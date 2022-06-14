@@ -2,46 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C0F54AF26
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 13:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3571054AF60
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 13:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239079AbiFNLRN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 07:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40562 "EHLO
+        id S241585AbiFNLij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 07:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231887AbiFNLRM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 07:17:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D20220F7;
-        Tue, 14 Jun 2022 04:17:11 -0700 (PDT)
+        with ESMTP id S241547AbiFNLi1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 07:38:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF1841610;
+        Tue, 14 Jun 2022 04:38:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 63039B817D7;
-        Tue, 14 Jun 2022 11:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08E6C3411F;
-        Tue, 14 Jun 2022 11:17:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3805A611E8;
+        Tue, 14 Jun 2022 11:38:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE281C3411E;
+        Tue, 14 Jun 2022 11:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655205429;
-        bh=OLxdqz8v9c0jsmtShQ9ZLaEVr+VzqF9XJMhBZg7aA0s=;
+        s=k20201202; t=1655206705;
+        bh=dt/7IRihakfa0z3FSC6b8H9fkTidVQtEjvRx/bxxSvU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XUX9WALMpQht+A2WyY/9Y0FRt3yAGu56w8ac6rFSzGJ85yg8dT6J3K6RDGfIB7XYP
-         5HRj8Zqf13Q+sQpnfcdtNH98UD2JYWmX/Jb8tSk0vKQaMzCAs98x6RJzWCrUiIP1WS
-         5UYokwEoFl4RnGKOl/XYv6G1l5hjU+Jv0ozicDBKLOU/1pRJXBsEcIX9pU6VUDZpmS
-         BPOXW6DMtZ4LTYDZLXKIgeikFskqOIjZi7EJJjJzRbhD06VdjY4hs4B/rJWa7cw0B+
-         j0DppMULkWDGui31JWKazA0hSoFKp7OaVzM6kBPz4vSnKrKqJ3BPNQAkaj/+Cm1K9X
-         asz2bWB0wPX9g==
-Date:   Tue, 14 Jun 2022 12:26:18 +0100
+        b=NBdiwjjoUG/a0z6QSAhuQ5VH2blwUuiBYDJ+/PBalF5wXzvY5CFYKt2DY0A/GesNa
+         KKz0FfRDorBtNoLNLvyeFQ1i9JmUU3rh5NismpJLJ7peSIbQeZ3/cFxOyP43DGB2Iu
+         qnavlnXX/y7ZrsWM4qgSWJgEplb1xn78yWHqVltC69a1CWNhREf5wVU5imBVLHAzId
+         rFABMWlHhPVKndbMjHHdN1+rGLMwp8V9ZHSJnA8wPLtiHj+m6H8bJYIMarciFZODk1
+         adhF5SBM7gX4QVBR/D3VYdKueJrSItwtMSIVEj+S/tkccVBYMZMlNIt/SlFdprZs7+
+         h62aeEQm8RWVQ==
+Date:   Tue, 14 Jun 2022 12:47:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: dac: cio-dac: Implement and utilize register
- structures
-Message-ID: <20220614122618.68e2e9d1@jic23-huawei>
-In-Reply-To: <44aec703753f930cceff448babd1c8e2959eebb0.1654118389.git.william.gray@linaro.org>
-References: <cover.1654118389.git.william.gray@linaro.org>
-        <44aec703753f930cceff448babd1c8e2959eebb0.1654118389.git.william.gray@linaro.org>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: ad4130: add AD4130 driver
+Message-ID: <20220614124735.1d712a4a@jic23-huawei>
+In-Reply-To: <37ac71be-78d6-a266-045b-18164d715e57@gmail.com>
+References: <20220608091238.403897-1-cosmin.tanislav@analog.com>
+        <20220608091238.403897-3-cosmin.tanislav@analog.com>
+        <CAHp75Vdvng-fxt-p2bHJiF8i967eh1o_MUgDFN_odhW0sLu69A@mail.gmail.com>
+        <37ac71be-78d6-a266-045b-18164d715e57@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,104 +63,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon,  6 Jun 2022 10:15:18 -0400
-William Breathitt Gray <william.gray@linaro.org> wrote:
+On Wed, 8 Jun 2022 23:11:51 +0300
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> Reduce magic numbers and improve code readability by implementing and
-> utilizing named register data structures.
+> On 6/8/22 18:59, Andy Shevchenko wrote:
+> > On Wed, Jun 8, 2022 at 12:19 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
+> >>
+> >> AD4130-8 is an ultra-low power, high precision, measurement solution for
+> >> low bandwidth battery operated applications.
+> >>
+> >> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+> >> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+> >> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+> >> selectable filter options, smart sequencer, sensor biasing and excitation
+> >> options, diagnostics, and a FIFO buffer.  
+> > 
+> > I believe we may gain a few LoCs by slightly bending the rule of 80.
+> > Also see below.
+> >   
 > 
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-
-I'm unconvinced this one really helps readability seeing
-as you are only indexing a straight forward array.
-
-Simply using u16 __iomem *
-would provide the main cleanup which is avoiding the indexing
-via * 2.
-
-Thanks,
-
-Jonathan
+> I'll only go over the 80 columns limit if Jonathan agrees to it.
 
 
-> ---
->  drivers/iio/dac/cio-dac.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
+Where it helps readability I fine with us going past 80.
+I'm not convinced by every case Andy highlights, but many do
+make things easier to read.
+
+
 > 
-> diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
-> index 8080984dcb03..7860450ceaf3 100644
-> --- a/drivers/iio/dac/cio-dac.c
-> +++ b/drivers/iio/dac/cio-dac.c
-> @@ -16,6 +16,7 @@
->  #include <linux/isa.h>
->  #include <linux/module.h>
->  #include <linux/moduleparam.h>
-> +#include <linux/types.h>
->  
->  #define CIO_DAC_NUM_CHAN 16
->  
-> @@ -34,14 +35,22 @@ static unsigned int num_cio_dac;
->  module_param_hw_array(base, uint, ioport, &num_cio_dac, 0);
->  MODULE_PARM_DESC(base, "Measurement Computing CIO-DAC base addresses");
->  
-> +/**
-> + * struct cio_dac_reg - device register structure
-> + * @da:	D/A data
-> + */
-> +struct cio_dac_reg {
-> +	u16 da[CIO_DAC_NUM_CHAN];
-> +};
-> +
->  /**
->   * struct cio_dac_iio - IIO device private data structure
->   * @chan_out_states:	channels' output states
-> - * @base:		base port address of the IIO device
-> + * @reg:		I/O address offset for the device registers
->   */
->  struct cio_dac_iio {
->  	int chan_out_states[CIO_DAC_NUM_CHAN];
-> -	void __iomem *base;
-> +	struct cio_dac_reg __iomem *reg;
->  };
->  
->  static int cio_dac_read_raw(struct iio_dev *indio_dev,
-> @@ -61,7 +70,6 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
->  	struct iio_chan_spec const *chan, int val, int val2, long mask)
->  {
->  	struct cio_dac_iio *const priv = iio_priv(indio_dev);
-> -	const unsigned int chan_addr_offset = 2 * chan->channel;
->  
->  	if (mask != IIO_CHAN_INFO_RAW)
->  		return -EINVAL;
-> @@ -71,7 +79,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_dev,
->  		return -EINVAL;
->  
->  	priv->chan_out_states[chan->channel] = val;
-> -	iowrite16(val, priv->base + chan_addr_offset);
-> +	iowrite16(val, priv->reg->da + chan->channel);
->  
->  	return 0;
->  }
-> @@ -106,8 +114,8 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
->  	}
->  
->  	priv = iio_priv(indio_dev);
-> -	priv->base = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
-> -	if (!priv->base)
-> +	priv->reg = devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
-> +	if (!priv->reg)
->  		return -ENOMEM;
->  
->  	indio_dev->info = &cio_dac_info;
-> @@ -117,8 +125,8 @@ static int cio_dac_probe(struct device *dev, unsigned int id)
->  	indio_dev->name = dev_name(dev);
->  
->  	/* initialize DAC outputs to 0V */
-> -	for (i = 0; i < 32; i += 2)
-> -		iowrite16(0, priv->base + i);
-> +	for (i = 0; i < CIO_DAC_NUM_CHAN; i++)
-> +		iowrite16(0, priv->reg->da + i);
->  
->  	return devm_iio_device_register(dev, indio_dev);
->  }
+> >> +       *size = ad4130_reg_size[reg];
+> >> +       if (!*size)
+> >> +               return -EINVAL;  
+> > 
+> > Is this check necessary?
+> >   
+> 
+> Yes. I haven't described all registers in the table, and the registers
+> can be accessed by the user via the debugfs_reg_access() method.
+
+For that one, probably worth a comment as not immediately obvious.
+
+> 
+
+...
+
+> 
+> >> +       switch (ref_sel) {
+> >> +       case AD4130_REF_REFIN1:
+> >> +               ret = regulator_get_voltage(st->regulators[2].consumer);
+> >> +               break;
+> >> +       case AD4130_REF_REFIN2:
+> >> +               ret = regulator_get_voltage(st->regulators[3].consumer);
+> >> +               break;
+> >> +       case AD4130_REF_AVDD_AVSS:
+> >> +               ret = regulator_get_voltage(st->regulators[0].consumer);
+> >> +               break;
+> >> +       case AD4130_REF_REFOUT_AVSS:
+> >> +               ret = st->int_ref_uv;
+> >> +               break;
+> >> +       default:
+> >> +               ret = -EINVAL;
+> >> +               break;
+> >> +       }  
+> >   
+> >> +       if (ret < 0)
+> >> +               return dev_err_probe(dev, ret, "Cannot use reference %u\n",
+> >> +                                    ref_sel);  
+> > 
+> > Can it be moved to the caller where it would cleaner to use, I think?
+> > As a good side effect the all above will be shortened to just return directly.
+> >   
+> 
+> I'm pretty sure I remember Jonathan suggested moving it inside the
+> function.
+
+It's possible, though I don't know what my reasoning would have been...
 

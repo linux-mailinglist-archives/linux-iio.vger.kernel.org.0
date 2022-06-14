@@ -2,72 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08B7354B441
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 17:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2C7254B46F
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 17:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349086AbiFNPLY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 11:11:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
+        id S1356594AbiFNPRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 11:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241398AbiFNPLX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 11:11:23 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5CCF2FE57;
-        Tue, 14 Jun 2022 08:11:22 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id g7so12098739eda.3;
-        Tue, 14 Jun 2022 08:11:22 -0700 (PDT)
+        with ESMTP id S1356586AbiFNPRi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 11:17:38 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0456962E3;
+        Tue, 14 Jun 2022 08:17:32 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id kq6so17807433ejb.11;
+        Tue, 14 Jun 2022 08:17:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=z3hgroj28Zs89uEskySDVuV/EGAjFVx+1yzPc51SYbg=;
-        b=IKXA/fv6Qo7hmQrY4ZMw0Jya/LfD9U/Rml8A+2Rg5Xl9Oebdh8vv3VQlqdirE6wR4q
-         5iHXN2Kh468W4DUmRuCvoAzvVA/SVmj7LAjxt//ZE3hz6BSYCfXtG9mAk9GPjtC0MijI
-         rER9KxJH2eEi4dFVZpKeaiS+/Jk8DCCHsw2pueu7CeGDefUZWv2GIakBY4klpQ+PN+u2
-         J+DZt+vVsPb8TMcMAhh2wBLtzn5yay7tmJJE8sppo4P6eUYlnIjGXAEa4xC1soXHHoFW
-         MLD9q6KDCpohqfml8YtGzQZzLf4lvL0F+TISEBISSqvGTEgqCPEa8BZo2K42OsKw6wV/
-         GG5A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/Bb9QNZS4KUSJsXgLquKvLX7xOgHLYAfEYnI8Rwogk=;
+        b=AFaVWlyXJ1FNEKXOiuwson3lZ8cfTXUQPrOam43nTKnwNtl29wG4yC9I4BKLiU093+
+         9nxcGWeZtPWw+VjHOE5zz/AfgFaQ95erSHURx3EH4kMGV+OX/Zhg52HUbNsK+F4O8qxa
+         YiDLHKSnFJEXXc9VXvMgeeKdvwBehE3gndoklvrfOPyKE0MQrYc6yNPCq0Ehrt4Wkx7b
+         NCXlLUvfwAv7+sXqBkBjus+6CueRX8yvK3zPnUXVgN5vtg5Wie1QnJnIwvkdTD1/riEB
+         34YPiKG/o1SYJkqi1jTiN3ZgzYjT2WTrokAX0zYXstowIcQBS0CDQQ1lwio8zIyvS2XE
+         yb1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=z3hgroj28Zs89uEskySDVuV/EGAjFVx+1yzPc51SYbg=;
-        b=d6ioIP3mBF+CXDh0A1XlVDn1QvHjHyQ29kqBnWeeS9gq6diUCUGKouJ46XFZjfufNY
-         eSTkkTaI06z6YkQs2LNX4EKzpu2cjwU4nVckZ/Diz2b6lgYAGEGViAgJ3gdZ5MX6mHyM
-         xh7xjbDUoyibv3Ib0U35SHyAbKC0tbo9lCcVGXpKVAhDx3v4FPJgoyVBFD5DSnBzRuHq
-         RxhtdjMphYo3JEleETc+ygCwbnxiGDLecmGqPBk6jpZ2cM0gtSEOU6KEkrQfG8+Empu9
-         SqcZiuraDCLxLCPQ6kFMnyU72YGpeQYZTYK55/HGaBlsBtjItfM6/E427EC6wtgUHJaw
-         6skQ==
-X-Gm-Message-State: AOAM531e32xbCeC3555kYdE9K8PNr9DqjAkOSpB9M8NVqXER1SjKaoVE
-        IhKDBvV5AwsjlVmpsHg8VJr9iKsXWc/PyC29JD3SZtfNMnsx2Q==
-X-Google-Smtp-Source: AGRyM1sb9mKj5CCuJtLS5MIoTIZSWkJQSZvyEbXLvbtJrNfsKT2UeAuAEQpxurmfRMnuHdHBE7HW2BYeu6OJwZ/qOkc=
-X-Received: by 2002:a05:6402:4390:b0:42e:b7e:e9ac with SMTP id
- o16-20020a056402439000b0042e0b7ee9acmr6643257edc.97.1655219481180; Tue, 14
- Jun 2022 08:11:21 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/Bb9QNZS4KUSJsXgLquKvLX7xOgHLYAfEYnI8Rwogk=;
+        b=yYDJcKua1ahk3rxn1BOMbIz8BDYZSU/VvMQw3bqbivZc4ruLs+JxBEoGW3AN5w700t
+         qGsVd0b89LwaUMzTsrdgmXi6pzW0D4+cl4f9jzsbWewArvZOFLr+QgmosI5LVsaQEbUu
+         Nlx20N/oZIQB31WR0a+tiZgKWmXzaHpxvPNVMm3PiBu50DhkcXErqdkqJo8Xi3iVZlCm
+         zn8spaSZkBHtznVV8ZQSip21GeHqbqfMd8cAQZaPA33ptt1qrXDentJhLdpDGBUyI6rz
+         +kcmX0rXT/YeI/AI0h+Urq1OwH8jcF3VKRMd/MVuGaB+Nkds/I90t2cqPWOlcqXtKWjb
+         EIlA==
+X-Gm-Message-State: AOAM533dA9SNLWROvFpWo1h7z6Erb0mowO1JRdDzHErzfMs5/l3ZLTOU
+        kS08/zLUFCIr1vxKJNme36s=
+X-Google-Smtp-Source: AGRyM1tJm5/bvEJsCvork/9f2aT3katbgBIymlUUTiawbib1+mgc64mVno1uo/2ndBNZTkoAukTW+Q==
+X-Received: by 2002:a17:906:c209:b0:6fe:a3d5:c5a4 with SMTP id d9-20020a170906c20900b006fea3d5c5a4mr4672061ejz.759.1655219850365;
+        Tue, 14 Jun 2022 08:17:30 -0700 (PDT)
+Received: from localhost.localdomain (p5b3f7f9c.dip0.t-ipconnect.de. [91.63.127.156])
+        by smtp.gmail.com with ESMTPSA id f1-20020a50d541000000b0042dd7e13391sm7198180edj.45.2022.06.14.08.17.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jun 2022 08:17:26 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com
+Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH 1/6] iio: adc: mp2629: fix wrong comparison of channel
+Date:   Tue, 14 Jun 2022 17:17:17 +0200
+Message-Id: <20220614151722.2194936-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220613120534.36991-1-andrea.merello@iit.it> <20220613120534.36991-9-andrea.merello@iit.it>
- <CAHp75Vdh8kAH6540xCwzFh5uf=QMVTHC42a8pOgvkpObzjfD+w@mail.gmail.com>
- <164f663acbba481a8ea8f45f185aaf83@iit.it> <CAHp75VeYK=oCbbBVp01_b5LK_FqAo4F_bic9Me4Y6PpfFnDU6g@mail.gmail.com>
- <a41936e4063f4c2c9da7c7e1d915bd62@iit.it>
-In-Reply-To: <a41936e4063f4c2c9da7c7e1d915bd62@iit.it>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 14 Jun 2022 17:10:43 +0200
-Message-ID: <CAHp75Vd_w1WOp9ntbNqxtuuVXi0kMGbX=OZ7cioNxoh2yUa1ag@mail.gmail.com>
-Subject: Re: [v6 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Andrea Merello <Andrea.Merello@iit.it>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        jmondi <jacopo@jmondi.org>,
-        "andrea.merello@gmail.com" <andrea.merello@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -78,48 +69,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 2:15 PM Andrea Merello <Andrea.Merello@iit.it> wrot=
-e:
+Input voltage channel enum is compared against iio address instead
+of channel.
 
-...
+Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
+Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+---
+ drivers/iio/adc/mp2629_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> >> >> +       devm_add_action_or_reset(priv->dev, bno055_debugfs_remove, =
-priv->debugfs);
-> >> >
-> >> >Shouldn't we report the potential error here? It's not directly
-> >> >related to debugfs, but something which is not directly related.
-> >>
-> >> The error eventually comes out from something that has nothing to do w=
-ith debugs per se (i.e. the devm stuff), but it will only affect debugfs in=
-deed.
-> >>
-> >> Assuming that we don't want to make the whole driver fail in case debu=
-gfs stuff fails (see last part of the comment above debugfs_create_file() i=
-mplementation), and given that the devm_add_action_or_reset(), should indee=
-d "reset" in case of failure (i.e.  we should be in a clean situation anywa=
-y), I would say it should be OK not to propagate the error and let things g=
-o on.
-> >
-> >As I said, it's not directly related to debugfs. Here is the resource
-> >leak possible or bad things happen if you probe the driver, that fails
-> >to add this call for removal, remove it, and try to insert again, in
-> >such case the debugfs will be stale.
->
-> Hum, I would say this shouldn't ever happen: AFAICS devm_add_action_or_re=
-set() is a wrapper around devm_add_action() and it's purpose is exactly to =
-add a check for failure; devm_add_action_or_reset() immediately invokes the=
- action handler in case devm_add_action() fails. IOW in case of failure to =
-add the devm stuff, the debugfs file is removed immediately and it shouldn'=
-t cause any mess with next times probe()s; just the driver will go on witho=
-ut the debugfs file being here.
->
-> I think this is the point of using devm_add_action_or_reset() instead of =
-dev_add_action()  indeed, or am I missing something?
+diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+index aca084f1e78a..e7fbfe92e884 100644
+--- a/drivers/iio/adc/mp2629_adc.c
++++ b/drivers/iio/adc/mp2629_adc.c
+@@ -73,7 +73,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+ 		if (ret)
+ 			return ret;
+ 
+-		if (chan->address == MP2629_INPUT_VOLT)
++		if (chan->channel == MP2629_INPUT_VOLT)
+ 			rval &= GENMASK(6, 0);
+ 		*val = rval;
+ 		return IIO_VAL_INT;
+-- 
+2.25.1
 
-Reading that code again and I think you are right, so dev_warn() will
-be sufficient to show that we fail. OTOH, what is the point of adding
-a resource for the failed debugfs call?
-
---=20
-With Best Regards,
-Andy Shevchenko

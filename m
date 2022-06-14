@@ -2,53 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3571054AF60
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 13:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F41654AF6A
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 13:42:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241585AbiFNLij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 07:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        id S239698AbiFNLmk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 07:42:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241547AbiFNLi1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 07:38:27 -0400
+        with ESMTP id S238564AbiFNLmj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 07:42:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF1841610;
-        Tue, 14 Jun 2022 04:38:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30633152D;
+        Tue, 14 Jun 2022 04:42:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3805A611E8;
-        Tue, 14 Jun 2022 11:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE281C3411E;
-        Tue, 14 Jun 2022 11:38:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FAE761319;
+        Tue, 14 Jun 2022 11:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB12C3411B;
+        Tue, 14 Jun 2022 11:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655206705;
-        bh=dt/7IRihakfa0z3FSC6b8H9fkTidVQtEjvRx/bxxSvU=;
+        s=k20201202; t=1655206956;
+        bh=Wjy0k6PpJbFhFOoNlE9Qv+v/Zpxwj3EDjUSlAzHy1lQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NBdiwjjoUG/a0z6QSAhuQ5VH2blwUuiBYDJ+/PBalF5wXzvY5CFYKt2DY0A/GesNa
-         KKz0FfRDorBtNoLNLvyeFQ1i9JmUU3rh5NismpJLJ7peSIbQeZ3/cFxOyP43DGB2Iu
-         qnavlnXX/y7ZrsWM4qgSWJgEplb1xn78yWHqVltC69a1CWNhREf5wVU5imBVLHAzId
-         rFABMWlHhPVKndbMjHHdN1+rGLMwp8V9ZHSJnA8wPLtiHj+m6H8bJYIMarciFZODk1
-         adhF5SBM7gX4QVBR/D3VYdKueJrSItwtMSIVEj+S/tkccVBYMZMlNIt/SlFdprZs7+
-         h62aeEQm8RWVQ==
-Date:   Tue, 14 Jun 2022 12:47:35 +0100
+        b=HDoa8lrQ/UJsPIGpXTSPoztcA47Nzq2VGRDj+vnWpeHDyoB5SkvkZ5oO6oXjJwD7z
+         3OOpNMTPM4KJQ6EcNnsqNSScju/mzdGhISeIpr7DN8WZmpVoYB4Mp9ZTjJSSP7+bvN
+         bvjYZj4Nw0zpnIfuCXqZXIMkLmTBe0Hh32jbWodrPqFGo+syhrawBCdx+iBUbc/7qq
+         559JQcBMGSleUCTs1LlnxNQjLkSocFOSxK0/SdmI2P22fa9M6x0xX++xKcM40UwZ/K
+         t745G8Bu1O0/qxiwX7GEmOnYKnN59SELUBzUDjiFcpdHuIbF2lFEu9zGetpziZ2hcS
+         UeoACwW4tkwIA==
+Date:   Tue, 14 Jun 2022 12:51:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v4 2/2] iio: adc: ad4130: add AD4130 driver
-Message-ID: <20220614124735.1d712a4a@jic23-huawei>
-In-Reply-To: <37ac71be-78d6-a266-045b-18164d715e57@gmail.com>
-References: <20220608091238.403897-1-cosmin.tanislav@analog.com>
-        <20220608091238.403897-3-cosmin.tanislav@analog.com>
-        <CAHp75Vdvng-fxt-p2bHJiF8i967eh1o_MUgDFN_odhW0sLu69A@mail.gmail.com>
-        <37ac71be-78d6-a266-045b-18164d715e57@gmail.com>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@collabora.com, alvaro.soliverez@collabora.com,
+        andy.shevchenko@gmail.com, digetx@gmail.com
+Subject: Re: [PATCH v5 0/2] Add LTRF216A Driver
+Message-ID: <20220614125146.35b8288d@jic23-huawei>
+In-Reply-To: <20220608113553.32083-1-shreeya.patel@collabora.com>
+References: <20220608113553.32083-1-shreeya.patel@collabora.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,79 +57,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 8 Jun 2022 23:11:51 +0300
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Wed,  8 Jun 2022 17:05:51 +0530
+Shreeya Patel <shreeya.patel@collabora.com> wrote:
 
-> On 6/8/22 18:59, Andy Shevchenko wrote:
-> > On Wed, Jun 8, 2022 at 12:19 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
-> >>
-> >> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> >> low bandwidth battery operated applications.
-> >>
-> >> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> >> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> >> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> >> selectable filter options, smart sequencer, sensor biasing and excitation
-> >> options, diagnostics, and a FIFO buffer.  
-> > 
-> > I believe we may gain a few LoCs by slightly bending the rule of 80.
-> > Also see below.
-> >   
+> This patchset adds support for ltrf216a Ambient Light Sensor
+> and documents the DT bindings for the same.
 > 
-> I'll only go over the 80 columns limit if Jonathan agrees to it.
+As Andy already gave some valuable feedback and you have
+a few autobuilder checks to fix up (plus I'm low on time this week)
+I'll wait for v6 before taking another look.
 
+Thanks,
 
-Where it helps readability I fine with us going past 80.
-I'm not convinced by every case Andy highlights, but many do
-make things easier to read.
-
+Jonathan
 
 > 
-> >> +       *size = ad4130_reg_size[reg];
-> >> +       if (!*size)
-> >> +               return -EINVAL;  
-> > 
-> > Is this check necessary?
-> >   
+> Changes in v5
+>   - Add power management support.
+>   - Add reset functionality.
+>   - Use readx_poll_timeout() to get data.
+>   - Cleanup some of the redundant code.
+>   - Update int_time_fac after I2C write is successful.
+>   - Rename mutex to lock.
+>   - Use Reverse Xmas tree pattern for all variable definitions.
+>   - Improve error handling messages and add error codes.
+>   - Add one more MODULE_AUTHOR.
+>   - Remove cleardata which was reading data for infrared light.
+>   - Remove patch for deprecated vendor prefix [PATCH v4 3/3].
+>   - Remove deprecated string from DT binding document.
 > 
-> Yes. I haven't described all registers in the table, and the registers
-> can be accessed by the user via the debugfs_reg_access() method.
-
-For that one, probably worth a comment as not immediately obvious.
-
+> Changes in v4
+>   - Add more descriptive comment for mutex lock
+>   - Fix mutex locking in read_raw()
+>   - Use i2c_smbus_read_i2c_block_data()
 > 
-
-...
-
+> Changes in v3
+>   - Use u16 instead of u8 for int_time_fac
+>   - Reorder headers in ltrf216a.c file
+>   - Remove int_time_mapping table and use int_time_available
+>   - Fix indentation in the bindings file.
 > 
-> >> +       switch (ref_sel) {
-> >> +       case AD4130_REF_REFIN1:
-> >> +               ret = regulator_get_voltage(st->regulators[2].consumer);
-> >> +               break;
-> >> +       case AD4130_REF_REFIN2:
-> >> +               ret = regulator_get_voltage(st->regulators[3].consumer);
-> >> +               break;
-> >> +       case AD4130_REF_AVDD_AVSS:
-> >> +               ret = regulator_get_voltage(st->regulators[0].consumer);
-> >> +               break;
-> >> +       case AD4130_REF_REFOUT_AVSS:
-> >> +               ret = st->int_ref_uv;
-> >> +               break;
-> >> +       default:
-> >> +               ret = -EINVAL;
-> >> +               break;
-> >> +       }  
-> >   
-> >> +       if (ret < 0)
-> >> +               return dev_err_probe(dev, ret, "Cannot use reference %u\n",
-> >> +                                    ref_sel);  
-> > 
-> > Can it be moved to the caller where it would cleaner to use, I think?
-> > As a good side effect the all above will be shortened to just return directly.
-> >   
+> Changes in v2
+>   - Add support for 25ms and 50ms integration time.
+>   - Rename some of the macros as per names given in datasheet
+>   - Add a comment for the mutex lock
+>   - Use read_avail callback instead of attributes and set the
+>     appropriate _available bit.
+>   - Use FIELD_PREP() at appropriate places.
+>   - Add a constant lookup table for integration time and reg val
+>   - Use BIT() macro for magic numbers.
+>   - Improve error handling at few places.
+>   - Use get_unaligned_le24() and div_u64()
+>   - Use probe_new() callback and devm functions
+>   - Return errors in probe using dev_err_probe()
+>   - Use DEFINE_SIMPLE_DEV_PM_OPS()
+>   - Correct the formula for lux to use 0.45 instead of 0.8
+>   - Add interrupt and power supply property in DT bindings
+>   - Add vendor prefix name as per the alphabetical order.
 > 
-> I'm pretty sure I remember Jonathan suggested moving it inside the
-> function.
-
-It's possible, though I don't know what my reasoning would have been...
+> 
+> Shreeya Patel (2):
+>   dt-bindings: Document ltrf216a light sensor bindings
+>   iio: light: Add support for ltrf216a sensor
+> 
+>  .../bindings/iio/light/liteon,ltrf216a.yaml   |  50 ++
+>  drivers/iio/light/Kconfig                     |  10 +
+>  drivers/iio/light/Makefile                    |   1 +
+>  drivers/iio/light/ltrf216a.c                  | 441 ++++++++++++++++++
+>  4 files changed, 502 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+>  create mode 100644 drivers/iio/light/ltrf216a.c
+> 
 

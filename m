@@ -2,176 +2,319 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F35754B57F
+	by mail.lfdr.de (Postfix) with ESMTP id A75C554B580
 	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 18:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356984AbiFNQMy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 12:12:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55656 "EHLO
+        id S1357005AbiFNQM1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 12:12:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357039AbiFNQMx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 12:12:53 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251672871B;
-        Tue, 14 Jun 2022 09:12:43 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id x62so12336109ede.10;
-        Tue, 14 Jun 2022 09:12:43 -0700 (PDT)
+        with ESMTP id S1357003AbiFNQMX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 12:12:23 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C4B117C
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:12:21 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id f13so6440217qtb.5
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kjc7Yr/ErA3zp8OTbDL5CmDnRX1voumk9vLY3Tug8DQ=;
-        b=EGmBu0R0JyubwoXTK1QexYyYlgjuu0lOVroA0GqrOJxfVvX7a9plLRn5cZMPNuv3lE
-         NuCLj0+JA/Bu9cfvwgr+FUIdTznZ7WQw3OEC6Xx9arg0rYKEQOIvvA5SX1Cci7pYw4V/
-         TzV0YeoE+cVeUbpHYXItfoo47CM7R8MquVEW+IAfEqHK5/y3OBgfctemtPZeFB3b4P3n
-         Tw3WF3rVjRJdXbhyggZf1S10npP3PxzEM+CtHB3Q2TkOLP2LbIcVB7gB7RcSpaeGn74r
-         QHUpZVyMEk6Fu4eKJr8wCGgB8dV0MJXCJ8Tw44DT15SvY3MxdO1e8k14Twjwu1VyRYbW
-         r7iA==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=3jBqBxMB7fqDN551D5iAxDom4QaYI7W0sqRlfDkpCc8=;
+        b=kmuz4JLangHbni60CUWT2xTGrO5G1qMmeyyTNxwO2GAUS9Zo/A9AGz+Js0L0ZpUj5S
+         0dymZ5D4Abl1SKY7smIhJSGpq812JzZyGyg6gnJM1hsTARM41oQjGdw7JCuhIVYJLdIu
+         v8njo7+6ylA1Lg21LW6b4mxnwduGTlBjtKTpMvSTMEd7wp2iesqCVWtJqcyN5sgVS1yh
+         gnkly6txocbpDtWykSVEi0Qwc4YRgXPc1zweFl+WDIw3wIiY2UHjCNIvyXQmpCgd6/cq
+         P2Iyg0v1FvnNz18zXmByvrNB6z5nC3aSUlRofDZHgpUR3e2ovDY2nezeSOgVN0vQ1lcO
+         bm+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kjc7Yr/ErA3zp8OTbDL5CmDnRX1voumk9vLY3Tug8DQ=;
-        b=LBCKHUKboRCW1IEGWWlBBNcATrobsgeT64E9XvIWrfKaqHkCowlbFSexxwnpDgqX7t
-         rTI/t537t37Fj3JsbEHxrghfWwlSvbfSnfj+Vu5NeQgOeB7QrzlHWKKXno6KMSLr2Asz
-         PxMIoByZE986htC1GFPzmDoKsWlDyrr69T9o4BEVHnTQ403hVf/TKFFz2J55Qm3v/3M3
-         ZlzJm9Pkfb8lKN0FEQHB7yh/lETnPMvtmlshTbg11vUtPxCPvfu5/Q20QoUfeSHyibqB
-         zgvhNEhQ3kcdQzHDXgLO+iMdxswHWjnYYYZV17Tf6GPj/18zvABck+/f2Vf6XW/sFVRn
-         ehKA==
-X-Gm-Message-State: AOAM531400GtexEwI2n9yTEdfViXBwWLIefSafx8kYfCezZ6Mz+s7ALp
-        9DYorpKUZUZpQNBLkircP3TjFf+Jvdl7Pbf6yEQ=
-X-Google-Smtp-Source: ABdhPJyiUXZvGGc032b6sj/qHxGWFTDMztNL0Ct+5us5gcLF/orDegpHW1e/1c4NfcOfozDAO/s2h9vLcov5eRauY8Y=
-X-Received: by 2002:aa7:d303:0:b0:42d:d192:4c41 with SMTP id
- p3-20020aa7d303000000b0042dd1924c41mr7087360edq.178.1655223162056; Tue, 14
- Jun 2022 09:12:42 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=3jBqBxMB7fqDN551D5iAxDom4QaYI7W0sqRlfDkpCc8=;
+        b=VNlLXwLAqnZBt+Le9kVvKepdPzWBicrhuJrdmF/VA5LDieSX/KruLplAF+5FLwi1F7
+         kEt8nV0kNzA29yg248Tco5ggnjnEu154iNZfPsBtlpSmUbiFjMWXsHj6+JjokPP0UWfv
+         5VnoUwqDiF2PsuEKhkmzisonLO3GmE0F2CBaJMDvg2xQbFKusgq/AVMWezmzWVJqeGEM
+         7NLgqD62MgKlEUPGT1FgWwcD/ApZ4vZ8uQYZwuqvs1rczYhxrg6NwpHGdPO5szn/AwM7
+         YreiTQIVWv2/MztnlGwreYXUYZ1oKQYsl1LyckMTzy5LXIuPzArp0tL+KP3/fNLSxqm/
+         UG9Q==
+X-Gm-Message-State: AOAM531j+o5XIJotiSlGLWQ81eU1caxh0y5qJEKPF9IWnQV6U+FEKPiq
+        kO8PTP349HGWMwwqdknDbD4kCw==
+X-Google-Smtp-Source: ABdhPJzCveOrz66ys+OxsOHkdqq6dB46agmi3j4eoqqBAXFFpNzvKeU1zTejfZB/KOvowZ4r4C33og==
+X-Received: by 2002:a05:622a:54a:b0:305:3186:1fe9 with SMTP id m10-20020a05622a054a00b0030531861fe9mr4804128qtx.60.1655223140435;
+        Tue, 14 Jun 2022 09:12:20 -0700 (PDT)
+Received: from fedora ([23.82.142.207])
+        by smtp.gmail.com with ESMTPSA id cj19-20020a05622a259300b00304f6f4199dsm7237283qtb.65.2022.06.14.09.12.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jun 2022 09:12:20 -0700 (PDT)
+Date:   Tue, 14 Jun 2022 12:12:18 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: stx104: Implement and utilize register
+ structures
+Message-ID: <YqizYqqu3tyzRUJ3@fedora>
+References: <cover.1654118389.git.william.gray@linaro.org>
+ <a2dca9435f7f1f727c696a1faa0ab9e27927f9f3.1654118389.git.william.gray@linaro.org>
+ <20220614122248.7f257556@jic23-huawei>
 MIME-Version: 1.0
-References: <20220614151722.2194936-1-sravanhome@gmail.com> <20220614151722.2194936-5-sravanhome@gmail.com>
-In-Reply-To: <20220614151722.2194936-5-sravanhome@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 14 Jun 2022 18:12:05 +0200
-Message-ID: <CAHp75VffZ3u+mP=wqThbiFAaDk7u=O-E5qhTWD_HAxv0PN1Q_w@mail.gmail.com>
-Subject: Re: [PATCH 5/6] power: supply: Add support for mp2733 battery charger
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zKhNy45o+JagUNi2"
+Content-Disposition: inline
+In-Reply-To: <20220614122248.7f257556@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 5:17 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
->
-> mp2733 is updated version of mp2629 battery charge management
-> which supports usb fast-charge and higher range of input voltage.
 
-USB
+--zKhNy45o+JagUNi2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-...
+On Tue, Jun 14, 2022 at 12:22:48PM +0100, Jonathan Cameron wrote:
+> On Mon,  6 Jun 2022 10:15:17 -0400
+> William Breathitt Gray <william.gray@linaro.org> wrote:
+>=20
+> > Reduce magic numbers and improve code readability by implementing and
+> > utilizing named register data structures.
+> >=20
+> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+>=20
+> A few comments inline, but looks fine to me otherwise.
+>=20
+> Jonathan
+>=20
+> > ---
+> >  drivers/iio/adc/stx104.c | 70 +++++++++++++++++++++++++++-------------
+> >  1 file changed, 47 insertions(+), 23 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
+> > index 7552351bfed9..7656b363e281 100644
+> > --- a/drivers/iio/adc/stx104.c
+> > +++ b/drivers/iio/adc/stx104.c
+> > @@ -16,6 +16,7 @@
+> >  #include <linux/module.h>
+> >  #include <linux/moduleparam.h>
+> >  #include <linux/spinlock.h>
+> > +#include <linux/types.h>
+> > =20
+> >  #define STX104_OUT_CHAN(chan) {				\
+> >  	.type =3D IIO_VOLTAGE,				\
+> > @@ -44,14 +45,36 @@ static unsigned int num_stx104;
+> >  module_param_hw_array(base, uint, ioport, &num_stx104, 0);
+> >  MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
+> > =20
+> > +/**
+> > + * struct stx104_reg - device register structure
+> > + * @ad:		ADC Data
+> > + * @achan:	ADC Channel
+> > + * @dio:	Digital I/O
+> > + * @dac:	DAC Channels
+> > + * @cir_asr:	Clear Interrupts and ADC Status
+> > + * @acr:	ADC Control
+> > + * @pccr_fsh:	Pacer Clock Control and FIFO Status MSB
+> > + * @acfg:	ADC Configuration
+> > + */
+> > +struct stx104_reg {
+> > +	u16 ad;
+> > +	u8 achan;
+> > +	u8 dio;
+> > +	u16 dac[2];
+> > +	u8 cir_asr;
+> > +	u8 acr;
+> > +	u8 pccr_fsh;
+> > +	u8 acfg;
+> > +};
+> > +
+> >  /**
+> >   * struct stx104_iio - IIO device private data structure
+> >   * @chan_out_states:	channels' output states
+> > - * @base:		base port address of the IIO device
+> > + * @reg:		I/O address offset for the device registers
+> >   */
+> >  struct stx104_iio {
+> >  	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
+> > -	void __iomem *base;
+> > +	struct stx104_reg __iomem *reg;
+> >  };
+> > =20
+> >  /**
+> > @@ -64,7 +87,7 @@ struct stx104_iio {
+> >  struct stx104_gpio {
+> >  	struct gpio_chip chip;
+> >  	spinlock_t lock;
+> > -	void __iomem *base;
+> > +	u8 __iomem *base;
+> >  	unsigned int out_state;
+> >  };
+> > =20
+> > @@ -72,6 +95,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
+> >  	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
+> >  {
+> >  	struct stx104_iio *const priv =3D iio_priv(indio_dev);
+> > +	struct stx104_reg __iomem *const reg =3D priv->reg;
+> >  	unsigned int adc_config;
+> >  	int adbu;
+> >  	int gain;
+> > @@ -79,7 +103,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
+> >  	switch (mask) {
+> >  	case IIO_CHAN_INFO_HARDWAREGAIN:
+> >  		/* get gain configuration */
+> > -		adc_config =3D ioread8(priv->base + 11);
+> > +		adc_config =3D ioread8(&reg->acfg);
+> >  		gain =3D adc_config & 0x3;
+> > =20
+> >  		*val =3D 1 << gain;
+> > @@ -91,24 +115,24 @@ static int stx104_read_raw(struct iio_dev *indio_d=
+ev,
+> >  		}
+> > =20
+> >  		/* select ADC channel */
+> > -		iowrite8(chan->channel | (chan->channel << 4), priv->base + 2);
+> > +		iowrite8(chan->channel | (chan->channel << 4), &reg->achan);
+> > =20
+> >  		/* trigger ADC sample capture and wait for completion */
+> > -		iowrite8(0, priv->base);
+> > -		while (ioread8(priv->base + 8) & BIT(7));
+> > +		iowrite8(0, &reg->ad);
+>=20
+> Curious - 8 bit write to a 16 bit address?  Maybe worth a comment
+> on why.
 
-> +static int mp2733_get_usb_type(unsigned int rval)
-> +{
-> +       int type;
+This address doubles as the 8-bit Software Strobe Register; writing an
+8-bit value to this address will initiate an ADC sample capture. I'll
+rename this member to ssr_ad and add some comments to make this more
+explicit.
 
-Unneeded, just return directly.
+>=20
+> > +		while (ioread8(&reg->cir_asr) & BIT(7));
+> > =20
+> > -		*val =3D ioread16(priv->base);
+> > +		*val =3D ioread16(&reg->ad);
+> >  		return IIO_VAL_INT;
+> >  	case IIO_CHAN_INFO_OFFSET:
+> >  		/* get ADC bipolar/unipolar configuration */
+> > -		adc_config =3D ioread8(priv->base + 11);
+> > +		adc_config =3D ioread8(&reg->acfg);
+> >  		adbu =3D !(adc_config & BIT(2));
+> > =20
+> >  		*val =3D -32768 * adbu;
+> >  		return IIO_VAL_INT;
+> >  	case IIO_CHAN_INFO_SCALE:
+> >  		/* get ADC bipolar/unipolar and gain configuration */
+> > -		adc_config =3D ioread8(priv->base + 11);
+> > +		adc_config =3D ioread8(&reg->acfg);
+> >  		adbu =3D !(adc_config & BIT(2));
+> >  		gain =3D adc_config & 0x3;
+> > =20
+> > @@ -130,16 +154,16 @@ static int stx104_write_raw(struct iio_dev *indio=
+_dev,
+> >  		/* Only four gain states (x1, x2, x4, x8) */
+> >  		switch (val) {
+> >  		case 1:
+> > -			iowrite8(0, priv->base + 11);
+> > +			iowrite8(0, &priv->reg->acfg);
+> >  			break;
+> >  		case 2:
+> > -			iowrite8(1, priv->base + 11);
+> > +			iowrite8(1, &priv->reg->acfg);
+> >  			break;
+> >  		case 4:
+> > -			iowrite8(2, priv->base + 11);
+> > +			iowrite8(2, &priv->reg->acfg);
+> >  			break;
+> >  		case 8:
+> > -			iowrite8(3, priv->base + 11);
+> > +			iowrite8(3, &priv->reg->acfg);
+> >  			break;
+> >  		default:
+> >  			return -EINVAL;
+> > @@ -153,7 +177,7 @@ static int stx104_write_raw(struct iio_dev *indio_d=
+ev,
+> >  				return -EINVAL;
+> > =20
+> >  			priv->chan_out_states[chan->channel] =3D val;
+> > -			iowrite16(val, priv->base + 4 + 2 * chan->channel);
+> > +			iowrite16(val, priv->reg->dac + chan->channel);
+> Perhaps for consistency with below go with
+> &priv->reg->dac[chan->channels];
 
-> +       switch (rval) {
-> +       case MP2733_SOURCE_TYPE_APPLE_1p0:
-> +       case MP2733_SOURCE_TYPE_APPLE_2p1:
-> +       case MP2733_SOURCE_TYPE_APPLE_2p4:
-> +               type = POWER_SUPPLY_USB_TYPE_APPLE_BRICK_ID;
-> +               break;
-> +       case MP2733_SOURCE_TYPE_SDP:
-> +               type = POWER_SUPPLY_USB_TYPE_SDP;
-> +               break;
-> +       case MP2733_SOURCE_TYPE_CDP:
-> +               type = POWER_SUPPLY_USB_TYPE_CDP;
-> +               break;
-> +       case MP2733_SOURCE_TYPE_DCP:
-> +               type = POWER_SUPPLY_USB_TYPE_DCP;
-> +               break;
-> +       default:
-> +               type = POWER_SUPPLY_USB_TYPE_UNKNOWN;
-> +               break;
-> +       }
-> +
-> +       return type;
-> +}
-> +
-> +static int mp2629_get_usb_type(unsigned int rval)
-> +{
-> +       int type;
+Ack.
 
-Ditto.
+William Breathitt Gray
 
-> +       switch (rval) {
-> +       case MP2629_SOURCE_TYPE_SDP:
-> +               type = POWER_SUPPLY_USB_TYPE_SDP;
-> +               break;
-> +       case MP2629_SOURCE_TYPE_CDP:
-> +               type = POWER_SUPPLY_USB_TYPE_CDP;
-> +               break;
-> +       case MP2629_SOURCE_TYPE_DCP:
-> +               type = POWER_SUPPLY_USB_TYPE_DCP;
-> +               break;
-> +       case MP2629_SOURCE_TYPE_OTG:
-> +               type = POWER_SUPPLY_USB_TYPE_PD_DRP;
-> +               break;
-> +       default:
-> +               type = POWER_SUPPLY_USB_TYPE_UNKNOWN;
-> +               break;
-> +       }
-> +
-> +       return type;
-> +}
+> > =20
+> >  			return 0;
+> >  		}
+> > @@ -307,15 +331,15 @@ static int stx104_probe(struct device *dev, unsig=
+ned int id)
+> >  	}
+> > =20
+> >  	priv =3D iio_priv(indio_dev);
+> > -	priv->base =3D devm_ioport_map(dev, base[id], STX104_EXTENT);
+> > -	if (!priv->base)
+> > +	priv->reg =3D devm_ioport_map(dev, base[id], STX104_EXTENT);
+> > +	if (!priv->reg)
+> >  		return -ENOMEM;
+> > =20
+> >  	indio_dev->info =3D &stx104_info;
+> >  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > =20
+> >  	/* determine if differential inputs */
+> > -	if (ioread8(priv->base + 8) & BIT(5)) {
+> > +	if (ioread8(&priv->reg->cir_asr) & BIT(5)) {
+> >  		indio_dev->num_channels =3D ARRAY_SIZE(stx104_channels_diff);
+> >  		indio_dev->channels =3D stx104_channels_diff;
+> >  	} else {
+> > @@ -326,14 +350,14 @@ static int stx104_probe(struct device *dev, unsig=
+ned int id)
+> >  	indio_dev->name =3D dev_name(dev);
+> > =20
+> >  	/* configure device for software trigger operation */
+> > -	iowrite8(0, priv->base + 9);
+> > +	iowrite8(0, &priv->reg->acr);
+> > =20
+> >  	/* initialize gain setting to x1 */
+> > -	iowrite8(0, priv->base + 11);
+> > +	iowrite8(0, &priv->reg->acfg);
+> > =20
+> >  	/* initialize DAC output to 0V */
+> > -	iowrite16(0, priv->base + 4);
+> > -	iowrite16(0, priv->base + 6);
+> > +	iowrite16(0, &priv->reg->dac[0]);
+> > +	iowrite16(0, &priv->reg->dac[1]);
+> > =20
+> >  	stx104gpio->chip.label =3D dev_name(dev);
+> >  	stx104gpio->chip.parent =3D dev;
+> > @@ -348,7 +372,7 @@ static int stx104_probe(struct device *dev, unsigne=
+d int id)
+> >  	stx104gpio->chip.get_multiple =3D stx104_gpio_get_multiple;
+> >  	stx104gpio->chip.set =3D stx104_gpio_set;
+> >  	stx104gpio->chip.set_multiple =3D stx104_gpio_set_multiple;
+> > -	stx104gpio->base =3D priv->base + 3;
+> > +	stx104gpio->base =3D &priv->reg->dio;
+> >  	stx104gpio->out_state =3D 0x0;
+> > =20
+> >  	spin_lock_init(&stx104gpio->lock);
+>=20
 
-...
+--zKhNy45o+JagUNi2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +       return sprintf(buf, "USB DP %u:DM %u\n", !!(rval & BIT(2)),
-> +                        !!(rval & BIT(1)));
+-----BEGIN PGP SIGNATURE-----
 
-sysfs_emit() ?
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYqizYgAKCRC1SFbKvhIj
+K5vmAQChcLKhfi0sWCfjC9SAoN/3WVMynSdCNnQvj9Mwk3HMlAEA5Y93Y4cM7zff
+eNDbkKot5hO57G8W/Qr5pQKQbQ81uQk=
+=1gzP
+-----END PGP SIGNATURE-----
 
-...
-
-> +static const struct mp2xx_chip_info mp2xx_chip_info_tbl[] = {
-> +       [CHIP_ID_MP2629] = {
-> +               .rfields = mp2629_reg_fields,
-> +               .chip_props = mp2629_chip_props,
-> +               .has_impedance = 1,
-
-> +               .has_fast_charge = 0,
-
-Unneeded.
-
-> +               .mpxx_get_usb_type = mp2629_get_usb_type,
-> +       },
-> +       [CHIP_ID_MP2733] = {
-> +               .rfields = mp2733_reg_fields,
-> +               .chip_props = mp2733_chip_props,
-
-> +               .has_impedance = 0,
-
-Ditto.
-
-> +               .has_fast_charge = 1,
-> +
-> +               .mpxx_get_usb_type = mp2733_get_usb_type,
-> +       },
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
+--zKhNy45o+JagUNi2--

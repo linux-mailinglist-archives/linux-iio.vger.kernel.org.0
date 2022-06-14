@@ -2,205 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC49854B5C9
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 18:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E3954B89C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 20:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235758AbiFNQQs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 12:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59694 "EHLO
+        id S231970AbiFNS3j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 14:29:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232315AbiFNQQU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 12:16:20 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2A837BDF
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:15:43 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id hf10so6433565qtb.7
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:15:43 -0700 (PDT)
+        with ESMTP id S243033AbiFNS3h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 14:29:37 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E7E49247;
+        Tue, 14 Jun 2022 11:29:35 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id z7so12818991edm.13;
+        Tue, 14 Jun 2022 11:29:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=HugF3kVZQV7tRWlbsi9AfRP8AXxUXr/ecMMBI60Ommg=;
-        b=aP8eJtZG8tX82Qcc+gRKt0ht+U2+a1jDaWf2J/lStM2+QcR3HRqjrGHCe0CIua2aP4
-         rlXPJkAUjgkE3udu3n9eLgXCIkyIHFiRrSMUgM32h9ysFvkfmNIZGQ1SS3z0tg7KdPlX
-         htJhJFdeXYimZoUifB6n4TD2DIJZJMK3TlyzR4mS3cF1yGtlAgzFzm9fIi+rUF0UWzF8
-         vFht7MrUkWAzP9v3xfNaaPPTE50D/kTCbHOp8Fm6XckzMVqy5fUM+GcAWLQpRFxqiA03
-         WrMZgSf0kwwtV2ZhVJTURUKRBgsmqx22fYNXs4xLij+yg4jPmHVltXJe6aMPbc/wTx2s
-         Qvkg==
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=2hbagPy9DfCZIv7VzDsALXlfqRYHeR8658DIeJPqY1I=;
+        b=Zcx+NxgKFFS0rz5/5ceFaZC0nRDR8x0TrYoQT1b4YSoye7qmTi+ZtWLJE5i+XFSBIy
+         KBJXKqJsYGLrT+l2jghrDiaYNBEznL28L21Af9X4Paz+Yhd4lVyrH9AX5NsHWKLJwsbn
+         MAuF9NDaFbg8iTBtVaS0XRs8jAhzjJDVoCCHgvZDA3k7T8PZn6WlEnSPbVgN4D8ky1yQ
+         OgRY5rUrYzoWKeKkv/m+0FCpKIStZ56StzGpYgvCqvwFOq+PRRdMo9Wh6NE7GcmbY3Q4
+         2aHGT4rJn+W1Y7z/eswomKzHUj/mWpAJj6fqSq7e3iX6cHVL1R33NIELJdUGEyQ+lCAi
+         Lysg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=HugF3kVZQV7tRWlbsi9AfRP8AXxUXr/ecMMBI60Ommg=;
-        b=L/QO/KXgP9eSFZ1hyBgXOMTBAnq8DLyo2iJTmrUv/CKrAU+KYoxiE6Xh+IzD9ZL351
-         PwEpp4xbDH0XgLFd4RY1LTQ492xWfvE1JKleMPBs4S5nWEQRsSVVkewPpvk2MDRcKp5q
-         ah3RdKBNFk6g2M+jlYT6DN2mOy5aKGDQUjEZVK1e2UzcB30L+DFxLths7P2cUlKSqdR7
-         ulNUsTMXwcsSO5PAgsudt1+/SPvFnDaaa/WfHRM/lGYddM696wceY5tWhRt2jav5qFKw
-         Rb/HvR92vFKDIqnbpSFXx3xW4P91ocqRYPWJmNSv6a0D/Tt3Pj/SEFHX4g1vLlKGvw4H
-         zl8A==
-X-Gm-Message-State: AOAM5319sxxWTvEdaGcZotsnxuHUvKzCpx0ytbxw4FRGwfxb5I2CpLEh
-        JVMwoxxDLe5msXq7zypozOSP1g==
-X-Google-Smtp-Source: ABdhPJxMUEksBnAPeMx4IH1vi+69QnqxoNTWSDXP8lLm42vGB69JoW9G6iWS+IRyaTMcUQy0y3NynA==
-X-Received: by 2002:ac8:5c16:0:b0:305:34a0:f538 with SMTP id i22-20020ac85c16000000b0030534a0f538mr4701831qti.653.1655223342723;
-        Tue, 14 Jun 2022 09:15:42 -0700 (PDT)
-Received: from fedora ([23.82.142.207])
-        by smtp.gmail.com with ESMTPSA id c7-20020a05620a268700b006a6f57fe2e1sm9905165qkp.98.2022.06.14.09.15.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jun 2022 09:15:42 -0700 (PDT)
-Date:   Tue, 14 Jun 2022 12:15:40 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: dac: cio-dac: Implement and utilize register
- structures
-Message-ID: <Yqi0LEbqiSCNxWS3@fedora>
-References: <cover.1654118389.git.william.gray@linaro.org>
- <44aec703753f930cceff448babd1c8e2959eebb0.1654118389.git.william.gray@linaro.org>
- <20220614122618.68e2e9d1@jic23-huawei>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=2hbagPy9DfCZIv7VzDsALXlfqRYHeR8658DIeJPqY1I=;
+        b=WfuOBWIl/j39mBlaKmHcLOtxpGAQaLLF+LjU58McOGpXLEkX4EC9SlanX0TqFnHkAX
+         aQb3oIuMVI4jL2VNQSgYVdHtv/2YApKeB1eUKdeWG34paBrXoXEfnSl65b+AM59bbw4Z
+         QooJDb+njvKASqxWBCrkagSp0R8ayCm+QYafeOpPglbCwt8Cl8kBilGh9ob51uEbLa+z
+         wK2dKEX+qIvuT8/72WnxTzfeQDxACoFt3G7CrYePZGeplWjS+aKGBKX16l7AvgO5h9o2
+         eecJAxMcG15SuaiOb132a9H/9ZnCHjq+Cg2k48ODFpTr1nYImp6kU8UseDWMuX8D54W/
+         s9Ig==
+X-Gm-Message-State: AOAM532PTJgH8u+pMz8ewc/CWB+zWpQAft/u91armto3vs9VujqeaFCk
+        FhVfwPYls9UHopnAbvM13RM=
+X-Google-Smtp-Source: ABdhPJz+dWkxfnadgXrn6xX3lRffeVZwFY/donfPDomsyNzbT80reRO86qqnwzJKVSKcxi1X5krB2g==
+X-Received: by 2002:a05:6402:1cb5:b0:42d:ddda:7459 with SMTP id cz21-20020a0564021cb500b0042dddda7459mr7827087edb.16.1655231374220;
+        Tue, 14 Jun 2022 11:29:34 -0700 (PDT)
+Received: from [192.168.0.104] (p5b3f7f9c.dip0.t-ipconnect.de. [91.63.127.156])
+        by smtp.gmail.com with ESMTPSA id cf15-20020a170906b2cf00b007072dc80e06sm5235207ejb.190.2022.06.14.11.29.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jun 2022 11:29:33 -0700 (PDT)
+Message-ID: <5efcbaef-2ab9-9507-b3ab-d173ed350979@gmail.com>
+Date:   Tue, 14 Jun 2022 20:29:32 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M7k0kYrMKQquTa5e"
-Content-Disposition: inline
-In-Reply-To: <20220614122618.68e2e9d1@jic23-huawei>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 3/6] mfd: mp2629: Add support for mps mp2733 battery
+ charger
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+References: <20220614151722.2194936-1-sravanhome@gmail.com>
+ <20220614151722.2194936-3-sravanhome@gmail.com>
+ <CAHp75VcaU-KkCGZ0tczM6JKaVdGC6icGt0pbpC5sTf+0+ePamQ@mail.gmail.com>
+From:   saravanan sekar <sravanhome@gmail.com>
+In-Reply-To: <CAHp75VcaU-KkCGZ0tczM6JKaVdGC6icGt0pbpC5sTf+0+ePamQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello Andy,
+Thanks for your time to review, I try fix all the review comments
 
---M7k0kYrMKQquTa5e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 14/06/22 18:05, Andy Shevchenko wrote:
+> On Tue, Jun 14, 2022 at 5:17 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
+>>
+>> mp2733 is updated version of mp2629 battery charge management
+>> device for single-cell Li-ion or Li-polymer battery. Additionally
+>> supports usb fast-charge and higher range of input voltage.
+> 
+> ...
+> 
+>> +#include <linux/of_device.h>
+> 
+> What the original code misses is the mod_devicetable.h, and also see below.
+> 
+> ...
+> 
+>> +static const struct of_device_id mp2629_of_match[] = {
+>> +       { .compatible = "mps,mp2629", .data = (void *)CHIP_ID_MP2629 },
+>> +       { .compatible = "mps,mp2733", .data = (void *)CHIP_ID_MP2733 },
+>> +       { }
+>> +};
+>> +MODULE_DEVICE_TABLE(of, mp2629_of_match);
+> 
+> No need to move, see below.
+> 
+> ...
+> 
+>> +static int mp2629_probe(struct i2c_client *client,
+>> +                       const struct i2c_device_id *id)
+> 
+> Why out of a sudden you moved from ->probe_new() to ->probe()?
+> 
+I was experiment to pass i2c_device_id table to differentiate, the used 
+compatible. I will switch back to probe_new.
 
-On Tue, Jun 14, 2022 at 12:26:18PM +0100, Jonathan Cameron wrote:
-> On Mon,  6 Jun 2022 10:15:18 -0400
-> William Breathitt Gray <william.gray@linaro.org> wrote:
->=20
-> > Reduce magic numbers and improve code readability by implementing and
-> > utilizing named register data structures.
-> >=20
-> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
->=20
-> I'm unconvinced this one really helps readability seeing
-> as you are only indexing a straight forward array.
->=20
-> Simply using u16 __iomem *
-> would provide the main cleanup which is avoiding the indexing
-> via * 2.
->=20
-> Thanks,
->=20
-> Jonathan
+>> +       enum mp2xx_chip_id chip_id;
+>> +       const struct of_device_id *of_id;
+>>          int ret;
+>>
+>> +       if (client->dev.of_node) {
+>> +               of_id = of_match_device(mp2629_of_match, &client->dev);
+>> +               if (!of_id) {
+>> +                       dev_err(&client->dev, "Failed to match device\n");
+>> +                       return -ENODEV;
+>> +               }
+>> +               chip_id = (enum mp2xx_chip_id)of_id->data;
+>> +       }
+> 
+> This all is a single LoC only + property.h:
+> 
+> #include <linux/property.h>
+> 
+>       enum mp2xx_chip_id chip_id;
+> 
+>       chip_id = (uintptr_t)device_get_match_data(&client->dev);
+> 
+sure.
 
-I agree, that is a much simpler approach and reduces the changes we need
-to make to this file. I'll adjust this to u16 __iomem * in v2.
 
-William Breathitt Gray
-
->=20
->=20
-> > ---
-> >  drivers/iio/dac/cio-dac.c | 24 ++++++++++++++++--------
-> >  1 file changed, 16 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
-> > index 8080984dcb03..7860450ceaf3 100644
-> > --- a/drivers/iio/dac/cio-dac.c
-> > +++ b/drivers/iio/dac/cio-dac.c
-> > @@ -16,6 +16,7 @@
-> >  #include <linux/isa.h>
-> >  #include <linux/module.h>
-> >  #include <linux/moduleparam.h>
-> > +#include <linux/types.h>
-> > =20
-> >  #define CIO_DAC_NUM_CHAN 16
-> > =20
-> > @@ -34,14 +35,22 @@ static unsigned int num_cio_dac;
-> >  module_param_hw_array(base, uint, ioport, &num_cio_dac, 0);
-> >  MODULE_PARM_DESC(base, "Measurement Computing CIO-DAC base addresses");
-> > =20
-> > +/**
-> > + * struct cio_dac_reg - device register structure
-> > + * @da:	D/A data
-> > + */
-> > +struct cio_dac_reg {
-> > +	u16 da[CIO_DAC_NUM_CHAN];
-> > +};
-> > +
-> >  /**
-> >   * struct cio_dac_iio - IIO device private data structure
-> >   * @chan_out_states:	channels' output states
-> > - * @base:		base port address of the IIO device
-> > + * @reg:		I/O address offset for the device registers
-> >   */
-> >  struct cio_dac_iio {
-> >  	int chan_out_states[CIO_DAC_NUM_CHAN];
-> > -	void __iomem *base;
-> > +	struct cio_dac_reg __iomem *reg;
-> >  };
-> > =20
-> >  static int cio_dac_read_raw(struct iio_dev *indio_dev,
-> > @@ -61,7 +70,6 @@ static int cio_dac_write_raw(struct iio_dev *indio_de=
-v,
-> >  	struct iio_chan_spec const *chan, int val, int val2, long mask)
-> >  {
-> >  	struct cio_dac_iio *const priv =3D iio_priv(indio_dev);
-> > -	const unsigned int chan_addr_offset =3D 2 * chan->channel;
-> > =20
-> >  	if (mask !=3D IIO_CHAN_INFO_RAW)
-> >  		return -EINVAL;
-> > @@ -71,7 +79,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_de=
-v,
-> >  		return -EINVAL;
-> > =20
-> >  	priv->chan_out_states[chan->channel] =3D val;
-> > -	iowrite16(val, priv->base + chan_addr_offset);
-> > +	iowrite16(val, priv->reg->da + chan->channel);
-> > =20
-> >  	return 0;
-> >  }
-> > @@ -106,8 +114,8 @@ static int cio_dac_probe(struct device *dev, unsign=
-ed int id)
-> >  	}
-> > =20
-> >  	priv =3D iio_priv(indio_dev);
-> > -	priv->base =3D devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
-> > -	if (!priv->base)
-> > +	priv->reg =3D devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
-> > +	if (!priv->reg)
-> >  		return -ENOMEM;
-> > =20
-> >  	indio_dev->info =3D &cio_dac_info;
-> > @@ -117,8 +125,8 @@ static int cio_dac_probe(struct device *dev, unsign=
-ed int id)
-> >  	indio_dev->name =3D dev_name(dev);
-> > =20
-> >  	/* initialize DAC outputs to 0V */
-> > -	for (i =3D 0; i < 32; i +=3D 2)
-> > -		iowrite16(0, priv->base + i);
-> > +	for (i =3D 0; i < CIO_DAC_NUM_CHAN; i++)
-> > +		iowrite16(0, priv->reg->da + i);
-> > =20
-> >  	return devm_iio_device_register(dev, indio_dev);
-> >  }
->=20
-
---M7k0kYrMKQquTa5e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYqi0LAAKCRC1SFbKvhIj
-KwubAQDCBfPf574F1urURdZ+BjUNIUM0lqyWwuNm1L4ezTWehQD/S/iJ3N3FK1LU
-pWU+3u6BD2L1q0oiTQmKa+HFQ5+YLwE=
-=Nm6o
------END PGP SIGNATURE-----
-
---M7k0kYrMKQquTa5e--
+Thanks,
+Saravanan

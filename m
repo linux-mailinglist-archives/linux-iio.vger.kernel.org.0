@@ -2,90 +2,205 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B70E54B5C4
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 18:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC49854B5C9
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 18:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344547AbiFNQPm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 12:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57102 "EHLO
+        id S235758AbiFNQQs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 12:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357144AbiFNQNx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 12:13:53 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A70937A97;
-        Tue, 14 Jun 2022 09:13:52 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id bg6so18268389ejb.0;
-        Tue, 14 Jun 2022 09:13:52 -0700 (PDT)
+        with ESMTP id S232315AbiFNQQU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 12:16:20 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2A837BDF
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:15:43 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id hf10so6433565qtb.7
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 09:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BmWPRm4CQytOjJbY5e6x4bG2uF7mqlwaQ9khfyHpdtM=;
-        b=ar119iB/7OKDS7S6TQ4H4zTIo7J5STokKztBQLNQISaOQBcTFVUenE3VawcmlhRM0Q
-         tOdaoTkWuP8lWLUSYLgbKAraMJ/O3CNkqxY7wSODmK/eSiUEgq78xoNM7V1YHkGON0Qy
-         6qc7+5e+9LbsaoWLgyZOqpiFYoBk45HqLTyOGGDjnRUie/5myw9BChqtcHt7SabuKztj
-         7EvGEsdnvMeDz+LhLqJ5aNkMbeJX2+V4iFcQ29SFdamIeQr09i5cMVZoQ1A7W6E67S8Z
-         IY2TP5HgJf/9j27Dw17xc/abIefWL0120Cq1WdGpGmB/aonYAkgPj+Op/F1LVNVii511
-         DlOg==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=HugF3kVZQV7tRWlbsi9AfRP8AXxUXr/ecMMBI60Ommg=;
+        b=aP8eJtZG8tX82Qcc+gRKt0ht+U2+a1jDaWf2J/lStM2+QcR3HRqjrGHCe0CIua2aP4
+         rlXPJkAUjgkE3udu3n9eLgXCIkyIHFiRrSMUgM32h9ysFvkfmNIZGQ1SS3z0tg7KdPlX
+         htJhJFdeXYimZoUifB6n4TD2DIJZJMK3TlyzR4mS3cF1yGtlAgzFzm9fIi+rUF0UWzF8
+         vFht7MrUkWAzP9v3xfNaaPPTE50D/kTCbHOp8Fm6XckzMVqy5fUM+GcAWLQpRFxqiA03
+         WrMZgSf0kwwtV2ZhVJTURUKRBgsmqx22fYNXs4xLij+yg4jPmHVltXJe6aMPbc/wTx2s
+         Qvkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BmWPRm4CQytOjJbY5e6x4bG2uF7mqlwaQ9khfyHpdtM=;
-        b=THV7N0sL81gSNpoAZT6b7xvLfK2gu36131sf5eu7MwKVANRKtXy8D/ybPZdr/5BOag
-         MvtYEDC7pMTAFkJ+hTsFJqqchvHoK4tZs1ZFv2y7rInCaZ+zR7+zo9Db0vT6XReBxVm8
-         7wFEsK1cx0uCP7RKUV+i1f04VFQd4r1HSKyv0nnXV7iSRysHzgM5+nLcfmmYSX46EcWV
-         clDTgDE5bUXCqdkb9kAwrPAHRy+O4YkIMCeD0NloAm/cK5T/e6f/9jyos3lI7Ed2O/lc
-         3M67WbiqNIdhr8U75XszTLhvTJZgXsfD0xQEfKUsx55qZz4YZPDT5injfjRrfMe5r2IV
-         YkxQ==
-X-Gm-Message-State: AOAM532t8uknzKnF12+xtqiBRVJe3MQWIO9xFZgioi1c+Pr0VobMX9HL
-        aYsMIfjfCy5EwU0EopzgeA4/lKbEB/nE0TYg9KM=
-X-Google-Smtp-Source: AGRyM1tlfdJQTGTYe1hRWfpb3xnCIKhQnrHGUlC5N6lBZ8nqyM+sV2xgWwsK9lMjbwTNVLs2zg4VHXT5WcxogDWDFoQ=
-X-Received: by 2002:a17:906:d550:b0:704:7ba6:9854 with SMTP id
- cr16-20020a170906d55000b007047ba69854mr4969164ejc.579.1655223231098; Tue, 14
- Jun 2022 09:13:51 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HugF3kVZQV7tRWlbsi9AfRP8AXxUXr/ecMMBI60Ommg=;
+        b=L/QO/KXgP9eSFZ1hyBgXOMTBAnq8DLyo2iJTmrUv/CKrAU+KYoxiE6Xh+IzD9ZL351
+         PwEpp4xbDH0XgLFd4RY1LTQ492xWfvE1JKleMPBs4S5nWEQRsSVVkewPpvk2MDRcKp5q
+         ah3RdKBNFk6g2M+jlYT6DN2mOy5aKGDQUjEZVK1e2UzcB30L+DFxLths7P2cUlKSqdR7
+         ulNUsTMXwcsSO5PAgsudt1+/SPvFnDaaa/WfHRM/lGYddM696wceY5tWhRt2jav5qFKw
+         Rb/HvR92vFKDIqnbpSFXx3xW4P91ocqRYPWJmNSv6a0D/Tt3Pj/SEFHX4g1vLlKGvw4H
+         zl8A==
+X-Gm-Message-State: AOAM5319sxxWTvEdaGcZotsnxuHUvKzCpx0ytbxw4FRGwfxb5I2CpLEh
+        JVMwoxxDLe5msXq7zypozOSP1g==
+X-Google-Smtp-Source: ABdhPJxMUEksBnAPeMx4IH1vi+69QnqxoNTWSDXP8lLm42vGB69JoW9G6iWS+IRyaTMcUQy0y3NynA==
+X-Received: by 2002:ac8:5c16:0:b0:305:34a0:f538 with SMTP id i22-20020ac85c16000000b0030534a0f538mr4701831qti.653.1655223342723;
+        Tue, 14 Jun 2022 09:15:42 -0700 (PDT)
+Received: from fedora ([23.82.142.207])
+        by smtp.gmail.com with ESMTPSA id c7-20020a05620a268700b006a6f57fe2e1sm9905165qkp.98.2022.06.14.09.15.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jun 2022 09:15:42 -0700 (PDT)
+Date:   Tue, 14 Jun 2022 12:15:40 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: dac: cio-dac: Implement and utilize register
+ structures
+Message-ID: <Yqi0LEbqiSCNxWS3@fedora>
+References: <cover.1654118389.git.william.gray@linaro.org>
+ <44aec703753f930cceff448babd1c8e2959eebb0.1654118389.git.william.gray@linaro.org>
+ <20220614122618.68e2e9d1@jic23-huawei>
 MIME-Version: 1.0
-References: <20220614151722.2194936-1-sravanhome@gmail.com> <20220614151722.2194936-6-sravanhome@gmail.com>
-In-Reply-To: <20220614151722.2194936-6-sravanhome@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 14 Jun 2022 18:13:09 +0200
-Message-ID: <CAHp75Ve1FygZOUfbXkhu5jkpKmiVPxAcxUNaP31LHLWfL-pZzQ@mail.gmail.com>
-Subject: Re: [PATCH 6/6] power: supply: mp2629: Add usb fast charge settings
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="M7k0kYrMKQquTa5e"
+Content-Disposition: inline
+In-Reply-To: <20220614122618.68e2e9d1@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 14, 2022 at 5:17 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
->
-> Allows the user to change the usb device fast charge setting to advertise
-> host on enumeration helps to accelerate the charging cycle. Altering this
-> value resets usb existing connection.
 
-USB
+--M7k0kYrMKQquTa5e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-...
+On Tue, Jun 14, 2022 at 12:26:18PM +0100, Jonathan Cameron wrote:
+> On Mon,  6 Jun 2022 10:15:18 -0400
+> William Breathitt Gray <william.gray@linaro.org> wrote:
+>=20
+> > Reduce magic numbers and improve code readability by implementing and
+> > utilizing named register data structures.
+> >=20
+> > Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+>=20
+> I'm unconvinced this one really helps readability seeing
+> as you are only indexing a straight forward array.
+>=20
+> Simply using u16 __iomem *
+> would provide the main cleanup which is avoiding the indexing
+> via * 2.
+>=20
+> Thanks,
+>=20
+> Jonathan
 
-> +KernelVersion: 5.19
+I agree, that is a much simpler approach and reduces the changes we need
+to make to this file. I'll adjust this to u16 __iomem * in v2.
 
-I don't think it will be available at v5.19. v5.20?
+William Breathitt Gray
 
--- 
-With Best Regards,
-Andy Shevchenko
+>=20
+>=20
+> > ---
+> >  drivers/iio/dac/cio-dac.c | 24 ++++++++++++++++--------
+> >  1 file changed, 16 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/dac/cio-dac.c b/drivers/iio/dac/cio-dac.c
+> > index 8080984dcb03..7860450ceaf3 100644
+> > --- a/drivers/iio/dac/cio-dac.c
+> > +++ b/drivers/iio/dac/cio-dac.c
+> > @@ -16,6 +16,7 @@
+> >  #include <linux/isa.h>
+> >  #include <linux/module.h>
+> >  #include <linux/moduleparam.h>
+> > +#include <linux/types.h>
+> > =20
+> >  #define CIO_DAC_NUM_CHAN 16
+> > =20
+> > @@ -34,14 +35,22 @@ static unsigned int num_cio_dac;
+> >  module_param_hw_array(base, uint, ioport, &num_cio_dac, 0);
+> >  MODULE_PARM_DESC(base, "Measurement Computing CIO-DAC base addresses");
+> > =20
+> > +/**
+> > + * struct cio_dac_reg - device register structure
+> > + * @da:	D/A data
+> > + */
+> > +struct cio_dac_reg {
+> > +	u16 da[CIO_DAC_NUM_CHAN];
+> > +};
+> > +
+> >  /**
+> >   * struct cio_dac_iio - IIO device private data structure
+> >   * @chan_out_states:	channels' output states
+> > - * @base:		base port address of the IIO device
+> > + * @reg:		I/O address offset for the device registers
+> >   */
+> >  struct cio_dac_iio {
+> >  	int chan_out_states[CIO_DAC_NUM_CHAN];
+> > -	void __iomem *base;
+> > +	struct cio_dac_reg __iomem *reg;
+> >  };
+> > =20
+> >  static int cio_dac_read_raw(struct iio_dev *indio_dev,
+> > @@ -61,7 +70,6 @@ static int cio_dac_write_raw(struct iio_dev *indio_de=
+v,
+> >  	struct iio_chan_spec const *chan, int val, int val2, long mask)
+> >  {
+> >  	struct cio_dac_iio *const priv =3D iio_priv(indio_dev);
+> > -	const unsigned int chan_addr_offset =3D 2 * chan->channel;
+> > =20
+> >  	if (mask !=3D IIO_CHAN_INFO_RAW)
+> >  		return -EINVAL;
+> > @@ -71,7 +79,7 @@ static int cio_dac_write_raw(struct iio_dev *indio_de=
+v,
+> >  		return -EINVAL;
+> > =20
+> >  	priv->chan_out_states[chan->channel] =3D val;
+> > -	iowrite16(val, priv->base + chan_addr_offset);
+> > +	iowrite16(val, priv->reg->da + chan->channel);
+> > =20
+> >  	return 0;
+> >  }
+> > @@ -106,8 +114,8 @@ static int cio_dac_probe(struct device *dev, unsign=
+ed int id)
+> >  	}
+> > =20
+> >  	priv =3D iio_priv(indio_dev);
+> > -	priv->base =3D devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
+> > -	if (!priv->base)
+> > +	priv->reg =3D devm_ioport_map(dev, base[id], CIO_DAC_EXTENT);
+> > +	if (!priv->reg)
+> >  		return -ENOMEM;
+> > =20
+> >  	indio_dev->info =3D &cio_dac_info;
+> > @@ -117,8 +125,8 @@ static int cio_dac_probe(struct device *dev, unsign=
+ed int id)
+> >  	indio_dev->name =3D dev_name(dev);
+> > =20
+> >  	/* initialize DAC outputs to 0V */
+> > -	for (i =3D 0; i < 32; i +=3D 2)
+> > -		iowrite16(0, priv->base + i);
+> > +	for (i =3D 0; i < CIO_DAC_NUM_CHAN; i++)
+> > +		iowrite16(0, priv->reg->da + i);
+> > =20
+> >  	return devm_iio_device_register(dev, indio_dev);
+> >  }
+>=20
+
+--M7k0kYrMKQquTa5e
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYqi0LAAKCRC1SFbKvhIj
+KwubAQDCBfPf574F1urURdZ+BjUNIUM0lqyWwuNm1L4ezTWehQD/S/iJ3N3FK1LU
+pWU+3u6BD2L1q0oiTQmKa+HFQ5+YLwE=
+=Nm6o
+-----END PGP SIGNATURE-----
+
+--M7k0kYrMKQquTa5e--

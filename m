@@ -2,109 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B4A54D330
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 23:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A31154D36E
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 23:14:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348008AbiFOVAY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 17:00:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54714 "EHLO
+        id S1349202AbiFOVOf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 17:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346052AbiFOVAQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 17:00:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91FB5523D;
-        Wed, 15 Jun 2022 14:00:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6194361356;
-        Wed, 15 Jun 2022 21:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F301BC3411E;
-        Wed, 15 Jun 2022 21:00:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655326814;
-        bh=H/KvdVW+OVA5m+P7Zw9G+q3TtBvXLtLwBl8hRTBS/bA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QxbPbc8tlWgFeYsXMM2ZnM0naobnJYZtq2duTMSpUT095EP3ijtx5nuKABHZdHqcI
-         riEpWjEsb1HpqDB3zhiD8V01PxXhGT7S4o0M2xb+CH4emrPXxw6MDnM4zazkrybu5/
-         A3ZHL/SpqayY9OCkZQ6EC9+gKzel9dVIVleBqXpAbPfnTn3JRWJsjcDlPutNoZsePz
-         BM1soqK1938U73gjJOE5+Pi3Bx2srKZlll0ot6/NupAUIYbxnU6EQ8wHJwHU5ouyKa
-         nQiuiUBRatc9C7gieka7hSvwHqfHU/0d8ckfQOZMvNc99jIu7/WqHyQtvWs5YAh2yK
-         +R731VOOVpxVA==
-Date:   Wed, 15 Jun 2022 22:09:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: adc: intel_mrfld_adc: explicitly add proper
- header files
-Message-ID: <20220615220930.710ed42d@jic23-huawei>
-In-Reply-To: <PH0PR03MB6786A019FB9A1BA810DDE2BC99AD9@PH0PR03MB6786.namprd03.prod.outlook.com>
-References: <20220615120803.41350-1-andriy.shevchenko@linux.intel.com>
-        <PH0PR03MB6786A019FB9A1BA810DDE2BC99AD9@PH0PR03MB6786.namprd03.prod.outlook.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S1346733AbiFOVOX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 17:14:23 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15BA955346;
+        Wed, 15 Jun 2022 14:14:23 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id g25so25635285ejh.9;
+        Wed, 15 Jun 2022 14:14:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lFiJWZyjgj7yLljlIGD+CfiM/7XdC+qPawIPNYD0GPw=;
+        b=FhT4sJzoPFZC/gYPr+fV/OwAoFJCcU91LCb5J+fhV9zZlOOv7biXpxCIe1PUzQTlmO
+         4UNfwQPimmXpFtSunprG/mBRju8bs8vkgE2FFK3VHnDsdM+VDYLeytThIY8FQLJcSkNt
+         ae8FjaQMO7u5YgYDtS4/8kVri7Wgi+MiJaESPRQh6n3I3+5WS9rqDNQuwfdgM97Vt6fb
+         0yGOJirmsbrvABuvSOStTjzaBc+5nKyms06ziSUTBpEI6tVHyKk4Tz//NY8gfBcWMSqq
+         FOHUDzsrW2uBCmF1qlHeYD1sOdDbJWo/McN8jX/qZxn9aCI019kVVUhXoUSoXeHu44Na
+         zk5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lFiJWZyjgj7yLljlIGD+CfiM/7XdC+qPawIPNYD0GPw=;
+        b=wQrV42kJU8rrpWGWQaV5scXw4rBG6Cc+vez/7bocObAfsN2aoYkT/qhfgcUKyXdezE
+         w8qg31jQx4mpQ5Tta7DNMO9Wuz0vowkLnBIWVcj34pcJCioFBHTji9VsWwxlLuwbCgWD
+         wzbVWWiapK0miV/7p+ON0WBwEozlDBJOG/e7He2A+72xnUni+AHEpKcTHx63v+cY6Xzg
+         vu/bv6kB+aJC88xwxzuqy6ns/HENYAH0OGH9eHRMQ9Ew5c5HNQCaJf5JRpUmn7jOHX9H
+         Ku8DGKSGeUiEmU8lrjEnkrPy509cpn9OrFiuwdFW0mu8HcyLhE+Kl9EoX6QbLJh1GUSS
+         cZyQ==
+X-Gm-Message-State: AJIora/6kGT9Khe2ATmBzN+QG0wDtGjU5PN9V09kPVX73KmRNCJ7N0XH
+        nrddyNRXQ5BSbhPGBKv8M/ZzqgRGxqS+az37aeY=
+X-Google-Smtp-Source: AGRyM1u9REE1osB08QHKj6YyZqbLsn8iF32qND5beRcZGcbuwGm/p10Bur0itHl5couuX0nOvASp1vpkL8WS+iqthX0=
+X-Received: by 2002:a17:907:9721:b0:70c:65e7:2aa5 with SMTP id
+ jg33-20020a170907972100b0070c65e72aa5mr1639766ejc.132.1655327661439; Wed, 15
+ Jun 2022 14:14:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220613120534.36991-13-andrea.merello@iit.it> <202206160409.GTDk9b3k-lkp@intel.com>
+In-Reply-To: <202206160409.GTDk9b3k-lkp@intel.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 15 Jun 2022 23:13:42 +0200
+Message-ID: <CAHp75Vd7zF=rC7VYAnqc7cz52HfcLdVWwE6kuifwv3L8JiFBxg@mail.gmail.com>
+Subject: Re: [v6 12/14] iio: imu: add BNO055 serdev driver
+To:     kernel test robot <lkp@intel.com>
+Cc:     Andrea Merello <andrea.merello@iit.it>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>, kbuild-all@lists.01.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Jun 2022 12:15:48 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+On Wed, Jun 15, 2022 at 10:57 PM kernel test robot <lkp@intel.com> wrote:
 
-> Hi Andy,
->=20
-> > -----Original Message-----
-> > From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Sent: Wednesday, June 15, 2022 2:08 PM
-> > To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>;
-> > Alexandru Ardelean <aardelean@deviqon.com>; linux-
-> > iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Cc: Jonathan Cameron <jic23@kernel.org>; Lars-Peter Clausen
-> > <lars@metafoo.de>
-> > Subject: [PATCH v1 1/1] iio: adc: intel_mrfld_adc: explicitly add proper
-> > header files
-> >=20
-> > [External]
-> >=20
-> > Do not trust the fact that iio.h includes of.h which in turn includes
-> > all the headers we are relying on.
-> >=20
-> > The ultimate goal is to actually drop of.h from iio.h.
-> >=20
-> > Signed-off-by: Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com>
-> > ---
-> >=20
-> > Jonathan, this should be squeezed before we remove of.h in iio.h
-> > I think Nuno somehow missed this =20
->=20
-> Yes, I did (compile) tested this on arm and arm64 as I said in the cover.
-> I guess this one won't be enabled on those archs :).
->=20
-> I was planning to send this on v2 (I did noticed the kernel test bot
-> emails) but yeah, this should actually be included with the other
-> patches before removing of.h from iio. Thanks!
->=20
-> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+...
 
-Applied.  Oddly didn't show up in my normal x86 build test.
+> >> drivers/iio/imu/bno055/./bno055_ser_trace.h:91:23: warning: format '%d' expects argument of type 'int', but argument 3 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
 
-As suggested, slotted in before the of.h removal patch.
+>     80              TP_PROTO(size_t len, const unsigned char *buf),
+>     81              TP_ARGS(len, buf),
+>     82              TP_STRUCT__entry(
+>     83                      __field(size_t, len)
+>     84                      __dynamic_array(unsigned char, buf, len)
+>     85              ),
+>     86              TP_fast_assign(
+>     87                      __entry->len = len;
+>     88                      memcpy(__get_dynamic_array(buf),
+>     89                             buf, __entry->len);
+>     90              ),
+>   > 91              TP_printk("len: %d, data: = %*ph",
 
-Thanks,
+Obviously it must be %zu
 
-Jonathan
+>     92                        __entry->len, __entry->len, __get_dynamic_array(buf)
+>     93              )
 
->=20
 
+-- 
+With Best Regards,
+Andy Shevchenko

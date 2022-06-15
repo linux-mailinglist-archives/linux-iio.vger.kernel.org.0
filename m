@@ -2,117 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A2854D34B
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 23:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5AA54D378
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 23:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233389AbiFOVGn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 17:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60288 "EHLO
+        id S1343803AbiFOVQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 17:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245567AbiFOVGk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 17:06:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02DD3EAB2
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 14:06:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A2ECEB8216F
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 21:06:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B448C3411A;
-        Wed, 15 Jun 2022 21:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655327196;
-        bh=xO0lWfM9eURwMp5gwbcmZbcdP/e7OM6+H+vDzM7kjqw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ATzFiJ4RIQQcNAfO5rS5oITeGAZxIom1R0dBHWKWHHYra1zzersIwSv2F2duuee6f
-         WoGBNJFOCBYeP/+RHS1QEHeKCv79BzHXT9E9oTGJV6iXT5xjITzdlgfUT2GDdBpJih
-         txJXJsrMPalPPGgGSNw0CiPQOx19aKWP9tu9lqNOAr0/T8HpdxFKrUE7eDBAFJSVXS
-         fzFFWCkSoODBdbUW2Xr6cQ+Gwz+clhNI+TCSWMndLi7HyeQyaprue/jXSFSE+KY5cl
-         w6kF2bxc04pnEK84sNzl4jX9FCEb6BQYbFa1vsGIxaOunuAXsg1vw7fOqPNS5widTu
-         wqetNv+QP/o7A==
-Date:   Wed, 15 Jun 2022 22:15:52 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     haibo.chen@nxp.com, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-imx@nxp.com
-Subject: Re: [PATCH v2] iio: accel: mma8452: ignore the return value of
- reset operation
-Message-ID: <20220615221552.0d8afb3b@jic23-huawei>
-In-Reply-To: <8690f687-8f9d-b03f-226f-3a289e718ed5@redhat.com>
-References: <1655292718-14287-1-git-send-email-haibo.chen@nxp.com>
-        <8690f687-8f9d-b03f-226f-3a289e718ed5@redhat.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S1346840AbiFOVQi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 17:16:38 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E1455375;
+        Wed, 15 Jun 2022 14:16:37 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id kq6so25639059ejb.11;
+        Wed, 15 Jun 2022 14:16:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5C0iPhxeakDMvXUgfV1iPdhonSoQnQ5rnGQnwwF8N4I=;
+        b=ndEHHXW6A4Vo5fTttCudOntgwWpQqS8o5OQw7Dr/ipB9FrgxKbTQttBUOtENB/qPNp
+         rjO1hI3ffuijmr74DFbtpwtOcFgHuew8O3dHjpJuFakGh5br8lqKr5Fz7/KrJ7R6li95
+         9SNOVLP0lq2/CJddHGRT0M0f3GeL5G+CfLHiQX9ySgAHA87JaNIsfP3N/VnKUAGQhYQL
+         RbBbOWDORE0ROq7bjI+pzH5t4QDXBRsTi35wyFmn0DIF5dSQWpvS+TG5aodzBiZqBmPu
+         Gl7z4st3AjJMdunku+MOTrxu5WWfGvbdku5LjxyxAVnEhfGWcJdM5OpAm72muWufH+tp
+         aFgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5C0iPhxeakDMvXUgfV1iPdhonSoQnQ5rnGQnwwF8N4I=;
+        b=qavTRL2HTEhiHQMae89O7fI3OGPkOHG5vNuSJ8izcHaAAuguL8PWv5BYYFiFdio1Gu
+         6YuogyHsQ18ip5gfKdtuWsBwGeIV6rMceS5aTmxGKmTPbit4bms/aGZTFElVvhMkDe9D
+         pyw7PuCU+EfIv7X+FnTIpBL3TkumQwER+cnw974AJGKWCdevL/iswfaGi3AULq6sG7KC
+         UuVw/8zXUpZXUEpqkEKIGrCg70TR5swk7VIEHXXVu3N/RNoG584jUtLtfGkhZQ+97kOa
+         x7M7Kdixfcxae6B7tzLqOTBgFvcht+2oG31aFVQagO7knQyUQYOKowAX7m6m3PsF5FhP
+         QIgw==
+X-Gm-Message-State: AJIora991TwUMieXFdEgBLjw8zWJWBLuk+QjG7nwZYTq4eNGxky/bdjX
+        QB6m2GgjfkwDFCBX18Ayx60sAhNrv/Ir8cgr8mJDdEST3q4g3A==
+X-Google-Smtp-Source: AGRyM1udFiLz4MZe8/DqP44VPEv+E+P3jM2cO+yV+gJZhqYCMCOt8vME4Hd7rMVqtWBzGo5APnL553Y4nTb5XRaIrWg=
+X-Received: by 2002:a17:907:9721:b0:70c:65e7:2aa5 with SMTP id
+ jg33-20020a170907972100b0070c65e72aa5mr1647531ejc.132.1655327795941; Wed, 15
+ Jun 2022 14:16:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220613120534.36991-13-andrea.merello@iit.it>
+ <202206160409.GTDk9b3k-lkp@intel.com> <CAHp75Vd7zF=rC7VYAnqc7cz52HfcLdVWwE6kuifwv3L8JiFBxg@mail.gmail.com>
+In-Reply-To: <CAHp75Vd7zF=rC7VYAnqc7cz52HfcLdVWwE6kuifwv3L8JiFBxg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 15 Jun 2022 23:15:58 +0200
+Message-ID: <CAHp75VctKV0sbZsjHjPutqo+WDJr5HemWjc50CCqSsScbh5p9A@mail.gmail.com>
+Subject: Re: [v6 12/14] iio: imu: add BNO055 serdev driver
+To:     kernel test robot <lkp@intel.com>
+Cc:     Andrea Merello <andrea.merello@iit.it>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>, kbuild-all@lists.01.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Jun 2022 18:10:47 +0200
-Hans de Goede <hdegoede@redhat.com> wrote:
+On Wed, Jun 15, 2022 at 11:13 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Wed, Jun 15, 2022 at 10:57 PM kernel test robot <lkp@intel.com> wrote:
+>
+> ...
+>
+> > >> drivers/iio/imu/bno055/./bno055_ser_trace.h:91:23: warning: format '%d' expects argument of type 'int', but argument 3 has type 'size_t' {aka 'long unsigned int'} [-Wformat=]
+>
+> >     80              TP_PROTO(size_t len, const unsigned char *buf),
+> >     81              TP_ARGS(len, buf),
+> >     82              TP_STRUCT__entry(
+> >     83                      __field(size_t, len)
+> >     84                      __dynamic_array(unsigned char, buf, len)
+> >     85              ),
+> >     86              TP_fast_assign(
+> >     87                      __entry->len = len;
+> >     88                      memcpy(__get_dynamic_array(buf),
+> >     89                             buf, __entry->len);
+> >     90              ),
+> >   > 91              TP_printk("len: %d, data: = %*ph",
+>
+> Obviously it must be %zu
+>
+> >     92                        __entry->len, __entry->len, __get_dynamic_array(buf)
 
-> Hi,
-> 
-> On 6/15/22 13:31, haibo.chen@nxp.com wrote:
-> > From: Haibo Chen <haibo.chen@nxp.com>
-> > 
-> > On fxls8471, after set the reset bit, the device will reset immediately,
-> > will not give ACK. So ignore the return value of this reset operation,
-> > let the following code logic to check whether the reset operation works.
-> > 
-> > Signed-off-by: Haibo Chen <haibo.chen@nxp.com>  
-> 
-> Thanks, patch looks good to me:
-> 
-> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Looks very much like a fix to me, so fixes tag please.
-As it's otherwise good, just sending the tag in reply to this
-message will be fine.
+...and the second len here should be casted to (int) explicitly, since
+* in the printf() format specifier means int argument.
 
-Thanks,
+> >     93              )
 
-Jonathan
-
-> 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> > ---
-> >  drivers/iio/accel/mma8452.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-> > index e0f0c0abed28..c7d9ca96dbaa 100644
-> > --- a/drivers/iio/accel/mma8452.c
-> > +++ b/drivers/iio/accel/mma8452.c
-> > @@ -1511,10 +1511,14 @@ static int mma8452_reset(struct i2c_client *client)
-> >  	int i;
-> >  	int ret;
-> >  
-> > -	ret = i2c_smbus_write_byte_data(client,	MMA8452_CTRL_REG2,
-> > +	/*
-> > +	 * Find on fxls8471, after config reset bit, it reset immediately,
-> > +	 * and will not give ACK, so here do not check the return value.
-> > +	 * The following code will read the reset register, and check whether
-> > +	 * this reset works.
-> > +	 */
-> > +	i2c_smbus_write_byte_data(client, MMA8452_CTRL_REG2,
-> >  					MMA8452_CTRL_REG2_RST);
-> > -	if (ret < 0)
-> > -		return ret;
-> >  
-> >  	for (i = 0; i < 10; i++) {
-> >  		usleep_range(100, 200);  
-> 
-
+-- 
+With Best Regards,
+Andy Shevchenko

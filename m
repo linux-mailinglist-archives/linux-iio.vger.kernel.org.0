@@ -2,107 +2,516 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2187154D417
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 00:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A3054D4C1
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 00:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349889AbiFOWAV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 18:00:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
+        id S1350085AbiFOWtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 18:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347212AbiFOWAU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 18:00:20 -0400
-Received: from sonic305-21.consmr.mail.ir2.yahoo.com (sonic305-21.consmr.mail.ir2.yahoo.com [77.238.177.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E96853C76
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 15:00:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1655330417; bh=9BHO/vEJQwspdOBU725pBTSFGjwJmz7DBY+o68qDYnU=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=fwTA4VWZOWS7WJusp9uR51uXBmIEuZPjz6fbbPmIuUt/3DJroY9DPCtR2rz1tusyhohtOH9XgW3Gvso5Z/EPuOco03gouahcXkODZQN9sAqnp1H6GybVoJ78GdIyrAEBhjd8CV7GL/FpykKX8jYPyydz7QFTHVA5/5LpjIxIK/uQ6D/qZAdeSeHi6H+CP1Q8mdl6H+OJJGQZYiQLjAKtYoTCu0JeEuTYsJkkTxWbHssUxawPE0iWeuHfdqyHpcL9gMPxHGI9adI9FOK8lHDw3BW4+ks6EZINSG1/5ZOfAYru+6ccfc0ZM0A7Hcq6KxS24ikoDbDeCa505lODWFjeqw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1655330417; bh=yA3neS3B9Xf3zw+ZQbxMSUUSwgGz33cOJojjHXjv/cW=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=EHYzxAlzPFhzdFYIDyD5tBD4uIPrMlqlNS8c3UvyhLlGV1wOvh3kpVri/qjWPXQkL/iXBs/70HTADiUXzo5/1X3uHUuU7KRF2Daui5Iz0/Noa/gGJL4PpMC4nqS96HL5TAmWdqgVi5BpwDeF+sBz8Psxj9kTmv5WKoVG75LZZLNQS0XXAvBPRLh7Qn8MdMDo/ny9u091D0lC4mQ8kJ+LCW9xYWoAIdXQLiVv7/5CU4T4swYuwWt6FHNjlqu+8Tp8z4aKcG8SyKVz5ZxcnSdJOAWsmNUBpKYUg6b+7QeYkaGEemalskm0dNFAH4nhryNlw+ISxnh+JjzaYmT84Ku0fQ==
-X-YMail-OSG: 4KuY4F0VM1nP5AyFwdexSy9aW.eJen6AHj3jkqFOChcZnUPhDPpxi_1hRxC3kEz
- sQcdAx4nK60HjW66yDnsvAahkvO97kq93kTR2Jo1x9xmOv.QKaaWWOVWf_x9Xn1W22VmTju1Asti
- aLkOB0ecM14GIm.zO5bFxjMCTzdkcNd38xBkqcChCnR6_B0_kZjJN0mzcnJt2rlDQiuM92pOWGGO
- bbnpxqLFi2sY0eRYEPotogQ87PLvelt2CaRXvwgyS3Ii99hUFo.3beLxIGb2RGP4.k3nRO4zQPWZ
- jqEtT3iC4VwfzxQYFvBE1TFtqheloDJwK_sGj_Iz5agrl.73lJyegPkralSRt1RtHLMfIcCrerXd
- 9BB63f4u9VlJPythMWbzuZap_jJh8RIn_xQDvwW.TF1ngTh6WyqS4qT2HPePpOVwQMi8u7ZNpLTh
- MbldGBomLq4VrB9H6BYZung00KxVcE9zby4r.bffteKiLVR2eC.duKzey3Fm48QYVHhiQH9XpmM4
- iHMC0ZeAjDxjuWbLNCQ2Exldk16JRRPb5F7vUinx6dNU_misx60XL8qJVNN27a9gyc1J1QcyPZjA
- y180NVIf_aNciCV6u7tRd5GasJV_API6TqZMkVBUQxAQFf.vA9D5Db8lNex86L9VeU9vUhBSHZkL
- SjJwRgV5tVlRhulscOCk1dU3ufNi25dvzht3UHEomrmW15VoZbqxk2ncofhtuDDKIvepGScEKcnu
- _qkRfz7E7yvo9aSlygnh14otD2Zr9m.EgWRPMYsZObcxIMF_4x1svgKt1T0zAnyw_p0ayAE6pE6.
- s4UgcTYMDEDwKmY72kFbyqdPKDnq_Ff1RWuVHxDc3mCtdFUcTVxyGeGPuRV9eELSJVOWN6YWyyNN
- ST2aCDENM4y4MM0AVcxIUQD3RfXN4hkzamXosiozFdxn9zuR0Y_HRojuwKUe.wp8IsKuuxBYqYRQ
- 989xzxrw1wO6hPvlQSF0ASfgIFG8K69bo5jc9mhJphUwYBm14TeFJDGh2wXr1J4us0MznPR6UQp2
- B7OwACqHEjxurxvNQ9ZSTrMow5bKT1jlPb6DuzVJfKxybZ58HXKsnToxeDm3UVf6YZTkalMIqlHD
- x_tmQFmGkhp_7jmGV7.PfrPuR6IQZILbaLa2yfbc3cwi5dgQ5o8xfC7m5G4arPK5a5nyKT2z6F42
- hvhigoVy5yZB5u8FkVfZ8H5IBAfcwRl.XeQWKNOiStzC5j1IHpSR3vl26w_sfmQOHeosFkDuS_Lz
- 25AE4tncnp_PdKq.g_7sqD4CLRH1uiRfI65PBMd8MJEQsQtm.PkD80ElT2BvQW6YmsRPFm48MOst
- L_SVKSxQJ8wgWx6axy6n32HZLVrv8E1AdfhNRV_j0u8fTLrQ87oiek0TxQv90pSrWZKxd0uY3o9K
- YlhZaekqDb6Y6SAMeght6dT5Sb02GOKWJXr5GgKywB7gsDu3174B6NYEpB0Vi5GBGj5Spovox.GU
- fdEhOvFkDWc3NlGZnuAzmuZE5w09Yd_0wQFy3mq9rbQSPi9fWnOA90EFQeT4IE2G7DzHkcVVn1N9
- aw1dkrKS_iQ0RQuBMip0oYMg7Y7DApLQ52vyPkAp12RqwoD5HO3TAk0rDj_2hs72p6I.4LZh0UPj
- o7r_13NPnAB3HMuBxhZfeZZ5hC0BarVox1yZ7rTNyET2HhaQe2t5oTf.I6imFTvrhtzrUUry89l3
- BYE90sDuXT3aPU7rzSMETdxvAxQ80X71Z4m.gyB30ytd57klcv.Yplwm_JZw9VaNZIYQ6VunmGfg
- OJc6ZSEi1DjKV7eYl1dxK6j8m1xrwnrfGMkzAJV49DXbtxH1JWdEOtVY1aPfLus3IQKf8.fZJw3B
- 602LSOLYmXn3g87FBWxwrIbNMV8Lx7H7C2AIsBziB_RIaxlrCJjjuiviMwSlbh66aiLTwgAlcxkk
- yRW.o3we4avup2_fXj.tohOFo7sdksLOhEWOmMkQ4pxwbtGryQW6ik9o_rBHLIzHhrKW2yrs5ODS
- L6YPamQuhU7OrvEANOaIcdKMggo9WJ5NLgQMaeAg3ht7EUwLFOVjeWzekay.kkkDspSD2f7Y9Tx6
- bTN0PADZ_WjK598ZJiC9A1B1ToI6d4TlkwJgxCoUp.MeHF1em1.xQ.gIG3Ch09bEnUKvUAI9AU4j
- UsVK9PMwofKptyS0vpy518ze8ybwC7xTwLJZl_lA6exxx8q_EzR83EQcS4J8wQGJTO5bC8Nvk.PX
- 8A81_VoaSqGO.jjOBba22P7i3uhWYsr1vikazl6hW_1SU4FjvnGsasYN27IZu4WHOvBiqbL_je4i
- hyRQ4694-
-X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ir2.yahoo.com with HTTP; Wed, 15 Jun 2022 22:00:17 +0000
-Received: by hermes--canary-production-ir2-c9bf9d9bc-74fwm (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8ace1dad76e9ec93841826844d70561c;
-          Wed, 15 Jun 2022 22:00:16 +0000 (UTC)
-Message-ID: <5361e0d1-1a2f-e185-e5f4-b4c8e90d6215@rocketmail.com>
-Date:   Thu, 16 Jun 2022 00:00:14 +0200
+        with ESMTP id S1346327AbiFOWt3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 18:49:29 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8338E56405
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 15:49:26 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id h192so12701402pgc.4
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 15:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=BTgb0npZslGFqc9l4/B2gapx8GhMpIsy4i4EMeyyDr0=;
+        b=WvQUh86qusE8PX1g7+NSCGy1cDhMQoQxF2jJKx6nYb2FRlplI+9h/aRuthtegCxFL0
+         ztLFvr3Y0bFc0Kmz2ph/kvL1SKumYDYqyrjTvVT3abIhD+cwsKPgbcNiqF+QrW0mFY6t
+         ReO2vQkpTPt3BPjusfP146o55WN5YX/Fk3zMJacEILu1xw0o26oHX1xTjHKyThohZuU/
+         X4JwKH18igly2gUlYR06mSkoWN2fq5FikzlgsqyM7K9UF//YF+ysz6rUHkkFjRaKoaUZ
+         Lb9MYuJulIP+BkpJyrGVkWAv3asYtMt5PYOr6L3nQ2yJ2pANC5UdRQd1P5yNzwNo+20I
+         zPfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=BTgb0npZslGFqc9l4/B2gapx8GhMpIsy4i4EMeyyDr0=;
+        b=ScMs1JqwEvBdtAgiLjeIWfcjS/I19LDLzsOTz9AxZveSmHnrKPenaxSxYvNMTebfGO
+         ZA0leNyz0wJgHMk2KxCYcvyuYT9h4RlDPUV3UmSn7pmV7C//Ij38kiD6g8mf1m875yf1
+         NIr2fy7tnOtHpKdieK218fl0TaNJgygZBPzw+MY97BSZTxUJE5hJnFTz/Yp+un2jhKvw
+         ztWaWDNmKpVCiw+XXH3/H7RGuyhP1jp+YftL+zwr3uT6Gw/O2UxTfIb1HiKDTKpNPH/F
+         mrni7tt1F5sBiLwjtUXv3tvJXIqr5KQ4sKAFI/ey2vOpwRD4NhomHpLaInaY+ougoiYq
+         zXlg==
+X-Gm-Message-State: AJIora+Raiui41sdsVMv6TNpEh6k0ux5Xn2gJJHF70NVqGjgneQs1+6L
+        wJ1J7WzSiIetMd9NkO6smrOFtQ==
+X-Google-Smtp-Source: AGRyM1vJTWE74QAH+LAzbfgiQoQZEXpPZOfnHOlTu+phRnDTJoAfiQS6YkTfp6ogAdyvwLAJL0QVDg==
+X-Received: by 2002:a63:1408:0:b0:408:ab3d:9310 with SMTP id u8-20020a631408000000b00408ab3d9310mr1777949pgl.253.1655333365420;
+        Wed, 15 Jun 2022 15:49:25 -0700 (PDT)
+Received: from google.com ([192.77.111.2])
+        by smtp.gmail.com with ESMTPSA id p24-20020aa78618000000b0051c7038bd52sm127995pfn.220.2022.06.15.15.49.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jun 2022 15:49:25 -0700 (PDT)
+Date:   Wed, 15 Jun 2022 23:49:22 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, matthias.bgg@gmail.com,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com, ChiYuan Huang <cy_huang@richtek.com>
+Subject: Re: [PATCH v2 08/15] mfd: mt6370: Add Mediatek MT6370 support
+Message-ID: <Yqph8jwHU8rPooJA@google.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com>
+ <20220613111146.25221-9-peterwu.pub@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2 7/7] iio: magnetometer: yas530: Add YAS537 variant
-Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1655081082.git.jahau@rocketmail.com>
- <b6e100de37921c22ebf0698f8e0e99794053303a.1655081082.git.jahau@rocketmail.com>
- <CAHp75VfFwSQ6bk=TMLiyA1j-AsafjGdVFbTTHJJ67C8zeYfz8Q@mail.gmail.com>
- <033f64ea-4ba7-eb89-3259-688008e29989@rocketmail.com>
-In-Reply-To: <033f64ea-4ba7-eb89-3259-688008e29989@rocketmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220613111146.25221-9-peterwu.pub@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15.06.22 23:43, Jakob Hauser wrote:
-> 
-> On 13.06.22 17:20, Andy Shevchenko wrote:
->>
->> On Mon, Jun 13, 2022 at 3:18 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->>>
->>> - * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5, Xiaomi)
->>> + * YAS537 MS-3T (2015 Samsung Galaxy S6, Note 5, Galaxy S7)
->>
->> Not sure what happened to Xiaomi. There is nothing in the commit
->> message about this change.
-> 
-> "Xiaomi" is too generic, specific devices should be listed here. E.g.
-> Xiaomi Redmi 2 seems to have YAS537 but I'm fully sure this applies to
-> all its variants [1]. Samsung Galaxy S7 (and S7 edge) is often quoted in
-> conjunction with YAS537, so I took this.
+On Mon, 13 Jun 2022, ChiaEn Wu wrote:
 
-I forgot a "not" here:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add Mediatek MT6370 MFD support.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+>  drivers/mfd/Kconfig  |  13 ++
+>  drivers/mfd/Makefile |   1 +
+>  drivers/mfd/mt6370.c | 349 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 363 insertions(+)
+>  create mode 100644 drivers/mfd/mt6370.c
+> 
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index 3b59456f5545..d9a7524a3e0e 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -937,6 +937,19 @@ config MFD_MT6360
+>  	  PMIC part includes 2-channel BUCKs and 2-channel LDOs
+>  	  LDO part includes 4-channel LDOs
+>  
+> +config MFD_MT6370
+> +	tristate "Mediatek MT6370 SubPMIC"
+> +	select MFD_CORE
+> +	select REGMAP_I2C
+> +	select REGMAP_IRQ
+> +	depends on I2C
+> +	help
+> +	  Say Y here to enable MT6370 SubPMIC functional support.
+> +	  It integrate single cell battery charger with adc monitoring, RGB
 
-"[...] but I'm *not* fully sure this applies to all its variants [...]"
+s/integrates/consists of a/
+
+"ADC"
+
+> +	  LEDs, dual channel flashlight, WLED backlight driver, display bias
+
+> +	  voltage supply, one general purpose LDO, and cc logic
+> +	  controller with USBPD commmunication capable.
+
+The last part makes no sense - "and is USBPD"?
+
+>  config MFD_MT6397
+>  	tristate "MediaTek MT6397 PMIC Support"
+>  	select MFD_CORE
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index 858cacf659d6..62b27125420e 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -242,6 +242,7 @@ obj-$(CONFIG_INTEL_SOC_PMIC_BXTWC)	+= intel_soc_pmic_bxtwc.o
+>  obj-$(CONFIG_INTEL_SOC_PMIC_CHTWC)	+= intel_soc_pmic_chtwc.o
+>  obj-$(CONFIG_INTEL_SOC_PMIC_CHTDC_TI)	+= intel_soc_pmic_chtdc_ti.o
+>  obj-$(CONFIG_MFD_MT6360)	+= mt6360-core.o
+> +obj-$(CONFIG_MFD_MT6370)	+= mt6370.o
+>  mt6397-objs			:= mt6397-core.o mt6397-irq.o mt6358-irq.o
+>  obj-$(CONFIG_MFD_MT6397)	+= mt6397.o
+>  obj-$(CONFIG_INTEL_SOC_PMIC_MRFLD)	+= intel_soc_pmic_mrfld.o
+> diff --git a/drivers/mfd/mt6370.c b/drivers/mfd/mt6370.c
+> new file mode 100644
+> index 000000000000..6af9f73c9c0c
+> --- /dev/null
+> +++ b/drivers/mfd/mt6370.c
+> @@ -0,0 +1,349 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/bits.h>
+> +#include <linux/i2c.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +
+> +enum {
+> +	MT6370_USBC_I2C = 0,
+> +	MT6370_PMU_I2C,
+> +	MT6370_MAX_I2C
+> +};
+> +
+> +#define MT6370_REG_DEV_INFO	0x100
+> +#define MT6370_REG_CHG_IRQ1	0x1C0
+> +#define MT6370_REG_CHG_MASK1	0x1E0
+> +
+> +#define MT6370_VENID_MASK	GENMASK(7, 4)
+> +
+> +#define MT6370_NUM_IRQREGS	16
+> +#define MT6370_USBC_I2CADDR	0x4E
+> +#define MT6370_REG_ADDRLEN	2
+> +#define MT6370_REG_MAXADDR	0x1FF
+> +
+> +/* IRQ definitions */
+> +#define MT6370_IRQ_DIRCHGON		0
+> +#define MT6370_IRQ_CHG_TREG		4
+> +#define MT6370_IRQ_CHG_AICR		5
+> +#define MT6370_IRQ_CHG_MIVR		6
+> +#define MT6370_IRQ_PWR_RDY		7
+> +#define MT6370_IRQ_FL_CHG_VINOVP	11
+> +#define MT6370_IRQ_CHG_VSYSUV		12
+> +#define MT6370_IRQ_CHG_VSYSOV		13
+> +#define MT6370_IRQ_CHG_VBATOV		14
+> +#define MT6370_IRQ_CHG_VINOVPCHG	15
+> +#define MT6370_IRQ_TS_BAT_COLD		20
+> +#define MT6370_IRQ_TS_BAT_COOL		21
+> +#define MT6370_IRQ_TS_BAT_WARM		22
+> +#define MT6370_IRQ_TS_BAT_HOT		23
+> +#define MT6370_IRQ_TS_STATC		24
+> +#define MT6370_IRQ_CHG_FAULT		25
+> +#define MT6370_IRQ_CHG_STATC		26
+> +#define MT6370_IRQ_CHG_TMR		27
+> +#define MT6370_IRQ_CHG_BATABS		28
+> +#define MT6370_IRQ_CHG_ADPBAD		29
+> +#define MT6370_IRQ_CHG_RVP		30
+> +#define MT6370_IRQ_TSHUTDOWN		31
+> +#define MT6370_IRQ_CHG_IINMEAS		32
+> +#define MT6370_IRQ_CHG_ICCMEAS		33
+> +#define MT6370_IRQ_CHGDET_DONE		34
+> +#define MT6370_IRQ_WDTMR		35
+> +#define MT6370_IRQ_SSFINISH		36
+> +#define MT6370_IRQ_CHG_RECHG		37
+> +#define MT6370_IRQ_CHG_TERM		38
+> +#define MT6370_IRQ_CHG_IEOC		39
+> +#define MT6370_IRQ_ADC_DONE		40
+> +#define MT6370_IRQ_PUMPX_DONE		41
+> +#define MT6370_IRQ_BST_BATUV		45
+> +#define MT6370_IRQ_BST_MIDOV		46
+> +#define MT6370_IRQ_BST_OLP		47
+> +#define MT6370_IRQ_ATTACH		48
+> +#define MT6370_IRQ_DETACH		49
+> +#define MT6370_IRQ_HVDCP_STPDONE	51
+> +#define MT6370_IRQ_HVDCP_VBUSDET_DONE	52
+> +#define MT6370_IRQ_HVDCP_DET		53
+> +#define MT6370_IRQ_CHGDET		54
+> +#define MT6370_IRQ_DCDT			55
+> +#define MT6370_IRQ_DIRCHG_VGOK		59
+> +#define MT6370_IRQ_DIRCHG_WDTMR		60
+> +#define MT6370_IRQ_DIRCHG_UC		61
+> +#define MT6370_IRQ_DIRCHG_OC		62
+> +#define MT6370_IRQ_DIRCHG_OV		63
+> +#define MT6370_IRQ_OVPCTRL_SWON		67
+> +#define MT6370_IRQ_OVPCTRL_UVP_D	68
+> +#define MT6370_IRQ_OVPCTRL_UVP		69
+> +#define MT6370_IRQ_OVPCTRL_OVP_D	70
+> +#define MT6370_IRQ_OVPCTRL_OVP		71
+> +#define MT6370_IRQ_FLED_STRBPIN		72
+> +#define MT6370_IRQ_FLED_TORPIN		73
+> +#define MT6370_IRQ_FLED_TX		74
+> +#define MT6370_IRQ_FLED_LVF		75
+> +#define MT6370_IRQ_FLED2_SHORT		78
+> +#define MT6370_IRQ_FLED1_SHORT		79
+> +#define MT6370_IRQ_FLED2_STRB		80
+> +#define MT6370_IRQ_FLED1_STRB		81
+> +#define mT6370_IRQ_FLED2_STRB_TO	82
+> +#define MT6370_IRQ_FLED1_STRB_TO	83
+> +#define MT6370_IRQ_FLED2_TOR		84
+> +#define MT6370_IRQ_FLED1_TOR		85
+> +#define MT6370_IRQ_OTP			93
+> +#define MT6370_IRQ_VDDA_OVP		94
+> +#define MT6370_IRQ_VDDA_UV		95
+> +#define MT6370_IRQ_LDO_OC		103
+> +#define MT6370_IRQ_BLED_OCP		118
+> +#define MT6370_IRQ_BLED_OVP		119
+> +#define MT6370_IRQ_DSV_VNEG_OCP		123
+> +#define MT6370_IRQ_DSV_VPOS_OCP		124
+> +#define MT6370_IRQ_DSV_BST_OCP		125
+> +#define MT6370_IRQ_DSV_VNEG_SCP		126
+> +#define MT6370_IRQ_DSV_VPOS_SCP		127
+> +
+> +struct mt6370_info {
+> +	struct i2c_client *i2c[MT6370_MAX_I2C];
+> +	struct device *dev;
+> +	struct regmap *regmap;
+> +	struct regmap_irq_chip_data *irq_data;
+> +};
+
+Can we shove all of the above into a header file?
+
+> +static const struct regmap_irq mt6370_irqs[] = {
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHGON, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TREG, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_AICR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_MIVR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_PWR_RDY, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FL_CHG_VINOVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VSYSUV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VSYSOV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VBATOV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VINOVPCHG, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_COLD, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_COOL, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_WARM, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_HOT, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_STATC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_FAULT, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_STATC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TMR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_BATABS, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_ADPBAD, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_RVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_TSHUTDOWN, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_IINMEAS, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_ICCMEAS, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHGDET_DONE, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_WDTMR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_SSFINISH, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_RECHG, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TERM, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_IEOC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_ADC_DONE, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_PUMPX_DONE, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_BATUV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_MIDOV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_OLP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_ATTACH, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DETACH, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_STPDONE, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_VBUSDET_DONE, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_DET, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHGDET, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DCDT, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_VGOK, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_WDTMR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_UC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_OC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_OV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_SWON, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_UVP_D, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_UVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_OVP_D, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_OVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_STRBPIN, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_TORPIN, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_TX, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_LVF, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_SHORT, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_SHORT, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_STRB, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_STRB, 8),
+> +	REGMAP_IRQ_REG_LINE(mT6370_IRQ_FLED2_STRB_TO, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_STRB_TO, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_TOR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_TOR, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_OTP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_VDDA_OVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_VDDA_UV, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_LDO_OC, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_BLED_OCP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_BLED_OVP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VNEG_OCP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VPOS_OCP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_BST_OCP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VNEG_SCP, 8),
+> +	REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VPOS_SCP, 8)
+> +};
+> +
+> +static const struct regmap_irq_chip mt6370_irq_chip = {
+> +	.name		= "mt6370-irqs",
+> +	.status_base	= MT6370_REG_CHG_IRQ1,
+> +	.mask_base	= MT6370_REG_CHG_MASK1,
+> +	.num_regs	= MT6370_NUM_IRQREGS,
+> +	.irqs		= mt6370_irqs,
+> +	.num_irqs	= ARRAY_SIZE(mt6370_irqs),
+> +};
+> +
+> +static const struct resource mt6370_regulator_irqs[] = {
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VPOS_SCP, "db_vpos_scp"),
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VNEG_SCP, "db_vneg_scp"),
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_BST_OCP, "db_vbst_ocp"),
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VPOS_OCP, "db_vpos_ocp"),
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VNEG_OCP, "db_vneg_ocp"),
+> +	DEFINE_RES_IRQ_NAMED(MT6370_IRQ_LDO_OC, "ldo_oc")
+> +};
+> +
+> +static const struct mfd_cell mt6370_devices[] = {
+> +	MFD_CELL_OF("adc", NULL, NULL, 0, 0, "mediatek,mt6370-adc"),
+> +	MFD_CELL_OF("charger", NULL, NULL, 0, 0, "mediatek,mt6370-charger"),
+> +	MFD_CELL_OF("backlight", NULL, NULL, 0, 0, "mediatek,mt6370-backlight"),
+> +	MFD_CELL_OF("flashlight", NULL, NULL, 0, 0, "mediatek,mt6370-flashlight"),
+> +	MFD_CELL_OF("indicator", NULL, NULL, 0, 0, "mediatek,mt6370-indicator"),
+> +	MFD_CELL_OF("tcpc", NULL, NULL, 0, 0, "mediatek,mt6370-tcpc"),
+> +	MFD_CELL_RES("regulator", mt6370_regulator_irqs)
+> +};
+> +
+> +static int mt6370_check_vendor_info(struct mt6370_info *info)
+> +{
+> +	unsigned int devinfo;
+> +	int ret;
+> +
+> +	ret = regmap_read(info->regmap, MT6370_REG_DEV_INFO, &devinfo);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (FIELD_GET(MT6370_VENID_MASK, devinfo)) {
+> +	case 0x8: /* RT5081 */
+> +	case 0xA: /* RT5081A */
+> +	case 0xE: /* MT6370 */
+> +	case 0xF: /* MT6371 */
+> +	case 0x9: /* MT6372P */
+> +	case 0xB: /* MT6372CP */
+
+Please define these and drop the comments.
+
+> +		break;
+> +	default:
+> +		dev_err(info->dev, "Not invalid value 0x%02x\n", devinfo);
+> +		return -ENODEV;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6370_regmap_read(void *context, const void *reg_buf,
+> +			      size_t reg_size, void *val_buf, size_t val_size)
+> +{
+> +	struct mt6370_info *info = context;
+> +	u8 bank_idx = *(u8 *)reg_buf, bank_addr = *(u8 *)(reg_buf + 1);
+
+Looks a little scruffy.  Perhaps allocate the values below.
+
+> +	int ret;
+> +
+> +	ret = i2c_smbus_read_i2c_block_data(info->i2c[bank_idx], bank_addr,
+> +					    val_size, val_buf);
+> +	if (ret != val_size)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6370_regmap_write(void *context, const void *data, size_t count)
+> +{
+> +	struct mt6370_info *info = context;
+> +	u8 bank_idx = *(u8 *)data, bank_addr = *(u8 *)(data + 1);
+
+As above.
+
+> +	int len = count - MT6370_REG_ADDRLEN;
+> +
+> +	return i2c_smbus_write_i2c_block_data(info->i2c[bank_idx], bank_addr,
+> +					      len, data + MT6370_REG_ADDRLEN);
+> +}
+> +
+> +static const struct regmap_bus mt6370_regmap_bus = {
+> +	.read		= mt6370_regmap_read,
+> +	.write		= mt6370_regmap_write,
+> +};
+> +
+> +static const struct regmap_config mt6370_regmap_config = {
+> +	.reg_bits		= 16,
+> +	.val_bits		= 8,
+> +	.reg_format_endian	= REGMAP_ENDIAN_BIG,
+> +	.max_register		= MT6370_REG_MAXADDR,
+> +};
+> +
+> +static int mt6370_probe(struct i2c_client *i2c)
+> +{
+> +	struct mt6370_info *info;
+> +	struct i2c_client *usbc_i2c;
+> +	int ret;
+> +
+> +	info = devm_kzalloc(&i2c->dev, sizeof(*info), GFP_KERNEL);
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	info->dev = &i2c->dev;
+> +
+> +	usbc_i2c = devm_i2c_new_dummy_device(&i2c->dev, i2c->adapter,
+> +					     MT6370_USBC_I2CADDR);
+> +	if (IS_ERR(usbc_i2c)) {
+> +		ret = PTR_ERR(usbc_i2c);
+> +		dev_err(&i2c->dev, "Failed to register usbc i2c client %d\n", ret);
+
+"USB-C I2C"?
+
+> +		return ret;
+> +	}
+> +
+> +	/* Assign I2C client for PMU and TypeC */
+> +	info->i2c[MT6370_PMU_I2C] = i2c;
+> +	info->i2c[MT6370_USBC_I2C] = usbc_i2c;
+> +
+> +	info->regmap = devm_regmap_init(&i2c->dev, &mt6370_regmap_bus, info,
+> +					&mt6370_regmap_config);
+> +	if (IS_ERR(info->regmap)) {
+> +		ret = PTR_ERR(info->regmap);
+> +		dev_err(&i2c->dev, "Failed to register regmap (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = mt6370_check_vendor_info(info);
+> +	if (ret) {
+> +		dev_err(&i2c->dev, "Failed to check vendor info (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_regmap_add_irq_chip(&i2c->dev, info->regmap, i2c->irq,
+> +				       IRQF_ONESHOT, -1, &mt6370_irq_chip,
+> +				       &info->irq_data);
+> +	if (ret) {
+> +		dev_err(&i2c->dev, "Failed to add irq chip (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return devm_mfd_add_devices(&i2c->dev, PLATFORM_DEVID_AUTO,
+> +				    mt6370_devices, ARRAY_SIZE(mt6370_devices),
+> +				    NULL, 0,
+> +				    regmap_irq_get_domain(info->irq_data));
+> +}
+> +
+> +static const struct of_device_id mt6370_match_table[] = {
+> +	{ .compatible = "mediatek,mt6370", },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, mt6370_match_table);
+> +
+> +static struct i2c_driver mt6370_driver = {
+> +	.driver = {
+> +		.name = "mt6370",
+> +		.of_match_table = mt6370_match_table,
+> +	},
+> +	.probe_new = mt6370_probe,
+> +};
+> +module_i2c_driver(mt6370_driver);
+> +
+> +MODULE_AUTHOR("ChiYuan Huang <cy_huang@richtek.com>");
+> +MODULE_DESCRIPTION("MT6370 I2C MFD Driver");
+
+Drop all references to "MFD" please.
+
+> +MODULE_LICENSE("GPL v2");
+
+-- 
+Lee Jones [李琼斯]
+Principal Technical Lead - Developer Services
+Linaro.org │ Open source software for Arm SoCs
+Follow Linaro: Facebook | Twitter | Blog

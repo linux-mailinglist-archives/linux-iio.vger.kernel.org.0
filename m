@@ -2,241 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F37954CEB9
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 18:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5AF54CF99
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 19:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233585AbiFOQde (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 12:33:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36938 "EHLO
+        id S1349886AbiFORUO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 13:20:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356130AbiFOQdQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 12:33:16 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8162457B1;
-        Wed, 15 Jun 2022 09:33:11 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id u12so24297182eja.8;
-        Wed, 15 Jun 2022 09:33:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=37sI1USoy+xRQH8QbGSjnzweIUNwAt0HoK9F/1KuOZ4=;
-        b=VDL9QmcQj8yIgSj4LMJxd1bT9DSNCD5IK1lckPMPlBcMaksnq3xla7UTUsu/fXVPbs
-         eT80MVA5NJwXjMR37UiwDMwDqpi2s+9bWp5Ui56I6O8BYZaU1n/VLeEA6p4oVX7sH/6U
-         onyymzSLt9QM5kO823hLqwx4KbcOy5RiCYi9FXemWzCshZMK+xuL60lzOKeHI1temeIt
-         nh5KNquRW7ySATd2l6Iw5nd6GHt6Kw0kbFkNa/ZAQJUVEVG5b4BKnCCNBHrQDJbZiWLi
-         SPWGk1vS6YRhsxjQCwT8pzpgxFJtPqIfXgvHJVfoB55Was/cQda3Fw5+cDYgFJkSFmjZ
-         zbSA==
+        with ESMTP id S1349694AbiFORUI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 13:20:08 -0400
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67FD23172;
+        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
+Received: by mail-io1-f42.google.com with SMTP id r5so13394909iod.5;
+        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=37sI1USoy+xRQH8QbGSjnzweIUNwAt0HoK9F/1KuOZ4=;
-        b=Pa2wwPYfKx+XZC4S/02tIct7LDBbnrOT0ib2rVqtOu/O0JOdqFo6uesLg3DwQIlMSK
-         wAe9imRwgzijrFuQjNl3i2FgRKqBF3C4xvaPgOYFdMhTpWKagMllI4O7U4HGG5eL8ave
-         8lVM/XYVYYb9Z+Ugwn8eDeJC7OGRCbM1BwXWcZCy0ZbrgIhcp2V1Mjk3evQzqEx5KbCL
-         Vlno57sdj8QlkszYJAnMNjzvAUoppM68aIY8j5M7Ij1OET4+OQczP5ghLFXfSLnW4tK8
-         HsnXeY85wp6TdjXG/FblFnLHefkhD+iCbUbXjQmv9sDpxspT2NpVo+JjMADCu94EKmAb
-         9IyA==
-X-Gm-Message-State: AJIora/P1NxyfcytZkZF7yKLBPK3rdZCeOdhObFtvw3o3dfVh3c0GDZB
-        XWAUSFHXcbsNZ2ANjKBDNplpF6uYJEw2fuCqehg=
-X-Google-Smtp-Source: AGRyM1vDmI64JtK+fXsJKnvDR2X1TpTWuCM7Z6iVIxs6wzLIMn4UVuyNvp9Mlkskq/lhEKHq6diUGBe2SKNN4/Jfg5E=
-X-Received: by 2002:a17:906:434f:b0:711:eb76:c320 with SMTP id
- z15-20020a170906434f00b00711eb76c320mr602613ejm.636.1655310790302; Wed, 15
- Jun 2022 09:33:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220615135130.227236-1-shreeya.patel@collabora.com> <20220615135130.227236-3-shreeya.patel@collabora.com>
-In-Reply-To: <20220615135130.227236-3-shreeya.patel@collabora.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 18:32:33 +0200
-Message-ID: <CAHp75VeU9oSJmMdyT_0BZDuG5WMiuJiCPv5So4DWG05EEDKrhw@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] iio: light: Add support for ltrf216a sensor
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=sTGa151t/trhczGlfaIhFF1i0SVtoSLocgRhlGdaZgA=;
+        b=BLAycBVIcpla2nICRxF5jHexDyuYvqsu2vCm4j8Zh8FASQd6KmTM8OGWVJUiY+P5GA
+         c9bigCxuyJGMidGwDExTb6FRccOwXr7LWlf2GuJQnJTsM+LGzX+RWwatzdNgo6ZwmZ60
+         DovxVq3fUOeg8kM7bYqAS4PhkpRek09rCcfJ2dcppw//gB7b4Dgw0Q1QPikPcv9Al5nx
+         qd0gMBZr6bTFUJwvhssik1tDn/PyFlhaxqRB9hVezgblRaVpf2yyRsL6meVZfk7Gsx68
+         CbEF+ifN2pvAkynOe+2Uvmi1SUQsyHGbvkPNuYWaaLgQ8wXJcDJ6FkeczioUChxD0iiD
+         zmUQ==
+X-Gm-Message-State: AJIora/wW+KypZmun2XIT45B9q9UzWqkzR/6b/HqZ10XsaXJvrA5TsSX
+        jTQjwkjO1edV5uuMOha+SQ==
+X-Google-Smtp-Source: AGRyM1sTi5PIIcsQSq4HRK5RYwDCF35wSPHxr52ZB9lddA1mfsnKOMGnhVqSy2h9XTYEz+EVUAfR+Q==
+X-Received: by 2002:a05:6638:1409:b0:332:221d:1136 with SMTP id k9-20020a056638140900b00332221d1136mr439272jad.3.1655313606060;
+        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id b127-20020a021985000000b0032e7456da06sm6465171jab.15.2022.06.15.10.20.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jun 2022 10:20:05 -0700 (PDT)
+Received: (nullmailer pid 1478916 invoked by uid 1000);
+        Wed, 15 Jun 2022 17:20:03 -0000
+From:   Rob Herring <robh@kernel.org>
 To:     Shreeya Patel <shreeya.patel@collabora.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        alvaro.soliverez@collabora.com, Dmitry Osipenko <digetx@gmail.com>,
-        kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Cc:     kernel@collabora.com, krisman@collabora.com,
+        Zhigang.Shi@liteon.com, jic23@kernel.org,
+        andy.shevchenko@gmail.com, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, digetx@gmail.com, lars@metafoo.de,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        alvaro.soliverez@collabora.com
+In-Reply-To: <20220615135130.227236-2-shreeya.patel@collabora.com>
+References: <20220615135130.227236-1-shreeya.patel@collabora.com> <20220615135130.227236-2-shreeya.patel@collabora.com>
+Subject: Re: [PATCH v6 1/2] dt-bindings: Document ltrf216a light sensor bindings
+Date:   Wed, 15 Jun 2022 11:20:03 -0600
+Message-Id: <1655313603.936120.1478915.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 3:52 PM Shreeya Patel
-<shreeya.patel@collabora.com> wrote:
->
-> From: Zhigang Shi <Zhigang.Shi@liteon.com>
->
-> Add initial support for ltrf216a ambient light sensor.
+On Wed, 15 Jun 2022 19:21:29 +0530, Shreeya Patel wrote:
+> Add devicetree bindings for ltrf216a ambient light sensor.
+> 
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> ---
+> Changes in v5
+>   - Remove deprecated string 'ltr' from the bindings.
+> 
+> Changes in v3
+>   - Fix indentation in the example section
+> 
+> Changes in v2
+>   - Take over the maintainership for the bindings
+>   - Add interrupt and power supply property in DT bindings
+> 
+>  .../bindings/iio/light/liteon,ltrf216a.yaml   | 50 +++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+> 
 
-This doesn't clarify why regmap API for SMBus can't be used.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-...
+yamllint warnings/errors:
 
-> Datasheet: https://bit.ly/3MRTYwY
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml: properties:compatible:const: ['liteon,ltrf216a'] is not of type 'string'
+	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml: ignoring, error in schema: properties: compatible: const
+Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.example.dtb:0:0: /example-0/i2c/light-sensor@53: failed to match any schema with compatible: ['liteon,ltrf216a']
 
-These kinds of links tend to disappear, please use the real link.
+doc reference errors (make refcheckdocs):
 
-...
+See https://patchwork.ozlabs.org/patch/
 
-> Reported-by: kernel test robot <lkp@intel.com>
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
-No, the new feature may not be reported.
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
-...
+pip3 install dtschema --upgrade
 
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/i2c.h>
-> +#include <linux/init.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/pm.h>
-> +#include <linux/pm_runtime.h>
+Please check and re-submit.
 
-+ blank line
-
-> +#include <linux/iio/iio.h>
-
-+ blank line
-
-> +#include <asm/unaligned.h>
-
-...
-
-> +/*
-> + * Window Factor is needed when the device is under Window glass
-> + * with coated tinted ink. This is to compensate the light loss
-
-compensate for the
-
-> + * due to the lower transmission rate of the window glass and helps
-> + * in calculating lux.
-> + */
-
-...
-
-> +static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
-> +{
-> +       struct device *dev = &data->client->dev;
-> +       int ret, suspended;
-> +
-> +       if (on) {
-> +               suspended = pm_runtime_suspended(dev);
-> +               ret = pm_runtime_get_sync(dev);
-
-> +               /* Allow one integration cycle before allowing a reading */
-> +               if (suspended)
-> +                       msleep(ltrf216a_int_time_reg[0][0]);
-
-Even if the get_sync() failed?
-
-Also, how do you take care about reference count in the case of failed
-get_sync90?
-
-> +       } else {
-> +               pm_runtime_mark_last_busy(dev);
-> +               ret = pm_runtime_put_autosuspend(dev);
-> +       }
-> +
-> +       return ret;
-> +}
-
-...
-
-> +static int ltrf216a_read_raw(struct iio_dev *indio_dev,
-> +                            struct iio_chan_spec const *chan, int *val,
-> +                            int *val2, long mask)
-> +{
-> +       struct ltrf216a_data *data = iio_priv(indio_dev);
-> +       int ret;
-> +
-> +       mutex_lock(&data->lock);
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_PROCESSED:
-> +               ret = ltrf216a_get_lux(data);
-> +               if (ret < 0)
-> +                       break;
-> +               *val = ret;
-> +               ret = IIO_VAL_INT;
-> +               break;
-> +       case IIO_CHAN_INFO_INT_TIME:
-> +               ret = ltrf216a_get_int_time(data, val, val2);
-> +               break;
-> +       default:
-> +               ret = -EINVAL;
-> +               break;
-> +       }
-> +
-> +       mutex_unlock(&data->lock);
-> +
-> +       return ret;
-> +}
-
-You can refactor this function to call mutex lock/unlock as many times
-as cases you have and return directly.
-
-...
-
-> +       /* reset sensor, chip fails to respond to this, so ignore any errors */
-> +       ltrf216a_reset(indio_dev);
-> +
-> +       ret = pm_runtime_set_active(&client->dev);
-> +       if (ret)
-> +               goto error_power_down;
-
-Why do you need to power down here?
-
-> +       pm_runtime_enable(&client->dev);
-> +       pm_runtime_set_autosuspend_delay(&client->dev, 5000);
-> +       pm_runtime_use_autosuspend(&client->dev);
-> +
-> +       ltrf216a_set_power_state(data, true);
-
-The below code suggests that you are mixing badly devm_ with non-devm_
-APIs, don't do this. You have to group devm_ first followed by
-non-devm_ calls.
-
-...
-
-> +static int ltrf216a_remove(struct i2c_client *client)
-> +{
-> +       struct iio_dev *indio_dev = i2c_get_clientdata(client);
-> +
-> +       iio_device_unregister(indio_dev);
-> +       pm_runtime_disable(&client->dev);
-> +       pm_runtime_set_suspended(&client->dev);
-> +       ltrf216a_disable(indio_dev);
-> +
-> +       return 0;
-
-I believe the ordering of freeing resources and reverting state is not
-in reverse. See above why.
-
-> +}
-
-...
-
-> +static DEFINE_SIMPLE_DEV_PM_OPS(ltrf216a_pm_ops, ltrf216a_runtime_suspend,
-> +                               ltrf216a_runtime_resume);
-
-Are you sure you are using proper macro? SIMPLE is for system sleep,
-while the function names suggest that this is about runtime PM.
-
--- 
-With Best Regards,
-Andy Shevchenko

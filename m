@@ -2,74 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE63D54BC0E
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jun 2022 22:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44CC154BF3A
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 03:28:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358387AbiFNUtW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 14 Jun 2022 16:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
+        id S233317AbiFOB21 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 14 Jun 2022 21:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358467AbiFNUs3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 16:48:29 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8DA41988
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 13:48:16 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id gc3-20020a17090b310300b001e33092c737so119259pjb.3
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jun 2022 13:48:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=FKttehnRyWHLRCbEVc8BEN7Nq8NEnIEZrjC6GBkel28=;
-        b=um790NINW6SPz/mn/uCi4IfD5Ys9JPSY1K1aZrlnkbmUzqLYmwHi3LhqMrH1CMne2Z
-         KC1GQbI50hWzHdQGINwuocWoXQUznEf697nu/aC+ApZ3J4X1VedJ0djtz/LhhowKnLOs
-         C298Np/0bxtkPr8F3A7e11bNdcDOHhNbzSOAFTw3XCv0UbrmoHwScsx0zG1zRlIHWgmk
-         qyw2RN91dcC22l91sRTVUW3IfsUPvqqpl2i6d2vhiQlOdljYQrhAfQHTzlveycqdQGFU
-         Mgux9dPpSS+r01oenXwo8Z4f4ICtbPLhZvNkmi7rQz1RbjarT1pkM0EKFs/rTA8oQep6
-         ZTpA==
+        with ESMTP id S231237AbiFOB21 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 14 Jun 2022 21:28:27 -0400
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12482CE07;
+        Tue, 14 Jun 2022 18:28:25 -0700 (PDT)
+Received: by mail-io1-f42.google.com with SMTP id q11so11202584iod.8;
+        Tue, 14 Jun 2022 18:28:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=FKttehnRyWHLRCbEVc8BEN7Nq8NEnIEZrjC6GBkel28=;
-        b=36sUHXXPWJD/BhK4GS/oD8lIzk0noF74tZqNEvxo4TcAS9mNb4O8kvx9yjibqPsPh/
-         AOnwwAsCiEBR70F7BCITC37rrwjFDbjxKUnFhP1hmfTyGM7SqtTRUV2LWfla980Q9RQa
-         KGxAZu8oBEaHleirU0jrwtbdG87cXch4X2xjCIdgLvuPu1R2dE3FYTMFuZD6YZ2ZV0wr
-         qJ9BKiuWS+jeATLoQs2LbmH6oaF5VJ/U1l6dak7oH3VsgyYXx+ivsiwU77V+0phEwStP
-         WoHNCcN00NSyilIQFZDnkHb/ocfiNdfqypiRw7oM2JkCHfDncjgCaqJkh3KDl9zuT82A
-         69MA==
-X-Gm-Message-State: AJIora+zdj8AcGt7DLq7Qy9J4ZnkGHJ1B4uMNPmxbQLzTLooerIQEnqY
-        RSlJH2fL78gdoDd9iwJS6A2I8w==
-X-Google-Smtp-Source: AGRyM1uKnwL63QW7PW0eVtBoAjWN/m9SVuVEQ0O8Xlh8MD9grvwUrzxnRs6wLGish3Lq35jg0oPYfA==
-X-Received: by 2002:a17:90b:3591:b0:1e3:25d3:e78e with SMTP id mm17-20020a17090b359100b001e325d3e78emr6345411pjb.29.1655239686545;
-        Tue, 14 Jun 2022 13:48:06 -0700 (PDT)
-Received: from [172.22.33.138] ([192.77.111.2])
-        by smtp.gmail.com with ESMTPSA id h12-20020a170902eecc00b001641670d1adsm7684389plb.131.2022.06.14.13.48.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jun 2022 13:48:06 -0700 (PDT)
-Message-ID: <425477c2-7515-1402-f2db-66f15f09cbf4@linaro.org>
-Date:   Tue, 14 Jun 2022 13:48:05 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2 2/6] dt-bindings: mfd: Add mp2733 compatible
-Content-Language: en-US
-To:     Saravanan Sekar <sravanhome@gmail.com>, sre@kernel.org,
-        lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com
-Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20220614194225.2226447-1-sravanhome@gmail.com>
- <20220614194225.2226447-2-sravanhome@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=suAYcRsiFSTodJkKkMZwNSVlbn0Z7Celw9TQj2rqfTk=;
+        b=Ykg8MzBnSwtI7prchez0bfErHDzfWIqArxqJaX0qyFEHLcQTVQOmRzEtL3s4dktBGg
+         PEs0yBbGvIcC6V2h4r2MK1gP9ryGrAgkr7qVb384qcJT8vGYQdp3c/mrdzBO2kmA+noN
+         AfyfvZQ0iUdMgjzH8nEYkLMljMtPIzq0d1JOOy0mUjBQZ0KXP0yn//eVxDTbbPNsEqsw
+         1YRny99CMDsMvpARuXpiJfIz827KefOwhx1EvKiiZ/SskfWxf7SM23NJNUiHPO0X2lvK
+         1eim6uR2cgrCDp9g7/T0Mw54zkda7+mtMGXZavWl9xSYMzBlbzFYMAeOwPFC6HTNBtlE
+         c/ug==
+X-Gm-Message-State: AOAM531s9bkiCJvom6+13y6z59GoV4b4CG6XQD6WuzML8nHHi9q6JWph
+        +JE3Xz4R7aBogFez0FAlAA==
+X-Google-Smtp-Source: ABdhPJxqIl9Zm9z8IKtqnt37oI4/tjqMhg+8+yDWQMkG9w2ChU6LsAVhGgh7YMYx5rXIIyt05hrUfg==
+X-Received: by 2002:a05:6638:15cc:b0:331:f70f:635e with SMTP id i12-20020a05663815cc00b00331f70f635emr4223164jat.29.1655256504947;
+        Tue, 14 Jun 2022 18:28:24 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id c1-20020a056638028100b0032e802256a9sm5531696jaq.163.2022.06.14.18.28.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jun 2022 18:28:24 -0700 (PDT)
+Received: (nullmailer pid 3407444 invoked by uid 1000);
+        Wed, 15 Jun 2022 01:28:22 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     lee.jones@linaro.org, krzysztof.kozlowski+dt@linaro.org,
+        jic23@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-pm@vger.kernel.org, sre@kernel.org, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
 In-Reply-To: <20220614194225.2226447-2-sravanhome@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20220614194225.2226447-1-sravanhome@gmail.com> <20220614194225.2226447-2-sravanhome@gmail.com>
+Subject: Re: [PATCH v2 2/6] dt-bindings: mfd: Add mp2733 compatible
+Date:   Tue, 14 Jun 2022 19:28:22 -0600
+Message-Id: <1655256502.732671.3407443.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,7 +60,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/06/2022 12:42, Saravanan Sekar wrote:
+On Tue, 14 Jun 2022 21:42:21 +0200, Saravanan Sekar wrote:
 > Add new compatible for mp2733 mfd driver.
 > 
 > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
@@ -85,19 +68,34 @@ On 14/06/2022 12:42, Saravanan Sekar wrote:
 >  Documentation/devicetree/bindings/mfd/mps,mp2629.yaml | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> index f91acc42d652..fe13869e2c58 100644
-> --- a/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml
-> @@ -19,6 +19,7 @@ description: |
->  properties:
->    compatible:
->      const: mps,mp2629
-> +    const: mps,mp2733
 
-This does not look like proper syntax. Please run `make
-dt_binding_check` (see instructions in bindings directory) to validate it.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/mfd/mps,mp2629.yaml:22:5: [error] duplication of key "const" in mapping (key-duplicates)
 
-Best regards,
-Krzysztof
+dtschema/dtc warnings/errors:
+make[1]: *** Deleting file 'Documentation/devicetree/bindings/mfd/mps,mp2629.example.dts'
+Documentation/devicetree/bindings/mfd/mps,mp2629.yaml:22:5: found duplicate key "const" with value "mps,mp2733" (original value: "mps,mp2629")
+make[1]: *** [Documentation/devicetree/bindings/Makefile:26: Documentation/devicetree/bindings/mfd/mps,mp2629.example.dts] Error 1
+make[1]: *** Waiting for unfinished jobs....
+./Documentation/devicetree/bindings/mfd/mps,mp2629.yaml:22:5: found duplicate key "const" with value "mps,mp2733" (original value: "mps,mp2629")
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/mfd/mps,mp2629.yaml: ignoring, error parsing file
+make: *** [Makefile:1404: dt_binding_check] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

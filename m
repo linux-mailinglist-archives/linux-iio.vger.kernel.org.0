@@ -2,93 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D7354CA0F
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 15:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B0054CA4C
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 15:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353788AbiFONoT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 09:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
+        id S240208AbiFONv6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 09:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347532AbiFONoS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 09:44:18 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3432C677
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 06:44:16 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id x38so20574757ybd.9
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 06:44:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hp1aAAlFAq4/A1NH4phA+P7Vi5cvcSnxaSA1EwmzOjs=;
-        b=lVfAk6c7MPyRfXkCYOWdVQURkSp+OBByvpe056Tgq9IMl2OauUoGqFUnhviTFb2AA7
-         tXjeTRjUn04Ib4a9agWf/BW6v1+t9bnOMpPlIk5o5CFJmoXlocEzwCkrP+0K5pj/nEPH
-         aDv8LKc+BLj2jMBaKCSoMqp253iGg+GgWOMTUrh92DiDz2nN3xzGtbNEigp2bT+lUZwW
-         myZ/G45CpWEsSYjoHFTMDx2qQGWMl0eg3K0p86rOSedi3yBGeh1pOi7P0mhvV/S4b3sG
-         U4p5XmESE0mUSpPZZhUtNh3JDlRWOYlEHyn8IXpD9Jk95y29uBi8BBDPzbsRgbpO+vip
-         xiiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hp1aAAlFAq4/A1NH4phA+P7Vi5cvcSnxaSA1EwmzOjs=;
-        b=yUzf2yfA/U/G0jNYrbgLIUMaD/2vJvufIHURXsb6AevvawHRqVnce/X0iaXLOl4jCY
-         H8I9LgXUhLbV9dwWWUVjWLL4enVRIeSxLc5p4YZD4VyV0cu4Ec0kmvgrEz+sZVtbMD3i
-         61XF2LUIDoue3+X65uFD7XHSt+RJkX2GmFDELKQWNNKao/rHFNW8pRvdRWjw5dfpjF60
-         kLSd1Oa1MLs8CwbDxvLih3iih3G7OOShJTJ7Ocxwvj5+q+39YYccOan8+YB7/gIArB3D
-         Pr4UbKO1wro+subgg1+Gi/aYmQEOH3MPViBgk9g7INfF5e/J+n2xq989ktcCXjPQk3uh
-         cHBA==
-X-Gm-Message-State: AJIora9FkrM8UdWIi5VHTY9amRhF6ODAWmrfdu/uXMzJDgsJHqesq2NA
-        tYcqYEGb2Gczsr2+nn/vOH56rx5nDaL0vRqV+F/mE2WHj7I=
-X-Google-Smtp-Source: AGRyM1vwXQw90on1sHsRQC4/H0k1Bofmho0MnG9UWhioWNDMZYti404KFNThV3NhBXgLu5NZbUKp/nAL98zAv6yclsA=
-X-Received: by 2002:a25:1256:0:b0:65d:6433:7993 with SMTP id
- 83-20020a251256000000b0065d64337993mr10084424ybs.626.1655300656100; Wed, 15
- Jun 2022 06:44:16 -0700 (PDT)
+        with ESMTP id S239803AbiFONv5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 09:51:57 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521E53C717;
+        Wed, 15 Jun 2022 06:51:56 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:10:3153:7fbd:8a7b:29b6:89fb])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 7B37D6601701;
+        Wed, 15 Jun 2022 14:51:51 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1655301114;
+        bh=izgURzLTy40gnm0phiG12h3sKNra6Vhk2TKfrtJGjtw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LpYtRhqr1HskmYyVVVlRdDuc84lU1+qwAyYlPHRFYCxj8tWaIyaP2tcUf23f+oVxS
+         Tg4hSCDBbkprsaxujxhuzRI2KfWr7zBlI1ZMPq2A2fWS/jNsof8IQbqOynB9OQTk+d
+         BU9TALaDqNYcGWnGR+Uhq47gqcrbC7iAfW0LIJbpgpq5QfSR3M4XTPmiZllTW0xy48
+         jA+WHNNfh55w3dlykVcHjNl3vk9oJjBjETetDjaaXvlIiA26BII0NbhlKl05Nb1sEy
+         FM+NTZiTr3Wm+ghzhs+v47LBQzPcfx37HVrZMChNrsQ0UjqRiv7BPNcM98TOqC/M7U
+         ecaeM7632wRYg==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        Zhigang.Shi@liteon.com, krisman@collabora.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com, andy.shevchenko@gmail.com,
+        digetx@gmail.com, Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH v6 0/2] Add LTRF216A Driver
+Date:   Wed, 15 Jun 2022 19:21:28 +0530
+Message-Id: <20220615135130.227236-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com> <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 15 Jun 2022 15:44:04 +0200
-Message-ID: <CACRpkdbObQ5WrzVC_xYobJPSBVSMyaz0HHXesLP+g1HCzCGJtQ@mail.gmail.com>
-Subject: Re: [PATCH 10/10] pinctrl: Add AXP192 pin control driver
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
-        Michael Walle <michael@walle.cc>
-Cc:     brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 3, 2022 at 3:56 PM Aidan MacDonald
-<aidanmacdonald.0x0@gmail.com> wrote:
+This patchset adds support for ltrf216a Ambient Light Sensor
+and documents the DT bindings for the same.
 
-> The AXP192 PMIC's GPIO registers are much different from the GPIO
-> registers of the AXP20x and AXP813 PMICs supported by the existing
-> pinctrl-axp209 driver. It makes more sense to add a new driver for
-> the AXP192, rather than add support in the existing axp20x driver.
->
-> The pinctrl-axp192 driver is considerably more flexible in terms of
-> register layout and should be able to support other X-Powers PMICs.
-> Interrupts and pull down resistor configuration are supported too.
->
-> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+Changes in v6
+  - Fix some errors reported by kernel test robot.
+  - Add protocol details for the datasheet link.
+  - Remove useless assignments.
+  - Add unit details for read data delay macro.
+  - Use pm_sleep_ptr().
 
-Looks good to me (TM) but I'd like Michael Walle to take a look
-to check if this is one of those drivers that could make use of
-gpio-regmap.c CONFIG_GPIO_REGMAP to make it even
-simpler.
+Changes in v5
+  - Add power management support.
+  - Add reset functionality.
+  - Use readx_poll_timeout() to get data.
+  - Cleanup some of the redundant code.
+  - Update int_time_fac after I2C write is successful.
+  - Rename mutex to lock.
+  - Use Reverse Xmas tree pattern for all variable definitions.
+  - Improve error handling messages and add error codes.
+  - Add one more MODULE_AUTHOR.
+  - Remove cleardata which was reading data for infrared light.
+  - Remove patch for deprecated vendor prefix [PATCH v4 3/3].
+  - Remove deprecated string from DT binding document.
 
-Yours,
-Linus Walleij
+Changes in v4
+  - Add more descriptive comment for mutex lock
+  - Fix mutex locking in read_raw()
+  - Use i2c_smbus_read_i2c_block_data()
+
+Changes in v3
+  - Use u16 instead of u8 for int_time_fac
+  - Reorder headers in ltrf216a.c file
+  - Remove int_time_mapping table and use int_time_available
+  - Fix indentation in the bindings file.
+
+Changes in v2
+  - Add support for 25ms and 50ms integration time.
+  - Rename some of the macros as per names given in datasheet
+  - Add a comment for the mutex lock
+  - Use read_avail callback instead of attributes and set the
+    appropriate _available bit.
+  - Use FIELD_PREP() at appropriate places.
+  - Add a constant lookup table for integration time and reg val
+  - Use BIT() macro for magic numbers.
+  - Improve error handling at few places.
+  - Use get_unaligned_le24() and div_u64()
+  - Use probe_new() callback and devm functions
+  - Return errors in probe using dev_err_probe()
+  - Use DEFINE_SIMPLE_DEV_PM_OPS()
+  - Correct the formula for lux to use 0.45 instead of 0.8
+  - Add interrupt and power supply property in DT bindings
+  - Add vendor prefix name as per the alphabetical order.
+
+
+Shreeya Patel (2):
+  dt-bindings: Document ltrf216a light sensor bindings
+  iio: light: Add support for ltrf216a sensor
+
+ .../bindings/iio/light/liteon,ltrf216a.yaml   |  50 ++
+ drivers/iio/light/Kconfig                     |  10 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/ltrf216a.c                  | 429 ++++++++++++++++++
+ 4 files changed, 490 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+ create mode 100644 drivers/iio/light/ltrf216a.c
+
+-- 
+2.30.2
+

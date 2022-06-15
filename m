@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A180554C51D
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 11:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C901A54C52D
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 11:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346206AbiFOJwO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 05:52:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
+        id S1347186AbiFOJxr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 05:53:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244334AbiFOJwO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 05:52:14 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9624E49931;
-        Wed, 15 Jun 2022 02:52:13 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id m20so22070137ejj.10;
-        Wed, 15 Jun 2022 02:52:13 -0700 (PDT)
+        with ESMTP id S1346788AbiFOJxn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 05:53:43 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFFB396B9;
+        Wed, 15 Jun 2022 02:53:42 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id v1so22058234ejg.13;
+        Wed, 15 Jun 2022 02:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=2d94UGsGvMGNq3E5FlbqsEwX5l7DPXjVnfOqe97Myh4=;
-        b=nUq5wRtuiPL5DfL+y3mSe9/eaTVnLo07rrQp+8nbW05xvzKCo8XcNt867JClW6Xfrv
-         p981As4aLxeRx4oe23iJDcNczy7kysJ0O+ThPla1s/2LufWljTu0QEFw+oDNzu1GgQFt
-         BohAPFTwwpjg0g6oXcxL1uW7yYQgi1pKPlACC4EXuV+i462HyOsbD+ZGc6d3NaycxS3S
-         DwVgwAYGnpz/EfoeTekCFpLYL7modzG9bDmL//SwZibgPaescfj6Zmaos/aXwWYfp+6e
-         +Vq7ATIE117a959CUlRevBhxqHAS7hpg/t2F/NSmEUskR+Gg/+odiebitTnpxUG80FKr
-         eTYw==
+        bh=GikhKivQJzKmYbaChPmx+v0UPgQb1tXpSd4vkzT/6G8=;
+        b=B2AjlhIDHLQOvymCm4IJdMdL/DamnXoTSTbLLamPDD8Q1oyrl7tyT7Q5NDlgLtE/oC
+         O00MjBh/ZAsy+PFebM/tVA7aPphzwUwuWrEB69dYUsyodJ0W0gt2yN6zmbBvzcCgXNoH
+         tBDNvOSzHJsmON3iM0Ui8/8MI6gPmz+EcN+cFARfjBfjSLkqXT6YKRFS2wAkOnNMOvlb
+         6Chni6Hj14F7zdxOy8Egrv7EP1f9Fxai2ldd3vcp4bwkyg5huuSnlrzWH18wPIV+PNDw
+         adyMcIAsSOGwawb8hwRl0cflJzVZFCtDkqAHwE5lEWamG50PkehTEQeWagF/v1iMAO9n
+         QS0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=2d94UGsGvMGNq3E5FlbqsEwX5l7DPXjVnfOqe97Myh4=;
-        b=ZUyDHYoxNv1uJLt+6AxbgHsETbdrd/mOgGQ9hPkb9SWEivUpsE3Ua2KyrGBllDYIkg
-         Kf+MByLO3/+7UXMqU8z+m2I+A60w/Zr77sDeMlsn4yZbWkEEYJnuvmSpYJxHnVrVwFYr
-         XlEiy/+6FNfcoPuVL7gt/fUD13ypujwgQFe0u4tlFS04mksW8EnhNAfa4ZOmgTUaoQUB
-         Jroay8J3HlLuVvdTWYHt9opXqZVtN6elcm0p/lLTZH565SqnLvc/SeQDpRiKnkFtQ+sy
-         /ZADhXzEeG3kD6hjHj9tC8VxB3VDlAHug9o9XWuyaezsA1HtE22vSe5B9lpLnvZe+jne
-         OtZQ==
-X-Gm-Message-State: AOAM532AW+yV79G9z2OQE8p6bs56esQfYwNgLjq/OYK5vktLHfngN3Vz
-        x3KsD1BmJEyA5aonPpKa9otEvPsg2a2F3tHBckrI1G4AZkkKBw==
-X-Google-Smtp-Source: ABdhPJxSHsie5MrccfhGp2VK2b5KuzAP6yBzxUWuyelTh0jGk8Aai0SqNKINfIA8xwNXsjSBS5pH3HDHd9ZL1uWbLSU=
-X-Received: by 2002:a17:906:d9d9:b0:710:f2ae:b455 with SMTP id
- qk25-20020a170906d9d900b00710f2aeb455mr8043815ejb.77.1655286732107; Wed, 15
- Jun 2022 02:52:12 -0700 (PDT)
+        bh=GikhKivQJzKmYbaChPmx+v0UPgQb1tXpSd4vkzT/6G8=;
+        b=vy3ftPMy3xHiMBVCN+zM487dSS0VY7uU/g4hvgmiZNdRTNzFU1bV1wnPx1qM5r8vma
+         cHEnoE7zWUwZtDeJarG2+20kFao4cR2HV9gMNlRKUQDDSRWp3mQ3sR++G+qS6xmbh7aV
+         rz/wP7dPgL+vlCBoUzXIccuU8V6uV4SnDNbkFa8xEpJ7hWHXPYDoJIiKUDP0Vjm3hl5b
+         /vazFUzB3n2lor8xInbmNmi6Zfb1XSR4wFckc/CZOwjsYLEN49lW7DTMpiuwj75bnQSU
+         gdWu3uglm9CwMxw4TLgZ34xAGezKmS1SRjXkX25mXy9LeJ3IVMmm+y0OECvfhmFiMZ/b
+         6NQQ==
+X-Gm-Message-State: AOAM533T3crkZ632RD7/C5ant8quqJnVSs5X/xwphQbAS1qMTBbNWLfK
+        q8m6HKlYMNppWYNDMZwo111OL+Uyf/TAVTNetSE=
+X-Google-Smtp-Source: ABdhPJyEtwPNSHSqff8aykeV3/Ia3F9lMkiK8P/fePUy2yIogqe9RTZF/xt0Mb7SATy13R/UwRVx6oidEYzd7P9BQJw=
+X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
+ dc1-20020a170906c7c100b00711d2e999d0mr8061029ejb.639.1655286820739; Wed, 15
+ Jun 2022 02:53:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220614194225.2226447-1-sravanhome@gmail.com> <20220614194225.2226447-6-sravanhome@gmail.com>
-In-Reply-To: <20220614194225.2226447-6-sravanhome@gmail.com>
+References: <20220614194225.2226447-1-sravanhome@gmail.com>
+In-Reply-To: <20220614194225.2226447-1-sravanhome@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 11:51:34 +0200
-Message-ID: <CAHp75Vc1PTJ-u6uMqQnCipbC1Dihx4fftc92rXRKGSeaZVZPfw@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] power: supply: mp2629: Add usb fast charge settings
+Date:   Wed, 15 Jun 2022 11:53:04 +0200
+Message-ID: <CAHp75VdY4UUw9xSCFscSZrmd0s63LhcTSP16_Nn135iv2QSheQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] iio: adc: mp2629: fix wrong comparison of channel
 To:     Saravanan Sekar <sravanhome@gmail.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
@@ -74,30 +74,42 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Tue, Jun 14, 2022 at 9:42 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
 >
-> Allows the user to change the usb device fast charge setting to advertise
-> host on enumeration helps to accelerate the charging cycle. Altering this
-> value resets USB existing connection.
+> Input voltage channel enum is compared against iio address instead
+> of channel.
+
+the channel
 
 ...
 
-> +Description:
-> +               Represents a usb device fast charge settings.Altering this
+I do not see a cover letter, but FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+for all patches except DT binding
+Note, some of the comments regarding spelling were given, I believe
+you are going to address them in v3.
 
-USB
+> Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
+> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> ---
+>  drivers/iio/adc/mp2629_adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+> index aca084f1e78a..e7fbfe92e884 100644
+> --- a/drivers/iio/adc/mp2629_adc.c
+> +++ b/drivers/iio/adc/mp2629_adc.c
+> @@ -73,7 +73,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+>                 if (ret)
+>                         return ret;
+>
+> -               if (chan->address == MP2629_INPUT_VOLT)
+> +               if (chan->channel == MP2629_INPUT_VOLT)
+>                         rval &= GENMASK(6, 0);
+>                 *val = rval;
+>                 return IIO_VAL_INT;
+> --
+> 2.25.1
+>
 
-> +               value resets usb existing connection
-
-USB
-
-> +               USB DP:DM[0:0] 0.6V : Hi-Z
-> +               USB DP:DM[0:1] 3.3V : 0.6V
-> +               USB DP:DM[1:0] 0.6V : 0.6V
-> +               USB DP:DM[1:1] 0.6V : 3.3V
-> +
-> +                Access: Read, Write
-> +
-> +                Valid values: Represented in bit DP & DM setting. Valid
-> +                             range is [0, 3].
 
 -- 
 With Best Regards,

@@ -2,75 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C149E54CBC5
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 16:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3D154CBD7
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 16:54:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239938AbiFOOwg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 10:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
+        id S245503AbiFOOyF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 10:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239840AbiFOOwd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 10:52:33 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 343C663A7;
-        Wed, 15 Jun 2022 07:52:30 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id z7so16502518edm.13;
-        Wed, 15 Jun 2022 07:52:30 -0700 (PDT)
+        with ESMTP id S229920AbiFOOyE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 10:54:04 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BD4255B5;
+        Wed, 15 Jun 2022 07:54:03 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id c2so16555845edf.5;
+        Wed, 15 Jun 2022 07:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZxDlg0EdzPxYwY4K8DTikqmJi02hCqlQxjHuqjSZNfA=;
-        b=EwhKhaZrTy3fa3bUhjKdWPD6ieKfbZBuMSPBdfBKI6Uxr86y2RNIUAUxDjo5SjKO//
-         SiZ4UFtxDwhURy6JgI+B2wTtikTf4RkHkpT73A7of6oWQCgInzWHEsCxEcS0iO3MGBUg
-         gQV26gEqUGpByNVpdyWbXrTQZUWhZ762iYLUl6Kf5Inf/shaj7MVfXoK3C6hFrPJIRnO
-         EPxWRRAH/J/F9ShFEsQn0T7ADvI2scnbg3Id0OtI1bQUXhXwp2d+89Pf4lrjMM2KNPoz
-         gI0bq8hvynB7Bu367GOwMHA3uAZH/5MJkBzguAxS7538dG/Ki/gth+uoESiYdaUqpGPh
-         Fj1g==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zm2W6v9ccsuKHVJhwB8rr2eHxTDAjCj+px+ePJ5qgIs=;
+        b=jiy/iuSj3AfU2kuIdFtr8PXuyzYy6seV5g6tVWhn/JlJYbGhZhskDOQiK8Ga2faNpK
+         JMb9UOoo/mzbkXVaCEYepY224dm24vB7Q80OyBCEgp/hdjkqy6bamryZmGLSm6U0aOVp
+         DZquHV69vQTqVZViqyGImIvaa+8B8yOELcd3WhmmxAj9nQEQ/IgNIxMjI42TSF8tnTEj
+         7h9nmUeqCTcNQkU7l2zea5q+2YHIzeRTr3P2ZcCI/llMlqXFDW91aFIBiY8E83MnVPON
+         RhNB/L9HiC+IkGqVXJ2SFqw7DbAeZOmkjkIyyCW11GRygKb5HbVfWdiKQv7asu1DKrR+
+         fV1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZxDlg0EdzPxYwY4K8DTikqmJi02hCqlQxjHuqjSZNfA=;
-        b=S5CNL6xW8SbqmvGhZcZVAKlOSkVbfRpbvzlz0etQcolE8DymUQLC7EoSsJFdwwkvAn
-         T+2Ym6+PUnm8y2PhqnED52gEhR7yFpA0hKXPog0+ZNP/xk9pyAw9fEyi1l6e2h/MwX7D
-         HuMVMECXQymMWtvHdpeNeqpr1oCC7Ky0wg7axMMEOq8HVQ0cP3Sx0LehBnL6OdwzElRX
-         Yj+oE2iy9p8uYMnbLTxU1DArykv/0B0YqJgqJl7BmB7Ct3D6AyeJlKBelOycIxmrJupn
-         1bVzdWQRfa5ThB1VxGmjEPGvOTbxxsUclOWL+1Hd7bEzmps1t+lFx7juY6BG1mBRGOjF
-         BsRA==
-X-Gm-Message-State: AJIora96481gr68j8GDzJ3vCGy+Kz0WUG+oexaGdrzVQ59+pktwWYfob
-        6RNPypqmuChuCP23ocGMnKavQYQ3+2SRs0ovZfc=
-X-Google-Smtp-Source: AGRyM1sE207DJv9+1fRWDv51iUOC+CD0NSEaQlIkEakAWD6nsBwwDcwkIt1u8W8zJ1RJ6uK0mJzWuYQE0xfeidGejO0=
-X-Received: by 2002:a05:6402:5002:b0:435:1ff1:99ee with SMTP id
- p2-20020a056402500200b004351ff199eemr153892eda.230.1655304748655; Wed, 15 Jun
- 2022 07:52:28 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zm2W6v9ccsuKHVJhwB8rr2eHxTDAjCj+px+ePJ5qgIs=;
+        b=hnusF9D4FoxYRNLVuZZlUTHDgp0upMDljaYMyyO+0UU5XcnwKJ3xUkbk/HsGHdV+0b
+         rSacuK5XfkKWC/vCQsNtbi63M7EZJ77B5LqbojJhFXDR7O4ZwmvxOS7Pp9AMvvrrqhOe
+         tNuWtVU1qlLQfN0FMEN9ZJ7EHnBCOpg+pQWygTrJ200rM0Zikx8vI7DQFnHXmn9WjVRu
+         sQf6xrkb077xN25TSru7Z5MW4xUyEvz0rlr5FV72ZOdHvLgICacjCW1gkjdE8LzxZTe0
+         rTJqpIeKgm6bvlh7X2NY3mbujB2VlBK6nK83+01oDetfK19AYu8Jkt0MMHajCvpNOSff
+         BszA==
+X-Gm-Message-State: AJIora8WZ5/z+zPtb0MFa1+yei8vCcI0N+N21Y1yNkjmXSD+Twr17e4Q
+        qkhdWzdhdXwi8MbwoMHrsyoB8dHPsl0V3Q==
+X-Google-Smtp-Source: AGRyM1ssNYYluvGF08zqq6Tim7ZAg+YNRrtCwwml4VMqehODAChivoe5VgtdJv77f6EKr5ZLt1TMXg==
+X-Received: by 2002:a05:6402:5212:b0:42e:2fa:41a7 with SMTP id s18-20020a056402521200b0042e02fa41a7mr184821edd.22.1655304841912;
+        Wed, 15 Jun 2022 07:54:01 -0700 (PDT)
+Received: from localhost.localdomain (p5dcfe5fe.dip0.t-ipconnect.de. [93.207.229.254])
+        by smtp.gmail.com with ESMTPSA id y2-20020a1709063a8200b00706287ba061sm6341665ejd.180.2022.06.15.07.54.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jun 2022 07:54:01 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com
+Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v3 0/6] Add support for mp2733 battery charger
+Date:   Wed, 15 Jun 2022 16:53:51 +0200
+Message-Id: <20220615145357.2370044-1-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com> <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 16:51:52 +0200
-Message-ID: <CAHp75VevetU0p+BTcQ6HcAn=2xgVGAL34ZuAi53rK3SDt=O-cw@mail.gmail.com>
-Subject: Re: [PATCH 10/10] pinctrl: Add AXP192 pin control driver
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -81,173 +69,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 3, 2022 at 6:29 PM Aidan MacDonald
-<aidanmacdonald.0x0@gmail.com> wrote:
->
-> The AXP192 PMIC's GPIO registers are much different from the GPIO
-> registers of the AXP20x and AXP813 PMICs supported by the existing
-> pinctrl-axp209 driver. It makes more sense to add a new driver for
-> the AXP192, rather than add support in the existing axp20x driver.
->
-> The pinctrl-axp192 driver is considerably more flexible in terms of
-> register layout and should be able to support other X-Powers PMICs.
-> Interrupts and pull down resistor configuration are supported too.
+changes in v3:
+ - fixed dt_binding_check error
+ - fixed spelling usb->USB
 
-Thank you for contribution, overall looks good, below some not very
-critical comments.
+changes in v2:
+ - fixed spelling
+ - revert back probe to probe_new in mfd driver
 
-...
+I do not see a cover letter, but FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+for all patches except DT binding
+Note, some of the comments regarding spelling were given, I believe
+you are going to address them in v3.
 
-> +static const struct axp192_pctl_reg_info axp192_pin_ctrl_regs[] = {
-> +       { .reg = AXP192_GPIO0_CTRL,   .mask = 0x07 },
-> +       { .reg = AXP192_GPIO1_CTRL,   .mask = 0x07 },
-> +       { .reg = AXP192_GPIO2_CTRL,   .mask = 0x07 },
-> +       { .reg = AXP192_GPIO4_3_CTRL, .mask = 0x03 },
-> +       { .reg = AXP192_GPIO4_3_CTRL, .mask = 0x0c },
-> +       { .reg = AXP192_N_RSTO_CTRL,  .mask = 0xc0 },
-> +};
 
-GENMASK()
+add support for mp2733 Battery charger control driver for Monolithic
+Power System's MP2733 chipset
 
-...
+Saravanan Sekar (6):
+  iio: adc: mp2629: fix wrong comparison of channel
+  dt-bindings: mfd: Add mp2733 compatible
+  mfd: mp2629: Add support for mps mp2733 battery charger
+  iio: adc: mp2629: restrict input voltage mask for mp2629
+  power: supply: Add support for mp2733 battery charger
+  power: supply: mp2629: Add USB fast charge settings
 
-> +       if ((val & reginfo->mask) == (input_muxvals[offset] << (ffs(reginfo->mask) - 1)))
-> +               return GPIO_LINE_DIRECTION_IN;
-
-> +       else
-
-Redundant.
-Also applies for the other similar cases in your code. Note, this is
-also redundant for 'continue' and 'break' in case of loops.
-
-> +               return GPIO_LINE_DIRECTION_OUT;
-
-...
-
-> +       if (!reginfo->mask)
-> +               return -EOPNOTSUPP;
-
-Please, double check that this is used by the pin control subsystem
-and not ENOTSUP in your case here.
-
-...
-
-> +       default:
-> +               return -EOPNOTSUPP;
-
-Ditto.
-
-...
-
-> +               default:
-> +                       return -EOPNOTSUPP;
-
-Ditto.
-
-...
-
-> +               default:
-> +                       /* unreachable */
-> +                       break;
-
-return 0?! Perhaps you need to return an error?
-
-> +               }
-> +       }
-> +
-> +       return 0;
-
-...
-
-> +       if (muxvals[group] == (u8)-1)
-
-limits.h and U8_MAX? Or GENMASK()? Choose one which suits you.
-
-> +               return -EINVAL;
-
-...
-
-> +       if (!of_device_is_available(pdev->dev.of_node))
-> +               return -ENODEV;
-
-Dead code.
-
-> +       if (!axp20x) {
-> +               dev_err(&pdev->dev, "Parent drvdata not set\n");
-> +               return -EINVAL;
-> +       }
-
-Another useless piece of code.
-
-...
-
-> +       pctl->desc = of_device_get_match_data(&pdev->dev);
-
-device_get_match_data()
-
-...
-
-> +       pctl->chip.to_irq               = axp192_gpio_to_irq;
-
-Why a custom method?
-
-...
-
-> +       pctl->pctl_dev = devm_pinctrl_register(&pdev->dev, pctrl_desc, pctl);
-> +       if (IS_ERR(pctl->pctl_dev)) {
-> +               dev_err(&pdev->dev, "couldn't register pinctrl driver\n");
-> +               return PTR_ERR(pctl->pctl_dev);
-
-Here and everywhere else in ->probe() and Co, use
-
-  return dev_err_probe(...);
-
-pattern.
-
-> +       }
-
-...
-
-> +       ret = gpiochip_add_pin_range(&pctl->chip, dev_name(&pdev->dev),
-> +                                    pctl->desc->pins->number,
-> +                                    pctl->desc->pins->number,
-> +                                    pctl->desc->npins);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "failed to add pin range\n");
-> +               return ret;
-> +       }
-
-We have a specific callback where you may put this, otherwise on some
-systems it may not work as expected.
-
-...
-
-> +       dev_info(&pdev->dev, "AXP192 pinctrl and GPIO driver loaded\n");
-
-Useless.
-
-...
-
-> +static struct platform_driver axp192_pctl_driver = {
-> +       .probe          = axp192_pctl_probe,
-> +       .driver = {
-> +               .name           = "axp192-gpio",
-> +               .of_match_table = axp192_pctl_match,
-> +       },
-> +};
-
-> +
-
-Redundant blank line.
-
-> +module_platform_driver(axp192_pctl_driver);
-
-...
-
-Globally two comments:
-1) I also believe that you may utilize gpio-regmap API;
-2) try to get rid of OFisms, make it property provider agnostic.
+ .../ABI/testing/sysfs-class-power-mp2629      |  16 ++
+ .../devicetree/bindings/mfd/mps,mp2629.yaml   |   4 +-
+ drivers/iio/adc/mp2629_adc.c                  |   5 +-
+ drivers/mfd/mp2629.c                          |   5 +-
+ drivers/power/supply/mp2629_charger.c         | 208 +++++++++++++++---
+ include/linux/mfd/mp2629.h                    |   6 +
+ 6 files changed, 212 insertions(+), 32 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

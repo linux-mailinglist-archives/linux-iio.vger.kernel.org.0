@@ -2,68 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B72BA54CBD6
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 16:54:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0C5D54CDDB
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 18:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245684AbiFOOyL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 10:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42112 "EHLO
+        id S232224AbiFOQKy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 12:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344116AbiFOOyK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 10:54:10 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CEDA2A713;
-        Wed, 15 Jun 2022 07:54:09 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id z7so16509457edm.13;
-        Wed, 15 Jun 2022 07:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=6Clv+JrvN5xAcPquJt0P4YgFaBe3M0B8HPlEXIs7o5U=;
-        b=HrtHARPp1Xww8CBJG9O4NBrrfnhmef+9FXRkvUyzllK9op+K9cZGY1fehxk9grKgHY
-         GXG8hbFJmnK1xu6+2TrgrSAG+cB24FJfiAfYcRiwqWkj93oaOlOQqXuMVjpVunw42Eh9
-         Ic01ViH0sn0OgIrXBmb8MLUd+fSF/U+W/2yweKyF/YHyYD4tqXI5TqM2RNiaSZ7HyAGE
-         LhvJfMTrdPlcViZc1fR8Vog7zFnv1USEDDM/EHuikEP0KxjT28VAOXnok/WMudsIIFPe
-         okjTVnGvKusxFqBBd8C8vPywNotJLvPbxzNfUfkack9T4AHjFsmz+LTgoOBacXGwC5dc
-         QzxA==
+        with ESMTP id S230236AbiFOQKx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 12:10:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EDBE134B91
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 09:10:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1655309451;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=L8C7CNnZsHIiOsbHm8tz+65i/chIUrJHAiiny+QpZ2g=;
+        b=KmOVoinpXZQiTvaMAWn6q1bYN7RjR2dAeJElTrppuCZTuF63zdmo7jAu6mgRBPp+h+wr/Y
+        QSgNax8/+ynpqFyu3HSTjInkLBJVoPigpTU+zt5CP2jU9sBF+Sf6zVpED0RTFrr4Yrncfn
+        XUXthmSlTeR5XiNS6+ClwXrPHLEU4HY=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-511-AAiSkUf6NYqbhldZu7tL-g-1; Wed, 15 Jun 2022 12:10:50 -0400
+X-MC-Unique: AAiSkUf6NYqbhldZu7tL-g-1
+Received: by mail-ed1-f72.google.com with SMTP id s15-20020a056402520f00b004327f126170so8940696edd.7
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 09:10:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6Clv+JrvN5xAcPquJt0P4YgFaBe3M0B8HPlEXIs7o5U=;
-        b=rESDyNqitKt9DVc3tJQHg08ZM2pQCR13Znn4XzQSAUXoy3Zv3ZWl78v25nVzvLaj/W
-         JqI+Tvy8SY0AcYcewMN1eDnxu8UpuD5ARZuONwe5R8sCwbEHfiSg7jklqYTrHoMgIW+M
-         V2EBW7NY67MUtqHPY1Ay/KvTHrTfQX5y/NyrSRXC++dsOepgPozrvPKgF1HZUZy38ilb
-         jKztQAbv8k/JmUXYhMcJ1tI4cAgifFJt/dDD9gGpx+7oVOhV32xk2/NuWFJ1rWjVC4al
-         X69apCMDuNt1JDoi+ydKn2JtHnp70LBQgoKRV3+O1lo8inBKeQEjU4ZQQlfWH1l8pz0U
-         BGIw==
-X-Gm-Message-State: AJIora+SoCENK6tjuysj1qCh2ASUih1+7zCp9TGoq98d7SKNdQKXxP7C
-        p5x60LuWc6eYjymcP484TwI=
-X-Google-Smtp-Source: AGRyM1ujs1HeXOasq6DHF83w4PPcRH7kW5sgTud79flC34uP4Hx/vJhKCSdoYRUWd1SFHAiZyCK7Fw==
-X-Received: by 2002:a05:6402:51d4:b0:42f:b38d:dbb9 with SMTP id r20-20020a05640251d400b0042fb38ddbb9mr100501edd.255.1655304848997;
-        Wed, 15 Jun 2022 07:54:08 -0700 (PDT)
-Received: from localhost.localdomain (p5dcfe5fe.dip0.t-ipconnect.de. [93.207.229.254])
-        by smtp.gmail.com with ESMTPSA id y2-20020a1709063a8200b00706287ba061sm6341665ejd.180.2022.06.15.07.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 07:54:08 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com
-Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v3 6/6] power: supply: mp2629: Add USB fast charge settings
-Date:   Wed, 15 Jun 2022 16:53:57 +0200
-Message-Id: <20220615145357.2370044-7-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220615145357.2370044-1-sravanhome@gmail.com>
-References: <20220615145357.2370044-1-sravanhome@gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=L8C7CNnZsHIiOsbHm8tz+65i/chIUrJHAiiny+QpZ2g=;
+        b=tkFY8ljBISUHAXqaj5UEsvigHd2X6e+EAk+Oo9o4wTelwOc8Nd3G+y/8/jVM6IETB/
+         a6P74kCdp1rYOVgymTD9GG/trrXbdi5pOgFLemgab78vtE7aZN6jQFlB7GDHEuvzJJLM
+         5C0ZC3Aao0qTcjqiYPh+KG2S9YOvokxz9RtxJ6+ONMXNDTZTdiuq/U//s+chxyONMETd
+         qiLdRFEYHDVwF3r3rfny5PehLK/GUEPx0kLuD7z5e48W4ETkB6WAWpjflWyAr2C+8b+/
+         Wh1M9auzh7OjmcbdwxNrBcloRkKK7rJvFaEkgzDoNHlGDihpFw8wZJrMzJXFiu4LR8QE
+         SnxQ==
+X-Gm-Message-State: AJIora+0kHNU6f0NmLfEaGojpqswOLM0HL7bBJR3VfqV7v3hlaFmRHMr
+        GHKNOG+CZ5FpurgVsquA/cVQJkCo3Gs9y78RBVJUdkFzacid6ecqvyqOQcb838OEenoLneadzZ3
+        Of/931xjU3ues19W2ZUxp
+X-Received: by 2002:a17:906:7952:b0:711:d4e0:da23 with SMTP id l18-20020a170906795200b00711d4e0da23mr489483ejo.305.1655309449558;
+        Wed, 15 Jun 2022 09:10:49 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1todeVP2438ghYV55GiAx7PH0P9XpRlMmKnC0cGTTtRvrHmdwvSVJuWAVKv6YDvzlO8oAM35A==
+X-Received: by 2002:a17:906:7952:b0:711:d4e0:da23 with SMTP id l18-20020a170906795200b00711d4e0da23mr489467ejo.305.1655309449389;
+        Wed, 15 Jun 2022 09:10:49 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id i27-20020a50871b000000b0042dcbc3f302sm9604497edb.36.2022.06.15.09.10.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jun 2022 09:10:48 -0700 (PDT)
+Message-ID: <8690f687-8f9d-b03f-226f-3a289e718ed5@redhat.com>
+Date:   Wed, 15 Jun 2022 18:10:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v2] iio: accel: mma8452: ignore the return value of reset
+ operation
+Content-Language: en-US
+To:     haibo.chen@nxp.com, jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-imx@nxp.com
+References: <1655292718-14287-1-git-send-email-haibo.chen@nxp.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <1655292718-14287-1-git-send-email-haibo.chen@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,40 +80,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Allows the user to change the USB device fast charge setting to advertise
-host on enumeration helps to accelerate the charging cycle. Altering this
-value resets USB existing connection.
+Hi,
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- .../ABI/testing/sysfs-class-power-mp2629         | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+On 6/15/22 13:31, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
+> 
+> On fxls8471, after set the reset bit, the device will reset immediately,
+> will not give ACK. So ignore the return value of this reset operation,
+> let the following code logic to check whether the reset operation works.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-diff --git a/Documentation/ABI/testing/sysfs-class-power-mp2629 b/Documentation/ABI/testing/sysfs-class-power-mp2629
-index 914d67caac0d..b386d02cb010 100644
---- a/Documentation/ABI/testing/sysfs-class-power-mp2629
-+++ b/Documentation/ABI/testing/sysfs-class-power-mp2629
-@@ -1,3 +1,19 @@
-+What:		/sys/class/power_supply/mp2629_battery/usb_fast_charge
-+Date:		June 2022
-+KernelVersion:	5.20
-+Description:
-+		Represents a USB device fast charge settings.Altering this
-+		value resets USB existing connection
-+		USB DP:DM[0:0] 0.6V : Hi-Z
-+		USB DP:DM[0:1] 3.3V : 0.6V
-+		USB DP:DM[1:0] 0.6V : 0.6V
-+		USB DP:DM[1:1] 0.6V : 3.3V
-+
-+                Access: Read, Write
-+
-+                Valid values: Represented in bit DP & DM setting. Valid
-+			      range is [0, 3].
-+
- What:		/sys/class/power_supply/mp2629_battery/batt_impedance_compen
- Date:		April 2020
- KernelVersion:	5.7
--- 
-2.25.1
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  drivers/iio/accel/mma8452.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+> index e0f0c0abed28..c7d9ca96dbaa 100644
+> --- a/drivers/iio/accel/mma8452.c
+> +++ b/drivers/iio/accel/mma8452.c
+> @@ -1511,10 +1511,14 @@ static int mma8452_reset(struct i2c_client *client)
+>  	int i;
+>  	int ret;
+>  
+> -	ret = i2c_smbus_write_byte_data(client,	MMA8452_CTRL_REG2,
+> +	/*
+> +	 * Find on fxls8471, after config reset bit, it reset immediately,
+> +	 * and will not give ACK, so here do not check the return value.
+> +	 * The following code will read the reset register, and check whether
+> +	 * this reset works.
+> +	 */
+> +	i2c_smbus_write_byte_data(client, MMA8452_CTRL_REG2,
+>  					MMA8452_CTRL_REG2_RST);
+> -	if (ret < 0)
+> -		return ret;
+>  
+>  	for (i = 0; i < 10; i++) {
+>  		usleep_range(100, 200);
 

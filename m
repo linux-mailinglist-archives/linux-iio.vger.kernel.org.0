@@ -2,112 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D7054C8C9
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 14:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D7354CA0F
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 15:44:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242619AbiFOMoI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 08:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49206 "EHLO
+        id S1353788AbiFONoT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 09:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348482AbiFOMoH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 08:44:07 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07E93D492;
-        Wed, 15 Jun 2022 05:44:05 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id cn20so3544405edb.6;
-        Wed, 15 Jun 2022 05:44:05 -0700 (PDT)
+        with ESMTP id S1347532AbiFONoS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 09:44:18 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3432C677
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 06:44:16 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id x38so20574757ybd.9
+        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 06:44:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=R+RSNrE+veMSA+ePZlMwQAwMEyJDpDolrSZr72aOZFM=;
-        b=Zxhv82eURtXpHqgEW/OY2RIytXiBNvDtS22ktrAupK1xZ6PTsoxfSVboBB77Adz/Ym
-         svpO9WiPKmjvCg6E0DuLA/ICoIiBfnbeVbmax3EKTZTZ6E/vq7nJJUlQzKdAzH1ao63H
-         87ZR8hKBK2Zjk+/qMl7MgeuGSMb4ko8iBPqhYXzg1538cWUx0Vk+WgZmJLY/SqZ/vwco
-         /1d4ehisCAkgU57Qe1lPE1PgO3qMf6rPBl8p0AXvnOtQo6qd+6liYbFPEqstXXRjtrDk
-         w4OvkjMeuffrzeIdDBVLaJKfsqm+zYzJgW+OFz1hLvpxM+Gbv+ZlWQUBoYcSrABFuSHK
-         4STQ==
+        bh=hp1aAAlFAq4/A1NH4phA+P7Vi5cvcSnxaSA1EwmzOjs=;
+        b=lVfAk6c7MPyRfXkCYOWdVQURkSp+OBByvpe056Tgq9IMl2OauUoGqFUnhviTFb2AA7
+         tXjeTRjUn04Ib4a9agWf/BW6v1+t9bnOMpPlIk5o5CFJmoXlocEzwCkrP+0K5pj/nEPH
+         aDv8LKc+BLj2jMBaKCSoMqp253iGg+GgWOMTUrh92DiDz2nN3xzGtbNEigp2bT+lUZwW
+         myZ/G45CpWEsSYjoHFTMDx2qQGWMl0eg3K0p86rOSedi3yBGeh1pOi7P0mhvV/S4b3sG
+         U4p5XmESE0mUSpPZZhUtNh3JDlRWOYlEHyn8IXpD9Jk95y29uBi8BBDPzbsRgbpO+vip
+         xiiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=R+RSNrE+veMSA+ePZlMwQAwMEyJDpDolrSZr72aOZFM=;
-        b=TKfDYUOZHOOVbc9zrUk7nwTgYG4+OSDuWQ0IYkjR9M43OsXXN/CRIPASn8MddN5xMz
-         +vZSxbOeTyd/VL4tYd476srSmO4A1Qj+WrH+VUbZc73qnR3YiBNc2HRSHKNd6sHa1SeQ
-         LBlUQyl0Cukya2VxRybwhebvA/Eq+qGC1cqeffGDqUZqNOclyzkxqQazLYqi6vRLWYXV
-         cKKlKa/I08MIykEv+H852NIiYeOM/hHDXTrmfzqISyVl7CgyQp7tlsrAjK6H13SJv0m2
-         S2UdPBSAw/IZnWLjJZsO0C749CyQVTNhqprMMEblvtb9HLt7P5miF+rPrQsWMEw3QMrD
-         HsCw==
-X-Gm-Message-State: AOAM531PBE1sVwNWuD95PMY4CG1VLJzIJk3qSNE66tMUvn/5Mh1l1kBW
-        WWyIXprN792xEXxOJQZ3OGBIxmiQ7CbgI87ij6I8ABy6rCgjwQ==
-X-Google-Smtp-Source: ABdhPJySOjKcWJFtK1r5qjaUa502RBxjj3CYN6y284bAlAp/TNyj9TCsqjTJjPXP8eqiWFEzZx/0jaRHcjt3rERGq/E=
-X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
- b1-20020aa7d481000000b0042dd5fdf963mr12497438edr.209.1655297044080; Wed, 15
- Jun 2022 05:44:04 -0700 (PDT)
+        bh=hp1aAAlFAq4/A1NH4phA+P7Vi5cvcSnxaSA1EwmzOjs=;
+        b=yUzf2yfA/U/G0jNYrbgLIUMaD/2vJvufIHURXsb6AevvawHRqVnce/X0iaXLOl4jCY
+         H8I9LgXUhLbV9dwWWUVjWLL4enVRIeSxLc5p4YZD4VyV0cu4Ec0kmvgrEz+sZVtbMD3i
+         61XF2LUIDoue3+X65uFD7XHSt+RJkX2GmFDELKQWNNKao/rHFNW8pRvdRWjw5dfpjF60
+         kLSd1Oa1MLs8CwbDxvLih3iih3G7OOShJTJ7Ocxwvj5+q+39YYccOan8+YB7/gIArB3D
+         Pr4UbKO1wro+subgg1+Gi/aYmQEOH3MPViBgk9g7INfF5e/J+n2xq989ktcCXjPQk3uh
+         cHBA==
+X-Gm-Message-State: AJIora9FkrM8UdWIi5VHTY9amRhF6ODAWmrfdu/uXMzJDgsJHqesq2NA
+        tYcqYEGb2Gczsr2+nn/vOH56rx5nDaL0vRqV+F/mE2WHj7I=
+X-Google-Smtp-Source: AGRyM1vwXQw90on1sHsRQC4/H0k1Bofmho0MnG9UWhioWNDMZYti404KFNThV3NhBXgLu5NZbUKp/nAL98zAv6yclsA=
+X-Received: by 2002:a25:1256:0:b0:65d:6433:7993 with SMTP id
+ 83-20020a251256000000b0065d64337993mr10084424ybs.626.1655300656100; Wed, 15
+ Jun 2022 06:44:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1654118389.git.william.gray@linaro.org> <a2dca9435f7f1f727c696a1faa0ab9e27927f9f3.1654118389.git.william.gray@linaro.org>
- <CAHp75VepZ8P_cqnN8qJ_Wb=xM0LW3y-a22tv1otDReFSqRDFYA@mail.gmail.com>
- <YqnIygHDSUbV5yws@fedora> <CAHp75Vcojz1d8uGcR5CMeSFcBDCxqzDbncU2Mp-LT4iDqw_+Pw@mail.gmail.com>
- <YqnOUlE1nEnCC44B@fedora>
-In-Reply-To: <YqnOUlE1nEnCC44B@fedora>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 14:43:27 +0200
-Message-ID: <CAHp75Vd91GMGUJurGKi2Ve_GM13uLpQFaeYG8Q48yFA6Aq2_ow@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: stx104: Implement and utilize register structures
-To:     William Breathitt Gray <william.gray@linaro.org>,
-        Mark Brown <broonie@kernel.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com> <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
+In-Reply-To: <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 15 Jun 2022 15:44:04 +0200
+Message-ID: <CACRpkdbObQ5WrzVC_xYobJPSBVSMyaz0HHXesLP+g1HCzCGJtQ@mail.gmail.com>
+Subject: Re: [PATCH 10/10] pinctrl: Add AXP192 pin control driver
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+        Michael Walle <michael@walle.cc>
+Cc:     brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 2:19 PM William Breathitt Gray
-<william.gray@linaro.org> wrote:
-> On Wed, Jun 15, 2022 at 02:00:26PM +0200, Andy Shevchenko wrote:
-> > On Wed, Jun 15, 2022 at 1:55 PM William Breathitt Gray
-> > <william.gray@linaro.org> wrote:
-> > > On Wed, Jun 15, 2022 at 11:44:54AM +0200, Andy Shevchenko wrote:
-> > > > On Mon, Jun 6, 2022 at 4:27 PM William Breathitt Gray
-> > > > <william.gray@linaro.org> wrote:
-> > > > >
-> > > > > Reduce magic numbers and improve code readability by implementing and
-> > > > > utilizing named register data structures.
-> > > >
-> > > > Can we consider using regmap APIs instead?
-> >
-> > > The regmap API may be more appropriate here. I'll investigate and see if
-> > > I can convert this over to it.
-> >
-> > I just realized that this driver is for the old PC104 (like?) hardware
-> > that most likely uses IO ports, I don't remember if we have support
-> > for IO ports in regmap (MMIO -- yes for sure).
+On Fri, Jun 3, 2022 at 3:56 PM Aidan MacDonald
+<aidanmacdonald.0x0@gmail.com> wrote:
 
-> Hmm, I don't see IO ports mentioned in include/linux/regmap.h, so I
-> don't think the regmap API directly supports it (maybe someone familiar
-> with regmap knows). Although we do get a virtual mapping cookie via
-> ioport_map() in this driver, I don't know if we can pass that to the
-> regmap functions and have it actually work.
+> The AXP192 PMIC's GPIO registers are much different from the GPIO
+> registers of the AXP20x and AXP813 PMICs supported by the existing
+> pinctrl-axp209 driver. It makes more sense to add a new driver for
+> the AXP192, rather than add support in the existing axp20x driver.
+>
+> The pinctrl-axp192 driver is considerably more flexible in terms of
+> register layout and should be able to support other X-Powers PMICs.
+> Interrupts and pull down resistor configuration are supported too.
+>
+> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 
-The problem is with accessors which are inconsistent in regmap MMIO
-implementation. I think it should be converted to use
-ioreadXX()/iowriteXX() in all cases (currently only BE cases use
-them). Another variant is to provide read*_be() / write*_be() for all
-architectures, replace corresponding ops in regmap MMIO and introduce
-regmap IO with inX()/outX. The former seems to me the best option,
-while the latter is cleaner.
+Looks good to me (TM) but I'd like Michael Walle to take a look
+to check if this is one of those drivers that could make use of
+gpio-regmap.c CONFIG_GPIO_REGMAP to make it even
+simpler.
 
-+Cc: Mark if he knows more about this.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Yours,
+Linus Walleij

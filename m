@@ -2,78 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 441D954C7AC
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 13:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82A2A54C7AF
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 13:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236920AbiFOLp6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 07:45:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
+        id S240406AbiFOLrv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 07:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234129AbiFOLp5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 07:45:57 -0400
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4062227CF6
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 04:45:57 -0700 (PDT)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D9B4D200D42;
-        Wed, 15 Jun 2022 13:45:55 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-        by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A39D7200D40;
-        Wed, 15 Jun 2022 13:45:55 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-        by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 7A555180219B;
-        Wed, 15 Jun 2022 19:45:54 +0800 (+08)
-From:   haibo.chen@nxp.com
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     haibo.chen@nxp.com, hdegoede@redhat.com, linux-iio@vger.kernel.org,
-        linux-imx@nxp.com
-Subject: [PATCH v2] iio: accel: mma8452: ignore the return value of reset operation
-Date:   Wed, 15 Jun 2022 19:31:58 +0800
-Message-Id: <1655292718-14287-1-git-send-email-haibo.chen@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S237723AbiFOLru (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 07:47:50 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9171E25EAE;
+        Wed, 15 Jun 2022 04:47:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655293668; x=1686829668;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QbIkcyUw/L14+nIayRRYoRVuzlGbZsXJBtcZC1EJL9o=;
+  b=YHpKRDPJyQnqZEzFRFYRevwBwirC+xV1rwYc/00wzqiDanFyrfqTGsAt
+   jAH+vGLh9+k3GCaXCRiC7EC4i+Znw9ZliCeDoHR9SDF3F5jDhpm4TB3Zm
+   vWEvhwfo37rakcc3FSR6aUkzBQTrNBnVXsOGZYH9A2+fA9LEGT/g+EHr1
+   uJ162YbkdAcHdhZxZWcGcNzboxZMG7iCsGu5Juv0gJef6s7Jss0jv1omv
+   T+q/wFrJ/dFftRzQYI6Kx9zcUxzSxYSYNSvnPTCyiHgmhv2dlSsR1rIUB
+   10iPxytcw90NMfcw8hSve7jomOLKCa4x9G2zswbklWCbYu4VTIbyBfqmQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10378"; a="267621696"
+X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
+   d="scan'208";a="267621696"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2022 04:47:48 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,302,1647327600"; 
+   d="scan'208";a="618424942"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga001.jf.intel.com with ESMTP; 15 Jun 2022 04:47:46 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 3C8BA18F; Wed, 15 Jun 2022 14:47:50 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2 1/2] iio: proximity: sx_common: Don't use IIO device for properties
+Date:   Wed, 15 Jun 2022 14:47:45 +0300
+Message-Id: <20220615114746.2767-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Haibo Chen <haibo.chen@nxp.com>
+It's not correct to use artificial device created by IIO core to
+retrieve device properties. Even ->get_default_reg() callback
+takes a simple struct device pointer which suggests it wants to
+operate on the real device.
 
-On fxls8471, after set the reset bit, the device will reset immediately,
-will not give ACK. So ignore the return value of this reset operation,
-let the following code logic to check whether the reset operation works.
+Correct this by replacing pointer to IIO device by a real device
+pointer in the caller of ->get_default_reg().
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/accel/mma8452.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+v2: new patch (necessary prerequisite for the following change)
+ drivers/iio/proximity/sx_common.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index e0f0c0abed28..c7d9ca96dbaa 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -1511,10 +1511,14 @@ static int mma8452_reset(struct i2c_client *client)
- 	int i;
- 	int ret;
+diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
+index 8ad814d96b7e..9f2e47385198 100644
+--- a/drivers/iio/proximity/sx_common.c
++++ b/drivers/iio/proximity/sx_common.c
+@@ -434,7 +434,7 @@ static void sx_common_regulator_disable(void *_data)
  
--	ret = i2c_smbus_write_byte_data(client,	MMA8452_CTRL_REG2,
-+	/*
-+	 * Find on fxls8471, after config reset bit, it reset immediately,
-+	 * and will not give ACK, so here do not check the return value.
-+	 * The following code will read the reset register, and check whether
-+	 * this reset works.
-+	 */
-+	i2c_smbus_write_byte_data(client, MMA8452_CTRL_REG2,
- 					MMA8452_CTRL_REG2_RST);
--	if (ret < 0)
--		return ret;
+ #define SX_COMMON_SOFT_RESET				0xde
  
- 	for (i = 0; i < 10; i++) {
- 		usleep_range(100, 200);
+-static int sx_common_init_device(struct iio_dev *indio_dev)
++static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
+ {
+ 	struct sx_common_data *data = iio_priv(indio_dev);
+ 	struct sx_common_reg_default tmp;
+@@ -456,8 +456,7 @@ static int sx_common_init_device(struct iio_dev *indio_dev)
+ 
+ 	/* Program defaults from constant or BIOS. */
+ 	for (i = 0; i < data->chip_info->num_default_regs; i++) {
+-		initval = data->chip_info->ops.get_default_reg(&indio_dev->dev,
+-							       i, &tmp);
++		initval = data->chip_info->ops.get_default_reg(dev, i, &tmp);
+ 		ret = regmap_write(data->regmap, initval->reg, initval->def);
+ 		if (ret)
+ 			return ret;
+@@ -530,7 +529,7 @@ int sx_common_probe(struct i2c_client *client,
+ 
+ 	i2c_set_clientdata(client, indio_dev);
+ 
+-	ret = sx_common_init_device(indio_dev);
++	ret = sx_common_init_device(dev, indio_dev);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Unable to initialize sensor\n");
+ 
 -- 
-2.25.1
+2.35.1
 

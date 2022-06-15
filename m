@@ -2,62 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A20554C33B
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 10:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D8D054C4F3
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 11:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238023AbiFOIMx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 04:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48500 "EHLO
+        id S1347355AbiFOJpe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 05:45:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244519AbiFOIMt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 04:12:49 -0400
-X-Greylist: delayed 563 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Jun 2022 01:12:46 PDT
-Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14ECF5FE5
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 01:12:45 -0700 (PDT)
-Received: by mail.olerise.pl (Postfix, from userid 1001)
-        id 9573925B8F; Wed, 15 Jun 2022 10:00:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
-        t=1655280094; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=BQaloXXvSbmA0eoj5Tk3sHeNoKUkjZla/5yXIOFAuGx2f/7xNjHGFKkqkUORAFqwc
-         aaaRu+OMo7jt/2f1Oe3T2CxiDBOOG8SlVevx1JtkptcVLr7QAaW+8NAsj/n7hdwZa2
-         twOn3XhYMoqq+IkS8eLWKmbbOFKXfNXnOU6dfwQ5X1xM6Da+x5H/HabvFaXCM0IYRW
-         FOPmEt3QHXVoNgA4ScHJed8gdjOmpYc0MgLjvW6kAm7bpIayP6RK7d8mQX2sppxXCX
-         ZkSxfrkfbbjgfXTG1v07MkszIBwOhXTBXmbSXy/fDaVUk3mmbv8XejkNIGPb4i9AGC
-         c0JlKIPB0GLfA==
-Received: by mail.olerise.pl for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 08:00:27 GMT
-Message-ID: <20220615084500-0.1.f.82vr.0.2noy1rzgfk@olerise.pl>
-Date:   Wed, 15 Jun 2022 08:00:27 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@olerise.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.olerise.pl
+        with ESMTP id S1346676AbiFOJpd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 05:45:33 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D164A457A4;
+        Wed, 15 Jun 2022 02:45:32 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id x5so15307014edi.2;
+        Wed, 15 Jun 2022 02:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Az0IhgLrluMj3GRMffnnHU8dn9q2U05jVmkW4Ha7TmE=;
+        b=AAdkjP7lcrPBx8gbayY/ZnxUVDiPwnG7RR/E+4eAm/ZkE5RPmKMfJILidca5QQG9Pp
+         0xxBOBvj5R5ENPB0HcUNSO2lqBA32wLjJgbyhQKiNM9HVCJiC8wxO3GMATzu8EaEQS+O
+         0IJVXu8bnIUmjuHC5D5t6HvBzdo4l2jOLpSqBYBMLSiWzRdYj+RyXSIMGgTomCw/A7dc
+         NoNOI5vlPg3qYbBtXhrE1rNIwprT3x6WT9lbI3rTIjXDmp03khoVmMIflnqHuz80eCMc
+         hC15UYCHEZftLZ4bf2G6WVJKnfQoHx2B6AxXIhXVt70pf7t1tnRjysjSU4rjAeHtBgUw
+         wHJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Az0IhgLrluMj3GRMffnnHU8dn9q2U05jVmkW4Ha7TmE=;
+        b=x1F7eh0DvLtNpB9pzL+q7A4cZ6qmYTxi7HUBnpS5416tB8vMBPvmQu7m1TZ10LuVLS
+         h/+jHau+DmBcy2K52U1eLLbyDGNiTyFN+Danm1m2x60FUXxVLZh+FoUd83y+kyE3v58m
+         tWn8kUt06BZWSCmflKTU+sqxHPrX7KGbLMTm5sr3R5leEs7gDHzVbKvxCAVDQZzYPdtc
+         0VC5q9CiegZeA1OMeW2yKDxbwxBdAuPWaprmDX25rtLuI7/z+YMq/dwa3h16lG/MdZsZ
+         HXqNQjEhw0W7dwDTkOmkNeu+RBZmfLZ3FlnxyaI1Od8510RhC7CL4QBUePWpXT02WdLl
+         YEVw==
+X-Gm-Message-State: AOAM533t4JDOx7Q5ZGDhI86GD7bmdtHKTuH1d//3iu/wGoh1Y/LLsPCQ
+        QAkZq0feaqumtH4++Twe1VI2DZ5VO1272FQP3eU=
+X-Google-Smtp-Source: ABdhPJxof2Sz5oKQSk9HGgbwC1neNDYJeVkSg4FYD0XcviuLrBhBP3hRVoRp/nnzwuYiqDs8yDRpnVsVgEaVnHTxTB4=
+X-Received: by 2002:aa7:d481:0:b0:42d:d5fd:f963 with SMTP id
+ b1-20020aa7d481000000b0042dd5fdf963mr11526488edr.209.1655286331287; Wed, 15
+ Jun 2022 02:45:31 -0700 (PDT)
 MIME-Version: 1.0
+References: <cover.1654118389.git.william.gray@linaro.org> <a2dca9435f7f1f727c696a1faa0ab9e27927f9f3.1654118389.git.william.gray@linaro.org>
+In-Reply-To: <a2dca9435f7f1f727c696a1faa0ab9e27927f9f3.1654118389.git.william.gray@linaro.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 15 Jun 2022 11:44:54 +0200
+Message-ID: <CAHp75VepZ8P_cqnN8qJ_Wb=xM0LW3y-a22tv1otDReFSqRDFYA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: adc: stx104: Implement and utilize register structures
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, Jun 6, 2022 at 4:27 PM William Breathitt Gray
+<william.gray@linaro.org> wrote:
+>
+> Reduce magic numbers and improve code readability by implementing and
+> utilizing named register data structures.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
-
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
-
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+Can we consider using regmap APIs instead?
 
 
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski
+-- 
+With Best Regards,
+Andy Shevchenko

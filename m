@@ -2,109 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B5AF54CF99
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 19:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1378A54D0A7
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 20:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349886AbiFORUO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 13:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
+        id S1350258AbiFOSHD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 14:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349694AbiFORUI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 13:20:08 -0400
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D67FD23172;
-        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
-Received: by mail-io1-f42.google.com with SMTP id r5so13394909iod.5;
-        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=sTGa151t/trhczGlfaIhFF1i0SVtoSLocgRhlGdaZgA=;
-        b=BLAycBVIcpla2nICRxF5jHexDyuYvqsu2vCm4j8Zh8FASQd6KmTM8OGWVJUiY+P5GA
-         c9bigCxuyJGMidGwDExTb6FRccOwXr7LWlf2GuJQnJTsM+LGzX+RWwatzdNgo6ZwmZ60
-         DovxVq3fUOeg8kM7bYqAS4PhkpRek09rCcfJ2dcppw//gB7b4Dgw0Q1QPikPcv9Al5nx
-         qd0gMBZr6bTFUJwvhssik1tDn/PyFlhaxqRB9hVezgblRaVpf2yyRsL6meVZfk7Gsx68
-         CbEF+ifN2pvAkynOe+2Uvmi1SUQsyHGbvkPNuYWaaLgQ8wXJcDJ6FkeczioUChxD0iiD
-         zmUQ==
-X-Gm-Message-State: AJIora/wW+KypZmun2XIT45B9q9UzWqkzR/6b/HqZ10XsaXJvrA5TsSX
-        jTQjwkjO1edV5uuMOha+SQ==
-X-Google-Smtp-Source: AGRyM1sTi5PIIcsQSq4HRK5RYwDCF35wSPHxr52ZB9lddA1mfsnKOMGnhVqSy2h9XTYEz+EVUAfR+Q==
-X-Received: by 2002:a05:6638:1409:b0:332:221d:1136 with SMTP id k9-20020a056638140900b00332221d1136mr439272jad.3.1655313606060;
-        Wed, 15 Jun 2022 10:20:06 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.251])
-        by smtp.gmail.com with ESMTPSA id b127-20020a021985000000b0032e7456da06sm6465171jab.15.2022.06.15.10.20.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 10:20:05 -0700 (PDT)
-Received: (nullmailer pid 1478916 invoked by uid 1000);
-        Wed, 15 Jun 2022 17:20:03 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Shreeya Patel <shreeya.patel@collabora.com>
-Cc:     kernel@collabora.com, krisman@collabora.com,
-        Zhigang.Shi@liteon.com, jic23@kernel.org,
-        andy.shevchenko@gmail.com, robh+dt@kernel.org,
-        devicetree@vger.kernel.org, digetx@gmail.com, lars@metafoo.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        alvaro.soliverez@collabora.com
-In-Reply-To: <20220615135130.227236-2-shreeya.patel@collabora.com>
-References: <20220615135130.227236-1-shreeya.patel@collabora.com> <20220615135130.227236-2-shreeya.patel@collabora.com>
-Subject: Re: [PATCH v6 1/2] dt-bindings: Document ltrf216a light sensor bindings
-Date:   Wed, 15 Jun 2022 11:20:03 -0600
-Message-Id: <1655313603.936120.1478915.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1346928AbiFOSHC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 14:07:02 -0400
+Received: from ssl.serverraum.org (ssl.serverraum.org [IPv6:2a01:4f8:151:8464::1:2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC30D50B25;
+        Wed, 15 Jun 2022 11:07:00 -0700 (PDT)
+Received: from [127.0.0.1] (nyx.walle.cc [158.255.213.36])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ssl.serverraum.org (Postfix) with ESMTPSA id B221F221D4;
+        Wed, 15 Jun 2022 20:06:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
+        t=1655316417;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=X31Y0rQlpQau1yeSY1ewrfTTggu40SW7YZpoP18Nyc4=;
+        b=OYz6MguMMV3tV9zA8VtMkNpupo/XoNdrSezibyu9AwYYzlewf9Hez4YMuVDHDz4Cds2khU
+        plTm2VquklTTvnLjD4bam0yzvWGufT3IaxfwAJRrzVOCljFuIYwhYLGBkrw5337vST1zxN
+        IRtqmDNFGhS9FxsTaSwFM2BTvxXYEBo=
+Date:   Wed, 15 Jun 2022 20:06:49 +0200
+From:   Michael Walle <michael@walle.cc>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+CC:     brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 10/10] pinctrl: Add AXP192 pin control driver
+User-Agent: K-9 Mail for Android
+In-Reply-To: <CACRpkdbObQ5WrzVC_xYobJPSBVSMyaz0HHXesLP+g1HCzCGJtQ@mail.gmail.com>
+References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com> <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com> <CACRpkdbObQ5WrzVC_xYobJPSBVSMyaz0HHXesLP+g1HCzCGJtQ@mail.gmail.com>
+Message-ID: <A3444B9B-FDCD-4292-9DE4-D7DBC9DFA597@walle.cc>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 15 Jun 2022 19:21:29 +0530, Shreeya Patel wrote:
-> Add devicetree bindings for ltrf216a ambient light sensor.
-> 
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
-> ---
-> Changes in v5
->   - Remove deprecated string 'ltr' from the bindings.
-> 
-> Changes in v3
->   - Fix indentation in the example section
-> 
-> Changes in v2
->   - Take over the maintainership for the bindings
->   - Add interrupt and power supply property in DT bindings
-> 
->  .../bindings/iio/light/liteon,ltrf216a.yaml   | 50 +++++++++++++++++++
->  1 file changed, 50 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
-> 
+Am 15=2E Juni 2022 15:44:04 OEZ schrieb Linus Walleij <linus=2Ewalleij@lina=
+ro=2Eorg>:
+>On Fri, Jun 3, 2022 at 3:56 PM Aidan MacDonald
+><aidanmacdonald=2E0x0@gmail=2Ecom> wrote:
+>
+>> The AXP192 PMIC's GPIO registers are much different from the GPIO
+>> registers of the AXP20x and AXP813 PMICs supported by the existing
+>> pinctrl-axp209 driver=2E It makes more sense to add a new driver for
+>> the AXP192, rather than add support in the existing axp20x driver=2E
+>>
+>> The pinctrl-axp192 driver is considerably more flexible in terms of
+>> register layout and should be able to support other X-Powers PMICs=2E
+>> Interrupts and pull down resistor configuration are supported too=2E
+>>
+>> Signed-off-by: Aidan MacDonald <aidanmacdonald=2E0x0@gmail=2Ecom>
+>
+>Looks good to me (TM) but I'd like Michael Walle to take a look
+>to check if this is one of those drivers that could make use of
+>gpio-regmap=2Ec CONFIG_GPIO_REGMAP to make it even
+>simpler=2E
+>
+>Yours,
+>Linus Walleij
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+FWIW, I can look at it at the end of next week=2E I'm on vacation=2E
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml: properties:compatible:const: ['liteon,ltrf216a'] is not of type 'string'
-	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml: ignoring, error in schema: properties: compatible: const
-Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.example.dtb:0:0: /example-0/i2c/light-sensor@53: failed to match any schema with compatible: ['liteon,ltrf216a']
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+-michael 

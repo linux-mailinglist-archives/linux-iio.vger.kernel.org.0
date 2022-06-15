@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7164554C4FD
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 11:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6717854C512
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 11:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347767AbiFOJsi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 05:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59624 "EHLO
+        id S231497AbiFOJtc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 05:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347636AbiFOJs0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 05:48:26 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA4D46C89;
-        Wed, 15 Jun 2022 02:48:24 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id h23so22058729ejj.12;
-        Wed, 15 Jun 2022 02:48:24 -0700 (PDT)
+        with ESMTP id S1346456AbiFOJtV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 05:49:21 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94CEF488AC;
+        Wed, 15 Jun 2022 02:49:18 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id m20so22056539ejj.10;
+        Wed, 15 Jun 2022 02:49:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=R0PdQgE8AW1FqJLlPb9KUQOuMjK/uFPg0d1n7yjok5Y=;
-        b=OGmPBo1bh6/K8gPJVE9mmZrImpniTz8kXMIDMvi0Q9K1WW+zBmciWBO+p/GaV99YXk
-         oHFiREXM0nibnUAt4Yj3UZr/RUT1/r+RZ9kYEJNYOJLvmZcsm3i4CJzOHrzaSXefH/2C
-         EqvOmjRQk429Tou8QbLxOgo8wp1SEotONcNF6rJ1mrvmkOIJlXpKNyoNVL6lR30bzwSn
-         94ftqKDwzD5l6TNrYy/6usiIDRYVqNUAwA649T1LhGnEmA3ExhW1t9ljtIbiLJSpLZxP
-         1Y+hbK+PLvFTv8VT4mxi45x9xje/o81usn2TnxMftMftTfpMWILtGmFhvwSoqheD/zg4
-         WIaA==
+        bh=QCKpeqEfTS4E6wW79c/P3cTks5oS6TYw3XIdgKTe3lc=;
+        b=F1v0m7RCn1fj32YglfwUSrLijv/R2ebOkGMHr5jgXudOnzsZY2abWTbYLvvZZIf7/1
+         DkGeQB5J/tk431btMx8eBY6+NIEYqWr5M2ny9jYkDwI0byUt9ynDwDfiw/DVwOwxFJJs
+         qujoZirZxih6FMDHM0uuKkqOy4QMbI52uyVlBnTFOXpN9Lwa7jqIvzWiyQhZ/AJI5jsT
+         SZJH+a1E7vzx8NIo6V9JsHMF+GXjmkCxwuaVfIwpWYbh/9IsEzk4yxCxn9zm+EvNDjcX
+         A2wLY/pBO1I+uDlfsAChgmmQ9zO5CCUlqLrGNWvTWbv+iLobn9e37EzlYuusBIPguxpz
+         YXJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=R0PdQgE8AW1FqJLlPb9KUQOuMjK/uFPg0d1n7yjok5Y=;
-        b=GiDJoRdV4w9BxcSznfEJP1NAAGtUGWyhVhMlS9WEf5oH55ZckJGE2P26PA9cgvRK4O
-         Xbs14Oo97Ib/jZLIkcJYzgv8PUZRVTiP3EqgfrVLI/NWdBWxx6rVO1xAwCria+xRqe8L
-         5SEuK5G0MhuqrnsgPz5hCzMkOh2J0nxq01bV+IaH9i1srCEcIJj/LuAt9D9+u9JoCbOg
-         r+kvKi6sx9aplA0pvFhfc4JKsX41NCLABhVFVe9raUOqDpTLFgOTqo8g93bBYe4lAe7F
-         8GVVeWIEZuUgdR9950kXoPXh7OnuAN+z9t5gPLf2OpYbMdogg76mZ8FZnx/tROIkxkB3
-         Jp1A==
-X-Gm-Message-State: AOAM530XfoI6XebuvTrnhvDhPoC5n9mgAtWTh+xShJ6mq8e3vz2S4NKH
-        w4+ChdccapI6gbNqU07qkwwomzx39/H5h1sgxa8=
-X-Google-Smtp-Source: ABdhPJzzrmS0VyKeWdLvJmIOSc060BFAQCXQq3Affwz81i3FaUy1gH0naGLWVBnIArni8GVKIq8gs9pmp6sqAkAuoZU=
-X-Received: by 2002:a17:906:149:b0:711:fca6:bc2f with SMTP id
- 9-20020a170906014900b00711fca6bc2fmr8195332ejh.497.1655286502558; Wed, 15 Jun
- 2022 02:48:22 -0700 (PDT)
+        bh=QCKpeqEfTS4E6wW79c/P3cTks5oS6TYw3XIdgKTe3lc=;
+        b=JsMVxl41C4iltfwc2mLGph0swPFxAmiJklJTIfmIWLO6cvRG96F3pwujtadAynt5uF
+         9/U46UULu7gKfD8VP2qu2yWSN6yoQH8nzjR5sBYqoD3Gr+ieqnNeEZIIi387RCQoMDrR
+         U+PQSP/Dz7c2O8FjuvZ7kxooFvfdi6ZWIpbn9qNIW3VtH3CkMAifqyhq6XVPEd4EzkPu
+         Q/7x1QleBlysUz8UbVIV3NhpGSELN9Zrqa00VOkE8r9qf/SJOYkn8sXTuR/FDme/5mM7
+         0Yc4K/kIKpKraOs2RyvQtFiV4szK0I9F2FALRoiOMS3j4Egv8Y6GteSE5vBQDxEQB16J
+         bNBA==
+X-Gm-Message-State: AOAM532u8JwasrTNlR9LNLSs/xkk//QCocg+Ue7ONuOvRkP/MLRvzNTd
+        7BHmEDsl/wU49Cvni+RpnkCZX3Fhbk0L1U8syGM=
+X-Google-Smtp-Source: ABdhPJyDsIEgyhvdL6efswx/TfmG3xjmCRL3UEyaz49DTSDtZYSctbilgS8flMEWsTGnf9Ch/+n7D1OROXmfvYi3v3I=
+X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
+ dc1-20020a170906c7c100b00711d2e999d0mr8046131ejb.639.1655286557167; Wed, 15
+ Jun 2022 02:49:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220614194225.2226447-1-sravanhome@gmail.com> <20220614194225.2226447-3-sravanhome@gmail.com>
-In-Reply-To: <20220614194225.2226447-3-sravanhome@gmail.com>
+References: <20220614194225.2226447-1-sravanhome@gmail.com> <20220614194225.2226447-4-sravanhome@gmail.com>
+In-Reply-To: <20220614194225.2226447-4-sravanhome@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 15 Jun 2022 11:47:44 +0200
-Message-ID: <CAHp75Vf8TeD2sxeROTmSr9frCs=CvZ2eaMFW=4D2+W3unj7dcA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] mfd: mp2629: Add support for mps mp2733 battery charger
+Date:   Wed, 15 Jun 2022 11:48:39 +0200
+Message-ID: <CAHp75Vd+RNV=PC0S=uJCvtWbg1x01bcAp6cbMoOdF-So8Gb0-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 4/6] iio: adc: mp2629: restrict input voltage mask for mp2629
 To:     Saravanan Sekar <sravanhome@gmail.com>
 Cc:     Sebastian Reichel <sre@kernel.org>,
         Lee Jones <lee.jones@linaro.org>,
@@ -74,17 +74,11 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Tue, Jun 14, 2022 at 9:42 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
 >
-> mp2733 is updated version of mp2629 battery charge management
-> device for single-cell Li-ion or Li-polymer battery. Additionally
-> supports usb fast-charge and higher range of input voltage.
+> add support for mp2733 which is updated version of mp2629
 
-USB
+Add
 
-It seems I already gave this comment somewhere.
-
-...
-
-The code looks good.
+> with a higher range of input voltage.
 
 -- 
 With Best Regards,

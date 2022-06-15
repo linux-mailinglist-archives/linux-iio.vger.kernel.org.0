@@ -2,75 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A306854C84F
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 14:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277A454C8C4
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jun 2022 14:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240337AbiFOMTf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 15 Jun 2022 08:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51458 "EHLO
+        id S242577AbiFOMns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 15 Jun 2022 08:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbiFOMTe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 08:19:34 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B70A366A5
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 05:19:33 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id o73so8540996qke.7
-        for <linux-iio@vger.kernel.org>; Wed, 15 Jun 2022 05:19:33 -0700 (PDT)
+        with ESMTP id S1348060AbiFOMnZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 15 Jun 2022 08:43:25 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D64F92F3AB;
+        Wed, 15 Jun 2022 05:43:22 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id b8so15919143edj.11;
+        Wed, 15 Jun 2022 05:43:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Igm5tZYG7QF581SklELZumsNm7wuqz0+TVn6nJnUDOs=;
-        b=F9P5Nsg3ql3uveTdk+RwkQbygV5xxgm1AKDcwLMc0I+XHHkTXlpTC9GinK6/z8VU++
-         F1AQMsImyVYXETPACQTTBFIB06A6R6Yos+1ghiz+39i2T1ZddVMThmCMWLlDkcQg5weP
-         DHcvISGY2d4cBB/X6J7AaiyCbj8YZAhDZN/cVGeZub2z/BSMM0eKusMLhO4eNIIGKjTX
-         LbgAmKY4Ygbjq2dNwleLnvzBqY30qy0f/vIz8p8V+P1DAaHJ92jaqjirw73vJbsF2eOo
-         BLqbTZgSMFuLM4xMMizV3Hsb6qKnc/WcLvkqmrYcN738qneoOTi8fCNZ2KyiGqp2ngCT
-         xznA==
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=GTvJGCJYQZvQ3rU+CccADUrm/b7qxrSE+8Z1G9IV6HQ=;
+        b=iA8FaiZJtOY2UdVuXU7LEjeYdutcp3cXPtf8nq2DD4qJk154kCJ69KR9RyuOf6QKu4
+         +K7rtMX7+TCGNy+qbGfFmmJntOAte59PlNZe7P4I2RBVsYEvLB57Ci1UaX86ClVImHSC
+         BQhosFyQCdWAtWYYqiuBZLYJ31t3qwLf3tTYSVuwSFCL+p47RQq64u5K1HAQqFXcC9uw
+         ajHqcqB3Uhfees0U71jiTNuCAfq38oP6jBy0lGKEk5A+edOtatISgAR+QWHqlm3haMsk
+         tRr2spoNg6MzgNDMexqx7IIJgjAwzcMyIbV9AGCytoXwXHDhlHEoTTeFstHv+3dm52Kq
+         zcEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Igm5tZYG7QF581SklELZumsNm7wuqz0+TVn6nJnUDOs=;
-        b=JN792c7HOvLDJXbvC+ACuCoYgWvNB72r82rP4ra7BLNGfb2V62Tk3Ogk0Dur1gcp/m
-         t8ThctnmIwmxXmsH0vSHzKGtrrtUPftKxAnRqwzb9kWIxEOn8+gm7a2sVtPPhyXy/n5c
-         pLN9ogYYPXFdfbIbwKr2mszY3OY+X1kq+3ld1qJMiJcWDCLwxqCP0c5Y9S3IVF0Hu4+M
-         dNXLTDywZZgYw+8hlWC3hvPKeDggJsPcCQ+J6Auz6eN4cnl2CGTz/9P0svCkDENqjyfq
-         6WPn8CkRLqf5fNAWSps8YwNAidTqmv+yyqDOAJioyLSYg4ERemfQOlgknIWYEe7HvQI9
-         7uyw==
-X-Gm-Message-State: AOAM531VZOm7kpEf3uXkYcVT+TPLBkDpfux+OIN9KOobLkt04K3KfIAs
-        qGNPWIlaWMHbeVJ4kDY2h5Id1KjysPxUhw==
-X-Google-Smtp-Source: ABdhPJw7oD+kHgXwTTFZuhVhGiSNBra/UBVEkbc7aO1y49+Iz/0oIdB9I3X+1Yp58ZSvHKtdlclGew==
-X-Received: by 2002:a05:620a:1206:b0:6a6:8436:526c with SMTP id u6-20020a05620a120600b006a68436526cmr7792538qkj.669.1655295572449;
-        Wed, 15 Jun 2022 05:19:32 -0700 (PDT)
-Received: from fedora ([23.82.142.209])
-        by smtp.gmail.com with ESMTPSA id e10-20020a05620a014a00b0069fc13ce1f3sm11747021qkn.36.2022.06.15.05.19.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 05:19:32 -0700 (PDT)
-Date:   Wed, 15 Jun 2022 08:19:30 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] iio: adc: stx104: Implement and utilize register
- structures
-Message-ID: <YqnOUlE1nEnCC44B@fedora>
-References: <cover.1654118389.git.william.gray@linaro.org>
- <a2dca9435f7f1f727c696a1faa0ab9e27927f9f3.1654118389.git.william.gray@linaro.org>
- <CAHp75VepZ8P_cqnN8qJ_Wb=xM0LW3y-a22tv1otDReFSqRDFYA@mail.gmail.com>
- <YqnIygHDSUbV5yws@fedora>
- <CAHp75Vcojz1d8uGcR5CMeSFcBDCxqzDbncU2Mp-LT4iDqw_+Pw@mail.gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=GTvJGCJYQZvQ3rU+CccADUrm/b7qxrSE+8Z1G9IV6HQ=;
+        b=PSzn3rGPpygwkszrDBN4OCD3PqBLC2VxiH/kjFkUU1pdFKws85KJf31pjR+LO1dkk3
+         uXK5oAeo1A8Q/G5WjlWpFtIn7GnCOQZAl84jKLgtr2zkkb/gLnSiu6Ijc+f2izqato4f
+         3mDJSioFWd2Uf18dpx8idh/mONgSbSTZIVfeub4ZIC/Dps7ntShdAYUyymWMjcL+8/et
+         B9HOF96m5X2+YfRtHeSFmtqXJGmLdhXixxyvjFWI9rQRSOw3JNxN0syXU4q8I8v8PtVT
+         S7auv2wsVAwt9qCEpxUzYzLhYzl0x6o6kXOoMQsFBLF+g4WMllO8AqeDDKIA2MNw/69H
+         eSHQ==
+X-Gm-Message-State: AOAM531gc6fL5Qhh6YoYPcKK79Aj3Rd5EKSnSfXHr8xOJ82lNG7O0d1J
+        Y1ODJ64XZzxZ1Zi24mEW3qM=
+X-Google-Smtp-Source: ABdhPJyT8cM5cExqx5Z6GWj+iGpnlkatPQK7juFYKEAD9SBg+l2k6N65ctF820Z4/OcbKMf8nl2TVQ==
+X-Received: by 2002:a05:6402:5193:b0:42e:2569:652c with SMTP id q19-20020a056402519300b0042e2569652cmr12442370edd.73.1655297001302;
+        Wed, 15 Jun 2022 05:43:21 -0700 (PDT)
+Received: from [192.168.0.182] ([188.24.99.129])
+        by smtp.gmail.com with ESMTPSA id yz15-20020a170906dc4f00b0070ad296e4b0sm6260538ejb.186.2022.06.15.05.43.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Jun 2022 05:43:20 -0700 (PDT)
+Message-ID: <bbba32e8-4106-57f1-3065-bf646e16bcfe@gmail.com>
+Date:   Wed, 15 Jun 2022 15:43:20 +0300
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PZrNp5qxT1PaPDhw"
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vcojz1d8uGcR5CMeSFcBDCxqzDbncU2Mp-LT4iDqw_+Pw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add AD4130
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+References: <20220608091238.403897-1-cosmin.tanislav@analog.com>
+ <20220608091238.403897-2-cosmin.tanislav@analog.com>
+ <20220609210342.GA84096-robh@kernel.org>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <20220609210342.GA84096-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,52 +79,314 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---PZrNp5qxT1PaPDhw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 15, 2022 at 02:00:26PM +0200, Andy Shevchenko wrote:
-> On Wed, Jun 15, 2022 at 1:55 PM William Breathitt Gray
-> <william.gray@linaro.org> wrote:
-> > On Wed, Jun 15, 2022 at 11:44:54AM +0200, Andy Shevchenko wrote:
-> > > On Mon, Jun 6, 2022 at 4:27 PM William Breathitt Gray
-> > > <william.gray@linaro.org> wrote:
-> > > >
-> > > > Reduce magic numbers and improve code readability by implementing a=
-nd
-> > > > utilizing named register data structures.
-> > >
-> > > Can we consider using regmap APIs instead?
->=20
-> > The regmap API may be more appropriate here. I'll investigate and see if
-> > I can convert this over to it.
->=20
-> I just realized that this driver is for the old PC104 (like?) hardware
-> that most likely uses IO ports, I don't remember if we have support
-> for IO ports in regmap (MMIO -- yes for sure).
->=20
-> --=20
-> With Best Regards,
-> Andy Shevchenko
+On 6/10/22 00:03, Rob Herring wrote:
+> On Wed, Jun 08, 2022 at 12:12:37PM +0300, Cosmin Tanislav wrote:
+>> AD4130-8 is an ultra-low power, high precision, measurement solution for
+>> low bandwidth battery operated applications.
+>>
+>> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+>> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+>> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+>> selectable filter options, smart sequencer, sensor biasing and excitation
+>> options, diagnostics, and a FIFO buffer.
+>>
+>> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> ---
+>>   .../bindings/iio/adc/adi,ad4130.yaml          | 262 ++++++++++++++++++
+>>   1 file changed, 262 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+>> new file mode 100644
+>> index 000000000000..c06b8a96d31e
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+>> @@ -0,0 +1,262 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +# Copyright 2022 Analog Devices Inc.
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4130.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Analog Devices AD4130 ADC device driver
+>> +
+>> +maintainers:
+>> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> +
+>> +description: |
+>> +  Bindings for the Analog Devices AD4130 ADC. Datasheet can be found here:
+>> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4130-8.pdf
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - adi,ad4130
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  clocks:
+>> +    maxItems: 1
+>> +    description: phandle to the master clock (mclk)
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: mclk
+>> +
+>> +  interrupts:
+>> +    maxItems: 1
+>> +
+>> +  interrupt-names:
+>> +    description: |
+>> +      Specify which interrupt pin should be configured as Data Ready / FIFO
+>> +      interrupt.
+>> +      Default if not supplied is int.
+> 
+>         default: int
 
-Hmm, I don't see IO ports mentioned in include/linux/regmap.h, so I
-don't think the regmap API directly supports it (maybe someone familiar
-with regmap knows). Although we do get a virtual mapping cookie via
-ioport_map() in this driver, I don't know if we can pass that to the
-regmap functions and have it actually work.
+Violates string array schema. I'm pretty sure I've said this before.
 
-William Breathitt Gray
-
---PZrNp5qxT1PaPDhw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYqnOUgAKCRC1SFbKvhIj
-K+q4AQCyG562pUOu+4/k36DQT2mwPUi0uNM6b5lulZ7bpEhHbQEA4D/hn0cRVqxX
-y3z7ArocrkHEyGO13JYRmyMq83dcOAQ=
-=Vdgt
------END PGP SIGNATURE-----
-
---PZrNp5qxT1PaPDhw--
+> 
+>> +    enum:
+>> +      - int
+>> +      - clk
+>> +      - p2
+>> +      - dout
+>> +
+>> +  '#address-cells':
+>> +    const: 1
+>> +
+>> +  '#size-cells':
+>> +    const: 0
+>> +
+>> +  refin1-supply:
+>> +    description: refin1 supply. Can be used as reference for conversion.
+>> +
+>> +  refin2-supply:
+>> +    description: refin2 supply. Can be used as reference for conversion.
+>> +
+>> +  avdd-supply:
+>> +    description: AVDD voltage supply. Can be used as reference for conversion.
+>> +
+>> +  iovdd-supply:
+>> +    description: IOVDD voltage supply. Used for the chip interface.
+>> +
+>> +  spi-max-frequency:
+>> +    maximum: 5000000
+>> +
+>> +  adi,int-clk-out:
+>> +    description: Specify if the internal clock should be exposed on the CLK pin.
+>> +    type: boolean
+>> +
+>> +  adi,ext-clk-freq:
+>> +    description: Specify the frequency of the external clock.
+>> +    $ref: /schemas/types.yaml#/definitions/uint32
+> 
+> -hz suffix and drop the type.
+> 
+>> +    enum: [76800, 153600]
+>> +    default: 76800
+>> +
+>> +  adi,bipolar:
+>> +    description: Specify if the device should be used in bipolar mode.
+>> +    type: boolean
+>> +
+>> +  adi,vbias-pins:
+>> +    description: Analog inputs to apply a voltage bias of (AVDD − AVSS) / 2 to.
+>> +    $ref: /schemas/types.yaml#/definitions/uint32-array
+>> +    maxItems: 16
+>> +    items:
+>> +      minimum: 0
+>> +      maximum: 15
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +  - interrupts
+>> +
+>> +patternProperties:
+>> +  "^channel@([0-9]|1[0-5])$":
+>> +    type: object
+>> +    $ref: adc.yaml
+>> +    unevaluatedProperties: false
+>> +
+>> +    properties:
+>> +      reg:
+>> +        description: |
+> 
+> Don't need '|'.
+> 
+>> +          The channel number.
+>> +        items:
+>> +          minimum: 0
+>> +          maximum: 15
+> 
+> This allows for more than 1 channel to be listed in reg. Is that intent?
+> If not, drop 'items'. If so and there a valid range, then add
+> minItems/maxItems.
+> 
+>> +
+>> +      diff-channels:
+>> +        description: |
+>> +          Besides the analog inputs available, internal inputs can be used.
+>> +          16: Internal temperature sensor.
+>> +          17: AVSS
+>> +          18: Internal reference
+>> +          19: DGND
+>> +          20: (AVDD − AVSS)/6+
+>> +          21: (AVDD − AVSS)/6-
+>> +          22: (IOVDD − DGND)/6+
+>> +          23: (IOVDD − DGND)/6-
+>> +          24: (ALDO − AVSS)/6+
+>> +          25: (ALDO − AVSS)/6-
+>> +          26: (DLDO − DGND)/6+
+>> +          27: (DLDO − DGND)/6-
+>> +          28: V_MV_P
+>> +          29: V_MV_M
+>> +        items:
+>> +          minimum: 0
+>> +          maximum: 29
+>> +
+>> +      adi,reference-select:
+>> +        description: |
+>> +          Select the reference source to use when converting on the
+>> +          specific channel. Valid values are:
+>> +          0: REFIN1(+)/REFIN1(−)
+>> +          1: REFIN2(+)/REFIN2(−)
+>> +          2: REFOUT/AVSS (Internal reference)
+>> +          3: AVDD/AVSS
+>> +          If not specified, REFIN1 is used.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        enum: [0, 1, 2, 3]
+>> +        default: 0
+>> +
+>> +      adi,excitation-pin-0:
+>> +        description: |
+>> +          Analog input to apply excitation current to while the channel
+>> +          is active.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        minimum: 0
+>> +        maximum: 15
+>> +        default: 0
+>> +
+>> +      adi,excitation-pin-1:
+>> +        description: |
+>> +          Analog input to apply excitation current to while this channel
+>> +          is active.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        minimum: 0
+>> +        maximum: 15
+>> +        default: 0
+>> +
+>> +      adi,excitation-current-0-nanoamps:
+> 
+> Prior property was 'adi,excitation-current-nanoamp'. Please match
+> '-nanoamp'.
+> 
+>> +        description: |
+>> +          Excitation current in nanoamps to be applied to pin specified in
+>> +          adi,excitation-pin-0 while this channel is active.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
+>> +        default: 0
+>> +
+>> +      adi,excitation-current-1-nanoamps:
+>> +        description: |
+>> +          Excitation current in nanoamps to be applied to pin specified in
+>> +          adi,excitation-pin-1 while this channel is active.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        enum: [0, 100, 10000, 20000, 50000, 100000, 150000, 200000]
+>> +        default: 0
+>> +
+>> +      adi,burnout-current-nanoamps:
+>> +        description: |
+>> +          Burnout current in nanoamps to be applied for this channel.
+>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>> +        enum: [0, 500, 2000, 4000]
+>> +        default: 0
+>> +
+>> +      adi,buffered-positive:
+>> +        description: Enable buffered mode for positive input.
+>> +        type: boolean
+>> +
+>> +      adi,buffered-negative:
+>> +        description: Enable buffered mode for negative input.
+>> +        type: boolean
+>> +
+>> +    required:
+>> +      - reg
+>> +      - diff-channels
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +
+>> +    spi {
+>> +      #address-cells = <1>;
+>> +      #size-cells = <0>;
+>> +
+>> +      adc@0 {
+>> +        compatible = "adi,ad4130";
+>> +        reg = <0>;
+>> +
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        spi-max-frequency = <5000000>;
+>> +        interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
+>> +        interrupt-parent = <&gpio>;
+>> +
+>> +        channel@0 {
+>> +          reg = <0>;
+>> +
+>> +          adi,reference-select = <2>;
+>> +
+>> +          /* AIN8, AIN9 */
+>> +          diff-channels = <8 9>;
+>> +        };
+>> +
+>> +        channel@1 {
+>> +          reg = <1>;
+>> +
+>> +          adi,reference-select = <2>;
+>> +
+>> +          /* AIN10, AIN11 */
+>> +          diff-channels = <10 11>;
+>> +        };
+>> +
+>> +        channel@2 {
+>> +          reg = <2>;
+>> +
+>> +          adi,reference-select = <2>;
+>> +
+>> +          /* Temperature Sensor, DGND */
+>> +          diff-channels = <16 19>;
+>> +        };
+>> +
+>> +        channel@3 {
+>> +          reg = <3>;
+>> +
+>> +          adi,reference-select = <2>;
+>> +
+>> +          /* Internal reference, DGND */
+>> +          diff-channels = <18 19>;
+>> +        };
+>> +
+>> +        channel@4 {
+>> +          reg = <4>;
+>> +
+>> +          adi,reference-select = <2>;
+>> +
+>> +          /* DGND, DGND */
+>> +          diff-channels = <19 19>;
+>> +        };
+>> +      };
+>> +    };
+>> -- 
+>> 2.36.1
+>>
+>>

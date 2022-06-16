@@ -2,204 +2,175 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1B154E98F
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 20:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C576B54EBE1
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 23:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377975AbiFPSjb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jun 2022 14:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40036 "EHLO
+        id S1378928AbiFPVFj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jun 2022 17:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378008AbiFPSj2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 14:39:28 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE47754194;
-        Thu, 16 Jun 2022 11:39:24 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id hj18so3757055ejb.0;
-        Thu, 16 Jun 2022 11:39:24 -0700 (PDT)
+        with ESMTP id S1355496AbiFPVFi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 17:05:38 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33AE2606E4
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jun 2022 14:05:37 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id i15so2235126plr.1
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jun 2022 14:05:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hTMAYNOtiXLbIpfBfX/ZjoF2j1Xgqm6lvqAWKAijSCw=;
-        b=nyIQTTIZFGabt6h84OUe/BFnlLSq7adaVeP4z1n5ObblUDxDNNljfgsiz3VCvV9ZkC
-         U7xuxJiYskOlhs1ud2X1DPGZvY0xjIFn0sVTd0BZq35jlitXDUvG6OIh7QdQxEUbgMl/
-         yF/djqpmpb4Y2V61qa4hNsSem8fawETTnv347nn+Xsl6BJEDc1HROOx7Zy0VgWMHlvPT
-         6MpuGT7JqBe8jYSmhMsdkF8QOAqzUVq4WuLg6Zd5thSLGxOZfw0eOlXaAt6tw/RCB0NT
-         aVuJY2k1FZN5T0U5k1LuvX8Vn3vXZLMKWU8pKp5GZ3Mie1f1VSRCyeRSRvnZMTM/NbRC
-         koMQ==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=qWeAN6wBOdgTg8JbowHd+2FzjeCfu8a+6968a4QI8WI=;
+        b=N5ZFoL+aFoUS6hB954SKMlb7yCUNVwnEz5QTGbIWpo81EwQ1sMXtUJNQgQWUFXyaqj
+         B3EKyPgnhgeP6Zxqc0o0AXWyPWgb2jZKHij8R6bu7VXYG/qL6Jeu3Pus4aTVrIH5N/up
+         1mVgnWLjqxO/IM/TYAske9+86aHB4TE/sPT2q6jKDvKrVbIRbqCUop88VsbKe70HL/Xn
+         WD13w1gMuXTC77dfwj7AUO0e7PAT47hYpwj/3hqPUXU+ijawuZQFwT1JvD33vRGoqe5d
+         JySTlKChot+aWilu0E/PsGcDvuRxR9SgKE0cOeMTOx1RDYK8f3vG2bi+O+s59MTFKM8U
+         9Wlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hTMAYNOtiXLbIpfBfX/ZjoF2j1Xgqm6lvqAWKAijSCw=;
-        b=UIDO3QUz9J1zukEaiBMJD+2wOskT4cOaxEhnbaIRN+g3aY3almRligZ+kQ4tj+Hgsf
-         CUqZV64nTy/qaSvlp4jGFCgNuIaW+l1K7+Jvd76ErC/16RHfugSe7PPKBTIRFiaW1UrI
-         +VSvm/Y4qRmHwCYeD6FE1pFCxT9SNCNxiMhSR0LHkRsI+GwhkM18y2hoGfA0T6eYUdh9
-         FkXaSVgxmtnvwAdXJoKmlLKTNYd+q9CT6UBOlu3wbbzg54smDglCRUzjOiej3i/yqnmj
-         FhOlcXzUWbTCeGa31AFg2MtQXaQDQcKC3LzrsojZXZSgDyxb8p65zPOYQX3+cIRX5iAh
-         neoA==
-X-Gm-Message-State: AJIora/T2j8qxKU9XywDDx7lw4E6WT0RF4TV5R18QpMigysBmjbYSkEQ
-        kTlnr5IGt3pftLVY5kBq2DGmEZOC1ASx1U0pwk8=
-X-Google-Smtp-Source: AGRyM1tVRlc/Efjknp2j0mwetaeHSRuuZt3+3lupYLxOIvdx4bOnZ8iDWPyj+gzzwfQlpMTvdeDuFyByDBNdSk7oxOI=
-X-Received: by 2002:a17:906:434f:b0:711:eb76:c320 with SMTP id
- z15-20020a170906434f00b00711eb76c320mr5744542ejm.636.1655404763382; Thu, 16
- Jun 2022 11:39:23 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=qWeAN6wBOdgTg8JbowHd+2FzjeCfu8a+6968a4QI8WI=;
+        b=omrhjil3ZdFw3SHyEcFGYnRSeoiau7l54Lb2IKwZno5lV7bod98n66CRpMJIVGN3Hq
+         cESRMlCim1APmiuJxPHkkc5Hu+d1T2dx6pMWUfObX2Jsojn0EEYmxQGny7Ormfudcadi
+         vvPQ8VPH5SvUxyC/fei1z8866KJc71i3zQzwqAjKZ9018W1nmYABvB43y6v9ccL+vaXD
+         tbCe5CZh2f12hB4NgiabgUJPY5mjuPZfIXjoCnzoL6VOhEmdIh4yFFIVnBgF0FK6iGt5
+         aW4KI1o7XeiSIafiriASteQuFX8+wLiYaTqe9JI4/CfSM5GFmaDOfKyGD0wI3Uvw8IHR
+         txCA==
+X-Gm-Message-State: AJIora/B31SuWfl4sCGMrBXjCXDnKQbLEybKkXHtOVpFcsVLStH6WRsN
+        ux2Iw0onqijgBcJMfKxHo1YrSw==
+X-Google-Smtp-Source: AGRyM1unXZ92n4cSgCY+nW05HkVgMJnrvjv1CRQe+KwLgKR+A0HSLHUM2FUPV+vxq7K020P5WmFE0w==
+X-Received: by 2002:a17:90b:4d8a:b0:1e6:87ad:bfd3 with SMTP id oj10-20020a17090b4d8a00b001e687adbfd3mr7000104pjb.138.1655413536660;
+        Thu, 16 Jun 2022 14:05:36 -0700 (PDT)
+Received: from [172.22.33.138] ([192.77.111.2])
+        by smtp.gmail.com with ESMTPSA id y5-20020a17090ad70500b001dd16b86fc0sm4249403pju.19.2022.06.16.14.05.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jun 2022 14:05:36 -0700 (PDT)
+Message-ID: <dd9b9be2-7bdf-6cb6-b8ad-d7c0a0d5b98a@linaro.org>
+Date:   Thu, 16 Jun 2022 14:05:34 -0700
 MIME-Version: 1.0
-References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
- <20220616104211.9257-3-ddrokosov@sberdevices.ru> <CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNShFRG3kP8b6w@mail.gmail.com>
- <20220616170218.dihjli46spimozeg@CAB-WSD-L081021.sigma.sbrf.ru>
-In-Reply-To: <20220616170218.dihjli46spimozeg@CAB-WSD-L081021.sigma.sbrf.ru>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 16 Jun 2022 20:38:46 +0200
-Message-ID: <CAHp75VdEY9z_0=sAkKOico9JKYPOX6yqnoetiW49oFHm+SeUoQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer driver
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 02/15] dt-bindings: power: supply: Add Mediatek MT6370
+ Charger
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, jic23@kernel.org,
+        lars@metafoo.de, matthias.bgg@gmail.com, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com, ChiaEn Wu <chiaen_wu@richtek.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com>
+ <20220613111146.25221-3-peterwu.pub@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220613111146.25221-3-peterwu.pub@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 16, 2022 at 7:02 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
-> On Thu, Jun 16, 2022 at 02:18:52PM +0200, Andy Shevchenko wrote:
-> > On Thu, Jun 16, 2022 at 12:42 PM Dmitry Rokosov
-> > <DDRokosov@sberdevices.ru> wrote:
+On 13/06/2022 04:11, ChiaEn Wu wrote:
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+> 
+> Add Mediatek MT6370 Charger binding documentation.
+> 
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+>  .../power/supply/mediatek,mt6370-charger.yaml | 60 +++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> new file mode 100644
+> index 000000000000..b63553ebb15b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> @@ -0,0 +1,60 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Mediatek MT6370 Battery Charger
+> +
+> +maintainers:
+> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+> +
+> +description: |
+> +  This module is part of the MT6370 MFD device.
+> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
+> +
+> +properties:
+> +  compatible:
+> +    const: mediatek,mt6370-charger
+> +
+> +  interrupts:
+> +    description: |
+> +      Specify what irqs are needed to be handled by MT6370 Charger driver. IRQ
+> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL_UVP_D"
+> +      are required.
+> +    items:
+> +      - description: BC1.2 done irq
+> +      - description: usb plug in irq
+> +      - description: mivr irq
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: attach_i
+> +      - const: uvp_d_evt
+> +      - const: mivr
+> +
+> +  io-channels:
+> +    description: |
+> +      Use ADC channel to read vbus, ibus, ibat, etc., info. Ibus ADC channel
+> +      is required.
 
-...
+Add io-channel-names and describe each item - what type of ADC it is
+expected to be.
 
-> > Not sure why you put those blank lines herey, it makes code not compact.
->
-> Here I use blank lines to split fields from different registers.
-> In other words, in the msa311_fields enum one line contains fields from one
-> register. But for some heavy registers (like TAP_ACTIVE_STS) we have so many
-> fields and their declaration doesn't fit to 80 symbols.
-> So I've made a decision to split registers using blank lines.
+> +    minItems: 1
+> +    maxItems: 9
+> +
+> +  usb-otg-vbus-regulator:
+> +    type: object
+> +    description: OTG boost regulator.
+> +    $ref: /schemas/regulator/regulator.yaml#
 
-Better is to add a comment explaining what register is described
-below, and not just a blank line.
+unevaluatedProperties: false
 
-...
+> +
+> +    properties:
+> +      enable-gpio:
 
-> > Not sure you need this. Dropping i2c dependency from this structure
-> > allows much easier to add, e.g. SPI support of the same hardware.
->
-> Mainly I use i2c pointer in the probe() path, and you are right, we can
-> change i2c pointer to dev and generalize msa311_priv struct from bus
-> perspective.
+"gpios", so:
+enable-gpios
 
-Yep, note that you may easily retrieve i2c_client from struct device
-pointer if you need to do that in some (I believe rare to none) cases.
+> +        maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +  - interrupt-names
+> +  - io-channels
+> +
+> +additionalProperties: false
+> +
+> +...
 
-...
 
-> > > +       struct regmap *regs;
-> >
-> > I believe this is used most, so making this a first member in the
-> > structure saves  some instructions (check with bloat-o-meter).
-> >
->
-> Are you talking about archs where offset calculation adds more bytes to
-> instruction? And when offset equals to 0, we can save some space.
-
-It doesn't have anything to do with arches, simply compiler
-optimization, otherwise yes, that's what I meant.
-
-...
-
-> > > +       wait_ms = (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
-> >
-> > This looks very odd from a physics perspective: sec * sec * sec == sec ?!
-> >
-> > Perhaps you meant some HZ* macros from units.h?
-> >
->
-> I suppose because of UHZ calculation I have to use NANO instead of
-> USEC_PER_SEC in the following line:
->
->         freq_uhz = msa311_odr_table[odr].val * USEC_PER_SEC +
->                    msa311_odr_table[odr].val2;
->
-> But below line is right from physics perspective. 1sec = 1/Hz, so
-> msec = (USEC_PER_SEC / freq_uhz) * MSEC_PER_SEC:
->
->         wait_ms = (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
->
-> Or do you mean that I should change MSEC_PER_SEC to just MILLI?
-
-1 / Hz = 1 sec. That's how physics defines it. Try to figure out what
-you meant by above multiplications / divisions and come up with the
-best that fits your purposes.
-
-...
-
-> > > +                       if (err) {
-> > > +                               dev_err(dev, "cannot update freq (%d)\n", err);
-> > > +                               goto failed;
-> > > +                       }
-> >
-> > Why is this inside the loop and more important under lock? Also you
-> > may cover the initial error code by this message when moving it out of
-> > the loop and lock.
-> >
-> > Ditto for other code snippets in other function(s) where applicable.
->
-> Yes, I can move dev_err() outside of loop. But all ODR search loop
-> should be under lock fully, because other msa311 operations should not
-> be executed when we search proper ODR place.
-
-I didn't suggest getting rid of the lock.
-
-...
-
-> > > +       mutex_lock(&msa311->lock);
-> > > +       err = regmap_field_write(msa311->fields[F_NEW_DATA_INT_EN], state);
-> > > +       mutex_unlock(&msa311->lock);
-> >
-> > > +
-> >
-> > No need.
->
-> Sorry, I don't understand. We do not need to call it under lock, right?
-> I think we have to wrap it by msa311 lock, because other msa311
-> operations should not be executed when we enable or disable new data
-> interrupt (for example ODR value changing or something else).
-
-The blank line is not needed, I specifically commented on the
-emphasized paragraph (by delimiting it with blank lines and leaving
-the rest for the better context for you to understand, it seems it did
-the opposite...).
-
-...
-
-> > > +       mutex_lock(&msa311->lock);
-> > > +       err = msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_NORMAL);
-> > > +       mutex_unlock(&msa311->lock);
-> >
-> > > +
-> >
-> > No need.
->
-> Again I don't understand why, sorry. We do not want to get sporadic
-> MSA311 attributes changing during power mode transition from another
-> userspace process.
-
-As per above.
-
--- 
-With Best Regards,
-Andy Shevchenko
+Best regards,
+Krzysztof

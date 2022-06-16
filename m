@@ -2,70 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5177054E327
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 16:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E04954E354
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 16:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377519AbiFPOQU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jun 2022 10:16:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53858 "EHLO
+        id S1377684AbiFPOYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jun 2022 10:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233419AbiFPOQU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 10:16:20 -0400
-Received: from smtpbg.qq.com (smtpbg138.qq.com [106.55.201.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF0924BF2;
-        Thu, 16 Jun 2022 07:16:09 -0700 (PDT)
-X-QQ-mid: bizesmtp73t1655388936te84ol4k
-Received: from localhost.localdomain ( [153.0.97.30])
-        by bizesmtp.qq.com (ESMTP) with 
-        id ; Thu, 16 Jun 2022 22:15:30 +0800 (CST)
-X-QQ-SSF: 01000000003000D0I000B00A0000000
-X-QQ-FEAT: rDVzBkvD//YLDwnPANlvrHAlKPDEbPwgQ2HSKDcek4Llnwe5aVQKtmWVbq2qr
-        u80NhtcuRwxAuSsC0lvRI43BtAKe0tVS5DU3YHjokYpFYw+kBRGrkfLRttT9zO1pAyM5hWx
-        gLkkCTee6jy+lp4hv7GA8t2l7zrqZk7m1BGYqO57B3HNJm2A6jTa1uNSXL6flmNtMk/BPtr
-        0ghpYmixSjWIvmXK//RyAfJxYUEKzJ+dxDbEFUwo5GjnlXhrm4nl33xQvrSoxv502N9v965
-        PbWYevjr2La5fyF7GIipgHCy+mChpYRDGxOACy+bMpLkzijzbcsLk3rU8=
-X-QQ-GoodBg: 0
-From:   Xiang wangx <wangxiang@cdjrlc.com>
-To:     jic23@kernel.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Xiang wangx <wangxiang@cdjrlc.com>
-Subject: [PATCH] iio: Fix typo in comment
-Date:   Thu, 16 Jun 2022 22:15:22 +0800
-Message-Id: <20220616141522.2238-1-wangxiang@cdjrlc.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S1377680AbiFPOYy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 10:24:54 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360D834BBD;
+        Thu, 16 Jun 2022 07:24:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655389493; x=1686925493;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=hE6chBrBrGD7pj5GeBUGyoLBvmW45blq2Czih28Qh54=;
+  b=RgQjah8OMeTODBKoQ/2gDCFC9eA7bB4s6irayevqsgYpUcSGheDxmeFW
+   SOMQ7hx7whHxDTsKRPLDsg7a33hYDLaLSDJBpa03KA3Gl1sxv82MYL1a6
+   iowjitl9Kv1S8+mEZP1PCeBOFB1HIM7PPRp43kWauEoWsXQCrygJJIldZ
+   awy5Iqq/X0VucMPtIgBtFdc9HOte1+EA5uFq/Sc4hmCWQmKPPNHcJs7Lm
+   kJVd1W6IFSF4+WdGaIb2oS8dyyqtATS1nQKYd2LdrK+0LmN8IODucoK+w
+   5+bRAUDUrroG78Q7lUotQcr8gq5myNp4oB9G79EN4vuvPFHLiTJrimlZi
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="259721301"
+X-IronPort-AV: E=Sophos;i="5.92,305,1650956400"; 
+   d="scan'208";a="259721301"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 07:24:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,305,1650956400"; 
+   d="scan'208";a="583653276"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 16 Jun 2022 07:24:50 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 27E6A1C2; Thu, 16 Jun 2022 17:24:54 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: accel: mma7660: Drop wrong use of ACPI_PTR()
+Date:   Thu, 16 Jun 2022 17:24:51 +0300
+Message-Id: <20220616142451.10322-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam10
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Delete the redundant word 'in'.
+ACPI_PTR() is more harmful than helpful. For example, in this case
+if CONFIG_ACPI=n, the ID table left unused which is not what we want.
 
-Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+Instead of making linker to drop a section, drop ACPI_PTR().
+
+As a side effect this makes driver ACPI and OF clean.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/gyro/bmg160_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/mma7660.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-index 81a6d09788bd..cedd9f02ea21 100644
---- a/drivers/iio/gyro/bmg160_core.c
-+++ b/drivers/iio/gyro/bmg160_core.c
-@@ -766,7 +766,7 @@ static int bmg160_write_event_config(struct iio_dev *indio_dev,
- 		return 0;
- 	}
- 	/*
--	 * We will expect the enable and disable to do operation in
-+	 * We will expect the enable and disable to do operation
- 	 * in reverse order. This will happen here anyway as our
- 	 * resume operation uses sync mode runtime pm calls, the
- 	 * suspend operation will be delayed by autosuspend delay
+diff --git a/drivers/iio/accel/mma7660.c b/drivers/iio/accel/mma7660.c
+index 112a5a33c29f..794f2f383303 100644
+--- a/drivers/iio/accel/mma7660.c
++++ b/drivers/iio/accel/mma7660.c
+@@ -7,8 +7,8 @@
+  * IIO driver for Freescale MMA7660FC; 7-bit I2C address: 0x4c.
+  */
+ 
+-#include <linux/acpi.h>
+ #include <linux/i2c.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -255,7 +255,7 @@ static const struct of_device_id mma7660_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mma7660_of_match);
+ 
+-static const struct acpi_device_id __maybe_unused mma7660_acpi_id[] = {
++static const struct acpi_device_id mma7660_acpi_id[] = {
+ 	{"MMA7660", 0},
+ 	{}
+ };
+@@ -267,7 +267,7 @@ static struct i2c_driver mma7660_driver = {
+ 		.name = "mma7660",
+ 		.pm = pm_sleep_ptr(&mma7660_pm_ops),
+ 		.of_match_table = mma7660_of_match,
+-		.acpi_match_table = ACPI_PTR(mma7660_acpi_id),
++		.acpi_match_table = mma7660_acpi_id,
+ 	},
+ 	.probe		= mma7660_probe,
+ 	.remove		= mma7660_remove,
 -- 
-2.36.1
+2.35.1
 

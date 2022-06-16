@@ -2,163 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E258354DF54
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 12:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451DA54DF95
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 12:57:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376340AbiFPKmg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jun 2022 06:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56602 "EHLO
+        id S1376262AbiFPK5g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jun 2022 06:57:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376301AbiFPKme (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 06:42:34 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F16E92;
-        Thu, 16 Jun 2022 03:42:31 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 243815FD0E;
-        Thu, 16 Jun 2022 13:42:30 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1655376150;
-        bh=acb8bFjvFs4vIpvT4bDEWmEuHbG15fD1/I93Ay4Q9/Q=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=PdWCaMBPluJVzi55wsUJU4A/DGCcB+UTIMLBgW5L8cTXPa4+Mu9ZUSZgY4I0HCatP
-         awGx8S+8XuwDyLbBA5bN+gHMQeBNMhSjyWNQRSpAdroIrVTqfZBOVARS4l6SZIRPBd
-         DNr4XNU3F/1tv3wRh6oi8h//ivBdtkjp6I/OP8VN71lgJR3uPSDXUARla1L+RTtgNx
-         V8ltCoW/IwEdtLUv4Lk7lbEoeAAbsGe7w2uv6K0P7Dsv2ABTGFVaShlFc6bzoTh6BX
-         fh+5x6i2wAej28cqEusj+ug1fe0nurXs5eGxQZO39DrJRqUOgWxpxt8z71cylIdKj+
-         L43HH/a7OHgPA==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Thu, 16 Jun 2022 13:42:30 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Subject: [PATCH v3 3/3] dt-bindings: iio: accel: add dt-binding schema for
- msa311 accel driver
-Thread-Topic: [PATCH v3 3/3] dt-bindings: iio: accel: add dt-binding schema
- for msa311 accel driver
-Thread-Index: AQHYgW2/WnQfCkQxXk6267GmpT0D/g==
-Date:   Thu, 16 Jun 2022 10:42:17 +0000
-Message-ID: <20220616104211.9257-4-ddrokosov@sberdevices.ru>
-References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S231206AbiFPK5f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 06:57:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C8E2BF2
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jun 2022 03:57:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F9AF6187C
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jun 2022 10:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52FEFC34114;
+        Thu, 16 Jun 2022 10:57:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1655377052;
+        bh=PODDCeCXTaW9rLJySVY7geTdl3v1DBymlxMXX+ClqH8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mcSumZbwoGnGKZuc6giE/N4ilqHIDvBLF8XLD41qmFOFlZpFqR3TS8v/nFplsr9iB
+         soQH0DG60yljqQyxy4gx++d4auxG480quCmVzt9jp13rFwqCszJgQxLGvlYET+8+Wy
+         ElvS5FC02Sar+rfvYP59ZqSFOCsyXznsH0JhwxNE=
+Date:   Thu, 16 Jun 2022 12:57:30 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Jacopo Mondi <jacopo@jmondi.org>
+Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andrea Merello <andrea.merello@gmail.com>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev
+Subject: Re: [PATCH 2/2] staging: iio: imu: Add CEVA BNO08x driver
+Message-ID: <YqsMmmqhN3WEx1Lq@kroah.com>
+References: <20220616100006.22045-1-jacopo+renesas@jmondi.org>
+ <20220616100006.22045-3-jacopo+renesas@jmondi.org>
+ <YqsFSrg+Q+jdsId/@kroah.com>
+ <20220616103634.vkb7nkn555a5evlw@uno.localdomain>
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/16 07:44:00 #19785775
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616103634.vkb7nkn555a5evlw@uno.localdomain>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduce devicetree binding json-schema for MSA311 tri-axial,
-low-g accelerometer driver.
+On Thu, Jun 16, 2022 at 12:36:34PM +0200, Jacopo Mondi wrote:
+> Hi Greg
+> 
+> On Thu, Jun 16, 2022 at 12:26:18PM +0200, Greg Kroah-Hartman wrote:
+> > On Thu, Jun 16, 2022 at 12:00:06PM +0200, Jacopo Mondi wrote:
+> > > From: Jacopo Mondi <jacopo@jmondi.org>
+> > >
+> > > Add support for CEVA BNO08x Sensor Hub.
+> > >
+> > > The BNO08X family (BNO080/85/86) is a System in Package (SiP) that
+> > > integrates a triaxial accelerometer, triaxial gyroscope, magnetometer
+> > > and a 32-bit ARM Cortex-M0+ microcontroller running CEVA's SH-2
+> > > firmware.
+> > >
+> > > Datasheet:
+> > > https://www.ceva-dsp.com/wp-content/uploads/2019/10/BNO080_085-Datasheet.pdf
+> > >
+> > > Signed-off-by: Jacopo Mondi <jacopo@jmondi.org>
+> > > ---
+> > >  MAINTAINERS                             |   7 +
+> > >  drivers/staging/iio/Kconfig             |   1 +
+> > >  drivers/staging/iio/Makefile            |   1 +
+> > >  drivers/staging/iio/imu/bno08x/Kconfig  |  11 +
+> > >  drivers/staging/iio/imu/bno08x/Makefile |   3 +
+> > >  drivers/staging/iio/imu/bno08x/bno08x.c | 618 ++++++++++++++++++++++++
+> >
+> > Why are you adding a new driver to staging/iio/ and not to the real part
+> > of the kernel?  What needs to be done to it to get it out of here?
+> 
+> Mostly because I don't have access to the hw development platform
+> anymore, and the one I had was not reliable enough for any further
+> development anyway.
+> 
+> I went for staging as I cannot guarantee I can test any requested
+> change on the series.
+> 
+> I'm afraid this is a "take it or leave it" series, and as the driver
+> does anyway work (even if for a single feature) I thought it was worth
+> sending it upstream anyway.
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
----
- .../bindings/iio/accel/memsensing,msa311.yaml | 52 +++++++++++++++++++
- MAINTAINERS                                   |  1 +
- 2 files changed, 53 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/memsensing,=
-msa311.yaml
+Sure, but staging is not a dumping ground, if you want to submit it and
+run away, I can't take it here, sorry.
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.=
-yaml b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-new file mode 100644
-index 000000000000..072632708d42
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
-@@ -0,0 +1,52 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/iio/accel/memsensing,msa311.yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: MEMSensing digital 3-Axis accelerometer
-+
-+maintainers:
-+  - Dmitry Rokosov <ddrokosov@sberdevices.ru>
-+
-+description: |
-+  MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-+  sensitivity consumer applications. It has dynamical user selectable full
-+  scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurement=
-s
-+  with output data rates from 1Hz to 1000Hz.
-+  Datasheet can be found at following URL
-+  https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
-+
-+properties:
-+  compatible:
-+    const: memsensing,msa311
-+
-+  reg:
-+    maxItems: 1
-+    description: I2C registers address
-+
-+  interrupts:
-+    maxItems: 1
-+    description: optional I2C int pin can be freely mapped to specific fun=
-c
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+
-+        accelerometer@62 {
-+            compatible =3D "memsensing,msa311";
-+            reg =3D <0x62>;
-+            interrupt-parent =3D <&gpio_intc>;
-+            interrupts =3D <29 IRQ_TYPE_EDGE_RISING>;
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 55aeb25c004c..be39e5c214fe 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12482,6 +12482,7 @@ MEMSENSING MICROSYSTEMS MSA311 ACCELEROMETER DRIVER
- M:	Dmitry Rokosov <ddrokosov@sberdevices.ru>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/accel/memsensing,msa311.yaml
- F:	drivers/iio/accel/msa311.c
-=20
- MEN A21 WATCHDOG DRIVER
---=20
-2.36.0
+Perhaps just let this live as a patch on the mailing list and if anyone
+else wants to pick it up and maintain it, they can do so.
+
+thanks,
+
+greg k-h

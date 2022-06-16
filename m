@@ -2,109 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E04954E354
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 16:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09BF354E691
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jun 2022 18:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377684AbiFPOYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 16 Jun 2022 10:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
+        id S1377345AbiFPQAj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 16 Jun 2022 12:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377680AbiFPOYy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 10:24:54 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 360D834BBD;
-        Thu, 16 Jun 2022 07:24:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655389493; x=1686925493;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hE6chBrBrGD7pj5GeBUGyoLBvmW45blq2Czih28Qh54=;
-  b=RgQjah8OMeTODBKoQ/2gDCFC9eA7bB4s6irayevqsgYpUcSGheDxmeFW
-   SOMQ7hx7whHxDTsKRPLDsg7a33hYDLaLSDJBpa03KA3Gl1sxv82MYL1a6
-   iowjitl9Kv1S8+mEZP1PCeBOFB1HIM7PPRp43kWauEoWsXQCrygJJIldZ
-   awy5Iqq/X0VucMPtIgBtFdc9HOte1+EA5uFq/Sc4hmCWQmKPPNHcJs7Lm
-   kJVd1W6IFSF4+WdGaIb2oS8dyyqtATS1nQKYd2LdrK+0LmN8IODucoK+w
-   5+bRAUDUrroG78Q7lUotQcr8gq5myNp4oB9G79EN4vuvPFHLiTJrimlZi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10379"; a="259721301"
-X-IronPort-AV: E=Sophos;i="5.92,305,1650956400"; 
-   d="scan'208";a="259721301"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 07:24:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,305,1650956400"; 
-   d="scan'208";a="583653276"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 16 Jun 2022 07:24:50 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 27E6A1C2; Thu, 16 Jun 2022 17:24:54 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: accel: mma7660: Drop wrong use of ACPI_PTR()
-Date:   Thu, 16 Jun 2022 17:24:51 +0300
-Message-Id: <20220616142451.10322-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S1377818AbiFPQAh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 16 Jun 2022 12:00:37 -0400
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159044477D;
+        Thu, 16 Jun 2022 09:00:36 -0700 (PDT)
+Received: by mail-io1-f54.google.com with SMTP id q11so1913782iod.8;
+        Thu, 16 Jun 2022 09:00:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=k8h1U4hPgh2BRfxurg7hGh/LZsiqV8Y2F6zGtf6ny+o=;
+        b=5RG3nlR7WC+RPi15BRORMiobbE5B/ZNM8xyz1EfCUqODgTvuqbREuWk3eL66kvzcnC
+         vy0i74HNoe/GGMaslPLWkmoDoikl2caNzzW0aBjBVXVuU9b17jDxRnMCtfCbqoXrUNiN
+         bopGkSiwVBGKdBTSCYAipGeBjd5t6E2yRTDZDm5m73hk2xeMqamDoMtFlNw1tf0M7oo0
+         chHJwPSPVkG5nIpFC74aU855woB2VsHByrj8+QnclAiQDwhIn3X0CV2vwwk86zizcf1J
+         ezUCVaHUPeIlpzeuIBixzTG49hQzmUK/kuFjwPOFkRAFeF70qTF9a8EqqZMyORWMMVBe
+         MqBg==
+X-Gm-Message-State: AJIora9POalTmFB6aRi7AeWxFBZXKa2Xb5nLDVQmtAL820wqeGD8iosP
+        bO4yeeh6BlliB4faiUOorw==
+X-Google-Smtp-Source: AGRyM1uJTs4FDZxMRCj45jF2apTlmwONCj0E8OipnKt1Fs2e7QE05ytGmbrjTICQ6Of8TUoYZCr53Q==
+X-Received: by 2002:a5d:81d9:0:b0:669:d5b1:3fe0 with SMTP id t25-20020a5d81d9000000b00669d5b13fe0mr2799297iol.214.1655395235356;
+        Thu, 16 Jun 2022 09:00:35 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.251])
+        by smtp.gmail.com with ESMTPSA id h3-20020a056e020d4300b002d3de4c1ecbsm1122162ilj.68.2022.06.16.09.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jun 2022 09:00:34 -0700 (PDT)
+Received: (nullmailer pid 3555880 invoked by uid 1000);
+        Thu, 16 Jun 2022 16:00:33 -0000
+Date:   Thu, 16 Jun 2022 10:00:33 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Claudiu Beznea <claudiu.beznea@microchip.com>
+Cc:     ludovic.desroches@atmel.com, alexandre.belloni@bootlin.com,
+        nicolas.ferre@microchip.com, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, eugen.hristev@microchip.com,
+        linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
+        krzk+dt@kernel.org
+Subject: Re: [PATCH 12/16] dt-bindings: iio: adc: at91-sama5d2_adc: add id
+ for temperature channel
+Message-ID: <20220616160033.GA3555795-robh@kernel.org>
+References: <20220609083213.1795019-1-claudiu.beznea@microchip.com>
+ <20220609083213.1795019-13-claudiu.beznea@microchip.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220609083213.1795019-13-claudiu.beznea@microchip.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ACPI_PTR() is more harmful than helpful. For example, in this case
-if CONFIG_ACPI=n, the ID table left unused which is not what we want.
+On Thu, 09 Jun 2022 11:32:09 +0300, Claudiu Beznea wrote:
+> Add ID for temperature channel of AT91 SAMA5D2 ADC.
+> 
+> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+> ---
+>  include/dt-bindings/iio/adc/at91-sama5d2_adc.h | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
 
-Instead of making linker to drop a section, drop ACPI_PTR().
-
-As a side effect this makes driver ACPI and OF clean.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/accel/mma7660.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/accel/mma7660.c b/drivers/iio/accel/mma7660.c
-index 112a5a33c29f..794f2f383303 100644
---- a/drivers/iio/accel/mma7660.c
-+++ b/drivers/iio/accel/mma7660.c
-@@ -7,8 +7,8 @@
-  * IIO driver for Freescale MMA7660FC; 7-bit I2C address: 0x4c.
-  */
- 
--#include <linux/acpi.h>
- #include <linux/i2c.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -255,7 +255,7 @@ static const struct of_device_id mma7660_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mma7660_of_match);
- 
--static const struct acpi_device_id __maybe_unused mma7660_acpi_id[] = {
-+static const struct acpi_device_id mma7660_acpi_id[] = {
- 	{"MMA7660", 0},
- 	{}
- };
-@@ -267,7 +267,7 @@ static struct i2c_driver mma7660_driver = {
- 		.name = "mma7660",
- 		.pm = pm_sleep_ptr(&mma7660_pm_ops),
- 		.of_match_table = mma7660_of_match,
--		.acpi_match_table = ACPI_PTR(mma7660_acpi_id),
-+		.acpi_match_table = mma7660_acpi_id,
- 	},
- 	.probe		= mma7660_probe,
- 	.remove		= mma7660_remove,
--- 
-2.35.1
-
+Acked-by: Rob Herring <robh@kernel.org>

@@ -2,61 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E76655001F
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 00:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DACDD55006E
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 01:12:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242164AbiFQWow (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 18:44:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
+        id S1383301AbiFQXML (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 19:12:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238184AbiFQWov (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 18:44:51 -0400
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 328E43B3C6;
-        Fri, 17 Jun 2022 15:44:50 -0700 (PDT)
-Received: by mail-io1-f47.google.com with SMTP id i16so5900754ioa.6;
-        Fri, 17 Jun 2022 15:44:50 -0700 (PDT)
+        with ESMTP id S231852AbiFQXMK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 19:12:10 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979CA64BDE
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 16:12:06 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id r5so5217097pgr.3
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 16:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=294ojvCzJG+QxzRogH/Uf6cGP9X/olCBo7vsCMUaWUs=;
+        b=rRMAv5j+Hd/iJN32vcBDVL12U3rDEOOrDCl0MNjeuoB8nfWV1YTHVPRQxhLQzoJgkX
+         ZJG8iKXWOMEzcoSSx4BzvL4tW/FkQYqnQyv12OpGhLHgnqsF6MA0Zv/JSKUyme4TAdC1
+         PK4UNdO1p7nq6ua9IRX7f5y8kq4TRP0rZ11wo6jCd21bxBCR0qCtS3EqGZPgSOcsLfsG
+         FG4f5UYmY07Jsv9z6xEuBtiNjJlIeAgxtaZTK9tJdqWjWANTPiGOVJybe7hvJ9oZqXL9
+         HFn/y5aQTdGOOA9aVIAvXAe7Q0YJ5X8tMP0RYR8Qd7xIDEPKM+u0LrMy9wJIkIzH20SK
+         yGQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mkyBoQrK77DJf9OidPmzQRZw3BY2GrOu7sXDzTqHibQ=;
-        b=tYpwtZCLTGnIpucqGTZ4Sh5Gv3o/QIz2U9ojPllJXkoOlegH2CZeYIWsRBNqYkfnVg
-         heR/1MYbiyheLkvPW4BHptoN4qQ/HXhobbUm2SDcgM0AbBnt6rlXl4zPFcEj2NYc5NDv
-         jzz2shVTT5czGd0PjN/SD9Dw+5OdH4jL+aBCsG3ecQG5SteCz/PltEKPVnh/Jsetb/ZN
-         nwsvC+yc97Qq3pfbeGIPWhqsYIPwEdCuDprzsYegXgTNKG5uHoIj7jmlylZHJcJRTLjb
-         9wi9zrrVoz+elGoWJ/lntry/yGUCsI4lLCkV7mlA+3Ovl1uLN45Rb/IV/TGaozdy0KO4
-         q4EA==
-X-Gm-Message-State: AJIora8KeqXUDApQv7LyRzWUyzHY6Vy5UGpuantVPPQx81c5N4rTL7cz
-        oxXB4sbe8qhHlgJcts7zlQ==
-X-Google-Smtp-Source: AGRyM1tDPeUx3oHDWGBfNfy3Bwife7YxjkilpSCRIPUY+TToJAdSs36ofKaHo7asCA3YZKFWMOKAcg==
-X-Received: by 2002:a02:6a1e:0:b0:331:f9b9:a920 with SMTP id l30-20020a026a1e000000b00331f9b9a920mr6617996jac.44.1655505889508;
-        Fri, 17 Jun 2022 15:44:49 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.251])
-        by smtp.gmail.com with ESMTPSA id c31-20020a023b1f000000b0032e271a558csm2722382jaa.168.2022.06.17.15.44.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 15:44:49 -0700 (PDT)
-Received: (nullmailer pid 2576416 invoked by uid 1000);
-        Fri, 17 Jun 2022 22:44:48 -0000
-Date:   Fri, 17 Jun 2022 16:44:48 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-imx@nxp.com, Jonathan Cameron <jic23@kernel.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: Add imx6ul & imx6sx compatibles
-Message-ID: <20220617224448.GA2574775-robh@kernel.org>
-References: <20220613123529.466528-1-alexander.stein@ew.tq-group.com>
- <1655141687.002668.3951189.nullmailer@robh.at.kernel.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=294ojvCzJG+QxzRogH/Uf6cGP9X/olCBo7vsCMUaWUs=;
+        b=pWbAyFjBwbmOB/T3Vlc/xxe4mKmEYUGGtfwDXyTXGBsBleNndk+AeQDnS6ypzpvGOe
+         J2gucH38I1PRMUYkloeQeszBYzUx2GqYcHu2r88x4yNhGZOvutY+jX7DpZoQVQVJdbl3
+         8t77kOdDg82hZ6wcyBygIWhWoz27g9ky3R5SlHHdPTsjH93gp2NVNxCfPKK8/xzOVWc3
+         v8YM1XaZHQnV6HK+KFXhEVN7DTCWbbj/cf+New3dyXAbp1bQQ18eT/z3mwozKy/OTwWB
+         kDn3y8ZOD6jEUbmPTGo5XfObgJ5DaH4lBymlqIuFbcEEan0hsyHeBRzzHR9CvHhRMZJl
+         LMsQ==
+X-Gm-Message-State: AJIora9aOy13zLcqk+qmGXBlEIudVYi9Rd+c1NSzfE6akpbjBJpGmeYX
+        ILcBa5KyAHTDZKyCjcrwySiFOA==
+X-Google-Smtp-Source: AGRyM1stFAPlhmMkLY1NazO67J7oIwcpQv5+571CFcD+wsnGDHo4hdZrZyBBUSUL5SYGrTcERU92tQ==
+X-Received: by 2002:a63:4f05:0:b0:405:5463:2ea8 with SMTP id d5-20020a634f05000000b0040554632ea8mr10679545pgb.94.1655507526105;
+        Fri, 17 Jun 2022 16:12:06 -0700 (PDT)
+Received: from [172.31.235.92] ([216.9.110.6])
+        by smtp.gmail.com with ESMTPSA id c2-20020a639602000000b003fb098151c9sm4301292pge.64.2022.06.17.16.12.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Jun 2022 16:12:05 -0700 (PDT)
+Message-ID: <b59237c7-fb60-35e2-66f9-668d9946bd3c@linaro.org>
+Date:   Fri, 17 Jun 2022 16:12:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1655141687.002668.3951189.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 02/15] dt-bindings: power: supply: Add Mediatek MT6370
+ Charger
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, matthias.bgg@gmail.com,
+        lee.jones@linaro.org, Daniel Thompson <daniel.thompson@linaro.org>,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com, ChiaEn Wu <chiaen_wu@richtek.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com>
+ <20220613111146.25221-3-peterwu.pub@gmail.com>
+ <dd9b9be2-7bdf-6cb6-b8ad-d7c0a0d5b98a@linaro.org>
+ <CABtFH5+5Y5Tq3vO6Sg3kf98CWm9Aijv7qkdBcpm2SB0JZ1gCiA@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CABtFH5+5Y5Tq3vO6Sg3kf98CWm9Aijv7qkdBcpm2SB0JZ1gCiA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,74 +85,135 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 13, 2022 at 11:34:46AM -0600, Rob Herring wrote:
-> On Mon, 13 Jun 2022 14:35:29 +0200, Alexander Stein wrote:
-> > Both are already using the vf610 compatible.
-> > 
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../devicetree/bindings/iio/adc/fsl,vf610-adc.yaml       | 9 ++++++++-
-> >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > 
+On 17/06/2022 03:19, ChiaEn Wu wrote:
+> Hi Krzysztof,
 > 
-> Running 'make dtbs_check' with the schema in this patch gives the
-> following warnings. Consider if they are expected or the schema is
-> incorrect. These may not be new warnings.
+> Thanks for your helpful comments! I have so some questions want to ask
+> you below.
 > 
-> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-> This will change in the future.
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> 於 2022年6月17日 週五 清晨5:05寫道：
+>>
+>> On 13/06/2022 04:11, ChiaEn Wu wrote:
+>>> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>>>
+>>> Add Mediatek MT6370 Charger binding documentation.
+>>>
+>>> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+>>> ---
+>>>  .../power/supply/mediatek,mt6370-charger.yaml | 60 +++++++++++++++++++
+>>>  1 file changed, 60 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+>>> new file mode 100644
+>>> index 000000000000..b63553ebb15b
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+>>> @@ -0,0 +1,60 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Mediatek MT6370 Battery Charger
+>>> +
+>>> +maintainers:
+>>> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+>>> +
+>>> +description: |
+>>> +  This module is part of the MT6370 MFD device.
+>>> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: mediatek,mt6370-charger
+>>> +
+>>> +  interrupts:
+>>> +    description: |
+>>> +      Specify what irqs are needed to be handled by MT6370 Charger driver. IRQ
+>>> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL_UVP_D"
+>>> +      are required.
+>>> +    items:
+>>> +      - description: BC1.2 done irq
+>>> +      - description: usb plug in irq
+>>> +      - description: mivr irq
+>>> +
+>>> +  interrupt-names:
+>>> +    items:
+>>> +      - const: attach_i
+>>> +      - const: uvp_d_evt
+>>> +      - const: mivr
+>>> +
+>>> +  io-channels:
+>>> +    description: |
+>>> +      Use ADC channel to read vbus, ibus, ibat, etc., info. Ibus ADC channel
+>>> +      is required.
+>>
+>> Add io-channel-names and describe each item - what type of ADC it is
+>> expected to be.
+>>
 > 
-> Full log is available here: https://patchwork.ozlabs.org/patch/
+> I'm afraid I might not be understanding what you mean.
+> I will try to add some text in "description" and "io-channel-names", like below
+> ----------------------------------
+> io-channels:
+>   description: |
+>     Use ADC channel to read VBUS, IBUS, IBAT, etc., info. Ibus ADC channel
+>     is required. It can be seen in
+> include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
+>   minItems: 1
+>   maxItems: 9
 > 
-> 
-> adc@2198000: 'num-channels' does not match any of the regexes: 'pinctrl-[0-9]+'
+> io-channel-names:
+>   items:
+>     - const: vbusdiv5
+>     - const: vbusdiv2
 
-Looks like you need to add 'num-channels'?
+Almost. The best would be something like this:
+Documentation/devicetree/bindings/power/supply/cpcap-charger.yaml
+so also "items" with description under "io-channels". You need to skip
+maxItems in such case (keep minItems).
 
-> 	arch/arm/boot/dts/imx6ul-14x14-evk.dtb
-> 	arch/arm/boot/dts/imx6ul-ccimx6ulsbcexpress.dtb
-> 	arch/arm/boot/dts/imx6ul-ccimx6ulsbcpro.dtb
-> 	arch/arm/boot/dts/imx6ul-geam.dtb
-> 	arch/arm/boot/dts/imx6ul-isiot-emmc.dtb
-> 	arch/arm/boot/dts/imx6ul-isiot-nand.dtb
-> 	arch/arm/boot/dts/imx6ul-kontron-n6310-s-43.dtb
-> 	arch/arm/boot/dts/imx6ul-kontron-n6310-s.dtb
-> 	arch/arm/boot/dts/imx6ull-14x14-evk.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-aster.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-emmc-aster.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-emmc-eval-v3.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-emmc-iris.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-emmc-iris-v2.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-eval-v3.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-iris.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-iris-v2.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-wifi-aster.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-wifi-eval-v3.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-wifi-iris.dtb
-> 	arch/arm/boot/dts/imx6ull-colibri-wifi-iris-v2.dtb
-> 	arch/arm/boot/dts/imx6ul-liteboard.dtb
-> 	arch/arm/boot/dts/imx6ull-jozacp.dtb
-> 	arch/arm/boot/dts/imx6ull-myir-mys-6ulx-eval.dtb
-> 	arch/arm/boot/dts/imx6ull-opos6uldev.dtb
-> 	arch/arm/boot/dts/imx6ull-phytec-segin-ff-rdk-emmc.dtb
-> 	arch/arm/boot/dts/imx6ull-phytec-segin-ff-rdk-nand.dtb
-> 	arch/arm/boot/dts/imx6ull-phytec-segin-lc-rdk-nand.dtb
-> 	arch/arm/boot/dts/imx6ull-phytec-tauri-emmc.dtb
-> 	arch/arm/boot/dts/imx6ull-phytec-tauri-nand.dtb
-> 	arch/arm/boot/dts/imx6ull-tqma6ull2l-mba6ulx.dtb
-> 	arch/arm/boot/dts/imx6ull-tqma6ull2-mba6ulx.dtb
-> 	arch/arm/boot/dts/imx6ul-opos6uldev.dtb
-> 	arch/arm/boot/dts/imx6ul-phytec-segin-ff-rdk-emmc.dtb
-> 	arch/arm/boot/dts/imx6ul-phytec-segin-ff-rdk-nand.dtb
-> 	arch/arm/boot/dts/imx6ul-pico-dwarf.dtb
-> 	arch/arm/boot/dts/imx6ul-pico-hobbit.dtb
-> 	arch/arm/boot/dts/imx6ul-pico-pi.dtb
-> 	arch/arm/boot/dts/imx6ul-prti6g.dtb
-> 	arch/arm/boot/dts/imx6ul-tqma6ul1-mba6ulx.dtb
-> 	arch/arm/boot/dts/imx6ul-tqma6ul2l-mba6ulx.dtb
-> 	arch/arm/boot/dts/imx6ul-tqma6ul2-mba6ulx.dtb
-> 	arch/arm/boot/dts/imx6ul-tx6ul-0010.dtb
-> 	arch/arm/boot/dts/imx6ul-tx6ul-0011.dtb
-> 	arch/arm/boot/dts/imx6ul-tx6ul-mainboard.dtb
+>     - ...
+> ----------------------------------
+> Did these modifications meet your expectations?
 > 
+>>> +    minItems: 1
+>>> +    maxItems: 9
+>>> +
+>>> +  usb-otg-vbus-regulator:
+>>> +    type: object
+>>> +    description: OTG boost regulator.
+>>> +    $ref: /schemas/regulator/regulator.yaml#
+>>
+>> unevaluatedProperties: false
 > 
+> I will add this in the next patch.
+> 
+>>
+>>> +
+>>> +    properties:
+>>> +      enable-gpio:
+>>
+>> "gpios", so:
+>> enable-gpios
+> 
+> If this otg regulator only uses one GPIO Pin, do I still need to
+> change to "gpios"?
+
+Yes, because "gpios" is the preferred suffix. This is requirement for
+all such properties. enable-gpios are also documented here:
+Documentation/devicetree/bindings/gpio/gpio-consumer-common.yaml
+
+
+> If so, I will refine it along with the regulator "enable-gpio" in MFD
+> dt-binding.
+
+Yes, there it should be "enable-gpios" as well.
+
+
+
+
+Best regards,
+Krzysztof

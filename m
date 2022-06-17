@@ -2,76 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B437254FACA
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 18:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E0454FBA8
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 18:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383162AbiFQQIv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 12:08:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55324 "EHLO
+        id S233830AbiFQQyz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 12:54:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383141AbiFQQIt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 12:08:49 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E043B33A10;
-        Fri, 17 Jun 2022 09:08:48 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id u12so9637613eja.8;
-        Fri, 17 Jun 2022 09:08:48 -0700 (PDT)
+        with ESMTP id S229794AbiFQQyy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 12:54:54 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D441ED;
+        Fri, 17 Jun 2022 09:54:53 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id fu3so9862026ejc.7;
+        Fri, 17 Jun 2022 09:54:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=HyaPAU422RTkmUp3vQSmgWg7DCK+47J/Ak6BUGAJv9g=;
-        b=T+pFXVXs2r+jnKz9ngTh0ZNKl5hes6LPoOziVTWMXaG2Q/FnbhCwSNBXQVM1NoKmFw
-         dzokG5Bb12FUtkfKvTF8dg9kf3laiK96t1QYl4fOKtPUqlcyJx+o8OS/26SQIgLM/+OZ
-         xuLJnS2qJjR33nDhMfVhR4/31KgLMMUqtZvtOHKJ9V71j9d976A/7/vN9MXXgYdlYJ6P
-         vRt2QWSIiDszzQnhb3iyubH6H84foOOjcspVK2zmQ87p++vrszkPM3tT+q/6CixA/w6g
-         ajUTWiGspTuBwE7j0UlgGD3IYRBy4Gqo/GBDApB5elZBhq1+pqZKnL4InAAQ2y0qWCwP
-         uhUg==
+        bh=QSt3LrzgFcD+YdW3BwQVvoaLeU41rd1AP4Ip8zTtDqc=;
+        b=SlP1pkUKUrW5ybdwtrxH1PpgNTbsnSEHyO8jGuviKkg1OiVuqEhYc/fzM6tIu0c8jS
+         ef8b5eL8gQyB/sAOeBzBP9U1zZVKmC+A9FXilfvSplzYQjZgShOAgugldDmEsdZFxHwR
+         I8Xog09XyuvpsjgODLpEmCkO3VqPyh3cT+UweZWska4lPh610rBNlu0MELIX0CnjUfwa
+         5PvAY1YUPUwR1SgzFdGsFUk1KFKeMbci8ePe8zIKFy61yOLFEwZYZk+0QCxo2bi/lhKj
+         B4F6t/HSRzl0EIHWaiCTNcpBfdYYhEPjlvY0am0FM5RW8ehda8NujIx+7KUk6vTqmACM
+         IPAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=HyaPAU422RTkmUp3vQSmgWg7DCK+47J/Ak6BUGAJv9g=;
-        b=NkZjloiXP68oAre/i2YU4DDqGyRTZGvtkru/FRLTOBkjv88kfWXrDA/eaim3kHdEXJ
-         pyjQl6PgiDJJl4SJPu8nmArAXQsqOwa50G1PaFTK5uC1TvI3JBFaJoDzFV7aSai+Rrub
-         8fuEpgWA1e5LiLOL/cDUdbWClwLP6f7X2L9YbJgeCIoYEIzMdFHFlN26Dy27RFiZAlp0
-         lcY/drCa/2on/BQIps5Vs5eTPnp4rlVEY9JEM1SgvS4CBIHUbeI1AWNEp5SkCEZEIVDS
-         1CVHOxA2HcQKD+WMX6fQFmG3Hz4EEY7zFxQSV81bsxNgM0CUfWjHe7GUtWv2zQl5XZrE
-         r3JA==
-X-Gm-Message-State: AJIora/8AM/F88pSDfrQV98idcsD6RSz1G1FOAQYl4/In+JjgFKlzW/d
-        QzMJDjMWk08x/2S9F7+dr12Zdxq5pIFSQmAMmss=
-X-Google-Smtp-Source: AGRyM1uSPK+9gOEkIB1Rod/oCh4qsf64lmqJg2CMb1Cevr4ga1D8aaK63zqJQRFdpsane3HyNa/P0wdRDmoRFm+JH2U=
-X-Received: by 2002:a17:906:434f:b0:711:eb76:c320 with SMTP id
- z15-20020a170906434f00b00711eb76c320mr9944067ejm.636.1655482127352; Fri, 17
- Jun 2022 09:08:47 -0700 (PDT)
+        bh=QSt3LrzgFcD+YdW3BwQVvoaLeU41rd1AP4Ip8zTtDqc=;
+        b=X9QiBetDb4FJZgOCmSY8Jy7o91ZD6y8wqM/kOpc7wXbA+gFoA3QwleISH7/BHBEq+j
+         xqZCSFz59ibOJhcyhgrougBUsDIAsAvp4PP3SoRx7USNc2/K+Qs8DEsWuQScOLKHbI7b
+         lGpCL/gOIMGDauiNsyhJl+IeSceCIY6qwKDyOgf93mKanb+goe97mZuN5i/65BeioCTG
+         LNxxD7Lcwn4dnIH+aJZj+PFU/k5c0RcM63UOdZEnwohTYwD+oZN0YoCWlH+n/Ti6o56e
+         8vaVWGF1BnbIF9QBP3hhDZp588CG1grZQDUHEUvCYrVbPEayq4q0mjtq6IdauKlY/mMW
+         ipSg==
+X-Gm-Message-State: AJIora+6pVIbSoZITQgXJYI2KWGykh4rVCUQysB4zrflovT+IxwRR9Hl
+        gMQHP85/SNYDFeRTIvV/GBZ7OSShC7H6yxSC3TQ=
+X-Google-Smtp-Source: AGRyM1uH3xkkaNRL2YB0jmqdw7nIbIjlvpkg7HbTGzwEtj453kt0upgJuFaIBE0/nZM6zLd+D9/iIszJ3oRrGXwIiGA=
+X-Received: by 2002:a17:906:c7c1:b0:711:d2e9:99d0 with SMTP id
+ dc1-20020a170906c7c100b00711d2e999d0mr10144363ejb.639.1655484892267; Fri, 17
+ Jun 2022 09:54:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220603135714.12007-1-aidanmacdonald.0x0@gmail.com>
- <20220603135714.12007-11-aidanmacdonald.0x0@gmail.com> <CAHp75VevetU0p+BTcQ6HcAn=2xgVGAL34ZuAi53rK3SDt=O-cw@mail.gmail.com>
- <VGkmH1cTj8QZxZXUjbuky58yY3X5QWSY@localhost>
-In-Reply-To: <VGkmH1cTj8QZxZXUjbuky58yY3X5QWSY@localhost>
+References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
+ <20220616104211.9257-3-ddrokosov@sberdevices.ru> <CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNShFRG3kP8b6w@mail.gmail.com>
+ <20220616170218.dihjli46spimozeg@CAB-WSD-L081021.sigma.sbrf.ru>
+ <CAHp75VdEY9z_0=sAkKOico9JKYPOX6yqnoetiW49oFHm+SeUoQ@mail.gmail.com> <20220617142239.wq43wjdxdc2cq37r@CAB-WSD-L081021.sigma.sbrf.ru>
+In-Reply-To: <20220617142239.wq43wjdxdc2cq37r@CAB-WSD-L081021.sigma.sbrf.ru>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 17 Jun 2022 18:08:09 +0200
-Message-ID: <CAHp75VfTLz7Zv1UPROuaGr8g88_BoDb2rd7GQ6m0dNEGSPSasQ@mail.gmail.com>
-Subject: Re: [PATCH 10/10] pinctrl: Add AXP192 pin control driver
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Fri, 17 Jun 2022 18:54:14 +0200
+Message-ID: <CAHp75Vfix_cnnyvfv5xsS1_x_PKS2VLDgc6-QA26Pi_U-c21AA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer driver
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -83,67 +76,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 17, 2022 at 2:14 PM Aidan MacDonald
-<aidanmacdonald.0x0@gmail.com> wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
-> > On Fri, Jun 3, 2022 at 6:29 PM Aidan MacDonald
-> > <aidanmacdonald.0x0@gmail.com> wrote:
+On Fri, Jun 17, 2022 at 4:22 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+>
+> On Thu, Jun 16, 2022 at 08:38:46PM +0200, Andy Shevchenko wrote:
+> > On Thu, Jun 16, 2022 at 7:02 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> > > On Thu, Jun 16, 2022 at 02:18:52PM +0200, Andy Shevchenko wrote:
+> > > > On Thu, Jun 16, 2022 at 12:42 PM Dmitry Rokosov
+> > > > <DDRokosov@sberdevices.ru> wrote:
 
 ...
 
-> >> +       if ((val & reginfo->mask) == (input_muxvals[offset] << (ffs(reginfo->mask) - 1)))
-> >> +               return GPIO_LINE_DIRECTION_IN;
-> >
-> >> +       else
-> >
-> > Redundant.
-> > Also applies for the other similar cases in your code. Note, this is
-> > also redundant for 'continue' and 'break' in case of loops.
->
-> Sorry, I'm not sure what you're referring to here. The "else"?
+> > > > > +       wait_ms = (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
+> > > >
+> > > > This looks very odd from a physics perspective: sec * sec * sec == sec ?!
+> > > >
+> > > > Perhaps you meant some HZ* macros from units.h?
+> > >
+> > > I suppose because of UHZ calculation I have to use NANO instead of
+> > > USEC_PER_SEC in the following line:
+> > >
+> > >         freq_uhz = msa311_odr_table[odr].val * USEC_PER_SEC +
+> > >                    msa311_odr_table[odr].val2;
+> > >
+> > > But below line is right from physics perspective. 1sec = 1/Hz, so
+> > > msec = (USEC_PER_SEC / freq_uhz) * MSEC_PER_SEC:
 
-Yes.
+I believe the first one should be HZ_PER_MHZ, then it will be fine.
 
-> I'm missing the generalization.
+> > >         wait_ms = (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
+> > >
+> > > Or do you mean that I should change MSEC_PER_SEC to just MILLI?
+> >
+> > 1 / Hz = 1 sec. That's how physics defines it. Try to figure out what
+> > you meant by above multiplications / divisions and come up with the
+> > best that fits your purposes.
 >
-> >> +               return GPIO_LINE_DIRECTION_OUT;
+> From my point of view, I've already implemented the best way to calculate
+> how much time I need to wait for the next data chunk based on ODR Hz
+> value :-)
+>
+> ODR value from the table has val integer part and val2 in microHz.
+> By this line we calculate microHz conversion to take into account val2
+> part:
+>
+>     freq_uhz = msa311_odr_table[odr].val * USEC_PER_SEC +
+>                msa311_odr_table[odr].val2;
+>
+> By the next line we try to calculate miliseconds for msleep() from ODR
+> microHz value:
+>
+>     wait_ms = (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
+>
+> (USEC_PER_SEC / freq_uhz) => seconds
+
+> seconds * MSEC_PER_SEC => milliseconds>
+
+> USEC_PER_SEC and MSEC_PER_SEC are just coefficients, they are not
+> measured in "seconds" units.
+
+Nope, it's a mistake. Those multipliers imply the unit. The rest are
+the numbers. See above how to fix this (as far as I can tell).
 
 ...
 
-> >> +       pctl->chip.to_irq               = axp192_gpio_to_irq;
+> > > > > +                       if (err) {
+> > > > > +                               dev_err(dev, "cannot update freq (%d)\n", err);
+> > > > > +                               goto failed;
+> > > > > +                       }
+> > > >
+> > > > Why is this inside the loop and more important under lock? Also you
+> > > > may cover the initial error code by this message when moving it out of
+> > > > the loop and lock.
+> > > >
+> > > > Ditto for other code snippets in other function(s) where applicable.
+> > >
+> > > Yes, I can move dev_err() outside of loop. But all ODR search loop
+> > > should be under lock fully, because other msa311 operations should not
+> > > be executed when we search proper ODR place.
 > >
-> > Why a custom method?
->
-> The irq chip is part of the mfd device, not the gpio chip. There does
-> not seem to be any default implementation for this case so I have to
-> provide one. A similar example is gpio-wm8994.
->
-> I did notice I'm doing something wrong by calling regmap_irq_get_virq()
-> in the probe function, which creates an irq mapping; I think I should be
-> doing that in the to_irq() callback like the other drivers do.
+> > I didn't suggest getting rid of the lock.
 
-It may be done using different approaches, but this part should be
-carefully reviewed by GPIO / pin control maintainers.
+> Sorry, I didn't get you... But I fully agree with you about dev_err()
+> movement.
 
-...
+Yes, that's what I'm talking about. The dev_err() should be outside of
+critical section, for example:
 
-> Ah, sorry, I see that function is deprecated. The documentation points
-> to doing this in the device tree instead. So if I understand correctly
-> I should follow the example of pinctrl-thunderbay and add gpio-ranges:
->
->     pinctrl0: gpio@0 {
->         compatible = "x-powers,axp192-gpio";
->         gpio-controller;
->         #gpio-cells = <2>;
->         gpio-ranges = <&pinctrl0 0 0 6>;
->     };
->
-> which means I'll have to update the gpio DT bindings. I'm guessing the
-> callback you mentioned is add_pin_ranges() or of_gpio_ranges_fallback()
-> but neither of those seem appropriate in this case. The DT node should
-> be good enough.
-
-Sounds good.
+  mutex_unlock();
+  if (ret) {
+    dev_err(...);
+    return ret;
+  }
+  ...
+  return 0;
 
 -- 
 With Best Regards,

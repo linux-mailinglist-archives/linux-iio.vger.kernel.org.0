@@ -2,79 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF35054F9F7
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 17:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DB554FA93
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 17:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383093AbiFQPOx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 11:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
+        id S1382993AbiFQPl3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 11:41:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383091AbiFQPOw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 11:14:52 -0400
-X-Greylist: delayed 1869 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 08:14:51 PDT
-Received: from m15114.mail.126.com (m15114.mail.126.com [220.181.15.114])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 705F83614A
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 08:14:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=oqTFS
-        HQR0LyoKRjMr2/vnSyFVI269+kRaqPVQCinquA=; b=YUbWt5fwnt/qeuRUmA3ks
-        eVCpZ2psR0iXF1+SWD6egNuCcjodxyAm8GSiCgo5o0xD45yq6mZpxNt31gJUPPWs
-        4Zu2nyVGceNZd+r9Q4L5CpPrlk6Q1FOH/wELEeUK5ApmuVtgj2z/Y/aZJBdZbCFY
-        jMmJxz4160rAY0fqjpIZ7A=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-        by smtp7 (Coremail) with SMTP id DsmowACHJv+Ckqxin0VlDg--.21214S2;
-        Fri, 17 Jun 2022 22:41:07 +0800 (CST)
-From:   Liang He <windhl@126.com>
-To:     jic23@kernel.org, lars@metafoo.de, joel@jms.id.au, andrew@aj.id.au,
-        p.zabel@pengutronix.de, lgirdwood@gmail.com, broonie@kernel.org,
-        billy_tsai@aspeedtech.com, colin.king@intel.com
-Cc:     windhl@126.com, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: Fix refcount leak bug in aspeed_adc
-Date:   Fri, 17 Jun 2022 22:41:06 +0800
-Message-Id: <20220617144106.4050677-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S235707AbiFQPlY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 11:41:24 -0400
+X-Greylist: delayed 903 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 08:41:21 PDT
+Received: from sv220.xserver.jp (sv220.xserver.jp [202.226.39.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A15F4F1E2;
+        Fri, 17 Jun 2022 08:41:21 -0700 (PDT)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2.xserver.jp)
+Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [210.188.201.183])
+        by sv220.xserver.jp (Postfix) with ESMTPA id 038CD12025F434;
+        Sat, 18 Jun 2022 00:16:31 +0900 (JST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DsmowACHJv+Ckqxin0VlDg--.21214S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZF4fWry3Gry7Cr4UZr15XFb_yoW3CrcEgw
-        s7WwsxXrnrAFZ0vrWqvw1fXr909Fy8WFWkuF10v34fWa4UArZ7AryDWF4YvrWUZrs2va45
-        ZF4DX34xJrnxGjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjn2-3UUUUU==
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuA0jF2JVj6h7ygABsh
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 17 Jun 2022 23:16:31 +0800
+From:   Steve Dibenedetto <y-kitsuya@bell-group.co.jp>
+To:     undisclosed-recipients:;
+Subject: THIS IS VERY CONFIDENTIAL
+Reply-To: stevedibenedetto17@gmail.com
+Mail-Reply-To: stevedibenedetto17@gmail.com
+Message-ID: <ec1bb68d0d72aa3e007bad8b0e72f08f@bell-group.co.jp>
+X-Sender: y-kitsuya@bell-group.co.jp
+User-Agent: Roundcube Webmail/1.2.0
+X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,
+        SPF_HELO_PASS,SPF_SOFTFAIL,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stevedibenedetto17[at]gmail.com]
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.6 ODD_FREEM_REPTO Has unusual reply-to header
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-In aspeed_adc_set_trim_data(), of_find_node_by_name() will return
-a node pointer with refcount incremented. We should use of_node_put()
-when it is not used anymore.
 
-Signed-off-by: Liang He <windhl@126.com>
----
- drivers/iio/adc/aspeed_adc.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-index 0793d2474cdc..9341e0e0eb55 100644
---- a/drivers/iio/adc/aspeed_adc.c
-+++ b/drivers/iio/adc/aspeed_adc.c
-@@ -186,6 +186,7 @@ static int aspeed_adc_set_trim_data(struct iio_dev *indio_dev)
- 		return -EOPNOTSUPP;
- 	}
- 	scu = syscon_node_to_regmap(syscon);
-+	of_node_put(syscon);
- 	if (IS_ERR(scu)) {
- 		dev_warn(data->dev, "Failed to get syscon regmap\n");
- 		return -EOPNOTSUPP;
 -- 
-2.25.1
+Hello,
 
+My name is Steve Dibenedetto.I apologize to have contacted you this way
+without a direct relationship. There is an opportunity to collaborate
+with me in the sourcing of some materials needed by our company for
+production of the different medicines we are researching.
+
+I'm aware that this might be totally outside your professional
+specialization, but it will be a great source for generating extra
+revenue. I  discovered a manufacturer who can supply us at a lower rate
+than our company's previous purchases.
+I will give you more specific details when/if I receive feedback from
+you showing interest.
+
+Warm Regards
+Steve Dibenedetto
+Production & Control Manager,
+Green Field Laboratories
+Gothic House, Barker Gate,
+Nottingham, NG1 1JU,
+United Kingdom.

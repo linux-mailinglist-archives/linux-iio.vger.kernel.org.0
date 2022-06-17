@@ -2,176 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43FA854F6A7
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 13:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4515554F6D9
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 13:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380876AbiFQL1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 07:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54416 "EHLO
+        id S236406AbiFQLkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 07:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381290AbiFQL1J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 07:27:09 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76ABD6BFD1;
-        Fri, 17 Jun 2022 04:27:06 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id y12so4219890ior.7;
-        Fri, 17 Jun 2022 04:27:06 -0700 (PDT)
+        with ESMTP id S235549AbiFQLkE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 07:40:04 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1A5C5A0B6
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 04:40:03 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id v22so6838657ybd.5
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 04:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=cIita4Mx/OZl+X+VeaS6ACjFa0zy1JtZ/wxGcvDjX4M=;
-        b=cBnghZ9dK8jQypp2zWcU1IJmfJ9ib0azbSO3a6CUrQ6p7k8MqcOEu38UcGE/ELnbTj
-         H8ijRkJPVfwZkD66BARfJX9oqGp5ge7C/Qw3DlQbZsvEEWj/J9mBU7bCEKxQwlnlHY9M
-         SBloAA7m7tmnhDjWeMSIY/T7PARhocjfJGPxhzOeODLK3cPap+SSyb4kH1Z//ZuD4l8v
-         x9YVQQnDeCAKKsgUNQMFXKyMOFvhFCJyKXsnWZg4h4AFQs9m8271FmL3Oc4bhBIDrys2
-         AKhbEKwxmxTk/45W3UpXfGJzK42rRBHh7djKKQ7LrLGqFCSjNEcYTb/10k6Q8kliAaAJ
-         T0AQ==
+         :cc;
+        bh=yc3R1HAxwJRbo0IGIdIenstu0QwkUP0dcps9d2zB52A=;
+        b=vE+ND+8bEtyoWfASyAAGfnuGiqsGSf7/9x42qZYxpfKS8n09VlUZXxBJzoBWXBDi0/
+         Qx+nuKX8jm9+3lx7/BNixXqDDxpw5yZOM/Q5a6NCz+zR4U/B2thvTw42sslUTgNJm/EK
+         Eo/QNM+Qk0FQ9lmPzKYNqvVyXCIy3YTEQtL5Lt4lWuDVsoHrlVJ6EIBQDxR+8Db13f10
+         +wjYSks2Bcq9LoSyJKfsvgwF1Qva45AIxrxliFczdJ0DuIVK7oP/mZ7AmAtDtxAjN2hn
+         M/fSLzMFRMyFhtBbp0Ny88SPC9Tr0qg87AExNkBTKbN2ad5u/ywo2liWkYwserPqKLsS
+         u6zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=cIita4Mx/OZl+X+VeaS6ACjFa0zy1JtZ/wxGcvDjX4M=;
-        b=OW06Ppzody8xhgFYSzr1WtIbLRoJ+Jj1vA6a1Fw9sNPPpKxDF0CtTsx7IUVFGEfgVD
-         4iSdJGRBbsWE8EOFoYPhFK6t1pQ8t+fZ5s+DKCMJcukEnxFkOe/5dXqfciaWEQAHitu2
-         fY5VV9C3iNqY/jUbSwkACv6bKPP4xnU05/dG40bJnMZIbXVLuT3FnGbbCGNmPk9JJu5X
-         HBd+lmB0zIEb/xOjtrTQ9SEndgu6HbpcWRC86jyDtce9BZWbK3Wpp5bkSeW6p1Dt5FLs
-         UtBMQ1znIfmdE17SG0/lHV6mqwI29ZVp337uf1oM2mVJEEKUWVMUbbTh0Zf2GUYSQTmZ
-         s1Qg==
-X-Gm-Message-State: AJIora9twcC8lcid0wmNWgWpIkb7ju6Vm3srqdGyk0cXyz0QW+lzbpg2
-        GbWI9ul1BcJ1WgPOa5lmzAMXur3ZdiXnudfylRwwNuBzDa4=
-X-Google-Smtp-Source: AGRyM1v+uOPPKXH5BGj0nN0XZL/uXw8K7soKzPUvo/hXYcZRuyA8S1WlggM3NtZdIqlhGxZxIj4Std5tTPlwSTv8/pI=
-X-Received: by 2002:a05:6638:d01:b0:331:d29a:8e60 with SMTP id
- q1-20020a0566380d0100b00331d29a8e60mr5201134jaj.254.1655465225916; Fri, 17
- Jun 2022 04:27:05 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=yc3R1HAxwJRbo0IGIdIenstu0QwkUP0dcps9d2zB52A=;
+        b=hv0HF67ftorlcgXFbMrQFAdPoFddDVy/3H+Z+aLtcxwFeCjZ9ZqMrqoUC3DOoORO+K
+         LxKUD9F5To28jcVEhx/5j8WvbSegLrlJCIfcpKNSLTpXJwdj0uXTS6VoSfb8KcMTcqnl
+         Nt4d3+Bsl7UzGtdzpZSt8VGc2ZiIHvxbL7RzQCahQO25oabNoqwzeSMRK3HWNYGybqiv
+         GZeeRij3tH0tjBMY7sRDL/CqOgAq2WtU4ERJidSBLEZRLKVcfoXZgNykzIogkYgqzUkt
+         MQr7sD9DIgMcaOERrl60awKKMINPGoKbw7qvvnrfGwujM0klTBCJgiI/pcj8v9z572XX
+         s4fA==
+X-Gm-Message-State: AJIora8oKh2x88YFHb/C0sAw7FJOqxTj4+xInn7qfvzHl1Jnb3jeLOGA
+        X0fR2xCwwcWgZfgPjxcSCw7HwXGTi3KI9qx83lcS+w==
+X-Google-Smtp-Source: AGRyM1venCjjwZ7GgOmrvGr7VrRGB329r0Hf2ocwMvnWG8w+C90OLZ94ZFN9dD78yXsSvSeaV+aDv5AKrqOZd1021Xk=
+X-Received: by 2002:a25:dc0b:0:b0:65d:e5d:a87a with SMTP id
+ y11-20020a25dc0b000000b0065d0e5da87amr10277471ybe.295.1655466002933; Fri, 17
+ Jun 2022 04:40:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-7-peterwu.pub@gmail.com>
- <28b73da7-d97c-5ea5-0b22-724fa971aeb0@linaro.org>
-In-Reply-To: <28b73da7-d97c-5ea5-0b22-724fa971aeb0@linaro.org>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Fri, 17 Jun 2022 19:26:55 +0800
-Message-ID: <CABtFH5LTpHyaJvwr6WHWx89gdGmsD-inWJa_LidyJzSL5bxowg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/15] dt-bindings: mfd: Add Mediatek MT6370
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, matthias.bgg@gmail.com,
-        lee.jones@linaro.org, Daniel Thompson <daniel.thompson@linaro.org>,
-        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com, ChiYuan Huang <cy_huang@richtek.com>
+References: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
+ <44170bf8-5777-e30b-b74d-a6835b1937e2@metafoo.de> <YqxOl8W2yzp9CcBP@smile.fi.intel.com>
+In-Reply-To: <YqxOl8W2yzp9CcBP@smile.fi.intel.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 17 Jun 2022 13:39:51 +0200
+Message-ID: <CACRpkdbeQ_67V3jkw_-KfTwe54TxrK_LA7N8Nwj1qEpTELN9dQ@mail.gmail.com>
+Subject: Re: Intel Timed-IO driver in IIO/Counter subsystem
+To:     "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        "N, Pandith" <pandith.n@intel.com>,
+        "D, Lakshmi Sowjanya" <lakshmi.sowjanya.d@intel.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "vilhelm.gray@gmail.com" <vilhelm.gray@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Hall, Christopher S" <christopher.s.hall@intel.com>,
+        "Sangannavar, Mallikarjunappa" 
+        <mallikarjunappa.sangannavar@intel.com>,
+        "T R, Thejesh Reddy" <thejesh.reddy.t.r@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Krzysztof,
-
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=E5=B9=
-=B46=E6=9C=8817=E6=97=A5 =E9=80=B1=E4=BA=94 =E6=B8=85=E6=99=A85:15=E5=AF=AB=
-=E9=81=93=EF=BC=9A
->
-> On 13/06/2022 04:11, ChiaEn Wu wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
+On Fri, Jun 17, 2022 at 11:51 AM Shevchenko, Andriy
+<andriy.shevchenko@intel.com> wrote:
+> On Fri, Jun 17, 2022 at 09:22:09AM +0200, Lars-Peter Clausen wrote:
+> > On 6/17/22 08:37, N, Pandith wrote:
+> > > Hi,
+> > >
+> > > We have a Intel Timed IO peripheral with following functionalities :
+> > >
+> > > 1. Event capture capability - Captures event count and timestamp.
+> > > 2. Pulse generation - periodic or single event generation.
+> > > 3. Return cross-timestamp on request.
+> > >
+> > > Timed IO device is being used in various Industrial use cases such as : time capture, synchronization, fan speed calculation etc.
+> > >
+> > > IIO or counter subsystem seems to be suitable for timed-io driver.
+> > >
+> > > Is it favourable to implement as part of IIO or counter subsystem ? Wanted to know your feedback.
 > >
-> > Add Mediatek MT6370 binding documentation.
-> >
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> >  .../bindings/mfd/mediatek,mt6370.yaml         | 279 ++++++++++++++++++
-> >  .../dt-bindings/iio/adc/mediatek,mt6370_adc.h |  18 ++
-> >  2 files changed, 297 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt63=
-70.yaml
-> >  create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
-> >
-> > diff --git a/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml=
- b/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
-> > new file mode 100644
-> > index 000000000000..6c2639e81e50
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
-> > @@ -0,0 +1,279 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/mfd/mediatek,mt6370.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Mediatek MT6370 SubPMIC
-> > +
-> > +maintainers:
-> > +  - ChiYuan Huang <cy_huang@richtek.com>
-> > +
-> > +description: |
-> > +  MT6370 is a highly-integrated smart power management IC, which inclu=
-des a
-> > +  single cell Li-Ion/Li-Polymer switching battery charger, a USB Type-=
-C &
-> > +  Power Delivery (PD) controller, dual flash LED current sources, a RG=
-B LED
-> > +  driver, a backlight WLED driver, a display bias driver and a general=
- LDO for
-> > +  portable devices.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: mediatek,mt6370
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  wakeup-source: true
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +  interrupt-controller: true
-> > +
-> > +  '#interrupt-cells':
-> > +    const: 1
-> > +
-> > +  adc:
-> > +    type: object
-> > +    description: |
-> > +      Provides 9 channels for system monitoring, including vbusdiv5, v=
-busdiv2,
-> > +      vbat, vsys, chg_vddp, ts_bat, ibus, ibat, and temp_jc.
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        const: mediatek,mt6370-adc
-> > +
-> > +      "#io-channel-cells":
-> > +        const: 1
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - '#io-channel-cells'
+> > That sounds like a mix of a counter and PPS device. Have you looked at the
+> > PPS subsystem[1]?
 >
-> Decide in your entire patchset whether you use ' or ". Don't mix.
+> The newly HTE subsystem was proposed by Linus W. to be used for this case.
 
-Thanks for your comments.
-We apologize for doing these mistakes...
-We will use the same symbol in the entire patchset and check again
-before the next submission.
+Indeed, the subsystem was proposed exactly because both IIO and GPIO would
+be consumers of it (possibly more). I think it covers case 1 & 3.
 
->
-> Since you did not test your bindings, I am not reviewing it. First, test
-> them. No need for me to do the job of a automated tool, right?
->
-> Best regards,
-> Krzysztof
+Dipen (the HTE subsystem maintainer) worked very hard on it and it can be
+used with Tegra194 GPIO events flawlessly all the way to userspace.
 
-Best regards,
-ChiaEn Wu
+You need to make an drivers/hte driver for the Intel hardware and jig
+it to the IIO subsystem the same way we connected it to GPIO.
+
+For 2. I am uncertain. Periodic events sound like PWM to me.
+
+If a "single event" is something
+like pulling a GPIO line high/low at a specific (wall clock) time in the
+future, it should probably be in the GPIO subsystem, like a triggered
+GPIO event or so, that sounds a bit hard but certainly doable with some
+thinking and tinkering.
+
+Yours,
+Linus Walleij

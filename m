@@ -2,114 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F19C54F409
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 11:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 673FB54F455
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 11:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231546AbiFQJPn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 05:15:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33490 "EHLO
+        id S1380938AbiFQJdE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 05:33:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbiFQJPm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 05:15:42 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56DF49B43;
-        Fri, 17 Jun 2022 02:15:40 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id m16so1083854ilf.6;
-        Fri, 17 Jun 2022 02:15:40 -0700 (PDT)
+        with ESMTP id S1380925AbiFQJdD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 05:33:03 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A6D15829;
+        Fri, 17 Jun 2022 02:33:02 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id y196so3710044pfb.6;
+        Fri, 17 Jun 2022 02:33:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Rwjg/1YINzqxKrc7KAD/i4G4OnLWc8a5sJgC2L1EvV8=;
-        b=T7RlZkRmUrk1uPWymyVaIYEm2USnc/kiRpW1DN7Cx2fgKOPadbLJ9hDWp330pVll0b
-         nVbSUAeOw0ind5aX2DvD+qJ8edzVQwQd3vVZJpL8lsPgf97MamIi1jYUacpEmf4yt4Nv
-         8RRQrqnZlA+v/EIUq3IJoumZPhS6kWTzFZg2DF9GNU3fnbSMCbrE+BajwsAUMooWjcpt
-         9mPv6dhXPsyKfQqvI+pMgreCD1G0ZEiRwMHTufp3vlcXKkuxk6+kqTFh4zOAP+G5b4Na
-         EpWtKBRqGJyZrmKT1ZeI3lx3hOwvQwReCYUJPQvQLh44wdub2G8emdWusMIolDoHXPjN
-         eScA==
+        h=from:to:cc:subject:date:message-id;
+        bh=DQqtBZQvmWcHeVNDbchb0TJuxs6lxK8z0XJvGtf7guI=;
+        b=XGbCdemz1/31qY+TIdC+qeuVXwy9MkE4SeE9Q3MUi3B5rOsYds/K4LcjJjomqJ295j
+         Ij10mwRe537NcDi3M29i9qVtn/eaz4v1bmTAf8Hg4HigKD5KrsiKdGLtGUumnLOlki+7
+         alrxZ/9QHSb38IrqS/BebMWrjItBzNIw25boG3lsx0WDVy1JRVP2NQom1fWtcrXzLoW5
+         7gRPGuT6ZsRNId9Fg6y0mz7I2ZLTx0sDqUBHf3axoBXkBWnucAR0J+Nx6ZHasXk4ANPo
+         WrjC6++/xxnBEC52kl7KZ1fJstRxMP3zkOgM/GI+tyXze5vPX78d4Ox6hvGUoq8T/gXO
+         nWcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Rwjg/1YINzqxKrc7KAD/i4G4OnLWc8a5sJgC2L1EvV8=;
-        b=DFHz0V+njVCqn++GopoXSIjoI4VxbsFEh5/4qwEMCZEjBVNJ3Lhb5v+URmiwVFpBma
-         vemd/YAALBb9kpSqZkEwYlX7hvPtRUtbBftO7csKdaA3RyJ0/KaY2+Cxq6UMfMhw2OxZ
-         A95a0trAzOOmnlbWLoSfmb7WYdcECw4XUwSGsDsUpQlP8P11cmYBYu5O9DFgAY//IHAu
-         HZ2hgNQAf2TALwCldHR4gmotfZuyYkkXNCwUdsPQJzW6Q8LB8YZI3buD7qr+4FD4D/2E
-         yAJOwAqpXvIh3cBM0S9r4OEzs/bozxHNBfqo9dxll8YNQB5V4NQaT9ILHDgCTstI5Qdb
-         2rng==
-X-Gm-Message-State: AJIora8h7SYXV93x2WHwrMmf0EHB+j+Pofg9wYBD61Fq7WtsKoka7why
-        nzqUJCiC6hzMdTqVF3B3ZT03yu6Ah7zcmrExi9A=
-X-Google-Smtp-Source: AGRyM1ulXgBKYwRX4sDQBTJgY1sJ1HQy/qNt3KPa2+zyrl3Y4yDe7BzlO+x/VaU+eUVa36+znFzZdfjPq6R82D89JK0=
-X-Received: by 2002:a05:6e02:144f:b0:2d1:90c9:9047 with SMTP id
- p15-20020a056e02144f00b002d190c99047mr5212028ilo.211.1655457340207; Fri, 17
- Jun 2022 02:15:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-12-peterwu.pub@gmail.com>
- <915871e4-b156-ab19-043f-b719e03a5711@infradead.org>
-In-Reply-To: <915871e4-b156-ab19-043f-b719e03a5711@infradead.org>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Fri, 17 Jun 2022 17:15:29 +0800
-Message-ID: <CABtFH5JyESUuMkDuRSKdc7pf5M4Zah2eZ_LG1RMbMVYxYkcBxA@mail.gmail.com>
-Subject: Re: [PATCH v2 11/15] iio: adc: mt6370: Add Mediatek MT6370 support
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     jic23@kernel.org, lars@metafoo.de, matthias.bgg@gmail.com,
-        lee.jones@linaro.org, Daniel Thompson <daniel.thompson@linaro.org>,
-        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com, ChiaEn Wu <chiaen_wu@richtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=DQqtBZQvmWcHeVNDbchb0TJuxs6lxK8z0XJvGtf7guI=;
+        b=CaAalMcOaLse1u3oiF1wdKQx0vo7md75LeFrqHST7V+I5XOF+7BN/swQLUoEjal6xB
+         qvZ20jhXoW+k1jAlA6PUBc0fQ7c6/Hs6IXLFw+ewbMhvJPrpWXYpdWA7NXvKdqlk+kde
+         SGgn7uj1xlc2RPhXbxY5/eLs//aD+CuX3eCpBcIdAci/CZkNc/M6D+Y1BrsGupFHBBEJ
+         e9TjAZcYaUMHhy/4oLpotlCQZL+mR57n4V7GmXQyGAjRq2Iyh1FBcxSsoeerxjrBNbPn
+         8e5EbUoRnJuDiFFNVfUSvcnwbWM5oIxKkHQMLWUMQgcT7uzGleTwa9Gbc4shX7Aaoyf3
+         0KOQ==
+X-Gm-Message-State: AJIora8ymFUOdBd+ebEqR0TfoZW1Y7niVgtb09I+u+UXBsf+mE1NTNaI
+        s020bNlIMhf6wQubVpl/w6Q=
+X-Google-Smtp-Source: AGRyM1txPmv7kBAqyuErGcZWmFl01saucMsNwFPHvJMCN0YByXKQJL++Z7XlKZQVAZV6yqkdg/Kt8A==
+X-Received: by 2002:a05:6a00:2410:b0:522:9837:581f with SMTP id z16-20020a056a00241000b005229837581fmr9072334pfh.11.1655458381800;
+        Fri, 17 Jun 2022 02:33:01 -0700 (PDT)
+Received: from localhost.localdomain ([2402:7500:46b:e813:14e7:c8c7:4065:3f67])
+        by smtp.gmail.com with ESMTPSA id o10-20020a170902d4ca00b0015e8d4eb242sm3103576plg.140.2022.06.17.02.32.59
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 17 Jun 2022 02:33:01 -0700 (PDT)
+From:   cy_huang <u0084500@gmail.com>
+To:     jic23@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org
+Cc:     lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH 0/2] Add Richtek RTQ6056 support
+Date:   Fri, 17 Jun 2022 17:32:53 +0800
+Message-Id: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Randy,
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-Thanks for your comment!
-I apologize for any inconvenience caused when you decoded this help text.
-I will refine this in the next patch, thanks!
+This patch series is to enable Richtek RTQ6056 support.
 
-Randy Dunlap <rdunlap@infradead.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=8814=E6=
-=97=A5 =E9=80=B1=E4=BA=8C =E5=87=8C=E6=99=A84:17=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> On 6/13/22 04:11, ChiaEn Wu wrote:
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index 71ab0a06aa82..09576fb478ad 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -737,6 +737,15 @@ config MEDIATEK_MT6360_ADC
-> >         is used in smartphones and tablets and supports a 11 channel
-> >         general purpose ADC.
-> >
-> > +config MEDIATEK_MT6370_ADC
-> > +     tristate "Mediatek MT6370 ADC driver"
-> > +     depends on MFD_MT6370
-> > +     help
-> > +       Say Y here to enable MT6370 ADC support.
-> > +
-> > +       Integrated for System Monitoring includes is used in smartphone=
-s
->
-> Please try again on the help text. I can't decode that.
->
-> > +       and tablets and supports a 9 channel general purpose ADC.
->
-> --
-> ~Randy
+The RTQ6056 is a high accuracy current-sense monitor with I2C interface, and
+the device provides full information for system by reading out the load current
+and power.
 
-Best Regards,
-ChiaEn Wu
+ChiYuan Huang (2):
+  dt-bindings: iio: adc: Add rtq6056 adc support
+  iio: adc: Add rtq6056 support
+
+ .../ABI/testing/sysfs-bus-iio-adc-rtq6056          |  58 +++
+ .../bindings/iio/adc/richtek,rtq6056-adc.yaml      |  57 +++
+ drivers/iio/adc/Kconfig                            |  15 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/rtq6056-adc.c                      | 548 +++++++++++++++++++++
+ 5 files changed, 679 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-rtq6056
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+ create mode 100644 drivers/iio/adc/rtq6056-adc.c
+
+-- 
+2.7.4
+

@@ -2,141 +2,214 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C401B54F8D8
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 16:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C12354F913
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jun 2022 16:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234937AbiFQODg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 10:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
+        id S234097AbiFQOXI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 10:23:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1382416AbiFQODf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 10:03:35 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D0D3B545
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 07:03:34 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id i19so6494928qvu.13
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 07:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=fiwp8bsbcjGAaZzZV6s3gf3i6c0BmFdlOtnUZ+QPRAE=;
-        b=TlBfLHbQrtLcxqYB16q2koB2KB/RtRbQ7qkK4JgEIanSxWsYGDBOQRO0Y0AUD8RHRV
-         z51ifxgV6eLYIaXG5O5mAuo7dQ/BITpNK3nGgeHr2z7waQTVtmTu8LXCVm0mSPUuClaU
-         LnH9oVcUBgaEHTN5FPFORTA02cVVIi/NPqLjvrQyLuTRxGwEFYIEtE0V3fG995eo2OQl
-         hayxhqhISOkZHqmHeByUZd8QJLua2f9Awx6guncO4sG16/J9oJAc4a7pNUx8F63rOSRd
-         Ovn0wzSL0lmFbj/y10l4NfxZpIAakSSwwb3UAv/KRQY2WtqhTr5jIw4FxMYzM5poWWPl
-         HXAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=fiwp8bsbcjGAaZzZV6s3gf3i6c0BmFdlOtnUZ+QPRAE=;
-        b=lH0l3XDw+/ilA48tcUHm9JCE5jSPYwPEbRI9q54BncN9V4P18VoqYoKYvMDDlUqiwS
-         +NuYZkqwv4JiYinEMasq8Dk4eMyRFvR4KSnd8JXppqlZ/Xp28/lOHIqU9NsZpLYxBaDM
-         9R+LoEuoLMcAgin6nOYDeqeK5DUwHvg3ZD3eXo+DyC6Chb48S6cGUlPdSNGd5CNHNG66
-         Zk2tlOdCsZKz0mlgFpRi4PegdvPxvSU9e3h4JgTx+BPqSmoENEZV2lc242COoZ4eQ1c9
-         wsQnDqXd9j/VaMxRe1SV+2QRxPeWTHu7FDbXNp3LQhYKouwIE70EBjz8QI/NpiBc5FK/
-         3g0Q==
-X-Gm-Message-State: AJIora8ZsfHlI7AV970dCcspZwrBXz5GuFr/EkUoCGxleLGoBlzqDY8f
-        Hzr3ur1oRJmVvUbgrMiG0YbaVw==
-X-Google-Smtp-Source: AGRyM1vbbUiWoN5O60iVrqu2Sgx4rsnVuNA+lYFkHp86XhIhEYu/mSw4Nk6C0XEheNKNeKdozF3LRQ==
-X-Received: by 2002:a05:6214:5f8d:b0:464:6b1b:1bf2 with SMTP id ls13-20020a0562145f8d00b004646b1b1bf2mr8438028qvb.0.1655474613335;
-        Fri, 17 Jun 2022 07:03:33 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id bj30-20020a05620a191e00b006a758ce2ae1sm4416819qkb.104.2022.06.17.07.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 07:03:32 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 10:03:30 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     "D, Lakshmi Sowjanya" <lakshmi.sowjanya.d@intel.com>,
-        "N, Pandith" <pandith.n@intel.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        with ESMTP id S231616AbiFQOXH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 10:23:07 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92A7313F14;
+        Fri, 17 Jun 2022 07:23:01 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id A3D9B5FD02;
+        Fri, 17 Jun 2022 17:22:58 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1655475778;
+        bh=Jdzs37PQONv+MWbIBgcYFpdKs3EVFCoHkcvkdPG8Yh8=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=mKtGSg/oUWAu5xHFLhdo62tmRerPWeQ025Z+ujrDdbMSg9Jy5TTf+JeZvRNOrFhw/
+         LdwD8DB5g/B63Fjzf0cazM0D2QdnAhw/LOKjRzr6q7hwjNttLw/EN0j88JJRlbJKR4
+         ZMCXUw8G9zVh2z/q1Il2pHmeNxFfYQB65KZk9Ff5hh3KehA4ffkocg19qN+YJgouiG
+         P3bHqP5RbUI9IL3MXGU0FijsasjbKm75t+AiaBsR+DO2eMBXwSvMrw4Az9PonVHind
+         FXfNfMO7VRi0hARyVGEWP5EJH6y9/C1hWWxUQHsBNzWuM6ySWaIeO8hh4AyPV/+njC
+         Jf+9E7REh9omQ==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Fri, 17 Jun 2022 17:22:45 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "jic23@kernel.org" <jic23@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "Hall, Christopher S" <christopher.s.hall@intel.com>,
-        "Sangannavar, Mallikarjunappa" 
-        <mallikarjunappa.sangannavar@intel.com>,
-        "T R, Thejesh Reddy" <thejesh.reddy.t.r@intel.com>
-Subject: Re: Intel Timed-IO driver in IIO/Counter subsystem
-Message-ID: <YqyJslf2UsM32xRP@fedora>
-References: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Topic: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Index: AQHYgW2+up0uMWdZgUWEAW/5cCPkBq1RwVQAgABPMQCAABr0AIABSsaA
+Date:   Fri, 17 Jun 2022 14:22:22 +0000
+Message-ID: <20220617142239.wq43wjdxdc2cq37r@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
+ <20220616104211.9257-3-ddrokosov@sberdevices.ru>
+ <CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNShFRG3kP8b6w@mail.gmail.com>
+ <20220616170218.dihjli46spimozeg@CAB-WSD-L081021.sigma.sbrf.ru>
+ <CAHp75VdEY9z_0=sAkKOico9JKYPOX6yqnoetiW49oFHm+SeUoQ@mail.gmail.com>
+In-Reply-To: <CAHp75VdEY9z_0=sAkKOico9JKYPOX6yqnoetiW49oFHm+SeUoQ@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <90F88ACC28C1C841A6FDC5B0F822968E@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PdcVgtCMHVmxHtf4"
-Content-Disposition: inline
-In-Reply-To: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/17 11:24:00 #19799334
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---PdcVgtCMHVmxHtf4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jun 17, 2022 at 06:37:14AM +0000, N, Pandith wrote:
-> Hi,
+On Thu, Jun 16, 2022 at 08:38:46PM +0200, Andy Shevchenko wrote:
+> On Thu, Jun 16, 2022 at 7:02 PM Dmitry Rokosov <DDRokosov@sberdevices.ru>=
+ wrote:
+> > On Thu, Jun 16, 2022 at 02:18:52PM +0200, Andy Shevchenko wrote:
+> > > On Thu, Jun 16, 2022 at 12:42 PM Dmitry Rokosov
+> > > <DDRokosov@sberdevices.ru> wrote:
 >=20
-> We have a Intel Timed IO peripheral with following functionalities :
+> ...
 >=20
-> 1. Event capture capability - Captures event count and timestamp.
-> 2. Pulse generation - periodic or single event generation.
-> 3. Return cross-timestamp on request.
+> > > Not sure why you put those blank lines herey, it makes code not compa=
+ct.
+> >
+> > Here I use blank lines to split fields from different registers.
+> > In other words, in the msa311_fields enum one line contains fields from=
+ one
+> > register. But for some heavy registers (like TAP_ACTIVE_STS) we have so=
+ many
+> > fields and their declaration doesn't fit to 80 symbols.
+> > So I've made a decision to split registers using blank lines.
 >=20
-> Timed IO device is being used in various Industrial use cases such as : t=
-ime capture, synchronization, fan speed calculation etc.
+> Better is to add a comment explaining what register is described
+> below, and not just a blank line.
 >=20
-> IIO or counter subsystem seems to be suitable for timed-io driver.
+> ...
 >=20
-> Is it favourable to implement as part of IIO or counter subsystem ? Wante=
-d to know your feedback.
+
+Agreed, I'll do that in the v4.
+
+...
+
+> > > > +       wait_ms =3D (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
+> > >
+> > > This looks very odd from a physics perspective: sec * sec * sec =3D=
+=3D sec ?!
+> > >
+> > > Perhaps you meant some HZ* macros from units.h?
+> > >
+> >
+> > I suppose because of UHZ calculation I have to use NANO instead of
+> > USEC_PER_SEC in the following line:
+> >
+> >         freq_uhz =3D msa311_odr_table[odr].val * USEC_PER_SEC +
+> >                    msa311_odr_table[odr].val2;
+> >
+> > But below line is right from physics perspective. 1sec =3D 1/Hz, so
+> > msec =3D (USEC_PER_SEC / freq_uhz) * MSEC_PER_SEC:
+> >
+> >         wait_ms =3D (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
+> >
+> > Or do you mean that I should change MSEC_PER_SEC to just MILLI?
 >=20
-> We may need to use custom ABI for sysfs based user interaction OR
-> Can we enhance ioctl interface to accommodate our use case (counter-chard=
-ev.c) ?
-> Since timed-io works in nano second precision, ioctl is more suitable.
+> 1 / Hz =3D 1 sec. That's how physics defines it. Try to figure out what
+> you meant by above multiplications / divisions and come up with the
+> best that fits your purposes.
 >=20
-> Regards,
-> Pandith and Sowjanya
+> ...
 >=20
-> ps : resent the mail with plain text as delivery to linux-iio@vger.kernel=
-=2Eorg failed.
 
-Hello Pandith and Sowjanya,
+From my point of view, I've already implemented the best way to calculate
+how much time I need to wait for the next data chunk based on ODR Hz
+value :-)
 
-What you are describing sounds similar to what counter-chardev.c tries
-to solve (i.e. Counter events with timestamps). Would you elaborate more
-on how this device works and what you are trying to accomplish with it?
+ODR value from the table has val integer part and val2 in microHz.
+By this line we calculate microHz conversion to take into account val2
+part:
 
-For example, when you refer to an "event count and timestamp", does
-count here mean the internal device hardware timestamp or is this the
-Linux system timestamp? Does "pulse generation" refer to capturing the
-count on some physical line signal, or is this a device-internal timer
-countdown trigger event? Is "cross-timestamp" referring to a difference
-calculation between two count events?
 
-Thanks,
+    freq_uhz =3D msa311_odr_table[odr].val * USEC_PER_SEC +
+               msa311_odr_table[odr].val2;
 
-William Breathitt Gray
+By the next line we try to calculate miliseconds for msleep() from ODR
+microHz value:
 
---PdcVgtCMHVmxHtf4
-Content-Type: application/pgp-signature; name="signature.asc"
+    wait_ms =3D (USEC_PER_SEC * MSEC_PER_SEC) / freq_uhz;
 
------BEGIN PGP SIGNATURE-----
+(USEC_PER_SEC / freq_uhz) =3D> seconds
+seconds * MSEC_PER_SEC =3D> milliseconds
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYqyJsgAKCRC1SFbKvhIj
-KzCsAQCfRLagWTH90q2mxFYupe0e3leAexardtoyIQa6T//v8wEAw1bh2bKx+bB0
-Na/k6m9BU4BgIos+g+prjk9fuY+ycgY=
-=Hsb8
------END PGP SIGNATURE-----
+USEC_PER_SEC and MSEC_PER_SEC are just coefficients, they are not
+measured in "seconds" units.
 
---PdcVgtCMHVmxHtf4--
+> > > > +                       if (err) {
+> > > > +                               dev_err(dev, "cannot update freq (%=
+d)\n", err);
+> > > > +                               goto failed;
+> > > > +                       }
+> > >
+> > > Why is this inside the loop and more important under lock? Also you
+> > > may cover the initial error code by this message when moving it out o=
+f
+> > > the loop and lock.
+> > >
+> > > Ditto for other code snippets in other function(s) where applicable.
+> >
+> > Yes, I can move dev_err() outside of loop. But all ODR search loop
+> > should be under lock fully, because other msa311 operations should not
+> > be executed when we search proper ODR place.
+>=20
+> I didn't suggest getting rid of the lock.
+>=20
+> ...
+>=20
+
+Sorry, I didn't get you... But I fully agree with you about dev_err()
+movement.
+
+> > > > +       mutex_lock(&msa311->lock);
+> > > > +       err =3D regmap_field_write(msa311->fields[F_NEW_DATA_INT_EN=
+], state);
+> > > > +       mutex_unlock(&msa311->lock);
+> > >
+> > > > +
+> > >
+> > > No need.
+> >
+> > Sorry, I don't understand. We do not need to call it under lock, right?
+> > I think we have to wrap it by msa311 lock, because other msa311
+> > operations should not be executed when we enable or disable new data
+> > interrupt (for example ODR value changing or something else).
+>=20
+> The blank line is not needed, I specifically commented on the
+> emphasized paragraph (by delimiting it with blank lines and leaving
+> the rest for the better context for you to understand, it seems it did
+> the opposite...).
+>=20
+> ...
+>=20
+
+Yep, didn't get you properly... Sorry for that...
+
+--=20
+Thank you,
+Dmitry=

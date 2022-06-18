@@ -2,57 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9E06550628
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 18:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5635355062D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:00:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235504AbiFRQqS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 12:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54332 "EHLO
+        id S236074AbiFRRA2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 13:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234351AbiFRQqR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 12:46:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F4529582;
-        Sat, 18 Jun 2022 09:46:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E2F63B80A72;
-        Sat, 18 Jun 2022 16:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC689C3411A;
-        Sat, 18 Jun 2022 16:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655570774;
-        bh=O2RJ2eqglnM+kXxDGHgy56LBtlq6DELn/lrQeHUDxv0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HSHjkS30t9lRlmWfuNd2+3ndOnL233B8tJTKTstwSQEXz/p0ev/9xBUXnDLI3JnAt
-         tgiQg1Ed+OwoUAfebcbycWuP5kw8/8aaLK69+goSvkTnrVIwV8VJrDEXPg1N5xpqQZ
-         jcsfsq5dZ2Ufsfp9u5/rymT5eW8lbLRCPo7pgfvgZhF1H6+KgrKhk3F6iXoEeslOXm
-         YguscccVN2SiiHoj1yTTwGWdUHEborey8nWc14i0FpCT/hrTjgIQWPZsK6T1f32klW
-         vcG3VZIH99wDv4K8jrKYoLlhNoUjs7rOaU2vdATNIbqR0xfJayFbRdqQCyk+sOfJvg
-         B9BMo7SbSFszg==
-Date:   Sat, 18 Jun 2022 17:55:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     linux-iio@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Song Qiang <songqiang1304521@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] proximity: vl53l0x: Make VDD regulator actually
- optional
-Message-ID: <20220618175530.2106129e@jic23-huawei>
-In-Reply-To: <20220614112049.302278-1-luca.weiss@fairphone.com>
-References: <20220614112049.302278-1-luca.weiss@fairphone.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S234566AbiFRRA1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:00:27 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5493612D02
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 10:00:23 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id y19so13945411ejq.6
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 10:00:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=Qo+XVZATD7QvafJGYNsBnvzlaXlfHOgJMqIMb8gJ68I=;
+        b=X2qWk44P4TSsmjCHzHruBJB3JXlcqcj+1A7VBhLQLmyWGJEYrzo6zSx/p3/xEsVQWG
+         WbBKM9iHasQQrHEC+N5Se9AK72b0KMQDF/nOORGPr2GLq5F05iG3j9EMbPzqBXYjYFIN
+         ttG17/+j2bTOL8G6Fpo7AyPSHFkD9X5jK+pt0ybo3an5HBbIf1mZV7VPZclOJHhfdH4g
+         sS7YyhFiIcjCoiiaQo+gxkq1r5pX3p7v3P3rEMInsSrPtg+ghu1BOTlEud3m9VQle5FY
+         kJI9znu9F4cO2R3YMEzgRBOuNP0U0a791jySrdInn6/olG5aXhhyDcJUC4gJ6a6n2CKi
+         Pt/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=Qo+XVZATD7QvafJGYNsBnvzlaXlfHOgJMqIMb8gJ68I=;
+        b=N38ASnrt2WO+vEjm+XJNdnyq2DeIbpMeJVPh6JA3awzI1tokUQrldNAAMmhLnx+eL6
+         xbzpKmZnVW1fYcvg2L5SbFXlMBNjeP1UY7AaBV7vSNG1OZxtvblylK0s2qplTL7BTCEv
+         q/DF/4R6ZyvynSlrMIywrGht7FFxEmnGivZSr098+WMo9juFhN9wkcO9sSGCswMgWtPX
+         UgrYo54f1LxFVU0a760fs8RX3C4+wZzrDdZBS+MA/BAS6qadne9vDwbN4HoNy70+3Fjk
+         E+lfakMGsWtDqi2zDjF+7yYpscOphq3+VtAo/QBjc7POnckPnmXCQIQt9v48YRQvCBJP
+         Sq6A==
+X-Gm-Message-State: AJIora/2WtV8YCICzSCve2cDi1wIF6/GZCtkVExcCdXkbnc4XDQzuKLH
+        xVzJSr6cbkB7XLHU0k8a8SHz5Q==
+X-Google-Smtp-Source: AGRyM1u4CVew7K3LxjmXZseIbBAUDExxTq6WbzYmeYgVp/qnZPQHgFK1WAIuvASEueoknrZsutAr/Q==
+X-Received: by 2002:a17:906:649b:b0:712:24cd:6102 with SMTP id e27-20020a170906649b00b0071224cd6102mr14417111ejm.664.1655571621875;
+        Sat, 18 Jun 2022 10:00:21 -0700 (PDT)
+Received: from [192.168.0.205] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id f23-20020a170906825700b0070ad296e4b0sm3559455ejx.186.2022.06.18.10.00.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jun 2022 10:00:21 -0700 (PDT)
+Message-ID: <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
+Date:   Sat, 18 Jun 2022 19:00:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
+Content-Language: en-US
+To:     ChiYuan Huang <u0084500@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        cy_huang <cy_huang@richtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+ <1655458375-30478-2-git-send-email-u0084500@gmail.com>
+ <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
+ <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,38 +83,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Jun 2022 13:20:50 +0200
-Luca Weiss <luca.weiss@fairphone.com> wrote:
+On 18/06/2022 08:50, ChiYuan Huang wrote:
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> 於 2022年6月18日 週六 上午9:45寫道：
+>>
+>> On 17/06/2022 02:32, cy_huang wrote:
+>>> From: ChiYuan Huang <cy_huang@richtek.com>
+>>>
+>>> Add the documentation for Richtek RTQ6056.
+>>>
+>>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+>>> ---
+>>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
+>>>  1 file changed, 57 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>> new file mode 100644
+>>> index 00000000..6b4e0e0
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>> @@ -0,0 +1,57 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
+>>> +
+>>> +maintainers:
+>>> +  - ChiYuan Huang <cy_huang@richtek.com>
+>>> +
+>>> +description: |
+>>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
+>>> +  interface, and the device provides full information for system by reading
+>>> +  out the loading current and power.
+>>> +
+>>> +  The device monitors both of the drops across sense resistor and the BUS
+>>> +  voltage, converts into the current in amperes, and power in watts through
+>>> +  internal analog-to-digital converter ADC. The programmable calibration,
+>>> +  adjustable conversion time, and averaging function are also built in for
+>>> +  more design flexibility.
+>>> +
+>>> +  Datasheet is available at
+>>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    const: richtek,rtq6056
+>>> +
+>>> +  reg:
+>>> +    maxItems: 1
+>>> +
+>>> +  "#io-channel-cells":
+>>> +    const: 1
+>>> +
+>>> +  richtek,shunt-resistor-uohm:
+>>
+>> Use standard properties, so "-micro-ohms". Drop the unit from
+>> description and drop the ref.
+>>
+> Use richtek.shunt-resistor-micro-ohms?
 
-> Contrary to what the naming might suggest, devm_regulator_get_optional
-> returns -ENODEV in case the regulator is not found which will trigger
-> probe error in this driver.
-> 
-> Use devm_regulator_get instead which will return a dummy regulator that
-> we can just use as if it was a proper regulator.
-> 
-> Fixes: d3d6dba56dab ("proximity: vl53l0x: Handle the VDD regulator")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> @Jonathan: As discussed in the other email, maybe you want to
-> adjust/remove the "Fixes:" tag. Your call.
-Applied to the togreg branch of iio.git.
+Yes.
 
-> 
->  drivers/iio/proximity/vl53l0x-i2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/proximity/vl53l0x-i2c.c b/drivers/iio/proximity/vl53l0x-i2c.c
-> index 3b7a33ff601d..c7c4d33d340f 100644
-> --- a/drivers/iio/proximity/vl53l0x-i2c.c
-> +++ b/drivers/iio/proximity/vl53l0x-i2c.c
-> @@ -237,7 +237,7 @@ static int vl53l0x_probe(struct i2c_client *client)
->  				     I2C_FUNC_SMBUS_BYTE_DATA))
->  		return -EOPNOTSUPP;
->  
-> -	data->vdd_supply = devm_regulator_get_optional(&client->dev, "vdd");
-> +	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
->  	if (IS_ERR(data->vdd_supply))
->  		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
->  				     "Unable to get VDD regulator\n");
+> Or the prefix 'richtek,' can be removed?
 
+No, the vendor prefix must stay.
+
+Best regards,
+Krzysztof

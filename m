@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25DE155056D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 16:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BF9550575
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 16:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239007AbiFROJ2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 10:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57246 "EHLO
+        id S235775AbiFROMc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 10:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237409AbiFROIr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 10:08:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25A7C2735;
-        Sat, 18 Jun 2022 07:08:47 -0700 (PDT)
+        with ESMTP id S233353AbiFROMY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 10:12:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A84217E23;
+        Sat, 18 Jun 2022 07:12:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C8178B80A2B;
-        Sat, 18 Jun 2022 14:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ED4C3411A;
-        Sat, 18 Jun 2022 14:08:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2BB6DB802C7;
+        Sat, 18 Jun 2022 14:12:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F52EC3411A;
+        Sat, 18 Jun 2022 14:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655561324;
-        bh=VtXf63KgLtr5IA1INMzI+NXdXdKDkS8xgWUivtRwKg0=;
+        s=k20201202; t=1655561540;
+        bh=psM6drmWISqaLG1yD9nvqEE5SBtQuHMteerZ+w778sk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jnCXqiHO0ojW3Oj92dnVO0uSD9L4UO7oXWXmdsB5E6hNNz064Ek7fLRbkKbGJwT9e
-         Otg4sN7B6kQvh8ZwufZhPEaCMH64ss7L6B3U16srwu0eF3+n9bkjK/qeD6vW8cyX6t
-         y71fSSEcgXPXKgWzOxC7x2NyV4B4XirovspGHrEUInv5DjuoeUB8ZQuf9w0K2uq4nS
-         i8F5A5h+ZC7yqR01B/ElJFm0mjzZGOqprBwb/rQfEWts9q3Y1XgYGAGUIoRJJPR+ve
-         +8jVYyE05sS6qUtLzoN72EUZbq9LeMmX4mVFvuO+1D7cIHcuVZCfo2nE+yfQ/uwkWf
-         ouVx6l9LiXMvg==
-Date:   Sat, 18 Jun 2022 15:18:00 +0100
+        b=EEFQAa06XJRwywULvTdYLm8vhq8cjk/K9agQ2xq2TJyUsJ5Es2k3/NfjjFTXbrHYh
+         3PkDE3/ghwb6wKY1/nsutc6OVnei5PW0+/1mN8OiYHu94+g5kBJJ3KTauMnsU85xcy
+         V5KcH++Ipnl4PPN4zsen7EMgEVqGAV1N6hXcN50SZLbaDh7MKLhAtSYnuKhCuABTvW
+         n6ujxwyh0UVKpX42sX73LeiifVBSHR5RLY8ZdX8bl09HD0RgQsYXEXKb0CANuTh0RY
+         J41pjuc8NkVFX7cbPkTiWu4pmRBw1G5V+Z/RzoEIgDb8KXEjiqXrYq09hjcEM05EK6
+         rmi/CgT3EEJYg==
+Date:   Sat, 18 Jun 2022 15:21:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -40,12 +40,12 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Hans de Goede <hdegoede@redhat.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 1/8] iio: magnetometer: yas530: Change data type of
- hard_offsets to signed
-Message-ID: <20220618151800.0616c21f@jic23-huawei>
-In-Reply-To: <dd6fe7f67e2f8c917aabd6eb0e0deccc660b48c2.1655509425.git.jahau@rocketmail.com>
+Subject: Re: [PATCH v3 2/8] iio: magnetometer: yas530: Change range of data
+ in volatile register
+Message-ID: <20220618152137.59de13fb@jic23-huawei>
+In-Reply-To: <bd9cd1d425afc07cd9939e4b41ada39a9ca350b4.1655509425.git.jahau@rocketmail.com>
 References: <cover.1655509425.git.jahau@rocketmail.com>
-        <dd6fe7f67e2f8c917aabd6eb0e0deccc660b48c2.1655509425.git.jahau@rocketmail.com>
+        <bd9cd1d425afc07cd9939e4b41ada39a9ca350b4.1655509425.git.jahau@rocketmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,30 +60,17 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Jun 2022 02:13:09 +0200
+On Sat, 18 Jun 2022 02:13:10 +0200
 Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> The "hard_offsets" are currently unsigned u8 but they should be signed as they
-> can get negative. They are signed in function yas5xx_meaure_offsets() and in the
-> Yamaha drivers [1][2].
+> In function yas5xx_volatile_reg(), the range for measure data should end at
+> "YAS5XX_MEASURE_DATA + 7" instead of "+ 8" as we count from 0 to 7 here.
 > 
-> [1] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas.h#L156
-> [2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L91
+> This change is of low importance as the "+ 8" register isn't called.
 > 
-> Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
 > Cc: Linus Walleij <linus.walleij@linaro.org>
 
-Trivial but it's nice to clean out CC if you also have a tag from the person.
-All the automation will generally send emails to anyone who has given a tag
-so the CC doesn't add anything at this point
-
-I try to drop cases of this when applying patches, but if it's done by
-the submitter it makes my life a little easier!
-
-Thanks,
-
-Jonathan
-
+Drop the Cc now you have an RB from Linus.
 
 > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
@@ -93,16 +80,22 @@ Jonathan
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-> index b2bc637150bf..40192aa46b04 100644
+> index 40192aa46b04..2799ae0784fd 100644
 > --- a/drivers/iio/magnetometer/yamaha-yas530.c
 > +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-> @@ -132,7 +132,7 @@ struct yas5xx {
->  	unsigned int version;
->  	char name[16];
->  	struct yas5xx_calibration calibration;
-> -	u8 hard_offsets[3];
-> +	s8 hard_offsets[3];
->  	struct iio_mount_matrix orientation;
->  	struct regmap *map;
->  	struct regulator_bulk_data regs[2];
+> @@ -527,7 +527,7 @@ static bool yas5xx_volatile_reg(struct device *dev, unsigned int reg)
+>  {
+>  	return reg == YAS5XX_ACTUATE_INIT_COIL ||
+>  		reg == YAS5XX_MEASURE ||
+> -		(reg >= YAS5XX_MEASURE_DATA && reg <= YAS5XX_MEASURE_DATA + 8);
+> +		(reg >= YAS5XX_MEASURE_DATA && reg <= YAS5XX_MEASURE_DATA + 7);
+trivial, but I'd prefer it as
+reg < RAS5XX_MEASURE_DATA + 8
+because we have 8 registers and do bulk reads of sizeof(u8[8]) so it is more natural
+to use 8 as the constant.
+
+
+>  }
+>  
+>  /* TODO: enable regmap cache, using mark dirty and sync at runtime resume */
 

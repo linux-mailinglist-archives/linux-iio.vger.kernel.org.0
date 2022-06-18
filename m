@@ -2,59 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 972115504FC
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213F6550506
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:11:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234117AbiFRNIz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 09:08:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51704 "EHLO
+        id S229561AbiFRNLl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 09:11:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238078AbiFRNIp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:08:45 -0400
+        with ESMTP id S229456AbiFRNLk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:11:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E6E167E5;
-        Sat, 18 Jun 2022 06:08:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF9A17079
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 06:11:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6341C60B63;
-        Sat, 18 Jun 2022 13:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71232C3411A;
-        Sat, 18 Jun 2022 13:08:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08B2160B97
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 13:11:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1924C3411A;
+        Sat, 18 Jun 2022 13:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655557721;
-        bh=/QwGfDf6kYui15a8Igc4mfWEBIwRmra1YgsyS0TRMaU=;
+        s=k20201202; t=1655557897;
+        bh=eLZj0TBzW6kjVFOhmlMgqKyUQcYLNqcUvNu5rXRrGd4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ESMxcyIMqq4A+Uu99HzmhdwFPJzv+wlvWXV3vwLR5k2X+TQSVG+TXYnPACg/7AnKr
-         +u4lpf1/vaOWsWOFn2yysuXeEAX83zTHAKAtwxKizWmgP6IdjlKYhqR8mGJAH4eKjV
-         K70truEf0ys2TlQDDtiVXFiUtgh1vGK3cDjJV7NLkREc0arJ/4K+0GSXohWbzJxCc0
-         NgyKr5jHGM3o4lSCvWrBazlEi/4BxIiLxHJjP5whbneiTpLHu7KTVO2oUEcRYoDa/o
-         sPP/LH8tu2Ltsv0CKzs0uAEw87R8UGOq2YzytTymsI8LlJXnwwaAreLihbILtSo14i
-         5vWhdGytdeV9A==
-Date:   Sat, 18 Jun 2022 14:17:57 +0100
+        b=PTmQwS4Wsd0oV0sexU5zDQqyuMwmaI/3+L6sJXWufkr1u/w6JMumcm2NoO7og5q7I
+         kDmj0hzksxlDAmlRnLcCGNzPmqherAHWztw8xXclGz52NO/T1o0zLMHoYRb2li8s6c
+         TkcIzraPKAE+00LssCJ5w26NRQpkq4vhrTumkly1Z4Bp/qwSK55X3Bo1TNCz878XhX
+         srjzAiaq3NNVBi+2N0JGWTzFqMOV8QLruGUCOAiIeKJV6SwcldjFyzjw2c9loMktQq
+         /Mud0KNZV7Z0N5RgkzknZJmGbBIBTPGy0AWM+Dl5yK0/us8bjKEdMqPshtOUbtHgGS
+         yGCkOw1VW8xhA==
+Date:   Sat, 18 Jun 2022 14:20:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH v14 00/10] iio: adc: introduce Qualcomm SPMI Round Robin
- ADC
-Message-ID: <20220618141757.625f86c4@jic23-huawei>
-In-Reply-To: <20220618140913.49fd1dc2@jic23-huawei>
-References: <20220429220904.137297-1-caleb.connolly@linaro.org>
-        <20220618140913.49fd1dc2@jic23-huawei>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Siddartha Mohanadoss <smohanad@codeaurora.org>
+Subject: Re: [PATCH v2 0/4] 3rd set of IIO export namespaces.
+Message-ID: <20220618142054.4571f2f4@jic23-huawei>
+In-Reply-To: <20220604155306.422937-1-jic23@kernel.org>
+References: <20220604155306.422937-1-jic23@kernel.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,164 +57,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Jun 2022 14:09:13 +0100
+On Sat,  4 Jun 2022 16:53:02 +0100
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Fri, 29 Apr 2022 23:08:55 +0100
-> Caleb Connolly <caleb.connolly@linaro.org> wrote:
-> 
-> > The RRADC is responsible for reading data about the current and
-> > voltage from the USB or DC in jacks, it can also read the battery
-> > ID (resistence) and some temperatures. It is found on the PMI8998 and
-> > PM660 Qualcomm PMICs.
-> > 
-> > The RRADC has to calibrate some ADC values based on which chip fab
-> > the PMIC was produced in, to facilitate this the patches
-> > ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
-> > and ("mfd: qcom-spmi-pmic: read fab id on supported PMICs")
-> > expose the PMIC revision information and fab_id as a struct and register
-> > them as driver data in the Qualcomm SPMI PMIC driver so that it can be
-> > read by the RRADC.
-> > 
-> > The first 3 patches add support for looking up an SPMI device from a
-> > struct device_node, as well as introducing support for looking up the
-> > base USID of a Qcom PMIC, see patch comments for more details. These
-> > Address Bjorns comments on v2.  
-> 
-> Hi Caleb / All
-> 
-> Rather than waste time going for a v15 for the 3 minor issues in reviews
-> I've just fixed them up whilst applying.
-> 
-> As spmi or mfd maintainers may want an immutable branch I've
-> just pushed one out at
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git immutable-qcom-spmi-rradc
-> that has the first 5 patches. I assume the dts changes will go via qcom -> arm-soc
-> as normal.
-> 
-> 0-day should run on that branch shortly but I'll be optimistic and pull it
-> into my testing branch in the meantime (mostly so I don't forget about it and
-> can mark it applied in patchwork :)
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> Changes since v1:
+> - Rebase (bit of fuzz in patches 1 and 4)
 
-Gah.  Merge into IIO doesn't build because of dropping of.h from includes
-in iio.h.  This driver should directly include property.h directly.
+If anyone has time to take a quick look through this lot and sanity
+check I haven't done anything stupid it would be much appreciated.
 
-New 'immutable' branch with same name pushed out.  Guessing no one picked
-it up in the minute or so previous version was available for!
+Disadvantage of being the maintainer is there isn't anyone else you
+can moan about when no one reviews your patches. Of course I never
+moan about other maintainers and I'm sure no one ever moans
+about me :)
 
-I'd advise that Lee / Stephen don't merge this for a few days at least so
-any other issues have become visible and I can fix them up without making
-for complex history.
-
-Thanks,
-
-Jonathan
-
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> > 
-> > Changes since v13:
-> >  * Address Lee Jones' feedback on the SPMI patches.
-> >  * Pick up Jami's patch to enable the RRADC on the OnePlus 5
-> > 
-> > Changes since v12:
-> >  * Apply Krzysztof's suggestions to rradc DT binding docs.
-> > 
-> > Changes since v11:
-> >  * Remove debug logging which was left in ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
-> >  * Picked up Dmitry's Tested-by and Reviewed-by tags.
-> > 
-> > Changes since v10:
-> >  * Don't inline spmi_device_from_of()
-> > 
-> > Changes since v9:
-> >  * Add back missing copyright, this driver is originally derived from
-> >    downstream (Thanks Manivannan).
-> > 
-> > Changes since v8:
-> >  * Drop Reported-by for the bugfix on previous revision reported by LKP
-> >  * Apply Jonathans suggestions
-> >  * Rework patch 2 ("expose the PMIC revid information to clients") to
-> >    handle PMICs with a single USID (thanks Dmitry)
-> > 
-> > Changes since v7:
-> >  * Addressed Jonathans comments
-> >  * Fixed bug reported by LKP
-> > 
-> > Changes since v6:
-> >  * Fix printf format warning in rradc
-> > 
-> > Changes since v5:
-> >  * Add missing EXPORT_SYMBOL_GPL() to
-> >    ("spmi: add a helper to look up an SPMI device from a device node")
-> > 
-> > Changes since v4:
-> >  * Addressed Jonathan's comments on v4
-> >  * Reworked the qcom-spmi-pmic patches to properly walk the devicetree
-> >    to find the base USID. I've tested this on SDM845 which has two PMICs
-> >    (pm8998 and pmi8998) and I'm able to look up the PMIC revid from all
-> >    4 USIDs.
-> > 
-> > Changes since v3:
-> >  * Split PMIC patch in two, rework to support function drivers on a
-> >    sibling USID
-> >  * Completely rework RRADC driver to make use of the modern IIO
-> >    framework. This required re-arranging a lot of the equations and
-> >    results in some lost precision, where relevant I've left comments to
-> >    explain this. I don't think any of it is significant enough to
-> >    justify doing post-processing in driver.
-> >    Thanks a lot Jonathan and John Stultz for helping me out with
-> >    this
-> > 
-> > Changes since v2:
-> >  * Add missing include (thanks kernel test robot :D)
-> >  * Rework some confusing function return values, specifically
-> >    rradc_read_status_in_cont_mode and rradc_prepare_batt_id_conversion
-> >    both of which didn't correctly handle "ret". This also bought up an
-> >    issue as the previous implementation didn't actually wait for the
-> >    channel to be ready. It doesn't seem like that's strictly necessary
-> >    (same data is reported if I wait for the status to be good or not)
-> >    but I've included it anyway for good measure.
-> > 
-> > Changes since v1:
-> >  * Rework the RRADC driver based on Jonathan's feedback
-> >  * Pick up Rob's reviewed by for the dt-binding patch.
-> >  ---
-> > Caleb Connolly (9):
-> >   spmi: add a helper to look up an SPMI device from a device node
-> >   mfd: qcom-spmi-pmic: expose the PMIC revid information to clients
-> >   mfd: qcom-spmi-pmic: read fab id on supported PMICs
-> >   dt-bindings: iio: adc: document qcom-spmi-rradc
-> >   iio: adc: qcom-spmi-rradc: introduce round robin adc
-> >   arm64: dts: qcom: pmi8998: add rradc node
-> >   arm64: dts: qcom: sdm845-oneplus: enable rradc
-> >   arm64: dts: qcom: sdm845-db845c: enable rradc
-> >   arm64: dts: qcom: sdm845-xiaomi-beryllium: enable rradc
-> > 
-> > Jami Kettunen (1):
-> >   arm64: dts: qcom: msm8998-oneplus-common: enable RRADC
-> > 
-> >  .../bindings/iio/adc/qcom,spmi-rradc.yaml     |   51 +
-> >  .../boot/dts/qcom/msm8998-oneplus-common.dtsi |    4 +
-> >  arch/arm64/boot/dts/qcom/pmi8998.dtsi         |    8 +
-> >  arch/arm64/boot/dts/qcom/sdm845-db845c.dts    |    4 +
-> >  .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |    4 +
-> >  .../boot/dts/qcom/sdm845-xiaomi-beryllium.dts |    4 +
-> >  drivers/iio/adc/Kconfig                       |   12 +
-> >  drivers/iio/adc/Makefile                      |    1 +
-> >  drivers/iio/adc/qcom-spmi-rradc.c             | 1021 +++++++++++++++++
-> >  drivers/mfd/qcom-spmi-pmic.c                  |  272 +++--
-> >  drivers/spmi/spmi.c                           |   17 +
-> >  include/linux/spmi.h                          |    3 +
-> >  include/soc/qcom/qcom-spmi-pmic.h             |   61 +
-> >  13 files changed, 1372 insertions(+), 90 deletions(-)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/qcom,spmi-rradc.yaml
-> >  create mode 100644 drivers/iio/adc/qcom-spmi-rradc.c
-> >  create mode 100644 include/soc/qcom/qcom-spmi-pmic.h
-> >   
-> 
+>=20
+> I sent v1 out in Feb and only got review on one patch (which I've since
+> applied - thanks Nuno).
+>=20
+> Looking for a quick sanity check of these 4 that remain from anyone who
+> has the time.  Whilst this is mechanical stuff, I've made enough dumb
+> mistakes in such patches over the years that I still like to get a second
+> set of eyes on them if at all possible!=20
+>=20
+> Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: Siddartha Mohanadoss <smohanad@codeaurora.org>
+>=20
+> Jonathan Cameron (4):
+>   iio: imu: bmi160: Move exported symbols to IIO_BMI160 namespace
+>   iio: pressure: bmp280: Move symbol exports to IIO_BMP280 namespace
+>   iio: chemical: sps30: Move symbol exports into IIO_SPS30 namespace
+>   iio: adc: qcom-vadc: Move symbol exports to IIO_QCOM_VADC namespace
+>=20
+>  drivers/iio/adc/qcom-pm8xxx-xoadc.c  |  1 +
+>  drivers/iio/adc/qcom-spmi-adc5.c     |  1 +
+>  drivers/iio/adc/qcom-spmi-vadc.c     |  1 +
+>  drivers/iio/adc/qcom-vadc-common.c   | 16 ++++++++--------
+>  drivers/iio/chemical/sps30.c         |  2 +-
+>  drivers/iio/chemical/sps30_i2c.c     |  1 +
+>  drivers/iio/chemical/sps30_serial.c  |  1 +
+>  drivers/iio/imu/bmi160/bmi160_core.c |  6 +++---
+>  drivers/iio/imu/bmi160/bmi160_i2c.c  |  1 +
+>  drivers/iio/imu/bmi160/bmi160_spi.c  |  1 +
+>  drivers/iio/pressure/bmp280-core.c   |  2 +-
+>  drivers/iio/pressure/bmp280-i2c.c    |  1 +
+>  drivers/iio/pressure/bmp280-regmap.c |  4 ++--
+>  drivers/iio/pressure/bmp280-spi.c    |  1 +
+>  14 files changed, 24 insertions(+), 15 deletions(-)
+>=20
 

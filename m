@@ -2,161 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E7785501B9
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 03:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959215501D1
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 04:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233143AbiFRBpI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 21:45:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
+        id S1383685AbiFRCBc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 22:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232011AbiFRBpH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 21:45:07 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA8766211
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 18:45:06 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id d14so2118608pjs.3
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 18:45:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=MVVfG1ukpcWxNx9o6iSFBfRaMO1Vdtzlg+i0swD+fb4=;
-        b=q3BsEgoVvOfEqW1uqQ/h2RJoRA2KAVkCNjtFaZH6ciU4+b1sNXN3iCRnu2XCYBNH9q
-         H853Swy9HwpS7fGroR74zzwzeCMiADQiOL904RmSeAWkEHmOGYj6KAELIK9/2Wpk2ODb
-         HYuIf1TPlgIPga6t4XpZ7yWjNOYcBbyP6kGArJehExA0cPQecr8QJN0XoarWwQU7eE3o
-         GJy3SaxfCY/UXVHJN8Lvq5FJTidG1DswoSRfxwcWhFuz1u1Nkt/3+eOOi/MQqh8LiXE8
-         ayBueIF0F9dIb/6qCtV0l1HOo5loteHEVEbrUU5uFxokX3n86TI6zos1sknyef+TxN4f
-         D98A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=MVVfG1ukpcWxNx9o6iSFBfRaMO1Vdtzlg+i0swD+fb4=;
-        b=U3EyOAZy/YR2P0pJonT+bJyxrThUV6LAVk1Fe+hKa6rx29kKTtFf5tyO6g3/azr2SB
-         sRX8fcHyXOQ5JbCo+13JEjTJm0a0NDMCCKMv4BASDo22VDOY/DI02vBUMan+YRkACFyb
-         4XV+iB8UmKV1dYETRuwKEjAai102KODy/sIhNP59VUSFclMdr/CKk7BTCVhI0Qy4SdMW
-         Eg/k1BjinoQbpMZfqQVKdhZumPStTj4qrdzwHh+ex0BT0xcXOCfbiHRPBqrKXPxWZd4K
-         0IbK4afOxQ0JcoVS5yDw6wAxQYfhCrfH4lzZmauGBXI5ql9SK0BGNGoaq2x9wlxRvFdf
-         j93Q==
-X-Gm-Message-State: AJIora8DcKGcUk/oR4gv2fh4koNH0xQtQHaCVEjHTdo4GES0lakR3vvn
-        zNooM12fyNY4Nfi5GGjZnUQDpcYzG0RyzA==
-X-Google-Smtp-Source: AGRyM1sPqWjdN+XA9tmr0a8NAAwk+Ph/AdPkD7bdRPhjSkxbh27BWLRZd5LO4X5I+QCm+cbu4DJ4Ow==
-X-Received: by 2002:a17:90a:408f:b0:1e3:23a:2370 with SMTP id l15-20020a17090a408f00b001e3023a2370mr13610279pjg.84.1655516705705;
-        Fri, 17 Jun 2022 18:45:05 -0700 (PDT)
-Received: from [172.31.235.92] ([216.9.110.6])
-        by smtp.gmail.com with ESMTPSA id i186-20020a62c1c3000000b00524c5c236a6sm4039656pfg.33.2022.06.17.18.45.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jun 2022 18:45:05 -0700 (PDT)
-Message-ID: <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
-Date:   Fri, 17 Jun 2022 18:45:02 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
+        with ESMTP id S238105AbiFRCBa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 22:01:30 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38BE6B7DC
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 19:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655517689; x=1687053689;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=l5uBCltGOAECjQetHMCiX4oaVx3wtljWGCj7SxyqP8Y=;
+  b=T2hlEMffXmb6wbBFUe0pHsXyCWx4J20TR5JTCH5GkxNGdesr7K/U7CWO
+   QB13R8asUhegbq1nxT+qmvlgO6X1Yc3x1WqMDajRN6Y9F2bLYA9JtN8pd
+   Js2fVrBjvAAdAUIPK8RZnRl+vFODTlnl9H6AjUyf/ce7ajl9iu0nxSCwn
+   xdv7/yMb+Nj4u7VndxG89O/bOEi9wrrLGMAIoyJ/1SXDcu3rhlzFdW6pP
+   07Z0NByhKDGVh9VoKovIV5YymoC+gDQssFJX0c5QsZXWYRpqfoUO6J4fe
+   ZJJVdTO9sFX62MCzsk//kpDqbYPtSqRmb6M/JSp2d+E5e4jXworMZ3JTW
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="305050147"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="305050147"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 19:01:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="537017862"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by orsmga003.jf.intel.com with ESMTP; 17 Jun 2022 19:01:29 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 17 Jun 2022 19:01:28 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 17 Jun 2022 19:01:28 -0700
+Received: from orsmsx611.amr.corp.intel.com ([10.22.229.24]) by
+ ORSMSX611.amr.corp.intel.com ([10.22.229.24]) with mapi id 15.01.2308.027;
+ Fri, 17 Jun 2022 19:01:28 -0700
+From:   "Hall, Christopher S" <christopher.s.hall@intel.com>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
+        Dipen Patel <dipenp@nvidia.com>,
+        "N, Pandith" <pandith.n@intel.com>,
+        "D, Lakshmi Sowjanya" <lakshmi.sowjanya.d@intel.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "vilhelm.gray@gmail.com" <vilhelm.gray@gmail.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "Sangannavar, Mallikarjunappa" 
+        <mallikarjunappa.sangannavar@intel.com>,
+        "T R, Thejesh Reddy" <thejesh.reddy.t.r@intel.com>
+Subject: RE: Intel Timed-IO driver in IIO/Counter subsystem
+Thread-Topic: Intel Timed-IO driver in IIO/Counter subsystem
+Thread-Index: AdiCFGKgSJf28KGeQ2qEKrwEQy9pwAAQT46AAAU1qIAAA8pdgAANdf+g
+Date:   Sat, 18 Jun 2022 02:01:28 +0000
+Message-ID: <ad7e53d1bd2448b4971af65483fe3542@intel.com>
+References: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
+ <44170bf8-5777-e30b-b74d-a6835b1937e2@metafoo.de>
+ <YqxOl8W2yzp9CcBP@smile.fi.intel.com>
+ <CACRpkdbeQ_67V3jkw_-KfTwe54TxrK_LA7N8Nwj1qEpTELN9dQ@mail.gmail.com>
+In-Reply-To: <CACRpkdbeQ_67V3jkw_-KfTwe54TxrK_LA7N8Nwj1qEpTELN9dQ@mail.gmail.com>
+Accept-Language: en-US
 Content-Language: en-US
-To:     cy_huang <u0084500@gmail.com>, jic23@kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Cc:     lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
- <1655458375-30478-2-git-send-email-u0084500@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1655458375-30478-2-git-send-email-u0084500@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.6.500.17
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 17/06/2022 02:32, cy_huang wrote:
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> Add the documentation for Richtek RTQ6056.
-> 
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> ---
->  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
-> new file mode 100644
-> index 00000000..6b4e0e0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
-> +
-> +maintainers:
-> +  - ChiYuan Huang <cy_huang@richtek.com>
-> +
-> +description: |
-> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
-> +  interface, and the device provides full information for system by reading
-> +  out the loading current and power.
-> +
-> +  The device monitors both of the drops across sense resistor and the BUS
-> +  voltage, converts into the current in amperes, and power in watts through
-> +  internal analog-to-digital converter ADC. The programmable calibration,
-> +  adjustable conversion time, and averaging function are also built in for
-> +  more design flexibility.
-> +
-> +  Datasheet is available at
-> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
-> +
-> +properties:
-> +  compatible:
-> +    const: richtek,rtq6056
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  richtek,shunt-resistor-uohm:
-
-Use standard properties, so "-micro-ohms". Drop the unit from
-description and drop the ref.
-
-> +    description: Shunt IN+/IN- sensing node resistor in microohm.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      rtq6056@40 {
-
-Generic node name, so probably "adc" (or something else appropriate).
-
-> +        compatible = "richtek,rtq6056";
-> +        reg = <0x40>;
-> +        #io-channel-cells = <1>;
-> +      };
-> +    };
-
-
-Best regards,
-Krzysztof
+SGkgTGludXMsDQoNCkZyaWRheSwgSnVuZSAxNywgMjAyMiA0OjQwIEFNIExpbnVzIFdhbGxlaWog
+PGxpbnVzLndhbGxlaWpAbGluYXJvLm9yZz4gd3JvdGU6DQoNCj4gRm9yIDIuIEkgYW0gdW5jZXJ0
+YWluLiBQZXJpb2RpYyBldmVudHMgc291bmQgbGlrZSBQV00gdG8gbWUuDQoNCkkgZG8gbm90IHRo
+aW5rIFRHUElPIHBlcmlvZGljIG91dHB1dCBpcyB1c2VmdWwgZm9yIFBXTS4gVGhlcmUgYXJlIHR3
+byBvdXRwdXQNCm1vZGVzOiBlZGdlIG91dHB1dCBhbmQgcHVsc2Ugb3V0cHV0LiBJbiBlZGdlIG1v
+ZGUgb3V0cHV0LCB3aGVyZSB0aGUgYW4gZWRnZQ0KaXMgcHJvZHVjZWQgcGVyaW9kaWNhbGx5IGJh
+c2VkIG9uIHRoZSBwcm9ncmFtbWVkIHBlcmlvZCB0aGUgZHV0eSBjeWNsZSBpcw0KYWx3YXlzIDUw
+JS4gSW4gcHVsc2UgbW9kZSBvdXRwdXQgd2hlcmUgYSBwdWxzZSBpcyBwcm9kdWNlZCBlYWNoIG91
+dHB1dA0KcGVyaW9kLCB0aGUgd2lkdGggb2YgdGhlIHB1bHNlIGlzIHR3byBBUlQgdGlja3Mgd2hp
+Y2ggb24gY3VycmVudCBJbnRlbA0KY2xpZW50IHBsYXRmb3JtcyBpcyBhYm91dCA1MCBucy4gVGhl
+IHB1bHNlIHdpZHRoIGlzIG5vdCBhZGp1c3RhYmxlLg0KDQpXZSB3YW50IHRvIGJlIGFibGUgdG8g
+b3V0cHV0IGEgY2xvY2sgZnJvbSAxIEh6ICgxIFBQUykgdXAgdG8gMSBLSHogdGhhdCBpcw0Kc3lu
+Y2hyb25pemVkIHdpdGggdGhlIHN5c3RlbSBjbG9jay4NCg0KSXQgaXMgcG9zc2libGUgdG8gcmVw
+cmVzZW50IHRoZSBwZXJpb2RpYyBvdXRwdXQgZnVuY3Rpb24gYXMgYSBQV00gZGV2aWNlLA0KYnV0
+IHRoZSBQV00gc3Vic3lzdGVtIG91dHB1dCAtIHdpdGhvdXQgbW9kaWZpY2F0aW9uIC0gaXMgbm90
+IGFsaWduZWQgdG8NCmFueSBjbG9jayB3aGljaCBicmVha3MgdGhlIHRpbWluZyBhcHBsaWNhdGlv
+bi4NCg0KPiBJZiBhICJzaW5nbGUgZXZlbnQiIGlzIHNvbWV0aGluZw0KPiBsaWtlIHB1bGxpbmcg
+YSBHUElPIGxpbmUgaGlnaC9sb3cgYXQgYSBzcGVjaWZpYyAod2FsbCBjbG9jaykgdGltZSBpbiB0
+aGUNCj4gZnV0dXJlLCBpdCBzaG91bGQgcHJvYmFibHkgYmUgaW4gdGhlIEdQSU8gc3Vic3lzdGVt
+LCBsaWtlIGEgdHJpZ2dlcmVkDQo+IEdQSU8gZXZlbnQgb3Igc28sIHRoYXQgc291bmRzIGEgYml0
+IGhhcmQgYnV0IGNlcnRhaW5seSBkb2FibGUgd2l0aCBzb21lDQo+IHRoaW5raW5nIGFuZCB0aW5r
+ZXJpbmcuDQoNCkVhcmxpZXIsIHdlIHByb3Bvc2VkIGEgbGluZXJlcV93cml0ZSgpIG1ldGhvZCBp
+biBhZGRpdGlvbiB0byB0aGUgYWxyZWFkeQ0KZXhpc3RpbmcgbGluZXJlcV9yZWFkKCkuDQoNCmh0
+dHBzOi8vbGttbC5vcmcvbGttbC8yMDIxLzgvMjQvODA3DQoNClRoaXMgaXMgZm9yICJzaW5nbGUg
+c2hvdCIgc2NoZWR1bGVkIG91dHB1dCBvbmx5LiBUaGlzIGlzIGZhaXJseSBlYXN5IHRvDQppbXBs
+ZW1lbnQgdXNpbmcgdGhlIFRpbWVkIEkvTyBoYXJkd2FyZSBiZWNhdXNlIHRoZSBjbG9jayB1c2Vk
+IHRvIHNjaGVkdWxlDQpvdXRwdXQgZXZlbnRzIGlzIGRpcmVjdGx5IHJlbGF0ZWQgdG8gVFNDIGFu
+ZCBzeXN0ZW0gdGltZS4NCg0KVGhlIGRpZmZpY3VsdCBwYXJ0IGlzIGltcGxlbWVudGluZyB0aGlz
+IGZvciBkZXZpY2VzIHRoYXQgYXJlIG5vdCB0aW1lDQphd2FyZS4NCg0KPiBZb3VycywNCj4gTGlu
+dXMgV2FsbGVpag0KDQpUaGFua3MsDQpDaHJpc3RvcGhlcg0K

@@ -2,44 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8631A5505C7
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 17:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5867D5505CE
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 17:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235493AbiFRPbK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 11:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42318 "EHLO
+        id S235136AbiFRPjM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 11:39:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234228AbiFRPbJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 11:31:09 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E58B410FE8;
-        Sat, 18 Jun 2022 08:31:08 -0700 (PDT)
+        with ESMTP id S230133AbiFRPjL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 11:39:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95FFDEAD;
+        Sat, 18 Jun 2022 08:39:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 41B72CE02BE;
-        Sat, 18 Jun 2022 15:31:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36268C3411A;
-        Sat, 18 Jun 2022 15:31:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7543060B1E;
+        Sat, 18 Jun 2022 15:39:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC6AC3411A;
+        Sat, 18 Jun 2022 15:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655566265;
-        bh=1/JqD0jrLT+kJuKDhRHBaxwfNIV3cVZwTcjFBPk6sRI=;
+        s=k20201202; t=1655566746;
+        bh=McuYUPbcTogh0Yrn7FSYihqEAcvdIVNBBIDilpwKOpE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=DRq5DP/dXx2lZQB31tll4Avibx0zKqv+18F1YRmohciCwpMSmDstNj2rGgr9lMIpq
-         5I67qkw05iQlp4a3C2eANCMYfKAUqCVNKRrSFNwTdRUTolPAmpSJvBRXnlhXPvxmRj
-         2zh2q7lPoUpn1LUZLSNPDY3Yr9f6cOBxTRsWDm1NbtQ+gwOjYLpf+qUciUAj8gbjX+
-         al4dQTuBNOiGZtnonm2uQu9mtuHwBbCwRIyOIjVRCinc6kscmPf0kbbSTYzxHdkSQp
-         RYXT9EtqwMpi1yFK2Cisf5UPiWS81Dc/lEcxTjrNdoVsHujBbUF1bYqXyAg8QLT9uN
-         85xg3ealaIvyw==
-Date:   Sat, 18 Jun 2022 16:40:23 +0100
+        b=dSnD0FK661SnooSn7Z/CDSOX3C3M6TplRlQ+BdTAy3J5UoTF1ZJhfy0liHIx9LLKJ
+         MmOBy6sUSheDILDX/FclyJ2ODmVSkJuDFnMF9EcDwWOK0MMT7rSQl26Krt7XqdvqGH
+         1ULRRVdc6QRCMSLjBZYYrmNqffXtEeuxOm9uPjF2u1F1Vqa3EQc2N58FHFgSv/NvSE
+         0gBc87cgiNXnUcjPnNOILCd+NQ1oVQDTlP3VULDcsL6ZpPWAwY2t8+39JcivJuquhJ
+         vVRYNmRbCwYBRuOwqx3C78E8ZqVCAyRz5L7XP3svJYw32ZsjUiJbfJih8B78n6II/1
+         HYiaISZCY5RRQ==
+Date:   Sat, 18 Jun 2022 16:48:20 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Xiang wangx <wangxiang@cdjrlc.com>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: Fix typo in comment
-Message-ID: <20220618164023.51b3080f@jic23-huawei>
-In-Reply-To: <20220616141522.2238-1-wangxiang@cdjrlc.com>
-References: <20220616141522.2238-1-wangxiang@cdjrlc.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lars@metafoo.de, matthias.bgg@gmail.com, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com, ChiaEn Wu <chiaen_wu@richtek.com>
+Subject: Re: [PATCH v2 07/15] Documentation: ABI: testing: mt6370: Add ADC
+ sysfs guideline
+Message-ID: <20220618164820.2eeb8ae8@jic23-huawei>
+In-Reply-To: <20220613111146.25221-8-peterwu.pub@gmail.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com>
+        <20220613111146.25221-8-peterwu.pub@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,31 +63,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 16 Jun 2022 22:15:22 +0800
-Xiang wangx <wangxiang@cdjrlc.com> wrote:
+On Mon, 13 Jun 2022 19:11:38 +0800
+ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 
-> Delete the redundant word 'in'.
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
 > 
-> Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
-Applied, but with patch title changed to reflect the driver in question.
-
-iio: gyro: bmg160: ...
-
+> Add ABI documentation for mt6370 non-standard ADC sysfs interfaces.
+> 
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
 > ---
->  drivers/iio/gyro/bmg160_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  .../ABI/testing/sysfs-bus-iio-adc-mt6370      | 36 +++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370
 > 
-> diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-> index 81a6d09788bd..cedd9f02ea21 100644
-> --- a/drivers/iio/gyro/bmg160_core.c
-> +++ b/drivers/iio/gyro/bmg160_core.c
-> @@ -766,7 +766,7 @@ static int bmg160_write_event_config(struct iio_dev *indio_dev,
->  		return 0;
->  	}
->  	/*
-> -	 * We will expect the enable and disable to do operation in
-> +	 * We will expect the enable and disable to do operation
->  	 * in reverse order. This will happen here anyway as our
->  	 * resume operation uses sync mode runtime pm calls, the
->  	 * suspend operation will be delayed by autosuspend delay
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370 b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370
+> new file mode 100644
+> index 000000000000..039b3381176a
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370
+> @@ -0,0 +1,36 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage0_raw
+
+Unfortunately the kernel documentation build scripts do no support duplicating
+standard ABI for particular devices so as to provide more information.
+Hence you can't have anything in this file.
+
+
+> +KernelVersion:	5.18
+> +Contact:	chiaen_wu@richtek.com
+> +Description:
+> +		Indicated MT6370 VBUS ADC with lower accuracy(+-75mA)
+Curious though, voltage with a mA accuracy range?
+This scale should be presented directly to userspace anyway so no need
+for this doc.
+
+> +		higher measure range(1~22V)
+> +		Calculating with scale returns voltage in uV
+
+No. All channels return in mV. That's the ABI requirement as
+in sysfs-bus-iio and we cannot vary if for particular drivers.  If we did
+no generic tooling would work.
+
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage1_raw
+> +KernelVersion:	5.18
+> +Contact:	chiaen_wu@richtek.com
+> +Description:
+> +		Indicated MT6370 VBUS ADC with higher accuracy(+-30mA)
+> +		lower measure range(1~9.76V)
+> +		Calculating with scale offset returns voltage in uV
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage4_raw
+> +KernelVersion:	5.18
+> +Contact:	chiaen_wu@richtek.com
+> +Description:
+> +		Indicated MT6370 TS_BAT ADC
+> +		Calculating with scale returns voltage in uV
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage7_raw
+> +KernelVersion:	5.18
+> +Contact:	chiaen_wu@richtek.com
+> +Description:
+> +		Indicated MT6370 CHG_VDDP ADC
+> +		Calculating with scale returns voltage in mV
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_temp8_raw
+> +KernelVersion:	5.18
+> +Contact:	chiaen_wu@richtek.com
+> +Description:
+> +		Indicated MT6370 IC junction temperature
+> +		Calculating with scale and offset returns temperature in degree
 

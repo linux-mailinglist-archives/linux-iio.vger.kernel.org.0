@@ -2,99 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87FDA55055E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 16:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98FCB55056E
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 16:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235392AbiFROCR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 10:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        id S239503AbiFROGe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 10:06:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244203AbiFRN5U (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:57:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDCDE6B;
-        Sat, 18 Jun 2022 06:57:19 -0700 (PDT)
+        with ESMTP id S239472AbiFROG0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 10:06:26 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 795F113E3C;
+        Sat, 18 Jun 2022 07:06:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19F3B60BB1;
-        Sat, 18 Jun 2022 13:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EE2C3411A;
-        Sat, 18 Jun 2022 13:57:05 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 391FEB8013C;
+        Sat, 18 Jun 2022 14:06:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787ADC3411A;
+        Sat, 18 Jun 2022 14:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655560638;
-        bh=lRorEWc2KTi7z7ymOlOmHg76zQDyaFrAFstUtz9SnBg=;
+        s=k20201202; t=1655561182;
+        bh=C5dR11nmIbd7ulhKg+caNcYU9xH6pSpJ8aq4v29W2BU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AHFj/HFoFUUH94y50WWJJ41Nc0+xVyu0BnPz6ynMPeCuA7tW1khpFHcZOcygfpS66
-         1PJdLDzuD9XLdoajYWLREwRAil3c82vDUZ1NpmJkmEvfQh8et0/u/ebN3adQ5YS49E
-         8rFcodb3jxfyoQyunzWPPKvsaeSLocaZU+cQic/JV8F9tZOPKEeTIt8kcRe5ZukkUq
-         tC8mkXxl1GHz/gJLiyIVLfWHvitlR6Yvz5/CJvrG8iSMlMnfArAYkQhVYGdY+V8m14
-         j2OCBtwYS9BuyltkfUIfF1QkJE3GHgLcO5pM1rV3UdWaNJotY41oTuDuq5mtMGUnRq
-         zduVJofRh6Ktw==
-Date:   Sat, 18 Jun 2022 15:06:24 +0100
+        b=DReMJwDyEA1rcbhV7Wyw0PnbBvnKJgwDNmNDXZH9pP3SmmsLbJOO1DGD2skMuNudA
+         mHpUBsKzkhPIXv000C2dhc6HAG/hgWkDq16QbQE3Ab+m7MaPVK9a68XLmJyK4Pj8P5
+         8Fn/fVD9N8RYPM4gxc0KKMJrYt5/HrojBDyhiAj9tagHYWSMRJjylJHMv/Sjde33TZ
+         pRWw/OJz5IilCqdu/a7b/zErgY93zaO8F/SbjHZyvBqDjDNvZYySzgG8wWhmyIO3vO
+         Iol28XLu7Rw4p0QLtt6iiHHyMI3hfxa3X/28TIS4b+IGJqmtPN4+AKMHq1CbJnl9UC
+         bB7e/whQTcRRA==
+Date:   Sat, 18 Jun 2022 15:15:38 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, linux-imx@nxp.com,
-        linux-renesas-soc@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-mediatek@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        openbmc@lists.ozlabs.org, Cai Huoqing <cai.huoqing@linux.dev>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Benson Leung <bleung@chromium.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 22/34] iio: inkern: only return error codes in
- iio_channel_get_*() APIs
-Message-ID: <20220618150624.1bfc8914@jic23-huawei>
-In-Reply-To: <35e7c36c9ecbdc67698b413cf867cf19442ccfa9.camel@gmail.com>
-References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-23-nuno.sa@analog.com>
-        <20220611161701.46a68837@jic23-huawei>
-        <35e7c36c9ecbdc67698b413cf867cf19442ccfa9.camel@gmail.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 7/7] iio: magnetometer: yas530: Add YAS537 variant
+Message-ID: <20220618151538.3d142682@jic23-huawei>
+In-Reply-To: <033f64ea-4ba7-eb89-3259-688008e29989@rocketmail.com>
+References: <cover.1655081082.git.jahau@rocketmail.com>
+        <b6e100de37921c22ebf0698f8e0e99794053303a.1655081082.git.jahau@rocketmail.com>
+        <CAHp75VfFwSQ6bk=TMLiyA1j-AsafjGdVFbTTHJJ67C8zeYfz8Q@mail.gmail.com>
+        <033f64ea-4ba7-eb89-3259-688008e29989@rocketmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -105,109 +62,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Jun 2022 09:06:49 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Sat, 2022-06-11 at 16:17 +0100, Jonathan Cameron wrote:
-> > On Fri, 10 Jun 2022 10:45:33 +0200
-> > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> >  =20
-> > > APIs like of_iio_channel_get_by_name() and of_iio_channel_get_all()
-> > > were
-> > > returning a mix of NULL and error pointers being NULL the way to =20
-> >=20
-> > pointers with NULL being the way to...
-> >  =20
-> > > "notify" that we should do a "system" lookup for channels. This
-> > > make
-> > > it very confusing and prone to errors as commit dbbccf7c20bf
-> > > ("iio: inkern: fix return value in
-> > > devm_of_iio_channel_get_by_name()")
-> > > proves. On top of this, patterns like 'if (channel !=3D NULL) return
-> > > channel'
-> > > were being used where channel could actually be an error code which
-> > > makes the code hard to read.
-> > >=20
-> > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > ---
-> > > =C2=A0drivers/iio/inkern.c | 24 +++++++++++-------------
-> > > =C2=A01 file changed, 11 insertions(+), 13 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > > index 87fd2a0d44f2..31d9c122199a 100644
-> > > --- a/drivers/iio/inkern.c
-> > > +++ b/drivers/iio/inkern.c
-> > > @@ -214,7 +214,7 @@ static struct iio_channel
-> > > *of_iio_channel_get(struct device_node *np, int index)
-> > > =C2=A0struct iio_channel *of_iio_channel_get_by_name(struct device_no=
-de
-> > > *np,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *name)
-> > > =C2=A0{
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_channel *chan =
-=3D NULL;
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_channel *chan;
-> > > =C2=A0
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Walk up the tree o=
-f devices looking for a matching iio
-> > > channel */
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0while (np) {
-> > > @@ -231,11 +231,11 @@ struct iio_channel
-> > > *of_iio_channel_get_by_name(struct device_node *np,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0chan =3D of_iio_channel_get(np, index);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!IS_ERR(chan) || PTR_ERR(chan) =3D=3D -
-> > > EPROBE_DEFER)
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bre=
-ak; =20
-> >=20
-> > This original behaviour is 'interesting'. If we get a error like -
-> > ENOMEM
-> > we should return it rather than carry on.=C2=A0 Do we have enough
-> > knowledge
-> > of possible errors here to be more explicit on when we keep looking
-> > up
-> > the tree?=C2=A0 I think we can get -ENOENT from
-> > of_parse_phandle_with_args()
-> >=20
-> > That raises an interesting question on whether -ENODEV is the right
-> > response
-> > for the previously NULL case or is -ENOENT more consistent with other
-> > of_ functions?=C2=A0 No device could be thought of as being the case th=
-at
-> > needs
-> > to defer (in hope it turns up later) whereas no entry means it will
-> > never
-> > succeed. =20
->=20
-> From what I could see, of_parse_phandle_with_args() either returns=C2=A0
-> -EINVAL or -ENOENT. We also have the internal of_iio_channel_get()
-> which can return -ENOMEM. So I guess we should only continue looking if
-> we get -ENOENT?
->=20
-> To be clear, do you still prefer to explicitly return -ENODEV in the
-> previous NULL cases or should we honor the return code from=20
-> of_parse_phandle_with_args() and just return chans (and thus ENOENT)?
-You've looked at this more than me, so whilst I think -ENOENT is probably
-slightly more consistent I'll go with whatever you conclude is the
-best option.  Maybe add a small amount of description on what you chose
-and why to the relevant patch descriptions.
 
-Thanks,
+> 
+> >> +       /* Sanity check, is this all zeroes? */
+> >> +       if (memchr_inv(data, 0x00, 16) == NULL) {  
+> > 
+> >   if (!memchr_inv(...))
+> >   
+> >> +               if (FIELD_GET(GENMASK(5, 0), data[16]) == 0)
+> >> +                       dev_warn(yas5xx->dev, "calibration is blank!\n");
+> >> +       }  
+> 
+> No problem to change for YAS537.
+> 
+> At YAS530/532, there is a similar line that should be changed
+> accordingly. However, there is a patch by Linus that was already added
+> to "fixes-togreg" branch in iio.git quite a while ago [5]. The patch is
+> not included in torvalds/linux v5.19-rc1 or -rc2 and neither in iio.git
+> testing branch. So I'm unsure what I should base the patchset on if I
+> want to change that line. I will probably choose linux-next, as the
+> patch is included there and in Kconfig also patch "iio: magnetometer:
+> ak8974: Drop dependency on OF" is included (which on the other hand
+> isn't included in "fixes-togreg" branch in iio.git).
+> 
+> [5]
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=fixes-togreg&id=bb52d3691db8cf24cea049235223f3599778f264
+
+Busy couple of weeks for me and that fix got caught up in the merge
+window timing before that.  I should get a pull request out shortly.
 
 Jonathan
 
-
->=20
-> - Nuno S=C3=A1
 

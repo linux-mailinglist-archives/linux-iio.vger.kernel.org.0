@@ -2,86 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C3AC550182
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 03:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7785501B9
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 03:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1383450AbiFRBBx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 17 Jun 2022 21:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43384 "EHLO
+        id S233143AbiFRBpI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 17 Jun 2022 21:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbiFRBBv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 21:01:51 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562A66AA5F
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 18:01:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655514110; x=1687050110;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=zR1gSwxkzYD6bd2puOA+3X8pOo/RX1o1swKt46JkSKw=;
-  b=CuQKEMOiqZMJF0aJntypENY4vxvTbcbr/++4UD9KPA6+HMjsm+CBeZew
-   ljE/CbWHEDJW2A7aavL5eByBCLoZoPYBsQji2FUCGSb9hHLCMQ2BkDhw1
-   7JVtHZaAdjxDdn9MLMmnN5IF0kgPcsM1hKVs10GI/07Ul444iAQe0wn4J
-   Doy72niLE3DnO4XDqrZvWPK9NKgnBTxyX5Ki+44qz76m1TxSN/kq9GZaY
-   78pfcQMFQrRR1h3XBC/gB/x+TrPpjvJPpKp/DMfD+d7S8WwpZDP4/ax8S
-   lpgbA9Z+6CceFJn8LwbBWcdBdFQVWVMLOFLSgRDKixa5LAwxu1YjMKM4X
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="343607245"
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="343607245"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 18:01:48 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
-   d="scan'208";a="537009760"
-Received: from orsmsx604.amr.corp.intel.com ([10.22.229.17])
-  by orsmga003.jf.intel.com with ESMTP; 17 Jun 2022 18:01:48 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 17 Jun 2022 18:01:47 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Fri, 17 Jun 2022 18:01:47 -0700
-Received: from orsmsx611.amr.corp.intel.com ([10.22.229.24]) by
- ORSMSX611.amr.corp.intel.com ([10.22.229.24]) with mapi id 15.01.2308.027;
- Fri, 17 Jun 2022 18:01:47 -0700
-From:   "Hall, Christopher S" <christopher.s.hall@intel.com>
-To:     "N, Pandith" <pandith.n@intel.com>,
-        "william.gray@linaro.org" <william.gray@linaro.org>,
-        "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-CC:     "vilhelm.gray@gmail.com" <vilhelm.gray@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        "Sangannavar, Mallikarjunappa" 
-        <mallikarjunappa.sangannavar@intel.com>,
-        "D, Lakshmi Sowjanya" <lakshmi.sowjanya.d@intel.com>,
-        "T R, Thejesh Reddy" <thejesh.reddy.t.r@intel.com>
-Subject: RE: Intel Timed-IO driver in IIO/Counter subsystem
-Thread-Topic: Intel Timed-IO driver in IIO/Counter subsystem
-Thread-Index: AdiCFGKgSJf28KGeQ2qEKrwEQy9pwAAd/EBQ
-Date:   Sat, 18 Jun 2022 01:01:47 +0000
-Message-ID: <ff67454b89fa444db36dee57fac5eb74@intel.com>
-References: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
-In-Reply-To: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.6.500.17
-x-originating-ip: [10.22.254.132]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S232011AbiFRBpH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 17 Jun 2022 21:45:07 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA8766211
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 18:45:06 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id d14so2118608pjs.3
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jun 2022 18:45:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=MVVfG1ukpcWxNx9o6iSFBfRaMO1Vdtzlg+i0swD+fb4=;
+        b=q3BsEgoVvOfEqW1uqQ/h2RJoRA2KAVkCNjtFaZH6ciU4+b1sNXN3iCRnu2XCYBNH9q
+         H853Swy9HwpS7fGroR74zzwzeCMiADQiOL904RmSeAWkEHmOGYj6KAELIK9/2Wpk2ODb
+         HYuIf1TPlgIPga6t4XpZ7yWjNOYcBbyP6kGArJehExA0cPQecr8QJN0XoarWwQU7eE3o
+         GJy3SaxfCY/UXVHJN8Lvq5FJTidG1DswoSRfxwcWhFuz1u1Nkt/3+eOOi/MQqh8LiXE8
+         ayBueIF0F9dIb/6qCtV0l1HOo5loteHEVEbrUU5uFxokX3n86TI6zos1sknyef+TxN4f
+         D98A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=MVVfG1ukpcWxNx9o6iSFBfRaMO1Vdtzlg+i0swD+fb4=;
+        b=U3EyOAZy/YR2P0pJonT+bJyxrThUV6LAVk1Fe+hKa6rx29kKTtFf5tyO6g3/azr2SB
+         sRX8fcHyXOQ5JbCo+13JEjTJm0a0NDMCCKMv4BASDo22VDOY/DI02vBUMan+YRkACFyb
+         4XV+iB8UmKV1dYETRuwKEjAai102KODy/sIhNP59VUSFclMdr/CKk7BTCVhI0Qy4SdMW
+         Eg/k1BjinoQbpMZfqQVKdhZumPStTj4qrdzwHh+ex0BT0xcXOCfbiHRPBqrKXPxWZd4K
+         0IbK4afOxQ0JcoVS5yDw6wAxQYfhCrfH4lzZmauGBXI5ql9SK0BGNGoaq2x9wlxRvFdf
+         j93Q==
+X-Gm-Message-State: AJIora8DcKGcUk/oR4gv2fh4koNH0xQtQHaCVEjHTdo4GES0lakR3vvn
+        zNooM12fyNY4Nfi5GGjZnUQDpcYzG0RyzA==
+X-Google-Smtp-Source: AGRyM1sPqWjdN+XA9tmr0a8NAAwk+Ph/AdPkD7bdRPhjSkxbh27BWLRZd5LO4X5I+QCm+cbu4DJ4Ow==
+X-Received: by 2002:a17:90a:408f:b0:1e3:23a:2370 with SMTP id l15-20020a17090a408f00b001e3023a2370mr13610279pjg.84.1655516705705;
+        Fri, 17 Jun 2022 18:45:05 -0700 (PDT)
+Received: from [172.31.235.92] ([216.9.110.6])
+        by smtp.gmail.com with ESMTPSA id i186-20020a62c1c3000000b00524c5c236a6sm4039656pfg.33.2022.06.17.18.45.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Jun 2022 18:45:05 -0700 (PDT)
+Message-ID: <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
+Date:   Fri, 17 Jun 2022 18:45:02 -0700
 MIME-Version: 1.0
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
+Content-Language: en-US
+To:     cy_huang <u0084500@gmail.com>, jic23@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
+Cc:     lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+ <1655458375-30478-2-git-send-email-u0084500@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <1655458375-30478-2-git-send-email-u0084500@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,96 +75,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-N, Pandith <pandith.n@intel.com> wrote:
-> Hi,
->=20
-> We have a Intel Timed IO peripheral with following functionalities :
->=20
-> 1. Event capture capability - Captures event count and timestamp.
+On 17/06/2022 02:32, cy_huang wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add the documentation for Richtek RTQ6056.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+> new file mode 100644
+> index 00000000..6b4e0e0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+> @@ -0,0 +1,57 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
+> +
+> +maintainers:
+> +  - ChiYuan Huang <cy_huang@richtek.com>
+> +
+> +description: |
+> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
+> +  interface, and the device provides full information for system by reading
+> +  out the loading current and power.
+> +
+> +  The device monitors both of the drops across sense resistor and the BUS
+> +  voltage, converts into the current in amperes, and power in watts through
+> +  internal analog-to-digital converter ADC. The programmable calibration,
+> +  adjustable conversion time, and averaging function are also built in for
+> +  more design flexibility.
+> +
+> +  Datasheet is available at
+> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
+> +
+> +properties:
+> +  compatible:
+> +    const: richtek,rtq6056
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +  richtek,shunt-resistor-uohm:
 
-An event is an edge on the input or output signal. Rising, falling,
-or both edges can be selected for counting / timestamping. The
-timestamp and count are captured synchronously.
+Use standard properties, so "-micro-ohms". Drop the unit from
+description and drop the ref.
 
-If, for example, the hardware is configured to capture both types of
-input edges, each input edge causes the count to increment by one and
-the ART value (see below) to be captured atomically.
+> +    description: Shunt IN+/IN- sensing node resistor in microohm.
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      rtq6056@40 {
 
-To see how this may be useful, consider the case where two event
-occur before software is able to read the first. A count delta of >1
-indicates that an event timestamp was missed.
+Generic node name, so probably "adc" (or something else appropriate).
 
-For another example: If the input signal is periodic, the frequency
-offset between the input clock and the local clock can be computed:
+> +        compatible = "richtek,rtq6056";
+> +        reg = <0x40>;
+> +        #io-channel-cells = <1>;
+> +      };
+> +    };
 
- (delta ART / delta count) * (nom. input freq / 1e9 ns) *
-	(1e9 / ART frequency)
 
-It is not necessary to read each event to determine the average
-frequency for multiple events.
-
-> 2. Pulse generation - periodic or single event generation.
-> 3. Return cross-timestamp on request.
-
-This may imply that the Timed I/O logic is driven by a separate device cloc=
-k.
-It is not. It is driven by the platform clock - the Always Running
-Timer (ART). ART is directly related to the CPU timestamp counter (TSC).
-ART and TSC can be converted to one another using the following equation:
-
-TSC_Value =3D (ART_Value * CPUID.15H:EBX[31:0] )/ CPUID.15H:EAX[31:0] + K
-
-ART ticks at the core crystal frequency. Typically this is 38.4 MHz. The
-frequency can be discovered by reading CPUID.15H:ECX[31:0].
-
-More information can be found in the Intel Software Developer's
-Manual (SDM) in the Invariant Timekeeping section
-17.17.4 and Determining the Processor Base Frequency section 18.7.3
-(https://cdrdv2.intel.com/v1/dl/getContent/671200)
-
-K is typically zero. A virtualized guest is an example where K !=3D 0. In
-this case, K is offset by the value of the VMCS TSC offset.
-
-An example of how ART can be directly converted to system time is in the
-e1000e driver:
-
-drivers/net/ethernet/intel/e1000e/ptp.c:e1000e_phc_getcrosststamp()
-
-using the following functions:
-
-- arch/x86/kernel/tsc.c:convert_art_to_tsc() [ART->TSC]
-- kernel/time/timekeeping.c:get_device_system_crosststamp() [TSC->System Ti=
-me]
-
-These are dependent upon TSC being selected as the clocksource. The
-attempted conversion results in an error otherwise.
-
-A PHC driver implementation of Timed I/O was proposed:
-- https://lkml.org/lkml/2020/1/31/25
-
-that included a cross-timestamp function. This crosstimestamp - in the sens=
-e
-of determining the relationship between two independent clocks - is a
-software fiction because system time is based on ART. The cross-timestamp
-value enabled conversion of an event timestamp from ART -> System Time in
-the application in the usual way when using the PHC API.
-
-In my opinion, given a (more) greenfield API implementation. ART timestamps
-should not be exposed at the application level at all. All timestamps
-returned to the application should be in terms of system time.
-
-There is a chapter (21.3.5) in the Atom(r) x6000E datasheet for Timed I/O:
-
-https://cdrdv2.intel.com/v1/dl/getContent/636112?explicitVersion=3Dtrue&wap=
-kw=3DEHL%20datasheet
-
-Note that the hardware function is called TGPIO.
-
-There is also Timed I/O example code using the PHC driver referenced above:
-
-https://www.intel.com/content/www/us/en/develop/documentation/tcc-tools-202=
-1-2-developer-guide/top/time-synchronization-and-communication-tools/time-a=
-ware-gpio-tgpio-samples.html
-
-Thanks,
-Christopher
+Best regards,
+Krzysztof

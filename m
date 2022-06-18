@@ -2,326 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C26955064D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F22A555065B
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234900AbiFRRRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 13:17:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43030 "EHLO
+        id S237270AbiFRR1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 13:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233373AbiFRRRH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:17:07 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A0813D66;
-        Sat, 18 Jun 2022 10:17:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 33438CE0986;
-        Sat, 18 Jun 2022 17:17:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670B6C3411A;
-        Sat, 18 Jun 2022 17:16:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655572622;
-        bh=7XCDDYfV83xMFA1Nq8ZlvM/SnMA5iCTP9CKgyrzuITY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ua5hSurVhYvagLVmj4e5BG3ry/6fhC+ZrheQkl4FbCNmZk+ecO4eTg3E4ZKp1SaZb
-         zhaCcdzdHpzMOqgk8aMLtzhpuN8Qe8QQSy1rC3ZlwLFEJU9pisF4Z9j3Kxw+wx3zqj
-         H6ioOzG2BKQZIkZyadTnQRZlBdeXbgfXNmE/I9aQKZwXh1Dera6ryH4+805xh6dnse
-         eOyL32HehyDn7ULyg/k5KG7ZHGxAztVpROqnG80SiOSvipmOcXV8vYm4CId5P+UPP3
-         Vu/GZmhhKcEAeSwKS4v8q0j9IFMFtQLXE/OVaLKPfqR1kOX3Q6eWHp1oc1yZi+A7qS
-         SbG/2WjFklQCA==
-Date:   Sat, 18 Jun 2022 18:26:18 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     <andrea.merello@iit.it>
-Cc:     <mchehab+huawei@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <lars@metafoo.de>, <robh+dt@kernel.org>,
-        <andy.shevchenko@gmail.com>, <matt.ranostay@konsulko.com>,
-        <ardeleanalex@gmail.com>, <jacopo@jmondi.org>
-Subject: Re: [v6 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
-Message-ID: <20220618182618.4da1df69@jic23-huawei>
-In-Reply-To: <20220613120534.36991-9-andrea.merello@iit.it>
-References: <20220613120534.36991-1-andrea.merello@iit.it>
-        <20220613120534.36991-9-andrea.merello@iit.it>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S229449AbiFRR1F (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:27:05 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E684815FDC;
+        Sat, 18 Jun 2022 10:27:03 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id w17so9354978wrg.7;
+        Sat, 18 Jun 2022 10:27:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=DoIZZ1NTKy4Vr/t9RCJI3Po/KaMoN7vfri8esvxKoD4=;
+        b=Nxp8r11G1j4iGd99hYd/4zZmf4jaIWbqEAANLSikI9r7y+gNhjPgOCLQFs4/9aJH31
+         c+8+WR98KfXuEMxxgWDNoCrj3VIE8bcpmNi1ICx32OC21eN0En0dCMerkwQHqiXPesye
+         eCifP9XKvchch6dq+DgJXRScVnhSzv9FbDWeUP7QrvzzkE2sj7c5IIox23CiexDBY35P
+         q6EC1AY8WLHKMptrZnFeZYLW2ax28xXjDr31oyYErLr4Whgeo47fi9jlWvYl+EpGFU7k
+         YkrAxW98hKX3xQfh6tp6KLRLioihYQj9RnMiwQz1UItsOl2nEm4JWZbjooaupZc1EWLG
+         1lVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=DoIZZ1NTKy4Vr/t9RCJI3Po/KaMoN7vfri8esvxKoD4=;
+        b=zd4BhiFiV75BKOTWnYTee+IzO2aVIvRP9v6qCsSpS7TRKy6Jko630ZrD7xN2JZlMQR
+         7lCdozNuPDmcQwTaaavjd7hZbSDUa5b795h/Fb6Q8oneJy3meY3y3SNTxarcpsBdANaZ
+         pIhFFcHODJI9V7RIvFffIj+trWqxMUzCBQMSbU9GJstePR9TxRNbHXMUh9MuJzgCi3RN
+         IOKA1Hu21RYy8CITqmpVFFrYIDOLsd0vBtTmGxCaSBcD0BrW0bX3nspZuxELs5bYJMn9
+         e4EVi/SctApvB2WyG6ZnFNqSPC5qnG/jOU53ZOgfjgzmqD7xucSLRQ6km6At8gt/nnYB
+         EdrQ==
+X-Gm-Message-State: AJIora+w1audyV90BsDGNy62w80ckcUzLeJs/jjyDhFtkm/xasCKD+43
+        UDlmidHCWbJv5hlxR5T2DdY=
+X-Google-Smtp-Source: AGRyM1tMtCZM/na5Zlkzt1FCoJ/jorGoHxo7DCEfL73cpnVS2Ejl7E66gpXYLOo7mKevuop/PG3jBg==
+X-Received: by 2002:a05:6000:12c3:b0:21a:3795:70ac with SMTP id l3-20020a05600012c300b0021a379570acmr12455037wrx.175.1655573222361;
+        Sat, 18 Jun 2022 10:27:02 -0700 (PDT)
+Received: from [192.168.0.104] (p5b3f781c.dip0.t-ipconnect.de. [91.63.120.28])
+        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b0039c4f53c4fdsm16882283wmq.45.2022.06.18.10.27.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jun 2022 10:27:01 -0700 (PDT)
+Message-ID: <fb16197e-d5a1-eec3-af6d-19b2f5a5779e@gmail.com>
+Date:   Sat, 18 Jun 2022 19:27:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 1/6] iio: adc: mp2629: fix wrong comparison of channel
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20220615145357.2370044-1-sravanhome@gmail.com>
+ <20220615145357.2370044-2-sravanhome@gmail.com>
+ <20220618172301.44363feb@jic23-huawei>
+From:   saravanan sekar <sravanhome@gmail.com>
+In-Reply-To: <20220618172301.44363feb@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Jun 2022 14:05:28 +0200
-<andrea.merello@iit.it> wrote:
+On 18/06/22 18:23, Jonathan Cameron wrote:
+Hello Jonathan,
 
-> From: Andrea Merello <andrea.merello@iit.it>
+> On Wed, 15 Jun 2022 16:53:52 +0200
+> Saravanan Sekar <sravanhome@gmail.com> wrote:
 > 
-> Add the core driver for the BNO055 IMU from Bosch. This IMU can be
-> connected via both serial and I2C busses; separate patches will add support
-> for them.
+>> Input voltage channel enum is compared against iio address instead
+>> of the channel.
+>>
+>> Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
+>> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > 
-> The driver supports "AMG" (Accelerometer, Magnetometer, Gyroscope) mode,
-> that provides raw data from the said internal sensors, and a couple of
-> "fusion" modes (i.e. the IMU also does calculations in order to provide
-> euler angles, quaternions, linear acceleration and gravity measurements).
+> So how do you want to handle this?  If I take it as a separate fix it will
+> take a while to get upstream so that the later part of this series can be
+> applied on top of it.
 > 
-> In fusion modes the AMG data is still available (with some calibration
-> refinements done by the IMU), but certain settings such as low pass filters
-> cut-off frequency and sensors' ranges are fixed, while in AMG mode they can
-> be customized; this is why AMG mode can still be interesting.
+> If the fix isn't super urgent, then perhaps we just queue it up with the
+> rest of the series and Lee picks up through MFD?
 > 
-> Signed-off-by: Andrea Merello <andrea.merello@iit.it>
-> ---
-Hi Andrea,
 
-A few trivial things from me this time seeing as you are going to be doing a v7.
+Thanks for the review. It is not urgent to integrate now, may wait for 
+Lee to take along with the series.
+
+> On basis we might go that way.
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Also, this probably wants a stable tag.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>   drivers/iio/adc/mp2629_adc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+>> index aca084f1e78a..e7fbfe92e884 100644
+>> --- a/drivers/iio/adc/mp2629_adc.c
+>> +++ b/drivers/iio/adc/mp2629_adc.c
+>> @@ -73,7 +73,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+>>   		if (ret)
+>>   			return ret;
+>>   
+>> -		if (chan->address == MP2629_INPUT_VOLT)
+>> +		if (chan->channel == MP2629_INPUT_VOLT)
+>>   			rval &= GENMASK(6, 0);
+>>   		*val = rval;
+>>   		return IIO_VAL_INT;
+> 
+
 
 Thanks,
-
-Jonathan
-
-
-
-> +
-> +static ssize_t bno055_get_calib_status(struct device *dev, char *buf, int which)
-> +{
-> +	struct bno055_priv *priv = iio_priv(dev_to_iio_dev(dev));
-> +	int calib;
-> +	int ret;
-> +	int val;
-> +
-> +	if (priv->operation_mode == BNO055_OPR_MODE_AMG ||
-> +	    (priv->operation_mode == BNO055_OPR_MODE_FUSION_FMC_OFF &&
-> +	     which == BNO055_CALIB_STAT_MAGN_SHIFT)) {
-> +		calib = 0;
-> +	} else {
-> +		mutex_lock(&priv->lock);
-> +		ret = regmap_read(priv->regmap, BNO055_CALIB_STAT_REG, &val);
-> +		mutex_unlock(&priv->lock);
-> +
-> +		if (ret)
-> +			return -EIO;
-> +
-> +		calib = ((val >> which) & BNO055_CALIB_STAT_MASK) + 1;
-Hmm. This is an unsual field get.  I wonder if it is good idea to
-have what looks like a field mask in BNO055_CALIB_STAT_MASK but isn't
-really because we are applying it to a shifted value.  Maybe we 
-are better off just encoding it directly here as  GENMASK(1, 0)
-
-> +	}
-> +
-> +	return sysfs_emit(buf, "%d\n", calib);
-> +}
-> +
-
-> +#ifdef CONFIG_DEBUG_FS
-
-I'm not particularly keen on ifdef fun in c files. How bad is it if we
-just don't bother and use __maybe_unused.  debug_fs_createfile is visible to
-the compiler in !CONFIG_DEBUG_FS so it should manage to remove everything
-except *_debugfs_reg_access() but that is trivial in size anyway.
-
-> +static int bno055_debugfs_reg_access(struct iio_dev *iio_dev, unsigned int reg,
-> +				     unsigned int writeval, unsigned int *readval)
-> +{
-> +	struct bno055_priv *priv = iio_priv(iio_dev);
-> +
-> +	if (readval)
-> +		return regmap_read(priv->regmap, reg, readval);
-> +	else
-> +		return regmap_write(priv->regmap, reg, writeval);
-> +}
-> +
-> +static ssize_t bno055_show_fw_version(struct file *file, char __user *userbuf,
-> +				      size_t count, loff_t *ppos)
-> +{
-> +	struct bno055_priv *priv = file->private_data;
-> +	int rev, ver;
-> +	char *buf;
-> +	int ret;
-> +
-> +	ret = regmap_read(priv->regmap, BNO055_SW_REV_LSB_REG, &rev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(priv->regmap, BNO055_SW_REV_MSB_REG, &ver);
-> +	if (ret)
-> +		return ret;
-> +
-> +	buf = kasprintf(GFP_KERNEL, "ver: 0x%x, rev: 0x%x\n", ver, rev);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	ret = simple_read_from_buffer(userbuf, count, ppos, buf, strlen(buf));
-> +	kfree(buf);
-> +
-> +	return ret;
-> +}
-> +
-> +static const struct file_operations bno055_fw_version_ops = {
-> +	.open = simple_open,
-> +	.read = bno055_show_fw_version,
-> +	.llseek = default_llseek,
-> +	.owner = THIS_MODULE,
-> +};
-> +
-> +static void bno055_debugfs_remove(void *debugfs)
-> +{
-> +	debugfs_remove((struct dentry *)debugfs);
-> +}
-> +
-> +static void bno055_debugfs_init(struct iio_dev *iio_dev)
-> +{
-> +	struct bno055_priv *priv = iio_priv(iio_dev);
-> +
-> +	priv->debugfs = debugfs_create_file("firmware_version", 0400,
-> +					    iio_get_debugfs_dentry(iio_dev),
-> +					    priv, &bno055_fw_version_ops);
-> +
-> +	devm_add_action_or_reset(priv->dev, bno055_debugfs_remove, priv->debugfs);
-> +}
-> +#else
-> +static void bno055_debugfs_init(struct iio_dev *iio_dev)
-> +{
-> +}
-> +
-> +static int bno055_debugfs_reg_access(struct iio_dev *iio_dev, unsigned int reg,
-> +				     unsigned int writeval, unsigned int *readval)
-> +{
-> +	return 0;
-> +}
-> +#endif
-> +
-
-...
-
-
-> +
-> +static irqreturn_t bno055_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *iio_dev = pf->indio_dev;
-> +	struct bno055_priv *priv = iio_priv(iio_dev);
-> +	int xfer_start, start, end, prev_end;
-> +	unsigned long mask;
-> +	int quat_extra_len;
-> +	bool first = true;
-> +	int buf_idx = 0;
-> +	bool thr_hit;
-> +	int ret;
-> +
-> +	mutex_lock(&priv->lock);
-> +
-> +	/*
-> +	 * Walk the bitmap and eventually perform several transfers.
-> +	 * Bitmap ones-fields that are separated by gaps <= xfer_burst_break_thr
-> +	 * will be included in same transfer.
-> +	 * Every time the bitmap contains a gap wider than xfer_burst_break_thr
-> +	 * then we split the transfer, skipping the gap.
-> +	 */
-> +	for_each_set_bitrange(start, end, iio_dev->active_scan_mask,
-> +			      iio_dev->masklength) {
-> +		/*
-> +		 * First transfer will start from the beginning of the first
-> +		 * ones-field in the bitmap
-> +		 */
-> +		if (first) {
-> +			xfer_start = start;
-> +		} else {
-> +			/*
-> +			 * We found the next ones-field; check whether to
-> +			 * include it in * the current transfer or not (i.e.
-> +			 * let's perform the current * transfer and prepare for
-> +			 * another one).
-> +			 */
-> +
-> +			/*
-> +			 * In case the zeros-gap contains the quaternion bit,
-> +			 * then its length is actually 4 words instead of 1
-> +			 * (i.e. +3 wrt other channels).
-> +			 */
-> +			quat_extra_len = ((start > BNO055_SCAN_QUATERNION) &&
-
-you could reduce the scope of quat_extra_len and thr_hit, perhaps
-to just within the for loop.  Perhaps it's not worth bothering though. Up to you.
-
-
-> +					  (prev_end <= BNO055_SCAN_QUATERNION)) ? 3 : 0;
-> +
-> +			/* If the gap is wider than xfer_burst_break_thr then.. */
-> +			thr_hit = (start - prev_end + quat_extra_len) >
-> +				priv->xfer_burst_break_thr;
-> +
-> +			/*
-> +			 * .. transfer all the data up to the gap. Then set the
-> +			 * next transfer start index at right after the gap
-> +			 * (i.e. at the start of this ones-field).
-> +			 */
-> +			if (thr_hit) {
-> +				mask = *iio_dev->active_scan_mask >> xfer_start;
-> +				ret = bno055_scan_xfer(priv, xfer_start,
-> +						       prev_end - xfer_start,
-> +						       mask, priv->buf.chans, &buf_idx);
-> +				if (ret)
-> +					goto done;
-> +				xfer_start = start;
-> +			}
-> +		}
-> +		first = false;
-> +		prev_end = end;
-> +	}
-> +
-> +	/*
-> +	 * We finished walking the bitmap; no more gaps to check for. Just
-> +	 * perform the current transfer.
-> +	 */
-> +	mask = *iio_dev->active_scan_mask >> xfer_start;
-> +	ret = bno055_scan_xfer(priv, xfer_start,
-> +			       prev_end - xfer_start,
-> +			       mask, priv->buf.chans, &buf_idx);
-
-Check ret and if it's an error don't push the data.
-
-> +
-> +	iio_push_to_buffers_with_timestamp(iio_dev, &priv->buf, pf->timestamp);
-> +done:
-> +	mutex_unlock(&priv->lock);
-> +	iio_trigger_notify_done(iio_dev->trig);
-> +	return IRQ_HANDLED;
-> +}
-> +
-
-> +int bno055_probe(struct device *dev, struct regmap *regmap,
-> +		 int xfer_burst_break_thr, bool sw_reset)
-> +{
-...
-
-> +
-> +	/*
-> +	 * The stock FW version contains a bug (see comment at the beginning of
-> +	 * this file) that causes the anglvel scale to be changed depending on
-> +	 * the chip range setting. We workaround this, but we don't know what
-> +	 * other FW versions might do.
-> +	 */
-> +	if (ver != 0x3 || rev != 0x11)
-> +		dev_warn(dev, "Untested firmware version. Anglvel scale may not work as expected\n");
-> +
-> +	ret = regmap_bulk_read(priv->regmap, BNO055_UID_LOWER_REG,
-> +			       priv->uid, BNO055_UID_LEN);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Sensor calibration data */
-> +	fw_name_buf = kasprintf(GFP_KERNEL,
-> +				BNO055_FW_UID_FMT,
-> +				BNO055_UID_LEN, priv->uid);
-
-No need to break this into so many lines.  Can get it on two without
-passing 80 chars.
+Saravanan

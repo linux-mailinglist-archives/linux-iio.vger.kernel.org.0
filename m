@@ -2,48 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABD93550524
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB00550529
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233932AbiFRNjS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 09:39:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41100 "EHLO
+        id S230229AbiFRNnP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 09:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbiFRNjR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:39:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0663615801;
-        Sat, 18 Jun 2022 06:39:17 -0700 (PDT)
+        with ESMTP id S229643AbiFRNnP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:43:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B2551B781
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 06:43:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9513560C16;
-        Sat, 18 Jun 2022 13:39:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73B9C3411A;
-        Sat, 18 Jun 2022 13:39:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 24368B8015A
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 13:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65DCC3411A;
+        Sat, 18 Jun 2022 13:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655559556;
-        bh=NaI1s8MV1DekMTJJBuznazPzmo9dH36Xf7i0FHuVPzY=;
+        s=k20201202; t=1655559791;
+        bh=K1zNY65Zan+BY++OJcrxwlKIZT+10vWrqGTTsQbVpv8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sOiNSW5LpDW9Pglq9D9QYvt0Q2PVjmxgUo6ycj8fUCYpT/ScNDPmBoRes/wfTEZmU
-         L7zbSPe1kR9BsvASD7ABYwB7vV0m3d26jIS4II9geCSoKO7iFi+/M3Qx1DImXS3ai8
-         JyWSn0SvgzKlnCcCPheGUdPEHL9qZMCZT+Q37XipeRBWonuOR0Vrksu9v13dousWwj
-         9sCAy1yOWLDSGZ0IVi4iyUdrLgnyV2T2f+ZYi5RwA2aCrWoV+UxMWw6qfMATqPx3hm
-         5Bnd3c1KIN94HrP/sw1p54EsJHtZR3/nW6TB1uxoWU3HvVDNMaknHJDf70ufvf/n50
-         0xS9/i7qs6vQw==
-Date:   Sat, 18 Jun 2022 14:48:33 +0100
+        b=nF81YZ1HrZziAN0CCAL3u1PxJ60mmKqKBHEH4O8sAn972gmLA+sIItIF7dvuGaf+2
+         sBBoUzEWGV4qpDLkH//FofEVcX3QJ7F6B/ZRxGZELcWLQxLcq9ExOFogtrZbm06XEA
+         sIo4xmL6DpHZqg8EtUN6Zpk2hN+pUZV6+YPw1O1JHOa5vvmY8GHeDBVCLsjoocpfh/
+         EL59dN7tyOoqUHOS+t4XGjbaLEf+VNFNuIfGFWC3tiaBhqaNvqt0UdCnV2n7XXUka8
+         4fhG523vvKgRIw2ONjkabbLbhJMA7csj2uAcwrn3ehA4Po6zuzpvchimqtjctmvYKV
+         DvKJwZC7x/O6Q==
+Date:   Sat, 18 Jun 2022 14:52:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v4 2/2] iio: adc: ad4130: add AD4130 driver
-Message-ID: <20220618144809.7d36908d@jic23-huawei>
-In-Reply-To: <20220608091238.403897-3-cosmin.tanislav@analog.com>
-References: <20220608091238.403897-1-cosmin.tanislav@analog.com>
-        <20220608091238.403897-3-cosmin.tanislav@analog.com>
+To:     Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2] iio:light:tsl2563: Replace flush_scheduled_work()
+ with cancel_delayed_work_sync().
+Message-ID: <20220618145229.5c8fd452@jic23-huawei>
+In-Reply-To: <3381176e-2f86-24ba-a8ba-c4ce8f416086@I-love.SAKURA.ne.jp>
+References: <4c2df9f0-89db-cfe8-b2ac-54c991f9fa4e@I-love.SAKURA.ne.jp>
+        <3381176e-2f86-24ba-a8ba-c4ce8f416086@I-love.SAKURA.ne.jp>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,21 +55,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  8 Jun 2022 12:12:38 +0300
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Sun, 12 Jun 2022 23:52:59 +0900
+Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp> wrote:
 
-> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> low bandwidth battery operated applications.
+> Commit 9e61d901155bcd4e ("iio: light: tsl2563: Remove
+> flush_scheduled_work") replaced cancel_delayed_work() +
+> flush_scheduled_work() with cancel_delayed_work_sync() for only
+> tsl2563_probe() side.
 > 
-> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> selectable filter options, smart sequencer, sensor biasing and excitation
-> options, diagnostics, and a FIFO buffer.
+> Do the same thing for tsl2563_remove() side, which was added by
+> commit 388be4883952872b ("staging:iio: tsl2563 abi fixes and interrupt
+> handling").
 > 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-FWIW I took another look through and didn't find anything to add to the
-existing reviews of this version.
+> Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+> ---
+> Changes in v2:
+>   Use cancel_delayed_work_sync() instead of introducing a dedicated WQ.
+Nice.  This does the job without the complexity or overhead of a dedicated
+work queue.  
 
-Jonathan
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
+
+Thanks,
+
+Jonathqan
+
+> 
+> Please see commit c4f135d643823a86 ("workqueue: Wrap flush_workqueue()
+> using a macro") for background.
+> 
+>  drivers/iio/light/tsl2563.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> index 0a278eea36ca..4d89ac3a5bbc 100644
+> --- a/drivers/iio/light/tsl2563.c
+> +++ b/drivers/iio/light/tsl2563.c
+> @@ -803,12 +803,11 @@ static int tsl2563_remove(struct i2c_client *client)
+>  
+>  	iio_device_unregister(indio_dev);
+>  	if (!chip->int_enabled)
+> -		cancel_delayed_work(&chip->poweroff_work);
+> +		cancel_delayed_work_sync(&chip->poweroff_work);
+>  	/* Ensure that interrupts are disabled - then flush any bottom halves */
+>  	chip->intr &= ~0x30;
+>  	i2c_smbus_write_byte_data(chip->client, TSL2563_CMD | TSL2563_REG_INT,
+>  				  chip->intr);
+> -	flush_scheduled_work();
+>  	tsl2563_set_power(chip, 0);
+>  
+>  	return 0;
 

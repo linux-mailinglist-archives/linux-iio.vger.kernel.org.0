@@ -2,51 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 213F6550506
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18C5355050D
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 15:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbiFRNLl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 09:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
+        id S230234AbiFRNRw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 09:17:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiFRNLk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:11:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF9A17079
-        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 06:11:38 -0700 (PDT)
+        with ESMTP id S229456AbiFRNRv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 09:17:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF4DDEAD;
+        Sat, 18 Jun 2022 06:17:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08B2160B97
-        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 13:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1924C3411A;
-        Sat, 18 Jun 2022 13:11:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 84AD2B808C4;
+        Sat, 18 Jun 2022 13:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8485C3411A;
+        Sat, 18 Jun 2022 13:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655557897;
-        bh=eLZj0TBzW6kjVFOhmlMgqKyUQcYLNqcUvNu5rXRrGd4=;
+        s=k20201202; t=1655558266;
+        bh=nmSfIhwdXVYqsSz7pkv5v/OV6Q1kNMZACzI7k2REBNE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=PTmQwS4Wsd0oV0sexU5zDQqyuMwmaI/3+L6sJXWufkr1u/w6JMumcm2NoO7og5q7I
-         kDmj0hzksxlDAmlRnLcCGNzPmqherAHWztw8xXclGz52NO/T1o0zLMHoYRb2li8s6c
-         TkcIzraPKAE+00LssCJ5w26NRQpkq4vhrTumkly1Z4Bp/qwSK55X3Bo1TNCz878XhX
-         srjzAiaq3NNVBi+2N0JGWTzFqMOV8QLruGUCOAiIeKJV6SwcldjFyzjw2c9loMktQq
-         /Mud0KNZV7Z0N5RgkzknZJmGbBIBTPGy0AWM+Dl5yK0/us8bjKEdMqPshtOUbtHgGS
-         yGCkOw1VW8xhA==
-Date:   Sat, 18 Jun 2022 14:20:54 +0100
+        b=X9WZ5W+ZW7pwMHbImv9vGPOaNO35V2FJwW4oKyGykyl8Bl5XhD9EmSb1Qb3w24IGD
+         2s066vZSBfUpdj9V1Pal35iYmJ2a5w2E6CxxwhtXOfuj7B6inP2AFGwpwrqZwqZmV1
+         ddhFfP/ws8ryZA3Y2AHqCfoIK4KBhBDulkWCiM65y/B9BGJ2VW77j4ot/06wjGOt4G
+         JndllYTvwkukXxp39k235DibSxYOUYwSOaDRNkTN+oradidKhmGd07CJjli/6kGGT5
+         0avyy31vvmneyE3bchsEemIT4bu9pj3M7R+jaBKHT0yYRFKz1yVhZUOs2ezV9vTW14
+         TzTQJGkw2V0mQ==
+Date:   Sat, 18 Jun 2022 14:27:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>
-Subject: Re: [PATCH v2 0/4] 3rd set of IIO export namespaces.
-Message-ID: <20220618142054.4571f2f4@jic23-huawei>
-In-Reply-To: <20220604155306.422937-1-jic23@kernel.org>
-References: <20220604155306.422937-1-jic23@kernel.org>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "rockosov@gmail.com" <rockosov@gmail.com>
+Subject: Re: [PATCH v3] iio: trigger: warn about non-registered iio trigger
+ getting attempt
+Message-ID: <20220618142703.75025659@jic23-huawei>
+In-Reply-To: <20220616091308.miwqkdfc77mm72hz@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220607183907.20017-1-ddrokosov@sberdevices.ru>
+        <20220616091308.miwqkdfc77mm72hz@CAB-WSD-L081021.sigma.sbrf.ru>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,56 +62,101 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  4 Jun 2022 16:53:02 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 16 Jun 2022 09:13:00 +0000
+Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> Changes since v1:
-> - Rebase (bit of fuzz in patches 1 and 4)
+> Hello Jonathan,
+> 
+> I notice the patchset from 
+> https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices.ru/
+> is not merged to stable yet.
+> I think if this WARN() patch is okay for you, maybe it's better to merge
+> it together with the previous one. It will notify developers about this
+> problem as you suggested before, and the previous patchset resolves the issue
+> in the all IIO drivers.
+> 
+> What do you think about it?
 
-If anyone has time to take a quick look through this lot and sanity
-check I haven't done anything stupid it would be much appreciated.
+It would be a stretch to take a defensive measure like this into stable,
+so I'll just queue this up for the next merge window.  We might have
+some exciting intermediate times where anyone actually using the togreg
+branch directly will get drivers that will spit out the warning.
+That should only be people active on the list though who will find
+this quickly enough and understand what is gong on.
 
-Disadvantage of being the maintainer is there isn't anyone else you
-can moan about when no one reviews your patches. Of course I never
-moan about other maintainers and I'm sure no one ever moans
-about me :)
+I'm fine with this and it's been on list long enough for anyone else to comment.
+It'll be in a branch I'm happy to rebase for at few days anyway if there
+are any last minute comments or tags.
 
->=20
-> I sent v1 out in Feb and only got review on one patch (which I've since
-> applied - thanks Nuno).
->=20
-> Looking for a quick sanity check of these 4 that remain from anyone who
-> has the time.  Whilst this is mechanical stuff, I've made enough dumb
-> mistakes in such patches over the years that I still like to get a second
-> set of eyes on them if at all possible!=20
->=20
-> Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Siddartha Mohanadoss <smohanad@codeaurora.org>
->=20
-> Jonathan Cameron (4):
->   iio: imu: bmi160: Move exported symbols to IIO_BMI160 namespace
->   iio: pressure: bmp280: Move symbol exports to IIO_BMP280 namespace
->   iio: chemical: sps30: Move symbol exports into IIO_SPS30 namespace
->   iio: adc: qcom-vadc: Move symbol exports to IIO_QCOM_VADC namespace
->=20
->  drivers/iio/adc/qcom-pm8xxx-xoadc.c  |  1 +
->  drivers/iio/adc/qcom-spmi-adc5.c     |  1 +
->  drivers/iio/adc/qcom-spmi-vadc.c     |  1 +
->  drivers/iio/adc/qcom-vadc-common.c   | 16 ++++++++--------
->  drivers/iio/chemical/sps30.c         |  2 +-
->  drivers/iio/chemical/sps30_i2c.c     |  1 +
->  drivers/iio/chemical/sps30_serial.c  |  1 +
->  drivers/iio/imu/bmi160/bmi160_core.c |  6 +++---
->  drivers/iio/imu/bmi160/bmi160_i2c.c  |  1 +
->  drivers/iio/imu/bmi160/bmi160_spi.c  |  1 +
->  drivers/iio/pressure/bmp280-core.c   |  2 +-
->  drivers/iio/pressure/bmp280-i2c.c    |  1 +
->  drivers/iio/pressure/bmp280-regmap.c |  4 ++--
->  drivers/iio/pressure/bmp280-spi.c    |  1 +
->  14 files changed, 24 insertions(+), 15 deletions(-)
->=20
+Applied to the togreg branch of iio.git and pushed out as testing.
+
+Hopefully I'll get a pull request out for the fixes-togreg branch
+sometime this weekend.
+
+Thanks for adding this protection btw.
+
+Jonathan
+
+
+> 
+> On Tue, Jun 07, 2022 at 06:39:18PM +0000, Dmitry Rokosov wrote:
+> > As a part of patch series about wrong trigger register() and get()
+> > calls order in the some IIO drivers trigger initialization path:
+> > 
+> > https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices.ru/
+> > 
+> > runtime WARN_ONCE() is added to alarm IIO driver authors who make such
+> > a mistake.
+> > 
+> > When an IIO driver allocates a new IIO trigger, it should register it
+> > before calling the get() operation. In other words, each IIO driver
+> > must abide by IIO trigger alloc()/register()/get() calls order.
+> > 
+> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> > ---
+> > Changes:
+> > v1 -> v2: totally reworked the patch, used trig->list entry instead of
+> >           trig->owner as driver registration indicator.
+> >           It works perfectly for both builtin and built as a module
+> >           drivers.
+> > 
+> > v2 -> v3: changed WARN() call to WARN_ONCE() to avoid warn spamming
+> >           during deferred probe() as Andy suggested.
+> > ---
+> >  drivers/iio/industrialio-trigger.c | 2 ++
+> >  include/linux/iio/trigger.h        | 5 +++++
+> >  2 files changed, 7 insertions(+)
+> > 
+> > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
+> > index f504ed351b3e..d6277e72d515 100644
+> > --- a/drivers/iio/industrialio-trigger.c
+> > +++ b/drivers/iio/industrialio-trigger.c
+> > @@ -581,6 +581,8 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
+> >  	if (trig->name == NULL)
+> >  		goto free_descs;
+> >  
+> > +	INIT_LIST_HEAD(&trig->list);
+> > +
+> >  	trig->subirq_chip.name = trig->name;
+> >  	trig->subirq_chip.irq_mask = &iio_trig_subirqmask;
+> >  	trig->subirq_chip.irq_unmask = &iio_trig_subirqunmask;
+> > diff --git a/include/linux/iio/trigger.h b/include/linux/iio/trigger.h
+> > index 4c69b144677b..03b1d6863436 100644
+> > --- a/include/linux/iio/trigger.h
+> > +++ b/include/linux/iio/trigger.h
+> > @@ -93,6 +93,11 @@ static inline void iio_trigger_put(struct iio_trigger *trig)
+> >  static inline struct iio_trigger *iio_trigger_get(struct iio_trigger *trig)
+> >  {
+> >  	get_device(&trig->dev);
+> > +
+> > +	WARN_ONCE(list_empty(&trig->list),
+> > +		  "Getting non-registered iio trigger %s is prohibited\n",
+> > +		  trig->name);
+> > +
+> >  	__module_get(trig->owner);
+> >  
+> >  	return trig;
+> > -- 
+> > 2.36.0  
+> 
 

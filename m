@@ -2,179 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A2B5505E3
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 17:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0AA5505D7
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 17:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230133AbiFRPuq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 11:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53498 "EHLO
+        id S234726AbiFRPqY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 11:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230082AbiFRPup (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 11:50:45 -0400
-Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3C6413D0A;
-        Sat, 18 Jun 2022 08:50:43 -0700 (PDT)
-Received: by mail-vk1-xa34.google.com with SMTP id b81so3289500vkf.1;
-        Sat, 18 Jun 2022 08:50:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=T3SgY9Ix2aQ1fUpUhaxNDx5u2J5tcKzRVXLg7gEU6qc=;
-        b=DAwZ8Ft7Sba01Z8evn6uoWQoH9rK99FXpEvjXBnA5t7tR3tZLlgrp6fUNJv9smBdlj
-         w2ry2c8bJtmivQXeLqhPT2XSBwsFoWYms32x2AaQxszi3YExASCUQR0PkaTxQV3cFlrR
-         H0zI0OIOrxec4FoQbqX8kAUShOTUk2SnVSM+qgS85KMl1SWMTpWYfrRin8vQP1lljFwP
-         I5N+LN+QzHKmXYl1N8qFwNU6ukkXn604ClWenfzZhuYkvrQ78LPX9mz2JVzzk3vy812F
-         lqiWIiDFkmRXuzz+9HK7tMIqicYzR0YRcelW3rE6DWb3aPsVT73OSAfla5enZiLhj5LJ
-         DlyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=T3SgY9Ix2aQ1fUpUhaxNDx5u2J5tcKzRVXLg7gEU6qc=;
-        b=mUGPuyucpWNesAnQ5p8V654b/dSXU4xC1At8frqmiTqJ/B2+JXI43Dbmrz22wgVMyW
-         r7YIr7jzNsnMaU8pXq09AQTXF96m3anEHKzVSQprrT4HldaDqRkh1M6+r5w7y1H1fIjo
-         GrjK4ZJovU7wtQRS21UNJMpu2ZCF7L3sPkQm4M49Cwim7RG2u9iuJX2JtBkWXQWXnTL4
-         5vlIgPVF+3GPMS6PNXRRAINXkgm+4HXQ6ClQCt7GTYQKFIs0BHeoEE8JYSDTgwpsryOO
-         E16rnpHK3MWuOj5LlRVEt2H66Hfqbkkw1ZfO9Swc01anMTSwCCn0EGAAG4ddop4BFtvr
-         5V9g==
-X-Gm-Message-State: AJIora8kvN2Nnr/wax/o9o//qSmfcf1k/1Zlso+uB9GBPb7/OdUqLYnO
-        f8jucz5Yyu6G90QUVZ4htIV0aihphkW9m8/XDDmVAtqk
-X-Google-Smtp-Source: AGRyM1ubde/CEtYH/tGSzFgCo0k54FpcDOVXmIF4a2Tu5TcjzQIXDvB+7E3C4YBEkNvrSXZwPSqpnL4auCvuFJ6z9zY=
-X-Received: by 2002:a1f:18c4:0:b0:35c:d0f9:c547 with SMTP id
- 187-20020a1f18c4000000b0035cd0f9c547mr6544075vky.29.1655567442932; Sat, 18
- Jun 2022 08:50:42 -0700 (PDT)
+        with ESMTP id S230133AbiFRPqX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 11:46:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE49DFD7;
+        Sat, 18 Jun 2022 08:46:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1C52BB80122;
+        Sat, 18 Jun 2022 15:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AAAC3411A;
+        Sat, 18 Jun 2022 15:46:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655567179;
+        bh=ZGW00kE2X5QeC42ZPdciUlBPY1kZEm9YExB8rVytviM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=CNxKtQsOJ7okFR8VWDvxsg1POAjID1uJ7gnyCcdIqRIJP+Q3wOxlRxPzYa0gFuBhG
+         auKr9veH/mlCT/MDGpiE8L9q3cIc8BHL7HgothiPlZb6n4EnAf4lVeg28wVwv40TZI
+         WT21g+aMay0vq6jFiARX4FcoJ4/q2X4O1b7VdcqeGldt7znXGokQszfhdXPUgqOmbz
+         ATAzpnTuhd1JEkDM8VQzLph/0HIWj1Bq7JfBc55qj6jxm47pj/EUKtN/IEZZaE3bkR
+         VG1YdW75ntG/4SXRc7jztJpMGhwPlGEnJ+ahGVDIJ12mxwUbP4reQz14LNHIqpdQSV
+         fEDg98ZqOBDhQ==
+Date:   Sat, 18 Jun 2022 16:55:33 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lars@metafoo.de, matthias.bgg@gmail.com, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com, ChiYuan Huang <cy_huang@richtek.com>
+Subject: Re: [PATCH v2 08/15] mfd: mt6370: Add Mediatek MT6370 support
+Message-ID: <20220618165533.5669e288@jic23-huawei>
+In-Reply-To: <20220613111146.25221-9-peterwu.pub@gmail.com>
+References: <20220613111146.25221-1-peterwu.pub@gmail.com>
+        <20220613111146.25221-9-peterwu.pub@gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
- <1655458375-30478-2-git-send-email-u0084500@gmail.com> <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
-In-Reply-To: <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
-From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Sat, 18 Jun 2022 23:50:32 +0800
-Message-ID: <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=E5=B9=
-=B46=E6=9C=8818=E6=97=A5 =E9=80=B1=E5=85=AD =E4=B8=8A=E5=8D=889:45=E5=AF=AB=
-=E9=81=93=EF=BC=9A
->
-> On 17/06/2022 02:32, cy_huang wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
-> >
-> > Add the documentation for Richtek RTQ6056.
-> >
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> >  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++=
-++++++++
-> >  1 file changed, 57 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,r=
-tq6056-adc.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-=
-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.ya=
-ml
-> > new file mode 100644
-> > index 00000000..6b4e0e0
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yam=
-l
-> > @@ -0,0 +1,57 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit AD=
-C
-> > +
-> > +maintainers:
-> > +  - ChiYuan Huang <cy_huang@richtek.com>
-> > +
-> > +description: |
-> > +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SM=
-Bus
-> > +  interface, and the device provides full information for system by re=
-ading
-> > +  out the loading current and power.
-> > +
-> > +  The device monitors both of the drops across sense resistor and the =
-BUS
-> > +  voltage, converts into the current in amperes, and power in watts th=
-rough
-> > +  internal analog-to-digital converter ADC. The programmable calibrati=
-on,
-> > +  adjustable conversion time, and averaging function are also built in=
- for
-> > +  more design flexibility.
-> > +
-> > +  Datasheet is available at
-> > +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: richtek,rtq6056
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  richtek,shunt-resistor-uohm:
->
-> Use standard properties, so "-micro-ohms". Drop the unit from
-> description and drop the ref.
->
-Use richtek.shunt-resistor-micro-ohms?
-Or the prefix 'richtek,' can be removed?
-> > +    description: Shunt IN+/IN- sensing node resistor in microohm.
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#io-channel-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <0>;
-> > +      rtq6056@40 {
->
-> Generic node name, so probably "adc" (or something else appropriate).
->
-Ack in next.
-> > +        compatible =3D "richtek,rtq6056";
-> > +        reg =3D <0x40>;
-> > +        #io-channel-cells =3D <1>;
-> > +      };
-> > +    };
->
->
-> Best regards,
-> Krzysztof
+On Mon, 13 Jun 2022 19:11:39 +0800
+ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add Mediatek MT6370 MFD support.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Hi.
+
+A few trivial things that probably overlap with other reviewer
+comments.
+
+
+> +static int mt6370_check_vendor_info(struct mt6370_info *info)
+> +{
+> +	unsigned int devinfo;
+> +	int ret;
+> +
+> +	ret = regmap_read(info->regmap, MT6370_REG_DEV_INFO, &devinfo);
+> +	if (ret)
+> +		return ret;
+> +
+> +	switch (FIELD_GET(MT6370_VENID_MASK, devinfo)) {
+> +	case 0x8: /* RT5081 */
+> +	case 0xA: /* RT5081A */
+> +	case 0xE: /* MT6370 */
+> +	case 0xF: /* MT6371 */
+> +	case 0x9: /* MT6372P */
+> +	case 0xB: /* MT6372CP */
+> +		break;
+> +	default:
+> +		dev_err(info->dev, "Not invalid value 0x%02x\n", devinfo);
+
+Double negative... You mean "Invalid value" 
+though you probably want to say something more specific such as
+		"Unknown Vendor ID 0x%02x\n")
+
+> +		return -ENODEV;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6370_regmap_read(void *context, const void *reg_buf,
+> +			      size_t reg_size, void *val_buf, size_t val_size)
+> +{
+> +	struct mt6370_info *info = context;
+> +	u8 bank_idx = *(u8 *)reg_buf, bank_addr = *(u8 *)(reg_buf + 1);
+> +	int ret;
+> +
+> +	ret = i2c_smbus_read_i2c_block_data(info->i2c[bank_idx], bank_addr,
+> +					    val_size, val_buf);
+> +	if (ret != val_size)
+> +		return ret;
+If it's positive , that is probably not what regmap expects.
+See handling in here
+https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regmap-i2c.c#L222
+
+> +
+> +	return 0;
+> +}
+
+
+> +
+> +static int mt6370_probe(struct i2c_client *i2c)
+> +{
+> +	struct mt6370_info *info;
+> +	struct i2c_client *usbc_i2c;
+> +	int ret;
+> +
+> +	info = devm_kzalloc(&i2c->dev, sizeof(*info), GFP_KERNEL);
+> +	if (!info)
+> +		return -ENOMEM;
+> +
+> +	info->dev = &i2c->dev;
+> +
+> +	usbc_i2c = devm_i2c_new_dummy_device(&i2c->dev, i2c->adapter,
+> +					     MT6370_USBC_I2CADDR);
+> +	if (IS_ERR(usbc_i2c)) {
+> +		ret = PTR_ERR(usbc_i2c);
+> +		dev_err(&i2c->dev, "Failed to register usbc i2c client %d\n", ret);
+Might as well use
+		return dev_err_probe(&i2c->dev, PTR_ERR(usb_i2c),
+				     "Failed to register USBC I2C client\n");
+
+Whilst the defer handling isn't relevant, it is safe to use throughout probe
+and tidier in this case at least.
+
+> +		return ret;
+> +	}
+> +
+> +	/* Assign I2C client for PMU and TypeC */
+> +	info->i2c[MT6370_PMU_I2C] = i2c;
+> +	info->i2c[MT6370_USBC_I2C] = usbc_i2c;
+> +
+> +	info->regmap = devm_regmap_init(&i2c->dev, &mt6370_regmap_bus, info,
+> +					&mt6370_regmap_config);
+> +	if (IS_ERR(info->regmap)) {
+> +		ret = PTR_ERR(info->regmap);
+> +		dev_err(&i2c->dev, "Failed to register regmap (%d)\n", ret);
+
+as above dev_err_probe() will tidy this and following cases up for you.
+
+> +		return ret;
+> +	}
+> +
+> +	ret = mt6370_check_vendor_info(info);
+> +	if (ret) {
+> +		dev_err(&i2c->dev, "Failed to check vendor info (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_regmap_add_irq_chip(&i2c->dev, info->regmap, i2c->irq,
+> +				       IRQF_ONESHOT, -1, &mt6370_irq_chip,
+> +				       &info->irq_data);
+> +	if (ret) {
+> +		dev_err(&i2c->dev, "Failed to add irq chip (%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	return devm_mfd_add_devices(&i2c->dev, PLATFORM_DEVID_AUTO,
+> +				    mt6370_devices, ARRAY_SIZE(mt6370_devices),
+> +				    NULL, 0,
+> +				    regmap_irq_get_domain(info->irq_data));
+> +}

@@ -2,173 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CAC8550658
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF055506D5
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 23:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236999AbiFRR0W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 13:26:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47986 "EHLO
+        id S230113AbiFRVkA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 17:40:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiFRR0V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:26:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60A915FD3;
-        Sat, 18 Jun 2022 10:26:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 57D85B80B2E;
-        Sat, 18 Jun 2022 17:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DFCC3411A;
-        Sat, 18 Jun 2022 17:26:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655573178;
-        bh=39UnWn6/BLP0wfoTZHT7v2eNKaEICuTAxT3fZ9m190s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iO2tqrxnt4KpaHax6i/wrpdA0yUl51BQfyFFDXdlXie//UgyKsVSCJjCaqC8x0HgZ
-         sr2Ur5peM9Wm3C03A0OlYpiKofzqd7I45exkV2OvIeVDyy01W4XwSOnmgkRmn9bRII
-         AwgTJKMztbMPb3BatWny0rxA7rY5gkc+d9eZnlN77+uvUXkCEUqsGbHlna/Kn/6Bas
-         RgUrjW3P3UYIPEAX9aOP2FzM0UiHrDGV4eu/fCMXf1R9AnU/j7PVnhgolSbE4TuLzU
-         j6Fez52xdS3ZphVn02Jl8Q3Uv14kNvGhN1nS32inVVzbcITZIQDDY8JgMtKnE0r2+x
-         +x9xCE1KYEEBA==
-Date:   Sat, 18 Jun 2022 18:35:34 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     ChiYuan Huang <u0084500@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
-Message-ID: <20220618183534.576a2277@jic23-huawei>
-In-Reply-To: <20220618183440.121365d7@jic23-huawei>
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
-        <1655458375-30478-2-git-send-email-u0084500@gmail.com>
-        <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
-        <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
-        <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
-        <20220618183440.121365d7@jic23-huawei>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S229680AbiFRVj7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 17:39:59 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E3AB7D6;
+        Sat, 18 Jun 2022 14:39:58 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id z7so10318064edm.13;
+        Sat, 18 Jun 2022 14:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Hvr1nu2yN593GMlX8fO+Db7irapWGKQJ5Kq9iaHCuaM=;
+        b=jAFDSnYK8/BQsquv0b2CwSQCP6pOzp6zNH3EAQI51CFiGEPYjw/rwiI5BKWsbHcqLg
+         cetwkRIyIa6YDKHZcBbS1lkkIrI2MYRrqSTXv1v4IGJ2dsiwjGeDP70m89mgTOA1mID9
+         kmnfJhbjySezuuJZLjx3VNYjq5SzCty+BbWXel4rY03bjO8dBtB8+SkZL5rk85EkxJyV
+         lP2UbaIS/+lqSYikugVlqV/U4xArPCBX7tC/VLGFxTxg13/YThx8pYaqwRzKFQxD0Gh2
+         WO48/5g22Va/v8YcbP3VTr3GO5M177F68qBOjhpXvKJ/UG0k7EnRF0f8TcLeeVJ4YkbJ
+         2hxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Hvr1nu2yN593GMlX8fO+Db7irapWGKQJ5Kq9iaHCuaM=;
+        b=QoNm9SHXkTvioX9IDrM7ieCKF/5w0EiMocZnyELKon/JNg3NMRTIse3gcylyjuwyT2
+         e9H8qaSpfSDVHIbYYf+rUAVexFYdeZCv3U30iPxy/IuyQGuPYiCNmk1WBJpKI0SNN9dg
+         9Az4o7hygjLuLfz5wExTDo7rR3cjXnkOyWJssmNbG3q6y04qSbhP2/9odRg30yNk0IfF
+         MqNA3kvQOek6OrGb7/Y2CleJyGn9Q7hR8ooF07mNFVzv1i6bl7GUhQMrHsULE0D4k7VN
+         stzGrxqfzHu3U4TP9xhvNOPyDRyIKWJLea8P9I4XiPoDBQIBG6zqgtS0kOTTr1EsBWS6
+         0bqA==
+X-Gm-Message-State: AJIora/esjZ+clEyZngjNkD5KfzNlxg0DD6o3aCKXWUOF/6t1ZTxn5mS
+        dHvqHbWrFzrsHCEr+hUUbvCljT+CRvE=
+X-Google-Smtp-Source: AGRyM1tT1x47MeQd6Iylql9Nl6MNb7pG8YHh7zkmkAOKiZFR1Ga8iGYltb/wW4xPNBrnwRMFHI+rFA==
+X-Received: by 2002:a05:6402:1941:b0:435:5972:7811 with SMTP id f1-20020a056402194100b0043559727811mr14716285edz.234.1655588396494;
+        Sat, 18 Jun 2022 14:39:56 -0700 (PDT)
+Received: from localhost (92.40.169.177.threembb.co.uk. [92.40.169.177])
+        by smtp.gmail.com with ESMTPSA id k11-20020a17090632cb00b00705cdfec71esm3825355ejk.7.2022.06.18.14.39.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jun 2022 14:39:56 -0700 (PDT)
+From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+To:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com
+Cc:     lars@metafoo.de, rafael@kernel.org, quic_gurus@quicinc.com,
+        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
+        michael@walle.cc, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [PATCH v3 00/16] Add support for AXP192 PMIC
+Date:   Sat, 18 Jun 2022 22:39:53 +0100
+Message-Id: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 18 Jun 2022 18:34:40 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+Changes in v3:
 
-> On Sat, 18 Jun 2022 19:00:19 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->=20
-> > On 18/06/2022 08:50, ChiYuan Huang wrote: =20
-> > > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=
-=E5=B9=B46=E6=9C=8818=E6=97=A5 =E9=80=B1=E5=85=AD =E4=B8=8A=E5=8D=889:45=E5=
-=AF=AB=E9=81=93=EF=BC=9A   =20
-> > >>
-> > >> On 17/06/2022 02:32, cy_huang wrote:   =20
-> > >>> From: ChiYuan Huang <cy_huang@richtek.com>
-> > >>>
-> > >>> Add the documentation for Richtek RTQ6056.
-> > >>>
-> > >>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > >>> ---
-> > >>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++=
-++++++++++++
-> > >>>  1 file changed, 57 insertions(+)
-> > >>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richt=
-ek,rtq6056-adc.yaml
-> > >>>
-> > >>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6=
-056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-ad=
-c.yaml
-> > >>> new file mode 100644
-> > >>> index 00000000..6b4e0e0
-> > >>> --- /dev/null
-> > >>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc=
-.yaml
-> > >>> @@ -0,0 +1,57 @@
-> > >>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > >>> +%YAML 1.2
-> > >>> +---
-> > >>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yam=
-l#
-> > >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > >>> +
-> > >>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bi=
-t ADC
-> > >>> +
-> > >>> +maintainers:
-> > >>> +  - ChiYuan Huang <cy_huang@richtek.com>
-> > >>> +
-> > >>> +description: |
-> > >>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C an=
-d SMBus
-> > >>> +  interface, and the device provides full information for system b=
-y reading
-> > >>> +  out the loading current and power.
-> > >>> +
-> > >>> +  The device monitors both of the drops across sense resistor and =
-the BUS
-> > >>> +  voltage, converts into the current in amperes, and power in watt=
-s through
-> > >>> +  internal analog-to-digital converter ADC. The programmable calib=
-ration,
-> > >>> +  adjustable conversion time, and averaging function are also buil=
-t in for
-> > >>> +  more design flexibility.
-> > >>> +
-> > >>> +  Datasheet is available at
-> > >>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.p=
-df
-> > >>> +
-> > >>> +properties:
-> > >>> +  compatible:
-> > >>> +    const: richtek,rtq6056
-> > >>> +
-> > >>> +  reg:
-> > >>> +    maxItems: 1
-> > >>> +
-> > >>> +  "#io-channel-cells":
-> > >>> +    const: 1
-> > >>> +
-> > >>> +  richtek,shunt-resistor-uohm:   =20
-> > >>
-> > >> Use standard properties, so "-micro-ohms". Drop the unit from
-> > >> description and drop the ref.
-> > >>   =20
-> > > Use richtek.shunt-resistor-micro-ohms?   =20
-> >=20
-> > Yes.
-> >  =20
-> > > Or the prefix 'richtek,' can be removed?   =20
-> >=20
-> > No, the vendor prefix must stay. =20
->=20
-> It's a standard generic binding used in a bunch of IIO and hwmon
-> drivers without vendor prefix.  Mind you I can't find a definition
+* Update pinctrl driver to address Andy Shevchenko's review comments
+  from v1, and fix a few other issues.
+* Add gpio-ranges property and example snippet to gpio DT bindings.
+* Update commit message of patch 01/16 to point out that all register
+  addresses are obtained using sub_irq_reg().
+* Document ccc_table in axp20x_battery. Also update commit message to
+  note a small fix that is part of that patch.
+* Drop axp20x_adc consolidation patch in favor of using separate adc_raw
+  functions. It's a minor code size optimization that may not be worth
+  the effort due to implementation complexity.
+* Use the FIELD_GET macro in axp20x_adc to further clarify intent.
+* Fix a typo in the regulator driver where an AXP20X regulator ID was
+  mistakenly used instead of an AXP192 regulator ID. Also carry over
+  an Acked-by: tag from v1. Hope that's okay.
+* Accumulate Acked-by: tags from v1 on DT patches.
+* Accumulate Acked-by: tags from v2.
 
-by which I meant to say "bindings" not drivers :)
+Note that regmap maintainer Mark Brown has said the first two patches to
+regmap-irq aren't suitable for inclusion into the kernel in their current
+state. I'm including them for v3 so the series remains testable.
 
-> in any of the top level binding files.  Probably wants to be in
-> adc.yaml for IIO.
->=20
-> Jonathan
->=20
-> =20
-> >=20
-> > Best regards,
-> > Krzysztof =20
->=20
+Changes in v2:
+
+* Do a little cleanup of axp20x_adc suggested by Jonathan Cameron
+* Consolidate ADC read functions in axp20x_adc
+* Drop the axp192's read_label callback in axp20x_adc
+* Clean up the axp192-gpio dt bindings
+* Rewrite a problematic bit of code in axp20x_usb_power reported
+  by kernel test robot
+* Support AXP192 in axp20x_battery
+* Split up regmap-irq changes to two separate patches
+
+Cover letter from v1:
+
+Hi all,
+
+This patch series adds support for the X-Powers AXP192 PMIC to the
+AXP20x driver framework.
+
+The first patch is a small change to regmap-irq to support the AXP192's
+unusual IRQ register layout. It isn't possible to include all of the
+IRQ registers in one regmap-irq chip without this.
+
+The rest of the changes are pretty straightforward, I think the only
+notable parts are the axp20x_adc driver where there seems to be some
+opportunities for code reuse (the axp192 is nearly a duplicate of the
+axp20x) and the addition of a new pinctrl driver for the axp192, since
+the axp20x pinctrl driver was not very easy to adapt.
+
+Aidan MacDonald (16):
+  regmap-irq: Use sub_irq_reg() to calculate unmask register address
+  regmap-irq: Add get_irq_reg to support unusual register layouts
+  dt-bindings: mfd: add bindings for AXP192 MFD device
+  dt-bindings: iio: adc: axp209: Add AXP192 compatible
+  dt-bindings: power: supply: axp20x: Add AXP192 compatible
+  dt-bindings: gpio: Add AXP192 GPIO bindings
+  dt-bindings: power: axp20x-battery: Add AXP192 compatible
+  mfd: axp20x: Add support for AXP192
+  regulator: axp20x: Add support for AXP192
+  iio: adc: axp20x_adc: Minor code cleanups
+  iio: adc: axp20x_adc: Add support for AXP192
+  power: supply: axp20x_usb_power: Add support for AXP192
+  pinctrl: Add AXP192 pin control driver
+  power: axp20x_battery: Add constant charge current table
+  power: axp20x_battery: Support battery status without fuel gauge
+  power: axp20x_battery: Add support for AXP192
+
+ .../bindings/gpio/x-powers,axp192-gpio.yaml   |  68 +++
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+ .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+ .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+ .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+ drivers/base/regmap/regmap-irq.c              |  19 +-
+ drivers/iio/adc/axp20x_adc.c                  | 359 +++++++++--
+ drivers/mfd/axp20x-i2c.c                      |   2 +
+ drivers/mfd/axp20x.c                          | 153 +++++
+ drivers/pinctrl/Kconfig                       |  14 +
+ drivers/pinctrl/Makefile                      |   1 +
+ drivers/pinctrl/pinctrl-axp192.c              | 562 ++++++++++++++++++
+ drivers/power/supply/axp20x_battery.c         | 143 ++++-
+ drivers/power/supply/axp20x_usb_power.c       |  80 ++-
+ drivers/regulator/axp20x-regulator.c          | 101 +++-
+ include/linux/mfd/axp20x.h                    |  84 +++
+ include/linux/regmap.h                        |   5 +
+ 17 files changed, 1529 insertions(+), 83 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
+ create mode 100644 drivers/pinctrl/pinctrl-axp192.c
+
+-- 
+2.35.1
 

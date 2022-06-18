@@ -2,133 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F22A555065B
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22356550653
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237270AbiFRR1G (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 13:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48484 "EHLO
+        id S234336AbiFRRVn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 13:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiFRR1F (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:27:05 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E684815FDC;
-        Sat, 18 Jun 2022 10:27:03 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id w17so9354978wrg.7;
-        Sat, 18 Jun 2022 10:27:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=DoIZZ1NTKy4Vr/t9RCJI3Po/KaMoN7vfri8esvxKoD4=;
-        b=Nxp8r11G1j4iGd99hYd/4zZmf4jaIWbqEAANLSikI9r7y+gNhjPgOCLQFs4/9aJH31
-         c+8+WR98KfXuEMxxgWDNoCrj3VIE8bcpmNi1ICx32OC21eN0En0dCMerkwQHqiXPesye
-         eCifP9XKvchch6dq+DgJXRScVnhSzv9FbDWeUP7QrvzzkE2sj7c5IIox23CiexDBY35P
-         q6EC1AY8WLHKMptrZnFeZYLW2ax28xXjDr31oyYErLr4Whgeo47fi9jlWvYl+EpGFU7k
-         YkrAxW98hKX3xQfh6tp6KLRLioihYQj9RnMiwQz1UItsOl2nEm4JWZbjooaupZc1EWLG
-         1lVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=DoIZZ1NTKy4Vr/t9RCJI3Po/KaMoN7vfri8esvxKoD4=;
-        b=zd4BhiFiV75BKOTWnYTee+IzO2aVIvRP9v6qCsSpS7TRKy6Jko630ZrD7xN2JZlMQR
-         7lCdozNuPDmcQwTaaavjd7hZbSDUa5b795h/Fb6Q8oneJy3meY3y3SNTxarcpsBdANaZ
-         pIhFFcHODJI9V7RIvFffIj+trWqxMUzCBQMSbU9GJstePR9TxRNbHXMUh9MuJzgCi3RN
-         IOKA1Hu21RYy8CITqmpVFFrYIDOLsd0vBtTmGxCaSBcD0BrW0bX3nspZuxELs5bYJMn9
-         e4EVi/SctApvB2WyG6ZnFNqSPC5qnG/jOU53ZOgfjgzmqD7xucSLRQ6km6At8gt/nnYB
-         EdrQ==
-X-Gm-Message-State: AJIora+w1audyV90BsDGNy62w80ckcUzLeJs/jjyDhFtkm/xasCKD+43
-        UDlmidHCWbJv5hlxR5T2DdY=
-X-Google-Smtp-Source: AGRyM1tMtCZM/na5Zlkzt1FCoJ/jorGoHxo7DCEfL73cpnVS2Ejl7E66gpXYLOo7mKevuop/PG3jBg==
-X-Received: by 2002:a05:6000:12c3:b0:21a:3795:70ac with SMTP id l3-20020a05600012c300b0021a379570acmr12455037wrx.175.1655573222361;
-        Sat, 18 Jun 2022 10:27:02 -0700 (PDT)
-Received: from [192.168.0.104] (p5b3f781c.dip0.t-ipconnect.de. [91.63.120.28])
-        by smtp.gmail.com with ESMTPSA id t9-20020a05600c198900b0039c4f53c4fdsm16882283wmq.45.2022.06.18.10.27.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jun 2022 10:27:01 -0700 (PDT)
-Message-ID: <fb16197e-d5a1-eec3-af6d-19b2f5a5779e@gmail.com>
-Date:   Sat, 18 Jun 2022 19:27:00 +0200
+        with ESMTP id S231142AbiFRRVm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:21:42 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83AA0140CF;
+        Sat, 18 Jun 2022 10:21:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 17596B80A72;
+        Sat, 18 Jun 2022 17:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41652C3411A;
+        Sat, 18 Jun 2022 17:21:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655572894;
+        bh=s9rzUJH1dCU78egHZ+iIG03v6Lj+ion9PzSseqxJCFI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mLbJ4PLP002IFIyUS/mFXkt7VRPo37gj1dl2UgXLay+Jd+5DxzlSRZxjCKSQfzLtm
+         w4ERJv/y4Vtvf+zMWg/hqpOjfO75ncGomxEsmRBeblvqyljZF/cJ0Ghsf1i8AkvVYy
+         CTfCUKo5VD9g1SiBv2jluSBhogu0x0nNfUVOBKIfVg9HtAQUAAfDJ/p33a5g0kx2kd
+         QlWaytpoO91OuQliAYmBYJC3yq5N6Q8XpHivXx5gTE7c7v/ixy3a9u9FLFcZpTIv8D
+         BUJ5TsJBVILC9zkvhKEqh4bM/awT4sH6gM4Y9KEH1IVSYXTDyOvr87C/r8rkSapHHo
+         AwM2FiuCayWcQ==
+Date:   Sat, 18 Jun 2022 18:30:40 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
+        <linux-mips@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <chrome-platform@lists.linux.dev>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <openbmc@lists.ozlabs.org>, Cai Huoqing <cai.huoqing@linux.dev>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Jishnu Prakash <quic_jprakash@quicinc.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Amit Kucheria <amitk@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Benson Leung <bleung@chromium.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Christophe Branchereau <cbranchereau@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 20/34] iio: inkern: only relase the device node when
+ done with it
+Message-ID: <20220618183040.29ed935d@jic23-huawei>
+In-Reply-To: <20220610084545.547700-21-nuno.sa@analog.com>
+References: <20220610084545.547700-1-nuno.sa@analog.com>
+        <20220610084545.547700-21-nuno.sa@analog.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v3 1/6] iio: adc: mp2629: fix wrong comparison of channel
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20220615145357.2370044-1-sravanhome@gmail.com>
- <20220615145357.2370044-2-sravanhome@gmail.com>
- <20220618172301.44363feb@jic23-huawei>
-From:   saravanan sekar <sravanhome@gmail.com>
-In-Reply-To: <20220618172301.44363feb@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 18/06/22 18:23, Jonathan Cameron wrote:
-Hello Jonathan,
+On Fri, 10 Jun 2022 10:45:31 +0200
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> On Wed, 15 Jun 2022 16:53:52 +0200
-> Saravanan Sekar <sravanhome@gmail.com> wrote:
-> 
->> Input voltage channel enum is compared against iio address instead
->> of the channel.
->>
->> Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
->> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
->> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> 
-> So how do you want to handle this?  If I take it as a separate fix it will
-> take a while to get upstream so that the later part of this series can be
-> applied on top of it.
-> 
-> If the fix isn't super urgent, then perhaps we just queue it up with the
-> rest of the series and Lee picks up through MFD?
-> 
+Typo in patch title (just noticed whilst scrolling past)
 
-Thanks for the review. It is not urgent to integrate now, may wait for 
-Lee to take along with the series.
-
-> On basis we might go that way.
-> 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Also, this probably wants a stable tag.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>   drivers/iio/adc/mp2629_adc.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
->> index aca084f1e78a..e7fbfe92e884 100644
->> --- a/drivers/iio/adc/mp2629_adc.c
->> +++ b/drivers/iio/adc/mp2629_adc.c
->> @@ -73,7 +73,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
->>   		if (ret)
->>   			return ret;
->>   
->> -		if (chan->address == MP2629_INPUT_VOLT)
->> +		if (chan->channel == MP2629_INPUT_VOLT)
->>   			rval &= GENMASK(6, 0);
->>   		*val = rval;
->>   		return IIO_VAL_INT;
-> 
+release
 
 
-Thanks,
-Saravanan
+> 'of_node_put()' can potentially release the memory pointed to by
+> 'iiospec.np' which would leave us with an invalid pointer (and we would
+> still pass it in 'of_xlate()'). As such, we can only release the node
+> after we are done with it.
+>=20
+> Fixes: 17d82b47a215d ("iio: Add OF support")
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> ---
+>  drivers/iio/inkern.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index df74765d33dc..9d87057794fc 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -165,9 +165,10 @@ static int __of_iio_channel_get(struct iio_channel *=
+channel,
+> =20
+>  	idev =3D bus_find_device(&iio_bus_type, NULL, iiospec.np,
+>  			       iio_dev_node_match);
+> -	of_node_put(iiospec.np);
+> -	if (idev =3D=3D NULL)
+> +	if (idev =3D=3D NULL) {
+> +		of_node_put(iiospec.np);
+>  		return -EPROBE_DEFER;
+> +	}
+> =20
+>  	indio_dev =3D dev_to_iio_dev(idev);
+>  	channel->indio_dev =3D indio_dev;
+> @@ -175,6 +176,7 @@ static int __of_iio_channel_get(struct iio_channel *c=
+hannel,
+>  		index =3D indio_dev->info->of_xlate(indio_dev, &iiospec);
+>  	else
+>  		index =3D __of_iio_simple_xlate(indio_dev, &iiospec);
+> +	of_node_put(iiospec.np);
+>  	if (index < 0)
+>  		goto err_put;
+>  	channel->channel =3D &indio_dev->channels[index];
+

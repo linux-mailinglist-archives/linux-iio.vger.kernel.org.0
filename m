@@ -2,79 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5635355062D
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:00:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C7555062B
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 18:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236074AbiFRRA2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 13:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60732 "EHLO
+        id S236149AbiFRQwP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 12:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234566AbiFRRA1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:00:27 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5493612D02
-        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 10:00:23 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id y19so13945411ejq.6
-        for <linux-iio@vger.kernel.org>; Sat, 18 Jun 2022 10:00:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Qo+XVZATD7QvafJGYNsBnvzlaXlfHOgJMqIMb8gJ68I=;
-        b=X2qWk44P4TSsmjCHzHruBJB3JXlcqcj+1A7VBhLQLmyWGJEYrzo6zSx/p3/xEsVQWG
-         WbBKM9iHasQQrHEC+N5Se9AK72b0KMQDF/nOORGPr2GLq5F05iG3j9EMbPzqBXYjYFIN
-         ttG17/+j2bTOL8G6Fpo7AyPSHFkD9X5jK+pt0ybo3an5HBbIf1mZV7VPZclOJHhfdH4g
-         sS7YyhFiIcjCoiiaQo+gxkq1r5pX3p7v3P3rEMInsSrPtg+ghu1BOTlEud3m9VQle5FY
-         kJI9znu9F4cO2R3YMEzgRBOuNP0U0a791jySrdInn6/olG5aXhhyDcJUC4gJ6a6n2CKi
-         Pt/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Qo+XVZATD7QvafJGYNsBnvzlaXlfHOgJMqIMb8gJ68I=;
-        b=N38ASnrt2WO+vEjm+XJNdnyq2DeIbpMeJVPh6JA3awzI1tokUQrldNAAMmhLnx+eL6
-         xbzpKmZnVW1fYcvg2L5SbFXlMBNjeP1UY7AaBV7vSNG1OZxtvblylK0s2qplTL7BTCEv
-         q/DF/4R6ZyvynSlrMIywrGht7FFxEmnGivZSr098+WMo9juFhN9wkcO9sSGCswMgWtPX
-         UgrYo54f1LxFVU0a760fs8RX3C4+wZzrDdZBS+MA/BAS6qadne9vDwbN4HoNy70+3Fjk
-         E+lfakMGsWtDqi2zDjF+7yYpscOphq3+VtAo/QBjc7POnckPnmXCQIQt9v48YRQvCBJP
-         Sq6A==
-X-Gm-Message-State: AJIora/2WtV8YCICzSCve2cDi1wIF6/GZCtkVExcCdXkbnc4XDQzuKLH
-        xVzJSr6cbkB7XLHU0k8a8SHz5Q==
-X-Google-Smtp-Source: AGRyM1u4CVew7K3LxjmXZseIbBAUDExxTq6WbzYmeYgVp/qnZPQHgFK1WAIuvASEueoknrZsutAr/Q==
-X-Received: by 2002:a17:906:649b:b0:712:24cd:6102 with SMTP id e27-20020a170906649b00b0071224cd6102mr14417111ejm.664.1655571621875;
-        Sat, 18 Jun 2022 10:00:21 -0700 (PDT)
-Received: from [192.168.0.205] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id f23-20020a170906825700b0070ad296e4b0sm3559455ejx.186.2022.06.18.10.00.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jun 2022 10:00:21 -0700 (PDT)
-Message-ID: <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
-Date:   Sat, 18 Jun 2022 19:00:19 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
-Content-Language: en-US
-To:     ChiYuan Huang <u0084500@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S234351AbiFRQwP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 12:52:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9142EDE94;
+        Sat, 18 Jun 2022 09:52:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A84C60F42;
+        Sat, 18 Jun 2022 16:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50619C3411A;
+        Sat, 18 Jun 2022 16:52:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655571132;
+        bh=hO3gP+ei2JRu9oPGWa5DA4GlwowtTxu8lIIs+XqI6uM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=U25fZxOh4+QM/eudqid+jHEK0ZlV/X7ItQPSWFn/kJc+l0E0fyNfQVLI/4ELmwCh0
+         d/azHCPodB+/vgjAr4pjzd4kfk5vh7dCLQKFlCXTC9Cibgjd2TloAI8iVdZS/HorAE
+         0pgE+8VxTOaXwUdmFwmlVN/DxWQ5axRuA30AJefNXg/GgSpJN2+OvrefJrvb6Bi5A6
+         RtSVyHlkB4wxpaj401eyEwNINvGEOp45fghW1t4parMMDbCWcoj5qBoD5oSsT8IS2y
+         RKB1A2OjrFzZtigbE0+d5vbvFel3wC5sGX+8mIEZyNPztkvI6ZxkPeNnbtrhXTE22q
+         rHS3M2LQE7cJA==
+Date:   Sat, 18 Jun 2022 18:01:29 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
- <1655458375-30478-2-git-send-email-u0084500@gmail.com>
- <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
- <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: Add imx6ul & imx6sx compatibles
+Message-ID: <20220618180129.699b8601@jic23-huawei>
+In-Reply-To: <20220617224448.GA2574775-robh@kernel.org>
+References: <20220613123529.466528-1-alexander.stein@ew.tq-group.com>
+        <1655141687.002668.3951189.nullmailer@robh.at.kernel.org>
+        <20220617224448.GA2574775-robh@kernel.org>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -83,73 +59,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 18/06/2022 08:50, ChiYuan Huang wrote:
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> 於 2022年6月18日 週六 上午9:45寫道：
->>
->> On 17/06/2022 02:32, cy_huang wrote:
->>> From: ChiYuan Huang <cy_huang@richtek.com>
->>>
->>> Add the documentation for Richtek RTQ6056.
->>>
->>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
->>> ---
->>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
->>>  1 file changed, 57 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>> new file mode 100644
->>> index 00000000..6b4e0e0
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>> @@ -0,0 +1,57 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
->>> +
->>> +maintainers:
->>> +  - ChiYuan Huang <cy_huang@richtek.com>
->>> +
->>> +description: |
->>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
->>> +  interface, and the device provides full information for system by reading
->>> +  out the loading current and power.
->>> +
->>> +  The device monitors both of the drops across sense resistor and the BUS
->>> +  voltage, converts into the current in amperes, and power in watts through
->>> +  internal analog-to-digital converter ADC. The programmable calibration,
->>> +  adjustable conversion time, and averaging function are also built in for
->>> +  more design flexibility.
->>> +
->>> +  Datasheet is available at
->>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
->>> +
->>> +properties:
->>> +  compatible:
->>> +    const: richtek,rtq6056
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  "#io-channel-cells":
->>> +    const: 1
->>> +
->>> +  richtek,shunt-resistor-uohm:
->>
->> Use standard properties, so "-micro-ohms". Drop the unit from
->> description and drop the ref.
->>
-> Use richtek.shunt-resistor-micro-ohms?
+On Fri, 17 Jun 2022 16:44:48 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-Yes.
+> On Mon, Jun 13, 2022 at 11:34:46AM -0600, Rob Herring wrote:
+> > On Mon, 13 Jun 2022 14:35:29 +0200, Alexander Stein wrote:  
+> > > Both are already using the vf610 compatible.
+> > > 
+> > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/adc/fsl,vf610-adc.yaml       | 9 ++++++++-
+> > >  1 file changed, 8 insertions(+), 1 deletion(-)
+> > >   
+> > 
+> > Running 'make dtbs_check' with the schema in this patch gives the
+> > following warnings. Consider if they are expected or the schema is
+> > incorrect. These may not be new warnings.
+> > 
+> > Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> > This will change in the future.
+> > 
+> > Full log is available here: https://patchwork.ozlabs.org/patch/
+> > 
+> > 
+> > adc@2198000: 'num-channels' does not match any of the regexes: 'pinctrl-[0-9]+'  
+> 
+> Looks like you need to add 'num-channels'?
 
-> Or the prefix 'richtek,' can be removed?
+or a lot of wrong dtbs :)
 
-No, the vendor prefix must stay.
+By which I mean ones providing a property that may or may not be actually
+used by any drivers...
 
-Best regards,
-Krzysztof
+Jonathan
+
+
+> 
+> > 	arch/arm/boot/dts/imx6ul-14x14-evk.dtb
+> > 	arch/arm/boot/dts/imx6ul-ccimx6ulsbcexpress.dtb
+> > 	arch/arm/boot/dts/imx6ul-ccimx6ulsbcpro.dtb
+> > 	arch/arm/boot/dts/imx6ul-geam.dtb
+> > 	arch/arm/boot/dts/imx6ul-isiot-emmc.dtb
+> > 	arch/arm/boot/dts/imx6ul-isiot-nand.dtb
+> > 	arch/arm/boot/dts/imx6ul-kontron-n6310-s-43.dtb
+> > 	arch/arm/boot/dts/imx6ul-kontron-n6310-s.dtb
+> > 	arch/arm/boot/dts/imx6ull-14x14-evk.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-aster.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-emmc-aster.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-emmc-eval-v3.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-emmc-iris.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-emmc-iris-v2.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-eval-v3.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-iris.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-iris-v2.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-wifi-aster.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-wifi-eval-v3.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-wifi-iris.dtb
+> > 	arch/arm/boot/dts/imx6ull-colibri-wifi-iris-v2.dtb
+> > 	arch/arm/boot/dts/imx6ul-liteboard.dtb
+> > 	arch/arm/boot/dts/imx6ull-jozacp.dtb
+> > 	arch/arm/boot/dts/imx6ull-myir-mys-6ulx-eval.dtb
+> > 	arch/arm/boot/dts/imx6ull-opos6uldev.dtb
+> > 	arch/arm/boot/dts/imx6ull-phytec-segin-ff-rdk-emmc.dtb
+> > 	arch/arm/boot/dts/imx6ull-phytec-segin-ff-rdk-nand.dtb
+> > 	arch/arm/boot/dts/imx6ull-phytec-segin-lc-rdk-nand.dtb
+> > 	arch/arm/boot/dts/imx6ull-phytec-tauri-emmc.dtb
+> > 	arch/arm/boot/dts/imx6ull-phytec-tauri-nand.dtb
+> > 	arch/arm/boot/dts/imx6ull-tqma6ull2l-mba6ulx.dtb
+> > 	arch/arm/boot/dts/imx6ull-tqma6ull2-mba6ulx.dtb
+> > 	arch/arm/boot/dts/imx6ul-opos6uldev.dtb
+> > 	arch/arm/boot/dts/imx6ul-phytec-segin-ff-rdk-emmc.dtb
+> > 	arch/arm/boot/dts/imx6ul-phytec-segin-ff-rdk-nand.dtb
+> > 	arch/arm/boot/dts/imx6ul-pico-dwarf.dtb
+> > 	arch/arm/boot/dts/imx6ul-pico-hobbit.dtb
+> > 	arch/arm/boot/dts/imx6ul-pico-pi.dtb
+> > 	arch/arm/boot/dts/imx6ul-prti6g.dtb
+> > 	arch/arm/boot/dts/imx6ul-tqma6ul1-mba6ulx.dtb
+> > 	arch/arm/boot/dts/imx6ul-tqma6ul2l-mba6ulx.dtb
+> > 	arch/arm/boot/dts/imx6ul-tqma6ul2-mba6ulx.dtb
+> > 	arch/arm/boot/dts/imx6ul-tx6ul-0010.dtb
+> > 	arch/arm/boot/dts/imx6ul-tx6ul-0011.dtb
+> > 	arch/arm/boot/dts/imx6ul-tx6ul-mainboard.dtb
+> > 
+> >   
+

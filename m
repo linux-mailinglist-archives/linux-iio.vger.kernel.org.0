@@ -2,93 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22356550653
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DCC9550655
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 19:25:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234336AbiFRRVn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 13:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45442 "EHLO
+        id S236447AbiFRRZa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 13:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbiFRRVm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:21:42 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83AA0140CF;
-        Sat, 18 Jun 2022 10:21:37 -0700 (PDT)
+        with ESMTP id S231142AbiFRRZ1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 13:25:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CF915FCF;
+        Sat, 18 Jun 2022 10:25:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 17596B80A72;
-        Sat, 18 Jun 2022 17:21:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41652C3411A;
-        Sat, 18 Jun 2022 17:21:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E72B60B55;
+        Sat, 18 Jun 2022 17:25:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDFDC3411A;
+        Sat, 18 Jun 2022 17:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655572894;
-        bh=s9rzUJH1dCU78egHZ+iIG03v6Lj+ion9PzSseqxJCFI=;
+        s=k20201202; t=1655573123;
+        bh=Q6g5uQ1LQChmHpAdw8ycq1g5nOknwEdMg8uvJ98h72Q=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mLbJ4PLP002IFIyUS/mFXkt7VRPo37gj1dl2UgXLay+Jd+5DxzlSRZxjCKSQfzLtm
-         w4ERJv/y4Vtvf+zMWg/hqpOjfO75ncGomxEsmRBeblvqyljZF/cJ0Ghsf1i8AkvVYy
-         CTfCUKo5VD9g1SiBv2jluSBhogu0x0nNfUVOBKIfVg9HtAQUAAfDJ/p33a5g0kx2kd
-         QlWaytpoO91OuQliAYmBYJC3yq5N6Q8XpHivXx5gTE7c7v/ixy3a9u9FLFcZpTIv8D
-         BUJ5TsJBVILC9zkvhKEqh4bM/awT4sH6gM4Y9KEH1IVSYXTDyOvr87C/r8rkSapHHo
-         AwM2FiuCayWcQ==
-Date:   Sat, 18 Jun 2022 18:30:40 +0100
+        b=ZvzyXwrvKPXWSQe+/ZLoXnYYLU/AiMwKuFeit6PR33u7BeJ6L13LeNnhgryWe6FiT
+         pUMsFNXUUkjUFQvYCOHX+12uRfI8zD56F7t4W+Kq6kpq2fEctqGxnKuZF6sYnje5X5
+         Ngi/Ima8tTCiQ71eGWhUTybULz4xxFWh0p5Bd9nKA84oRc787Av4G+hc3BjgQ54Wq9
+         FPJHA6xJB3KLs+Y3kVMmo3lq6UViP+1NXs1NsnGqwyDhBd2OfiwCYONiCV/sLbVR8u
+         3TxOLHarcLim4y7mS8XHpb3Nmy/STL4WMeLgwR3Eg26QBb9jrTxlmfX8Kmq/dFWs4I
+         lnOVFJvEM6JEQ==
+Date:   Sat, 18 Jun 2022 18:34:40 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-imx@nxp.com>, <linux-renesas-soc@vger.kernel.org>,
-        <linux-mips@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <chrome-platform@lists.linux.dev>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <openbmc@lists.ozlabs.org>, Cai Huoqing <cai.huoqing@linux.dev>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     ChiYuan Huang <u0084500@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Benson Leung <bleung@chromium.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Patrick Venture <venture@google.com>,
-        Arnd Bergmann <arnd@arndb.de>, Nancy Yuen <yuenn@google.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Re: [PATCH 20/34] iio: inkern: only relase the device node when
- done with it
-Message-ID: <20220618183040.29ed935d@jic23-huawei>
-In-Reply-To: <20220610084545.547700-21-nuno.sa@analog.com>
-References: <20220610084545.547700-1-nuno.sa@analog.com>
-        <20220610084545.547700-21-nuno.sa@analog.com>
+        cy_huang <cy_huang@richtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
+Message-ID: <20220618183440.121365d7@jic23-huawei>
+In-Reply-To: <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
+References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+        <1655458375-30478-2-git-send-email-u0084500@gmail.com>
+        <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
+        <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
+        <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -103,50 +65,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 10 Jun 2022 10:45:31 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Sat, 18 Jun 2022 19:00:19 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Typo in patch title (just noticed whilst scrolling past)
-
-release
-
-
-> 'of_node_put()' can potentially release the memory pointed to by
-> 'iiospec.np' which would leave us with an invalid pointer (and we would
-> still pass it in 'of_xlate()'). As such, we can only release the node
-> after we are done with it.
+> On 18/06/2022 08:50, ChiYuan Huang wrote:
+> > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=E5=
+=B9=B46=E6=9C=8818=E6=97=A5 =E9=80=B1=E5=85=AD =E4=B8=8A=E5=8D=889:45=E5=AF=
+=AB=E9=81=93=EF=BC=9A =20
+> >>
+> >> On 17/06/2022 02:32, cy_huang wrote: =20
+> >>> From: ChiYuan Huang <cy_huang@richtek.com>
+> >>>
+> >>> Add the documentation for Richtek RTQ6056.
+> >>>
+> >>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> >>> ---
+> >>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++=
+++++++++++
+> >>>  1 file changed, 57 insertions(+)
+> >>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek=
+,rtq6056-adc.yaml
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq605=
+6-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.=
+yaml
+> >>> new file mode 100644
+> >>> index 00000000..6b4e0e0
+> >>> --- /dev/null
+> >>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.y=
+aml
+> >>> @@ -0,0 +1,57 @@
+> >>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >>> +%YAML 1.2
+> >>> +---
+> >>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
+> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >>> +
+> >>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit =
+ADC
+> >>> +
+> >>> +maintainers:
+> >>> +  - ChiYuan Huang <cy_huang@richtek.com>
+> >>> +
+> >>> +description: |
+> >>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and =
+SMBus
+> >>> +  interface, and the device provides full information for system by =
+reading
+> >>> +  out the loading current and power.
+> >>> +
+> >>> +  The device monitors both of the drops across sense resistor and th=
+e BUS
+> >>> +  voltage, converts into the current in amperes, and power in watts =
+through
+> >>> +  internal analog-to-digital converter ADC. The programmable calibra=
+tion,
+> >>> +  adjustable conversion time, and averaging function are also built =
+in for
+> >>> +  more design flexibility.
+> >>> +
+> >>> +  Datasheet is available at
+> >>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
+> >>> +
+> >>> +properties:
+> >>> +  compatible:
+> >>> +    const: richtek,rtq6056
+> >>> +
+> >>> +  reg:
+> >>> +    maxItems: 1
+> >>> +
+> >>> +  "#io-channel-cells":
+> >>> +    const: 1
+> >>> +
+> >>> +  richtek,shunt-resistor-uohm: =20
+> >>
+> >> Use standard properties, so "-micro-ohms". Drop the unit from
+> >> description and drop the ref.
+> >> =20
+> > Use richtek.shunt-resistor-micro-ohms? =20
 >=20
-> Fixes: 17d82b47a215d ("iio: Add OF support")
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
->  drivers/iio/inkern.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> Yes.
 >=20
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index df74765d33dc..9d87057794fc 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -165,9 +165,10 @@ static int __of_iio_channel_get(struct iio_channel *=
-channel,
-> =20
->  	idev =3D bus_find_device(&iio_bus_type, NULL, iiospec.np,
->  			       iio_dev_node_match);
-> -	of_node_put(iiospec.np);
-> -	if (idev =3D=3D NULL)
-> +	if (idev =3D=3D NULL) {
-> +		of_node_put(iiospec.np);
->  		return -EPROBE_DEFER;
-> +	}
-> =20
->  	indio_dev =3D dev_to_iio_dev(idev);
->  	channel->indio_dev =3D indio_dev;
-> @@ -175,6 +176,7 @@ static int __of_iio_channel_get(struct iio_channel *c=
-hannel,
->  		index =3D indio_dev->info->of_xlate(indio_dev, &iiospec);
->  	else
->  		index =3D __of_iio_simple_xlate(indio_dev, &iiospec);
-> +	of_node_put(iiospec.np);
->  	if (index < 0)
->  		goto err_put;
->  	channel->channel =3D &indio_dev->channels[index];
+> > Or the prefix 'richtek,' can be removed? =20
+>=20
+> No, the vendor prefix must stay.
+
+It's a standard generic binding used in a bunch of IIO and hwmon
+drivers without vendor prefix.  Mind you I can't find a definition
+in any of the top level binding files.  Probably wants to be in
+adc.yaml for IIO.
+
+Jonathan
+
+=20
+>=20
+> Best regards,
+> Krzysztof
 

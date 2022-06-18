@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F16C955061B
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 18:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DBE3550626
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jun 2022 18:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234900AbiFRQXm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 12:23:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43584 "EHLO
+        id S231359AbiFRQnq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 12:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231496AbiFRQXm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 12:23:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A5E81055C;
-        Sat, 18 Jun 2022 09:23:41 -0700 (PDT)
+        with ESMTP id S236690AbiFRQna (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 12:43:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87301A1AC;
+        Sat, 18 Jun 2022 09:43:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D15260F30;
-        Sat, 18 Jun 2022 16:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC72C3411D;
-        Sat, 18 Jun 2022 16:23:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0A0E2B80ABD;
+        Sat, 18 Jun 2022 16:43:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A139DC3411F;
+        Sat, 18 Jun 2022 16:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655569420;
-        bh=5gCzLzShuvKNoQCaZ1sv/yrWTlcGBOdeQ8QzK85FSlc=;
+        s=k20201202; t=1655570605;
+        bh=XLxsCUvmHdKAGIc4CWlWZtwdR71VaEBXPO7MJuu8wks=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NKH5l1D1rPjlFfn5omKPx3cZXmXkEgzJVJ1UwuGfQN0StipvMHELXKllUc3XbLLTL
-         4AmhiiHUqKjHabJYLjHB65goIkW39Isw0oBWWEk+S4LwzhHsYIxVdYExuRU6ApgHyv
-         wOa8dEyMzRixeeJeCzl89cOkwP5paayixD7/jALYqIuwf4QAMv7aq9sIUKBEte1Lp+
-         PWv9dMo/dS/cFouC5BZAtugH/4pSDx7XnJre34MFIYwV8Lb6/DlaljrivmPFTfQPIc
-         /m+4Qo/4L7qvvlpF9zUJ31GU9EXS6WnALqxgtrX60uYaRF5qKVQTGXdkv7Y49G0hz3
-         8NKfQOaCeQS3w==
-Date:   Sat, 18 Jun 2022 17:32:58 +0100
+        b=NQxAjNrUMfibFqPq05roTlVkKwsOz2wGfsVfjDyuGB2MB4MveC7o2OeSG4s6u8XIB
+         43goSMPaJI/SCCH+eNyuDaS8a/Zs38b01BwNTkgfc2I/kdFGZKOdtOBCflOTyfYqJh
+         q1sLPJt7gaqWMbU2SRSZAPJwegn+uLySfnOaKw5kdrlkjx2xiJobaxNmSFD6IZFpSE
+         PpMIGZKdss9Y0rXOYcfLNL0DbOaUr8BDjjVPktomcOSlpujAzYS6JTeAuY8s6CgTlY
+         MDEqJiS4ZWhDFJKNFpdeAsXJ+ChtNHS0E++ch8bZ0ca2709F1tA3EgtJLSzi5bEi6R
+         ANzv9apVdLfeg==
+Date:   Sat, 18 Jun 2022 17:52:42 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add include/dt-bindings/iio to IIO
- SUBSYSTEM AND DRIVERS
-Message-ID: <20220618173258.4be9882b@jic23-huawei>
-In-Reply-To: <20220613115045.24326-1-lukas.bulwahn@gmail.com>
-References: <20220613115045.24326-1-lukas.bulwahn@gmail.com>
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Stephen Boyd <swboyd@chromium.org>,
+        Aashish Sharma <shraash@google.com>,
+        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+        linux-iio@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio:proximity:sx9324: Check ret value of
+ device_property_read_u32_array()
+Message-ID: <20220618175242.56fd125c@jic23-huawei>
+In-Reply-To: <CAPUE2usiMSi-njO5G9wELOdRuL428Vw9BtS4NfbKX1wtVCMaWA@mail.gmail.com>
+References: <20220613232224.2466278-1-swboyd@chromium.org>
+        <CAPUE2usiMSi-njO5G9wELOdRuL428Vw9BtS4NfbKX1wtVCMaWA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,40 +58,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 13 Jun 2022 13:50:45 +0200
-Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+On Mon, 13 Jun 2022 16:25:55 -0700
+Gwendal Grignou <gwendal@chromium.org> wrote:
 
-> Maintainers of the directory Documentation/devicetree/bindings/iio
-> are also the maintainers of the corresponding directory
-> include/dt-bindings/iio.
-> 
-> Add the file entry for include/dt-bindings/iio to the appropriate
-> section in MAINTAINERS.
-> 
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-
-Applied,
+> On Mon, Jun 13, 2022 at 4:22 PM Stephen Boyd <swboyd@chromium.org> wrote:
+> >
+> > From: Aashish Sharma <shraash@google.com>
+> >
+> > 0-day reports:
+> >
+> > drivers/iio/proximity/sx9324.c:868:3: warning: Value stored
+> > to 'ret' is never read [clang-analyzer-deadcode.DeadStores]
+> >
+> > Put an if condition to break out of switch if ret is non-zero.
+> >
+> > Signed-off-by: Aashish Sharma <shraash@google.com>
+> > Fixes: a8ee3b32f5da ("iio:proximity:sx9324: Add dt_binding support")
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > [swboyd@chromium.org: Reword commit subject, add fixes tag]
+> > Signed-off-by: Stephen Boyd <swboyd@chromium.org>  
+> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
 Thanks,
 
 Jonathan
 
-> ---
-> Jonathan, Lars-Peter, please pick this MAINTAINERS addition to your section.
-> 
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2b8aec742e6e..503b8042784e 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -9656,6 +9656,7 @@ F:	Documentation/ABI/testing/sysfs-bus-iio*
->  F:	Documentation/devicetree/bindings/iio/
->  F:	drivers/iio/
->  F:	drivers/staging/iio/
-> +F:	include/dt-bindings/iio/
->  F:	include/linux/iio/
->  F:	tools/iio/
->  
+> > ---
+> >  drivers/iio/proximity/sx9324.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx9324.c
+> > index 70c37f664f6d..63fbcaa4cac8 100644
+> > --- a/drivers/iio/proximity/sx9324.c
+> > +++ b/drivers/iio/proximity/sx9324.c
+> > @@ -885,6 +885,9 @@ sx9324_get_default_reg(struct device *dev, int idx,
+> >                         break;
+> >                 ret = device_property_read_u32_array(dev, prop, pin_defs,
+> >                                                      ARRAY_SIZE(pin_defs));
+> > +               if (ret)
+> > +                       break;
+> > +
+> >                 for (pin = 0; pin < SX9324_NUM_PINS; pin++)
+> >                         raw |= (pin_defs[pin] << (2 * pin)) &
+> >                                SX9324_REG_AFE_PH0_PIN_MASK(pin);
+> >
+> > base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
+> > --
+> > https://chromeos.dev
+> >  
 

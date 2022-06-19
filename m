@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1A5550D83
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 01:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD972550D87
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 01:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbiFSXBD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 19:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60590 "EHLO
+        id S233641AbiFSXMP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 19:12:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233641AbiFSXBC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 19:01:02 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0368BDEB
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:01:01 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id c13so8318186eds.10
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:01:00 -0700 (PDT)
+        with ESMTP id S231812AbiFSXMP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 19:12:15 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E785FE3
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:12:14 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id ej4so8856478edb.7
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=F9i/+Rlge8FpKZhDpo3dAHxm9VwiEdyHtkurTkhCJlY=;
-        b=Omg95uU9eW8my9kaESWyodB9Wejkk2CObU20Zxe+k3pJ259Eeep4g4WfqsCrcVH+Er
-         1T5ZmsbicNBilHGIMxMX4Jp1hje5OThfQmcSFPdKPxaTIgoukwD+M8sE9htpGykMfd2r
-         RzTG/soML7XZpr9uh5rZ1jqAQI/3aAwU+5GAxCg3FZlyWeFYBRYMwIE+cCXjZCW0pOeP
-         EcFUJGfHdnAnmWSQhw/6IqIdRDZXhdaC1mq0DX8qB/EJiZiIT8+BPnUAlIrf8KzUnaHc
-         chWsCWD9XINYerYU76iXD9OV+HXqI/+3zh95Ub246bCz/J642tDI0qun/xLEQBDd4QFy
-         djWw==
+        bh=3oNYbdTMC2COMsNWatWMyYc72XIREuv2bQDskB+/znM=;
+        b=exIXEoiJtvKd4UubkR/nkCvqc5ZFYp1DwCYa2eopsu/2JNm++Gg8Q155O5hI8fz4Zq
+         cJXWLWWaxCE+gAZaaz2YRCp70gYhEHxeTfslyD6F8HlxW6Tm4A2uTIPsoAr+evx56GiQ
+         ngYuTA79eVKNKT/+TRfJs5BHMKwIrXZEGJLcsG3SyvLJ6UnPGMICYSHjBBcdlePa3RUr
+         v7Tm7VvTkzbNhKKshbISnMlpY5ySs+nkOlxFF5G2MaetPG6aB+mSUTPFDpEk0GlgZdC9
+         ei5VkH9vziRSiqXvxOxpG8mVYkzw+9trc4LbazAn0RFAyaRuHR+D717ZoNX0jZ6QzW/j
+         zLPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F9i/+Rlge8FpKZhDpo3dAHxm9VwiEdyHtkurTkhCJlY=;
-        b=qfex0N9fmiI5jNKjwsOChiWfFYQK9kFkleYIDr261loMqzDD8EzFoPOH6doiY+VhUr
-         pKmNpNE3Hxphlz+C0mZW90Wf7N4AoWTLlm2+1+auab6KejD6Xv+hpTyaWvTsbrpB2M/9
-         miQvPe3xCfJSpJXwS2lde8p0/oFiAZzHiOH8MmbKtd3AdzEjEDWOIk23oU+HQUAmnpXj
-         TLzjd9/XqcdoXWX8yMREhTL0c7KYFkqYZDjWWUTnYeE4x28oYzQHz72bCsfAt4a8JDCg
-         RbgukjtKBcmB8gpPw6ayqOt1uXZHMAT4DlZrfVOki9HoW4lS7rkC0Em2FNW6MPU/mZw4
-         7rjA==
-X-Gm-Message-State: AJIora97p83TQ4Ebx/3LFsdNB6nPvzHiS6arfsPmGjKlzsLeq8br54lh
-        l9DyA+1IKHQUfb5tczdiKf9vsqqdZ8keY0n24ZE=
-X-Google-Smtp-Source: AGRyM1tdwMX2nzIP8+Ecpgc1xzgUaHIOCxnF2AAzktq0welLrABrjDO3T1nOajVBw90zWtvT7+OTK8GUppXSHQJrHdQ=
-X-Received: by 2002:aa7:d29a:0:b0:435:705f:1319 with SMTP id
- w26-20020aa7d29a000000b00435705f1319mr10446558edq.54.1655679659606; Sun, 19
- Jun 2022 16:00:59 -0700 (PDT)
+        bh=3oNYbdTMC2COMsNWatWMyYc72XIREuv2bQDskB+/znM=;
+        b=cB/a8cJqg8VFPM287/6+BdaZiRswiuYGOzcxJMzT3f7k01zcoRgdOrtzmJc7BjoWFo
+         +mNQL4XqwP+Y7ocn6vIJmtq+7f3dmLKPG7HvU/08V+C5BzLQ52cKwRe2I7v5dbSnlM9s
+         son5uIGx+KgnMrYxDpuSfFuAGEwpPlZJx6yHCfEl0BJc/jDGF2B25W41ZXjjAuHeOCmb
+         HA1mDdhtKJT7C8UGNlHHELoxbtGSL8GIwqbBt06TjUEq/xceS11bdaDkxWGKdrCaEHdG
+         LmPiCp2wpoJaMtWQ0KTvgE5Vbo8xxqitDjI3JBu02q8qL2qtl7iagp0lzJ0+ICgfcl6o
+         coIw==
+X-Gm-Message-State: AJIora9fmeSftAbNR1bixVOehGULTLk+mLyWhUAnJYCqNibzowWr+19U
+        Iuu3AYyfy64TyjJddkCCAwKZFpVwnHnz6JRhAP0=
+X-Google-Smtp-Source: AGRyM1sFt9rJFFEMLhdLzDYjdVn8I1QzhjPMzZdz4Q+FK+MerPDMBAR4ZFlCKIk9kEq4EeM98G+BFx8l1fWqbvdsHVk=
+X-Received: by 2002:a05:6402:4390:b0:42e:b7e:e9ac with SMTP id
+ o16-20020a056402439000b0042e0b7ee9acmr26412998edc.97.1655680332673; Sun, 19
+ Jun 2022 16:12:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220619185839.1363503-1-jic23@kernel.org> <20220619185839.1363503-6-jic23@kernel.org>
-In-Reply-To: <20220619185839.1363503-6-jic23@kernel.org>
+References: <20220619185839.1363503-1-jic23@kernel.org> <20220619185839.1363503-17-jic23@kernel.org>
+In-Reply-To: <20220619185839.1363503-17-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 20 Jun 2022 01:00:23 +0200
-Message-ID: <CAHp75Vfp3rzi_NPHZ76CDC43X3Mpm=vthBw6Og9Ya=OjCEeAHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 05/17] staging: iio: cdc: ad7746: Use local buffer for
- multi byte reads.
+Date:   Mon, 20 Jun 2022 01:11:36 +0200
+Message-ID: <CAHp75VdTwj6sAQp2r2egFXvr5RQvnDHrOUo45==UT-_6A9GKrg@mail.gmail.com>
+Subject: Re: [PATCH v2 16/17] iio: cdc: ad7746: Move driver out of staging.
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Peter Rosin <peda@axentia.se>,
@@ -74,24 +73,25 @@ On Sun, Jun 19, 2022 at 8:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> I2C does not require DMA safe buffers so there is no need to ensure
-> the buffers are in their own cacheline. Hence simplify things by
-> using a local variable instead of embedding the buffer in the chip
-> info structure.
-
-...
-
->                                                     sizeof(chip->data),
->                                                     chip->data);
-
-How will these compile? Or am I missing something?
-
-> -
->                 if (ret < 0)
->                         goto out;
+> All known major issues with this driver resolved so time to move
+> it out of staging.
 >
-> -               *val = get_unaligned_be24(chip->data) - 0x800000;
-> +               *val = get_unaligned_be24(data) - 0x800000;
+> Note this cleanup work was done using the roadtest framework.
+> https://lore.kernel.org/all/20220311162445.346685-1-vincent.whitchurch@axis.com/
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/cdc/Kconfig          |  10 +
+>  drivers/iio/cdc/Makefile         |   1 +
+>  drivers/iio/cdc/ad7746.c         | 818 +++++++++++++++++++++++++++++++
+>  drivers/staging/iio/cdc/ad7746.c | 818 -------------------------------
+
+It's a bit hard to review, perhaps you forgot to add -M -C when
+generating this patch?
+
+(Also note that `git am` able to parse renamings, the only thing which
+should be in full in patches is when one deletes the file, although it
+may be already supported by newest versions of Git, dunno)
 
 -- 
 With Best Regards,

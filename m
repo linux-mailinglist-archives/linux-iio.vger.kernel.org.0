@@ -2,65 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6DF5509B2
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C43DA5509BC
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:38:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233877AbiFSKdm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 06:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
+        id S229887AbiFSKi5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 06:38:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234518AbiFSKde (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:33:34 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626D4D13E;
-        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id o10so11459691edi.1;
-        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
+        with ESMTP id S229758AbiFSKi4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:38:56 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C22101DF;
+        Sun, 19 Jun 2022 03:38:55 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id z11so5297711edp.9;
+        Sun, 19 Jun 2022 03:38:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
-        b=BTJQO9voJW1vKsgT0btEodY1tvnnhpJRDcYGMAxTb2Ib5d5g3Euen13gbEH+aGVa95
-         d91YXagZiZ71giTOlXTlVMgtSx0i+qeJUAiC5bN62iStl7tR8gA6k24GuCKMRe3Oh+vP
-         7GWqANCPAsqiIVEzDUMhwXh4jBwFuD6IbW2ECqpYbMNEjylWcyixH9rQry/UB8xJt+7x
-         ygQeq2qXl7RwIvw70rdfCiRZcCKVxRQiBFTuusmb0mSbBkvpn3H4TUjc0yFm8Rkzy7l0
-         RvZ1MjVkbzTiE1TXz/CKuZsY6BqBevqjH/tVCnZzc36MvXDQ7ebQo8J2cb1S4VfQCJNj
-         dBDQ==
+         :cc:content-transfer-encoding;
+        bh=Iz6jHYMoS6HvBou6Ank4WdyYv7rCxOnAp99ym/26Ctc=;
+        b=JRFFibUTmHEAklZ7mVmGSE8YwHbxVNzfgozrUuHD3iXiddsS+EYng0C2hZ6AoTMEVK
+         Ao/bWQs1sDA3otDsuKz6FM8jL13CuK35u6vEA477vf68p/R1IZtejqoxBeyQ6vZkfzz/
+         Vb2qCSnz2bc66VO6M32icbFzl8bB0gvOeFzT8bte3m4UgO70HDSb0zdPOJlPq3RC/hHj
+         l4D0wSoO9B5S/iKxbBsQAZl9/5/n1t2ZT1ANAkIyTBtr0kw9dQDTp/C8iwHbyweG120P
+         cj0+apI/fONHlq8iI8VTTcAwe9ITQFgf0DEFg3+cW5TCJmCgps5Pqo6laH4/UssFUjjI
+         SLqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
-        b=HTyuU3swut1Ok8N8V4kp5VmhxsufXBVvUqp2DjpFj4ekVNVN/r/yNlIwxv+LrdLNiZ
-         5+L12udZoMUpIBZmCb5KJi7/yrFMW8zwVF+UzwANp9313kW+u6GUjmSXKn1KZI7s2e0R
-         WXEJNXmiTOVWsXyTZRPmjvcf+S7kiwWbDXxGsMWXrwiFtJZROsCplF3YE0lnpIq5/edf
-         Sx47d88gGJn2cIwJiGdalOOvwSa6W+rksT/Y4VAq9omvsBPQlXAKCIjIxdKVviHKIXwC
-         EmQMCfdBaQoPu6BS60U/OEy3mSdOKygx5Rwf8AgQBFX0kqWs+6N9ax8rnhPk0vDFBMPW
-         kgxg==
-X-Gm-Message-State: AJIora8ugjnMWqm+9dXBuKZuBhRGbm6ntbDfcIlJ8qAYOds8GhXhbWWH
-        oCo7sFciD5D5MhVuzX+bmcr4QiIJYAysfW2Dc9A=
-X-Google-Smtp-Source: AGRyM1vChaySuuq26yuk1hR8OBgh/cK+d6arLHy+Vl2o2vFb/x7G+7oVeQ9TKZZtcE1MIbq/LfilJh1p4+i7LNg5cKs=
-X-Received: by 2002:a05:6402:5002:b0:435:1ff1:99ee with SMTP id
- p2-20020a056402500200b004351ff199eemr22679113eda.230.1655634812846; Sun, 19
- Jun 2022 03:33:32 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Iz6jHYMoS6HvBou6Ank4WdyYv7rCxOnAp99ym/26Ctc=;
+        b=gdB81Z9JE5tSFgB964BolNcY846vPmFLw4VDsIntwTVx/7M9oHgsYybwz0wvhZPWwJ
+         GFfBZBLQti4xXWAq3PSfutcQrVLAci7nfo/6URjbnUxPgdStCW03E20TG02OWusJHqHi
+         8ENjepg7o0GkszcXhIuGdibPA5V7ui9kAcjFOIN/LVNWzUYG9nNMHQcZAORESWU8uBRd
+         fzRqCDOENtdItHjP1cCzqBI6VZQK7mwbToWFI2u27II0WeTxNnPUT3eTvMERbYMsw6w9
+         ZObSC3uWnBJocs++ktlULPXNBQvFtoefF7cyFz92XyHlNm9iBuyqxiWs2VkUB1YTZBRZ
+         td6g==
+X-Gm-Message-State: AJIora/L+M4csSScfZEGc3NDszIbcBLGz8BtD4cjJv2gmDSopkgiYsSv
+        xS1VxTdlt8bKLm7vaw2EyOI//WtInAczsZdMRsc=
+X-Google-Smtp-Source: AGRyM1to9YBUfhbInjOrJgnYWN1fIsrZBJlye6LbmZ5oiQZy8LF7p/fln889Xe+4p3TmOvEoO5jt4q3pcaPmajHuvZY=
+X-Received: by 2002:a05:6402:11d2:b0:42d:e68a:eae0 with SMTP id
+ j18-20020a05640211d200b0042de68aeae0mr23021080edw.111.1655635134082; Sun, 19
+ Jun 2022 03:38:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1655509425.git.jahau@rocketmail.com> <3bdb392bb75073bdfe10aab1739fee2d6c64f10c.1655509425.git.jahau@rocketmail.com>
- <20220618162833.218dbe67@jic23-huawei>
-In-Reply-To: <20220618162833.218dbe67@jic23-huawei>
+References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+ <1655458375-30478-3-git-send-email-u0084500@gmail.com> <CAHp75VfEQ6tu4-NQKwA+63Ae5busUwV+ZRqD6BtbUA+EkCZnWw@mail.gmail.com>
+ <CADiBU3-wO0-0c9y-GpE15ra2AqkAG-ftqTh+hCvYEY-TojZ-pg@mail.gmail.com>
+In-Reply-To: <CADiBU3-wO0-0c9y-GpE15ra2AqkAG-ftqTh+hCvYEY-TojZ-pg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 19 Jun 2022 12:32:56 +0200
-Message-ID: <CAHp75VemByhNAYGuP2h-5HazPZL7k5tyGc1WV2gKEdjX_5Sing@mail.gmail.com>
-Subject: Re: [PATCH v3 8/8] iio: magnetometer: yas530: Add YAS537 variant
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jakob Hauser <jahau@rocketmail.com>,
+Date:   Sun, 19 Jun 2022 12:38:17 +0200
+Message-ID: <CAHp75VeBdgbyDQXEYb9ZZdi3AU=vPw6aKGWbNLnuA_QoN4LE4A@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: Add rtq6056 support
+To:     ChiYuan Huang <u0084500@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
+        cy_huang <cy_huang@richtek.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -71,56 +74,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jun 18, 2022 at 5:19 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sat, 18 Jun 2022 02:13:16 +0200
-> Jakob Hauser <jahau@rocketmail.com> wrote:
+On Sat, Jun 18, 2022 at 5:16 PM ChiYuan Huang <u0084500@gmail.com> wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=
+=9C=8818=E6=97=A5 =E9=80=B1=E5=85=AD =E5=87=8C=E6=99=A81:08=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+> > On Fri, Jun 17, 2022 at 11:37 AM cy_huang <u0084500@gmail.com> wrote:
 
 ...
 
-> > +             for (i = 0; i < 17; i++) {
->
-> Reduce indent by doing this as multiple loops.
-> Though even better if you can use bulk writes.
->
->                 int j = 0;
->                 for (i = 0; i < 12; i++) {
->                         ret = regmap_write(yas5xx->map, YAS537_MTC + i,
->                                            data[j++])
->                         if (ret)
->                                 return ret;
->                 }
->
->                 for (i = 0; i < 4; i++) {
->                         ret = regmap_write(yas5xx->map, YAS573_OFFSET_X + i,
->                                            data[j++]);
->                         if (ret)
->                                 return ret;
->                 }
+> > > +KernelVersion: 5.18.2
+> >
+> > Wrong version, this won't be part of a stable kernel.
+> >
+> From kernel.org, currently the stable kernel version is 5.18.5.
+> Change to 5.18.5?
 
-I guess you are referring to _noinc variants of regmap bulk operations.
+Nope. You need to use realistic kernel version, and as I said it can't
+be a stable one.
 
-> > +                     if (i < 12) {
-> > +                             ret = regmap_write(yas5xx->map,
-> > +                                                YAS537_MTC + i,
-> > +                                                data[i]);
-> > +                             if (ret)
-> > +                                     return ret;
-> > +                     } else if (i < 15) {
-> > +                             ret = regmap_write(yas5xx->map,
-> > +                                                YAS537_OFFSET_X + i - 12,
-> > +                                                data[i]);
-> > +                             if (ret)
-> > +                                     return ret;
-> > +                             yas5xx->hard_offsets[i - 12] = data[i];
-> > +                     } else {
-> > +                             ret = regmap_write(yas5xx->map,
-> > +                                                YAS537_HCK + i - 15,
-> > +                                                data[i]);
-> > +                             if (ret)
-> > +                                     return ret;
-> > +                     }
-> > +             }
+...
 
--- 
+> > But for sure you missed
+
+> >   types.h
+> >
+> Ack in next. But for types.h, i2c.h already include device.h.
+> And device.h already include types.h.
+> Is it still needed to declare explicitly for types.h??
+
+Yes. You have to include all headers you are a direct user of, except
+the ones that are guaranteed to be included by others. The types.h is
+not guaranteed to be included by listed above.
+
+...
+
+> > > +       struct device *dev;
+> > > +       struct regmap *regmap;
+> >
+> > Swapping these two might give less code in the generated binary. Have
+> > you run bloat-o-meter?
+> >
+> I never know about this tool.
+> I'll check it before I submit the next revision.
+> Thanks for the reminding.
+>
+> But from Jonathan's reply, I may remove 'struct regmap *regmap'.
+> If all function need the 'regmap', a local variable 'regmap' need to
+> be declared.
+> To use struct regmap *regmap =3D dev_get_regmap(dev, NULL) is more effect=
+ive.
+
+It's fine, but you may experiment with bloat-o-meter even in that case
+out of curiosity.
+
+--=20
 With Best Regards,
 Andy Shevchenko

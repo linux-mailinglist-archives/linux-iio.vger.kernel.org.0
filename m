@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA6955081A
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 05:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD2E55082F
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 05:57:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233514AbiFSDfL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 23:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33410 "EHLO
+        id S233819AbiFSD5L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 18 Jun 2022 23:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbiFSDfK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 23:35:10 -0400
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95754E0AA;
-        Sat, 18 Jun 2022 20:35:09 -0700 (PDT)
-Received: by mail-vk1-f175.google.com with SMTP id b5so424877vkp.4;
-        Sat, 18 Jun 2022 20:35:09 -0700 (PDT)
+        with ESMTP id S229639AbiFSD5K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 23:57:10 -0400
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A76911C01;
+        Sat, 18 Jun 2022 20:57:09 -0700 (PDT)
+Received: by mail-vs1-f43.google.com with SMTP id d39so7594267vsv.7;
+        Sat, 18 Jun 2022 20:57:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
          :from:date:message-id:subject:to:cc;
-        bh=PYdi3RN1EFrd9W5OnYRhUPpSnzGMgBN8JOB8wfBDroI=;
-        b=rz7qQWHyrbqjyTlEefLBPqbAqatDXLfnisjHYIMedkUqC3js7ZnyeYGsYQle/APKDU
-         Tj2A12YoNqg7t54lqrT4k+Ot2pKnhPxpLicGfS12Rnq3DdJIwFIfIuS4B0OY148lrgno
-         61pyR4IkjmEr/PG3NCMCg3qShJ/p6FPrzNZMGe8pfCzO0WxWvdMgEykqwUIoLLShYxUe
-         0JZrLba2oG5P0tb8c70SqdjrZiosah9nz+eAkHuYwvXrzNrnyiH+Ibih5GNmhUfk/Od5
-         BSZbgVVQ8zqLT5n5MWP0sf+he7b73Y6B8LrFoRCAHDUpFgaGRhn7GSf+5IxRj5ul/kYK
-         8wew==
-X-Gm-Message-State: AJIora9NVS2wDp3WKpiJWwYFJRNr0rNsasxBwdbwrJ8QVq7de0yTIcBO
-        5JITOt+/Iuxr9B4wOWUo8IfuiKxsZjrY+g==
-X-Google-Smtp-Source: AGRyM1tUqzTITQHEg4LfU/KCr4BmsIjdWYQx7TpAihFjAP/XjXdmF5yUUzbGF5mUReRJVeOYwlKpjw==
-X-Received: by 2002:a05:6122:1990:b0:36b:f70c:ba55 with SMTP id bv16-20020a056122199000b0036bf70cba55mr1223702vkb.12.1655609708486;
-        Sat, 18 Jun 2022 20:35:08 -0700 (PDT)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
-        by smtp.gmail.com with ESMTPSA id r21-20020a056122015500b0035cf844fdf6sm1313728vko.53.2022.06.18.20.35.07
+        bh=GbS9TDOHV4jf2htfhwIeIm8TpA0asWaDoPdyofcHL38=;
+        b=N7ZoypqMi1X63sj47YYzSqMlx18uwKWNrZZKoTFBfrqRA5Z8n9VIm+O+bB7WyRBzy9
+         ZbsS6jtzS6hufj6HZIUvgiseKETZSjywPqOsInvgF38FvnlsTdhUiWLaMZDDuKS2xAyg
+         Z81u0R+yDvsKCxkjdOKDKotE9B9No6gJgVYjqicBV+pqBUzMkFD/EUdNRQlRmuWuoSyX
+         8q1SSHpTGTzRkftVSxPDe01aX4+HiLqeCPVsVqvBuIOycWjdWA/GlmAvWyWzq+GpKR5e
+         +f5rIQkUkFD87nnCiVIoIswT41JVmtsbml89P8Q1vUW+VRyqDVOOxp0F7ZjSWIMN/sDp
+         XEew==
+X-Gm-Message-State: AJIora8Gn/TdOPDm2AWbY9+4m2P7qb+bnIJ4Wn1slinwrUNGUrUJ3OyZ
+        6Qnf7hUs/9iiMFnIWoKH9SPdmYOmOvSTcg==
+X-Google-Smtp-Source: AGRyM1uSfh6aSI/zfFzk668qTBuf6A1RkVJ3RCGLtrFnuGhW+BYOq1ahRenUh+Jg1zsvvrZ3yPWFbg==
+X-Received: by 2002:a05:6102:32c8:b0:34c:2358:1824 with SMTP id o8-20020a05610232c800b0034c23581824mr8083413vss.65.1655611028583;
+        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com. [209.85.222.45])
+        by smtp.gmail.com with ESMTPSA id k26-20020ab0715a000000b0037f029bcf0bsm809913uao.21.2022.06.18.20.57.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jun 2022 20:35:08 -0700 (PDT)
-Received: by mail-ua1-f43.google.com with SMTP id l9so2851359uac.4;
-        Sat, 18 Jun 2022 20:35:07 -0700 (PDT)
-X-Received: by 2002:ab0:2705:0:b0:379:7378:3c75 with SMTP id
- s5-20020ab02705000000b0037973783c75mr6476337uao.77.1655609707538; Sat, 18 Jun
- 2022 20:35:07 -0700 (PDT)
+        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
+Received: by mail-ua1-f45.google.com with SMTP id r15so2852271uaf.13;
+        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
+X-Received: by 2002:a9f:37a2:0:b0:379:2023:a630 with SMTP id
+ q31-20020a9f37a2000000b003792023a630mr6647474uaq.73.1655611028267; Sat, 18
+ Jun 2022 20:57:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com> <20220618214009.2178567-6-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220618214009.2178567-6-aidanmacdonald.0x0@gmail.com>
+References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com> <20220618214009.2178567-11-aidanmacdonald.0x0@gmail.com>
+In-Reply-To: <20220618214009.2178567-11-aidanmacdonald.0x0@gmail.com>
 Reply-To: wens@csie.org
 From:   Chen-Yu Tsai <wens@csie.org>
-Date:   Sun, 19 Jun 2022 11:34:56 +0800
-X-Gmail-Original-Message-ID: <CAGb2v6455AN7BGoUoOigvVvJ0nrrp1HvA4tsNs4AkaOKJ-mxfA@mail.gmail.com>
-Message-ID: <CAGb2v6455AN7BGoUoOigvVvJ0nrrp1HvA4tsNs4AkaOKJ-mxfA@mail.gmail.com>
-Subject: Re: [PATCH v3 05/16] dt-bindings: power: supply: axp20x: Add AXP192 compatible
+Date:   Sun, 19 Jun 2022 11:56:56 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
+Message-ID: <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
+Subject: Re: [PATCH v3 10/16] iio: adc: axp20x_adc: Minor code cleanups
 To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -69,8 +69,7 @@ Cc:     Linus Walleij <linus.walleij@linaro.org>,
         devicetree <devicetree@vger.kernel.org>,
         linux-kernel <linux-kernel@vger.kernel.org>,
         linux-iio@vger.kernel.org,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        Rob Herring <robh@kernel.org>
+        "open list:THERMAL" <linux-pm@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
@@ -86,32 +85,58 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Sun, Jun 19, 2022 at 5:40 AM Aidan MacDonald
 <aidanmacdonald.0x0@gmail.com> wrote:
 >
-> The AXP192's USB power supply is similar to the AXP202 but it has
-> different USB current limits.
-
-Should also mention the different register offset for VBUS status.
-
-ChenYu
-
+> The code may be clearer if parameters are not re-purposed to hold
+> temporary results like register values, so introduce local variables
+> as necessary to avoid that. Also, use the common FIELD_PREP macro
+> instead of a hand-rolled version.
 >
-> Acked-by: Rob Herring <robh@kernel.org>
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
 > Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 > ---
->  .../bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml  | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/iio/adc/axp20x_adc.c | 61 +++++++++++++++++++-----------------
+>  1 file changed, 33 insertions(+), 28 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> index 0c371b55c9e1..e800b3b97f0d 100644
-> --- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> +++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-> @@ -22,6 +22,7 @@ properties:
->    compatible:
->      oneOf:
->        - enum:
-> +          - x-powers,axp192-usb-power-supply
->            - x-powers,axp202-usb-power-supply
->            - x-powers,axp221-usb-power-supply
->            - x-powers,axp223-usb-power-supply
-> --
-> 2.35.1
+> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> index 53bf7d4899d2..041511280e1e 100644
+> --- a/drivers/iio/adc/axp20x_adc.c
+> +++ b/drivers/iio/adc/axp20x_adc.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/property.h>
+>  #include <linux/regmap.h>
+>  #include <linux/thermal.h>
+> +#include <linux/bitfield.h>
+
+Sort this group of headers alphabetically please.
+
 >
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/driver.h>
+> @@ -22,20 +23,20 @@
+>  #include <linux/mfd/axp20x.h>
+>
+>  #define AXP20X_ADC_EN1_MASK                    GENMASK(7, 0)
+> -
+>  #define AXP20X_ADC_EN2_MASK                    (GENMASK(3, 2) | BIT(7))
+> +
+>  #define AXP22X_ADC_EN1_MASK                    (GENMASK(7, 5) | BIT(0))
+>
+>  #define AXP20X_GPIO10_IN_RANGE_GPIO0           BIT(0)
+>  #define AXP20X_GPIO10_IN_RANGE_GPIO1           BIT(1)
+> -#define AXP20X_GPIO10_IN_RANGE_GPIO0_VAL(x)    ((x) & BIT(0))
+> -#define AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(x)    (((x) & BIT(0)) << 1)
+>
+>  #define AXP20X_ADC_RATE_MASK                   GENMASK(7, 6)
+> -#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
+> -#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
+>  #define AXP20X_ADC_RATE_HZ(x)                  ((ilog2((x) / 25) << 6) & AXP20X_ADC_RATE_MASK)
+> +
+>  #define AXP22X_ADC_RATE_HZ(x)                  ((ilog2((x) / 100) << 6) & AXP20X_ADC_RATE_MASK)
+> +
+> +#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
+> +#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
+
+Please also mention "grouping macros based on chip type" in the commit log.
+
+Otherwise,
+
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>

@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD972550D87
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 01:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41C9550D8F
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 01:20:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233641AbiFSXMP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 19:12:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
+        id S231812AbiFSXUs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 19:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231812AbiFSXMP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 19:12:15 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E785FE3
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:12:14 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id ej4so8856478edb.7
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:12:14 -0700 (PDT)
+        with ESMTP id S231539AbiFSXUr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 19:20:47 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D786418
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:20:46 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id n20so11154336ejz.10
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3oNYbdTMC2COMsNWatWMyYc72XIREuv2bQDskB+/znM=;
-        b=exIXEoiJtvKd4UubkR/nkCvqc5ZFYp1DwCYa2eopsu/2JNm++Gg8Q155O5hI8fz4Zq
-         cJXWLWWaxCE+gAZaaz2YRCp70gYhEHxeTfslyD6F8HlxW6Tm4A2uTIPsoAr+evx56GiQ
-         ngYuTA79eVKNKT/+TRfJs5BHMKwIrXZEGJLcsG3SyvLJ6UnPGMICYSHjBBcdlePa3RUr
-         v7Tm7VvTkzbNhKKshbISnMlpY5ySs+nkOlxFF5G2MaetPG6aB+mSUTPFDpEk0GlgZdC9
-         ei5VkH9vziRSiqXvxOxpG8mVYkzw+9trc4LbazAn0RFAyaRuHR+D717ZoNX0jZ6QzW/j
-         zLPg==
+        bh=/Rc5/CHu2Jl8pgnlZF2VJAidUyxBG0Z0t/+1WB/446Q=;
+        b=igHVKI1GzaYYhjx+WXw3bDpp5FGl84rUq6QrxIR7pQE2KLvrAv/7/mhW7WDQrvyaXw
+         7bMwhq+jvSsvNN/KhzJGJqZ7Jp/6nYSE74Os1D5lDkGaf4GiICCEXkgt1bNvVEVq7ZOL
+         T9xGVUrayVCmN4XM3f/BQq3cAojiK1LtEDwvZY8yyQ8xY+Vrx+M1GVJa7J9U6irOYZv7
+         AtVtoArcUBSiQGvBPKFxvqLkQv4ZTghAnwQ83egu63J/5oxU4DLnwobMyrLQQBO7Kfnn
+         MtOCDATbxql8JT6iUoK3qbgOI2MVAutuV6mwC6PSMq2FfT9BRlXBuHmg/jvKpfsJBaNT
+         CfGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3oNYbdTMC2COMsNWatWMyYc72XIREuv2bQDskB+/znM=;
-        b=cB/a8cJqg8VFPM287/6+BdaZiRswiuYGOzcxJMzT3f7k01zcoRgdOrtzmJc7BjoWFo
-         +mNQL4XqwP+Y7ocn6vIJmtq+7f3dmLKPG7HvU/08V+C5BzLQ52cKwRe2I7v5dbSnlM9s
-         son5uIGx+KgnMrYxDpuSfFuAGEwpPlZJx6yHCfEl0BJc/jDGF2B25W41ZXjjAuHeOCmb
-         HA1mDdhtKJT7C8UGNlHHELoxbtGSL8GIwqbBt06TjUEq/xceS11bdaDkxWGKdrCaEHdG
-         LmPiCp2wpoJaMtWQ0KTvgE5Vbo8xxqitDjI3JBu02q8qL2qtl7iagp0lzJ0+ICgfcl6o
-         coIw==
-X-Gm-Message-State: AJIora9fmeSftAbNR1bixVOehGULTLk+mLyWhUAnJYCqNibzowWr+19U
-        Iuu3AYyfy64TyjJddkCCAwKZFpVwnHnz6JRhAP0=
-X-Google-Smtp-Source: AGRyM1sFt9rJFFEMLhdLzDYjdVn8I1QzhjPMzZdz4Q+FK+MerPDMBAR4ZFlCKIk9kEq4EeM98G+BFx8l1fWqbvdsHVk=
-X-Received: by 2002:a05:6402:4390:b0:42e:b7e:e9ac with SMTP id
- o16-20020a056402439000b0042e0b7ee9acmr26412998edc.97.1655680332673; Sun, 19
- Jun 2022 16:12:12 -0700 (PDT)
+        bh=/Rc5/CHu2Jl8pgnlZF2VJAidUyxBG0Z0t/+1WB/446Q=;
+        b=ac+QDIKk+Q7EGdddI5SS5l+sBVaOVgLojMAqh/0yGIn5SCcyT2XtYtnPSPEabjYq3D
+         Mk8nWDVGWhRcUkxhhpR+39pRgN3hxo0MSf8ZDaIvU6Fsit800D3nKf/pIL7GAWFNh4qN
+         Sy4BjvMBvt4HUN0tyk84/Cn3w20ICkiyrQOis6r06C6Je9URfUWne+sg+fK8AS8MUUr+
+         liJDlnVszz/Fzl9Wt8QSBv7C/vyOvbKrVGNt99RcVL87x3gzkTst/HaxI/RxkuZpxmoD
+         u/LUgsr/fFwYpGjdcdqcRH0Kstp44EoYa4amuNu7zCu6cqdWAjXMpmR3OLBT4Om2aExC
+         yZEQ==
+X-Gm-Message-State: AJIora+Tn+2DU8R+zhJqBKH0ZCnVROdBMq6o7UZEY44RnVfnXQ43H26H
+        0hBygTGZPWI//5aSBg4Sec0Hf2FDyoLff79zGQs=
+X-Google-Smtp-Source: AGRyM1uwTDoVhZbXWKiSiMhb1QoCa4YTjUhYvvS/Imx5i2sINMZwSyuvnpQ8u/Z0KIQRCJdopyQvB0NVeqjsnbCf0co=
+X-Received: by 2002:a17:907:9721:b0:70c:65e7:2aa5 with SMTP id
+ jg33-20020a170907972100b0070c65e72aa5mr18545456ejc.132.1655680845138; Sun, 19
+ Jun 2022 16:20:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220619185839.1363503-1-jic23@kernel.org> <20220619185839.1363503-17-jic23@kernel.org>
-In-Reply-To: <20220619185839.1363503-17-jic23@kernel.org>
+References: <20220619185839.1363503-1-jic23@kernel.org> <20220619185839.1363503-12-jic23@kernel.org>
+In-Reply-To: <20220619185839.1363503-12-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 20 Jun 2022 01:11:36 +0200
-Message-ID: <CAHp75VdTwj6sAQp2r2egFXvr5RQvnDHrOUo45==UT-_6A9GKrg@mail.gmail.com>
-Subject: Re: [PATCH v2 16/17] iio: cdc: ad7746: Move driver out of staging.
+Date:   Mon, 20 Jun 2022 01:20:08 +0200
+Message-ID: <CAHp75Vdf3aWaeT17cxsm=a7LUSpc1LnoMGkRQS8O_3ftufprLg@mail.gmail.com>
+Subject: Re: [PATCH v2 11/17] iio: core: Introduce _inputoffset for
+ differential channels
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Peter Rosin <peda@axentia.se>,
@@ -73,25 +74,28 @@ On Sun, Jun 19, 2022 at 8:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> All known major issues with this driver resolved so time to move
-> it out of staging.
+> Address an ABI gap for device where the offset of both lines in a
+> differential pair may be controlled so as to allow a wider range of
+> inputs, but without having any direct effect of the differential
+> measurement.
 >
-> Note this cleanup work was done using the roadtest framework.
-> https://lore.kernel.org/all/20220311162445.346685-1-vincent.whitchurch@axis.com/
+> _offset cannot be used as to remain in line with existing usage,
+> userspace would be expected to apply it as (_raw + _offset) * scale
+> whereas _inputoffset is not.
+> Similarly calibbias is expected to tweak the measurement seen, not
+> the adjust the two lines of the differential pair.
+>
+> Needed for in_capacitanceX-capacitanceY_inputoffset for the
+> AD7746 CDC driver.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
 > ---
->  drivers/iio/cdc/Kconfig          |  10 +
->  drivers/iio/cdc/Makefile         |   1 +
->  drivers/iio/cdc/ad7746.c         | 818 +++++++++++++++++++++++++++++++
->  drivers/staging/iio/cdc/ad7746.c | 818 -------------------------------
+> I''m not entirely happy with the naming on this one, so if anyone
+> has a better idea I'm definitely open to it!
 
-It's a bit hard to review, perhaps you forgot to add -M -C when
-generating this patch?
-
-(Also note that `git am` able to parse renamings, the only thing which
-should be in full in patches is when one deletes the file, although it
-may be already supported by newest versions of Git, dunno)
+I'm not sure I got the idea behind this, but would be "tare" /
+"tarepoint" / alike suitable here?
 
 -- 
 With Best Regards,

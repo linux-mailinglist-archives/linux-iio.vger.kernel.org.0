@@ -2,79 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD2E55082F
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 05:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D13755099C
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233819AbiFSD5L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 18 Jun 2022 23:57:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44280 "EHLO
+        id S232213AbiFSK0m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 06:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbiFSD5K (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 18 Jun 2022 23:57:10 -0400
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A76911C01;
-        Sat, 18 Jun 2022 20:57:09 -0700 (PDT)
-Received: by mail-vs1-f43.google.com with SMTP id d39so7594267vsv.7;
-        Sat, 18 Jun 2022 20:57:09 -0700 (PDT)
+        with ESMTP id S230244AbiFSK0l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:26:41 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A59A183
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 03:26:40 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id eq6so4094935edb.6
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 03:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=LMKugXzUXUVai16DUUHT/I5mEbxAHSqoLaxIXVOrxyM=;
+        b=Ypl413ms1X3cg1uTpkvLxPrRHtXYDvFbTbPJh/pW9waclQ2x305G/8XKTfmfZGTg4p
+         ZkF1fjXlZrNFqa4E80I99muKcunDkKfdT1MfOlQO9ewFp2B+xQFOv29o4Oqe1I0EQ11g
+         KHcGSGRlJWXS+Xr07UR3KWzgMbgWfmavvlTWyYZynsiowfHtEDdY+G37PXqAQnJLo9Dx
+         gjsO8CeG20WIliM4devWlCjnUKTtdmKfIu5XoWA43+ePILFMOaVa5bX8UMnqTCrXtsFE
+         5eMlI9J0mS9URDqR4Fh07BovNViKsoI0w4JT+h+cQu0hKJM7rR+kPDMWFBioXR9h124D
+         PMWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=GbS9TDOHV4jf2htfhwIeIm8TpA0asWaDoPdyofcHL38=;
-        b=N7ZoypqMi1X63sj47YYzSqMlx18uwKWNrZZKoTFBfrqRA5Z8n9VIm+O+bB7WyRBzy9
-         ZbsS6jtzS6hufj6HZIUvgiseKETZSjywPqOsInvgF38FvnlsTdhUiWLaMZDDuKS2xAyg
-         Z81u0R+yDvsKCxkjdOKDKotE9B9No6gJgVYjqicBV+pqBUzMkFD/EUdNRQlRmuWuoSyX
-         8q1SSHpTGTzRkftVSxPDe01aX4+HiLqeCPVsVqvBuIOycWjdWA/GlmAvWyWzq+GpKR5e
-         +f5rIQkUkFD87nnCiVIoIswT41JVmtsbml89P8Q1vUW+VRyqDVOOxp0F7ZjSWIMN/sDp
-         XEew==
-X-Gm-Message-State: AJIora8Gn/TdOPDm2AWbY9+4m2P7qb+bnIJ4Wn1slinwrUNGUrUJ3OyZ
-        6Qnf7hUs/9iiMFnIWoKH9SPdmYOmOvSTcg==
-X-Google-Smtp-Source: AGRyM1uSfh6aSI/zfFzk668qTBuf6A1RkVJ3RCGLtrFnuGhW+BYOq1ahRenUh+Jg1zsvvrZ3yPWFbg==
-X-Received: by 2002:a05:6102:32c8:b0:34c:2358:1824 with SMTP id o8-20020a05610232c800b0034c23581824mr8083413vss.65.1655611028583;
-        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com. [209.85.222.45])
-        by smtp.gmail.com with ESMTPSA id k26-20020ab0715a000000b0037f029bcf0bsm809913uao.21.2022.06.18.20.57.08
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=LMKugXzUXUVai16DUUHT/I5mEbxAHSqoLaxIXVOrxyM=;
+        b=CMAhOFCZwTgkWI2sNEcgXzPO/mH9E9sMRPojnKqXONmKvPI+dDrIhCTcwuIH4FV6g0
+         RNmN4OTb2Mhu6OG+AUH5G7s2rr+lE65BBSd+3Lx2vdmzequB5XJv4oLhuPFlF28+QpXD
+         HeMsZfPBHZlWwswAENXeJGr/xOdvfiLXhypXZm8CMrQLldJMDPxSqitPYK/g6LK9aqvj
+         wG/909LoPIgxEq8lvVCZ/WftibENqnBrRxr+TRoRYJiIzlUTgsAgXC7HNJbIQgeHDvO7
+         +oI/Y7NvO1b15HqJsTItFHBQTLz+CGK+k08rzi0PWdS6IiXmGo7oR9v2uwd77mmZ5pfK
+         RStA==
+X-Gm-Message-State: AJIora+Dg04nobBXXxZe5ODv0oLBa++jZe7vWRC47XxNsqVcjBlXZFzz
+        HTb3RKLlS6LTnpUHb7EJHJ+nOA==
+X-Google-Smtp-Source: AGRyM1vSH5zCEmJVebQFtZIwLmV3YNnw42c3pfk+x5krwDe7OONdisSq0NqxbVOphy65AwV4KaNGVA==
+X-Received: by 2002:a05:6402:5408:b0:435:60fa:5017 with SMTP id ev8-20020a056402540800b0043560fa5017mr13936929edb.223.1655634398488;
+        Sun, 19 Jun 2022 03:26:38 -0700 (PDT)
+Received: from [192.168.0.206] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id la5-20020a170907780500b006f3ef214de7sm4434553ejc.77.2022.06.19.03.26.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
-Received: by mail-ua1-f45.google.com with SMTP id r15so2852271uaf.13;
-        Sat, 18 Jun 2022 20:57:08 -0700 (PDT)
-X-Received: by 2002:a9f:37a2:0:b0:379:2023:a630 with SMTP id
- q31-20020a9f37a2000000b003792023a630mr6647474uaq.73.1655611028267; Sat, 18
- Jun 2022 20:57:08 -0700 (PDT)
+        Sun, 19 Jun 2022 03:26:38 -0700 (PDT)
+Message-ID: <d7b6517d-7339-ea2b-8402-fead8eba25f0@linaro.org>
+Date:   Sun, 19 Jun 2022 12:26:36 +0200
 MIME-Version: 1.0
-References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com> <20220618214009.2178567-11-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220618214009.2178567-11-aidanmacdonald.0x0@gmail.com>
-Reply-To: wens@csie.org
-From:   Chen-Yu Tsai <wens@csie.org>
-Date:   Sun, 19 Jun 2022 11:56:56 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
-Message-ID: <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 10/16] iio: adc: axp20x_adc: Minor code cleanups
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     ChiYuan Huang <u0084500@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        krzysztof.kozlowski+dt@linaro.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J . Wysocki" <rafael@kernel.org>, quic_gurus@quicinc.com,
-        sebastian.reichel@collabora.com,
-        Andy Shevchenko <andy.shevchenko@gmail.com>, michael@walle.cc,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        cy_huang <cy_huang@richtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        lkml <linux-kernel@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
+ <1655458375-30478-2-git-send-email-u0084500@gmail.com>
+ <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
+ <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
+ <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
+ <20220618183440.121365d7@jic23-huawei>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220618183440.121365d7@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,61 +85,86 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 19, 2022 at 5:40 AM Aidan MacDonald
-<aidanmacdonald.0x0@gmail.com> wrote:
->
-> The code may be clearer if parameters are not re-purposed to hold
-> temporary results like register values, so introduce local variables
-> as necessary to avoid that. Also, use the common FIELD_PREP macro
-> instead of a hand-rolled version.
->
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-> ---
->  drivers/iio/adc/axp20x_adc.c | 61 +++++++++++++++++++-----------------
->  1 file changed, 33 insertions(+), 28 deletions(-)
->
-> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-> index 53bf7d4899d2..041511280e1e 100644
-> --- a/drivers/iio/adc/axp20x_adc.c
-> +++ b/drivers/iio/adc/axp20x_adc.c
-> @@ -15,6 +15,7 @@
->  #include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/thermal.h>
-> +#include <linux/bitfield.h>
+On 18/06/2022 19:34, Jonathan Cameron wrote:
+> On Sat, 18 Jun 2022 19:00:19 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> On 18/06/2022 08:50, ChiYuan Huang wrote:
+>>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> 於 2022年6月18日 週六 上午9:45寫道：  
+>>>>
+>>>> On 17/06/2022 02:32, cy_huang wrote:  
+>>>>> From: ChiYuan Huang <cy_huang@richtek.com>
+>>>>>
+>>>>> Add the documentation for Richtek RTQ6056.
+>>>>>
+>>>>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+>>>>> ---
+>>>>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
+>>>>>  1 file changed, 57 insertions(+)
+>>>>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>>>> new file mode 100644
+>>>>> index 00000000..6b4e0e0
+>>>>> --- /dev/null
+>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
+>>>>> @@ -0,0 +1,57 @@
+>>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>>>> +%YAML 1.2
+>>>>> +---
+>>>>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
+>>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>>>> +
+>>>>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
+>>>>> +
+>>>>> +maintainers:
+>>>>> +  - ChiYuan Huang <cy_huang@richtek.com>
+>>>>> +
+>>>>> +description: |
+>>>>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
+>>>>> +  interface, and the device provides full information for system by reading
+>>>>> +  out the loading current and power.
+>>>>> +
+>>>>> +  The device monitors both of the drops across sense resistor and the BUS
+>>>>> +  voltage, converts into the current in amperes, and power in watts through
+>>>>> +  internal analog-to-digital converter ADC. The programmable calibration,
+>>>>> +  adjustable conversion time, and averaging function are also built in for
+>>>>> +  more design flexibility.
+>>>>> +
+>>>>> +  Datasheet is available at
+>>>>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
+>>>>> +
+>>>>> +properties:
+>>>>> +  compatible:
+>>>>> +    const: richtek,rtq6056
+>>>>> +
+>>>>> +  reg:
+>>>>> +    maxItems: 1
+>>>>> +
+>>>>> +  "#io-channel-cells":
+>>>>> +    const: 1
+>>>>> +
+>>>>> +  richtek,shunt-resistor-uohm:  
+>>>>
+>>>> Use standard properties, so "-micro-ohms". Drop the unit from
+>>>> description and drop the ref.
+>>>>  
+>>> Use richtek.shunt-resistor-micro-ohms?  
+>>
+>> Yes.
+>>
+>>> Or the prefix 'richtek,' can be removed?  
+>>
+>> No, the vendor prefix must stay.
+> 
+> It's a standard generic binding used in a bunch of IIO and hwmon
+> drivers without vendor prefix.  Mind you I can't find a definition
+> in any of the top level binding files.  Probably wants to be in
+> adc.yaml for IIO.
 
-Sort this group of headers alphabetically please.
+Indeed, thanks for correcting me. It should be just
+"shunt-resistor-micro-ohms" then.
 
->
->  #include <linux/iio/iio.h>
->  #include <linux/iio/driver.h>
-> @@ -22,20 +23,20 @@
->  #include <linux/mfd/axp20x.h>
->
->  #define AXP20X_ADC_EN1_MASK                    GENMASK(7, 0)
-> -
->  #define AXP20X_ADC_EN2_MASK                    (GENMASK(3, 2) | BIT(7))
-> +
->  #define AXP22X_ADC_EN1_MASK                    (GENMASK(7, 5) | BIT(0))
->
->  #define AXP20X_GPIO10_IN_RANGE_GPIO0           BIT(0)
->  #define AXP20X_GPIO10_IN_RANGE_GPIO1           BIT(1)
-> -#define AXP20X_GPIO10_IN_RANGE_GPIO0_VAL(x)    ((x) & BIT(0))
-> -#define AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(x)    (((x) & BIT(0)) << 1)
->
->  #define AXP20X_ADC_RATE_MASK                   GENMASK(7, 6)
-> -#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
-> -#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
->  #define AXP20X_ADC_RATE_HZ(x)                  ((ilog2((x) / 25) << 6) & AXP20X_ADC_RATE_MASK)
-> +
->  #define AXP22X_ADC_RATE_HZ(x)                  ((ilog2((x) / 100) << 6) & AXP20X_ADC_RATE_MASK)
-> +
-> +#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
-> +#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
 
-Please also mention "grouping macros based on chip type" in the commit log.
-
-Otherwise,
-
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Best regards,
+Krzysztof

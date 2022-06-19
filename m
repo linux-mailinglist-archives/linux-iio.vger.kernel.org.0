@@ -2,52 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B66DF5509D5
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E225509E2
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231132AbiFSKth (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 06:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58692 "EHLO
+        id S235650AbiFSKwQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 06:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbiFSKte (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:49:34 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE87F586;
-        Sun, 19 Jun 2022 03:49:31 -0700 (PDT)
+        with ESMTP id S232316AbiFSKwP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:52:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEB510FE1;
+        Sun, 19 Jun 2022 03:52:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 067BAB80BA0;
-        Sun, 19 Jun 2022 10:49:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA75C34114;
-        Sun, 19 Jun 2022 10:49:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9DF4AB80D22;
+        Sun, 19 Jun 2022 10:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CB1C34114;
+        Sun, 19 Jun 2022 10:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655635768;
-        bh=ml8xzfS/4s43QQV6uviKGJHvPVeDaTAIYELUeCzvLgQ=;
+        s=k20201202; t=1655635932;
+        bh=7OWf8G0jMiKkIOyazPpTYHLvbZq8teEs+PZVbvDwI6Y=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iYwwMBfyDQm0f6hP6GWsi0fTaNMVBwjaQyAC9ffT5LXRNPh87AyacMSZQ1cviJUKO
-         U0QupP6B7PkLQCztJ8acMXfDBobwVkGOOndhMrK7kp32Xf1wPqBcUSnEVCkuRYYv97
-         4Rrwz2cGasqjZ6qZL4xz6uBAoyCzzxAFysolMk9XFf42tCiOWVbZDMXaeRCSlBsDWi
-         luah1NVLlaRHYDopV8wohsVv2lCuOq0V/kIcoTydfuQi+3kZFqzSfXfnZGiLVYA8o0
-         1QOiSQkwSke8hugpr2S5uK1k0rYasiAVXDFq5w+Q9byK1uEOEgR3Fln6/KWZgNg27U
-         6QDvPFDIK8s5w==
-Date:   Sun, 19 Jun 2022 11:58:46 +0100
+        b=rVQRKLTdruRR6l4WvRrlC19nxkgW8EIkCQ2gqqYtXUUhFJiH1zLJwD6vbS//J8kC9
+         44D/E1gNGoxLsOgXOvx+MiE1CN+Y+r6FtHtkIVD8xoC48AFFXYLATO6VzXx/4dYDSy
+         DCdoxxbLUKoFriC43ZMHV9Asit/4Lr9bCgl4B8w+sh3HIwdjK1u5RL9sUPDkuuMF0j
+         idn0/fCc560VvXDkdCoAf47ghxKd+fgqtC/q4RKc7yhglIHtY+Np+LLTtcxPauJMxt
+         wXJK5FbTrlA8UQVzC56+25tCg9ofu9tHQfbpV9jn2869QABEU+uGtTx462oCqgkbsH
+         142+V6S9BsF1Q==
+Date:   Sun, 19 Jun 2022 12:01:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jakob Hauser <jahau@rocketmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Chen-Yu Tsai <wens@csie.org>
+Cc:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        krzysztof.kozlowski+dt@linaro.org,
+        Lee Jones <lee.jones@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J . Wysocki" <rafael@kernel.org>, quic_gurus@quicinc.com,
+        sebastian.reichel@collabora.com,
+        Andy Shevchenko <andy.shevchenko@gmail.com>, michael@walle.cc,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 8/8] iio: magnetometer: yas530: Add YAS537 variant
-Message-ID: <20220619115846.7d6a8393@jic23-huawei>
-In-Reply-To: <CAHp75VemByhNAYGuP2h-5HazPZL7k5tyGc1WV2gKEdjX_5Sing@mail.gmail.com>
-References: <cover.1655509425.git.jahau@rocketmail.com>
-        <3bdb392bb75073bdfe10aab1739fee2d6c64f10c.1655509425.git.jahau@rocketmail.com>
-        <20220618162833.218dbe67@jic23-huawei>
-        <CAHp75VemByhNAYGuP2h-5HazPZL7k5tyGc1WV2gKEdjX_5Sing@mail.gmail.com>
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-iio@vger.kernel.org,
+        "open list:THERMAL" <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v3 10/16] iio: adc: axp20x_adc: Minor code cleanups
+Message-ID: <20220619120126.54d0b586@jic23-huawei>
+In-Reply-To: <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
+References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com>
+        <20220618214009.2178567-11-aidanmacdonald.0x0@gmail.com>
+        <CAGb2v65PLTcy53zjHA83qAaNq4y-Mmxfv4xvSuwqRLGBiwgjDQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -62,62 +73,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 19 Jun 2022 12:32:56 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sun, 19 Jun 2022 11:56:56 +0800
+Chen-Yu Tsai <wens@csie.org> wrote:
 
-> On Sat, Jun 18, 2022 at 5:19 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Sat, 18 Jun 2022 02:13:16 +0200
-> > Jakob Hauser <jahau@rocketmail.com> wrote:  
-> 
-> ...
-> 
-> > > +             for (i = 0; i < 17; i++) {  
+> On Sun, Jun 19, 2022 at 5:40 AM Aidan MacDonald
+> <aidanmacdonald.0x0@gmail.com> wrote:
 > >
-> > Reduce indent by doing this as multiple loops.
-> > Though even better if you can use bulk writes.
+> > The code may be clearer if parameters are not re-purposed to hold
+> > temporary results like register values, so introduce local variables
+> > as necessary to avoid that. Also, use the common FIELD_PREP macro
+> > instead of a hand-rolled version.
 > >
-> >                 int j = 0;
-> >                 for (i = 0; i < 12; i++) {
-> >                         ret = regmap_write(yas5xx->map, YAS537_MTC + i,
-> >                                            data[j++])
-> >                         if (ret)
-> >                                 return ret;
-> >                 }
+> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> > Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+> > ---
+> >  drivers/iio/adc/axp20x_adc.c | 61 +++++++++++++++++++-----------------
+> >  1 file changed, 33 insertions(+), 28 deletions(-)
 > >
-> >                 for (i = 0; i < 4; i++) {
-> >                         ret = regmap_write(yas5xx->map, YAS573_OFFSET_X + i,
-> >                                            data[j++]);
-> >                         if (ret)
-> >                                 return ret;
-> >                 }  
+> > diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
+> > index 53bf7d4899d2..041511280e1e 100644
+> > --- a/drivers/iio/adc/axp20x_adc.c
+> > +++ b/drivers/iio/adc/axp20x_adc.c
+> > @@ -15,6 +15,7 @@
+> >  #include <linux/property.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/thermal.h>
+> > +#include <linux/bitfield.h>  
 > 
-> I guess you are referring to _noinc variants of regmap bulk operations.
-Hi Andy,
+> Sort this group of headers alphabetically please.
+> 
+> >
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/driver.h>
+> > @@ -22,20 +23,20 @@
+> >  #include <linux/mfd/axp20x.h>
+> >
+> >  #define AXP20X_ADC_EN1_MASK                    GENMASK(7, 0)
+> > -
+> >  #define AXP20X_ADC_EN2_MASK                    (GENMASK(3, 2) | BIT(7))
+> > +
+> >  #define AXP22X_ADC_EN1_MASK                    (GENMASK(7, 5) | BIT(0))
+> >
+> >  #define AXP20X_GPIO10_IN_RANGE_GPIO0           BIT(0)
+> >  #define AXP20X_GPIO10_IN_RANGE_GPIO1           BIT(1)
+> > -#define AXP20X_GPIO10_IN_RANGE_GPIO0_VAL(x)    ((x) & BIT(0))
+> > -#define AXP20X_GPIO10_IN_RANGE_GPIO1_VAL(x)    (((x) & BIT(0)) << 1)
+> >
+> >  #define AXP20X_ADC_RATE_MASK                   GENMASK(7, 6)
+> > -#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
+> > -#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)
+> >  #define AXP20X_ADC_RATE_HZ(x)                  ((ilog2((x) / 25) << 6) & AXP20X_ADC_RATE_MASK)
+> > +
+> >  #define AXP22X_ADC_RATE_HZ(x)                  ((ilog2((x) / 100) << 6) & AXP20X_ADC_RATE_MASK)
+> > +
+> > +#define AXP813_V_I_ADC_RATE_MASK               GENMASK(5, 4)
+> > +#define AXP813_ADC_RATE_MASK                   (AXP20X_ADC_RATE_MASK | AXP813_V_I_ADC_RATE_MASK)  
+> 
+> Please also mention "grouping macros based on chip type" in the commit log.
+> 
+> Otherwise,
+> 
+> Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+With Chen-Yu's suggested changes,
 
-No. These seem to be incrementing the register address, so you don't want the _noinc
-variant as far as I can see.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> 
-> > > +                     if (i < 12) {
-> > > +                             ret = regmap_write(yas5xx->map,
-> > > +                                                YAS537_MTC + i,
-> > > +                                                data[i]);
-> > > +                             if (ret)
-> > > +                                     return ret;
-> > > +                     } else if (i < 15) {
-> > > +                             ret = regmap_write(yas5xx->map,
-> > > +                                                YAS537_OFFSET_X + i - 12,
-> > > +                                                data[i]);
-> > > +                             if (ret)
-> > > +                                     return ret;
-> > > +                             yas5xx->hard_offsets[i - 12] = data[i];
-> > > +                     } else {
-> > > +                             ret = regmap_write(yas5xx->map,
-> > > +                                                YAS537_HCK + i - 15,
-> > > +                                                data[i]);
-> > > +                             if (ret)
-> > > +                                     return ret;
-> > > +                     }
-> > > +             }  
-> 
+Thanks,
+
+Jonathan
+
 

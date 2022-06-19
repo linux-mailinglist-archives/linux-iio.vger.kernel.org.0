@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DA9550AC2
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 15:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA08550B24
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 16:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbiFSNJC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 09:09:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48954 "EHLO
+        id S231395AbiFSOSL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 10:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230290AbiFSNJB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 09:09:01 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9441168;
-        Sun, 19 Jun 2022 06:08:58 -0700 (PDT)
+        with ESMTP id S229447AbiFSOSK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 10:18:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2452635;
+        Sun, 19 Jun 2022 07:18:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2FDECB80D35;
-        Sun, 19 Jun 2022 13:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BDEC341C4;
-        Sun, 19 Jun 2022 13:08:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 171C460F61;
+        Sun, 19 Jun 2022 14:18:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA72AC34114;
+        Sun, 19 Jun 2022 14:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655644135;
-        bh=0oSSKlFNUvoKNVjh7H0FePG86919f/dV3KLFNTvvQYo=;
+        s=k20201202; t=1655648288;
+        bh=m0J4H+mG6jDWlaC62PywH35uXmKJtmGHeOSShrPjBiE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=P9oi7LGa++XoQ/ih34SZJq69qayFLd70FIHG6t7wQdiqkpHu0hBKFjOnlGKr2Abt+
-         lG17pfiLlS1tidePtl/KStalLOuJI4k5MqXtHKVVK+RB3oFXt9XX/2/gfveexGcHtu
-         4SFpPzyEnNjAoHBz4QdQOYUXFsgyOmlxEhmaiR0VNL4XJ0xFnGk082lKrAbcLWOIPa
-         G7oci48FbRp+7NG87wQihIBBqhnxToJoQXCcLfIGQ+dScaumQeNQSeDDVyGRJdbxv9
-         8S7f+Cmevytl/ywXUGwxpKKZ49scFXAIqnyhg6G2wie4dQYQLgYyI6gMEoqp3ks2rC
-         X94oc1ZTjn/HA==
-Date:   Sun, 19 Jun 2022 14:18:14 +0100
+        b=pYQ2xPcyrIjVRdaQPCb4PCqqJ9XqOmXUpA3hCZUTzpYEI5hq/Osu+vdTEUP3ggRQZ
+         ru1z16PnKsOPDPcwVjbF5fB1g/dlynShf3dSK8g4nrHXOB2It/pWB1MmsurEXPIQHD
+         zhiOGApzzX95VjMi62LaG6UfqUc2lBYauP13FQcqIFhT3lr458vzY85dGNzt7BVJA7
+         2cJ23ND/w5wPTkzFpxdPU7BcK0nF7ewQXpTv5h3VF2xFvcv25NPsL+wsuluDpnStJg
+         5U7Zy0sgiUKGFdjOWRIhBCPDkc6AtPpibEktTz8T9gw4cSxwS5odYTftaJXKIMedvV
+         4ByORBrXUpCjA==
+Date:   Sun, 19 Jun 2022 15:27:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] iio: accel: bma400: Add support for single and
- double tap events
-Message-ID: <20220619141814.4b2b3dee@jic23-huawei>
-In-Reply-To: <20220613191706.31239-3-jagathjog1996@gmail.com>
-References: <20220613191706.31239-1-jagathjog1996@gmail.com>
-        <20220613191706.31239-3-jagathjog1996@gmail.com>
+To:     Quentin Schulz <foss+kernel@0leil.net>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: Re: [PATCH] iio: accel: mxc4005: report orientation of
+ accelerometer
+Message-ID: <20220619152726.030f8e27@jic23-huawei>
+In-Reply-To: <20220615110240.684744-1-foss+kernel@0leil.net>
+References: <20220615110240.684744-1-foss+kernel@0leil.net>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -56,409 +56,191 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 14 Jun 2022 00:47:06 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
+On Wed, 15 Jun 2022 13:02:40 +0200
+Quentin Schulz <foss+kernel@0leil.net> wrote:
 
-> Add support for single and double tap events based on the tap threshold
-> value and minimum quiet time value between the taps. The INT1 pin is used
-> to interrupt and event is pushed to userspace.
-> 
-> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+>=20
+Hi Quentin,
+
+Interesting / horribly ill defined little feature ;)
+
+> The accelerometer can report precise values for x, y and z accelerations
+> but it can also simply report its orientation on XY plane and Z axis.
+>=20
+> Since the orientation of the device may be enough information for
+> userspace and allows to avoid expensive fusion algorithms, let's add
+> support for it.
+>=20
+> The orientation register stores a 2b value for XY plane orientation:
+> between 225=C2=B0 and 315=C2=B0, returns 0, between 315=C2=B0 and 45=C2=
+=B0, 1, between 45=C2=B0
+> and 135=C2=B0, 2 and between 135=C2=B0 and 225=C2=B0, 3. We "round" those=
+ to 270=C2=B0,
+> 0=C2=B0, 90=C2=B0 and 180=C2=B0 degrees.
+
+Wow. The datasheet description of this very confusing...
+One key thing is we need to be careful of is that tilt (x/y is
+not always available - but rather shows the last, and probably
+now garbage, value)
+>=20
+> For Z axis, the register bit returns 0 if facing the user, 1 otherwise,
+> which the driver translates to 0=C2=B0 and 180=C2=B0 respectively.
+
+I assume facing up vs facing down?  User might be lying on their
+back in which case this description doesn't work.  The datasheet
+also talks about the case where g lies near the XY plane and hence
+the z axis is horizontal.
+
+
+>=20
+> Those values are proper if the accelerometer is mounted such that the
+> XYZ axes are as follows when the device is facing the user in portrait
+> mode (respecting the right-hand rule):
+>=20
+>      y
+>      ^
+>      |
+>      |
+>      |
+>      +----------> x
+>     /
+>    /
+>   /
+>  L
+> z
+>=20
+> Since this information is very basic, imprecise (only 4 values for XY
+> plane and 2 for Z axis) and can be extrapolated from the actual,
+> precise, x, y and z acceleration values, it is not made available
+> through buffers.
+>=20
+> A change in XY plane or Z axis orientation can also trigger an interrupt
+> but this feature is not added in this commit.
+>=20
+> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 > ---
->  drivers/iio/accel/bma400.h      |  11 ++
->  drivers/iio/accel/bma400_core.c | 210 ++++++++++++++++++++++++++++++--
->  2 files changed, 211 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
-> index e8f802a82300..d05edd9b009a 100644
-> --- a/drivers/iio/accel/bma400.h
-> +++ b/drivers/iio/accel/bma400.h
-> @@ -40,6 +40,7 @@
->  #define BMA400_INT_STAT1_REG        0x0f
->  #define BMA400_INT_STAT2_REG        0x10
->  #define BMA400_INT12_MAP_REG        0x23
-> +#define BMA400_INT_ENG_OVRUN_MSK    BIT(4)
->  
->  /* Temperature register */
->  #define BMA400_TEMP_DATA_REG        0x11
-> @@ -105,6 +106,16 @@
->  #define BMA400_INT_GEN2_MSK         BIT(3)
->  #define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
->  
-> +/* TAP config registers */
-> +#define BMA400_TAP_CONFIG           0x57
-> +#define BMA400_TAP_CONFIG1          0x58
-> +#define BMA400_S_TAP_MSK            BIT(2)
-> +#define BMA400_D_TAP_MSK            BIT(3)
-> +#define BMA400_INT_S_TAP_MSK        BIT(10)
-> +#define BMA400_INT_D_TAP_MSK        BIT(11)
-> +#define BMA400_TAP_SEN_MSK          GENMASK(2, 0)
-> +#define BMA400_TAP_QUIET_MSK        GENMASK(3, 2)
+>  drivers/iio/accel/mxc4005.c | 39 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+>=20
+> diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+> index b3afbf064915..61f24058d239 100644
+> --- a/drivers/iio/accel/mxc4005.c
+> +++ b/drivers/iio/accel/mxc4005.c
+> @@ -20,6 +20,11 @@
+>  #define MXC4005_IRQ_NAME		"mxc4005_event"
+>  #define MXC4005_REGMAP_NAME		"mxc4005_regmap"
+> =20
+> +#define MXC4005_REG_TILT_ORIENT		0x01
+> +#define MXC4005_REG_TILT_ORIENT_Z_MASK		BIT(6)
 
-So following up on the 'what is the maximum time between double taps
-question I took a look at the datasheet.
+I think you need to deal with BIT(7) as well.
 
-What about quiet_dt and tics_th?
+> +#define MXC4005_REG_TILT_ORIENT_XY_MASK		GENMASK(5, 4)
+> +#define MXC4005_REG_TILT_ORIENT_XY_SHIFT	4
 
-quiet_dt seems to be min time between taps in a double tap, and tics_th
-is about the 'tap' algorithm itself.
-
-Interesting, tics_th is kind of the opposite of what we'd normally use period
-for.  We only get event if the max to min of tap occur closer together than
-this value.
-
-quiet_dt seems a closer fit to what you documented period for.  quiet
-controls min space between single taps.  So related but indirectly to
-double tap detection.
-If I have understood this correctly.
-
-* If two taps are more that quiet apart then we get 2 single taps.
-* If two taps are more than quiet_dt apart but less than quiet apart then
-  we get a double tap.
-* If two taps are less than quiet_dt apart, then we probably detect them
-  as a single tap, as long as the tics_th timing condition is met.
-
-Whilst quiet effects both single and double tap I think we would have
-to define it as controls on both of them (linked by changing value of
-one effecting the other).
-
-Period doesn't fit any of these but I'm struggling to come up with
-good ABI.
-
-Maybe use "holdoff" for single tap to indicate minimum time after
-first tap before we can have another one.  (lifted from naming of
-controls on oscilloscope triggers).
-
-What to call the same time for double taps (which it's a limit on how
-far apart they can be) isn't obvious.  Nor is what would map to quiet_dt
-a they are both very specific to double taps. 
-Maybe "period" makes sense for quiet (not quiet_dt) when applied to a double
-tap as it's time within which the event must have completed (got 2 taps)
-but it's a stetch.
-
-Anyhow, this needs more thought.  All suggestions welcome!
-
-
-A few trivial things inline as well.
-
-
+Don't define the shift, you can use FIELD_GET(MASK, val)
 
 > +
->  /*
->   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
->   * converting to micro values for +-2g range.
-> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
-> index c31bdd9b168e..f8945dc0de04 100644
-> --- a/drivers/iio/accel/bma400_core.c
-> +++ b/drivers/iio/accel/bma400_core.c
-> @@ -29,6 +29,7 @@
->  #include <linux/iio/trigger.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/sysfs.h>
->  
->  #include "bma400.h"
->  
-> @@ -88,6 +89,7 @@ struct bma400_data {
->  	bool step_event_en;
->  	bool activity_event_en;
->  	unsigned int generic_event_en;
-> +	unsigned int tap_event_en;
->  	/* Correct time stamp alignment */
->  	struct {
->  		__le16 buff[3];
-> @@ -216,6 +218,36 @@ static const struct iio_event_spec bma400_accel_event[] = {
->  				       BIT(IIO_EV_INFO_HYSTERESIS) |
->  				       BIT(IIO_EV_INFO_ENABLE),
->  	},
-> +	{
-> +		.type = IIO_EV_TYPE_GESTURE,
-> +		.dir = IIO_EV_DIR_SINGLETAP,
-> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> +				       BIT(IIO_EV_INFO_ENABLE),
-> +	},
-> +	{
-> +		.type = IIO_EV_TYPE_GESTURE,
-> +		.dir = IIO_EV_DIR_DOUBLETAP,
-> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
-> +				       BIT(IIO_EV_INFO_PERIOD) |
-> +				       BIT(IIO_EV_INFO_ENABLE),
-> +	},
-> +};
-> +
-> +/* List of sensitivity values available to configure tap interrupts */
-> +static IIO_CONST_ATTR(in_accel_gesture_value_available, "0 1 2 3 4 5 6 7");
-> +
-> +/* List of minimum quiet time before and after double tap, in data samples. */
-> +static IIO_CONST_ATTR(in_accel_gesture_doubletap_period_available,
-> +		      "60 80 100 120");
-> +
-> +static struct attribute *bma400_event_attributes[] = {
-> +	&iio_const_attr_in_accel_gesture_value_available.dev_attr.attr,
-> +	&iio_const_attr_in_accel_gesture_doubletap_period_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group bma400_event_attribute_group = {
-> +	.attrs = bma400_event_attributes,
->  };
->  
->  #define BMA400_ACC_CHANNEL(_index, _axis) { \
-> @@ -1012,6 +1044,10 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
->  		case IIO_EV_DIR_FALLING:
->  			return FIELD_GET(BMA400_INT_GEN2_MSK,
->  					 data->generic_event_en);
-> +		case IIO_EV_DIR_SINGLETAP:
-> +			return FIELD_GET(BMA400_S_TAP_MSK, data->tap_event_en);
-> +		case IIO_EV_DIR_DOUBLETAP:
-> +			return FIELD_GET(BMA400_D_TAP_MSK, data->tap_event_en);
->  		default:
->  			return -EINVAL;
->  		}
-> @@ -1101,6 +1137,80 @@ static int bma400_activity_event_en(struct bma400_data *data,
->  	return 0;
->  }
->  
-> +static int bma400_tap_event_en(struct bma400_data *data,
-> +			       enum iio_event_direction dir, int state)
-> +{
-> +	int ret;
-> +	unsigned int mask, field_value;
-> +
-> +	/*
-> +	 * Tap interrupts can be configured only in normal mode.
-> +	 * See table in section 4.3 "Power modes - performance modes" of
-> +	 * datasheet v1.2.
-> +	 */
-> +	if (data->power_mode != POWER_MODE_NORMAL)
-> +		return -EINVAL;
-> +
-> +	/*
-> +	 * Tap interrupts are operating with the data rate of 200Hz.
-> +	 * See section 4.7 "Tap sensing interrupt" in datasheet v1.2.
-> +	 */
-> +	if (data->sample_freq.hz != 200) {
-> +		dev_err(data->dev, "Invalid data rate for tap interrupts.\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = regmap_update_bits(data->regmap, BMA400_INT12_MAP_REG,
-> +				 BMA400_S_TAP_MSK,
-> +				 FIELD_PREP(BMA400_S_TAP_MSK, state));
-> +	if (ret)
-> +		return ret;
-> +
-> +	switch (dir) {
-> +	case IIO_EV_DIR_SINGLETAP:
-> +		mask = BMA400_S_TAP_MSK;
-> +		set_mask_bits(&field_value, BMA400_S_TAP_MSK,
-> +			      FIELD_PREP(BMA400_S_TAP_MSK, state));
-> +		break;
-> +	case IIO_EV_DIR_DOUBLETAP:
-> +		mask = BMA400_D_TAP_MSK;
-> +		set_mask_bits(&field_value, BMA400_D_TAP_MSK,
-> +			      FIELD_PREP(BMA400_D_TAP_MSK, state));
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG1_REG, mask,
-> +				 field_value);
-> +	if (ret)
-> +		return ret;
-> +
-> +	set_mask_bits(&data->tap_event_en, mask, field_value);
-> +
-> +	return 0;
-> +}
-> +
-> +static int bma400_disable_adv_interrupt(struct bma400_data *data)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_write(data->regmap, BMA400_INT_CONFIG0_REG, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_write(data->regmap, BMA400_INT_CONFIG1_REG, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	data->tap_event_en = 0;
-> +	data->generic_event_en = 0;
-> +	data->step_event_en = 0;
-> +	data->activity_event_en = 0;
-> +
-> +	return 0;
-> +}
-> +
->  static int bma400_write_event_config(struct iio_dev *indio_dev,
->  				     const struct iio_chan_spec *chan,
->  				     enum iio_event_type type,
-> @@ -1111,10 +1221,20 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
->  
->  	switch (chan->type) {
->  	case IIO_ACCEL:
-> -		mutex_lock(&data->mutex);
-> -		ret = bma400_activity_event_en(data, dir, state);
-> -		mutex_unlock(&data->mutex);
-> -		return ret;
-> +		switch (type) {
-> +		case IIO_EV_TYPE_MAG:
-> +			mutex_lock(&data->mutex);
-> +			ret = bma400_activity_event_en(data, dir, state);
-> +			mutex_unlock(&data->mutex);
-> +			return ret;
-> +		case IIO_EV_TYPE_GESTURE:
-> +			mutex_lock(&data->mutex);
-> +			ret = bma400_tap_event_en(data, dir, state);
-> +			mutex_unlock(&data->mutex);
-> +			return ret;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	case IIO_STEPS:
->  		mutex_lock(&data->mutex);
->  		ret = bma400_steps_event_enable(data, state);
-> @@ -1159,8 +1279,8 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
->  	struct bma400_data *data = iio_priv(indio_dev);
->  	int ret, reg;
->  
-> -	switch (chan->type) {
-> -	case IIO_ACCEL:
-> +	switch (type) {
-> +	case IIO_EV_TYPE_MAG:
->  		reg = get_gen_config_reg(dir);
->  		if (reg < 0)
->  			return -EINVAL;
-> @@ -1196,6 +1316,25 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_EV_TYPE_GESTURE:
-> +		switch (info) {
-> +		case IIO_EV_INFO_VALUE:
-> +			ret = regmap_read(data->regmap, BMA400_TAP_CONFIG,
-> +					  val);
-> +			if (ret)
-> +				return ret;
-> +			*val = FIELD_GET(BMA400_TAP_SEN_MSK, *val);
-
-I'd prefer a local variable for regval into which the regmap_read goes.
-
-Slightly more readable that way as *val then only ever means one thing.
-
-> +			return IIO_VAL_INT;
-> +		case IIO_EV_INFO_PERIOD:
-> +			ret = regmap_read(data->regmap, BMA400_TAP_CONFIG1,
-> +					  val);
-> +			if (ret)
-> +				return ret;
-> +			*val = FIELD_GET(BMA400_TAP_QUIET_MSK, *val);
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -1209,10 +1348,10 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
->  				    int val, int val2)
+>  #define MXC4005_REG_XOUT_UPPER		0x03
+>  #define MXC4005_REG_XOUT_LOWER		0x04
+>  #define MXC4005_REG_YOUT_UPPER		0x05
+> @@ -96,6 +101,7 @@ static const struct attribute_group mxc4005_attrs_grou=
+p =3D {
+>  static bool mxc4005_is_readable_reg(struct device *dev, unsigned int reg)
 >  {
->  	struct bma400_data *data = iio_priv(indio_dev);
-> -	int reg, ret;
-> +	int reg, ret, quiet_period;
->  
-> -	switch (chan->type) {
-> -	case IIO_ACCEL:
-> +	switch (type) {
-> +	case IIO_EV_TYPE_MAG:
->  		reg = get_gen_config_reg(dir);
->  		if (reg < 0)
->  			return -EINVAL;
-> @@ -1228,7 +1367,6 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
->  		case IIO_EV_INFO_PERIOD:
->  			if (val < 1 || val > 65535)
->  				return -EINVAL;
-> -
+>  	switch (reg) {
+> +	case MXC4005_REG_TILT_ORIENT:
+>  	case MXC4005_REG_XOUT_UPPER:
+>  	case MXC4005_REG_XOUT_LOWER:
+>  	case MXC4005_REG_YOUT_UPPER:
+> @@ -214,6 +220,28 @@ static int mxc4005_read_raw(struct iio_dev *indio_de=
+v,
+>  	int ret;
+> =20
+>  	switch (mask) {
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		switch (chan->type) {
+> +		case IIO_ROT:
+> +			ret =3D regmap_read(data->regmap, chan->address, val);
+> +			if (ret < 0) {
+> +				dev_err(data->dev, "failed to read rotation\n");
+> +				return ret;
+> +			}
+> +
+> +			if (chan->channel2 =3D=3D IIO_MOD_X_AND_Y) {
+> +				*val &=3D MXC4005_REG_TILT_ORIENT_XY_MASK;
+> +				*val >>=3D MXC4005_REG_TILT_ORIENT_XY_SHIFT;
+FIELD_GET()
 
-Clear out this noise.
+> +				/* 00 =3D 270=C2=B0; 01 =3D 0=C2=B0; 10 =3D 90=C2=B0; 11 =3D 180=C2=
+=B0 */
+> +				*val =3D (360 + (*val - 1) * 90) % 360;
 
->  			mutex_lock(&data->mutex);
->  			put_unaligned_be16(val, &data->duration);
->  			ret = regmap_bulk_write(data->regmap,
-> @@ -1248,6 +1386,31 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_EV_TYPE_GESTURE:
-> +		switch (info) {
-> +		case IIO_EV_INFO_VALUE:
-> +			if (val < 0 || val > 7)
-> +				return -EINVAL;
-> +
-> +			return regmap_update_bits(data->regmap,
-> +						  BMA400_TAP_CONFIG,
-> +						  BMA400_TAP_SEN_MSK,
-> +						  FIELD_PREP(BMA400_TAP_SEN_MSK,
-> +							     val));
-> +
-> +		case IIO_EV_INFO_PERIOD:
-> +			quiet_period = (val / 20) - 3;
-> +			if (quiet_period < 0 || quiet_period > 3)
-> +				return -EINVAL;
-> +
-> +			return regmap_update_bits(data->regmap,
-> +						  BMA400_TAP_CONFIG1,
-> +						  BMA400_TAP_QUIET_MSK,
-> +						  FIELD_PREP(BMA400_TAP_QUIET_MSK,
-> +							     quiet_period));
+In event of tilt not being set (BIT (7)) I think you should return an error
+code here.  -EBUSY perhaps? To reflect the fact we don't have valid data.
+
+> +			} else {
+> +				*val &=3D MXC4005_REG_TILT_ORIENT_Z_MASK;
+> +				*val =3D *val ? 180 : 0;
+Documentation for this is really confusing, as it refers to a circumstance
+when it can be assumed to be horizontal, but then doesn't define it.
+
+It might be a simple as tilt being set and thus indicating significant
+acceleration due to gravity in the xy plane.
+However, the Z orientation is still updated in that case...
+
+> +			}
+> +			return IIO_VAL_INT;
 > +		default:
 > +			return -EINVAL;
 > +		}
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -1287,6 +1450,7 @@ static const struct iio_info bma400_info = {
->  	.write_event_config = bma400_write_event_config,
->  	.write_event_value = bma400_write_event_value,
->  	.read_event_value = bma400_read_event_value,
-> +	.event_attrs = &bma400_event_attribute_group,
+>  	case IIO_CHAN_INFO_RAW:
+>  		switch (chan->type) {
+>  		case IIO_ACCEL:
+> @@ -287,11 +315,22 @@ static const unsigned long mxc4005_scan_masks[] =3D=
+ {
+>  	},							\
+>  }
+> =20
+> +#define MXC4005_CHANNEL_ORIENTATION(_axis) {			\
+> +	.type =3D IIO_ROT,					\
+
+Hmm.  Should this be rotation or inclination (so referenced
+to gravity).  Inclination is not particularly tightly defined but the
+point is that it is relative to gravity - kind of a special case of
+rot.
+
+For the adis16209 we handled inclination and rotation.  I think rotation
+in that device corresponds to XY here. (though it's oddly defined for
+X axis, whereas I'm fairly sure it should be Z - as rotation 'about'
+z axis). The Z one here should I think be an inclination because it's not
+about any particular axis.
+
+We also have angle to confuse matters. In that case intent was 'between'
+two things. Arguably all the uses of rot are as well, just that one of those
+things is gravity or magnetic north.  With hindsight I think we could have
+gotten away with one of them, but hard to tidy up now.
+
+In conclusion, what you have here I think is best described as
+IIO_ROT about Z axis (the XY one)
+and IIO_INCL for the Z axis (the Z one).
+
+> +	.modified =3D 1,						\
+> +	.channel2 =3D IIO_MOD_##_axis,				\
+> +	.address =3D MXC4005_REG_TILT_ORIENT,			\
+> +	.info_mask_separate =3D BIT(IIO_CHAN_INFO_PROCESSED),	\
+> +	.scan_index =3D -1,					\
+> +}
+> +
+>  static const struct iio_chan_spec mxc4005_channels[] =3D {
+>  	MXC4005_CHANNEL(X, MXC4005_REG_XOUT_UPPER),
+>  	MXC4005_CHANNEL(Y, MXC4005_REG_YOUT_UPPER),
+>  	MXC4005_CHANNEL(Z, MXC4005_REG_ZOUT_UPPER),
+>  	IIO_CHAN_SOFT_TIMESTAMP(3),
+> +	MXC4005_CHANNEL_ORIENTATION(X_AND_Y),
+> +	MXC4005_CHANNEL_ORIENTATION(Z),
 >  };
->  
->  static const struct iio_trigger_ops bma400_trigger_ops = {
-> @@ -1350,6 +1514,32 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
->  	if (ret || !data->status)
->  		goto unlock_err;
->  
-> +	/*
-> +	 * Disable all advance interrupts if interrupt engine overrun occurs.
-> +	 * See section 4.7 "Interrupt engine overrun" in datasheet v1.2.
-> +	 */
-> +	if (FIELD_GET(BMA400_INT_ENG_OVRUN_MSK, le16_to_cpu(data->status))) {
-> +		bma400_disable_adv_interrupt(data);
-> +		dev_err(data->dev, "Interrupt engine overrun\n");
-> +		goto unlock_err;
-> +	}
-> +
-> +	if (FIELD_GET(BMA400_INT_S_TAP_MSK, le16_to_cpu(data->status)))
-> +		iio_push_event(indio_dev,
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> +						  IIO_MOD_X_OR_Y_OR_Z,
-> +						  IIO_EV_TYPE_GESTURE,
-> +						  IIO_EV_DIR_SINGLETAP),
-> +			       timestamp);
-> +
-> +	if (FIELD_GET(BMA400_INT_D_TAP_MSK, le16_to_cpu(data->status)))
-> +		iio_push_event(indio_dev,
-> +			       IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> +						  IIO_MOD_X_OR_Y_OR_Z,
-> +						  IIO_EV_TYPE_GESTURE,
-> +						  IIO_EV_DIR_DOUBLETAP),
-> +			       timestamp);
-> +
->  	if (FIELD_GET(BMA400_INT_GEN1_MSK, le16_to_cpu(data->status)))
->  		ev_dir = IIO_EV_DIR_RISING;
->  
+> =20
+>  static irqreturn_t mxc4005_trigger_handler(int irq, void *private)
 

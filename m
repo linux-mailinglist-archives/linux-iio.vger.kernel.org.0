@@ -2,48 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E11550C12
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 18:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB235550C21
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 18:41:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230310AbiFSQbZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 12:31:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57578 "EHLO
+        id S232341AbiFSQlJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 12:41:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbiFSQbZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 12:31:25 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25395AE66;
-        Sun, 19 Jun 2022 09:31:21 -0700 (PDT)
-Received: (Authenticated sender: contact@artur-rojek.eu)
-        by mail.gandi.net (Postfix) with ESMTPA id 23529C0008;
-        Sun, 19 Jun 2022 16:31:17 +0000 (UTC)
+        with ESMTP id S229490AbiFSQlJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 12:41:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7025CE34
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 09:41:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E084611E3
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:41:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A552C34114;
+        Sun, 19 Jun 2022 16:41:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655656866;
+        bh=ALXNXfY9LW5stzXwG3UnG7Yf2a/38ZMYmZCtgmKNxrQ=;
+        h=Date:From:To:Subject:From;
+        b=nwSa5UBUblpOb4AdDEgAAlEdBFHQcuo66+3Uw8MckcCqRtrfL8dqonKqqtUnWZRXw
+         etqJ0H3/vcH2tgiZVoJVeaEPC+oEPBHVpUovW/laqWCYGItOKsfBWK/DxmLpG4jrPg
+         j0Mho2Jpj9Xcve9cwayG118ix7DT8LS5tZAFoNI93qfZ7AUpC2Khk4Ci1+Jbjp0mXM
+         uptH3DrrAJRb35Kz9hkgSsMZ5AR+gQqb5aTdQr2FOkLcDVbnivZOCFPQDJdgDXwh9E
+         J5HwX++v8ckexLBk4Hm1jh17EVC8lnDt8FyrvvL2ZBEFT/JMBqL+Uz9O2/pcBJgfBf
+         uZPZgQfNTHgHw==
+Date:   Sun, 19 Jun 2022 17:50:25 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 1st set of IIO fixes for 5.19
+Message-ID: <20220619175025.72b3edb4@jic23-huawei>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Date:   Sun, 19 Jun 2022 18:31:17 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Chris Morgan <macromorgan@hotmail.com>
-Cc:     Chris Morgan <macromorgan@hotmail.com>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        maccraft123mc@gmail.com, heiko@sntech.de,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        dmitry.torokhov@gmail.com, Paul Cercueil <paul@crapouillou.net>,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] Input: adc-joystick - Add polled input device
- support
-In-Reply-To: <20220619163230.3130be79@jic23-huawei>
-References: <20220613192353.696-1-macroalpha82@gmail.com>
- <20220613192353.696-3-macroalpha82@gmail.com>
- <ec496fcf808d73fe356d1961d89bf1ff@artur-rojek.eu>
- <SN6PR06MB5342762DE16AFC607CA9D5F9A5AD9@SN6PR06MB5342.namprd06.prod.outlook.com>
- <cdb956639e9550b287db31b762f7b764@artur-rojek.eu>
- <20220619163230.3130be79@jic23-huawei>
-Message-ID: <8225d239df59501b51fa71bac625827e@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,229 +50,154 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-06-19 17:32, Jonathan Cameron wrote:
-> On Sat, 18 Jun 2022 15:08:29 +0200
-> Artur Rojek <contact@artur-rojek.eu> wrote:
-> 
->> On 2022-06-15 17:12, Chris Morgan wrote:
->> > On Wed, Jun 15, 2022 at 03:43:07AM +0200, Artur Rojek wrote:
->> >> On 2022-06-13 21:23, Chris Morgan wrote:
->> >> > From: Chris Morgan <macromorgan@hotmail.com>
->> >> >
->> >> > Add polled input device support to the adc-joystick driver. This is
->> >> > useful for devices which do not have hardware capable triggers on
->> >> > their SARADC. Code modified from adc-joystick.c changes made by Maya
->> >> > Matuszczyk.
->> >> >
->> >> > Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
->> >> > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
->> >>
->> >> Hi Chris,
->> >>
->> >> Comments inline. I also Cc'd Paul and Jonathan, who were attached in
->> >> v2.
-> +CC linux-iio
-> 
->> >>
->> >> > ---
->> >> >  drivers/input/joystick/adc-joystick.c | 52 +++++++++++++++++++++------
->> >> >  1 file changed, 41 insertions(+), 11 deletions(-)
->> >> >
->> >> > diff --git a/drivers/input/joystick/adc-joystick.c
->> >> > b/drivers/input/joystick/adc-joystick.c
->> >> > index 78ebca7d400a..dc01cd0214d2 100644
->> >> > --- a/drivers/input/joystick/adc-joystick.c
->> >> > +++ b/drivers/input/joystick/adc-joystick.c
->> >> > @@ -13,6 +13,10 @@
->> >> >
->> >> >  #include <asm/unaligned.h>
->> >> >
->> >> > +#define ADC_JSK_POLL_INTERVAL	16
->> >> > +#define ADC_JSK_POLL_MIN	8
->> >> > +#define ADC_JSK_POLL_MAX	32
->> >> > +
->> >> >  struct adc_joystick_axis {
->> >> >  	u32 code;
->> >> >  	s32 range[2];
->> >> > @@ -26,8 +30,21 @@ struct adc_joystick {
->> >> >  	struct adc_joystick_axis *axes;
->> >> >  	struct iio_channel *chans;
->> >> >  	int num_chans;
->> >> > +	bool polled;
->> >> >  };
->> >> >
->> >> > +static void adc_joystick_poll(struct input_dev *input)
->> >> > +{
->> >> > +	struct adc_joystick *joy = input_get_drvdata(input);
->> >> > +	int i, val;
->> >> > +
->> >> > +	for (i = 0; i < joy->num_chans; i++) {
->> >> > +		iio_read_channel_raw(&joy->chans[i], &val);
-Perhaps check the return value and leave early on error.
->> >> > +		input_report_abs(input, joy->axes[i].code, val);
->> >> > +	}
->> >> > +	input_sync(input);
->> >> > +}
->> >> > +
->> >> >  static int adc_joystick_handle(const void *data, void *private)
->> >> >  {
->> >> >  	struct adc_joystick *joy = private;
->> >> > @@ -215,8 +232,19 @@ static int adc_joystick_probe(struct
->> >> > platform_device *pdev)
->> >> >  	joy->input = input;
->> >> >  	input->name = pdev->name;
->> >> >  	input->id.bustype = BUS_HOST;
->> >> > -	input->open = adc_joystick_open;
->> >> > -	input->close = adc_joystick_close;
->> >> > +
->> >> > +	if (device_property_read_bool(dev,
->> >> > "adc-joystick,no-hardware-trigger"))
->> >> > +		joy->polled = 1;
->> >> As mentioned in v2, I don't think a DT property is required here.
->> >> Assuming
->> >> the polled mode is a fallback for devices with no buffers, just do:
->> >> ```
->> >> 	joy->polled = !(joy->chans[0].indio_dev->modes &
->> >> 			INDIO_ALL_BUFFER_MODES);
->> >> ```
->> >
->> > Understood. I attempted this and noticed that it was showing I have
->> > INDIO_BUFFER_TRIGGERED in addition to INDIO_DIRECT_MODE (the
->> > INDIO_DIRECT_MODE is the only one specified at the hardware level
->> > though). Should I just check for INDIO_BUFFER_SOFTWARE &
->> > INDIO_BUFFER_HARDWARE instead? I think it's possible that the inclusion
->> > of the industrialio_triggered_buffer module in my kernel is adding
->> > this to the channel somehow?
->> Having INDIO_BUFFER_TRIGGERED means that your saradc is capable of 
->> using
->> the existing flow. You should be able to register a software trigger 
->> and
->> use the adc-joystick driver without further issues.
->> That said, this is where it gets problematic - there is no way to 
->> create
->> an IIO trigger via Device Tree, since triggers don't describe any 
->> piece
->> of hardware, and you shouldn't need to register it at runtime
->> (configfs/sysfs) for communication between two kernel drivers either. 
->> At
->> the same time, it's not adc-joystick's job to register an external
->> trigger.
->> 
->> Jonathan,
->> I don't know what the proper approach to this should be, perhaps you
->> could assist?
-> 
-> You are correct in your description above. Device tree folk take the 
-> view
-> that sysfs / hrtimer etc triggers are a policy decision so don't belong
-> in device tree.  In general you need some userspace code to stitch up
-> the trigger anyway (even ADCs that provide triggers of their own often
-> have several).
-> 
-> An alternative that may make sense here would be for the adc-joystick
-> driver to provide a trigger of it's own. That's easy enough to do,
-> but as things stand we don't provide a way to control the attached
-> trigger from other kernel drivers (i.e. you can't do the equivalent
-> of writing current_trigger for another device).
-> 
-> It's probably not implausible to add that though.  Is it worth it for
-> a joystick (vs doing what is done here), maybe not.
-> 
-> It would be worth doing if we cared about high performance (for some 
-> ADCs
-> anyway) but here we don't really so the polled read functions are fine.
-> 
-> Note many ADC drivers only support running in either polled or buffered
-> mode in IIO because polling random channels when doing highly optimised
-> accesses tends to make the drivers complex.  Hence you might find this
-> doesn't work for all setups...
-> 
-> Thanks,
-> 
-> Jonathan
+The following changes since commit 57ae8a492116910bad2b3497ffe555b3a4b4180f:
 
-Jonathan,
-thanks for the detailed answer.
+  Merge tag 'driver-core-5.18-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core (2022-04-30 10:24:21 -0700)
 
-Chris,
-In light of the above, I think the best course of action should be to 
-keep your polling code. It looks like your saradc has introduced [1] 
-`INDIO_BUFFER_TRIGGERED` support exclusively for this very 
-(adc-joystick) case. This means we can't use `indio_dev->modes` to 
-determine whether the joystick can be polled, otherwise we might break 
-behavior of existing hardware. I suggest that we get back to passing 
-this intention via optional `poll-interval` DT property, that enables 
-the polling path if present (indiscriminately of the IIO mode). Let's 
-see what the Device Tree folk say about that :)
+are available in the Git repository at:
 
-Cheers,
-Artur
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-5.19a
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4e130dc7b41348b13684f0758c26cc6cf72a3449
-> 
-> 
-> 
->> 
->> Cheers,
->> Artur
->> >
->> > Thank you.
->> >
->> >> > +
->> >> > +	if (joy->polled) {
->> >> > +		input_setup_polling(input, adc_joystick_poll);
->> >> > +		input_set_poll_interval(input, ADC_JSK_POLL_INTERVAL);
->> >> > +		input_set_min_poll_interval(input, ADC_JSK_POLL_MIN);
->> >> > +		input_set_max_poll_interval(input, ADC_JSK_POLL_MAX);
->> >> > +	} else {
->> >> > +		input->open = adc_joystick_open;
->> >> > +		input->close = adc_joystick_close;
->> >> > +	}
->> >> >
->> >> >  	error = adc_joystick_set_axes(dev, joy);
->> >> >  	if (error)
->> >> > @@ -229,16 +257,18 @@ static int adc_joystick_probe(struct
->> >> > platform_device *pdev)
->> >> >  		return error;
->> >> >  	}
->> >> >
->> >> > -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
->> >> > -	if (IS_ERR(joy->buffer)) {
->> >> > -		dev_err(dev, "Unable to allocate callback buffer\n");
->> >> > -		return PTR_ERR(joy->buffer);
->> >> > -	}
->> >> > +	if (!joy->polled) {
->> >> > +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
->> >> Please maintain line discipline of 80 chars to stay consistent with
->> >> the rest
->> >> of this driver.
->> >
->> > Understood, sorry about that.
->> >
->> >> > +		if (IS_ERR(joy->buffer)) {
->> >> > +			dev_err(dev, "Unable to allocate callback buffer\n");
->> >> > +			return PTR_ERR(joy->buffer);
->> >> > +		}
->> >> >
->> >> > -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
->> >> > joy->buffer);
->> >> > -	if (error)  {
->> >> > -		dev_err(dev, "Unable to add action\n");
->> >> > -		return error;
->> >> > +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
->> >> > joy->buffer);
->> >> Same here.
->> >
->> > Ditto.
->> >
->> >>
->> >> Cheers,
->> >> Artur
->> >> > +		if (error)  {
->> >> > +			dev_err(dev, "Unable to add action\n");
->> >> > +			return error;
->> >> > +		}
->> >> >  	}
->> >> >
->> >> >  	return 0;
+for you to fetch changes up to 70171ed6dc53d2f580166d47f5b66cf51a6d0092:
+
+  iio:proximity:sx9324: Check ret value of device_property_read_u32_array() (2022-06-19 17:22:49 +0100)
+
+----------------------------------------------------------------
+1st set of IIO fixes for the 5.19 cycle.
+
+Most of these have been in next for a long time. Unfortunately there
+was one stray patch in the branch (wasn't a fix), so I've just rebased
+to remove that.
+
+* testing
+  - Fix a missing MODULE_LICENSE() warning by restricting possible build
+    configs.
+* Various drivers
+  - Fix ordering of iio_get_trigger() being called before
+    iio_trigger_register()
+* adi,admv1014
+  - Fix dubious x & !y warning.
+* adi,axi-adc
+  - Fix missing of_node_put() in error and normal paths.
+* aspeed,adc
+  - Add missing of_node_put()
+* fsl,mma8452
+  - Fix broken probing from device tree.
+  - Drop check on return value of i2c write to device to cause reset as
+    ACK will be missing (device reset before sending it).
+* fsl,vf610
+  - Fix documentation of in_conversion_mode ABI.
+* iio-trig-sysfs
+  - Ensure irq work has finished before freeing the trigger.
+* invensense,mpu3050
+ - Disable regulators in error path.
+* invensense,icm42600
+  - Fix collision of enum value of 0 with error path where 0 is no match.
+* renesas,rzg2l_Adc
+  - Add missing fwnode_handle_put() in error path.
+* rescale
+  - Fix a boolean logic bug for detection of raw + scale affecting an
+    obscure corner case.
+* semtech,sx9324
+  - Check return value of read of pin_defs
+* st,stm32-adc:
+  - Fix interaction across ADC instances for some supported devices.
+  - Drop false spurious IRQ messages.
+  - Fix calibration value handling.  If we can't calibrate don't expose the
+    vref_int channel.
+  - Fix maximum clock rate for stm32pm15x
+* ti,ads131e08
+  - Add missing fwnode_handle_put() in error paths.
+* xilinx,ams
+  - Fix variable checked for error from platform_get_irq()
+* x-powers,axp288
+  - Overide TS_PIN bias current for boards where it is not correctly
+    initialized.
+* yamaha,yas530
+  - Fix inverted check on calibration data being all zeros.
+
+----------------------------------------------------------------
+Aashish Sharma (1):
+      iio:proximity:sx9324: Check ret value of device_property_read_u32_array()
+
+Antoniu Miclaus (1):
+      iio: freq: admv1014: Fix warning about dubious x & !y and improve readability
+
+Baruch Siach (1):
+      iio: adc: vf610: fix conversion mode sysfs node name
+
+Dmitry Rokosov (5):
+      iio:accel:bma180: rearrange iio trigger get and register
+      iio:accel:kxcjk-1013: rearrange iio trigger get and register
+      iio:accel:mxc4005: rearrange iio trigger get and register
+      iio:chemical:ccs811: rearrange iio trigger get and register
+      iio:humidity:hts221: rearrange iio trigger get and register
+
+Haibo Chen (2):
+      iio: mma8452: fix probe fail when device tree compatible is used.
+      iio: accel: mma8452: ignore the return value of reset operation
+
+Hans de Goede (1):
+      iio: adc: axp288: Override TS pin bias current for some models
+
+Jean-Baptiste Maneyrol (1):
+      iio: imu: inv_icm42600: Fix broken icm42600 (chip id 0 value)
+
+Jialin Zhang (2):
+      iio: adc: rzg2l_adc: add missing fwnode_handle_put() in rzg2l_adc_parse_properties()
+      iio: adc: ti-ads131e08: add missing fwnode_handle_put() in ads131e08_alloc_channels()
+
+Liam Beguin (1):
+      iio: test: fix missing MODULE_LICENSE for IIO_RESCALE=m
+
+Linus Walleij (2):
+      iio: magnetometer: yas530: Fix memchr_inv() misuse
+      iio: afe: rescale: Fix boolean logic bug
+
+Lv Ruyi (1):
+      iio: adc: xilinx-ams: fix return error variable
+
+Miaoqian Lin (2):
+      iio: adc: aspeed: Fix refcount leak in aspeed_adc_set_trim_data
+      iio: adc: adi-axi-adc: Fix refcount leak in adi_axi_adc_attach_client
+
+Olivier Moysan (2):
+      iio: adc: stm32: fix vrefint wrong calibration value handling
+      iio: adc: stm32: fix maximum clock rate for stm32mp15x
+
+Vincent Whitchurch (1):
+      iio: trigger: sysfs: fix use-after-free on remove
+
+Yannick Brosseau (2):
+      iio: adc: stm32: Fix ADCs iteration in irq handler
+      iio: adc: stm32: Fix IRQs on STM32F4 by removing custom spurious IRQs message
+
+Zheyu Ma (1):
+      iio: gyro: mpu3050: Fix the error handling in mpu3050_power_up()
+
+ Documentation/ABI/testing/sysfs-bus-iio-vf610    |  2 +-
+ drivers/iio/accel/bma180.c                       |  3 +-
+ drivers/iio/accel/kxcjk-1013.c                   |  4 +--
+ drivers/iio/accel/mma8452.c                      | 22 +++++++++-----
+ drivers/iio/accel/mxc4005.c                      |  4 +--
+ drivers/iio/adc/adi-axi-adc.c                    |  3 ++
+ drivers/iio/adc/aspeed_adc.c                     |  1 +
+ drivers/iio/adc/axp288_adc.c                     |  8 +++++
+ drivers/iio/adc/rzg2l_adc.c                      |  8 +++--
+ drivers/iio/adc/stm32-adc-core.c                 |  9 ++++--
+ drivers/iio/adc/stm32-adc.c                      | 37 +++++++++++-------------
+ drivers/iio/adc/ti-ads131e08.c                   | 10 +++++--
+ drivers/iio/adc/xilinx-ams.c                     |  2 +-
+ drivers/iio/afe/iio-rescale.c                    |  2 +-
+ drivers/iio/chemical/ccs811.c                    |  4 +--
+ drivers/iio/frequency/admv1014.c                 |  6 ++--
+ drivers/iio/gyro/mpu3050-core.c                  |  1 +
+ drivers/iio/humidity/hts221_buffer.c             |  5 +++-
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h      |  1 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c |  2 +-
+ drivers/iio/magnetometer/yamaha-yas530.c         |  2 +-
+ drivers/iio/proximity/sx9324.c                   |  3 ++
+ drivers/iio/test/Kconfig                         |  2 +-
+ drivers/iio/test/Makefile                        |  2 +-
+ drivers/iio/trigger/iio-trig-sysfs.c             |  1 +
+ 25 files changed, 92 insertions(+), 52 deletions(-)

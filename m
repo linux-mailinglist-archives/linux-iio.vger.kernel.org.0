@@ -2,169 +2,125 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D13755099C
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A6DF5509B2
+	for <lists+linux-iio@lfdr.de>; Sun, 19 Jun 2022 12:33:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232213AbiFSK0m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 06:26:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S233877AbiFSKdm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 06:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiFSK0l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:26:41 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A59A183
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 03:26:40 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id eq6so4094935edb.6
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 03:26:40 -0700 (PDT)
+        with ESMTP id S234518AbiFSKde (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 06:33:34 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 626D4D13E;
+        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id o10so11459691edi.1;
+        Sun, 19 Jun 2022 03:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=LMKugXzUXUVai16DUUHT/I5mEbxAHSqoLaxIXVOrxyM=;
-        b=Ypl413ms1X3cg1uTpkvLxPrRHtXYDvFbTbPJh/pW9waclQ2x305G/8XKTfmfZGTg4p
-         ZkF1fjXlZrNFqa4E80I99muKcunDkKfdT1MfOlQO9ewFp2B+xQFOv29o4Oqe1I0EQ11g
-         KHcGSGRlJWXS+Xr07UR3KWzgMbgWfmavvlTWyYZynsiowfHtEDdY+G37PXqAQnJLo9Dx
-         gjsO8CeG20WIliM4devWlCjnUKTtdmKfIu5XoWA43+ePILFMOaVa5bX8UMnqTCrXtsFE
-         5eMlI9J0mS9URDqR4Fh07BovNViKsoI0w4JT+h+cQu0hKJM7rR+kPDMWFBioXR9h124D
-         PMWw==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
+        b=BTJQO9voJW1vKsgT0btEodY1tvnnhpJRDcYGMAxTb2Ib5d5g3Euen13gbEH+aGVa95
+         d91YXagZiZ71giTOlXTlVMgtSx0i+qeJUAiC5bN62iStl7tR8gA6k24GuCKMRe3Oh+vP
+         7GWqANCPAsqiIVEzDUMhwXh4jBwFuD6IbW2ECqpYbMNEjylWcyixH9rQry/UB8xJt+7x
+         ygQeq2qXl7RwIvw70rdfCiRZcCKVxRQiBFTuusmb0mSbBkvpn3H4TUjc0yFm8Rkzy7l0
+         RvZ1MjVkbzTiE1TXz/CKuZsY6BqBevqjH/tVCnZzc36MvXDQ7ebQo8J2cb1S4VfQCJNj
+         dBDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=LMKugXzUXUVai16DUUHT/I5mEbxAHSqoLaxIXVOrxyM=;
-        b=CMAhOFCZwTgkWI2sNEcgXzPO/mH9E9sMRPojnKqXONmKvPI+dDrIhCTcwuIH4FV6g0
-         RNmN4OTb2Mhu6OG+AUH5G7s2rr+lE65BBSd+3Lx2vdmzequB5XJv4oLhuPFlF28+QpXD
-         HeMsZfPBHZlWwswAENXeJGr/xOdvfiLXhypXZm8CMrQLldJMDPxSqitPYK/g6LK9aqvj
-         wG/909LoPIgxEq8lvVCZ/WftibENqnBrRxr+TRoRYJiIzlUTgsAgXC7HNJbIQgeHDvO7
-         +oI/Y7NvO1b15HqJsTItFHBQTLz+CGK+k08rzi0PWdS6IiXmGo7oR9v2uwd77mmZ5pfK
-         RStA==
-X-Gm-Message-State: AJIora+Dg04nobBXXxZe5ODv0oLBa++jZe7vWRC47XxNsqVcjBlXZFzz
-        HTb3RKLlS6LTnpUHb7EJHJ+nOA==
-X-Google-Smtp-Source: AGRyM1vSH5zCEmJVebQFtZIwLmV3YNnw42c3pfk+x5krwDe7OONdisSq0NqxbVOphy65AwV4KaNGVA==
-X-Received: by 2002:a05:6402:5408:b0:435:60fa:5017 with SMTP id ev8-20020a056402540800b0043560fa5017mr13936929edb.223.1655634398488;
-        Sun, 19 Jun 2022 03:26:38 -0700 (PDT)
-Received: from [192.168.0.206] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id la5-20020a170907780500b006f3ef214de7sm4434553ejc.77.2022.06.19.03.26.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Jun 2022 03:26:38 -0700 (PDT)
-Message-ID: <d7b6517d-7339-ea2b-8402-fead8eba25f0@linaro.org>
-Date:   Sun, 19 Jun 2022 12:26:36 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+X1hXjyvwp+2w3vayb4RCn/spxH4ZaqgCltaU1rHplA=;
+        b=HTyuU3swut1Ok8N8V4kp5VmhxsufXBVvUqp2DjpFj4ekVNVN/r/yNlIwxv+LrdLNiZ
+         5+L12udZoMUpIBZmCb5KJi7/yrFMW8zwVF+UzwANp9313kW+u6GUjmSXKn1KZI7s2e0R
+         WXEJNXmiTOVWsXyTZRPmjvcf+S7kiwWbDXxGsMWXrwiFtJZROsCplF3YE0lnpIq5/edf
+         Sx47d88gGJn2cIwJiGdalOOvwSa6W+rksT/Y4VAq9omvsBPQlXAKCIjIxdKVviHKIXwC
+         EmQMCfdBaQoPu6BS60U/OEy3mSdOKygx5Rwf8AgQBFX0kqWs+6N9ax8rnhPk0vDFBMPW
+         kgxg==
+X-Gm-Message-State: AJIora8ugjnMWqm+9dXBuKZuBhRGbm6ntbDfcIlJ8qAYOds8GhXhbWWH
+        oCo7sFciD5D5MhVuzX+bmcr4QiIJYAysfW2Dc9A=
+X-Google-Smtp-Source: AGRyM1vChaySuuq26yuk1hR8OBgh/cK+d6arLHy+Vl2o2vFb/x7G+7oVeQ9TKZZtcE1MIbq/LfilJh1p4+i7LNg5cKs=
+X-Received: by 2002:a05:6402:5002:b0:435:1ff1:99ee with SMTP id
+ p2-20020a056402500200b004351ff199eemr22679113eda.230.1655634812846; Sun, 19
+ Jun 2022 03:33:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
-Content-Language: en-US
+References: <cover.1655509425.git.jahau@rocketmail.com> <3bdb392bb75073bdfe10aab1739fee2d6c64f10c.1655509425.git.jahau@rocketmail.com>
+ <20220618162833.218dbe67@jic23-huawei>
+In-Reply-To: <20220618162833.218dbe67@jic23-huawei>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 19 Jun 2022 12:32:56 +0200
+Message-ID: <CAHp75VemByhNAYGuP2h-5HazPZL7k5tyGc1WV2gKEdjX_5Sing@mail.gmail.com>
+Subject: Re: [PATCH v3 8/8] iio: magnetometer: yas530: Add YAS537 variant
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     ChiYuan Huang <u0084500@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+Cc:     Jakob Hauser <jahau@rocketmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
- <1655458375-30478-2-git-send-email-u0084500@gmail.com>
- <7a9d3354-164b-e5e5-936b-95de4c4338f9@linaro.org>
- <CADiBU3_wyFLpoy3PU0a-EbGAKoQ9LZMprH5DWnzwo05-Gwa2=Q@mail.gmail.com>
- <279cf4ef-8b41-5e92-73c3-416730038c56@linaro.org>
- <20220618183440.121365d7@jic23-huawei>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220618183440.121365d7@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 18/06/2022 19:34, Jonathan Cameron wrote:
-> On Sat, 18 Jun 2022 19:00:19 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> On 18/06/2022 08:50, ChiYuan Huang wrote:
->>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> 於 2022年6月18日 週六 上午9:45寫道：  
->>>>
->>>> On 17/06/2022 02:32, cy_huang wrote:  
->>>>> From: ChiYuan Huang <cy_huang@richtek.com>
->>>>>
->>>>> Add the documentation for Richtek RTQ6056.
->>>>>
->>>>> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
->>>>> ---
->>>>>  .../bindings/iio/adc/richtek,rtq6056-adc.yaml      | 57 ++++++++++++++++++++++
->>>>>  1 file changed, 57 insertions(+)
->>>>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>>>> new file mode 100644
->>>>> index 00000000..6b4e0e0
->>>>> --- /dev/null
->>>>> +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056-adc.yaml
->>>>> @@ -0,0 +1,57 @@
->>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>>>> +%YAML 1.2
->>>>> +---
->>>>> +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056-adc.yaml#
->>>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>>> +
->>>>> +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit ADC
->>>>> +
->>>>> +maintainers:
->>>>> +  - ChiYuan Huang <cy_huang@richtek.com>
->>>>> +
->>>>> +description: |
->>>>> +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SMBus
->>>>> +  interface, and the device provides full information for system by reading
->>>>> +  out the loading current and power.
->>>>> +
->>>>> +  The device monitors both of the drops across sense resistor and the BUS
->>>>> +  voltage, converts into the current in amperes, and power in watts through
->>>>> +  internal analog-to-digital converter ADC. The programmable calibration,
->>>>> +  adjustable conversion time, and averaging function are also built in for
->>>>> +  more design flexibility.
->>>>> +
->>>>> +  Datasheet is available at
->>>>> +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
->>>>> +
->>>>> +properties:
->>>>> +  compatible:
->>>>> +    const: richtek,rtq6056
->>>>> +
->>>>> +  reg:
->>>>> +    maxItems: 1
->>>>> +
->>>>> +  "#io-channel-cells":
->>>>> +    const: 1
->>>>> +
->>>>> +  richtek,shunt-resistor-uohm:  
->>>>
->>>> Use standard properties, so "-micro-ohms". Drop the unit from
->>>> description and drop the ref.
->>>>  
->>> Use richtek.shunt-resistor-micro-ohms?  
->>
->> Yes.
->>
->>> Or the prefix 'richtek,' can be removed?  
->>
->> No, the vendor prefix must stay.
-> 
-> It's a standard generic binding used in a bunch of IIO and hwmon
-> drivers without vendor prefix.  Mind you I can't find a definition
-> in any of the top level binding files.  Probably wants to be in
-> adc.yaml for IIO.
+On Sat, Jun 18, 2022 at 5:19 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Sat, 18 Jun 2022 02:13:16 +0200
+> Jakob Hauser <jahau@rocketmail.com> wrote:
 
-Indeed, thanks for correcting me. It should be just
-"shunt-resistor-micro-ohms" then.
+...
 
+> > +             for (i = 0; i < 17; i++) {
+>
+> Reduce indent by doing this as multiple loops.
+> Though even better if you can use bulk writes.
+>
+>                 int j = 0;
+>                 for (i = 0; i < 12; i++) {
+>                         ret = regmap_write(yas5xx->map, YAS537_MTC + i,
+>                                            data[j++])
+>                         if (ret)
+>                                 return ret;
+>                 }
+>
+>                 for (i = 0; i < 4; i++) {
+>                         ret = regmap_write(yas5xx->map, YAS573_OFFSET_X + i,
+>                                            data[j++]);
+>                         if (ret)
+>                                 return ret;
+>                 }
 
-Best regards,
-Krzysztof
+I guess you are referring to _noinc variants of regmap bulk operations.
+
+> > +                     if (i < 12) {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_MTC + i,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                     } else if (i < 15) {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_OFFSET_X + i - 12,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                             yas5xx->hard_offsets[i - 12] = data[i];
+> > +                     } else {
+> > +                             ret = regmap_write(yas5xx->map,
+> > +                                                YAS537_HCK + i - 15,
+> > +                                                data[i]);
+> > +                             if (ret)
+> > +                                     return ret;
+> > +                     }
+> > +             }
+
+-- 
+With Best Regards,
+Andy Shevchenko

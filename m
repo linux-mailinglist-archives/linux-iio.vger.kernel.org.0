@@ -2,189 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BABD5513D8
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 11:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1485C551FBC
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 17:07:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239354AbiFTJPC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jun 2022 05:15:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54574 "EHLO
+        id S242360AbiFTPGr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jun 2022 11:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238854AbiFTJPB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 05:15:01 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9615BA47E
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 02:15:00 -0700 (PDT)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25K99epZ005208;
-        Mon, 20 Jun 2022 09:14:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=BH+UVc3a5cGQYga9TJFcAWc8A9oR9a+uw/ZNiqCWVa4=;
- b=BdsDsfUlvXNKCz/duU0kFpwKUsdWUPgbfWDqciSnjzzi3gvtIY7+9hT/00Zp4T3aPCJB
- HQMnpnrk9Sb2Hsg9nwEY/tUR5/L9kxdWFrmdZ5cjNubYdqdZaIzrJ2NdQFGN9pziKgIf
- R04W8G0BgqxaiPOc/U/ESkU56qUnoOIArtQyGiNcJZXXm93czS0PHMQw1IfD9BjeOt2s
- RzydATAQ6IUPY/OiMvxEhclsDJcwNPqY0DBciB2ph0VhRPQXBomA3FguUM+TYw95UXVt
- TNYdsPZyjCUV0EyRQg5akPR5Md5irTQkDR/cGz6HO/K5bLVlLybLc9Y0f2Y5y1LBbITS qQ== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3gs5a0asms-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 20 Jun 2022 09:14:26 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 25K96Oxa025838;
-        Mon, 20 Jun 2022 09:14:26 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
-        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3gth8v6py3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 20 Jun 2022 09:14:25 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mAIYFPQ/oYoLVkeEOsui0P/ZJArbHZIPJCgLMnjNYNO/H7xSyKtKwOd7uJ7HFG44nnexgmy5oCcK44LC4DpNUpuYqJ95+N6OVIkaaxE4PvnfA/97Xf0aKsFP5X9DTXbhimYUEjCqJGXYwhANYulcQUGNkzLGa5OSlWXNqzWD7SPpH0nXGcf5/V8LTJxWCjV69ZtNfYxez9k/bISu13pJvhE/2XwaCU0aum5pWa4c1jALuHejjGLG/mpFEn/7qEZb/+s+qQ4AsTdE1ucLLtli8mGlVFHpAIxVC6ldX9Axt4KDi84jLRzJ0ais8DZ4eIBBPnmhyAkWsIDL8c1h6hmuYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BH+UVc3a5cGQYga9TJFcAWc8A9oR9a+uw/ZNiqCWVa4=;
- b=XEtQ89gohOZCAyfSnxcbRVafrPo3WNqPan7bhYWQQFFNrVpotoTB8DHYcNAFRRp/ZwOE3byNbh2aYTnVgKp4g3jGddtQS7aDrPKmnStZCIGkuqvCi4e3Zqy9A+MmcKfq7Te8/jadq8rP3AEWocDFG+5kF7n/hbQCVtmFVcWnDXbJwzs5UVI3cWUaKk/Dp2BwLph7yJ8ysaia9x17Kv6kArHf58w0tJ2/lpjwjq9yVWzEaMMzyKHEPaiYzqhNMqCOwsv7fakti9qDmH4bHjdOR5En/NDzSXr/EzANDlcpbQmm+31EI4Dj3ie2zr9s3JxLcnahNoDfqKtEh2n4f9k2BA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S242374AbiFTPGU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 11:06:20 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071D4100E;
+        Mon, 20 Jun 2022 07:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BH+UVc3a5cGQYga9TJFcAWc8A9oR9a+uw/ZNiqCWVa4=;
- b=IMpaKI7Nq+7losUN9gaXkF843SM6l4EoUGHh1Ex/QRd+iVz+fbite0plcJnMjcDdWQN+UTpg16FAuGYufbY5Van9WBpo/Ol+IyCtrX5qT9ZPd3N9rPQlIwErQXEaNBTHQ8rF0VgY+OsoulWvrx/7W/Ws3Mb0Gf0j6dmlAy7EA7k=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by MW4PR10MB5702.namprd10.prod.outlook.com
- (2603:10b6:303:18c::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5353.16; Mon, 20 Jun
- 2022 09:14:24 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::5020:9b82:5917:40b]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::5020:9b82:5917:40b%6]) with mapi id 15.20.5353.018; Mon, 20 Jun 2022
- 09:14:24 +0000
-Date:   Mon, 20 Jun 2022 12:14:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrea Merello <andrea.merello@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, Jacopo Mondi <jacopo@jmondi.org>
-Subject: Re: [PATCH 2/2] staging: iio: imu: Add CEVA BNO08x driver
-Message-ID: <20220620091403.GH16517@kadam>
-References: <20220616100006.22045-1-jacopo+renesas@jmondi.org>
- <20220616100006.22045-3-jacopo+renesas@jmondi.org>
- <20220617184941.00001fcb@Huawei.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220617184941.00001fcb@Huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: JN2P275CA0032.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:2::20)
- To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
+  d=axis.com; q=dns/txt; s=axis-central1; t=1655736219;
+  x=1687272219;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=Na3GHwh2nPIlcEioUu2L4Q9Qk2l1gWyv/bLyqBui10c=;
+  b=a3j1NuVif+KCfAl5geHnr21ipGQbuWuSPp8uuXwGnlUIX8r8db8NqC7s
+   WBm4+pPbPUmroALH5cjuORJLZ0rtWSQana0N04Ef34DlUqMSQ8cu1XXZc
+   HMYXpak+gyqbVnAgL/36TArkSNS/o+oH7VJdCr+nisE2/AjjmccQ893nm
+   +LVmzJSB2seAJObTdTejeWGgQuPDqU+maVx0kMmP4GwN7XKSF2r/DC7Jf
+   ZfkUhL/jMa74DfNl4yxw7fUV5j4kuB9x+6Gtx0O7yl180jCQaGALCoZwL
+   b+Kl6UK3ND2oaqymSkfPBPcy5A2X+Gj2fW7PY9UAVfOQ59kenYPm7LI/Z
+   w==;
+Date:   Mon, 20 Jun 2022 16:42:31 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     <rafael.j.wysocki@intel.com>, <jic23@kernel.org>
+CC:     <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>
+Subject: PM runtime_error handling missing in many drivers?
+Message-ID: <20220620144231.GA23345@axis.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3ca62128-b485-491f-a2be-08da529d4459
-X-MS-TrafficTypeDiagnostic: MW4PR10MB5702:EE_
-X-Microsoft-Antispam-PRVS: <MW4PR10MB5702CBF3F49CFD06EA7043228EB09@MW4PR10MB5702.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 3Ysu+Zd+ZWKNRZu2C6zp36htA6AcUKNHYf1spzPtsuwTnR8KRGB4jo9zCvJCMJXo5wBoiEHVPY4TlNJ1bPXh3RYvc0QJ9zMHlZ5jJ84g1Kg6WMQaj18aEqDmqMaWzDWMf1CBVWY1sDQykI4Y2VuzhD9b+idGmiKOxHwFP8vk588MGGNJIf/C2eGnCzXiSCdOh6QkqrvaCiY//HUMvhqz6wqh0LNOTjWj+gezpsOkaPiZZPmbwnlMq2A/Q4Tk7NlJ731wuUlHF82khYPiw6u3RxjzsyoUAHSCHPCB2b+YmwwXF5UsvJJ4CJenrVtia+7nJyyqG/bOGVymFLrzVB4LgUJxuNpEeJVOLrJzaPXkEEM+jaANgkGPBFfBQx4dN9KByYnC0zHWlis1d8ztdZvj+w0u4sgR0y1yiLDjI8iWjUgyZKLiYPVy4oboCREBARQWHBk2c9YLZzbQuT9yE3X5EeFQ5gP5UI4DJG5nGO/loAExG8/Qi04uqRJ9bFNRCTdkcNSnNMxUu2+3nOKSA+Za7mTnZVFrXwOZfstXkjhe9gtuuq+6rvvD7PqtbmfVtwtPaui1WIkixOZ++0KGV5SERHEcvDU0SggrPaQi/nfiLHPgslr+hfYYpgCr6bTWfQNgnA5zVL0rj3UY5uTDYgkrdlGDEdHuCCvCRQjnWOEIM5eiUGpm2Gf7I9cY4mCV+XIUB1wCLTXsbRrZY2fhmvn0Gg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(366004)(396003)(136003)(39860400002)(376002)(346002)(8676002)(5660300002)(7416002)(33716001)(2906002)(52116002)(86362001)(44832011)(478600001)(6506007)(6512007)(26005)(38100700002)(6486002)(9686003)(6666004)(1076003)(33656002)(8936002)(38350700002)(186003)(66476007)(4326008)(41300700001)(66556008)(316002)(54906003)(6916009)(83380400001)(66946007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?YQLMIEGmXljuYocEFNj2GKXDUQ0DkY9yAZVt2dYzAg7qqR9CjdO5ytk7AQko?=
- =?us-ascii?Q?2DJA6nN0MJs3JOffsMu3GJbjPhiqMt4iPRwGPtf+eIiO27lHuplc5ZwTaEu5?=
- =?us-ascii?Q?z7Ob28JyarNg7IqCoPbO6Isv4N7Y0u8JDLiaBNWWbA17s3VYDJozqnYwLq+a?=
- =?us-ascii?Q?TY21NTn0xMw0q2hhc3QGEkbbRYc3/SD6JTQ4reKapX8zNApZWm73Lt5KtxOn?=
- =?us-ascii?Q?xNV995HoHiwkvlCtoMNh4n6pU3VMpIfticJX6kxQqvlE3X1pwQ1iiLRlrbP+?=
- =?us-ascii?Q?emdKdn6m0sbGSS9FuJEyjZOWek2AWOZFStS6iclkHocuAoxuzS+qwevCXnw7?=
- =?us-ascii?Q?rtXa5azmfkO3ErtRsXAjXnZ7QE91G4Yq0UqJl0YD0mPCUG3WdvI/U59Ka8zB?=
- =?us-ascii?Q?w4vwlV1yf1YjJdvaaZc7jmN0bN32KGogq8IiXRPNV3R7kTEz0CDuPhY1+zdB?=
- =?us-ascii?Q?zbsEIES310xmrEQD8iwZghNTT7XES/PjUQmF6orRW381VU/ZKuKUroUuc/Fv?=
- =?us-ascii?Q?a6TDXMLyCtjXGg97aL8lNmYBDLZZTPHLK9HcBemQty1J5Azo6WycMChuLoO3?=
- =?us-ascii?Q?56nV6kmmxiUAwLR/MfyWT6qR1hEa8f41AKzcW4eJTo19udcTgkQ9dIQV8G60?=
- =?us-ascii?Q?5RQtmpTJuyZpVpts88xq4DznggSzB+ORz1XzteiaM+lp1ZZh9fbv1ikIwJ8Z?=
- =?us-ascii?Q?w9WtrqLqSSVNmh5OaefHsc3ZHaLiUBrAzTHgwel3aJ2QK/mpLs3OuqRmUMOe?=
- =?us-ascii?Q?moYOT8CgMPP9xwXg5keg+21JZ6bYKbKaMyfhRcd8CCkD13toXE+kxEweH9Iu?=
- =?us-ascii?Q?NQvGQXbvFteQzGkry7RAkZJmy8NabdDi5EywA1ws2Q8rgCnHOr2B6Bvj6UW9?=
- =?us-ascii?Q?k75Ci9R1ARrNcfs5MZGLq5rXdwi0K/a2HxrZlRdr1MDXp1azGKQET/LR3Emz?=
- =?us-ascii?Q?x2dCzkBfZrFl3VcVPhxm9qx8rgW2trsnsccTk4/S/mXjfCcsoBu7jSsW6xLy?=
- =?us-ascii?Q?hMgofsM7i0LPteF0DKtEBM0vVD1py2wfP4M9M+mtG0thSdXTLFdg6ivjdozA?=
- =?us-ascii?Q?k+eTMf+hkiJMAYruc95NW23SobFFn+v/AWgJsCNOe8dkwYuI/rIGtF0dNbZE?=
- =?us-ascii?Q?bhyJRpo6Vh8mSGyDeVrFAQ7RMHyn9xYbDE1aXWH391gPM+w8EOifSVOxXLam?=
- =?us-ascii?Q?tVIP8IKe10grCNoHg1ouv90IrpCh11vrnveb+AIeiZTCBUtemuWKOZ3cFgN5?=
- =?us-ascii?Q?66PYACJJgmVYO2x+K6m/A9Lu4FNjSWNqhpfBIagKBDlVoT5pK5mYp05pHeUg?=
- =?us-ascii?Q?obrUx3gDY8QjXArpp2OkOx/dNtQFEr1gy1gozUUkUqvbP4JOrVV6HMqUJT+x?=
- =?us-ascii?Q?K3k00TWzrF31nwO0xSJZmAuGkLyqchugPTnZn+3CEWY3htwXeBuatcNEmZRD?=
- =?us-ascii?Q?fvoeN1fzpbHyMYXV7Y6ljcOgljDaVGSiXCQ6RUkLXupv83eZAdqgUkPM4pKj?=
- =?us-ascii?Q?aSJglEMcpC1J8PCsa7ZfpnwtQoHtujn1SRid/EiBhTcrzkigck92HzBpg870?=
- =?us-ascii?Q?/nPZ3QhrbnwhTT+yKFPEdTT+Wq/D+JJOdA0tabLS7uIrt4NmwY5pZmBMMzct?=
- =?us-ascii?Q?zLztXznd30z4YJmQ+WJzNqgoB506+FODIa/D+Nmyq9jBf4QDyu++sf+R55PF?=
- =?us-ascii?Q?KlHFYu4myce8O3gIls+JWRK+A9J1qAwvHyffTM3hM9uWtIkHuqttGU636Yh1?=
- =?us-ascii?Q?QD7NPvHm6IHmxYUhiWco014bFGVwPqE=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3ca62128-b485-491f-a2be-08da529d4459
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2022 09:14:24.0633
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NG1KZ/ALCwFgBf+q8mvCI6N5j9Jaxy9p3/OrLr6+fe8iZlU9e1bjLMR6rBS7ep8O+1hBZAnFHJWUquRYN6HHZcejXV+6wHrhr9FKWayA/ac=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5702
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.517,18.0.883
- definitions=2022-06-20_04:2022-06-17,2022-06-20 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=609 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206200043
-X-Proofpoint-ORIG-GUID: DWfBDv-38vK6-MS9RCgFEFvBehr34LJw
-X-Proofpoint-GUID: DWfBDv-38vK6-MS9RCgFEFvBehr34LJw
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 17, 2022 at 06:49:41PM +0100, Jonathan Cameron wrote:
-> > +static irqreturn_t bno08x_trigger_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf = p;
-> > +	struct iio_dev *iio_dev = pf->indio_dev;
-> > +	struct bno08x_dev *bno08x = iio_priv(iio_dev);
-> > +	u8 cargo[BNO08x_CARGO_BUFFER_SIZE];
-> > +	int ret;
-> > +
-> > +	ret = bno08x_wait_for_cargo_timeout(bno08x, cargo, BNO08x_CARGO_BUFFER_SIZE);
-> > +	if (ret < 0)
-> > +		goto done;
-> > +
-> I'm lazy - if it's less than 0 it's definitely less than 24 so no need for separate
-> paths unless you add some dev_dbg/err or similar which might make sense here.
-> 
+Many drivers do something like the following to resume their hardware
+before performing some hardware access when user space ask for it:
 
-Also 24 is a magic number.  But you have to be a bit careful with
-combining conditions.  The two common bugs are forgot to set the error
-code and type promotion to unsigned long:
+	ret = pm_runtime_resume_and_get(dev);
+	if (ret)
+		return ret;
 
-	if (ret < sizeof(buf))
-		goto done;
+But if the ->runtime_resume() callback fails, then the
+power.runtime_error is set and any further attempts to use
+pm_runtime_resume_and_get() will fail, as documented in
+Documentation/power/runtime_pm.rst.
 
-Negative ret values are > sizeof(buf) and for 0 to sizeof - 1 then the
-error code isn't set so this made up example would be totally broken.
-None of that applies here, of course, but I like breaking the conditions
-apart just as a habit.
+This means that if a driver sees an error even once from, say, an I2C
+transaction in its ->runtime_resume() callback, then the driver will
+permanently stop to work.  My guess is that this is *not* the behaviour
+intended by driver writers.  I would expect that the driver re-attempts
+to access the hardware the next time user space tries to use the device,
+so that the driver is resilient against temporary failures.
 
-> > +	if (ret < 24)
-> > +		goto done;
-> > +
+I noticed this with drivers/iio/light/vcnl4000.c.
 
-regards,
-dan carpenter
+During a read of iio:device0/in_illuminance_raw, an error is injected
+into the I2C transaction (the dump_stack() indicates the location) and
+the I2C transaction fails:
 
+[110190.730000][   T27] rpm_resume: 0-0009 flags-4 cnt-1  dep-0  auto-1 p-0 irq-0 child-0
+[110190.730000][   T27] i2c_write: i2c-0 #0 a=009 f=0000 l=3 [00-00-00]
+[110778.040000][   T27] i2c_result: i2c-0 n=1 ret=0
+[110778.040000][   T27] CPU: 0 PID: 27 Comm: python3 Not tainted 5.19.0-rc3+ #71
+[110778.040000][   T27] Stack:
+[110778.040000][   T27]  60a27dc6 60a27dc6 688af710 61085fc0
+[110778.040000][   T27]  61085f90 60a27dc6 60069bf0 00000001
+[110778.040000][   T27]  688af750 60905626 609055b3 61085fe0
+[110778.040000][   T27] Call Trace:
+[110778.040000][   T27]  [<608d05dc>] show_stack.cold+0x166/0x2a7
+[110778.040000][   T27]  [<60905626>] dump_stack_lvl+0x73/0x92
+[110778.040000][   T27]  [<6090566e>] dump_stack+0x29/0x31
+[110778.040000][   T27]  [<6092463e>] __i2c_transfer.cold+0x28/0x49
+[110778.040000][   T27]  [<607445dd>] i2c_smbus_xfer_emulated+0x28d/0xc60
+[110778.040000][   T27]  [<607452c2>] __i2c_smbus_xfer+0x312/0x8e0
+[110778.040000][   T27]  [<60745a40>] i2c_smbus_xfer+0x1b0/0x2e0
+[110778.040000][   T27]  [<60745e76>] i2c_smbus_write_word_data+0x46/0x60
+[110778.040000][   T27]  [<68968755>] vcnl4200_set_power_state+0x45/0x160 [vcnl4000]
+[110778.040000][   T27]  [<689680ee>] vcnl4000_runtime_resume+0x2e/0x40 [vcnl4000]
+[110778.040000][   T27]  [<606d262f>] __rpm_callback+0x5f/0x3e0
+[110778.040000][   T27]  [<606d2b44>] rpm_callback+0x194/0x1e0
+[110778.040000][   T27]  [<606d48fb>] rpm_resume+0xd5b/0x11d0
+[110778.040000][   T27]  [<606d5a77>] __pm_runtime_resume+0xb7/0x120
+[110778.040000][   T27]  [<68969903>] vcnl4000_set_pm_runtime_state.isra.0+0x43/0x1f0 [vcnl4000]
+[110778.040000][   T27]  [<68969b36>] vcnl4000_read_raw+0x86/0x250 [vcnl4000]
+[110778.040000][   T27]  [<607794fd>] iio_read_channel_info+0x10d/0x130
+[110778.040000][   T27]  [<60698553>] dev_attr_show+0x23/0x80
+[110778.040000][   T27]  [<60441174>] sysfs_kf_seq_show+0x144/0x2d0
+[110778.040000][   T27]  [<6043ce9e>] kernfs_seq_show+0x2e/0x40
+[110778.040000][   T27]  [<6033fe40>] seq_read_iter+0x310/0xb20
+[110778.040000][   T27]  [<6043e0ea>] kernfs_fop_read_iter+0x2da/0x520
+[110778.040000][   T27]  [<602cd46e>] new_sync_read+0x1ae/0x2f0
+[110778.040000][   T27]  [<602d1e84>] vfs_read+0x344/0x4a0
+[110778.040000][   T27]  [<602d2885>] ksys_read+0xb5/0x270
+[110778.040000][   T27]  [<602d2a63>] sys_read+0x23/0x30
+[110778.040000][   T27]  [<60051aea>] handle_syscall+0x1ba/0x250
+[110778.040000][   T27]  [<6006be9b>] userspace+0x3bb/0x600
+[110778.040000][   T27]  [<60047c8b>] fork_handler+0xcb/0xe0
+[110778.040000][   T27] rpm_idle: i2c-0 flags-5 cnt-0  dep-0  auto-1 p-0 irq-0 child-0
+[110778.040000][   T27] rpm_return_int: rpm_idle+0x250/0x970:i2c-0 ret=-11
+[110778.040000][   T27] rpm_return_int: rpm_resume+0x24d/0x11d0:0-0009 ret=-5
+
+The above is OK, the read of the file naturally fails since
+pm_runtime_resume_and_get() fails.  But all further reads of the file
+from user space fail even before getting to any register access, due to
+the behaviour described above.
+
+[110778.050000][   T27] rpm_resume: 0-0009 flags-4 cnt-1  dep-0  auto-1 p-0 irq-0 child-0
+[110778.050000][   T27] rpm_return_int: rpm_resume+0x24d/0x11d0:0-0009 ret=-22
+
+The following patch fixes the issue on vcnl4000, but is this the right
+fix?  And, unless I'm missing something, there are dozens of drivers
+with the same problem.
+
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index e02e92bc2928..082b8969fe2f 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -414,6 +414,8 @@ static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
+ 
+ 	if (on) {
+ 		ret = pm_runtime_resume_and_get(dev);
++		if (ret)
++			pm_runtime_set_suspended(dev);
+ 	} else {
+ 		pm_runtime_mark_last_busy(dev);
+ 		ret = pm_runtime_put_autosuspend(dev);

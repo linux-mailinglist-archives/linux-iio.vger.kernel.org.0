@@ -2,64 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72A00550D92
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 01:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5FD550ECD
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 05:07:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbiFSXYV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 19 Jun 2022 19:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
+        id S237469AbiFTDHm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 19 Jun 2022 23:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232300AbiFSXYS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 19:24:18 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403BD64DD
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:24:17 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id y19so17944620ejq.6
-        for <linux-iio@vger.kernel.org>; Sun, 19 Jun 2022 16:24:17 -0700 (PDT)
+        with ESMTP id S237246AbiFTDHl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 19 Jun 2022 23:07:41 -0400
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B1865B2;
+        Sun, 19 Jun 2022 20:07:40 -0700 (PDT)
+Received: by mail-il1-x12d.google.com with SMTP id m16so5055740ilf.6;
+        Sun, 19 Jun 2022 20:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VHt4iXf9wPUSIJ1DU4CegV9U7JOG+R9nPN1pzuPhCaA=;
-        b=Hol9lRUXLU+7qz4FH7JLlWb8qYB4+I3c+FFrlZHBLt7xcjVqTBNUYk5Ffvv4lcncAs
-         pNlOeTPYnfQFHUKxXrOJu3IpcN2fK47Oz8oxby6pATsQXP6zP1X5k5ydtQYkpVxS5eGx
-         xuQcmjcAmq/j2IoPZkAjsJSEWfBIt2pCF2/bv4DdWrcutXTR6qyDR9lISkZBuRqZTDlk
-         1cS/DlkXBHj4a7gCRFb6pmnGNF8vw220t6n1zvlMBkvfwL/hWZ4RQSanGTdiB9+bPhFW
-         1gGnBRNsbz3l+LajyTVFoSFINy/l2Om/wE5a/gweZMS+E73vgPcBMc2xpkl3enuhnJns
-         u+0A==
+         :cc:content-transfer-encoding;
+        bh=ClA6mV7hozr21kuBkeCxjd9fGNxXJpc68c5A8HEJUUI=;
+        b=gOpv1108ut5ySpAPndiTka0cdAPZs7Flmw6QF/XASUursDWrwbsAx9Vt+ZXF5kcdEw
+         TCakBrMFGrsxiKWEOhenPFzr9LBdXhjmxW5370IMQcOOlgaFHdTNkBB+FXGyNxJcg61e
+         E1CcWHlUQ+QDQ0SBGzNysb+dxHy8expVECKExkABctkP/dtbwAAACdK2L7UDO9Gbz48K
+         ji3tgBrL0udfA8TkFrC8hp8qz2em39uxnCPqC9QkBkCfnnMqz+vlX4RNa8QIDVPQFIsS
+         Tfem3Y9ER0V16TcCeQoXqA7MiKjEXoKy5//qqMQChDe5hPDjkyy9/RyTBkvqD/PR7kp3
+         aZZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VHt4iXf9wPUSIJ1DU4CegV9U7JOG+R9nPN1pzuPhCaA=;
-        b=LilitGVJRASFbcTNKZvySMYdOMmMrmHLTAq0ZYKrgpbA1Exe7hhfkj6jHI2HhZCChr
-         lgD2CA8JppnRtGWf6sTznlr3nXiZV7m5usFoK+d3LRjqQxxEgg/uhkn3lzyjOP5ALxXT
-         J5zDr7OdlfPK91XUKXA+4uHSn7EUIm1YIoVeGNfjVT5ta29+FpRgLIwb+5WgaQiOncjt
-         NiG4hLzPykOeaj69cqh2Vdr3TQ06OrM3Z4RP3iN1c7GQrsB5WzX/Ob5PZ/ajOUbXbVcS
-         6kw4vS4c2lenFI1ElE0NITXwX3Po89f/2u3HgSRGmYFZ2EFdM0dxbtqsTUmUWp5DArsd
-         c3Ow==
-X-Gm-Message-State: AJIora9gNadKxPEAan5cvPGFYZmoqE1vMnNL0pZe2dSta1qYLsyh9K0f
-        TN+oqHG3O5BqXw1r4qVE+0bwLmuUY3zC3QWVwEw=
-X-Google-Smtp-Source: AGRyM1v38KuWvM/qRUW26QhDZdRDMYg16unUZaUj6mstttkJ0OUum4Z1YM9LqxdxTdTu3AvorFshzeQdX4f230p8gyc=
-X-Received: by 2002:a17:906:d9d9:b0:710:f2ae:b455 with SMTP id
- qk25-20020a170906d9d900b00710f2aeb455mr19102905ejb.77.1655681055834; Sun, 19
- Jun 2022 16:24:15 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ClA6mV7hozr21kuBkeCxjd9fGNxXJpc68c5A8HEJUUI=;
+        b=GEfgbHzpmH0uUZ6uMTT+DbKYhbPVmaJQTSCZAFx1ZAdCCTzdFDIiDQr+wyqLTgzCDQ
+         EfmgI6/LZEzcpopXMiOC795S5yI89SucZRRMjX38yKGBQ3m/puF7EWKfUoeP/A4twnbm
+         xW/krzXvaoy1GJd1E9Fpd3AoW+o72yMqFtIkzTBUZJLn4eDL46ymkiPuSmtxrxyv57r1
+         0dKNHtKLi/YesODLsilCKAoRvrW64rjIhQAPystd8ztbtc3OZy1MrHuGDDdqDcj1ujD2
+         ei6ngSJe9/DBAXyAEAd9ALSdNgPh3fi8+6hSfBYbGzgN9sdNawzeRj6ud8aw9UyYmnfN
+         HQ6A==
+X-Gm-Message-State: AJIora9OBmOY1Vekl6KDag8YTpQ0KCLzT41BZtBZFykqGL/dMCUCj+5v
+        YgxbCS6jSXStBKCbx1uoSmzMZ9dkSXLVUYmt8zo=
+X-Google-Smtp-Source: AGRyM1uWx3Xja5gAlxQTsI9Gy8E4mbdwpO+4QcNSHclRnN4Pr80zjlE1E8X1wNostXJGk9TU7gkWHZtEAVASNa5cJX8=
+X-Received: by 2002:a05:6e02:1bc1:b0:2d1:96b3:b961 with SMTP id
+ x1-20020a056e021bc100b002d196b3b961mr12302759ilv.213.1655694460188; Sun, 19
+ Jun 2022 20:07:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220619185839.1363503-1-jic23@kernel.org>
-In-Reply-To: <20220619185839.1363503-1-jic23@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 20 Jun 2022 01:23:39 +0200
-Message-ID: <CAHp75VdjNuXeNPsjV4owGt5yg9N9kN8iYMKUX8rn=PRFpLKa+A@mail.gmail.com>
-Subject: Re: [PATCH v2 00/17] staging/iio: Clean up AD7746 CDC driver and move
- from staging.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Peter Rosin <peda@axentia.se>,
-        Michael Hennerich <michael.hennerich@analog.com>,
+References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-4-peterwu.pub@gmail.com>
+ <91e9e3af-8208-7535-1864-08744f934593@linaro.org>
+In-Reply-To: <91e9e3af-8208-7535-1864-08744f934593@linaro.org>
+From:   szuni chen <szunichen@gmail.com>
+Date:   Mon, 20 Jun 2022 11:07:29 +0800
+Message-ID: <CA+hk2fZbh0=8gurGS95XpXrYyF3NbwFbFMcygcrW_q10m0zinA@mail.gmail.com>
+Subject: Re: [PATCH v2 03/15] dt-bindings: leds: mt6370: Add Mediatek mt6370
+ current sink type LED indicator
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        ChiYuan Huang <cy_huang@richtek.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -70,68 +87,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jun 19, 2022 at 8:58 PM Jonathan Cameron <jic23@kernel.org> wrote:
+Dear Krzysztof,
 
-> Vincent: I'm getting some instability with roadtest after forwards porting to
-> current mainline. Tests run 'sometimes'.  Other times I get a crash
-> in um_set_signal.  Seems unrelated to the test this series adds.
+Thank you for the valuable command.
+
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=E5=B9=
+=B46=E6=9C=8817=E6=97=A5 =E9=80=B1=E4=BA=94 =E6=B8=85=E6=99=A85:09=E5=AF=AB=
+=E9=81=93=EF=BC=9A
 >
-> Changes since v1: Thanks to Andy and Peter for reviews.
-> - Use sizeof(data) for be24 buffer data[3]
-> - Make the precision patch fall back to old maths if overflow would
->   have occured.
+> On 13/06/2022 04:11, ChiaEn Wu wrote:
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> >
+> > Add Mediatek mt6370 current sink type LED indicator binding documentati=
+on.
+> >
+> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> > ---
+> >  .../leds/mediatek,mt6370-indicator.yaml       | 48 +++++++++++++++++++
+> >  1 file changed, 48 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6=
+370-indicator.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/leds/mediatek,mt6370-ind=
+icator.yaml b/Documentation/devicetree/bindings/leds/mediatek,mt6370-indica=
+tor.yaml
+> > new file mode 100644
+> > index 000000000000..42b96c8047a3
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/leds/mediatek,mt6370-indicator.=
+yaml
+> > @@ -0,0 +1,48 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/leds/mediatek,mt6370-indicator.yaml=
+#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: LED driver for MT6370 PMIC from MediaTek Integrated.
+> > +
+> > +maintainers:
+> > +  - Alice Chen <alice_chen@richtek.com>
+> > +
+> > +description: |
+> > +  This module is part of the MT6370 MFD device.
+> > +  Add MT6370 LED driver include 4-channel RGB LED support Register/PWM=
+/Breath Mode
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: mediatek,mt6370-indicator
+> > +
+> > +  "#address-cells":
+> > +    const: 1
+> > +
+> > +  "#size-cells":
+> > +    const: 0
+> > +
+> > +patternProperties:
+> > +  "^(multi-)?led@[0-3]$":
 >
-> This started out as an experiment with Vincent Whitchurch's roadtest
-> testing framework [1] and that worked well so I carried on cleaning up the
-> driver.
+> If this is multi-led, then you should reference
+> /schemas/leds/leds-pwm-multicolor.yaml
 >
-> Mostly this is standard tidy up, move to new interfaces, then move the driver
-> out of staging, but there are a few other things in here.
+> See other examples using it.
+
+In my opinion, leds-pwm-multicolor.yaml is used for external pwm
+signals, and needs to assign an external pwm property.
+But our pwm leds use an internal clock to generate the pwm signal. Is
+leds-class-multicolor.yaml more appropriate?
+
+Sincerely,
+Alice
 >
-> 1) Precision improvement for IIO_VAL_FRACTIONAL_LOG2.
->    The ad7746 is a 24 bit sensor and this highlighted that 9 decimal
->    places wasn't enough to keep the error introduced by
->    _raw * _scale from growing too large over the whole range (I couldn't
->    write a sensible test for it).  So I've proposed increasing the precision
->    of the calculation used to provide the sysfs attributes with this value
->    type and printing a few more decimal places (12), but only if overflow
->    will not occur due to val[0] > ULLONG_MAX / PICO
-> 2) _inputoffset ABI addition.  This driver had an odd use of _offset for
->    the case of differential channels that applied the offset to both
->    of the differential pair (hence usespace shouldn't not apply it when
-
-userspace?
-
->    converting to the base units. That isn't inline with the existing
->    documentation for _offset and it wasn't clear to me that it made sense
->    at all.  To avoid confusion I've added this new ABI (_inputoffset) for t
-> 3) roadtest file - note this is not a complete test set for the driver and
->    mainly focused on the main channel reads and places I thought I might
->    have broken things whilst working on the driver.
 >
-> My conclusion on roadtest - Very useful indeed. I'd encourage others to
-> consider developing some basic sanity tests for drivers they are working on.
-> Hopefully my python code isn't too hideous to understand at least!
-> Vincent, it might be worth thinking about some generic code to handle the
-> 'variants' on correct ABI like I introduce here because I switched from
-> a shared by type scale to an individual one per channel for the voltages.
-> Both were ABI compliant so that sort of change is fine most of the time
-> though we have to be careful with it.
 >
-> All comments welcome.  Note there may be changes that make more sense
-> to do after moving this out of staging as long as there are no ABI changes involved
-> etc.  Feel free to highlight those sorts of changes as well as anything more
-> significant.
-
-Overall it looks good to me. One Q though, do you plan to switch it to
-regmap APIs?
-
-...
-
->   staging: iio: cdc: ad7746: Drop usused i2c_set_clientdata()
-
-unused
-
--- 
-With Best Regards,
-Andy Shevchenko
+> Best regards,
+> Krzysztof

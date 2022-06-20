@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 905D755238B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 20:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 031D55523A0
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 20:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238373AbiFTSH0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jun 2022 14:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54122 "EHLO
+        id S243887AbiFTSNP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jun 2022 14:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235843AbiFTSHZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 14:07:25 -0400
+        with ESMTP id S238101AbiFTSNP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 14:13:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B281AF12
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 11:07:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B38018B31
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 11:13:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 817386158A
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 18:07:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0DFC341C4;
-        Mon, 20 Jun 2022 18:07:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B621F6158D
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 18:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A295C341C0;
+        Mon, 20 Jun 2022 18:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655748443;
-        bh=emiH/nkiB4LRfl4YbcP4q238Ek9cnNaD0f0wciRs5Bk=;
+        s=k20201202; t=1655748792;
+        bh=rTVi+CZnfXIIaf1Tml2S8hS6rE1h2GFg9RZggGDbPJw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UmRTccA0/VOJgDgYGEOeEc/6M91TuBh7IgMR7vEseKg7TNoukiHjgR6V+NnNeYpTn
-         tDmMRsGp2IrSh6RVntZPBmG9aWr7dxHnbypZShIxDQbrVB7PWcu3tX7IYD9GuVu6uk
-         /j7m5VXPg5yNvJ2Q2ndlbr8SLwiI2m5pHiUOlXeZtuEyaX1fDhHFJfeiXUc7TPkC7F
-         vFR2rQanVXnlOhluxfy6AWbYnYTS3YtEQFmpdHAUG0Z+1wfCZUORtXarNXzcEOhQSq
-         RYPeEXfGG+EspWZagowN00Ztf7//KINCL9VEetpKKjSp2hGGOEMS1XzR18DtFEheRC
-         kCL5Efs9z/jUw==
-Date:   Mon, 20 Jun 2022 19:07:18 +0100
+        b=FliM5GVQZT0hpjYRAVSohOO+orrPRL+xV3lF/066FX5ejOw1GIEwC7DhKXV8YhdwV
+         3xEvpTz0KnGeFO67pj54h0c9BKQu7Mi+DEE4wIYmEsGAr/4676lCNmZoe2lPKh7Mvz
+         jblXVylhcTE71mIdzc4942ke8AcP9vmGp+yDD1heNNUsJaQUH7HwcLEWG80qQwS+Lr
+         b0iYlHciGcicFzZEgQtshrLb6/mJQIB6zfD5b6yP1aqTrsKbo7o6fplGjT2jcIZjNz
+         uQ9NUYMa4HHLz+wul9T5IHg56ccVtT1bqyu9HmVb/GZSrs0y88gLzznuzfVwhaeQhn
+         pzEHCZ3r0U6hg==
+Date:   Mon, 20 Jun 2022 19:13:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
@@ -40,16 +40,17 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Vincent Whitchurch <vincent.whitchurch@axis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 00/17] staging/iio: Clean up AD7746 CDC driver and
- move from staging.
-Message-ID: <20220620190718.3978775e@jic23-huawei>
-In-Reply-To: <CAHp75VdjNuXeNPsjV4owGt5yg9N9kN8iYMKUX8rn=PRFpLKa+A@mail.gmail.com>
+Subject: Re: [PATCH v2 11/17] iio: core: Introduce _inputoffset for
+ differential channels
+Message-ID: <20220620191307.7f8fefa7@jic23-huawei>
+In-Reply-To: <CAHp75Vdf3aWaeT17cxsm=a7LUSpc1LnoMGkRQS8O_3ftufprLg@mail.gmail.com>
 References: <20220619185839.1363503-1-jic23@kernel.org>
-        <CAHp75VdjNuXeNPsjV4owGt5yg9N9kN8iYMKUX8rn=PRFpLKa+A@mail.gmail.com>
+        <20220619185839.1363503-12-jic23@kernel.org>
+        <CAHp75Vdf3aWaeT17cxsm=a7LUSpc1LnoMGkRQS8O_3ftufprLg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,18 +61,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 20 Jun 2022 01:20:08 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> 
-> Overall it looks good to me. One Q though, do you plan to switch it to
-> regmap APIs?
+> On Sun, Jun 19, 2022 at 8:59 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Address an ABI gap for device where the offset of both lines in a
+> > differential pair may be controlled so as to allow a wider range of
+> > inputs, but without having any direct effect of the differential
+> > measurement.
+> >
+> > _offset cannot be used as to remain in line with existing usage,
+> > userspace would be expected to apply it as (_raw + _offset) * scale
+> > whereas _inputoffset is not.
+> > Similarly calibbias is expected to tweak the measurement seen, not
+> > the adjust the two lines of the differential pair.
+> >
+> > Needed for in_capacitanceX-capacitanceY_inputoffset for the
+> > AD7746 CDC driver.
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > ---
+> > I''m not entirely happy with the naming on this one, so if anyone
+> > has a better idea I'm definitely open to it! =20
+>=20
+> I'm not sure I got the idea behind this, but would be "tare" /
+> "tarepoint" / alike suitable here?
+>
 
-Probably not unless doing some more significant work on the driver for
-some other reason.  It's definitely not yet a requirement that IIO drivers
-use regmap, even though it is of course desirable where it fits well.
-Given it should be fine to do the conversion and rely on roadtest to
-see if anything isn't broken, converting this one might be a good first
-patch for someone who is interested in writing modern drivers.
+Hmm I don't think tare maps well as I've never seen it applied to a
+differential channel like this.  Not really seen it much used outside
+of checkweighing (the mention brought back some horrible memories
+of debugging software for high speed check weighers :)
 
-Thanks,
+So to try and explain what this is doing in more depth.
+
+This is basically applying a negative offset X to both the P(ostitive) and
+N(egative) lines. Hence
+
+measured capacitance =3D (P - X) - (N - X)
+                     =3D P - N
+
+the aim of X being to keep the signal hitting some internal point on
+the device within a range that is measurable.
+
+The relevant text on the datasheet is:
+
+"The CAPDAC can be understood as a negative capacitance
+connected internally to the CIN pin."
+
+"Each of the two input capacitances CX and CY between the EXC
+and CIN pins must be less than 4 pF (without using the
+CAPDACs) or must be less than 21 pF and balanced by the
+CAPDACs. Balancing by the CAPDACs means that both
+CX=E2=80=93CAPDAC(+) and CY=E2=80=93CAPDAC(=E2=80=93) are less than 4 pF."
+
+So basically if you have both sides of the differential pair
+that are too large (>4 pF) then you can drag them together
+down to that range by adding negative capacitance.
+
+Ouch that's confusing :)
 
 Jonathan
+
+
+
+

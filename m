@@ -2,50 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7F5E5524C2
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 21:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C095524D7
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jun 2022 21:53:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245221AbiFTTmr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jun 2022 15:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52892 "EHLO
+        id S229749AbiFTTxe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jun 2022 15:53:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245505AbiFTTmi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 15:42:38 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30ACE1CB15;
-        Mon, 20 Jun 2022 12:42:35 -0700 (PDT)
+        with ESMTP id S229553AbiFTTxb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 15:53:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8B9619C3F
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 12:53:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A6E32B81636;
-        Mon, 20 Jun 2022 19:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C7BC3411B;
-        Mon, 20 Jun 2022 19:42:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6456A61631
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 19:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F505C3411B;
+        Mon, 20 Jun 2022 19:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655754152;
-        bh=QUatO8LljWRFWGqX+mKGIdqVItZiPZbPTMtwsPK3ejg=;
+        s=k20201202; t=1655754808;
+        bh=IMdeFzYQ1mLSZrBCJiTAF5cg7K7jo5xuv61owUiLAhU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=P7M1cz9itYGT0Le204mddGf50LgAqGQGNLHKf6zrrQjK63f3g+n+qlzYHm2n/1wqH
-         QHa4rWTpe8CltOZpz4jIzQTS/ndinb9UdJMMWtoIUBiGKZAZXG5LQRxPYz5cjAMK5O
-         DWRsta3SQzZ8bI8cEG8FdxsbRfPuanXC5Ur1TaEMe6C9CusUY1nPqtxCzSXOJTk011
-         IfrtMncfVckj3zH15Sa6EUJvgdFrBO9zoqPxpTsOw42EzzE/Kgv8UxvHAZcvgpkVyX
-         KEDbgyL4b2twcUfB3+cKEZlQtMWU+KD59LwrxlPfKg7W9qZk4/aCZ3fo7MvC6RW0J+
-         4ZdlivkKFSQ8Q==
-Date:   Mon, 20 Jun 2022 20:42:25 +0100
+        b=nAqWbgEfkrcUXOVmJ5yeVnmT4zGaZ4LhNLFvblIfS7RaSU+oxajq+KX6ArU1gQ4tN
+         csWsWVpQq9JsQMAosxq7UN2r1VzH+vycFccyGG1S/Q+hdyNRAkCKYxYP/734Zbx5mS
+         eTe0KxMlTl0rYVEforAFOzrP9Z8A8WapH1R2vRI1sJ+nwJdEwdaTIAiPcC/JK4zJF7
+         1N1m+oyHPCNJkwfu5xW3CJOjxfgqveDqCEZ1fCHWFoeozTIJtF2O3YNGK3AQfDDr+7
+         Zl29yGp5caSMIWTL6o6XLmktNWtzeHrRC6bhzbEMNOWIh8B//wOJD/dNqDs/jVS5Va
+         ofvYNDtwDEWBg==
+Date:   Mon, 20 Jun 2022 20:53:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>
-Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
-Message-ID: <20220620204225.34d40a3f@jic23-huawei>
-In-Reply-To: <20220603181006.2c5cc6c4@jic23-huawei>
-References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
-        <20220603181006.2c5cc6c4@jic23-huawei>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>
+Subject: Re: [PATCH v2 16/17] iio: cdc: ad7746: Move driver out of staging.
+Message-ID: <20220620205322.737f4a57@jic23-huawei>
+In-Reply-To: <CAHp75Vd6V0-h82MmDfwWa5e_0_DD1-S7jAmse-fhiAc2nmRc_w@mail.gmail.com>
+References: <20220619185839.1363503-1-jic23@kernel.org>
+        <20220619185839.1363503-17-jic23@kernel.org>
+        <CAHp75VdTwj6sAQp2r2egFXvr5RQvnDHrOUo45==UT-_6A9GKrg@mail.gmail.com>
+        <20220620174044.000061af@Huawei.com>
+        <CAHp75Vd6V0-h82MmDfwWa5e_0_DD1-S7jAmse-fhiAc2nmRc_w@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,88 +62,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 3 Jun 2022 18:10:06 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 20 Jun 2022 20:40:17 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Mon, 30 May 2022 20:33:24 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> On Mon, Jun 20, 2022 at 6:40 PM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> > On Mon, 20 Jun 2022 01:11:36 +0200
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
+> > > On Sun, Jun 19, 2022 at 8:59 PM Jonathan Cameron <jic23@kernel.org> wrote:  
 > 
-> > First of all, the additional conversion from vIRQ, and this is exactly
-> > what is returned by platform_get_irq_byname(), to vIRQ is not needed.  
-> Confusing sentence form.  Perhaps:
+> ...
 > 
-> First, the additional conversion from vIRQ (returned by platform_get_irq_byname())
-> to vIRQ is not needed.
+> > > >  drivers/iio/cdc/ad7746.c         | 818 +++++++++++++++++++++++++++++++
+> > > >  drivers/staging/iio/cdc/ad7746.c | 818 -------------------------------  
+> > >
+> > > It's a bit hard to review, perhaps you forgot to add -M -C when
+> > > generating this patch?  
+> >
+> > Specifically passed --no-renames because this is a direct file move -
+> > I should have stated that though.
+> >
+> > The intent is to allow review of the full driver as being proposed for
+> > move out of staging.  
 > 
-> > Hence, drop no-op call to irq_of_parse_and_map().
-> > 
-> > Second, assign the firmware node instead of of_node.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> Hi,
+> In (my) practice it only makes review much harder without any
+> additional benefits. Git is smart to understand renaming and in the
+> diffstat there is a special line about renaming.
 > 
-> Seems sensible to me, but I'd like a sanity check from someone more
-> familiar with this driver.
+> >  Including the bits that otherwise aren't
+> > visible anywhere in the driver.  I only do this (and ask for it from others)
+> > for staging graduation patches.  
+> 
+> Perhaps somebody finds that useful, but me :-)
+> 
 
-This one has been outstanding for a few weeks. I'd still like
-an Ack or similar form someone who knows this device well.
-
-If no one has looked at it in a week or so I'll just go with
-my judgement and pick it up.
-
-Thanks,
+I definitely do as lets me lazy and not apply the patches just do a review
++ where do you comment on something in the original driver that is getting moved?
+That particularly use case only really applies to drivers moving out of staging
+though.  Alternative is to paste the entire driver in the cover letter which
+is not a great solution either...
 
 Jonathan
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/adc/mxs-lradc-adc.c | 9 +++------
-> >  1 file changed, 3 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
-> > index bca79a93cbe4..25292bb8a13f 100644
-> > --- a/drivers/iio/adc/mxs-lradc-adc.c
-> > +++ b/drivers/iio/adc/mxs-lradc-adc.c
-> > @@ -17,7 +17,6 @@
-> >  #include <linux/mfd/core.h>
-> >  #include <linux/mfd/mxs-lradc.h>
-> >  #include <linux/module.h>
-> > -#include <linux/of_irq.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/sysfs.h>
-> >  
-> > @@ -692,7 +691,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
-> >  	struct mxs_lradc_adc *adc;
-> >  	struct iio_dev *iio;
-> >  	struct resource *iores;
-> > -	int ret, irq, virq, i, s, n;
-> > +	int ret, irq, i, s, n;
-> >  	u64 scale_uv;
-> >  	const char **irq_name;
-> >  
-> > @@ -721,7 +720,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
-> >  	platform_set_drvdata(pdev, iio);
-> >  
-> >  	iio->name = pdev->name;
-> > -	iio->dev.of_node = dev->parent->of_node;
-> > +	device_set_node(&iio->dev, dev_fwnode(dev->parent));
-> >  	iio->info = &mxs_lradc_adc_iio_info;
-> >  	iio->modes = INDIO_DIRECT_MODE;
-> >  	iio->masklength = LRADC_MAX_TOTAL_CHANS;
-> > @@ -747,9 +746,7 @@ static int mxs_lradc_adc_probe(struct platform_device *pdev)
-> >  		if (irq < 0)
-> >  			return irq;
-> >  
-> > -		virq = irq_of_parse_and_map(dev->parent->of_node, irq);
-> > -
-> > -		ret = devm_request_irq(dev, virq, mxs_lradc_adc_handle_irq,
-> > +		ret = devm_request_irq(dev, irq, mxs_lradc_adc_handle_irq,
-> >  				       0, irq_name[i], iio);
-> >  		if (ret)
-> >  			return ret;  
-> 
 

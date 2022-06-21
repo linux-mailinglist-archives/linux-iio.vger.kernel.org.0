@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F17E7553B60
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5284F553B61
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354029AbiFUUTX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:19:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55820 "EHLO
+        id S1353829AbiFUUTb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354017AbiFUUTW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:19:22 -0400
+        with ESMTP id S1354017AbiFUUTa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:19:30 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2760B2613C
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:19:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7A81CFCD
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:19:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D20A6B81B24
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:19:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D358C341C5;
-        Tue, 21 Jun 2022 20:19:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8C594B81809
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F46C3411C;
+        Tue, 21 Jun 2022 20:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842758;
-        bh=FTxPvwWZ+PsYz/PMouUMeUBi5brTPtjcJ0J79lS6jtw=;
+        s=k20201202; t=1655842767;
+        bh=2VOKrsbJJyFWIQ+Jx64qLLEpnySDWXWZeeq6TPRQzXw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A359trlrZJ7jwrpvDWNzr3v9Bd+emOvKWCMKG5Awa76gkbKYQMTEOBpcDMEvTB8/z
-         2+wyHlqUxbF0jdx8z+lyzZUUBD2Y72t749/8Kwk5V2NxobVpmqbYf8Hw0rs913vh52
-         MgaNr/zG+pfwNV/qq5gGhK3AsHDgnbdTDlWj413CaC7f57+bFa4mRFR99UiPSYoovC
-         lLQ3o/beBdAUxdvmXtzqnDkyBcNF07oXd4J5RprO0FfWnHScoVGf5Nb4nhu0N+ZPuk
-         Pmr2mlv7gNeaNCckvCYaDQ8kEaHengWjGWKV8Ae+xp82uR1T4c7nqLha41mU51HPZn
-         iLVVCRZxcPhUw==
+        b=u71zx0eEJzwq5BO14M0v49eH203ytIOxl5P4X9JN1bwlVrbO2YScLOeFPhlchWwXx
+         YZs5wkFoIpJj+ISdMZNLie7vylE6WzFtdF3wMNjBOJ3Riaz1h4dgttbi0yeY/rcdtw
+         r6ERqQssL7m8/FCkJA8lYaqrHVYp6ahmR4/maF9R3isFNx0ngtUfaO9GbpxmTyERX8
+         Nl47zidaqbU4g6mqFbj+tbQLqwsDFBwEaSG6eCfEX94xn5y0OS5q5s+zZE8MElmVwl
+         /KzQvGkoDKUB9yU9tYEK62eJ+ahfPcjGxp5lrF55v+UGE7K/oeNphl/R+fM+zMrqaq
+         SEImKaAmv/a2Q==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 09/36] iio: adc: xilinx-ams: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:26:52 +0100
-Message-Id: <20220621202719.13644-10-jic23@kernel.org>
+Subject: [PATCH 10/36] iio: chemical: scd4x: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:26:53 +0100
+Message-Id: <20220621202719.13644-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -89,47 +89,50 @@ structure and functions when !CONFIG_PM_SLEEP + removes the need to
 mark pm functions __maybe_unused.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Michal Simek <michal.simek@xilinx.com>
+Cc: Roan van Dijk <roan@protonic.nl>
 ---
- drivers/iio/adc/xilinx-ams.c | 8 ++++----
+ drivers/iio/chemical/scd4x.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-index a55396c1f8b2..8dad2b232ba7 100644
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -1421,7 +1421,7 @@ static int ams_probe(struct platform_device *pdev)
- 	return devm_iio_device_register(&pdev->dev, indio_dev);
- }
- 
--static int __maybe_unused ams_suspend(struct device *dev)
-+static int ams_suspend(struct device *dev)
- {
- 	struct ams *ams = iio_priv(dev_get_drvdata(dev));
- 
-@@ -1430,20 +1430,20 @@ static int __maybe_unused ams_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused ams_resume(struct device *dev)
-+static int ams_resume(struct device *dev)
- {
- 	struct ams *ams = iio_priv(dev_get_drvdata(dev));
- 
- 	return clk_prepare_enable(ams->clk);
- }
- 
--static SIMPLE_DEV_PM_OPS(ams_pm_ops, ams_suspend, ams_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(ams_pm_ops, ams_suspend, ams_resume);
- 
- static struct platform_driver ams_driver = {
- 	.probe = ams_probe,
- 	.driver = {
- 		.name = "xilinx-ams",
--		.pm = &ams_pm_ops,
-+		.pm = pm_sleep_ptr(&ams_pm_ops),
- 		.of_match_table = ams_of_match_table,
+diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+index 37143b5526ee..54066532ea45 100644
+--- a/drivers/iio/chemical/scd4x.c
++++ b/drivers/iio/chemical/scd4x.c
+@@ -551,7 +551,7 @@ static const struct iio_chan_spec scd4x_channels[] = {
  	},
+ };
+ 
+-static int __maybe_unused scd4x_suspend(struct device *dev)
++static int scd4x_suspend(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct scd4x_state *state  = iio_priv(indio_dev);
+@@ -564,7 +564,7 @@ static int __maybe_unused scd4x_suspend(struct device *dev)
+ 	return regulator_disable(state->vdd);
+ }
+ 
+-static int __maybe_unused scd4x_resume(struct device *dev)
++static int scd4x_resume(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct scd4x_state *state = iio_priv(indio_dev);
+@@ -577,7 +577,7 @@ static int __maybe_unused scd4x_resume(struct device *dev)
+ 	return scd4x_send_command(state, CMD_START_MEAS);
+ }
+ 
+-static __maybe_unused SIMPLE_DEV_PM_OPS(scd4x_pm_ops, scd4x_suspend, scd4x_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(scd4x_pm_ops, scd4x_suspend, scd4x_resume);
+ 
+ static void scd4x_stop_meas(void *state)
+ {
+@@ -688,7 +688,7 @@ static struct i2c_driver scd4x_i2c_driver = {
+ 	.driver = {
+ 		.name = KBUILD_MODNAME,
+ 		.of_match_table = scd4x_dt_ids,
+-		.pm = &scd4x_pm_ops
++		.pm = pm_sleep_ptr(&scd4x_pm_ops),
+ 	},
+ 	.probe = scd4x_probe,
  };
 -- 
 2.36.1

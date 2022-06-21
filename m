@@ -2,95 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DCBC552F18
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 11:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BEF9552FB7
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 12:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349377AbiFUJrl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 05:47:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60172 "EHLO
+        id S1347054AbiFUK0i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 06:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349266AbiFUJrk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 05:47:40 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3E827B37;
-        Tue, 21 Jun 2022 02:47:39 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id c130-20020a1c3588000000b0039c6fd897b4so9012134wma.4;
-        Tue, 21 Jun 2022 02:47:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=K3ZCR9iVeq6ZAfU5TRz3a90s4e4BlA0vDBwbjjM5RfY=;
-        b=dkpM687CjGEtZhDZ8rCYb6sL/az4iSWToMOUg+fg5uLqGa7P6ahCru2Owl3HEpvPwX
-         Oi2/89PQEieIpg84jOUXJ6Y5Cpwan5pt5ljmadId3m5MbuBe8aDrPUBRkLJ1DwUs5vWH
-         Hb+UNstb7VY6U0dpCsXJ8mzrWHs2oKbbg8uQq2dSWJgaYjKUILISHN5l90u7VVYrZw7C
-         a2mbYQ1UCK2dxrxyamx/HQWb7akAs/5Zn1dBqO/ju2XEVFLnj1ttNHBVNzIpyuQmuUrS
-         xXmDCobmZKLeuP1mQInRZKtYBvlasJyz9NP6QUtJxDPiAIjJHGxG1fITu5HgBGY7Aj+h
-         2EiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=K3ZCR9iVeq6ZAfU5TRz3a90s4e4BlA0vDBwbjjM5RfY=;
-        b=J3PisXJDyU3cpslpTuV/iLVzz79t1L/2OSOkwPLl5WhYlbKBm18JFGGd78OE8adv6J
-         aGjWz6Lqdl0jUz/YAshZaeA+L27WAqGyXMYyPqU8DDPRQ5ozDv9I7xtYlNgizWVsy7mx
-         MmN9Nn8wIqZbFi1QZ2oCs0fzPaS2yHdcfFuqGguSiX/9WuxC4e8vUbwW8VTSLwMJl4T2
-         I0IjF0GVh4aJJIf6ep8AH8JNZcZcGUOeM0KCP4ezhUvSb8osZYB+O/z2agOOvyPUkDBd
-         K1KV2be+cWR419SiHPdrbj02UsvhfrYmGOl1URKJWacWW8EFetjBHv746ST7c6YBZ8+a
-         OTZQ==
-X-Gm-Message-State: AJIora/h9uSw+iDYUK1zvI3KxYuFmWcpWYBZJ5ayh8wsmVjK6ZBV7zYU
-        FGn1zWuctY6PxFar26L9YLw=
-X-Google-Smtp-Source: AGRyM1sjQlqfYgzhZtmD5KyrTu1rLV5cg8wZwFoDW7+iQXmmb5YxwYnxnBrasq/IQhB/AjTjOu85qQ==
-X-Received: by 2002:a05:600c:3505:b0:39c:93d4:5eec with SMTP id h5-20020a05600c350500b0039c93d45eecmr28551855wmq.179.1655804857770;
-        Tue, 21 Jun 2022 02:47:37 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id r15-20020adff70f000000b002185d79dc7fsm15323739wrp.75.2022.06.21.02.47.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Jun 2022 02:47:37 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        with ESMTP id S1346086AbiFUK0h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 06:26:37 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 112AC28726;
+        Tue, 21 Jun 2022 03:26:35 -0700 (PDT)
+X-IronPort-AV: E=McAfee;i="6400,9594,10384"; a="281144103"
+X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
+   d="scan'208";a="281144103"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 03:26:35 -0700
+X-IronPort-AV: E=Sophos;i="5.92,209,1650956400"; 
+   d="scan'208";a="729778749"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 03:26:32 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andy.shevchenko@gmail.com>)
+        id 1o3b5Z-000qvj-Kg;
+        Tue, 21 Jun 2022 13:26:29 +0300
+Date:   Tue, 21 Jun 2022 13:26:29 +0300
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Fabio Estevam <festevam@gmail.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
+        <linux-arm-kernel@lists.infradead.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: adc: qcom-spmi-rradc: Fix spelling mistake "coherrency" -> "coherency"
-Date:   Tue, 21 Jun 2022 10:47:36 +0100
-Message-Id: <20220621094736.90436-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.35.3
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
+Message-ID: <YrGc1WKpZ/ik3Bt+@smile.fi.intel.com>
+References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
+ <CAOMZO5CtjkjsbOTaNF7+Hwswsn-fs2WNK=zyFL53JnBBpS8=0Q@mail.gmail.com>
+ <CAHp75Vd9yah3D8dUOPinhj=nm9GQs3xOsWZRL=6CvaROZC3OCQ@mail.gmail.com>
+ <CAOMZO5Bp83NSWPmbwp4uzrGSVkW2xQ+pRMFHaghs_XN+j32fcw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5Bp83NSWPmbwp4uzrGSVkW2xQ+pRMFHaghs_XN+j32fcw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is a spelling mistake in a dev_err message. Fix it.
+On Mon, Jun 20, 2022 at 06:56:27PM -0300, Fabio Estevam wrote:
+> On Mon, Jun 20, 2022 at 6:34 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> 
+> > Still? Does it mean you have it before my patch? If no, I will be very puzzled...
+> 
+> Yes, the warning is present before your patch.
+> 
+> > Otherwise does the touchscreen work?
+> 
+> I cannot test touchscreen at the moment.
+> 
+> >> Any suggestions?
+> >
+> > Perhaps, but we need to eliminate the proposed change from the  equation
+> 
+> If you send a v2 with "#include <linux/property.h>" then you can add:
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/iio/adc/qcom-spmi-rradc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Actually the entire thingy with setting node is not needed in this driver.
 
-diff --git a/drivers/iio/adc/qcom-spmi-rradc.c b/drivers/iio/adc/qcom-spmi-rradc.c
-index 87f349782108..56a713766954 100644
---- a/drivers/iio/adc/qcom-spmi-rradc.c
-+++ b/drivers/iio/adc/qcom-spmi-rradc.c
-@@ -295,7 +295,7 @@ static int rradc_read(struct rradc_chip *chip, u16 addr, __le16 *buf, int len)
- 	}
- 
- 	if (retry_cnt == RR_ADC_COHERENT_CHECK_RETRY)
--		dev_err(chip->dev, "Retry exceeded for coherrency check\n");
-+		dev_err(chip->dev, "Retry exceeded for coherency check\n");
- 
- 	return ret;
- }
+> Tested-by: Fabio Estevam <festevam@gmail.com>
+
+Thanks!
+
 -- 
-2.35.3
+With Best Regards,
+Andy Shevchenko
+
 

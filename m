@@ -2,72 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB8F455297C
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 04:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 644915529CA
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 05:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344445AbiFUCnH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 20 Jun 2022 22:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56272 "EHLO
+        id S244781AbiFUDhb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 20 Jun 2022 23:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232725AbiFUCnG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 22:43:06 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE121C10C;
-        Mon, 20 Jun 2022 19:43:04 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id p69so12958258iod.0;
-        Mon, 20 Jun 2022 19:43:04 -0700 (PDT)
+        with ESMTP id S1345055AbiFUDh2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 20 Jun 2022 23:37:28 -0400
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF28205C2
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 20:37:26 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id cu16so18044776qvb.7
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jun 2022 20:37:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=XBEE2W3FjydD0/XD0h/jv8cpLUWQxzRJ40zan6MUb+E=;
-        b=oWfVzxZxhoE4HCZZdM8AG2g15e+tsDablb3uv6NkJNr1Kh3zVrgyKtEPApzczQpRms
-         bD8RZbDm7aMtscYJEN8XXGOlsTqkZf1dtxoWPDORJ7urpKFNz5I0ZAkz1Y6lu2L3VKxk
-         jsgOC3+8UD4PmI07mrFKGYJUB4K2+cCuGgR1lLkTssDUPma6usi742emzjDomnez/fO7
-         gkncrR62Ovc5cM/k3mTqd9wRYOhJWE1fAYa4f47f2OUNxvJeF/xsemZbX25KUkPaIWm8
-         FPCUCW3ESzi7b+Cjy8YYs3GbGU2ami25BYtYRPOZWh4ANtHkZtNS3Ocb5DmSnpwpiC2t
-         VZVg==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=MSnBJxIMajCRdbgjedD4hjClanw8+Ph3IgtMGknCwiY=;
+        b=Kxg5RRAOTrisP7gRyvQXdU4/dykXnQY0AURJMlUd4GxSn1g4e69J3KDUoiL2IMf5j5
+         hesGNNYUIGLa4H8Kb5WL6G6goKZoiSu2+9/ZvKFCwVNBDPkZwznT4osobntEa54mkh9b
+         LlaUv3yMI/9MYPFcxWKON9ryC2ICxxYk27ccTQmAwn8RJiDOLGa/XHGeZ3iJ6GnwEYXH
+         DR9WFHaxTdEHG7spA0Hw6YzqgO2npfAO6Rl7c+5AZD9WkOGWEKIUpLPuaX69GNzTrvHO
+         gUSq545RRF9IRGiXJzOoCmAy3rG/B5dGSa5kFFdqc9qgWbAFlgu8gmKCG1yE2cgbLmcn
+         2pOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XBEE2W3FjydD0/XD0h/jv8cpLUWQxzRJ40zan6MUb+E=;
-        b=SFsINAcKpo0JqvLZoIiAnlSWTDwO3lvN5Q8VeVFXxVlvuJjimD+NqZVyJiuJnQzv6R
-         ZbkDwgWT+sZax3pIhI0V95jNOm2d7nzAAIoAxhN9FqWOlMzoRzpHDBh/TjXTJ4lkiuny
-         I1xJbKalFidpctUA+w4CQtQqpUGCK61Lh2vMIRNSfEzvzXdq/4DlxGz9Zj1vmLgJb+hV
-         MLhbTDCeHJBGBeEF6WEEoHlpN/hFuIQMLS5iAthEqHT3COWEmOR3wxrwdlYEYdutoNTm
-         JKySTWwPiEZmw8gtHJfUCVfhIUbQalTqh74uD1zHiGbb2kblaqW1u+1gKr345lR5P+O9
-         8eeA==
-X-Gm-Message-State: AJIora8QGpEsIBkVHrnxkeg4mZIjs1bCXwJj+a2Dz3ZT7bjeLFI/NgL2
-        qt1D5l7DvKntNPUKrog7UZdF1d4g+ixJkq+mvfY=
-X-Google-Smtp-Source: AGRyM1vpQzgV0zlZHowqIGzYAAvxpyakFnm6y9bItBulj3V4Z+ncRS7AdAAHY3Rk9Fm+0HC+g4QHLAUy8HRH6yxI77s=
-X-Received: by 2002:a02:6d61:0:b0:338:398c:1be8 with SMTP id
- e33-20020a026d61000000b00338398c1be8mr10684754jaf.271.1655779384400; Mon, 20
- Jun 2022 19:43:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-8-peterwu.pub@gmail.com>
- <20220618164820.2eeb8ae8@jic23-huawei> <CABtFH5+R761Tyd4yaWg-foSC4K=_aeYiVaTf37KvVH1Z4z9Jhw@mail.gmail.com>
- <20220620193500.145f05b9@jic23-huawei>
-In-Reply-To: <20220620193500.145f05b9@jic23-huawei>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Tue, 21 Jun 2022 10:42:53 +0800
-Message-ID: <CABtFH5KsiDchvshPEEs2hejCWW3z+7RFUXuUBkpR-uiWqOMKyQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/15] Documentation: ABI: testing: mt6370: Add ADC
- sysfs guideline
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=MSnBJxIMajCRdbgjedD4hjClanw8+Ph3IgtMGknCwiY=;
+        b=p3k4vkfktwBWzEeauc4GvycZXvvYpueMGRmn0NqrDxtZsHsRcc7MoxhxDGxPyGNZ0O
+         O9UtHPs2WobjKACj6H+sOrGif4Bg1GGUGCUm0kOfFLaFn52+VxE+GE81nJD4l8XR7hep
+         S7q1B7yoCatt/XI29t3VXmg3ed1AD8T+HQDtXjSmUzIuX+TsWEoQeWdWTZgASM4UREwl
+         FX2b+hplz9HsSJSngrha5+O7YUMajzxvlN7m9c70R4IslVFbRfvv2+3iBywqcUm89Nqd
+         /UkjQeGuCTaDtMX0Wii3jnsAhUUjtR/Q4Ruc8S9iavqtdGrnSpaaPo2q0kE+fss2Syxq
+         YpUw==
+X-Gm-Message-State: AJIora+iY2wFJPlbhhUKwLCmVnCoT50hLeJy2bkan2cx0xCfHnbEYYAr
+        7Ny3UbGxu11QpihStivFLom7RR4GB8w=
+X-Google-Smtp-Source: AGRyM1sM7tremjaJsRoJ98qu4+4UrIBe6PQLWWTox1huWj9Sn6i7AzIS1zrg+Zw13ZgERiGdUMmGCw==
+X-Received: by 2002:a05:6214:21a5:b0:46e:3743:a0b6 with SMTP id t5-20020a05621421a500b0046e3743a0b6mr20968297qvc.19.1655782645264;
+        Mon, 20 Jun 2022 20:37:25 -0700 (PDT)
+Received: from spruce (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id z13-20020a05622a060d00b00304eb8e880dsm13247074qta.23.2022.06.20.20.37.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jun 2022 20:37:24 -0700 (PDT)
+Date:   Mon, 20 Jun 2022 23:37:22 -0400
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, matthias.bgg@gmail.com,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com, ChiaEn Wu <chiaen_wu@richtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Tomasz Duszynski <tomasz.duszynski@octakon.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Siddartha Mohanadoss <smohanad@codeaurora.org>
+Subject: Re: [PATCH v2 0/4] 3rd set of IIO export namespaces.
+Message-ID: <YrE88tt9469NSNno@spruce>
+References: <20220604155306.422937-1-jic23@kernel.org>
+ <20220618142054.4571f2f4@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220618142054.4571f2f4@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -78,155 +76,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+On Sat, Jun 18, 2022 at 02:20:54PM +0100, Jonathan Cameron wrote:
+> On Sat,  4 Jun 2022 16:53:02 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Changes since v1:
+> > - Rebase (bit of fuzz in patches 1 and 4)
+> 
+> If anyone has time to take a quick look through this lot and sanity
+> check I haven't done anything stupid it would be much appreciated.
 
-Thanks for your reply!
+FWIW, 1 through 4 look good to me.
 
-Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=8821=E6=
-=97=A5 =E9=80=B1=E4=BA=8C =E5=87=8C=E6=99=A82:35=E5=AF=AB=E9=81=93=EF=BC=9A
+Reviewed-By: Joe Simmons-Talbott <joetalbott@gmail.com>
 
->
-> On Mon, 20 Jun 2022 14:00:43 +0800
-> ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> > Hi Jonathan,
-> >
-> > Thanks for your helpful comments, and I have some questions want to
-> > ask you below.
-> >
-> > Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=8818=
-=E6=97=A5 =E9=80=B1=E5=85=AD =E6=99=9A=E4=B8=8A11:39=E5=AF=AB=E9=81=93=EF=
-=BC=9A
-> > >
-> > > On Mon, 13 Jun 2022 19:11:38 +0800
-> > > ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> > >
-> > > > From: ChiaEn Wu <chiaen_wu@richtek.com>
-> > > >
-> > > > Add ABI documentation for mt6370 non-standard ADC sysfs interfaces.
-> > > >
-> > > > Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
-> > > > ---
-> > > >  .../ABI/testing/sysfs-bus-iio-adc-mt6370      | 36 +++++++++++++++=
-++++
-> > > >  1 file changed, 36 insertions(+)
-> > > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-mt6=
-370
-> > > >
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370 b/D=
-ocumentation/ABI/testing/sysfs-bus-iio-adc-mt6370
-> > > > new file mode 100644
-> > > > index 000000000000..039b3381176a
-> > > > --- /dev/null
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-mt6370
-> > > > @@ -0,0 +1,36 @@
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage0_=
-raw
-> > >
-> > > Unfortunately the kernel documentation build scripts do no support du=
-plicating
-> > > standard ABI for particular devices so as to provide more information=
-.
-> > > Hence you can't have anything in this file.
-> > >
-> >
-> > I want to confirm with you again,
-> > because my ABI file duplicates with standard sysfs-bus-iio (voltage,
-> > current, and temperature channels),
-> > Should I just remove this ABI file and modify the code of mt6370-adc
-> > to meet your expectations??
->
-> yes.
-
-OK! I got it! I will refine the code in the next patch!
-
->
-> >
-> > >
-> > > > +KernelVersion:       5.18
-> > > > +Contact:     chiaen_wu@richtek.com
-> > > > +Description:
-> > > > +             Indicated MT6370 VBUS ADC with lower accuracy(+-75mA)
-> > > Curious though, voltage with a mA accuracy range?
-> >
-> > Yes, this description is based on the data sheet.
->
-> Weird :)
-
-First, I want to apologize to you because I rechecked the datasheet
-and asked the hardware engineer,
-the conclusion is I wrote the wrong unit...
-The correction is that the accuracy of vbusdiv5 is +-75"mV", not "mA",
-and another one, vbusdiv2, is +-30mV.
-I sincerely apologize for this mistake and for any inconvenience...
-
->
-> >
-> > > This scale should be presented directly to userspace anyway so no nee=
-d
-> > > for this doc.
-> > >
-> > > > +             higher measure range(1~22V)
-> > > > +             Calculating with scale returns voltage in uV
-> > >
-> > > No. All channels return in mV. That's the ABI requirement as
-> > > in sysfs-bus-iio and we cannot vary if for particular drivers.  If we=
- did
-> > > no generic tooling would work.
-> >
-> > Ok, I got it!
-> >
-> > >
-> > > > +
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage1_=
-raw
-> > > > +KernelVersion:       5.18
-> > > > +Contact:     chiaen_wu@richtek.com
-> > > > +Description:
-> > > > +             Indicated MT6370 VBUS ADC with higher accuracy(+-30mA=
-)
-> > > > +             lower measure range(1~9.76V)
-> > > > +             Calculating with scale offset returns voltage in uV
-> > > > +
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage4_=
-raw
-> > > > +KernelVersion:       5.18
-> > > > +Contact:     chiaen_wu@richtek.com
-> > > > +Description:
-> > > > +             Indicated MT6370 TS_BAT ADC
-> > > > +             Calculating with scale returns voltage in uV
-> > > > +
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage7_=
-raw
-> > > > +KernelVersion:       5.18
-> > > > +Contact:     chiaen_wu@richtek.com
-> > > > +Description:
-> > > > +             Indicated MT6370 CHG_VDDP ADC
-> > > > +             Calculating with scale returns voltage in mV
-> > > > +
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_temp8_raw
-> > > > +KernelVersion:       5.18
-> > > > +Contact:     chiaen_wu@richtek.com
-> > > > +Description:
-> > > > +             Indicated MT6370 IC junction temperature
-> > > > +             Calculating with scale and offset returns temperature=
- in degree
-> >
-> > Shall I modify the scale of temperature to milli degrees in
-> > mt6370-adc.c and remove this item??
->
-> yes.
->
-> Thanks,
->
-> Jonathan
->
-> >
-> > >
-> >
-> > Best regards,
-> > ChiaEn Wu
->
-
-Best regards,
-ChiaEn Wu
+Joe
+> 
+> Disadvantage of being the maintainer is there isn't anyone else you
+> can moan about when no one reviews your patches. Of course I never
+> moan about other maintainers and I'm sure no one ever moans
+> about me :)
+> 
+> > 
+> > I sent v1 out in Feb and only got review on one patch (which I've since
+> > applied - thanks Nuno).
+> > 
+> > Looking for a quick sanity check of these 4 that remain from anyone who
+> > has the time.  Whilst this is mechanical stuff, I've made enough dumb
+> > mistakes in such patches over the years that I still like to get a second
+> > set of eyes on them if at all possible! 
+> > 
+> > Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
+> > Cc: Nuno Sá <nuno.sa@analog.com>
+> > Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> > Cc: Siddartha Mohanadoss <smohanad@codeaurora.org>
+> > 
+> > Jonathan Cameron (4):
+> >   iio: imu: bmi160: Move exported symbols to IIO_BMI160 namespace
+> >   iio: pressure: bmp280: Move symbol exports to IIO_BMP280 namespace
+> >   iio: chemical: sps30: Move symbol exports into IIO_SPS30 namespace
+> >   iio: adc: qcom-vadc: Move symbol exports to IIO_QCOM_VADC namespace
+> > 
+> >  drivers/iio/adc/qcom-pm8xxx-xoadc.c  |  1 +
+> >  drivers/iio/adc/qcom-spmi-adc5.c     |  1 +
+> >  drivers/iio/adc/qcom-spmi-vadc.c     |  1 +
+> >  drivers/iio/adc/qcom-vadc-common.c   | 16 ++++++++--------
+> >  drivers/iio/chemical/sps30.c         |  2 +-
+> >  drivers/iio/chemical/sps30_i2c.c     |  1 +
+> >  drivers/iio/chemical/sps30_serial.c  |  1 +
+> >  drivers/iio/imu/bmi160/bmi160_core.c |  6 +++---
+> >  drivers/iio/imu/bmi160/bmi160_i2c.c  |  1 +
+> >  drivers/iio/imu/bmi160/bmi160_spi.c  |  1 +
+> >  drivers/iio/pressure/bmp280-core.c   |  2 +-
+> >  drivers/iio/pressure/bmp280-i2c.c    |  1 +
+> >  drivers/iio/pressure/bmp280-regmap.c |  4 ++--
+> >  drivers/iio/pressure/bmp280-spi.c    |  1 +
+> >  14 files changed, 24 insertions(+), 15 deletions(-)
+> > 
+> 

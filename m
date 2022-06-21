@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86637553B6C
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39943553B6D
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354258AbiFUUUg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:20:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56752 "EHLO
+        id S1354263AbiFUUUm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:20:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354256AbiFUUUf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C0A1CFCD
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:34 -0700 (PDT)
+        with ESMTP id S1354268AbiFUUUm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EA8828991
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 98390B81B07
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8CEC3411C;
-        Tue, 21 Jun 2022 20:20:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16F6C6181B
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE41C341C4;
+        Tue, 21 Jun 2022 20:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842832;
-        bh=aNsWmTaWWnd1Gh7lA6RZjRrPyI4g7F6B3hrJztzlCJE=;
+        s=k20201202; t=1655842840;
+        bh=STw9T+eCYKZGLNbBcQn9J3EcCT6QJXT4yOFXLuEzYTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EybBLBqqI7217oAFeTUSS9E+YYeZhFI5dbpHHcJKd5RyHTUIh5SWzRpDITg6BkWKL
-         jSF5Gbo6ts6INYuzV0I1VULf0dACO9+8ghhLtczNC8IMqY9A8qoiFL0kJIDaAXE8FB
-         Jd+xqQksmTpL0lq1XugGVI7hzx83C7xwgmGlMvQFbtqlUQuI4em6EeHJ+Tgp0CmD+F
-         BCN1dRvKVaD8UJW/ODwE2mgoZMqkdB/PP2BKJgbI596bg8cdIffcnYTNdnlEM9sKfQ
-         XmbNHcpCsZKmzNbIOs0O2DQDDB8F2XPgxx9cDw8Cs3+AB0/g0JnMIok9AlHnn886QV
-         O3vTeu8+rYqGQ==
+        b=EGIHbP7u/tR/c9n8sE+Pj9hWzhTcrawEaXbREaVJUyTLQrNAvK2+Ea+qF3g0qtow/
+         0sLBjqflU0dE/m8xFK+YtaKWoKmQsldoAXVDvW/f8q63OqkNyyCSNII7wxpXzSgk9Y
+         rAtzI2qJU/lNUIdL7vo84YLBGeXS+NJqUA9dzb74O8K/dJKMvxCAmc7VgcgrYQmzra
+         QBkdKAr1iniJpqgqXsaXJN6va9WlAFRbmWEiPNVm05L/IqV2cr4M9Vmkfw5iLhDlxv
+         O7rCCYXMj0SY28B3SMfe6Dix/t78l5fgxiZuOlgTCJ4jbBvGv+nZaSQ+DSwaRxBPvX
+         b/Zc2l0SBPsJw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 18/36] iio: health: afe4404: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:27:01 +0100
-Message-Id: <20220621202719.13644-19-jic23@kernel.org>
+Subject: [PATCH 19/36] iio: light: al3010: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:27:02 +0100
+Message-Id: <20220621202719.13644-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -89,51 +89,45 @@ structure and functions when !CONFIG_PM_SLEEP + removes the need to
 mark pm functions __maybe_unused.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: David Heidelberg <david@ixit.cz>
 ---
- drivers/iio/health/afe4404.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/light/al3010.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 1bb7de60f8ca..dd7800159051 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -415,7 +415,7 @@ static const struct of_device_id afe4404_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, afe4404_of_match);
- 
--static int __maybe_unused afe4404_suspend(struct device *dev)
-+static int afe4404_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
- 	struct afe4404_data *afe = iio_priv(indio_dev);
-@@ -436,7 +436,7 @@ static int __maybe_unused afe4404_suspend(struct device *dev)
- 	return 0;
+diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+index b4e9924094cd..ce5363845b22 100644
+--- a/drivers/iio/light/al3010.c
++++ b/drivers/iio/light/al3010.c
+@@ -200,17 +200,17 @@ static int al3010_probe(struct i2c_client *client,
+ 	return devm_iio_device_register(&client->dev, indio_dev);
  }
  
--static int __maybe_unused afe4404_resume(struct device *dev)
-+static int afe4404_resume(struct device *dev)
+-static int __maybe_unused al3010_suspend(struct device *dev)
++static int al3010_suspend(struct device *dev)
  {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
- 	struct afe4404_data *afe = iio_priv(indio_dev);
-@@ -456,7 +456,8 @@ static int __maybe_unused afe4404_resume(struct device *dev)
- 	return 0;
+ 	return al3010_set_pwr(to_i2c_client(dev), false);
  }
  
--static SIMPLE_DEV_PM_OPS(afe4404_pm_ops, afe4404_suspend, afe4404_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(afe4404_pm_ops, afe4404_suspend,
-+				afe4404_resume);
+-static int __maybe_unused al3010_resume(struct device *dev)
++static int al3010_resume(struct device *dev)
+ {
+ 	return al3010_set_pwr(to_i2c_client(dev), true);
+ }
  
- static int afe4404_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
-@@ -607,7 +608,7 @@ static struct i2c_driver afe4404_i2c_driver = {
+-static SIMPLE_DEV_PM_OPS(al3010_pm_ops, al3010_suspend, al3010_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(al3010_pm_ops, al3010_suspend, al3010_resume);
+ 
+ static const struct i2c_device_id al3010_id[] = {
+ 	{"al3010", },
+@@ -228,7 +228,7 @@ static struct i2c_driver al3010_driver = {
  	.driver = {
- 		.name = AFE4404_DRIVER_NAME,
- 		.of_match_table = afe4404_of_match,
--		.pm = &afe4404_pm_ops,
-+		.pm = pm_sleep_ptr(&afe4404_pm_ops),
+ 		.name = AL3010_DRV_NAME,
+ 		.of_match_table = al3010_of_match,
+-		.pm = &al3010_pm_ops,
++		.pm = pm_sleep_ptr(&al3010_pm_ops),
  	},
- 	.probe = afe4404_probe,
- 	.remove = afe4404_remove,
+ 	.probe		= al3010_probe,
+ 	.id_table	= al3010_id,
 -- 
 2.36.1
 

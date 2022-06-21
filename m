@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA9BC553B63
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25AA3553B64
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354050AbiFUUTp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:19:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S1354065AbiFUUTw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354017AbiFUUTo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:19:44 -0400
+        with ESMTP id S1354017AbiFUUTw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:19:52 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFEB1CFCD
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:19:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEA02613C
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:19:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C5BE2B81809
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6C9C3411C;
-        Tue, 21 Jun 2022 20:19:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EAC70B81B24
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:19:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1F6C341C4;
+        Tue, 21 Jun 2022 20:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842781;
-        bh=oQVK8zu9RDGROfQmKal1LUbnVDhdKjLWODLPg13kPwM=;
+        s=k20201202; t=1655842788;
+        bh=0oSGiJpWCxBQCdZZZqvVuQT2Cw5szPuHbWL/hBhsH2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RM+k9jC2tvWSW/o/lG23zWtu/8OlQwWu2qR3Ip4HrAkv4un0SMDJp6qlSXTJaYpds
-         1lbjyRd97mmaZiLFXieqy7ym9OgqGRLgoi7tKyUvkq+e8Hm/VDpvVsgy3g9Z9DQopE
-         ZAymCexpf8+HMQstnEmzNXoo7P/pl1SgX5B8qXKAIiVAdh4Sf4td6DsN0lo+A2Rqx9
-         AIIk31O60cKS0O0rmDjJXSl3x1mEdFs6KwIx2KOfXxdzJeISCzN3mNIlNVcHHrGkHr
-         Hb0/212gk9kE2o68Th/PMjDulxK4oVl9QJ7yjcTe3BSbrZU+xIlRcdt+kt+cXUPp98
-         oMPTp0xek5ExQ==
+        b=Kc1f2PJxhiGbZO4czhKfFDnnfhrbnLMGClHK3ujRm6IILi6Na5NjcppE8eCN/mIRn
+         My4PNbQrxX6fIsQWRY3dXIJg0jGl5YdYTAsRdq9y1/MiRxiRIEJvuai0yYe1rXBFzy
+         1b7NKRSMV8YPI+Ip4009HMZmMiKy47PB1pGkmRBKeCoJ6eQp029woDzBemKfJ5v65s
+         rmuuFnhrLp2mKQkUHF63qIVXmuEy6HL+266650GbR7z5Z1/CK2O/Wob9urLayyPxKu
+         KlZoEHAkndVvZHsMBzR62CD3bBa6setU8DIhJzPs4xd/fFFnaomhrp5Ajr0n1wkmQ2
+         9kxC69CFk35nw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 12/36] iio: dac: ltc1660: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:26:55 +0100
-Message-Id: <20220621202719.13644-13-jic23@kernel.org>
+Subject: [PATCH 13/36] iio: dac: max517: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:26:56 +0100
+Message-Id: <20220621202719.13644-14-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -91,47 +91,47 @@ mark pm functions __maybe_unused.
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- drivers/iio/dac/ltc1660.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/dac/max517.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/dac/ltc1660.c b/drivers/iio/dac/ltc1660.c
-index c76233c9bb72..2758fc8a5ad5 100644
---- a/drivers/iio/dac/ltc1660.c
-+++ b/drivers/iio/dac/ltc1660.c
-@@ -137,20 +137,21 @@ static const struct iio_info ltc1660_info = {
- 	.write_raw = &ltc1660_write_raw,
- };
- 
--static int __maybe_unused ltc1660_suspend(struct device *dev)
-+static int ltc1660_suspend(struct device *dev)
- {
- 	struct ltc1660_priv *priv = iio_priv(spi_get_drvdata(
- 						to_spi_device(dev)));
- 	return regmap_write(priv->regmap, LTC1660_REG_SLEEP, 0x00);
+diff --git a/drivers/iio/dac/max517.c b/drivers/iio/dac/max517.c
+index a6ef555153f4..373ce6ff83b7 100644
+--- a/drivers/iio/dac/max517.c
++++ b/drivers/iio/dac/max517.c
+@@ -100,21 +100,21 @@ static int max517_write_raw(struct iio_dev *indio_dev,
+ 	return ret;
  }
  
--static int __maybe_unused ltc1660_resume(struct device *dev)
-+static int ltc1660_resume(struct device *dev)
+-static int __maybe_unused max517_suspend(struct device *dev)
++static int max517_suspend(struct device *dev)
  {
- 	struct ltc1660_priv *priv = iio_priv(spi_get_drvdata(
- 						to_spi_device(dev)));
- 	return regmap_write(priv->regmap, LTC1660_REG_WAKE, 0x00);
- }
--static SIMPLE_DEV_PM_OPS(ltc1660_pm_ops, ltc1660_suspend, ltc1660_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(ltc1660_pm_ops, ltc1660_suspend,
-+				ltc1660_resume);
+ 	u8 outbuf = COMMAND_PD;
  
- static int ltc1660_probe(struct spi_device *spi)
+ 	return i2c_master_send(to_i2c_client(dev), &outbuf, 1);
+ }
+ 
+-static int __maybe_unused max517_resume(struct device *dev)
++static int max517_resume(struct device *dev)
  {
-@@ -233,7 +234,7 @@ static struct spi_driver ltc1660_driver = {
+ 	u8 outbuf = 0;
+ 
+ 	return i2c_master_send(to_i2c_client(dev), &outbuf, 1);
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(max517_pm_ops, max517_suspend, max517_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(max517_pm_ops, max517_suspend, max517_resume);
+ 
+ static const struct iio_info max517_info = {
+ 	.read_raw = max517_read_raw,
+@@ -201,7 +201,7 @@ MODULE_DEVICE_TABLE(i2c, max517_id);
+ static struct i2c_driver max517_driver = {
  	.driver = {
- 		.name = "ltc1660",
- 		.of_match_table = ltc1660_dt_ids,
--		.pm = &ltc1660_pm_ops,
-+		.pm = pm_sleep_ptr(&ltc1660_pm_ops),
+ 		.name	= MAX517_DRV_NAME,
+-		.pm	= &max517_pm_ops,
++		.pm	= pm_sleep_ptr(&max517_pm_ops),
  	},
- 	.probe	= ltc1660_probe,
- 	.remove = ltc1660_remove,
+ 	.probe		= max517_probe,
+ 	.id_table	= max517_id,
 -- 
 2.36.1
 

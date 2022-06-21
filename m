@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A312553B5A
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:18:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8476553B5B
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352453AbiFUUSs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55440 "EHLO
+        id S1353327AbiFUUSv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:18:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354321AbiFUUSm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:18:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 957AD1CB00
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:18:41 -0700 (PDT)
+        with ESMTP id S1353370AbiFUUSu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:18:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 033331CFCD
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:18:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 336A1617C0
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:18:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B9DC3411C;
-        Tue, 21 Jun 2022 20:18:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CCF1617C0
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:18:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27297C341C4;
+        Tue, 21 Jun 2022 20:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842720;
-        bh=tXUjAECGDC97pW6hCsoM/tmUG9QCEtVKk1DKRB1Ft2Y=;
+        s=k20201202; t=1655842729;
+        bh=ZVo5W6uwva7QBmpp/yht+4hpbNEb+/jkE57WTOxF3eg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lr3Mb7zggQ1zHxZu6DU7+NKq6et8EmRysin5REdkgA2gxFkpJmOw9Rw+aw9Yd/wOH
-         4U5MSYnKx8CcfS9vV7Ed3Zc5TxMAH9KCXxs5GcI0fQYFmlj3Rn7bZjummm+LIuymKa
-         WVm4o7YjMbDy+KokuTjuQNzyAg/CIJ3kfRPKD/+3d4+wl1iHRqBOkyG4T/7rCOqoU6
-         lHJNJANScQpxDTYpZl1PbX8x6XzO0pomKeriEAwHabE5Lr57TMBenD3P2zqBwhlpbI
-         c5fuTCtp5ebGMTP/d0MnkHB7BuINc6K3TwBrS8xph2bbi4NWYIBzP6Bby4E+T7VQHC
-         JR65gz2drS7Gw==
+        b=iEF6e5+jhzRMrSUynDv7ddCxj6k+BjA87fZQPP/04TFQgvIGOt12foL/E6Ggd3XEe
+         ixLudVAMz/OhvnFS/yX0p96UjUp7IZMpXp2MvXzlAZ6uDfHGzLgJnPvXZSLc24MTQ+
+         xqRo+OUp1bFt+SD1Ic+ysQjbOIb+Q0icPFjKjnVcWwxZAlgaYlzzCqwOA0b3tlK9wC
+         SR960NsSdi0S1flABNsrRDxVGEunSsVHz1zj7CzABPTXVZ/Kw5um04BsgN1GwTKDXx
+         7xm8C8r8l9xgYzluyJeR6fFpgLbysigaLKt4RkDv8+PleVhUgFj2ua4KM23l13u14G
+         HtUug2gt2DBpw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 04/36] iio: adc: imx7d_adc: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:26:47 +0100
-Message-Id: <20220621202719.13644-5-jic23@kernel.org>
+Subject: [PATCH 05/36] iio: adc: meson_saradc: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:26:48 +0100
+Message-Id: <20220621202719.13644-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -84,37 +84,53 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-In this case we only gain the ability to have the compiler drop the
-struct dev_pm_ops because the callbacks are called from paths other
-than suspend and resume.  In general the purpose of this new macro
-is to allow automated removal of the callbacks as well, but that doesn't
-apply here.
+Using these newer macros allows the compiler to remove the unused
+structure and functions when !CONFIG_PM_SLEEP + removes the need to
+mark pm functions __maybe_unused.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 ---
- drivers/iio/adc/imx7d_adc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/adc/meson_saradc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-index 119217af2bde..86caff1d006b 100644
---- a/drivers/iio/adc/imx7d_adc.c
-+++ b/drivers/iio/adc/imx7d_adc.c
-@@ -540,14 +540,15 @@ static int imx7d_adc_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+index c18be3c519af..1a68b099d323 100644
+--- a/drivers/iio/adc/meson_saradc.c
++++ b/drivers/iio/adc/meson_saradc.c
+@@ -1281,22 +1281,22 @@ static int meson_sar_adc_remove(struct platform_device *pdev)
+ 	return meson_sar_adc_hw_disable(indio_dev);
  }
  
--static SIMPLE_DEV_PM_OPS(imx7d_adc_pm_ops, imx7d_adc_disable, imx7d_adc_enable);
-+static DEFINE_SIMPLE_DEV_PM_OPS(imx7d_adc_pm_ops, imx7d_adc_disable,
-+				imx7d_adc_enable);
+-static int __maybe_unused meson_sar_adc_suspend(struct device *dev)
++static int meson_sar_adc_suspend(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
  
- static struct platform_driver imx7d_adc_driver = {
- 	.probe		= imx7d_adc_probe,
+ 	return meson_sar_adc_hw_disable(indio_dev);
+ }
+ 
+-static int __maybe_unused meson_sar_adc_resume(struct device *dev)
++static int meson_sar_adc_resume(struct device *dev)
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 
+ 	return meson_sar_adc_hw_enable(indio_dev);
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(meson_sar_adc_pm_ops,
+-			 meson_sar_adc_suspend, meson_sar_adc_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(meson_sar_adc_pm_ops,
++				meson_sar_adc_suspend, meson_sar_adc_resume);
+ 
+ static struct platform_driver meson_sar_adc_driver = {
+ 	.probe		= meson_sar_adc_probe,
+@@ -1304,7 +1304,7 @@ static struct platform_driver meson_sar_adc_driver = {
  	.driver		= {
- 		.name	= "imx7d_adc",
- 		.of_match_table = imx7d_adc_match,
--		.pm	= &imx7d_adc_pm_ops,
-+		.pm	= pm_sleep_ptr(&imx7d_adc_pm_ops),
+ 		.name	= "meson-saradc",
+ 		.of_match_table = meson_sar_adc_of_match,
+-		.pm = &meson_sar_adc_pm_ops,
++		.pm = pm_sleep_ptr(&meson_sar_adc_pm_ops),
  	},
  };
  

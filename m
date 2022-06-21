@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18CBD553B6F
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC00553B70
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354267AbiFUUU5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
+        id S1354268AbiFUUU7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354256AbiFUUU4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:56 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6208D2613C
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:52 -0700 (PDT)
+        with ESMTP id S1354256AbiFUUU7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FBD1CFCD
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 67589CE1C3A
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9F6C3411C;
-        Tue, 21 Jun 2022 20:20:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5DBF4B81B07
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4093AC341C4;
+        Tue, 21 Jun 2022 20:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842848;
-        bh=TzpDH/PTgvb4s6AAydwAOEf9PgL+gttUYXhnIpL7lRg=;
+        s=k20201202; t=1655842856;
+        bh=mFglGnZ2qq7YIYl4qcrkS1N+FnCS3345zhcCklI+Hbg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JfETOiUrwbzwkCNjqPdgUsEuZ2szpB/1luuWzsQhk13WJJYyqyTgdK+Jx0KMLc+F0
-         xm9DxMNIKupsOfLsDUrFTBxdC8PkI3EDciTgCusjOdalq19MdOs+21V4s3E1tmfVQJ
-         2tzjkqCpdf0ibezrOrerElIbgQt3IAhkVw0Rtml1TeubKLEevaR38VpbYWBnj/nvVw
-         vZ2YVVpHxQG1zx19y4L4iQ5XSeJj7EAIjZbE5dxB3rmvZliPihx5tZUqW5GfpESrO/
-         CN/PnqxedFBZY28Bhgcv0qGCFr/ENqpFXhDBoMo671rSJBycMz/KHcYNYs8ZJ4g+UO
-         Aepmrmd+6U/gQ==
+        b=Mw31zysJolog4j4T23X3EnBy5D1Wa60sb40Va3CvpPQDww6qAuqbOo3iAHBRVQoL0
+         QxiOApUX+aY9VmmxRMKU+iJZlT+zzvCJx9Wz30h6nwDrahmoPUqB+Z9USEE9GsajCH
+         zUxh6WclT9MnaiSe6t65KG5KGLZ+v3jkrzJC6f3byW26n9yj8LN9dCJAH/6QXP45XS
+         veQJpxN0987hoNveskfbX+9nh9Kcwu1h/w/yadsXANfQvUCZ4RVMqime0diY+L4H97
+         KrYBSXePrcsV5RCUi43w7N5zaTWoukE2259HF/6jcigKCQpAzEUlujslgvJCs7dPmM
+         qOdXIKKUpd1EA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 20/36] iio: light: al3320a: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:27:03 +0100
-Message-Id: <20220621202719.13644-21-jic23@kernel.org>
+Subject: [PATCH 21/36] iio: light: as73211: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:27:04 +0100
+Message-Id: <20220621202719.13644-22-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -89,46 +89,50 @@ structure and functions when !CONFIG_PM_SLEEP + removes the need to
 mark pm functions __maybe_unused.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Heidelberg <david@ixit.cz>
+Cc: Christian Eggers <ceggers@arri.de>
 ---
- drivers/iio/light/al3320a.c | 9 +++++----
+ drivers/iio/light/as73211.c | 9 +++++----
  1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-index cc1407ccc10a..bc99179728ed 100644
---- a/drivers/iio/light/al3320a.c
-+++ b/drivers/iio/light/al3320a.c
-@@ -223,17 +223,18 @@ static int al3320a_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
+diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+index 3ba2378df3dd..2307fc531752 100644
+--- a/drivers/iio/light/as73211.c
++++ b/drivers/iio/light/as73211.c
+@@ -755,21 +755,22 @@ static int as73211_probe(struct i2c_client *client)
+ 	return devm_iio_device_register(dev, indio_dev);
  }
  
--static int __maybe_unused al3320a_suspend(struct device *dev)
-+static int al3320a_suspend(struct device *dev)
+-static int __maybe_unused as73211_suspend(struct device *dev)
++static int as73211_suspend(struct device *dev)
  {
- 	return al3320a_set_pwr(to_i2c_client(dev), false);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 
+ 	return as73211_power(indio_dev, false);
  }
  
--static int __maybe_unused al3320a_resume(struct device *dev)
-+static int al3320a_resume(struct device *dev)
+-static int __maybe_unused as73211_resume(struct device *dev)
++static int as73211_resume(struct device *dev)
  {
- 	return al3320a_set_pwr(to_i2c_client(dev), true);
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 
+ 	return as73211_power(indio_dev, true);
  }
  
--static SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend, al3320a_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(al3320a_pm_ops, al3320a_suspend,
-+				al3320a_resume);
+-static SIMPLE_DEV_PM_OPS(as73211_pm_ops, as73211_suspend, as73211_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(as73211_pm_ops, as73211_suspend,
++				as73211_resume);
  
- static const struct i2c_device_id al3320a_id[] = {
- 	{"al3320a", 0},
-@@ -251,7 +252,7 @@ static struct i2c_driver al3320a_driver = {
+ static const struct of_device_id as73211_of_match[] = {
+ 	{ .compatible = "ams,as73211" },
+@@ -787,7 +788,7 @@ static struct i2c_driver as73211_driver = {
  	.driver = {
- 		.name = AL3320A_DRV_NAME,
- 		.of_match_table = al3320a_of_match,
--		.pm = &al3320a_pm_ops,
-+		.pm = pm_sleep_ptr(&al3320a_pm_ops),
+ 		.name           = AS73211_DRV_NAME,
+ 		.of_match_table = as73211_of_match,
+-		.pm             = &as73211_pm_ops,
++		.pm             = pm_sleep_ptr(&as73211_pm_ops),
  	},
- 	.probe		= al3320a_probe,
- 	.id_table	= al3320a_id,
+ 	.probe_new  = as73211_probe,
+ 	.id_table   = as73211_id,
 -- 
 2.36.1
 

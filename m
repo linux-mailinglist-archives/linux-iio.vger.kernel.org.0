@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E87F8553B6B
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86637553B6C
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jun 2022 22:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354017AbiFUUU0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 21 Jun 2022 16:20:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56640 "EHLO
+        id S1354258AbiFUUUg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 21 Jun 2022 16:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354263AbiFUUUZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62B721CFCD
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:24 -0700 (PDT)
+        with ESMTP id S1354256AbiFUUUf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 21 Jun 2022 16:20:35 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C0A1CFCD
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 13:20:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00394617F4
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3DEC341C4;
-        Tue, 21 Jun 2022 20:20:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 98390B81B07
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 20:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8CEC3411C;
+        Tue, 21 Jun 2022 20:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1655842823;
-        bh=a9COZF0+ZiVAqmNEfLj92B/D6i34BlC7qy9zHSzB3u4=;
+        s=k20201202; t=1655842832;
+        bh=aNsWmTaWWnd1Gh7lA6RZjRrPyI4g7F6B3hrJztzlCJE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZcNT3Qi17sSpwuMTzvE4MqvUGpN8Ic8c4BMEGzJWF8Q9/PPL4KG7mF5UFI81e4qbA
-         A+R8QOJuwJ3eKUkVBUO1VvIKl93OtlPcf7Imn7GLGNWGQ1wlpJEHMHfhKHQ/729jSw
-         fDAWy56RzkukAiM1p3wLyEeLCmQQDXSgPIwrMlehin6FVJkkcPkukV9VEgTtV/4aBu
-         6hy93Vsnj5LusfBTRLTqVB6R0oCSWHqr2hf0TYXro+S/yUTd8ui1ePJ3dREE/4LgBv
-         CmEA40ZleC2AP1l8Cvvz5J1nazUUihLlh7A/0qchu6gBQ4o00y6kl+3icf+3y9+Adp
-         7L9moPfDE0ekQ==
+        b=EybBLBqqI7217oAFeTUSS9E+YYeZhFI5dbpHHcJKd5RyHTUIh5SWzRpDITg6BkWKL
+         jSF5Gbo6ts6INYuzV0I1VULf0dACO9+8ghhLtczNC8IMqY9A8qoiFL0kJIDaAXE8FB
+         Jd+xqQksmTpL0lq1XugGVI7hzx83C7xwgmGlMvQFbtqlUQuI4em6EeHJ+Tgp0CmD+F
+         BCN1dRvKVaD8UJW/ODwE2mgoZMqkdB/PP2BKJgbI596bg8cdIffcnYTNdnlEM9sKfQ
+         XmbNHcpCsZKmzNbIOs0O2DQDDB8F2XPgxx9cDw8Cs3+AB0/g0JnMIok9AlHnn886QV
+         O3vTeu8+rYqGQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>
 Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
@@ -64,9 +64,9 @@ Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 17/36] iio: health: afe4403: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Tue, 21 Jun 2022 21:27:00 +0100
-Message-Id: <20220621202719.13644-18-jic23@kernel.org>
+Subject: [PATCH 18/36] iio: health: afe4404: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Date:   Tue, 21 Jun 2022 21:27:01 +0100
+Message-Id: <20220621202719.13644-19-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220621202719.13644-1-jic23@kernel.org>
 References: <20220621202719.13644-1-jic23@kernel.org>
@@ -90,50 +90,50 @@ mark pm functions __maybe_unused.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/health/afe4403.c | 9 +++++----
+ drivers/iio/health/afe4404.c | 9 +++++----
  1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-index 856ec901b091..3bb4028c5d74 100644
---- a/drivers/iio/health/afe4403.c
-+++ b/drivers/iio/health/afe4403.c
-@@ -408,7 +408,7 @@ static const struct of_device_id afe4403_of_match[] = {
+diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
+index 1bb7de60f8ca..dd7800159051 100644
+--- a/drivers/iio/health/afe4404.c
++++ b/drivers/iio/health/afe4404.c
+@@ -415,7 +415,7 @@ static const struct of_device_id afe4404_of_match[] = {
  };
- MODULE_DEVICE_TABLE(of, afe4403_of_match);
+ MODULE_DEVICE_TABLE(of, afe4404_of_match);
  
--static int __maybe_unused afe4403_suspend(struct device *dev)
-+static int afe4403_suspend(struct device *dev)
+-static int __maybe_unused afe4404_suspend(struct device *dev)
++static int afe4404_suspend(struct device *dev)
  {
- 	struct iio_dev *indio_dev = spi_get_drvdata(to_spi_device(dev));
- 	struct afe4403_data *afe = iio_priv(indio_dev);
-@@ -429,7 +429,7 @@ static int __maybe_unused afe4403_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct afe4404_data *afe = iio_priv(indio_dev);
+@@ -436,7 +436,7 @@ static int __maybe_unused afe4404_suspend(struct device *dev)
  	return 0;
  }
  
--static int __maybe_unused afe4403_resume(struct device *dev)
-+static int afe4403_resume(struct device *dev)
+-static int __maybe_unused afe4404_resume(struct device *dev)
++static int afe4404_resume(struct device *dev)
  {
- 	struct iio_dev *indio_dev = spi_get_drvdata(to_spi_device(dev));
- 	struct afe4403_data *afe = iio_priv(indio_dev);
-@@ -449,7 +449,8 @@ static int __maybe_unused afe4403_resume(struct device *dev)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct afe4404_data *afe = iio_priv(indio_dev);
+@@ -456,7 +456,8 @@ static int __maybe_unused afe4404_resume(struct device *dev)
  	return 0;
  }
  
--static SIMPLE_DEV_PM_OPS(afe4403_pm_ops, afe4403_suspend, afe4403_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(afe4403_pm_ops, afe4403_suspend,
-+				afe4403_resume);
+-static SIMPLE_DEV_PM_OPS(afe4404_pm_ops, afe4404_suspend, afe4404_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(afe4404_pm_ops, afe4404_suspend,
++				afe4404_resume);
  
- static int afe4403_probe(struct spi_device *spi)
- {
-@@ -598,7 +599,7 @@ static struct spi_driver afe4403_spi_driver = {
+ static int afe4404_probe(struct i2c_client *client,
+ 			 const struct i2c_device_id *id)
+@@ -607,7 +608,7 @@ static struct i2c_driver afe4404_i2c_driver = {
  	.driver = {
- 		.name = AFE4403_DRIVER_NAME,
- 		.of_match_table = afe4403_of_match,
--		.pm = &afe4403_pm_ops,
-+		.pm = pm_sleep_ptr(&afe4403_pm_ops),
+ 		.name = AFE4404_DRIVER_NAME,
+ 		.of_match_table = afe4404_of_match,
+-		.pm = &afe4404_pm_ops,
++		.pm = pm_sleep_ptr(&afe4404_pm_ops),
  	},
- 	.probe = afe4403_probe,
- 	.remove = afe4403_remove,
+ 	.probe = afe4404_probe,
+ 	.remove = afe4404_remove,
 -- 
 2.36.1
 

@@ -2,104 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5FC055431F
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jun 2022 09:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6107554377
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jun 2022 09:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234333AbiFVG3g (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jun 2022 02:29:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45684 "EHLO
+        id S1347527AbiFVGeK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jun 2022 02:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235471AbiFVG3f (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 02:29:35 -0400
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 667E62F64A
-        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 23:29:34 -0700 (PDT)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 7B38F200003;
-        Wed, 22 Jun 2022 06:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1655879372;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+uIbel8HSiDaw/zOpmrpLst6SLMn0SHvw1Ynx6AWqhQ=;
-        b=DbuUv5IzWdL8Gsq9/KU6aod0XxwNzEWn9hzW4ZQZ7qKXWd/uKpzxmV1/vB/wTcegauo7hc
-        o1OxGne/SKYIwsZDnSMmacGzXRJ9BlaC0u9Bqnjpjh6Fk6SBAqGV8B5bsrvTs+xqvDyZJJ
-        ZHTLPYkIXz1wLXCi38sps3muahUy9TwGUFcu+nuhCb8TBDXGn3OAopD88nz3kzSyxPJ5d7
-        RGpFtRuknCPFR2lKsSVcB84kRtyF4XOv/jD9ujaSaoA/3hwiyOwF5MlbG+I9I5mjxOuqXy
-        2kuX5QmdoGIZ+SAh2ixgQtqx9wHzZo+TajXA6vtGSqd0q5KvIb/6opufX9xKFQ==
-Date:   Wed, 22 Jun 2022 08:29:25 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Brian Masney <masneyb@onstation.org>,
-        David Heidelberg <david@ixit.cz>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Christian Eggers <ceggers@arri.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Hui Liu <hui.liu@mediatek.com>,
-        Joe Sandom <joe.g.sandom@gmail.com>,
-        "Ismail H . Kose" <ihkose@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Mathieu Othacehe <m.othacehe@gmail.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Parthiban Nallathambi <pn@denx.de>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Philippe Schenker <philippe.schenker@toradex.com>,
-        Rishi Gupta <gupt21@gmail.com>,
-        Roan van Dijk <roan@protonic.nl>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 08/36] iio: adc: ti-am335x: Switch to
- DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Message-ID: <20220622082925.6e9c15b0@xps-13>
-In-Reply-To: <20220621202719.13644-9-jic23@kernel.org>
-References: <20220621202719.13644-1-jic23@kernel.org>
-        <20220621202719.13644-9-jic23@kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229788AbiFVGeF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 02:34:05 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417E3344E1
+        for <linux-iio@vger.kernel.org>; Tue, 21 Jun 2022 23:34:04 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1o3tw2-0000qx-2q; Wed, 22 Jun 2022 08:33:54 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1o3tvx-001yd1-8h; Wed, 22 Jun 2022 08:33:50 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1o3tvx-000MTk-AP; Wed, 22 Jun 2022 08:33:49 +0200
+Date:   Wed, 22 Jun 2022 08:33:49 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     =?utf-8?B?6JKL5YGl?= <jiangjian@cdjrlc.com>
+Cc:     jic23 <jic23@kernel.org>, lars <lars@metafoo.de>,
+        ardeleanalex <ardeleanalex@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "antoniu.miclaus" <antoniu.miclaus@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: magnetometer: hmc5843: Remove duplicate 'the'
+Message-ID: <20220622063349.njjnkzuxzp3tqoo7@pengutronix.de>
+References: <20220622035925.5008-1-jiangjian@cdjrlc.com>
+ <20220622054927.u7im55jm5ya3n43l@pengutronix.de>
+ <tencent_4A8F2A14242D4AE12AF9EFA6@qq.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2n6gntqnbw5r2slz"
+Content-Disposition: inline
+In-Reply-To: <tencent_4A8F2A14242D4AE12AF9EFA6@qq.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
 
-(second try, with a reply all...)
+--2n6gntqnbw5r2slz
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-jic23@kernel.org wrote on Tue, 21 Jun 2022 21:26:51 +0100:
+Hello,
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->=20
-> Using these newer macros allows the compiler to remove the unused
-> structure and functions when !CONFIG_PM_SLEEP + removes the need to
-> mark pm functions __maybe_unused.
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+On Wed, Jun 22, 2022 at 02:05:03PM +0800, =E8=92=8B=E5=81=A5 wrote:
+> Yes,the tool found the issue.&nbsp;
+> I am a&nbsp;beginner for this job and don't&nbsp;
+> konw how to write the commit messgae=EF=BC=8Cbut, you are maintainer, so =
+i copy the
+> suggestion.&nbsp;
+> &nbsp;
+> &nbsp;
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Another thing you should do to not annoy the people you communicate
+with: Fix your mail agent to not use &nbsp; instead of spaces.
 
-Thanks,
-Miqu=C3=A8l
+Best regards
+Uwe
+
+--2n6gntqnbw5r2slz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKyt8oACgkQwfwUeK3K
+7AlTmgf/WkmSUWgXBDa/ZGcbep9ZD0Skn52FyryvdYfM+xdPNMlF3VC5CA+mA0am
+VMqrIrF9vqRRpO7v9KrJ99bs2X4RrtNDe+8TVUVHUyLkv3yJOHdhX28OI6FEtQN5
+9UIFiVog5ACx0wcwjzaRHfu8zi57PrlQfsNX/1KZTvyMQKMSFjq9/kwlxSRArcUm
+F88ZVswyLuAp7plD5w2JuIAA26ahOKEEbwm+PHcYxXYYOagrRfxXRo7YRoe11RHf
+JnKG8CR+nSDVZH554pNMYey2i06wdKxlJ5u+0qs+tk7qKfGfoT+KzxctVgN+xUsf
+3e7QCziM3IBZw1WOE5rauMdnq2R5mQ==
+=Gg+E
+-----END PGP SIGNATURE-----
+
+--2n6gntqnbw5r2slz--

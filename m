@@ -2,145 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9DD554860
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jun 2022 14:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CA995548D2
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jun 2022 14:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234139AbiFVJg0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jun 2022 05:36:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35224 "EHLO
+        id S1355580AbiFVKg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jun 2022 06:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiFVJg0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 05:36:26 -0400
-Received: from ixit.cz (ip-94-112-206-30.net.upcbroadband.cz [94.112.206.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA29D2CE0C
-        for <linux-iio@vger.kernel.org>; Wed, 22 Jun 2022 02:36:22 -0700 (PDT)
-Received: from [10.0.0.163] (_gateway [10.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by ixit.cz (Postfix) with ESMTPSA id B09792007F;
-        Wed, 22 Jun 2022 11:36:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-        t=1655890578;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=abJwlkcJdUeTkgLWft0NvFTUWFTs+iy7Yb3/QnMkpgY=;
-        b=YPgDGSL0qm0hgVm6xyuEorl56DFWnl7JyVDL2bE4d8Fn2AIw2io4ewllKsRCTKZuKfeVYI
-        exMCCqS17nEUGL9h5DTloU/BAt9Smg1ccuhhAFJiSRrtH1pK8LE6c9A6grH/9xy3BJmmzH
-        G3DBIWn4Ytnt4Sg7Z5tMqQHCtQtThpE=
-Message-ID: <839b8e54-17f0-f313-a0ca-41fd38e9569c@ixit.cz>
-Date:   Wed, 22 Jun 2022 11:36:18 +0200
+        with ESMTP id S1355402AbiFVKgx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 06:36:53 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5FE13BA7D;
+        Wed, 22 Jun 2022 03:36:49 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id o10so23263128edi.1;
+        Wed, 22 Jun 2022 03:36:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=YFwi1vxkzrvgsqoCKPo5AQXebahZiMS5qtbuazVoioY=;
+        b=C60jruRIr3l7H20jbT6Re8q4TAOBzwgoJniFeCwP9jUCkCeFfZSyKWDXzuiR3+WsFk
+         iug9mCtL5f/362puhR37XxfXjPTn+feFC8tv5f+bUCGxDr5RecoUaz5WL/iKgw40h3f5
+         nRLlZkcl+Cgcr2kX9I7VZkqGcpVV39vi0d4feUx7Mg7xkPeRevq2RrFsFeI4kgEh2RbO
+         1N8lkUgvGsbvP6nJ0yewhGBY+YbTQLHkQCH0wrxztTUCL3jR2tFJCgJ4iW4RmvFKBM5x
+         9Wx0qhacGBBsF/oQxleSmTbsTojFMMwK1Y3Znaa7mITTI9ctZr+bJEAD7fH9uR2Py1m/
+         LCwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=YFwi1vxkzrvgsqoCKPo5AQXebahZiMS5qtbuazVoioY=;
+        b=JUQkFuw/LJT3Zo+3RWVoPZFiD2r+ZQg17eyslr5kTL99ME8uvUy2BSEWuIUEBpx+Ju
+         5lgkWlveEWsfYs147upTOC8HupaMjHP3uTE3A4wji8AeY3atS3UnXWMtbGJP8uO7+aZI
+         b74tRwChr9xVkcZsQIyX39BXUzK2/Jy9rVSj5IpEa/fgr7U+sqNWqNJmOMpTaZ5BuT4y
+         kf+tGjg1l3SmsN2QleI70t7hF5P555BGdBlhsSaC8ui0NzV+WrdzsUFdihe0DEmvVdkK
+         tv8DMP+r6szL0EAIqsbNaYcUJjHK0VqEzfvQU5AySASWzRKDye8DpG51ZK8E1G+Tb9AJ
+         PIgg==
+X-Gm-Message-State: AJIora/JbIdlBFYOpg7Dm/7Z1IHgTL1xejn62ZJ6PGGBQCvMFfI1S14t
+        YVorYM/L8RLtE96StQo1Et71XIdRB3bDUjKODnQ=
+X-Google-Smtp-Source: AGRyM1tnnFr1LC7h/zRLo+HkB47D6IcosyajAFO4R/Wl+PPHAqyQruG56xeyLIJB7dGNj2Z8gyVtab2tS/XsOjguV9k=
+X-Received: by 2002:a05:6402:5002:b0:435:1ff1:99ee with SMTP id
+ p2-20020a056402500200b004351ff199eemr3312157eda.230.1655894208315; Wed, 22
+ Jun 2022 03:36:48 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 19/36] iio: light: al3010: Switch to
- DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Brian Masney <masneyb@onstation.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Christian Eggers <ceggers@arri.de>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Hui Liu <hui.liu@mediatek.com>,
-        Joe Sandom <joe.g.sandom@gmail.com>,
-        "Ismail H . Kose" <ihkose@gmail.com>,
+References: <20220314141643.22184-1-u.kleine-koenig@pengutronix.de>
+ <20220314141643.22184-2-u.kleine-koenig@pengutronix.de> <d6b890c8-bfb5-cfa5-c6d8-ee245701c077@nvidia.com>
+ <20220621204914.byokkrxiznvod7vq@pengutronix.de>
+In-Reply-To: <20220621204914.byokkrxiznvod7vq@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 22 Jun 2022 12:36:11 +0200
+Message-ID: <CAHp75VcBEpLo+pYy+RG3O2BbePJbGEQ89jxi-oG1W6=+2hgXrQ@mail.gmail.com>
+Subject: Re: [PATCH v8 01/16] clk: generalize devm_clk_get() a bit
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Jon Hunter <jonathanh@nvidia.com>, Stephen Boyd <sboyd@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Russell King <linux@armlinux.org.uk>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Lars Povlsen <lars.povlsen@microchip.com>,
+        Steen Hegelund <Steen.Hegelund@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        linux-hwmon@vger.kernel.org,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
         Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Mathieu Othacehe <m.othacehe@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Mark Brown <broonie@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+        linux-clk <linux-clk@vger.kernel.org>,
+        LINUXWATCHDOG <linux-watchdog@vger.kernel.org>,
+        "open list:REAL TIME CLOCK (RTC) SUBSYSTEM" 
+        <linux-rtc@vger.kernel.org>,
         Michal Simek <michal.simek@xilinx.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
-        Parthiban Nallathambi <pn@denx.de>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Philippe Schenker <philippe.schenker@toradex.com>,
-        Rishi Gupta <gupt21@gmail.com>,
-        Roan van Dijk <roan@protonic.nl>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Zhiyong Tao <zhiyong.tao@mediatek.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20220621202719.13644-1-jic23@kernel.org>
- <20220621202719.13644-20-jic23@kernel.org>
-From:   David Heidelberg <david@ixit.cz>
-In-Reply-To: <20220621202719.13644-20-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RDNS_DYNAMIC,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        linux-stm32@st-md-mailman.stormreply.com,
+        Andy Gross <agross@kernel.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Keguang Zhang <keguang.zhang@gmail.com>,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        linux-pwm@vger.kernel.org, Sascha Hauer <kernel@pengutronix.de>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        =?UTF-8?Q?Andr=C3=A9_Gustavo_Nakagomi_Lopez?= <andregnl@usp.br>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        linux-amlogic <linux-amlogic@lists.infradead.org>,
+        Amireddy Mallikarjuna reddy 
+        <mallikarjunax.reddy@linux.intel.com>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-spi <linux-spi@vger.kernel.org>,
+        Cai Huoqing <caihuoqing@baidu.com>,
+        linux-crypto <linux-crypto@vger.kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        dmaengine <dmaengine@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-both patches 19 and 20:
+On Tue, Jun 21, 2022 at 11:01 PM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@pengutronix.de> wrote:
+> On Tue, Jun 21, 2022 at 08:57:00PM +0100, Jon Hunter wrote:
 
-Reviewed-by: David Heidelberg <david@ixit.cz>
+...
 
-On 21/06/2022 22:27, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Using these newer macros allows the compiler to remove the unused
-> structure and functions when !CONFIG_PM_SLEEP + removes the need to
-> mark pm functions __maybe_unused.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: David Heidelberg <david@ixit.cz>
-> ---
->   drivers/iio/light/al3010.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
-> index b4e9924094cd..ce5363845b22 100644
-> --- a/drivers/iio/light/al3010.c
-> +++ b/drivers/iio/light/al3010.c
-> @@ -200,17 +200,17 @@ static int al3010_probe(struct i2c_client *client,
->   	return devm_iio_device_register(&client->dev, indio_dev);
->   }
->   
-> -static int __maybe_unused al3010_suspend(struct device *dev)
-> +static int al3010_suspend(struct device *dev)
->   {
->   	return al3010_set_pwr(to_i2c_client(dev), false);
->   }
->   
-> -static int __maybe_unused al3010_resume(struct device *dev)
-> +static int al3010_resume(struct device *dev)
->   {
->   	return al3010_set_pwr(to_i2c_client(dev), true);
->   }
->   
-> -static SIMPLE_DEV_PM_OPS(al3010_pm_ops, al3010_suspend, al3010_resume);
-> +static DEFINE_SIMPLE_DEV_PM_OPS(al3010_pm_ops, al3010_suspend, al3010_resume);
->   
->   static const struct i2c_device_id al3010_id[] = {
->   	{"al3010", },
-> @@ -228,7 +228,7 @@ static struct i2c_driver al3010_driver = {
->   	.driver = {
->   		.name = AL3010_DRV_NAME,
->   		.of_match_table = al3010_of_match,
-> -		.pm = &al3010_pm_ops,
-> +		.pm = pm_sleep_ptr(&al3010_pm_ops),
->   	},
->   	.probe		= al3010_probe,
->   	.id_table	= al3010_id,
+> (Pro tipp: The commit in next has a Link: footer. If you follow the
+> link, you find the thread that was actually applied (i.e. v9) and where
+> the fix is also contained.)
 
--- 
-David Heidelberg
-Consultant Software Engineer
+Even easier, you may take a message-id from the Link and supply to `b4`:
 
-Matrix: @okias:matrix.org
+  b4 mbox ${message-id}
+  mutt -f ${message-id}.mbx # or whatever MUA that handles mboxes
 
+
+Dunno if `b4` has capability to parse Link instead of message-id.
+
+--=20
+With Best Regards,
+Andy Shevchenko

@@ -2,141 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FF10558912
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 21:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C1E855896F
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 21:45:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231190AbiFWTgC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jun 2022 15:36:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60148 "EHLO
+        id S231180AbiFWTot (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jun 2022 15:44:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbiFWTfw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 15:35:52 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8C46B8FB;
-        Thu, 23 Jun 2022 12:20:42 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id b23so273930ljh.7;
-        Thu, 23 Jun 2022 12:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uk7g0Aw/EDRHBj5LRpy9KD4B4NBBKvlJakN4LOD9oDw=;
-        b=XmrpTDwJgogJyAc6MgFm9zgw5CTPEurzYo1zs575PeLPE6f4GG396CBGgQLOil7hqS
-         fHLLXI/XanWBn4u0Hon7BiB8xXHkRVt8kHJ6lHYQw7FzIChqJt6YiZQZccs7+g/WixR6
-         OdhyK8msgOAEK6fgMvTIs6HlbNLBn6lyK5KJ1LlxnpJPbEf7QdGyyrVmANqepCUm2bBp
-         7K9NifoM/02+a9PPUde1kpdBwa9FVoQhHU6njcE0kD5ukne1feFQ2Npn+vyCxLZ4JVBp
-         OUYqVPyyAzBlqExSQQeFyMzkSeXe4ndm7rEPDnkEY3aEel83PilzVuQkSoSspux/G1RZ
-         GPow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uk7g0Aw/EDRHBj5LRpy9KD4B4NBBKvlJakN4LOD9oDw=;
-        b=3rjw7ajOEfG4On1ZGIr8ba1dWEMsR6xWGMFR8ImlhysjDgWfHel8Im2bBMVLLhIbmg
-         4GwW+fcANAeKLtg+9hXy/+e7iQd/gwgfJgFbZuHbrR1k6frGv6SEFF7H+/AQVRx7Aj6g
-         gdoAeQYbRkcpydF52N+zbyAEGhFNSWExpv0MdBrn6vbttV10yfHkiyXw8ggQeL/OGy0O
-         d1voD2ynk+45HIxlSk+iQtnmO6mki2Wg9thf37EC6GIxaX1SHaKw41FIG45bT4rnUe38
-         c7mngKRtl+nQR5qgxt1xboOADr+HyA8SszIX9Gw2pnzGf/Y8tZFK+FfiwIPktu9uIAwA
-         P2+Q==
-X-Gm-Message-State: AJIora/iWIRkk064NZ9+hSO9XmwO20ZIvpUq4BJS/TcLAV1/A9XDGjY+
-        UE38M0Ld8l13Fqa2oi9kWIqSFv3c2CdGIwk2cTI=
-X-Google-Smtp-Source: AGRyM1tJWW+6956tJa3lm0LJW4qM7fqOh82M5ZyF44p3fdHpVdxSrqBF8LUisXNI6qHiKFgxJgcrfbt8cz9B77aJTLc=
-X-Received: by 2002:a2e:5752:0:b0:25a:6cff:6b06 with SMTP id
- r18-20020a2e5752000000b0025a6cff6b06mr5547628ljd.435.1656012040981; Thu, 23
- Jun 2022 12:20:40 -0700 (PDT)
+        with ESMTP id S231548AbiFWToY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 15:44:24 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CA7AA4;
+        Thu, 23 Jun 2022 12:37:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+        :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=9CGM3MAz5VIB06lBzNjGngOQOoE0/I7wEi8Zke9gm+w=; b=eQsA4dsC7zy0gZGxnWzQsATNue
+        4RNWA+fhmA3erPfzk5dxeMQCaD5Lf11f9oQOKkk8CzdloSz0KwOEP+HRM4wMgGPP8ofcZCZ2qDmwT
+        xfiupW9UG4h8v6ZC3HM8LRHIplQ2b0UahGQFsyNwJUOONvAmQaW+GT7DlYixlYzdJoIae9dvTqpeU
+        gy/FAvkyHsCJjzMv7Un5R+xfx0R5N1LCz8GpdTxJ5A4fM7tBl8UkLYkl8Zu3L9BNeakPSWLUWDFoM
+        lRie2OS7t8onKtNzBXKfM4zQiHwHss/qcyL+N+8jD2XviMbsj2Yz1eEDOSE48nGWdf9/GLVllbreJ
+        XSnwtsig==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1o4SWU-00Bssw-NX; Thu, 23 Jun 2022 19:30:38 +0000
+Message-ID: <bcc5b395-7fd8-f1a0-1b9f-62c9948287af@infradead.org>
+Date:   Thu, 23 Jun 2022 12:29:27 -0700
 MIME-Version: 1.0
-References: <20220623170844.2189814-1-marcus.folkesson@gmail.com> <20220623170844.2189814-6-marcus.folkesson@gmail.com>
-In-Reply-To: <20220623170844.2189814-6-marcus.folkesson@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 23 Jun 2022 21:20:01 +0200
-Message-ID: <CAHp75Ve+gDa46MRhTR-5dOutGhXqakZbSX14TurwnsuT4OeuYQ@mail.gmail.com>
-Subject: Re: [PATCH 06/10] iio: adc: mcp3911: add support for oversampling ratio
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 12/14] leds: mt6370: Add Mediatek MT6370 current sink
+ type LED Indicator support
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+References: <20220623115631.22209-1-peterwu.pub@gmail.com>
+ <20220623115631.22209-13-peterwu.pub@gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220623115631.22209-13-peterwu.pub@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jun 23, 2022 at 9:08 PM Marcus Folkesson
-<marcus.folkesson@gmail.com> wrote:
->
-> The chip support oversampling ratio so expose it to userspace.
 
-supports
 
-ratio, so
+On 6/23/22 04:56, ChiaEn Wu wrote:
+> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+> index a49979f..a8c58c3 100644
+> --- a/drivers/leds/Kconfig
+> +++ b/drivers/leds/Kconfig
+> @@ -244,6 +244,17 @@ config LEDS_MT6323
+>  	  This option enables support for on-chip LED drivers found on
+>  	  Mediatek MT6323 PMIC.
+>  
+> +config LEDS_MT6370_RGB
+> +	tristate "LED Support for Mediatek MT6370 PMIC"
+> +	depends on LEDS_CLASS
+> +	depends on MFD_MT6370
+> +	select LINEAR_RANGE
+> +	help
+> +	  Say Y here to enable support for MT6370_RGB LED device.
+> +	  In MT6370, there are four channel current-sink LED drivers that
+> +	  support hardware pattern for const current, PWM, and breath mode.
 
-...
+Spell out "constant" (if that is what "const" means here). ?
 
-> +static const int mcp3911_osr_table[] = {32, 64, 128, 256, 512, 1024, 2048, 4096};
-
-Spaces inside {}.
-
-...
-
->  }
->
-> +
-
-Unwanted blank line.
-
-...
-
-> +               switch (val) {
-> +               case 4096:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x07);
-> +                       break;
-> +               case 2048:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x06);
-> +                       break;
-> +               case 1024:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x05);
-> +                       break;
-> +               case 512:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x04);
-> +                       break;
-> +               case 256:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x03);
-> +                       break;
-> +               case 128:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x02);
-> +                       break;
-> +               case 64:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x01);
-> +                       break;
-> +               case 32:
-> +                       val = FIELD_PREP(MCP3911_CONFIG_OSR, 0x00);
-> +                       break;
-> +               default:
-> +                       ret = -EINVAL;
-> +                       goto out;
-> +               }
-
-I understood why the table above, but this is a waste of resources.
-Use that table
-
-...
-
-> +               ret = mcp3911_update(adc, MCP3911_REG_CONFIG,
-> +                               MCP3911_CONFIG_OSR,
-> +                               val, 2);
-
-sizeof() ?
+> +	  Isink4 channel can also be used as a CHG_VIN power good indicator.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+~Randy

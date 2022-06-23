@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B7B5588DF
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 21:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0CD55588E3
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 21:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231450AbiFWT35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jun 2022 15:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47472 "EHLO
+        id S229617AbiFWTbe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jun 2022 15:31:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231455AbiFWT3c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 15:29:32 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EAE592149;
-        Thu, 23 Jun 2022 12:00:21 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id u12so99863eja.8;
-        Thu, 23 Jun 2022 12:00:21 -0700 (PDT)
+        with ESMTP id S231179AbiFWTbQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 15:31:16 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CE8B8894B;
+        Thu, 23 Jun 2022 12:02:39 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id z7so243820edm.13;
+        Thu, 23 Jun 2022 12:02:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=DlD0qxEHT2yzgN07/r9hAt1+bX51O7i0+YMrDs9OqBI=;
-        b=f11c4tn3nl7urOAnkHO27alkVuIcDL2eMLUTUz1bg8OraDNhiUYgNDbNM/S+SX+NXD
-         oOD1clTA6J3Wdh2VpyEptUNa/6DbNdXu55pKdoPvkGPdu29vYCHb0BL5jQLkwUAZktFM
-         Kk+uS9ZZsxlh2v6nZRne1NcBT9Q+DB7Ny0wUd2juLeelh697JPhi3uf6X8bzN5fSLn0t
-         JcrsNNb5uh1QcU31D1WnJr/LPaLBDbvu+eAEaVGsUWXL8oWBbj+erypHxZ0BIWP+wBzD
-         mq4F00+VauyqgV9b64PyqTwkl06v4YIP6rG3kPRNqmY7TcK5lpUQwXx4j4ysh2sNohP+
-         l5YA==
+        bh=JCErgz0H1oyDXgvoAb85VRrQrpHCFzhnzWBsRkTC1Ro=;
+        b=ZYTcLOGJ6iocPPES2rs3DpEF4kmyePCI4155SWosvmdBJCNrlukEDhoLlKtbYz9SDr
+         smsBek4ua310ytCYnGatpprCnCZ2zzqErtPMVpGtLhEh1RcqYOAIkMvp7OGLO6DqOMD3
+         5298c4Rj/EFO0pxoOJP03nddYnCJ9JnMunmJhmJBvHaWSruOrVwUf0VyQ26nlBEn0Ujr
+         su2xN8fm496RtGcO5760doij2gMLpfUpX2Y3oBcVKtQGGGml0tEA6oyEV14y99Mn0TN8
+         QmHePZA/iJiageQA7eD1YdsEeYlq/7fKHaCRNFKLTqAi2pnP/ZilymaditFbEt6w+1qI
+         O3jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=DlD0qxEHT2yzgN07/r9hAt1+bX51O7i0+YMrDs9OqBI=;
-        b=2OT5pMDBRgfgmYvd7BtaeAx6tWXCIodcXoM+PicjHoHUfYmD5nT44Iuny/oT8bXc9E
-         9aafEpBJVCEjOZgnpn9mzdzrgwvtmkV66oea/YqD5ZmGJazucTLHS8Iw0WtXfhYPX6Tj
-         HdhVThYFRYR9tFrKjJnMLvo9kkzIP0cZeoTHu+IoetyyX8a0phg86Q0IPkGXPys0ME8l
-         Kttg2PerRAnEHH1FFhkFl7+UY5Az2BS1dgxDASPT6WxHAExkA3aCYsMszd6Ki6VuaR8q
-         98UJGfA55Ijz9N5h7bgkjjSDNGPncyoMj3hkBGs+DjkYuxTDAPtoJUfZ5Hb9Q/1Avgz0
-         UURg==
-X-Gm-Message-State: AJIora/ZvvL10j8dEwITxS4+S06O5UU1Z3qzD+js9yxPRwRQcZnqnyVy
-        lSiv5fdEFdf2qoCiOkj5p0gFsM3+yxkhaLlSJco=
-X-Google-Smtp-Source: AGRyM1tjvJdRj1PCspbJAq1ILaoQ+ef9Zgu837d8hxEsWLP71mAQ+rAb5XvUL3ESbXicGB497dv2xjD8VYMwG4XkNMo=
-X-Received: by 2002:a17:907:2d09:b0:722:f0bf:ac26 with SMTP id
- gs9-20020a1709072d0900b00722f0bfac26mr9722254ejc.77.1656010819823; Thu, 23
- Jun 2022 12:00:19 -0700 (PDT)
+        bh=JCErgz0H1oyDXgvoAb85VRrQrpHCFzhnzWBsRkTC1Ro=;
+        b=UejAMTVUw5BnmAYGPDdoqTHNfc+895KsApkOm3sM6jRYGwsOIM2SDGFYUSt1Nkck2T
+         HFZqfGV+URJYr3OajS6JXIFwhYSrfFgxxKCditHTh1fOJviGe/8RMN3MdpBXdW8jLnf7
+         dYOr4tPduNRwC7nKF8BZTSgScssyiEWBegVLzEPBVWElV63FW5YyXDjclWf6xjsU0hzp
+         iX/asqwctNc7TcF8+jTewBLqrqZPhg2z5eGe+Z422z2FWKVNb7ZXJTXzY+1pJqrLQGn6
+         /kLb+ppBhUO3qnzVyOdG1PAr4RDhvfpB2AhIiMvy1yYGH+klSst32cOwwQ73AKfWWju9
+         dD5A==
+X-Gm-Message-State: AJIora+m6PJSOQ+1OOsNjCV4/Nr0Wp8VwLgq1k7mDyBNvU3N7yLcU5XB
+        dB5LTpbJ3rflBMGAdFT0HZII+41K8tdH5lSv07w=
+X-Google-Smtp-Source: AGRyM1syrQDkwY335CQS1vBD7K+578crF+8n00y+UpGEUkEUJEF+doQKHrq6xYEeHzvQlnUpp5M8kT8AXNS1vKj8B3U=
+X-Received: by 2002:a05:6402:11d2:b0:42d:e68a:eae0 with SMTP id
+ j18-20020a05640211d200b0042de68aeae0mr12635838edw.111.1656010957888; Thu, 23
+ Jun 2022 12:02:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
-In-Reply-To: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
+References: <20220623170844.2189814-1-marcus.folkesson@gmail.com> <20220623170844.2189814-2-marcus.folkesson@gmail.com>
+In-Reply-To: <20220623170844.2189814-2-marcus.folkesson@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 23 Jun 2022 20:59:43 +0200
-Message-ID: <CAHp75VfKeGPL=T3cNCr2MWRBdOoNA3WuxhH_wSMkxsaBFjsELg@mail.gmail.com>
-Subject: Re: [PATCH 01/10] iio: adc: mcp3911: correct "microchip,device-addr" property
+Date:   Thu, 23 Jun 2022 21:01:59 +0200
+Message-ID: <CAHp75VcYk9PjQ=3ZPB1f=uQ-1GYKnvV-wsu+-z1z81W_ZHCqrw@mail.gmail.com>
+Subject: Re: [PATCH 02/10] iio: adc: mcp3911: use resource-managed version of iio_device_register
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -74,11 +74,10 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Thu, Jun 23, 2022 at 7:40 PM Marcus Folkesson
 <marcus.folkesson@gmail.com> wrote:
 >
-> Go for the right property name that is documented in the bindings.
+> Keep using managed resources as much as possible.
 
-If the driver is already for a while in the kernel, I'm afraid we may
-not do this, since it's part of ABI (firmware <--> OS). You can add a
-new property and try it first.
+You may not mix devm_ and non-devm_ API calls like this.
+So, you rule of thumb that goto is most of the time wrong after devm_ call.
 
 -- 
 With Best Regards,

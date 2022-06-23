@@ -2,134 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF55B557A30
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 14:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA51E557CC2
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 15:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231297AbiFWMVo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jun 2022 08:21:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38330 "EHLO
+        id S231743AbiFWNRE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jun 2022 09:17:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231230AbiFWMVn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 08:21:43 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30AB2F3AE
-        for <linux-iio@vger.kernel.org>; Thu, 23 Jun 2022 05:21:42 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-3137316bb69so191812397b3.10
-        for <linux-iio@vger.kernel.org>; Thu, 23 Jun 2022 05:21:42 -0700 (PDT)
+        with ESMTP id S231716AbiFWNRD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 09:17:03 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A60393FE;
+        Thu, 23 Jun 2022 06:17:02 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id c1so29446937qvi.11;
+        Thu, 23 Jun 2022 06:17:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5ZAX7YJT6NRdQsycAPfVOz2A8M7vZaZDDETi6cRa5pk=;
-        b=vzNpgpqq711oNduko6AaaZmKj3A645woCZoQbRSvf6d7q4/P7lbsKHha6gBwP7kfVH
-         TuI0VopnGzCoOVA96qWVouxn56INwjAnWbUUoes1Nw64/58N2HeHdCNxvMR+UHJvCAcV
-         Dp9l5G/ozqVEVO+bZv8dw4W+U/EPXarn97IA2bHB7jGRukj3XeH8R2U7Yiw6/vKozmxu
-         3tu3vTrVoCzsVkYJ89TkwYn6gTmaeDea30XRPcoL0y+JEUCwquu30o1SM2ndEKzcKIqz
-         DPvGrFTYJCintyiucRVymxcnWDbPdRIDbuAd55eO64PcT94MK4CBzKKfNBPYle4B7E+w
-         l0IQ==
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=24+UZDm+bboxj7ZmXKARXy52D/6fP2+29qM9adAHJQ4=;
+        b=J2q2PpDWZT/XG3kN+Z0MZyGzkZ1IoQg9qGfmPigxNXhO33ieQ/7lU/jHGk6LrR+5ev
+         0NPd6cZ+hp3lmjeBc/XTklO3zfgt2v5H1VAQoYDcTUwHrEgpaenjvXcR0GsH0piLkA52
+         p8Uy3PRzyQgj/cX8Zeiv+khK0zP4s4BPwjN6PgmH00wqKn2rQCus1mTQ32QoOSOvu4jZ
+         dUgRIJ+1cZmtwdkXWjvGzYnVqyK9NmTSYqOB9l3gAMxqkZem/7Gv2w/2g0sMiO7zl67D
+         6S6ylcqaVaBmjkDnJYEjtVCisEVeNO9zA26KRkH6E8fmeqd+ryvZqdIIQ1cflpUGlx56
+         TeDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5ZAX7YJT6NRdQsycAPfVOz2A8M7vZaZDDETi6cRa5pk=;
-        b=WPer9ro9UANfGsTAiMVk9rqEgrFdQGVaDo8718qk/e+EYw3Nhm/1eqKQ0ofgP8qzES
-         m9cg00Yn9wr9inN7jgvgmFRx/f90th+2X2BpIwnQL/UAy4bTd4wNHg0bScRYd50zm+nS
-         BEtwDxucxK1kyrK5b6u0DQv5ItTmqo8ex/MQBztjd8ROe/zFUWB02gQAdF+oETP582Kf
-         XuuS/OO18NrldMghyoNabylwWmfdu0h9OBAXizNzCy+9uZpdhoNvK6JnSRZsyYVB2ViB
-         tYA40TB8aVIzMNXO1HLs4DQISl3i+gcyI80BxGKwoBwzGtXT+nmDjd1psn8O01V79aq7
-         RgmA==
-X-Gm-Message-State: AJIora/fUBvCNpy6ccczobJE2ubae/5L+HLjQ7EUQqk1Z10izDK79/LC
-        LXPF4N5Cewfvmfz6G3Ub9WySVSmxA4LPo3QzrnMLNg==
-X-Google-Smtp-Source: AGRyM1tZpWg8CDQYbO6TqSUStNRV39BFYJatEIDpv3h1qnl/HotVHofDAFGQFyugQpZxGynDYZ3RyLIZEAQPQK8B4Vc=
-X-Received: by 2002:a0d:e20a:0:b0:317:ce36:a3a0 with SMTP id
- l10-20020a0de20a000000b00317ce36a3a0mr10658381ywe.448.1655986902018; Thu, 23
- Jun 2022 05:21:42 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=24+UZDm+bboxj7ZmXKARXy52D/6fP2+29qM9adAHJQ4=;
+        b=npSiSa5+WJmf4FaEFKyALpBLi7MDBRq1AuX8GnTYhb4r50lamfpquJpMe7aJzdNMuT
+         B16jtLsxHN6VPOWLAt649TT4Hv6OATF5HOy0RkkMnnyii6+EFVkEYaqTef7rF8WHiDK0
+         jmj7dNaPWfRsTISwcMt9oOjWLblqVVgmXkwU1ciSMNBkEQzmUI8ZvzQKKcwxFkksVLXo
+         3XKPDh2elLd33b7BViHHJl5QGAnbZ+bWeCMOlH+I+GtkIrf01Qw8Kk6o8EMtz5hKD2n8
+         BvLhB7sSIsNv8E8RDAOJMLztZMlv3GHsySRhduWLxgkKt7Q10J8xV/qRY7nhbeQaciTV
+         D/fA==
+X-Gm-Message-State: AJIora83yNMmmY1EHGzP7f1UqULgLy5kaldTBTpQNIQRopQd/SmZrMCZ
+        s+Y/DMjR0pV5geKBvobWWiw=
+X-Google-Smtp-Source: AGRyM1txIMaEVLgdPcHWGOvqHfkJqRf4fC0njW+U8dzkSZ9CnGAFNz+qzQMCuEb729NqDeTnCZBqjg==
+X-Received: by 2002:a05:622a:60c:b0:307:c887:2253 with SMTP id z12-20020a05622a060c00b00307c8872253mr8011201qta.216.1655990221818;
+        Thu, 23 Jun 2022 06:17:01 -0700 (PDT)
+Received: from spruce (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id f10-20020a05620a280a00b006a77940be22sm18717176qkp.95.2022.06.23.06.17.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jun 2022 06:17:01 -0700 (PDT)
+Date:   Thu, 23 Jun 2022 09:16:59 -0400
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: Re: [PATCH v3 05/14] dt-bindings: backlight: Add Mediatek MT6370
+ backlight
+Message-ID: <YrRny9TPqMUW7Yr/@spruce>
+References: <20220623115631.22209-1-peterwu.pub@gmail.com>
+ <20220623115631.22209-6-peterwu.pub@gmail.com>
 MIME-Version: 1.0
-References: <BYAPR11MB3240148739EBB945211DD77BE1AF9@BYAPR11MB3240.namprd11.prod.outlook.com>
- <44170bf8-5777-e30b-b74d-a6835b1937e2@metafoo.de> <YqxOl8W2yzp9CcBP@smile.fi.intel.com>
- <CACRpkdbeQ_67V3jkw_-KfTwe54TxrK_LA7N8Nwj1qEpTELN9dQ@mail.gmail.com> <ad7e53d1bd2448b4971af65483fe3542@intel.com>
-In-Reply-To: <ad7e53d1bd2448b4971af65483fe3542@intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 23 Jun 2022 14:21:30 +0200
-Message-ID: <CACRpkda63TNWLdTjY+_xxXb4df4qCZi1EaXL3pXK=+Hon-0RLQ@mail.gmail.com>
-Subject: Re: Intel Timed-IO driver in IIO/Counter subsystem
-To:     "Hall, Christopher S" <christopher.s.hall@intel.com>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Kent Gibson <warthog618@gmail.com>
-Cc:     "Shevchenko, Andriy" <andriy.shevchenko@intel.com>,
-        Dipen Patel <dipenp@nvidia.com>,
-        "N, Pandith" <pandith.n@intel.com>,
-        "D, Lakshmi Sowjanya" <lakshmi.sowjanya.d@intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "vilhelm.gray@gmail.com" <vilhelm.gray@gmail.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "Sangannavar, Mallikarjunappa" 
-        <mallikarjunappa.sangannavar@intel.com>,
-        "T R, Thejesh Reddy" <thejesh.reddy.t.r@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220623115631.22209-6-peterwu.pub@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jun 18, 2022 at 4:01 AM Hall, Christopher S
-<christopher.s.hall@intel.com> wrote:
-> Friday, June 17, 2022 4:40 AM Linus Walleij <linus.walleij@linaro.org> wrote:
->
-> > For 2. I am uncertain. Periodic events sound like PWM to me.
->
-> I do not think TGPIO periodic output is useful for PWM. There are two output
-> modes: edge output and pulse output. In edge mode output, where the an edge
-> is produced periodically based on the programmed period the duty cycle is
-> always 50%. In pulse mode output where a pulse is produced each output
-> period, the width of the pulse is two ART ticks which on current Intel
-> client platforms is about 50 ns. The pulse width is not adjustable.
->
-> We want to be able to output a clock from 1 Hz (1 PPS) up to 1 KHz that is
-> synchronized with the system clock.
->
-> It is possible to represent the periodic output function as a PWM device,
-> but the PWM subsystem output - without modification - is not aligned to
-> any clock which breaks the timing application.
+On Thu, Jun 23, 2022 at 07:56:22PM +0800, ChiaEn Wu wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> Add mt6370 backlight binding documentation.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+> 
+> v3
+> - Rename "mediatek,bled-pwm-hys-input-threshold-steps" to
+>   "mediatek,bled-pwm-hys-input-th-steps"
+> - Refine "bled-pwm-hys-input-th-steps", "bled-ovp-microvolt",
+>   "bled-ocp-microamp" enum values
+> ---
+>  .../leds/backlight/mediatek,mt6370-backlight.yaml  | 92 ++++++++++++++++++++++
+>  1 file changed, 92 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+> new file mode 100644
+> index 0000000..26563ae
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+> @@ -0,0 +1,92 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/leds/backlight/mediatek,mt6370-backlight.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Mediatek MT6370 Backlight
+> +
+> +maintainers:
+> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+> +
+> +description: |
+> +  This module is part of the MT6370 MFD device.
+> +  The MT6370 Backlight WLED driver supports up to a 29V output voltage for
+> +  4 channels of 8 series WLEDs. Each channel supports up to 30mA of current
+> +  capability with 2048 current steps (11 bits) in exponential or linear
+> +  mapping curves.
+> +
+> +allOf:
+> +  - $ref: common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: mediatek,mt6370-backlight
+> +
+> +  default-brightness:
+> +    minimum: 0
+> +    maximum: 2048
+> +
+> +  max-brightness:
+> +    minimum: 0
+> +    maximum: 2048
+> +
+> +  enable-gpios:
+> +    description: External backlight 'enable' pin
+> +    maxItems: 1
+> +
+> +  mediatek,bled-pwm-enable:
+> +    description: |
+> +      Enable external PWM input for backlight dimming
+> +    type: boolean
+> +
+> +  mediatek,bled-pwm-hys-enable:
+> +    description: |
+> +      Enable the backlight input-hysteresis for PWM mode
+> +    type: boolean
+> +
+> +  mediatek,bled-pwm-hys-input-th-steps:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    enum: [1, 4, 16, 64]
+> +    description: |
+> +      The selection of the upper and lower bounds threshold of backlight
+> +      PWM resolution. If we choose selection 64, the variation of PWM
+> +      resolution needs over than 64 steps.
 
-Is it "just" a clock then? As in drivers/clk?
+more than?
 
-It's of course annoying that the functionality of a certain hardware falls
-between the subsystems so we end up using pieces of a subsystem in
-another one, but there are several precedents, like network switch chips
-and USB UART chips with GPIO inside them, or graphic chips with
-clock dividers inside.
+Thanks,
+Joe
 
-> > If a "single event" is something
-> > like pulling a GPIO line high/low at a specific (wall clock) time in the
-> > future, it should probably be in the GPIO subsystem, like a triggered
-> > GPIO event or so, that sounds a bit hard but certainly doable with some
-> > thinking and tinkering.
->
-> Earlier, we proposed a linereq_write() method in addition to the already
-> existing linereq_read().
->
-> https://lkml.org/lkml/2021/8/24/807
-
-This might be a good approach for this part of the hardware, as long
-as we can make sure we get the userspace API abstract enough
-that other hardware can make use of it and userspace does not
-need to know what provides the timed output, just that there is
-some hardware that does.
-
-The ABI in the patch looks a bit dangerous, what happens if
-you set an event like that and something decides to shake the
-line by setting the output while the scheduled event is pending?
-
-The direction seems sound however, but Bartosz and Kent need
-to look at it in detail, their effort on the userspace ABI has been
-tremendous.
-
-Yours,
-Linus Walleij
+> +
+> +  mediatek,bled-ovp-shutdown:
+> +    description: |
+> +      Enable the backlight shutdown when OVP level triggered
+> +    type: boolean
+> +
+> +  mediatek,bled-ovp-microvolt:
+> +    enum: [17000000, 21000000, 25000000, 29000000]
+> +    description: |
+> +      Backlight OVP level selection.
+> +
+> +  mediatek,bled-ocp-shutdown:
+> +    description: |
+> +      Enable the backlight shutdown when OCP level triggerred.
+> +    type: boolean
+> +
+> +  mediatek,bled-ocp-microamp:
+> +    enum: [900000, 1200000, 1500000, 1800000]
+> +    description: |
+> +      Backlight OC level selection.
+> +
+> +  mediatek,bled-channel-use:
+> +    $ref: /schemas/types.yaml#/definitions/uint8
+> +    description: |
+> +      Backlight LED channel to be used.
+> +      Each bit mapping to:
+> +        - 0: CH4
+> +        - 1: CH3
+> +        - 2: CH2
+> +        - 3: CH1
+> +    minimum: 1
+> +    maximum: 15
+> +
+> +required:
+> +  - compatible
+> +  - mediatek,bled-channel-use
+> +
+> +additionalProperties: false
+> -- 
+> 2.7.4
+> 

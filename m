@@ -2,121 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3BB55552DF
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jun 2022 19:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE4AA556F9B
+	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 02:44:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377018AbiFVRwU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 22 Jun 2022 13:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55722 "EHLO
+        id S234564AbiFWAo4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 22 Jun 2022 20:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236780AbiFVRwT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 13:52:19 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D9135241;
-        Wed, 22 Jun 2022 10:52:16 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id D165C5FD04;
-        Wed, 22 Jun 2022 20:52:12 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1655920332;
-        bh=N634Zf56yv5/vkYfAq7VOSnfTEBvydl4YRfmE/8zL30=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=dqSYQ7LZD/baRFrXkuxGMrMSGpBh8WY5yyxHZP+rVD2qrww5N3qpsTt+uDxytZL/U
-         AN4/5M74dq9I3swXvml8kBII/5bGOJAFB18a5EsC/lvsFxAyTClgrYCwyhJgXzTShN
-         jpTeu6+kAGg+e2ShsEVveLQDNv79t+zahHajvGWxVKKCd1N8cg4HQromG03kxsY1tu
-         W+KK2thgZvftFFBu6ujr5m9Qp1bJHJ1QI8osTYirf7bWWDgQAgrVN+kz8kNY55bLvw
-         MFEL91nU2G1WQm/7R7Q2nqgYnP3hymCSYg2kpOUaKhC20zj7JBybZ5XKS2fIy5yJRe
-         9pFR7V0J8gj1Q==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed, 22 Jun 2022 20:52:12 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "rockosov@gmail.com" <rockosov@gmail.com>
-Subject: Re: [PATCH v3] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Topic: [PATCH v3] iio: trigger: warn about non-registered iio trigger
- getting attempt
-Thread-Index: AQHYep3lZdCBX5wfLkWR1miHp7T4Oq1Rmw8AgANrnICABpNhAA==
-Date:   Wed, 22 Jun 2022 17:51:56 +0000
-Message-ID: <20220622175206.ddyyex7bezzh4rd4@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220607183907.20017-1-ddrokosov@sberdevices.ru>
- <20220616091308.miwqkdfc77mm72hz@CAB-WSD-L081021.sigma.sbrf.ru>
- <20220618142703.75025659@jic23-huawei>
-In-Reply-To: <20220618142703.75025659@jic23-huawei>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <BBC3AE6F80A9864EBADE94B6544763F9@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229485AbiFWAoz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 22 Jun 2022 20:44:55 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0AF2FFE0
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jun 2022 17:44:53 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id a8-20020a05683012c800b0060c027c8afdso14293135otq.10
+        for <linux-iio@vger.kernel.org>; Wed, 22 Jun 2022 17:44:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:in-reply-to:references:from:user-agent:date:message-id
+         :subject:to:cc;
+        bh=lpAZKwH3a1dAzQ+kA5meAVgTrGUP9e6kKjEmM6YpaRU=;
+        b=VB7Rhv4MZjm493aZ7TLWZ7dmpv6t4k3I7q9Zkoz8rB41kveKO0h7szAQ8xo5qF54t9
+         hA8LLkqK/C/qeIOx2Rwwx4Ftfu8AcundGK329w9oaOoi0yzI/AraSDAY/23pCEq889BN
+         SqYLL17YxdOGnbyWjw7Ag8XXlY948fjdLGSQU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from
+         :user-agent:date:message-id:subject:to:cc;
+        bh=lpAZKwH3a1dAzQ+kA5meAVgTrGUP9e6kKjEmM6YpaRU=;
+        b=kvQ3SMJ5Is0sH6bBb8VaDD2jnd9G3zmhYKXUvSeXgZZ3SDFpgctU40Ai+0wi46vhPH
+         WK4Atbe7lmNkUEABfNpY9ZbLHMPZfLLlSxOhm6VNiRBomSIfsATKXT+p2+W3MeXOFprL
+         5TfMOHaO0vBIGae3Qd2GOmDaWGAKoA3/rY8KutCdrC++QnjCKvih7AA+cOaOAUejrake
+         XHpApbIDVIQilt/PJ0KyYCqjaxJW+AzOqTSf97xvUFtiw75OOgaGqlM5wQYTNlcDVdxp
+         MuSAmGunCkdpOdO7F5G1/2uMB4bNbz4Rf5+/VOdOUk1uyL0071IbOAtvs2tV09dtAW7a
+         7m+A==
+X-Gm-Message-State: AJIora8YhDHbFZLDwhXfAWOv/wCH5pg6SPZr4+2SoqIfwGbDpStX7AYl
+        n8NzHRADKzUL5fjbdJoIDVFpxaEwRPyW+Wis0Aod4PbZadk=
+X-Google-Smtp-Source: AGRyM1u11bT2D5O44+ST9xbUOOQycGmbmTLjQTChyquQxbqVJDDW22AEcP2mz+g4vQmy68YiWvI5/seZ9v8wxZytcn0=
+X-Received: by 2002:a9d:729b:0:b0:60c:21bd:97c0 with SMTP id
+ t27-20020a9d729b000000b0060c21bd97c0mr2694982otj.77.1655945092471; Wed, 22
+ Jun 2022 17:44:52 -0700 (PDT)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 22 Jun 2022 20:44:51 -0400
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/06/22 11:20:00 #19842104
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220621182859.459045-1-gwendal@chromium.org>
+References: <20220621182859.459045-1-gwendal@chromium.org>
+From:   Stephen Boyd <swboyd@chromium.org>
+User-Agent: alot/0.10
+Date:   Wed, 22 Jun 2022 20:44:51 -0400
+Message-ID: <CAE-0n51K25NUGRZNaBQMxvPeMPBzqunnhS28ePkzMs8Jhi2_8g@mail.gmail.com>
+Subject: Re: [PATCH] iio: cros: Add cros_ec_sensors_core_register
+To:     Gwendal Grignou <gwendal@chromium.org>, dianders@chromium.org,
+        jic23@kernel.org
+Cc:     linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan,
+The subject line could be a little clearer. Perhaps "Wait for sensors to
+probe before sending events" or something like that.
 
-On Sat, Jun 18, 2022 at 02:27:03PM +0100, Jonathan Cameron wrote:
-> On Thu, 16 Jun 2022 09:13:00 +0000
-> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
->=20
-> > Hello Jonathan,
-> >=20
-> > I notice the patchset from=20
-> > https://lore.kernel.org/all/20220524181150.9240-1-ddrokosov@sberdevices=
-.ru/
-> > is not merged to stable yet.
-> > I think if this WARN() patch is okay for you, maybe it's better to merg=
-e
-> > it together with the previous one. It will notify developers about this
-> > problem as you suggested before, and the previous patchset resolves the=
- issue
-> > in the all IIO drivers.
-> >=20
-> > What do you think about it?
->=20
-> It would be a stretch to take a defensive measure like this into stable,
-> so I'll just queue this up for the next merge window.  We might have
-> some exciting intermediate times where anyone actually using the togreg
-> branch directly will get drivers that will spit out the warning.
-> That should only be people active on the list though who will find
-> this quickly enough and understand what is gong on.
->=20
-> I'm fine with this and it's been on list long enough for anyone else to c=
-omment.
-> It'll be in a branch I'm happy to rebase for at few days anyway if there
-> are any last minute comments or tags.
->=20
-> Applied to the togreg branch of iio.git and pushed out as testing.
->=20
-> Hopefully I'll get a pull request out for the fixes-togreg branch
-> sometime this weekend.
+Quoting Gwendal Grignou (2022-06-21 11:28:59)
+> Instead of registering callback to process sensor events right at
+> initialization time, wait for the sensor to be register in the iio
+> subsystem.
 
-Thanks a lot for such detailed clarification! I'm seeing this warn
-patchset in the linux-next already.
+Please elaborate. A crash is seen if sensor events come in while sensors
+are being registered.
 
---=20
-Thank you,
-Dmitry=
+>
+> Events can come at probe time (in case the kernel rebooted abruptly
+> without switching the sensor off for instance).
+>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+
+Should add
+
+Reported-by: Douglas Anderson <dianders@chromium.org>
+
+and also some sort of Fixes tag.
+
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index e5ccedef13a80..5bf5cfb0e746b 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -340,17 +337,6 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>                         if (ret)
+>                                 return ret;
+>
+> -                       ret = cros_ec_sensorhub_register_push_data(
+> -                                       sensor_hub, sensor_platform->sensor_num,
+> -                                       indio_dev, push_data);
+> -                       if (ret)
+> -                               return ret;
+> -
+> -                       ret = devm_add_action_or_reset(
+> -                                       dev, cros_ec_sensors_core_clean, pdev);
+> -                       if (ret)
+> -                               return ret;
+> -
+>                         /* Timestamp coming from FIFO are in ns since boot. */
+>                         ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
+>                         if (ret)
+> @@ -372,6 +358,39 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  }
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
+>
+> +/**
+> + * cros_ec_sensors_core_register() - Register callback to FIFO when sensor is
+> + * ready.
+
+Please document 'dev' as well here.
+
+> + * @indio_dev:         iio device structure of the device
+> + * @push_data:          function to call when cros_ec_sensorhub receives
+> + *    a sample for that sensor.
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +int cros_ec_sensors_core_register(struct device *dev,
+> +                                 struct iio_dev *indio_dev,
+> +                                 cros_ec_sensorhub_push_data_cb_t push_data)
+> +{
+> +       struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+> +       struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
+> +       struct platform_device *pdev = to_platform_device(dev);
+> +       struct cros_ec_dev *ec = sensor_hub->ec;
+> +       int ret = 0;
+> +
+> +       if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO)) {
+
+Just curious if this condition is ever false? Or if the case when it is
+true is when 'push_data' is cros_ec_sensors_push_data()?
+
+> +               ret = cros_ec_sensorhub_register_push_data(
+> +                               sensor_hub, sensor_platform->sensor_num,
+> +                               indio_dev, push_data);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret = devm_add_action_or_reset(
+> +                               dev, cros_ec_sensors_core_clean, pdev);
+> +       }
+> +       return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(cros_ec_sensors_core_register);
+> +
+>  /**
+>   * cros_ec_motion_send_host_cmd() - send motion sense host command
+>   * @state:             pointer to state information for device
+> diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
+> index 25217279f3507..82f20c738a165 100644
+> --- a/drivers/iio/pressure/cros_ec_baro.c
+> +++ b/drivers/iio/pressure/cros_ec_baro.c
+> @@ -139,8 +139,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+>                 return -ENOMEM;
+>
+>         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> -                                       cros_ec_sensors_capture,
+> -                                       cros_ec_sensors_push_data);
+> +                                       cros_ec_sensors_capture);
+>         if (ret)
+>                 return ret;
+>
+> @@ -185,7 +184,13 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
+>
+>         state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+>
+> -       return devm_iio_device_register(dev, indio_dev);
+> +       ret = devm_iio_device_register(dev, indio_dev);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Ready to receive samples from the EC. */
+> +       return cros_ec_sensors_core_register(dev, indio_dev,
+> +                                            cros_ec_sensors_push_data);
+
+Would it make sense to add the devm_iio_device_register() call into
+cros_ec_sensors_core_register()? Then the caller can't mess up the order
+and register the push_data callback before the iio device. And is the
+callback ever going to be not cros_ec_sensors_push_data() (or NULL in
+case of not motion sense)? Seems like that could be hardcoded into the
+function as well.

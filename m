@@ -2,130 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B38559FDE
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 20:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96AE55A3AF
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 23:37:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229745AbiFXR7u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 13:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60706 "EHLO
+        id S231801AbiFXVgV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 17:36:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbiFXR7u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 13:59:50 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF9349B59;
-        Fri, 24 Jun 2022 10:59:48 -0700 (PDT)
-Received: (Authenticated sender: miquel.raynal@bootlin.com)
-        by mail.gandi.net (Postfix) with ESMTPSA id 7BA72C0004;
-        Fri, 24 Jun 2022 17:59:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1656093587;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QnYk4LM/FaI0hTQEp6s2QfDya067fAkGlMpiIGk0dfg=;
-        b=XNgCDjBF2isQmvQ2XE+g5+QrPpA6B73kCtIEyO/jdume+4vHVZyNetZLS8NcL6W/p5vfvz
-        60v4j2YAVmu3d3w2JJP9WMaK3W2pkJ7F6FhXirwQYzyr2BeLwAxnrphZ8W6SOjapL9A597
-        U3s3QE8E0ydC35Ihf2rFgUa11ydmgmdTwG9FckA4aRbtQTi02rlO0QFY5fIgNxpXgfMxgf
-        VU/GCNWFfHN2b2YC9LSka6kqJU06ExShtf/wNJ8L2TKgesJJcZqN4Nbp52bKhPntu9GM4O
-        SCCYPHOcJq7k06h13b7drKTmmMNZdYgw/IuRh/NGzpSAQlNZgXjKzHURJq9v5w==
-Date:   Fri, 24 Jun 2022 19:59:45 +0200
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Kory Maincent <kory.maincent@bootlin.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        thomas.petazzoni@bootlin.com, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 1/2] iio: dac: mcp4922: add support to mcp4921
-Message-ID: <20220624195945.6b5cf1be@xps-13>
-In-Reply-To: <20220624095619.1415614-1-kory.maincent@bootlin.com>
-References: <20220624095619.1415614-1-kory.maincent@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S231737AbiFXVgU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 17:36:20 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA9186AF2
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 14:36:18 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-3178acf2a92so36696147b3.6
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 14:36:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=cGTylEOWtLkcLIsxYVoGzfL+q0nSap9+8NoSlXBuXe4=;
+        b=cmDy8lsyV2rPNiNRuYkEb5rHWD8XZVHKqJZAeKf3TnWZFLlj+/DTdLUMbXEmtTuv9s
+         4KLbNJHfJqFtWZDtoSIB0jA5BkjqsNets6Rbr/qrINRnJTlQirI2k20GLR/Ql3zSe9Wq
+         Pb5aXUq1NZ5lDKQQMD7a39HTujZM62LjFsQtIqhJoX7pGAoQGMqpg1+inV2FswApITO2
+         CmT3BH618Yqgt62CZsqxQ5e1jZosKUxMbd0fExcTgjLrAxPBxkG7CVcmjw/O8dvTmdbG
+         l6UouC6UHf0T16KEM/mMUtmMtJOh0vyJl540PkTEmkGnFr3Ic8OHzXavkS9AsevSsxDH
+         c7uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=cGTylEOWtLkcLIsxYVoGzfL+q0nSap9+8NoSlXBuXe4=;
+        b=tciZAsnVal1NULcYZm9qdn9CozY+OVMaN2055xR/FvFj90Wcv9BSmzcQ/ghG/iApkz
+         EnzXmzA1tp9bnfkoEFe2SXjeJPDVRs8yGbHU/xKKfziXDmP2upWHrCTlwDfFrsuM3FuB
+         z0Te9ZoRplU4vRCGuY0ZV/dNai9gRK2myxAfyOZNoQbcFfDPU7xIV1421Ni8vrlUJa80
+         Uidej2F22dflZle2z5ZWfFwJvDPa3Q8+fPlIZIu2fhiaG45qVT0pbUnjWv4fslBWzw/d
+         Ij51mOUSA7PBnmuUI4V0jQDqK9Cq2ZxO//Z2yMCuz0IopoCsYxMYh4bzDXdo5CZ4SCX4
+         LYig==
+X-Gm-Message-State: AJIora8EGAg8goHSzAFI6OYDMxx129hZzXmBmwfDFbU0NxOA6ju/YKjm
+        ybJKrTyO65CaIGPxpeCOxAnnWO4QsR3feJocQViI5w==
+X-Google-Smtp-Source: AGRyM1v7bTPADut4sgzebmriq1YeKB4PBfCCubvcMefuaUSK78eOKMtZqJdaXmsewcrgPAHhOp3HhKhV310/qVQEQyc=
+X-Received: by 2002:a0d:cc54:0:b0:317:752c:bcf3 with SMTP id
+ o81-20020a0dcc54000000b00317752cbcf3mr1068283ywd.437.1656106577632; Fri, 24
+ Jun 2022 14:36:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-13-peterwu.pub@gmail.com>
+ <CACRpkdZatfOFmeGXepTrjAk1or4W6KNUEaXnP+srRebfM=52AA@mail.gmail.com>
+ <CACRpkdbzZqerE_2PeGMUWRbtjK=9P8V763cj83ZqjP4n6AVHAg@mail.gmail.com> <CA+hk2fZEG0TxMGhGJY21w=MmXgKsH5mYCYynQV1jbhpOCyf3qg@mail.gmail.com>
+In-Reply-To: <CA+hk2fZEG0TxMGhGJY21w=MmXgKsH5mYCYynQV1jbhpOCyf3qg@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 24 Jun 2022 23:36:06 +0200
+Message-ID: <CACRpkdYoR9SGQdxJQmUReP7SLk_BxG0yuTWAL__o90PuO8sCqA@mail.gmail.com>
+Subject: Re: [PATCH v3 12/14] leds: mt6370: Add Mediatek MT6370 current sink
+ type LED Indicator support
+To:     szuni chen <szunichen@gmail.com>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        devicetree <devicetree@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        alice_chen@richtek.com, Linux PM <linux-pm@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        ChiYuan Huang <cy_huang@richtek.com>, chiaen_wu@richtek.com,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Kory,
+On Fri, Jun 24, 2022 at 9:20 AM szuni chen <szunichen@gmail.com> wrote:
 
-kory.maincent@bootlin.com wrote on Fri, 24 Jun 2022 11:56:17 +0200:
+> > I meant this one. Move that into drivers/leds/flash
+> >  drivers/leds/flash/leds-mt6370-flash.c             |  657 ++++++++++++
+>
+> In next version, I'll use "leds: flash: ......" instead of "leds:
+> flashlight: ......" in subject.
+> May I confirm that the driver has already in the drivers/leds/flash,
+> so I don=E2=80=99t have to move it in next version?
 
-> Add support to mcp4921 which has only one output channel.
->=20
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Yeah you're right, I am just writing wrong comments today, it is already
+correct. Sorry!
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-> ---
->  drivers/iio/dac/mcp4922.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/dac/mcp4922.c b/drivers/iio/dac/mcp4922.c
-> index cb9e60e71b91..0d41c0f25515 100644
-> --- a/drivers/iio/dac/mcp4922.c
-> +++ b/drivers/iio/dac/mcp4922.c
-> @@ -17,10 +17,12 @@
->  #include <linux/bitops.h>
-> =20
->  #define MCP4922_NUM_CHANNELS	2
-> +#define MCP4921_NUM_CHANNELS	1
-> =20
->  enum mcp4922_supported_device_ids {
->  	ID_MCP4902,
->  	ID_MCP4912,
-> +	ID_MCP4921,
->  	ID_MCP4922,
->  };
-> =20
-> @@ -105,9 +107,10 @@ static int mcp4922_write_raw(struct iio_dev *indio_d=
-ev,
->  	}
->  }
-> =20
-> -static const struct iio_chan_spec mcp4922_channels[3][MCP4922_NUM_CHANNE=
-LS] =3D {
-> +static const struct iio_chan_spec mcp4922_channels[4][MCP4922_NUM_CHANNE=
-LS] =3D {
->  	[ID_MCP4902] =3D { MCP4922_CHAN(0, 8),	MCP4922_CHAN(1, 8) },
->  	[ID_MCP4912] =3D { MCP4922_CHAN(0, 10),	MCP4922_CHAN(1, 10) },
-> +	[ID_MCP4921] =3D { MCP4922_CHAN(0, 12),	{} },
->  	[ID_MCP4922] =3D { MCP4922_CHAN(0, 12),	MCP4922_CHAN(1, 12) },
->  };
-> =20
-> @@ -154,7 +157,10 @@ static int mcp4922_probe(struct spi_device *spi)
->  	indio_dev->info =3D &mcp4922_info;
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
->  	indio_dev->channels =3D mcp4922_channels[id->driver_data];
-> -	indio_dev->num_channels =3D MCP4922_NUM_CHANNELS;
-> +	if (id->driver_data =3D=3D ID_MCP4921)
-> +		indio_dev->num_channels =3D MCP4921_NUM_CHANNELS;
-> +	else
-> +		indio_dev->num_channels =3D MCP4922_NUM_CHANNELS;
->  	indio_dev->name =3D id->name;
-> =20
->  	ret =3D iio_device_register(indio_dev);
-> @@ -185,6 +191,7 @@ static void mcp4922_remove(struct spi_device *spi)
->  static const struct spi_device_id mcp4922_id[] =3D {
->  	{"mcp4902", ID_MCP4902},
->  	{"mcp4912", ID_MCP4912},
-> +	{"mcp4921", ID_MCP4921},
->  	{"mcp4922", ID_MCP4922},
->  	{}
->  };
-
-
-Thanks,
-Miqu=C3=A8l
+Yours,
+Linus Walleij

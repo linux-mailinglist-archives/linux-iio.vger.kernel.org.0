@@ -2,186 +2,224 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E1955597CE
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 12:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9736C5597E7
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 12:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230463AbiFXK1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 06:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39412 "EHLO
+        id S230427AbiFXKdD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 06:33:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbiFXK1t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 06:27:49 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D03397C523
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 03:27:46 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id sb34so3725232ejc.11
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 03:27:46 -0700 (PDT)
+        with ESMTP id S229970AbiFXKdC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 06:33:02 -0400
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com [IPv6:2607:f8b0:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F310C6277;
+        Fri, 24 Jun 2022 03:33:00 -0700 (PDT)
+Received: by mail-il1-x136.google.com with SMTP id o4so1195388ilm.9;
+        Fri, 24 Jun 2022 03:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Nuxc36+s4sWQDaVadkc6oPNaa2rIDEmkVevDjA38UUQ=;
-        b=Lu/cMZDQbpDrvP88FBrvMyrvBoGMLxkakNs1O/w0KJCcIFSPOUBY6OryS/oCJ06YOn
-         GbDK7li6a4UHrHldXUyUMMOWrNS7pm9L5bfCAY7TmNWPkoDDJz8VXQFe9Fhpv3m1uc0L
-         t4Sa3S5fCj+Jep4qZr+X95xroO/Fz5Hy4UOnCnNBFg2IacvUZRBw/4DLZFBdZxUBHoUe
-         5PIG9v7XeqxkrKqcy2iOjNxequ8IQZPQLNBUYSNE3EU48hl1FQubHzyALQeSD5oD6gy4
-         XQLb1KUjFcLMpjEJx38RU1Cy1e+e8w6rEg3l9/raR6EjGfIkJCCDcDqn2DXE/qEDSWEt
-         gzVQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=U226G+gJXjVu8Couc5Qv56p1SRGwVv16nFZEn3RxVtU=;
+        b=WZpsM51CgSRUFkewgWRiMqQCwdfKsPxTQTY1/FdwFAv5v1w7p4JLgRHq9illM8ReYx
+         z2I4w1oylu873NcQ0QfYk817rCiBPB0mGufQXo76zV/Icu9IEwOjioYXN0WrZaKX6cL9
+         07Rb+d983LgBkl7ZA2fWK1F/kNdQF9BiZL9Ob4HxWbn3065/DVrpR2hnCisuhiIvh29F
+         a1SdXgqZZPfRMBvTu2ZBrFXqF+/UDBm+1z8lmHXxgxBO4vl/CMvHhqBbS1k+4Bl/Ubp3
+         3Gnny6BLEYiAhqOwP9WZrt/sWfajs0WI0/NMdBj55eW9CetTpTBVfPJIFkRQKlBHknZx
+         L3Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Nuxc36+s4sWQDaVadkc6oPNaa2rIDEmkVevDjA38UUQ=;
-        b=ipnwp/rJVkhv81uVZyfpkGBb0sirFCzzbIune74K2Gvx6KiSnQ4Y8w4YAhaWKgdF8Y
-         cSwWw0jg4shRmfCl1uojSkN8kIGdfrJGkr8AJq2rFk1h7bNHfo5Bp44QqvYckDBo3Wp/
-         zbw6Nt8BNZGFPmVisNBuVBf6xbaCgeB8hUGdOIGRgpQqXnQz0hVDyQ7orK1mRlyw/0cK
-         Z6pET5A5VNE1nPFhiINnaXLj3B7GLQ90WnwUiCJGnIh3IfAoskARNj1pw7ZxngodRmVe
-         KfxGWULQcQkGgEyGM18W9UVmNfkccPPAgqSBVJwlvkZV2Ua4vt9q5pvjriTqJJkxAnR+
-         rUCw==
-X-Gm-Message-State: AJIora/NqXfafD/m7keNB/67kgOW6X/3KKyrNdtRYFKcBG2uvY3tyIjK
-        2LJUmMUvkxgZNCPRRQRHw70FRw==
-X-Google-Smtp-Source: AGRyM1t4wJC/XeeqGXInCg0idKMgknVDGZX7X/fQzRWF0oldACj/ylYne3Hz/Rt8agVjJawt7AOTzw==
-X-Received: by 2002:a17:907:94cb:b0:721:252c:d4bb with SMTP id dn11-20020a17090794cb00b00721252cd4bbmr12681930ejc.148.1656066465307;
-        Fri, 24 Jun 2022 03:27:45 -0700 (PDT)
-Received: from [192.168.0.234] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id o12-20020a056402038c00b0043561e0c9adsm1640034edv.52.2022.06.24.03.27.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jun 2022 03:27:44 -0700 (PDT)
-Message-ID: <06819889-2c00-83d8-0d25-ce6c2559105a@linaro.org>
-Date:   Fri, 24 Jun 2022 12:27:43 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=U226G+gJXjVu8Couc5Qv56p1SRGwVv16nFZEn3RxVtU=;
+        b=NshXzbaHHDUb4/GW9hDCkuuVfreEfA657/7/DSr4RAWAnJdNNxItmBotumPNwUk0vG
+         GTsAAYiDRoznYyc21jSN9fZsvZlMRaI8hFMbDwpZe1UdlvlHBvQmt84YCJAq2uKHbkKm
+         PSoqL/WBZqIk+R3b9dw5QCkiEyN2MZBcYHz+O8qn/G0xgS8jVM0X8RjZl6/XUum0VO0U
+         VoPx/pxI3BdZ2E5SQa7ahUmKv7nA0O8+6gquEEPFWgX+vy+gpW2+xtJdvNJ1a7fb1fca
+         73XXuDZ9SqJIYCP/H8b/6c44L0Z9d59FwjKt0u9T7v6TySF3wbbl3jFlXzthX09UhQA+
+         oGHw==
+X-Gm-Message-State: AJIora+VG60lyNBVeaMeIJqK9HJGCeYVCz+VbAT07ptFt1CoIkJmGS56
+        eELgQi+Qvo6NlH/Q+dgoALMuxIpX6evtDFq2+AM=
+X-Google-Smtp-Source: AGRyM1vwKPbWsq2euM9m6UqA1rwAUWYo4r1L6FV6jbw4QbMXoRJS9w4dpuFfMGm93LZs8AZ6tCdsbCCLj6aHRPRFCko=
+X-Received: by 2002:a05:6e02:1bc6:b0:2d3:dba7:f626 with SMTP id
+ x6-20020a056e021bc600b002d3dba7f626mr8034868ilv.299.1656066780324; Fri, 24
+ Jun 2022 03:33:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3 02/14] dt-bindings: power: supply: Add Mediatek MT6370
- Charger
-Content-Language: en-US
-To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, deller@gmx.de
-Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
-        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com
-References: <20220623115631.22209-1-peterwu.pub@gmail.com>
- <20220623115631.22209-3-peterwu.pub@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220623115631.22209-3-peterwu.pub@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-10-peterwu.pub@gmail.com>
+ <CAHp75VdgxR9aFQmi_MPrX=t7RMnKDiLAwWMvxbpW9OoQMJkKyw@mail.gmail.com>
+In-Reply-To: <CAHp75VdgxR9aFQmi_MPrX=t7RMnKDiLAwWMvxbpW9OoQMJkKyw@mail.gmail.com>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Fri, 24 Jun 2022 18:32:49 +0800
+Message-ID: <CABtFH5+YLpYdWNsy1DwkKf19L6THo5NYvQ8e3rpo9wkTS9HxwQ@mail.gmail.com>
+Subject: Re: [PATCH v3 09/14] regulator: mt6370: Add mt6370 DisplayBias and
+ VibLDO support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23/06/2022 13:56, ChiaEn Wu wrote:
-> From: ChiaEn Wu <chiaen_wu@richtek.com>
-> 
-> Add Mediatek MT6370 Charger binding documentation.
-> 
-> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
-> ---
-> 
-> v3
-> - Add items and remove maxItems of io-channels
-> - Add io-channel-names and describe each item
-> - Add "unevaluatedProperties: false" in "usb-otg-vbus-regulator"
-> - Rename "enable-gpio" to "enable-gpios" in "usb-otg-vbus-regulator"
-> ---
->  .../power/supply/mediatek,mt6370-charger.yaml      | 87 ++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> new file mode 100644
-> index 0000000..f138db6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> @@ -0,0 +1,87 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Mediatek MT6370 Battery Charger
-> +
-> +maintainers:
-> +  - ChiaEn Wu <chiaen_wu@richtek.com>
-> +
-> +description: |
-> +  This module is part of the MT6370 MFD device.
-> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
-> +
-> +properties:
-> +  compatible:
-> +    const: mediatek,mt6370-charger
-> +
-> +  interrupts:
-> +    description: |
-> +      Specify what irqs are needed to be handled by MT6370 Charger driver. IRQ
-> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL_UVP_D"
-> +      are required.
-> +    items:
-> +      - description: BC1.2 done irq
-> +      - description: usb plug in irq
-> +      - description: mivr irq
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: attach_i
-> +      - const: uvp_d_evt
-> +      - const: mivr
-> +
-> +  io-channels:
-> +    description: |
-> +      Use ADC channel to read VBUS, IBUS, IBAT, etc., info.
-> +    minItems: 1
-> +    items:
-> +      - description: |
-> +          VBUS voltage with lower accuracy (+-75mV) but higher measure
-> +          range (1~22V)
-> +      - description: |
-> +          VBUS voltage with higher accuracy (+-30mV) but lower measure
-> +          range (1~9.76V)
-> +      - description: the main system input voltage
-> +      - description: battery voltage
-> +      - description: battery temperature-sense input voltage
-> +      - description: IBUS current (required)
-> +      - description: battery current
-> +      - description: |
-> +          regulated output voltage to supply for the PWM low-side gate driver
-> +          and the bootstrap capacitor
-> +      - description: IC junction temperature
-> +
-> +  io-channel-names:
+Hi Andy,
 
-It does not match io-channels, you need minItems here as well.
+Thanks for your helpful comments!
 
-> +    items:
-> +      - const: vbusdiv5
-> +      - const: vbusdiv2
-> +      - const: vsys
-> +      - const: vbat
-> +      - const: ts_bat
-> +      - const: ibus
-> +      - const: ibat
-> +      - const: chg_vddp
-> +      - const: temp_jc
-> +
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=9C=
+=8824=E6=97=A5 =E9=80=B1=E4=BA=94 =E5=87=8C=E6=99=A82:19=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+>
+> On Thu, Jun 23, 2022 at 2:00 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> >
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> >
+> > Add mt6370 DisplayBias and VibLDO support.
+>
+> ...
+>
+> > +#include <linux/bits.h>
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/module.h>
+>
+> > +#include <linux/of.h>
+>
+> Any users of this? (See below)
+>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/driver.h>
+> > +#include <linux/regulator/machine.h>
+>
+> ...
+>
+> > +#define MT6370_LDO_MINUV       1600000
+> > +#define MT6370_LDO_STPUV       200000
+> > +#define MT6370_LDO_N_VOLT      13
+> > +#define MT6370_DBVBOOST_MINUV  4000000
+> > +#define MT6370_DBVBOOST_STPUV  50000
+> > +#define MT6370_DBVBOOST_N_VOLT 45
+> > +#define MT6370_DBVOUT_MINUV    4000000
+> > +#define MT6370_DBVOUT_STPUV    50000
+> > +#define MT6370_DBVOUT_N_VOLT   41
+>
+> If UV is a unit suffix, make it _UV.
+>
+> ...
+>
+> > +               .of_match =3D of_match_ptr("dsvbst"),
+>
+> Would it even be called / used if CONFIG_OF=3Dn?
+
+We got a notification from Mark telling us that this patch has been
+applied to git.
+( https://lore.kernel.org/linux-arm-kernel/165599931844.321775.808555909233=
+7130067.b4-ty@kernel.org/
+)
+So, should we need to make any other changes in the next submission?
+
+>
+> ...
+>
+> > +               .regulators_node =3D of_match_ptr("regulators"),
+>
+> Ditto.
+>
+> ...
+>
+> > +       for (i =3D 0; i < ARRAY_SIZE(mt6370_irqs); i++) {
+> > +               irq =3D platform_get_irq_byname(pdev, mt6370_irqs[i].na=
+me);
+> > +
+> > +               rdev =3D priv->rdev[mt6370_irqs[i].rid];
+> > +
+> > +               ret =3D devm_request_threaded_irq(priv->dev, irq, NULL,
+> > +                                               mt6370_irqs[i].handler,=
+ 0,
+> > +                                               mt6370_irqs[i].name, rd=
+ev);
+> > +               if (ret) {
+>
+> > +                       dev_err(priv->dev,
+> > +                               "Failed to register (%d) interrupt\n", =
+i);
+> > +                       return ret;
+>
+> return dev_err_probe(...); ?
+>
+> > +               }
+> > +       }
+>
+> ...
+>
+> > +       for (i =3D 0; i < MT6370_MAX_IDX; i++) {
+> > +               rdev =3D devm_regulator_register(priv->dev,
+> > +                                              mt6370_regulator_descs +=
+ i,
+> > +                                              &cfg);
+> > +               if (IS_ERR(rdev)) {
+>
+> > +                       dev_err(priv->dev,
+> > +                               "Failed to register (%d) regulator\n", =
+i);
+> > +                       return PTR_ERR(rdev);
+>
+> return dev_err_probe(...); ?
+>
+> > +               }
+> > +
+> > +               priv->rdev[i] =3D rdev;
+> > +       }
+>
+> ...
+>
+> > +       if (!priv->regmap) {
+> > +               dev_err(&pdev->dev, "Failed to init regmap\n");
+> > +               return -ENODEV;
+> > +       }
+>
+> return dev_err_probe(...);
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
 Best regards,
-Krzysztof
+ChiaEn Wu

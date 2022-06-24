@@ -2,143 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47A0155993D
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 14:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03ABB55A060
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 20:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231602AbiFXMJd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 08:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S229759AbiFXR1R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 13:27:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231775AbiFXMIm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 08:08:42 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5770A8124A;
-        Fri, 24 Jun 2022 05:08:41 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id a2so4124436lfg.5;
-        Fri, 24 Jun 2022 05:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=opz5tYqROCadOn1rTVDM2+Qm22g1iuj+39fMsI/vnic=;
-        b=HE/vBhYST9BZ6cYOcgQRbu/4xMr4Y0DfHmubIAE4XpfQTE04ykvKvIJ0ex4Z1LHPtG
-         EEHM+d4rKaZyCHx2xaHrQ5K6xqcmnqankJJ13uHFfhWsxiMkEMfBtOKYOHHEnfpj224k
-         bF6NkoAR5VOkMllJL3CauDw6UvHB6Ue8Tx8WOmqQ71scmjLuG1XQ2k2MAAsXqjGp/sN6
-         DO7TQv71Yedbl72jDKiLt/PjpITVvidmEM/0/IzysYPpDpOsLIlw+MkuWAZyBbuiJoi5
-         GGhmkVXfcwfHaLDiUNlKMWLJsBgoOV5HXKSUuH58BrJJhym/FH6HDZvG9GxQzdUs3fl6
-         d9gw==
+        with ESMTP id S232517AbiFXR0o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 13:26:44 -0400
+Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D77911A16;
+        Fri, 24 Jun 2022 10:26:41 -0700 (PDT)
+Received: by mail-il1-f181.google.com with SMTP id w10so1925409ilj.4;
+        Fri, 24 Jun 2022 10:26:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=opz5tYqROCadOn1rTVDM2+Qm22g1iuj+39fMsI/vnic=;
-        b=dBxk7ePZyctVWR+qcRjx1IFp8EoZe+nCrMbpbumyS/ttjfYp5q9dhsUknr6Gtcn22i
-         Rxx3eUJFIVlElkMn5TWMhKHO8GP5GRZVRUBlCdi2nPMUqrpNnkt5yORtNc7YF41eHgNk
-         IBZ7rYH/cL0WsbhbWPKP6R7Ym8MGkOduhAMCxY4gdjDx+YkFZG/BvQg00/iefYEr9Dl7
-         ppnhfrHEUcKTF/1m0STnmIObjXu6S8ui1NKX2hWWSUy864r9Cekzkt9ADCy764L+JvZb
-         cZXU6rLlQHq2RHda9sp5AFJw5E5tSGbgT651HIzQuC13QjZ7yxKmbRjvJsrwvCOlXZ7b
-         2cag==
-X-Gm-Message-State: AJIora+XjBkby0wjx+bmNNH/OHqlRVjPKPK6FyjHYohsJBiMx+oIWZoj
-        glzpKwCplbksyx3jQ9aiUcM=
-X-Google-Smtp-Source: AGRyM1t9k0afR23zcetUw4S0zjC+fF7Xymatl9u9QfjVjdRgDDPkLJFolTLpcUi5+7fRsTnd0r3LYw==
-X-Received: by 2002:a05:6512:3c91:b0:47f:aa00:d39b with SMTP id h17-20020a0565123c9100b0047faa00d39bmr4527833lfv.81.1656072519688;
-        Fri, 24 Jun 2022 05:08:39 -0700 (PDT)
-Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id p16-20020a05651238d000b004790ef191e3sm335897lft.216.2022.06.24.05.08.38
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=B5w8YwmvaMvgaa+XdQ9K9wrK3DoeF6dUpZwQeNncYzU=;
+        b=5S7jZ2DwxYsqIR3F3tWMPBX8DGfNIddNGlGBHhoqeKJpFE3T6hwbSs5XOQqDDW56Cz
+         03jhUSUFO39oM6HFQYCNh69dIckGooiN/NdiywpXmlH0XkBt3t8UCU1UjZUv2qlmITLb
+         2RakjGSEGXWQ9CoMkXDsWmXO4XWuuIjV+m/GtbNXSAznV7+VYjIJNh70zfWTu96fmUQf
+         VGjAxBvNPCGOsj2Nr4PcLi+YRqvfYSKypR/Lv2zBj4xaI+HmH3ZjAsJMdVCywVMIS7wS
+         9JzQGz9zEJiS+a42yZVvYh59pmsJUMp4vaBG2p5x/MZccLIX0JXBHpj/xV4SChopvZDu
+         w3fQ==
+X-Gm-Message-State: AJIora90fsaort/i9rOCMZCyLofP95JBXe+zxdeByaXa5WAgDiCmLG8n
+        6w3/X2ouort14KNNgJ2L2+kgHB+7tg==
+X-Google-Smtp-Source: AGRyM1v4lwCvNUsULQiN1Fb/2fRNm5hCntJ8GiYUQcFu8to/stf++2gRR+lEsPmEbGiKxezIqCr1NQ==
+X-Received: by 2002:a92:7c06:0:b0:2d6:605d:8164 with SMTP id x6-20020a927c06000000b002d6605d8164mr29024ilc.179.1656091600683;
+        Fri, 24 Jun 2022 10:26:40 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id c10-20020a92940a000000b002d90c9077a2sm1338850ili.57.2022.06.24.10.26.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jun 2022 05:08:39 -0700 (PDT)
-Date:   Fri, 24 Jun 2022 14:10:29 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
+        Fri, 24 Jun 2022 10:26:40 -0700 (PDT)
+Received: (nullmailer pid 146340 invoked by uid 1000);
+        Fri, 24 Jun 2022 17:26:34 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-kernel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/10] dt-bindings: iio: adc: mcp3911: add
- microchip,data-ready-hiz entry
-Message-ID: <YrWptbzVzM6fszLH@gmail.com>
-References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
- <20220623170844.2189814-5-marcus.folkesson@gmail.com>
- <789e8a4e-f5a3-9e92-da2c-22145ba272d9@linaro.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="8dCobV3nYVqH0LOT"
-Content-Disposition: inline
-In-Reply-To: <789e8a4e-f5a3-9e92-da2c-22145ba272d9@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Kent Gustavsson <kent@minoris.se>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+In-Reply-To: <20220623170844.2189814-5-marcus.folkesson@gmail.com>
+References: <20220623170844.2189814-1-marcus.folkesson@gmail.com> <20220623170844.2189814-5-marcus.folkesson@gmail.com>
+Subject: Re: [PATCH 05/10] dt-bindings: iio: adc: mcp3911: add microchip,data-ready-hiz entry
+Date:   Fri, 24 Jun 2022 11:26:34 -0600
+Message-Id: <1656091594.379237.146339.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Thu, 23 Jun 2022 19:08:39 +0200, Marcus Folkesson wrote:
+> The Data Ready Output Pin is either hard wired to work as high
+> impedance or push-pull. Make it configurable.
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml    | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
 
---8dCobV3nYVqH0LOT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-On Fri, Jun 24, 2022 at 11:54:58AM +0200, Krzysztof Kozlowski wrote:
-> > +  microchip,data-ready-hiz:
-> > +    description:
-> > +      Data Ready Pin Inactive State Control bit
->=20
-> "Bit" of what? Do not describe the programming model but the actual featu=
-re.
->=20
+yamllint warnings/errors:
 
-You are right. I will remove "bit".
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml: properties:microchip,data-ready-hiz: 'oneOf' conditional failed, one must be fixed:
+	Additional properties are not allowed ('default' was unexpected)
+		hint: A vendor boolean property can use "type: boolean"
+	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml: properties:microchip,data-ready-hiz: 'oneOf' conditional failed, one must be fixed:
+		'enum' is a required property
+		'const' is a required property
+		hint: A vendor string property with exact values has an implicit type
+		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+	Additional properties are not allowed ('default', 'type' were unexpected)
+		hint: A vendor string property with exact values has an implicit type
+	/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml: properties:microchip,data-ready-hiz: 'oneOf' conditional failed, one must be fixed:
+		'$ref' is a required property
+		'allOf' is a required property
+		hint: A vendor property needs a $ref to types.yaml
+		from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+	hint: Vendor specific properties must have a type and description unless they have a defined, common suffix.
+	from schema $id: http://devicetree.org/meta-schemas/vendor-props.yaml#
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml: ignoring, error in schema: properties: microchip,data-ready-hiz
+Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.example.dtb:0:0: /example-0/spi/adc@0: failed to match any schema with compatible: ['microchip,mcp3911']
 
-> > +      true =3D The DR pin state is high-impedance when data are NOT re=
-ady
-> > +      false =3D The DR pin state is a logic high when data are NOT rea=
-dy
-> > +    type: boolean
-> > +    default: false
->=20
-> You do not need default for bools.
+doc reference errors (make refcheckdocs):
 
-OK
->=20
-> > +
-> >    microchip,device-addr:
-> >      description: Device address when multiple MCP3911 chips are presen=
-t on the same SPI bus.
-> >      $ref: /schemas/types.yaml#/definitions/uint32
->=20
->=20
-> Best regards,
-> Krzysztof
+See https://patchwork.ozlabs.org/patch/
 
-Thanks,
-Marcus Folkesson
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
 
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
 
+pip3 install dtschema --upgrade
 
---8dCobV3nYVqH0LOT
-Content-Type: application/pgp-signature; name="signature.asc"
+Please check and re-submit.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmK1qa8ACgkQiIBOb1ld
-UjK10hAAr40LRKfXxY293jUkq59OTM1O9R0P5rQU6QH5059uMNimRckocoUmRfwz
-p3zVsJU3/Nr5yFXgH8gVUoK9N87iCo6tEIbA7KNUHKVkBEE+LWKsA8qqMsJV0T5V
-S9Y8p959zp9bzy+Og31jhWDu00GiREUTnkxq7qPz6Bn+u7W0KMn4Mc1iqCcgspMo
-rm+bGwPPhq6t3Bx9NYVOGybf8BayK4EqKdTzVH/vq9llGEedIGERnJkYnxJ/PWiD
-kkI2lGAaNF0udUTprOifwDo1oGaVaEPh4FTJ3VX3WTNKMvHokMKeNA8hQ1Fdo8T8
-mcJVXKRcoVtgwvOJHuJaVvM4aRGILTK2dmrJKss2n/q7979xtminhdyx3sAw4EuP
-PeMprXH/ClBZTy25c7bYshd9QPJ4oFEGWByerqfeqAb41RTpablK/B2tL0eIwxJx
-QFwIP7Gb+Gcz8Xwf9OuO7ul1c5Qomj7y2rjXj5a1snSSqRixfv4WQKdalgJpyJon
-GUa/978si2oKM66jbiCCrW1YuKxUPkcppJ7/gwCXz2Xp7pWygqZDN3Anb1jZUvVq
-LKVExxB9tGaabgB32pjNBi151/Ew9o4k5mRJV9hZEfJlj5SZO7HCWGbl0GTmv5SR
-6n80U1Y/2hXsJJ92b35dof+rlEWI67U7MI4VO0SrRTRfotcs5Mw=
-=IsvN
------END PGP SIGNATURE-----
-
---8dCobV3nYVqH0LOT--

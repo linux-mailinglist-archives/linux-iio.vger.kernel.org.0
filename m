@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7565559916
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 14:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D07A0559930
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 14:09:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbiFXMDX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 08:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
+        id S231898AbiFXMHk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 08:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230100AbiFXMDW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 08:03:22 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5F092CDC2;
-        Fri, 24 Jun 2022 05:03:21 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id j21so4138522lfe.1;
-        Fri, 24 Jun 2022 05:03:21 -0700 (PDT)
+        with ESMTP id S231903AbiFXMHb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 08:07:31 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222A87FD2A;
+        Fri, 24 Jun 2022 05:07:30 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id bn8so2561290ljb.2;
+        Fri, 24 Jun 2022 05:07:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=LRLPrqZ/tJwGdvagoItMmAQzSmts6CJt9PpLGt2HBU0=;
-        b=ftyp1r8QDfaCG2ZUcjStjpwLhkm6KG1dI2xfKjr2WmMEkVteu2G5rE8dftLZhyQe2l
-         3bX3/fFhpiDREOMiyos/YG9qwD1PxI8Q3ZZRTp/Lux+AVyzkDaBR+5o157pwX7AbXo6i
-         Zh0wWQdI6W+I9htRkxQRCU61bPcZrxdXTzUbam2UBO3fjs09URVb/A5n+QPNgzklQC2i
-         86+j4hmp1JfgDPR7Bffx6X7cQsdvyZg5zdi9rwr1Dj7tO5GUMB5jRtbSRBoKhFU0kylL
-         VVpYhWf6J3REfEs3Fm7ZGjEUlJAhkc4QVXzktYtTvnbShnEPqJ7Qrmev+w1al/8/i8Tu
-         /g4w==
+        bh=MlmWOxwc9B5om1qcXX6Sgk8MRmGPoyaBAHrPiH+sPck=;
+        b=TQavJQqPAxGOqaMWJH9G5tNHL53MY09upOvdRJfLqeqqZop/EKT0tPY3DYiABuEp6R
+         zLNG7my/MHYCPm5oEBkNe/RKCL3gIoCOTEYLZ5XRY+flheUaPrpqFFaSipolHublVGk7
+         8Z9C6a2UXzh65Mwq/B9RTrrYSVAU33jj2TzOT+5tG18uTErqLoFcY6bpUlf7lQ4cKNrx
+         FzTSgNU7Or9nuNLn2hU9yDkXPIgoY4cNUA2pxNmWAqB0XMXmPCKenP2FydicJ0Gspq03
+         ItDkP4YjE/Hk/SH8BXRir0+EVbSyUi4R7qslZ7PsLFRlMk5ZmOgXJ+kQAquVkncYJVs2
+         rsEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=LRLPrqZ/tJwGdvagoItMmAQzSmts6CJt9PpLGt2HBU0=;
-        b=CNtS8qLsQWocELbwNgRfOk76E/TRuXVQspOBS5PT49vpLclESuIoazaJ0KLp2/Rfh1
-         Jx2oOt8xBztynNCja82t2xG4xUeSVNzm5M9aPHAltJi2jYNLD1u4nMjhZxy/76MXxLE5
-         UKDteCZLlvaqDaWA7NmvGsuGHvwDszuenTogME61plM+4PPwC9KzevBWH5FctnYNswto
-         ohWLKCH3BsVpbAeBf2LZxJes/QN9j81/lUBsoeO403PaKAhtUBWsABMDXaZIjwi7Fdt/
-         RHAQfpk2bJ6UT8FKTZk/KFHAziYNvaZsLpaD3qHcgEW+RQ/c3fklKX0zBjYGC15HPxSK
-         TKxA==
-X-Gm-Message-State: AJIora8eOHrN2AjoegBroamO4YKVJ/m0XHxLTB7JLg8VfOlGpVGUu/kZ
-        bBu7bxHUxX9PHmoGSEeOf1k=
-X-Google-Smtp-Source: AGRyM1uTUL4Ju7SDEhiFfP/o6kyIS+lpa/Uw3jH+CtX52sw0CDfzA4Sb2rcaHh2nEcKKrb9wIhnIQw==
-X-Received: by 2002:a05:6512:ea5:b0:47f:785c:7031 with SMTP id bi37-20020a0565120ea500b0047f785c7031mr8766005lfb.35.1656072199616;
-        Fri, 24 Jun 2022 05:03:19 -0700 (PDT)
+        bh=MlmWOxwc9B5om1qcXX6Sgk8MRmGPoyaBAHrPiH+sPck=;
+        b=3sFhTSr/HkfWNuB4gKrxZRQB+NvVKZlBrZ9kzkGIoGdlJgF0OKIFJpED1MvvKGSgEh
+         M6vHZ1lksBg9iWN53MYBZ5u5/2lL88IyFQh+OeJJUxrsj74Fc/z9oXctexcJpxJ6HcrF
+         d8YtTl0mzrZTaxhH28Cb1/k8wiuweHZHXOA8sYJ+rbD6nsihlcXTXV2OfdYwxR2JwhPw
+         quB7ZZB+Cqlg0/XClFvJMo0VWdWHl6cdKKy6rx/HIWRcmJ/FDiz6fzp4zxsOiH2VvC6x
+         jRT+sDhfmV14royii7NuiGPQVgyuEhZ7bHOO3M8kDHaHyFHazTpA0cTfnKrJaZ7Wzzx0
+         PHyA==
+X-Gm-Message-State: AJIora85zXfCaz7QhyW0Tv42LrwYmqqSYxJxXl+FqaccdgKHrBeHseFm
+        ixINSCofN78hBfqqza+kxqg=
+X-Google-Smtp-Source: AGRyM1ul024y5yyz3HCvSrcXgQgYJBlCT9N3Mk8SZtstRjOh+SrDXWzEgx7iNLMpl1idElTM3rjavg==
+X-Received: by 2002:a05:651c:178a:b0:25a:44ab:593 with SMTP id bn10-20020a05651c178a00b0025a44ab0593mr7385359ljb.358.1656072448258;
+        Fri, 24 Jun 2022 05:07:28 -0700 (PDT)
 Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id u16-20020ac258d0000000b0047f6f675ea1sm338586lfo.161.2022.06.24.05.03.18
+        by smtp.gmail.com with ESMTPSA id v5-20020a2ea605000000b0025a96e2ab0csm261845ljp.133.2022.06.24.05.07.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jun 2022 05:03:18 -0700 (PDT)
-Date:   Fri, 24 Jun 2022 14:05:08 +0200
+        Fri, 24 Jun 2022 05:07:27 -0700 (PDT)
+Date:   Fri, 24 Jun 2022 14:09:17 +0200
 From:   Marcus Folkesson <marcus.folkesson@gmail.com>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
@@ -58,16 +58,17 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         linux-iio <linux-iio@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 10/10] iio: adc: mcp3911: add support to set PGA
-Message-ID: <YrWodHgbTJrUJ2lZ@gmail.com>
+Subject: Re: [PATCH 06/10] iio: adc: mcp3911: add support for oversampling
+ ratio
+Message-ID: <YrWpbcjHSY+se1Aj@gmail.com>
 References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
- <20220623170844.2189814-10-marcus.folkesson@gmail.com>
- <CAHp75Vf7=Pk7T8ysrFS9u1sKQXUpqczGJkaeX-MLbwpx-iM2rg@mail.gmail.com>
+ <20220623170844.2189814-6-marcus.folkesson@gmail.com>
+ <CAHp75Ve+gDa46MRhTR-5dOutGhXqakZbSX14TurwnsuT4OeuYQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="bKRj2/f7JE0UQ8BO"
+        protocol="application/pgp-signature"; boundary="mjYFCl1wg8k8qrkO"
 Content-Disposition: inline
-In-Reply-To: <CAHp75Vf7=Pk7T8ysrFS9u1sKQXUpqczGJkaeX-MLbwpx-iM2rg@mail.gmail.com>
+In-Reply-To: <CAHp75Ve+gDa46MRhTR-5dOutGhXqakZbSX14TurwnsuT4OeuYQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -79,114 +80,111 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---bKRj2/f7JE0UQ8BO
+--mjYFCl1wg8k8qrkO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 23, 2022 at 09:15:51PM +0200, Andy Shevchenko wrote:
-> On Thu, Jun 23, 2022 at 7:41 PM Marcus Folkesson
+On Thu, Jun 23, 2022 at 09:20:01PM +0200, Andy Shevchenko wrote:
+> On Thu, Jun 23, 2022 at 9:08 PM Marcus Folkesson
 > <marcus.folkesson@gmail.com> wrote:
 > >
-> > Add support for setting the Programmable Gain Amplifiers by adjust the
-> > scale value.
+> > The chip support oversampling ratio so expose it to userspace.
+>=20
+> supports
+>=20
+> ratio, so
+>=20
+> ...
+
+Thanks
+>=20
+> > +static const int mcp3911_osr_table[] =3D {32, 64, 128, 256, 512, 1024,=
+ 2048, 4096};
+>=20
+> Spaces inside {}.
+
+Not sure what you mean?
 >=20
 > ...
 >=20
-> > +       int ret =3D mcp3911_read(adc, MCP3911_REG_GAIN, val, 1);
+> >  }
+> >
 > > +
-> > +       if (ret)
-> > +               return ret;
 >=20
-> Please split the assignment.
+> Unwanted blank line.
 >=20
->   int ret;
->=20
->   ret =3D ...
->   if (ret)
+> ...
 
-OK
-
+Removed
 >=20
+> > +               switch (val) {
+> > +               case 4096:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x07);
+> > +                       break;
+> > +               case 2048:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x06);
+> > +                       break;
+> > +               case 1024:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x05);
+> > +                       break;
+> > +               case 512:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x04);
+> > +                       break;
+> > +               case 256:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x03);
+> > +                       break;
+> > +               case 128:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x02);
+> > +                       break;
+> > +               case 64:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x01);
+> > +                       break;
+> > +               case 32:
+> > +                       val =3D FIELD_PREP(MCP3911_CONFIG_OSR, 0x00);
+> > +                       break;
+> > +               default:
+> > +                       ret =3D -EINVAL;
+> > +                       goto out;
+> > +               }
+>=20
+> I understood why the table above, but this is a waste of resources.
+> Use that table
+
+Yep, I will use the table instead
 >=20
 > ...
 >=20
-> > +       *val >>=3D channel * 3;
-> > +       *val &=3D 0x07;
+> > +               ret =3D mcp3911_update(adc, MCP3911_REG_CONFIG,
+> > +                               MCP3911_CONFIG_OSR,
+> > +                               val, 2);
 >=20
-> GENMASK() ?
+> sizeof() ?
 
-I will use GENMASK
->=20
-> > +       *val =3D (1 << *val);
->=20
-> Unneeded parentheses, perhaps BIT()?
-
-I will switch to BIT()
->=20
-> ...
->=20
-> > +                               ret =3D mcp3911_update(adc, MCP3911_REG=
-_GAIN,
-> > +                                               MCP3911_GAIN_MASK(chann=
-el->channel),
-> > +                                               MCP3911_GAIN_VAL(channe=
-l->channel,
-> > +                                                       i), 1);
->=20
-> This is not good indentation, at least i), should be on the previous line.
-
-Agree
-
->=20
-> ...
->=20
-> > +static int mcp3911_calc_scale_table(struct mcp3911 *adc)
-> > +{
-> > +       u32 ref =3D MCP3911_INT_VREF_MV;
-> > +       u32 div;
->=20
-> > +       int ret =3D 0;
->=20
-> Useless assignment.
-
-Agree
->=20
->=20
-> Return directly.
-
-OK
->=20
->=20
-> The useless label.
-
-Agree
->=20
-> > +       return ret;
->=20
+sizeof() what?
 
 
 Thanks,
 Marcus Folkesson
 
---bKRj2/f7JE0UQ8BO
+--mjYFCl1wg8k8qrkO
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmK1qGAACgkQiIBOb1ld
-UjKJNRAAge69rOmGEVokFO/oISGAzXS1ZqArxPISfbiEhZnC08gxknW2F8FoFVYd
-KF0vimNI8D6ZojSGrJ/3Dn000yFgFf/nhjKWbEu/Wz1hGr5T7c25lw/darA7iyuZ
-KhzfVorHKEaZxDd/xVVVS2IU8ebDLsUDDyrBfOyvS5ERj25sz/kw7jZXDjsY3QAd
-wtIve7zqV58QRD+TYulZCb4Ms5mTdGHDWktPgeQiOnI7hFQGjVtUuWrcuQAKHffa
-QhEqHSVIqXB+Y6pjQuk/SjBZod9zSb5rlSCjId9wzFrBJLkhl1ITqTxcAse9/eyF
-6vwqLnfGblOzcFHdovPTSG5IjPgrzeevoftvbera4t+uOAnKSxrrSyftvXSESarE
-r92dxeP/nxtJ7sPuwReIHgOHvRNaamlFN5CPgzc0SL6i4xoCryVJswh6/J1SXHmE
-b15T1/X6a9L7eFPn0JwgOcr03dh010ZMZF39LYP+TfW1eDkYusd6ePNuyctMjT/1
-MhjgZ4uXFEYfCApWJ+0UWyFDnIvU8/SSP+GxE2JQuEzZgnqyGGgZd6gd0oGyQtHJ
-y5QsDtfTAhuOh+6wsI447gjnxD0DCzEp0kropz3eaIMGTfrXnF3t9A3HyRdut6/h
-LgEyb+kYTGF39sT6FLeR37vvyZKvACpaOalFGKrbz+jmDVltq7k=
-=1Q1R
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmK1qWgACgkQiIBOb1ld
+UjLRIhAAxjpsZF7muOuTgCKiTvY0MQGsqb059NkGOLpiiiB39A0g4r+Oj3yHDdZk
+RmynAm/qheM70moQNU2GUDKUm96bHVHrPmbpl8TpOZ0QldlPanXs3gZ+vBeGlO95
+t0s4NPLVHnxKusVRDSMeWa5EETjm0DWTfwbwE/tDp5Gd9U56+vsJ+fndhIwolLo3
+4kjkDo1oPXlFeJUwAHOZ9HNp+987NVoS0u9SDotb/CkWK63hNfpP9aL6Knk07cby
+PgtLzefWXf47NVOAErZIfE0UzNQkRTP7ijH20JcX+CLYKavovEYbrMXyhVwQky4c
+NrWFjHYy1DhW6WKMc2qW76q1vPrQgQo4y/rsbLlF/25TWCfN3ruFOdpGzijPkDku
+r4buN5L2C7M+MOdfT6R+4Uo2RzQoeK7ZuheU51rn9B/8FQbtldD99mCoBARoEdEq
+JSzIpdnheTmQwZH4BNgzEoe6/NrG08fAtG9oET+7NvCK4fA+h+KasgZ+Ixo/MbOw
+jD8B3m0nNGd1RBRm41/KGUnO4IFzDWmLZAwIHGTRIMpJ3cT5BxR84mmi48EcngS6
+x42I5s1LmfvwCh1k+YXcUWhttZEK/qv6NiEPFRdlK/GomREs4aVDqviveRy0TLnA
+cscGoik2YWh0sOAkmxoOmPhuiNLwL3IW7YhybhrYiTh95p1lrTE=
+=3t6v
 -----END PGP SIGNATURE-----
 
---bKRj2/f7JE0UQ8BO--
+--mjYFCl1wg8k8qrkO--

@@ -2,172 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 511BE558A2F
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jun 2022 22:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6083558D30
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 04:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbiFWUer (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 23 Jun 2022 16:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33738 "EHLO
+        id S229534AbiFXCTR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 23 Jun 2022 22:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbiFWUeq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 16:34:46 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E9960C7E;
-        Thu, 23 Jun 2022 13:34:44 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id r20so437836wra.1;
-        Thu, 23 Jun 2022 13:34:44 -0700 (PDT)
+        with ESMTP id S229523AbiFXCTQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 23 Jun 2022 22:19:16 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83DB51E64;
+        Thu, 23 Jun 2022 19:19:13 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id cs6so2746500qvb.6;
+        Thu, 23 Jun 2022 19:19:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=references:from:to:cc:subject:in-reply-to:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=IK/XCGAwWKhc4dZa86Nh3vaAkVdDBZoCXA0duTVjqDQ=;
-        b=gYaWWKTLbWBMByASORPVMc8CxPoGbr8pioEUymVhlmvBZLN8LoSARszNyJgfFej41z
-         rnPlmHOZPjROJg9n411VO4Y6wY9fP65bGZf/Gq1IrOIKeDeXUabzFF7CJXjxqn/cTIln
-         2uSL38+TGWqC9kSQqvJz/Qy8+ck4c47dcfF32Uc5Sf5Y6NG5chuVM1PGpMzJl3J8atW3
-         B8VkCVATtmfUC6xfEKL9DX1YYTSLiE+z8KPUCx7AOZItbp1Nl+DkliPvDEcE7ctf57Qi
-         lJUtws9CIIgQV7SaxLuCtAi0k1ERnxXrGSQW6OJGPyqk7M4jCys5SxkVaQ2lloXz/R/Z
-         ThYQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uzzh72mHiSVMomouiy6J+rgHPUmk/fQgjJAGuIjU8IY=;
+        b=Ljlwkr+H31043E4By2jpn2Bfhip4RB0bqd0aVyFh+p8QH3j4pOhRSXn6Q35qhWwsR2
+         v2SvEAD/TOYIIlHm9hJ0qTeACCZxrjsHfSxl29/qGUj8VXJY5u1t/wdFkiwKoWbBcmTo
+         VMu7Lev5hBOP6D5Vc2q2qST2ZGRhU3Jwcgq+pTdPgzbOEEC6uByaMPRdXHr2Y9Zac5ne
+         zGui3ryO5MVFGShmQ6aVtjRrYcaYse7HhZzx8Q8BGwevWib9EtIFvcx1WjQydHcAjROV
+         zsWFeu4yw4cvzD9i0V0iJdCL6os9sSHJ8StxUzPBsT4pGnRhdVuQVQ/7iz1veSsmmlkS
+         9T9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:references:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=IK/XCGAwWKhc4dZa86Nh3vaAkVdDBZoCXA0duTVjqDQ=;
-        b=hRcA5qm3ZkFNBso5NPaEDe5vZL4J0Z+u75KN+n5MBGl8iMECqABWdQu3KAzUnVVGCt
-         2pkrliJn7g4qFQZajKbqSY9qZueumGwu4BUNsadE3qiWWyHQmjggBeyb8GrFdar6/FNW
-         xXsbsTuB/N3kBhn5IFpwYc2E8Vgi9r93IIM6fqwmt3UY9i1FHBJaqoRRNl/XwEPS+/pK
-         I4a0whFbNiVBng3Mw1LXxCf9N+10HTPy55tk/2xjIp5Sc9qMkIoKSfpJ9utrfQLXqNNs
-         RGANs3o3mT/Cc3UNAWU1cm/ywavK2QOrlpjCoobC2Jp6+1H+9Uwy3lI52T5+/v1FoWJ+
-         bq4w==
-X-Gm-Message-State: AJIora8kSYO1BYVWGAcNhgZ+V1Bv+yVtvuI9jFykJmLXCX5B/ymjQp6E
-        /z7/UrTFEzpSW3L5vvQG1DE=
-X-Google-Smtp-Source: AGRyM1snb1laNeZAsPIQd3dxnawiGNhk+UGfN5ihQx8QZ4cdi8LYJtk5LQihHXV1jMBUlcrHVvmA6A==
-X-Received: by 2002:adf:df09:0:b0:21b:8a8d:99c8 with SMTP id y9-20020adfdf09000000b0021b8a8d99c8mr9696887wrl.152.1656016482596;
-        Thu, 23 Jun 2022 13:34:42 -0700 (PDT)
-Received: from localhost (92.40.171.44.threembb.co.uk. [92.40.171.44])
-        by smtp.gmail.com with ESMTPSA id h6-20020adffd46000000b0021b96cdf68fsm312754wrs.97.2022.06.23.13.34.41
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Uzzh72mHiSVMomouiy6J+rgHPUmk/fQgjJAGuIjU8IY=;
+        b=3p3qdYj6CCNDy42vxqTuMq8tMbwTN5WfjQ3wMi+nsZSdxl3DvQJ9P+CTA86SfBJVyX
+         8AEkakktGmzMeCTE052bETmMhQ+dJsKg3PH8Z+Py8DHiL0zZTb0QSU2Ru6UYLQbDksst
+         165PZdZsY85wlgo6A++hj/w9/tswHWzSy2tNbpi4ATq8YP17u+kZsZ5qyMrafWa9gozp
+         aY9iZWP460RjVLrNxkO/w6QARoZFyInyXmoFlVStiHb7loBZWheLOSylsGSI3auGASnV
+         sT1LpHhcR54uCK2oQEDiCBCKLbeUqUp8BScIogzSNz8NkjLwEYtg/Cw6QKh6Gj4kmu+k
+         o9wA==
+X-Gm-Message-State: AJIora8uRJ7DJqghQorw6vTfB+Xgk0oX5283ij4PxqZ14xldSVVj4Ct1
+        qiX4eKG2cAHiUyYAQ/P1U79YGDJ1dXvOVQ==
+X-Google-Smtp-Source: AGRyM1vYeOxQBxJFgHrfpsq2lpIkDfnv8bYxpM/4XO4EatHKOyqL+Ma1clPdf67gvzsyFoZpakC3/Q==
+X-Received: by 2002:a05:622a:355:b0:305:2f9:9ce8 with SMTP id r21-20020a05622a035500b0030502f99ce8mr10789505qtw.297.1656037153082;
+        Thu, 23 Jun 2022 19:19:13 -0700 (PDT)
+Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id i19-20020a05620a151300b006a91da2fc8dsm983064qkk.0.2022.06.23.19.19.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jun 2022 13:34:42 -0700 (PDT)
-References: <20220607155324.118102-1-aidanmacdonald.0x0@gmail.com>
- <20220607155324.118102-3-aidanmacdonald.0x0@gmail.com>
- <YqDLflKTsYaupArl@sirena.org.uk>
- <6YJcC5wyOg6x6Ny4Os8ujFbK2qB4alkU@localhost>
- <CANhJrGMqUmnSvyNRgRyp40YnGQkD3N_2AZLn94NDp+4RG0_x5w@mail.gmail.com>
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        krzysztof.kozlowski+dt@linaro.org, Chen-Yu Tsai <wens@csie.org>,
-        jic23@kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, lars@metafoo.de,
-        "Rafael J . Wysocki" <rafael@kernel.org>, quic_gurus@quicinc.com,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio@vger.kernel.org, Linux PM list <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v2 02/17] regmap-irq: Add get_irq_reg to support unusual
- register layouts
-In-reply-to: <CANhJrGMqUmnSvyNRgRyp40YnGQkD3N_2AZLn94NDp+4RG0_x5w@mail.gmail.com>
-Date:   Thu, 23 Jun 2022 21:35:47 +0100
-Message-ID: <AX8g6eUgSrGJYBxU1YYNt2559CtK9b5G@localhost>
+        Thu, 23 Jun 2022 19:19:12 -0700 (PDT)
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>
+Subject: [PATCH] iio: Don't use bare "unsigned"
+Date:   Thu, 23 Jun 2022 22:18:06 -0400
+Message-Id: <20220624021806.1010962-1-joetalbott@gmail.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Use "unsigned int" rather than bare "unsigned". Reported by checkpatch.pl.
 
-Matti Vaittinen <mazziesaccount@gmail.com> writes:
+Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
+---
+ drivers/iio/industrialio-buffer.c     | 10 +++++-----
+ drivers/iio/industrialio-core.c       |  4 ++--
+ drivers/iio/industrialio-sw-device.c  |  2 +-
+ drivers/iio/industrialio-sw-trigger.c |  2 +-
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-> Hi dee Ho peeps!
->
-> Sorry for the late reply.
->
-> pe 10. kes=C3=A4k. 2022 klo 18.43 Aidan MacDonald
-> (aidanmacdonald.0x0@gmail.com) kirjoitti:
->>
->> Mark Brown <broonie@kernel.org> writes:
->>
->> > On Tue, Jun 07, 2022 at 04:53:09PM +0100, Aidan MacDonald wrote:
->> >
->> >> -    if (!chip->sub_reg_offsets || !chip->not_fixed_stride) {
->> >> +    if (chip->get_irq_reg) {
->> >> +            reg =3D chip->get_irq_reg(base_reg, i);
->> >> +    } else if (!chip->sub_reg_offsets || !chip->not_fixed_stride) {
->> >
->> > It seems like it would be cleaner and clearer to refactor things so th=
-at
->> > we always have a get_irq_reg() with standard chips getting given a
->> > default implementation which implements the current behaviour.
->>
->> I don't think that is a good way to clean things up. I only intended
->> get_irq_reg() to be a quick hack to solve a problem; in my opinion it
->> would be a poor abstraction to base the API around.
->>
->> What I'd suggest is something that will simplify regmap-irq. Instead of
->> defining the base registers, etc. in the chip, introduce a new struct
->> to describe a register group:
->>
->>     struct regmap_irq_reg_group {
->>         unsigned int status_base;
->>         unsigned int mask_base;
->>         ...
->>
->>         unsigned int irq_reg_stride;
->>
->>         int num_regs;
->>     };
->>
->> The idea is that the registers in a group are linearly mapped using the
->> formula "base + (i * irq_reg_stride)". Then it's possible to allow for
->> multiple register groups in regmap_irq_chip:
->>
->>     struct regmap_irq_chip {
->>         const struct regmap_irq_reg_group *groups;
->>         unsigned int num_groups;
->>
->>         unsigned int main_status_base;
->>         unsigned int num_main_status_bits;
->>         int num_main_regs;
->>
->>         ...
->>     };
->>
->> It should be straightforward to fit existing chips into this model.
->>
->> - Chips that use a main status + sub-block IRQ layout will define
->>   one register group for each sub-block and continue to describe the
->>   location of the main status registers inside of regmap_irq_chip.
->>   A group will only get polled if the corresponding main status bit
->>   is set -- n'th group is polled if n'th bit is set.
->
-> Does this work for devices where a single main status bit can flag
-> IRQs in more than one sub-registers?
->
-> Best Regards
->  -- Matti
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index b078eb2f3c9d..513a34a0b593 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -705,7 +705,7 @@ static unsigned int iio_storage_bytes_for_timestamp(struct iio_dev *indio_dev)
+ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+ 				const unsigned long *mask, bool timestamp)
+ {
+-	unsigned bytes = 0;
++	unsigned int bytes = 0;
+ 	int length, i, largest = 0;
+ 
+ 	/* How much space will the demuxed element take? */
+@@ -934,9 +934,9 @@ static int iio_verify_update(struct iio_dev *indio_dev,
+  * @l:		list head used for management
+  */
+ struct iio_demux_table {
+-	unsigned from;
+-	unsigned to;
+-	unsigned length;
++	unsigned int from;
++	unsigned int to;
++	unsigned int length;
+ 	struct list_head l;
+ };
+ 
+@@ -974,7 +974,7 @@ static int iio_buffer_update_demux(struct iio_dev *indio_dev,
+ 				   struct iio_buffer *buffer)
+ {
+ 	int ret, in_ind = -1, out_ind, length;
+-	unsigned in_loc = 0, out_loc = 0;
++	unsigned int in_loc = 0, out_loc = 0;
+ 	struct iio_demux_table *p = NULL;
+ 
+ 	/* Clear out any old demux */
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index e1ed44dec2ab..ca28f76b8f40 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -384,7 +384,7 @@ static ssize_t iio_debugfs_read_reg(struct file *file, char __user *userbuf,
+ {
+ 	struct iio_dev *indio_dev = file->private_data;
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+-	unsigned val = 0;
++	unsigned int val = 0;
+ 	int ret;
+ 
+ 	if (*ppos > 0)
+@@ -414,7 +414,7 @@ static ssize_t iio_debugfs_write_reg(struct file *file,
+ {
+ 	struct iio_dev *indio_dev = file->private_data;
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+-	unsigned reg, val;
++	unsigned int reg, val;
+ 	char buf[80];
+ 	int ret;
+ 
+diff --git a/drivers/iio/industrialio-sw-device.c b/drivers/iio/industrialio-sw-device.c
+index 49f775f16ad5..cdaf30a3f233 100644
+--- a/drivers/iio/industrialio-sw-device.c
++++ b/drivers/iio/industrialio-sw-device.c
+@@ -27,7 +27,7 @@ static DEFINE_MUTEX(iio_device_types_lock);
+ 
+ static
+ struct iio_sw_device_type *__iio_find_sw_device_type(const char *name,
+-						     unsigned len)
++						     unsigned int len)
+ {
+ 	struct iio_sw_device_type *d = NULL, *iter;
+ 
+diff --git a/drivers/iio/industrialio-sw-trigger.c b/drivers/iio/industrialio-sw-trigger.c
+index 9ae793a70b8b..994f03a71520 100644
+--- a/drivers/iio/industrialio-sw-trigger.c
++++ b/drivers/iio/industrialio-sw-trigger.c
+@@ -27,7 +27,7 @@ static DEFINE_MUTEX(iio_trigger_types_lock);
+ 
+ static
+ struct iio_sw_trigger_type *__iio_find_sw_trigger_type(const char *name,
+-						       unsigned len)
++						       unsigned int len)
+ {
+ 	struct iio_sw_trigger_type *t = NULL, *iter;
+ 
+-- 
+2.35.3
 
-No, I realized once I got into the refactor that what I outlined here
-wouldn't fit that use case well, which is what rohm-bd71828 needs.
-
-There are some other complications with this approach, like how to
-go between IRQs and register groups efficiently, and it's generally
-a rather heavyweight solution. It might be useful for handling very
-hierarchical chips, but I couldn't justify the added complexity when
-most chips don't need it -- after all most chips behind slow busses
-will have a small number of interrupts and a fairly flat structure.
-
-In the end I went with Mark's suggestion to factor things out around
-->get_irq_reg(). At first I thought there might be too many "gotchas"
-that'd limit its usefulness, but in the end it proved to be a better
-option and a lot easier to implement.

@@ -2,73 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CDCE55971D
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 11:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1ECA5597AC
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 12:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbiFXJ46 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 05:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42546 "EHLO
+        id S230210AbiFXKTv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 06:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbiFXJ4z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 05:56:55 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A2C67A19C;
-        Fri, 24 Jun 2022 02:56:52 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id k7so1144678ils.8;
-        Fri, 24 Jun 2022 02:56:52 -0700 (PDT)
+        with ESMTP id S231454AbiFXKTs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 06:19:48 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B47B7C507;
+        Fri, 24 Jun 2022 03:19:47 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id y18so2233298iof.2;
+        Fri, 24 Jun 2022 03:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=M4nnsvgHgIi0r2ItWc5dFuhTU+zH2GcT6p/faSXA7jc=;
-        b=HsRYekV2sU4Xv613pAvXWZuwPyAd8ueafTN7t5ELrygCaBWqwnSFn/yimTyvXphliU
-         rk/k1nDNQ3ECBrZQCQibcC5/SXphAPug9oObZB9Femn+4ZMKO367Z07kbw302ugSier+
-         3u6Ie+cqpVmNjf+nVQ2o9wUhernyrputNPwEkW+iFxQ7yrQw609omGwbvjVllqqdkQlb
-         DFP5VJKZgPzIyttK1WQpTnymekzhmxmCFLdIDv+zhBnfs0Quw4/dsjyIWcL8P0Yv01Hh
-         HffrHojwf2vBBMXK+Xv5kciDDgUaOI7o+FqSBYVUB7RtJd64wGJ3mx0TRrsc6+x3jNA+
-         Uofw==
+        bh=RgSnFxwGzpmjm+p7ZnjxYjteXl5sPOJEGrU4Scgygt8=;
+        b=Ksbgww2SpxbTKSeTwjSi+p9D7IjbSHXpPB6L2alhOT0rPaZ3Jdcwu4C8kKWHxpZsNs
+         pDZuW0yEoNBO0Hch6e/i/MyP8cEMrpcp0cPmroROelXTAnV/iMJJ35xzaUxnSQ80bmAt
+         FltIIv4lxmVG83sudMnDJngHdXAPymOVnnH0oSIsuglA6T+ThlE9cu/QXsyrD1halwkq
+         4K3YpgtFmjOQS4dXGRT42MgvZSQwT5yZfxY8tb0iUMGjYycTBPfNix0kpEQLPHOYAs/N
+         BZkwaH866WD1HBeagt9fSRhQwdsNkEWRuT2z/k8aQQco4QLvUdvBC6kIAJI/qCmJqBhj
+         IgeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=M4nnsvgHgIi0r2ItWc5dFuhTU+zH2GcT6p/faSXA7jc=;
-        b=4QDiFNuyHmWZ9g7JG7KiFjNCuKE0VSg4BJHi+DiYOHzJt/uoBbIVM9hFGCnvbvdVCh
-         mcCfzOV5cdTiu/nyBKtUk2rn94PXsuBaKcLIQvxlhOwa8Hjh2WfQnvioOUQUPd8jME1Q
-         lSBQZ7qEKfFqlrwpl/i2htzpPw7KvnSXQ+UzkUr9hBCZbcxra8iyK5dEL7tk4Oafxrdh
-         5AcBU2Z+Z+Pku+8dfcenyWlaZihS5FCZ6PiiR7fwrRe9TXgEstWY9EWd3rhQSiMeej47
-         b52MeYyucdragJiPypszqtb9qtORrIjpPKodKaSYK5ID4iHSLRLXFded5trEyyOBqRkB
-         /TFA==
-X-Gm-Message-State: AJIora/6KcZfLeHvLltf6HoUjQX3vWt/X+htkbzI/g9LMK4U4CcukgVa
-        QvgBC7wz3ztve1xxi0BbZs38WJPNpDB6FwM9wiQ=
-X-Google-Smtp-Source: AGRyM1u4tHhqAdEi5ogAeS0dS5voh35vGz3kiJUl5ktCSsYPoM0YYC7H2ztWgE2w6YlrhoWKAwKgDMijTEOWiU+6IC8=
-X-Received: by 2002:a05:6e02:10cf:b0:2d9:2310:e6b3 with SMTP id
- s15-20020a056e0210cf00b002d92310e6b3mr7601053ilj.212.1656064612053; Fri, 24
- Jun 2022 02:56:52 -0700 (PDT)
+        bh=RgSnFxwGzpmjm+p7ZnjxYjteXl5sPOJEGrU4Scgygt8=;
+        b=qMqPmA+zGbVuxjEvOWkyxw7/MFYCSqjQPLGmsbpwULfE8fhMlmL/IRwqnj3YejJF9g
+         b1yCO5nn+HiNiEAQbtIzVCd+C4ZcFYXW6DZGFz65hRMTb9nRDbntndRuz9K9pPwgDVJ2
+         oLUT5BPbhTrZC76H4g592C57o1Xiv8K804tnMQGRFjL8tMZ8koYlAWvcfi/hFZ85DvTf
+         wGINS3ovFyoDk372is+ePAt1qneHJAftGgxoA+/aGBkuqBsSYXbTNsHq4CCDyMgMCMgb
+         KJgt8Ud+2U39qViJQRsBdNzwgafH8lfga2qWadS786r1bhnKeWG3BL+mHwfyeMNJCyyV
+         WrdA==
+X-Gm-Message-State: AJIora9qexEwZmX0HEnXIRD70/NtIGDhY08NmbcIavssyuCZ/vI7jCJK
+        PWasFdZuSaNrdJBLctoV2/dy7+1t4n6CIa1S2TY=
+X-Google-Smtp-Source: AGRyM1vutyoXzSan9RSfWSnID47w2e/WTQN3pASpI53PVkOjX+Rz7wJCkOQl3pTTKmSWx4A4FnD/sHVFYCZM+YdWIVo=
+X-Received: by 2002:a5e:990f:0:b0:673:4f01:3a2a with SMTP id
+ t15-20020a5e990f000000b006734f013a2amr4553113ioj.76.1656065986866; Fri, 24
+ Jun 2022 03:19:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-15-peterwu.pub@gmail.com>
- <20220623134316.rg3adyobz3hkgflt@maple.lan>
-In-Reply-To: <20220623134316.rg3adyobz3hkgflt@maple.lan>
+References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-8-peterwu.pub@gmail.com>
+ <CAHp75Vd95sEQz8y4ZcviUKaC9ic27yitR+VCwkfb38MTTe0mkg@mail.gmail.com>
+In-Reply-To: <CAHp75Vd95sEQz8y4ZcviUKaC9ic27yitR+VCwkfb38MTTe0mkg@mail.gmail.com>
 From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Fri, 24 Jun 2022 17:56:41 +0800
-Message-ID: <CABtFH5JnAAGh46i9yb1J6c2gAZfRHgTOhK19dOCdCuvdLW1ALg@mail.gmail.com>
-Subject: Re: [PATCH v3 14/14] video: backlight: mt6370: Add Mediatek MT6370 support
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>, jingoohan1@gmail.com,
-        pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>,
-        lars@metafoo.de, lgirdwood@gmail.com, broonie@kernel.org,
-        linux@roeck-us.net, heikki.krogerus@linux.intel.com, deller@gmx.de,
+Date:   Fri, 24 Jun 2022 18:19:35 +0800
+Message-ID: <CABtFH5K_vB5Rmo+2zAJ8PuMeMvC9x-yhDL93ByOLD+gc2maQYg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/14] mfd: mt6370: Add Mediatek MT6370 support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
         Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -81,114 +96,162 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Daniel,
+Hi Andy,
 
-Thanks for your comments!
+Thanks for your helpful comments! We have some questions below.
 
-Daniel Thompson <daniel.thompson@linaro.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=
-=8823=E6=97=A5 =E9=80=B1=E5=9B=9B =E6=99=9A=E4=B8=8A9:43=E5=AF=AB=E9=81=93=
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=9C=
+=8824=E6=97=A5 =E9=80=B1=E4=BA=94 =E5=87=8C=E6=99=A82:01=E5=AF=AB=E9=81=93=
 =EF=BC=9A
 >
-> On Thu, Jun 23, 2022 at 07:56:31PM +0800, ChiaEn Wu wrote:
-> > From: ChiaEn Wu <chiaen_wu@richtek.com>
+> On Thu, Jun 23, 2022 at 1:59 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 > >
-> > Add Mediatek MT6370 Backlight support.
+> > From: ChiYuan Huang <cy_huang@richtek.com>
 > >
-> > Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> > Add Mediatek MT6370 MFD support.
 >
-> > diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/=
-Kconfig
-> > index a003e02..7cd823d 100644
-> > <snip>
-> > +static int mt6370_init_backlight_properties(struct mt6370_priv *priv,
-> > +                                         struct backlight_properties *=
-props)
+> ...
+>
+> > +config MFD_MT6370
+> > +       tristate "Mediatek MT6370 SubPMIC"
+> > +       select MFD_CORE
+> > +       select REGMAP_I2C
+> > +       select REGMAP_IRQ
+> > +       depends on I2C
+> > +       help
+> > +         Say Y here to enable MT6370 SubPMIC functional support.
+> > +         It consists of a single cell battery charger with ADC monitor=
+ing, RGB
+> > +         LEDs, dual channel flashlight, WLED backlight driver, display=
+ bias
+> > +         voltage supply, one general purpose LDO, and the USB Type-C &=
+ PD
+> > +         controller complies with the latest USB Type-C and PD standar=
+ds.
+>
+> What will be the module name in case it's chosen to be built as a module?
+
+OK, we will add related text in the next patch! Thanks!
+
+>
+> ...
+>
+> >  obj-$(CONFIG_INTEL_SOC_PMIC_BXTWC)  +=3D intel_soc_pmic_bxtwc.o
+> >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTWC)     +=3D intel_soc_pmic_chtwc.o
+> >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTDC_TI)  +=3D intel_soc_pmic_chtdc_ti.o
+> >  obj-$(CONFIG_MFD_MT6360)       +=3D mt6360-core.o
+> > +obj-$(CONFIG_MFD_MT6370)       +=3D mt6370.o
+> >  mt6397-objs                    :=3D mt6397-core.o mt6397-irq.o mt6358-=
+irq.o
+> >  obj-$(CONFIG_MFD_MT6397)       +=3D mt6397.o
+> >  obj-$(CONFIG_INTEL_SOC_PMIC_MRFLD)     +=3D intel_soc_pmic_mrfld.o
+>
+> This whole bunch of drivers is in the wrong place in Makefile.
+>
+> https://lore.kernel.org/all/20220616182524.7956-2-andriy.shevchenko@linux=
+.intel.com/
+>
+
+hmm... So shall we need to cherry-pick your this patch first,
+then modify the Makefile before the next submission??
+
+> ...
+>
+> > +#define MT6370_REG_MAXADDR     0x1FF
+>
+> Wondering if (BIT(10) - 1) gives a better hint on how hardware limits
+> this (so it will be clear it's 10-bit address).
+
+well... This "0x1FF" is just a virtual mapping value to map the max
+address of the PMU bank(0x1XX).
+So, I feel its means is different from using (BIT(10) - 1) here.
+
+>
+> ...
+>
+> > +static int mt6370_check_vendor_info(struct mt6370_info *info)
 > > +{
-> > +     struct device *dev =3D priv->dev;
-> > +     u8 prop_val;
-> > +     u32 brightness, ovp_uV, ocp_uA;
-> > +     unsigned int mask, val;
-> > +     int ret;
+> > +       unsigned int devinfo;
+> > +       int ret;
 > > +
-> > +     /* Vendor optional properties */
-> > +     val =3D 0;
-> > +     if (device_property_read_bool(dev, "mediatek,bled-pwm-enable"))
-> > +             val |=3D MT6370_BL_PWM_EN_MASK;
-> > +
-> > +     if (device_property_read_bool(dev, "mediatek,bled-pwm-hys-enable"=
-))
-> > +             val |=3D MT6370_BL_PWM_HYS_EN_MASK;
-> > +
-> > +     ret =3D device_property_read_u8(dev,
-> > +                                   "mediatek,bled-pwm-hys-input-th-ste=
-ps",
-> > +                                   &prop_val);
-> > +     if (!ret) {
-> > +             prop_val =3D clamp_val(prop_val,
-> > +                                  MT6370_BL_PWM_HYS_TH_MIN_STEP,
-> > +                                  MT6370_BL_PWM_HYS_TH_MAX_STEP);
-> > +             /*
-> > +              * prop_val =3D  1      -->  1 steps --> 0x00
-> > +              * prop_val =3D  2 ~  4 -->  4 steps --> 0x01
-> > +              * prop_val =3D  5 ~ 16 --> 16 steps --> 0x10
-> > +              * prop_val =3D 17 ~ 64 --> 64 steps --> 0x11
->
->                                                       ^^^^^
-> These numbers are binary, not hex, right? If so, the comments
-> should be 0b00 to 0b03 .
-
-Ohh! Yes! These numbers are binary!
-I so apologize for making this mistake...
-I will revise the comments in the next patch!
-Thank you so much!
-
->
->
-> > +              */
-> > +             prop_val =3D (ilog2(roundup_pow_of_two(prop_val)) + 1) >>=
- 1;
-> > +             val |=3D prop_val << (ffs(MT6370_BL_PWM_HYS_SEL_MASK) - 1=
+> > +       ret =3D regmap_read(info->regmap, MT6370_REG_DEV_INFO, &devinfo=
 );
-> > +     }
+> > +       if (ret)
+> > +               return ret;
 > > +
-> > +     ret =3D regmap_update_bits(priv->regmap, MT6370_REG_BL_PWM,
-> > +                              val, val);
-> > +     if (ret)
-> > +             return ret;
+> > +       switch (FIELD_GET(MT6370_VENID_MASK, devinfo)) {
+> > +       case MT6370_VENID_RT5081:
+> > +       case MT6370_VENID_RT5081A:
+> > +       case MT6370_VENID_MT6370:
+> > +       case MT6370_VENID_MT6371:
+> > +       case MT6370_VENID_MT6372P:
+> > +       case MT6370_VENID_MT6372CP:
 >
-> Overall, I like this approach! Easy to read and understand.
+> return 0;
 >
+> > +               break;
+> > +       default:
+> > +               dev_err(info->dev, "Unknown Vendor ID 0x%02x\n", devinf=
+o);
+> > +               return -ENODEV;
+> > +       }
+> > +
+> > +       return 0;
 >
-> > <snip>
-> > +static int mt6370_bl_probe(struct platform_device *pdev)
-> > +{
-> > +     struct mt6370_priv *priv;
-> > +     struct backlight_properties props =3D {
-> > +             .type =3D BACKLIGHT_RAW,
-> > +             .scale =3D BACKLIGHT_SCALE_LINEAR,
->
-> Sorry, I missed this before but the KConfig comment says that the
-> backlight can support both linear and exponential curves.
->
-> Is there a good reason to default to linear?
+> ...and drop these two lines?
 
-Well...
-The customers who used this PMIC have very few or even no use exponential c=
-urve,
-so I set the default to linear.
-
-If you think this is inappropriate, I will add a DT property to
-control this feature in the next patch!
-
-By the way,
-I found some mistakes in my probe() function... I didn't use "return"
-when I use dev_err_probe()...
-I will refine it in the next patch!
+OK! We will refine it in the next patch!
 
 >
+> > +}
 >
-> Daniel.
-> >
+> ...
+>
+> > +       bank_idx =3D *(u8 *)reg_buf;
+> > +       bank_addr =3D *(u8 *)(reg_buf + 1);
+>
+> Why not
+>
+>   const u8 *u8_buf =3D reg_buf;
+>
+>   bank_idx =3D u8_buf[0];
+>   bank_addr =3D u8_buf[1];
+>
+> ?
+
+We will refine it in the next patch! Thanks!
+
+>
+> ...
+>
+> > +       if (ret < 0)
+> > +               return ret;
+> > +       else if (ret !=3D val_size)
+>
+> Redundant 'else'.
+
+I'm not quite sure what you mean, so I made the following changes first.
+------------------------------------
+       if (ret < 0)
+              return ret;
+       if (ret !=3D val_size)
+              return -EIO;
+------------------------------------
+I don't know if it meets your expectations??
+
+>
+> > +               return -EIO;
+>
+> ...
+>
+> > +       bank_idx =3D *(u8 *)data;
+> > +       bank_addr =3D *(u8 *)(data + 1);
+>
+> As per above.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
 Best regards,
 ChiaEn Wu

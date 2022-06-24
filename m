@@ -2,231 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A4CD5596C3
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 11:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6518555970D
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 11:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229876AbiFXJeu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 05:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51974 "EHLO
+        id S229641AbiFXJzC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 05:55:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiFXJet (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 05:34:49 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9638B699BF;
-        Fri, 24 Jun 2022 02:34:48 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id p69so2092342iod.10;
-        Fri, 24 Jun 2022 02:34:48 -0700 (PDT)
+        with ESMTP id S229469AbiFXJzC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 05:55:02 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B9D47543
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 02:55:01 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id pk21so3656124ejb.2
+        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 02:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=MP9RQT0mw2gx9xecm41XDjO0xQp/A9AAK0cYbd+v7PM=;
-        b=XOSjJie8EVvJ68P8cDkEuXXdIP7YNykFHD5ucaFHa23sPTgdW5s+vEyYglwP5ITADf
-         de6ih0EGdaikqxaCCoMYFOazeMTR+HJ2Od3FO0aVrMGZ9Ao0YQc3IGKpdK1KsldTwlvh
-         mNgixo6yDK8vv6W4zP9rFZEgeSROQH0wRlhznnuez0r+LK3zlRzbpSDq8zkiXpRGsUdD
-         wlBFXBP+v/yudkNVKvRuUvTnfyVEt9q4H+CcHi3K0tEYuY/us9b2jbsRIceZSdwT323h
-         bCW6ZtoKL/DDgyl9mBYWdF/TeTYV9OJiSRhfvnTTdEl5HuLFgATDlbAUJ79bLaqNIqyo
-         pjrg==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=LxlyydORZPOFGaHD/uBTpE1Gv4F+iq5krFi3Trgnneo=;
+        b=kCV6DXPBi376m/3DfvAqd6ndBKXGtDzBRFbudq61NQjy6Uq6nv7w+e/mF/mlzHURsX
+         FukknfrtqBTMFrKtSKWFP7pgG4d+RWSuyL+PQtR8j+IHEan3Aj41GekjEOpUix9bWccZ
+         6SyU5ySj/zSHAY5D1yP6fekCYn64g4C1ldqtnq4ceo4HydidWDv4tPw+JCezyVMlJHoR
+         Qt0/hTiF1EItHJwvXM7Xub1i1/ifI2lWQzVXQisA9kSEo3DbMQvSg+CznyNXxOcKsFT+
+         n5PvIATpiSdfYJIutwYkPKyU4RL+jy1G25uNJStB7WQ8DU6uXrFpym0DqTK5iw5mI6Dd
+         DYXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=MP9RQT0mw2gx9xecm41XDjO0xQp/A9AAK0cYbd+v7PM=;
-        b=hTAwqwnpuD0bg8/et7uTMOZKNM6Jv3GlxUPHmRqiY5BPoi+LOY0oBU6SMxoD9ZITW7
-         bSuFV3mfndskomSI+cNkjpWG9DLQCS+O1zx6GROfdejgo0+U0Int8kVR0hHISku+Kb1p
-         /2rLNceaWpnkvE4oNF7oSvrCyNG5fq6bb405EaUJfDHIjiLp6Q/VTwys6lfNd0XYF6Po
-         kbvIqC5LCFWflKy6lo3HM6jVbc63MOOoPHy++FhBM0YxYEEng+lk3la3kJ8PgH2XGVof
-         04eUcvPzwZ+FUUi4X0bxOEnIzQyhRe/WOBb2HRDE7XinMHgKS743ZgfGki+AYIbOxnK7
-         VSkg==
-X-Gm-Message-State: AJIora+kPWz4/GuYVOPISnffJ+3zolxj/ChUizbAmgtKayi0/soZjcBz
-        nMNvrZUHp3/mb2kSsjujN1lv0a9JqL16dkIFp+E=
-X-Google-Smtp-Source: AGRyM1uasjCkCSVNNk3dqGVMtMHhWuLiOU+3vPo8KNEsy3IZCmdFQUJiWYJTC/E8bQMesuaOX1oy1FkolQJLbHcM1Io=
-X-Received: by 2002:a05:6638:348d:b0:331:d8f0:fd9d with SMTP id
- t13-20020a056638348d00b00331d8f0fd9dmr7928714jal.165.1656063287244; Fri, 24
- Jun 2022 02:34:47 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=LxlyydORZPOFGaHD/uBTpE1Gv4F+iq5krFi3Trgnneo=;
+        b=iQvH59X61TuysCi72019RELqiJ2ZH73qaKRHysmrG57RscumJENu2kwIXlwtAq6fk4
+         jgIMdOkRudCbIBpl+9JklbCDVYPSHQXEABBYqEWEvWWPlBJWLCijV12uzhG/668tV6na
+         bnQE/VtOnNs0hyoe9bop/1U3Nf8W581RaKQTP4uGtE/VWAzanbX92fi3fntHS5gwe9Ek
+         uSUQXxtvpL1bEDOajDqYm2xbBD26+hIaHoak8hKgSN3d4x3hGDsF/fGMQLPAihN7i87v
+         Rrgu0J6dtk/Kso+/lNoSKI45gM1rvoqJcJkmZg0Qi4S5br4qpNiD/3sI7BQ+dSKa4Py8
+         sxnA==
+X-Gm-Message-State: AJIora9OHKu1yC7x6o6KnD/3dRBobrA+rhor90gkfUwtQouFINxhYd8T
+        s6RmRbll/7D7jsialyQDabxK9Q==
+X-Google-Smtp-Source: AGRyM1ty12gQWhn+V/hw4oN+c21S3LnvTt1UPjo3aNH+hHBj3AkOKOyhMw8+kEmm9+Om156boJ6xlg==
+X-Received: by 2002:a17:906:20c6:b0:718:cc95:ccaf with SMTP id c6-20020a17090620c600b00718cc95ccafmr12598031ejc.714.1656064499807;
+        Fri, 24 Jun 2022 02:54:59 -0700 (PDT)
+Received: from [192.168.0.234] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id kj20-20020a170907765400b00722dac96232sm824451ejc.126.2022.06.24.02.54.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Jun 2022 02:54:59 -0700 (PDT)
+Message-ID: <789e8a4e-f5a3-9e92-da2c-22145ba272d9@linaro.org>
+Date:   Fri, 24 Jun 2022 11:54:58 +0200
 MIME-Version: 1.0
-References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-6-peterwu.pub@gmail.com>
- <YrRny9TPqMUW7Yr/@spruce>
-In-Reply-To: <YrRny9TPqMUW7Yr/@spruce>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Fri, 24 Jun 2022 17:34:36 +0800
-Message-ID: <CABtFH5JdPHfvGi+tG+EKh_-XH0YxWHR3o=LsPAdW38e8fFoBeg@mail.gmail.com>
-Subject: Re: [PATCH v3 05/14] dt-bindings: backlight: Add Mediatek MT6370 backlight
-To:     Joe Simmons-Talbott <joetalbott@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
-        sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, Jonathan Cameron <jic23@kernel.org>,
-        lars@metafoo.de, lgirdwood@gmail.com, broonie@kernel.org,
-        linux@roeck-us.net, heikki.krogerus@linux.intel.com, deller@gmx.de,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 05/10] dt-bindings: iio: adc: mcp3911: add
+ microchip,data-ready-hiz entry
+Content-Language: en-US
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
+ <20220623170844.2189814-5-marcus.folkesson@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220623170844.2189814-5-marcus.folkesson@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Joe,
+On 23/06/2022 19:08, Marcus Folkesson wrote:
+> The Data Ready Output Pin is either hard wired to work as high
+> impedance or push-pull. Make it configurable.
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/adc/microchip,mcp3911.yaml    | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> index 95ab285f4eba..74b333e44bfd 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+> @@ -36,6 +36,14 @@ properties:
+>      description: IRQ line of the ADC
+>      maxItems: 1
+>  
+> +  microchip,data-ready-hiz:
+> +    description:
+> +      Data Ready Pin Inactive State Control bit
 
-Joe Simmons-Talbott <joetalbott@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=9C=
-=8823=E6=97=A5 =E9=80=B1=E5=9B=9B =E6=99=9A=E4=B8=8A9:17=E5=AF=AB=E9=81=93=
-=EF=BC=9A
->
-> On Thu, Jun 23, 2022 at 07:56:22PM +0800, ChiaEn Wu wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
-> >
-> > Add mt6370 backlight binding documentation.
-> >
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> >
-> > v3
-> > - Rename "mediatek,bled-pwm-hys-input-threshold-steps" to
-> >   "mediatek,bled-pwm-hys-input-th-steps"
-> > - Refine "bled-pwm-hys-input-th-steps", "bled-ovp-microvolt",
-> >   "bled-ocp-microamp" enum values
-> > ---
-> >  .../leds/backlight/mediatek,mt6370-backlight.yaml  | 92 ++++++++++++++=
-++++++++
-> >  1 file changed, 92 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/leds/backlight/me=
-diatek,mt6370-backlight.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/leds/backlight/mediatek,=
-mt6370-backlight.yaml b/Documentation/devicetree/bindings/leds/backlight/me=
-diatek,mt6370-backlight.yaml
-> > new file mode 100644
-> > index 0000000..26563ae
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-=
-backlight.yaml
-> > @@ -0,0 +1,92 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/leds/backlight/mediatek,mt6370-back=
-light.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Mediatek MT6370 Backlight
-> > +
-> > +maintainers:
-> > +  - ChiaEn Wu <chiaen_wu@richtek.com>
-> > +
-> > +description: |
-> > +  This module is part of the MT6370 MFD device.
-> > +  The MT6370 Backlight WLED driver supports up to a 29V output voltage=
- for
-> > +  4 channels of 8 series WLEDs. Each channel supports up to 30mA of cu=
-rrent
-> > +  capability with 2048 current steps (11 bits) in exponential or linea=
-r
-> > +  mapping curves.
-> > +
-> > +allOf:
-> > +  - $ref: common.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: mediatek,mt6370-backlight
-> > +
-> > +  default-brightness:
-> > +    minimum: 0
-> > +    maximum: 2048
-> > +
-> > +  max-brightness:
-> > +    minimum: 0
-> > +    maximum: 2048
-> > +
-> > +  enable-gpios:
-> > +    description: External backlight 'enable' pin
-> > +    maxItems: 1
-> > +
-> > +  mediatek,bled-pwm-enable:
-> > +    description: |
-> > +      Enable external PWM input for backlight dimming
-> > +    type: boolean
-> > +
-> > +  mediatek,bled-pwm-hys-enable:
-> > +    description: |
-> > +      Enable the backlight input-hysteresis for PWM mode
-> > +    type: boolean
-> > +
-> > +  mediatek,bled-pwm-hys-input-th-steps:
-> > +    $ref: /schemas/types.yaml#/definitions/uint8
-> > +    enum: [1, 4, 16, 64]
-> > +    description: |
-> > +      The selection of the upper and lower bounds threshold of backlig=
-ht
-> > +      PWM resolution. If we choose selection 64, the variation of PWM
-> > +      resolution needs over than 64 steps.
->
-> more than?
->
-> Thanks,
-> Joe
->
+"Bit" of what? Do not describe the programming model but the actual feature.
 
-Thanks for your helpful comments!
-I will revise this in the next patch. Thanks!
+> +      true = The DR pin state is high-impedance when data are NOT ready
+> +      false = The DR pin state is a logic high when data are NOT ready
+> +    type: boolean
+> +    default: false
 
-> > +
-> > +  mediatek,bled-ovp-shutdown:
-> > +    description: |
-> > +      Enable the backlight shutdown when OVP level triggered
-> > +    type: boolean
-> > +
-> > +  mediatek,bled-ovp-microvolt:
-> > +    enum: [17000000, 21000000, 25000000, 29000000]
-> > +    description: |
-> > +      Backlight OVP level selection.
-> > +
-> > +  mediatek,bled-ocp-shutdown:
-> > +    description: |
-> > +      Enable the backlight shutdown when OCP level triggerred.
-> > +    type: boolean
-> > +
-> > +  mediatek,bled-ocp-microamp:
-> > +    enum: [900000, 1200000, 1500000, 1800000]
-> > +    description: |
-> > +      Backlight OC level selection.
-> > +
-> > +  mediatek,bled-channel-use:
-> > +    $ref: /schemas/types.yaml#/definitions/uint8
-> > +    description: |
-> > +      Backlight LED channel to be used.
-> > +      Each bit mapping to:
-> > +        - 0: CH4
-> > +        - 1: CH3
-> > +        - 2: CH2
-> > +        - 3: CH1
-> > +    minimum: 1
-> > +    maximum: 15
-> > +
-> > +required:
-> > +  - compatible
-> > +  - mediatek,bled-channel-use
-> > +
-> > +additionalProperties: false
-> > --
-> > 2.7.4
-> >
+You do not need default for bools.
+
+> +
+>    microchip,device-addr:
+>      description: Device address when multiple MCP3911 chips are present on the same SPI bus.
+>      $ref: /schemas/types.yaml#/definitions/uint32
+
 
 Best regards,
-ChiaEn Wu
+Krzysztof

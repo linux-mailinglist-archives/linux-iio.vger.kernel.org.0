@@ -2,96 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 105C15598A6
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 13:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BF975598EE
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jun 2022 14:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230425AbiFXLky (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 07:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32912 "EHLO
+        id S231154AbiFXL75 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 07:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbiFXLkx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 07:40:53 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C557C77070
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 04:40:52 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id g26so4135996ejb.5
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 04:40:52 -0700 (PDT)
+        with ESMTP id S230520AbiFXL74 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 07:59:56 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6686F79A;
+        Fri, 24 Jun 2022 04:59:54 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id z13so4010067lfj.13;
+        Fri, 24 Jun 2022 04:59:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=yy24MqgNoh04Wcf3D2OtiN2cBgfAiEXHDzWGPuJGK9o=;
-        b=lHmUiWiXPi9B6UOOWeyFYwQG8hPeZnA+ltsmMKdFIkgssbt3bc684dUGLED1PcrHNV
-         zMtTDHV/vSMKeBUEQ1Ns1/822af0cGXN8FeH4f2/E6SLnOFUhcney0xFzsZxsz0b0MyN
-         G3jediLVRnPaG1/NpHAFBYX/ln8O/mom1ODWhtlEPyGtEMvv1cKMSDF1SBRG/j7lB+ZQ
-         Qdumnn8pu+Cm6YQ0v0NjDM4F1eLMIplOVmRRp5HR3J5IzQN0w9befAomRwaqKgmLLk6d
-         2UPtKOgwUxDnQxxMsrtMO6e0bE3TX6pISD0q/NU9c0jeMPSMHgUXEwsnC3f43eCzTyQR
-         0Tnw==
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=iZCsld/Kwu7GK8ETue9xYaG0XWT7s0wsxnFfMbbKZpw=;
+        b=q5GFNawCB7XD7hhK4bKucbqihbOQVduc4fBNFokKiL9iwTssnAnfwEeAvxMhnNHfhr
+         pdZY42syRC7AUTNrsnZ8pBTpbswErIrN7Wf01LvwxrePY0LDckvuftmQqnMD2C4ZuxX1
+         QiyVKAffeNqGlwuSVBZWzMMMZQAk79546oNQJHPntzPjAXSW2kQGg9E3K6oiqrdHG7WQ
+         sZAe6hyg3epf46+llJNZryZ+XvKvQSS3Mm5fVFQEH3Q6/ZBeYkF3BkiBO9zO5qQp8ak0
+         EXmvHEeiUCAwRBaBfQP7uiJn0925IlAnU8uABCbm7Z85rMYyn5AS2VM1v8OzoThDw2nH
+         88HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=yy24MqgNoh04Wcf3D2OtiN2cBgfAiEXHDzWGPuJGK9o=;
-        b=UqYsFLhTqel4oN7IuUt5xFigXUBkKf7Co4Ng1Is8rfm8eD1bO740T0xGYhOyHH3TnT
-         mT2aJ4PbyAOpCWIRi5Ut4j1Ab6uzAf4hExuxihxiX45l/jAQ0hrgFIClw2weBn9hZjXo
-         DcxcQb7aIOMd2TGwujAz5Ex5VVV5vASy2Ua8/X+S9+K35QWd7q8Hysj51tn1hj8ooW5c
-         oFraGU/u5hLBgkB1Ec/aImy+pehYaoIOr5KLc/iYYVqMS41l3wTzZDd29AGQ9rCW0mK8
-         bIbITn8XBk+MKZFr1cfkxA9aEMdxds3tA9WsvKnNJ8XINnaVWgfi19htN36mIcytCL6M
-         wfrA==
-X-Gm-Message-State: AJIora9+5q+fgahF2O8TRH+9J6NW7ivdSbhYoRSUyTSYjyFlmxzOTfD3
-        zuyPqu2Fwb4M9eoiWFuq2YDnTWScCQkOow==
-X-Google-Smtp-Source: AGRyM1tD0+on2/SUIA73VKnd1ynphMygj9K2ZiDycQZkB6sBMq+S76vrTE6qtDUnJ8sffk6YYFEaAg==
-X-Received: by 2002:a17:907:9722:b0:706:19d0:80b5 with SMTP id jg34-20020a170907972200b0070619d080b5mr12930874ejc.33.1656070851427;
-        Fri, 24 Jun 2022 04:40:51 -0700 (PDT)
-Received: from [192.168.0.235] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id n18-20020a05640204d200b00435a08a3557sm1844443edw.27.2022.06.24.04.40.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jun 2022 04:40:51 -0700 (PDT)
-Message-ID: <22dc8eba-af71-ff7c-fd74-bf5778655bfc@linaro.org>
-Date:   Fri, 24 Jun 2022 13:40:50 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 2/2] dt-bindings: iio: dac: mcp4922: expand for mcp4921
- support
-Content-Language: en-US
-To:     Kory Maincent <kory.maincent@bootlin.com>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=iZCsld/Kwu7GK8ETue9xYaG0XWT7s0wsxnFfMbbKZpw=;
+        b=BOPeL851R3tsIJI2qSIqrklsNgWnH5r4YfSgJPEED331TfE85R8bK3Oq+Nlsbfsdp+
+         UrbGbJyLYUjxA73G6zbCDUd3MXaHcoCrQhel7r9vn8sBPawtZ2m4C5FQZxRbI2yKC87q
+         kLPhxvD5wAGrugiU0cxJIje2evBEZaRVUw3BQZ96ifdXNu+/2rLQAS4R9JGzWJ+68NP0
+         LaBns2WN69/50ysDv72fY/kOwi3M+ouBamQsjk9XXePHssafnd+JhkFods4bwff52sG2
+         zjtiAU2xdVAxGw153uhtxrFrowxjCBobWae2yOrB3msbbS1XPeDVW2Sm5z8M+yCzE3fL
+         SqDA==
+X-Gm-Message-State: AJIora99xA4DSuqccUHdGhA09gJuJQ+vBaWwBgJZROYt3E8l00bc4TWZ
+        3gKoQvgCGYdSEpmFYMaS/nE=
+X-Google-Smtp-Source: AGRyM1sFbNItZpRs+PanpXqkVxryAqQQaTc2hSmSvHlaEy9mIvpaKCYqmgB14os3iTdcKVQkoOsXtQ==
+X-Received: by 2002:a19:9209:0:b0:47d:bb62:9103 with SMTP id u9-20020a199209000000b0047dbb629103mr8845659lfd.314.1656071992959;
+        Fri, 24 Jun 2022 04:59:52 -0700 (PDT)
+Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id e20-20020a2ea554000000b00258eac98baasm258521ljn.77.2022.06.24.04.59.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jun 2022 04:59:52 -0700 (PDT)
+Date:   Fri, 24 Jun 2022 14:01:42 +0200
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
-        Michael Welling <mwelling@ieee.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     thomas.petazzoni@bootlin.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>
-References: <20220624095619.1415614-1-kory.maincent@bootlin.com>
- <20220624095619.1415614-2-kory.maincent@bootlin.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220624095619.1415614-2-kory.maincent@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 04/10] iio: adc: mcp3911: add support for interrupts
+Message-ID: <YrWnppnMcsqfFxaw@gmail.com>
+References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
+ <20220623170844.2189814-4-marcus.folkesson@gmail.com>
+ <CAHp75VcMtz1ax3SEAwM8fCWqV-7ZZW6FWRB9v4W0k0Fi4CJ8-g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="uHkWNRERGs3Dz+ti"
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcMtz1ax3SEAwM8fCWqV-7ZZW6FWRB9v4W0k0Fi4CJ8-g@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/06/2022 11:56, Kory Maincent wrote:
-> Add device tree bindings for the MCP4921 DAC.
-> 
-> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-> ---
->  Documentation/devicetree/bindings/iio/dac/microchip,mcp4922.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
+
+--uHkWNRERGs3Dz+ti
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Thu, Jun 23, 2022 at 09:04:51PM +0200, Andy Shevchenko wrote:
+> Unwanted blank line.
+>=20
 
+Removed
 
-Best regards,
-Krzysztof
+> > +static int mcp3911_set_trigger_state(struct iio_trigger *trig, bool en=
+able)
+> > +{
+>=20
+> > +       bool dr_hiz;
+>=20
+> As far as I can see you don't need this variable, just call if
+> (device_property_...(...)).
+
+Fixed
+
+>=20
+> Unneeded blank line.
+
+Removed
+
+Thanks,
+Marcus Folkesson
+
+--uHkWNRERGs3Dz+ti
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmK1p6AACgkQiIBOb1ld
+UjI4bxAAtxliZ5qiESZfQzSB1pwoRXxWZIKt87PbqOLd1Rrs/8hqyIfy0za/LqYu
+x/NdKAEN9GaTUdSmFnxTPmMV11bIxS/UJwRd8EqiyOk+cp7riJS9u8ICfM/WSEj6
+tn2SL/6pvIXoTrmu0pMHvYiVQVfJYVT4urJ6Xd/RktI/FbPi85lfvn69o7aLvqXA
+vTD+3rkupbuIV22FOxr/V7PIS67d53QhbDhv+F14EqQEgK32HM2zFDDORAXSWwIz
+5cVN7H0Ze+ejE5cIXUxKdwY7gFD5vkgSU4kZ5qGjtn2Vy5V7PmyB2t/bTxhqYoFI
+maJ2nuBHaiqKE7vlQnOCk7VDw5Eloc+1HwH5/P4eZeKdcQ9b1RfDi/zLqrkesYtE
+D874CkONDMXwgNxM1US0QGxQO1vltfnGOqu6k0j4NKIULADtXBoQba1ewj/KAB9n
+VFOQxEuXqJ21RGqdMdxN+1UEn8k+ixbgWPYXovn3JtNYsf/2aO3leB7kNGUmqCr+
+rhkFumra2F8k8G5VZsLeJ+9+8YBrx7V6P2cbXiOHbiKYxnPec2pyzUwRTaf8QvoC
+6QVHPu0xnVyZ8bYatWtNYejPIFKHZsz8wFfE/KyvYA34TX2x7mRlllJIjPMfLlE2
+TKkcGvA/Z5vxnZzUaP3cz3nuCwg4YuOj4O5zfbxnkH9PhxszIHY=
+=5y0I
+-----END PGP SIGNATURE-----
+
+--uHkWNRERGs3Dz+ti--

@@ -2,65 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 099CA55A9D8
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 14:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E293655A9A3
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 14:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232836AbiFYMJL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 08:09:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47410 "EHLO
+        id S232170AbiFYME5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 08:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232170AbiFYMJL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 08:09:11 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152D82DA9E;
-        Sat, 25 Jun 2022 05:09:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656158949; x=1687694949;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=U+MKyW42cm90TH4qiG7D9bq9ws49EylDg1LcDEnyUDI=;
-  b=AJYvdMGI1Fm5zvasoQiYL0ThZVr/YEAdCy75ZMfNUfxq6Ym2WMMhgHYP
-   g4LAByUJLouAjJrPnqwuuJvf0JZiXUks8AlyjdvYSP3EMammp16RWEyK7
-   1Eq7pq53VAo8+iAeLji63bVHxf78VisjSu/UfAnl3rPl5iY5xE1X3JmO3
-   sf8GelyzygKgYZTLf7u8a6LQq9V61PJTlk9Nk/lhqkavdFIpYUJBnpUkR
-   65dNsaKtL2WW9pd+qPxLBLin6XrovzCk6y5Ou3gCk9uYUb6LIYqT1sV7d
-   p/leIp2I4Ftsv9Htf6mz1Sz+t6YBHiH4NSJ/ceQ6ks3AndpJsXGY4dmqW
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10388"; a="281222299"
-X-IronPort-AV: E=Sophos;i="5.92,222,1650956400"; 
-   d="scan'208";a="281222299"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2022 05:09:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,222,1650956400"; 
-   d="scan'208";a="691898744"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 25 Jun 2022 05:09:06 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o54b3-0005jD-WA;
-        Sat, 25 Jun 2022 12:09:05 +0000
-Date:   Sat, 25 Jun 2022 20:08:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S232029AbiFYME4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 08:04:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B575E14021;
+        Sat, 25 Jun 2022 05:04:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4126A611E9;
+        Sat, 25 Jun 2022 12:04:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08FBC3411C;
+        Sat, 25 Jun 2022 12:04:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656158693;
+        bh=v+nq6VKI00e2nKJ82BUSyHWq2binsIyiy8z0or5TJu4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=RbQrAGZz1s4DDX7PqB95hkyVGX7hM5EWyN/EZz/dXspuXbTok6auAO7S5HiJSF2hp
+         ljz/YlVBubGN+gmMCjX95zL+hZcYhUTgNFlnDuK8UzpjshmuYU6gNatKQKyjyoC1He
+         cbHvL14nmmxzBHfMBcKtgryvgwZVdd0er/7oykV2VMi3tuZ6ypkSDsdd3uNKW6Vm/O
+         3OSg9UOHtyrq42LBEwYI4UI3zZb8gnzzWWcvohlJoIrcqvrUgL9dDW79tYOZ6An89f
+         QpqyycOSQvUmwYjeJhtAcqPujjb005MRHu/Zcj4+H94nwmhx4pohQ8+HW7wG1hy0Tw
+         jjorI2WJqQXyw==
+Date:   Sat, 25 Jun 2022 13:14:20 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 10/10] iio: adc: mcp3911: add support to set PGA
-Message-ID: <202206252046.W7EVOoVr-lkp@intel.com>
-References: <20220625103853.2470346-10-marcus.folkesson@gmail.com>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 06/10] iio: adc: mcp3911: add support for
+ oversampling ratio
+Message-ID: <20220625131420.28c8bb5a@jic23-huawei>
+In-Reply-To: <20220625103853.2470346-6-marcus.folkesson@gmail.com>
+References: <20220625103853.2470346-1-marcus.folkesson@gmail.com>
+        <20220625103853.2470346-6-marcus.folkesson@gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220625103853.2470346-10-marcus.folkesson@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,111 +60,147 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sat, 25 Jun 2022 12:38:49 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+
+> The chip supports oversampling ratio, so expose it to userspace.
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 Hi Marcus,
 
-I love your patch! Perhaps something to improve:
+A few minor comments inline.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v5.19-rc3 next-20220624]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Thanks,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marcus-Folkesson/iio-adc-mcp3911-correct-microchip-device-addr-property/20220625-184118
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: i386-randconfig-a001
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/def017eb4efc80ab515495d6eb7d59d142c0276d
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Marcus-Folkesson/iio-adc-mcp3911-correct-microchip-device-addr-property/20220625-184118
-        git checkout def017eb4efc80ab515495d6eb7d59d142c0276d
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/adc/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   drivers/iio/adc/mcp3911.c: In function 'mcp3911_calc_scale_table':
->> drivers/iio/adc/mcp3911.c:305:13: warning: variable 'tmp0' set but not used [-Wunused-but-set-variable]
-     305 |         int tmp0, tmp1;
-         |             ^~~~
-   drivers/iio/adc/mcp3911.c: At top level:
-   drivers/iio/adc/mcp3911.c:366:22: warning: initialized field overwritten [-Woverride-init]
-     366 |         MCP3911_CHAN(0),
-         |                      ^
-   drivers/iio/adc/mcp3911.c:347:31: note: in definition of macro 'MCP3911_CHAN'
-     347 |                 .scan_index = idx,                              \
-         |                               ^~~
-   drivers/iio/adc/mcp3911.c:366:22: note: (near initialization for 'mcp3911_channels[0].scan_index')
-     366 |         MCP3911_CHAN(0),
-         |                      ^
-   drivers/iio/adc/mcp3911.c:347:31: note: in definition of macro 'MCP3911_CHAN'
-     347 |                 .scan_index = idx,                              \
-         |                               ^~~
-   drivers/iio/adc/mcp3911.c:367:22: warning: initialized field overwritten [-Woverride-init]
-     367 |         MCP3911_CHAN(1),
-         |                      ^
-   drivers/iio/adc/mcp3911.c:347:31: note: in definition of macro 'MCP3911_CHAN'
-     347 |                 .scan_index = idx,                              \
-         |                               ^~~
-   drivers/iio/adc/mcp3911.c:367:22: note: (near initialization for 'mcp3911_channels[1].scan_index')
-     367 |         MCP3911_CHAN(1),
-         |                      ^
-   drivers/iio/adc/mcp3911.c:347:31: note: in definition of macro 'MCP3911_CHAN'
-     347 |                 .scan_index = idx,                              \
-         |                               ^~~
+Jonathan
 
 
-vim +/tmp0 +305 drivers/iio/adc/mcp3911.c
+> ---
+> 
+> Notes:
+>     v2:
+>         - Make use of osr table
+>         - Change formatting and typos
+> 
+>  drivers/iio/adc/mcp3911.c | 47 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> index f4ee0c27c2ab..1469c12ebbb2 100644
+> --- a/drivers/iio/adc/mcp3911.c
+> +++ b/drivers/iio/adc/mcp3911.c
+> @@ -5,6 +5,8 @@
+>   * Copyright (C) 2018 Marcus Folkesson <marcus.folkesson@gmail.com>
+>   * Copyright (C) 2018 Kent Gustavsson <kent@minoris.se>
+>   */
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+>  #include <linux/clk.h>
+>  #include <linux/delay.h>
+>  #include <linux/err.h>
+> @@ -35,6 +37,7 @@
+>  #define MCP3911_REG_CONFIG		0x0c
+>  #define MCP3911_CONFIG_CLKEXT		BIT(1)
+>  #define MCP3911_CONFIG_VREFEXT		BIT(2)
+> +#define MCP3911_CONFIG_OSR		GENMASK(13, 11)
+>  
+>  #define MCP3911_REG_OFFCAL_CH0		0x0e
+>  #define MCP3911_REG_GAINCAL_CH0		0x11
+> @@ -53,6 +56,8 @@
+>  
+>  #define MCP3911_NUM_CHANNELS		2
+>  
+> +static const int mcp3911_osr_table[] = {32, 64, 128, 256, 512, 1024, 2048, 4096};
+> +
+>  struct mcp3911 {
+>  	struct spi_device *spi;
+>  	struct mutex lock;
+> @@ -108,6 +113,22 @@ static int mcp3911_update(struct mcp3911 *adc, u8 reg, u32 mask,
+>  	return mcp3911_write(adc, reg, val, len);
+>  }
+>  
+> +static int mcp3911_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     const int **vals, int *type, int *length,
+> +			     long info)
+> +{
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		*type = IIO_VAL_INT;
+> +		*vals = mcp3911_osr_table;
+> +		*length = ARRAY_SIZE(mcp3911_osr_table);
+> +		return IIO_AVAIL_LIST;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+>  static int mcp3911_read_raw(struct iio_dev *indio_dev,
+>  			    struct iio_chan_spec const *channel, int *val,
+>  			    int *val2, long mask)
+> @@ -134,6 +155,16 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+>  
+>  		ret = IIO_VAL_INT;
+>  		break;
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		ret = mcp3911_read(adc,
+> +				MCP3911_REG_CONFIG, val, 2);
+> +		if (ret)
+> +			goto out;
+> +
+> +		*val = FIELD_GET(MCP3911_CONFIG_OSR, *val);
+> +		*val = 32 << *val;
+> +		ret = IIO_VAL_INT;
+> +		break;
+>  
+>  	case IIO_CHAN_INFO_SCALE:
+>  		if (adc->vref) {
+> @@ -186,6 +217,17 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+>  				MCP3911_STATUSCOM_EN_OFFCAL,
+>  				MCP3911_STATUSCOM_EN_OFFCAL, 2);
+>  		break;
+> +
+> +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +		for (int i = 0; i < sizeof(mcp3911_osr_table); i++) {
+> +			if (val == mcp3911_osr_table[i]) {
 
-   299	
-   300	static int mcp3911_calc_scale_table(struct mcp3911 *adc)
-   301	{
-   302		u32 ref = MCP3911_INT_VREF_MV;
-   303		u32 div;
-   304		int ret;
- > 305		int tmp0, tmp1;
-   306		s64 tmp2;
-   307	
-   308		if (adc->vref) {
-   309			ret = regulator_get_voltage(adc->vref);
-   310			if (ret < 0) {
-   311				dev_err(&adc->spi->dev,
-   312					"failed to get vref voltage: %d\n",
-   313				       ret);
-   314				return ret;
-   315			}
-   316	
-   317			ref = ret / 1000;
-   318		}
-   319	
-   320		/*
-   321		 * For 24bit Conversion
-   322		 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
-   323		 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
-   324		 */
-   325	
-   326		/* ref = Reference voltage
-   327		 * div = (2^23 * 1.5 * gain) = 12582912 * gain
-   328		 */
-   329		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-   330			div = 12582912 * BIT(i);
-   331			tmp2 = div_s64((s64)ref * 1000000000LL, div);
-   332			tmp1 = div;
-   333			tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
-   334	
-   335			mcp3911_scale_table[i][0] = 0;
-   336			mcp3911_scale_table[i][1] = tmp1;
-   337		}
-   338	
-   339		return 0;
-   340	}
-   341	
+Default type of IIO writes is IIO_VAL_INT_PLUS_MICRO.  You can either provide
+write_raw_get_fmt() or be lazy and check val2 == 0 here.
+ 
+> +				val = FIELD_PREP(MCP3911_CONFIG_OSR, i);
+> +				ret = mcp3911_update(adc, MCP3911_REG_CONFIG, MCP3911_CONFIG_OSR,
+> +						val, 2);
+> +				break;
+> +			}
+> +		}
+> +		break;
+>  	}
+>  
+>  out:
+> @@ -198,9 +240,13 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+>  		.indexed = 1,					\
+>  		.channel = idx,					\
+>  		.scan_index = idx,				\
+> +		.scan_index = idx,				\
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+repeated... I guess a merge conflict resolution issue.
+
+> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO), \
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
+>  			BIT(IIO_CHAN_INFO_OFFSET) |		\
+>  			BIT(IIO_CHAN_INFO_SCALE),		\
+> +		.info_mask_shared_by_type_available =		\
+> +			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+>  		.scan_type = {					\
+>  			.sign = 's',				\
+>  			.realbits = 24,				\
+> @@ -252,6 +298,7 @@ static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+>  static const struct iio_info mcp3911_info = {
+>  	.read_raw = mcp3911_read_raw,
+>  	.write_raw = mcp3911_write_raw,
+> +	.read_avail = mcp3911_read_avail,
+>  };
+>  
+>  static irqreturn_t mcp3911_interrupt(int irq, void *dev_id)
+
+

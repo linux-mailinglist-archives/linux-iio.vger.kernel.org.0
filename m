@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84C6155AA43
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 14:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E531A55AA47
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 15:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232821AbiFYM6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 08:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47586 "EHLO
+        id S231982AbiFYM7i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 08:59:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbiFYM6H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 08:58:07 -0400
+        with ESMTP id S232988AbiFYM7h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 08:59:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A3A5580
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 05:58:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34B2B19012
+        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 05:59:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03B8D61167
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 12:58:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2176FC3411C;
-        Sat, 25 Jun 2022 12:57:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC881612A8
+        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 12:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6785CC341C6;
+        Sat, 25 Jun 2022 12:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656161881;
-        bh=coh9xwwrMismVks+snj/hNHnXKS1pN8Zs2dPSVuYK0A=;
+        s=k20201202; t=1656161976;
+        bh=5z56iY7Os1Ac5uuVxhl9VJ087eDsrv/LCNNSpdwro2s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TMFP3KNNJrL5KsWl8ZH2EiP4Gq0iygRrN6DSed+zxH8iKxmbgLfk2s8bvdfzMR4VO
-         qQCZzMwRIiQYxp3lS54w/DPYR3SkuOYItLpRjQw/AI9Tx/6n++AkEDte3YyYEMVFTh
-         Ph4KurMnQ3r4C0YCW4BWNUGnUM7xK5DFmXdMnQWMo7xCN5gE3PNPwSGht2g6ZoiACR
-         XylvsSIN6VIzhdZr8QVks3zR3QAAIy4VpFeIqXcZq/m7eUBpOgwfA6WVbfqYrv4QWT
-         bAiONWZAGRjOEQjLsUpGh3RcEc1EhwP7jtnFY3Yajk1DBcZV95X5suaMd070aFMChA
-         7zqz6FtX4rZLA==
-Date:   Sat, 25 Jun 2022 14:07:22 +0100
+        b=Xr5efM+KZhWQaYGOzUjZ90zyVzDjbeO1P2PR7UQ5y9io9bNO6/Di5HBqMZI8W+DHA
+         HAtwYQb6s+uYd4nZU3Lff5Y21152Fl4Lg4eIWxliQgXE9Su4Bc8xxpPjYMf6Cb3Eke
+         tw/h7lz1wIwQOAPHpQG8/ezQh/NPPJuPt/Y9dJxXlfqJNixZ9fjN5DI5H3ZQRxiiwH
+         rvay+1zHRc1dN/RWTJ3s9ft62EA6o5FMCq6FNPEtPp/l2xLlmyQns2vADdDPtLCch8
+         cSfkpSKFRiDAJDs1Pa7PO+yhsLX6v8E2MgVMmDyc7MlJoI+jXxLXyJ8CvThX2lqAvH
+         PA65Iqfexq09w==
+Date:   Sat, 25 Jun 2022 14:08:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Ismail Kose <ihkose@gmail.com>
 Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
@@ -65,13 +65,13 @@ Cc:     linux-iio@vger.kernel.org, Paul Cercueil <paul@crapouillou.net>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Zhiyong Tao <zhiyong.tao@mediatek.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 14/36] iio: dac: max5821: Switch to
+Subject: Re: [PATCH 11/36] iio: dac: ds4424: Switch to
  DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Message-ID: <20220625140722.39ed5e48@jic23-huawei>
-In-Reply-To: <CABEhyf-N-hi7z3SQK4FRWyztwJ=3t17NZT-gGCEugQhUkpcZQA@mail.gmail.com>
+Message-ID: <20220625140855.757b5fcd@jic23-huawei>
+In-Reply-To: <CABEhyf8EezacO8hSCDtz8kDnWeTWFJYBz0XJufjmyprv5u3rmw@mail.gmail.com>
 References: <20220621202719.13644-1-jic23@kernel.org>
-        <20220621202719.13644-15-jic23@kernel.org>
-        <CABEhyf-N-hi7z3SQK4FRWyztwJ=3t17NZT-gGCEugQhUkpcZQA@mail.gmail.com>
+        <20220621202719.13644-12-jic23@kernel.org>
+        <CABEhyf8EezacO8hSCDtz8kDnWeTWFJYBz0XJufjmyprv5u3rmw@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -86,18 +86,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 Jun 2022 10:58:30 -0700
+On Thu, 23 Jun 2022 11:04:12 -0700
 Ismail Kose <ihkose@gmail.com> wrote:
 
-> Signed-off
-> ismail
+> signed-off
+> ismail.
+Hi Ismail,
 
-Tag for this would be
-Acked-by
-as you aren't involved in the sign of chain for this one, rather you
-are reviewing.
+Thanks for taking a look.
 
-If you can confirm that it would be much appreciated.
+As with the other one, please reply with an
+Acked-by tag fully stated as that's what we need to apply it to the patch
+(and what automated tooling like b4 will be looking for.
+
+Thanks,
+
+Jonathan
+
 > 
 > 
 > On Tue, Jun 21, 2022 at 1:19 PM Jonathan Cameron <jic23@kernel.org> wrote:
@@ -109,54 +114,55 @@ If you can confirm that it would be much appreciated.
 > > mark pm functions __maybe_unused.
 > >
 > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Philippe Reynes <tremyfr@yahoo.fr>
+> > Cc: Ismail H. Kose <ihkose@gmail.com>
 > > ---
-> >  drivers/iio/dac/max5821.c | 9 +++++----
-> >  1 file changed, 5 insertions(+), 4 deletions(-)
+> >  drivers/iio/dac/ds4424.c | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
 > >
-> > diff --git a/drivers/iio/dac/max5821.c b/drivers/iio/dac/max5821.c
-> > index 540f9ea7cada..e001b594d5b1 100644
-> > --- a/drivers/iio/dac/max5821.c
-> > +++ b/drivers/iio/dac/max5821.c
-> > @@ -267,7 +267,7 @@ static int max5821_write_raw(struct iio_dev *indio_dev,
-> >         }
+> > diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
+> > index 5a5e967b0be4..509394690bcc 100644
+> > --- a/drivers/iio/dac/ds4424.c
+> > +++ b/drivers/iio/dac/ds4424.c
+> > @@ -171,7 +171,7 @@ static int ds4424_verify_chip(struct iio_dev
+> > *indio_dev)
+> >         return ret;
 > >  }
 > >
-> > -static int __maybe_unused max5821_suspend(struct device *dev)
-> > +static int max5821_suspend(struct device *dev)
+> > -static int __maybe_unused ds4424_suspend(struct device *dev)
+> > +static int ds4424_suspend(struct device *dev)
 > >  {
-> >         u8 outbuf[2] = { MAX5821_EXTENDED_COMMAND_MODE,
-> >                          MAX5821_EXTENDED_DAC_A |
-> > @@ -277,7 +277,7 @@ static int __maybe_unused max5821_suspend(struct
-> > device *dev)
-> >         return i2c_master_send(to_i2c_client(dev), outbuf, 2);
-> >  }
-> >
-> > -static int __maybe_unused max5821_resume(struct device *dev)
-> > +static int max5821_resume(struct device *dev)
-> >  {
-> >         u8 outbuf[2] = { MAX5821_EXTENDED_COMMAND_MODE,
-> >                          MAX5821_EXTENDED_DAC_A |
-> > @@ -287,7 +287,8 @@ static int __maybe_unused max5821_resume(struct device
+> >         struct i2c_client *client = to_i2c_client(dev);
+> >         struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > @@ -189,7 +189,7 @@ static int __maybe_unused ds4424_suspend(struct device
 > > *dev)
-> >         return i2c_master_send(to_i2c_client(dev), outbuf, 2);
+> >         return ret;
 > >  }
 > >
-> > -static SIMPLE_DEV_PM_OPS(max5821_pm_ops, max5821_suspend, max5821_resume);
-> > +static DEFINE_SIMPLE_DEV_PM_OPS(max5821_pm_ops, max5821_suspend,
-> > +                               max5821_resume);
+> > -static int __maybe_unused ds4424_resume(struct device *dev)
+> > +static int ds4424_resume(struct device *dev)
+> >  {
+> >         struct i2c_client *client = to_i2c_client(dev);
+> >         struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> > @@ -206,7 +206,7 @@ static int __maybe_unused ds4424_resume(struct device
+> > *dev)
+> >         return ret;
+> >  }
 > >
-> >  static const struct iio_info max5821_info = {
-> >         .read_raw = max5821_read_raw,
-> > @@ -374,7 +375,7 @@ static struct i2c_driver max5821_driver = {
+> > -static SIMPLE_DEV_PM_OPS(ds4424_pm_ops, ds4424_suspend, ds4424_resume);
+> > +static DEFINE_SIMPLE_DEV_PM_OPS(ds4424_pm_ops, ds4424_suspend,
+> > ds4424_resume);
+> >
+> >  static const struct iio_info ds4424_info = {
+> >         .read_raw = ds4424_read_raw,
+> > @@ -312,7 +312,7 @@ static struct i2c_driver ds4424_driver = {
 > >         .driver = {
-> >                 .name   = "max5821",
-> >                 .of_match_table = max5821_of_match,
-> > -               .pm     = &max5821_pm_ops,
-> > +               .pm     = pm_sleep_ptr(&max5821_pm_ops),
+> >                 .name   = "ds4424",
+> >                 .of_match_table = ds4424_of_match,
+> > -               .pm     = &ds4424_pm_ops,
+> > +               .pm     = pm_sleep_ptr(&ds4424_pm_ops),
 > >         },
-> >         .probe          = max5821_probe,
-> >         .id_table       = max5821_id,
+> >         .probe          = ds4424_probe,
+> >         .remove         = ds4424_remove,
 > > --
 > > 2.36.1
 > >

@@ -2,198 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 352FF55A5A6
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 02:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C85555A8D7
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 12:37:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230388AbiFYAy3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 20:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
+        id S232297AbiFYKhV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 06:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbiFYAy2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 20:54:28 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740CE5001A;
-        Fri, 24 Jun 2022 17:54:26 -0700 (PDT)
-X-UUID: 780357f6997c455fb5477ca2b5b98988-20220625
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.6,REQID:de213be8-96b4-4f51-8d3f-3c2a1c709920,OB:0,LO
-        B:0,IP:0,URL:25,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,AC
-        TION:release,TS:70
-X-CID-INFO: VERSION:1.1.6,REQID:de213be8-96b4-4f51-8d3f-3c2a1c709920,OB:0,LOB:
-        0,IP:0,URL:25,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Spam_GS981B3D,AC
-        TION:quarantine,TS:70
-X-CID-META: VersionHash:b14ad71,CLOUDID:99a476ea-f7af-4e69-92ee-0fd74a0c286c,C
-        OID:4ca74c2c1c80,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:1,File:nil,QS:nil,BEC:nil,COL:0
-X-UUID: 780357f6997c455fb5477ca2b5b98988-20220625
-Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
-        (envelope-from <miles.chen@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
-        with ESMTP id 1674105141; Sat, 25 Jun 2022 08:54:19 +0800
-Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.2.792.15; Sat, 25 Jun 2022 08:54:18 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
- mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
- 15.0.1497.2; Sat, 25 Jun 2022 08:54:18 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.792.3 via Frontend Transport; Sat, 25 Jun 2022 08:54:18 +0800
-From:   Miles Chen <miles.chen@mediatek.com>
-To:     <peterwu.pub@gmail.com>
-CC:     <alice_chen@richtek.com>, <broonie@kernel.org>,
-        <chiaen_wu@richtek.com>, <chunfeng.yun@mediatek.com>,
-        <cy_huang@richtek.com>, <daniel.thompson@linaro.org>,
-        <deller@gmx.de>, <devicetree@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <gregkh@linuxfoundation.org>,
-        <heikki.krogerus@linux.intel.com>, <jic23@kernel.org>,
-        <jingoohan1@gmail.com>, <krzysztof.kozlowski+dt@linaro.org>,
-        <lars@metafoo.de>, <lee.jones@linaro.org>, <lgirdwood@gmail.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-fbdev@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, <linux-pm@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <linux@roeck-us.net>,
-        <matthias.bgg@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
-        <sre@kernel.org>, <szunichen@gmail.com>
-Subject: Re: [PATCH v3 02/14] dt-bindings: power: supply: Add Mediatek MT6370 Charger
-Date:   Sat, 25 Jun 2022 08:54:18 +0800
-Message-ID: <20220625005418.7565-1-miles.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20220623115631.22209-3-peterwu.pub@gmail.com>
-References: <20220623115631.22209-3-peterwu.pub@gmail.com>
+        with ESMTP id S231287AbiFYKhU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 06:37:20 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287AA2A255;
+        Sat, 25 Jun 2022 03:37:19 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id r9so193514ljp.9;
+        Sat, 25 Jun 2022 03:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=p74EiAOrPkTvHsU80Gm6F1ejn2Q2dF5pBSqgM8W6O8g=;
+        b=Kvo0fglBTj0/ELNAGvVtCWnzgWVkDUGRwavsjI+Z1C2J8G1iiPUBQrUDtjDFfnS6DI
+         WXhW3+jl5RGEzCsWPistAArfqXHjaBztUMA75lJoTJS2DThF7aoJltWZGG2swjlG9zUU
+         b6Jx7BjRgfH9BetMqutckV+TLzqQ5qgp30iCctoGnnoYJ3PInwXmG89faMBRCFDkKTqb
+         d+vvXNVUpHMnWPjhae43agN6WjUjMaRt6aRT7Xk5FuK3aH/cNeLJYRPKaSNS6y6GR6Og
+         rlCN26rO4hHoJRMnfM52TCKADZv2xVPWzut6jOwkUKGVv3gebpTrxE9ReABorpyXtzSP
+         RQgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=p74EiAOrPkTvHsU80Gm6F1ejn2Q2dF5pBSqgM8W6O8g=;
+        b=YJdXVv4swG4Rbm3Ty4D8lLTfKhnir2ksbtlSb1mchWlmaLTlI/SOWNkn3ySf5Wt+pa
+         XLvwiXPFOtGqWbZS6vZNsq4n1vaX8LQUE0CkJ3nayzT8eCQPpgPcberEZzN702pjr3xE
+         rMfJGNjZntRaJ4J+eEsvQjOQXE8YF7V2W1jzDRbEEh1ym43/fC1wQlYoAWKFvnZCczcC
+         JJiCM/1rNjEhlpcr76kcwt2L20j+8FdD8TuAxArqFI+1uXqKHTvEgH8rFqo/BMRU6kMQ
+         EjVd0ioGFQnNtOMWC8qZH+DBEUaCAlTOyCihlWuauAFNTlAKN91uubbKzHhk5RgYmugD
+         xDzQ==
+X-Gm-Message-State: AJIora9y5bedwOZaS4ul+ym1El57bDpXP1iYfb1hl2BydLoQpbJW2FoR
+        NbSCH14m4yod6WWEqEczluYiv9gvACZC5QTU
+X-Google-Smtp-Source: AGRyM1uXChu1I/cl858gf+d6K/L0j/uYWpeDmUCmU93MP0j1pfBCh4E4Y9vvCAk368dg1dxykRCRQg==
+X-Received: by 2002:a05:651c:1202:b0:25a:6096:bd7e with SMTP id i2-20020a05651c120200b0025a6096bd7emr1617796lja.304.1656153437330;
+        Sat, 25 Jun 2022 03:37:17 -0700 (PDT)
+Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id z8-20020ac25de8000000b0047ac01fc644sm809115lfq.44.2022.06.25.03.37.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Jun 2022 03:37:16 -0700 (PDT)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 01/10] iio: adc: mcp3911: correct "microchip,device-addr" property
+Date:   Sat, 25 Jun 2022 12:38:44 +0200
+Message-Id: <20220625103853.2470346-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi ChiaEn,
+Go for the right property name that is documented in the bindings.
 
-> Add Mediatek MT6370 Charger binding documentation.
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
 
-s/Mediatek/MediaTek/
+Notes:
+    v2:
+        - Fallback to "device-addr" due to compatibility (Andy Shevchenko)
 
-Would you mind fix that for the series?
+ drivers/iio/adc/mcp3911.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-cheers,
-Miles
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index 1cb4590fe412..c5a0f19d7834 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -208,7 +208,13 @@ static int mcp3911_config(struct mcp3911 *adc)
+ 	u32 configreg;
+ 	int ret;
+ 
+-	device_property_read_u32(dev, "device-addr", &adc->dev_addr);
++	ret = device_property_read_u32(dev, "microchip,device-addr", &adc->dev_addr);
++
++	/* Fallback to "device-addr" due to historical mismatch between
++	 * dt-bindings and implementation
++	 */
++	if (ret)
++		device_property_read_u32(dev, "device-addr", &adc->dev_addr);
+ 	if (adc->dev_addr > 3) {
+ 		dev_err(&adc->spi->dev,
+ 			"invalid device address (%i). Must be in range 0-3.\n",
+-- 
+2.36.1
 
-> 
-> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
-> ---
-> 
-> v3
-> - Add items and remove maxItems of io-channels
-> - Add io-channel-names and describe each item
-> - Add "unevaluatedProperties: false" in "usb-otg-vbus-regulator"
-> - Rename "enable-gpio" to "enable-gpios" in "usb-otg-vbus-regulator"
-> ---
->  .../power/supply/mediatek,mt6370-charger.yaml      | 87 ++++++++++++++++++++++
->  1 file changed, 87 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> new file mode 100644
-> index 0000000..f138db6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
-> @@ -0,0 +1,87 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Mediatek MT6370 Battery Charger
-> +
-> +maintainers:
-> +  - ChiaEn Wu <chiaen_wu@richtek.com>
-> +
-> +description: |
-> +  This module is part of the MT6370 MFD device.
-> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
-> +
-> +properties:
-> +  compatible:
-> +    const: mediatek,mt6370-charger
-> +
-> +  interrupts:
-> +    description: |
-> +      Specify what irqs are needed to be handled by MT6370 Charger driver. IRQ
-> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL_UVP_D"
-> +      are required.
-> +    items:
-> +      - description: BC1.2 done irq
-> +      - description: usb plug in irq
-> +      - description: mivr irq
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: attach_i
-> +      - const: uvp_d_evt
-> +      - const: mivr
-> +
-> +  io-channels:
-> +    description: |
-> +      Use ADC channel to read VBUS, IBUS, IBAT, etc., info.
-> +    minItems: 1
-> +    items:
-> +      - description: |
-> +          VBUS voltage with lower accuracy (+-75mV) but higher measure
-> +          range (1~22V)
-> +      - description: |
-> +          VBUS voltage with higher accuracy (+-30mV) but lower measure
-> +          range (1~9.76V)
-> +      - description: the main system input voltage
-> +      - description: battery voltage
-> +      - description: battery temperature-sense input voltage
-> +      - description: IBUS current (required)
-> +      - description: battery current
-> +      - description: |
-> +          regulated output voltage to supply for the PWM low-side gate driver
-> +          and the bootstrap capacitor
-> +      - description: IC junction temperature
-> +
-> +  io-channel-names:
-> +    items:
-> +      - const: vbusdiv5
-> +      - const: vbusdiv2
-> +      - const: vsys
-> +      - const: vbat
-> +      - const: ts_bat
-> +      - const: ibus
-> +      - const: ibat
-> +      - const: chg_vddp
-> +      - const: temp_jc
-> +
-> +  usb-otg-vbus-regulator:
-> +    type: object
-> +    description: OTG boost regulator.
-> +    unevaluatedProperties: false
-> +    $ref: /schemas/regulator/regulator.yaml#
-> +
-> +    properties:
-> +      enable-gpios:
-> +        maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - interrupts
-> +  - interrupt-names
-> +  - io-channels
-> +
-> +additionalProperties: false
-> +
-> +...
-> -- 
-> 2.7.4
-> 
-> 

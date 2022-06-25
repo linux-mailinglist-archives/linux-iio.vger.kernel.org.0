@@ -2,49 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C88BD55AA60
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 15:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A566B55AA69
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 15:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232981AbiFYNRK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 09:17:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33118 "EHLO
+        id S233037AbiFYNSo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 09:18:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbiFYNRI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 09:17:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2020011821;
-        Sat, 25 Jun 2022 06:17:06 -0700 (PDT)
+        with ESMTP id S233032AbiFYNSk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 09:18:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 304451A81F;
+        Sat, 25 Jun 2022 06:18:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4AA5612CB;
-        Sat, 25 Jun 2022 13:17:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641EDC3411C;
-        Sat, 25 Jun 2022 13:17:03 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id ADDC2B80959;
+        Sat, 25 Jun 2022 13:18:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C288C341CA;
+        Sat, 25 Jun 2022 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656163024;
-        bh=EQ5NzjxPicxRp5lCLKniHD4eu7yQO6P2W6htjFIhPvo=;
+        s=k20201202; t=1656163116;
+        bh=DrvYsHNixQGAFxZ5B9o45TBNbqBktYaLq5jvaKUH8Tc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=oNKh52OCnc31NiXe1GV1IVpnKRb03djN/vdb0EGtjIegIo1BGnsdA9aMFihL5Ak1d
-         6KBakA5oxES5lSMArs9M+KgHNR84Ty3R2yWpDAYZ+A7rjy8nVsLmu4Qmg8RXng0Km/
-         0VbXRxWOEdiwaWVPRnSfJNhabxbqUEy6WeHWoqrxoN8goScd2aORNwATDP8QVDKXmU
-         R8xDqhPLCTZD597FDJZ8ay+kv3s6s4SA+zPyqNk9RKPGWckLs61i6oOyXax9vZkQe+
-         dTqaJFa5Nmt2EySO13vQzkmn64S01t9xHhXorrW8fi+L5b0G5wm8dglZRncGWz8IZZ
-         uBOihqtn2BaxQ==
-Date:   Sat, 25 Jun 2022 14:26:32 +0100
+        b=usAhrIS5wLWHr9hU7Do3gZcWvMC4Oeze1rkLQlqxian1RZ4QQIXbBhzWt2vE6roOv
+         h5Sb+F/3L6++RBecYlOK+/fKWRJ9ym5nf86uqhRmfj1hA/GX7s/AZvZAJEWx7MK+G1
+         WjtrYmqtpIaSuUNZ+7hjjnUNTSqE6HPkDiSXlsFudVcD3DDc7qBHhyLXGU4kjd2zSp
+         hvJ4CuVgysdhorhnAngH26w2Avw3ksAbGOVHB5gl9/Gd+zfnFyIbFEQVEQF0kG4Net
+         Qxs1BfQbAQQAuYWK2N4RMk0X61Dq6Ts87F1diYTYuaJz30o7bp9PW5Q58zMRjtuvlu
+         QwEmR6sMofWDg==
+Date:   Sat, 25 Jun 2022 14:28:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jiang Jian <jiangjian@cdjrlc.com>,
+To:     Olivier Moysan <olivier.moysan@foss.st.com>
+Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: dac: ad5380: aligned '*' each line and drop
- unneeded blank line
-Message-ID: <20220625142632.1d0201a1@jic23-huawei>
-In-Reply-To: <CAHp75Veau14x1_8oauUZ=d4TxqJ9wcRyAQF6dR9YrwuTKjP3rQ@mail.gmail.com>
-References: <20220621092319.69598-1-jiangjian@cdjrlc.com>
-        <CAHp75Veau14x1_8oauUZ=d4TxqJ9wcRyAQF6dR9YrwuTKjP3rQ@mail.gmail.com>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Wan Jiabing <wanjiabing@vivo.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: Re: [PATCH 0/2] iio: adc: stm32-adc: add checks on adc state
+Message-ID: <20220625142802.51ee9637@jic23-huawei>
+In-Reply-To: <20220620154738.801706-1-olivier.moysan@foss.st.com>
+References: <20220620154738.801706-1-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,78 +61,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 21 Jun 2022 16:08:14 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 20 Jun 2022 17:47:36 +0200
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> On Tue, Jun 21, 2022 at 11:26 AM Jiang Jian <jiangjian@cdjrlc.com> wrote:
-> >
-> > Consider '*' alignment in the comments of struct ad5380_chip_info declaration.  
+> On ADC startup a calibration is launched.
+> A prerequisite for ADC calibration is to have ADC in disabled state.
+> After kernel boot, the ADC state may be unknown as the ADC may have been left enabled by boot stage.
 > 
-> Next time don't forget to bump the version of the patch (use -vX, X =
-> 0,1, ..., with the `git format-patch`) and add a changelog (after
-> cutter '---' line).
+> Call ADC disable routine systematically before launching calibration.
+> Adapt ADC disable routine to perform disabling sequence according to current ADC state.
 > 
-> > ...  
-> > >   * @channel_template:  channel specification template
-> > >   * @num_channels:      number of channels
-> > >   * @int_vref:          internal vref in uV
-> > > -*/
-> > > + */
-> > >  
-> > While at it, drop the unneeded blank line here.  
-> > >  struct ad5380_chip_info {  
-> > ...
-> > }  
+> Olivier Moysan (2):
+>   iio: adc: stm32-adc: make safe adc disable
+>   iio: adc: stm32-adc: disable adc before calibration
 > 
-> This should be replaced by something simpler, like:
-> While at it, drop the unneeded blank lines.
+>  drivers/iio/adc/stm32-adc.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> 
-> I do not think you need to resend this simplest patch and Jonathan
-> will help you this time, but consider the above for future
-> contributions, thanks!
-Tweaked and applied to the togreg branch of iio.git which I'll
-push out initially as testing to let the 0-day bot poke it.
+
+Series applied to the togreg branch and pushed out as testing
+for all the normal reasons.
 
 Thanks,
 
 Jonathan
-
-> 
-> > Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
-> > ---
-> >  drivers/iio/dac/ad5380.c | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
-> > index a44c83242fb1..81775152aac6 100644
-> > --- a/drivers/iio/dac/ad5380.c
-> > +++ b/drivers/iio/dac/ad5380.c
-> > @@ -36,8 +36,7 @@
-> >   * @channel_template:  channel specification template
-> >   * @num_channels:      number of channels
-> >   * @int_vref:          internal vref in uV
-> > -*/
-> > -
-> > + */
-> >  struct ad5380_chip_info {
-> >         struct iio_chan_spec    channel_template;
-> >         unsigned int            num_channels;
-> > @@ -53,7 +52,6 @@ struct ad5380_chip_info {
-> >   * @pwr_down:          whether the chip is currently in power down mode
-> >   * @lock:              lock to protect the data buffer during regmap ops
-> >   */
-> > -
-> >  struct ad5380_state {
-> >         struct regmap                   *regmap;
-> >         const struct ad5380_chip_info   *chip_info;
-> > --
-> > 2.17.1
-> >  
-> 
-> 
-> --
-> With Best Regards,
-> Andy Shevchenko
 

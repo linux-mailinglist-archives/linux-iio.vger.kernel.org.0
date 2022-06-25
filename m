@@ -2,93 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3CD55AC72
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 22:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 616D255AC6E
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 22:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233352AbiFYUGJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 16:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39818 "EHLO
+        id S233536AbiFYULd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 16:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232852AbiFYUGI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 16:06:08 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01756140BC
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 13:06:07 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id eq6so7815118edb.6
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 13:06:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=G+O94VcDTtwbrcVKx/+ZQ1mO7kffs6WRdpcMIlGbZkw=;
-        b=zaFPw4+a7OLQYwpz7lsAI46E5WXeCd6y3P2HAHzXf/G1JCAiYj5ELtObWDkDuOOW1A
-         V0+hVFmG2q4UKw2Kvafmn/Z+q5yQQLXhg/B2347dNO4gYLrIxj83Ns8+5aqawGHe3fBH
-         E6mAV48lLxRv8c+WV0uCND05k107DOzYKJsxxxA7UdHLoLoGkpWj/1O/kB87FKkC2WeI
-         WXkkeEK+4jOoD69nMIrMbVpZDftAqqkLk0qrXZ3/tgPN/vtmDMb3WtlQIpVGPoxnAAJK
-         m2Czdob575dF0so3qAne2W7fcuKeSACmbXSITWVfiE+Ce5Hd1J/HZjsNSNY67sZC3244
-         KR2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=G+O94VcDTtwbrcVKx/+ZQ1mO7kffs6WRdpcMIlGbZkw=;
-        b=E4DsFtSdLnAPt0kiw9VRQ3rFFRT52GlPhvnLK8iMmpiTnA78+bSjciyrvVKSQOKx9q
-         8uDC8zdxbroCtawUgzE4Mb4S3Bxfy2sP5H9rzlg55qWkW7Kzzdy7HwsmFJM4MNKFho8F
-         a7l/RG5xZfwzqdCD0Om+Gr15zRPN3lQwkL5aQFHc4yS020eGgcEK6+GizjYiW8UV5/Mb
-         IseNW1HimDSuki2BYp/ZU4m05c4tYHjeUTy85QQKVCbz0vnZSKBDMUsltTenFutmsyJD
-         GJqZK5cGV9PTuMhEmrv678fx+ML0VYUI0bj9D+TSQZ6Zytxb2xojDCsEeRcV/Nq2rUwM
-         8vqQ==
-X-Gm-Message-State: AJIora/oYihxpnAew2hm3B1H+vvC1BdzaNFo3NyKWUIxCKrAq7oP4sEK
-        5XwlPsOPA5tdAxyqGxvLDIBg+Q==
-X-Google-Smtp-Source: AGRyM1skFoOAS415YobZwbpZc3SvDFRLuL0LmIj9Z9dcWxQlEkNQADeploUM3OA5k/vHKAIH2euACQ==
-X-Received: by 2002:a05:6402:5193:b0:435:9a5f:50a8 with SMTP id q19-20020a056402519300b004359a5f50a8mr6964593edd.212.1656187565646;
-        Sat, 25 Jun 2022 13:06:05 -0700 (PDT)
-Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id jl18-20020a17090775d200b006fec8e8eff6sm2990023ejc.176.2022.06.25.13.06.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jun 2022 13:06:05 -0700 (PDT)
-Message-ID: <b3482122-8d2d-61c9-7d11-ad4fa2798aba@linaro.org>
-Date:   Sat, 25 Jun 2022 22:06:04 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2 05/10] dt-bindings: iio: adc: mcp3911: add
- microchip,data-ready-hiz entry
-Content-Language: en-US
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
+        with ESMTP id S233374AbiFYULc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 16:11:32 -0400
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA00413E9E;
+        Sat, 25 Jun 2022 13:11:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656187891; x=1687723891;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=v0zBwBZ5Y5uFdrQf31Ecdcp8Net+EpFvhp5KLBPyt0I=;
+  b=gZ5LYaup2j/EXebSC0B246ORyrFEnMTg0D6kpUd1gC0GcBSzyAR4I/Rd
+   v6AwRTy+Tzrz3TbKhZvZIfuPZAFkFWHVHozyPegeUrawkQ5lUecYlGBD1
+   R5hRwuMcGV9hcS1qKNVbkOVVkrX/xL79UPszDL/y6nP0CMQekKN8pw5SF
+   KWJTtZg9qyKjfidTgn/2BS2hoPlW5gYRp+EAPHEHYOZiqx1gq92Gadkup
+   j5Yslzb96pDdsfnLsEMW+cmpsMzYPwTZLwq50BQrEL+ScoXp9waH7mSu+
+   UlkfszF4+h8JqYjyAINN38ta14yR8b+13m+ZWMQPrg2xP/xp6JcX2fVsl
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10389"; a="264263713"
+X-IronPort-AV: E=Sophos;i="5.92,222,1650956400"; 
+   d="scan'208";a="264263713"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2022 13:11:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,222,1650956400"; 
+   d="scan'208";a="589377273"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 25 Jun 2022 13:11:29 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o5C7s-0006Fz-HN;
+        Sat, 25 Jun 2022 20:11:28 +0000
+Date:   Sun, 26 Jun 2022 04:11:13 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     kbuild-all@lists.01.org, Angel Iglesias <ang.iglesiasg@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220625103853.2470346-1-marcus.folkesson@gmail.com>
- <20220625103853.2470346-5-marcus.folkesson@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220625103853.2470346-5-marcus.folkesson@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: pressure: bmp280: Add support for BMP380 sensor
+ family
+Message-ID: <202206260315.GVEVwo9d-lkp@intel.com>
+References: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 25/06/2022 12:38, Marcus Folkesson wrote:
-> The Data Ready Output Pin is either hard wired to work as high
-> impedance or push-pull. Make it configurable.
-> 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Hi Angel,
 
+Thank you for the patch! Yet something to improve:
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on robh/for-next linus/master v5.19-rc3 next-20220624]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: sh-buildonly-randconfig-r004-20220626
+compiler: sh4-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/56e3f8aecddacdbe204fbe5e28032ef2befae647
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
+        git checkout 56e3f8aecddacdbe204fbe5e28032ef2befae647
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=sh SHELL=/bin/bash
 
-Best regards,
-Krzysztof
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   sh4-linux-ld: drivers/iio/pressure/bmp280-core.o: in function `bmp380_read_press':
+>> bmp280-core.c:(.text+0x5f0): undefined reference to `__divdi3'
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

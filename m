@@ -2,62 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5CE455A463
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 00:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 352FF55A5A6
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 02:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbiFXWdt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 24 Jun 2022 18:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48922 "EHLO
+        id S230388AbiFYAy3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 24 Jun 2022 20:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229910AbiFXWds (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 18:33:48 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4631852E55
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 15:33:47 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id r1so3234504plo.10
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jun 2022 15:33:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QOxyiidE0XayyRLxJup7Yrx0Xq1SxWMLzDy5htdSrjE=;
-        b=BSDcY6WTpEnFqSjFJ+C2Z2dsOkp4FXI0BdP0y2+exv+ZBEud5/x4SUBhtc5hKvDmRY
-         T5AQQ826Miq2pNsUQILn5Lio8cb9A4UzFDUEr8YGE0oYlLg4GHDKWJ/jLpCaRuRKOvRf
-         JXQHrO8jshxWCGSQVRhDaXVBnKSI2jxoS7I5Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=QOxyiidE0XayyRLxJup7Yrx0Xq1SxWMLzDy5htdSrjE=;
-        b=zs/VX80UwWSS3mQLJknq/tn5KIIQJ+koInC49jlghy9JKAr3+lrBF42I/utrgypd6c
-         91VgeySqCoRApbXgO4OaqWRf4kASl2tNdAwbwQWvxiwK8owZ9fCk26CXW3paf7O0Kx2x
-         8ECB06riAYGxoLOZIy212ng1tdqWTOPWOqh7PeH/DH0CryBibKlcmRJB3+kPA7MlNQuG
-         amd7cwOEx5AtT8yNKiJFD7F1awbJXhSWTrUa2VOcuya31loyY6B4hFKYE7jyyy2XrK16
-         iesXDEDPqy9FGNgcRnrHUL2ZSGaj5TIwuo9ujSfRaVRY8CoeoNMO2ErLku/3ZcutipWX
-         Pikw==
-X-Gm-Message-State: AJIora/WDwdablOz/DA1gP5qpsV05nZTLazmwll5SqiT8UqUAmKzsD3k
-        cDMFid2b/5q82QFPG7j7F8YgOzuQiTwJOw==
-X-Google-Smtp-Source: AGRyM1uU2HLunXbWofJSjVg8IZTUXIpUiKSl0F2h6Vki2x5V6PRtL8thKbpIfuPhO1faR6Z95/fItw==
-X-Received: by 2002:a17:902:d2c1:b0:16a:4028:4748 with SMTP id n1-20020a170902d2c100b0016a40284748mr1381070plc.37.1656110026727;
-        Fri, 24 Jun 2022 15:33:46 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:7851:19cd:de16:eb4d])
-        by smtp.gmail.com with UTF8SMTPSA id iy11-20020a170903130b00b0016a4a2ea92asm2288382plb.255.2022.06.24.15.33.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Jun 2022 15:33:46 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jikos@kernel.org, jic23@kernel.org,
-        srinivas.pandruvada@linux.intel.com, wpsmith@google.com
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH] iio/hid: Add mount_matrix
-Date:   Fri, 24 Jun 2022 15:33:41 -0700
-Message-Id: <20220624223341.2625231-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
+        with ESMTP id S229757AbiFYAy2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 24 Jun 2022 20:54:28 -0400
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740CE5001A;
+        Fri, 24 Jun 2022 17:54:26 -0700 (PDT)
+X-UUID: 780357f6997c455fb5477ca2b5b98988-20220625
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.6,REQID:de213be8-96b4-4f51-8d3f-3c2a1c709920,OB:0,LO
+        B:0,IP:0,URL:25,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Release_Ham,AC
+        TION:release,TS:70
+X-CID-INFO: VERSION:1.1.6,REQID:de213be8-96b4-4f51-8d3f-3c2a1c709920,OB:0,LOB:
+        0,IP:0,URL:25,TC:0,Content:0,EDM:0,RT:0,SF:45,FILE:0,RULE:Spam_GS981B3D,AC
+        TION:quarantine,TS:70
+X-CID-META: VersionHash:b14ad71,CLOUDID:99a476ea-f7af-4e69-92ee-0fd74a0c286c,C
+        OID:4ca74c2c1c80,Recheck:0,SF:28|17|19|48,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:1,File:nil,QS:nil,BEC:nil,COL:0
+X-UUID: 780357f6997c455fb5477ca2b5b98988-20220625
+Received: from mtkcas10.mediatek.inc [(172.21.101.39)] by mailgw01.mediatek.com
+        (envelope-from <miles.chen@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-SHA384 256/256)
+        with ESMTP id 1674105141; Sat, 25 Jun 2022 08:54:19 +0800
+Received: from mtkmbs07n1.mediatek.inc (172.21.101.16) by
+ mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.2.792.15; Sat, 25 Jun 2022 08:54:18 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.186) by
+ mtkmbs07n1.mediatek.inc (172.21.101.16) with Microsoft SMTP Server (TLS) id
+ 15.0.1497.2; Sat, 25 Jun 2022 08:54:18 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.792.3 via Frontend Transport; Sat, 25 Jun 2022 08:54:18 +0800
+From:   Miles Chen <miles.chen@mediatek.com>
+To:     <peterwu.pub@gmail.com>
+CC:     <alice_chen@richtek.com>, <broonie@kernel.org>,
+        <chiaen_wu@richtek.com>, <chunfeng.yun@mediatek.com>,
+        <cy_huang@richtek.com>, <daniel.thompson@linaro.org>,
+        <deller@gmx.de>, <devicetree@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <gregkh@linuxfoundation.org>,
+        <heikki.krogerus@linux.intel.com>, <jic23@kernel.org>,
+        <jingoohan1@gmail.com>, <krzysztof.kozlowski+dt@linaro.org>,
+        <lars@metafoo.de>, <lee.jones@linaro.org>, <lgirdwood@gmail.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-leds@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <linux-usb@vger.kernel.org>, <linux@roeck-us.net>,
+        <matthias.bgg@gmail.com>, <pavel@ucw.cz>, <robh+dt@kernel.org>,
+        <sre@kernel.org>, <szunichen@gmail.com>
+Subject: Re: [PATCH v3 02/14] dt-bindings: power: supply: Add Mediatek MT6370 Charger
+Date:   Sat, 25 Jun 2022 08:54:18 +0800
+Message-ID: <20220625005418.7565-1-miles.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20220623115631.22209-3-peterwu.pub@gmail.com>
+References: <20220623115631.22209-3-peterwu.pub@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain
+X-MTK:  N
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,162 +75,125 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ISH based sensors do not naturally return data in the W3C 'natural'
-orientation.
-They returns all data inverted, to match Microsoft Windows requirement:
-[https://docs.microsoft.com/en-us/windows/uwp/devices-sensors/sensors#accelerometer]
-""" If the device has the SimpleOrientation of FaceUp on a table, then
-the accelerometer would read -1 G on the Z axis. """
-While W3C defines [https://www.w3.org/TR/motion-sensors/#accelerometer-sensor]
-"""The Accelerometer sensor is an inertial-frame sensor, this means that
-when the device is in free fall, the acceleration is 0 m/s2 in the
-falling direction, and when a device is laying flat on a table, the
-acceleration in upwards direction will be equal to the Earth gravity,
-i.e. g ≡ 9.8 m/s2 as it is measuring the force of the table pushing the
-device upwards."""
+Hi ChiaEn,
 
-Fixes all HID sensors that defines IIO_MOD_[XYZ] attributes.
+> Add Mediatek MT6370 Charger binding documentation.
 
-Tested on "HP Spectre x360 Convertible 13" and "Dell XPS 13 9365".
+s/Mediatek/MediaTek/
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- drivers/iio/accel/hid-sensor-accel-3d.c       |  3 +++
- .../hid-sensors/hid-sensor-attributes.c       | 21 +++++++++++++++++++
- drivers/iio/gyro/hid-sensor-gyro-3d.c         |  3 +++
- drivers/iio/magnetometer/hid-sensor-magn-3d.c |  3 +++
- include/linux/hid-sensor-hub.h                |  2 ++
- 5 files changed, 32 insertions(+)
+Would you mind fix that for the series?
 
-diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c b/drivers/iio/accel/hid-sensor-accel-3d.c
-index a2def6f9380a3..980bbd7fba502 100644
---- a/drivers/iio/accel/hid-sensor-accel-3d.c
-+++ b/drivers/iio/accel/hid-sensor-accel-3d.c
-@@ -59,6 +59,7 @@ static const struct iio_chan_spec accel_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_X,
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_ACCEL,
- 		.modified = 1,
-@@ -69,6 +70,7 @@ static const struct iio_chan_spec accel_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_Y,
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_ACCEL,
- 		.modified = 1,
-@@ -79,6 +81,7 @@ static const struct iio_chan_spec accel_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_Z,
-+		.ext_info = hid_sensor_ext_info,
- 	},
- 	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
- };
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-index 9b279937a24e0..e367e4b482ef0 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -585,6 +585,27 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
- }
- EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, IIO_HID);
- 
-+static const struct iio_mount_matrix hid_sensor_windows_axis = {
-+	.rotation = {
-+		"-1", "0", "0",
-+		"0", "-1", "0",
-+		"0", "0", "-1"
-+	}
-+};
-+
-+static const struct iio_mount_matrix *
-+hid_sensor_get_mount_matrix(const struct iio_dev *indio_dev,
-+				const struct iio_chan_spec *chan)
-+{
-+	return &hid_sensor_windows_axis;
-+}
-+
-+const struct iio_chan_spec_ext_info hid_sensor_ext_info[] = {
-+	IIO_MOUNT_MATRIX(IIO_SHARED_BY_TYPE, hid_sensor_get_mount_matrix),
-+	{ }
-+};
-+EXPORT_SYMBOL(hid_sensor_ext_info);
-+
- MODULE_AUTHOR("Srinivas Pandruvada <srinivas.pandruvada@intel.com>");
- MODULE_DESCRIPTION("HID Sensor common attribute processing");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-index 8f0ad022c7f1b..b852f5166bb21 100644
---- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
-+++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
-@@ -58,6 +58,7 @@ static const struct iio_chan_spec gyro_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_X,
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_ANGL_VEL,
- 		.modified = 1,
-@@ -68,6 +69,7 @@ static const struct iio_chan_spec gyro_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_Y,
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_ANGL_VEL,
- 		.modified = 1,
-@@ -78,6 +80,7 @@ static const struct iio_chan_spec gyro_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
- 		.scan_index = CHANNEL_SCAN_INDEX_Z,
-+		.ext_info = hid_sensor_ext_info,
- 	},
- 	IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
- };
-diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-index e85a3a8eea908..aefbdb9b0869a 100644
---- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-+++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
-@@ -74,6 +74,7 @@ static const struct iio_chan_spec magn_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SCALE) |
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_MAGN,
- 		.modified = 1,
-@@ -83,6 +84,7 @@ static const struct iio_chan_spec magn_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SCALE) |
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_MAGN,
- 		.modified = 1,
-@@ -92,6 +94,7 @@ static const struct iio_chan_spec magn_3d_channels[] = {
- 		BIT(IIO_CHAN_INFO_SCALE) |
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 		BIT(IIO_CHAN_INFO_HYSTERESIS),
-+		.ext_info = hid_sensor_ext_info,
- 	}, {
- 		.type = IIO_ROT,
- 		.modified = 1,
-diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-sensor-hub.h
-index c27329e2a5ad5..ee7d5b430a785 100644
---- a/include/linux/hid-sensor-hub.h
-+++ b/include/linux/hid-sensor-hub.h
-@@ -236,6 +236,8 @@ struct hid_sensor_common {
- 	struct work_struct work;
- };
- 
-+extern const struct iio_chan_spec_ext_info hid_sensor_ext_info[];
-+
- /* Convert from hid unit expo to regular exponent */
- static inline int hid_sensor_convert_exponent(int unit_expo)
- {
--- 
-2.37.0.rc0.161.g10f37bed90-goog
+cheers,
+Miles
 
+> 
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+> 
+> v3
+> - Add items and remove maxItems of io-channels
+> - Add io-channel-names and describe each item
+> - Add "unevaluatedProperties: false" in "usb-otg-vbus-regulator"
+> - Rename "enable-gpio" to "enable-gpios" in "usb-otg-vbus-regulator"
+> ---
+>  .../power/supply/mediatek,mt6370-charger.yaml      | 87 ++++++++++++++++++++++
+>  1 file changed, 87 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> new file mode 100644
+> index 0000000..f138db6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+> @@ -0,0 +1,87 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Mediatek MT6370 Battery Charger
+> +
+> +maintainers:
+> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+> +
+> +description: |
+> +  This module is part of the MT6370 MFD device.
+> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
+> +
+> +properties:
+> +  compatible:
+> +    const: mediatek,mt6370-charger
+> +
+> +  interrupts:
+> +    description: |
+> +      Specify what irqs are needed to be handled by MT6370 Charger driver. IRQ
+> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL_UVP_D"
+> +      are required.
+> +    items:
+> +      - description: BC1.2 done irq
+> +      - description: usb plug in irq
+> +      - description: mivr irq
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: attach_i
+> +      - const: uvp_d_evt
+> +      - const: mivr
+> +
+> +  io-channels:
+> +    description: |
+> +      Use ADC channel to read VBUS, IBUS, IBAT, etc., info.
+> +    minItems: 1
+> +    items:
+> +      - description: |
+> +          VBUS voltage with lower accuracy (+-75mV) but higher measure
+> +          range (1~22V)
+> +      - description: |
+> +          VBUS voltage with higher accuracy (+-30mV) but lower measure
+> +          range (1~9.76V)
+> +      - description: the main system input voltage
+> +      - description: battery voltage
+> +      - description: battery temperature-sense input voltage
+> +      - description: IBUS current (required)
+> +      - description: battery current
+> +      - description: |
+> +          regulated output voltage to supply for the PWM low-side gate driver
+> +          and the bootstrap capacitor
+> +      - description: IC junction temperature
+> +
+> +  io-channel-names:
+> +    items:
+> +      - const: vbusdiv5
+> +      - const: vbusdiv2
+> +      - const: vsys
+> +      - const: vbat
+> +      - const: ts_bat
+> +      - const: ibus
+> +      - const: ibat
+> +      - const: chg_vddp
+> +      - const: temp_jc
+> +
+> +  usb-otg-vbus-regulator:
+> +    type: object
+> +    description: OTG boost regulator.
+> +    unevaluatedProperties: false
+> +    $ref: /schemas/regulator/regulator.yaml#
+> +
+> +    properties:
+> +      enable-gpios:
+> +        maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +  - interrupt-names
+> +  - io-channels
+> +
+> +additionalProperties: false
+> +
+> +...
+> -- 
+> 2.7.4
+> 
+> 

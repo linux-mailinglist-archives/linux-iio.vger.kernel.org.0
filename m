@@ -2,56 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A96EB55AAB7
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 16:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFC855AACB
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jun 2022 16:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232974AbiFYN7X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 09:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32818 "EHLO
+        id S232660AbiFYOFb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 10:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232972AbiFYN7X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 09:59:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D453B140CB;
-        Sat, 25 Jun 2022 06:59:21 -0700 (PDT)
+        with ESMTP id S232429AbiFYOFa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 10:05:30 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AC615809;
+        Sat, 25 Jun 2022 07:05:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CBF46133D;
-        Sat, 25 Jun 2022 13:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C55C3411C;
-        Sat, 25 Jun 2022 13:59:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 46252B80B6A;
+        Sat, 25 Jun 2022 14:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E05C3411C;
+        Sat, 25 Jun 2022 14:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656165560;
-        bh=NIUoySN+9uhjtO7bZji2ZxlL80qaYG7QqoukiQq6aoE=;
+        s=k20201202; t=1656165926;
+        bh=M4LKJfPNpT+x8nTjj1pC9k2cXwJjs5nM0SQKtE/4Ibw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mu5KUgDM61c5Qb2xp5OHBy8OYLZOiRwFHZ4sSjM/J7iXhRAOETESlBtgP/VkiJxMn
-         HSlXn6U/quxhyHvDo64CmaEF+XNZNaxSDe8mz+IpcAyajH0+YK8u5eHHDIXq85hueS
-         up0pEwiqhZOFjwDyqLPk06IyyL8q+u9X1q05IQxVJD/RNeD5OBYjVScGUdpIzvASWg
-         auUPWJWi6Tj4So0hATdSzvwxk8988oCafyggD9ns581ose1CQbXNeoe+KgT4lmmpFB
-         a9m821d+qg8hXkFs0oKTCsRxc7FOTUi39D579dsSeIqyq9tshE08ncqQ2QBvF4OyOA
-         m8DqDvXJKNZ8Q==
-Date:   Sat, 25 Jun 2022 15:08:47 +0100
+        b=u4NWM2RdL9R7YQDwQs7Ps8BawmdfsjWTh6HAL3c+BZSfLBFI/1E37JdfE1EaDaRlI
+         M/lrhRh3VmDSUcZctkkeysmtCrrVym8tNfXTgnz2elvhCRCCYWYi3la7BibATmmPYT
+         zlxnPm8P+41I9GEPKGoYxHlfjISTLzEebsMUqwGx3BjPxjeEfU9a5U5WCYijwL8LAy
+         bFQggbovVLzrjk7QzzTYYxgVx9feKLQ/VQTR1clzy/E5DJwjq5ef2kHaN45u2+O/ti
+         e2o/GXBl6zmRHVKqU8eE52/Ymw5rNO8jdyi+bqr+73pa9/QfP37vsWfYpjUq2cX0Hs
+         dbLF20HuYio7A==
+Date:   Sat, 25 Jun 2022 15:14:53 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Cosmin Tanislav <demonsingur@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v5 2/2] iio: adc: ad4130: add AD4130 driver
-Message-ID: <20220625150847.44c8bc2d@jic23-huawei>
-In-Reply-To: <CAHp75VeRgnCLP0YqiOe8OkW3hQ178ia+Y3PjFtCMW4Sh7JfCZQ@mail.gmail.com>
-References: <20220620162059.1097264-1-cosmin.tanislav@analog.com>
-        <20220620162059.1097264-3-cosmin.tanislav@analog.com>
-        <CAHp75VcBJkQ+CwyoDaTJ_AD+mv9d0tEd_txqHwkPRy4-xvnyKg@mail.gmail.com>
-        <2aa93eab-de6d-866b-a829-36b47ff00982@gmail.com>
-        <CAHp75Vc_fcAP6gGwMkYZUoMM6jKeUoQr8J+zYCUz8inSHnTF_w@mail.gmail.com>
-        <54bfff70-938f-16e1-198d-47ed9ba95db4@gmail.com>
-        <CAHp75VeRgnCLP0YqiOe8OkW3hQ178ia+Y3PjFtCMW4Sh7JfCZQ@mail.gmail.com>
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v3 4/8] iio: magnetometer: yas530: Correct temperature
+ handling
+Message-ID: <20220625151453.036a4b22@jic23-huawei>
+In-Reply-To: <a348dbb6-8d4a-bcdb-e992-9b11e1c9f23f@rocketmail.com>
+References: <cover.1655509425.git.jahau@rocketmail.com>
+        <076e87f66378be8c729723cb9be5bc9151c081ab.1655509425.git.jahau@rocketmail.com>
+        <20220618155331.5da93b88@jic23-huawei>
+        <a348dbb6-8d4a-bcdb-e992-9b11e1c9f23f@rocketmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -66,104 +62,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 Jun 2022 19:33:45 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 21 Jun 2022 02:48:46 +0200
+Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> On Thu, Jun 23, 2022 at 6:14 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
-> > On 6/23/22 18:39, Andy Shevchenko wrote:  
-> > > On Thu, Jun 23, 2022 at 5:27 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
-> > >> On 6/20/22 21:29, Andy Shevchenko wrote:  
-> > >>> On Mon, Jun 20, 2022 at 6:27 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
+> Hi Jonathan,
 > 
+> On 18.06.22 16:53, Jonathan Cameron wrote:
+> >
+> > On Sat, 18 Jun 2022 02:13:12 +0200
+> > Jakob Hauser <jahau@rocketmail.com> wrote:  
 > ...
+> >>  /* These variant IDs are known from code dumps */
+> >>  #define YAS537_DEVICE_ID		0x07 /* YAS537 (MS-3T) */
+> >> @@ -314,7 +315,7 @@ static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)  
+> > 
+> > Hmm. I'm not a great fun of big hydra functions to handle differences
+> > between devices.  This could easily all be one code flow with some
+> > lookups into chip specific constant data (as btw could a lot of
+> > the other switch statements in the existing driver).  
 > 
-> > >>>> +       /*
-> > >>>> +        * DMA (thus cache coherency maintenance) requires the
-> > >>>> +        * transfer buffers to live in their own cache lines.
-> > >>>> +        */  
-> > >>>
-> > >>> This is a good comment, but what fields does it apply to?  
-> > >>
-> > >> Whatever is below it, grouped together. This is not hard to
-> > >> understand.  
-> > >
-> > > It's hard to understand what exactly is DMA-aware here. I see only one
-> > > buffer that is aligned properly for DMA, the rest are not, except the
-> > > case if all of them are going in one DMA transaction. Is this the case
-> > > here?
-> > >  
-> > >>>> +       u8                      reset_buf[AD4130_RESET_BUF_SIZE] __aligned(IIO_DMA_MINALIGN);  
-> > >
-> > > This is aligned.
-> > >  
-> > >>>> +       u8                      reg_write_tx_buf[4];  
-> > >
-> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0).
-> > >  
-> > >>>> +       u8                      reg_read_tx_buf[1];  
-> > >
-> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0 + 4).
-> > >  
-> > >>>> +       u8                      reg_read_rx_buf[3];  
-> > >
-> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0 + 4 + 1).
-> > > And this is Rx.
-> > >  
-> > >>>> +       u8                      fifo_tx_buf[2];  
-> > >
-> > > Here is Tx again which is most likely is not aligned...
-> > >  
-> > >>>> +       u8                      fifo_rx_buf[AD4130_FIFO_SIZE *
-> > >>>> +                                           AD4130_FIFO_MAX_SAMPLE_SIZE];
-> > >>>> +};  
-> > >  
-> >
-> > This has been mentioned before by Jonathan as a reply to V6 of my
-> > AD74413R driver.
-> >  
-> >  > I'm surprised I didn't mention this before but you only need to  
-> > ensure  > that any memory used for DMA is not in a cacheline with memory
-> > used  
-> >  > for other things that might change concurrently.  
-> >
-> > To my understanding, as long as the DMA buffers will all be accessed by
-> > the same DMA-compatible SPI controller, you only need to align them so
-> > they're not in the same cacheline with memory that will not be accessed
-> > by the SPI controller.  
+> I'll try to implement the chip_info approach. This should become a
+> separate patch.
 > 
-> SPI is synchronous by nature, what will happen if the Tx and Rx
-> buffers are sharing the same cache line? Anybody to shed a light here?
+> Concerning the patchset, I would prefer to introduce the chip_info
+> approach rather late. That would mean to leave this patch unchanged and
+> introduce your suggestions later within the patchset. I think it's
+> easier to follow the changes along the patchset.
 > 
-> (I.o.w. I'm not sure that we don't need to split the Rx and Tx buffers
-> of the same transfer.)
+> However, you probably would prefer to place the chip_info patch rather
+> early in the patchset?
+
+Whilst I'd prefer it earlier, if it's a real pain, just put a note on
+that in the cover letter and I'll cope :)
+
 > 
-Oddly I thought I replied to this before lunch, but not seeing my own message.
-My understanding is that any device that trashes it's own buffers during
-DMA is broken and needs to implement bounce buffers within the SPI master
-driver.  That shouldn't happen anyway because the race conditions around
-this are about caching and stale data write back. During a transfer, only
-the device should touch the cacheline with the DMA buffers in it, so any
-write back that might return stale data should be pushing back the correct
-data (unchanged) or data the device wants to update..
+> >>  static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> >>  {
+> >>  	struct yas5xx_calibration *c = &yas5xx->calibration;
+> >> -	u16 t, x, y1, y2;
+> >> +	u16 t_ref, t, x, y1, y2;
+> >>  	/* These are "signed x, signed y1 etc */
+> >>  	s32 sx, sy1, sy2, sy, sz;
+> >>  	int ret;
+> >> @@ -329,16 +330,46 @@ static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo,
+> >>  	sy1 = yas5xx_linearize(yas5xx, y1, 1);
+> >>  	sy2 = yas5xx_linearize(yas5xx, y2, 2);
+> >>  
+> >> -	/*
+> >> -	 * Temperature compensation for x, y1, y2 respectively:
+> >> -	 *
+> >> -	 *          Cx * t
+> >> -	 * x' = x - ------
+> >> -	 *           100
+> >> -	 */
+> >> -	sx = sx - (c->Cx * t) / 100;
+> >> -	sy1 = sy1 - (c->Cy1 * t) / 100;
+> >> -	sy2 = sy2 - (c->Cy2 * t) / 100;
+> >> +	/* Set the temperature reference value (unit: counts) */
+> >> +	switch (yas5xx->devid) {
+> >> +	case YAS530_DEVICE_ID:
+> >> +		t_ref = YAS530_20DEGREES;  
+> > 
+> > One thought to simplify the divergent flow below.
+> > 
+> > 		t_ref2 = 0;  
+> >> +		break;
+> >> +	case YAS532_DEVICE_ID:
+> >> +		t_ref = YAS532_20DEGREES;  
+> > 		if (yas5xx->version == YAS532_VERSION_AC)
+> > 			t_ref2 = YAS432_20DEGREES;
+> > 		else
+> > 			t_ref2 = 0;  
+> 
+> The t_ref2 approach looks confusing to me. Because for the most version
+> it's "t_ref2 = 0", only one version out of four needs this.
+> 
+> Another approach: I would rather introduce t_comp (for compensation). In
+> the chip_info, for the most version it would be...
+> 
+>         .t_comp = t,
+> 
+> ... and for the one variant it would be:
+> 
+>         .t_comp = t - t_ref,
 
-My suggestion is an expanded comment (I'm fine adding this whilst applying
-and fixing the docs version numbering highlighted above). The key here
-is that we don't have one bit of the code changing the buffers whilst
-DMA is in progress via a different path.  They all need to be covered
-by the same lock.
+That looks sensible to me.
+> 
+> A problem: I would include the YAS variants like YAS530, YAS532 etc. in
+> the chip_info. The versions like "AB" and "AC", on the other hand, I
+> wouldn't include into the chip_info, instead I would handle these in the
+> functions. In that case the, "t_comp" thing would need to be done in the
+> function using an if statement, similar to what you suggested up here.
 
-	 * DMA (thus cache coherency maintenance) requires any
-	 * transfer buffers to live in their own cache lines.
-	 * As the use of these buffers is synchronous, all of the
-	 * buffers used for DMA in this driver may share a cache
-	 * line.
+I'd assume there won't be too many different versions that need separate
+support and have a chipinfo for each of those versions.  So you
+select the chipinfo based on both the device part number and version.
 
-Note I'm waiting on a DT review though before taking this. Complex
-binding but I see it's in their patchwork as needs review so hopefully
-they'll get to it soon. 
+>
+Thanks,
 
-https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20220620162059.1097264-2-cosmin.tanislav@analog.com/
-
-
-Jonathan
-
+J

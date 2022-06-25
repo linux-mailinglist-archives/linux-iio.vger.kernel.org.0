@@ -2,129 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDB0A608F63
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Oct 2022 21:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35833609253
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 12:56:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229916AbiJVTsw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Oct 2022 15:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
+        id S230058AbiJWK4i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 06:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbiJVTsq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Oct 2022 15:48:46 -0400
-Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F5412D80A;
-        Sat, 22 Oct 2022 12:48:44 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 6AD1458012A;
-        Sat, 22 Oct 2022 15:48:41 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Sat, 22 Oct 2022 15:48:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm2; t=1666468121; x=1666475321; bh=UGS1Mg1RbR
-        rjg7l/C4uODk6tRvKSFxQmBze4CDiRUok=; b=R769R20cvAUvCJzdLxBnDkwPBp
-        EbTpyCnh90ePwkW/W271GgnujcaxKPNlKUZTD1QiMzbOX6UUmX5GBGQy5YnoG3Hz
-        7bIbm4GGSebbV6RK2kBgjxCEhVjRMxNaLgKsw+7i5e4f4W2C2HsQFTmKv8S+gZdE
-        jcEJHfdX99rjFuuQuzOPTEkJYLvC3gJ1f7jx+9U6cwktdP6NSfqNvxTgarEWxD1c
-        GFRrikCndHmtZnFVFspin0GH0nBuno9DFl/vX1YEuWJJ1DmabcJBI+QgW+pFl13L
-        PUlTUh21czWS+IFSiTNJyGJ4p7ipLzCb7UJepNPQ1EVgfsLevgq5To41FFEw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm3; t=1666468121; x=1666475321; bh=UGS1Mg1RbRrjg7l/C4uODk6tRvKS
-        FxQmBze4CDiRUok=; b=DZdlxJQ1/OPf/Y6KDYWPfdC+mu56NzIOlbXghWxjCj9D
-        9CPMuzFO6wSIpYXaVVKO5ogBmtK5zrRUpai6gPg5qF7aq51p1Tf8zgVV+aEGQIpg
-        Le7lvLJR+05feR3Q+7owk4RsmE3rzpsqGg/UOGa7xGgp5BzvreC3G8OxhZ0WzoTZ
-        kHVkLu1P+KTSJm4dYCrODRLVTVeSHwuFqAuyI9eyO0UD5B3tL3/NipBn2AFumQvr
-        +xjvFjLrJEOmbNOFedB+o0knlGPPR7li0EwNxPvDXhDL0DJhj4plmQqEZJg8uEWZ
-        ljUtVQj8llXCVqwnpTmY8Mpk0y+FjFMyLlNEuZEfiA==
-X-ME-Sender: <xms:GElUY9vt3ItviEp5AJXQjYcX0YyV47YTITTgtkGjjNw0aSie0vzYkg>
-    <xme:GElUY2cknoJTeDpYvjbC4RFS-FtPGbyfFDbbyjNFIChdDqrc0xYFVavFYI99vu8kl
-    0KtHqNspAg1e6vBhwY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrgedttddgudegtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:GElUYwxiXoqPMILm1SZ_32__qu1Q5l_zrlV4KYN9jBrAlex9SwSKIg>
-    <xmx:GElUY0PzOcbbrTlSQkCZ5j1lrS1Cnv1p6FZXhLQlA1lHQyiDXRQGng>
-    <xmx:GElUY9-JQg9pRkXJG00aarf_3pC2T4jG_plPdMl-YxzKsRcEtsxZ9g>
-    <xmx:GUlUYyKFp-5FR5wwM3xl6nutJeKlKU0pfMGHX_pxDvaIG8i-amMB_w>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 90C24B60086; Sat, 22 Oct 2022 15:48:40 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-1047-g9e4af4ada4-fm-20221005.001-g9e4af4ad
-Mime-Version: 1.0
-Message-Id: <7c4531b8-a296-4ea3-9564-b094704d10b2@app.fastmail.com>
-In-Reply-To: <e7ace68a-98e5-63c8-7dd7-a35d0eba1c6e@linaro.org>
-References: <20221021202254.4142411-1-arnd@kernel.org>
- <e7ace68a-98e5-63c8-7dd7-a35d0eba1c6e@linaro.org>
-Date:   Sat, 22 Oct 2022 21:48:19 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Arnd Bergmann" <arnd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, "Ben Dooks" <ben-linux@fluff.org>,
-        "Simtec Linux Team" <linux@simtec.co.uk>,
-        linux-doc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        devicetree@vger.kernel.org, patches@opensource.cirrus.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        "linux-mmc @ vger . kernel . org" <linux-mmc@vger.kernel.org>,
-        linux-mtd@lists.infradead.org,
+        with ESMTP id S229973AbiJWK4h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 06:56:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B635A8DB;
+        Sun, 23 Oct 2022 03:56:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A888B60B61;
+        Sun, 23 Oct 2022 10:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14D3C433C1;
+        Sun, 23 Oct 2022 10:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666522596;
+        bh=lyTdIKeZjwi6PoGVvjTDLmW7YJbAZtMOfj7JmOF6Gmw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NYPN8VkGrvo19tKNOorOnl8MKQZvblC5h8iXLPadyri41aTPyDui7E+JY5laKk+DL
+         HLXoCzTDhLStJFiOsTWS7Ncr1r0Q1BZF8UMrxr8FSNQw10fyEnSJvTK9KVZipqgMvu
+         Pm06NM/KwM3bDnwN6EgJ5sg+pW6tCqZcRnCOZ3HBg5qOnzkoejcMbW072nABaLReYu
+         mx60T4xZD0Lx1O0iMQEHmgnQ0Pbc4lwiMYYdl2OZ0wlBlNfEKSUk3/FlhgO4qHfiUT
+         gdTCJn9FaCuXP6NgrgH/Q35es00kmSD38ewz/SOd9ZOWo/MCEdOnPw5IlbI+dJeBFy
+         MqZCizIzCf3Tg==
+Date:   Sat, 25 Jun 2022 14:32:53 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Cosmin Tanislav <demonsingur@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-watchdog@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 00/21] ARM: s3c: clean out obsolete platforms
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH v5 2/2] iio: adc: ad4130: add AD4130 driver
+Message-ID: <20220625143253.0c022fcd@jic23-huawei>
+In-Reply-To: <CAHp75VeRgnCLP0YqiOe8OkW3hQ178ia+Y3PjFtCMW4Sh7JfCZQ@mail.gmail.com>
+References: <20220620162059.1097264-1-cosmin.tanislav@analog.com>
+        <20220620162059.1097264-3-cosmin.tanislav@analog.com>
+        <CAHp75VcBJkQ+CwyoDaTJ_AD+mv9d0tEd_txqHwkPRy4-xvnyKg@mail.gmail.com>
+        <2aa93eab-de6d-866b-a829-36b47ff00982@gmail.com>
+        <CAHp75Vc_fcAP6gGwMkYZUoMM6jKeUoQr8J+zYCUz8inSHnTF_w@mail.gmail.com>
+        <54bfff70-938f-16e1-198d-47ed9ba95db4@gmail.com>
+        <CAHp75VeRgnCLP0YqiOe8OkW3hQ178ia+Y3PjFtCMW4Sh7JfCZQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 22, 2022, at 17:18, Krzysztof Kozlowski wrote:
-> On 21/10/2022 16:22, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> The s3c24xx platform was marked as deprecated a while ago,
->> and for the s3c64xx platform, we marked all except one legacy
->> board file as unused.
->> 
->> This series removes all of those, leaving only s3c64xx support
->> for DT based boots as well as the cragg6410 board file.
->> 
->> About half of the s3c specific drivers were only used on
->> the now removed machines, so these drivers can be retired
->> as well. I can either merge the driver removal patches through
->> the soc tree along with the board file patches, or subsystem
->> maintainers can pick them up into their own trees, whichever
->> they prefer.
->
-> Just to be sure - do you expect me to ack the series, or rather as usual
-> pick them up?
+On Thu, 23 Jun 2022 19:33:45 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-I think in this case it is easier if I pick them up with your
-Ack along with the other platforms I posted, as there are
-some minor conflicts between Makefile/Kconfig changes where
-I remove adjacent lines.
+> On Thu, Jun 23, 2022 at 6:14 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> > On 6/23/22 18:39, Andy Shevchenko wrote:  
+> > > On Thu, Jun 23, 2022 at 5:27 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
+> > >> On 6/20/22 21:29, Andy Shevchenko wrote:  
+> > >>> On Mon, Jun 20, 2022 at 6:27 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:  
+> 
+> ...
+> 
+> > >>>> +       /*
+> > >>>> +        * DMA (thus cache coherency maintenance) requires the
+> > >>>> +        * transfer buffers to live in their own cache lines.
+> > >>>> +        */  
+> > >>>
+> > >>> This is a good comment, but what fields does it apply to?  
+> > >>
+> > >> Whatever is below it, grouped together. This is not hard to
+> > >> understand.  
+> > >
+> > > It's hard to understand what exactly is DMA-aware here. I see only one
+> > > buffer that is aligned properly for DMA, the rest are not, except the
+> > > case if all of them are going in one DMA transaction. Is this the case
+> > > here?
+> > >  
+> > >>>> +       u8                      reset_buf[AD4130_RESET_BUF_SIZE] __aligned(IIO_DMA_MINALIGN);  
+> > >
+> > > This is aligned.
+> > >  
+> > >>>> +       u8                      reg_write_tx_buf[4];  
+> > >
+> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0).
+> > >  
+> > >>>> +       u8                      reg_read_tx_buf[1];  
+> > >
+> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0 + 4).
+> > >  
+> > >>>> +       u8                      reg_read_rx_buf[3];  
+> > >
+> > > This one is aligned + offset (== AD4130_RESET_BUF_SIZE + 0 + 4 + 1).
+> > > And this is Rx.
+> > >  
+> > >>>> +       u8                      fifo_tx_buf[2];  
+> > >
+> > > Here is Tx again which is most likely is not aligned...
+> > >  
+> > >>>> +       u8                      fifo_rx_buf[AD4130_FIFO_SIZE *
+> > >>>> +                                           AD4130_FIFO_MAX_SAMPLE_SIZE];
+> > >>>> +};  
+> > >  
+> >
+> > This has been mentioned before by Jonathan as a reply to V6 of my
+> > AD74413R driver.
+> >  
+> >  > I'm surprised I didn't mention this before but you only need to  
+> > ensure  > that any memory used for DMA is not in a cacheline with memory
+> > used  
+> >  > for other things that might change concurrently.  
+> >
+> > To my understanding, as long as the DMA buffers will all be accessed by
+> > the same DMA-compatible SPI controller, you only need to align them so
+> > they're not in the same cacheline with memory that will not be accessed
+> > by the SPI controller.  
+> 
+> SPI is synchronous by nature, what will happen if the Tx and Rx
+> buffers are sharing the same cache line? Anybody to shed a light here?
+> 
+> (I.o.w. I'm not sure that we don't need to split the Rx and Tx buffers
+> of the same transfer.)
 
-       Arnd
+My understanding is that any device that stamps on itself is considered broken
+and needs to do it's own bounce buffering.  We just need to ensure no
+CPU writes hit stuff in the same cacheline whilst DMA is in progress.
+
+A clarification to the comment to say that it covers all the buffers at the
+end of the structure would be a good addition.
+
+Jonathan
+

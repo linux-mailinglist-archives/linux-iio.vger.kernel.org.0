@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FA5D55B1E1
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B453B55B1D1
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234299AbiFZMU1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 08:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
+        id S234394AbiFZMU2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 08:20:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234450AbiFZMUZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33229E02C
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:23 -0700 (PDT)
+        with ESMTP id S234239AbiFZMU0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836E4DFE6
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8847E61219
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0604C34114;
-        Sun, 26 Jun 2022 12:20:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FADA6120E
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A1FC341CA;
+        Sun, 26 Jun 2022 12:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656246022;
-        bh=t7UDbWnHPquhiOglFYsd592JTk5Mv50Vw8rUaSDwT+I=;
+        s=k20201202; t=1656246024;
+        bh=xexD3gYgalhsmjgwmBurwkX81qIXtLR/lM77RJ0eIpg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LfNUj6HcugqpSp3sUQhVJ7zDrvxVRyb585P8UFqcMX4um8Rk/m6VMyUcOhOK3bsTS
-         cVEdiR0y96558NBb6oKPuA/Lw0/Oppyenx6i9ZuIkLKP8KpfMBSDevMtL3iZE+tcV8
-         kuyrPnCcFWpieUkQ5d7KSp5uneTPLBaHOLBpQFzJDakLYrKAoo6JQF0wdOnzf0aUTA
-         W51mKRs5bczaxB2cu9GYZRqbvX0on3p3LLEVDeK2i2D12gkvDuF2f2fxZVgTmerSko
-         LDU7X+B5z9C4C7q7S36AG1w+Q9HyK5olxyxmpVEHue3ulslv6tYdN9Lo3beqDLOhkG
-         EKpQDZGj26Jmg==
+        b=fY825JcPxSerbPxTWod6H+5H7zDHBdUSuQmhCPFdR9MwNvlqKIfkhDm6N/PnaqHYz
+         sumZ4MyPW2zlOXdYBTFYh0LczeEb3dgMkhatM2M1GJK1uDP/h41sBj0fT+z56lJERc
+         s9HDNdLWgXiYXQ10B1BepzUq83DWuP+0zAkFxIOkvohJHJCUZM1D/gBNIefx8yE8sZ
+         A9ujMDgcO5yyTULjBDbVnftKPrDe5S2XrPQka6h1TvHtDwITEte/ELNV0cwRm3Ognm
+         H2vGx53gNwP/bvueZn+TXFSavis1gZN3YTKcEhwqs5OcQE38P5tA71w4ed9ZVGqPoE
+         ghqOTQrKxwFJg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -39,9 +39,9 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Vincent Whitchurch <vincent.whitchurch@axis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 01/17] iio: core: Increase precision of IIO_VAL_FRACTIONAL_LOG2 when possible
-Date:   Sun, 26 Jun 2022 13:29:22 +0100
-Message-Id: <20220626122938.582107-2-jic23@kernel.org>
+Subject: [PATCH v3 02/17] iio: ABI: Fix wrong format of differential capacitance channel ABI.
+Date:   Sun, 26 Jun 2022 13:29:23 +0100
+Message-Id: <20220626122938.582107-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220626122938.582107-1-jic23@kernel.org>
 References: <20220626122938.582107-1-jic23@kernel.org>
@@ -59,66 +59,27 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-With some high resolution sensors such as the ad7746 the build up of error
-when multiplying the _raw and _scale values together can be significant.
-Reduce this affect by providing additional resolution in both calculation
-and formatting of result. If overflow would occur with a 1e12 multiplier,
-fall back to the 1e9 used before this patch and 9 decimal places.
+in_ only occurs once in these attributes.
 
+Fixes: 0baf29d658c7 ("staging:iio:documentation Add abi docs for capacitance adcs.")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/industrialio-core.c | 31 +++++++++++++++++++++++--------
- 1 file changed, 23 insertions(+), 8 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-iio | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index dc3e1cb9bfbd..8225d0c43010 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -18,6 +18,7 @@
- #include <linux/poll.h>
- #include <linux/property.h>
- #include <linux/sched.h>
-+#include <linux/units.h>
- #include <linux/wait.h>
- #include <linux/cdev.h>
- #include <linux/slab.h>
-@@ -674,14 +675,28 @@ static ssize_t __iio_format_value(char *buf, size_t offset, unsigned int type,
- 		else
- 			return sysfs_emit_at(buf, offset, "%d.%09u", tmp0,
- 					     abs(tmp1));
--	case IIO_VAL_FRACTIONAL_LOG2:
--		tmp2 = shift_right((s64)vals[0] * 1000000000LL, vals[1]);
--		tmp0 = (int)div_s64_rem(tmp2, 1000000000LL, &tmp1);
--		if (tmp0 == 0 && tmp2 < 0)
--			return sysfs_emit_at(buf, offset, "-0.%09u", abs(tmp1));
--		else
--			return sysfs_emit_at(buf, offset, "%d.%09u", tmp0,
--					     abs(tmp1));
-+	case IIO_VAL_FRACTIONAL_LOG2: {
-+		u64 t1, t2, mult;
-+		int integer, precision;
-+		bool neg = vals[0] < 0;
-+
-+		if (vals[0] > ULLONG_MAX / PICO) {
-+			mult = NANO;
-+			precision = 9;
-+		} else {
-+			mult = PICO;
-+			precision = 12;
-+		}
-+		t1 = shift_right((u64)abs(vals[0]) * mult, vals[1]);
-+		integer = (int)div64_u64_rem(t1, mult, &t2);
-+		if (integer == 0 && neg)
-+			return sysfs_emit_at(buf, offset, "-0.%0*llu",
-+					     precision, abs(t2));
-+		if (neg)
-+			integer *= -1;
-+		return sysfs_emit_at(buf, offset, "%d.%0*llu", integer,
-+				     precision, abs(t2));
-+	}
- 	case IIO_VAL_INT_MULTIPLE:
- 	{
- 		int i;
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 3e00d7f7ee22..d3a0c0ef8948 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -193,7 +193,7 @@ Description:
+ 		Raw capacitance measurement from channel Y. Units after
+ 		application of scale and offset are nanofarads.
+ 
+-What:		/sys/.../iio:deviceX/in_capacitanceY-in_capacitanceZ_raw
++What:		/sys/.../iio:deviceX/in_capacitanceY-capacitanceZ_raw
+ KernelVersion:	3.2
+ Contact:	linux-iio@vger.kernel.org
+ Description:
 -- 
 2.36.1
 

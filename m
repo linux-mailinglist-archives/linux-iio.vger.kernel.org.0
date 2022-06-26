@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA7EB55B2F6
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 18:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF63A55B2F0
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 18:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231689AbiFZQpz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 12:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51674 "EHLO
+        id S231605AbiFZQp5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 12:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231652AbiFZQpx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 12:45:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B716BE01E
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 09:45:52 -0700 (PDT)
+        with ESMTP id S231753AbiFZQp4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 12:45:56 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC44DD11A
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 09:45:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 537BA60C4E
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 16:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3B4C385A2;
-        Sun, 26 Jun 2022 16:45:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9BF24B80D38
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 16:45:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED48C385A9;
+        Sun, 26 Jun 2022 16:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656261951;
-        bh=R8u/rHNKgyxdVEdWnyXjIbILPZqGYc/sVTmiNosoNsk=;
+        s=k20201202; t=1656261953;
+        bh=ZY19fXt0aAtMpIahGd5nNw9Oz6qYoxqQ/fP98SnyAzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hcrgYBYLxZXtOXlD/DyfHNjsM5Dq3Yvtf0SLHBkA8HrP41HMrbbwB3jPg4jiT/fa4
-         2cvsb1QYl6q/dWKHLqs0A+Rih/IT42AYLhd7aUZkl7ohxEYgrp0wKe6D0q6vquVcK+
-         O8DxvJ2/fPGcDFUqy74Qo63vObkFMrCPPNuSEau/BHBH4pU9/jpEBITdWxjtjVppuj
-         r/qTZIrWNardJBQLZ91YSHQTCZoeAum6kSEGHjnHgoDLOh18TLwtIiENhgH3g7Ggqx
-         IJmSFjegdxDPqFJDIxee5aznEj/OStS/c1msukpfIyMksMy7iw9prDlz+iAnp5ZcXD
-         BtIAVUyRrfY4g==
+        b=tgnJFnr4ovWdk4xLxgAzZMvKN6AcFfESye7BRnEjeMarYjg+TnYAx2kLUsBAnUTLO
+         aWfSs0chyBsyhVh2Nt0Zu6YmK7IOdXDYNMGOqGKKegeULbujSC5h8a1XKin//7wAR7
+         3DByJSDOzb1TEDhjekWBZ3p4IRRxcAb4/FCjTdjZpKzeCRGk/WKyRst98vnVvMKLkr
+         7OeqHK5BhTbCs+N1F2vPNx+AN0t+7HYUn0t2XtOo9Zx1SsD8BXbb1ACOsU3MMpEMK3
+         TBzWNnu0cKCp8GvVIRRLcZyXm3BVaHSk88KEOpufL25ikDI47TPpnBH1MrToCEAMGY
+         NRCmbtN9AoJ+A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Subject: [PATCH 3/4] iio: ABI: stm32-timer-trigger: Fuse unusual ABI into main doc.
-Date:   Sun, 26 Jun 2022 17:55:10 +0100
-Message-Id: <20220626165511.602202-4-jic23@kernel.org>
+        Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH 4/4] iio: ABI: sx9324: Squash some formatting to keep scripting happy.
+Date:   Sun, 26 Jun 2022 17:55:11 +0100
+Message-Id: <20220626165511.602202-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220626165511.602202-1-jic23@kernel.org>
 References: <20220626165511.602202-1-jic23@kernel.org>
@@ -56,55 +56,33 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-We can't duplicate the description of sampling_frequency. This device
-has some unusual requirements which we solved by giving a
-sampling_frequency of 0 special meaning. As such add a note
-about this unusual usage to the main documentation.
+The indenting added in here to give bullet points is nice to read
+but unfortunately our docs building scripts trip up on it.
 
-Whilst I don't particularly like this resolution, it is the best
-I could come up with given earlier discussion on this topic.
+make htmldocs gives
+../iio/Documentation/ABI/testing/sysfs-bus-iio-sx9324:2: ERROR: Unexpected indentation.
 
-Link: https://lore.kernel.org/linux-iio/20210315101217.00002c50@Huawei.com/
+So drop the pretty indenting to avoid that error message.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Gwendal Grignou <gwendal@chromium.org>
 ---
- Documentation/ABI/testing/sysfs-bus-iio             | 3 +++
- Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 | 8 --------
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ Documentation/ABI/testing/sysfs-bus-iio-sx9324 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 3e00d7f7ee22..e81ba6f5e1c8 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -107,6 +107,9 @@ Description:
- 		relevant directories.  If it affects all of the above
- 		then it is to be found in the base device directory.
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-sx9324 b/Documentation/ABI/testing/sysfs-bus-iio-sx9324
+index 632e3321f5a3..9c1e8884a738 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-sx9324
++++ b/Documentation/ABI/testing/sysfs-bus-iio-sx9324
+@@ -8,7 +8,7 @@ Description:
+ 		+ not connected (HZ),
+ 		+ grounded (GD),
+ 		+ connected to an antenna where it can act as a base
+-		  (DS - data shield), or measured input (MI).
++		(DS - data shield), or measured input (MI).
  
-+		The stm32-timer-trigger has the additional characteristic that
-+		a sampling_frequency of 0 is defined to stop sampling.
-+
- What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
- What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-index c4a4497c249a..05074c4a65e2 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
-@@ -90,14 +90,6 @@ Description:
- 		Reading returns the current master modes.
- 		Writing set the master mode
- 
--What:		/sys/bus/iio/devices/triggerX/sampling_frequency
--KernelVersion:	4.11
--Contact:	benjamin.gaignard@st.com
--Description:
--		Reading returns the current sampling frequency.
--		Writing an value different of 0 set and start sampling.
--		Writing 0 stop sampling.
--
- What:		/sys/bus/iio/devices/iio:deviceX/in_count0_preset
- KernelVersion:	4.12
- Contact:	benjamin.gaignard@st.com
+ 		The sensor rotates measurement across 4 phases
+ 		(PH0, PH1, PH2, PH3), where the inputs are configured
 -- 
 2.36.1
 

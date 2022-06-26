@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A994455B1DD
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B39FF55B1D7
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234461AbiFZMU4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 08:20:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54012 "EHLO
+        id S234463AbiFZMVC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 08:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234377AbiFZMUz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3E1E029
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:54 -0700 (PDT)
+        with ESMTP id S234377AbiFZMU7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:59 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33F9E029
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 170036121E
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEDAC341CA;
-        Sun, 26 Jun 2022 12:20:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 89895B80D64
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F835C34114;
+        Sun, 26 Jun 2022 12:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656246053;
-        bh=1Baf9RpeNPMoNZgtHhi2g5k2FpODNsyPpl+eyLke4d0=;
+        s=k20201202; t=1656246056;
+        bh=Xi2rgt2mN60SDnhcrY3JD5flJN8ktDPB0PYPrAsvGrE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aPZnL/L/ri71EbEj/I4YXbZUYgzOC1mq2afqw0KOXPcsnr9Dh4VA+onzi4gKasswQ
-         Jx4uhqT2CU/v8oIEvkh5NgxkBhFapshUu+EWq+WDFHcFwAkSjvwcWLT5MpAXwcejEc
-         V50IQamKkrVfbY+zoAhqEMNyYReJr9ocCCpjeWQKETvw0S94eShZxPyhlLlqfGOBWc
-         BemDEGV9E5WVAklYERQahHgHv+AgBbD/rBR6fLsiEoB8bGArUoYYMcAxKwFmIMGCjW
-         eHzUzVk5IBHcw2ETQMLM/ywv6taGn0kPSZ4A1KfGixmNhKnrviLTSvpGFn29MBMSDu
-         JY/HtlDrxdkIw==
+        b=ViXtkMVeTsJc7OEll/CJ6N7H89XVPFcu0RCTZqYjZE226qTsC902n8DRZlLdgCi7C
+         jkqI7vir6piG6a7A1RM27SLP1BdyL59GKJGgkMfAgl8bPmVsHW4JtxVvoFqXXLRGG3
+         YX43MNAKYAQJ2bmw3SlAwksvYcC6PyMtv7Z8lzbXDU/paSyV3cbCeLFnlFGxriUleI
+         gWvW4FCUdsUQ/rrB3D3/IUa7/p1Gb5C5zVuHz9LqJ4z6btk8N5h7yRZOQYIVgh5+bX
+         mJRqLX3kyxwP33cY4K3t4AUlO9OH+isyYTkStQ48CgL8EDNdBjlUYxiQOaSZ1S/Wyj
+         DW4XU6jt3QgCg==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -39,9 +39,9 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Vincent Whitchurch <vincent.whitchurch@axis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 13/17] staging: iio: cdc: ad7746: Use read_avail() rather than opencoding.
-Date:   Sun, 26 Jun 2022 13:29:34 +0100
-Message-Id: <20220626122938.582107-14-jic23@kernel.org>
+Subject: [PATCH v3 14/17] staging: iio: ad7746: White space cleanup
+Date:   Sun, 26 Jun 2022 13:29:35 +0100
+Message-Id: <20220626122938.582107-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220626122938.582107-1-jic23@kernel.org>
 References: <20220626122938.582107-1-jic23@kernel.org>
@@ -59,127 +59,79 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Switch over to the IIO core handling for _available attributes
-making them available for in kernel users and enforcing correct
-naming etc automatically.
+Tidy up some trivial whitespace issues.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/staging/iio/cdc/ad7746.c | 39 +++++++++++++++++++++++++++-----
- 1 file changed, 33 insertions(+), 6 deletions(-)
+ drivers/staging/iio/cdc/ad7746.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
-index d8fbb8a85bbf..034054b09b6f 100644
+index 034054b09b6f..9ef14405a260 100644
 --- a/drivers/staging/iio/cdc/ad7746.c
 +++ b/drivers/staging/iio/cdc/ad7746.c
-@@ -163,6 +163,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		.channel = 0,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = VIN,
- 	},
- 	[VIN_VDD] = {
-@@ -172,6 +173,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		.extend_name = "supply",
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = VIN_VDD,
- 	},
- 	[TEMP_INT] = {
-@@ -198,6 +200,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		BIT(IIO_CHAN_INFO_CALIBSCALE) | BIT(IIO_CHAN_INFO_OFFSET),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_CALIBBIAS) |
- 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = CIN1,
- 	},
- 	[CIN1_DIFF] = {
-@@ -210,6 +213,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		BIT(IIO_CHAN_INFO_CALIBSCALE) | BIT(IIO_CHAN_INFO_ZEROPOINT),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_CALIBBIAS) |
- 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = CIN1_DIFF,
- 	},
- 	[CIN2] = {
-@@ -220,6 +224,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		BIT(IIO_CHAN_INFO_CALIBSCALE) | BIT(IIO_CHAN_INFO_OFFSET),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_CALIBBIAS) |
- 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = CIN2,
- 	},
- 	[CIN2_DIFF] = {
-@@ -232,6 +237,7 @@ static const struct iio_chan_spec ad7746_channels[] = {
- 		BIT(IIO_CHAN_INFO_CALIBSCALE) | BIT(IIO_CHAN_INFO_ZEROPOINT),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_CALIBBIAS) |
- 		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 		.address = CIN2_DIFF,
- 	}
- };
-@@ -440,18 +446,12 @@ static int ad7746_store_vt_filter_rate_setup(struct ad7746_chip_info *chip,
- 	return 0;
- }
+@@ -21,9 +21,7 @@
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
  
--static IIO_CONST_ATTR(in_voltage_sampling_frequency_available, "50 31 16 8");
--static IIO_CONST_ATTR(in_capacitance_sampling_frequency_available,
--		       "91 84 50 26 16 13 11 9");
+-/*
+- * AD7746 Register Definition
+- */
++/* AD7746 Register Definition */
+ 
+ #define AD7746_REG_STATUS		0
+ #define AD7746_REG_CAP_DATA_HIGH	1
+@@ -244,12 +242,12 @@ static const struct iio_chan_spec ad7746_channels[] = {
+ 
+ /* Values are Update Rate (Hz), Conversion Time (ms) + 1*/
+ static const unsigned char ad7746_vt_filter_rate_table[][2] = {
+-	{50, 20 + 1}, {31, 32 + 1}, {16, 62 + 1}, {8, 122 + 1},
++	{ 50, 20 + 1 }, { 31, 32 + 1 }, { 16, 62 + 1 }, { 8, 122 + 1 },
+ };
+ 
+ static const unsigned char ad7746_cap_filter_rate_table[][2] = {
+-	{91, 11 + 1}, {84, 12 + 1}, {50, 20 + 1}, {26, 38 + 1},
+-	{16, 62 + 1}, {13, 77 + 1}, {11, 92 + 1}, {9, 110 + 1},
++	{ 91, 11 + 1 }, { 84, 12 + 1 }, { 50, 20 + 1 }, { 26, 38 + 1 },
++	{ 16, 62 + 1 }, { 13, 77 + 1 }, { 11, 92 + 1 }, { 9, 110 + 1 },
+ };
+ 
+ static int ad7746_set_capdac(struct ad7746_chip_info *chip, int channel)
+@@ -732,6 +730,7 @@ static int ad7746_probe(struct i2c_client *client,
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
++
+ 	chip = iio_priv(indio_dev);
+ 	mutex_init(&chip->lock);
+ 
+@@ -782,8 +781,8 @@ static int ad7746_probe(struct i2c_client *client,
+ 		}
+ 	}
+ 
+-	ret = i2c_smbus_write_byte_data(chip->client,
+-					AD7746_REG_EXC_SETUP, regval);
++	ret = i2c_smbus_write_byte_data(chip->client, AD7746_REG_EXC_SETUP,
++					regval);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -796,7 +795,6 @@ static const struct i2c_device_id ad7746_id[] = {
+ 	{ "ad7747", 7747 },
+ 	{}
+ };
 -
- static struct attribute *ad7746_attributes[] = {
- 	&iio_dev_attr_in_capacitance0_calibbias_calibration.dev_attr.attr,
- 	&iio_dev_attr_in_capacitance0_calibscale_calibration.dev_attr.attr,
- 	&iio_dev_attr_in_capacitance1_calibscale_calibration.dev_attr.attr,
- 	&iio_dev_attr_in_capacitance1_calibbias_calibration.dev_attr.attr,
- 	&iio_dev_attr_in_voltage0_calibscale_calibration.dev_attr.attr,
--	&iio_const_attr_in_voltage_sampling_frequency_available.dev_attr.attr,
--	&iio_const_attr_in_capacitance_sampling_frequency_available.dev_attr.attr,
- 	NULL,
+ MODULE_DEVICE_TABLE(i2c, ad7746_id);
+ 
+ static const struct of_device_id ad7746_of_match[] = {
+@@ -805,7 +803,6 @@ static const struct of_device_id ad7746_of_match[] = {
+ 	{ .compatible = "adi,ad7747" },
+ 	{ },
  };
+-
+ MODULE_DEVICE_TABLE(of, ad7746_of_match);
  
-@@ -554,6 +554,32 @@ static int ad7746_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static const int ad7746_v_samp_freq[] = { 50, 31, 16, 8, };
-+static const int ad7746_cap_samp_freq[] = { 91, 84, 50, 26, 16, 13, 11, 9, };
-+
-+static int ad7746_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, const int **vals,
-+			     int *type, int *length, long mask)
-+{
-+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
-+		return -EINVAL;
-+
-+	switch (chan->type) {
-+	case IIO_VOLTAGE:
-+		*vals = ad7746_v_samp_freq;
-+		*length = ARRAY_SIZE(ad7746_v_samp_freq);
-+		break;
-+	case IIO_CAPACITANCE:
-+		*vals = ad7746_cap_samp_freq;
-+		*length = ARRAY_SIZE(ad7746_cap_samp_freq);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	*type = IIO_VAL_INT;
-+	return IIO_AVAIL_LIST;
-+}
-+
- static int ad7746_read_channel(struct iio_dev *indio_dev,
- 			       struct iio_chan_spec const *chan,
- 			       int *val)
-@@ -689,6 +715,7 @@ static int ad7746_read_raw(struct iio_dev *indio_dev,
- static const struct iio_info ad7746_info = {
- 	.attrs = &ad7746_attribute_group,
- 	.read_raw = ad7746_read_raw,
-+	.read_avail = ad7746_read_avail,
- 	.write_raw = ad7746_write_raw,
- };
- 
+ static struct i2c_driver ad7746_driver = {
 -- 
 2.36.1
 

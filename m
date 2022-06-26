@@ -2,404 +2,478 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3553D55B275
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 16:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1B355B27D
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 16:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbiFZO3m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 10:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        id S230013AbiFZOmQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 10:42:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbiFZO3l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 10:29:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5C5DF4A;
-        Sun, 26 Jun 2022 07:29:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBF2861255;
-        Sun, 26 Jun 2022 14:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889A7C34114;
-        Sun, 26 Jun 2022 14:29:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656253779;
-        bh=bH3usP7pZbcRTm6go50AOVwKzM+HofK+c3akIXH9cGQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=afYOZjNnlFt/mOedeOf6EEWpxaBTMgjGKLrDgRVKf0m5GOA4sReNkqhronkCkshiq
-         LqCBsmQaTh8O6AShooWUWJwpNEwBIR8+2HkTqZ+rZuU+nGy7HCVar9SUAJ1BPYcy19
-         M4vA+dfomeT5iTqMhYLefelwIoyA4GTYj/KGAlosHAIIXlAihx0axwQLfHzIfNvd6j
-         4YK50mB9tRgJITx7pAAMknp0ju94PXnqMhcTTYPo04cTyS43nI7ac6kt9gLuhFEHrc
-         TP/X6diUMqXE3DZroTOi9e4G/VxG9rFsM7xzlNAZgEEEpgXqEtCnlWSaBIC+FieNNb
-         RjBxN/+fvVVGg==
-Date:   Sun, 26 Jun 2022 15:39:08 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] iio: pressure: bmp280: Adds more tunable config
- parameters for BMP380
-Message-ID: <20220626153908.5b71d2ac@jic23-huawei>
-In-Reply-To: <20220625151039.48148-1-ang.iglesiasg@gmail.com>
-References: <20220625151039.48148-1-ang.iglesiasg@gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S230073AbiFZOmQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 10:42:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 99D34BC10
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 07:42:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1656254533;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3LpdeaC3QaRN10uYQxLnUJ/W/jYEd2M+AtzZFaFucek=;
+        b=CO1jXSIxeZFecr8oHkgtopQ3QcU6Crdo3/W0O45UfOK2uqwbsT9pbmjHf9gUcAJnterX6D
+        tz59Emad9e7chrYExYmhZun/GDPQ/KufEKaguLp1WRcOyV7xABX3YUTDzhgHD5wPLHScpN
+        MRADDBFgj5kz1Iy57Jek1Hiuv1d0MXI=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-389-eOEQiBDyP0yPVrSKuIEozQ-1; Sun, 26 Jun 2022 10:42:11 -0400
+X-MC-Unique: eOEQiBDyP0yPVrSKuIEozQ-1
+Received: by mail-ed1-f70.google.com with SMTP id x8-20020a056402414800b0042d8498f50aso5394069eda.23
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 07:42:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=3LpdeaC3QaRN10uYQxLnUJ/W/jYEd2M+AtzZFaFucek=;
+        b=vsXSP7cxr6qhMyq7BUUkQKnjQkZuEIOC85KxdpzgAIRhJvwi1N6u6T/IaxNdQWQb5a
+         RzxROJqwcQxYMtRqWXLNlHbcikeXGjEt12BJDSGDBXGCZ3nMh7KJ6Im4TZq/VGhGNfKd
+         WEdPU/3Hm9Ngr1aDNdBOIBBFlK/8PBdcWAZqZqogHOLDlN6SzYQcJYh25nK7B2iC2t8H
+         gqC2BsD+TbZ6QtMBx8A2E+E2VbSkB7bABauQt8Hkc4Jd3Gl0pxnSVshxAKG3cWSdZIXB
+         sXBw8Q15gkZOK6UctNxTRt/N8ufsM/jkDh8LRU+Vp0RHhEt8iJmsgZEGYK4JnKKIxqMv
+         GRNg==
+X-Gm-Message-State: AJIora/au/pf4KyAae5/jcTBZCRjNyufYeGSjmiyN3VBDWcjeggM/Y23
+        F+2w3NMyLMgAiEUZPhl878LxE7yFcPPc35OyvbvIPmFsfAo1PpzfOQREIc6CnpKhZJc3FY2Pt5x
+        XiN0L72nS0HCQ3BiSgaJe
+X-Received: by 2002:a05:6402:42c6:b0:435:dc4b:1bb2 with SMTP id i6-20020a05640242c600b00435dc4b1bb2mr11387343edc.355.1656254529828;
+        Sun, 26 Jun 2022 07:42:09 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1uA+taxhu+04vagERXzT/VIBtYm4CMnQQBYo6eG5mUpPV7OCLDFLBrnbc6g1fS9ki9VWHXo5Q==
+X-Received: by 2002:a05:6402:42c6:b0:435:dc4b:1bb2 with SMTP id i6-20020a05640242c600b00435dc4b1bb2mr11387315edc.355.1656254529513;
+        Sun, 26 Jun 2022 07:42:09 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c1e:bf00:d69d:5353:dba5:ee81? (2001-1c00-0c1e-bf00-d69d-5353-dba5-ee81.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:d69d:5353:dba5:ee81])
+        by smtp.gmail.com with ESMTPSA id dn7-20020a05640222e700b0042617ba6396sm5981898edb.32.2022.06.26.07.42.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Jun 2022 07:42:08 -0700 (PDT)
+Message-ID: <60f39446-a764-2f7f-ec6c-30f49ada3f07@redhat.com>
+Date:   Sun, 26 Jun 2022 16:42:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH] iio/hid: Add mount_matrix
+Content-Language: en-US
+To:     Gwendal Grignou <gwendal@chromium.org>,
+        srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, jikos@kernel.org,
+        wpsmith@google.com, linux-iio@vger.kernel.org,
+        Bastien Nocera <hadess@hadess.net>
+References: <20220624223341.2625231-1-gwendal@chromium.org>
+ <20220625120937.24c51ca4@jic23-huawei>
+ <937c3317-91f7-9236-70a8-39ca4c2f6396@redhat.com>
+ <534cde0d461b194e2fa9a91bd987da1cd2aae58a.camel@linux.intel.com>
+ <CAPUE2usnMyDN5DpgY_dtj73Jb811-9Y6Q8ZLsnqKiA7=q=74UQ@mail.gmail.com>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CAPUE2usnMyDN5DpgY_dtj73Jb811-9Y6Q8ZLsnqKiA7=q=74UQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        WEIRD_QUOTING autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 25 Jun 2022 17:10:36 +0200
-Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+Hi,
 
-> Allows to configure the IIR filter coefficient and the sampling frequency
-> The IIR filter coefficient is exposed using the sysfs attribute
-> "filter_low_pass_3db_frequency"
+On 6/25/22 22:52, Gwendal Grignou wrote:
+> On Sat, Jun 25, 2022 at 11:27 AM srinivas pandruvada
+> <srinivas.pandruvada@linux.intel.com> wrote:
+>>
+>> On Sat, 2022-06-25 at 14:33 +0200, Hans de Goede wrote:
+>>> Hi,
+>>>
+>>> Jonathan, thanks for Cc-ing me on this.
+>>>
+>>> On 6/25/22 13:09, Jonathan Cameron wrote:
+>>>> On Fri, 24 Jun 2022 15:33:41 -0700
+>>>> Gwendal Grignou <gwendal@chromium.org> wrote:
+>>>>
+>>>>> ISH based sensors do not naturally return data in the W3C
+>>>>> 'natural'
+>>>>> orientation.
+>>>>> They returns all data inverted, to match Microsoft Windows
+>>>>> requirement:
+>>>>> [
+>>>>> https://docs.microsoft.com/en-us/windows/uwp/devices-sensors/senso
+>>>>> rs#accelerometer]
+>>>>> """ If the device has the SimpleOrientation of FaceUp on a table,
+>>>>> then
+>>>>> the accelerometer would read -1 G on the Z axis. """
+>>>>
+>>>> Probably reference the HID Usage Tables 1.3 spec rather than the MS
+>>>> one.
+>>>> https://usb.org/sites/default/files/hut1_3_0.pdf
+> That document does not clearly defined what the accelerometer should return.
+>>>> After some waving around of my left and right hand I'm fairly sure
+>>>> that says the same
+>>>> thing as the MS spec. Section 4.4 Vector Usages
+>>>>
+>>>>> While W3C defines
+>>>>> [https://www.w3.org/TR/motion-sensors/#accelerometer-sensor]
+>>>>> """The Accelerometer sensor is an inertial-frame sensor, this
+>>>>> means that
+>>>>> when the device is in free fall, the acceleration is 0 m/s2 in
+>>>>> the
+>>>>> falling direction, and when a device is laying flat on a table,
+>>>>> the
+>>>>> acceleration in upwards direction will be equal to the Earth
+>>>>> gravity,
+>>>>> i.e. g ≡ 9.8 m/s2 as it is measuring the force of the table
+>>>>> pushing the
+>>>>> device upwards."""
+>>>>>
+>>>>> Fixes all HID sensors that defines IIO_MOD_[XYZ] attributes.
+>>>>>
+>>>>> Tested on "HP Spectre x360 Convertible 13" and "Dell XPS 13
+>>>>> 9365".
+>>>>>
+>>>>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+>>>>
+>>>> Ah.  Whilst this is a fix, it seems likely to break a whole bunch
+>>>> of existing
+>>>> users that are compensating for the wrong orientation in
+>>>> userspace.  Also, do
+>>>> we know how universal this is?  I have a nasty feeling it'll turn
+>>>> out some
+>>>> HID sensors do it the other way whatever the spec says.  Bastien,
+>>>> are you
+>>>> carrying a local fix for this in your userspace code?
+>>>>
+>>>> +CC a few people who are likely to know more on just how bad that
+>>>> will be...
+>>>
+>>> Right, so Linux userspace expects an axis system similar to the
+>>> Android one,
+>>> which is actually the one which seems to be described here.
+>>>
+>>> The axis system expect is that when a tablet is layed flat on the
+>>> table,
+>>> the x and y axis are as one would expect when drawing a mathematics
+>>> graph on the surface of the tablet.
+>>>
+>>> So X-axis goes from left to right, with left side being lower numbers
+>>> and
+>>> right side higher numbers.
+>>>
+>>> And Y-axis goes from bottom to top, with the bottom being lower
+>>> numbers and
+>>> the top higher numbers.
+>>>
+>>> That leaves the Z-axis which comes out of the screen at a 90° angle
+>>> (to both
+>>> the X and Y axis) and the vector coming out of the screen towards to
+>>> the user /
+>>> observer of the screen indicates positive numbers where as imagining
+>>> the same
+>>> axis pointing down through the table on which the tables is lying
+>>> towards
+>>> the floor represents negative numbers.
+>>>
+>>> This means that the accel values of a tablet resting on a table,
+>>> expresses
+>>> in units of 1G are: [ 0, 0, -1 ] and I've seen quite a few HID
+>>> sensors
+> But W3C and Android expect [ 0, 0, 1g ] when resting on the table. See
+> commit message for W3C and for Android, see
+> https://source.android.com/devices/sensors/sensor-types#accelerometer
+> """When the device lies flat on a table, the acceleration value along
+> z is +9.81 alo, which corresponds to the acceleration of the device (0
+> m/s^2) minus the force of gravity (-9.81 m/s^2)."""". That is why we
+> need to change the sign to be consistent with these standards.
+
+Windows and HID devices use [ 0, 0, -1 ] for device face up on
+a flat table and this is what Linux has been reporting to userspace
+for many many years now. Auto-display-rotation based in accel
+reading was first supported in GNOME through iio-sensor-proxy
+in 2014 !
+
+And iio-sensor-proxy expects the Windows/HID sign of the axis
+you can NOT just go and change this, that would break 8 years
+of precedent of using the current Windows/HID sign (+/-) for
+the axis!
+
+Also besides the kernel reporting a matrix it is also possible
+for userspace to provide a matrix using udev's hwdb:
+
+https://github.com/systemd/systemd/blob/main/hwdb.d/60-sensor.hwdb
+
+This has been in place since 2016 and this sets a matrix adjusting
+readings of non HID sensors to match the *HID/windows* definition
+of the axis.
+
+>>> with accel reporting on various devices and they all adhere to this
+>>> without applying any accel matrix. Or in other words, HID sensors
+>>> behave
+>>> as expected by userspace when applying the norm matrix of:
+>>>
+>>>         .rotation = {
+>>>                 "1", "0", "0",
+>>>                 "0", "1", "0",
+>>>                 "0", "0", "1"
+>>>
+>>> And this patch will cause the image to be upside down (no matter what
+>>> the
+>>> rotation) when using auto-rotation with iio-sensor-proxy.
+>>>
+>>> So big NACK from me for this patch.
+>>>
+>>> I'm not sure what this patch is trying to fix but it looks to me like
+>>> it
+>>> is a bug in the HID sensors implementation of the specific device.
+> This is a not a bug since HID sensors from 2 laptops from different
+> manufacturers (HP and Dell) report the same values.
+
+Right, I wrongly assumed the Android definition would match the
+IMHO much saner / much more intuitive HID/Windows definitions,
+since the arrows in the phone image in the Android docs point
+in the same direction as the Windows docs.
+
+But I have tested on an Android phone now and I see that
+Android indeed has all the axis inverted.
+ 
+>>> Again HID-sensors already work fine on tons of existing devices
+>>> without
+>>> any matrix getting applied.
+> Note this patch does not change the value reported by the sensor, just
+> define a matrix to make sure the sensors values are consistent with
+> Android/W3C.
+
+And iio-sensor-proxy will read the kernel provided matrix, apply it
+and then put the image upside down since you've just mirrored both
+the X and Y axis, breaking rotation for all existing GNOME and KDE
+users.
+
+So still a big NACK from me.
+
+If Android needs the axis to be flipped, then it should do so
+in the iio-sensor HAL inside android, not add a matrix which
+breaks 8 years of userspace API convention.
+
+Breaking userspace is simply not acceptible, we have a very clear
+no regressions policy. So this patch simply cannot be merged: NACK.
+
+Regards,
+
+Hans
+
+
+
+
+>>>> One other thing inline.  The mount matrix you've provided isn't a
+>>>> rotation matrix.
+>>>>
+>>>> I'd forgotten the annoyance of graphics folks using the right
+>>>> handed sensor
+>>>> axis whilst nearly all other uses are left handed. It drove me mad
+>>>> many years
+>>>> ago - every code base that used sensors and rendered the result
+>>>> needed a
+>>>> flip of the z axis - it was never well documented, so half the time
+>>>> the code ended up with many axis flips based on people debugging
+>>>> local
+>>>> orientation problems.  *sigh*
+>>>>
+>>>>
+>>>>> ---
+>>>>>  drivers/iio/accel/hid-sensor-accel-3d.c       |  3 +++
+>>>>>  .../hid-sensors/hid-sensor-attributes.c       | 21
+>>>>> +++++++++++++++++++
+>>>>>  drivers/iio/gyro/hid-sensor-gyro-3d.c         |  3 +++
+>>>>>  drivers/iio/magnetometer/hid-sensor-magn-3d.c |  3 +++
+>>>>>  include/linux/hid-sensor-hub.h                |  2 ++
+>>>>>  5 files changed, 32 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/iio/accel/hid-sensor-accel-3d.c
+>>>>> b/drivers/iio/accel/hid-sensor-accel-3d.c
+>>>>> index a2def6f9380a3..980bbd7fba502 100644
+>>>>> --- a/drivers/iio/accel/hid-sensor-accel-3d.c
+>>>>> +++ b/drivers/iio/accel/hid-sensor-accel-3d.c
+>>>>> @@ -59,6 +59,7 @@ static const struct iio_chan_spec
+>>>>> accel_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_X,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_ACCEL,
+>>>>>                 .modified = 1,
+>>>>> @@ -69,6 +70,7 @@ static const struct iio_chan_spec
+>>>>> accel_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_Y,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_ACCEL,
+>>>>>                 .modified = 1,
+>>>>> @@ -79,6 +81,7 @@ static const struct iio_chan_spec
+>>>>> accel_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_Z,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         },
+>>>>>         IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
+>>>>>  };
+>>>>> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-
+>>>>> attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-
+>>>>> attributes.c
+>>>>> index 9b279937a24e0..e367e4b482ef0 100644
+>>>>> --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+>>>>> +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+>>>>> @@ -585,6 +585,27 @@ int
+>>>>> hid_sensor_parse_common_attributes(struct hid_sensor_hub_device
+>>>>> *hsdev,
+>>>>>  }
+>>>>>  EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, IIO_HID);
+>>>>>
+>>>>> +static const struct iio_mount_matrix hid_sensor_windows_axis = {
+>>>>> +       .rotation = {
+>>>>> +               "-1", "0", "0",
+>>>>> +               "0", "-1", "0",
+>>>>> +               "0", "0", "-1"
+>>>>
+>>>> Unless my memory of rotation matrices serves me wrong, that's not a
+>>>> rotation matrix.
+>>>> (det(R) != 1)
+> This is indeed not a rotation matrix.
+> What I observed is when laying flat on the table (open at 180 degree),
+> using the sysfs interface the value reported by the laptops along the
+> Z axis is -1g, while using an android phone, the reported value is 1g.
+> Same thing when the device is lying on this left side (reported value
+> along the X axis -1g instead of 1g for an android phone), and when
+> resting on the front lip (reported value along the Y axis is -1g
+> instead of 1g).
 > 
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Hi Angel
-
-A few comments inline,
-> ---
->  drivers/iio/pressure/bmp280-core.c | 168 ++++++++++++++++++++++++++++-
->  drivers/iio/pressure/bmp280.h      |  18 ----
->  2 files changed, 166 insertions(+), 20 deletions(-)
+>>>>
+>>>> That's a an axis flip from a right handed set of axis to a left
+>>>> handed one.
+>>>> So to fix this up, you would need to invert the raw readings of at
+>>>> least one axis
+>>>> rather than rely on the mount matrix or make the scale negative.
+> Negative scale is a good option, but it will definitely break user
+> space applications, when the mount matrix may not be used today.
 > 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 3887475a9059..3d22fc844e87 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -96,6 +96,27 @@ static const char *const bmp280_supply_names[] = {
->  	"vddd", "vdda"
->  };
->  
-> +enum bmp380_odr {
-> +	BMP380_ODR_200HZ,
-> +	BMP380_ODR_100HZ,
-> +	BMP380_ODR_50HZ,
-> +	BMP380_ODR_25HZ,
-> +	BMP380_ODR_12_5HZ,
-> +	BMP380_ODR_6_25HZ,
-> +	BMP380_ODR_3_125HZ,
-> +	BMP380_ODR_1_5625HZ,
-> +	BMP380_ODR_0_78HZ,
-> +	BMP380_ODR_0_39HZ,
-> +	BMP380_ODR_0_2HZ,
-> +	BMP380_ODR_0_1HZ,
-> +	BMP380_ODR_0_05HZ,
-> +	BMP380_ODR_0_02HZ,
-> +	BMP380_ODR_0_01HZ,
-> +	BMP380_ODR_0_006HZ,
-> +	BMP380_ODR_0_003HZ,
-> +	BMP380_ODR_0_0015HZ
-> +};
-> +
->  #define BMP280_NUM_SUPPLIES ARRAY_SIZE(bmp280_supply_names)
->  
->  struct bmp280_data {
-> @@ -117,6 +138,16 @@ struct bmp280_data {
->  	u8 oversampling_press;
->  	u8 oversampling_temp;
->  	u8 oversampling_humid;
-> +	u8 iir_filter_coeff;
-> +
-> +	/* BMP380 devices introduce sampling frequecy configuration. See
-> +	 * datasheet sections 3.3.3. and 4.3.19.
-> +	 *
-> +	 * BMx280 devices allowed indirect configuration of sampling frequency
-> +	 * changing the t_standby duration between measurements. See datasheet
-> +	 * section 3.6.3
-> +	 */
-> +	int sampling_freq;
->  
->  	/*
->  	 * Carryover value from temperature conversion, used in pressure
-> @@ -135,6 +166,12 @@ struct bmp280_chip_info {
->  	const int *oversampling_humid_avail;
->  	int num_oversampling_humid_avail;
->  
-> +	const int *iir_filter_coeffs_avail;
-> +	int num_iir_filter_coeffs_avail;
-> +
-> +	const int (*sampling_freq_avail)[2];
-> +	int num_sampling_freq_avail;
-> +
->  	int (*chip_config)(struct bmp280_data *);
->  	int (*read_temp)(struct bmp280_data *, int *);
->  	int (*read_press)(struct bmp280_data *, int *, int *);
-> @@ -185,6 +222,30 @@ static const struct iio_chan_spec bmp280_channels[] = {
->  	},
->  };
->  
-> +static const struct iio_chan_spec bmp380_channels[] = {
-> +	{
-> +		.type = IIO_PRESSURE,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> +					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> +	},
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> +					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> +	},
-> +	{
-> +		.type = IIO_HUMIDITYRELATIVE,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> +					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> +	},
-> +};
-> +
->  static int bmp280_read_calib(struct bmp280_data *data,
->  			     struct bmp280_calib *calib,
->  			     unsigned int chip)
-> @@ -514,6 +575,15 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
->  			break;
->  		}
->  		break;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*val = data->chip_info->sampling_freq_avail[data->sampling_freq][0];
-This is currently safe, but given sampling_freq_avail is only present for one device type,
-I'd prefer a sanity check that it is not NULL.
-
-> +		*val2 = data->chip_info->sampling_freq_avail[data->sampling_freq][1];
-> +		ret = IIO_VAL_INT_PLUS_MICRO;
-> +		break;
-> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> +		*val = data->chip_info->iir_filter_coeffs_avail[data->iir_filter_coeff];
-> +		ret = IIO_VAL_INT;
-> +		break;
->  	default:
->  		ret = -EINVAL;
->  		break;
-> @@ -577,6 +647,39 @@ static int bmp280_write_oversampling_ratio_press(struct bmp280_data *data,
->  	return -EINVAL;
->  }
->  
-> +static int bmp280_write_sampling_frequency(struct bmp280_data *data,
-> +					   int val, int val2)
-> +{
-> +	int i;
-> +	const int (*avail)[2] = data->chip_info->sampling_freq_avail;
-> +	const int n = data->chip_info->num_sampling_freq_avail;
-> +
-> +	for (i = 0; i < n; i++) {
-> +		if (avail[i][0] == val && avail[i][1] == val2) {
-> +			data->sampling_freq = i;
-better to only set the cached value if the write succeeds.
-
-e.g.
-			ret = data->chip_info->chip_config(data);
-			if (ret)
-				return ret;
-
-			data->sampling_freq = i;
-
-			return 0;
-> +
-> +			return data->chip_info->chip_config(data);
-> +		}
-> +	}
-> +	return -EINVAL;
-> +}
-> +
-> +static int bmp280_write_iir_filter_coeffs(struct bmp280_data *data, int val)
-> +{
-> +	int i;
-> +	const int *avail = data->chip_info->iir_filter_coeffs_avail;
-> +	const int n = data->chip_info->num_iir_filter_coeffs_avail;
-> +
-> +	for (i = 0; i < n; i++) {
-> +		if (avail[i] == val) {
-> +			data->iir_filter_coeff = i;
-> +
-As for previous function, set the cached value only after you know the write
-succeeded.
-
-> +			return data->chip_info->chip_config(data);
-> +		}
-> +	}
-> +	return -EINVAL;
-> +}
-> +
->  static int bmp280_write_raw(struct iio_dev *indio_dev,
->  			    struct iio_chan_spec const *chan,
->  			    int val, int val2, long mask)
-> @@ -606,6 +709,22 @@ static int bmp280_write_raw(struct iio_dev *indio_dev,
->  		pm_runtime_mark_last_busy(data->dev);
->  		pm_runtime_put_autosuspend(data->dev);
->  		break;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		pm_runtime_get_sync(data->dev);
-> +		mutex_lock(&data->lock);
-> +		ret = bmp280_write_sampling_frequency(data, val, val2);
-> +		mutex_unlock(&data->lock);
-> +		pm_runtime_mark_last_busy(data->dev);
-> +		pm_runtime_put_autosuspend(data->dev);
-> +		break;
-> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> +		pm_runtime_get_sync(data->dev);
-> +		mutex_lock(&data->lock);
-> +		ret = bmp280_write_iir_filter_coeffs(data, val);
-> +		mutex_unlock(&data->lock);
-> +		pm_runtime_mark_last_busy(data->dev);
-> +		pm_runtime_put_autosuspend(data->dev);
-> +		break;
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -636,6 +755,17 @@ static int bmp280_read_avail(struct iio_dev *indio_dev,
->  		}
->  		*type = IIO_VAL_INT;
->  		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		*vals = (const int *)data->chip_info->sampling_freq_avail;
-> +		*type = IIO_VAL_INT_PLUS_MICRO;
-> +		/* Values are stored in a 2D matrix */
-> +		*length = data->chip_info->num_sampling_freq_avail;
-> +		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-> +		*vals = data->chip_info->iir_filter_coeffs_avail;
-> +		*type = IIO_VAL_INT;
-> +		*length = data->chip_info->num_iir_filter_coeffs_avail;
-> +		return IIO_AVAIL_LIST;
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -749,7 +879,7 @@ static int bmp380_cmd(struct bmp280_data *data, u8 cmd)
->  		goto failure;
->  	}
->  	/* wait for 2ms for command to be proccessed */
-> -	usleep_range(2000, 2500);
-> +	usleep_range(data->start_up_time, data->start_up_time + 100);
->  	/* check for command processing error */
->  	ret = regmap_read(data->regmap, BMP380_REG_ERROR, &reg);
->  	if (ret) {
-> @@ -943,6 +1073,27 @@ static int bmp380_read_calib(struct bmp280_data *data,
->  	return 0;
->  }
->  
-> +static const int bmp380_odr_table[][2] = {
-> +	[BMP380_ODR_200HZ]	= {200, 0},
-> +	[BMP380_ODR_100HZ]	= {100, 0},
-> +	[BMP380_ODR_50HZ]	= {50, 0},
-> +	[BMP380_ODR_25HZ]	= {25, 0},
-> +	[BMP380_ODR_12_5HZ]	= {12, 500000},
-> +	[BMP380_ODR_6_25HZ]	= {6, 250000},
-> +	[BMP380_ODR_3_125HZ]	= {3, 125000},
-> +	[BMP380_ODR_1_5625HZ]	= {1, 562500},
-> +	[BMP380_ODR_0_78HZ]	= {0, 781250},
-> +	[BMP380_ODR_0_39HZ]	= {0, 390625},
-> +	[BMP380_ODR_0_2HZ]	= {0, 195313},
-> +	[BMP380_ODR_0_1HZ]	= {0, 97656},
-> +	[BMP380_ODR_0_05HZ]	= {0, 48828},
-> +	[BMP380_ODR_0_02HZ]	= {0, 24414},
-> +	[BMP380_ODR_0_01HZ]	= {0, 12207},
-> +	[BMP380_ODR_0_006HZ]	= {0, 6104},
-> +	[BMP380_ODR_0_003HZ]	= {0, 3052},
-> +	[BMP380_ODR_0_0015HZ]	= {0, 1526},
-> +};
-> +
->  static int bmp380_chip_config(struct bmp280_data *data)
->  {
->  	u8 osrs;
-> @@ -976,7 +1127,7 @@ static int bmp380_chip_config(struct bmp280_data *data)
->  
->  	/* configure output data rate */
->  	ret = regmap_write_bits(data->regmap, BMP380_REG_ODR,
-> -				BMP380_ODRS_MASK, BMP380_ODRS_50HZ);
-> +				BMP380_ODRS_MASK, data->sampling_freq);
->  	if (ret < 0) {
->  		dev_err(data->dev, "failed to write ODR selection register\n");
->  		return ret;
-> @@ -990,6 +1141,9 @@ static int bmp380_chip_config(struct bmp280_data *data)
->  		return ret;
->  	}
->  
-> +	/* startup time wait to verify config */
-> +	usleep_range(data->start_up_time, data->start_up_time + 100);
-> +
-
-Only necessary now?  Or is this a fix for what was here before?
-
->  	/* check config error flag */
->  	ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
->  	if (ret < 0) {
-> @@ -1007,6 +1161,7 @@ static int bmp380_chip_config(struct bmp280_data *data)
->  }
->  
->  static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
-> +static const int bmp380_iir_filter_coeffs_avail[] = { 0, 1, 3, 7, 15, 31, 63, 127 };
->  
->  static const struct bmp280_chip_info bmp380_chip_info = {
->  	.oversampling_temp_avail = bmp380_oversampling_avail,
-> @@ -1015,6 +1170,12 @@ static const struct bmp280_chip_info bmp380_chip_info = {
->  	.oversampling_press_avail = bmp380_oversampling_avail,
->  	.num_oversampling_press_avail = ARRAY_SIZE(bmp380_oversampling_avail),
->  
-> +	.sampling_freq_avail = bmp380_odr_table,
-> +	.num_sampling_freq_avail = ARRAY_SIZE(bmp380_odr_table) * 2,
-> +
-> +	.iir_filter_coeffs_avail = bmp380_iir_filter_coeffs_avail,
-> +	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp380_iir_filter_coeffs_avail),
-> +
->  	.chip_config = bmp380_chip_config,
->  	.read_temp = bmp380_read_temp,
->  	.read_press = bmp380_read_press,
-> @@ -1369,9 +1530,12 @@ int bmp280_common_probe(struct device *dev,
->  		break;
->  	case BMP380_CHIP_ID:
->  		indio_dev->num_channels = 2;
-> +		indio_dev->channels = bmp380_channels;
->  		data->chip_info = &bmp380_chip_info;
->  		data->oversampling_press = ilog2(4);
->  		data->oversampling_temp = ilog2(1);
-> +		data->iir_filter_coeff = 2;
-> +		data->sampling_freq = BMP380_ODR_50HZ;
->  		data->start_up_time = 2000;
->  		break;
->  	default:
-> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> index b4c122525ffe..f9e21546957e 100644
-> --- a/drivers/iio/pressure/bmp280.h
-> +++ b/drivers/iio/pressure/bmp280.h
-> @@ -71,24 +71,6 @@
->  #define BMP380_OSRS_PRESS_32X		BMP380_OSRS_PRESS_X(5)
->  
->  #define BMP380_ODRS_MASK		GENMASK(4, 0)
-> -#define BMP380_ODRS_200HZ		0x00
-> -#define BMP380_ODRS_100HZ		0x01
-> -#define BMP380_ODRS_50HZ		0x02
-> -#define BMP380_ODRS_25HZ		0x03
-> -#define BMP380_ODRS_12_5HZ		0x04
-> -#define BMP380_ODRS_6_25HZ		0x05
-> -#define BMP380_ODRS_3_1HZ		0x06
-> -#define BMP380_ODRS_1_5HZ		0x07
-> -#define BMP380_ODRS_0_78HZ		0x08
-> -#define BMP380_ODRS_0_39HZ		0x09
-> -#define BMP380_ODRS_0_2HZ		0x0A
-> -#define BMP380_ODRS_0_1HZ		0x0B
-> -#define BMP380_ODRS_0_05HZ		0x0C
-> -#define BMP380_ODRS_0_02HZ		0x0D
-> -#define BMP380_ODRS_0_01HZ		0x0E
-> -#define BMP380_ODRS_0_006HZ		0x0F
-> -#define BMP380_ODRS_0_003HZ		0x10
-> -#define BMP380_ODRS_0_0015HZ		0x11
->  
->  #define BMP380_CTRL_SENSORS_MASK	GENMASK(1, 0)
->  #define BMP380_CTRL_SENSORS_PRESS_EN	BIT(0)
+> Gwendal.
+>>>>
+>>>> Jonathan
+>>>>
+>>>>
+>>>>> +       }
+>>>>> +};
+>>>>> +
+>>>>> +static const struct iio_mount_matrix *
+>>>>> +hid_sensor_get_mount_matrix(const struct iio_dev *indio_dev,
+>>>>> +                               const struct iio_chan_spec *chan)
+>>>>> +{
+>>>>> +       return &hid_sensor_windows_axis;
+>>>>> +}
+>>>>> +
+>>>>> +const struct iio_chan_spec_ext_info hid_sensor_ext_info[] = {
+>>>>> +       IIO_MOUNT_MATRIX(IIO_SHARED_BY_TYPE,
+>>>>> hid_sensor_get_mount_matrix),
+>>>>> +       { }
+>>>>> +};
+>>>>> +EXPORT_SYMBOL(hid_sensor_ext_info);
+>>>>> +
+>>>>>  MODULE_AUTHOR("Srinivas Pandruvada
+>>>>> <srinivas.pandruvada@intel.com>");
+>>>>>  MODULE_DESCRIPTION("HID Sensor common attribute processing");
+>>>>>  MODULE_LICENSE("GPL");
+>>>>> diff --git a/drivers/iio/gyro/hid-sensor-gyro-3d.c
+>>>>> b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+>>>>> index 8f0ad022c7f1b..b852f5166bb21 100644
+>>>>> --- a/drivers/iio/gyro/hid-sensor-gyro-3d.c
+>>>>> +++ b/drivers/iio/gyro/hid-sensor-gyro-3d.c
+>>>>> @@ -58,6 +58,7 @@ static const struct iio_chan_spec
+>>>>> gyro_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_X,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_ANGL_VEL,
+>>>>>                 .modified = 1,
+>>>>> @@ -68,6 +69,7 @@ static const struct iio_chan_spec
+>>>>> gyro_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_Y,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_ANGL_VEL,
+>>>>>                 .modified = 1,
+>>>>> @@ -78,6 +80,7 @@ static const struct iio_chan_spec
+>>>>> gyro_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>>                 .scan_index = CHANNEL_SCAN_INDEX_Z,
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         },
+>>>>>         IIO_CHAN_SOFT_TIMESTAMP(CHANNEL_SCAN_INDEX_TIMESTAMP)
+>>>>>  };
+>>>>> diff --git a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+>>>>> b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+>>>>> index e85a3a8eea908..aefbdb9b0869a 100644
+>>>>> --- a/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+>>>>> +++ b/drivers/iio/magnetometer/hid-sensor-magn-3d.c
+>>>>> @@ -74,6 +74,7 @@ static const struct iio_chan_spec
+>>>>> magn_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SCALE) |
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_MAGN,
+>>>>>                 .modified = 1,
+>>>>> @@ -83,6 +84,7 @@ static const struct iio_chan_spec
+>>>>> magn_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SCALE) |
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_MAGN,
+>>>>>                 .modified = 1,
+>>>>> @@ -92,6 +94,7 @@ static const struct iio_chan_spec
+>>>>> magn_3d_channels[] = {
+>>>>>                 BIT(IIO_CHAN_INFO_SCALE) |
+>>>>>                 BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>>>>>                 BIT(IIO_CHAN_INFO_HYSTERESIS),
+>>>>> +               .ext_info = hid_sensor_ext_info,
+>>>>>         }, {
+>>>>>                 .type = IIO_ROT,
+>>>>>                 .modified = 1,
+>>>>> diff --git a/include/linux/hid-sensor-hub.h b/include/linux/hid-
+>>>>> sensor-hub.h
+>>>>> index c27329e2a5ad5..ee7d5b430a785 100644
+>>>>> --- a/include/linux/hid-sensor-hub.h
+>>>>> +++ b/include/linux/hid-sensor-hub.h
+>>>>> @@ -236,6 +236,8 @@ struct hid_sensor_common {
+>>>>>         struct work_struct work;
+>>>>>  };
+>>>>>
+>>>>> +extern const struct iio_chan_spec_ext_info
+>>>>> hid_sensor_ext_info[];
+>>>>> +
+>>>>>  /* Convert from hid unit expo to regular exponent */
+>>>>>  static inline int hid_sensor_convert_exponent(int unit_expo)
+>>>>>  {
+>>>>
+>>>
+>>
+> 
 

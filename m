@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B453B55B1D1
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079D055B1D8
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 14:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234394AbiFZMU2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 08:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53816 "EHLO
+        id S234239AbiFZMUa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 08:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234239AbiFZMU0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:26 -0400
+        with ESMTP id S234450AbiFZMU2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 08:20:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836E4DFE6
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11579E029
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 05:20:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FADA6120E
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A1FC341CA;
-        Sun, 26 Jun 2022 12:20:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0BCB6120E
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 12:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D81FC34114;
+        Sun, 26 Jun 2022 12:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656246024;
-        bh=xexD3gYgalhsmjgwmBurwkX81qIXtLR/lM77RJ0eIpg=;
+        s=k20201202; t=1656246027;
+        bh=TCPDHk7sO2AWTGtftRHe5Y5e04Cdwl+XsrtaDMY0a5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fY825JcPxSerbPxTWod6H+5H7zDHBdUSuQmhCPFdR9MwNvlqKIfkhDm6N/PnaqHYz
-         sumZ4MyPW2zlOXdYBTFYh0LczeEb3dgMkhatM2M1GJK1uDP/h41sBj0fT+z56lJERc
-         s9HDNdLWgXiYXQ10B1BepzUq83DWuP+0zAkFxIOkvohJHJCUZM1D/gBNIefx8yE8sZ
-         A9ujMDgcO5yyTULjBDbVnftKPrDe5S2XrPQka6h1TvHtDwITEte/ELNV0cwRm3Ognm
-         H2vGx53gNwP/bvueZn+TXFSavis1gZN3YTKcEhwqs5OcQE38P5tA71w4ed9ZVGqPoE
-         ghqOTQrKxwFJg==
+        b=MawP/Jzo3PHSWFEOpVCuCSvpOA81VZVvyccm61So3p4MEQJmnnaRwhoRSZALL381s
+         d9zjNsCyVp45SD0qOKfVffEpbOMwwXB607YPkNUepa13FvVxhz8o+wYvrvjOAzQrlv
+         XVdvEx70aBxEGbCJkvpBMt1Nm19qYbNmIQwAm15TETWtWGgJqfBkIgSYxbfgPGCVRm
+         zmX5aEKB0AVRgdKKZreUstnw6Bj2lGnzbz1XmMUQ27tZN1VJvkJmmpsnSefxiVAiXr
+         T8JT2+wOOwn4Gx79JZF835eeIzDPT2IBkOubYfBj/iKzZhnU/kmcSf6cBXjEN+Kr6z
+         Kx/uVCYZ6jZ7A==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -39,9 +39,9 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Vincent Whitchurch <vincent.whitchurch@axis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 02/17] iio: ABI: Fix wrong format of differential capacitance channel ABI.
-Date:   Sun, 26 Jun 2022 13:29:23 +0100
-Message-Id: <20220626122938.582107-3-jic23@kernel.org>
+Subject: [PATCH v3 03/17] staging: iio: cdc: ad7746: Use explicit be24 handling.
+Date:   Sun, 26 Jun 2022 13:29:24 +0100
+Message-Id: <20220626122938.582107-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220626122938.582107-1-jic23@kernel.org>
 References: <20220626122938.582107-1-jic23@kernel.org>
@@ -59,27 +59,57 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-in_ only occurs once in these attributes.
+Chance from fiddly local implementation of be24 to cpu endian conversion
+by reading into a 3 byte buffer and using get_unaligned_be24()
 
-Fixes: 0baf29d658c7 ("staging:iio:documentation Add abi docs for capacitance adcs.")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- Documentation/ABI/testing/sysfs-bus-iio | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/iio/cdc/ad7746.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-index 3e00d7f7ee22..d3a0c0ef8948 100644
---- a/Documentation/ABI/testing/sysfs-bus-iio
-+++ b/Documentation/ABI/testing/sysfs-bus-iio
-@@ -193,7 +193,7 @@ Description:
- 		Raw capacitance measurement from channel Y. Units after
- 		application of scale and offset are nanofarads.
+diff --git a/drivers/staging/iio/cdc/ad7746.c b/drivers/staging/iio/cdc/ad7746.c
+index 52b8957c19c9..08f73be5797a 100644
+--- a/drivers/staging/iio/cdc/ad7746.c
++++ b/drivers/staging/iio/cdc/ad7746.c
+@@ -15,6 +15,8 @@
+ #include <linux/stat.h>
+ #include <linux/sysfs.h>
  
--What:		/sys/.../iio:deviceX/in_capacitanceY-in_capacitanceZ_raw
-+What:		/sys/.../iio:deviceX/in_capacitanceY-capacitanceZ_raw
- KernelVersion:	3.2
- Contact:	linux-iio@vger.kernel.org
- Description:
++#include <asm/unaligned.h>
++
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ 
+@@ -95,10 +97,7 @@ struct ad7746_chip_info {
+ 	u8	capdac[2][2];
+ 	s8	capdac_set;
+ 
+-	union {
+-		__be32 d32;
+-		u8 d8[4];
+-	} data ____cacheline_aligned;
++	u8 data[3] ____cacheline_aligned;
+ };
+ 
+ enum ad7746_chan {
+@@ -546,13 +545,14 @@ static int ad7746_read_raw(struct iio_dev *indio_dev,
+ 		/* Now read the actual register */
+ 
+ 		ret = i2c_smbus_read_i2c_block_data(chip->client,
+-						    chan->address >> 8, 3,
+-						    &chip->data.d8[1]);
++						    chan->address >> 8,
++						    sizeof(chip->data),
++						    chip->data);
+ 
+ 		if (ret < 0)
+ 			goto out;
+ 
+-		*val = (be32_to_cpu(chip->data.d32) & 0xFFFFFF) - 0x800000;
++		*val = get_unaligned_be24(chip->data) - 0x800000;
+ 
+ 		switch (chan->type) {
+ 		case IIO_TEMP:
 -- 
 2.36.1
 

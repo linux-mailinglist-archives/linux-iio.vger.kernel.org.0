@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D1B355B2A3
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 17:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7BCC55B2FC
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 18:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229959AbiFZP3J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 26 Jun 2022 11:29:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49032 "EHLO
+        id S229593AbiFZQpt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 12:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiFZP3H (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 11:29:07 -0400
+        with ESMTP id S231605AbiFZQpt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 12:45:49 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37EC9DF74
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 08:29:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F7DD11A
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 09:45:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E26A7B80D56
-        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 15:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6673C34114;
-        Sun, 26 Jun 2022 15:29:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3698AB80D32
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 16:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C72C34114;
+        Sun, 26 Jun 2022 16:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656257343;
-        bh=T8Psk+ZrFWxix7ovyV2dpncjYjzPrV5uKwbHmWwXX0o=;
+        s=k20201202; t=1656261945;
+        bh=a18Sxfwzln9fD8DvRmRTzjoLVe5ejibPo5+MwBQ+dqQ=;
         h=From:To:Cc:Subject:Date:From;
-        b=hyfgdeAFVEqFEZeBNPMgO+3G9qUMi4ceAlQm1V9WKH2sLbWLfbNK+0F4pcqCYgcHs
-         a0M/LdH2dCy6j9GDEPBLLwXESF4Fw7/xTLlgg20odzrjzPAwCn0Fg8Mq6XMwKp+MvX
-         DpPFA3UGEPYvwl7dorgxQK6pp/UPNiVpQ6tgu3h8YIafxrIBaXvORl665coFJ7KWwn
-         MIb33pIecbS1eiAsafZa3KsD7YfTl7xP/Md3B79Jy2TJ45KkcziCxRiiZtRASQRng6
-         +y6maZXliHk0bz1b0bIgdydaTIpbaqIYOere3Bq7gopW/9h6oKVwjMShoZQw/47+bB
-         Z4Wb2t2F1ixWw==
+        b=jwfr/0JDjsRkm2KT1HZsnCLnpxUNqMoxztIHBX1x9C71/7q9hFrT+SvJP1AR0LWCs
+         42EaOHTeWvtqt00WsvusfANt53GHK7WCMgQ8B4X/vV51sk89woT3R1r9wloBhKDvik
+         q6IkMP5EA+q9zX9MCOphx1QMGQ6ZTN0DXyy/outerGPt/06+D0/cpHFI4STpXidMZB
+         Zz4rYpwlW3AYz3C+xFxIO/wQJAJoJdqo2M7gSIn8FB2HL6i2+LGXIJoG4+oDIRNofH
+         +58GYfZlYwmn6pJqE2GQOjKxlF+2P75ivqEn8j5oxjh0fRtjAqg2LYYOSo0DYrCkTc
+         i0NYqrReXla4w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH] iio: adc: ti-ads124s08: Drop unused parameter to ads124s_read()
-Date:   Sun, 26 Jun 2022 16:38:28 +0100
-Message-Id: <20220626153828.589664-1-jic23@kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/4] IIO: Some documentation error and warning fixes.
+Date:   Sun, 26 Jun 2022 17:55:07 +0100
+Message-Id: <20220626165511.602202-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -52,44 +53,34 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The channel number is never used in this call, so don't pass it in.
+Mauro Carvalho Chehab highlighted some outstanding IIO documentation
+issues in a thread on generally reducing the warning splat that is
+a documentation build.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/ti-ads124s08.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The fixes aren't exactly ideal, but they are necessary to get these
+last few cases in IIO to not generate warnings.
 
-diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
-index 64833156c199..4ca62121f0d1 100644
---- a/drivers/iio/adc/ti-ads124s08.c
-+++ b/drivers/iio/adc/ti-ads124s08.c
-@@ -193,7 +193,7 @@ static int ads124s_reset(struct iio_dev *indio_dev)
- 	return 0;
- };
- 
--static int ads124s_read(struct iio_dev *indio_dev, unsigned int chan)
-+static int ads124s_read(struct iio_dev *indio_dev)
- {
- 	struct ads124s_private *priv = iio_priv(indio_dev);
- 	int ret;
-@@ -242,7 +242,7 @@ static int ads124s_read_raw(struct iio_dev *indio_dev,
- 			goto out;
- 		}
- 
--		ret = ads124s_read(indio_dev, chan->channel);
-+		ret = ads124s_read(indio_dev);
- 		if (ret < 0) {
- 			dev_err(&priv->spi->dev, "Read ADC failed\n");
- 			goto out;
-@@ -290,7 +290,7 @@ static irqreturn_t ads124s_trigger_handler(int irq, void *p)
- 		if (ret)
- 			dev_err(&priv->spi->dev, "Start ADC conversions failed\n");
- 
--		priv->buffer[j] = ads124s_read(indio_dev, scan_index);
-+		priv->buffer[j] = ads124s_read(indio_dev);
- 		ret = ads124s_write_cmd(indio_dev, ADS124S08_STOP_CONV);
- 		if (ret)
- 			dev_err(&priv->spi->dev, "Stop ADC conversions failed\n");
+https://lore.kernel.org/all/20220626085524.42ee92c0@sal.lan/
+
+Jonathan Cameron (4):
+  iio: ABI: temperature: Unify documentation for thermocouple fault
+    detection.
+  iio: ABI: max31865: Drop in_filter_notch_centre_frequency as in main
+    docs.
+  iio: ABI: stm32-timer-trigger: Fuse unusual ABI into main doc.
+  iio: ABI: sx9324: Squash some formatting to keep scripting happy.
+
+ Documentation/ABI/testing/sysfs-bus-iio       |  3 ++
+ .../ABI/testing/sysfs-bus-iio-sx9324          |  2 +-
+ .../sysfs-bus-iio-temperature-max31856        | 31 -------------------
+ .../sysfs-bus-iio-temperature-max31865        | 20 ------------
+ .../ABI/testing/sysfs-bus-iio-thermocouple    | 18 +++++++++++
+ .../ABI/testing/sysfs-bus-iio-timer-stm32     |  8 -----
+ 6 files changed, 22 insertions(+), 60 deletions(-)
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-thermocouple
+
 -- 
 2.36.1
 

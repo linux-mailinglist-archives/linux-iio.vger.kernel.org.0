@@ -2,62 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BB3355ACE8
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 00:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13AA155ADEF
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 03:28:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233468AbiFYWYs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 18:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48086 "EHLO
+        id S233537AbiFZBYr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 25 Jun 2022 21:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbiFYWYr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 18:24:47 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73D113D51
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 15:24:46 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id jb13so5063023plb.9
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jun 2022 15:24:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=UXlF06FaD8KDiG+JfqFrHNDFhGUpqj2/rjt064pHY0s=;
-        b=M7AYRhXN0wVSqf223DciiKtcsRmKTFAFQKsvIuVStHGVpIMcmPvde6KXmHMnnxs7Me
-         DtG62LdTtGFpk578pwzYOqDmMdIQyqXThs2thkfnkHSHBDekH2MCH1WjrjWNU37NC/Nd
-         8m0UDnVfljhXWKQVuEKoRfpAXzsYnk0QKqFaw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=UXlF06FaD8KDiG+JfqFrHNDFhGUpqj2/rjt064pHY0s=;
-        b=yeGEygOi/XtEJSvoIrxh1ACycfQjaYNs4iy5vvqiWaCFhzyDh4TDVDSWIpJkXgO7gM
-         JJNVuBY7U0qIu5cD1COKWjh1pTD1mmACsRNVz7YEam6KTd7So5gh5uMQMTd1NmESaxkH
-         Y2aK9VeO/LwwIVxDNdcxIoRyCDPnhUzAdZjPdeweRPX0X6yoaupAkVRrcAcDYIAwnnbb
-         YoGXPKnJb37ys0OFBi7b+HlT4MY5WzUfwcFdEeZNKoE7dAmRxIjzH92Pr0/ZZN/0TyAi
-         jqI7F+xBnx42c255Z4sOpfvayyrVXBVO/30lPOVYpGtmK3mXFs4vuUBURHpsqeXp4MuH
-         WSJg==
-X-Gm-Message-State: AJIora8V/qevdYsOZ3xvpX8BEBGVqn2F97YzW6pzJlExjq2+Z9ugX84B
-        CQjspzDOe0irqlWzzzig+cv8Bg==
-X-Google-Smtp-Source: AGRyM1tpB3iXd58F6qQfROJy408oxyltHtEHcTLYHtqVszma50w+AUo26EIMNf47aWCQaYs9FfFQVQ==
-X-Received: by 2002:a17:90a:64cc:b0:1ec:c7bc:d998 with SMTP id i12-20020a17090a64cc00b001ecc7bcd998mr6588430pjm.21.1656195886167;
-        Sat, 25 Jun 2022 15:24:46 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:1f1b:ac36:ee4f:cd78])
-        by smtp.gmail.com with UTF8SMTPSA id f11-20020a62380b000000b0051829b1595dsm4080742pfa.130.2022.06.25.15.24.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jun 2022 15:24:45 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     jic23@kernel.org, dianders@chromium.org, swboyd@chromium.org
-Cc:     linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2] iio: cros: Register FIFO callback after sensor is registered
-Date:   Sat, 25 Jun 2022 15:24:43 -0700
-Message-Id: <20220625222443.2906866-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
-In-Reply-To: <CAPUE2usKnbvXw5wBLq-w4ZkftAqZdiwQHu51rWi_-Dw8PoC9_Q@mail.gmail.com>
-References: <CAPUE2usKnbvXw5wBLq-w4ZkftAqZdiwQHu51rWi_-Dw8PoC9_Q@mail.gmail.com>
+        with ESMTP id S231754AbiFZBYq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 21:24:46 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99AAB84E;
+        Sat, 25 Jun 2022 18:24:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656206684; x=1687742684;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zxt7FTKnL1KnGMwsPjwbDJvrp8p26gSFYjDhU/sSKpU=;
+  b=PN1xdBiFI3LnJz0+6+xGwFE2OVRdB2XSgfruez5q119VjwyyQacbp8e6
+   Ti7e8P3R53SFMeqS9CFnk1ggGUDuKhrfctDHsvX+rPJTdBjSWkR/5YvKa
+   DPTixyqBYLw69ZMgMB37Bng12kiEuBaCWUl6C8eHIpUYrkuSujFifHCj7
+   jF88AvNMik3lmwq1YojEkj+odo7jnlJeJ5xhfz0AzQ/f5+F78s4ZuHLba
+   FXHquL7Ii3Hjey4mMtgeDiJ+edQXrY+uHDqo6laU0AxHiuc9X/XsKGGtH
+   E1ezfLO78e/O9Ch0ymcF/ZDmEf7lMhqoxxc6ZqT97nrp006x07jonJ1Iq
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10389"; a="345237201"
+X-IronPort-AV: E=Sophos;i="5.92,223,1650956400"; 
+   d="scan'208";a="345237201"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2022 18:24:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,223,1650956400"; 
+   d="scan'208";a="587008609"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 25 Jun 2022 18:24:42 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o5H0z-0006Xb-Fs;
+        Sun, 26 Jun 2022 01:24:41 +0000
+Date:   Sun, 26 Jun 2022 09:24:23 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     kbuild-all@lists.01.org, Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: pressure: bmp280: Add support for BMP380 sensor
+ family
+Message-ID: <202206260908.STsTkCPR-lkp@intel.com>
+References: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,257 +69,113 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Instead of registering callback to process sensor events right at
-initialization time, wait for the sensor to be register in the iio
-subsystem.
+Hi Angel,
 
-Events can come at probe time (in case the kernel rebooted abruptly
-without switching the sensor off for  instance), and be sent to IIO core
-before the sensor is fully registered.
+Thank you for the patch! Perhaps something to improve:
 
-Reported-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-Changes since v1:
-- renamed from "iio: cros: Add cros_ec_sensors_core_register"
-- Call devm_iio_device_register() inside cros_ec_sensors_core_register.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on robh/for-next linus/master v5.19-rc3 next-20220624]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
- drivers/iio/accel/cros_ec_accel_legacy.c      |  4 +-
- .../cros_ec_sensors/cros_ec_lid_angle.c       |  4 +-
- .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    | 58 ++++++++++++++-----
- drivers/iio/light/cros_ec_light_prox.c        |  6 +-
- drivers/iio/pressure/cros_ec_baro.c           |  6 +-
- .../linux/iio/common/cros_ec_sensors_core.h   |  7 ++-
- 7 files changed, 60 insertions(+), 31 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: i386-randconfig-s001
+compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
+reproduce:
+        # apt-get install sparse
+        # sparse version: v0.6.4-31-g4880bd19-dirty
+        # https://github.com/intel-lab-lkp/linux/commit/56e3f8aecddacdbe204fbe5e28032ef2befae647
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
+        git checkout 56e3f8aecddacdbe204fbe5e28032ef2befae647
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/pressure/
 
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 1c0171f26e99e..0f403342b1fc0 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture, NULL);
-+					cros_ec_sensors_capture);
- 	if (ret)
- 		return ret;
- 
-@@ -235,7 +235,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
- 		state->sign[CROS_EC_SENSOR_Z] = -1;
- 	}
- 
--	return devm_iio_device_register(dev, indio_dev);
-+	return cros_ec_sensors_core_register(dev, indio_dev, NULL);
- }
- 
- static struct platform_driver cros_ec_accel_platform_driver = {
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-index 9f780fafaed9f..119acb078af3b 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
-@@ -98,7 +98,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
--	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
-+	ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL);
- 	if (ret)
- 		return ret;
- 
-@@ -114,7 +114,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	return devm_iio_device_register(dev, indio_dev);
-+	return cros_ec_sensors_core_register(dev, indio_dev, NULL);
- }
- 
- static const struct platform_device_id cros_ec_lid_angle_ids[] = {
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-index 61e07a7bb1995..66153b1850f10 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
-@@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data);
-+					cros_ec_sensors_capture);
- 	if (ret)
- 		return ret;
- 
-@@ -298,7 +297,8 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
- 	else
- 		state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	return devm_iio_device_register(dev, indio_dev);
-+	return cros_ec_sensors_core_register(dev, indio_dev,
-+			cros_ec_sensors_push_data);
- }
- 
- static const struct platform_device_id cros_ec_sensors_ids[] = {
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index e5ccedef13a80..b5317e6339598 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -228,21 +228,18 @@ static void cros_ec_sensors_core_clean(void *arg)
- 
- /**
-  * cros_ec_sensors_core_init() - basic initialization of the core structure
-- * @pdev:		platform device created for the sensors
-+ * @pdev:		platform device created for the sensor
-  * @indio_dev:		iio device structure of the device
-  * @physical_device:	true if the device refers to a physical device
-  * @trigger_capture:    function pointer to call buffer is triggered,
-  *    for backward compatibility.
-- * @push_data:          function to call when cros_ec_sensorhub receives
-- *    a sample for that sensor.
-  *
-  * Return: 0 on success, -errno on failure.
-  */
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev,
- 			      bool physical_device,
--			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data)
-+			      cros_ec_sensors_capture_t trigger_capture)
- {
- 	struct device *dev = &pdev->dev;
- 	struct cros_ec_sensors_core_state *state = iio_priv(indio_dev);
-@@ -340,17 +337,6 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			if (ret)
- 				return ret;
- 
--			ret = cros_ec_sensorhub_register_push_data(
--					sensor_hub, sensor_platform->sensor_num,
--					indio_dev, push_data);
--			if (ret)
--				return ret;
--
--			ret = devm_add_action_or_reset(
--					dev, cros_ec_sensors_core_clean, pdev);
--			if (ret)
--				return ret;
--
- 			/* Timestamp coming from FIFO are in ns since boot. */
- 			ret = iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
- 			if (ret)
-@@ -372,6 +358,46 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
- }
- EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
- 
-+/**
-+ * cros_ec_sensors_core_register() - Register callback to FIFO and IIO when
-+ * sensor is ready.
-+ * It must be called at the end of the sensor probe routine.
-+ * @dev:		device created for the sensor
-+ * @indio_dev:		iio device structure of the device
-+ * @push_data:          function to call when cros_ec_sensorhub receives
-+ *    a sample for that sensor.
-+ *
-+ * Return: 0 on success, -errno on failure.
-+ */
-+int cros_ec_sensors_core_register(struct device *dev,
-+				  struct iio_dev *indio_dev,
-+				  cros_ec_sensorhub_push_data_cb_t push_data)
-+{
-+	struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
-+	struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct cros_ec_dev *ec = sensor_hub->ec;
-+	int ret = 0;
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO) &&
-+	    push_data != NULL) {
-+		ret = cros_ec_sensorhub_register_push_data(
-+				sensor_hub, sensor_platform->sensor_num,
-+				indio_dev, push_data);
-+		if (ret)
-+			return ret;
-+
-+		ret = devm_add_action_or_reset(
-+				dev, cros_ec_sensors_core_clean, pdev);
-+	}
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(cros_ec_sensors_core_register);
-+
- /**
-  * cros_ec_motion_send_host_cmd() - send motion sense host command
-  * @state:		pointer to state information for device
-diff --git a/drivers/iio/light/cros_ec_light_prox.c b/drivers/iio/light/cros_ec_light_prox.c
-index e345e0f71b740..19e529c84e957 100644
---- a/drivers/iio/light/cros_ec_light_prox.c
-+++ b/drivers/iio/light/cros_ec_light_prox.c
-@@ -182,8 +182,7 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data);
-+					cros_ec_sensors_capture);
- 	if (ret)
- 		return ret;
- 
-@@ -239,7 +238,8 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
- 
- 	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	return devm_iio_device_register(dev, indio_dev);
-+	return cros_ec_sensors_core_register(dev, indio_dev,
-+					     cros_ec_sensors_push_data);
- }
- 
- static const struct platform_device_id cros_ec_light_prox_ids[] = {
-diff --git a/drivers/iio/pressure/cros_ec_baro.c b/drivers/iio/pressure/cros_ec_baro.c
-index 25217279f3507..2649c2f89e898 100644
---- a/drivers/iio/pressure/cros_ec_baro.c
-+++ b/drivers/iio/pressure/cros_ec_baro.c
-@@ -139,8 +139,7 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
--					cros_ec_sensors_capture,
--					cros_ec_sensors_push_data);
-+					cros_ec_sensors_capture);
- 	if (ret)
- 		return ret;
- 
-@@ -185,7 +184,8 @@ static int cros_ec_baro_probe(struct platform_device *pdev)
- 
- 	state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
- 
--	return devm_iio_device_register(dev, indio_dev);
-+	return cros_ec_sensors_core_register(dev, indio_dev,
-+					     cros_ec_sensors_push_data);
- }
- 
- static const struct platform_device_id cros_ec_baro_ids[] = {
-diff --git a/include/linux/iio/common/cros_ec_sensors_core.h b/include/linux/iio/common/cros_ec_sensors_core.h
-index a8259c8822f56..e72167b96d27e 100644
---- a/include/linux/iio/common/cros_ec_sensors_core.h
-+++ b/include/linux/iio/common/cros_ec_sensors_core.h
-@@ -93,8 +93,11 @@ int cros_ec_sensors_read_cmd(struct iio_dev *indio_dev, unsigned long scan_mask,
- struct platform_device;
- int cros_ec_sensors_core_init(struct platform_device *pdev,
- 			      struct iio_dev *indio_dev, bool physical_device,
--			      cros_ec_sensors_capture_t trigger_capture,
--			      cros_ec_sensorhub_push_data_cb_t push_data);
-+			      cros_ec_sensors_capture_t trigger_capture);
-+
-+int cros_ec_sensors_core_register(struct device *dev,
-+				  struct iio_dev *indio_dev,
-+				  cros_ec_sensorhub_push_data_cb_t push_data);
- 
- irqreturn_t cros_ec_sensors_capture(int irq, void *p);
- int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+
+sparse warnings: (new ones prefixed by >>)
+   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
+>> drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
+>> drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
+   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: restricted __le16 degrades to integer
+   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
+
+vim +928 drivers/iio/pressure/bmp280-core.c
+
+   908	
+   909	static int bmp380_read_calib(struct bmp280_data *data,
+   910				     struct bmp380_calib *calib, unsigned int chip)
+   911	{
+   912		int ret;
+   913		u8 buf[BMP380_CALIB_REG_COUNT];
+   914	
+   915		/* Read temperature calibration values. */
+   916		ret = regmap_bulk_read(data->regmap, BMP380_REG_CALIB_TEMP_START, buf,
+   917				       BMP380_CALIB_REG_COUNT);
+   918		if (ret < 0) {
+   919			dev_err(data->dev,
+   920				"failed to read temperature calibration parameters\n");
+   921			return ret;
+   922		}
+   923	
+   924		/* Toss the temperature calibration data into the entropy pool */
+   925		add_device_randomness(buf, sizeof(buf));
+   926	
+   927		/* Parse calibration data */
+ > 928		calib->T1 = le16_from_bytes(buf[BMP380_T1], buf[BMP380_T1 + 1]);
+   929		calib->T2 = le16_from_bytes(buf[BMP380_T2], buf[BMP380_T2 + 1]);
+   930		calib->T3 = buf[BMP380_T3];
+   931		calib->P1 = le16_from_bytes(buf[BMP380_P1], buf[BMP380_P1 + 1]);
+   932		calib->P2 = le16_from_bytes(buf[BMP380_P2], buf[BMP380_P2 + 1]);
+   933		calib->P3 = buf[BMP380_P3];
+   934		calib->P4 = buf[BMP380_P4];
+   935		calib->P5 = le16_from_bytes(buf[BMP380_P5], buf[BMP380_P5 + 1]);
+   936		calib->P6 = le16_from_bytes(buf[BMP380_P6], buf[BMP380_P6 + 1]);
+   937		calib->P7 = buf[BMP380_P7];
+   938		calib->P8 = buf[BMP380_P8];
+   939		calib->P9 = le16_from_bytes(buf[BMP380_P9], buf[BMP380_P9 + 1]);
+   940		calib->P10 = buf[BMP380_P10];
+   941		calib->P11 = buf[BMP380_P11];
+   942	
+   943		return 0;
+   944	}
+   945	
+
 -- 
-2.37.0.rc0.161.g10f37bed90-goog
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp

@@ -2,180 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13AA155ADEF
-	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 03:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF5A855B00C
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jun 2022 09:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbiFZBYr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 25 Jun 2022 21:24:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44884 "EHLO
+        id S234062AbiFZHvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 26 Jun 2022 03:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbiFZBYq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 25 Jun 2022 21:24:46 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D99AAB84E;
-        Sat, 25 Jun 2022 18:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656206684; x=1687742684;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Zxt7FTKnL1KnGMwsPjwbDJvrp8p26gSFYjDhU/sSKpU=;
-  b=PN1xdBiFI3LnJz0+6+xGwFE2OVRdB2XSgfruez5q119VjwyyQacbp8e6
-   Ti7e8P3R53SFMeqS9CFnk1ggGUDuKhrfctDHsvX+rPJTdBjSWkR/5YvKa
-   DPTixyqBYLw69ZMgMB37Bng12kiEuBaCWUl6C8eHIpUYrkuSujFifHCj7
-   jF88AvNMik3lmwq1YojEkj+odo7jnlJeJ5xhfz0AzQ/f5+F78s4ZuHLba
-   FXHquL7Ii3Hjey4mMtgeDiJ+edQXrY+uHDqo6laU0AxHiuc9X/XsKGGtH
-   E1ezfLO78e/O9Ch0ymcF/ZDmEf7lMhqoxxc6ZqT97nrp006x07jonJ1Iq
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10389"; a="345237201"
-X-IronPort-AV: E=Sophos;i="5.92,223,1650956400"; 
-   d="scan'208";a="345237201"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2022 18:24:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,223,1650956400"; 
-   d="scan'208";a="587008609"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 25 Jun 2022 18:24:42 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o5H0z-0006Xb-Fs;
-        Sun, 26 Jun 2022 01:24:41 +0000
-Date:   Sun, 26 Jun 2022 09:24:23 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     kbuild-all@lists.01.org, Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] iio: pressure: bmp280: Add support for BMP380 sensor
- family
-Message-ID: <202206260908.STsTkCPR-lkp@intel.com>
-References: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
+        with ESMTP id S233948AbiFZHvU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 26 Jun 2022 03:51:20 -0400
+Received: from sonic301-20.consmr.mail.ir2.yahoo.com (sonic301-20.consmr.mail.ir2.yahoo.com [77.238.176.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3081F120AF
+        for <linux-iio@vger.kernel.org>; Sun, 26 Jun 2022 00:51:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1656229877; bh=39cnnm2LcZpob9DUMBAQbw/FL7wmWN3SUwndjA+V+IM=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=aCOHGye8jea7IQosA6kJLtGHeXJ0nYmVYabloYgoyge4OeNF3i3yppRY2HYmdh/R9Kq5Ufl6zGGQQp7uhvHwlncFACKVU8MnHIbTuqd8cQvRWfBIDrwiUkYPGSXklJp8IUPT3nnIvoPV8J/eoelpoWyuGFfMBQ/+B/j1NdA9uZZJmP0V+Zb96/Q0FAwBdM3U9ldrGuPcU/NMgm9lcEAyiw8xjGzq/XfdMe5Sc7jLuFUfpOUYyc5ME7qvLGR197wj56BTGa6H5K8WdDRbD+yISNlNDNKX9zGzp1rnbLbI4pJhVfSbFb0sXt+W6QkN2xNawYmgtTaxi3WgZhwFIYh0jQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1656229877; bh=Qezq+kiFonbVJBLljqyjQV8R26/WQGnH7Xqlfj1tTGH=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=hLF6gVA+MS+LfFYqRumOtsfX4SQOlaPmUiZX01JvrDziAg99lPte4QOkWZF2ZNj4bxV0XQfi42UOqlkNgxceiyTFh2Wq1hPLCtJ45GfWR+KdtHahvVRproP4auXcOm2XJvesG0fZblHYho30AWwa7vy8Dna6H1c6bg1U4IOn+msQ2AqbJv8yjsHVrCh08TVL70o9JXcvmkmBuKW3TpSdFh3kbKkSh35d/vpQdpUGB+y7fojopBYZENyVN3GFK13WOvJGaYz1dObrmnASOKezvVC8zaRlMmv3hnt59Ks2yau/Qzixbjy8n93iv1JzrwBHa67LLJPET5xVO03gshYmGQ==
+X-YMail-OSG: qQ0smoAVM1mnPWGV7bUD98WUopSwrzNXadP2D1iGIuSf1TEGJhpE5LrbFTThXRZ
+ i1hFhK0z.GmGB3JqK393rKDt2q5QZbqyoj9bH.sMJpZJsfw2ONXVwmaMULEDyzlXZSDgTsGXTYGE
+ aeuPIIOCaPClOhV147udSUXdln05JFNBw1lpS3bHa0JxpGu58_WWuRFf07knohna74zaPAErmtpj
+ L1mDMI0a.r5aG_06YnA.SdsKkEFVmRKGVToyT_6pbkcHV3vgporI.RaDIgb_YbF21qh7ruKgHVGJ
+ E6.b1KWp1v8ouGZUibXHi6HXaImFLBqZzocebFQEvLEaRpLbqNHrr4T6Ps6Zg3H19XUYC9LvckkE
+ MX9sRcuZmfgqlfsnXJ.39F7n1KT.iwsUjAeubyeh0HDLKeymXS.9Pf4LHikFEYm_TwgKPXvbY2ul
+ egpu9OHEL5ZIY9JqeEBdarNkUBNuY55wG2V.u81dW60hagJh2JTRpMJqirhm8mMKbYDrl3vLHCj4
+ E10PpelW5OYhyBDMjZSRQM_XztfnWxkFKJAcn7Q0hM3aR.Yfc5v02gx.y1gJDpXiuXzR9MjFgr9q
+ O3uj6BYKIiv6itFcFKiJjwM_93xcPFkH4MtPxyV5fHKqQ97evGT6IRCUx.SXsYbA7yk3hKEi4PN_
+ LayAn3syYrkrWGqcjQpcnyEotRwZGv9ep7FD6Hovt6QTBL6sYxXx30Ba6WptzkQrjErbnsTIrF1Y
+ KzT3imbGUs901bP7f8_xiyzaqihfMH7PLhkncmtt78rlLhul9crCbpmZE6WpZnU023ok7YVeWUQt
+ 237O8Fwzh8y_WPeqADPbMLQrS6EShg9tJbKxyc7toV28GEpAsWH4zpxvZbLJkVckGpe2IbqD36U1
+ uR8Med9mYKAtnkENeywd.11xrh6uHPG9Uh2X9lRQsf3CDS5B9utCv0rGL0oVSbKQpqR84KxduHqA
+ Tkk20gCmQKhqiHSSv0FndhtM1NL5RyTdjNc3Mjvn6Y71gwBkj2BhaapZXdOvg2.f8eQbg0Yhihaa
+ lDhc5D9kMZVTBC.wECIaN0o5q5jHtxW9QZOWJmEUG8pvlhpZadFLVEsMomgoDEIshuAaKkufUzYj
+ 29JzUGkb0ivx7Sc37ZWcHXjzM15YLi2MWs9hE7HtWPad21K8kx8D7ejLTJON0drhfAmhCXtRwRIC
+ DCP374HsH6jzS6cpgj8kz2ygKnh483I9sJD4I.27oMSKF0h5gmDRjFJUsFaYUH6IYNwOf0B09hQB
+ mLUji6ysFptXxzHx8zhrbRbzlkLfKY3vOfhr0rEEKedjFEVntPGmLnYcGssmJdomDnfaYbtrgvlk
+ 3WUkDZXVwNVdAmlNtDiSfh1KSh.rB_th3JDfbeuVnIR4RWPBxxE01_zS0MPJ8KO8hKZTzu1iotsD
+ CM2CULG3ehLnlJuaWs7W0RLCtvAVSD0jYPs_sDpG4msv1x8oFBy0ZDflXJBotC65Z2nG5j2FmJcT
+ 8IXswusGqLMwwlfNn1CiwqT4.ns22Aiapg4hVxlBQSd9uzkg6t60zKoQ0CcgGsTRWt9d3sNoUdOH
+ bVlqIgFnMQFUf4nY43f.PAb6L5Adztz1TNIiD_.6cuaOZWv7nqQ2ul1g5UZASUADtC0Fj_AiKCtz
+ Uub.rj13k8xPf2A07UEIENUGCQBIFkeLrkJLOQlNr.UZpCnudr4ZC1j6jZt89f5LRpUicd8DsJP2
+ Kn6CpcF5yv1CeKBlDe7vFJIkGFG.gUv202Apt0garmIYJfaS_gd8mKI79tiq.WrZw_PaWqf8whWK
+ Ns4nsYmUqSYr0lur44fuw5ieFcnS9ZkiEYUnuGrugi_sDX9U7VDkU.eyKU13IgYIE5PmGZmt5lGU
+ f2SiSFCHVpumXvIxlyny0jnLecMZJ.j4jxqhhtuWSn_ZpwcK1B7e6kV_Z7cp6hYzSp35yuWOnjdd
+ ugvG.cEU1FMrcRMF1nR8xi8a.AQRmPva5VbinjoOEGIwVAGUk.FYY9zqvpu7cDIOFT.eGXry3vup
+ oW9maZOkDmsxm9WKN181d2A_0D.uDFUA5THgfR6MFkh4OLyS6FSedDQ13DAdmrHKwMrVAm0ikNEI
+ 1uH2iMiiz8yxlGrKVyDmAXJ9ALJyeGJULvVZBpB4b4ezHErRk._YdXOGqCHQwraYSDsRdFyQ.EO2
+ b0yScIUqm8c5kZdyOc8EwrUF1URiNGHtzrGCjGWDCqXnkm0eM8R2p9i4UgPRALfSoLJST46ZUT9o
+ ygGxrk_DXDikGLGE6ztEr2VxA2SpSquv3ApO8Qp476GeoCFCph_6MBAPO.h8d8jIT8lpG
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Sun, 26 Jun 2022 07:51:17 +0000
+Received: by hermes--canary-production-ir2-c9bf9d9bc-fw6gn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3a9d8ca4ca272df8e505774fd3b7d3a5;
+          Sun, 26 Jun 2022 07:51:12 +0000 (UTC)
+Message-ID: <c7de2a05-af72-5b73-b70c-82d84e84887c@rocketmail.com>
+Date:   Sun, 26 Jun 2022 09:51:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 5/8] iio: magnetometer: yas530: Change data type of
+ calibration coefficients
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1655509425.git.jahau@rocketmail.com>
+ <18f223776f6942d52af2e41dd10160e220a23311.1655509425.git.jahau@rocketmail.com>
+ <20220618155618.18996d0c@jic23-huawei>
+ <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+In-Reply-To: <10c06f21-23d3-d3a8-5a6d-8290cf2971cb@rocketmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20280 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Angel,
+Hi Jonathan,
 
-Thank you for the patch! Perhaps something to improve:
+On 21.06.22 02:51, Jakob Hauser wrote:
+>
+> 
+> On 18.06.22 16:56, Jonathan Cameron wrote:
+>
+>> On Sat, 18 Jun 2022 02:13:13 +0200
+>> Jakob Hauser <jahau@rocketmail.com> wrote:
+>>
+>>> This is a preparation for adding YAS537 variant.
+>>>
+>>> YAS537 uses other data types on the calibration coefficients [1] than YAS530 [2]
+>>> and YAS532 [3].
+>>>
+>>> On YAS537, at least for a4 and a7 this could matter because 8-bit unsigned data
+>>> from the register gets stored into a signed data type, therefore this should be
+>>> 8-bit as well.
+>>>
+>>> For YAS530/532, on the other hand, it doesn't seem to matter. The size of a2-a9
+>>> and k is smaller than 8-bit at extraction, also the applied math is low. And
+>>> Cx/Cy1/Cy2, now being defined as signed 16-bit, are extracted as unsigned 8-bit
+>>> and undergo only minor math.
+>>
+>> Ok. If this is harmless to existing drivers fair enough, though my personal
+>> inclination would have been to take the easier approach of making the
+>> new variant sign extend on variable load (sign_extend_32() and similar)
+>> just so we didn't need to check the older parts weren't affected.
+> 
+> I didn't know that operation :) Let's take this.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v5.19-rc3 next-20220624]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+While working on patchset v4, I just realized that sign_extend32() can't
+be used at the variable declaration but instead needs to be applied at
+"variable load", as you wrote.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: i386-randconfig-s001
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.4-31-g4880bd19-dirty
-        # https://github.com/intel-lab-lkp/linux/commit/56e3f8aecddacdbe204fbe5e28032ef2befae647
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Angel-Iglesias/dt-bindings-iio-pressure-bmp085-Add-BMP380-compatible-string/20220625-231424
-        git checkout 56e3f8aecddacdbe204fbe5e28032ef2befae647
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/pressure/
+I wasn't aware of this until now. In that case, I'd  prefer to leave the
+patch unchanged. Overall the resulting code looks simpler that way.
+Applying sign_extend32() at all locations where we extract calibration
+coefficients makes it more dizzy.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
->> drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
->> drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:928:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:929:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:931:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:932:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:935:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:936:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
-   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: restricted __le16 degrades to integer
-   drivers/iio/pressure/bmp280-core.c:939:21: sparse: sparse: cast to restricted __le16
-
-vim +928 drivers/iio/pressure/bmp280-core.c
-
-   908	
-   909	static int bmp380_read_calib(struct bmp280_data *data,
-   910				     struct bmp380_calib *calib, unsigned int chip)
-   911	{
-   912		int ret;
-   913		u8 buf[BMP380_CALIB_REG_COUNT];
-   914	
-   915		/* Read temperature calibration values. */
-   916		ret = regmap_bulk_read(data->regmap, BMP380_REG_CALIB_TEMP_START, buf,
-   917				       BMP380_CALIB_REG_COUNT);
-   918		if (ret < 0) {
-   919			dev_err(data->dev,
-   920				"failed to read temperature calibration parameters\n");
-   921			return ret;
-   922		}
-   923	
-   924		/* Toss the temperature calibration data into the entropy pool */
-   925		add_device_randomness(buf, sizeof(buf));
-   926	
-   927		/* Parse calibration data */
- > 928		calib->T1 = le16_from_bytes(buf[BMP380_T1], buf[BMP380_T1 + 1]);
-   929		calib->T2 = le16_from_bytes(buf[BMP380_T2], buf[BMP380_T2 + 1]);
-   930		calib->T3 = buf[BMP380_T3];
-   931		calib->P1 = le16_from_bytes(buf[BMP380_P1], buf[BMP380_P1 + 1]);
-   932		calib->P2 = le16_from_bytes(buf[BMP380_P2], buf[BMP380_P2 + 1]);
-   933		calib->P3 = buf[BMP380_P3];
-   934		calib->P4 = buf[BMP380_P4];
-   935		calib->P5 = le16_from_bytes(buf[BMP380_P5], buf[BMP380_P5 + 1]);
-   936		calib->P6 = le16_from_bytes(buf[BMP380_P6], buf[BMP380_P6 + 1]);
-   937		calib->P7 = buf[BMP380_P7];
-   938		calib->P8 = buf[BMP380_P8];
-   939		calib->P9 = le16_from_bytes(buf[BMP380_P9], buf[BMP380_P9 + 1]);
-   940		calib->P10 = buf[BMP380_P10];
-   941		calib->P11 = buf[BMP380_P11];
-   942	
-   943		return 0;
-   944	}
-   945	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Kind regards,
+Jakob

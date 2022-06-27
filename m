@@ -2,328 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FFE255C685
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 14:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F78455DCE7
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238385AbiF0Pfb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jun 2022 11:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57850 "EHLO
+        id S235053AbiF0Plg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jun 2022 11:41:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236810AbiF0Pfb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 11:35:31 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED39815A01;
-        Mon, 27 Jun 2022 08:35:29 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id i194so9894963ioa.12;
-        Mon, 27 Jun 2022 08:35:29 -0700 (PDT)
+        with ESMTP id S238503AbiF0Plf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 11:41:35 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD1A1A045
+        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 08:41:33 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id u15so19991557ejc.10
+        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 08:41:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=DWaXwbPhQLHYiofNZTdJv3EVFnAdrGH7jDTx9yceMtw=;
-        b=ksb5BcoUCSVfEkzZlG0QrskY3cFp4GorVjfAwA3x4/5DZbPV7fLw1Y7J523xOVf8Ub
-         /uyDjbniffH4qZhCtgHefzhHJo5mDm1SLBrVlKteg1HKo0DpS5G1aajvx+71eeOVJU7Q
-         V4ZSW+Fs3gR00ecyUtfFkLY/YrQJb75P9Lay6ZgTpnjMaG3lJ8lSFhfuzPBet7jTFz86
-         r8Jp0gvd0VPvh+m7ZA80t71BWSP+6AdPAP6nTiZk/uORkFE4rkKY4sdquPFdYg8vknvT
-         ZPVreFYVVRCZhl/EqFCOa1/hWPqIzoofIZunlmWCNSBK3Hh/lH8Vel38c3b/0AxKeA2x
-         1yBw==
+         :cc;
+        bh=kfjLdGhSexDPly8hhGteb3RZrx3gdLDiLngp+yfgmtA=;
+        b=NsXl7AlqR2pfsCVRgXgqqQMY53PwCluy6Pw33OIkhInuRj6kBIHiZWrcgrSMbk37BR
+         irazbdgwO603bJo8fNjG1qnUHYWaCelnYsGSLQ9s9XxGku/wjZ9I1WFgH4Rnbamii2ih
+         CuWrK4tcK1xCxQ8mNoCzvL0ptalphmRdIo6SY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=DWaXwbPhQLHYiofNZTdJv3EVFnAdrGH7jDTx9yceMtw=;
-        b=U5sXM/E14uEcrIzKV40HTrmpESr/d3OvXgAtmnhiLj655X0C62Z4kbrkLzB+XXffqF
-         a+f5D458K/KuxpmvreuqkG4R2Q4bVdgJsVuBytekbspY8gVksN+NBg3xkjlvvqVtKURV
-         PbXQiZ1Df5jxqAT3G5QBexP15dvkbmiHlbOEdMDsTNx9XbWvSEAti2dkZtvTacHjMpjD
-         nx6JETrx96mmUuC5q8ihqEVudbgUL715X+zPWrWYaSjNWTgCmhCCNA7iZxOIjjCg1XG+
-         ZQW0V4p6BTQaj5OZBGqUq9fuV/ZMtj9SYmV1/yTSjlhguaHVGe+j0XQuqRMOH/K60gjX
-         0Rfg==
-X-Gm-Message-State: AJIora8PyT78VX5HzEr60CyjfTZN8mFzIbg0VDxEGsjAhQJBQ1bfT7tT
-        dKLEy2CLzfV0iCEAyX5mCxX/HkjZsclQJqGY8n4=
-X-Google-Smtp-Source: AGRyM1uuqQ0pteqznSDBc+rr+xZIcchgLPVUMC7kEEbrXp0/Nr/J1O/NizWgVIIzmtRuba13kEvcIfC6ruo3to2Wzrw=
-X-Received: by 2002:a05:6638:210e:b0:33c:953d:5676 with SMTP id
- n14-20020a056638210e00b0033c953d5676mr4041037jaj.196.1656344128174; Mon, 27
- Jun 2022 08:35:28 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=kfjLdGhSexDPly8hhGteb3RZrx3gdLDiLngp+yfgmtA=;
+        b=UFzpfc4Ebl4SXMAjXT2WyALYGMTpdmIAl5wyL1gMLmnvlrWG+XoF88mjLhCPYf/+PM
+         bPZcmaXFYnP9ZAzI9/UYW5k3yRIbN4aRpPpLr/cffJnRVkL0E9Wo2zNXo7MmefKOcUPW
+         JL3/EaV56+/n3zL1vM8DktlYp/NE9jGOgjn3Vw1mSocvHs5fVdVAvHxbmjmfSdp6F23G
+         WObpIv6ze7SuRACiCaytM+hyeBiKIhXVsehrWG24Pdd0VDaz8jvnbpRPgZ2nJNA8rfjN
+         THCAbhFQy3/a8XAEowU3+ih/fxOD+XGMUcHPORD58pReeYGihLo+4y01fE0FKTFL9nts
+         OKzQ==
+X-Gm-Message-State: AJIora8qhXt2wrHsL2nMfzDgxeQyNz50ayJRRPTutOkCgkBsmm1kigbx
+        ogAk/1OFKL1nP71bO/EP6RcJgWW3Go/2b3gI
+X-Google-Smtp-Source: AGRyM1vmLCgqpVZwe6Kn/40NtLOBUOrWVO9sUGMatxbOy56k3oVsesTiBfda86DRJHitFNyW6UUeKg==
+X-Received: by 2002:a17:907:930:b0:711:da36:62f7 with SMTP id au16-20020a170907093000b00711da3662f7mr13384657ejc.468.1656344491823;
+        Mon, 27 Jun 2022 08:41:31 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
+        by smtp.gmail.com with ESMTPSA id r1-20020a17090638c100b007219c20dcd8sm5149986ejd.196.2022.06.27.08.41.30
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jun 2022 08:41:31 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id o4so9689165wrh.3
+        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 08:41:30 -0700 (PDT)
+X-Received: by 2002:adf:d1e9:0:b0:21b:c8f8:3c16 with SMTP id
+ g9-20020adfd1e9000000b0021bc8f83c16mr7399317wrd.659.1656344490253; Mon, 27
+ Jun 2022 08:41:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220613111146.25221-1-peterwu.pub@gmail.com> <20220613111146.25221-9-peterwu.pub@gmail.com>
- <Yqph8jwHU8rPooJA@google.com> <CABtFH5KLVQFYOBGZ--9+s4GrHXbsDao-yL-KCFwL3FD_kbNhjg@mail.gmail.com>
- <Yrm7NTID16g8gM5t@google.com>
-In-Reply-To: <Yrm7NTID16g8gM5t@google.com>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Mon, 27 Jun 2022 23:35:06 +0800
-Message-ID: <CABtFH5L7B_kEvG5E2Um5EANEScJPTfQthyLNfCbvoHq_YDpXxQ@mail.gmail.com>
-Subject: Re: [PATCH v2 08/15] mfd: mt6370: Add Mediatek MT6370 support
-To:     Lee Jones <lee.jones@linaro.org>
+References: <CAPUE2usKnbvXw5wBLq-w4ZkftAqZdiwQHu51rWi_-Dw8PoC9_Q@mail.gmail.com>
+ <20220625222443.2906866-1-gwendal@chromium.org>
+In-Reply-To: <20220625222443.2906866-1-gwendal@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 27 Jun 2022 08:41:18 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UvSfo82=w5R7R4zhkuj6Z+xffyLe6HRsLzUommTvyWag@mail.gmail.com>
+Message-ID: <CAD=FV=UvSfo82=w5R7R4zhkuj6Z+xffyLe6HRsLzUommTvyWag@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: cros: Register FIFO callback after sensor is registered
+To:     Gwendal Grignou <gwendal@chromium.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>,
-        ChiYuan Huang <cy_huang@richtek.com>
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-iio <linux-iio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Lee,
+Hi,
 
-Thanks for your reply!
+On Sat, Jun 25, 2022 at 3:24 PM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> Instead of registering callback to process sensor events right at
+> initialization time, wait for the sensor to be register in the iio
+> subsystem.
+>
+> Events can come at probe time (in case the kernel rebooted abruptly
+> without switching the sensor off for  instance), and be sent to IIO core
+> before the sensor is fully registered.
+>
+> Reported-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+> Changes since v1:
+> - renamed from "iio: cros: Add cros_ec_sensors_core_register"
+> - Call devm_iio_device_register() inside cros_ec_sensors_core_register.
+>
+>  drivers/iio/accel/cros_ec_accel_legacy.c      |  4 +-
+>  .../cros_ec_sensors/cros_ec_lid_angle.c       |  4 +-
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +-
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 58 ++++++++++++++-----
+>  drivers/iio/light/cros_ec_light_prox.c        |  6 +-
+>  drivers/iio/pressure/cros_ec_baro.c           |  6 +-
+>  .../linux/iio/common/cros_ec_sensors_core.h   |  7 ++-
+>  7 files changed, 60 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index 1c0171f26e99e..0f403342b1fc0 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>                 return -ENOMEM;
+>
+>         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> -                                       cros_ec_sensors_capture, NULL);
+> +                                       cros_ec_sensors_capture);
+>         if (ret)
+>                 return ret;
+>
+> @@ -235,7 +235,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>                 state->sign[CROS_EC_SENSOR_Z] = -1;
+>         }
+>
+> -       return devm_iio_device_register(dev, indio_dev);
+> +       return cros_ec_sensors_core_register(dev, indio_dev, NULL);
 
-Lee Jones <lee.jones@linaro.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=8827=E6=97=
-=A5 =E9=80=B1=E4=B8=80 =E6=99=9A=E4=B8=8A10:14=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Sat, 18 Jun 2022, ChiaEn Wu wrote:
->
-> > Hi Lee,
-> >
-> > Thanks for your helpful comments, we have some questions and replies be=
-low.
-> >
-> > Lee Jones <lee.jones@linaro.org> =E6=96=BC 2022=E5=B9=B46=E6=9C=8816=E6=
-=97=A5 =E9=80=B1=E5=9B=9B =E6=B8=85=E6=99=A86:49=E5=AF=AB=E9=81=93=EF=BC=9A
-> >
-> > >
-> > > On Mon, 13 Jun 2022, ChiaEn Wu wrote:
-> > >
-> > > > From: ChiYuan Huang <cy_huang@richtek.com>
-> > > >
-> > > > Add Mediatek MT6370 MFD support.
-> > > >
-> > > > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > > > ---
-> > > >  drivers/mfd/Kconfig  |  13 ++
-> > > >  drivers/mfd/Makefile |   1 +
-> > > >  drivers/mfd/mt6370.c | 349 +++++++++++++++++++++++++++++++++++++++=
-++++
-> > > >  3 files changed, 363 insertions(+)
-> > > >  create mode 100644 drivers/mfd/mt6370.c
-> > > >
-> > > > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> > > > index 3b59456f5545..d9a7524a3e0e 100644
-> > > > --- a/drivers/mfd/Kconfig
-> > > > +++ b/drivers/mfd/Kconfig
-> > > > @@ -937,6 +937,19 @@ config MFD_MT6360
-> > > >         PMIC part includes 2-channel BUCKs and 2-channel LDOs
-> > > >         LDO part includes 4-channel LDOs
-> > > >
-> > > > +config MFD_MT6370
-> > > > +     tristate "Mediatek MT6370 SubPMIC"
-> > > > +     select MFD_CORE
-> > > > +     select REGMAP_I2C
-> > > > +     select REGMAP_IRQ
-> > > > +     depends on I2C
-> > > > +     help
-> > > > +       Say Y here to enable MT6370 SubPMIC functional support.
-> > > > +       It integrate single cell battery charger with adc monitorin=
-g, RGB
-> > >
-> > > s/integrates/consists of a/
-> > >
-> > > "ADC"
-> >
-> > We will fine it in the next patch.
-> >
-> > >
-> > > > +       LEDs, dual channel flashlight, WLED backlight driver, displ=
-ay bias
-> > >
-> > > > +       voltage supply, one general purpose LDO, and cc logic
-> > > > +       controller with USBPD commmunication capable.
-> > >
-> > > The last part makes no sense - "and is USBPD"?
-> >
-> > If we modify this help text to
-> > "one general purpose LDO, and the USB Type-C & PD controller complies
-> > with the latest USB Type-C and PD standards",
-> > did these modifications meet your expectations?
->
-> "one general purpose LDO and a USB Type-C & PD controller that
-> complies with the latest USB Type-C and PD standards"
->
-> Better?
+In the case where the last argument is NULL then the new
+cros_ec_sensors_core_register() is always equivalent to the old
+devm_iio_device_register(), right? ...but I guess it's more idiomatic
+to always use the cros_ec version, so I'm OK with this.
 
-Yes, thanks! We will modify it like that in the next patch.
 
+> @@ -372,6 +358,46 @@ int cros_ec_sensors_core_init(struct platform_device *pdev,
+>  }
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_core_init);
 >
-> > > >  config MFD_MT6397
-> > > >       tristate "MediaTek MT6397 PMIC Support"
-> > > >       select MFD_CORE
-> > > > diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> > > > index 858cacf659d6..62b27125420e 100644
-> > > > --- a/drivers/mfd/Makefile
-> > > > +++ b/drivers/mfd/Makefile
-> > > > @@ -242,6 +242,7 @@ obj-$(CONFIG_INTEL_SOC_PMIC_BXTWC)        +=3D =
-intel_soc_pmic_bxtwc.o
-> > > >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTWC)   +=3D intel_soc_pmic_chtwc.o
-> > > >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTDC_TI)        +=3D intel_soc_pmic_c=
-htdc_ti.o
-> > > >  obj-$(CONFIG_MFD_MT6360)     +=3D mt6360-core.o
-> > > > +obj-$(CONFIG_MFD_MT6370)     +=3D mt6370.o
-> > > >  mt6397-objs                  :=3D mt6397-core.o mt6397-irq.o mt635=
-8-irq.o
-> > > >  obj-$(CONFIG_MFD_MT6397)     +=3D mt6397.o
-> > > >  obj-$(CONFIG_INTEL_SOC_PMIC_MRFLD)   +=3D intel_soc_pmic_mrfld.o
-> > > > diff --git a/drivers/mfd/mt6370.c b/drivers/mfd/mt6370.c
-> > > > new file mode 100644
-> > > > index 000000000000..6af9f73c9c0c
-> > > > --- /dev/null
-> > > > +++ b/drivers/mfd/mt6370.c
-> > > > @@ -0,0 +1,349 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > +
-> > > > +#include <linux/bits.h>
-> > > > +#include <linux/i2c.h>
-> > > > +#include <linux/interrupt.h>
-> > > > +#include <linux/kernel.h>
-> > > > +#include <linux/mfd/core.h>
-> > > > +#include <linux/module.h>
-> > > > +#include <linux/regmap.h>
-> > > > +
-> > > > +enum {
-> > > > +     MT6370_USBC_I2C =3D 0,
-> > > > +     MT6370_PMU_I2C,
-> > > > +     MT6370_MAX_I2C
-> > > > +};
-> > > > +
-> > > > +#define MT6370_REG_DEV_INFO  0x100
-> > > > +#define MT6370_REG_CHG_IRQ1  0x1C0
-> > > > +#define MT6370_REG_CHG_MASK1 0x1E0
-> > > > +
-> > > > +#define MT6370_VENID_MASK    GENMASK(7, 4)
-> > > > +
-> > > > +#define MT6370_NUM_IRQREGS   16
-> > > > +#define MT6370_USBC_I2CADDR  0x4E
-> > > > +#define MT6370_REG_ADDRLEN   2
-> > > > +#define MT6370_REG_MAXADDR   0x1FF
-> > > > +
-> > > > +/* IRQ definitions */
-> > > > +#define MT6370_IRQ_DIRCHGON          0
-> > > > +#define MT6370_IRQ_CHG_TREG          4
-> > > > +#define MT6370_IRQ_CHG_AICR          5
-> > > > +#define MT6370_IRQ_CHG_MIVR          6
-> > > > +#define MT6370_IRQ_PWR_RDY           7
-> > > > +#define MT6370_IRQ_FL_CHG_VINOVP     11
-> > > > +#define MT6370_IRQ_CHG_VSYSUV                12
-> > > > +#define MT6370_IRQ_CHG_VSYSOV                13
-> > > > +#define MT6370_IRQ_CHG_VBATOV                14
-> > > > +#define MT6370_IRQ_CHG_VINOVPCHG     15
-> > > > +#define MT6370_IRQ_TS_BAT_COLD               20
-> > > > +#define MT6370_IRQ_TS_BAT_COOL               21
-> > > > +#define MT6370_IRQ_TS_BAT_WARM               22
-> > > > +#define MT6370_IRQ_TS_BAT_HOT                23
-> > > > +#define MT6370_IRQ_TS_STATC          24
-> > > > +#define MT6370_IRQ_CHG_FAULT         25
-> > > > +#define MT6370_IRQ_CHG_STATC         26
-> > > > +#define MT6370_IRQ_CHG_TMR           27
-> > > > +#define MT6370_IRQ_CHG_BATABS                28
-> > > > +#define MT6370_IRQ_CHG_ADPBAD                29
-> > > > +#define MT6370_IRQ_CHG_RVP           30
-> > > > +#define MT6370_IRQ_TSHUTDOWN         31
-> > > > +#define MT6370_IRQ_CHG_IINMEAS               32
-> > > > +#define MT6370_IRQ_CHG_ICCMEAS               33
-> > > > +#define MT6370_IRQ_CHGDET_DONE               34
-> > > > +#define MT6370_IRQ_WDTMR             35
-> > > > +#define MT6370_IRQ_SSFINISH          36
-> > > > +#define MT6370_IRQ_CHG_RECHG         37
-> > > > +#define MT6370_IRQ_CHG_TERM          38
-> > > > +#define MT6370_IRQ_CHG_IEOC          39
-> > > > +#define MT6370_IRQ_ADC_DONE          40
-> > > > +#define MT6370_IRQ_PUMPX_DONE                41
-> > > > +#define MT6370_IRQ_BST_BATUV         45
-> > > > +#define MT6370_IRQ_BST_MIDOV         46
-> > > > +#define MT6370_IRQ_BST_OLP           47
-> > > > +#define MT6370_IRQ_ATTACH            48
-> > > > +#define MT6370_IRQ_DETACH            49
-> > > > +#define MT6370_IRQ_HVDCP_STPDONE     51
-> > > > +#define MT6370_IRQ_HVDCP_VBUSDET_DONE        52
-> > > > +#define MT6370_IRQ_HVDCP_DET         53
-> > > > +#define MT6370_IRQ_CHGDET            54
-> > > > +#define MT6370_IRQ_DCDT                      55
-> > > > +#define MT6370_IRQ_DIRCHG_VGOK               59
-> > > > +#define MT6370_IRQ_DIRCHG_WDTMR              60
-> > > > +#define MT6370_IRQ_DIRCHG_UC         61
-> > > > +#define MT6370_IRQ_DIRCHG_OC         62
-> > > > +#define MT6370_IRQ_DIRCHG_OV         63
-> > > > +#define MT6370_IRQ_OVPCTRL_SWON              67
-> > > > +#define MT6370_IRQ_OVPCTRL_UVP_D     68
-> > > > +#define MT6370_IRQ_OVPCTRL_UVP               69
-> > > > +#define MT6370_IRQ_OVPCTRL_OVP_D     70
-> > > > +#define MT6370_IRQ_OVPCTRL_OVP               71
-> > > > +#define MT6370_IRQ_FLED_STRBPIN              72
-> > > > +#define MT6370_IRQ_FLED_TORPIN               73
-> > > > +#define MT6370_IRQ_FLED_TX           74
-> > > > +#define MT6370_IRQ_FLED_LVF          75
-> > > > +#define MT6370_IRQ_FLED2_SHORT               78
-> > > > +#define MT6370_IRQ_FLED1_SHORT               79
-> > > > +#define MT6370_IRQ_FLED2_STRB                80
-> > > > +#define MT6370_IRQ_FLED1_STRB                81
-> > > > +#define mT6370_IRQ_FLED2_STRB_TO     82
-> > > > +#define MT6370_IRQ_FLED1_STRB_TO     83
-> > > > +#define MT6370_IRQ_FLED2_TOR         84
-> > > > +#define MT6370_IRQ_FLED1_TOR         85
-> > > > +#define MT6370_IRQ_OTP                       93
-> > > > +#define MT6370_IRQ_VDDA_OVP          94
-> > > > +#define MT6370_IRQ_VDDA_UV           95
-> > > > +#define MT6370_IRQ_LDO_OC            103
-> > > > +#define MT6370_IRQ_BLED_OCP          118
-> > > > +#define MT6370_IRQ_BLED_OVP          119
-> > > > +#define MT6370_IRQ_DSV_VNEG_OCP              123
-> > > > +#define MT6370_IRQ_DSV_VPOS_OCP              124
-> > > > +#define MT6370_IRQ_DSV_BST_OCP               125
-> > > > +#define MT6370_IRQ_DSV_VNEG_SCP              126
-> > > > +#define MT6370_IRQ_DSV_VPOS_SCP              127
-> > > > +
-> > > > +struct mt6370_info {
-> > > > +     struct i2c_client *i2c[MT6370_MAX_I2C];
-> > > > +     struct device *dev;
-> > > > +     struct regmap *regmap;
-> > > > +     struct regmap_irq_chip_data *irq_data;
-> > > > +};
-> > >
-> > > Can we shove all of the above into a header file?
-> >
-> > Well... In Patch v1, we put these "#define IRQ" into
-> > "include/dt-bindings/mfd/mediatek,mt6370.h".
-> > But the reviewer of DT files hoped us to remove this header file, we
-> > put these "#define IRQ" in this .c file.
-> > Shall we leave them here or put them into the header file in
-> > "driver/power/supply/mt6370-charger.h"?
->
-> Where are they used?
+> +/**
+> + * cros_ec_sensors_core_register() - Register callback to FIFO and IIO when
+> + * sensor is ready.
+> + * It must be called at the end of the sensor probe routine.
+> + * @dev:               device created for the sensor
+> + * @indio_dev:         iio device structure of the device
+> + * @push_data:          function to call when cros_ec_sensorhub receives
+> + *    a sample for that sensor.
+> + *
+> + * Return: 0 on success, -errno on failure.
+> + */
+> +int cros_ec_sensors_core_register(struct device *dev,
+> +                                 struct iio_dev *indio_dev,
+> +                                 cros_ec_sensorhub_push_data_cb_t push_data)
+> +{
+> +       struct cros_ec_sensor_platform *sensor_platform = dev_get_platdata(dev);
+> +       struct cros_ec_sensorhub *sensor_hub = dev_get_drvdata(dev->parent);
+> +       struct platform_device *pdev = to_platform_device(dev);
+> +       struct cros_ec_dev *ec = sensor_hub->ec;
+> +       int ret = 0;
 
-Sorry, I wrote the wrong path last time...
-What I should say last time was to put them into the header file into
-"driver/mfd/mt6370.h"
-These "#define IRQ" are just used in "driver/mfd/mt6370.c"
-I=E2=80=99m really sorry for making this mistake...
+nit: don't init "ret" to 0 when you simply assign it right below.
 
->
-> --
-> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
-> Principal Technical Lead - Developer Services
-> Linaro.org =E2=94=82 Open source software for Arm SoCs
-> Follow Linaro: Facebook | Twitter | Blog
 
-Best regards,
-ChiaEn Wu
+> +       ret = devm_iio_device_register(dev, indio_dev);
+> +       if (ret)
+> +               return ret;
+> +
+> +       if (cros_ec_check_features(ec, EC_FEATURE_MOTION_SENSE_FIFO) &&
+> +           push_data != NULL) {
+
+I think the check for push_data should be first so it can short
+circuit and avoid the call to cros_ec_check_features(), right?
+
+In the past I've been yelled at for using "!= NULL" and told that
+thing should simply be "&& push_data". I'll leave it up to you about
+whether it's something that should be changed here.
+
+Also: you can reduce indentation of the function and simply if you just do:
+
+if (!push_data || !cros_ec_check_features(...))
+  return 0;
+
+-Doug

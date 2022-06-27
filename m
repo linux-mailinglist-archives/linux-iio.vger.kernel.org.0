@@ -2,86 +2,145 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE90555C3B3
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 14:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63FA55D06D
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235830AbiF0N31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jun 2022 09:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40678 "EHLO
+        id S236716AbiF0OKE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jun 2022 10:10:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235802AbiF0N3Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 09:29:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCCCE6449;
-        Mon, 27 Jun 2022 06:29:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FA9E6131C;
-        Mon, 27 Jun 2022 13:29:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2776C341C7;
-        Mon, 27 Jun 2022 13:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656336562;
-        bh=koP0LmMICCW2tEjuoT240NQp9NWZVgkESEstwnzFVEU=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=pXnBwbGpnvLxDLqShZ45Xp/YVOroDAW49CNWQdsxNPxIhyY27pZATkEz9mZJTB9Qi
-         29xtzFsNQn9Lj21GILf/oW1JPd2t1mZBVxjmjr4Za84dXQ7Yu8aULEj1li0qYweuBY
-         Dk2jO43GpFnPDGTy3y9GycgUgtpOWHNQgwz6EZN1ZLt+mSvm8y50AB1IUUsJy9QcyQ
-         TiYLhHVrz3jDF6RUURmqC1VxbHtiOHkAVICXJ32T9VcMR1IRhZMKDGyx+6Y+MwRL3N
-         nUY8phHh+fKjjcIeiBTomavLUlzV4Lk4yvenffVzdWCq7Bdkfe2TMIdQZxvegpIdJw
-         ec88Sfv4dpIFQ==
-Received: by mail-ua1-f42.google.com with SMTP id k19so3443852uap.7;
-        Mon, 27 Jun 2022 06:29:22 -0700 (PDT)
-X-Gm-Message-State: AJIora9QWuOcJx/oBfjIaE+rsqwhcDBoNaK+6jCG5kT6VFEx4R+g32Iz
-        QUwDG6hJpbn3sIKiJ9QPJavPu3i5nm+q+OpfLw==
-X-Google-Smtp-Source: AGRyM1tOtcxuT6/x81UVoJBJzNeJo6UBAxDP1STaallBGDtYQjq4Xv5cpryqMvdjHDlsdwgzmLcQQu/RDxSCO35hOeU=
-X-Received: by 2002:a05:6130:3aa:b0:37f:26c0:e196 with SMTP id
- az42-20020a05613003aa00b0037f26c0e196mr4580118uab.43.1656336561682; Mon, 27
- Jun 2022 06:29:21 -0700 (PDT)
+        with ESMTP id S236724AbiF0OKB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 10:10:01 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F201D13D0F
+        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 07:09:59 -0700 (PDT)
+Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LWqJP4rlCz6H8N8;
+        Mon, 27 Jun 2022 22:05:57 +0800 (CST)
+Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
+ fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 27 Jun 2022 16:09:57 +0200
+Received: from localhost (10.202.226.42) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 27 Jun
+ 2022 15:09:56 +0100
+Date:   Mon, 27 Jun 2022 15:09:55 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Fabrice Gasnier" <fabrice.gasnier@foss.st.com>
+Subject: Re: [PATCH 3/4] iio: ABI: stm32-timer-trigger: Fuse unusual ABI
+ into main doc.
+Message-ID: <20220627150955.00001e68@Huawei.com>
+In-Reply-To: <20220626233745.10cd37ff@sal.lan>
+References: <20220626165511.602202-1-jic23@kernel.org>
+        <20220626165511.602202-4-jic23@kernel.org>
+        <20220626233745.10cd37ff@sal.lan>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-References: <20220614151722.2194936-1-sravanhome@gmail.com>
- <20220614151722.2194936-2-sravanhome@gmail.com> <YqpkXYAtXtvzX44J@google.com>
-In-Reply-To: <YqpkXYAtXtvzX44J@google.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 27 Jun 2022 07:29:10 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKg2rv5_ZKqRpNcxQVDqvETOrKXfvWMDvemDRgS57yFqQ@mail.gmail.com>
-Message-ID: <CAL_JsqKg2rv5_ZKqRpNcxQVDqvETOrKXfvWMDvemDRgS57yFqQ@mail.gmail.com>
-Subject: Re: [PATCH 2/6] dt-bindings: mfd: Add mp2733 compatible
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Saravanan Sekar <sravanhome@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "open list:THERMAL" <linux-pm@vger.kernel.org>,
-        devicetree@vger.kernel.org,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhreml736-chm.china.huawei.com (10.201.108.87) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 15, 2022 at 4:59 PM Lee Jones <lee.jones@linaro.org> wrote:
->
-> On Tue, 14 Jun 2022, Saravanan Sekar wrote:
->
-> > Add new compatible for mp2733 mfd driver.
-> >
-> > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+On Sun, 26 Jun 2022 23:37:45 +0100
+Mauro Carvalho Chehab <mchehab@kernel.org> wrote:
+
+> Em Sun, 26 Jun 2022 17:55:10 +0100
+> Jonathan Cameron <jic23@kernel.org> escreveu:
+> 
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > We can't duplicate the description of sampling_frequency. This device
+> > has some unusual requirements which we solved by giving a
+> > sampling_frequency of 0 special meaning. As such add a note
+> > about this unusual usage to the main documentation.
+> > 
+> > Whilst I don't particularly like this resolution, it is the best
+> > I could come up with given earlier discussion on this topic.
+> > 
+> > Link: https://lore.kernel.org/linux-iio/20210315101217.00002c50@Huawei.com/
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 > > ---
-> >  Documentation/devicetree/bindings/mfd/mps,mp2629.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
->
-> Applied, thanks.
+> >  Documentation/ABI/testing/sysfs-bus-iio             | 3 +++
+> >  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 | 8 --------
+> >  2 files changed, 3 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index 3e00d7f7ee22..e81ba6f5e1c8 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -107,6 +107,9 @@ Description:
+> >  		relevant directories.  If it affects all of the above
+> >  		then it is to be found in the base device directory.
+> >  
+> > +		The stm32-timer-trigger has the additional characteristic that
+> > +		a sampling_frequency of 0 is defined to stop sampling.
+> > +  
+> 
+> I would actually say something like:
+> 
+> 		A ampling_frequency of 0 means to stop sampling,
+> 		if supported by the driver.
+> 
 
-This breaks linux-next. Please apply v3 instead.
+We actively want to stop people doing this without coming
+to the list and explaining exactly why they need to. The discussion
+around that one exception was long and involved. So we want
+them to have to modify this doc to list their part thus raising
+awareness of them doing this. So far it's in one driver our of many
+(and to use this feature it needs custom userspace as it is
+setting up a complex chain of devices, but for other more conventional
+use, not allowing 0 is fine).
 
-Rob
+The source of this disagreement is the documentation serves two
+purposes - for userspace code authors and for kernel developers.
+Userspace can just not set the value to 0 if it is generic code.
+
+We could add additional ABI element to make userspace aware, but
+so far only this one device which will run with customer userspace
+uses this.  Hence we rely on documentation.
+
+Jonathan
+
+> Either way:
+> 
+> Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> 
+> 
+> >  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > index c4a4497c249a..05074c4a65e2 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > @@ -90,14 +90,6 @@ Description:
+> >  		Reading returns the current master modes.
+> >  		Writing set the master mode
+> >  
+> > -What:		/sys/bus/iio/devices/triggerX/sampling_frequency
+> > -KernelVersion:	4.11
+> > -Contact:	benjamin.gaignard@st.com
+> > -Description:
+> > -		Reading returns the current sampling frequency.
+> > -		Writing an value different of 0 set and start sampling.
+> > -		Writing 0 stop sampling.
+> > -
+> >  What:		/sys/bus/iio/devices/iio:deviceX/in_count0_preset
+> >  KernelVersion:	4.12
+> >  Contact:	benjamin.gaignard@st.com  
+

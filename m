@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C02255DF05
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0202B55D34F
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:12:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242474AbiF0WPA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jun 2022 18:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48592 "EHLO
+        id S242401AbiF0WPB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jun 2022 18:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242476AbiF0WO5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 18:14:57 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4076251;
-        Mon, 27 Jun 2022 15:14:56 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id p128so11127009iof.1;
-        Mon, 27 Jun 2022 15:14:56 -0700 (PDT)
+        with ESMTP id S242481AbiF0WO6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 18:14:58 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F9C4F8;
+        Mon, 27 Jun 2022 15:14:57 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id p9so6688772ilj.7;
+        Mon, 27 Jun 2022 15:14:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=BVB7C/5MkJDKS/sblnSL0zYrA4sSlEYmWcTFfszpEhg=;
-        b=TxOJM9caTshAkFhOQbUcF0w0mLeCH5nQpb0YnnqrpaxJ1pmJUIxkF3GUtCgEJT/QvC
-         WPDqgWsFODH6UVlDWe2nbpf2IQ0AzTPUPN+73MUExjkNa7ed/AAEjcHO23ofmSPLP45T
-         MYyBxe5X7ank1Vepl0pKaZK3lG5MHFALAcbHh5K22ot0kq4HfnS7NiNLmQ1f7M183xa/
-         BirG2ibkuRa+p4GOc/Rhl2w6Kn9EdYe57B4na2sLccI5tzyW6AB0XRLfLY7e62KwpYFs
-         n9ItgjYUPPtZqolyGrgOZjNJVy0Mty6T6OzVbse4Lt5N3eACNq4iHi/6L9SrZ9cL/PeL
-         qAaw==
+        bh=pV2xTgdlxdd1ooYEnYbOQKVwbFMX8hVbxWQ2hIe3+xs=;
+        b=RcsQhNjF7KK48nc/jdZpKDrn3PkpNF1Vp/D0KYuAbR/ThnCcKdtSOS/iZheghJNA/I
+         BZ6/HIVLue3SZeKbjTUXPKaAXud0ihMjBDdAEIF//1ych74DYGKTejOsPluKYDW7upmy
+         5Pwm1gIPnp/zCN4BMyP8ec0q1kofbW3Y3PiMxyDQMusD9PtidpAK9CBsa6Tl2SXBCwf2
+         f+h9EsjWs8utxuB3OQRbgKfbR5a5g+/yFBaDqcg3bH27JJ3ZBPujaNysB4izspw6aTMu
+         bJx8pg17jStg7JjqH9O1aEio/7Bnv35TnVXdvdN4e6SkMMz8TqLuCGB4pzEzZS8Cr2Vp
+         QxEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=BVB7C/5MkJDKS/sblnSL0zYrA4sSlEYmWcTFfszpEhg=;
-        b=d1EioRorAD+pRfwexg5gsav/QeYwxIAoOFm1xqwUOJlsgwXBS1imFuiPTyME/TRzYV
-         7yXJ/j5lYbh+kzZregg/L0iQ1/9zimHHz3AojGKKht5U3mJyg8ALCrrQZqqheJZALNg8
-         c13+u5wBRiYEsMZPMR8uzWt8++rBDgQwu3XcCwqbeeFfag7DugRNVvfTUrEh00sJ/6w/
-         GukMfeUKMYOoXQVZNr3GkP4tis5M3lCgrsfsASHKq82ZsekmHEw2nDDaPMV2nTZMJFot
-         rJEqJx8H7hOdrbzmPhkh8YQ1LVaNcsEhrJKzAeOhrCqx6KKUh/+aNHTwGjv9s6RjvAsm
-         y+tw==
-X-Gm-Message-State: AJIora/dCredCtcJbhg8R0pLJUN0djMlFdpmMiSCVfWCkj9y9wwH9ukb
-        BU9h/RFvvcwMpGRhdkFwNLj4AxDo/Qg=
-X-Google-Smtp-Source: AGRyM1vRPf22f5qviQc3o4uheuTBsXJFExE6Cz/WDRuc0KTc+cCvhK4GF9pxaV6kaViaB+/XmayHAg==
-X-Received: by 2002:a05:6638:13cd:b0:33c:84c0:1ac7 with SMTP id i13-20020a05663813cd00b0033c84c01ac7mr7276791jaj.83.1656368095078;
-        Mon, 27 Jun 2022 15:14:55 -0700 (PDT)
+        bh=pV2xTgdlxdd1ooYEnYbOQKVwbFMX8hVbxWQ2hIe3+xs=;
+        b=4RSsyFNCSZ2UTgEkzkOE8Vv6xmGOsQ1BRJKUNVIREnsStSotRRo6yeiEONEUZyTNst
+         w1yUvoBMEFh3aqv7RyOP2o+Dbi9MwKBQaqk8usFpzGnbtiJyx2WaVNHK+Tn9bnbZ8Dj2
+         tXk3P8NwnFmRCGmbK2K1APSDJ61Fl5hYBRnLP4DvsECH5Qt506D991dkl//97165GqDK
+         rIHgRCMqIU3Z+RcAiB585UhF1FQeWuKfEiBPnGTxMnvrUppOttY8iZOa2h9VdgxGnt3T
+         7vS0fVnvoyv30C79jBD7Fg8vL3iZNE+DW6ei6uJd3O9L8BSFKZ81/+oDGczE0Yhh9pM5
+         stnA==
+X-Gm-Message-State: AJIora8ytlai07F3rOVIG5HmP29yW5KHNDD+RjX9Oyneu/o4mkmYPz8f
+        RFXdCPS1aYF/bVmpSpNWaAn+KR8Vxvc=
+X-Google-Smtp-Source: AGRyM1sSYIygi5wqOxH0x/IcNyKAoeaN31dn0MrnKdLCpIL/Ttpyh63NcKCmhDOPUhpalw4VzNoTPw==
+X-Received: by 2002:a05:6e02:1608:b0:2d9:3f3e:f0c4 with SMTP id t8-20020a056e02160800b002d93f3ef0c4mr8918971ilu.249.1656368096528;
+        Mon, 27 Jun 2022 15:14:56 -0700 (PDT)
 Received: from Dixie.. ([2604:2d80:a188:fd00:7a85:cf35:f4b3:542f])
-        by smtp.gmail.com with ESMTPSA id p7-20020a02b007000000b00339dd3976absm5255589jah.110.2022.06.27.15.14.53
+        by smtp.gmail.com with ESMTPSA id p7-20020a02b007000000b00339dd3976absm5255589jah.110.2022.06.27.15.14.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jun 2022 15:14:54 -0700 (PDT)
+        Mon, 27 Jun 2022 15:14:56 -0700 (PDT)
 From:   Chris Morgan <macroalpha82@gmail.com>
 To:     linux-input@vger.kernel.org
 Cc:     devicetree@vger.kernel.org, contact@artur-rojek.eu,
@@ -55,9 +55,9 @@ Cc:     devicetree@vger.kernel.org, contact@artur-rojek.eu,
         dmitry.torokhov@gmail.com, paul@crapouillou.net, jic23@kernel.org,
         linux-iio@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>,
         Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH v4 2/3] Input: adc-joystick - Add polled input device support
-Date:   Mon, 27 Jun 2022 17:14:43 -0500
-Message-Id: <20220627221444.3638-3-macroalpha82@gmail.com>
+Subject: [PATCH v4 3/3] arm64: dts: rockchip: Update joystick to polled for Odroid-Go2
+Date:   Mon, 27 Jun 2022 17:14:44 -0500
+Message-Id: <20220627221444.3638-4-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220627221444.3638-1-macroalpha82@gmail.com>
 References: <20220627221444.3638-1-macroalpha82@gmail.com>
@@ -73,101 +73,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add polled input device support to the adc-joystick driver. This is
-useful for devices which do not have hardware capable triggers on
-their SARADC. Code modified from adc-joystick.c changes made by Maya
-Matuszczyk.
+Update the Odroid Go Advance to use "poll-interval" from the
+adc-joystick driver.
 
-Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
 ---
- drivers/input/joystick/adc-joystick.c | 49 +++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
-index 78ebca7d400a..7e3c5083ec3c 100644
---- a/drivers/input/joystick/adc-joystick.c
-+++ b/drivers/input/joystick/adc-joystick.c
-@@ -26,8 +26,23 @@ struct adc_joystick {
- 	struct adc_joystick_axis *axes;
- 	struct iio_channel *chans;
- 	int num_chans;
-+	bool polled;
- };
+diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+index ea0695b51ecd..61583c3f24e6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
+@@ -26,6 +26,7 @@ adc-joystick {
+ 		compatible = "adc-joystick";
+ 		io-channels = <&saradc 1>,
+ 			      <&saradc 2>;
++		poll-interval = <60>;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
  
-+static void adc_joystick_poll(struct input_dev *input)
-+{
-+	struct adc_joystick *joy = input_get_drvdata(input);
-+	int i, val, ret;
-+
-+	for (i = 0; i < joy->num_chans; i++) {
-+		ret = iio_read_channel_raw(&joy->chans[i], &val);
-+		if (ret < 0)
-+			return;
-+		input_report_abs(input, joy->axes[i].code, val);
-+	}
-+	input_sync(input);
-+}
-+
- static int adc_joystick_handle(const void *data, void *private)
- {
- 	struct adc_joystick *joy = private;
-@@ -179,6 +194,7 @@ static int adc_joystick_probe(struct platform_device *pdev)
- 	int error;
- 	int bits;
- 	int i;
-+	int value;
- 
- 	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
- 	if (!joy)
-@@ -215,8 +231,15 @@ static int adc_joystick_probe(struct platform_device *pdev)
- 	joy->input = input;
- 	input->name = pdev->name;
- 	input->id.bustype = BUS_HOST;
--	input->open = adc_joystick_open;
--	input->close = adc_joystick_close;
-+
-+	if (!device_property_read_u32(dev, "poll-interval", &value)) {
-+		joy->polled = 1;
-+		input_setup_polling(input, adc_joystick_poll);
-+		input_set_poll_interval(input, value);
-+	} else {
-+		input->open = adc_joystick_open;
-+		input->close = adc_joystick_close;
-+	}
- 
- 	error = adc_joystick_set_axes(dev, joy);
- 	if (error)
-@@ -229,16 +252,20 @@ static int adc_joystick_probe(struct platform_device *pdev)
- 		return error;
- 	}
- 
--	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
--	if (IS_ERR(joy->buffer)) {
--		dev_err(dev, "Unable to allocate callback buffer\n");
--		return PTR_ERR(joy->buffer);
--	}
-+	if (!joy->polled) {
-+		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
-+						     joy);
-+		if (IS_ERR(joy->buffer)) {
-+			dev_err(dev, "Unable to allocate callback buffer\n");
-+			return PTR_ERR(joy->buffer);
-+		}
- 
--	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
--	if (error)  {
--		dev_err(dev, "Unable to add action\n");
--		return error;
-+		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
-+						 joy->buffer);
-+		if (error)  {
-+			dev_err(dev, "Unable to add action\n");
-+			return error;
-+		}
- 	}
- 
- 	return 0;
 -- 
 2.34.1
 

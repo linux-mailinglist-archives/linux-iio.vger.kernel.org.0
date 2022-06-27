@@ -2,112 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A9C55CF54
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 026CC55D0AE
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237599AbiF0WIZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 27 Jun 2022 18:08:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42248 "EHLO
+        id S242447AbiF0WOy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 27 Jun 2022 18:14:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242679AbiF0WHz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 18:07:55 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411F91E3FA
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 15:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=EKAxXLruVZ47KMOGk77Qd7WK2xozBrejaq0+lva205w=; b=BayINbs+sm8pxj3g8oXaG5k4k0
-        mcu2mwZJCZtn/a8EcaMV6pBJnZrKIaqLntcvMaKbuuaTv7A1FGtub3UZpHA+qIv8rxqneScugr68+
-        0kKbt0UBF21fKBs3amWfeoo3lOS1I5BkMcxo9EPMkYUysizH0SdwhWA7lqdSti/fP+Ik9pqyr5T5Z
-        Uj12eXyz9YIK+gj3Duf+63R1WC7CWBe55FyUBrR8SL5ZMIROAeRAx3tPMZJMyD0VgxPd0jC/aDBvr
-        i+bCkYR0BrrOH3R/2yrB9m4MhqxB2tbLt7EO7VrE87pYYVLw5qayAIlCMugRJ+Ng7z0AP4NSDUAup
-        uRn/mjZA==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1o5wsP-0006uR-8W; Tue, 28 Jun 2022 00:06:37 +0200
-Received: from [2001:a61:2a49:8301:9e5c:8eff:fe01:8578]
-        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1o5wsP-000V1x-3A; Tue, 28 Jun 2022 00:06:37 +0200
-Message-ID: <fde8b70b-a8c8-3e70-b55d-beede2bd7040@metafoo.de>
-Date:   Tue, 28 Jun 2022 00:06:36 +0200
+        with ESMTP id S242401AbiF0WOy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 27 Jun 2022 18:14:54 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB76060DC;
+        Mon, 27 Jun 2022 15:14:52 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id p69so11085284iod.10;
+        Mon, 27 Jun 2022 15:14:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=n8YqZKMnu5wFfAYg9KKwPbiYeb43yaP+RoJqTw94+ew=;
+        b=o7yff7z0RiTZCe4SsxtEJUGOsiujoqFc8vkFuA7GehOJF+MNt6m8mQNYV7nGH9hhcU
+         wodNt2xbZ7D6U+pteGrRRSDjwUdfGTi22C2sJ9k2k0eDANpC2+zAWb4FVNHFdE/ZVOQ0
+         WUCLoBpL5R3A7A+bQjU9EQkKZCopyTphNAholVNTXOe1v7eVQyVlhHu7YGANnWooRNis
+         7/Mip94mOIvlZgERChobMJNRTMw7E1P7W6uAQsg94iQDKB2aAUe+4ULxAeCr8Gt2KPgv
+         +wXuj/t2zfiD6z52GaFLDCziLDmkQjUEKJFnoodXH7MEK8WwCynpW+yBLzI+1q8MaFwu
+         U1sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=n8YqZKMnu5wFfAYg9KKwPbiYeb43yaP+RoJqTw94+ew=;
+        b=cEe1db0UCDelmQitsq+VpPIqB7S5YZgmLGGixdahzFXLJ0KUYhxFgenXwY0m1ddReH
+         chMq/GV4WeuJ4xnMNtKNJW8eCXXMeE75Fn6e8JvStX6xRePLpzuxMpltWcHeXGulChUd
+         vqg8+T9/dWZ1UbymGrLZ1oYwOFyd5O6qRZ1VNu05k6AlTtl0EM+cmV8wwmDWcHN8yoTL
+         VI2Fuh3VHkMrjgRJPuqSzLjq6jmENPdpmxIpoii0N91/SSfL1in+eCsEZJpTJErS5SBM
+         uJmAebJqi/xZUiKC2dpY0CP6jzem6nLPS+FkyysWbvaKMp9wAueG6vGl524K0+pfvDBk
+         fNew==
+X-Gm-Message-State: AJIora8dXwlFZKrodZ3xu5UE9AkxJPZ6lBLtV3Zl/94eBSXPfg+7xlYc
+        hSRMosIX5dwFDLjYumVejg3Y4NN1o/o=
+X-Google-Smtp-Source: AGRyM1smQ8WKzL9VAmB83IiGVy7A50zr1UpQGf81NWwuE/kN7d0OEPeGmRJo1rm9GQ719TG0bp1UiA==
+X-Received: by 2002:a05:6638:1354:b0:33a:cc7a:d0b3 with SMTP id u20-20020a056638135400b0033acc7ad0b3mr9259829jad.163.1656368091920;
+        Mon, 27 Jun 2022 15:14:51 -0700 (PDT)
+Received: from Dixie.. ([2604:2d80:a188:fd00:7a85:cf35:f4b3:542f])
+        by smtp.gmail.com with ESMTPSA id p7-20020a02b007000000b00339dd3976absm5255589jah.110.2022.06.27.15.14.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jun 2022 15:14:51 -0700 (PDT)
+From:   Chris Morgan <macroalpha82@gmail.com>
+To:     linux-input@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, contact@artur-rojek.eu,
+        maccraft123mc@gmail.com, heiko@sntech.de,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        dmitry.torokhov@gmail.com, paul@crapouillou.net, jic23@kernel.org,
+        linux-iio@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>
+Subject: [PATCH v4 0/3] adc-joystick: Add polled support
+Date:   Mon, 27 Jun 2022 17:14:41 -0500
+Message-Id: <20220627221444.3638-1-macroalpha82@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] iio: fix iio_format_avail_range() printing for none
- IIO_VAL_INT
-Content-Language: en-US
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, Fawzi Khaber <fawzi.khaber@tdk.com>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-References: <20220627193402.21553-1-jmaneyrol@invensense.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20220627193402.21553-1-jmaneyrol@invensense.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.6/26586/Mon Jun 27 10:06:41 2022)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/27/22 21:34, Jean-Baptiste Maneyrol wrote:
-> From: Fawzi Khaber <fawzi.khaber@tdk.com>
->
-> iio_format_avail_range() should print range as follow [min, step, max], so
-> the function was previously calling iio_format_list() with length = 3,
-> length variable refers to the array size of values not the number of
-> elements. In case of non IIO_VAL_INT values each element has integer part
-> and decimal part. With length = 3 this would cause premature end of loop
-> and result in printing only one element.
->
-> Signed-off-by: Fawzi Khaber <fawzi.khaber@tdk.com>
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> ---
->   drivers/iio/industrialio-core.c | 18 +++++++++++++++++-
->   1 file changed, 17 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 358b909298c0..0f4dbda3b9d3 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -812,7 +812,23 @@ static ssize_t iio_format_avail_list(char *buf, const int *vals,
->   
->   static ssize_t iio_format_avail_range(char *buf, const int *vals, int type)
->   {
-> -	return iio_format_list(buf, vals, type, 3, "[", "]");
-> +	int length;
-> +
-> +	/*
-> +	 * length refers to the array size , not the number of elements.
-> +	 * The purpose is to print the range [min , step ,max] so length should
-> +	 * be 3 in case of int, and 6 for other types.
-> +	 */
-> +	switch (type) {
-> +	case IIO_VAL_INT:
-> +		length = 3;
-> +		break;
-> +	default:
-> +		length = 6;
-> +		break;
-> +	}
-> +
-> +	return iio_format_list(buf, vals, type, length, "[", "]");
->   }
->   
->   static ssize_t iio_read_channel_info_avail(struct device *dev,
+Add support to the existing adc-joystick driver to support polling
+rather than relying on triggered buffers. This is useful for devices
+that do not offer triggered buffers in hardware. Code adapted from
+changes made by Maya Matuszczyk <maccraft123mc@gmail.com>.
 
-Change looks good! Lets also add a unit test for this in iio-test-format.c
+Changes from V3:
+ - After lengthy discussion decided to support with existing attribute
+   of "poll-interval". If present, the driver will use polling and if
+   not present, it will use triggered buffers (as the driver does
+   today).
+ - Corrected some lines to honor the 80 character line-limit.
+ - Check return value from polling method and return early if there
+   is an error reading the data.
+
+Changes from V2:
+ - Changed parameter from "adc-joystick,polled" to
+   "adc-joystick,no-hardware-trigger" as it is more representative of
+   what the driver and hardware are doing.
+
+Changes from V1:
+ - Removed driver compatible string of "adc-joystick-polled".
+ - Added new optional boolean value of "adc-joystick,polled".
+ - Cleaned up if statements regarding polling behavior.
+
+Chris Morgan (3):
+  dt-bindings: adc-joystick: add poll-interval
+  Input: adc-joystick - Add polled input device support
+  arm64: dts: rockchip: Update joystick to polled for Odroid-Go2
+
+ .../bindings/input/adc-joystick.yaml          |  6 +++
+ .../boot/dts/rockchip/rk3326-odroid-go2.dts   |  1 +
+ drivers/input/joystick/adc-joystick.c         | 49 ++++++++++++++-----
+ 3 files changed, 45 insertions(+), 11 deletions(-)
+
+-- 
+2.34.1
 

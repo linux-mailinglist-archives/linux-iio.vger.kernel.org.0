@@ -2,67 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C9355CD0F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B06C55E24F
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344515AbiF1Lrz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 07:47:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47470 "EHLO
+        id S245221AbiF1LxN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 07:53:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344482AbiF1Lrx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 07:47:53 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC310B0F;
-        Tue, 28 Jun 2022 04:47:52 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-31780ad7535so113920627b3.8;
-        Tue, 28 Jun 2022 04:47:52 -0700 (PDT)
+        with ESMTP id S236568AbiF1LxM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 07:53:12 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88C130F79;
+        Tue, 28 Jun 2022 04:53:11 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-2ef5380669cso114055487b3.9;
+        Tue, 28 Jun 2022 04:53:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=bBnFmZjZIoNFqqriC+iwFPBKJU61baPmyAFFIDagDFE=;
-        b=S5ySAPM3rocgZ/Ugszd1CJjXHRh/k51KEH6B+k1RaIub/lWTQSBPNs58VeCF0R88K1
-         tYGbwPBeKSKFou3r31LBzjOr3wFpuCiggyWWhCwjRvdX1zA9uSKSLMLVEtsdah3CUMCw
-         V3qB56dC/4DTnToVxBehqbA/CYk/XiuI7E//GHJlFiaGTWwhkLaUePbr8AbbM5WRhPmk
-         UJettY4vD6qoFbFMxlVATsEKXF55MR/u/bfsaAGQfl8zDJpE3ntCAk/t4NfdCamsUT1z
-         1IUj/p3F6T1awGq9UIJrZMhJW9JEDZ72Tpue7pLvnxGjWoJJ+/rFoFuFlByJrMK2kWVZ
-         0/mA==
+        bh=XNYX9WokN0679cD0D/hGygcBjjhtjrHu3X0w/VyXDQg=;
+        b=p+9m14+6QsTCZ3pdtSfJn+WEHQmDbBfmFgyzcxQlQAFSE6IZY+I2k0I60ILS1T6sE6
+         5tfPY5UZgBU3FRb4NSW//C4Rx1Ok8ZtMgaPCeNnseoVwEVJEBVFNSrjEMdO0/aE06dMF
+         bO4JyL56j2waskXr5NRKktwhHstWwfoOWUIKXEVeyeHLnlyJ69uPTTPHfcyFtQdII3ir
+         DcrqRmp4yuJtYhQikKQO4K74tylJuh4wPkW3XPaMf8NJTGy1r4c5kq60uETiZZASMznb
+         ZWFQkb1edLWF2vaOXd4DP8s5wnw2b9QM2i0kdqnmPmBiANAXfuc6nrwo6+J80NhmvMlD
+         X06w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=bBnFmZjZIoNFqqriC+iwFPBKJU61baPmyAFFIDagDFE=;
-        b=kXl3wB7VtGpc69cgCcjx4Kev6L0Cm0SQzH8BnzV+PzuWV0qp5DHlZiNgmF+nzivBqN
-         Su50n/VBp3UHPjxMaI9tj+1OuP0ln9zv/M+g+3YHtO5EE/i7Mz/E7tcLV2vs1L4v8+2c
-         WEDsVuk9pbt6ynZOCsiYzo+odA4TfXMlQDonOM8n1SXr+0Mjwvidu5J+4Dlxu30YFhxh
-         cKNAchnlDKn6bZgZCqwkYOHbzM4OHa9lGuLRq2LWWQ4XCck/KPHFRDxS2niSduFJSUFL
-         Gu+WY8Nt3JmUG9lczvkEdRNV2bmf1B3jbAYfR2LBfZw1gs6mOP1TpYzqtcVWlYymUc8I
-         4rqQ==
-X-Gm-Message-State: AJIora/a1V54jHEVZqoQHcl+ZQmQqrNHF8FqUgK4WnJmWY9bZSrvcgPN
-        yCyiqR2O6ak/K/jha/K/aEnrLhfMcv/BIi3Xzx+UEJdX8PiCjg==
-X-Google-Smtp-Source: AGRyM1sI77zIPf/cv6+E7ghaqhb46auVskCT8U9VnPQcDZuNWFZhpI/LTOpehqZbUIHMZAMPVhomR3UMPvaQ7nGOgFg=
+        bh=XNYX9WokN0679cD0D/hGygcBjjhtjrHu3X0w/VyXDQg=;
+        b=gMCi5KiuOCUMC69Re5b0/9L++ghu2RXNDuEI5AwSOua/EJIY3+TPmS8Geaghgr2X+5
+         2tnT0p302GOuGVVkMHcPnvsmGS2Oc5+5V63/h5rVD/3dPlY5gi43bmlER5lskl+SPxP0
+         ZpObq//ZGJ+K795oHNO1YimTRkK9Q48v1pN7FJbw8Gc3RxjIC4HoSTiXzur0EHYYZNz1
+         QcDKyFGzG3BLAS//yZWdqK9jeJ903xsuFm11t7srKE0MWnmKidMKWyi1EgpUWzp3KGKM
+         44rGhD6SUFF+uX3XfqfqBj6tXQtgDneJl3t5uiC3RKhi5qCuXfG/ax7o+5QSRF1buL4S
+         7yaA==
+X-Gm-Message-State: AJIora9B+i+3eFd33AR/+SmeQRIniyyJPgSc+Ykf0r4TtY/hRkwT0ISv
+        8vyjcfuX2IhMGwHEJS5RcGnD8hhUTQbRGXTf0+E=
+X-Google-Smtp-Source: AGRyM1t1yvSVmh1UzQdiLz0fOsWVO4xcBW2SRjndRAGwREFZZ1pQOPCCdyP/RInbExx8gXe7S6V6QoaMvGta8vqrn/0=
 X-Received: by 2002:a81:2386:0:b0:317:6586:8901 with SMTP id
- j128-20020a812386000000b0031765868901mr20837201ywj.195.1656416872035; Tue, 28
- Jun 2022 04:47:52 -0700 (PDT)
+ j128-20020a812386000000b0031765868901mr20865815ywj.195.1656417190958; Tue, 28
+ Jun 2022 04:53:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <1655458375-30478-1-git-send-email-u0084500@gmail.com>
- <1655458375-30478-3-git-send-email-u0084500@gmail.com> <CAHp75VfEQ6tu4-NQKwA+63Ae5busUwV+ZRqD6BtbUA+EkCZnWw@mail.gmail.com>
- <CADiBU3-wO0-0c9y-GpE15ra2AqkAG-ftqTh+hCvYEY-TojZ-pg@mail.gmail.com>
- <CAHp75VeBdgbyDQXEYb9ZZdi3AU=vPw6aKGWbNLnuA_QoN4LE4A@mail.gmail.com> <CADiBU3_jgoc9ZuVuVH_cvSeQkghOeUDxzLE_VZFtZ9eaTWeqgA@mail.gmail.com>
-In-Reply-To: <CADiBU3_jgoc9ZuVuVH_cvSeQkghOeUDxzLE_VZFtZ9eaTWeqgA@mail.gmail.com>
+References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-8-peterwu.pub@gmail.com>
+ <CAHp75Vd95sEQz8y4ZcviUKaC9ic27yitR+VCwkfb38MTTe0mkg@mail.gmail.com> <CABtFH5K_vB5Rmo+2zAJ8PuMeMvC9x-yhDL93ByOLD+gc2maQYg@mail.gmail.com>
+In-Reply-To: <CABtFH5K_vB5Rmo+2zAJ8PuMeMvC9x-yhDL93ByOLD+gc2maQYg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 28 Jun 2022 13:47:15 +0200
-Message-ID: <CAHp75VejsNhgee0exMGzo3dqFxi8udO2GUbCTz9iNFJ7wZGvRw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: Add rtq6056 support
-To:     ChiYuan Huang <u0084500@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+Date:   Tue, 28 Jun 2022 13:52:34 +0200
+Message-ID: <CAHp75Vc0t+3p2TGs9kZ-6JP8y-+cmSF++9uCfbWAgFhapteh-A@mail.gmail.com>
+Subject: Re: [PATCH v3 07/14] mfd: mt6370: Add Mediatek MT6370 support
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
         cy_huang <cy_huang@richtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -75,59 +96,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 5:39 AM ChiYuan Huang <u0084500@gmail.com> wrote:
+On Fri, Jun 24, 2022 at 12:19 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=
-=9C=8819=E6=97=A5 =E9=80=B1=E6=97=A5 =E4=B8=8B=E5=8D=886:38=E5=AF=AB=E9=81=
+=9C=8824=E6=97=A5 =E9=80=B1=E4=BA=94 =E5=87=8C=E6=99=A82:01=E5=AF=AB=E9=81=
 =93=EF=BC=9A
-> > On Sat, Jun 18, 2022 at 5:16 PM ChiYuan Huang <u0084500@gmail.com> wrot=
-e:
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=
-=E6=9C=8818=E6=97=A5 =E9=80=B1=E5=85=AD =E5=87=8C=E6=99=A81:08=E5=AF=AB=E9=
-=81=93=EF=BC=9A
-> > > > On Fri, Jun 17, 2022 at 11:37 AM cy_huang <u0084500@gmail.com> wrot=
-e:
+> > On Thu, Jun 23, 2022 at 1:59 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote=
+:
 
 ...
 
-> > > > > +       struct device *dev;
-> > > > > +       struct regmap *regmap;
-> > > >
-> > > > Swapping these two might give less code in the generated binary. Ha=
-ve
-> > > > you run bloat-o-meter?
-> > > >
-> > > I never know about this tool.
-> > > I'll check it before I submit the next revision.
-> > > Thanks for the reminding.
-> > >
-> > > But from Jonathan's reply, I may remove 'struct regmap *regmap'.
-> > > If all function need the 'regmap', a local variable 'regmap' need to
-> > > be declared.
-> > > To use struct regmap *regmap =3D dev_get_regmap(dev, NULL) is more ef=
-fective.
+> > >  obj-$(CONFIG_INTEL_SOC_PMIC_BXTWC)  +=3D intel_soc_pmic_bxtwc.o
+> > >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTWC)     +=3D intel_soc_pmic_chtwc.o
+> > >  obj-$(CONFIG_INTEL_SOC_PMIC_CHTDC_TI)  +=3D intel_soc_pmic_chtdc_ti.=
+o
+> > >  obj-$(CONFIG_MFD_MT6360)       +=3D mt6360-core.o
+> > > +obj-$(CONFIG_MFD_MT6370)       +=3D mt6370.o
+> > >  mt6397-objs                    :=3D mt6397-core.o mt6397-irq.o mt635=
+8-irq.o
+> > >  obj-$(CONFIG_MFD_MT6397)       +=3D mt6397.o
+> > >  obj-$(CONFIG_INTEL_SOC_PMIC_MRFLD)     +=3D intel_soc_pmic_mrfld.o
 > >
-> > It's fine, but you may experiment with bloat-o-meter even in that case
-> > out of curiosity.
+> > This whole bunch of drivers is in the wrong place in Makefile.
 > >
-> I tred to only swap these two line for *dev and *regmap.
-> Check the below two cases
-> 1. bloat-o-meter with rtq6056 as the builtin
-> add/remove: 0/0 grow/shrink: 0/0 up/down: 0/0 (0)
-> Function                                     old     new   delta
-> Total: Before=3D24428680, After=3D24428680, chg +0.00%
-> 2. size tool with rtq6056 as the kernel build
->    text    data     bss     dec     hex filename
->    5261    1155       0    6416    1910 drivers/iio/adc/rtq6056-adc.ko.ol=
-d
->    text    data     bss     dec     hex filename
->    5261    1155       0    6416    1910 drivers/iio/adc/rtq6056-adc.ko
+> > https://lore.kernel.org/all/20220616182524.7956-2-andriy.shevchenko@lin=
+ux.intel.com/
 >
-> It's weird that there's no difference.
->
-> Do I misunderstand something?
+> hmm... So shall we need to cherry-pick your this patch first,
+> then modify the Makefile before the next submission??
 
-Nope, it means that in _current_ code this makes no change. Feel free
-to go with your variant if you prefer.
+I don't know what Lee's preferences are, but at least I have these
+options in mind:
+1) wait until Lee applies my series;
+2) take that single patch to your tree as a precursor.
+
+In the second case you will need to send the series with that patch as well=
+.
+
+...
+
+> > > +#define MT6370_REG_MAXADDR     0x1FF
+> >
+> > Wondering if (BIT(10) - 1) gives a better hint on how hardware limits
+> > this (so it will be clear it's 10-bit address).
+>
+> well... This "0x1FF" is just a virtual mapping value to map the max
+> address of the PMU bank(0x1XX).
+> So, I feel its means is different from using (BIT(10) - 1) here.
+
+Perhaps a comment then?
+
+...
+
+> > > +       if (ret < 0)
+> > > +               return ret;
+> > > +       else if (ret !=3D val_size)
+> >
+> > Redundant 'else'.
+>
+> I'm not quite sure what you mean, so I made the following changes first.
+> ------------------------------------
+>        if (ret < 0)
+>               return ret;
+>        if (ret !=3D val_size)
+>               return -EIO;
+> ------------------------------------
+> I don't know if it meets your expectations??
+
+Yes.
+
+> > > +               return -EIO;
 
 --=20
 With Best Regards,

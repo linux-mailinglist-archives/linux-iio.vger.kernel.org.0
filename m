@@ -2,66 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5989855C494
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 14:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C6855C596
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 14:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344780AbiF1MBr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 08:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
+        id S1345414AbiF1MQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 08:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344633AbiF1MBr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 08:01:47 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA1B26137;
-        Tue, 28 Jun 2022 05:01:46 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id g4so10266123ybg.9;
-        Tue, 28 Jun 2022 05:01:46 -0700 (PDT)
+        with ESMTP id S1345383AbiF1MQg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 08:16:36 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A885825C76
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jun 2022 05:16:35 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-317a66d62dfso114781767b3.7
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jun 2022 05:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0pniwHeX6vb5Ys8VLQ575NNjNqJoH9OkhJrizfKPi3c=;
-        b=Tls115h5P1d6CAUhvXtiHLxV/QERJk2gH3l26P7Kg7hw63dHHmMMjRiHaz86jAmRSS
-         +nBuxhzPS5AaUtD9m+OM1V4HzfwtdRhEPivY5DLooleF0N2JrvA5tDtzU92yvYyKgwbp
-         Clbn1EDZH/q4Ew6lqskiUEQUHy8IqWY3JAwPUIRwnQKY56QlBFwUmUJ2H7no7OIdjgyH
-         jWZ/u/GcaW2/0uI0qjwZ1uQkJeykbuLCrADKAVW7KNkrb5GN93y8O0j7HptVtpAfbU/Q
-         4k6pzW11kB+Oa/u07vonquWPoB/MK0GkQdXx/gXZSWCyLY9Bd/WTlM+bDPxDKyvZDfm+
-         NdDA==
+        bh=GkKspg2u6R6jexEqgukN9yCccSFbM4xhOI8mmjYXifo=;
+        b=aweVwLn8T0wOUku13O59RH+3lQC/5R6KhbDlqXOKHviP38d0eDuPW26OXFx0ovWdXU
+         OBR0DFHke4Wpfkivb+6/waTju1/e/u7OyWEdbXNHvn0X7rInXsbysVW8t0ehiFcrEkbM
+         w+v9AOVOmaAcCgiITPQrmuRTyOA6lNB67nvMV2qbmV0bpKOtstY06OHfVpYEiRJY1vBr
+         npKOU8mfylPdUPDrRXO155D3KNOtB9chtXajcTUqn4MEu4dnELpo8dhQHqGKUEtJ0Qvr
+         hdw7RlgUdOLVfdp+u9wmyi2+w6WXvMe9brNL5e6wNd7Gnhphe9kHtBuFQgFrErWODLNP
+         y3DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0pniwHeX6vb5Ys8VLQ575NNjNqJoH9OkhJrizfKPi3c=;
-        b=MuWGe5qXwY33MpB2D8oNF4RKU00Ac0Vktk7yxNgwS+HDW38A7EpINiDtopE7j1Fztc
-         HJbUcObOa9dbWeXzy2w4MEDecj++8mZQDgMgX8EbMvqNAK8FHYYTEe+ldgaUsnbR8FbP
-         ZsdvEdhV/8yRkqtL3Y14QO0hZ67AkscnA8uplck9mqmGajvP9y4pcLmqkmv/kTwfd/ip
-         93yodJPLRHGTPctJOF9aEom2tUCOU+u5xDnWg7TB2PxrmB4PfDLh5N3/f7jH3FlplEwr
-         GmQ1dSqeJOPUlea1u9MBc6KG5lmdxrk6AUTf4y1zdT461XfxX9SZmCs9cayOBc2BZH0P
-         Jd5Q==
-X-Gm-Message-State: AJIora8Ek4Mz/VZvTwKBNvRkcDCc+2VKuqsZCB8fXhKTjEY5mj7qgiXr
-        HqudIyB8wXzFAI9RqcJ8otVxFlDejoTDZD6WFV1XS7ZWML9v6g==
-X-Google-Smtp-Source: AGRyM1tpFFYZ6IOqD7r/Q4SIXcc6hmpB1jS1eyL0YvIHX4qnjN2FurPx5b34iHQgxmyh4RHzzXGN5xkLVRIAOk0J75I=
-X-Received: by 2002:a25:ca0a:0:b0:66b:4e6c:e094 with SMTP id
- a10-20020a25ca0a000000b0066b4e6ce094mr20644626ybg.296.1656417705669; Tue, 28
- Jun 2022 05:01:45 -0700 (PDT)
+        bh=GkKspg2u6R6jexEqgukN9yCccSFbM4xhOI8mmjYXifo=;
+        b=lKFfDJykdl3UE0+sypiSdaiei+9Raw+rwvzOBBogr4NQLKxhjT7HeffV3T3UretwJY
+         AvsdtDogBwcT20/97+bRSQjzDYF9Pah+nIAmFq5UxBZGBiahK6l9H3+xAIukzthqZ1hM
+         WQ/1fLBrYOde8f8SqYdSBwHP73MU9DeMprNFkFw/cibMNuhe2FoTn15cJld0W5eerwPr
+         uG+mfJvEAYifPGAASEBNVVoEYd5UK/uE+bIcCYq8AtH6rc1TFUr2QrEXFmJjIB7MtdmS
+         Xt4fKLATH7Hzj4MeoOzEdgqCL5tL9/OZk2r8lH5bY9jAG/ujDxJdFBENVkb4wRYuqAY8
+         +qNw==
+X-Gm-Message-State: AJIora8Jk4h36Ksy+4XjG1BV4O4jbFn+O3+ZR6LjbVCNciRx6B2L/WHZ
+        vHDtZsTDEJMG6bE68ZxSQpS1jl5xBLmlvyRV0ms=
+X-Google-Smtp-Source: AGRyM1sGHwdXwcNLBLdpdbbEGUsa7+Fw0rSe0W35IHge4LMDk0swVgMFI8bXYE9FJob5OXAhTmJUWNodPCW1zie0i8s=
+X-Received: by 2002:a81:468b:0:b0:318:4cac:6576 with SMTP id
+ t133-20020a81468b000000b003184cac6576mr20359835ywa.277.1656418594738; Tue, 28
+ Jun 2022 05:16:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220623170844.2189814-1-marcus.folkesson@gmail.com>
- <20220623170844.2189814-2-marcus.folkesson@gmail.com> <CAHp75VcYk9PjQ=3ZPB1f=uQ-1GYKnvV-wsu+-z1z81W_ZHCqrw@mail.gmail.com>
- <YrVZwAqmE0QmibQY@gmail.com> <20220625122429.14e98106@jic23-huawei>
-In-Reply-To: <20220625122429.14e98106@jic23-huawei>
+References: <20220626122938.582107-1-jic23@kernel.org> <20220626122938.582107-9-jic23@kernel.org>
+In-Reply-To: <20220626122938.582107-9-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 28 Jun 2022 14:01:08 +0200
-Message-ID: <CAHp75Vdr87rXRAKHtxftkPEbS+2yAp8a+Cp1Jx0XnozL+WCKVw@mail.gmail.com>
-Subject: Re: [PATCH 02/10] iio: adc: mcp3911: use resource-managed version of iio_device_register
+Date:   Tue, 28 Jun 2022 14:15:57 +0200
+Message-ID: <CAHp75VfopwTrTQ-QeDs2CbmGy+xoUGeQ2g=ysr5AP3f78VxFLw@mail.gmail.com>
+Subject: Re: [PATCH v3 08/17] staging: iio: cdc: ad7746: Break up use of
+ chan->address and use FIELD_PREP etc
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Peter Rosin <peda@axentia.se>,
+        Michael Hennerich <michael.hennerich@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -73,69 +70,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Jun 25, 2022 at 1:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, Jun 26, 2022 at 2:20 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Fri, 24 Jun 2022 08:29:20 +0200
-> Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> > Thank you for your comments (all of them) Andy!
-> >
-> > On Thu, Jun 23, 2022 at 09:01:59PM +0200, Andy Shevchenko wrote:
-> > > On Thu, Jun 23, 2022 at 7:40 PM Marcus Folkesson
-> > > <marcus.folkesson@gmail.com> wrote:
-> > > >
-> > > > Keep using managed resources as much as possible.
-> > >
-> > > You may not mix devm_ and non-devm_ API calls like this.
-> > > So, you rule of thumb that goto is most of the time wrong after devm_ call.
-> >
-> > Can you please confirm that clocks and regulators are disabled when the
-> > resources are handed back?
-> > I cannot see where when I'm trying to follow the code.
-> Andy isn't arguing that the goto is wrong but rather that you cannot
-> in general safely use devm_* calls if their failure leads to having to
-> do any cleanup.  The reason is the ordering is hard to reason about. Sometimes
-> it's safe, but often enough causes problems that we basically refuse to think
-> hard enough to figure out if it is.  Hence basic rule is don't do it.
->
-> The issue is this.
-> probe() {
->
->         non_devm_call_1();
->         ret = devm_call_2()
->         if (ret)
->                 goto err;
->
->         return 0;
-> err:
->         unwind_non_devm_call_1()
-> }
->
-> remove() {
->         unwind_non_devm_call_1()
-> }
->
-> remove or error path should unwind in opposite order of what happens in probe.
-> On the rare occasion where that isn't the right choice, there should be very
-> clear comments to say why.
->
-> Order is
->
-> remove() -> unwind_non_devm_call_1()
-> devm_managed_cleanup() -> unwind_devm_call_2()
->
-> Whereas should be
->
-> remove()-> unwind_call_2() then unwind_call_1()
->
->
-> There are two ways to solve this.  Either only use devm for those
-> elements in probe() that happen before the first thing you need to
-> unwind manually or make everything devm managed (it unwinds in reverse
-> order of setup) devm_add_action_or_reset() allows you to use your
-> own devm_ managed callbacks if there isn't a standard one available.
+> Instead of encoding several different fields into chan->address use
+> an indirection to a separate per channel structure where the various
+> fields can be expressed in a more readable form.  This also allows
+> the register values to be constructed at runtime using FIELD_PREP()
 
-Thanks, Jonathan, that's exactly what I meant!
+FIELD_PREP().
+
+(Note period)
+
+> Drop the now redundant _SHIFT macros.
+
+...
+
+>  /* CAPDAC Register Bit Designations (AD7746_REG_CAPDACx) */
+>  #define AD7746_CAPDAC_DACEN            BIT(7)
+> -#define AD7746_CAPDAC_DACP(x)          ((x) & 0x7F)
+> +#define AD7746_CAPDAC_DACP_MASK                0x7F
+
+GENMASK() ?
 
 -- 
 With Best Regards,

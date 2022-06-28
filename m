@@ -2,112 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D0055F034
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 23:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8D1055F0CA
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 00:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbiF1VJX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 17:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54708 "EHLO
+        id S229591AbiF1WBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 18:01:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbiF1VJX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 17:09:23 -0400
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F184B35DF7;
-        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
-Received: by mail-io1-f52.google.com with SMTP id m13so14203934ioj.0;
-        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=U12Z4vhZw7H5Cr8clwAhRnGVpf0ZJMi2KclaKSIzIuc=;
-        b=5o73RqOiloAOCShhv7TphrWsTibe8y2rQo3Hfw+db6SmIfXl9su9G2OkT/GSquzQlv
-         d9tEq4iQz2/lZGPh1Go02mOpYdMQRKEffLtq8Tm3wSiEGuffnYJ1uYXDtYKlLu7mSQR+
-         c96Pq4moyzVZEG38IBEwKbeJjXew9X53AwxvAMBtfZKVbAxWGVYnyhAzmNOOtEd8MoQU
-         thHBypnTABgNBJtRoNIiGq1OGxgGD6sN3z7olT2f6w4+961RbSyRx1etaoIF9GrZO4Kp
-         2eKhMkAYXkQ+I1JgKz6Xyi0ZVEbIrz7XVdfs0jeKtTogDPMKosyiEHrWugKA9k82SxtO
-         64ZA==
-X-Gm-Message-State: AJIora+K6O8orZNh3Ho8mDWCQvUjo5iyz048EqWS1rGjChUnOtVlKiBj
-        2Coickl5DMFmS9wXj26A+Q==
-X-Google-Smtp-Source: AGRyM1tliiRnnklDEBtVXq44emC7wKr5Y6AIwfUauYZGzq3A+BpA7GBnq2zEPsDhJFPDba9ZY+wvlA==
-X-Received: by 2002:a05:6638:2113:b0:339:e689:6fb3 with SMTP id n19-20020a056638211300b00339e6896fb3mr25626jaj.169.1656450561190;
-        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id z7-20020a923207000000b002d1d3b1abbesm6156374ile.80.2022.06.28.14.09.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 14:09:20 -0700 (PDT)
-Received: (nullmailer pid 980530 invoked by uid 1000);
-        Tue, 28 Jun 2022 21:09:19 -0000
-Date:   Tue, 28 Jun 2022 15:09:19 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+        with ESMTP id S229436AbiF1WA7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 18:00:59 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736472251A;
+        Tue, 28 Jun 2022 15:00:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656453658; x=1687989658;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VyNhPycHnj1hw+SAQsHLxaZt3LLJYpzQwob4bA5V5ck=;
+  b=C+2y5r1/RgRPKsaLuG4Dl8Y0+WVZhw9c/PDtaGTJ69Gvu/Hv7WFNu6sA
+   IwsGW+/1FIi/mksslNY+w8MciNqbV+0rtZJuZrvojfRcuX51Nsx/czoz9
+   xeMV0rG+wviu3/HHeHkAI+Gi4KQYJce1NMXO19SlmdZzcm9a0kBSApqIN
+   nub9/lqyWwZ9hfRqOSlayn9+RJat6vOc8S9vnXyM0ROe3mU6XH8XVq9UY
+   pD4dff1PGTAHz3jIo6eXGwRzBkgkjUNc7pksRa5gkMSCDTxzBm7pvKxaL
+   gem1/SHTmSZXiNdPpzOMzCgyHWnfggxfAHCSU2oFCRdH9UazDiFAYXEXQ
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10392"; a="281893507"
+X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
+   d="scan'208";a="281893507"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 15:00:57 -0700
+X-IronPort-AV: E=Sophos;i="5.92,229,1650956400"; 
+   d="scan'208";a="680223763"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jun 2022 15:00:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1o6JGP-000xC3-Iy;
+        Wed, 29 Jun 2022 01:00:53 +0300
+Date:   Wed, 29 Jun 2022 01:00:53 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-imx@nxp.com, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org
-Subject: Re: (EXT) Re: [PATCH] dt-bindings: iio: adc: Add imx6ul & imx6sx
- compatibles
-Message-ID: <20220628210919.GB963202-robh@kernel.org>
-References: <20220613123529.466528-1-alexander.stein@ew.tq-group.com>
- <20220617224448.GA2574775-robh@kernel.org>
- <20220618180129.699b8601@jic23-huawei>
- <12003373.O9o76ZdvQC@steina-w>
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v2 1/2] iio: proximity: sx_common: Don't use IIO device
+ for properties
+Message-ID: <Yrt6FVHilUuoPrnL@smile.fi.intel.com>
+References: <20220615114746.2767-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <12003373.O9o76ZdvQC@steina-w>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220615114746.2767-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 20, 2022 at 10:12:44AM +0200, Alexander Stein wrote:
-> Hello,
+On Wed, Jun 15, 2022 at 02:47:45PM +0300, Andy Shevchenko wrote:
+> It's not correct to use artificial device created by IIO core to
+> retrieve device properties. Even ->get_default_reg() callback
+> takes a simple struct device pointer which suggests it wants to
+> operate on the real device.
 > 
-> Am Samstag, 18. Juni 2022, 19:01:29 CEST schrieb Jonathan Cameron:
-> > On Fri, 17 Jun 2022 16:44:48 -0600
-> > 
-> > Rob Herring <robh@kernel.org> wrote:
-> > > On Mon, Jun 13, 2022 at 11:34:46AM -0600, Rob Herring wrote:
-> > > > On Mon, 13 Jun 2022 14:35:29 +0200, Alexander Stein wrote:
-> > > > > Both are already using the vf610 compatible.
-> > > > > 
-> > > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > > ---
-> > > > > 
-> > > > >  .../devicetree/bindings/iio/adc/fsl,vf610-adc.yaml       | 9
-> > > > >  ++++++++-
-> > > > >  1 file changed, 8 insertions(+), 1 deletion(-)
-> > > > 
-> > > > Running 'make dtbs_check' with the schema in this patch gives the
-> > > > following warnings. Consider if they are expected or the schema is
-> > > > incorrect. These may not be new warnings.
-> > > > 
-> > > > Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-> > > > This will change in the future.
-> > > > 
-> > > > Full log is available here: https://patchwork.ozlabs.org/patch/
-> > > > 
-> > > > 
-> > > > adc@2198000: 'num-channels' does not match any of the regexes:
-> > > > 'pinctrl-[0-9]+'> 
-> > > Looks like you need to add 'num-channels'?
-> > 
-> > or a lot of wrong dtbs :)
-> > 
-> > By which I mean ones providing a property that may or may not be actually
-> > used by any drivers...
-> 
-> This got already fixed by Baruch's patch which is currently in Shawn's imx-
-> fixes-5.19 branch at [1]
+> Correct this by replacing pointer to IIO device by a real device
+> pointer in the caller of ->get_default_reg().
 
-Great!
+Gwendal, any comments on this version?
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

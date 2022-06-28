@@ -2,89 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14E4B55EDCA
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 21:20:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D0055F034
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 23:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235415AbiF1TUU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 15:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52574 "EHLO
+        id S229707AbiF1VJX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 17:09:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234596AbiF1TUC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 15:20:02 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D130BBC86;
-        Tue, 28 Jun 2022 12:18:07 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id p136so17686293ybg.4;
-        Tue, 28 Jun 2022 12:18:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7IQwRMlSVPcn362SikaZ4Eq9k/hWCiY8rzFaOjEbtVk=;
-        b=FDC3RGbxTQoQ3NUFARlxPcbwIJjMYPT8NIwvk/GEaHDvjtRsjy+RXmcQWcVcgaxgJM
-         l+YOMG3B2k8BQEXgG8Wru35PZ2bNtS+0dUVORxiuuIOx/dNMSPrE9EbITOtdCyYqsbfc
-         gMyVl0BBr8Lzw12Mbh57nI0zo3jbOLaEWbIiG8eU+SjZwCiBjMYscHxFVnBxY0n//Pgl
-         a/fyHEhJpOTcHMLm+v6QM13GdSstxmyqj442wNBqZADuvM/d7RhpqbOrlD//26JNBATL
-         XVieOKjstLHTfS5B8Zr189JAIdLhB6/Qdsx7H5XY8IV1i7Wif08fkK5AnXZRuQzZsPtU
-         XzOw==
+        with ESMTP id S229506AbiF1VJX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 17:09:23 -0400
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F184B35DF7;
+        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
+Received: by mail-io1-f52.google.com with SMTP id m13so14203934ioj.0;
+        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7IQwRMlSVPcn362SikaZ4Eq9k/hWCiY8rzFaOjEbtVk=;
-        b=TF/7IyEqN/AX/kZ9FRT58IcQKcDqUM4CXoZUWQ+8PCwOt1cuf+k897wFTd9r+uTPAr
-         gl4S9/I6vMjLZuWYvwQD5TA5EVEXu7QSRKPEzGT8627EkN43QSDYja4GxoVSp1VAfsj8
-         LPs5yXX1AGYmvKjg0/E1scS+XcSwNNn+cWwoCUCMMHoGoePzT779zz7gWe9BzungUylQ
-         mrsPKK9R3WI9GM7XaoFfpIZ4QmLPnNfrWh25mFIdKK0cGx8R28MWAJvKeuSzFoMypxk8
-         iIfGZk2KhFmWlTVogYpi+283ZTqOTzGzlXgWXD0tbR1Jc5vyom74NMiXSugtwKmdEErz
-         k2Tw==
-X-Gm-Message-State: AJIora9+i/VcIyrozVZ/4LUWXTmjYuC8V2hXsXP8WMiR4PW01CKzEMd1
-        JNy1RykRlrt5B5hD+3YZwfUSucL5QXrtjShPGq8=
-X-Google-Smtp-Source: AGRyM1uEN3nkmCVzMO/TlzxvXoovFrW87cughMH1YvZoZFaHztTpeANNEUP+JoPbzffhkdou55ZdBuW2i4y9gUZzIYU=
-X-Received: by 2002:a25:dd83:0:b0:66c:8d8d:4f5f with SMTP id
- u125-20020a25dd83000000b0066c8d8d4f5fmr19189893ybg.79.1656443886524; Tue, 28
- Jun 2022 12:18:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220628144649.3957286-1-cosmin.tanislav@analog.com> <20220628144649.3957286-3-cosmin.tanislav@analog.com>
-In-Reply-To: <20220628144649.3957286-3-cosmin.tanislav@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 28 Jun 2022 21:17:29 +0200
-Message-ID: <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] iio: adc: ad4130: add AD4130 driver
-To:     Cosmin Tanislav <demonsingur@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=U12Z4vhZw7H5Cr8clwAhRnGVpf0ZJMi2KclaKSIzIuc=;
+        b=5o73RqOiloAOCShhv7TphrWsTibe8y2rQo3Hfw+db6SmIfXl9su9G2OkT/GSquzQlv
+         d9tEq4iQz2/lZGPh1Go02mOpYdMQRKEffLtq8Tm3wSiEGuffnYJ1uYXDtYKlLu7mSQR+
+         c96Pq4moyzVZEG38IBEwKbeJjXew9X53AwxvAMBtfZKVbAxWGVYnyhAzmNOOtEd8MoQU
+         thHBypnTABgNBJtRoNIiGq1OGxgGD6sN3z7olT2f6w4+961RbSyRx1etaoIF9GrZO4Kp
+         2eKhMkAYXkQ+I1JgKz6Xyi0ZVEbIrz7XVdfs0jeKtTogDPMKosyiEHrWugKA9k82SxtO
+         64ZA==
+X-Gm-Message-State: AJIora+K6O8orZNh3Ho8mDWCQvUjo5iyz048EqWS1rGjChUnOtVlKiBj
+        2Coickl5DMFmS9wXj26A+Q==
+X-Google-Smtp-Source: AGRyM1tliiRnnklDEBtVXq44emC7wKr5Y6AIwfUauYZGzq3A+BpA7GBnq2zEPsDhJFPDba9ZY+wvlA==
+X-Received: by 2002:a05:6638:2113:b0:339:e689:6fb3 with SMTP id n19-20020a056638211300b00339e6896fb3mr25626jaj.169.1656450561190;
+        Tue, 28 Jun 2022 14:09:21 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id z7-20020a923207000000b002d1d3b1abbesm6156374ile.80.2022.06.28.14.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jun 2022 14:09:20 -0700 (PDT)
+Received: (nullmailer pid 980530 invoked by uid 1000);
+        Tue, 28 Jun 2022 21:09:19 -0000
+Date:   Tue, 28 Jun 2022 15:09:19 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org
+Subject: Re: (EXT) Re: [PATCH] dt-bindings: iio: adc: Add imx6ul & imx6sx
+ compatibles
+Message-ID: <20220628210919.GB963202-robh@kernel.org>
+References: <20220613123529.466528-1-alexander.stein@ew.tq-group.com>
+ <20220617224448.GA2574775-robh@kernel.org>
+ <20220618180129.699b8601@jic23-huawei>
+ <12003373.O9o76ZdvQC@steina-w>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12003373.O9o76ZdvQC@steina-w>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jun 28, 2022 at 4:49 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
->
-> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> low bandwidth battery operated applications.
->
-> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> selectable filter options, smart sequencer, sensor biasing and excitation
-> options, diagnostics, and a FIFO buffer.
+On Mon, Jun 20, 2022 at 10:12:44AM +0200, Alexander Stein wrote:
+> Hello,
+> 
+> Am Samstag, 18. Juni 2022, 19:01:29 CEST schrieb Jonathan Cameron:
+> > On Fri, 17 Jun 2022 16:44:48 -0600
+> > 
+> > Rob Herring <robh@kernel.org> wrote:
+> > > On Mon, Jun 13, 2022 at 11:34:46AM -0600, Rob Herring wrote:
+> > > > On Mon, 13 Jun 2022 14:35:29 +0200, Alexander Stein wrote:
+> > > > > Both are already using the vf610 compatible.
+> > > > > 
+> > > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > > > > ---
+> > > > > 
+> > > > >  .../devicetree/bindings/iio/adc/fsl,vf610-adc.yaml       | 9
+> > > > >  ++++++++-
+> > > > >  1 file changed, 8 insertions(+), 1 deletion(-)
+> > > > 
+> > > > Running 'make dtbs_check' with the schema in this patch gives the
+> > > > following warnings. Consider if they are expected or the schema is
+> > > > incorrect. These may not be new warnings.
+> > > > 
+> > > > Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> > > > This will change in the future.
+> > > > 
+> > > > Full log is available here: https://patchwork.ozlabs.org/patch/
+> > > > 
+> > > > 
+> > > > adc@2198000: 'num-channels' does not match any of the regexes:
+> > > > 'pinctrl-[0-9]+'> 
+> > > Looks like you need to add 'num-channels'?
+> > 
+> > or a lot of wrong dtbs :)
+> > 
+> > By which I mean ones providing a property that may or may not be actually
+> > used by any drivers...
+> 
+> This got already fixed by Baruch's patch which is currently in Shawn's imx-
+> fixes-5.19 branch at [1]
 
-It would be respectful, if you include given tags. Why didn't you do
-that? Any significant change that has to be re-reviewed?
+Great!
 
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Rob Herring <robh@kernel.org>

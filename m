@@ -2,276 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6D155CFB6
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F4555E189
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jun 2022 15:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244637AbiF1GoS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 02:44:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53064 "EHLO
+        id S1343737AbiF1HGe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 03:06:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343577AbiF1GoQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 02:44:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FFA026AE7
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jun 2022 23:44:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1421B61978
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jun 2022 06:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B819C3411D;
-        Tue, 28 Jun 2022 06:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656398654;
-        bh=SgKayFUXb94rbpByuktzT/IaSy0xwPrAP6meJL46oK8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=a6dKnTaRMJj5BkF+ocz5+0Od0DpvbxJQDTb0E8TAT5Wl3XDGwBiKw8fHLGut0HW6p
-         QellHN8WHd8l+/+yNTH0sNFi+4e3D37MVycS72/XPIEVE4cdXvpr/4cn7+TcX6bwyc
-         ILz2ZxcNFWfwUOo6jHYHxV93JpVE5BSTMOEsNi4cp7syL7C/VZvKApw7BUWVanyqkf
-         0I+dfc/MCI9Im2SF0gPju29NN9MPg3iK9ClM18ZsHMU7opsCF4nlu6gusbJRZmBRLI
-         +JaGAMtu44suNxqjPlr9QMo/s1WOxU0JkcgRBykAG/WCUFSXj0M4xC5OjN48D38oDS
-         KIkbHlHv8BQwg==
-Date:   Tue, 28 Jun 2022 07:44:09 +0100
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        "Navin Sankar Velliangiri" <navin@linumiz.com>,
-        Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
-Subject: Re: [PATCH 1/4] iio: ABI: temperature: Unify documentation for
- thermocouple fault detection.
-Message-ID: <20220628074409.42f0ecae@sal.lan>
-In-Reply-To: <20220627151812.000069d2@Huawei.com>
-References: <20220626165511.602202-1-jic23@kernel.org>
-        <20220626165511.602202-2-jic23@kernel.org>
-        <20220626233331.2e8e38d1@sal.lan>
-        <20220627151812.000069d2@Huawei.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-redhat-linux-gnu)
+        with ESMTP id S1343698AbiF1HGd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 03:06:33 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDA160DA;
+        Tue, 28 Jun 2022 00:06:31 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id fi2so23732177ejb.9;
+        Tue, 28 Jun 2022 00:06:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=coq/7vnAq5AAKiy+JRJn8yCWHeyO1w5IBcA9B1tk73A=;
+        b=I8P3Xi33BP3BMxfE7Od5sVWn5KHPcp3e9D02zms7oD8kMgJDEhtvNNpDjp0fjhqhQ6
+         e5/O12Lol3R7P/Pt0s8SoLfIDUKLn2GOAf+mjMCu81/DfohdcAZ7OSnd4UWAu7ZRyOsM
+         ToGqMCeEI1pPKcpHLcPZMg7R8lv/Ddxyd+FZzC3a4mAMHw2Hmd1jVDZX949tHrVH09xc
+         d6AbbeLE3/Bc7nvhfab5YothtgarpirIsY3nIDyBKuDfY2D9yWaTnvbQo9mVnevCkcRA
+         UzOKxsoRsaADCVTC7at5m1mBeGkvCqOSPND1l5ZEZfDoZLcvrG7PmPul8GvLLUwKz0Ha
+         lBIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=coq/7vnAq5AAKiy+JRJn8yCWHeyO1w5IBcA9B1tk73A=;
+        b=RfXYqWiYGhkO5LCF+gdKJGh3dYCYtaNGve51lqCCaAIBj07IojsuhEEJhgz35v4h3R
+         EgXF+c1Ei26yLYGd1lWr0lVvZ4RXf/jyiJk5R/7Mb8O3ZwquM06EqqHxg6dV+DMJAcUG
+         WnysCOHoMFa9ONesdZrkS+n4uZYOf+G4vp0/u1KmJL7SJn+xzt+hcS2a7JMaIPGafGzv
+         iq9vsw5tD68KlTTcnNTLWWXUT1Kp+lZOFaj1Yb3U4Y8zWUEmA1dAoVpfojZjnJxhb8OE
+         zM93EfIclrVZTiavQ7euDeeBgEPLDdmAKIoLZqyiKRcBa/6b4KpkSbBEhA2tbnv0vOOX
+         dD7A==
+X-Gm-Message-State: AJIora9iahWtMoAZkGaL5CuBeixWlR0YoYJhJllMYurFb3yDZeS+t/Gd
+        OgjNzVlIdVd5kGaFpndk2ZA=
+X-Google-Smtp-Source: AGRyM1sFYa5hMPGAhi+KvUvHpnnZXMuSNpdGu5gamm+cLp/Q9Ht/DBU0nPyOIqARkRBFQgOZL2vp9A==
+X-Received: by 2002:a17:906:37c6:b0:70c:f9f:f0c5 with SMTP id o6-20020a17090637c600b0070c0f9ff0c5mr16716876ejc.743.1656399990436;
+        Tue, 28 Jun 2022 00:06:30 -0700 (PDT)
+Received: from demon-pc.localdomain ([79.119.98.153])
+        by smtp.gmail.com with ESMTPSA id k11-20020a1709062a4b00b00726abf9a32bsm1834556eje.138.2022.06.28.00.06.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jun 2022 00:06:29 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+X-Google-Original-From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: [PATCH v6 0/2] AD4130
+Date:   Tue, 28 Jun 2022 10:05:51 +0300
+Message-Id: <20220628070553.3933748-1-cosmin.tanislav@analog.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Em Mon, 27 Jun 2022 15:18:12 +0100
-Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
+AD4130-8 is an ultra-low power, high precision, measurement solution for
+low bandwidth battery operated applications.
 
-> On Sun, 26 Jun 2022 23:33:31 +0100
-> Mauro Carvalho Chehab <mchehab@kernel.org> wrote:
-> 
-> > Em Sun, 26 Jun 2022 17:55:08 +0100
-> > Jonathan Cameron <jic23@kernel.org> escreveu:
-> >   
-> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > 
-> > > The kernel build docs do not support having multiple definitions for
-> > > the same sysfs filename.     
-> > 
-> > Actually, this is not a matter of the docs build system not supporting. 
-> > It is, instead, how the ABI were supposed to work: a given ABI symbol 
-> > should have consistent behavior on all drivers that use it. Failing to
-> > do that is asking for troubles.
-> > 
-> > So, having duplicated symbols either mean that:
-> > 
-> > a) both have the same meaning. They can/should be unified in order to
-> >    remove redundant documentation;
-> > 
-> > b) the same ABI symbol have different meanings depending on the driver(s)
-> >    that use it. This makes very hard for userspace, as it is harder to
-> >    write a program using it, as the behavior/meaning starts to be
-> >    driver-dependent.  
-> 
-> I think we'll disagree on this.
-> 
-> There are circumstances where a particular ABI in a particular driver
-> benefits from additional documentation that would be in the 'impdef
-> category' for the generic ABI.
+The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+selectable filter options, smart sequencer, sensor biasing and excitation
+options, diagnostics, and a FIFO buffer.
 
-If a particular driver needs something different, either:
+V1 -> V2
+ * add kernel version to ABI file
+ * merge ABI patch into driver patch
+ * make copyright header similar to other drivers
+ * rearrange includes
+ * use units.h defines where possible and add unit sufix to
+   SOFT_RESET_SLEEP define
+ * remove ending comma to last members of enums / lists
+ * remove unused FILTER_MAX define
+ * use BIT macro for PIN_FN_*
+ * rearrange SETUP_SIZE definition
+ * group bools in ad4130_state and ad4130_chan_info
+ * put scale_tbls definition on one line
+ * remove newline before reg size == 0 check
+ * put mask used as value in a variable
+ * remove useless ret = 0 assignment
+ * make buffer attrs oneline
+ * use for_each_set_bit in update_scan_mode
+ * use if else for internal reference voltage error checking
+ * inline reference voltage check
+ * check number of vbias pins
+ * remove .has_int_pin = false
+ * remove avail_len for IIO_AVAIL_RANGE
+ * remove useless enabled_channels check in unlink_slot
+ * remove unused AD4130_RESET_CLK_COUNT define
+ * only call fwnode_handle_put for child in case of error
+ * default adi,reference-select to REFIN1
+ * default adi,int-ref-en to false
+ * of_irq_get_byname -> fwnode_irq_get_byname
+ * P1 -> P2 as interrupt pin options
+ * add missing comma in db3_freq_avail init
+ * cast values to u64 to make math using units.h work
+ * add datasheet reference to IRQ polarity
+ * add comment about disabling channels in predisable
+ * add part number prefix find_table_index
+ * return voltage from get_ref_voltage
+ * add datasheet reference for internal reference voltage selection
+ * add comment explaining AIN and GPIO pin sharing
+ * parse channel setup before parsing excitation pins
+ * only validate excitation pin if value is not off
+ * use FIELD_PREP for bipolar and int_ref_en
+ * put devm_regmap_init call on one line
+ * introduce a slot_info struct to contain setup_info for each slot
+ * enable internal reference automatically if needed
+ * decide mclk sel based on adi,ext-clk-freq and adi,int-clk-out
+ * dt-bindings: use internal reference explicitly
+ * dt-bindings: set type for adi,excitation-pin-0
+ * dt-bindings: set $ref for adi,vbias-pins
+ * dt-bindings: remove minItems from interrupts property
+ * dt-bindings: remove adi,int-ref-en default value
+ * dt-bindings: remove adi,bipolar default value
+ * dt-bindings: inline adi,int-ref-en description
+ * dt-bindings: default adi,reference-select to REFIN1
+ * dt-bindings: clean up description for diff-channels and
+   adi,reference-select
+ * dt-bindings: add more text to interrupt-names description
+ * dt-bindings: turn interrupt-names into a single string
+ * dt-bindings: add maxItems to adi,vbias-pins
 
-1. the ABI definition was loose or too tight, not being generic enough to
-   cover other hardware needing ABI for the same feature;
-2. a different ABI symbol would need, as the two symbols with the same
-   name are mapping completely different ABIs.
+V2 -> V3
+ * dt-bindings: add interrupt controller include to example
+ * dt-bindings: remove $ref in diff-channels
 
-> For this particular case it extends the info available from 'wire
-> disconnected' in the generic case, to 'which possible wires are
-> disconnected' in the specific case. 
+V3 -> V4:
+  * handle watermark value as number of datum
+  * DOUT_OR_INT -> INT
+  * AD4130_8_NAME -> AD4130_NAME
+  * return early in case of failure when parsing fw channel
+  * use IIO_DMA_MINALIGN for aligning buffer
+  * add comments for fs_to_freq and freq_to_fs
+  * remove support for other variants because of unavailability of model
+    ids for future chip variants
+  * remove support for db3 frequency because of inaccuracy when calculating
+  * remove ternary where possible
+  * refactor defines
+  * dt-bindings: add unevaluatedProperties: true to channel node
 
-In the specific case of device faults, it could be mapped in a way
-that would be generic enough, yet providing hardware-specific information,
-when the hardware supports it.
+V4 -> V5:
+ * simplify get_ref_voltage function and move print statement to first user
+ * inline statements not going over the 80 cols limit
+ * simplify scale table filling
+ * determine table length inside find table index macro
+ * current_na -> tmp inside ad4130_parse_fw_setup
+ * define full register set
+ * put range register size definitions on one line
+ * nanoamps -> nanoamp
+ * adi,ext-clk-freq -> adi,ext-clk-freq-hz
+ * return directly in ad4130_validate_vbias_pins
+ * place comment regarding irq_trigger at assignment
+ * inversed -> inverted inside irq_trigger comment
+ * do not initialize int_clk_out
+ * return directly in ad4130_validate_diff_channels
+ * add () after reference to update_scan_mode in comment
+ * use BIT() for channel offset
+ * comment nitpicks on slot finding
+ * return -EINVAL out of reg read for invalid sizes
+ * place regmap at start of ad4130_state
+ * place bools at the end of ad4130_setup_info
+ * remove commas after terminators
+ * dt-bindings: only allow one element in reg
+ * dt-bindings: inline reg description
+ * dt-bindings: remove $ref from adi,ext-clk-freq-hz
 
-In this specific case, I would probably create a generic ABI (or ABI set)
-to report hardware issues in a way that it would be more generic.
+V5 -> V6:
+ * bump KernelVersion
+ * use IIO_DEVICE_ATTR_RO
+ * nitpick inside mutex comment
+ * use valid_mask for validating gpios
+ * improve DMA comment
 
-One possibility for this case would be to use something like this:
+Cosmin Tanislav (2):
+  dt-bindings: iio: adc: add AD4130
+  iio: adc: ad4130: add AD4130 driver
 
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	no faults
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      |   36 +
+ .../bindings/iio/adc/adi,ad4130.yaml          |  259 +++
+ MAINTAINERS                                   |    8 +
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4130.c                      | 2014 +++++++++++++++++
+ 6 files changed, 2331 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
+ create mode 100644 drivers/iio/adc/ad4130.c
 
-On hardware that can't pinpoint what wire(s) the problem is occurring:
+-- 
+2.36.1
 
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	fault: open circuit
-
-or
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	fault: excessive voltage
-
-On more sophisticated hardware that can pinpoint what wires have
-issues, it may report, instead:
-
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	fault: open circuit fault at thermocouple wire #2
-
-or
-
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	fault: excessive voltage at thermocouple wires #0 and #1
-
-or even:
-
-	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-	fault: open circuit fault at thermocouple wire #2
-	fault: excessive voltage at thermocouple wires #0 and #1
-
-The above should be generic enough for a program to identify if there
-isn't any failures if such "fault" ABI would return "no faults". Any value
-different than that means that there's a fault, and the read value
-telling what happened could be output to the user before such program
-aborts due to a hardware error.
-
--
-
-The point is that, when the ABI is made to be subsystem-wide since
-the beginning, it tends to be more generic, as the ABI design should
-consider that other devices may have different capabilities. 
-
-> Neither affects what userspace
-> does with it, but they are useful if you are debugging the hardware.
-> They are probably not worth expanding the ABI to provide a debugging
-> guide, so it that info was in the documentation but is now lost
-> (in this case, non critical as it's probably a case of go read the
->  datasheet if the hanging wire isn't obvious).
-> 
-> I don't mind just making this patch description vague: 
-> 
-> Kernel documentation for a given ABI element should not be duplicated
-> in multiple files, so pull them into one higher level documentation file.
-
-Works for me. With that, feel free to add my reviewed-by.
-
-Regards,
-Mauro
-
-> > >  Hence generalize the documentation a little
-> > > and pull it out of device specific files and into
-> > > sysfs-bus-iio-thermocouple
-> > > 
-> > > These may well be more general and need pulling into a more generic
-> > > file in the future, but we can do that when it is needed.
-> > > 
-> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > Cc: Navin Sankar Velliangiri <navin@linumiz.com>
-> > > Cc: Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>    
-> > 
-> > Except for the above correction, the patch looks OK to me.
-> > 
-> > Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >   
-> > > ---
-> > >  .../sysfs-bus-iio-temperature-max31856        | 31 -------------------
-> > >  .../sysfs-bus-iio-temperature-max31865        | 12 -------
-> > >  .../ABI/testing/sysfs-bus-iio-thermocouple    | 18 +++++++++++
-> > >  3 files changed, 18 insertions(+), 43 deletions(-)
-> > > 
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856 b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856
-> > > deleted file mode 100644
-> > > index e5ef6d8e5da1..000000000000
-> > > --- a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856
-> > > +++ /dev/null
-> > > @@ -1,31 +0,0 @@
-> > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_oc
-> > > -KernelVersion:	5.1
-> > > -Contact:	linux-iio@vger.kernel.org
-> > > -Description:
-> > > -		Open-circuit fault. The detection of open-circuit faults,
-> > > -		such as those caused by broken thermocouple wires.
-> > > -		Reading returns either '1' or '0'.
-> > > -
-> > > -		===  =======================================================
-> > > -		'1'  An open circuit such as broken thermocouple wires
-> > > -		     has been detected.
-> > > -		'0'  No open circuit or broken thermocouple wires are detected
-> > > -		===  =======================================================
-> > > -
-> > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > -KernelVersion:	5.1
-> > > -Contact:	linux-iio@vger.kernel.org
-> > > -Description:
-> > > -		Overvoltage or Undervoltage Input Fault. The internal circuitry
-> > > -		is protected from excessive voltages applied to the thermocouple
-> > > -		cables by integrated MOSFETs at the T+ and T- inputs, and the
-> > > -		BIAS output. These MOSFETs turn off when the input voltage is
-> > > -		negative or greater than VDD.
-> > > -
-> > > -		Reading returns either '1' or '0'.
-> > > -
-> > > -		===  =======================================================
-> > > -		'1'  The input voltage is negative or greater than VDD.
-> > > -		'0'  The input voltage is positive and less than VDD (normal
-> > > -		     state).
-> > > -		===  =======================================================
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865 b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > index 4b072da92218..349089e4f2d6 100644
-> > > --- a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > @@ -1,15 +1,3 @@
-> > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > -KernelVersion:	5.11
-> > > -Contact:	linux-iio@vger.kernel.org
-> > > -Description:
-> > > -		Overvoltage or Undervoltage Input fault. The internal circuitry
-> > > -		is protected from excessive voltages applied to the thermocouple
-> > > -		cables at FORCE+, FORCE2, RTDIN+ & RTDIN-. This circuitry turn
-> > > -		off when the input voltage is negative or greater than VDD.
-> > > -
-> > > -		Reading returns '1' if input voltage is negative or greater
-> > > -		than VDD, otherwise '0'.
-> > > -
-> > >  What:		/sys/bus/iio/devices/iio:deviceX/in_filter_notch_center_frequency
-> > >  KernelVersion:	5.11
-> > >  Contact:	linux-iio@vger.kernel.org
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-thermocouple b/Documentation/ABI/testing/sysfs-bus-iio-thermocouple
-> > > new file mode 100644
-> > > index 000000000000..01259df297ca
-> > > --- /dev/null
-> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-thermocouple
-> > > @@ -0,0 +1,18 @@
-> > > +What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > +KernelVersion:	5.1
-> > > +Contact:	linux-iio@vger.kernel.org
-> > > +Description:
-> > > +		Overvoltage or Undervoltage Input Fault. The internal circuitry
-> > > +		is protected from excessive voltages applied to the thermocouple
-> > > +		cables. The device can also detect if such a condition occurs.
-> > > +
-> > > +		Reading returns '1' if input voltage is negative or greater
-> > > +		than VDD, otherwise '0'.
-> > > +
-> > > +What:		/sys/bus/iio/devices/iio:deviceX/fault_oc
-> > > +KernelVersion:	5.1
-> > > +Contact:	linux-iio@vger.kernel.org
-> > > +Description:
-> > > +		Open-circuit fault. The detection of open-circuit faults,
-> > > +		such as those caused by broken thermocouple wires.
-> > > +		Reading returns '1' if fault, '0' otherwise.    
-> 

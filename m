@@ -2,113 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A09455F33A
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 04:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D2055F350
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 04:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231365AbiF2CKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 28 Jun 2022 22:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
+        id S229573AbiF2CUV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 28 Jun 2022 22:20:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231165AbiF2CKI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 22:10:08 -0400
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A3EF326C5;
-        Tue, 28 Jun 2022 19:10:03 -0700 (PDT)
-Received: by mail-io1-f46.google.com with SMTP id h85so14683077iof.4;
-        Tue, 28 Jun 2022 19:10:03 -0700 (PDT)
+        with ESMTP id S229489AbiF2CUU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 28 Jun 2022 22:20:20 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12632205F4;
+        Tue, 28 Jun 2022 19:20:20 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id jh14so12751563plb.1;
+        Tue, 28 Jun 2022 19:20:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id;
+        bh=rlgeYTKJxDBdTrgiYt+xBlY3VqeL9LFxhA7ObySVmls=;
+        b=Asfrq9DkHEDXEOE6TLp9NaixoEmjkbBjN4QAx1t6Jdz3CAHsjxDxSsf/t1Zsa5FrLv
+         eAV53wLS92Woy/9kPUoKw6SQqLTHED9oDevHdXwa9oMp4e9GWW0+nmsl0RbwD9CJXOFQ
+         GCgFaZgfpAFwIz4ff4T+BSFPWrdWJlSGLsGCefl80M3lE323Og+zDqV58X0dvy1Vremt
+         rYc1LPNQcFkeAVqStAbUK+BbVm8pUQ0NtQYuBDioKE3vMVBSdi0iCHPnNoZZbFhjiUg0
+         13cHDeE6Fr0g76Quc0Gi25gyzsEX4DGgu6Zgs2zVujBmeqXmkGTlsbP2jY7fqAVZL6sm
+         oEJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=LN+78puhwYgKBtGz2TuDo+Xg7t/Ipevze3ieJ206j4Y=;
-        b=cQka8Kajrz27cvfwVqVCDOpDQ9f8zqznaxA+QKh0SxSrSkmE+cC4kMUTAtE02Cjawx
-         RmsAP5ZVOD2f9UtcwIBImaAL31DnadXG5/lZ9R+jtBgSkrKcohIF5laKd4vYzTb19kGx
-         4ZYjhQXbwxpJoVPIcaDbKkNJSpSTcDSBI7sZclWidqvmDLZCXbsdrXVKNXTc351cHyJL
-         hSw6h2UGsZVneAu95/9O2V3Bbb1uvZL8QP2Z70D4+XJT1YcJrPWTcxxyqfNwY+AjoOvq
-         /qtb/vJ/T7SKlxpQ43U/a1B86UiNukg+24YF7pUXFKZsYy7/vmx249A/d/Qsshc/Q2lj
-         M5DQ==
-X-Gm-Message-State: AJIora+tams5HpGwq4k7O1VCYmvCLpwalL0ueNR5Exx3SmJEcofi9QjJ
-        TgjBxWpn+TbnSK2evTqn5Q==
-X-Google-Smtp-Source: AGRyM1tYMYPFp2t74pAadIvPmONlKDfgpVJ9eVS2orkI/qmxrWCHXrzijGo4rGJR+DGI/H8yB6clFw==
-X-Received: by 2002:a05:6638:191b:b0:33c:8b14:e7e4 with SMTP id p27-20020a056638191b00b0033c8b14e7e4mr621920jal.212.1656468603517;
-        Tue, 28 Jun 2022 19:10:03 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.253])
-        by smtp.gmail.com with ESMTPSA id s10-20020a5ec64a000000b0067520155dedsm5407453ioo.15.2022.06.28.19.10.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 19:10:03 -0700 (PDT)
-Received: (nullmailer pid 1403680 invoked by uid 1000);
-        Wed, 29 Jun 2022 02:09:39 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Chris Morgan <macroalpha82@gmail.com>
-Cc:     heiko@sntech.de, contact@artur-rojek.eu,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        jic23@kernel.org, robh+dt@kernel.org,
-        Chris Morgan <macromorgan@hotmail.com>,
-        linux-input@vger.kernel.org, paul@crapouillou.net,
-        maccraft123mc@gmail.com, dmitry.torokhov@gmail.com,
-        devicetree@vger.kernel.org
-In-Reply-To: <20220628191500.69831-2-macroalpha82@gmail.com>
-References: <20220628191500.69831-1-macroalpha82@gmail.com> <20220628191500.69831-2-macroalpha82@gmail.com>
-Subject: Re: [PATCH v5 1/3] dt-bindings: adc-joystick: add poll-interval-ms
-Date:   Tue, 28 Jun 2022 20:09:39 -0600
-Message-Id: <1656468579.916584.1403679.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=rlgeYTKJxDBdTrgiYt+xBlY3VqeL9LFxhA7ObySVmls=;
+        b=SvLPA2I7apaakYIZrIqoGJ/p+caiDMNkCDVCAnwavcigtNv+7J+GX2So2oczQ5JfoA
+         Y/ny4cvq8hiIo9OGRmNF/eLOVXBtSp/CpWLw3Q/zsWB/2uqY5ZuTtRfYRf0WmhxFxZTw
+         3Gmmeh74N+7DrC8A2rgrIi9U2OFZ6rj4GWQRChiDu78DAD5P19TeSndrDjlY1OT0IYYv
+         x/UvslFwzZeQsyB18pY73kc+yF3NN61FEec7ztbKeqVVp/ka33OhrtQzhgbtC2fRybri
+         IqqyEs1c39lz7fGzKw8aYM1Zr0gbV+Om6aE4qW/3BWIst3/wH2t9ht8izzK4Wo4rBRUX
+         UrlQ==
+X-Gm-Message-State: AJIora/SjXZFNPell5sTLKkK6CiwO8DyrBnZPA66WjlnYopVcJaeoT6P
+        mIy1Pii5exX6mc2MlOzsHlXzXzVUFGg=
+X-Google-Smtp-Source: AGRyM1v/ayIzyNIeUDcObnQHPxXau0MRrWv2PtOl7K6jdnh20ferQPLXLDrB7Du5ep/zyZoPLrTBaA==
+X-Received: by 2002:a17:90b:3e86:b0:1ec:fc46:9e1b with SMTP id rj6-20020a17090b3e8600b001ecfc469e1bmr3004092pjb.155.1656469219432;
+        Tue, 28 Jun 2022 19:20:19 -0700 (PDT)
+Received: from localhost.localdomain ([2402:7500:46a:3e21:914b:bb3e:3e56:4806])
+        by smtp.gmail.com with ESMTPSA id p26-20020a056a0026da00b005251e2b53acsm10089015pfw.116.2022.06.28.19.20.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Jun 2022 19:20:18 -0700 (PDT)
+From:   cy_huang <u0084500@gmail.com>
+To:     jic23@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org
+Cc:     lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v2 0/2] Add Richtek RTQ6056 support
+Date:   Wed, 29 Jun 2022 10:20:10 +0800
+Message-Id: <1656469212-12717-1-git-send-email-u0084500@gmail.com>
+X-Mailer: git-send-email 2.7.4
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Jun 2022 14:14:58 -0500, Chris Morgan wrote:
-> New devicetree attribute of "poll-interval-ms".
-> 
-> Add poll-interval support for the adc-joystick documentation. This is
-> an optional value and if not provided the adc-joystick works as it
-> does today (with triggered buffers). If this value is provided, the
-> adc-joystick driver is polled at the specified interval. A new
-> attribute was added instead of using the existing attribute of
-> "poll-interval" to comply with rules detailed in property-units.yaml.
-> 
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  Documentation/devicetree/bindings/input/adc-joystick.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+This patch series is to enable Richtek RTQ6056 support.
 
-yamllint warnings/errors:
+The RTQ6056 is a high accuracy current-sense monitor with I2C interface, and
+the device provides full information for system by reading out the load current
+and power.
 
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/adc-joystick.yaml: properties:poll-interval-ms: '$ref' should not be valid under {'const': '$ref'}
-	hint: Standard unit suffix properties don't need a type $ref
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml: patternProperties:^thermistor@:properties:adi,excitation-current-nanoamp: '$ref' should not be valid under {'const': '$ref'}
-	hint: Standard unit suffix properties don't need a type $ref
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml#
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/input/adc-joystick.yaml: ignoring, error in schema: properties: poll-interval-ms
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml: ignoring, error in schema: patternProperties: ^thermistor@: properties: adi,excitation-current-nanoamp
-Documentation/devicetree/bindings/input/adc-joystick.example.dtb:0:0: /example-0/adc-joystick: failed to match any schema with compatible: ['adc-joystick']
-Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.example.dtb:0:0: /example-0/spi/ltc2983@0: failed to match any schema with compatible: ['adi,ltc2983']
+Since v2
+- Change the resistor property name to be generic 'shunt-resistor-micro-ohms'.
+- Rename file from 'rtq6056-adc' to 'rtq6056'.
+- Refine the ABI, if generic already defined it, remove it and check the channel
+  report unit.
+- Add copyright text.
+- include the correct header.
+- change the property parsing name.
+- To use iio_chan_spec address field.
+- Refine each channel separate and shared_by_all.
+- Use pm_runtime and pm_runtime_autosuspend.
+- Remove the shutdown callback. From the HW suggestion, it's not recommended to
+  use battery as the power supply.
+- Check all scale unit (voltage->mV, current->mA, power->milliWatt).
+- Use the read_avail to provide the interface for attribute value list.
+- Add comma for the last element in the const integer array.
+- Refine each ADC label text.
+- In read_label callback, replace snprintf to sysfs_emit.
 
-doc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/patch/
+ChiYuan Huang (2):
+  dt-bindings: iio: adc: Add rtq6056 adc support
+  iio: adc: Add rtq6056 support
 
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
+ .../ABI/testing/sysfs-bus-iio-adc-rtq6056          |   6 +
+ .../bindings/iio/adc/richtek,rtq6056.yaml          |  56 ++
+ drivers/iio/adc/Kconfig                            |  15 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/rtq6056.c                          | 670 +++++++++++++++++++++
+ 5 files changed, 748 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-rtq6056
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
+ create mode 100644 drivers/iio/adc/rtq6056.c
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
+-- 
+2.7.4
 

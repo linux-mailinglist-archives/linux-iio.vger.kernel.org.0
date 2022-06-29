@@ -2,169 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F92955FB38
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA1455FBC5
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232448AbiF2I7o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 04:59:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42114 "EHLO
+        id S232582AbiF2JVt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 05:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232356AbiF2I7o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 04:59:44 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EE924956;
-        Wed, 29 Jun 2022 01:59:43 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id g26so31171455ejb.5;
-        Wed, 29 Jun 2022 01:59:43 -0700 (PDT)
+        with ESMTP id S232556AbiF2JVr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 05:21:47 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140F8369CF;
+        Wed, 29 Jun 2022 02:21:47 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id p136so20650045ybg.4;
+        Wed, 29 Jun 2022 02:21:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=Ey+1hPLWMzu03pOiFsT4/+TTM+sA5fHRsZxt3a18l5I=;
-        b=ITFrgF4tOWPEhvarmRB5prRer9hEUz+UyNGFHcwfTGVb8Iu9ut4cyieJU0oum2eSvM
-         Z7BNbjCLM32ciGEqgOGAt7TvZQjazxOM+YygBbgwnjhjYYYJ2Wx9VoLysU1iJ94izIR6
-         Bxw0IUWp6KLy/n7RGqg926kFq6jj29j3PJaXlUIotrrJ61Xf5csNYpp03WfWmkS0xDco
-         G9WP5jKLZnsQRv3rm4KWk2n9Hu+SwCfuT700IElUw1emp0EzBS9CIQIZm++CAZOvUm+f
-         CJWFt8Y0z0e5g5Jv90vt0p3lNiwAnXhlj5S9VWNfWOVvsoIO4LRu6jEhJxjB2suMC1Vh
-         9Meg==
+         :cc;
+        bh=Eh9/8QN0XyfFrvsob3PxLqr+FKeuVvmGbb+SLnFK1w8=;
+        b=PPWbglVheR1zvwyNWD8rSPW6EbKmdZgAavX9onplBeIgwxs723trIMU7z3LDmN9k29
+         uh3RckB+t6+3c4qyCYxaWFO/sR8VOrxJw8F2hGqyAcCiBwlElhON9/cAYSrHVAa9JPqL
+         7NkGvNUuSztlynTWjIzgrsY1a20qxeHk1H+AIV4ZkGAXGaXnulfCHsmxuxzDmhEZKTPS
+         y+WuFTLQdRwE3Q+So0fO0WmkJpJ48rFlC8moc57ZG0AJQ+wTfPN3dMANkMqDH81GsgiC
+         OkkXsg2EYLgPeoGGPx4MBqqhELE9UEK3Z1Y6KZaQkKSbbdruOXBMD3viMugUd/MArqaS
+         1puw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=Ey+1hPLWMzu03pOiFsT4/+TTM+sA5fHRsZxt3a18l5I=;
-        b=RgxoT/J5sEJb500PAC9PnD7wGOeECmuR0QB+uN80CALXWxDGSJRaY7i+w7KPl/UuE2
-         XDj5fk0F7RPaPiTNq0/szGD/CBU2dMDP8v/RfYOI4bmrS0IEwllxv8dVNiJHHOXkmF+/
-         dpHdWMZql5KGSR7MypGhNCdr1q/2weh+X2l9mAP9AzFUYnFul5afgPT9TLM4XBbu4hAk
-         rvpZfBmVZT5s2atBimiM8a6YSHkPuHCXTukews7lq+88vCMkkeTqdZC1wvlNADiT4i0w
-         BUDCC9u2b8x2MeFw6+3Zf1BZgHYpZafd/C6iCq4XHbTXUjQYvmQM7ZuwIkUOc18nTHKs
-         HEoQ==
-X-Gm-Message-State: AJIora/G6GuOY8cekN6tMJbHOEHqxwy+yI8UURBvFgToH2Pjp+/ZoY+I
-        HAvj9tmwsgdc8mTfzJiVnNoTwle1I5ftsPccOM4=
-X-Google-Smtp-Source: AGRyM1tS17F0rorf47vhU8c0TPDYGRUlrVAu3BBSUv1DO0tbWiOYhXEPu0at2UeRXUwCcE+w/UrNYs+A6K2xfqP0bo4=
-X-Received: by 2002:a17:907:72d0:b0:726:ec43:9bb with SMTP id
- du16-20020a17090772d000b00726ec4309bbmr2032289ejc.533.1656493181431; Wed, 29
- Jun 2022 01:59:41 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=Eh9/8QN0XyfFrvsob3PxLqr+FKeuVvmGbb+SLnFK1w8=;
+        b=wxCVu1eUSFvkm12yBQlB7/h1wXCPCySEgMvjsLzbg1D0IkPKw1kG3Pq/rZ3yUsdURn
+         lYjTNHCMmY0088QmAgFf16Vhgh9xV+3xVeszv2K4e7Xft9CXUO3xtFzH5ixsVHwcHbz0
+         QauEx/wCaQncT+o+HA1KpzzEhMXj8YVJ6vIyhgnfzhCf21Q1XWsvKTOOazlw8HygsgmD
+         zXi7gDGgwmYiIsg9IrcHw78RlV6BM6MQsrufMUyyZhGa9p53Vm4PvVNf4xbfqQt/m1+a
+         XxuID4GcORALf0lOwez4s4Yix5dd0wHUlTNyB8/53suXG9npvU/C9UpG3+CQQ+h5IdKy
+         hDig==
+X-Gm-Message-State: AJIora+u2TKAtyVwhyMtWygxKC2dcclxo3qXAj739vYGJ53CUNGzO2Uf
+        rY+ynB46HmxicQXdSM9dV0Aj1rR2SnyrUziQI9hJALhKcVkdNw==
+X-Google-Smtp-Source: AGRyM1uS+cvIcNrFFvfdfOeCNdpGq8GX+n4BbHmYy6esu6LUeW4Sa8uIybAYqDBzFNJslfFaHj0xSak/OZIgcDW4t74=
+X-Received: by 2002:a25:b2a8:0:b0:66c:8110:3331 with SMTP id
+ k40-20020a25b2a8000000b0066c81103331mr2388431ybj.460.1656494506281; Wed, 29
+ Jun 2022 02:21:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <1656469212-12717-1-git-send-email-u0084500@gmail.com>
- <1656469212-12717-2-git-send-email-u0084500@gmail.com> <bc6f42d9-f821-ad0c-85c8-b4a4d2146485@linaro.org>
-In-Reply-To: <bc6f42d9-f821-ad0c-85c8-b4a4d2146485@linaro.org>
-From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Wed, 29 Jun 2022 16:59:30 +0800
-Message-ID: <CADiBU39TPVhDgZkv27mzWNMD5EVOg_jFq=_mFLa6tPZ6EwjT3g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add rtq6056 adc support
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
+References: <20220615114746.2767-1-andriy.shevchenko@linux.intel.com>
+ <Yrt6FVHilUuoPrnL@smile.fi.intel.com> <CAPUE2ut2+FwHHV=YxoqExet7m1R9Odji23DVB5zrGzCLgxzNdQ@mail.gmail.com>
+In-Reply-To: <CAPUE2ut2+FwHHV=YxoqExet7m1R9Odji23DVB5zrGzCLgxzNdQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 29 Jun 2022 11:21:07 +0200
+Message-ID: <CAHp75Ve1rLvjzmPjOxCjA61A1hjXUpVZi=42+SjARw+t58gDcg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: proximity: sx_common: Don't use IIO device
+ for properties
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> =E6=96=BC 2022=E5=B9=
-=B46=E6=9C=8829=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=884:25=E5=AF=AB=
-=E9=81=93=EF=BC=9A
+On Wed, Jun 29, 2022 at 1:41 AM Gwendal Grignou <gwendal@chromium.org> wrote:
 >
-> On 29/06/2022 04:20, cy_huang wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
+> On Tue, Jun 28, 2022 at 3:01 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
 > >
-> > Add the documentation for Richtek rtq6056.
+> > On Wed, Jun 15, 2022 at 02:47:45PM +0300, Andy Shevchenko wrote:
+> > > It's not correct to use artificial device created by IIO core to
+> > > retrieve device properties. Even ->get_default_reg() callback
+> > > takes a simple struct device pointer which suggests it wants to
+> > > operate on the real device.
+> > >
+> > > Correct this by replacing pointer to IIO device by a real device
+> > > pointer in the caller of ->get_default_reg().
 > >
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > ---
-> > Since v2
-> > - Change the resistor property name to be generic 'shunt-resistor-micro=
--ohms'.
-> >
-> > ---
-> >  .../bindings/iio/adc/richtek,rtq6056.yaml          | 56 ++++++++++++++=
-++++++++
-> >  1 file changed, 56 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,r=
-tq6056.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.=
-yaml b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> > new file mode 100644
-> > index 00000000..fe45d8b
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
-> > @@ -0,0 +1,56 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/richtek,rtq6056.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: RTQ6056 Bi-Directional Current and Power Monitor with 16-bit AD=
-C
-> > +
-> > +maintainers:
-> > +  - ChiYuan Huang <cy_huang@richtek.com>
-> > +
-> > +description: |
-> > +  The RTQ6056 is a high accuracy current-sense monitor with I2C and SM=
-Bus
-> > +  interface, and the device provides full information for system by re=
-ading
-> > +  out the loading current and power.
-> > +
-> > +  The device monitors both of the drops across sense resistor and the =
-BUS
-> > +  voltage, converts into the current in amperes, and power in watts th=
-rough
-> > +  internal analog-to-digital converter ADC. The programmable calibrati=
-on,
-> > +  adjustable conversion time, and averaging function are also built in=
- for
-> > +  more design flexibility.
-> > +
-> > +  Datasheet is available at
-> > +  https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: richtek,rtq6056
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +  shunt-resistor-micro-ohms:
-> > +    description: Shunt IN+/IN- sensing node resistor
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - "#io-channel-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +      #address-cells =3D <1>;
-> > +      #size-cells =3D <0>;
-> > +      rtq6056@40 {
->
-> This was not fixed.
->
-Sorry, too many changes to check. I really forgot it.
->
-> Best regards,
-> Krzysztof
+> > Gwendal, any comments on this version?
+> We can also replace '&indio_dev->dev' with 'dev' when setting
+> ACPI_COMPANION_SET() in the probe routine.
+
+It would make no sense, IIUC. In any case, the second patch in the
+series, which was the same in v1 removes that completely.
+
+> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+
+Thanks!
+
+-- 
+With Best Regards,
+Andy Shevchenko

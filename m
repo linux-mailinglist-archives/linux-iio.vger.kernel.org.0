@@ -2,117 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7176B5608E3
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 20:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5507E560B1A
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 22:36:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230448AbiF2SRL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 14:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59822 "EHLO
+        id S229615AbiF2UgD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 16:36:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbiF2SRJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 14:17:09 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C3E3B3D2
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jun 2022 11:17:06 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id e2so23373892edv.3
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jun 2022 11:17:06 -0700 (PDT)
+        with ESMTP id S229492AbiF2UgD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 16:36:03 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88EC930F5D;
+        Wed, 29 Jun 2022 13:36:02 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id y16so6203499lfb.9;
+        Wed, 29 Jun 2022 13:36:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=E1jlEoaTPiNrxpMd8CbmD+GquuR2xwFVd9hdNuD3pQg=;
-        b=IMgvJNI2Shu2YS7FRrkuNOoKotUuk+Gd5objaOVBsEnVVBB82azq2pGZzKy08ce5Lx
-         0dOVNDIzkmGnqX/yNuK3G8TvwkXyoasGPPmGvgdX+1+77T71yGeQ5OqLqj2Qzh9xewZS
-         t04/PxMPqgs98zQfD/f6firmFl2/Jpa/GQVaeERfF/5tUwQlxw2oyQpvMlQvnDlDL+wd
-         PFBmY73Ho1OEgMtY9IYc+dGr2MFHeS+wR/rSD3BcziClhyjTE8SQRfu1XtYOHGIOD8e6
-         C4QnGx/WivSfHEB2ayQrwSP/fX9Gqi6iU0TE8FBzTtsrBsPxJEXggml4VvpwKNn0+RCZ
-         9Xiw==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Cum4ZLY4F3hU5Y/mRP9v9xDUy4JzQcKCwxlvWrxymB0=;
+        b=WuyY7qW+HCSSzFSLtc4rFTG0WS48oHYVAOg/q4AUqASeq8+5XgZdnsDWmIn78ccwCk
+         d3o6Hb3AT6NclfBzcpV4eY+OWNR7z1Xy5ArMQI72dgTHZthr3NkhBGcNI1GxcS2CKhHw
+         B1GbFyUhawrrOIn3D+SgXYjc4nxXrm0ZEQa4Q4Qq3F5lGIyBbW/mOys6jNphE0C6YYBE
+         Voh2O/aPF1dmj4Ll6YWkPcJKRnr7nzzjcyzTFmvlstGNMDO+cpZ/06ghFugOnhV18yoV
+         Rr+8tWOXZWQa1+GOvj2TsIzP6LSUW0bA7s9p88gic3baUCpXQ4ww4IZZFhrSRLO8/D9m
+         05Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=E1jlEoaTPiNrxpMd8CbmD+GquuR2xwFVd9hdNuD3pQg=;
-        b=U9UbuVdGaO/DDpjY7jZHe1KDapvv6JBdhFRQwVXwZnlufztS1Nm9h+5dtQ/WevpGgw
-         nKMzTqmegM5kbGcP4PQMsynn2as7Ucll2reJNoEcFCMAXOewTDtCNAoowHl4neNKIyTA
-         2hXJuB455lYyq+ved7jJLPkXp3Qy2M7nEdEuN2pwgkduqAv7CETHBEaL9NFiLFXRBFrS
-         HYsaln1rzLXuyyCDfP9QnW53mubF8jFGZpsKUdmSEkqHGZ9G75MebrlESS7VLiHMjc9p
-         pykCaFUQcyFcDaQlt/xBkw/ZaIyylFYx9Ew/zRwb7af8fzifUuApNdi3Ag7xzmx6ZIig
-         WYpA==
-X-Gm-Message-State: AJIora9ZmwvnMb+QCaF/q5flKWBlXWIP92WAUARhFJT0kzOOxmboswNd
-        ISMqhrRcEo/ThhtxCGRuVrtBeg==
-X-Google-Smtp-Source: AGRyM1tqWVzV1AZV22fnO/A7rGjKFDP+PsQHU5xoa8tsJ3MnfAUQCYmOGVMe/tTQ+u93YZGrhNA4IQ==
-X-Received: by 2002:a05:6402:520b:b0:435:c2a4:f822 with SMTP id s11-20020a056402520b00b00435c2a4f822mr6209482edd.198.1656526625454;
-        Wed, 29 Jun 2022 11:17:05 -0700 (PDT)
-Received: from [192.168.0.187] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id n4-20020aa7c784000000b00437e08d319csm555612eds.61.2022.06.29.11.17.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jun 2022 11:17:05 -0700 (PDT)
-Message-ID: <506c9d41-6808-64b8-f57e-380d4520cc0d@linaro.org>
-Date:   Wed, 29 Jun 2022 20:17:03 +0200
+        bh=Cum4ZLY4F3hU5Y/mRP9v9xDUy4JzQcKCwxlvWrxymB0=;
+        b=2ouXX1iBCQlZHFY6Ly0EyDrAa9N20328IewQL8pxBC+4ipV3uKFQQcjIag1N+oQ4UN
+         Bpgyt450MouU0JjK+50HbxSZaH7ouAD8U9HzNWLSMUmVo+Yjb/vnzI/RhRR5fsvZcXya
+         EL/AOVtouMrUhlHlBUgzQNTZBpJsHYIxtFWqZB7UmSdKZqFN/vNtjKe3Tkh/pjvq8Y7B
+         bd3swoGQjO0DBC03II8y7eu89Q/fIBLa5AGg23Wr1xuDOFtWQ67NRku6KlNxxi9Qknmi
+         fhasfZYu0CW+7xwMJTrVrXOgrm32/tNXgsfG4grEHIA4T/EAm5d/DOBMgVZ9dG1RvmA1
+         wv3A==
+X-Gm-Message-State: AJIora9+PPHWIag0l8e2w+svVcGjs3qrf2M3rQesfDh2l2o/JlTQAQcz
+        6i1TWXSFLtwFKnbN2tv7EQS03tGfottc5w==
+X-Google-Smtp-Source: AGRyM1sjHdMc8r4kOAVvDSXun0/3hIPR8IttNr7lI5/QmNY+yF5MpxDORulTNwDHzBmTuJcWcQR9wA==
+X-Received: by 2002:a05:6512:402:b0:481:a86:5721 with SMTP id u2-20020a056512040200b004810a865721mr3227708lfk.525.1656534960424;
+        Wed, 29 Jun 2022 13:36:00 -0700 (PDT)
+Received: from localhost.localdomain (c-2ec2f5c4-74736162.cust.telenor.se. [46.194.245.196])
+        by smtp.gmail.com with ESMTPSA id p12-20020ac24ecc000000b0047f59336d6asm2738057lfr.179.2022.06.29.13.35.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jun 2022 13:35:59 -0700 (PDT)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH] iio: adc: ad778-1: do not explicity set INDIO_BUFFER_TRIGGERED mode
+Date:   Wed, 29 Jun 2022 22:38:47 +0200
+Message-Id: <20220629203847.4801-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v4 04/15] dt-bindings: gpio: Add AXP192 GPIO bindings
-Content-Language: en-US
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
-        linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        sre@kernel.org, lee.jones@linaro.org, lgirdwood@gmail.com,
-        broonie@kernel.org
-Cc:     lars@metafoo.de, quic_gurus@quicinc.com,
-        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
-        michael@walle.cc, rdunlap@infradead.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
- <20220629143046.213584-5-aidanmacdonald.0x0@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220629143046.213584-5-aidanmacdonald.0x0@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 29/06/2022 16:30, Aidan MacDonald wrote:
-> The AXP192 PMIC is different enough from the PMICs supported by
-> the AXP20x GPIO driver to warrant a separate driver. The AXP192
-> driver also supports interrupts and pinconf settings.
-> 
-> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-> ---
->  .../bindings/gpio/x-powers,axp192-gpio.yaml   | 68 +++++++++++++++++++
->  1 file changed, 68 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
-> new file mode 100644
-> index 000000000000..ceb94aa2bc97
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
-> @@ -0,0 +1,68 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: "http://devicetree.org/schemas/gpio/x-powers,axp192-gpio.yaml#"
-> +$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-> +
+The core sets INDIO_BUFFER_TRIGGERED as part of
+devm_iio_triggered_buffer_setup().
 
-If there is going to be next version, please drop the quotes for these
-two. In every patch.
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+ drivers/iio/adc/ad7768-1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anyway:
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index aa42ba759fa1..f5e5df105e67 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -620,7 +620,7 @@ static int ad7768_probe(struct spi_device *spi)
+ 	indio_dev->num_channels = ARRAY_SIZE(ad7768_channels);
+ 	indio_dev->name = spi_get_device_id(spi)->name;
+ 	indio_dev->info = &ad7768_info;
+-	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
++	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+ 	ret = ad7768_setup(st);
+ 	if (ret < 0) {
+-- 
+2.36.1
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
-Best regards,
-Krzysztof

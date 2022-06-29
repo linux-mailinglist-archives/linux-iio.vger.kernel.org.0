@@ -2,184 +2,624 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1BC75602F5
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 16:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC0425604F1
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 17:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233575AbiF2Oa5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 10:30:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58728 "EHLO
+        id S232239AbiF2Pww (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 11:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232876AbiF2OaY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 10:30:24 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F8C35DF2;
-        Wed, 29 Jun 2022 07:30:15 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id s1so22744601wra.9;
-        Wed, 29 Jun 2022 07:30:15 -0700 (PDT)
+        with ESMTP id S231848AbiF2Pww (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 11:52:52 -0400
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008711FCF6;
+        Wed, 29 Jun 2022 08:52:50 -0700 (PDT)
+Received: by mail-io1-xd2e.google.com with SMTP id z191so16398488iof.6;
+        Wed, 29 Jun 2022 08:52:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=I/6knLBCspYoJbBWZ+ks97ukajAgwVFBs4o2jAnU4CE=;
-        b=F0whcHo7Zc3k+GEpoS8SmLr8tVyFTKmt1wCz/oaQlx6Ib7ZKEX063yRQrkxoZs0r67
-         WuH740v9d1VXR0yfCyonHdTDr8SULH4ZkFuzdySuwlPcuOZ3LaJDMsxWd41SESYBfEIv
-         H8ji5KUI/doCTfmHIKSZX+Np38hQVSim+qGxZGJwI8ju5NQQox6gytgsiS1hLzkxMhVe
-         oRMky2ppDq/8k+h45DL81Ypj1rsrXdhjxJ/CW3xMCD+sE4+iUveaR5KbVMxWVdpWMNDA
-         81k4aiE8tNaiW0ZsvzBSEG1sNt6/1tKZAl0RtIhF/GQjlSGVa8zdL/IIkkA54mS5jP5f
-         nTvQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=m3srbM8QGWrZhwGq/B370AsvjDk8BediS0HIOgFCe3E=;
+        b=TEqaPH+b8J+kXTgX6LEBz8BN99Q66IkyfTj6NQf26Ir9KFKzJZQhZNNYMMGqRDSXRo
+         7G8RPAE3Ivq80Rkwp/+ZUB/616P7/Lyl6qshrI567HvQ9t6/P6X0G1jLWZWUOjIkoWSt
+         cWz4d4UdzcRBwtU09wfItyTJ5bA1klYc7TJ6RafHaP3Yo88QQKuHk1zI/qe3q/vWt9au
+         LlVlhUhn+6HuKRK3wVWiMaHNlFbychaZJGtyZvVICV8gpj2/STktb0MXl1ilulpiV/Zf
+         ZL+ykSxuyluILTFp3WJD6ZM2Ux79vUgPcg9FYBVp7HCc9nzlsTEp25Ooc7reCsJUgvA9
+         j6vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=I/6knLBCspYoJbBWZ+ks97ukajAgwVFBs4o2jAnU4CE=;
-        b=QarWicW+fkgt/0GTNZH//6FRRqB2kd6Py7+WkTPz+arB9pbW8uR3bZa6daHDfiWzwD
-         KXVq19sZtMoa7nHI9cKB9CGosUnhcHdID3Lr5qgEGlXeIm4JCT0G963S9whz8kyDdhSd
-         9UC2KbOQgkDYjGO9CEY23Rb15WS2PbMjfZSS3/VIzpCDrpcGyV16TpNpNfZRleLH+Y+y
-         AsN25oyJSH0hWev5hziUxidkEcfwaYx6w2yz5ffKRE40g4/NwRVle6j/wIQpOfEMQE8W
-         h3F5SnPrq3XPkwfSTNogfZ//Ta7Ctvfj1wrb1oHl1EyOYS3RMcUdDfVu5puATWWD5/dX
-         8nSA==
-X-Gm-Message-State: AJIora8XkPWU9Px00XwtbiBCAt4Gf1yIcmBk0nD6LuB2NLi8uTRrN3iv
-        MyngoEuwrJNpMNCIV9gYURc=
-X-Google-Smtp-Source: AGRyM1ssJB+8a1pR4WAQ+kpPKxT8wl7jYM6SAD5uwinvRVog9qTcEzaMAvr1kw6gi5jmBcgoMiZX1g==
-X-Received: by 2002:a5d:528e:0:b0:21b:b85b:5873 with SMTP id c14-20020a5d528e000000b0021bb85b5873mr3425379wrv.191.1656513015000;
-        Wed, 29 Jun 2022 07:30:15 -0700 (PDT)
-Received: from localhost (92.40.168.16.threembb.co.uk. [92.40.168.16])
-        by smtp.gmail.com with ESMTPSA id c21-20020a05600c0a5500b0039c4d022a44sm3402041wmq.1.2022.06.29.07.30.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jun 2022 07:30:14 -0700 (PDT)
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        sre@kernel.org, lee.jones@linaro.org, lgirdwood@gmail.com,
-        broonie@kernel.org
-Cc:     lars@metafoo.de, quic_gurus@quicinc.com,
-        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
-        michael@walle.cc, rdunlap@infradead.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: [PATCH v4 15/15] power: axp20x_battery: Add support for AXP192
-Date:   Wed, 29 Jun 2022 15:30:46 +0100
-Message-Id: <20220629143046.213584-16-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=m3srbM8QGWrZhwGq/B370AsvjDk8BediS0HIOgFCe3E=;
+        b=s8Q/WrTy4eqEd8IQXefqdG41wyUCi3GwTfmdbhrbSobmP1tJa+iWD/3SYMOWDyYKOp
+         w8iYQWO4FzfA9yaSI7VJkgbs3r60Hye5O5yaDBEZWCQqXDLHu7tqTvhAq5hFNST/D7LB
+         cvG1vSbiLMngasYrt5AX5khoNFG07K5OuBXZELvb8fF07TBFsC2zP6IQqMeT3DvmyOqW
+         3n/3IvUysZvE76z9ogRd6uq1vU36ylHdYytywv77E4zm/GxhBLOj8DGP7yfY2gbCuCX7
+         kCz+jMnN7AzpFOopcUIpXY1/ryWyt8qror351X0QrrYMN/HVprhhpIs4Ree7bmXZHIHx
+         QoLg==
+X-Gm-Message-State: AJIora87TtyL/O9LGmeqZCyfpwQc9YVz2Q6zhOZHtOowdtin0049ZqLG
+        4k1sY3f5aQ2UmT1OVq4wirNrMuInWJNJkiMjCf4=
+X-Google-Smtp-Source: AGRyM1t+rE4Wwngtg5YS4SsXmN+Nyw4Tu9pZHHDpNjJP8e9iQDVbLMC6ySWAMXPj73PzqGNOmA4LXfYcAJyLHSyBKfs=
+X-Received: by 2002:a05:6638:14c7:b0:33c:c6ff:4d74 with SMTP id
+ l7-20020a05663814c700b0033cc6ff4d74mr2346897jak.254.1656517968775; Wed, 29
+ Jun 2022 08:52:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220623115631.22209-1-peterwu.pub@gmail.com> <20220623115631.22209-12-peterwu.pub@gmail.com>
+ <CAHp75Vf2UAVgWS1nu8iwNjESWHQGOMWcNMUFShZ8Q_Qp3fssdQ@mail.gmail.com>
+In-Reply-To: <CAHp75Vf2UAVgWS1nu8iwNjESWHQGOMWcNMUFShZ8Q_Qp3fssdQ@mail.gmail.com>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Wed, 29 Jun 2022 23:52:33 +0800
+Message-ID: <CABtFH5J8GVXQMKmsUs2HfjV-p_rx4gLdCTKsDP_aCJWzE4AVeQ@mail.gmail.com>
+Subject: Re: [PATCH v3 11/14] power: supply: mt6370: Add Mediatek MT6370
+ charger driver
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AXP192 has a battery charger similar to other X-Powers PMICs,
-but unlike the other supported devices, it does not have a fuel
-gauge and can't report battery capacity directly.
+Hi Andy,
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
----
- drivers/power/supply/axp20x_battery.c | 49 +++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 3 deletions(-)
+Sorry for the late reply, I have some questions to ask you below. Thanks!
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 574c1d001556..1e84d26ce8e3 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -544,6 +544,19 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
- 	}
- }
- 
-+static enum power_supply_property axp192_battery_props[] = {
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_ONLINE,
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-+	POWER_SUPPLY_PROP_HEALTH,
-+	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-+	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-+};
-+
- static enum power_supply_property axp20x_battery_props[] = {
- 	POWER_SUPPLY_PROP_PRESENT,
- 	POWER_SUPPLY_PROP_ONLINE,
-@@ -568,6 +581,16 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
- 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
- }
- 
-+static const struct power_supply_desc axp192_batt_ps_desc = {
-+	.name = "axp192-battery",
-+	.type = POWER_SUPPLY_TYPE_BATTERY,
-+	.properties = axp192_battery_props,
-+	.num_properties = ARRAY_SIZE(axp192_battery_props),
-+	.property_is_writeable = axp20x_battery_prop_writeable,
-+	.get_property = axp20x_battery_get_prop,
-+	.set_property = axp20x_battery_set_prop,
-+};
-+
- static const struct power_supply_desc axp20x_batt_ps_desc = {
- 	.name = "axp20x-battery",
- 	.type = POWER_SUPPLY_TYPE_BATTERY,
-@@ -578,6 +601,19 @@ static const struct power_supply_desc axp20x_batt_ps_desc = {
- 	.set_property = axp20x_battery_set_prop,
- };
- 
-+static const int axp192_ccc_table[AXP20X_CHRG_CTRL1_TGT_CURR+1] = {
-+	100000,  190000,  280000,  360000,
-+	450000,  550000,  630000,  700000,
-+	780000,  880000,  960000,  1000000,
-+	1080000, 1160000, 1240000, 1320000,
-+};
-+
-+static const struct axp_data axp192_data = {
-+	.ccc_table = axp192_ccc_table,
-+	.get_max_voltage = axp20x_battery_get_max_voltage,
-+	.set_max_voltage = axp20x_battery_set_max_voltage,
-+};
-+
- static const struct axp_data axp209_data = {
- 	.ccc_scale = 100000,
- 	.ccc_offset = 300000,
-@@ -606,6 +642,9 @@ static const struct axp_data axp813_data = {
- 
- static const struct of_device_id axp20x_battery_ps_id[] = {
- 	{
-+		.compatible = "x-powers,axp192-battery-power-supply",
-+		.data = (void *)&axp192_data,
-+	}, {
- 		.compatible = "x-powers,axp209-battery-power-supply",
- 		.data = (void *)&axp209_data,
- 	}, {
-@@ -623,6 +662,7 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 	struct axp20x_batt_ps *axp20x_batt;
- 	struct power_supply_config psy_cfg = {};
- 	struct power_supply_battery_info *info;
-+	const struct power_supply_desc *ps_desc;
- 	struct device *dev = &pdev->dev;
- 
- 	if (!of_device_is_available(pdev->dev.of_node))
-@@ -666,9 +706,12 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 
- 	axp20x_batt->data = (struct axp_data *)of_device_get_match_data(dev);
- 
--	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
--						       &axp20x_batt_ps_desc,
--						       &psy_cfg);
-+	if (!axp20x_batt->data->has_fg)
-+		ps_desc = &axp192_batt_ps_desc;
-+	else
-+		ps_desc = &axp20x_batt_ps_desc;
-+
-+	axp20x_batt->batt = devm_power_supply_register(&pdev->dev, ps_desc, &psy_cfg);
- 	if (IS_ERR(axp20x_batt->batt)) {
- 		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
- 			PTR_ERR(axp20x_batt->batt));
--- 
-2.35.1
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B46=E6=9C=
+=8824=E6=97=A5 =E9=80=B1=E4=BA=94 =E5=87=8C=E6=99=A82:56=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+>
+> On Thu, Jun 23, 2022 at 2:00 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> >
+> > From: ChiaEn Wu <chiaen_wu@richtek.com>
+> >
+> > Add Mediatek MT6370 charger driver.
+>
+> ...
+>
+> > +config CHARGER_MT6370
+> > +       tristate "Mediatek MT6370 Charger Driver"
+> > +       depends on MFD_MT6370
+> > +       depends on REGULATOR
+> > +       select LINEAR_RANGES
+> > +       help
+> > +         Say Y here to enable MT6370 Charger Part.
+> > +         The device supports High-Accuracy Voltage/Current Regulation,
+> > +         Average Input Current Regulation, Battery Temperature Sensing=
+,
+> > +         Over-Temperature Protection, DPDM Detection for BC1.2.
+>
+> Module name?
+>
+> ...
+>
+> > +#include <dt-bindings/iio/adc/mediatek,mt6370_adc.h>
+>
+> This usually goes after linux/*
+>
+> > +#include <linux/atomic.h>
+> > +#include <linux/bitfield.h>
+> > +#include <linux/bits.h>
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/iio/consumer.h>
+> > +#include <linux/init.h>
+> > +#include <linux/interrupt.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/module.h>
+>
+> > +#include <linux/of.h>
+>
+>
+> > +#include <linux/platform_device.h>
+> > +#include <linux/power_supply.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/driver.h>
+> > +#include <linux/workqueue.h>
+>
+> ...
+>
+> > +#define MT6370_MIVR_IBUS_TH            100000          /* 100 mA */
+>
+> Instead of comment, add proper units.
+>
+> ...
+>
+> > +       MT6370_USB_STAT_DCP,
+> > +       MT6370_USB_STAT_CDP,
+> > +       MT6370_USB_STAT_MAX,
+>
+> No comma for a terminator line.
+>
+> ...
+>
+> > +static inline u32 mt6370_chg_val_to_reg(const struct mt6370_chg_range =
+*range,
+> > +                                       u32 val)
+> > +static inline u32 mt6370_chg_reg_to_val(const struct mt6370_chg_range =
+*range,
+> > +                                       u8 reg)
+>
+> I'm wondering if you can use the
+> https://elixir.bootlin.com/linux/v5.19-rc3/source/include/linux/linear_ra=
+nge.h
+> APIs.
 
+Thanks for your helpful comments!
+I will refine it in the next patch!
+
+>
+> ...
+>
+> > +       int ret =3D 0;
+>
+> This seems a redundant assignment, see below.
+>
+> > +       rcfg->ena_gpiod =3D fwnode_gpiod_get_index(of_fwnode_handle(of)=
+,
+> > +                                                "enable", 0,
+>
+> For index =3D=3D 0 don't use _index API.
+>
+> > +                                                GPIOD_OUT_LOW |
+> > +                                                GPIOD_FLAGS_BIT_NONEXC=
+LUSIVE,
+> > +                                                rdesc->name);
+> > +       if (IS_ERR(rcfg->ena_gpiod)) {
+> > +               dev_err(priv->dev, "Failed to requeset OTG EN Pin\n");
+>
+> request
+>
+> > +               rcfg->ena_gpiod =3D NULL;
+>
+> So, use _optional and return any errors you got.
+
+These days, I tried to use various APIs in <gpio/consumer.h>, and also
+try to use _optional APIs.
+But my OTG regulator node is a child node of the charger node, like below.
+---------------------------------------------------------------------------=
+-
+// copy-paste from our mfd dt-binding example
+        charger {
+          compatible =3D "mediatek,mt6370-charger";
+          interrupts =3D <48>, <68>, <6>;
+          interrupt-names =3D "attach_i", "uvp_d_evt", "mivr";
+          io-channels =3D <&mt6370_adc MT6370_CHAN_IBUS>;
+
+          mt6370_otg_vbus: usb-otg-vbus-regulator {
+            regulator-name =3D "mt6370-usb-otg-vbus";
+            regulator-min-microvolt =3D <4350000>;
+            regulator-max-microvolt =3D <5800000>;
+            regulator-min-microamp =3D <500000>;
+            regulator-max-microamp =3D <3000000>;
+          };
+        };
+---------------------------------------------------------------------------=
+-
+Hence, if I use _optional APIs, it will always get NULL.
+And, If I use 'gpiod_get_from_of_node' here, this API will only parse
+the 'enable' property, not 'enable-gpio' or 'enable-gpios', we need to
+add the '-gpio' suffix before we use this API.
+
+Only 'fwnode_gpiod_get_index' can match this case. Although fwnode
+parsing is not preferred, 'of_parse_cb' already can guarantee the
+callback will only be used by the regulator of_node parsing.
+
+>
+> > +       } else {
+> > +               val =3D MT6370_OPA_MODE_MASK | MT6370_OTG_PIN_EN_MASK;
+> > +               ret =3D regmap_update_bits(priv->regmap, MT6370_REG_CHG=
+_CTRL1,
+> > +                                        val, val);
+> > +               if (ret)
+> > +                       dev_err(priv->dev, "Failed to set otg bits\n");
+> > +       }
+>
+> ...
+>
+> > +       irq_num =3D platform_get_irq_byname(pdev, irq_name);
+>
+> > +
+>
+> Unwanted blank line.
+>
+> > +       if (irq_num < 0) {
+>
+> > +               dev_err(priv->dev, "Failed to get platform resource\n")=
+;
+>
+> Isn't it printed by the call?
+>
+> > +       } else {
+> > +               if (en)
+> > +                       enable_irq(irq_num);
+> > +               else
+> > +                       disable_irq_nosync(irq_num);
+> > +       }
+>
+> ...
+>
+> > +toggle_cfo_exit:
+>
+> The useless label.
+>
+> > +       return ret;
+> > +}
+>
+> ...
+>
+> > +       ret =3D mt6370_chg_get_online(priv, val);
+> > +       if (!val->intval) {
+>
+> No error check?
+
+I replace "mt6370_chg_get_online()" with "power_supply_get_property()"
+and add some error check.
+Could it meet your expectations??
+
+>
+> > +               val->intval =3D POWER_SUPPLY_STATUS_DISCHARGING;
+> > +               return 0;
+> > +       }
+>
+> ...
+>
+> > +static int mt6370_chg_set_online(struct mt6370_priv *priv,
+> > +                                const union power_supply_propval *val)
+> > +{
+> > +       int attach;
+> > +       u32 pwr_rdy =3D !!val->intval;
+> > +
+> > +       mutex_lock(&priv->attach_lock);
+> > +       attach =3D atomic_read(&priv->attach);
+> > +       if (pwr_rdy =3D=3D !!attach) {
+> > +               dev_err(priv->dev, "pwr_rdy is same(%d)\n", pwr_rdy);
+> > +               mutex_unlock(&priv->attach_lock);
+> > +               return 0;
+> > +       }
+> > +
+> > +       atomic_set(&priv->attach, pwr_rdy);
+> > +       mutex_unlock(&priv->attach_lock);
+> > +
+> > +       if (!queue_work(priv->wq, &priv->bc12_work))
+> > +               dev_err(priv->dev, "bc12 work has already queued\n");
+> > +
+> > +       return 0;
+>
+> > +
+>
+> Unwanted blank line.
+>
+> > +}
+>
+> > +static int mt6370_chg_get_property(struct power_supply *psy,
+> > +                                  enum power_supply_property psp,
+> > +                                  union power_supply_propval *val)
+> > +{
+> > +       struct mt6370_priv *priv =3D power_supply_get_drvdata(psy);
+> > +       int ret =3D 0;
+> > +
+> > +       switch (psp) {
+> > +       case POWER_SUPPLY_PROP_ONLINE:
+> > +               ret =3D mt6370_chg_get_online(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_STATUS:
+> > +               ret =3D mt6370_chg_get_status(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CHARGE_TYPE:
+> > +               ret =3D mt6370_chg_get_charge_type(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+> > +               ret =3D mt6370_chg_get_ichg(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+> > +               ret =3D mt6370_chg_get_max_ichg(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+> > +               ret =3D mt6370_chg_get_cv(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+> > +               ret =3D mt6370_chg_get_max_cv(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+> > +               ret =3D mt6370_chg_get_aicr(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
+> > +               ret =3D mt6370_chg_get_mivr(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
+> > +               ret =3D mt6370_chg_get_iprechg(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+> > +               ret =3D mt6370_chg_get_ieoc(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_TYPE:
+> > +               val->intval =3D priv->psy_desc->type;
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_USB_TYPE:
+> > +               val->intval =3D priv->psy_usb_type;
+> > +               break;
+> > +       default:
+> > +               ret =3D -EINVAL;
+> > +               break;
+> > +       }
+> > +
+> > +       return ret;
+>
+> In all cases, return directly.
+>
+> > +}
+>
+> ...
+>
+> > +       switch (psp) {
+> > +       case POWER_SUPPLY_PROP_ONLINE:
+> > +               ret =3D mt6370_chg_set_online(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+> > +               ret =3D mt6370_chg_set_ichg(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+> > +               ret =3D mt6370_chg_set_cv(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+> > +               ret =3D mt6370_chg_set_aicr(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_INPUT_VOLTAGE_LIMIT:
+> > +               ret =3D mt6370_chg_set_mivr(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
+> > +               ret =3D mt6370_chg_set_iprechg(priv, val);
+> > +               break;
+> > +       case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+> > +               ret =3D mt6370_chg_set_ieoc(priv, val);
+> > +               break;
+> > +       default:
+> > +               ret =3D -EINVAL;
+> > +       }
+> > +       return ret;
+>
+> As per above.
+>
+> ...
+>
+> > +       for (i =3D 0; i < F_MAX; i++) {
+> > +               priv->rmap_fields[i] =3D devm_regmap_field_alloc(priv->=
+dev,
+> > +                                                              priv->re=
+gmap,
+> > +                                                              fds[i].f=
+ield);
+> > +               if (IS_ERR(priv->rmap_fields[i])) {
+> > +                       dev_err(priv->dev,
+> > +                               "Failed to allocate regmap field [%s]\n=
+",
+> > +                               fds[i].name);
+> > +                       return PTR_ERR(priv->rmap_fields[i]);
+>
+> return dev_err_probe();
+>
+> > +               }
+> > +       }
+>
+> ...
+>
+> > +       mutex_init(&priv->attach_lock);
+> > +       atomic_set(&priv->attach, 0);
+>
+> Why not atomic_init() ?
+> But yeah, usage of it and other locking mechanisms in this driver are
+> questionable.
+
+I will refine it in the next patch!
+
+>
+> ...
+>
+> > +       /* ICHG/IEOC Workaroud, ICHG can not be set less than 900mA */
+>
+> Workaround
+>
+> ...
+>
+> > +       return IS_ERR(priv->rdev) ? PTR_ERR(priv->rdev) : 0;
+>
+> PTR_ERR_OR_ZERO()
+>
+> ...
+>
+> > +               .of_node =3D priv->dev->of_node,
+>
+> dev_of_node() ?
+>
+> > +       };
+> > +
+> > +       priv->psy_desc =3D &mt6370_chg_psy_desc;
+> > +       priv->psy_desc->name =3D dev_name(priv->dev);
+> > +       priv->psy =3D devm_power_supply_register(priv->dev, priv->psy_d=
+esc, &cfg);
+> > +
+> > +       return IS_ERR(priv->psy) ? PTR_ERR(priv->psy) : 0;
+>
+> PTR_ERR_OR_ZERO()
+>
+> > +}
+>
+> ...
+>
+> > +static irqreturn_t mt6370_attach_i_handler(int irq, void *data)
+> > +{
+> > +       struct mt6370_priv *priv =3D data;
+> > +       u32 otg_en;
+> > +       int ret;
+> > +
+> > +       /* Check in otg mode or not */
+> > +       ret =3D mt6370_chg_field_get(priv, F_BOOST_STAT, &otg_en);
+> > +       if (ret < 0) {
+> > +               dev_err(priv->dev, "failed to get otg state\n");
+> > +               return IRQ_HANDLED;
+>
+> Handled error?
+>
+> > +       }
+> > +
+> > +       if (otg_en)
+> > +               return IRQ_HANDLED;
+>
+> > +       mutex_lock(&priv->attach_lock);
+> > +       atomic_set(&priv->attach, MT6370_ATTACH_STAT_ATTACH_BC12_DONE);
+> > +       mutex_unlock(&priv->attach_lock);
+>
+> Mutex around atomic?! It's interesting...
+
+I will revise it in the next patch.
+
+>
+> > +       if (!queue_work(priv->wq, &priv->bc12_work))
+> > +               dev_err(priv->dev, "bc12 work has already queued\n");
+> > +
+> > +       return IRQ_HANDLED;
+> > +}
+>
+> ...
+>
+> > +       for (i =3D 0; i < ARRAY_SIZE(mt6370_chg_irqs); i++) {
+> > +               ret =3D platform_get_irq_byname(to_platform_device(priv=
+->dev),
+> > +                                             mt6370_chg_irqs[i].name);
+> > +               if (ret < 0) {
+> > +                       dev_err(priv->dev, "Failed to get irq %s\n",
+> > +                               mt6370_chg_irqs[i].name);
+>
+> Isn't the same printed by the above call?
+
+well... yes they are similar, I will remove one of them in the next patch.
+
+>
+> > +                       return ret;
+> > +               }
+> > +
+> > +               ret =3D devm_request_threaded_irq(priv->dev, ret, NULL,
+> > +                                               mt6370_chg_irqs[i].hand=
+ler,
+> > +                                               IRQF_TRIGGER_FALLING,
+> > +                                               dev_name(priv->dev),
+> > +                                               priv);
+> > +
+> > +               if (ret < 0) {
+> > +                       dev_err(priv->dev, "Failed to request irq %s\n"=
+,
+> > +                               mt6370_chg_irqs[i].name);
+> > +                       return ret;
+>
+> return dev_err_probe();
+>
+> > +               }
+> > +       }
+>
+> ...
+>
+> > +static int mt6370_chg_probe(struct platform_device *pdev)
+> > +{
+>
+>
+> Use return dev_err_probe(...); pattern.
+>
+> > +probe_out:
+> > +       destroy_workqueue(priv->wq);
+> > +       mutex_destroy(&priv->attach_lock);
+>
+> I don't see clearly the initialization of these in the ->probe().
+> Besides that, does destroy_workque() synchronize the actual queue(s)?
+>
+> Mixing devm_ and non-devm_ may lead to a wrong release order that's
+> why it is better to see allocating and destroying resources in one
+> function (they may be wrapped, but should be both of them, seems like
+> you have done it only for the first parts).
+
+OK, I will try to revise these in the next patch!
+
+>
+> > +       return ret;
+> > +}
+>
+> ...
+>
+> > +static int mt6370_chg_remove(struct platform_device *pdev)
+> > +{
+> > +       struct mt6370_priv *priv =3D platform_get_drvdata(pdev);
+> > +
+> > +       if (priv) {
+>
+> Can you describe when this condition can be false?
+
+well... I will remove it in the next patch, sorry for making this
+stupid mistake...
+
+>
+> > +               mt6370_chg_enable_irq(priv, "mivr", false);
+> > +               cancel_delayed_work_sync(&priv->mivr_dwork);
+> > +               destroy_workqueue(priv->wq);
+> > +               mutex_destroy(&priv->attach_lock);
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+>
+> ...
+>
+> > +static struct platform_driver mt6370_chg_driver =3D {
+> > +       .probe =3D mt6370_chg_probe,
+> > +       .remove =3D mt6370_chg_remove,
+> > +       .driver =3D {
+> > +               .name =3D "mt6370-charger",
+> > +               .of_match_table =3D of_match_ptr(mt6370_chg_of_match),
+>
+> No good use of of_match_ptr(), please drop it.
+>
+> > +       },
+> > +};
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+
+Thanks for your review!
+
+Best regards,
+ChiaEn Wu

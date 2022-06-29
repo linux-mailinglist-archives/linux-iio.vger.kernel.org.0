@@ -2,60 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7058C55FC02
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73EC955FC53
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbiF2J21 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 05:28:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41072 "EHLO
+        id S233017AbiF2JmQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 05:42:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231860AbiF2J20 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 05:28:26 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729C93898;
-        Wed, 29 Jun 2022 02:28:25 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id ge10so31332296ejb.7;
-        Wed, 29 Jun 2022 02:28:25 -0700 (PDT)
+        with ESMTP id S232626AbiF2JmP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 05:42:15 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7AA3BBF1;
+        Wed, 29 Jun 2022 02:42:12 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-31772f8495fso142491457b3.4;
+        Wed, 29 Jun 2022 02:42:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=OcjlEA+4dS73Cz+a5jVwrlBiB9UB3IJkomavNYdn3KE=;
-        b=CSJ8pKHssY81NHEo37dQakuHxjhhT72ifL3/WNSt4UG7uRbllRpC6LqsumzrysrNj1
-         2J7XeAWjQGy9zW2uqWtZj50hKVwnOyUVMJf/aZpijpzhi0eP/cSUZJJ12rm5XNsfP0e6
-         4+Zq29EnY25bBjwhUDk4wWcbxguIDwgp6wJ2NWjAyyUk9X2EFlKIWEi7ALMnokOJuadd
-         noHBqcMzta0Dr+8sWng04yjdaipXFj08YE0nP28p/KzrGsOsKtk7IQChBBQCKjXbzQxS
-         4jyKq/r2HdjKExfm5FQlst3qYI9GsFqOQriEm0sObNJ1KUOkbQjcJVo4z7f5sh0KY8y9
-         nPRw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dphcQupyROJ0Vn2I9eMkRI2C8/cYPFXlsrEJa1A+m0I=;
+        b=a1XiGPRO6e6y+8vP5WdeYTRMcJgI+OmZ++oaD8yEl5YH8A2xu7z0J1zk8XS0wQ6Jd+
+         +OEaJH6R0USSh5v9xfu+Qy8GVhWbNSdYui7NILY24UiyI8qNVPJyKPRHlpptugXH80pI
+         Ktrhpt8N846eFVA+pQYvWIbGEHdHfJbcMQs3V8ne7pf7blupiDhIupcC3MHpG6H0hc6/
+         3icptYNu1nHCt3flqp8Xlr+6KNN1ETxPbSFV2xnCIdsk1QNChgIIDhUwpX+8cAiuk881
+         a74QGO4d2sBMKWE1oP8i1qGvbwY9Ag69Nqa7oty3h4DzSNMJmX3oJHneTidSxC5/VXd0
+         bqlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=OcjlEA+4dS73Cz+a5jVwrlBiB9UB3IJkomavNYdn3KE=;
-        b=2oQ6L/YcIT0fHNH1KHm+pR9WeMaUz3BmAQd8NiQIg1ZM714YAdl59V9Y6+BKLgaB2S
-         T3QkGcTPAJ/g8Q3B3WfDBzIgMS4EYiqglZ5k5SU6cFAVwCjG3NspxgsxAnOCHTgTOjFC
-         oQGz+hwvA0+S+8ibfRtI51CT8GqgLw4R/mbX+H3ZAJo8YGiDC+YlOLpyf7pUlPJGaHBi
-         X1r/m8Fi/uGAG+2hoE3/qikj7XxYxmhTper6HpfHF2B0sIefcgxJlGmAM2CF7gz4klwF
-         U222D8iC+4S5vSCaQEANlhwkm+4QmKYmJc1fwvwXPaL539zKj/Lfv2endEvHzxmBhLxH
-         7T9g==
-X-Gm-Message-State: AJIora/HDa/sgeQTJYFkDGeD+MB0+T1rufChihAbFHK5hy/Vtwk1jPCV
-        3xEW+vRkVG2lGp2yf0v2wB8=
-X-Google-Smtp-Source: AGRyM1vs4gqfTQsGQHWewAwgtxD9xFaOVCxxUvBfBmWTRQabLQMl0/F/6JP8pjgYGhxg9n+kBDFMrA==
-X-Received: by 2002:a17:906:ce:b0:715:705e:52fb with SMTP id 14-20020a17090600ce00b00715705e52fbmr2278219eji.303.1656494903920;
-        Wed, 29 Jun 2022 02:28:23 -0700 (PDT)
-Received: from [192.168.0.182] ([79.119.98.153])
-        by smtp.gmail.com with ESMTPSA id r1-20020a17090638c100b007219c20dcd8sm7499978ejd.196.2022.06.29.02.28.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jun 2022 02:28:23 -0700 (PDT)
-Message-ID: <7fc0292d-1d93-4ae8-2947-9444ef48a19e@gmail.com>
-Date:   Wed, 29 Jun 2022 12:28:21 +0300
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dphcQupyROJ0Vn2I9eMkRI2C8/cYPFXlsrEJa1A+m0I=;
+        b=XghSYN88X0OYm+O/W1sOlIWmGF5+ibGJR18BKBK+cSKAVcH4edurOB/Pe/c8Sp1Per
+         bWRZffGQUZ3iO+D8UROKMZ+v2nFJ6FCQ3f0jZi8fz6Bh/uAxwcXhacK43BgHiFkKYONV
+         FnxVc+OXq0IBihOr7XXYn7vEAeeUJXVlQrIQDYor/llFWMAwFLp8PojYknQ8zmGhznnr
+         j9zO/Xyw7Y0Bof0ZWeJDhZ1wcMKl3fnZqHnBWXzSwo1f/uikCV+aj1E64Rghir3iuxaM
+         d+gGvJnEjiB+kaOnjw07NR6kDX/pH4rUE09WI14bb20GA3vOhzGrnQPAvYsseirGwjg4
+         mHuA==
+X-Gm-Message-State: AJIora9jDnjzYKzZZQnoD07nv7Eq7tMOrgszo7bCSLgPeh/knJyUB6vi
+        tO5G0lAUGdTDPrJsbNQAq1mfMrcE4nCSqM9b3YonFrKFU/G4LA==
+X-Google-Smtp-Source: AGRyM1sEWvOA8TWINKJbJeT2jByQgHuAnrXH2xN0IXetoXTufJfBjPcAm9m4hgZMsNOQvfMKZX/jCEL4z+4DkyI5KKg=
+X-Received: by 2002:a81:6fd7:0:b0:317:964a:c7a4 with SMTP id
+ k206-20020a816fd7000000b00317964ac7a4mr2875304ywc.131.1656495731432; Wed, 29
+ Jun 2022 02:42:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
+References: <20220628144649.3957286-1-cosmin.tanislav@analog.com>
+ <20220628144649.3957286-3-cosmin.tanislav@analog.com> <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
+ <7fc0292d-1d93-4ae8-2947-9444ef48a19e@gmail.com>
+In-Reply-To: <7fc0292d-1d93-4ae8-2947-9444ef48a19e@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 29 Jun 2022 11:41:30 +0200
+Message-ID: <CAHp75VeedgEymKY9UwMjnS7XL8rdj2TNhLA38JjY=f1_4np6fg@mail.gmail.com>
 Subject: Re: [PATCH v7 2/2] iio: adc: ad4130: add AD4130 driver
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -64,15 +62,9 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         Cosmin Tanislav <cosmin.tanislav@analog.com>
-References: <20220628144649.3957286-1-cosmin.tanislav@analog.com>
- <20220628144649.3957286-3-cosmin.tanislav@analog.com>
- <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -81,23 +73,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Jun 29, 2022 at 11:28 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> On 6/28/22 22:17, Andy Shevchenko wrote:
+> > On Tue, Jun 28, 2022 at 4:49 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> >>
+> >> AD4130-8 is an ultra-low power, high precision, measurement solution for
+> >> low bandwidth battery operated applications.
+> >>
+> >> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+> >> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+> >> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+> >> selectable filter options, smart sequencer, sensor biasing and excitation
+> >> options, diagnostics, and a FIFO buffer.
+> >
+> > It would be respectful, if you include given tags. Why didn't you do
+> > that? Any significant change that has to be re-reviewed?
+>
+> Sorry, I sometimes forget about picking up tags. Maybe Jonathan will do
+> it if everything else is good.
+
+I see, you may take them automatically by using the b4 tool.
+ 1. Take the Message-Id of your initial submission (v7).
+ 2. Run `b4 am $message-id`.
+ 3. Drop the previous patch from your tree either by reverting or rebasing.
+ 4. Apply the new one by `git am $message-id:ish` (see the output of
+`b4 am ...`).
+
+In that case all tags will be picked up automatically.
 
 
-On 6/28/22 22:17, Andy Shevchenko wrote:
-> On Tue, Jun 28, 2022 at 4:49 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
->>
->> AD4130-8 is an ultra-low power, high precision, measurement solution for
->> low bandwidth battery operated applications.
->>
->> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
->> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
->> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
->> selectable filter options, smart sequencer, sensor biasing and excitation
->> options, diagnostics, and a FIFO buffer.
-> 
-> It would be respectful, if you include given tags. Why didn't you do
-> that? Any significant change that has to be re-reviewed?
-> 
-
-Sorry, I sometimes forget about picking up tags. Maybe Jonathan will do
-it if everything else is good.
+-- 
+With Best Regards,
+Andy Shevchenko

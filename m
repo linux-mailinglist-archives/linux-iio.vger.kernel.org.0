@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A247F560B70
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 23:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E26560B76
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 23:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229776AbiF2VOg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 17:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55746 "EHLO
+        id S229925AbiF2VP3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 17:15:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230072AbiF2VOe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 17:14:34 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 906B43EA81;
-        Wed, 29 Jun 2022 14:14:33 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id h187so28030320ybg.0;
-        Wed, 29 Jun 2022 14:14:33 -0700 (PDT)
+        with ESMTP id S229784AbiF2VP2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 17:15:28 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E920E3EA80;
+        Wed, 29 Jun 2022 14:15:27 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-317741c86fdso160920067b3.2;
+        Wed, 29 Jun 2022 14:15:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=h7xwnj6Omy1Mv9voGpoMY3zpjYfFQMfuRepOySAIgS4=;
-        b=WfS71ZTiSnDX1aATjVreV1HbNo091JyEfm8QJh627lY6noiQ8XgjGFnLiRn9CKxe8l
-         3BTo0O466GNfluf5WWv1v1iAK9yc4GIYah+3R/eIHpHNqheMQAqLLzttLdPej13V0AmK
-         ej3F2alPtB3s683ANgVdCwLSQa2oUT8Kyz3X8pw++RfbMs3LSkofjPu45cR6FeHj4tPy
-         XYUipf7Y6G23xtXmpUECgC1cKLLo78J/+9UY0DcI46wzi0/0IBQmFFPcYpYAWpB5zYlE
-         cGHCyUQGs7henjYR2UIPWRUCDOnpKpjQS/2UcZszIZxOXfdeRP14RHPr12O0abTieM3U
-         dNxg==
+        bh=VQm/Y0pRhZo0EQ3hGxGXsSwZ7m4Ckh1ldpjFHGlQngM=;
+        b=RKGKxa+RvT3LNthm+jbo2945D36VjmFCeZDQz7wa+r3im7uo76EeA1vonXqshC9wEZ
+         ts05NmsnVEfq1AvDJX2gydJgnHhyjACZ2w+UB0YrLg6v0WiayzT071jUSP8KdP29mHGf
+         tt/jpfr5yCP0Zq/TIUwm+V2UE5In4HUir4zwCN7M6lmuSjqgYqAJZOa0Acouu5QwNAYM
+         wZ+NCoK9G1a+QQgyM+P0LpmEYZO8xJ+QDUq+LZp8Y0VRCwPg5ZKlfybI1KrjduRBYqCz
+         x840nHc2PsKPUvB4+h5X0hwVwlbgjwgXwL+BfI4gQkf5zInEnEIWJX79657jUjA5ytcO
+         oMqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=h7xwnj6Omy1Mv9voGpoMY3zpjYfFQMfuRepOySAIgS4=;
-        b=Y16ehhWTUymGOuP2Gi8cTi5DsYyGMQv76wlvw15994U1jfjLd4xVN4FBbVpXA/bNN5
-         6DzRWJNfQQSNVNf5YFaLaVo6S+Dl9kSR4HEAh5o0l5Stno3mSi4YrgZgsGm5Nu0M19Vn
-         a/jtKdW9N3hM8HNNuM1HBSMUswJ7BXaMF5WksANbKT6dtEDID7iMIE1WAk7Y4gH7NqYf
-         MIK20wBwp4UF/XNIqRR7k/PJVy69KtTS4PZYmiyTUhIOZ20QRY4bUcRlw4hY+b23pHuL
-         y5bu1+sXWrkTZaKXvWhz7+5dcxLl+eUcKP47EnBWWl8AsWLp1jeSjiQTFlLaQyAY2W2m
-         UrVQ==
-X-Gm-Message-State: AJIora96iavGZuEcLWd38oyNpq1iF3JvIjLDnw6LtDShKEUZYQ6uC3cv
-        2N9z/5z7xzFqRuwCm8bb8bhFNVxBqr3j6FzTRPk=
-X-Google-Smtp-Source: AGRyM1tK7/ApIWaYffqYFe+Z8/VUynQyRB3OyvTpRk1OQdz+7Fuc/c5lCrTUxZyH4pGW8DucwBeGOVY6wEjL7FAo6pw=
-X-Received: by 2002:a05:6902:1549:b0:66d:5f76:27ba with SMTP id
- r9-20020a056902154900b0066d5f7627bamr5395898ybu.385.1656537272682; Wed, 29
- Jun 2022 14:14:32 -0700 (PDT)
+        bh=VQm/Y0pRhZo0EQ3hGxGXsSwZ7m4Ckh1ldpjFHGlQngM=;
+        b=UgCa17LNlKU19R6QlL8JNl5gtax2X9Jjqkt1MF3LhTtFpFtVTLxxI8WT5YJLM+QxaJ
+         os8AZA52b11Y1GHJ6oMd9Zf79VBXUt1ZWRYj7xeFev3l1GYg6aoz0KDOYQ0SGYAc4nKZ
+         tVqnl3BPzgtvVyBTDykYV6aiTJI/xQNfcMOFZ3nVF+Xaq4zrVX60r2WPhxtlOzDCnt1q
+         DME8Hv0vUQWP/L58BwDa+1UdDVqssI2MGcz5hgZuTJA+rwJZx5+nZ9kHa2Kz2dmLX21/
+         odB0n1K6bMf0/uyKpmb173e8BeELJYp0loiCn21hlR1VUCB0orrRDAGG2JfBy3NAyVTc
+         A2zA==
+X-Gm-Message-State: AJIora/GfpqmL7sfjFIwGm8j+2sRfLX3d/xmteBqXyEsbXzhxNix8sVu
+        64+onibjOOASqYpuy9nqdvwm29uhu7Hu6hxJtfY=
+X-Google-Smtp-Source: AGRyM1vjTl+ZTBxNHWU7Y+SKVUM+7l7LoPrU/pxB0LB56DuBzTjfBNb4B6t6o1yh5uYgXRiLqzSki4Kio/rVHJpTbdI=
+X-Received: by 2002:a81:6fd7:0:b0:317:964a:c7a4 with SMTP id
+ k206-20020a816fd7000000b00317964ac7a4mr6476899ywc.131.1656537327032; Wed, 29
+ Jun 2022 14:15:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com> <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
+References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+In-Reply-To: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jun 2022 23:13:55 +0200
-Message-ID: <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
-Subject: Re: [PATCH v4 12/15] pinctrl: Add AXP192 pin control driver
+Date:   Wed, 29 Jun 2022 23:14:49 +0200
+Message-ID: <CAHp75Vc=PWXauEKDNX+vmqv=oO1LDv8-GgU3OFZXjf8yJrG8wA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/15] Add support for AXP192 PMIC
 To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
 Cc:     Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -82,66 +82,119 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 4:30 PM Aidan MacDonald
+On Wed, Jun 29, 2022 at 4:29 PM Aidan MacDonald
 <aidanmacdonald.0x0@gmail.com> wrote:
 >
-> The AXP192 PMIC's GPIO registers are much different from the GPIO
-> registers of the AXP20x and AXP813 PMICs supported by the existing
-> pinctrl-axp209 driver. It makes more sense to add a new driver for
-> the AXP192, rather than add support in the existing axp20x driver.
+> Changes in v4:
 >
-> The pinctrl-axp192 driver is considerably more flexible in terms of
-> register layout and should be able to support other X-Powers PMICs.
-> Interrupts and pull down resistor configuration are supported too.
+> * Drop regmap-irq patches and rebase on top of the regmap-irq
+>   refactoring series[1], which implements the same functionality.
+> * Reorder mfd_cells, putting one-line entries at the bottom.
+> * Fix incorrect example in axp192-gpio device tree bindings.
+> * Perform adc_en2 flag -> adc_en2_mask conversion in axp20x_adc
+>   as a separate patch.
+> * Simplify axp192_usb_power_set_current_max().
+> * Drop unneeded OF dependency in pin control driver, and document
+>   tables used for describing register layouts.
+> * Various style fixups suggested by Andy Shevchenko.
 
-...
 
-> +config PINCTRL_AXP192
-> +       tristate "X-Powers AXP192 PMIC pinctrl and GPIO Support"
-> +       depends on MFD_AXP20X
-> +       select PINMUX
-> +       select GENERIC_PINCONF
-> +       select GPIOLIB
-> +       help
-> +         AXP PMICs provide multiple GPIOs that can be muxed for different
-> +         functions. This driver bundles a pinctrl driver to select the function
-> +         muxing and a GPIO driver to handle the GPIO when the GPIO function is
-> +         selected.
-> +         Say Y to enable pinctrl and GPIO support for the AXP192 PMIC.
+For patches 6-11
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-What will be the module name if compiled as a module?
+> [1]: https://lore.kernel.org/lkml/20220623211420.918875-1-aidanmacdonald.0x0@gmail.com/
+>
+> Changes in v3:
+>
+> * Update pinctrl driver to address Andy Shevchenko's review comments
+>   from v1, and fix a few other issues.
+> * Add gpio-ranges property and example snippet to gpio DT bindings.
+> * Update commit message of patch 01/16 to point out that all register
+>   addresses are obtained using sub_irq_reg().
+> * Document ccc_table in axp20x_battery. Also update commit message to
+>   note a small fix that is part of that patch.
+> * Drop axp20x_adc consolidation patch in favor of using separate adc_raw
+>   functions. It's a minor code size optimization that may not be worth
+>   the effort due to implementation complexity.
+> * Use the FIELD_GET macro in axp20x_adc to further clarify intent.
+> * Fix a typo in the regulator driver where an AXP20X regulator ID was
+>   mistakenly used instead of an AXP192 regulator ID. Also carry over
+>   an Acked-by: tag from v1. Hope that's okay.
+> * Accumulate Acked-by: tags from v1 on DT patches.
+> * Accumulate Acked-by: tags from v2.
+>
+> Note that regmap maintainer Mark Brown has said the first two patches to
+> regmap-irq aren't suitable for inclusion into the kernel in their current
+> state. I'm including them for v3 so the series remains testable.
+>
+> Changes in v2:
+>
+> * Do a little cleanup of axp20x_adc suggested by Jonathan Cameron
+> * Consolidate ADC read functions in axp20x_adc
+> * Drop the axp192's read_label callback in axp20x_adc
+> * Clean up the axp192-gpio dt bindings
+> * Rewrite a problematic bit of code in axp20x_usb_power reported
+>   by kernel test robot
+> * Support AXP192 in axp20x_battery
+> * Split up regmap-irq changes to two separate patches
+>
+> Cover letter from v1:
+>
+> Hi all,
+>
+> This patch series adds support for the X-Powers AXP192 PMIC to the
+> AXP20x driver framework.
+>
+> The first patch is a small change to regmap-irq to support the AXP192's
+> unusual IRQ register layout. It isn't possible to include all of the
+> IRQ registers in one regmap-irq chip without this.
+>
+> The rest of the changes are pretty straightforward, I think the only
+> notable parts are the axp20x_adc driver where there seems to be some
+> opportunities for code reuse (the axp192 is nearly a duplicate of the
+> axp20x) and the addition of a new pinctrl driver for the axp192, since
+> the axp20x pinctrl driver was not very easy to adapt.
+>
+> Aidan MacDonald (15):
+>   dt-bindings: mfd: add bindings for AXP192 MFD device
+>   dt-bindings: iio: adc: axp209: Add AXP192 compatible
+>   dt-bindings: power: supply: axp20x: Add AXP192 compatible
+>   dt-bindings: gpio: Add AXP192 GPIO bindings
+>   dt-bindings: power: axp20x-battery: Add AXP192 compatible
+>   mfd: axp20x: Add support for AXP192
+>   regulator: axp20x: Add support for AXP192
+>   iio: adc: axp20x_adc: Minor code cleanups
+>   iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
+>   iio: adc: axp20x_adc: Add support for AXP192
+>   power: supply: axp20x_usb_power: Add support for AXP192
+>   pinctrl: Add AXP192 pin control driver
+>   power: axp20x_battery: Add constant charge current table
+>   power: axp20x_battery: Support battery status without fuel gauge
+>   power: axp20x_battery: Add support for AXP192
+>
+>  .../bindings/gpio/x-powers,axp192-gpio.yaml   |  68 ++
+>  .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+>  .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+>  .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+>  .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+>  drivers/iio/adc/axp20x_adc.c                  | 356 +++++++++--
+>  drivers/mfd/axp20x-i2c.c                      |   2 +
+>  drivers/mfd/axp20x.c                          | 152 +++++
+>  drivers/pinctrl/Kconfig                       |  13 +
+>  drivers/pinctrl/Makefile                      |   1 +
+>  drivers/pinctrl/pinctrl-axp192.c              | 598 ++++++++++++++++++
+>  drivers/power/supply/axp20x_battery.c         | 142 ++++-
+>  drivers/power/supply/axp20x_usb_power.c       |  84 ++-
+>  drivers/regulator/axp20x-regulator.c          | 100 ++-
+>  include/linux/mfd/axp20x.h                    |  84 +++
+>  15 files changed, 1547 insertions(+), 74 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/gpio/x-powers,axp192-gpio.yaml
+>  create mode 100644 drivers/pinctrl/pinctrl-axp192.c
+>
+> --
+> 2.35.1
+>
 
-...
-
-> +/**
-> + * struct axp192_pctl_function - describes a function that GPIOs may have
-> + *
-> + * @name: Function name
-> + * @muxvals: Mux values used for selecting this function, one per GPIO.
-> + *           The i'th element corresponds to the i'th GPIO and is written
-> + *           to the GPIO's control register field to select this function.
-> + *           U8_MAX indicates that the pin does not support this function.
-> + * @groups: Array of @ngroups groups listing pins supporting this function.
-> + * @ngroups: Number of pin groups.
-> + */
-> +struct axp192_pctl_function {
-> +       const char              *name;
-> +       /* Mux value written to the control register to select the function (-1 if unsupported) */
-> +       const u8                *muxvals;
-> +       const char * const      *groups;
-> +       unsigned int            ngroups;
-> +};
-
-Can it be replaced by struct function_desc?
-https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/pinmux.h#L130
-
-...
-
-> +       ret = devm_gpiochip_add_data(dev, &pctl->chip, pctl);
-> +       if (ret)
-> +               dev_err_probe(dev, ret, "Failed to register GPIO chip\n");
-
-Missed return.
 
 -- 
 With Best Regards,

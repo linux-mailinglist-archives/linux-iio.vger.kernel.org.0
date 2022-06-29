@@ -2,67 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA1455FBC5
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7058C55FC02
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jun 2022 11:28:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232582AbiF2JVt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 29 Jun 2022 05:21:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
+        id S232814AbiF2J21 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 29 Jun 2022 05:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232556AbiF2JVr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 05:21:47 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140F8369CF;
-        Wed, 29 Jun 2022 02:21:47 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id p136so20650045ybg.4;
-        Wed, 29 Jun 2022 02:21:47 -0700 (PDT)
+        with ESMTP id S231860AbiF2J20 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 29 Jun 2022 05:28:26 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729C93898;
+        Wed, 29 Jun 2022 02:28:25 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id ge10so31332296ejb.7;
+        Wed, 29 Jun 2022 02:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Eh9/8QN0XyfFrvsob3PxLqr+FKeuVvmGbb+SLnFK1w8=;
-        b=PPWbglVheR1zvwyNWD8rSPW6EbKmdZgAavX9onplBeIgwxs723trIMU7z3LDmN9k29
-         uh3RckB+t6+3c4qyCYxaWFO/sR8VOrxJw8F2hGqyAcCiBwlElhON9/cAYSrHVAa9JPqL
-         7NkGvNUuSztlynTWjIzgrsY1a20qxeHk1H+AIV4ZkGAXGaXnulfCHsmxuxzDmhEZKTPS
-         y+WuFTLQdRwE3Q+So0fO0WmkJpJ48rFlC8moc57ZG0AJQ+wTfPN3dMANkMqDH81GsgiC
-         OkkXsg2EYLgPeoGGPx4MBqqhELE9UEK3Z1Y6KZaQkKSbbdruOXBMD3viMugUd/MArqaS
-         1puw==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=OcjlEA+4dS73Cz+a5jVwrlBiB9UB3IJkomavNYdn3KE=;
+        b=CSJ8pKHssY81NHEo37dQakuHxjhhT72ifL3/WNSt4UG7uRbllRpC6LqsumzrysrNj1
+         2J7XeAWjQGy9zW2uqWtZj50hKVwnOyUVMJf/aZpijpzhi0eP/cSUZJJ12rm5XNsfP0e6
+         4+Zq29EnY25bBjwhUDk4wWcbxguIDwgp6wJ2NWjAyyUk9X2EFlKIWEi7ALMnokOJuadd
+         noHBqcMzta0Dr+8sWng04yjdaipXFj08YE0nP28p/KzrGsOsKtk7IQChBBQCKjXbzQxS
+         4jyKq/r2HdjKExfm5FQlst3qYI9GsFqOQriEm0sObNJ1KUOkbQjcJVo4z7f5sh0KY8y9
+         nPRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Eh9/8QN0XyfFrvsob3PxLqr+FKeuVvmGbb+SLnFK1w8=;
-        b=wxCVu1eUSFvkm12yBQlB7/h1wXCPCySEgMvjsLzbg1D0IkPKw1kG3Pq/rZ3yUsdURn
-         lYjTNHCMmY0088QmAgFf16Vhgh9xV+3xVeszv2K4e7Xft9CXUO3xtFzH5ixsVHwcHbz0
-         QauEx/wCaQncT+o+HA1KpzzEhMXj8YVJ6vIyhgnfzhCf21Q1XWsvKTOOazlw8HygsgmD
-         zXi7gDGgwmYiIsg9IrcHw78RlV6BM6MQsrufMUyyZhGa9p53Vm4PvVNf4xbfqQt/m1+a
-         XxuID4GcORALf0lOwez4s4Yix5dd0wHUlTNyB8/53suXG9npvU/C9UpG3+CQQ+h5IdKy
-         hDig==
-X-Gm-Message-State: AJIora+u2TKAtyVwhyMtWygxKC2dcclxo3qXAj739vYGJ53CUNGzO2Uf
-        rY+ynB46HmxicQXdSM9dV0Aj1rR2SnyrUziQI9hJALhKcVkdNw==
-X-Google-Smtp-Source: AGRyM1uS+cvIcNrFFvfdfOeCNdpGq8GX+n4BbHmYy6esu6LUeW4Sa8uIybAYqDBzFNJslfFaHj0xSak/OZIgcDW4t74=
-X-Received: by 2002:a25:b2a8:0:b0:66c:8110:3331 with SMTP id
- k40-20020a25b2a8000000b0066c81103331mr2388431ybj.460.1656494506281; Wed, 29
- Jun 2022 02:21:46 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=OcjlEA+4dS73Cz+a5jVwrlBiB9UB3IJkomavNYdn3KE=;
+        b=2oQ6L/YcIT0fHNH1KHm+pR9WeMaUz3BmAQd8NiQIg1ZM714YAdl59V9Y6+BKLgaB2S
+         T3QkGcTPAJ/g8Q3B3WfDBzIgMS4EYiqglZ5k5SU6cFAVwCjG3NspxgsxAnOCHTgTOjFC
+         oQGz+hwvA0+S+8ibfRtI51CT8GqgLw4R/mbX+H3ZAJo8YGiDC+YlOLpyf7pUlPJGaHBi
+         X1r/m8Fi/uGAG+2hoE3/qikj7XxYxmhTper6HpfHF2B0sIefcgxJlGmAM2CF7gz4klwF
+         U222D8iC+4S5vSCaQEANlhwkm+4QmKYmJc1fwvwXPaL539zKj/Lfv2endEvHzxmBhLxH
+         7T9g==
+X-Gm-Message-State: AJIora/HDa/sgeQTJYFkDGeD+MB0+T1rufChihAbFHK5hy/Vtwk1jPCV
+        3xEW+vRkVG2lGp2yf0v2wB8=
+X-Google-Smtp-Source: AGRyM1vs4gqfTQsGQHWewAwgtxD9xFaOVCxxUvBfBmWTRQabLQMl0/F/6JP8pjgYGhxg9n+kBDFMrA==
+X-Received: by 2002:a17:906:ce:b0:715:705e:52fb with SMTP id 14-20020a17090600ce00b00715705e52fbmr2278219eji.303.1656494903920;
+        Wed, 29 Jun 2022 02:28:23 -0700 (PDT)
+Received: from [192.168.0.182] ([79.119.98.153])
+        by smtp.gmail.com with ESMTPSA id r1-20020a17090638c100b007219c20dcd8sm7499978ejd.196.2022.06.29.02.28.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jun 2022 02:28:23 -0700 (PDT)
+Message-ID: <7fc0292d-1d93-4ae8-2947-9444ef48a19e@gmail.com>
+Date:   Wed, 29 Jun 2022 12:28:21 +0300
 MIME-Version: 1.0
-References: <20220615114746.2767-1-andriy.shevchenko@linux.intel.com>
- <Yrt6FVHilUuoPrnL@smile.fi.intel.com> <CAPUE2ut2+FwHHV=YxoqExet7m1R9Odji23DVB5zrGzCLgxzNdQ@mail.gmail.com>
-In-Reply-To: <CAPUE2ut2+FwHHV=YxoqExet7m1R9Odji23DVB5zrGzCLgxzNdQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 29 Jun 2022 11:21:07 +0200
-Message-ID: <CAHp75Ve1rLvjzmPjOxCjA61A1hjXUpVZi=42+SjARw+t58gDcg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: proximity: sx_common: Don't use IIO device
- for properties
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v7 2/2] iio: adc: ad4130: add AD4130 driver
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         linux-iio <linux-iio@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
+        devicetree <devicetree@vger.kernel.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+References: <20220628144649.3957286-1-cosmin.tanislav@analog.com>
+ <20220628144649.3957286-3-cosmin.tanislav@analog.com>
+ <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <CAHp75Ve6f0dfMmctAwZ3UTA98MDs_injKik2C=wXpJ1zJyiPxA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,31 +81,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 1:41 AM Gwendal Grignou <gwendal@chromium.org> wrote:
->
-> On Tue, Jun 28, 2022 at 3:01 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > On Wed, Jun 15, 2022 at 02:47:45PM +0300, Andy Shevchenko wrote:
-> > > It's not correct to use artificial device created by IIO core to
-> > > retrieve device properties. Even ->get_default_reg() callback
-> > > takes a simple struct device pointer which suggests it wants to
-> > > operate on the real device.
-> > >
-> > > Correct this by replacing pointer to IIO device by a real device
-> > > pointer in the caller of ->get_default_reg().
-> >
-> > Gwendal, any comments on this version?
-> We can also replace '&indio_dev->dev' with 'dev' when setting
-> ACPI_COMPANION_SET() in the probe routine.
 
-It would make no sense, IIUC. In any case, the second patch in the
-series, which was the same in v1 removes that completely.
 
-> Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+On 6/28/22 22:17, Andy Shevchenko wrote:
+> On Tue, Jun 28, 2022 at 4:49 PM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+>>
+>> AD4130-8 is an ultra-low power, high precision, measurement solution for
+>> low bandwidth battery operated applications.
+>>
+>> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+>> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+>> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+>> selectable filter options, smart sequencer, sensor biasing and excitation
+>> options, diagnostics, and a FIFO buffer.
+> 
+> It would be respectful, if you include given tags. Why didn't you do
+> that? Any significant change that has to be re-reviewed?
+> 
 
-Thanks!
-
--- 
-With Best Regards,
-Andy Shevchenko
+Sorry, I sometimes forget about picking up tags. Maybe Jonathan will do
+it if everything else is good.

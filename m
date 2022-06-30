@@ -2,61 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8EC561333
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 09:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD855613B1
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 09:53:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbiF3H1D (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 03:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50706 "EHLO
+        id S229720AbiF3Hwj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 03:52:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbiF3H1C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 03:27:02 -0400
-Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CEB3879C;
-        Thu, 30 Jun 2022 00:27:01 -0700 (PDT)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ssl.serverraum.org (Postfix) with ESMTPSA id 73BC52223E;
-        Thu, 30 Jun 2022 09:26:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2016061301;
-        t=1656574018;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zjrfyTV5MhZ/ZdhkEC7JgGAqSs/5JnxfS2vRsmrz01Y=;
-        b=EJK731q8CqsM1mgdMNjEaM2dgFiziXDifqo3WToZDaj4/VuCqHc8NQ6d5qwFH80aM3N59p
-        jvx3lH9jp+d3AC+Rkmk/cmITFnlJN6830y8jsk7n+X6Y+2iH7n71q2SEHMb5wFKQiwSamH
-        8sIQet4ySkEdu3YoS2gQ0l2gXUZY71o=
+        with ESMTP id S233362AbiF3HwW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 03:52:22 -0400
+Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300E83DA5A
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 00:52:21 -0700 (PDT)
+Received: by mail.olerise.pl (Postfix, from userid 1001)
+        id 8D3DE23C34; Thu, 30 Jun 2022 09:51:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
+        t=1656575519; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
+        h=Date:From:To:Subject:From;
+        b=InpY/mQnTqoKZoRbCeALZjUeKlYBDlnIl8H+DEk/iIKeqw4fbcralIP0WnfcHm9k1
+         c18rY0Zwd13fTyI5gropDnL5N4DrxJAJEUfTQGljMiZxgQYOwxeiuTA7v/PDDYRr5i
+         2sBtyFo7GX7c9h0xhQlM1UCXR9f7eX5O3zLfCcKmpl8zmnvgyaxOgqRX/4UiPZRmqC
+         soA4ZjO48qHx6SkaV3rhhkxq0Jxwt5grvXdnf1K8MqKyYxX+z4hgcushhYWipYYCWo
+         A8PgMHZBqXzvGh/50993RiDaY3FhTtehlcxFWNH1ZPNC6WxZw/nZh77/mCLMeDTxPc
+         MPBfVzo7JgKFw==
+Received: by mail.olerise.pl for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 07:51:21 GMT
+Message-ID: <20220630084500-0.1.p.bc5d.0.m4afpnbidi@olerise.pl>
+Date:   Thu, 30 Jun 2022 07:51:21 GMT
+From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
+        <przemyslaw.wroblewski@olerise.pl>
+To:     <linux-iio@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.olerise.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 30 Jun 2022 09:26:55 +0200
-From:   Michael Walle <michael@walle.cc>
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, quic_gurus@quicinc.com,
-        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 13/16] pinctrl: Add AXP192 pin control driver
-In-Reply-To: <me4ummrWKIPseIG4ay7yCfrumN8sIdvc@localhost>
-References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com>
- <20220618214009.2178567-14-aidanmacdonald.0x0@gmail.com>
- <cafd8a40ad35dcf8a35350261af6031c@walle.cc>
- <me4ummrWKIPseIG4ay7yCfrumN8sIdvc@localhost>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <01a338e8f94b077df3fe2c4f13d4da28@walle.cc>
-X-Sender: michael@walle.cc
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,18 +46,17 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Am 2022-06-27 15:12, schrieb Aidan MacDonald:
+Dzie=C5=84 dobry,
 
->> I *think* what is needed for gpio-regmap to support this is:
->>  - support values and masks for the direction, for now, we
->>    only support single bits.
->>  - support the pinctrl_gpio_direction_{input,output} calls
->> 
->> -michael
-> 
-> That sounds about right, thanks for taking a look.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-I thought you were trying to add these to gpio-regmap? Unless
-I'm missing something, that should be easy enough.
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
--michael
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Przemys=C5=82aw Wr=C3=B3blewski

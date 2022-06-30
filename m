@@ -2,66 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98ADE561EDD
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 17:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 911DB5620F8
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 19:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235606AbiF3PMN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 11:12:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49164 "EHLO
+        id S233126AbiF3RMm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 13:12:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235605AbiF3PML (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 11:12:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFC52BB3F;
-        Thu, 30 Jun 2022 08:12:11 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B17A660E84;
-        Thu, 30 Jun 2022 15:12:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142ECC34115;
-        Thu, 30 Jun 2022 15:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656601930;
-        bh=ZaCyi231xN55NbL6hah2FVZ40YJUDbimFdDQCUOmGEA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=K7IKXfd9/pUACjiI15Da8zt3ouesm1jbRlDrrQQYEA48PUssOguUm2V2ANCrrmZIO
-         TFpuXyFtZWp1mbIsube9cq9hma3+6WnoHOYolML+fqKebhh+lavwfJPt9F2mW8Qepm
-         0iztq5YZ+mu2QOxAQ9YsFIS0DfEYI1B5uluNXzA9L3AG94KQqT+vs6E2PqWLF3YLPb
-         uwQDfnzQBAIoprN47o+Ft1EnYcZM0cKDp7dp+MTsBMdFDHehPq8BHRlgF8oJAv5LKg
-         IWXwD0/fjVUL8jTblCUfcFUe5TXrZJ+lCNsstlEEZeaDJoeWsfj6i6DbTyT+a2ntsV
-         lb2ca6Z15QTcQ==
-Received: by mail-vs1-f54.google.com with SMTP id j6so18603800vsi.0;
-        Thu, 30 Jun 2022 08:12:10 -0700 (PDT)
-X-Gm-Message-State: AJIora8tUziQggjiIIu5Wf3N5Md3hDnXUVlRueR9ZztUrjeIdgwDHF2c
-        6SfL9plAQohLNiRDKGH16YmGdskJwba4z8Uh1A==
-X-Google-Smtp-Source: AGRyM1sE0e68v7McZcrdxOt2FnnPQJyoMMCz3luQW735kIxxQS448cN4nvcfDkxVmzob49oMuoeWsZ1lbV7RsMyGwOQ=
-X-Received: by 2002:a67:1787:0:b0:354:6490:437f with SMTP id
- 129-20020a671787000000b003546490437fmr8839140vsx.26.1656601929001; Thu, 30
- Jun 2022 08:12:09 -0700 (PDT)
+        with ESMTP id S231348AbiF3RMl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 13:12:41 -0400
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C14AF3EF38;
+        Thu, 30 Jun 2022 10:12:38 -0700 (PDT)
+Received: by mail-il1-f180.google.com with SMTP id k7so12805108ils.8;
+        Thu, 30 Jun 2022 10:12:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vH+eIeVMyqxiZo7+C2E8+WxMh8E5sNuGYMj0NCMiFYc=;
+        b=FXB/YzLVXfbCiDRG6H68XfbKBuwwvfJfOe+cBXqFy1G4l97L6ntSzf3fKv1c+5iOG9
+         6kUwiNWLJmYwsfmicPEgSAfSV6l8q/unSZmpS2PRhZiH9jj0GF5XX8RJ0HaAUy7fcZ2V
+         n9w0vJLocSzd3HWMuzfxFF/I1FpnVDYnCO+icCUQok5DPzcge9Y4MddmqJN0uN/CCELY
+         1YOsiCOcYwA2EwAVM6b0DiZJ9Exxgx9iQuBXQXfByrxIxac3PHYm67/yPfoTRNdF3xhR
+         SWI7PW5y0XN7qL1Q2f4YkmEhrWdBQDugeqlLMtZUQmgztVymudY/55K/64CZU2dNxAU2
+         0e4w==
+X-Gm-Message-State: AJIora/yiiwvvm1ENrYEg7U9ABr9PoMOuPo7XN+051RwxSnqYbe97siE
+        SMOtr+kuXtogYhAS4dg72LdR/Q3ahg==
+X-Google-Smtp-Source: AGRyM1tYEmugjifHFHRwNw9YGWl6wPQoGw00b9hcZYt4UmmpCK8sUvJEvNDX1A4o85vt603e9O081A==
+X-Received: by 2002:a05:6e02:16cc:b0:2da:b7b7:a7ab with SMTP id 12-20020a056e0216cc00b002dab7b7a7abmr6095559ilx.114.1656609157996;
+        Thu, 30 Jun 2022 10:12:37 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id m9-20020a02cdc9000000b00331fdc68ccesm8617042jap.140.2022.06.30.10.12.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jun 2022 10:12:37 -0700 (PDT)
+Received: (nullmailer pid 2919582 invoked by uid 1000);
+        Thu, 30 Jun 2022 17:12:36 -0000
+Date:   Thu, 30 Jun 2022 11:12:36 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH v7 1/2] dt-bindings: iio: adc: add AD4130
+Message-ID: <20220630171236.GA2912452-robh@kernel.org>
+References: <20220628144649.3957286-1-cosmin.tanislav@analog.com>
+ <20220628144649.3957286-2-cosmin.tanislav@analog.com>
 MIME-Version: 1.0
-References: <20220627221444.3638-1-macroalpha82@gmail.com> <20220627221444.3638-2-macroalpha82@gmail.com>
-In-Reply-To: <20220627221444.3638-2-macroalpha82@gmail.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Thu, 30 Jun 2022 09:11:57 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqL9U0ku+2hiaLeUMakpOhp7DYhQLi2MJpUthTjX5T655Q@mail.gmail.com>
-Message-ID: <CAL_JsqL9U0ku+2hiaLeUMakpOhp7DYhQLi2MJpUthTjX5T655Q@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] dt-bindings: adc-joystick: add poll-interval
-To:     Chris Morgan <macroalpha82@gmail.com>
-Cc:     Linux Input <linux-input@vger.kernel.org>,
-        devicetree@vger.kernel.org, Artur Rojek <contact@artur-rojek.eu>,
-        Maciej Matuszczyk <maccraft123mc@gmail.com>,
-        "heiko@sntech.de" <heiko@sntech.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
-        Chris Morgan <macromorgan@hotmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220628144649.3957286-2-cosmin.tanislav@analog.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,34 +65,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jun 27, 2022 at 4:14 PM Chris Morgan <macroalpha82@gmail.com> wrote:
->
-> Add poll-interval support for the adc-joystick documentation. This is
-> an optional value and if not provided the adc-joystick works as it
-> does today (with triggered buffers). If this value is provided, the
-> adc-joystick driver is polled at the specified interval.
->
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+On Tue, Jun 28, 2022 at 05:46:48PM +0300, Cosmin Tanislav wrote:
+> AD4130-8 is an ultra-low power, high precision, measurement solution for
+> low bandwidth battery operated applications.
+> 
+> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+> selectable filter options, smart sequencer, sensor biasing and excitation
+> options, diagnostics, and a FIFO buffer.
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 > ---
->  Documentation/devicetree/bindings/input/adc-joystick.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/input/adc-joystick.yaml b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-> index 2ee04e03bc22..2d755091e46d 100644
-> --- a/Documentation/devicetree/bindings/input/adc-joystick.yaml
-> +++ b/Documentation/devicetree/bindings/input/adc-joystick.yaml
-> @@ -18,6 +18,12 @@ properties:
->    compatible:
->      const: adc-joystick
->
-> +  poll-interval:
-> +    description:
-> +      Poll interval time in milliseconds. If not specified, device will use
-> +      triggered buffer.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
+>  .../bindings/iio/adc/adi,ad4130.yaml          | 256 ++++++++++++++++++
+>  1 file changed, 256 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml
 
-Already defined in input.yaml, so add a $ref to it and here you just
-need 'poll-interval: true'.
+The bot report can be ignored. It's all due to '-nanoamp' suffix 
+landing.
 
-Rob
+Reviewed-by: Rob Herring <robh@kernel.org>

@@ -2,89 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07F38561562
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 10:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D8C561794
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 12:21:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233898AbiF3IqX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 04:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47324 "EHLO
+        id S232866AbiF3KVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 06:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233730AbiF3IqV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 04:46:21 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03BD735AB6
-        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 01:46:20 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id m6-20020a05600c3b0600b003a0489f412cso1835060wms.1
-        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 01:46:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=sPtsGsGxiY0pUJurJivkSz6fB7RJpCiec1m/UGMaAjk=;
-        b=DBAJoYyq7Z73P2+PdO6gsa3dmnvFmEowkOKISZ9iJz6pAEmXXVZIgWfDMriW3xYBnH
-         GvMAPIj6o3sVkw5riTDzKq9KZMiOj1coVvIRjSlknhw4w6M1BeyL7uLLQFetLUzNyR72
-         EQdNsTFZ8oSwNpP04o1/ZP0FjCouCsFW7TjNau7dO4vIpECdQzO1JUF/KoMzvPIFS3w8
-         bZ1zc8HlZdn+PdVg2BOhAx7Rwem9CD3pgAiW2MLDZ+K7avrwqUxnzrIKwYfeS4F1IiDP
-         EFPOXND2h1M2PUGx0GlTy7INVMXhhVJMynpsuiuTvBCJ4ug9aUl40GOpmGpFrBzp8pwS
-         q+Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=sPtsGsGxiY0pUJurJivkSz6fB7RJpCiec1m/UGMaAjk=;
-        b=olXC5Twce8uJS1rjq29wTnycaPBXLW/OKpu9YX/TWdbK/A9G92iWgMh4kVOBwfnJcF
-         wIagppVlcQ/Tuvnz2+wWNkVEnafI7ib170TMC3gE9SuT2pkU6KbAQv/k+ooja31Ymkex
-         wd/W1dzHhUcCnrYJSu4yTz2IBYIQk8bGf8vCIJLHLL5jwiIXG2ia97w1c/JHXjs3fcNs
-         GY2RhhRm8d7aKvBDeauPUjlzEFjbxPF3eU7MPFgV8O0fODlH/LBl/yalgJ2kETb1xlpq
-         hqc+TzNAY48jwyIJYQtLxMHdU98RR/camY5gePq5y2oeA1umvCEQFPvnS8YP+ipUR98t
-         v1Cg==
-X-Gm-Message-State: AJIora9eLwUhCNFPrTz+OVi61HBN0HTSTRAZ6+fSkEoMhPna7S5HNHGS
-        rYs0buXHt6qWqJjkIcsz4IFILA==
-X-Google-Smtp-Source: AGRyM1ugh7ioXGoQUFDmXtrKxolSnmDVjP63pLV19ZWBQnnH2IWw2DyBym1XDSOSurWwcmKuA1D5Sg==
-X-Received: by 2002:a05:600c:4e51:b0:3a0:4e8d:1e44 with SMTP id e17-20020a05600c4e5100b003a04e8d1e44mr8845997wmq.105.1656578778595;
-        Thu, 30 Jun 2022 01:46:18 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id l1-20020a5d4bc1000000b00219e77e489fsm18371784wrt.17.2022.06.30.01.46.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jun 2022 01:46:17 -0700 (PDT)
-Date:   Thu, 30 Jun 2022 09:46:15 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, quic_gurus@quicinc.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Michael Walle <michael@walle.cc>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v4 00/15] Add support for AXP192 PMIC
-Message-ID: <Yr1i19uttBub3G8P@google.com>
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
- <CAHp75Vc=PWXauEKDNX+vmqv=oO1LDv8-GgU3OFZXjf8yJrG8wA@mail.gmail.com>
- <CAHp75VeqvCnWtWLF1zySPGkfBT5obosu0h_pZEhz+pOQWzMdWQ@mail.gmail.com>
- <Yr1W/m6UV3792GvF@google.com>
- <CAHp75VdC=Dw_YnTuzZ+PMLfr0y1NcH2DQ1bRccU8e=cGLWznuQ@mail.gmail.com>
+        with ESMTP id S232212AbiF3KVL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 06:21:11 -0400
+X-Greylist: delayed 372 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Jun 2022 03:21:09 PDT
+Received: from algol.kleine-koenig.org (algol.kleine-koenig.org [IPv6:2a01:4f8:c010:8611::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB2F45064
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 03:21:09 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by algol.kleine-koenig.org (Postfix) with ESMTP id D2D43495E51;
+        Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
+Received: from algol.kleine-koenig.org ([IPv6:::1])
+        by localhost (algol.kleine-koenig.org [IPv6:::1]) (amavisd-new, port 10024)
+        with ESMTP id NwXCAnR12vTv; Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
+Received: from taurus.defre.kleine-koenig.org (unknown [IPv6:2a02:8071:b694:6cfc:9c6f:9d3e:3e3:5d2d])
+        by algol.kleine-koenig.org (Postfix) with ESMTPSA;
+        Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
+Message-ID: <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
+Date:   Thu, 30 Jun 2022 12:14:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VdC=Dw_YnTuzZ+PMLfr0y1NcH2DQ1bRccU8e=cGLWznuQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] iio: humidity: dht11: Improve error reporting in .probe()
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Yves-Alexis Perez <corsac@debian.org>
+References: <20220630063528.205327-1-ukleinek@debian.org>
+ <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+From:   =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <ukleinek@debian.org>
+In-Reply-To: <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ZL8wcAs0SjaV2tkE29P6Raqn"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -92,45 +53,66 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 30 Jun 2022, Andy Shevchenko wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ZL8wcAs0SjaV2tkE29P6Raqn
+Content-Type: multipart/mixed; boundary="------------bynxaIDLyI9sspcFJcZulMD2";
+ protected-headers="v1"
+From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <ukleinek@debian.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-iio <linux-iio@vger.kernel.org>, Yves-Alexis Perez <corsac@debian.org>
+Message-ID: <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
+Subject: Re: [PATCH] iio: humidity: dht11: Improve error reporting in .probe()
+References: <20220630063528.205327-1-ukleinek@debian.org>
+ <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+In-Reply-To: <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
 
-> On Thu, Jun 30, 2022 at 9:55 AM Lee Jones <lee.jones@linaro.org> wrote:
-> > On Wed, 29 Jun 2022, Andy Shevchenko wrote:
-> > > On Wed, Jun 29, 2022 at 11:14 PM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote:
-> > > > On Wed, Jun 29, 2022 at 4:29 PM Aidan MacDonald
-> > > > <aidanmacdonald.0x0@gmail.com> wrote:
-> > > > >
-> > > > > Changes in v4:
-> > > > >
-> > > > > * Drop regmap-irq patches and rebase on top of the regmap-irq
-> > > > >   refactoring series[1], which implements the same functionality.
-> > > > > * Reorder mfd_cells, putting one-line entries at the bottom.
-> > > > > * Fix incorrect example in axp192-gpio device tree bindings.
-> > > > > * Perform adc_en2 flag -> adc_en2_mask conversion in axp20x_adc
-> > > > >   as a separate patch.
-> > > > > * Simplify axp192_usb_power_set_current_max().
-> > > > > * Drop unneeded OF dependency in pin control driver, and document
-> > > > >   tables used for describing register layouts.
-> > > > > * Various style fixups suggested by Andy Shevchenko.
-> > > >
-> > > > For patches 6-11
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > >
-> > > Ditto for patches 13-15.
-> >
-> > Not sure `b4` will pick these up!
-> 
-> No it won't. But it's not an issue, one may use `git msg-filter` for
-> that, esp. taking into account that series most likely will be resent
-> due to patch 12 (`but not fully sure it will be the case).
-> 
-> For your convenience I have added on per patch basis.
+--------------bynxaIDLyI9sspcFJcZulMD2
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-That helps, thanks Andy.
+T24gNi8zMC8yMiAwOToxNywgQW5keSBTaGV2Y2hlbmtvIHdyb3RlOg0KPiBPbiBUaHUsIEp1
+biAzMCwgMjAyMiBhdCA4OjU4IEFNIFV3ZSBLbGVpbmUtS8O2bmlnIDx1a2xlaW5la0BkZWJp
+YW4ub3JnPiB3cm90ZToNCj4+DQo+PiBEb24ndCBlbWl0IGEgbWVzc2FnZSBmb3IgLUVOT01F
+TSwgdGhlIGtlcm5lbCBpcyBhbHJlYWR5IGxvdWQgZW5vdWdoIGluDQo+PiB0aGlzIGNhc2Uu
+IEFkZCBhIG1lc3NhZ2UgaWYgZ2V0dGluZyB0aGUgR1BJTyBvciByZWdpc3RlcmluZyB0aGUg
+aWlvDQo+PiBkZXZpY2UgZmFpbHMgYW5kIHVzZSBkZXZfZXJyX3Byb2JlIGZvciBpbXByb3Zl
+ZCBiZWhhdmlvdXIgb24NCj4+IC1FUFJPQkVfREVGRVIuDQo+IA0KPiBXaHkgZG8gd2UgbmVl
+ZCBhZGRpdGlvbmFsIG1lc3NhZ2VzPw0KDQpJIGRvbid0IHVuZGVyc3RhbmQgdGhlIHF1ZXN0
+aW9uLiBEbyB5b3UgcmVhbGx5IHdvbmRlciB3aHkgdGhlcmUgaXMgYSANCmJlbmVmaXQgb2Yg
+YW4gZXJyb3IgbWVzc2FnZSBpZiBhIHJlc291cmNlIGFsbG9jYXRpb24gaW4gcHJvYmUgZmFp
+bHM/DQoNCkN1cnJlbnQgc3RhdGUgaXMgdGhhdCBmb3IgWXZlcy1BbGV4aXMgKG9uIENjOikg
+dGhlIGRyaXZlciBpcyBzaWxlbnQgYnV0IA0KdW5ib3VuZC4gSSBndWVzcyB0aGF0J3MgYmVj
+YXVzZSBncGlvZF9nZXQgZmFpbHMsIGJ1dCBzZWVpbmcgYSANCmNvbmZpcm1hdGlvbiBpbiB0
+aGUga2VybmVsIGxvZyB3b3VsZCBiZSBuaWNlLg0KDQo+IFRoZXkgc2hvdWxkIGJlIHNwbGl0
+IGluIGEgc2VwYXJhdGUgcGF0Y2gsIHBlcmhhcHMsIHdpdGggdGhlIGV4cGxhbmF0aW9uLg0K
+PiANCj4gQWN0dWFsbHkgdGhlIHJlc3QgSSB3b3VsZCBzcGxpdCB0byB0d286IGNvbnZlcnRp
+bmcgdG8gZGV2X2Vycl9wcm9iZSgpDQo+IGluIHRoZSBjYXNlIHdoZXJlIGl0J3Mgbm90IHJp
+Z2h0IG5vdywgYW5kIGRyb3BwaW5nIEVOT01FTSBtZXNzYWdlLg0KDQpTbyB3ZSdyZSBhdCB0
+aHJlZSBwYXRjaGVzOg0KDQogIC0gZHJvcCBFTk9NRU0gbWVzc2FnZQ0KICAtIGNvbnZlcnQg
+ZXhpc3RpbmcgbWVzc2FnZXMgdG8gZGV2X2Vycl9wcm9iZSgpDQogIC0gaW50cm9kdWNlIGVy
+cm9ycyBmb3IgZGV2bV9ncGlvZF9nZXQoKSBhbmQgZGV2bV9paW9fZGV2aWNlX3JlZ2lzdGVy
+KCkNCg0KSSBjYW4gcmV3b3JrIGFjY29yZGluZ2x5LCBidXQgZm9yIG1lIHRoaXMgbG9va3Mg
+YSBiaXQgb3ZlciBlbmdpbmVlcmVkLg0KDQpCZXN0IHJlZ2FyZHMNClV3ZQ0K
 
--- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+--------------bynxaIDLyI9sspcFJcZulMD2--
+
+--------------ZL8wcAs0SjaV2tkE29P6Raqn
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmK9d5kACgkQwfwUeK3K
+7AlGGgf/WZ0HNpjfpeN7VGiCyuqckzkloeoMmXeZznXQE/fq9ACybw4oy5hDG10S
+hzW98y+ti6/uSQ68ddOF3eFUV20en8VCIgMkpXc1xvK8HkVvEg7vBZ07MStp1UVN
+MQFBt6I3bRLI8jfaPA52MjC8D/VHszpwFHgGAJIoXb6RdvRFcmaA1qB87gaRVwIu
+k9n8zPbFArfClQZA8BODaLCCUHBNiMaj7am2EgHwKZx4PalrbDbmCXoSYcTHIy7l
+LrEc1RSwJlGapuVuP/deHhmo7L9no7RpuVC7hRknmqVUh9kzcvrnY398vSGhvgCt
+7IEWfeaBLEm83+bhFvUgWjp8hjFYnA==
+=+F0j
+-----END PGP SIGNATURE-----
+
+--------------ZL8wcAs0SjaV2tkE29P6Raqn--

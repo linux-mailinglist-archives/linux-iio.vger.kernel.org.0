@@ -2,64 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 728CC56140B
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 10:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0A55561415
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 10:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232839AbiF3IBi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 04:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52966 "EHLO
+        id S229798AbiF3IDh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 04:03:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233434AbiF3IA7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 04:00:59 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 920EF41630;
-        Thu, 30 Jun 2022 01:00:57 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id r3so32374718ybr.6;
-        Thu, 30 Jun 2022 01:00:57 -0700 (PDT)
+        with ESMTP id S233372AbiF3ICs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 04:02:48 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066534132A;
+        Thu, 30 Jun 2022 01:02:46 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-31772f8495fso171102057b3.4;
+        Thu, 30 Jun 2022 01:02:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=F4VaG08RYManopuZpAGSTmqyNLUmKtObC9D7j1buosc=;
-        b=kR7wcXI3ZkBnGgu38OPdD7Q/6eo1kxMRs1xbtDloKLyhkRsa/hcn5yGk53ePz+ItAD
-         TyqtMUZsdjmFbDnmALeo6dJy4/7+KvkNmSN+216paSx4APdA6vQv571cHc5pwlkbA8tc
-         HkVpUKcjaNnK6HWoZmftFYL95Omid416u4c3Z7583i2woIkU/zFZOD4CvZR93eU6Q1Z3
-         y2cpETE06mn9VQZZ3QNIPVXUte+ggWmukX/CYwzja94R2MuV4oO0nhmKr3DdEEOs+V24
-         e9hm/tX3ONyohQCW0D74wP6IxkuVKiOoiJpGZDBey2HvRxPqDqQ2LfNRFx3YDz79QpqT
-         353A==
+        bh=wryy9746UaaGxV4FOLo7kKFh4EpIsQh9KMPdBAHP8Z0=;
+        b=EuqGaFPUEjQeNovEFyIsPzEevrE/MyEERD8z6GV/KX+v8SZLmmoKF99fCL1Tc8OzSY
+         NCI8GtLKjbJhst1BQ6klzruatF3NI38f7A6HoGL7U+aWkhSBVBxR0X4MKJtlOcjKAB/C
+         9H2peAEDN1eDhy5ic1slnnIeJ1yGD+KQNOb3Tzsjb4ZcgldL5HgG6AihQI9wJFIvWk90
+         8xZKVPnqaskPj90bptVjhmIYZogXpMUTlun/wSR/YCGfhC3Tc0vzlk1ORBe9bkapGc8p
+         tv3gsDFh8bHhGp+WWkt5GDJNkzLknsdlxPQgJnz7NyRWQL5I+tosJSI1lRcgoHqNOdBX
+         JdZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F4VaG08RYManopuZpAGSTmqyNLUmKtObC9D7j1buosc=;
-        b=f+qUyiz6xFc0aoUhmoZKLNEtd87eJNFH3gyR+mBTsUoZxhRMSP3ZcLOz0i+/ByzHjS
-         TxKSOT7GCyEspA5iSRZxpcINxzrkVfWYJ1URUpVBYgHjOr8pFNnH1T8pGD+RaB4cu0UN
-         aqUrvwEat/9/mmMRKpFOq59gjr0moUZZrrB4s/OegfbCW2sGBePyFtrFalNY2eyQ0VfZ
-         ++/J4tTx9jbCJR8ijwjgEcBybSpsHUe/DqQRvvLpOPRvyX3Ml+XSQ/fxLxmW6ryzwqgj
-         xhgaq3B5+xnNGDqy3CoXY1zHR2Iw33/tHhcQ+6sfoLLlVL4fGvOSPkrMWVv2Ci8xqsjd
-         KfFw==
-X-Gm-Message-State: AJIora+srk/WEezJi9TAIvaRqiKV+Q680seAz2ouSLHYNOwmzKyPykE4
-        ZFtuUlmiisZo4Z1H/wJ2+Mgix34HG75HIK1Ebko=
-X-Google-Smtp-Source: AGRyM1tOkHckST+esMDNGkulQhtjI1csN1ZIVD3zn7rKujVWHzxaEq3fwCuqXRCu101gK1Wctd5PTtsXc9fPqrBWULc=
-X-Received: by 2002:a05:6902:1142:b0:66d:999a:81a7 with SMTP id
- p2-20020a056902114200b0066d999a81a7mr3728559ybu.460.1656576056733; Thu, 30
- Jun 2022 01:00:56 -0700 (PDT)
+        bh=wryy9746UaaGxV4FOLo7kKFh4EpIsQh9KMPdBAHP8Z0=;
+        b=oGDXxXLctprrQ8uQWYaeFKCLIDFM/5Wh1cSXj85pG61olCb36FYQex8nLAhAFQLrTG
+         ZrSQaYpDIgMxDcPPn1nHpR81h013Gixi3Xg/l6OxTDHEuFJET9X+Fbmsd6cL6fOng6GM
+         jQLo2JyQkr8SWe+3kbLOfiv1SrfjTfV3NT3+9zAN6DFVgApi5i1Mle2LeAyumqkS6V2V
+         GnNmV0BZEbYlLBcJVAyuOvrFwdrDjeJ3bc+Sg92WUgpnnBEFqpqoEEuwanLLWvUb4XoU
+         NbUOQ9fTz8WGEH7Gt90WzSgIDAtOnFi+PSMn2iC3LSE1mEso2QoPaVckQKiBYjo8wOx2
+         R3Gg==
+X-Gm-Message-State: AJIora+FoLhJ2GuBJ/YYFavO3E68/VmsGvBV9b6Gfqow3w53jPSBleCI
+        CPL79Y8X9L56w2cDmIJzcW2bidieMXet2A7hm5c=
+X-Google-Smtp-Source: AGRyM1tQjxmbD422jLcHIB0ewRpbtEaFVyHc3AuXiZDShY6jeHf515TJp/d6+dz8eUSii25nd5yw8hg9NywapvMWtu0=
+X-Received: by 2002:a81:2386:0:b0:317:6586:8901 with SMTP id
+ j128-20020a812386000000b0031765868901mr8832602ywj.195.1656576165059; Thu, 30
+ Jun 2022 01:02:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com> <20220629143046.213584-16-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220629143046.213584-16-aidanmacdonald.0x0@gmail.com>
+References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+ <CAHp75Vc=PWXauEKDNX+vmqv=oO1LDv8-GgU3OFZXjf8yJrG8wA@mail.gmail.com>
+ <CAHp75VeqvCnWtWLF1zySPGkfBT5obosu0h_pZEhz+pOQWzMdWQ@mail.gmail.com> <Yr1W/m6UV3792GvF@google.com>
+In-Reply-To: <Yr1W/m6UV3792GvF@google.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 30 Jun 2022 10:00:15 +0200
-Message-ID: <CAHp75Vd_U0wOcivr01b0P3k2M8AMdtsE2ODazR705-6PTisJ2g@mail.gmail.com>
-Subject: Re: [PATCH v4 15/15] power: axp20x_battery: Add support for AXP192
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
+Date:   Thu, 30 Jun 2022 10:02:08 +0200
+Message-ID: <CAHp75VdC=Dw_YnTuzZ+PMLfr0y1NcH2DQ1bRccU8e=cGLWznuQ@mail.gmail.com>
+Subject: Re: [PATCH v4 00/15] Add support for AXP192 PMIC
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Chen-Yu Tsai <wens@csie.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>, quic_gurus@quicinc.com,
@@ -82,120 +84,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jun 29, 2022 at 4:30 PM Aidan MacDonald
-<aidanmacdonald.0x0@gmail.com> wrote:
+On Thu, Jun 30, 2022 at 9:55 AM Lee Jones <lee.jones@linaro.org> wrote:
+> On Wed, 29 Jun 2022, Andy Shevchenko wrote:
+> > On Wed, Jun 29, 2022 at 11:14 PM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Wed, Jun 29, 2022 at 4:29 PM Aidan MacDonald
+> > > <aidanmacdonald.0x0@gmail.com> wrote:
+> > > >
+> > > > Changes in v4:
+> > > >
+> > > > * Drop regmap-irq patches and rebase on top of the regmap-irq
+> > > >   refactoring series[1], which implements the same functionality.
+> > > > * Reorder mfd_cells, putting one-line entries at the bottom.
+> > > > * Fix incorrect example in axp192-gpio device tree bindings.
+> > > > * Perform adc_en2 flag -> adc_en2_mask conversion in axp20x_adc
+> > > >   as a separate patch.
+> > > > * Simplify axp192_usb_power_set_current_max().
+> > > > * Drop unneeded OF dependency in pin control driver, and document
+> > > >   tables used for describing register layouts.
+> > > > * Various style fixups suggested by Andy Shevchenko.
+> > >
+> > > For patches 6-11
+> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> >
+> > Ditto for patches 13-15.
 >
-> The AXP192 has a battery charger similar to other X-Powers PMICs,
-> but unlike the other supported devices, it does not have a fuel
-> gauge and can't report battery capacity directly.
+> Not sure `b4` will pick these up!
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+No it won't. But it's not an issue, one may use `git msg-filter` for
+that, esp. taking into account that series most likely will be resent
+due to patch 12 (`but not fully sure it will be the case).
 
-> Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-> ---
->  drivers/power/supply/axp20x_battery.c | 49 +++++++++++++++++++++++++--
->  1 file changed, 46 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-> index 574c1d001556..1e84d26ce8e3 100644
-> --- a/drivers/power/supply/axp20x_battery.c
-> +++ b/drivers/power/supply/axp20x_battery.c
-> @@ -544,6 +544,19 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
->         }
->  }
->
-> +static enum power_supply_property axp192_battery_props[] = {
-> +       POWER_SUPPLY_PROP_PRESENT,
-> +       POWER_SUPPLY_PROP_ONLINE,
-> +       POWER_SUPPLY_PROP_STATUS,
-> +       POWER_SUPPLY_PROP_VOLTAGE_NOW,
-> +       POWER_SUPPLY_PROP_CURRENT_NOW,
-> +       POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-> +       POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-> +       POWER_SUPPLY_PROP_HEALTH,
-> +       POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-> +       POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-> +};
-> +
->  static enum power_supply_property axp20x_battery_props[] = {
->         POWER_SUPPLY_PROP_PRESENT,
->         POWER_SUPPLY_PROP_ONLINE,
-> @@ -568,6 +581,16 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
->                psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
->  }
->
-> +static const struct power_supply_desc axp192_batt_ps_desc = {
-> +       .name = "axp192-battery",
-> +       .type = POWER_SUPPLY_TYPE_BATTERY,
-> +       .properties = axp192_battery_props,
-> +       .num_properties = ARRAY_SIZE(axp192_battery_props),
-> +       .property_is_writeable = axp20x_battery_prop_writeable,
-> +       .get_property = axp20x_battery_get_prop,
-> +       .set_property = axp20x_battery_set_prop,
-> +};
-> +
->  static const struct power_supply_desc axp20x_batt_ps_desc = {
->         .name = "axp20x-battery",
->         .type = POWER_SUPPLY_TYPE_BATTERY,
-> @@ -578,6 +601,19 @@ static const struct power_supply_desc axp20x_batt_ps_desc = {
->         .set_property = axp20x_battery_set_prop,
->  };
->
-> +static const int axp192_ccc_table[AXP20X_CHRG_CTRL1_TGT_CURR+1] = {
-> +       100000,  190000,  280000,  360000,
-> +       450000,  550000,  630000,  700000,
-> +       780000,  880000,  960000,  1000000,
-> +       1080000, 1160000, 1240000, 1320000,
-> +};
-> +
-> +static const struct axp_data axp192_data = {
-> +       .ccc_table = axp192_ccc_table,
-> +       .get_max_voltage = axp20x_battery_get_max_voltage,
-> +       .set_max_voltage = axp20x_battery_set_max_voltage,
-> +};
-> +
->  static const struct axp_data axp209_data = {
->         .ccc_scale = 100000,
->         .ccc_offset = 300000,
-> @@ -606,6 +642,9 @@ static const struct axp_data axp813_data = {
->
->  static const struct of_device_id axp20x_battery_ps_id[] = {
->         {
-> +               .compatible = "x-powers,axp192-battery-power-supply",
-> +               .data = (void *)&axp192_data,
-> +       }, {
->                 .compatible = "x-powers,axp209-battery-power-supply",
->                 .data = (void *)&axp209_data,
->         }, {
-> @@ -623,6 +662,7 @@ static int axp20x_power_probe(struct platform_device *pdev)
->         struct axp20x_batt_ps *axp20x_batt;
->         struct power_supply_config psy_cfg = {};
->         struct power_supply_battery_info *info;
-> +       const struct power_supply_desc *ps_desc;
->         struct device *dev = &pdev->dev;
->
->         if (!of_device_is_available(pdev->dev.of_node))
-> @@ -666,9 +706,12 @@ static int axp20x_power_probe(struct platform_device *pdev)
->
->         axp20x_batt->data = (struct axp_data *)of_device_get_match_data(dev);
->
-> -       axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
-> -                                                      &axp20x_batt_ps_desc,
-> -                                                      &psy_cfg);
-> +       if (!axp20x_batt->data->has_fg)
-> +               ps_desc = &axp192_batt_ps_desc;
-> +       else
-> +               ps_desc = &axp20x_batt_ps_desc;
-> +
-> +       axp20x_batt->batt = devm_power_supply_register(&pdev->dev, ps_desc, &psy_cfg);
->         if (IS_ERR(axp20x_batt->batt)) {
->                 dev_err(&pdev->dev, "failed to register power supply: %ld\n",
->                         PTR_ERR(axp20x_batt->batt));
-> --
-> 2.35.1
->
-
+For your convenience I have added on per patch basis.
 
 -- 
 With Best Regards,

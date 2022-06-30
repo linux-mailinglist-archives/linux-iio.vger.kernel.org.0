@@ -2,61 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD855613B1
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 09:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12C275613A8
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 09:53:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229720AbiF3Hwj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 03:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
+        id S233277AbiF3HwI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 03:52:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233362AbiF3HwW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 03:52:22 -0400
-Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300E83DA5A
-        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 00:52:21 -0700 (PDT)
-Received: by mail.olerise.pl (Postfix, from userid 1001)
-        id 8D3DE23C34; Thu, 30 Jun 2022 09:51:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
-        t=1656575519; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=InpY/mQnTqoKZoRbCeALZjUeKlYBDlnIl8H+DEk/iIKeqw4fbcralIP0WnfcHm9k1
-         c18rY0Zwd13fTyI5gropDnL5N4DrxJAJEUfTQGljMiZxgQYOwxeiuTA7v/PDDYRr5i
-         2sBtyFo7GX7c9h0xhQlM1UCXR9f7eX5O3zLfCcKmpl8zmnvgyaxOgqRX/4UiPZRmqC
-         soA4ZjO48qHx6SkaV3rhhkxq0Jxwt5grvXdnf1K8MqKyYxX+z4hgcushhYWipYYCWo
-         A8PgMHZBqXzvGh/50993RiDaY3FhTtehlcxFWNH1ZPNC6WxZw/nZh77/mCLMeDTxPc
-         MPBfVzo7JgKFw==
-Received: by mail.olerise.pl for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 07:51:21 GMT
-Message-ID: <20220630084500-0.1.p.bc5d.0.m4afpnbidi@olerise.pl>
-Date:   Thu, 30 Jun 2022 07:51:21 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@olerise.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.olerise.pl
+        with ESMTP id S233294AbiF3HwG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 03:52:06 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F133EA80
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 00:52:06 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1o6oxy-0005cJ-1S; Thu, 30 Jun 2022 09:51:58 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1o6oxt-003Y3w-NV; Thu, 30 Jun 2022 09:51:57 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1o6oxw-00BPTC-Nb; Thu, 30 Jun 2022 09:51:56 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH net-next v1 1/1] iio: adc: tsc2046: silent spi_device_id warning
+Date:   Thu, 30 Jun 2022 09:51:55 +0200
+Message-Id: <20220630075155.2718293-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Add spi_device_id to silent following warning:
+ SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/iio/adc/ti-tsc2046.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+index 55b35570ad8b..27dc959aee37 100644
+--- a/drivers/iio/adc/ti-tsc2046.c
++++ b/drivers/iio/adc/ti-tsc2046.c
+@@ -833,11 +833,18 @@ static const struct of_device_id ads7950_of_table[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ads7950_of_table);
+ 
++static const struct spi_device_id tsc2046_adc_spi_ids[] = {
++	{ "tsc2046e-adc" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, tsc2046_adc_spi_ids);
++
+ static struct spi_driver tsc2046_adc_driver = {
+ 	.driver = {
+ 		.name = "tsc2046",
+ 		.of_match_table = ads7950_of_table,
+ 	},
++	.id_table = tsc2046_adc_spi_ids,
+ 	.probe = tsc2046_adc_probe,
+ };
+ module_spi_driver(tsc2046_adc_driver);
+-- 
+2.30.2
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
-
-
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski

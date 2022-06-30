@@ -2,117 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D8C561794
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 12:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B1485617EE
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 12:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232866AbiF3KVM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 06:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59354 "EHLO
+        id S234635AbiF3K1q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 06:27:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232212AbiF3KVL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 06:21:11 -0400
-X-Greylist: delayed 372 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 30 Jun 2022 03:21:09 PDT
-Received: from algol.kleine-koenig.org (algol.kleine-koenig.org [IPv6:2a01:4f8:c010:8611::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB2F45064
-        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 03:21:09 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by algol.kleine-koenig.org (Postfix) with ESMTP id D2D43495E51;
-        Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
-Received: from algol.kleine-koenig.org ([IPv6:::1])
-        by localhost (algol.kleine-koenig.org [IPv6:::1]) (amavisd-new, port 10024)
-        with ESMTP id NwXCAnR12vTv; Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
-Received: from taurus.defre.kleine-koenig.org (unknown [IPv6:2a02:8071:b694:6cfc:9c6f:9d3e:3e3:5d2d])
-        by algol.kleine-koenig.org (Postfix) with ESMTPSA;
-        Thu, 30 Jun 2022 12:14:54 +0200 (CEST)
-Message-ID: <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
-Date:   Thu, 30 Jun 2022 12:14:49 +0200
+        with ESMTP id S234937AbiF3K1Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 06:27:25 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C101E3F0
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 03:27:18 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-3178acf2a92so174336477b3.6
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 03:27:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=HNxB8VlKFnASCS1FopR17k/Gv2s9Xen6ldTXsI+bKrc=;
+        b=hnJE0lAJyeZwPYGrsNV8L4oEbttpQ4QlFMXMW4YBzoCovt2Jl/FgbKSn2TyvjDA/gh
+         jZ3XOS2o8JH2o95m6P5O+v/nAcGRHScum0XuDPeGpUqNchZK0gww7U9QRU1ujpDPSeSJ
+         Y33Yo797S/sujoTAthiymn1Vv9U2TeQ7vG5Rb5M7gE8W/aTD1QESn+dJAt+jAFesuPsW
+         SOsbxGyHumZbvUFH30/txir4jFcm6qg7wzsE/O/2TEwZt1MDCaOA1Uo5RP9O+fUQ/xtt
+         kRQqn0dA7HOEwdVB75gOyheYFt3RU36ZxxWybhv5NEN/yVHLCtPdn5Mly7Tn2J/cKFje
+         RkvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=HNxB8VlKFnASCS1FopR17k/Gv2s9Xen6ldTXsI+bKrc=;
+        b=zrIAxnAEInT8nY2ZIQb1UxsNy4ulQc5tss9INQ0wXt/JI06ar79zr85Bm7aYQfOiFJ
+         7PjXGl3A+a18178/BAOkSKkTxqlSeYGNh5tIha4/jQs3wxpQVIdeFL4+MeBlKhTYgR6f
+         1COzZs+BVX4lgCQiV8JWKzdXlUlz56rFxcgQy/8bAdVmWltzp/BZTQFbWu+Yl5ofLfO7
+         gbUeE/FZeyf3iA9098UJg8UTzaM3NBT4F9baTT6AYkaFZ1kwbz9JBVCF+2AaTQMjHs7p
+         8aXmEQeykUz7syhFULgM72hHQJ58VxVi65QhAO84WjHS5mmqm5R2XUNbI7NzkYtSsU8g
+         pZPw==
+X-Gm-Message-State: AJIora/H9NzlG87zEbzyYd3D5+TMCks6T9pVG3g3hGiJY1dLjHWJ168K
+        VJilYDO3p3d4aajeIU9Zamg41AGeKpJHH8Q4FKc=
+X-Google-Smtp-Source: AGRyM1s1n9DcRQHdb1d/jDsCA1CYq3O6Tzmnp4GOUVCJsoMExwMjdPYbi8ux5TiBfcYMUt42X2ophGgJ9YoDC6pOe+o=
+X-Received: by 2002:a81:2386:0:b0:317:6586:8901 with SMTP id
+ j128-20020a812386000000b0031765868901mr9473738ywj.195.1656584837500; Thu, 30
+ Jun 2022 03:27:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
+References: <20220630063528.205327-1-ukleinek@debian.org> <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+ <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
+In-Reply-To: <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 30 Jun 2022 12:26:40 +0200
+Message-ID: <CAHp75Vf45tDDHYv4fyUsXbQhbseecFE7SAcTQxgozXbBbBZN1A@mail.gmail.com>
 Subject: Re: [PATCH] iio: humidity: dht11: Improve error reporting in .probe()
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@debian.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-iio <linux-iio@vger.kernel.org>,
         Yves-Alexis Perez <corsac@debian.org>
-References: <20220630063528.205327-1-ukleinek@debian.org>
- <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
-From:   =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <ukleinek@debian.org>
-In-Reply-To: <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------ZL8wcAs0SjaV2tkE29P6Raqn"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ZL8wcAs0SjaV2tkE29P6Raqn
-Content-Type: multipart/mixed; boundary="------------bynxaIDLyI9sspcFJcZulMD2";
- protected-headers="v1"
-From: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <ukleinek@debian.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-iio <linux-iio@vger.kernel.org>, Yves-Alexis Perez <corsac@debian.org>
-Message-ID: <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
-Subject: Re: [PATCH] iio: humidity: dht11: Improve error reporting in .probe()
-References: <20220630063528.205327-1-ukleinek@debian.org>
- <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
-In-Reply-To: <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+On Thu, Jun 30, 2022 at 12:25 PM Uwe Kleine-K=C3=B6nig <ukleinek@debian.org=
+> wrote:
+> On 6/30/22 09:17, Andy Shevchenko wrote:
+> > On Thu, Jun 30, 2022 at 8:58 AM Uwe Kleine-K=C3=B6nig <ukleinek@debian.=
+org> wrote:
+> >>
+> >> Don't emit a message for -ENOMEM, the kernel is already loud enough in
+> >> this case. Add a message if getting the GPIO or registering the iio
+> >> device fails and use dev_err_probe for improved behaviour on
+> >> -EPROBE_DEFER.
+> >
+> > Why do we need additional messages?
+>
+> I don't understand the question. Do you really wonder why there is a
+> benefit of an error message if a resource allocation in probe fails?
+>
+> Current state is that for Yves-Alexis (on Cc:) the driver is silent but
+> unbound. I guess that's because gpiod_get fails, but seeing a
+> confirmation in the kernel log would be nice.
+>
+> > They should be split in a separate patch, perhaps, with the explanation=
+.
+> >
+> > Actually the rest I would split to two: converting to dev_err_probe()
+> > in the case where it's not right now, and dropping ENOMEM message.
+>
+> So we're at three patches:
+>
+>   - drop ENOMEM message
+>   - convert existing messages to dev_err_probe()
+>   - introduce errors for devm_gpiod_get() and devm_iio_device_register()
+>
+> I can rework accordingly, but for me this looks a bit over engineered.
 
---------------bynxaIDLyI9sspcFJcZulMD2
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Perhaps, but they three are about different stuff.
 
-T24gNi8zMC8yMiAwOToxNywgQW5keSBTaGV2Y2hlbmtvIHdyb3RlOg0KPiBPbiBUaHUsIEp1
-biAzMCwgMjAyMiBhdCA4OjU4IEFNIFV3ZSBLbGVpbmUtS8O2bmlnIDx1a2xlaW5la0BkZWJp
-YW4ub3JnPiB3cm90ZToNCj4+DQo+PiBEb24ndCBlbWl0IGEgbWVzc2FnZSBmb3IgLUVOT01F
-TSwgdGhlIGtlcm5lbCBpcyBhbHJlYWR5IGxvdWQgZW5vdWdoIGluDQo+PiB0aGlzIGNhc2Uu
-IEFkZCBhIG1lc3NhZ2UgaWYgZ2V0dGluZyB0aGUgR1BJTyBvciByZWdpc3RlcmluZyB0aGUg
-aWlvDQo+PiBkZXZpY2UgZmFpbHMgYW5kIHVzZSBkZXZfZXJyX3Byb2JlIGZvciBpbXByb3Zl
-ZCBiZWhhdmlvdXIgb24NCj4+IC1FUFJPQkVfREVGRVIuDQo+IA0KPiBXaHkgZG8gd2UgbmVl
-ZCBhZGRpdGlvbmFsIG1lc3NhZ2VzPw0KDQpJIGRvbid0IHVuZGVyc3RhbmQgdGhlIHF1ZXN0
-aW9uLiBEbyB5b3UgcmVhbGx5IHdvbmRlciB3aHkgdGhlcmUgaXMgYSANCmJlbmVmaXQgb2Yg
-YW4gZXJyb3IgbWVzc2FnZSBpZiBhIHJlc291cmNlIGFsbG9jYXRpb24gaW4gcHJvYmUgZmFp
-bHM/DQoNCkN1cnJlbnQgc3RhdGUgaXMgdGhhdCBmb3IgWXZlcy1BbGV4aXMgKG9uIENjOikg
-dGhlIGRyaXZlciBpcyBzaWxlbnQgYnV0IA0KdW5ib3VuZC4gSSBndWVzcyB0aGF0J3MgYmVj
-YXVzZSBncGlvZF9nZXQgZmFpbHMsIGJ1dCBzZWVpbmcgYSANCmNvbmZpcm1hdGlvbiBpbiB0
-aGUga2VybmVsIGxvZyB3b3VsZCBiZSBuaWNlLg0KDQo+IFRoZXkgc2hvdWxkIGJlIHNwbGl0
-IGluIGEgc2VwYXJhdGUgcGF0Y2gsIHBlcmhhcHMsIHdpdGggdGhlIGV4cGxhbmF0aW9uLg0K
-PiANCj4gQWN0dWFsbHkgdGhlIHJlc3QgSSB3b3VsZCBzcGxpdCB0byB0d286IGNvbnZlcnRp
-bmcgdG8gZGV2X2Vycl9wcm9iZSgpDQo+IGluIHRoZSBjYXNlIHdoZXJlIGl0J3Mgbm90IHJp
-Z2h0IG5vdywgYW5kIGRyb3BwaW5nIEVOT01FTSBtZXNzYWdlLg0KDQpTbyB3ZSdyZSBhdCB0
-aHJlZSBwYXRjaGVzOg0KDQogIC0gZHJvcCBFTk9NRU0gbWVzc2FnZQ0KICAtIGNvbnZlcnQg
-ZXhpc3RpbmcgbWVzc2FnZXMgdG8gZGV2X2Vycl9wcm9iZSgpDQogIC0gaW50cm9kdWNlIGVy
-cm9ycyBmb3IgZGV2bV9ncGlvZF9nZXQoKSBhbmQgZGV2bV9paW9fZGV2aWNlX3JlZ2lzdGVy
-KCkNCg0KSSBjYW4gcmV3b3JrIGFjY29yZGluZ2x5LCBidXQgZm9yIG1lIHRoaXMgbG9va3Mg
-YSBiaXQgb3ZlciBlbmdpbmVlcmVkLg0KDQpCZXN0IHJlZ2FyZHMNClV3ZQ0K
-
---------------bynxaIDLyI9sspcFJcZulMD2--
-
---------------ZL8wcAs0SjaV2tkE29P6Raqn
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmK9d5kACgkQwfwUeK3K
-7AlGGgf/WZ0HNpjfpeN7VGiCyuqckzkloeoMmXeZznXQE/fq9ACybw4oy5hDG10S
-hzW98y+ti6/uSQ68ddOF3eFUV20en8VCIgMkpXc1xvK8HkVvEg7vBZ07MStp1UVN
-MQFBt6I3bRLI8jfaPA52MjC8D/VHszpwFHgGAJIoXb6RdvRFcmaA1qB87gaRVwIu
-k9n8zPbFArfClQZA8BODaLCCUHBNiMaj7am2EgHwKZx4PalrbDbmCXoSYcTHIy7l
-LrEc1RSwJlGapuVuP/deHhmo7L9no7RpuVC7hRknmqVUh9kzcvrnY398vSGhvgCt
-7IEWfeaBLEm83+bhFvUgWjp8hjFYnA==
-=+F0j
------END PGP SIGNATURE-----
-
---------------ZL8wcAs0SjaV2tkE29P6Raqn--
+--=20
+With Best Regards,
+Andy Shevchenko

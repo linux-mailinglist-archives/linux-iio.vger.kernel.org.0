@@ -2,72 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2D995625AF
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jun 2022 23:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD4B562659
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 01:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234911AbiF3VzH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 30 Jun 2022 17:55:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45018 "EHLO
+        id S229828AbiF3XB5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 30 Jun 2022 19:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232633AbiF3VzG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 17:55:06 -0400
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC40217;
-        Thu, 30 Jun 2022 14:55:04 -0700 (PDT)
-Received: by mail-io1-f47.google.com with SMTP id m13so571439ioj.0;
-        Thu, 30 Jun 2022 14:55:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=O0oI2Gbpm910/K3zuIgYxSbljlnn6O3+k19Oo002PO8=;
-        b=h2UuwuwbnKEelVZu8LJo9AA0aImrF0GDkLZVz8mo+EUEQqFuDxorAzBX7gRP9D4NMT
-         rm6f8mKyVqZKgDIIbAGaI2hPe234/3lDuyH5PeQwvVAk9FbTY/7U5kx9avfu6Od47YkG
-         Btvh+TQwsMgB9XyZ+ZbsaUb2QTgOEAD9WrlhNWqvYLG4jq/WXqD3FKgGPKx2N2Wjs6f+
-         /UfTbau/WZBJZ9scuA4vNaadl6vdLDS3u1doDgDEn5cB+Hov51zng2btG0HSw8fwEvIg
-         l4WAALllHpUUnSz/D63d6LLSppbbL567BSWjddmVR2pzhwyLEcA+qdBakaIIhFbe6ydy
-         8bRg==
-X-Gm-Message-State: AJIora9tACg6r7ixO9iVlMXVy/p+t1GuEN2Tr9/JgoW5P92w8CwCU5Ld
-        xkUItkoN2/t7wYOFSRb1ew==
-X-Google-Smtp-Source: AGRyM1vtcfkSVY6M7PNTiDY7FVEXYZMNw3bvjSTqjH2j0Qe5vPkkxFrAuZnZMfEK51OROsKsre8rDw==
-X-Received: by 2002:a05:6638:3387:b0:33c:9f9e:5a17 with SMTP id h7-20020a056638338700b0033c9f9e5a17mr6777342jav.12.1656626104166;
-        Thu, 30 Jun 2022 14:55:04 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id m2-20020a02cdc2000000b00339e6168237sm8637761jap.34.2022.06.30.14.55.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jun 2022 14:55:03 -0700 (PDT)
-Received: (nullmailer pid 3384041 invoked by uid 1000);
-        Thu, 30 Jun 2022 21:55:00 -0000
-Date:   Thu, 30 Jun 2022 15:55:00 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     chiaen_wu@richtek.com, devicetree@vger.kernel.org,
-        matthias.bgg@gmail.com, jic23@kernel.org,
-        daniel.thompson@linaro.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
-        jingoohan1@gmail.com, linux-leds@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        alice_chen@richtek.com, pavel@ucw.cz, lee.jones@linaro.org,
-        lgirdwood@gmail.com, robh+dt@kernel.org, chunfeng.yun@mediatek.com,
-        linux@roeck-us.net, linux-fbdev@vger.kernel.org,
-        broonie@kernel.org, szunichen@gmail.com, sre@kernel.org,
-        heikki.krogerus@linux.intel.com, cy_huang@richtek.com,
-        linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, gregkh@linuxfoundation.org,
-        lars@metafoo.de, deller@gmx.de
-Subject: Re: [PATCH v3 05/14] dt-bindings: backlight: Add Mediatek MT6370
- backlight
-Message-ID: <20220630215500.GA3383976-robh@kernel.org>
-References: <20220623115631.22209-1-peterwu.pub@gmail.com>
- <20220623115631.22209-6-peterwu.pub@gmail.com>
+        with ESMTP id S229531AbiF3XB5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 30 Jun 2022 19:01:57 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4806653D33;
+        Thu, 30 Jun 2022 16:01:53 -0700 (PDT)
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 25UN18a4075834;
+        Thu, 30 Jun 2022 18:01:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1656630068;
+        bh=QtzutZRbSrOPPcLttyyspgFWlZmc7+nzWVIjmBpjb9k=;
+        h=From:To:CC:Subject:Date;
+        b=Cq+mwCtuPow287YDfQYtTCXLUdXorpPDwHhAb/+rz85iB/WX3AAq/RuoI5plJLeIi
+         1lmIgccPWu+GkEhtNVfAfgmuMB0UDF+MG6gXcOY6lj32WJAwJ2b7YjbWejTRB1uKIw
+         BJ2XGzEC2ohla1UqbPeZh402114Xc/xfZ+pSWdFE=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 25UN18dl085041
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 30 Jun 2022 18:01:08 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 30
+ Jun 2022 18:01:08 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Thu, 30 Jun 2022 18:01:08 -0500
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 25UN18ou022220;
+        Thu, 30 Jun 2022 18:01:08 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Javier Martinez Canillas <javier@osg.samsung.com>,
+        Nishanth Menon <nm@ti.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] iio: adc: ti-adc128s052: Fix number of channels when device tree is used
+Date:   Thu, 30 Jun 2022 18:01:07 -0500
+Message-ID: <20220630230107.13438-1-nm@ti.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220623115631.22209-6-peterwu.pub@gmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,23 +67,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 23 Jun 2022 19:56:22 +0800, ChiaEn Wu wrote:
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> Add mt6370 backlight binding documentation.
-> 
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> ---
-> 
-> v3
-> - Rename "mediatek,bled-pwm-hys-input-threshold-steps" to
->   "mediatek,bled-pwm-hys-input-th-steps"
-> - Refine "bled-pwm-hys-input-th-steps", "bled-ovp-microvolt",
->   "bled-ocp-microamp" enum values
-> ---
->  .../leds/backlight/mediatek,mt6370-backlight.yaml  | 92 ++++++++++++++++++++++
->  1 file changed, 92 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
-> 
+When device_match_data is called - with device tree, of_match list is
+looked up to find the data, which by default is 0. So, no matter which
+kind of device compatible we use, we match with config 0 which implies
+we enable 8 channels even on devices that do not have 8 channels.
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Solve it by providing the match data similar to what we do with the ACPI
+lookup information.
+
+Fixes: 9e611c9e5a20 ("iio: adc128s052: Add OF match table")
+Cc: <stable@vger.kernel.org> # 5.0+
+Signed-off-by: Nishanth Menon <nm@ti.com>
+---
+
+Side note: commits 9e611c9e5a20c ("iio: adc128s052: Add OF match table"),
+37cd3c8768edc ("iio: adc128s052: Add pin-compatible IDs"),
+b41fa86b67bd3 ("iio:adc128s052: add support for adc124s021") introduce
+code that is fixed by this patch, but it makes no real sense to go and
+split this patch to apply to versions older than 5.0 - which seems to be
+the earliest the patch would apply. I picked the "Add OF match table" as
+the patch that set the precedence which follow on patches followed.
+
+ drivers/iio/adc/ti-adc128s052.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+index 622fd384983c..21a7764cbb93 100644
+--- a/drivers/iio/adc/ti-adc128s052.c
++++ b/drivers/iio/adc/ti-adc128s052.c
+@@ -181,13 +181,13 @@ static int adc128_probe(struct spi_device *spi)
+ }
+ 
+ static const struct of_device_id adc128_of_match[] = {
+-	{ .compatible = "ti,adc128s052", },
+-	{ .compatible = "ti,adc122s021", },
+-	{ .compatible = "ti,adc122s051", },
+-	{ .compatible = "ti,adc122s101", },
+-	{ .compatible = "ti,adc124s021", },
+-	{ .compatible = "ti,adc124s051", },
+-	{ .compatible = "ti,adc124s101", },
++	{ .compatible = "ti,adc128s052", .data = 0},
++	{ .compatible = "ti,adc122s021", .data = 1},
++	{ .compatible = "ti,adc122s051", .data = 1},
++	{ .compatible = "ti,adc122s101", .data = 1},
++	{ .compatible = "ti,adc124s021", .data = 2},
++	{ .compatible = "ti,adc124s051", .data = 2},
++	{ .compatible = "ti,adc124s101", .data = 2},
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, adc128_of_match);
+-- 
+2.31.1
+

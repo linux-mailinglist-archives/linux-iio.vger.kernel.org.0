@@ -2,193 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D16856311E
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 12:15:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 770EB563310
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 14:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234130AbiGAKPP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 06:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37700 "EHLO
+        id S233585AbiGAMAi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 08:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233989AbiGAKPO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 06:15:14 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71A573933
-        for <linux-iio@vger.kernel.org>; Fri,  1 Jul 2022 03:15:12 -0700 (PDT)
-Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LZ9xS26kNz6FBRg;
-        Fri,  1 Jul 2022 18:12:44 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Jul 2022 12:15:10 +0200
-Received: from localhost (10.81.215.232) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 1 Jul
- 2022 11:15:09 +0100
-Date:   Fri, 1 Jul 2022 11:15:08 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+        with ESMTP id S229716AbiGAMAh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 08:00:37 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB62F83F08;
+        Fri,  1 Jul 2022 05:00:31 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 5CC6F5FD04;
+        Fri,  1 Jul 2022 15:00:28 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1656676828;
+        bh=gyPwB5+OVO7siaEhrsEb3sbbKDhwy+paF7E/JsUmC4o=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=eDjzAQcaJMOWRF96FnZqGtaG2uqpv70+/HYiJdlEJlXceRdQTaaS1kH7u7CkU2hDa
+         AtpoXSaPdwPwOUL4+WjbXLk/5iVFXmocr/xsBvien4bGoxTErP9Y+qqH7ATtlHReK6
+         LYUTE+uzSzuFHJJEcwlX3aB+L38EnmZvPlw8wag0pOH0Cv0mjtwSPUsDZ3zns4e7gT
+         YVgxcc5nBHPm2XPbcdWahSvsI7DD3MHjOHkkpXS/uTJVNJ/ZAKoh4zJHRLYa0JOuQ/
+         9DFyISIg/fwdjRK+20POfGmHzU5T5hREjPp5gK4V/s/zh6yttn9GyoikOWRpWdBuAk
+         SoVKM3N3BeG/w==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Fri,  1 Jul 2022 15:00:27 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     <linux-iio@vger.kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Siddartha Mohanadoss <smohanad@codeaurora.org>
-Subject: Re: [PATCH v2 4/4] iio: adc: qcom-vadc: Move symbol exports to
- IIO_QCOM_VADC namespace
-Message-ID: <20220701111508.00005b5e@Huawei.com>
-In-Reply-To: <20220604155306.422937-5-jic23@kernel.org>
-References: <20220604155306.422937-1-jic23@kernel.org>
-        <20220604155306.422937-5-jic23@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
+ allocate() stage
+Thread-Topic: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
+ allocate() stage
+Thread-Index: AQHYdd/Pt2zXEFx7c0Or/RCut5+rEK0/GLKAgCpM/oA=
+Date:   Fri, 1 Jul 2022 11:59:59 +0000
+Message-ID: <20220701115823.vywhifktaxcr72cc@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
+ <20220604145955.2a1108ca@jic23-huawei>
+In-Reply-To: <20220604145955.2a1108ca@jic23-huawei>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <18D36DC6D25ED14FBF5A05D4E02E3307@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.215.232]
-X-ClientProxiedBy: lhreml723-chm.china.huawei.com (10.201.108.74) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/07/01 07:59:00 #19867624
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat,  4 Jun 2022 16:53:06 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+Hello Jonathan,
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Avoid unnecessary pollution of the global symbol namespace by
-> moving library functions in to a specific namespace and import
-> that into the drivers that make use of the functions.
-> 
-> For more info: https://lwn.net/Articles/760045/
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: Siddartha Mohanadoss <smohanad@codeaurora.org>
-> Link: https://lore.kernel.org/r/20220220173701.502331-6-jic23@kernel.org
+This patch has been on the mailing list for one month already, but no
+comments from other IIO reviewers. What do you think we should do with it?
+Is it a helpful change or not?
 
-Dropped for now after a build issue found in linux next as
-there are a few calls into this made from a thermal driver.
+On Sat, Jun 04, 2022 at 02:59:55PM +0100, Jonathan Cameron wrote:
+> On Wed, 1 Jun 2022 17:48:32 +0000
+> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+>=20
+> > To provide a new IIO trigger to the IIO core, usually driver executes t=
+he
+> > following pipeline: allocate()/register()/get(). Before, IIO core assig=
+ned
+> > trig->owner as a pointer to the module which registered this trigger at
+> > the register() stage. But actually the trigger object is owned by the
+> > module earlier, on the allocate() stage, when trigger object is
+> > successfully allocated for the driver.
+> >=20
+> > This patch moves trig->owner initialization from register()
+> > stage of trigger initialization pipeline to allocate() stage to
+> > eliminate all misunderstandings and time gaps between trigger object
+> > creation and owner acquiring.
+> >=20
+> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+>=20
+> Hi Dmitry,
+>=20
+> I 'think' this is fine, but its in the high risk category that I'd like
+> to keep it on list for a few weeks before applying.
+>=20
+> Note I'm still keen that in general we keep the flow such that
+> we do allocate()/register()/get() as there is no guarantee that the get()
+> will never do anything that requires the trigger to be registered, even
+> though that is true today.  Which is another way of saying I'm still
+> keen we fix up any cases that sneak in after your fix up set dealt with
+> the current ones.
+>=20
+> Thanks for following up on this!
+>=20
+> Jonathan
+>=20
 
-I'll send out a new version at somepoint.
-
-Thanks,
-
-Jonathan
-
-
-> ---
->  drivers/iio/adc/qcom-pm8xxx-xoadc.c |  1 +
->  drivers/iio/adc/qcom-spmi-adc5.c    |  1 +
->  drivers/iio/adc/qcom-spmi-vadc.c    |  1 +
->  drivers/iio/adc/qcom-vadc-common.c  | 16 ++++++++--------
->  4 files changed, 11 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> index 5e9e56821075..e2ef89dcaa5e 100644
-> --- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> +++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-> @@ -1028,3 +1028,4 @@ module_platform_driver(pm8xxx_xoadc_driver);
->  MODULE_DESCRIPTION("PM8xxx XOADC driver");
->  MODULE_LICENSE("GPL v2");
->  MODULE_ALIAS("platform:pm8xxx-xoadc");
-> +MODULE_IMPORT_NS(IIO_QCOM_VADC);
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-> index 87438d1e5c0b..10bb51b648c1 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -925,3 +925,4 @@ module_platform_driver(adc5_driver);
->  MODULE_ALIAS("platform:qcom-spmi-adc5");
->  MODULE_DESCRIPTION("Qualcomm Technologies Inc. PMIC5 ADC driver");
->  MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_QCOM_VADC);
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> index 34202ba52469..cb0c6af091ac 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -935,3 +935,4 @@ MODULE_DESCRIPTION("Qualcomm SPMI PMIC voltage ADC driver");
->  MODULE_LICENSE("GPL v2");
->  MODULE_AUTHOR("Stanimir Varbanov <svarbanov@mm-sol.com>");
->  MODULE_AUTHOR("Ivan T. Ivanov <iivanov@mm-sol.com>");
-> +MODULE_IMPORT_NS(IIO_QCOM_VADC);
-> diff --git a/drivers/iio/adc/qcom-vadc-common.c b/drivers/iio/adc/qcom-vadc-common.c
-> index d5209f32adb3..7ca191ea1a65 100644
-> --- a/drivers/iio/adc/qcom-vadc-common.c
-> +++ b/drivers/iio/adc/qcom-vadc-common.c
-> @@ -662,7 +662,7 @@ int qcom_vadc_scale(enum vadc_scale_fn_type scaletype,
->  		return -EINVAL;
->  	}
->  }
-> -EXPORT_SYMBOL(qcom_vadc_scale);
-> +EXPORT_SYMBOL_NS(qcom_vadc_scale, IIO_QCOM_VADC);
->  
->  u16 qcom_adc_tm5_temp_volt_scale(unsigned int prescale_ratio,
->  				 u32 full_scale_code_volt, int temp)
-> @@ -675,7 +675,7 @@ u16 qcom_adc_tm5_temp_volt_scale(unsigned int prescale_ratio,
->  					     temp);
->  	return qcom_vadc_scale_voltage_code(voltage, prescale, full_scale_code_volt, 1000);
->  }
-> -EXPORT_SYMBOL(qcom_adc_tm5_temp_volt_scale);
-> +EXPORT_SYMBOL_NS(qcom_adc_tm5_temp_volt_scale, IIO_QCOM_VADC);
->  
->  u16 qcom_adc_tm5_gen2_temp_res_scale(int temp)
->  {
-> @@ -704,7 +704,7 @@ int qcom_adc5_hw_scale(enum vadc_scale_fn_type scaletype,
->  	return scale_adc5_fn[scaletype].scale_fn(prescale, data,
->  					adc_code, result);
->  }
-> -EXPORT_SYMBOL(qcom_adc5_hw_scale);
-> +EXPORT_SYMBOL_NS(qcom_adc5_hw_scale, IIO_QCOM_VADC);
->  
->  int qcom_adc5_prescaling_from_dt(u32 numerator, u32 denominator)
->  {
-> @@ -720,7 +720,7 @@ int qcom_adc5_prescaling_from_dt(u32 numerator, u32 denominator)
->  
->  	return pre;
->  }
-> -EXPORT_SYMBOL(qcom_adc5_prescaling_from_dt);
-> +EXPORT_SYMBOL_NS(qcom_adc5_prescaling_from_dt, IIO_QCOM_VADC);
->  
->  int qcom_adc5_hw_settle_time_from_dt(u32 value,
->  				     const unsigned int *hw_settle)
-> @@ -734,7 +734,7 @@ int qcom_adc5_hw_settle_time_from_dt(u32 value,
->  
->  	return -EINVAL;
->  }
-> -EXPORT_SYMBOL(qcom_adc5_hw_settle_time_from_dt);
-> +EXPORT_SYMBOL_NS(qcom_adc5_hw_settle_time_from_dt, IIO_QCOM_VADC);
->  
->  int qcom_adc5_avg_samples_from_dt(u32 value)
->  {
-> @@ -743,7 +743,7 @@ int qcom_adc5_avg_samples_from_dt(u32 value)
->  
->  	return __ffs(value);
->  }
-> -EXPORT_SYMBOL(qcom_adc5_avg_samples_from_dt);
-> +EXPORT_SYMBOL_NS(qcom_adc5_avg_samples_from_dt, IIO_QCOM_VADC);
->  
->  int qcom_adc5_decimation_from_dt(u32 value, const unsigned int *decimation)
->  {
-> @@ -756,7 +756,7 @@ int qcom_adc5_decimation_from_dt(u32 value, const unsigned int *decimation)
->  
->  	return -EINVAL;
->  }
-> -EXPORT_SYMBOL(qcom_adc5_decimation_from_dt);
-> +EXPORT_SYMBOL_NS(qcom_adc5_decimation_from_dt, IIO_QCOM_VADC);
->  
->  int qcom_vadc_decimation_from_dt(u32 value)
->  {
-> @@ -766,7 +766,7 @@ int qcom_vadc_decimation_from_dt(u32 value)
->  
->  	return __ffs64(value / VADC_DECIMATION_MIN);
->  }
-> -EXPORT_SYMBOL(qcom_vadc_decimation_from_dt);
-> +EXPORT_SYMBOL_NS(qcom_vadc_decimation_from_dt, IIO_QCOM_VADC);
->  
->  MODULE_LICENSE("GPL v2");
->  MODULE_DESCRIPTION("Qualcomm ADC common functionality");
-
+--=20
+Thank you,
+Dmitry=

@@ -2,67 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01B8C562A86
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 06:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB50E562BDE
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 08:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234267AbiGAE3s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 00:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35840 "EHLO
+        id S235213AbiGAGi1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 02:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233830AbiGAE3r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 00:29:47 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95DA658FE0;
-        Thu, 30 Jun 2022 21:29:45 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2614TOdI022208;
-        Thu, 30 Jun 2022 23:29:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1656649764;
-        bh=ZZpTjhFTAu6hQIWqxUkqm1xErTjHOgN3ive3sAMZfRo=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=TOiJ08uHEub6ZBK3naZVJbWyeivMiQELfUMPgDDu+7osyFSPk30ZUJ9JBraUH3VND
-         U80CsUI228LON00wdpjzCxPzdw2uMRSwG/2yE/m1a/leoqGiBUHEFCyYPS8MSDK2OG
-         tNfpXkRI2xRbefiKlRbcMrnjSFA8xAzQdIwN1mZ0=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2614TOEY009657
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 30 Jun 2022 23:29:24 -0500
-Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Thu, 30
- Jun 2022 23:29:24 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Thu, 30 Jun 2022 23:29:24 -0500
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2614TOmu001166;
-        Thu, 30 Jun 2022 23:29:24 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        with ESMTP id S234062AbiGAGi0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 02:38:26 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85EC91A3BB
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 23:38:25 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id ay16so2254997ejb.6
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jun 2022 23:38:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=jSUhQ3rBFKJxU2LCa9Ql4GrsO3TLNvrpxzwTvNvCTBU=;
+        b=KR6dlzrqc5KAGSH9q86OuFL5a+BEdvq6u4BADqzj2u4IsWpTYBto01KpxaRquYf7o0
+         JtiDRx/EyAFV+Cgl87CMVn8WN8HIEmG9LenpcmVVzSOvx+64M2BMif34Ryj1EWc5AOFw
+         fYwxSBePaevTU7jMLWsvxwTKWDcn87aGdBdmm0sxLXhyzBwIBwpzD4KT7gyiC7VxyfNv
+         uHVB9jLUHzbOWpzFgjBqcmsnAnHklk34pQDS0rTbq2/FYY0HRtcx/JVWOP2N114fQYUZ
+         M4+c23OEagK0HqTdKz9FxEcJaQD4psedtmE5SHRxcA0KMZO2obWfzBbCZJRV9wn0TrIc
+         x3zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=jSUhQ3rBFKJxU2LCa9Ql4GrsO3TLNvrpxzwTvNvCTBU=;
+        b=vTPB8V+pYnDOxVFc5arMblx666NqVML1CGYKsIo3XmExHRJRkzNrl7gWVJj08F+yM0
+         62NYy3t2kHPxzDuHnAIyRWtvPxDmEYZZAHDgVPSdoi7z7Knfo9eHH+tZYRsNb8tRKqiJ
+         6mlnlfWmkT4UIi+PD48v1L98vzNr8zucUAJYHsJONwft8V408TFtmT5Rbxd8nSgR5dt/
+         H1Q/GR0crRx0vYCqEx6zMaRb65n1YKKhDBlrK+v0b7FN4IF8YxBV4w/vDeSco5YoULtn
+         aYeCeYFGEySXTKxlGb7HEjztBaTcXUq2mXiC10qXPF2MwLL3izKB8pjS+1TJ8bvQY03M
+         KrTg==
+X-Gm-Message-State: AJIora9/XifAducEoU6qTwXYAYqfHAUTTgaArPKmEhy+d7WeyaLOKf3C
+        M8UKGvxmN11nfCk+Nka4/v2n6w==
+X-Google-Smtp-Source: AGRyM1u1+fKIC+2Zyq9jouPxdVF4hWeo0y+1sNSQER05/bn7i/qCLb8ToWpi8wtdaJkhU/0g3pvttA==
+X-Received: by 2002:a17:907:7636:b0:72a:9297:37d1 with SMTP id jy22-20020a170907763600b0072a929737d1mr293126ejc.349.1656657504110;
+        Thu, 30 Jun 2022 23:38:24 -0700 (PDT)
+Received: from [192.168.0.190] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id s27-20020a170906355b00b00702d8b37a03sm9951428eja.17.2022.06.30.23.38.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jun 2022 23:38:23 -0700 (PDT)
+Message-ID: <5dbf57e4-7573-fa63-d8f1-6ecde08a0875@linaro.org>
+Date:   Fri, 1 Jul 2022 08:38:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ti,adc128s052: Add adc08c and
+ adc10c family
+Content-Language: en-US
+To:     Nishanth Menon <nm@ti.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Alexandru Ardelean <ardeleanalex@gmail.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Jonathan Cameron <jic23@kernel.org>
-CC:     Nishanth Menon <nm@ti.com>, Florian Eckert <fe@dev.tdt.de>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-Subject: [PATCH 2/2] iio: adc: ti-adc128s052: Add lower resolution devices support
-Date:   Thu, 30 Jun 2022 23:29:19 -0500
-Message-ID: <20220701042919.18180-3-nm@ti.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220701042919.18180-1-nm@ti.com>
+Cc:     Florian Eckert <fe@dev.tdt.de>, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
 References: <20220701042919.18180-1-nm@ti.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+ <20220701042919.18180-2-nm@ti.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220701042919.18180-2-nm@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,91 +83,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-interface. The device family responds with 12bit data, of which the LSB
-bits are transmitted by the lower resolution devices as 0. We don't need
-to mess with ADC108S102_BITS as a result for the lower resolution
-devices.
+On 01/07/2022 06:29, Nishanth Menon wrote:
+> The adcxx4s communicates with a host processor via an SPI/Microwire Bus
+> interface. The device family responds with 12bit data, of which the LSB
+> bits are 0 for the lower resolution devices. I have been able to test
+> adc102s051, hence adding just the missing ones in that family.
+> 
+> Lets reuse the binding to support the family of devices with name
+> ADC<bb><c>S<sss>, where
+> * bb is the resolution in number of bits (8, 10, 12)
+> * c is the number of channels (1, 2, 4, 8)
+> * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
+>   and 101 for 1 MSPS)
+> 
+> Complete datasheets are available at TI's website here:
+>   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+> 
+> Handling of 8, 10 and 12 bits converters are the same, the
+> unavailable bits are 0 in LSB :)
+> 
+> Inspired-by: drivers/hwmon/adcxx.c
+> 
+> Signed-off-by: Nishanth Menon <nm@ti.com>
+> ---
+> 
+> Checkpatch does complain with Inspired-by: insisting it to be an email
+> address.. but I was really inspired by the hwmon driver.. Don't know
+> what else to say here.. we could probably drop it?
 
-I have been able to test adc102s051, hence adding just the missing
-ones in that family.
+Drop it or convert to just test.
 
-Lets reuse the driver to support the family of devices with name
-ADC<bb><c>S<sss>, where
-* bb is the resolution in number of bits (8, 10, 12)
-* c is the number of channels (1, 2, 4, 8)
-* sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-  and 101 for 1 MSPS)
+When passing checkpatch:
 
-Complete datasheets are available at TI's website here:
-  https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Also see: drivers/hwmon/adcxx.c
-
-Signed-off-by: Nishanth Menon <nm@ti.com>
----
-
-This does add on additional sparse warnings around casting .data value
-to const from int for the of_match_table, and a bunch around the .cls
-field for acpi_device_id - maybe someone could suggest a smarter way to
-fix those.
-
-Applies after https://lore.kernel.org/linux-iio/20220630230107.13438-1-nm@ti.com/
-
- drivers/iio/adc/ti-adc128s052.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-index 21a7764cbb93..0a3aab4df60e 100644
---- a/drivers/iio/adc/ti-adc128s052.c
-+++ b/drivers/iio/adc/ti-adc128s052.c
-@@ -7,6 +7,20 @@
-  * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
-  * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
-  * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
-+ *
-+ * The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-+ * interface. This driver supports the whole family of devices with name
-+ * ADC<bb><c>S<sss>, where
-+ * bb is the resolution in number of bits (8, 10, 12)
-+ * c is the number of channels (1, 2, 4, 8)
-+ * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-+ * and 101 for 1 MSPS)
-+ *
-+ * Complete datasheets are available at TI's website here:
-+ *   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-+ *
-+ * Handling of 8, 10 and 12 bits converters are the same, the
-+ * unavailable bits are 0 in LSB :)
-  */
- 
- #include <linux/acpi.h>
-@@ -185,6 +199,12 @@ static const struct of_device_id adc128_of_match[] = {
- 	{ .compatible = "ti,adc122s021", .data = 1},
- 	{ .compatible = "ti,adc122s051", .data = 1},
- 	{ .compatible = "ti,adc122s101", .data = 1},
-+	{ .compatible = "ti,adc102s021", .data = 1},
-+	{ .compatible = "ti,adc102s051", .data = 1},
-+	{ .compatible = "ti,adc102s101", .data = 1},
-+	{ .compatible = "ti,adc082s021", .data = 1},
-+	{ .compatible = "ti,adc082s051", .data = 1},
-+	{ .compatible = "ti,adc082s101", .data = 1},
- 	{ .compatible = "ti,adc124s021", .data = 2},
- 	{ .compatible = "ti,adc124s051", .data = 2},
- 	{ .compatible = "ti,adc124s101", .data = 2},
-@@ -197,6 +217,12 @@ static const struct spi_device_id adc128_id[] = {
- 	{ "adc122s021",	1 },
- 	{ "adc122s051",	1 },
- 	{ "adc122s101",	1 },
-+	{ "adc102s021",	1 },
-+	{ "adc102s051",	1 },
-+	{ "adc102s101",	1 },
-+	{ "adc082s021",	1 },
-+	{ "adc082s051",	1 },
-+	{ "adc082s101",	1 },
- 	{ "adc124s021", 2 },
- 	{ "adc124s051", 2 },
- 	{ "adc124s101", 2 },
--- 
-2.31.1
-
+Best regards,
+Krzysztof

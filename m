@@ -2,102 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60971563732
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 17:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBF935637BF
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 18:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiGAPu4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 11:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S230124AbiGAQWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 12:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiGAPuy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 11:50:54 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD254BC1B;
-        Fri,  1 Jul 2022 08:50:53 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id l68so1555459wml.3;
-        Fri, 01 Jul 2022 08:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=references:from:to:cc:subject:in-reply-to:date:message-id
-         :mime-version;
-        bh=wPj9N9qu4aq/UnSUzvPL7u5RGFCXg6RhipCMWPPUP+E=;
-        b=qmHvFC4W+7jzt+PKswn0v+gJneeYa1y7Ec62t1euR7kRN13Ei7OpySs3CxTmkQff1m
-         zqeHqN/e0VOGFfy6yS5zikdIcmri4FYdF68pthJ/RLi6l6NbR8yCOfiN09sfFGN7vu+3
-         0KXLAWlF2w2IEJ5ZfZfNGpcnmnhVQ2cWXzUw7XO3zn0yzqBPy7DQOJNtAJLTHhOTZP1B
-         lJWVLHwkbuSFTgseY8v+vDKmIBf05vVJNZAO5ooUy3+6C8weWR4QmxLX7pS92Br7NADr
-         jWM6d20s5etMuPUjszIMPXCIBK3JVnAsR1be9EPBIz0pnu46stNF1u+RY/ZP8FRCslEa
-         R4LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:references:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version;
-        bh=wPj9N9qu4aq/UnSUzvPL7u5RGFCXg6RhipCMWPPUP+E=;
-        b=L74duYgqDL4/iyx2GlLz+UNEfjuvxJ8DtSXm0kOeYLvgfsCErRC6AXN57s7r/vBk+o
-         FfGMJX1MaNJFUW1MZ7fP6JTmu9vPnDHeOsbhvXcNRHTR0hXcK/SqE0SeQzimYINgLLBY
-         VSo6afEU9RjhMreQo+SAatMTLUc12/D2BqWjW5dQERIwTNWKItlrX7w1qzmf/sGnm3rX
-         3xm0iTeNs3Q9/2X2/e9507a3+xUDqoS2FNsJYNWM9/6ukBqMbZT3OHKyDKGDn41Q5PER
-         0KhmBLbSZlsEiF4QjrXtmWb/U3cT1UHkGu76AFa94c/wuYMqMtlwBlg0o0MlYAGrChZW
-         VnNQ==
-X-Gm-Message-State: AJIora+3N5eVxzhTya9gk/HUjiyu0JAz5cQDYteNTkWYqi9JtIPXHoah
-        Kcgw0ZOgGWA7e+n0vB4Ct08=
-X-Google-Smtp-Source: AGRyM1uvy66G1WQ/BJmadW36XZ6pD9gBgGsl38zD24GbCOyBZz9Hio0Gl/3/pUtmFDNPIFZza75obQ==
-X-Received: by 2002:a05:600c:2246:b0:3a0:4d14:e9d5 with SMTP id a6-20020a05600c224600b003a04d14e9d5mr17113722wmm.70.1656690652283;
-        Fri, 01 Jul 2022 08:50:52 -0700 (PDT)
-Received: from localhost (92.40.202.200.threembb.co.uk. [92.40.202.200])
-        by smtp.gmail.com with ESMTPSA id m123-20020a1ca381000000b003942a244f47sm7488681wme.32.2022.07.01.08.50.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Jul 2022 08:50:51 -0700 (PDT)
-References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com>
- <20220618214009.2178567-14-aidanmacdonald.0x0@gmail.com>
- <cafd8a40ad35dcf8a35350261af6031c@walle.cc>
- <me4ummrWKIPseIG4ay7yCfrumN8sIdvc@localhost>
- <01a338e8f94b077df3fe2c4f13d4da28@walle.cc>
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Michael Walle <michael@walle.cc>
-Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
-        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
-        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
-        rafael@kernel.org, quic_gurus@quicinc.com,
-        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 13/16] pinctrl: Add AXP192 pin control driver
-In-reply-to: <01a338e8f94b077df3fe2c4f13d4da28@walle.cc>
-Date:   Fri, 01 Jul 2022 16:51:59 +0100
-Message-ID: <HVuKY4uz71KVTEQCbjewrX6SufiowzOP@localhost>
+        with ESMTP id S232070AbiGAQW1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 12:22:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40B13F8B1;
+        Fri,  1 Jul 2022 09:22:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 582B46253E;
+        Fri,  1 Jul 2022 16:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E5AC3411E;
+        Fri,  1 Jul 2022 16:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1656692539;
+        bh=lFbPb5+FqcYrOK1uW5XpecMCGdgJybKgfEFre34Au4s=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Zzp2gxzcPbyzz5AMjHlYWFC5yMv9RLrECQxN3zoX6hKozMnXameh4C/SSlXJ7Rdcg
+         T1JkIzzpDPsnjmHOfz4kbOlW8+vluoDwgg7ty70Im5kBknZJ74eJoSomdSGmvkJORS
+         Cej9YoQN3Ie+iufHVsuGEuz+7GsbTju3sNmPTSmGKIaF2JF8h3HexwViUtipna6dak
+         NGLiRmIlZ7YDSL08TCDZyYOB/LwmB51I7sop7gxMUThdGtfsPa6toxL2O1k5dGi4ZZ
+         r7W16x4ToFtZt02cb5ymKvDcPOmU5wYB2y908kFArDQEsLRvGw6USyEe4+aZfEUXvK
+         IEny7cqVqwVdw==
+Date:   Fri, 1 Jul 2022 17:31:53 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Nishanth Menon <nm@ti.com>,
+        Javier Martinez Canillas <javier@osg.samsung.com>,
+        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: ti-adc128s052: Fix number of channels when
+ device tree is used
+Message-ID: <20220701173153.04711237@jic23-huawei>
+In-Reply-To: <CAHp75Vfm+NDzZEB1Qp-3+mbj=NOko=5jjcHr_A4J6-jMpTykhg@mail.gmail.com>
+References: <20220630230107.13438-1-nm@ti.com>
+        <CAHp75Vfm+NDzZEB1Qp-3+mbj=NOko=5jjcHr_A4J6-jMpTykhg@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, 1 Jul 2022 12:13:24 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-Michael Walle <michael@walle.cc> writes:
+> On Fri, Jul 1, 2022 at 1:02 AM Nishanth Menon <nm@ti.com> wrote:
+> >
+> > When device_match_data is called - with device tree, of_match list is  
+> 
+> device_get_match_data() ?
+> 
+> > looked up to find the data, which by default is 0. So, no matter which
+> > kind of device compatible we use, we match with config 0 which implies
+> > we enable 8 channels even on devices that do not have 8 channels.
+> >
+> > Solve it by providing the match data similar to what we do with the ACPI
+> > lookup information.
+> >
+> > Fixes: 9e611c9e5a20 ("iio: adc128s052: Add OF match table")
+> > Cc: <stable@vger.kernel.org> # 5.0+
+> > Signed-off-by: Nishanth Menon <nm@ti.com>  
+> 
+> ...
+> 
+> > +       { .compatible = "ti,adc128s052", .data = 0},  
+> 
+> No assignment, 0 _is_ the default here.
+> 
+> > +       { .compatible = "ti,adc122s021", .data = 1},
+> > +       { .compatible = "ti,adc122s051", .data = 1},
+> > +       { .compatible = "ti,adc122s101", .data = 1},
+> > +       { .compatible = "ti,adc124s021", .data = 2},
+> > +       { .compatible = "ti,adc124s051", .data = 2},
+> > +       { .compatible = "ti,adc124s101", .data = 2},  
+> 
+> What you need _ideally_ is rather use pointers to data structure where
+> each of that chip is defined, then it will be as simple as
+> 
+> 
+> const struct my_custom_drvdata *data;
+> 
+> data = device_get_match_data(dev);
+> 
+> Where my_custom_drvdata::num_of_channels will be already assigned to
+> whatever you want on a per chip basis.
 
-> Am 2022-06-27 15:12, schrieb Aidan MacDonald:
->
->>> I *think* what is needed for gpio-regmap to support this is:
->>>  - support values and masks for the direction, for now, we
->>>    only support single bits.
->>>  - support the pinctrl_gpio_direction_{input,output} calls
->>> -michael
->> That sounds about right, thanks for taking a look.
->
-> I thought you were trying to add these to gpio-regmap? Unless
-> I'm missing something, that should be easy enough.
->
-> -michael
+Agreed. That's much nicer and a not a lot larger change so still suitable as a fix.
 
-Yeah, I can send patches this weekend. One detail I missed was the
-to_irq() part, so I'm going to add a hook for that too.
+> 
+> If the number of channels is the only data you have, then yes, cast it
+> to void * in the OF ID table and
 
-The alternative is using hierarchical IRQ domains, but that seems
-like a lot of added complication when to_irq() works just as well.
+It's not just the number of channels.  This is an index into an array of chip
+type specific structures. Hence the driver is half way to what you suggested.
+Using a pointer for the ACPI and DT paths is the right way to do this.
+For the spi_device_id table, you could stick with an index, or move to casting
+a pointer to an integer, I don't really mind.
+
+Thanks,
+
+Jonathan
+
+> 
+> num = (uintptr_t)device_get_match_data(dev);
+> 
+> will suffice.
+> 
+

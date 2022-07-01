@@ -2,75 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34C085634A6
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 15:49:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E905636FE
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 17:36:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231765AbiGANtp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 09:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43592 "EHLO
+        id S230095AbiGAPgm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 11:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230133AbiGANtp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 09:49:45 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA32C27B32;
-        Fri,  1 Jul 2022 06:49:42 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id EA7935FD03;
-        Fri,  1 Jul 2022 16:49:39 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1656683380;
-        bh=YXUoraWfnYfy0hSgolh/FxiWqXDsGzZ4lVAE9CP5umc=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=jeIH+5NN2v4t2D8ZdTOioxfh08oUzODDmcpPa4W2LCteNTrAtCKp100sTP77aO9LQ
-         lP63XC7PgS4xkOjaUp/24GXZWAktK/YKCuyP7pYuDpSrfD51Pf7IRxDrwnc8Hpgkdf
-         Fe4rY1jzWfVfsbtPibsCbbJnJ83UupA11w42xBKScvEqzi2D1tOISDC5o0w++/lZby
-         I+VDly2EdmneivYbfmTzO7yg/odpxhCSdkxQTCRGx6KnLolOgViUXJhVMf9Mn8W/Yb
-         jgZ/2bXUvPDdvBIfBRuiZkXbJawt7YtBJRyHyoWLf1tVKmdDXAYEDLzwqvDkbxFFqd
-         msPEEzug9xiHA==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Fri,  1 Jul 2022 16:49:39 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Topic: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Index: AQHYgW2+up0uMWdZgUWEAW/5cCPkBq1WepyAgBLyeQA=
-Date:   Fri, 1 Jul 2022 13:49:10 +0000
-Message-ID: <20220701134734.nfc6xa4q7rhfi3r7@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
- <20220616104211.9257-3-ddrokosov@sberdevices.ru>
- <20220619132703.5cf3b090@jic23-huawei>
-In-Reply-To: <20220619132703.5cf3b090@jic23-huawei>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <036813C44A635F4DA01F1C93886F5056@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229491AbiGAPgl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 11:36:41 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A4B3969C;
+        Fri,  1 Jul 2022 08:36:41 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id v9so3748034wrp.7;
+        Fri, 01 Jul 2022 08:36:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=references:from:to:cc:subject:in-reply-to:date:message-id
+         :mime-version;
+        bh=sYub0N475p+0VGhz+u6M1TELUK/iEnZfnAN/MojLZIE=;
+        b=dG3gWMTpxupxXO5Q1Yvv+bsWdhehMZxuBXH5mWSRK5qvyNzPOk6iHYgtKuXRgtzr1u
+         3QAhhbmKg3B0F1sHW7iP59NwsIZQA5BSBsiaNy93hT7b+WQRpOa9A4KcznOX0nLjDxkK
+         DWGZsPYbl3YTeWXgkL9XThoAAhc/5eXVopqOidZhV4ZtAeGtlA8INFSkoaT16O1XZX49
+         vE1WL4T8PROyZl/q4dJC4UevHEMgYvZrxx9Ppdd+PmOVoMIYfyW0hh4GYjJs/ogqUlMS
+         JmcVgJMX78rmCAtFIF8jnsP7CY/kngr+1OH5tlB8Ev2kxKZlGZm+SJISO2zKDBbeboA4
+         YSgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:references:from:to:cc:subject:in-reply-to:date
+         :message-id:mime-version;
+        bh=sYub0N475p+0VGhz+u6M1TELUK/iEnZfnAN/MojLZIE=;
+        b=kjeYi6I++K1zoQCZ4nBpp4xiSCzrdvPDwS4B9to8HjoZ8eqr9NH/FW+dMZrKsXyBi+
+         kV8X4qwm5qt846UlzmCgwBpRs5ruw5WkzdFWGmTX+C/yU8/E+nGAOV5RpVcxSUk5b0O8
+         UcHzNj4Rf8s2NqYHchzyqY+rIgEKZK4nUgNvf24XoUJRXI/iYf8hOjYPqx46l8EZR3qF
+         Bj2anAYrHn70mAkvLGW1zxkthTsG/Nn1aJwPSjvOXXf4k2O30PmwO9TXAtSPvkl98Adk
+         p0rCXQi/DdUpmTBruwBY1UknoaCMqla5m5tEE2rfnfs/MUQDH3j9Mu7l01B73vFoF5HL
+         pSeA==
+X-Gm-Message-State: AJIora9z3S+eYnziX1HD48fo1jXTResbg0Om7ZWPI+7zj20ub3/JfEaN
+        nuMFmLczkcN+QAvTWT74N20=
+X-Google-Smtp-Source: AGRyM1uXzal0NgDC531OK+6wzV83ogvagHoNoOJlLzY7A1trI1imJ0FnVhho2+YakzVrN5zBn1NY6w==
+X-Received: by 2002:adf:f184:0:b0:21b:6c76:5b6e with SMTP id h4-20020adff184000000b0021b6c765b6emr13423763wro.126.1656689799526;
+        Fri, 01 Jul 2022 08:36:39 -0700 (PDT)
+Received: from localhost (92.40.202.205.threembb.co.uk. [92.40.202.205])
+        by smtp.gmail.com with ESMTPSA id a1-20020a05600c348100b003a03be22f9fsm1656240wmq.18.2022.07.01.08.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Jul 2022 08:36:38 -0700 (PDT)
+References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+ <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
+ <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
+From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, quic_gurus@quicinc.com,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Michael Walle <michael@walle.cc>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH v4 12/15] pinctrl: Add AXP192 pin control driver
+In-reply-to: <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
+Date:   Fri, 01 Jul 2022 16:37:45 +0100
+Message-ID: <oMIjFujkw4ZeuMGoTkWq64BbfEejJF12@localhost>
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/07/01 07:59:00 #19867624
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,131 +87,71 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
 
-Sorry for the delayed response.
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
 
-On Sun, Jun 19, 2022 at 01:27:03PM +0100, Jonathan Cameron wrote:
-> On Thu, 16 Jun 2022 10:42:14 +0000
-> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
->=20
-> > MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-> > sensitivity consumer applications. It has dynamical user selectable ful=
-l
-> > scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measuremen=
-ts
-> > with output data rates from 1Hz to 1000Hz.
-> >=20
-> > Datasheet can be found at following URL:
-> > https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
-> >=20
-> > This driver supports following MSA311 features:
-> >     - IIO interface
-> >     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
-> >     - ODR (Output Data Rate) selection
-> >     - Scale and samp_freq selection
-> >     - IIO triggered buffer, IIO reg access
-> >     - NEW_DATA interrupt + trigger
-> >=20
-> > Below features to be done:
-> >     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
-> >     - Low Power mode
-> >=20
-> > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> Hi Dmitry,
->=20
-> A few things I missed before + I'm still not happy with the runtime
-> pm handling.  One case that isn't covered well is !CONFIG_RUNTIME_PM
->=20
-> Thanks,
->=20
-> Jonathan
->=20
+> On Wed, Jun 29, 2022 at 4:30 PM Aidan MacDonald
+> <aidanmacdonald.0x0@gmail.com> wrote:
+>>
+>> The AXP192 PMIC's GPIO registers are much different from the GPIO
+>> registers of the AXP20x and AXP813 PMICs supported by the existing
+>> pinctrl-axp209 driver. It makes more sense to add a new driver for
+>> the AXP192, rather than add support in the existing axp20x driver.
+>>
+>> The pinctrl-axp192 driver is considerably more flexible in terms of
+>> register layout and should be able to support other X-Powers PMICs.
+>> Interrupts and pull down resistor configuration are supported too.
+>
+> ...
+>
+>> +config PINCTRL_AXP192
+>> +       tristate "X-Powers AXP192 PMIC pinctrl and GPIO Support"
+>> +       depends on MFD_AXP20X
+>> +       select PINMUX
+>> +       select GENERIC_PINCONF
+>> +       select GPIOLIB
+>> +       help
+>> +         AXP PMICs provide multiple GPIOs that can be muxed for different
+>> +         functions. This driver bundles a pinctrl driver to select the function
+>> +         muxing and a GPIO driver to handle the GPIO when the GPIO function is
+>> +         selected.
+>> +         Say Y to enable pinctrl and GPIO support for the AXP192 PMIC.
+>
+> What will be the module name if compiled as a module?
+>
+> ...
+>
+>> +/**
+>> + * struct axp192_pctl_function - describes a function that GPIOs may have
+>> + *
+>> + * @name: Function name
+>> + * @muxvals: Mux values used for selecting this function, one per GPIO.
+>> + *           The i'th element corresponds to the i'th GPIO and is written
+>> + *           to the GPIO's control register field to select this function.
+>> + *           U8_MAX indicates that the pin does not support this function.
+>> + * @groups: Array of @ngroups groups listing pins supporting this function.
+>> + * @ngroups: Number of pin groups.
+>> + */
+>> +struct axp192_pctl_function {
+>> +       const char              *name;
+>> +       /* Mux value written to the control register to select the function (-1 if unsupported) */
+>> +       const u8                *muxvals;
+>> +       const char * const      *groups;
+>> +       unsigned int            ngroups;
+>> +};
+>
+> Can it be replaced by struct function_desc?
+> https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/pinmux.h#L130
 
-...
+That'd work, but using the generic infrastructure doesn't allow me to
+simplify anything -- I can eliminate three trivial functions, but the
+generic code is higher overhead (extra allocations, radix trees, ...)
+so I'd prefer to stick with the current approach.
 
-> > +static irqreturn_t msa311_buffer_thread(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf =3D p;
-> > +	struct iio_dev *indio_dev =3D pf->indio_dev;
-> > +	struct msa311_priv *msa311 =3D iio_priv(indio_dev);
-> > +	struct device *dev =3D &msa311->i2c->dev;
-> > +	const struct iio_chan_spec *chan;
-> > +	__le16 axis;
-> > +	int bit =3D 0, err, i =3D 0;
-> > +
-> > +	/* Ensure correct alignment of time stamp when present */
-> > +	struct {
-> > +		__le16 channels[MSA311_SI_Z + 1];
-> > +		s64 ts __aligned(8);
-> > +	} buf;
-> > +
-> > +	memset(&buf, 0, sizeof(buf));
-> > +
-> > +	mutex_lock(&msa311->lock);
-> > +
-> > +	for_each_set_bit(bit, indio_dev->active_scan_mask,
-> > +			 indio_dev->masklength) {
-> > +		chan =3D &msa311_channels[bit];
->=20
-> Nothing to do with your driver, but feels like it's worth
-> exploring a
-> 	for_each_chan_in_iio_scan(struct iio_chan_spec, struct iio_dev) macro.
->=20
-> I'll add that to my todo list.
->=20
+>> +       ret = devm_gpiochip_add_data(dev, &pctl->chip, pctl);
+>> +       if (ret)
+>> +               dev_err_probe(dev, ret, "Failed to register GPIO chip\n");
+>
+> Missed return.
 
-If you don't mind, I can prepare such a patch.
-
-...
-
-> When this unwind we will disable autosuspend etc, but leave the device
-> in whatever state it happens to be in at that stage (if I understand
-> this handling correctly).  That might seem like a bad thing, but if
-> we register a devm_add_action_or_reset() callback before this which
-> disables the device independently of anything to do with runtime PM,
-> then the device will
-> a) Be turned off as desired.
-> b) It'll still be turned off even if runtime pm is disabled for the syste=
-m
->    which is nice.
->=20
-> Given the particular state register must be writeable and is presumably
-> idempotent, can we just call=20
-> err =3D msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_SUSPEND);
-> Unconditionally in such a callback?
-
-I think it's a good idea. I didn't think about the configs when runtime pm
-is disabled. So looks like we need to make sure that device is workable
-from a pm perspective, and it is achievable only using a direct
-msa311_set_pwr_mode() call as you suggested below.
-
-> > +	err =3D devm_pm_runtime_enable(dev);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	/* Resume msa311 logic before any interactions with registers */
-> > +	err =3D pm_runtime_resume_and_get(dev);
-> I missed this before, but if runtime pm is disabled, this won't do anythi=
-ng
-> so device won't be powered on.
->=20
-> One common(ish) way to handle this is the following sequence.
->=20
-> 1) Power up supply regs etc and a register a devm_ callback to turn them =
-off again.
-> 2) Put the device into a non suspend state (not using runtime pm calls).
-> 3) Register a callback to turn it off again (that is safe against it bein=
-g
->    turned off via another path such as runtime pm).
-> 4) pm_runtime_set_active() to let the runtime pm code know it is turned o=
-n.
-> 5) devm_pm_runtime_enable()
-> 6) autosuspend setup and enablement.
->=20
-> If runtime pm isn't enabled then only 1-3 happen.  We waste power but the
-> device works.
-
---=20
-Thank you,
-Dmitry=
+Thanks for catching this, that was pretty silly of me...

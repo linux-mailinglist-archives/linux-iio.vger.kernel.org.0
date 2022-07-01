@@ -2,79 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E905636FE
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 17:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60971563732
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 17:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbiGAPgm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 11:36:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
+        id S229616AbiGAPu4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 11:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiGAPgl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 11:36:41 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A4B3969C;
-        Fri,  1 Jul 2022 08:36:41 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id v9so3748034wrp.7;
-        Fri, 01 Jul 2022 08:36:41 -0700 (PDT)
+        with ESMTP id S229441AbiGAPuy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 11:50:54 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD254BC1B;
+        Fri,  1 Jul 2022 08:50:53 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id l68so1555459wml.3;
+        Fri, 01 Jul 2022 08:50:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=references:from:to:cc:subject:in-reply-to:date:message-id
          :mime-version;
-        bh=sYub0N475p+0VGhz+u6M1TELUK/iEnZfnAN/MojLZIE=;
-        b=dG3gWMTpxupxXO5Q1Yvv+bsWdhehMZxuBXH5mWSRK5qvyNzPOk6iHYgtKuXRgtzr1u
-         3QAhhbmKg3B0F1sHW7iP59NwsIZQA5BSBsiaNy93hT7b+WQRpOa9A4KcznOX0nLjDxkK
-         DWGZsPYbl3YTeWXgkL9XThoAAhc/5eXVopqOidZhV4ZtAeGtlA8INFSkoaT16O1XZX49
-         vE1WL4T8PROyZl/q4dJC4UevHEMgYvZrxx9Ppdd+PmOVoMIYfyW0hh4GYjJs/ogqUlMS
-         JmcVgJMX78rmCAtFIF8jnsP7CY/kngr+1OH5tlB8Ev2kxKZlGZm+SJISO2zKDBbeboA4
-         YSgQ==
+        bh=wPj9N9qu4aq/UnSUzvPL7u5RGFCXg6RhipCMWPPUP+E=;
+        b=qmHvFC4W+7jzt+PKswn0v+gJneeYa1y7Ec62t1euR7kRN13Ei7OpySs3CxTmkQff1m
+         zqeHqN/e0VOGFfy6yS5zikdIcmri4FYdF68pthJ/RLi6l6NbR8yCOfiN09sfFGN7vu+3
+         0KXLAWlF2w2IEJ5ZfZfNGpcnmnhVQ2cWXzUw7XO3zn0yzqBPy7DQOJNtAJLTHhOTZP1B
+         lJWVLHwkbuSFTgseY8v+vDKmIBf05vVJNZAO5ooUy3+6C8weWR4QmxLX7pS92Br7NADr
+         jWM6d20s5etMuPUjszIMPXCIBK3JVnAsR1be9EPBIz0pnu46stNF1u+RY/ZP8FRCslEa
+         R4LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:references:from:to:cc:subject:in-reply-to:date
          :message-id:mime-version;
-        bh=sYub0N475p+0VGhz+u6M1TELUK/iEnZfnAN/MojLZIE=;
-        b=kjeYi6I++K1zoQCZ4nBpp4xiSCzrdvPDwS4B9to8HjoZ8eqr9NH/FW+dMZrKsXyBi+
-         kV8X4qwm5qt846UlzmCgwBpRs5ruw5WkzdFWGmTX+C/yU8/E+nGAOV5RpVcxSUk5b0O8
-         UcHzNj4Rf8s2NqYHchzyqY+rIgEKZK4nUgNvf24XoUJRXI/iYf8hOjYPqx46l8EZR3qF
-         Bj2anAYrHn70mAkvLGW1zxkthTsG/Nn1aJwPSjvOXXf4k2O30PmwO9TXAtSPvkl98Adk
-         p0rCXQi/DdUpmTBruwBY1UknoaCMqla5m5tEE2rfnfs/MUQDH3j9Mu7l01B73vFoF5HL
-         pSeA==
-X-Gm-Message-State: AJIora9z3S+eYnziX1HD48fo1jXTResbg0Om7ZWPI+7zj20ub3/JfEaN
-        nuMFmLczkcN+QAvTWT74N20=
-X-Google-Smtp-Source: AGRyM1uXzal0NgDC531OK+6wzV83ogvagHoNoOJlLzY7A1trI1imJ0FnVhho2+YakzVrN5zBn1NY6w==
-X-Received: by 2002:adf:f184:0:b0:21b:6c76:5b6e with SMTP id h4-20020adff184000000b0021b6c765b6emr13423763wro.126.1656689799526;
-        Fri, 01 Jul 2022 08:36:39 -0700 (PDT)
-Received: from localhost (92.40.202.205.threembb.co.uk. [92.40.202.205])
-        by smtp.gmail.com with ESMTPSA id a1-20020a05600c348100b003a03be22f9fsm1656240wmq.18.2022.07.01.08.36.38
+        bh=wPj9N9qu4aq/UnSUzvPL7u5RGFCXg6RhipCMWPPUP+E=;
+        b=L74duYgqDL4/iyx2GlLz+UNEfjuvxJ8DtSXm0kOeYLvgfsCErRC6AXN57s7r/vBk+o
+         FfGMJX1MaNJFUW1MZ7fP6JTmu9vPnDHeOsbhvXcNRHTR0hXcK/SqE0SeQzimYINgLLBY
+         VSo6afEU9RjhMreQo+SAatMTLUc12/D2BqWjW5dQERIwTNWKItlrX7w1qzmf/sGnm3rX
+         3xm0iTeNs3Q9/2X2/e9507a3+xUDqoS2FNsJYNWM9/6ukBqMbZT3OHKyDKGDn41Q5PER
+         0KhmBLbSZlsEiF4QjrXtmWb/U3cT1UHkGu76AFa94c/wuYMqMtlwBlg0o0MlYAGrChZW
+         VnNQ==
+X-Gm-Message-State: AJIora+3N5eVxzhTya9gk/HUjiyu0JAz5cQDYteNTkWYqi9JtIPXHoah
+        Kcgw0ZOgGWA7e+n0vB4Ct08=
+X-Google-Smtp-Source: AGRyM1uvy66G1WQ/BJmadW36XZ6pD9gBgGsl38zD24GbCOyBZz9Hio0Gl/3/pUtmFDNPIFZza75obQ==
+X-Received: by 2002:a05:600c:2246:b0:3a0:4d14:e9d5 with SMTP id a6-20020a05600c224600b003a04d14e9d5mr17113722wmm.70.1656690652283;
+        Fri, 01 Jul 2022 08:50:52 -0700 (PDT)
+Received: from localhost (92.40.202.200.threembb.co.uk. [92.40.202.200])
+        by smtp.gmail.com with ESMTPSA id m123-20020a1ca381000000b003942a244f47sm7488681wme.32.2022.07.01.08.50.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Jul 2022 08:36:38 -0700 (PDT)
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
- <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
- <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
+        Fri, 01 Jul 2022 08:50:51 -0700 (PDT)
+References: <20220618214009.2178567-1-aidanmacdonald.0x0@gmail.com>
+ <20220618214009.2178567-14-aidanmacdonald.0x0@gmail.com>
+ <cafd8a40ad35dcf8a35350261af6031c@walle.cc>
+ <me4ummrWKIPseIG4ay7yCfrumN8sIdvc@localhost>
+ <01a338e8f94b077df3fe2c4f13d4da28@walle.cc>
 From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, quic_gurus@quicinc.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Michael Walle <michael@walle.cc>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v4 12/15] pinctrl: Add AXP192 pin control driver
-In-reply-to: <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
-Date:   Fri, 01 Jul 2022 16:37:45 +0100
-Message-ID: <oMIjFujkw4ZeuMGoTkWq64BbfEejJF12@localhost>
+To:     Michael Walle <michael@walle.cc>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        lee.jones@linaro.org, sre@kernel.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, lgirdwood@gmail.com, lars@metafoo.de,
+        rafael@kernel.org, quic_gurus@quicinc.com,
+        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 13/16] pinctrl: Add AXP192 pin control driver
+In-reply-to: <01a338e8f94b077df3fe2c4f13d4da28@walle.cc>
+Date:   Fri, 01 Jul 2022 16:51:59 +0100
+Message-ID: <HVuKY4uz71KVTEQCbjewrX6SufiowzOP@localhost>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -88,70 +80,24 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+Michael Walle <michael@walle.cc> writes:
 
-> On Wed, Jun 29, 2022 at 4:30 PM Aidan MacDonald
-> <aidanmacdonald.0x0@gmail.com> wrote:
->>
->> The AXP192 PMIC's GPIO registers are much different from the GPIO
->> registers of the AXP20x and AXP813 PMICs supported by the existing
->> pinctrl-axp209 driver. It makes more sense to add a new driver for
->> the AXP192, rather than add support in the existing axp20x driver.
->>
->> The pinctrl-axp192 driver is considerably more flexible in terms of
->> register layout and should be able to support other X-Powers PMICs.
->> Interrupts and pull down resistor configuration are supported too.
+> Am 2022-06-27 15:12, schrieb Aidan MacDonald:
 >
-> ...
+>>> I *think* what is needed for gpio-regmap to support this is:
+>>>  - support values and masks for the direction, for now, we
+>>>    only support single bits.
+>>>  - support the pinctrl_gpio_direction_{input,output} calls
+>>> -michael
+>> That sounds about right, thanks for taking a look.
 >
->> +config PINCTRL_AXP192
->> +       tristate "X-Powers AXP192 PMIC pinctrl and GPIO Support"
->> +       depends on MFD_AXP20X
->> +       select PINMUX
->> +       select GENERIC_PINCONF
->> +       select GPIOLIB
->> +       help
->> +         AXP PMICs provide multiple GPIOs that can be muxed for different
->> +         functions. This driver bundles a pinctrl driver to select the function
->> +         muxing and a GPIO driver to handle the GPIO when the GPIO function is
->> +         selected.
->> +         Say Y to enable pinctrl and GPIO support for the AXP192 PMIC.
+> I thought you were trying to add these to gpio-regmap? Unless
+> I'm missing something, that should be easy enough.
 >
-> What will be the module name if compiled as a module?
->
-> ...
->
->> +/**
->> + * struct axp192_pctl_function - describes a function that GPIOs may have
->> + *
->> + * @name: Function name
->> + * @muxvals: Mux values used for selecting this function, one per GPIO.
->> + *           The i'th element corresponds to the i'th GPIO and is written
->> + *           to the GPIO's control register field to select this function.
->> + *           U8_MAX indicates that the pin does not support this function.
->> + * @groups: Array of @ngroups groups listing pins supporting this function.
->> + * @ngroups: Number of pin groups.
->> + */
->> +struct axp192_pctl_function {
->> +       const char              *name;
->> +       /* Mux value written to the control register to select the function (-1 if unsupported) */
->> +       const u8                *muxvals;
->> +       const char * const      *groups;
->> +       unsigned int            ngroups;
->> +};
->
-> Can it be replaced by struct function_desc?
-> https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/pinmux.h#L130
+> -michael
 
-That'd work, but using the generic infrastructure doesn't allow me to
-simplify anything -- I can eliminate three trivial functions, but the
-generic code is higher overhead (extra allocations, radix trees, ...)
-so I'd prefer to stick with the current approach.
+Yeah, I can send patches this weekend. One detail I missed was the
+to_irq() part, so I'm going to add a hook for that too.
 
->> +       ret = devm_gpiochip_add_data(dev, &pctl->chip, pctl);
->> +       if (ret)
->> +               dev_err_probe(dev, ret, "Failed to register GPIO chip\n");
->
-> Missed return.
-
-Thanks for catching this, that was pretty silly of me...
+The alternative is using hierarchical IRQ domains, but that seems
+like a lot of added complication when to_irq() works just as well.

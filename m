@@ -2,53 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9615637EC
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 18:30:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A33B656380A
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Jul 2022 18:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbiGAQam (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 1 Jul 2022 12:30:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
+        id S232024AbiGAQgc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 1 Jul 2022 12:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiGAQal (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 12:30:41 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8133135F;
-        Fri,  1 Jul 2022 09:30:40 -0700 (PDT)
+        with ESMTP id S231393AbiGAQga (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 1 Jul 2022 12:36:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE65A41987;
+        Fri,  1 Jul 2022 09:36:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4974CB830A5;
-        Fri,  1 Jul 2022 16:30:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B34BC341C8;
-        Fri,  1 Jul 2022 16:30:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 627C962531;
+        Fri,  1 Jul 2022 16:36:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198A0C341C7;
+        Fri,  1 Jul 2022 16:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1656693038;
-        bh=cFeQkiG6enetQ6lbFo12SK/2ylH3uFnDMr/9MeqML0Y=;
+        s=k20201202; t=1656693387;
+        bh=ooeSNeFdZ5T+oMd/579rTg3mNtDz7W8VDV0eFE/RTgQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XNWHpi7MFAkm4mdgV4xFKVo2xXjl0NAzm0m8df8TA+N11Tlt8ttCaB4enNU7lMFUM
-         enBDfzX59pC7zHhnyBgAiFT00+uYqhQIk95HAPtQYH4wL/H1N3I6RTP77pUYjlSGwJ
-         SeI8lI4g4Zc9XAZxvIiVNnsDpz9v9by7jv0ScRbWjLeUZoxMcKu81o0Jc2ZzvuYwU3
-         8GROYo9reHT+jCoa/LdRlgzZSXOlOOnWiePTDhcobXIY/PUFc/mQov2XdDM5/gfdz1
-         KJxB9hUIQz67exTNY9be8/Q0i7ViyA0QGF4pT7CBVc0lO1tiBfPHPy4A1lPxlR0EB+
-         RnMt23iSHdO8g==
-Date:   Fri, 1 Jul 2022 17:40:11 +0100
+        b=UK14zdU9reYMhjShHyCsXE32Yi4/rJhsrAMG4NgyCByWWRSL14C2/4hv2lrQ3JELO
+         2gwnPH5PtYyGHivAYOuAGL+pMzLPYmh9Jm+I7iTqaorpnO0YdGi29wKCMzN8b3bIXx
+         4XxbLQNLa4sP1L8MXpyhgg3YlMYppCdELhvZ8Y/16y+WKjvrKsFItGEOwenOOLQSm5
+         xpSEAaB5OAYIgiGZW0AKZBiXyrQ9olkTZGny6Tix6RuHXA6HAUxSJeDYZrId8g2g0Y
+         txIHbYaxOoU2wOc19/wyNCUMR0TnpFUl0quQ3ZnwFchGLpNLE+3NKXDiQXuziNwUUN
+         XRzKPsVdGhBeg==
+Date:   Fri, 1 Jul 2022 17:46:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nishanth Menon <nm@ti.com>
-Cc:     Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Florian Eckert <fe@dev.tdt.de>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: ti-adc128s052: Add lower resolution
- devices support
-Message-ID: <20220701174011.14d17f43@jic23-huawei>
-In-Reply-To: <20220701042919.18180-3-nm@ti.com>
-References: <20220701042919.18180-1-nm@ti.com>
-        <20220701042919.18180-3-nm@ti.com>
+To:     LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc:     lars@metafoo.de, tomas.melin@vaisala.com, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bsp-development.geo@leica-geosystems.com
+Subject: Re: [PATCH V1 1/1] iio: accel: sca3300: Extend the trigger buffer
+ from 16 to 32 bytes
+Message-ID: <20220701174602.68b20753@jic23-huawei>
+In-Reply-To: <20220701023030.2527019-2-Qing-wu.Li@leica-geosystems.com.cn>
+References: <20220701023030.2527019-1-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220701023030.2527019-2-Qing-wu.Li@leica-geosystems.com.cn>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,111 +57,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 30 Jun 2022 23:29:19 -0500
-Nishanth Menon <nm@ti.com> wrote:
+On Fri,  1 Jul 2022 02:30:30 +0000
+LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
 
-> The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> interface. The device family responds with 12bit data, of which the LSB
-> bits are transmitted by the lower resolution devices as 0. We don't need
-> to mess with ADC108S102_BITS as a result for the lower resolution
-> devices.
+> After added inclination angle channels, the trigger buffer size is
+> insufficient. Extend the buffer size from 16 to 32 bytes, and change
+> the trigger buffer from the struct to a u8 array to adapt the sensor
+> with/without inclination angles output.
+> New trigger buffer data:
+>   - SCA3300: 3 accel channels, temp, and timestamp.
+>   - SCL3300: 3 accel channels, temp, 3 incli channels, and timestamp.
+> Readjustment the scan index to make it consistent with the buffer data.
+> 
+> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 
-whilst not strictly necessary I would prefer we did as it may reduce
-storage requirements, computation complexity etc for userspace (particularly
-if they are 8 bits).
+Hi.
 
-Would affect scale and shift so slightly more complex, but not a lot
-so still a fairly simple change.  Just add resolution to your config
-structure and duplicate it where necessary to allow whatever resolutions
-we support.
+Looks good. A trivial suggestion inline to make the code a little more
+'self documenting'.  It's a minor change so if you are happy with
+the suggestion I can tweak that whilst applying.
 
-> 
-> I have been able to test adc102s051, hence adding just the missing
-> ones in that family.
-> 
-> Lets reuse the driver to support the family of devices with name
-> ADC<bb><c>S<sss>, where
-> * bb is the resolution in number of bits (8, 10, 12)
-> * c is the number of channels (1, 2, 4, 8)
-> * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
->   and 101 for 1 MSPS)
-> 
-> Complete datasheets are available at TI's website here:
->   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> 
-> Also see: drivers/hwmon/adcxx.c
-> 
-> Signed-off-by: Nishanth Menon <nm@ti.com>
+Thanks,
+
+Jonathan
+
 > ---
+>  drivers/iio/accel/sca3300.c | 29 ++++++++++++++++++-----------
+>  1 file changed, 18 insertions(+), 11 deletions(-)
 > 
-> This does add on additional sparse warnings around casting .data value
-> to const from int for the of_match_table, and a bunch around the .cls
-> field for acpi_device_id - maybe someone could suggest a smarter way to
-> fix those.
-> 
-> Applies after https://lore.kernel.org/linux-iio/20220630230107.13438-1-nm@ti.com/
-> 
->  drivers/iio/adc/ti-adc128s052.c | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> index 21a7764cbb93..0a3aab4df60e 100644
-> --- a/drivers/iio/adc/ti-adc128s052.c
-> +++ b/drivers/iio/adc/ti-adc128s052.c
-> @@ -7,6 +7,20 @@
->   * https://www.ti.com/lit/ds/symlink/adc128s052.pdf
->   * https://www.ti.com/lit/ds/symlink/adc122s021.pdf
->   * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
-> + *
-> + * The adcxx4s communicates with a host processor via an SPI/Microwire Bus
-> + * interface. This driver supports the whole family of devices with name
-> + * ADC<bb><c>S<sss>, where
-> + * bb is the resolution in number of bits (8, 10, 12)
-> + * c is the number of channels (1, 2, 4, 8)
-> + * sss is the maximum conversion speed (021 for 200 kSPS, 051 for 500 kSPS
-> + * and 101 for 1 MSPS)
-> + *
-> + * Complete datasheets are available at TI's website here:
-> + *   https://www.ti.com/lit/gpn/adc<bb><c>s<sss>.pdf
-> + *
-> + * Handling of 8, 10 and 12 bits converters are the same, the
-> + * unavailable bits are 0 in LSB :)
->   */
+> diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
+> index 3c4827bfef53..820dfb635bf1 100644
+> --- a/drivers/iio/accel/sca3300.c
+> +++ b/drivers/iio/accel/sca3300.c
+> @@ -47,12 +47,20 @@
+>  #define SCL3300_REG_ANG_CTRL 0x0C
+>  #define SCL3300_ANG_ENABLE   0x1F
 >  
->  #include <linux/acpi.h>
-> @@ -185,6 +199,12 @@ static const struct of_device_id adc128_of_match[] = {
->  	{ .compatible = "ti,adc122s021", .data = 1},
->  	{ .compatible = "ti,adc122s051", .data = 1},
->  	{ .compatible = "ti,adc122s101", .data = 1},
-> +	{ .compatible = "ti,adc102s021", .data = 1},
-> +	{ .compatible = "ti,adc102s051", .data = 1},
-> +	{ .compatible = "ti,adc102s101", .data = 1},
+> +/*
+> + * Buffer size max case:
+> + * Three accel channels, two bytes per channel.
+> + * Temperature channel, two bytes.
+> + * Three incli channels, two bytes per channel.
+> + * Timestamp channel, eight bytes.
+> + */
+> +#define SCA3300_MAX_BUFFER_SIZE (ALIGN(2 * 7, sizeof(s64)) + sizeof(s64))
 
-Numeric order preferred. Not sure why these are in the middle.
+Instead of the 2 use sizeof(s16)
+ Also now you don't have timestamp in your enum sca3000_scan_indexes
+you could add a 'tail' element to the enum such as SCA3000_SCAN_MAX then
+use that instead of the 7 here.  Hopefully that would make
+this more self documenting.
 
-> +	{ .compatible = "ti,adc082s021", .data = 1},
-> +	{ .compatible = "ti,adc082s051", .data = 1},
-> +	{ .compatible = "ti,adc082s101", .data = 1},
-
-Andy's comment on using pointers instead follows through to here.
-To describe the channels more fully you'll need additional
-_config[] structures.
-
-
->  	{ .compatible = "ti,adc124s021", .data = 2},
->  	{ .compatible = "ti,adc124s051", .data = 2},
->  	{ .compatible = "ti,adc124s101", .data = 2},
-> @@ -197,6 +217,12 @@ static const struct spi_device_id adc128_id[] = {
->  	{ "adc122s021",	1 },
->  	{ "adc122s051",	1 },
->  	{ "adc122s101",	1 },
-> +	{ "adc102s021",	1 },
-> +	{ "adc102s051",	1 },
-> +	{ "adc102s101",	1 },
-> +	{ "adc082s021",	1 },
-> +	{ "adc082s051",	1 },
-> +	{ "adc082s101",	1 },
->  	{ "adc124s021", 2 },
->  	{ "adc124s051", 2 },
->  	{ "adc124s101", 2 },
+> +
+>  enum sca3300_scan_indexes {
+>  	SCA3300_ACC_X = 0,
+>  	SCA3300_ACC_Y,
+>  	SCA3300_ACC_Z,
+>  	SCA3300_TEMP,
+> -	SCA3300_TIMESTAMP,
+>  	SCA3300_INCLI_X,
+>  	SCA3300_INCLI_Y,
+>  	SCA3300_INCLI_Z,
+> @@ -140,10 +148,10 @@ static const struct iio_chan_spec scl3300_channels[] = {
+>  	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Y, 0x2, Y),
+>  	SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Z, 0x3, Z),
+>  	SCA3300_TEMP_CHANNEL(SCA3300_TEMP, 0x05),
+> -	IIO_CHAN_SOFT_TIMESTAMP(4),
+>  	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_X, 0x09, X),
+>  	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Y, 0x0A, Y),
+>  	SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Z, 0x0B, Z),
+> +	IIO_CHAN_SOFT_TIMESTAMP(7),
+>  };
+>  
+>  static const unsigned long sca3300_scan_masks[] = {
+> @@ -184,7 +192,9 @@ struct sca3300_chip_info {
+>   * @spi: SPI device structure
+>   * @lock: Data buffer lock
+>   * @chip: Sensor chip specific information
+> - * @scan: Triggered buffer. Four channel 16-bit data + 64-bit timestamp
+> + * @buffer: Triggered buffer:
+> + *          -SCA3300: 4 channel 16-bit data + 64-bit timestamp
+> + *          -SCL3300: 7 channel 16-bit data + 64-bit timestamp
+>   * @txbuf: Transmit buffer
+>   * @rxbuf: Receive buffer
+>   */
+> @@ -192,10 +202,7 @@ struct sca3300_data {
+>  	struct spi_device *spi;
+>  	struct mutex lock;
+>  	const struct sca3300_chip_info *chip;
+> -	struct {
+> -		s16 channels[4];
+> -		s64 ts __aligned(sizeof(s64));
+> -	} scan;
+> +	u8 buffer[SCA3300_MAX_BUFFER_SIZE] __aligned(sizeof(s64));
+>  	u8 txbuf[4] __aligned(IIO_DMA_MINALIGN);
+>  	u8 rxbuf[4];
+>  };
+> @@ -484,21 +491,21 @@ static irqreturn_t sca3300_trigger_handler(int irq, void *p)
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct sca3300_data *data = iio_priv(indio_dev);
+>  	int bit, ret, val, i = 0;
+> +	s16 *channels = (s16 *)data->buffer;
+>  
+>  	for_each_set_bit(bit, indio_dev->active_scan_mask,
+>  			 indio_dev->masklength) {
+> -		ret = sca3300_read_reg(data, sca3300_channels[bit].address,
+> -				       &val);
+> +		ret = sca3300_read_reg(data, indio_dev->channels[bit].address, &val);
+>  		if (ret) {
+>  			dev_err_ratelimited(&data->spi->dev,
+>  				"failed to read register, error: %d\n", ret);
+>  			/* handled, but bailing out due to errors */
+>  			goto out;
+>  		}
+> -		data->scan.channels[i++] = val;
+> +		channels[i++] = val;
+>  	}
+>  
+> -	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+> +	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+>  					   iio_get_time_ns(indio_dev));
+>  out:
+>  	iio_trigger_notify_done(indio_dev->trig);
 

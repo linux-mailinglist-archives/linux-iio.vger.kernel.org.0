@@ -2,94 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65BB1563F21
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Jul 2022 10:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1104F5640CE
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Jul 2022 16:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbiGBIrM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Jul 2022 04:47:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
+        id S229970AbiGBOkD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Jul 2022 10:40:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbiGBIrM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 04:47:12 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56C4F19293;
-        Sat,  2 Jul 2022 01:47:10 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id a4so7567922lfm.0;
-        Sat, 02 Jul 2022 01:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Vy7/4tbj3XLf+DpLreSYSf+oxe5mn9Q33pXydZQga4Q=;
-        b=fvXrwjZRbBrffHRM8JwBM4z8pBMYUm6Fsh9ZeXhzOfA0ahpHDdgMHDagsUYHe11hAP
-         5+eFcNUy/tt1UZgX1n8jNQKkxP0YbMjVkZPBt8Xttnm7AmGDlDmnKAz2pPwWiUtFFODq
-         yGYXdTx5/5HLY6+IA2nFWDzj4i7obtpLZE/bl/dBOVXUa8OHyL5Rus7Tj+AwHRYvA6Pg
-         tIrPromxtwbKPOnzIguMrJQWMe8uS4ULQMFXg1gUaviR+MmBwMe5RfGfoQgCa1ZA51Lk
-         38VKvHqIzk4Iuve+dcQr+bVL2nsPTTEs/EIzDbuPr6HfVm7MuUMwPQrWpHX0CDTzUjE4
-         ZARw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Vy7/4tbj3XLf+DpLreSYSf+oxe5mn9Q33pXydZQga4Q=;
-        b=hqTAcT72Wf5gzcbAQ9NfyBzpBQuT/bECKQbuOG4SRqI+MQ0GuMpSKhVK+njoMh6JSP
-         PFJ/xL3YpwoGt2Y1XlOmonVpqxen0+UaZ80V8KAaulrEsV5HSD56QSKCYqfNRJ0B8IS+
-         WfOB8cysFzGso4F+iuLDhS1t7nwQdXVAv4oF/vnNlKUqKRWfqPYWffVLvBD7zFqU1m98
-         JQO0DV+Rc0ta+3dITVG4M/0mNux+mjo17x18rBkhFLSM6AioW/b1bWqiRA0mCrLXLMtr
-         eQDyfoGH2O6hSaRPwb97OrDsdObLU1N8nunZo4YNTM4rAQXemIE+DdJAiHZ89srKWVta
-         TROA==
-X-Gm-Message-State: AJIora+7zZPR+dFNX84UqOEme2XjRPD+EXrKVsedpgfforRXeLRwJw0Z
-        mjZVJeIq/u77E8/v/tFxKJju7PzRKRU=
-X-Google-Smtp-Source: AGRyM1v/zjYwatx+gb38PYwgXomu3E79oePMRdz3/y41C5wMIHXmBRgF28i/W/6414JZUsWr8JeocA==
-X-Received: by 2002:a05:6512:31c9:b0:47f:664b:34ae with SMTP id j9-20020a05651231c900b0047f664b34aemr11460725lfe.503.1656751628516;
-        Sat, 02 Jul 2022 01:47:08 -0700 (PDT)
-Received: from localhost.localdomain (c-2ec2f5c4-74736162.cust.telenor.se. [46.194.245.196])
-        by smtp.gmail.com with ESMTPSA id p14-20020ac24ece000000b0047f8de9e6b0sm3965765lfr.104.2022.07.02.01.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Jul 2022 01:47:07 -0700 (PDT)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Song Qiang <songqiang1304521@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Marcus Folkesson <marcus.folkesson@gmail.com>
-Subject: [PATCH] iio: magnetometer: rm3100: do not explicity set INDIO_BUFFER_TRIGGERED mode
-Date:   Sat,  2 Jul 2022 10:50:05 +0200
-Message-Id: <20220702085005.31666-1-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.36.1
+        with ESMTP id S230079AbiGBOkC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 10:40:02 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF52389F;
+        Sat,  2 Jul 2022 07:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656772802; x=1688308802;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B6rf/XsGgPRYPW9MIP6DyZelrdINxacxtyD3IRRnWrg=;
+  b=RhX47Xg9FY3ChIIB0cDrGFdchATWdhrjM8jXjbs5DgpFPXhUpEK98vE4
+   li43bs4HSgtw6RWsKFC9OE9wHCQnHGTIgyxXaMfg+9sVo8X6io9I6GFgd
+   LhenALIDCt9qxn7T5TEjFPkvNA/hw3EqYYo3CWMDtYhDvEmbrKwmpdTaM
+   YmDi4LOqYs+7nuInrOVKSnicC+6DrnHcup0sCBIt/TeLBOKnK9oI7YRoj
+   cF0ImpMvOTZFbnmEsQnVLZoO+w7SGaz6SxoPTUIslYn3dwUpvAiq7QkEM
+   i+uZkEIZWGqTicJRMnfV87k3hItdLLJmB3LBAknJv32Mh93AHNHpGxVDU
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10395"; a="263231741"
+X-IronPort-AV: E=Sophos;i="5.92,240,1650956400"; 
+   d="scan'208";a="263231741"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2022 07:40:01 -0700
+X-IronPort-AV: E=Sophos;i="5.92,240,1650956400"; 
+   d="scan'208";a="624580967"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2022 07:39:59 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1o7eHs-0013hy-1L;
+        Sat, 02 Jul 2022 17:39:56 +0300
+Date:   Sat, 2 Jul 2022 17:39:56 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Michal Simek <michal.simek@amd.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Conall O'Griofa <conall.o'griofa@xilinx.com>,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@xilinx.com>
+Subject: Re: [PATCH v1 1/2] iio: adc: xilinx-xadc: Make use of device
+ properties
+Message-ID: <YsBYvPKfZRLygCyz@smile.fi.intel.com>
+References: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
+ <20220603183224.540b3808@jic23-huawei>
+ <e2efcf6d-ed85-dc6e-64e1-f0efedd4a673@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e2efcf6d-ed85-dc6e-64e1-f0efedd4a673@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The core sets INDIO_BUFFER_TRIGGERED as part of
-devm_iio_triggered_buffer_setup().
+On Mon, Jun 20, 2022 at 04:58:04PM +0200, Michal Simek wrote:
+> On 6/3/22 19:32, Jonathan Cameron wrote:
+> > On Tue, 31 May 2022 17:11:17 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > 
+> > > Convert the module to be property provider agnostic and allow
+> > > it to be used on non-OF platforms.
+> > > 
+> > > Add mod_devicetable.h include.
+> > > 
+> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > 
+> > These both seem good to me, but as the driver is fairly actively maintained,
+> > I'll let this one sit on the list for a while so others can take a look.
+> > 
+> > Whilst it 'seems' unlikely anyone will ever use this driver with other firmware
+> > I am keen to reduce the number of of-specific drivers in IIO just to avoid
+> > any chance of cut and paste.
+> > 
+> > Who knows, I'm trying to run an aspeed-i2c driver with ACPI at the moment
+> > because it's handy for a emulated setup, so maybe the same will one day happen
+> > with this device :)  Weirder things have happened.
+> 
+> Conall: Can you please test these changes and provide your feedback?
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
- drivers/iio/magnetometer/rm3100-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hmm... No news? 
 
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index 26195733ea3e..060914c63969 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -552,7 +552,7 @@ int rm3100_common_probe(struct device *dev, struct regmap *regmap, int irq)
- 	indio_dev->info = &rm3100_info;
- 	indio_dev->channels = rm3100_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(rm3100_channels);
--	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_TRIGGERED;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->currentmode = INDIO_DIRECT_MODE;
- 
- 	if (!irq)
 -- 
-2.36.1
+With Best Regards,
+Andy Shevchenko
+
 

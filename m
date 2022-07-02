@@ -2,63 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 463B85640DB
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Jul 2022 16:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 399185640F9
+	for <lists+linux-iio@lfdr.de>; Sat,  2 Jul 2022 17:20:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232294AbiGBOxC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Jul 2022 10:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
+        id S230213AbiGBPUq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Jul 2022 11:20:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbiGBOxB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 10:53:01 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C75BC0F;
-        Sat,  2 Jul 2022 07:52:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=tANdXAfV1vCs9Lw2PldJS6DPsvSnCBtLkkhAPN71x+A=; b=m8m09NehjeFLIOuV0/cG163a+V
-        /6mPuZ4P14grF8WYGK6+hJUnoaRJ7CTIwMZkRY9Gk7Uko2YS88S36brz/c+oUDtdSPYqtlOzcR571
-        wk3U29JLTwMdIBVyv7dwkR68LK49O8Y1+8eJIJ3kI8oyaUD19xqEzsrw4JXdB+rmRjRmcKUnqmUhO
-        Jsi6bXci74ZSD0TAr+rdA/B857hJ0h3jpKS7f22+tKxujnnK2BGrn8isPFaChx8dEc/9y+DPO10aQ
-        4SmwCUaPcnQOKvCJ5ZSXeq7+L/veiCi6ifC2BWzLT5acMdNSwWiifk5K/GfSZ1dPcM424mdcsimlW
-        60HWPRRA==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1o7eUT-0002jB-5U; Sat, 02 Jul 2022 16:52:57 +0200
-Received: from [2001:a61:2a49:8301:9e5c:8eff:fe01:8578]
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1o7eUS-000BVR-UU; Sat, 02 Jul 2022 16:52:56 +0200
-Message-ID: <cb198913-cf3b-e3f4-bbe9-e864822d9820@metafoo.de>
-Date:   Sat, 2 Jul 2022 16:52:56 +0200
+        with ESMTP id S230079AbiGBPUq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 11:20:46 -0400
+Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281F4F589;
+        Sat,  2 Jul 2022 08:20:45 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailnew.nyi.internal (Postfix) with ESMTP id B36DE5809B1;
+        Sat,  2 Jul 2022 11:11:46 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Sat, 02 Jul 2022 11:11:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sholland.org; h=
+        cc:cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm3; t=1656774706; x=
+        1656781906; bh=WlUJqIGfR/wOzO2AjWyOS/FzqIjWHFuWNbbZcRFvDrk=; b=K
+        uUk1tXL0awd7O4RX4mxQiHaH4nYvLAKwRwULMTTAbSqhlfGcAT1nXzE4pp10Vjvb
+        LddmXJ3xKoqWaY0QG2P68U7MMANQ6CmgZdclJu8w74hcM40uZDAMdSurevqz2gLJ
+        FHae/PFSg6B6iiaTBx+6txL9LqVhAePXdocaBIF21Vuc4F1/O7AZY8JbWwQok8iQ
+        RdCLb4obPZ2X3N9+uTRg3fmomR8t+UHsomyc07ALDYZi2f9ADte3MMGIRs0wQX59
+        bSyjgFbkqrEpeM8ud4BtGa5wST2Wz0GWpxjeP0DOZqirgMztt54SgFRU7bUQRF3Q
+        BbkaNZGZ5eP6qYfBP6F6g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1656774706; x=
+        1656781906; bh=WlUJqIGfR/wOzO2AjWyOS/FzqIjWHFuWNbbZcRFvDrk=; b=v
+        tFMYBKHBbj+Av+9i5dxazQxSpnv6mEi+7/FCLR+bUStrTfuQjcGpAnSHljUvKzVI
+        InugYh02ZH5XYXvHDg0K8+iNGBsczRWsyNRXxZS5LPyC4OVAeU3C4CU2IGUsPLvG
+        wewRZ7SYlPyFoaMej0YGQ4t9p2r8/CdbhUTYmn7JWc8EpLbbQ/blwZpZndzTaXw9
+        oJsR8rDxmub0jTsB3FSnjo3FPIomRBKDME4k9HoGuz81beJ/V4doCRAu+vMnbA2J
+        pTw/oGwHdwFNJPZnUYApSo2FG06pWe5kuA+83vFj/T6ISXcpYEXon+K7Di24kjXn
+        jPez0gjJ1xRWMKwqJQcNw==
+X-ME-Sender: <xms:MWDAYi3p_aBz3zgjTNv1vCObzI4-tPrPJgOlxD-XNeRb8_Xl2n_x9g>
+    <xme:MWDAYlHSDO8LK0svQpe5xr0L4Ta3VxMZCwuPTnuLUFo7ZEujIinP5O85-oelMN0yo
+    WhiwHz_3wDN6SCUvQ>
+X-ME-Received: <xmr:MWDAYq6qdmVXJ8Q6naw0I8upnUH0adRpYBfGaiX1hQdCb_96Mu5wa0kRen9K9T8EJZHQEEw0yZSEYYuK8PJJXh_eSVlECqYr0DLzxUb2kyIBJow5jI9gjVyBzA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudehhedgkeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefuvfevfhfhkffffgggjggtgfesth
+    ejredttdefjeenucfhrhhomhepufgrmhhuvghlucfjohhllhgrnhguuceoshgrmhhuvghl
+    sehshhholhhlrghnugdrohhrgheqnecuggftrfgrthhtvghrnhepkeelgefhffduffduie
+    dvteeukefgiedtleehjedvkedtveelkefhvddugfetheevnecuffhomhgrihhnpehlihhn
+    uhigqdhsuhhngihirdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepshgrmhhuvghlsehshhholhhlrghnugdrohhrgh
+X-ME-Proxy: <xmx:MWDAYj1sKlLRU8GpVJTtk_zI-PpbXR6YT80Zu_3Tktn3lcKKxjmj1A>
+    <xmx:MWDAYlGozgMs8g6x4s7VQZw8Y3nAyhs75IVeqShTrAvfnZp2_g4WZA>
+    <xmx:MWDAYs8MyTPnNJs2kYi0jTHFQ4cLmW6Sf0eSLIINwGMew8VITi2Pzg>
+    <xmx:MmDAYglx4HmAyiFAmKvhsKzqHVYtG3EZLLfo7-HlRVbRB0gs5rdzRg>
+Feedback-ID: i0ad843c9:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 2 Jul 2022 11:11:44 -0400 (EDT)
+Subject: Re: [PATCH v4 12/15] pinctrl: Add AXP192 pin control driver
+To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>, wens@csie.org
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        sre@kernel.org, lee.jones@linaro.org, lgirdwood@gmail.com,
+        broonie@kernel.org, lars@metafoo.de, quic_gurus@quicinc.com,
+        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
+        michael@walle.cc, rdunlap@infradead.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+ <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
+From:   Samuel Holland <samuel@sholland.org>
+Message-ID: <37d40cf2-4512-754f-2e44-ee1449bc2e9f@sholland.org>
+Date:   Sat, 2 Jul 2022 10:11:43 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v1 1/2] iio: adc: xilinx-xadc: Make use of device
- properties
+In-Reply-To: <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Michal Simek <michal.simek@xilinx.com>
-References: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
- <20220603183224.540b3808@jic23-huawei>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <20220603183224.540b3808@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.6/26591/Sat Jul  2 09:24:09 2022)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,22 +96,152 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/3/22 19:32, Jonathan Cameron wrote:
-> On Tue, 31 May 2022 17:11:17 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->
->> Convert the module to be property provider agnostic and allow
->> it to be used on non-OF platforms.
->>
->> Add mod_devicetable.h include.
->>
->> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> These both seem good to me, but as the driver is fairly actively maintained,
-> I'll let this one sit on the list for a while so others can take a look.
->
-> Whilst it 'seems' unlikely anyone will ever use this driver with other firmware
-> I am keen to reduce the number of of-specific drivers in IIO just to avoid
-> any chance of cut and paste.
-I actually have this device on a PCIe card where I instantiate it using 
-mfd with device properties. But no external channels so there was no 
-need to convert that part to device properties.
+On 6/29/22 9:30 AM, Aidan MacDonald wrote:
+> The AXP192 PMIC's GPIO registers are much different from the GPIO
+> registers of the AXP20x and AXP813 PMICs supported by the existing
+> pinctrl-axp209 driver. It makes more sense to add a new driver for
+> the AXP192, rather than add support in the existing axp20x driver.
+> 
+> The pinctrl-axp192 driver is considerably more flexible in terms of
+> register layout and should be able to support other X-Powers PMICs.
+> Interrupts and pull down resistor configuration are supported too.
+
+I am planning to implement gpio/pinctrl support for AXP152[1], which is
+somewhere between AXP20x and AXP192 in terms of GPIO capability.
+
+Which driver should I add it to? How much work would it be to convert AXP20x
+variants to the new driver? And if supporting other X-Powers PMICs is the plan,
+would it make sense to convert the existing driver in-place to avoid dealing
+with Kconfig migrations?
+
+[1]: https://linux-sunxi.org/AXP152
+
+> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+> ---
+>  drivers/pinctrl/Kconfig          |  13 +
+>  drivers/pinctrl/Makefile         |   1 +
+>  drivers/pinctrl/pinctrl-axp192.c | 598 +++++++++++++++++++++++++++++++
+>  3 files changed, 612 insertions(+)
+>  create mode 100644 drivers/pinctrl/pinctrl-axp192.c
+> [...]
+> +static int axp192_pinconf_get(struct pinctrl_dev *pctldev, unsigned int pin, unsigned long *config)
+> +{
+> +	enum pin_config_param param = pinconf_to_config_param(*config);
+> +	unsigned int arg = 1;
+> +	bool pull_down;
+> +	int ret;
+> +
+> +	switch (param) {
+> +	case PIN_CONFIG_BIAS_DISABLE:
+> +		ret = axp192_pinconf_get_pull_down(pctldev, pin, &pull_down);
+> +		if (ret)
+> +			return ret;
+> +		if (pull_down)
+> +			return -EINVAL;
+> +		break;
+> +
+> +	case PIN_CONFIG_BIAS_PULL_DOWN:
+> +		ret = axp192_pinconf_get_pull_down(pctldev, pin, &pull_down);
+> +		if (ret)
+> +			return ret;
+> +		if (!pull_down)
+> +			return -EINVAL;
+> +		break;
+> +
+> +	default:
+> +		return -ENOTSUPP;
+> +	}
+> +
+> +	*config = pinconf_to_config_packed(param, arg);
+> +	return 0;
+> +}
+> +
+> +static int axp192_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
+> +			      unsigned long *configs, unsigned int num_configs)
+> +{
+> +	int ret;
+> +	unsigned int cfg;
+> +
+> +	for (cfg = 0; cfg < num_configs; cfg++) {
+> +		switch (pinconf_to_config_param(configs[cfg])) {
+> +		case PIN_CONFIG_BIAS_DISABLE:
+> +			ret = axp192_pinconf_set_pull_down(pctldev, pin, 0);
+> +			if (ret)
+> +				return ret;
+> +			break;
+> +
+> +		case PIN_CONFIG_BIAS_PULL_DOWN:
+> +			ret = axp192_pinconf_set_pull_down(pctldev, pin, 1);
+> +			if (ret)
+> +				return ret;
+> +			break;
+> +
+> +		default:
+> +			return -ENOTSUPP;
+
+The GPIO outputs are always open-drain. It looks like this needs to handle
+PIN_CONFIG_DRIVE_OPEN_DRAIN, or gpiolib will try to emulate it.
+
+And I would suggest returning -EINVAL for PIN_CONFIG_DRIVE_PUSH_PULL, but
+gpiolib does not check the return value when setting that.
+
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> [...]
+> +
+> +static int axp192_pctl_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct axp20x_dev *axp20x = dev_get_drvdata(dev->parent);
+> +	struct axp192_pctl *pctl;
+> +	struct pinctrl_desc *pctrl_desc;
+> +	int ret, i;
+> +
+> +	pctl = devm_kzalloc(dev, sizeof(*pctl), GFP_KERNEL);
+> +	if (!pctl)
+> +		return -ENOMEM;
+> +
+> +	pctl->desc = device_get_match_data(dev);
+> +	pctl->regmap = axp20x->regmap;
+> +	pctl->regmap_irqc = axp20x->regmap_irqc;
+> +	pctl->dev = dev;
+> +
+> +	pctl->chip.base			= -1;
+> +	pctl->chip.can_sleep		= true;
+> +	pctl->chip.request		= gpiochip_generic_request;
+> +	pctl->chip.free			= gpiochip_generic_free;
+> +	pctl->chip.parent		= dev;
+> +	pctl->chip.label		= dev_name(dev);
+> +	pctl->chip.owner		= THIS_MODULE;
+> +	pctl->chip.get			= axp192_gpio_get;
+> +	pctl->chip.get_direction	= axp192_gpio_get_direction;
+> +	pctl->chip.set			= axp192_gpio_set;
+> +	pctl->chip.direction_input	= axp192_gpio_direction_input;
+> +	pctl->chip.direction_output	= axp192_gpio_direction_output;
+> +	pctl->chip.to_irq		= axp192_gpio_to_irq;
+> +	pctl->chip.ngpio		= pctl->desc->npins;
+> +
+> +	pctl->irqs = devm_kcalloc(dev, pctl->desc->npins, sizeof(int), GFP_KERNEL);
+> +	if (!pctl->irqs)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < pctl->desc->npins; i++) {
+> +		ret = platform_get_irq_byname_optional(pdev, pctl->desc->pins[i].name);
+> +		if (ret > 0)
+> +			pctl->irqs[i] = ret;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, pctl);
+> +
+> +	pctrl_desc = devm_kzalloc(dev, sizeof(*pctrl_desc), GFP_KERNEL);
+> +	if (!pctrl_desc)
+> +		return -ENOMEM;
+
+This can go inside struct axp192_pctl. It does not need a separate allocation.
+
+Regards,
+Samuel

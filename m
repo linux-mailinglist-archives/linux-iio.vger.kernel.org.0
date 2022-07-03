@@ -2,133 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55FF9564273
-	for <lists+linux-iio@lfdr.de>; Sat,  2 Jul 2022 21:21:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F987564393
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Jul 2022 03:53:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbiGBTV6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 2 Jul 2022 15:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39008 "EHLO
+        id S229782AbiGCBxc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 2 Jul 2022 21:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiGBTV5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 15:21:57 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6A9DFBF;
-        Sat,  2 Jul 2022 12:21:54 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id r14so1927802wrg.1;
-        Sat, 02 Jul 2022 12:21:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=references:from:to:cc:subject:in-reply-to:date:message-id
-         :mime-version;
-        bh=ShPrvMVvs0iuePdOh13YlEW0US0KOGLiiTqD4zGCiNY=;
-        b=h+Qdn99o3gPmJiMNYJ8IJgMULL3Pew0pTISs4L2CeQQnyvSsIZ8aznyCoGBS9BGYi2
-         FxoO0AWZPRTt6nxQGAahmwr7IMbhBVnRJnEMhHkqtBMLFQqsvvwM4Y+V7FeGyZOeeYBl
-         mU9ZNByXO/UBhWkBUwLVlvM3AZ9KDIVq3CgNvYnaAkQPdPJXkC7mWyoTOb6y3VVcwhZK
-         gpUYPWYZA5ChcrdsKSH7aQlCviSaRTFlOtm51v28waZ83qHW/aOEV30Sr/+RCL4Dxrdg
-         T0V+G3YJHKHvZascKcwihEUX5TYVWMoK5B1QPlLHldc0QlJrbWuKZQ72ONJF7YtLldPs
-         TZLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:references:from:to:cc:subject:in-reply-to:date
-         :message-id:mime-version;
-        bh=ShPrvMVvs0iuePdOh13YlEW0US0KOGLiiTqD4zGCiNY=;
-        b=rqeYQ0D/XcZ5vRXDdiJR9ByRan5mx9TANWyWLU+XkC9SdYH/AmwxN5R5HKrAzonOk8
-         Ol/DLlZz4fv8zcBaeqXhkx4P+Zjq9KQHj2yP2az6sac04jCxA/durDumvKuip+iWpXEY
-         p2PEQCdh+ZdeG9YL7Th8CVcaD3EvevEnJorNB/wt0LVfi4l1AVXTnodEbo9FqPcL/b5i
-         BTKk9boaJE2QgkeTuuClKcaiMpv2GrClA4C1Y/Mzx+pLmPh11B6oOTFe+iFl3Bf4l4S9
-         PmkJk5FKH4KH1qcK4dMM8b+Hpz35tOrzRq+GQSV7Fyf7dki+75ILJcIBn+zoSIrqm2BU
-         F/qQ==
-X-Gm-Message-State: AJIora8zXiEqmlA5WPZGBkY2Z8/WGMDHjyP98oatXj5na517CwUowOJG
-        MNUVzdqQBVb7Ov6aP3C5DaA=
-X-Google-Smtp-Source: AGRyM1tg3/+hgf9pDL8NRFCAQ4YOA7tn10T6UX7ijpnLqcxSD9+RqrDkEV/swdnxAMA8gwuref6OPw==
-X-Received: by 2002:adf:ed41:0:b0:210:20a5:26c2 with SMTP id u1-20020adfed41000000b0021020a526c2mr18660614wro.603.1656789712614;
-        Sat, 02 Jul 2022 12:21:52 -0700 (PDT)
-Received: from localhost (92.40.203.19.threembb.co.uk. [92.40.203.19])
-        by smtp.gmail.com with ESMTPSA id y15-20020a5d4acf000000b0021b9c520953sm25806153wrs.64.2022.07.02.12.21.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Jul 2022 12:21:52 -0700 (PDT)
-References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
- <20220629143046.213584-13-aidanmacdonald.0x0@gmail.com>
- <CAHp75Vduv_fN=2DKbOwReRoPeAYjGqSANT7UhDaRifUJ4zf5XQ@mail.gmail.com>
- <oMIjFujkw4ZeuMGoTkWq64BbfEejJF12@localhost>
- <CAHp75VdVyJyOZCkLQgbDNC9bSWwF0ksLOvMG=96fH8dzmukE5g@mail.gmail.com>
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, quic_gurus@quicinc.com,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Michael Walle <michael@walle.cc>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v4 12/15] pinctrl: Add AXP192 pin control driver
-In-reply-to: <CAHp75VdVyJyOZCkLQgbDNC9bSWwF0ksLOvMG=96fH8dzmukE5g@mail.gmail.com>
-Date:   Sat, 02 Jul 2022 20:22:58 +0100
-Message-ID: <YhW7o8WJ6ptv6cU8GzuiBWbZt3kmczIL@localhost>
+        with ESMTP id S229486AbiGCBxa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 2 Jul 2022 21:53:30 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEA0AE78;
+        Sat,  2 Jul 2022 18:53:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656813208; x=1688349208;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FeCzh1lV5+YW3m3VQjD7k6MVEVciEB1YGGhWNqYpr0A=;
+  b=OFFUc0K5wjfzRrxiI6rCEtSkuUjxat/i5ANy67+j/OdtlKRLTzNyT1uS
+   nS5bM+7sJp0tWnO6Jfa5gr/NlDJM2FK25GutZ/YRb/IOHpei1yCispTNW
+   wpSSOkUnuLTOw9z0GTvWrO97UN+E49a+wDqN8QJL+x4Ip3n5mgpcf7sGP
+   2O1A4mg/0Tn4eRHtHZCcg+EJQcirqdBO0nsN+FpCM1hyWq37GMjtXlYpa
+   CGLohMp/VHpHLlnDu1/rTGIgF1qV1qkNnP0j+ar8uQ+1ZZH6pGoQ65tBh
+   tGupiOM98Po3E4f+ve6EebtKWqYCcnxlh6cteuWvvfQv6jFAaKaJSM9CF
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10396"; a="369213301"
+X-IronPort-AV: E=Sophos;i="5.92,241,1650956400"; 
+   d="scan'208";a="369213301"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2022 18:53:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,241,1650956400"; 
+   d="scan'208";a="768867606"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 02 Jul 2022 18:53:24 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1o7onc-000Fwf-38;
+        Sun, 03 Jul 2022 01:53:24 +0000
+Date:   Sun, 3 Jul 2022 09:52:59 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     andrea.merello@iit.it, jic23@kernel.org, mchehab+huawei@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org, lars@metafoo.de,
+        robh+dt@kernel.org, andy.shevchenko@gmail.com,
+        matt.ranostay@konsulko.com, ardeleanalex@gmail.com,
+        jacopo@jmondi.org, Andrea Merello <andrea.merello@iit.it>
+Subject: Re: [v6 12/14] iio: imu: add BNO055 serdev driver
+Message-ID: <202207030922.GDkeqL76-lkp@intel.com>
+References: <20220613120534.36991-13-andrea.merello@iit.it>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220613120534.36991-13-andrea.merello@iit.it>
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
-Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+Thank you for the patch! Perhaps something to improve:
 
-> On Fri, Jul 1, 2022 at 5:36 PM Aidan MacDonald
-> <aidanmacdonald.0x0@gmail.com> wrote:
->> Andy Shevchenko <andy.shevchenko@gmail.com> writes:
->> > On Wed, Jun 29, 2022 at 4:30 PM Aidan MacDonald
->> > <aidanmacdonald.0x0@gmail.com> wrote:
->
-> ...
->
->> >> +struct axp192_pctl_function {
->> >> +       const char              *name;
->> >> +       /* Mux value written to the control register to select the function (-1 if unsupported) */
->> >> +       const u8                *muxvals;
->> >> +       const char * const      *groups;
->> >> +       unsigned int            ngroups;
->> >> +};
->> >
->> > Can it be replaced by struct function_desc?
->> > https://elixir.bootlin.com/linux/latest/source/drivers/pinctrl/pinmux.h#L130
->>
->> That'd work, but using the generic infrastructure doesn't allow me to
->> simplify anything -- I can eliminate three trivial functions, but the
->> generic code is higher overhead (extra allocations, radix trees, ...)
->
-> I really don't see how it gets into extra allocations. Either way you
-> have a pointer to opaque data or in your current code it's called
-> muxvals. Other fields seem 1:1 what is in struct function_desc. The
-> code will be probably the same.
->
-> I.o.w. I'm talking of eliminating data type, and not about simplifying
-> the code by fully switching to generic infrastructure.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v5.19-rc4 next-20220701]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-struct function_desc is hidden behind an #ifdef, so I can't use it
-without enabling the generic pinmux helpers. It doesn't make a lot
-of sense to enable them if they're not going to be used.
+url:    https://github.com/intel-lab-lkp/linux/commits/andrea-merello-iit-it/Add-support-for-Bosch-BNO055-IMU/20220614-203754
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20220703/202207030922.GDkeqL76-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project bcd153485ebf07fe79e2b843ed5f1cb74997df1b)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/f37504a206ca4b342e184a1fc137f6c47f3960e9
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review andrea-merello-iit-it/Add-support-for-Bosch-BNO055-IMU/20220614-203754
+        git checkout f37504a206ca4b342e184a1fc137f6c47f3960e9
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash drivers/iio/
 
-More generally, why would I use a type from an API I'm not using just
-because it happens to look like a type I defined locally? That would
-be misleading. Given that the code is the same either way, a local type
-is preferable because it clearly communicates that I'm not using the
-generic API, and guarantees that the type isn't referenced elsewhere.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/iio/imu/bno055/bno055_ser_trace.c:13:
+   In file included from drivers/iio/imu/bno055/./bno055_ser_trace.h:104:
+   In file included from include/trace/define_trace.h:102:
+   In file included from include/trace/trace_events.h:237:
+>> drivers/iio/imu/bno055/./bno055_ser_trace.h:92:9: warning: format specifies type 'int' but the argument has type 'size_t' (aka 'unsigned long') [-Wformat]
+                         __entry->len, __entry->len, __get_dynamic_array(buf)
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/trace/stages/stage3_trace_output.h:6:17: note: expanded from macro '__entry'
+   #define __entry field
+                   ^
+   include/trace/stages/stage3_trace_output.h:9:43: note: expanded from macro 'TP_printk'
+   #define TP_printk(fmt, args...) fmt "\n", args
+                                   ~~~       ^
+   include/trace/trace_events.h:45:16: note: expanded from macro 'TRACE_EVENT'
+                                PARAMS(print));                   \
+                                ~~~~~~~^~~~~~~
+   include/linux/tracepoint.h:107:25: note: expanded from macro 'PARAMS'
+   #define PARAMS(args...) args
+                           ^~~~
+   include/trace/trace_events.h:203:27: note: expanded from macro 'DECLARE_EVENT_CLASS'
+           trace_event_printf(iter, print);                                \
+                                    ^~~~~
+   In file included from drivers/iio/imu/bno055/bno055_ser_trace.c:13:
+   In file included from drivers/iio/imu/bno055/./bno055_ser_trace.h:104:
+   In file included from include/trace/define_trace.h:102:
+   In file included from include/trace/trace_events.h:237:
+>> drivers/iio/imu/bno055/./bno055_ser_trace.h:91:36: warning: field width should have type 'int', but argument has type 'size_t' (aka 'unsigned long') [-Wformat]
+               TP_printk("len: %d, data: = %*ph",
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+   include/trace/stages/stage3_trace_output.h:9:33: note: expanded from macro 'TP_printk'
+   #define TP_printk(fmt, args...) fmt "\n", args
+                                   ^~~
+   include/trace/trace_events.h:45:16: note: expanded from macro 'TRACE_EVENT'
+                                PARAMS(print));                   \
+                                ~~~~~~~^~~~~~~
+   include/linux/tracepoint.h:107:25: note: expanded from macro 'PARAMS'
+   #define PARAMS(args...) args
+                           ^~~~
+   include/trace/trace_events.h:203:27: note: expanded from macro 'DECLARE_EVENT_CLASS'
+           trace_event_printf(iter, print);                                \
+                                    ^~~~~
+   2 warnings generated.
+
+
+vim +92 drivers/iio/imu/bno055/./bno055_ser_trace.h
+
+    78	
+    79	TRACE_EVENT(recv,
+    80		    TP_PROTO(size_t len, const unsigned char *buf),
+    81		    TP_ARGS(len, buf),
+    82		    TP_STRUCT__entry(
+    83			    __field(size_t, len)
+    84			    __dynamic_array(unsigned char, buf, len)
+    85		    ),
+    86		    TP_fast_assign(
+    87			    __entry->len = len;
+    88			    memcpy(__get_dynamic_array(buf),
+    89				   buf, __entry->len);
+    90		    ),
+  > 91		    TP_printk("len: %d, data: = %*ph",
+  > 92			      __entry->len, __entry->len, __get_dynamic_array(buf)
+    93		    )
+    94	);
+    95	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

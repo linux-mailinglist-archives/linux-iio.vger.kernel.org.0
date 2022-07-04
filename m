@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 464ED565E70
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 22:29:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB01565E8E
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 22:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231186AbiGDU3w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 16:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41098 "EHLO
+        id S233326AbiGDUg2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 16:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbiGDU3v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 16:29:51 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA04125C5;
-        Mon,  4 Jul 2022 13:29:50 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id c143so9980671ybf.3;
-        Mon, 04 Jul 2022 13:29:50 -0700 (PDT)
+        with ESMTP id S229595AbiGDUg1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 16:36:27 -0400
+Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA4E1BE39;
+        Mon,  4 Jul 2022 13:36:26 -0700 (PDT)
+Received: by mail-yb1-xb2a.google.com with SMTP id e69so11960963ybh.2;
+        Mon, 04 Jul 2022 13:36:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BJ5uLmaL6h68lsnPAamuG1muud74QSPIe8Sz8xN9JKc=;
-        b=IyhykYvWClWsa/rmW6Z/KwjZd5OEnZBjTZJoLjjQF9DF//3C/8TDLUZ9WgQcftxTIg
-         RSAO/m1TfA810UfvrDxUciTgRWK2V4vdbkEYBtyWoxZlfSzBqFx5f84Zp+uH4jhvnzq/
-         HsHVqaeINcK2mj/R1Ossi/8UDOV+jsLE5fw3mKztcr2IiO0IBISDLkBu1k6BwebWsnEj
-         rhZLb6XD3sUUzdCeoSWKQm/M4LzSdBs90raNvlZ4+hvPn95gzOFxzHeI3LQRisB4w0up
-         aec9JMZAW5+VoFpw7BV31bnXLr9oQpCTjtoPy02YGKT8SUHH8jzuYOAiMXH/V2hoIFH5
-         cM0Q==
+        bh=i7pfQddT00wwybN55WXtE8jeGfJuRCDhkTs8A9N9Avc=;
+        b=juo7rzkgyOnogzMhLYCktRvFpSFkP3vvhbMY8Uk0vJKYeWueIKW+lWdoXP3yLwbds6
+         vcrr5NUqPVbQnT0hwWaYs4EEj2Nkh5SCjrFrs18UN6hZAi3OYtxjuCQlEQvAQUlc9Dpv
+         J7v71ibaYThmJdJsc986feiZcZN+aEpDukUNqgPRhJF8LMCaE4eeOYQA30SWbqQhe9N9
+         uD2O3yv/dhvIOAfc/Yh+JrL6jYRzMb9TGUOPIk36TgGFoLO92g7jiweWYexkxNNBIGdE
+         16csuxysxq+iUAOhEZmurW/lnrwSZZbdImIhQoMrVi+ukTjz9HsWjjHwlR4I1VW1mjTI
+         xbUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BJ5uLmaL6h68lsnPAamuG1muud74QSPIe8Sz8xN9JKc=;
-        b=Cqyz1OMEOMzFxE2syD6lwWUMsP1rKDnINvoLKkiPYiJiwb2cuA+8Ftx8sXS875gYrx
-         FTWe9QxiIQZ+Y+KaESjbryah4nNAANF03t0AQw49bVJ1cAkrlNoN3kAbyjXXqB51fL8D
-         BsbEjO1tH9dOd/QVkRVKIy95zyeBbi9aTRe8JxqzS7UoblfbCdHPT2OYU5F2wXZAPan1
-         y/x7O+CwU3OWR6dg3oz3+fBTbTSrH558dwPT025lKnlXp8Xauxu36VqKl5PBsCgFeqdG
-         GdxpeGqjaZuzHALclMqMk4nfVZa4Dzll2LnSaPCukeJkBsov4Cwn+z9dXfcNATIGQ+fk
-         aizQ==
-X-Gm-Message-State: AJIora8rwsbXdG/5bBjdG0HfA17TQ8FkUNAuEyhxj82R9+qo+tenU56w
-        n1/9JBBPL4RYYaOrDbiFhusaZCq6NGlPKAQ+YDCiAyfeqmt/Ag==
-X-Google-Smtp-Source: AGRyM1vEHdw+U96rIzhW6zkgtaj72ZS8Mc4Jf0CUsUjgZNa7gf9zGcS1I+LbCSSAS46frig4pqKB5Woq3OBcI+Ti+RY=
-X-Received: by 2002:a25:858e:0:b0:66e:4898:63e2 with SMTP id
- x14-20020a25858e000000b0066e489863e2mr8437278ybk.296.1656966589934; Mon, 04
- Jul 2022 13:29:49 -0700 (PDT)
+        bh=i7pfQddT00wwybN55WXtE8jeGfJuRCDhkTs8A9N9Avc=;
+        b=nZpdPcn2Obpreocg3995PpIalItzsq5aXZ9FdVISee1wvxNzsIZasydILZtzexPlYi
+         ItW2O0Khh02e7WWDbonco6Wzk3YT0/aEYHU/V9w3IpvI1QvcIiZdfpY0TqxTFHi8FtDc
+         0jYjIuB2he2WU2V6fOdNv7BRm85aXIKJahkTBS2YiEVvq/LIYfgogC4Kb2xuOBxYpp+I
+         hE7yfGduVHr++/eaWHLi5C0VsvbbPZp6Bn9J6UI/8je4hy4lCfVsvkkn66GopMnbymT0
+         KQw7mxdzhpb3CwWB1LJ+EfgkSrjkkmNDQzg0MafGxQ/Dn3ldZyvYSDXYf8QGJUgKj0qA
+         Iosg==
+X-Gm-Message-State: AJIora/IOuzHjECZLJi0uKIS7RN+D+GqPRsUyGZJ6XAeRAWquGWEXcNP
+        8IcUSPdDm2oyvZ7V+bzzfDJvlKIQp6cIQ7M3JTn7Kf+ILyUQdA==
+X-Google-Smtp-Source: AGRyM1u/kp8kfUd0nPXCHFP2i3Eix2PxxDcpp8y9ipLkrPPb23jLPB36f0GfOZtN0YbNTf6oiGSAGugY2K6v9bhH1+c=
+X-Received: by 2002:a5b:68a:0:b0:66e:472a:83f4 with SMTP id
+ j10-20020a5b068a000000b0066e472a83f4mr8583937ybq.570.1656966985988; Mon, 04
+ Jul 2022 13:36:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-8-peterwu.pub@gmail.com>
-In-Reply-To: <20220704053901.728-8-peterwu.pub@gmail.com>
+References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-10-peterwu.pub@gmail.com>
+In-Reply-To: <20220704053901.728-10-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 4 Jul 2022 22:29:13 +0200
-Message-ID: <CAHp75VcmEasZu53kZFO9R0Y=gZau-XFpAPd2a00deHv3PO1ZOg@mail.gmail.com>
-Subject: Re: [PATCH v4 07/13] mfd: mt6370: Add Mediatek MT6370 support
+Date:   Mon, 4 Jul 2022 22:35:47 +0200
+Message-ID: <CAHp75Ve+-ht6J5PZXS1jO1qfxn6Nfd2wDfuW-NsigR_k7iRJGg@mail.gmail.com>
+Subject: Re: [PATCH v4 09/13] iio: adc: mt6370: Add Mediatek MT6370 support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -86,17 +86,19 @@ Cc:     Lee Jones <lee.jones@linaro.org>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UPPERCASE_50_75 autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 4, 2022 at 7:41 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+On Mon, Jul 4, 2022 at 7:42 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> Add Mediatek MT6370 MFD support.
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>
+> Add Mediatek MT6370 ADC support.
 
 ...
 
@@ -104,122 +106,51 @@ On Mon, Jul 4, 2022 at 7:41 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 
 If so,
 
-> +         will be called "mt6370.ko".
+> +         will be called "mt6370-adc.ko".
 
-".ko" part is not needed.
-
-To all your patches in the series where this applies.
+No ".ko" part.
 
 ...
 
-> +static const struct regmap_irq mt6370_irqs[] = {
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHGON, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TREG, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_AICR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_MIVR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_PWR_RDY, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FL_CHG_VINOVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VSYSUV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VSYSOV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VBATOV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_VINOVPCHG, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_COLD, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_COOL, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_WARM, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_BAT_HOT, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TS_STATC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_FAULT, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_STATC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TMR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_BATABS, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_ADPBAD, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_RVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_TSHUTDOWN, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_IINMEAS, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_ICCMEAS, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHGDET_DONE, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_WDTMR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_SSFINISH, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_RECHG, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_TERM, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHG_IEOC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_ADC_DONE, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_PUMPX_DONE, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_BATUV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_MIDOV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_BST_OLP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_ATTACH, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DETACH, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_STPDONE, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_VBUSDET_DONE, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_HVDCP_DET, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_CHGDET, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DCDT, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_VGOK, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_WDTMR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_UC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_OC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DIRCHG_OV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_SWON, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_UVP_D, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_UVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_OVP_D, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OVPCTRL_OVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_STRBPIN, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_TORPIN, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_TX, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED_LVF, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_SHORT, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_SHORT, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_STRB, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_STRB, 8),
-> +       REGMAP_IRQ_REG_LINE(mT6370_IRQ_FLED2_STRB_TO, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_STRB_TO, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED2_TOR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_FLED1_TOR, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_OTP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_VDDA_OVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_VDDA_UV, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_LDO_OC, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_BLED_OCP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_BLED_OVP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VNEG_OCP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VPOS_OCP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_BST_OCP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VNEG_SCP, 8),
-> +       REGMAP_IRQ_REG_LINE(MT6370_IRQ_DSV_VPOS_SCP, 8)
+> +#define ADC_CONV_TIME_US               35000
 
-Leave a comma here.
+Since it's actually MS, drop this and use MS * 1000 whenever it's needed.
 
-> +};
+
+> +#define ADC_CONV_TIME_MS               (ADC_CONV_TIME_US / 1000)
 
 ...
 
-> +static const struct resource mt6370_regulator_irqs[] = {
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VPOS_SCP, "db_vpos_scp"),
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VNEG_SCP, "db_vneg_scp"),
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_BST_OCP, "db_vbst_ocp"),
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VPOS_OCP, "db_vpos_ocp"),
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_DSV_VNEG_OCP, "db_vneg_ocp"),
-> +       DEFINE_RES_IRQ_NAMED(MT6370_IRQ_LDO_OC, "ldo_oc")
+> +static int mt6370_adc_read_label(struct iio_dev *iio_dev,
+> +                                struct iio_chan_spec const *chan, char *label)
+> +{
+> +       return snprintf(label, PAGE_SIZE, "%s\n",
+> +                       mt6370_channel_labels[chan->channel]);
 
-Leave a comma here.
+sysfs_emit()
 
-> +};
-> +
-> +static const struct mfd_cell mt6370_devices[] = {
-> +       MFD_CELL_OF("adc", NULL, NULL, 0, 0, "mediatek,mt6370-adc"),
-> +       MFD_CELL_OF("charger", NULL, NULL, 0, 0, "mediatek,mt6370-charger"),
-> +       MFD_CELL_OF("backlight", NULL, NULL, 0, 0, "mediatek,mt6370-backlight"),
-> +       MFD_CELL_OF("flashlight", NULL, NULL, 0, 0, "mediatek,mt6370-flashlight"),
-> +       MFD_CELL_OF("indicator", NULL, NULL, 0, 0, "mediatek,mt6370-indicator"),
-> +       MFD_CELL_OF("tcpc", NULL, NULL, 0, 0, "mediatek,mt6370-tcpc"),
-> +       MFD_CELL_RES("regulator", mt6370_regulator_irqs)
+> +}
 
-Leave a comma here.
+...
 
-> +};
+> +static int mt6370_adc_probe(struct platform_device *pdev)
+> +{
+> +       int ret;
+> +       struct mt6370_adc_data *priv;
+> +       struct regmap *regmap;
+> +       struct iio_dev *indio_dev;
 
+Per all your patches, use reversed xmas tree ordering ("longest line
+first" rule).
+Also it may be good to have a temporary variable for struct device pointer.
+
+> +}
+
+...
+
+> +MODULE_DESCRIPTION("MT6370 ADC Drvier");
+
+Driver. Spell check your patches.
 
 -- 
 With Best Regards,

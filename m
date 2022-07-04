@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA72A565F42
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 23:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F33D3565F45
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 23:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232937AbiGDV6R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 17:58:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52872 "EHLO
+        id S232376AbiGDV7f (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 17:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbiGDV6Q (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 17:58:16 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7712312624;
-        Mon,  4 Jul 2022 14:58:15 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id b85so5540213yba.8;
-        Mon, 04 Jul 2022 14:58:15 -0700 (PDT)
+        with ESMTP id S229790AbiGDV7e (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 17:59:34 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E851AC0D;
+        Mon,  4 Jul 2022 14:59:33 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id j7so12443019ybj.10;
+        Mon, 04 Jul 2022 14:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=aX4msgN1b6B4E4WJ19/77nMyu3z3AuscBwv+NzJVFAs=;
-        b=pxocR5fcb/eN8OBfibNhCE8C51JiWomfEbeMlgefujdpH5XNv6i9nU0YoDEPq+UmL+
-         uwkb/0qFuGEQgkyQXb95m/T19xiLxZd5QK6/hFOLb1x3ezQJXo/l/71CEm71s0dn87PT
-         05vb4dU5Z4msXQJ0ojRC6NYCh8H7UjFgurCeYziZ+4S/reeW7HXxxJqan4y7yzuixbgx
-         lkbGdra3NXvtrZvxuP24Q/SjzrcNjK0ve+oP2IBeB0Gy/CzVjWYE//KzJYhqqGBDvrkg
-         B9mdZ8UqRgnAtNn6DGXAcD6Ydsa0xiLGn+5G6Zh3PAOWosT7wkqEiuihEfQ5DDm2ONRx
-         SlDA==
+        bh=cumV9qPENekMjwnvtuGOttD9N1tqu/fT5FfTmap5cpM=;
+        b=PRykaQHrNaAsX39gxzj8c2LxjhYS234XvpUDTTccMpfcfE0d5X6R+l2OfdVj4lxW+d
+         gdWMk/pIW4rn+/cSbOALBcswmyf+i5r2FcYvTPboPN7di8gGeie/OWq0N5W9fBUMJH1V
+         7y6HQ29Za2SPFP1oiIdfjox0UQEKN9qaWQWQVPGSLGkCtk5BcAaHU+xw2j7vX2yfL/3I
+         tuv9hrWfnljhlkJkzGm8pcKqApxyzjZ/raoprKdwdG2rq/7NK/xYnLqv+jJ/eGAQXQVT
+         ehweRucwBELCfiF1TpO5JQpDc9Sl3vhqC4ViyfaSXCdNNrisX0I2yaHUH6B1HNK366DA
+         tpZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=aX4msgN1b6B4E4WJ19/77nMyu3z3AuscBwv+NzJVFAs=;
-        b=q0j5LJzUFoXtu3CGx7pd5rPTuLBcgi/r7cRls48yMBztttuwSZu500B64/vLT6g86a
-         7U9fSS9gjMYQI1lcv0SWl0CBcQcQOw7a2PHPbZGPtBCtjL6qwxyjlYgeimg3SyGLNf3r
-         gYfJM0eraFNegwBcjhLDRrXglbYeRQOreP0D7UKh/Nx2VVdLcbuwg93Fmb4hanQJ+kso
-         8h7viPs1h9BjhEZJKz/sj1wLZDARxHnM72d1IiXxaC06f8/ENKR5qfO5xArd1juUwbu9
-         vaetPhnbz891cFhwS/gPuvWpZUgzmsutadfj0X4Z0EikGmmZxh+BwYFA5rhvN7XLzUOY
-         O3Ig==
-X-Gm-Message-State: AJIora8RbcaeMRbeBxEB3g8aA7//c2tiagcnwIiLxkcGExRs7dfBcNuE
-        rtLBrlD+2LmVKfX2xjYJPavbUx3GExHszvJTvpnqDyiFhhisUA==
-X-Google-Smtp-Source: AGRyM1t/9z9b6uGG5VgQIWg4GoZ+wA/U092ZWBOTi6Odm0JKng78m/z+5bkZVjP23n2tYU11nS7qu3LcXyVWbSKmgJ0=
-X-Received: by 2002:a05:6902:686:b0:66e:627f:4d29 with SMTP id
- i6-20020a056902068600b0066e627f4d29mr3662717ybt.385.1656971894641; Mon, 04
- Jul 2022 14:58:14 -0700 (PDT)
+        bh=cumV9qPENekMjwnvtuGOttD9N1tqu/fT5FfTmap5cpM=;
+        b=yueZNbS+d9S+SvKIGow4fE7XsUjclUIMINL6DSkIQksGT/kXxue3HjZi7uBN/Vdjr/
+         ArY66STsNOr/hVCxJuEULWWnb5SX9mBU9Tj0wMglX1MZsug/0yBzkXchsRWBWsHaLmJ+
+         R8C43umRVUCrDyifjHYB/acTZGJFYw+uMtDrm0hKIE5aSbN44kj7gR49UxoqikkO3JVY
+         TQKGDne/4Asimjdxv8XJHCckw3cfDKF6C8UV2O//nzBXxzOzkMIPPFQN4GtKLqoSiGGz
+         jbOtnc1P5TGFW1h/cGRQWN45bXG439t+PJhijQuPLwyGhUudyVr/jEaXznNqS6SdgaES
+         EIjA==
+X-Gm-Message-State: AJIora+dvzYtECxxpMiXfbtTBo+IrrTtvRTwl9ksOp24auZVMXanSdef
+        WHWW3BV2fESQa/wGG3Lvt/jqVD3Pfm2Fga/VuUs=
+X-Google-Smtp-Source: AGRyM1uVd+HKfOGlYPMQhzA0FtYi+ACIK+be1b8Dein39aaDB6lfG7d/p58nnmXoo7uP3l8YRom5L+jOFrp948LKdfo=
+X-Received: by 2002:a05:6902:10c9:b0:668:e27c:8f7 with SMTP id
+ w9-20020a05690210c900b00668e27c08f7mr33692356ybu.128.1656971973165; Mon, 04
+ Jul 2022 14:59:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704172116.195841-1-marcus.folkesson@gmail.com> <20220704172116.195841-7-marcus.folkesson@gmail.com>
-In-Reply-To: <20220704172116.195841-7-marcus.folkesson@gmail.com>
+References: <20220704172116.195841-1-marcus.folkesson@gmail.com> <20220704172116.195841-9-marcus.folkesson@gmail.com>
+In-Reply-To: <20220704172116.195841-9-marcus.folkesson@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 4 Jul 2022 23:57:37 +0200
-Message-ID: <CAHp75VeqAJK_jBmF5zb3NACS0JJvzWQ8HAgpDFcXPAQiozp94g@mail.gmail.com>
-Subject: Re: [PATCH v3 6/9] iio: adc: mcp3911: add support for interrupts
+Date:   Mon, 4 Jul 2022 23:58:56 +0200
+Message-ID: <CAHp75VfxrV7VTCZx9PPC+YbcWGEDAconBXChPx+_n86nnj6uHg@mail.gmail.com>
+Subject: Re: [PATCH v3 8/9] iio: adc: mcp3911: add support for oversampling ratio
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -71,23 +71,20 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 4, 2022 at 7:21 PM Marcus Folkesson
+On Mon, Jul 4, 2022 at 7:22 PM Marcus Folkesson
 <marcus.folkesson@gmail.com> wrote:
 >
-> Make it possible to read values upon interrupts.
-> Configure Data Ready Signal Output Pin to either HiZ or push-pull and
-> use it as interrupt source.
+> The chip supports oversampling ratio, so expose it to userspace.
 
 ...
 
-> +               /*
-> +                * The device generates interrupts as long as it is powered up.
-> +                * Some platforms might not allow the option to power it down so
-> +                * don't enable the interrupt to avoid extra load on the system
+> +               ret = mcp3911_read(adc,
+> +                               MCP3911_REG_CONFIG, val, 2);
 
-Missed period.
+One line?
 
-> +                */
+> +               if (ret)
+> +                       goto out;
 
 -- 
 With Best Regards,

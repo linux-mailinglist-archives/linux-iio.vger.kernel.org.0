@@ -2,143 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 190EB564CD0
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 06:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F0F564CFD
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 07:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbiGDExZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 00:53:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S231429AbiGDFjc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 01:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiGDExX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 00:53:23 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2023C56;
-        Sun,  3 Jul 2022 21:53:19 -0700 (PDT)
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2643x1vn023139;
-        Mon, 4 Jul 2022 04:52:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2021-07-09;
- bh=uXkBllE3kZLcpHEjYoJCuit4HijNmmrx/Je5YaU0NuI=;
- b=LP8Wva8gZsUNkFX/alyJr02UnDVX5tVru+6XOn+6UI9kxUX6VsvsAehVTLpl6INvcPuE
- FEIfWsSzbF3qVJ0bENKZKjwGglj5JDpECOhPQM67kvdKwXygKAsh/UlmXjDafZED00Vw
- Ei/tVMxnCr9SM7sqoCtcXMITiygY8NwXJ2VMKJlG5TYeRP52tgYH/Mpz07UwNNHWLVXd
- FwJDbSCO9xIBzhcWfNwP/AXzlh1zwrtMVl09nAdzX4y87ex0AVlNjLCxpK/Rx9/KJLGY
- fH6dA2roVP2CP/Bw6GJpANdU8ZeyfyoMDKyjEpG+VxvjxEzJsbWSdajB4HRjrfXr43yS QQ== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3h2eju2a6u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 04 Jul 2022 04:52:53 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 2644pKNm014076;
-        Mon, 4 Jul 2022 04:52:51 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
-        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3h2cf7e9d7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 04 Jul 2022 04:52:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=e/+nXjUzTFXArPFL9hj18HYtMQLecCuL7E8w9T0BuYHP3PpGYgtoaElYFtcytD1b1+kbjeHiwEUUr2tABWEQIMqMKn9ApqR9y97qtZMWDN8aTImcWAb5cwLbw75AHMp1OHiarKcCX7Yk5z474edYH+MupFjtCbA0I8vD0BSnsr+K9mzaUmIxgynW7Zp+0DlXlw3+xKDXaOHrS1fPs5tNjV7XlFN1ripzI4aseFIgE6lC5hsvc9pnxSyMrJAh7g1gdx8U0b+OCYMf/ojad0SNBMbav1OlBUbTiIL/h0y1mY2IcjPpQXW7NWS1RcFC8D1bIxDXLMh6Q8Yot/c/bRk3lQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uXkBllE3kZLcpHEjYoJCuit4HijNmmrx/Je5YaU0NuI=;
- b=Vmjm0pEUeRBqrPoR95p93adXLs4gJv7Q4l5VTvURyMuSqt5fJkhI0m6bSqivTbJT3i4E8AiLUq3OInjom0Frpa9g+QTtL8ZckGkitLTrtQa+d89XqKbwyNn3OO9vbkw2IR74C5cunbwKm0T89d73rc5HojU8wg6dvbeh8C5aPGb/eGjyhnuLPY1RHBdtd7wEdzW6KR6+X0eM0Qq7vzPyWg2RSwET1zLFSl6VymMmYAHGbynPCdxzJt0LqhdbdF290jCLmpt9sy8ggGwczQtw4q79lM+RCPyl/5dCC6Vii1WyszWJZCc8WVd91Y8Y9F4zf6By19ARDjYh3A+Ubfb/kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S229591AbiGDFja (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 01:39:30 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11A646307;
+        Sun,  3 Jul 2022 22:39:29 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id n12so8059271pfq.0;
+        Sun, 03 Jul 2022 22:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uXkBllE3kZLcpHEjYoJCuit4HijNmmrx/Je5YaU0NuI=;
- b=rnm27UcLjNdafvEtOGuadwUepknORXjIUveeVcfQYIROEVEw9kfZK4zcB8YIsZY28gnb1ZBMhLaFgXa0vzA+rtUwShMZ4FUjXelWzuCqu64Sp7oF/4X+B7QHK3GjDz62b6SmtPVnGNb+4BYYh/GQdT0yGHnoZE3AnEgk5VuAHUA=
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- (2603:10b6:301:2d::28) by BN6PR10MB1889.namprd10.prod.outlook.com
- (2603:10b6:404:ff::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.17; Mon, 4 Jul
- 2022 04:52:49 +0000
-Received: from MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::5020:9b82:5917:40b]) by MWHPR1001MB2365.namprd10.prod.outlook.com
- ([fe80::5020:9b82:5917:40b%6]) with mapi id 15.20.5395.018; Mon, 4 Jul 2022
- 04:52:49 +0000
-Date:   Mon, 4 Jul 2022 07:52:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] iio: pressure: bmp280: Add support for BMP380
- sensor family
-Message-ID: <20220704045229.GT11460@kadam>
-References: <20220704003219.208409-1-ang.iglesiasg@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220704003219.208409-1-ang.iglesiasg@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-ClientProxiedBy: JNXP275CA0009.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:19::21)
- To MWHPR1001MB2365.namprd10.prod.outlook.com (2603:10b6:301:2d::28)
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AXCYs1tP3RVWM+wE/Nbrq4/WIRuAc/tat3MFvoxWwq4=;
+        b=gqw1bkUJBy0g7w922SCzSfqpBppoz4/wfY+7W8PIvhtPcdieDA61ykbf/3np9uMmIo
+         YJxtrDFf4H3Xfb8bQlgZB2aK7c+S1qXMmUbNl77Gz4jqbZL4aJCK3+0snaWDnt4O0P/q
+         +IVJXKNzJhlMF5RmFDG38BXJWKqlnDRIqDU8Yrx4jMvnVIg2lxd3ZGVXnuR4qxJN5SU2
+         OsxRvf/2LdPLZYeYFYzLZ2Ry5QQF6jP0LaoPZxmpPtuXOqEN8j/sGLVgf5oUg55+fk68
+         BhvJH0vYRjhlhPypTQRG/qvoymoYkURwTn8foQTChFG4WMHWkjGgnrpmLi7REZN09b/J
+         Yo4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AXCYs1tP3RVWM+wE/Nbrq4/WIRuAc/tat3MFvoxWwq4=;
+        b=4bZgQT6y4yb/DOLgHoB7qP6wBZ2/hrPwJHFCr3kYN6nXhDbvTFxGIV6SaSeBMnSOg2
+         mnVao8lxnwbl3nqbxCAzcvTGaqhCXxwypZClo0jeto/z8m3KKHieO9vzmO2rl8ZFa+MG
+         GZW069LOKvV3gNgjVI23bDohuf4/j1T2eSjqXjiNM75Z1V+qezxT9VW0S3ZwJVNT0A3f
+         Ah8A0cJTRmivI3Dpnc05Yx/19KOnAbUbeRKO0YtQYEzq7WdoY/bqezSlNiBTS0QqVyvt
+         6ebzPksl6BmR2gqLomIaFZ+jy1r6q+Era617TBFWpMcFaoX5evz+1E/YJ8Jz0/u/o2Bx
+         v1uA==
+X-Gm-Message-State: AJIora+klTwvZJcRTHsPYxuN/kRz5ZXQnjY4FN5hOQ6uw+9LlUEq8jW6
+        QUrHnZbW4LiWGjy+S3b2I2k=
+X-Google-Smtp-Source: AGRyM1v5mLSIHJIvXqk3IwGmWzHXsHokTfrTW6HYIKy36LxlvLHGrVjlljwEGM3p415A4KhJ0QYB4A==
+X-Received: by 2002:a65:6c0a:0:b0:3fa:c20c:cbe7 with SMTP id y10-20020a656c0a000000b003fac20ccbe7mr24026870pgu.611.1656913168404;
+        Sun, 03 Jul 2022 22:39:28 -0700 (PDT)
+Received: from RD-3580-24288.rt.l (42-72-4-255.emome-ip.hinet.net. [42.72.4.255])
+        by smtp.gmail.com with ESMTPSA id h24-20020a635318000000b0040dffa7e3d7sm13904507pgb.16.2022.07.03.22.39.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Jul 2022 22:39:27 -0700 (PDT)
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: [PATCH v4 00/13] Add Mediatek MT6370 PMIC support
+Date:   Mon,  4 Jul 2022 13:38:48 +0800
+Message-Id: <20220704053901.728-1-peterwu.pub@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 63d5f0e5-12ee-4fd1-fe93-08da5d790b90
-X-MS-TrafficTypeDiagnostic: BN6PR10MB1889:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: BJB7NnN3FePGQ48r/Q6+Yc8p0xavjdv+aVITvsTTnpTHdGi56zoPFByD7ihSAigQK8ijO2V0lQPm1LmeDWLD/iVPAq+ODWtLMgYbFZMTgIYyqIMOP9LE43Cpt3Uaw7V6mi9AdelpSp39iIXRgi4JLMyPJL+ySKzTLHRnEZSXPk/GXbHdc/xBAhGxhNMvJpKuSUF/UAl0Ha3Cvx0QwO6ix1esfKwjXZ5XsFUmZxxGFX4xOY95bbbfaYXKlIlrdszhOsyEnRVwVwZJbrFys3Ftb32RfRi4HgngX1/4hxUe0iweqAcPPBu9pZH/aODfAamLeTLb7AvBxdcm+n8uUQe3VorhXPB7Riddabz21YdSiVVgGYzDaIV89YiRn4Q2pQLntmbJ90+pAnhZRglJCY3b3xKQsntVZUhr24GdbzW8B/hnV6WOorsj7+Xlb7C2NzfsHHZke2uUPf4mdXUjpq8jSu4K/3VzxzV2YPMjGY6P/J65ItJn/jml44zHkRUuVpiUdpYWCsQE63bhVXGWVWBa9Z+xlxPGsVsRCywd7GDZFJsdz/Vsm73mhJiaI3o+rWSvvtNIP5bjUiA8vvv8DlsEwYM0SYte/4jjOYCIkLMeRkNryD5VvfRA0b8BgLT9Ke/mmVXgUVfx3T3WuNrdFieIwTyvr9/+jpuTuuIMZvqYf/7oGjO1cLWlUfpzWYnHfPx0XES0S9mpBJtiksTDXU1caSaFxhzf9xP0BxJTfTKGISwvxDA6GS7U2OUiLMhgnmXkeAHnnGphQzKpSY37xolat14UXW+EG+3Y3x3XV4fSs4JdzTZTNvHCiaQv7nHBagxA
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR1001MB2365.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(396003)(366004)(376002)(346002)(136003)(39860400002)(186003)(1076003)(38350700002)(38100700002)(54906003)(8676002)(6916009)(66476007)(66556008)(66946007)(4326008)(316002)(52116002)(9686003)(44832011)(6506007)(5660300002)(33656002)(8936002)(6512007)(86362001)(478600001)(6486002)(33716001)(26005)(41300700001)(2906002)(6666004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WoMeG/QII8gzkMa1W2AszjCmxR0Y9dF3v+w2hLqDJw2YK5IVQiPOanENEALZ?=
- =?us-ascii?Q?7DDgyfP+y+xeBz41gj124NHUMv9zvwHHXjikSmtWKnb+J8IHE4FZjSWmvpiC?=
- =?us-ascii?Q?35X56bQDYAQdhFNpWgxg4uD51RWe0kQY8zibmE6+QaCgmKhaa5wKI0NaeG3b?=
- =?us-ascii?Q?xFYQNS8WNjh36BjrBy1IvYhvUR35ujWB/LddQDM1dUJJtSRy03G9o881L4hw?=
- =?us-ascii?Q?S2N68UKIR5aaZ7yJBtsmG5E3RhA53rOBJeZfRlMEwaK1XV5XPZwTpSqYY31l?=
- =?us-ascii?Q?5nPIFz8HvJy8Q6nVlCVy13zW7zXNQoMiPcmx1u+HiPOLtptcev0ou0sK0396?=
- =?us-ascii?Q?V/IGjRxSY4wEecCqmyt1oK1JfHIDPsdiFeaijpwrx4T8/F6WRda50v6Y8jY8?=
- =?us-ascii?Q?XeE7nFKubHAmhfWjCBoEGA0KFJolQWELf28l1mGYNcspJDom0PsqRUu3wd98?=
- =?us-ascii?Q?W9n9eZncKThowz36ZXl67TusPmto82qqcCrM91tbTpEfn7woI+LPinn4d7g1?=
- =?us-ascii?Q?x1+/I3TlfXi3KibAaYzhl74rYsYdBI77fth9J3/HU51bvR0jPvPpUqO8I+v7?=
- =?us-ascii?Q?MyROXjGeL+jK+9ljTmSwf74dWlVQmenP3KKeDgY8ABL7abAyC0qyk+ct7NGh?=
- =?us-ascii?Q?4DMgYakCYF0jJkclRgWdNAN/X3ufFsue9yP4fIzM7ByLR6CPfYTCokswhGKd?=
- =?us-ascii?Q?DSAyVN5823CKx2XfoY4pioniOn90iJIgwknTHeuiXCVj1w4w+E359lOqXE9z?=
- =?us-ascii?Q?e2VUuaSHghlOxNd/S+1zh6x26TPOhQXELgSnFEvxADcc4VlYQlRLp/pUh1SB?=
- =?us-ascii?Q?9SezKhOkH4VexrjMA6hqcdO0ZGtxesLw0DJXMJqsS79tTGXirEgqFEvGfPWe?=
- =?us-ascii?Q?JDOcL4Q4GUDy/JVtKiL3GnULj7YdPATSRplj82vhpz/q3M/V9PvzAtW8vo4L?=
- =?us-ascii?Q?FAIoUzcnbelzr7JySOWlNxwQxUF6jYviHzrPxXFZjRMxZN4W1Ya+MB47SbpG?=
- =?us-ascii?Q?OhtikT+Kgg2+tj5nljUAPQPwK/iRJyrVfmEBFSCjB4I1+mKzBe0JU5eI+Qc8?=
- =?us-ascii?Q?fyRqf5v7Yatx5HxYC+xS7H+8FdlyY3HfYl4uX38UsHCpfyTrnZEzdvhqaguT?=
- =?us-ascii?Q?jEep581AbUADj1m9vqZYXZBNdxCOSJsTirK335AlWr5LdXp2AqOwvLk2gRxP?=
- =?us-ascii?Q?2u8fZeTVQKUkKXhhf9DmMNrItGbik7o87OwE0nIq+g7izshRfajg5SxhK2Cz?=
- =?us-ascii?Q?ZEPXYqcBKUIjDJ23MXpJQRuYrss8iEvn0s53zVbAQerH3QSyGBruVpgwvk/T?=
- =?us-ascii?Q?YUUAtB1G2U3aa3cjDBeOaNutiQ2IKf4LTk5y3sQn4m+bnB43iYkOvDy1NHcJ?=
- =?us-ascii?Q?m4TXOD8Cz1CkKv4epO1D3CjFpoPLIob8N7mbtFeWFPSOmSqhBHmh0Bpw568z?=
- =?us-ascii?Q?avU7qjz5OkrvAc54x0ENagTK6K2qGtXIUShJ8dVqJjOaCkznlcwjoZg77oB1?=
- =?us-ascii?Q?KHrDzpzRIh+apt+EovlvS4tcTXUyu3uvG0OFOK339Oe48q9AGZxY5FQ8thf3?=
- =?us-ascii?Q?nAOOeP7FGti7v92chmdpXBHbfHVUgSB+7hx/1IPC?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63d5f0e5-12ee-4fd1-fe93-08da5d790b90
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR1001MB2365.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2022 04:52:49.4855
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Vm/OxMbSGm51ErGHvQHO1tWHBV7D95YwCdGO8ET5na0Ry7Kzq1+R7NTEi8fmdqhMBCSpARJeRgpjf5MbvH4yzMhzy8HSzhAWc+8emODezl8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR10MB1889
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.517,18.0.883
- definitions=2022-07-04_03:2022-06-28,2022-07-04 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 suspectscore=0
- malwarescore=0 bulkscore=0 mlxlogscore=990 phishscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2207040020
-X-Proofpoint-GUID: Sq2I1zsvy2T1KUvRe3_49kenJhU_G-8v
-X-Proofpoint-ORIG-GUID: Sq2I1zsvy2T1KUvRe3_49kenJhU_G-8v
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -146,49 +80,332 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 04, 2022 at 02:32:09AM +0200, Angel Iglesias wrote:
-> +/* Send a command to BMP3XX sensors */
-> +static int bmp380_cmd(struct bmp280_data *data, u8 cmd)
-> +{
-> +	int ret;
-> +	unsigned int reg;
-> +
-> +	/* check if device is ready to process a command */
-> +	ret = regmap_read(data->regmap, BMP380_REG_STATUS, &reg);
-> +	if (ret) {
-> +		dev_err(data->dev, "failed to read error register\n");
-> +		return ret;
-> +	}
-> +	if (!(cmd & BMP380_STATUS_CMD_RDY_MASK)) {
+From: ChiaEn Wu <chiaen_wu@richtek.com>
 
-This looks like it should be "reg" instead of command?
+This patch series add Mediatek MT6370 PMIC support. The MT6370 is a
+highly-integrated smart power management IC, which includes a single
+cell Li-Ion/Li-Polymer switching battery charger, a USB
+Type-C & Power Delivery (PD) controller, dual Flash LED current sources,
+a RGB LED driver, a backlight WLED driver, a display bias driver and a
+general LDO for portable devices.
 
-> +		dev_err(data->dev, "device is not ready to accept commands\n");
-> +		return -EBUSY;
-> +	}
-> +
-> +	/* send command to process */
-> +	ret = regmap_write(data->regmap, BMP380_REG_CMD, cmd);
-> +	if (ret) {
-> +		dev_err(data->dev, "failed to send command to device\n");
-> +		return ret;
-> +	}
-> +	/* wait for 2ms for command to be proccessed */
-> +	usleep_range(data->start_up_time, data->start_up_time + 100);
-> +	/* check for command processing error */
-> +	ret = regmap_read(data->regmap, BMP380_REG_ERROR, &reg);
-> +	if (ret) {
-> +		dev_err(data->dev, "error reading ERROR reg\n");
-> +		return ret;
-> +	}
-> +	if (reg & BMP380_ERR_CMD_MASK) {
-> +		dev_err(data->dev, "error processing command 0x%X\n", cmd);
-> +		return -EINVAL;
-> +	}
-> +	dev_dbg(data->dev, "Command 0x%X proccessed successfully\n", cmd);
-> +
-> +	return 0;
-> +}
+In this series of patches, we based on Andy Shevchenko's mfd patch used to
+adjust the Makefile order.
+(https://lore.kernel.org/all/20220616182524.7956-2-andriy.shevchenko@linux.intel.com/)
+Among with this, we took some changes for MT6370 and refined the MT6370 device
+tree files to comply with DT specifications.
 
-regards,
-dan carpenter
+Thank you,
+ChiaEn Wu
+
+---
+Changes in v4:
+- In patch 02/13:
+	- Add minItems of "io-channel-names"
+	- Replace text "Mediatek" with "MediaTek"
+
+- In patch 06/13:
+	- Roll back all "$ref: " to v2 patch style (using
+	  "/schemas/...")
+
+- In patch 07/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Replace "first break and then return" with "return directly"
+	  in
+	  "mt6370_check_vendor_info()"
+	- Add module name related description in Kconfig helptext
+	- Add Copyright in the source code
+	- Add header file "mt6370.h" for all "#define IRQ"
+	- Adjust Makefile order of MT6370
+	- Refine "bank_idx" and "bank_addr" in
+	  "mt6375_regmap_read()" / "mt6375_regmap_write()"
+	- Refine redundant "else if" in "mt6370_regmap_read()"
+
+- In patch 08/13:
+    - Replace text "Mediatek" with "MediaTek" in Kconfig
+    - Replace "first ret=regulator_(dis/en)able and then return"
+      with "return directly" in "mt6370_tcpc_set_vbus()"
+    - Replace header file <linux/of.h> with <linux/mod_devicetable.h>
+    - Add Copyright in the source code
+    - Add module name related description in Kconfig helptext
+    - Remove header file <linux/of.h>
+    - Refine all probe error by using dev_err_probe()
+
+- In patch 09/13:
+	- Replace text "Mediatek" with "MediaTek"
+	- Replace all "first dev_err() and then return" with "return
+	  dev_err_probe()"
+	- Add Copyright in the source code
+	- Add module name related description in Kconfig
+	- Add unit suffix of macro "ADC_CONV_POLLING_TIME"
+	- Add new macro "ADC_CONV_TIME_MS"
+	- Adjust the position of include file <mediatek,mt6370_adc.h>
+	- Adjust the postions between <linux/module.h> and
+	  <linux/mod_devicetable.h>
+	- Fix some incorrect characters
+
+- In patch 10/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig and
+	  MODULE_DESCRIPTION()
+	- Replace "mt6370_chg_val_to_reg" and "mt6370_chg_reg_to_val"
+	  with
+	  "linear_range" API
+	- Replace "first break and then return" with "return directly"
+	  in all
+	  cases of get/set power_supply_property
+	- Replace all "first dev_err() and then return" with "return
+	  dev_err_probe()"
+	- Replace all "return IS_ERR(priv->rdev) ? PTR_ERR(priv->rdev) :
+	  0" with
+	  "PTR_ERR_OR_ZERO()"
+	- Replace "priv->dev->of_node" with "dev_of_node()"
+	- Add Copyright in the source code
+	- Add module name related description in Kconfig helptext
+	- Add proper unit of "MT6370_MIVR_IBUS_TH"
+	- Add error check in "mt6370_chg_get_status"
+	- Remove including <mediatek,mt6370_adc.h> header file
+	- Remove redundant comma of every enum terminator line
+	- Remove unwanted blank lines
+	- Remove the useless label (toggle_cfo_exit:)
+	- Remove using atomic
+	- Remove using of_match_ptr()
+	- Fix some incorrect characters
+	- Fix updating wrong bits when using ena_gpiod of OTG regulator
+	- Adjust the probe order in probe()
+
+- In patch 11/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Replace text "const" with "constant" in Kconfig
+	- Add Copyright in the source code
+
+- In patch 12/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Add Copyright in the source code
+
+- In patch 13/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Add Copyright in the source code
+	- Revise the comment of "PWM HYS STEPS"
+
+
+Changes in v3:
+- Remove ADC ABI file, which is added in v2 Patch 7
+- In patch 02/14:
+	- Add items and remove maxItems of io-channels
+	- Add io-channel-names and describe each item
+	- Add "unevaluatedProperties: false" in "usb-otg-vbus-regulator"
+	- Rename "enable-gpio" to "enable-gpios" in "usb-otg-vbus-regulator"
+- In patch 03/14:
+	- Use leds-class-multicolor.yaml instead of common.yaml.
+	- Split multi-led and led node.
+	- Add subdevice "led" in "multi-led".
+- In patch 04/14:
+	- Remove the description of enum.
+- In patch 05/14:
+	- Rename "mediatek,bled-pwm-hys-input-threshold-steps" to
+	  "mediatek,bled-pwm-hys-input-th-steps"
+	- Refine "bled-pwm-hys-input-th-steps", "bled-ovp-microvolt",
+	  "bled-ocp-microamp" enum values
+- In patch 06/14:
+	- Use " in entire patchset
+	- Refine ADC description
+	- Rename "enable-gpio" to "enable-gpios" in "regualtor"
+- In patch 07/14:
+	- Refine Kconfig help text
+	- Refine error message of unknown vendor ID in
+	  mt6370_check_vendor_info()
+	- Refine return value handling of mt6370_regmap_read()
+	- Refine all probe error by using dev_err_probe()
+	- Refine "bank_idx" and "bank_addr" in mt6370_regmap_read() and
+	  mt6370_regmap_write()
+	- Add "#define VENID*" and drop the comments in
+	  mt6370_check_vendor_info()
+	- Drop "MFD" in MODULE_DESCRIPTION()
+- In patch 09/14:
+	- Refine Kconfig help text
+- In patch 10/14:
+	- Refine Kconfig help text
+	- Refine all channel value in read_scale()
+		a. current: uA --> mA
+		b. voltage: uV --> mV
+		c. temperature: degrees Celsius --> milli degrees Celsius
+	- Add "default:" condition of switch statement in read_scale() and read_raw()
+	- Add error message for reading ADC register failed
+	- Add the comment for adc_lock
+	- Add <linux/mod_devicetable.h> header file for struct of_device_id
+	- Replace "adc" text with "ADC" in all of the error messages
+- In patch 12/14:
+	- Refine the grammer of the Kconfig.
+	- Change reg mode to the const current mode.
+- In patch 14/14:
+	- Refine bool properties parsing (pwm-enable, ovp-shutdown, ocp-shutdown) in DT
+	  parsing function
+	- Refine u32 and u8 properties parsing (pwm-hys-input-th-steps, ovp-microvolt,
+	  ocp-microamp), from using register value to using actual value
+	- Refine error string of "channle-use" parsing failed
+	- Refine Kconfig help text
+
+
+Changes in v2:
+- In patch 01/15:
+	- Add "unevaluatedProperties: false".
+	- Delete "DT bindings".
+	- Refine the description to fit in 80 columns.
+	- Skip the connector description.
+- In patch 02/15:
+	- Refine items description of interrupt-name
+	- Rename "usb-otg-vbus" to "usb-otg-vbus-regulator"
+	- Add constraint properties for ADC
+- In patch 03/15:
+	- Skip not useful description of "^(multi-)?led@[0-3]$"
+	  and reg.
+	- Due to the dependency, remove the mention of mfd
+	  document directory.
+	- Delete Soft-start property. In design aspect, we think
+	  soft-restart should always be enabled, our new chip
+	  has deleted the related setting register , also, we don’t
+	  allow user adjust this parameter in this chip.
+	- Refine the commit message.
+- In patch 04/15:
+	- Skip not useful description of "^led@[0-1]$" and reg.
+	- Add apace after '#'.
+	- Refine the commit message.
+- In patch 05/15:
+	- Remove "binding documentation" in subject title
+	- Refine description of mt6370 backlight binding
+	  document
+	- Refine properties name(bled-pwm-hys-input-bit,
+	  bled-ovp-microvolt, bled-ocp-microamp) and their
+	  description
+- In patch 06/15:
+	- Refine ADC and Regulator descriptions
+	- Refine include header usage in example
+	- Refine node name to generic node name("pmic@34")
+	- Refine led example indentation
+	- Refine license of mediatek,mt6370_adc.h
+	- Rename the dts example from IRQ define to number.
+	- Remove mediatek,mt6370.h
+- In patch 07/15:
+	- Add ABI documentation for mt6370 non-standard ADC
+	  sysfs interfaces.
+- In patch 08/15:
+	- Add all IRQ define into mt6370.c.
+	- Refine include header usage
+- In patch 09/15:
+	- No changes.
+- In patch 10/15:
+	- Use 'gpiod_get_from_of_node' to replace
+	  'fwnode_gpiod_get_index'.
+- In patch 11/15:
+	- Refine Kconfig mt6370 help text
+	- Refine mask&shift to FIELD_PREP()
+	- Refine mutex lock name ("lock" -> "adc_lock")
+	- Refine mt6370_adc_read_scale()
+	- Refine mt6370_adc_read_offset()
+	- Refine mt6370_channel_labels[] by using enum to index
+	  chan spec
+	- Refine MT6370_ADC_CHAN()
+	- Refine indio_dev->name
+	- Remove useless include header files
+- In patch 12/15:
+	- Refine mt6370_chg_otg_rdesc.of_match
+	  ("mt6370,otg-vbus" -> "usb-otg-vbus-regulator") to match
+	  DT binding
+- In patch 13/15:
+	- Refine Kconfig description.
+	- Remove include "linux/of.h" and use
+	  "linux/mod_devicetable.h".
+	- Place a comma for the last element of the const
+	  unsigned int array.
+	- Add a comment line for the mutex 'lock'.
+	- In probe function, use 'dev_err_probe' in some
+	  judgement to reduce the LOC.
+	- Refine include header usage.
+	  BIT/GENMASK -> linux/bits.h
+	  FIELD_GET -> linux/bitfield.h
+- In patch 14/15:
+	- Add blank line.
+	- Replace container_of() with to_mt6370_led() .
+	- Refine description of ramping.
+	- Refine the mt6370_init_common_properties function.
+	- Refine the probe return.
+- In patch 15/15:
+	- Refine MT6370 help text in Kconfig
+	- Refine DT Parse function
+	- Remove useless enum
+	- Add comment for 6372 backward compatible in
+	  bl_update_status() and
+	  check_vendor_info()
+	- Using dev_err_probe(); insteads dev_err()&return; in
+	  the probe()
+
+Alice Chen (2):
+  dt-bindings: leds: Add Mediatek MT6370 flashlight
+  leds: flashlight: mt6370: Add Mediatek MT6370 flashlight support
+
+ChiYuan Huang (7):
+  dt-bindings: usb: Add Mediatek MT6370 TCPC
+  dt-bindings: leds: mt6370: Add Mediatek mt6370 current sink type LED
+    indicator
+  dt-bindings: backlight: Add Mediatek MT6370 backlight
+  dt-bindings: mfd: Add Mediatek MT6370
+  mfd: mt6370: Add Mediatek MT6370 support
+  usb: typec: tcpci_mt6370: Add Mediatek MT6370 tcpci driver
+  leds: mt6370: Add Mediatek MT6370 current sink type LED Indicator
+    support
+
+ChiaEn Wu (4):
+  dt-bindings: power: supply: Add Mediatek MT6370 Charger
+  iio: adc: mt6370: Add Mediatek MT6370 support
+  power: supply: mt6370: Add Mediatek MT6370 charger driver
+  video: backlight: mt6370: Add Mediatek MT6370 support
+
+ .../leds/backlight/mediatek,mt6370-backlight.yaml  |   92 ++
+ .../bindings/leds/mediatek,mt6370-flashlight.yaml  |   41 +
+ .../bindings/leds/mediatek,mt6370-indicator.yaml   |   77 ++
+ .../devicetree/bindings/mfd/mediatek,mt6370.yaml   |  280 ++++++
+ .../power/supply/mediatek,mt6370-charger.yaml      |   88 ++
+ .../bindings/usb/mediatek,mt6370-tcpc.yaml         |   36 +
+ drivers/iio/adc/Kconfig                            |   12 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/mt6370-adc.c                       |  274 +++++
+ drivers/leds/Kconfig                               |   14 +
+ drivers/leds/Makefile                              |    1 +
+ drivers/leds/flash/Kconfig                         |   12 +
+ drivers/leds/flash/Makefile                        |    1 +
+ drivers/leds/flash/leds-mt6370-flash.c             |  662 ++++++++++++
+ drivers/leds/leds-mt6370.c                         |  994 ++++++++++++++++++
+ drivers/mfd/Kconfig                                |   16 +
+ drivers/mfd/Makefile                               |    1 +
+ drivers/mfd/mt6370.c                               |  289 ++++++
+ drivers/mfd/mt6370.h                               |   88 ++
+ drivers/power/supply/Kconfig                       |   14 +
+ drivers/power/supply/Makefile                      |    1 +
+ drivers/power/supply/mt6370-charger.c              | 1062 ++++++++++++++++++++
+ drivers/usb/typec/tcpm/Kconfig                     |   11 +
+ drivers/usb/typec/tcpm/Makefile                    |    1 +
+ drivers/usb/typec/tcpm/tcpci_mt6370.c              |  207 ++++
+ drivers/video/backlight/Kconfig                    |   12 +
+ drivers/video/backlight/Makefile                   |    1 +
+ drivers/video/backlight/mt6370-backlight.c         |  352 +++++++
+ include/dt-bindings/iio/adc/mediatek,mt6370_adc.h  |   18 +
+ 29 files changed, 4658 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+ create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml
+ create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-indicator.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+ create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+ create mode 100644 Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+ create mode 100644 drivers/iio/adc/mt6370-adc.c
+ create mode 100644 drivers/leds/flash/leds-mt6370-flash.c
+ create mode 100644 drivers/leds/leds-mt6370.c
+ create mode 100644 drivers/mfd/mt6370.c
+ create mode 100644 drivers/mfd/mt6370.h
+ create mode 100644 drivers/power/supply/mt6370-charger.c
+ create mode 100644 drivers/usb/typec/tcpm/tcpci_mt6370.c
+ create mode 100644 drivers/video/backlight/mt6370-backlight.c
+ create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
+
+-- 
+2.7.4
+

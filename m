@@ -2,109 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B25565F55
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 00:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A28565FBB
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 01:29:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbiGDWES (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 18:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56490 "EHLO
+        id S230311AbiGDX3b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 19:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233028AbiGDWER (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 18:04:17 -0400
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1FFB869;
-        Mon,  4 Jul 2022 15:04:17 -0700 (PDT)
-Received: by mail-yb1-xb2e.google.com with SMTP id d145so15612088ybh.1;
-        Mon, 04 Jul 2022 15:04:17 -0700 (PDT)
+        with ESMTP id S230011AbiGDX3a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 19:29:30 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B80521A5
+        for <linux-iio@vger.kernel.org>; Mon,  4 Jul 2022 16:29:29 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id d145so15846504ybh.1
+        for <linux-iio@vger.kernel.org>; Mon, 04 Jul 2022 16:29:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WA0CaXQ5woKFuQBJ+vZAxAma/izW7Cyd5GqzqgRRN30=;
-        b=Xp39ZhE3gu7WzKot9UWpOfRbSrret4YF/sBE1KQLT0sVvuXaGQTn4fNvNWSTy+Mprl
-         igEpBFdHKiiiAVRqXAM7hKVtm1LnahwUkBylrMEKZnZ8WGL6TgNkTr5KFlFGD29bNRul
-         utoepBprQwSY45XrseYl7XgOfMf/bRWAVDCyUMAS72a7ph/+1BcJLik5+4zwXkcj2Etn
-         sbD2vQmoUiUOkdwMAK5bjoKLf2+8FOFtvLf5DX5T6TXxX0030PjI67c3Fz0gA8X/7Ti3
-         3izpbslseAJ4nfY8kgaj0CaVMPPxSsPEyMGK4nre3Wfg//WhqbgfAMUx/xtiW5ug0/p1
-         F2wQ==
+        bh=DYfa5SW60uxPFfpBGnze3FVN0xAr6cm6zrVNUcZRHEM=;
+        b=AWcB67cILo/HS1hZgAzwpw7SGHAwg7RMS9Yb15/eVWZzDLYbgErMSIpmG3BBU/+wk8
+         VM7jPaOh5XGogBh7lbr/giIa7Vme66rv/fuuN0qjpSUmuG7TtT8powmobzQ70XSSXJr4
+         /9G/JY+SjqvuOLDNd+xxpU7UUrVTlnTsF0bnk09REd+n6M2val56bZJ8SFc5y8kgUaP4
+         fOLTjjy0ka7xWun9Fb5EeQidBVSon2GOYBS1ExT5n/3QG/auJUubvK6fpOcI17xztGR/
+         mB2VU7RSC9A+Zhqomnnnsl6S6NeAbqcavBg9ZfcmVZdl/i/RYkavuYm2qlLeYWZy/BoO
+         jrDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WA0CaXQ5woKFuQBJ+vZAxAma/izW7Cyd5GqzqgRRN30=;
-        b=2He4+6Azl0cI6K4sS621v9BCcvh0G/zVuRHEx/3PikBYh+VbQ33Gsh36P3a+RLN5R+
-         5066k+K6IqOa5ki4vS0+XV1a/ONPDA3k6J8Cma1XrX+RPCYLaZtPnDyOslL+BneI+ioT
-         2zupfgNWg1rUUt6MqTOOuUpdtS30eTNNG61nUoqsfa4IlM161RzxrRPLJb8lnNNWJdE2
-         DbeGxH8SW9z5MvVDFGjD6uBPeVGEDglQ9Atet5lOXmX8jtDDA3Nt+pzaGT7F2mwURQUn
-         dttzy9SA0CCd0JVWa4TGLfuJEXN+7AReJVqtXI582DxSC0T8aXpWfedUzt0zd/0I1Ckc
-         Ge3Q==
-X-Gm-Message-State: AJIora8G4OwHT+HhU+3wInyaCki4zTXwL9ysnUj3yWwtUI2HGWXpS1EJ
-        QnarZng/6veXGfrDmnHR570NXACzFw5npO3YlrUdvlVk8p8rIQ==
-X-Google-Smtp-Source: AGRyM1uSiycsXgdx4E0vIMPSIUmMB4U+b9FtGgnCtSsh2BptdFeG3zP/K5aUdMx4ykWn4+0QDv0gtygAcdb/3eZbLkQ=
-X-Received: by 2002:a25:858e:0:b0:66e:4898:63e2 with SMTP id
- x14-20020a25858e000000b0066e489863e2mr8877361ybk.296.1656972256092; Mon, 04
- Jul 2022 15:04:16 -0700 (PDT)
+        bh=DYfa5SW60uxPFfpBGnze3FVN0xAr6cm6zrVNUcZRHEM=;
+        b=6iHU3TZswMPzKZ8s3B4dEKrhB0x2gc6dZR9BncIEkP5g3s7c5O3jhHdegHMTm0GkiO
+         2s+qoP3t1BZVBy8/9g7nVKwqxr52GLZmghnLyiswqTKMlS5nO5R87wSi85yr9irNPwa5
+         ENuAupN7LOxWvtU5zlmbVCaJJvfSnzgcyAEfSiVyDa3mQ9PmwPP+LVq7wx38ABTkgiRG
+         LVRxt08VaFyeUMKdflAb5U0AeeqdqzzaOxVc4IReFV++itQLol7lx7TpqPxXrCq5muas
+         r1sPnQCoK37ZkxRGdKCfmXcnFrBrK3VHNTi24LEABSNfyr8aUMXuhNbCcClTww54Rc1x
+         XAuA==
+X-Gm-Message-State: AJIora9TyZBE44ZEcf7sBOPtT9hZpYeEZ3EwqUvB/8XPPESe/+ImpgE+
+        HKgN0p+0L9DPh8B4aHJloIaOo3/hufnNL5cqUX0CQA==
+X-Google-Smtp-Source: AGRyM1vCHd+tMIgnTmjocJ+aqdEL7YLE2lS9emkkzZMxS+vgaMFBtO0bt+SgFXq+LLqP2D08Wls3VKVq9J1gAL9Xwog=
+X-Received: by 2002:a25:fe04:0:b0:66e:1f8a:8e89 with SMTP id
+ k4-20020a25fe04000000b0066e1f8a8e89mr17796826ybe.514.1656977368400; Mon, 04
+ Jul 2022 16:29:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704172116.195841-1-marcus.folkesson@gmail.com>
-In-Reply-To: <20220704172116.195841-1-marcus.folkesson@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 5 Jul 2022 00:03:39 +0200
-Message-ID: <CAHp75VcgDDFH9VuVx1VV4U+F_j+QOaJ1qUpUzw59ZixakUcEsw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/9] Improve MCP3911 driver
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
+References: <cover.1656883851.git.jahau@rocketmail.com> <8a1fb0faedc25aa2fbf9852cf4e1d9d085675ad6.1656883851.git.jahau@rocketmail.com>
+In-Reply-To: <8a1fb0faedc25aa2fbf9852cf4e1d9d085675ad6.1656883851.git.jahau@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 5 Jul 2022 01:29:17 +0200
+Message-ID: <CACRpkdZ3PMff3hrZrHJaKXiacy1KZoKBZmRwte3Kp27G2O+8kg@mail.gmail.com>
+Subject: Re: [PATCH v4 08/10] iio: magnetometer: yas530: Apply documentation
+ and style fixes
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 4, 2022 at 7:20 PM Marcus Folkesson
-<marcus.folkesson@gmail.com> wrote:
->
-> Hi,
->
-> This patch series intend to fix bugs and add functionality to the
-> MCP3911 driver.
-> The main features added are
-> - Support for buffers
-> - Interrupt driven readings
-> - Support for oversampling ratio
-> - Support for set scale values (Gain)
->
-> Among the bug fixes, there are changes in the formula for calculate raw
-> value and a fix for mismatch in the devicetree property.
->
-> Another general improvement for the driver is to use managed resources
-> for all allocated resources.
->
-> See patch notes for more specific changes between versions.
->
-> General changes for the series:
+On Mon, Jul 4, 2022 at 12:03 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-For non-commented patches (excluding patch 7!)
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> This commit gathers several minor changes.
+>
+> In the device examples, "Xiaomi" is too generic, specific devices should be
+> listed here. E.g. Xiaomi Redmi 2 seems to have YAS537 but it's not fully clear
+> if this applies to all its variants. Samsung Galaxy S7 is often quoted in
+> conjunction with YAS537.
+>
+> Removed defines for device IDs of YAS537 and YAS539, they are not needed so far.
+>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-For commented ones, you may take the tag if you are going to address
-them as suggested.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> v3:
-> - Drop Phase patch
-> - Add Fixes tags for those patches that are fixes
-> - Move Fixes patches to the beginning of the patchset
-
--- 
-With Best Regards,
-Andy Shevchenko
+Yours,
+Linus Walleij

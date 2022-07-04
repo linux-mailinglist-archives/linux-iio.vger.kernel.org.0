@@ -2,68 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA6E564AEC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 02:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F830564B06
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 03:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiGDAdr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Jul 2022 20:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54258 "EHLO
+        id S229579AbiGDBBz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Jul 2022 21:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbiGDAdq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Jul 2022 20:33:46 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B0C16146;
-        Sun,  3 Jul 2022 17:33:45 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id b26so11198185wrc.2;
-        Sun, 03 Jul 2022 17:33:45 -0700 (PDT)
+        with ESMTP id S229450AbiGDBBx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Jul 2022 21:01:53 -0400
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60101.outbound.protection.outlook.com [40.107.6.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B77725F6;
+        Sun,  3 Jul 2022 18:01:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=alzOV0S9hEFulSnojMZhVRP6LetwVEvkq+qVTMPp3v7jV2uBFFG9Aljk8Qt0b6YV9NyM3Cf/15cWFOWdCu0aNpSughpAPbUSTKUrISnUw8Ql6lhmUJVDUEiZYS1wRgePGQS/B92+/xG10UjIh+B5fqO+7m8jBXOQ3CoTH2Szp8eSV1SBJGZJ/LHZm2+2c9g+J+0lQ4/G35e/Re0ITONbYY6MBj6OuXzhexfYXFMMoLa7+r79+zMDketmFp5B2iJHlD/utlhShDkBlxrne2535PSlyh0TVutB7tkCr3F94Xh9y40K/bHsc7O29/lfeEBjk4ItuhCcjLJBKqFAM6jjqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4Di8Kn6U+DtqNErmPQudU8+iiOw7bvHOfeLNdxPqUSw=;
+ b=i9nCAmy+nCNRIchlNgNvpxecSWQoJepR4jprKRovp4Qr3gVgoJ3aV4WtvqRTz/hlRSs0f7zmy6YeuTl4jti1EPr2lK4huFL7ChbXORYQKzrr2du0Hzibq1bHSifaTBzyji7LCiVanJpbEmMrruUeSYJ8Nz6Ho8LlbR2gqjHtP0+VBR0UUuq8C1tdUK19HRt/bxG0tZpmwmdHgsThc6WDJ7ftGpa90kjDc5kDAH9XtWRDshue/CiqRZKvAa+6B6ygaghfYQ/15Lom/57xqLyLkuplNpi0Vd6LAEvQF2RNGBiEscRr6jq84yKYFgjExB+TJCheA+MuCCyVcjK9ujOfpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass action=none
+ header.from=leica-geosystems.com.cn; dkim=pass
+ header.d=leica-geosystems.com.cn; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P4iMzV5q1Bszb1Le7bggIfrAtHC4PWgCOOkJ4nY/9is=;
-        b=hJOCbFbu6z/DhqDssnsA9Si0sFSGNdYGwgPjwgfOEFWjGPyooLZal48rBz0VHi1cOi
-         NI9CkSjs4qId8cZNo77X38xx8hCOajU674SJFScO/C6btn6UkM6zTBx4utDgGoqNkb/A
-         znFO/SiWV9QM0n3CZvWLXPdTUkWk3aaoIGfpcJWWAytj+iicoY5eiPZTI14a6MyvWjg9
-         TgV4CMWWVB43NJ1XRdupLMEVHLkizXOKnuEEIVDMasyfVhmZ6XTqx/Ytg7S0bXsGWh44
-         LtOGVqk4ejkMhFjwOG0BM+iwcYmnM6gqWvwRqCeQivIAL4dhK2zUmmcjYOBV4vj5ASQf
-         D8lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P4iMzV5q1Bszb1Le7bggIfrAtHC4PWgCOOkJ4nY/9is=;
-        b=wLAjznr2b+/dnGOiZBgpYyb+jVMYgRvZaDtpgBd4WQ4DF5dy6V900jEof2Wppu2L8U
-         SXF9MLabNuQRsuk9hW5JagSwJRadbDw+E2vbIL0/cfG73/2zCIw7I7tf6Q4DyLIcTKuf
-         FYJ6oeVpaEjFkdCsRmJlJvR4aFjxlPu1F4u1JlrfSMf21oEAO3d+O+cmG3+y5fWocyyY
-         AiPaUFJMZriNeXwbud7jQLHxfYkZl7/WuwwC7RgF0nCN/juQs6nfxBl9t8TJ76dQzl+E
-         WnFHuw887jScA7wKPuib3fKI5IVH3YcEV5ZbfqKKk/WyE796oK6V765zJ1HqVzNg+ti5
-         PiaQ==
-X-Gm-Message-State: AJIora/alP3VvYE6K7PJHsCSZ3Sr+kpMAOE/ZIyVg50zI/h2mc142CAa
-        TnbUIQTsYWut5dRfYXp39Qc=
-X-Google-Smtp-Source: AGRyM1srSO9Ejd3m5KbU4bXgQH8gWnlUsoJFn6ESCG7tpeZfk3l1GrgzwXnW7qzzMypHDXU9+mqdjQ==
-X-Received: by 2002:adf:f48e:0:b0:21d:6562:4717 with SMTP id l14-20020adff48e000000b0021d65624717mr5508345wro.428.1656894823807;
-        Sun, 03 Jul 2022 17:33:43 -0700 (PDT)
-Received: from xps-work.lan (214.red-83-37-4.dynamicip.rima-tde.net. [83.37.4.214])
-        by smtp.gmail.com with ESMTPSA id q5-20020adff945000000b0021b9585276dsm28078126wrr.101.2022.07.03.17.33.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Jul 2022 17:33:43 -0700 (PDT)
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Di8Kn6U+DtqNErmPQudU8+iiOw7bvHOfeLNdxPqUSw=;
+ b=cBr0azyr4zYjTLosdqSAErpcYxp6lmwptjLwLSL2HhKFpyH0fK1+UtVH+ls3uBv0O9kPe3tRUpxAJ1iX80NgX8jqptAXa+Syc9+YlqLqpZoEXKg1IAkIadCR2cqcuaCfBh7BD+xVwvzYflVif4yBiDbU/2sccFWOyvyAohyIc18=
+Received: from AM9PR06MB7844.eurprd06.prod.outlook.com (2603:10a6:20b:3aa::24)
+ by VE1PR06MB7038.eurprd06.prod.outlook.com (2603:10a6:800:1a7::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.14; Mon, 4 Jul
+ 2022 01:01:46 +0000
+Received: from AM9PR06MB7844.eurprd06.prod.outlook.com
+ ([fe80::7ce1:9e8b:a4f8:11ca]) by AM9PR06MB7844.eurprd06.prod.outlook.com
+ ([fe80::7ce1:9e8b:a4f8:11ca%9]) with mapi id 15.20.5395.020; Mon, 4 Jul 2022
+ 01:01:46 +0000
+From:   LI Qingwu <qing-wu.li@leica-geosystems.com.cn>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] iio: pressure: bmp280: Adds more tunable config parameters for BMP380
-Date:   Mon,  4 Jul 2022 02:33:33 +0200
-Message-Id: <20220704003337.208696-1-ang.iglesiasg@gmail.com>
-X-Mailer: git-send-email 2.36.1
+CC:     "lars@metafoo.de" <lars@metafoo.de>,
+        "tomas.melin@vaisala.com" <tomas.melin@vaisala.com>,
+        "nuno.sa@analog.com" <nuno.sa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        GEO-CHHER-bsp-development 
+        <bsp-development.geo@leica-geosystems.com>
+Subject: RE: [PATCH V1 1/1] iio: accel: sca3300: Extend the trigger buffer
+ from 16 to 32 bytes
+Thread-Topic: [PATCH V1 1/1] iio: accel: sca3300: Extend the trigger buffer
+ from 16 to 32 bytes
+Thread-Index: AQHYjPKNuiUUBllm20O/wlqzm/hoCa1pujMAgAOuCXA=
+Date:   Mon, 4 Jul 2022 01:01:46 +0000
+Message-ID: <AM9PR06MB78447C75482FA9179A601BFDD7BE9@AM9PR06MB7844.eurprd06.prod.outlook.com>
+References: <20220701023030.2527019-1-Qing-wu.Li@leica-geosystems.com.cn>
+        <20220701023030.2527019-2-Qing-wu.Li@leica-geosystems.com.cn>
+ <20220701174602.68b20753@jic23-huawei>
+In-Reply-To: <20220701174602.68b20753@jic23-huawei>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=leica-geosystems.com.cn;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 44f681a0-6c5b-4fec-4b92-08da5d58c487
+x-ms-traffictypediagnostic: VE1PR06MB7038:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: MYpfPF2fYN8Af0WG9rV3mVzsv81WnBh1+XFGCzec8a+fOYx1jJrw0Crq3WJWkF9tuavhMgUAvrWTKmqQkX0lis+rW0R+Bjkb4/B6ZyZm3D7RYy8gR0p2/1rm463pkDHWAL665CF+ICJaV3/PuUcFOc6xC2aTJf8M7u0h3/G2lL5vE3paExKMr1NyCu4q4Jdn/nLD7MSfqwrgsOC6/vtXI0IGHPdmO8kxc5hc2IAqiskkZC0dsK2m67WEYmMu/FXZpxQ31UZCswAvJ+BjnYG5t22KYq8oqiPR0PaU1As2Yb1XperlaSuNMHyQMqSuzdekPnaZkO+VxSqZO6rRwDjsyi7uBGafFca9bS2u9sPdZKF8dVSLZ21RI48TEuCaNnaX6ztOqMaZkFOi0xeiRlB3Poo6dFmEyICdgxbNGHjfFtBDKpfqwyWG9N44TNQ6AmmwZ3nVszveWOgL3Cp2I4ch10/LurESEf/DCr2AoE12FbcM82u0FfWNIKicgkRUxbOOxfSfyoJ89Ay1m0TGp4k3ezUrQTziKCWM7u1iof/c75HqGKKrRGO+mtnQalYr5TMmoEtoLtNX/OfIcl0t80RI+uIKN+UqWLMSERWajxxtb4nxJeXPwmWyCgkCYOUyk7/p3UbDh+r013jKK87O75i+PPFNLy/E03WCSoL/Wcaam+bfcQg1uh6IyrS/jittuYrajX+cvjGxO8SiHUb9OJoSx0S6Vkaep3f7jtEC04wZZ6/iOCiO59WHkQ0KfuaHEBjzjcLCBiiLO+2YKUYiT+QQ5OUiatobw5C+Hf0CTnyz5Wc2QD4KpizPRIYAgrhc1OBx
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR06MB7844.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(376002)(136003)(39860400002)(396003)(346002)(55016003)(83380400001)(2906002)(86362001)(64756008)(66556008)(76116006)(45080400002)(54906003)(38100700002)(4326008)(66476007)(66946007)(478600001)(66446008)(122000001)(186003)(316002)(6916009)(7696005)(5660300002)(33656002)(38070700005)(966005)(6506007)(41300700001)(8676002)(52536014)(26005)(8936002)(9686003)(53546011)(71200400001)(107886003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?apUc6KYy60Za0GSBT7gTPYvz7OEOUnbJ3uZXs4guFexzLElA4Klfh8hn8Nb3?=
+ =?us-ascii?Q?ZCGljkqetKOZRp1EeagtNAEVmcPfI/fQz6FwCrn79MEADKRpjdZQpbB/AT5+?=
+ =?us-ascii?Q?ZwAGT59ckXRXKizxEkV5nCGADq0L01DsVE8UDWkfkfGeYCtgbWadmtyzSQPz?=
+ =?us-ascii?Q?QEY6hjbPBRpFMTTQC5qObrecy0zCskWl3pOb1vw8GSMT9LVbJKJHnm+b+Xib?=
+ =?us-ascii?Q?9vPm3r5eu7Xx+mHM99shHUXQg0Y1Iuz2VX5SLrmsVWSIQri08zMVz9sl8jGN?=
+ =?us-ascii?Q?1RIWtBmXJo5GmmUNBye2Mff53Nqd000GUvRUpbgAtlZcCml+4VC3DvXEmGX5?=
+ =?us-ascii?Q?tBrvLEtQu2FA6kMoNhyQUfhzEtdMuJKtdlrKxw+bSuqxa9X0l1CF1MKl52of?=
+ =?us-ascii?Q?7s/HlT0rPqwJ33iFLz3CICg4MSsxkCQy/3MtJ5bDMFW9Ottuk78tFaIZ34ED?=
+ =?us-ascii?Q?zc8KReKOqHDuJrODqfaXqgEx/SF2zyOjvu7DNhNzi502GWxwOvzYQ38Qtf5P?=
+ =?us-ascii?Q?3rdHWmJn79znL1ea1P5g2WxP3zLAR3/13s7lmi6vwumC4kr4pZ7+78t8Ijyt?=
+ =?us-ascii?Q?99f4yDjGeB4YHyKWPrC9Tc5za8VtaUCezEZDZdjh7LUHKDp6t7/yxYKqoPnO?=
+ =?us-ascii?Q?A2hT4pPmxwN9Bhjr23lWLA1rt0rDbAtNL1VS84m8DX2TQuqiyPCkP7y64UKW?=
+ =?us-ascii?Q?EoPYNDpEQ8D09MjA5TnR7ZEP+7vesolAYo/E32Kt/ZthIYK9Ood33HbbUsfJ?=
+ =?us-ascii?Q?idU/UZorBiZRTlepiixYLQMIhNwtI2xg5G73r7Hg3yHLgpHuiGJs/lGU/CNh?=
+ =?us-ascii?Q?xhlS6Y8HP0Tv3na5BEtymYmSgGiQQziFD39HxltJ0/ZSpD0xyOZfky/LlILc?=
+ =?us-ascii?Q?sNsyQQQB7iRQrT+6nXCajcHcpzdgDlVvzqf4d7so4wLPgWraeIUai8jUFZ+1?=
+ =?us-ascii?Q?ZazL+dCtGLO930rHPvm6PqHT6OU6cpGdehshRuGaMakZzPK1oJhOh1X+FvE8?=
+ =?us-ascii?Q?Oo1CZaFQTqBushpOC2AFj/Ce2zXo+RuoawKqmF90upLbLfcyp6QFM5OhIJH/?=
+ =?us-ascii?Q?5AFBNQVjH7//GII1DZCidD7PQ238Bgh+ehDGcLCWFV8oEezpxvHVYOYULyd1?=
+ =?us-ascii?Q?FfDSmzJAEK1v2qPlqxjxk9MSz8xnE7K89sROtuLp8Ts6A9MHkjXqwjWyQUce?=
+ =?us-ascii?Q?phokKKt4bydxMhrHyTPdO169+YyNK5ffOOPMoLdgYZzOuAF/m/C37NbWeO8S?=
+ =?us-ascii?Q?bZlL8lAeR8VSK5q4FEbix+u1sAiIFuJPEBGCHrZNVwcWQk+K64J6T4UgM8rT?=
+ =?us-ascii?Q?BLwh1rdn0r9JTDd+NFuGPOV+dz9SNyNdYx+/gGOuWzFDVNhW+KIfO6LXun4v?=
+ =?us-ascii?Q?3th+0MtER1luq7FM9WSUwXLGHvqZDgQHF/vtmccX4G1/Z+z8qRRV1y7QrQlE?=
+ =?us-ascii?Q?OmXQ+cZ790dNyLxW3ihIYX/uj4cIxLPImhXeOL0voZWMwZAd8cyt1nNbcvXh?=
+ =?us-ascii?Q?fKNBObAQuEzBnXUF/b3dGRSQ4jW5ujF1RJQJkOIc7RJbTeo2UyqruYjlpA8p?=
+ =?us-ascii?Q?Oa0jBJ9IfxqEFwC/uoh4UDGrPFyNfE+yO7pdtqrXLbKA6679FAgazd4xS0Zq?=
+ =?us-ascii?Q?uQF/856/SW15/o0JFWXflug=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR06MB7844.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44f681a0-6c5b-4fec-4b92-08da5d58c487
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2022 01:01:46.1428
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8AISLDMmJ0WIczr+d+emIksBvx6kyMYSwwaVe6TrfW4i/1qQkpLP9QSQSSmwasu1wZ7w8PciZUkMmk0p7OJlFsrb88pw86UzIcdgSgsZrVSOfjsce2wXQWC1W+4R8fpK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB7038
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,580 +126,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Allows to configure the IIR filter coefficient and the sampling frequency
-The IIR filter coefficient is exposed using the sysfs attribute
-"filter_low_pass_3db_frequency"
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
----
- drivers/iio/pressure/bmp280-core.c | 338 ++++++++++++++++++++++++++---
- drivers/iio/pressure/bmp280.h      |  18 --
- 2 files changed, 308 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 0d2395a28df8..fb321419bff8 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -99,6 +99,27 @@ static const char *const bmp280_supply_names[] = {
- 	"vddd", "vdda"
- };
- 
-+enum bmp380_odr {
-+	BMP380_ODR_200HZ,
-+	BMP380_ODR_100HZ,
-+	BMP380_ODR_50HZ,
-+	BMP380_ODR_25HZ,
-+	BMP380_ODR_12_5HZ,
-+	BMP380_ODR_6_25HZ,
-+	BMP380_ODR_3_125HZ,
-+	BMP380_ODR_1_5625HZ,
-+	BMP380_ODR_0_78HZ,
-+	BMP380_ODR_0_39HZ,
-+	BMP380_ODR_0_2HZ,
-+	BMP380_ODR_0_1HZ,
-+	BMP380_ODR_0_05HZ,
-+	BMP380_ODR_0_02HZ,
-+	BMP380_ODR_0_01HZ,
-+	BMP380_ODR_0_006HZ,
-+	BMP380_ODR_0_003HZ,
-+	BMP380_ODR_0_0015HZ
-+};
-+
- #define BMP280_NUM_SUPPLIES ARRAY_SIZE(bmp280_supply_names)
- 
- struct bmp280_data {
-@@ -120,6 +141,16 @@ struct bmp280_data {
- 	u8 oversampling_press;
- 	u8 oversampling_temp;
- 	u8 oversampling_humid;
-+	u8 iir_filter_coeff;
-+
-+	/* BMP380 devices introduce sampling frequecy configuration. See
-+	 * datasheet sections 3.3.3. and 4.3.19.
-+	 *
-+	 * BMx280 devices allowed indirect configuration of sampling frequency
-+	 * changing the t_standby duration between measurements. See datasheet
-+	 * section 3.6.3
-+	 */
-+	int sampling_freq;
- 
- 	/*
- 	 * Carryover value from temperature conversion, used in pressure
-@@ -131,6 +162,7 @@ struct bmp280_data {
- struct bmp280_chip_info {
- 	unsigned int id_reg;
- 
-+	const struct iio_chan_spec *channels;
- 	int num_channels;
- 	unsigned int start_up_time;
- 
-@@ -146,6 +178,14 @@ struct bmp280_chip_info {
- 	int num_oversampling_humid_avail;
- 	int oversampling_humid_default;
- 
-+	const int *iir_filter_coeffs_avail;
-+	int num_iir_filter_coeffs_avail;
-+	int iir_filter_coeff_default;
-+
-+	const int (*sampling_freq_avail)[2];
-+	int num_sampling_freq_avail;
-+	int sampling_freq_default;
-+
- 	int (*chip_config)(struct bmp280_data *);
- 	int (*read_temp)(struct bmp280_data *, int *);
- 	int (*read_press)(struct bmp280_data *, int *, int *);
-@@ -197,6 +237,30 @@ static const struct iio_chan_spec bmp280_channels[] = {
- 	},
- };
- 
-+static const struct iio_chan_spec bmp380_channels[] = {
-+	{
-+		.type = IIO_PRESSURE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-+				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+	},
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-+				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+	},
-+	{
-+		.type = IIO_HUMIDITYRELATIVE,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-+				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+	},
-+};
-+
- static int bmp280_read_calib(struct bmp280_data *data, unsigned int chip)
- {
- 	int ret;
-@@ -524,6 +588,25 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
- 			break;
- 		}
- 		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (unlikely(!data->chip_info->sampling_freq_avail)) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		*val = data->chip_info->sampling_freq_avail[data->sampling_freq][0];
-+		*val2 = data->chip_info->sampling_freq_avail[data->sampling_freq][1];
-+		ret = IIO_VAL_INT_PLUS_MICRO;
-+		break;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		if (unlikely(!data->chip_info->iir_filter_coeffs_avail)) {
-+			ret = -EINVAL;
-+			break;
-+		}
-+
-+		*val = data->chip_info->iir_filter_coeffs_avail[data->iir_filter_coeff];
-+		ret = IIO_VAL_INT;
-+		break;
- 	default:
- 		ret = -EINVAL;
- 		break;
-@@ -540,14 +623,27 @@ static int bmp280_write_oversampling_ratio_humid(struct bmp280_data *data,
- 					       int val)
- {
- 	int i;
-+	int ret, prev;
- 	const int *avail = data->chip_info->oversampling_humid_avail;
- 	const int n = data->chip_info->num_oversampling_humid_avail;
- 
- 	for (i = 0; i < n; i++) {
- 		if (avail[i] == val) {
-+			prev = data->oversampling_humid;
- 			data->oversampling_humid = ilog2(val);
- 
--			return data->chip_info->chip_config(data);
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				/*
-+				 * Error applying new configuration. Might be
-+				 * an invalid configuration, will try to
-+				 * restore previous value just to be sure
-+				 */
-+				data->oversampling_humid = prev;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+			return 0;
- 		}
- 	}
- 	return -EINVAL;
-@@ -557,14 +653,27 @@ static int bmp280_write_oversampling_ratio_temp(struct bmp280_data *data,
- 					       int val)
- {
- 	int i;
-+	int ret, prev;
- 	const int *avail = data->chip_info->oversampling_temp_avail;
- 	const int n = data->chip_info->num_oversampling_temp_avail;
- 
- 	for (i = 0; i < n; i++) {
- 		if (avail[i] == val) {
-+			prev = data->oversampling_temp;
- 			data->oversampling_temp = ilog2(val);
- 
--			return data->chip_info->chip_config(data);
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				/*
-+				 * Error applying new configuration. Might be
-+				 * an invalid configuration, will try to
-+				 * restore previous value just to be sure
-+				 */
-+				data->oversampling_temp = prev;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+			return 0;
- 		}
- 	}
- 	return -EINVAL;
-@@ -574,14 +683,87 @@ static int bmp280_write_oversampling_ratio_press(struct bmp280_data *data,
- 					       int val)
- {
- 	int i;
-+	int ret, prev;
- 	const int *avail = data->chip_info->oversampling_press_avail;
- 	const int n = data->chip_info->num_oversampling_press_avail;
- 
- 	for (i = 0; i < n; i++) {
- 		if (avail[i] == val) {
-+			prev = data->oversampling_press;
- 			data->oversampling_press = ilog2(val);
- 
--			return data->chip_info->chip_config(data);
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				/*
-+				 * Error applying new configuration. Might be
-+				 * an invalid configuration, will try to
-+				 * restore previous value just to be sure
-+				 */
-+				data->oversampling_press = prev;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+			return 0;
-+		}
-+	}
-+	return -EINVAL;
-+}
-+
-+static int bmp280_write_sampling_frequency(struct bmp280_data *data,
-+					   int val, int val2)
-+{
-+	int i;
-+	int ret, prev;
-+	const int (*avail)[2] = data->chip_info->sampling_freq_avail;
-+	const int n = data->chip_info->num_sampling_freq_avail;
-+
-+	for (i = 0; i < n; i++) {
-+		if (avail[i][0] == val && avail[i][1] == val2) {
-+			prev = data->sampling_freq;
-+			data->sampling_freq = i;
-+
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				/*
-+				 * Error applying new configuration. Might be
-+				 * an invalid configuration, will try to
-+				 * restore previous value just to be sure
-+				 */
-+				data->sampling_freq = prev;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+			}
-+			return 0;
-+		}
-+	}
-+	return -EINVAL;
-+}
-+
-+static int bmp280_write_iir_filter_coeffs(struct bmp280_data *data, int val)
-+{
-+	int i;
-+	int ret, prev;
-+	const int *avail = data->chip_info->iir_filter_coeffs_avail;
-+	const int n = data->chip_info->num_iir_filter_coeffs_avail;
-+
-+	for (i = 0; i < n; i++) {
-+		if (avail[i] == val) {
-+			prev = data->iir_filter_coeff;
-+			data->iir_filter_coeff = i;
-+
-+			ret = data->chip_info->chip_config(data);
-+			if (ret) {
-+				/*
-+				 * Error applying new configuration. Might be
-+				 * an invalid configuration, will try to
-+				 * restore previous value just to be sure
-+				 */
-+				data->iir_filter_coeff = prev;
-+				data->chip_info->chip_config(data);
-+				return ret;
-+
-+			}
-+			return 0;
- 		}
- 	}
- 	return -EINVAL;
-@@ -616,6 +798,22 @@ static int bmp280_write_raw(struct iio_dev *indio_dev,
- 		pm_runtime_mark_last_busy(data->dev);
- 		pm_runtime_put_autosuspend(data->dev);
- 		break;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		pm_runtime_get_sync(data->dev);
-+		mutex_lock(&data->lock);
-+		ret = bmp280_write_sampling_frequency(data, val, val2);
-+		mutex_unlock(&data->lock);
-+		pm_runtime_mark_last_busy(data->dev);
-+		pm_runtime_put_autosuspend(data->dev);
-+		break;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		pm_runtime_get_sync(data->dev);
-+		mutex_lock(&data->lock);
-+		ret = bmp280_write_iir_filter_coeffs(data, val);
-+		mutex_unlock(&data->lock);
-+		pm_runtime_mark_last_busy(data->dev);
-+		pm_runtime_put_autosuspend(data->dev);
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -646,6 +844,17 @@ static int bmp280_read_avail(struct iio_dev *indio_dev,
- 		}
- 		*type = IIO_VAL_INT;
- 		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*vals = (const int *)data->chip_info->sampling_freq_avail;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		/* Values are stored in a 2D matrix */
-+		*length = data->chip_info->num_sampling_freq_avail;
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		*vals = data->chip_info->iir_filter_coeffs_avail;
-+		*type = IIO_VAL_INT;
-+		*length = data->chip_info->num_iir_filter_coeffs_avail;
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -691,6 +900,7 @@ static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
- static const struct bmp280_chip_info bmp280_chip_info = {
- 	.id_reg = BMP280_REG_ID,
- 	.start_up_time = 2000,
-+	.channels = bmp280_channels,
- 	.num_channels = 2,
- 
- 	.oversampling_temp_avail = bmp280_oversampling_avail,
-@@ -728,6 +938,7 @@ static int bme280_chip_config(struct bmp280_data *data)
- static const struct bmp280_chip_info bme280_chip_info = {
- 	.id_reg = BMP280_REG_ID,
- 	.start_up_time = 2000,
-+	.channels = bmp280_channels,
- 	.num_channels = 3,
- 
- 	.oversampling_temp_avail = bmp280_oversampling_avail,
-@@ -965,18 +1176,39 @@ static int bmp380_read_calib(struct bmp280_data *data, unsigned int chip)
- 	return 0;
- }
- 
-+static const int bmp380_odr_table[][2] = {
-+	[BMP380_ODR_200HZ]	= {200, 0},
-+	[BMP380_ODR_100HZ]	= {100, 0},
-+	[BMP380_ODR_50HZ]	= {50, 0},
-+	[BMP380_ODR_25HZ]	= {25, 0},
-+	[BMP380_ODR_12_5HZ]	= {12, 500000},
-+	[BMP380_ODR_6_25HZ]	= {6, 250000},
-+	[BMP380_ODR_3_125HZ]	= {3, 125000},
-+	[BMP380_ODR_1_5625HZ]	= {1, 562500},
-+	[BMP380_ODR_0_78HZ]	= {0, 781250},
-+	[BMP380_ODR_0_39HZ]	= {0, 390625},
-+	[BMP380_ODR_0_2HZ]	= {0, 195313},
-+	[BMP380_ODR_0_1HZ]	= {0, 97656},
-+	[BMP380_ODR_0_05HZ]	= {0, 48828},
-+	[BMP380_ODR_0_02HZ]	= {0, 24414},
-+	[BMP380_ODR_0_01HZ]	= {0, 12207},
-+	[BMP380_ODR_0_006HZ]	= {0, 6104},
-+	[BMP380_ODR_0_003HZ]	= {0, 3052},
-+	[BMP380_ODR_0_0015HZ]	= {0, 1526},
-+};
-+
- static int bmp380_chip_config(struct bmp280_data *data)
- {
- 	u8 osrs;
- 	unsigned int tmp;
- 	int ret;
-+	bool change, aux;
- 
- 	/* configure power control register */
--	ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
--				BMP380_CTRL_SENSORS_MASK | BMP380_MODE_MASK,
--				BMP380_CTRL_SENSORS_PRESS_EN |
--				BMP380_CTRL_SENSORS_TEMP_EN |
--				FIELD_PREP(BMP380_MODE_MASK, BMP380_MODE_NORMAL));
-+	ret = regmap_update_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-+				 BMP380_CTRL_SENSORS_MASK,
-+				 BMP380_CTRL_SENSORS_PRESS_EN |
-+				 BMP380_CTRL_SENSORS_TEMP_EN);
- 	if (ret < 0) {
- 		dev_err(data->dev,
- 			"failed to write operation control register\n");
-@@ -987,55 +1219,90 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 	osrs = FIELD_PREP(BMP380_OSRS_TEMP_MASK, data->oversampling_temp) |
- 	       FIELD_PREP(BMP380_OSRS_PRESS_MASK, data->oversampling_press);
- 
--	ret = regmap_write_bits(data->regmap, BMP380_REG_OSR,
--				BMP380_OSRS_TEMP_MASK | BMP380_OSRS_PRESS_MASK,
--				osrs);
-+	ret = regmap_update_bits_check(data->regmap, BMP380_REG_OSR,
-+				       BMP380_OSRS_TEMP_MASK |
-+				       BMP380_OSRS_PRESS_MASK,
-+				       osrs, &aux);
- 	if (ret < 0) {
- 		dev_err(data->dev, "failed to write oversampling register\n");
- 		return ret;
- 	}
-+	change = change || aux;
- 
- 	/* configure output data rate */
--	ret = regmap_write_bits(data->regmap, BMP380_REG_ODR,
--				BMP380_ODRS_MASK, BMP380_ODRS_50HZ);
-+	ret = regmap_update_bits_check(data->regmap, BMP380_REG_ODR,
-+				       BMP380_ODRS_MASK, data->sampling_freq,
-+				       &aux);
- 	if (ret < 0) {
- 		dev_err(data->dev, "failed to write ODR selection register\n");
- 		return ret;
- 	}
-+	change = change || aux;
- 
- 	/* set filter data */
--	ret = regmap_update_bits(data->regmap, BMP380_REG_CONFIG,
--				 BMP380_FILTER_MASK,
--				 FIELD_PREP(BMP380_FILTER_MASK, BMP380_FILTER_3X));
-+	ret = regmap_update_bits_check(data->regmap, BMP380_REG_CONFIG,
-+				BMP380_FILTER_MASK,
-+				FIELD_PREP(BMP380_FILTER_MASK, data->iir_filter_coeff),
-+				&aux);
- 	if (ret < 0) {
- 		dev_err(data->dev, "failed to write config register\n");
- 		return ret;
- 	}
-+	change = change || aux;
- 
--	/* wait startup_time before verifying config changes */
--	usleep_range(data->start_up_time, data->start_up_time + 100);
-+	if (change) {
-+		/* cycle sensor state machine to reset any measurement in progress
-+		 * configuration errors are detected in a measurment cycle.
-+		 * If the sampling frequency is too low, it is faster to reset
-+		 * measurement cycle and restart measurements
-+		 */
-+		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-+					BMP380_MODE_MASK,
-+					FIELD_PREP(BMP380_MODE_MASK,
-+						   BMP380_MODE_SLEEP));
-+		if (ret < 0) {
-+			dev_err(data->dev, "failed to set sleep mode\n");
-+			return ret;
-+		}
-+		usleep_range(2000, 2500);
-+		ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-+					BMP380_MODE_MASK,
-+					FIELD_PREP(BMP380_MODE_MASK,
-+						   BMP380_MODE_NORMAL));
-+		if (ret < 0) {
-+			dev_err(data->dev, "failed to set normal mode\n");
-+			return ret;
-+		}
-+		/* wait before checking the configuration error flag.
-+		 * Worst case value for measure time indicated in the datashhet
-+		 * in section 3.9.1 is used.
-+		 */
-+		msleep(80);
- 
--	/* check config error flag */
--	ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
--	if (ret < 0) {
--		dev_err(data->dev,
--			"failed to read error register\n");
--		return ret;
--	}
--	if (tmp & BMP380_ERR_CONF_MASK) {
--		dev_warn(data->dev,
--			 "sensor flagged configuration as incompatible\n");
--		return -EINVAL;
-+		/* check config error flag */
-+		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
-+		if (ret < 0) {
-+			dev_err(data->dev,
-+				"failed to read error register\n");
-+			return ret;
-+		}
-+		if (tmp & BMP380_ERR_CONF_MASK) {
-+			dev_warn(data->dev,
-+				"sensor flagged configuration as incompatible\n");
-+			return -EINVAL;
-+		}
- 	}
- 
- 	return 0;
- }
- 
- static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
-+static const int bmp380_iir_filter_coeffs_avail[] = { 0, 1, 3, 7, 15, 31, 63, 127 };
- 
- static const struct bmp280_chip_info bmp380_chip_info = {
- 	.id_reg = BMP380_REG_ID,
- 	.start_up_time = 2000,
-+	.channels = bmp380_channels,
- 	.num_channels = 2,
- 
- 	.oversampling_temp_avail = bmp380_oversampling_avail,
-@@ -1046,6 +1313,14 @@ static const struct bmp280_chip_info bmp380_chip_info = {
- 	.num_oversampling_press_avail = ARRAY_SIZE(bmp380_oversampling_avail),
- 	.oversampling_press_default = ilog2(4),
- 
-+	.sampling_freq_avail = bmp380_odr_table,
-+	.num_sampling_freq_avail = ARRAY_SIZE(bmp380_odr_table) * 2,
-+	.sampling_freq_default = BMP380_ODR_50HZ,
-+
-+	.iir_filter_coeffs_avail = bmp380_iir_filter_coeffs_avail,
-+	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp380_iir_filter_coeffs_avail),
-+	.iir_filter_coeff_default = 2,
-+
- 	.chip_config = bmp380_chip_config,
- 	.read_temp = bmp380_read_temp,
- 	.read_press = bmp380_read_press,
-@@ -1282,6 +1557,7 @@ static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
- static const struct bmp280_chip_info bmp180_chip_info = {
- 	.id_reg = BMP280_REG_ID,
- 	.start_up_time = 2000,
-+	.channels = bmp280_channels,
- 	.num_channels = 2,
- 
- 	.oversampling_temp_avail = bmp180_oversampling_temp_avail,
-@@ -1380,7 +1656,6 @@ int bmp280_common_probe(struct device *dev,
- 	data->dev = dev;
- 
- 	indio_dev->name = name;
--	indio_dev->channels = bmp280_channels;
- 	indio_dev->info = &bmp280_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
-@@ -1403,10 +1678,13 @@ int bmp280_common_probe(struct device *dev,
- 	data->chip_info = chip_info;
- 
- 	/* apply initial values from chip info structure */
-+	indio_dev->channels = chip_info->channels;
- 	indio_dev->num_channels = chip_info->num_channels;
- 	data->oversampling_press = chip_info->oversampling_press_default;
- 	data->oversampling_humid = chip_info->oversampling_humid_default;
- 	data->oversampling_temp = chip_info->oversampling_temp_default;
-+	data->iir_filter_coeff = chip_info->iir_filter_coeff_default;
-+	data->sampling_freq = chip_info->sampling_freq_default;
- 	data->start_up_time = chip_info->start_up_time;
- 
- 	/* Bring up regulators */
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index fd38906c889c..1314d5059c53 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -54,24 +54,6 @@
- #define BMP380_OSRS_PRESS_MASK		GENMASK(2, 0)
- 
- #define BMP380_ODRS_MASK		GENMASK(4, 0)
--#define BMP380_ODRS_200HZ		0x00
--#define BMP380_ODRS_100HZ		0x01
--#define BMP380_ODRS_50HZ		0x02
--#define BMP380_ODRS_25HZ		0x03
--#define BMP380_ODRS_12_5HZ		0x04
--#define BMP380_ODRS_6_25HZ		0x05
--#define BMP380_ODRS_3_1HZ		0x06
--#define BMP380_ODRS_1_5HZ		0x07
--#define BMP380_ODRS_0_78HZ		0x08
--#define BMP380_ODRS_0_39HZ		0x09
--#define BMP380_ODRS_0_2HZ		0x0A
--#define BMP380_ODRS_0_1HZ		0x0B
--#define BMP380_ODRS_0_05HZ		0x0C
--#define BMP380_ODRS_0_02HZ		0x0D
--#define BMP380_ODRS_0_01HZ		0x0E
--#define BMP380_ODRS_0_006HZ		0x0F
--#define BMP380_ODRS_0_003HZ		0x10
--#define BMP380_ODRS_0_0015HZ		0x11
- 
- #define BMP380_CTRL_SENSORS_MASK	GENMASK(1, 0)
- #define BMP380_CTRL_SENSORS_PRESS_EN	BIT(0)
--- 
-2.36.1
+
+
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, July 2, 2022 12:46 AM
+> To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+> Cc: lars@metafoo.de; tomas.melin@vaisala.com; nuno.sa@analog.com;
+> linux-iio@vger.kernel.org; linux-kernel@vger.kernel.org;
+> GEO-CHHER-bsp-development <bsp-development.geo@leica-geosystems.com>
+> Subject: Re: [PATCH V1 1/1] iio: accel: sca3300: Extend the trigger buffe=
+r from
+> 16 to 32 bytes
+>=20
+> [Some people who received this message don't often get email from
+> jic23@kernel.org. Learn why this is important at
+> https://aka.ms/LearnAboutSenderIdentification ]
+>=20
+> This email is not from Hexagon's Office 365 instance. Please be careful w=
+hile
+> clicking links, opening attachments, or replying to this email.
+>=20
+>=20
+> On Fri,  1 Jul 2022 02:30:30 +0000
+> LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn> wrote:
+>=20
+> > After added inclination angle channels, the trigger buffer size is
+> > insufficient. Extend the buffer size from 16 to 32 bytes, and change
+> > the trigger buffer from the struct to a u8 array to adapt the sensor
+> > with/without inclination angles output.
+> > New trigger buffer data:
+> >   - SCA3300: 3 accel channels, temp, and timestamp.
+> >   - SCL3300: 3 accel channels, temp, 3 incli channels, and timestamp.
+> > Readjustment the scan index to make it consistent with the buffer data.
+> >
+> > Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+>=20
+> Hi.
+>=20
+> Looks good. A trivial suggestion inline to make the code a little more 's=
+elf
+> documenting'.  It's a minor change so if you are happy with the suggestio=
+n I
+> can tweak that whilst applying.
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+
+Yes, sure, absolutely agree, Thank you!
+
+LI Qingwu
+
+> > ---
+> >  drivers/iio/accel/sca3300.c | 29 ++++++++++++++++++-----------
+> >  1 file changed, 18 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/sca3300.c b/drivers/iio/accel/sca3300.c
+> > index 3c4827bfef53..820dfb635bf1 100644
+> > --- a/drivers/iio/accel/sca3300.c
+> > +++ b/drivers/iio/accel/sca3300.c
+> > @@ -47,12 +47,20 @@
+> >  #define SCL3300_REG_ANG_CTRL 0x0C
+> >  #define SCL3300_ANG_ENABLE   0x1F
+> >
+> > +/*
+> > + * Buffer size max case:
+> > + * Three accel channels, two bytes per channel.
+> > + * Temperature channel, two bytes.
+> > + * Three incli channels, two bytes per channel.
+> > + * Timestamp channel, eight bytes.
+> > + */
+> > +#define SCA3300_MAX_BUFFER_SIZE (ALIGN(2 * 7, sizeof(s64)) +
+> > +sizeof(s64))
+>=20
+> Instead of the 2 use sizeof(s16)
+>  Also now you don't have timestamp in your enum sca3000_scan_indexes you
+> could add a 'tail' element to the enum such as SCA3000_SCAN_MAX then use
+> that instead of the 7 here.  Hopefully that would make this more self
+> documenting.
+
+
+>=20
+> > +
+> >  enum sca3300_scan_indexes {
+> >       SCA3300_ACC_X =3D 0,
+> >       SCA3300_ACC_Y,
+> >       SCA3300_ACC_Z,
+> >       SCA3300_TEMP,
+> > -     SCA3300_TIMESTAMP,
+> >       SCA3300_INCLI_X,
+> >       SCA3300_INCLI_Y,
+> >       SCA3300_INCLI_Z,
+> > @@ -140,10 +148,10 @@ static const struct iio_chan_spec scl3300_channel=
+s[]
+> =3D {
+> >       SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Y, 0x2, Y),
+> >       SCA3300_ACCEL_CHANNEL(SCA3300_ACC_Z, 0x3, Z),
+> >       SCA3300_TEMP_CHANNEL(SCA3300_TEMP, 0x05),
+> > -     IIO_CHAN_SOFT_TIMESTAMP(4),
+> >       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_X, 0x09, X),
+> >       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Y, 0x0A, Y),
+> >       SCA3300_INCLI_CHANNEL(SCA3300_INCLI_Z, 0x0B, Z),
+> > +     IIO_CHAN_SOFT_TIMESTAMP(7),
+> >  };
+> >
+> >  static const unsigned long sca3300_scan_masks[] =3D { @@ -184,7 +192,9
+> > @@ struct sca3300_chip_info {
+> >   * @spi: SPI device structure
+> >   * @lock: Data buffer lock
+> >   * @chip: Sensor chip specific information
+> > - * @scan: Triggered buffer. Four channel 16-bit data + 64-bit
+> > timestamp
+> > + * @buffer: Triggered buffer:
+> > + *          -SCA3300: 4 channel 16-bit data + 64-bit timestamp
+> > + *          -SCL3300: 7 channel 16-bit data + 64-bit timestamp
+> >   * @txbuf: Transmit buffer
+> >   * @rxbuf: Receive buffer
+> >   */
+> > @@ -192,10 +202,7 @@ struct sca3300_data {
+> >       struct spi_device *spi;
+> >       struct mutex lock;
+> >       const struct sca3300_chip_info *chip;
+> > -     struct {
+> > -             s16 channels[4];
+> > -             s64 ts __aligned(sizeof(s64));
+> > -     } scan;
+> > +     u8 buffer[SCA3300_MAX_BUFFER_SIZE] __aligned(sizeof(s64));
+> >       u8 txbuf[4] __aligned(IIO_DMA_MINALIGN);
+> >       u8 rxbuf[4];
+> >  };
+> > @@ -484,21 +491,21 @@ static irqreturn_t sca3300_trigger_handler(int ir=
+q,
+> void *p)
+> >       struct iio_dev *indio_dev =3D pf->indio_dev;
+> >       struct sca3300_data *data =3D iio_priv(indio_dev);
+> >       int bit, ret, val, i =3D 0;
+> > +     s16 *channels =3D (s16 *)data->buffer;
+> >
+> >       for_each_set_bit(bit, indio_dev->active_scan_mask,
+> >                        indio_dev->masklength) {
+> > -             ret =3D sca3300_read_reg(data,
+> sca3300_channels[bit].address,
+> > -                                    &val);
+> > +             ret =3D sca3300_read_reg(data,
+> > + indio_dev->channels[bit].address, &val);
+> >               if (ret) {
+> >                       dev_err_ratelimited(&data->spi->dev,
+> >                               "failed to read register, error: %d\n",
+> ret);
+> >                       /* handled, but bailing out due to errors */
+> >                       goto out;
+> >               }
+> > -             data->scan.channels[i++] =3D val;
+> > +             channels[i++] =3D val;
+> >       }
+> >
+> > -     iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
+> > +     iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
+> >
+> iio_get_time_ns(indio_dev));
+> >  out:
+> >       iio_trigger_notify_done(indio_dev->trig);
 

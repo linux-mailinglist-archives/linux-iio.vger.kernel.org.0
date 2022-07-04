@@ -2,119 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 647B3565308
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 13:07:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C41C56572C
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 15:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233575AbiGDLHc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 07:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55302 "EHLO
+        id S233178AbiGDNbD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 09:31:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229836AbiGDLHb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 07:07:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28560DFAC;
-        Mon,  4 Jul 2022 04:07:31 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA67F61624;
-        Mon,  4 Jul 2022 11:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F6C3411E;
-        Mon,  4 Jul 2022 11:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1656932850;
-        bh=ShPSNOvgzATtn2/Bsxk03dhF7u+9UjNpwSKkcGRvTT0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yg7oJSBac1jklWTdfgCXuJ3ysIGEvXrqf9/zfqWj42Iyu5IX6vLXQxNYM/N8zePVv
-         gl+h3HeUDHDoljmR2gePU76jeomtKSKBVHs4jLc0sVpZAXzp8rEBO43+ANIOsKdZ6Y
-         UAo9IGe43RtjSE/pzqD1J5iVI+6bU5b1kL+Sse4w=
-Date:   Mon, 4 Jul 2022 13:07:27 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     szuni chen <szunichen@gmail.com>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>, chiaen_wu@richtek.com,
-        alice_chen@richtek.com, ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
-Subject: Re: [PATCH v4 08/13] usb: typec: tcpci_mt6370: Add Mediatek MT6370
- tcpci driver
-Message-ID: <YsLJ7+HiqaBTwCLg@kroah.com>
-References: <20220704053901.728-1-peterwu.pub@gmail.com>
- <20220704053901.728-9-peterwu.pub@gmail.com>
- <YsKXcnys2Wa8Zz0p@kroah.com>
- <CA+hk2fYA3phYAoh+BFr0ddy9MR8Ro1WCoqBpa1UK2StwMtLyfQ@mail.gmail.com>
+        with ESMTP id S234389AbiGDNap (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 09:30:45 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE8ACFCC
+        for <linux-iio@vger.kernel.org>; Mon,  4 Jul 2022 06:24:43 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id u14so11109053ljh.2
+        for <linux-iio@vger.kernel.org>; Mon, 04 Jul 2022 06:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=RNT9aO9JuvdHPRG7M+oG+iA92P02fztEckYlKzdbtWk=;
+        b=mZ5i+hsuL8fdkpWGrhFFiNutnU2jOl0UmVPXtZ316je0d4PjS8jpMDpfZAbSIN+jew
+         2EqogvZbpseX3msTfcBxwKaPrOjvpn0+Xf0Q4UhWMy75YuzHPVfttpYrAMcfewOxc/Z5
+         MPVEyzmFOBqY7X48hLWOaKHpakETSRTypNUAwxQGOEt2Xeqo6ODssG3ojwj7nUQgi079
+         78QgkQGDSOpqCfIWHQMeeOnWcfS/ghN3FyGnAVE6jyVzLdscqPB3xDoEZiXuRvc62TXF
+         +NUI+ZvGKh0bsqvGZCJTanRIt7e+95vyYzDygokoZjbmLZRPhcRGQ/8FyFdXvke0+NXD
+         g6rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=RNT9aO9JuvdHPRG7M+oG+iA92P02fztEckYlKzdbtWk=;
+        b=sJVG5toLUCzMG6vxxLCHlEj3+86856uDT9Th6h9UqLD2Ly4Xi8PQWtzjGAME4htToD
+         1g6mIxEWZ0+h6hzjlz6N7Ko0N7+JaFTf1ft/h6pv2GmLALjjYEXaNbgEQNCirSf4yyog
+         0QMX9q0Z7+23r/g5vwSVGpiVIq6tWVGIXp+Pvue8qSvw6euLDFmNVUU3+9bVatay/i44
+         CYBTippvTPimzwITv/CawZF/DJdmIcAXQgomqpDjoM5EB6kFzj5pmC1yc5G/6fPPzue4
+         VX3UJw+QQQyfJphHVaTRMQVGf7F7n1jDrZpNw0R65A+8H3tg1xYRDsEcL4dam5HDPiu0
+         3xPg==
+X-Gm-Message-State: AJIora+xNEiY8HkkD7P23caBtM05znmF9AF/6OXxKtTFEkRXRKF2mlNE
+        Xj5gZZMO6LwoBnit7FSh8NoTrzL9MHMkFiv5paY=
+X-Google-Smtp-Source: AGRyM1u9pMqpI7Uten85WU6kNbx9jlAlcks9tY+yNzZSgrOVIslz03Fea6vCNdTydUTc7ylYUrBZ0Tx3k26sFq7OD7w=
+X-Received: by 2002:a2e:87d1:0:b0:25c:42b:28c0 with SMTP id
+ v17-20020a2e87d1000000b0025c042b28c0mr10310076ljj.191.1656941080377; Mon, 04
+ Jul 2022 06:24:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+hk2fYA3phYAoh+BFr0ddy9MR8Ro1WCoqBpa1UK2StwMtLyfQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Received: by 2002:a05:6512:2829:0:0:0:0 with HTTP; Mon, 4 Jul 2022 06:24:39
+ -0700 (PDT)
+Reply-To: nadagelassou@gmail.com
+From:   Ms Nadage Lassou <maxigbikpi5@gmail.com>
+Date:   Mon, 4 Jul 2022 07:24:39 -0600
+Message-ID: <CA+2vrypbVJOVZOd9LAHR+F9J8qpbeMYsRF9GC9sa3j81OOJ7VQ@mail.gmail.com>
+Subject: REPLY FOR DETAILS.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:22e listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4999]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [maxigbikpi5[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [maxigbikpi5[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 04, 2022 at 05:31:29PM +0800, szuni chen wrote:
-> Greg KH <gregkh@linuxfoundation.org> 於 2022年7月4日 週一 下午3:32寫道：
-> >
-> > On Mon, Jul 04, 2022 at 01:38:56PM +0800, ChiaEn Wu wrote:
-> > > From: ChiYuan Huang <cy_huang@richtek.com>
-> > >
-> > > Add chip level mt6370 tcpci driver.
-> >
-> > What does this mean?  Please provide more information about the hardware
-> > being supported here so we know how to review this.
-> 
-> Dear Greg,
-> 
-> MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery charger,
-> a USB Type-C & Power Delivery (PD) controller, dual flash LED current sources,
-> a RGB LED driver, a backlight WLED driver, a display bias driver and a
-> general LDO for portable devices.
-> 
-> This driver is used for the Type-C & Power Delivery controller in
-> MediaTek MT6370 IC.
-> 
-> If we change the commit message to
-> 
-> "Add MediaTek MT6370 tcpci driver.
-> MediaTek MT6370 is a multi-functional IC that includes USB Type-C.
-> It works with Type-C Port Controller Manager to provide USB PD and USB
-> Type-C functionalities."
-> 
-> does this meet your requirements?
+Greetings.
 
-What would you want to see if you were reading a changelog text for an
-unfamiliar hardware device?  More text is always better!
+I have a something important to tell you for your benefit,Reply back
+to my email to have the details,
+Thanks for your time and  Attention,
 
-thanks,
-
-greg k-h
+Ms Nadage Lassou

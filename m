@@ -2,71 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 739E65650B4
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 11:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4805A5650EE
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 11:34:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232979AbiGDJ0a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 05:26:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50626 "EHLO
+        id S233777AbiGDJdD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 05:33:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233598AbiGDJ0X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 05:26:23 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA685BE28;
-        Mon,  4 Jul 2022 02:26:20 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id s1so12546928wra.9;
-        Mon, 04 Jul 2022 02:26:20 -0700 (PDT)
+        with ESMTP id S233948AbiGDJcv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 05:32:51 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8BFE0C7;
+        Mon,  4 Jul 2022 02:31:41 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id g16-20020a17090a7d1000b001ea9f820449so13070622pjl.5;
+        Mon, 04 Jul 2022 02:31:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=+jEi4BGnvw0Fd8W0naBqBCRqClUz+i2NxYyhI89U4wI=;
-        b=BMRzbNjyu2uMIUOboEa7m0IYar4pQG8HpLgZWinc+bCH+xHllM0C0qJGkYfdkuThq+
-         Wpv0wLHg+Z/56OVzI2uLaRmIIgemev7+wx2IwHmL0IreOvA0FTPsj2dH9Tq/5jvab++z
-         xzXlKQT3bKRF4j7pXL2hWX7x51TGShz6TazCYNVJQU+izvBhjer7N4lJwcHBnbvYUhNI
-         PN8VRAni/9Oj9PdqP0O3+bCbwSbJqfO8Xg8ZTuFAjzZqi3Mvzaw4wYAhvo/iEF0/azhI
-         /oWg3rEZe6pA9RS5ygkO52nJcT+UGwm5IxvLvv4XJSN+Ogd6lORmW7qqfGy235xOU6DU
-         feXw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=xIA0tkEJFCPwLmR+R6eKHNKrvI9a6bVM4TsihGfrld0=;
+        b=f8MhiLRjvn4JhQhz9F64yCgS5B6jrH8tJwT1awj7AGv9RShuJdBVz84vc1kQVsx0Lv
+         eNwaezjyn3nuI01xLjtA8+y0NZAqsqTswX489ZxWe/DK4qA3KOAt8JChBJylkfu6iBcj
+         ORlmB+OW6RB+2+Vau8HlQetnTopYsjVTFjp0f9KRNoR/+YI371o5iIsodX7EUGlhLxKP
+         kIepqqS2tlY+l7PfLRiLbmuc06ZAkcN8W3clHbhEfFPx2LGi5BU/JurrZIflfzIJK1dI
+         KLvXaDm+sy2U5Xe0lntfK9VA1zVFQuJyC2Hbzq2cctn7nouM2bwK0yqcoPWSdeZyN5vE
+         +/GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=+jEi4BGnvw0Fd8W0naBqBCRqClUz+i2NxYyhI89U4wI=;
-        b=OGL5xEyQ0hnoc3a+Ws2DN0FpEG8+8oNTKgd/ucYPy8Vk6GHVpPAEoQ7KW9nM0HaGP2
-         iUdjj5duTg/rnPYvFeyzdpnVrov7uTqZTY1KkEwvsdwmj+30JZ3H8zEImYGJep8eQxK9
-         g5N/bTmCB8mz3CCWZosZ4eXwJSEmnDrH0UJORW3BIGBOogA2mHv1dB3fVKJa0ZgpHuGi
-         6elXBxzVWRAhCn6AfOyCTEeJbtrBOGX4sKKXL0hAaz2prFlI6ubh6LNpKJVbrnD2qgw8
-         Jsii8tbH3MHY+RVpcK0AOV3oAt1J4c+8Ie/a18/9c7LEvrf4tE7TNreXPfaPlFjYHmAp
-         VtTg==
-X-Gm-Message-State: AJIora8QlAJSuKL//nFZioPaoOxTSmQAy1WLXzDDsjoo9KW5JepArz/l
-        j6mULypP9hDyl18nQGPpoAex9B6bhaiekcuS
-X-Google-Smtp-Source: AGRyM1sFikMyiskRDFpClyGO3m8wMQ/dVhL+e/jkPQE0rHf4Mcb3bWsG42Mk3XKrIso+sCD1NjVdMg==
-X-Received: by 2002:a05:6000:1ac8:b0:21b:9239:8f28 with SMTP id i8-20020a0560001ac800b0021b92398f28mr26529502wry.517.1656926779450;
-        Mon, 04 Jul 2022 02:26:19 -0700 (PDT)
-Received: from [10.43.0.73] (68.201.26.77.dynamic.reverse-mundo-r.com. [77.26.201.68])
-        by smtp.gmail.com with ESMTPSA id i1-20020adffc01000000b0021b5861eaf7sm30245355wrr.3.2022.07.04.02.26.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Jul 2022 02:26:19 -0700 (PDT)
-Message-ID: <9a07f9b011646284db9e2eeeb76b80afad599b68.camel@gmail.com>
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: pressure: bmp085: Add BMP380
- compatible string
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=xIA0tkEJFCPwLmR+R6eKHNKrvI9a6bVM4TsihGfrld0=;
+        b=POMPhCymPAxgLj2H6m7adApMVcTrUWLx1gC5wWoSYnMk8y7f37BYaMomk10afoT4mg
+         VvWRteExDmC6YL2pHc9YTYlaPZSrBAL8Ku456f5j2U16C6v1q8vs8h9SlOcF7eVCo9VQ
+         otonsIoxN6lV0Is0xQpYoRAgzcMFjlmZAEdkzcnLW9sTtjAqoRWvP+VTSDUSsFjt6H5w
+         khuhWdTW2ScsDwWGtolr2cIEP9YeCMPxo2aUSYmcZ1G3x1QlwP64PPRVowc+XgCXg6UN
+         x1CYrcPKhqcPx5VaAsFPeL6fc3BQZb/7/nS0yUyEEilfHfkywXsIF8r8zIsqo2GQvS9l
+         d61Q==
+X-Gm-Message-State: AJIora+ywkXY3rglOW+A0MWGoerBEpEer7QEG6ser+wAjZxjmjxxKPfg
+        fz3MvTmVktNpFh+dIjt/DF/1kEYY97iCmWGriEw=
+X-Google-Smtp-Source: AGRyM1snqrRpQbd96zgAVBmjrPX1x2o3afFwTRTiOLpzM13U4eENpimphE3z0PHrUTRqdjm3Nu9HaCkQlEPGsPeCLlE=
+X-Received: by 2002:a17:903:110c:b0:168:fa61:1440 with SMTP id
+ n12-20020a170903110c00b00168fa611440mr34740455plh.149.1656927100855; Mon, 04
+ Jul 2022 02:31:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-9-peterwu.pub@gmail.com>
+ <YsKXcnys2Wa8Zz0p@kroah.com>
+In-Reply-To: <YsKXcnys2Wa8Zz0p@kroah.com>
+From:   szuni chen <szunichen@gmail.com>
+Date:   Mon, 4 Jul 2022 17:31:29 +0800
+Message-ID: <CA+hk2fYA3phYAoh+BFr0ddy9MR8Ro1WCoqBpa1UK2StwMtLyfQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/13] usb: typec: tcpci_mt6370: Add Mediatek MT6370
+ tcpci driver
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Mon, 04 Jul 2022 11:26:17 +0200
-In-Reply-To: <ad00b52e-cead-920a-9b99-db4032cb6d0c@linaro.org>
-References: <20220704002641.207169-1-ang.iglesiasg@gmail.com>
-         <ad00b52e-cead-920a-9b99-db4032cb6d0c@linaro.org>
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>, chiaen_wu@richtek.com,
+        alice_chen@richtek.com, ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -77,35 +94,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On lun, 2022-07-04 at 10:58 +0200, Krzysztof Kozlowski wrote:
-> On 04/07/2022 02:26, Angel Iglesias wrote:
-> > Add bosch,bmp380 compatible string for the new family of sensors.
-> > This family includes the BMP380, BMP384 and BMP388. The register
-> > map
-> > in this family changes substantially and introduces new features
-> > but core concepts and operations carryover from the previous
-> > iterations
-> > 
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> 
-> Please add Acked-by/Reviewed-by tags when posting new versions.
-> However,
-> there's no need to repost patches *only* to add the tags. The
-> upstream
-> maintainer will do that for acks received on the version they apply.
-> 
-> https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
-> 
-> If a tag was not added on purpose, please state why and what changed.
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> 
-> Best regards,
-> Krzysztof
+Greg KH <gregkh@linuxfoundation.org> =E6=96=BC 2022=E5=B9=B47=E6=9C=884=E6=
+=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=883:32=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Mon, Jul 04, 2022 at 01:38:56PM +0800, ChiaEn Wu wrote:
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> >
+> > Add chip level mt6370 tcpci driver.
+>
+> What does this mean?  Please provide more information about the hardware
+> being supported here so we know how to review this.
 
-Apologies for the inconvenience. I'll be more careful with kernel
-protocol and use the proper tags. Thank you for your time.
+Dear Greg,
 
-Kind regards,
-Angel
+MediaTek MT6370 is a highly-integrated smart power management IC,
+which includes a single cell Li-Ion/Li-Polymer switching battery charger,
+a USB Type-C & Power Delivery (PD) controller, dual flash LED current sourc=
+es,
+a RGB LED driver, a backlight WLED driver, a display bias driver and a
+general LDO for portable devices.
+
+This driver is used for the Type-C & Power Delivery controller in
+MediaTek MT6370 IC.
+
+If we change the commit message to
+
+"Add MediaTek MT6370 tcpci driver.
+MediaTek MT6370 is a multi-functional IC that includes USB Type-C.
+It works with Type-C Port Controller Manager to provide USB PD and USB
+Type-C functionalities."
+
+does this meet your requirements?
+Or =E2=80=9CAdd tcpci driver for Mediatek MT6370 IC=E2=80=9D is enough?
+
+Sincerely,
+Alice Chen

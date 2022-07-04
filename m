@@ -2,114 +2,256 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F2E0565DD4
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 21:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D827565E15
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 21:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230457AbiGDTKc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 15:10:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
+        id S231817AbiGDTiJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 15:38:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232141AbiGDTKb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 15:10:31 -0400
-Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52B9B22
-        for <linux-iio@vger.kernel.org>; Mon,  4 Jul 2022 12:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
-         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID;
-        bh=Fz6uiurruekU7k9x4bmamwF0IaR1pic94Q2gYX2pqq4=; b=EjowEYNulaONSEV1NFSIFH1/4b
-        whSvr6+IoZDcnIXmSkXoyyAkYXC3THdpUfzpvSaNdNt78QwzsZZrWbPq+9sDcMomxgUuwQcbTuOKZ
-        2A/cb0cB1aMktaW0lJj4qKmvd1daksMjYy97Vhr9GS7Rz6DWoUwpPSmTlyp6J8YKic6fim0FXGmVg
-        AsRa4pdILMrc0m6/YZilk6coyg/xnXevgvdprr5YYnzySj7GtKFj1A+jwz24iJp+oDK7p2cdpBXwC
-        +pSbd04sp8q3bAtAI3QzjBU/GG14HAOFiTBpafpaHZtodM3uRMUzGdA7eai8cdFGwY20dWD/h1y3Q
-        jQXjwFIQ==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92.3)
-        (envelope-from <lars@metafoo.de>)
-        id 1o8RSm-0009wb-GW; Mon, 04 Jul 2022 21:10:28 +0200
-Received: from [2001:a61:2a49:8301:9e5c:8eff:fe01:8578]
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lars@metafoo.de>)
-        id 1o8RSm-0001T4-At; Mon, 04 Jul 2022 21:10:28 +0200
-Message-ID: <a0f15b17-a72d-125b-82c3-20c2f406f443@metafoo.de>
-Date:   Mon, 4 Jul 2022 21:10:27 +0200
+        with ESMTP id S229892AbiGDTiJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 15:38:09 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 637379FCB;
+        Mon,  4 Jul 2022 12:38:08 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-31bf3656517so89774407b3.12;
+        Mon, 04 Jul 2022 12:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=oszJ77F2FRLFZiRT4PLikjAIOd77jSDJ8S6luXx4hmo=;
+        b=dlEoiNMn5VqJxHvwRxY77Cpk71emtQfaetnUv5+QegcQtPAUlXH3Er1dbx7mzrzcv/
+         wQoF43D+Fc8iVhFxhm54vAv0Qan+VvZ7aMEOWWd8CDpjfTYXNb9iNU0xMUB9ODt/ezj0
+         E1OGGnbB5EQLtFWpRFacDzXWKFXZiBwZJgs24e73O/ywCk0S1KhZEPc4b9kOpRNDwGmX
+         OtVtVrw2//WfUDjF9iwY7JgjlzaxIr04VoG/V8yWf6RhbTR4MB7vU459Q0duEsoMuAWo
+         9RYUcrE+8d7US2zgl3TjY1Z65kNSmK280CTHOhEbpiBShGhUo20cd7LCsA9lo9MGijFq
+         WsYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=oszJ77F2FRLFZiRT4PLikjAIOd77jSDJ8S6luXx4hmo=;
+        b=u7RulcDtFnf+mHNRKhcOc9H1aj4MkbtN+yqfSqUPRhrU8MfFtwX5Hr71hIxiCSsbWA
+         iwLrTbmQh95Osr9JRmQkodJmBMk6KWwLZCvgbNzD7WN2GJCeY9jYh3Uzc6C0NGcJpnZ7
+         /8Yq8N5JkB7CIol3iVxgLvebLWX0yy7frgaI3wHMhh+jSS72fPrt0ED4l2vOg/iSSkB/
+         GfYVgBbSwYdhDV7h9NHj7CRBCrPNjMU4q+Vsck53ne/ND5sx+k0biRgAdal7n58+W0+E
+         tNmAhpVW485s0vLMonoeMvmC2FW1w/cW1MYJYgpU0pMdKQU0T5XpkckSrfT1ts7hW7cF
+         FBWA==
+X-Gm-Message-State: AJIora9S4/BPT9yPf1kR6cvGh85crDXHfwhf+lBO1J3jB1N68vFonOdt
+        +zKjACoQe9f3jS10ctpvSVUUDJIfAzmSWqetnCg=
+X-Google-Smtp-Source: AGRyM1t2Z/Sss9bJC+w75RUZhUMQh0sX0Ici3Q4T3BXacm2+e94SGpCxT3mlrBHed6OSdfiPng27zOzhO4TqvHYpqDk=
+X-Received: by 2002:a81:3984:0:b0:31c:b59e:a899 with SMTP id
+ g126-20020a813984000000b0031cb59ea899mr2577964ywa.195.1656963487512; Mon, 04
+ Jul 2022 12:38:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: fast spi driver development
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Patricio Moreno <pm.pato@gmail.com>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-References: <ee3d70ac-a9b3-9b91-df92-81fb73c0f93f@gmail.com>
- <CAHp75VdGJKsdcY_ntd4-xy0xPb=J195yOyJM7d7vC_mPj+dm0w@mail.gmail.com>
-From:   Lars-Peter Clausen <lars@metafoo.de>
-In-Reply-To: <CAHp75VdGJKsdcY_ntd4-xy0xPb=J195yOyJM7d7vC_mPj+dm0w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: lars@metafoo.de
-X-Virus-Scanned: Clear (ClamAV 0.103.6/26593/Mon Jul  4 09:28:57 2022)
+References: <cover.1656883851.git.jahau@rocketmail.com> <28a2a9ec27c6fb4073149b897415475a8f04e3f7.1656883851.git.jahau@rocketmail.com>
+In-Reply-To: <28a2a9ec27c6fb4073149b897415475a8f04e3f7.1656883851.git.jahau@rocketmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 4 Jul 2022 21:37:30 +0200
+Message-ID: <CAHp75VfGqk_q1iDyj06tEuTNoG35xjOL0_5HgokFauUz_aAwFQ@mail.gmail.com>
+Subject: Re: [PATCH v4 09/10] iio: magnetometer: yas530: Introduce "chip_info" structure
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/4/22 20:00, Andy Shevchenko wrote:
-> On Sun, Jul 3, 2022 at 3:09 PM Patricio Moreno <pm.pato@gmail.com> wrote:
->> Hello,
->>
->> I'm writing a driver for the TI ADS127x family of ADCs. The ads127x is a
->> 24 bit samples, 4/8 channels, ADC, which can be clocked, using SPI, with
->> up to 25 MHz. For what I've seen, I've followed a common approach within
->> the IIO ADC drivers, but I can't get it to work at high frequencies.
->>
->> I'm using the triggered buffers interface, with a RDY interrupt pin. The
->> problem I have is with timings. When the ADC sends the data ready
->> signal, my handler is called approximately 7µs later. This handler then
->> calls spi_read to get 24 bytes (8 3 bytes samples) and the kernel takes
->> a lot of time to read the SPI bus, actually, to *start* reading.
->>
->> I would really appreciate some guidance on how to deal with this issue.
-> +Cc: maintainers and AD guys. I remember there was a discussion about
-> supporting HiFreq ADCs in IIO and AFAIR there are some issues (and you
-> probably need to use DMA in cyclic mode or so).
+On Mon, Jul 4, 2022 at 12:04 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+>
+> This commit introduces the "chip_info" structure approach for better vari=
+ant
+> handling.
+>
+> The variant to be used is now chosen by the devicetree (enum "chip_ids"),
 
-A created some slides on this very topic a while ago. See 
-https://wiki.analog.com/_media/resources/fpga/peripherals/spi-engine3.pdf
+Device Tree
 
-The summary is a general purpose operating system is not well suited to 
-this task, mainly, like you noticed, due to the context switch penalty.
+> not by the chip ID in the register. However, there is a check to make sur=
+e
+> they match (using integer "id_check").
 
-In general the solution to this is to batch multiple sample acquisitions 
-together to reduce the number of context switches. There are both 
-software and hardware based approaches for this.
+...
 
-  * Asymmetric multiprocessing: Dedicate one core to data acquisition 
-running a bare metal application. It can control the SPI controller in a 
-tight loop and make sure that transactions are scheduled on time. Data 
-can be moved to the main OS using a shared memory ring buffer.
+Thanks for a new version, it's getting better. My comments below.
 
-  * FIFO in the sensor: Probably the best solution if available. Have a 
-FIFO in the sensor with a threshold IRQ and read multiple samples in a 
-single SPI transfer when the FIFO is almost full.
+But first of all, can you split this to at least two patches, i.e.
+1) split out functions without introducing chip->info yet;
+2) adding chip_info.
 
-  * SPI transfer offloading on the host side: This is what the 
-presentation mainly talks about. The host system has a SPI controller IP 
-that supports scheduling SPI transfers without software interaction in 
-response to a trigger signal, e.g. a timer of external GPIO. The data is 
-then pushed to a FIFO or directly to system memory using DMA. The host 
-system is notified when a certain amount of samples have been received.
+Possible alternative would be more steps in 2), i.e. introducing
+chip_info for the callback only, then add field (or semantically
+unified fields) by field with corresponding changes in the code. In
+this case it would be easier to review.
 
-- Lars
+I leave this exercise to you if Jonathan thinks it worth it.
 
+...
+
+> -#define YAS530_20DEGREES               182 /* Counts starting at -62 =C2=
+=B0C */
+
+> -#define YAS532_20DEGREES               390 /* Counts starting at -50 =C2=
+=B0C */
+
+The comments suddenly disappear from the file. See below.
+
+...
+
+> +enum chip_ids {
+> +       yas530,
+> +       yas532,
+> +       yas533,
+> +};
+> +
+> +static const char yas5xx_product_name[][13] =3D {
+> +       "YAS530 MS-3E",
+> +       "YAS532 MS-3R",
+> +       "YAS533 MS-3F"
+> +};
+> +
+> +static const char yas5xx_version_name[][2][3] =3D {
+> +       { "A", "B" },
+> +       { "AB", "AC" },
+> +       { "AB", "AC" }
+
+Shan't we put indices here?
+Also, use * instead of one dimension of array.
+
+> +};
+
+...
+
+> +static const int yas530_volatile_reg[] =3D {
+> +       YAS530_ACTUATE_INIT_COIL,
+> +       YAS530_MEASURE
+
++ Comma.
+
+> +};
+
+...
+
+> +/* Number of counts between minimum and reference temperature */
+> +const u16 t_ref_counts[] =3D { 182, 390, 390 };
+> +
+> +/* Starting point of temperature counting in 1/10:s degrees Celsius */
+> +const s16 min_temp_celcius_x10[] =3D { -620, -500, -500 };
+
+See above.
+
+...
+
+> +struct yas5xx_chip_info {
+> +       unsigned int devid;
+
+> +       const int *volatile_reg;
+> +       const int volatile_reg_qty;
+> +       const u32 scaling_val2;
+
+Why const here?
+I assume entire structure is const, no?
+
+> +       int (*get_measure)(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *=
+yo, s32 *zo);
+> +       int (*get_calibration_data)(struct yas5xx *yas5xx);
+> +       void (*dump_calibration)(struct yas5xx *yas5xx);
+> +       int (*measure_offsets)(struct yas5xx *yas5xx);
+> +       int (*power_on)(struct yas5xx *yas5xx);
+> +};
+
+...
+
+> +       int i, j;
+
+j can have a proper name.
+
+> +       j =3D yas5xx->chip_info->volatile_reg_qty;
+
+...
+
+> +static struct yas5xx_chip_info yas5xx_chip_info_tbl[] =3D {
+> +       [yas530] =3D {
+> +               .devid =3D YAS530_DEVICE_ID,
+> +               .volatile_reg =3D yas530_volatile_reg,
+> +               .volatile_reg_qty =3D ARRAY_SIZE(yas530_volatile_reg),
+> +               .scaling_val2 =3D 100000000, /* picotesla to Gauss */
+> +               .get_measure =3D yas530_get_measure,
+> +               .get_calibration_data =3D yas530_get_calibration_data,
+> +               .dump_calibration =3D yas530_dump_calibration,
+> +               .measure_offsets =3D yas530_measure_offsets,
+> +               .power_on =3D yas530_power_on,
+> +       },
+> +       [yas532] =3D {
+> +               .devid =3D YAS532_DEVICE_ID,
+> +               .volatile_reg =3D yas530_volatile_reg,
+> +               .volatile_reg_qty =3D ARRAY_SIZE(yas530_volatile_reg),
+> +               .scaling_val2 =3D 100000, /* nanotesla to Gauss */
+> +               .get_measure =3D yas530_get_measure,
+> +               .get_calibration_data =3D yas532_get_calibration_data,
+> +               .dump_calibration =3D yas530_dump_calibration,
+> +               .measure_offsets =3D yas530_measure_offsets,
+> +               .power_on =3D yas530_power_on,
+> +       },
+> +       [yas533] =3D {
+> +               .devid =3D YAS532_DEVICE_ID,
+> +               .volatile_reg =3D yas530_volatile_reg,
+> +               .volatile_reg_qty =3D ARRAY_SIZE(yas530_volatile_reg),
+> +               .scaling_val2 =3D 100000, /* nanotesla to Gauss */
+> +               .get_measure =3D yas530_get_measure,
+> +               .get_calibration_data =3D yas532_get_calibration_data,
+> +               .dump_calibration =3D yas530_dump_calibration,
+> +               .measure_offsets =3D yas530_measure_offsets,
+> +               .power_on =3D yas530_power_on,
+> +       }
+
+Keep comma here.
+
+> +};
+
+...
+
+> -       int ret;
+> +       int id_check, ret;
+
+Don't add variables with different semantics on the same line.
+
+...
+
+> +       if (id_check !=3D yas5xx->chip_info->devid) {
+>                 ret =3D -ENODEV;
+> -               dev_err(dev, "unhandled device ID %02x\n", yas5xx->devid)=
+;
+> +               dev_err(dev, "device ID %02x doesn't match %s\n",
+> +                       id_check, id->name);
+
+ret =3D dev_err_probe() ?
+
+>                 goto assert_reset;
+>         }
+
+...
+
+> +       dev_info(dev, "detected %s %s\n", yas5xx_product_name[yas5xx->chi=
+p],
+> +                yas5xx_version_name[yas5xx->chip][yas5xx->version]);
+
+I'm wondering if these arrays can be actually embedded into chip_info?
+
+--=20
+With Best Regards,
+Andy Shevchenko

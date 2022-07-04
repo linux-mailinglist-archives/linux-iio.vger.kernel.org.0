@@ -2,62 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 217C5565D43
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 20:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCFE565D4F
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 20:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbiGDSAr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 14:00:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S229674AbiGDSFh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 14:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229619AbiGDSAr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 14:00:47 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9203E6150
-        for <linux-iio@vger.kernel.org>; Mon,  4 Jul 2022 11:00:45 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-317a66d62dfso88382977b3.7
-        for <linux-iio@vger.kernel.org>; Mon, 04 Jul 2022 11:00:45 -0700 (PDT)
+        with ESMTP id S229515AbiGDSFe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 14:05:34 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B969F5A5;
+        Mon,  4 Jul 2022 11:05:33 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-317a66d62dfso88480407b3.7;
+        Mon, 04 Jul 2022 11:05:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=nPsSa/LAgsx4Z/tWZ+a1i/lR7QodoPPSduMaqCdlfG8=;
-        b=X18TVpiStnQFQv0iWZrRIQUDEtwuI9xf0VAdWqRWyTgAMejvQXwnkUt0B7D3I89d3m
-         LLZxGyfKskOfjcOQxuqcv0PlivljumJA82PwwvtLCn8nYCg+7J1cyA0SC5URQG/jz0Mn
-         rW1TWfJw0ngCS2v2GwyEzr7fbjt3CyRvhJz0QBP2dzDPt+2G2pKnFdyC/LQ48Ss7MrZ2
-         ezKjUEs5OYhgClSQ+hfiZThrXIvQqTNSJSD08RSE470/7txrhsb5zB4ktMc0iIAtn4MG
-         ei1MSKVpTLIMdhoY+LT8vJn5IaZKIxpU/l1/ZfJhkGYKu5VYRG15ZH4/V2xTxj/o1eJP
-         +osg==
+         :cc;
+        bh=wvgWVrmjJwCrqqGIbzo2OGx8Xd0ocvsSUiioa+7VI/g=;
+        b=gMCdmAzcM209agNxEe0/dcoRkK+vrkRaOOFZDV1oEYXw32pbPbpMbueZpHysaoUBAq
+         QOZ6zq4ZCLpht396i3XA2+N1frjvCvJJ4sc7u1fXiPpLpRuDsEHpBVv4FXsgs9Oy6c+F
+         GNh2ge3hlh+JzqijtX3Y2yCexZbweDq/oUHlAVaR+99DB+Wuf5FxwNvbdmIElX1EjI7o
+         nld8kehjkVTCf8NAZDYRdH1360JDJ73yX92vabkNxx0zyXXX0ozO7vjHUoZQ8KF09tXk
+         1G16bYm8v5ILUmr0GdSrxnWIlJYXX0/6CKeW5wmLs5eMRYCfMT27CcHHdKeFs/olWd5d
+         mZwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nPsSa/LAgsx4Z/tWZ+a1i/lR7QodoPPSduMaqCdlfG8=;
-        b=FyXa/2DTK4D0AdPZs6ZuDCUrslMSjmObYvCs3QWZkoA8eonHV18VcQxEhp9dhKvWZC
-         P2mPH/Zjrjut0VWl40RLC6qldGi2A8+8qS2rVPDuXJVDNoBJSPLFNZNidaCa7SpM+jbj
-         njvohgucJeoHrH8Rf5JbOTD/KCBNA+Kl42E/oOk181nBLNV0HTLzKYo7N/nPieBL4OG1
-         Tn7wfIx4UhbjfenVpnP6Sx+86Hc5tDewyUYEl6klsLXjSeRjc92TMFgZg2Sdn9N4Ire7
-         kVboS7e6qXNSisYAjAVntS55c3Z/UmX+xS2rfEdDpdpjyKgf40f8cRjCX21RvGKnOvT2
-         PV6Q==
-X-Gm-Message-State: AJIora99iRsdY2QidKCNV5lJ6XmWlmw9rvIQfhEr0u54Q67pQOx5PWI7
-        UWiPWbzTakuhKC9RXuI6Hj0bQJlHsN8402vbzv7RlWvJjtry4g==
-X-Google-Smtp-Source: AGRyM1to/ro/rmAx3EVprlxFYwuwgK/ATBBLg/9cB0ghSP9jSiiFF1x/275fz3aVl/zAIuk1smgMNNDqt45K3tbZqio=
+         :message-id:subject:to:cc;
+        bh=wvgWVrmjJwCrqqGIbzo2OGx8Xd0ocvsSUiioa+7VI/g=;
+        b=1C/VVMzrC7Hp6fdV82Y0kQcby/9ocGTh3043oWDQYxKPdQODt+0PVI0eDHQOud2tyo
+         BSRbJ0hVC01Qxbv8Qhdk9BjUG/Vh2JV6MTf72P+A24p17N9o7lph+UfOWvqUF16VQSQ1
+         LoAZ8rlQGdeN4KKsNhhJavdYJsYgl7lIBQLFpVCrhJJM6oZ6hhTHjjTtq6eYtUlqsRcU
+         +65REfG9RpliHrWQXcmPkQAls0eSMgKNceOC3e1F7L8kbWsuv7dcd6zAhMB1riMeCUKo
+         QOkTwzPIA1WBc90p6KqFhtyEqHfBNPBtKap5imly6fbHX6Un1JXjcONPgV8VUK2hniOq
+         Mveg==
+X-Gm-Message-State: AJIora/ZwTg4GFAMAIKiLo2y4Xg/zS0YZcfiGnXfEETSWjExqHo4LWPA
+        asY9nR5KgaHeBV+Rgad+NJO5EUtB6h8q+id7J/jobjn6phHU8g==
+X-Google-Smtp-Source: AGRyM1vLNXRmir9J5EHpnCGKWblrl/KOURiqeAKTbHJrUHUSO+lABRv3NWKIEFXBOS8ku9l3AgIh7jSxB7/NTGnzsuE=
 X-Received: by 2002:a81:468b:0:b0:318:4cac:6576 with SMTP id
- t133-20020a81468b000000b003184cac6576mr33405916ywa.277.1656957644638; Mon, 04
- Jul 2022 11:00:44 -0700 (PDT)
+ t133-20020a81468b000000b003184cac6576mr33429494ywa.277.1656957932717; Mon, 04
+ Jul 2022 11:05:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <ee3d70ac-a9b3-9b91-df92-81fb73c0f93f@gmail.com>
-In-Reply-To: <ee3d70ac-a9b3-9b91-df92-81fb73c0f93f@gmail.com>
+References: <cover.1656883851.git.jahau@rocketmail.com> <24d0ed13b317de4209cfd0b7ecd258af87b1b952.1656883851.git.jahau@rocketmail.com>
+In-Reply-To: <24d0ed13b317de4209cfd0b7ecd258af87b1b952.1656883851.git.jahau@rocketmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 4 Jul 2022 20:00:07 +0200
-Message-ID: <CAHp75VdGJKsdcY_ntd4-xy0xPb=J195yOyJM7d7vC_mPj+dm0w@mail.gmail.com>
-Subject: Re: fast spi driver development
-To:     Patricio Moreno <pm.pato@gmail.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
+Date:   Mon, 4 Jul 2022 20:04:55 +0200
+Message-ID: <CAHp75VeBdLypGa+f0FVPtBBs-i5VzQ-UvDdm5G7SG6Jgn4YvVQ@mail.gmail.com>
+Subject: Re: [PATCH v4 06/10] iio: magnetometer: yas530: Rename functions and registers
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -68,35 +70,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 3, 2022 at 3:09 PM Patricio Moreno <pm.pato@gmail.com> wrote:
+On Mon, Jul 4, 2022 at 12:03 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 >
-> Hello,
+> This is a preparation for adding YAS537 variant.
 >
-> I'm writing a driver for the TI ADS127x family of ADCs. The ads127x is a
-> 24 bit samples, 4/8 channels, ADC, which can be clocked, using SPI, with
-> up to 25 MHz. For what I've seen, I've followed a common approach within
-> the IIO ADC drivers, but I can't get it to work at high frequencies.
+> Functions that are used only by YAS530, YAS532 and YAS533 are renamed from
+> yas5xx to yas530. Same for the registers.
 >
-> I'm using the triggered buffers interface, with a RDY interrupt pin. The
-> problem I have is with timings. When the ADC sends the data ready
-> signal, my handler is called approximately 7=C2=B5s later. This handler t=
-hen
-> calls spi_read to get 24 bytes (8 3 bytes samples) and the kernel takes
-> a lot of time to read the SPI bus, actually, to *start* reading.
+> To avoid part listing in function and registers names, the name of the first
+> variant is used. Where appropriate, comments were added that these functions
+> are used by more than one variant.
 >
-> I would really appreciate some guidance on how to deal with this issue.
-
-+Cc: maintainers and AD guys. I remember there was a discussion about
-supporting HiFreq ADCs in IIO and AFAIR there are some issues (and you
-probably need to use DMA in cyclic mode or so).
+> Functions that will be used by all variants including YAS537 remain in the
+> naming scheme yas5xx. Or YAS5XX for registers, respectively.
 
 ...
 
->                  st->data.samples[i] =3D (b[3 * i] << 16) | (b[3 * i + 1]
-> << 8) | (b[3 * i + 2] << 0);
+>  /**
+> - * yas5xx_measure() - Make a measure from the hardware
+> + * yas530_measure() - Make a measure from the hardware
+>   * @yas5xx: The device state
+>   * @t: the raw temperature measurement
+>   * @x: the raw x axis measurement
+> @@ -190,7 +192,8 @@ static u16 yas532_extract_axis(u8 *data)
+>   * @y2: the y2 axis measurement
+>   * @return: 0 on success or error code
+>   */
+> -static int yas5xx_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+> +/* Used by YAS530, YAS532 and YAS533 */
 
-JFYI: get_unaligned_be24() is what you need here.
+Why a separate comment and not embedded into the kernel doc above?
 
---=20
+> +static int yas530_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+
+...
+
+>  /**
+> - * yas5xx_get_measure() - Measure a sample of all axis and process
+> + * yas530_get_measure() - Measure a sample of all axis and process
+>   * @yas5xx: The device state
+>   * @to: Temperature out
+>   * @xo: X axis out
+> @@ -314,7 +318,8 @@ static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)
+>   * @zo: Z axis out
+>   * @return: 0 on success or error code
+>   */
+> -static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+> +/* Used by YAS530, YAS532 and YAS533 */
+
+Ditto.
+
+> +static int yas530_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
+
+...
+
+>  /**
+> - * yas53x_extract_calibration() - extracts the a2-a9 and k calibration
+> + * yas530_extract_calibration() - extracts the a2-a9 and k calibration
+>   * @data: the bitfield to use
+>   * @c: the calibration to populate
+>   */
+> -static void yas53x_extract_calibration(u8 *data, struct yas5xx_calibration *c)
+> +/* Used by YAS530, YAS532 and YAS533 */
+
+Ditto.
+
+> +static void yas530_extract_calibration(u8 *data, struct yas5xx_calibration *c)
+
+-- 
 With Best Regards,
 Andy Shevchenko

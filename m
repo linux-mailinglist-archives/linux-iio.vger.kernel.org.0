@@ -2,215 +2,333 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A33E564BBB
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 04:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D485A564C00
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 05:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiGDCcy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 3 Jul 2022 22:32:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56802 "EHLO
+        id S229946AbiGDDRJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 3 Jul 2022 23:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229565AbiGDCcy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Jul 2022 22:32:54 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576E46382;
-        Sun,  3 Jul 2022 19:32:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656901973; x=1688437973;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gUXrEL+LxCvVxG3WsdvesscV7I7PWrPK+ypBJL0gTqk=;
-  b=R4/0lUzp9Ka/9X1rYwgc89oBcx/uxhpHyYFwVVX3wjD1bs17bTDHkz6/
-   zifCZ8Ek19+xdqDbZEp6evOWeZ7lVl6KEloPAH33YnT40lCdQWRKQ61gE
-   2aG1/7eN7JEaB/jwDV6nwZfOH/ru2lr0V9dRhEcNvSECnPZs7vB12i9h+
-   FPXmkkWMtx2IvIHfjo6aB6In7AEIJ6NOX8ETeHkp5flgZe0+g6wSBBotT
-   xsj45Uj96UUKdxdkVgiOtv/+KZlEAJQpvYe2cGF1fSEBaHs+SbdVD50dD
-   5iKQK2x79ggM0iuOqT+FUXdGXDAlSHb7KRrn8R9D7qeX1SpsUFhPHH+Iz
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10397"; a="281775068"
-X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="281775068"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2022 19:32:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,243,1650956400"; 
-   d="scan'208";a="734666235"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 03 Jul 2022 19:32:50 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o8BtK-000HMJ-5z;
-        Mon, 04 Jul 2022 02:32:50 +0000
-Date:   Mon, 4 Jul 2022 10:32:09 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] iio: pressure: bmp280: Adds more tunable config
- parameters for BMP380
-Message-ID: <202207041006.YJFp2Aj6-lkp@intel.com>
-References: <20220704003337.208696-1-ang.iglesiasg@gmail.com>
+        with ESMTP id S229613AbiGDDRI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 3 Jul 2022 23:17:08 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F7A38AD;
+        Sun,  3 Jul 2022 20:17:06 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id c131-20020a1c3589000000b003a19b2bce36so1561798wma.4;
+        Sun, 03 Jul 2022 20:17:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=wuVILhOwhA4An73apQGG0DjzsaTl4gC5x8gIscEMkZ4=;
+        b=MM2kUO3Vn5IPL0jgkmAdIxcZE9sO/MfAjS+4YHUwyKZJp/pfqVhv7w41KXypyGFB3A
+         pZXZI3A7s8PvUb9q9eJAjC/3mPLx46snFc8htPoi00Bzt5+zS858J8de7gsnN/Nmql0m
+         kdjo0J0wmdEK9d8RKJROhsuDmJ96o0Ed/nMLfX46JShjPpxcMt5uKoDBBtiyPL2tVBei
+         kiFmFwNo9Misq1eSUm4/V5M1TDjA0cFpRHtvZHpoMmbR7hhKRZ8ZtokrRWh6aIKwAJ4v
+         dnOc8MME2eeG1yHN1doIVmksXoCVKSxU/XmtJGnZRWMTjxgsexQMiMa8h1gLDerIYcA1
+         xxrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=wuVILhOwhA4An73apQGG0DjzsaTl4gC5x8gIscEMkZ4=;
+        b=xDWmhta3BJcvP/uQUnB0oDhCmcrg/RdOAcGBHVTD2x9OfbH7XdEeuNohBtAK2Vr4ef
+         h9e6sYWdnNnSt8jJJmuLWogduRz6KlIRRjQREEycVThniD9ztn3e4uqiTfQA4+hNTpjZ
+         mMVhVZQFZzEdT5y6jYg52AyP8OQkDcP6o8YO+WuTmL6GdjoP/PBiGK51Kh60DvKJ2IC3
+         S5Ows2mQIVsI6JiGbEDKHuZoSOQeJGocRFR4cR6AnqGu87a6bZpn+MBve/tZyDpDaANM
+         tl95vj0GcoBp74mkyaNHHp53e4+kZ7pZc9Q/UmmLtASBSUhx+NYat/X9I4W51vXEHH9L
+         gqbg==
+X-Gm-Message-State: AJIora9Aoxr7k158Cay48SPh4Y0SJuGHjZ8Atggqn7VuwyPV1EkL6pnl
+        RfJRiaaNGipF3IX2kIOCw8Oh0ygnfpYMoDg3GG4=
+X-Google-Smtp-Source: AGRyM1uxJy01TwgIf7+7L5cZ3Sgg0CW1+x48xTiItbzIw/QVNyJBBIIcorUhtCmDJng9wxa/4aSSL9PAKdkXDMO+ykw=
+X-Received: by 2002:a05:600c:2182:b0:3a2:afc8:7098 with SMTP id
+ e2-20020a05600c218200b003a2afc87098mr1156891wme.92.1656904624765; Sun, 03 Jul
+ 2022 20:17:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220704003337.208696-1-ang.iglesiasg@gmail.com>
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <1656469212-12717-1-git-send-email-u0084500@gmail.com>
+ <1656469212-12717-3-git-send-email-u0084500@gmail.com> <CAHp75Vd2bxFA5PmjEtgAjJfCf9YZENq_fb9b2VHmMmmHdqGJSw@mail.gmail.com>
+In-Reply-To: <CAHp75Vd2bxFA5PmjEtgAjJfCf9YZENq_fb9b2VHmMmmHdqGJSw@mail.gmail.com>
+From:   ChiYuan Huang <u0084500@gmail.com>
+Date:   Mon, 4 Jul 2022 11:16:53 +0800
+Message-ID: <CADiBU384ZwKL_+i1zRL9qfVt-NLo=pnf8zrGna4Sxt+toYZdWg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add rtq6056 support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        cy_huang <cy_huang@richtek.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Angel,
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=
+=881=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=886:05=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+>
+> On Wed, Jun 29, 2022 at 4:23 AM cy_huang <u0084500@gmail.com> wrote:
+>
+> > Add Richtek rtq6056 supporting.
+> >
+> > It can be used for the system to monitor load current and power with 16=
+-bit
+> > resolution.
+>
+> ...
+>
+> > +static int rtq6056_adc_read_channel(struct rtq6056_priv *priv,
+> > +                                   struct iio_chan_spec const *ch,
+> > +                                   int *val)
+> > +{
+> > +       struct device *dev =3D priv->dev;
+> > +       unsigned int addr =3D ch->address;
+> > +       unsigned int regval;
+> > +       int ret;
+> > +
+> > +       pm_runtime_get_sync(dev);
+> > +
+> > +       ret =3D regmap_read(priv->regmap, addr, &regval);
+> > +       if (ret) {
+> > +               pm_runtime_put(dev);
+> > +               return ret;
+> > +       }
+>
+> You can optimize this to
+>
+>        pm_runtime_get_sync(dev);
+>        ret =3D regmap_read(priv->regmap, addr, &regval);
+>        pm_runtime_mark_last_busy(dev);
+>        pm_runtime_put(dev);
+>        if (ret)
+>            return ret;
+>
+> > +       /* Power and VBUS is unsigned 16-bit, others are signed 16-bit =
+*/
+> > +       if (addr =3D=3D RTQ6056_REG_BUSVOLT || addr =3D=3D RTQ6056_REG_=
+POWER)
+> > +               *val =3D regval;
+> > +       else
+> > +               *val =3D sign_extend32(regval, 16);
+>
+> > +       pm_runtime_mark_last_busy(dev);
+> > +       pm_runtime_put(dev);
+>
+> ...and get rid of these.
+>
+> > +       return IIO_VAL_INT;
+> > +}
+>
+> ...
+>
+> > +               *val2 =3D 1000000000;
+>
+> NANO ?
+>
+Yes, unit is 2.5 microvolt. I have all listed all unit comments in the
+source code.
+> ...
+>
+> > +               *val2 =3D 1000;
+>
+> MILLI ?
+>
+Yes.
+> > +       *val =3D DIV_ROUND_UP(1000000, sample_time);
+>
+> USEC_PER_SEC ?
+>
+No, sample time is (vshunt convesion time + vbus conversion time) *
+average sample.
+And the sample freq returns the unit by HZ (sample frequency per second)
 
-Thank you for the patch! Perhaps something to improve:
-
-[auto build test WARNING on 69cb6c6556ad89620547318439d6be8bb1629a5a]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Angel-Iglesias/Add-support-for-pressure-sensor-Bosch-BMP380/20220704-083456
-base:   69cb6c6556ad89620547318439d6be8bb1629a5a
-config: arm64-buildonly-randconfig-r001-20220703 (https://download.01.org/0day-ci/archive/20220704/202207041006.YJFp2Aj6-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 134363208b9272a967c911f7b56c255a72a6f0a0)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install arm64 cross compiling tool for clang build
-        # apt-get install binutils-aarch64-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/b9905383fbc9858f211da589e86db6675f82f528
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Angel-Iglesias/Add-support-for-pressure-sensor-Bosch-BMP380/20220704-083456
-        git checkout b9905383fbc9858f211da589e86db6675f82f528
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash drivers/iio/pressure/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/pressure/bmp280-core.c:1230:11: warning: variable 'change' is uninitialized when used here [-Wuninitialized]
-           change = change || aux;
-                    ^~~~~~
-   drivers/iio/pressure/bmp280-core.c:1205:13: note: initialize the variable 'change' to silence this warning
-           bool change, aux;
-                      ^
-                       = 0
-   1 warning generated.
-
-
-vim +/change +1230 drivers/iio/pressure/bmp280-core.c
-
-  1199	
-  1200	static int bmp380_chip_config(struct bmp280_data *data)
-  1201	{
-  1202		u8 osrs;
-  1203		unsigned int tmp;
-  1204		int ret;
-  1205		bool change, aux;
-  1206	
-  1207		/* configure power control register */
-  1208		ret = regmap_update_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-  1209					 BMP380_CTRL_SENSORS_MASK,
-  1210					 BMP380_CTRL_SENSORS_PRESS_EN |
-  1211					 BMP380_CTRL_SENSORS_TEMP_EN);
-  1212		if (ret < 0) {
-  1213			dev_err(data->dev,
-  1214				"failed to write operation control register\n");
-  1215			return ret;
-  1216		}
-  1217	
-  1218		/* configure oversampling */
-  1219		osrs = FIELD_PREP(BMP380_OSRS_TEMP_MASK, data->oversampling_temp) |
-  1220		       FIELD_PREP(BMP380_OSRS_PRESS_MASK, data->oversampling_press);
-  1221	
-  1222		ret = regmap_update_bits_check(data->regmap, BMP380_REG_OSR,
-  1223					       BMP380_OSRS_TEMP_MASK |
-  1224					       BMP380_OSRS_PRESS_MASK,
-  1225					       osrs, &aux);
-  1226		if (ret < 0) {
-  1227			dev_err(data->dev, "failed to write oversampling register\n");
-  1228			return ret;
-  1229		}
-> 1230		change = change || aux;
-  1231	
-  1232		/* configure output data rate */
-  1233		ret = regmap_update_bits_check(data->regmap, BMP380_REG_ODR,
-  1234					       BMP380_ODRS_MASK, data->sampling_freq,
-  1235					       &aux);
-  1236		if (ret < 0) {
-  1237			dev_err(data->dev, "failed to write ODR selection register\n");
-  1238			return ret;
-  1239		}
-  1240		change = change || aux;
-  1241	
-  1242		/* set filter data */
-  1243		ret = regmap_update_bits_check(data->regmap, BMP380_REG_CONFIG,
-  1244					BMP380_FILTER_MASK,
-  1245					FIELD_PREP(BMP380_FILTER_MASK, data->iir_filter_coeff),
-  1246					&aux);
-  1247		if (ret < 0) {
-  1248			dev_err(data->dev, "failed to write config register\n");
-  1249			return ret;
-  1250		}
-  1251		change = change || aux;
-  1252	
-  1253		if (change) {
-  1254			/* cycle sensor state machine to reset any measurement in progress
-  1255			 * configuration errors are detected in a measurment cycle.
-  1256			 * If the sampling frequency is too low, it is faster to reset
-  1257			 * measurement cycle and restart measurements
-  1258			 */
-  1259			ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-  1260						BMP380_MODE_MASK,
-  1261						FIELD_PREP(BMP380_MODE_MASK,
-  1262							   BMP380_MODE_SLEEP));
-  1263			if (ret < 0) {
-  1264				dev_err(data->dev, "failed to set sleep mode\n");
-  1265				return ret;
-  1266			}
-  1267			usleep_range(2000, 2500);
-  1268			ret = regmap_write_bits(data->regmap, BMP380_REG_POWER_CONTROL,
-  1269						BMP380_MODE_MASK,
-  1270						FIELD_PREP(BMP380_MODE_MASK,
-  1271							   BMP380_MODE_NORMAL));
-  1272			if (ret < 0) {
-  1273				dev_err(data->dev, "failed to set normal mode\n");
-  1274				return ret;
-  1275			}
-  1276			/* wait before checking the configuration error flag.
-  1277			 * Worst case value for measure time indicated in the datashhet
-  1278			 * in section 3.9.1 is used.
-  1279			 */
-  1280			msleep(80);
-  1281	
-  1282			/* check config error flag */
-  1283			ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
-  1284			if (ret < 0) {
-  1285				dev_err(data->dev,
-  1286					"failed to read error register\n");
-  1287				return ret;
-  1288			}
-  1289			if (tmp & BMP380_ERR_CONF_MASK) {
-  1290				dev_warn(data->dev,
-  1291					"sensor flagged configuration as incompatible\n");
-  1292				return -EINVAL;
-  1293			}
-  1294		}
-  1295	
-  1296		return 0;
-  1297	}
-  1298	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> > +
+> > +       return IIO_VAL_INT;
+> > +}
+>
+> ...
+>
+> > +static int rtq6056_adc_read_label(struct iio_dev *indio_dev,
+> > +                                 struct iio_chan_spec const *chan,
+> > +                                 char *label)
+> > +{
+> > +       return sysfs_emit(label, "%s\n", rtq6056_channel_labels[chan->c=
+hannel]);
+> > +}
+>
+> ...
+>
+> > +       /* calibration =3D 5120000 / (Rshunt (uohm) * current lsb (1mA)=
+) */
+>
+> uOhm
+>
+> ...
+>
+> > +static ssize_t shunt_resistor_show(struct device *dev,
+> > +                                  struct device_attribute *attr, char =
+*buf)
+> > +{
+> > +       struct rtq6056_priv *priv =3D iio_priv(dev_to_iio_dev(dev));
+> > +       int vals[2] =3D { priv->shunt_resistor_uohm, 1000000 };
+>
+> MICRO ?
+>
+Yes, for this kind of sense resistor, it will choose 2 milli-Ohm, 1
+milli-Ohms,, 0.5 milli-Ohms, or less.
+> > +       return iio_format_value(buf, IIO_VAL_FRACTIONAL, 1, vals);
+> > +}
+>
+> ...
+>
+> > +       ret =3D rtq6056_set_shunt_resistor(priv, val * 1000000 + val_fr=
+act);
+>
+> MICRO ?
+>
+Yes
+> > +       if (ret)
+> > +               return ret;
+>
+> ...
+>
+> > +       struct {
+> > +               u16 vals[RTQ6056_MAX_CHANNEL];
+> > +               int64_t timestamp;
+> > +       } data __aligned(8);
+>
+> Hmm... alignment of this struct will be at least 4 bytes, but
+> shouldn't we rather be sure that the timestamp member is aligned
+> properly? Otherwise this seems fragile and dependent on
+> RTQ6056_MAX_CHANNEL % 4 =3D=3D 0.
+>
+Yap, from the 'max channel', it already guarantee this struct will be
+aligned at lease 4.
+Actually, It can be removed.
+> ...
+>
+> > +       pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
+> > +       pm_runtime_use_autosuspend(dev);
+> > +       pm_runtime_set_active(dev);
+> > +       pm_runtime_mark_last_busy(dev);
+> > +       pm_runtime_enable(dev);
+> > +
+> > +       /* By default, use 2000 micro-ohm resistor */
+> > +       shunt_resistor_uohm =3D 2000;
+> > +       device_property_read_u32(dev, "shunt-resistor-micro-ohms",
+> > +                                &shunt_resistor_uohm);
+> > +
+> > +       ret =3D rtq6056_set_shunt_resistor(priv, shunt_resistor_uohm);
+> > +       if (ret) {
+> > +               dev_err(dev, "Failed to init shunt resistor\n");
+> > +               goto err_probe;
+>
+> return dev_err_probe();
+>
+> (see below how)
+>
+> > +       }
+> > +
+> > +       indio_dev->name =3D "rtq6056";
+> > +       indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +       indio_dev->channels =3D rtq6056_channels;
+> > +       indio_dev->num_channels =3D ARRAY_SIZE(rtq6056_channels);
+> > +       indio_dev->info =3D &rtq6056_info;
+> > +
+> > +       ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+> > +                                             rtq6056_buffer_trigger_ha=
+ndler,
+> > +                                             NULL);
+> > +       if (ret) {
+> > +               dev_err(dev, "Failed to allocate iio trigger buffer\n")=
+;
+>
+> Ditto.
+>
+> > +               goto err_probe;
+>
+> It is a sign of wrong ordering, either do not use devm_ calls after
+> non-devm_ or make the latter wrapped into devm_add_action_or_reset().
+> See below for additional information.
+>
+I think the another way is to register all using devm_ and to call the
+pm_runtime at the last.
+> > +       }
+> > +
+> > +       ret =3D devm_iio_device_register(dev, indio_dev);
+> > +       if (ret) {
+> > +               dev_err(dev, "Failed to allocate iio device\n");
+> > +               goto err_probe;
+> > +       }
+> > +
+> > +       return 0;
+> > +
+> > +err_probe:
+> > +       pm_runtime_dont_use_autosuspend(dev);
+> > +       pm_runtime_disable(dev);
+> > +       pm_runtime_set_suspended(dev);
+> > +
+> > +       return ret;
+>
+> ...
+>
+> > +static int rtq6056_remove(struct i2c_client *i2c)
+> > +{
+> > +       struct device *dev =3D &i2c->dev;
+>
+> Another (but usually not good option) is to call devm_..._unregister() he=
+re.
+>
+> > +       pm_runtime_dont_use_autosuspend(dev);
+> > +       pm_runtime_disable(dev);
+> > +       pm_runtime_set_suspended(dev);
+> > +
+> > +       return 0;
+> > +}
+>
+> ...
+>
+> > +static const struct dev_pm_ops rtq6056_pm_ops =3D {
+> > +       SET_RUNTIME_PM_OPS(rtq6056_runtime_suspend, rtq6056_runtime_res=
+ume, NULL)
+>
+> RUNTIME_PM_OPS()
+>
+> > +};
+>
+> ...
+>
+> > +static const struct of_device_id rtq6056_device_match[] =3D {
+> > +       { .compatible =3D "richtek,rtq6056", },
+>
+> In this case the inner comma is not needed.
+>
+> > +       {}
+> > +};
+>
+> ...
+>
+> > +static struct i2c_driver rtq6056_driver =3D {
+> > +       .driver =3D {
+> > +               .name =3D "rtq6056",
+> > +               .of_match_table =3D rtq6056_device_match,
+>
+> > +               .pm =3D &rtq6056_pm_ops,
+>
+> pm_ptr()
+>
+> > +       },
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

@@ -2,91 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4805A5650EE
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 11:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8A05652A9
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Jul 2022 12:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbiGDJdD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 05:33:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
+        id S232228AbiGDKng (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 06:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233948AbiGDJcv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 05:32:51 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8BFE0C7;
-        Mon,  4 Jul 2022 02:31:41 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id g16-20020a17090a7d1000b001ea9f820449so13070622pjl.5;
-        Mon, 04 Jul 2022 02:31:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=xIA0tkEJFCPwLmR+R6eKHNKrvI9a6bVM4TsihGfrld0=;
-        b=f8MhiLRjvn4JhQhz9F64yCgS5B6jrH8tJwT1awj7AGv9RShuJdBVz84vc1kQVsx0Lv
-         eNwaezjyn3nuI01xLjtA8+y0NZAqsqTswX489ZxWe/DK4qA3KOAt8JChBJylkfu6iBcj
-         ORlmB+OW6RB+2+Vau8HlQetnTopYsjVTFjp0f9KRNoR/+YI371o5iIsodX7EUGlhLxKP
-         kIepqqS2tlY+l7PfLRiLbmuc06ZAkcN8W3clHbhEfFPx2LGi5BU/JurrZIflfzIJK1dI
-         KLvXaDm+sy2U5Xe0lntfK9VA1zVFQuJyC2Hbzq2cctn7nouM2bwK0yqcoPWSdeZyN5vE
-         +/GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=xIA0tkEJFCPwLmR+R6eKHNKrvI9a6bVM4TsihGfrld0=;
-        b=POMPhCymPAxgLj2H6m7adApMVcTrUWLx1gC5wWoSYnMk8y7f37BYaMomk10afoT4mg
-         VvWRteExDmC6YL2pHc9YTYlaPZSrBAL8Ku456f5j2U16C6v1q8vs8h9SlOcF7eVCo9VQ
-         otonsIoxN6lV0Is0xQpYoRAgzcMFjlmZAEdkzcnLW9sTtjAqoRWvP+VTSDUSsFjt6H5w
-         khuhWdTW2ScsDwWGtolr2cIEP9YeCMPxo2aUSYmcZ1G3x1QlwP64PPRVowc+XgCXg6UN
-         x1CYrcPKhqcPx5VaAsFPeL6fc3BQZb/7/nS0yUyEEilfHfkywXsIF8r8zIsqo2GQvS9l
-         d61Q==
-X-Gm-Message-State: AJIora+ywkXY3rglOW+A0MWGoerBEpEer7QEG6ser+wAjZxjmjxxKPfg
-        fz3MvTmVktNpFh+dIjt/DF/1kEYY97iCmWGriEw=
-X-Google-Smtp-Source: AGRyM1snqrRpQbd96zgAVBmjrPX1x2o3afFwTRTiOLpzM13U4eENpimphE3z0PHrUTRqdjm3Nu9HaCkQlEPGsPeCLlE=
-X-Received: by 2002:a17:903:110c:b0:168:fa61:1440 with SMTP id
- n12-20020a170903110c00b00168fa611440mr34740455plh.149.1656927100855; Mon, 04
- Jul 2022 02:31:40 -0700 (PDT)
+        with ESMTP id S230390AbiGDKng (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 06:43:36 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2059.outbound.protection.outlook.com [40.107.243.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF8C2E07;
+        Mon,  4 Jul 2022 03:43:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=C587aOfrCAMbRXBKQaS3FalbMoNXh6MEwO7nMTbRaDRWYXPjEz2boXNQD1jEajtz4JXoOgN+9/B26QIe+l4HA+L5l6K5Y37mg2v0JANWIqoqm9+meZHvMNqDcOR2G0Rbvycxfoao8bBOrl92SBfEAFT1hcBfYN4TLbOXRu5xd87kqjLiLynX7vOFkOEZWdaGR/K92fQj4MyVNVJitkPv7ZHwC9+MA2MsZl+GMXlog4P5aq1h2MjjCHpr0HZMScJRbhnpaPEp2QN9fMmqJUKNBXh+EfGzZCNU+SLxU6Ytr8r2x8YbIZjeuEJLMwl/gVfFyItjmJBsCuAA9y3bjwDPdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7C8P+B0wLiR2ZDAWKpdWmeWUbV4Hpo0CQo4/CrAB5Tg=;
+ b=RO07QRXvW/dkyO3we5zXfq/UqDh7ga3GDIvNPW49trIoYftwCAfgYAjTAz8SkARa9d8YI6Q4cHKj++3/U+sTzEBZWdcZj/ouh3JgTNuyOqDMG4fwceX8+iiMSGVQGm+yXqoKAlO5inAThIL2SKuajhESsgP6brQy8m0wOEiIoaIdxhwcSgIjDt4l85FN7JAxqh2GrZKRETQiAy9LeOs8sXN2XDIvdw7yeVtU67cBldZYHAk/JY02QMfJD/HeJjkgvhjzFysWyA0b6xs8gvu3MTV/fcoKxqLYU+NL1b/j0UCqSGoQKLJBQLEQdq07u0pK/f+AbhdNcSH0Tva9yKTIag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7C8P+B0wLiR2ZDAWKpdWmeWUbV4Hpo0CQo4/CrAB5Tg=;
+ b=csKJY9uWfjB8mW8S7Nrd5j0OykBn3E7EO4k7ica68t8yAHdgDqb9tOUC958L6e94UduIuK1P+QrMIQfZCRDPSXQwlHmTZ9RMtvhli+6qikIADnkx+xUhFRcVmk7d50lTlEfgqmZN2KravPiHF6rTq1V8mvcyfNbThWANst2amZw=
+Received: from DS7PR03CA0228.namprd03.prod.outlook.com (2603:10b6:5:3ba::23)
+ by DM5PR1201MB0170.namprd12.prod.outlook.com (2603:10b6:4:59::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.17; Mon, 4 Jul
+ 2022 10:43:32 +0000
+Received: from DM6NAM11FT042.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:3ba:cafe::8) by DS7PR03CA0228.outlook.office365.com
+ (2603:10b6:5:3ba::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5395.17 via Frontend
+ Transport; Mon, 4 Jul 2022 10:43:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT042.mail.protection.outlook.com (10.13.173.165) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5395.14 via Frontend Transport; Mon, 4 Jul 2022 10:43:32 +0000
+Received: from [10.254.241.52] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.28; Mon, 4 Jul
+ 2022 05:43:29 -0500
+Message-ID: <1d6eba67-5a63-e1b2-c9cd-583b950ddca6@amd.com>
+Date:   Mon, 4 Jul 2022 12:43:26 +0200
 MIME-Version: 1.0
-References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-9-peterwu.pub@gmail.com>
- <YsKXcnys2Wa8Zz0p@kroah.com>
-In-Reply-To: <YsKXcnys2Wa8Zz0p@kroah.com>
-From:   szuni chen <szunichen@gmail.com>
-Date:   Mon, 4 Jul 2022 17:31:29 +0800
-Message-ID: <CA+hk2fYA3phYAoh+BFr0ddy9MR8Ro1WCoqBpa1UK2StwMtLyfQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/13] usb: typec: tcpci_mt6370: Add Mediatek MT6370
- tcpci driver
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v1 1/2] iio: adc: xilinx-xadc: Make use of device
+ properties
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Conall O'Griofa <conall.o'griofa@xilinx.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>, chiaen_wu@richtek.com,
-        alice_chen@richtek.com, ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Michal Simek <michal.simek@xilinx.com>
+References: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
+ <20220603183224.540b3808@jic23-huawei>
+ <e2efcf6d-ed85-dc6e-64e1-f0efedd4a673@amd.com>
+ <YsBYvPKfZRLygCyz@smile.fi.intel.com>
+From:   Michal Simek <michal.simek@amd.com>
+In-Reply-To: <YsBYvPKfZRLygCyz@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 935638a0-86e7-4de9-c45e-08da5daa0a31
+X-MS-TrafficTypeDiagnostic: DM5PR1201MB0170:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: Yq1895HnZecU5mXwRGlln9FETa6e8CKOC93w5uztE7ioUL6rmI/2ogUTFLhnaHNT03nAtdIYrLwQP4s1iuETEmqA/IPj9OlDoym7gG8Io1Nxdtjbbu48VOAushpykmJlTEMG5LNlmpHWUc8dd/ybe5CW8dkuHZsCGJypeLeHSLygfyGR4+xw5OP5OGHa99DNkTRAl059v9w1Ucpd1iKNAeeHVdyVJ0/HBirmRtx1+PjqWnpblqSwL3pO4FTkNJMsAIIX8OX3BpOElCgyFcWjjAsADBh1ibvncAwC7RwrEHY7tsMWnPo5dogL0Y6Ab88DrrWZpKz9NwzY7YIOO2ZH1f5B0G1B6tm18Nad3xKKznZuOe5Zl+sGIt5AxYaFniZhdySxZIda1+DdbMSbrau7SMrAit57x8G1yRVvjM7UePyRYXgulRVkT5aYWtPKepc2ein7QX7AVdITt5oeGpPqCe4JC3wUgmYRpd8vuLes4wEZE7IIWySotsp45vVEURHpyIX8o0u5sSgmNMU15PUSrIKnmTZr8ByDc/8GEuKaVMmFB4DYuuoU6uR1GX0XRgN0Udxp7g7+WJ6LV2HLFeKKbYy33iyivKvGraPZXDsSsCVGGJtCqN+3NoMpcGRBA4wt8LJkfXq8fAQEssAEPf9L9MK8K9vi4jTZ0nkrGH//qpZHDxcjAmOrO3J5WMh3tBTfPVopVKgSe16LDF2Yoo+zKmuDEjhj8tvVbiKQXjJuVDqijYYnL700UkY7+nDeXNysjc6rBiT5NkFgd0XAI/eI9m33Fu8hIBF4dSQnaSfT/FuNDsyfyxLowfUn0wB13NneWY8+rA9rdFSS0TV+xm5jU/dV7BkFf4PzIosvP8Za5YnL+TJCgMR9xdkLRxrR6rnXNJlFJ+yDVTh/d92Y+34KeYd7zkS+/+DVMec/Md2g7mQ=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230016)(4636009)(346002)(376002)(136003)(39860400002)(396003)(40470700004)(36840700001)(46966006)(4326008)(478600001)(5660300002)(44832011)(81166007)(82740400003)(31696002)(8936002)(356005)(6916009)(54906003)(8676002)(316002)(16576012)(86362001)(40460700003)(47076005)(426003)(70586007)(70206006)(336012)(2616005)(26005)(16526019)(186003)(107886003)(41300700001)(2906002)(36756003)(82310400005)(53546011)(6666004)(40480700001)(36860700001)(34020700004)(31686004)(43740500002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2022 10:43:32.2266
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 935638a0-86e7-4de9-c45e-08da5daa0a31
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT042.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR1201MB0170
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,38 +109,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> =E6=96=BC 2022=E5=B9=B47=E6=9C=884=E6=
-=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=883:32=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Mon, Jul 04, 2022 at 01:38:56PM +0800, ChiaEn Wu wrote:
-> > From: ChiYuan Huang <cy_huang@richtek.com>
-> >
-> > Add chip level mt6370 tcpci driver.
->
-> What does this mean?  Please provide more information about the hardware
-> being supported here so we know how to review this.
+Hi Andy,
 
-Dear Greg,
+On 7/2/22 16:39, Andy Shevchenko wrote:
+> On Mon, Jun 20, 2022 at 04:58:04PM +0200, Michal Simek wrote:
+>> On 6/3/22 19:32, Jonathan Cameron wrote:
+>>> On Tue, 31 May 2022 17:11:17 +0300
+>>> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+>>>
+>>>> Convert the module to be property provider agnostic and allow
+>>>> it to be used on non-OF platforms.
+>>>>
+>>>> Add mod_devicetable.h include.
+>>>>
+>>>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>>>
+>>> These both seem good to me, but as the driver is fairly actively maintained,
+>>> I'll let this one sit on the list for a while so others can take a look.
+>>>
+>>> Whilst it 'seems' unlikely anyone will ever use this driver with other firmware
+>>> I am keen to reduce the number of of-specific drivers in IIO just to avoid
+>>> any chance of cut and paste.
+>>>
+>>> Who knows, I'm trying to run an aspeed-i2c driver with ACPI at the moment
+>>> because it's handy for a emulated setup, so maybe the same will one day happen
+>>> with this device :)  Weirder things have happened.
+>>
+>> Conall: Can you please test these changes and provide your feedback?
+> 
+> Hmm... No news?
 
-MediaTek MT6370 is a highly-integrated smart power management IC,
-which includes a single cell Li-Ion/Li-Polymer switching battery charger,
-a USB Type-C & Power Delivery (PD) controller, dual flash LED current sourc=
-es,
-a RGB LED driver, a backlight WLED driver, a display bias driver and a
-general LDO for portable devices.
+Anand unfortunately left the company. I have asked testing team to test this 
+patch and they can't see any issue.
+That's why:
+Acked-by: Michal Simek <michal.simek@amd.com>
 
-This driver is used for the Type-C & Power Delivery controller in
-MediaTek MT6370 IC.
+Thanks,
+Michal
 
-If we change the commit message to
-
-"Add MediaTek MT6370 tcpci driver.
-MediaTek MT6370 is a multi-functional IC that includes USB Type-C.
-It works with Type-C Port Controller Manager to provide USB PD and USB
-Type-C functionalities."
-
-does this meet your requirements?
-Or =E2=80=9CAdd tcpci driver for Mediatek MT6370 IC=E2=80=9D is enough?
-
-Sincerely,
-Alice Chen

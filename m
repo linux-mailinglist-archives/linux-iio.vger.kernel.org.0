@@ -2,119 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9CB456608A
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 03:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6C625660BA
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 03:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbiGEBNk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 4 Jul 2022 21:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
+        id S231347AbiGEBly (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 4 Jul 2022 21:41:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbiGEBNj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 21:13:39 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E3F0B87A;
-        Mon,  4 Jul 2022 18:13:39 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id y14-20020a17090a644e00b001ef775f7118so6853348pjm.2;
-        Mon, 04 Jul 2022 18:13:39 -0700 (PDT)
+        with ESMTP id S229865AbiGEBlx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 4 Jul 2022 21:41:53 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C950EDF09;
+        Mon,  4 Jul 2022 18:41:52 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id q9so15431563wrd.8;
+        Mon, 04 Jul 2022 18:41:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=/KsfK/V0d8ToZ+E6OEEqCLi5B5hLJgvh5U23wBizRsg=;
-        b=KRmMBSAu9BXPprxpAm5q1f77xbWjG8Isw/3aW9fcpWq4nM4Pw0eKaaC67TYI4oHRb3
-         rBfQTftx42v485u+jrEJ/3dOgpMZTOvebwqZpokjsQ/hcv1y7aOaOWwysMFuVBVidxg/
-         zfaE3XHyOhU1Q7VapKOpFk4m6KS6ckrwtXHA8KX0L7abAGv9fXJc9lYcFv4Aye+cJ6gD
-         GpFAFOq91yD4F+rIg6xMOs2Yh4FuHZMrC3gfaxHLQVNSc8nxLQjsfsfVKVkXLRUWbfGZ
-         XmyUHqKby76lpX9L+7SFN5pkBTcNkwAXZujVSx9H6sFCyXgX98dy63fAvKTfxWrqZ4ar
-         3QBQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=3mXXLJT3pzHfY2MP3/D0o2S28/BVSfmZhtJ9riIPTYk=;
+        b=BOJBA7mleKywdRuyqtpjDV4i2xNN8cmg0F5cRn4q88lQ1pAwfmyWik2giLT5N20921
+         NJU5t1mMU07Bzu+XlV+gQqNisf82bGhM2WpQdyhg8wD3NiZwOUY2qPwiLTWRFb4H9Uo3
+         g5/RwjcSMRF5YkBkGJMrHckZciYeiPcWSxw7YDm7NavMDagqWVP8mDdFmkKVooHCgwEi
+         am5SYzeLOtid4PoPlIrQiYdudZ+aPdJDbyuyswZC2UXMArFFVoJ/Dnk5uvQf21hI9oPX
+         hFtSD/dYkt70aTjKYZGKa4fJKWSm7s0DvERiF4DVn/CuKNOk8uhyA8jZ2SDYuiJUDQQi
+         dYng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=/KsfK/V0d8ToZ+E6OEEqCLi5B5hLJgvh5U23wBizRsg=;
-        b=3SeTKSV7SNZnHHkJJabsyLbFCY/KyZ9IWA/uJaQqj59Hr2caC31ZsjIYmLI/OuvPU6
-         6f89AtoBWb89V1+J+02LcGU7b0poYH9MrKukxF1TbwfROE2osqslOZa4aVO6YiAf/Adl
-         Cne4TpCn7axvT0EAqXxwYRDmsRGRpt3XaN/3jZEChvUqxkNgXLKijwuGAJ3G4xSXUrrs
-         rYnAbLkdmA85lJ83x7psYVy0QLp2XTbIGxE6vbv5hT4Rp934/ByGQcx8Sf0cr5fWtgBz
-         C4o7XjwDGo/yy3+SBe0f9TqxtfPlYa/AAWTwbiL6lVKr5r/V3rnmnJmTEk7r8xQ5vaif
-         qJqw==
-X-Gm-Message-State: AJIora/PtCM3iPl6Qc+aJCLj4MUIwR3bq+jzljwQBeLyupVPi9NI0Ice
-        gfZEOlFgaivvQaCKRVKKYy4=
-X-Google-Smtp-Source: AGRyM1sgMpaP0Q64qHoUTkXkRGyu9301qytl0nv2YEGI1fDSAssBS1+jo33V7GNKPyoovjjoPztl0Q==
-X-Received: by 2002:a17:90a:d3d7:b0:1ef:ebe:d613 with SMTP id d23-20020a17090ad3d700b001ef0ebed613mr38126329pjw.240.1656983618520;
-        Mon, 04 Jul 2022 18:13:38 -0700 (PDT)
-Received: from [192.168.43.80] (subs02-180-214-232-11.three.co.id. [180.214.232.11])
-        by smtp.gmail.com with ESMTPSA id w8-20020a1709026f0800b0016a38fa3f95sm21874957plk.118.2022.07.04.18.13.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Jul 2022 18:13:37 -0700 (PDT)
-Message-ID: <5418fb0b-47e2-d251-a6c7-a9bacbaf3dc1@gmail.com>
-Date:   Tue, 5 Jul 2022 08:13:31 +0700
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=3mXXLJT3pzHfY2MP3/D0o2S28/BVSfmZhtJ9riIPTYk=;
+        b=GxKP30WmrdL0lwMNz1EdfAbDKJB62vgqbL2mBwut7P1wHJcsdjT8oxzsNSVx3bRzcg
+         UYTUV00fXH4kkXqNDUAm7g3UlbfRrTqo2DOJapJi8wBpSzVpSb6EG24P52ABSc4G04WM
+         fIpuhTtIBd7ppZ2OflPyaPmm56CiT7YVGlrwmJOJfvs5ytlPDLAjm6qA1pD1YZng9Guu
+         ScMk406m2L74iBSuPzqzCGsgahhao37bI1bxvD/K99SVUF6a+kMGfYlUf4VlXoOdgQzv
+         ldMCHz+tLeK+hkl8qYOOv3E96HJ/SUkbi3tba7XOaFmanqtQYz2SBq1ZARTF2OcQbQGq
+         0RIA==
+X-Gm-Message-State: AJIora+9007brdJ0asrk3DWlZgX/o735xFa8FTVizlPT/lzMlRQ5XpRn
+        yLV9kNnaW9ddGLnAVAeAh9tRv7EYGRhJvYSF+vE=
+X-Google-Smtp-Source: AGRyM1thvmcTH3k8A1sXDOs2Gcf1kS8jALhWsjz7+83QLg81nbpKv3n2CrxTaDkOx1K4MTBmM9J3tyriWKZXLEbU9zw=
+X-Received: by 2002:adf:f043:0:b0:21d:6a90:f3e6 with SMTP id
+ t3-20020adff043000000b0021d6a90f3e6mr7291898wro.277.1656985311154; Mon, 04
+ Jul 2022 18:41:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] Documentation: bno055: separate SPDX identifier and
- page title
-Content-Language: en-US
+References: <1656469212-12717-1-git-send-email-u0084500@gmail.com>
+ <1656469212-12717-3-git-send-email-u0084500@gmail.com> <CAHp75Vd2bxFA5PmjEtgAjJfCf9YZENq_fb9b2VHmMmmHdqGJSw@mail.gmail.com>
+ <CADiBU384ZwKL_+i1zRL9qfVt-NLo=pnf8zrGna4Sxt+toYZdWg@mail.gmail.com>
+ <CADiBU3_sU8bj29x2Qs9y9fM2YDYcKvNBkBuzfpzuCkAjSeTu+Q@mail.gmail.com> <CAHp75VeiuJjiPFFh0pEGGH4+UEn0g5902UhAJL93Ho2WvH0_gg@mail.gmail.com>
+In-Reply-To: <CAHp75VeiuJjiPFFh0pEGGH4+UEn0g5902UhAJL93Ho2WvH0_gg@mail.gmail.com>
+From:   ChiYuan Huang <u0084500@gmail.com>
+Date:   Tue, 5 Jul 2022 09:41:39 +0800
+Message-ID: <CADiBU38FbZ87EHn_UDy-rS6V2bGDdLZJOcqNZsS03MzbNaVaKA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add rtq6056 support
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Linux Documentation List <linux-doc@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Andrea Merello <andrea.merello@iit.it>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        jmondi <jacopo@jmondi.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        cy_huang <cy_huang@richtek.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <YsGVa8KFmdvGY92e@debian.me>
- <20220704034041.15448-1-bagasdotme@gmail.com>
- <CAHp75Vdg=NG9fnd0EQWg5D4WoW9hGJM+MMBRLSacgQUptuGe9Q@mail.gmail.com>
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <CAHp75Vdg=NG9fnd0EQWg5D4WoW9hGJM+MMBRLSacgQUptuGe9Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/5/22 02:49, Andy Shevchenko wrote:
->> Cc: Jonathan Corbet <corbet@lwn.net>
->> Cc: Andrea Merello <andrea.merello@iit.it>
->> Cc: Jonathan Cameron <jic23@kernel.org>
->> Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
->> Cc: Lars-Peter Clausen <lars@metafoo.de>
->> Cc: Rob Herring <robh+dt@kernel.org>
->> Cc: Matt Ranostay <matt.ranostay@konsulko.com>
->> Cc: Alexandru Ardelean <ardeleanalex@gmail.com>
->> Cc: jacopo@jmondi.org
->> Cc: linux-iio@vger.kernel.org
->> Cc: devicetree@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org (open list)
-> 
-> It's a very noisy Cc list which will go in the git history. Instead,
-> use --to and --cc parameters of `git format-patch`. Maintainers
-> usually use `b4` tool that adds a Link tag to the patch itself on the
-> Lore archive which will keep track on the Cc list anyway.
-> 
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=
+=885=E6=97=A5 =E9=80=B1=E4=BA=8C =E6=B8=85=E6=99=A85:52=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+>
+> On Mon, Jul 4, 2022 at 9:27 AM ChiYuan Huang <u0084500@gmail.com> wrote:
+> > ChiYuan Huang <u0084500@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=884=
+=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8A=E5=8D=8811:16=E5=AF=AB=E9=81=93=EF=
+=BC=9A
+> > > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=
+=E6=9C=881=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=886:05=E5=AF=AB=E9=
+=81=93=EF=BC=9A
+> > > > On Wed, Jun 29, 2022 at 4:23 AM cy_huang <u0084500@gmail.com> wrote=
+:
+>
+> ...
+>
+> > > > > +       *val =3D DIV_ROUND_UP(1000000, sample_time);
+> > > >
+> > > > USEC_PER_SEC ?
+> > > >
+> > > No, sample time is (vshunt convesion time + vbus conversion time) *
+> > > average sample.
+> > > And the sample freq returns the unit by HZ (sample frequency per seco=
+nd)
+> > >
+> > The 'sample time' is unit by micro-second like as you mentioned.
+>
+> Ah, then it should be MICRO, so we will get Hz.
+>
+> > > > > +       return IIO_VAL_INT;
+> > > > > +}
+>
+> ...
+>
+> > > > > +       struct {
+> > > > > +               u16 vals[RTQ6056_MAX_CHANNEL];
+> > > > > +               int64_t timestamp;
+> > > > > +       } data __aligned(8);
+> > > >
+> > > > Hmm... alignment of this struct will be at least 4 bytes, but
+> > > > shouldn't we rather be sure that the timestamp member is aligned
+> > > > properly? Otherwise this seems fragile and dependent on
+> > > > RTQ6056_MAX_CHANNEL % 4 =3D=3D 0.
+> > > >
+> > > Yap, from the 'max channel', it already guarantee this struct will be
+> > > aligned at lease 4.
+> > > Actually, It can be removed.
+>
+> I think for the safest side it should be given to the timestamp member. N=
+o?
+>
+Sorry, following your comment, Why to use 'align' for the timestamp member?
+the data member already guarantee 2 * 4 =3D 8 byte, then timestamp will
+be 8 byte aligned, right?
 
-Hi Andy,
+what you mentioned is to put __aligned(8) only for timestamp.
 
-Thanks for reminding me.
-
-I think something like `b4 am -l`, right?
-
-Anyway, should I resend (reroll)?
-
--- 
-An old man doll... just what I always wanted! - Clara
+I try to put aligned in two ways ( one is only for timestamp, another
+is the whole struct). the result is the same.
+From my thinking, in this case, the struct is already 8 byte aligned
+for timestamp member. don't you think to put 'aligned' is redundant?
+> --
+> With Best Regards,
+> Andy Shevchenko

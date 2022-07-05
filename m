@@ -2,94 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825FF567791
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 21:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFC6568577
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 12:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233115AbiGETMy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 15:12:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
+        id S232577AbiGFKYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 06:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233779AbiGETMm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 15:12:42 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC74020F7A;
-        Tue,  5 Jul 2022 12:12:40 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id b85so10300327yba.8;
-        Tue, 05 Jul 2022 12:12:40 -0700 (PDT)
+        with ESMTP id S232386AbiGFKYf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 06:24:35 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4E023BFC;
+        Wed,  6 Jul 2022 03:24:34 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id z12so11778001wrq.7;
+        Wed, 06 Jul 2022 03:24:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=57cUWhF9VaqTVA1734zTG0eBBoeZZWbpzvCVHxEeHsg=;
-        b=qgYeHABwiqO25p0BTSmbVdaFuDZo3wWingdIK42NsVZRRyHfNRojZ3lSIqIJsFP7ek
-         QsWwbk8Gw2jxnfZru1Xj2c7TcsWbocfl2KRRwkSFwNSVHzz+n95ww4s47QLs2/pS8pEK
-         RLIH1iTTayK8I3DKHsSBGDixxFxRp9AtoRHfMMbdVrUhcFkYuKd+IWD/psYCMQ/1ehuW
-         QrynLtYB7hEqCmb3YkMIY7BLavlgiSPOuWS1/ay4CDuNJBCfTrnYDP5qwg9LxAyATVtT
-         GQn5bmpZd4Fndt6IlqlGIAnyYzWrS5AiVN5zXHT4M16sbZBVZlvZ8/Z0YXYeMO5Lm+nP
-         GT/A==
+        h=references:from:to:cc:subject:date:in-reply-to:message-id
+         :mime-version;
+        bh=gAAFLxTVBbke7idk+TJqhtAe46jVc+eusFaZ2+NGDNc=;
+        b=T01qQGVCFpQvsrYLXbIulhJcGg0HUmQARvvOBgipM53C+Kp8/JIW6EVZQb5v0UNLwb
+         ml0P7sxKFGboDz7Kyc82mBHUJNEO0yRFzMpFmbK4JRLCoyqkfBGu/dlbT2ajCZH8/rag
+         fEVKcZ2ywOjzx+JWnLYUwVSpbUU4PWhsNQzBTji78zfstk9Yu3qAhwlP6Kf0vvPvkd2b
+         PP2nxprfreGNNm0gX45OMoKjagQ6gYAa1hM2XRfJomg8WJjQmTsdOWUbhDH+1SGW2013
+         GeHT4vlC7fliPHYqfW+hPr4R0eArQu9KrGpNAZm9xnx+v/SIAhMOH/Wjyabf+lLJm7iW
+         gzkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=57cUWhF9VaqTVA1734zTG0eBBoeZZWbpzvCVHxEeHsg=;
-        b=khhO/7yvkGtqesVBw5y548XOonp7iZHESUV8uItp8FNNjY/yODHOzFCFr7QayvYYbZ
-         wl3XlwCIldfo/flT4khahohlEY+QYpNtzDCFswaxCosvlNpr+o2MSM0/RmEW8CVw7KGO
-         Rv/IPwGDOM2eM2KxJiRQ701W4wmJZ5mYp8v/rL5B8CnLym7tYD+qBIOWzHvYAtJz0Ns/
-         pVwe6YUZsW/BbO7VLQVJgnOPREPINMHvymjmFUr3RnIY91OlLBYnxN/vtzl7AVgZk+B2
-         GT/lAg2eGdKakqjKNTGok3JktUGJ4vbsB78QTNZ0NwmfdnXnQdy6U5tyKD4vd6P0/+m+
-         k9pw==
-X-Gm-Message-State: AJIora8bT35PKmd8ygpmVUNQ9f3XtSJh1yXjDV0B2vTRO9JM8Y88T5ZU
-        lafUxUVLOLidfOG6iSNZaDtt5YLMFZ9aUImgr7mQqlkfTtz4yA==
-X-Google-Smtp-Source: AGRyM1su+ua32MhJSMzy8VPGelN4ZA+0a9k5ZpXM5XHwIeKL69TkCcG2EspcyfTSny8g0KfHy9W5PDk7RXfaCqmz/oI=
-X-Received: by 2002:a25:cbcf:0:b0:66e:8893:a02c with SMTP id
- b198-20020a25cbcf000000b0066e8893a02cmr2851299ybg.460.1657048359433; Tue, 05
- Jul 2022 12:12:39 -0700 (PDT)
+        h=x-gm-message-state:references:from:to:cc:subject:date:in-reply-to
+         :message-id:mime-version;
+        bh=gAAFLxTVBbke7idk+TJqhtAe46jVc+eusFaZ2+NGDNc=;
+        b=kk9CrQ79OGzuPlAzaQ37UxR0TJLH4d+7ndJqi7cuBEEFOpGi57TVrGV2KSP8UeGT5k
+         mXzntGrptd7iz+IVGwdglKH9ZXmoBRD8Q/ytqaELjRMtdnKLjw8ZKKMhgc3lX/DyRq0K
+         q/rJMgfec5NrUowTy3TfBZQo+19OHZs50KbtHJshivTmNd+yXvug3VAKQ7n58GzfoKlf
+         Ph14ZjTM/P2/ZNGWO0BjI9mJdG9aSB+5Rni9r+1YY0Ws66bgECfv27QXNWjNQjJHI/6i
+         Qxu+HfYYoyVy0rIYlwNNSuPaS7N9BjpX5U6JG6GcLUWnwUBWlDRO7i8XZk3EQOED9Kya
+         WKtA==
+X-Gm-Message-State: AJIora9m8dwFSvgPlgsEk+USgQ6Z198joG6WXwVFwqBKiaDYBSP+o6+0
+        S+WC1izObcHnMBmG/6E/myc=
+X-Google-Smtp-Source: AGRyM1vU3MJHoH322VL/VZ3kLVOdxQZ29efLU3+xNpoRRoRaYcb0Iv3nb/x5LHrg9UdFMQ7tbtgPbw==
+X-Received: by 2002:adf:d1ea:0:b0:21b:a6cb:fcf6 with SMTP id g10-20020adfd1ea000000b0021ba6cbfcf6mr36825810wrd.477.1657103072945;
+        Wed, 06 Jul 2022 03:24:32 -0700 (PDT)
+Received: from localhost (92.40.202.163.threembb.co.uk. [92.40.202.163])
+        by smtp.gmail.com with ESMTPSA id bq25-20020a5d5a19000000b0021d6d74a0ecsm6931272wrb.96.2022.07.06.03.24.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Jul 2022 03:24:32 -0700 (PDT)
+References: <20220629143046.213584-1-aidanmacdonald.0x0@gmail.com>
+ <20220629143046.213584-7-aidanmacdonald.0x0@gmail.com>
+ <YsQwHiVdooN2TWbh@google.com> <MiQPswErEouy9b8OQ6k5WeQxH3ENw94W@localhost>
+ <YsRM0O3MQmBO5WXK@google.com>
+From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linus.walleij@linaro.org, brgl@bgdev.pl, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, wens@csie.org, jic23@kernel.org,
+        sre@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+        lars@metafoo.de, quic_gurus@quicinc.com,
+        sebastian.reichel@collabora.com, andy.shevchenko@gmail.com,
+        michael@walle.cc, rdunlap@infradead.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v4 06/15] mfd: axp20x: Add support for AXP192
+Date:   Tue, 05 Jul 2022 20:42:43 +0100
+In-reply-to: <YsRM0O3MQmBO5WXK@google.com>
+Message-ID: <VHU3uih5i4iLk4b8WSSqo4p8Dc5tMaDN@localhost>
 MIME-Version: 1.0
-References: <20220705121756.41660-1-kai.heng.feng@canonical.com>
-In-Reply-To: <20220705121756.41660-1-kai.heng.feng@canonical.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 5 Jul 2022 21:12:03 +0200
-Message-ID: <CAHp75VdnvxhR7yB2sroH4y8VgU3ORnCC3wH4CEKYCX1XSPvMxg@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: cm32181: Add PM support
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Kevin Tsai <ktsai@capellamicro.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 5, 2022 at 2:31 PM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
+
+Lee Jones <lee.jones@linaro.org> writes:
+
+> On Tue, 05 Jul 2022, Aidan MacDonald wrote:
 >
-> The read on in_illuminance_input keeps at 0 after system sleep.
+>> 
+>> Lee Jones <lee.jones@linaro.org> writes:
+>> 
+>> > On Wed, 29 Jun 2022, Aidan MacDonald wrote:
+>> >
+>> >> The AXP192 PMIC is similar to the AXP202/AXP209, but with different
+>> >> regulators, additional GPIOs, and a different IRQ register layout.
+>> >> 
+>> >> Acked-for-MFD-by: Lee Jones <lee.jones@linaro.org>
+>> >> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+>> >> ---
+>> >>  drivers/mfd/axp20x-i2c.c   |   2 +
+>> >>  drivers/mfd/axp20x.c       | 152 +++++++++++++++++++++++++++++++++++++
+>> >>  include/linux/mfd/axp20x.h |  84 ++++++++++++++++++++
+>> >>  3 files changed, 238 insertions(+)
+>> >> [...]
+>> >> +static const struct regmap_irq_chip axp192_regmap_irq_chip = {
+>> >> +	.name			= "axp192_irq_chip",
+>> >> +	.status_base		= AXP192_IRQ1_STATE,
+>> >> +	.ack_base		= AXP192_IRQ1_STATE,
+>> >> +	.unmask_base		= AXP192_IRQ1_EN,
+>> >> +	.init_ack_masked	= true,
+>> >> +	.irqs			= axp192_regmap_irqs,
+>> >> +	.num_irqs		= ARRAY_SIZE(axp192_regmap_irqs),
+>> >> +	.num_regs		= 5,
+>> >> +	.get_irq_reg		= axp192_get_irq_reg,
+>> >
+>> > Fix me:
+>> >
+>> > drivers/mfd/axp20x.c:634:35: error: initialization of 'unsigned int (*)(struct regmap_irq_chip_data *, unsigned int,  int)' from incompatible pointer type 'int (*)(unsigned int,  int)' [-Werror=incompatible-pointer-types]
+>> >   634 |         .get_irq_reg            = axp192_get_irq_reg,
+>> >       |                                   ^~~~~~~~~~~~~~~~~~
+>> > drivers/mfd/axp20x.c:634:35: note: (near initialization for 'axp192_regmap_irq_chip.get_irq_reg')
+>> >
+>> 
+>> This doesn't need fixing. You are missing the prerequisite patches.
+>> 
+>> -- snip --
+>> Changes in v4:
+>> * Drop regmap-irq patches and rebase on top of the regmap-irq
+>>   refactoring series[1], which implements the same functionality.
+>> 
+>> [1]: https://lore.kernel.org/lkml/20220623211420.918875-1-aidanmacdonald.0x0@gmail.com/
+>> -- snip --
 >
-> So add proper suspend and resume callback to make the sensor keep
-> working after system sleep.
+>> Perhaps I wasn't clear enough that it was a dependency, sorry for
+>> any confusion.
+>
+> Any idea why the regmap-irq patches weren't in -next?
 
-...
+Uh, sorry, I didn't pay attention and assumed this was the same error
+the kernel test robot was reporting against mfd-next (missing field).
+But the field does exist; this error is a type mismatch:
 
-> +static int cm32181_resume(struct device *dev)
-> +{
-> +       struct i2c_client *client = to_i2c_client(dev);
-> +       struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
+  initialization of 'unsigned int (*)(struct regmap_irq_chip_data *,
+                                      unsigned int,  int)'
+  from incompatible pointer type 'int (*)(unsigned int,  int)'
 
-Simply device_get_drvdata(dev) ?
+So the regmap-irq patches were in -next, the problem is you were
+using the old patch from v3.
 
-> +       return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
-> +                                        cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
-> +}
+FYI, I just sent a v5 which drops the GPIO driver, so please use
+the patches from that version. Thanks.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Regards,
+Aidan

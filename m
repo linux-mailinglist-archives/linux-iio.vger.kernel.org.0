@@ -2,161 +2,184 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1328656681D
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 12:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A78F5668D7
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 13:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbiGEKhP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 06:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59356 "EHLO
+        id S231702AbiGELC0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jul 2022 07:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231680AbiGEKhO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 06:37:14 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017C8AE5A
-        for <linux-iio@vger.kernel.org>; Tue,  5 Jul 2022 03:37:10 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o8fuq-0001LC-19; Tue, 05 Jul 2022 12:36:24 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o8fue-004XxA-J7; Tue, 05 Jul 2022 12:36:16 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1o8fuh-0038F6-8t; Tue, 05 Jul 2022 12:36:15 +0200
-Date:   Tue, 5 Jul 2022 12:36:15 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jean Delvare <jdelvare@suse.de>
-Cc:     Wolfram Sang <wsa@kernel.org>, Guenter Roeck <groeck@chromium.org>,
-        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-integrity@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, chrome-platform@lists.linux.dev,
-        linux-rpi-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
-        linux-omap@vger.kernel.org, linux-mtd@lists.infradead.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org,
-        acpi4asus-user@lists.sourceforge.net, linux-pm@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
-Message-ID: <20220705103615.ceeq7rku53x743ps@pengutronix.de>
-References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
- <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
- <20220705120852.049dc235@endymion.delvare>
+        with ESMTP id S231840AbiGELCX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 07:02:23 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F9A2BD
+        for <linux-iio@vger.kernel.org>; Tue,  5 Jul 2022 04:02:21 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id r3so21144992ybr.6
+        for <linux-iio@vger.kernel.org>; Tue, 05 Jul 2022 04:02:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=sRcyYznFCmNnrzd03wHMAFc3YVrFb2+fzENEmHCUjTc=;
+        b=ToLTDVQd7d0gleZwwEtrrARMwi9GPh2j7xTretoVhQCxuGHODN+WTdKBWH5CFw5Yrj
+         qw8npf50yd8amq3PVrGDqButgVjmNo9R6EyOC0kmb5WdwFMDSUj1/RyFM/aMFUg58wJg
+         4BB0S+xSg2fwxm9GltgKEKptqRJqI1fC0sEhg2zvA+ilVnM8KDsMGi5letzkgvMbtOz2
+         Cm3BInqFzJOdzY0pI7wkO1l1cS0885trCGKnhxCHXeo5THQQ0LYuh2OwbvJvtpJle8dQ
+         YsIn5FvPiAW0IjykRgkkkOtphzSCgsa2jcPQx+4tta36D4/kMU06QRcWyjqV9ZwiDz66
+         gNTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=sRcyYznFCmNnrzd03wHMAFc3YVrFb2+fzENEmHCUjTc=;
+        b=lb9NIhhcwYeR7IXIFPl2aa9enig1+5XpgoLZD14Ed5fIQh0faEhgivIkQNqYSvs701
+         6nEupPl0snzyUjQDcHNSoWxEbuFGgSUQIxhGck5AgFAAWtyfQcv8Ighm3UXvs3z2f1sJ
+         OOpL39l9OnfvyjfZnROZU2hH3xQf/rBCSUA0TeT8py9ezH1yQb7aSv51rXzbM6Ey6mm5
+         Zmo2WYTiK7fIMVIdpqY5gWiCITVrGEHBuHUW76pCHj9uY3WaANP1XFkSXftTkCg46G0t
+         JTrVfP/NF3LoycE2uMn7CIV6FF0xp8JYsjXqx7nHJNSgjAat54GHLTK9vaqTo0dp4gGh
+         FUrQ==
+X-Gm-Message-State: AJIora8GwV2gNTI7xT9JIgc2ofBI25x9isJ/du4thdFxxu3RH3YWJ7JN
+        YvYmsrlAMkURVKxiBBMyxlYtGZGXDX1IV/IO0GR89anTZo8F/3+w
+X-Google-Smtp-Source: AGRyM1vzbDVkADc/1kxStzafb6V2ifx+urSRRGodGjEyghnU3XWa++/2k3+Y6Jd3MP7XzhXGfIW+es1heB4Rk4vnx5k=
+X-Received: by 2002:a05:6902:154c:b0:66e:8254:146e with SMTP id
+ r12-20020a056902154c00b0066e8254146emr1094312ybu.570.1657018940015; Tue, 05
+ Jul 2022 04:02:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gut2agzhpaayxotv"
-Content-Disposition: inline
-In-Reply-To: <20220705120852.049dc235@endymion.delvare>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <1656469212-12717-1-git-send-email-u0084500@gmail.com>
+ <1656469212-12717-3-git-send-email-u0084500@gmail.com> <CAHp75Vd2bxFA5PmjEtgAjJfCf9YZENq_fb9b2VHmMmmHdqGJSw@mail.gmail.com>
+ <CADiBU384ZwKL_+i1zRL9qfVt-NLo=pnf8zrGna4Sxt+toYZdWg@mail.gmail.com>
+ <CADiBU3_sU8bj29x2Qs9y9fM2YDYcKvNBkBuzfpzuCkAjSeTu+Q@mail.gmail.com>
+ <CAHp75VeiuJjiPFFh0pEGGH4+UEn0g5902UhAJL93Ho2WvH0_gg@mail.gmail.com>
+ <CADiBU38FbZ87EHn_UDy-rS6V2bGDdLZJOcqNZsS03MzbNaVaKA@mail.gmail.com>
+ <CAHp75VfyKtFQbcJJxW8TNSHMZppM6Qgj4hxiUzLB1bSmeWBBAg@mail.gmail.com>
+ <CADiBU3_fZxCigiaa8mh9bHV565Bxiyux1a1zFWmi9v6xwdZzgQ@mail.gmail.com> <CADiBU3_qL1xf+VirMxD5q3wOH_UGSpXZi6pCjX2H44zbeXBqdg@mail.gmail.com>
+In-Reply-To: <CADiBU3_qL1xf+VirMxD5q3wOH_UGSpXZi6pCjX2H44zbeXBqdg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 5 Jul 2022 13:01:43 +0200
+Message-ID: <CAHp75VdM-Z_q8eCrpN_DC3GrRKt-UPCYNnw0VP0bj6zUcqtp5w@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: Add rtq6056 support
+To:     ChiYuan Huang <u0084500@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, Jul 5, 2022 at 12:33 PM ChiYuan Huang <u0084500@gmail.com> wrote:
+> ChiYuan Huang <u0084500@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=885=E6=
+=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=885:30=E5=AF=AB=E9=81=93=EF=BC=9A
 
---gut2agzhpaayxotv
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-On Tue, Jul 05, 2022 at 12:08:52PM +0200, Jean Delvare wrote:
-> On Tue, 28 Jun 2022 16:03:12 +0200, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <uwe@kleine-koenig.org>
-> >=20
-> > The value returned by an i2c driver's remove function is mostly ignored.
-> > (Only an error message is printed if the value is non-zero that the
-> > error is ignored.)
-> >=20
-> > So change the prototype of the remove function to return no value. This
-> > way driver authors are not tempted to assume that passing an error to
-> > the upper layer is a good idea. All drivers are adapted accordingly.
-> > There is no intended change of behaviour, all callbacks were prepared to
-> > return 0 before.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
->=20
-> That's a huge change for a relatively small benefit, but if this is
-> approved by the I2C core maintainer then fine with me. For:
+> Sorry to bother you by the personal mail.
 
-Agreed, it's huge. The benefit isn't really measureable, the motivation
-is to improve the situation for driver authors who with the change
-cannot make wrong assumptions about what to return in .remove(). During
-the preparation this uncovered a few bugs. See for example
-bbc126ae381cf0a27822c1f822d0aeed74cc40d9.
+No problem asking this in ML, it's normal development process.
+Moreover it's good that others may browse mail archives and find the
+answers. Private mails won't help in that sense. Hence Cc'ing mailing
+list again.
 
-> >  drivers/hwmon/adc128d818.c                                | 4 +---
-> >  drivers/hwmon/adt7470.c                                   | 3 +--
-> >  drivers/hwmon/asb100.c                                    | 6 ++----
-> >  drivers/hwmon/asc7621.c                                   | 4 +---
-> >  drivers/hwmon/dme1737.c                                   | 4 +---
-> >  drivers/hwmon/f75375s.c                                   | 5 ++---
-> >  drivers/hwmon/fschmd.c                                    | 6 ++----
-> >  drivers/hwmon/ftsteutates.c                               | 3 +--
-> >  drivers/hwmon/ina209.c                                    | 4 +---
-> >  drivers/hwmon/ina3221.c                                   | 4 +---
-> >  drivers/hwmon/jc42.c                                      | 3 +--
-> >  drivers/hwmon/mcp3021.c                                   | 4 +---
-> >  drivers/hwmon/occ/p8_i2c.c                                | 4 +---
-> >  drivers/hwmon/pcf8591.c                                   | 3 +--
-> >  drivers/hwmon/smm665.c                                    | 3 +--
-> >  drivers/hwmon/tps23861.c                                  | 4 +---
-> >  drivers/hwmon/w83781d.c                                   | 4 +---
-> >  drivers/hwmon/w83791d.c                                   | 6 ++----
-> >  drivers/hwmon/w83792d.c                                   | 6 ++----
-> >  drivers/hwmon/w83793.c                                    | 6 ++----
-> >  drivers/hwmon/w83795.c                                    | 4 +---
-> >  drivers/hwmon/w83l785ts.c                                 | 6 ++----
-> >  drivers/i2c/i2c-core-base.c                               | 6 +-----
-> >  drivers/i2c/i2c-slave-eeprom.c                            | 4 +---
-> >  drivers/i2c/i2c-slave-testunit.c                          | 3 +--
-> >  drivers/i2c/i2c-smbus.c                                   | 3 +--
-> >  drivers/i2c/muxes/i2c-mux-ltc4306.c                       | 4 +---
-> >  drivers/i2c/muxes/i2c-mux-pca9541.c                       | 3 +--
-> >  drivers/i2c/muxes/i2c-mux-pca954x.c                       | 3 +--
->=20
-> Reviewed-by: Jean Delvare <jdelvare@suse.de>
+> I try to put the 'align' in timestamp member.
+> checkpatch.pl show me the below warning.
+>
+> WARNING: Missing a blank line after declarations
+> #448: FILE: drivers/iio/adc/rtq6056.c:448:
+> + u16 vals[RTQ6056_MAX_CHANNEL];
+> + int64_t timestamp __aligned(8);
+>
+> WARNING: externs should be avoided in .c files
+> #448: FILE: drivers/iio/adc/rtq6056.c:448:
+> + int64_t timestamp __aligned(8);
+>
+> total: 0 errors, 2 warnings, 651 lines checked
 
-Thanks
-Uwe
+You may run `git grep -n 'align(8)'
+
+> Does it mean that I only can put the align for the whole struct?
+
+It means that checkpatch is full of false positives.
+
+Btw, use s64 as a type for timestamp as it's more common.
+
+1. Jonathan, shan't we unify this across the IIO drivers? It seems
+they are using (besides s64): int64_t, u64.
+
+2. Also:
+
+drivers/iio/light/vcnl4000.c:911:       u16 buffer[8] __aligned(8)
+
+drivers/iio/light/vcnl4035.c:106:       u8 buffer[ALIGN(sizeof(u16),
+sizeof(s64)) + sizeof(s64)]  __aligned(8);
+
+drivers/iio/light/si1145.c:190: u8 buffer[24] __aligned(8);
+
+// misplaced aligned()
+drivers/iio/adc/mt6360-adc.c-265-               u16 values[MT6360_CHAN_MAX]=
+;
+drivers/iio/adc/mt6360-adc.c-266-               int64_t timestamp;
+drivers/iio/adc/mt6360-adc.c:267:       } data __aligned(8);
+
+drivers/iio/adc/stm32-adc.c:250:        u16
+buffer[STM32_ADC_MAX_SQ + 4] __aligned(8);
+
+drivers/iio/adc/mxs-lradc-adc.c:119:    u32
+buffer[10] __aligned(8);
+
+drivers/iio/adc/ti-adc0832.c:37:        u8 data[24] __aligned(8);
+
+drivers/iio/adc/ti-ads124s08.c:108:     u32
+buffer[ADS124S08_MAX_CHANNELS + sizeof(s64)/sizeof(u32)] __aligned(8);
+
+drivers/iio/amplifiers/ada4250.c:304:   u8 data[2] __aligned(8) =3D {};
+
+drivers/iio/chemical/atlas-sensor.c:95: __be32 buffer[6] __aligned(8);
+
+drivers/iio/health/afe4403.c:79:        s32 buffer[8] __aligned(8);
+
+drivers/iio/health/afe4404.c:95:        s32 buffer[10] __aligned(8);
+
+drivers/iio/imu/adis16475.c:107:        __be16
+data[ADIS16475_MAX_SCAN_DATA] __aligned(8);
+
+drivers/iio/imu/adis16480.c:174:        __be16
+data[ADIS16495_BURST_MAX_DATA] __aligned(8);
+
+drivers/iio/imu/bmi160/bmi160.h:19:     __le16 buf[12] __aligned(8);
+
+drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c:568:     u8
+iio_buff[ST_LSM6DSX_IIO_BUFF_SIZE] __aligned(8);
+
+// ??? haven't checked context
+drivers/iio/light/acpi-als.c:65:        s32
+evt_buffer[ACPI_ALS_EVT_BUFFER_SIZE / sizeof(s32)]  __aligned(8);
+
+drivers/iio/light/si1145.c:190: u8 buffer[24] __aligned(8);
+
+drivers/iio/magnetometer/rm3100-core.c:82:      u8
+buffer[RM3100_SCAN_BYTES] __aligned(8);
+
+drivers/iio/potentiostat/lmp91000.c:75: u32 buffer[4] __aligned(8);
+
+drivers/iio/pressure/mpl3115.c:160:     u8 buffer[16] __aligned(8);
+
+drivers/iio/proximity/isl29501.c:941:   u32 buffer[4] __aligned(8) =3D
+{}; /* 1x16-bit + naturally aligned ts */
+
+
+need conversion.
+
+3. Why do we need explicit garbage in the code? :-)
+
+drivers/iio/light/rpr0521.c-204-                __le16 channels[3];
+drivers/iio/light/rpr0521.c-205-                u8 garbage;
+drivers/iio/light/rpr0521.c:206:                s64 ts __aligned(8);
 
 --=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---gut2agzhpaayxotv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmLEFBwACgkQwfwUeK3K
-7AkavggAgLmynakXX/rOF4Jwy2OuBXH29kecKqPd6xj4yHsu3ggy8kd/hlU4jJib
-vV0H9ioq69hhMqjme5AHJJsueLFi/t/iwuQwuWUKluCBBlx0RXBsVx8qxV7A0uWa
-mdKU3ApPaN7y0cS1jccdN7ydsL3H2ayzIwfQuNqx1G3P/uqXfkusV0fjwQ/rQct3
-qs4t2/QiHUd0tStlGw2eSKxp1z5KRrDMstK17fiZSsw/SYoMyldV8Ame6+gaxx0X
-e93FqM5jj67ovjD3jJanfOwI5vesu4+szu4GK6vHRWvpsieHsSeyS+GNgfM5oLA7
-iguZ0rauzy0je3hrHuKgp1maJ59ibQ==
-=fYiS
------END PGP SIGNATURE-----
-
---gut2agzhpaayxotv--
+With Best Regards,
+Andy Shevchenko

@@ -2,67 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB25567607
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 19:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07278567726
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Jul 2022 21:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233072AbiGERyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 13:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41510 "EHLO
+        id S233196AbiGETEH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jul 2022 15:04:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbiGERyy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 13:54:54 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1690913E9B;
-        Tue,  5 Jul 2022 10:54:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657043693; x=1688579693;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Km880PB9XZc0BJUMeh8tRcEuJbGickfi/0b4M5YX+Ik=;
-  b=Dbk6BVmeVH+oQSjaCEaG23oR6hE3X+YRYvntD1+zKwwFMKnYK7KJ0Ip6
-   x6to0msA+GuH5Ad48/PVEUPZKf4FUDGVmnPrETCWrADcHAOkV+RlDsE+O
-   qxHgxhm4KETVTG7kg2wKkpVlv+ANhdY1+GJ2bO9tob8mhglAzCtcJ4cW1
-   a53l6T58RsRpla3iLrM3Z0EDT2dUcJHRVRh7ij2Ru4PIW7Gn7bNwa7cpg
-   cqaHsgw3J8GQJd+7qcYjOJr6/qJPWkiZVsGEG6GGHrZu9lJY5E5upHcE1
-   3P7KxBs0glCU6H0AHAw5zPwSHfk5yruBpCimIypSDWzCPteuCBbNEQ5hK
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10399"; a="272208264"
-X-IronPort-AV: E=Sophos;i="5.92,247,1650956400"; 
-   d="scan'208";a="272208264"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2022 10:47:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,247,1650956400"; 
-   d="scan'208";a="919813843"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 05 Jul 2022 10:47:49 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1o8meK-000JRZ-Uh;
-        Tue, 05 Jul 2022 17:47:48 +0000
-Date:   Wed, 6 Jul 2022 01:47:27 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Nishanth Menon <nm@ti.com>,
-        Javier Martinez Canillas <javier@osg.samsung.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-adc128s052: Fix number of channels when
- device tree is used
-Message-ID: <202207060155.zkacpxjc-lkp@intel.com>
-References: <20220630230107.13438-1-nm@ti.com>
+        with ESMTP id S233148AbiGETED (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 15:04:03 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43BB313E9B;
+        Tue,  5 Jul 2022 12:04:02 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id u20so12005476iob.8;
+        Tue, 05 Jul 2022 12:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bE5XBwBaUlDCGnXVs2nzLhFtfywgyruVY0VsAxP2lIk=;
+        b=LjxAQ8lGVMo5FsqJ8NQU/tr5fdAsiUXWPIcLOydFT5+4oF1FTZ5CR+EvuX5JO42bpG
+         nAqpzwLoNNvOQfXd4tj/BuymyFoQHKpWsWGpPNVpD3GZgAFoRVLIcSiOOBTcfW58D2gT
+         uv2tXi0Mc2XHczl/CqchAx/03pFAacFvNpd3Zgv2lmwNfG3jSDmo+peU+5J/et1/b3pd
+         tgCmyItRhXA0Uj153q2Abs1H8XG7Ip+iqQiUox3ZqeDd/ukf/Hd2VMEKYx4XoSjoBfou
+         NWHYIoSdiPvr7gsHGNX3eQu14NJvAwU0B1BEdR4nHJMaFvWPOUfKObYT6bl5xA22YNK4
+         AsPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bE5XBwBaUlDCGnXVs2nzLhFtfywgyruVY0VsAxP2lIk=;
+        b=DmhtDCiE31WAw/9QBl8PjuzfBUC0yGD7216QgB3yTFtLN131f7vvo9bEjSL7fu01EW
+         7vu2ymZqWzIWRiusluO0AyqpGFOLWp4yymXSPAiA1kvgsZNhdgQH9hon2tvnd0FBotCM
+         DTmMw3Byn4tz5zNoGBSE0/Odr0Ra5OBTMKTaUTBV3id1tO6TJ5O8cXbd7Dklx9bHMTuB
+         kgGEYYqiICoHV70Kw4UdiGk5JKh9iynZKTlf3O+6jvvXzKM7p0SbeA5CAIQpJ+ff1Vfg
+         aEDzN8PsGMbnUndswpwM8kO7atvzxpsBWx+ge0snu9bRx9qpvhrIC3UFkxq3EgO8rxAS
+         UOag==
+X-Gm-Message-State: AJIora8k0djFEYUkEmLngSFwiE3S+cV2z631N+uXFPFaCvhFfLip3x8Q
+        x2jxy/duHjgXi9FNjdXA1HhZxmkQo08=
+X-Google-Smtp-Source: AGRyM1s6zt8p23aX4BzTYowmkRQ8Xfa9qc8UtMN8YKEe8wuErmx7MF79Us7OxuAotW5km5abt6thkg==
+X-Received: by 2002:a05:6638:2050:b0:33c:9bbb:82b6 with SMTP id t16-20020a056638205000b0033c9bbb82b6mr23191264jaj.147.1657047841257;
+        Tue, 05 Jul 2022 12:04:01 -0700 (PDT)
+Received: from Dixie.. ([2604:2d80:a188:fd00:a8dc:16da:96d1:2d19])
+        by smtp.gmail.com with ESMTPSA id d93-20020a0285e6000000b0033efe01c20esm397762jai.42.2022.07.05.12.03.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Jul 2022 12:04:00 -0700 (PDT)
+From:   Chris Morgan <macroalpha82@gmail.com>
+X-Google-Original-From: Chris Morgan <macromorgan@hotmail.com>
+To:     linux-input@vger.kernel.org
+Cc:     devicetree@vger.kernel.org, contact@artur-rojek.eu,
+        maccraft123mc@gmail.com, heiko@sntech.de,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        dmitry.torokhov@gmail.com, paul@crapouillou.net, jic23@kernel.org,
+        linux-iio@vger.kernel.org, Chris Morgan <macroalpha82@gmail.com>
+Subject: [PATCH v7 0/3] adc-joystick: Add polled support
+Date:   Tue,  5 Jul 2022 14:03:51 -0500
+Message-Id: <20220705190354.69263-1-macromorgan@hotmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220630230107.13438-1-nm@ti.com>
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,78 +71,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Nishanth,
+From: Chris Morgan <macroalpha82@gmail.com>
 
-I love your patch! Perhaps something to improve:
+Add support to the existing adc-joystick driver to support polling
+rather than relying on triggered buffers. This is useful for devices
+that do not offer triggered buffers in hardware. Code adapted from
+changes made by Maya Matuszczyk <maccraft123mc@gmail.com>.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v5.19-rc5 next-20220705]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
+Changes from V6:
+ - Reverted back to "poll-interval" after mailing list discussion.
+ - Referenced input.yaml for definition of poll-interval in adc-joystick
+   documentation.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Nishanth-Menon/iio-adc-ti-adc128s052-Fix-number-of-channels-when-device-tree-is-used/20220701-070342
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: nios2-randconfig-r036-20220703 (https://download.01.org/0day-ci/archive/20220706/202207060155.zkacpxjc-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/d5184722ec9ae186da9bed1497e4804297f2040b
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Nishanth-Menon/iio-adc-ti-adc128s052-Fix-number-of-channels-when-device-tree-is-used/20220701-070342
-        git checkout d5184722ec9ae186da9bed1497e4804297f2040b
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=nios2 SHELL=/bin/bash drivers/iio/adc/
+Changes from V5:
+ - Corrected an error found by yamllint in the documentation.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Changes from V4:
+ - Added unit property to devicetree attribute making it now
+   "poll-interval-ms".
+ - Simplified logic for setting polled value and made variable names
+   more clear.
 
-All warnings (new ones prefixed by >>):
+Changes from V3:
+ - After lengthy discussion decided to support with existing attribute
+   of "poll-interval". If present, the driver will use polling and if
+   not present, it will use triggered buffers (as the driver does
+   today).
+ - Corrected some lines to honor the 80 character line-limit.
+ - Check return value from polling method and return early if there
+   is an error reading the data.
 
->> drivers/iio/adc/ti-adc128s052.c:185:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     185 |         { .compatible = "ti,adc122s021", .data = 1},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:185:50: note: (near initialization for 'adc128_of_match[1].data')
-   drivers/iio/adc/ti-adc128s052.c:186:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     186 |         { .compatible = "ti,adc122s051", .data = 1},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:186:50: note: (near initialization for 'adc128_of_match[2].data')
-   drivers/iio/adc/ti-adc128s052.c:187:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     187 |         { .compatible = "ti,adc122s101", .data = 1},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:187:50: note: (near initialization for 'adc128_of_match[3].data')
-   drivers/iio/adc/ti-adc128s052.c:188:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     188 |         { .compatible = "ti,adc124s021", .data = 2},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:188:50: note: (near initialization for 'adc128_of_match[4].data')
-   drivers/iio/adc/ti-adc128s052.c:189:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     189 |         { .compatible = "ti,adc124s051", .data = 2},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:189:50: note: (near initialization for 'adc128_of_match[5].data')
-   drivers/iio/adc/ti-adc128s052.c:190:50: warning: initialization of 'const void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     190 |         { .compatible = "ti,adc124s101", .data = 2},
-         |                                                  ^
-   drivers/iio/adc/ti-adc128s052.c:190:50: note: (near initialization for 'adc128_of_match[6].data')
+Changes from V2:
+ - Changed parameter from "adc-joystick,polled" to
+   "adc-joystick,no-hardware-trigger" as it is more representative of
+   what the driver and hardware are doing.
+
+Changes from V1:
+ - Removed driver compatible string of "adc-joystick-polled".
+ - Added new optional boolean value of "adc-joystick,polled".
+ - Cleaned up if statements regarding polling behavior.
 
 
-vim +185 drivers/iio/adc/ti-adc128s052.c
+Chris Morgan (3):
+  dt-bindings: adc-joystick: add poll-interval
+  Input: adc-joystick - Add polled input device support
+  arm64: dts: rockchip: Update joystick to polled for OG2
 
-   182	
-   183	static const struct of_device_id adc128_of_match[] = {
-   184		{ .compatible = "ti,adc128s052", .data = 0},
- > 185		{ .compatible = "ti,adc122s021", .data = 1},
-   186		{ .compatible = "ti,adc122s051", .data = 1},
-   187		{ .compatible = "ti,adc122s101", .data = 1},
-   188		{ .compatible = "ti,adc124s021", .data = 2},
-   189		{ .compatible = "ti,adc124s051", .data = 2},
-   190		{ .compatible = "ti,adc124s101", .data = 2},
-   191		{ /* sentinel */ },
-   192	};
-   193	MODULE_DEVICE_TABLE(of, adc128_of_match);
-   194	
+ .../bindings/input/adc-joystick.yaml          |  5 ++
+ .../boot/dts/rockchip/rk3326-odroid-go2.dts   |  1 +
+ drivers/input/joystick/adc-joystick.c         | 51 +++++++++++++++----
+ 3 files changed, 46 insertions(+), 11 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.34.1
+

@@ -2,63 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 049CB567A6A
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 00:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4720A567A71
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 00:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229995AbiGEWyA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 18:54:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51928 "EHLO
+        id S232688AbiGEW4u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jul 2022 18:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbiGEWyA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 18:54:00 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E1D10CF;
-        Tue,  5 Jul 2022 15:53:58 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id o4so19553638wrh.3;
-        Tue, 05 Jul 2022 15:53:58 -0700 (PDT)
+        with ESMTP id S229994AbiGEW4t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 18:56:49 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B3614D00;
+        Tue,  5 Jul 2022 15:56:48 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id b26so19564231wrc.2;
+        Tue, 05 Jul 2022 15:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=EwGxnZ5x0SNmvQDKOSOQHy8UpQQQrz2+JP+pz6BLjY4=;
-        b=Y0r0D7X+vZrlSeMjvw/Y/PVCtqlc7Tna0nbdIBO9b5puzrLR5WKxsUNwbZw5cWM0R3
-         OLRjbHmGXOgLWjrtNyCp1iSrLdsyZnNYIGaup/6lWsajWehd+T1UJJJz4YtwsFXObUUE
-         O8M/mj04qy90yX9CuQvc7RwVdu1zbSFURHMpOCoWVxLdjyglHCp6wvIezNofvgSGrjFa
-         Wr3RYvWs4gr7xpZRsIHWP9VuxuhVYhqU/SHTJK3mucfCCqYTPdK3xPPPztQn8N7LqFSR
-         /rXPjXyDHtGRspTtb360BzrATyvqAPdL9GlxhAZT2zNLHd9AVZU+BzRbhNbeZKepEW/I
-         tdqQ==
+        bh=zL3YaBsI2xTGiJj2TbzH8GBqtIjY97YUDCwE5WljzJo=;
+        b=ozr5AtTt/pUS+XSeTixcByO7KyRlNo+uPXS8SCZ5Jlg6rUP5T6qUx/wxMYIIOxN4BU
+         mZ8xHIt1d2D053oiV1hAq4ZXeSRZ3W88EgdxNgC9UXBkjzr1+JXSNppWOcVTnno0l2nh
+         JVE4lO/TFfQW9tSAdpotJTUGf5XOaWdW2RQecuLnMvsCi6iX3KMT0t2rax2jXEUI52dK
+         hwXhWjZG7ar4AzZ8Fz8mNGev6nE6NA/nTfgPxD1gk7aKXbn8TOnWmiZwPMtvo8CGbNog
+         kvH2CqX8XCumzB9xgOTubOwslmlApYIC+F65CE3L3UoKxzKIq43jb61WG07WhhDZ2W8M
+         4Ukg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=EwGxnZ5x0SNmvQDKOSOQHy8UpQQQrz2+JP+pz6BLjY4=;
-        b=2VzuImtIlJQD8C8QBRwge8kL4v1Bf9CiLjvdGyxXZhHluTXDmG9rlUa006itqBnpJW
-         J4Yk/YgaxRtY76Y1Kf228XbzBWJ3BPh1T5fmH+EclaDlaqn/KtJ19HDKy0gunXBH/4m3
-         uwCFYFvLdoz6FDSu4UZWKYbFbwrx32Emcv8Oid2RM4eqpjuBCV5uWT005OXkqpkt7nH/
-         m7c5cQCr/u543Oo8mtMgyvttiBdbDMdbdjq8Iq6EvX702WQUfkJsVvieAog/0O22PKWf
-         PRA0FP47PCh9uD5AyEijUvvqIzv5AhEsXlgiojNIO5SAmUwFNM+mrJfM2KwoUnBm9hfw
-         yPCA==
-X-Gm-Message-State: AJIora9YlGnHiZRZsh1nN4eiqXMurLFv2oXa9oFpRLdGa549zptqoI3q
-        trOfmQpEkZEEs9vq1W5Kn9o=
-X-Google-Smtp-Source: AGRyM1t47k9N/xwwklARYa34Oe5nJGwwJWn05QvjO4BYjAXyz00xC+I04pPTG1/SuTSP732BPAs5hw==
-X-Received: by 2002:a05:6000:118e:b0:21d:701e:7cc5 with SMTP id g14-20020a056000118e00b0021d701e7cc5mr7176589wrx.376.1657061637182;
-        Tue, 05 Jul 2022 15:53:57 -0700 (PDT)
+        bh=zL3YaBsI2xTGiJj2TbzH8GBqtIjY97YUDCwE5WljzJo=;
+        b=mUm+M/q7DprsEdzkwvK/2OS57/V3sSoJqJlTd6spEmSmbspiXnxnUecz3vUObDazvg
+         r7G7zYY+s8PTv9vfkU8/ZY6UdI+owF9SsfkPkSPOJgcChyAESMLKFVZVrv1t4COp8ERY
+         I64NBcmb47O+iUTjC0+xxyfv655z84QpweU6upG7Adz1MsWAImQ+Gl3hRHFXHie3coSS
+         qEAD+eFjm2nj8ssleqJgo8oDBRLhLb5/s08ly/Fx2csC7bZjy5ygYKAjMei2Ev0AKPmz
+         71UqSuRrAZ+XOoqXNy540vnIK1ogLQ3r7z5d2ntP56mesJGvn7FTQ1X+kugMpKa5ArrJ
+         P8WA==
+X-Gm-Message-State: AJIora+11cf0s8U6uO2vobFxk0oFBgK5sv55pPmLd3H8MNBqfPGqFa1C
+        ZtvcuA2OWhPrLwWybfBjOe2lHItNIxU=
+X-Google-Smtp-Source: AGRyM1txX/s3W3BFx3VdgP4BD00VAhluDQ/i92/owuJD4QW+h+/xZkjmVhZxj7+Hf9E7vw/kCJ3YcQ==
+X-Received: by 2002:a5d:6da8:0:b0:21d:2598:4e28 with SMTP id u8-20020a5d6da8000000b0021d25984e28mr36105913wrs.373.1657061806688;
+        Tue, 05 Jul 2022 15:56:46 -0700 (PDT)
 Received: from [192.168.90.207] (214.red-83-37-4.dynamicip.rima-tde.net. [83.37.4.214])
-        by smtp.gmail.com with ESMTPSA id u6-20020a5d5146000000b0020fcc655e4asm34675746wrt.5.2022.07.05.15.53.56
+        by smtp.gmail.com with ESMTPSA id bn24-20020a056000061800b0020fe35aec4bsm33178876wrb.70.2022.07.05.15.56.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Jul 2022 15:53:56 -0700 (PDT)
-Message-ID: <84fc71cbcae80a7b021a88da55fd0aa8452bbcbb.camel@gmail.com>
-Subject: Re: [PATCH v2 2/5] iio: pressure: Kconfig: Add references to BMP380
+        Tue, 05 Jul 2022 15:56:46 -0700 (PDT)
+Message-ID: <886b99b4a0f2ddb8cd89faba9e23b5d710f59f12.camel@gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: pressure: bmp280: simplify driver
+ initialization logic
 From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 06 Jul 2022 00:53:55 +0200
-In-Reply-To: <YsMUj+kzVtn0HPZ0@smile.fi.intel.com>
-References: <20220704002747.207401-1-ang.iglesiasg@gmail.com>
-         <YsMUj+kzVtn0HPZ0@smile.fi.intel.com>
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 06 Jul 2022 00:56:45 +0200
+In-Reply-To: <CAHp75Vcgivf1cDFBqWqoYQKdLYjH5NFsJi18HSy3L4U7WbjnGw@mail.gmail.com>
+References: <20220704002957.207850-1-ang.iglesiasg@gmail.com>
+         <CAHp75Vcgivf1cDFBqWqoYQKdLYjH5NFsJi18HSy3L4U7WbjnGw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
 MIME-Version: 1.0
@@ -73,17 +77,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-07-04 at 19:25 +0300, Andy Shevchenko wrote:
-> On Mon, Jul 04, 2022 at 02:27:45AM +0200, Angel Iglesias wrote:
-> > Adds reference to BMP380 in bmp280 driver descriptions and symbols
+On Mon, 2022-07-04 at 22:10 +0200, Andy Shevchenko wrote:
+> On Mon, Jul 4, 2022 at 2:46 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+> > 
+> > Extended chip_info structure with default values for configuration params
+> > to simplify and unify initialization logic for different supported sensors
 > 
 > ...
 > 
-> > -         Say yes here to build support for Bosch Sensortec BMP180 and
-> > BMP280
-> > +         Say yes here to build support for Bosch Sensortec BMP1/2/380
+> > +       ret = data->chip_info->read_calib(data, chip_id);
+> > +       if (ret < 0) {
+> > +               dev_err(data->dev,
+> > +                       "failed to read calibration coefficients\n");
+> > +               return ret;
 > 
-> Please do not shorten them like this, list all in full:
-> BMP180, BMP280 and BMP380
+> return dev_err_probe(...);
+
+Got it, thank you!
+
+> >         }
 > 
-Ok, thank you for your time!
+> 
+Thanks,
+Angel Iglesias
+

@@ -2,85 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D295568B5E
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 16:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA5E7568B79
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 16:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231663AbiGFOht (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 10:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57290 "EHLO
+        id S232070AbiGFOjT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 10:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229792AbiGFOhs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 10:37:48 -0400
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B52F1836D;
-        Wed,  6 Jul 2022 07:37:47 -0700 (PDT)
-Received: by mail-il1-f181.google.com with SMTP id p13so9315924ilq.0;
-        Wed, 06 Jul 2022 07:37:47 -0700 (PDT)
+        with ESMTP id S230232AbiGFOjS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 10:39:18 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A5F21E2A;
+        Wed,  6 Jul 2022 07:39:17 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id h17so9226401wrx.0;
+        Wed, 06 Jul 2022 07:39:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=nbQzGLyZt6vzMT4BrPBKi6wsfX0WBie55S1iaaXmviw=;
+        b=KCmuH45Vy/rpX/YO/8zkdGIjPwhBYbYTx4AAuan5fdQsofigAJqvELTwsriH+fNszk
+         8ibZuqSZb0KkiBhVZaHKQu2ofbuuSc2j2Er6SS0P/OcGNiw3Qk4x2WSdUJqWQwnp0tOH
+         AoCdkpjvY2D46ih6+FHsGjqI4+oUTBq5PMgRafwnLQNdjGF51y5dpzLJEcGv5U0D5y0m
+         zmmHDfIouMDdPYEIRtWJwVoZrIwKiqQwFx7ysqEIv9qu8YOPnzhBEiZtMQt7o9xSUj9B
+         vGW7pMrIyHBP8WIAocwjP2crsF9F9NVABukfZtlL4JleU+HPb/zdaCCWC3sbjH495cOX
+         DSHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=qc8X/1LaMy2WznH4PBEmnzF+GVIKVnqPUAAQ7c6UFzY=;
-        b=yemtQXHiV9p+ZML88zDYY9rnmka+jQJ06tN/bTgobDsJvuWYA05WaXO46V/0DiIarn
-         0iJabHwiHMxMBL3OT5Tda8ECsHRKInZ+yuM/8JJ8bZBgxmuPYKsZRGm7VcGTJEqSjjLT
-         5sgxaT3wZWk8ZYcXYPXHK4unGLwpgMOmBi+DSuEwWBbWS7EyXiv2SEpNRBkw2BzCs2PU
-         c/r9wkhRkBF7GPRSai8UekoY2/DNRXLIqhAMDYWvYdZc4CGoIZOrAjTsUwr/idIC6jIo
-         wj9UxIsKMDCeS6W1UM5kKk82X4vRZOE2PRt6EWBsijjzTNqNpm54Y9dbmmfCj3okvGXq
-         NQqg==
-X-Gm-Message-State: AJIora+MVTjZVz0ylq/GCu1CV7nvwiBg1EFdUCkwWe/DFOjtB8qjZGpG
-        tQPsJsJgvb/g7+mUPckTGQ==
-X-Google-Smtp-Source: AGRyM1vNXiruOQpnrCzruFXGrXb492DjvZelE7rIiAG8dXbAIlUC/fQZ/w+0wnCe1gztq0UT9xa11g==
-X-Received: by 2002:a92:d409:0:b0:2dc:40d:169 with SMTP id q9-20020a92d409000000b002dc040d0169mr12580351ilm.135.1657118266757;
-        Wed, 06 Jul 2022 07:37:46 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id m29-20020a02a15d000000b00339ceeec5edsm15799374jah.12.2022.07.06.07.37.45
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=nbQzGLyZt6vzMT4BrPBKi6wsfX0WBie55S1iaaXmviw=;
+        b=LtWHKRgTG7ZvZv7NlWx9LOVCoFnS9K8bUa4Q9cWvVgyX/URMfldoF0USDlngypX7/d
+         veva2vUJtX2Z4jeeJdV7jyoTz/wVj9I/vqaPXE6NLxgwYwRcOj7WSz2WBXYM97uOSSGx
+         BgnWPcQUwYEo9v0u6GBWQ65IF5AfTH7XNdOk/7YdauotSE7ZGxNzKozDXyzyEoiRUb8/
+         objJ204lJTw9c9MtZqF0zKJ/Nm7jl45cBzEre2l/uA5omEf4mF/O7MIjviGnXPSlCsuV
+         Iol6NNngPtb/VXwfkHUdlC+BEdu7xwG8wRxEjSvabr2UY+WwYojCIzP6g6/sJCWWfq3x
+         Z+CA==
+X-Gm-Message-State: AJIora9gNrWcnay1zrkvi7WNkFpsd7vfvNEDsR4tbEZ/pNP9tVuDek3F
+        ChU2ZnPsF7xqFW1l2FpX98k=
+X-Google-Smtp-Source: AGRyM1sCnYfNWrP9a6CSVlU5BzXSjjrZmNGdu/l9Zkwg02x4RMZljumMZCkx5SDH7ztA2RR8lp07bw==
+X-Received: by 2002:a5d:4982:0:b0:21d:6e04:1fb3 with SMTP id r2-20020a5d4982000000b0021d6e041fb3mr12404193wrq.69.1657118356381;
+        Wed, 06 Jul 2022 07:39:16 -0700 (PDT)
+Received: from [192.168.1.126] (68.201.26.77.dynamic.reverse-mundo-r.com. [77.26.201.68])
+        by smtp.gmail.com with ESMTPSA id z5-20020adfe545000000b0021b81855c1csm43580911wrm.27.2022.07.06.07.39.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Jul 2022 07:37:46 -0700 (PDT)
-Received: (nullmailer pid 6765 invoked by uid 1000);
-        Wed, 06 Jul 2022 14:37:44 -0000
-Date:   Wed, 6 Jul 2022 08:37:44 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Chris Morgan <macroalpha82@gmail.com>
-Cc:     maccraft123mc@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>,
-        paul@crapouillou.net, contact@artur-rojek.eu, jic23@kernel.org,
-        heiko@sntech.de, devicetree@vger.kernel.org,
-        dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v7 1/3] dt-bindings: adc-joystick: add poll-interval
-Message-ID: <20220706143744.GA6709-robh@kernel.org>
-References: <20220705190354.69263-1-macromorgan@hotmail.com>
- <20220705190354.69263-2-macromorgan@hotmail.com>
+        Wed, 06 Jul 2022 07:39:15 -0700 (PDT)
+Message-ID: <dd655cf6e49cac219a5ae29bff1a19fd026c6ea5.camel@gmail.com>
+Subject: Re: [PATCH v2 5/5] iio: pressure: bmp280: Adds more tunable config
+ parameters for BMP380
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Date:   Wed, 06 Jul 2022 16:39:13 +0200
+In-Reply-To: <CAHp75VcEAtpVsfp2CCtJR_e_eSSFaMkODFwd-ZuHKGsNPcVWfA@mail.gmail.com>
+References: <20220704003337.208696-1-ang.iglesiasg@gmail.com>
+         <CAHp75VdBv8BJVzBCMzWKpm0RrqX=K_QPQ4cgdshqXP3Uy+hVHQ@mail.gmail.com>
+         <b9280ecbf78424882878ef2ff6c3da6671064ed5.camel@gmail.com>
+         <CAHp75VcEAtpVsfp2CCtJR_e_eSSFaMkODFwd-ZuHKGsNPcVWfA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220705190354.69263-2-macromorgan@hotmail.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 05 Jul 2022 14:03:52 -0500, Chris Morgan wrote:
-> From: Chris Morgan <macroalpha82@gmail.com>
+On mié, 2022-07-06 at 14:42 +0200, Andy Shevchenko wrote:
+> On Wed, Jul 6, 2022 at 12:51 AM Angel Iglesias <ang.iglesiasg@gmail.com>
+> wrote:
+> > On Mon, 2022-07-04 at 22:08 +0200, Andy Shevchenko wrote:
+> > > On Mon, Jul 4, 2022 at 2:41 AM Angel Iglesias <ang.iglesiasg@gmail.com>
+> > > wrote:
 > 
-> Add poll-interval support for the adc-joystick documentation. This is
-> an optional value and if not provided the adc-joystick works as it
-> does today (with buffers). If this value is provided, the adc-joystick
-> driver is polled at the specified interval. The existing attribute of
-> "poll-interval" was used instead of complying with property-units.yaml
-> after discussion of the issue on the mailing list.
+> ...
 > 
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> ---
->  Documentation/devicetree/bindings/input/adc-joystick.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
+> > > > +               if (unlikely(!data->chip_info->sampling_freq_avail)) {
+> > > 
+> > > Why unlikely() ? How does this improve code generation / performance?
+> > 
+> > As Jonathan Cameron sugested on a previous version of the patch, even
+> > thought
+> > this code should be safe (as if we are checking sampling frequency is
+> > because
+> > the sensor is a BMP380 and has that property), it would be better to have a
+> > sanity check just to be sure the property is really available. I used
+> > unlikely
+> > macro to take into account that the property would be almost always
+> > initialized.
+> > 
+> > Now that you mention, probably this code won't be called too often to make
+> > the
+> > "unlikely" branching hint make a meaningful performance difference
+> > 
+> > > > +               if (unlikely(!data->chip_info->iir_filter_coeffs_avail))
+> > > > {
+> > > 
+> > > Ditto.
 > 
+> Is this really a performance-critical path? How did you check that
+> unlikely() makes sense?
+> More evidence, please!
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+You're right. This code will be invoked by userspace using the sysfs ABI,
+probably just once, to check sensor settings. The unlikely() is out place, I'll
+drop it in next patch iteration.
+
+> ...
+> 
+> > > Why do you need to copy'n'paste dozens of the very same comment?
+> > > Wouldn't it be enough to explain it somewhere at the top of the file
+> > > or in the respective documentation (if it exists)?
+> 
+> No answer?
+
+Apologies, I'll fix the duplicated comments. Would be a good place for the
+comment before the function "bmp280_write_raw" or at the start of the switch
+block?
+
+

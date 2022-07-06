@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 579F8567B4F
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 03:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9632B567B59
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 03:12:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbiGFBIX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 21:08:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53162 "EHLO
+        id S229866AbiGFBMF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jul 2022 21:12:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiGFBIW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 21:08:22 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8229CA458;
-        Tue,  5 Jul 2022 18:08:18 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 205-20020a1c02d6000000b003a03567d5e9so10266419wmc.1;
-        Tue, 05 Jul 2022 18:08:18 -0700 (PDT)
+        with ESMTP id S229453AbiGFBME (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 21:12:04 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B449D17E3B;
+        Tue,  5 Jul 2022 18:12:03 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id h17so6662273wrx.0;
+        Tue, 05 Jul 2022 18:12:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=X9JGYMgyEjh/3XaB96SqjzcBtp/IEDYGgCXSHBcak0I=;
-        b=XJSeUvcGwW3vDMSKNe+GSlBWvLm80N4dlkQgeW97/78iep9wAYNFxYhnBeb8RCAvDp
-         vpenqHESq9nWVu4KY0AaLWwTMLGlnCUtkxxXEjXAle/Js0sY5e/+fHWX0lFowjWNGITf
-         n6m97D4s3HYZP1Sr2OYyF82gnpfQ8TQfP+P5NCfmRqhjNaNQg8PfKtSEJ7xdI5cIfwG7
-         F1x9U49G1LIDW7CMVGYJh2DgSvWjU9MkozPF5adAR9IkiesWsyCD+DE0finBQptN65Qi
-         X7YJ8uc4GJld2EWT9HQHnY8Dl6pfI0TrvGjiLng986U2pong6KrWO9iRKt16QKJam3s3
-         J7PA==
+        bh=5aHvbPnFc3WrMNwBi3yAbFFZyJSqQyCqgLMTVPf4RLU=;
+        b=Kc8vqNE2IGoqlLDiZ+FSqlnPMExF5NIN1pe0GVo228I4/ps9+EPKOFtOoAjww6DkN7
+         D3wAOQREyUjj9xFZsxi/9P1VkL2umDintLoR3mqOCyarg6D+20MKs8DKKp8KyL91icZl
+         b8RWC2eyMAH+mRGKu/2v2Xic3pokUFFld53cdPko425fHnmg7xHTLhHz4IeV+g8UKzqW
+         2Od0FoVavukSxMtI94JeibQJyzqxJKzTeRC/x3z2dUz+BSB95FDZtUj8niJgYUYtqwgT
+         631dYIcVdX+TSm4Kcph3oa9DwpDRgTBOtz6nTmyJ9ahi7K+AcI3HoIIjyMNbM/E+K06m
+         ExQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=X9JGYMgyEjh/3XaB96SqjzcBtp/IEDYGgCXSHBcak0I=;
-        b=vYeCHEwhkuE9qU53vstseHFgW6u4tmyQ//kJXHN8/DnQ0rQ7l1gxxjwX5pC8kvDhgt
-         4SHD6CHUhxRxg738Reof/AOTKh9WEpiAFp39F68ZN5LOQCpwRP9nQU/8NYDH6PaJwoh4
-         9L6XiK7j7igsjop2whxbNvMPPIBCBy36uORsL/rk4i7SWkaGUgc8SQcV7zHmMr5qCL7S
-         5eEId0QBCYPY4geXvX21plBaDrdeqJl/wdpCfi4j9bYTQtpRCyh4AFaeC0NiT03CWWe0
-         SIWsAJQ2EA2G98VOdF+fIkhIQKOuJxcouxqu9hRkqRnaznVmYpylXCP725n5r6+rQ7TD
-         VY4w==
-X-Gm-Message-State: AJIora+6gjRtJZ+WNS2O/o3p+B2/lHGClkLYV6bGJ0c98ZX9R+K5c4/H
-        Izkae6AmQEwrsLC32xntGu4L9dSIaXiIGy4v650X6P0u8s4=
-X-Google-Smtp-Source: AGRyM1sPaZEn0qLD67hiapm6RAVVZG7N9epthPKNtAbB68VvGndYepMU2OZ40TlQINxl2yIzgw36xtcrBUCmc5VjNWw=
-X-Received: by 2002:a05:600c:19c8:b0:3a1:792e:f913 with SMTP id
- u8-20020a05600c19c800b003a1792ef913mr35958362wmq.182.1657069696835; Tue, 05
- Jul 2022 18:08:16 -0700 (PDT)
+        bh=5aHvbPnFc3WrMNwBi3yAbFFZyJSqQyCqgLMTVPf4RLU=;
+        b=5hKaehKzFQIW6aQOP1eAA1zvEalobt5A2zNVFOycXrcAksn/8azX3SK/fqv9lNhuIU
+         IT7l+sKziOHHvHPEbwIL7eEWcJzZf9VNuivm1t9YtDjdi6A3wqLFlI7wlBRV3Z8Ae+Ww
+         T0bJ0j6psCvaue6h+vi3dIhsNAPc/pI7ZQIo8BEj6YFHx3a2IABPOguJpqka3jnySv4b
+         EjBgta0btZihh1y1cbUJ7LPAI5/++XBLaWgpGL32iMC4bV+O6bLakhSxjRMpYAY+fR+W
+         ODl/HDB/AzV8cirAcok9b5wDrXpQ89X7FVDfoxrpjiqgOSZrIdSkiY36ZtqbXsMF75R/
+         YLLg==
+X-Gm-Message-State: AJIora9FlqQYO91BI2nXRtFqWFZmCnskKxad6Iq/HZ0mKq7cUpG3phvy
+        8QalDMyDN7d2tZBKkAULNBV6eOgqbTD/MKCa3e8=
+X-Google-Smtp-Source: AGRyM1sdTmzdRD2GUYAi9SAT8RRwNuwCu1WxK/TW2ZV5+qb5KAVwcP2Y6E3q1zrMXKRo9/VS1fNTY93liJO4UFoMeTA=
+X-Received: by 2002:adf:f90c:0:b0:21a:3dcb:d106 with SMTP id
+ b12-20020adff90c000000b0021a3dcbd106mr33713209wrr.448.1657069922265; Tue, 05
+ Jul 2022 18:12:02 -0700 (PDT)
 MIME-Version: 1.0
 References: <1657038252-31360-1-git-send-email-u0084500@gmail.com>
  <1657038252-31360-3-git-send-email-u0084500@gmail.com> <CAHp75VeV6vByZXGLraLes+94Rfs23ZjPXGaXzUf-YY=sb_1=2Q@mail.gmail.com>
 In-Reply-To: <CAHp75VeV6vByZXGLraLes+94Rfs23ZjPXGaXzUf-YY=sb_1=2Q@mail.gmail.com>
 From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Wed, 6 Jul 2022 09:08:05 +0800
-Message-ID: <CADiBU38qzjECL9_8djx4Vna5PA=A2_jh7BFph1z2D_LOqTtZTQ@mail.gmail.com>
+Date:   Wed, 6 Jul 2022 09:11:50 +0800
+Message-ID: <CADiBU3_7hbwesbXTHBhqo7orQmYp=bY_8b7yhNDKB6m6-CCEtA@mail.gmail.com>
 Subject: Re: [PATCH v4 2/2] iio: adc: Add rtq6056 support
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -94,26 +94,18 @@ Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=
 > I said explicitly that the kernel version mustn't be not stable nor devel=
 oping.
 >
+Sorry, and this.
+Are you saying that patch series need to depend on the stable kernel versio=
+n?
+I cannot always sync the latest one and have to use the tag to grab
+the stable one.
+Right?
 > ...
 >
 > > +KernelVersion: 5.15.31
 >
 > ^^^ Wrong
 >
-I really cannot understand what kernel version I need to specified.
-https://lore.kernel.org/lkml/CAHp75VeBdgbyDQXEYb9ZZdi3AU=3DvPw6aKGWbNLnuA_Q=
-oN4LE4A@mail.gmail.com/
-
-Last time, my understanding is to use the realistic kernel version.
-Then from my  development environment, the kernel  I used is 5.15.31.
-That's why I changed it from '5.18.2' to '5.15.31'.
-
-Do you mind to tell me what kernel version I need to write for this
-ABI test document?
-I'm almost confused about 'realistic', 'non-stable', nor 'developing'.
-
-If to write '5.19' or the future version '5.20', is it ok?
-
 > --
 > With Best Regards,
 > Andy Shevchenko

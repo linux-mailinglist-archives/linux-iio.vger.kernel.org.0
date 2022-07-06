@@ -2,220 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F142568848
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 14:27:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97523568875
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 14:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbiGFM1d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 08:27:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
+        id S232256AbiGFMgp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 08:36:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233061AbiGFM1b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 08:27:31 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B30237E8
-        for <linux-iio@vger.kernel.org>; Wed,  6 Jul 2022 05:27:29 -0700 (PDT)
-Received: from [192.168.1.101] (abxi46.neoplus.adsl.tpnet.pl [83.9.2.46])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A886C3F756;
-        Wed,  6 Jul 2022 14:27:24 +0200 (CEST)
-Message-ID: <a443cd40-a1d5-6e17-1c49-d592a590f1f8@somainline.org>
-Date:   Wed, 6 Jul 2022 14:27:23 +0200
+        with ESMTP id S232245AbiGFMgo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 08:36:44 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF981BE8A;
+        Wed,  6 Jul 2022 05:36:41 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-317a66d62dfso138428067b3.7;
+        Wed, 06 Jul 2022 05:36:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=sTOpDj3B0JNGWnvk1OWAvZnWT1OVUubXtuttRhdrPpM=;
+        b=k1QLo+8ys7NyUAOL0fmOmMeACSgLMkm66WZnE4lyiyUyXvUqqiJFX432ZMIs26K6e+
+         KRnG/cXS4CMPiLVh6RmFsDVrGWoeFYDyANNBVRq23+pvD5kGrZTH610t4n8+XzQc7Sjo
+         o+AlQOPYCg/pjEFLFEGXf0TyTzhgZpuR2eYdPoWLmw6Fi33PrXwvgqwDpxHqovNo+Zm/
+         SmiZ/tFCaBpToim9J6dgXRJhbcd56t/ZYXVIyf64B/P1fiN/otZLO10pmBN0XT6pjJmY
+         FHk+nQX0Q/9lDPyzdmGQqxp2Zpwhu8zt2w1/Ikt2U4PPu8pFmRjyrdEFsCZX80W+lZVe
+         yRKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=sTOpDj3B0JNGWnvk1OWAvZnWT1OVUubXtuttRhdrPpM=;
+        b=bTrLdtjjMvIBsUHp25jK6hKGNXZlPFahdX7/RfP2w2xfpCV07zwwxH2HGLodmmgWsF
+         XHu2v7Ofo+g+QS3ExJrpcOj8PpLlR2P+mliYQMK8Dl9L2xgCNibKY8Ulg965d7LHf2W6
+         iSPjLmCAII9pq9EfUBwdIUvw+Nbz3sMBHpXLiUUUFH9RBlrbSldoR3ZloQ8cfaDQURJD
+         2eH+t6SoKdQCz4ObdheEQyaSXeGITfjYi9rgE93E86D4/Co3yzMfFDHz+nvANdoG9gaT
+         8Ox+M6QmuCfKM45wjY22EK8o635Jtu0k5AJNvn7cwSnLUH7Z8rhy27gxIA3oorpArVkX
+         jEgg==
+X-Gm-Message-State: AJIora/cFtiHuUnkOnmykRg6w+giHiDaVuOgHtZujs9CLlomTteB/UYQ
+        pJSCcqTKhhQjv1T6zELA0PHLu3spkcVgblRR3To=
+X-Google-Smtp-Source: AGRyM1tut2KEhyTX/0JRT+GpR24w2i80fdtHRSQIkoJRE7efMWT7H8RkbjZe2FXj0Yq/SMO0qGcWsLfx8dWDdu2NHls=
+X-Received: by 2002:a81:108f:0:b0:31c:d7ae:9ff1 with SMTP id
+ 137-20020a81108f000000b0031cd7ae9ff1mr7723915ywq.18.1657111000815; Wed, 06
+ Jul 2022 05:36:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v6 11/12] arm64: dts: qcom: add PMP8074 DTSI
-Content-Language: en-US
-To:     Robert Marko <robimarko@gmail.com>, agross@kernel.org,
-        bjorn.andersson@linaro.org, lee.jones@linaro.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linus.walleij@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
-        jic23@kernel.org, lars@metafoo.de, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20220704212402.1715182-1-robimarko@gmail.com>
- <20220704212402.1715182-11-robimarko@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@somainline.org>
-In-Reply-To: <20220704212402.1715182-11-robimarko@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20220705121756.41660-1-kai.heng.feng@canonical.com>
+ <CAHp75VdnvxhR7yB2sroH4y8VgU3ORnCC3wH4CEKYCX1XSPvMxg@mail.gmail.com> <CAAd53p4ZNna2G7hD4vDfDF-fAtLNJinr+tr9LddMq06yFT26YA@mail.gmail.com>
+In-Reply-To: <CAAd53p4ZNna2G7hD4vDfDF-fAtLNJinr+tr9LddMq06yFT26YA@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 6 Jul 2022 14:36:04 +0200
+Message-ID: <CAHp75VegnLShEPHg=aRG=M3kf36M3tHPL7Jwz-i=A3Z48-2pYA@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: cm32181: Add PM support
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     Kevin Tsai <ktsai@capellamicro.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Jul 6, 2022 at 4:02 AM Kai-Heng Feng
+<kai.heng.feng@canonical.com> wrote:
+> On Wed, Jul 6, 2022 at 3:12 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Tue, Jul 5, 2022 at 2:31 PM Kai-Heng Feng
+> > <kai.heng.feng@canonical.com> wrote:
 
+...
 
-On 4.07.2022 23:24, Robert Marko wrote:
-> PMP8074 is a companion PMIC to the Qualcomm IPQ8074 series that is
-> controlled via SPMI.
-> 
-> Add DTSI for it providing GPIO, regulator and RTC support.
-> 
-> RTC is disabled by default as there is no built-in battery so it will
-> loose time unless board vendor added a battery, so make it optional.
-> 
-> Signed-off-by: Robert Marko <robimarko@gmail.com>
-> ---
-> Changes in v6:
-> * Add RTC and GPIO nodes
-> 
-> Changes in v5:
-> * Remove #address-cells and #size-cells as they are not required for
-> regulator subnodes
-> ---
->  arch/arm64/boot/dts/qcom/pmp8074.dtsi | 125 ++++++++++++++++++++++++++
->  1 file changed, 125 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/pmp8074.dtsi
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/pmp8074.dtsi b/arch/arm64/boot/dts/qcom/pmp8074.dtsi
-> new file mode 100644
-> index 000000000000..a3b395e4d78f
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/pmp8074.dtsi
-> @@ -0,0 +1,125 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-Hi,
+> > > +static int cm32181_resume(struct device *dev)
+> > > +{
+> > > +       struct i2c_client *client = to_i2c_client(dev);
+> > > +       struct cm32181_chip *cm32181 = iio_priv(i2c_get_clientdata(client));
+> >
+> > Simply device_get_drvdata(dev) ?
+>
+> iio_priv() is still needed to get the struct priv.
 
-Please consider BSD3, or at least dual-licensing with some permissive
-license (so that for example BSDs can re-use these DTs).
-> +
-> +#include <dt-bindings/spmi/spmi.h>
-> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +
-> +&spmi_bus {
-> +	pmic@0 {
-> +		compatible = "qcom,pmp8074", "qcom,spmi-pmic";
-> +		reg = <0x0 SPMI_USID>;
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		pmp8074_adc: adc@3100 {
-> +			compatible = "qcom,spmi-adc-rev2";
-> +			reg = <0x3100>;
-> +			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			#io-channel-cells = <1>;
-> +
-> +			ref_gnd@0 {
-No underscores in node names, please change this to ref-gnd (and consequently
-for all other nodes). Note that this only concerns node names and not labels.
+I'm not objecting to that. My point is that you don't need to
+dereference dev --> client --> dev.
 
-> +				reg = <ADC5_REF_GND>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			vref_1p25@1 {
-> +				reg = <ADC5_1P25VREF>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			vref_vadc@2 {
-> +				reg = <ADC5_VREF_VADC>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			pmic_die: die_temp@6 {
-> +				reg = <ADC5_DIE_TEMP>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			xo_therm: xo_temp@76 {
-> +				reg = <ADC5_XO_THERM_100K_PU>;
-> +				qcom,ratiometric;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			pa_therm1: thermistor1@77 {
-> +				reg = <ADC5_AMUX_THM1_100K_PU>;
-> +				qcom,ratiometric;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			pa_therm2: thermistor2@78 {
-> +				reg = <ADC5_AMUX_THM2_100K_PU>;
-> +				qcom,ratiometric;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			pa_therm3: thermistor3@79 {
-> +				reg = <ADC5_AMUX_THM3_100K_PU>;
-> +				qcom,ratiometric;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,pre-scaling = <1 1>;
-> +			};
-> +
-> +			vph_pwr@131 {
-> +				reg = <ADC5_VPH_PWR>;
-> +				qcom,pre-scaling = <1 3>;
-> +			};
-> +		};
-> +
-> +		pmp8074_rtc: rtc@6000 {
-> +			compatible = "qcom,pm8941-rtc";
-> +			reg = <0x6000>;
-> +			reg-names = "rtc", "alarm";
-> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_NONE>;
-> +			allow-set-time;
-> +			status = "disabled";
-Isn't this PMIC-internal, aka accessible on all devices using PMP8074?
+And yes, I see that client is still used, but it's again not about my point.
 
-> +		};
-> +
-> +		pmp8074_gpios: gpio@c000 {
-> +			compatible = "qcom,pmp8074-gpio", "qcom,spmi-gpio";
-> +			reg = <0xc000>;
-> +			gpio-controller;
-> +			#gpio-cells = <2>;
-> +			gpio-ranges = <&pmp8074_gpios 0 0 12>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +		};
-> +	};
-> +
-> +	pmic@1 {
-> +		compatible = "qcom,pmp8074", "qcom,spmi-pmic";
-> +		reg = <0x1 SPMI_USID>;
-> +
-> +		regulators {
-> +			compatible = "qcom,pmp8074-regulators";
-> +
-> +			s3: s3 {
-> +				regulator-name = "vdd_s3";
-> +				regulator-min-microvolt = <592000>;
-> +				regulator-max-microvolt = <1064000>;
+> > > +       return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
+> > > +                                        cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
+> > > +}
 
-Are you sure no other configurations are supported with this PMIC?
-Otherwise you may accidentally burn somebody's board by setting up
-regulators in a place that's not usually expected to have them..
-
-Konrad
-> +				regulator-always-on;
-> +				regulator-boot-on;
-> +			};
-> +
-> +			s4: s4 {
-> +				regulator-name = "vdd_s4";
-> +				regulator-min-microvolt = <712000>;
-> +				regulator-max-microvolt = <992000>;
-> +				regulator-always-on;
-> +				regulator-boot-on;
-> +			};
-> +
-> +			l11: l11 {
-> +				regulator-name = "l11";
-> +				regulator-min-microvolt = <1800000>;
-> +				regulator-max-microvolt = <3300000>;
-> +			};
-> +		};
-> +	};
-> +};
+-- 
+With Best Regards,
+Andy Shevchenko

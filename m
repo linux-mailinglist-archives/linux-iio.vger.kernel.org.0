@@ -2,75 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F26C85693A3
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 22:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B555693B4
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 22:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234075AbiGFUwt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 16:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54668 "EHLO
+        id S234328AbiGFU6H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 16:58:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232212AbiGFUwt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 16:52:49 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF47A1CB1D;
-        Wed,  6 Jul 2022 13:52:46 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id B5DFC66019A9;
-        Wed,  6 Jul 2022 21:52:44 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1657140765;
-        bh=plFfInWaF2jQzdSTym9IBrTK4gHtJFiLIaSgAP0rW5M=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=TSyP7iVStBzIx18dwKvtCyZtx9VysYN+PtKQAWJ4T6zlCCnSi5NjRZAw3znj/Yk+y
-         pt/mAjdcaKXdn9Rihd0+wsNOZLEGD8hln6wO6S7e3e/oi8WJkMCu5Dqg5MhD4EsXCz
-         dscnYA5fYBemHlVlLV5zqHUCo1zHNK5S5S7yxN//zdyfGCQj6P2Ymq6jxu4NbLoiph
-         8kk9JlmJDSPDmQguHoIywkOHtIOMM7aZUF/Q8Rel9tXv0V6QRKypBpPGBobBCXSZml
-         aG1K8OJ3iy/yQTxmcU7KAtrWZWampuIhHxDmkmpvvJTH+G/G9dDc1uXvphcJFqGzYN
-         o5ZbJ2RrG9MhQ==
-Message-ID: <d8dc8a62-93b8-618e-ff18-dd85c8e75464@collabora.com>
-Date:   Wed, 6 Jul 2022 23:52:42 +0300
+        with ESMTP id S234159AbiGFU6H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 16:58:07 -0400
+X-Greylist: delayed 4358 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Jul 2022 13:58:05 PDT
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D4961E3D3;
+        Wed,  6 Jul 2022 13:58:05 -0700 (PDT)
+Received: (Authenticated sender: contact@artur-rojek.eu)
+        by mail.gandi.net (Postfix) with ESMTPA id 6A7C2240007;
+        Wed,  6 Jul 2022 20:58:01 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v6 2/2] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org, Zhigang.Shi@liteon.com,
-        krisman@collabora.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com, andy.shevchenko@gmail.com,
-        digetx@gmail.com, kernel test robot <lkp@intel.com>
-References: <20220615135130.227236-1-shreeya.patel@collabora.com>
- <20220615135130.227236-3-shreeya.patel@collabora.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20220615135130.227236-3-shreeya.patel@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 06 Jul 2022 22:58:01 +0200
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Chris Morgan <macroalpha82@gmail.com>, maccraft123mc@gmail.com,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        Chris Morgan <macromorgan@hotmail.com>, paul@crapouillou.net,
+        jic23@kernel.org, heiko@sntech.de, devicetree@vger.kernel.org,
+        dmitry.torokhov@gmail.com, linux-input@vger.kernel.org,
+        robh+dt@kernel.org
+Subject: Re: [PATCH v7 1/3] dt-bindings: adc-joystick: add poll-interval
+In-Reply-To: <20220706143744.GA6709-robh@kernel.org>
+References: <20220705190354.69263-1-macromorgan@hotmail.com>
+ <20220705190354.69263-2-macromorgan@hotmail.com>
+ <20220706143744.GA6709-robh@kernel.org>
+Message-ID: <79f571c76adc5e4c17857b6d4785d727@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 6/15/22 16:51, Shreeya Patel wrote:
-> +static int ltrf216a_get_lux(struct ltrf216a_data *data)
-> +{
-> +	int greendata;
-> +	u64 lux, div;
-> +
-> +	ltrf216a_set_power_state(data, true);
+On 2022-07-06 16:37, Rob Herring wrote:
+> On Tue, 05 Jul 2022 14:03:52 -0500, Chris Morgan wrote:
+>> From: Chris Morgan <macroalpha82@gmail.com>
+>> 
+>> Add poll-interval support for the adc-joystick documentation. This is
+>> an optional value and if not provided the adc-joystick works as it
+>> does today (with buffers). If this value is provided, the adc-joystick
+>> driver is polled at the specified interval. The existing attribute of
+>> "poll-interval" was used instead of complying with property-units.yaml
+>> after discussion of the issue on the mailing list.
+>> 
+>> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+>> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+>> ---
+>>  Documentation/devicetree/bindings/input/adc-joystick.yaml | 5 +++++
+>>  1 file changed, 5 insertions(+)
+>> 
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-All the power-on errors should be handled.
-
--- 
-Best regards,
-Dmitry
+Acked-by: Artur Rojek <contact@artur-rojek.eu>

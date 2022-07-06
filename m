@@ -2,185 +2,220 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CCF568536
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 12:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F142568848
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 14:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233281AbiGFKUA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 06:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60966 "EHLO
+        id S233286AbiGFM1d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 08:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233289AbiGFKTG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 06:19:06 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B874D2714F;
-        Wed,  6 Jul 2022 03:18:53 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id v14so21368765wra.5;
-        Wed, 06 Jul 2022 03:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ZvGwVkTGyDn+vP4Fazz0kJpHMoviO3wS63dcj/8fxfo=;
-        b=ZKCpGxJTFzF/rvSEejnIawseKoqfxUwKeVrwTB0K/cZ2nx8Ce/JEBlUNqYZ/6sMZaV
-         y8aM1r7uUGzM8mxiw542IB7VjSGemOdAF34nToc96Ehd2pa3DtjtQLGevQqMRATa+ta9
-         tN+gp4HKFfzBREN3ko+JQ7XhlC/UdW5a+NRch/vxEF5ZYPZaPXXG9MzskzDD7ixfRJJE
-         G37xZgLxxFOVCatGXobMzXlXC+HA+CzMjBTGArCoTXKUxTVt8WFZuCrmTjMctnIWMtb2
-         Z9XOF0V+a1BXKRfjjwMSYAX1h9LNIpf72HYEvgbGV5iB5Z40We8lfR2f3k3x0bhSOstR
-         JMwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ZvGwVkTGyDn+vP4Fazz0kJpHMoviO3wS63dcj/8fxfo=;
-        b=FAk/Xnu5N5p67IVOpwEXdgm53Gheju73j5kEyUTBgwuHEIjtRqcXlMuPrttQ0prOOl
-         jI7COOBMi2/EiUKqIKeXSFyTmnFM7J6AFUEpi9RYO3S6eA1b6396DVE/jX5prWCFZjBl
-         BVeLkh9w8o2KolsFxlTz+iP2GtDdLguHeuCGhwlRDfSZreDEuvQWnNqjzd1TCsNPs6/l
-         kzFkjiJH4yqpNWs/jCIsc7y9N1w2k3AgFmZxA41z9jgHj+FVt8A+/VmF7KKAuVZMgZQ6
-         +IdoArdElIzaGXQHtJ5bPITEe7SECO8op/l7aaj3tIXP1CO2MrtZsI9aOyRi6zTRuFPG
-         kyjQ==
-X-Gm-Message-State: AJIora9fHv6HuqUzjHgMegXx0gNJqGKp4j7uOZa/m1QOn/6Zja++8EtL
-        cR3S3g8b6WBqZUyocjNu7/M=
-X-Google-Smtp-Source: AGRyM1vLCj4x+NqNP5HpX/hsCERhQNRayOjvlpg+w1jdkzDlNlP0qjd8PmOdvrbpuk0bd3MwfVqGOw==
-X-Received: by 2002:adf:dc09:0:b0:21b:9ec1:f4ab with SMTP id t9-20020adfdc09000000b0021b9ec1f4abmr37147285wri.558.1657102732173;
-        Wed, 06 Jul 2022 03:18:52 -0700 (PDT)
-Received: from localhost (92.40.202.167.threembb.co.uk. [92.40.202.167])
-        by smtp.gmail.com with ESMTPSA id h15-20020a1ccc0f000000b0039749b01ea7sm33702763wmb.32.2022.07.06.03.18.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Jul 2022 03:18:51 -0700 (PDT)
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org,
-        lee.jones@linaro.org, sre@kernel.org, lgirdwood@gmail.com,
-        broonie@kernel.org
-Cc:     lars@metafoo.de, andy.shevchenko@gmail.com,
-        linus.walleij@linaro.org, brgl@bgdev.pl, michael@walle.cc,
-        samuel@sholland.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH v5 13/13] power: axp20x_battery: Add support for AXP192
-Date:   Wed,  6 Jul 2022 11:19:02 +0100
-Message-Id: <20220706101902.4984-14-aidanmacdonald.0x0@gmail.com>
-In-Reply-To: <20220706101902.4984-1-aidanmacdonald.0x0@gmail.com>
-References: <20220706101902.4984-1-aidanmacdonald.0x0@gmail.com>
+        with ESMTP id S233061AbiGFM1b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 08:27:31 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B30237E8
+        for <linux-iio@vger.kernel.org>; Wed,  6 Jul 2022 05:27:29 -0700 (PDT)
+Received: from [192.168.1.101] (abxi46.neoplus.adsl.tpnet.pl [83.9.2.46])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id A886C3F756;
+        Wed,  6 Jul 2022 14:27:24 +0200 (CEST)
+Message-ID: <a443cd40-a1d5-6e17-1c49-d592a590f1f8@somainline.org>
+Date:   Wed, 6 Jul 2022 14:27:23 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v6 11/12] arm64: dts: qcom: add PMP8074 DTSI
+Content-Language: en-US
+To:     Robert Marko <robimarko@gmail.com>, agross@kernel.org,
+        bjorn.andersson@linaro.org, lee.jones@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linus.walleij@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
+        jic23@kernel.org, lars@metafoo.de, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20220704212402.1715182-1-robimarko@gmail.com>
+ <20220704212402.1715182-11-robimarko@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@somainline.org>
+In-Reply-To: <20220704212402.1715182-11-robimarko@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The AXP192 has a battery charger similar to other X-Powers PMICs,
-but unlike the other supported devices, it does not have a fuel
-gauge and can't report battery capacity directly.
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
----
- drivers/power/supply/axp20x_battery.c | 49 +++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 574c1d001556..1e84d26ce8e3 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -544,6 +544,19 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
- 	}
- }
- 
-+static enum power_supply_property axp192_battery_props[] = {
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_ONLINE,
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-+	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-+	POWER_SUPPLY_PROP_HEALTH,
-+	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-+	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-+};
-+
- static enum power_supply_property axp20x_battery_props[] = {
- 	POWER_SUPPLY_PROP_PRESENT,
- 	POWER_SUPPLY_PROP_ONLINE,
-@@ -568,6 +581,16 @@ static int axp20x_battery_prop_writeable(struct power_supply *psy,
- 	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
- }
- 
-+static const struct power_supply_desc axp192_batt_ps_desc = {
-+	.name = "axp192-battery",
-+	.type = POWER_SUPPLY_TYPE_BATTERY,
-+	.properties = axp192_battery_props,
-+	.num_properties = ARRAY_SIZE(axp192_battery_props),
-+	.property_is_writeable = axp20x_battery_prop_writeable,
-+	.get_property = axp20x_battery_get_prop,
-+	.set_property = axp20x_battery_set_prop,
-+};
-+
- static const struct power_supply_desc axp20x_batt_ps_desc = {
- 	.name = "axp20x-battery",
- 	.type = POWER_SUPPLY_TYPE_BATTERY,
-@@ -578,6 +601,19 @@ static const struct power_supply_desc axp20x_batt_ps_desc = {
- 	.set_property = axp20x_battery_set_prop,
- };
- 
-+static const int axp192_ccc_table[AXP20X_CHRG_CTRL1_TGT_CURR+1] = {
-+	100000,  190000,  280000,  360000,
-+	450000,  550000,  630000,  700000,
-+	780000,  880000,  960000,  1000000,
-+	1080000, 1160000, 1240000, 1320000,
-+};
-+
-+static const struct axp_data axp192_data = {
-+	.ccc_table = axp192_ccc_table,
-+	.get_max_voltage = axp20x_battery_get_max_voltage,
-+	.set_max_voltage = axp20x_battery_set_max_voltage,
-+};
-+
- static const struct axp_data axp209_data = {
- 	.ccc_scale = 100000,
- 	.ccc_offset = 300000,
-@@ -606,6 +642,9 @@ static const struct axp_data axp813_data = {
- 
- static const struct of_device_id axp20x_battery_ps_id[] = {
- 	{
-+		.compatible = "x-powers,axp192-battery-power-supply",
-+		.data = (void *)&axp192_data,
-+	}, {
- 		.compatible = "x-powers,axp209-battery-power-supply",
- 		.data = (void *)&axp209_data,
- 	}, {
-@@ -623,6 +662,7 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 	struct axp20x_batt_ps *axp20x_batt;
- 	struct power_supply_config psy_cfg = {};
- 	struct power_supply_battery_info *info;
-+	const struct power_supply_desc *ps_desc;
- 	struct device *dev = &pdev->dev;
- 
- 	if (!of_device_is_available(pdev->dev.of_node))
-@@ -666,9 +706,12 @@ static int axp20x_power_probe(struct platform_device *pdev)
- 
- 	axp20x_batt->data = (struct axp_data *)of_device_get_match_data(dev);
- 
--	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
--						       &axp20x_batt_ps_desc,
--						       &psy_cfg);
-+	if (!axp20x_batt->data->has_fg)
-+		ps_desc = &axp192_batt_ps_desc;
-+	else
-+		ps_desc = &axp20x_batt_ps_desc;
-+
-+	axp20x_batt->batt = devm_power_supply_register(&pdev->dev, ps_desc, &psy_cfg);
- 	if (IS_ERR(axp20x_batt->batt)) {
- 		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
- 			PTR_ERR(axp20x_batt->batt));
--- 
-2.35.1
+On 4.07.2022 23:24, Robert Marko wrote:
+> PMP8074 is a companion PMIC to the Qualcomm IPQ8074 series that is
+> controlled via SPMI.
+> 
+> Add DTSI for it providing GPIO, regulator and RTC support.
+> 
+> RTC is disabled by default as there is no built-in battery so it will
+> loose time unless board vendor added a battery, so make it optional.
+> 
+> Signed-off-by: Robert Marko <robimarko@gmail.com>
+> ---
+> Changes in v6:
+> * Add RTC and GPIO nodes
+> 
+> Changes in v5:
+> * Remove #address-cells and #size-cells as they are not required for
+> regulator subnodes
+> ---
+>  arch/arm64/boot/dts/qcom/pmp8074.dtsi | 125 ++++++++++++++++++++++++++
+>  1 file changed, 125 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/pmp8074.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/pmp8074.dtsi b/arch/arm64/boot/dts/qcom/pmp8074.dtsi
+> new file mode 100644
+> index 000000000000..a3b395e4d78f
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/pmp8074.dtsi
+> @@ -0,0 +1,125 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+Hi,
 
+Please consider BSD3, or at least dual-licensing with some permissive
+license (so that for example BSDs can re-use these DTs).
+> +
+> +#include <dt-bindings/spmi/spmi.h>
+> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> +
+> +&spmi_bus {
+> +	pmic@0 {
+> +		compatible = "qcom,pmp8074", "qcom,spmi-pmic";
+> +		reg = <0x0 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		pmp8074_adc: adc@3100 {
+> +			compatible = "qcom,spmi-adc-rev2";
+> +			reg = <0x3100>;
+> +			interrupts = <0x0 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			#io-channel-cells = <1>;
+> +
+> +			ref_gnd@0 {
+No underscores in node names, please change this to ref-gnd (and consequently
+for all other nodes). Note that this only concerns node names and not labels.
+
+> +				reg = <ADC5_REF_GND>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			vref_1p25@1 {
+> +				reg = <ADC5_1P25VREF>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			vref_vadc@2 {
+> +				reg = <ADC5_VREF_VADC>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			pmic_die: die_temp@6 {
+> +				reg = <ADC5_DIE_TEMP>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			xo_therm: xo_temp@76 {
+> +				reg = <ADC5_XO_THERM_100K_PU>;
+> +				qcom,ratiometric;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			pa_therm1: thermistor1@77 {
+> +				reg = <ADC5_AMUX_THM1_100K_PU>;
+> +				qcom,ratiometric;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			pa_therm2: thermistor2@78 {
+> +				reg = <ADC5_AMUX_THM2_100K_PU>;
+> +				qcom,ratiometric;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			pa_therm3: thermistor3@79 {
+> +				reg = <ADC5_AMUX_THM3_100K_PU>;
+> +				qcom,ratiometric;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +			};
+> +
+> +			vph_pwr@131 {
+> +				reg = <ADC5_VPH_PWR>;
+> +				qcom,pre-scaling = <1 3>;
+> +			};
+> +		};
+> +
+> +		pmp8074_rtc: rtc@6000 {
+> +			compatible = "qcom,pm8941-rtc";
+> +			reg = <0x6000>;
+> +			reg-names = "rtc", "alarm";
+> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_NONE>;
+> +			allow-set-time;
+> +			status = "disabled";
+Isn't this PMIC-internal, aka accessible on all devices using PMP8074?
+
+> +		};
+> +
+> +		pmp8074_gpios: gpio@c000 {
+> +			compatible = "qcom,pmp8074-gpio", "qcom,spmi-gpio";
+> +			reg = <0xc000>;
+> +			gpio-controller;
+> +			#gpio-cells = <2>;
+> +			gpio-ranges = <&pmp8074_gpios 0 0 12>;
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	pmic@1 {
+> +		compatible = "qcom,pmp8074", "qcom,spmi-pmic";
+> +		reg = <0x1 SPMI_USID>;
+> +
+> +		regulators {
+> +			compatible = "qcom,pmp8074-regulators";
+> +
+> +			s3: s3 {
+> +				regulator-name = "vdd_s3";
+> +				regulator-min-microvolt = <592000>;
+> +				regulator-max-microvolt = <1064000>;
+
+Are you sure no other configurations are supported with this PMIC?
+Otherwise you may accidentally burn somebody's board by setting up
+regulators in a place that's not usually expected to have them..
+
+Konrad
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +			};
+> +
+> +			s4: s4 {
+> +				regulator-name = "vdd_s4";
+> +				regulator-min-microvolt = <712000>;
+> +				regulator-max-microvolt = <992000>;
+> +				regulator-always-on;
+> +				regulator-boot-on;
+> +			};
+> +
+> +			l11: l11 {
+> +				regulator-name = "l11";
+> +				regulator-min-microvolt = <1800000>;
+> +				regulator-max-microvolt = <3300000>;
+> +			};
+> +		};
+> +	};
+> +};

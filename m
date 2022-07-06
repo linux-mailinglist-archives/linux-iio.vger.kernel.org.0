@@ -2,37 +2,37 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBD85693C4
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 23:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEBDB5693EA
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 23:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233809AbiGFVA3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 17:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S232302AbiGFVJr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 17:09:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233692AbiGFVA1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 17:00:27 -0400
+        with ESMTP id S233748AbiGFVJp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 17:09:45 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E928F220F4;
-        Wed,  6 Jul 2022 14:00:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F7311446;
+        Wed,  6 Jul 2022 14:09:43 -0700 (PDT)
 Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id B95B966019AA;
-        Wed,  6 Jul 2022 22:00:24 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id D316B66019AA;
+        Wed,  6 Jul 2022 22:09:40 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1657141225;
-        bh=1yqivW3OfQW/R38VjkAOcosydDNZlcJT15iHFWhhmwM=;
+        s=mail; t=1657141781;
+        bh=zU7+vGNULbAoKugsQooNwRb5lIpQX1+E+hN6Rxf1NZ4=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=jOaBnOZwwv2lh36dnbUiozFSWdoPw3+RZGxBPiVOQ1MhQgbTOcp4JEYPxJsdg1R70
-         a58km2bWnVL0Yvgc4i6sTJim7mSqxkPEVEPgLWeToXVWLGUsXHkLP7ICfMGg0FrP7h
-         RVpf3u52olYo4k/PyU4yJx2tAGn5y0GNYh2Exo6N3sooiy8oa7u5KgNKlXLAqeOCLP
-         cwmNALFwRjq0UQTeVOJMPhEwmYh2Lx1boWzpoIUHwYCes9T1y+1CUEeeUsP5IhEy99
-         taZfyiZ2SlmkuPIG5eOoAqWdCpYDIP5PutzOHLs7U5mZC8opNZisAWTIISXCd17gLh
-         GzVRjg+LTa17w==
-Message-ID: <37527ba7-ae54-86a0-b0af-fe20d3a1e484@collabora.com>
-Date:   Thu, 7 Jul 2022 00:00:21 +0300
+        b=l8hWnXn7GJlmYRkYtHUCZISwiiZBf3GyRtDfd8e9dD+UYgiW5v83DnfbdeubY5idQ
+         Fp39UW9NFi931zqyujyYmk5wL0j5tz/S9Q3L0yLwyXKR9kooNvmujpojwVRXtK9dwC
+         ly9loAn1xgY65t4LrrtmwJRVd/V82wW//88jtxVEigM35zUyBu+5xVfJwveVv+1GHx
+         YLTeqfAzcLNJQwmNL0MaUChUPj2oHpdaw3bhhW0NaKz99O0/2oZr7kQ2QV63IZwvD3
+         qVoRketyk3hYyIMeFMHyZSW8BNVPSCXkV2GVZ5S+ALEO3h2kMuekkvO8qfn81VXiQC
+         ZJLPZ8HpVWnog==
+Message-ID: <60b6965b-7a14-8b7c-c9b9-c463fc0ad88c@collabora.com>
+Date:   Thu, 7 Jul 2022 00:09:38 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
@@ -62,25 +62,33 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 6/15/22 16:51, Shreeya Patel wrote:
-> +static int ltrf216a_remove(struct i2c_client *client)
+> +static int ltrf216a_probe(struct i2c_client *client)
 > +{
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +	struct ltrf216a_data *data;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
 > +
-> +	iio_device_unregister(indio_dev);
-> +	pm_runtime_disable(&client->dev);
-> +	pm_runtime_set_suspended(&client->dev);
-> +	ltrf216a_disable(indio_dev);
+> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
 > +
-> +	return 0;
-> +}
+> +	data = iio_priv(indio_dev);
+> +	i2c_set_clientdata(client, indio_dev);
+> +	data->client = client;
+> +
+> +	mutex_init(&data->lock);
+> +
+> +	indio_dev->info = &ltrf216a_info;
+> +	indio_dev->name = LTRF216A_DRV_NAME;
+> +	indio_dev->channels = ltrf216a_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ltrf216a_channels);
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	/* reset sensor, chip fails to respond to this, so ignore any errors */
+> +	ltrf216a_reset(indio_dev);
 
-As Jonathan said, there is no need to disable sensor in the remove()
-since you're using devm_add_action_or_reset().
-
-If you're going to use devm_pm_runtime_enable(), then let's also use
-devm_iio_device_register() and in this case the ltrf216a_remove() is not
-needed anymore at all since the removal will be handled by the driver
-core entirely, i.e. you'll need to drop ltrf216a_remove().
+Shouldn't SW resetting be done after enabling sensor? Perhaps that's why
+it fails to respond?
 
 -- 
 Best regards,

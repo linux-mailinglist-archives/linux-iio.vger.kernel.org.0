@@ -2,66 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF7E568885
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 14:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAFB856889B
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 14:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231171AbiGFMna (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 6 Jul 2022 08:43:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S232371AbiGFMpw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 6 Jul 2022 08:45:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbiGFMna (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 08:43:30 -0400
+        with ESMTP id S231905AbiGFMpv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 6 Jul 2022 08:45:51 -0400
 Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559971002;
-        Wed,  6 Jul 2022 05:43:28 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-31cac89d8d6so68956517b3.2;
-        Wed, 06 Jul 2022 05:43:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F67B1A053;
+        Wed,  6 Jul 2022 05:45:51 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-31c89111f23so88364097b3.0;
+        Wed, 06 Jul 2022 05:45:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/5y+ayoqK0xBHDulZ+6Ht1XtHZqZEVyNCk6BdzJd4xM=;
-        b=cbH0Na0sFkVOZOYEflwN8I1ccVKKD/HBtf9v+GQTNFmbqelo3sg01Wn8eM6m6P6BXM
-         KGeFrHA7F5GjSOdIsQwZ5xoth/YHA1SCnz25FykjOuheRjEXCnqvwWkAXD8Kob0o+egF
-         Vddxt3E8TjWXNCZd+JAufe3N99vYj0kbe+5GzE0lH52J818y2OeDVbTcGa4GIzgj1A3f
-         1eFgMQ/a7tG1/66qmpCRcWUjv8QEEzsh2ZNj/g7CrfCE3DwJcbA5zcKCrTxW3PjpfMcD
-         41Wl4AaNtec5Js7p7n5bXvEgB0Jhg6NmXjOyAgyLmX3XP0CKyUvkt0nWpfpv/0mjoGtE
-         AF7A==
+         :cc:content-transfer-encoding;
+        bh=pxQ0akSIpGA9dPAjcdLLYFtTSDWH+hUWLR2UqjvHiV4=;
+        b=ejR6eADL9/QpJDdvg1e7GysSgoBWFXYJ4foMw4AerG1LUtiNZSprPoVRSqB8pznJ6q
+         sbodb1F6QhO/GxUSPNqXKfSxj3rsp3WEPIQUDKWOmIDzXc3vzcBnwc8bQH6EgDIceZDF
+         WuPggNbPhNm5A6yFeNllZP54JycRrPjsvK+KSfu93pdfPLIgFhRtkPEwgxDrim9PlCyo
+         AsshhbJXy7UuVNNDDTf3qzLa5fSPNWGbVXwgY1AuT/5UKOmHfMWq+ioCpml6XRrlaFaH
+         HLiEgmS78dkBQr0QmpnHcQ09X3cEUV9hjjvBS9ycyAoxBG3ezPijNBQ4pF+v7XfnTVrg
+         +I4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/5y+ayoqK0xBHDulZ+6Ht1XtHZqZEVyNCk6BdzJd4xM=;
-        b=X7J2jKGi2hoo/m/8HikYW0kYu6UIghs1FiQroJcYnCnFoh+gQo1ngNp5fzE3G1XgHw
-         WvInpXMt79HN3UWTtLvCQxbug7qjr0xh/E6HPDzKl8n/oVhnm+Pg75ZUfjO7bwd887+Z
-         ujWwVx8s+NXJKjI6Q9tx/RCk5AIt4z6B+lLqhaIMglHEwIkHxCKQXnyDUtYAZiCBbTbf
-         CIsBYh0HjyIODhz7M2EGq5Z7q6Hrlfwat+CVoh3VlrluO9pzPoAjM9H5TqinxE2UKnAT
-         X7fKTfv16cAXjCm4znlQE2gFn+u8AYQ2807jJWUb+roj73XZXnRosXuO5W6ie8pMOye+
-         s9Xg==
-X-Gm-Message-State: AJIora/8+JZRPWvxeKbAxormrmpuXEtvj4467DlSokdkmNK9JaXVCfgz
-        QUs+JtlFdRdFG3IuxeJit86wg8P2Gbe2U8eclz4=
-X-Google-Smtp-Source: AGRyM1siTfxLaf7r66f4u0TDghdCwWtcvP3v5siNoDxz16R8JT/URBs3LTW+qbg8jlqFq2bxpjqc833UMpYYtFnA+j8=
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=pxQ0akSIpGA9dPAjcdLLYFtTSDWH+hUWLR2UqjvHiV4=;
+        b=WrZMWGCiAPCQyE4v+bWSc8+FwqnWzRv2zkf4f8fuobPqK163jGM+NLEL9cfJTpaKdy
+         O00vgRANvGHxf9b/bZZXTyeJn/7L7VTxZOLdn7nmHn3Ttn5ROEMypXuRtOYLGZPAU+uT
+         lAMt+CPdG1tfkbEgeX2aVFOR21g+cr1UTwQU5K2KrHVnhrOOCXiefS1tG+6EMRgGxhgd
+         gObtWcBgiLL2O6H9t4+TjluFCb6+1vOxLNxdvPYPGpup7+8hFPjrcfvN84a58XRiFs/M
+         gxc4BP8lF+gQdEA0rYeTv+9Ls6icsGzNFEpINzm0oj4lNRosTRjWvbi5vq81bLMXDyjp
+         4ejg==
+X-Gm-Message-State: AJIora++xSTZJTQxIDUnOxvnkOXr+AvIDd9E+w9ZFqNP3ua6JWbKGPLl
+        c6YVnFBixV9OMQM+VRZPEiqyg/7iaQAozOmtqpQ=
+X-Google-Smtp-Source: AGRyM1saMDAcd52qtKTSCYpA+P0fDD0DMRQdGlSQL8wPPaqACMEimC6j4uYPvpQrBJgPPhcxrXtM8nNn9tbgesBH2jQ=
 X-Received: by 2002:a81:3984:0:b0:31c:b59e:a899 with SMTP id
- g126-20020a813984000000b0031cb59ea899mr12875568ywa.195.1657111407489; Wed, 06
- Jul 2022 05:43:27 -0700 (PDT)
+ g126-20020a813984000000b0031cb59ea899mr12886820ywa.195.1657111550463; Wed, 06
+ Jul 2022 05:45:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704003337.208696-1-ang.iglesiasg@gmail.com>
- <CAHp75VdBv8BJVzBCMzWKpm0RrqX=K_QPQ4cgdshqXP3Uy+hVHQ@mail.gmail.com> <b9280ecbf78424882878ef2ff6c3da6671064ed5.camel@gmail.com>
-In-Reply-To: <b9280ecbf78424882878ef2ff6c3da6671064ed5.camel@gmail.com>
+References: <1657038252-31360-1-git-send-email-u0084500@gmail.com>
+ <1657038252-31360-3-git-send-email-u0084500@gmail.com> <CAHp75VeV6vByZXGLraLes+94Rfs23ZjPXGaXzUf-YY=sb_1=2Q@mail.gmail.com>
+ <CADiBU38qzjECL9_8djx4Vna5PA=A2_jh7BFph1z2D_LOqTtZTQ@mail.gmail.com>
+In-Reply-To: <CADiBU38qzjECL9_8djx4Vna5PA=A2_jh7BFph1z2D_LOqTtZTQ@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 6 Jul 2022 14:42:51 +0200
-Message-ID: <CAHp75VcEAtpVsfp2CCtJR_e_eSSFaMkODFwd-ZuHKGsNPcVWfA@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] iio: pressure: bmp280: Adds more tunable config
- parameters for BMP380
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Date:   Wed, 6 Jul 2022 14:45:13 +0200
+Message-ID: <CAHp75Vct4YytjXmFVtqKEM6zK84=PsTDD7=y7mxjELjZMj845A@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: Add rtq6056 support
+To:     ChiYuan Huang <u0084500@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        cy_huang <cy_huang@richtek.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -72,41 +74,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 6, 2022 at 12:51 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
-> On Mon, 2022-07-04 at 22:08 +0200, Andy Shevchenko wrote:
-> > On Mon, Jul 4, 2022 at 2:41 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+On Wed, Jul 6, 2022 at 3:08 AM ChiYuan Huang <u0084500@gmail.com> wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=
+=9C=886=E6=97=A5 =E9=80=B1=E4=B8=89 =E5=87=8C=E6=99=A83:09=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+> > On Tue, Jul 5, 2022 at 6:31 PM cy_huang <u0084500@gmail.com> wrote:
 
 ...
 
-> > > +               if (unlikely(!data->chip_info->sampling_freq_avail)) {
+> > > +KernelVersion: 5.15.31
 > >
-> > Why unlikely() ? How does this improve code generation / performance?
->
-> As Jonathan Cameron sugested on a previous version of the patch, even thought
-> this code should be safe (as if we are checking sampling frequency is because
-> the sensor is a BMP380 and has that property), it would be better to have a
-> sanity check just to be sure the property is really available. I used unlikely
-> macro to take into account that the property would be almost always initialized.
->
-> Now that you mention, probably this code won't be called too often to make the
-> "unlikely" branching hint make a meaningful performance difference
->
-> > > +               if (unlikely(!data->chip_info->iir_filter_coeffs_avail)) {
+> > ^^^ Wrong
 > >
-> > Ditto.
+> I really cannot understand what kernel version I need to specified.
+> https://lore.kernel.org/lkml/CAHp75VeBdgbyDQXEYb9ZZdi3AU=3DvPw6aKGWbNLnuA=
+_QoN4LE4A@mail.gmail.com/
+>
+> Last time, my understanding is to use the realistic kernel version.
+> Then from my  development environment, the kernel  I used is 5.15.31.
+> That's why I changed it from '5.18.2' to '5.15.31'.
+>
+> Do you mind to tell me what kernel version I need to write for this
+> ABI test document?
+> I'm almost confused about 'realistic', 'non-stable', nor 'developing'.
+>
+> If to write '5.19' or the future version '5.20', is it ok?
 
-Is this really a performance-critical path? How did you check that
-unlikely() makes sense?
-More evidence, please!
+It's as simple as "next version that most likely your patch will be
+in", in 99.9% cases it's 'current-cycle-version + 1', i.e. 5.20.
 
-...
-
-> > Why do you need to copy'n'paste dozens of the very same comment?
-> > Wouldn't it be enough to explain it somewhere at the top of the file
-> > or in the respective documentation (if it exists)?
-
-No answer?
-
--- 
+--=20
 With Best Regards,
 Andy Shevchenko

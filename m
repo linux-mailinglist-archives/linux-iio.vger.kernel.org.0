@@ -2,102 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4720A567A71
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 00:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 579F8567B4F
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Jul 2022 03:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232688AbiGEW4u (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 5 Jul 2022 18:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
+        id S229605AbiGFBIX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 5 Jul 2022 21:08:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229994AbiGEW4t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 18:56:49 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B3614D00;
-        Tue,  5 Jul 2022 15:56:48 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id b26so19564231wrc.2;
-        Tue, 05 Jul 2022 15:56:48 -0700 (PDT)
+        with ESMTP id S229479AbiGFBIW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 5 Jul 2022 21:08:22 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8229CA458;
+        Tue,  5 Jul 2022 18:08:18 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 205-20020a1c02d6000000b003a03567d5e9so10266419wmc.1;
+        Tue, 05 Jul 2022 18:08:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=zL3YaBsI2xTGiJj2TbzH8GBqtIjY97YUDCwE5WljzJo=;
-        b=ozr5AtTt/pUS+XSeTixcByO7KyRlNo+uPXS8SCZ5Jlg6rUP5T6qUx/wxMYIIOxN4BU
-         mZ8xHIt1d2D053oiV1hAq4ZXeSRZ3W88EgdxNgC9UXBkjzr1+JXSNppWOcVTnno0l2nh
-         JVE4lO/TFfQW9tSAdpotJTUGf5XOaWdW2RQecuLnMvsCi6iX3KMT0t2rax2jXEUI52dK
-         hwXhWjZG7ar4AzZ8Fz8mNGev6nE6NA/nTfgPxD1gk7aKXbn8TOnWmiZwPMtvo8CGbNog
-         kvH2CqX8XCumzB9xgOTubOwslmlApYIC+F65CE3L3UoKxzKIq43jb61WG07WhhDZ2W8M
-         4Ukg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=X9JGYMgyEjh/3XaB96SqjzcBtp/IEDYGgCXSHBcak0I=;
+        b=XJSeUvcGwW3vDMSKNe+GSlBWvLm80N4dlkQgeW97/78iep9wAYNFxYhnBeb8RCAvDp
+         vpenqHESq9nWVu4KY0AaLWwTMLGlnCUtkxxXEjXAle/Js0sY5e/+fHWX0lFowjWNGITf
+         n6m97D4s3HYZP1Sr2OYyF82gnpfQ8TQfP+P5NCfmRqhjNaNQg8PfKtSEJ7xdI5cIfwG7
+         F1x9U49G1LIDW7CMVGYJh2DgSvWjU9MkozPF5adAR9IkiesWsyCD+DE0finBQptN65Qi
+         X7YJ8uc4GJld2EWT9HQHnY8Dl6pfI0TrvGjiLng986U2pong6KrWO9iRKt16QKJam3s3
+         J7PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=zL3YaBsI2xTGiJj2TbzH8GBqtIjY97YUDCwE5WljzJo=;
-        b=mUm+M/q7DprsEdzkwvK/2OS57/V3sSoJqJlTd6spEmSmbspiXnxnUecz3vUObDazvg
-         r7G7zYY+s8PTv9vfkU8/ZY6UdI+owF9SsfkPkSPOJgcChyAESMLKFVZVrv1t4COp8ERY
-         I64NBcmb47O+iUTjC0+xxyfv655z84QpweU6upG7Adz1MsWAImQ+Gl3hRHFXHie3coSS
-         qEAD+eFjm2nj8ssleqJgo8oDBRLhLb5/s08ly/Fx2csC7bZjy5ygYKAjMei2Ev0AKPmz
-         71UqSuRrAZ+XOoqXNy540vnIK1ogLQ3r7z5d2ntP56mesJGvn7FTQ1X+kugMpKa5ArrJ
-         P8WA==
-X-Gm-Message-State: AJIora+11cf0s8U6uO2vobFxk0oFBgK5sv55pPmLd3H8MNBqfPGqFa1C
-        ZtvcuA2OWhPrLwWybfBjOe2lHItNIxU=
-X-Google-Smtp-Source: AGRyM1txX/s3W3BFx3VdgP4BD00VAhluDQ/i92/owuJD4QW+h+/xZkjmVhZxj7+Hf9E7vw/kCJ3YcQ==
-X-Received: by 2002:a5d:6da8:0:b0:21d:2598:4e28 with SMTP id u8-20020a5d6da8000000b0021d25984e28mr36105913wrs.373.1657061806688;
-        Tue, 05 Jul 2022 15:56:46 -0700 (PDT)
-Received: from [192.168.90.207] (214.red-83-37-4.dynamicip.rima-tde.net. [83.37.4.214])
-        by smtp.gmail.com with ESMTPSA id bn24-20020a056000061800b0020fe35aec4bsm33178876wrb.70.2022.07.05.15.56.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Jul 2022 15:56:46 -0700 (PDT)
-Message-ID: <886b99b4a0f2ddb8cd89faba9e23b5d710f59f12.camel@gmail.com>
-Subject: Re: [PATCH v2 3/5] iio: pressure: bmp280: simplify driver
- initialization logic
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=X9JGYMgyEjh/3XaB96SqjzcBtp/IEDYGgCXSHBcak0I=;
+        b=vYeCHEwhkuE9qU53vstseHFgW6u4tmyQ//kJXHN8/DnQ0rQ7l1gxxjwX5pC8kvDhgt
+         4SHD6CHUhxRxg738Reof/AOTKh9WEpiAFp39F68ZN5LOQCpwRP9nQU/8NYDH6PaJwoh4
+         9L6XiK7j7igsjop2whxbNvMPPIBCBy36uORsL/rk4i7SWkaGUgc8SQcV7zHmMr5qCL7S
+         5eEId0QBCYPY4geXvX21plBaDrdeqJl/wdpCfi4j9bYTQtpRCyh4AFaeC0NiT03CWWe0
+         SIWsAJQ2EA2G98VOdF+fIkhIQKOuJxcouxqu9hRkqRnaznVmYpylXCP725n5r6+rQ7TD
+         VY4w==
+X-Gm-Message-State: AJIora+6gjRtJZ+WNS2O/o3p+B2/lHGClkLYV6bGJ0c98ZX9R+K5c4/H
+        Izkae6AmQEwrsLC32xntGu4L9dSIaXiIGy4v650X6P0u8s4=
+X-Google-Smtp-Source: AGRyM1sPaZEn0qLD67hiapm6RAVVZG7N9epthPKNtAbB68VvGndYepMU2OZ40TlQINxl2yIzgw36xtcrBUCmc5VjNWw=
+X-Received: by 2002:a05:600c:19c8:b0:3a1:792e:f913 with SMTP id
+ u8-20020a05600c19c800b003a1792ef913mr35958362wmq.182.1657069696835; Tue, 05
+ Jul 2022 18:08:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <1657038252-31360-1-git-send-email-u0084500@gmail.com>
+ <1657038252-31360-3-git-send-email-u0084500@gmail.com> <CAHp75VeV6vByZXGLraLes+94Rfs23ZjPXGaXzUf-YY=sb_1=2Q@mail.gmail.com>
+In-Reply-To: <CAHp75VeV6vByZXGLraLes+94Rfs23ZjPXGaXzUf-YY=sb_1=2Q@mail.gmail.com>
+From:   ChiYuan Huang <u0084500@gmail.com>
+Date:   Wed, 6 Jul 2022 09:08:05 +0800
+Message-ID: <CADiBU38qzjECL9_8djx4Vna5PA=A2_jh7BFph1z2D_LOqTtZTQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: Add rtq6056 support
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        cy_huang <cy_huang@richtek.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Wed, 06 Jul 2022 00:56:45 +0200
-In-Reply-To: <CAHp75Vcgivf1cDFBqWqoYQKdLYjH5NFsJi18HSy3L4U7WbjnGw@mail.gmail.com>
-References: <20220704002957.207850-1-ang.iglesiasg@gmail.com>
-         <CAHp75Vcgivf1cDFBqWqoYQKdLYjH5NFsJi18HSy3L4U7WbjnGw@mail.gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-07-04 at 22:10 +0200, Andy Shevchenko wrote:
-> On Mon, Jul 4, 2022 at 2:46 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
-> > 
-> > Extended chip_info structure with default values for configuration params
-> > to simplify and unify initialization logic for different supported sensors
-> 
+Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=
+=886=E6=97=A5 =E9=80=B1=E4=B8=89 =E5=87=8C=E6=99=A83:09=E5=AF=AB=E9=81=93=
+=EF=BC=9A
+>
+> On Tue, Jul 5, 2022 at 6:31 PM cy_huang <u0084500@gmail.com> wrote:
+> >
+> > From: ChiYuan Huang <cy_huang@richtek.com>
+> >
+> > Add Richtek rtq6056 supporting.
+> >
+> > It can be used for the system to monitor load current and power with 16=
+-bit
+> > resolution.
+> >
+> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>
+> Since you sent a new version:
+> I said explicitly that the kernel version mustn't be not stable nor devel=
+oping.
+>
 > ...
-> 
-> > +       ret = data->chip_info->read_calib(data, chip_id);
-> > +       if (ret < 0) {
-> > +               dev_err(data->dev,
-> > +                       "failed to read calibration coefficients\n");
-> > +               return ret;
-> 
-> return dev_err_probe(...);
+>
+> > +KernelVersion: 5.15.31
+>
+> ^^^ Wrong
+>
+I really cannot understand what kernel version I need to specified.
+https://lore.kernel.org/lkml/CAHp75VeBdgbyDQXEYb9ZZdi3AU=3DvPw6aKGWbNLnuA_Q=
+oN4LE4A@mail.gmail.com/
 
-Got it, thank you!
+Last time, my understanding is to use the realistic kernel version.
+Then from my  development environment, the kernel  I used is 5.15.31.
+That's why I changed it from '5.18.2' to '5.15.31'.
 
-> >         }
-> 
-> 
-Thanks,
-Angel Iglesias
+Do you mind to tell me what kernel version I need to write for this
+ABI test document?
+I'm almost confused about 'realistic', 'non-stable', nor 'developing'.
 
+If to write '5.19' or the future version '5.20', is it ok?
+
+> --
+> With Best Regards,
+> Andy Shevchenko

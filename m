@@ -2,61 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71BB156CC32
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Jul 2022 03:32:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B023F56CE54
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Jul 2022 11:14:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbiGJBbm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 9 Jul 2022 21:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
+        id S229482AbiGJJOc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 10 Jul 2022 05:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbiGJBbk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 9 Jul 2022 21:31:40 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9236015A21;
-        Sat,  9 Jul 2022 18:31:39 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id y22so532127qki.7;
-        Sat, 09 Jul 2022 18:31:39 -0700 (PDT)
+        with ESMTP id S229476AbiGJJOa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 10 Jul 2022 05:14:30 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF60C22;
+        Sun, 10 Jul 2022 02:14:25 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id r14so3534241wrg.1;
+        Sun, 10 Jul 2022 02:14:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=W+RUA8QatinY3k/ikkS0kUMcoOi6M3AlFiU1N+5j9MI=;
-        b=lSv4WQ8HlrpD3fVbm2Yhta7lhAIa3r+j6LUNquuxXWx2DuXhRxAZQvSqg/m50VHKQC
-         EW2osXIdWeE0MtrdWqzVDzrQjkrGeyYPyCKgzZYNiqJBwp6Sx22neu2OghHSswDtN1TS
-         ZKTRrW6SDlcsPxo6Wxu68ICDQMwwau5BO3t1uZy8sRpiyPyBOpr+2Jq37ihO6ak4mohw
-         yF257n4+LPPgDq42Ny5XWkqHaeO3Aj9oDHOGZnHYb+nTg5Ew6EAjOwuAnlVT0YnOteKq
-         Pd1Qxtbb6XTFAnVRrGC125EkJuzp5ZYO+yodyR0vrujo9vuLRLbZEwww/xGvmLDWxq2Y
-         A8Og==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SYknjzSgfWyPWFlSCA9AKi75ZVUb+k975pWuijFAjNQ=;
+        b=QU95pMggxLyEbC3mrGq+FXUgf1AREHXL+IgHdJoNhgwTfQmJCn8S0HTCKIv0PZVqLd
+         bT8awglH5fvaw5lQXBYfY2lCiymtOPSZ36wc6YnKIXphtIFOlUpRHlA9KRy16fITkEO0
+         /ubuPs4ApUEdfmdHOd113U6UClyZ7zpg19+4XxDmpgOEgKtVVBGRFXsb+xr0RegfWBwY
+         WtMVSs3EojDxwP4WbLg6X/ieXcmqzdz/shi0QUDd8jb7lup+t+OzAidI54DjOUr+8OSC
+         eZRpoyMo6kwOwzuGa+kdy6kuPLFoqwoWyatywCex/VimS/mB9EZag5r/Rllj0XAeL2Wy
+         XtWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=W+RUA8QatinY3k/ikkS0kUMcoOi6M3AlFiU1N+5j9MI=;
-        b=T0ltGjJKE+ZMumigFn8d9AZIzM0COGXTq/hofB5XTPDEXKLIObvTjeeiIIYalVJFLM
-         oXpMlV6/oXu1ThlidzChB2VZ0qbNumz0FojyvkTdo/RXLW1/uHAtDE7LvRyGz+ok86gv
-         kOAdIZaorpd05iu0jZsJpTpHpyazPl4GkGwiT8YsJhxA6sO/aHAOfQjbjLon5ePvzjrW
-         uqrUP3HWcP7Zr+qGT6npF78ZReQYo4rTxcB8prsA0eHOJ2gwdk7d1gdcjxiWP9iMvYtR
-         w3v4lpF1zeY7UaZfdT6YRFYPoM5GdLI2+iKNrE3HDNlZLaQdp84GlGAdVVyenBBw7P/u
-         bsMA==
-X-Gm-Message-State: AJIora8FUZQfcuSPuEzeOfKBxIXnrL/+QZVxTkGpIbvJ5qrED99BA1cV
-        t9viL0y9F1y2GIpJKMDgtNU=
-X-Google-Smtp-Source: AGRyM1vS5JUfU8T3Ux084nZAemZhx6XwdCnyFbQzlb424f0DwOZriBhvMfpqBHpAZWiHp+aa7w0wBg==
-X-Received: by 2002:a37:9241:0:b0:6b5:738c:be25 with SMTP id u62-20020a379241000000b006b5738cbe25mr3094264qkd.178.1657416698628;
-        Sat, 09 Jul 2022 18:31:38 -0700 (PDT)
-Received: from shaak.xiphos.ca (modemcable055.92-163-184.mc.videotron.ca. [184.163.92.55])
-        by smtp.gmail.com with ESMTPSA id j13-20020a05620a410d00b006b575a9775csm2137258qko.45.2022.07.09.18.31.37
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=SYknjzSgfWyPWFlSCA9AKi75ZVUb+k975pWuijFAjNQ=;
+        b=MQ/E9D6OqnDoZnH4CeDmGsUDUcZPuztZix4GNuZ7Qne0V5tmthXFN5/NLkSRaAoP1X
+         Ze08syyrfzn7BM0YHzozQiNvolJX16wfo8gw4/QI0/OafPPvNBusypp9AgjsQfKnFQ+h
+         oQBVkJ0v8bMdDoF6g7FpX+vL5cMg1qAVNyYBWJXWqJdVtvzukMSiX7bT0JRQk+FfwziS
+         NsKbty54LmFbQmUOnpKKxeJ3WiNY++bovNwK95dfofJMV58m3p6LJLgT6747mOGOtI/6
+         8UHz232FmBExTfC2/BejV2HdGknSFZHwQcbbVHVRmCxjvuDgTTUNBdyyZPm30SPLevok
+         FHvg==
+X-Gm-Message-State: AJIora9FtCb92uqmkpFf4ErGZM6hPnQLluXUP/bYAdvw8R4H01G5URBF
+        H+nVItZg29yPnG6PwQSDWD2+obUiKlo=
+X-Google-Smtp-Source: AGRyM1skE+6kXkIIj6asAt8kleKs5cfz59/YIZ5QGOEjEaFs+VFGkA021VnlkvB8y+l1pYUAGdZ89A==
+X-Received: by 2002:a5d:4447:0:b0:21d:6b84:4678 with SMTP id x7-20020a5d4447000000b0021d6b844678mr11426393wrr.668.1657444463560;
+        Sun, 10 Jul 2022 02:14:23 -0700 (PDT)
+Received: from xps-work.lan (214.red-83-37-4.dynamicip.rima-tde.net. [83.37.4.214])
+        by smtp.gmail.com with ESMTPSA id f16-20020a056000129000b0021d74906683sm3187707wrx.28.2022.07.10.02.14.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Jul 2022 18:31:38 -0700 (PDT)
-From:   Liam Beguin <liambeguin@gmail.com>
-To:     liambeguin@gmail.com, jic23@kernel.org, geert@linux-m68k.org
-Cc:     peda@axentia.se, linux-iio@vger.kernel.org,
+        Sun, 10 Jul 2022 02:14:22 -0700 (PDT)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v1 5/5] iio: test: rework Kconfig to support modules
-Date:   Sat,  9 Jul 2022 21:31:09 -0400
-Message-Id: <20220710013109.3349104-6-liambeguin@gmail.com>
-X-Mailer: git-send-email 2.35.1.4.g5d01301f2b86
-In-Reply-To: <20220710013109.3349104-1-liambeguin@gmail.com>
-References: <20220710013109.3349104-1-liambeguin@gmail.com>
+Subject: [PATCH v3 0/5] Add support for pressure sensor Bosch BMP380
+Date:   Sun, 10 Jul 2022 11:13:45 +0200
+Message-Id: <20220710091346.15661-1-ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -69,52 +72,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Rework the IIO test Kconfig to support building KUnit tests as modules.
-This lets users execute tests at runtime in addition to the usual
-tools/testing/kunit/kunit.py script.
+This patchset adds BMP380 variant to the already existing drivers for
+the Bosch BMP180/280 pressure sensors.
 
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
----
- drivers/iio/test/Kconfig | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+Patch 1 adds references and sensor id to the devicetree bindings docs.
+Patch 2 adds references to the new sensors on the Kconfig file.
+Patch 3 is a minor refactor simplifying driver initialization logic
+to facilitate the integration of the new sensor variant extending the
+information stored in the "chip_info" struct.
 
-diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
-index 7dbf51bc4934..82924727b2cc 100644
---- a/drivers/iio/test/Kconfig
-+++ b/drivers/iio/test/Kconfig
-@@ -5,15 +5,25 @@
- 
- # Keep in alphabetical order
- config IIO_RESCALE_KUNIT_TEST
--	bool "Test IIO rescale conversion functions"
--	depends on KUNIT=y && IIO_RESCALE=y
-+	tristate "Test IIO rescale conversion functions" if !KUNIT_ALL_TESTS
-+	depends on KUNIT && IIO_RESCALE
- 	default KUNIT_ALL_TESTS
- 	help
--	  If you want to run tests on the iio-rescale code say Y here.
-+	  build unit tests for the iio-rescale code.
- 
--	  This takes advantage of ARCH=um to run tests and should be used by
--	  developers to tests their changes to the rescaling logic.
-+	  For more information on KUnit and unit tests in general, please refer
-+	  to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  If unsure, say N.
- 
- config IIO_FORMAT_KUNIT_TEST
--        bool "Test IIO formatting functions"
--        depends on KUNIT=y
-+	tristate "Test IIO formatting functions" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  build unit tests for the IIO formatting functions.
-+
-+	  For more information on KUnit and unit tests in general, please refer
-+	  to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  If unsure, say N.
+Patch 4 adds the basic logic to initialize and read measurements from
+the sensor.
+Patch 5 adds advanced configurable features such as sampling frequency
+and IIR filter through the IIO sysfs ABI.
+
+Changes in v3:
+ - Patch 2: Fixed incorrect abbreviation.
+ - Patch 3: use dev_err_probe helper to handle error initializing sensor.
+ - Patch 4: Fixed kernel test robot warning provoked by missing include.
+ - Patch 4: Fixed bug reported by Dan Carpenter <dan.carpenter@oracle.com>.
+ - Patch 5: Fixed formatting and typos on multiple comments.
+ - Patch 5: Fixed missing boolean initialization reported by
+    Andy Shevchenko <andy.shevchenko@gmail.com>.
+ - Patch 5: Replaced duplicated comments with a single comment containing
+    a brief explantation in a shared location.
+ - Patch 5: Dropped incorrect use of unlikely macro.
+
+Changes in v2:
+ - Added patch 2 updating Kconfig with references to new sensor.
+ - Patch 3 adds changes proposed by Jonathan Cameron <jic23@kernel.org>
+    to declutter and unify configuration logic for the different sensors
+    extending "chip_info" struct with default configuration parameters.
+ - Patch 4: store temperature and pressure adc values on 3 byte array
+    instead of using the type __le32. Uses function get_unaligned_le24
+    to convert the little-endian encoded 3 byte value to an integer.
+ - Patch 4: drops custom macro le16_from_bytes and use get_unaligned_le16.
+ - Patch 4: generate masks using GENMASK macro.
+ - Patch 4: use FIELD_PREP to generate bitfields for registries.
+ - Patch 4: dropped stray formatting change.
+ - Patch 5: adds sanity checks in bmp280_read_raw for channel properties
+   only available in the BMP380.
+ - Patch 5: on bmp280_write_* checks if a problem ocurred committing new
+    configuration and tries to restore previous working configuration
+    to keep the sensor in a previous working state.
+ - Patch 5: refactored bmp380_chip_config to only check for configuration
+    errors when a configuration change is detected.
+ - Patch 5: improved invalid configuration detection on BMP380 restarting
+    measurement loop to force a new measurement after the configuration is
+    updated.
+
+Previous versions:
+  v2: https://patchwork.kernel.org/project/linux-iio/list/?series=656144
+  v1: https://patchwork.kernel.org/project/linux-iio/list/?series=653822
+
+Angel Iglesias (5):
+  dt-bindings: iio: pressure: bmp085: Add BMP380 compatible string
+  iio: pressure: Kconfig: Add references to BMP380
+  iio: pressure: bmp280: simplify driver initialization logic
+  iio: pressure: bmp280: Add support for BMP380 sensor family
+  iio: pressure: bmp280: Add more tunable config parameters for BMP380
+
+ .../bindings/iio/pressure/bmp085.yaml         |   4 +-
+ drivers/iio/pressure/Kconfig                  |   6 +-
+ drivers/iio/pressure/bmp280-core.c            | 718 +++++++++++++++++-
+ drivers/iio/pressure/bmp280-i2c.c             |   5 +
+ drivers/iio/pressure/bmp280-regmap.c          |  55 ++
+ drivers/iio/pressure/bmp280-spi.c             |   5 +
+ drivers/iio/pressure/bmp280.h                 |  83 ++
+ 7 files changed, 831 insertions(+), 45 deletions(-)
+
+
+base-commit: e5524c2a1fc4002a52e16236659e779767617a4f
 -- 
-2.35.1.4.g5d01301f2b86
+2.36.1
 

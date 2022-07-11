@@ -2,70 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9ED570335
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 14:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37B2E5703D4
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 15:07:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbiGKMqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 08:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S229886AbiGKNHW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 09:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232108AbiGKMpr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 08:45:47 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174BE64E3B;
-        Mon, 11 Jul 2022 05:45:10 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id d16so6821960wrv.10;
-        Mon, 11 Jul 2022 05:45:09 -0700 (PDT)
+        with ESMTP id S229561AbiGKNHV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 09:07:21 -0400
+Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60AFA2E6AB;
+        Mon, 11 Jul 2022 06:07:20 -0700 (PDT)
+Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-31c89111f23so48489747b3.0;
+        Mon, 11 Jul 2022 06:07:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=nj+8U5dCs7AUxZlYYLZz/BAZkJpwweLoeIkwzs3owdk=;
-        b=SCqWBu/B7q02kU1ZOWtHrgqEFfk6J4dOy1IMsXXTxPyCg0unf8FEVJXunFPetkUwmQ
-         ghNtK0/WFtvpOZcVMXv+7zV/3EwmtFUYqZa3cSqjwq6a2DSWKWhFeqEa/GJA01cwqBLJ
-         xVErwsfioFszbrOsUBl1Pv79ZpZXnb0LyHEizRiIbph0bw5Ecb5eWsMkGd3JMx70zM8M
-         5wsana1q2GSROSA/yNsRypEl8ASHk2+SmZ1aTBLEKa2nzzIP5xq+HqnDKVQJLKKwUwxr
-         cwd2ktD+bQYdRbcvlHjH+5Wk0xOXjnTyqI51O2iRtMs1NnqQLytJSYF4C/mkRY+oj3SI
-         Og/g==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BNM3kXV0AhjO7ZOLKGan+F0enyHnlLAuy8cjbGSut0s=;
+        b=EDountau261E7xzsz1ChRdtIc71Impr3p7bkOtYbBZ6t0z1yRxs9dA2G+OCWDXn8CB
+         gVX0Zpbba4P1uf0huN9Q/b4S/031ZmrxZxA6N4LSycaLuaUZ+T8j7qhx6d9WE6R8wRrb
+         o5sH0zfAPkUzG366bx0hNOLaRa553G+b4s0pjc+q9ds5SkFiHefrJYDpbu2RDqx9fJgs
+         tqHHupuVYZwzpU6D2ActxljwtHeFn7WkK97/6CwJepkrYhQ59HjYa/GNIMBc+FKkb5iS
+         yf3DBg8CBnf3IuE2Oz7BFKC6p224HiJT7XHoI86ujQjnHmyFH2HJCWc4OCZ3XwpLXFav
+         GOXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=nj+8U5dCs7AUxZlYYLZz/BAZkJpwweLoeIkwzs3owdk=;
-        b=8Qea5S3Kh2Aj2zNuBSP2ZbqcOyMdP7EwCg9k0/cQj08N5joch/vCgQCPtQWG8SrmPJ
-         j55xt+D5afysu1d9mE1U5yn3Pnr8Evw5Ljndu2ydjwGGoPJDwO+SoVN4NuFzcp8sVdS0
-         01rMvJkkV0ypHUI6oKQH3NBWpkllNMPE7JkmC71uJsRfYmgstOYLL5TJKS9vREFI+fDX
-         T5Fw1Jr3UzY0jOxT4BrEgtYEWOrlAWU5IJ5R9AupEq9U2W0uOut6yJO3WuqaBrsBptC/
-         IgHxEP6bQ83+gkljh+CbwjnK8ARoO4GeJEDi4UIzCvWiC2vyebX6b2N0rFdOGrblXlfv
-         pMhg==
-X-Gm-Message-State: AJIora+0/ftSYTlZqMDsQXvkpTUywy9vsFLgFhtBRpX2AMqMjhnZoJ2w
-        4DJSyPirnaZ3uNiKpbSD8hI=
-X-Google-Smtp-Source: AGRyM1uRDl1y+Wzw06p7Fcx1sTRex9Ge0g6lMyhmOkuYKEPEeBDhxfM+ITkRMmJV21D9TdKgO2Q+MA==
-X-Received: by 2002:a05:6000:156b:b0:21d:9daf:3cdb with SMTP id 11-20020a056000156b00b0021d9daf3cdbmr8255068wrz.492.1657543508529;
-        Mon, 11 Jul 2022 05:45:08 -0700 (PDT)
-Received: from [192.168.1.126] (68.201.26.77.dynamic.reverse-mundo-r.com. [77.26.201.68])
-        by smtp.gmail.com with ESMTPSA id f10-20020a7bc8ca000000b003a0231af43csm6467754wml.48.2022.07.11.05.45.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 05:45:07 -0700 (PDT)
-Message-ID: <046a29a5191c53813ce9477000b07c21ca5699fc.camel@gmail.com>
-Subject: Re: [PATCH v3 3/5] iio: pressure: bmp280: simplify driver
- initialization logic
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BNM3kXV0AhjO7ZOLKGan+F0enyHnlLAuy8cjbGSut0s=;
+        b=VGtn+7wl6aEzjbW8vhMTbr2sQIYOjmKAnZwFEa3sTR5RsnanTgqPuDFx1NaKmt70IW
+         SO7kFcJKLVrGuZxyoAjnK6VMBlEOrirjmzfT8SkQFc8zEKpzo8MPPHwzrQTRroE87kAd
+         sTGRpM3P0PbDeT8dePvWSdpJthL8hfZXwqKG1apxuRcL95W5IHuhKNE5+EVwILyuUSfK
+         K5TTlAqo42lzapHAaWF/uip3l43BPf/JBh8EO/aLm/BbJzw+fB2701YYc1nTBMAqsvAQ
+         DaW1OamEa9AS/n/OEdQAhEd7SE11I4pa8f4VunI4jXZ2V6HCZLolosbm3KWXmpVN98D/
+         7Onw==
+X-Gm-Message-State: AJIora8QgG312j8GDpuRr2/AoxmnwBzGFGkZ29M4zh2PZBYilTYtod2b
+        84c3mBcw/y275Ny/6icj+xVBewFOdNHXVQrOwxs=
+X-Google-Smtp-Source: AGRyM1tQShar12PLw4rye1Bt58JXUEhApqx2qQjKZjoLh/LoBLWeLqS7wREroNbGzIyfz7ZQyE1A/Ybr1d7l4V+VBv0=
+X-Received: by 2002:a81:4986:0:b0:31d:388b:d08d with SMTP id
+ w128-20020a814986000000b0031d388bd08dmr14422466ywa.185.1657544839207; Mon, 11
+ Jul 2022 06:07:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220711112900.61363-1-shreeya.patel@collabora.com> <20220711112900.61363-3-shreeya.patel@collabora.com>
+In-Reply-To: <20220711112900.61363-3-shreeya.patel@collabora.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 11 Jul 2022 15:06:42 +0200
+Message-ID: <CAHp75Vf3NDsep5_819=e8yrna_AGh5cew=fs+hHe1q8LCa-PyA@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] iio: light: Add support for ltrf216a sensor
+To:     Shreeya Patel <shreeya.patel@collabora.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 11 Jul 2022 14:45:06 +0200
-In-Reply-To: <YssdPch7dVmRWDbB@smile.fi.intel.com>
-References: <20220710091708.15967-1-ang.iglesiasg@gmail.com>
-         <YssdPch7dVmRWDbB@smile.fi.intel.com>
+        Rob Herring <robh+dt@kernel.org>, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        alvaro.soliverez@collabora.com, dmitry.osipenko@collabora.com
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -76,36 +71,149 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On dom, 2022-07-10 at 21:41 +0300, Andy Shevchenko wrote:
-> It seems you somehow managed to send patches separately from email
-> perspective.
-> Make sure you pass parameter --thread to `git format-patch`, so it will create
-> a proper chain of emails.
+On Mon, Jul 11, 2022 at 1:30 PM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+> From: Zhigang Shi <Zhigang.Shi@liteon.com>
+>
+> Add initial support for ltrf216a ambient light sensor.
+>
+> Datasheet: https://gitlab.steamos.cloud/shreeya/iio/-/blob/main/LTRF216A.pdf
+> Co-developed-by: Shreeya Patel <shreeya.patel@collabora.com>
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> Signed-off-by: Zhigang Shi <Zhigang.Shi@liteon.com>
 
-How should I proceed to fix this issue? Should I wait for more feedback and send
-a new revision of the patches, now as a proper mail chain? Or should I resend
-current patchset as a chain? I don't want to spam the mailing list more due to
-my inexperience contributing.
+Submitter's SoB always has to be last among SoBs in the proposed change.
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#sign-your-work-the-developer-s-certificate-of-origin
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
 
-> On Sun, Jul 10, 2022 at 11:17:06AM +0200, Angel Iglesias wrote:
-> > Simplified common initialization logic of different sensor types
-> > unifying calibration and initial configuration recovery.
-> > 
-> > Default config param values of each sensor type are stored inside
-> > chip_info structure and used to initialize sensor data struct instance.
-> > 
-> > The auxiliar functions for read each sensor type calibration are converted
-> > to a callback available on the chip_info struct.
-> 
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> 
-> Usually this kind of tag goes before your SoB, because it's chronologically
-> correct.
-> 
-Ok, makes sense.
+...
 
-Thank you for your time and help,
+> +static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
+> +{
+> +       struct device *dev = &data->client->dev;
+> +       int ret;
+> +
+> +       if (on) {
+> +               ret = pm_runtime_resume_and_get(dev);
+> +               if (ret < 0) {
+> +                       dev_err(dev, "Failed to resume runtime PM: %d\n", ret);
+> +                       return ret;
+> +               }
 
-Best regards,
-Angel
+> +
+
+Unneeded blank line.
+
+> +       } else {
+> +               pm_runtime_mark_last_busy(dev);
+> +               ret = pm_runtime_put_autosuspend(dev);
+> +       }
+> +
+> +       return ret;
+> +}
+
+...
+
+> +       ret = regmap_read_poll_timeout(data->regmap, LTRF216A_MAIN_STATUS,
+> +                                      val, val & LTRF216A_ALS_DATA_STATUS,
+> +                                      LTRF216A_ALS_READ_DATA_DELAY_US,
+> +                                      LTRF216A_ALS_READ_DATA_DELAY_US * 50);
+> +       if (ret) {
+> +               dev_err(dev, "Timed out waiting for valid data from LTRF216A_MAIN_STATUS reg: %d\n",
+> +                       ret);
+
+THe message is a bit misleading. The loop might be broken by the I/O error.
+
+> +               return ret;
+> +       }
+> +
+> +       ret = regmap_bulk_read(data->regmap, addr, buf, sizeof(buf));
+> +       if (ret < 0) {
+> +               dev_err(dev, "Error reading measurement data: %d\n", ret);
+> +               return ret;
+> +       }
+
+...
+
+> +static const struct regmap_config ltrf216a_regmap_config = {
+> +       .name = LTRF216A_DRV_NAME,
+> +       .reg_bits = 8,
+> +       .val_bits = 8,
+> +       .max_register = LTRF216A_MAX_REG,
+
+Why do you use regmap locking? What for?
+
+> +};
+
+...
+
+> +       data->regmap = devm_regmap_init_i2c(client, &ltrf216a_regmap_config);
+> +       if (IS_ERR(data->regmap)) {
+> +               dev_err(&client->dev, "Regmap initialization failed.\n");
+> +               return PTR_ERR(data->regmap);
+
+return dev_err_probe(...);
+
+> +       }
+
+...
+
+> +       ret = devm_pm_runtime_enable(&client->dev);
+> +       if (ret < 0) {
+> +               dev_err_probe(&client->dev, ret, "Failed to enable runtime PM\n");
+> +               return ret;
+
+Ditto.
+
+> +       }
+
+...
+
+> +               ret = ltrf216a_init(indio_dev);
+> +               if (ret) {
+> +                       dev_err_probe(&client->dev, ret, "Failed to enable the sensor\n");
+> +                       return ret;
+
+Ditto.
+
+> +               }
+
+...
+
+> +       if (ret < 0)
+
+For all these  ' < 0', please explain what positive return value means
+there, if any, and why it's being ignored.
+
+...
+
+> +static const struct i2c_device_id ltrf216a_id[] = {
+> +       { LTRF216A_DRV_NAME, 0 },
+
+Please, use the string literal directly since it's kinda an ABI,
+defining above for potential changes is not a good idea. Also you may
+drop the ', 0' part.
+
+> +       {}
+> +};
+
+...
+
+> +static struct i2c_driver ltrf216a_driver = {
+> +       .driver = {
+
+> +               .name = LTRF216A_DRV_NAME,
+
+Ditto.
+
+> +               .pm = pm_ptr(&ltrf216a_pm_ops),
+> +               .of_match_table = ltrf216a_of_match,
+> +       },
+> +       .probe_new      = ltrf216a_probe,
+> +       .id_table       = ltrf216a_id,
+> +};
+
+-- 
+With Best Regards,
+Andy Shevchenko

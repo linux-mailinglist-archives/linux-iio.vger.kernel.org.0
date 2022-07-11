@@ -2,129 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF46B57062B
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 16:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 114A4570993
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 19:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230250AbiGKOuP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 10:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44444 "EHLO
+        id S231347AbiGKRzY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 13:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230032AbiGKOuN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 10:50:13 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED19B30F7E;
-        Mon, 11 Jul 2022 07:50:11 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 252C06601A00;
-        Mon, 11 Jul 2022 15:50:09 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1657551009;
-        bh=1If1vEKZCWn1IW5+EMlV8S1ER1R5G9Y7ZejySPeDJtQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=gB9SwhdIyfSAtZBrxd1QlumEh8Pq7BGsPI6y1/TUNrn/Q7yG7NyBK4ox71KC5uhb3
-         HVITWyw/Rxf3cV6slLDffoc3/WqaqjnzlWVE/LJ9PnewlJ5JJ9C14s5HInvGkYClCB
-         /pXx11aFVHDq5OnsDvJgU219aj9jW/YCbly3w1OdRdyYjF3cIFMbRuJW72ypdrBran
-         WRJkmmgVMaHDWtPb0SfHzVRiqxKHgrRY5ivYpCFdZNdQk6kLWAAsB/196JSgXFgqG8
-         +4vFL2fXNhYDkraJu8zDojmTp3tIiPeEHwNFRiRXiy8DUjLfcjdFSr+jGbspi+e9BY
-         ipEKjlcalDCtA==
-Message-ID: <fcf8ee4b-a064-e2e3-d4db-53d36ba271db@collabora.com>
-Date:   Mon, 11 Jul 2022 17:50:07 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v7 2/2] iio: light: Add support for ltrf216a sensor
-Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Shreeya Patel <shreeya.patel@collabora.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, Zhigang.Shi@liteon.com,
-        krisman@collabora.com, linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Collabora Kernel ML <kernel@collabora.com>,
-        alvaro.soliverez@collabora.com
-References: <20220711112900.61363-1-shreeya.patel@collabora.com>
- <20220711112900.61363-3-shreeya.patel@collabora.com>
- <CAHp75Vf3NDsep5_819=e8yrna_AGh5cew=fs+hHe1q8LCa-PyA@mail.gmail.com>
- <c90e7334-5921-886b-2f9c-869fb55216ca@collabora.com>
- <CAHp75Vf=FOt+N6azar5gifvig8FL4sS3LX1kO8CzNCh2yOk-DQ@mail.gmail.com>
- <68de450f-da22-02e3-e863-7e17582ee03f@collabora.com>
- <CAHp75VcMsa+s9Lrp6fF_nzJ9RgsVnbCCDjvLW=-hdFpAs69pgA@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAHp75VcMsa+s9Lrp6fF_nzJ9RgsVnbCCDjvLW=-hdFpAs69pgA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229563AbiGKRzX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 13:55:23 -0400
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567393245D;
+        Mon, 11 Jul 2022 10:55:23 -0700 (PDT)
+Received: by mail-io1-f47.google.com with SMTP id n68so5642900iod.3;
+        Mon, 11 Jul 2022 10:55:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=zQYfTc7ETRTCZIgWWYw80Iww1nESA3imnUOHAbZNink=;
+        b=H949EHyA5fsBYfVOmEFwmzi4/D/EhgYB2F9rP3DesqKbpvmVzE6EgAd53uCK0vr4A3
+         wwajR6nxBKnWx1Mq3WU+TwEca5hOOir62rkch6i/LHXrxnGSnxefxmRBpTy8PrPE8SU1
+         irN8FX4sjdDH4jrbchzk2DFeMSa6xevp2ImsfF/XEPu5I5BoovzuhJOoFmFT6teYUBqX
+         ZDVcdPEBvkeDVfTD057jTwiHXOv8hT8l4Syl5IP12f+0J2zNMNAy6t1fwZrpNJ9tuHO2
+         yRGgVu0Mav1zSMHZvHn2bYqzc+fjEM2qtOeLGL8dyAVIpG2rUN7NYo+i1q7kf/sA1CjK
+         3iLg==
+X-Gm-Message-State: AJIora94nvrBDE/F4cR6j2Q21mtpAcvIuUk5YsxwQFkcvFO7EpdU8N04
+        Pn2OlkdXckpSHsthStCGC+AKC39XTA==
+X-Google-Smtp-Source: AGRyM1uE9R2fPsn1VUU8DOTLoa3jlkmDcdWazULz/mhKIHwM2a2Mr0Dxk1I9Ka1+ZBiBywhlw3BqfQ==
+X-Received: by 2002:a05:6638:1651:b0:33c:a8d2:71a6 with SMTP id a17-20020a056638165100b0033ca8d271a6mr11256299jat.165.1657562121188;
+        Mon, 11 Jul 2022 10:55:21 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id z17-20020a056638215100b0033eda79403bsm3170853jaj.9.2022.07.11.10.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jul 2022 10:55:20 -0700 (PDT)
+Received: (nullmailer pid 4172124 invoked by uid 1000);
+        Mon, 11 Jul 2022 17:55:19 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Tomer Maimon <tmaimon77@gmail.com>
+Cc:     zhengbin13@huawei.com, j.neuschaefer@gmx.net, yuenn@google.com,
+        robh+dt@kernel.org, devicetree@vger.kernel.org,
+        tali.perry1@gmail.com, krzysztof.kozlowski+dt@linaro.org,
+        joel@jms.id.au, avifishman70@gmail.com, lars@metafoo.de,
+        benjaminfair@google.com, jic23@kernel.org,
+        openbmc@lists.ozlabs.org, venture@google.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20220711134312.234268-2-tmaimon77@gmail.com>
+References: <20220711134312.234268-1-tmaimon77@gmail.com> <20220711134312.234268-2-tmaimon77@gmail.com>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: npcm: Add npcm845 compatible string
+Date:   Mon, 11 Jul 2022 11:55:19 -0600
+Message-Id: <1657562119.172361.4172123.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/11/22 17:22, Andy Shevchenko wrote:
-> On Mon, Jul 11, 2022 at 4:04 PM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->> On 7/11/22 16:41, Andy Shevchenko wrote:
->>> On Mon, Jul 11, 2022 at 3:39 PM Shreeya Patel
->>> <shreeya.patel@collabora.com> wrote:
->>>> On 11/07/22 18:36, Andy Shevchenko wrote:
->>>>> On Mon, Jul 11, 2022 at 1:30 PM Shreeya Patel
+On Mon, 11 Jul 2022 16:43:10 +0300, Tomer Maimon wrote:
+> Add a compatible string for Nuvoton BMC NPCM845 ADC.
 > 
-> ...
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml     | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
->>>>>> +static const struct regmap_config ltrf216a_regmap_config = {
->>>>>> +       .name = LTRF216A_DRV_NAME,
->>>>>> +       .reg_bits = 8,
->>>>>> +       .val_bits = 8,
->>>>>> +       .max_register = LTRF216A_MAX_REG,
->>>>> Why do you use regmap locking? What for?
->>>>
->>>> Why do we want to skip the internal locking if it doesn't bring any
->>>> benefits?
->>>
->>> Can you elaborate on the "no benefits" part, please?
->>
->> Since the regmap's lock will never be contended, thus it's free to keep
-> 
-> I'm skeptical about "free" here. My concerns are:
-> 1) grosser code base;
-> 2) slower code flow (even nop takes time to process).
-> 
->> using it. If later on we will need to change the driver's code such that
->> the lock will become needed, then we won't need to bother with
->> re-enabling it. The comment to the driver's mutex states clearly that
->> it's intended to protect the cached value.
->>
->> Hence what is point in disabling the regmap's lock? There are very few
->> drivers that disable the regmap's lock and most of them do that for the
->> good reason.
-> 
-> Most of the drivers that have its own lock _and_ regmap lock took the
-> locking scheme wrong. It is 101 when writing a driver to have a clear
-> picture of what lock protects what data (or I/O).
-> 
-> Even if lock is _almost_ free, it's still required to provide
-> understanding of how each of the locks is being used in the code.
-> 
-> That said, the main point of my review comment is to make the author
-> think about it, or just elaborate if it has been thought through
-> already.
 
-Alright, thank you for clarifying yours point! I helped Shreeya a tad
-with preparing the v7 and disabling the regmap's lock wasn't under
-question. Since this driver isn't about performance and a nanosecond
-improvement isn't worthwhile in comparison to the the I2C transfer time,
-should be cleaner to keep the regmap's lock in place, IMO. I'll let
-Shreeya to answer next time, sorry for jumping in.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
--- 
-Best regards,
-Dmitry
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.example.dtb: adc@f000c000: compatible: 'oneOf' conditional failed, one must be fixed:
+	['nuvoton,npcm750-adc'] is too short
+	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

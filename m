@@ -2,60 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 114A4570993
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 19:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6119570A19
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 20:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbiGKRzY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 13:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57454 "EHLO
+        id S229542AbiGKSp4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 14:45:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbiGKRzX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 13:55:23 -0400
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 567393245D;
-        Mon, 11 Jul 2022 10:55:23 -0700 (PDT)
-Received: by mail-io1-f47.google.com with SMTP id n68so5642900iod.3;
-        Mon, 11 Jul 2022 10:55:23 -0700 (PDT)
+        with ESMTP id S229476AbiGKSpz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 14:45:55 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7720F1F2EB
+        for <linux-iio@vger.kernel.org>; Mon, 11 Jul 2022 11:45:51 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id h23so10290529ejj.12
+        for <linux-iio@vger.kernel.org>; Mon, 11 Jul 2022 11:45:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=m1RsWff47LxhudZHFngID0hDulVvllnH8BZICMjZYZU=;
+        b=DyV4IVBQMxLl/6ko/Tfj8FZmTmYn9Zs9XYRSEH7bEq3t2dtHUBzWmOFY/HCJ3knUkt
+         BX4BOQ4EHVQGXdCzGuCGLKefX3JXNpf+EJP5Cy7rACBdOjHlBFVmQAfc/MmvMBB+SIpd
+         GVftrGWG43F+9XCDA4P4DvuL/floKuPaWjYaM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=zQYfTc7ETRTCZIgWWYw80Iww1nESA3imnUOHAbZNink=;
-        b=H949EHyA5fsBYfVOmEFwmzi4/D/EhgYB2F9rP3DesqKbpvmVzE6EgAd53uCK0vr4A3
-         wwajR6nxBKnWx1Mq3WU+TwEca5hOOir62rkch6i/LHXrxnGSnxefxmRBpTy8PrPE8SU1
-         irN8FX4sjdDH4jrbchzk2DFeMSa6xevp2ImsfF/XEPu5I5BoovzuhJOoFmFT6teYUBqX
-         ZDVcdPEBvkeDVfTD057jTwiHXOv8hT8l4Syl5IP12f+0J2zNMNAy6t1fwZrpNJ9tuHO2
-         yRGgVu0Mav1zSMHZvHn2bYqzc+fjEM2qtOeLGL8dyAVIpG2rUN7NYo+i1q7kf/sA1CjK
-         3iLg==
-X-Gm-Message-State: AJIora94nvrBDE/F4cR6j2Q21mtpAcvIuUk5YsxwQFkcvFO7EpdU8N04
-        Pn2OlkdXckpSHsthStCGC+AKC39XTA==
-X-Google-Smtp-Source: AGRyM1uE9R2fPsn1VUU8DOTLoa3jlkmDcdWazULz/mhKIHwM2a2Mr0Dxk1I9Ka1+ZBiBywhlw3BqfQ==
-X-Received: by 2002:a05:6638:1651:b0:33c:a8d2:71a6 with SMTP id a17-20020a056638165100b0033ca8d271a6mr11256299jat.165.1657562121188;
-        Mon, 11 Jul 2022 10:55:21 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id z17-20020a056638215100b0033eda79403bsm3170853jaj.9.2022.07.11.10.55.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 10:55:20 -0700 (PDT)
-Received: (nullmailer pid 4172124 invoked by uid 1000);
-        Mon, 11 Jul 2022 17:55:19 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Tomer Maimon <tmaimon77@gmail.com>
-Cc:     zhengbin13@huawei.com, j.neuschaefer@gmx.net, yuenn@google.com,
-        robh+dt@kernel.org, devicetree@vger.kernel.org,
-        tali.perry1@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        joel@jms.id.au, avifishman70@gmail.com, lars@metafoo.de,
-        benjaminfair@google.com, jic23@kernel.org,
-        openbmc@lists.ozlabs.org, venture@google.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20220711134312.234268-2-tmaimon77@gmail.com>
-References: <20220711134312.234268-1-tmaimon77@gmail.com> <20220711134312.234268-2-tmaimon77@gmail.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: npcm: Add npcm845 compatible string
-Date:   Mon, 11 Jul 2022 11:55:19 -0600
-Message-Id: <1657562119.172361.4172123.nullmailer@robh.at.kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=m1RsWff47LxhudZHFngID0hDulVvllnH8BZICMjZYZU=;
+        b=dxv4hoBQg/Geex2LYmJ3vnGcDVWEzypkmH8aFkqRgQBoILcYiaReZh97G5MhzD3cdQ
+         e3QfJ4RNlyghd/w+QUiQagcRqu3sH18HkZyUek51zY1hmvcFd+nBTJEcvkkHm3RLrDzt
+         wbUdK+EpUTZq0GtJiYhBFRqRw9bBgjdLGa59KsI3AM2W7UXxJ+aRtU9EzcVtt/AVbzFJ
+         TLHW8zVRFcDWB5Sjv/Gnq4ngz9xF2CEupCvdOmTgrlx+qYsJoXdbGYMPD/Z0SEOOdGiJ
+         qwfs0Cl90L/SFEaQ3UB2622JHM9G98Fa44rX9peeSXhO9eSriYiW+S/bPmd6l0YXKVTu
+         8vPw==
+X-Gm-Message-State: AJIora/HyxnkjbgJPxCfCSymSaWaHiHJnoBl3NGL7VR4NWx6HsbLoVsF
+        3Em+2SKeifLCNkclwuYzEPXX2NwN6cOsQ1Lav4Q=
+X-Google-Smtp-Source: AGRyM1tb9QOia8yu67LZSR1CtrqsvUU4ERwDwWCs1a/+/qku2t6/P+Bfceh7PrWrJaLMx0OuFMC3fw==
+X-Received: by 2002:a17:906:8a49:b0:72b:3b8d:31c3 with SMTP id gx9-20020a1709068a4900b0072b3b8d31c3mr12836785ejc.279.1657565149784;
+        Mon, 11 Jul 2022 11:45:49 -0700 (PDT)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com. [209.85.128.49])
+        by smtp.gmail.com with ESMTPSA id cb1-20020a0564020b6100b0043a6dc3c4b0sm4762968edb.41.2022.07.11.11.45.49
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Jul 2022 11:45:49 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id r129-20020a1c4487000000b003a2d053adcbso5486073wma.4
+        for <linux-iio@vger.kernel.org>; Mon, 11 Jul 2022 11:45:49 -0700 (PDT)
+X-Received: by 2002:a05:600c:285:b0:3a2:e5fd:84eb with SMTP id
+ 5-20020a05600c028500b003a2e5fd84ebmr9054023wmk.151.1657565148811; Mon, 11 Jul
+ 2022 11:45:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220711144716.642617-1-gwendal@chromium.org>
+In-Reply-To: <20220711144716.642617-1-gwendal@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Mon, 11 Jul 2022 11:45:36 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=VEiVgXSC=vx5vB3kEuL2XCQyuaAxNvDHig-PjOfANHag@mail.gmail.com>
+Message-ID: <CAD=FV=VEiVgXSC=vx5vB3kEuL2XCQyuaAxNvDHig-PjOfANHag@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: cros: Register FIFO callback after sensor is registered
+To:     Gwendal Grignou <gwendal@chromium.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,37 +73,107 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 11 Jul 2022 16:43:10 +0300, Tomer Maimon wrote:
-> Add a compatible string for Nuvoton BMC NPCM845 ADC.
-> 
-> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+Hi,
+
+On Mon, Jul 11, 2022 at 7:47 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> Instead of registering callback to process sensor events right at
+> initialization time, wait for the sensor to be register in the iio
+> subsystem.
+>
+> Events can come at probe time (in case the kernel rebooted abruptly
+> without switching the sensor off for  instance), and be sent to IIO core
+> before the sensor is fully registered.
+>
+> Reported-by: Douglas Anderson <dianders@chromium.org>
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 > ---
->  .../devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml     | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
+> Changes since v2:
+> - Do not compare pointer with NULL,
+> - Invert logic to reduce indentation.
+> - Do not set local variable just before use.
+>
+> Changes since v1:
+> - renamed from "iio: cros: Add cros_ec_sensors_core_register"
+> - Call devm_iio_device_register() inside cros_ec_sensors_core_register.
+>
+>  drivers/iio/accel/cros_ec_accel_legacy.c      |  4 +-
+>  .../cros_ec_sensors/cros_ec_lid_angle.c       |  4 +-
+>  .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +-
+>  .../cros_ec_sensors/cros_ec_sensors_core.c    | 58 ++++++++++++++-----
+>  drivers/iio/light/cros_ec_light_prox.c        |  6 +-
+>  drivers/iio/pressure/cros_ec_baro.c           |  6 +-
+>  .../linux/iio/common/cros_ec_sensors_core.h   |  7 ++-
+>  7 files changed, 60 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> index 1c0171f26e99e..0f403342b1fc0 100644
+> --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>                 return -ENOMEM;
+>
+>         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> -                                       cros_ec_sensors_capture, NULL);
+> +                                       cros_ec_sensors_capture);
+>         if (ret)
+>                 return ret;
+>
+> @@ -235,7 +235,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+>                 state->sign[CROS_EC_SENSOR_Z] = -1;
+>         }
+>
+> -       return devm_iio_device_register(dev, indio_dev);
+> +       return cros_ec_sensors_core_register(dev, indio_dev, NULL);
+>  }
+>
+>  static struct platform_driver cros_ec_accel_platform_driver = {
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> index 9f780fafaed9f..119acb078af3b 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> @@ -98,7 +98,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+>         if (!indio_dev)
+>                 return -ENOMEM;
+>
+> -       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
+> +       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL);
+>         if (ret)
+>                 return ret;
+>
+> @@ -114,7 +114,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+>         if (ret)
+>                 return ret;
+>
+> -       return devm_iio_device_register(dev, indio_dev);
+> +       return cros_ec_sensors_core_register(dev, indio_dev, NULL);
+>  }
+>
+>  static const struct platform_device_id cros_ec_lid_angle_ids[] = {
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> index 61e07a7bb1995..66153b1850f10 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> @@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+>                 return -ENOMEM;
+>
+>         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> -                                       cros_ec_sensors_capture,
+> -                                       cros_ec_sensors_push_data);
+> +                                       cros_ec_sensors_capture);
+>         if (ret)
+>                 return ret;
+>
+> @@ -298,7 +297,8 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+>         else
+>                 state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+>
+> -       return devm_iio_device_register(dev, indio_dev);
+> +       return cros_ec_sensors_core_register(dev, indio_dev,
+> +                       cros_ec_sensors_push_data);
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Probably not worth spinning for, but now that the indentation was been
+reduced (compared to v2) the above call doesn't need to be split
+across 2 lines.
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.example.dtb: adc@f000c000: compatible: 'oneOf' conditional failed, one must be fixed:
-	['nuvoton,npcm750-adc'] is too short
-	From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/patch/
-
-This check can fail if there are any dependencies. The base for a patch
-series is generally the most recent rc1.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

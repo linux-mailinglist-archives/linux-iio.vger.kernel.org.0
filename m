@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD105702A5
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 14:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 954A55702A6
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 14:40:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231805AbiGKMkF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 08:40:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
+        id S231867AbiGKMkI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 08:40:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231822AbiGKMjv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 08:39:51 -0400
+        with ESMTP id S231843AbiGKMjx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 08:39:53 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5714A4E84B;
-        Mon, 11 Jul 2022 05:38:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719315246E;
+        Mon, 11 Jul 2022 05:39:03 -0700 (PDT)
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BCAAMN026688;
-        Mon, 11 Jul 2022 08:38:57 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h76k6bhxs-1
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BAvb7D026643;
+        Mon, 11 Jul 2022 08:39:03 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h76k6bhy3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 11 Jul 2022 08:38:56 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 26BCctQt045705
+        Mon, 11 Jul 2022 08:39:03 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 26BCd177000422
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Jul 2022 08:38:55 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+        Mon, 11 Jul 2022 08:39:01 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 11 Jul
- 2022 08:38:54 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 11 Jul 2022 08:38:54 -0400
+ 2022 08:39:00 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 11 Jul 2022 08:39:00 -0400
 Received: from nsa.ad.analog.com ([10.44.3.53])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26BCbVEB011687;
-        Mon, 11 Jul 2022 08:38:45 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26BCbVEC011687;
+        Mon, 11 Jul 2022 08:38:51 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-arm-msm@vger.kernel.org>, <openbmc@lists.ozlabs.org>,
         <linux-renesas-soc@vger.kernel.org>,
@@ -86,9 +86,9 @@ CC:     Andy Gross <agross@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Pengutronix Kernel Team <kernel@pengutronix.de>,
         Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v2 06/15] thermal: qcom: qcom-spmi-adc-tm5: convert to IIO fwnode API
-Date:   Mon, 11 Jul 2022 14:38:26 +0200
-Message-ID: <20220711123835.811358-7-nuno.sa@analog.com>
+Subject: [PATCH v2 07/15] iio: adc: ingenic-adc: convert to IIO fwnode interface
+Date:   Mon, 11 Jul 2022 14:38:27 +0200
+Message-ID: <20220711123835.811358-8-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.37.0
 In-Reply-To: <20220711123835.811358-1-nuno.sa@analog.com>
 References: <20220711123835.811358-1-nuno.sa@analog.com>
@@ -96,13 +96,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: FFRWcRmTcMI7ad7VGDZdc4Mxr_C8uF4I
-X-Proofpoint-GUID: FFRWcRmTcMI7ad7VGDZdc4Mxr_C8uF4I
+X-Proofpoint-ORIG-GUID: w-LSjoxPM1fkD4boNQ6Bp1aWrvGEvBU7
+X-Proofpoint-GUID: w-LSjoxPM1fkD4boNQ6Bp1aWrvGEvBU7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-11_18,2022-07-08_01,2022-06-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- mlxlogscore=918 malwarescore=0 spamscore=0 impostorscore=0
+ mlxlogscore=815 malwarescore=0 spamscore=0 impostorscore=0
  priorityscore=1501 suspectscore=0 mlxscore=0 lowpriorityscore=0
  bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2206140000 definitions=main-2207110054
@@ -115,28 +115,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Make usage of the new firmware agnostic API
-'devm_of_iio_channel_get_by_name()' to get the IIO channel.
+Move from 'of_xlate()' to 'fwnode_xlate()'. The end goal is to completely
+drop OF from the IIO inkernel interface.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ingenic-adc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-index d9c9c975f931..0b8543c627f0 100644
---- a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-+++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
-@@ -825,7 +825,8 @@ static int adc_tm5_get_dt_channel_data(struct adc_tm5_chip *adc_tm,
+diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+index bf5c03c34f84..9e08f3abeea6 100644
+--- a/drivers/iio/adc/ingenic-adc.c
++++ b/drivers/iio/adc/ingenic-adc.c
+@@ -719,12 +719,12 @@ static int ingenic_adc_read_raw(struct iio_dev *iio_dev,
  	}
- 	channel->adc_channel = args.args[0];
+ }
  
--	channel->iio = devm_of_iio_channel_get_by_name(adc_tm->dev, node, NULL);
-+	channel->iio = devm_fwnode_iio_channel_get_by_name(adc_tm->dev,
-+							   of_fwnode_handle(node), NULL);
- 	if (IS_ERR(channel->iio)) {
- 		ret = PTR_ERR(channel->iio);
- 		if (ret != -EPROBE_DEFER)
+-static int ingenic_adc_of_xlate(struct iio_dev *iio_dev,
+-				const struct of_phandle_args *iiospec)
++static int ingenic_adc_fwnode_xlate(struct iio_dev *iio_dev,
++				    const struct fwnode_reference_args *iiospec)
+ {
+ 	int i;
+ 
+-	if (!iiospec->args_count)
++	if (!iiospec->nargs)
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < iio_dev->num_channels; ++i)
+@@ -743,7 +743,7 @@ static const struct iio_info ingenic_adc_info = {
+ 	.write_raw = ingenic_adc_write_raw,
+ 	.read_raw = ingenic_adc_read_raw,
+ 	.read_avail = ingenic_adc_read_avail,
+-	.of_xlate = ingenic_adc_of_xlate,
++	.fwnode_xlate = ingenic_adc_fwnode_xlate,
+ };
+ 
+ static int ingenic_adc_buffer_enable(struct iio_dev *iio_dev)
 -- 
 2.37.0
 

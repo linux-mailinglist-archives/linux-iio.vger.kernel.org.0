@@ -2,53 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825145704CA
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 15:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D3FA5704F4
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 16:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiGKN5j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 09:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53226 "EHLO
+        id S229536AbiGKOEN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 10:04:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbiGKN5g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 09:57:36 -0400
-X-Greylist: delayed 856 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 11 Jul 2022 06:57:35 PDT
-Received: from maillog.nuvoton.com (maillog.nuvoton.com [202.39.227.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4DCAE6069F
-        for <linux-iio@vger.kernel.org>; Mon, 11 Jul 2022 06:57:35 -0700 (PDT)
-Received: from NTHCCAS01.nuvoton.com (NTHCCAS01.nuvoton.com [10.1.8.28])
-        by maillog.nuvoton.com (Postfix) with ESMTP id E21CC1C80CA9;
-        Mon, 11 Jul 2022 21:43:20 +0800 (CST)
-Received: from NTHCCAS01.nuvoton.com (10.1.8.28) by NTHCCAS01.nuvoton.com
- (10.1.8.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 11 Jul
- 2022 21:43:20 +0800
-Received: from taln60.nuvoton.co.il (10.191.1.180) by NTHCCAS01.nuvoton.com
- (10.1.12.25) with Microsoft SMTP Server id 15.1.2375.7 via Frontend
- Transport; Mon, 11 Jul 2022 21:43:20 +0800
-Received: by taln60.nuvoton.co.il (Postfix, from userid 10070)
-        id 81BDA63A23; Mon, 11 Jul 2022 16:43:19 +0300 (IDT)
-From:   Tomer Maimon <tmaimon77@gmail.com>
-To:     <avifishman70@gmail.com>, <tali.perry1@gmail.com>,
-        <joel@jms.id.au>, <venture@google.com>, <yuenn@google.com>,
-        <benjaminfair@google.com>, <jic23@kernel.org>, <lars@metafoo.de>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <j.neuschaefer@gmx.net>, <zhengbin13@huawei.com>
-CC:     <openbmc@lists.ozlabs.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Tomer Maimon <tmaimon77@gmail.com>
-Subject: [PATCH v1 2/2] iio: adc: npcm: Add NPCM8XX support
-Date:   Mon, 11 Jul 2022 16:43:11 +0300
-Message-ID: <20220711134312.234268-3-tmaimon77@gmail.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220711134312.234268-1-tmaimon77@gmail.com>
-References: <20220711134312.234268-1-tmaimon77@gmail.com>
+        with ESMTP id S230084AbiGKOEK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 10:04:10 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB34120A7;
+        Mon, 11 Jul 2022 07:04:09 -0700 (PDT)
+Received: from [192.168.2.145] (109-252-119-232.nat.spd-mgts.ru [109.252.119.232])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B2FE066019FF;
+        Mon, 11 Jul 2022 15:04:07 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1657548248;
+        bh=C0XN9RKnWDlXmYm+a6GfTq9/VWea2/+BxOU6oLr0iIA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=a4UBbmV2mSyXG2UjvRpgZls25hVIKUBcPmATMmR75GesQqwEutstb/m8oaJVAWcLz
+         3VXOto5qYeVOZXmP9jl8iIx0ZbfyiIVVU7ohty6MLy9P7G1CGjWKRWv9SVRooUz+mH
+         vWkItc9ycf4O5giNdhKzfXIr8eXQTbhYmpFRd9oR+h4qe8kJQLztHfjsPpkK9bN5d6
+         ZNTVS/33imlFuHGR0/O5V8O6SBPD64uYpWrannQ24htvd7YMomkP8dOaUAiTi2Oo36
+         G2nsAaeFG9E2UBXNCuwxvflnBkf9Z2mZtDIPY2HSHAzt4srrWTO8HPCGh/yHinyi96
+         d7ayb2gWNmqBw==
+Message-ID: <68de450f-da22-02e3-e863-7e17582ee03f@collabora.com>
+Date:   Mon, 11 Jul 2022 17:04:04 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
-        FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v7 2/2] iio: light: Add support for ltrf216a sensor
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, Zhigang.Shi@liteon.com,
+        krisman@collabora.com, linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Collabora Kernel ML <kernel@collabora.com>,
+        alvaro.soliverez@collabora.com
+References: <20220711112900.61363-1-shreeya.patel@collabora.com>
+ <20220711112900.61363-3-shreeya.patel@collabora.com>
+ <CAHp75Vf3NDsep5_819=e8yrna_AGh5cew=fs+hHe1q8LCa-PyA@mail.gmail.com>
+ <c90e7334-5921-886b-2f9c-869fb55216ca@collabora.com>
+ <CAHp75Vf=FOt+N6azar5gifvig8FL4sS3LX1kO8CzNCh2yOk-DQ@mail.gmail.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAHp75Vf=FOt+N6azar5gifvig8FL4sS3LX1kO8CzNCh2yOk-DQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,122 +67,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Adding ADC NPCM8XX support to NPCM ADC driver.
-ADC NPCM8XX uses a different resolution and voltage reference.
+On 7/11/22 16:41, Andy Shevchenko wrote:
+> On Mon, Jul 11, 2022 at 3:39 PM Shreeya Patel
+> <shreeya.patel@collabora.com> wrote:
+>> On 11/07/22 18:36, Andy Shevchenko wrote:
+>>> On Mon, Jul 11, 2022 at 1:30 PM Shreeya Patel
+> 
+> Please, remove unneeded context when replying!
+> 
+> ...
+> 
+>>>> +static const struct regmap_config ltrf216a_regmap_config = {
+>>>> +       .name = LTRF216A_DRV_NAME,
+>>>> +       .reg_bits = 8,
+>>>> +       .val_bits = 8,
+>>>> +       .max_register = LTRF216A_MAX_REG,
+>>> Why do you use regmap locking? What for?
+>>
+>> Why do we want to skip the internal locking if it doesn't bring any
+>> benefits?
+> 
+> Can you elaborate on the "no benefits" part, please?
 
-As part of adding NPCM8XX support:
-- Add NPCM8XX specific compatible string.
-- Add data to handle architecture-specific ADC parameters.
+Since the regmap's lock will never be contended, thus it's free to keep
+using it. If later on we will need to change the driver's code such that
+the lock will become needed, then we won't need to bother with
+re-enabling it. The comment to the driver's mutex states clearly that
+it's intended to protect the cached value.
 
-Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
----
- drivers/iio/adc/npcm_adc.c | 39 ++++++++++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 8 deletions(-)
+Hence what is point in disabling the regmap's lock? There are very few
+drivers that disable the regmap's lock and most of them do that for the
+good reason.
 
-diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
-index f7bc0bb7f112..efacba256056 100644
---- a/drivers/iio/adc/npcm_adc.c
-+++ b/drivers/iio/adc/npcm_adc.c
-@@ -16,6 +16,12 @@
- #include <linux/uaccess.h>
- #include <linux/reset.h>
- 
-+struct npcm_adc_info {
-+	u32 data_mask;
-+	u32 internal_vref;
-+	u32 res_bits;
-+};
-+
- struct npcm_adc {
- 	bool int_status;
- 	u32 adc_sample_hz;
-@@ -34,6 +40,7 @@ struct npcm_adc {
- 	 * has finished.
- 	 */
- 	struct mutex lock;
-+	struct npcm_adc_info *data;
- };
- 
- /* ADC registers */
-@@ -52,13 +59,21 @@ struct npcm_adc {
- #define NPCM_ADCCON_CH(x)		((x) << 24)
- #define NPCM_ADCCON_DIV_SHIFT		1
- #define NPCM_ADCCON_DIV_MASK		GENMASK(8, 1)
--#define NPCM_ADC_DATA_MASK(x)		((x) & GENMASK(9, 0))
- 
- #define NPCM_ADC_ENABLE		(NPCM_ADCCON_ADC_EN | NPCM_ADCCON_ADC_INT_EN)
- 
- /* ADC General Definition */
--#define NPCM_RESOLUTION_BITS		10
--#define NPCM_INT_VREF_MV		2000
-+static const struct npcm_adc_info npxm7xx_adc_info = {
-+	.data_mask = GENMASK(9, 0),
-+	.internal_vref = 2048,
-+	.res_bits = 10,
-+};
-+
-+static const struct npcm_adc_info npxm8xx_adc_info = {
-+	.data_mask = GENMASK(11, 0),
-+	.internal_vref = 1229,
-+	.res_bits = 12,
-+};
- 
- #define NPCM_ADC_CHAN(ch) {					\
- 	.type = IIO_VOLTAGE,					\
-@@ -129,7 +144,8 @@ static int npcm_adc_read(struct npcm_adc *info, int *val, u8 channel)
- 	if (ret < 0)
- 		return ret;
- 
--	*val = NPCM_ADC_DATA_MASK(ioread32(info->regs + NPCM_ADCDATA));
-+	*val = ioread32(info->regs + NPCM_ADCDATA);
-+	*val &= info->data->data_mask;
- 
- 	return 0;
- }
-@@ -157,9 +173,9 @@ static int npcm_adc_read_raw(struct iio_dev *indio_dev,
- 			vref_uv = regulator_get_voltage(info->vref);
- 			*val = vref_uv / 1000;
- 		} else {
--			*val = NPCM_INT_VREF_MV;
-+			*val = info->data->internal_vref;
- 		}
--		*val2 = NPCM_RESOLUTION_BITS;
-+		*val2 = info->data->res_bits;
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		*val = info->adc_sample_hz;
-@@ -176,7 +192,8 @@ static const struct iio_info npcm_adc_iio_info = {
- };
- 
- static const struct of_device_id npcm_adc_match[] = {
--	{ .compatible = "nuvoton,npcm750-adc", },
-+	{ .compatible = "nuvoton,npcm750-adc", .data = &npxm7xx_adc_info},
-+	{ .compatible = "nuvoton,npcm845-adc", .data = &npxm8xx_adc_info},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, npcm_adc_match);
-@@ -190,14 +207,20 @@ static int npcm_adc_probe(struct platform_device *pdev)
- 	struct npcm_adc *info;
- 	struct iio_dev *indio_dev;
- 	struct device *dev = &pdev->dev;
-+	const struct of_device_id *match;
- 
- 	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*info));
- 	if (!indio_dev)
- 		return -ENOMEM;
- 	info = iio_priv(indio_dev);
- 
--	mutex_init(&info->lock);
-+	match = of_match_node(npcm_adc_match, pdev->dev.of_node);
-+	if (!match || !match->data) {
-+		dev_err(dev, "Failed getting npcm_adc_data\n");
-+		return -ENODEV;
-+	}
- 
-+	info->data = (struct npcm_adc_info *)match->data;
- 	info->dev = &pdev->dev;
- 
- 	info->regs = devm_platform_ioremap_resource(pdev, 0);
 -- 
-2.33.0
-
+Best regards,
+Dmitry

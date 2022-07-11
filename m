@@ -2,112 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 797925702CC
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 14:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF9ED570335
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Jul 2022 14:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231860AbiGKMk3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 11 Jul 2022 08:40:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S232018AbiGKMqE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 11 Jul 2022 08:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231276AbiGKMkL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 08:40:11 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C8E21167;
-        Mon, 11 Jul 2022 05:40:00 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BCAAMc026688;
-        Mon, 11 Jul 2022 08:40:00 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h76k6bj3t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 11 Jul 2022 08:39:59 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 26BCdwv4000448
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 11 Jul 2022 08:39:58 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 11 Jul
- 2022 08:39:57 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 11 Jul 2022 08:39:57 -0400
-Received: from nsa.ad.analog.com ([10.44.3.53])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26BCbVEK011687;
-        Mon, 11 Jul 2022 08:39:45 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-arm-msm@vger.kernel.org>, <openbmc@lists.ozlabs.org>,
-        <linux-renesas-soc@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, <linux-imx@nxp.com>,
-        <linux-mips@vger.kernel.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        <linux-iio@vger.kernel.org>, <chrome-platform@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-CC:     Andy Gross <agross@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        with ESMTP id S232108AbiGKMpr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 11 Jul 2022 08:45:47 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174BE64E3B;
+        Mon, 11 Jul 2022 05:45:10 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id d16so6821960wrv.10;
+        Mon, 11 Jul 2022 05:45:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=nj+8U5dCs7AUxZlYYLZz/BAZkJpwweLoeIkwzs3owdk=;
+        b=SCqWBu/B7q02kU1ZOWtHrgqEFfk6J4dOy1IMsXXTxPyCg0unf8FEVJXunFPetkUwmQ
+         ghNtK0/WFtvpOZcVMXv+7zV/3EwmtFUYqZa3cSqjwq6a2DSWKWhFeqEa/GJA01cwqBLJ
+         xVErwsfioFszbrOsUBl1Pv79ZpZXnb0LyHEizRiIbph0bw5Ecb5eWsMkGd3JMx70zM8M
+         5wsana1q2GSROSA/yNsRypEl8ASHk2+SmZ1aTBLEKa2nzzIP5xq+HqnDKVQJLKKwUwxr
+         cwd2ktD+bQYdRbcvlHjH+5Wk0xOXjnTyqI51O2iRtMs1NnqQLytJSYF4C/mkRY+oj3SI
+         Og/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=nj+8U5dCs7AUxZlYYLZz/BAZkJpwweLoeIkwzs3owdk=;
+        b=8Qea5S3Kh2Aj2zNuBSP2ZbqcOyMdP7EwCg9k0/cQj08N5joch/vCgQCPtQWG8SrmPJ
+         j55xt+D5afysu1d9mE1U5yn3Pnr8Evw5Ljndu2ydjwGGoPJDwO+SoVN4NuFzcp8sVdS0
+         01rMvJkkV0ypHUI6oKQH3NBWpkllNMPE7JkmC71uJsRfYmgstOYLL5TJKS9vREFI+fDX
+         T5Fw1Jr3UzY0jOxT4BrEgtYEWOrlAWU5IJ5R9AupEq9U2W0uOut6yJO3WuqaBrsBptC/
+         IgHxEP6bQ83+gkljh+CbwjnK8ARoO4GeJEDi4UIzCvWiC2vyebX6b2N0rFdOGrblXlfv
+         pMhg==
+X-Gm-Message-State: AJIora+0/ftSYTlZqMDsQXvkpTUywy9vsFLgFhtBRpX2AMqMjhnZoJ2w
+        4DJSyPirnaZ3uNiKpbSD8hI=
+X-Google-Smtp-Source: AGRyM1uRDl1y+Wzw06p7Fcx1sTRex9Ge0g6lMyhmOkuYKEPEeBDhxfM+ITkRMmJV21D9TdKgO2Q+MA==
+X-Received: by 2002:a05:6000:156b:b0:21d:9daf:3cdb with SMTP id 11-20020a056000156b00b0021d9daf3cdbmr8255068wrz.492.1657543508529;
+        Mon, 11 Jul 2022 05:45:08 -0700 (PDT)
+Received: from [192.168.1.126] (68.201.26.77.dynamic.reverse-mundo-r.com. [77.26.201.68])
+        by smtp.gmail.com with ESMTPSA id f10-20020a7bc8ca000000b003a0231af43csm6467754wml.48.2022.07.11.05.45.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Jul 2022 05:45:07 -0700 (PDT)
+Message-ID: <046a29a5191c53813ce9477000b07c21ca5699fc.camel@gmail.com>
+Subject: Re: [PATCH v3 3/5] iio: pressure: bmp280: simplify driver
+ initialization logic
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Haibo Chen <haibo.chen@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Patrick Venture <venture@google.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH v2 15/15] iio: inkern: fix coding style warnings
-Date:   Mon, 11 Jul 2022 14:38:35 +0200
-Message-ID: <20220711123835.811358-16-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.37.0
-In-Reply-To: <20220711123835.811358-1-nuno.sa@analog.com>
-References: <20220711123835.811358-1-nuno.sa@analog.com>
-MIME-Version: 1.0
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 11 Jul 2022 14:45:06 +0200
+In-Reply-To: <YssdPch7dVmRWDbB@smile.fi.intel.com>
+References: <20220710091708.15967-1-ang.iglesiasg@gmail.com>
+         <YssdPch7dVmRWDbB@smile.fi.intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 0_F8neRx295GMfZGJyiYuK_60ZEkVtca
-X-Proofpoint-GUID: 0_F8neRx295GMfZGJyiYuK_60ZEkVtca
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-11_18,2022-07-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- mlxlogscore=719 malwarescore=0 spamscore=0 impostorscore=0
- priorityscore=1501 suspectscore=0 mlxscore=0 lowpriorityscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207110054
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -115,274 +76,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Just cosmetics. No functional change intended...
+On dom, 2022-07-10 at 21:41 +0300, Andy Shevchenko wrote:
+> It seems you somehow managed to send patches separately from email
+> perspective.
+> Make sure you pass parameter --thread to `git format-patch`, so it will create
+> a proper chain of emails.
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/inkern.c | 64 ++++++++++++++++++++++----------------------
- 1 file changed, 32 insertions(+), 32 deletions(-)
+How should I proceed to fix this issue? Should I wait for more feedback and send
+a new revision of the patches, now as a proper mail chain? Or should I resend
+current patchset as a chain? I don't want to spam the mailing list more due to
+my inexperience contributing.
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index fab951546086..9ce6ff2a3484 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -45,13 +45,13 @@ int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
- 	int i = 0, ret = 0;
- 	struct iio_map_internal *mapi;
- 
--	if (maps == NULL)
-+	if (!maps)
- 		return 0;
- 
- 	mutex_lock(&iio_map_list_lock);
--	while (maps[i].consumer_dev_name != NULL) {
-+	while (maps[i].consumer_dev_name) {
- 		mapi = kzalloc(sizeof(*mapi), GFP_KERNEL);
--		if (mapi == NULL) {
-+		if (!mapi) {
- 			ret = -ENOMEM;
- 			goto error_ret;
- 		}
-@@ -69,7 +69,6 @@ int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
- }
- EXPORT_SYMBOL_GPL(iio_map_array_register);
- 
--
- /*
-  * Remove all map entries associated with the given iio device
-  */
-@@ -157,7 +156,7 @@ static int __fwnode_iio_channel_get(struct iio_channel *channel,
- 		return err;
- 
- 	idev = bus_find_device_by_fwnode(&iio_bus_type, iiospec.fwnode);
--	if (idev == NULL) {
-+	if (!idev) {
- 		fwnode_handle_put(iiospec.fwnode);
- 		return -EPROBE_DEFER;
- 	}
-@@ -190,7 +189,7 @@ static struct iio_channel *fwnode_iio_channel_get(struct fwnode_handle *fwnode,
- 		return ERR_PTR(-EINVAL);
- 
- 	channel = kzalloc(sizeof(*channel), GFP_KERNEL);
--	if (channel == NULL)
-+	if (!channel)
- 		return ERR_PTR(-ENOMEM);
- 
- 	err = __fwnode_iio_channel_get(channel, fwnode, index);
-@@ -307,7 +306,7 @@ static struct iio_channel *fwnode_iio_channel_get_all(struct device *dev)
- 
- 	/* NULL terminated array to save passing size */
- 	chans = kcalloc(nummaps + 1, sizeof(*chans), GFP_KERNEL);
--	if (chans == NULL)
-+	if (!chans)
- 		return ERR_PTR(-ENOMEM);
- 
- 	/* Search for FW matches */
-@@ -332,7 +331,7 @@ static struct iio_channel *iio_channel_get_sys(const char *name,
- 	struct iio_channel *channel;
- 	int err;
- 
--	if (name == NULL && channel_name == NULL)
-+	if (!name && !channel_name)
- 		return ERR_PTR(-ENODEV);
- 
- 	/* first find matching entry the channel map */
-@@ -347,11 +346,11 @@ static struct iio_channel *iio_channel_get_sys(const char *name,
- 		break;
- 	}
- 	mutex_unlock(&iio_map_list_lock);
--	if (c == NULL)
-+	if (!c)
- 		return ERR_PTR(-ENODEV);
- 
- 	channel = kzalloc(sizeof(*channel), GFP_KERNEL);
--	if (channel == NULL) {
-+	if (!channel) {
- 		err = -ENOMEM;
- 		goto error_no_mem;
- 	}
-@@ -363,7 +362,7 @@ static struct iio_channel *iio_channel_get_sys(const char *name,
- 			iio_chan_spec_from_name(channel->indio_dev,
- 						c->map->adc_channel_label);
- 
--		if (channel->channel == NULL) {
-+		if (!channel->channel) {
- 			err = -EINVAL;
- 			goto error_no_chan;
- 		}
-@@ -455,7 +454,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 	int mapind = 0;
- 	int i, ret;
- 
--	if (dev == NULL)
-+	if (!dev)
- 		return ERR_PTR(-EINVAL);
- 
- 	chans = fwnode_iio_channel_get_all(dev);
-@@ -483,7 +482,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 
- 	/* NULL terminated array to save passing size */
- 	chans = kcalloc(nummaps + 1, sizeof(*chans), GFP_KERNEL);
--	if (chans == NULL) {
-+	if (!chans) {
- 		ret = -ENOMEM;
- 		goto error_ret;
- 	}
-@@ -497,7 +496,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 		chans[mapind].channel =
- 			iio_chan_spec_from_name(chans[mapind].indio_dev,
- 						c->map->adc_channel_label);
--		if (chans[mapind].channel == NULL) {
-+		if (!chans[mapind].channel) {
- 			ret = -EINVAL;
- 			goto error_free_chans;
- 		}
-@@ -559,14 +558,14 @@ struct iio_channel *devm_iio_channel_get_all(struct device *dev)
- EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
- 
- static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
--	enum iio_chan_info_enum info)
-+			    enum iio_chan_info_enum info)
- {
- 	int unused;
- 	int vals[INDIO_MAX_RAW_ELEMENTS];
- 	int ret;
- 	int val_len = 2;
- 
--	if (val2 == NULL)
-+	if (!val2)
- 		val2 = &unused;
- 
- 	if (!iio_channel_has_info(chan->channel, info))
-@@ -578,9 +577,10 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
- 					vals, &val_len, info);
- 		*val = vals[0];
- 		*val2 = vals[1];
--	} else
-+	} else {
- 		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
- 					chan->channel, val, val2, info);
-+	}
- 
- 	return ret;
- }
-@@ -591,7 +591,7 @@ int iio_read_channel_raw(struct iio_channel *chan, int *val)
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -610,7 +610,7 @@ int iio_read_channel_average_raw(struct iio_channel *chan, int *val)
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -624,7 +624,8 @@ int iio_read_channel_average_raw(struct iio_channel *chan, int *val)
- EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
- 
- static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
--	int raw, int *processed, unsigned int scale)
-+						 int raw, int *processed,
-+						 unsigned int scale)
- {
- 	int scale_type, scale_val, scale_val2;
- 	int offset_type, offset_val, offset_val2;
-@@ -657,7 +658,7 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- 	}
- 
- 	scale_type = iio_channel_read(chan, &scale_val, &scale_val2,
--					IIO_CHAN_INFO_SCALE);
-+				      IIO_CHAN_INFO_SCALE);
- 	if (scale_type < 0) {
- 		/*
- 		 * If no channel scaling is available apply consumer scale to
-@@ -702,19 +703,19 @@ static int iio_convert_raw_to_processed_unlocked(struct iio_channel *chan,
- }
- 
- int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
--	int *processed, unsigned int scale)
-+				 int *processed, unsigned int scale)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
- 
- 	ret = iio_convert_raw_to_processed_unlocked(chan, raw, processed,
--							scale);
-+						    scale);
- err_unlock:
- 	mutex_unlock(&iio_dev_opaque->info_exist_lock);
- 
-@@ -729,7 +730,7 @@ int iio_read_channel_attribute(struct iio_channel *chan, int *val, int *val2,
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -755,7 +756,7 @@ int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -833,7 +834,7 @@ int iio_read_avail_channel_raw(struct iio_channel *chan,
- 	int type;
- 
- 	ret = iio_read_avail_channel_attribute(chan, vals, &type, length,
--					 IIO_CHAN_INFO_RAW);
-+					       IIO_CHAN_INFO_RAW);
- 
- 	if (ret >= 0 && type != IIO_VAL_INT)
- 		/* raw values are assumed to be IIO_VAL_INT */
-@@ -917,7 +918,7 @@ int iio_get_channel_type(struct iio_channel *chan, enum iio_chan_type *type)
- 	/* Need to verify underlying driver has not gone away */
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -944,7 +945,7 @@ int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
- 	int ret;
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (chan->indio_dev->info == NULL) {
-+	if (!chan->indio_dev->info) {
- 		ret = -ENODEV;
- 		goto err_unlock;
- 	}
-@@ -978,9 +979,8 @@ unsigned int iio_get_channel_ext_info_count(struct iio_channel *chan)
- }
- EXPORT_SYMBOL_GPL(iio_get_channel_ext_info_count);
- 
--static const struct iio_chan_spec_ext_info *iio_lookup_ext_info(
--						const struct iio_channel *chan,
--						const char *attr)
-+static const struct iio_chan_spec_ext_info *
-+iio_lookup_ext_info(const struct iio_channel *chan, const char *attr)
- {
- 	const struct iio_chan_spec_ext_info *ext_info;
- 
--- 
-2.37.0
+> On Sun, Jul 10, 2022 at 11:17:06AM +0200, Angel Iglesias wrote:
+> > Simplified common initialization logic of different sensor types
+> > unifying calibration and initial configuration recovery.
+> > 
+> > Default config param values of each sensor type are stored inside
+> > chip_info structure and used to initialize sensor data struct instance.
+> > 
+> > The auxiliar functions for read each sensor type calibration are converted
+> > to a callback available on the chip_info struct.
+> 
+> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> 
+> Usually this kind of tag goes before your SoB, because it's chronologically
+> correct.
+> 
+Ok, makes sense.
 
+Thank you for your time and help,
+
+Best regards,
+Angel

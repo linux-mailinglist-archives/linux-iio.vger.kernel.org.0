@@ -2,72 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C33C5713BD
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Jul 2022 10:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418555713E4
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Jul 2022 10:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232129AbiGLIAH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Jul 2022 04:00:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33396 "EHLO
+        id S229962AbiGLIDq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Jul 2022 04:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232417AbiGLH76 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Jul 2022 03:59:58 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 437439B54B;
-        Tue, 12 Jul 2022 00:59:57 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id o7so12584481lfq.9;
-        Tue, 12 Jul 2022 00:59:57 -0700 (PDT)
+        with ESMTP id S232223AbiGLIDp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Jul 2022 04:03:45 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 079026579;
+        Tue, 12 Jul 2022 01:03:44 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id n18so10912072lfq.1;
+        Tue, 12 Jul 2022 01:03:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=S+qr/rB1qp3jjME/ZnJzZQtFse2L01G1JMoWBlVLSGU=;
-        b=D9uRYKokFim4JLJO9gvLlORuIh6vcIUQJfDCoZKNyWB35esEUVUh/49prmxrSVqZwV
-         3KQ1TeNXyy/4v9rfTGx1At0tvDe26KiAp4lF+NNjE0yzw2mg2iHXSmNUVLtGn/ZiOTs9
-         ROTw/puBgp1n1TEeFXFQWpIUSiW/kG7hjZjmTHNq7uU8AuMMyDsB5wclUERNySepNxP/
-         +xEhyP0MKwMwQLBTEIjajP4XfENyyWToPSpmEMm19FCMtste/xtaECL+wPeUbUu/sFXt
-         Z3h+62Qa9RN2XgHk2DQ6ceN8TshvjagwtjpSHeauWhdI3v4m9FW6jPd3dqs4vCMo3csa
-         hBFA==
+        bh=A/bW8s0zoH5UpbLSo1+jfXj3G0A2yQEqrO879sTZg5Q=;
+        b=VxhyLif+q+1G5dGPSu8k90vU6hL373LvHxZVzMk2MsBLRbSavwWVZuWG4a7zM8cQyY
+         BMMgqdsHgFtEmT177VKDRc/pI12Gty4TW6NC70OWWz8TefcTzMbk/okzFrp8kY4+EiP6
+         EjB100143GnuOMTbCmW7YjtnPof97VLNkIz1GsOc5nw/85fSnZTJDtl+RpRTrsd+dG31
+         XfgxLsHc1ubY3Z8e1zzV2DOQzihtp+ayYK15qMCNTM/Ald/3WoVLN3ljCiaXNNhCd/4m
+         5yGdhq5+Ck5mb9puVd2BGr5QutymWQVbpD/CLv/Ve8fAXdHvonmIwHoolZB1N4oioj0h
+         3ayQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=S+qr/rB1qp3jjME/ZnJzZQtFse2L01G1JMoWBlVLSGU=;
-        b=RHQ8zf5hpMbq0HALb447qwQkVi36Z3F5eDK0RQJSzszR2A6y698BFR9uMFU3Qreykh
-         nDUjw+aFbdP916cOBqiFP4Rwu35O+KSCQQEIGvIz7WD8T5fhVXIVOmOE91im95EyJQd2
-         WP2twYfuq0MF/ofAbcznCvh1SysaSiXW+/MmC7et1UAIGB+KRLeRwuXTBwAMhScGQCWh
-         p7zJ1WY5BPvITBcYUC2pK8djw+pzXfJPcG79vGZKzaORoH4Fnob+8Zwe08SN8rU7FVIK
-         l3Ayu9VELvEKog5X9b1/pRLt1hIufkmdRqlyXGEA1PcwmoPmugAokm2OM43qn1Voo54L
-         ZbEg==
-X-Gm-Message-State: AJIora+5F42WyGH3/j4TeAbdIcgla3Rnqdy2GaNWWsjkiqM1ErTFVue8
-        fJY/G6PfcsojpamWn7jI9WrXb0wys7aNNYkg4tg=
-X-Google-Smtp-Source: AGRyM1shi6v9DXsk4lwIdb0yjkJzIJOV8Bqm/mWXus8sJ5A9abScTn9/Us6KGjW2cBxKfXtDm7lOkhAKt2bBzLjAPho=
-X-Received: by 2002:a05:6512:324a:b0:486:a915:7b70 with SMTP id
- c10-20020a056512324a00b00486a9157b70mr12988761lfr.265.1657612795528; Tue, 12
- Jul 2022 00:59:55 -0700 (PDT)
+        bh=A/bW8s0zoH5UpbLSo1+jfXj3G0A2yQEqrO879sTZg5Q=;
+        b=7Vjq8M+HLbtN5alxc2pw6Nexr542QSj3FrYRgRCnBPNXhzEm2TzfERxDBV5rq5LH8U
+         xuvY0pt6YPPJrC9nDWgXGEN7j4/dQjyug8qMTVP1GbvCUBdtr0DJjKViCDZG6rt2NLMn
+         JaBR0Pt9N++O1sD96hond4N2Nc696qVe/0XprsRAhL2yRIDXjEYhy7u0ofc55Cjj1qc6
+         liLeG9fPMoITeklsz7NfpUydFbj9NLE19/XuI230Ngekij3cmSHOSJckWpMyXmXNWnNq
+         pFp9LfLHQKVCbBdODki14T5d2e/ztVgBdbgbw45uT5PV/FUWyoVHD8SJ4b5kmYZZC8f5
+         1RjQ==
+X-Gm-Message-State: AJIora9596abcU0SCGQUmnyYMez/LZjCmxRLX/Le9MhnXrz1FNTDJKWv
+        JH0BRhiSzGtcRStvohizhndI++eb6LlDdk+lS8U=
+X-Google-Smtp-Source: AGRyM1uetHv/UaG2R06jgnf9Ql2EOiVLPNLAlyTB3qAJPBJR9BfzPSFpwGS8ztIHge2xsMxx4c18CNJkdJ+rPX76K6M=
+X-Received: by 2002:a05:6512:1188:b0:481:2eb7:f2 with SMTP id
+ g8-20020a056512118800b004812eb700f2mr13946842lfr.401.1657613022433; Tue, 12
+ Jul 2022 01:03:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220711134312.234268-1-tmaimon77@gmail.com> <20220711134312.234268-3-tmaimon77@gmail.com>
- <CAHp75VdXsiH9ityqopznRpjxvwOboS_Zbi9iO6nRZ03TuKxTtg@mail.gmail.com> <CAHp75VeCPRVUMHYdNWgPja2eWeStokRDSogW-7ALz10_yEaDMA@mail.gmail.com>
-In-Reply-To: <CAHp75VeCPRVUMHYdNWgPja2eWeStokRDSogW-7ALz10_yEaDMA@mail.gmail.com>
+References: <20220711134312.234268-1-tmaimon77@gmail.com> <20220711134312.234268-2-tmaimon77@gmail.com>
+ <1657562119.172361.4172123.nullmailer@robh.at.kernel.org>
+In-Reply-To: <1657562119.172361.4172123.nullmailer@robh.at.kernel.org>
 From:   Tomer Maimon <tmaimon77@gmail.com>
-Date:   Tue, 12 Jul 2022 10:59:44 +0300
-Message-ID: <CAP6Zq1j_-w0n9WTUG99UVTJwsyqY0Zcs294wmA7LuWdiF4KYMA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] iio: adc: npcm: Add NPCM8XX support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Patrick Venture <venture@google.com>,
+Date:   Tue, 12 Jul 2022 11:03:30 +0300
+Message-ID: <CAP6Zq1jAzHysKaVMt960hsL2rN05_kfC265CS8Xcz1r8KOQDPg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: npcm: Add npcm845
+ compatible string
+To:     Rob Herring <robh@kernel.org>
+Cc:     zhengbin13@huawei.com,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
         Nancy Yuen <yuenn@google.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Benjamin Fair <benjaminfair@google.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-        zhengbin13@huawei.com, OpenBMC Maillist <openbmc@lists.ozlabs.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+        OpenBMC Maillist <openbmc@lists.ozlabs.org>,
+        Patrick Venture <venture@google.com>,
+        "open list:IIO SUBSYSTEM AND DRIVERS" <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
@@ -79,47 +81,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+Hi Rob,
 
-Thanks for your comments, they will be addressed next version.
+Thanks for your comment, it will be addressed next version.
 
-On Mon, 11 Jul 2022 at 17:16, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 11 Jul 2022 at 20:55, Rob Herring <robh@kernel.org> wrote:
 >
-> On Mon, Jul 11, 2022 at 4:14 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jul 11, 2022 at 3:59 PM Tomer Maimon <tmaimon77@gmail.com> wrote:
->
-> ...
->
-> > >         struct device *dev = &pdev->dev;
-> > > +       const struct of_device_id *match;
->
-> > > +       match = of_match_node(npcm_adc_match, pdev->dev.of_node);
-> > > +       if (!match || !match->data) {
-> > > +               dev_err(dev, "Failed getting npcm_adc_data\n");
-> > > +               return -ENODEV;
-> > > +       }
-> > >
-> > > +       info->data = (struct npcm_adc_info *)match->data;
+> On Mon, 11 Jul 2022 16:43:10 +0300, Tomer Maimon wrote:
+> > Add a compatible string for Nuvoton BMC NPCM845 ADC.
 > >
-> > Instead of above
+> > Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml     | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
 > >
-> >   info->data = device_get_match_data(dev);
-> >   if (!info->data)
 >
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
 >
-> >     return -ENODEV;
+> yamllint warnings/errors:
 >
-> Or
+> dtschema/dtc warnings/errors:
+> /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.example.dtb: adc@f000c000: compatible: 'oneOf' conditional failed, one must be fixed:
+>         ['nuvoton,npcm750-adc'] is too short
+>         From schema: /builds/robherring/linux-dt-review/Documentation/devicetree/bindings/iio/adc/nuvoton,npcm750-adc.yaml
 >
->   return dev_err_probe(dev, -EINVAL, "...\n");
+> doc reference errors (make refcheckdocs):
 >
-> if you want that message to be issued.
+> See https://patchwork.ozlabs.org/patch/
 >
+> This check can fail if there are any dependencies. The base for a patch
+> series is generally the most recent rc1.
 >
-> --
-> With Best Regards,
-> Andy Shevchenko
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>
+> pip3 install dtschema --upgrade
+>
+> Please check and re-submit.
+>
 
 Best regards,
 

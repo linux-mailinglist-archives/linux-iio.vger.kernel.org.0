@@ -2,53 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A93D573AC5
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 18:02:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59D5D573AE3
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 18:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237096AbiGMQCo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Jul 2022 12:02:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
+        id S237137AbiGMQLv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Jul 2022 12:11:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237124AbiGMQCj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 12:02:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2F850181;
-        Wed, 13 Jul 2022 09:02:37 -0700 (PDT)
+        with ESMTP id S237146AbiGMQLs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 12:11:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5444E501AF;
+        Wed, 13 Jul 2022 09:11:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 62047B820D6;
-        Wed, 13 Jul 2022 16:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB411C34114;
-        Wed, 13 Jul 2022 16:02:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9DE661AD5;
+        Wed, 13 Jul 2022 16:11:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30801C34114;
+        Wed, 13 Jul 2022 16:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657728155;
-        bh=0x7la21sx0eXpWEyHVI4LAHH8EFkUPLyeiwrINqKQwI=;
+        s=k20201202; t=1657728705;
+        bh=xKgCGVq47wtNXtj8TX6Re2zKYRejln4t9WqBUbpnVhE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=i0rDRvXCD2agdvFTtmYpi2THI4Nae0zbbA+hI6/F0lLe6dDQuxOP06s/qRXSTUlpJ
-         ZQKK/s/DUnJzUBOJ0/CCzyJSCi3G52ztdC9MsP2WI1J3tbZb1wdmhdgVvB/KbKQMKh
-         pHu9/9arqbvertIappvNpaFz3FC2YrptGirOAOLQTaq7J3jy4Bp1r5ln9tvC5diYSs
-         yhWrds+OTMwVsegDB6TZAWZEMe2vjDb5cdYKmRNtS+hUy0F9FSWAlXMG7vi2TMkKsa
-         q5e/HfE//IrBeP6/TY7UvT2iUh38ebMfmeqaZ2KCWmyEC/ZAYuKyvdZ8yzoGoRGWAU
-         +sE9afk3Ll04g==
-Date:   Wed, 13 Jul 2022 17:12:23 +0100
+        b=Z4h44caKqvqkIvqs6HwQUOqADIwkLjFK//iczkKgVOJrp/Eas6LK4iyLCD4Ov5k2G
+         BqGD/3kXLf7rE5BaYi3JLXh9b15l1aCsvyyYQWwtQs33kMSVTTS0h9oSvqYhvZ/qVu
+         aMGgz2kWO5W/9QNWb0NnctlyYTVmDKuy/GhcbdEa8V9qdJftMCwIrWDzU/XRrB6IzY
+         dhN/9wTMVkywR+n7Uw5rZTYBi3ARAaMUMS3PqKhsYDGzwW+8dif2F8cbWziuzDhiVV
+         cHoPYWSwX9w7M+Xi7Cw+/yZrFzmCvosbIpXPPsZ/IHXCAyKej9PpFDNCNLEvTatqaL
+         Knll34e5QIt2Q==
+Date:   Wed, 13 Jul 2022 17:21:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Michal Simek <michal.simek@amd.com>,
-        Conall O'Griofa <conall.o'griofa@xilinx.com>,
-        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH v1 1/2] iio: adc: xilinx-xadc: Make use of device
- properties
-Message-ID: <20220713171223.01005ca7@jic23-huawei>
-In-Reply-To: <YsMSvSJdc/eVqnYU@smile.fi.intel.com>
-References: <20220531141118.64540-1-andriy.shevchenko@linux.intel.com>
-        <20220603183224.540b3808@jic23-huawei>
-        <e2efcf6d-ed85-dc6e-64e1-f0efedd4a673@amd.com>
-        <YsBYvPKfZRLygCyz@smile.fi.intel.com>
-        <1d6eba67-5a63-e1b2-c9cd-583b950ddca6@amd.com>
-        <YsMSvSJdc/eVqnYU@smile.fi.intel.com>
+To:     Tomer Maimon <tmaimon77@gmail.com>
+Cc:     <avifishman70@gmail.com>, <tali.perry1@gmail.com>,
+        <joel@jms.id.au>, <venture@google.com>, <yuenn@google.com>,
+        <benjaminfair@google.com>, <lars@metafoo.de>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <j.neuschaefer@gmx.net>,
+        <zhengbin13@huawei.com>, <openbmc@lists.ozlabs.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] iio: adc: npcm: Add NPCM8XX support
+Message-ID: <20220713172132.0bc5002d@jic23-huawei>
+In-Reply-To: <20220713132640.215916-3-tmaimon77@gmail.com>
+References: <20220713132640.215916-1-tmaimon77@gmail.com>
+        <20220713132640.215916-3-tmaimon77@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,28 +60,125 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 4 Jul 2022 19:18:05 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 13 Jul 2022 16:26:40 +0300
+Tomer Maimon <tmaimon77@gmail.com> wrote:
 
-> On Mon, Jul 04, 2022 at 12:43:26PM +0200, Michal Simek wrote:
-> > On 7/2/22 16:39, Andy Shevchenko wrote:  
-> > > On Mon, Jun 20, 2022 at 04:58:04PM +0200, Michal Simek wrote:  
+> Adding ADC NPCM8XX support to NPCM ADC driver.
+> ADC NPCM8XX uses a different resolution and voltage reference.
 > 
-> ...
+> As part of adding NPCM8XX support:
+> - Add NPCM8XX specific compatible string.
+> - Add data to handle architecture-specific ADC parameters.
 > 
-> > > Hmm... No news?  
-> > 
-> > Anand unfortunately left the company. I have asked testing team to test this
-> > patch and they can't see any issue.
-> > That's why:
-> > Acked-by: Michal Simek <michal.simek@amd.com>  
-> 
-> Ah, thanks! Jonathan, I guess we are set to apply now.
-> 
+> Signed-off-by: Tomer Maimon <tmaimon77@gmail.com>
+missing 
 
-Applied to the togreg branch of iio.git and pushed out as testing for all the
-normal reasons.
+#include <linux/property.h> 
+
+So in current IIO togreg tree this doesn't build.  I could fix it up
+but given we are very late in cycle and I'd like to give this a little
+more time on list for Andy to take another look if he wishes, chances
+are this won't make it in until early next cycle.
 
 Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/adc/npcm_adc.c | 35 ++++++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/npcm_adc.c b/drivers/iio/adc/npcm_adc.c
+> index f7bc0bb7f112..4c7ebcd57b88 100644
+> --- a/drivers/iio/adc/npcm_adc.c
+> +++ b/drivers/iio/adc/npcm_adc.c
+> @@ -16,6 +16,12 @@
+>  #include <linux/uaccess.h>
+>  #include <linux/reset.h>
+>  
+> +struct npcm_adc_info {
+> +	u32 data_mask;
+> +	u32 internal_vref;
+> +	u32 res_bits;
+> +};
+> +
+>  struct npcm_adc {
+>  	bool int_status;
+>  	u32 adc_sample_hz;
+> @@ -34,6 +40,7 @@ struct npcm_adc {
+>  	 * has finished.
+>  	 */
+>  	struct mutex lock;
+> +	const struct npcm_adc_info *data;
+>  };
+>  
+>  /* ADC registers */
+> @@ -52,13 +59,21 @@ struct npcm_adc {
+>  #define NPCM_ADCCON_CH(x)		((x) << 24)
+>  #define NPCM_ADCCON_DIV_SHIFT		1
+>  #define NPCM_ADCCON_DIV_MASK		GENMASK(8, 1)
+> -#define NPCM_ADC_DATA_MASK(x)		((x) & GENMASK(9, 0))
+>  
+>  #define NPCM_ADC_ENABLE		(NPCM_ADCCON_ADC_EN | NPCM_ADCCON_ADC_INT_EN)
+>  
+>  /* ADC General Definition */
+> -#define NPCM_RESOLUTION_BITS		10
+> -#define NPCM_INT_VREF_MV		2000
+> +static const struct npcm_adc_info npxm7xx_adc_info = {
+> +	.data_mask = GENMASK(9, 0),
+> +	.internal_vref = 2048,
+> +	.res_bits = 10,
+> +};
+> +
+> +static const struct npcm_adc_info npxm8xx_adc_info = {
+> +	.data_mask = GENMASK(11, 0),
+> +	.internal_vref = 1229,
+> +	.res_bits = 12,
+> +};
+>  
+>  #define NPCM_ADC_CHAN(ch) {					\
+>  	.type = IIO_VOLTAGE,					\
+> @@ -129,7 +144,8 @@ static int npcm_adc_read(struct npcm_adc *info, int *val, u8 channel)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	*val = NPCM_ADC_DATA_MASK(ioread32(info->regs + NPCM_ADCDATA));
+> +	*val = ioread32(info->regs + NPCM_ADCDATA);
+> +	*val &= info->data->data_mask;
+>  
+>  	return 0;
+>  }
+> @@ -157,9 +173,9 @@ static int npcm_adc_read_raw(struct iio_dev *indio_dev,
+>  			vref_uv = regulator_get_voltage(info->vref);
+>  			*val = vref_uv / 1000;
+>  		} else {
+> -			*val = NPCM_INT_VREF_MV;
+> +			*val = info->data->internal_vref;
+>  		}
+> -		*val2 = NPCM_RESOLUTION_BITS;
+> +		*val2 = info->data->res_bits;
+>  		return IIO_VAL_FRACTIONAL_LOG2;
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+>  		*val = info->adc_sample_hz;
+> @@ -176,7 +192,8 @@ static const struct iio_info npcm_adc_iio_info = {
+>  };
+>  
+>  static const struct of_device_id npcm_adc_match[] = {
+> -	{ .compatible = "nuvoton,npcm750-adc", },
+> +	{ .compatible = "nuvoton,npcm750-adc", .data = &npxm7xx_adc_info},
+> +	{ .compatible = "nuvoton,npcm845-adc", .data = &npxm8xx_adc_info},
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, npcm_adc_match);
+> @@ -196,6 +213,10 @@ static int npcm_adc_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  	info = iio_priv(indio_dev);
+>  
+> +	info->data = device_get_match_data(dev);
+> +	if (!info->data)
+> +		return -EINVAL;
+> +
+>  	mutex_init(&info->lock);
+>  
+>  	info->dev = &pdev->dev;
+

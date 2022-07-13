@@ -2,81 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 947D5572883
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Jul 2022 23:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9619572AD7
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 03:31:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233173AbiGLVXV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 12 Jul 2022 17:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57380 "EHLO
+        id S233117AbiGMBbJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 12 Jul 2022 21:31:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233235AbiGLVXS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Jul 2022 17:23:18 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBD8D0E35
-        for <linux-iio@vger.kernel.org>; Tue, 12 Jul 2022 14:23:16 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id r9so8036626lfp.10
-        for <linux-iio@vger.kernel.org>; Tue, 12 Jul 2022 14:23:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=ZIixC2bV5bk0+HIicGoB7Neycw0Y+e5g1F3XyfSlUow=;
-        b=lEd2am2qFIvJv6mvwUPXijftjd8L/Wyv9Yx+kKh+EvPQy2tACUdBFYr9SBMhe52bh4
-         oypuIStUzdaV9hnFKV8CZx6YYvxyWyBt+hdEKrL0xT8OBGD7oRh55m4WKmqzfkbzj5Dp
-         XMjQMxMW8vWxEpXgr3S5Y1Ti7r5bCIkZ4ftbbTBEg93nORt5WH5trqMQe35/+EvhDdak
-         RVOBEB9WpNO4QJ8LX7couSF9n0zEMJpevFZOlFiQKveOzKA8dDVowBooFkhWIfiz5GRv
-         kiov8wQwDs2OA8iiTDK4cv5moIrCKR7v3VOys92mWJTzS/unkodYL9b7uHt/oeRUfBuP
-         lbBg==
+        with ESMTP id S230417AbiGMBbJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 12 Jul 2022 21:31:09 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D73CC9219
+        for <linux-iio@vger.kernel.org>; Tue, 12 Jul 2022 18:31:08 -0700 (PDT)
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5C3DC3F770
+        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 01:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1657675866;
+        bh=BCcc4GfN+MGP0hj9IK2EKrG4OYSKiM0e7SGOkyqrreo=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=quaeGVgyzCiUGTDOirKxtSmbx5VPsnNPoR8kn9bWuWs92ixiryOywCnAJTbymel8u
+         If/K9Booud7G/nVEehB3ERLwgsYg9GO+svHGIpfhd5U56BnmoX1fIgx2Zf+hnkAl/v
+         Hp5NRMV1u/URl7NjxVxrEUQftkxW4ZaUcARhKwtqhE3zJJn98xxMZkDAwAbOaKQL8f
+         ITt01HJ01zpFvD3P08TjZLlATiYCK1TPmpn3t7OyfVMUY30yLe9LVGtU7uC0Ob7jri
+         hlAuCprZbloxWq7NCGlt+EI89rkcVwDawKwo/tmwpQwxJkFGNpa8fDtEUfByT8ErJJ
+         8AB51BQGfk1fQ==
+Received: by mail-oi1-f197.google.com with SMTP id o9-20020acaf009000000b0032f4e886b80so6198654oih.5
+        for <linux-iio@vger.kernel.org>; Tue, 12 Jul 2022 18:31:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=ZIixC2bV5bk0+HIicGoB7Neycw0Y+e5g1F3XyfSlUow=;
-        b=2lxsa7yGCs4lj+nYxkEda/p9isTkfrjRhdiPIgF9dbaGrlzpYmXwr2BU7tsX06VAh7
-         hubSwsGxztagoXGf5S/4ygxxdAuquSDLuMIh3E0TkN0802iTACGovjSFXVFq8tsfooPl
-         1gncmmjQ9sPwf+tJxm91LKvdHFOLNxv9gpbNFaZWbTlwr/Piz4jby4zFqSJ13418xdbs
-         ytHzbjRYMu8BWTt4zr/ALE0gQxiyj10sFH9aVHsCWm5tfFfh1IwuM32Poziyk3xWKv45
-         SghNqVlCEYujM+iMRGVhbv14ymicNNQxUpWBqtd8Zhkqv5cBTTQre6hjxqLEEY3EoraL
-         IB1g==
-X-Gm-Message-State: AJIora/3P/6xC9vFkRa7e0fq/1thZL0Kp24aaGGo0yu9t7dykWEzN4Gl
-        PoMl7eWxiQyD/rGKvMkTclveew==
-X-Google-Smtp-Source: AGRyM1sLfpcYmbiEjWfaKm08jr8ScrE2GfPqP64cecPIr1DDlLCmyOl86WwUnjYrA+y/rjH/i6DnAQ==
-X-Received: by 2002:a05:6512:3b8f:b0:489:c6c9:f522 with SMTP id g15-20020a0565123b8f00b00489c6c9f522mr11797lfv.244.1657660996339;
-        Tue, 12 Jul 2022 14:23:16 -0700 (PDT)
-Received: from [10.0.0.8] (fwa5da9-171.bb.online.no. [88.93.169.171])
-        by smtp.gmail.com with ESMTPSA id v11-20020ac2560b000000b0047f9dca3708sm2391737lfd.51.2022.07.12.14.23.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 12 Jul 2022 14:23:15 -0700 (PDT)
-Message-ID: <ca26630c-a09c-6f4d-51de-7a2ba615bd58@linaro.org>
-Date:   Tue, 12 Jul 2022 23:23:13 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BCcc4GfN+MGP0hj9IK2EKrG4OYSKiM0e7SGOkyqrreo=;
+        b=MlCxBHs7hZISIj5VyNsCtPHJZeiAoUjmVp0RZFmzkWFqbeMccOpilFob+Bn9fLlT41
+         rrEAnuh6eOUcZCrXkuSCaoIM3emm5RlXmgqEwQDqbR1OAcautpmHqENGVEe6F2ge7dWa
+         edrrxM7oQEWGlPBKs8esiILfhaTJ9OokZmPIgLm85nle+6UhzwTYvkxnp9V9p1BufuPC
+         iFV/+PGUMLO/kCO45ooI2mlZri7ZSF+5HurqA3/e6/R95o8m6GdkQ5UU6jFnoMAfaSFG
+         5EGVNT1G687GTk/XaODPfo0ItG8SNXuJohkD7zZTjFZg3mCjmsB9FtIGHZDdTnDdmueZ
+         mqNg==
+X-Gm-Message-State: AJIora/xvxmW9a1QG+FkE45v/5ezxcQH9Fp/xu/NrK5HaZtRZHA0qvb1
+        nRv+0JVoyU/wst2msK0rX6+/KJAs46hq7vHoKy2/GNiebzyQNh6rpw9VZAaFADM9ysDMzuukh5R
+        XSBn/qvUwS73Jjxbus+/B34mrV6m9nm8KGW/vaIS1iJa0b3D6sHBCDw==
+X-Received: by 2002:a05:6808:1643:b0:335:19ba:b696 with SMTP id az3-20020a056808164300b0033519bab696mr552722oib.42.1657675865300;
+        Tue, 12 Jul 2022 18:31:05 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1v6KysfUndZJ6mEviiHlk0zOxcc1iB28C8yGi2owgz5pTmyxq1hkaNLbmASDCQ8QImXIjNRulZ6lU2Cu1DNF5g=
+X-Received: by 2002:a05:6808:1643:b0:335:19ba:b696 with SMTP id
+ az3-20020a056808164300b0033519bab696mr552714oib.42.1657675865013; Tue, 12 Jul
+ 2022 18:31:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 5/5] dt-bindings: input: touchscreen: stmpe: Remove
- node name requirement
-Content-Language: en-US
-To:     Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-input@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20220712163345.445811-1-francesco.dolcini@toradex.com>
- <20220712163345.445811-6-francesco.dolcini@toradex.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220712163345.445811-6-francesco.dolcini@toradex.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+References: <20220707000151.33381-1-kai.heng.feng@canonical.com> <20220707175037.1352fa6b@jic23-huawei>
+In-Reply-To: <20220707175037.1352fa6b@jic23-huawei>
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Date:   Wed, 13 Jul 2022 09:30:52 +0800
+Message-ID: <CAAd53p6OS+WH+vP3GUyrExmy_a7KoGyN6-v5hspcFaBoS1S07Q@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: light: cm32181: Add PM support
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     ktsai@capellamicro.com, lars@metafoo.de, hdegoede@redhat.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,18 +74,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/07/2022 18:33, Francesco Dolcini wrote:
-> STMPE driver does not require a specific node name anymore, only the
-> compatible is checked, update binding according to this.
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
->  Documentation/devicetree/bindings/input/touchscreen/stmpe.txt | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+On Fri, Jul 8, 2022 at 12:40 AM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Thu,  7 Jul 2022 08:01:51 +0800
+> Kai-Heng Feng <kai.heng.feng@canonical.com> wrote:
+>
+> > The read on in_illuminance_input keeps at 0 after system sleep.
+> >
+> > So add proper suspend and resume callback to make the sensor keep
+> > working after system sleep.
+> >
+> > Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+> Applied to the togreg branch of iio.git and pushed out as testing for
+> the autobuilders to poke at it and see if we missed anything,
 
+This commit doesn't seem to be included in iio/togreg branch.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Kai-Heng
 
-
-Best regards,
-Krzysztof
+>
+> Thanks,
+>
+> Jonathan
+>
+> > ---
+> > v2:
+> >  - Use dev_get_drvdata() instead of i2c_get_clientdata() to avoid extra
+> >    dereference.
+> >
+> >  drivers/iio/light/cm32181.c | 22 ++++++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> >
+> > diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+> > index 97649944f1df6..edbe6a3138d0b 100644
+> > --- a/drivers/iio/light/cm32181.c
+> > +++ b/drivers/iio/light/cm32181.c
+> > @@ -460,6 +460,8 @@ static int cm32181_probe(struct i2c_client *client)
+> >                       return PTR_ERR(client);
+> >       }
+> >
+> > +     i2c_set_clientdata(client, indio_dev);
+> > +
+> >       cm32181 = iio_priv(indio_dev);
+> >       cm32181->client = client;
+> >       cm32181->dev = dev;
+> > @@ -486,6 +488,25 @@ static int cm32181_probe(struct i2c_client *client)
+> >       return 0;
+> >  }
+> >
+> > +static int cm32181_suspend(struct device *dev)
+> > +{
+> > +     struct i2c_client *client = to_i2c_client(dev);
+> > +
+> > +     return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
+> > +                                      CM32181_CMD_ALS_DISABLE);
+> > +}
+> > +
+> > +static int cm32181_resume(struct device *dev)
+> > +{
+> > +     struct i2c_client *client = to_i2c_client(dev);
+> > +     struct cm32181_chip *cm32181 = iio_priv(dev_get_drvdata(dev));
+> > +
+> > +     return i2c_smbus_write_word_data(client, CM32181_REG_ADDR_CMD,
+> > +                                      cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
+> > +}
+> > +
+> > +DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
+> > +
+> >  static const struct of_device_id cm32181_of_match[] = {
+> >       { .compatible = "capella,cm3218" },
+> >       { .compatible = "capella,cm32181" },
+> > @@ -506,6 +527,7 @@ static struct i2c_driver cm32181_driver = {
+> >               .name   = "cm32181",
+> >               .acpi_match_table = ACPI_PTR(cm32181_acpi_match),
+> >               .of_match_table = cm32181_of_match,
+> > +             .pm = pm_sleep_ptr(&cm32181_pm_ops),
+> >       },
+> >       .probe_new      = cm32181_probe,
+> >  };
+>

@@ -2,490 +2,455 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B85E0573A7A
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 17:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED424573A82
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 17:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237069AbiGMPsf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Jul 2022 11:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
+        id S236977AbiGMPtT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Jul 2022 11:49:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237042AbiGMPs2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 11:48:28 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3D54F673;
-        Wed, 13 Jul 2022 08:48:20 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26DAqEdC027649;
-        Wed, 13 Jul 2022 17:48:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=selector1;
- bh=VQK3Do5F41kTcO36apEUbg6NJlKtW9bkdWCXeFd1mPw=;
- b=gSwcIftV5l0ZU0osvvzsSYL535JFhr0MRoD4haaRA/pMVLQ3Qri9T9DwCR2WlWeeKKYQ
- zvl6qU7jhajAMdeznUNIOil8YevYQqAXUoER3TE/2WQuonhxSj1NDRNwlq2aHCTWTeD2
- kQUAkAWy1XBjyP72hjZbUfH/IX7BNswOqBXkIVYD+3Qic2mP+eX9uuN2FS+DmzirGEZc
- CyF/5coXJyRMjKAKc9ditRpR5wgEK8sgXckzsqE2LCNur7xoJqAFmR4Y40Ax2NU2vweq
- 3q1M25abd4HauSIn6GZvdwLySVQm2jcZpaEr1yVbx5CrKxgL5t3O72aW8Avtt0jrimLd zA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3h93cwjj1b-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 13 Jul 2022 17:48:18 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id E6B1910002A;
-        Wed, 13 Jul 2022 17:48:17 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CB25A22788E;
-        Wed, 13 Jul 2022 17:48:17 +0200 (CEST)
-Received: from [10.48.1.102] (10.75.127.50) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 13 Jul
- 2022 17:48:11 +0200
-Message-ID: <c4385216-1d9e-34b3-58ea-edf8d9ed4cd8@foss.st.com>
-Date:   Wed, 13 Jul 2022 17:48:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2 13/15] iio: adc: stm32-adc: convert to device
- properties
-Content-Language: en-US
-To:     =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
-        <linux-arm-msm@vger.kernel.org>, <openbmc@lists.ozlabs.org>,
-        <linux-renesas-soc@vger.kernel.org>,
-        <linux-mediatek@lists.infradead.org>, <linux-imx@nxp.com>,
-        <linux-mips@vger.kernel.org>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        <linux-iio@vger.kernel.org>, <chrome-platform@lists.linux.dev>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-CC:     Andy Gross <agross@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Haibo Chen <haibo.chen@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Patrick Venture <venture@google.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        with ESMTP id S229753AbiGMPtL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 11:49:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C8BA1C931
+        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 08:49:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DC0ABB820C1
+        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 15:49:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1377DC341C8;
+        Wed, 13 Jul 2022 15:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657727346;
+        bh=Ji3Gvdu3ul/VIlUZZN7/npqxBOizUSzAPVucMqI0NgM=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FTCVspAwbi0HRHRJvL+aug9YqZC9g+MriFL10GT7JyL/c7dMvEu3DNTxdhcbNSlHQ
+         8bZuHlZUV52vmgmQx5aHgjNT/R7qeaiHiBhK0stxzdgPsxk6wltwM8aMIjYwqJKzfS
+         4Wq0oR/1n2QuvmZjEZBej7IH5kQ4bMuMUOXpnOz3hQeuJsUalzgx1LX7OtLnCVSwPG
+         +s5jZt199lc7Yh+uw3rvRhQ8s0oCUlQEpIDnF8RY0Rhi+ACvsfOas1xIt8nf82EOCa
+         R0KiJ/XvaxKkBRlgYMPwNuuL3kz6DpARbW+zsz1tKiX/uwhqlNgeaeF2dWxiCAQ/48
+         8XC8yRM7WD8iw==
+Date:   Wed, 13 Jul 2022 16:58:54 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Bastien Nocera <hadess@hadess.net>,
         Gwendal Grignou <gwendal@chromium.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+        jikos@kernel.org, wpsmith@google.com, linux-iio@vger.kernel.org,
         Linus Walleij <linus.walleij@linaro.org>
-References: <20220711123835.811358-1-nuno.sa@analog.com>
- <20220711123835.811358-14-nuno.sa@analog.com>
- <f0f150cf-586f-9f13-81b0-cb95bd0d8f23@foss.st.com>
- <ca7dc3801e29ddaa59f868c20d491d15541522d8.camel@gmail.com>
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <ca7dc3801e29ddaa59f868c20d491d15541522d8.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.75.127.50]
-X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-13_05,2022-07-13_03,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Subject: Re: [PATCH] iio/hid: Add mount_matrix
+Message-ID: <20220713165854.27828d0c@jic23-huawei>
+In-Reply-To: <c5fda5ad-59fb-c933-c640-4b3e44ec95ca@redhat.com>
+References: <20220624223341.2625231-1-gwendal@chromium.org>
+        <20220625120937.24c51ca4@jic23-huawei>
+        <937c3317-91f7-9236-70a8-39ca4c2f6396@redhat.com>
+        <534cde0d461b194e2fa9a91bd987da1cd2aae58a.camel@linux.intel.com>
+        <CAPUE2usnMyDN5DpgY_dtj73Jb811-9Y6Q8ZLsnqKiA7=q=74UQ@mail.gmail.com>
+        <60f39446-a764-2f7f-ec6c-30f49ada3f07@redhat.com>
+        <CAPUE2uv-GS2ZMhmzmLzHhUGyrtDJ0GVvk17JafnMSSYdnK8z0g@mail.gmail.com>
+        <b0b9beb8440ca40e6673b1ee8473708516d639cb.camel@hadess.net>
+        <c5fda5ad-59fb-c933-c640-4b3e44ec95ca@redhat.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,WEIRD_QUOTING
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 7/12/22 12:33, Nuno Sá wrote:
-> Hi Fabrice,
-> 
-> Nice that someone in ST is looking at this one :)
+On Tue, 28 Jun 2022 14:33:09 +0200
+Hans de Goede <hdegoede@redhat.com> wrote:
 
-Hi Nuno,
+> Hi,
+>=20
+> On 6/27/22 11:55, Bastien Nocera wrote:
+> > On Mon, 2022-06-27 at 02:05 -0700, Gwendal Grignou wrote: =20
+> >> =C2=A0of
+> >>
+> >> On Sun, Jun 26, 2022 at 7:42 AM Hans de Goede <hdegoede@redhat.com>
+> >> wrote: =20
+> >>>
+> >>> Hi,
+> >>>
+> >>> On 6/25/22 22:52, Gwendal Grignou wrote: =20
+> >>>> On Sat, Jun 25, 2022 at 11:27 AM srinivas pandruvada
+> >>>> <srinivas.pandruvada@linux.intel.com> wrote: =20
+> >>>>>
+> >>>>> On Sat, 2022-06-25 at 14:33 +0200, Hans de Goede wrote: =20
+> >>>>>> Hi,
+> >>>>>>
+> >>>>>> Jonathan, thanks for Cc-ing me on this.
+> >>>>>>
+> >>>>>> On 6/25/22 13:09, Jonathan Cameron wrote: =20
+> >>>>>>> On Fri, 24 Jun 2022 15:33:41 -0700
+> >>>>>>> Gwendal Grignou <gwendal@chromium.org> wrote:
+> >>>>>>> =20
+> >>>>>>>> ISH based sensors do not naturally return data in the W3C
+> >>>>>>>> 'natural'
+> >>>>>>>> orientation.
+> >>>>>>>> They returns all data inverted, to match Microsoft
+> >>>>>>>> Windows
+> >>>>>>>> requirement:
+> >>>>>>>> [
+> >>>>>>>> https://docs.microsoft.com/en-us/windows/uwp/devices-sensors/sen=
+so
+> >>>>>>>> rs#accelerometer]
+> >>>>>>>> """ If the device has the SimpleOrientation of FaceUp on
+> >>>>>>>> a table,
+> >>>>>>>> then
+> >>>>>>>> the accelerometer would read -1 G on the Z axis. """ =20
+> >>>>>>>
+> >>>>>>> Probably reference the HID Usage Tables 1.3 spec rather
+> >>>>>>> than the MS
+> >>>>>>> one.
+> >>>>>>> https://usb.org/sites/default/files/hut1_3_0.pdf =20
+> >>>> That document does not clearly defined what the accelerometer
+> >>>> should return. =20
+> >>>>>>> After some waving around of my left and right hand I'm
+> >>>>>>> fairly sure
+> >>>>>>> that says the same
+> >>>>>>> thing as the MS spec. Section 4.4 Vector Usages
+> >>>>>>> =20
+> >>>>>>>> While W3C defines
+> >>>>>>>> [
+> >>>>>>>> https://www.w3.org/TR/motion-sensors/#accelerometer-sensor
+> >>>>>>>> ]
+> >>>>>>>> """The Accelerometer sensor is an inertial-frame sensor,
+> >>>>>>>> this
+> >>>>>>>> means that
+> >>>>>>>> when the device is in free fall, the acceleration is 0
+> >>>>>>>> m/s2 in
+> >>>>>>>> the
+> >>>>>>>> falling direction, and when a device is laying flat on a
+> >>>>>>>> table,
+> >>>>>>>> the
+> >>>>>>>> acceleration in upwards direction will be equal to the
+> >>>>>>>> Earth
+> >>>>>>>> gravity,
+> >>>>>>>> i.e. g =E2=89=A1 9.8 m/s2 as it is measuring the force of the
+> >>>>>>>> table
+> >>>>>>>> pushing the
+> >>>>>>>> device upwards."""
+> >>>>>>>>
+> >>>>>>>> Fixes all HID sensors that defines IIO_MOD_[XYZ]
+> >>>>>>>> attributes.
+> >>>>>>>>
+> >>>>>>>> Tested on "HP Spectre x360 Convertible 13" and "Dell XPS
+> >>>>>>>> 13
+> >>>>>>>> 9365".
+> >>>>>>>>
+> >>>>>>>> Signed-off-by: Gwendal Grignou <gwendal@chromium.org> =20
+> >>>>>>>
+> >>>>>>> Ah.=C2=A0 Whilst this is a fix, it seems likely to break a whole
+> >>>>>>> bunch
+> >>>>>>> of existing
+> >>>>>>> users that are compensating for the wrong orientation in
+> >>>>>>> userspace.=C2=A0 Also, do
+> >>>>>>> we know how universal this is?=C2=A0 I have a nasty feeling
+> >>>>>>> it'll turn
+> >>>>>>> out some
+> >>>>>>> HID sensors do it the other way whatever the spec says.=C2=A0
+> >>>>>>> Bastien,
+> >>>>>>> are you
+> >>>>>>> carrying a local fix for this in your userspace code?
+> >>>>>>>
+> >>>>>>> +CC a few people who are likely to know more on just how
+> >>>>>>> bad that
+> >>>>>>> will be... =20
+> >>>>>>
+> >>>>>> Right, so Linux userspace expects an axis system similar to
+> >>>>>> the
+> >>>>>> Android one,
+> >>>>>> which is actually the one which seems to be described here.
+> >>>>>>
+> >>>>>> The axis system expect is that when a tablet is layed flat on
+> >>>>>> the
+> >>>>>> table,
+> >>>>>> the x and y axis are as one would expect when drawing a
+> >>>>>> mathematics
+> >>>>>> graph on the surface of the tablet.
+> >>>>>>
+> >>>>>> So X-axis goes from left to right, with left side being lower
+> >>>>>> numbers
+> >>>>>> and
+> >>>>>> right side higher numbers.
+> >>>>>>
+> >>>>>> And Y-axis goes from bottom to top, with the bottom being
+> >>>>>> lower
+> >>>>>> numbers and
+> >>>>>> the top higher numbers.
+> >>>>>>
+> >>>>>> That leaves the Z-axis which comes out of the screen at a 90=C2=B0
+> >>>>>> angle
+> >>>>>> (to both
+> >>>>>> the X and Y axis) and the vector coming out of the screen
+> >>>>>> towards to
+> >>>>>> the user /
+> >>>>>> observer of the screen indicates positive numbers where as
+> >>>>>> imagining
+> >>>>>> the same
+> >>>>>> axis pointing down through the table on which the tables is
+> >>>>>> lying
+> >>>>>> towards
+> >>>>>> the floor represents negative numbers.
+> >>>>>>
+> >>>>>> This means that the accel values of a tablet resting on a
+> >>>>>> table,
+> >>>>>> expresses
+> >>>>>> in units of 1G are: [ 0, 0, -1 ] and I've seen quite a few
+> >>>>>> HID
+> >>>>>> sensors =20
+> >>>> But W3C and Android expect [ 0, 0, 1g ] when resting on the
+> >>>> table. See
+> >>>> commit message for W3C and for Android, see
+> >>>> https://source.android.com/devices/sensors/sensor-types#accelerometer
+> >>>> """When the device lies flat on a table, the acceleration value
+> >>>> along
+> >>>> z is +9.81 alo, which corresponds to the acceleration of the
+> >>>> device (0
+> >>>> m/s^2) minus the force of gravity (-9.81 m/s^2)."""". That is why
+> >>>> we
+> >>>> need to change the sign to be consistent with these standards. =20
+> >>>
+> >>> Windows and HID devices use [ 0, 0, -1 ] for device face up on
+> >>> a flat table and
+> >>> this is what Linux has been reporting to userspace for many many
+> >>> years now. =20
+> >> This is not true. Most drivers for standalone sensor report [ 0, 0,
+> >> 1]
+> >> when the accelerometer sits face up on a table. For instance:
+> >> - in driver drivers/iio/accel/kxcjk-1013.c, read INFO_RAW reports the
+> >> raw accelerometer for sensor KX023 (see datasheet
+> >> https://kionixfs.azureedge.net/en/datasheet/KX023-1025%20Specification=
+s%20Rev%2012.0.pdf
+> >> page 17), as the scale is a positive value.
+> >> - same for sensor BMI160 in driver
+> >> drivers/iio/imu/bmi160/bmi160_core.c. The BMI160 axis conforms to W3C
+> >> and Android requirement (see
+> >> https://www.bosch-sensortec.com/media/boschsensortec/downloads/datashe=
+ets/bst-bmi160-ds000.pdf
+> >> page 107). =20
+> >=20
+> > Accelerometers can be installed in any orientation inside the shell of
+> > the device, which means that raw data reported from the device needs to
+> > be checked against how it's implemented.
+> >  =20
+> >>> Auto-display-rotation based in accel
+> >>> reading was first supported in GNOME through iio-sensor-proxy
+> >>> in 2014 !
+> >>>
+> >>> And iio-sensor-proxy expects the Windows/HID sign of the axis
+> >>> you can NOT just go and change this, that would break 8 years
+> >>> of precedent of using the current Windows/HID sign (+/-) for
+> >>> the axis!
+> >>>
+> >>> Also besides the kernel reporting a matrix it is also possible
+> >>> for userspace to provide a matrix using udev's hwdb:
+> >>>
+> >>> https://github.com/systemd/systemd/blob/main/hwdb.d/60-sensor.hwdb =20
+> >> Note that the determinant of most of the matrices in this file equals
+> >> -1. It means these matrices do not just describe a rotation, they
+> >> first invert the axis (see
+> >> https://en.wikipedia.org/wiki/Determinant#Orientation_of_a_basis)
+> >> 136 out of 160 matrices invert the axes. In particular, entries with
+> >> acpi:KIOX... 42 out of 45 are inverted, with acpi:BOSC0200*, 22 out
+> >> 31
+> >> are, with acpi:SMO8500* 25 out 27 are.
+> >>
+> >> The matrices for directly connected accelerometers/IMU where axes are
+> >> not inverted may be errors and confirm that some IIO drivers do
+> >> report
+> >> [ 0, 0, 1 ] for accelerometer ICs face up. I will send a more
+> >> detailed
+> >> message with my findings on the systemd mailing list. =20
+> >=20
+> > You're already in touch with the people who have worked on that code
+> > here (that'd be Hans and myself).
+> >  =20
+> >> =20
+> >>>
+> >>> This has been in place since 2016 and this sets a matrix adjusting
+> >>> readings of non HID sensors to match the *HID/windows* definition
+> >>> of the axis.
+> >>> =20
+> >>>>>> with accel reporting on various devices and they all adhere
+> >>>>>> to this
+> >>>>>> without applying any accel matrix. Or in other words, HID
+> >>>>>> sensors
+> >>>>>> behave
+> >>>>>> as expected by userspace when applying the norm matrix of:
+> >>>>>>
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .rotation =3D {
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 "1", "0", "0",
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 "0", "1", "0",
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 "0", "0", "1"
+> >>>>>>
+> >>>>>> And this patch will cause the image to be upside down (no
+> >>>>>> matter what
+> >>>>>> the
+> >>>>>> rotation) when using auto-rotation with iio-sensor-proxy.
+> >>>>>>
+> >>>>>> So big NACK from me for this patch.
+> >>>>>>
+> >>>>>> I'm not sure what this patch is trying to fix but it looks to
+> >>>>>> me like
+> >>>>>> it
+> >>>>>> is a bug in the HID sensors implementation of the specific
+> >>>>>> device. =20
+> >>>> This is a not a bug since HID sensors from 2 laptops from
+> >>>> different
+> >>>> manufacturers (HP and Dell) report the same values. =20
+> >>>
+> >>> Right, I wrongly assumed the Android definition would match the
+> >>> IMHO much saner / much more intuitive HID/Windows definitions,
+> >>> since the arrows in the phone image in the Android docs point
+> >>> in the same direction as the Windows docs.
+> >>>
+> >>> But I have tested on an Android phone now and I see that
+> >>> Android indeed has all the axis inverted.
+> >>> =20
+> >>>>>> Again HID-sensors already work fine on tons of existing
+> >>>>>> devices
+> >>>>>> without
+> >>>>>> any matrix getting applied. =20
+> >>>> Note this patch does not change the value reported by the sensor,
+> >>>> just
+> >>>> define a matrix to make sure the sensors values are consistent
+> >>>> with
+> >>>> Android/W3C. =20
+> >>>
+> >>> And iio-sensor-proxy will read the kernel provided matrix, apply it
+> >>> and then put the image upside down since you've just mirrored both
+> >>> the X and Y axis, breaking rotation for all existing GNOME and KDE
+> >>> users.
+> >>>
+> >>> So still a big NACK from me.
+> >>>
+> >>> If Android needs the axis to be flipped, then it should do so
+> >>> in the iio-sensor HAL inside android, not add a matrix which
+> >>> breaks 8 years of userspace API convention.
+> >>>
+> >>> Breaking userspace is simply not acceptible, we have a very clear
+> >>> no regressions policy. So this patch simply cannot be merged: NACK. =
+=20
+> >> I agree this patch is not right, but it has at least the merit to
+> >> reveal an inconsistency among IIO drivers. As Jonathan suggested,
+> >> some
+> >> drivers should return a negative scale. We need to choose which ones
+> >> should: either the group of drivers that reports unaltered data from
+> >> the hardware sensors and conform to W3C standard and android
+> >> specification, or the ones that conform to the HID specification. =20
+> >=20
+> > You need to realise that the drivers aren't created equal.
+> >=20
+> > Whether a driver returns:
+> > - the raw readings from the sensor (which might or might not be aligned
+> > with the Android, Windows 8 or IIO docs),
+> > - adjusted readings (meant to be used as-is if the sensor is mounted
+> > with the right orientation inside the right component of the device),
+> > - or completely ludicrous readings because the sensor is in the wrong
+> > part of the system, or tracks something else (all the HP "disk fall"
+> > sensors)
+> >=20
+> > all those are essentially API. You can't "fix" this after the fact. I,
+> > and others who contributed to the systemd quirks file, expected the
+> > kernel readings to not change with the kernel version.
+> >=20
+> > The right approach would be to define which is the expected orientation
+> > in the IIO docs, although that already seems to be done[1], and
+> > actually make sure this is respected in *new* implementations.
+> >=20
+> > Finally, I'll also add that the implementation in iio-sensor-proxy
+> > expects a single authoritative mount matrix to be provided for a
+> > device, as a mount matrix is supposed to correct the readings for the
+> > way a sensor was mounted inside the chassis/display of a particular
+> > device.
+> >=20
+> > Cheers
+> >=20
+> > [1]:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/tree/Docu=
+mentation/ABI/testing/sysfs-bus-iio#n1838
+> > An implementor might consider that for a hand-held device, a
+> > 'natural' orientation would be 'front facing camera at the top'.
+> > The main hardware reference frame could then be described as :
+> > * Y is in the plane of the screen and is positive towards the
+> >   top of the screen ;
+> > * X is in the plane of the screen, perpendicular to Y axis, and
+> >   positive towards the right hand side of the screen ;
+> > * Z is perpendicular to the screen plane and positive out of the
+> >   screen. =20
+>=20
+> Note though that this does not clearly define what
+> e.g. "positive towards the top of the screen" means if
+> you look at the axis illustrations in both the Windows,
+> Android and W3C docs they all have an arrow pointing
+> towards the top of the screen for the Y axis, which
+> matches the "positive towards the top of the screen"
+> wording.
+>=20
+> Yet Android / W3C expect a positive reading when
+> the G force vector is pointing down. Which I still
+> find confusing.
+>=20
+> This means that we to add a text similar to the Windows
+> docs here, say something like (made up by me not copy
+> pasted from Windows docs):
+>=20
+> "The Z-axis reading will be -1G when a device is laying
+> flat on a table with its display facing up"
+>=20
+> To fix the are we measuring gravity or force countering
+> gravity confusion.
+>=20
+> Jonathan, shall I submit a patch to add this, maybe with
+> some extra text that we are following the Windows/HID
+> convention and that Android/W3C do things differently?
 
-Thank you for taking care of converting all these drivers to device
-properties, including this one :-).
+I'm not going to rush this through late in a cycle.
+So propose a text update and let's carry on the discussion
+around that. (you may already have done so - I'm way behind!)
 
-> 
-> On Mon, 2022-07-11 at 16:04 +0200, Fabrice Gasnier wrote:
->> On 7/11/22 14:38, Nuno Sá wrote:
->>> Make the conversion to firmware agnostic device properties. As part
->>> of
->>> the conversion the IIO inkern interface 'of_xlate()' is also
->>> converted to
->>> 'fwnode_xlate()'. The goal is to completely drop 'of_xlate' and
->>> hence OF
->>> dependencies from IIO.
->>>
->>> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
->>> ---
->>>  drivers/iio/adc/stm32-adc.c | 121 ++++++++++++++++++++------------
->>> ----
->>>  1 file changed, 67 insertions(+), 54 deletions(-)
->>>
->>> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-
->>> adc.c
->>> index 3985fe972892..e55859113df8 100644
->>> --- a/drivers/iio/adc/stm32-adc.c
->>> +++ b/drivers/iio/adc/stm32-adc.c
->>> @@ -21,11 +21,11 @@
->>>  #include <linux/io.h>
->>>  #include <linux/iopoll.h>
->>>  #include <linux/module.h>
->>> +#include <linux/mod_devicetable.h>
->>>  #include <linux/nvmem-consumer.h>
->>>  #include <linux/platform_device.h>
->>>  #include <linux/pm_runtime.h>
->>> -#include <linux/of.h>
->>> -#include <linux/of_device.h>
->>> +#include <linux/property.h>
->>>  
->>>  #include "stm32-adc-core.h"
->>>  
->>> @@ -1530,8 +1530,8 @@ static int stm32_adc_update_scan_mode(struct
->>> iio_dev *indio_dev,
->>>         return ret;
->>>  }
->>>  
->>> -static int stm32_adc_of_xlate(struct iio_dev *indio_dev,
->>> -                             const struct of_phandle_args
->>> *iiospec)
->>> +static int stm32_adc_fwnode_xlate(struct iio_dev *indio_dev,
->>> +                                 const struct
->>> fwnode_reference_args *iiospec)
->>>  {
->>>         int i;
->>>  
->>> @@ -1585,7 +1585,7 @@ static const struct iio_info
->>> stm32_adc_iio_info = {
->>>         .hwfifo_set_watermark = stm32_adc_set_watermark,
->>>         .update_scan_mode = stm32_adc_update_scan_mode,
->>>         .debugfs_reg_access = stm32_adc_debugfs_reg_access,
->>> -       .of_xlate = stm32_adc_of_xlate,
->>> +       .fwnode_xlate = stm32_adc_fwnode_xlate,
->>>  };
->>>  
->>>  static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
->>> @@ -1782,14 +1782,14 @@ static const struct iio_chan_spec_ext_info
->>> stm32_adc_ext_info[] = {
->>>         {},
->>>  };
->>>  
->>> -static int stm32_adc_of_get_resolution(struct iio_dev *indio_dev)
->>> +static int stm32_adc_fw_get_resolution(struct iio_dev *indio_dev)
->>>  {
->>> -       struct device_node *node = indio_dev->dev.of_node;
->>> +       struct device *dev = &indio_dev->dev;
->>>         struct stm32_adc *adc = iio_priv(indio_dev);
->>>         unsigned int i;
->>>         u32 res;
->>>  
->>> -       if (of_property_read_u32(node, "assigned-resolution-bits",
->>> &res))
->>> +       if (device_property_read_u32(dev, "assigned-resolution-
->>> bits", &res))
->>>                 res = adc->cfg->adc_info->resolutions[0];
->>>  
->>>         for (i = 0; i < adc->cfg->adc_info->num_res; i++)
->>> @@ -1873,11 +1873,11 @@ static void stm32_adc_chan_init_one(struct
->>> iio_dev *indio_dev,
->>>  
->>>  static int stm32_adc_get_legacy_chan_count(struct iio_dev
->>> *indio_dev, struct stm32_adc *adc)
->>>  {
->>> -       struct device_node *node = indio_dev->dev.of_node;
->>> +       struct device *dev = &indio_dev->dev;
->>>         const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
->>>         int num_channels = 0, ret;
->>>  
->>> -       ret = of_property_count_u32_elems(node, "st,adc-channels");
->>> +       ret = device_property_count_u32(dev, "st,adc-channels");
->>>         if (ret > adc_info->max_channels) {
->>>                 dev_err(&indio_dev->dev, "Bad st,adc-channels?\n");
->>>                 return -EINVAL;
->>> @@ -1885,8 +1885,8 @@ static int
->>> stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct
->>> stm
->>>                 num_channels += ret;
->>>         }
->>>  
->>> -       ret = of_property_count_elems_of_size(node, "st,adc-diff-
->>> channels",
->>> -                                             sizeof(struct
->>> stm32_adc_diff_channel));
->>> +       /* each st,adc-diff-channels is a group of 2 u32 */
->>> +       ret = device_property_count_u64(dev, "st,adc-diff-
->>> channels");
-> 
-> Are you fine with this change (still does not have any reference to the
-> target struct but the comment might be helpful and there's no magic 2)?
+Given we have a bunch of mount matrices that aren't rotation
+matrices out in the wild, we probably want to cover that as
+well, potentially by relaxing the definition to allow
+rotoinversions, or at least state they are out there even if
+we actively discourage them going forwards.=20
+
+Also, I just remembered Linus w wrote the docs in the first
+place and there was a long discussion at the time so +CC
+
+Thanks,
+
+Jonathan
 
 
-Since you added that comment, this sounds better. IMHO, This still looks
-a bit weird. I'd feel more comfortable by using u32 API for a
-'uint32-matrix' as defined in dt-bindings.
-Strictly speaking, something like
-sizeof(struct stm32_adc_diff_channel) / sizeof(u32) could be used, along
-with this comment and device_property_count_u32() to make it clear ?
 
-Maybe Jonathan has an opinion, as he first raised a comment here ?
+>=20
+> Regards,
+>=20
+> Hans
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+>=20
+> >  =20
+>=20
 
-> 
->>>         if (ret > adc_info->max_channels) {
->>>                 dev_err(&indio_dev->dev, "Bad st,adc-diff-
->>> channels?\n");
->>>                 return -EINVAL;
->>> @@ -1896,7 +1896,7 @@ static int
->>> stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct
->>> stm
->>>         }
->>>  
->>>         /* Optional sample time is provided either for each, or all
->>> channels */
->>> -       ret = of_property_count_u32_elems(node, "st,min-sample-
->>> time-nsecs");
->>> +       ret = device_property_count_u32(dev, "st,min-sample-time-
->>> nsecs");
->>>         if (ret > 1 && ret != num_channels) {
->>>                 dev_err(&indio_dev->dev, "Invalid st,min-sample-
->>> time-nsecs\n");
->>>                 return -EINVAL;
->>> @@ -1907,21 +1907,20 @@ static int
->>> stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev, struct
->>> stm
->>>  
->>>  static int stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
->>>                                       struct stm32_adc *adc,
->>> -                                     struct iio_chan_spec
->>> *channels)
->>> +                                     struct iio_chan_spec
->>> *channels,
->>> +                                     int nchans)
->>>  {
->>> -       struct device_node *node = indio_dev->dev.of_node;
->>>         const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
->>>         struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
->>> +       struct device *dev = &indio_dev->dev;
->>>         u32 num_diff = adc->num_diff;
->>>         int size = num_diff * sizeof(*diff) / sizeof(u32);
->>> -       int scan_index = 0, val, ret, i;
->>> -       struct property *prop;
->>> -       const __be32 *cur;
->>> -       u32 smp = 0;
->>> +       int scan_index = 0, ret, i;
->>> +       u32 smp = 0, nsmps, smps[STM32_ADC_CH_MAX],
->>> chans[STM32_ADC_CH_MAX];
->>>  
->>>         if (num_diff) {
->>> -               ret = of_property_read_u32_array(node, "st,adc-
->>> diff-channels",
->>> -                                                (u32 *)diff,
->>> size);
->>> +               ret = device_property_read_u32_array(dev, "st,adc-
->>> diff-channels",
->>> +                                                    (u32 *)diff,
->>> size);
->>>                 if (ret) {
->>>                         dev_err(&indio_dev->dev, "Failed to get
->>> diff channels %d\n", ret);
->>>                         return ret;
->>> @@ -1942,32 +1941,51 @@ static int
->>> stm32_adc_legacy_chan_init(struct iio_dev *indio_dev,
->>>                 }
->>>         }
->>>  
->>> -       of_property_for_each_u32(node, "st,adc-channels", prop,
->>> cur, val) {
->>> -               if (val >= adc_info->max_channels) {
->>> -                       dev_err(&indio_dev->dev, "Invalid channel
->>> %d\n", val);
->>> +       ret = device_property_read_u32_array(dev, "st,adc-
->>> channels", chans,
->>> +                                            nchans);
->>> +       if (ret)
->>> +               return ret;
->>> +
->>> +       for (i = 0; i < nchans; i++) {
->>
->> Hi Nuno,
->>
->> There's an endless loop issue here due to the two for loops are using
->> the same index 'i'. (Please look at my earlier comments in v1)
->>
-> 
-> Ouch... 
-> 
-> Regarding your v1 comments (that for some reason I missed), I do not
-> think there's any helper like "of_property_for_each_u32()". For now we
-> have to live with this...
-
-Indeed, still need to fix this for loop.
-
-> 
->> for (i = 0; i < nchans; i++) {
->>         ...
->>         // Here i gets cleared, num_diff may vary (example with 0
->> here)
->>         for (i = 0; i < num_diff; i++) {
->>                 ...
->>         }
->>
->>         stm32_adc_chan_init_one(.. &channels[scan_index]..
->> scan_index..)
->>
->>         scan_index++; // Still, scan index gets incremented
->> indefinitly
->> }
->>
->> There's an out of boudary situation with scan_index above, wich ends-
->> up
->> in crashing in stm32_adc_chan_init_one().
->>
->>> +               if (chans[i] >= adc_info->max_channels) {
->>> +                       dev_err(&indio_dev->dev, "Invalid channel
->>> %d\n",
->>> +                               chans[i]);
->>>                         return -EINVAL;
->>>                 }
->>>  
->>>                 /* Channel can't be configured both as single-ended
->>> & diff */
->>>                 for (i = 0; i < num_diff; i++) {
->>> -                       if (val == diff[i].vinp) {
->>> -                               dev_err(&indio_dev->dev, "channel
->>> %d misconfigured\n",  val);
->>> +                       if (chans[i] == diff[i].vinp) {
->>> +                               dev_err(&indio_dev->dev, "channel
->>> %d misconfigured\n",  chans[i]);
->>>                                 return -EINVAL;
->>>                         }
->>>                 }
->>> -               stm32_adc_chan_init_one(indio_dev,
->>> &channels[scan_index], val,
->>> -                                       0, scan_index, false);
->>> +               stm32_adc_chan_init_one(indio_dev,
->>> &channels[scan_index],
->>> +                                       chans[i], 0, scan_index,
->>> false);
->>>                 scan_index++;
->>>         }
->>>  
->>> +       nsmps = device_property_count_u32(dev, "st,min-sample-time-
->>> nsecs");
->>> +       if (nsmps) {
->>> +               if (nsmps >= nchans)
->>
->> nit: if (nsmps > nchans)
->>
->>> +                       nsmps = nchans;
->>> +
->>
->> There's a bit of redundancy in checking nsmps,
->> "st,min-sample-time-nsecs" is already sanitized in
->> stm32_adc_get_legacy_chan_count():
->>
->> /* Optional sample time is provided either for each, or all channels
->> */
->> ret = device_property_count_u32(dev, "st,min-sample-time-nsecs");
->> if (ret > 1 && ret != num_channels) {
->>         dev_err(...
->>
->> So just sharing my thoughts here:
->> - Maybe this could be dropped ?
->>   (Thinking loudly) The earliest this gets sanitized, the less un-
->> needed
->> initialisations happen before failing?
->> - Or the earlier check could be moved here ?
->>
->> I've no strong opinion.
->>
-> 
-> Ahh, didn't noticed the first call to 'device_property_count_u32(dev,
-> "st,min-sample-time-nsecs")'. So I do agree with you that we should
-> bail as soon as possible but I'm also not a big fan of calling
-> device_property_count_u32() for the same purpose. So I would suggest:
-> 
-> 1) Your option 2.
-> 2) Option 1 but we would store 'nsmps' in the first call (making it a
-> member of struct stm32_adc) and then use it here accordingly.
-> 
-> Thought?
-
-I'd prefer Your option 2) to follow the logic of the current code (e.g.
-get count then init chans). It has the advantage to tackle errors as
-soon as possible, and store 'nsmps' at once, when sanitized. Its avoids
-redundancy here, only cost is an extra variable indeed.
-
-Best Regards,
-Fabrice
-
-> 
->> Best Regards,
->> Fabrice
->>
->>> +               ret = device_property_read_u32_array(dev, "st,min-
->>> sample-time-nsecs",
->>> +                                                    smps, nsmps);
->>> +               if (ret)
->>> +                       return ret;
->>> +       }
->>> +
->>>         for (i = 0; i < scan_index; i++) {
->>>                 /*
->>> -                * Using of_property_read_u32_index(), smp value
->>> will only be
->>> -                * modified if valid u32 value can be decoded. This
->>> allows to
->>> -                * get either no value, 1 shared value for all
->>> indexes, or one
->>> -                * value per channel.
->>> +                * This check is used with the above logic so that
->>> smp value
->>> +                * will only be modified if valid u32 value can be
->>> decoded. This
->>> +                * allows to get either no value, 1 shared value
->>> for all indexes,
->>> +                * or one value per channel. The point is to have
->>> the same
->>> +                * behavior as 'of_property_read_u32_index()'.
->>>                  */
->>> -               of_property_read_u32_index(node, "st,min-sample-
->>> time-nsecs", i, &smp);
->>> +               if (i < nsmps)
->>> +                       smp = smps[i];
->>>  
-> 
-> Regarding your comment on v1, I would prefer to keep this as-is. I
-> think it's enough together with the comment. Can change it though if
-> you fell too strong about it :)
-> 
-> Thanks!
-> - Nuno Sá
-> 

@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 848BA572F6B
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 09:43:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 568E5572F6E
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 09:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231168AbiGMHnS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Jul 2022 03:43:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38758 "EHLO
+        id S231189AbiGMHoK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Jul 2022 03:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232024AbiGMHnS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 03:43:18 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C777E5859
-        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 00:43:16 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id ez10so18342441ejc.13
-        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 00:43:15 -0700 (PDT)
+        with ESMTP id S234742AbiGMHoH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 03:44:07 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11356EEBE
+        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 00:44:06 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id x91so13027518ede.1
+        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 00:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/VlnmlHCQfW3p97UCy5YcE83IQ1M7mTcSHN9rJn92L0=;
-        b=DMmVsyTnzW/ZzHy/WNEhXKuJ/wvbeUmmgXu5noAA5OBSdWDoQXacYqh811HBuPUcB2
-         1704vMKky0r/XykIbgErzhYfAUaQwcS9in9Iyv7UDr89rtWYHrjgAoS4/ftDM13e6zET
-         6Zq3W/iDUAstij4E96pl6A4dFBehNRT4BC9T4B+TDbUnPluj2ffkyJngYthP+RTyypoS
-         8Ngpxqp4L5W5uQXKECMiWjztav+0/GDWvhzTqjfXmJSqE4LeJbCOxop9s0KYRQHCvYwi
-         E53Ud0ve7qzEcCxNGVvfN7QIMwZ7/wVNGUlwjNS+1AxhR4BSF0jl8P02UdhUEjzq2usI
-         6Yhw==
+        bh=XpXyhJ4QNFnL4f5EJCGYwB18DxuLMU3vuswmDUU/6LM=;
+        b=dv3RBfCUzpoDhS6Aea9fT3Naw2N/mY3ENtgcsvmkZHsy0KNLqjQJD/v4UUGYYT65Bv
+         L42ePuEoaXv/CD2/0uxp4pR+Hk1qomsNDWmfSSncSfwjW74/Uy4iVCSiFHpQHjYU1jjR
+         NGrqCSVjggpKE46fk3cabnS3319GztqOzcgIkw/Lncbgn7eBhO4m1ffr7mATJwIWL1LJ
+         N2pPTmCI2kAMFJ3m5VnH6tFz8nYeAukT1AoyfYmrO4nVWXA51RstI6RO8+9iK5gPRGMR
+         a2F6/+etVy9DY7zf0MJF6p/PRDsRk6EtY/DxEGWsFb+KqZDKhBN1si7KrDXIuTAT5fDL
+         8SGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/VlnmlHCQfW3p97UCy5YcE83IQ1M7mTcSHN9rJn92L0=;
-        b=Y+zkPXD7884erU919Vm9BPYS7HECpZhwP43vrURWXuW7LKiBhNqAjAjNtbV+/pazIt
-         5WFRaPpho/qrm8yfyQ8T6lEpIb+O68Ejq0oly/V14j/uE0tB2hQMXpilQr5WEc0+OCo8
-         cjr1r/syt0ETDMJgyuAZljSITPmdaSJcOSTZZsHfJ7IG45uLUdejAIrcTp7HAOleW47V
-         o7zFN9h8dRVWx+a/AxjbEDRAFckhF8e/2ksiCWxrOrAQLUAgZgS2EjVMHtFTE4NZxPOu
-         mxP4M6ozuRfWkFyW/7GExIddwVMpgBYI+tVSBMRMEwAah9NfbO9A3/oNqwNugjnYuqwB
-         S0Gg==
-X-Gm-Message-State: AJIora+HMzovBgZxDqxt9LCExLPADV9nzLb/EXkbMlh5KwOSw1yd4lFu
-        /2ymbVZzQCEUyhdnnv1V5bsU3dXlMw80pcwaN68hWw==
-X-Google-Smtp-Source: AGRyM1sqqwrs67V0xYX+vIkQzt1SsBz/eWMrr7ikKraa6psgwLTFp/02ZOU5oQQud0MALSLXgtkrRGzhBoT1X0IdY9c=
-X-Received: by 2002:a17:907:87b0:b0:72b:9f0d:3f89 with SMTP id
- qv48-20020a17090787b000b0072b9f0d3f89mr1053322ejc.734.1657698194579; Wed, 13
- Jul 2022 00:43:14 -0700 (PDT)
+        bh=XpXyhJ4QNFnL4f5EJCGYwB18DxuLMU3vuswmDUU/6LM=;
+        b=PR/2H7WTm88QGaKsnXN0WtGDMm+P61lnvtmJ44gBFpZ9w3eGbI79SIexauktnC84l3
+         zQDnTyVzKrUMueU9Ah1BAftjjJY4uShlAupNVogGJJ8qWBDtLesMaLNYzbcrPHF/g2m2
+         2VbisEY6uVB7INx1lqrXYfWLwQf/kJv0p1joMNDnchBCjriDkYKYMIxlHiqNdqmOqP7i
+         ngRgEyRmxgt4NFHMIYka/DA/UxW4ozMBY1F5qul0GuwpwYG1Cqc9TOjPMWpMRTdxe1aF
+         MBFIpPEUcJxIkB2E+ETze2YGww08TYgTBLc4w+SNjz1WXzEa4LfxNWJa8UAV/Qxmaql8
+         4GoQ==
+X-Gm-Message-State: AJIora9UC/w6qUEX/UlZHU9gK3CX/ThRJlFwGxFTEcZxPUWRwgPGFPPL
+        vvSqJf8wkSijUqZIjYJZCsAomDTlwfhjKrTKgZPndA==
+X-Google-Smtp-Source: AGRyM1sX4F6SiKqMB+JxZ5Wx2Pmtxkg3bpG8fzVwjszy4OPlIxdaH/u7IdCdfjlRCKG7QJCUEHdRq0RDeziupAcS4J8=
+X-Received: by 2002:a05:6402:430f:b0:43a:d521:bda with SMTP id
+ m15-20020a056402430f00b0043ad5210bdamr3077496edc.69.1657698245380; Wed, 13
+ Jul 2022 00:44:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220712163345.445811-1-francesco.dolcini@toradex.com> <20220712163345.445811-4-francesco.dolcini@toradex.com>
-In-Reply-To: <20220712163345.445811-4-francesco.dolcini@toradex.com>
+References: <20220712110232.329164-1-francesco.dolcini@toradex.com> <20220712110232.329164-3-francesco.dolcini@toradex.com>
+In-Reply-To: <20220712110232.329164-3-francesco.dolcini@toradex.com>
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Wed, 13 Jul 2022 09:43:04 +0200
-Message-ID: <CAMRc=McUdeXSNwE9WBVh_ZrsL+-WusEQjqcuE2v=m1exHS6_eA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] dt-bindings: gpio: stmpe: Remove node name requirement
+Date:   Wed, 13 Jul 2022 09:43:54 +0200
+Message-ID: <CAMRc=MeBE=V8cE2ZnuHzw65i5mx2S6iM9LDC8=M-Pa0RWHR7yg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] dt-bindings: gpio: stmpe: Remove node name requirement
 To:     Francesco Dolcini <francesco.dolcini@toradex.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Linus Walleij <linus.walleij@linaro.org>,
@@ -75,7 +75,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 12, 2022 at 6:33 PM Francesco Dolcini
+On Tue, Jul 12, 2022 at 1:02 PM Francesco Dolcini
 <francesco.dolcini@toradex.com> wrote:
 >
 > STMPE driver does not require a specific node name anymore, only the

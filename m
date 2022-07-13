@@ -2,192 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8036A573003
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 10:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF1F573107
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Jul 2022 10:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234817AbiGMIEb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 13 Jul 2022 04:04:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
+        id S235683AbiGMI0q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 13 Jul 2022 04:26:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233739AbiGMIE3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 04:04:29 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 613D6E1900
-        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 01:04:27 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id a5so14327953wrx.12
-        for <linux-iio@vger.kernel.org>; Wed, 13 Jul 2022 01:04:27 -0700 (PDT)
+        with ESMTP id S235626AbiGMI03 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 13 Jul 2022 04:26:29 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911109FE1D;
+        Wed, 13 Jul 2022 01:25:03 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id g6so11315202qtu.2;
+        Wed, 13 Jul 2022 01:25:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=yaBi5+j2aB+gOEpu/CS6a4crTXK1oluI+G7cSMbxelM=;
-        b=MduZJ4LcUwia674sobuaUywFu/y9XJbPCqF8UXjn0wnRaCT+QZ3XOGx+YAje4xxfsx
-         x9gPEEwK6l26zgKylqiCX6kg+6Qcrx6/7WQ/ytwHvcda4vtybERuZ4s70YTn/BNqLy24
-         5MeZn8161zhdqCh3Gug8o1zPTpESCgZp9pNlebMEHS9aj8RGpd5fMetXcNCgQ8tnZWl2
-         oITFcoQoNbdZcmx8uMXLq2HS15pvFWibAtvysAkVPH+IejhAt1//CsNF6qnytW3Sp+Yo
-         iZrLyWZCZeToIHPCPlOTz9lFBuwhiDKL4zdw/LqWzu1dOoE8C4t19oUDKrZTd7BZsh3v
-         b4DA==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aSPbs5jGfLTZctvd5nbr966YtO4x5hSc1Gz30C4v3cA=;
+        b=HiJ/y+GNuYUzwt2HnUqRwSRWUatDURDJknYaE9V2CvwhTd8ND6InA6EFP7baAeIEtI
+         mi/b2Syk0DqAGKgAVpSGFb2tXWhywxT0+MtWXsk8xGf77IPZ4l4H90xAjKPbJPiNDfbx
+         xEW6HUYjS2b3mXVD1anijEvRq7xSBD9UxaiAM9fd79ZurjLcG34v1l8bA22UAvnQX5C6
+         p58LpcTKybMjirqwQTZ0Qv5cROyD0NJ2pHGNQ0lAi2UYSOAQ2U4KfwIrqY0dILXf0xKk
+         TdooFTKzDIJ1wIDf4kSQkFPGq/x+IemBUSuV+e36fBOJexqTMoMJA1QmUL8zmVQ1ZNPN
+         zprg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=yaBi5+j2aB+gOEpu/CS6a4crTXK1oluI+G7cSMbxelM=;
-        b=S90fKajvrm1q4sjo/Nvc79g41lgwN/0s2ubMncI3K9A5cBwEU5jjF5orJcDKLxx8Ji
-         sCSRTE22LeTGbIbmQXThViWKDSwDB2aGEJYDpAJAhtV7hB6iNv6PAqNPOXvfbJ5ekIc7
-         ul16bnCCM8iR4aPjDv2wj2w0hN/1RZU6YI+UKm1+PfFRpwtgeKSEJy2I5P0ZgeXExPdG
-         yVxfAG2LhDl2RX+RHfqGhaYDh83X6lr1cev51RwJYAQVWY6JOGnVxNXqk+SbKy7bryyX
-         9nw4Z1bK2QwBmcKBlWJIKgYdwCy/LErsbN0xw+5aKXX5CTMgU81E96Y4IQ6ex+VS6QHv
-         nCkA==
-X-Gm-Message-State: AJIora97sXmEPgQIepqKsZvt7Fu40jMBi2V9ZnVbY0nJtPxzpqF31S63
-        2XZF/EHvK+gdsofQtsurRl6ICg==
-X-Google-Smtp-Source: AGRyM1sox2gwD2oOUs0Po8YP6r0hOoKvkq7xKaXz/jSSA3VY7uq2zQIZPBxBD2yVdN4jLfilFwtkQw==
-X-Received: by 2002:a5d:4890:0:b0:21d:9bf3:89b5 with SMTP id g16-20020a5d4890000000b0021d9bf389b5mr1887795wrq.153.1657699465867;
-        Wed, 13 Jul 2022 01:04:25 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id l29-20020a05600c1d1d00b0039749b01ea7sm1616879wms.32.2022.07.13.01.04.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jul 2022 01:04:25 -0700 (PDT)
-Date:   Wed, 13 Jul 2022 09:04:22 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Subject: Re: [PATCH v3 07/14] mfd: mt6370: Add Mediatek MT6370 support
-Message-ID: <Ys58hr3AK/p/4/ng@google.com>
-References: <20220623115631.22209-1-peterwu.pub@gmail.com>
- <20220623115631.22209-8-peterwu.pub@gmail.com>
- <Ys2TTsv1oU8n1fUE@google.com>
- <CABtFH5LMHrfOdLZZxpjwsHmyHZsHUmevpQJYDFqZtvfpC6AVxg@mail.gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aSPbs5jGfLTZctvd5nbr966YtO4x5hSc1Gz30C4v3cA=;
+        b=GKQeAqh2VgL9B4VO8+IfdNLpRo6aoEjXp6VtQf+ybrfBFfytLcVACKVtVwpOn8JAs6
+         Rhgy1SyuK8gkYT6968uel9kZDNfPjYgCs+Afd5oSP/Ro+DGwoUU6buHOP2gJqwk5SQd4
+         vQHJgwDuyN+Exk19iD7GTzcmS7gF3BzYP16w6/+ncJ3f1BULEdoqk/xSENqHMjjz9Zg2
+         zWoa00spih4ru7l9xARO3hk8kVgM+8czmGW652n1E91USHKwB8Yq0NIiRVTOAYj88LP/
+         QD0VdPahD1vyCWoQnUokcsZr+9PdaVxrK4oxy6nr3MbjvuG5ksM1mQmS/4AbHW1fDwIP
+         pt6A==
+X-Gm-Message-State: AJIora+oNKqD0LuX1xewdDGLGQCiT9eJZ65dU/5rWkHcwrrlYZrvUTvL
+        O3LD46OFvcXXhBDy+BlCqBRJqe+i6Qeihmi22CM68FnL
+X-Google-Smtp-Source: AGRyM1sEzdqXq/1mgwSZSo2VnWb3RUhBjvBFgMyKxI3yId74xi6MmqySKCLqmxMb5QyIN4478qIRXzcgzqkZNJ/vjU0=
+X-Received: by 2002:ac8:5bcd:0:b0:31e:b0c5:4298 with SMTP id
+ b13-20020ac85bcd000000b0031eb0c54298mr1811791qtb.318.1657700701299; Wed, 13
+ Jul 2022 01:25:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABtFH5LMHrfOdLZZxpjwsHmyHZsHUmevpQJYDFqZtvfpC6AVxg@mail.gmail.com>
+References: <20220711203408.2949888-1-robimarko@gmail.com> <20220711203408.2949888-3-robimarko@gmail.com>
+ <CACRpkdbLKXrVu9q3m1BRfRMT5q4gtrtuSNw0PmTsZBraeytVFw@mail.gmail.com>
+In-Reply-To: <CACRpkdbLKXrVu9q3m1BRfRMT5q4gtrtuSNw0PmTsZBraeytVFw@mail.gmail.com>
+From:   Robert Marko <robimarko@gmail.com>
+Date:   Wed, 13 Jul 2022 10:24:50 +0200
+Message-ID: <CAOX2RU6uRbkU3VCZRuNQewndEGiJweRbr0PehARyHGjhq6-5FA@mail.gmail.com>
+Subject: Re: [PATCH v7 3/7] dt-bindings: pinctrl: qcom,pmic-gpio: add PMP8074
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        lee.jones@linaro.org, Rob Herring <robh+dt@kernel.org>,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Devicetree List <devicetree@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 13 Jul 2022, ChiaEn Wu wrote:
+On Tue, 12 Jul 2022 at 10:39, Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+> On Mon, Jul 11, 2022 at 10:34 PM Robert Marko <robimarko@gmail.com> wrote:
+>
+> > Document the compatible for PMP8074 which has 12 GPIO-s with holes at
+> > GPIO1 and GPIO12.
+> >
+> > Signed-off-by: Robert Marko <robimarko@gmail.com>
+> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>
+> Patch applied to the pinctrl tree.
 
-> Hi Lee,
-> 
-> Thanks for your reply.
-> 
-> Lee Jones <lee.jones@linaro.org> 於 2022年7月12日 週二 晚上11:29寫道：
-> >
-> > On Thu, 23 Jun 2022, ChiaEn Wu wrote:
-> >
-> > > From: ChiYuan Huang <cy_huang@richtek.com>
-> > >
-> > > Add Mediatek MT6370 MFD support.
-> >
-> > No such thing as "MFD support".
-> >
-> > And you're not getting away with submitting a 370 line patch with a 5
-> > word change log either. :)
-> >
-> > Please at least tell us what the device is and what it's used for.
-> 
-> I sincerely apologize.
-> We will add more descriptions of the MT6370 feature in the v5 patch.
-> 
-> >
-> > > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > > ---
-> > >
-> > > v3
-> > > - Refine Kconfig help text
-> > > - Refine error message of unknown vendor ID in
-> > >   mt6370_check_vendor_info()
-> > > - Refine return value handling of mt6370_regmap_read()
-> > > - Refine all probe error by using dev_err_probe()
-> > > - Refine "bank_idx" and "bank_addr" in mt6370_regmap_read() and
-> > >   mt6370_regmap_write()
-> > > - Add "#define VENID*" and drop the comments in
-> > >   mt6370_check_vendor_info()
-> > > - Drop "MFD" in MODULE_DESCRIPTION()
-> > > ---
-> > >  drivers/mfd/Kconfig  |  13 ++
-> > >  drivers/mfd/Makefile |   1 +
-> > >  drivers/mfd/mt6370.c | 358 +++++++++++++++++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 372 insertions(+)
-> > >  create mode 100644 drivers/mfd/mt6370.c
+Hi Linus,
+Dont want to bother you, but I am not seeing this and the GPIO patch
+in the pinctrl tree.
 
-[...]
-
-> > > +static int mt6370_probe(struct i2c_client *i2c)
-> > > +{
-> > > +     struct mt6370_info *info;
-> > > +     struct i2c_client *usbc_i2c;
-> > > +     int ret;
-> > > +
-> > > +     info = devm_kzalloc(&i2c->dev, sizeof(*info), GFP_KERNEL);
-> > > +     if (!info)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     info->dev = &i2c->dev;
-> > > +
-> > > +     usbc_i2c = devm_i2c_new_dummy_device(&i2c->dev, i2c->adapter,
-> > > +                                          MT6370_USBC_I2CADDR);
-> > > +     if (IS_ERR(usbc_i2c))
-> > > +             return dev_err_probe(&i2c->dev, PTR_ERR(usbc_i2c),
-> > > +                                  "Failed to register USBC I2C client\n");
-> > > +
-> > > +     /* Assign I2C client for PMU and TypeC */
-> > > +     info->i2c[MT6370_PMU_I2C] = i2c;
-> > > +     info->i2c[MT6370_USBC_I2C] = usbc_i2c;
-> > > +
-> > > +     info->regmap = devm_regmap_init(&i2c->dev, &mt6370_regmap_bus, info,
-> > > +                                     &mt6370_regmap_config);
-> >
-> > Apart from in mt6370_check_vendor_info() where is this actually used?
-> 
-> Well... from my understanding, we use this MFD driver to make other
-> drivers of MT6370 (e.g. charger, ADC, led...) use the same regmap
-> settings.
-> Thus, this regmap is not only used in mt6370_check_vendor_info().
-
-Well for that to happen you need to store the data somewhere for the
-child devices to fetch from.  I don't see that happening in this
-patch?  What did I miss?
-
--- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Regards,
+Robert
+>
+> Yours,
+> Linus Walleij

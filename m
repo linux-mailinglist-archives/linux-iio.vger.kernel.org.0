@@ -2,57 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C2F5748E2
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Jul 2022 11:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E635D574958
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Jul 2022 11:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237895AbiGNJ2o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 14 Jul 2022 05:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56578 "EHLO
+        id S238403AbiGNJod (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 14 Jul 2022 05:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231220AbiGNJ20 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Jul 2022 05:28:26 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3022C666;
-        Thu, 14 Jul 2022 02:27:45 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-31d7db3e6e5so10752277b3.11;
-        Thu, 14 Jul 2022 02:27:45 -0700 (PDT)
+        with ESMTP id S238243AbiGNJoZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 14 Jul 2022 05:44:25 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E96211A0F;
+        Thu, 14 Jul 2022 02:44:24 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-2ef5380669cso11207607b3.9;
+        Thu, 14 Jul 2022 02:44:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=eoEUqCQ0HzWcRS/EEisE9qpbq5xcTJ7+l4FqGraIDiM=;
-        b=Ld+ADuIcLOILCqHSVmutQbx0yNCzFYK+d1CfgjosNRjzv4la0za1LrNxPVbXKyGrBU
-         plEeNvs9LuKtBpdK2m8TdIf5+YpouBnaZ9Vsy9DWCZQPgh7oBlkDpas1TKNSR2vAuZ/m
-         ORq+hpDzjNbMh57lvUku8daA4iIIz1ZvXj/KjuJUO8f4GYx3HxMDS3SJKg0sxPO5bA1n
-         KdTdyIG7yt7UXNPxNXnsFgVEMla/Hw7WsDWj9pGpxJIEBu4dM2YsIkBZZHbP1tv7Iw1s
-         /UceXFWGcqnbfJelCGnMi9F2w99ZJ8EasltdyIOX+aD94fVjhuHVUAYCDxWNBrPm1xlZ
-         NyrA==
+        bh=zQfNaPBMj9qupXp4mDqBN3FvXkuDRylRWUn+zvSSLGM=;
+        b=oUdjAR6phW8mBTe5eDzj0QeWXcrYu1dSSLOGdISEQbBbC80E3nnO2FEXxGYAf5RiXM
+         qwCt3mFNhcwCVxxKFv95OoQ0lQSZxF92XMKvQIcmRpKoj31iWTGkf6owEnJ4SKyFwH0k
+         JauEuOFAu1eKjoPKsewxkkdItYHKrSID6UH/riAytvkcYOvK7wJWfdXGd7YOn2ZlGDPx
+         UknY6TlQhPMD62NXaNa84SFcZnW0ErJAIVlOFo4CQxO3vJ5UK7w+Chs6Xo+IjKurYNSH
+         WqV07lOMcczIHACgOGIOzTx9kcVs99te0vmj/tlI8+bxgqMwN7h4K7I2B72mfGLzkJ4i
+         gQ2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=eoEUqCQ0HzWcRS/EEisE9qpbq5xcTJ7+l4FqGraIDiM=;
-        b=E4tvnZILOXCcRDzTvq7MkhVAeunrJYCn7/BCiAjX3twkqYrczkm7nwD/MzgagOv4VY
-         wyLIbtIebU8BMG0vP9au76ByBj5i4J6pNx0y+aiKOk2H1LM4YOWqKNYv12WF+97pOgtO
-         zdBK7d4kbHke0DviCwLC5p1oJluSENyZazKdt6l45qSDGpbM6W6pPPx0wcRSjEhhGSuF
-         JUyd8W4pZNXrh3rkTYhzGw4BifxUw1pqzuwHgu+wAQQF1VUGTV/31i6FT1yKq5yBdEfc
-         I60wxm8XjdzUr5hkIuv0eGEa6qOLAxt6TEnD6h/cMXZNZcUaad3AVYIE66Hf2gV7sjrd
-         JM5A==
-X-Gm-Message-State: AJIora+W4OO7HknhU7CFgQWzvIiFWG6i7HJWfFCYB1OFvfBOCXUeYFIf
-        lduDnzWFV5B4tUJypqeSRtwqPVGUfmwvtLJ5Do0=
-X-Google-Smtp-Source: AGRyM1vfgn4gESJkQheSbCNETjn+vwZk7ww5qzlDRalqVBynMRD8SYo6G8iLMHpByXaVRHoDkU+ZiCki5RU9ApOFE6k=
-X-Received: by 2002:a81:72c4:0:b0:31c:b309:c4e8 with SMTP id
- n187-20020a8172c4000000b0031cb309c4e8mr8841348ywc.520.1657790864413; Thu, 14
- Jul 2022 02:27:44 -0700 (PDT)
+        bh=zQfNaPBMj9qupXp4mDqBN3FvXkuDRylRWUn+zvSSLGM=;
+        b=2IDATPUV3G1XUlJtbtTM/xKl0j703c9YOSnfV3GKddxJ4lPihMz21mMbCrTnI7cVUt
+         PlvTJ5i8etYQnPm9iJL1QCZwmpJwmQ9bXR1WN374T3YNLpc3qt5/ve/mnn2rPHnZMgEl
+         Cw7U5xNraEMtyLdYa0YuEkXpkbCS4HVKLnqiwkzsA+Ko79/ZYWHExD1I89xHL40s4+ln
+         MEsvOgsd+J1yAhvgcrfcP4xAdocH4Cm4u7au8wU66lAC089+TDhnE23KDVvfIQJtJiFb
+         NA2ACoBkfJSRr4/5veO5SADFDogaH5k1B13iOS3G+TfXLa7TraLCkweEExxVH4e6oPem
+         Y/+Q==
+X-Gm-Message-State: AJIora94Q2UfK832rlallO3kczk0rIDqvHwZch5lVcEWV/Ig1/AyRdTf
+        KTAp/dW4h3mDmodhEmdwj1QKj+Pf18CBY4WIE7A=
+X-Google-Smtp-Source: AGRyM1tGq8KvNtgJfDDwwfnd/uLdaBM71GAdhz/B4s7iJ7PIRrr3jUFpxSU8W+abEjc+p3ioRN+vN34Iicys3Eb13K4=
+X-Received: by 2002:a81:4986:0:b0:31d:388b:d08d with SMTP id
+ w128-20020a814986000000b0031d388bd08dmr8542894ywa.185.1657791863639; Thu, 14
+ Jul 2022 02:44:23 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220704053901.728-1-peterwu.pub@gmail.com> <20220704053901.728-14-peterwu.pub@gmail.com>
  <CAHp75VdwEc9AW1w8ejsxkw+sBTF1dumd99QyzTY9BZaXiViRWQ@mail.gmail.com>
  <CABtFH5K-2+2hbpvpq2nPE5AsznkQxZF2r3MVC64Q39DJhVuUtA@mail.gmail.com>
- <CAHp75VevDwdAKLYEWJgnMDvzuPuFibLuVqH-GKazEOT76wM6_A@mail.gmail.com> <CABtFH5LT1Ct_9-B_XRrGwYFmL5kGS6KHR7dNVyUO5z4sTy_6oA@mail.gmail.com>
-In-Reply-To: <CABtFH5LT1Ct_9-B_XRrGwYFmL5kGS6KHR7dNVyUO5z4sTy_6oA@mail.gmail.com>
+ <CAHp75VevDwdAKLYEWJgnMDvzuPuFibLuVqH-GKazEOT76wM6_A@mail.gmail.com>
+ <CABtFH5LT1Ct_9-B_XRrGwYFmL5kGS6KHR7dNVyUO5z4sTy_6oA@mail.gmail.com> <CAHp75VcU_9Ao2CoqiUDZHqhVOjEMZor+hctPp3YYP4HOjYLDUg@mail.gmail.com>
+In-Reply-To: <CAHp75VcU_9Ao2CoqiUDZHqhVOjEMZor+hctPp3YYP4HOjYLDUg@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 14 Jul 2022 11:27:07 +0200
-Message-ID: <CAHp75VcU_9Ao2CoqiUDZHqhVOjEMZor+hctPp3YYP4HOjYLDUg@mail.gmail.com>
+Date:   Thu, 14 Jul 2022 11:43:46 +0200
+Message-ID: <CAHp75VeMP4zDMmGfdya5Y1C0Hkb7=jeOQGE_HqyDdZcmd_Uyyg@mail.gmail.com>
 Subject: Re: [PATCH v4 13/13] video: backlight: mt6370: Add Mediatek MT6370 support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
@@ -98,67 +99,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Jul 14, 2022 at 9:13 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=
+On Thu, Jul 14, 2022 at 11:27 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Jul 14, 2022 at 9:13 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=
 =9C=8813=E6=97=A5 =E9=80=B1=E4=B8=89 =E6=99=9A=E4=B8=8A8:07=E5=AF=AB=E9=81=
 =93=EF=BC=9A
-> > On Wed, Jul 13, 2022 at 12:53 PM ChiaEn Wu <peterwu.pub@gmail.com> wrot=
-e:
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=
-=E6=9C=885=E6=97=A5 =E9=80=B1=E4=BA=8C =E6=B8=85=E6=99=A85:14=E5=AF=AB=E9=
-=81=93=EF=BC=9A
-> > > > On Mon, Jul 4, 2022 at 7:43 AM ChiaEn Wu <peterwu.pub@gmail.com> wr=
-ote:
-
-Please, once again, remove unneeded context when replying!
-^^^^^^^
 
 ...
 
-> > > > > +               prop_val =3D (ilog2(roundup_pow_of_two(prop_val))=
- + 1) >> 1;
-> > > >
-> > > > Isn't something closer to get_order() or fls()?
-> > >
-> > > I will revise it to "(get_order(prop_va * PAGE_SIZE) + 1) / 2" and
-> > > this change is meet your expectations??
-> >
-> > Nope. Try again. What about fls()?
+> > I have tried two methods so far, as follows
+> > -------------------------------------------------------------
+> > /*
+> >  * prop_val =3D  1      -->  1 steps --> b'00
+> >  * prop_val =3D  2 ~  4 -->  4 steps --> b'01
+> >  * prop_val =3D  5 ~ 16 --> 16 steps --> b'10
+> >  * prop_val =3D 17 ~ 64 --> 64 steps --> b'11
+> > */
 >
-> I have tried two methods so far, as follows
-> -------------------------------------------------------------
-> /*
->  * prop_val =3D  1      -->  1 steps --> b'00
->  * prop_val =3D  2 ~  4 -->  4 steps --> b'01
->  * prop_val =3D  5 ~ 16 --> 16 steps --> b'10
->  * prop_val =3D 17 ~ 64 --> 64 steps --> b'11
-> */
-
-So, for 1 --> 0, for 2 --> 1, for 5 --> 2, and for 17 --> 3.
-Now, consider x - 1:
-0  ( 0 ) --> 0
-1  (2^0) --> 1
-4  (2^2) --> 2
-16 (2^4) --> 3
-64 (2^6) --> ? (but let's consider that the range has been checked already)
-
-Since we take the lower limit, it means ffs():
-
-  y =3D (ffs(x - 1) + 1) / 2;
-
-Does it work for you?
-
-> // 1. use fls() and ffs() combination
-> prop_val =3D ffs(prop_val) =3D=3D fls(prop_val) ? fls(prop_val) >> 1 :
-> (fls(prop_val) + 1) >> 1;
+> So, for 1 --> 0, for 2 --> 1, for 5 --> 2, and for 17 --> 3.
+> Now, consider x - 1:
+> 0  ( 0 ) --> 0
+> 1  (2^0) --> 1
+> 4  (2^2) --> 2
+> 16 (2^4) --> 3
+> 64 (2^6) --> ? (but let's consider that the range has been checked alread=
+y)
 >
-> // 2. use one line for-loop, but without fls()
-> for (i =3D --prop_val, prop_val =3D 0; i >> 2 * prop_val !=3D 0; prop_val=
-++);
-> -------------------------------------------------------------
-> Do these changes meet your expectations??
+> Since we take the lower limit, it means ffs():
+>
+>   y =3D (ffs(x - 1) + 1) / 2;
+>
+> Does it work for you?
 
-No, this is ugly. Yes, I understand that a bit arithmetics is hard...
+It wouldn't, because we need to use fls() against it actually.
+
+So,
+0..1   (-1..0)   --> 0
+2..4   (1..3)   --> 1
+5..16  (4..15)  --> 2
+17..64 (16..63) --> 3
+
+y =3D x ? ((fls(x - 1) + 1) / 2 : 0;
+
 
 --=20
 With Best Regards,

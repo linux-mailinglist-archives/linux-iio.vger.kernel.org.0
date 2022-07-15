@@ -2,101 +2,151 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B387757635A
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 16:05:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C35576542
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 18:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235208AbiGOOD4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 10:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33688 "EHLO
+        id S233408AbiGOQ3W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 12:29:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235211AbiGOODh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 10:03:37 -0400
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F9B25E
-        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 07:03:33 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id n206so6179494oia.6
-        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 07:03:33 -0700 (PDT)
+        with ESMTP id S233219AbiGOQ3U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 12:29:20 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0531B22B15
+        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 09:29:18 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id d16so7393014wrv.10
+        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 09:29:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=wiMWIX3l/jdmh+YACZVdS2gYVkizBVrd2KWV3gaU6Z4=;
-        b=BIRzzrrQL0Y/ssJ/J1a73s5ddfcBNpuq17wksb8BrAecgeXu79gNbOCSg7gg8jDc0H
-         CIr1FWr21Meh2ptFidR5u9gmSIZhBwhI42OMVN78REczlTDM2LNNpUt4maUQj4RmDA4N
-         Fxp9Td+foUrQg3YajUZ00tt+YxZpEduZrGheQ14DJF8A3km3RH0YY++b3N6opKBOHHv9
-         GTiioG580OvYVpkzcUPcOvkljBoqb5eSpakejnEzXH9k1NyId7a9rcNnnOI+vp5Pud9+
-         MigV+TpA2wubAcgg1n/x+icopUw/rPXKn9oKqrMXFWYvfnCG6986liovKMbpE+KwympK
-         ImsQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=g4utnIEpgUH8SrFacOeGCRYGCTX0362lTOZoYsGdnLU=;
+        b=OzC/9QXaaDqxoCP/B7s3PFEoW1r/3BL4QbU0Itu4yM/SSqwTf9zl3vnXpqm6D9/wLg
+         u9IULLjrR/XGDkdPfCpFCJs5/QboFpLuQOffp2IKLY+TcH8l8BzzHthtTM5hML+jlRHO
+         FG6Cxp7CivJKWEJLvCIuG26LkXP6sxJbO1IKctA1ERVcnJsmcMUdeLVDCwMA4onz9+H1
+         1MNjc+56N5uGO0uP7FpLmEqEBd9LvV4yyBSj2q2kCVBKFG5yQDPjhzHOHdM+unWA77AD
+         SzvLrlWu0scXmQGI3iWJ+50TPqZt4sVHUFRyHKBkMNQSgWZ1mUzUSIa7VQPGG7NvSDCO
+         TFOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=wiMWIX3l/jdmh+YACZVdS2gYVkizBVrd2KWV3gaU6Z4=;
-        b=j0UshMoOFnHwgeQ+tahTK1+yS4GVWkbE6juI3kILRL0EYybCZQOrIE06KONGAujFn0
-         CJz9JGO0cPD4iTNPyNPPBr3EMGRjgjAspPsb1ZRSKQuOeMoOt43u7YewiOv9c4VRP329
-         3NUEf37cqa31OPgWxzYfb8U6euKxB5/zZG2XPd6JTwTkkQjhVGtGl8IVjhXItQk4IYBz
-         C4OjLp2qE4Tiyq3zvvs1qhJzk6BFfAQDqzPS8kdBvi7Kcy0vwJoGuMEK39lDB9rjprCB
-         OauaMRwfEibwz+1rKTmje0kFOzCaTa6ELZhkywu/At+51Uj1rS/4KmJOd8Xd9XevApoJ
-         3nSA==
-X-Gm-Message-State: AJIora/ioX6T5Pjdef0JCTs8OVpV6qyMyRwcuRiv/SGAxK5y5waH4Nmh
-        nrSgxt0YOPn32EDRVaHiMKPrED5brsy9XuhV9Vw=
-X-Google-Smtp-Source: AGRyM1s7LNB9hr5fGR7PvT5GhGUNbd6q7ioj8oQdK5JBz12Jn9CqYgSj7yZHq+Y6vkjCAL8dMSh0MfxAu/mEdRA2LYE=
-X-Received: by 2002:a54:4105:0:b0:33a:3de4:3316 with SMTP id
- l5-20020a544105000000b0033a3de43316mr3632547oic.145.1657893812959; Fri, 15
- Jul 2022 07:03:32 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=g4utnIEpgUH8SrFacOeGCRYGCTX0362lTOZoYsGdnLU=;
+        b=AakqjsnYPQTt6KNrhcQPNkQs5Q926EWcGNX6Qhtl2tgli0ryPF7vNpWSWwQlXMdJ6Q
+         tmDUVuiIRFAaj7j/8EPD9m/EKR4O8hxqiVwXjCNkpgdXjypj6rwN23EvByn4TMsjsbTi
+         qkSlezAgsyHiYtlzyiD6+ui92JnjLe5y4mlWUCuQoD98DSM2cZo7LNDbGX6ZIh75uO9F
+         Q4/JI/RPcyBeuHoZgY5to8bsdHwjDUieLmokmpShnDpBhdZvin1Z8u56M7OBd1PmZ+dz
+         wHnChsTAjh8H95SEnSaD3UOruOL2BdgDux2v0iW4AOXZ+/ki7Mci6AQ3qR9JNXVW3F/n
+         1xAA==
+X-Gm-Message-State: AJIora/65AGCLQsRxeO/oQn2ia3Wpaot2cm93LTmlB25AQ5NDAOhZmb/
+        hm8l5/Mhk7WnwVDagecZqaHu3w==
+X-Google-Smtp-Source: AGRyM1tSF48yUDKFkMabG1ZK0Ufn2HDShLc1rfkqldFR9s050thAUB7FUGwV6hpIfcU96gErNHiZ9Q==
+X-Received: by 2002:a05:6000:16cb:b0:21d:7b9e:d0af with SMTP id h11-20020a05600016cb00b0021d7b9ed0afmr13306509wrf.139.1657902556488;
+        Fri, 15 Jul 2022 09:29:16 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id h7-20020adffd47000000b0021d650e4df4sm4283198wrs.87.2022.07.15.09.29.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Jul 2022 09:29:16 -0700 (PDT)
+Date:   Fri, 15 Jul 2022 17:29:13 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: Re: [PATCH v5 13/13] video: backlight: mt6370: Add MediaTek MT6370
+ support
+Message-ID: <20220715162913.5ewxwhv6jtdgt3c2@maple.lan>
+References: <20220715112607.591-1-peterwu.pub@gmail.com>
+ <20220715112607.591-14-peterwu.pub@gmail.com>
+ <ec3bdfb8-0e42-a772-28b1-165811872afa@collabora.com>
 MIME-Version: 1.0
-Received: by 2002:ac9:7f0b:0:0:0:0:0 with HTTP; Fri, 15 Jul 2022 07:03:32
- -0700 (PDT)
-Reply-To: susanneklatten201@gmail.com
-From:   Susanne Klatten <dhelp782@gmail.com>
-Date:   Fri, 15 Jul 2022 17:03:32 +0300
-Message-ID: <CAO1axY_jCnf7Xt4J7jEjQ8kvB5MK7o9-Aanf5T4Vk-2jDoBvww@mail.gmail.com>
-Subject: RE
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,REPTO_419_FRAUD_GM_LOOSE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:242 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6404]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [dhelp782[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [susanneklatten201[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [dhelp782[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  1.0 REPTO_419_FRAUD_GM_LOOSE Ends-in-digits Reply-To is similar to
-        *      known advance fee fraud collector mailbox
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec3bdfb8-0e42-a772-28b1-165811872afa@collabora.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-Hallo,
+On Fri, Jul 15, 2022 at 02:38:45PM +0200, AngeloGioacchino Del Regno wrote:
+> Il 15/07/22 13:26, ChiaEn Wu ha scritto:
+> > From: ChiaEn Wu <chiaen_wu@richtek.com>
+> >
+> > MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> > with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> > driver, display bias voltage supply, one general purpose LDO, and the
+> > USB Type-C & PD controller complies with the latest USB Type-C and PD
+> > standards.
+> >
+> > This adds support for MediaTek MT6370 Backlight driver. It's commonly used
+> > to drive the display WLED. There are 4 channels inside, and each channel
+> > supports up to 30mA of current capability with 2048 current steps in
+> > exponential or linear mapping curves.
+> >
+> > Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+>
+> Hello ChiaEn,
+>
+> I propose to move this one to drivers/leds (or drivers/pwm) and, instead of
+> registering a backlight device, register a PWM device.
+>
+> This way you will be able to reuse the generic backlight-pwm driver, as you'd
+> be feeding the PWM device exposed by this driver to the generic one: this will
+> most importantly make it easy to chain it with MTK_DISP_PWM (mtk-pwm-disp)
+> with a devicetree that looks like...
 
-   Wie geht es dir heute?
+Out of interest, does MT6370 have the same structure for backlights as the prior
+systems using mtk-pwm-disp or was mtk-pwm-disp simply a normal(-ish) PWM
+that relied on something on the board for all the constant current
+driver hardware?
 
-Bitte haben Sie meine vorherige Mail erhalten, die ich Ihnen geschickt habe?
+
+>
+> 	pwmleds-disp {
+> 		compatible = "pwm-leds";
+>
+> 		disp_led: disp-pwm {
+> 			label = "backlight-pwm";
+> 			pwms = <&pwm0 0 500000>;
+> 			max-brightness = <1024>;
+> 		};
+> 	};
+>
+> 	backlight_lcd0: backlight {
+> 		compatible = "led-backlight";
+> 		leds = <&disp_led>, <&pmic_bl_led>;
+> 		default-brightness-level = <300>;
+> 	};
+
+I think this proposal has to start with the devicetree bindings rather
+than the driver. Instead I think the question is: does this proposal
+result in DT bindings that better describe the underlying hardware?
+
+This device has lots of backlight centric features (OCP, OVP, single
+control with multiple outputs, exponential curves, etc) and its not
+clear where they would fit into the "PWM" bindings.
+
+Come to think of it I'm also a little worried also about the whole linear
+versus exponential curve thing since I thought LED drivers were required
+to use exponential curves.
+
+
+Daniel.

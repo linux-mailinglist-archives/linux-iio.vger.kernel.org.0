@@ -2,285 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7605766C2
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 20:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1F7576914
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 23:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbiGOSaW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 14:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51278 "EHLO
+        id S231754AbiGOVkU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 17:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbiGOSaV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 14:30:21 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5F1747B7;
-        Fri, 15 Jul 2022 11:30:19 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-31caffa4a45so55017947b3.3;
-        Fri, 15 Jul 2022 11:30:19 -0700 (PDT)
+        with ESMTP id S231728AbiGOVkT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 17:40:19 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 704D787343
+        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 14:40:17 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id v16so8399054wrd.13
+        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 14:40:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nt4bJMHyhYZZNJmsHG+jvKocDnQ/uRBuL8blfA1ku0E=;
-        b=JugXTEP6dHNPhtEvF7a+5JHtnQB0Wezxj3mXkDrGYozqfRojDQsyF1yaMm4ScB7/Jm
-         WsEkXJ0SEUGVVrZkC8BCoP0SfwdVW7GCvaD3VfdXQIsQWYFdR6LU4jAozR5eLknvx1TA
-         ImyChQqdYXJ0emEU0f1Dn5cGjmGGfK8hvylIv7olh1kv26+7rkg/ROqYp55f4+j0shBF
-         rb8dsgfz2gABDl/R7/RQA/+frn3Nz/VTzWGjxNJ696EP7aWkPhW2AZ98uCXxLlWzju6y
-         gW9J1WwQmK2wGdyYn3ZQfH/AHS1DVivoCmAvm5pg5MqTybZj012lhFCUjYCBV37kdAdW
-         bB7w==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=J6BSJtpNWZ2Z1cUANVaPa8k/01zDYr+V4xutkYf54NQ=;
+        b=EiZ/Jmkz5DdkNRwJGtK9gVoZ3BcJ8ejMk3yeeSneUGJiCM2csICY8AdW61vGapRVcY
+         UVEs2lvDUtUmSWhTy5Riy+DiODr1rNBvvUK4wbrRLT25XjOXefr0/051txgAy4PBorpi
+         GKNcSgswr6pLYwYHFSVzvB34JMrg+jT1ikpzno4L0ZOP0gQXJvWnMhCAGwkPbk+zk4T6
+         NHUHFy/WsEuLp1Gd3GTwIoolQEUdfvT1tqqUGbfp80W8fFmVfSTmouc1u2k89r7uyeR9
+         nYK4zK2wqlmEsLRHEwqRtcub6mC9oo2ROYXHqnHla+d+LumXFIkgFPThdJfozfzXSQFb
+         VGhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nt4bJMHyhYZZNJmsHG+jvKocDnQ/uRBuL8blfA1ku0E=;
-        b=3GYe1k6x2hqr9kIsNoQ/zb7wc0Ujbfox0Zajs6Ld4jLgZ/63llqcZgvumMs+wU6+tM
-         b7lDsmPUY11ZDNVej89c5CM7IVSivkJZ5Gjs81v+n31srnyVKtR28fmcfOxctvePtOfC
-         rlT4a3Q+A+rJyKa6Nx6QEbQ3UZJb87KQQNsE6FBxZqzFtD2uPROmeXwmQLmVbXll9oyx
-         imX8wppsjv3p8AEw4uMsBEfCCIh3Obyspi6E757DinJvwuTFFYKk0DgDRbixTozp/zjZ
-         nNSbbrB0mqOHesAYESI9gO0n+ToarpMjRh8q5oP582zc6milmVeyiSaxdaNKLp7IT3zl
-         wp3g==
-X-Gm-Message-State: AJIora/YuE7Gq4sb0NRHl0/Mw8jVopFPnVqoYK5bUa3tA6WOz7UHA23l
-        W++HU9yCQQ0I8MYYgDhXsQbRtrodTq6qnaN2Vhs=
-X-Google-Smtp-Source: AGRyM1vzP7L4rkzgqFevRJH1d667ZKPy7GjYyztLTPXytxkGqbpO4dyGE5UlcSEsEn68hi2rmxg67+K7y1Uib8FAXL0=
-X-Received: by 2002:a81:54c1:0:b0:31d:ec18:fd5d with SMTP id
- i184-20020a8154c1000000b0031dec18fd5dmr7586417ywb.277.1657909819017; Fri, 15
- Jul 2022 11:30:19 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=J6BSJtpNWZ2Z1cUANVaPa8k/01zDYr+V4xutkYf54NQ=;
+        b=yqwMMuZ0Tjbpoj3q2tkl1l/y5YeYxgh8/ZcjSuk1sBAUEIDWuwQxDZIvalQDsyIHbL
+         BPCrxmgGKa6xfhEjPzAkhgLB+3scWeimyLQ7lVWiuOUgA7obQHxPTfPmHwBTMUNYWYak
+         QrogB8X/mkgqrAFo2mwOUqixxR3C0af9sfXz4EkFJBpe83+h5oLiaIhOd6z+/sELrJEW
+         VUxVUa4mPlyRmXQxDld2D3Z9CgybaYAa5aEzK48KtlOtNV7Ra/jbodFbUaE/putEUO+1
+         KZJtfwih1wOpbxeMzGrCulefLR/5yxn0+fJHPkv5BA1/t8ZekKNzMQr5k4JKV9itqDXS
+         6k9g==
+X-Gm-Message-State: AJIora8YKah5MI425y0/jEF46ea0D7AcNzdA8oIedDx+tGclzcm+sKPO
+        11EE0ueBC1OQiZUNyk7aqlEmGQ==
+X-Google-Smtp-Source: AGRyM1vl55wMLC6v4FE7361A1EgLL5IjuxGDiU+pOGyn8ZoWrdHGmzM+ZMQkW7lv66vojAGIB7e/MQ==
+X-Received: by 2002:a5d:4e04:0:b0:21d:6ec3:38a2 with SMTP id p4-20020a5d4e04000000b0021d6ec338a2mr14182586wrt.362.1657921215858;
+        Fri, 15 Jul 2022 14:40:15 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:a223:f4b3:40c9:43fa? ([2a05:6e02:1041:c10:a223:f4b3:40c9:43fa])
+        by smtp.googlemail.com with ESMTPSA id j27-20020a05600c1c1b00b0039c4ba160absm17678280wms.2.2022.07.15.14.40.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Jul 2022 14:40:15 -0700 (PDT)
+Message-ID: <563e92de-68aa-7382-2564-c1ccc270c571@linaro.org>
+Date:   Fri, 15 Jul 2022 23:40:11 +0200
 MIME-Version: 1.0
-References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-12-peterwu.pub@gmail.com>
-In-Reply-To: <20220715112607.591-12-peterwu.pub@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 15 Jul 2022 20:29:42 +0200
-Message-ID: <CAHp75VfyVufzf7CK38BVu_j0B4ax_d1gLAGYDE3H1zaKkuUB=A@mail.gmail.com>
-Subject: Re: [PATCH v5 11/13] leds: mt6370: Add MediaTek MT6370 current sink
- type LED Indicator support
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v3 06/15] thermal: qcom: qcom-spmi-adc-tm5: convert to IIO
+ fwnode API
+Content-Language: en-US
+To:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+        openbmc@lists.ozlabs.org, linux-imx@nxp.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-iio@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-mediatek@lists.infradead.org,
+        chrome-platform@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     Gwendal Grignou <gwendal@chromium.org>,
         Jonathan Cameron <jic23@kernel.org>,
+        Saravanan Sekar <sravanhome@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Thara Gopinath <thara.gopinath@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Fair <benjaminfair@google.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Patrick Venture <venture@google.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Benson Leung <bleung@chromium.org>,
+        Nancy Yuen <yuenn@google.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Christophe Branchereau <cbranchereau@gmail.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Guenter Roeck <groeck@chromium.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Andy Gross <agross@kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Jishnu Prakash <quic_jprakash@quicinc.com>
+References: <20220715122903.332535-1-nuno.sa@analog.com>
+ <20220715122903.332535-7-nuno.sa@analog.com>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20220715122903.332535-7-nuno.sa@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 1:29 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> From: ChiYuan Huang <cy_huang@richtek.com>
->
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual
-> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
->
-> In MediaTek MT6370, there are four channel current-sink RGB LEDs that
-> support hardware pattern for constant current, PWM, and breath mode.
-> Isink4 channel can also be used as a CHG_VIN power good indicator.
+On 15/07/2022 14:28, Nuno Sá wrote:
+> Make usage of the new firmware agnostic API
+> 'devm_of_iio_channel_get_by_name()' to get the IIO channel.
+> 
+> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-...
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-> +         This driver can also be built as a module. If so the module
+> ---
+>   drivers/thermal/qcom/qcom-spmi-adc-tm5.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+> index d9c9c975f931..0b8543c627f0 100644
+> --- a/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+> +++ b/drivers/thermal/qcom/qcom-spmi-adc-tm5.c
+> @@ -825,7 +825,8 @@ static int adc_tm5_get_dt_channel_data(struct adc_tm5_chip *adc_tm,
+>   	}
+>   	channel->adc_channel = args.args[0];
+>   
+> -	channel->iio = devm_of_iio_channel_get_by_name(adc_tm->dev, node, NULL);
+> +	channel->iio = devm_fwnode_iio_channel_get_by_name(adc_tm->dev,
+> +							   of_fwnode_handle(node), NULL);
+>   	if (IS_ERR(channel->iio)) {
+>   		ret = PTR_ERR(channel->iio);
+>   		if (ret != -EPROBE_DEFER)
 
-so, the
-
-> +         will be called "leds-mt6370.ko".
-
-No ".ko".
-
-Why did you ignore these comments? Please go and fix _everywhere_ in
-your series.
-It's basically the rule of thumb, if the reviewer gives a comment
-against an occurrence of something, go through entire series and check
-if there are other places like commented one and address them all.
-
-...
-
-> + * Author: Alice Chen <alice_chen@richtek.com>
-
-Strange, the commit message doesn't have a corresponding SoB, why?
-
-...
-
-> +#define MT6370_PWM_DUTY                                31
-> +#define MT6372_PMW_DUTY                                255
-
-Looks like these are limits by hardware?
-Check with the datasheet if (BIT(x) - 1) makes more sense here.
-
-...
-
-> +       switch (led_no) {
-> +       case MT6370_LED_ISNK1:
-> +               sel_field = F_LED1_DUTY;
-> +               break;
-> +       case MT6370_LED_ISNK2:
-> +               sel_field = F_LED2_DUTY;
-> +               break;
-> +       case MT6370_LED_ISNK3:
-> +               sel_field = F_LED3_DUTY;
-> +               break;
-> +       default:
-> +               sel_field = F_LED4_DUTY;
-
-Missed break;
-
-> +       }
-
-...
-
-> +       switch (led_no) {
-> +       case MT6370_LED_ISNK1:
-> +               sel_field = F_LED1_FREQ;
-> +               break;
-> +       case MT6370_LED_ISNK2:
-> +               sel_field = F_LED2_FREQ;
-> +               break;
-> +       case MT6370_LED_ISNK3:
-> +               sel_field = F_LED3_FREQ;
-> +               break;
-> +       default:
-> +               sel_field = F_LED4_FREQ;
-
-Ditto.
-
-> +       }
-
-...
-
-> +       switch (led_no) {
-> +       case MT6370_LED_ISNK1:
-> +       case MT6370_LED_ISNK2:
-> +       case MT6370_LED_ISNK3:
-> +               *base = MT6370_REG_RGB1_TR + led_no * 3;
-> +               break;
-> +       default:
-> +               *base = MT6370_REG_RGB_CHRIND_TR;
-
-Ditto.
-It seems you dropped them for all switch-cases. It's not goot, please
-restore them back.
-
-> +       }
-
-...
-
-> +       u8 val[P_MAX_PATTERNS / 2] = {0};
-
-{ } should suffice
-
-
-> +       /*
-> +        * Pattern list
-> +        * tr1: byte 0, b'[7: 4]
-> +        * tr2: byte 0, b'[3: 0]
-> +        * tf1: byte 1, b'[7: 4]
-> +        * tf2: byte 1, b'[3: 0]
-> +        * ton: byte 2, b'[7: 4]
-> +        * toff: byte 2, b'[3: 0]
-> +        */
-> +       for (i = 0; i < P_MAX_PATTERNS; i++) {
-> +               curr = pattern + i;
-> +
-> +               sel_range = i == P_LED_TOFF ? R_LED_TOFF : R_LED_TRFON;
-> +
-> +               linear_range_get_selector_within(priv->ranges + sel_range,
-> +                                                curr->delta_t, &sel);
-> +
-> +               val[i / 2] |= sel << (4 * ((i + 1) % 2));
-> +       }
-> +
-> +       memcpy(pattern_val, val, 3);
-> +       return 0;
-> +}
-
-...
-
-> +out:
-
-out_unlock:
-
-> +       mutex_unlock(&priv->lock);
-> +
-> +       return ret;
-
-...
-
-> +out:
-
-Ditto. And so on.
-
-> +       mutex_unlock(&priv->lock);
-> +
-> +       return ret;
-
-...
-
-> +               sub_led = devm_kzalloc(priv->dev,
-> +                                      sizeof(*sub_led) * MC_CHANNEL_NUM,
-> +                                      GFP_KERNEL);
-
-NIH devm_kcalloc(). Also check if you really need zeroed data.
-
-> +               if (!sub_led)
-> +                       return -ENOMEM;
-
-...
-
-> +                       ret = fwnode_property_read_u32(child, "color", &color);
-> +                       if (ret) {
-> +                               dev_err(priv->dev,
-> +                                       "led %d, no color specified\n",
-> +                                       led->index);
-> +                               return ret;
-
-return dev_err_probe(...) ; ?
-
-Ditto for many places in your entire series.
-
-> +                       }
-
-...
-
-> +       priv = devm_kzalloc(&pdev->dev,
-> +                           struct_size(priv, leds, count), GFP_KERNEL);
-
-At least one parameter can be placed on the previous line.
-
-> +       if (!priv)
-> +               return -ENOMEM;
 
 -- 
-With Best Regards,
-Andy Shevchenko
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

@@ -2,39 +2,39 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC14957619D
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 14:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9865761A0
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 14:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbiGOMam (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 08:30:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
+        id S229908AbiGOMav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 08:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233209AbiGOMak (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 08:30:40 -0400
+        with ESMTP id S231698AbiGOMau (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 08:30:50 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5882659244
-        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 05:30:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249B459244
+        for <linux-iio@vger.kernel.org>; Fri, 15 Jul 2022 05:30:49 -0700 (PDT)
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26FAnJfv026918;
-        Fri, 15 Jul 2022 08:29:52 -0400
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26FBsOlT026930;
+        Fri, 15 Jul 2022 08:29:58 -0400
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h9r37te7t-1
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3h9r37te8f-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 15 Jul 2022 08:29:51 -0400
+        Fri, 15 Jul 2022 08:29:58 -0400
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 26FCToJs061373
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 26FCTvHs061384
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 15 Jul 2022 08:29:50 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+        Fri, 15 Jul 2022 08:29:57 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 15 Jul
- 2022 08:29:49 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 15 Jul 2022 08:29:49 -0400
+ 2022 08:29:56 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 15 Jul 2022 08:29:56 -0400
 Received: from nsa.ad.analog.com ([10.44.3.55])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26FCRxO6001007;
-        Fri, 15 Jul 2022 08:29:40 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 26FCRxO7001007;
+        Fri, 15 Jul 2022 08:29:47 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <openbmc@lists.ozlabs.org>, <linux-imx@nxp.com>,
         <linux-stm32@st-md-mailman.stormreply.com>,
@@ -88,9 +88,9 @@ CC:     Gwendal Grignou <gwendal@chromium.org>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Haibo Chen <haibo.chen@nxp.com>,
         Jishnu Prakash <quic_jprakash@quicinc.com>
-Subject: [PATCH v3 10/15] iio: adc: qcom-pm8xxx-xoadc: convert to device properties
-Date:   Fri, 15 Jul 2022 14:28:58 +0200
-Message-ID: <20220715122903.332535-11-nuno.sa@analog.com>
+Subject: [PATCH v3 11/15] iio: adc: qcom-spmi-vadc: convert to device properties
+Date:   Fri, 15 Jul 2022 14:28:59 +0200
+Message-ID: <20220715122903.332535-12-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220715122903.332535-1-nuno.sa@analog.com>
 References: <20220715122903.332535-1-nuno.sa@analog.com>
@@ -98,8 +98,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: bHQe4IGuGUggCaW8AX5gdha6-7dwv5qk
-X-Proofpoint-ORIG-GUID: bHQe4IGuGUggCaW8AX5gdha6-7dwv5qk
+X-Proofpoint-GUID: MVmGb0whldOE-JyoxEj31jVVL1mFsBM3
+X-Proofpoint-ORIG-GUID: MVmGb0whldOE-JyoxEj31jVVL1mFsBM3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-15_04,2022-07-15_01,2022-06-22_01
@@ -126,171 +126,166 @@ Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 Acked-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/adc/qcom-pm8xxx-xoadc.c | 58 ++++++++++++++---------------
- 1 file changed, 28 insertions(+), 30 deletions(-)
+ drivers/iio/adc/qcom-spmi-vadc.c | 44 ++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iio/adc/qcom-pm8xxx-xoadc.c b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-index 5e9e56821075..eb424496ee1d 100644
---- a/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-+++ b/drivers/iio/adc/qcom-pm8xxx-xoadc.c
-@@ -14,9 +14,9 @@
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
+diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
+index 34202ba52469..bcff0f62b70e 100644
+--- a/drivers/iio/adc/qcom-spmi-vadc.c
++++ b/drivers/iio/adc/qcom-spmi-vadc.c
+@@ -13,8 +13,9 @@
+ #include <linux/kernel.h>
+ #include <linux/math64.h>
  #include <linux/module.h>
 -#include <linux/of.h>
--#include <linux/of_device.h>
 +#include <linux/mod_devicetable.h>
  #include <linux/platform_device.h>
 +#include <linux/property.h>
  #include <linux/regmap.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -694,8 +694,8 @@ static int pm8xxx_read_raw(struct iio_dev *indio_dev,
- 	}
+ #include <linux/slab.h>
+ #include <linux/log2.h>
+@@ -481,8 +482,8 @@ static int vadc_read_raw(struct iio_dev *indio_dev,
+ 	return ret;
  }
  
--static int pm8xxx_of_xlate(struct iio_dev *indio_dev,
--			   const struct of_phandle_args *iiospec)
-+static int pm8xxx_fwnode_xlate(struct iio_dev *indio_dev,
-+			       const struct fwnode_reference_args *iiospec)
+-static int vadc_of_xlate(struct iio_dev *indio_dev,
+-			 const struct of_phandle_args *iiospec)
++static int vadc_fwnode_xlate(struct iio_dev *indio_dev,
++			     const struct fwnode_reference_args *iiospec)
  {
- 	struct pm8xxx_xoadc *adc = iio_priv(indio_dev);
- 	u8 pre_scale_mux;
-@@ -706,10 +706,10 @@ static int pm8xxx_of_xlate(struct iio_dev *indio_dev,
- 	 * First cell is prescaler or premux, second cell is analog
- 	 * mux.
- 	 */
--	if (iiospec->args_count != 2) {
--		dev_err(&indio_dev->dev, "wrong number of arguments for %pOFn need 2 got %d\n",
--			iiospec->np,
--			iiospec->args_count);
-+	if (iiospec->nargs != 2) {
-+		dev_err(&indio_dev->dev, "wrong number of arguments for %pfwP need 2 got %d\n",
-+			iiospec->fwnode,
-+			iiospec->nargs);
- 		return -EINVAL;
- 	}
- 	pre_scale_mux = (u8)iiospec->args[0];
-@@ -727,34 +727,34 @@ static int pm8xxx_of_xlate(struct iio_dev *indio_dev,
- }
+ 	struct vadc_priv *vadc = iio_priv(indio_dev);
+ 	unsigned int i;
+@@ -496,7 +497,7 @@ static int vadc_of_xlate(struct iio_dev *indio_dev,
  
- static const struct iio_info pm8xxx_xoadc_info = {
--	.of_xlate = pm8xxx_of_xlate,
-+	.fwnode_xlate = pm8xxx_fwnode_xlate,
- 	.read_raw = pm8xxx_read_raw,
+ static const struct iio_info vadc_info = {
+ 	.read_raw = vadc_read_raw,
+-	.of_xlate = vadc_of_xlate,
++	.fwnode_xlate = vadc_fwnode_xlate,
  };
  
- static int pm8xxx_xoadc_parse_channel(struct device *dev,
--				      struct device_node *np,
-+				      struct fwnode_handle *fwnode,
- 				      const struct xoadc_channel *hw_channels,
- 				      struct iio_chan_spec *iio_chan,
- 				      struct pm8xxx_chan_info *ch)
+ struct vadc_channels {
+@@ -647,15 +648,15 @@ static const struct vadc_channels vadc_chans[] = {
+ 	VADC_CHAN_NO_SCALE(LR_MUX3_BUF_PU1_PU2_XO_THERM, 0)
+ };
+ 
+-static int vadc_get_dt_channel_data(struct device *dev,
++static int vadc_get_fw_channel_data(struct device *dev,
+ 				    struct vadc_channel_prop *prop,
+-				    struct device_node *node)
++				    struct fwnode_handle *fwnode)
  {
--	const char *name = np->name;
+-	const char *name = node->name;
 +	const char *name = fwnode_get_name(fwnode);
- 	const struct xoadc_channel *hwchan;
--	u32 pre_scale_mux, amux_channel;
-+	u32 pre_scale_mux, amux_channel, reg[2];
- 	u32 rsv, dec;
+ 	u32 chan, value, varr[2];
  	int ret;
- 	int chid;
  
--	ret = of_property_read_u32_index(np, "reg", 0, &pre_scale_mux);
-+	ret = fwnode_property_read_u32_array(fwnode, "reg", reg,
-+					     ARRAY_SIZE(reg));
+-	ret = of_property_read_u32(node, "reg", &chan);
++	ret = fwnode_property_read_u32(fwnode, "reg", &chan);
  	if (ret) {
--		dev_err(dev, "invalid pre scale/mux number %s\n", name);
--		return ret;
--	}
--	ret = of_property_read_u32_index(np, "reg", 1, &amux_channel);
--	if (ret) {
--		dev_err(dev, "invalid amux channel number %s\n", name);
-+		dev_err(dev, "invalid pre scale/mux or amux channel number %s\n",
-+			name);
+ 		dev_err(dev, "invalid channel number %s\n", name);
  		return ret;
- 	}
+@@ -669,7 +670,7 @@ static int vadc_get_dt_channel_data(struct device *dev,
+ 	/* the channel has DT description */
+ 	prop->channel = chan;
  
-+	pre_scale_mux = reg[0];
-+	amux_channel = reg[1];
-+
- 	/* Find the right channel setting */
- 	chid = 0;
- 	hwchan = &hw_channels[0];
-@@ -778,7 +778,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
- 	/* Everyone seems to use default ("type 2") decimation */
- 	ch->decimation = VADC_DEF_DECIMATION;
- 
--	if (!of_property_read_u32(np, "qcom,ratiometric", &rsv)) {
-+	if (!fwnode_property_read_u32(fwnode, "qcom,ratiometric", &rsv)) {
- 		ch->calibration = VADC_CALIB_RATIOMETRIC;
- 		if (rsv > XOADC_RSV_MAX) {
- 			dev_err(dev, "%s too large RSV value %d\n", name, rsv);
-@@ -791,7 +791,7 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
- 	}
- 
- 	/* Optional decimation, if omitted we use the default */
--	ret = of_property_read_u32(np, "qcom,decimation", &dec);
-+	ret = fwnode_property_read_u32(fwnode, "qcom,decimation", &dec);
+-	ret = of_property_read_u32(node, "qcom,decimation", &value);
++	ret = fwnode_property_read_u32(fwnode, "qcom,decimation", &value);
  	if (!ret) {
- 		ret = qcom_vadc_decimation_from_dt(dec);
+ 		ret = qcom_vadc_decimation_from_dt(value);
  		if (ret < 0) {
-@@ -820,15 +820,14 @@ static int pm8xxx_xoadc_parse_channel(struct device *dev,
+@@ -682,7 +683,7 @@ static int vadc_get_dt_channel_data(struct device *dev,
+ 		prop->decimation = VADC_DEF_DECIMATION;
+ 	}
+ 
+-	ret = of_property_read_u32_array(node, "qcom,pre-scaling", varr, 2);
++	ret = fwnode_property_read_u32_array(fwnode, "qcom,pre-scaling", varr, 2);
+ 	if (!ret) {
+ 		ret = vadc_prescaling_from_dt(varr[0], varr[1]);
+ 		if (ret < 0) {
+@@ -695,7 +696,7 @@ static int vadc_get_dt_channel_data(struct device *dev,
+ 		prop->prescale = vadc_chans[prop->channel].prescale_index;
+ 	}
+ 
+-	ret = of_property_read_u32(node, "qcom,hw-settle-time", &value);
++	ret = fwnode_property_read_u32(fwnode, "qcom,hw-settle-time", &value);
+ 	if (!ret) {
+ 		ret = vadc_hw_settle_time_from_dt(value);
+ 		if (ret < 0) {
+@@ -708,7 +709,7 @@ static int vadc_get_dt_channel_data(struct device *dev,
+ 		prop->hw_settle_time = VADC_DEF_HW_SETTLE_TIME;
+ 	}
+ 
+-	ret = of_property_read_u32(node, "qcom,avg-samples", &value);
++	ret = fwnode_property_read_u32(fwnode, "qcom,avg-samples", &value);
+ 	if (!ret) {
+ 		ret = vadc_avg_samples_from_dt(value);
+ 		if (ret < 0) {
+@@ -721,7 +722,7 @@ static int vadc_get_dt_channel_data(struct device *dev,
+ 		prop->avg_samples = VADC_DEF_AVG_SAMPLES;
+ 	}
+ 
+-	if (of_property_read_bool(node, "qcom,ratiometric"))
++	if (fwnode_property_read_bool(fwnode, "qcom,ratiometric"))
+ 		prop->calibration = VADC_CALIB_RATIOMETRIC;
+ 	else
+ 		prop->calibration = VADC_CALIB_ABSOLUTE;
+@@ -731,16 +732,16 @@ static int vadc_get_dt_channel_data(struct device *dev,
  	return 0;
  }
  
--static int pm8xxx_xoadc_parse_channels(struct pm8xxx_xoadc *adc,
--				       struct device_node *np)
-+static int pm8xxx_xoadc_parse_channels(struct pm8xxx_xoadc *adc)
+-static int vadc_get_dt_data(struct vadc_priv *vadc, struct device_node *node)
++static int vadc_get_fw_data(struct vadc_priv *vadc)
  {
+ 	const struct vadc_channels *vadc_chan;
+ 	struct iio_chan_spec *iio_chan;
+ 	struct vadc_channel_prop prop;
 -	struct device_node *child;
 +	struct fwnode_handle *child;
- 	struct pm8xxx_chan_info *ch;
+ 	unsigned int index = 0;
  	int ret;
- 	int i;
  
--	adc->nchans = of_get_available_child_count(np);
-+	adc->nchans = device_get_child_node_count(adc->dev);
- 	if (!adc->nchans) {
- 		dev_err(adc->dev, "no channel children\n");
- 		return -ENODEV;
-@@ -846,14 +845,14 @@ static int pm8xxx_xoadc_parse_channels(struct pm8xxx_xoadc *adc,
- 		return -ENOMEM;
+-	vadc->nchannels = of_get_available_child_count(node);
++	vadc->nchannels = device_get_child_node_count(vadc->dev);
+ 	if (!vadc->nchannels)
+ 		return -EINVAL;
  
- 	i = 0;
--	for_each_available_child_of_node(np, child) {
-+	device_for_each_child_node(adc->dev, child) {
- 		ch = &adc->chans[i];
- 		ret = pm8xxx_xoadc_parse_channel(adc->dev, child,
- 						 adc->variant->channels,
- 						 &adc->iio_chans[i],
- 						 ch);
+@@ -756,10 +757,10 @@ static int vadc_get_dt_data(struct vadc_priv *vadc, struct device_node *node)
+ 
+ 	iio_chan = vadc->iio_chans;
+ 
+-	for_each_available_child_of_node(node, child) {
+-		ret = vadc_get_dt_channel_data(vadc->dev, &prop, child);
++	device_for_each_child_node(vadc->dev, child) {
++		ret = vadc_get_fw_channel_data(vadc->dev, &prop, child);
  		if (ret) {
 -			of_node_put(child);
 +			fwnode_handle_put(child);
  			return ret;
  		}
- 		i++;
-@@ -884,12 +883,11 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
- 	const struct xoadc_variant *variant;
- 	struct pm8xxx_xoadc *adc;
- 	struct iio_dev *indio_dev;
--	struct device_node *np = pdev->dev.of_node;
- 	struct regmap *map;
- 	struct device *dev = &pdev->dev;
- 	int ret;
  
--	variant = of_device_get_match_data(dev);
-+	variant = device_get_match_data(dev);
- 	if (!variant)
+@@ -848,7 +849,6 @@ static int vadc_check_revision(struct vadc_priv *vadc)
+ 
+ static int vadc_probe(struct platform_device *pdev)
+ {
+-	struct device_node *node = pdev->dev.of_node;
+ 	struct device *dev = &pdev->dev;
+ 	struct iio_dev *indio_dev;
+ 	struct vadc_priv *vadc;
+@@ -860,7 +860,7 @@ static int vadc_probe(struct platform_device *pdev)
+ 	if (!regmap)
  		return -ENODEV;
  
-@@ -904,7 +902,7 @@ static int pm8xxx_xoadc_probe(struct platform_device *pdev)
- 	init_completion(&adc->complete);
- 	mutex_init(&adc->lock);
+-	ret = of_property_read_u32(node, "reg", &reg);
++	ret = device_property_read_u32(dev, "reg", &reg);
+ 	if (ret < 0)
+ 		return ret;
  
--	ret = pm8xxx_xoadc_parse_channels(adc, np);
-+	ret = pm8xxx_xoadc_parse_channels(adc);
+@@ -880,7 +880,7 @@ static int vadc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = vadc_get_dt_data(vadc, node);
++	ret = vadc_get_fw_data(vadc);
  	if (ret)
  		return ret;
  

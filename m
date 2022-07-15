@@ -2,121 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3ECC575A9D
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 06:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC8F575CDC
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 09:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbiGOExG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 00:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37108 "EHLO
+        id S232588AbiGOH4v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 03:56:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiGOExG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 00:53:06 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C5378583;
-        Thu, 14 Jul 2022 21:53:05 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id j22so6997100ejs.2;
-        Thu, 14 Jul 2022 21:53:05 -0700 (PDT)
+        with ESMTP id S232584AbiGOH4u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 03:56:50 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FDD7E004;
+        Fri, 15 Jul 2022 00:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language
-         :from:cc:references:to:in-reply-to:content-transfer-encoding;
-        bh=q64YR+dz3l8N7KWsT2gr8PSkDJ8PbvnFEtZazzJt2ik=;
-        b=TZF/1PNOgat33kGEqwm0sKjVGVoe5Z3ryywyXeqsIKSWzKkmOL8q7SB++vfy6dvlx8
-         ZGN/Tv7YraG5i0iWboYaHEQ0Ye2spd1Gq8yk0cee9BFlY5PMXd2gLigAH1ZijkgpNn4T
-         utJi24RbFfbHVVW+jFTfDk0oXtmImXkBI76XzuQlsAqwVFhb/Po7MgsvKNwZ354GuZSE
-         7DnPWe2qfQvfaphiyEASVkLYcdx7dm++u9XTPBLLbEvvaNO6/qBPxmBWT0GwQquVLs/g
-         Ln+XkLZlfpb6LhlwkW+uJsqJmEtZDN4nNtKI5qmDZXLUvcBcjrKBkbxttqhmJQtCCHry
-         m1Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:cc:references:to:in-reply-to
-         :content-transfer-encoding;
-        bh=q64YR+dz3l8N7KWsT2gr8PSkDJ8PbvnFEtZazzJt2ik=;
-        b=mqV5DnZWB4V+dmQggmL+LH00u27tgtttJheck+rnXGAdkr+dmCnBlmvDnmowijKFgs
-         KSV2/EFfphx6iJRxOc0kWxrHJHNjpr+SbA7V2HbGaU2PWMIl4bdwiFRsCkuqR7638dZP
-         dECPWjucmgBOMqZrTu+rpJSlvXSYw3vhOxC/I9fYEgJm07Os1OHF46+PBgW9/HdZ/L4q
-         c/FI1jTkj9/K8IGq6BSCPmLWveHLEbrpapUMQ6m7foqCL11JxXXZ6PHKNewECcf4iv2d
-         gfPHpFJupcn6GTEXwQagZJmL74iqv4QSv4CfC7IKUekgmpGd+cpxHBxdP01YLq7+R4Nm
-         IcoA==
-X-Gm-Message-State: AJIora9Eyu+Og10pMPsj+Pej7GHKpIf2OCGpQ5JJ08ED+3LqW/R42B72
-        KiXAF7CJWtv2b299sb1x61U=
-X-Google-Smtp-Source: AGRyM1vJS2pPI+Aq0Nn7vFNE0vbKPvqiynIpJzvgmXsbMz9uZoZ7o1vfkFH/s3P6vTPnswF/3kekSg==
-X-Received: by 2002:a17:907:1c8f:b0:6e8:f898:63bb with SMTP id nb15-20020a1709071c8f00b006e8f89863bbmr12079765ejc.721.1657860783722;
-        Thu, 14 Jul 2022 21:53:03 -0700 (PDT)
-Received: from [192.168.0.182] ([79.119.98.153])
-        by smtp.gmail.com with ESMTPSA id b6-20020aa7cd06000000b004355998ec1asm2110036edw.14.2022.07.14.21.53.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Jul 2022 21:53:03 -0700 (PDT)
-Message-ID: <08a9d34b-f44e-e1f2-ebc6-4123986b3c54@gmail.com>
-Date:   Fri, 15 Jul 2022 07:53:03 +0300
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1657871809; x=1689407809;
+  h=subject:from:to:cc:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=3e8PWl1SbKdPwB4I8T3+mrIuGshCyHGD0HiV7NPzQK8=;
+  b=kwyVrUmkywiigit+xRfQCbMMsK4WkPpSqh1l23HcfLLN1MZus3x2K9Sg
+   bDGkiWJjG2l44XoE0ApFTphQa2r/wPg3+/qpnDyOvhQk6nQ3suwJ0sL2B
+   5/nxRMDzbsFdmX5btWaDiXyH9E3a/nlcjq4x/2SMBt6gzh/dz6NAV7RnB
+   dEzdfi0SS0VDJpmlG912+TDzyBjOWkLVYKErX778ZxXdHf9++iqbDNZIF
+   z3HYzOgv3HWqwca1q1KIYcOOOor2sqImWqTlC6pRXfsVKlz6nwrRJ16gy
+   Npuu9bdxOP0xWh3jQI0T7zqF6OAaYEllwrJpgJ6V/rsZKekr+d+37g4gH
+   w==;
+X-IronPort-AV: E=Sophos;i="5.92,273,1650924000"; 
+   d="scan'208";a="25069308"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 15 Jul 2022 09:56:46 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Fri, 15 Jul 2022 09:56:46 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Fri, 15 Jul 2022 09:56:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1657871806; x=1689407806;
+  h=from:to:cc:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding:subject;
+  bh=3e8PWl1SbKdPwB4I8T3+mrIuGshCyHGD0HiV7NPzQK8=;
+  b=gXSpGuGkkqhUWE4ojoEh3e1qdmsFWUUqLWFijY+Qe9GK4eNmVZrOJN69
+   fTBBummlErC9VH2Hi9dQoppZKC83CZ6eQLT0xYT/vZI4Q6ga0MBJTsE/V
+   hl1QUnqovw5RUXXVjLnYb3UOAoK0dkYhzs0uRq/lwbgaNllJXO22MShYS
+   qAYsLMzAnc2L3oChHPveveQuWieUKWL6/J1Qjht/m/fgZADr1gUyr2Oq5
+   G87IyrX/h4nk6YlgaedgX8U5ajQP4C4sIfiBu0UsHVCLgBZMSZCyMakE0
+   922ANdsw4qDLcTFh2WvNX4yQwvy97L4rJWW5sPevRenVENMEyEvry330n
+   w==;
+X-IronPort-AV: E=Sophos;i="5.92,273,1650924000"; 
+   d="scan'208";a="25069305"
+Subject: Re: Re: [PATCH] dt-bindings: iio: adc: Add imx6ul & imx6sx compatibles
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 15 Jul 2022 09:56:46 +0200
+Received: from steina-w.localnet (unknown [10.123.49.12])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 114F3280056;
+        Fri, 15 Jul 2022 09:56:46 +0200 (CEST)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Haibo Chen <haibo.chen@nxp.com>, devicetree@vger.kernel.org
+Date:   Fri, 15 Jul 2022 09:56:45 +0200
+Message-ID: <8090017.T7Z3S40VBb@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20220628210919.GB963202-robh@kernel.org>
+References: <20220613123529.466528-1-alexander.stein@ew.tq-group.com> <12003373.O9o76ZdvQC@steina-w> <20220628210919.GB963202-robh@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v8 2/2] iio: adc: ad4130: add AD4130 driver
-Content-Language: en-US
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <20220715044948.434149-1-cosmin.tanislav@analog.com>
- <20220715044948.434149-3-cosmin.tanislav@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-In-Reply-To: <20220715044948.434149-3-cosmin.tanislav@analog.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 7/15/22 07:49, Cosmin Tanislav wrote:
-> AD4130-8 is an ultra-low power, high precision, measurement solution for
-> low bandwidth battery operated applications.
+Am Dienstag, 28. Juni 2022, 23:09:19 CEST schrieb Rob Herring:
+> On Mon, Jun 20, 2022 at 10:12:44AM +0200, Alexander Stein wrote:
+> > Hello,
+> > 
+> > Am Samstag, 18. Juni 2022, 19:01:29 CEST schrieb Jonathan Cameron:
+> > > On Fri, 17 Jun 2022 16:44:48 -0600
+> > > 
+> > > Rob Herring <robh@kernel.org> wrote:
+> > > > On Mon, Jun 13, 2022 at 11:34:46AM -0600, Rob Herring wrote:
+> > > > > On Mon, 13 Jun 2022 14:35:29 +0200, Alexander Stein wrote:
+> > > > > > Both are already using the vf610 compatible.
+> > > > > > 
+> > > > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > > > > > ---
+> > > > > > 
+> > > > > >  .../devicetree/bindings/iio/adc/fsl,vf610-adc.yaml       | 9
+> > > > > >  ++++++++-
+> > > > > >  1 file changed, 8 insertions(+), 1 deletion(-)
+> > > > > 
+> > > > > Running 'make dtbs_check' with the schema in this patch gives the
+> > > > > following warnings. Consider if they are expected or the schema is
+> > > > > incorrect. These may not be new warnings.
+> > > > > 
+> > > > > Note that it is not yet a requirement to have 0 warnings for
+> > > > > dtbs_check.
+> > > > > This will change in the future.
+> > > > > 
+> > > > > Full log is available here: https://patchwork.ozlabs.org/patch/
+> > > > > 
+> > > > > 
+> > > > > adc@2198000: 'num-channels' does not match any of the regexes:
+> > > > > 'pinctrl-[0-9]+'>
+> > > > 
+> > > > Looks like you need to add 'num-channels'?
+> > > 
+> > > or a lot of wrong dtbs :)
+> > > 
+> > > By which I mean ones providing a property that may or may not be
+> > > actually
+> > > used by any drivers...
+> > 
+> > This got already fixed by Baruch's patch which is currently in Shawn's
+> > imx-
+> > fixes-5.19 branch at [1]
 > 
-> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
-> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
-> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
-> selectable filter options, smart sequencer, sensor biasing and excitation
-> options, diagnostics, and a FIFO buffer.
+> Great!
 > 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ...
-> +static int ad4130_gpio_init_valid_mask(struct gpio_chip *gc,
-> +				       unsigned long *valid_mask,
-> +				       unsigned int ngpios)
-> +{
-> +	struct ad4130_state *st = gpiochip_get_data(gc);
-> +	unsigned int i;
-> +
-> +	/*
-> +	 * Output-only GPIO functionality is available on pins AIN2 through
-> +	 * AIN5. If these pins are used for anything else, do not expose them.
-> +	 */
-> +	for (i = 0; i < ngpios; i++) {
-> +		unsigned int pin = i + AD4130_AIN2_P1;
-> +		bool valid = st->pins_fn[pin] == AD4130_PIN_FN_NONE;
-> +
-> +		__assign_bit(i, valid_mask, valid);
-> +	}
-> +
-> +
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
-I missed an extra blank line here. Maybe you could fix it while
-picking the patchset up, Jonathan?
+Did this got missed? Or is it applied somwhere I' not aware of?
 
-> +	return 0;
-> +}
-> +
-> ...
+Best regards,
+Alexander
+
+
+

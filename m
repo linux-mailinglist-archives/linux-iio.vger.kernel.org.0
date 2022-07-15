@@ -2,61 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06FAA57627F
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:06:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C38576294
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:11:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234399AbiGONGU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 09:06:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45844 "EHLO
+        id S231962AbiGONLX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 09:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiGONGT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:06:19 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A468B3D599;
-        Fri, 15 Jul 2022 06:06:17 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 6so8329824ybc.8;
-        Fri, 15 Jul 2022 06:06:17 -0700 (PDT)
+        with ESMTP id S229475AbiGONLW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:11:22 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C8161EECD;
+        Fri, 15 Jul 2022 06:11:19 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-31c8bb90d09so46335157b3.8;
+        Fri, 15 Jul 2022 06:11:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=cjk0QcLK7Qj7+zbxyz81ybo9xTsZsUl/7XEcNiCSZlk=;
-        b=I/KxJOarbkD3CTr6bI1+GX+R+0NK3NiJOovyOkNmpfsXSDv2vhcKk5NI+vZftnkbGg
-         MwrvPAOczLpV/PzuzznMkxCSxJ+6WcBxz2SeXhuGLsY0hH+bxgIA+vAWaqy8gXKWAq2A
-         uzFOe2j4x3jy2QIvV7SK11B49LyIqafJ56HKzoiej9S7S0ggTmMqLI8tQrHvAJsSRq/z
-         rNeHJ2pSwMUMYzeC8dNaH6ecQWQOtzNB7/eDnb0GxvTouw5w6xHmU0P81MLtH8ioFMQA
-         fU5zDFovh6s+bvTishJ0zl5v/l4nnJ809RZNoyuqT7PXEo9cUMjGqySfB+fn2ERJmoLs
-         3duw==
+        bh=+LrkSO95PVy8bw27Iig3QT1GOG3G5eqBwe6wxhmR/uU=;
+        b=QWPiN1LWPmuijdMKT5AAJLiDd75nqTOhtxH5ERUnVqh8bmSoNBzZIgc24Y12QYZbiK
+         ZZZ1bonJ6bNj4/7dxSkAiOrS74VCGiXGhWZIxtov9goqlOn5pRrD8dZwQ+LVOT0zjsij
+         ZycSe0JZLJo499082g+stfHqVo3HUWmZ9oHqx7dbKQi8DMpwGjlvzsbhEjxZCPUX1VBE
+         Uc1tcbJmyRqjXmP4pv/MISV2Q52lQXTzxZ5gH/ZSlXdpnNalR9OhXt02d2SnPVWsqiq1
+         Uz2U49YRfc8nBIp8fjPbkLZZkI0e8nu+6vgIwXaucQUeg5o34WZ1leokFfUD1AZgptQc
+         30zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cjk0QcLK7Qj7+zbxyz81ybo9xTsZsUl/7XEcNiCSZlk=;
-        b=H5ztsXgtdPdhxjNfLlDvNXD2n7pVUmxlic9bMcioNNnGL3iAxoY2mKgsTvcAti25n3
-         SG5BqjPUl3V9/wfI50Kicyhq0/Vy1srtnht3X2lU/Bat8u8O149jfW6YFJ55fx/2+YtJ
-         BAC/zgY8yCPwTlhlwaSoCoHkI6sDz7Rgi3KnRrh28QPfWC9X/1iJlkmG1AJx02gXwauA
-         Rz2Q6YqM9UMph9pNwlERWYB8pUDckUuzsZ4lJW7ndNuweU4Mexjip5nzsu271O10jk4q
-         YBEIGJY30cEajjc9/FQh0akSfEcmWaSrcFgTtXWlRMpiibN/jqFSZCUpVwompp9S9NtE
-         V+UQ==
-X-Gm-Message-State: AJIora/zfuY0767eC++6t2Mqy1l+2KqJvtQoxIr6SYyFjwt/IpwTJWZx
-        IuxZHqnBPKbC0gpAC9ChtW3hTsIpQ+HqZg5l/tc=
-X-Google-Smtp-Source: AGRyM1u3gUyh808T1Pv3+nx4gv3OvZpiRmNXNk53IV5K4A6JGQG9S+KaILzgC03cdHtsws8VU8kBi0pySHUZ77kiRtY=
-X-Received: by 2002:a05:6902:1143:b0:66e:eb08:4c23 with SMTP id
- p3-20020a056902114300b0066eeb084c23mr14488436ybu.570.1657890376848; Fri, 15
- Jul 2022 06:06:16 -0700 (PDT)
+        bh=+LrkSO95PVy8bw27Iig3QT1GOG3G5eqBwe6wxhmR/uU=;
+        b=tCdG9faxd1YIAQdZPVif/wRyly4LrUTJmcqmQj8pGE8hFgJIT+JqocByxW5adtCinM
+         DJ207Nn2oM5Gt07aeAWl72JyvKqZp36UVD8Ua19wPyJQcJqZQjzGdawAUnqg82XUlnSt
+         j0gwNVBYtE6yvqzmBIJJaQT3ezE0kzSdWGtXuv3SxkuWCwUxEE5wdtN/h6zAK6PnlZGQ
+         PYiUkqaT8dAYlNzu829KZkco/pjnHHFXyBPpl6ROaroupc3Ab3taaEAjzHTy9ZSRDHZb
+         wo4SJm3j4mn8WhIif8SEBjqapQLRsreKt5tprtczsi1/97mp3boAOBhHaKfsReG2RLpH
+         9qnw==
+X-Gm-Message-State: AJIora+wh1aqXAy/eMIv4XwY+oEZOEAsnX1AzV4FwJ3PXHwgxXQQgNKw
+        2cBKFiuKyUQ7FDdpaSsOwMH5s9SlnY0kNztD8Cw=
+X-Google-Smtp-Source: AGRyM1vwE3NLxsUuIe5Aj+Ad86KoIRk0zfg8IwPNre3toXOXDCYSWjHhTiLXCjbb3wl3KhuodPQdkjLVkGMg2Yk7hJQ=
+X-Received: by 2002:a81:72c4:0:b0:31c:b309:c4e8 with SMTP id
+ n187-20020a8172c4000000b0031cb309c4e8mr15864875ywc.520.1657890678612; Fri, 15
+ Jul 2022 06:11:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-12-peterwu.pub@gmail.com>
- <d7157483-a6c6-1883-6fc1-d518c7095288@collabora.com>
-In-Reply-To: <d7157483-a6c6-1883-6fc1-d518c7095288@collabora.com>
+References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-9-peterwu.pub@gmail.com>
+In-Reply-To: <20220715112607.591-9-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 15 Jul 2022 15:05:40 +0200
-Message-ID: <CAHp75VdzG4hjcMDv5Qro25gJx+adO-rNTiCx9ez30uVoUX-odg@mail.gmail.com>
-Subject: Re: [PATCH v5 11/13] leds: mt6370: Add MediaTek MT6370 current sink
- type LED Indicator support
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
+Date:   Fri, 15 Jul 2022 15:10:42 +0200
+Message-ID: <CAHp75VdCgdTOu-CdNo9XGY+PrhPh93v_CkAHJC6hkArsKeiXbA@mail.gmail.com>
+Subject: Re: [PATCH v5 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
+ tcpci driver
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
         Rob Herring <robh+dt@kernel.org>,
@@ -98,28 +95,96 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 2:40 PM AngeloGioacchino Del Regno
-<angelogioacchino.delregno@collabora.com> wrote:
-> Il 15/07/22 13:26, ChiaEn Wu ha scritto:
+On Fri, Jul 15, 2022 at 1:28 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 
-...
-
-> > +#define STATE_OFF                            0
-> > +#define STATE_KEEP                           1
-> > +#define STATE_ON                             2
+> The MT6370 is a highly-integrated smart power management IC, which
+> includes a single cell Li-Ion/Li-Polymer switching battery charger,
+> a USB Type-C & Power Delivery (PD) controller, dual Flash LED current
+> sources, a RGB LED driver, a backlight WLED driver, a display bias
+> driver and a general LDO for portable devices.
 >
-> I propose, instead:
->
-> enum mt6370_state {
->         STATE_OFF = 0,
->         STATE_KEEP,
->         STATE_ON,
+> This commit add support for the Type-C & Power Delivery controller in
 
->         STATE_MAX,
+This commit add -> Add
 
-Usually we don't put commas at the terminator entries.
 
-> };
+> MediaTek MT6370 IC.
+
+
+> +static int mt6370_tcpc_probe(struct platform_device *pdev)
+> +{
+> +       struct mt6370_priv *priv;
+> +       struct device *dev = &pdev->dev;
+> +       int ret;
+> +
+> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +       if (!priv)
+> +               return -ENOMEM;
+> +
+> +       priv->dev = dev;
+> +       platform_set_drvdata(pdev, priv);
+> +
+> +       priv->tcpci_data.regmap = dev_get_regmap(dev->parent, NULL);
+> +       if (!priv->tcpci_data.regmap)
+> +               return dev_err_probe(dev, -ENODEV, "Failed to init regmap\n");
+> +
+> +       ret = mt6370_check_vendor_info(priv);
+> +       if (ret)
+> +               return ret;
+> +
+> +       priv->irq = platform_get_irq(pdev, 0);
+> +       if (priv->irq < 0)
+> +               return priv->irq;
+> +
+> +       /* Assign TCPCI feature and ops */
+> +       priv->tcpci_data.auto_discharge_disconnect = 1;
+> +       priv->tcpci_data.init = mt6370_tcpc_init;
+> +       priv->tcpci_data.set_vconn = mt6370_tcpc_set_vconn;
+> +
+> +       priv->vbus = devm_regulator_get_optional(dev, "vbus");
+> +       if (!IS_ERR(priv->vbus))
+> +               priv->tcpci_data.set_vbus = mt6370_tcpc_set_vbus;
+> +
+> +       priv->tcpci = tcpci_register_port(dev, &priv->tcpci_data);
+> +       if (IS_ERR(priv->tcpci))
+> +               return dev_err_probe(dev, PTR_ERR(priv->tcpci),
+> +                                    "Failed to register tcpci port\n");
+> +
+> +       ret = devm_request_threaded_irq(dev, priv->irq, NULL,
+> +                                       mt6370_irq_handler, IRQF_ONESHOT,
+> +                                       dev_name(dev), priv);
+> +       if (ret) {
+
+> +               tcpci_unregister_port(priv->tcpci);
+
+This is wrong.
+You mixed devm_ with non-devm. Either drop devm_ *after* the first
+non-devm_ call, or convert everything to be managed.
+
+> +               return dev_err_probe(dev, ret, "Failed to allocate irq\n");
+> +       }
+> +
+> +       device_init_wakeup(dev, true);
+> +       dev_pm_set_wake_irq(dev, priv->irq);
+> +
+> +       return 0;
+> +}
+> +
+> +static int mt6370_tcpc_remove(struct platform_device *pdev)
+> +{
+> +       struct mt6370_priv *priv = platform_get_drvdata(pdev);
+
+> +       disable_irq(priv->irq);
+
+Why?
+An ugly workaround due to ordering issues in ->probe()?
+
+> +       tcpci_unregister_port(priv->tcpci);
+> +       dev_pm_clear_wake_irq(&pdev->dev);
+> +       device_init_wakeup(&pdev->dev, false);
+> +
+> +       return 0;
+> +}
 
 -- 
 With Best Regards,

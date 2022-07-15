@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C38576294
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 356F15762A6
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231962AbiGONLX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 09:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49352 "EHLO
+        id S232848AbiGONS5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 09:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbiGONLW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:11:22 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C8161EECD;
-        Fri, 15 Jul 2022 06:11:19 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-31c8bb90d09so46335157b3.8;
-        Fri, 15 Jul 2022 06:11:19 -0700 (PDT)
+        with ESMTP id S229436AbiGONSz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:18:55 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89EC10FE2;
+        Fri, 15 Jul 2022 06:18:53 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id f73so8362859yba.10;
+        Fri, 15 Jul 2022 06:18:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=+LrkSO95PVy8bw27Iig3QT1GOG3G5eqBwe6wxhmR/uU=;
-        b=QWPiN1LWPmuijdMKT5AAJLiDd75nqTOhtxH5ERUnVqh8bmSoNBzZIgc24Y12QYZbiK
-         ZZZ1bonJ6bNj4/7dxSkAiOrS74VCGiXGhWZIxtov9goqlOn5pRrD8dZwQ+LVOT0zjsij
-         ZycSe0JZLJo499082g+stfHqVo3HUWmZ9oHqx7dbKQi8DMpwGjlvzsbhEjxZCPUX1VBE
-         Uc1tcbJmyRqjXmP4pv/MISV2Q52lQXTzxZ5gH/ZSlXdpnNalR9OhXt02d2SnPVWsqiq1
-         Uz2U49YRfc8nBIp8fjPbkLZZkI0e8nu+6vgIwXaucQUeg5o34WZ1leokFfUD1AZgptQc
-         30zg==
+        bh=RIDFbj9Nm/Hc84YphLe1TSejCss5csMsL3XGmdeREuc=;
+        b=LjTUeU/VvjExiFE7qVdoTT66INknzaksBvLAL0QX/hhMGm1S/DCmWjGAqEm1RDjTt0
+         nrI4wHZo/WK5aG8U5fIPVbESm+g18hEELTujXpx69+Azj8qnUnYXhFafWvDdYrxJWF8Q
+         n4alCS65LacwduwaUDBvHdbTO5eZ4k4tWaJ199RDLEdi+Nnbu8tJ4UTjcA2YPJBeHBKH
+         hWc3HEBwkV0/ygom4+Ivyr3ViE5siRsP8CdzKAgWRXLBXaArht7DgMtJUJb/WrGYsYt8
+         eWv+sETgNCGjxIJCtjEQJk1vVPGobtuRYELM3bihPsOKaqDcf5qzy1Ry+AVMll6TrQxi
+         eYjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=+LrkSO95PVy8bw27Iig3QT1GOG3G5eqBwe6wxhmR/uU=;
-        b=tCdG9faxd1YIAQdZPVif/wRyly4LrUTJmcqmQj8pGE8hFgJIT+JqocByxW5adtCinM
-         DJ207Nn2oM5Gt07aeAWl72JyvKqZp36UVD8Ua19wPyJQcJqZQjzGdawAUnqg82XUlnSt
-         j0gwNVBYtE6yvqzmBIJJaQT3ezE0kzSdWGtXuv3SxkuWCwUxEE5wdtN/h6zAK6PnlZGQ
-         PYiUkqaT8dAYlNzu829KZkco/pjnHHFXyBPpl6ROaroupc3Ab3taaEAjzHTy9ZSRDHZb
-         wo4SJm3j4mn8WhIif8SEBjqapQLRsreKt5tprtczsi1/97mp3boAOBhHaKfsReG2RLpH
-         9qnw==
-X-Gm-Message-State: AJIora+wh1aqXAy/eMIv4XwY+oEZOEAsnX1AzV4FwJ3PXHwgxXQQgNKw
-        2cBKFiuKyUQ7FDdpaSsOwMH5s9SlnY0kNztD8Cw=
-X-Google-Smtp-Source: AGRyM1vwE3NLxsUuIe5Aj+Ad86KoIRk0zfg8IwPNre3toXOXDCYSWjHhTiLXCjbb3wl3KhuodPQdkjLVkGMg2Yk7hJQ=
-X-Received: by 2002:a81:72c4:0:b0:31c:b309:c4e8 with SMTP id
- n187-20020a8172c4000000b0031cb309c4e8mr15864875ywc.520.1657890678612; Fri, 15
- Jul 2022 06:11:18 -0700 (PDT)
+        bh=RIDFbj9Nm/Hc84YphLe1TSejCss5csMsL3XGmdeREuc=;
+        b=VxgiEGoFQGUYqSko+lJKnHxVGH2zZsKKIQ9+fWl5TxvFC5y30oyYNFiJiWM7qvcf/8
+         wgwp1K8xIJJaXJdX9tCKzsfm3phCcmJ8mn4KJgVmLKfgUaW8scedC4sDAnZLKvPa605J
+         Xuf6pJD58ZF1Uq0SiLTwAMC41+W9qucdY3imNc1goVEWJk+yv7ELXTuqzLpXctX4h627
+         6Lx5ATaLA/TKD/lMhN21bMGyH1IWyg+s8bol5BjNho6iSX3WeTGJRDKyemoCfAUju24d
+         SL+yk0pm9MaL8GAym0K3eMQjngBLoyRpIHnFKRNOiBj0VfNEQ/UeeZcjFVYKEv9XfV9g
+         UJGw==
+X-Gm-Message-State: AJIora8ahXY1qyFHIc3AhbqzjH9ZZJ6SH3aoUgptYOIiV2Qf7yH0i2ZL
+        +DxNEioZC3N5G67lqSRU5M1RnxHjoBI+bES87pM=
+X-Google-Smtp-Source: AGRyM1tX0Yj4hhKwKn8Wh56LVxsUs+zEZtzzOqfyiqtoMPojzsjlQH4dKqby9pg3kc6AYzvHnWHIojiIQybijv0fZ+I=
+X-Received: by 2002:a25:cbcf:0:b0:66e:8893:a02c with SMTP id
+ b198-20020a25cbcf000000b0066e8893a02cmr14089485ybg.460.1657891133149; Fri, 15
+ Jul 2022 06:18:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-9-peterwu.pub@gmail.com>
-In-Reply-To: <20220715112607.591-9-peterwu.pub@gmail.com>
+References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-10-peterwu.pub@gmail.com>
+In-Reply-To: <20220715112607.591-10-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 15 Jul 2022 15:10:42 +0200
-Message-ID: <CAHp75VdCgdTOu-CdNo9XGY+PrhPh93v_CkAHJC6hkArsKeiXbA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
- tcpci driver
+Date:   Fri, 15 Jul 2022 15:18:16 +0200
+Message-ID: <CAHp75VfiBcaSbZy67Puwb2pBW2MHN8iQj3upA=h3VkKSFJbs0g@mail.gmail.com>
+Subject: Re: [PATCH v5 09/13] iio: adc: mt6370: Add MediaTek MT6370 support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -96,94 +95,70 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jul 15, 2022 at 1:28 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-
-> The MT6370 is a highly-integrated smart power management IC, which
-> includes a single cell Li-Ion/Li-Polymer switching battery charger,
-> a USB Type-C & Power Delivery (PD) controller, dual Flash LED current
-> sources, a RGB LED driver, a backlight WLED driver, a display bias
-> driver and a general LDO for portable devices.
 >
-> This commit add support for the Type-C & Power Delivery controller in
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>
+> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> driver, display bias voltage supply, one general purpose LDO, and the
+> USB Type-C & PD controller complies with the latest USB Type-C and PD
+> standards.
+>
+> This adds support the MT6370 ADC driver for system monitoring, including
 
-This commit add -> Add
+This adds --> Add a
 
+> charger current, voltage, and temperature.
 
-> MediaTek MT6370 IC.
+...
 
+> +#include <linux/bits.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/regmap.h>
+> +#include <linux/sysfs.h>
 
-> +static int mt6370_tcpc_probe(struct platform_device *pdev)
+...
+
+> +#define MT6370_AICR_400MA              0x6
+> +#define MT6370_ICHG_500MA              0x4
+> +#define MT6370_ICHG_900MA              0x8
+
+_mA ?
+
+...
+
+> +       ret = regmap_read_poll_timeout(priv->regmap,
+> +                                      MT6370_REG_CHG_ADC, reg_val,
+> +                                      !(reg_val & MT6370_ADC_START_MASK),
+> +                                      ADC_CONV_POLLING_TIME_US,
+> +                                      ADC_CONV_TIME_MS * 1000 * 3);
+
+1000 --> MILLI ?
+
+...
+
+> +static int mt6370_adc_probe(struct platform_device *pdev)
 > +{
-> +       struct mt6370_priv *priv;
-> +       struct device *dev = &pdev->dev;
+
+Given comment in one place in the entire series would be good to use
+in another where appropriate. For example, here it would also be nice
+to have a temporary variable
+
+  struct device *dev = &pdev->dev;
+
+It will shorten some lines.
+
+> +       struct mt6370_adc_data *priv;
+> +       struct iio_dev *indio_dev;
+> +       struct regmap *regmap;
 > +       int ret;
-> +
-> +       priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +       if (!priv)
-> +               return -ENOMEM;
-> +
-> +       priv->dev = dev;
-> +       platform_set_drvdata(pdev, priv);
-> +
-> +       priv->tcpci_data.regmap = dev_get_regmap(dev->parent, NULL);
-> +       if (!priv->tcpci_data.regmap)
-> +               return dev_err_probe(dev, -ENODEV, "Failed to init regmap\n");
-> +
-> +       ret = mt6370_check_vendor_info(priv);
-> +       if (ret)
-> +               return ret;
-> +
-> +       priv->irq = platform_get_irq(pdev, 0);
-> +       if (priv->irq < 0)
-> +               return priv->irq;
-> +
-> +       /* Assign TCPCI feature and ops */
-> +       priv->tcpci_data.auto_discharge_disconnect = 1;
-> +       priv->tcpci_data.init = mt6370_tcpc_init;
-> +       priv->tcpci_data.set_vconn = mt6370_tcpc_set_vconn;
-> +
-> +       priv->vbus = devm_regulator_get_optional(dev, "vbus");
-> +       if (!IS_ERR(priv->vbus))
-> +               priv->tcpci_data.set_vbus = mt6370_tcpc_set_vbus;
-> +
-> +       priv->tcpci = tcpci_register_port(dev, &priv->tcpci_data);
-> +       if (IS_ERR(priv->tcpci))
-> +               return dev_err_probe(dev, PTR_ERR(priv->tcpci),
-> +                                    "Failed to register tcpci port\n");
-> +
-> +       ret = devm_request_threaded_irq(dev, priv->irq, NULL,
-> +                                       mt6370_irq_handler, IRQF_ONESHOT,
-> +                                       dev_name(dev), priv);
-> +       if (ret) {
 
-> +               tcpci_unregister_port(priv->tcpci);
-
-This is wrong.
-You mixed devm_ with non-devm. Either drop devm_ *after* the first
-non-devm_ call, or convert everything to be managed.
-
-> +               return dev_err_probe(dev, ret, "Failed to allocate irq\n");
-> +       }
-> +
-> +       device_init_wakeup(dev, true);
-> +       dev_pm_set_wake_irq(dev, priv->irq);
-> +
-> +       return 0;
-> +}
-> +
-> +static int mt6370_tcpc_remove(struct platform_device *pdev)
-> +{
-> +       struct mt6370_priv *priv = platform_get_drvdata(pdev);
-
-> +       disable_irq(priv->irq);
-
-Why?
-An ugly workaround due to ordering issues in ->probe()?
-
-> +       tcpci_unregister_port(priv->tcpci);
-> +       dev_pm_clear_wake_irq(&pdev->dev);
-> +       device_init_wakeup(&pdev->dev, false);
-> +
-> +       return 0;
 > +}
 
 -- 

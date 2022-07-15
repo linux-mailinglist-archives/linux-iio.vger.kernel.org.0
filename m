@@ -2,91 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 356F15762A6
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFEF5762CB
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 15:29:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232848AbiGONS5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 09:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S229846AbiGON3a (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 09:29:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiGONSz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:18:55 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E89EC10FE2;
-        Fri, 15 Jul 2022 06:18:53 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id f73so8362859yba.10;
-        Fri, 15 Jul 2022 06:18:53 -0700 (PDT)
+        with ESMTP id S234625AbiGON3Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 09:29:24 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E091237FF;
+        Fri, 15 Jul 2022 06:29:23 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id l124so4654350pfl.8;
+        Fri, 15 Jul 2022 06:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RIDFbj9Nm/Hc84YphLe1TSejCss5csMsL3XGmdeREuc=;
-        b=LjTUeU/VvjExiFE7qVdoTT66INknzaksBvLAL0QX/hhMGm1S/DCmWjGAqEm1RDjTt0
-         nrI4wHZo/WK5aG8U5fIPVbESm+g18hEELTujXpx69+Azj8qnUnYXhFafWvDdYrxJWF8Q
-         n4alCS65LacwduwaUDBvHdbTO5eZ4k4tWaJ199RDLEdi+Nnbu8tJ4UTjcA2YPJBeHBKH
-         hWc3HEBwkV0/ygom4+Ivyr3ViE5siRsP8CdzKAgWRXLBXaArht7DgMtJUJb/WrGYsYt8
-         eWv+sETgNCGjxIJCtjEQJk1vVPGobtuRYELM3bihPsOKaqDcf5qzy1Ry+AVMll6TrQxi
-         eYjQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lmEbAYKWlOqPX2RjEuea2Sgy80PtCQ6vAnGW/GIiSPU=;
+        b=nW1VzwudviEYvqFXOa/22wLsBmSaClxipxEjXsDbuunL/jtsRLkzRJ0XgaCdDTlQCG
+         vd1Iy14VPseOW1lSpRlmdwD4ZJC683VIQfD58Pa74De44nwY3neCWRcGgBoOvS3jVEiU
+         zX0fNm7uMrBSi57//klwfRHxHdgsTA6mhPHyoq91szD6UGrdQRmSpIIwvGp8ytAD7xaE
+         TzOrZA2j40YTfZnFE+GW5bOc38g8h0JJxk9rqmgJdWRMJN8jeMVRNEZ0E+fKIcDfirX0
+         hgsW4Vh5+jhaf/cv9/8fNyDk49bAp697pV2KT79h+jaXe/iPRpI7xBoG3fGUz8udmfE1
+         +uIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RIDFbj9Nm/Hc84YphLe1TSejCss5csMsL3XGmdeREuc=;
-        b=VxgiEGoFQGUYqSko+lJKnHxVGH2zZsKKIQ9+fWl5TxvFC5y30oyYNFiJiWM7qvcf/8
-         wgwp1K8xIJJaXJdX9tCKzsfm3phCcmJ8mn4KJgVmLKfgUaW8scedC4sDAnZLKvPa605J
-         Xuf6pJD58ZF1Uq0SiLTwAMC41+W9qucdY3imNc1goVEWJk+yv7ELXTuqzLpXctX4h627
-         6Lx5ATaLA/TKD/lMhN21bMGyH1IWyg+s8bol5BjNho6iSX3WeTGJRDKyemoCfAUju24d
-         SL+yk0pm9MaL8GAym0K3eMQjngBLoyRpIHnFKRNOiBj0VfNEQ/UeeZcjFVYKEv9XfV9g
-         UJGw==
-X-Gm-Message-State: AJIora8ahXY1qyFHIc3AhbqzjH9ZZJ6SH3aoUgptYOIiV2Qf7yH0i2ZL
-        +DxNEioZC3N5G67lqSRU5M1RnxHjoBI+bES87pM=
-X-Google-Smtp-Source: AGRyM1tX0Yj4hhKwKn8Wh56LVxsUs+zEZtzzOqfyiqtoMPojzsjlQH4dKqby9pg3kc6AYzvHnWHIojiIQybijv0fZ+I=
-X-Received: by 2002:a25:cbcf:0:b0:66e:8893:a02c with SMTP id
- b198-20020a25cbcf000000b0066e8893a02cmr14089485ybg.460.1657891133149; Fri, 15
- Jul 2022 06:18:53 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lmEbAYKWlOqPX2RjEuea2Sgy80PtCQ6vAnGW/GIiSPU=;
+        b=wkBJ+fKtTIFuY1GppvdLQzsHFZkrPKPabBxMw49zEKoDOdfMG9vbhkwWvXr+GvP04z
+         aVEs3BdKRCfqEPPlQ5vldvzH2GXjoo11mhnUTIINp1fAQrKE/SC9vOE9bY1BlYs53zBV
+         p+/u6AmD8Zd0h9VNLBoO6IU59gu2qTOMm0JhYdPfVYP1TrfWrj9+mgsGDfB399SbU1b2
+         vQseaY+qsnPLJEael2lvAcWMbxt9id6VvpgRXgxiJUfpVju/FPubdb7GpzF5yQ6EczQU
+         GdTOMWyKXSFYfe9JOvrBMtbTd16PQaH1RUMdSBKcxq2rQ+EqONB7Q+8Zd7cSOICiLMxJ
+         hwpA==
+X-Gm-Message-State: AJIora9FeJPt96wWJpRJFLsi9CHBHXjZ83TmNEr4qnFxFUSwckaElgL/
+        sbX3Hx2z0ZlaL+hjd66MIw==
+X-Google-Smtp-Source: AGRyM1vAiEUCIHGxamaoKHk4eRp56pEf+4nacB8IWdx8UvYeFXHCvGjCB2QPDzWpnqo9Xbxw/UeaKw==
+X-Received: by 2002:a63:e955:0:b0:419:66f8:e331 with SMTP id q21-20020a63e955000000b0041966f8e331mr11835579pgj.585.1657891763075;
+        Fri, 15 Jul 2022 06:29:23 -0700 (PDT)
+Received: from localhost.localdomain ([144.202.91.207])
+        by smtp.gmail.com with ESMTPSA id a4-20020a1709027d8400b0015e8d4eb2ddsm3493893plm.295.2022.07.15.06.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Jul 2022 06:29:22 -0700 (PDT)
+From:   Zheyu Ma <zheyuma97@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH] iio: light: isl29028: Fix the warning in isl29028_remove()
+Date:   Fri, 15 Jul 2022 21:29:09 +0800
+Message-Id: <20220715132909.480548-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-10-peterwu.pub@gmail.com>
-In-Reply-To: <20220715112607.591-10-peterwu.pub@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 15 Jul 2022 15:18:16 +0200
-Message-ID: <CAHp75VfiBcaSbZy67Puwb2pBW2MHN8iQj3upA=h3VkKSFJbs0g@mail.gmail.com>
-Subject: Re: [PATCH v5 09/13] iio: adc: mt6370: Add MediaTek MT6370 support
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,73 +67,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 15, 2022 at 1:28 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> From: ChiaEn Wu <chiaen_wu@richtek.com>
->
-> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
-> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
-> driver, display bias voltage supply, one general purpose LDO, and the
-> USB Type-C & PD controller complies with the latest USB Type-C and PD
-> standards.
->
-> This adds support the MT6370 ADC driver for system monitoring, including
+The driver uses managed resource API to register the iio device, so it
+is unnecessarg to unregister the device manually.
 
-This adds --> Add a
+The following log reveals it:
 
-> charger current, voltage, and temperature.
+[   32.374955] isl29028 0-0010: remove
+[   32.376861] general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+[   32.377676] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.379432] RIP: 0010:kernfs_find_and_get_ns+0x28/0xe0
+[   32.385461] Call Trace:
+[   32.385807]  sysfs_unmerge_group+0x59/0x110
+[   32.386110]  dpm_sysfs_remove+0x58/0xc0
+[   32.386391]  device_del+0x296/0xe50
+[   32.386959]  cdev_device_del+0x1d/0xd0
+[   32.387231]  devm_iio_device_unreg+0x27/0xb0
+[   32.387542]  devres_release_group+0x319/0x3d0
+[   32.388162]  i2c_device_remove+0x93/0x1f0
 
-...
+Fixes: 2db5054ac28d ("staging: iio: isl29028: add runtime power management support")
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+ drivers/iio/light/isl29028.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-> +#include <linux/bits.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/kernel.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/sysfs.h>
-
-...
-
-> +#define MT6370_AICR_400MA              0x6
-> +#define MT6370_ICHG_500MA              0x4
-> +#define MT6370_ICHG_900MA              0x8
-
-_mA ?
-
-...
-
-> +       ret = regmap_read_poll_timeout(priv->regmap,
-> +                                      MT6370_REG_CHG_ADC, reg_val,
-> +                                      !(reg_val & MT6370_ADC_START_MASK),
-> +                                      ADC_CONV_POLLING_TIME_US,
-> +                                      ADC_CONV_TIME_MS * 1000 * 3);
-
-1000 --> MILLI ?
-
-...
-
-> +static int mt6370_adc_probe(struct platform_device *pdev)
-> +{
-
-Given comment in one place in the entire series would be good to use
-in another where appropriate. For example, here it would also be nice
-to have a temporary variable
-
-  struct device *dev = &pdev->dev;
-
-It will shorten some lines.
-
-> +       struct mt6370_adc_data *priv;
-> +       struct iio_dev *indio_dev;
-> +       struct regmap *regmap;
-> +       int ret;
-
-> +}
-
+diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
+index 9de3262aa688..505235903bd8 100644
+--- a/drivers/iio/light/isl29028.c
++++ b/drivers/iio/light/isl29028.c
+@@ -641,8 +641,6 @@ static int isl29028_remove(struct i2c_client *client)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+ 	struct isl29028_chip *chip = iio_priv(indio_dev);
+ 
+-	iio_device_unregister(indio_dev);
+-
+ 	pm_runtime_disable(&client->dev);
+ 	pm_runtime_set_suspended(&client->dev);
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

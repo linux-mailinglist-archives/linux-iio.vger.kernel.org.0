@@ -2,117 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A27AA575FEB
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 13:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DA97575FFA
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Jul 2022 13:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229577AbiGOLV0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 15 Jul 2022 07:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42822 "EHLO
+        id S230286AbiGOL0Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 15 Jul 2022 07:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiGOLVZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 07:21:25 -0400
-Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2267B87C1C;
-        Fri, 15 Jul 2022 04:21:24 -0700 (PDT)
-Received: by mail-qt1-x82e.google.com with SMTP id r17so3490944qtx.6;
-        Fri, 15 Jul 2022 04:21:24 -0700 (PDT)
+        with ESMTP id S229452AbiGOL0Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 15 Jul 2022 07:26:24 -0400
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 167BC13DDA;
+        Fri, 15 Jul 2022 04:26:23 -0700 (PDT)
+Received: by mail-pj1-x1030.google.com with SMTP id o3-20020a17090a744300b001ef8f7f3dddso5777007pjk.3;
+        Fri, 15 Jul 2022 04:26:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=7aAwPpbyNhMgBtXYplVX7e+e1ZXjzCZEFZQ0/Qp+rZs=;
-        b=XdinAxILUx5V4/TMUwVnHjrF2YH64IZZFeCyINRd3Uc2T7zK5jdlBkPARxgAUQPknQ
-         jCfx0227x6mZ/nJvyEdEOP0X2HcETQpjzcvpoVctcPe8hpu24084l6+Zfq6C9Yp+Pe19
-         LGKjBB+xZcEbyihQC5Jva22iuE9RvoR1T1A0aT5gZbbl2uX8Yfn+4VkAcRNJ2oRqIyBp
-         hvqhsHzhzq2ZXGWh4u48/NdYzataIRkzPk7S3WkMEcPz42YtmZsCcrQ4fU8zYMkCmEb3
-         CBLLe2wOl7idYi+SWFz4xCdXZ1vxsiFpcZo/yuvmbHWMT7smdxKunQKgJNVUdlfCfqdO
-         L3zw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gxyNAIdF8uVow3H1XhXBwg96o/plsRwQuCipoy5Ry9E=;
+        b=HUVakAht3QYDlCi6rTyHeuImXIMd379d6m8rZFlB3sH4E5dxdvR2GCC4cEqBq0hWHO
+         3mZAFFKklsIBUVZeEziNcYCKl3zu29jSR49coEkq/NEsl8fliMu4Gps15q5kYqP7H2x2
+         pBJFKtAwkAm0YIsjRhHfrikU+jVoPijPUxfVIVn4JjFXKSyP/NBe/eprcI6/hgR03rQJ
+         ETmc1N5Q2qEArmwE5va/IgZTPbmV9zI22+JK2uCOFMjlRhq72MCfo1oJCOvIr7sI8vRB
+         fkkJ6hSHZzzEKAWLjQfbpocJ6mU2MF42oDM8TC5eEwin4rpIj5+HZnjfPYFWo1igXxvk
+         ylpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=7aAwPpbyNhMgBtXYplVX7e+e1ZXjzCZEFZQ0/Qp+rZs=;
-        b=C32l/yvn3gn5zO6KUh/FKMf6/PfjQKJcyyG1FRiIjYeMrRB/pPLfLYrogpaKzZs6hz
-         F9Kop2gErdrdSGoX78NlIMSEsORVBVOuu6FfJHTzYuGY+e3UDLoHNx5J48Ssm/A5SuO+
-         K76YvZv/VGaXzXJLBUwAVmOMmyFmy4c+gCKp0loZZC1tPw9a+9R2y86DCepmFW7UYU1V
-         YMmcHwsrgck1CUhc53UERSb3YtE1VE/3O1BAQ5FK53xdXqeqSsUxtgCLEdk2tFQmNXhq
-         ri/Q/oRJe2Gh+pi5BC36yQVwoyyo3G9Ei/lCaXHnVtBoqSbRyadHrr0pYqYKLr0JxykK
-         4O3g==
-X-Gm-Message-State: AJIora8PeeNWzLKO/6GHVfsZX4CW1T2u3HxtYjIX48xMB38wkPD9+O+k
-        qeqssOuRx6oYALiUUgbr7Yk=
-X-Google-Smtp-Source: AGRyM1uAV6CcmfwBUiFodYja+YAI93swdvRkjmOrj/G87DJHG1tvUago8AS2lP01zuUI+2pKWO0gZQ==
-X-Received: by 2002:a05:622a:20f:b0:31e:de95:3cd3 with SMTP id b15-20020a05622a020f00b0031ede953cd3mr944896qtx.458.1657884082996;
-        Fri, 15 Jul 2022 04:21:22 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id ay7-20020a05620a178700b006b578ff5dfasm3767112qkb.41.2022.07.15.04.21.15
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gxyNAIdF8uVow3H1XhXBwg96o/plsRwQuCipoy5Ry9E=;
+        b=HTnMH46nvwcYxm4XqMIEiD+eNO/0h6/jCTu89Ilnal89R+ankotVPwr3ehn5zRvNXp
+         geleH2bIqOUuXhrTrPyiJi69mtFr5h74C31GtqKh0NJ3uZ5rnHuTPLxsBAQMQ7yEHdqy
+         4kfP+5O3i8f8VTlyu0WALaGGl+ZlbefKZyjfQqfvYcwZEW692OwmxPlvHyXrHZK/lNc4
+         SLLGDdlP7upyutkmnmL7CO1fiHTLP+PyQ4aWlapA1aXcrUnTtX5lFdqyAg4kJQ5YEgnM
+         YsVRCn5f/6ZE4Co5jXOTF5L38CN3kyZPyc8+7Ni3bcMPVDDAgglHuqpy5D0AsXmQxz/K
+         u48w==
+X-Gm-Message-State: AJIora8ftNcXzL3p0rrPcWSBg1E7RRv0Yru53PmftgKCGEQuhMbYjA+c
+        4hTGvd+VVBEzv0d5BSmAo28=
+X-Google-Smtp-Source: AGRyM1vAeOtUIfstbiXdFTS8IM2qsuNBcIlE5ZGLviTu+LOg0TWAQB6D3c0+uhw6k8SiuBspFKiMsA==
+X-Received: by 2002:a17:902:7487:b0:16b:d8ae:7e33 with SMTP id h7-20020a170902748700b0016bd8ae7e33mr12804578pll.21.1657884382451;
+        Fri, 15 Jul 2022 04:26:22 -0700 (PDT)
+Received: from RD-3580-24288.rt.l (42-72-159-86.emome-ip.hinet.net. [42.72.159.86])
+        by smtp.gmail.com with ESMTPSA id a5-20020aa78e85000000b00525b61f4792sm3550604pfr.109.2022.07.15.04.26.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Jul 2022 04:21:22 -0700 (PDT)
-Message-ID: <83d816f52b3d4194b51b20f31b875055f63cd718.camel@gmail.com>
-Subject: Re: [PATCH v2 13/15] iio: adc: stm32-adc: convert to device
- properties
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-arm-msm@vger.kernel.org, openbmc@lists.ozlabs.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-imx@nxp.com,
-        linux-mips@vger.kernel.org,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
+        Fri, 15 Jul 2022 04:26:21 -0700 (PDT)
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+To:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de
+Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com
-Cc:     Andy Gross <agross@kernel.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Benjamin Fair <benjaminfair@google.com>,
-        Nancy Yuen <yuenn@google.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Christophe Branchereau <cbranchereau@gmail.com>,
-        Avi Fishman <avifishman70@gmail.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Thara Gopinath <thara.gopinath@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Fabio Estevam <festevam@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Haibo Chen <haibo.chen@nxp.com>, Arnd Bergmann <arnd@arndb.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Patrick Venture <venture@google.com>,
-        Amit Kucheria <amitk@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Guenter Roeck <groeck@chromium.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 15 Jul 2022 13:22:18 +0200
-In-Reply-To: <c4385216-1d9e-34b3-58ea-edf8d9ed4cd8@foss.st.com>
-References: <20220711123835.811358-1-nuno.sa@analog.com>
-         <20220711123835.811358-14-nuno.sa@analog.com>
-         <f0f150cf-586f-9f13-81b0-cb95bd0d8f23@foss.st.com>
-         <ca7dc3801e29ddaa59f868c20d491d15541522d8.camel@gmail.com>
-         <c4385216-1d9e-34b3-58ea-edf8d9ed4cd8@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.3 
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: [PATCH v5 00/13] Add MediaTek MT6370 PMIC support
+Date:   Fri, 15 Jul 2022 19:25:54 +0800
+Message-Id: <20220715112607.591-1-peterwu.pub@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -123,206 +80,382 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2022-07-13 at 17:48 +0200, Fabrice Gasnier wrote:
-> On 7/12/22 12:33, Nuno S=C3=A1 wrote:
-> > Hi Fabrice,
-> >=20
-> > Nice that someone in ST is looking at this one :)
->=20
-> Hi Nuno,
->=20
-> Thank you for taking care of converting all these drivers to device
-> properties, including this one :-).
->=20
-> >=20
-> > On Mon, 2022-07-11 at 16:04 +0200, Fabrice Gasnier wrote:
-> > > On 7/11/22 14:38, Nuno S=C3=A1 wrote:
-> > > > Make the conversion to firmware agnostic device properties. As
-> > > > part
-> > > > of
-> > > > the conversion the IIO inkern interface 'of_xlate()' is also
-> > > > converted to
-> > > > 'fwnode_xlate()'. The goal is to completely drop 'of_xlate' and
-> > > > hence OF
-> > > > dependencies from IIO.
-> > > >=20
-> > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > > ---
-> > > > =C2=A0drivers/iio/adc/stm32-adc.c | 121 ++++++++++++++++++++-------=
--
-> > > > ----
-> > > > ----
-> > > > =C2=A01 file changed, 67 insertions(+), 54 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/iio/adc/stm32-adc.c
-> > > > b/drivers/iio/adc/stm32-
-> > > > adc.c
-> > > > index 3985fe972892..e55859113df8 100644
-> > > > --- a/drivers/iio/adc/stm32-adc.c
-> > > > +++ b/drivers/iio/adc/stm32-adc.c
-> > > > @@ -21,11 +21,11 @@
-> > > > =C2=A0#include <linux/io.h>
-> > > > =C2=A0#include <linux/iopoll.h>
-> > > > =C2=A0#include <linux/module.h>
-> > > > +#include <linux/mod_devicetable.h>
-> > > > =C2=A0#include <linux/nvmem-consumer.h>
-> > > > =C2=A0#include <linux/platform_device.h>
-> > > > =C2=A0#include <linux/pm_runtime.h>
-> > > > -#include <linux/of.h>
-> > > > -#include <linux/of_device.h>
-> > > > +#include <linux/property.h>
-> > > > =C2=A0
-> > > > =C2=A0#include "stm32-adc-core.h"
-> > > > =C2=A0
-> > > > @@ -1530,8 +1530,8 @@ static int
-> > > > stm32_adc_update_scan_mode(struct
-> > > > iio_dev *indio_dev,
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
-> > > > =C2=A0}
-> > > > =C2=A0
-> > > > -static int stm32_adc_of_xlate(struct iio_dev *indio_dev,
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct of_phandle_args
-> > > > *iiospec)
-> > > > +static int stm32_adc_fwnode_xlate(struct iio_dev *indio_dev,
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct
-> > > > fwnode_reference_args *iiospec)
-> > > > =C2=A0{
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int i;
-> > > > =C2=A0
-> > > > @@ -1585,7 +1585,7 @@ static const struct iio_info
-> > > > stm32_adc_iio_info =3D {
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.hwfifo_set_waterma=
-rk =3D stm32_adc_set_watermark,
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.update_scan_mode =
-=3D stm32_adc_update_scan_mode,
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.debugfs_reg_access=
- =3D stm32_adc_debugfs_reg_access,
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.of_xlate =3D stm32_adc_=
-of_xlate,
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.fwnode_xlate =3D stm32_=
-adc_fwnode_xlate,
-> > > > =C2=A0};
-> > > > =C2=A0
-> > > > =C2=A0static unsigned int stm32_adc_dma_residue(struct stm32_adc
-> > > > *adc)
-> > > > @@ -1782,14 +1782,14 @@ static const struct
-> > > > iio_chan_spec_ext_info
-> > > > stm32_adc_ext_info[] =3D {
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{},
-> > > > =C2=A0};
-> > > > =C2=A0
-> > > > -static int stm32_adc_of_get_resolution(struct iio_dev
-> > > > *indio_dev)
-> > > > +static int stm32_adc_fw_get_resolution(struct iio_dev
-> > > > *indio_dev)
-> > > > =C2=A0{
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device_node *node=
- =3D indio_dev->dev.of_node;
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device *dev =3D &=
-indio_dev->dev;
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct stm32_adc *a=
-dc =3D iio_priv(indio_dev);
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned int i;
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 res;
-> > > > =C2=A0
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (of_property_read_u32=
-(node, "assigned-resolution-
-> > > > bits",
-> > > > &res))
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (device_property_read=
-_u32(dev, "assigned-resolution-
-> > > > bits", &res))
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0res =3D adc->cfg->adc_info->resolutions[0];
-> > > > =C2=A0
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0for (i =3D 0; i < a=
-dc->cfg->adc_info->num_res; i++)
-> > > > @@ -1873,11 +1873,11 @@ static void
-> > > > stm32_adc_chan_init_one(struct
-> > > > iio_dev *indio_dev,
-> > > > =C2=A0
-> > > > =C2=A0static int stm32_adc_get_legacy_chan_count(struct iio_dev
-> > > > *indio_dev, struct stm32_adc *adc)
-> > > > =C2=A0{
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device_node *node=
- =3D indio_dev->dev.of_node;
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct device *dev =3D &=
-indio_dev->dev;
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct stm32_=
-adc_info *adc_info =3D adc->cfg-
-> > > > >adc_info;
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int num_channels =
-=3D 0, ret;
-> > > > =C2=A0
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D of_property_coun=
-t_u32_elems(node, "st,adc-
-> > > > channels");
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D device_property_=
-count_u32(dev, "st,adc-
-> > > > channels");
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret > adc_info-=
->max_channels) {
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_err(&indio_dev->dev, "Bad st,adc-
-> > > > channels?\n");
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return -EINVAL;
-> > > > @@ -1885,8 +1885,8 @@ static int
-> > > > stm32_adc_get_legacy_chan_count(struct iio_dev *indio_dev,
-> > > > struct
-> > > > stm
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0num_channels +=3D ret;
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > > > =C2=A0
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D of_property_coun=
-t_elems_of_size(node, "st,adc-
-> > > > diff-
-> > > > channels",
-> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(struct
-> > > > stm32_adc_diff_channel));
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* each st,adc-diff-chan=
-nels is a group of 2 u32 */
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D device_property_=
-count_u64(dev, "st,adc-diff-
-> > > > channels");
-> >=20
-> > Are you fine with this change (still does not have any reference to
-> > the
-> > target struct but the comment might be helpful and there's no magic
-> > 2)?
->=20
->=20
-> Since you added that comment, this sounds better. IMHO, This still
-> looks
-> a bit weird. I'd feel more comfortable by using u32 API for a
-> 'uint32-matrix' as defined in dt-bindings.
-> Strictly speaking, something like
-> sizeof(struct stm32_adc_diff_channel) / sizeof(u32) could be used,
-> along
-> with this comment and device_property_count_u32() to make it clear ?
->=20
+From: ChiaEn Wu <chiaen_wu@richtek.com>
 
-No strong option so I can do as you prefer:
+This patch series add MediaTek MT6370 PMIC support. The MT6370 is a
+highly-integrated smart power management IC, which includes a single
+cell Li-Ion/Li-Polymer switching battery charger, a USB
+Type-C & Power Delivery (PD) controller, dual Flash LED current sources,
+a RGB LED driver, a backlight WLED driver, a display bias driver and a
+general LDO for portable devices.
 
-	ret =3D device_property_count_u32();
-	if (ret /=C2=A0
-(sizeof(struct stm32_adc_diff_channel) / sizeof(u32)) > max_chan) {
-		...
-	}
-	...
+In this series of patches, we based on Andy Shevchenko's mfd patch used to
+adjust the Makefile order.
+(https://lore.kernel.org/all/20220616182524.7956-2-andriy.shevchenko@linux.intel.com/)
+Among with this, we took some changes for MT6370 and refined the MT6370 device
+tree files to comply with DT specifications.
 
-Probably it's a good idea to store that sizeof() division in a local
-variable :)
+"[PATCH v5 06/13] dt-bindings: mfd: Add MediaTek MT6370" depends on previous
+DT binding patches, so before applying this patch, please apply other DT
+patches first. Thanks!
 
-- Nuno S=C3=A1
+Thank you,
+ChiaEn Wu
 
-> > >=20
->=20
+---
+Changes in v5:
+- In patch 07/13:
+	- Add the comma in the last REGMAP_IRQ_REG_LINE(),
+	   DEFINE_RES_IRQ_NAMED() and MFD_CELL_RES()
+	- Add the prefix in the first parameter of all mfd_cell
+	- Move enum and struct mt6370_info to mt6370.h
+	- Remove struct device *dev in struct mt6370_info
+	- Revise the description of Kconfig help text
+	- Revise MODULE_DESCRIPTION()
+
+- In patch 08/13:
+	- Add comma for the last index of mt6370_reg_init.
+	- Use dev_err_probe to decrease LOC.
+	- Use 'dev' variable to make probe function more clean.
+	- Refine kconfig text.
+	- Remove both 'else' in set_vbus callback.
+	- Remove comma for of_device_id if the assigned member is only one.
+
+- In patch 09/13:
+	- Replace using snprintf() with sysfs_emit() in mt6370_adc_read_label()
+	- Remove macro ADC_CONV_TIME_US
+	- Revise all variable ordering
+	- Revise the description of Kconfig help text
+	- Revise MODULE_DESCRIPTION()
+
+- In patch 10/13:
+	- Replace unsigned int type of pwr_rdy with bool in
+	   mt6370_chg_set_online()
+	- Remove redundant 'else' in mt6370_chg_field_get()
+	- Revise 'if-else' in mt6370_chg_field_set()
+	- Revise 'if' condition in mt6370_chg_enable_irq()
+	- Revise all text 'otg' --> 'OTG'
+	- Revise MT6370_MIVR_IBUS_TH_100_MA --> MT6370_MIVR_IBUS_TH_100_mA
+	- Revise the description of Kconfig help text
+
+- In patch 12/13:
+	- Refine descriptions.
+	- Refine the macro name.
+	- Refine the bracket and blanks.
+
+- In patch 13/13:
+	- Add missed <mod_devicetable.h>
+	- Add struct device *dev in probe() to make code cleaning
+	- Remove useless including header file <gpio/driver.h>, <of.h>
+	- Remove useless variable uasage in mt6370_init_backlight_properties()
+	- Remove redundant checking enable_gpio in mt6370_bl_update_status()
+	- Remove redundant parentheses in mt6370_bl_get_brightness()
+	- Revise the description of Kconfig help text
+	- Revise the calculation of hys_th_steps
+
+
+Changes in v4:
+- In patch 02/13:
+	- Add minItems of "io-channel-names"
+	- Replace text "Mediatek" with "MediaTek"
+
+- In patch 06/13:
+	- Roll back all "$ref: " to v2 patch style (using "/schemas/...")
+
+- In patch 07/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Replace "first break and then return" with "return directly"
+	   in "mt6370_check_vendor_info()"
+	- Add module name related description in Kconfig helptext
+	- Add Copyright in the source code
+	- Add header file "mt6370.h" for all "#define IRQ"
+	- Adjust Makefile order of MT6370
+	- Refine "bank_idx" and "bank_addr" in
+	  "mt6375_regmap_read()" / "mt6375_regmap_write()"
+	- Refine redundant "else if" in "mt6370_regmap_read()"
+
+- In patch 08/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Replace "first ret=regulator_(dis/en)able and then return"
+	   with "return directly" in "mt6370_tcpc_set_vbus()"
+	- Replace header file <linux/of.h> with <linux/mod_devicetable.h>
+	- Add Copyright in the source code
+	- Add module name related description in Kconfig helptext
+	- Remove header file <linux/of.h>
+	- Refine all probe error by using dev_err_probe()
+
+- In patch 09/13:
+	- Replace text "Mediatek" with "MediaTek"
+	- Replace all "first dev_err() and then return" with
+	   "return dev_err_probe()"
+	- Add Copyright in the source code
+	- Add module name related description in Kconfig
+	- Add unit suffix of macro "ADC_CONV_POLLING_TIME"
+	- Add new macro "ADC_CONV_TIME_MS"
+	- Adjust the position of include file <mediatek,mt6370_adc.h>
+	- Adjust the postions between <linux/module.h> and
+	   <linux/mod_devicetable.h>
+	- Fix some incorrect characters
+
+- In patch 10/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig and
+	   MODULE_DESCRIPTION()
+	- Replace "mt6370_chg_val_to_reg" and "mt6370_chg_reg_to_val"
+	   with "linear_range" API
+	- Replace "first break and then return" with "return directly"
+	   in all cases of get/set power_supply_property
+	- Replace all "first dev_err() and then return" with "return
+	   dev_err_probe()"
+	- Replace all "return IS_ERR(priv->rdev) ? PTR_ERR(priv->rdev) : 0"
+	   with "PTR_ERR_OR_ZERO()"
+	- Replace "priv->dev->of_node" with "dev_of_node()"
+	- Add Copyright in the source code
+	- Add module name related description in Kconfig helptext
+	- Add proper unit of "MT6370_MIVR_IBUS_TH"
+	- Add error check in "mt6370_chg_get_status"
+	- Remove including <mediatek,mt6370_adc.h> header file
+	- Remove redundant comma of every enum terminator line
+	- Remove unwanted blank lines
+	- Remove the useless label (toggle_cfo_exit:)
+	- Remove using atomic
+	- Remove using of_match_ptr()
+	- Fix some incorrect characters
+	- Fix updating wrong bits when using ena_gpiod of OTG regulator
+	- Adjust the probe order in probe()
+
+- In patch 11/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Replace text "const" with "constant" in Kconfig
+	- Add Copyright in the source code
+
+- In patch 12/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Add Copyright in the source code
+
+- In patch 13/13:
+	- Replace text "Mediatek" with "MediaTek" in Kconfig
+	- Add Copyright in the source code
+	- Revise the comment of "PWM HYS STEPS"
+
+
+Changes in v3:
+- Remove ADC ABI file, which is added in v2 Patch 7
+- In patch 02/14:
+	- Add items and remove maxItems of io-channels
+	- Add io-channel-names and describe each item
+	- Add "unevaluatedProperties: false" in "usb-otg-vbus-regulator"
+	- Rename "enable-gpio" to "enable-gpios" in "usb-otg-vbus-regulator"
+- In patch 03/14:
+	- Use leds-class-multicolor.yaml instead of common.yaml.
+	- Split multi-led and led node.
+	- Add subdevice "led" in "multi-led".
+- In patch 04/14:
+	- Remove the description of enum.
+- In patch 05/14:
+	- Rename "mediatek,bled-pwm-hys-input-threshold-steps" to
+	  "mediatek,bled-pwm-hys-input-th-steps"
+	- Refine "bled-pwm-hys-input-th-steps", "bled-ovp-microvolt",
+	  "bled-ocp-microamp" enum values
+- In patch 06/14:
+	- Use " in entire patchset
+	- Refine ADC description
+	- Rename "enable-gpio" to "enable-gpios" in "regualtor"
+- In patch 07/14:
+	- Refine Kconfig help text
+	- Refine error message of unknown vendor ID in
+	  mt6370_check_vendor_info()
+	- Refine return value handling of mt6370_regmap_read()
+	- Refine all probe error by using dev_err_probe()
+	- Refine "bank_idx" and "bank_addr" in mt6370_regmap_read() and
+	  mt6370_regmap_write()
+	- Add "#define VENID*" and drop the comments in
+	  mt6370_check_vendor_info()
+	- Drop "MFD" in MODULE_DESCRIPTION()
+- In patch 09/14:
+	- Refine Kconfig help text
+- In patch 10/14:
+	- Refine Kconfig help text
+	- Refine all channel value in read_scale()
+		a. current: uA --> mA
+		b. voltage: uV --> mV
+		c. temperature: degrees Celsius --> milli degrees Celsius
+	- Add "default:" condition of switch statement in read_scale() and read_raw()
+	- Add error message for reading ADC register failed
+	- Add the comment for adc_lock
+	- Add <linux/mod_devicetable.h> header file for struct of_device_id
+	- Replace "adc" text with "ADC" in all of the error messages
+- In patch 12/14:
+	- Refine the grammer of the Kconfig.
+	- Change reg mode to the const current mode.
+- In patch 14/14:
+	- Refine bool properties parsing (pwm-enable, ovp-shutdown, ocp-shutdown) in DT
+	  parsing function
+	- Refine u32 and u8 properties parsing (pwm-hys-input-th-steps, ovp-microvolt,
+	  ocp-microamp), from using register value to using actual value
+	- Refine error string of "channle-use" parsing failed
+	- Refine Kconfig help text
+
+
+Changes in v2:
+- In patch 01/15:
+	- Add "unevaluatedProperties: false".
+	- Delete "DT bindings".
+	- Refine the description to fit in 80 columns.
+	- Skip the connector description.
+- In patch 02/15:
+	- Refine items description of interrupt-name
+	- Rename "usb-otg-vbus" to "usb-otg-vbus-regulator"
+	- Add constraint properties for ADC
+- In patch 03/15:
+	- Skip not useful description of "^(multi-)?led@[0-3]$"
+	  and reg.
+	- Due to the dependency, remove the mention of mfd
+	  document directory.
+	- Delete Soft-start property. In design aspect, we think
+	  soft-restart should always be enabled, our new chip
+	  has deleted the related setting register , also, we don’t
+	  allow user adjust this parameter in this chip.
+	- Refine the commit message.
+- In patch 04/15:
+	- Skip not useful description of "^led@[0-1]$" and reg.
+	- Add apace after '#'.
+	- Refine the commit message.
+- In patch 05/15:
+	- Remove "binding documentation" in subject title
+	- Refine description of mt6370 backlight binding
+	  document
+	- Refine properties name(bled-pwm-hys-input-bit,
+	  bled-ovp-microvolt, bled-ocp-microamp) and their
+	  description
+- In patch 06/15:
+	- Refine ADC and Regulator descriptions
+	- Refine include header usage in example
+	- Refine node name to generic node name("pmic@34")
+	- Refine led example indentation
+	- Refine license of mediatek,mt6370_adc.h
+	- Rename the dts example from IRQ define to number.
+	- Remove mediatek,mt6370.h
+- In patch 07/15:
+	- Add ABI documentation for mt6370 non-standard ADC
+	  sysfs interfaces.
+- In patch 08/15:
+	- Add all IRQ define into mt6370.c.
+	- Refine include header usage
+- In patch 09/15:
+	- No changes.
+- In patch 10/15:
+	- Use 'gpiod_get_from_of_node' to replace
+	  'fwnode_gpiod_get_index'.
+- In patch 11/15:
+	- Refine Kconfig mt6370 help text
+	- Refine mask&shift to FIELD_PREP()
+	- Refine mutex lock name ("lock" -> "adc_lock")
+	- Refine mt6370_adc_read_scale()
+	- Refine mt6370_adc_read_offset()
+	- Refine mt6370_channel_labels[] by using enum to index
+	  chan spec
+	- Refine MT6370_ADC_CHAN()
+	- Refine indio_dev->name
+	- Remove useless include header files
+- In patch 12/15:
+	- Refine mt6370_chg_otg_rdesc.of_match
+	  ("mt6370,otg-vbus" -> "usb-otg-vbus-regulator") to match
+	  DT binding
+- In patch 13/15:
+	- Refine Kconfig description.
+	- Remove include "linux/of.h" and use
+	  "linux/mod_devicetable.h".
+	- Place a comma for the last element of the const
+	  unsigned int array.
+	- Add a comment line for the mutex 'lock'.
+	- In probe function, use 'dev_err_probe' in some
+	  judgement to reduce the LOC.
+	- Refine include header usage.
+	  BIT/GENMASK -> linux/bits.h
+	  FIELD_GET -> linux/bitfield.h
+- In patch 14/15:
+	- Add blank line.
+	- Replace container_of() with to_mt6370_led() .
+	- Refine description of ramping.
+	- Refine the mt6370_init_common_properties function.
+	- Refine the probe return.
+- In patch 15/15:
+	- Refine MT6370 help text in Kconfig
+	- Refine DT Parse function
+	- Remove useless enum
+	- Add comment for 6372 backward compatible in
+	  bl_update_status() and
+	  check_vendor_info()
+	- Using dev_err_probe(); insteads dev_err()&return; in
+	  the probe()
+
+Alice Chen (2):
+  dt-bindings: leds: Add MediaTek MT6370 flashlight
+  leds: flashlight: mt6370: Add MediaTek MT6370 flashlight support
+
+ChiYuan Huang (7):
+  dt-bindings: usb: Add MediaTek MT6370 TCPC
+  dt-bindings: leds: mt6370: Add MediaTek MT6370 current sink type LED
+    indicator
+  dt-bindings: backlight: Add MediaTek MT6370 backlight
+  dt-bindings: mfd: Add MediaTek MT6370
+  mfd: mt6370: Add MediaTek MT6370 support
+  usb: typec: tcpci_mt6370: Add Mediatek MT6370 tcpci driver
+  leds: mt6370: Add MediaTek MT6370 current sink type LED Indicator
+    support
+
+ChiaEn Wu (4):
+  dt-bindings: power: supply: Add MediaTek MT6370 Charger
+  iio: adc: mt6370: Add MediaTek MT6370 support
+  power: supply: mt6370: Add MediaTek MT6370 charger driver
+  video: backlight: mt6370: Add MediaTek MT6370 support
+
+ .../leds/backlight/mediatek,mt6370-backlight.yaml  |   92 ++
+ .../bindings/leds/mediatek,mt6370-flashlight.yaml  |   41 +
+ .../bindings/leds/mediatek,mt6370-indicator.yaml   |   77 ++
+ .../devicetree/bindings/mfd/mediatek,mt6370.yaml   |  280 ++++++
+ .../power/supply/mediatek,mt6370-charger.yaml      |   88 ++
+ .../bindings/usb/mediatek,mt6370-tcpc.yaml         |   36 +
+ drivers/iio/adc/Kconfig                            |   12 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/mt6370-adc.c                       |  273 +++++
+ drivers/leds/Kconfig                               |   14 +
+ drivers/leds/Makefile                              |    1 +
+ drivers/leds/flash/Kconfig                         |   12 +
+ drivers/leds/flash/Makefile                        |    1 +
+ drivers/leds/flash/leds-mt6370-flash.c             |  661 ++++++++++++
+ drivers/leds/leds-mt6370.c                         |  994 ++++++++++++++++++
+ drivers/mfd/Kconfig                                |   16 +
+ drivers/mfd/Makefile                               |    1 +
+ drivers/mfd/mt6370.c                               |  281 ++++++
+ drivers/mfd/mt6370.h                               |   99 ++
+ drivers/power/supply/Kconfig                       |   14 +
+ drivers/power/supply/Makefile                      |    1 +
+ drivers/power/supply/mt6370-charger.c              | 1062 ++++++++++++++++++++
+ drivers/usb/typec/tcpm/Kconfig                     |   11 +
+ drivers/usb/typec/tcpm/Makefile                    |    1 +
+ drivers/usb/typec/tcpm/tcpci_mt6370.c              |  207 ++++
+ drivers/video/backlight/Kconfig                    |   12 +
+ drivers/video/backlight/Makefile                   |    1 +
+ drivers/video/backlight/mt6370-backlight.c         |  339 +++++++
+ include/dt-bindings/iio/adc/mediatek,mt6370_adc.h  |   18 +
+ 29 files changed, 4646 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+ create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-flashlight.yaml
+ create mode 100644 Documentation/devicetree/bindings/leds/mediatek,mt6370-indicator.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt6370.yaml
+ create mode 100644 Documentation/devicetree/bindings/power/supply/mediatek,mt6370-charger.yaml
+ create mode 100644 Documentation/devicetree/bindings/usb/mediatek,mt6370-tcpc.yaml
+ create mode 100644 drivers/iio/adc/mt6370-adc.c
+ create mode 100644 drivers/leds/flash/leds-mt6370-flash.c
+ create mode 100644 drivers/leds/leds-mt6370.c
+ create mode 100644 drivers/mfd/mt6370.c
+ create mode 100644 drivers/mfd/mt6370.h
+ create mode 100644 drivers/power/supply/mt6370-charger.c
+ create mode 100644 drivers/usb/typec/tcpm/tcpci_mt6370.c
+ create mode 100644 drivers/video/backlight/mt6370-backlight.c
+ create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6370_adc.h
+
+-- 
+2.7.4
+

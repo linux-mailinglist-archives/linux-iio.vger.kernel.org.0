@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC529577070
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 19:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE2E4577073
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 19:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbiGPRjL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 13:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46222 "EHLO
+        id S229505AbiGPRlz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 13:41:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230313AbiGPRjJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 13:39:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B83DD10FC0;
-        Sat, 16 Jul 2022 10:39:05 -0700 (PDT)
+        with ESMTP id S229501AbiGPRly (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 13:41:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CEA1C108
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 10:41:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D466611A6;
-        Sat, 16 Jul 2022 17:39:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B92C34114;
-        Sat, 16 Jul 2022 17:39:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE7BA611E4
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 17:41:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DA1C34114;
+        Sat, 16 Jul 2022 17:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657993144;
-        bh=k8F15ykDf5m+r4/I7RU3R8rqaaAe0MvqtE3T6MXh/to=;
+        s=k20201202; t=1657993313;
+        bh=tRix/Vc7FZ/n1uFH0Cwqj6uxQZGr96G9yflp9+fA4K0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kHN2y5iBaPDyznSfGD+B0FZebCnxFNJTZUfhljzHRaZFdjArTKoYH3dhOzgQhbaFj
-         qU+pf5QqG6IX/BHcd6NeQdcNRa7InJrk1FNCpZoupQO177qxVHg6f1uWBKJWdngpKO
-         kreFeKArz+UMOteMWfRLHt8nBDudvIlD9IKW067UzkPqHY9esrLs897JH8UNeJ0fnk
-         sxb5mCt22PE9q6gBsDHiURYvQz3t5wNky1WYyGkVYC6C6d5sM+gP3x/2BFWY/fK6Pe
-         +HwkYPttHxZQ7XLC2AYNiL3uMkNQ9LsnoON+Tsx7o9sI/XDX2uuhnUuYhMcbl6i2zB
-         1a/x1gMw282Cg==
-Date:   Sat, 16 Jul 2022 18:48:57 +0100
+        b=Tzjg8MbPujs5q4L0a1xvxrSEEcv/KXSeW0Ycskql4jV5whhobxvs9AtJ5eUGXStwi
+         Ir6KJwGXTRld9NZyLq4Fo9joLxJjEce2Hay0GopcGWNMs+FgkzzI2geF10Mp+gJ0sA
+         yDUN8jHfhFeoOnaCzYo7kRk066JKc1hGKljgOrEhr1kXp/GIVNOdNoevsQ1bJ7qrAt
+         Nu5i00bHV8dsFCpwstUSwBxGu61/5f7ypi2dP8G0Cl7fWpA5wzmLTBUiee6lwvTbg8
+         YpxlQ+SOa44ATbI7/TDr0GVFdtnPczvfv++MnYxwGEcI9sV/AjQ4qkHVG48fuGWFLe
+         7snCVbKpsrEHg==
+Date:   Sat, 16 Jul 2022 18:51:47 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Fred Eckert <Frede@cmslaser.com>
-Subject: Re: [PATCH v2 0/2] iio: Implement and utilize register structures
- for ISA drivers
-Message-ID: <20220716184857.7ad17421@jic23-huawei>
-In-Reply-To: <cover.1657213745.git.william.gray@linaro.org>
-References: <cover.1657213745.git.william.gray@linaro.org>
+To:     Thorsten Scherer <t.scherer@eckelmann.de>
+Cc:     Liam Beguin <liambeguin@gmail.com>, <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: ad7949: Fix error message
+Message-ID: <20220716185147.3b0176a1@jic23-huawei>
+In-Reply-To: <20220709053810.wb4mnwk5icjygz4r@NB142.eckelmann.group>
+References: <20220708201720.16523-1-t.scherer@eckelmann.de>
+        <Ysi07nn5JpIUJHS3@shaak>
+        <20220709053810.wb4mnwk5icjygz4r@NB142.eckelmann.group>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,40 +54,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  7 Jul 2022 13:21:23 -0400
-William Breathitt Gray <william.gray@linaro.org> wrote:
+On Sat, 9 Jul 2022 07:38:10 +0200
+Thorsten Scherer <t.scherer@eckelmann.de> wrote:
 
-> Changes in v2:
->  - Rename 'ad' member to 'ssr_ad' to indicate access to Software Strobe
->    Register as well; relevant comments updated
->  - Dereference DAC channel address via array subscripts in the
->    stx104_write_raw() function in order to match rest of code
->  - Replace struct cio_dac_reg with direct u16 pointer to the DAC
->    address; this greatly simplifies the cio-dac patch
+> Hi,
 > 
-> The STX104 and CIO-DAC drivers were updated to use I/O memory accessor
-> calls such as ioread8()/iowrite8() in previous patch series [1]. This
-> patch series is a continuation of the effort to improve the code
-> readability and reduce magic numbers by implementing and utilizing named
-> register data structures.
-Series applied to the togreg branch of iio.git.  Given timing in cycle, I'll
-only push that out as testing (for 0-day etc) and then rebase it after rc1.
+> On Fri, Jul 08, 2022 at 06:51:26PM -0400, Liam Beguin wrote:
+> > On Fri, Jul 08, 2022 at 10:17:20PM +0200, Thorsten Scherer wrote:  
+> > > Signed-off-by: Thorsten Scherer <t.scherer@eckelmann.de>
+> > > ---
+> > >  drivers/iio/adc/ad7949.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/adc/ad7949.c b/drivers/iio/adc/ad7949.c
+> > > index 44bb5fde83de..12fb5f9971db 100644
+> > > --- a/drivers/iio/adc/ad7949.c
+> > > +++ b/drivers/iio/adc/ad7949.c
+> > > @@ -400,7 +400,7 @@ static int ad7949_spi_probe(struct spi_device *spi)
+> > >  
+> > >  	ret = ad7949_spi_init(ad7949_adc);
+> > >  	if (ret) {
+> > > -		dev_err(dev, "enable to init this device: %d\n", ret);
+> > > +		dev_err(dev, "fail to init this device: %d\n", ret);  
+> > 
+> > Maybe 'failed' or 'unable' instead of 'fail'?  
+> 
+> I decided to be consistent with the wording of the other dev_err's.  If
+> anyone cares, I'll send a v2 adjusting the others as well.
 
-Thanks,
+I've taken the view that this is obviously an improvement so applied
+it to the togreg branch of iio.git (note given timing this will only be
+pushed out for now as testing, and later rebased on rc1).
+
+If anyone wants to follow up with a grammar improvement patch, that's
+fine with me, but the meaning is clear enough either way in my view.
 
 Jonathan
 
 > 
-> [1] https://lore.kernel.org/all/cover.1652201921.git.william.gray@linaro.org/
+> > otherwise:
+> > 
+> > Reviewed-by: Liam Beguin <liambeguin@gmail.com>
+> > 
+> > Cheers,
+> > Liam
+> >   
 > 
-> William Breathitt Gray (2):
->   iio: adc: stx104: Implement and utilize register structures
->   iio: dac: cio-dac: Cleanup indexing for DAC writes
-> 
->  drivers/iio/adc/stx104.c  | 74 ++++++++++++++++++++++++++-------------
->  drivers/iio/dac/cio-dac.c | 10 +++---
->  2 files changed, 55 insertions(+), 29 deletions(-)
-> 
-> 
-> base-commit: 338222d8e1121bcb78a86fb39982eddcc367a5bc
+> Best regards
+> Thorsten
 

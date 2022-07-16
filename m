@@ -2,53 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02377577023
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 18:33:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B08057702C
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 18:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiGPQc7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 12:32:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43196 "EHLO
+        id S230015AbiGPQlp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 12:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbiGPQc7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 12:32:59 -0400
+        with ESMTP id S229683AbiGPQlp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 12:41:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB8D1C90E;
-        Sat, 16 Jul 2022 09:32:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6A21D0FA
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 09:41:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 082CB611A1;
-        Sat, 16 Jul 2022 16:32:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C692DC34114;
-        Sat, 16 Jul 2022 16:32:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8544611AF
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 16:41:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575C1C34114;
+        Sat, 16 Jul 2022 16:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657989177;
-        bh=cJp2wu2WDji8FHYk3HEiYWSkBLJcHvkpVMIut/q0nEo=;
+        s=k20201202; t=1657989703;
+        bh=HHijj0AXwYGbDYV6lmP3/uUD5bPI8Y5YnGon4p/uTLk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fu0H7PJ3J6TzGG2svZjDCdtHIgFhyHABQVfE4G4nmx2qkO1WTZ68zxj9lCeWM7b/T
-         lUmb48OFzT8TuiX7fCs5W4MEHHXYVKpBeTyKWJtio4opOzAUajMUvSIvj38RBa2I4o
-         Yd3e4hktpLfUjpfnQn3hhHpVveKImcKZNIdDIiRnROg0+XP4tueuLF8F2hMo8KgHnM
-         7kRzRgk9RuU3lNy7b0URZO/b7smzqaf81rQ+u1MScEiTYuT2pZuTW/u/xWuvjH/BfD
-         jZLnx8ZoiBtNVfDJkGxr7n6ieuTNtt1cuPJl8PzWRvVa1KshejE9DKHr86PTvXZO41
-         TeVMisr3Rfh0w==
-Date:   Sat, 16 Jul 2022 17:42:49 +0100
+        b=S8Ol6pzScKwtyoZSptiwf03R12X3/np5RXxgwTKzFASZSaScns7cQUNaDuQ1J1Wzk
+         4YEikES4gO9NP3N7SzH2ezrHAkC5REcqFeaxF3pZ2LmrBUphV32llMUWdtcTIk5F5T
+         mVgHTwOL1gCGTJqolp42XecqddDfokzFEcb0tCVjHq7tbytiM2nVlYfcL9cfs7VVFU
+         ekt1vtsPNtoHj30lEdtkH0E5HFv1/3QRe347xW0KJ7vHOycJStqPl0loLrip5x96tr
+         lEgKrolj0T5Mvfe7aTUVsW4ggUrnT4Aej4r3OYFn4iCnqYGl5AvfcEiy16wXtx0k0t
+         cTiIfzF9GmpHw==
+Date:   Sat, 16 Jul 2022 17:51:36 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc:     <eugen.hristev@microchip.com>, <lars@metafoo.de>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 00/19] iio: adc: at91-sama5d2_adc: add support for
- temperature sensor
-Message-ID: <20220716174249.687af22b@jic23-huawei>
-In-Reply-To: <20220628151631.3116454-1-claudiu.beznea@microchip.com>
-References: <20220628151631.3116454-1-claudiu.beznea@microchip.com>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@debian.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Yves-Alexis Perez <corsac@debian.org>
+Subject: Re: [PATCH] iio: humidity: dht11: Improve error reporting in
+ .probe()
+Message-ID: <20220716175136.31600985@jic23-huawei>
+In-Reply-To: <2ed20f22-1628-9596-b6a7-fcad250984f1@debian.org>
+References: <20220630063528.205327-1-ukleinek@debian.org>
+        <CAHp75VfCwQLApiQQq6FdjoXxdyArBW9e+kkXYsRDwxXT0c17dQ@mail.gmail.com>
+        <1d4af147-46c3-010e-a9c5-e56044f3b624@debian.org>
+        <CAHp75Vf45tDDHYv4fyUsXbQhbseecFE7SAcTQxgozXbBbBZN1A@mail.gmail.com>
+        <2ed20f22-1628-9596-b6a7-fcad250984f1@debian.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,84 +61,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Jun 2022 18:16:12 +0300
-Claudiu Beznea <claudiu.beznea@microchip.com> wrote:
+On Thu, 30 Jun 2022 16:15:05 +0200
+Uwe Kleine-K=C3=B6nig <ukleinek@debian.org> wrote:
 
-> Hi,
-> 
-> The following series add support for temperature sensor available on
-> SAMA7G5.
-> 
-> Temperature sensor available on SAMA7G5 provides 2 outputs VTEMP and VBG.
-> VTEMP is proportional to the absolute temperature voltage and VBG is a
-> quasi-temperature independent voltage. Both are necessary in computing
-> the temperature (for better accuracy). Also, for better accuracy the
-> following settings were imposed when measusing the temperature:
-> oversampling rate of 256, sampling frequency of 10MHz, a startup time of
-> 512 ticks, MR.tracktim=0xf, EMR.trackx=0x3.
-> 
-> For computing the temperature measured by ADC calibration data is
-> necessary. This is provided via OTP memory available on SAMA7G5.
-> 
-> Patches 1/19-4/19 provides some fixes.
-> Patches 5/19-16/19 prepares for the addition of temperature sensor
-> support.
-> Patch 17/16 adds the temperature sensor support.
-> 
-> Along with temperature sensor support I took the chance and added
-> runtime PM support in this series, too (handled in patch 19/19).
-> 
-> The rest of patches in this series are minor cleanups.
+> On 6/30/22 12:26, Andy Shevchenko wrote:
+> > On Thu, Jun 30, 2022 at 12:25 PM Uwe Kleine-K=C3=B6nig <ukleinek@debian=
+.org> wrote: =20
+> >> On 6/30/22 09:17, Andy Shevchenko wrote: =20
+> >>> On Thu, Jun 30, 2022 at 8:58 AM Uwe Kleine-K=C3=B6nig <ukleinek@debia=
+n.org> wrote: =20
+> >>>>
+> >>>> Don't emit a message for -ENOMEM, the kernel is already loud enough =
+in
+> >>>> this case. Add a message if getting the GPIO or registering the iio
+> >>>> device fails and use dev_err_probe for improved behaviour on
+> >>>> -EPROBE_DEFER. =20
+> >>>
+> >>> Why do we need additional messages? =20
+> >>
+> >> I don't understand the question. Do you really wonder why there is a
+> >> benefit of an error message if a resource allocation in probe fails?
+> >>
+> >> Current state is that for Yves-Alexis (on Cc:) the driver is silent but
+> >> unbound. I guess that's because gpiod_get fails, but seeing a
+> >> confirmation in the kernel log would be nice.
 
-Other than the use of MEGA in patch 17, I'm fine with this now, but
-would like to leave more time for Eugen and others to comment if they
-wish.  Given timing, I'm afraid this is very unlikely to make the next
-merge window anyway now, so we have lots of time.
+Giving that example in the patch description makes for a very strong
+reasoning.  Mostly I want this captured so that others who might consider
+similar patches and see this, understand the reasoning.  Messages for things
+that can happen in real life are definitely a good thing!
 
-Sorry for the delay in my reviewing v2. Pesky covid.
+> >> =20
+> >>> They should be split in a separate patch, perhaps, with the explanati=
+on.
+> >>>
+> >>> Actually the rest I would split to two: converting to dev_err_probe()
+> >>> in the case where it's not right now, and dropping ENOMEM message. =20
+> >>
+> >> So we're at three patches:
+> >>
+> >>    - drop ENOMEM message
+> >>    - convert existing messages to dev_err_probe()
+> >>    - introduce errors for devm_gpiod_get() and devm_iio_device_registe=
+r()
+
+That lines up with how I'd prefer it split. If I'd not wanted the patch des=
+cription
+additions above anyway I 'might' have just picked it up.  Given we are going
+around again, let's set a nice example.  In particularly it will make the
+description easier to read as separates -ENOMEM case from the new additions.
 
 Jonathan
 
-> 
-> Thank you,
-> Claudiu Beznea
-> 
-> Changes in v2:
-> - addressed review comments
-> - with this, new patches were intruced in this series: 2/19, 4/19,
->   8/19, 9,19
-> - runtime pm support has been adapted to work also when CONFIG_PM
->   is not enabled
-> - collected tags
-> 
-> Claudiu Beznea (19):
->   iio: adc: at91-sama5d2_adc: fix AT91_SAMA5D2_MR_TRACKTIM_MAX
->   iio: adc: at91-sama5d2_adc: check return status for pressure and touch
->   iio: adc: at91-sama5d2_adc: lock around oversampling and sample freq
->   iio: adc: at91-sama5d2_adc: disable/prepare buffer on suspend/resume
->   iio: adc: at91-sama5d2_adc: exit from write_raw() when buffers are
->     enabled
->   iio: adc: at91-sama5d2_adc: handle different EMR.OSR for different hw
->     versions
->   iio: adc: at91-sama5d2_adc: move the check of oversampling in its
->     function
->   iio: adc: at91-sama5d2_adc: drop AT91_OSR_XSAMPLES defines
->   iio: adc: at91-sama5d2_adc: add .read_avail() chan_info ops
->   iio: adc: at91-sama5d2_adc: adjust osr based on specific platform data
->   iio: adc: at91-sama5d2_adc: add 64 and 256 oversampling ratio
->   iio: adc: at91-sama5d2_adc: move oversampling storage in its function
->   iio: adc: at91-sama5d2_adc: update trackx on emr
->   iio: adc: at91-sama5d2_adc: add startup and tracktim as parameter for
->     at91_adc_setup_samp_freq()
->   iio: adc: at91-sama5d2_adc: lock around at91_adc_read_info_raw()
->   dt-bindings: iio: adc: at91-sama5d2_adc: add id for temperature
->     channel
->   iio: adc: at91-sama5d2_adc: add support for temperature sensor
->   iio: adc: at91-sama5d2_adc: add empty line after functions
->   iio: adc: at91-sama5d2_adc: add runtime pm support
-> 
->  drivers/iio/adc/at91-sama5d2_adc.c            | 683 +++++++++++++++---
->  .../dt-bindings/iio/adc/at91-sama5d2_adc.h    |   3 +
->  2 files changed, 566 insertions(+), 120 deletions(-)
-> 
+
+> >>
+> >> I can rework accordingly, but for me this looks a bit over engineered.=
+ =20
+> >=20
+> > Perhaps, but they three are about different stuff. =20
+>=20
+> The different things could be named as follows:
+>=20
+>   - Improve error reporting in .probe() for devm_iio_device_alloc()
+>   - Improve error reporting in .probe() for devm_gpiod_get()
+>   - Improve error reporting in .probe() for gpiod_to_irq()
+>   - Improve error reporting in .probe() for devm_iio_device_register()
+>=20
+> Even after the discussion I think it's ok to summarize that to a single=20
+> patch "Improve error reporting in .probe()". I'd wait for Jonathan's=20
+> feedback with his opinion before reworking the patch.
+
+
+
+>=20
+> Best regards
+> Uwe
 

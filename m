@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 549B6577002
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 17:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E0C3577007
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 18:07:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbiGPP7k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 11:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57942 "EHLO
+        id S229473AbiGPQHI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 12:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiGPP7j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 11:59:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBEEC13D35
-        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 08:59:38 -0700 (PDT)
+        with ESMTP id S229457AbiGPQHH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 12:07:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1559B19C3B
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 09:07:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8EBC3B80AD9
-        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 15:59:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB13C34114;
-        Sat, 16 Jul 2022 15:59:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A422F6102E
+        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 16:07:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEFFC34115;
+        Sat, 16 Jul 2022 16:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657987176;
-        bh=bjAj6ywOCqzk36/YcJE045pDcW8kApwOFp2Oi1zV8W8=;
+        s=k20201202; t=1657987626;
+        bh=7cLoJuzFEYlnIdg3tZsiAFJ7xupXcfmrLoDUzkZ9Pgs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fNa4yetFXqqE7LZXm3q5Z8L+PwtoE9Djmg10zUe7k4MlDdwNgO4vUWpNWrW18mORb
-         nJHfNtu9Ep9s5mNleXvE872u09SYJfif32RVC05sReeAEm6hTpTZc+scqfhJ4EmQ3i
-         7fhOwJt0RFaTq7KvAFaIq0gRmbpaVwEtL8e7oqLQWEgOTstBN0ozQ0IxAjz6GiA+DZ
-         ol2PiZ5EBiJGzlevi4bIz/PTkHGVsrmTr1AXyhg9xFHA2/YnnMaWHjbmkHkPXF+EN4
-         OSoGsuni7FiR6xnUkl/fj02igQKTfveIcUVrjaygjQqbyeldS6NgC+M+7Fhx981cO7
-         INLWXCiL4jiJQ==
-Date:   Sat, 16 Jul 2022 17:09:29 +0100
+        b=mdvUriZ1Am+tVFfRqoTBPqmf12S1AZvnXJ+IIiyd/nlANzcVohuiwyQA3hjd0wQOk
+         9kbJPBh4KBfUaxPLAIFT4NNZEFhY/f7gNXTr8H5+uE97dESWja6fy5tYnJ4pRxpStO
+         zjgaQsKpa8vOY9zInWY3sdP9TA8NkOrYLOx2ZVhW9gYT5d2faNter3j+3ZICNrDp2s
+         xBVTQNVmKfiN1DgSJ6QfhkmvLQNRuI7zq6+9ieq6lRqDFAaWfCBnZJgWmZ0ikCFcwj
+         lWxJ+CGQDJWUC2aXnYIbLbqMeZCO6fSemb2QLAY0F95newg75oxpnCjRU8qSz9wwIa
+         pvHxi9Bq3XtDw==
+Date:   Sat, 16 Jul 2022 17:16:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        Fawzi Khaber <fawzi.khaber@tdk.com>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH] iio: fix iio_format_avail_range() printing for none
- IIO_VAL_INT
-Message-ID: <20220716170929.2f358344@jic23-huawei>
-In-Reply-To: <20220627193402.21553-1-jmaneyrol@invensense.com>
-References: <20220627193402.21553-1-jmaneyrol@invensense.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Giedrius =?UTF-8?B?VHJhaW5hdmnEjWl1cw==?= <giedrius@blokas.io>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: Dynamically configured channels, overlap with GPIO, encoder
+ support
+Message-ID: <20220716171659.0d47e08f@jic23-huawei>
+In-Reply-To: <CAHp75Vd28B5HFcmOPoT4HS0MHyCs8-WXUxSzgVgpg1nXj5sR7g@mail.gmail.com>
+References: <CAMONXLtN9-t=SuNzDWk22ufYXQHh7ZkXD2FhrRmR_uRgJFmZng@mail.gmail.com>
+        <CAHp75Vd28B5HFcmOPoT4HS0MHyCs8-WXUxSzgVgpg1nXj5sR7g@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,55 +55,81 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 27 Jun 2022 21:34:02 +0200
-Jean-Baptiste Maneyrol <jmaneyrol@invensense.com> wrote:
+On Tue, 28 Jun 2022 14:35:20 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Fawzi Khaber <fawzi.khaber@tdk.com>
-> 
-> iio_format_avail_range() should print range as follow [min, step, max], so
-> the function was previously calling iio_format_list() with length = 3,
-> length variable refers to the array size of values not the number of
-> elements. In case of non IIO_VAL_INT values each element has integer part
-> and decimal part. With length = 3 this would cause premature end of loop
-> and result in printing only one element.
-> 
-> Signed-off-by: Fawzi Khaber <fawzi.khaber@tdk.com>
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> On Tue, Jun 28, 2022 at 12:06 PM Giedrius Trainavi=C4=8Dius
+> <giedrius@blokas.io> wrote:
+> >
+> > Hello,
+> >
+> > I am developing an extension board for Raspberry Pi, it has a
+> > microcontroller on it and I'm trying to expose its pins as a I/O
+> > expander via I=C2=B2C bus. I've recently successfully implemented gpioc=
+hip
+> > interface as well as irq_chip in a kernel module, and now I'm looking
+> > at adding ADC support, Industrial IO seems like a good candidate for
+> > exposing it, but I have a couple of questions:
+> >
+> > 1. Can the IIO channels be configured dynamically?
 
-Fixes tag?
+Nope. You'd need to remove and probe the device again.
 
-Otherwise looks good to me.
-> ---
->  drivers/iio/industrialio-core.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 358b909298c0..0f4dbda3b9d3 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -812,7 +812,23 @@ static ssize_t iio_format_avail_list(char *buf, const int *vals,
->  
->  static ssize_t iio_format_avail_range(char *buf, const int *vals, int type)
->  {
-> -	return iio_format_list(buf, vals, type, 3, "[", "]");
-> +	int length;
-> +
-> +	/*
-> +	 * length refers to the array size , not the number of elements.
-> +	 * The purpose is to print the range [min , step ,max] so length should
-> +	 * be 3 in case of int, and 6 for other types.
-> +	 */
-> +	switch (type) {
-> +	case IIO_VAL_INT:
-> +		length = 3;
-> +		break;
-> +	default:
-> +		length = 6;
-> +		break;
-> +	}
-> +
-> +	return iio_format_list(buf, vals, type, length, "[", "]");
->  }
->  
->  static ssize_t iio_read_channel_info_avail(struct device *dev,
+> On the
+> > microcontroller, the same pins can be used for GPIO, ADC, etc... - can
+> > things like the channel direction, the function (simple high or low
+> > GPIO pin, ADC, PWM output) be configured by userspace programs? Can it
+> > be configured within a kernel module, if I provide my own sysfs
+> > interface for function setup?
+
+As a general rule, a pin is wired to one thing on a given board, so it very
+rarely makes sense to actually configure these at runtime.  Normally you
+push that complexity to device tree.  Sure there are cases with dev boards
+etc where this isn't a perfect fit but having to unbind a driver and rebind
+it with a new DT overlay isn't too bad and makes things a lot simpler
+for the common case of not wanting to do anything dynamic.
+
+> >
+> > 2. Can IIO channels be appended and removed to/from the list during run=
+time?
+
+Not with a bound driver.
+
+> >
+> > 3. Are encoders supported by IIO? I'd like to decode encoders within
+> > the firmware of the microcontroller, and provide only
+> > increments/decrements to the kernel module via I=C2=B2C, can encoders b=
+uilt
+> > in such a way be exposed via IIO? I've seen some patches on the
+> > internet adding 'counter' interface to IIO, but it seems it never made
+> > it to be within IIO, and instead the 'counter' in its own subsystem.
+
+Other way around.  Counters were supported in IIO, but the fit was not good
+so in the end the counter subsystem was written to handle them better and
+we've since moved all the drivers over.
+
+> >
+> > 4. How does IIO interact with gpiochip? As I'm implementing gpiochip
+> > interface, I could simply return -EBUSY for pins already used by the
+> > other subsystem.
+It doesn't.  You need to control the usecases before binding drivers (calli=
+ng
+probe etc) so that each driver is told only about the 'channels / pins'
+that it has access.
+
+Wrapping such a device up as an MFD with appropriate registration functions
+to handle management is one way to handle this.
+
+>=20
+> We have a DLN2 adapter that provides 4 interfaces with overlapped GPIO
+> pins, I don't remember how they solved this. Perhaps the
+> microcontroller itself refuses GPIO line acquisition when it's in use
+> for other functions.
+>=20
+> Hence, I recommend looking into the drivers for Diolan DLN2.
+>=20
+Good suggestion.
+
+Jonathan
+=20
 

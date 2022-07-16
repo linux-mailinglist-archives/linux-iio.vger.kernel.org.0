@@ -2,56 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 576D0576FF1
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 17:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37F8D576FF8
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 17:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231859AbiGPPle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 11:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50022 "EHLO
+        id S229694AbiGPPsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 11:48:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiGPPld (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 11:41:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9231DA51;
-        Sat, 16 Jul 2022 08:41:32 -0700 (PDT)
+        with ESMTP id S229499AbiGPPsS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 11:48:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845F31BEBB;
+        Sat, 16 Jul 2022 08:48:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6D9D6B80AB9;
-        Sat, 16 Jul 2022 15:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F38EC34114;
-        Sat, 16 Jul 2022 15:41:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 223CF61177;
+        Sat, 16 Jul 2022 15:48:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5713FC34114;
+        Sat, 16 Jul 2022 15:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657986090;
-        bh=u/RKJ6oT43C5tacik6enadpoU+M83shrDq4oCRky09Y=;
+        s=k20201202; t=1657986496;
+        bh=nVDEFHipPDeDlvNWrmIwvsAG2RQ+HA1vZ6GWK14g8tE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Td3MKs+VV2MR0gd+gXcPIwTeIHB+pa9ZYRGy0sYlof7buXRVWABwtCbAfQF2v9RwL
-         0jOXbaYKd1XyUrG4vHEepNK24IkHP6Zq83Z+ceJ6Xi6EcDCIEwVg59IWoqCDKo2TlW
-         /T8+Omm/AWv+6Eetf/uJ0JTF2ou95MASsH8BG4b7eZnK6GuEOCNcv4JTP0ObO0Y4IS
-         2MPfAu7qvbg7tlsl0lXyuarA2X3WRrecxGNyZll/MktylOs4d+KNu44X4HQoK+Jyet
-         PHpIQDk07rPw9cIuM/eJDlZAHNu8LvYtpErDx+FL089S6DzlyLBBsCFfzJ2X+dfdcZ
-         nCuqWM9DdK6jg==
-Date:   Sat, 16 Jul 2022 16:51:21 +0100
+        b=CWjW7GtefMde/9ok+CjYHtBWICqxs41/DkuSmq3geR203ag/r9PVaRP7121IVk4jx
+         gSVjOExgmXZEE3SKluo3pCAoFUnLz1DmxkRaCxbmdH1Feog4k7yv9TEJ9jBkVEo1Fd
+         grBUH/RKxYMp1yd3/1qRBDUPokd+sTG+yfi8n67cwLQu0cqdH/M0JIgqknSYfg7yAU
+         BWGGEmCZIHs61puWhWmUw57TgU67MywQYBVjAjhv+bAD689uzKzXh6S79oG4isayjQ
+         bLaTHBez2mQt4bjSYNi3kmx3FmZMNrIK+MYt2QUkre3rx/0dB42bDEiybjLDs9xiQJ
+         4U/2zPqufw45Q==
+Date:   Sat, 16 Jul 2022 16:58:08 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Message-ID: <20220716165121.3f0120df@jic23-huawei>
-In-Reply-To: <20220701134734.nfc6xa4q7rhfi3r7@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220616104211.9257-1-ddrokosov@sberdevices.ru>
-        <20220616104211.9257-3-ddrokosov@sberdevices.ru>
-        <20220619132703.5cf3b090@jic23-huawei>
-        <20220701134734.nfc6xa4q7rhfi3r7@CAB-WSD-L081021.sigma.sbrf.ru>
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        contact@artur-rojek.eu, maccraft123mc@gmail.com, heiko@sntech.de,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        dmitry.torokhov@gmail.com, paul@crapouillou.net,
+        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
+Subject: Re: [PATCH v7 2/3] Input: adc-joystick - Add polled input device
+ support
+Message-ID: <20220716165808.70c54d7d@jic23-huawei>
+In-Reply-To: <20220705190354.69263-3-macromorgan@hotmail.com>
+References: <20220705190354.69263-1-macromorgan@hotmail.com>
+        <20220705190354.69263-3-macromorgan@hotmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,103 +58,130 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 1 Jul 2022 13:49:10 +0000
-Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+On Tue,  5 Jul 2022 14:03:53 -0500
+Chris Morgan <macroalpha82@gmail.com> wrote:
 
-> Hello Jonathan,
+> From: Chris Morgan <macroalpha82@gmail.com>
 > 
-> Sorry for the delayed response.
+> Add polled input device support to the adc-joystick driver. This is
+> useful for devices which do not have hardware capable triggers on
+> their SARADC. Code modified from adc-joystick.c changes made by Maya
+> Matuszczyk.
 > 
-> On Sun, Jun 19, 2022 at 01:27:03PM +0100, Jonathan Cameron wrote:
-> > On Thu, 16 Jun 2022 10:42:14 +0000
-> > Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
-> >   
-> > > MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-> > > sensitivity consumer applications. It has dynamical user selectable full
-> > > scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
-> > > with output data rates from 1Hz to 1000Hz.
-> > > 
-> > > Datasheet can be found at following URL:
-> > > https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
-> > > 
-> > > This driver supports following MSA311 features:
-> > >     - IIO interface
-> > >     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
-> > >     - ODR (Output Data Rate) selection
-> > >     - Scale and samp_freq selection
-> > >     - IIO triggered buffer, IIO reg access
-> > >     - NEW_DATA interrupt + trigger
-> > > 
-> > > Below features to be done:
-> > >     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
-> > >     - Low Power mode
-> > > 
-> > > Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>  
-> > Hi Dmitry,
-> > 
-> > A few things I missed before + I'm still not happy with the runtime
-> > pm handling.  One case that isn't covered well is !CONFIG_RUNTIME_PM
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> 
-> ...
-> 
-> > > +static irqreturn_t msa311_buffer_thread(int irq, void *p)
-> > > +{
-> > > +	struct iio_poll_func *pf = p;
-> > > +	struct iio_dev *indio_dev = pf->indio_dev;
-> > > +	struct msa311_priv *msa311 = iio_priv(indio_dev);
-> > > +	struct device *dev = &msa311->i2c->dev;
-> > > +	const struct iio_chan_spec *chan;
-> > > +	__le16 axis;
-> > > +	int bit = 0, err, i = 0;
-> > > +
-> > > +	/* Ensure correct alignment of time stamp when present */
-> > > +	struct {
-> > > +		__le16 channels[MSA311_SI_Z + 1];
-> > > +		s64 ts __aligned(8);
-> > > +	} buf;
-> > > +
-> > > +	memset(&buf, 0, sizeof(buf));
-> > > +
-> > > +	mutex_lock(&msa311->lock);
-> > > +
-> > > +	for_each_set_bit(bit, indio_dev->active_scan_mask,
-> > > +			 indio_dev->masklength) {
-> > > +		chan = &msa311_channels[bit];  
-> > 
-> > Nothing to do with your driver, but feels like it's worth
-> > exploring a
-> > 	for_each_chan_in_iio_scan(struct iio_chan_spec, struct iio_dev) macro.
-> > 
-> > I'll add that to my todo list.
-> >   
-> 
-> If you don't mind, I can prepare such a patch.
+> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 
-I had a look at this whilst travelling and it's a lot more complex than I
-thought it would be because of gaps in the scan_index in some drivers (not
-all channels have scan indexes and not all scan indexes are used)
+Hi.
 
-If we write such a thing we need to resolve that in the core and I suspect
-it will require creation of an indirection structure that lets us
-do scan_index based look up of channels.  Whilst that works in many drivers
-because there is a nice 1 to 1 mapping, there are exceptions.
-Hence I think we would be looking at:
+One comment inline on improving the error handling slightly.
 
-1) Check at registration time on whether scan_index == location in
-iio_dev->channels, if so set another pointer say iio_dev->channels_linear =
-iio_dev->channels.
-2) If not, create a lookup table and make iio_dev->channels_linear
-point to that.
-3) Finally introduce a macro that uses channels_linear.
-
-What fun ;)
+Thanks,
 
 Jonathan
- 
 
+> ---
+>  drivers/input/joystick/adc-joystick.c | 51 +++++++++++++++++++++------
+>  1 file changed, 40 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
+> index 78ebca7d400a..2f4bd12d6344 100644
+> --- a/drivers/input/joystick/adc-joystick.c
+> +++ b/drivers/input/joystick/adc-joystick.c
+> @@ -26,8 +26,23 @@ struct adc_joystick {
+>  	struct adc_joystick_axis *axes;
+>  	struct iio_channel *chans;
+>  	int num_chans;
+> +	bool polled;
+>  };
+>  
+> +static void adc_joystick_poll(struct input_dev *input)
+> +{
+> +	struct adc_joystick *joy = input_get_drvdata(input);
+> +	int i, val, ret;
+> +
+> +	for (i = 0; i < joy->num_chans; i++) {
+> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
+> +		if (ret < 0)
+> +			return;
+> +		input_report_abs(input, joy->axes[i].code, val);
+> +	}
+> +	input_sync(input);
+> +}
+> +
+>  static int adc_joystick_handle(const void *data, void *private)
+>  {
+>  	struct adc_joystick *joy = private;
+> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct platform_device *pdev)
+>  	int error;
+>  	int bits;
+>  	int i;
+> +	unsigned int poll_interval;
+>  
+>  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+>  	if (!joy)
+> @@ -215,8 +231,17 @@ static int adc_joystick_probe(struct platform_device *pdev)
+>  	joy->input = input;
+>  	input->name = pdev->name;
+>  	input->id.bustype = BUS_HOST;
+> -	input->open = adc_joystick_open;
+> -	input->close = adc_joystick_close;
+> +
+> +	joy->polled = !device_property_read_u32(dev, "poll-interval",
+> +						&poll_interval);
+Slight preference for an explicit check on presence of property
+	
+	if (device_property_present(dev, "poll-interval")) {
+		error = device_property_read_u32();
+		if (error)
+			return error;
+		input_setup_polling(input, adc_joystick_poll);
+		input_set_poll_interval(input, poll_interval);
+	} else {
+		input->open = adc_joystick_open;
+		input->close = adc_joystick_close;
+	}
+
+That way we will return an error if there is a malformed property.
+
+> +
+> +	if (joy->polled) {
+> +		input_setup_polling(input, adc_joystick_poll);
+> +		input_set_poll_interval(input, poll_interval);
+> +	} else {
+> +		input->open = adc_joystick_open;
+> +		input->close = adc_joystick_close;
+> +	}
+>  
+>  	error = adc_joystick_set_axes(dev, joy);
+>  	if (error)
+> @@ -229,16 +254,20 @@ static int adc_joystick_probe(struct platform_device *pdev)
+>  		return error;
+>  	}
+>  
+> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+> -	if (IS_ERR(joy->buffer)) {
+> -		dev_err(dev, "Unable to allocate callback buffer\n");
+> -		return PTR_ERR(joy->buffer);
+> -	}
+> +	if (!joy->polled) {
+> +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
+> +						     joy);
+> +		if (IS_ERR(joy->buffer)) {
+> +			dev_err(dev, "Unable to allocate callback buffer\n");
+> +			return PTR_ERR(joy->buffer);
+> +		}
+>  
+> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
+> -	if (error)  {
+> -		dev_err(dev, "Unable to add action\n");
+> -		return error;
+> +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
+> +						 joy->buffer);
+> +		if (error)  {
+> +			dev_err(dev, "Unable to add action\n");
+> +			return error;
+> +		}
+>  	}
+>  
+>  	return 0;
 

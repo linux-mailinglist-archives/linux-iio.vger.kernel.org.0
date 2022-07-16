@@ -2,52 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A4457707A
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 19:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46CA3577088
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 19:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229687AbiGPRr2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 13:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49650 "EHLO
+        id S232151AbiGPRxl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 13:53:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiGPRr1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 13:47:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660AE1EC53
-        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 10:47:26 -0700 (PDT)
+        with ESMTP id S229505AbiGPRxk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 13:53:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BBF1D0ED;
+        Sat, 16 Jul 2022 10:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 03DD2B80AB9
-        for <linux-iio@vger.kernel.org>; Sat, 16 Jul 2022 17:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D35C34115;
-        Sat, 16 Jul 2022 17:47:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 342A1611F1;
+        Sat, 16 Jul 2022 17:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08624C3411C;
+        Sat, 16 Jul 2022 17:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657993643;
-        bh=c40U+9ZeE/J2NepvCHDhJ7I3dQJx5EYu7xEZzPhsHrI=;
+        s=k20201202; t=1657994018;
+        bh=Lp7KQSH5DD2kT+Gb+r4iUxsQ3cjHy1yjYW7yoqxoiAM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LTomlLtA7DTd61Wpa5MYzQtCrs/9kMPz8zqqElHBu1PX7KrSnAXN+ApJvP1Jm9WFP
-         nDuhu0AhRaa5kBPpZpPIRUX85FGKD/1yHhOHZKpeopDP6H0R/Cbf0XXWN7vPb7H0da
-         SVc5+T42RedfE7e3hMNlGvlxRpjSRfFdYAvz2BUMEWY3nVJ4fkC4hntS5TrCyGbh0Y
-         ro1KK5/1KkQY0+r1jvenMoxAhg8+bROXY54GqLnV8uF8orhohgU1/Se3AYasWfoY9t
-         N5w7CUXommksrBCFLSReqwT++QZaV7rlHp5d9RzGxcBygcryhAZg0CJNCGol+FGOe9
-         QIA4N42T4neuA==
-Date:   Sat, 16 Jul 2022 18:57:17 +0100
+        b=jRULfFjyhl6TC8JTmuWk/cofXgn7fFK4gQtPo2JuuXPoN9ss1JGEK0ZVbzgE5f69t
+         0H7yjjJQTjSrmE0L/g0tZgZQX1mcLCb/4JAaQFZ2R2mxOP42v3r27R6Bl7D5CQSW60
+         eJgqn6akerc+ih2G720rr4Tkm8BQgQ1huw94mFAX+V1ViKw0Xo536CNRqkX+9V0G9P
+         sZzrWZhPEt6T1arZDOtbWWwYY6E6xtq4omao3+mSuV26V6lb6wAZ+xt5u3oMWyNatQ
+         UdPuRBRxBjx+VznYRjoA+nM8AuVhGZFm3OR34LZzwtUL+yDP4fzciFL328BaJ9wLsR
+         e+zKolLSWB62A==
+Date:   Sat, 16 Jul 2022 19:03:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?= =?UTF-8?B?Zw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        kernel@pengutronix.de, Thorsten Scherer <t.scherer@eckelmann.de>
-Subject: Re: ti-ads7950: selecting the adc input range
-Message-ID: <20220716185717.59e7fb5c@jic23-huawei>
-In-Reply-To: <496f7dec852e556c44c065cd6dbbfd9c3032dd47.camel@gmail.com>
-References: <20220708080257.y6wn7pztylujepyr@pengutronix.de>
-        <441bfa83-4014-fed9-3527-7db34df7da3a@metafoo.de>
-        <496f7dec852e556c44c065cd6dbbfd9c3032dd47.camel@gmail.com>
+To:     Liam Beguin <liambeguin@gmail.com>
+Cc:     geert@linux-m68k.org, peda@axentia.se, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 5/5] iio: test: rework Kconfig to support modules
+Message-ID: <20220716190331.43f5bc03@jic23-huawei>
+In-Reply-To: <20220710013109.3349104-6-liambeguin@gmail.com>
+References: <20220710013109.3349104-1-liambeguin@gmail.com>
+        <20220710013109.3349104-6-liambeguin@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,74 +54,63 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 08 Jul 2022 12:35:19 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Sat,  9 Jul 2022 21:31:09 -0400
+Liam Beguin <liambeguin@gmail.com> wrote:
 
-> On Fri, 2022-07-08 at 11:28 +0200, Lars-Peter Clausen wrote:
-> > On 7/8/22 10:02, Uwe Kleine-K=C3=B6nig wrote: =20
-> > > Hello,
-> > >=20
-> > > the ADS7950 has a register bit (called TI_ADS7950_CR_RANGE_5V in
-> > > the
-> > > driver) that selects the input range. Depending on that bit the
-> > > input
-> > > range is either [0 .. V_{REF}] or [0 .. 2 * V_{REF}].
-> > >=20
-> > > The driver currently defaults to setting that bit, so the range is
-> > > the
-> > > big one.
-> > >=20
-> > > On a machine here however I know the input is in the smaller range
-> > > and
-> > > I'd like to benefit from the higher resolution of the small range.
-> > > I
-> > > wonder how to make this tunable. Should that be done using a
-> > > firmware
-> > > property? ("single-input-range" vs. "double-input-range"? Or input-
-> > > range
-> > > =3D <1> vs. input-range =3D <2> which better matches the data sheet
-> > > that
-> > > calls the two modes "Range 1 (0 to V_{REF})" and "Range 2 (0 to
-> > > 2xV_{REF})") Or should this be made tunable via sysfs? (E.g. by
-> > > writing
-> > > to the scale property? Or a separate property?) =20
-> >=20
-> > Hi,
-> >=20
-> > Its a bit of a tricky one. You can find arguments for and against=20
-> > either. Like "devicetree is for hardware description and not
-> > application=20
-> > specific configuration data", or "I know which setting I want to use,
-> > having the kernel apply it makes it a lot easier".
-> >=20
-> > What we've done in the past in the IIO framework is to make the scale
-> > property writable for such devices. Together with a scale_available=20
-> > property to list valid options. This is the most flexible option as
-> > it=20
-> > allows to change the setting at runtime for applications where it is=20
-> > required.
-> >  =20
->=20
-> Yes, it's a tricky one and I have the feeling that thoughts about this
-> are changing frequently :).
->=20
-> Well, this feels identical to what I had in a DAC [1] I recently
-> upstreamed. IIRC, on the first version of the series or during
-> discussion on the RFC I also had in mind to make it configurable
-> through sysfs but Jonathan advised me to go with a fw property.
-
-DACs sometimes have a safety issue (you can fry boards if you set them wrong
-and it's not unheard of for designers to make them safe for only a particul=
-ar
-range on a multirange DAC).
-Assuming this ADC is sensible that shouldn't be the case here... (famous
-last words ;)
+> Rework the IIO test Kconfig to support building KUnit tests as modules.
+> This lets users execute tests at runtime in addition to the usual
+> tools/testing/kunit/kunit.py script.
+> 
+> Signed-off-by: Liam Beguin <liambeguin@gmail.com>
+One trivial comment inline.  Fixed that up and applied to the togreg branch
+of iio.git. Not I'll only push out as testing for now as will be rebasing
+the tree after rc1.
 
 Jonathan
 
->=20
-> [1]:https://elixir.bootlin.com/linux/latest/source/drivers/iio/dac/ltc268=
-8.c#L786
->=20
-> - Nuno S=C3=A1
+
+> ---
+>  drivers/iio/test/Kconfig | 24 +++++++++++++++++-------
+>  1 file changed, 17 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
+> index 7dbf51bc4934..82924727b2cc 100644
+> --- a/drivers/iio/test/Kconfig
+> +++ b/drivers/iio/test/Kconfig
+> @@ -5,15 +5,25 @@
+>  
+>  # Keep in alphabetical order
+>  config IIO_RESCALE_KUNIT_TEST
+> -	bool "Test IIO rescale conversion functions"
+> -	depends on KUNIT=y && IIO_RESCALE=y
+> +	tristate "Test IIO rescale conversion functions" if !KUNIT_ALL_TESTS
+> +	depends on KUNIT && IIO_RESCALE
+>  	default KUNIT_ALL_TESTS
+>  	help
+> -	  If you want to run tests on the iio-rescale code say Y here.
+> +	  build unit tests for the iio-rescale code.
+
+Build
+
+>  
+> -	  This takes advantage of ARCH=um to run tests and should be used by
+> -	  developers to tests their changes to the rescaling logic.
+> +	  For more information on KUnit and unit tests in general, please refer
+> +	  to the KUnit documentation in Documentation/dev-tools/kunit/.
+> +
+> +	  If unsure, say N.
+>  
+>  config IIO_FORMAT_KUNIT_TEST
+> -        bool "Test IIO formatting functions"
+> -        depends on KUNIT=y
+> +	tristate "Test IIO formatting functions" if !KUNIT_ALL_TESTS
+> +	depends on KUNIT
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  build unit tests for the IIO formatting functions.
+> +
+> +	  For more information on KUnit and unit tests in general, please refer
+> +	  to the KUnit documentation in Documentation/dev-tools/kunit/.
+> +
+> +	  If unsure, say N.
 

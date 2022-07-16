@@ -2,53 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F8D576FF8
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 17:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D710576FFD
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Jul 2022 17:54:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbiGPPsS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 11:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52620 "EHLO
+        id S229867AbiGPPx5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 11:53:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiGPPsS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 11:48:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845F31BEBB;
-        Sat, 16 Jul 2022 08:48:17 -0700 (PDT)
+        with ESMTP id S229865AbiGPPx4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 11:53:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015016261;
+        Sat, 16 Jul 2022 08:53:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 223CF61177;
-        Sat, 16 Jul 2022 15:48:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5713FC34114;
-        Sat, 16 Jul 2022 15:48:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0404661177;
+        Sat, 16 Jul 2022 15:53:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31F5C34114;
+        Sat, 16 Jul 2022 15:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1657986496;
-        bh=nVDEFHipPDeDlvNWrmIwvsAG2RQ+HA1vZ6GWK14g8tE=;
+        s=k20201202; t=1657986831;
+        bh=qKwOLqXKlfuxhy0Xj2JK6pTSgZmrElwNz+8WZgNuzn4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CWjW7GtefMde/9ok+CjYHtBWICqxs41/DkuSmq3geR203ag/r9PVaRP7121IVk4jx
-         gSVjOExgmXZEE3SKluo3pCAoFUnLz1DmxkRaCxbmdH1Feog4k7yv9TEJ9jBkVEo1Fd
-         grBUH/RKxYMp1yd3/1qRBDUPokd+sTG+yfi8n67cwLQu0cqdH/M0JIgqknSYfg7yAU
-         BWGGEmCZIHs61puWhWmUw57TgU67MywQYBVjAjhv+bAD689uzKzXh6S79oG4isayjQ
-         bLaTHBez2mQt4bjSYNi3kmx3FmZMNrIK+MYt2QUkre3rx/0dB42bDEiybjLDs9xiQJ
-         4U/2zPqufw45Q==
-Date:   Sat, 16 Jul 2022 16:58:08 +0100
+        b=lzdz6+rdGZDJjMe/JE8tXoIyR52SOSrq+r5DoJ2QzhlgQPr9eAjYmiMOXOrWYgLRs
+         WqEfTmREp8eLnAXuVxyzaQPmomyKmgxZ9bdbrUlBlbcCrvbMXjFNHALUH5OtU1b2un
+         As03lE+S3jgXoQ9IZLZhYyEXMWBvB+AlVKoF29Yg5Was9+R9+d9/3n79/8QTdvzsiZ
+         n8leYOechUGH7n+ixhbziX1NnBh2Z0/T7nO5hL230jGPgSNc+/PO/9p2kumb9gq/IE
+         XuTeqMDll/BKOfFqUhvuCM7S1TqIw2Q+1Ml2CKclfDcwp/kKXuWCf1r0TN5sWRtJzU
+         FrhEWHkc/Mddg==
+Date:   Sat, 16 Jul 2022 17:03:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Morgan <macroalpha82@gmail.com>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        contact@artur-rojek.eu, maccraft123mc@gmail.com, heiko@sntech.de,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        dmitry.torokhov@gmail.com, paul@crapouillou.net,
-        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH v7 2/3] Input: adc-joystick - Add polled input device
- support
-Message-ID: <20220716165808.70c54d7d@jic23-huawei>
-In-Reply-To: <20220705190354.69263-3-macromorgan@hotmail.com>
-References: <20220705190354.69263-1-macromorgan@hotmail.com>
-        <20220705190354.69263-3-macromorgan@hotmail.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] iio: pressure: bmp280: Add support for BMP380
+ sensor family
+Message-ID: <20220716170344.0470eaae@jic23-huawei>
+In-Reply-To: <2d8bbc776ef21a90576b6201cd84736f00c67957.camel@gmail.com>
+References: <20220625150921.47769-1-ang.iglesiasg@gmail.com>
+        <20220625164623.42ed8e1d@jic23-huawei>
+        <2d8bbc776ef21a90576b6201cd84736f00c67957.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,130 +59,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue,  5 Jul 2022 14:03:53 -0500
-Chris Morgan <macroalpha82@gmail.com> wrote:
+On Mon, 27 Jun 2022 17:42:49 +0200
+Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> From: Chris Morgan <macroalpha82@gmail.com>
-> 
-> Add polled input device support to the adc-joystick driver. This is
-> useful for devices which do not have hardware capable triggers on
-> their SARADC. Code modified from adc-joystick.c changes made by Maya
-> Matuszczyk.
-> 
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> On s=C3=A1b, 2022-06-25 at 16:46 +0100, Jonathan Cameron wrote:
+> > On Sat, 25 Jun 2022 17:09:12 +0200
+> > Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+> >  =20
+> > > Adds compatibility with the new generation of this sensor, the
+> > > BMP380
+> > >=20
+> > > Included basic sensor initialization to do pressure and temp
+> > > measurements and allows tuning oversampling settings for each
+> > > channel
+> > > The compensation algorithms are adapted from the device datasheet
+> > > and
+> > > the repository https://github.com/BoschSensortec/BMP3-Sensor-API
+> > >=20
+> > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com> =20
+> >=20
+> > Hi Angel,
+> >=20
+> > A few comments inline, but mostly looks good to me.
 
-Hi.
+First a process comment.  Cut out anything you agree with.
+Too many emails to read so focus on the bits where there are questions
+or they will get missed.  Reviewers are happy to assume you agree
+with them if you don't say otherwise :)
 
-One comment inline on improving the error handling slightly.
 
-Thanks,
+> >=20
+> > Jonathan
+...
 
-Jonathan
+>=20
+> > > +
+> > > +#define BMP380_FILTER_MASK=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0GENMASK(3, 1)
+> > > +#define BMP380_FILTER_OFF=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00
+> > > +#define BMP380_FILTER_1X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(1)
+> > > +#define BMP380_FILTER_3X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(2)
+> > > +#define BMP380_FILTER_7X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0(BIT(2) | BIT(1))
+> > > +#define BMP380_FILTER_15X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(3)
+> > > +#define BMP380_FILTER_31X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0(BIT(3) | BIT(1))
+> > > +#define BMP380_FILTER_63X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0(BIT(3) | BIT(2))
+> > > +#define BMP380_FILTER_127X=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0(BIT(3) | BIT(2) | BIT(1)) =20
+> >=20
+> > these are values, 0,1,2,3,4,5,6,7 not a bunch of bits.
+> > So use with FIELD_PREP() =20
+>=20
+> Should I convert the values to a enumeration or simply declare the
+> macros with the values? Thanks in advance
 
-> ---
->  drivers/input/joystick/adc-joystick.c | 51 +++++++++++++++++++++------
->  1 file changed, 40 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
-> index 78ebca7d400a..2f4bd12d6344 100644
-> --- a/drivers/input/joystick/adc-joystick.c
-> +++ b/drivers/input/joystick/adc-joystick.c
-> @@ -26,8 +26,23 @@ struct adc_joystick {
->  	struct adc_joystick_axis *axes;
->  	struct iio_channel *chans;
->  	int num_chans;
-> +	bool polled;
->  };
->  
-> +static void adc_joystick_poll(struct input_dev *input)
-> +{
-> +	struct adc_joystick *joy = input_get_drvdata(input);
-> +	int i, val, ret;
-> +
-> +	for (i = 0; i < joy->num_chans; i++) {
-> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
-> +		if (ret < 0)
-> +			return;
-> +		input_report_abs(input, joy->axes[i].code, val);
-> +	}
-> +	input_sync(input);
-> +}
-> +
->  static int adc_joystick_handle(const void *data, void *private)
->  {
->  	struct adc_joystick *joy = private;
-> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  	int error;
->  	int bits;
->  	int i;
-> +	unsigned int poll_interval;
->  
->  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
->  	if (!joy)
-> @@ -215,8 +231,17 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  	joy->input = input;
->  	input->name = pdev->name;
->  	input->id.bustype = BUS_HOST;
-> -	input->open = adc_joystick_open;
-> -	input->close = adc_joystick_close;
-> +
-> +	joy->polled = !device_property_read_u32(dev, "poll-interval",
-> +						&poll_interval);
-Slight preference for an explicit check on presence of property
-	
-	if (device_property_present(dev, "poll-interval")) {
-		error = device_property_read_u32();
-		if (error)
-			return error;
-		input_setup_polling(input, adc_joystick_poll);
-		input_set_poll_interval(input, poll_interval);
-	} else {
-		input->open = adc_joystick_open;
-		input->close = adc_joystick_close;
-	}
+Slight preference for defines with the values.
 
-That way we will return an error if there is a malformed property.
-
-> +
-> +	if (joy->polled) {
-> +		input_setup_polling(input, adc_joystick_poll);
-> +		input_set_poll_interval(input, poll_interval);
-> +	} else {
-> +		input->open = adc_joystick_open;
-> +		input->close = adc_joystick_close;
-> +	}
->  
->  	error = adc_joystick_set_axes(dev, joy);
->  	if (error)
-> @@ -229,16 +254,20 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  		return error;
->  	}
->  
-> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
-> -	if (IS_ERR(joy->buffer)) {
-> -		dev_err(dev, "Unable to allocate callback buffer\n");
-> -		return PTR_ERR(joy->buffer);
-> -	}
-> +	if (!joy->polled) {
-> +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
-> +						     joy);
-> +		if (IS_ERR(joy->buffer)) {
-> +			dev_err(dev, "Unable to allocate callback buffer\n");
-> +			return PTR_ERR(joy->buffer);
-> +		}
->  
-> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, joy->buffer);
-> -	if (error)  {
-> -		dev_err(dev, "Unable to add action\n");
-> -		return error;
-> +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
-> +						 joy->buffer);
-> +		if (error)  {
-> +			dev_err(dev, "Unable to add action\n");
-> +			return error;
-> +		}
->  	}
->  
->  	return 0;
+J
 

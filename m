@@ -2,112 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42427577293
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 02:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A45757751C
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 10:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbiGQAmy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 20:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
+        id S231390AbiGQIqs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Jul 2022 04:46:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiGQAmx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 20:42:53 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03E314037;
-        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id y141so7764905pfb.7;
-        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Hb6uI1Kl3qHRzDha2s0SlVlOvbXC6dOtlm91aV7ABgY=;
-        b=it36RuOLsBUb3x81iM5ebii17uRe/rIOh4gOAMgUMfdDFOooc24jHBqg1D19EvgGYp
-         rGuxzkmkldERIjq7tslreLZSlJGgnRGZajpZEv1Hfg26MJ+uZ5QPKyQvf6eb2T4q6xJN
-         izlzO1STSkNLExhKVt90oBuuCH7uXjzNgfZnUDHbupggLqK9SVsY1b2rvsdIv6LJzkIo
-         Xp51AGH+7jIUDqQGCBBU3P8qL0HSVqCsKkoUMYVvSw59nJlDLarrgPbUf+2gKwc58HK1
-         YHAUXt9ggD0BGrcv6FICyFDfXwoRphl6HrUqk+Mzjn+MuWsCa4PUmpxIbrN1eBasItj6
-         Dgwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Hb6uI1Kl3qHRzDha2s0SlVlOvbXC6dOtlm91aV7ABgY=;
-        b=LMwvSoyi6hj5B1Fyt1yixtylkOYfvv8+pjxHcYI/S6tMleqz5UNLbDTbG3I06CFONG
-         3rSSf/Rl0WCzwiGegU/k8wjGPoAzs1b3/zUcAWTNeR0rwzT+AZq/WFZ0TUgm1jCsFStO
-         Qn91QnZSJ/119Zo0lQVgJiXJr00S1PGgvX9cawBpZW+I1Kmkum/hF5Ir5G4d+mXmGzUW
-         REC7QHF8Ean0byhFcrwNaKIta9qUx4Sv+XdFiIdKox10UrnyXMHHECe/GiSRzMhCCfqM
-         qrcBlGmCbpVMQq3nRd15t3yFZrZ65o5X6M8qIL5zbVQN/DGuMclsZ0Gm1BPEwlmKVbD0
-         r5qQ==
-X-Gm-Message-State: AJIora+V4tRnJmDx/IDa1p5xlacZ9K3ToMpjLejg91AkbLX5aH6TPax5
-        lVqDRWGSHDsLyNTCvrxs8Q==
-X-Google-Smtp-Source: AGRyM1vBg68W+rk82aX7JJRSUKXZFSFngt3GxMHzOuhh1/5sCdlBkrhs4z5+JMQbHyQxntTnDPtucg==
-X-Received: by 2002:a05:6a00:301f:b0:52a:ccdd:17f9 with SMTP id ay31-20020a056a00301f00b0052accdd17f9mr21383840pfb.82.1658018572098;
-        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
-Received: from localhost.localdomain ([144.202.91.207])
-        by smtp.gmail.com with ESMTPSA id y8-20020aa793c8000000b0052ab602a7d0sm6363409pff.100.2022.07.16.17.42.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Jul 2022 17:42:51 -0700 (PDT)
-From:   Zheyu Ma <zheyuma97@gmail.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Zheyu Ma <zheyuma97@gmail.com>
-Subject: [PATCH v2] iio: light: isl29028: Fix the warning in isl29028_remove()
-Date:   Sun, 17 Jul 2022 08:42:41 +0800
-Message-Id: <20220717004241.2281028-1-zheyuma97@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230137AbiGQIqr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 04:46:47 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D43C119013;
+        Sun, 17 Jul 2022 01:46:45 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id A19441C0003; Sun, 17 Jul 2022 10:46:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1658047603;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4f64FZhtfQR2a3FCAYRr0ogYWj/q8DKyVYT+VvicBeQ=;
+        b=X/BFAsMq23/Z925NfDrqcBTa1+NMdOyKTvWC/jcKDAR6LqTUqqHZoUtcXNlv78JOtxgGnV
+        KEEYsSPoUk1QuhIMUdjyfj3xzKKwVS0zAwbCUcypphXNu5ux3xhohdBfmM7V0g4XNKdvZk
+        vtsZgzTGRnv3Kh57WLG7g5U2h7I81C8=
+Date:   Sun, 17 Jul 2022 10:46:43 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lee.jones@linaro.org, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: Re: [PATCH v5 11/13] leds: mt6370: Add MediaTek MT6370 current sink
+ type LED Indicator support
+Message-ID: <20220717084643.GA14285@duo.ucw.cz>
+References: <20220715112607.591-1-peterwu.pub@gmail.com>
+ <20220715112607.591-12-peterwu.pub@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="M9NhX3UHpAaciwkO"
+Content-Disposition: inline
+In-Reply-To: <20220715112607.591-12-peterwu.pub@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver use the non-managed form of the register function in
-isl29028_remove(). To keep the release order as mirroring the ordering
-in probe, the driver should use non-managed form in probe, too.
 
-The following log reveals it:
+--M9NhX3UHpAaciwkO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[   32.374955] isl29028 0-0010: remove
-[   32.376861] general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
-[   32.377676] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-[   32.379432] RIP: 0010:kernfs_find_and_get_ns+0x28/0xe0
-[   32.385461] Call Trace:
-[   32.385807]  sysfs_unmerge_group+0x59/0x110
-[   32.386110]  dpm_sysfs_remove+0x58/0xc0
-[   32.386391]  device_del+0x296/0xe50
-[   32.386959]  cdev_device_del+0x1d/0xd0
-[   32.387231]  devm_iio_device_unreg+0x27/0xb0
-[   32.387542]  devres_release_group+0x319/0x3d0
-[   32.388162]  i2c_device_remove+0x93/0x1f0
+Hi!
 
-Fixes: 2db5054ac28d ("staging: iio: isl29028: add runtime power management support")
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
----
-Changes in v2:
-    - Use the non-managed form to register the device
----
- drivers/iio/light/isl29028.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The MediaTek MT6370 is a highly-integrated smart power management IC,
+> which includes a single cell Li-Ion/Li-Polymer switching battery
+> charger, a USB Type-C & Power Delivery (PD) controller, dual
+> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
+> a display bias driver and a general LDO for portable devices.
+>=20
+> In MediaTek MT6370, there are four channel current-sink RGB LEDs that
+> support hardware pattern for constant current, PWM, and breath mode.
+> Isink4 channel can also be used as a CHG_VIN power good indicator.
+>=20
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
 
-diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
-index 9de3262aa688..a62787f5d5e7 100644
---- a/drivers/iio/light/isl29028.c
-+++ b/drivers/iio/light/isl29028.c
-@@ -625,7 +625,7 @@ static int isl29028_probe(struct i2c_client *client,
- 					 ISL29028_POWER_OFF_DELAY_MS);
- 	pm_runtime_use_autosuspend(&client->dev);
- 
--	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
-+	ret = iio_device_register(indio_dev);
- 	if (ret < 0) {
- 		dev_err(&client->dev,
- 			"%s(): iio registration failed with error %d\n",
--- 
-2.25.1
+> index a49979f..71bacb5 100644
+> --- a/drivers/leds/Kconfig
+> +++ b/drivers/leds/Kconfig
+> @@ -244,6 +244,20 @@ config LEDS_MT6323
+>  	  This option enables support for on-chip LED drivers found on
+>  	  Mediatek MT6323 PMIC.
+> =20
+> +config LEDS_MT6370_RGB
+> +	tristate "LED Support for MediaTek MT6370 PMIC"
+> +	depends on LEDS_CLASS
+> +	depends on MFD_MT6370
+> +	select LINEAR_RANGE
+> +	help
+> +	  Say Y here to enable support for MT6370_RGB LED device.
+> +	  In MT6370, there are four channel current-sink LED drivers that
+> +	  support hardware pattern for constant current, PWM, and breath mode.
+> +	  Isink4 channel can also be used as a CHG_VIN power good
 
+Should this go to leds/rgb directory, and should it depend on
+multicolor framework?
+
+Best regards,
+							Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--M9NhX3UHpAaciwkO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCYtPMcwAKCRAw5/Bqldv6
+8kpOAJ9ibEmS72bgf9dapQwzhfeNWkBoRACdEEQFY+HUneM6yUqd3lRjlWgYdx0=
+=17QR
+-----END PGP SIGNATURE-----
+
+--M9NhX3UHpAaciwkO--

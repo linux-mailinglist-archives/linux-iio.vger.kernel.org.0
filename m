@@ -2,101 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CADF8577718
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 17:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7089577757
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 18:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbiGQPfE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Jul 2022 11:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59514 "EHLO
+        id S229536AbiGQQu7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Jul 2022 12:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229993AbiGQPfD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 11:35:03 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2106E13E88;
-        Sun, 17 Jul 2022 08:35:02 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id m16so2881816qka.12;
-        Sun, 17 Jul 2022 08:35:02 -0700 (PDT)
+        with ESMTP id S229487AbiGQQu7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 12:50:59 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C69F13F35
+        for <linux-iio@vger.kernel.org>; Sun, 17 Jul 2022 09:50:58 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id q14so7615732iod.3
+        for <linux-iio@vger.kernel.org>; Sun, 17 Jul 2022 09:50:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=p7+cg2LOJ1jjwaLPnm5wodKq+ffhY0uO8A/jZtHxwtA=;
-        b=XW0KM7LR2T1Y//unaBu3Ul/2TzTRQWzx6EBVJ9QTIO0vo/uybtLneAJNUgX9mKOgaT
-         ot1DUb/SEdJPxaNsXaLykoYJhsBG5zrqDCIUVCaSxwh/OTA4+svu92V9W87mt9kS+6+j
-         Qn1UuoYVoMGR1AG7e1tJUly1xFMFR5aTXX7IaMR2qe4kB5UO0397aNolUPu3BKju5E6m
-         7oN+xOrXG0RwK2auPBMYNEteO3kh9/OH4I8p/Ik6KYve6u8XG70X7FR9uoXw2YQCat+l
-         Xs4PmX4KhcczaDbMiVSH+bzYF5c6rjT9JrtP8/idLVZzJfMppLOPpGNJAMnUfnOEjGql
-         2PCg==
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=avxBOPDF9jSAMvXoJK0nNwdJ0nlaICszMhRag1oLQs0=;
+        b=J0aoOTCgbnMNLewUZwdZSEJIVxiNwigjs6f/MXhLSVNI/UN6iP2FkO+w9WtHKuKb2B
+         OiAQBPQ/ODPX5h5ndkUL1ppZzOYDUNiGifhnVwsbQJ7XGzSUpkI7VrE4vaUIrqudUoWS
+         ctGr/dRPcSZcFpEtcu0fYBYh5t3xJJgP8xNJg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=p7+cg2LOJ1jjwaLPnm5wodKq+ffhY0uO8A/jZtHxwtA=;
-        b=E4ZywFEHSwXdp8mqEhMUr/74BEeCkMm3xqNm1Dsb7pOHOAc/9w7jgT4xm4CqbVXPVz
-         WXdo2h12dzXvrR1l6Gjvks2QzDxxpZj68K77EZ3DryvGsHl4KDy9xn7AdZMTkzK6N6k3
-         27aSBK+Ji2vC2vjiTVRlrf0/agzIn2lqZvcjw/4Dh4OH+urkfwfHQo8I1/fWYnv81vpf
-         VhASBAGUgx6UpTrQ1OHx8YVeZircslOICZkIX0IGvm25RVzv9K5iB72EzseluwpXsYw9
-         QjRzNmaKIkF7fdDhnDOnDFsNzYdhchs+ivwBj38q4xCVRuptgbriP7cCgIHIhlaYA5dV
-         wAew==
-X-Gm-Message-State: AJIora8UjYpO5Fvcs53TRji+BtKuNql2r00SAyYD3wyRGb2bHpHJVx17
-        U/UFJ/M94XkRl7JHJ4E7l/VQwosao7o=
-X-Google-Smtp-Source: AGRyM1tOomyBhtXwCr64p2wk6HYudjQrnvaiqliSLHvuPXogdJVCBz+pEHUAg+ZXPUEXrT6V8zDa8w==
-X-Received: by 2002:a05:620a:c43:b0:6a9:77ef:e000 with SMTP id u3-20020a05620a0c4300b006a977efe000mr15387110qki.396.1658072100849;
-        Sun, 17 Jul 2022 08:35:00 -0700 (PDT)
-Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
-        by smtp.gmail.com with ESMTPSA id ez12-20020a05622a4c8c00b0031eb0bb5c3csm7708016qtb.28.2022.07.17.08.34.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Jul 2022 08:35:00 -0700 (PDT)
-From:   Joe Simmons-Talbott <joetalbott@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>
-Subject: [PATCH] iio: Use parens with sizeof
-Date:   Sun, 17 Jul 2022 11:34:38 -0400
-Message-Id: <20220717153438.10800-1-joetalbott@gmail.com>
-X-Mailer: git-send-email 2.35.3
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=avxBOPDF9jSAMvXoJK0nNwdJ0nlaICszMhRag1oLQs0=;
+        b=Mq1EniF2LQaSrW0mcEWwNAnWRiF4dosDedtuOXDyDnK2sz/EqN7ohNFBocNyAkQqBI
+         Tx66HZWrL1pbRrp0ZicSBU9O/EUICzNp7EzRrhKo3JKEFJlt2Nt1pdsmfujFgFbCNJlw
+         vctdIlQ7VnBMcprCL8XLCMGE7/R4BanCgIx46aiEvcT3ndl80I3vsM7/AzHC++zlrOmi
+         V4PUhLlGMnTNns5oRvFeXNZonDv/zHx0bKMHnFAO2TdYWUbZdBRmHkOr0yyp4t2xx4fT
+         dKT1WvPBUIBZmzu0T8G167pjwyj3CEQfKhJmIfBr0pMztaH4JM5lO5gvgaccBzWuRKwp
+         +LFw==
+X-Gm-Message-State: AJIora/IrWmUDI8r9e5CzNWlM21XioIYiKLEhIBGG2Qe7G6Ex+kBfRJr
+        NnX/sEdhuicXTDlSGwx6bzeol3Acq5WQu4HHapZTyA==
+X-Google-Smtp-Source: AGRyM1uYMhNwQAD9pc3mUr9H9IENzHihp34bUYCkG+QQ9xKyo23pmeANSuDiGw+hvpEVAsAsRqnRq9MKojpB4GnUKYI=
+X-Received: by 2002:a05:6638:4511:b0:33f:4ccb:3139 with SMTP id
+ bs17-20020a056638451100b0033f4ccb3139mr12421804jab.20.1658076657036; Sun, 17
+ Jul 2022 09:50:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220711144716.642617-1-gwendal@chromium.org> <CAD=FV=VEiVgXSC=vx5vB3kEuL2XCQyuaAxNvDHig-PjOfANHag@mail.gmail.com>
+ <20220717161148.0a2ef822@jic23-huawei>
+In-Reply-To: <20220717161148.0a2ef822@jic23-huawei>
+From:   Gwendal Grignou <gwendal@chromium.org>
+Date:   Sun, 17 Jul 2022 18:50:45 +0200
+Message-ID: <CAPUE2uu-0tDSdpjL0AGEfQBEJs9K9wpBDcUf7+j5pt7EqxgCPg@mail.gmail.com>
+Subject: Re: [PATCH v3] iio: cros: Register FIFO callback after sensor is registered
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Doug Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Prefer 'sizeof(var)' over 'sizeof var' as reported by checkpatch.pl.
+On Sun, Jul 17, 2022 at 5:01 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Mon, 11 Jul 2022 11:45:36 -0700
+> Doug Anderson <dianders@chromium.org> wrote:
+>
+> > Hi,
+> >
+> > On Mon, Jul 11, 2022 at 7:47 AM Gwendal Grignou <gwendal@chromium.org> wrote:
+> > >
+> > > Instead of registering callback to process sensor events right at
+> > > initialization time, wait for the sensor to be register in the iio
+> > > subsystem.
+> > >
+> > > Events can come at probe time (in case the kernel rebooted abruptly
+> > > without switching the sensor off for  instance), and be sent to IIO core
+> > > before the sensor is fully registered.
+> > >
+> > > Reported-by: Douglas Anderson <dianders@chromium.org>
+> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> Applied to the togreg branch of iio.git which will be pushed out as testing
+> only until rc1 is out and I can rebase.
+>
+> I'm assuming this doesn't need to go in quickly as a fix?  If it does
+> let me know (and add a fixes tag)
+We were lucky current drivers do not allocate channels after calling
+cros_ec_sensors_core_init()
+For cleanliness, we can add the following fixes tag:
 
-Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
----
- drivers/iio/industrialio-trigger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when
+EC supports FIFO")
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index f504ed351b3e..88bccb0676c8 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -368,7 +368,7 @@ struct iio_poll_func
- 	va_list vargs;
- 	struct iio_poll_func *pf;
- 
--	pf = kmalloc(sizeof *pf, GFP_KERNEL);
-+	pf = kmalloc(sizeof(*pf), GFP_KERNEL);
- 	if (pf == NULL)
- 		return NULL;
- 	va_start(vargs, fmt);
-@@ -560,7 +560,7 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
- 	struct iio_trigger *trig;
- 	int i;
- 
--	trig = kzalloc(sizeof *trig, GFP_KERNEL);
-+	trig = kzalloc(sizeof(*trig), GFP_KERNEL);
- 	if (!trig)
- 		return NULL;
- 
--- 
-2.35.3
-
+Thanks,
+Gwendal
+> Thanks,
+>
+> Jonathan
+>
+> > > ---
+> > > Changes since v2:
+> > > - Do not compare pointer with NULL,
+> > > - Invert logic to reduce indentation.
+> > > - Do not set local variable just before use.
+> > >
+> > > Changes since v1:
+> > > - renamed from "iio: cros: Add cros_ec_sensors_core_register"
+> > > - Call devm_iio_device_register() inside cros_ec_sensors_core_register.
+> > >
+> > >  drivers/iio/accel/cros_ec_accel_legacy.c      |  4 +-
+> > >  .../cros_ec_sensors/cros_ec_lid_angle.c       |  4 +-
+> > >  .../common/cros_ec_sensors/cros_ec_sensors.c  |  6 +-
+> > >  .../cros_ec_sensors/cros_ec_sensors_core.c    | 58 ++++++++++++++-----
+> > >  drivers/iio/light/cros_ec_light_prox.c        |  6 +-
+> > >  drivers/iio/pressure/cros_ec_baro.c           |  6 +-
+> > >  .../linux/iio/common/cros_ec_sensors_core.h   |  7 ++-
+> > >  7 files changed, 60 insertions(+), 31 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > index 1c0171f26e99e..0f403342b1fc0 100644
+> > > --- a/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > +++ b/drivers/iio/accel/cros_ec_accel_legacy.c
+> > > @@ -215,7 +215,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+> > >                 return -ENOMEM;
+> > >
+> > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > -                                       cros_ec_sensors_capture, NULL);
+> > > +                                       cros_ec_sensors_capture);
+> > >         if (ret)
+> > >                 return ret;
+> > >
+> > > @@ -235,7 +235,7 @@ static int cros_ec_accel_legacy_probe(struct platform_device *pdev)
+> > >                 state->sign[CROS_EC_SENSOR_Z] = -1;
+> > >         }
+> > >
+> > > -       return devm_iio_device_register(dev, indio_dev);
+> > > +       return cros_ec_sensors_core_register(dev, indio_dev, NULL);
+> > >  }
+> > >
+> > >  static struct platform_driver cros_ec_accel_platform_driver = {
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > index 9f780fafaed9f..119acb078af3b 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_lid_angle.c
+> > > @@ -98,7 +98,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+> > >         if (!indio_dev)
+> > >                 return -ENOMEM;
+> > >
+> > > -       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL, NULL);
+> > > +       ret = cros_ec_sensors_core_init(pdev, indio_dev, false, NULL);
+> > >         if (ret)
+> > >                 return ret;
+> > >
+> > > @@ -114,7 +114,7 @@ static int cros_ec_lid_angle_probe(struct platform_device *pdev)
+> > >         if (ret)
+> > >                 return ret;
+> > >
+> > > -       return devm_iio_device_register(dev, indio_dev);
+> > > +       return cros_ec_sensors_core_register(dev, indio_dev, NULL);
+> > >  }
+> > >
+> > >  static const struct platform_device_id cros_ec_lid_angle_ids[] = {
+> > > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > index 61e07a7bb1995..66153b1850f10 100644
+> > > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors.c
+> > > @@ -236,8 +236,7 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+> > >                 return -ENOMEM;
+> > >
+> > >         ret = cros_ec_sensors_core_init(pdev, indio_dev, true,
+> > > -                                       cros_ec_sensors_capture,
+> > > -                                       cros_ec_sensors_push_data);
+> > > +                                       cros_ec_sensors_capture);
+> > >         if (ret)
+> > >                 return ret;
+> > >
+> > > @@ -298,7 +297,8 @@ static int cros_ec_sensors_probe(struct platform_device *pdev)
+> > >         else
+> > >                 state->core.read_ec_sensors_data = cros_ec_sensors_read_cmd;
+> > >
+> > > -       return devm_iio_device_register(dev, indio_dev);
+> > > +       return cros_ec_sensors_core_register(dev, indio_dev,
+> > > +                       cros_ec_sensors_push_data);
+> >
+> > Probably not worth spinning for, but now that the indentation was been
+> > reduced (compared to v2) the above call doesn't need to be split
+> > across 2 lines.
+> >
+> > Reviewed-by: Douglas Anderson <dianders@chromium.org>
+>

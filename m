@@ -2,112 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1E157781E
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 22:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A3C75778A1
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 00:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbiGQUIc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Jul 2022 16:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50590 "EHLO
+        id S230080AbiGQWkg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 17 Jul 2022 18:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiGQUIb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 16:08:31 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14EE3B80;
-        Sun, 17 Jul 2022 13:08:30 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id g1so6701346qki.7;
-        Sun, 17 Jul 2022 13:08:30 -0700 (PDT)
+        with ESMTP id S229587AbiGQWkg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 18:40:36 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7580311174
+        for <linux-iio@vger.kernel.org>; Sun, 17 Jul 2022 15:40:34 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id e69so18106634ybh.2
+        for <linux-iio@vger.kernel.org>; Sun, 17 Jul 2022 15:40:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RVbKruXrudOejdVpt6BRSlOurBARv5UgOInWZVYbs+M=;
-        b=Feo/WyzmswpQ6NicQibu7mzR1pIk2iO52Q0OtTlN/e2t2DPJaiQ97wBBqbyVZui+fK
-         vat0qDJkzeNJ7ptOoIzWR8SNk0/ORsETnCA1NJQiJ21HUq3o45sazeC4g/VxC79PTvK6
-         h/lIjmS4ewlbAONVn6hVRd7cTRUMQd71X+yg9b1TBsYGxO8jxB5ZuzMnEkfbLkDgT+zL
-         gHkVe+ZMiXvvMK/DHWtx0qJAJsbifIBb2TA3O6FXQxy2FsvpWdvbwQrLqFc4+Bw8LZF5
-         JXPrnEYhViiCMhRj0gmuk3mDDwLBpz/i/n/cIEXoxpnzu0K12AbRvxh4rYE0+nRjB8TU
-         TwxA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=zNhUhmWBJ3lNgzEKeFq7abfcgk0YlUWuk7VNsTnNB5s=;
+        b=R+p5S7qsNH55Z7tKmyxRSKbOF4u2eBUYaHekyM4wrwQns+QcEKL89eJhnbyYcQqBbQ
+         xSr44xVu/r0GeJdVVYccauTNiX05JEj1+zjlXFL1N2kAGYGw1VXUmPQGkxdK+RJgpSGn
+         tRstwJYp0vqiXEtlyBW+PH99H0xWpTg6kf2RD/LS1JECg9yKEQVLh6PsRE5oGZ5Gz85C
+         BICWzGcwVkrRr3R6jlvCgKI0vux4euqPrkpZL0hUt/UhZZWNstdw+rJdaU4kQRyu8JUo
+         npHtjhFXG0Ic8K3eQtEn8vDOzZzrQWzqAuXuVo1bopQ/22C0FNGU2ATHOyVp0uV7IlVw
+         rr7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RVbKruXrudOejdVpt6BRSlOurBARv5UgOInWZVYbs+M=;
-        b=oODmKJ+57WClnbsQKfm9JqVwN5yi1o4aA1ZAD+9nyd/z3Qz0LWElOpPJJOB1SSVyrj
-         bJ+Gw3BotJ2PwjUIz1F/FBPAjK4PiMvAas4/fUJSpsrPhiiEeSNytvgacUzaSj/uYJTW
-         WPMP/4gPH/xlDPPRK1+kci41MlO6Nbd9ZlCfe8tqm4WRBCl7QmW+n90yPKaJvWZZHRRu
-         XsLNIHqxTbcVcic6hkBEDr/S0axlP5BXx+fUxzteuBYh0/1yB/8nfPKuXMPNABM/mfdc
-         YmJqB8Hlsp2IRrhQHNS2vMxUj756m4zCmuVZwelm+wyeQkjpDADu7HMad9k5sQabMVzS
-         4EFw==
-X-Gm-Message-State: AJIora+eAWwWXq2w9e0qLyhTX6f1lMbiukp3VCqh82yWhFnbqsoKTDfk
-        BbER2I70+Ynkbg+H5f8PBx0=
-X-Google-Smtp-Source: AGRyM1u5HaRYUNSIdZ+VQ5cVrKgqByYPdxZQPsJ8u+nGtkiomGD+kBmPGxnwvSZR18sKhemEkOYgSA==
-X-Received: by 2002:a37:d281:0:b0:6af:24c7:a981 with SMTP id f123-20020a37d281000000b006af24c7a981mr15889271qkj.736.1658088509176;
-        Sun, 17 Jul 2022 13:08:29 -0700 (PDT)
-Received: from spruce (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
-        by smtp.gmail.com with ESMTPSA id g18-20020ac87752000000b0031ee01443b4sm4606923qtu.74.2022.07.17.13.08.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Jul 2022 13:08:28 -0700 (PDT)
-Date:   Sun, 17 Jul 2022 16:08:27 -0400
-From:   Joe Simmons-Talbott <joetalbott@gmail.com>
-To:     Joe Perches <joe@perches.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: Use parens with sizeof
-Message-ID: <YtRsO7cLyDIH47od@spruce>
-References: <20220717153438.10800-1-joetalbott@gmail.com>
- <59c0003bfc5b429a8e39151da942fcaf707109a0.camel@perches.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=zNhUhmWBJ3lNgzEKeFq7abfcgk0YlUWuk7VNsTnNB5s=;
+        b=qQwbpf44HUBqBy4siwehqMSZNqqgKmrAx+FiveOAoshGcFdpy92SgjYkGPj55apQrl
+         dTC8mPzKIVK9UMS0kujDgGpCm8UoUpNo59mEFtfbHVVgt30z72epvCVt6x10vDEKwUh7
+         xGV/9Qp4sZjc/DHUOBWIiJZ8X//ytulOtC40Yax9x3NP1EvAqs1fN1N9I2E/KPN9VGmR
+         P+h0nl+7f+OtC/8dB/5vKWaYVpyJRemsG6cHzp9Fg6EAKaRDcIdV+67fk11gv1jR5fzN
+         r7jPx5VZ7MNa+cIQd70Aks+smOtHcyiUN1Tks28Jat14+LA3AIeTHRf6+VPejSYn8Pu/
+         uAcA==
+X-Gm-Message-State: AJIora+or4oidZhL5ZtyT0+yfRQTpUku4gQe20hRyACjrIemt9zhMh95
+        cpsb4iGXRbs4/n+B9f8HxJAoAJR4RwQZqWwFYrg=
+X-Google-Smtp-Source: AGRyM1s/ja4ehN36dIJ/aQ7+9zgo7XGezoOiJnmLqONYUuEEg1rZ7c2nFNQulCM05mj5hYg9MGeeR9EuZdW3+8Nemxw=
+X-Received: by 2002:a25:3807:0:b0:66e:c7d0:e7a7 with SMTP id
+ f7-20020a253807000000b0066ec7d0e7a7mr23462147yba.103.1658097633756; Sun, 17
+ Jul 2022 15:40:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <59c0003bfc5b429a8e39151da942fcaf707109a0.camel@perches.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:7010:57ce:b0:2da:17d8:d624 with HTTP; Sun, 17 Jul 2022
+ 15:40:33 -0700 (PDT)
+Reply-To: amaaofosu001@gmail.com
+From:   "Mr. Amaa Ofosu" <amaaoofosuu.box@gmail.com>
+Date:   Sun, 17 Jul 2022 23:40:33 +0100
+Message-ID: <CAG_aRH8sVQB9BfJUcPwdSm7xh0oN_U9Eh=CQbBJctT1-34FRuA@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_HK_NAME_FM_MR_MRS,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 17, 2022 at 10:08:37AM -0700, Joe Perches wrote:
-> On Sun, 2022-07-17 at 11:34 -0400, Joe Simmons-Talbott wrote:
-> > Prefer 'sizeof(var)' over 'sizeof var' as reported by checkpatch.pl.
-> 
-> unrelated trivia:
-> 
-> > diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> []
-> > @@ -368,7 +368,7 @@ struct iio_poll_func
-> >  	va_list vargs;
-> >  	struct iio_poll_func *pf;
-> >  
-> > -	pf = kmalloc(sizeof *pf, GFP_KERNEL);
-> > +	pf = kmalloc(sizeof(*pf), GFP_KERNEL);
-> >  	if (pf == NULL)
-> >  		return NULL;
-> >  	va_start(vargs, fmt);
-> > @@ -560,7 +560,7 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
-> >  	struct iio_trigger *trig;
-> >  	int i;
-> >  
-> > -	trig = kzalloc(sizeof *trig, GFP_KERNEL);
-> > +	trig = kzalloc(sizeof(*trig), GFP_KERNEL);
-> >  	if (!trig)
-> >  		return NULL;
-> 
-> It'd be nice to be consistent with the allocation return test.
-> 
-> Please pick one of:
-> 
-> 	if (ptr == NULL)
-> or
-> 	if (!ptr)		// my preference
-> 
+Greetings,
 
-I'm happy to submit a patch for that.  Do you want me to include a
-Suggested-by: tag?
+How are you doing? I got your contact in my search for a trustworthy
+and reliable partner for a business proposal. I contacted you so that
+we can work together.
 
-Thanks,
-Joe
+Please if my business proposal offends your moral values do accept my
+apology, get back to me for more details.
+
+Waiting for your Response.
+Regards.
+Mr. Amaa Ofosu

@@ -2,236 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44C965771F3
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 00:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42427577293
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Jul 2022 02:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231772AbiGPWjv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 16 Jul 2022 18:39:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
+        id S229619AbiGQAmy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 16 Jul 2022 20:42:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiGPWju (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 18:39:50 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F49192A8;
-        Sat, 16 Jul 2022 15:39:49 -0700 (PDT)
-Received: from mercury (unknown [185.209.196.172])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id DA7546601656;
-        Sat, 16 Jul 2022 23:39:47 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1658011188;
-        bh=COEr5uOxMkI3kPNEax0jj1+fGc37yVW4MCquaThpdzI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JB5nMFWMpC6G9dcujK7dvS0SOFU99Z8xDvdj6318RD7PoIOMdQoqqXVqT9tAnM669
-         eQy9KLM0jmoYp33WaoUS2KTrsn3YkfKSpGKffufXC/1IUJFutZrABbnIBM0zLmO1zY
-         BHAbtHczFv0dmW+hcv53T+L7xXt38grZVEmY0Z5jTO1Ywg7QmzuaNZHqiEGGWU4bQU
-         IXDnA2RoECqO1Mlnu0ka1rXBlNF2mRHTe8NOIgPlrEzXgAw4rgUkMAyztEtvxuKIna
-         U3H6jlANxPR9c8iPxyZkoZMyePlfLtgpQxg+/eyJvsEJ2xb9cCFm8XjiMwKccjYzas
-         DR8FbiCBITAiw==
-Received: by mercury (Postfix, from userid 1000)
-        id 790E91060428; Sun, 17 Jul 2022 00:39:45 +0200 (CEST)
-Date:   Sun, 17 Jul 2022 00:39:45 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-Cc:     jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, wens@csie.org,
-        lee.jones@linaro.org, lgirdwood@gmail.com, broonie@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com,
-        linus.walleij@linaro.org, brgl@bgdev.pl, michael@walle.cc,
-        samuel@sholland.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v5 11/13] power: axp20x_battery: Add constant charge
- current table
-Message-ID: <20220716223945.o6ilrbrlvdszcwfa@mercury.elektranox.org>
-References: <20220706101902.4984-1-aidanmacdonald.0x0@gmail.com>
- <20220706101902.4984-12-aidanmacdonald.0x0@gmail.com>
+        with ESMTP id S229505AbiGQAmx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 16 Jul 2022 20:42:53 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03E314037;
+        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id y141so7764905pfb.7;
+        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Hb6uI1Kl3qHRzDha2s0SlVlOvbXC6dOtlm91aV7ABgY=;
+        b=it36RuOLsBUb3x81iM5ebii17uRe/rIOh4gOAMgUMfdDFOooc24jHBqg1D19EvgGYp
+         rGuxzkmkldERIjq7tslreLZSlJGgnRGZajpZEv1Hfg26MJ+uZ5QPKyQvf6eb2T4q6xJN
+         izlzO1STSkNLExhKVt90oBuuCH7uXjzNgfZnUDHbupggLqK9SVsY1b2rvsdIv6LJzkIo
+         Xp51AGH+7jIUDqQGCBBU3P8qL0HSVqCsKkoUMYVvSw59nJlDLarrgPbUf+2gKwc58HK1
+         YHAUXt9ggD0BGrcv6FICyFDfXwoRphl6HrUqk+Mzjn+MuWsCa4PUmpxIbrN1eBasItj6
+         Dgwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Hb6uI1Kl3qHRzDha2s0SlVlOvbXC6dOtlm91aV7ABgY=;
+        b=LMwvSoyi6hj5B1Fyt1yixtylkOYfvv8+pjxHcYI/S6tMleqz5UNLbDTbG3I06CFONG
+         3rSSf/Rl0WCzwiGegU/k8wjGPoAzs1b3/zUcAWTNeR0rwzT+AZq/WFZ0TUgm1jCsFStO
+         Qn91QnZSJ/119Zo0lQVgJiXJr00S1PGgvX9cawBpZW+I1Kmkum/hF5Ir5G4d+mXmGzUW
+         REC7QHF8Ean0byhFcrwNaKIta9qUx4Sv+XdFiIdKox10UrnyXMHHECe/GiSRzMhCCfqM
+         qrcBlGmCbpVMQq3nRd15t3yFZrZ65o5X6M8qIL5zbVQN/DGuMclsZ0Gm1BPEwlmKVbD0
+         r5qQ==
+X-Gm-Message-State: AJIora+V4tRnJmDx/IDa1p5xlacZ9K3ToMpjLejg91AkbLX5aH6TPax5
+        lVqDRWGSHDsLyNTCvrxs8Q==
+X-Google-Smtp-Source: AGRyM1vBg68W+rk82aX7JJRSUKXZFSFngt3GxMHzOuhh1/5sCdlBkrhs4z5+JMQbHyQxntTnDPtucg==
+X-Received: by 2002:a05:6a00:301f:b0:52a:ccdd:17f9 with SMTP id ay31-20020a056a00301f00b0052accdd17f9mr21383840pfb.82.1658018572098;
+        Sat, 16 Jul 2022 17:42:52 -0700 (PDT)
+Received: from localhost.localdomain ([144.202.91.207])
+        by smtp.gmail.com with ESMTPSA id y8-20020aa793c8000000b0052ab602a7d0sm6363409pff.100.2022.07.16.17.42.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Jul 2022 17:42:51 -0700 (PDT)
+From:   Zheyu Ma <zheyuma97@gmail.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH v2] iio: light: isl29028: Fix the warning in isl29028_remove()
+Date:   Sun, 17 Jul 2022 08:42:41 +0800
+Message-Id: <20220717004241.2281028-1-zheyuma97@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="aaa3fkkzmlof3mir"
-Content-Disposition: inline
-In-Reply-To: <20220706101902.4984-12-aidanmacdonald.0x0@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The driver use the non-managed form of the register function in
+isl29028_remove(). To keep the release order as mirroring the ordering
+in probe, the driver should use non-managed form in probe, too.
 
---aaa3fkkzmlof3mir
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The following log reveals it:
 
-Hi,
+[   32.374955] isl29028 0-0010: remove
+[   32.376861] general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN PTI
+[   32.377676] KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
+[   32.379432] RIP: 0010:kernfs_find_and_get_ns+0x28/0xe0
+[   32.385461] Call Trace:
+[   32.385807]  sysfs_unmerge_group+0x59/0x110
+[   32.386110]  dpm_sysfs_remove+0x58/0xc0
+[   32.386391]  device_del+0x296/0xe50
+[   32.386959]  cdev_device_del+0x1d/0xd0
+[   32.387231]  devm_iio_device_unreg+0x27/0xb0
+[   32.387542]  devres_release_group+0x319/0x3d0
+[   32.388162]  i2c_device_remove+0x93/0x1f0
 
-On Wed, Jul 06, 2022 at 11:19:00AM +0100, Aidan MacDonald wrote:
-> Add a table-based lookup method for constant charge current,
-> which is necessary when the setting cannot be represented as
-> a linear range.
->=20
-> This also replaces the hard-coded 300 mA default ccc setting
-> if the DT-specified value is unsupported; the minimum value
-> for the device is now set exactly instead of relying on the
-> value being rounded down to a supported value.
->=20
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-> ---
+Fixes: 2db5054ac28d ("staging: iio: isl29028: add runtime power management support")
+Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+---
+Changes in v2:
+    - Use the non-managed form to register the device
+---
+ drivers/iio/light/isl29028.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+diff --git a/drivers/iio/light/isl29028.c b/drivers/iio/light/isl29028.c
+index 9de3262aa688..a62787f5d5e7 100644
+--- a/drivers/iio/light/isl29028.c
++++ b/drivers/iio/light/isl29028.c
+@@ -625,7 +625,7 @@ static int isl29028_probe(struct i2c_client *client,
+ 					 ISL29028_POWER_OFF_DELAY_MS);
+ 	pm_runtime_use_autosuspend(&client->dev);
+ 
+-	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
++	ret = iio_device_register(indio_dev);
+ 	if (ret < 0) {
+ 		dev_err(&client->dev,
+ 			"%s(): iio registration failed with error %d\n",
+-- 
+2.25.1
 
--- Sebastian
-
->  drivers/power/supply/axp20x_battery.c | 59 +++++++++++++++++++++------
->  1 file changed, 47 insertions(+), 12 deletions(-)
->=20
-> diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply=
-/axp20x_battery.c
-> index 9106077c0dbb..401779d84d2b 100644
-> --- a/drivers/power/supply/axp20x_battery.c
-> +++ b/drivers/power/supply/axp20x_battery.c
-> @@ -61,6 +61,14 @@ struct axp20x_batt_ps;
->  struct axp_data {
->  	int	ccc_scale;
->  	int	ccc_offset;
-> +	/*
-> +	 * Lookup table for constant charge current, if provided this is used
-> +	 * instead of ccc_scale/ccc_offset.
-> +	 *
-> +	 * The table is indexed by the field AXP20X_CHRG_CTRL1_TGT_CURR so it
-> +	 * must have AXP20X_CHRG_CTRL1_TGT_CURR+1 elements.
-> +	 */
-> +	const int *ccc_table;
->  	bool	has_fg_valid;
->  	int	(*get_max_voltage)(struct axp20x_batt_ps *batt, int *val);
->  	int	(*set_max_voltage)(struct axp20x_batt_ps *batt, int val);
-> @@ -176,7 +184,10 @@ static int axp20x_get_constant_charge_current(struct=
- axp20x_batt_ps *axp,
-> =20
->  	*val &=3D AXP20X_CHRG_CTRL1_TGT_CURR;
-> =20
-> -	*val =3D *val * axp->data->ccc_scale + axp->data->ccc_offset;
-> +	if (axp->data->ccc_table)
-> +		*val =3D axp->data->ccc_table[*val];
-> +	else
-> +		*val =3D *val * axp->data->ccc_scale + axp->data->ccc_offset;
-> =20
->  	return 0;
->  }
-> @@ -389,16 +400,35 @@ static int axp20x_battery_set_max_voltage(struct ax=
-p20x_batt_ps *axp20x_batt,
->  				  AXP20X_CHRG_CTRL1_TGT_VOLT, val);
->  }
-> =20
-> +static int axp20x_get_constant_charge_current_sel(struct axp20x_batt_ps =
-*axp_batt,
-> +						  int charge_current)
-> +{
-> +	int i;
-> +
-> +	if (axp_batt->data->ccc_table) {
-> +		for (i =3D AXP20X_CHRG_CTRL1_TGT_CURR; i >=3D 0; i--) {
-> +			if (axp_batt->data->ccc_table[i] <=3D charge_current)
-> +				return i;
-> +		}
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	i =3D (charge_current - axp_batt->data->ccc_offset) / axp_batt->data->c=
-cc_scale;
-> +	if (i > AXP20X_CHRG_CTRL1_TGT_CURR || i < 0)
-> +		return -EINVAL;
-> +
-> +	return i;
-> +}
-> +
->  static int axp20x_set_constant_charge_current(struct axp20x_batt_ps *axp=
-_batt,
->  					      int charge_current)
->  {
->  	if (charge_current > axp_batt->max_ccc)
->  		return -EINVAL;
-> =20
-> -	charge_current =3D (charge_current - axp_batt->data->ccc_offset) /
-> -		axp_batt->data->ccc_scale;
-> -
-> -	if (charge_current > AXP20X_CHRG_CTRL1_TGT_CURR || charge_current < 0)
-> +	charge_current =3D axp20x_get_constant_charge_current_sel(axp_batt, cha=
-rge_current);
-> +	if (charge_current < 0)
->  		return -EINVAL;
-> =20
->  	return regmap_update_bits(axp_batt->regmap, AXP20X_CHRG_CTRL1,
-> @@ -410,14 +440,14 @@ static int axp20x_set_max_constant_charge_current(s=
-truct axp20x_batt_ps *axp,
->  {
->  	bool lower_max =3D false;
-> =20
-> -	charge_current =3D (charge_current - axp->data->ccc_offset) /
-> -		axp->data->ccc_scale;
-> -
-> -	if (charge_current > AXP20X_CHRG_CTRL1_TGT_CURR || charge_current < 0)
-> +	charge_current =3D axp20x_get_constant_charge_current_sel(axp, charge_c=
-urrent);
-> +	if (charge_current < 0)
->  		return -EINVAL;
-> =20
-> -	charge_current =3D charge_current * axp->data->ccc_scale +
-> -		axp->data->ccc_offset;
-> +	if (axp->data->ccc_table)
-> +		charge_current =3D axp->data->ccc_table[charge_current];
-> +	else
-> +		charge_current =3D charge_current * axp->data->ccc_scale + axp->data->=
-ccc_offset;
-> =20
->  	if (charge_current > axp->max_ccc)
->  		dev_warn(axp->dev,
-> @@ -629,7 +659,12 @@ static int axp20x_power_probe(struct platform_device=
- *pdev)
->  								   ccc)) {
->  			dev_err(&pdev->dev,
->  				"couldn't set constant charge current from DT: fallback to minimum v=
-alue\n");
-> -			ccc =3D 300000;
-> +
-> +			if (axp20x_batt->data->ccc_table)
-> +				ccc =3D axp20x_batt->data->ccc_table[0];
-> +			else
-> +				ccc =3D axp20x_batt->data->ccc_offset;
-> +
->  			axp20x_batt->max_ccc =3D ccc;
->  			axp20x_set_constant_charge_current(axp20x_batt, ccc);
->  		}
-> --=20
-> 2.35.1
->=20
-
---aaa3fkkzmlof3mir
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmLTPiUACgkQ2O7X88g7
-+pqb5w//Rj1zJNtTfSRun6rF3+mFEo/1sWS/1ofixrlrahfM2EIqy6heMUeRHLSA
-rr1orplBrlIP0hbbebdgtM27KKAJbjvY2I6yMlJTN8iQa2fNp/vJjOIFDjIbMWgc
-W2RwBbwcF3lU65jsB4iUtFWxfxPipsEbfB2BBbZV+KaRDoFNu6WIUH37N31FWGJu
-tvpPjtXcVinNTfZJiSenQ+HtuhtneTTDA7RinllMa1y7LU7LAIa48kuvl/e20v4l
-H8KzpkkYuPVC+vF4sCKJ33zprLUNRoV4GwOnSRpkODV1HEMjAQZMF/dZJ3NQ8W14
-Xxb2ip+SaRTAD0TLDZl1B/5uLuFEZF2XSAB54wvGIrs6FOH+adjRKlc9SrqVClig
-ZEv0qlpVzRTQ+3Z0D6cfV94yJ0yPSE7ivZj1wvtjUWEaTdKAQYc43ZQyvHDg7pjy
-hD87zEEAsNKlxP27Y2lFbnaB00nbYNdtNKhMoDmhBH2SxllE3rjeOA2y2BHJrLeZ
-ThltuMfKPpGDTKxxt7/Qxh94tbCxRXQGZM1DD9U9XMxwe922Hy7Ws523gH2FrdTG
-gPKtZ4TSlFYu5LVWrMyiJ5YhBTxu8MUs1dz/qakuUC/1KFD+OiBLaLBY4a/Pg/To
-yq1ZpXkVH3LCISl/3305reZf6hy4f7heSRJt+k99NKypRPDlGUM=
-=u+Wk
------END PGP SIGNATURE-----
-
---aaa3fkkzmlof3mir--

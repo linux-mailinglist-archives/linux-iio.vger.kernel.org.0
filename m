@@ -2,45 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F2625788B0
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6605788B9
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229890AbiGRRoZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 13:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        id S235573AbiGRRqz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 13:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235905AbiGRRoQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:44:16 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BF05F61;
-        Mon, 18 Jul 2022 10:44:15 -0700 (PDT)
+        with ESMTP id S235241AbiGRRqy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:46:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC8B2C648;
+        Mon, 18 Jul 2022 10:46:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 90F73CE1884;
-        Mon, 18 Jul 2022 17:44:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61065C341CB;
-        Mon, 18 Jul 2022 17:44:09 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3014DB81658;
+        Mon, 18 Jul 2022 17:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9E2C341C0;
+        Mon, 18 Jul 2022 17:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658166251;
-        bh=bvwgPiet+KbQqeWdNCXQUOY/LnQARZbnjVN0i6WvK0U=;
+        s=k20201202; t=1658166410;
+        bh=fJhXHjK4iR4PrXajXTvrNgHrH8Xm1UQQa3ldL5pU8Q8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ATDYLREGyDY1p0LExzxuUBNAtzBS2ji87F0D7Jxl/sgTxwo5gaPcqcijf8ix4XJ6n
-         jt9GMNvthc64DxonGMWbpTRSKSsOO1wXL6ZxDQS0BshuXii+dBTD6rpRcanC/EBGfN
-         vIeqUB+PPjTCq9TDjAx57iRzpHe916eLG2yAUqzbn6wb/VmUkcH++70/eXdDkopnvk
-         UHD4LChwJ0NPy0GxNn7WjeLldjX4m76DislFHV5TG9ppdwR2U5p0wxl2GdA2vjKsWC
-         Z3eDvVCwpA8N/A6IJUJezxqkC7q2/2+f/ZHoN/J2gqgD4r1OTRbSZIRUOQsskL7zIL
-         U8rlmISioDJng==
-Date:   Mon, 18 Jul 2022 18:54:06 +0100
+        b=DB8w1PxX6sE2Jqdygs6y9Yra55MUcXmY2BOHTZcAw0DKG02aC1cEIry13uVVG+RV5
+         J8RQ/OKz7vypxp6so9gWssYqpA8ROtWd5a+rAed/SpsZeAVCmSwIUQ6RSiBpMlIn0Z
+         suW6eJfhov5tckaw8Z4hOytHN+r9T+6K9MEuc2uxXaXw9j31QcH+STlPtSqCl/uGf+
+         ag8WEniN/ywrb3G4bXyO0sinsDM4ZofO1O1zuA7aUxiyFrmVOsAL4HYhGXjEdMvheZ
+         Q73/UmZArebfTzc4IrUKtoeFSy6hb3+VikVr7scxUGMWYsnNvKL40dCKzQ/o9xuzud
+         kpNCNEzPxT+Pg==
+Date:   Mon, 18 Jul 2022 18:56:45 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jiang Jian <jiangjian@cdjrlc.com>
-Cc:     lars@metafoo.de, ardeleanalex@gmail.com, andy.shevchenko@gmail.com,
-        antoniu.miclaus@analog.com, u.kleine-koenig@pengutronix.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: magnetometer: hmc5843: Remove duplicate 'the'
-Message-ID: <20220718185406.793cc3b4@jic23-huawei>
-In-Reply-To: <20220622035925.5008-1-jiangjian@cdjrlc.com>
-References: <20220622035925.5008-1-jiangjian@cdjrlc.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Akira Yokosawa <akiyks@gmail.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        kbuild-all@lists.01.org, linux-kernel@vger.kernel.org,
+        Stephen Boyd <swboyd@chromium.org>, linux-doc@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: proximity: sx9324: add empty line in front of
+ bullet list
+Message-ID: <20220718185645.0a0ecd84@jic23-huawei>
+In-Reply-To: <YsFl9YoSn2YUDHAk@debian.me>
+References: <202207021703.lEW6FLT1-lkp@intel.com>
+        <85c5fe48-90fd-6ad6-72d8-a3e7929f23e4@gmail.com>
+        <abcaa4f5-7a9b-56b5-c11a-a88fef9d1e0a@gmail.com>
+        <YsFl9YoSn2YUDHAk@debian.me>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,27 +62,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 22 Jun 2022 11:59:25 +0800
-Jiang Jian <jiangjian@cdjrlc.com> wrote:
+On Sun, 3 Jul 2022 16:48:37 +0700
+Bagas Sanjaya <bagasdotme@gmail.com> wrote:
 
-> Fix an obvious typing error, found by spellcheck(1).
+> On Sun, Jul 03, 2022 at 01:27:47PM +0900, Akira Yokosawa wrote:
+> > "make htmldocs" emits a warning of:
+> > 
+> >     Documentation/ABI/testing/sysfs-bus-iio-sx9324:2: WARNING: Unexpected indentation.
+> > 
+> > This is due to a missing empty line in front of the bullet list.
+> > Fix it.
+> > 
+> > Note: The line count of 2 in the warning is not exact in this case.
+> > 
+> > Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+> > Fixes: 4c18a890dff8 ("iio:proximity:sx9324: Add SX9324 support")
+> > Link: https://lore.kernel.org/r/202207021703.lEW6FLT1-lkp@intel.com/
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Cc: Gwendal Grignou <gwendal@chromium.org>
+> > Cc: Stephen Boyd <swboyd@chromium.org>
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
 > 
-> Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
-Applied.  Thanks
-> ---
->  drivers/iio/magnetometer/hmc5843_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Applying this on top of Mauro's fixes [1], no warnings. Thanks.
 > 
-> diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-> index 92eb2d156ddb..4a63b2da9df0 100644
-> --- a/drivers/iio/magnetometer/hmc5843_core.c
-> +++ b/drivers/iio/magnetometer/hmc5843_core.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-or-later
->  /*
-> - * Device driver for the the HMC5843 multi-chip module designed
-> + * Device driver for the HMC5843 multi-chip module designed
->   * for low field magnetic sensing.
->   *
->   * Copyright (C) 2010 Texas Instruments
+> So I think Sphinx was pointing the culprit at the wrong location, since
+> the problem isn't lie on the field, but rather on the list.
+> 
+> Mauro, can you please pick this up?
+> 
+> [1]: https://lore.kernel.org/linux-doc/cover.1656759988.git.mchehab@kernel.org/
+> 
+> Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> 
 
+I've picked it up via the iio tree.  If Mauro has it as well, git will
+sort it out for us.
+
+Thanks,
+
+Jonathan

@@ -2,203 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 855AF5780CB
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 13:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12BC578105
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 13:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233957AbiGRLcd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 07:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
+        id S234450AbiGRLjT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 07:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232593AbiGRLcc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 07:32:32 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDD71A802;
-        Mon, 18 Jul 2022 04:32:30 -0700 (PDT)
-Received: (Authenticated sender: contact@artur-rojek.eu)
-        by mail.gandi.net (Postfix) with ESMTPA id 489671BF204;
-        Mon, 18 Jul 2022 11:32:27 +0000 (UTC)
+        with ESMTP id S234469AbiGRLjQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 07:39:16 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2292704;
+        Mon, 18 Jul 2022 04:39:13 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id m8so1395959edd.9;
+        Mon, 18 Jul 2022 04:39:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WM+zWzeYAitwMFZLUVsc8lp6MA3Zpo/kJcizrD/8ssk=;
+        b=OvcuKUIjR4uhqpfL8lpsxLQ88mCYxcDOZ5lSaz8YMU5SyNSpWm2LhWIoS9CC+qDuiX
+         DI/fnwo811XGeH4U+R290EOyJleoAHOZMLhaBd4hEdDGJHO0ZVerBEE3gVl6te9BpcT4
+         KyyXCEIlVZI9vzIm3Fjqb3WD+Kz4vqa72ux+kIiV8AtKAdtI87dFPLp0/j+Mpfxof+su
+         lev/A8157qmlXkCgs9+5cRS0ruqiTC3/PHuZcO3JHcb+eMLKX823Z/MyUYWDhywL+lc6
+         ZEQD7h68BhRbIcXy5EQnFOo4JXLrkrtrSYjrBnXa5BTwwYZFNpiLwNcI86j6oai3JcHf
+         Kb7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WM+zWzeYAitwMFZLUVsc8lp6MA3Zpo/kJcizrD/8ssk=;
+        b=ZPzABo93bnWSf4CHpIJ+mtevlCaIMyi7sdL5NY4HacH09HwL/vR97GBSlDS+1DG8rV
+         erOe41DsfrcUEupmTUtssvzTrh1gKVWrWy0VFcWJvVKMRSfCcEkkBuQAMn44WF313Y9R
+         arEIWomj3UU/9Ovtv6mkXJoewEKSYBA4AbafY23LQuwrKOyuemF3J6NIBha+d7+Ld/54
+         F6dasTaUobv1LSoXbrt4+9VnLcnQjtNZl3h86Yc3dynIom83ihN96OQTJvXPB/hyXR7c
+         QpcNqr2IeD72plYgLjRyitIL06HvknE1D7W8WYrlYG6JuMcD7NNYZPyEBZODQ7ekPGDh
+         GdGw==
+X-Gm-Message-State: AJIora/VW1UdhFwT2CeR9JblilLwjoIjTf3Bf7NsF//p2OnvnZF/o1EY
+        2XgXIlJJtj44+Fcj+HE7hdoVxBc8a4VUQoJ6dcE=
+X-Google-Smtp-Source: AGRyM1uLSUr+2lvxiCg3cwvu9VMJCLD+uDi8ZOzhv3dgH0XROSPP5YW44n0Pb3saV+i0UvUB6nImoWisC6NYG7PACSY=
+X-Received: by 2002:a05:6402:34c5:b0:43a:8f90:e643 with SMTP id
+ w5-20020a05640234c500b0043a8f90e643mr35599070edc.88.1658144351737; Mon, 18
+ Jul 2022 04:39:11 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Mon, 18 Jul 2022 13:32:27 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Chris Morgan <macroalpha82@gmail.com>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, maccraft123mc@gmail.com,
-        heiko@sntech.de, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org, dmitry.torokhov@gmail.com,
-        paul@crapouillou.net, linux-iio@vger.kernel.org,
-        Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH v7 2/3] Input: adc-joystick - Add polled input device
- support
-In-Reply-To: <20220716165808.70c54d7d@jic23-huawei>
-References: <20220705190354.69263-1-macromorgan@hotmail.com>
- <20220705190354.69263-3-macromorgan@hotmail.com>
- <20220716165808.70c54d7d@jic23-huawei>
-Message-ID: <bb7e12b61a56b61770def053ce42bdd9@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20220715112607.591-1-peterwu.pub@gmail.com> <20220715112607.591-9-peterwu.pub@gmail.com>
+ <CAHp75VdCgdTOu-CdNo9XGY+PrhPh93v_CkAHJC6hkArsKeiXbA@mail.gmail.com> <20220718080831.GA31509@cyhuang-hp-elitebook-840-g3.rt>
+In-Reply-To: <20220718080831.GA31509@cyhuang-hp-elitebook-840-g3.rt>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 18 Jul 2022 13:38:35 +0200
+Message-ID: <CAHp75Ve2_UcS9e3pJC2j4FBc21=S8878tQusyxNV1mXtQG423w@mail.gmail.com>
+Subject: Re: [PATCH v5 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
+ tcpci driver
+To:     ChiYuan Huang <u0084500@gmail.com>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-07-16 17:58, Jonathan Cameron wrote:
-> On Tue,  5 Jul 2022 14:03:53 -0500
-> Chris Morgan <macroalpha82@gmail.com> wrote:
-> 
->> From: Chris Morgan <macroalpha82@gmail.com>
->> 
->> Add polled input device support to the adc-joystick driver. This is
->> useful for devices which do not have hardware capable triggers on
->> their SARADC. Code modified from adc-joystick.c changes made by Maya
->> Matuszczyk.
->> 
->> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
->> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> 
-> Hi.
-> 
-> One comment inline on improving the error handling slightly.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>  drivers/input/joystick/adc-joystick.c | 51 
->> +++++++++++++++++++++------
->>  1 file changed, 40 insertions(+), 11 deletions(-)
->> 
->> diff --git a/drivers/input/joystick/adc-joystick.c 
->> b/drivers/input/joystick/adc-joystick.c
->> index 78ebca7d400a..2f4bd12d6344 100644
->> --- a/drivers/input/joystick/adc-joystick.c
->> +++ b/drivers/input/joystick/adc-joystick.c
->> @@ -26,8 +26,23 @@ struct adc_joystick {
->>  	struct adc_joystick_axis *axes;
->>  	struct iio_channel *chans;
->>  	int num_chans;
->> +	bool polled;
->>  };
->> 
->> +static void adc_joystick_poll(struct input_dev *input)
->> +{
->> +	struct adc_joystick *joy = input_get_drvdata(input);
->> +	int i, val, ret;
->> +
->> +	for (i = 0; i < joy->num_chans; i++) {
->> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
->> +		if (ret < 0)
->> +			return;
->> +		input_report_abs(input, joy->axes[i].code, val);
->> +	}
->> +	input_sync(input);
->> +}
->> +
->>  static int adc_joystick_handle(const void *data, void *private)
->>  {
->>  	struct adc_joystick *joy = private;
->> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct 
->> platform_device *pdev)
->>  	int error;
->>  	int bits;
->>  	int i;
->> +	unsigned int poll_interval;
->> 
->>  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
->>  	if (!joy)
->> @@ -215,8 +231,17 @@ static int adc_joystick_probe(struct 
->> platform_device *pdev)
->>  	joy->input = input;
->>  	input->name = pdev->name;
->>  	input->id.bustype = BUS_HOST;
->> -	input->open = adc_joystick_open;
->> -	input->close = adc_joystick_close;
->> +
->> +	joy->polled = !device_property_read_u32(dev, "poll-interval",
->> +						&poll_interval);
-> Slight preference for an explicit check on presence of property
-> 
-> 	if (device_property_present(dev, "poll-interval")) {
-> 		error = device_property_read_u32();
-> 		if (error)
-> 			return error;
-> 		input_setup_polling(input, adc_joystick_poll);
-> 		input_set_poll_interval(input, poll_interval);
-> 	} else {
-> 		input->open = adc_joystick_open;
-> 		input->close = adc_joystick_close;
-> 	}
-> 
-> That way we will return an error if there is a malformed property.
-I'm fine with that, just let's keep the polling setup logic outside the 
-DT parsing code, like it was in v7:
-```
-	if (device_property_present(dev, "poll-interval")) {
-		error = device_property_read_u32(dev, "poll-interval",
-						 &poll_interval);
-		if (error)
-			return error;
-		joy->polled = true;
-	}
+On Mon, Jul 18, 2022 at 10:08 AM ChiYuan Huang <u0084500@gmail.com> wrote:
+> On Fri, Jul 15, 2022 at 03:10:42PM +0200, Andy Shevchenko wrote:
+> > On Fri, Jul 15, 2022 at 1:28 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 
-	if (joy->polled) {
-		input_setup_polling(input, adc_joystick_poll);
-		input_set_poll_interval(input, poll_interval);
-	} else {
-		input->open = adc_joystick_open;
-		input->close = adc_joystick_close;
-	}
+...
 
-```
+> > > This commit add support for the Type-C & Power Delivery controller in
+> >
+> > This commit add -> Add
+> >
+> Upper case? Or rewrite it as 'This commit is to add .....'?
 
-Cheers,
-Artur
-> 
->> +
->> +	if (joy->polled) {
->> +		input_setup_polling(input, adc_joystick_poll);
->> +		input_set_poll_interval(input, poll_interval);
->> +	} else {
->> +		input->open = adc_joystick_open;
->> +		input->close = adc_joystick_close;
->> +	}
->> 
->>  	error = adc_joystick_set_axes(dev, joy);
->>  	if (error)
->> @@ -229,16 +254,20 @@ static int adc_joystick_probe(struct 
->> platform_device *pdev)
->>  		return error;
->>  	}
->> 
->> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
->> -	if (IS_ERR(joy->buffer)) {
->> -		dev_err(dev, "Unable to allocate callback buffer\n");
->> -		return PTR_ERR(joy->buffer);
->> -	}
->> +	if (!joy->polled) {
->> +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
->> +						     joy);
->> +		if (IS_ERR(joy->buffer)) {
->> +			dev_err(dev, "Unable to allocate callback buffer\n");
->> +			return PTR_ERR(joy->buffer);
->> +		}
->> 
->> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, 
->> joy->buffer);
->> -	if (error)  {
->> -		dev_err(dev, "Unable to add action\n");
->> -		return error;
->> +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
->> +						 joy->buffer);
->> +		if (error)  {
->> +			dev_err(dev, "Unable to add action\n");
->> +			return error;
->> +		}
->>  	}
->> 
->>  	return 0;
+Please, read this documentation [1] for better understanding. It
+should clarify this and perhaps other possible questions.
+
+[1]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html#describe-your-changes
+
+> > > MediaTek MT6370 IC.
+
+...
+
+> > > +       ret = devm_request_threaded_irq(dev, priv->irq, NULL,
+> > > +                                       mt6370_irq_handler, IRQF_ONESHOT,
+> > > +                                       dev_name(dev), priv);
+> > > +       if (ret) {
+> >
+> > > +               tcpci_unregister_port(priv->tcpci);
+> >
+> > This is wrong.
+> > You mixed devm_ with non-devm. Either drop devm_ *after* the first
+> > non-devm_ call, or convert everything to be managed.
+> >
+> How about to add 'devm_add_action_or_reset' for tcpci_unregister_port?
+> This will convert all as 'devm_' version.
+
+I think it would work, that wrapper was designed to cover cases like this.
+
+> > > +               return dev_err_probe(dev, ret, "Failed to allocate irq\n");
+> > > +       }
+
+...
+
+> > > +static int mt6370_tcpc_remove(struct platform_device *pdev)
+> > > +{
+> > > +       struct mt6370_priv *priv = platform_get_drvdata(pdev);
+> >
+> > > +       disable_irq(priv->irq);
+> >
+> > Why?
+> > An ugly workaround due to ordering issues in ->probe()?
+> >
+> Yes, due to the ordering in probe.
+> 'bus remove' will be called before device resource releases.
+>
+> Like as you said, another way is to convert all as non-devm
+> version after 'tcpci_unregister_port'.
+>
+> If to keep the original order, 'disable_irq' before
+> 'tcpci_unregister_port' can make the flow more safe.
+>
+> Or you can think one case if irq triggers after
+> 'tcpci_unregister_port'. Null pointer occurs.
+>
+> Anyway, in next revision, I'll convert all to be 'devm_' version.
+> For this remove callback, only 'dev_pm_clear_wake_irq' and
+> 'device_init_wakeup' will be kept.
+>
+> Is this better?
+
+Sounds like a plan!
+
+> > > +       tcpci_unregister_port(priv->tcpci);
+> > > +       dev_pm_clear_wake_irq(&pdev->dev);
+> > > +       device_init_wakeup(&pdev->dev, false);
+> > > +
+> > > +       return 0;
+> > > +}
+
+-- 
+With Best Regards,
+Andy Shevchenko

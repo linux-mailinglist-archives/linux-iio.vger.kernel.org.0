@@ -2,45 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94CC95787A4
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 18:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3E75787DE
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 18:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233635AbiGRQnC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 12:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39884 "EHLO
+        id S234391AbiGRQyx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 12:54:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232158AbiGRQnB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 12:43:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78413FD07;
-        Mon, 18 Jul 2022 09:43:00 -0700 (PDT)
+        with ESMTP id S234385AbiGRQyw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 12:54:52 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C69CE1056A;
+        Mon, 18 Jul 2022 09:54:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BD25614D5;
-        Mon, 18 Jul 2022 16:43:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D518C341C0;
-        Mon, 18 Jul 2022 16:42:56 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 3852ACE178E;
+        Mon, 18 Jul 2022 16:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755B0C341CB;
+        Mon, 18 Jul 2022 16:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658162579;
-        bh=mt3Hyx8w6+AK+UEpBf+TEowqs5ZfWsQtF+zhUIoosBg=;
+        s=k20201202; t=1658163286;
+        bh=yBBYa1xZZmd/FW0Ok5m8qrhARtPq1Z+pUX8jaMNgznM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BGxX9vsMm1Ecrtq84DecdKj2ORySdm25ksz6E2U2vy91SN+3jC3GDANNGLUVg5lnP
-         e4nJPEkDUuQTG8z2+sVPseOya+28/8YR/gbw8DbnXG2hmDvdWy91geYgVEkBhtI/yA
-         c0Pfbzj3uh17pMp1a67PBC0cDA01HCa68YgL6bfE0GjGq/O4DqoLQ8g6vxUeK/K3FM
-         kuwyFcpLF59a1bpliKM7nfSvxckVg1f87cKrs0Gfw93tiXiMwUlVaQTOZCUNeMNjjF
-         B8OTLAipPWoMzX3IPty7g+nuMX1AI8cd8lYthlhjNbvqoSPWfs0UuFMzssUCc3SesF
-         ex2a8XW5rhW9g==
-Date:   Mon, 18 Jul 2022 17:52:53 +0100
+        b=tVoSsV1sti1rOnXxYnTHWdjcpFuV0S6VX/0LX2zyv2vexiVBINSAbDztE/ZHUhV7a
+         WXveOAFvZWGUtBCE3GuR/otLhVM3ZSMvMVIG6xUhSCwtrakpOcOZvrd6NS3wVYerNJ
+         X/YaG8rkUNQPlUvzN5yu7NJhPSY7/Zm9qdzMvNN5F+9OuyUDG1S8+Ymu5nGBx/qqZB
+         noz3wnLoPSJTB5lbIpUCG2mPwcEk7Q/pJ1+T2Kif5ger9Eoi+hVR5lee3JitPh4rDb
+         rr6jj7LocOV5BRjOkHwYyBkrxAsiUAZ5cRQ0seJ0C/fbUzqWw9ZXq5pa4QQSKb3N0b
+         iSSXPCn6z86Dg==
+Date:   Mon, 18 Jul 2022 18:04:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     cy_huang <u0084500@gmail.com>
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 0/3] Add Richtek RTQ6056 support
-Message-ID: <20220718175253.1333a61a@jic23-huawei>
-In-Reply-To: <1658123163-10039-1-git-send-email-u0084500@gmail.com>
+Subject: Re: [PATCH v7 3/3] Documentation: ABI: testing: rtq6056: Update ABI
+ docs
+Message-ID: <20220718180441.1363d2a6@jic23-huawei>
+In-Reply-To: <1658123163-10039-4-git-send-email-u0084500@gmail.com>
 References: <1658123163-10039-1-git-send-email-u0084500@gmail.com>
+        <1658123163-10039-4-git-send-email-u0084500@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,82 +56,60 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 18 Jul 2022 13:46:00 +0800
+On Mon, 18 Jul 2022 13:46:03 +0800
 cy_huang <u0084500@gmail.com> wrote:
 
 > From: ChiYuan Huang <cy_huang@richtek.com>
 > 
-> This patch series is to enable Richtek RTQ6056 support.
+> Add documentation for the usage of voltage channel integration time.
 > 
-> The RTQ6056 is a high accuracy current-sense monitor with I2C interface, and
-> the device provides full information for system by reading out the load current
-> and power.
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index d4ccc68..1f7d327 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -2030,3 +2030,13 @@ Description:
+>  		Available range for the forced calibration value, expressed as:
+>  
+>  		- a range specified as "[min step max]"
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_integration_time
+> +KernelVersion:	5.20
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		For voltage sensing hardware, there may be different time between
+> +		channel conversion and sample update. 'Integration time' is used to
+> +		specify the channel internal conversion time. And sample update
+> +		interval is equal to average sample count multiple integration time.
+> +		Unit as microsecond.
 
-If sending a new version without there being any public replies to the previous version
-please reply to that thread yourself to say you are resending and why.
-Greatly reduces the chances of me picking up the wrong version!
-> 
-> Since v7
-> - Use 'DEFINE_RUNTIME_DEV_PM_OPS' to replace the explicit declaration of pm_ops.
-> 
-> Since v6
-> - Remove specific rtq6056 ABI document.
-> - Update integration time description in general ABI document.
-> - Remove the redundant blank line.
-> - To prevent the race condition for attribute wrtie and shunt resistor write,
->   use 'iio_device_claim_direct_mode' API.
-> - Refine the order for 'action_reset' and 'pm_runtime'.
-> - Fix text typo in comment like as ohm to Ohm and timea to time.
-> 
-> Since v5
-> - Fix kernel version text for ABI.
-> 
-> Since v4
-> - Add '__aligned(8)' for timestamp member.
-> - Declare timestamp from 'int64_t' to more unified 's64'.
-> 
-> Since v3
-> - change the node name to be generic 'adc' in binding example.
-> - Refine pm_runtime API calling order in 'read_channel' API.
-> - Fix vshunt wrong scale for divider.
-> - Refine the comment text.
-> - Use 'devm_add_action_or_reset' to decrease the code usage in probe
->   function.
-> - Use RUNTIME_PM_OPS to replace SET_RUNTIME_PM_OPS.
-> - minor fix for the comma.
-> - Use pm_ptr to replace the direct assigned pm_ops.
-> 
-> Since v2
-> - Change the resistor property name to be generic 'shunt-resistor-micro-ohms'.
-> - Rename file from 'rtq6056-adc' to 'rtq6056'.
-> - Refine the ABI, if generic already defined it, remove it and check the channel
->   report unit.
-> - Add copyright text.
-> - include the correct header.
-> - change the property parsing name.
-> - To use iio_chan_spec address field.
-> - Refine each channel separate and shared_by_all.
-> - Use pm_runtime and pm_runtime_autosuspend.
-> - Remove the shutdown callback. From the HW suggestion, it's not recommended to
->   use battery as the power supply.
-> - Check all scale unit (voltage->mV, current->mA, power->milliWatt).
-> - Use the read_avail to provide the interface for attribute value list.
-> - Add comma for the last element in the const integer array.
-> - Refine each ADC label text.
-> - In read_label callback, replace snprintf to sysfs_emit.
-> 
-> ChiYuan Huang (3):
->   dt-bindings: iio: adc: Add rtq6056 adc support
->   iio: adc: Add rtq6056 support
->   Documentation: ABI: testing: rtq6056: Update ABI docs
-> 
->  Documentation/ABI/testing/sysfs-bus-iio            |  10 +
->  .../bindings/iio/adc/richtek,rtq6056.yaml          |  56 ++
->  drivers/iio/adc/Kconfig                            |  15 +
->  drivers/iio/adc/Makefile                           |   1 +
->  drivers/iio/adc/rtq6056.c                          | 663 +++++++++++++++++++++
->  5 files changed, 745 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/richtek,rtq6056.yaml
->  create mode 100644 drivers/iio/adc/rtq6056.c
-> 
+Whilst I did suggest moving this to this file, I also suggested that it was the
+wrong interface to use.  For similar cases we've used in_voltageY_sampling_frequency
+in the past because this isn't really an integration time, but rather a reflection of
+a bunch of other stuff that makes up the conversion time.  In IIO we chose a long
+time ago to use 1/conversion_time as the exposed interface == sampling_frequency
 
+So, unless there is a strong reason to do otherwise, drop the overall sampling_frequency
+attribute and use per channel ones instead.  Then update the main documentation
+to make this usecase clear. Something in the block
+https://elixir.bootlin.com/linux/latest/source/Documentation/ABI/testing/sysfs-bus-iio#L89
+like adding the in_voltageY_sampling_frequency entry to the What: list and a
+sentence at the end that says something like:
+
+"Some devices have separate controls of sampling frequency for individual channels.
+If multiple channels are enabled in a scan, then the sampling_frequency of the the
+scan may be computed from the per channel sampling_frequencies."
+
+Not something to put in the documentation, but for devices which do simultaneous sampling
+it is very unlikely we'll have per channel sampling frequencies so there isn't an
+ambiguity. The alternative we 'could' consider is to allow both overall sampling_frequency
+and per channel in_voltageY_sampling_frequency but that is a bad idea because the
+ABI (and most userspace software) assumes that more specific attributes override the
+values of more generic ones (rather than them having different meanings as would be
+the case here).
+
+Jonathan

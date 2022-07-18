@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD31578BC6
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 22:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0695578BCF
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 22:32:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235380AbiGRUaf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 16:30:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37828 "EHLO
+        id S235252AbiGRUc5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 16:32:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235287AbiGRUae (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 16:30:34 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 145C42CDD2
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 13:30:33 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id j22so23463511ejs.2
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 13:30:33 -0700 (PDT)
+        with ESMTP id S233811AbiGRUc4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 16:32:56 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A732E9FE
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 13:32:55 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id bp15so23472483ejb.6
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 13:32:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=K1hSSBlOTtPtcSfpCRVcUhp+y+jXopeVWkjrPjQTwQY=;
-        b=er6djZJSBpTZVnpQZJsMjLOXyI4r/Co+GZFQ94BZBDRQSio3RLYqz4V6i5pIZ5Uw+0
-         UBZ9ust7clgRl1Qmv1v5AtWbLNThR9AKi9oND2pFK7mdSily9VBbAWq7j/dNUrKJmJyF
-         Ysc7Kgz8+7nI5wylz/YlDzcceVR67xXn9H5PR8kkxKM/OmaQNclgTkspEsYecW1Jb4hn
-         dz7Q/6Byj0mTpObbxxSc/p7+ljx7qntlU0IBW+8p1BxAYDd2/7X9rSK7/rKEM57v9pEL
-         +wOU+S8l8hEa/qOhuwtgDxKtZ7kfpEZGWvhSsQcgDcU6nSVuktUcoX1TKtkd1O7MpBQs
-         FehQ==
+        bh=AVow+F5AyDyYSBTWDMixxqgzzT863oaZJ6tWhsfG+ug=;
+        b=o0yHiKWL+aBK0gREVKejTe79GWnlURkEYDo6NEEZHqStZsWIwFBnYLq8jxG4zNbYK7
+         6Fvdbh4d+JgDkPApjaxh7VvR2fDZ5sTQX3cxHojV54D/2Wuq680MqrOpRaEGwVNKfYNp
+         DDHhRDwbJgIfFgs04Yvp9XqOuI9h5OHu8Kax8j3/GM0xnMi2WsOf01sEqX6rpcReZeru
+         8XWPOliTkGGdcgvM5hiwsvmZyiuXl3WudbRf9qSS9vfOgNtaVino7V/1q6mCM/S8Cbv3
+         obqDMRzqgIvpzIxgWuiGw63dFlCM664Umv3q7j7LvZ+23nDfCaZ+dt1bgNMuY/XqUHwD
+         +0rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=K1hSSBlOTtPtcSfpCRVcUhp+y+jXopeVWkjrPjQTwQY=;
-        b=pa4IDffL8mK7G67g2SRHmOIlgPu3agcstVP2V+Y4lT5vqzmL7aKEfQHIf5+L3JMpHr
-         6+8wjnT+nos98bBXvIIoJxtdGqYdwmfOZEIByjcm3o3JX421C++z8kbbjM+7nzMpPPkY
-         J63oQvRzCOwntjp46zgVPF3LlUDX9JMlWxKJ3JbHPA/7bVPsU6f3/3rNo8tWCyr0bYPT
-         pJd9EU/34GD+CHKLq+egkfHgmVgh7S1GzwhVvrTvrDl3Bt9aU7xAG2niU0iAK7ivg5Me
-         XsCZ3V/jQkVWnA8CsoC2nScLAr3Nt6RIrjrmGX7xJYkHii9tRyxGRaxcMVsv41ngr3Y3
-         qoeQ==
-X-Gm-Message-State: AJIora92T7tcea1cKQhPMTDO+HZMKo/6BRALzQnRc6m+1/B2yEAr/3nf
-        gKpq9j9pCkTqh6hN/UbApfEXWaA6xsCL3pHw5QU=
-X-Google-Smtp-Source: AGRyM1uWhoo83wt8T5EctLaAhRcaiguRX4UjKzmIa5piVtlV4e9T1gxw6TfdTQUMGEtNMsiMBAdcnJZfFd1NkNkZp+o=
-X-Received: by 2002:a17:906:9b09:b0:72b:9612:d373 with SMTP id
- eo9-20020a1709069b0900b0072b9612d373mr26262125ejc.606.1658176231653; Mon, 18
- Jul 2022 13:30:31 -0700 (PDT)
+        bh=AVow+F5AyDyYSBTWDMixxqgzzT863oaZJ6tWhsfG+ug=;
+        b=bfmHbJOncYmeVHGpU9ZIGZLZWFTeYZyjQ0ipZ/Vj981060c3cAXVQyLVC9Wmwttk0V
+         8YRgEywIaWkpo1RemsS8gcT5syaJvE0T0+rAANz+BAGilVEh29DwbrI1K//k2rxMHamq
+         yIFdBYAnt6doFUOo7zCi8rLBFkYWkUTmP3qt8gtIHkNaedDsHDqvYQwiYLyr5acoWVNc
+         XTgAlXAelZhiMFBxsiMLBcY7nTpyLsCSOtNREbXM25z+i0uh6GOoZxH9egQojZIyeYsh
+         MOI1OsUZh5vy/ZMCu5K8x5JXBB+3TMWb693DTYkJUQ+PpHGjYUhekxCDn2sRIkSCqXAP
+         XY1g==
+X-Gm-Message-State: AJIora/OD4+AYdTYaOAAxh2nT9IHg3Fb1noPUWpjqFA4VXzW+26fW6Vf
+        7bX+EIuldD7vV7vodTUp9fol2q+OWDxgKxK9/4c=
+X-Google-Smtp-Source: AGRyM1tcpOZaBT8OBwOVyLCDLhYGuCKkmoRwCPCz0YctDt5P+AumbK3CLRwccAH1oCO9NzZHSCItwuBdLo6MUo4SV2Q=
+X-Received: by 2002:a17:907:1c8d:b0:6f2:eb2:1cd6 with SMTP id
+ nb13-20020a1709071c8d00b006f20eb21cd6mr26186921ejc.568.1658176374170; Mon, 18
+ Jul 2022 13:32:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220718194258.181738-1-ukleinek@debian.org> <20220718194258.181738-3-ukleinek@debian.org>
-In-Reply-To: <20220718194258.181738-3-ukleinek@debian.org>
+ <CAHp75Vd983XT=03HMAdJmaHTR4YK-=XmZnYd+gF0SY90ywR2ug@mail.gmail.com>
+In-Reply-To: <CAHp75Vd983XT=03HMAdJmaHTR4YK-=XmZnYd+gF0SY90ywR2ug@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 18 Jul 2022 22:29:54 +0200
-Message-ID: <CAHp75Vd983XT=03HMAdJmaHTR4YK-=XmZnYd+gF0SY90ywR2ug@mail.gmail.com>
+Date:   Mon, 18 Jul 2022 22:32:17 +0200
+Message-ID: <CAHp75VdC1eW-KQmQ3EXEh70k4XDQ1HoO9m5dEY9=VGKNN2K-oA@mail.gmail.com>
 Subject: Re: [PATCH v2 3/3] iio: humidity: dht11: Use dev_err_probe consistently
 To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@debian.org>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -69,27 +70,21 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 18, 2022 at 9:51 PM Uwe Kleine-K=C3=B6nig <ukleinek@debian.org>=
- wrote:
->
-> All but one error path use dev_err_probe() to emit a message. Use the sam=
-e
-> incarnation for the remaining exit point for consistency.
+On Mon, Jul 18, 2022 at 10:29 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+> On Mon, Jul 18, 2022 at 9:51 PM Uwe Kleine-K=C3=B6nig <ukleinek@debian.or=
+g> wrote:
 
 ...
 
-> +       if (dht11->irq < 0)
-> +               return dev_err_probe(dev, -EINVAL, "GPIO %d has no interr=
-upt\n",
-> +                                    desc_to_gpio(dht11->gpiod));
+> And to be honest I don't like this desc_to_gpio() usage. It's not for
+> board files, it will bring confusing information to the user. What is
+> important is the name of GPIO, i.o.w. "connection id".
 
-Oh, what I missed is the error code shadowing. Can't we propagate the
-real error code?
--EINVAL --> dht11->irq
-
-And to be honest I don't like this desc_to_gpio() usage. It's not for
-board files, it will bring confusing information to the user. What is
-important is the name of GPIO, i.o.w. "connection id".
+Yes, I have noticed that this is in the original code, just if you
+want to make it better at the same time. Not sure if Jonathan wants
+all these in the single patch again, however it will touch almost the
+same line in all (three ?).
 
 --=20
 With Best Regards,

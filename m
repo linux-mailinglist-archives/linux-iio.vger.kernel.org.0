@@ -2,126 +2,203 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 831C65780AB
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 13:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 855AF5780CB
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 13:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233791AbiGRLY5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 07:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48832 "EHLO
+        id S233957AbiGRLcd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 07:32:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233294AbiGRLY4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 07:24:56 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9ED219B;
-        Mon, 18 Jul 2022 04:24:53 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 9F14F5FD2C;
-        Mon, 18 Jul 2022 14:24:50 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1658143490;
-        bh=wGEeIQWWGtUa/UelB/KX1+Ok9OTnuuq+f1pYAYE6qF8=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=htKR2Puy5cXqexK4g/yiTKmkgj/VY4lXUoTfY47f6egQQTBzXefQVDmQ44zcdCq0A
-         VFHUBQhbWb79fNN9ILbwaM6IY/oRGo0HZdSnsXacS/GkzpHv4hND6hNC7VmFsAD+x0
-         XdgPGsM+CnC0j27P6WN83LYg9Y5cHApd3BbIDRjeDG0c+P6ZVqUNzJJgJbw14sVehA
-         V5W2iX+oD1rusI23T28nXa4YzN1YzTcssDMCUuP112vB5zQZTe5VyBHm2Y13YJMCwR
-         7IRIJtcnlCmAwTja6zGKas1CuScUy38JXjJaQmTTdwgXknJrnxPnss/G72ikc8uyI5
-         rov8Z1qby6D8A==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon, 18 Jul 2022 14:24:50 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Topic: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
- allocate() stage
-Thread-Index: AQHYdd/Pt2zXEFx7c0Or/RCut5+rEK0/GLKAgCpM/oCAEyDEAIAErDEAgALhSAA=
-Date:   Mon, 18 Jul 2022 11:23:59 +0000
-Message-ID: <20220718112446.lucl7omialqri7yv@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
- <20220604145955.2a1108ca@jic23-huawei>
- <20220701115823.vywhifktaxcr72cc@CAB-WSD-L081021.sigma.sbrf.ru>
- <20220713170436.32330fa6@jic23-huawei> <20220716162556.2e919bf7@jic23-huawei>
-In-Reply-To: <20220716162556.2e919bf7@jic23-huawei>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <AF8CF10F72894E429D9BAA345C244FE0@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S232593AbiGRLcc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 07:32:32 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDD71A802;
+        Mon, 18 Jul 2022 04:32:30 -0700 (PDT)
+Received: (Authenticated sender: contact@artur-rojek.eu)
+        by mail.gandi.net (Postfix) with ESMTPA id 489671BF204;
+        Mon, 18 Jul 2022 11:32:27 +0000 (UTC)
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/07/18 07:04:00 #19921665
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Date:   Mon, 18 Jul 2022 13:32:27 +0200
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Chris Morgan <macroalpha82@gmail.com>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, maccraft123mc@gmail.com,
+        heiko@sntech.de, krzysztof.kozlowski+dt@linaro.org,
+        robh+dt@kernel.org, dmitry.torokhov@gmail.com,
+        paul@crapouillou.net, linux-iio@vger.kernel.org,
+        Chris Morgan <macromorgan@hotmail.com>
+Subject: Re: [PATCH v7 2/3] Input: adc-joystick - Add polled input device
+ support
+In-Reply-To: <20220716165808.70c54d7d@jic23-huawei>
+References: <20220705190354.69263-1-macromorgan@hotmail.com>
+ <20220705190354.69263-3-macromorgan@hotmail.com>
+ <20220716165808.70c54d7d@jic23-huawei>
+Message-ID: <bb7e12b61a56b61770def053ce42bdd9@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
-
-On Sat, Jul 16, 2022 at 04:25:56PM +0100, Jonathan Cameron wrote:
-> On Wed, 13 Jul 2022 17:04:36 +0100
-> Jonathan Cameron <jic23@kernel.org> wrote:
->=20
-> > On Fri, 1 Jul 2022 11:59:59 +0000
-> > Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
-> >=20
-> > > Hello Jonathan,
-> > >=20
-> > > This patch has been on the mailing list for one month already, but no
-> > > comments from other IIO reviewers. What do you think we should do wit=
-h it?
-> > > Is it a helpful change or not? =20
-> >=20
-> > Given I'm way behind and timing in cycle, I'm probably going to kick th=
-is
-> > back to start of the next cycle. Sorry for delay,
-> Applied to the togreg branch of iio.git.
->=20
-> I'm unlikely to do another pull request this cycle unless there is a dela=
-y in
-> the release for some reason (and probably not even if there is), so this
-> is queued up for next cycle.  As such it'll sit exposed only in the testi=
-ng
-> branch until I rebase on rc1.
->=20
+On 2022-07-16 17:58, Jonathan Cameron wrote:
+> On Tue,  5 Jul 2022 14:03:53 -0500
+> Chris Morgan <macroalpha82@gmail.com> wrote:
+> 
+>> From: Chris Morgan <macroalpha82@gmail.com>
+>> 
+>> Add polled input device support to the adc-joystick driver. This is
+>> useful for devices which do not have hardware capable triggers on
+>> their SARADC. Code modified from adc-joystick.c changes made by Maya
+>> Matuszczyk.
+>> 
+>> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+>> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> 
+> Hi.
+> 
+> One comment inline on improving the error handling slightly.
+> 
 > Thanks,
->=20
+> 
 > Jonathan
->=20
+> 
+>> ---
+>>  drivers/input/joystick/adc-joystick.c | 51 
+>> +++++++++++++++++++++------
+>>  1 file changed, 40 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/drivers/input/joystick/adc-joystick.c 
+>> b/drivers/input/joystick/adc-joystick.c
+>> index 78ebca7d400a..2f4bd12d6344 100644
+>> --- a/drivers/input/joystick/adc-joystick.c
+>> +++ b/drivers/input/joystick/adc-joystick.c
+>> @@ -26,8 +26,23 @@ struct adc_joystick {
+>>  	struct adc_joystick_axis *axes;
+>>  	struct iio_channel *chans;
+>>  	int num_chans;
+>> +	bool polled;
+>>  };
+>> 
+>> +static void adc_joystick_poll(struct input_dev *input)
+>> +{
+>> +	struct adc_joystick *joy = input_get_drvdata(input);
+>> +	int i, val, ret;
+>> +
+>> +	for (i = 0; i < joy->num_chans; i++) {
+>> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
+>> +		if (ret < 0)
+>> +			return;
+>> +		input_report_abs(input, joy->axes[i].code, val);
+>> +	}
+>> +	input_sync(input);
+>> +}
+>> +
+>>  static int adc_joystick_handle(const void *data, void *private)
+>>  {
+>>  	struct adc_joystick *joy = private;
+>> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct 
+>> platform_device *pdev)
+>>  	int error;
+>>  	int bits;
+>>  	int i;
+>> +	unsigned int poll_interval;
+>> 
+>>  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+>>  	if (!joy)
+>> @@ -215,8 +231,17 @@ static int adc_joystick_probe(struct 
+>> platform_device *pdev)
+>>  	joy->input = input;
+>>  	input->name = pdev->name;
+>>  	input->id.bustype = BUS_HOST;
+>> -	input->open = adc_joystick_open;
+>> -	input->close = adc_joystick_close;
+>> +
+>> +	joy->polled = !device_property_read_u32(dev, "poll-interval",
+>> +						&poll_interval);
+> Slight preference for an explicit check on presence of property
+> 
+> 	if (device_property_present(dev, "poll-interval")) {
+> 		error = device_property_read_u32();
+> 		if (error)
+> 			return error;
+> 		input_setup_polling(input, adc_joystick_poll);
+> 		input_set_poll_interval(input, poll_interval);
+> 	} else {
+> 		input->open = adc_joystick_open;
+> 		input->close = adc_joystick_close;
+> 	}
+> 
+> That way we will return an error if there is a malformed property.
+I'm fine with that, just let's keep the polling setup logic outside the 
+DT parsing code, like it was in v7:
+```
+	if (device_property_present(dev, "poll-interval")) {
+		error = device_property_read_u32(dev, "poll-interval",
+						 &poll_interval);
+		if (error)
+			return error;
+		joy->polled = true;
+	}
 
-Thank you for the patch applied.
-I have one question about the previous already applied patchset
+	if (joy->polled) {
+		input_setup_polling(input, adc_joystick_poll);
+		input_set_poll_interval(input, poll_interval);
+	} else {
+		input->open = adc_joystick_open;
+		input->close = adc_joystick_close;
+	}
 
-https://lore.kernel.org/all/20220607183907.20017-1-ddrokosov@sberdevices.ru=
-/
+```
 
-I see this patchset already merged to linux-next more than a month ago.
-But it's still not available in the linux stable branch. Could you please
-explain what's the problem with this one? Was some bug found during
-linux-next testing stage? Should I fix something?
-
-Appreciate any help to understand what's I missing.
-
---=20
-Thank you,
-Dmitry=
+Cheers,
+Artur
+> 
+>> +
+>> +	if (joy->polled) {
+>> +		input_setup_polling(input, adc_joystick_poll);
+>> +		input_set_poll_interval(input, poll_interval);
+>> +	} else {
+>> +		input->open = adc_joystick_open;
+>> +		input->close = adc_joystick_close;
+>> +	}
+>> 
+>>  	error = adc_joystick_set_axes(dev, joy);
+>>  	if (error)
+>> @@ -229,16 +254,20 @@ static int adc_joystick_probe(struct 
+>> platform_device *pdev)
+>>  		return error;
+>>  	}
+>> 
+>> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+>> -	if (IS_ERR(joy->buffer)) {
+>> -		dev_err(dev, "Unable to allocate callback buffer\n");
+>> -		return PTR_ERR(joy->buffer);
+>> -	}
+>> +	if (!joy->polled) {
+>> +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
+>> +						     joy);
+>> +		if (IS_ERR(joy->buffer)) {
+>> +			dev_err(dev, "Unable to allocate callback buffer\n");
+>> +			return PTR_ERR(joy->buffer);
+>> +		}
+>> 
+>> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, 
+>> joy->buffer);
+>> -	if (error)  {
+>> -		dev_err(dev, "Unable to add action\n");
+>> -		return error;
+>> +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
+>> +						 joy->buffer);
+>> +		if (error)  {
+>> +			dev_err(dev, "Unable to add action\n");
+>> +			return error;
+>> +		}
+>>  	}
+>> 
+>>  	return 0;

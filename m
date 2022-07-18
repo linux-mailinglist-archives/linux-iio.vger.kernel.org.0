@@ -2,37 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 726D8578422
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 15:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F01578461
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 15:53:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235306AbiGRNpr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 09:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40786 "EHLO
+        id S235568AbiGRNxi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 09:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235240AbiGRNpm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 09:45:42 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F075624963;
-        Mon, 18 Jul 2022 06:45:37 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4FAC46601A60;
-        Mon, 18 Jul 2022 14:45:35 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1658151936;
-        bh=EXKnw2OAVh4UgVY6zw8D6FiE6rIcc5hXLWhj8edCwEQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=b7IVnsGHPMh5g88WN/m/HeqRFgQ7jYT5LBJjdDNG5gehWg8aValkTW6urTd3VMSVD
-         RNsQuIWp7FLWTitkrc9L6toHnrb0Y3MXddAwe1GPuqxN80ybV9uKrZyck+6jG83cj4
-         sMjRoukjzfpVhrMF6glrxJrBe00cyb7wPdYxLnpc//4lsFosF5T8bCTDbnJEiG+Bcr
-         J1SQMhz1ZwbABKqvIlAhlZDMbZo1cx18XuWsJVrxBwvPLODfj3yWLLQ0Ta3NvKGMRy
-         VClcdoIA3/H/wNzZu1gCe2blZCzc8sP7DldFzpOIrO4TSM9mx1Fm8ZFIbI70cCPGLX
-         ZGiNNM1nI8f/A==
-Message-ID: <512118d1-c571-94fd-4fdf-16fe3995f592@collabora.com>
-Date:   Mon, 18 Jul 2022 15:45:31 +0200
+        with ESMTP id S235565AbiGRNxh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 09:53:37 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4C927FDB
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 06:53:34 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id n18so19464806lfq.1
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 06:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=6/DcKl1792dtFraiyvZ692Ib84+Yi+4Ulxn0Vh9//vc=;
+        b=adf7fKMxBuELaUr2WN93cCfzLwvAYLCSxArs7AO+ItT6SAVQJjfqXVZ6xkpW0xpkKo
+         On5VqFStvsWGBQOGKJZQ7dLaBgOWAEZQ1ln9tRYix8ijrghu8R9X0wF26Iemn7lRv1UR
+         JU4jQ6RpcMZ1YJ3iqD98dn0Gj9oL4LkJVchdcAXwLw3UmGrv38tllSQatCxZyLdY/TFG
+         XlzM91z8J7cQNV1JdadJSE/R1I5akBQLQWQVvSCZ1N5YESUD32HcFx4TGEpLgefyGFoP
+         dLOr+pELGuaDGzuiqcBfzujdTZh67+MpQOpx73gRJe4YjU9RNocEz/kTAhi9aEUaDcFw
+         c45g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=6/DcKl1792dtFraiyvZ692Ib84+Yi+4Ulxn0Vh9//vc=;
+        b=bHJeZwdCZ9wZqlw7w7kqd6Kkz3Dx+p/jX1xnKJXdRihM3TFjqIdoklOkCQK9YqDfbR
+         SyexjH7/kYJL3y+VHDRT7ZvT/z4WeKxxXFpwXQceqctmYixovRXmIERdvj6jDl20HOIC
+         aloOJiYRolkb2c+YRif4T0Gohit16guKyJSPWTqysr4gErLSNkE5u7IpAqG6mSkGVFx8
+         CE2M7v8ibqQnRCvbVSuF/qlYpQ5uidHx7hNJFSqAqtaEuFuZIVgMOWHtW3P0lG8foQ3f
+         S2bDu8vAty2xsVfpvbNtc5uqHknxx61cYZXTshDJo26zf+8c8Lob/RTvIBcUyQc+giE9
+         Q6IA==
+X-Gm-Message-State: AJIora+27NgTIOeeU4PaLnOR0j9h2BZwy/ZvUi9wbp+euaVk4SZS758D
+        y4sRAbbS9TksV+Zw6QNhFLX3GhWc6NxRlhWk
+X-Google-Smtp-Source: AGRyM1vlH8y6dxxb5A3iLBYGqYkrcDCTAdlap219dHfRtUb7BZ/CdexwgBbf1qAUdAng6pNUPijgsQ==
+X-Received: by 2002:a05:6512:3d28:b0:489:fd63:f9c9 with SMTP id d40-20020a0565123d2800b00489fd63f9c9mr14550160lfv.96.1658152413217;
+        Mon, 18 Jul 2022 06:53:33 -0700 (PDT)
+Received: from [192.168.115.193] (89-162-31-138.fiber.signal.no. [89.162.31.138])
+        by smtp.gmail.com with ESMTPSA id c24-20020ac25f78000000b00477c164293csm2601359lfc.79.2022.07.18.06.53.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Jul 2022 06:53:32 -0700 (PDT)
+Message-ID: <f3082ae0-4d1d-e5a0-909a-5daa798ab7fe@linaro.org>
+Date:   Mon, 18 Jul 2022 15:53:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
@@ -40,7 +57,7 @@ Subject: Re: [PATCH 1/1] dt-bindings: iio: adc: add compatible for mt8188
 Content-Language: en-US
 To:     Hui Liu <hui.liu@mediatek.com>, jic23@kernel.org, lars@metafoo.de,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com
 Cc:     srv_heupstream@mediatek.com, zhiyong.tao@mediatek.com,
         guodong.liu@mediatek.com, johnson.wang@mediatek.com,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
@@ -48,43 +65,27 @@ Cc:     srv_heupstream@mediatek.com, zhiyong.tao@mediatek.com,
         linux-mediatek@lists.infradead.org
 References: <20220718123930.24373-1-hui.liu@mediatek.com>
  <20220718123930.24373-2-hui.liu@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 In-Reply-To: <20220718123930.24373-2-hui.liu@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 18/07/22 14:39, Hui Liu ha scritto:
+On 18/07/2022 14:39, Hui Liu wrote:
 > From: "Hui.Liu" <hui.liu@mediatek.com>
 > 
 > This commit adds MediaTek mt8188 auxadc in dt-binding documentation.
-> 
-> Signed-off-by: Hui.Liu <hui.liu@mediatek.com>
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Do not use "This commit/patch".
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
 
-> ---
->   .../devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml      | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> index 65581ad4b816..7f79a06e76f5 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> @@ -35,6 +35,7 @@ properties:
->             - enum:
->                 - mediatek,mt8183-auxadc
->                 - mediatek,mt8186-auxadc
-> +              - mediatek,mt8188-auxadc
->                 - mediatek,mt8195-auxadc
->                 - mediatek,mt8516-auxadc
->             - const: mediatek,mt8173-auxadc
 
+Best regards,
+Krzysztof

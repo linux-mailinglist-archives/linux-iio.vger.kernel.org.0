@@ -2,495 +2,272 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC34A5779BB
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 05:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E36B2577A57
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 07:22:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbiGRDYf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 17 Jul 2022 23:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52616 "EHLO
+        id S230131AbiGRFV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 01:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbiGRDYe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 17 Jul 2022 23:24:34 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4B2962D5;
-        Sun, 17 Jul 2022 20:24:32 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id bk26so15168713wrb.11;
-        Sun, 17 Jul 2022 20:24:32 -0700 (PDT)
+        with ESMTP id S229680AbiGRFV6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 01:21:58 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE9166440;
+        Sun, 17 Jul 2022 22:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1658121717; x=1689657717;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=nF2WyA4uet9smkd1LZYi12Qi8hrJQnoAFHYxJDF3S1w=;
+  b=138kNqumoqkYGp/T5a5ezMftfiAda0WljjJR6vI7YdYkGxiNsgCk7mbO
+   oCKYSej7W2i7h7t0xQw7Gmr4F9D/Kd3LmIeGLEfGkUfWNTYF9sMAYG1wF
+   iVwVqMWHfMoDAOWxUmMGp8YPZBeOGqVX6DE5bMiYSvLyLe8G8MpBvpzIZ
+   dW+/IKGUGPU1q3KjPWxgh9lKTXY1Eu31Ih8zeMYbp+q9Xg12IgSv3LKPm
+   37thgzc5ojNFDx5xVXIE6spxQ5edSPgAbUjtaL9XVQPBbf1zeqcZ8CTS7
+   8OZBNrw0Tdr0FThIHn3WKYEUD9I5g9QfSE1AOwBLHdJs8HfixhsTtFnI7
+   A==;
+X-IronPort-AV: E=Sophos;i="5.92,280,1650956400"; 
+   d="scan'208";a="168251537"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 17 Jul 2022 22:21:54 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17; Sun, 17 Jul 2022 22:21:53 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.17 via Frontend Transport; Sun, 17 Jul 2022 22:21:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=XVDaXktZTFKmaS1Q7IV7kB1OSekMn3Y54vTkXB8uSblS/4q814cKgKKPTe9Qrbw4ccZj0LbdrA1Tz4+ksnDJxfhqHsBtKvcT+gVs6+gGrvVFbzV6LeVBlQlAji6isRC7ryog9uDKjWeZ1mW4HGHK7SJ5D4qmjG49eepUTl0KxppX8OTC60UPFhfMyOG5Q2KH3WYZwO3D3p1c/UtJ4mMn8qA8T5f+Mw1maoMd0E027iL31Q84f3XXw7Bc1hms1bsnbiaNlQnhflEGFX0lNGgNvTZwf2hMFNkCKGi2fa9gMmtGRKuIsdx9DSWlaTroUJKkU9zOHKDxKnb1k0IaagDdAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nF2WyA4uet9smkd1LZYi12Qi8hrJQnoAFHYxJDF3S1w=;
+ b=ZATsS2nIDE6qwSB7fNeqJ7qj4Cuo//Kj3AaOP1C4Zs0JBUDxWH4NVcTZV/PuInoux9sD9eAKVDMKXrXO+48CLWxHENfIzWCpwhKqrE45MokFCdOHFi7moLsETeeYDL2Lo7EGgtQJSkskMwpjZmBS6vN10Y/2R+D5TJKGss1S34BlJM1a6+YDlXtxebZecfTLBC1lImXESXjWbPg2YjCdLihwUBhYnOE4isWZHsnTMYgTqgU2ML5h/wxR0kccRfaOpyn9WN6E/sRcXpY4Fb1T5GBuIoHzzdxfeiiaGqWFpahpN4amJt45D6befL8/DW47W0VKdWmiAWVm5c4X8o+JTg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ExHD1YWVI7dhzqB7OPxXxafdaqH/UG07zGnDnS43790=;
-        b=ON0mAlDBieFFfJn8KQ59K/FhCzwDKPe+22JhmRQvoaRG/RN8ldWQwc8CnBhitcM6C5
-         TZH5pYH6xG0tv3vbM2Co2mkp7S0BRLyNQBy5siv1PVnhcjer9dfymrdkKVYRKLhGrKRe
-         EK60U8LL8nJbf3YU6Didr7UuuA3JDkVuZn1K3VGgCH1UAbA+CllM0unwwjOzToIirfJM
-         GCVeKu/HTK7mPjm0DbQB9tPmoCrBPjlXjaWKoZwH4IWzf4Jpjr8W6Hc38n74soXBZw9+
-         sTPlJxva7hr08qlKCxUBJa4HHxOboLiUQeayEcTqPeDBSxUKMup8dX+sJLlXER7aHHQE
-         sIFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ExHD1YWVI7dhzqB7OPxXxafdaqH/UG07zGnDnS43790=;
-        b=eWZlzaNP/j5FCzU9tiHeurjxAQIEBWGHUfaphkxxqlnzjQLxCdQQ+CT4uG//5mEqYG
-         leXMigieZ9UVo8C0xCqoSu4yIXjg+FGE6sJ51/4JwbmsDGNM8eu8o1EUmu5lCnvsPeXW
-         Qfbpx7ZItSmc52xxjqjP1SiOeBP727PI4gjCmFoG0Sbg38by6T45i8B2tYiUFGo8avAf
-         awFvliVoZDpAk0SUoWW9FYKHkKJOvUWQwdX4tLFzsqy81hwVPW4OsYkJb0EuhlH73M4K
-         c1CKsMdYomnUxYOS33YwRCgEgUkisIQZn64GOq4lL/5vYxXE7rjN5uK/yTq3w1nSyF8U
-         bT1w==
-X-Gm-Message-State: AJIora9LxeeqPbGNhusQCWy3d2yWdO+O33yYzxDi4JbE3X7zcGlOvr9z
-        6LjZlXlP4dg2k4LtH3hNVrOmzLlFgh7AXl8c7nrTS1RA
-X-Google-Smtp-Source: AGRyM1vwdJ99q9td66cfd6VghxwG49B9WCer6Ob9/Z7AzfsehlfrTehkfsDBMMeAQy/4hLrZE456SNnYz3h0AMSSuoE=
-X-Received: by 2002:adf:f043:0:b0:21d:6a90:f3e6 with SMTP id
- t3-20020adff043000000b0021d6a90f3e6mr21215994wro.277.1658114671267; Sun, 17
- Jul 2022 20:24:31 -0700 (PDT)
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nF2WyA4uet9smkd1LZYi12Qi8hrJQnoAFHYxJDF3S1w=;
+ b=rsCtHlvNjoQXiq3aCLmFinzLFNAgzyhBVEv9+jEYmM+vIjAkdQxObTH/jeB/9ElS40CBmUw1NnCA6a6KGKr19ZNgA42H6P7L+Zoay4RViO9e6ini1bmOWCyHkm7bD6V1o6eKO2bNUuCKE4yMjlXOkSNDD92GYl3DTSeWNtSNg3M=
+Received: from BN6PR11MB1953.namprd11.prod.outlook.com (2603:10b6:404:105::14)
+ by MWHPR11MB1773.namprd11.prod.outlook.com (2603:10b6:300:10f::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.14; Mon, 18 Jul
+ 2022 05:21:48 +0000
+Received: from BN6PR11MB1953.namprd11.prod.outlook.com
+ ([fe80::5c8c:c31f:454d:824c]) by BN6PR11MB1953.namprd11.prod.outlook.com
+ ([fe80::5c8c:c31f:454d:824c%8]) with mapi id 15.20.5438.023; Mon, 18 Jul 2022
+ 05:21:48 +0000
+From:   <Claudiu.Beznea@microchip.com>
+To:     <nuno.sa@analog.com>, <openbmc@lists.ozlabs.org>,
+        <linux-imx@nxp.com>, <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-iio@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linux-renesas-soc@vger.kernel.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <chrome-platform@lists.linux.dev>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        <linux-arm-msm@vger.kernel.org>
+CC:     <gwendal@chromium.org>, <jic23@kernel.org>, <sravanhome@gmail.com>,
+        <tmaimon77@gmail.com>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <lorenzo@kernel.org>,
+        <festevam@gmail.com>, <shawnguo@kernel.org>,
+        <olivier.moysan@foss.st.com>, <tali.perry1@gmail.com>,
+        <thara.gopinath@linaro.org>, <bjorn.andersson@linaro.org>,
+        <arnd@arndb.de>, <benjaminfair@google.com>,
+        <Nicolas.Ferre@microchip.com>, <rafael@kernel.org>,
+        <venture@google.com>, <kernel@pengutronix.de>,
+        <fabrice.gasnier@foss.st.com>, <daniel.lezcano@linaro.org>,
+        <bleung@chromium.org>, <yuenn@google.com>,
+        <miquel.raynal@bootlin.com>, <alexandre.belloni@bootlin.com>,
+        <rui.zhang@intel.com>, <linus.walleij@linaro.org>,
+        <cbranchereau@gmail.com>, <cai.huoqing@linux.dev>,
+        <avifishman70@gmail.com>, <Eugen.Hristev@microchip.com>,
+        <matthias.bgg@gmail.com>, <s.hauer@pengutronix.de>,
+        <lars@metafoo.de>, <andy.shevchenko@gmail.com>,
+        <groeck@chromium.org>, <paul@crapouillou.net>, <agross@kernel.org>,
+        <amitk@kernel.org>, <Michael.Hennerich@analog.com>,
+        <haibo.chen@nxp.com>, <quic_jprakash@quicinc.com>
+Subject: Re: [PATCH v3 09/15] iio: adc: at91-sama5d2_adc: convert to device
+ properties
+Thread-Topic: [PATCH v3 09/15] iio: adc: at91-sama5d2_adc: convert to device
+ properties
+Thread-Index: AQHYmmZH+bXCt9SIWESU/qLNP3LjdQ==
+Date:   Mon, 18 Jul 2022 05:21:47 +0000
+Message-ID: <ada4c2a2-e13d-77aa-f489-7cc0a063adbd@microchip.com>
+References: <20220715122903.332535-1-nuno.sa@analog.com>
+ <20220715122903.332535-10-nuno.sa@analog.com>
+In-Reply-To: <20220715122903.332535-10-nuno.sa@analog.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f3894d75-77c9-4623-3755-08da687d69a7
+x-ms-traffictypediagnostic: MWHPR11MB1773:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 7gUfF/7KnEwUrbi/wYeqqxZHY35VynAchdS/rYkwVJtGdZ4D7QEspRQc5mbSOwGFZlAIAm4kzEP2uEFJik9ING2F5DjWXBep+ppzBUwTOM/LGqEAcgXQgSEEFbarmsppud7Z7iIFK9HWbO7bFDzll2HiZyiJbUvfK85ldzuypYuGc81lnDHBA+GgLFzok9Ke8mGIa/ncUtg4JqWyMfO4TOOLJ780z5VA1bZGZfLWkafyPWg7WY/I4DvIyP1zeZsqdyxlpNFc2c7z0Qa76END5Nk7QMJW20x3fyfaT4/snEHGHDiDWZvPZ7nz3t9uNUUwAHRpDJvsS1vSCwxs0IBceIemHhCAXsYrSvw15u0NEmDxIS/7nI+NOXtGKL3Er+11/cvLfa9JfVLxpEoqRqU9z1ZERMJaGY1AzaWQhygCOLA6AeOgha6YNiBxpQk8WHZ2sXmUF4pPIsmIKI9yPeyFZPNnSsd7tsYHwFfLEb6BYXiLQ9PR0T6zYxFlvutwKhYNorF/grNox8vj8/KDvvQqK1wY0AnG+Y4wHa+K0hom+7LmlNkysIWkFCe9m1zVpZCD/UAfCQD+GuhgEOXxPgBGV2JCqcghFPmbsIoN0ZQKA+BI4WeuC1+GTmO5KjArCokNHVpr1OsPX3393C7eP2DnqYZ2NWwJc4BLj+lZ3OThnpGBasInaqx/92oglSEWglLn7uVhn5aDK7L2xs2p+ijPdBXSQ2JwiMXTAQBlc+ymyw/Znh4k6w5nZvzQ2wn99mlUhJIKGr74vBpar/vm1+XCQxqzIwyNNycXgGTqzkutI2jXJ34Qod02QF/MvkT6kC8PilmDIlix1oa+LFCSTHZwN5qOcVWF6jhR/ftFVfjUUKTf8GsII45GWdAx0R0jZNHtY1xOoPeIlIfrTEDZNiQ/Ag==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB1953.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(346002)(136003)(396003)(39860400002)(376002)(478600001)(5660300002)(31696002)(8936002)(83380400001)(41300700001)(86362001)(6486002)(2906002)(6506007)(2616005)(26005)(6512007)(7366002)(7406005)(186003)(7416002)(53546011)(38100700002)(31686004)(4326008)(36756003)(91956017)(64756008)(66446008)(66476007)(66556008)(76116006)(66946007)(122000001)(110136005)(45080400002)(921005)(316002)(8676002)(54906003)(71200400001)(38070700005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UEN0dzlRbVoyOCs0M2F1VDdjZm5TQWhvQnY5T1RNMHF0c09OYjY3MjMvaCtG?=
+ =?utf-8?B?RXlpNnkwVkRsYk00WVMrcGJJNjJSL1RRQUI0Y2hZMWl6ZDhLc0J1K3UvdDBo?=
+ =?utf-8?B?NmNKVjFlRzRyeXUyMkJDNEh4NmRVUTVFN3djaUZQdzdYYlJZN1o0RWpzamNr?=
+ =?utf-8?B?VitudWJmVjVOU0xOT0RvUGo2c2pmL21laFJxY0phdXQwa3NaNGx5Wkg5bmRW?=
+ =?utf-8?B?aWF6QjAxd2prYWU2eXJZRWkxUG1uVW5UNjdPMHE0NEVuenhLVVdRaVQvM0k3?=
+ =?utf-8?B?bkRmSEFSNVRuZ1BOZEtoNFV4eEpyU3ZXRzdIUHRlQWxJc2s1YUFVbm4xT1U5?=
+ =?utf-8?B?NVhHY2xlcGdOUzFUdklxQXM2MkR6Z1dCNzFEZ1FPMFc5cmhGNTJKNFJvSHU5?=
+ =?utf-8?B?QUhZV2lHaHRVWmtwZE9XT3dvZFJMRW9mTmtHU0xGbFY4MDVVckNwdVNZYWZs?=
+ =?utf-8?B?R1d3Vkd5eHBMVjlnbWdmdXpFN2hYaUdOaWxXUHJuWkJMVlhmQTNZYkpyOXgz?=
+ =?utf-8?B?TXdqQlVvUGpNOXo4Zk02S2NOR3ArU1Yxb0kvR0tGSHdZUkdnZmt6dFcyT21a?=
+ =?utf-8?B?THhDSGZEdmVHbk0zQUVheW1YZlJhdXNYVUhrYjVURjZtMnRIMlA1cmFYTHl6?=
+ =?utf-8?B?Q3NwRE15bW03OE50b1ozOTEwam5lZW51TGtLOW4xQ0FkcVU5WE1Pdjh5dWdT?=
+ =?utf-8?B?NzAydTZvZjJNU01Uc3NHSGxFL0xISHN1a0U2UWc3ZjBZNGxVaWZzMFR6RlB6?=
+ =?utf-8?B?VUJYVGd1Z1dzMmNCZ1ZMUnRvcEtrQloxQzhZQWdVV2FhMjVBMmpFUnRTSWh6?=
+ =?utf-8?B?ei9uU2JTZnR3SnZzM05hUzBaanlPVXY2Q3M5Z3FxVTg1UU4zSmFnMWtiK0p1?=
+ =?utf-8?B?ZTB3eFFsaXlYbjF4dWVKci9BcEdNY29oUmwwMFp2Mm5iYXRPVDNRMm9wWi9C?=
+ =?utf-8?B?aG5UNHNXU1lZdUNBUXk4eWdNY3pGaHo5a0k2Z3NqSHVkRHU4V1VNb1NDVktj?=
+ =?utf-8?B?UHN2c0VKcVdtMU11c1lKSWU2dXVINzRDeTZmRW9ROFRmZTF5RCtvYXJiOFNZ?=
+ =?utf-8?B?ZTBUcUkwZm5NNzl3WjB0WUlyMGVCQ0lOaU9wRUc5b3FjUDJnWmE1TDVPbnlY?=
+ =?utf-8?B?bTVXQnBTaHhGMUI0UHZHTi9RT05ETDhZNEZyMjFRUElLbHUwTWVKSUwybnRE?=
+ =?utf-8?B?TGFHYmxSYklZcWJOWnIwQmtqWk1kcTBBMjZlYU1KVzdvSzF6MERpRVk1Z3I0?=
+ =?utf-8?B?REhOUTgya1dmTnF2L0VMM2xJd2R4TFdMMzBReDlLMTUxbm5aLzBlZ3IvZEdY?=
+ =?utf-8?B?TGlYU1FUb0ppZHdNUHNYWWRIUUNNYUtFd1A3ZXd6b21PdVc0SkhKSGF3U0s5?=
+ =?utf-8?B?OU5ZYmZURkNRaFNtR0VFNUtrSk9KYmRaazF1S0RLSisxYTZzK0ZRTWNPRTVK?=
+ =?utf-8?B?NjNlUy9DSFN0YWw4TUk2UStRSGw0RWxPbTZZbHZJbEJoZ1ZGdjJBYi8vZnJM?=
+ =?utf-8?B?QlVPY1oveTJiVWo4V05kVDNFRHp0ekFFQVlqUUQ0UDJ6U1YzVktMWHU4TlJT?=
+ =?utf-8?B?Q09lMVZKdXJheU9UYTVOQnQvS2VlaU40bDV4UERkRDIxR1FrMkpTREhEUlhI?=
+ =?utf-8?B?M3VVNE41ZHovb1kvM1N1cWhHR0FOTXBvZW1oQ2Qrbm9tTTdBTkp6S2k4ZjND?=
+ =?utf-8?B?b3R5Y1dleXlabWJmd1kvT3YzZFlLT0YrcHNVM3VJQW5ZMW15THlqMy9iS1I0?=
+ =?utf-8?B?SzJWUTFKM1FWWUNWYVFkWElGbm82cjhBT0dta2RpWXM4RUtRNXpJZ0NpTktN?=
+ =?utf-8?B?aTRjYklqcXRiNTJKaEUwV1FZMzUwZ0VtdU93T3M0QmNiaTZ3Ni9XQTdkSnlk?=
+ =?utf-8?B?Yis3RkIvUWdRaUdkZENsL2x3bTZ0akt2ZytEVk9xei9ydFh0SFJKaVZ4YS9j?=
+ =?utf-8?B?OUl3SkZ4cmtneXltaStlY3hzSCtnNGFpa203K3BTNTdET1hyamUwS1dFOTZI?=
+ =?utf-8?B?VWlwZFB2eTVMMkorOE5UTitjcWtxVXJSMUpnK2swMU1iZiszc2pwQlR1cHN6?=
+ =?utf-8?B?T0RTZGE0UE5IZ0hadjlHRnYwNnBhWHlpbWJTZ2xUOWZzYWJLYUxSeGxra0Er?=
+ =?utf-8?B?KzQzTTd3V3kzWklQRnFoY1lxS0JtMXR0Y1pHbTFEN0dneFFxYkZlaXZsUVhI?=
+ =?utf-8?B?WGc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <00A35A8B5118944294F79CEB4A2BE862@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <1657116702-24161-1-git-send-email-u0084500@gmail.com>
- <1657116702-24161-3-git-send-email-u0084500@gmail.com> <20220707183027.342f6c88@jic23-huawei>
- <CADiBU3_KQ=WvD-1E4SODkdEY254_b-covw-0SHcAaF3XQqdbaQ@mail.gmail.com> <20220716183750.311f449c@jic23-huawei>
-In-Reply-To: <20220716183750.311f449c@jic23-huawei>
-From:   ChiYuan Huang <u0084500@gmail.com>
-Date:   Mon, 18 Jul 2022 11:24:19 +0800
-Message-ID: <CADiBU3_dDUMWTAYt27ngm_arQS+CSAZrcyayWJfANymfEqug7A@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] iio: adc: Add rtq6056 support
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB1953.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3894d75-77c9-4623-3755-08da687d69a7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jul 2022 05:21:47.8644
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Th/AHPZDUgjTF0LshVt/tHY0Ou0qWTPAen/aIDq6R5XvmcRJ/SSjDyXNeSFO18LOdUOallr2bMSqsSyyqkMJtsPtYiWlD7+Pga1727D9QB4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB1773
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2022=E5=B9=B47=E6=9C=8817=E6=
-=97=A5 =E9=80=B1=E6=97=A5 =E5=87=8C=E6=99=A81:27=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Mon, 11 Jul 2022 10:48:17 +0800
-> ChiYuan Huang <u0084500@gmail.com> wrote:
->
-> > Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2022=E5=B9=B47=E6=9C=888=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E5=87=8C=E6=99=A81:20=E5=AF=AB=E9=81=93=EF=BC=
-=9A
-> > >
-> > > On Wed,  6 Jul 2022 22:11:42 +0800
-> > > cy_huang <u0084500@gmail.com> wrote:
-> > >
-> > > > From: ChiYuan Huang <cy_huang@richtek.com>
-> > > >
-> > > > Add Richtek rtq6056 supporting.
-> > > >
-> > > > It can be used for the system to monitor load current and power wit=
-h 16-bit
-> > > > resolution.
-> > > >
-> > > > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > >
-> > > Various feedback inline.
-> > >
-> > > Thanks,
-> > >
-> > > Jonathan
-> > >
-> > > > ---
-> > > > Since v5
-> > > > - Fix kernel version text for ABI.
-> > > >
-> > > > Since v4
-> > > > - Add '__aligned(8)' for timestamp member in buffer_trigger_handler=
- function.
-> > > > - Declare timestamp from 'int64_t' to more unified 's64'.
-> > > >
-> > > > Since v3
-> > > > - Refine pm_runtime API calling order in 'read_channel' API.
-> > > > - Fix vshunt wrong scale for divider.
-> > > > - Refine the comment text.
-> > > > - Use 'devm_add_action_or_reset' to decrease the code usage in prob=
-e
-> > > >   function.
-> > > > - Use RUNTIME_PM_OPS to replace SET_RUNTIME_PM_OPS.
-> > > > - minor fix for the comma.
-> > > > - Use pm_ptr to replace the direct assigned pm_ops.
-> > > >
-> > > > Since v2
-> > > > - Rename file from 'rtq6056-adc' to 'rtq6056'.
-> > > > - Refine the ABI, if generic already defined it, remove it and chec=
-k the channel
-> > > >   report unit.
-> > > > - Add copyright text.
-> > > > - include the correct header.
-> > > > - change the property parsing name.
-> > > > - To use iio_chan_spec address field.
-> > > > - Refine each channel separate and shared_by_all.
-> > > > - Use pm_runtime and pm_runtime_autosuspend.
-> > > > - Remove the shutdown callback. From the HW suggestion, it's not re=
-commended to
-> > > >   use battery as the power supply.
-> > > > - Check all scale unit (voltage->mV, current->mA, power->milliWatt)=
-.
-> > > > - Use the read_avail to provide the interface for attribute value l=
-ist.
-> > > > - Add comma for the last element in the const integer array.
-> > > > - Refine each ADC label text.
-> > > > - In read_label callback, replace snprintf to sysfs_emit.
-> > > >
-> > > > ---
-> > > >  .../ABI/testing/sysfs-bus-iio-adc-rtq6056          |   6 +
-> > > >  drivers/iio/adc/Kconfig                            |  15 +
-> > > >  drivers/iio/adc/Makefile                           |   1 +
-> > > >  drivers/iio/adc/rtq6056.c                          | 651 +++++++++=
-++++++++++++
-> > > >  4 files changed, 673 insertions(+)
-> > > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-rtq=
-6056
-> > > >  create mode 100644 drivers/iio/adc/rtq6056.c
-> > > >
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-rtq6056 b/=
-Documentation/ABI/testing/sysfs-bus-iio-adc-rtq6056
-> > > > new file mode 100644
-> > > > index 00000000..e89d15b
-> > > > --- /dev/null
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-rtq6056
-> > > > @@ -0,0 +1,6 @@
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage0_=
-integration_time
-> > > > +What:                /sys/bus/iio/devices/iio:deviceX/in_voltage1_=
-integration_time
-> > > > +KernelVersion:       5.20
-> > > > +Contact:     cy_huang@richtek.com
-> > > > +Description:
-> > > > +             Each voltage conversion time in uS
-> > >
-> > > Please move this entry to sysfs-bus-iio
-> > >
-> > > It's a natural extension of existing standard ABI so doesn't need to =
-be in
-> > > a driver specific documentation file.
-> > >
-> > > However, way back in patch 1 I gave feedback on why we don't normally=
- use integration time
-> > > for voltage channels and I thought you were changing this...
-> > >
-> > I didn't intend to change this. Just cannot find any suitable
-> > attribute for this feature.
-> > From the IC interrnal, there's only one set of ADC.
-> > And the conversion order is bus/shunt......, average sample count to
-> > control the sample update interval.
-> > That' why the sample frequency is calculated by one second to divide
-> > [(bus_ct + shunt_ct) *  average sample bit] (us)
-> >
-> > If it's not suitable for this attribute, I think it's better to change
-> > it as file attribute, not IIO channel attribute.
-> >
-> > How do you think?
->
-> As mentioned in patch 1 discussion, we've done this before (IIRC) by defi=
-ning per channel
-> sampling frequencies and not providing a general one.
->
-> We might want to consider improving the documentation in ABI/testing/sysf=
-s-bus-iio
-> to make that clear however.
->
-> > > ...
-> > >
-> > > > +static int rtq6056_adc_read_channel(struct rtq6056_priv *priv,
-> > > > +                                 struct iio_chan_spec const *ch,
-> > > > +                                 int *val)
-> > > > +{
-> > > > +     struct device *dev =3D priv->dev;
-> > > > +     unsigned int addr =3D ch->address;
-> > > > +     unsigned int regval;
-> > > > +     int ret;
-> > > > +
-> > > > +     pm_runtime_get_sync(dev);
-> > > > +     ret =3D regmap_read(priv->regmap, addr, &regval);
-> > > > +     pm_runtime_mark_last_busy(dev);
-> > > > +     pm_runtime_put(dev);
-> > > > +     if (ret)
-> > > > +             return ret;
-> > > > +
-> > > > +     /* Power and VBUS is unsigned 16-bit, others are signed 16-bi=
-t */
-> > > > +     if (addr =3D=3D RTQ6056_REG_BUSVOLT || addr =3D=3D RTQ6056_RE=
-G_POWER)
-> > > > +             *val =3D regval;
-> > > > +     else
-> > > > +             *val =3D sign_extend32(regval, 16);
-> > > > +
-> > >
-> > > One blank line only.
-> > >
-> > > > +
-> > > > +     return IIO_VAL_INT;
-> > > > +}
-> > > > +
-> > > ...
-> > >
-> > >
-> > > > +
-> > > > +static int rtq6056_adc_write_raw(struct iio_dev *indio_dev,
-> > > > +                              struct iio_chan_spec const *chan, in=
-t val,
-> > > > +                              int val2, long mask)
-> > > > +{
-> > > > +     struct rtq6056_priv *priv =3D iio_priv(indio_dev);
-> > > > +
-> > > > +     if (iio_buffer_enabled(indio_dev))
-> > >
-> > > This is racy as can enter buffered mode immediately after this check.
-> > > Use iio_device_claim_direct_mode() to avoid any races around this.
-> > >
-> > for the shunt resistor attribute write, also?
-> > > > +             return -EBUSY;
-> > > > +
-> > > > +     switch (mask) {
-> > > > +     case IIO_CHAN_INFO_INT_TIME:
-> > > > +             return rtq6056_adc_set_conv_time(priv, chan, val);
-> > > > +     case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > > > +             return rtq6056_adc_set_average(priv, val);
-> > > > +     default:
-> > > > +             return -EINVAL;
-> > > > +     }
-> > > > +}
-> > >
-> > >
-> > > > +
-> > > > +static void rtq6056_remove(void *dev)
-> > > > +{
-> > > > +     pm_runtime_dont_use_autosuspend(dev);
-> > > > +     pm_runtime_disable(dev);
-> > > > +     pm_runtime_set_suspended(dev);
-> > >
-> > > There isn't anything here to push the device into a suspend state, so=
- why
-> > > does calling pm_runtime_set_suspended() make sense?
-> > >
-> > As I know, It is needed, at least 'pm_runtime_set_suspended' must be ke=
-pt.
-> >
-> > To think one case, adc is reading, module is removing.
-> > Who  will change the IC state to off?
->
-> That's not what set_suspended does.  We aren't telling the device to
-> 'suspend' we are telling the runtime pm code that it already is.
-> If you want that to be the case, then you need to manually call whatever =
-your
-> driver needs to do to suspend the device.
->
-> Note that if runtime pm is not configured into the kernel, everything sho=
-uld
-> still work. That is you should always power the device up in probe() and =
-down
-> in remove().  That powerdown is needs to not use the runtime pm paths (as=
- they
-> aren't being built in such a kernel!)
->
-> >
-> > pm_runtime is already disabled, the IC will be kept in 'active', right?
-> > > > +}
-> > > > +
-> > > >
-> > > > +
-> > > > +static int rtq6056_probe(struct i2c_client *i2c)
-> > > > +{
-> > > > +     struct iio_dev *indio_dev;
-> > > > +     struct rtq6056_priv *priv;
-> > > > +     struct device *dev =3D &i2c->dev;
-> > > > +     struct regmap *regmap;
-> > > > +     unsigned int vendor_id, shunt_resistor_uohm;
-> > > > +     int ret;
-> > > > +
-> > > > +     if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_SMBUS_WOR=
-D_DATA))
-> > > > +             return -EOPNOTSUPP;
-> > > > +
-> > > > +     indio_dev =3D devm_iio_device_alloc(dev, sizeof(*priv));
-> > > > +     if (!indio_dev)
-> > > > +             return -ENOMEM;
-> > > > +
-> > > > +     priv =3D iio_priv(indio_dev);
-> > > > +     priv->dev =3D dev;
-> > > > +     priv->vshuntct_us =3D priv->vbusct_us =3D 1037;
-> > > > +     priv->avg_sample =3D 1;
-> > > > +     i2c_set_clientdata(i2c, priv);
-> > > > +
-> > > > +     regmap =3D devm_regmap_init_i2c(i2c, &rtq6056_regmap_config);
-> > > > +     if (IS_ERR(regmap))
-> > > > +             return dev_err_probe(dev, PTR_ERR(regmap),
-> > > > +                                  "Failed to init regmap\n");
-> > > > +
-> > > > +     priv->regmap =3D regmap;
-> > > > +
-> > > > +     ret =3D regmap_read(regmap, RTQ6056_REG_MANUFACTID, &vendor_i=
-d);
-> > > > +     if (ret)
-> > > > +             return dev_err_probe(dev, ret,
-> > > > +                                  "Failed to get manufacturer info=
-\n");
-> > > > +
-> > > > +     if (vendor_id !=3D RTQ6056_VENDOR_ID)
-> > > > +             return dev_err_probe(dev, -ENODEV,
-> > > > +                                  "Invalid vendor id 0x%04x\n", ve=
-ndor_id);
-> > > > +
-> > > > +     ret =3D devm_regmap_field_bulk_alloc(dev, regmap, priv->rm_fi=
-elds,
-> > > > +                                        rtq6056_reg_fields, F_MAX_=
-FIELDS);
-> > > > +     if (ret)
-> > > > +             return dev_err_probe(dev, ret, "Failed to init regmap=
- field\n");
-> > > > +
-> > > > +     /*
-> > > > +      * By default, configure average sample as 1, bus and shunt c=
-onversion
-> > > > +      * timea as 1037 microsecond, and operating mode to all on.
-> > > > +      */
-> > > > +     ret =3D regmap_write(regmap, RTQ6056_REG_CONFIG, RTQ6056_DEFA=
-ULT_CONFIG);
-> > > > +     if (ret)
-> > > > +             return dev_err_probe(dev, ret,
-> > > > +                                  "Failed to enable continuous sen=
-sing\n");
-> > > > +
-> > > > +     pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
-> > > > +     pm_runtime_use_autosuspend(dev);
-> > > > +     pm_runtime_set_active(dev);
-> > > > +     pm_runtime_mark_last_busy(dev);
-> > > > +     pm_runtime_enable(dev);
-> > >
-> > > Look at whether you can use devm_pm_runtime_enable()
-> > > Note it handles disabling autosuspend for you.
-> > >
-> > > When using runtime_pm() you want to ensure that the device works with=
-out
-> > > runtime pm support being enabled.  As such, you turn the device on be=
-fore
-> > > enabling runtime_pm() and (this is missing I think) turn it off after=
- disabling
-> > > runtime pm.  So I'd expect a devm_add_action_or_reset() call to unwin=
-d
-> > > setting the device into continuous sending above.
-> > >
-> > If so, I think it's better to configure the device keep in off state
-> > in probe stage.
->
-> Only keep it in off state 'if' runtime pm is configured in.
-> Normally you need to power the device up in probe then
-> enable runtime pm to turn it off again (if runtime pm is supported).
-> If runtime pm isn't supported, we just leave the device powered up the wh=
-ole
-> time until remove() when we power it down.
->
-> > The calling order may need to be changed as below
-> > devm_add_action_or_reset...
-> >
-> > pm_runtime_set_autosuspend_delay
-> > pm_runtime_use_auto_suspend
-> > devm_pm_runtime_enable
->
->
->
-> >
-> > > > +
-> > > > +     ret =3D devm_add_action_or_reset(dev, rtq6056_remove, dev);
-> > >
-> > > The callback naming is too generic. It should give some indication
-> > > of what it is undoing (much of probe is handled by other devm_ callba=
-cks).
-> > >
-> > How about to change the name to 'rtq6056_enter_shutdown_state'?
-> > And in this function, to change the device state in shutdown with
-> > 'pm_runtime_set_suspended' API.
->
-> I think this reflects back to earlier misunderstanding of what
-> pm_runtime_set_suspended() actually does (assuming I have understood it
-> correctly).
->
-Ok, I really misunderstand it.
-> > > > +     if (ret)
-> > > > +             return ret;
-> > > > +
-> > > > +     /* By default, use 2000 micro-ohm resistor */
-> > > > +     shunt_resistor_uohm =3D 2000;
-> > > > +     device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> > > > +                              &shunt_resistor_uohm);
-> > > > +
-> > > > +     ret =3D rtq6056_set_shunt_resistor(priv, shunt_resistor_uohm)=
-;
-> > > > +     if (ret)
-> > > > +             return dev_err_probe(dev, ret,
-> > > > +                                  "Failed to init shunt resistor\n=
-");
-> > > > +
-> > > > +     indio_dev->name =3D "rtq6056";
-> > > > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > > > +     indio_dev->channels =3D rtq6056_channels;
-> > > > +     indio_dev->num_channels =3D ARRAY_SIZE(rtq6056_channels);
-> > > > +     indio_dev->info =3D &rtq6056_info;
-> > > > +
-> > > > +     ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> > > > +                                           rtq6056_buffer_trigger_=
-handler,
-> > > > +                                           NULL);
-> > > > +     if (ret)
-> > > > +             return dev_err_probe(dev, ret,
-> > > > +                                  "Failed to allocate iio trigger =
-buffer\n");
-> > > > +
-> > > > +     return devm_iio_device_register(dev, indio_dev);
-> > > > +}
-> > >
-> > > > +
-> > > > +static const struct dev_pm_ops rtq6056_pm_ops =3D {
-> > > > +     RUNTIME_PM_OPS(rtq6056_runtime_suspend, rtq6056_runtime_resum=
-e, NULL)
-> > >
-> > > Is there any reason we can't use these same ops to achieve at least s=
-ome power
-> > > saving in suspend?  i.e. use DEFINE_RUNTIME_PM_OPS()
-> >                                                  ~~~~~~~~~~~~~~~~~~~~~~=
-~
-> >                                                  Where can I find this?
->
-> oops. DEFINE_RUNTIME_DEV_PM_OPS()
-> https://elixir.bootlin.com/linux/v5.19-rc6/source/include/linux/pm_runtim=
-e.h#L37
->
-
-OK, it's really new API. That's why I cannot find it.
-Due to there's no reply in several days, so I already submit the v6 as
-my understanding.
-
-The last is to use 'DEFINE_RUNTIME_DEV_PM_OPS'.
-I think it's better than just to declare 'runtime_enable' and 'runtime_disa=
-ble'.
-This API also consider system suspend and resume.
-
-Will be added in v7.
-> > >
-> > > I have tidying this up in existing drivers on my todo list as I think=
- it is almost
-> > > always a good idea.  Note this is why there isn't a define to create =
-the
-> > > particular combination you have here.
-> > >
-> > If there's no combination like as that one, why  not unify it  to
-> > '_DEFINE_DEV_PM_OPS'?
-> > > > +};
-> > > > +
-> > >
->
+T24gMTUuMDcuMjAyMiAxNToyOCwgTnVubyBTw6Egd3JvdGU6DQo+IEVYVEVSTkFMIEVNQUlMOiBE
+byBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IGtub3cgdGhl
+IGNvbnRlbnQgaXMgc2FmZQ0KPiANCj4gTWFrZSB0aGUgY29udmVyc2lvbiB0byBmaXJtd2FyZSBh
+Z25vc3RpYyBkZXZpY2UgcHJvcGVydGllcy4gQXMgcGFydCBvZg0KPiB0aGUgY29udmVyc2lvbiB0
+aGUgSUlPIGlua2VybiBpbnRlcmZhY2UgJ29mX3hsYXRlKCknIGlzIGFsc28gY29udmVydGVkIHRv
+DQo+ICdmd25vZGVfeGxhdGUoKScuIFRoZSBnb2FsIGlzIHRvIGNvbXBsZXRlbHkgZHJvcCAnb2Zf
+eGxhdGUnIGFuZCBoZW5jZSBPRg0KPiBkZXBlbmRlbmNpZXMgZnJvbSBJSU8uDQo+IA0KPiBTaWdu
+ZWQtb2ZmLWJ5OiBOdW5vIFPDoSA8bnVuby5zYUBhbmFsb2cuY29tPg0KPiBSZXZpZXdlZC1ieTog
+QW5keSBTaGV2Y2hlbmtvIDxhbmR5LnNoZXZjaGVua29AZ21haWwuY29tPg0KDQpSZXZpZXdlZC1i
+eTogQ2xhdWRpdSBCZXpuZWEgPGNsYXVkaXUuYmV6bmVhQG1pY3JvY2hpcC5jb20+DQoNCg0KPiAt
+LS0NCj4gIGRyaXZlcnMvaWlvL2FkYy9hdDkxLXNhbWE1ZDJfYWRjLmMgfCAzMCArKysrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCsp
+LCAxNSBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lpby9hZGMvYXQ5
+MS1zYW1hNWQyX2FkYy5jIGIvZHJpdmVycy9paW8vYWRjL2F0OTEtc2FtYTVkMl9hZGMuYw0KPiBp
+bmRleCBmZTMxMzFjOTU5M2MuLmRmNzE2NTg0YzExNyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9p
+aW8vYWRjL2F0OTEtc2FtYTVkMl9hZGMuYw0KPiArKysgYi9kcml2ZXJzL2lpby9hZGMvYXQ5MS1z
+YW1hNWQyX2FkYy5jDQo+IEBAIC0xNiw4ICsxNiw5IEBADQo+ICAjaW5jbHVkZSA8bGludXgvaW50
+ZXJydXB0Lmg+DQo+ICAjaW5jbHVkZSA8bGludXgvaW8uaD4NCj4gICNpbmNsdWRlIDxsaW51eC9t
+b2R1bGUuaD4NCj4gLSNpbmNsdWRlIDxsaW51eC9vZl9kZXZpY2UuaD4NCj4gKyNpbmNsdWRlIDxs
+aW51eC9tb2RfZGV2aWNldGFibGUuaD4NCj4gICNpbmNsdWRlIDxsaW51eC9wbGF0Zm9ybV9kZXZp
+Y2UuaD4NCj4gKyNpbmNsdWRlIDxsaW51eC9wcm9wZXJ0eS5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4
+L3NjaGVkLmg+DQo+ICAjaW5jbHVkZSA8bGludXgvd2FpdC5oPg0KPiAgI2luY2x1ZGUgPGxpbnV4
+L2lpby9paW8uaD4NCj4gQEAgLTY1MCw4ICs2NTEsOCBAQCBhdDkxX2FkY19jaGFuX2dldChzdHJ1
+Y3QgaWlvX2RldiAqaW5kaW9fZGV2LCBpbnQgY2hhbikNCj4gICAgICAgICByZXR1cm4gaW5kaW9f
+ZGV2LT5jaGFubmVscyArIGluZGV4Ow0KPiAgfQ0KPiANCj4gLXN0YXRpYyBpbmxpbmUgaW50IGF0
+OTFfYWRjX29mX3hsYXRlKHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXYsDQo+IC0gICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IHN0cnVjdCBvZl9waGFuZGxlX2FyZ3MgKmlp
+b3NwZWMpDQo+ICtzdGF0aWMgaW5saW5lIGludCBhdDkxX2FkY19md25vZGVfeGxhdGUoc3RydWN0
+IGlpb19kZXYgKmluZGlvX2RldiwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIGNvbnN0IHN0cnVjdCBmd25vZGVfcmVmZXJlbmNlX2FyZ3MgKmlpb3NwZWMpDQo+ICB7
+DQo+ICAgICAgICAgcmV0dXJuIGF0OTFfYWRjX2NoYW5feGxhdGUoaW5kaW9fZGV2LCBpaW9zcGVj
+LT5hcmdzWzBdKTsNCj4gIH0NCj4gQEAgLTE4NzYsNyArMTg3Nyw3IEBAIHN0YXRpYyBjb25zdCBz
+dHJ1Y3QgaWlvX2luZm8gYXQ5MV9hZGNfaW5mbyA9IHsNCj4gICAgICAgICAucmVhZF9yYXcgPSAm
+YXQ5MV9hZGNfcmVhZF9yYXcsDQo+ICAgICAgICAgLndyaXRlX3JhdyA9ICZhdDkxX2FkY193cml0
+ZV9yYXcsDQo+ICAgICAgICAgLnVwZGF0ZV9zY2FuX21vZGUgPSAmYXQ5MV9hZGNfdXBkYXRlX3Nj
+YW5fbW9kZSwNCj4gLSAgICAgICAub2ZfeGxhdGUgPSAmYXQ5MV9hZGNfb2ZfeGxhdGUsDQo+ICsg
+ICAgICAgLmZ3bm9kZV94bGF0ZSA9ICZhdDkxX2FkY19md25vZGVfeGxhdGUsDQo+ICAgICAgICAg
+Lmh3Zmlmb19zZXRfd2F0ZXJtYXJrID0gJmF0OTFfYWRjX3NldF93YXRlcm1hcmssDQo+ICB9Ow0K
+PiANCj4gQEAgLTE5MjAsNiArMTkyMSw3IEBAIHN0YXRpYyBpbnQgYXQ5MV9hZGNfYnVmZmVyX2Fu
+ZF90cmlnZ2VyX2luaXQoc3RydWN0IGRldmljZSAqZGV2LA0KPiANCj4gIHN0YXRpYyBpbnQgYXQ5
+MV9hZGNfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCj4gIHsNCj4gKyAgICAg
+ICBzdHJ1Y3QgZGV2aWNlICpkZXYgPSAmcGRldi0+ZGV2Ow0KPiAgICAgICAgIHN0cnVjdCBpaW9f
+ZGV2ICppbmRpb19kZXY7DQo+ICAgICAgICAgc3RydWN0IGF0OTFfYWRjX3N0YXRlICpzdDsNCj4g
+ICAgICAgICBzdHJ1Y3QgcmVzb3VyY2UgKnJlczsNCj4gQEAgLTE5MzMsNyArMTkzNSw3IEBAIHN0
+YXRpYyBpbnQgYXQ5MV9hZGNfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikNCj4g
+ICAgICAgICBzdCA9IGlpb19wcml2KGluZGlvX2Rldik7DQo+ICAgICAgICAgc3QtPmluZGlvX2Rl
+diA9IGluZGlvX2RldjsNCj4gDQo+IC0gICAgICAgc3QtPnNvY19pbmZvLnBsYXRmb3JtID0gb2Zf
+ZGV2aWNlX2dldF9tYXRjaF9kYXRhKCZwZGV2LT5kZXYpOw0KPiArICAgICAgIHN0LT5zb2NfaW5m
+by5wbGF0Zm9ybSA9IGRldmljZV9nZXRfbWF0Y2hfZGF0YShkZXYpOw0KPiANCj4gICAgICAgICBp
+bmRpb19kZXYtPm5hbWUgPSBkZXZfbmFtZSgmcGRldi0+ZGV2KTsNCj4gICAgICAgICBpbmRpb19k
+ZXYtPm1vZGVzID0gSU5ESU9fRElSRUNUX01PREUgfCBJTkRJT19CVUZGRVJfU09GVFdBUkU7DQo+
+IEBAIC0xOTUwLDM0ICsxOTUyLDMyIEBAIHN0YXRpYyBpbnQgYXQ5MV9hZGNfcHJvYmUoc3RydWN0
+IHBsYXRmb3JtX2RldmljZSAqcGRldikNCj4gDQo+ICAgICAgICAgc3QtPm92ZXJzYW1wbGluZ19y
+YXRpbyA9IEFUOTFfT1NSXzFTQU1QTEVTOw0KPiANCj4gLSAgICAgICByZXQgPSBvZl9wcm9wZXJ0
+eV9yZWFkX3UzMihwZGV2LT5kZXYub2Zfbm9kZSwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAiYXRtZWwsbWluLXNhbXBsZS1yYXRlLWh6IiwNCj4gLSAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAmc3QtPnNvY19pbmZvLm1pbl9zYW1wbGVfcmF0ZSk7DQo+ICsg
+ICAgICAgcmV0ID0gZGV2aWNlX3Byb3BlcnR5X3JlYWRfdTMyKGRldiwgImF0bWVsLG1pbi1zYW1w
+bGUtcmF0ZS1oeiIsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZz
+dC0+c29jX2luZm8ubWluX3NhbXBsZV9yYXRlKTsNCj4gICAgICAgICBpZiAocmV0KSB7DQo+ICAg
+ICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsDQo+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICJpbnZhbGlkIG9yIG1pc3NpbmcgdmFsdWUgZm9yIGF0bWVsLG1pbi1zYW1wbGUtcmF0ZS1o
+elxuIik7DQo+ICAgICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiAgICAgICAgIH0NCj4gDQo+
+IC0gICAgICAgcmV0ID0gb2ZfcHJvcGVydHlfcmVhZF91MzIocGRldi0+ZGV2Lm9mX25vZGUsDQo+
+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImF0bWVsLG1heC1zYW1wbGUtcmF0
+ZS1oeiIsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJnN0LT5zb2NfaW5m
+by5tYXhfc2FtcGxlX3JhdGUpOw0KPiArICAgICAgIHJldCA9IGRldmljZV9wcm9wZXJ0eV9yZWFk
+X3UzMihkZXYsICJhdG1lbCxtYXgtc2FtcGxlLXJhdGUtaHoiLA0KPiArICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAmc3QtPnNvY19pbmZvLm1heF9zYW1wbGVfcmF0ZSk7DQo+
+ICAgICAgICAgaWYgKHJldCkgew0KPiAgICAgICAgICAgICAgICAgZGV2X2VycigmcGRldi0+ZGV2
+LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAiaW52YWxpZCBvciBtaXNzaW5nIHZhbHVlIGZv
+ciBhdG1lbCxtYXgtc2FtcGxlLXJhdGUtaHpcbiIpOw0KPiAgICAgICAgICAgICAgICAgcmV0dXJu
+IHJldDsNCj4gICAgICAgICB9DQo+IA0KPiAtICAgICAgIHJldCA9IG9mX3Byb3BlcnR5X3JlYWRf
+dTMyKHBkZXYtPmRldi5vZl9ub2RlLCAiYXRtZWwsc3RhcnR1cC10aW1lLW1zIiwNCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAmc3QtPnNvY19pbmZvLnN0YXJ0dXBfdGltZSk7
+DQo+ICsgICAgICAgcmV0ID0gZGV2aWNlX3Byb3BlcnR5X3JlYWRfdTMyKGRldiwgImF0bWVsLHN0
+YXJ0dXAtdGltZS1tcyIsDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICZzdC0+c29jX2luZm8uc3RhcnR1cF90aW1lKTsNCj4gICAgICAgICBpZiAocmV0KSB7DQo+ICAg
+ICAgICAgICAgICAgICBkZXZfZXJyKCZwZGV2LT5kZXYsDQo+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICJpbnZhbGlkIG9yIG1pc3NpbmcgdmFsdWUgZm9yIGF0bWVsLHN0YXJ0dXAtdGltZS1tc1xu
+Iik7DQo+ICAgICAgICAgICAgICAgICByZXR1cm4gcmV0Ow0KPiAgICAgICAgIH0NCj4gDQo+IC0g
+ICAgICAgcmV0ID0gb2ZfcHJvcGVydHlfcmVhZF91MzIocGRldi0+ZGV2Lm9mX25vZGUsDQo+IC0g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImF0bWVsLHRyaWdnZXItZWRnZS10eXBl
+IiwgJmVkZ2VfdHlwZSk7DQo+ICsgICAgICAgcmV0ID0gZGV2aWNlX3Byb3BlcnR5X3JlYWRfdTMy
+KGRldiwgImF0bWVsLHRyaWdnZXItZWRnZS10eXBlIiwNCj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgJmVkZ2VfdHlwZSk7DQo+ICAgICAgICAgaWYgKHJldCkgew0KPiAg
+ICAgICAgICAgICAgICAgZGV2X2RiZygmcGRldi0+ZGV2LA0KPiAgICAgICAgICAgICAgICAgICAg
+ICAgICAiYXRtZWwsdHJpZ2dlci1lZGdlLXR5cGUgbm90IHNwZWNpZmllZCwgb25seSBzb2Z0d2Fy
+ZSB0cmlnZ2VyIGF2YWlsYWJsZVxuIik7DQo+IC0tDQo+IDIuMzcuMQ0KPiANCg0K

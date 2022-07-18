@@ -2,43 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5401557884A
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E63578840
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233732AbiGRR05 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 13:26:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43672 "EHLO
+        id S234993AbiGRRW6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 13:22:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbiGRR00 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:26:26 -0400
-X-Greylist: delayed 621 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 Jul 2022 10:26:24 PDT
-Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [IPv6:2a00:1098:0:82:1000:0:2:1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE1C2A964;
-        Mon, 18 Jul 2022 10:26:24 -0700 (PDT)
-Received: from [90.247.97.225] (port=43504 helo=jic23-huawei)
-        by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <jic23@jic23.retrosnub.co.uk>)
-        id 1oDULo-000Aes-T9; Mon, 18 Jul 2022 18:16:09 +0100
-Date:   Mon, 18 Jul 2022 18:25:47 +0100
-From:   Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To:     Shreeya Patel <shreeya.patel@collabora.com>
-Cc:     lars@metafoo.de, robh+dt@kernel.org, dmitry.osipenko@collabora.com,
-        Zhigang.Shi@liteon.com, krisman@collabora.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com,
-        alvaro.soliverez@collabora.com, andy.shevchenko@gmail.com
-Subject: Re: [PATCH v9 2/2] iio: light: Add support for ltrf216a sensor
-Message-ID: <20220718182547.360e5cf2@jic23-huawei>
-In-Reply-To: <20220715111626.1066513-3-shreeya.patel@collabora.com>
-References: <20220715111626.1066513-1-shreeya.patel@collabora.com>
-        <20220715111626.1066513-3-shreeya.patel@collabora.com>
+        with ESMTP id S233400AbiGRRW5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:22:57 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22DD20BD0;
+        Mon, 18 Jul 2022 10:22:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 989A9B816D4;
+        Mon, 18 Jul 2022 17:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C619C341C0;
+        Mon, 18 Jul 2022 17:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1658164974;
+        bh=4Qf4uY0oktTd//WyjvLyb1YapNMCufZPX8bfRpna8Fw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=FKkNKxw/kSvyFnzvgQpX72YSb9C0wtGX2dw4fIAXmH4PuiW1KfVWmvQw7ufO4jw17
+         CCIMYspn+W/gj5vVZ0ecOXyXLPHm/lar6IuLDqXPvJvRH17hJhLgXFHKaDD6BhzJ3/
+         /BRelt5LBe370HQ7+77hLmEG2GhmkgEdiO9HnS1cQAIcgfiFt3Ydq+beQi//q7gudO
+         9vYaMxgMI+okXLTBOHrQhNeulM2Rl4hm5IECw0ieXhVKlWSVkHlfC0Br02d2x75XEO
+         0ia8aElEl8j3jewmrubVsUwLCwLxEh5Lf3MfYn5JbAau5ayTV1FFXWluA+hq7fAHli
+         qrwQu9hGvA6SA==
+Date:   Mon, 18 Jul 2022 18:32:49 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "noname.nuno@gmail.com" <noname.nuno@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v1] iio: trigger: move trig->owner init to trigger
+ allocate() stage
+Message-ID: <20220718183249.6f411e5c@jic23-huawei>
+In-Reply-To: <20220718112446.lucl7omialqri7yv@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220601174837.20292-1-ddrokosov@sberdevices.ru>
+        <20220604145955.2a1108ca@jic23-huawei>
+        <20220701115823.vywhifktaxcr72cc@CAB-WSD-L081021.sigma.sbrf.ru>
+        <20220713170436.32330fa6@jic23-huawei>
+        <20220716162556.2e919bf7@jic23-huawei>
+        <20220718112446.lucl7omialqri7yv@CAB-WSD-L081021.sigma.sbrf.ru>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-BlackCat-Spam-Score: 19
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,136 +64,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Jul 2022 16:46:26 +0530
-Shreeya Patel <shreeya.patel@collabora.com> wrote:
+On Mon, 18 Jul 2022 11:23:59 +0000
+Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-> Add initial support for ltrf216a ambient light sensor.
+> Hello Jonathan,
 > 
-> Datasheet: https://gitlab.collabora.com/shreeya/iio/-/blob/master/LTRF216A.pdf
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Co-developed-by: Zhigang Shi <Zhigang.Shi@liteon.com>
-> Signed-off-by: Zhigang Shi <Zhigang.Shi@liteon.com>
-> Co-developed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> On Sat, Jul 16, 2022 at 04:25:56PM +0100, Jonathan Cameron wrote:
+> > On Wed, 13 Jul 2022 17:04:36 +0100
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >   
+> > > On Fri, 1 Jul 2022 11:59:59 +0000
+> > > Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> > >   
+> > > > Hello Jonathan,
+> > > > 
+> > > > This patch has been on the mailing list for one month already, but no
+> > > > comments from other IIO reviewers. What do you think we should do with it?
+> > > > Is it a helpful change or not?    
+> > > 
+> > > Given I'm way behind and timing in cycle, I'm probably going to kick this
+> > > back to start of the next cycle. Sorry for delay,  
+> > Applied to the togreg branch of iio.git.
+> > 
+> > I'm unlikely to do another pull request this cycle unless there is a delay in
+> > the release for some reason (and probably not even if there is), so this
+> > is queued up for next cycle.  As such it'll sit exposed only in the testing
+> > branch until I rebase on rc1.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> 
+> Thank you for the patch applied.
+> I have one question about the previous already applied patchset
+> 
+> https://lore.kernel.org/all/20220607183907.20017-1-ddrokosov@sberdevices.ru/
+> 
+> I see this patchset already merged to linux-next more than a month ago.
+> But it's still not available in the linux stable branch. Could you please
+> explain what's the problem with this one? Was some bug found during
+> linux-next testing stage? Should I fix something?
+> 
+> Appreciate any help to understand what's I missing.
+
+It's not a fix so it will go in during the merge window in about 2 weeks time.
+Won't get backported to Stable though unless we ask for that to happen as it's
+not really a fix so I didn't add a marking for it to be picked up for stable
+(which would only happen after 5.20-rc1 anyway).
+
+J
 
 
-The first of the two 0-day warnings confuses me. It might be spurious due
-to some unrelated issue, but I'm not certain of that...
-
-Otherwise, a few more comments around PM. The way you've done it isn't
-something I've seen before + I think you leave the device powered up in
-!CONFIG_PM after remove which isn't ideal.
-
-Thanks,
-
-Jonathan
-
-
-> +static int ltrf216a_set_power_state(struct ltrf216a_data *data, bool on)
-> +{
-> +	struct device *dev = &data->client->dev;
-> +	int ret;
-
-This one was caught by 0-day.  ret = 0; or perhaps better, just return
-directly in the two branches rather than having a single exit point.
-
-> +
-> +	if (on) {
-> +		ret = pm_runtime_resume_and_get(dev);
-> +		if (ret) {
-> +			dev_err(dev, "failed to resume runtime PM: %d\n", ret);
-> +			return ret;
-> +		}
-> +	} else {
-> +		pm_runtime_mark_last_busy(dev);
-> +		pm_runtime_put_autosuspend(dev);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-
-
-> +
-> +static int ltrf216a_probe(struct i2c_client *client)
-> +{
-> +	struct ltrf216a_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +
-> +	data->regmap = devm_regmap_init_i2c(client, &ltrf216a_regmap_config);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
-> +				     "regmap initialization failed\n");
-> +
-> +	i2c_set_clientdata(client, indio_dev);
-> +	data->client = client;
-> +
-> +	mutex_init(&data->lock);
-> +
-> +	indio_dev->info = &ltrf216a_info;
-> +	indio_dev->name = "ltrf216a";
-> +	indio_dev->channels = ltrf216a_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ltrf216a_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	/* reset sensor, chip fails to respond to this, so ignore any errors */
-> +	ltrf216a_reset(indio_dev);
-> +
-> +	ret = regmap_reinit_cache(data->regmap, &ltrf216a_regmap_config);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "failed to reinit regmap cache\n");
-> +
-> +	ret = devm_pm_runtime_enable(&client->dev);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "failed to enable runtime PM\n");
-> +
-> +	pm_runtime_set_autosuspend_delay(&client->dev, 1000);
-> +	pm_runtime_use_autosuspend(&client->dev);
-> +
-> +	if (!IS_ENABLED(CONFIG_PM)) {
-> +		ret = ltrf216a_enable(indio_dev);
-
-What turns this off again?  I'd expect to see a devm_add_action_or_reset()
-to do that in the !CONFIG_PM case.
-
-This is also an unusual pattern. As far as I can tell it works.
-Normal trick for ensuring !CONFIG_PM works is to:
-
-1) Unconditionally turn device on.
-2) Register unconditional device off devm_callback. Very rarely harmful even if device already off
-   due to runtime pm.
-3) Then call pm_runtime_set_active() so the state tracking matches.
-4) Call 	
-  pm_runtime_mark_last_busy(dev);
-  pm_runtime_put_autosuspend(dev);
-  (here you have a function to do this anyway)
-  to let runtime_pm use same path as normal to autosuspend
-
-the upshot of this is that if !CONFIG_PM 3 and 4 do nothing and device
-is left turned on.  Is there something I'm missing that makes that cycle
-inappropriate here?  The main reason to do this is it then looks exactly
-like any other runtime_pm calls elsewhere in the driver, so easier to review.
-
-
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	data->int_time = 100000;
-> +	data->int_time_fac = 100;
-> +	data->als_gain_fac = 3;
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
-> +
+> 
 

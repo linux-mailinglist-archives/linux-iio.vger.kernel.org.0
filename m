@@ -2,47 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3E75787DE
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 18:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428CF5787F3
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 18:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234391AbiGRQyx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 12:54:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
+        id S234759AbiGRQ6L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 12:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbiGRQyw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 12:54:52 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C69CE1056A;
-        Mon, 18 Jul 2022 09:54:49 -0700 (PDT)
+        with ESMTP id S234906AbiGRQ6K (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 12:58:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8975E2BB31;
+        Mon, 18 Jul 2022 09:58:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 3852ACE178E;
-        Mon, 18 Jul 2022 16:54:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755B0C341CB;
-        Mon, 18 Jul 2022 16:54:44 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4FF43B8167A;
+        Mon, 18 Jul 2022 16:58:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89CBC341C0;
+        Mon, 18 Jul 2022 16:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658163286;
-        bh=yBBYa1xZZmd/FW0Ok5m8qrhARtPq1Z+pUX8jaMNgznM=;
+        s=k20201202; t=1658163487;
+        bh=Pv6CF0fctVJjOuZW4hNgdDsz8hkNLBlWN2b+uvUotbU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tVoSsV1sti1rOnXxYnTHWdjcpFuV0S6VX/0LX2zyv2vexiVBINSAbDztE/ZHUhV7a
-         WXveOAFvZWGUtBCE3GuR/otLhVM3ZSMvMVIG6xUhSCwtrakpOcOZvrd6NS3wVYerNJ
-         X/YaG8rkUNQPlUvzN5yu7NJhPSY7/Zm9qdzMvNN5F+9OuyUDG1S8+Ymu5nGBx/qqZB
-         noz3wnLoPSJTB5lbIpUCG2mPwcEk7Q/pJ1+T2Kif5ger9Eoi+hVR5lee3JitPh4rDb
-         rr6jj7LocOV5BRjOkHwYyBkrxAsiUAZ5cRQ0seJ0C/fbUzqWw9ZXq5pa4QQSKb3N0b
-         iSSXPCn6z86Dg==
-Date:   Mon, 18 Jul 2022 18:04:41 +0100
+        b=L7oe73yAKMB9aQzWZKy9GH8tX+2xEIjljKKE4/fFtpQ52MaAYvZNIuiGsTvG4XnOe
+         PlU8nmcYhKjcVUQjfjppL5Jg5qd61J3S++WZrsv26TP6sn6xYRbL0g5CwBCw0o+ixI
+         Fj4tjiBkjzyPMqPO8HUPBCXgsJOwuoK4mvdyKwMHReeUquSSXCj6bzAsAcCc9TswcS
+         6k5/T/v5MiY2Mya96xBanEwIcRz5d4zDI1lxCeyI0PD0xD9dUEGgTU5bDji+zgBFiW
+         8XW1XdKhcp+VKGHg1DI5xPqsryHhCnqpDnWI6ZoPheofLGWhR2capYKZcI5WsCaqDg
+         xAPnUbtVVLxvw==
+Date:   Mon, 18 Jul 2022 18:08:02 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     cy_huang <u0084500@gmail.com>
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         lars@metafoo.de, cy_huang@richtek.com, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] Documentation: ABI: testing: rtq6056: Update ABI
- docs
-Message-ID: <20220718180441.1363d2a6@jic23-huawei>
-In-Reply-To: <1658123163-10039-4-git-send-email-u0084500@gmail.com>
+Subject: Re: [PATCH v7 2/3] iio: adc: Add rtq6056 support
+Message-ID: <20220718180802.43b66961@jic23-huawei>
+In-Reply-To: <1658123163-10039-3-git-send-email-u0084500@gmail.com>
 References: <1658123163-10039-1-git-send-email-u0084500@gmail.com>
-        <1658123163-10039-4-git-send-email-u0084500@gmail.com>
+        <1658123163-10039-3-git-send-email-u0084500@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,60 +55,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 18 Jul 2022 13:46:03 +0800
+On Mon, 18 Jul 2022 13:46:02 +0800
 cy_huang <u0084500@gmail.com> wrote:
 
 > From: ChiYuan Huang <cy_huang@richtek.com>
 > 
-> Add documentation for the usage of voltage channel integration time.
+> Add Richtek rtq6056 supporting.
+> 
+> It can be used for the system to monitor load current and power with 16-bit
+> resolution.
 > 
 > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index d4ccc68..1f7d327 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2030,3 +2030,13 @@ Description:
->  		Available range for the forced calibration value, expressed as:
->  
->  		- a range specified as "[min step max]"
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY_integration_time
-> +KernelVersion:	5.20
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		For voltage sensing hardware, there may be different time between
-> +		channel conversion and sample update. 'Integration time' is used to
-> +		specify the channel internal conversion time. And sample update
-> +		interval is equal to average sample count multiple integration time.
-> +		Unit as microsecond.
 
-Whilst I did suggest moving this to this file, I also suggested that it was the
-wrong interface to use.  For similar cases we've used in_voltageY_sampling_frequency
-in the past because this isn't really an integration time, but rather a reflection of
-a bunch of other stuff that makes up the conversion time.  In IIO we chose a long
-time ago to use 1/conversion_time as the exposed interface == sampling_frequency
+other than the ABI question around integration_time vs sampling_frequency
+in review of patch 3, this looks good to me.
 
-So, unless there is a strong reason to do otherwise, drop the overall sampling_frequency
-attribute and use per channel ones instead.  Then update the main documentation
-to make this usecase clear. Something in the block
-https://elixir.bootlin.com/linux/latest/source/Documentation/ABI/testing/sysfs-bus-iio#L89
-like adding the in_voltageY_sampling_frequency entry to the What: list and a
-sentence at the end that says something like:
-
-"Some devices have separate controls of sampling frequency for individual channels.
-If multiple channels are enabled in a scan, then the sampling_frequency of the the
-scan may be computed from the per channel sampling_frequencies."
-
-Not something to put in the documentation, but for devices which do simultaneous sampling
-it is very unlikely we'll have per channel sampling frequencies so there isn't an
-ambiguity. The alternative we 'could' consider is to allow both overall sampling_frequency
-and per channel in_voltageY_sampling_frequency but that is a bad idea because the
-ABI (and most userspace software) assumes that more specific attributes override the
-values of more generic ones (rather than them having different meanings as would be
-the case here).
+Thanks,
 
 Jonathan

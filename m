@@ -2,51 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC7F57884D
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:27:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56B6578867
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Jul 2022 19:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbiGRR1B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 18 Jul 2022 13:27:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
+        id S235540AbiGRR3L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 18 Jul 2022 13:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234944AbiGRR1A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:27:00 -0400
+        with ESMTP id S233707AbiGRR3L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 18 Jul 2022 13:29:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181882C13B
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 10:26:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D1005F5E
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 10:29:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A024C6156E
-        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 17:26:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EDAC341C0;
-        Mon, 18 Jul 2022 17:26:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D00DB61597
+        for <linux-iio@vger.kernel.org>; Mon, 18 Jul 2022 17:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC893C341C0;
+        Mon, 18 Jul 2022 17:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1658165217;
-        bh=Z2DctOq2IV/ql+ZHBD0VtVkfHdTKLq7tg9IGuHKpox4=;
+        s=k20201202; t=1658165349;
+        bh=vKOA2Sjkz4KWE9WHL2fgIwr0Xc0rETnybRUxjFN39KY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ayAt09cFpDXTcf4IpNaGBejg2IwBu6LUKNRRmeCRYOPwLI7MOaVhWRpOWtTem6PBV
-         06Pd95NkfqAihk2SeGIJKW+8urcbO9L/1Hdto+nPDbMp0tUu+Q8jn7IsLywWWbIijF
-         xAoQIrzdK9hgClsB5jVXlOWiwW7c91xI5PybeYRNN3nH1IL3FgWE6whXzpgaGMFRUQ
-         vALsHFDKNYPQtj+ZkJDK55P5EG69erD6lODpCKIy0W63QrhVDbC2JHlZuDuWyX1eog
-         nc2Jt2xscref6YB8hgA324W6PI5Nxjntw79JqTuztKHo1cHlM+nsFl8bt+bz7mgfAM
-         8tJfheAxi9jUQ==
-Date:   Mon, 18 Jul 2022 18:36:54 +0100
+        b=EgcnhQIBEcXnmvL+UheNSctoPnBX7T5/SYIW/7/Uy4k8YB5vKHB2U34Gs/zzZ2Bk+
+         OM0yoHq21W9PUACBphvRSA0osufKWp6xglOf9YWi6dG2RDXMCYrA9mqwfmXSvZ/xrc
+         4byEw6FkrFXSg9XiFw3Xd9WwHNdmnjrlaQ5nXE3YFelpbTSZHJWL9Vl5M52pwBlpQe
+         S/TuFroSYd7n3XQUWgf6tazbRFDM+j4DTRqguCTqXitSccKNrY/0z3fwPeuHrFwGVk
+         uX5L3Q0tKXghgyADR6HvqFb1v8bGGOgo4UZf7EIvIvokt8uNHrdrKm7nug75kvrXXK
+         KcdFeGeOHL85Q==
+Date:   Mon, 18 Jul 2022 18:39:05 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
         <linux-iio@vger.kernel.org>,
-        "Navin Sankar Velliangiri" <navin@linumiz.com>,
-        Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
-Subject: Re: [PATCH 1/4] iio: ABI: temperature: Unify documentation for
- thermocouple fault detection.
-Message-ID: <20220718183654.6e0e9a95@jic23-huawei>
-In-Reply-To: <20220628074409.42f0ecae@sal.lan>
+        "Fabrice Gasnier" <fabrice.gasnier@foss.st.com>
+Subject: Re: [PATCH 3/4] iio: ABI: stm32-timer-trigger: Fuse unusual ABI
+ into main doc.
+Message-ID: <20220718183905.2de6b3c7@jic23-huawei>
+In-Reply-To: <20220628065119.38ef8aea@sal.lan>
 References: <20220626165511.602202-1-jic23@kernel.org>
-        <20220626165511.602202-2-jic23@kernel.org>
-        <20220626233331.2e8e38d1@sal.lan>
-        <20220627151812.000069d2@Huawei.com>
-        <20220628074409.42f0ecae@sal.lan>
+        <20220626165511.602202-4-jic23@kernel.org>
+        <20220626233745.10cd37ff@sal.lan>
+        <20220627150955.00001e68@Huawei.com>
+        <20220628065119.38ef8aea@sal.lan>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,228 +59,118 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 28 Jun 2022 07:44:09 +0100
+On Tue, 28 Jun 2022 06:51:19 +0100
 Mauro Carvalho Chehab <mchehab@kernel.org> wrote:
 
-> Em Mon, 27 Jun 2022 15:18:12 +0100
+> Em Mon, 27 Jun 2022 15:09:55 +0100
 > Jonathan Cameron <Jonathan.Cameron@Huawei.com> escreveu:
 > 
-> > On Sun, 26 Jun 2022 23:33:31 +0100
+> > On Sun, 26 Jun 2022 23:37:45 +0100
 > > Mauro Carvalho Chehab <mchehab@kernel.org> wrote:
 > >   
-> > > Em Sun, 26 Jun 2022 17:55:08 +0100
+> > > Em Sun, 26 Jun 2022 17:55:10 +0100
 > > > Jonathan Cameron <jic23@kernel.org> escreveu:
 > > >     
 > > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > > > 
-> > > > The kernel build docs do not support having multiple definitions for
-> > > > the same sysfs filename.       
+> > > > We can't duplicate the description of sampling_frequency. This device
+> > > > has some unusual requirements which we solved by giving a
+> > > > sampling_frequency of 0 special meaning. As such add a note
+> > > > about this unusual usage to the main documentation.
+> > > > 
+> > > > Whilst I don't particularly like this resolution, it is the best
+> > > > I could come up with given earlier discussion on this topic.
+> > > > 
+> > > > Link: https://lore.kernel.org/linux-iio/20210315101217.00002c50@Huawei.com/
+> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> > > > ---
+> > > >  Documentation/ABI/testing/sysfs-bus-iio             | 3 +++
+> > > >  Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 | 8 --------
+> > > >  2 files changed, 3 insertions(+), 8 deletions(-)
+> > > > 
+> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > > > index 3e00d7f7ee22..e81ba6f5e1c8 100644
+> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > > > @@ -107,6 +107,9 @@ Description:
+> > > >  		relevant directories.  If it affects all of the above
+> > > >  		then it is to be found in the base device directory.
+> > > >  
+> > > > +		The stm32-timer-trigger has the additional characteristic that
+> > > > +		a sampling_frequency of 0 is defined to stop sampling.
+> > > > +      
 > > > 
-> > > Actually, this is not a matter of the docs build system not supporting. 
-> > > It is, instead, how the ABI were supposed to work: a given ABI symbol 
-> > > should have consistent behavior on all drivers that use it. Failing to
-> > > do that is asking for troubles.
+> > > I would actually say something like:
 > > > 
-> > > So, having duplicated symbols either mean that:
-> > > 
-> > > a) both have the same meaning. They can/should be unified in order to
-> > >    remove redundant documentation;
-> > > 
-> > > b) the same ABI symbol have different meanings depending on the driver(s)
-> > >    that use it. This makes very hard for userspace, as it is harder to
-> > >    write a program using it, as the behavior/meaning starts to be
-> > >    driver-dependent.    
+> > > 		A ampling_frequency of 0 means to stop sampling,
+> > > 		if supported by the driver.
+> > >     
 > > 
-> > I think we'll disagree on this.
+> > We actively want to stop people doing this without coming
+> > to the list and explaining exactly why they need to. The discussion
+> > around that one exception was long and involved. So we want
+> > them to have to modify this doc to list their part thus raising
+> > awareness of them doing this. So far it's in one driver our of many
+> > (and to use this feature it needs custom userspace as it is
+> > setting up a complex chain of devices, but for other more conventional
+> > use, not allowing 0 is fine).
 > > 
-> > There are circumstances where a particular ABI in a particular driver
-> > benefits from additional documentation that would be in the 'impdef
-> > category' for the generic ABI.  
-> 
-> If a particular driver needs something different, either:
-> 
-> 1. the ABI definition was loose or too tight, not being generic enough to
->    cover other hardware needing ABI for the same feature;
-> 2. a different ABI symbol would need, as the two symbols with the same
->    name are mapping completely different ABIs.
-> 
-> > For this particular case it extends the info available from 'wire
-> > disconnected' in the generic case, to 'which possible wires are
-> > disconnected' in the specific case.   
-> 
-> In the specific case of device faults, it could be mapped in a way
-> that would be generic enough, yet providing hardware-specific information,
-> when the hardware supports it.
-> 
-> In this specific case, I would probably create a generic ABI (or ABI set)
-> to report hardware issues in a way that it would be more generic.
-> 
-> One possibility for this case would be to use something like this:
-> 
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	no faults
-> 
-> On hardware that can't pinpoint what wire(s) the problem is occurring:
-> 
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	fault: open circuit
-> 
-> or
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	fault: excessive voltage
-> 
-> On more sophisticated hardware that can pinpoint what wires have
-> issues, it may report, instead:
-> 
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	fault: open circuit fault at thermocouple wire #2
-> 
-> or
-> 
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	fault: excessive voltage at thermocouple wires #0 and #1
-> 
-> or even:
-> 
-> 	$ cat /sys/bus/iio/devices/iio:deviceX/fault
-> 	fault: open circuit fault at thermocouple wire #2
-> 	fault: excessive voltage at thermocouple wires #0 and #1
-> 
-> The above should be generic enough for a program to identify if there
-> isn't any failures if such "fault" ABI would return "no faults". Any value
-> different than that means that there's a fault, and the read value
-> telling what happened could be output to the user before such program
-> aborts due to a hardware error.
-> 
-> -
-> 
-> The point is that, when the ABI is made to be subsystem-wide since
-> the beginning, it tends to be more generic, as the ABI design should
-> consider that other devices may have different capabilities. 
-> 
-> > Neither affects what userspace
-> > does with it, but they are useful if you are debugging the hardware.
-> > They are probably not worth expanding the ABI to provide a debugging
-> > guide, so it that info was in the documentation but is now lost
-> > (in this case, non critical as it's probably a case of go read the
-> >  datasheet if the hanging wire isn't obvious).
+> > The source of this disagreement is the documentation serves two
+> > purposes - for userspace code authors and for kernel developers.
+> > Userspace can just not set the value to 0 if it is generic code.
 > > 
-> > I don't mind just making this patch description vague: 
-> > 
-> > Kernel documentation for a given ABI element should not be duplicated
-> > in multiple files, so pull them into one higher level documentation file.  
+> > We could add additional ABI element to make userspace aware, but
+> > so far only this one device which will run with customer userspace
+> > uses this.  Hence we rely on documentation.  
 > 
-> Works for me. With that, feel free to add my reviewed-by.
-Applied - hopefully I'll sneak out a pull request later this week.
-Apologies for delay. I blame Covid.
+> 
+> OK!
+> 
+> This actually proves the point that duplicated symbols at ABI cause
+> troubles, as different implementations could end abusing on what
+> it would be expected, like in this case ;-)
+> 
+> Anyway, feel free to add my reviewed-by to this patch.
+Picked up 2 and 3 of this series. 4 was fixed by someone else.
 
-J
+Thanks,
+
+Jonathan
 
 > 
 > Regards,
 > Mauro
 > 
-> > > >  Hence generalize the documentation a little
-> > > > and pull it out of device specific files and into
-> > > > sysfs-bus-iio-thermocouple
-> > > > 
-> > > > These may well be more general and need pulling into a more generic
-> > > > file in the future, but we can do that when it is needed.
-> > > > 
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > Cc: Navin Sankar Velliangiri <navin@linumiz.com>
-> > > > Cc: Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>      
-> > > 
-> > > Except for the above correction, the patch looks OK to me.
+> > 
+> > Jonathan
+> >   
+> > > Either way:
 > > > 
 > > > Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+> > > 
 > > >     
-> > > > ---
-> > > >  .../sysfs-bus-iio-temperature-max31856        | 31 -------------------
-> > > >  .../sysfs-bus-iio-temperature-max31865        | 12 -------
-> > > >  .../ABI/testing/sysfs-bus-iio-thermocouple    | 18 +++++++++++
-> > > >  3 files changed, 18 insertions(+), 43 deletions(-)
-> > > > 
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856 b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856
-> > > > deleted file mode 100644
-> > > > index e5ef6d8e5da1..000000000000
-> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31856
-> > > > +++ /dev/null
-> > > > @@ -1,31 +0,0 @@
-> > > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_oc
-> > > > -KernelVersion:	5.1
-> > > > -Contact:	linux-iio@vger.kernel.org
+> > > >  What:		/sys/bus/iio/devices/iio:deviceX/sampling_frequency_available
+> > > >  What:		/sys/bus/iio/devices/iio:deviceX/in_intensity_sampling_frequency_available
+> > > >  What:		/sys/bus/iio/devices/iio:deviceX/in_proximity_sampling_frequency_available
+> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32 b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > > > index c4a4497c249a..05074c4a65e2 100644
+> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-timer-stm32
+> > > > @@ -90,14 +90,6 @@ Description:
+> > > >  		Reading returns the current master modes.
+> > > >  		Writing set the master mode
+> > > >  
+> > > > -What:		/sys/bus/iio/devices/triggerX/sampling_frequency
+> > > > -KernelVersion:	4.11
+> > > > -Contact:	benjamin.gaignard@st.com
 > > > > -Description:
-> > > > -		Open-circuit fault. The detection of open-circuit faults,
-> > > > -		such as those caused by broken thermocouple wires.
-> > > > -		Reading returns either '1' or '0'.
+> > > > -		Reading returns the current sampling frequency.
+> > > > -		Writing an value different of 0 set and start sampling.
+> > > > -		Writing 0 stop sampling.
 > > > > -
-> > > > -		===  =======================================================
-> > > > -		'1'  An open circuit such as broken thermocouple wires
-> > > > -		     has been detected.
-> > > > -		'0'  No open circuit or broken thermocouple wires are detected
-> > > > -		===  =======================================================
-> > > > -
-> > > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > > -KernelVersion:	5.1
-> > > > -Contact:	linux-iio@vger.kernel.org
-> > > > -Description:
-> > > > -		Overvoltage or Undervoltage Input Fault. The internal circuitry
-> > > > -		is protected from excessive voltages applied to the thermocouple
-> > > > -		cables by integrated MOSFETs at the T+ and T- inputs, and the
-> > > > -		BIAS output. These MOSFETs turn off when the input voltage is
-> > > > -		negative or greater than VDD.
-> > > > -
-> > > > -		Reading returns either '1' or '0'.
-> > > > -
-> > > > -		===  =======================================================
-> > > > -		'1'  The input voltage is negative or greater than VDD.
-> > > > -		'0'  The input voltage is positive and less than VDD (normal
-> > > > -		     state).
-> > > > -		===  =======================================================
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865 b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > > index 4b072da92218..349089e4f2d6 100644
-> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-temperature-max31865
-> > > > @@ -1,15 +1,3 @@
-> > > > -What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > > -KernelVersion:	5.11
-> > > > -Contact:	linux-iio@vger.kernel.org
-> > > > -Description:
-> > > > -		Overvoltage or Undervoltage Input fault. The internal circuitry
-> > > > -		is protected from excessive voltages applied to the thermocouple
-> > > > -		cables at FORCE+, FORCE2, RTDIN+ & RTDIN-. This circuitry turn
-> > > > -		off when the input voltage is negative or greater than VDD.
-> > > > -
-> > > > -		Reading returns '1' if input voltage is negative or greater
-> > > > -		than VDD, otherwise '0'.
-> > > > -
-> > > >  What:		/sys/bus/iio/devices/iio:deviceX/in_filter_notch_center_frequency
-> > > >  KernelVersion:	5.11
-> > > >  Contact:	linux-iio@vger.kernel.org
-> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-thermocouple b/Documentation/ABI/testing/sysfs-bus-iio-thermocouple
-> > > > new file mode 100644
-> > > > index 000000000000..01259df297ca
-> > > > --- /dev/null
-> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-thermocouple
-> > > > @@ -0,0 +1,18 @@
-> > > > +What:		/sys/bus/iio/devices/iio:deviceX/fault_ovuv
-> > > > +KernelVersion:	5.1
-> > > > +Contact:	linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +		Overvoltage or Undervoltage Input Fault. The internal circuitry
-> > > > +		is protected from excessive voltages applied to the thermocouple
-> > > > +		cables. The device can also detect if such a condition occurs.
-> > > > +
-> > > > +		Reading returns '1' if input voltage is negative or greater
-> > > > +		than VDD, otherwise '0'.
-> > > > +
-> > > > +What:		/sys/bus/iio/devices/iio:deviceX/fault_oc
-> > > > +KernelVersion:	5.1
-> > > > +Contact:	linux-iio@vger.kernel.org
-> > > > +Description:
-> > > > +		Open-circuit fault. The detection of open-circuit faults,
-> > > > +		such as those caused by broken thermocouple wires.
-> > > > +		Reading returns '1' if fault, '0' otherwise.      
+> > > >  What:		/sys/bus/iio/devices/iio:deviceX/in_count0_preset
+> > > >  KernelVersion:	4.12
+> > > >  Contact:	benjamin.gaignard@st.com      
 > >   
 

@@ -2,105 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F69957A82D
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Jul 2022 22:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 481DD57A979
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Jul 2022 23:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbiGSU04 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 19 Jul 2022 16:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
+        id S240590AbiGSVwM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 19 Jul 2022 17:52:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229939AbiGSU0z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jul 2022 16:26:55 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C834B0D3
-        for <linux-iio@vger.kernel.org>; Tue, 19 Jul 2022 13:26:54 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id d12so26808878lfq.12
-        for <linux-iio@vger.kernel.org>; Tue, 19 Jul 2022 13:26:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
-        b=W/0pyW4vGZUBJNu0LDTVCRn88+Qyo3BDzqzfQ8YIAo5WlDXNNMWgRWOEsulijqHl8c
-         F3/nKLCQ2gWmMRWdLEc3YrE74wn5AzsTtsRgIIq9H53Jl3KwYCCpA/iKSV49HAxljuWp
-         rc0x6bBPlB4wSZ3X9Th+RcLSsA2uoMq3pLHTeMiJl8vAQWT/kzrajYJm+GdjBmJrQiPn
-         YAcHqvTAoGQDc1krkfY7h1xVCfI/77PDgBqlLthU1xLqVaK5zCzLraFx+kE92X/tVZZ0
-         JoKI3AhufXO6Oz+riEfBfgk9QXMCgGz9mh1A0R5sChcL0TaLNIsz3W+E2yk2ttJqI06a
-         oViw==
+        with ESMTP id S240612AbiGSVwA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 19 Jul 2022 17:52:00 -0400
+Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D52CF61DA5;
+        Tue, 19 Jul 2022 14:51:58 -0700 (PDT)
+Received: by mail-io1-f46.google.com with SMTP id h145so12946553iof.9;
+        Tue, 19 Jul 2022 14:51:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=lLG88JCPgF7Yhflf4FNi4GQedsSNMbwmPtgneUr9Mu0=;
-        b=ffxaQhltkpGffkQywefesaNWQ2jh+S9kPsZTE8AXZ/y4f9FuHImiZYiDQQAidkTcm0
-         0zDsbyI24xAeWMsuOLDgrGmTVPSkByDQbsraujmIt0xDDafctj4+YoO8VXoup6vOKcNt
-         7ljFlD85yDMb8u4r2HXBEopTkB0zcq9dZBinI+Tj+8E7i6ohhlKLzaUvoUTZ/LnUvCw7
-         rEErmMtdry1HMwlcf8Lp4w93VIuKKr5TDfNgt5XG2kqyfnn+uTQZExfRSzzVMeQi58Da
-         bhNctbOWerrFh40K+yx5tq1NKcFeVS6xEZBHwB0zisoSvRAiSMDJB8Fe7LM5GrIE/ZMU
-         5IDA==
-X-Gm-Message-State: AJIora/rYneC8hH1+PYThgAjOrVB0EeMhHIUQtlvUXVV7tyS8Sc9YX1I
-        IbEaZpEo1WQ/9wL/jIcS76odLkIYFmSU1cBaLhg=
-X-Google-Smtp-Source: AGRyM1vfwQA7YtBvbZ/b0S3D/draqSG9aDi64edANVdZvy5z7OVqQSAcXHdd76rscxYSlXvndRQHWmD3+hYBwcoo8uI=
-X-Received: by 2002:a05:6512:1152:b0:489:fda1:1507 with SMTP id
- m18-20020a056512115200b00489fda11507mr18076544lfg.206.1658262412923; Tue, 19
- Jul 2022 13:26:52 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XOtlQvN9qURJ7YCNsoS0tTTQu8LGfesaRB0+2MadP3M=;
+        b=LUfCLES56PinZiQhkBfhJWlceGehYzXR+uP0DJIKZcLOj8riPKm1Lr0XE2ADhLSmoH
+         9P2BJejVt2YLK+nX78z4VCx8qxfT5RsBwPxKjCSCyYOVtR4GDXNuHSCXaAyzvWNbL1ce
+         yXmjd0AK5h6ncEOAKYmAafwvPxgGW1u4QtTB5rblHyxVBZ/vCbuRSiTSy51g3FMof1FD
+         hmg6Le8gS/pMF4oKNDzI5CSkSap89w/lYALiA1yFACsk34cR7/IldxdM9I//ooZpnCo+
+         JINO5mMYSb6imr2ctwLoezKsTWhLtNXPAhkxxkCLdkNC2dKgNgpgcWKh/ggsQ2cNZB4S
+         9aAw==
+X-Gm-Message-State: AJIora9Z1jdB5E4d1e+RFNRLfTB2tlqHHzxuKu64xh4V9YIr8+UpJRU7
+        4rsG3EdBAdaGb1WFWLy4uNTjAOYhSw==
+X-Google-Smtp-Source: AGRyM1sUjLLfxdK9YtkqDUTklQ+t4pjGaftzONx6t0TN95Cpdy7+y07kDpdmMOQ8le8bApF21jYZaw==
+X-Received: by 2002:a05:6638:339b:b0:33f:5a4c:4d8e with SMTP id h27-20020a056638339b00b0033f5a4c4d8emr17873648jav.93.1658267518056;
+        Tue, 19 Jul 2022 14:51:58 -0700 (PDT)
+Received: from xps15.herring.priv ([64.188.179.248])
+        by smtp.googlemail.com with ESMTPSA id l14-20020a92290e000000b002dd06902010sm553046ilg.42.2022.07.19.14.51.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jul 2022 14:51:57 -0700 (PDT)
+From:   Rob Herring <robh@kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Cristian Pop <cristian.pop@analog.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: iio/dac: adi,ad5766: Add missing type to 'output-range-microvolts'
+Date:   Tue, 19 Jul 2022 15:51:52 -0600
+Message-Id: <20220719215152.1877776-1-robh@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Received: by 2002:a05:6520:2f49:b0:1f8:2994:4bab with HTTP; Tue, 19 Jul 2022
- 13:26:52 -0700 (PDT)
-Reply-To: mailfunds48@gmail.com
-From:   Tom Christ <yahayabuhari92@gmail.com>
-Date:   Tue, 19 Jul 2022 21:26:52 +0100
-Message-ID: <CADbC8Auski5VreZF74DxwqFFZV2veAeu2NNrRhRkPc6eDfr2yw@mail.gmail.com>
-Subject: DARLEHENSANGEBOT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:131 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mailfunds48[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [yahayabuhari92[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [yahayabuhari92[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Ben=C3=B6tigen Sie ein Gesch=C3=A4ftsdarlehen oder ein Darlehen jeglicher A=
-rt?
-Wenn ja, kontaktieren Sie uns
+'output-range-microvolts' is missing a type definition. '-microvolts' is
+not a standard unit (should be '-microvolt'). As the property is already
+in use, add a type reference.
 
-*Vollst=C3=A4ndiger Name:
-* Ben=C3=B6tigte Menge:
-*Leihdauer:
-*Mobiltelefon:
-*Land:
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+index a8f7720d1e3e..29bd16dab546 100644
+--- a/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml
+@@ -22,6 +22,8 @@ properties:
+       - adi,ad5767
+ 
+   output-range-microvolts:
++    $ref: /schemas/types.yaml#/definitions/int32-array
++    maxItems: 2
+     description: Select converter output range.
+ 
+   reg:
+-- 
+2.34.1
+

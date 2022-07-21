@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B1A757CF24
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 17:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0955D57CF21
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 17:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232266AbiGUPdB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Jul 2022 11:33:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46894 "EHLO
+        id S231961AbiGUPdG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Jul 2022 11:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231601AbiGUPcl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 11:32:41 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 285A087235
-        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:19 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id z22so3358135lfu.7
-        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:19 -0700 (PDT)
+        with ESMTP id S232035AbiGUPco (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 11:32:44 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EAED87C0C
+        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:21 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id z13so1859155ljj.6
+        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=KpbhzspuygFwG8vSA8m7O2wzJD0Js2bLL2ZwSFQUUh8=;
-        b=Wb0rgx/+JD0lUO5OIbB13AO2kBj5vUIgEXqqA/A7qkzZbSkf6H5TybPzAc3jLDRWZz
-         De4WQJnjI8sBvx/GegpfA1NIr8rFGrK6Aly5uAe3MV5JfBncMtME2wikDcSvchswZz2H
-         bGSdBZ3Y/eaVXJx/oekM+nPU6YMkzGlhvS+Y09AUAaM7BodBFWsZtMuaEw5YVtimcJIS
-         12YbKGbYvGnx4Nl49xdzjrX7XOE0OH5uVQJ28w4sEYFoPpSaJbKMOXPTslhG0MHUDNR2
-         RTtCrW1myAJqWrWmhMA5zngFS4b5D3FkPX1I6gujjeNsueoKwdJpWBTxFNTF4BpJE2bo
-         8+mA==
+        bh=Qkcak79PKqus0FBcBxREwIPQ11TDFoKGG7oCkfoXPQc=;
+        b=SwxDA2lsFKhk6eufWqim1Ro7JRbs5otwloShXKdIpq6ZcJReMBAY58gN0E7UQp6NHa
+         wSI10aoScdzw8YSJQKeSc8ZiJ2/jQrOCKox3W9A7U/I4/PTgvHSf9xW7a1onx8EY9iYk
+         BwZQ4PSquN8zdyaSiAFB/pFTprslWTyuIlKIe7mpnyuqWJ+aqoU9wNkMOSOkuizT6zdW
+         8Ju7sAzettoIlO1AWlALjN59qJamLNafzIFzH9m8ccBNUht5Z2U3T63oAK2mFdYRALZa
+         LdJNeykJiUPFRDhNj+y5tpsvd0/5F8ceDQgABQr50RMi820tS3INbLiOe9iCmBOrhtxQ
+         /Hww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KpbhzspuygFwG8vSA8m7O2wzJD0Js2bLL2ZwSFQUUh8=;
-        b=JX0UYxBGYf8sQiHXLtzxgDIIXjqv9+zVDIKjbR2u93lrDeqsJ2TozZ+XaAkxgO010+
-         qsLgTI+xbDQDszzttDBOV+hNGbcTVxO6qHN4lo6u67Z9dA8lzKDcDpDJJcWIqG5ajQk0
-         AeR6C0PvvIpuN2U7A749v12uwJ12rWxnyxRKddKCWK/UdIwDvDA3gghKrrnVT/wu6w2J
-         O4Ef3rrU0sF2yY1lCzdfDEmuDpzhANT7yM3HFNTtYU07v9iLDvvE0DRHOjjBW3MutM8d
-         3ZcH+RGRKXsk5r35HWvqWXuXLX6+a029ms1GcpKHCX8ioMus8ssZP2YBIa4/pxkXTqE9
-         8QxQ==
-X-Gm-Message-State: AJIora/yE055AOvimFrvQ8HM3xdKxp6jovlEHsmWiKUkybtMYQa973Xs
-        YhvzyCd8XVSWOY7WD2o8DyCFXA==
-X-Google-Smtp-Source: AGRyM1ubWL7w8E7CRaphPTSvA0k3fiWFSqprLYOLH+JjbjSiG740pSD/ln4Nfs04hmWe6t26JztkWg==
-X-Received: by 2002:a05:6512:2809:b0:489:ff8e:44f2 with SMTP id cf9-20020a056512280900b00489ff8e44f2mr23393295lfb.70.1658417537183;
-        Thu, 21 Jul 2022 08:32:17 -0700 (PDT)
+        bh=Qkcak79PKqus0FBcBxREwIPQ11TDFoKGG7oCkfoXPQc=;
+        b=xPq3pi2PKqNWP+jnBbj6o22O4npWYzR+8ZZhz2SFEu9t5XRHA+99dAdri0MnEpylrV
+         CjpDsiW+7le76ktaxMjHytI/PxY8jCXsrfv6pXQqpRTYLdm+14rfiUahi5KECiDO6WiK
+         wE5SyGu6szuvLtgBprKXLX4uN+ZtwDNpArd19lSPd7+h3xNZZek7xBoXt3D9KulYiPYL
+         GvSTT4mjEg0Zo/Z9DWuPQDscxjs/O0BHc4jqZTQl/e8ByTFx/k0nGEVOL0wL6NTE8LLY
+         FlPR9SjF1xFG1/5dUbR7ntz1ERH8K4dWYVXzm8v+1ffHfmjic92nXjVBNRzEDSaBAPZ7
+         /7WQ==
+X-Gm-Message-State: AJIora+ksS6rEszMF75e7SaQprJzW4Mdt66lhAz8i5kz1mHrOrFV+G6L
+        JbrKiYNhMGPUoeJnePjGNIXXyg==
+X-Google-Smtp-Source: AGRyM1t5FpFk3c1ZpM6yYyF3OrMRK1RSMfVVWmGiA4wJJR3dTOcfJAhsvvr1fmUCOx5XIdCoKvqclQ==
+X-Received: by 2002:a2e:b947:0:b0:25d:d6f6:adaf with SMTP id 7-20020a2eb947000000b0025dd6f6adafmr3741489ljs.230.1658417539757;
+        Thu, 21 Jul 2022 08:32:19 -0700 (PDT)
 Received: from krzk-bin.. (89-162-31-138.fiber.signal.no. [89.162.31.138])
-        by smtp.gmail.com with ESMTPSA id a27-20020ac25e7b000000b0048a2995772asm504604lfr.73.2022.07.21.08.32.14
+        by smtp.gmail.com with ESMTPSA id a27-20020ac25e7b000000b0048a2995772asm504604lfr.73.2022.07.21.08.32.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 08:32:16 -0700 (PDT)
+        Thu, 21 Jul 2022 08:32:19 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
@@ -96,9 +96,9 @@ To:     Thierry Reding <thierry.reding@gmail.com>,
         linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
         linux-spi@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 4/6] dt-bindings: misc: explicitly list SPI CPHA and CPOL
-Date:   Thu, 21 Jul 2022 17:31:53 +0200
-Message-Id: <20220721153155.245336-5-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5/6] dt-bindings: net: explicitly list SPI CPHA and CPOL
+Date:   Thu, 21 Jul 2022 17:31:54 +0200
+Message-Id: <20220721153155.245336-6-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
 References: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
@@ -121,25 +121,56 @@ spi-peripheral-props.yaml schema.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/net/nfc/marvell,nci.yaml     | 12 ++++++++++--
+ .../devicetree/bindings/net/vertexcom-mse102x.yaml   | 12 +++++++++---
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-index b3c45c046ba5..a198848283d2 100644
---- a/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-+++ b/Documentation/devicetree/bindings/misc/olpc,xo1.75-ec.yaml
-@@ -28,7 +28,10 @@ properties:
-     description: GPIO uspecifier of the CMD pin
-     maxItems: 1
+diff --git a/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml b/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
+index 1bcaf6ba822c..00b3918a9bf2 100644
+--- a/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
++++ b/Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml
+@@ -56,8 +56,16 @@ properties:
+     description: |
+       For UART type of connection. Specifies that the chip is using RTS/CTS.
  
 -  spi-cpha: true
+-  spi-cpol: true
 +  spi-cpha:
 +    type: boolean
 +    description:
 +      The device requires shifted clock phase (CPHA) mode.
++
++  spi-cpol:
++    type: boolean
++    description:
++      The device requires inverse clock polarity (CPOL) mode.
++
+   spi-max-frequency: true
  
  required:
-   - compatible
+diff --git a/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml b/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
+index 8156a9aeb589..9dc1609f6d06 100644
+--- a/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
++++ b/Documentation/devicetree/bindings/net/vertexcom-mse102x.yaml
+@@ -34,9 +34,15 @@ properties:
+   interrupts:
+     maxItems: 1
+ 
+-  spi-cpha: true
+-
+-  spi-cpol: true
++  spi-cpha:
++    type: boolean
++    description:
++      The device requires shifted clock phase (CPHA) mode.
++
++  spi-cpol:
++    type: boolean
++    description:
++      The device requires inverse clock polarity (CPOL) mode.
+ 
+   spi-max-frequency:
+     minimum: 6000000
 -- 
 2.34.1
 

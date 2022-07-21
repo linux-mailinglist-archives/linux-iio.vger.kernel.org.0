@@ -2,152 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7D557CF2E
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 17:33:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC3657D045
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 17:50:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232498AbiGUPdW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Jul 2022 11:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46834 "EHLO
+        id S230008AbiGUPub (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Jul 2022 11:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229782AbiGUPc6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 11:32:58 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BFF87C38
-        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:24 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id z22so3358555lfu.7
-        for <linux-iio@vger.kernel.org>; Thu, 21 Jul 2022 08:32:24 -0700 (PDT)
+        with ESMTP id S232197AbiGUPua (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 11:50:30 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6C8423BFD;
+        Thu, 21 Jul 2022 08:50:29 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id va17so3945058ejb.0;
+        Thu, 21 Jul 2022 08:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zSAEKIvtye5jS07a7SCopVWWSkQdxtLbeG/Qb/jLxOk=;
-        b=Rvdze6Ay/jzmEJuWKHz6d8GONFosd5gpWdYWi/JRN1OjKN2i1Jk8wdvsduQ4H8k8JL
-         UdwErw84gZ4T/ZzSfJ5NynfzzrkFsWvRk7AQLb9rYAPas3wqT0gUiMpE9V1wXzOAsmHF
-         7EXEizMpX5vmdqwD6YyQM96dzP5GLBGnrBDS1/XmKVJk143W6ioev/IgPkh1VLk2Wzvz
-         /oNmvFAOYhtfbU0Cy1XasqHa9Dek8OUzjDtO10bNzcSElFT/9iZWpMTF0hdbY2dMa4En
-         sAR44Y7lA86ATER7P2GVmQOnk/BllCZ1FFLpXhxAkOtjuJVpIUurtPbYYw/BlC/KIOGq
-         IdiQ==
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=6c3wcMiJrn1UM/DKa9aWRLXTa5crPxp/oNNs3aCcNXs=;
+        b=AgcBH8UQYsZTIG65ZlYzGrtH6Ga+wem2ScqqwmgfJfNlywpwzuyTaO+63CL1Qbz/pC
+         2vgRUsqJZ++f80NwPsYFZpkQYJ5pIy1yCJjNMgu7VJ7KF5Gfcl2ZssdyWEELCjFRu8r1
+         EFZS3ytryXuvgSBNc8y07JJ6a/8QGjg24FoWxltjtXZhA7x9bRJVCHGezFu4SGl85PBj
+         HWzszl5i1RlE5OkfvXvdLDDQ4hcILVv3CF8MXKDU/VsauRaxj4l7BMdfE3IMtAwXFo+s
+         LEV5pohe8tJHblEZSUqgi7qSN7TSCgn3x4bukuvoMAzuF8pyQiAPVeJOIyu5/lFUZM4p
+         zU7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zSAEKIvtye5jS07a7SCopVWWSkQdxtLbeG/Qb/jLxOk=;
-        b=JDNssFNe3bk4k11P/CHF69HqRIW99tvjv0UstqyE6t8VXvkQk1a08EazOr2ogJJaIe
-         LAj1IruvUQBQFyk1RsSOkVNBJ5G7ey2ifrkTgBKPglntHJh7fFz4yFYCfsXtIOJw3PHD
-         EeDBK60K/o34bUrKdf5In+WhUcV3FvYTk+dus8ixisMyErpDTA0yZKUn3XF6MALUJSTf
-         +eA+rFzaoACzB8KCn4myOnF50Sqz/j2et8dTijZoUTN+fNOtHtbXeKMg9fe9ND0lao7T
-         HZK/+ndpEVzHWRGj7XlGct8uSATSYbsY8pi5diVqrVmPnlhPVx7Iur9XzM2SzfupPsO5
-         V3Gg==
-X-Gm-Message-State: AJIora8Xf3QfBAlOTNMmDhQdrEqzQVhetdiCrQKoD8cLa8O9BiVHwcnl
-        YUIo9EgJR1LbV2k1liyZVAxRcg==
-X-Google-Smtp-Source: AGRyM1t1GsMxf5C4K7kyBGZWAKDxo4V4V9DKDdnTuEaHQtbYw9EAmvVhKT4eVr1iIzVSWR6scvBZrQ==
-X-Received: by 2002:ac2:47f6:0:b0:488:b649:9f77 with SMTP id b22-20020ac247f6000000b00488b6499f77mr24197373lfp.559.1658417542316;
-        Thu, 21 Jul 2022 08:32:22 -0700 (PDT)
-Received: from krzk-bin.. (89-162-31-138.fiber.signal.no. [89.162.31.138])
-        by smtp.gmail.com with ESMTPSA id a27-20020ac25e7b000000b0048a2995772asm504604lfr.73.2022.07.21.08.32.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 08:32:21 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Marek Belisko <marek@goldelico.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Christian Eggers <ceggers@arri.de>,
-        Beniamin Bia <beniamin.bia@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <martenli@axis.com>,
-        Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
-        Cristian Pop <cristian.pop@analog.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Matheus Tavares <matheus.bernardino@usp.br>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Stefan Wahren <stefan.wahren@in-tech.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
-        linux-spi@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH 6/6] spi: dt-bindings: drop CPHA and CPOL from common properties
-Date:   Thu, 21 Jul 2022 17:31:55 +0200
-Message-Id: <20220721153155.245336-7-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
-References: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=6c3wcMiJrn1UM/DKa9aWRLXTa5crPxp/oNNs3aCcNXs=;
+        b=ocPYpl/BHcsJZ7dPoN3oY5++AgZYUT3HqulFvwIxP/680BloE4O/CzQIsYl76TZe1W
+         zQU5EO+0/bxxJi1/rFDbIF+qmvZVTbu0sKcoIZ1DMAeKWMlKN2JIAJ8HtESdCbZqqJpf
+         AXqC5s5z/lj7sQx3ciMH4ep1+I9uiWmTBjfUdI95ZAro4FL3h0bkkXEHqBXchs3TM/E7
+         EJSHtWxEDOAeRryuVZcPjvw/QXvTmpBn5a0S4uG3obR/lee4x08iLTS68h8FNf42zh1M
+         BYd17evg6bK4guRiKh1H205WSvc56sJWnXAdL6YEROG+i/jDlRWe8QNHXXdXaBOrnJXu
+         l87Q==
+X-Gm-Message-State: AJIora+nzn1w2GgaDI8ET+54raX0wRkqej9jGX/sHktlx0jioVRoKp0z
+        fgfUP9CzfgwL+kdIo0WikdE=
+X-Google-Smtp-Source: AGRyM1urL56xv/AChL16dVfmWB8ytt3oLC4MBYWwwMzMMEMwjiOuq0lKW67mS3sCGTi9n5Pdw0ZC3g==
+X-Received: by 2002:a17:907:60d1:b0:72f:42a0:f3f9 with SMTP id hv17-20020a17090760d100b0072f42a0f3f9mr17538751ejc.727.1658418627918;
+        Thu, 21 Jul 2022 08:50:27 -0700 (PDT)
+Received: from [192.168.0.104] (p5b3f6fa3.dip0.t-ipconnect.de. [91.63.111.163])
+        by smtp.gmail.com with ESMTPSA id k7-20020aa7c047000000b0043a85d7d15esm1174731edo.12.2022.07.21.08.50.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Jul 2022 08:50:27 -0700 (PDT)
+Message-ID: <7d20978f-e17c-9bea-1436-68bcf4bd8524@gmail.com>
+Date:   Thu, 21 Jul 2022 17:50:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v3 0/6] Add support for mp2733 battery charger
+Content-Language: en-US
+To:     lee.jones@linaro.org
+Cc:     sre@kernel.org, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        lars@metafoo.de, krzysztof.kozlowski+dt@linaro.org,
+        andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org
+References: <20220615145357.2370044-1-sravanhome@gmail.com>
+From:   saravanan sekar <sravanhome@gmail.com>
+In-Reply-To: <20220615145357.2370044-1-sravanhome@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The spi-cpha and spi-cpol properties are device specific and should be
-accepted only if device really needs them.  Drop them from common
-spi-peripheral-props.yaml schema (each device schema will list them
-instead).
+Hello Lee,
 
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/spi/spi-peripheral-props.yaml  | 10 ----------
- 1 file changed, 10 deletions(-)
+May I know what is the plan for merge this change-set !
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-index 9d63a58b46a0..ce048e782e80 100644
---- a/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-peripheral-props.yaml
-@@ -34,16 +34,6 @@ properties:
-     description:
-       The device requires 3-wire mode.
- 
--  spi-cpha:
--    $ref: /schemas/types.yaml#/definitions/flag
--    description:
--      The device requires shifted clock phase (CPHA) mode.
--
--  spi-cpol:
--    $ref: /schemas/types.yaml#/definitions/flag
--    description:
--      The device requires inverse clock polarity (CPOL) mode.
--
-   spi-cs-high:
-     $ref: /schemas/types.yaml#/definitions/flag
-     description:
--- 
-2.34.1
+On 15/06/22 16:53, Saravanan Sekar wrote:
+> changes in v3:
+>   - fixed dt_binding_check error
+>   - fixed spelling usb->USB
+> 
+> changes in v2:
+>   - fixed spelling
+>   - revert back probe to probe_new in mfd driver
+> 
+> I do not see a cover letter, but FWIW,
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> for all patches except DT binding
+> Note, some of the comments regarding spelling were given, I believe
+> you are going to address them in v3.
+> 
+> 
+> add support for mp2733 Battery charger control driver for Monolithic
+> Power System's MP2733 chipset
+> 
+> Saravanan Sekar (6):
+>    iio: adc: mp2629: fix wrong comparison of channel
+>    dt-bindings: mfd: Add mp2733 compatible
+>    mfd: mp2629: Add support for mps mp2733 battery charger
+>    iio: adc: mp2629: restrict input voltage mask for mp2629
+>    power: supply: Add support for mp2733 battery charger
+>    power: supply: mp2629: Add USB fast charge settings
+> 
+>   .../ABI/testing/sysfs-class-power-mp2629      |  16 ++
+>   .../devicetree/bindings/mfd/mps,mp2629.yaml   |   4 +-
+>   drivers/iio/adc/mp2629_adc.c                  |   5 +-
+>   drivers/mfd/mp2629.c                          |   5 +-
+>   drivers/power/supply/mp2629_charger.c         | 208 +++++++++++++++---
+>   include/linux/mfd/mp2629.h                    |   6 +
+>   6 files changed, 212 insertions(+), 32 deletions(-)
+> 
 
+Thanks,
+Saravanan

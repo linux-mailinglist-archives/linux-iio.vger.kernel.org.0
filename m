@@ -2,61 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D6557D1D8
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 18:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6E757D1DD
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 18:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbiGUQqP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Jul 2022 12:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51200 "EHLO
+        id S230217AbiGUQqR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Jul 2022 12:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiGUQqM (ORCPT
+        with ESMTP id S229715AbiGUQqM (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 12:46:12 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E519387C00;
-        Thu, 21 Jul 2022 09:46:10 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id s188so2718731oie.0;
-        Thu, 21 Jul 2022 09:46:10 -0700 (PDT)
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F41D88101;
+        Thu, 21 Jul 2022 09:46:12 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-10d6ddda695so3207423fac.0;
+        Thu, 21 Jul 2022 09:46:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LF+4BEXgeX20FEYKll0oCoEu58JRyVpVfKo7D5sSEx8=;
-        b=QaJVkk9hcWFTkEtwG/+eBy62Q04xBPngYZTh76RhgRj65YcIAaKuMwc8vKuAefHP/a
-         Em67U2P6yMh7KLoVWlTC4JLy1YwJahm6I8SwmkgR29DBG/V5nA+tQgS2n9hK2OJWXZFY
-         3IU+XgpUxX+MmdqE4c9ONFuqU17McZ3i6FQciajwuc+LhztcbGGmpBHfmoiswW2kiMe9
-         lyvbBgsH0PENFzy1q3KsSWlbJlTO2mQUqbZF80c0v2oIvvxBgqMu/NcsGETM7st4ri8n
-         +6vop45LBFeT+BzF5L6cXAeW80mXY46EPBQZF1K2ONtANhHzS4P5qR5LSZ4C75q9D7D1
-         7mdQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=FmXpKV8L1ROy4Dh0Qt2TT7rzbx5rKU4HTkrXEsPEgGo=;
+        b=SiFGahuH5PdKcRpgSbKIXKVarUDcfraqAzK34hwJqu2u5LSEqNYvmTi8a89CD9kZQc
+         TtKs7+v6pNsSPw4fbFVJ2V+XDQOSwVUmDrf1sk96V9Gy92j5vuat7tyvnj5iKk625CAJ
+         4H7A7wo++73OfxVcw8E25q/rcgPX6L4XnvraOthMYNylQ5Js3PRx8zTmReaB1EyfDmPJ
+         s6SAYkheSACrvMtQNjYrDwtM+U6xOq0xK2aCvtYC9V+q6yZibFfD+QpTZFJrR/IySLoI
+         Q/MoI7vkrNxWUiy+R62uarFrNyZBXSXgh2KVxOXg8YnWI7BXiLncHptkrhBeDE2vzndj
+         XsHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=LF+4BEXgeX20FEYKll0oCoEu58JRyVpVfKo7D5sSEx8=;
-        b=z/ZRUC/zhCGWH4r0LPmwj53Wd8JcM/GMbxQUiqbp54NlfWqA840EQGchAFA5zFXssR
-         eGGaKKOH/uK3LVeQEo57VZ+rOfIhvs30nbNJWvq6Q7wpXqTdXZmM76zrt7VeCUvmNvCG
-         bJkWTqZXlwR2neSDXzMMAIE4IdGC05fuVc2RkI0O17kZ/2K9Jh+WhsI82ShsSMHLAwtr
-         acD+fNrpXaqlTJu6hjv51L+q5sbEXYoe7MlSoAvThTidZH1vJu/VWMyFhqzaw8If1s94
-         VsI0rnIzOu2Y97emZqX7/jWvnqN6u+ZgsHfVcrf3ecOIVmhIaMTOpSuJRaG/qMX2opvo
-         j+gQ==
-X-Gm-Message-State: AJIora8ODlbJClVaVWnXCoV1WHImf6vyET0TbUsPWaaelIVuO1f+6T+N
-        w1Xzw5gPsAMx7ubH9sUFHTQnttBsRdU=
-X-Google-Smtp-Source: AGRyM1sMhCFTUel0nZbimwZ5NIBDdcSf55m/zvlssEXpf9MpUwKfPSxogCGIG/aiw/gR31eCq+auUQ==
-X-Received: by 2002:a05:6808:1585:b0:33a:653b:8812 with SMTP id t5-20020a056808158500b0033a653b8812mr4843650oiw.69.1658421969927;
-        Thu, 21 Jul 2022 09:46:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=FmXpKV8L1ROy4Dh0Qt2TT7rzbx5rKU4HTkrXEsPEgGo=;
+        b=u3+m4EJB99+IJ3BUetFb/GHz5dxQldzLMug2jP3HwW3d6lZNQJa7vPdrZZZnI5d4f7
+         pGV5odQsuyzimZcpRVPplHiAfLrPxgS4neSWVdouIDwK+P9hLQazdDEvtNYKcvMhVah0
+         53xTxuCJ/C2l4egvJb4SIxaCAbGJWnAbWs6c3MX7wunh7jVQiVs8eV4fSYPNTDbJvHH6
+         eXzyEYYwTCp6pmDb+fUk9bsZguFG4dqAFi0pVgUDiLvB8queWTr+h6BXPeOp2g4ARFcc
+         rPVWcUQG+gkUY9Udw1QIdOEgH3WrJSdRjeX+WQwUQyZ3HE0iYTlmaqgeeV0HyYMHc3sC
+         XT7Q==
+X-Gm-Message-State: AJIora9ZHBqwJoycaDLyQxlzJThkQ1e/C6Cj7sUL4nUYXK00kVX/IchA
+        dNh8krXzjC0abM3GlQ1S7QyrU3xoaIQ=
+X-Google-Smtp-Source: AGRyM1ucs7lTKF+U+AYUFgLdecTXONK3OQu+4kv91tPDZ8cv7M1e7yq5yVrvUzclv0qf6IwesAqpBQ==
+X-Received: by 2002:a05:6870:829e:b0:10c:240b:cbb9 with SMTP id q30-20020a056870829e00b0010c240bcbb9mr5464805oae.115.1658421971030;
+        Thu, 21 Jul 2022 09:46:11 -0700 (PDT)
 Received: from wintermute.localdomain (cpe-76-183-134-35.tx.res.rr.com. [76.183.134.35])
-        by smtp.gmail.com with ESMTPSA id f189-20020aca38c6000000b0033a45705cb2sm831512oia.8.2022.07.21.09.46.08
+        by smtp.gmail.com with ESMTPSA id f189-20020aca38c6000000b0033a45705cb2sm831512oia.8.2022.07.21.09.46.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 09:46:09 -0700 (PDT)
+        Thu, 21 Jul 2022 09:46:10 -0700 (PDT)
 From:   Chris Morgan <macroalpha82@gmail.com>
 To:     linux-input@vger.kernel.org
 Cc:     dmitry.torokhov@gmail.com, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
         contact@artur-rojek.eu, jic23@kernel.org, paul@crapouillou.net,
-        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH v8 0/3] dt-bindings: adc-joystick: add poll-interval
-Date:   Thu, 21 Jul 2022 11:46:00 -0500
-Message-Id: <20220721164603.13534-1-macroalpha82@gmail.com>
+        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>,
+        Maya Matuszczyk <maccraft123mc@gmail.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v8 1/3] dt-bindings: adc-joystick: add poll-interval
+Date:   Thu, 21 Jul 2022 11:46:01 -0500
+Message-Id: <20220721164603.13534-2-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220721164603.13534-1-macroalpha82@gmail.com>
+References: <20220721164603.13534-1-macroalpha82@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -71,65 +75,44 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Add support to the existing adc-joystick driver to support polling
-rather than relying on triggered buffers. This is useful for devices
-that do not offer triggered buffers in hardware. Code adapted from
-changes made by Maya Matuszczyk <maccraft123mc@gmail.com>.
+Add poll-interval support for the adc-joystick documentation. This is
+an optional value and if not provided the adc-joystick works as it
+does today (with buffers). If this value is provided, the adc-joystick
+driver is polled at the specified interval. The existing attribute of
+"poll-interval" was used instead of complying with property-units.yaml
+after discussion of the issue on the mailing list.
 
-Changes from V7:
- - Dropped acks from adc-joystick.c changes, as it has been altered
-   somewhat since v7.
- - Improved checking value of poll-interval to ensure explicit error
-   handling in the event of malformed values.
- - Adjusted logic to not check for storagebits if polling is in use,
-   which allows adc-joystick to work in polling mode for devices that
-   utilize a mux (such as the Odroid Go Super and the Anbernic RG353).
- - Changed error message and channel size comparison logic slightly to
-   ensure code can fit within 80 character column width.
+Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Artur Rojek <contact@artur-rojek.eu>
+---
+ Documentation/devicetree/bindings/input/adc-joystick.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changes from V6:
- - Reverted back to "poll-interval" after mailing list discussion.
- - Referenced input.yaml for definition of poll-interval in adc-joystick
-   documentation.
-
-Changes from V5:
- - Corrected an error found by yamllint in the documentation.
-
-Changes from V4:
- - Added unit property to devicetree attribute making it now
-   "poll-interval-ms".
- - Simplified logic for setting polled value and made variable names
-   more clear.
-
-Changes from V3:
- - After lengthy discussion decided to support with existing attribute
-   of "poll-interval". If present, the driver will use polling and if
-   not present, it will use triggered buffers (as the driver does
-   today).
- - Corrected some lines to honor the 80 character line-limit.
- - Check return value from polling method and return early if there
-   is an error reading the data.
-
-Changes from V2:
- - Changed parameter from "adc-joystick,polled" to
-   "adc-joystick,no-hardware-trigger" as it is more representative of
-   what the driver and hardware are doing.
-
-Changes from V1:
- - Removed driver compatible string of "adc-joystick-polled".
- - Added new optional boolean value of "adc-joystick,polled".
- - Cleaned up if statements regarding polling behavior.
-
-Chris Morgan (3):
-  dt-bindings: adc-joystick: add poll-interval
-  Input: adc-joystick - Add polled input device support
-  arm64: dts: rockchip: Update joystick to polled for OG2
-
- .../bindings/input/adc-joystick.yaml          |  5 ++
- .../boot/dts/rockchip/rk3326-odroid-go2.dts   |  1 +
- drivers/input/joystick/adc-joystick.c         | 82 ++++++++++++++-----
- 3 files changed, 68 insertions(+), 20 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/input/adc-joystick.yaml b/Documentation/devicetree/bindings/input/adc-joystick.yaml
+index 2ee04e03bc22..ab5caad055ea 100644
+--- a/Documentation/devicetree/bindings/input/adc-joystick.yaml
++++ b/Documentation/devicetree/bindings/input/adc-joystick.yaml
+@@ -14,6 +14,9 @@ description: >
+   Bindings for joystick devices connected to ADC controllers supporting
+   the Industrial I/O subsystem.
+ 
++allOf:
++  - $ref: input.yaml#
++
+ properties:
+   compatible:
+     const: adc-joystick
+@@ -28,6 +31,8 @@ properties:
+       https://github.com/devicetree-org/dt-schema/blob/master/schemas/iio/iio-consumer.yaml
+       for details.
+ 
++  poll-interval: true
++
+   '#address-cells':
+     const: 1
+ 
 -- 
 2.25.1
 

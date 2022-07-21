@@ -2,78 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCF857C8D0
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 12:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8AC157CB74
+	for <lists+linux-iio@lfdr.de>; Thu, 21 Jul 2022 15:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbiGUKST (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 21 Jul 2022 06:18:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47522 "EHLO
+        id S233777AbiGUNJ3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 21 Jul 2022 09:09:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231859AbiGUKSS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 06:18:18 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4867C82399;
-        Thu, 21 Jul 2022 03:18:17 -0700 (PDT)
-Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LpT4W0DV1z686vG;
-        Thu, 21 Jul 2022 18:16:27 +0800 (CST)
-Received: from lhreml710-chm.china.huawei.com (10.201.108.61) by
- fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 21 Jul 2022 12:18:14 +0200
-Received: from localhost (10.81.202.249) by lhreml710-chm.china.huawei.com
- (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 21 Jul
- 2022 11:18:13 +0100
-Date:   Thu, 21 Jul 2022 11:18:12 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Slark Xiao <slark_xiao@163.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: magn: hmc5843: Fix typo 'the the' in comment
-Message-ID: <20220721111812.00003038@Huawei.com>
-In-Reply-To: <20220721084441.50065-1-slark_xiao@163.com>
+        with ESMTP id S233934AbiGUNJA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 21 Jul 2022 09:09:00 -0400
+X-Greylist: delayed 8191 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Jul 2022 06:08:42 PDT
+Received: from m1353.mail.163.com (m1353.mail.163.com [220.181.13.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EBDD3422FF;
+        Thu, 21 Jul 2022 06:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=yDycJ
+        HNEX38nFYMkuR2P0QYIzEVoyazCWD1v3pTzJRQ=; b=kLqMYO0OYg9GwHVcypEXp
+        VWwWpkBVXOKVbERk6Cq6HNnNv4RBnXHDJK6TnypoiQTBrXDQqgswVLaqZcMAxyQ4
+        2k7ZB4w1SjVy4+pnrki5bf1leJ2aM9OWslu3VdLPmf/byttTJRVCHaypQKLTkpNC
+        n3ihwN8SuU4sViHB4DfAKk=
+Received: from slark_xiao$163.com ( [223.104.68.234] ) by
+ ajax-webmail-wmsvr53 (Coremail) ; Thu, 21 Jul 2022 18:35:25 +0800 (CST)
+X-Originating-IP: [223.104.68.234]
+Date:   Thu, 21 Jul 2022 18:35:25 +0800 (CST)
+From:   "Slark Xiao" <slark_xiao@163.com>
+To:     "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re:Re: [PATCH] iio: magn: hmc5843: Fix typo 'the the' in comment
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 163com
+In-Reply-To: <20220721111812.00003038@Huawei.com>
 References: <20220721084441.50065-1-slark_xiao@163.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+ <20220721111812.00003038@Huawei.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.81.202.249]
-X-ClientProxiedBy: lhreml734-chm.china.huawei.com (10.201.108.85) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <45c5e3ce.3724.182205399a9.Coremail.slark_xiao@163.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: NcGowAAXJ5nuK9liQColAA--.31122W
+X-CM-SenderInfo: xvod2y5b0lt0i6rwjhhfrp/xtbBAxhFZGB0LnhE9wABsK
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Jul 2022 16:44:41 +0800
-Slark Xiao <slark_xiao@163.com> wrote:
-
-> Replace 'the the' with 'the' in the comment.
-> 
-> Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Duplicate of 
-https://lore.kernel.org/all/20220622035925.5008-1-jiangjian@cdjrlc.com/
-> ---
->  drivers/iio/magnetometer/hmc5843_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-> index 92eb2d156ddb..4a63b2da9df0 100644
-> --- a/drivers/iio/magnetometer/hmc5843_core.c
-> +++ b/drivers/iio/magnetometer/hmc5843_core.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0-or-later
->  /*
-> - * Device driver for the the HMC5843 multi-chip module designed
-> + * Device driver for the HMC5843 multi-chip module designed
->   * for low field magnetic sensing.
->   *
->   * Copyright (C) 2010 Texas Instruments
-
+CgoKCgoKCgoKCgoKCgoKCkF0IDIwMjItMDctMjEgMTg6MTg6MTIsICJKb25hdGhhbiBDYW1lcm9u
+IiA8Sm9uYXRoYW4uQ2FtZXJvbkBIdWF3ZWkuY29tPiB3cm90ZToKPk9uIFRodSwgMjEgSnVsIDIw
+MjIgMTY6NDQ6NDEgKzA4MDAKPlNsYXJrIFhpYW8gPHNsYXJrX3hpYW9AMTYzLmNvbT4gd3JvdGU6
+Cj4KPj4gUmVwbGFjZSAndGhlIHRoZScgd2l0aCAndGhlJyBpbiB0aGUgY29tbWVudC4KPj4gCj4+
+IFNpZ25lZC1vZmYtYnk6IFNsYXJrIFhpYW8gPHNsYXJrX3hpYW9AMTYzLmNvbT4KPkR1cGxpY2F0
+ZSBvZiAKPmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDIyMDYyMjAzNTkyNS41MDA4LTEt
+amlhbmdqaWFuQGNkanJsYy5jb20vCj4+IC0tLQoKCk9rLCB0aGFua3MgZm9yIHRoYXQuIEkgd2ls
+bCB1cGRhdGUgbXkgbG9jYWwgZmlsZXMgaW4gdGltZSB0byBhdm9pZCB0aGlzIHNjZW5hcmlvLgpU
+aGFua3MhCgoKPj4gIGRyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9obWM1ODQzX2NvcmUuYyB8IDIg
+Ky0KPj4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQo+PiAK
+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9obWM1ODQzX2NvcmUuYyBi
+L2RyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9obWM1ODQzX2NvcmUuYwo+PiBpbmRleCA5MmViMmQx
+NTZkZGIuLjRhNjNiMmRhOWRmMCAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9paW8vbWFnbmV0b21l
+dGVyL2htYzU4NDNfY29yZS5jCj4+ICsrKyBiL2RyaXZlcnMvaWlvL21hZ25ldG9tZXRlci9obWM1
+ODQzX2NvcmUuYwo+PiBAQCAtMSw2ICsxLDYgQEAKPj4gIC8vIFNQRFgtTGljZW5zZS1JZGVudGlm
+aWVyOiBHUEwtMi4wLW9yLWxhdGVyCj4+ICAvKgo+PiAtICogRGV2aWNlIGRyaXZlciBmb3IgdGhl
+IHRoZSBITUM1ODQzIG11bHRpLWNoaXAgbW9kdWxlIGRlc2lnbmVkCj4+ICsgKiBEZXZpY2UgZHJp
+dmVyIGZvciB0aGUgSE1DNTg0MyBtdWx0aS1jaGlwIG1vZHVsZSBkZXNpZ25lZAo+PiAgICogZm9y
+IGxvdyBmaWVsZCBtYWduZXRpYyBzZW5zaW5nLgo+PiAgICoKPj4gICAqIENvcHlyaWdodCAoQykg
+MjAxMCBUZXhhcyBJbnN0cnVtZW50cwo=

@@ -2,123 +2,235 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7EE957DC0A
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 10:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEE157DCF8
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 10:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233529AbiGVIOl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jul 2022 04:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39264 "EHLO
+        id S234508AbiGVIxM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jul 2022 04:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233126AbiGVIOk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 04:14:40 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A060D9CE04
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 01:14:39 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id n185so2325406wmn.4
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 01:14:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=9DVxnFJwaerV12jgXMK3zBLGoxl8v4zlAcL2+s+9gAM=;
-        b=fCqnxqTTH+E1xRh3T7QQ2zSDiYbfwW+3g9ru9OX3UopVRra0sKnKDGorsmKMWA1RGd
-         k6TsTfDigwah7v8EoqIOYptREO8GMYZkrYG8g0VCu548fTIXtGSCGd4x1Bx+rji48mwA
-         R3CFjikMPFSdYVrxtD34DPbMsyQIAqw9qOLcqOEad+xVMlP7a8Nz8UdB6YQ4yXdn2RCA
-         +b5/eFidS8NP8my+rlZMh04sx/UgRlc9ITddUVpka4zCFTcPFkSKwt/1SzoHkzrOpezU
-         sxmAC/nnpezPVXhgOJH/YXffp0MolN04badm69WIOT4O0OEO4429qdUSN+FycMUb9OWY
-         6qRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=9DVxnFJwaerV12jgXMK3zBLGoxl8v4zlAcL2+s+9gAM=;
-        b=GT1x2GvA4bxawWgsm2ATTZvurxF46kF/Oz9oonITBL0yg6/llPrZS5YD7BeZn6ZuMQ
-         wU1Ki2cvVehUn3pheKei/Vo3a7ay+uc1PS1EOSnUGD/8R5WvpZ7kf7SNShgoLfcUFWs5
-         oVwg/dtrL8iR6Nz6HtFXc9EEym7Ijbvir+KA/BaQDIYgv8oMH4lb5ndxZMRm35KPYQfL
-         HdOD+6nIk9whpypHMV4rFxpvXEIpwzy1k/LwJogd3bAaVqKxuQ0oKKXuLspbDXpqatXy
-         DcGKQCS/XzebHcrCm4nHfU8DOxn6jd+UhIB39/lYrrxZkrh/b36gm2SG6Hb4j8oP9srH
-         oytA==
-X-Gm-Message-State: AJIora+4y1Wv60yQec4h3t9aSUegj2BG/SZuK9mMaqdGLyVAxktSna5w
-        dcYiqu/NyQw4vhK55QWDumXJbA==
-X-Google-Smtp-Source: AGRyM1vVqORhBY4QZ5CAvwiaAPx2Tb3NLOQb5UCE7K6q3cn72VM359jXqnVIY+ofcGDmAGvG1c5Szg==
-X-Received: by 2002:a1c:21c3:0:b0:3a2:fdba:3f39 with SMTP id h186-20020a1c21c3000000b003a2fdba3f39mr1620970wmh.194.1658477678048;
-        Fri, 22 Jul 2022 01:14:38 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id a21-20020a05600c349500b003a317ee3036sm4515726wmq.2.2022.07.22.01.14.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jul 2022 01:14:37 -0700 (PDT)
-Date:   Fri, 22 Jul 2022 09:14:35 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     saravanan sekar <sravanhome@gmail.com>
-Cc:     sre@kernel.org, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        lars@metafoo.de, krzysztof.kozlowski+dt@linaro.org,
-        andy.shevchenko@gmail.com, robh+dt@kernel.org, jic23@kernel.org
-Subject: Re: [PATCH v3 0/6] Add support for mp2733 battery charger
-Message-ID: <Ytpca2oosxjjQo0C@google.com>
-References: <20220615145357.2370044-1-sravanhome@gmail.com>
- <7d20978f-e17c-9bea-1436-68bcf4bd8524@gmail.com>
+        with ESMTP id S234794AbiGVIwx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 04:52:53 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEDCF9FE3D;
+        Fri, 22 Jul 2022 01:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1658479963; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=eDmhx9t3vbSM5/x8hDrcZa2ONSK3+dT3zluEy1cNTOQ=;
+        b=kr2dRfT00sONsfET1lsNN3ms6cKknrg+E61jg7vmZPw6nNxIbAx30EcvvbxKFiLzmr3doa
+        6EMrpjDcZ/TgJn5VcWvYWWEaBYsiE7iloTd+jDAAzfApsarZ1pkjugJ0YBCgtSeqa2UZKF
+        0Sb6Vjx10BQTvhYHNUcJhhZjNKLQBHQ=
+Date:   Fri, 22 Jul 2022 09:52:34 +0100
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 3/4] iio: afe/rescale: Add support for converting scale
+ avail table
+To:     Peter Rosin <peda@axentia.se>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, list@opendingux.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <MBZEFR.J5QW1P07Y388@crapouillou.net>
+In-Reply-To: <b413604e-8a94-a31d-35ce-52eb2cc78a46@axentia.se>
+References: <20220721191526.374152-1-paul@crapouillou.net>
+        <20220721191526.374152-4-paul@crapouillou.net>
+        <b413604e-8a94-a31d-35ce-52eb2cc78a46@axentia.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7d20978f-e17c-9bea-1436-68bcf4bd8524@gmail.com>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 21 Jul 2022, saravanan sekar wrote:
+Hi Peter,
 
-> On 15/06/22 16:53, Saravanan Sekar wrote:
-> > changes in v3:
-> >   - fixed dt_binding_check error
-> >   - fixed spelling usb->USB
-> > 
-> > changes in v2:
-> >   - fixed spelling
-> >   - revert back probe to probe_new in mfd driver
-> > 
-> > I do not see a cover letter, but FWIW,
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > for all patches except DT binding
-> > Note, some of the comments regarding spelling were given, I believe
-> > you are going to address them in v3.
-> > 
-> > 
-> > add support for mp2733 Battery charger control driver for Monolithic
-> > Power System's MP2733 chipset
-> > 
-> > Saravanan Sekar (6):
-> >    iio: adc: mp2629: fix wrong comparison of channel
-> >    dt-bindings: mfd: Add mp2733 compatible
-> >    mfd: mp2629: Add support for mps mp2733 battery charger
-> >    iio: adc: mp2629: restrict input voltage mask for mp2629
-> >    power: supply: Add support for mp2733 battery charger
-> >    power: supply: mp2629: Add USB fast charge settings
-> > 
-> >   .../ABI/testing/sysfs-class-power-mp2629      |  16 ++
-> >   .../devicetree/bindings/mfd/mps,mp2629.yaml   |   4 +-
-> >   drivers/iio/adc/mp2629_adc.c                  |   5 +-
-> >   drivers/mfd/mp2629.c                          |   5 +-
-> >   drivers/power/supply/mp2629_charger.c         | 208 +++++++++++++++---
-> >   include/linux/mfd/mp2629.h                    |   6 +
-> >   6 files changed, 212 insertions(+), 32 deletions(-)
+Le ven., juil. 22 2022 at 00:16:31 +0200, Peter Rosin <peda@axentia.se>=20
+a =E9crit :
+> Hi!
+>=20
+> 2022-07-21 at 21:15, Paul Cercueil wrote:
+>>  When the IIO channel has a scale_available attribute, we want the=20
+>> values
+>>  contained to be properly converted the same way the scale value is.
+>>=20
+>>  Since rescale_process_scale() may change the encoding type, we must
+>>  convert the IIO_AVAIL_LIST to a IIO_AVAIL_LIST_WITH_TYPE.
+>>=20
+>>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+>>  ---
+>>   drivers/iio/afe/iio-rescale.c   | 85=20
+>> +++++++++++++++++++++++++++++++++
+>>   include/linux/iio/afe/rescale.h |  2 +
+>>   2 files changed, 87 insertions(+)
+>>=20
+>>  diff --git a/drivers/iio/afe/iio-rescale.c=20
+>> b/drivers/iio/afe/iio-rescale.c
+>>  index 6949d2151025..5c9970b93384 100644
+>>  --- a/drivers/iio/afe/iio-rescale.c
+>>  +++ b/drivers/iio/afe/iio-rescale.c
+>>  @@ -232,6 +232,18 @@ static int rescale_read_avail(struct iio_dev=20
+>> *indio_dev,
+>>   		*type =3D IIO_VAL_INT;
+>>   		return iio_read_avail_channel_raw(rescale->source,
+>>   						  vals, length);
+>>  +	case IIO_CHAN_INFO_SCALE:
+>>  +		if (rescale->chan_processed) {
+>=20
+> I think it is wrong to simply feed the info-scale to the source=20
+> channel if it
+> happens to be processed. It still needs the inverse rescale. But see=20
+> below.
 
-> May I know what is the plan for merge this change-set !
+Yes, when I started working on that patchset, processed channels=20
+weren't a thing, and I don't think I understood what they are about.
 
-It's due for v5.21.
+>=20
+>>  +			return iio_read_avail_channel_attribute(rescale->source,
+>>  +								vals, type,
+>>  +								length,
+>>  +								IIO_CHAN_INFO_SCALE);
+>>  +		} else if (rescale->scale_len) {
+>>  +			*length =3D rescale->scale_len;
+>>  +			*vals =3D rescale->scale_data;
+>>  +			return IIO_AVAIL_LIST_WITH_TYPE;
+>>  +		}
+>>  +		fallthrough;
+>>   	default:
+>>   		return -EINVAL;
+>>   	}
+>>  @@ -266,11 +278,74 @@ static ssize_t rescale_write_ext_info(struct=20
+>> iio_dev *indio_dev,
+>>   					  buf, len);
+>>   }
+>>=20
+>>  +static int rescale_init_scale_avail(struct device *dev, struct=20
+>> rescale *rescale)
+>>  +{
+>>  +	int ret, type, length, *data;
+>>  +	const int *scale_raw;
+>>  +	unsigned int i;
+>>  +	size_t out_len;
+>>  +
+>>  +	ret =3D iio_read_avail_channel_attribute(rescale->source,=20
+>> &scale_raw,
+>>  +					       &type, &length,
+>>  +					       IIO_CHAN_INFO_SCALE);
+>>  +	if (ret < 0)
+>>  +		return ret;
+>>  +
+>>  +	switch (ret) {
+>>  +	case IIO_AVAIL_LIST_WITH_TYPE:
+>>  +		out_len =3D length;
+>>  +		break;
+>>  +	case IIO_AVAIL_LIST:
+>>  +		if (type =3D=3D IIO_VAL_INT)
+>>  +			out_len =3D length * 3 / 1;
+>>  +		else
+>>  +			out_len =3D length * 3 / 2;
+>>  +		break;
+>>  +	default:
+>>  +		/* TODO: Support IIO_AVAIL_RANGE */
+>>  +		return -EOPNOTSUPP;
+>>  +	}
+>>  +
+>>  +	data =3D devm_kzalloc(dev, sizeof(*data) * out_len, GFP_KERNEL);
+>>  +	if (!data)
+>>  +		return -ENOMEM;
+>>  +
+>>  +	if (ret =3D=3D IIO_AVAIL_LIST_WITH_TYPE) {
+>>  +		memcpy(data, scale_raw, sizeof(*scale_raw) * length);
+>>  +	} else if (type =3D=3D IIO_VAL_INT) {
+>>  +		for (i =3D 0; i < length; i++) {
+>>  +			data[i * 3 + 0] =3D scale_raw[i];
+>>  +			data[i * 3 + 2] =3D IIO_VAL_INT;
+>>  +		}
+>>  +	} else {
+>>  +		for (i =3D 0; i < length / 2; i++) {
+>>  +			data[i * 3 + 0] =3D scale_raw[i * 2];
+>>  +			data[i * 3 + 1] =3D scale_raw[i * 2 + 1];
+>>  +			data[i * 3 + 2] =3D type;
+>>  +		}
+>>  +	}
+>>  +
+>>  +	for (i =3D 0; i < out_len; i +=3D 3) {
+>>  +		ret =3D rescale_process_scale(rescale, data[i + 2],
+>>  +					    &data[i], &data[i + 1]);
+>>  +		if (ret < 0)
+>>  +			return ret;
+>>  +
+>>  +		data[i + 2] =3D ret;
+>>  +	}
+>>  +
+>>  +	rescale->scale_len =3D out_len;
+>>  +	rescale->scale_data =3D data;
+>>  +
+>>  +	return 0;
+>>  +}
+>>  +
+>>   static int rescale_configure_channel(struct device *dev,
+>>   				     struct rescale *rescale)
+>>   {
+>>   	struct iio_chan_spec *chan =3D &rescale->chan;
+>>   	struct iio_chan_spec const *schan =3D rescale->source->channel;
+>>  +	int ret;
+>>=20
+>>   	chan->indexed =3D 1;
+>>   	chan->output =3D schan->output;
+>>  @@ -303,6 +378,16 @@ static int rescale_configure_channel(struct=20
+>> device *dev,
+>>   	    !rescale->chan_processed)
+>>   		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_RAW);
+>>=20
+>>  +	if (iio_channel_has_available(schan, IIO_CHAN_INFO_SCALE)) {
+>>  +		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_SCALE);
+>>  +
+>>  +		if (!rescale->chan_processed) {
+>>  +			ret =3D rescale_init_scale_avail(dev, rescale);
+>>  +			if (ret)
+>>  +				return ret;
+>>  +		}
+>>  +	}
+>>  +
+>=20
+> Does a (sane) processed channel really have a scale? That seems a bit=20
+> fringe.
+> Wouldn't it be better to conditionally publish availability of=20
+> info-scale so
+> that it isn't visible for processed channels and dodge that=20
+> rabbit-hole? In
+> either case, the above commented implementation of info-scale for=20
+> rescaled
+> processed channels is wrong (I think...).
 
-If you're not planning on making any more changes, please collect all
-of your tags and submit a [RESEND].
+I could set the IIO_CHAN_INFO_SCALE only for non-processed channels,=20
+since this is what I can test with.
 
--- 
-Lee Jones [李琼斯]
-Principal Technical Lead - Developer Services
-Linaro.org │ Open source software for Arm SoCs
-Follow Linaro: Facebook | Twitter | Blog
+Cheers,
+-Paul
+
+>>   	return 0;
+>>   }
+>>=20
+>>  diff --git a/include/linux/iio/afe/rescale.h=20
+>> b/include/linux/iio/afe/rescale.h
+>>  index 6eecb435488f..74de2962f864 100644
+>>  --- a/include/linux/iio/afe/rescale.h
+>>  +++ b/include/linux/iio/afe/rescale.h
+>>  @@ -26,6 +26,8 @@ struct rescale {
+>>   	s32 numerator;
+>>   	s32 denominator;
+>>   	s32 offset;
+>>  +	int scale_len;
+>>  +	int *scale_data;
+>>   };
+>>=20
+>>   int rescale_process_scale(struct rescale *rescale, int scale_type,
+
+

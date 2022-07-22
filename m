@@ -2,72 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1963357E1F0
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 15:04:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF46257E2F6
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 16:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235231AbiGVNEW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jul 2022 09:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49668 "EHLO
+        id S233365AbiGVOTt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jul 2022 10:19:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235233AbiGVNES (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 09:04:18 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E93AF960;
-        Fri, 22 Jul 2022 06:04:16 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id r14so5365754ljp.2;
-        Fri, 22 Jul 2022 06:04:16 -0700 (PDT)
+        with ESMTP id S229959AbiGVOTt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 10:19:49 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FE9A6FBB;
+        Fri, 22 Jul 2022 07:19:48 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id c6so608041plc.5;
+        Fri, 22 Jul 2022 07:19:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=F3i1nh0A1DHu/AJzxatV5Ku9zoBWXQ5Yp0VbvHDsCrw=;
-        b=EDRNUioqRnq0DZaVEO2bvdnLyHv1qmw16uc9geh3IsTDCf/ZVX/zikyN0y+fZZEuQz
-         ylWhEkP0OVB4oOTXIW0pG/woVg0EQ5j2kM2bH5s4HUgeRBA/VmvSclln9iInvje29Lgi
-         yaA1qezL8iGOwfCHxwLukornUQtPkS88drkXfUTqVjB6gB1Rc71SjUvrmRV6pLw8wkOT
-         2umkQ5KuAqflHsPeCiNAtDkgChirRGTULbIzbt/+eXYA5USQyIus3lCIKpqnOgjRjYGN
-         7I6Ou9vmvrs4SGpafGbcrM5744Ns8hWhYThjb3t8EEotY2+aPPoni/8pueCo0FMpBQzz
-         eKRg==
+        h=sender:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=T1q/5UEvjKnmrGkeFgZRytr5DU5kdabjES1IFoO/gqw=;
+        b=N5b2E48s3MFxEm4zDb2HCPhQHt4Urn8emhJOhYSUlZ5Y57Ig163ukqY7GWAh8urYCS
+         HoNK8KFmrEWeuERbb5IRJDMLkwGWh8d6gFpumktZTx0iitGevy10Z/qaTUWKsPNCQefi
+         tgBpDzACKUqQ3W04Vse8a3Ym5LbgWuccclVvYtR+iXeeBcT8306sbxShnNhR+FkoELQE
+         RgJE3w9ydSuqJoeZ5XqQT8lRdGQe7VOQ9EYrs+whGEOfoUv54IzpxHuvLRMOI+Y7qnjJ
+         0ZTHyjIGqCWUJ4pDWCaeRp19ymx/h7u0u11UzLCg29nhJyqlZ4YsiPxey1skCyps7Zm9
+         f8Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=F3i1nh0A1DHu/AJzxatV5Ku9zoBWXQ5Yp0VbvHDsCrw=;
-        b=IykRaXMZxGJj7tgSm7izjBbzERWbFIRwXiiWTeU8fg49vML8aUb1LcqvVZHGDDD2RP
-         9ZZfeY716g0l31Q36qW09Izwj+HeixzVoMGhKP8dOPHiZSrU4+U9iOr1M9kRPU67yfyG
-         bDNRWzlKYVN0GL9Wl7BaX9/dvEZqF25NT+zCfhGHrHpnBZe9hTb0Bsis2BRkfNIBq5eu
-         r9IQvlbz0Mtqb5mdrGwNOyJq/mPS22HjNCgGeZdKROI9Fe0jRGp/0mcvxRp/ZeXhDLgi
-         hkexB7YylaxxVFqomlLjVQdsv3H9b9hp+y6M7++c/UjqsJeD1CdGnbXAUQxcbqXmB7Hc
-         fvhw==
-X-Gm-Message-State: AJIora/Gb1Q8/WHJ8A2MmeoBgEIeDW6h36Z/lEN7tL6m5oDG4tVNfdal
-        D32ANUvYg48ZYrnJ8QBjXvM=
-X-Google-Smtp-Source: AGRyM1viDf923Qcug9VOj5X/cN4Oq4EE1XKhddh1BkKFwmk/LlkItvoZ3WcgJQEvh8GrC9oD5cYwww==
-X-Received: by 2002:a2e:93c8:0:b0:24d:b348:b070 with SMTP id p8-20020a2e93c8000000b0024db348b070mr167912ljh.434.1658495055190;
-        Fri, 22 Jul 2022 06:04:15 -0700 (PDT)
-Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id s18-20020a056512203200b004786d37229csm1039673lfs.155.2022.07.22.06.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jul 2022 06:04:14 -0700 (PDT)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 9/9] iio: adc: mcp3911: add support to set PGA
-Date:   Fri, 22 Jul 2022 15:07:26 +0200
-Message-Id: <20220722130726.7627-10-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220722130726.7627-1-marcus.folkesson@gmail.com>
-References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
+        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+         :subject:content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=T1q/5UEvjKnmrGkeFgZRytr5DU5kdabjES1IFoO/gqw=;
+        b=MlfIlU20NUsVVV1N6hgkyh9Zqbxk1/HGNG+MfsJ8GetCLkYOvra05Uk3wah+9eH0eq
+         MlYwQMV/hDPQ7TEMNoDc78N+iGfooTBHIa3XbzT1uUhXVorueFkAR9rzPjGviBUV2opX
+         /NXM4sstVqwFn2vi3bZgnUDbsB+y5SJaJJdAE3s9Nutc3vk94+RZnrnHdqnFkk/FHvMv
+         NGHIHwD75pHig5oHWgHhZ3dAFBlyWndZ8TDO52buo6eOty/1zODzkuEXu2nGnF/wmNyg
+         ZZkR6gGFIRS5vgEroNjL8g1GB9hzeGvK9nmgmZ2Z6a3ReW9rw6EpZ4iF1xJpcQtKResS
+         YM/g==
+X-Gm-Message-State: AJIora+s0aIpMf6y+1h/LZta50HaoWBrjODjZTqD012812gdokdfNfgO
+        s5pbW2QkkqyXchirb/qQixw=
+X-Google-Smtp-Source: AGRyM1tXVqYNUy+NFgrAHlDcM01iNexAN7CaAL0uAROXCpeeVwkXmKhPFoUuKttLJzcQ4dpaFH8V7g==
+X-Received: by 2002:a17:903:120f:b0:15f:99f:9597 with SMTP id l15-20020a170903120f00b0015f099f9597mr651270plh.45.1658499587396;
+        Fri, 22 Jul 2022 07:19:47 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y12-20020aa79aec000000b005252a06750esm3913898pfp.182.2022.07.22.07.19.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Jul 2022 07:19:45 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <d0c94078-eec5-5924-a2c1-8c94c06364b8@roeck-us.net>
+Date:   Fri, 22 Jul 2022 07:19:42 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v6 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
+ tcpci driver
+Content-Language: en-US
+To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        andy.shevchenko@gmail.com
+Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com>
+ <20220722102407.2205-9-peterwu.pub@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20220722102407.2205-9-peterwu.pub@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,192 +93,280 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for setting the Programmable Gain Amplifiers by adjust the
-scale value.
+On 7/22/22 03:24, ChiaEn Wu wrote:
+> From: ChiYuan Huang <cy_huang@richtek.com>
+> 
+> The MediaTek MT6370 is a highly-integrated smart power management IC,
+> which includes a single cell Li-Ion/Li-Polymer switching battery
+> charger, a USB Type-C & Power Delivery (PD) controller, dual
+> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
+> a display bias driver and a general LDO for portable devices.
+> 
+> Add support for the Type-C & Power Delivery controller in
+> MediaTek MT6370 IC.
+> 
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/iio/adc/mcp3911.c | 107 +++++++++++++++++++++++++++++---------
- 1 file changed, 83 insertions(+), 24 deletions(-)
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index 30c91ccc5fb6..22a43d3fe402 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -27,6 +27,8 @@
- #define MCP3911_REG_MOD			0x06
- #define MCP3911_REG_PHASE		0x07
- #define MCP3911_REG_GAIN		0x09
-+#define MCP3911_GAIN_MASK(ch)		(GENMASK(2, 0) << 3 * ch)
-+#define MCP3911_GAIN_VAL(ch, val)      ((val << 3 * ch) & MCP3911_GAIN_MASK(ch))
- 
- #define MCP3911_REG_STATUSCOM		0x0a
- #define MCP3911_STATUSCOM_DRHIZ         BIT(12)
-@@ -57,8 +59,10 @@
- #define MCP3911_REG_WRITE(reg, id)	((((reg) << 1) | ((id) << 5) | (0 << 0)) & 0xff)
- 
- #define MCP3911_NUM_CHANNELS		2
-+#define MCP3911_NUM_SCALES		6
- 
- static const int mcp3911_osr_table[] = { 32, 64, 128, 256, 512, 1024, 2048, 4096 };
-+static u32 mcp3911_scale_table[MCP3911_NUM_SCALES][2];
- 
- struct mcp3911 {
- 	struct spi_device *spi;
-@@ -67,6 +71,7 @@ struct mcp3911 {
- 	struct clk *clki;
- 	u32 dev_addr;
- 	struct iio_trigger *trig;
-+	u32 gain[MCP3911_NUM_CHANNELS];
- 	struct {
- 		u32 channels[MCP3911_NUM_CHANNELS];
- 		s64 ts __aligned(8);
-@@ -143,6 +148,11 @@ static int mcp3911_read_avail(struct iio_dev *indio_dev,
- 		*vals = mcp3911_osr_table;
- 		*length = ARRAY_SIZE(mcp3911_osr_table);
- 		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SCALE:
-+		*type = IIO_VAL_INT_PLUS_NANO;
-+		*vals = (int *)mcp3911_scale_table;
-+		*length = ARRAY_SIZE(mcp3911_scale_table) * 2;
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -187,29 +197,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
- 		break;
- 
- 	case IIO_CHAN_INFO_SCALE:
--		if (adc->vref) {
--			ret = regulator_get_voltage(adc->vref);
--			if (ret < 0) {
--				dev_err(indio_dev->dev.parent,
--					"failed to get vref voltage: %d\n",
--				       ret);
--				goto out;
--			}
--
--			*val = ret / 1000;
--		} else {
--			*val = MCP3911_INT_VREF_MV;
--		}
--
--		/*
--		 * For 24bit Conversion
--		 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
--		 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
--		 */
--
--		/* val2 = (2^23 * 1.5) */
--		*val2 = 12582912;
--		ret = IIO_VAL_FRACTIONAL;
-+		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
-+		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
-+		ret = IIO_VAL_INT_PLUS_NANO;
- 		break;
- 	}
- 
-@@ -227,6 +217,18 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 
- 	mutex_lock(&adc->lock);
- 	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-+			if (val == mcp3911_scale_table[i][0] &&
-+				val2 == mcp3911_scale_table[i][1]) {
-+
-+				adc->gain[channel->channel] = BIT(i);
-+				ret = mcp3911_update(adc, MCP3911_REG_GAIN,
-+						MCP3911_GAIN_MASK(channel->channel),
-+						MCP3911_GAIN_VAL(channel->channel, i), 1);
-+			}
-+		}
-+		break;
- 	case IIO_CHAN_INFO_OFFSET:
- 		if (val2 != 0) {
- 			ret = -EINVAL;
-@@ -262,6 +264,47 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 	return ret;
- }
- 
-+static int mcp3911_calc_scale_table(struct mcp3911 *adc)
-+{
-+	u32 ref = MCP3911_INT_VREF_MV;
-+	u32 div;
-+	int ret;
-+	int tmp0, tmp1;
-+	s64 tmp2;
-+
-+	if (adc->vref) {
-+		ret = regulator_get_voltage(adc->vref);
-+		if (ret < 0) {
-+			dev_err(&adc->spi->dev,
-+				"failed to get vref voltage: %d\n",
-+			       ret);
-+			return ret;
-+		}
-+
-+		ref = ret / 1000;
-+	}
-+
-+	/*
-+	 * For 24-bit Conversion
-+	 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
-+	 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
-+	 *
-+	 * ref = Reference voltage
-+	 * div = (2^23 * 1.5 * gain) = 12582912 * gain
-+	 */
-+	for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-+		div = 12582912 * BIT(i);
-+		tmp2 = div_s64((s64)ref * 1000000000LL, div);
-+		tmp1 = div;
-+		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
-+
-+		mcp3911_scale_table[i][0] = 0;
-+		mcp3911_scale_table[i][1] = tmp1;
-+	}
-+
-+	return 0;
-+}
-+
- #define MCP3911_CHAN(idx) {					\
- 		.type = IIO_VOLTAGE,				\
- 		.indexed = 1,					\
-@@ -271,8 +314,10 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
- 			BIT(IIO_CHAN_INFO_OFFSET) |		\
- 			BIT(IIO_CHAN_INFO_SCALE),		\
--		.info_mask_shared_by_type_available =		\
-+		.info_mask_shared_by_type_available =           \
- 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-+		.info_mask_separate_available =			\
-+			BIT(IIO_CHAN_INFO_SCALE),		\
- 		.scan_type = {					\
- 			.sign = 's',				\
- 			.realbits = 24,				\
-@@ -495,6 +540,20 @@ static int mcp3911_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	ret = mcp3911_calc_scale_table(adc);
-+	if (ret)
-+		return ret;
-+
-+       /* Set gain to 1 for all channels */
-+	for (int i = 0; i < MCP3911_NUM_CHANNELS; i++) {
-+		adc->gain[i] = 1;
-+		ret = mcp3911_update(adc, MCP3911_REG_GAIN,
-+				MCP3911_GAIN_MASK(i),
-+				MCP3911_GAIN_VAL(i, 0), 1);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	indio_dev->name = spi_get_device_id(spi)->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &mcp3911_info;
--- 
-2.36.1
+> ---
+> 
+> v6
+> - Convert tcpci as device resource managed with 'devm_add_action_or_reset' API.
+> - Refine remvoe callback.
+> - Refine the commit text from 'This commit add' to 'Add'.
+> ---
+>   drivers/usb/typec/tcpm/Kconfig        |  11 ++
+>   drivers/usb/typec/tcpm/Makefile       |   1 +
+>   drivers/usb/typec/tcpm/tcpci_mt6370.c | 208 ++++++++++++++++++++++++++++++++++
+>   3 files changed, 220 insertions(+)
+>   create mode 100644 drivers/usb/typec/tcpm/tcpci_mt6370.c
+> 
+> diff --git a/drivers/usb/typec/tcpm/Kconfig b/drivers/usb/typec/tcpm/Kconfig
+> index 073fd2e..e6b88ca 100644
+> --- a/drivers/usb/typec/tcpm/Kconfig
+> +++ b/drivers/usb/typec/tcpm/Kconfig
+> @@ -35,6 +35,17 @@ config TYPEC_MT6360
+>   	  USB Type-C. It works with Type-C Port Controller Manager
+>   	  to provide USB PD and USB Type-C functionalities.
+>   
+> +config TYPEC_TCPCI_MT6370
+> +	tristate "MediaTek MT6370 Type-C driver"
+> +	depends on MFD_MT6370
+> +	help
+> +	  MediaTek MT6370 is a multi-functional IC that includes
+> +	  USB Type-C. It works with Type-C Port Controller Manager
+> +	  to provide USB PD and USB Type-C functionalities.
+> +
+> +	  This driver can also be built as a module. The module
+> +	  will be called "tcpci_mt6370".
+> +
+>   config TYPEC_TCPCI_MAXIM
+>   	tristate "Maxim TCPCI based Type-C chip driver"
+>   	help
+> diff --git a/drivers/usb/typec/tcpm/Makefile b/drivers/usb/typec/tcpm/Makefile
+> index 7d499f3..906d9dc 100644
+> --- a/drivers/usb/typec/tcpm/Makefile
+> +++ b/drivers/usb/typec/tcpm/Makefile
+> @@ -6,4 +6,5 @@ typec_wcove-y				:= wcove.o
+>   obj-$(CONFIG_TYPEC_TCPCI)		+= tcpci.o
+>   obj-$(CONFIG_TYPEC_RT1711H)		+= tcpci_rt1711h.o
+>   obj-$(CONFIG_TYPEC_MT6360)		+= tcpci_mt6360.o
+> +obj-$(CONFIG_TYPEC_TCPCI_MT6370)	+= tcpci_mt6370.o
+>   obj-$(CONFIG_TYPEC_TCPCI_MAXIM)		+= tcpci_maxim.o
+> diff --git a/drivers/usb/typec/tcpm/tcpci_mt6370.c b/drivers/usb/typec/tcpm/tcpci_mt6370.c
+> new file mode 100644
+> index 0000000..4f53319
+> --- /dev/null
+> +++ b/drivers/usb/typec/tcpm/tcpci_mt6370.c
+> @@ -0,0 +1,208 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2022 Richtek Technology Corp.
+> + *
+> + * Author: ChiYuan Huang <cy_huang@richtek.com>
+> + */
+> +
+> +#include <linux/bits.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/pm_wakeup.h>
+> +#include <linux/pm_wakeirq.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/usb/tcpm.h>
+> +#include "tcpci.h"
+> +
+> +#define MT6370_REG_SYSCTRL8	0x9B
+> +
+> +#define MT6370_AUTOIDLE_MASK	BIT(3)
+> +
+> +#define MT6370_VENDOR_ID	0x29CF
+> +#define MT6370_TCPC_DID_A	0x2170
+> +
+> +struct mt6370_priv {
+> +	struct device *dev;
+> +	struct regulator *vbus;
+> +	struct tcpci *tcpci;
+> +	struct tcpci_data tcpci_data;
+> +};
+> +
+> +static const struct reg_sequence mt6370_reg_init[] = {
+> +	REG_SEQ(0xA0, 0x1, 1000),
+> +	REG_SEQ(0x81, 0x38, 0),
+> +	REG_SEQ(0x82, 0x82, 0),
+> +	REG_SEQ(0xBA, 0xFC, 0),
+> +	REG_SEQ(0xBB, 0x50, 0),
+> +	REG_SEQ(0x9E, 0x8F, 0),
+> +	REG_SEQ(0xA1, 0x5, 0),
+> +	REG_SEQ(0xA2, 0x4, 0),
+> +	REG_SEQ(0xA3, 0x4A, 0),
+> +	REG_SEQ(0xA4, 0x01, 0),
+> +	REG_SEQ(0x95, 0x01, 0),
+> +	REG_SEQ(0x80, 0x71, 0),
+> +	REG_SEQ(0x9B, 0x3A, 1000),
+> +};
+> +
+> +static int mt6370_tcpc_init(struct tcpci *tcpci, struct tcpci_data *data)
+> +{
+> +	u16 did;
+> +	int ret;
+> +
+> +	ret = regmap_register_patch(data->regmap, mt6370_reg_init,
+> +				    ARRAY_SIZE(mt6370_reg_init));
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = regmap_raw_read(data->regmap, TCPC_BCD_DEV, &did, sizeof(u16));
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (did == MT6370_TCPC_DID_A)
+> +		return regmap_write(data->regmap, TCPC_FAULT_CTRL, 0x80);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6370_tcpc_set_vconn(struct tcpci *tcpci, struct tcpci_data *data,
+> +				 bool enable)
+> +{
+> +	return regmap_update_bits(data->regmap, MT6370_REG_SYSCTRL8,
+> +				  MT6370_AUTOIDLE_MASK,
+> +				  !enable ? MT6370_AUTOIDLE_MASK : 0);
+> +}
+> +
+> +static int mt6370_tcpc_set_vbus(struct tcpci *tcpci, struct tcpci_data *data,
+> +				bool source, bool sink)
+> +{
+> +	struct mt6370_priv *priv = container_of(data, struct mt6370_priv,
+> +						tcpci_data);
+> +	int ret;
+> +
+> +	ret = regulator_is_enabled(priv->vbus);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (ret && !source)
+> +		return regulator_disable(priv->vbus);
+> +
+> +	if (!ret && source)
+> +		return regulator_enable(priv->vbus);
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t mt6370_irq_handler(int irq, void *dev_id)
+> +{
+> +	struct mt6370_priv *priv = dev_id;
+> +
+> +	return tcpci_irq(priv->tcpci);
+> +}
+> +
+> +static int mt6370_check_vendor_info(struct mt6370_priv *priv)
+> +{
+> +	struct regmap *regmap = priv->tcpci_data.regmap;
+> +	u16 vid;
+> +	int ret;
+> +
+> +	ret = regmap_raw_read(regmap, TCPC_VENDOR_ID, &vid, sizeof(u16));
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (vid != MT6370_VENDOR_ID)
+> +		return dev_err_probe(priv->dev, -ENODEV,
+> +				     "Vendor ID not correct 0x%02x\n", vid);
+> +
+> +	return 0;
+> +}
+> +
+> +static void mt6370_unregister_tcpci_port(void *tcpci)
+> +{
+> +	tcpci_unregister_port(tcpci);
+> +}
+> +
+> +static int mt6370_tcpc_probe(struct platform_device *pdev)
+> +{
+> +	struct mt6370_priv *priv;
+> +	struct device *dev = &pdev->dev;
+> +	int irq, ret;
+> +
+> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->dev = dev;
+> +
+> +	priv->tcpci_data.regmap = dev_get_regmap(dev->parent, NULL);
+> +	if (!priv->tcpci_data.regmap)
+> +		return dev_err_probe(dev, -ENODEV, "Failed to init regmap\n");
+> +
+> +	ret = mt6370_check_vendor_info(priv);
+> +	if (ret)
+> +		return ret;
+> +
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0)
+> +		return dev_err_probe(dev, irq, "Failed to get irq\n");
+> +
+> +	/* Assign TCPCI feature and ops */
+> +	priv->tcpci_data.auto_discharge_disconnect = 1;
+> +	priv->tcpci_data.init = mt6370_tcpc_init;
+> +	priv->tcpci_data.set_vconn = mt6370_tcpc_set_vconn;
+> +
+> +	priv->vbus = devm_regulator_get_optional(dev, "vbus");
+> +	if (!IS_ERR(priv->vbus))
+> +		priv->tcpci_data.set_vbus = mt6370_tcpc_set_vbus;
+> +
+> +	priv->tcpci = tcpci_register_port(dev, &priv->tcpci_data);
+> +	if (IS_ERR(priv->tcpci))
+> +		return dev_err_probe(dev, PTR_ERR(priv->tcpci),
+> +				     "Failed to register tcpci port\n");
+> +
+> +	ret = devm_add_action_or_reset(dev, mt6370_unregister_tcpci_port,
+> +				       priv->tcpci);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_request_threaded_irq(dev, irq, NULL, mt6370_irq_handler,
+> +					IRQF_ONESHOT, dev_name(dev), priv);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to allocate irq\n");
+> +
+> +	device_init_wakeup(dev, true);
+> +	dev_pm_set_wake_irq(dev, irq);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mt6370_tcpc_remove(struct platform_device *pdev)
+> +{
+> +	dev_pm_clear_wake_irq(&pdev->dev);
+> +	device_init_wakeup(&pdev->dev, false);
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct of_device_id mt6370_tcpc_devid_table[] = {
+> +	{ .compatible = "mediatek,mt6370-tcpc" },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, mt6370_tcpc_devid_table);
+> +
+> +static struct platform_driver mt6370_tcpc_driver = {
+> +	.driver = {
+> +		.name = "mt6370-tcpc",
+> +		.of_match_table = mt6370_tcpc_devid_table,
+> +	},
+> +	.probe = mt6370_tcpc_probe,
+> +	.remove = mt6370_tcpc_remove,
+> +};
+> +module_platform_driver(mt6370_tcpc_driver);
+> +
+> +MODULE_AUTHOR("ChiYuan Huang <cy_huang@richtek.com>");
+> +MODULE_DESCRIPTION("MT6370 USB Type-C Port Controller Interface Driver");
+> +MODULE_LICENSE("GPL v2");
 

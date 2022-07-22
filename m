@@ -2,111 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A7F157E044
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 12:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EE4457E1D7
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 15:04:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbiGVKwQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jul 2022 06:52:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58932 "EHLO
+        id S235144AbiGVNEC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jul 2022 09:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbiGVKwQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 06:52:16 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408C5B555F;
-        Fri, 22 Jul 2022 03:52:15 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 952C666019E6;
-        Fri, 22 Jul 2022 11:52:11 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1658487133;
-        bh=kFAslBVlJoHgLrrvN1O6EZ92+ayKqlc5D4IWhxvPP/w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=WcnTj5IviG5rcDShXoXbR39JBDKe32ASqqEublwMzD8DVgN9+r6S6uf2npaIFcNH4
-         WjvMZqkbbd40dKBXkgbB9jRvCMdkGHIMVbtHfgu8BRGzOU14d+T2glgMzL/r2P8wkQ
-         0vTjhWbE3eEkhnE90VVncPLSkCXqB+ywlQqr2sgWJ8nAQsYGdOCbG8ySUhqsUAXV+6
-         RI2uxlQHyM57Eq7pli9zouTJLACaSnvNGdrSkqMQtMp9c/f4qsQPTxmXq2i7GBG5wS
-         Mwc3owXreYH/NKGFFbQ4MH1FgCHjcaN6IXOuE3Fp7Qca8h0kNivWCRWu9OzP27pCkc
-         M7ra8kxkL7b3A==
-Message-ID: <c1c0913d-d711-d415-a84e-25427ed750c9@collabora.com>
-Date:   Fri, 22 Jul 2022 12:52:09 +0200
+        with ESMTP id S234435AbiGVNEB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 09:04:01 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01162AF949;
+        Fri, 22 Jul 2022 06:04:01 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id a23so5143311lfm.10;
+        Fri, 22 Jul 2022 06:04:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gtx1POFQfGcm6rMrqG9zNaho/uQFWTyjs4Tf3lJFOcg=;
+        b=fJ4TxTo8srrpzKU87PviIHDVWYPWfk5KEqerQY7surMDSJcklaqAfJU/cYN4vA/QVo
+         6pfF1uFiHXk7SdsVl0D+pKyH8KDXPqzZ39G05Nb2uoCiMVNDw/Pk5hmD0nG5ILpwb4Lb
+         /m9JwBh5X+rEXlzmKnc3AJa15q3DHY2CgaI+ALCAA9SsJvY/Wdsq45eMsSjOQBMNDZnA
+         wPRaaDHJJVLFSvfkNLTgELT2n4uHVPFIAs9Az+RdyVkh2vSb8eQ4TP/LoVkdvXOkX9yP
+         Lt1BS+8l2rz4k+nqU1hX9gjVrSPIwHUS3IuoFH88mad3eiMaRSal4306btU9C19AD6PW
+         Kw6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gtx1POFQfGcm6rMrqG9zNaho/uQFWTyjs4Tf3lJFOcg=;
+        b=HCZCs98YFIZjJXno1kXk7QU2xE+1IgBnjPZp8Zd3KZKFgfhoaSQ/u7IY3CiViMnYJp
+         w8tmaWmkYLIeWUgsWaSr6LwwwMnOnyw7AEmpimrxBJXICp5CaOFd/nnQK36oxIDatjc+
+         QyHKh4vshpKs4A8UaIUtiMkbYEjgICmF3WATnK8iKaD6/Xa1hV/TFl1HAjDTyEFhSxUS
+         3HVATIJZOHoU+8cfGt3UVr4ad9QC5B7xSv90u7gr9Evx13+RYylVDctzIQdoXmeRQy2z
+         niCMpzdArczsUMgS9jSrLAMkMzcGWsKj+6/q9Jmg5q16yj4tQGqB9vVa8i0tADjilKi9
+         ubkQ==
+X-Gm-Message-State: AJIora+hSjt1+HGgzQO7w6+2GG3pE5oAafuhyGw3ASDILmGXMZuCIjAd
+        ZeRdYs+CEG9H7Ok0jhZtzfo=
+X-Google-Smtp-Source: AGRyM1sESBw/ngj8wF18Z6xJhKlZwLijIJqWMren1QpYZ+ohaNUhCpGPBjRDGSJ61Mtm1iQbMd/yTw==
+X-Received: by 2002:ac2:530b:0:b0:486:6982:5ab5 with SMTP id c11-20020ac2530b000000b0048669825ab5mr193269lfh.138.1658495039206;
+        Fri, 22 Jul 2022 06:03:59 -0700 (PDT)
+Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id s18-20020a056512203200b004786d37229csm1039673lfs.155.2022.07.22.06.03.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Jul 2022 06:03:58 -0700 (PDT)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/9] Improve MCP3911 driver
+Date:   Fri, 22 Jul 2022 15:07:17 +0200
+Message-Id: <20220722130726.7627-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
- sink type LED Indicator support
-Content-Language: en-US
-To:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
-        daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, deller@gmx.de,
-        andy.shevchenko@gmail.com
-Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
-        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com
-References: <20220722102407.2205-1-peterwu.pub@gmail.com>
- <20220722102407.2205-12-peterwu.pub@gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20220722102407.2205-12-peterwu.pub@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 22/07/22 12:24, ChiaEn Wu ha scritto:
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual
-> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
-> 
-> In MediaTek MT6370, there are four channel current-sink RGB LEDs that
-> support hardware pattern for constant current, PWM, and breath mode.
-> Isink4 channel can also be used as a CHG_VIN power good indicator.
-> 
-> Signed-off-by: Alice Chen <alice_chen@richtek.com>
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Hi,
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+This patch series intend to fix bugs and improve functionality of the
+MCP3911 driver.
+The main features added are
+- Support for buffers
+- Interrupt driven readings
+- Support for oversampling ratio
+- Support for set scale values (Gain)
 
-> ---
-> 
-> v6
-> - Remove the 'ko' from mt6370 led Kconfig description.
-> - Add both authors for Alice and ChiYuan.
-> - Use pdata to distinguish the code from mt6370/71 to mt6372.
-> - Instead of 'state' define, use the 'state' enum.
-> - Fix the typo for 'MT6372_PMW_DUTY'.
-> - For pwm_duty define, replace with bit macro - 1.
-> - Refine all the labels from 'out' to 'out_unlock'.
-> - Use struct 'dev' variable and 'dev_err_probe' to optimize the LOC.
-> - Revise for the array initialization from {0} to {}.
-> - Move into rgb folder and rename file name to 'leds-mt6370-rgb'.
-> - Refine the 'comma' usage in struct/enum.
-> ---
->   drivers/leds/rgb/Kconfig           |   13 +
->   drivers/leds/rgb/Makefile          |    1 +
->   drivers/leds/rgb/leds-mt6370-rgb.c | 1004 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 1018 insertions(+)
->   create mode 100644 drivers/leds/rgb/leds-mt6370-rgb.c
-> 
+Among the bug fixes, there are changes in the formula for calculate raw
+value and a fix for mismatch in the devicetree property.
+
+Another general improvement for the driver is to use managed resources
+for all allocated resources.
+
+General changes for the series:
+
+v3:
+- Drop Phase patch
+- Add Fixes tags for those patches that are fixes
+- Move Fixes patches to the beginning of the patchset
+
+v4:
+- Split up devm-cleanup functions 
+- Cosmetic cleanups
+- Add
+    select IIO_BUFFER
+    select IIO_TRIGGERED_BUFFER
+    To Kconfig
+- Add .endianness = IIO_BE
+
+
+Best regards,
+Marcus Folkesson
+
+
+

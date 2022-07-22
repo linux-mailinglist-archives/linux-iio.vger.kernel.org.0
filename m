@@ -2,215 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E69457E55B
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 19:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A44557E6A9
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 20:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232454AbiGVRWw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jul 2022 13:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44212 "EHLO
+        id S236046AbiGVSh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 22 Jul 2022 14:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235275AbiGVRWs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 13:22:48 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282D165D64;
-        Fri, 22 Jul 2022 10:22:47 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id x24-20020a17090ab01800b001f21556cf48so8721229pjq.4;
-        Fri, 22 Jul 2022 10:22:47 -0700 (PDT)
+        with ESMTP id S229667AbiGVSh4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 14:37:56 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E80A026D
+        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id t1so8946845lft.8
+        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=qeiIlgvumKK5S0+PlFlhTMVYAJ0Lvpf2jQ1NG55lcEY=;
-        b=IcL1/yuk0eNs+nlfp8kWoKt6OGOm/JV1gT/3grJG+GvdWS6RJpqrH2Ut4HlGhz3vJM
-         M1d97/cuDJPWvkbaoEWNN6dRtUU64tRNPeQgZfI0UZRhSj82mmG671hnfX9BTNVaa0HK
-         TLsExZf5TsmWSDL5z3FIuo/AqmWqhMq9362l3CAZrRho01+E+qvhDgSSYTe6wMY3D9Bv
-         MbYBL2qiUAtJWgymLRA9PUMGlcW69sGZrTkJORrmR2fGoXL+/QWj4RUPGlqsvmkphGB2
-         8CHBrQlwItqZsNLpQr8VTL7k/2I3/4+zWly+FVWwRAPRE4On1nsbxuRTZaZxhzIsnuXW
-         uuEQ==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
+        b=GsqhyOyvPqQLTvBum+zuJxJdCWumdKt28rH2mPmYbBK74XD17jt60KtD0pMHpo/hya
+         vb9wzTzbNdeHuA/5g/kHobFtb0+H7CYDfb4AvZumRqW3JnejJKFeINvR34dlTLchYXjz
+         j0UREVOivqXUfB4/IgLh/3GwMH3nmWpkN29OsnadwZiyJhvuC8Ke+A7q5rONII1LLIRN
+         ur9/WC2nNosjE3LvdRSxF0kGBq3CGOT6wxtYRhP1t3tA3RPVu4/9VS+clhFLMjMPW09o
+         1TD97bVIN/s+O48yV/5C3XwcnVszKfIepyHe6JQqce4HYChtqdx1Ean31k2MwSuBhPl2
+         mZzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=qeiIlgvumKK5S0+PlFlhTMVYAJ0Lvpf2jQ1NG55lcEY=;
-        b=BkVXORX4eFNpgSIX8BixkQ0mWPIgWU2zBD4kprzavY23xxhzoPqlyYUvkljxoZbIiA
-         aZu8hYZoHiRTYdKPBzhHISTBllYLzwJ3HJkMdr3n0KmOjkIoj2T5V+X15gcBiu1AZ+si
-         wLZ9bv6ugm1iQG3chjDTYjbn0WktfewxddkoDVlP6qNST/sgCEkeauS1Hde/dlCRDnvw
-         9FgUXVa2vgRtzPTHdGHtHQLORmxs2TntcuAzQOFZ2wu+gQj69pbfmdDdzC4+k5lE1IcU
-         F54LV/6ArXgdkyA0suGCSKpzVKC9j3E3vlYlbJ78tU0fI2IR2NFi0FlZC/120MxpOVh8
-         UU1A==
-X-Gm-Message-State: AJIora/2JPZSBtPPCl2WmGN4E9HTD7zNM9GtDVhdgsT64BlPEVEOz0Qm
-        sz4gD8CSZenohypIyp+4sOM=
-X-Google-Smtp-Source: AGRyM1s+gkXYyczPUE2+QAKLCqqm5OhlVQZ1bdrCzaAps2IrdGgS1DxAKjzsy/3Otg0cJ4ZCgLnYdg==
-X-Received: by 2002:a17:90a:5513:b0:1f1:c93c:7ad8 with SMTP id b19-20020a17090a551300b001f1c93c7ad8mr18163136pji.88.1658510566454;
-        Fri, 22 Jul 2022 10:22:46 -0700 (PDT)
-Received: from potin-quanta.. (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
-        by smtp.gmail.com with ESMTPSA id bf17-20020a656d11000000b003fd4831e6fesm3625505pgb.70.2022.07.22.10.22.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Jul 2022 10:22:45 -0700 (PDT)
-From:   Potin Lai <potin.lai.pt@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>,
-        Potin Lai <potin.lai.pt@gmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] iio: humidity: hdc100x: add manufacturer and device id cehck
-Date:   Sat, 23 Jul 2022 01:20:34 +0800
-Message-Id: <20220722172035.44977-1-potin.lai.pt@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
+        b=YFQnG+0BkRhGJgtlZgV6o+0MjrtKU9da4K61bxNHv6sNxgBa7IVr+hmkh0rxUC6TvI
+         m4zvV8lTtvng1S8W9ciwvUAkieAZXeDFX1XGEJMSb5H4N+LXVQosFOcm47BSZ5eykOdR
+         hyCp6a4B4YhJ6alsk1VTHaCvYJONcxLdLSq1hUwulW3fi4JUFKJQNWJ26VfWwcRQxpiZ
+         vNbu3O3ufTYPPAwwztpmXlLrWXHEtgmHpKHaLIwcMgiYqHK8CVtKbdFurAxLwesS+CUX
+         EUFh6DP3N/MFCvl1JxkIDFNvEPKTavhAiBMNvzlA167jyUKagpxgIIaitPItICzY6fkp
+         eE2A==
+X-Gm-Message-State: AJIora85LJKaxw4eRI29BDGbxOyD5rxCmpT9tbppbFYU5RMos60wDR14
+        zs6pMHi6RS+5oqJLRU+rpjLozQ==
+X-Google-Smtp-Source: AGRyM1t4tkeV7OyDpZcsS6qCtak/AfOICQG9L4dyANvy9yS4TYY7Ac7Z+0mbnuyWn6CiHaHsFou02A==
+X-Received: by 2002:a05:6512:2622:b0:481:5b17:58e7 with SMTP id bt34-20020a056512262200b004815b1758e7mr478609lfb.600.1658515073264;
+        Fri, 22 Jul 2022 11:37:53 -0700 (PDT)
+Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
+        by smtp.gmail.com with ESMTPSA id d15-20020a0565123d0f00b0048a7222eb8bsm1008194lfv.135.2022.07.22.11.37.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Jul 2022 11:37:52 -0700 (PDT)
+Message-ID: <1a03d894-3f4c-fb57-5f05-ad7bf11f5488@linaro.org>
+Date:   Fri, 22 Jul 2022 20:37:49 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/6] dt-bindings: panel: explicitly list SPI CPHA and CPOL
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Nishant Malpani <nish.malpani25@gmail.com>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
+        Tomi Valkeinen <tomi.valkeinen@ti.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Marek Belisko <marek@goldelico.com>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        Christian Eggers <ceggers@arri.de>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
+        Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
+        Cristian Pop <cristian.pop@analog.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Matheus Tavares <matheus.bernardino@usp.br>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Stefan Wahren <stefan.wahren@in-tech.com>,
+        Pratyush Yadav <p.yadav@ti.com>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
+        linux-spi@vger.kernel.org
+References: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
+ <20220721153155.245336-2-krzysztof.kozlowski@linaro.org>
+ <20220721193004.GA1783390-robh@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220721193004.GA1783390-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add manufacturer and device id checking during probe, and Skip the
-checking if chip model not supported.
+On 21/07/2022 21:30, Rob Herring wrote:
+> On Thu, Jul 21, 2022 at 05:31:50PM +0200, Krzysztof Kozlowski wrote:
+>> The spi-cpha and spi-cpol properties are device specific and should be
+>> accepted only if device really needs them.  Explicitly list them in
+>> device bindings in preparation of their removal from generic
+>> spi-peripheral-props.yaml schema.
+>>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> ---
+>>  .../bindings/display/panel/lgphilips,lb035q02.yaml   | 10 ++++++++++
+>>  .../bindings/display/panel/samsung,ld9040.yaml       | 10 ++++++++++
+>>  .../bindings/display/panel/samsung,lms380kf01.yaml   | 12 +++++++++---
+>>  .../bindings/display/panel/samsung,lms397kf04.yaml   | 12 +++++++++---
+>>  .../bindings/display/panel/samsung,s6d27a1.yaml      | 12 +++++++++---
+>>  .../bindings/display/panel/sitronix,st7789v.yaml     | 10 ++++++++++
+>>  .../devicetree/bindings/display/panel/tpo,td.yaml    | 10 ++++++++++
+>>  7 files changed, 67 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+>> index 5e4e0e552c2f..0bd7bbad5b94 100644
+>> --- a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+>> +++ b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
+>> @@ -21,6 +21,16 @@ properties:
+>>    enable-gpios: true
+>>    port: true
+>>  
+>> +  spi-cpha:
+>> +    type: boolean
+>> +    description:
+>> +      The device requires shifted clock phase (CPHA) mode.
+>> +
+>> +  spi-cpol:
+>> +    type: boolean
+>> +    description:
+>> +      The device requires inverse clock polarity (CPOL) mode.
+> 
+> Not great duplicating the type and description everywhere.
+> 
+> We can move the definition back to spi-controller.yaml, so then that 
+> does type checking of the property, but not presence/absence checks.
 
-Supported:
-- HDC1000
-- HDC1010
-- HDC1050
-- HDC1080
+If I understand correctly, all client devices (which do no reference
+spi-controller) will need to explicitly mention CPHA/CPOL. Good idea.
 
-Not supported:
-- HDC1008
-
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
- drivers/iio/humidity/hdc100x.c | 87 +++++++++++++++++++++++++++++-----
- 1 file changed, 76 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 9e0fce917ce4..b8ae8d2ae7f0 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -34,6 +34,32 @@
- #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
- #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
- 
-+#define HDC100X_REG_MFR_ID	0xFE
-+#define HDC100X_REG_DEV_ID	0xFF
-+
-+#define HDC100X_MFR_ID	0x5449
-+
-+enum {
-+	HDC100X,
-+	HDC1000,
-+	HDC1008,
-+	HDC1010,
-+	HDC1050,
-+	HDC1080
-+};
-+
-+struct hdc100x_of_data {
-+	bool support_mfr_check;
-+};
-+
-+static const struct hdc100x_of_data hdc100x_of_data = {
-+	.support_mfr_check	= true,
-+};
-+
-+static const struct hdc100x_of_data hdc1008_of_data = {
-+	.support_mfr_check	= false,
-+};
-+
- struct hdc100x_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-@@ -351,6 +377,42 @@ static const struct iio_info hdc100x_info = {
- 	.attrs = &hdc100x_attribute_group,
- };
- 
-+static int hdc100x_read_mfr_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
-+}
-+
-+static int hdc100x_read_dev_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
-+}
-+
-+static const struct of_device_id hdc100x_dt_ids[];
-+static bool is_valid_hdc100x(struct i2c_client *client,
-+			     const struct i2c_device_id *id)
-+{
-+	const struct of_device_id *match;
-+	struct hdc100x_of_data *of_data;
-+	int mfr_id, dev_id;
-+
-+	match = i2c_of_match_device(hdc100x_dt_ids, client);
-+
-+	if (match) {
-+		of_data = (struct hdc100x_of_data *)match->data;
-+		if (!of_data->support_mfr_check)
-+			return true;
-+	} else if (id->driver_data == HDC1008)
-+		return true;
-+
-+	mfr_id = hdc100x_read_mfr_id(client);
-+	dev_id = hdc100x_read_dev_id(client);
-+	if (mfr_id == HDC100X_MFR_ID &&
-+	   (dev_id == 0x1000 || dev_id == 0x1050))
-+		return true;
-+
-+	return false;
-+}
-+
- static int hdc100x_probe(struct i2c_client *client,
- 			 const struct i2c_device_id *id)
- {
-@@ -362,6 +424,9 @@ static int hdc100x_probe(struct i2c_client *client,
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
- 		return -EOPNOTSUPP;
- 
-+	if (!is_valid_hdc100x(client, id))
-+		return -EOPNOTSUPP;
-+
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
-@@ -397,22 +462,22 @@ static int hdc100x_probe(struct i2c_client *client,
- }
- 
- static const struct i2c_device_id hdc100x_id[] = {
--	{ "hdc100x", 0 },
--	{ "hdc1000", 0 },
--	{ "hdc1008", 0 },
--	{ "hdc1010", 0 },
--	{ "hdc1050", 0 },
--	{ "hdc1080", 0 },
-+	{ "hdc100X", HDC100X },
-+	{ "hdc1000", HDC1000 },
-+	{ "hdc1008", HDC1008 },
-+	{ "hdc1010", HDC1010 },
-+	{ "hdc1050", HDC1050 },
-+	{ "hdc1080", HDC1080 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, hdc100x_id);
- 
- static const struct of_device_id hdc100x_dt_ids[] = {
--	{ .compatible = "ti,hdc1000" },
--	{ .compatible = "ti,hdc1008" },
--	{ .compatible = "ti,hdc1010" },
--	{ .compatible = "ti,hdc1050" },
--	{ .compatible = "ti,hdc1080" },
-+	{ .compatible = "ti,hdc1000", .data = &hdc100x_of_data },
-+	{ .compatible = "ti,hdc1008", .data = &hdc1008_of_data },
-+	{ .compatible = "ti,hdc1010", .data = &hdc100x_of_data },
-+	{ .compatible = "ti,hdc1050", .data = &hdc100x_of_data },
-+	{ .compatible = "ti,hdc1080", .data = &hdc100x_of_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
--- 
-2.34.1
-
+Best regards,
+Krzysztof

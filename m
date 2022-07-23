@@ -2,166 +2,191 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A44557E6A9
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Jul 2022 20:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B2FF57ECD1
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Jul 2022 10:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236046AbiGVSh6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 22 Jul 2022 14:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50984 "EHLO
+        id S237191AbiGWIz4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 23 Jul 2022 04:55:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbiGVSh4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 22 Jul 2022 14:37:56 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E80A026D
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id t1so8946845lft.8
-        for <linux-iio@vger.kernel.org>; Fri, 22 Jul 2022 11:37:54 -0700 (PDT)
+        with ESMTP id S232496AbiGWIz4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Jul 2022 04:55:56 -0400
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B15E15809;
+        Sat, 23 Jul 2022 01:55:55 -0700 (PDT)
+Received: by mail-pf1-x42d.google.com with SMTP id d10so6268536pfd.9;
+        Sat, 23 Jul 2022 01:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
-        b=GsqhyOyvPqQLTvBum+zuJxJdCWumdKt28rH2mPmYbBK74XD17jt60KtD0pMHpo/hya
-         vb9wzTzbNdeHuA/5g/kHobFtb0+H7CYDfb4AvZumRqW3JnejJKFeINvR34dlTLchYXjz
-         j0UREVOivqXUfB4/IgLh/3GwMH3nmWpkN29OsnadwZiyJhvuC8Ke+A7q5rONII1LLIRN
-         ur9/WC2nNosjE3LvdRSxF0kGBq3CGOT6wxtYRhP1t3tA3RPVu4/9VS+clhFLMjMPW09o
-         1TD97bVIN/s+O48yV/5C3XwcnVszKfIepyHe6JQqce4HYChtqdx1Ean31k2MwSuBhPl2
-         mZzw==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=S/hiSA7tfOhhItlZMNyP7rE7eTE9zhuzix6o1mkkaQI=;
+        b=daRru6nvDBf3J6bjjteKP9fdtBcSm0eeGDjgA232i9WDqpU2V9qDlEPJ19eSPaZrsH
+         Z7jIovabG2qZWJ3S9ieMo8pAm66rsBPZ6VbeUp47IFMOo9wvtv/NdD5Q2ZHXKV2Tmdbe
+         udxqDpoSnxhFEEcyClStE1Sw1edaQrkM8QTT++JO4jW56pDioDVBz18b7BY9iuRbH2hG
+         dC4JrMsRD1Q8LtgXDwm1DOB+JzJM6wukAW07oIC0zfOc5ZU60mcgQRpIJQwPYIOvqIFf
+         DGBS8IcCn296ynAye49rfcC4zXUyEdKV8QAB9uYJL0rkV0FOhEKlFpzv81ewGy89kSDP
+         NKzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pZNADembFWMrMyIeeoU2sLzijZgUqqEN6vVBxD7cEAs=;
-        b=YFQnG+0BkRhGJgtlZgV6o+0MjrtKU9da4K61bxNHv6sNxgBa7IVr+hmkh0rxUC6TvI
-         m4zvV8lTtvng1S8W9ciwvUAkieAZXeDFX1XGEJMSb5H4N+LXVQosFOcm47BSZ5eykOdR
-         hyCp6a4B4YhJ6alsk1VTHaCvYJONcxLdLSq1hUwulW3fi4JUFKJQNWJ26VfWwcRQxpiZ
-         vNbu3O3ufTYPPAwwztpmXlLrWXHEtgmHpKHaLIwcMgiYqHK8CVtKbdFurAxLwesS+CUX
-         EUFh6DP3N/MFCvl1JxkIDFNvEPKTavhAiBMNvzlA167jyUKagpxgIIaitPItICzY6fkp
-         eE2A==
-X-Gm-Message-State: AJIora85LJKaxw4eRI29BDGbxOyD5rxCmpT9tbppbFYU5RMos60wDR14
-        zs6pMHi6RS+5oqJLRU+rpjLozQ==
-X-Google-Smtp-Source: AGRyM1t4tkeV7OyDpZcsS6qCtak/AfOICQG9L4dyANvy9yS4TYY7Ac7Z+0mbnuyWn6CiHaHsFou02A==
-X-Received: by 2002:a05:6512:2622:b0:481:5b17:58e7 with SMTP id bt34-20020a056512262200b004815b1758e7mr478609lfb.600.1658515073264;
-        Fri, 22 Jul 2022 11:37:53 -0700 (PDT)
-Received: from [192.168.10.173] (93.81-167-86.customer.lyse.net. [81.167.86.93])
-        by smtp.gmail.com with ESMTPSA id d15-20020a0565123d0f00b0048a7222eb8bsm1008194lfv.135.2022.07.22.11.37.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Jul 2022 11:37:52 -0700 (PDT)
-Message-ID: <1a03d894-3f4c-fb57-5f05-ad7bf11f5488@linaro.org>
-Date:   Fri, 22 Jul 2022 20:37:49 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S/hiSA7tfOhhItlZMNyP7rE7eTE9zhuzix6o1mkkaQI=;
+        b=KT033+dl7GXMn9XuIerDyRhqF9NDbaW2KR3jMtCIXGmBxWuuS99RMbBWNJkkWv3gGP
+         ye1saF96oA0EAKxci0md8/BSOoogOkcssT1WLlOyx1iYgf6wi+IBp94JUWoHc69QQOij
+         1CKadyKUEerTIIF1E9NwEqhGS7C4s1igZRJjvA/9z6humnnvFWRxx87tWWaZGHKaHk67
+         JpB5q2DVuBr3FtablMLv36yGRLZpo1xKvrAu3DeMspVzbIOCFDlzPX6ZXLx2EztQksdZ
+         D0tpqB1hE0ePScHg7VxvaRfOq3d7ohgITGG9NhWmUNjdDZZaHIYVZ+6qpks+T7N52UAU
+         i0JQ==
+X-Gm-Message-State: AJIora/CBKA/E/BYrCOBXqayMMgQB1qLw3cS+iwFxuWP6rr++31/NvP+
+        Cmc2gG4nFFQL/jKd+qztSsDq4RZ0qd8fM7MYLUtmQAHO
+X-Google-Smtp-Source: AGRyM1vpxl9IcytS0wQP/GU9WxT2lnlMrubpttuQuKVnh1X7pg374hbl+764MO2LJdJ4n9nUA/NBcGGJAzTn9ZjX5r4=
+X-Received: by 2002:a05:6a02:302:b0:415:fa99:e0aa with SMTP id
+ bn2-20020a056a02030200b00415fa99e0aamr3105979pgb.516.1658566554250; Sat, 23
+ Jul 2022 01:55:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 1/6] dt-bindings: panel: explicitly list SPI CPHA and CPOL
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Nishant Malpani <nish.malpani25@gmail.com>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Marek Belisko <marek@goldelico.com>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Christian Eggers <ceggers@arri.de>,
-        Beniamin Bia <beniamin.bia@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
-        Dan Murphy <dmurphy@ti.com>, Sean Nyekjaer <sean@geanix.com>,
-        Cristian Pop <cristian.pop@analog.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Matheus Tavares <matheus.bernardino@usp.br>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Stefan Wahren <stefan.wahren@in-tech.com>,
-        Pratyush Yadav <p.yadav@ti.com>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, netdev@vger.kernel.org,
-        linux-spi@vger.kernel.org
-References: <20220721153155.245336-1-krzysztof.kozlowski@linaro.org>
- <20220721153155.245336-2-krzysztof.kozlowski@linaro.org>
- <20220721193004.GA1783390-robh@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220721193004.GA1783390-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20220613191706.31239-1-jagathjog1996@gmail.com>
+ <20220613191706.31239-2-jagathjog1996@gmail.com> <20220619135427.4ffc2d3d@jic23-huawei>
+ <CAM+2EuJWEOn-Vtaox=G3zXcd+zpx=mAhY1YHuNJx2XpAyPB1xg@mail.gmail.com> <20220716155633.244b9243@jic23-huawei>
+In-Reply-To: <20220716155633.244b9243@jic23-huawei>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Sat, 23 Jul 2022 14:25:42 +0530
+Message-ID: <CAM+2EuJR9EEEKdi-Ku_wFY=Lb+_H6gBDKGSW3qM0twOH2913kw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] iio: Add new event type gesture and use direction
+ for single and double tap
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/07/2022 21:30, Rob Herring wrote:
-> On Thu, Jul 21, 2022 at 05:31:50PM +0200, Krzysztof Kozlowski wrote:
->> The spi-cpha and spi-cpol properties are device specific and should be
->> accepted only if device really needs them.  Explicitly list them in
->> device bindings in preparation of their removal from generic
->> spi-peripheral-props.yaml schema.
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>  .../bindings/display/panel/lgphilips,lb035q02.yaml   | 10 ++++++++++
->>  .../bindings/display/panel/samsung,ld9040.yaml       | 10 ++++++++++
->>  .../bindings/display/panel/samsung,lms380kf01.yaml   | 12 +++++++++---
->>  .../bindings/display/panel/samsung,lms397kf04.yaml   | 12 +++++++++---
->>  .../bindings/display/panel/samsung,s6d27a1.yaml      | 12 +++++++++---
->>  .../bindings/display/panel/sitronix,st7789v.yaml     | 10 ++++++++++
->>  .../devicetree/bindings/display/panel/tpo,td.yaml    | 10 ++++++++++
->>  7 files changed, 67 insertions(+), 9 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> index 5e4e0e552c2f..0bd7bbad5b94 100644
->> --- a/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> +++ b/Documentation/devicetree/bindings/display/panel/lgphilips,lb035q02.yaml
->> @@ -21,6 +21,16 @@ properties:
->>    enable-gpios: true
->>    port: true
->>  
->> +  spi-cpha:
->> +    type: boolean
->> +    description:
->> +      The device requires shifted clock phase (CPHA) mode.
->> +
->> +  spi-cpol:
->> +    type: boolean
->> +    description:
->> +      The device requires inverse clock polarity (CPOL) mode.
-> 
-> Not great duplicating the type and description everywhere.
-> 
-> We can move the definition back to spi-controller.yaml, so then that 
-> does type checking of the property, but not presence/absence checks.
+Hi Jonathan,
 
-If I understand correctly, all client devices (which do no reference
-spi-controller) will need to explicitly mention CPHA/CPOL. Good idea.
+On Sat, Jul 16, 2022 at 8:16 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sun, 26 Jun 2022 18:51:54 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> > Hi Jonathan,
+> >
+> > Sorry for the delay in replying.
+> >
+> > On Sun, Jun 19, 2022 at 6:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > On Tue, 14 Jun 2022 00:47:05 +0530
+> > > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > >
+> > > > Add new event type for tap called gesture and the direction can be used
+> > > > to differentiate single and double tap. This may be used by accelerometer
+> > > > sensors to express single and double tap events. For directional tap,
+> > > > modifiers like IIO_MOD_(X/Y/Z) can be used along with singletap and
+> > > > doubletap direction.
+> > > >
+> > > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> > >
+> > > Hi,
+> > >
+> > > With fresh eyes I think we need to rethink the use of _period to make sure
+> > > we have 'space' for another very like ABI element which is the maximum
+> > > time between events for them to be considered a double tap.
+> > >
+> > > Jonathan
+> > >
+> > > > ---
+> > > >  Documentation/ABI/testing/sysfs-bus-iio | 24 ++++++++++++++++++++++++
+> > > >  drivers/iio/industrialio-event.c        |  5 ++++-
+> > > >  include/uapi/linux/iio/types.h          |  3 +++
+> > > >  tools/iio/iio_event_monitor.c           |  8 +++++++-
+> > > >  4 files changed, 38 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > > > index 3e00d7f7ee22..4eaf85e01911 100644
+> > > > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > > > @@ -2035,3 +2035,27 @@ Description:
+> > > >               Available range for the forced calibration value, expressed as:
+> > > >
+> > > >               - a range specified as "[min step max]"
+> > > > +
+> > > > +What:                /sys/.../events/in_accel_gesture_singletap_en
+> > > > +What:                /sys/.../events/in_accel_gesture_doubletap_en
+> > > > +KernelVersion:       5.19
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             Device generates an event on a single or double tap.
+> > > > +
+> > > > +What:                /sys/.../events/in_accel_gesture_singletap_value
+> > > > +What:                /sys/.../events/in_accel_gesture_doubletap_value
+> > > > +KernelVersion:       5.19
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             Specifies the threshold value that the device is comparing
+> > > > +             against to generate the tap gesture event. Units and exact
+> > > > +             meaning of value are device specific.
+> > >
+> > > I'm fine with this one being device specific, as likely a complex alg
+> > > involved.
+> > >
+> > > > +
+> > > > +What:                /sys/.../events/in_accel_gesture_doubletap_period
+> > > > +KernelVersion:       5.19
+> > > > +Contact:     linux-iio@vger.kernel.org
+> > > > +Description:
+> > > > +             Minimum time period between before and after the double tap
+> > > > +             event. Units and exact meaning of period value are device
+> > > > +             specific.
+> > >
+> > > I think the units need to be standard.  Also would this work better
+> > > as a description?
+> > >
+> > >         Minimum time in seconds between the two taps making up a double
+> > >         tap event.
+> >
+> > The values for the time between the two taps are not in terms of seconds,
+> > here period value is in terms of data samples which depends on
+> > the data rate.
+>
+> These time based controls in IIO are always defined in seconds. You'll have
+> to correct for the data rate in the driver.
+>
+> Either just make the available options change with data rate, or have the
+> driver do a 'nearest possible' choice based on what was requested and what
+> is possible at the current data rate.
+>
+> It's more complex but it gives a consistent ABI across devices that work
+> in many different ways.
 
-Best regards,
-Krzysztof
+TAP interrupts work with a 200 Hz data rate, so all the time-related
+config values
+are converted to seconds and provided the available options.
+I have prepared the v2 and soon I will send the same.
+
+Thank you,
+Jagath
+
+
+>
+> Jonathan
+>
+> >
+> > >
+> > > Raises a question though. How would we specify the maximum time? I.e.
+> > > if taps are further apart than Xseconds, they are reported as two single
+> > > taps.
+> > >
+> > > Maybe reusing period here isn't a good idea and we need to have new ABI for
+> > > this?
+> > >
+> > >
+> > >
+> > >
+>

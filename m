@@ -2,103 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF2957F22B
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Jul 2022 02:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A31AD57F606
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Jul 2022 18:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbiGXAXT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 23 Jul 2022 20:23:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52756 "EHLO
+        id S229542AbiGXQpH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 24 Jul 2022 12:45:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbiGXAXS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 23 Jul 2022 20:23:18 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8560A140AD;
-        Sat, 23 Jul 2022 17:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1658622197; x=1690158197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FkfucsltimmyJei0ltMaCIfrrDXHIuYViPxYpvd7rpc=;
-  b=l6u+Pun/6gGsP8L2yeXVpK1pawYqgHVxgajcNweozN+BFZ+9sGpYu1h9
-   8x4FWb4Z7s7M6T6wgHKlRsuWb17/A/kbJhVCiTFBaxj7g4usof1+20qNE
-   9cIPWolrQ35kGcTvQYdrirYT6j+YZgxSqW5q08HK/9NeITiZgxZkbWQH6
-   s3T3Cs7E/iG1r5oU5B9uk4OxLwJN+z6nxUkINea8xmuyE+mgB4e8cKYu0
-   unADpiUfK1WBKFbLTuyulMObznjhrFWRaOvDIFhJGf2S1B+ceNisTVgdm
-   uCf2QHWoD8o0ILM/kRYfo7w8bjOXN8a9LsI7IW4ul8A9azTNbcG4wMx63
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10417"; a="270538612"
-X-IronPort-AV: E=Sophos;i="5.93,189,1654585200"; 
-   d="scan'208";a="270538612"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2022 17:23:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,189,1654585200"; 
-   d="scan'208";a="741434139"
-Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 23 Jul 2022 17:23:14 -0700
-Received: from kbuild by e0eace57cfef with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1oFPOr-0003Hn-1y;
-        Sun, 24 Jul 2022 00:23:13 +0000
-Date:   Sun, 24 Jul 2022 08:22:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>, linux-iio@vger.kernel.org
-Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        with ESMTP id S229492AbiGXQpG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 24 Jul 2022 12:45:06 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38E0DFDF;
+        Sun, 24 Jul 2022 09:45:02 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id d17so12677383lfa.12;
+        Sun, 24 Jul 2022 09:45:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MuA7bUK1vPsyvnnRjvygkOnBLlHAQP1fUUPE8cGCTKU=;
+        b=P5sgjKwsaoaJMZA2RBJQY1WlmL17hTLIgSoNSzbH+ZRSUCHAw5EXC5g6W/Alg2tTrw
+         DjMLBhpOJlA9mxpvI/oJH0eLDr6knefcxQsMROBAP4XUomHb9Pw+BtPrXw6uSQmpP3cQ
+         Y3C8pK63hyXtEC9sIm2L9aRxFZKKxiAttsWJ8x7MQ1tVPa2SqcMmmM86QkI1t6NPCh2p
+         nbntf860xxsFYixNA2btRSD2EtOQPFJcEEr2T6QcJsriDdabHvVxCIrIHoMhiIqQey8Y
+         POujt9BfNuuFhc996M4QKXTdLvGUTd85izfhOJF3clFPb9B2EVmY+Kc5bMMa8vfTHJgA
+         ttJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MuA7bUK1vPsyvnnRjvygkOnBLlHAQP1fUUPE8cGCTKU=;
+        b=Oo9acZHguwck0H52Ppn2bzzcAuPXCiZ1e1UaVJ+4NXsHxnkowAhGj/Qjts4sryTJ7e
+         LhtkdJbMl/hKTnus57hoQvL2xiaiZG/SpEd26tMk1Tjt0EULN0bFhljqM5A729e6kFMx
+         dY4vTmeyLd0JzEhYXETrM25VUF/DkysgIBOy8hX1TnS19hi7VlLJmMHVXbIxnG/8WnIk
+         ljd72KDJQcms8nnnHFU/plaG4Bme33fqRL8xOw0xQ+sFxvpLNz+kraVL1ln+uO7NgRNv
+         pVcukQ7c8Up2GAXm1xYGILxqrTGudKqR5zkr1dP47yIWj3qsCkSDqtTUOR8HP/IHuRja
+         prqQ==
+X-Gm-Message-State: AJIora+lm3Q2lW4Knh95CCHcVHU8+3ND1MsPoYfDZY/nC/92ypj6oMCe
+        UmYTOhyP6teOofM/Rxs2izpYr/oXW0cLRu1GL0U=
+X-Google-Smtp-Source: AGRyM1vuxEcTb3Pr3xKx2cO93efjRep/PFRh2eJQYA9lgkVEvc3wcAZdwerS2VOq+2rfD7IrhEh/GQ==
+X-Received: by 2002:a05:6512:13a1:b0:47f:787b:4e6a with SMTP id p33-20020a05651213a100b0047f787b4e6amr3112530lfa.64.1658681100823;
+        Sun, 24 Jul 2022 09:45:00 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-5673c7-93.dhcp.inet.fi. [86.115.199.93])
+        by smtp.gmail.com with ESMTPSA id k12-20020a2eb74c000000b0025d40241c1dsm2267566ljo.6.2022.07.24.09.44.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Jul 2022 09:45:00 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 4/5] iio: pressure: bmp280: Add support for BMP380
- sensor family
-Message-ID: <202207240827.C5K7s1KU-lkp@intel.com>
-References: <50841287411a4e459487cc94a05bc6de66be4acf.1658597501.git.ang.iglesiasg@gmail.com>
+Subject: [PATCH 1/2] iio: st_sensors: Retry ID verification on failure
+Date:   Sun, 24 Jul 2022 19:43:15 +0300
+Message-Id: <20220724164316.68393-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50841287411a4e459487cc94a05bc6de66be4acf.1658597501.git.ang.iglesiasg@gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Angel,
+Some sensors do not always start fast enough to read a valid ID from
+registers at first attempt. Let's retry at most 3 times with short sleep
+in between to fix random timing issues.
 
-Thank you for the patch! Yet something to improve:
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+---
+ drivers/iio/common/st_sensors/st_sensors_core.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-[auto build test ERROR on 180c6cb6b9b79c55b79e8414f4c0208f2463af7d]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Angel-Iglesias/Add-support-for-pressure-sensor-Bosch-BMP380/20220724-014146
-base:   180c6cb6b9b79c55b79e8414f4c0208f2463af7d
-config: i386-randconfig-a002 (https://download.01.org/0day-ci/archive/20220724/202207240827.C5K7s1KU-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 12fbd2d377e396ad61bce56d71c98a1eb1bebfa9)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/eb385b5ff634acc29a3d9f20847e62ec73484fcb
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Angel-Iglesias/Add-support-for-pressure-sensor-Bosch-BMP380/20220724-014146
-        git checkout eb385b5ff634acc29a3d9f20847e62ec73484fcb
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>, old ones prefixed by <<):
-
->> ERROR: modpost: "__divdi3" [drivers/iio/pressure/bmp280.ko] undefined!
-
+diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
+index 9910ba1da085..106f7953683e 100644
+--- a/drivers/iio/common/st_sensors/st_sensors_core.c
++++ b/drivers/iio/common/st_sensors/st_sensors_core.c
+@@ -21,6 +21,8 @@
+ 
+ #include "st_sensors_core.h"
+ 
++#define VERIFY_ID_RETRY_COUNT 3
++
+ int st_sensors_write_data_with_mask(struct iio_dev *indio_dev,
+ 				    u8 reg_addr, u8 mask, u8 data)
+ {
+@@ -619,11 +621,18 @@ EXPORT_SYMBOL_NS(st_sensors_get_settings_index, IIO_ST_SENSORS);
+ int st_sensors_verify_id(struct iio_dev *indio_dev)
+ {
+ 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+-	int wai, err;
++	int wai, err, i;
+ 
+ 	if (sdata->sensor_settings->wai_addr) {
+-		err = regmap_read(sdata->regmap,
+-				  sdata->sensor_settings->wai_addr, &wai);
++		for (i = 0; i < VERIFY_ID_RETRY_COUNT; i++) {
++			err = regmap_read(sdata->regmap,
++					  sdata->sensor_settings->wai_addr, &wai);
++
++			if (!err && sdata->sensor_settings->wai == wai)
++				return 0;
++
++			msleep(20);
++		}
+ 		if (err < 0) {
+ 			dev_err(&indio_dev->dev,
+ 				"failed to read Who-Am-I register.\n");
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.34.1
+

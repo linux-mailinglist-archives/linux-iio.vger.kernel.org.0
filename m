@@ -2,54 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C93E57FBB8
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C39C757FBD8
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234174AbiGYIvs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 04:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35188 "EHLO
+        id S229995AbiGYIzp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 04:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234146AbiGYIvr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:51:47 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EA6140C4;
-        Mon, 25 Jul 2022 01:51:44 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id l23so19329568ejr.5;
-        Mon, 25 Jul 2022 01:51:44 -0700 (PDT)
+        with ESMTP id S234384AbiGYIzj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:55:39 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E211582A;
+        Mon, 25 Jul 2022 01:55:37 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id t3so13025556edd.0;
+        Mon, 25 Jul 2022 01:55:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sRH3Ko4u3nUzP+XsjQZDkgCAeoY72VHZaoe9ljYtNKk=;
-        b=b1ttEgokmKJ5jDFSHg4C3qui+lCgzhMb1cFI+vnFX9/Qaqz5wXWkN7XbXTCmQ3rbX8
-         /3TN1NF7tN2a41ftKlXShOS7XLz6vjt/dE/JoVvRFVa7TBsRv37MEJRyEWP7V4gtObN8
-         DWOlJaAA+IaENb1E9U2bsj5iMsc5NaHbap/4bNNdkO+vyaoG6bExWIwrQG9s7uFg7Baj
-         s+FY3gPXBy8r3qaYg0AV960MNBWHc4g/ppm+fVbr7FGTau4bS6hbfDOGbOOSslhkiqHB
-         4edKEq3lX1FHBOVPE941JMEmpBIHu6i/Z5b0c8XziqmaTyViSW8bxZxzR+/rVIJcM7jV
-         un+A==
+        bh=3INTKFVzGpgdLiO6cm/tt/F3n1FdE/J8Gtrvuuomg/U=;
+        b=KGUkTvmsrFj/i/g2Txcus2neVCIeH7fS7RYDzgarpCQjAlV25rYmvRqFk4rEW2Xu6H
+         dVkCJgHWlrXopXOfsXa7jLI7QUV58LjpMPEGgOlQAaOnihMKMqUORjOGJ0SyGVX6oPmr
+         AMrcGRzTVPctXdbs6Q2EfqiY6PKD5GpzJSWGECpaDGigxvdYX+uHjA92klNsnuWiXkR8
+         KK3MgVH2qSoijeYpB69tibPEs3jLzlYrbqnbLehlkcag6TPz7QYuNOe0ls9ksOj0BiPk
+         SOG0zIupDCmFrghFibZg1nOn4XrHoUYCdTW2Pwb7i2+PJ+hXVio5/EJxBh6mFV3wBtpH
+         A4FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sRH3Ko4u3nUzP+XsjQZDkgCAeoY72VHZaoe9ljYtNKk=;
-        b=W8jUwZGhehqGXf2omf/rXy1s93Pmb6J8SzTXfCNpY4DNQVAr4N7/dxmWhNrNt4jwdR
-         xPMpS3zle8XoODg+lVdPaJglcRWLR+ced9JjGz2xfnKwjY+C+wWpEJwTXFvFLq64kUH0
-         A4tFXi0uiV/JPAAieFbal1RipjM7a5/n+xMHSgqsh93VL40N/WjBZvfqfV9FRGJ89DX8
-         6NE4PFg2kxn8hVp5a5QDvvDM13/cyiLpCkga1Ej2vdPTwnYYDRQj244cAXKmRMjSRBAJ
-         hHtB58nAqbyxmyKffuYumE7MgzwZBUuPbj9u3YfKmGOvXNm59ouPyo0fjWIEgqjAWOxw
-         oTVg==
-X-Gm-Message-State: AJIora+yz8UfFvOLxWhTVECYfKpJXUWAbm01y+ne/QMRetXDH0qdZcp2
-        iW2x70TFKMnYViWcAH7tPewuFhWaiPBCMrYTwO4=
-X-Google-Smtp-Source: AGRyM1t++SIdSmibdfYzJgTAAGzjzRMgfSGJttBagInbaOHb+Jia4m43oDM7a3cRNSWK7OUMOrpRHLsW33nuUHySItE=
-X-Received: by 2002:a17:907:1c8d:b0:6f2:eb2:1cd6 with SMTP id
- nb13-20020a1709071c8d00b006f20eb21cd6mr9106852ejc.568.1658739102757; Mon, 25
- Jul 2022 01:51:42 -0700 (PDT)
+        bh=3INTKFVzGpgdLiO6cm/tt/F3n1FdE/J8Gtrvuuomg/U=;
+        b=dxPHoDmRgC9rpOQw/kF0dORG9HPgQXMrNb5ia19fDY/ujBHsUuEz0hYogxJtfGlxG6
+         /eojK5Ixf0WSISXA18Fgmxa13gAw+VnADFiGo9YTwZu9BgJ4H8XShs6A8YMXfnxQzxp0
+         AfkmxXd02aoHimGBZwxt5yHj3o2qeGlAvAkNyRhO10oq9KJZuWahas1GeJSqUdAMVspE
+         MDjVtJkN0P+YKUe+ci+xpr6/vSPx8ayPH6zP3yapsJcdMzsQ9xI+eghOsAlMFLl2feOr
+         9C44e0MvKsQbzlkmjDsKavrMJ+nohNdH6x47ehi+36HMI+P+0hZaEsJ2y4+ypVNJ4hL3
+         8I4A==
+X-Gm-Message-State: AJIora8tTq0iBWP3JTuOMng+a9RmiL+HCn7qyylEMaN1Z02H029l8pU+
+        vcJ2x16a5O8tP6LPXeWQwVIRQCHSFK4f6s9pXqw=
+X-Google-Smtp-Source: AGRyM1v8y+nmZhsplbXoHzO4Ve+2H3JYkbB6esC4VwvluxmYvgNwKHcXWiOtO8fBnhCqb3I9/pY7SCo8PriYmFxn6lE=
+X-Received: by 2002:a05:6402:34c5:b0:43a:8f90:e643 with SMTP id
+ w5-20020a05640234c500b0043a8f90e643mr11947835edc.88.1658739336148; Mon, 25
+ Jul 2022 01:55:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-13-peterwu.pub@gmail.com>
 In-Reply-To: <20220722102407.2205-13-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 10:51:06 +0200
-Message-ID: <CAHp75Vf85_uzA9fRxTizbPJxODcXFpM4wuU6DxP2j9UA47B_2g@mail.gmail.com>
+Date:   Mon, 25 Jul 2022 10:55:00 +0200
+Message-ID: <CAHp75VfgiK87VwWu2bTJ_mR0=g0sa0LPJ+H16OGcUdARmzFRSA@mail.gmail.com>
 Subject: Re: [PATCH v6 12/13] leds: flash: mt6370: Add MediaTek MT6370
  flashlight support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
@@ -96,104 +96,39 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jul 22, 2022 at 12:25 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> From: Alice Chen <alice_chen@richtek.com>
->
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual Flash
-> LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
->
-> The Flash LED in MT6370 has 2 channels and support torch/strobe mode.
-> Add the support of MT6370 FLASH LED.
->
-> Signed-off-by: Alice Chen <alice_chen@richtek.com>
 
-This SoB chain is wrong. Prioritize and read Submitting Patches!
+Forgot to add a couple of things...
 
 ...
 
-> +static int mt6370_torch_brightness_set(struct led_classdev *lcdev,
-> +                                      enum led_brightness level)
-> +{
-> +       struct mt6370_led *led = to_mt6370_led(lcdev, flash.led_cdev);
-> +       struct mt6370_priv *priv = led->priv;
-> +       u32 led_enable_mask = (led->led_no == MT6370_LED_JOINT) ?
-> +                             MT6370_FLCSEN_MASK_ALL :
-> +                             MT6370_FLCSEN_MASK(led->led_no);
-> +       u32 enable_mask = MT6370_TORCHEN_MASK | led_enable_mask;
-> +       u32 val = level ? led_enable_mask : 0;
+> +#define MT6370_ITORCH_MIN_UA           25000
+> +#define MT6370_ITORCH_STEP_UA          12500
+> +#define MT6370_ITORCH_MAX_UA           400000
+> +#define MT6370_ITORCH_DOUBLE_MAX_UA    800000
+> +#define MT6370_ISTRB_MIN_UA            50000
+> +#define MT6370_ISTRB_STEP_UA           12500
+> +#define MT6370_ISTRB_MAX_UA            1500000
+> +#define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
 
-> +       u32 prev = priv->fled_torch_used, curr;
+Perhaps _uA would be better and consistent across your series
+regarding current units.
 
-Here and in the other functions with similar variables it seems you
-never use prev after assigning curr.
-Just define a single variable and use it accordingly.
+...
 
-> +       int ret, i;
-> +
-> +       mutex_lock(&priv->lock);
-> +
 > +       /*
-> +        * Only one set of flash control logic,
-> +        * use the flag to avoid strobe is currently used.
+> +        * For the flash to turn on/off, need to wait HW ramping up/down time
+
+we need
+
+> +        * 5ms/500us to prevent the unexpected problem.
 > +        */
-> +       if (priv->fled_strobe_used) {
-> +               dev_warn(lcdev->dev, "Please disable strobe first [%d]\n",
-> +                        priv->fled_strobe_used);
-> +               ret = -EBUSY;
-> +               goto unlock;
-> +       }
-> +
-> +       if (level)
-> +               curr = prev | BIT(led->led_no);
-> +       else
-> +               curr = prev & ~BIT(led->led_no);
-> +
-> +       if (curr)
-> +               val |= MT6370_TORCHEN_MASK;
-> +
-> +       if (level) {
-> +               level -= 1;
-> +               if (led->led_no == MT6370_LED_JOINT) {
-> +                       int flevel[MT6370_MAX_LEDS];
-> +
-> +                       flevel[0] = level / 2;
-> +                       flevel[1] = level - flevel[0];
-> +                       for (i = 0; i < MT6370_MAX_LEDS; i++) {
-> +                               ret = regmap_update_bits(priv->regmap,
-> +                                               MT6370_REG_FLEDITOR(i),
-> +                                               MT6370_ITORCH_MASK, flevel[i]);
-> +                               if (ret)
-> +                                       goto unlock;
-> +                       }
-> +               } else {
-> +                       ret = regmap_update_bits(priv->regmap,
-> +                                       MT6370_REG_FLEDITOR(led->led_no),
-> +                                       MT6370_ITORCH_MASK, level);
-> +                       if (ret)
-> +                               goto unlock;
-> +               }
-> +       }
-> +
-> +       ret = regmap_update_bits(priv->regmap, MT6370_REG_FLEDEN,
-> +                                enable_mask, val);
-> +       if (ret)
-> +               goto unlock;
-> +
-> +       priv->fled_torch_used = curr;
-> +
-> +unlock:
-> +       mutex_unlock(&priv->lock);
-> +       return ret;
-> +}
+> +       if (!prev && curr)
+> +               usleep_range(5000, 6000);
+> +       else if (prev && !curr)
+> +               udelay(500);
 
-...
-
-> +       struct v4l2_flash_config v4l2_config = {0};
-
-0 is not needed.
+This still remains unanswered, why in the first place we allow
+switching, and a busy loop in the other place?
 
 -- 
 With Best Regards,

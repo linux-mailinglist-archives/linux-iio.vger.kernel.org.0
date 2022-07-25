@@ -2,150 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A90857FC0E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 11:10:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 100D157FD83
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 12:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231654AbiGYJKI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 05:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50510 "EHLO
+        id S232406AbiGYKbf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 06:31:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231421AbiGYJKH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 05:10:07 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7557B140BD;
-        Mon, 25 Jul 2022 02:10:05 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id l23so19409011ejr.5;
-        Mon, 25 Jul 2022 02:10:05 -0700 (PDT)
+        with ESMTP id S234379AbiGYKbe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 06:31:34 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878B115819
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 03:31:32 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id z13so15304826wro.13
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 03:31:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BSEtgg8+Hpw/EtiHjL5IRktNHYkZQ4l9B8QMcHNKzRs=;
-        b=DvY9h9DoO0kblI5Gb7JOwMF5uAXyYh+0N98faLjkVtDpKYgYiZXw8rUpaon1Qsb+x/
-         y8PR5FRgsPRxbCvYRmi6JyQZHxlbh7MXccC1nAKDIdus48fm9phu/mVPu5c/7jnzpiUa
-         CeYdC3SruNmPOz8QR4pQRYz+9lbX/PiafhwNwu9n1G7QLCs3uqxyNxwD3CM2frokPBsH
-         DkjmmlsnQziUrFfN7mDBzyVBjS82vigYVYvIcaX8uI8LEUmNiadHmdk5ix5lNuZ/1UZ/
-         NGL0Cy1cT3KvSr2YKUSTaA8mjLj8kGwovaeEc5qHPC+CgkPbA4CYf9Td2TeI9EthK4eN
-         F2CQ==
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=QR4thViojhLm7m3iVqTAzOPrEuZ+oboQVEbkcRYR7U0=;
+        b=hcY3ebDhxmUgKAKSOPUOX7d/LMYdV3cijN2N6OfC0kvVYjMwOvmOolx+2NETIKYqUp
+         GPy3YFMR7smmOlatz8CKT+4p2UQ+6lI9Ejv06f+y6zEFBSmLUPFbbscFbBBsOCvH434Q
+         ke8WXFQ+uXl36Kdevvs6uhTIaQQgtIFRovUfQ/RDq3AHQ469OhSceGOKRnPmFWjpxVnH
+         VERQ2rtptnToPx6leEXxAAby7RDypiZaQady2IbBpsvPlsYJ0uSwLW6l0adFiFhqOZ8D
+         XJZDsGiJcpWWsVtF7ngMWVpb9VQHwHEkKK2RVLip5CsQWVUMkj1jqMMhHMjq3wvU4bke
+         J0IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BSEtgg8+Hpw/EtiHjL5IRktNHYkZQ4l9B8QMcHNKzRs=;
-        b=NslrMZ5f6I5mWX5JpKL7DuOYDqURoD3YpuEXmU1oZytERSQagJTrj0I4F41CB8iZCu
-         5e0iIcyVN28dlKxkbGucyXvZ6lJtrSkqnGKQmlfNy6xtYAHwGLG8tHsyKeIxE8ru9HyF
-         9DErc0ZbvY0UouD6yy5HWppQYzUkPXOG7ujfVUYU4ZSJdz0iG+wyBCIA5xFUb28loMIg
-         o7X6AwFLu4cUtPcddtQ7D4ttza7Y4HuTlrWv2jtexYywisJ+B5hOTFLnp0cxUZfazDFG
-         EX8GmNajUoxskItnRrxCulluUMHprqfwceJuBj3wdoD6T6hq6w5WOwezm0NjpnTx48YW
-         YJFw==
-X-Gm-Message-State: AJIora9xNIqvD722EYwBt0oMcuhu/EvVZdvkb+WWLyTW7rUhzCeiwFjc
-        NSPkfLDqoM4hF3AOJsxqY0RvYlrJcu3XEBpxfXY=
-X-Google-Smtp-Source: AGRyM1u9Nn1gh/K3al7D9YTYNDVE3nZB3C3o2fD7AeOdyqGaPbXnVSlqvpk1KEgMM6wZM2t+cB6cSp8E5+GGA2PWOz8=
-X-Received: by 2002:a17:907:6297:b0:72f:9aad:fcb with SMTP id
- nd23-20020a170907629700b0072f9aad0fcbmr9108533ejc.161.1658740203874; Mon, 25
- Jul 2022 02:10:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-8-peterwu.pub@gmail.com>
- <CAHp75VfiKMROzxeEaCH6qCthK9qanJPqbjADLMVH-V0upKf+9Q@mail.gmail.com>
- <CABtFH5++4N1mECJ0vN-79WsJJWcBTVxLFgvkiouPf1qev7LHHQ@mail.gmail.com>
- <CAHp75VfKihBLjUFqe_Sj5dqTO7-wjLehAF+9_8-sbUeyJ-ZAmg@mail.gmail.com> <CABtFH5+LvvcVscRotyRYXhXs1pPkCahbVe0NcSFxC4k_WMMsuQ@mail.gmail.com>
-In-Reply-To: <CABtFH5+LvvcVscRotyRYXhXs1pPkCahbVe0NcSFxC4k_WMMsuQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 11:09:26 +0200
-Message-ID: <CAHp75Vd53faWJ8oD2WGQEMAVc-NfoceUUjpOJwy7piaraH8CNA@mail.gmail.com>
-Subject: Re: [PATCH v6 07/13] mfd: mt6370: Add MediaTek MT6370 support
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=QR4thViojhLm7m3iVqTAzOPrEuZ+oboQVEbkcRYR7U0=;
+        b=vm7sze/z22pG3z2Ek1L9O3JPDirZ5A9a+v0qW+kP+bsJolcRVqj9Gl/cS8WjqZ7l8h
+         O3dm8dS2AEAmECwvcB5B4MZ6QP7JcNEAb1Rhq7Y9AG8a3m66fAYPsnd4asZmHOgyVhT+
+         9PWLp3kEMAZNL5IDtSWJHsb4IMFWOqfsMVem1dqrg0bwR7HMTyOTVb+ic4zXCqWEiE+0
+         XOLOm2N8dJdr0lcO0TLnhu8kMLj5A99JOZkzXU8J0NHf88MPTqzRW9kzAMkDBnichL8g
+         vRtLUbkJxyAxfCrjYf7IYVFANE72Y3GlAF6OAmZ+5gazcd//u+Gbf2puKzPsu5cjea1N
+         4F1g==
+X-Gm-Message-State: AJIora8KLeci0zpiCtxyQwvS1PPiTlCv2ML+b+s57+5aG19qQtZ9rCw0
+        6hoZX0lFQcqmuOEu6NdhPWc0Nw==
+X-Google-Smtp-Source: AGRyM1uhInd5p9lSRbYGnaq9oTNYSYBtNWlkq9wyaVzmMkSkg4hYhWboyJgYIo9QbRHYBeJSc2cjCg==
+X-Received: by 2002:a5d:584c:0:b0:21e:7f48:bf19 with SMTP id i12-20020a5d584c000000b0021e7f48bf19mr5190179wrf.474.1658745090915;
+        Mon, 25 Jul 2022 03:31:30 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id l18-20020a05600c1d1200b003a04d19dab3sm29367538wms.3.2022.07.25.03.31.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jul 2022 03:31:30 -0700 (PDT)
+Date:   Mon, 25 Jul 2022 11:31:28 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     lee.jones@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        andy.shevchenko@gmail.com, chiaen_wu@richtek.com,
+        alice_chen@richtek.com, cy_huang@richtek.com,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        szunichen@gmail.com
+Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370
+ support
+Message-ID: <20220725103128.xtaw2c4y5fobowg7@maple.lan>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com>
+ <20220722102407.2205-14-peterwu.pub@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220722102407.2205-14-peterwu.pub@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 25, 2022 at 11:06 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> On Mon, Jul 25, 2022 at 4:43 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-
-...
-
-> > > > > +#define MT6370_REG_DEV_INFO    0x100
-> > > > > +#define MT6370_REG_CHG_IRQ1    0x1C0
-> > > > > +#define MT6370_REG_CHG_MASK1   0x1E0
-> > > > > +
-> > > > > +#define MT6370_VENID_MASK      GENMASK(7, 4)
-> > > > > +
-> > > > > +#define MT6370_NUM_IRQREGS     16
-> > > > > +#define MT6370_USBC_I2CADDR    0x4E
-> > > >
-> > > > > +#define MT6370_REG_ADDRLEN     2
-> > > > > +#define MT6370_REG_MAXADDR     0x1FF
-> > > >
-> > > > These two more logically to have near to other _REG_* definitions above.
-
-...
-
-> > You lost me. Namespace has a meaning, i.e. grouping items of a kind.
-> > In your proposal I don't see that. If REG_MAXADDR and REG_ADDRLEN are
-> > _not_ of the _REG_ kind as per above, why do they have this namespace
-> > in the first place?
-
-> oh... Sorry, I just got the wrong meaning
-> maybe it should be revised like this, right??
-
-I don't know. I am not an author of the code, I do not have access
-(and don't want to) to the hardware datasheets, all up to you. From
-the style perspective below looks good.
-
-> -------------------------------------------------------------------
-> #define MT6370_REG_DEV_INFO    0x100
-> #define MT6370_REG_CHG_IRQ1    0x1C0
-> #define MT6370_REG_CHG_MASK1   0x1E0
-> #define MT6370_REG_MAXADDR     0x1FF // Move it to here
+On Fri, Jul 22, 2022 at 06:24:07PM +0800, ChiaEn Wu wrote:
+> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+> index a003e02..846dbe7 100644
+> --- a/drivers/video/backlight/Kconfig
+> +++ b/drivers/video/backlight/Kconfig
+> @@ -268,6 +268,18 @@ config BACKLIGHT_MAX8925
+>  	  If you have a LCD backlight connected to the WLED output of MAX8925
+>  	  WLED output, say Y here to enable this driver.
 >
-> #define MT6370_VENID_MASK      GENMASK(7, 4)
->
-> #define MT6370_NUM_IRQREGS     16
-> #define MT6370_USBC_I2CADDR    0x4E
->
-> #define MT6370_MAX_ADDRLEN     2    // Rename
+> +config BACKLIGHT_MT6370
+> +	tristate "MediaTek MT6370 Backlight Driver"
+> +	depends on MFD_MT6370
+> +	help
+> +	  This enables support for Mediatek MT6370 Backlight driver.
+> +	  It's commonly used to drive the display WLED. There are 4 channels
+> +	  inside, and each channel supports up to 30mA of current capability
+> +	  with 2048 current steps in exponential or linear mapping curves.
+
+Does the MT6372 support more steps than this? In other words does it use
+a fourteen bit scale or does it use an 11-bit scale at a different
+register location?
 
 
+> +
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called "mt6370-backlight".
+> +
+> [...]
+> diff --git a/drivers/video/backlight/mt6370-backlight.c b/drivers/video/backlight/mt6370-backlight.c
+> new file mode 100644
+> index 0000000..ba00a8f
+> --- /dev/null
+> +++ b/drivers/video/backlight/mt6370-backlight.c
+> [...]
+> +static int mt6370_bl_update_status(struct backlight_device *bl_dev)
+> +{
+> +	struct mt6370_priv *priv = bl_get_data(bl_dev);
+> +	int brightness = backlight_get_brightness(bl_dev);
+> +	unsigned int enable_val;
+> +	u8 brightness_val[2];
+> +	int ret;
+> +
+> +	if (brightness) {
+> +		brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
+> +		brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
+> +
+> +		/*
+> +		 * To make MT6372 using 14 bits to control the brightness
+> +		 * backward compatible with 11 bits brightness control
+> +		 * (like MT6370 and MT6371 do), we left shift the value
+> +		 * and pad with 1 to remaining bits. Hence, the MT6372's
+> +		 * backlight brightness will be almost the same as MT6370's
+> +		 * and MT6371's.
+> +		 */
+> +		if (priv->vid_type == MT6370_VID_6372) {
+> +			brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
+> +			brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
+> +		}
 
--- 
-With Best Regards,
-Andy Shevchenko
+This somewhat depends on the answer to the first question above, but
+what is the point of this shifting? If the range is 14-bit then the
+driver should set max_brightness to 16384 and present the full range of
+the MT6372 to the user.
+
+Especially when using linear mappings (which are a totally pointless
+scale to use for a backlight) the extra steps are useful for backlight
+animation.
+
+
+Daniel.

@@ -2,91 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F329057FB91
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:41:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7811D57FB98
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbiGYIlq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 04:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55442 "EHLO
+        id S233284AbiGYIno (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 04:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233220AbiGYIln (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:41:43 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A59914036
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 01:41:41 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id w6-20020a056830410600b0061c99652493so8195569ott.8
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 01:41:41 -0700 (PDT)
+        with ESMTP id S233337AbiGYInn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:43:43 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EFD140C4;
+        Mon, 25 Jul 2022 01:43:42 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id z18so620205edb.10;
+        Mon, 25 Jul 2022 01:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=uTjKVHM55JmJsVe2aGmCPrG6R8LbZnPZHi2RrDTr+hg=;
-        b=ajOOG7RVPogWBL5z787apCCcNbOfTQcTEaLdb3smgqbQqObufplSwxMWZGjSvlLQIb
-         1oitahisHCi45SlAF/HI84kBdIQIqs9cttab5v2OHsaQeo00dT485mlY+RhDeHDW60Io
-         hw8IK2TxE6GnYwsndW/einvl63zinAlH8vhnnvmBECbG+DpddJs0SGmzw6sECfY6Td5I
-         43JpSDr7UkrDA+i/Up2BOapt56fE5mzfVS1ttiAaMe4MJBYIuKEg6naDJAdMZ0Fv14VO
-         emK0Fu9AdTIe8AQSO5B9SmHlC8kcAiMzFPPp/nBG8ewhUcgPNR6EmO6C8W4b9XEGCTTW
-         MrdQ==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gBUjOXPSyxIp/ssA5bMpYCLKWAJ3HGf2reVDfO9yM3o=;
+        b=ZcloaGBXNWKgwFGhN0tBCVgGN7mKJ0l57wi/gxiOCcQ3btK6lq9SuR+ZDWopqPFJwr
+         QtH+fUQor4bu6z6i3Onr2HRzeQyO9JOs9GcWZvML3s9jvPJQnd/sk2l56CU4eOkmNXQj
+         LqLK8afv+vA1SA6f+pxw6kwJwYDOpRk9RKfUzqG3YfKkkTmnHl6JN0Bgs4bLgrYJH4/G
+         DwVst0E8Wq+wDqCv4Rf6WiAWX6k8ZbwXfY2/046oEtgbBla5lc4gNBqV8JGbD5c944lY
+         EL1jChoaIjqEM9Bwbv2uv0Do0n4Vre3jmkyldcj0zTNhXTJcj/3JcVpHUBK+rQNRfl5E
+         JX3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=uTjKVHM55JmJsVe2aGmCPrG6R8LbZnPZHi2RrDTr+hg=;
-        b=qz2IB/qo5gv3cMuk93+UAsZW7AmrXxDGjwHdAEZvWfiLmqZSXKqsk3d1PYsIQgdwU2
-         sSK/ll/BNC3xxeCbBmKvMhUN0P7GSBDYniq1utmqJyzi0mvPcqSh3GTJdeb7CnnJ/dND
-         WAHaij8ptPnLUbJIo5Uo/h46sJW9AE7hkhp705hWQwnsa9hvuMjHzR8lJk6AdB0VdoAV
-         LD+P17auA+AONDhTVdqx1byTpyP8E41knlTG0Z8dun6Nc8zm8wI4mI7JuEgknAy1ytYx
-         sOoQfVYGHSxvgiVFubfxQmrNPZKNQ1C7wVt10v5RQtZ69UtBUVF8fFhJ1JpY7o0RWmFs
-         94gA==
-X-Gm-Message-State: AJIora9D4mODL0qZYGzpq4pYQVpEf/h9Dvn1s8xb73eX/H5mANigJpyt
-        xJO9q+N/OCMd68PfLEB274eO4DtviQoZOXd+dIULBaXch7J1tSFU
-X-Google-Smtp-Source: AGRyM1tjUhexl5BMwvtevjJPceeD7pVcZfaQilTIyV9QAJD9KJW+C5YCv/f3ACJzOPi4AD4Uo3mrdM0UNYHNILklqNM=
-X-Received: by 2002:a05:6830:660c:b0:618:f504:5b7d with SMTP id
- cp12-20020a056830660c00b00618f5045b7dmr4230838otb.300.1658738500275; Mon, 25
- Jul 2022 01:41:40 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gBUjOXPSyxIp/ssA5bMpYCLKWAJ3HGf2reVDfO9yM3o=;
+        b=WF8HjDlbWM9SQ/1RTZrtsH6LlgLJGTGksTCYgNwJ2ITU7nO38Iszi4G6Bs1tv6Bpak
+         1O1pyZuKXoovZKbMMVE87o9UpCNjtR0SN1pAQXM2uobFqaa6cV3RcfuNSHNElH7Bt1J5
+         fRpp2yFuJ3jWc0uQQceptnG55IsC7lhLBytAk6Y3uT3NGMeF+4Trty1rNtyUcu+6KsSj
+         Oc1klU/bJ3GZ2kZsWgS2K+QKpyJrwaDGDHW8NO300wnOk0x7Evb3i4lOKZacgSrgRXoX
+         RHbS5f/4uDBkgUK2IrqlbLnisADIIgCvrVtkDE6Eel2zrqAsz/INaga/ec6reAisSGPw
+         xpHw==
+X-Gm-Message-State: AJIora8EWIaOeFopPOZFhx62Gi75ilx8OK2jLyURKPffWc8Qeuyn5lap
+        MslqwBOIWchlALV5FwUUgmO+MbKmQudHFw4YPsM=
+X-Google-Smtp-Source: AGRyM1soQCq75MmbI4ONQXkzNoXoyDLrEe84HYxRimv6nF0nPZqyoEzx4IbLZDEZCEsYL6EGcqoDhOkMKbKf9dD+JE4=
+X-Received: by 2002:a05:6402:254b:b0:43b:d6c3:dd96 with SMTP id
+ l11-20020a056402254b00b0043bd6c3dd96mr11626028edb.406.1658738620885; Mon, 25
+ Jul 2022 01:43:40 -0700 (PDT)
 MIME-Version: 1.0
-From:   Crt Mori <cmo@melexis.com>
-Date:   Mon, 25 Jul 2022 10:41:04 +0200
-Message-ID: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
-Subject: Controlling device power management from terminal
-To:     Linux Iio <linux-iio@vger.kernel.org>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-8-peterwu.pub@gmail.com>
+ <CAHp75VfiKMROzxeEaCH6qCthK9qanJPqbjADLMVH-V0upKf+9Q@mail.gmail.com> <CABtFH5++4N1mECJ0vN-79WsJJWcBTVxLFgvkiouPf1qev7LHHQ@mail.gmail.com>
+In-Reply-To: <CABtFH5++4N1mECJ0vN-79WsJJWcBTVxLFgvkiouPf1qev7LHHQ@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 25 Jul 2022 10:43:04 +0200
+Message-ID: <CAHp75VfKihBLjUFqe_Sj5dqTO7-wjLehAF+9_8-sbUeyJ-ZAmg@mail.gmail.com>
+Subject: Re: [PATCH v6 07/13] mfd: mt6370: Add MediaTek MT6370 support
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
-I am implementing the power saving modes for mlx90632 device driver
-and while I have implemented routines for SET_RUNTIME_PM_OPS
-(runtime_pm_suspend and runtime_pm_resume) I am not able to find out
-how to trigger them from the terminal.
+On Mon, Jul 25, 2022 at 10:30 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> On Mon, Jul 25, 2022 at 4:00 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
 
-It could be that my driver code for power management implementation is
-incomplete and I need to initialize something more.
+...
 
-Maybe it is helpful, but the power submodule of the device contains below files:
+> > > +#define MT6370_REG_DEV_INFO    0x100
+> > > +#define MT6370_REG_CHG_IRQ1    0x1C0
+> > > +#define MT6370_REG_CHG_MASK1   0x1E0
+> > > +
+> > > +#define MT6370_VENID_MASK      GENMASK(7, 4)
+> > > +
+> > > +#define MT6370_NUM_IRQREGS     16
+> > > +#define MT6370_USBC_I2CADDR    0x4E
+> >
+> > > +#define MT6370_REG_ADDRLEN     2
+> > > +#define MT6370_REG_MAXADDR     0x1FF
+> >
+> > These two more logically to have near to other _REG_* definitions above.
+>
+> Hi Andy,
+> Thanks for your review.
+> Do you mean that we should move '#define MT6370_USBC_I2CADDR' and
+> '#define MT6370_REG_MAXADDR' after the line '#define
+> MT6370_REG_CHG_MASK1'?
+> -------------------------------------------------------------------
+> #define MT6370_REG_DEV_INFO    0x100
+> #define MT6370_REG_CHG_IRQ1    0x1C0
+> #define MT6370_REG_CHG_MASK1   0x1E0
+> #define MT6370_USBC_I2CADDR    0x4E
+> #define MT6370_REG_MAXADDR     0x1FF
+>
+> #define MT6370_VENID_MASK      GENMASK(7, 4)
+>
+> #define MT6370_NUM_IRQREGS     16
+> #define MT6370_REG_ADDRLEN     2
+> -------------------------------------------------------------------
+> Like this?
 
-$ ls -al /sys/bus/iio/devices/iio\:device0/power
-total 0
-drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
-drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
--rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
--rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
--rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
--r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
+You lost me. Namespace has a meaning, i.e. grouping items of a kind.
+In your proposal I don't see that. If REG_MAXADDR and REG_ADDRLEN are
+_not_ of the _REG_ kind as per above, why do they have this namespace
+in the first place?
 
-And control is already set to "auto" which according to documentation
-should allow the PM.
-
-Thanks for the hints.
-
-Best regards,
-Crt Mori
+-- 
+With Best Regards,
+Andy Shevchenko

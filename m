@@ -2,113 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9E2F580675
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF135806BE
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236864AbiGYVZB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 17:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45818 "EHLO
+        id S237400AbiGYV34 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 17:29:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiGYVZA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:25:00 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC601D0F8;
-        Mon, 25 Jul 2022 14:24:59 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id fy29so22759743ejc.12;
-        Mon, 25 Jul 2022 14:24:59 -0700 (PDT)
+        with ESMTP id S237466AbiGYV3N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:29:13 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B84024BE6
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:28:02 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id z13so17708201wro.13
+        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:28:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=YTknDddjpAEn0Nysyw1v1gQmmPikHyQfCRNmNWeBzvs=;
-        b=nww1KyATuXZwCRvSKsbfyJVABtoZEj9O8cQWSz5hxVBZjlB4Af/zyCYm8Xu70CnnJK
-         P5ezSwOgxlEOrgM0d0rqvk3fJjQ4Wh4bXZGRMFGvXJiWrZ238Wq55vMmsbu6ShbwBXC+
-         tTgT6yHxDgMAkHZB2L5FuJ8ZvFXq6f1aeflvOomuR0pvdPkfhmUk1E29818BumXeSG6M
-         rZxFYNuDbIFH31W8LVPel61jnYDI3jEXKgbGgERmB80nzFziWG6nC6QMqtMohZlG3LQ/
-         4lxxDSB7JFH9Hp2/Jr7Qb+lERp4ryWmIriLZVOfnwdp7VrHlblXFP3EZNG4fDrt6H+F3
-         2E+g==
+        d=linexp-org.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=hWFZXwysMvsN10lXDK6sChpf4X2qhnFs4AeSH8mvwTs=;
+        b=V7mOn4CmTbqh6bMglDam17dQJNZ1uZrNkVGQ9enufVzer/0mK6rPnBa9tF2CYQq5cg
+         vaNSspxKpPyqo32kEpyyS60GvsAsJWRR63UZwIyE/ZsQYTKhNDDJeYh/7BukklPce9nj
+         PGeuq+xjSewtJiwagQ+ykjt7JcfqbcEpWEjmtFqX63+C+7ZHBBIApfDFjJUSg08iNFL+
+         WMunOtTVpalGGXY+2NCGXOGoVwtIx7k67mk+Hgz6tL3ONvrQNdPzimxNLZdJ9A0zBcDU
+         c4Tx1rEyKbqKRyH/VNBC6tDn3pUuPvQQkTcLEr0zeOECp+W8KVMi/sFUeokpdyPMEj7Q
+         T+gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=YTknDddjpAEn0Nysyw1v1gQmmPikHyQfCRNmNWeBzvs=;
-        b=gNp08DeaOAUs3tkGBq+eJAZwovu7aIYnWp7FkRTjwUooVwHTkVP0wXvP55La1GfFFc
-         h845TwNGPxU/c30nDzgzwSVfp16rJj7+GvvOF+7JiiRwEl+Jq8L6ECYr6vmaWAuxDKxu
-         Y93Q2i6UL0o8lTKvVDmddteP/5BFmwrEr2izY3RcPGo6E5eNhzwKvPEBbUtOpyol7YDU
-         GZVqu8/0iprkD8Opqv+3GZAt6kFvFQUZab0LooBRs81WSrnFig2fdxP5nJL8fr2UPJZj
-         KyzgygwBb8M+p19NnpaleJ0WHh3k0icNeohudSRnQYODC68XXjb6hBsDGp9Sz9KJdVGL
-         PtnA==
-X-Gm-Message-State: AJIora8dUtfGT1evKwSNWX2PJnBfvuyypCGdhyeHmqVpVwQt6E8xsuz/
-        uJZvdS7VhRaBn5yF1EwxcCkf4c5cj2r6afLoZBe/r/pDolY=
-X-Google-Smtp-Source: AGRyM1vtZh/Dmwj8gKEhVI/+HRnKot4lRdR0ZqbxH8HVfChJPdHma+4MO8AljiEO6Md6RFkTl+snUdwuNGI+xUsEFPQ=
-X-Received: by 2002:a17:907:a063:b0:72b:52f7:feea with SMTP id
- ia3-20020a170907a06300b0072b52f7feeamr11692663ejc.740.1658784298276; Mon, 25
- Jul 2022 14:24:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220724164316.68393-1-matti.lehtimaki@gmail.com> <20220724164316.68393-2-matti.lehtimaki@gmail.com>
-In-Reply-To: <20220724164316.68393-2-matti.lehtimaki@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 23:24:21 +0200
-Message-ID: <CAHp75VfO_3xBWyOsS=v3uNKP=iR5KTmDEH6a90mKh0vFM-xOjQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: st_sensors: Fix null pointer on defer_probe error
-To:     =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=hWFZXwysMvsN10lXDK6sChpf4X2qhnFs4AeSH8mvwTs=;
+        b=MjcYXMCA4GghnZrW6RqMjHNQNII6XfI9lC5/F9Fm+wsgt4NRBqbB/ipYtqueXkgkJv
+         8PJeEbUxLUajiwQVh7ZMyvIkEHhtrTK6bBs555FLv78qmARExuzPqZG/RoQ84TrLEJr9
+         tgS1Xo9gbEq/ODN6WqKsfWHk2vqqCk0EEJCPKozJm4MTQVpumc7oUJ539iPZ+w08pgLc
+         ZrBAxdZD0hShHAd2tMVNa3lbFHi7W2fvvUFlzX8oAQCeA1/gByaYKHbRMRyKISZWvg/d
+         5GdqdDhU4IcLspBe3sDexCoMn81rmB7F+tsGa2aqs1o1LmSRxgFdV02n+IeCtIlOYsXH
+         30Jg==
+X-Gm-Message-State: AJIora8Ijnzo6SlmxTYH4r9loUu0IlNlwuqmLUMza6ZbLxtHTPKd+YyV
+        2kasdR+i3j5TOuEErPOwhudNjw==
+X-Google-Smtp-Source: AGRyM1sKKjruioCvoZ3EI2JZMo3qqzjeRP7j12dQmi1UnueZHyDTnJl5KV6/Y//5r/xXSnueikdBQg==
+X-Received: by 2002:adf:e193:0:b0:21e:626c:d082 with SMTP id az19-20020adfe193000000b0021e626cd082mr8548154wrb.159.1658784480791;
+        Mon, 25 Jul 2022 14:28:00 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:1780:8e54:dd38:6668])
+        by smtp.gmail.com with ESMTPSA id r17-20020a5d52d1000000b0021d68a504cbsm12668772wrv.94.2022.07.25.14.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jul 2022 14:28:00 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linexp.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
+        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
+        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
+        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
+        baolin.wang7@gmail.com, f.fainelli@gmail.com,
+        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
+        glaroque@baylibre.com, miquel.raynal@bootlin.com,
+        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
+        matthias.bgg@gmail.com, j-keerthy@ti.com,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner
+        sunXi SoC support),
+        linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support)
+Subject: [PATCH v2 27/32] iio/drivers/sun4i_gpadc: Switch to new of thermal API
+Date:   Mon, 25 Jul 2022 23:26:32 +0200
+Message-Id: <20220725212637.2818207-28-daniel.lezcano@linexp.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220725212637.2818207-1-daniel.lezcano@linexp.org>
+References: <20220725212637.2818207-1-daniel.lezcano@linexp.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 24, 2022 at 7:01 PM Matti Lehtim=C3=A4ki
-<matti.lehtimaki@gmail.com> wrote:
->
-> dev_err_probe() calls __device_set_deferred_probe_reason()
-> on -EPROBE_DEFER error. The device pointer to driver core private
-> structure is not yet initialized at this stage for the iio device causing
-> a null pointer error. Use parent device instead.
+The thermal OF code has a new API allowing to migrate the OF
+initialization to a simpler approach. The ops are no longer device
+tree specific and are the generic ones provided by the core code.
 
-the parent device pointer
+Convert the ops to the thermal_zone_device_ops format and use the new
+API to register the thermal zone with these generic ops.
 
-...
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+---
+ drivers/iio/adc/sun4i-gpadc-iio.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
->         pdata->vdd =3D devm_regulator_get(parent, "vdd");
->         if (IS_ERR(pdata->vdd))
-> -               return dev_err_probe(&indio_dev->dev, PTR_ERR(pdata->vdd)=
-,
-> +               return dev_err_probe(indio_dev->dev.parent, PTR_ERR(pdata=
-->vdd),
->                                      "unable to get Vdd supply\n");
+diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+index 2d393a4dfff6..13d1e937357c 100644
+--- a/drivers/iio/adc/sun4i-gpadc-iio.c
++++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+@@ -412,9 +412,9 @@ static int sun4i_gpadc_runtime_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int sun4i_gpadc_get_temp(void *data, int *temp)
++static int sun4i_gpadc_get_temp(struct thermal_zone_device *tz, int *temp)
+ {
+-	struct sun4i_gpadc_iio *info = data;
++	struct sun4i_gpadc_iio *info = tz->devdata;
+ 	int val, scale, offset;
+ 
+ 	if (sun4i_gpadc_temp_read(info->indio_dev, &val))
+@@ -428,7 +428,7 @@ static int sun4i_gpadc_get_temp(void *data, int *temp)
+ 	return 0;
+ }
+ 
+-static const struct thermal_zone_of_device_ops sun4i_ts_tz_ops = {
++static const struct thermal_zone_device_ops sun4i_ts_tz_ops = {
+ 	.get_temp = &sun4i_gpadc_get_temp,
+ };
+ 
+@@ -637,9 +637,9 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	if (IS_ENABLED(CONFIG_THERMAL_OF)) {
+-		info->tzd = thermal_zone_of_sensor_register(info->sensor_device,
+-							    0, info,
+-							    &sun4i_ts_tz_ops);
++		info->tzd = thermal_of_zone_register(info->sensor_device,
++						     0, info,
++						     &sun4i_ts_tz_ops);
+ 		/*
+ 		 * Do not fail driver probing when failing to register in
+ 		 * thermal because no thermal DT node is found.
+-- 
+2.25.1
 
-Why not use the 'parent' variable?
-
-...
-
->         pdata->vdd_io =3D devm_regulator_get(parent, "vddio");
->         if (IS_ERR(pdata->vdd_io))
-> -               return dev_err_probe(&indio_dev->dev, PTR_ERR(pdata->vdd_=
-io),
-> +               return dev_err_probe(indio_dev->dev.parent, PTR_ERR(pdata=
-->vdd_io),
-
-Ditto.
-
->                                      "unable to get Vdd_IO supply\n");
-
-
---=20
-With Best Regards,
-Andy Shevchenko

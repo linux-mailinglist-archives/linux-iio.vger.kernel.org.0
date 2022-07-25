@@ -2,154 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 100D157FD83
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 12:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B7757FDB3
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 12:41:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232406AbiGYKbf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 06:31:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52792 "EHLO
+        id S234680AbiGYKla (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 06:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234379AbiGYKbe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 06:31:34 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878B115819
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 03:31:32 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id z13so15304826wro.13
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 03:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=QR4thViojhLm7m3iVqTAzOPrEuZ+oboQVEbkcRYR7U0=;
-        b=hcY3ebDhxmUgKAKSOPUOX7d/LMYdV3cijN2N6OfC0kvVYjMwOvmOolx+2NETIKYqUp
-         GPy3YFMR7smmOlatz8CKT+4p2UQ+6lI9Ejv06f+y6zEFBSmLUPFbbscFbBBsOCvH434Q
-         ke8WXFQ+uXl36Kdevvs6uhTIaQQgtIFRovUfQ/RDq3AHQ469OhSceGOKRnPmFWjpxVnH
-         VERQ2rtptnToPx6leEXxAAby7RDypiZaQady2IbBpsvPlsYJ0uSwLW6l0adFiFhqOZ8D
-         XJZDsGiJcpWWsVtF7ngMWVpb9VQHwHEkKK2RVLip5CsQWVUMkj1jqMMhHMjq3wvU4bke
-         J0IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=QR4thViojhLm7m3iVqTAzOPrEuZ+oboQVEbkcRYR7U0=;
-        b=vm7sze/z22pG3z2Ek1L9O3JPDirZ5A9a+v0qW+kP+bsJolcRVqj9Gl/cS8WjqZ7l8h
-         O3dm8dS2AEAmECwvcB5B4MZ6QP7JcNEAb1Rhq7Y9AG8a3m66fAYPsnd4asZmHOgyVhT+
-         9PWLp3kEMAZNL5IDtSWJHsb4IMFWOqfsMVem1dqrg0bwR7HMTyOTVb+ic4zXCqWEiE+0
-         XOLOm2N8dJdr0lcO0TLnhu8kMLj5A99JOZkzXU8J0NHf88MPTqzRW9kzAMkDBnichL8g
-         vRtLUbkJxyAxfCrjYf7IYVFANE72Y3GlAF6OAmZ+5gazcd//u+Gbf2puKzPsu5cjea1N
-         4F1g==
-X-Gm-Message-State: AJIora8KLeci0zpiCtxyQwvS1PPiTlCv2ML+b+s57+5aG19qQtZ9rCw0
-        6hoZX0lFQcqmuOEu6NdhPWc0Nw==
-X-Google-Smtp-Source: AGRyM1uhInd5p9lSRbYGnaq9oTNYSYBtNWlkq9wyaVzmMkSkg4hYhWboyJgYIo9QbRHYBeJSc2cjCg==
-X-Received: by 2002:a5d:584c:0:b0:21e:7f48:bf19 with SMTP id i12-20020a5d584c000000b0021e7f48bf19mr5190179wrf.474.1658745090915;
-        Mon, 25 Jul 2022 03:31:30 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
-        by smtp.gmail.com with ESMTPSA id l18-20020a05600c1d1200b003a04d19dab3sm29367538wms.3.2022.07.25.03.31.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Jul 2022 03:31:30 -0700 (PDT)
-Date:   Mon, 25 Jul 2022 11:31:28 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     lee.jones@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
-        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
-        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com, deller@gmx.de,
-        andy.shevchenko@gmail.com, chiaen_wu@richtek.com,
-        alice_chen@richtek.com, cy_huang@richtek.com,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        szunichen@gmail.com
-Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370
- support
-Message-ID: <20220725103128.xtaw2c4y5fobowg7@maple.lan>
-References: <20220722102407.2205-1-peterwu.pub@gmail.com>
- <20220722102407.2205-14-peterwu.pub@gmail.com>
+        with ESMTP id S234696AbiGYKl0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 06:41:26 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A36917A81;
+        Mon, 25 Jul 2022 03:41:23 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:10:389d:42df:ae4c:c047:294c])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id AE74666015E7;
+        Mon, 25 Jul 2022 11:41:18 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1658745681;
+        bh=OIJqwsYXi8pLmEf2wCQHVghNtrzF+4UM3EjjU6Dcvqw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QIZvxYjEAmsA1Ew1SudcFsVFGDyXboHXWcEpsiihPbRjO2YTfwzwcPhCuFifH4+6G
+         +sHAkKX+qYQKgE8MC9rDpeetmdON8TbwYQdP5elmt680L9Fbd0OzVbjty5Mhqomp0F
+         VV1Mc3vHnctaeU9Kibn4cvHevfpHE5SwwmunbGocyOOU6imU9MzfE/iBKz/0qjoRpx
+         ULnBd0cYuFmz4Fynmd5TQP+UEuAdGkhOq5Lb8EQNFZdS+W2Qpeag6lO0h+I1Ui2tFD
+         y2Jmyjo5I9wa234oxWgRw/IsABTdgQwokosxDynqyR/Kqtcp/lXXk4Z4J0f5Ow6mOM
+         ijFEIgacg5ohQ==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        Zhigang.Shi@liteon.com, dmitry.osipenko@collabora.com
+Cc:     krisman@collabora.com, andy.shevchenko@gmail.com,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel@collabora.com,
+        alvaro.soliverez@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH v10 0/2] Add LTRF216A Driver
+Date:   Mon, 25 Jul 2022 16:10:48 +0530
+Message-Id: <20220725104050.491396-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220722102407.2205-14-peterwu.pub@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 06:24:07PM +0800, ChiaEn Wu wrote:
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index a003e02..846dbe7 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -268,6 +268,18 @@ config BACKLIGHT_MAX8925
->  	  If you have a LCD backlight connected to the WLED output of MAX8925
->  	  WLED output, say Y here to enable this driver.
->
-> +config BACKLIGHT_MT6370
-> +	tristate "MediaTek MT6370 Backlight Driver"
-> +	depends on MFD_MT6370
-> +	help
-> +	  This enables support for Mediatek MT6370 Backlight driver.
-> +	  It's commonly used to drive the display WLED. There are 4 channels
-> +	  inside, and each channel supports up to 30mA of current capability
-> +	  with 2048 current steps in exponential or linear mapping curves.
+This patchset adds support for ltrf216a Ambient Light Sensor
+and documents the DT bindings for the same.
 
-Does the MT6372 support more steps than this? In other words does it use
-a fourteen bit scale or does it use an 11-bit scale at a different
-register location?
+Changes in v10
+  - Handle !CONFIG_PM scenario similar to how other IIO drivers
+    do it.
+  - Fix kernel test robot warning.
+
+Changes in v9
+  - Add LTRF216A_MAIN_STATUS register in volatile function.
+  - Update the datasheet link.
+
+Changes in v8
+  - Add caching mechanism to restore register state after h/w resume.
+  - Add callback functions and disable locking in regmap config.
+  - Update mutex comment as per it's current scope in the driver.
+  - Add Shreeya as author of the driver.
+  - Make some minor cleanups.
+
+Changes in v7
+  - Add regmap support.
+  - Fix runtime power management implementation.
+  - Fix the ordering of devm and non-devm functions.
+  - Use DEFINE_RUNTIME_DEV_PM_OPS macro
+  - Fix the error reported by kernel test robot for bindings.
+
+Changes in v6
+  - Fix some errors reported by kernel test robot.
+  - Add protocol details for the datasheet link.
+  - Remove useless assignments.
+  - Add unit details for read data delay macro.
+  - Use pm_sleep_ptr().
+
+Changes in v5
+  - Add power management support.
+  - Add reset functionality.
+  - Use readx_poll_timeout() to get data.
+  - Cleanup some of the redundant code.
+  - Update int_time_fac after I2C write is successful.
+  - Rename mutex to lock.
+  - Use Reverse Xmas tree pattern for all variable definitions.
+  - Improve error handling messages and add error codes.
+  - Add one more MODULE_AUTHOR.
+  - Remove cleardata which was reading data for infrared light.
+  - Remove patch for deprecated vendor prefix [PATCH v4 3/3].
+  - Remove deprecated string from DT binding document.
+
+Changes in v4
+  - Add more descriptive comment for mutex lock
+  - Fix mutex locking in read_raw()
+  - Use i2c_smbus_read_i2c_block_data()
+
+Changes in v3
+  - Use u16 instead of u8 for int_time_fac
+  - Reorder headers in ltrf216a.c file
+  - Remove int_time_mapping table and use int_time_available
+  - Fix indentation in the bindings file.
+
+Changes in v2
+  - Add support for 25ms and 50ms integration time.
+  - Rename some of the macros as per names given in datasheet
+  - Add a comment for the mutex lock
+  - Use read_avail callback instead of attributes and set the
+    appropriate _available bit.
+  - Use FIELD_PREP() at appropriate places.
+  - Add a constant lookup table for integration time and reg val
+  - Use BIT() macro for magic numbers.
+  - Improve error handling at few places.
+  - Use get_unaligned_le24() and div_u64()
+  - Use probe_new() callback and devm functions
+  - Return errors in probe using dev_err_probe()
+  - Use DEFINE_SIMPLE_DEV_PM_OPS()
+  - Correct the formula for lux to use 0.45 instead of 0.8
+  - Add interrupt and power supply property in DT bindings
+  - Add vendor prefix name as per the alphabetical order.
 
 
-> +
-> +	  This driver can also be built as a module. If so, the module
-> +	  will be called "mt6370-backlight".
-> +
-> [...]
-> diff --git a/drivers/video/backlight/mt6370-backlight.c b/drivers/video/backlight/mt6370-backlight.c
-> new file mode 100644
-> index 0000000..ba00a8f
-> --- /dev/null
-> +++ b/drivers/video/backlight/mt6370-backlight.c
-> [...]
-> +static int mt6370_bl_update_status(struct backlight_device *bl_dev)
-> +{
-> +	struct mt6370_priv *priv = bl_get_data(bl_dev);
-> +	int brightness = backlight_get_brightness(bl_dev);
-> +	unsigned int enable_val;
-> +	u8 brightness_val[2];
-> +	int ret;
-> +
-> +	if (brightness) {
-> +		brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
-> +		brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
-> +
-> +		/*
-> +		 * To make MT6372 using 14 bits to control the brightness
-> +		 * backward compatible with 11 bits brightness control
-> +		 * (like MT6370 and MT6371 do), we left shift the value
-> +		 * and pad with 1 to remaining bits. Hence, the MT6372's
-> +		 * backlight brightness will be almost the same as MT6370's
-> +		 * and MT6371's.
-> +		 */
-> +		if (priv->vid_type == MT6370_VID_6372) {
-> +			brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
-> +			brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
-> +		}
+Shreeya Patel (2):
+  dt-bindings: Document ltrf216a light sensor bindings
+  iio: light: Add support for ltrf216a sensor
 
-This somewhat depends on the answer to the first question above, but
-what is the point of this shifting? If the range is 14-bit then the
-driver should set max_brightness to 16384 and present the full range of
-the MT6372 to the user.
+ .../bindings/iio/light/liteon,ltrf216a.yaml   |  49 ++
+ drivers/iio/light/Kconfig                     |  11 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/ltrf216a.c                  | 537 ++++++++++++++++++
+ 4 files changed, 598 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/liteon,ltrf216a.yaml
+ create mode 100644 drivers/iio/light/ltrf216a.c
 
-Especially when using linear mappings (which are a totally pointless
-scale to use for a backlight) the extra steps are useful for backlight
-animation.
+-- 
+2.30.2
 
-
-Daniel.

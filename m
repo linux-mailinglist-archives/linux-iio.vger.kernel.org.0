@@ -2,57 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6F8B57FBF3
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 11:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C4457FC01
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 11:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234410AbiGYJHC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 05:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47646 "EHLO
+        id S234503AbiGYJIQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 05:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233274AbiGYJHB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 05:07:01 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F4CFD38;
-        Mon, 25 Jul 2022 02:06:57 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id r21so7748394qtn.11;
-        Mon, 25 Jul 2022 02:06:57 -0700 (PDT)
+        with ESMTP id S234169AbiGYJIP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 05:08:15 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FAB310555;
+        Mon, 25 Jul 2022 02:08:14 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id z22so13034036edd.6;
+        Mon, 25 Jul 2022 02:08:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=IY0j+H2edk5UsmI6A7sNzAv0qZHfigoVGkZeFtNqZD0=;
-        b=OAft5TUYAXK6FHwdudrZ3/ylDTgyd7ApXgH3mCQQrEy/AppLvKLTFrPAuRaeFgFtA7
-         It8xo2DsjfOuep3j9cWzIbiJND3QEGySnwIZHLW7+dtLSlt+35HbGtRezBb37b4ET1YA
-         T08HOavE/cN4KrCVfDqvDb9AfqV938ASpM6+DesVsCpK+wJIO8i1UyBgvsftmWjtDjOG
-         FhD3Z5NBfgipr391g2noPdoBVxJJl+Zl02FqMF/RSg8CvI8FVka2TxagkUfxCYyIA8lN
-         BEkxNh5JboG7/J/TGmZM68ALnFQGOS8vaYU/EgWzrbg9AQ2GE7pMqCpLXdsGFwSSNDLe
-         gkfQ==
+        bh=SKEZcZKyJPxnUIHg9vM+IkXxZdZ8ejobr3a6ltkwgqg=;
+        b=SF+aqs+EVnbsbKQkA/8xNH4ehlnunss9fmN5U1pnRWAD2EMIQ+vnoZbzG36K5peZlX
+         CXhER1ViMJa80xFPZtY843nWQs5F1BNT454kUiXwBosjz4IYFjnLaJailn/bPKEmOYYj
+         OQZu//AWglB0ze0HUO1SQYsIXOFhVkCy9Y+HPByleJg8LXsl2myXUq38a43P555UG4Bx
+         W4w40So2uuPYw5I5cWqSTLAX8vR149Ik4ff+qJQus9SdkPcCLkZ3D5xoOpeLQVKUQZ8Y
+         zppNE2E5jRpSRhv5vq/EJEOVqtSyTp9xfxGx+C2GzeLpQ8Hqwv5+/dQLpC89uzdBr14a
+         kbDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=IY0j+H2edk5UsmI6A7sNzAv0qZHfigoVGkZeFtNqZD0=;
-        b=CuO4WS9fHj7VN8m6j+pML9Pkk2VxzX1EGGfV5AocQGxASyIkm+oDI6cGGjpxYQS1wj
-         MgoBaBcr9TVQTlvZ6+rCGOCqHFR0n+lJvCkF6QZ7Dft8q5jdkNB8CTBKj/ZPEbam45uH
-         yVnWSetf2SQ0/YsgTbZXXGoJfz7UsravSecdNGpgTW3CGWiOHp6wkz1Qss92rSrZxDgu
-         uUUZ3MOUicf/gytf6qRqm0ysv2WysQ0iPlDd+r7VxU6jMjd5cLHPiNXs4+sVtVr7+nwl
-         7L3DfNLmI+M93bhCzR9cVq49SiMCCZNieYFIgdiw/bKTeBBCxg50E33kATDcfqNKS4Dm
-         bckw==
-X-Gm-Message-State: AJIora8XD7u4mPqVqKVejm2eiq4pZClJi5Nkh22yITWTxd7QCmXwsBcY
-        FMBc65rlcVCecyHA7xj6lcOa+fOSthViakHrjQw=
-X-Google-Smtp-Source: AGRyM1tJSXMumghoATC65twYRnzaQxdiBNYaldY1M9f4DosemyPp1f+IvX7cbVFcEYtBJ2DRVha2cAhiDgReWJ+n9ic=
-X-Received: by 2002:ac8:5d49:0:b0:31f:aa:e632 with SMTP id g9-20020ac85d49000000b0031f00aae632mr9318617qtx.427.1658740016501;
- Mon, 25 Jul 2022 02:06:56 -0700 (PDT)
+        bh=SKEZcZKyJPxnUIHg9vM+IkXxZdZ8ejobr3a6ltkwgqg=;
+        b=WMP0r+Teh2HRAGcBZqzf9+ZXiWOTXBwm4NQZLWVE/qZNeqLyBOMCWslXcLHqQgjG7/
+         UYvUr5X0LE+IYvOlM74OSmJiPwCqzJiEUEybDBZlRCmJm8pN1uvWyzZABrYrRxq72GJd
+         nqyifhDDvTZJA/aBy4bAVnLS4/GzviEh5ImuG6oOh7Rl25vZm9c76T9h6juw9CqE74Fl
+         s6Ze30Wwgwp0Bwr30LaA/wTAy9JkgtChBqEY04VJMxupeb+DDOQkikZimfho2d0giW4N
+         wzEYPG3KWCFrREVI/4QSH9Jv6hYQ9jiP+Wat2B7DesHKKdoDSfqGxR/Mx7W3H27LHQJr
+         8SVg==
+X-Gm-Message-State: AJIora/LO3rc3m1iZ8cuNX07+tV846xIITdFMWo11PwhtbavJrStdhUL
+        RVnzydnp8AC0eBmvnAN8/hg3bX8HS0G9Iei7Hag=
+X-Google-Smtp-Source: AGRyM1v5JqoLA7zG3OW50lchaZUo0NzhFJOo3SiC7x0i5Bb09pqP2OvkrfyBcnIJEGb6N4UIi+1F3CYnjToz5WfvfBA=
+X-Received: by 2002:a05:6402:50c9:b0:43c:163a:4d5f with SMTP id
+ h9-20020a05640250c900b0043c163a4d5fmr1821081edb.386.1658740092120; Mon, 25
+ Jul 2022 02:08:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-8-peterwu.pub@gmail.com>
- <CAHp75VfiKMROzxeEaCH6qCthK9qanJPqbjADLMVH-V0upKf+9Q@mail.gmail.com>
- <CABtFH5++4N1mECJ0vN-79WsJJWcBTVxLFgvkiouPf1qev7LHHQ@mail.gmail.com> <CAHp75VfKihBLjUFqe_Sj5dqTO7-wjLehAF+9_8-sbUeyJ-ZAmg@mail.gmail.com>
-In-Reply-To: <CAHp75VfKihBLjUFqe_Sj5dqTO7-wjLehAF+9_8-sbUeyJ-ZAmg@mail.gmail.com>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Mon, 25 Jul 2022 17:06:20 +0800
-Message-ID: <CABtFH5+LvvcVscRotyRYXhXs1pPkCahbVe0NcSFxC4k_WMMsuQ@mail.gmail.com>
-Subject: Re: [PATCH v6 07/13] mfd: mt6370: Add MediaTek MT6370 support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-14-peterwu.pub@gmail.com>
+In-Reply-To: <20220722102407.2205-14-peterwu.pub@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 25 Jul 2022 11:07:35 +0200
+Message-ID: <CAHp75VfxeRR7BzOWwfNSo+x3JZcH37ogR+ZbapTAWrCYkr+FUg@mail.gmail.com>
+Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
@@ -95,52 +94,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 25, 2022 at 4:43 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Fri, Jul 22, 2022 at 12:25 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> ...
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
 >
-> > > > +#define MT6370_REG_DEV_INFO    0x100
-> > > > +#define MT6370_REG_CHG_IRQ1    0x1C0
-> > > > +#define MT6370_REG_CHG_MASK1   0x1E0
-> > > > +
-> > > > +#define MT6370_VENID_MASK      GENMASK(7, 4)
-> > > > +
-> > > > +#define MT6370_NUM_IRQREGS     16
-> > > > +#define MT6370_USBC_I2CADDR    0x4E
-> > >
-> > > > +#define MT6370_REG_ADDRLEN     2
-> > > > +#define MT6370_REG_MAXADDR     0x1FF
-> > >
-> > > These two more logically to have near to other _REG_* definitions above.
-> >
+> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> driver, display bias voltage supply, one general purpose LDO, and the
+> USB Type-C & PD controller complies with the latest USB Type-C and PD
+> standards.
+>
+> This adds support for MediaTek MT6370 Backlight driver. It's commonly used
+
+Read Submitting Patches, please!
+
+(In this case, find "This patch" in the above mentioned document, read
+and act accordingly)
+
+> to drive the display WLED. There are 4 channels inside, and each channel
+> supports up to 30mA of current capability with 2048 current steps in
+> exponential or linear mapping curves.
 
 ...
 
->
-> You lost me. Namespace has a meaning, i.e. grouping items of a kind.
-> In your proposal I don't see that. If REG_MAXADDR and REG_ADDRLEN are
-> _not_ of the _REG_ kind as per above, why do they have this namespace
-> in the first place?
+> +               brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
 
-oh... Sorry, I just got the wrong meaning
-maybe it should be revised like this, right??
--------------------------------------------------------------------
-#define MT6370_REG_DEV_INFO    0x100
-#define MT6370_REG_CHG_IRQ1    0x1C0
-#define MT6370_REG_CHG_MASK1   0x1E0
-#define MT6370_REG_MAXADDR     0x1FF // Move it to here
 
-#define MT6370_VENID_MASK      GENMASK(7, 4)
+(see below)
 
-#define MT6370_NUM_IRQREGS     16
-#define MT6370_USBC_I2CADDR    0x4E
+...
 
-#define MT6370_MAX_ADDRLEN     2    // Rename
--------------------------------------------------------------------
+> +               /*
+> +                * To make MT6372 using 14 bits to control the brightness
+> +                * backward compatible with 11 bits brightness control
+> +                * (like MT6370 and MT6371 do), we left shift the value
+> +                * and pad with 1 to remaining bits. Hence, the MT6372's
 
-Thanks!
+to the remaining
+
+> +                * backlight brightness will be almost the same as MT6370's
+> +                * and MT6371's.
+> +                */
+> +               if (priv->vid_type == MT6370_VID_6372) {
+> +                       brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
+> +                       brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
+> +               }
+
+Nice! Why not...
+
+...
+
+> +       gpiod_set_value(priv->enable_gpio, brightness ? 1 : 0);
+
+!!brightness will do as well.
+
+...
+
+> +       brightness = brightness_val[1] << fls(MT6370_BL_DIM2_MASK);
+
+> +               val |= prop_val << (ffs(MT6370_BL_PWM_HYS_SEL_MASK) - 1);
+
+> +               val |= ovp_uV << (ffs(MT6370_BL_OVP_SEL_MASK) - 1);
+
+> +               val |= ocp_uA << (ffs(MT6370_BL_OC_SEL_MASK) - 1);
+
+> +       val = prop_val << (ffs(MT6370_BL_CH_MASK) - 1);
+
+...to use respective _SHIFTs in all these?
+
+...
+
+> +       priv->enable_gpio = devm_gpiod_get_optional(dev, "enable",
+> +                                                   GPIOD_OUT_HIGH);
+> +       if (IS_ERR(priv->enable_gpio))
+> +               dev_err(dev, "Failed to get 'enable' gpio\n");
+
+What does this mean? Shouldn't be
+
+  return dev_err_probe()?
 
 -- 
-Best Regards,
-ChiaEn Wu
+With Best Regards,
+Andy Shevchenko

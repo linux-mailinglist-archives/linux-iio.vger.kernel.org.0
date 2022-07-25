@@ -2,57 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B18657FB3A
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52E9857FB64
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232879AbiGYIZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 04:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42354 "EHLO
+        id S233938AbiGYIbB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 04:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229822AbiGYIZq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:25:46 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A1E13E9B;
-        Mon, 25 Jul 2022 01:25:45 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id tk8so19173658ejc.7;
-        Mon, 25 Jul 2022 01:25:45 -0700 (PDT)
+        with ESMTP id S234141AbiGYIau (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:30:50 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A6A6556;
+        Mon, 25 Jul 2022 01:30:20 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id n2so8081171qkk.8;
+        Mon, 25 Jul 2022 01:30:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=J5rSRKJzZCEe75lE89H4BacTqhlHPMQzJe7RV2ORfWI=;
-        b=BNlVjsxRro5TG97838xZbVcQ/pG/LD+g/7G/AjwrIrlPvPS37j9HRk59ZPvQZFMbo9
-         MnOMniee2k168J7vlVevltwedsYw1fwJcNYMweUNuLPFL7JEp9m9CEssAgQLNBEXPpLX
-         65np3ghAZ/JI0ou7IY+VAdXdeEM9Dx5l6K3VMtdxVw5MaZ+JcN9Mz6qTKX+a72GlbThf
-         YgqMy4pPKGjxlN3v8ojq6p7cX1h0ysW9lnKZ5pLCEPb56UCWlozkB+OoACaoaIIUBRbZ
-         /V/wW4p+YYsXXLnpTvXofuXoBPwxmOEVHWVRTZH6OK6PGjSYJaBn82vKtB7a1B3eaVvy
-         gAUg==
+        bh=eGTl5W3lU5EPUSxceW+3YfZM8YTmZNPLhO3+yi0Lxxo=;
+        b=SchD1OSJhqZUbaDH3npCvBVhvgdsTgcai4JGkAeNGwKszMwOXVv1jP2YUfdpVF00gi
+         M7W+LOBWkm3fvR7QR5Oi7Rr243ZKrwIRGyjvM4fEdp3ybWcWAtUz3ifU5jDZ2eCRBBLb
+         hVRD5fVGR5o7NHR3kRn8qM+u20mgIRdugneUsK0DRfgczIFrKpOhBB+f9+/lUqaYKRv+
+         zCqM+TkCzfpywtt7PK8+F+XO4TuRbG4FDiDPWiwIK0+yYxleqIJNXSwBHMHq6a6DI1r4
+         IHORJbjxNq0t+3W70uo7ZSMhJhotvD3N/NslNtJkOTvO+ulZgz6/dODRy4NI0YAEC0V6
+         1QjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=J5rSRKJzZCEe75lE89H4BacTqhlHPMQzJe7RV2ORfWI=;
-        b=KmLawa8UXbcqBjf0QeFvLCZ0gZkepy9msxh2TcI45J0/AKstyDM2vjS0jhEAhMMHcC
-         XINhzzdIYVcgr/l48JvCkbsxVjj7kCBVvm8pju+RoZsEEyuUtcuCpYdfwDZcQigmYPRI
-         7cflqhlNiNtCzGshQnufoaJoVY8PeAQr/5sonhpTcD4hCt8GwwjsLrZbP5Es3OdbsNqR
-         BEyW4qunCBOr9c4YGiDmIRuC8Metmp/9wifmWsDyLzBeg781ZGF7VSTjkC3i4CE6kj35
-         S5I0eRZsw2MAO2G+FinrnraRM0k1vuHs0IDIIfWGgq55Z5a4+4yqqfkGD4YEkTrIjMJT
-         QC1w==
-X-Gm-Message-State: AJIora+hU7VC0LcDSE7wGV5cpWcVpLHCTv4zPhAEsYsFqMl0u7nfMIIr
-        BawBilq4Fe/pPdBgumbhzhronxEJSql//Xjj4ks=
-X-Google-Smtp-Source: AGRyM1tb8lf0258KwCgCSc1j2TNtucrsLChWD53/F5ZAYHmenBBMp0FJqJ/Hs5trX2iqStdOTyF6IVkbw5ytFnaOucM=
-X-Received: by 2002:a17:906:8a4a:b0:72b:5b23:3065 with SMTP id
- gx10-20020a1709068a4a00b0072b5b233065mr9396194ejc.557.1658737543426; Mon, 25
- Jul 2022 01:25:43 -0700 (PDT)
+        bh=eGTl5W3lU5EPUSxceW+3YfZM8YTmZNPLhO3+yi0Lxxo=;
+        b=DOwl29MfcAr7pGLDLeY/CXUd9wHq14dJzb6ZC3QEzBvAMZYanQyJ40IkjdbZxbgo3u
+         TfjapNLDmOhbyRk9hQB1V/Bzg0RMyiJJAvqfkVRKHlEXFMnywTtNZx6IkkAN2hx9kTkA
+         7jinPHvENmkw2uMaZG6tLZtHGmgyDHi3PCqOtHm2cg4wPZfY+V/1skHtMJNkRTBi77Nq
+         h+m2mN0PhsQ4/7AnPkB4dJ7XIs9E0WC+z87kRppObiWNG3mUEE+9uSjGQyeW82ncWaNb
+         Ijq3QCWFf13/96DwvTKRavkeH9zWnNpuSf1CQ/jG1azEfvpBJGpAyOEjpINangIWFazH
+         NXkg==
+X-Gm-Message-State: AJIora9aI99Ljjb9e5EkFol/ChC8WbCXGp2VPVf/Z5pHpunSby3hOO8A
+        pRFQvgkmu/wjFMamGUPLfl4H7EEqtU4Lcl2Sanc=
+X-Google-Smtp-Source: AGRyM1tT9zd1NbQQxCDwlfF4CX1SIOVXegpCvtscSaJImwYFwZu4GtSNklBiffb6QTC6/u0h5ukzMhHUITILaRb40TA=
+X-Received: by 2002:a05:620a:2942:b0:6b5:e33a:1771 with SMTP id
+ n2-20020a05620a294200b006b5e33a1771mr8042028qkp.665.1658737820011; Mon, 25
+ Jul 2022 01:30:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-11-peterwu.pub@gmail.com>
-In-Reply-To: <20220722102407.2205-11-peterwu.pub@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 10:25:06 +0200
-Message-ID: <CAHp75VeafmppD=Ge-kGZ7ab8=P9p5wmZXi_1fKFf+1uVA-SNog@mail.gmail.com>
-Subject: Re: [PATCH v6 10/13] power: supply: mt6370: Add MediaTek MT6370
- charger driver
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-8-peterwu.pub@gmail.com>
+ <CAHp75VfiKMROzxeEaCH6qCthK9qanJPqbjADLMVH-V0upKf+9Q@mail.gmail.com>
+In-Reply-To: <CAHp75VfiKMROzxeEaCH6qCthK9qanJPqbjADLMVH-V0upKf+9Q@mail.gmail.com>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Mon, 25 Jul 2022 16:29:43 +0800
+Message-ID: <CABtFH5++4N1mECJ0vN-79WsJJWcBTVxLFgvkiouPf1qev7LHHQ@mail.gmail.com>
+Subject: Re: [PATCH v6 07/13] mfd: mt6370: Add MediaTek MT6370 support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
@@ -95,82 +95,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 12:25 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+On Mon, Jul 25, 2022 at 4:00 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 >
-> From: ChiaEn Wu <chiaen_wu@richtek.com>
+
+...
+
 >
-> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
-> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
-> driver, display bias voltage supply, one general purpose LDO, and the
-> USB Type-C & PD controller complies with the latest USB Type-C and PD
-> standards.
+> > +#define MT6370_REG_DEV_INFO    0x100
+> > +#define MT6370_REG_CHG_IRQ1    0x1C0
+> > +#define MT6370_REG_CHG_MASK1   0x1E0
+> > +
+> > +#define MT6370_VENID_MASK      GENMASK(7, 4)
+> > +
+> > +#define MT6370_NUM_IRQREGS     16
+> > +#define MT6370_USBC_I2CADDR    0x4E
 >
-> This adds MediaTek MT6370 Charger driver support. The charger module
-> of MT6370 supports High-Accuracy Voltage/Current Regulation,
-> Average Input Current Regulation, Battery Temperature Sensing,
-> Over-Temperature Protection, DPDM Detection for BC1.2.
+> > +#define MT6370_REG_ADDRLEN     2
+> > +#define MT6370_REG_MAXADDR     0x1FF
+>
+> These two more logically to have near to other _REG_* definitions above.
 
-...
+Hi Andy,
+Thanks for your review.
+Do you mean that we should move '#define MT6370_USBC_I2CADDR' and
+'#define MT6370_REG_MAXADDR' after the line '#define
+MT6370_REG_CHG_MASK1'?
+-------------------------------------------------------------------
+#define MT6370_REG_DEV_INFO    0x100
+#define MT6370_REG_CHG_IRQ1    0x1C0
+#define MT6370_REG_CHG_MASK1   0x1E0
+#define MT6370_USBC_I2CADDR    0x4E
+#define MT6370_REG_MAXADDR     0x1FF
 
-> +static inline void mt6370_chg_enable_irq(struct mt6370_priv *priv,
-> +                                        const char *irq_name, bool en)
-> +{
-> +       int irq_num;
-> +       struct platform_device *pdev = to_platform_device(priv->dev);
-> +
-> +       irq_num = platform_get_irq_byname(pdev, irq_name);
+#define MT6370_VENID_MASK      GENMASK(7, 4)
 
-Every time the IRQ is not found you will get an error message printed here.
-1) Is IRQ optional?
-2) If not, can't you do validation only once?
+#define MT6370_NUM_IRQREGS     16
+#define MT6370_REG_ADDRLEN     2
+-------------------------------------------------------------------
+Like this?
 
-> +       if (irq_num < 0)
-> +               return;
-> +
-> +       if (en)
-> +               enable_irq(irq_num);
-> +       else
-> +               disable_irq_nosync(irq_num);
-> +}
-
-
-...
-
-> +       ret = mt6370_chg_field_set(priv, F_USBCHGEN, 0);
-> +       if (ret < 0) {
-
-> +       ret = mt6370_chg_field_set(priv, F_ICHG, 900000);
-> +       if (ret < 0) {
-
-> +       ret = mt6370_chg_field_set(priv, F_IINLMTSEL, 3);
-> +       if (ret < 0) {
-
-Do all these ' < 0' parts make sense?
-(Not only these cases, but in many in the entire driver)
-
-...
-
-> +       /* Check in otg mode or not */
-
-OTG
-
-...
-
-> +               ret = devm_request_threaded_irq(priv->dev, ret, NULL,
-> +                                               mt6370_chg_irqs[i].handler,
-> +                                               IRQF_TRIGGER_FALLING,
-> +                                               dev_name(priv->dev), priv);
-
-> +
-
-Redundant blank line.
-
-> +               if (ret < 0)
-> +                       return dev_err_probe(priv->dev, ret,
-> +                                            "Failed to request irq %s\n",
-> +                                            mt6370_chg_irqs[i].name);
-> +       }
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Best Regards,
+ChiaEn Wu

@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB5857FAD2
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8414457FAF6
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 10:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233274AbiGYIEU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 04:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
+        id S232301AbiGYIKw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 04:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbiGYIET (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:04:19 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628FA5FEF;
-        Mon, 25 Jul 2022 01:04:18 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id j22so19126473ejs.2;
-        Mon, 25 Jul 2022 01:04:18 -0700 (PDT)
+        with ESMTP id S229620AbiGYIKv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 04:10:51 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D810C12AEE;
+        Mon, 25 Jul 2022 01:10:50 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id ss3so19046220ejc.11;
+        Mon, 25 Jul 2022 01:10:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=r9oGiDsxiFpBH+3rbxjYFk4fKS6kxjytRyEJ438nM14=;
-        b=CJb2GrDqw5wptQkMGvGnlEHmNqNpBTz+oVejWM8vbDuV20ZOTC6BJ/xAOcSduhufTS
-         CtY8s0Ob07oaPbu/f4yqfvkHz/xDY1O6vs2/oftm3gv1Uc+ykJC+fUd1S21cXIv8VjyW
-         kSXeGTgiv3k4SaU7t5pXcn2tjl5/OFjnaZJ8Uu0DxeB/9Oof1BN5BOo2rRbXDmOoY1Oc
-         CAj9lT0OP1cy+XTY99JtA98O+TDOotsScJIH1YM0dQeqD+8VHoEVugkGshM79Qhx2IYY
-         Qmh4+CVjG1cahmKQrRaUHy+VKbjtu21T43SHNPAsr2ti4ofng6x5uib9AjGL5NY7lM5l
-         yEHw==
+        bh=QXb71uFWhSg39Viv30HgP3y8LahJOu5TtvkjW1YFFmA=;
+        b=gcXWANYd95QqpDZNjT80H5El43Dovr5S0wOb+dj41WF0UAkuUiJDW2NAi4iQ305XFQ
+         lVVKY0C+iGL0p5tVBSniVcX6zLS8O0o42jiM3VHbf3P2PJwPJY9pNrOD5I3tyZyDgnJy
+         d6DIH0u/YAoFuSujbvAgci/gyOOkxjcOa7FgLYcccmWOMRReiJpRQvj8oeNjtzasRz45
+         5wI5mC7zC/KC/unitlCB9w7h7MNbq7bWUvDLO3UqaeZF52Xc40wDLTHrTN6lnrUtKqrq
+         8MOcmmfgBfz1xp4MxADiih/qQe4qXT1ndVyvX9sozOvgmH8wWtATEk7QsOTuHRb8u2m9
+         CtKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=r9oGiDsxiFpBH+3rbxjYFk4fKS6kxjytRyEJ438nM14=;
-        b=qZNUDlfWV1gfKJrxcTaZGJJhKHsk86f362lbhhUtJH+39QG18dOLO63N1sHxgCRE1H
-         hXm6eU6V0zn4Ngv/zQjWMXrfZCkvsMO/VMSSToZETMcw0REBy9BmK+P9YJfC+nZgw5cT
-         F+qDNuwoySwOch2p8/iJA5ylWFoyf0v7tFAwEeaH0uWrL6+ZZT4aBARFcbEv55R4JkOu
-         2wncweioY2IspB39VCmTaBJU8caqKqXBd+e1p9oyen/hPiOj5FQVl/1Y+O0e0bEuHsCf
-         KjK7sJb4BxeEWWf1jzEqXuorh3Ov6obUdVU+bbyYUqQ67tauI+GTcAOFluXaORzYiWvf
-         Zysg==
-X-Gm-Message-State: AJIora8TqEE87kbc31MTqzf5aii+SPJ4mSYWqmMxH1ccYAQZK7hV2fAY
-        /mR9EM6czKo4CmxzsJ13XvQCrJJhJsU0MZbEpVU=
-X-Google-Smtp-Source: AGRyM1slRdGOzS2afMezkzisSa07VKYBk0S3NkjvREARPdSLLPsbko0C4F61HAPbqNjfvUDyrYKyJb1xX+GfnwkFVZU=
-X-Received: by 2002:a17:906:8a4a:b0:72b:5b23:3065 with SMTP id
- gx10-20020a1709068a4a00b0072b5b233065mr9334315ejc.557.1658736256789; Mon, 25
- Jul 2022 01:04:16 -0700 (PDT)
+        bh=QXb71uFWhSg39Viv30HgP3y8LahJOu5TtvkjW1YFFmA=;
+        b=uWgH9ODpJl474r6KXjDEVNXMUIHKloUQesa+lpBvT9gfOrkrn0B+T3Q27vJlXtAp6n
+         BPfGm52m+sV1famrqspkfZ7wrm4qb/4sKirOIRDddEA8QS/xQVQpYlGa89BlTHd1uKMD
+         Ck59W7FY5dNqH6PdXqV3HwVF/PUZ3yzQQieTe49Qgp9zXGMdn9Sm66PCxdFxD3R/R/im
+         JScxwgVaEUwGKIZSnhKJnKNP77YBL34/WNvYTpc9Gjpdy7MGJF+1rqWs5oaF6AARAIJg
+         qZmXxWh8VOYsaA4GXxStws3zYP/Kup9GHQEuD0Og3t0rkF9Y+4wcrAJhv/a1Hnxf+n0Z
+         rTJQ==
+X-Gm-Message-State: AJIora+PUM1iINCw3DM2vR7Zb7pJqaBygXJVElTCUVE8D8BtT0aI3K+k
+        jJIFfO0a5yc/OUllci9531HytHQLoWAUEgtAr8Q=
+X-Google-Smtp-Source: AGRyM1vadWdzYb+xBUWIOSQf30AXu6Fkj1TEEjh0wt407LPyY4IeBvhlCzY8/E5xfgCj1T+lP6Op+S0BRvRPn0GRG+I=
+X-Received: by 2002:a17:906:9b09:b0:72b:9612:d373 with SMTP id
+ eo9-20020a1709069b0900b0072b9612d373mr8927348ejc.606.1658736649264; Mon, 25
+ Jul 2022 01:10:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-9-peterwu.pub@gmail.com>
-In-Reply-To: <20220722102407.2205-9-peterwu.pub@gmail.com>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-10-peterwu.pub@gmail.com>
+In-Reply-To: <20220722102407.2205-10-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 10:03:40 +0200
-Message-ID: <CAHp75VessBZMBA6wNWhhXhPshDCghgkV8EkEUUqOeLqn-5pmpA@mail.gmail.com>
-Subject: Re: [PATCH v6 08/13] usb: typec: tcpci_mt6370: Add MediaTek MT6370
- tcpci driver
+Date:   Mon, 25 Jul 2022 10:10:12 +0200
+Message-ID: <CAHp75VfRZvYA3HJg=LAxXxu26aLSwRGQaED19Bg2d+dZw3RPfw@mail.gmail.com>
+Subject: Re: [PATCH v6 09/13] iio: adc: mt6370: Add MediaTek MT6370 support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -99,38 +98,54 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jul 22, 2022 at 12:25 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> From: ChiYuan Huang <cy_huang@richtek.com>
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
 >
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual
-> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
+> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> driver, display bias voltage supply, one general purpose LDO, and the
+> USB Type-C & PD controller complies with the latest USB Type-C and PD
+> standards.
 >
-> Add support for the Type-C & Power Delivery controller in
-> MediaTek MT6370 IC.
+> Add a support the MT6370 ADC driver for system monitoring, including
+
+support for the
+
+> charger current, voltage, and temperature.
 
 ...
 
-> +static int mt6370_tcpc_set_vconn(struct tcpci *tcpci, struct tcpci_data *data,
-> +                                bool enable)
-> +{
-> +       return regmap_update_bits(data->regmap, MT6370_REG_SYSCTRL8,
-> +                                 MT6370_AUTOIDLE_MASK,
-> +                                 !enable ? MT6370_AUTOIDLE_MASK : 0);
+> +#define MT6370_AICR_400_mA             0x6
+> +#define MT6370_ICHG_500_mA             0x4
+> +#define MT6370_ICHG_900_mA             0x8
 
-Why not positive conditional?
-
-  enable ? 0 : mask
-
-> +}
+^^^^ (Note this and read below)
 
 ...
 
-> +       ret = devm_add_action_or_reset(dev, mt6370_unregister_tcpci_port,
-> +                                      priv->tcpci);
+> +               reg_val = FIELD_GET(MT6370_AICR_ICHG_MASK, reg_val);
+> +               if (reg_val < MT6370_AICR_400_mA)
+> +                       *val1 = 3350;
+> +               else
+> +                       *val1 = 5000;
 
-I believe nothing bad will happen if you put it on one line.
+Here...
+
+...
+
+> +               if (reg_val < MT6370_ICHG_500_mA)
+> +                       *val1 = 2375;
+> +               else if (reg_val >= MT6370_ICHG_500_mA &&
+> +                        reg_val < MT6370_ICHG_900_mA)
+> +                       *val1 = 2680;
+> +               else
+> +                       *val1 = 5000;
+
+...and especially here it is so counterintuitive to have an if-else
+chain because the values are not ordered by semantic meaning.
+
+What if the new standard/hardware decides to use 0x7 for 100mA (hypothetically)?
+
+So, please use switch cases or other robust methods.
 
 -- 
 With Best Regards,

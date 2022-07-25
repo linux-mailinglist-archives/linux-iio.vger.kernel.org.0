@@ -2,57 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2CE4580694
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C92C5806D1
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236999AbiGYV2O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 17:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
+        id S237499AbiGYVcx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 17:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237418AbiGYV1m (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:27:42 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DBE24BF6
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:27:23 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id tk8so22840993ejc.7
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:27:23 -0700 (PDT)
+        with ESMTP id S237147AbiGYVcg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:32:36 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10BA9C60;
+        Mon, 25 Jul 2022 14:30:09 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id j22so22892022ejs.2;
+        Mon, 25 Jul 2022 14:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7LHfuBNA8HPcEuiBLLkG5dHMxh+6hUdGe9sNRqIjaOU=;
-        b=bhn8J1eXES1FqXT6JHPlQrdVAud5izbQZ5HjqR3ZPkeRVH/ZLcIiVNNsRvP/0LST33
-         j2B53qycCDL80be4EsPXaAtLbJusySkEFKITOV12rcO4N3QjLTvE9d2qaNqhLx9jGKWR
-         XudEoEkFDZqhQH64UtubpclEPs7/To45yoyfFxB8rZwuSxb7MsopPq34RNk3hNZNPWcQ
-         49TZEx+y4Lg4lc/X8lSJ+mTo38b0s6EzHhPsGhKRWydB6lkSmN+t9fm9LPaCmX6ZyAyT
-         SZeBSJ3otG8RTXVAF6PiihKfijMOfIXDgJiZNnpjzt0LUYuI3KWM4t8HOoYKe5QekGND
-         c/iQ==
+        bh=hG6d5UoxHzM3cTAhPbPewA+gfVWFpNNpNHiESxa2M/I=;
+        b=hUYv/m11ctMGaI38/nWpbh4grCb8qsdJY9IzCA9Spxs8E0xNlb58l4+DdK7Aj7G8I1
+         eLbR1GmTT4h80wt/tm2+3xCMiIa6mbJdfRNHpByY2eMShJavGljyfmh5ZAHW+FG0DOJk
+         hovjz7kgX2g2FTuYAAkU879Q5Vmjzz8zRqG+fbTZ3oi/2t5K4LfrU4fLegN3xsCyRH82
+         JQQBw+UnmUk9lQwIPOssovOWcYEvb6Bf/leWsA+bzsimgnnmmGU55z7Fl6DUzbdVH9AL
+         ubEJEgqrjOPMZ2LHnS+tW7CmAAB+1CXgYvTvbJSvZut4WGg5prJ3f5KO/lkUlV8Owhyg
+         45PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7LHfuBNA8HPcEuiBLLkG5dHMxh+6hUdGe9sNRqIjaOU=;
-        b=iGD6t1rd+YuB8EekAOKDuialDdYJgRm2KZDVJJzeMdHgj0FD5PMgp/psLVr6EKghJE
-         L1qN/ABZ/gV4+AwGmK1nw7plEpwVOu86dm42Al/JXCN96M5+/V10BFYumuz3Lro5IJle
-         tbSm3NJy0H40Y0Z8gaQlg/cU85zSREGSrjeyPQrcyN6GhTSA+9EPgeTO1GC6kAnLfX44
-         UfaYPQTvR4KYvzKVVwEozSfGXRqcydliA6gXn/pjdlxRHYYfLCsTDXX22SbIVMk3B7gj
-         uXHUz5FFeNPH3/vt1XPSEXpWAysEx7Faus243cnDigbASJ1BBYNQ9X2oEe4mqco4pwmq
-         zcOw==
-X-Gm-Message-State: AJIora90VOXKYJBdyJ6rFlL3F9oGewy1uNbKmMldsG0aGHuqZ/33GmxB
-        BrL7whoFzx6K9yUe/+7J81qS4jCqgB3zGwKiEdZLgWIIER4=
-X-Google-Smtp-Source: AGRyM1tqh03nRi8zYV1msk2FyLNz7Fv1CaNfdTqEUNf85YEUy8ik2/ptLicfNznAgWfGfkk3UmgXHai7dre4r4h1N34=
-X-Received: by 2002:a17:906:9b09:b0:72b:9612:d373 with SMTP id
- eo9-20020a1709069b0900b0072b9612d373mr11301733ejc.606.1658784442118; Mon, 25
- Jul 2022 14:27:22 -0700 (PDT)
+        bh=hG6d5UoxHzM3cTAhPbPewA+gfVWFpNNpNHiESxa2M/I=;
+        b=btp3z5H8I2oLfdKK/h5+bGHwugSkBl99qTOddJEy0sgctg4XM6gg3CYPDDrd5KmBum
+         /Kh8o7GcR7B8bAGDRS35hhZNk1v6sAByHnj/1CWGhQBefYAeOTXR9BlGMnMVrwioFgC6
+         l5quSK0NAoKt9LfrngXuDDnn7XtOMo6vYsXFe7n38moRNBYfzI9zgq9nqNM3B2Rm6ANa
+         iW/KOEhJBBABZQwl0+KAKPE41kkoXpCKTJsjgO3AFU6VBFyjZfRZgFh+ekEir/g7CD3Y
+         socgimapAZHDTT0EtwEpaOFTo2rj5NqIk2gg0egyWJNP8hYGEt8F6HREkL6azuHfwy/5
+         zsMw==
+X-Gm-Message-State: AJIora9DxFvslLqJhzkzRPLFQVCkRWCcOrCXHXzOMBe431xhRdGV5OB6
+        l7Jw9nVTgcwp7t2oi+fteII4ielDG6M+veF7v40=
+X-Google-Smtp-Source: AGRyM1s0wvsIZHHycPFxyzHmwkc7yXG2GZIJ1xIpDPc8GWj20AW4SBVxC6aj9eUN+kvENQaZZ6DkeVCfCdcAZwg5QH4=
+X-Received: by 2002:a17:907:6297:b0:72f:9aad:fcb with SMTP id
+ nd23-20020a170907629700b0072f9aad0fcbmr11312748ejc.161.1658784607947; Mon, 25
+ Jul 2022 14:30:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
-In-Reply-To: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
+References: <20220725184439.7618-1-ddrokosov@sberdevices.ru> <20220725184439.7618-2-ddrokosov@sberdevices.ru>
+In-Reply-To: <20220725184439.7618-2-ddrokosov@sberdevices.ru>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 23:26:45 +0200
-Message-ID: <CAHp75VcrFQXW10vkLSB5Yh2D24zPzKR9FtfDU8bsSqDwD7=zjg@mail.gmail.com>
-Subject: Re: Controlling device power management from terminal
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Linux Iio <linux-iio@vger.kernel.org>
+Date:   Mon, 25 Jul 2022 23:29:31 +0200
+Message-ID: <CAHp75VcpY1vwHCOaJNb-qw+3gsMyv9mJe+QaWrjiTKOdj1xfYg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/3] units: complement the set of Hz units
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -64,41 +75,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 25, 2022 at 10:48 AM Crt Mori <cmo@melexis.com> wrote:
+On Mon, Jul 25, 2022 at 8:44 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 >
-> Hi,
-> I am implementing the power saving modes for mlx90632 device driver
-> and while I have implemented routines for SET_RUNTIME_PM_OPS
-> (runtime_pm_suspend and runtime_pm_resume) I am not able to find out
-> how to trigger them from the terminal.
->
-> It could be that my driver code for power management implementation is
-> incomplete and I need to initialize something more.
->
-> Maybe it is helpful, but the power submodule of the device contains below files:
->
-> $ ls -al /sys/bus/iio/devices/iio\:device0/power
-> total 0
-> drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
-> drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
-> -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
-> -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
-> -rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
-> -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
->
-> And control is already set to "auto" which according to documentation
-> should allow the PM.
+> Currently, Hz units do not have milli, micro and nano Hz coefficients.
+> Some drivers (IIO especially) use their analogues to calculate
+> appropriate Hz values. This patch includes them to units.h definitions,
+> so they can be used from different kernel places.
 
-'auto' should enable it. So, whenever the driver thinks it's a time to
-power off/on the device it will call the methods.
+...
 
-You may hack a bit to enable autosuspend (which often is not a good
-idea for IIO sensors) and see it done automatically after some time.
+> +#define NHZ_PER_HZ             1000000000UL
+> +#define UHZ_PER_HZ             1000000UL
+> +#define MHZ_PER_HZ             1000UL
+
+mHZ perhaps?
+
+>  #define HZ_PER_KHZ             1000UL
+>  #define KHZ_PER_MHZ            1000UL
+>  #define HZ_PER_MHZ             1000000UL
+
 
 -- 
 With Best Regards,

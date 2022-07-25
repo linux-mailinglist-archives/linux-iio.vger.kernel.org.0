@@ -2,62 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23B6580616
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DECD580624
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:06:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232608AbiGYVCg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 17:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58784 "EHLO
+        id S230393AbiGYVGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 17:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbiGYVCf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:02:35 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41532237CB;
-        Mon, 25 Jul 2022 14:02:34 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id z22so15531079edd.6;
-        Mon, 25 Jul 2022 14:02:34 -0700 (PDT)
+        with ESMTP id S229915AbiGYVGB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:06:01 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BB811FCD6;
+        Mon, 25 Jul 2022 14:06:00 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id z22so15540211edd.6;
+        Mon, 25 Jul 2022 14:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1zhas+8j3Wav2jMIlQmpqUM9YHQ6PqTqpsAq4Djjqwg=;
-        b=M/gXcYWmpK6NPe5p+2Pq4EMKc3X45ZXAOFG2H1e/evwrSyEU+YnnNtpJpAgyIb0nPG
-         2iRgZNe0RN68r7cAdZ7eNBbRKbXboinWjbGGFgYvuemsP+2zq3Ekp5KPvdS1QFsU0gWg
-         lcVkNtwt9uk3Sar7RHWr39BCkyI0nD0HvVdCF9PJJP7oEdg5FC6Z/UqVtSL5VV7F0Crn
-         An4siyp+A/7DXsmczgc5ZX+ejf06aeaFUtIIT8p8OAwMSHIlb70UDeybuZCG8tojKfKY
-         t6OiJsU4ae93uEXDV8q9J4WJEEUNCqw07kMY5wbdXCaPBefTlrVAwNLcflsyFF47SKJp
-         ZUBg==
+        bh=rGBbKknERGaQR66mfFe62XOVnr8XdLDPSXcuJYtRG8s=;
+        b=YeQ32C0CB7mfUuZjqJHigX92cDaPLNsvkiX/YXHX/jW5BJoCjfdEgvOfhscT0R0u+I
+         80GgEtBuZSO+bPHnC56Qw1unzThVTq9vcT8AKcltRcifr/q7YpXpI54oMYKSLabFbtAy
+         q0dDZrJlpM2bVhLDgl/+JCJgqYRh1rkVSJXymLjBJuH1kcSAYt5pEFlh5YdH7/B3g0TS
+         afkCcK/ptmqyEsBLUFRfA3YWCDfWYxGSrcAQX+cMj2BENbmoa4ox+z259h/IWt0iXqTO
+         MyQLcHqSdK/1P8V8sPJ2WS34p57Kn9Xjl7bGW8+4ErkC3LqkNJx5r3asbb5crQivu160
+         ZExw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1zhas+8j3Wav2jMIlQmpqUM9YHQ6PqTqpsAq4Djjqwg=;
-        b=qT7LHtQWxkr/5wYn353cJSoyUNIVpqVt2RroBo0G2gMEXC0lvqO6j4XyJvn3NJVxuF
-         OPL0a1CbnLOHXFfid1Ugb3rK4DFeNuyJducPJo+alBJnK4Ada1lX7/ctfjsMob7txz/v
-         Qj37+uX1nRB1BcS9cQcTJ5sOCQwMZNf0Ib+O3MgF7SvHxBhYSfg7T+msLmvUtCc+/dEX
-         /8F6w7V4238kNVWai8Re/PeapT8tViG/I5Yw28mE6CU8u+TGi01LYqGBzSZYiYG7HXkP
-         cngXdPcluLRH1n/EDYqcr5AMNUG3N83SscV3F3nZVTmZ+GWb57nRv2BWgJtcKXg7fE+f
-         m0ww==
-X-Gm-Message-State: AJIora8aaycO4lzfye+kMJSxbx7aFQSsP1bZccb+695fhsrRyDLLoncX
-        RSOdx4NUESAOmkAGuVIAlAkLKsR0iyFVFJdFUGceMNjV77Q=
-X-Google-Smtp-Source: AGRyM1toS9e2QkPPe35y3WOoD+NQiUZrM17KRlMPBBqXq/DFCH4IquvDKzOfQAYT58z4+gR2SWNOQ9NSDettfjc+DFc=
-X-Received: by 2002:a05:6402:d53:b0:43b:a0cf:d970 with SMTP id
- ec19-20020a0564020d5300b0043ba0cfd970mr14726259edb.277.1658782952432; Mon, 25
- Jul 2022 14:02:32 -0700 (PDT)
+        bh=rGBbKknERGaQR66mfFe62XOVnr8XdLDPSXcuJYtRG8s=;
+        b=JEjVmC0MWhowD8ysm/UnXchOEiymJXt/9o+Tb/WYyh2nSq3rQ+CDLJjHpkToDjyAO0
+         5rEFXh8x4DD+iC/v63IcrROewuPU2ijFuBTLRFrWGaNQ1oQtigH6S0ugZXvMPr14sW6B
+         thLSkoVS5hFSfBM2fdUO/HpMwSpwCxAYBjY4A6sMCRxAjNpB41cwvwitfPm65Am4Pu2b
+         rz4JUHJDCIKdl3hCWESNLGS6G1DVAQo6Wmag8g+sg8sZs7kO8Wrw6+YX3cNFkHUmMw1H
+         sveFzi2YFbz3yF+rRo/sVqKRxucfQstqUYO9NJVR+WD1vBc4G1sb6WrwNnXYO3FQbaPc
+         7dVQ==
+X-Gm-Message-State: AJIora+w1N209Er3pBAxGqo6ZhKGpGaqlL3LLGni/vEy7iq1LsmxkkGO
+        7uQcRu/c8ZbUPoOkxGAtg0D7BOppjGmg0SlFnZM=
+X-Google-Smtp-Source: AGRyM1uw9Yfebn4NMaULNQGCHyMi5O8GRiBqMpMTBi0J4XuchcaXKVoV2G4tRXUWUuTi/8JKyxy5cOS4iUEApXZlSZ8=
+X-Received: by 2002:a05:6402:50c9:b0:43c:163a:4d5f with SMTP id
+ h9-20020a05640250c900b0043c163a4d5fmr4943645edb.386.1658783159031; Mon, 25
+ Jul 2022 14:05:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220722172035.44977-1-potin.lai.pt@gmail.com>
-In-Reply-To: <20220722172035.44977-1-potin.lai.pt@gmail.com>
+References: <cover.1658597501.git.ang.iglesiasg@gmail.com> <44a301d5605bcf5b30ae60b21d0b312717b938bc.1658597501.git.ang.iglesiasg@gmail.com>
+In-Reply-To: <44a301d5605bcf5b30ae60b21d0b312717b938bc.1658597501.git.ang.iglesiasg@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 23:01:56 +0200
-Message-ID: <CAHp75VdH4UXsG7GP5A3ocy0-J2XDr=9akwX+dwczt6ejA8kO7A@mail.gmail.com>
-Subject: Re: [PATCH 1/1] iio: humidity: hdc100x: add manufacturer and device
- id cehck
-To:     Potin Lai <potin.lai.pt@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+Date:   Mon, 25 Jul 2022 23:05:22 +0200
+Message-ID: <CAHp75Vf-TZrfesq4P7jGq9Aj_+_Fh5Mot9TU5A3v2JbfCpWSww@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] iio: pressure: bmp280: simplify driver
+ initialization logic
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -70,96 +71,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 7:25 PM Potin Lai <potin.lai.pt@gmail.com> wrote:
+On Sat, Jul 23, 2022 at 7:40 PM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 >
-> Add manufacturer and device id checking during probe, and Skip the
-
-ID
-skip
-
-> checking if chip model not supported.
+> Simplified common initialization logic of different sensor types
+> unifying calibration and initial configuration recovery.
 >
-> Supported:
-> - HDC1000
-> - HDC1010
-> - HDC1050
-> - HDC1080
+> Default config param values of each sensor type are stored inside
+> chip_info structure and used to initialize sensor data struct instance.
 >
-> Not supported:
-> - HDC1008
+> The auxiliar functions for read each sensor type calibration are converted
+> to a callback available on the chip_info struct.
 
 ...
 
-> +enum {
-> +       HDC100X,
-> +       HDC1000,
-> +       HDC1008,
-> +       HDC1010,
-> +       HDC1050,
-> +       HDC1080
+> +       .oversampling_temp_default = ilog2(2),
+> +       .oversampling_press_default = ilog2(16),
+> +       .oversampling_humid_default = ilog2(16),
+> +       .oversampling_temp_default = ilog2(1),
+> +       .oversampling_press_default = ilog2(8),
 
-+ Comma here.
-
-> +};
-
-...
-
-> +static const struct of_device_id hdc100x_dt_ids[];
-
-No, drop it.
-
-...
-
-> +       match = i2c_of_match_device(hdc100x_dt_ids, client);
-> +
-> +       if (match) {
-> +               of_data = (struct hdc100x_of_data *)match->data;
-> +               if (!of_data->support_mfr_check)
-> +                       return true;
-
-Besides the redundant blank line this call to i2c_of_match_device() is not good.
-
-of_data is a misleading name. What about ACPI?
-
-What you are looking for is:
-
-  data = device_get_match_data(&client->dev);
-
-> +       } else if (id->driver_data == HDC1008)
-
-Don't use I2C id field, switch to i2c ->probe_new() if it's not done yet.
-
-> +               return true;
-> +
-> +       mfr_id = hdc100x_read_mfr_id(client);
-> +       dev_id = hdc100x_read_dev_id(client);
-> +       if (mfr_id == HDC100X_MFR_ID &&
-> +          (dev_id == 0x1000 || dev_id == 0x1050))
-> +               return true;
-> +
-> +       return false;
-> +}
-
-...
-
->  static const struct i2c_device_id hdc100x_id[] = {
-> -       { "hdc100x", 0 },
-> -       { "hdc1000", 0 },
-> -       { "hdc1008", 0 },
-> -       { "hdc1010", 0 },
-> -       { "hdc1050", 0 },
-> -       { "hdc1080", 0 },
-> +       { "hdc100X", HDC100X },
-> +       { "hdc1000", HDC1000 },
-> +       { "hdc1008", HDC1008 },
-> +       { "hdc1010", HDC1010 },
-> +       { "hdc1050", HDC1050 },
-> +       { "hdc1080", HDC1080 },
-
-Please, use pointers as in of_device_id table.
-
->         { }
->  };
+It's a very interesting way of writing BIT(x)...
 
 -- 
 With Best Regards,

@@ -2,165 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05B73581023
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 11:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2826F581050
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 11:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238243AbiGZJmI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 05:42:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44336 "EHLO
+        id S238386AbiGZJt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 05:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237675AbiGZJmH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 05:42:07 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156042FFF7
-        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 02:42:05 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id n185so8377445wmn.4
-        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 02:42:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=AS9H2OdepDISuy0zpfcKWjXYlq3ZJwTXdSc84G0PXjk=;
-        b=UEdP/1caBfZR1vGaxbnA+UoIuwScQbKAKcncBmmq4nqTECUaEDLlNYSomjZPQ+3Edv
-         BzESjJPvCJUl85AD2VwJN8EDsWobDLgwRarLAf9iN9uYiqh2tWnfppB9ebJxHN8Rre/G
-         WUzTe1UZ/zak3NhGsZldKPgIddr49EKjV2cny9NT4ZF150B7A43pkFzKDYiWLC9NJSBF
-         CsB7+a0dhOu59G6sNRbWpTSZ+2Kn+DdnM/p8fF7NkpDMQmFYDCht470BoRRxhRZWDhss
-         7d6u1Qac/xLTKYBtSC4KvqEF3OexaIuCsla6XJByBAqTEAbIOECBf9Y9Axwg3yxb5W1Y
-         8yIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=AS9H2OdepDISuy0zpfcKWjXYlq3ZJwTXdSc84G0PXjk=;
-        b=WxDxbaNlszZXp6HwFA3zMz7xSZMFVfPDz5U8/NV7h3BU2uZE9BXfp/rB0bsi9XHI7L
-         vUxApnvE7rnB2IOVWHmsMDdHVyTrDJ8w0VP6gga/cnTYrVZPxD/L9JBoZTXCRHKoA1aB
-         DRVX3NDI3likxqxRbH++XXjnAgjRqWZA4DIspnpV1/cDi20YkronQjIPaBFJHq0iAPhA
-         BhgwKix+2NjN7LcOa0xQRNJXOgQ4GBkg9SL544DPJerVFM9D9HJX3GyV0ChKp2JJwMHQ
-         YL9IxkobxnhpHGMvhQrCNOJx2wy3RqY85j6C0W3OJkionFqxeMk2DeXw/qnM1NAaqEfy
-         7Vrg==
-X-Gm-Message-State: AJIora9rut6FQnLSliB25qVFdkkyhI6O7+AKZWY/ezZySM+LiiTNhnM7
-        0Jjjb6SnXC2Ct6lXLT4OSxHDIw==
-X-Google-Smtp-Source: AGRyM1sGgplIS0v67+5+3a3ZiyzGBSgKA7I0u+VqthrWa6RNVsTG1Lkswi8PKUHIKTJvBoPFdUlMeg==
-X-Received: by 2002:a7b:c7d8:0:b0:3a3:1b8a:97a4 with SMTP id z24-20020a7bc7d8000000b003a31b8a97a4mr11816687wmk.160.1658828523550;
-        Tue, 26 Jul 2022 02:42:03 -0700 (PDT)
-Received: from ?IPV6:2a01:cb1d:77d:8cd7:621a:855b:69ac:c34a? ([2a01:cb1d:77d:8cd7:621a:855b:69ac:c34a])
-        by smtp.gmail.com with ESMTPSA id u16-20020a5d4350000000b0021e4b0aac41sm13834639wrr.24.2022.07.26.02.42.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Jul 2022 02:42:03 -0700 (PDT)
-Message-ID: <11118ebb-8731-8e4b-e483-7b9b2cc42d13@baylibre.com>
-Date:   Tue, 26 Jul 2022 11:42:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.0.2
-Subject: Re: [PATCH v1 2/2] dt-binding: iio: time: add capture-tiecap.yaml
+        with ESMTP id S232651AbiGZJt1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 05:49:27 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B9B31DD7;
+        Tue, 26 Jul 2022 02:49:24 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 0C8E95FD04;
+        Tue, 26 Jul 2022 12:49:22 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1658828962;
+        bh=K22w9hfJS/evEUDwB3F4Dmwu3c9LbepbkOhWPVhSDek=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=eJcVk9fvnApIOVjcBfKtwFz2dgd43sRaYr3MwXFoaGgSg60+AK4LcFV7UQIYo5EaJ
+         x071z4GKx60KKh23vj2TuTfsoJDPpf94TbKoiPJPrCcrJmr1ODMAH7ajDd7iBhhSwJ
+         +oqeABT1+MmD7zJz75pdqXVKCQzaE48NxjPUdZoxeS3UyvGOrbGmrgI47QRfly9AwL
+         ayCJ6q+MN5P1N7ho3eaYHwcjzrZRydfWMrmRfhRebdVB1Lg1FzRML9b/yfqe78GQ1S
+         PEM4ch1QYw39AGP1eMD/lSj9ecSw+FAFW2khctCxQNzChMtivvxZo5OzY+3HxQmEp1
+         R6Ctr1scpBxzA==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Tue, 26 Jul 2022 12:49:19 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v1 1/3] units: complement the set of Hz units
+Thread-Topic: [PATCH v1 1/3] units: complement the set of Hz units
+Thread-Index: AQHYoFaQAQbyP6ttz02qWm6Ywvl4Ba2PaEmAgADOrYA=
+Date:   Tue, 26 Jul 2022 09:49:15 +0000
+Message-ID: <20220726094915.grn33xjqgkm52yja@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220725184439.7618-1-ddrokosov@sberdevices.ru>
+ <20220725184439.7618-2-ddrokosov@sberdevices.ru>
+ <CAHp75VcpY1vwHCOaJNb-qw+3gsMyv9mJe+QaWrjiTKOdj1xfYg@mail.gmail.com>
+In-Reply-To: <CAHp75VcpY1vwHCOaJNb-qw+3gsMyv9mJe+QaWrjiTKOdj1xfYg@mail.gmail.com>
+Accept-Language: ru-RU, en-US
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mranostay@ti.com
-References: <20220726072553.5136-1-jpanis@baylibre.com>
- <20220726072553.5136-3-jpanis@baylibre.com>
- <c4e8b285-1e77-492e-31d7-8c79328b95dd@linaro.org>
-From:   Julien Panis <jpanis@baylibre.com>
-In-Reply-To: <c4e8b285-1e77-492e-31d7-8c79328b95dd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <E6F6CFDC59DAB14FB5D4A4DE390163A6@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/07/26 06:45:00 #19969454
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello Andy,
 
-On 26/07/2022 11:29, Krzysztof Kozlowski wrote:
-> On 26/07/2022 09:25, Julien Panis wrote:
->> This commit adds a YAML binding for TI ECAP used in capture operating mode.
->>
->> Signed-off-by: Julien Panis <jpanis@baylibre.com>
->> ---
->>   .../bindings/iio/time/capture-tiecap.yaml     | 53 +++++++++++++++++++
->>   1 file changed, 53 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml b/Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml
->> new file mode 100644
->> index 000000000000..4f08e49a8506
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml
-> Use filename based on compatible, so:
-> ti,am62-ecap-capture.yaml
->
->> @@ -0,0 +1,53 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/capture-tiecap.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Texas Instruments Enhanced Capture (eCAP) Module
->> +
->> +maintainers:
->> +  - Julien Panis <jpanis@baylibre.com>
->> +
->> +description: |
->> +  The eCAP module resources can be used to capture timestamps
->> +  on input signal events (falling/rising edges).
->> +
->> +properties:
->> +  compatible:
->> +    const: ti,am62-ecap-capture
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    maxItems: 1
->> +
->> +  clock-names:
->> +    const: fck
->> +
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +required:
->> +  - compatible
->> +  - reg
->> +  - interrupts
->> +  - clocks
->> +  - clock-names
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    ecap0: capture@23100000 { /* eCAP in capture mode on am62x */
->> +        compatible = "ti,am62-ecap-capture";
->> +        reg = <0x00 0x23100000 0x00 0x100>;
->> +        interrupts = <GIC_SPI 113 IRQ_TYPE_EDGE_RISING>;
->> +        power-domains = <&k3_pds 51 TI_SCI_PD_EXCLUSIVE>;
-> Does not look like you tested the bindings. Please run `make
-> dt_binding_check` (see
-> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+Thank you for quick review.
 
+On Mon, Jul 25, 2022 at 11:29:31PM +0200, Andy Shevchenko wrote:
+> On Mon, Jul 25, 2022 at 8:44 PM Dmitry Rokosov <DDRokosov@sberdevices.ru>=
+ wrote:
+> >
+> > Currently, Hz units do not have milli, micro and nano Hz coefficients.
+> > Some drivers (IIO especially) use their analogues to calculate
+> > appropriate Hz values. This patch includes them to units.h definitions,
+> > so they can be used from different kernel places.
+>=20
+> ...
+>=20
+> > +#define NHZ_PER_HZ             1000000000UL
+> > +#define UHZ_PER_HZ             1000000UL
+> > +#define MHZ_PER_HZ             1000UL
+>=20
+> mHZ perhaps?
+>=20
 
-I did not indeed, sorry. I thought that checkpath also checked binding.
+I'm afraid it will not have the same view as other HZ units.
+Maybe it's better to call mHZ as MILLIHZ? What do you think?
 
-Thank you for your feedback. I'm going to prepare a new version.
-
-
->
->> +        clocks = <&k3_clks 51 0>;
->> +        clock-names = "fck";
->> +    };
->
-> Best regards,
-> Krzysztof
+--=20
+Thank you,
+Dmitry=

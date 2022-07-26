@@ -2,58 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B350E5806E9
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Jul 2022 23:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E93A580964
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 04:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231796AbiGYVpl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 25 Jul 2022 17:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37780 "EHLO
+        id S231590AbiGZCUl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 25 Jul 2022 22:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbiGYVpl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 17:45:41 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569FFB1CB
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:45:40 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id x91so15651331ede.1
-        for <linux-iio@vger.kernel.org>; Mon, 25 Jul 2022 14:45:40 -0700 (PDT)
+        with ESMTP id S230404AbiGZCUk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 25 Jul 2022 22:20:40 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8181719C33;
+        Mon, 25 Jul 2022 19:20:39 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id b25so10060091qka.11;
+        Mon, 25 Jul 2022 19:20:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=dRreLrBrAPCGQtNT0TZPoAtN/YhPomZRv5YcZJZHleA=;
-        b=VoU5Rr0ZDWMRHErHReBxi9nHMyN6dtvmiiU4ftC8Z2qZDdozn70hs+Lp26AMZpbhMr
-         mkrJYUziK3atjoUvn1AS6kBGkkRDWLRSDdOYmQAL2qSd14DjVH7AD3c9G2iRGKyOj1v5
-         RRfRIxTjN7fWxbaS3P3tO/WJ5dnGdg+euG6OAAsIC4oQEgDqjeXGlA6KzuUNKFR/eAuw
-         qPnYo6Rb/UMtNqT+P6SvTQ71CC72BfO7Ai9k7ITpU0ZWb7aIkSxpDbdNV5OVg2e5Jurc
-         ncm9Oe98PpoL7fEGcAewhiUEyucVvwfXLIm1eMWNzvpyjh9C6Wvn2rx2gX3vZaHn7Jw0
-         ANig==
+        bh=W0xMOzx9xkEwYcg4IC9rpOdFz/8JFTGOz3GpQHY8CyA=;
+        b=bQNzSCTQTDj5oJAikkEBCR3Q/tLaWKw4sj3Vy9sXwlvn8sYyxYtkIYLMGJHXeTnchw
+         taB+Q9JNgrphDka9FLEaK8Qsw28p9ed1+CizwomW4uNr80I+wP1Lqo9LTTYwNWb3V89V
+         GIklfwwZ1L8oQOXN4gS6QzAtgFIiB62NAp+81WQ1VPf3ZNTslXRqVWiUfEk+RoW/cY8f
+         fDSw5bn9W+8qRxPD/H7Me+Tk8/fC32oiFqKIMjraRmMb5Kapx2uuyolL4AP030DYsD1r
+         9zbtprQkDJeDZWr8JDzg2hRZyzyKu9MOyRP/v2uOlFD2v7biNRKTj8XzA8Co9eYGKCHI
+         FE9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=dRreLrBrAPCGQtNT0TZPoAtN/YhPomZRv5YcZJZHleA=;
-        b=Wz1u6zwksq4rlqy5FOxHVRV9Aoy0Kgel7HPt3CVagoUHeLuL2BhTZ44EdL1N2zY3sr
-         QVygwnKgLdhN1xe1FxVdL7qGW3dQm5Dq/FZqHAefniLKH3GyS1hDV8065KxOMeH7VYnb
-         byuER0AXaDPE0kt7SpZ8jQOoJPVu4feaznTT09koF8Z1NO5wbi3jy9GneKbGmoPuHlfF
-         ost/kS2btcwsyjg/CtWTqiXy7TBRRRGjRzrfCyEo8so139PSbS39gVCoAXVZqSFu+Wd7
-         Cj65S+V1wxnErw0iWmwW4Sz5BhLC/1lehvSSL3AVqrP/69aStlbeZzg4dvLYTV3VGd2f
-         GXqQ==
-X-Gm-Message-State: AJIora8VVuQ126GhYjjq5iFU4dSE31Ij9NEWVhzggS1sMJxUxzZnysSa
-        59cPQqzWJkjd0gydeNxG6tIu1C6FNxhCHjrgNEhlM6nm7ho=
-X-Google-Smtp-Source: AGRyM1uvwLvmqfkgXKDLrrEeoJ+e0FFLbdHJaAZ/7sB7ND/rlYLZoPk+Dg4cDiF2Bp0L+DheGBogvVyvbk9sMQ7xuIU=
-X-Received: by 2002:a05:6402:d05:b0:435:b2a6:94eb with SMTP id
- eb5-20020a0564020d0500b00435b2a694ebmr15028463edb.87.1658785538685; Mon, 25
- Jul 2022 14:45:38 -0700 (PDT)
+        bh=W0xMOzx9xkEwYcg4IC9rpOdFz/8JFTGOz3GpQHY8CyA=;
+        b=zZxFPvF85NxcUR5aY7nHc5ayUtGnK4+ZeTpK+EdMBydg6k+I+4M9d7LcWpfAQ2/487
+         PrcVkbn2nPm/8g5c0Uj2TI0+AbQloeemzW2GUkaIxorTR6JuEdQiognX4jraRo4tgjYu
+         i1In1BndCnBIj4KsEq0PyKdRYAEmtP5O33a7Gh+h5JNJCey2LR3qYe3rMu3BRd58+iYw
+         CfGjS+fO4MQRnYYp3ypkBr6EyjOoKz9QQPPhUgw+oyIkAtlGi0SOY+Wjk3S/kF0CM382
+         QcIYFYC/vGVkwOiDsEGwAZbQxfSuvLu5hhTtLs6KW0xPVC4DfW7jraDydyQ0SahjKcMM
+         WZCw==
+X-Gm-Message-State: AJIora/9gFK7EfbGxqMtTcbxC9m0ah4uE01h6ijhTm5ddeVRK36taA8U
+        YKvnErN8jl7TngFrh7OQGLfKQRYd8vaSLbyBf9w=
+X-Google-Smtp-Source: AGRyM1tZpCYcrI4GEenV5sl4ffLbB3S1w73dtE0jE5MocjhBVejW7P4d8PE22YJ6HvnYEZBNm5FpvyKW1Z34FzM/KzI=
+X-Received: by 2002:a37:80c2:0:b0:6b5:e9e4:c4c1 with SMTP id
+ b185-20020a3780c2000000b006b5e9e4c4c1mr11082627qkd.129.1658802038657; Mon, 25
+ Jul 2022 19:20:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
- <CAHp75VcrFQXW10vkLSB5Yh2D24zPzKR9FtfDU8bsSqDwD7=zjg@mail.gmail.com> <CAKv63uv12XWEEVAhUBuK9Botj4mCtKWwRL-YzxywOipTAHgQFg@mail.gmail.com>
-In-Reply-To: <CAKv63uv12XWEEVAhUBuK9Botj4mCtKWwRL-YzxywOipTAHgQFg@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 25 Jul 2022 23:45:02 +0200
-Message-ID: <CAHp75Vd7_Vz+kTEUzO+Pz3Bj5b7AYo=NMukL5dbX9HLXHE4K0Q@mail.gmail.com>
-Subject: Re: Controlling device power management from terminal
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Linux Iio <linux-iio@vger.kernel.org>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-14-peterwu.pub@gmail.com>
+ <20220725103128.xtaw2c4y5fobowg7@maple.lan>
+In-Reply-To: <20220725103128.xtaw2c4y5fobowg7@maple.lan>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Tue, 26 Jul 2022 10:20:02 +0800
+Message-ID: <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
+Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
+To:     Daniel Thompson <daniel.thompson@linaro.org>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -65,69 +95,101 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Jul 25, 2022 at 11:36 PM Crt Mori <cmo@melexis.com> wrote:
-> On Mon, 25 Jul 2022 at 23:27, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Jul 25, 2022 at 10:48 AM Crt Mori <cmo@melexis.com> wrote:
-> > >
-> > > Hi,
-> > > I am implementing the power saving modes for mlx90632 device driver
-> > > and while I have implemented routines for SET_RUNTIME_PM_OPS
-> > > (runtime_pm_suspend and runtime_pm_resume) I am not able to find out
-> > > how to trigger them from the terminal.
-> > >
-> > > It could be that my driver code for power management implementation is
-> > > incomplete and I need to initialize something more.
-> > >
-> > > Maybe it is helpful, but the power submodule of the device contains below files:
-> > >
-> > > $ ls -al /sys/bus/iio/devices/iio\:device0/power
-> > > total 0
-> > > drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
-> > > drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
-> > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
-> > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
-> > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
-> > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
-> > >
-> > > And control is already set to "auto" which according to documentation
-> > > should allow the PM.
-> >
-> > 'auto' should enable it. So, whenever the driver thinks it's a time to
-> > power off/on the device it will call the methods.
-> >
-> > You may hack a bit to enable autosuspend (which often is not a good
-> > idea for IIO sensors) and see it done automatically after some time.
+On Mon, Jul 25, 2022 at 6:31 PM Daniel Thompson
+<daniel.thompson@linaro.org> wrote:
 >
-> So the idea is to wait?
+> On Fri, Jul 22, 2022 at 06:24:07PM +0800, ChiaEn Wu wrote:
+> > diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+> > index a003e02..846dbe7 100644
+> > --- a/drivers/video/backlight/Kconfig
+> > +++ b/drivers/video/backlight/Kconfig
+> > @@ -268,6 +268,18 @@ config BACKLIGHT_MAX8925
+> >         If you have a LCD backlight connected to the WLED output of MAX8925
+> >         WLED output, say Y here to enable this driver.
+> >
+> > +config BACKLIGHT_MT6370
+> > +     tristate "MediaTek MT6370 Backlight Driver"
+> > +     depends on MFD_MT6370
+> > +     help
+> > +       This enables support for Mediatek MT6370 Backlight driver.
+> > +       It's commonly used to drive the display WLED. There are 4 channels
+> > +       inside, and each channel supports up to 30mA of current capability
+> > +       with 2048 current steps in exponential or linear mapping curves.
+>
+> Does the MT6372 support more steps than this? In other words does it use
+> a fourteen bit scale or does it use an 11-bit scale at a different
+> register location?
 
-Yes.
+Hi Daniel,
 
-> How would I enable autosuspend - by lowering
-> the autosusped_delay_ms?
+Thanks for your reply.
+Yes, MT6372 can support 16384 steps and uses a 14-bit scale register
+location. But the maximum current of each
+channel of MT6372 is the same as MT6370 and MT6371, both 30mA.
+The main reason why MT6372 is designed this way is that one of the
+customers asked for a more delicate
+adjustment of the backlight brightness. But other customers actually
+do not have such requirements.
+Therefore, we designed it this way for maximum compatibility in software.
 
-Yep, if you wish. The driver should enable it though.
+>
+>
+> > +
+> > +       This driver can also be built as a module. If so, the module
+> > +       will be called "mt6370-backlight".
+> > +
+> > [...]
+> > diff --git a/drivers/video/backlight/mt6370-backlight.c b/drivers/video/backlight/mt6370-backlight.c
+> > new file mode 100644
+> > index 0000000..ba00a8f
+> > --- /dev/null
+> > +++ b/drivers/video/backlight/mt6370-backlight.c
+> > [...]
+> > +static int mt6370_bl_update_status(struct backlight_device *bl_dev)
+> > +{
+> > +     struct mt6370_priv *priv = bl_get_data(bl_dev);
+> > +     int brightness = backlight_get_brightness(bl_dev);
+> > +     unsigned int enable_val;
+> > +     u8 brightness_val[2];
+> > +     int ret;
+> > +
+> > +     if (brightness) {
+> > +             brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
+> > +             brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
+> > +
+> > +             /*
+> > +              * To make MT6372 using 14 bits to control the brightness
+> > +              * backward compatible with 11 bits brightness control
+> > +              * (like MT6370 and MT6371 do), we left shift the value
+> > +              * and pad with 1 to remaining bits. Hence, the MT6372's
+> > +              * backlight brightness will be almost the same as MT6370's
+> > +              * and MT6371's.
+> > +              */
+> > +             if (priv->vid_type == MT6370_VID_6372) {
+> > +                     brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
+> > +                     brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
+> > +             }
+>
+> This somewhat depends on the answer to the first question above, but
+> what is the point of this shifting? If the range is 14-bit then the
+> driver should set max_brightness to 16384 and present the full range of
+> the MT6372 to the user.
 
-> How does the driver decide that it is time to
-> power off/on?
+So should we make all 16384 steps of MT6372 available to users?
+Does that mean the DTS needs to be modified as well?
+Or, for the reasons, I have just explained (just one customer has this
+requirement), then we do not make any changes for compatibility
+reasons?
+Thanks.
 
-I'm not a driver author, it seems you , who should answer this
-question (as you are about to add PM there, am I right?).
-
-> Do I need something else enabled to have this done automatically?
-> Autosuspend is 5000 in my case which would mean 5 seconds, so I am
-> quite sure I waited that long and I did not see printk's from the
-> driver.
-
-Something prevents it from doing (reference counting) or simply some
-initialization / enablement is forgotten. For different buses
-different PM runtime rules are applied (for example, IIRC, PCI core
-does it for you, while platform bus is on what driver wants basis).
+>
+> Especially when using linear mappings (which are a totally pointless
+> scale to use for a backlight) the extra steps are useful for backlight
+> animation.
+>
+>
+> Daniel.
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Best Regards,
+ChiaEn Wu

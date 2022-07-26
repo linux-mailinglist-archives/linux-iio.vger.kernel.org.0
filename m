@@ -2,133 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6083581306
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 14:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA4DA58147F
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 15:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233523AbiGZMSZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 08:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
+        id S232619AbiGZNvV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 09:51:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231981AbiGZMSZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 08:18:25 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D142E13F9E;
-        Tue, 26 Jul 2022 05:18:22 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id i13so8372689edj.11;
-        Tue, 26 Jul 2022 05:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uFNBuksRAUHG8SQKGfIMoqHF0ZeQIQql/Pes//0/1FE=;
-        b=p25ViQRAGjIzoqbyw32XacT85JsM0ATOnc/aJ7f4OQUM+aio/Y993fmTKcDeocHCd9
-         Ip6z+1IDcK1emNmby8GCnHh8nTAZJOit+jilIBMN3MN8BHArbq5Y7jX0AdPoo5PJRGP+
-         qBAvo4C0uBT25Q/8kqgwUa9AThgrYs6OVHHMaOpyea8oHPpg79QNvmgM1Uz/oDBPwnAl
-         AufVZdMZG9DZBf3rhJ84O3aYj5LM94YzLZW6y/dSBdJHdO6Du6+eIPe3NFTEc8T9fHX5
-         OTqmGMZhfJaXrcwzJtTP8MEOT5b0nUwAv/+Z19lTei3pSAbzl6AU10dk5npcBMsgvF/p
-         dQxw==
+        with ESMTP id S231154AbiGZNvU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 09:51:20 -0400
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4467B248DC;
+        Tue, 26 Jul 2022 06:51:20 -0700 (PDT)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-10d6ddda695so18723631fac.0;
+        Tue, 26 Jul 2022 06:51:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uFNBuksRAUHG8SQKGfIMoqHF0ZeQIQql/Pes//0/1FE=;
-        b=cNPpWFqrhdUYHBqsgEaKSBbbCWj+L+Ph7rG5Vg/7tJqlHs9dmJPxGmZAUZLAI3R4Ik
-         LQNHuKIA+fNSCbYisXlsazusZ18iTXASS+Xw0fUFivYKXPm3I5ESHF3u6pVcO+Dqs5DX
-         EzKjBjWvyXHgqqHff8Kqt5vRgEv0s93RtydqdX4/F7wWDygs95G/ytCu2dTC8J8sREI0
-         iWWz1brG+cEbncvzjLJ1Ep5lEVqRdHDDLlgqgiJdRBgxqSO9cB9XmoLOCPCc6NOFIjsJ
-         eRBoOct2RcXQE9Rlb6hZQQt6x03vQpSpYdZWNXIw8wc49M3/zyIGiYbhFsGwcmWK84Ku
-         GnEQ==
-X-Gm-Message-State: AJIora9udDXmKi0XUWumhr7oTYzH83T+bzAVHWjLznKPMo+0lGED8+7i
-        KnuVjbACRyRoSw2A6Eg3XQwXUwwa4f0Au59k6rY=
-X-Google-Smtp-Source: AGRyM1uzT38suKCsbCmFfyzBHLwwuulTdOWUnr3cD4+NYEDfZRxNjDpqwVCvJTRb6rCtiz3um/F+ZSKguXrhc6flE20=
-X-Received: by 2002:a05:6402:50c9:b0:43c:163a:4d5f with SMTP id
- h9-20020a05640250c900b0043c163a4d5fmr7812854edb.386.1658837901255; Tue, 26
- Jul 2022 05:18:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-12-peterwu.pub@gmail.com>
- <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com> <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
-In-Reply-To: <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 26 Jul 2022 14:17:44 +0200
-Message-ID: <CAHp75Vd4ApTju2LCCHQ1skgOjttwWo5b2NF3u+zbGyVnnFKNhA@mail.gmail.com>
-Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
- sink type LED Indicator support
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+         :message-id;
+        bh=CsJWLbupbPaLIrMNaESke+SXVtIQDiCRc5v86bUOhk0=;
+        b=R4UowwFSlwFpS88lAhJCvBUk8X5hGMfAZiGlH6ErHu/pDLYew/HrshjvtE+1eo1aNk
+         fiWHlDcgqLoeRXTu3GzhzG93gsGM1G0YXVwZpUD0QKc7CqL+AW2lLjxotht0LmpIrOsR
+         mSZ9G9l/ruO3P69OzogHQI2M2MxPNIf2YmTguPSl5EDMjpfQdSFzGFf5o1I31V+NDFWu
+         DLeCPsMLATKZCKQVw3mRgMemaTcD/i//QSVYGXHhUzFzXpB4QOpTsq+wDZ1h9Ocw13C8
+         jMTZbj3vUCKLqhiAhUppfvnyviIKp4EcEs8Z1BtpAtKfKpHDQ/tWH2LVAeC35Ik3Ps1S
+         uX+w==
+X-Gm-Message-State: AJIora/NitMhxFHfQNcuZ8UdCFrtMRHQmKp9uJWIupFhVlQ7h/hw7knz
+        CWoxBDP6meOlYXTmbytcDPc1wVKddg==
+X-Google-Smtp-Source: AGRyM1u8g+tfKK6g98F3726L2+/CnUZHjUgGrnlUMu9639KKM9TG4kiPb6hf9D5BTKRpI8XyP8bNtA==
+X-Received: by 2002:a05:6870:41d3:b0:10d:c25f:9c0d with SMTP id z19-20020a05687041d300b0010dc25f9c0dmr9386508oac.280.1658843479484;
+        Tue, 26 Jul 2022 06:51:19 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id e21-20020a9d63d5000000b0061ca70905absm6332750otl.49.2022.07.26.06.51.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 06:51:18 -0700 (PDT)
+Received: (nullmailer pid 179935 invoked by uid 1000);
+        Tue, 26 Jul 2022 13:51:16 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     devicetree@vger.kernel.org, jic23@kernel.org, mranostay@ti.com,
+        lars@metafoo.de, linux-kernel@vger.kernel.org, robh+dt@kernel.org,
+        linux-iio@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org
+In-Reply-To: <20220726072553.5136-3-jpanis@baylibre.com>
+References: <20220726072553.5136-1-jpanis@baylibre.com> <20220726072553.5136-3-jpanis@baylibre.com>
+Subject: Re: [PATCH v1 2/2] dt-binding: iio: time: add capture-tiecap.yaml
+Date:   Tue, 26 Jul 2022 07:51:16 -0600
+Message-Id: <1658843476.622431.179934.nullmailer@robh.at.kernel.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 1:46 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> On Mon, Jul 25, 2022 at 4:41 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
+On Tue, 26 Jul 2022 09:25:53 +0200, Julien Panis wrote:
+> This commit adds a YAML binding for TI ECAP used in capture operating mode.
+> 
+> Signed-off-by: Julien Panis <jpanis@baylibre.com>
+> ---
+>  .../bindings/iio/time/capture-tiecap.yaml     | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml
+> 
 
-...
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-> > > +struct mt6370_led {
-> > > +       union {
-> > > +               struct led_classdev isink;
-> > > +               struct led_classdev_mc mc;
-> > > +       };
-> >
-> > Where is the field that makes union work?
->
-> Just for saving memory space.
-> Because these led_classdevs do not be used at the same time.
-> Or do you think it would be better to rewrite it as follows?
-> -------------------------------------------------------------------------------------
-> struct mt6370_led {
->        struct led_classdev isink;
->        struct led_classdev_mc mc;
->        struct mt6370_priv *priv;
->        u32 default_state;
->        u32 index;
-> };
-> -------------------------------------------------------------------------------------
+yamllint warnings/errors:
 
-You obviously didn't get what I'm talking about...
-Each union to work properly should have an associated variable that
-holds the information of which field of the union is in use. Do you
-have such a variable? If not, how does your code know which one to
-use? If yes, add a proper comment there.
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml: $id: relative path/filename doesn't match actual path or filename
+	expected: http://devicetree.org/schemas/iio/time/capture-tiecap.yaml#
+Error: Documentation/devicetree/bindings/iio/time/capture-tiecap.example.dts:24.27-28 syntax error
+FATAL ERROR: Unable to parse input tree
+make[1]: *** [scripts/Makefile.lib:383: Documentation/devicetree/bindings/iio/time/capture-tiecap.example.dtb] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:1404: dt_binding_check] Error 2
 
--- 
-With Best Regards,
-Andy Shevchenko
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/patch/
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit.
+

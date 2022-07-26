@@ -2,123 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9674958169E
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 17:42:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E941B581BBD
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 23:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbiGZPlv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 11:41:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
+        id S239626AbiGZVkg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 17:40:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238661AbiGZPlu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 11:41:50 -0400
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28DF92C118;
-        Tue, 26 Jul 2022 08:41:50 -0700 (PDT)
-Received: by mail-yb1-f169.google.com with SMTP id f73so25934788yba.10;
-        Tue, 26 Jul 2022 08:41:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=XZBi7IzCqvfKTanZDhCaN3J6iz5Ywu+mqR8S9am4fhs=;
-        b=QDDQn9lnU62NcpS9soWU772pkL/9HkB1xjc/a5W+bfCduAK+Pa6gcb8xPeulpWJyXJ
-         6/uOyy8QuglLUQwmHmv2MhQue7NY/xz52ILoBSqMLyoG8eObuszPJ5Dv4ekNMfF3OeWN
-         PKVUlku7hNaqs2z6oqQdR0WICfNAR62NHvJA3QLyxJFpnFNvb2hld//6v0fs65mIfmk2
-         Kyu3wv6SmyuC+Vl1hLz7mRKq6Fh4ndYxn/GOz9azS8vQ7jdh9u+WAN02TAz6WtUQaoLa
-         FnFLH8sc8Dxeh6HB54CPK12I1osOWgjWTWR6hSk1iLpEdR7gd85XFkL6etjveuAFmjEN
-         bCSQ==
-X-Gm-Message-State: AJIora/gMiMfvdZe96ZNAsHDKySi2fFeiMe1VUjVS7zGST/t/Uv2IgEp
-        gz99M7Sd0NsSYXSnyDWRoUlPdyrT+dEsAiBppXo=
-X-Google-Smtp-Source: AGRyM1tagkoanXWG4bh0W25Ylp/aPCF89fBrmoKdcJqs7qiNOxQ5gGAdGZLvN0DeMzruyK55onWK4fqRCht4OkOWItU=
-X-Received: by 2002:a05:6902:154f:b0:66e:e2d3:ce1 with SMTP id
- r15-20020a056902154f00b0066ee2d30ce1mr12936010ybu.365.1658850109317; Tue, 26
- Jul 2022 08:41:49 -0700 (PDT)
+        with ESMTP id S239541AbiGZVkf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 17:40:35 -0400
+Received: from sonic313-21.consmr.mail.ir2.yahoo.com (sonic313-21.consmr.mail.ir2.yahoo.com [77.238.179.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A2726410
+        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 14:40:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1658871632; bh=pLQmEIJ5m0YYbOffMhaqcYc/X81hORTVkjuY9dZ4tsY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=B1SLBOH77M9+bw7o5QVV9VLbHm9zXdClJ8yjfj1V1E8MpUaFL4eZjXnNym6fPVIQJcw/V44SsJS1iplfzJn2TnlSIRTFV4TnyYZ0dW/+Wa7kQKlxg+pY321fgo2wTh3aBr93pwfg0FeRuak/R1sFgBmM9IzbqBO07FkJPaADWmELIEJDFVKwavs9u3SZpvGwdviXYQ2rA0FnmogvraabT4wzJJsM7cNgLqOI4OMm4U956bzKgVb7uAjEdOGqjNYS/3VU2RIZjYOMdeXdMDfIL853lII4mNWnwNlEI645wsjH3nJzcp1Ga9q0SipeqLVG3zNLspgix8o6e/FtotByRg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1658871632; bh=1Ayxi8+nYGwH2wPHKewGM2MBCMy6hvts5t9zFtdMxIY=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=INFy1aEjVqGa1i6i4v+7nEooyD8VcwHmVbQ03Rj9x3IYAZhHwEVcGEKMGyFyxxIP98Jn180CIv12a9AlKsXdfPeYqUILtIvgKl/wwz273pKdsRvhCgbTdZkJ5KjcsIzzhRzRTm/UnuDmBpazmidVJlHIgVnp0BCrI+yHxSZSBPo/A5WcUyZb34CVPZX947rKg9mDKu7v3d6KtjARFRypijSREqbutZLhVGu9TqSHSpd92ldoOCpDdptpwU7lhTtFYimSc2hQXK/64+HIe9Efihx9kX8lzCdIGnfkMsGAmXdnel1VP5G047lK/EGK6QmDj8drNXqqNLktLl9GyeSpHw==
+X-YMail-OSG: Pv7hJpMVM1kea7gEBYeAkTLNBI.KJZ8H1_r6nmKYcwKrPTGCXFdJBDTDaSx5Ho4
+ yxSkjM0cAeny4LPMTSjtLPX4st0pl3Y0mbYjbeU7eXy65pRQu8WYX2UIMJcI2W_RWJRNKK8drAyS
+ r5EKJyVrxgB90MGiCgbA_g8AXZqzVK9Mw.2_Npvi7OPJ1bQvOckleuVb4tWThHmjk2Y0gR0DCNF3
+ KAwwlOZ8q3sfGgl1sz4EjT01Mb3t7GAcuCJfagdIJnqf7yqK1P_qT0jHwjswzOrVzapFSaigG1Tv
+ ZnE_va2QWOZMvFSEpUOe1wipZTr96EU5XNzpb7hy8NYZteTUpUkNCMRMMtIN4KC2fCA5rGp_usDb
+ 5TqgUTfqg2fLqB3Thv_DNQlaJ5TGeYN2A2G61G2F44SE465y8DT1J8t428aya4BV3DZVhstarcei
+ Wofu9ygbAzAv4210pqAvcTMISQdyom4bbR30qGdPmG4Xd5BKpi2GxHgfVzlNt_0OIL5co8HIwfQO
+ X2648YlV7JQdu2GCVWyE3jp0LJEM.XLwWdkeYwf.jlSbj2ZQ6RpnNsZQGlYdNZKj3te29eSDLwuX
+ 2RWHyqzlFOBnDbqYBGB4.ptYP5cfQZivy63YDYdyhODOOrniepQ0JFJnd6L4YpiuSpzA5UQUGtXF
+ YxLw.BIQjH43mzpFJ0sgA4O6rduPznFlfY_GANUeqFUKizXWfdvTM5lCwdqWtUolBlYSNZYY3SMC
+ y.7.wp7th.GGQJwcbRuQWZpDHAtouMLLOfqL.Q383FJWb02iMjSD1QJASZRBmZOq0pR0JgZzfcIc
+ dp1KXDoJy3reGWD0_WTspWkzqTJ2KM9RBO8N4sqGZ24Z7nkPf__pfumqvdqSsjWmvFEhnRsW92Ep
+ SD26NdgZB0PiPovBniY.tzpEaF9A9w1Y_ZQ.heiZ.Lj3G8igHveiLrWd_KGEKLaDrrkXjn_bHq.S
+ GbQrsUK3m6VZUf6pl.eognLnPpQBKOcOKp9oCFgEwuWQRQR8yUXiMg6jEBfdbLiyiXa9CrkWGbND
+ 45VsP4QyknV_X1OZ7BpmDVNd8ogUUP9QNSOBFMurfYc7jJ0u1oHNIOwTnbrLSokECklYsNED57Kg
+ 1NBfwzpq4803ly_KiM_tq6dyKF4hO_V21lQhN8saCs33RzAHmazEnoRZzKoZLiLb2jsxJa1JYz8H
+ XVVvCTyvLov5a6KZR_8yPugj3QgkC0OsacyhOUKM2vdoggkfmXDiOScZSQyWcEMIsuW57hVnmDCB
+ qZyNqZffx9uj5SJTjj2ilq_rEnQrTwFgNUMSa3KxMwEaD4fdIly8H7EeK9Ub0j05UWo9loCRqlZp
+ Hb3DvppPh4dZPyNQ9TyfWTRx6IazLTKt0e.kLKpAex.tDIGjGPYfzijav3NyhwcD_2SdK4AByK5Q
+ E6vT_Icn2W9SfewA9ldETu53LagDoYodPtCUT0HIqbJkLEq8fykee4_eWnjrGud5FyBhsL8JY.Wq
+ TknQMGjFd2_l6UGtcKjudzD_4MsfmkNHCx6BAq6uZbqdXrEEmqjYJitG0Vm5Qx3f24NZycSUCWpn
+ 6iCDW0KFWrw_01udMq515fGngwUUbr5fin2xfV9ts8oVrhEmQp0k0tBLktbHYZbcDc2gqtq4x_Bf
+ RzOLJP5NqeEF2dfaWjMMmBRkrA0MXd_vjJiuDcpxC.DPuJoDuABxvn04UjYImVZ1geg9nxTfWGs1
+ 0uDR8rhUZ0Xrxx2_vQssUUl.FTlKK9bkenYJJz6tig4dctjiTOd7n9_HuhSpdkeaeCCP.vWEeP34
+ kwmkTaZ1zKQQyJp56q7SukBaYugw7WFU90B3ZWo12Pt6aGz9GJk5CjYLOaAbmTrbLOx0rY3xEt1h
+ YsZUyStBNOrxk5fAjfTvXLe.CzVNKgILfpv1RstZv1iogo0eBLHZYisMls6JtqjpropzJQQwc_1w
+ tyxQm1XypJiXdkGKD5aUsq_ZoAN32p95ZjxU5yuu1Ta51l6ckTID34vwL5uCpYbaBsbIWIDhP8aV
+ zu_WCL1NuwpKCAqqIFJnFQjVaiZrL40ebt7bmVTrTRMfhC2jJ2MScJZWyjzR.wmA_1QQdD4qJoc_
+ 3ckwbfmpzKNnvDaYuMKx8L7x3otrycZCzAvggr1FPxtu5Pw1.zfrMG97_Y.hWnz1JT4R.BGME8Ny
+ FpDZGwszR3F8KAzjftMjGVCA0LT9b9GldqohZak5fw1wjCvnNp0YP70l_.NySLpGzwsx_yd0nubJ
+ usRW7mkwn4UimgYxtlvmzOGk4WgDj7ERf0v2WeIk2j2uN6ZBoK_W4bPbGLd_uaWGBIT2B
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Tue, 26 Jul 2022 21:40:32 +0000
+Received: by hermes--canary-production-ir2-d447c45b6-2hw4d (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2c52c59737de2a58e010c2330b05cf54;
+          Tue, 26 Jul 2022 21:40:29 +0000 (UTC)
+Message-ID: <47cdefdb-dd3c-7f63-fe4a-153408e8b335@rocketmail.com>
+Date:   Tue, 26 Jul 2022 23:40:28 +0200
 MIME-Version: 1.0
-References: <20220620144231.GA23345@axis.com> <5caa944f-c841-6f74-8e43-a278b2b93b06@suse.com>
- <20220708110325.GA5307@axis.com> <4ca77763-53d0-965a-889e-be2eafadfd2f@intel.com>
- <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com>
-In-Reply-To: <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 26 Jul 2022 17:41:38 +0200
-Message-ID: <CAJZ5v0j0mgOcfKXRzyx12EX8CYLzowXrM8DGCH9XvQGnRNv0iw@mail.gmail.com>
-Subject: Re: PM runtime_error handling missing in many drivers?
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v4 06/10] iio: magnetometer: yas530: Rename functions and
+ registers
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1656883851.git.jahau@rocketmail.com>
+ <24d0ed13b317de4209cfd0b7ecd258af87b1b952.1656883851.git.jahau@rocketmail.com>
+ <CAHp75VeBdLypGa+f0FVPtBBs-i5VzQ-UvDdm5G7SG6Jgn4YvVQ@mail.gmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <CAHp75VeBdLypGa+f0FVPtBBs-i5VzQ-UvDdm5G7SG6Jgn4YvVQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.20447 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 11:05 AM Oliver Neukum <oneukum@suse.com> wrote:
->
->
->
-> On 08.07.22 22:10, Rafael J. Wysocki wrote:
-> > On 7/8/2022 1:03 PM, Vincent Whitchurch wrote:
->
-> >> Perhaps Rafael can shed some light on this.
-> >
-> > The driver always knows more than the framework about the device's
-> > actual state.  The framework only knows that something failed, but it
-> > doesn't know what it was and what way it failed.
->
-> Hi,
->
-> thinking long and deeply about this I do not think that this seemingly
-> obvious assertion is actually correct.
+Hi Andy,
 
-I guess that depends on what is regarded as "the framework".  I mean
-the PM-runtime code, excluding the bus type or equivalent.
+On 04.07.22 20:04, Andy Shevchenko wrote:
+> On Mon, Jul 4, 2022 at 12:03 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+>>
+...
+>>  /**
+>> - * yas5xx_measure() - Make a measure from the hardware
+>> + * yas530_measure() - Make a measure from the hardware
+>>   * @yas5xx: The device state
+>>   * @t: the raw temperature measurement
+>>   * @x: the raw x axis measurement
+>> @@ -190,7 +192,8 @@ static u16 yas532_extract_axis(u8 *data)
+>>   * @y2: the y2 axis measurement
+>>   * @return: 0 on success or error code
+>>   */
+>> -static int yas5xx_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y2)
+>> +/* Used by YAS530, YAS532 and YAS533 */
+> 
+> Why a separate comment and not embedded into the kernel doc above?
+> 
 
-> > The idea was that drivers would clear these errors.
->
-> I am afraid that is a deeply hidden layering violation. Yes, a driver's
-> resume() method may have failed. In that case, if that is the same
-> driver, it will obviously already know about the failure.
+I thought of it as an internal comment or hint. I'm not familiar with
+kernel doc and didn't dare to add it there.
 
-So presumably it will do something to recover and avoid returning the
-error in the first place.
+I'll move it to the bottom of the kernel doc part.
 
-From the PM-runtime core code perspective, if an error is returned by
-a suspend callback and it is not -EBUSY or -EAGAIN, the subsequent
-suspend is also likely to fail.
-
-If a resume callback returns an error, any subsequent suspend or
-resume operations are likely to fail.
-
-Storing the error effectively prevents subsequent operations from
-being carried out in both cases and that's why it is done.
-
-> PM operations, however, are operating on a tree. A driver requesting
-> a resume may get an error code. But it has no idea where this error
-> comes from. The generic code knows at least that.
-
-Well, what do you mean by "the generic code"?
-
-> Let's look at at a USB storage device. The request to resume comes
-> from sd.c. sd.c is certainly not equipped to handle a PCI error
-> condition that has prevented a USB host controller from resuming.
-
-Sure, but this doesn't mean that suspending or resuming the device is
-a good idea until the error condition gets resolved.
-
-> I am afraid this part of the API has issues. And they keep growing
-> the more we divorce the device driver from the bus driver, which
-> actually does the PM operation.
-
-Well, in general suspending or resuming a device is a collaborative
-effort and if one of the pieces falls over, making it work again
-involves fixing up the failing piece and notifying the others that it
-is ready again.  However, that part isn't covered and I'm not sure if
-it can be covered in a sufficiently generic way.
+Kind regards,
+Jakob

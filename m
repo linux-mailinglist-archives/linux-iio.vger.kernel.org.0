@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AAB55811ED
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 13:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D78A581248
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 13:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238715AbiGZL31 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 07:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41688 "EHLO
+        id S232934AbiGZLqi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 07:46:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238584AbiGZL30 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 07:29:26 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E91E3246D;
-        Tue, 26 Jul 2022 04:29:25 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id o1so10659943qkg.9;
-        Tue, 26 Jul 2022 04:29:25 -0700 (PDT)
+        with ESMTP id S232740AbiGZLqi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 07:46:38 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F413C24BDC;
+        Tue, 26 Jul 2022 04:46:36 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id u12so10232318qtk.0;
+        Tue, 26 Jul 2022 04:46:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=XmalPe35Kd6mBY2zrJx1/gBiFU0BeHwwnpYA4t5eT1A=;
-        b=A+GVbwXYOQP9Ox0/Kg5yJeoRW3oXpzMBaZl6QHpaFwLO6M1T19td44HKBJCw3Vx3Ve
-         ktmd1UtTbJD+BAaE6zqsTfR3VrFzvGc1ycrJ+1lK2/hvc3kasb+7PiA3SElolBBnXFtK
-         qNU1M+I1TW7DWOgloMTsxyAJYT/wMoGf+hgjJGl9GvTc59XZdmliUpeVii4f7rRJUKci
-         5+dm/XriHCRguOo9xXqJD+t0HnoByVTO++9VWPfq2ouA2m5kGH3x5qWmIItqJ8Gb6hmg
-         QDG8W9CtjH9uOf16p6XpJYeR5nrHxBx+z15ijLhKIUSlUrs9jUJNTlakGqIxckxJcedo
-         9gMg==
+        bh=wL1b72wWwttocLxQ4i2N7IFKv69W21HPhWs4hRLf0o0=;
+        b=AZ8qDLn4Znu85xCahXNOnmojv9wcePPk3Lf2KSJODsdYIL/u4rdAI0Lnw8MiXeeTQl
+         0fNcl+cJw4vrGMs/9mjAcX99bHsbOpeBwt1ay2R33YRq1VsVjC++YG2fmlp7hix1YwsO
+         IKZ3zoTB97u6iKZxmk+c33+dSbGXuJXJDQz+RRlu+LRdNCgrsyBWNRh2nYIBbuWUos51
+         BrJUcA7G/8NE1M8r1t7zyLNEvXtcGsNdIwqfkXwOFPRNUwWDTrUivYLlX/lxHIIPKvWG
+         uXmZtHYk57ezocXOjrXXXwhnGpuE94ql5T95iceJZSiu4iSTtJVip83p/q4s/P1JT7m/
+         PgVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XmalPe35Kd6mBY2zrJx1/gBiFU0BeHwwnpYA4t5eT1A=;
-        b=oO2/ndam3ttxxsTEDGx9amCTaYgdsnJ98QE/d8sKqQBOt9OOXcxIG4AQVTjNLUmlVo
-         NKwVb9/HpsPCcr4SnMABbXUA9b2TEtKRSH4273brRHuofIQOqFg2Yp1n/bAzBQXN8fJs
-         tS3Un33ZyKk4YHEIPB5bqsrS+iII6nF3Pzke+LclgInSC08jfFn6bWJQITVgCaeNVdUQ
-         3MFmxN/2pWI2TV2pfhnZpe/CSnQjGDAmrogkGRcB6elQ0B9zhwEwx8+bDhj8qNsojY//
-         EeDpNiUAuu7k7veLnFzaukZ8D7ZJEM4YfuOFJXeAVEnX91LXtZl2/VG1gaa0ZIDLA0bw
-         1uPw==
-X-Gm-Message-State: AJIora/ZA3h3o+2pGxSUAjywoMT4zQXEnAlXcn10V01TJ3i4qAbf4yq5
-        lUXhrUYT3sXqMJqK6hJkGdavtKUpYv/Y5qXYTUY=
-X-Google-Smtp-Source: AGRyM1si+IPV1ALNFzlmWfFOBqoGQxrsIfnktGjjWvpLW/pQqJdQWp+MkeEPkSRN7kGJUl8EvpjK1o1GylYFhHZ2kkc=
-X-Received: by 2002:a05:620a:2942:b0:6b5:e33a:1771 with SMTP id
- n2-20020a05620a294200b006b5e33a1771mr11971449qkp.665.1658834964512; Tue, 26
- Jul 2022 04:29:24 -0700 (PDT)
+        bh=wL1b72wWwttocLxQ4i2N7IFKv69W21HPhWs4hRLf0o0=;
+        b=wvpnYcrqPqDabB8SW5KSFMUYX0aK44p9eQIe9nlxcfis3Mdmi5cDaHQVkXupczyKOc
+         GUXeWGFIfKOtsPn9HMGR1vVzNcd9Suh6fMHxm/2EpODI081YjQiCr07vZ7rdvwqoVXdU
+         l+UhkoLymdbCOTE92gQAoUnKY/3Ln6dxdUQJz6DdDZP5m3GZOw3v0AGO8xx2pU3uQgNS
+         El/qLbHDgfQSvvnVtETCjHvad0rx/1z2YdYdtcGMRyiShArQSuojf8xKIabwCgw/vYAu
+         0wSJR2ApvrkKBhrnrxD66zFVuRj2v8HJ0yrhBvON8eutSbfvNcN8Vj2m+Td1uIrxj28K
+         jQBQ==
+X-Gm-Message-State: AJIora+A+mosHoqzSrnva77+s7B6I/5oJ7n4l9HJJlWqtX8if5/BxLJY
+        m4MK65D3+ln3/uSARZx+S+8g1u8tH5TnJ8erMvE=
+X-Google-Smtp-Source: AGRyM1sOWaWg8F0hJmRbLUJyv570Fqyt5WL0lP9RdfcVPQQLkd4tLFbTSnSOHuBdwqMxVIGbB1G4Kxurui/itRlhhGY=
+X-Received: by 2002:ac8:5a8b:0:b0:31f:27b8:2260 with SMTP id
+ c11-20020ac85a8b000000b0031f27b82260mr13732022qtc.198.1658835995667; Tue, 26
+ Jul 2022 04:46:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-14-peterwu.pub@gmail.com>
- <20220725103128.xtaw2c4y5fobowg7@maple.lan> <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
- <20220726093058.2fz2p2vg7xpfsnfe@maple.lan>
-In-Reply-To: <20220726093058.2fz2p2vg7xpfsnfe@maple.lan>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-12-peterwu.pub@gmail.com>
+ <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com>
+In-Reply-To: <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com>
 From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Tue, 26 Jul 2022 19:28:48 +0800
-Message-ID: <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
-Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
-To:     Daniel Thompson <daniel.thompson@linaro.org>
+Date:   Tue, 26 Jul 2022 19:45:59 +0800
+Message-ID: <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com>
+Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
+ sink type LED Indicator support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
         Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -69,10 +70,9 @@ Cc:     Lee Jones <lee.jones@linaro.org>,
         Guenter Roeck <linux@roeck-us.net>,
         "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
         Helge Deller <deller@gmx.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         ChiaEn Wu <chiaen_wu@richtek.com>,
         Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
         dri-devel <dri-devel@lists.freedesktop.org>,
         Linux LED Subsystem <linux-leds@vger.kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
@@ -96,119 +96,105 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 5:31 PM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
+On Mon, Jul 25, 2022 at 4:41 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 ...
-> > > Does the MT6372 support more steps than this? In other words does it use
-> > > a fourteen bit scale or does it use an 11-bit scale at a different
-> > > register location?
-> >
-> > Hi Daniel,
-> >
-> > Thanks for your reply.
-> > Yes, MT6372 can support 16384 steps and uses a 14-bit scale register
-> > location. But the maximum current of each
-> > channel of MT6372 is the same as MT6370 and MT6371, both 30mA.
-> > The main reason why MT6372 is designed this way is that one of the
-> > customers asked for a more delicate
-> > adjustment of the backlight brightness. But other customers actually
-> > do not have such requirements.
-> > Therefore, we designed it this way for maximum compatibility in software.
-
-Sorry for I used of the wrong word, I mean is 'driver', not
-higher-level software
-
+> > From: ChiYuan Huang <cy_huang@richtek.com>
 >
-> I don't think that is an acceptable approach for the upstream kernel.
->
-> To be "compatible" with (broken) software this driver ends up reducing
-> the capability of the upstream kernel to the point it becomes unable to
-> meet requirements for delicate adjustment (requirements that were
-> sufficiently important to change the hardware design so you could meet
-> them).
+> ^^^^ (Note this and read below)
 
-Originally, we just wanted to use one version of the driver to cover
-all the SubPMIC of the 6370 series(6370~6372).
-And, the users who use this series SubPMIC can directly apply this
-driver to drive the backlight device without knowing the underlying
-hardware.
-To achieve this goal, we have designed it to look like this.
-
->
->
 ...
-> > > > +
-> > > > +     if (brightness) {
-> > > > +             brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
-> > > > +             brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
-> > > > +
-> > > > +             /*
-> > > > +              * To make MT6372 using 14 bits to control the brightness
-> > > > +              * backward compatible with 11 bits brightness control
-> > > > +              * (like MT6370 and MT6371 do), we left shift the value
-> > > > +              * and pad with 1 to remaining bits. Hence, the MT6372's
-> > > > +              * backlight brightness will be almost the same as MT6370's
-> > > > +              * and MT6371's.
-> > > > +              */
-> > > > +             if (priv->vid_type == MT6370_VID_6372) {
-> > > > +                     brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
-> > > > +                     brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
-> > > > +             }
-> > >
-> > > This somewhat depends on the answer to the first question above, but
-> > > what is the point of this shifting? If the range is 14-bit then the
-> > > driver should set max_brightness to 16384 and present the full range of
-> > > the MT6372 to the user.
-> >
-> > So should we make all 16384 steps of MT6372 available to users?
->
-> Yes.
->
->
-> > Does that mean the DTS needs to be modified as well?
->
-> Yes... the property to set initial brightness needs a 14-bit range.
->
-> It would also be a good idea to discuss with the DT maintainers whether
-> you should introduce a second compatible string (ending 6372) in order
-> to allow the DT validation checks to detect accidental use of MT6372
-> ranges on MT6370 hardware.
 
-hmmm... I have just thought about it,
-maybe I can just modify the maximum value of default-brightness and
-max-brightness in DT to 16384,
-modify the description and add some comments.
+> In conjunction with above what SoB of Alice means?
+>
+> You really need to take your time and (re-)read
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html.
 
-And then on the driver side,
-we can use mt6370_check_vendor_info( ) to determine whether it is MT6372.
-If no, then in mt6370_bl_update_status(), first brightness_val / 8 and then set.
-In mt6370_bl_get_brightness(), first brightness_val * 8 and then return;
+Hi Andy,
 
-If I do this change, does this meet your requirements?
+Thanks for your reply.
+We are very sorry for this mistake. We will revise it in the next patch.
 
 >
+> ...
 >
-> > Or, for the reasons, I have just explained (just one customer has this
-> > requirement), then we do not make any changes for compatibility
-> > reasons?
+> > + * Author: Alice Chen <alice_chen@richtek.com>
+> > + * Author: ChiYuan Huang <cy_huang@richtek.com>
 >
-> I'd be curious what the compatiblity reasons are. In other words what
-> software breaks?
+> Would
+>  * Authors:
+>  *    Name_of_Author 1
+>  *    Name_of_Author 2
+>
+> work for you?
 
-The reason is as above. We just hope the users who use this series SubPMIC can
-directly apply this driver to drive the backlight device without
-knowing the underlying hardware.
-Not software breaks.
+It looks good, thanks! We will apply this in the next patch.
 
-Thanks!
+ ...
 
+> > +struct mt6370_led {
+> > +       union {
+> > +               struct led_classdev isink;
+> > +               struct led_classdev_mc mc;
+> > +       };
 >
-> Normally the userspace backlight code reads the max_brightness property
-> and configures things accordingly (and therefore if you the component
-> that breaks is something like an Android HAL then fix the HAL instead).
+> Where is the field that makes union work?
+
+Just for saving memory space.
+Because these led_classdevs do not be used at the same time.
+Or do you think it would be better to rewrite it as follows?
+-------------------------------------------------------------------------------------
+struct mt6370_led {
+       struct led_classdev isink;
+       struct led_classdev_mc mc;
+       struct mt6370_priv *priv;
+       u32 default_state;
+       u32 index;
+};
+-------------------------------------------------------------------------------------
+
+...
+
+> > +static int mt6370_gen_breath_pattern(struct mt6370_priv *priv,
+> > +                                    struct led_pattern *pattern, u32 len,
+> > +                                    u8 *pattern_val, u32 val_len)
+> > +{
+> > +       enum mt6370_led_ranges sel_range;
+> > +       struct led_pattern *curr;
+> > +       unsigned int sel;
+> > +       u8 val[P_MAX_PATTERNS / 2] = {};
+> > +       int i;
+> > +
+> > +       if (len < P_MAX_PATTERNS && val_len < P_MAX_PATTERNS / 2)
+> > +               return -EINVAL;
+> > +
+> > +       /*
+> > +        * Pattern list
+> > +        * tr1: byte 0, b'[7: 4]
+> > +        * tr2: byte 0, b'[3: 0]
+> > +        * tf1: byte 1, b'[7: 4]
+> > +        * tf2: byte 1, b'[3: 0]
+> > +        * ton: byte 2, b'[7: 4]
+> > +        * toff: byte 2, b'[3: 0]
+> > +        */
+> > +       for (i = 0; i < P_MAX_PATTERNS; i++) {
+> > +               curr = pattern + i;
+> > +
+> > +               sel_range = i == P_LED_TOFF ? R_LED_TOFF : R_LED_TRFON;
+> > +
+> > +               linear_range_get_selector_within(priv->ranges + sel_range,
+> > +                                                curr->delta_t, &sel);
+> > +
+> > +               val[i / 2] |= sel << (4 * ((i + 1) % 2));
+> > +       }
+> > +
+> > +       memcpy(pattern_val, val, 3);
 >
->
-> Daniel.
+> Isn't it something like put_unaligned_be24()/put_unaligned_le24()?
+
+OK, we will try to apply this method in the next patch.
+Thank you so much for reviewing our patches so many times and
+providing so many great suggestions!
 
 -- 
 Best Regards,

@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E52580A41
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 06:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E197580AF4
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 08:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbiGZEPs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 00:15:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33296 "EHLO
+        id S231258AbiGZGLh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 02:11:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbiGZEPr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 00:15:47 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E6BA240AA;
-        Mon, 25 Jul 2022 21:15:46 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id j195so4093224ybj.11;
-        Mon, 25 Jul 2022 21:15:46 -0700 (PDT)
+        with ESMTP id S229749AbiGZGLg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 02:11:36 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7C41EEEE;
+        Mon, 25 Jul 2022 23:11:33 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id e15so16529228edj.2;
+        Mon, 25 Jul 2022 23:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=lL85hlJEWNpWq8aoVq7T9RPrHigl/wy3kQyoeNe4Sas=;
-        b=hCdS8QSsYIw6gGaV0XS9IAV/+XD+Kk0QE5hzusxmOf5d2dTDTQQcL3NhqMYKbFY0Tn
-         ALB21R/6DazMYeCAAzfSZS7P0Z41gJsw+nZjWX6PlQXwXANm3LVAqrB5PFsMuqAHqXem
-         Mqmm3Ih1NTwtWzQhnAzSzRXXrf5yfCoFcjkmFFPLCmRVp2siIg3AfNjuCMTK2YESptid
-         eeP9tz5wTm7qe3sotMpBO4iTSI2DKFf7D3YatBVRT/PbkAZVFycO+siEvHp7i27pNctb
-         TonIMjdDnr0jjVWHRnLmYyT6Iqx8oAClUtlkGASQ6CkTyN1ePQ9WOQPU8smSEzTDkemD
-         7GYQ==
+        bh=5iTBFaujydfzjNtZ+tuEW42yh94kmq7eTQthHnu+Umc=;
+        b=DFreK31JfLkd3fAd0uB7CR6gjxpG6yBsGmnlSdQdVK9K9Iop3MmbjSc5l5Mqska/9F
+         6zDsLVWtd4iSJbART2yOrMPnU6eocnuJbVN14OsRvUxL4fHsO7Wrgfc2UhIcTUjufoph
+         2DxioqWBkat/Lt1MPd86qgmI4fJ9X5pOYvgIQ3L8XLGI4V6pl/+7xrFDCD36BkcmbO3v
+         msDZGsDArMOOY56AIoIP2Boyoi0IybH+bd3McBS1U0EmQcx61Apt04nGaujtweQDBRAO
+         5Sbq2NspvHrUHv6ggNUA5i+nF0w1W6dwyWvXZUzuukyS0Uo/f8jv4B+Fz7jfoW/fM0P7
+         F9hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lL85hlJEWNpWq8aoVq7T9RPrHigl/wy3kQyoeNe4Sas=;
-        b=PC6hw7zeLjOXjofpJO1WG7vc5dzxEG2re2M9lU+dBoq7396PI+/H0o18wCV6FXP3HL
-         DVWLfwjhxo6IEwiWKCpIpEPlKmux4/qzcM4DZhZCNbMd7X6p1kvG3YPC3yJskwL6q4mR
-         bnZe0hw9n0J+Xi3G9eMJsaUYwL6S1ZKD9cX+Q6y8lNrxlQKZnLMfAoWykBI5j3AX9D2S
-         9z2iIrahKCgnt+rZdzI/GVljdaBVN7YBa+n7iN2NH4LCEJgPaqB+wIKMkiopEFMVCIym
-         DJeu1Nz5F5UxTziRTH1aPfl7zngy8kqLsJxYAKxVhaM/Amqw9AgFMiycnhTrO/p03qGt
-         lKJA==
-X-Gm-Message-State: AJIora+Ml0B1VxZDIMEoOtToMqvbHpdtILIeE9WZF99630HmB0dl3Up+
-        GiwbnPIJXues3K50dfQsbBjTROsPpFGg5HH8f1w=
-X-Google-Smtp-Source: AGRyM1uSqvDW6wRuMm0lak5Iwbp5WAlFUJEhBzOij+tqweUKRMo5toAZUB++pRBDQrYJNbxll8cTRP6sKMvIiCj1/Dk=
-X-Received: by 2002:a05:6902:10c2:b0:671:73dd:e67e with SMTP id
- w2-20020a05690210c200b0067173dde67emr484158ybu.16.1658808945685; Mon, 25 Jul
- 2022 21:15:45 -0700 (PDT)
+        bh=5iTBFaujydfzjNtZ+tuEW42yh94kmq7eTQthHnu+Umc=;
+        b=BlAlzcA1MUrg7S4dIEucIEGjRfOoqen2XN9v1xrd8WPiwPJelPEvZOR53CSMHOw0bS
+         LGPA/U59ua6BMhoSECfgEy8/EGGiWBNZTPZx6e5vieTMcci3UmYoHtJ1RCf55sWLhBx+
+         rXgNbESeMDWnbdMW+CswYe9gyP+/J7gOdHu2Mg8EI0UOZkeHbMqJhCJnGbcHfXsxNk5g
+         Idy7Qx+FB8B7qOCVeygWdcE0P63QFG01kWmbdxxKyy5YvBsNwpzBUaEY2Opgbe/i2UiH
+         VaZHwzNV2u8wg9zeFKb+oFo6zT5agqi/2ygo5Gb/TgS7wX3D20qqI+/5/i6qMDEX9mL2
+         /CMQ==
+X-Gm-Message-State: AJIora9zbTMUbMaiUEu6d/Zud6rLXqVauQLyybsfYT/7geaGZBcHnKy9
+        UOgRBdN6J1k/CawajG6tSRJH2fjrEtTKswoBluYXHfMBpj7Lyw==
+X-Google-Smtp-Source: AGRyM1sDJR+2SWBXIadraV+/yk5L7Vs9denzeP6s+Yyxwc5C8W1vNP4hRGI/bOS7pUxW1lVGaWNV5mppOqxOjOJF8tE=
+X-Received: by 2002:a05:6402:d05:b0:435:b2a6:94eb with SMTP id
+ eb5-20020a0564020d0500b00435b2a694ebmr16409469edb.87.1658815891980; Mon, 25
+ Jul 2022 23:11:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-13-peterwu.pub@gmail.com>
- <CAHp75VfgiK87VwWu2bTJ_mR0=g0sa0LPJ+H16OGcUdARmzFRSA@mail.gmail.com>
-In-Reply-To: <CAHp75VfgiK87VwWu2bTJ_mR0=g0sa0LPJ+H16OGcUdARmzFRSA@mail.gmail.com>
-From:   szuni chen <szunichen@gmail.com>
-Date:   Tue, 26 Jul 2022 12:15:34 +0800
-Message-ID: <CA+hk2fYpDRw+DRRU3m=EDOP6UEQNpJLyNBHe8Zi0qOfUObTb4Q@mail.gmail.com>
+ <CAHp75VfgiK87VwWu2bTJ_mR0=g0sa0LPJ+H16OGcUdARmzFRSA@mail.gmail.com> <CA+hk2fYpDRw+DRRU3m=EDOP6UEQNpJLyNBHe8Zi0qOfUObTb4Q@mail.gmail.com>
+In-Reply-To: <CA+hk2fYpDRw+DRRU3m=EDOP6UEQNpJLyNBHe8Zi0qOfUObTb4Q@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 26 Jul 2022 08:10:55 +0200
+Message-ID: <CAHp75VdxWfo0QW=SXc0v+Ue92VO1TbpTqAqHT6mAK=GA606oFg@mail.gmail.com>
 Subject: Re: [PATCH v6 12/13] leds: flash: mt6370: Add MediaTek MT6370
  flashlight support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     szuni chen <szunichen@gmail.com>
 Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -96,47 +96,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
+On Tue, Jul 26, 2022 at 6:15 AM szuni chen <szunichen@gmail.com> wrote:
 
->
-> > +#define MT6370_ITORCH_MIN_UA           25000
-> > +#define MT6370_ITORCH_STEP_UA          12500
-> > +#define MT6370_ITORCH_MAX_UA           400000
-> > +#define MT6370_ITORCH_DOUBLE_MAX_UA    800000
-> > +#define MT6370_ISTRB_MIN_UA            50000
-> > +#define MT6370_ISTRB_STEP_UA           12500
-> > +#define MT6370_ISTRB_MAX_UA            1500000
-> > +#define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
->
-> Perhaps _uA would be better and consistent across your series
-> regarding current units.
->
+...
 
-Yes, _uA will be more consistent, but in general, using upper case in
-the define macro is a convention, doesn't it?
-
+> > > +#define MT6370_ITORCH_MIN_UA           25000
+> > > +#define MT6370_ITORCH_STEP_UA          12500
+> > > +#define MT6370_ITORCH_MAX_UA           400000
+> > > +#define MT6370_ITORCH_DOUBLE_MAX_UA    800000
+> > > +#define MT6370_ISTRB_MIN_UA            50000
+> > > +#define MT6370_ISTRB_STEP_UA           12500
+> > > +#define MT6370_ISTRB_MAX_UA            1500000
+> > > +#define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
+> >
+> > Perhaps _uA would be better and consistent across your series
+> > regarding current units.
 >
-> > +       /*
-> > +        * For the flash to turn on/off, need to wait for HW ramping up/down time
->
-> we need
->
-> > +        * 5ms/500us to prevent the unexpected problem.
-> > +        */
-> > +       if (!prev && curr)
-> > +               usleep_range(5000, 6000);
-> > +       else if (prev && !curr)
-> > +               udelay(500);
->
-> This still remains unanswered, why in the first place we allow
-> switching, and a busy loop in the other place?
+> Yes, _uA will be more consistent, but in general, using upper case in
+> the define macro is a convention, doesn't it?
 
-If I refine the description to
-"For the flash to turn on/off, need to wait for 5ms/500us analog settling time.
-If any flash led is already used, then the analog is settled done, we
-don't need to wait again."
-is it answer the question?
+There is general convention, but there are also:
+1) common sense;
+2) usage in practice (e.g. _US, etc for *seconds and _HZ for *frequency).
 
+My common sense tells me that it is convenient to use mA,uA, etc.
+Plus "in practice" it's related to use as in your series and elsewhere.
 
-Best regards,
-Alice
+But of course it's minor to me, decide yourself.
+
+...
+
+> > > +       /*
+> > > +        * For the flash to turn on/off, need to wait for HW ramping up/down time
+> >
+> > we need
+> >
+> > > +        * 5ms/500us to prevent the unexpected problem.
+> > > +        */
+> > > +       if (!prev && curr)
+> > > +               usleep_range(5000, 6000);
+> > > +       else if (prev && !curr)
+> > > +               udelay(500);
+> >
+> > This still remains unanswered, why in the first place we allow
+> > switching, and a busy loop in the other place?
+>
+> If I refine the description to
+> "For the flash to turn on/off, need to wait for 5ms/500us analog settling time.
+> If any flash led is already used, then the analog is settled done, we
+> don't need to wait again."
+> is it answer the question?
+
+No. I'm talking from the Linux APIs perspective. There is a huge
+difference between those branches. Please, conduct research, read
+documentation to understand what my question is about.
+
+-- 
+With Best Regards,
+Andy Shevchenko

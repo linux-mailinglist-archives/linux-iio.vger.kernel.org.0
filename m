@@ -2,93 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E197580AF4
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 08:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D65B580DA6
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 09:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231258AbiGZGLh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 02:11:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54888 "EHLO
+        id S231744AbiGZHaZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 03:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbiGZGLg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 02:11:36 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7C41EEEE;
-        Mon, 25 Jul 2022 23:11:33 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id e15so16529228edj.2;
-        Mon, 25 Jul 2022 23:11:33 -0700 (PDT)
+        with ESMTP id S238397AbiGZH3E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 03:29:04 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EB42B25B
+        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 00:26:19 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id b6so8165180wmq.5
+        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 00:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5iTBFaujydfzjNtZ+tuEW42yh94kmq7eTQthHnu+Umc=;
-        b=DFreK31JfLkd3fAd0uB7CR6gjxpG6yBsGmnlSdQdVK9K9Iop3MmbjSc5l5Mqska/9F
-         6zDsLVWtd4iSJbART2yOrMPnU6eocnuJbVN14OsRvUxL4fHsO7Wrgfc2UhIcTUjufoph
-         2DxioqWBkat/Lt1MPd86qgmI4fJ9X5pOYvgIQ3L8XLGI4V6pl/+7xrFDCD36BkcmbO3v
-         msDZGsDArMOOY56AIoIP2Boyoi0IybH+bd3McBS1U0EmQcx61Apt04nGaujtweQDBRAO
-         5Sbq2NspvHrUHv6ggNUA5i+nF0w1W6dwyWvXZUzuukyS0Uo/f8jv4B+Fz7jfoW/fM0P7
-         F9hg==
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=21tro8NgQMF0BbQUJgmRVJe8ax8ac1ERKEmdP9EvkKQ=;
+        b=ylwiRXDG+MXgpkQ+8qvtIy/jVkvcV26Aind4vPzrRQKOJsIqUfD91k7A/5VnUY1YTH
+         Srt/ksBKFWb7bRM9Lk027hyLmXlVfVwDJSs1lhsIS+4eiKbG/VL5hlF8uu4ygOxumF/V
+         vfZzT3YRqWFdPi2ruRCpKqAMzQIIspGmfFP78yfVGjnW6htOExG91PY+BHdIG3bQuyP6
+         iBo5emAzGf8UJx1jmi4bgT+QdqsM/IW4z4jYMYPs/pnWhOOhkyXO6Ykb5gRyd3Y8uiNi
+         /nQ0WmMr8qdtX9dzOL34p3SsLg5tRtzNm5ray2j3uQAzSeTsX7ry3xAi/kGsZsp0LshI
+         eJ4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5iTBFaujydfzjNtZ+tuEW42yh94kmq7eTQthHnu+Umc=;
-        b=BlAlzcA1MUrg7S4dIEucIEGjRfOoqen2XN9v1xrd8WPiwPJelPEvZOR53CSMHOw0bS
-         LGPA/U59ua6BMhoSECfgEy8/EGGiWBNZTPZx6e5vieTMcci3UmYoHtJ1RCf55sWLhBx+
-         rXgNbESeMDWnbdMW+CswYe9gyP+/J7gOdHu2Mg8EI0UOZkeHbMqJhCJnGbcHfXsxNk5g
-         Idy7Qx+FB8B7qOCVeygWdcE0P63QFG01kWmbdxxKyy5YvBsNwpzBUaEY2Opgbe/i2UiH
-         VaZHwzNV2u8wg9zeFKb+oFo6zT5agqi/2ygo5Gb/TgS7wX3D20qqI+/5/i6qMDEX9mL2
-         /CMQ==
-X-Gm-Message-State: AJIora9zbTMUbMaiUEu6d/Zud6rLXqVauQLyybsfYT/7geaGZBcHnKy9
-        UOgRBdN6J1k/CawajG6tSRJH2fjrEtTKswoBluYXHfMBpj7Lyw==
-X-Google-Smtp-Source: AGRyM1sDJR+2SWBXIadraV+/yk5L7Vs9denzeP6s+Yyxwc5C8W1vNP4hRGI/bOS7pUxW1lVGaWNV5mppOqxOjOJF8tE=
-X-Received: by 2002:a05:6402:d05:b0:435:b2a6:94eb with SMTP id
- eb5-20020a0564020d0500b00435b2a694ebmr16409469edb.87.1658815891980; Mon, 25
- Jul 2022 23:11:31 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=21tro8NgQMF0BbQUJgmRVJe8ax8ac1ERKEmdP9EvkKQ=;
+        b=A/MHKyONJ/bD2mFueZj4k0JyGyfa9hcofhTQipxJEQtWVxvqr8NXJWN54UtKgqHdl7
+         vUfjJwsHqcHDNeNiOJsgD/MRDPobXKesx2E+Kjglzm4JHhE2U7uCtAknV/s2Da6T9SX0
+         I2ZOqwA7Xj2SFPi+5BCumuUiOAJWGYqArtrHixLr9bI/0XNStCDDHY1DJ/HesPF/Ig5R
+         w0IhtXloXPe67bSihEEg2+/83wjN44zfC9WesyBQP+N4f+/z8gUW1oOemoqIPO5/07Dp
+         PYnsgYM/AcigfQPDV+pb/o0u9CJel9Ra/5HymsrLSCrN9RHD/2yJeyCSviK8o2L6jviP
+         jRdA==
+X-Gm-Message-State: AJIora+PA8lHFEoWQWpF1s/jtJpRhsFNI+XHtED6cfgFXfcEyCUpBezr
+        ZkfWJhx+cqPCUVDYaMyjuwcphQ==
+X-Google-Smtp-Source: AGRyM1sHh5qAWVhfvM7wnsq0GmqaOJu07OuZf96mZZYu1OHSKoTlkATutMus4ZnRsSFeu21FHSt/0A==
+X-Received: by 2002:a05:600c:a4c:b0:39c:6517:1136 with SMTP id c12-20020a05600c0a4c00b0039c65171136mr11181329wmq.12.1658820368647;
+        Tue, 26 Jul 2022 00:26:08 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:cb1d:77d:8cd7:621a:855b:69ac:c34a])
+        by smtp.gmail.com with ESMTPSA id c17-20020a5d5291000000b0021b956da1dcsm9007835wrv.113.2022.07.26.00.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 00:26:07 -0700 (PDT)
+From:   Julien Panis <jpanis@baylibre.com>
+To:     jic23@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        mranostay@ti.com, Julien Panis <jpanis@baylibre.com>
+Subject: [PATCH v1 0/2] ECAP support on TI AM62x SoC
+Date:   Tue, 26 Jul 2022 09:25:51 +0200
+Message-Id: <20220726072553.5136-1-jpanis@baylibre.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-13-peterwu.pub@gmail.com>
- <CAHp75VfgiK87VwWu2bTJ_mR0=g0sa0LPJ+H16OGcUdARmzFRSA@mail.gmail.com> <CA+hk2fYpDRw+DRRU3m=EDOP6UEQNpJLyNBHe8Zi0qOfUObTb4Q@mail.gmail.com>
-In-Reply-To: <CA+hk2fYpDRw+DRRU3m=EDOP6UEQNpJLyNBHe8Zi0qOfUObTb4Q@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 26 Jul 2022 08:10:55 +0200
-Message-ID: <CAHp75VdxWfo0QW=SXc0v+Ue92VO1TbpTqAqHT6mAK=GA606oFg@mail.gmail.com>
-Subject: Re: [PATCH v6 12/13] leds: flash: mt6370: Add MediaTek MT6370
- flashlight support
-To:     szuni chen <szunichen@gmail.com>
-Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -96,61 +68,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 6:15 AM szuni chen <szunichen@gmail.com> wrote:
+The Enhanced Capture (ECAP) module can be used to timestamp events
+detected on signal input pin. It can be used for time measurements
+of pulse train signals.
 
-...
+ECAP module includes 4 timestamp capture registers. For all 4 sequenced
+timestamp capture events (0->1->2->3->0->...), edge polarity (falling/rising
+edge) can be selected. Moreover, input signal can be prescaled.
 
-> > > +#define MT6370_ITORCH_MIN_UA           25000
-> > > +#define MT6370_ITORCH_STEP_UA          12500
-> > > +#define MT6370_ITORCH_MAX_UA           400000
-> > > +#define MT6370_ITORCH_DOUBLE_MAX_UA    800000
-> > > +#define MT6370_ISTRB_MIN_UA            50000
-> > > +#define MT6370_ISTRB_STEP_UA           12500
-> > > +#define MT6370_ISTRB_MAX_UA            1500000
-> > > +#define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
-> >
-> > Perhaps _uA would be better and consistent across your series
-> > regarding current units.
->
-> Yes, _uA will be more consistent, but in general, using upper case in
-> the define macro is a convention, doesn't it?
+This driver leverages IIO subsystem to :
+- select edge polarity for all 4 capture events (event mode)
+- log both event index and timestamp for each capture event
+Event polarity, event indexes, and timestamps give all the information
+about the input pulse train. Further information can easily be computed :
+period and/or duty cycle if frequency is constant, elapsed time between
+pulses, etc...
 
-There is general convention, but there are also:
-1) common sense;
-2) usage in practice (e.g. _US, etc for *seconds and _HZ for *frequency).
+Userspace commands :
+	cd /sys/devices/platform/bus@f0000/23120000.capture/iio\:device2/
 
-My common sense tells me that it is convenient to use mA,uA, etc.
-Plus "in practice" it's related to use as in your series and elsewhere.
+	# Configure/Enable data buffers
+	echo 1 > scan_elements/in_index_en
+	echo 1 > scan_elements/in_timestamp_en
+	echo 100 > buffer/length
+	echo 1 > buffer/enable
 
-But of course it's minor to me, decide yourself.
+	# Set event mode in range [0 ; 15]
+	# One bit for each CAPx register : 1 = falling edge / 0 = rising edge
+	# e.g. mode = 13 = 0xd = 0b1101
+	# -> falling edge for CAP1-3-4 / rising edge for CAP2
+	echo 13 > events/change_falling_value
 
-...
+	# Run ECAP
+	echo 1 > en
 
-> > > +       /*
-> > > +        * For the flash to turn on/off, need to wait for HW ramping up/down time
-> >
-> > we need
-> >
-> > > +        * 5ms/500us to prevent the unexpected problem.
-> > > +        */
-> > > +       if (!prev && curr)
-> > > +               usleep_range(5000, 6000);
-> > > +       else if (prev && !curr)
-> > > +               udelay(500);
-> >
-> > This still remains unanswered, why in the first place we allow
-> > switching, and a busy loop in the other place?
->
-> If I refine the description to
-> "For the flash to turn on/off, need to wait for 5ms/500us analog settling time.
-> If any flash led is already used, then the analog is settled done, we
-> don't need to wait again."
-> is it answer the question?
+	# Get the number of available data
+	cat buffer/data_available
 
-No. I'm talking from the Linux APIs perspective. There is a huge
-difference between those branches. Please, conduct research, read
-documentation to understand what my question is about.
+	# Read data
+	hexdump -v /dev/iio\:device2
+
+	# Stop ECAP
+	echo 0 > en
+
+Julien Panis (2):
+  iio: time: capture-tiecap: capture driver support for ECAP
+  dt-binding: iio: time: add capture-tiecap.yaml
+
+ .../bindings/iio/time/capture-tiecap.yaml     |  53 ++
+ drivers/iio/Kconfig                           |   1 +
+ drivers/iio/Makefile                          |   1 +
+ drivers/iio/time/Kconfig                      |  22 +
+ drivers/iio/time/Makefile                     |   6 +
+ drivers/iio/time/capture-tiecap.c             | 532 ++++++++++++++++++
+ 6 files changed, 615 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/time/capture-tiecap.yaml
+ create mode 100644 drivers/iio/time/Kconfig
+ create mode 100644 drivers/iio/time/Makefile
+ create mode 100644 drivers/iio/time/capture-tiecap.c
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

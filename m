@@ -2,107 +2,160 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2826F581050
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 11:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AFE581074
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Jul 2022 11:58:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238386AbiGZJt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 26 Jul 2022 05:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
+        id S238679AbiGZJ5q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 26 Jul 2022 05:57:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232651AbiGZJt1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 05:49:27 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B9B31DD7;
-        Tue, 26 Jul 2022 02:49:24 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 0C8E95FD04;
-        Tue, 26 Jul 2022 12:49:22 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1658828962;
-        bh=K22w9hfJS/evEUDwB3F4Dmwu3c9LbepbkOhWPVhSDek=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=eJcVk9fvnApIOVjcBfKtwFz2dgd43sRaYr3MwXFoaGgSg60+AK4LcFV7UQIYo5EaJ
-         x071z4GKx60KKh23vj2TuTfsoJDPpf94TbKoiPJPrCcrJmr1ODMAH7ajDd7iBhhSwJ
-         +oqeABT1+MmD7zJz75pdqXVKCQzaE48NxjPUdZoxeS3UyvGOrbGmrgI47QRfly9AwL
-         ayCJ6q+MN5P1N7ho3eaYHwcjzrZRydfWMrmRfhRebdVB1Lg1FzRML9b/yfqe78GQ1S
-         PEM4ch1QYw39AGP1eMD/lSj9ecSw+FAFW2khctCxQNzChMtivvxZo5OzY+3HxQmEp1
-         R6Ctr1scpBxzA==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Tue, 26 Jul 2022 12:49:19 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 1/3] units: complement the set of Hz units
-Thread-Topic: [PATCH v1 1/3] units: complement the set of Hz units
-Thread-Index: AQHYoFaQAQbyP6ttz02qWm6Ywvl4Ba2PaEmAgADOrYA=
-Date:   Tue, 26 Jul 2022 09:49:15 +0000
-Message-ID: <20220726094915.grn33xjqgkm52yja@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220725184439.7618-1-ddrokosov@sberdevices.ru>
- <20220725184439.7618-2-ddrokosov@sberdevices.ru>
- <CAHp75VcpY1vwHCOaJNb-qw+3gsMyv9mJe+QaWrjiTKOdj1xfYg@mail.gmail.com>
-In-Reply-To: <CAHp75VcpY1vwHCOaJNb-qw+3gsMyv9mJe+QaWrjiTKOdj1xfYg@mail.gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <E6F6CFDC59DAB14FB5D4A4DE390163A6@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S238577AbiGZJ5o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 26 Jul 2022 05:57:44 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D20431DC5
+        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 02:57:15 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id bn9so8530068wrb.9
+        for <linux-iio@vger.kernel.org>; Tue, 26 Jul 2022 02:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=iUicZLyBaZmjv2lqx7fW4HMBGqk7G7eOOVk/ONJ/4PI=;
+        b=a9jshOAIwiw5ztp0+n80iX49X5uP9g1fIPLWAKA0Oebli99rLSK1JSwbKX/TWSIEKD
+         O8RAu6x1EuYGsc6oXUYHrmfMJXvk5iAAbsgDFp3wtW13E5HsTmbU8dXiDaDJtMrBEKfo
+         BtLocFdB4gelyGOYkHzTosErUmhiDP8/zjswgy3RH2fFxA6Xdh3CA/yI5iTiW9jbWJ9K
+         oN+oMjKZdsMTijOKOP2BcUYtUHprOqVqAeK+KFkaDem1o5Ff7dUDZtyl1X5TpjYEAD8P
+         dBkE0hdxwnSaGXsfATXn6MSzu2tBqE1Ie2s0Wxg+NyX5ban32/phra4XzX8bj2k4iDT4
+         H/tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=iUicZLyBaZmjv2lqx7fW4HMBGqk7G7eOOVk/ONJ/4PI=;
+        b=iG/OTp1VvJJoTJ9ik8M/wjYxacTOmLSz5QSdVXsXa4/V79kmPZdYujEr4kevk3EbMh
+         v0kviye++mBhoianOIv2Izd7iJPpAv1r0FleRt+Vcd/kpMrb5aChlJuVsV2ybxZwBF7l
+         MwrYpRzeX/94rnw/kVorvEdn2a8rDt1KG83akLHuE5zZ4h8jsme8uemyKEpnFyFcumtR
+         +sxyH3eR9f8cv9vlDdAdkftzkwelf1g2SzkFvyxvBD+FgBZ54EmsX3GUvfWLzYzT4E6R
+         aNWd0aC20XpnjWzu+7xgNIjIFMmLfdj6xeHKySgml3Krf/4fKFZSVNkkmNlY/mP7mBXM
+         OslQ==
+X-Gm-Message-State: AJIora8USZT13xWb5/Y7iEUcchF0vY2nIqog4XvmvwmlEi7fiwV8GxOi
+        KIcrniYE1dlA3YWpK9hqynpo1w==
+X-Google-Smtp-Source: AGRyM1vaVzTyQ5b+nn+RlJ42faxYO14TpuNlzllTL+nY6z4bb/G0nOBbFTz5DJTxQxp7SwpuN92A3g==
+X-Received: by 2002:adf:e84b:0:b0:21e:61cd:647e with SMTP id d11-20020adfe84b000000b0021e61cd647emr10370152wrn.715.1658829433726;
+        Tue, 26 Jul 2022 02:57:13 -0700 (PDT)
+Received: from localhost.localdomain (210.145.15.109.rev.sfr.net. [109.15.145.210])
+        by smtp.googlemail.com with ESMTPSA id t3-20020a1c4603000000b003a2d87aea57sm21170873wma.10.2022.07.26.02.57.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 02:57:12 -0700 (PDT)
+From:   Amjad Ouled-Ameur <aouledameur@baylibre.com>
+To:     fparent@baylibre.com
+Cc:     broonie@kernel.org, chaotian.jing@mediatek.com,
+        chunfeng.yun@mediatek.com, devicetree@vger.kernel.org,
+        dmaengine@vger.kernel.org, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org,
+        linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-mmc@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux@roeck-us.net,
+        matthias.bgg@gmail.com, qii.wang@mediatek.com, robh+dt@kernel.org,
+        srinivas.kandagatla@linaro.org, ulf.hansson@linaro.org,
+        vkoul@kernel.org, wim@linux-watchdog.org
+Subject: Re: [PATCH 16/17] arm64: dts: mediatek: add mt8365 device-tree
+Date:   Tue, 26 Jul 2022 11:57:11 +0200
+Message-Id: <20220726095711.708310-1-aouledameur@baylibre.com>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20220531135026.238475-17-fparent@baylibre.com>
+References: <20220531135026.238475-17-fparent@baylibre.com>
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/07/26 06:45:00 #19969454
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Andy,
+Hi Fabien,
 
-Thank you for quick review.
+Could you please add CPUIDLE support:
 
-On Mon, Jul 25, 2022 at 11:29:31PM +0200, Andy Shevchenko wrote:
-> On Mon, Jul 25, 2022 at 8:44 PM Dmitry Rokosov <DDRokosov@sberdevices.ru>=
- wrote:
-> >
-> > Currently, Hz units do not have milli, micro and nano Hz coefficients.
-> > Some drivers (IIO especially) use their analogues to calculate
-> > appropriate Hz values. This patch includes them to units.h definitions,
-> > so they can be used from different kernel places.
->=20
-> ...
->=20
-> > +#define NHZ_PER_HZ             1000000000UL
-> > +#define UHZ_PER_HZ             1000000UL
-> > +#define MHZ_PER_HZ             1000UL
->=20
-> mHZ perhaps?
->=20
+diff --git a/arch/arm64/boot/dts/mediatek/mt8365.dtsi b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+index 323c814c10cc..1df4075db58f 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8365.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8365.dtsi
+@@ -59,6 +59,7 @@ cpu0: cpu@0 {
+ 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
+ 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
+ 			clock-names = "cpu", "intermediate";
++			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
+ 			operating-points-v2 = <&cluster0_opp>;
+ 			#cooling-cells = <2>;
+ 			enable-method = "psci";
+@@ -72,6 +73,7 @@ cpu1: cpu@1 {
+ 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
+ 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
+ 			clock-names = "cpu", "intermediate", "armpll";
++			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
+ 			operating-points-v2 = <&cluster0_opp>;
+ 			#cooling-cells = <2>;
+ 			enable-method = "psci";
+@@ -85,6 +87,7 @@ cpu2: cpu@2 {
+ 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
+ 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
+ 			clock-names = "cpu", "intermediate", "armpll";
++			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
+ 			operating-points-v2 = <&cluster0_opp>;
+ 			#cooling-cells = <2>;
+ 			enable-method = "psci";
+@@ -98,10 +101,42 @@ cpu3: cpu@3 {
+ 			clocks = <&mcucfg CLK_MCU_BUS_SEL>,
+ 				 <&apmixedsys CLK_APMIXED_MAINPLL>;
+ 			clock-names = "cpu", "intermediate", "armpll";
++			cpu-idle-states = <&MCDI_CPU &MCDI_CLUSTER &DPIDLE>;
+ 			operating-points-v2 = <&cluster0_opp>;
+ 			#cooling-cells = <2>;
+ 			enable-method = "psci";
+ 		};
++
++		idle-states {
++			entry-method = "psci";
++
++			MCDI_CPU: mcdi-cpu {
++				compatible = "arm,idle-state";
++				local-timer-stop;
++				arm,psci-suspend-param = <0x00010001>;
++				entry-latency-us = <300>;
++				exit-latency-us = <200>;
++				min-residency-us = <1000>;
++			};
++
++			MCDI_CLUSTER: mcdi-cluster {
++				compatible = "arm,idle-state";
++				local-timer-stop;
++				arm,psci-suspend-param = <0x01010001>;
++				entry-latency-us = <350>;
++				exit-latency-us = <250>;
++				min-residency-us = <1200>;
++			};
++
++			DPIDLE: dpidle {
++				compatible = "arm,idle-state";
++				local-timer-stop;
++				arm,psci-suspend-param = <0x01010004>;
++				entry-latency-us = <300>;
++				exit-latency-us = <800>;
++				min-residency-us = <3300>;
++			};
++		};
+ 	};
+ 
+ 	cluster0_opp: opp-table-0 {
 
-I'm afraid it will not have the same view as other HZ units.
-Maybe it's better to call mHZ as MILLIHZ? What do you think?
+I have tested it on i350 evk and each idle state is used properly.
 
---=20
-Thank you,
-Dmitry=
+Regards,
+Amjad

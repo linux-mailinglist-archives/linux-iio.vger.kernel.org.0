@@ -2,114 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 509E95830F5
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45634583165
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 20:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242897AbiG0Roz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 13:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        id S243103AbiG0SDT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 14:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243181AbiG0RoZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:44:25 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C89A8B4A8;
-        Wed, 27 Jul 2022 09:53:07 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id q23so14745423lfr.3;
-        Wed, 27 Jul 2022 09:53:07 -0700 (PDT)
+        with ESMTP id S243066AbiG0SDG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 14:03:06 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7113BA25D;
+        Wed, 27 Jul 2022 10:07:02 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id j22so32689190ejs.2;
+        Wed, 27 Jul 2022 10:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=k5oCcGPDr0My47uLGpFUyO0yVBgIsd/UrNxst8O80Sc=;
-        b=g+5t+zT1mFjw8xi+wQ9FTZBLfKWrtIEhZaRRjKjE9njUNeSQvc6VkMhzuMtF+hoClF
-         Dl3odeB6zqmqnAUHy6SmqfowXnKcKEu7IR+b9NoXdTD9TSnrZphJMCtVF/TDYHgjdVY7
-         ieDhfNA5NBxRHlPq3h3Uqp1UvqmjJ0isDsplrMCc3grkSP4gXJux4E5s2FaXdRFodevh
-         Xpxgh7fKGVXyudQyXKRVJcjcIqisXVOVkKOMunzwmb7PjV+EzgxGkdcL9gPWzLi5lvgq
-         3/p6S64i4klmhUSQAWW+f006hEdXKhvlbk7F2TMArydlrUBp61kky4TQwPEKnmQf6Gr3
-         Ixcg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pVg/eCwNEIrx6GRerxc0709vpghlaEmW51aLjLi1e8M=;
+        b=aBwCoXN2wnVKVkPRdakVvqRt9OJEGqlZECFjMrYlKVN8Pi/Euh2FJp6eeRrhnN7vvh
+         D5hs+lkE4mTCoGOw8jmWQ+hCAQBlinwauJBP8ikzrBKABHI4C8Q6dLNHtwrBuJjiC2XF
+         OSa8Qu3DuOUzIZnlMrZt72xitoP4TR85WXqQ5BJAvuvyrxr5NVTLJw6at+lmAVgk8sb9
+         8ROjypMMo1taArfugWKRNiiSzCJWn+EVwylRRNKOIalts9Y4W7u3XiRaAwWlZrVmb0fi
+         s9/rxXh2m3R7L7/zOrlbSbB9a4atHCn04qXjEnVNYzK1gfZf0S53BQ49QeJ+i7kKAOw/
+         l3aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=k5oCcGPDr0My47uLGpFUyO0yVBgIsd/UrNxst8O80Sc=;
-        b=DgFmsL9J2wViodJ7FisiMI+UxCOWUWLAj9MUL+imPrNZLrQYInBnn878FcGP0fVTJb
-         4BbC+pBpfNKKW7FpVzk5vCNrbF1/fEMfs4eyTWrNaNb3XQAID40ix2052BLXDL2Owe81
-         Cg8UsUMNODeawTCnRMfAOl/qQesSb7Emyvf/5jfArsCzQ2RIBxruv725YjyXVBKsiP7M
-         lHYDOzfwF1yeVgV+zEJHDKGFyod/1w51q722bEucnlwqp9Nq2vDl9QtmWJlc5m+W3mas
-         9hNQqyxAw0BTAw6XzroE+qhhOL1XwhhmcWfBuvxbWGn0bM+VvCTbH4TEXJGXrbcuJ5R6
-         uPOg==
-X-Gm-Message-State: AJIora92cMmXeYaJgMGrztiXKeH1br2p81HwmL78Xyp5S5iGGfa9PcPZ
-        ut2dIygQcDDeB8G+jrbjT98=
-X-Google-Smtp-Source: AGRyM1uS6YZG984glPCZhSncSiUhGHQNNybnJZZ603ln2wunorQ1ShlgPtDZ7WAOt2NA20TTKiQKEg==
-X-Received: by 2002:ac2:4bc1:0:b0:48a:ad3:f90f with SMTP id o1-20020ac24bc1000000b0048a0ad3f90fmr8279804lfq.91.1658940783813;
-        Wed, 27 Jul 2022 09:53:03 -0700 (PDT)
-Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id k1-20020a2ea261000000b0025d75995a07sm746769ljm.24.2022.07.27.09.53.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 09:53:03 -0700 (PDT)
-Date:   Wed, 27 Jul 2022 18:56:58 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Ricardo Ribalda <ribalda@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Beniamin Bia <beniamin.bia@analog.com>,
-        Patrick Vasseur <patrick.vasseur@c-s.fr>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
-        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?iso-8859-1?Q?M=E5rten?= Lindahl <martenli@axis.com>,
-        Bogdan Pricop <bogdan.pricop@emutex.com>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Michael Welling <mwelling@ieee.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Robert Jones <rjones@gateworks.com>,
-        Chris Coffey <cmc@babblebit.net>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v2 01/10] dt-bindings: iio: adc: use
- spi-peripheral-props.yaml
-Message-ID: <YuFuWnvMm4tMLs7/@gmail.com>
-References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
- <20220727164646.387541-2-krzysztof.kozlowski@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pVg/eCwNEIrx6GRerxc0709vpghlaEmW51aLjLi1e8M=;
+        b=egwn2WbS+3QJlW2jKrIptMtPZncjj6CIgX+W08mQZsrW9zjvpt3fPgfCEn81+UCcHy
+         ixdPw5yVvNWiw1AXV8gH2DoNN21fwcfE4chk1qBCS6rdB1VSxA4rny2sFPQ0IRnNOsMr
+         hR7Uigy+/lyJjpDZg97kypWcxmwFJ6G9hOLuTwFrBtFSuF0WMi7cniH/bTtkKvvIJLJL
+         Gi1Bt2MrzC/LVCHk8jz9mc8vsoK5hSjlAdsgBAAl5FfMsN9tGwkfW3NoSsmpSeqv7cXL
+         EeRqmKyYEdGyUkvddeo9t6DVbWwNklMig5I1lgv//huXeDF2cAXr298KvZk1sR3RlWa1
+         dvbQ==
+X-Gm-Message-State: AJIora80n2ZNKgjbM7Ft9L1q0xTPeC6DvD5tOFB/p31C/Oj1F6inRJbN
+        7YEoEKyc0zmNWd2QqHZvU20fCgJeaCvY0a03DLwtPQ4YYrk=
+X-Google-Smtp-Source: AGRyM1s6sTGx30blMAuTLfPmqIwH+qYP4Utw4B1oiVWxPTYrpZnNjkN4aoiQk75FuLt6fBQ2VZ2OX1sIEskVL6+JgPk=
+X-Received: by 2002:a17:907:9706:b0:72b:4b0d:86a2 with SMTP id
+ jg6-20020a170907970600b0072b4b0d86a2mr17542758ejc.242.1658941620460; Wed, 27
+ Jul 2022 10:07:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="YEGndTYCRLH9MHD/"
-Content-Disposition: inline
-In-Reply-To: <20220727164646.387541-2-krzysztof.kozlowski@linaro.org>
+References: <20220727164133.973930-1-potin.lai.pt@gmail.com> <20220727164133.973930-2-potin.lai.pt@gmail.com>
+In-Reply-To: <20220727164133.973930-2-potin.lai.pt@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 27 Jul 2022 19:06:23 +0200
+Message-ID: <CAHp75Vcar4Ufg1UpS6kGcieBCAwVh_KiUgiMEDJugb1YqO_FHg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] iio: humidity: hdc100x: switch to probe_new callback
+To:     Potin Lai <potin.lai.pt@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -120,52 +69,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Jul 27, 2022 at 6:43 PM Potin Lai <potin.lai.pt@gmail.com> wrote:
+>
+> Switch to probe_new callback due to probe is deprecated soon.
 
---YEGndTYCRLH9MHD/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-On Wed, Jul 27, 2022 at 06:46:37PM +0200, Krzysztof Kozlowski wrote:
-> Instead of listing directly properties typical for SPI peripherals,
-> reference the spi-peripheral-props.yaml schema.  This allows using all
-> properties typical for SPI-connected devices, even these which device
-> bindings author did not tried yet.
->=20
-> Remove the spi-* properties which now come via spi-peripheral-props.yaml
-> schema, except for the cases when device schema adds some constraints
-> like maximum frequency.
->=20
-> While changing additionalProperties->unevaluatedProperties, put it in
-> typical place, just before example DTS.
->=20
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
 > ---
-[...]
->  .../bindings/iio/adc/microchip,mcp3911.yaml   |  5 +++-
+>  drivers/iio/humidity/hdc100x.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 9e0fce917ce4c..0d514818635cb 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -351,8 +351,7 @@ static const struct iio_info hdc100x_info = {
+>         .attrs = &hdc100x_attribute_group,
+>  };
+>
+> -static int hdc100x_probe(struct i2c_client *client,
+> -                        const struct i2c_device_id *id)
+> +static int hdc100x_probe(struct i2c_client *client)
+>  {
+>         struct iio_dev *indio_dev;
+>         struct hdc100x_data *data;
+> @@ -422,7 +421,7 @@ static struct i2c_driver hdc100x_driver = {
+>                 .name   = "hdc100x",
+>                 .of_match_table = hdc100x_dt_ids,
+>         },
+> -       .probe = hdc100x_probe,
+> +       .probe_new = hdc100x_probe,
+>         .id_table = hdc100x_id,
+>  };
+>  module_i2c_driver(hdc100x_driver);
+> --
+> 2.31.1
+>
 
-FWIW:=20
-Reviewed-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-
---YEGndTYCRLH9MHD/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmLhblQACgkQiIBOb1ld
-UjJDTw/7BqHthBsEkYP0xMrkv3QyiojmRM/dm9DBpE2L4Qm9tgzjky8eHTeJdrGv
-wKJBUdlXF4ztcEev9olQs6iTZ+0mVNxh6jk5vzfO7nudKnEaoG2tgZWdZJHRHGNv
-gBeqqDHwGSv6dqIYA/DePu1RNbFqkhuzQCm+vUMg54E1dBuHLouvlB9v3rxz7YIB
-Q77AilcHt5SyFdZJayjN7YXoxJV0VKj7urCL44t2PKQnXAClErO4dICXxMP9w3O8
-HUGkSmvXWkXEKtXv3S2iF0sKTQMs3loJOtRBdRpthyNL26z114aMGuyUtufa10GA
-BuTLi+ITx1sW10g3ZHnlOhuxBOI3GkxT9bGIMm3bFBmtbAioUc/qQ5oDoBqBJNys
-24fKJDhHWn5brqSyES3hdiut1zUDRdaEzEkLXbYvCp+/sqAIRxjlimzQYwAkhjzO
-divUqxRvewwGsHiC6L3+spvWwt5VjeDhiV0VOtSS1Ws8IbmFDklGMArZqUHOOCAw
-MKwzho/muVqynERURzuzSouNuFOlWrNQozSQjZB8sd9NFHptTpNNUklPQd58O20O
-F3Pyclu2W+8JEOEJa3pZVD8XwEu3KOisUp2U4c9CUbSKCuTVLlCai0ukbC65IV7j
-f4vRdY9Apcwvw4ovK9awFC28RyZB/CJSC46TpjERIGxUeb3huVY=
-=kMsI
------END PGP SIGNATURE-----
-
---YEGndTYCRLH9MHD/--
+-- 
+With Best Regards,
+Andy Shevchenko

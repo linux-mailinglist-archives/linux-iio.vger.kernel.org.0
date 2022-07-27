@@ -2,200 +2,233 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E40B582EF6
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E121582FC3
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234073AbiG0RTz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 13:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
+        id S241718AbiG0RaR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 13:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241676AbiG0RSp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:18:45 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D72B79EFB;
-        Wed, 27 Jul 2022 09:43:56 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 15-20020a17090a098f00b001f305b453feso2802054pjo.1;
-        Wed, 27 Jul 2022 09:43:56 -0700 (PDT)
+        with ESMTP id S241818AbiG0R1N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:27:13 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF5A67E308
+        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:03 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id w18so9383080lje.1
+        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=WkXduqCunQer7KImaNq80YYtkZR4bE5GC9eBRnWBSEA=;
-        b=JB3Hr5Ww5oTt+YbeAwATLAtLz/SL3TcVPd5yC9sRf7LlclWytJmpYtTVaqoCh0AXQZ
-         PRPQpFToY8NbD+c12s4x5beVu0hs8FZwCf7XiK5OwgVxoMg1oe4XwYkv3TOGpul2KPAT
-         wTTeIzb7v8g7qeg4diTRmx2vPygGpaV3E+Sz+luLQesCFSv/NUQ/KZKohaBKNcP6lx96
-         /F/RYkUPp9WSHjDXOlzUysSBM3nxYY7vWiSvyhgchNeZVluz0zNBihDUh437CF6KKVlj
-         p8NvznXkamqfu1eTJ12PBryiCiuyY5qTQ3ZEnXBTFJj2uAPSK5x5PZDrbmpMF7Y0gvZ8
-         Uxqw==
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/yOyu6GWLTGzcNYsjeLpWfd27RAacTfDstKqyrSAoE=;
+        b=zftOa3M+Qu3zYg8ILzX3Ol1djhj/t7SAeRxKo972bNgpWrEhJmClL+UZJsvsRWxOSV
+         8YI2mWF521w9R+aNiQ6iKDDtb7skefK3alDkEo6BmHQN+oUIAACk602U2irOo/AIwH86
+         i4pVQhhseEc8K7cqlXODXGwym4vCD4qbbwS9QksbzonBYHSVGUrzPJV0b57ArJjbO9vC
+         Pob8fY5MMnhQdmtQww3LEKd9bSKQKIwje2tvqVKXYv8LtIWfIpeTHPamspElaXoe1jhC
+         E3fY9mKLFffhlf+V519K2wx1AhWxbEeRXvU/hHUYcGP/vVM/o2ZFJeno4AtnaWeSrmrv
+         VORQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=WkXduqCunQer7KImaNq80YYtkZR4bE5GC9eBRnWBSEA=;
-        b=d1z8PZDJbEBIfKbQObEUt3EgrKkn3xLiny2+AD8VPAU+VWgW/px/3c2s4ruFVMUGOu
-         rgwKq1ZtCdu+8r1BgVp0l7DEQRS2mHxNpewKv0hrEIhILtZWnaD38hHt2YIXnrqe1Lor
-         GJxf+j/SgyFYwF05r/9nSu4egWXcC7gFto+6fS5DqdSyrhl5L3HI8JhxKE6FLPlMhYUN
-         y+Lzuq0H5CNRVOvQbl26IyYkP2YeH6rhU6GiXLRMljh7fPa3bTEMTVQn8bq9824VHr1W
-         UwNPIIcJnfgxnHeVIbhtByQbhdR0fpLNkQvzs7IUsPmsHtvSl68r7L+pR/55AaPKGGUA
-         VnOQ==
-X-Gm-Message-State: AJIora8AtFcWIktnYKppW66J2jAePcQFsYGR4eIjHOLrfEAY4Z3ZqM2I
-        s0a47NXiB2C8swIQV7BbAcJvFMfmG9hg7A==
-X-Google-Smtp-Source: AGRyM1shETd1iWd+SaDgQAdVjf8pzBmIgHUJUk2sUIRw1F9nIxS5amEDqpIQxrzlH9/ZDbfhLh3TWg==
-X-Received: by 2002:a17:902:b612:b0:16c:d98d:638 with SMTP id b18-20020a170902b61200b0016cd98d0638mr21696533pls.38.1658940235720;
-        Wed, 27 Jul 2022 09:43:55 -0700 (PDT)
-Received: from potin-quanta.. (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
-        by smtp.gmail.com with ESMTPSA id h13-20020a17090a3d0d00b001ef3f85d1aasm2030480pjc.9.2022.07.27.09.43.53
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=K/yOyu6GWLTGzcNYsjeLpWfd27RAacTfDstKqyrSAoE=;
+        b=zO5as4rmgXaNjVcjmGbmAa3J5M/mgf+81o1LIf3UKHezOQGd53xQs/9LMDzIfNBWux
+         539zY3MiZY/AR+cUCQAerrThMwYTsO768GOWTzGvNAo+r7kcmY1gPkTWhoIEjiHnCu+b
+         G/ztj8MJfQxO6Ey/5BNsnlXeSYmzVNaOhuyovCk9MZ7grdSTh7kuN7A5sbW965EzQmth
+         H0CA4TBOn0e9Y0naWqUnH7DxCMwT/Q6Kw9UgZqCvOlPDk0w98qWoTsrMa+HEZfoaTOYy
+         8DzNfCt38OTLGdi46JvvZfvBE9BohS1gpurAYycbdmM7f8mHwrE6yATMUytez5x1yzax
+         OYvg==
+X-Gm-Message-State: AJIora8p9CxgbOR5d7jjIKXgfwIAgzG4iQHSMjqS5LMEnQ/EJS5BfQ3x
+        EaBoZJCW5jZ1/yRGmxcxbsgG4Q==
+X-Google-Smtp-Source: AGRyM1shwAJq5nKlVyuZgIIaEFt3mg7AsEO781aqRRSC7Qt8FRX7YiWFyEaXLzhx6TvoTrEe0YwYGA==
+X-Received: by 2002:a05:651c:11c5:b0:25e:22c9:19e1 with SMTP id z5-20020a05651c11c500b0025e22c919e1mr1242993ljo.428.1658940421850;
+        Wed, 27 Jul 2022 09:47:01 -0700 (PDT)
+Received: from krzk-bin.lan (78-26-46-173.network.trollfjord.no. [78.26.46.173])
+        by smtp.gmail.com with ESMTPSA id 18-20020ac25f52000000b0048910301774sm3375149lfz.307.2022.07.27.09.46.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 09:43:55 -0700 (PDT)
-From:   Potin Lai <potin.lai.pt@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Wed, 27 Jul 2022 09:47:01 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
-Subject: [PATCH v3 2/2] iio: humidity: hdc100x: add manufacturer and device ID check
-Date:   Thu, 28 Jul 2022 00:41:33 +0800
-Message-Id: <20220727164133.973930-3-potin.lai.pt@gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Robert Jones <rjones@gateworks.com>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 00/10] dt-bindings: iio: use spi-peripheral-props.yaml
+Date:   Wed, 27 Jul 2022 18:46:36 +0200
+Message-Id: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220727164133.973930-1-potin.lai.pt@gmail.com>
-References: <20220727164133.973930-1-potin.lai.pt@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add manufacturer and device ID checking during probe, and skip the
-checking if chip model not supported.
+Technically, this depends on [1] merged to SPI tree, if we want to
+preserve existing behavior of not allowing SPI CPHA and CPOL in each of
+schemas in this patch.
 
-Supported:
-- HDC1000
-- HDC1010
-- HDC1050
-- HDC1080
+If this patch comes independently via different tree, the SPI CPHA and
+CPOL will be allowed for brief period of time, before [1] is merged.
+This will not have negative impact, just DT schema checks will be
+loosened for that period.
 
-Not supported:
-- HDC1008
+[1] https://lore.kernel.org/all/20220722191539.90641-2-krzysztof.kozlowski@linaro.org/
 
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
- drivers/iio/humidity/hdc100x.c | 70 ++++++++++++++++++++++++++++------
- 1 file changed, 59 insertions(+), 11 deletions(-)
+Changes since v1
+================
+1. Continue the rework for entire IIO.
+v1: https://lore.kernel.org/all/20220715095302.214276-1-krzysztof.kozlowski@linaro.org/
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 0d514818635cb..593a9d3caf229 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -34,6 +34,23 @@
- #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
- #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
- 
-+#define HDC100X_REG_MFR_ID	0xFE
-+#define HDC100X_REG_DEV_ID	0xFF
-+
-+#define HDC100X_MFR_ID	0x5449
-+
-+struct hdc100x_chip_data {
-+	bool support_mfr_check;
-+};
-+
-+static const struct hdc100x_chip_data hdc100x_chip_data = {
-+	.support_mfr_check	= true,
-+};
-+
-+static const struct hdc100x_chip_data hdc1008_chip_data = {
-+	.support_mfr_check	= false,
-+};
-+
- struct hdc100x_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-@@ -351,6 +368,34 @@ static const struct iio_info hdc100x_info = {
- 	.attrs = &hdc100x_attribute_group,
- };
- 
-+static int hdc100x_read_mfr_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
-+}
-+
-+static int hdc100x_read_dev_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
-+}
-+
-+static bool is_valid_hdc100x(struct i2c_client *client)
-+{
-+	const struct hdc100x_chip_data *data;
-+	int mfr_id, dev_id;
-+
-+	data = device_get_match_data(&client->dev);
-+	if (!data->support_mfr_check)
-+		return true;
-+
-+	mfr_id = hdc100x_read_mfr_id(client);
-+	dev_id = hdc100x_read_dev_id(client);
-+	if (mfr_id == HDC100X_MFR_ID &&
-+	   (dev_id == 0x1000 || dev_id == 0x1050))
-+		return true;
-+
-+	return false;
-+}
-+
- static int hdc100x_probe(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev;
-@@ -361,6 +406,9 @@ static int hdc100x_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
- 		return -EOPNOTSUPP;
- 
-+	if (!is_valid_hdc100x(client))
-+		return -EINVAL;
-+
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
-@@ -396,22 +444,22 @@ static int hdc100x_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id hdc100x_id[] = {
--	{ "hdc100x", 0 },
--	{ "hdc1000", 0 },
--	{ "hdc1008", 0 },
--	{ "hdc1010", 0 },
--	{ "hdc1050", 0 },
--	{ "hdc1080", 0 },
-+	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
-+	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, hdc100x_id);
- 
- static const struct of_device_id hdc100x_dt_ids[] = {
--	{ .compatible = "ti,hdc1000" },
--	{ .compatible = "ti,hdc1008" },
--	{ .compatible = "ti,hdc1010" },
--	{ .compatible = "ti,hdc1050" },
--	{ .compatible = "ti,hdc1080" },
-+	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
-+	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+Best regards,
+Krzysztof
+
+Krzysztof Kozlowski (10):
+  dt-bindings: iio: adc: use spi-peripheral-props.yaml
+  dt-bindings: iio: accel: use spi-peripheral-props.yaml
+  dt-bindings: iio: amplifiers: adi,ada4250: use
+    spi-peripheral-props.yaml
+  dt-bindings: iio: dac: use spi-peripheral-props.yaml
+  dt-bindings: iio: frequency: adf4371: use spi-peripheral-props.yaml
+  dt-bindings: iio: health: ti,afe4403: use spi-peripheral-props.yaml
+  dt-bindings: iio: imu: use spi-peripheral-props.yaml
+  dt-bindings: iio: potentiometer: use spi-peripheral-props.yaml
+  dt-bindings: iio: samsung,sensorhub-rinato: use
+    spi-peripheral-props.yaml
+  dt-bindings: iio: temperature: use spi-peripheral-props.yaml
+
+ .../bindings/iio/accel/adi,adis16201.yaml     |  7 ++---
+ .../bindings/iio/accel/adi,adis16240.yaml     |  7 ++---
+ .../bindings/iio/accel/adi,adxl313.yaml       |  9 +++----
+ .../bindings/iio/accel/adi,adxl345.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl355.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl367.yaml       |  7 ++---
+ .../bindings/iio/accel/adi,adxl372.yaml       |  7 ++---
+ .../bindings/iio/accel/bosch,bma220.yaml      |  7 ++---
+ .../bindings/iio/accel/bosch,bma255.yaml      |  5 +++-
+ .../bindings/iio/accel/bosch,bmi088.yaml      |  7 ++---
+ .../bindings/iio/accel/fsl,mma7455.yaml       |  7 ++---
+ .../bindings/iio/accel/kionix,kxsd9.yaml      |  7 ++---
+ .../bindings/iio/accel/murata,sca3300.yaml    |  5 +++-
+ .../bindings/iio/accel/nxp,fxls8962af.yaml    |  7 ++---
+ .../bindings/iio/adc/adi,ad7124.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7192.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7280a.yaml         |  7 ++---
+ .../bindings/iio/adc/adi,ad7292.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7298.yaml          |  6 +++--
+ .../bindings/iio/adc/adi,ad7476.yaml          |  8 +++---
+ .../bindings/iio/adc/adi,ad7606.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |  7 ++---
+ .../bindings/iio/adc/adi,ad7923.yaml          |  7 ++---
+ .../bindings/iio/adc/adi,ad7949.yaml          |  7 ++---
+ .../bindings/iio/adc/holt,hi8435.yaml         |  7 ++---
+ .../bindings/iio/adc/lltc,ltc2496.yaml        |  8 +++---
+ .../bindings/iio/adc/maxim,max1027.yaml       |  5 +++-
+ .../bindings/iio/adc/maxim,max11100.yaml      |  7 +++--
+ .../bindings/iio/adc/maxim,max1118.yaml       | 26 ++++++++++---------
+ .../bindings/iio/adc/maxim,max1241.yaml       |  7 ++---
+ .../bindings/iio/adc/microchip,mcp3201.yaml   |  6 +++--
+ .../bindings/iio/adc/microchip,mcp3911.yaml   |  5 +++-
+ .../bindings/iio/adc/ti,adc0832.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,adc084s021.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,adc108s102.yaml       |  6 +++--
+ .../bindings/iio/adc/ti,adc12138.yaml         |  7 ++---
+ .../bindings/iio/adc/ti,adc128s052.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,adc161s626.yaml       |  7 ++---
+ .../bindings/iio/adc/ti,ads124s08.yaml        |  7 ++---
+ .../bindings/iio/adc/ti,ads131e08.yaml        |  7 ++---
+ .../bindings/iio/adc/ti,ads8344.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,ads8688.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,tlc4541.yaml          |  7 ++---
+ .../bindings/iio/adc/ti,tsc2046.yaml          |  7 ++---
+ .../bindings/iio/amplifiers/adi,ada4250.yaml  |  7 ++---
+ .../bindings/iio/dac/adi,ad5064.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5360.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5380.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5421.yaml          |  7 ++---
+ .../bindings/iio/dac/adi,ad5449.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5624r.yaml         |  9 ++++---
+ .../bindings/iio/dac/adi,ad5686.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5755.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad5758.yaml          |  4 +--
+ .../bindings/iio/dac/adi,ad5761.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5764.yaml          |  7 +++--
+ .../bindings/iio/dac/adi,ad5770r.yaml         |  7 ++---
+ .../bindings/iio/dac/adi,ad5791.yaml          |  9 ++++---
+ .../bindings/iio/dac/adi,ad8801.yaml          |  7 +++--
+ .../bindings/iio/dac/microchip,mcp4922.yaml   |  9 ++++---
+ .../bindings/iio/dac/ti,dac082s085.yaml       |  9 ++++---
+ .../bindings/iio/dac/ti,dac7311.yaml          |  7 ++---
+ .../bindings/iio/dac/ti,dac7612.yaml          |  7 ++---
+ .../bindings/iio/frequency/adf4371.yaml       |  7 ++---
+ .../bindings/iio/health/ti,afe4403.yaml       |  9 ++++---
+ .../bindings/iio/imu/adi,adis16460.yaml       |  7 ++---
+ .../bindings/iio/imu/adi,adis16480.yaml       |  9 ++++---
+ .../bindings/iio/imu/bosch,bmi160.yaml        |  7 ++---
+ .../bindings/iio/imu/invensense,icm42600.yaml |  6 +++--
+ .../bindings/iio/imu/invensense,mpu6050.yaml  |  5 ++--
+ .../bindings/iio/imu/nxp,fxos8700.yaml        |  7 ++---
+ .../bindings/iio/imu/st,lsm6dsx.yaml          |  9 ++++---
+ .../iio/potentiometer/microchip,mcp41010.yaml |  9 ++++---
+ .../iio/potentiometer/microchip,mcp4131.yaml  |  9 ++++---
+ .../iio/samsung,sensorhub-rinato.yaml         |  9 ++++---
+ .../iio/temperature/maxim,max31855k.yaml      |  4 +--
+ .../iio/temperature/maxim,max31856.yaml       |  6 +++--
+ .../iio/temperature/maxim,max31865.yaml       |  6 +++--
+ 78 files changed, 324 insertions(+), 249 deletions(-)
+
 -- 
-2.31.1
+2.34.1
 

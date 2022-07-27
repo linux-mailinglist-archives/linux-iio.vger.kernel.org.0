@@ -2,91 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2100A58200F
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 08:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6855E582069
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 08:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbiG0GZ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 02:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        id S229600AbiG0Gtt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 02:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbiG0GZZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 02:25:25 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E695712D19;
-        Tue, 26 Jul 2022 23:25:23 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id h22so12042590qta.3;
-        Tue, 26 Jul 2022 23:25:23 -0700 (PDT)
+        with ESMTP id S229831AbiG0Gt0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 02:49:26 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A86147BB3;
+        Tue, 26 Jul 2022 23:46:37 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id w7so15338922ply.12;
+        Tue, 26 Jul 2022 23:46:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3TPo7Ien9QeOugxuEK5vZ4jEbRvQ6L+0JHSHIFL79V8=;
-        b=Ju/fvdD+2tscdEHB4jMKbtF6QmWjmZhx4K1G8NkrcLADIpn1JSvESTmxlpt3R4JNiz
-         UREKmBz7PU2Y4uvwc4LZREeVj+DUEo2k1jrd7hNHdeyJaPFWuyOYHw16/YljzGwcQaoU
-         IH9nnG8x+s+fp3W9UU/Nffn3iiGxPKEQbqR3X0123vmqEq4yNkiC0A2VH4Sesf85arfJ
-         RzfM19DJEhBx9KsylbfN02wrMkNXOO4yndJf2oYfq2BmSNFuvo9Rdv3pkq/RJsxGlZB+
-         ENmHhdFgodOhI3rw8EXt41BmEN6clXlYa2qisFRSVLQ9+VWdxO1/quC1BwvjDvoQk+pS
-         Zcuw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y/y/NGsYBEyTIfNWZk+cf407tuuEI0WUq+xtTfiUgps=;
+        b=iFbW8yvgdiL9TcUyZFCEDTsa17t5tOrJKO9WdNS7PYhQPeG2K4q5ZlzrUJsdDGOIyZ
+         FYLH9p5Q9u4yXunFtHGJc89/5PyGHf+qkUYTowBvHDT9fzlojgUG6Yn2civJBbVAJOV8
+         MfybykCPqP06OGGO5A4b+q0oLh9LdscvPrLHBfMxPX0xdzc6AUyLk3wnLgWz2GN1wRv9
+         B34MgMEHnJ0OXsGcRS9DipBN6pvA2exLlFo4mZBTTeSZToc0+a9S8I5kbqGO2UekggHg
+         0GKADxM8/KAm1Wg9tFoT+dmRl4N628e32HoXQCLBROmrNpZ4vZjhGHGNXTV1Y/B/obOR
+         TsfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3TPo7Ien9QeOugxuEK5vZ4jEbRvQ6L+0JHSHIFL79V8=;
-        b=iqFal68E1zaedbcIYcQYIkhKL87sYiIoqMlCCFJZowvBL1KUyCT8UJJSTw0UoGnzJW
-         qsdQCURIllSlfylVh9/rACW+dumioy2mrf5So2nDPY4K+MNa7ui+sk8C0XLmL2zgt9Dj
-         F+jTqclpjIOPGpo+5MaxL5yXNCH9iZx3Dw8vmJkgiXtbbinV1Papa9/IqJ+oUMqW0aw3
-         RIy/KYvRqmAV/0dqXCipn+cMop9sBdIrkRJbfkxGV3KjyK2hirgA+/E2oF7UrXjJ198S
-         YEMeG7twuhbZITNOt/jFAeKkPjcbq//+z3LSgiQLcOCrIqRfJmNi2vFvXX1vcIhAzer7
-         b7Rg==
-X-Gm-Message-State: AJIora8Q/4iS8owyFsjmlFLNAb+wVE2C9n7sPfvbtrldBKpQI0Ok1sQu
-        hhwgUJDDRpDpG6muK3wOf9Zn6W1LjN1MoSwr4rE=
-X-Google-Smtp-Source: AGRyM1tfME3ecCaCTfMzeCQrYhvxtlKmxqJRxH1lMRN/F0J8TcAZeGQUzQp4E/o76yd4w8Asm4EShy68HPneD7bl0pE=
-X-Received: by 2002:a05:622a:1742:b0:31f:ef:f6eb with SMTP id
- l2-20020a05622a174200b0031f00eff6ebmr17635908qtk.548.1658903123036; Tue, 26
- Jul 2022 23:25:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-14-peterwu.pub@gmail.com>
- <20220725103128.xtaw2c4y5fobowg7@maple.lan> <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
- <20220726093058.2fz2p2vg7xpfsnfe@maple.lan> <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
- <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
-In-Reply-To: <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Wed, 27 Jul 2022 14:24:46 +0800
-Message-ID: <CABtFH5K3LLw9ZqY0Qrrx_8xs+3ioJpzP0=_HptmoDY6tvu2JVg@mail.gmail.com>
-Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
-To:     Daniel Thompson <daniel.thompson@linaro.org>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Y/y/NGsYBEyTIfNWZk+cf407tuuEI0WUq+xtTfiUgps=;
+        b=fXtrZTieZL+sH1RlG1hunm3mAZE/nRH8uS5VYfEgsa17UtYUKx7Ud4q+OjISb52mid
+         etDU+gk+XdGNAONMs8QwBnwbITozRHbjXsF+HtGKo7jisW0iY177Q2+ja2HW16CoqFhq
+         Q/C8a80Gcfn68lx2VKmHFmAvm2t+Qts1ZQJVxWVBLZ7x7Fe9HZ6XEv6zE2UuTMB2ftZ+
+         KOkNj1Rvt3aKUp/e6Yf2kq42n2oqCPqri3IZfdy5OVWxIsDuD8INPROdIz7x3oDJyIHj
+         BMR7PmE216knP9TZZsY5924qXleMmx687p4f1afHrgB4YtL4gn6MKYJ2iCp4Q7y3+L1+
+         GKkA==
+X-Gm-Message-State: AJIora8GO1tHALwnrVtlcrX18AGk/88kNmaBCHHBHtvdkA2mQyRUiJn0
+        CbfOjbywCI+IfYpLEjRfbtQ=
+X-Google-Smtp-Source: AGRyM1vLhD8q/yparTYLclk5jUsBDeJwr6U//vyCS7QRBOpPejVocjbqDmk/0BmFMC09bvo3DcA5Ng==
+X-Received: by 2002:a17:90b:4b81:b0:1ef:cd2c:bf2e with SMTP id lr1-20020a17090b4b8100b001efcd2cbf2emr2842594pjb.137.1658904395569;
+        Tue, 26 Jul 2022 23:46:35 -0700 (PDT)
+Received: from potin-quanta.. (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
+        by smtp.gmail.com with ESMTPSA id f15-20020a170902ce8f00b0016bf5557690sm12964882plg.4.2022.07.26.23.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Jul 2022 23:46:34 -0700 (PDT)
+From:   Potin Lai <potin.lai.pt@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH v2 1/1] iio: humidity: hdc100x: add manufacturer and device ID cehck
+Date:   Wed, 27 Jul 2022 14:44:15 +0800
+Message-Id: <20220727064415.940690-1-potin.lai.pt@gmail.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -97,161 +70,152 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Jul 26, 2022 at 7:59 PM Daniel Thompson
-<daniel.thompson@linaro.org> wrote:
+Add manufacturer and device ID checking during probe, and skip the
+checking if chip model not supported.
 
- ...
+Supported:
+- HDC1000
+- HDC1010
+- HDC1050
+- HDC1080
 
-> > > > > Does the MT6372 support more steps than this? In other words does it use
-> > > > > a fourteen bit scale or does it use an 11-bit scale at a different
-> > > > > register location?
-> > > >
-> > > > Hi Daniel,
-> > > >
-> > > > Thanks for your reply.
-> > > > Yes, MT6372 can support 16384 steps and uses a 14-bit scale register
-> > > > location. But the maximum current of each
-> > > > channel of MT6372 is the same as MT6370 and MT6371, both 30mA.
-> > > > The main reason why MT6372 is designed this way is that one of the
-> > > > customers asked for a more delicate
-> > > > adjustment of the backlight brightness. But other customers actually
-> > > > do not have such requirements.
-> > > > Therefore, we designed it this way for maximum compatibility in software.
-> >
-> > Sorry for I used of the wrong word, I mean is 'driver', not
-> > higher-level software
-> >
-> > >
-> > > I don't think that is an acceptable approach for the upstream kernel.
-> > >
-> > > To be "compatible" with (broken) software this driver ends up reducing
-> > > the capability of the upstream kernel to the point it becomes unable to
-> > > meet requirements for delicate adjustment (requirements that were
-> > > sufficiently important to change the hardware design so you could meet
-> > > them).
-> >
-> > Originally, we just wanted to use one version of the driver to cover
-> > all the SubPMIC of the 6370 series(6370~6372).
-> > And, the users who use this series SubPMIC can directly apply this
-> > driver to drive the backlight device without knowing the underlying
-> > hardware.
-> > To achieve this goal, we have designed it to look like this.
->
-> You don't need a second driver to support two different values for
-> max-brightness. The same driver can support both ranges with nothing but
-> a small tweak during the driver probe function.
->
->
-> > ...
-> > > > > > +
-> > > > > > +     if (brightness) {
-> > > > > > +             brightness_val[0] = (brightness - 1) & MT6370_BL_DIM2_MASK;
-> > > > > > +             brightness_val[1] = (brightness - 1) >> fls(MT6370_BL_DIM2_MASK);
-> > > > > > +
-> > > > > > +             /*
-> > > > > > +              * To make MT6372 using 14 bits to control the brightness
-> > > > > > +              * backward compatible with 11 bits brightness control
-> > > > > > +              * (like MT6370 and MT6371 do), we left shift the value
-> > > > > > +              * and pad with 1 to remaining bits. Hence, the MT6372's
-> > > > > > +              * backlight brightness will be almost the same as MT6370's
-> > > > > > +              * and MT6371's.
-> > > > > > +              */
-> > > > > > +             if (priv->vid_type == MT6370_VID_6372) {
-> > > > > > +                     brightness_val[0] <<= MT6370_BL_DIM2_6372_SHIFT;
-> > > > > > +                     brightness_val[0] |= MT6370_BL_DUMMY_6372_MASK;
-> > > > > > +             }
-> > > > >
-> > > > > This somewhat depends on the answer to the first question above, but
-> > > > > what is the point of this shifting? If the range is 14-bit then the
-> > > > > driver should set max_brightness to 16384 and present the full range of
-> > > > > the MT6372 to the user.
-> > > >
-> > > > So should we make all 16384 steps of MT6372 available to users?
-> > >
-> > > Yes.
-> > >
-> > >
-> > > > Does that mean the DTS needs to be modified as well?
-> > >
-> > > Yes... the property to set initial brightness needs a 14-bit range.
-> > >
-> > > It would also be a good idea to discuss with the DT maintainers whether
-> > > you should introduce a second compatible string (ending 6372) in order
-> > > to allow the DT validation checks to detect accidental use of MT6372
-> > > ranges on MT6370 hardware.
-> >
-> > hmmm... I have just thought about it,
-> > maybe I can just modify the maximum value of default-brightness and
-> > max-brightness in DT to 16384,
-> > modify the description and add some comments.
->
-> What for?
->
-> All the other backlight drivers (there are >130 of them) expose the hardware
-> range[1]. Most userspaces will already know how to handle that (by reading
-> the max_brightness and, if it is recent enough, also the scale
-> properties in sysfs).
->
-> I'm still don't understand why one should fix a bug in the userspace by
-> implementing a hack in the driver.
->
->
-> [1] Well almost. The PWM backlight driver does contain support for
->     dead-spot avoidance and to allow the adoption of exponential scale.
->     However this  purpose of these is based on how PWM backlights work
->
-> > And then on the driver side,
-> > we can use mt6370_check_vendor_info() to determine whether it is MT6372.
-> > If no, then in mt6370_bl_update_status(), first brightness_val / 8 and then set.
-> > In mt6370_bl_get_brightness(), first brightness_val * 8 and then return;
-> >
-> > If I do this change, does this meet your requirements?
->
-> Not really.
->
-> It's still misleading a sophisticated userspace, which may make bad
-> rounding decisions for backlight animation, in order to support a broken
-> one.
->
->
-> > > > Or, for the reasons, I have just explained (just one customer has this
-> > > > requirement), then we do not make any changes for compatibility
-> > > > reasons?
-> > >
-> > > I'd be curious what the compatiblity reasons are. In other words what
-> > > software breaks?
-> >
-> > The reason is as above. We just hope the users who use this series SubPMIC can
-> > directly apply this driver to drive the backlight device without
-> > knowing the underlying hardware.
-> > Not software breaks.
->
-> As above, ignoring the max_brightness property is a bug in the
-> userspace. I'm still unclear why sending faked ranges to userspace
-> it a better solution than fixing the userspace.
+Not supported:
+- HDC1008
 
-Ok, I got it!
-If I add a second compatible string (like 'mediatek,mt6372-backlight')
-in the DT section,
-and append 'if-then-else' to determine the correct maximum value of
-'default-brightness' and 'max-brightness',
-Also, I will append 'bled exponential mode' to make user control using
-linear or exponential mode.
-These changes I will explain to DT's maintainer again.
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+---
+LINK: [v1] https://lore.kernel.org/all/20220722172035.44977-1-potin.lai.pt@gmail.com/
+                                                           
+changes v1 --> v2:                       
+- fix typo in commit message           
+- change to use probe_new
+- use device_get_match_data instead of i2c_of_match_device
+---
+ drivers/iio/humidity/hdc100x.c | 78 ++++++++++++++++++++++++++++------
+ 1 file changed, 64 insertions(+), 14 deletions(-)
 
-Back to the driver section,
-do I still need to use the register to confirm again whether this
-SubPMIC used now is MT6372 and record this information? (using
-'mt6370_check_vendor_info()')
-I am afraid that the user who uses the MT6370 hardware, but the DT
-compatible string is set to 'mediatek,mt6372-backlight'.
-This may cause errors when update/get brightness values.
-So I hope the driver here can check again to make sure the
-'default-brightness', 'max-brightness', can be updated/got correctly.
-I don't know if this will make you feel redundant if I do this??
-
-Thank you so much!
-
+diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+index 9e0fce917ce4c..8c69b4a610c4f 100644
+--- a/drivers/iio/humidity/hdc100x.c
++++ b/drivers/iio/humidity/hdc100x.c
+@@ -34,6 +34,23 @@
+ #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
+ #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
+ 
++#define HDC100X_REG_MFR_ID	0xFE
++#define HDC100X_REG_DEV_ID	0xFF
++
++#define HDC100X_MFR_ID	0x5449
++
++struct hdc100x_chip_data {
++	bool support_mfr_check;
++};
++
++static const struct hdc100x_chip_data hdc100x_chip_data = {
++	.support_mfr_check	= true,
++};
++
++static const struct hdc100x_chip_data hdc1008_chip_data = {
++	.support_mfr_check	= false,
++};
++
+ struct hdc100x_data {
+ 	struct i2c_client *client;
+ 	struct mutex lock;
+@@ -351,8 +368,38 @@ static const struct iio_info hdc100x_info = {
+ 	.attrs = &hdc100x_attribute_group,
+ };
+ 
+-static int hdc100x_probe(struct i2c_client *client,
+-			 const struct i2c_device_id *id)
++static int hdc100x_read_mfr_id(struct i2c_client *client)
++{
++	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
++}
++
++static int hdc100x_read_dev_id(struct i2c_client *client)
++{
++	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
++}
++
++static bool is_valid_hdc100x(struct i2c_client *client)
++{
++	const struct of_device_id *match;
++	struct hdc100x_chip_data *data;
++	int mfr_id, dev_id;
++
++	data = device_get_match_data(&client->dev);
++	if (data) {
++		if (!data->support_mfr_check)
++			return true;
++	}
++
++	mfr_id = hdc100x_read_mfr_id(client);
++	dev_id = hdc100x_read_dev_id(client);
++	if (mfr_id == HDC100X_MFR_ID &&
++	   (dev_id == 0x1000 || dev_id == 0x1050))
++		return true;
++
++	return false;
++}
++
++static int hdc100x_probe(struct i2c_client *client)
+ {
+ 	struct iio_dev *indio_dev;
+ 	struct hdc100x_data *data;
+@@ -362,6 +409,9 @@ static int hdc100x_probe(struct i2c_client *client,
+ 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
+ 		return -EOPNOTSUPP;
+ 
++	if (!is_valid_hdc100x(client))
++		return -EOPNOTSUPP;
++
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+@@ -397,22 +447,22 @@ static int hdc100x_probe(struct i2c_client *client,
+ }
+ 
+ static const struct i2c_device_id hdc100x_id[] = {
+-	{ "hdc100x", 0 },
+-	{ "hdc1000", 0 },
+-	{ "hdc1008", 0 },
+-	{ "hdc1010", 0 },
+-	{ "hdc1050", 0 },
+-	{ "hdc1080", 0 },
++	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
++	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
++	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
++	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
++	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
++	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(i2c, hdc100x_id);
+ 
+ static const struct of_device_id hdc100x_dt_ids[] = {
+-	{ .compatible = "ti,hdc1000" },
+-	{ .compatible = "ti,hdc1008" },
+-	{ .compatible = "ti,hdc1010" },
+-	{ .compatible = "ti,hdc1050" },
+-	{ .compatible = "ti,hdc1080" },
++	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
++	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
++	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
++	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
++	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+@@ -422,7 +472,7 @@ static struct i2c_driver hdc100x_driver = {
+ 		.name	= "hdc100x",
+ 		.of_match_table = hdc100x_dt_ids,
+ 	},
+-	.probe = hdc100x_probe,
++	.probe_new = hdc100x_probe,
+ 	.id_table = hdc100x_id,
+ };
+ module_i2c_driver(hdc100x_driver);
 -- 
-Best Regards,
-ChiaEn Wu
+2.31.1
+

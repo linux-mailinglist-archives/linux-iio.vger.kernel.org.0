@@ -2,107 +2,172 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF995829FD
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 17:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7424582C92
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 18:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234172AbiG0PwK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 11:52:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53864 "EHLO
+        id S240512AbiG0Qrv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 12:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233752AbiG0PwJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 11:52:09 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 390A52A702
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 08:52:08 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id p10so20213039lfd.9
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 08:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=r+ha7lhBflc460y5THF4+LjZQv3BBhWbPvt660ntV4w=;
-        b=HajfvI/6l0BHtjFFyVInnth5cHgPWWwo3Mq9rUoDiz9X1M/3YvaIv8wMF0NqAPYv9E
-         yOmjV8QRRUcNgLO8UwrGvft4G7GcyUjP6Y691j2KWfT+LavcKebJoLy+TDiYJwXxwuV2
-         XZEN1g2vG1DUCxl1719eQXToHXh9X1q4wpIJ/uXF7iY8xN7ypE2dzJuC3oZmUE7S6z+f
-         /HAikeciCEZQhnAXP4SVD/PLZ3YOWZBynQvpD0RK4WU0D96zwQv9TJWvuhVrDzi7OuWI
-         Lp9lQTpV56DyqMdnfU7FaIYfnujISyLgVwnUlX3lP4n2+M9drfHz7+r+awyLXEIei0OL
-         wojw==
+        with ESMTP id S240435AbiG0Qq6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 12:46:58 -0400
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F6952DFE;
+        Wed, 27 Jul 2022 09:32:00 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id z132so12214227yba.3;
+        Wed, 27 Jul 2022 09:32:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=r+ha7lhBflc460y5THF4+LjZQv3BBhWbPvt660ntV4w=;
-        b=roWJCc7Zz63lU4sOiLKiepNZltDzwBVc0LB4UCVSPhuBHmlTsMg7AtiUL2U5ie6OW/
-         v9JjnB+CUqlf4LdUCWb8ymRa6D831SvLDChdEHKkjGJc3Aosi+4XpzayIDFNsPomyAW3
-         ZU+ekX+iVHB2l7N98js0+EpTk+1F5ddYuT/BYl7sccC0XH/DGzJHvpmIh+qKFm9ZqZhv
-         740u07rRipsF5Vdypuf8H8sDNi4L2BLhB6vDXBlZmRWfD2cWcRGtVXbvqvbX6e+6z944
-         yF4BCJ8QOR3nZ3oNHolBtLH4Zf6K2O8MueI5tNe5oejelA9y8OvFTjDOmgYS9RIF/jnZ
-         BKng==
-X-Gm-Message-State: AJIora+KmIrcMwBQVw2Eqj/TGxnCHQCktoBO4cO71pJBWzpjxP1F4kSt
-        645OALXzzare78UrK6Nj2gR4wQ==
-X-Google-Smtp-Source: AGRyM1uFlGo+mQfFG/MD+0PotT2fpEV4uoMRX06vRFxHGoiB6r1NRZaNOdvd2pgdj6mnncVtzb3Ktg==
-X-Received: by 2002:ac2:4f03:0:b0:481:5092:ec8f with SMTP id k3-20020ac24f03000000b004815092ec8fmr8817640lfr.35.1658937126228;
-        Wed, 27 Jul 2022 08:52:06 -0700 (PDT)
-Received: from krzk-bin.lan (78-26-46-173.network.trollfjord.no. [78.26.46.173])
-        by smtp.gmail.com with ESMTPSA id dt9-20020a0565122a8900b0048a835a60f6sm2392163lfb.251.2022.07.27.08.52.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 08:52:05 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] dt-bindings: iio: adc: ti,am3359-adc: add ti,am654-adc
-Date:   Wed, 27 Jul 2022 17:52:03 +0200
-Message-Id: <20220727155203.320929-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=1+FyBD7qfpB/NcO18BYu7xfIXfdCx5KarG2Yv/S7Vqo=;
+        b=JYxMw0mHbxinVXm9i9+14CdGALVjrTYiDeUhJVuPMZgET/swLcNWhLTeLJXYiFGEIj
+         Erf65NbkqFM46rSJTDAazMlOXYo46t79HK9Sg8tvEvOBNCEVj3Fkdg74KmXuJEJ7A/4+
+         sH98FfH2si/TC83Cop3IjGagaQpCAhiW4LmjcsEFRtbgEbFHdX/y53SmTDmo6AjT1FY5
+         p9upzGfzyuHbKlOetTlbpiYCf8z8jSTsjNXclKrQxf4ilw+sfa07F/I3U8J5Dg409896
+         YOVdofXp+Hhq90S9iF5LHRgFR88GoyAwG6fGjokHJnzXOTWzpjqtDc/roewQJmN/umjb
+         zDYg==
+X-Gm-Message-State: AJIora9U0CiWaZQKZ2+LkwvLanf8LlxK92hInHjllzKj8yILb2XH8LMe
+        h2+Atr/GH+i2QkujazvVIBaetojxFvVWo+KCI6c=
+X-Google-Smtp-Source: AGRyM1u6NteAhBXoLYdxy51ZeQgx+cCae1ZObILPbmLMpJfLv5mQSrC8YmVtriF4gtEgnkp8zwQjnFXzqKEjKETPdiQ=
+X-Received: by 2002:a05:6902:154f:b0:66e:e2d3:ce1 with SMTP id
+ r15-20020a056902154f00b0066ee2d30ce1mr16706157ybu.365.1658939519456; Wed, 27
+ Jul 2022 09:31:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20220620144231.GA23345@axis.com> <5caa944f-c841-6f74-8e43-a278b2b93b06@suse.com>
+ <20220708110325.GA5307@axis.com> <4ca77763-53d0-965a-889e-be2eafadfd2f@intel.com>
+ <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com> <CAJZ5v0j0mgOcfKXRzyx12EX8CYLzowXrM8DGCH9XvQGnRNv0iw@mail.gmail.com>
+ <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
+In-Reply-To: <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 27 Jul 2022 18:31:48 +0200
+Message-ID: <CAJZ5v0ijy4FG84xk_n8gxR_jS0xao246eVbnFj-dXzwz=8S9NQ@mail.gmail.com>
+Subject: Re: PM runtime_error handling missing in many drivers?
+To:     Oliver Neukum <oneukum@suse.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the ti,am654-adc compatible already used in DTS:
+On Wed, Jul 27, 2022 at 10:08 AM Oliver Neukum <oneukum@suse.com> wrote:
+>
+>
+>
+> On 26.07.22 17:41, Rafael J. Wysocki wrote:
+> > On Tue, Jul 26, 2022 at 11:05 AM Oliver Neukum <oneukum@suse.com> wrote:
+>
+> > I guess that depends on what is regarded as "the framework".  I mean
+> > the PM-runtime code, excluding the bus type or equivalent.
+>
+> Yes, we have multiple candidates in the generic case. Easy to overengineer.
+>
+> >>> The idea was that drivers would clear these errors.
+> >>
+> >> I am afraid that is a deeply hidden layering violation. Yes, a driver's
+> >> resume() method may have failed. In that case, if that is the same
+> >> driver, it will obviously already know about the failure.
+> >
+> > So presumably it will do something to recover and avoid returning the
+> > error in the first place.
+>
+> Yes, but that does not help us if they do return an error.
+>
+> > From the PM-runtime core code perspective, if an error is returned by
+> > a suspend callback and it is not -EBUSY or -EAGAIN, the subsequent
+> > suspend is also likely to fail.
+>
+> True.
+>
+> > If a resume callback returns an error, any subsequent suspend or
+> > resume operations are likely to fail.
+>
+> Also true, but the consequences are different.
+>
+> > Storing the error effectively prevents subsequent operations from
+> > being carried out in both cases and that's why it is done.
+>
+> I am afraid seeing these two operations as equivalent for this
+> purpose is a problem for two reasons:
+>
+> 1. suspend can be initiated by the generic framework
 
-  arch/arm64/boot/dts/ti/k3-am642-evm.dtb: adc: compatible:0: 'ti,am654-adc' is not one of ['ti,am3359-adc', 'ti,am4372-adc']
+Resume can be initiated by generic code too.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/iio/adc/ti,am3359-adc.yaml    | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+> 2. a failure to suspend leads to worse power consumption,
+>    while a failure to resume is -EIO, at best
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
-index d6f21d5cccd7..b32be24a9f98 100644
---- a/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/ti,am3359-adc.yaml
-@@ -11,9 +11,14 @@ maintainers:
- 
- properties:
-   compatible:
--    enum:
--      - ti,am3359-adc
--      - ti,am4372-adc
-+    oneOf:
-+      - enum:
-+          - ti,am3359-adc
-+          - ti,am4372-adc
-+      - items:
-+          - enum:
-+              - ti,am654-adc
-+          - const: ti,am3359-adc
- 
-   '#io-channel-cells':
-     const: 1
--- 
-2.34.1
+Yes, a failure to resume is a big deal.
 
+> >> PM operations, however, are operating on a tree. A driver requesting
+> >> a resume may get an error code. But it has no idea where this error
+> >> comes from. The generic code knows at least that.
+> >
+> > Well, what do you mean by "the generic code"?
+>
+> In this case the device model, which has the tree and all dependencies.
+> Error handling here is potentially very complicated because
+>
+> 1. a driver can experience an error from a node higher in the tree
+
+Well, there can be an error coming from a parent or a supplier, but
+the driver will not receive it directly.
+
+> 2. a driver can trigger a failure in a sibling
+> 3. a driver for a node can be less specific than the drivers higher up
+
+I'm not sure I understand the above correctly.
+
+> Reducing this to a single error condition is difficult.
+
+Fair enough.
+
+> Suppose you have a USB device with two interfaces. The driver for A
+> initiates a resume. Interface A is resumed; B reports an error.
+> Should this block further attempts to suspend the whole device?
+
+It should IMV.
+
+> >> Let's look at at a USB storage device. The request to resume comes
+> >> from sd.c. sd.c is certainly not equipped to handle a PCI error
+> >> condition that has prevented a USB host controller from resuming.
+> >
+> > Sure, but this doesn't mean that suspending or resuming the device is
+> > a good idea until the error condition gets resolved.
+>
+> Suspending clearly yes. Resuming is another matter. It has to work
+> if you want to operate without errors.
+
+Well, it has to physically work in the first place.  If it doesn't,
+the rest is a bit moot, because you end up with a non-functional
+device that appears to be permanently suspended.
+
+> >> I am afraid this part of the API has issues. And they keep growing
+> >> the more we divorce the device driver from the bus driver, which
+> >> actually does the PM operation.
+> >
+> > Well, in general suspending or resuming a device is a collaborative
+> > effort and if one of the pieces falls over, making it work again
+> > involves fixing up the failing piece and notifying the others that it
+> > is ready again.  However, that part isn't covered and I'm not sure if
+> > it can be covered in a sufficiently generic way.
+>
+> True. But that still cannot solve the question what is to be done
+> if error handling fails. Hence my proposal:
+> - record all failures
+> - heed the record only when suspending
+
+I guess that would boil down to moving the power.runtime_error update
+from rpm_callback() to rpm_suspend()?

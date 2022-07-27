@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45634583165
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 20:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3837C5831BA
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 20:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243103AbiG0SDT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 14:03:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45564 "EHLO
+        id S243264AbiG0SO0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 14:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243066AbiG0SDG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 14:03:06 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7113BA25D;
-        Wed, 27 Jul 2022 10:07:02 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id j22so32689190ejs.2;
-        Wed, 27 Jul 2022 10:07:02 -0700 (PDT)
+        with ESMTP id S243432AbiG0SOL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 14:14:11 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0940822BE4;
+        Wed, 27 Jul 2022 10:15:20 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id a89so1582087edf.5;
+        Wed, 27 Jul 2022 10:15:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=pVg/eCwNEIrx6GRerxc0709vpghlaEmW51aLjLi1e8M=;
-        b=aBwCoXN2wnVKVkPRdakVvqRt9OJEGqlZECFjMrYlKVN8Pi/Euh2FJp6eeRrhnN7vvh
-         D5hs+lkE4mTCoGOw8jmWQ+hCAQBlinwauJBP8ikzrBKABHI4C8Q6dLNHtwrBuJjiC2XF
-         OSa8Qu3DuOUzIZnlMrZt72xitoP4TR85WXqQ5BJAvuvyrxr5NVTLJw6at+lmAVgk8sb9
-         8ROjypMMo1taArfugWKRNiiSzCJWn+EVwylRRNKOIalts9Y4W7u3XiRaAwWlZrVmb0fi
-         s9/rxXh2m3R7L7/zOrlbSbB9a4atHCn04qXjEnVNYzK1gfZf0S53BQ49QeJ+i7kKAOw/
-         l3aA==
+        bh=itvgIbCL8AlCfcLB9DTtKEyVMfAWjYXvrHFZiAXSjJg=;
+        b=Bcmb33ExgzjD085FFT10aS3qwRAirdFEfJ39vDABC6q7rHl2PTaaAIy/C1NBIPMpXw
+         z2j+wMRGCtX1egbdOJbGI+GWPB0uFOGb+gPnd2VuxOaX4LxooBPkn0zlOXCgOeebr4LF
+         D10HTuidi7HVbJkor0ZQLddZUwg73iz03jgt5jMOue/9/iuleHHrltNh0feiIRQMmKie
+         4keYy9hJiVnVts4n5ZKcpORvaZ3NXWqkBEHFy4KKzSgh0TVfgzvOyheQHMVra/jmggfC
+         i8XTPHIFHWzK1TFxS/ggEVxm+b5wXhEOmyvHEkWSub2A7pUiQSrYrJW3DBCcE+OtH5SN
+         DKtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=pVg/eCwNEIrx6GRerxc0709vpghlaEmW51aLjLi1e8M=;
-        b=egwn2WbS+3QJlW2jKrIptMtPZncjj6CIgX+W08mQZsrW9zjvpt3fPgfCEn81+UCcHy
-         ixdPw5yVvNWiw1AXV8gH2DoNN21fwcfE4chk1qBCS6rdB1VSxA4rny2sFPQ0IRnNOsMr
-         hR7Uigy+/lyJjpDZg97kypWcxmwFJ6G9hOLuTwFrBtFSuF0WMi7cniH/bTtkKvvIJLJL
-         Gi1Bt2MrzC/LVCHk8jz9mc8vsoK5hSjlAdsgBAAl5FfMsN9tGwkfW3NoSsmpSeqv7cXL
-         EeRqmKyYEdGyUkvddeo9t6DVbWwNklMig5I1lgv//huXeDF2cAXr298KvZk1sR3RlWa1
-         dvbQ==
-X-Gm-Message-State: AJIora80n2ZNKgjbM7Ft9L1q0xTPeC6DvD5tOFB/p31C/Oj1F6inRJbN
-        7YEoEKyc0zmNWd2QqHZvU20fCgJeaCvY0a03DLwtPQ4YYrk=
-X-Google-Smtp-Source: AGRyM1s6sTGx30blMAuTLfPmqIwH+qYP4Utw4B1oiVWxPTYrpZnNjkN4aoiQk75FuLt6fBQ2VZ2OX1sIEskVL6+JgPk=
-X-Received: by 2002:a17:907:9706:b0:72b:4b0d:86a2 with SMTP id
- jg6-20020a170907970600b0072b4b0d86a2mr17542758ejc.242.1658941620460; Wed, 27
- Jul 2022 10:07:00 -0700 (PDT)
+        bh=itvgIbCL8AlCfcLB9DTtKEyVMfAWjYXvrHFZiAXSjJg=;
+        b=61iJ5QlUwBCPmB7NMkVRZuzTcJtLkSYXJfvoUdUE/MsMFe6AXfMeQLTlB1apiSR2pq
+         6sFr9Kr3ZZjbIffojfAy6dDRXfJYDQ7IMJE/RsAEqdu8n9/BtM5HULnRmCu2GRIuRoF3
+         6DBkebxs1JJDTXWOPDpwrUOuOfGBROBvUarqgQs51R8X3gKPDEGhWa0OQr8zLKDfU5AL
+         GBW0mbLIlHMAftLzAIcdx6VHtj6YMw+u2EnmN4TwCB8woC6welYaiV9/9JlO20Y0Ytvd
+         uPiaDD0KdKiXJeIgzfReowWWVptuy6RneZPSiK1pUnDOpnW9VaviI/OqX/r+dJqi8uvq
+         PxQg==
+X-Gm-Message-State: AJIora+Nos+n03AWWTU50otxjRN71sUoZkmerQLbgTLI/Dtsf+cHZ6+G
+        NZMKfAHfHNXwQknbbsltU8RBUoklBxEmvKL3qGc=
+X-Google-Smtp-Source: AGRyM1vE08GvXI8Seq7fL6E4eE6uDbubhjXI6A38hQXiIuv3wrFyKuSIA6l/+5iEpaT7ExlrM13QBhCbT2WWYntLl1k=
+X-Received: by 2002:a05:6402:280b:b0:43b:5d75:fcfa with SMTP id
+ h11-20020a056402280b00b0043b5d75fcfamr24007933ede.114.1658942118376; Wed, 27
+ Jul 2022 10:15:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220727164133.973930-1-potin.lai.pt@gmail.com> <20220727164133.973930-2-potin.lai.pt@gmail.com>
-In-Reply-To: <20220727164133.973930-2-potin.lai.pt@gmail.com>
+References: <20220727164133.973930-1-potin.lai.pt@gmail.com> <20220727164133.973930-3-potin.lai.pt@gmail.com>
+In-Reply-To: <20220727164133.973930-3-potin.lai.pt@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 27 Jul 2022 19:06:23 +0200
-Message-ID: <CAHp75Vcar4Ufg1UpS6kGcieBCAwVh_KiUgiMEDJugb1YqO_FHg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] iio: humidity: hdc100x: switch to probe_new callback
+Date:   Wed, 27 Jul 2022 19:14:40 +0200
+Message-ID: <CAHp75VdUHRYcyoRQXMs2OWq6Vke2-7sPEOujZ=dWwiNG80f+1A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: humidity: hdc100x: add manufacturer and
+ device ID check
 To:     Potin Lai <potin.lai.pt@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -71,42 +72,59 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Jul 27, 2022 at 6:43 PM Potin Lai <potin.lai.pt@gmail.com> wrote:
 >
-> Switch to probe_new callback due to probe is deprecated soon.
-
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-> ---
->  drivers/iio/humidity/hdc100x.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+> Add manufacturer and device ID checking during probe, and skip the
+> checking if chip model not supported.
 >
-> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> index 9e0fce917ce4c..0d514818635cb 100644
-> --- a/drivers/iio/humidity/hdc100x.c
-> +++ b/drivers/iio/humidity/hdc100x.c
-> @@ -351,8 +351,7 @@ static const struct iio_info hdc100x_info = {
->         .attrs = &hdc100x_attribute_group,
->  };
+> Supported:
+> - HDC1000
+> - HDC1010
+> - HDC1050
+> - HDC1080
 >
-> -static int hdc100x_probe(struct i2c_client *client,
-> -                        const struct i2c_device_id *id)
-> +static int hdc100x_probe(struct i2c_client *client)
->  {
->         struct iio_dev *indio_dev;
->         struct hdc100x_data *data;
-> @@ -422,7 +421,7 @@ static struct i2c_driver hdc100x_driver = {
->                 .name   = "hdc100x",
->                 .of_match_table = hdc100x_dt_ids,
->         },
-> -       .probe = hdc100x_probe,
-> +       .probe_new = hdc100x_probe,
->         .id_table = hdc100x_id,
->  };
->  module_i2c_driver(hdc100x_driver);
-> --
-> 2.31.1
->
+> Not supported:
+> - HDC1008
 
+Almost there!
+
+...
+
+> +static bool is_valid_hdc100x(struct i2c_client *client)
+> +{
+> +       const struct hdc100x_chip_data *data;
+> +       int mfr_id, dev_id;
+
+> +       data = device_get_match_data(&client->dev);
+> +       if (!data->support_mfr_check)
+> +               return true;
+
+Logically this part does belong to ->probe() and doesn't here (too
+wide for this specific helper).
+
+> +       mfr_id = hdc100x_read_mfr_id(client);
+> +       dev_id = hdc100x_read_dev_id(client);
+> +       if (mfr_id == HDC100X_MFR_ID &&
+> +          (dev_id == 0x1000 || dev_id == 0x1050))
+> +               return true;
+> +
+> +       return false;
+> +}
+
+...
+
+> +       if (!is_valid_hdc100x(client))
+> +               return -EINVAL;
+
+Means here you add
+
+       const struct hdc100x_chip_data *data;
+       struct device *dev = &client->dev;
+       ...
+       data = device_get_match_data(dev);
+       if (data->support_mfr_check && !is_valid_hdc100x(client))
+               return -EINVAL;
+
+(Introducing a temporary variable for struct device pointer might also
+help in future to refactor to make code neater.)
 
 -- 
 With Best Regards,

@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 427F0582FB3
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01707582FB8
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242219AbiG0R24 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 13:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58418 "EHLO
+        id S230309AbiG0RaL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 13:30:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238024AbiG0R1k (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:27:40 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E1E27F526
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:18 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id bf9so27843083lfb.13
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:18 -0700 (PDT)
+        with ESMTP id S242132AbiG0R1t (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:27:49 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A227E82D
+        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:24 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id t22so21550669lfg.1
+        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 09:47:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=xZf4OdbV43HHtgf1qVIKge/GbJKtAf7d2TC+uXlE1iw=;
-        b=unFrdwkByedm1Cx4IG8Ku7mviSYROrujqG4UjXQkiG0xYgsmJHR0xO4a+bYbYW/PwS
-         +BpCE5BwASL4enlWpSc5ChcanRPNkec78zKAkoqgkfIfM9juO9yFiudCpM2kK2iiVUUN
-         vcX/bOW82bpl3sEJt8lJ4P7UjpNpPGtSmZmxIhjeBtOY/lI5Pyef+zmEyrN7JnZwOT2v
-         5ornAJUjWzhOFUJ2FsEA+6X3NuHvsDNA0boK2iaiU45J721qkxkd0KE7vpsaUxk9VfAE
-         jbFm7EwWypt894KHqZaTBTjDRfbDhf2/nLsKWfjp3UDMIHwCK+Coy4qvG59UqItR52XE
-         A4RA==
+        bh=G58v43xma03waMnam16LPp6PjErsC4YB3W0kFW2yXEw=;
+        b=bkweZ8DUw8CXRKbjPLdIjIMR9jSuhPlbY/WgGBuPuZjvISu/X5g5hsJldTx/S+tux5
+         H1O6H4yiGvwQuw1wPyBDRmR+MHE/HKQu4JZEe78b2PiTONvXPu+p7gBmrVsgbfQx0OLH
+         O0ebEpNNCLP2YOE3Q/zCZzt7+T0hlOie7x9iPFMjO58tEoMfwIBRoFxRzD0Tp0BsoA8b
+         wDINxw4SiKwKwavER2Nl5vmkU5yVOBavA3s63FgBX7zfE0gBoV6tA1qNVfywm6nkWmJg
+         P9EvVQodM6kgg1iGz1M3SEzo8hjH1ZxzrxKM2yn7qczRHbEy6cdzNrnmptoI5dit7JGU
+         DpfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=xZf4OdbV43HHtgf1qVIKge/GbJKtAf7d2TC+uXlE1iw=;
-        b=S8hhzb4SQjTpxt0QTuE2AAkv2BmyfREHCq+HZp4ZBFE0JsBOMC6KLGVqxXBsLEQHtz
-         dxNnUZ+XV0vHYxhbDgV7dmt6juaDLSKs+8EGFLBcgUvR2s0y8oObJI8QhsrzGLC9VDaV
-         WvD2yZ9ADwRn1IeMQRq4Av5Umtr4Vbn2yHx1VQYkwHARLQ05n4IjxfW+Ec6o3DWGk5Nl
-         QTpyGIv4g2XIP99UH4BYVzzoOSP22nF7pnj6kiZADnrf4X6hf2KJf65+H7rBc7rCbRmb
-         bfF55V0w6rM1Pd9/5z6BRA7QPU/sm1WaLlON+ieHHNis8DuFIeFrZe1c8xNDFBge1JbB
-         bxRw==
-X-Gm-Message-State: AJIora95lPejgmXQOIn0yHC3VB5VqQ8BZRMR2teU/cCrrc1jhIaW6FE5
-        GKieBmh1GL+GUxGvmHYTfnukjw==
-X-Google-Smtp-Source: AGRyM1vk2lUU2rIgm+Qs7fiV5lfej9Y3jJ3qYGukgFmUOo3/tcHiuWVrQUOzvf2yUdGjOtEdYb/yTw==
-X-Received: by 2002:a05:6512:1287:b0:489:e488:950f with SMTP id u7-20020a056512128700b00489e488950fmr8402948lfs.440.1658940436717;
-        Wed, 27 Jul 2022 09:47:16 -0700 (PDT)
+        bh=G58v43xma03waMnam16LPp6PjErsC4YB3W0kFW2yXEw=;
+        b=g8Gw0vIXTW3vgoDDPQifJ8tLvFpy7O5r30A3Z0YtGF9RkZC+vGK4e2fnTR6leCHxIW
+         emMv6CizQg5/D+U3l7jqYer5ENmZIj7WWSgWdtqZaVLC0INckGXEw4K3EtOjWlFlDD8d
+         cTONFYd/KIpc8B1vIstqnh5AZz+2hCAmK2W0udlHWfjcYJBTYzdbOkz76C9lg+bNeg9L
+         86VtT0omu+NgM9dN7YBTFjW3x+63Lmwf8v3w7MJKqiTyIlrkbqrPZvgSOWhMsVUk2uve
+         1q0MKfajkdQowlkuNl/T+iuhCwvsvCqOlnbWiKKrpKEXadzGERGg13ukVpFoJaETiP3A
+         9+ew==
+X-Gm-Message-State: AJIora/uigWaL5fM1xCQ/MK4YDy4OMB36hpOyZlF6lima2zkKhsPAwY5
+        eYkDcpcHL5W7vmWFqvjfZpih8w==
+X-Google-Smtp-Source: AGRyM1vH0CUVOEcBUq1/Yiy2wWxdiPJq8QJMm8MMUeir/jyTAwdNpR1ErRGBl6KcNmi7ge05zM/W9Q==
+X-Received: by 2002:a05:6512:1393:b0:489:dd15:f04b with SMTP id p19-20020a056512139300b00489dd15f04bmr8180807lfa.284.1658940440119;
+        Wed, 27 Jul 2022 09:47:20 -0700 (PDT)
 Received: from krzk-bin.lan (78-26-46-173.network.trollfjord.no. [78.26.46.173])
-        by smtp.gmail.com with ESMTPSA id 18-20020ac25f52000000b0048910301774sm3375149lfz.307.2022.07.27.09.47.13
+        by smtp.gmail.com with ESMTPSA id 18-20020ac25f52000000b0048910301774sm3375149lfz.307.2022.07.27.09.47.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 09:47:16 -0700 (PDT)
+        Wed, 27 Jul 2022 09:47:19 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -100,9 +100,9 @@ To:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 05/10] dt-bindings: iio: frequency: adf4371: use spi-peripheral-props.yaml
-Date:   Wed, 27 Jul 2022 18:46:41 +0200
-Message-Id: <20220727164646.387541-6-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 06/10] dt-bindings: iio: health: ti,afe4403: use spi-peripheral-props.yaml
+Date:   Wed, 27 Jul 2022 18:46:42 +0200
+Message-Id: <20220727164646.387541-7-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
 References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
@@ -131,33 +131,33 @@ typical place, just before example DTS.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/iio/frequency/adf4371.yaml         | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/iio/health/ti,afe4403.yaml       | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-index 6b3a611e1cf1..0144f74a4768 100644
---- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-+++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-@@ -40,15 +40,16 @@ properties:
-       output stage will shut down until the ADF4371/ADF4372 achieves lock as
-       measured by the digital lock detect circuitry.
+diff --git a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+index d861526c5c42..6c5ad426a016 100644
+--- a/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
++++ b/Documentation/devicetree/bindings/iio/health/ti,afe4403.yaml
+@@ -25,14 +25,15 @@ properties:
+ 
+   reset-gpios: true
  
 -  spi-max-frequency: true
+-
+-additionalProperties: false
 -
  required:
    - compatible
    - reg
-   - clocks
-   - clock-names
  
--additionalProperties: false
 +allOf:
 +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
 +unevaluatedProperties: false
- 
++
  examples:
    - |
+     #include <dt-bindings/gpio/gpio.h>
 -- 
 2.34.1
 

@@ -2,79 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64096582904
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 16:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 617555829E4
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 17:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234298AbiG0Ovz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 10:51:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40628 "EHLO
+        id S233151AbiG0Pos (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 11:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234238AbiG0Ovu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 10:51:50 -0400
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232FD42AE9;
-        Wed, 27 Jul 2022 07:51:50 -0700 (PDT)
-Received: by mail-io1-f49.google.com with SMTP id v185so13704330ioe.11;
-        Wed, 27 Jul 2022 07:51:50 -0700 (PDT)
+        with ESMTP id S233157AbiG0Poq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 11:44:46 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ACDA47B91;
+        Wed, 27 Jul 2022 08:44:46 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id 70so16492736pfx.1;
+        Wed, 27 Jul 2022 08:44:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=QlqJyCLvvK+TzxVp0Du/4sfixvkQDQzIZY8oBXbSMvI=;
+        b=Bwdq8tjLd/xcPIAX/uEU4inNf7eeMUPTp9P1C+D0MChY+VIXw28n3UkSB/a1OdUNj0
+         0+QFhKaZN1H0VWQDVV4xwl3vHnsEj+cnfTVGWkv5YeZjdGg5tPLjPWcJ0N1SUU1v9kBN
+         ZFe5SUBKqVGeSE+tpUXxbUFrmy3y1XCjwkzIE98+N8n8A5pVcp8/jJedgnzPRquBnRkq
+         dUOU6rx0R4mNCZ//8Mi79hRHJBZJ8uHiFcSKMx03ltmwyZjiKxtUWR3cqcepMKY8QsYc
+         CYHsiHY2a+niuSncMud8bS/oOwb0jPlN+P/pR4tHOnRF5Rf8ZlFFToN7pdTaxb/20C8N
+         ONCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=xCokfXhPR4KTF41sdrZm+RqhxEGMWVkr/Hg5KMBHFR8=;
-        b=H7KppZWnYL7txUh3Yivu8Z8ktrMODqMaki4KRP3lqpqZoGRZE0C25ZCDF5VE4zX14/
-         ujLlFL7993L/tnIIopWsa9aMRyei6SEG/266ztE5r256SlRK5c3hJyGTCNV2mi6+1yJH
-         s1esC8a9O7gj7cAXb7JrtGfZxVxMDSkGZrt16HLuim5xolnS00SzIinb6o9KxZ/Org9P
-         xr4WAqRQr/srv8u91w0bPghV43MyURbv8R95Ezh/tdpQV8xtd5Rxuyy/3sJxfVSAgyr/
-         zQBQCpaVSjbl/rd5D/OGgFeK5803nY/dwyGmICnCVtmzcaEGkObVNntreRmVWLnPrphh
-         oH6Q==
-X-Gm-Message-State: AJIora+ot8LpXgio4Ho2vExDE3fYcUMGC63N+MdboeaeULOhdeubCe62
-        2b6na9G1ePFISUVH9AA0Rr6YS4+kYg==
-X-Google-Smtp-Source: AGRyM1sdrzFHIbGmxlbzQsvgmhTb+u6PlXR7h1s1EkyZ/uFrpL41TeK9mHOW3wo0afjLUrYDMRJkHQ==
-X-Received: by 2002:a05:6638:250d:b0:340:4915:263 with SMTP id v13-20020a056638250d00b0034049150263mr9036435jat.17.1658933509322;
-        Wed, 27 Jul 2022 07:51:49 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id b11-20020a026f4b000000b0033158c4a312sm7921935jae.55.2022.07.27.07.51.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 07:51:49 -0700 (PDT)
-Received: (nullmailer pid 2644092 invoked by uid 1000);
-        Wed, 27 Jul 2022 14:51:47 -0000
-Date:   Wed, 27 Jul 2022 08:51:47 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Cristian Pop <cristian.pop@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio/dac: adi,ad5766: Add missing type to
- 'output-range-microvolts'
-Message-ID: <20220727145147.GA2644033-robh@kernel.org>
-References: <20220719215152.1877776-1-robh@kernel.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=QlqJyCLvvK+TzxVp0Du/4sfixvkQDQzIZY8oBXbSMvI=;
+        b=4iOCBhaCUaxoHghbr2BJODEQv4JiVRPTn5zwG6qTIxXQIuYehcXFqfTWhezugRQHL4
+         Bd5PjqloQ5vOcS5V26UDe7qcXi5WDLlMXyEktnNHetvuCPqrLQJyoicS3TVt0LIabkRd
+         77gJf5xNY0MeeDPDcnBCyC5yOrO7F7E+13L/2Wk1XFfKOc9OqTWNfG/9zhRhJ8ETd8tE
+         El50iO3b2DI1OF1BHVAmIETn3Zq8nEzCv93SSppBp+Ym/5IuFJuibwg5AcLQROeL+PJ+
+         RYMSV9KRmqwlX6agvKDPTvCGz6dthfun10x8AtOsQMjxgtK845R7Girb6x7sQZA9wyUf
+         0oeA==
+X-Gm-Message-State: AJIora873qUNbxv4pVMZBsFEiuAB1niXk7PbXkQTQcO/3mChY2bi+zA5
+        g7UKVfBN/xESXV2cKt8f+Fg=
+X-Google-Smtp-Source: AGRyM1sDCBNblHpd1A/SV3TzZb8mfKld5q5VlxnaFVr0AN48IX0aLrkPmvmWp+XpPjoMYuy/0dqNWQ==
+X-Received: by 2002:a63:2a95:0:b0:41a:27e5:1996 with SMTP id q143-20020a632a95000000b0041a27e51996mr19160174pgq.447.1658936685669;
+        Wed, 27 Jul 2022 08:44:45 -0700 (PDT)
+Received: from [10.10.20.47] (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
+        by smtp.gmail.com with ESMTPSA id d10-20020a170902654a00b0016d1e514ec5sm13849539pln.139.2022.07.27.08.44.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Jul 2022 08:44:44 -0700 (PDT)
+Message-ID: <47516b38-58e1-e3c9-1ac2-7b8d8586566e@gmail.com>
+Date:   Wed, 27 Jul 2022 23:44:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220719215152.1877776-1-robh@kernel.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2 1/1] iio: humidity: hdc100x: add manufacturer and
+ device ID cehck
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20220727064415.940690-1-potin.lai.pt@gmail.com>
+ <CAHp75VfNmq12Yv7mqVeijqK0vwRdPsSrH5wMzg9qR15+t7ArSQ@mail.gmail.com>
+ <a385e266-b24e-7ffb-c083-891edd4b0b14@gmail.com>
+ <CAHp75VdjvJRwzPLLdMji+_m2tQY4JLBcNwt-QFkDJTyGFUOdKg@mail.gmail.com>
+From:   Potin Lai <potin.lai.pt@gmail.com>
+In-Reply-To: <CAHp75VdjvJRwzPLLdMji+_m2tQY4JLBcNwt-QFkDJTyGFUOdKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 19 Jul 2022 15:51:52 -0600, Rob Herring wrote:
-> 'output-range-microvolts' is missing a type definition. '-microvolts' is
-> not a standard unit (should be '-microvolt'). As the property is already
-> in use, add a type reference.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  Documentation/devicetree/bindings/iio/dac/adi,ad5766.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
 
-Applied, thanks!
+Andy Shevchenko 於 7/27/2022 7:56 PM 寫道:
+> On Wed, Jul 27, 2022 at 12:42 PM Potin Lai <potin.lai.pt@gmail.com> wrote:
+>> On 7/27/22 18:00, Andy Shevchenko wrote:
+>>> On Wed, Jul 27, 2022 at 8:46 AM Potin Lai <potin.lai.pt@gmail.com> wrote:
+> ...
+>
+>>>> +       data = device_get_match_data(&client->dev);
+>>>> +       if (data) {
+>>> This check is redundant. Too much protective programming. Just oblige
+>>> that matched ID has to always have an associated data.
+>> Is it guaranteed that device_get_match_data will not return NULL? I find some examples in other drivers, all of them have a check on returned data.
+> No, but as I said you may guarantee that by obliging developers not to
+> shoot in their feet.
+Thanks for the explanation, I will remove the checking part.
+
+Potin
+>> Will it be more appropriate if I move device_get_match_data to probe function, and return EINVAL when we get a NULL pointer from device_get_match_data?
+> Why is this check needed? We do not like dead code.
+>
+>>>> +               if (!data->support_mfr_check)
+>>>> +                       return true;
+>>>> +       }

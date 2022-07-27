@@ -2,64 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6855E582069
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 08:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A87058213E
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 09:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbiG0Gtt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 02:49:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53884 "EHLO
+        id S230330AbiG0Hhk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 03:37:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229831AbiG0Gt0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 02:49:26 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A86147BB3;
-        Tue, 26 Jul 2022 23:46:37 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id w7so15338922ply.12;
-        Tue, 26 Jul 2022 23:46:37 -0700 (PDT)
+        with ESMTP id S229680AbiG0Hhh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 03:37:37 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27D63B950;
+        Wed, 27 Jul 2022 00:37:36 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id y9so12106192qtv.5;
+        Wed, 27 Jul 2022 00:37:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Y/y/NGsYBEyTIfNWZk+cf407tuuEI0WUq+xtTfiUgps=;
-        b=iFbW8yvgdiL9TcUyZFCEDTsa17t5tOrJKO9WdNS7PYhQPeG2K4q5ZlzrUJsdDGOIyZ
-         FYLH9p5Q9u4yXunFtHGJc89/5PyGHf+qkUYTowBvHDT9fzlojgUG6Yn2civJBbVAJOV8
-         MfybykCPqP06OGGO5A4b+q0oLh9LdscvPrLHBfMxPX0xdzc6AUyLk3wnLgWz2GN1wRv9
-         B34MgMEHnJ0OXsGcRS9DipBN6pvA2exLlFo4mZBTTeSZToc0+a9S8I5kbqGO2UekggHg
-         0GKADxM8/KAm1Wg9tFoT+dmRl4N628e32HoXQCLBROmrNpZ4vZjhGHGNXTV1Y/B/obOR
-         TsfA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7wBtopi5nrrnF3/tK6d3mUXKRzW2T+DIHWRi/Z/g55U=;
+        b=JrXv07SnypKXIiO9c1hDaO1ve2XFoCQh3YJA9N0xzJ8VKdcy+NOWbVByEfE93yA1bT
+         Tl79vU21bY1Riyh5vdmQjiXNRM6Y+lisVzjlFGA12N5TkfsJVvBTZVM+DXhLMCRLgtAT
+         CWazI0B5gaYgTPfT/LBhBjVu7eM5hrdl/RUhg4FDmsUWR19oAbFy6HoE9edFHPyenD8T
+         Qf2WPKI/e5SPnIeUMPrpopEK3VVMRKkcz81I6LE01vsC+va5BFGobzRlWIltgg+x4gCQ
+         EHVJv70L2zauSaiZEF5yiD6RME26xNIBHXc93G+wfeZxZyIdgW4ZKl6QFkorqrFDfTKD
+         6LhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Y/y/NGsYBEyTIfNWZk+cf407tuuEI0WUq+xtTfiUgps=;
-        b=fXtrZTieZL+sH1RlG1hunm3mAZE/nRH8uS5VYfEgsa17UtYUKx7Ud4q+OjISb52mid
-         etDU+gk+XdGNAONMs8QwBnwbITozRHbjXsF+HtGKo7jisW0iY177Q2+ja2HW16CoqFhq
-         Q/C8a80Gcfn68lx2VKmHFmAvm2t+Qts1ZQJVxWVBLZ7x7Fe9HZ6XEv6zE2UuTMB2ftZ+
-         KOkNj1Rvt3aKUp/e6Yf2kq42n2oqCPqri3IZfdy5OVWxIsDuD8INPROdIz7x3oDJyIHj
-         BMR7PmE216knP9TZZsY5924qXleMmx687p4f1afHrgB4YtL4gn6MKYJ2iCp4Q7y3+L1+
-         GKkA==
-X-Gm-Message-State: AJIora8GO1tHALwnrVtlcrX18AGk/88kNmaBCHHBHtvdkA2mQyRUiJn0
-        CbfOjbywCI+IfYpLEjRfbtQ=
-X-Google-Smtp-Source: AGRyM1vLhD8q/yparTYLclk5jUsBDeJwr6U//vyCS7QRBOpPejVocjbqDmk/0BmFMC09bvo3DcA5Ng==
-X-Received: by 2002:a17:90b:4b81:b0:1ef:cd2c:bf2e with SMTP id lr1-20020a17090b4b8100b001efcd2cbf2emr2842594pjb.137.1658904395569;
-        Tue, 26 Jul 2022 23:46:35 -0700 (PDT)
-Received: from potin-quanta.. (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
-        by smtp.gmail.com with ESMTPSA id f15-20020a170902ce8f00b0016bf5557690sm12964882plg.4.2022.07.26.23.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Jul 2022 23:46:34 -0700 (PDT)
-From:   Potin Lai <potin.lai.pt@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
-Subject: [PATCH v2 1/1] iio: humidity: hdc100x: add manufacturer and device ID cehck
-Date:   Wed, 27 Jul 2022 14:44:15 +0800
-Message-Id: <20220727064415.940690-1-potin.lai.pt@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7wBtopi5nrrnF3/tK6d3mUXKRzW2T+DIHWRi/Z/g55U=;
+        b=6Jat2MyN2X/bCcy4KChsFEgToktjw+TM2nIp1GsWV6ZzmD6Rvuyrj1WVCZLEay7Yy8
+         q74Yij3pzdIaz/b3Dx1814Y7F7SZ4G/HV33u1NUwo1HFCib9KKUGzmTEDTFzeUjfU0Bs
+         QX31Xn8Ix8XeXydaf8AcdSF3TvwfwPs2BaLCmimOEG8poqkdfChiJgGU3sbSMzaEOAPp
+         tjrZy4no79UXKPkp/eBai9E81Hw5Bzcf2HNvuOYOYl0cPXcPSChnTM9IDK5Jn7McZXoP
+         xHO/bCA9YNSGqGzehOVJ5hVsFJnBC1xruUQWUOhNGDVuRflhxLBmPlRaFHVf97VUhQHe
+         GsuA==
+X-Gm-Message-State: AJIora+ycXd0R3vO91GJKaKDVU9HJPaB0TnRR6u89peGwkCT5WgXMS1m
+        XRVpcxeT3Rf2n10XEOj8napxn7O9AWFngkOo0UeP0b2UjH0=
+X-Google-Smtp-Source: AGRyM1sXpKQZrYG0IbOgoxNKanSErlzr5LcY9lrHn4FGhRFmisG96yuJDLZQZGtegCOB6F8ydUZqqM5XWqwFIZtxfFQ=
+X-Received: by 2002:a05:622a:6098:b0:2f0:f0d2:b5f0 with SMTP id
+ hf24-20020a05622a609800b002f0f0d2b5f0mr17361865qtb.583.1658907456035; Wed, 27
+ Jul 2022 00:37:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-12-peterwu.pub@gmail.com>
+ <CAHp75VewxvEDGoPdRBvLSLQOQ6OZzVft1ce3DkF7MK_O1VXZkQ@mail.gmail.com>
+ <CABtFH5+im7=vyKLUqztYeAX81e7ETFc+9o7y0seg2pxH0PEnUQ@mail.gmail.com> <CAHp75Vd4ApTju2LCCHQ1skgOjttwWo5b2NF3u+zbGyVnnFKNhA@mail.gmail.com>
+In-Reply-To: <CAHp75Vd4ApTju2LCCHQ1skgOjttwWo5b2NF3u+zbGyVnnFKNhA@mail.gmail.com>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Wed, 27 Jul 2022 15:36:59 +0800
+Message-ID: <CABtFH5+bQx5ym5jOzCPJWbZ23WtGYYwS7cMRt2g3ipEEqTb3JA@mail.gmail.com>
+Subject: Re: [PATCH v6 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
+ sink type LED Indicator support
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -70,152 +97,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add manufacturer and device ID checking during probe, and skip the
-checking if chip model not supported.
+On Tue, Jul 26, 2022 at 8:18 PM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
 
-Supported:
-- HDC1000
-- HDC1010
-- HDC1050
-- HDC1080
+...
 
-Not supported:
-- HDC1008
+> > Just for saving memory space.
+> > Because these led_classdevs do not be used at the same time.
+> > Or do you think it would be better to rewrite it as follows?
+> > -------------------------------------------------------------------------------------
+> > struct mt6370_led {
+> >        struct led_classdev isink;
+> >        struct led_classdev_mc mc;
+> >        struct mt6370_priv *priv;
+> >        u32 default_state;
+> >        u32 index;
+> > };
+> > -------------------------------------------------------------------------------------
+>
+> You obviously didn't get what I'm talking about...
+> Each union to work properly should have an associated variable that
+> holds the information of which field of the union is in use. Do you
+> have such a variable? If not, how does your code know which one to
+> use? If yes, add a proper comment there.
+>
 
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
-LINK: [v1] https://lore.kernel.org/all/20220722172035.44977-1-potin.lai.pt@gmail.com/
-                                                           
-changes v1 --> v2:                       
-- fix typo in commit message           
-- change to use probe_new
-- use device_get_match_data instead of i2c_of_match_device
----
- drivers/iio/humidity/hdc100x.c | 78 ++++++++++++++++++++++++++++------
- 1 file changed, 64 insertions(+), 14 deletions(-)
+Ummm... from my understanding,
+if the colors of these four LEDs are set to 'LED_COLOR_ID_RGB' or
+'LED_COLOR_ID_MULTI' in DT,
+their 'led->index' will be set to 'MT6370_VIRTUAL_MULTICOLOR' in
+'mt6370_leds_probe()'.
+If so, these led devices will be set as 'struct led_classdev_mc' and
+use related ops functions in 'mt6370_init_led_properties()'.
+Instead, they whose 'led->index' is not 'MT6370_VIRTUAL_MULTICOLOR'
+will be set as 'struct led_classdev'.
+So, maybe the member 'index' of the 'struct mt6370_led' is what you
+describe the information of which field of the union is in use?
+I will add the proper comment here to describe this thing. I'm so
+sorry for misunderstanding your mean last time.
+Thanks again for your review.
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 9e0fce917ce4c..8c69b4a610c4f 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -34,6 +34,23 @@
- #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
- #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
- 
-+#define HDC100X_REG_MFR_ID	0xFE
-+#define HDC100X_REG_DEV_ID	0xFF
-+
-+#define HDC100X_MFR_ID	0x5449
-+
-+struct hdc100x_chip_data {
-+	bool support_mfr_check;
-+};
-+
-+static const struct hdc100x_chip_data hdc100x_chip_data = {
-+	.support_mfr_check	= true,
-+};
-+
-+static const struct hdc100x_chip_data hdc1008_chip_data = {
-+	.support_mfr_check	= false,
-+};
-+
- struct hdc100x_data {
- 	struct i2c_client *client;
- 	struct mutex lock;
-@@ -351,8 +368,38 @@ static const struct iio_info hdc100x_info = {
- 	.attrs = &hdc100x_attribute_group,
- };
- 
--static int hdc100x_probe(struct i2c_client *client,
--			 const struct i2c_device_id *id)
-+static int hdc100x_read_mfr_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
-+}
-+
-+static int hdc100x_read_dev_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
-+}
-+
-+static bool is_valid_hdc100x(struct i2c_client *client)
-+{
-+	const struct of_device_id *match;
-+	struct hdc100x_chip_data *data;
-+	int mfr_id, dev_id;
-+
-+	data = device_get_match_data(&client->dev);
-+	if (data) {
-+		if (!data->support_mfr_check)
-+			return true;
-+	}
-+
-+	mfr_id = hdc100x_read_mfr_id(client);
-+	dev_id = hdc100x_read_dev_id(client);
-+	if (mfr_id == HDC100X_MFR_ID &&
-+	   (dev_id == 0x1000 || dev_id == 0x1050))
-+		return true;
-+
-+	return false;
-+}
-+
-+static int hdc100x_probe(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev;
- 	struct hdc100x_data *data;
-@@ -362,6 +409,9 @@ static int hdc100x_probe(struct i2c_client *client,
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
- 		return -EOPNOTSUPP;
- 
-+	if (!is_valid_hdc100x(client))
-+		return -EOPNOTSUPP;
-+
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
-@@ -397,22 +447,22 @@ static int hdc100x_probe(struct i2c_client *client,
- }
- 
- static const struct i2c_device_id hdc100x_id[] = {
--	{ "hdc100x", 0 },
--	{ "hdc1000", 0 },
--	{ "hdc1008", 0 },
--	{ "hdc1010", 0 },
--	{ "hdc1050", 0 },
--	{ "hdc1080", 0 },
-+	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
-+	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, hdc100x_id);
- 
- static const struct of_device_id hdc100x_dt_ids[] = {
--	{ .compatible = "ti,hdc1000" },
--	{ .compatible = "ti,hdc1008" },
--	{ .compatible = "ti,hdc1010" },
--	{ .compatible = "ti,hdc1050" },
--	{ .compatible = "ti,hdc1080" },
-+	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
-+	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
-@@ -422,7 +472,7 @@ static struct i2c_driver hdc100x_driver = {
- 		.name	= "hdc100x",
- 		.of_match_table = hdc100x_dt_ids,
- 	},
--	.probe = hdc100x_probe,
-+	.probe_new = hdc100x_probe,
- 	.id_table = hdc100x_id,
- };
- module_i2c_driver(hdc100x_driver);
 -- 
-2.31.1
-
+Best Regards,
+ChiaEn Wu

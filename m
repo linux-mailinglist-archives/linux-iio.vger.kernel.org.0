@@ -2,172 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7424582C92
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 18:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E25B582EEF
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 19:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240512AbiG0Qrv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 12:47:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42522 "EHLO
+        id S231463AbiG0RTx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 13:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240435AbiG0Qq6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 12:46:58 -0400
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F6952DFE;
-        Wed, 27 Jul 2022 09:32:00 -0700 (PDT)
-Received: by mail-yb1-f176.google.com with SMTP id z132so12214227yba.3;
-        Wed, 27 Jul 2022 09:32:00 -0700 (PDT)
+        with ESMTP id S236313AbiG0RSb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 13:18:31 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA8B79EE8;
+        Wed, 27 Jul 2022 09:43:52 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id 15-20020a17090a098f00b001f305b453feso2801865pjo.1;
+        Wed, 27 Jul 2022 09:43:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jLl28q0YHHTxCCA5OBtJuL5L9i48jfBj5mPfPnOXWnU=;
+        b=gTqC3mK7AhqDxoVzYGypLAHyHnuJyOHaNTyQjZSxbDDaLLMzHWR/WP9vjN+BEf7ZrN
+         Fit/pgr3trM5rPWHk48OyLLH9RgVMVbUXkIkCk+Jf8UUq7Ixq10MdWG5TqYbEOGR31nV
+         qsGV3q9SwnGIQePCh+MvO/t8bPRTd+8yYBHbLfqgUeg11NiAFrxhLg7KRX+lMGCNvMj5
+         eshRUR5CIFKYl0Q/8ArSW7i1Kc7cq0Ija+q7nd/mvYJD++RTwcjdDwoerC5TwBXLzCDS
+         jFvTidDTb5rxdGrTKSLMVxZmoCHN+DVOy2LOS3p+Gk01xSY112n3ooSyfPPZJeieGzO6
+         h1iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=1+FyBD7qfpB/NcO18BYu7xfIXfdCx5KarG2Yv/S7Vqo=;
-        b=JYxMw0mHbxinVXm9i9+14CdGALVjrTYiDeUhJVuPMZgET/swLcNWhLTeLJXYiFGEIj
-         Erf65NbkqFM46rSJTDAazMlOXYo46t79HK9Sg8tvEvOBNCEVj3Fkdg74KmXuJEJ7A/4+
-         sH98FfH2si/TC83Cop3IjGagaQpCAhiW4LmjcsEFRtbgEbFHdX/y53SmTDmo6AjT1FY5
-         p9upzGfzyuHbKlOetTlbpiYCf8z8jSTsjNXclKrQxf4ilw+sfa07F/I3U8J5Dg409896
-         YOVdofXp+Hhq90S9iF5LHRgFR88GoyAwG6fGjokHJnzXOTWzpjqtDc/roewQJmN/umjb
-         zDYg==
-X-Gm-Message-State: AJIora9U0CiWaZQKZ2+LkwvLanf8LlxK92hInHjllzKj8yILb2XH8LMe
-        h2+Atr/GH+i2QkujazvVIBaetojxFvVWo+KCI6c=
-X-Google-Smtp-Source: AGRyM1u6NteAhBXoLYdxy51ZeQgx+cCae1ZObILPbmLMpJfLv5mQSrC8YmVtriF4gtEgnkp8zwQjnFXzqKEjKETPdiQ=
-X-Received: by 2002:a05:6902:154f:b0:66e:e2d3:ce1 with SMTP id
- r15-20020a056902154f00b0066ee2d30ce1mr16706157ybu.365.1658939519456; Wed, 27
- Jul 2022 09:31:59 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=jLl28q0YHHTxCCA5OBtJuL5L9i48jfBj5mPfPnOXWnU=;
+        b=4/ZJ/ClXYcD/5Rg5Ljcqv64J7b7yVW0c+Z7wSqsP8gxPq7iBVjlxaRGGz8+l/xSayS
+         3UIFfLis3MYfysFlQOFr81jMn2azRqjIdhJUhf8U36WkRi0ikTBom2NkQbD8z+KtA/NX
+         AvV2COgTpH3ovYsDRd2LPukSyt6ew87A+u4jJeQhDnrYhq0c19GlHrYNPYPB3xS/4lfJ
+         SCWTQsMhcP6EfIa9xz2M8WuzMaUZMhzlOTB09t6JyCk9Wb70mFMnA9U72kRpJNZ00Y7f
+         V+738uD11XhV/CXXjNKiUDjHIrJSpPEXm4asbHIcqLFKvPGOoOL6UfJ3ZXqlgNdqxi6h
+         wTbw==
+X-Gm-Message-State: AJIora+fL8jk8VZc5Mca85Aaw06XMH3UYaOhazKGrqV5If8c+d5KmnQ1
+        QmQCuxFMMT48O4I0APgyhQt7bTpvcP+FKg==
+X-Google-Smtp-Source: AGRyM1ts0wZ3ofA/neE3N1ENMf3fYKfoZeO2BR/ZDCXzFjjnHZTPpgl6A1YvRBAQn0cpHTliNUb18w==
+X-Received: by 2002:a17:90a:62ca:b0:1f2:ef43:72a1 with SMTP id k10-20020a17090a62ca00b001f2ef4372a1mr5495888pjs.217.1658940231334;
+        Wed, 27 Jul 2022 09:43:51 -0700 (PDT)
+Received: from potin-quanta.. (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
+        by smtp.gmail.com with ESMTPSA id h13-20020a17090a3d0d00b001ef3f85d1aasm2030480pjc.9.2022.07.27.09.43.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Jul 2022 09:43:50 -0700 (PDT)
+From:   Potin Lai <potin.lai.pt@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH v3 0/2] iio: humidity: hdc100x: add manufacturer and device ID check
+Date:   Thu, 28 Jul 2022 00:41:31 +0800
+Message-Id: <20220727164133.973930-1-potin.lai.pt@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20220620144231.GA23345@axis.com> <5caa944f-c841-6f74-8e43-a278b2b93b06@suse.com>
- <20220708110325.GA5307@axis.com> <4ca77763-53d0-965a-889e-be2eafadfd2f@intel.com>
- <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com> <CAJZ5v0j0mgOcfKXRzyx12EX8CYLzowXrM8DGCH9XvQGnRNv0iw@mail.gmail.com>
- <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
-In-Reply-To: <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 27 Jul 2022 18:31:48 +0200
-Message-ID: <CAJZ5v0ijy4FG84xk_n8gxR_jS0xao246eVbnFj-dXzwz=8S9NQ@mail.gmail.com>
-Subject: Re: PM runtime_error handling missing in many drivers?
-To:     Oliver Neukum <oneukum@suse.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Jul 27, 2022 at 10:08 AM Oliver Neukum <oneukum@suse.com> wrote:
->
->
->
-> On 26.07.22 17:41, Rafael J. Wysocki wrote:
-> > On Tue, Jul 26, 2022 at 11:05 AM Oliver Neukum <oneukum@suse.com> wrote:
->
-> > I guess that depends on what is regarded as "the framework".  I mean
-> > the PM-runtime code, excluding the bus type or equivalent.
->
-> Yes, we have multiple candidates in the generic case. Easy to overengineer.
->
-> >>> The idea was that drivers would clear these errors.
-> >>
-> >> I am afraid that is a deeply hidden layering violation. Yes, a driver's
-> >> resume() method may have failed. In that case, if that is the same
-> >> driver, it will obviously already know about the failure.
-> >
-> > So presumably it will do something to recover and avoid returning the
-> > error in the first place.
->
-> Yes, but that does not help us if they do return an error.
->
-> > From the PM-runtime core code perspective, if an error is returned by
-> > a suspend callback and it is not -EBUSY or -EAGAIN, the subsequent
-> > suspend is also likely to fail.
->
-> True.
->
-> > If a resume callback returns an error, any subsequent suspend or
-> > resume operations are likely to fail.
->
-> Also true, but the consequences are different.
->
-> > Storing the error effectively prevents subsequent operations from
-> > being carried out in both cases and that's why it is done.
->
-> I am afraid seeing these two operations as equivalent for this
-> purpose is a problem for two reasons:
->
-> 1. suspend can be initiated by the generic framework
+In this patch series, we move the callback from probe to probe_new, and add
+manufacturer and device ID check for hdc100x driver.
 
-Resume can be initiated by generic code too.
+LINK: [v1] https://lore.kernel.org/all/20220722172035.44977-1-potin.lai.pt@gmail.com/
+LINK: [v2] https://lore.kernel.org/all/20220727064415.940690-1-potin.lai.pt@gmail.com/
 
-> 2. a failure to suspend leads to worse power consumption,
->    while a failure to resume is -EIO, at best
+changes v1 --> v2:
+- fix typo in commit message
+- change to use probe_new
+- use device_get_match_data instead of i2c_of_match_device
 
-Yes, a failure to resume is a big deal.
+changes v2 --> v3:
+- move probe_new part into a separate patch
+- remove unsed variable
+- remove redundant checking of matched data
 
-> >> PM operations, however, are operating on a tree. A driver requesting
-> >> a resume may get an error code. But it has no idea where this error
-> >> comes from. The generic code knows at least that.
-> >
-> > Well, what do you mean by "the generic code"?
->
-> In this case the device model, which has the tree and all dependencies.
-> Error handling here is potentially very complicated because
->
-> 1. a driver can experience an error from a node higher in the tree
+Potin Lai (2):
+  iio: humidity: hdc100x: switch to probe_new callback
+  iio: humidity: hdc100x: add manufacturer and device ID check
 
-Well, there can be an error coming from a parent or a supplier, but
-the driver will not receive it directly.
+ drivers/iio/humidity/hdc100x.c | 75 +++++++++++++++++++++++++++-------
+ 1 file changed, 61 insertions(+), 14 deletions(-)
 
-> 2. a driver can trigger a failure in a sibling
-> 3. a driver for a node can be less specific than the drivers higher up
+-- 
+2.31.1
 
-I'm not sure I understand the above correctly.
-
-> Reducing this to a single error condition is difficult.
-
-Fair enough.
-
-> Suppose you have a USB device with two interfaces. The driver for A
-> initiates a resume. Interface A is resumed; B reports an error.
-> Should this block further attempts to suspend the whole device?
-
-It should IMV.
-
-> >> Let's look at at a USB storage device. The request to resume comes
-> >> from sd.c. sd.c is certainly not equipped to handle a PCI error
-> >> condition that has prevented a USB host controller from resuming.
-> >
-> > Sure, but this doesn't mean that suspending or resuming the device is
-> > a good idea until the error condition gets resolved.
->
-> Suspending clearly yes. Resuming is another matter. It has to work
-> if you want to operate without errors.
-
-Well, it has to physically work in the first place.  If it doesn't,
-the rest is a bit moot, because you end up with a non-functional
-device that appears to be permanently suspended.
-
-> >> I am afraid this part of the API has issues. And they keep growing
-> >> the more we divorce the device driver from the bus driver, which
-> >> actually does the PM operation.
-> >
-> > Well, in general suspending or resuming a device is a collaborative
-> > effort and if one of the pieces falls over, making it work again
-> > involves fixing up the failing piece and notifying the others that it
-> > is ready again.  However, that part isn't covered and I'm not sure if
-> > it can be covered in a sufficiently generic way.
->
-> True. But that still cannot solve the question what is to be done
-> if error handling fails. Hence my proposal:
-> - record all failures
-> - heed the record only when suspending
-
-I guess that would boil down to moving the power.runtime_error update
-from rpm_callback() to rpm_suspend()?

@@ -2,84 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE7858349B
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Jul 2022 23:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B82D58362A
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 03:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236969AbiG0VGE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 17:06:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S233438AbiG1BMB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 27 Jul 2022 21:12:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236924AbiG0VFg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 17:05:36 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A2C6171F
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 14:04:21 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id w8-20020a05600c014800b003a32e89bc4eso92673wmm.5
-        for <linux-iio@vger.kernel.org>; Wed, 27 Jul 2022 14:04:21 -0700 (PDT)
+        with ESMTP id S230007AbiG1BMA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 21:12:00 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7901512628;
+        Wed, 27 Jul 2022 18:11:59 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id c139so633497pfc.2;
+        Wed, 27 Jul 2022 18:11:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linexp-org.20210112.gappssmtp.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=hWFZXwysMvsN10lXDK6sChpf4X2qhnFs4AeSH8mvwTs=;
-        b=fKlk36kNOIXutyiEJaCv7Gy8Y8SXPlCpXEpYT3v5hsMHepohYOURnllehr0xqrdsih
-         078Fcvs34wsDW8L5O5Pd7eWtz38QHUh1HtvR4zooK/5hbc97+Wmqbny72ol7qEj20n3v
-         GJV9ONI+/SmPBwYp1ysGn6xl2li8XJ7rlA9/L3pzQVAH9NdJeieQevx7mwXWpqjgeSoa
-         y3rBAk4q3yoQrnxQHvFy1QFxG2EKnxE9CDr+o4Pfk15EcgVvqz2DQxJyuis6Eot8avz/
-         0qyxFLygD/WvXkzaPZoOgQu6Nur+1H3zTbzuIy0Cw3V0q/rP5rk2p5z1Bc3boCtnkvAC
-         qrHA==
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ujYPF0y3oFZZMdYY8+ib0+t+2yFUQfMg4yTIIJFKcg0=;
+        b=Z8gvV24s76gdJ7QhQCkUbk8/ADQXP/8LL74cpScGPdwx94UliOfobmbH33PQKGbGei
+         NlQtaRhNy/+1upkfKEadsEtc9iBqQuqB/Vqhkc51DCrWancHqyPr9/mwVrTAz2HcehET
+         +7nKr12ElNK219UI48yDwTZbvHoh8oNABy0578ef53T9jQnn40HZIFwaDgI69CW/xkm8
+         A0meEwJZIoGC9c1o/BfNIwubvkXWKxKVIR53wO/as8aEiJzPkDcnjCGExqkU7EZoNyBF
+         bAUDqPcTNFUw+hjjckBkneJOqGsndgUm8SyA/1+PdcThyhxZXUe0jJGYODsVW5TlRkUM
+         PX9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=hWFZXwysMvsN10lXDK6sChpf4X2qhnFs4AeSH8mvwTs=;
-        b=fg+rcgcO2XHre+ar6BjT7A4h3gRc7b+6qmB5GyRn00Y5lhRSaiicb5c/JhoWwDCE6d
-         CwD0Fj8MJcIHGLxCuWSQgNghhJOJAVkMK9Xj5vlfS0ZQmLI14O1ERNKm50DbHC9vQvHt
-         s0T9uXS+izT1LxqjP3mltVbkFqtvEwsei4iLtWy9stw/Wr9fYsZULFT2uWCodhq6+rMK
-         zHeaMOw91RYDV/OoUi52FXLCKN0FH6IKgwboKecFyKYe7ELv291223aMUJsIMHjRjy+p
-         iLRBrHjlzp6bYHp8JhgEMmIKysWO6lQOaO95pL3ZMJ2Qx249ChV5NlMPWbImNT7ZZYuW
-         EihA==
-X-Gm-Message-State: AJIora/+PxbK2KXVPkZtMMwLLECgxjN4c0ltRtNKwaBR7BUdamk7X92r
-        7s4D9K00q6P+b3Man8NeEoCHpQ==
-X-Google-Smtp-Source: AGRyM1uvQcL47CIAsOneuLf1vtRWhov+nEkxHt6C1rGUbebVn2iW0PNibO5XgN8bydxhr3hGx4Gw1g==
-X-Received: by 2002:a05:600c:1c26:b0:3a3:2251:c3cb with SMTP id j38-20020a05600c1c2600b003a32251c3cbmr4353158wms.126.1658955854767;
-        Wed, 27 Jul 2022 14:04:14 -0700 (PDT)
-Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:65a8:ebd8:4098:d9d0])
-        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b003a38606385esm37908wmq.3.2022.07.27.14.04.12
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ujYPF0y3oFZZMdYY8+ib0+t+2yFUQfMg4yTIIJFKcg0=;
+        b=0ESyfgnYGC4VZDBsgqfIihC0UhU6Byj7HPQUG0e+lEPZL16RKp1i8oknkYyzI2DHe/
+         O7CxcjgEm5MbgTUCVvsPptJs8GHTXyNfbpvm+mGc7pp8l6y4JUON2oFnjP9yZFlbexXa
+         vs18g2IvIVlkbSKM/9dwcnTaDADsvuQbPWz9kqb1jq8lz0IFgxtqxVlODnsH6bq4jLNV
+         6i4v8UHEt5kwSmsYiyUUsw7AfMlXrJ0Egx/spMqL5p8hW2bTZ2ghKneuUVulVYE/o5y4
+         a9ssPy9LG4fbwZmcz+56ZKgv+LYz9I+dF460+EdTotzWc+othD2sKan5sH+tIabLC/pG
+         ushg==
+X-Gm-Message-State: AJIora/4d58bX3P4odEtEcEcnJDSlRSht0djiBRD0pukbDU3IdVfcX2N
+        A82eRh8rh1m5+/T8WskSzWoAmbQdHMpKcQ==
+X-Google-Smtp-Source: AGRyM1sFj8hWCt9crl8FHg9a9CNojhkr9VWpLtqVvMeKHzWiOS9x6DxdKx93K+xpfyz/sUXA5Qlz4Q==
+X-Received: by 2002:a05:6a00:148d:b0:52b:946:67d2 with SMTP id v13-20020a056a00148d00b0052b094667d2mr24082747pfu.31.1658970718401;
+        Wed, 27 Jul 2022 18:11:58 -0700 (PDT)
+Received: from localhost.localdomain (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
+        by smtp.gmail.com with ESMTPSA id x194-20020a6286cb000000b0052ad49292f0sm14526215pfd.48.2022.07.27.18.11.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 14:04:14 -0700 (PDT)
-From:   Daniel Lezcano <daniel.lezcano@linexp.org>
-To:     daniel.lezcano@linaro.org, rafael@kernel.org
-Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, khilman@baylibre.com,
-        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
-        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
-        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
-        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
-        baolin.wang7@gmail.com, f.fainelli@gmail.com,
-        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
-        glaroque@baylibre.com, miquel.raynal@bootlin.com,
-        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
-        matthias.bgg@gmail.com, j-keerthy@ti.com,
+        Wed, 27 Jul 2022 18:11:57 -0700 (PDT)
+From:   Potin Lai <potin.lai.pt@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
-        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner
-        sunXi SoC support),
-        linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support)
-Subject: [PATCH v3 27/32] iio/drivers/sun4i_gpadc: Switch to new of thermal API
-Date:   Wed, 27 Jul 2022 23:02:48 +0200
-Message-Id: <20220727210253.3794069-28-daniel.lezcano@linexp.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220727210253.3794069-1-daniel.lezcano@linexp.org>
-References: <20220727210253.3794069-1-daniel.lezcano@linexp.org>
+        Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH v4 0/2] iio: humidity: hdc100x: add manufacturer and device ID check
+Date:   Thu, 28 Jul 2022 00:34:15 +0000
+Message-Id: <20220728003417.3083353-1-potin.lai.pt@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -87,56 +70,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The thermal OF code has a new API allowing to migrate the OF
-initialization to a simpler approach. The ops are no longer device
-tree specific and are the generic ones provided by the core code.
+In this patch series, we move the callback from probe to probe_new, and add
+manufacturer and device ID check for hdc100x driver.
 
-Convert the ops to the thermal_zone_device_ops format and use the new
-API to register the thermal zone with these generic ops.
+LINK: [v1] https://lore.kernel.org/all/20220722172035.44977-1-potin.lai.pt@gmail.com/
+LINK: [v2] https://lore.kernel.org/all/20220727064415.940690-1-potin.lai.pt@gmail.com/
+LINK: [v3] https://lore.kernel.org/all/20220727164133.973930-1-potin.lai.pt@gmail.com/
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
----
- drivers/iio/adc/sun4i-gpadc-iio.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+changes v1 --> v2:
+- fix typo in commit message
+- change to use probe_new
+- use device_get_match_data instead of i2c_of_match_device
 
-diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-index 2d393a4dfff6..13d1e937357c 100644
---- a/drivers/iio/adc/sun4i-gpadc-iio.c
-+++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-@@ -412,9 +412,9 @@ static int sun4i_gpadc_runtime_resume(struct device *dev)
- 	return 0;
- }
- 
--static int sun4i_gpadc_get_temp(void *data, int *temp)
-+static int sun4i_gpadc_get_temp(struct thermal_zone_device *tz, int *temp)
- {
--	struct sun4i_gpadc_iio *info = data;
-+	struct sun4i_gpadc_iio *info = tz->devdata;
- 	int val, scale, offset;
- 
- 	if (sun4i_gpadc_temp_read(info->indio_dev, &val))
-@@ -428,7 +428,7 @@ static int sun4i_gpadc_get_temp(void *data, int *temp)
- 	return 0;
- }
- 
--static const struct thermal_zone_of_device_ops sun4i_ts_tz_ops = {
-+static const struct thermal_zone_device_ops sun4i_ts_tz_ops = {
- 	.get_temp = &sun4i_gpadc_get_temp,
- };
- 
-@@ -637,9 +637,9 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
- 	pm_runtime_enable(&pdev->dev);
- 
- 	if (IS_ENABLED(CONFIG_THERMAL_OF)) {
--		info->tzd = thermal_zone_of_sensor_register(info->sensor_device,
--							    0, info,
--							    &sun4i_ts_tz_ops);
-+		info->tzd = thermal_of_zone_register(info->sensor_device,
-+						     0, info,
-+						     &sun4i_ts_tz_ops);
- 		/*
- 		 * Do not fail driver probing when failing to register in
- 		 * thermal because no thermal DT node is found.
+changes v2 --> v3:
+- move probe_new part into a separate patch
+- remove unsed variable
+- remove redundant checking of matched data
+
+changes v3 --> v4:
+- move ID support checking to probe()
+- add hdc100x_chip_data pointer into hdc100x_data for accessing in future
+
+Potin Lai (2):
+  iio: humidity: hdc100x: switch to probe_new callback
+  iio: humidity: hdc100x: add manufacturer and device ID check
+
+ drivers/iio/humidity/hdc100x.c | 74 +++++++++++++++++++++++++++-------
+ 1 file changed, 60 insertions(+), 14 deletions(-)
+
 -- 
-2.25.1
+2.31.1
 

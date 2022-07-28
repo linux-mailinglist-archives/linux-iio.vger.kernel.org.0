@@ -2,90 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F18105846CB
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 22:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44EE5584700
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 22:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229728AbiG1UCL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Jul 2022 16:02:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43906 "EHLO
+        id S229473AbiG1U0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jul 2022 16:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbiG1UCK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jul 2022 16:02:10 -0400
-Received: from smtp.smtpout.orange.fr (smtp07.smtpout.orange.fr [80.12.242.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3037A7647A
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jul 2022 13:02:09 -0700 (PDT)
-Received: from [192.168.1.18] ([90.11.190.129])
-        by smtp.orange.fr with ESMTPA
-        id H9hto2P7UoEdDH9htogjBd; Thu, 28 Jul 2022 22:02:06 +0200
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
-X-ME-Date: Thu, 28 Jul 2022 22:02:06 +0200
-X-ME-IP: 90.11.190.129
-Message-ID: <3033c2bb-bfe7-459c-2a2b-e99bf33b28b5@wanadoo.fr>
-Date:   Thu, 28 Jul 2022 22:02:05 +0200
+        with ESMTP id S229456AbiG1U0O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jul 2022 16:26:14 -0400
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568E526555;
+        Thu, 28 Jul 2022 13:26:11 -0700 (PDT)
+Received: (Authenticated sender: contact@artur-rojek.eu)
+        by mail.gandi.net (Postfix) with ESMTPA id 06EB1100006;
+        Thu, 28 Jul 2022 20:26:07 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v3 2/2] iio: time: capture-tiecap: capture driver support
- for ECAP
-Content-Language: fr
-To:     jpanis@baylibre.com
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mranostay@ti.com, robh+dt@kernel.org
-References: <20220728175124.468461-1-jpanis@baylibre.com>
- <20220728175124.468461-3-jpanis@baylibre.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20220728175124.468461-3-jpanis@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Date:   Thu, 28 Jul 2022 22:26:07 +0200
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     linux-input@vger.kernel.org, dmitry.torokhov@gmail.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        heiko@sntech.de, jic23@kernel.org, paul@crapouillou.net,
+        linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>,
+        Maya Matuszczyk <maccraft123mc@gmail.com>
+Subject: Re: [PATCH v8 2/3] Input: adc-joystick - Add polled input device
+ support
+In-Reply-To: <20220721164603.13534-3-macroalpha82@gmail.com>
+References: <20220721164603.13534-1-macroalpha82@gmail.com>
+ <20220721164603.13534-3-macroalpha82@gmail.com>
+Message-ID: <8c6efe60662609a92e2a4e758e784f66@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 28/07/2022 à 19:51, Julien Panis a écrit :
-> ECAP hardware on AM62x SoC supports capture feature. It can be used
-> to timestamp events (falling/rising edges) detected on signal input pin.
+On 2022-07-21 18:46, Chris Morgan wrote:
+> From: Chris Morgan <macromorgan@hotmail.com>
 > 
-> This commit adds capture driver support for ECAP hardware on AM62x SoC.
+> Add polled input device support to the adc-joystick driver. This is
+> useful for devices which do not have hardware capable triggers on
+> their SARADC. Code modified from adc-joystick.c changes made by Maya
+> Matuszczyk.
 > 
-> In the ECAP hardware, capture pin can also be configured to be in
-> PWM mode. Current implementation only supports capture operating mode.
-> Hardware also supports timebase sync between multiple instances, but
-> this driver supports simple independent capture functionality.
-> 
-> Signed-off-by: Julien Panis <jpanis-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> ---
+Hey Chris,
 
-[...]
+sorry for the late response. Comments in-line.
 
-> +static int ecap_iio_remove(struct platform_device *pdev)
+Cheers,
+Artur
+>  drivers/input/joystick/adc-joystick.c | 82 ++++++++++++++++++++-------
+>  1 file changed, 62 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/input/joystick/adc-joystick.c
+> b/drivers/input/joystick/adc-joystick.c
+> index 78ebca7d400a..085b8e10dfb5 100644
+> --- a/drivers/input/joystick/adc-joystick.c
+> +++ b/drivers/input/joystick/adc-joystick.c
+> @@ -26,8 +26,23 @@ struct adc_joystick {
+>  	struct adc_joystick_axis *axes;
+>  	struct iio_channel *chans;
+>  	int num_chans;
+> +	bool polled;
+>  };
+> 
+> +static void adc_joystick_poll(struct input_dev *input)
 > +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct ecap_iio_dev *ecap_dev = iio_priv(indio_dev);
+> +	struct adc_joystick *joy = input_get_drvdata(input);
+> +	int i, val, ret;
 > +
-> +	if (ecap_dev->enabled)
-> +		ecap_iio_capture_disable(indio_dev);
-> +
-> +	regmap_exit(ecap_dev->regmap);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-
-Hi,
-
-should these 2 functions be part of an error handling path of the probe, 
-or handled with a devm_add_action_or_reset()?
-
-Just my 2c,
-
-CJ
-
-> +
-> +	return 0;
+> +	for (i = 0; i < joy->num_chans; i++) {
+> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
+> +		if (ret < 0)
+> +			return;
+> +		input_report_abs(input, joy->axes[i].code, val);
+> +	}
+> +	input_sync(input);
 > +}
 > +
+>  static int adc_joystick_handle(const void *data, void *private)
+>  {
+>  	struct adc_joystick *joy = private;
+> @@ -178,7 +193,9 @@ static int adc_joystick_probe(struct 
+> platform_device *pdev)
+>  	struct input_dev *input;
+>  	int error;
+>  	int bits;
+> +	int chan_storage;
+>  	int i;
+> +	unsigned int poll_interval;
+> 
+>  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+>  	if (!joy)
+> @@ -192,16 +209,31 @@ static int adc_joystick_probe(struct
+> platform_device *pdev)
+>  		return error;
+>  	}
+> 
+> -	/* Count how many channels we got. NULL terminated. */
+> +	if (device_property_present(dev, "poll-interval")) {
+> +		error = device_property_read_u32(dev, "poll-interval",
+> +						 &poll_interval);
+> +		if (error)
+> +			return error;
+> +		joy->polled = true;
+> +	}
+> +
+> +	/* Count how many channels we got. NULL terminated. Do not check the
+> +	 * storage size if using polling.
+> +	 */
+As per Linux coding style, the multi-line comment opens with a lone `/*`
+line. Also, move the second sentence into a new line for readability.
+
+> +	chan_storage = joy->chans[0].channel->scan_type.storagebits;
+>  	for (i = 0; joy->chans[i].indio_dev; i++) {
+> -		bits = joy->chans[i].channel->scan_type.storagebits;
+> -		if (!bits || bits > 16) {
+> -			dev_err(dev, "Unsupported channel storage size\n");
+> -			return -EINVAL;
+> -		}
+> -		if (bits != joy->chans[0].channel->scan_type.storagebits) {
+> -			dev_err(dev, "Channels must have equal storage size\n");
+> -			return -EINVAL;
+> +		if (!joy->polled) {
+> +			bits = joy->chans[i].channel->scan_type.storagebits;
+> +			if (!bits || bits > 16) {
+> +				dev_err(dev,
+> +					"Unsupported channel storage size\n");
+> +				return -EINVAL;
+> +			}
+> +			if (bits != chan_storage) {
+> +				dev_err(dev,
+> +					"Channels must be equal size\n");
+> +				return -EINVAL;
+> +			}
+Just do `for (i = 0; !joy->polled && joy->chans[i].indio_dev; i++)`, as
+this will terminate early if we're polling.
+Then we'll also be able to restore the loop body to its original code 
+and
+get rid of that `chan_storage` helper.
+
+>  		}
+>  	}
+>  	joy->num_chans = i;
+> @@ -215,8 +247,14 @@ static int adc_joystick_probe(struct 
+> platform_device *pdev)
+>  	joy->input = input;
+>  	input->name = pdev->name;
+>  	input->id.bustype = BUS_HOST;
+> -	input->open = adc_joystick_open;
+> -	input->close = adc_joystick_close;
+> +
+> +	if (joy->polled) {
+> +		input_setup_polling(input, adc_joystick_poll);
+> +		input_set_poll_interval(input, poll_interval);
+> +	} else {
+> +		input->open = adc_joystick_open;
+> +		input->close = adc_joystick_close;
+> +	}
+> 
+>  	error = adc_joystick_set_axes(dev, joy);
+>  	if (error)
+> @@ -229,16 +267,20 @@ static int adc_joystick_probe(struct
+> platform_device *pdev)
+>  		return error;
+>  	}
+> 
+> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+> -	if (IS_ERR(joy->buffer)) {
+> -		dev_err(dev, "Unable to allocate callback buffer\n");
+> -		return PTR_ERR(joy->buffer);
+> -	}
+> +	if (!joy->polled) {
+> +		joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
+> +						     joy);
+> +		if (IS_ERR(joy->buffer)) {
+> +			dev_err(dev, "Unable to allocate callback buffer\n");
+> +			return PTR_ERR(joy->buffer);
+> +		}
+> 
+> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, 
+> joy->buffer);
+> -	if (error)  {
+> -		dev_err(dev, "Unable to add action\n");
+> -		return error;
+> +		error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
+> +						 joy->buffer);
+> +		if (error)  {
+> +			dev_err(dev, "Unable to add action\n");
+> +			return error;
+> +		}
+>  	}
+> 
+>  	return 0;
+

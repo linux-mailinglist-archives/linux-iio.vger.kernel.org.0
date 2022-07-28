@@ -2,209 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C72B958362E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 03:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E5F3583D6C
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 13:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237094AbiG1BME (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 27 Jul 2022 21:12:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
+        id S236167AbiG1LbT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jul 2022 07:31:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbiG1BME (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 27 Jul 2022 21:12:04 -0400
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BDB3134F;
-        Wed, 27 Jul 2022 18:12:03 -0700 (PDT)
-Received: by mail-pl1-x633.google.com with SMTP id d3so483007pls.4;
-        Wed, 27 Jul 2022 18:12:03 -0700 (PDT)
+        with ESMTP id S233669AbiG1LbR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jul 2022 07:31:17 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F302527B11
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jul 2022 04:31:14 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id u14-20020a05600c00ce00b003a323062569so886634wmm.4
+        for <linux-iio@vger.kernel.org>; Thu, 28 Jul 2022 04:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=X9+m39qpfDk/Jz5JojeONM6iXLnZUrRI7Za8g7a2MjA=;
-        b=YnUAKpUwr6Z0hgClMKu/z6gzuLd2HBzBV74KpUUfhItEXPghvWt2bQV0US4N6hYI3I
-         5exC2Hf0DXL7jPYWOWE/4oF+cKcfdLF7zIcmqJrZsEJV3l14mXKMQrEoydw/RBipfmjD
-         yypu1wbl0DelATYZCqWMGZ5buPDS4AThMF9OQomt4AbF3M8ald5jUgiJfi6MtPvtkv37
-         msE4qVe2oGcm94ygJfi/SXKxPbQNNNVrT52INPVXGD0G3VcN3yWEvrpil1/hX0LBlg5j
-         MrfnGOjaUvrli4KhYSLoO9nBQc5SACnB/odrJ1wGjeCydL7o/d+T1U1FlUicGliIQcFN
-         hzAA==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=SMC59iUGEUeIWikaYVLjy2odSUsf6J1BxrN5JwfwEpY=;
+        b=I2LvfwRSLT0FBLkzKL97tXa0j3AxOgqK4JwBDMsSM+Z8HGBr1Hsl+SUU8HPYMLz66e
+         8uwZd7/fPyOTDqCE8CpYD1EB4BMYrqBICeOrQcRtAgtcyK1eE/L39avZt/VLlWPC4Uor
+         LoRGhJiBQNR/hDNsANtNPDEqnDWOhfwEJTmwgA0Cv1jj23KAfdmGOY1sasEYVFjLX/YX
+         ZlPZ2zhQiq7NYJ6LHAqKNcChUNlEupakqOtGb+CZPupdBgaFq1mBMgBamPwT1GZ2CiGh
+         Xxn5YMmbVopGqmz+InpOVGDvq/m/bhIDEUtdkMhmWHk2Kp5mn0bff3ZHplSxHO3nCLJd
+         f6Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=X9+m39qpfDk/Jz5JojeONM6iXLnZUrRI7Za8g7a2MjA=;
-        b=sYsZCzZTB4juBTDmWrH5bWlYLdGFgJ43MMyTP1uMH1wivggpmfqBbOxR2FEi9prRST
-         0e+gbEPvh4LDR7veNOqqdBrQW6+lNHB7zt61g9XWDT9LPhZENFEPLaduEgtp0JrO+Csm
-         gIUokFyqXfJIFTf4LmLrvoNJgKJKnwmgiavU48jzbTveQEFcWYlTGiz/hLkPSOIcf+Px
-         mZhFpzfsOMbF3PUYxXGOHZax+pptcUN26gKIrabZXV1l/idAx3YXXj88rYj9ARjM4qKP
-         dOqnzBV+PA/J9dmN6rSwRGjNzV6KYPAOLMMao7g66K2107WXnKVbZHkSju9WTI7ZpWmr
-         Wkjg==
-X-Gm-Message-State: AJIora82irl9LVIToS6tL4wioonzSIYnRm3VZwQB0S8yxM5T5zqAJ0Ff
-        Sead+N7osYMUKuVUTXYmC8n0RQrHXvI2QQ==
-X-Google-Smtp-Source: AGRyM1uyHj9EthnZvg5Fhnn4IYVAr8XGvk8wF6m1uPtl9tyYnlhwKWAyK0jM9dD3AcisXkE275UHBw==
-X-Received: by 2002:a17:902:6bcc:b0:16d:17db:3374 with SMTP id m12-20020a1709026bcc00b0016d17db3374mr24798082plt.101.1658970722825;
-        Wed, 27 Jul 2022 18:12:02 -0700 (PDT)
-Received: from localhost.localdomain (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
-        by smtp.gmail.com with ESMTPSA id x194-20020a6286cb000000b0052ad49292f0sm14526215pfd.48.2022.07.27.18.12.00
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=SMC59iUGEUeIWikaYVLjy2odSUsf6J1BxrN5JwfwEpY=;
+        b=jAjYybfjO4NXcJg2FyRCm8wFEzaNS6TEtr0jzED8R6akLKmitLpLEKDtlzj28g+csA
+         rCE3b2uZwuFBZKZEIGAMQN1u+qOw8hmBms6v4c8JwViq/5hr366enpIjuy2fwYiUY3yd
+         lF67PpopvYt+pAZSrchjb/hpkyzpP2mQu3HJKijSbgUyb5w/QKqtkLwwERc+SRD4lsu5
+         zJA1xsd/7OKVj3umQN6awrIon85Aa9utXcCxhD+PPsKygOSM9LtCYX2fw/z2X1DvzODI
+         mfXub+X1mzXLBTq/e3fqg/WKEZ7POmPuypxgEhMnP3oCKfJI3qgX7gz41UR0jt08lK29
+         T/Fw==
+X-Gm-Message-State: AJIora99yveJTzYZZKXSFwD1E3pa3Y2rXMclOOmlno47SaxfQEX1yVK9
+        pdZNm81HJMllhjhGtbc8eOA3gA==
+X-Google-Smtp-Source: AGRyM1vjIPgxwYbMk8BsnZlSouB9NDyINH+vUJA52rfBsJa1/epNS6uEmdrCNjJkZQ9qNZQU8kklUA==
+X-Received: by 2002:a05:600c:3556:b0:3a3:2a9c:f26 with SMTP id i22-20020a05600c355600b003a32a9c0f26mr6221269wmq.58.1659007873312;
+        Thu, 28 Jul 2022 04:31:13 -0700 (PDT)
+Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net. [80.7.220.175])
+        by smtp.gmail.com with ESMTPSA id z22-20020a1cf416000000b003a35516ccc3sm937306wma.26.2022.07.28.04.31.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Jul 2022 18:12:02 -0700 (PDT)
-From:   Potin Lai <potin.lai.pt@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Thu, 28 Jul 2022 04:31:12 -0700 (PDT)
+Date:   Thu, 28 Jul 2022 12:31:09 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Potin Lai <potin.lai.pt@gmail.com>
-Subject: [PATCH v4 2/2] iio: humidity: hdc100x: add manufacturer and device ID check
-Date:   Thu, 28 Jul 2022 00:34:17 +0000
-Message-Id: <20220728003417.3083353-3-potin.lai.pt@gmail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220728003417.3083353-1-potin.lai.pt@gmail.com>
-References: <20220728003417.3083353-1-potin.lai.pt@gmail.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Subject: Re: [PATCH v6 13/13] video: backlight: mt6370: Add MediaTek MT6370
+ support
+Message-ID: <20220728113109.7gf3b36mqjxlhcq3@maple.lan>
+References: <20220722102407.2205-1-peterwu.pub@gmail.com>
+ <20220722102407.2205-14-peterwu.pub@gmail.com>
+ <20220725103128.xtaw2c4y5fobowg7@maple.lan>
+ <CABtFH5LUKTZenTktq3v1JZ9xe-yJFsMvCZuwDhmxdT87k0O-zA@mail.gmail.com>
+ <20220726093058.2fz2p2vg7xpfsnfe@maple.lan>
+ <CABtFH5+in-+=6r3wOvQ8-78DT9CXaMursJukhx+kdwMvvP3djw@mail.gmail.com>
+ <20220726115954.kpkmidrk3zo3dpbq@maple.lan>
+ <CABtFH5K3LLw9ZqY0Qrrx_8xs+3ioJpzP0=_HptmoDY6tvu2JVg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABtFH5K3LLw9ZqY0Qrrx_8xs+3ioJpzP0=_HptmoDY6tvu2JVg@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add manufacturer and device ID checking during probe, and skip the
-checking if chip model not supported.
+On Wed, Jul 27, 2022 at 02:24:46PM +0800, ChiaEn Wu wrote:
+> On Tue, Jul 26, 2022 at 7:59 PM Daniel Thompson
+> <daniel.thompson@linaro.org> wrote:
+> > > > > So should we make all 16384 steps of MT6372 available to users?
+> > > >
+> > > > Yes.
+> > > >
+> > > >
+> > > > > Does that mean the DTS needs to be modified as well?
+> > > >
+> > > > Yes... the property to set initial brightness needs a 14-bit range.
+> > > >
+> > > > It would also be a good idea to discuss with the DT maintainers whether
+> > > > you should introduce a second compatible string (ending 6372) in order
+> > > > to allow the DT validation checks to detect accidental use of MT6372
+> > > > ranges on MT6370 hardware.
 
-Supported:
-- HDC1000
-- HDC1010
-- HDC1050
-- HDC1080
+[snip]
 
-Not supported:
-- HDC1008
+> > > > I'd be curious what the compatiblity reasons are. In other words what
+> > > > software breaks?
+> > >
+> > > The reason is as above. We just hope the users who use this series SubPMIC can
+> > > directly apply this driver to drive the backlight device without
+> > > knowing the underlying hardware.
+> > > Not software breaks.
+> >
+> > As above, ignoring the max_brightness property is a bug in the
+> > userspace. I'm still unclear why sending faked ranges to userspace
+> > it a better solution than fixing the userspace.
+>
+> Ok, I got it!
+> If I add a second compatible string (like 'mediatek,mt6372-backlight')
+> in the DT section,
+> and append 'if-then-else' to determine the correct maximum value of
+> 'default-brightness' and 'max-brightness',
+> Also, I will append 'bled exponential mode' to make user control using
+> linear or exponential mode.
 
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
- drivers/iio/humidity/hdc100x.c | 69 ++++++++++++++++++++++++++++------
- 1 file changed, 58 insertions(+), 11 deletions(-)
+I'd be very pleased to see support for exponential mode added: it's a
+much better way to control LEDs and backlights.
 
-diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-index 0d514818635cb..be1244577921d 100644
---- a/drivers/iio/humidity/hdc100x.c
-+++ b/drivers/iio/humidity/hdc100x.c
-@@ -34,7 +34,25 @@
- #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
- #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
- 
-+#define HDC100X_REG_MFR_ID	0xFE
-+#define HDC100X_REG_DEV_ID	0xFF
-+
-+#define HDC100X_MFR_ID	0x5449
-+
-+struct hdc100x_chip_data {
-+	bool support_mfr_check;
-+};
-+
-+static const struct hdc100x_chip_data hdc100x_chip_data = {
-+	.support_mfr_check	= true,
-+};
-+
-+static const struct hdc100x_chip_data hdc1008_chip_data = {
-+	.support_mfr_check	= false,
-+};
-+
- struct hdc100x_data {
-+	const struct hdc100x_chip_data *chip_data;
- 	struct i2c_client *client;
- 	struct mutex lock;
- 	u16 config;
-@@ -351,8 +369,32 @@ static const struct iio_info hdc100x_info = {
- 	.attrs = &hdc100x_attribute_group,
- };
- 
-+static int hdc100x_read_mfr_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
-+}
-+
-+static int hdc100x_read_dev_id(struct i2c_client *client)
-+{
-+	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
-+}
-+
-+static bool is_valid_hdc100x(struct i2c_client *client)
-+{
-+	int mfr_id, dev_id;
-+
-+	mfr_id = hdc100x_read_mfr_id(client);
-+	dev_id = hdc100x_read_dev_id(client);
-+	if (mfr_id == HDC100X_MFR_ID &&
-+	   (dev_id == 0x1000 || dev_id == 0x1050))
-+		return true;
-+
-+	return false;
-+}
-+
- static int hdc100x_probe(struct i2c_client *client)
- {
-+	const struct hdc100x_chip_data *chip_data;
- 	struct iio_dev *indio_dev;
- 	struct hdc100x_data *data;
- 	int ret;
-@@ -361,6 +403,10 @@ static int hdc100x_probe(struct i2c_client *client)
- 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
- 		return -EOPNOTSUPP;
- 
-+	chip_data = device_get_match_data(&client->dev);
-+	if (chip_data->support_mfr_check && !is_valid_hdc100x(client))
-+		return -EINVAL;
-+
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
-@@ -368,6 +414,7 @@ static int hdc100x_probe(struct i2c_client *client)
- 	data = iio_priv(indio_dev);
- 	i2c_set_clientdata(client, indio_dev);
- 	data->client = client;
-+	data->chip_data = chip_data;
- 	mutex_init(&data->lock);
- 
- 	indio_dev->name = dev_name(&client->dev);
-@@ -396,22 +443,22 @@ static int hdc100x_probe(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id hdc100x_id[] = {
--	{ "hdc100x", 0 },
--	{ "hdc1000", 0 },
--	{ "hdc1008", 0 },
--	{ "hdc1010", 0 },
--	{ "hdc1050", 0 },
--	{ "hdc1080", 0 },
-+	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
-+	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
-+	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, hdc100x_id);
- 
- static const struct of_device_id hdc100x_dt_ids[] = {
--	{ .compatible = "ti,hdc1000" },
--	{ .compatible = "ti,hdc1008" },
--	{ .compatible = "ti,hdc1010" },
--	{ .compatible = "ti,hdc1050" },
--	{ .compatible = "ti,hdc1080" },
-+	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
-+	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
-+	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
--- 
-2.31.1
 
+> These changes I will explain to DT's maintainer again.
+
+Excellent. I know DT maintainers are copied into this thread but they
+will probably not be following this patch's thread so it is better to
+discuss in the mail thread for the DT bindings!
+
+
+> Back to the driver section,
+> do I still need to use the register to confirm again whether this
+> SubPMIC used now is MT6372 and record this information? (using
+> 'mt6370_check_vendor_info()')
+> I am afraid that the user who uses the MT6370 hardware, but the DT
+> compatible string is set to 'mediatek,mt6372-backlight'.
+> This may cause errors when update/get brightness values.
+> So I hope the driver here can check again to make sure the
+> 'default-brightness', 'max-brightness', can be updated/got correctly.
+> I don't know if this will make you feel redundant if I do this??
+
+Yes, it's good idea to check the hardware model during probe. I'd
+suggest just reporting this as an error ("Buggy DT, wrong compatible
+string") rather than trying to re-intepret the parameters.
+
+
+Daniel.

@@ -2,179 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F48758403B
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 15:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B3958410C
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Jul 2022 16:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbiG1NoP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 28 Jul 2022 09:44:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49424 "EHLO
+        id S229506AbiG1OZr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 28 Jul 2022 10:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229722AbiG1NoP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jul 2022 09:44:15 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEA461D74
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jul 2022 06:44:13 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id r14so2026358ljp.2
-        for <linux-iio@vger.kernel.org>; Thu, 28 Jul 2022 06:44:13 -0700 (PDT)
+        with ESMTP id S231786AbiG1OZq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 28 Jul 2022 10:25:46 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14CBC3C144;
+        Thu, 28 Jul 2022 07:25:45 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 141so3518302ybn.4;
+        Thu, 28 Jul 2022 07:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=t3snUb/RB7GBK47suv0EVR2ZsOaRly5GONJO77oiuQg=;
-        b=sOfaZgsXdyu9YFFlp0fBAF2zTWC0nkR9f1upJND4qGEPvrIrLVegHEtcimHFcC9AGq
-         prtZcg30BThzrAdiXdKEkUpRniIlN96f9mAQHH7S+CtLKp+3fTUZSPlD611eQ2dtYPjR
-         YqiMQUjkRHEf04LzZ3ppP6nOtWAGMc2bT8RjQ/hyE7z92pAwqHUhynHwvZZNtP4KbouY
-         eceF+JDX0LoKRTtVK45Nwa4hAEhH/SEhaMDggMzfvU4kS+8AyKVNwNkLJElivl4nSrZE
-         TmqN96xweMiMzHG2Ydb14z1yTvzz3i2DMY+wiFAizX7sPBHqBoMkScO6+hRyMgBmlRvl
-         OhAg==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=p3LundJe/B7kP70p/sHLOn4E+FS4l10QjqFmK00htFE=;
+        b=A1npVQRsIIGhqrLf8k1afl0RnpwTJqtndWJ9zwwdiHBec1qyAdFLwzqHsOSEz3tCvV
+         J33JylIt6+Pd/jdRlsNR8UNmRloDG3G3NH8SDxk+u/mKNySVTad5ytB99iquy75NDEmJ
+         4mWC5CLDqVkcs4L2XoIG3yXXPEAHHG/8Tcg/Dvv9GYAPEUkBT69Sf5SENvQPZzOzH0sX
+         rfGEF5dzUYaNlMOHu9Bo+MhNb46gjzqbFsnt6Os5CtChAsnh8Oe9HHUf8ZzIl+foGeav
+         4tev6dNQXoIBnvQvDpzSxoDwu4FxCVkjoAtNixqsdq3d7+awDvcxDaofyreOs9jcFNbc
+         pM7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=t3snUb/RB7GBK47suv0EVR2ZsOaRly5GONJO77oiuQg=;
-        b=3wMMFl+Z8WBUrn7u5dIYWgoCVvTuLY6fncNmZ8cxOlXpW7kGByZIYzql27NINEFCrF
-         BEBd70ELl3Uz16llSK3z7Rp8PqArr4tMvhi2+QD0wFI2Bg4iu36BQFhOStK3btD5CJTF
-         m9V1BJS0uBC9ILSUHvHMqI13qCmGveyZem5AYgipmet2mN80GrhGYTOZk3CakbNBOX95
-         khzkb7ythR1jTIo6BfA9R1AxkqYaBvKbHB0dhNMgycBkTBsdGRnRqC5+YoYLCJ8eg4Q2
-         tPt8L7Od22iGurEQVwRkW8Ad4K9yYkkKVpVb0ggyqTHxjzsdGkY5xDaJVlw2LKuy6wpM
-         2UXA==
-X-Gm-Message-State: AJIora+xq3uXL3pGv//a4vZ9rd1Gd9tWxR+zmATbwp3Q0KnPAJ02vgaJ
-        VR2S8QT62hBw4xfH9VN9HafkMw==
-X-Google-Smtp-Source: AGRyM1uZFOldfIslMBj3ijO/FI232ybFsJuneomS8qRe2mSt04mZInbLVyYT4ft2fJRvZF6pDwVzIA==
-X-Received: by 2002:a05:651c:1993:b0:25e:2766:924 with SMTP id bx19-20020a05651c199300b0025e27660924mr2108589ljb.231.1659015852086;
-        Thu, 28 Jul 2022 06:44:12 -0700 (PDT)
-Received: from [192.168.3.197] (78-26-46-173.network.trollfjord.no. [78.26.46.173])
-        by smtp.gmail.com with ESMTPSA id v23-20020a2e9f57000000b0025de9a05176sm149221ljk.111.2022.07.28.06.44.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Jul 2022 06:44:11 -0700 (PDT)
-Message-ID: <5f728a46-d222-a734-ce69-5adb695fb374@linaro.org>
-Date:   Thu, 28 Jul 2022 15:44:10 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=p3LundJe/B7kP70p/sHLOn4E+FS4l10QjqFmK00htFE=;
+        b=6RF8NVyqer2ry7KkMbl4IGe3s466k9oAtT8aexLm+GyWJ8LGxFSmOwyN77/S38+3c1
+         fKKwh2CnoBJL8cg15hV7rxdNiwuSvH+rPXrZGZntlbgnmWQ4y7yi4yAx5kFspcdVe0pr
+         +pByPs6GHVdjawPpGZV0FuOoHi0L5tU0q2NfKxxMibBhfWpUr5HDe5XVX9U5lF6ZadYw
+         /qHuBuHuM2yrtiLfokOHvCGQXCqontHwfRxWYG/FcKKacSIVP9tleGsyDrOCvm/DeoYR
+         b+ucXBpRe03WGawwrsk6EXEOzdEoKDGs0tPFSDZgFbEIq6qDVPpJrJBzhBd4JliSP5kO
+         CUjA==
+X-Gm-Message-State: AJIora9AUiv+GEFNUaem3B7qlfBZvrywD5GTOgrdxToXQkTak2+zIN/G
+        dB1ZendnebimntracZRkcoXk8sTco+kdtkssDs0=
+X-Google-Smtp-Source: AGRyM1tCj4kGBTNXRwFwSGAlKun9Kno3+3NAkIfxjL5nye0CiOrWdeD4Is2ry7fRDFK14XMZzZ9IWnwfFJOA1A028zM=
+X-Received: by 2002:a25:e401:0:b0:66e:280a:98cd with SMTP id
+ b1-20020a25e401000000b0066e280a98cdmr20245601ybh.540.1659018344244; Thu, 28
+ Jul 2022 07:25:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 2/2] iio: time: capture-tiecap: capture driver support
- for ECAP
-Content-Language: en-US
-To:     Julien Panis <jpanis@baylibre.com>, jic23@kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mranostay@ti.com
-References: <20220728125212.76728-1-jpanis@baylibre.com>
- <20220728125212.76728-3-jpanis@baylibre.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220728125212.76728-3-jpanis@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <202207190634.ToyhlXSz-lkp@intel.com> <0551a3ad-8c42-78fe-5b50-ebbc003e55e6@intel.com>
+ <CANRwn3R48rvwnygdyKhmFE8wD+BCCHrTWa-M=uTvpnK5Jo3vww@mail.gmail.com>
+In-Reply-To: <CANRwn3R48rvwnygdyKhmFE8wD+BCCHrTWa-M=uTvpnK5Jo3vww@mail.gmail.com>
+From:   Jason Gerecke <killertofu@gmail.com>
+Date:   Thu, 28 Jul 2022 07:26:00 -0700
+Message-ID: <CANRwn3Tgumg-mZ9sV=8AXevag9z2s=mTF4qqZW2KenDmc9b1wQ@mail.gmail.com>
+Subject: Re: [PATCH] i2c: Use u8 type in i2c transfer calls
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Wolfram Sang <wsa-dev@sang-engineering.com>
+Cc:     linux-i2c@vger.kernel.org, Ping Cheng <pinglinux@gmail.com>,
+        "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
+        Jason Gerecke <jason.gerecke@wacom.com>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 28/07/2022 14:52, Julien Panis wrote:
-> ECAP hardware on AM62x SoC supports capture feature. It can be used
-> to timestamp events (falling/rising edges) detected on signal input pin.
-> 
-> This commit adds capture driver support for ECAP hardware on AM62x SoC.
-> 
-> In the ECAP hardware, capture pin can also be configured to be in
+On Wed, Jul 20, 2022 at 12:01 PM Jason Gerecke <killertofu@gmail.com> wrote=
+:
+>
+> On Tue, Jul 19, 2022 at 5:21 PM kernel test robot <rong.a.chen@intel.com>=
+ wrote:
+> >
+> >
+> > Hi Jason,
+> >
+> > I love your patch! Yet something to improve:
+> >
+> > [auto build test ERROR on wsa/i2c/for-next]
+> > [also build test ERROR on linus/master v5.19-rc7 next-20220718]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> >
+> > url:
+> > https://github.com/intel-lab-lkp/linux/commits/Jason-Gerecke/i2c-Use-u8=
+-type-in-i2c-transfer-calls/20220718-233658
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git
+> > i2c/for-next
+> > config: hexagon-randconfig-r026-20220718
+> > (https://download.01.org/0day-ci/archive/20220719/202207190634.ToyhlXSz=
+-lkp@intel.com/config)
+> > compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project
+> > d74b88c69dc2644bd0dc5d64e2d7413a0d4040e5)
+> > reproduce (this is a W=3D1 build):
+> >          wget
+> > https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cros=
+s
+> > -O ~/bin/make.cross
+> >          chmod +x ~/bin/make.cross
+> >          #
+> > https://github.com/intel-lab-lkp/linux/commit/9732240c23a365c0590f05ce8=
+3196869235a2ea7
+> >          git remote add linux-review https://github.com/intel-lab-lkp/l=
+inux
+> >          git fetch --no-tags linux-review
+> > Jason-Gerecke/i2c-Use-u8-type-in-i2c-transfer-calls/20220718-233658
+> >          git checkout 9732240c23a365c0590f05ce83196869235a2ea7
+> >          # save the config file
+> >          mkdir build_dir && cp config build_dir/.config
+> >          COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang make.cross=
+ W=3D1
+> > O=3Dbuild_dir ARCH=3Dhexagon SHELL=3D/bin/bash drivers/iio/adc/
+> >
+> > If you fix the issue, kindly add following tag where applicable
+> > Reported-by: kernel test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> > >> drivers/iio/adc/max1363.c:1645:12: error: incompatible function poin=
+ter types assigning to 'int (*)(const struct i2c_client *, const char *, in=
+t)' from 'int (const struct i2c_client *, const u8 *, int)' (aka 'int (cons=
+t struct i2c_client *, const unsigned char *, int)') [-Werror,-Wincompatibl=
+e-function-pointer-types]
+> >                     st->send =3D i2c_master_send;
+> >                              ^ ~~~~~~~~~~~~~~~
+> > >> drivers/iio/adc/max1363.c:1646:12: error: incompatible function poin=
+ter types assigning to 'int (*)(const struct i2c_client *, char *, int)' fr=
+om 'int (const struct i2c_client *, u8 *, int)' (aka 'int (const struct i2c=
+_client *, unsigned char *, int)') [-Werror,-Wincompatible-function-pointer=
+-types]
+> >                     st->recv =3D i2c_master_recv;
+> >                              ^ ~~~~~~~~~~~~~~~
+> >     2 errors generated.
+>
+> Wolfram and Jonathan,
+>
+> Writing a patch to fix the new warnings generated by my I2C patch is
+> simple enough, but I'd like some help coordinating getting both
+> patches landed. Should I wait for the I2C patch to land in "for-next"
+> before sending the IIO fix, or would it be preferred to send the IIO
+> fix right now so that both patches can be reviewed simultaneously?
 
-Thank you for your patch. There is something to discuss/improve.
+It's been pretty quiet, so asking again for any thoughts on how to
+best address this tangle...
 
-(...)
-
-> +static int ecap_iio_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct ecap_iio_dev *ecap_dev;
-> +	struct iio_dev *indio_dev;
-> +	void __iomem *mmio_base;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*ecap_dev));
-> +	if (IS_ERR(indio_dev)) {
-> +		dev_err(dev, "failed to allocate memory for iio device\n");
-
-Do not print messages, which core takes care of.
-
-> +		return PTR_ERR(indio_dev);
-> +	}
-> +
-> +	ecap_dev = iio_priv(indio_dev);
-> +
-> +	ecap_dev->clk = devm_clk_get(dev, "fck");
-> +	if (IS_ERR(ecap_dev->clk)) {
-> +		dev_err(dev, "failed to get clock\n");
-> +		return PTR_ERR(ecap_dev->clk);
-> +	}
-> +
-> +	ret = clk_prepare_enable(ecap_dev->clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable clock\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(dev, ecap_iio_clk_disable, ecap_dev->clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to add clock disable action\n");
-> +		return ret;
-> +	}
-> +
-> +	ecap_dev->clk_rate = clk_get_rate(ecap_dev->clk);
-> +	if (!ecap_dev->clk_rate) {
-> +		dev_err(dev, "failed to get clock rate\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (prescaler > ECAP_PS_MAX_VAL) {
-> +		prescaler = ECAP_PS_MAX_VAL;
-> +		dev_warn(dev, "prescaler out of range, forced to %d\n", prescaler);
-> +	}
-> +
-> +	mmio_base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(mmio_base)) {
-> +		dev_err(dev, "failed to remap io\n");
-
-No need for msg.
-
-> +		return PTR_ERR(mmio_base);
-> +	}
-> +
-> +	ecap_dev->regmap = regmap_init_mmio(dev, mmio_base, &ecap_iio_regmap_config);
-> +	if (IS_ERR(ecap_dev->regmap)) {
-> +		dev_err(dev, "failed to init regmap\n");
-> +		return PTR_ERR(ecap_dev->regmap);
-> +	}
-> +
-> +	indio_dev->name = devm_kasprintf(dev, GFP_KERNEL,
-> +					 "ecap-iio-%p", mmio_base);
-> +	indio_dev->info = &ecap_iio_info;
-> +	indio_dev->channels = ecap_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(ecap_iio_channels);
-> +	indio_dev->modes = INDIO_BUFFER_SOFTWARE;
-> +
-> +	ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev, NULL, NULL);
-> +	if (ret) {
-> +		dev_err(dev, "failed to setup iio buffer\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = platform_get_irq(pdev, 0);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to get irq\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_request_irq(dev, ret, ecap_iio_isr, 0, pdev->name, indio_dev);
-> +	if (ret) {
-> +		dev_err(dev, "failed to request irq\n");
-> +		return ret;
-> +	}
-
-Best regards,
-Krzysztof
+Jason

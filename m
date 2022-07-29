@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 501B258532F
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Jul 2022 18:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD5A3585339
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Jul 2022 18:13:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237207AbiG2QI5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Jul 2022 12:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
+        id S237042AbiG2QNz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Jul 2022 12:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236390AbiG2QI4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 12:08:56 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5413E88CC0;
-        Fri, 29 Jul 2022 09:08:53 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id rq15so3328945ejc.10;
-        Fri, 29 Jul 2022 09:08:53 -0700 (PDT)
+        with ESMTP id S231158AbiG2QNy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 12:13:54 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F2C8051A;
+        Fri, 29 Jul 2022 09:13:53 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id a89so6404943edf.5;
+        Fri, 29 Jul 2022 09:13:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=6JrbP87qPML6gdz0M7zzqoCICKgMk1yhSuaXzOlt+r4=;
-        b=jCeB1he7guhO6KaegICp7gQBT9+y6lVHo9UWhFxN/kh2mSa+KstiJJMo0EdZk0IA3j
-         11aEOqIqIhnF5gQNFJoTFV6jmgL6o8SAL3W9TC3WyoUeVfHedxSuxviHeV41YgGIbK9H
-         /1SWoOK4enWBNlOnLT774oqTw8S9LRKzlL/RI01nD0nil2XaY+ROyliSlJEVVVH/mVEU
-         9YQ5RnIR3jFQJUd/qIYu5dHBQV3bextUly+L5WcbXje43LabWIqCGdXMfuspR2Lgg6KD
-         DHbwIBvVIiZTzHy7EY4b644zTh/y8XETwNKOOoXvtMMEkFmN7Plh+CY8G8Bbp6pIJYfz
-         gmWA==
+        bh=BiIVKWMwPl8zZC85CjosOGko4Lv+xC1/XTxOKwarLfM=;
+        b=fHjwOp65DrOZsASHo3V6MmffON5jfRjreK76MSH/9FmqaKcPgXUMdjfStPZ30hy1/z
+         eEpNlLAfmCv47SL5iaPrfqh5Fa8Cmdjj0JNvIKUvmNM+O+RWahv3FP0EXPWi0F9iWtEX
+         FKnH6d+b4/7sutXltkM/VfJ4mXO2JDoUgiOjeHUYxeVv3FuH+uqX8DiA8+rHKJx0LU8C
+         y8g/edseJMbSQbkZzsspjg7zW4rMbamKGcopts1Nz00Ee8hHI8XwMWMhfqJqJLouJhl3
+         fQa9FCrK9xiPowFusD6pOWBiwCu3I9+DgIK50UQD3AK6TzlaIfXlZxe2HRVpSEnrGA9x
+         h5+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=6JrbP87qPML6gdz0M7zzqoCICKgMk1yhSuaXzOlt+r4=;
-        b=AsztvBfv6wgfa/41p/LSoDwdi8dCRdT1AVrpZpGamfHMzvwfcE+84MBMHcPwPLbsuu
-         gIbtmVHOQoceDuRZ25s9+wPR0z+QVI+g3WNGyTeew5QBEnMTnv0voI93OwtWgkc+3Gk1
-         xYyKyqPx37t7xmxjGtyZwJwigwNNFySLYBFiVdJdZHNfyETnScfddaLl4BLSJB1L5OWK
-         23ly6Qq/5pH9FvV8ATVddvfA3ZkCb0SYCa0IgXg2Vp27TePdDarIuHcHcuOZnaTTnAOj
-         T5b6411X2rB/FTK4Gmd3Sw4JvwoS55JydoYE4fTEbWrkqmQCHgdYIkrRWurcmSUwkfz6
-         GFUQ==
-X-Gm-Message-State: AJIora9/5FsSz/ZWmtNzpYQko2blmjlim+odWQV0kUkrsVdDKBrKeZiH
-        LWDWTFtl2t/t3cxFwjpEubERozTsYvCoThifsHQnES1NXWo=
-X-Google-Smtp-Source: AGRyM1sCzErWIkVt4KAg8gNL8hv8TT2TmEaXsHBiOYWKLPzQ/Eud17aZEiLaHPjit4p/EdW9KNpViEOqKpQ4cyaJTPE=
-X-Received: by 2002:a17:907:c06:b0:701:eb60:ded with SMTP id
- ga6-20020a1709070c0600b00701eb600dedmr3538217ejc.178.1659110931590; Fri, 29
- Jul 2022 09:08:51 -0700 (PDT)
+        bh=BiIVKWMwPl8zZC85CjosOGko4Lv+xC1/XTxOKwarLfM=;
+        b=u1EqJGi5F2VcfeW8O/DSZ/KCpkysuY2z+HaMgNhQIsqoSoOrGs45+uxia13k5rwZEw
+         WOPM7pwIaWHPkbsdzix9/HEo+/iYmV8/CatXN39S3DWe76xfWZqs8nDQQP8M30n6YdIX
+         X3haypLc1Qtulfkmy+WQDSoWKnLb44hSkSiw+BWSs/M3DlF8XCI9lVH7IwZghcjKNOfs
+         Kkk+soWJI+qCB167qqX7uBFFmX572Z12DiGKyPUJyItRLrH7fi+3P0yUWSPJY6xNS1cD
+         kpYmwnyw6NegMWZSTqsj5VwzTXmRJL8OfJHYjVJsy2wRJyHb75zsRBO6SivNYfSe6gX4
+         eqqw==
+X-Gm-Message-State: AJIora+LlBID8Sf6SVvYWhsgVmaMix+RU1Jj5Hgag+dsyW0E5J/18O7Z
+        F0dy2z+VTD8WHenNOtHqjK854caYhFjt2sm4QIc=
+X-Google-Smtp-Source: AGRyM1sHbgpBR+oeKzR4ubTM2Q2PSKokyw+LCj2VgGVFEBFen7c4/7rYvdFQ3pjMMnsrVMCRCzzIsQKQwzvelBdHx/M=
+X-Received: by 2002:a05:6402:40c3:b0:43b:d65a:cbf7 with SMTP id
+ z3-20020a05640240c300b0043bd65acbf7mr4331513edb.380.1659111232431; Fri, 29
+ Jul 2022 09:13:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1656883851.git.jahau@rocketmail.com> <28a2a9ec27c6fb4073149b897415475a8f04e3f7.1656883851.git.jahau@rocketmail.com>
  <CAHp75VfGqk_q1iDyj06tEuTNoG35xjOL0_5HgokFauUz_aAwFQ@mail.gmail.com>
@@ -51,8 +51,8 @@ References: <cover.1656883851.git.jahau@rocketmail.com> <28a2a9ec27c6fb4073149b8
  <c52e34f1-1cc3-4351-e03b-6b9bf83481b6@rocketmail.com>
 In-Reply-To: <c52e34f1-1cc3-4351-e03b-6b9bf83481b6@rocketmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 29 Jul 2022 18:08:15 +0200
-Message-ID: <CAHp75Vc9cYNOTmpr+NeQQEUVtkL6hnsjToiMBa2_NGnr2zuFtQ@mail.gmail.com>
+Date:   Fri, 29 Jul 2022 18:13:14 +0200
+Message-ID: <CAHp75Ve_0srfZbvKJ4z8dW3Mp_a8CHSTqASSAY_SOJiD20K0eA@mail.gmail.com>
 Subject: Re: [PATCH v4 09/10] iio: magnetometer: yas530: Introduce "chip_info" structure
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -75,42 +75,48 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Jul 29, 2022 at 1:06 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 > On 27.07.22 19:39, Andy Shevchenko wrote:
-> > On Wed, Jul 27, 2022 at 12:01 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
 ...
 
-> Instead I end up at a longer comment again.
+Just a couple of remarks.
 
-It's fine!
-
-> Though this also offers the chance to add some additional information
-> where the values were taken from.
->
-> Is it appropriate to include this to kernel doc? Generally I'm unsure on
-> kernel doc but I guess yes...
-
-I'm unsure if it's appropriate for static (integer) arrays, you may
-run kernel doc script yourself and check man, html and pdf formats to
-see if it's rendered correctly.
-
-...
-
-> > Again, you are the author and my point is just to make you look at
-> > this from different angles. If you see no better way, go with the
-> > current approach, but just spend a half an hour and perhaps we may
-> > have a cleaner solution?
->
 > Indeed, to my own surprise I found a solution with the 2D array:
+>
+>         static const char * const yas5xx_product_name[] = {
+>                 "YAS530 MS-3E",
+>                 "YAS532 MS-3R",
+>                 "YAS533 MS-3F",
+>         };
+>
+>         static const char * const yas5xx_version_name[][2] = {
 
-It looks better!
+yas5xx_version_names (note S at the end)
 
-...
+>                 [yas530] = { "A", "B" },
+>                 [yas532] = { "AB", "AC" },
+>                 [yas533] = { "AB", "AC" },
+>         };
+>
+>         ...
+>
+>         struct yas5xx_chip_info {
+>                 ...
+>                 const char *product_name;
+>                 const char * const *version_name;
+>                 ...
+>         };
+>
+>         static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+>                 [yas530] = {
+>                         ...
+>                         .product_name = yas5xx_product_name[0],
+>                         .version_name = yas5xx_version_name[0],
 
->         dev_info(dev, "detected %s %s\n",
->                  yas5xx->chip_info->product_name,
->                  yas5xx->chip_info->version_name[yas5xx->version]);
+Also 0 --> yas530 (use enum:ed indices)
 
-Very good!
+>                 },
+>         };
+>
 
 -- 
 With Best Regards,

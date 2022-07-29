@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7156E5856F4
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Jul 2022 00:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96EEB585704
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Jul 2022 00:56:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239560AbiG2Wwa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Jul 2022 18:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
+        id S239583AbiG2W40 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Jul 2022 18:56:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239542AbiG2Wwa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 18:52:30 -0400
-Received: from sonic310-12.consmr.mail.ir2.yahoo.com (sonic310-12.consmr.mail.ir2.yahoo.com [77.238.177.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A767D783
-        for <linux-iio@vger.kernel.org>; Fri, 29 Jul 2022 15:52:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659135147; bh=1JUeSuTl5UnqmpQmXxlJ9fFmonK1o1XoIKUnYly2J6Y=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=VP0rhVRlVAbkA/z+ilXbId3ZQZWJaV7K9svgf1c2Bg7cEqKmefTqVDxRLI33PDcBqgk9QqaCt2vyRUpzNPnIb4NqwO7cMRI0MEjlPiInXZgHHJ3tEMgEslP3nFNXZH0ie3D2/Vcqcnz0WbcP3UczI31rocHKVbl/LuADHPZSWBD9zH4VvWHHLn+HlXSPmGrngXBlCTpq1F3/b4VzmSAbZpYOfDCGewnT8+yLOUIicyZ4jSbWje6gGoLwjL7iSvj2lJD2E3WnCqnKO8EkffQnLaj4SfNRwSuB6CiswE+tToKZsi/gf2dcRdiJhYoD6ig5OX9umsSWnVjgwuH9nCwy1w==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659135147; bh=05wwq41KnAfy/tUR/JWKMXCRvwRxXP4G40yNIwRrQ3H=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=IS3EHR589kQxxf4/o0GIs2ScqQE17W4P7S844p4kmHEoC46BEuV5FENRHhJ0rhGqkgXlAAfWhQw+ErdYmuZ0UQXk6M6DQ+2VudZItE7kybLgw6qQpWxV+s+kKGF0R8AuXcaWZsUJBY41xPQn04eQ2Xn+If4MDJG5B1td8V0KFl+1z+k5a8ZMXKKMhNb3kJCOn0fhzjkloJ35HJwD8LP09xi/jDCMZHixejwfxS3tH0rwKvDqqhH8v2IWab4UTkvdfOTOdX0cMgkYK/lojvz+4lHqKEqQhJj+qoXdHLhJ4DBlAkiPRAWpWODzzP3/wKIu6Rtwb3K2Hyuger1OTEgX+A==
-X-YMail-OSG: GG9KCe8VM1nDzQZn_Uc3CaouocdfoNXjr5PENQNVmXrNhrlfyJgYhtReXcWWefM
- FeGkkhVt4TlPkXE6Ao74U7IyUnscCAK3gaqErHRu84QNyw7PWUQzil0sKJolYaDkaeQ2O56srwCC
- UYcCBrLKuQiHKqaNTJdaQTEEDaXbHKsze7VgQbksH4JM0RPv9sWC0KSmXPOCSVh8G.VJLSF0Nhkk
- fTi7tlep4_uBRF2XnuRVejYDsIo0p11FTy_iIp.m4an6MpETrH70hCAaglounIbsH86RVP2tSTND
- M_0zgVMU_rmteuiWRx5at893Zuy1MOc6oZk.tWWanuS8CIfYID6lJnldP9aCv5ccjC3_oFfAq9h7
- rzFxZF71up1FiHBCrU_BP8Uv_Ntbrym7Bk.JlBmP5xL5JEAx6CDboZlwVu66KalQMq2JTrQ9XxU9
- aoJNPMpCCqbxwiE4UAYPRAqJzi.KFn8cQELWEyTmR6U57XiS.yEvY7dv0sYtHqJ7pNrkS0bhDQTx
- zE6oGrncpW4tREpPjbiqpXKyj5Q7bdlT.XSrEtPAw24WGJ3yDB9LlCDfXdG1ByLfcfziQ5SDhtOY
- t6Qabu2l3oNz37yLKefH9qWPjubmDbBnfiVhsvmN.oMhq12TGMm_h1KQzOdBkobTC8Mh8EunGsf7
- qULgBmRj_i7.XxyBfTIxwlUC9RxLbW9RaGzrgfLpv1XAF08GmVeJVg1JtK5BIUcWai5QTPekxHqi
- 0nYmTC1i6gSBUwXzxAGsaSpnJBui9tLLSMlEuC0dXmgiGU6y2frUfHa8oMOd6zvoHau1IliKNj9t
- 7tUDR5EFPeS8PyvlshqTMyy4zhEGqAFnMxTClJ9vPa4CcUgMzCxCO_ZfJNdmgWbjNhDq4J.FKHnU
- hYVoIswu09liCZsPcYYC3pox5BALi9JSRuy5tjaA5DTR1iw2Ou.9H.cqFTkvLkv6SsGpsgs1SrAH
- hwvp9VAn1J_DCyJfBmNlLUZwI52d04ygUI9r4g3dC1kNs4Gea9P5tHElM1Pngp0DtpIydvhIN22P
- X.lpdR18.jHE8uE1o658hNtPnIYI.JYzuG5klTHfp9xMMzp5rC0pc3D9u5GHT3Ej5.sXLu6vVbSx
- Op6lrAdEila0n_KYq4aMDrrZZRdur60.axN4g5iWY1.zfuHEVJ9bV8SejYFwOxMNtJpf7XTLAHtf
- OjiAUkd8logUEXvK__U_2x2NbsTQTxBema9qm2fFv4PDSJ9S6y00BYhNb0vor2E5HHepwl.jfJrL
- 0CT_7v1P4Hg4B8KiyqZ3ffb5ADfRGM8FBNb77jdS6nA.6EhuT2AnV1nTi6KCqWYOC9N5DhetHwVU
- sPJgueAhW93bt0RauLLFpVw2vSJcFZMe49X4TLKLOxA1aGoYAjzW2ZDRHjTl_h0gRj28udq1e91c
- wFn3rWT0BChOetiqSzKBm4nRomcZZW4VFIOGNbzkJ._grPOE1PbtDoN1fIt2ZD6BPzFad2NoCjK4
- .3UYA_VZelHo0oPwcOBkMWiuUOHyYDFdw8ueiKXAVMo5suBL07QEFxEKfAsgc6SOU9UFUqNuqbol
- oi0bXOf3rt.8xt86RsibNdoqQvSX96d0RQujcRPKPKs85EhaPIpbxrL3.38NPOCLwpTwKjqkkfiE
- 9Y5OG8gfTwJSsfrhv_Zf5wfOeRdkEhbKNo.BhFv48Z8a86bjoxuXMLBazoeINywVQjO7UcqlXz2j
- KaNP6yZJAySiitggVItpAdzsZ.JYZhADv79q6Xrz7lMZewDjwxOKRtycKmgPUmyAt8Aku4eAbq9K
- cFTkhrlDcHJ6H_CH7YgGYfUTle3yDgcKFYd8e68ek6iLNnBhK_Vg7FzdXFzlMt3pHb84.gnA2tnK
- 9KK9N4CYK1mPOumlN3vSXgrOYi7p.odaV9s663AnWYYDFssdJdZUQe9xWrhfdXejrDv5VrFqQUM7
- uBaHuYPsyPQ_eTBq33M50T.sfd4hENqWHMU0q9zuRBpinyFebGxHi9OTcMCvFna.zZZ0jtK2flpS
- lyDjk9M97JE.VF.W6kLHSczX5BPS0Os_gbiwsXIktV_sP6KxllYtIzL_PfdpSCdgCVr.7vy_UHcM
- YB7OYPPe3LRkcn093GRRqCntO1zdrTZ5VeXr2qScIGEPgS4ob210HVomjrqEQO1z4mhcCiDrjoWF
- koTGV0d1gKtYnsQN0_Zm2053je4D59A4qCg.7.3fTsQWT8Nd0pS2Q1fQWuFusp1gKePbLcC08Oqd
- s71t9WEnxrytaC0sGE18NgOU1oTtYxAoklYL3lusXq_O5CH3b3JNfVFUronvg.6BzNGht5bX7_uJ
- PoV8-
+        with ESMTP id S239345AbiG2W4Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 18:56:24 -0400
+Received: from sonic314-19.consmr.mail.ir2.yahoo.com (sonic314-19.consmr.mail.ir2.yahoo.com [77.238.177.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66EA2868A1
+        for <linux-iio@vger.kernel.org>; Fri, 29 Jul 2022 15:56:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659135381; bh=Cyzo0mEasKIy+V2SC+VysfKIc4RFa6sAqMGybrs/t40=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=AO9ffnS2Mjp6ziaBjGou7lU0swocYn5B94eVviv32Fi2xuMRJKiMpBI21eQsiffE/MgCLXRBNCUPGywA33sBZtP8XaOfP9Rngp2QkOPABbR48uyW/mo+CJIr3Z5+PteAXF63ocStKO0wKgC7mjQ5HrrMiJFiu29RgyO7PRYLWnZHzPlXJyzTBJDrrpnTOCYdvf25yMtiH1ZrRl1fFO+wuF32Y12IjnLoy8UfKl6agRn5oIKzMLeOdLNr8i9d9mhHwftnx8aZeHXBdaUnQvICQ1whMO2AE4C0ROT8KJ0qfzylp+6tma/3N2gRYBlE2byw87jJoDq1UDgm9J9QQCyaLQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659135381; bh=fd8FaUgCh0NE7BymTcNF7GN4szEB3vXwRy5t5b0M9lb=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=orc2Y31eccSOmAOci9T20HB8CyCMFrfBZtmZ6MOMC1mRqsK0qbio5WYBd6YPqlAEPX1oVisVAk5cjvS1JuD794PuFYQfeKmxSd/R0+6I9JSeplSVfnt9yImXeopE3bMjdmPqBL9Sf6bumzogOL7YtjmQ16pW5S+M36bIN+4yla1FMQ6VMGPCnCFE4KHtt7G02kqRhi5eFxI9J/zk97k9TdgUG3LzlBwRBp4yJciOMqnPHHB6wEkJwQAbWKKzGNK/P5g+EnOPeVo/Z8u1Bc8Aj+Xgx/0e9Ee+p8t0oLK+qJVPzwX67gJ5pWj3BY0XaXNG8RnJhT4tuBebrFm20yJ9yA==
+X-YMail-OSG: qFLq.9QVM1lslcrtuZfvdTfETqW1MshlIVyPjwihYJcJiLz.rM0KSTe6CjaoJIQ
+ PRyH9vKuX0OQiifxpvA7xUadHr3q.C701BXMAMD4LCllW2Fl2O6r141UaIML0KBsoVN2.P1k6MfU
+ V_UpvCDW7bfEYQoRLsP0birHVYRNjeJWmBfeQOjEqoP7elWaz1a92m1GgdN61JyLhtXs0yeqrPXg
+ zZe2VA04g6GnN.iRM.VedUQCnfi.968ZtDXpWIipELI3mK4GsFu8pURcjKkKWhreLtQJsD9CGx8U
+ PLOTWG7H.5Rbq3BbCtpMABhit0S_k5a1n0Nf92bZv9L5guu5A30IolClsLJ79g.3OhYc3wQfW0.7
+ 01sQPI0b7ndApHamZUW.RMKBzewuTbFhBKBxlolbZ_efGJ_ZqMlC6JYagcLyX.DlYe0kz0nmIbRX
+ wqMf9qFtepT2B0QIG8MjtZ2ygorrdzs95UdL8fuxfSVMAUBisbAask38XcpQyO6kP_4ex41tLDjK
+ pfMzNDdlXGXyEnf_nQpomjbVB0.GExSZJoGjoOXdyu4yug857LFi76UtqQ_aKpavKRx.3JLreu9v
+ V3TkxuAq6cQHfQF75yx.SpSCYnje0H5uSSXb.xJawLpzYEoPjcEsT_dUsOsN_Hy9TxEkXHfyien4
+ QyNqrsImDYb_y1Gh3QXfgLS63acVRHEk2vaS41ZPbWHYGsYVmFoY.F.LgYJuuPcobu4PSrmO4cR6
+ yjJOeceYXvzIg_5eJwPYX_44Ru20bpHyeDTbJVR6UiaVaa8ayKWWYku32xCXYfcVrsfCXqsGgdTI
+ 09XLi2FVj6eSP.1JfvYaWWr0qVLCACKpxKuwIgrHjZPdDyH5YhNTyuzv9XPy4HLIeYRFNSMtZHyR
+ ubvuz16Tc5b0T9gGYxCh5vGLi1GUucsNRSu3ah2vTKRXYbJV7kZ0puyKGDz3.3JvWnBtuB8J17mE
+ hDxFrsMcbbUEGg_ZM464Iz0CZhEwCHNINIhnCimKRQdrf6BpIL7Dc__WXsqqCmGENbWey..ody5n
+ slwTtI3h5cS_aiR40BkOZlEB4iCj_eZMoL8IwNBXq1fb_z6DAchucktiNGFk5rjwiADri4JY2_NJ
+ .MzKsAh7Rsoc8LE9CYJqux.i.hLvIdPMyigmxq.tdECKhXLqCVIcf4oEdfmgVgELE.izPfTA6LFk
+ ae10BpWpYTwt_atkHc7BRAdfBaMExtQXwWjAOxcr.ZFjMESTdg4SYks9gXTngPCwaO2Er1SicayK
+ ZkRGY0n9kL75_JL7gxUL4Vn3UrmK4uBDYMGrzIbmvtIDt0xuv1Q1hkJHIFQ.b9g4nf8HJ1lYqZSG
+ o0zc2aaUkQiswdnpcRwcmKNo4X1lZKK54LGzJy7xSyhgfzVooAJARp7gWi4lB.JAMz3eRDqBGqvD
+ 1zSksZkogE0dSS6WDrlE0IaStYQCwydr.QG1bkGEBPjpjP4XX2SEnsLJcxjRfFq0FPuHv_.sXgeO
+ kJ9sJc2ZlUVSiLmrcHEDJDYNX21DSAD1UHnsuYyEHL9TcTyarfpi95_rmdfoZPM9eY4AHimw1eVy
+ FIno9AgnhBVY_mAAjgc2a0btXJ_BnGDqLUsBkFpbU_H6RpROwfKVGq3.xTzCf7pliSKa6KFgnF4x
+ XWNvyMyD8sg92Rmceil7yFp12NUW4Af8PV4TgEBVsxi_B0vpf_gaiZ030fJJ0M2Zl7dp8Wn4Os1y
+ Ip0ayh5Esdo9iAGiQzmI5rWrKWZl6jzUL0eqhKVvf6QluL5YEpLfhDCoufjgD9Et2npZ69pkvZ2c
+ mVpSNMaZHHJi_IN.DoXikz3ljtzOin7t00OXzBRrlbuiHqpgrRNsHo9PuXdYGWH8gmGxNNz3O3S6
+ XL41At2TPwzjxE2mr2VzBz4OlM4wZlPjPU5wyMn_ajlBQTl8OyrQEC0ap0Cm5FCrfD01XLAIKTtd
+ J7HtalFax5.cNM7Rc3yp_q1kOlqT9XDlNQ4gZD0UMN98fZRWGnwf9ueGkAmEA0cXlFjBrODG1sH5
+ ZGoVWQHZyZMT4Yb1JPmRPr911qvCXqe9YXm2dvyAlgjeVZ02YQNY0Rz3nqP2Hw3eROZl54vA9U2C
+ CB6XilJGQN5mK1w4viSV4nSslm1vzIYUE1Tbxg3zftWDB9NYN.1StwWhts8CJHcbEq381r5fqypu
+ DsayXUV51h33EYcMI9.mm0.ITk9T2YUTtCXvvgoi_fSJ_s3zTjLsY7BQSEVEcE16XlxvYMCai2WF
+ Z6Yn8Dy8g2YMgYCJUqnV4txvKoOIDpxbm0eHSyCwOPiC2qWgY.VI0rncAd.Se3Lsfe0TZuH9L9wt
+ aKw--
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Fri, 29 Jul 2022 22:52:27 +0000
-Received: by hermes--canary-production-ir2-d447c45b6-sqmx2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID fa79a2b2568bda8e5dd95eac776ed450;
-          Fri, 29 Jul 2022 22:52:22 +0000 (UTC)
-Message-ID: <4dbfd85f-a79e-9340-2654-d08eea616de4@rocketmail.com>
-Date:   Sat, 30 Jul 2022 00:52:20 +0200
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ir2.yahoo.com with HTTP; Fri, 29 Jul 2022 22:56:21 +0000
+Received: by hermes--canary-production-ir2-d447c45b6-fs4tk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID dbf00b67d1e8c958fdd7846f7a33db02;
+          Fri, 29 Jul 2022 22:56:16 +0000 (UTC)
+Message-ID: <30ce3ff6-14bf-19e5-e330-d7b8b30c1727@rocketmail.com>
+Date:   Sat, 30 Jul 2022 00:56:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
@@ -74,16 +74,16 @@ References: <cover.1656883851.git.jahau@rocketmail.com>
  <8639301c-ae9e-54ac-919d-baeb8760a31b@rocketmail.com>
  <CAHp75VecjLe67XfK6qgM4eZfKiTJ-UabD40i6Q_YmMpyWAWMkg@mail.gmail.com>
  <c52e34f1-1cc3-4351-e03b-6b9bf83481b6@rocketmail.com>
- <CAHp75Vc9cYNOTmpr+NeQQEUVtkL6hnsjToiMBa2_NGnr2zuFtQ@mail.gmail.com>
+ <CAHp75Ve_0srfZbvKJ4z8dW3Mp_a8CHSTqASSAY_SOJiD20K0eA@mail.gmail.com>
 From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <CAHp75Vc9cYNOTmpr+NeQQEUVtkL6hnsjToiMBa2_NGnr2zuFtQ@mail.gmail.com>
+In-Reply-To: <CAHp75Ve_0srfZbvKJ4z8dW3Mp_a8CHSTqASSAY_SOJiD20K0eA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.20447 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -92,61 +92,63 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Andy,
 
-On 29.07.22 18:08, Andy Shevchenko wrote:
-> On Fri, Jul 29, 2022 at 1:06 AM Jakob Hauser <jahau@rocketmail.com> wro=
-te:
+On 29.07.22 18:13, Andy Shevchenko wrote:
+> On Fri, Jul 29, 2022 at 1:06 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> 
+> ..
+> 
+> Just a couple of remarks.
+> 
+>> Indeed, to my own surprise I found a solution with the 2D array:
+>>
+>>         static const char * const yas5xx_product_name[] = {
+>>                 "YAS530 MS-3E",
+>>                 "YAS532 MS-3R",
+>>                 "YAS533 MS-3F",
+>>         };
+>>
+>>         static const char * const yas5xx_version_name[][2] = {
+> 
+> yas5xx_version_names (note S at the end)
 
-=2E..
+As I understand you, it's to be applied on "yas5xx_version_names" only.
+In the chip_info table, it would then look like:
 
->> Is it appropriate to include this to kernel doc? Generally I'm unsure =
-on
->> kernel doc but I guess yes...
->=20
-> I'm unsure if it's appropriate for static (integer) arrays, you may
-> run kernel doc script yourself and check man, html and pdf formats to
-> see if it's rendered correctly.
+        .product_name = yas5xx_product_name[yas530],
+        .version_name = yas5xx_version_names[yas530],
+                                           ^
+                                           S
 
-Nope, doesn't work...
+> 
+>>                 [yas530] = { "A", "B" },
+>>                 [yas532] = { "AB", "AC" },
+>>                 [yas533] = { "AB", "AC" },
+>>         };
+>>
+>>         ...
+>>
+>>         struct yas5xx_chip_info {
+>>                 ...
+>>                 const char *product_name;
+>>                 const char * const *version_name;
+>>                 ...
+>>         };
+>>
+>>         static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+>>                 [yas530] = {
+>>                         ...
+>>                         .product_name = yas5xx_product_name[0],
+>>                         .version_name = yas5xx_version_name[0],
+> 
+> Also 0 --> yas530 (use enum:ed indices)
 
-It was a beginner's mistake on my side. I did check
-Documentation/doc-guide/kernel-doc.rst before and followed the "typedef"
-part, which is quite short. I thought "typedef" is a more general
-designation =E2=80=93 but after reading more on "typedef" I now know what=
- it is :/
-https://github.com/torvalds/linux/blob/v5.18/Documentation/doc-guide/kern=
-el-doc.rst#typedef-documentation
+OK
 
-So, as far as I can see, kernel doc applies to functions, structures,
-unions, enumerations and typedefs only.
-
-I would then switch the comments to regular comments:
-
-/*
- * t_ref_counts[] is the number of counts at reference temperature.
- *
- * The temperature value at YAS magnetometers is a number of counts. The
- * values in t_ref_counts[] are the counts at the reference temperature
- * of 20 =C2=B0C.
- *
- * For YAS532/533, this value is known from the Android driver. For
- * YAS530, it was approximately measured.
- */
-static const u16 t_ref_counts[] =3D { 182, 390, 390, };
-
-/*
- * min_temp_celsius_x10[] is the starting point of temperature counting
- * in 1/10:s degrees Celsius.
- *
- * The array min_temp_celsius_x10[] contains the temperatures where the
- * temperature value count is 0. The values are in 1/10:s degrees
- * Celsius to ease the further temperature calculation.
- *
- * These temperatures are derived from the temperature resolutions given
- * in the data sheets.
- */
-static const s16 min_temp_celsius_x10[] =3D { -620, -500, -500, };
-
-=2E..
+> 
+>>                 },
+>>         };
+>>
+> 
 
 Kind regards,
 Jakob

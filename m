@@ -2,129 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3C7584CF2
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Jul 2022 09:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD883584EDF
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Jul 2022 12:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbiG2HuV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 29 Jul 2022 03:50:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33614 "EHLO
+        id S235535AbiG2KfH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 29 Jul 2022 06:35:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229805AbiG2HuU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 03:50:20 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A6A13DF3
-        for <linux-iio@vger.kernel.org>; Fri, 29 Jul 2022 00:50:18 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id v67-20020a1cac46000000b003a1888b9d36so3726853wme.0
-        for <linux-iio@vger.kernel.org>; Fri, 29 Jul 2022 00:50:18 -0700 (PDT)
+        with ESMTP id S235889AbiG2Ke4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 29 Jul 2022 06:34:56 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EA7677545;
+        Fri, 29 Jul 2022 03:34:54 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id c12so5304982ede.3;
+        Fri, 29 Jul 2022 03:34:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:to:cc:references
-         :content-language:from:in-reply-to:content-transfer-encoding;
-        bh=5lOAn0h02VH6KBbt82jLFJtiXqqsxvMuF0TBeD3/U/s=;
-        b=ZBOLcnAHY9OMxqdtNB7a6+JfLEuMeEZ3yOldjwKnougUkx2y+HE5T/uo+ms/IUtSX+
-         hm0CuK3s+kQ60h3jiAFfoDo2tWBj4gZiLbq8bIJyGpPlL25lmuZIMj897BxEKrZpTpTI
-         E9sh1Q77sJwp7ku6A61eKtBf64LuDafWgFkKWdQi+YIqzxLEYNPx7pdqL3+Eg+4bnapA
-         H/Vm+eD5uifdBrca5YuhJwb0mUPEKrtMlPXa5QW5ZlnipWRxajtglCgsvTB2IFs9uyMR
-         iGP5wd/efqA0nVSw/PeHh/ZzEcxWxZYwmdlhnb9hAMzCCrCVV7+GQn4SgH8KqltgwUzB
-         Vmqg==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc;
+        bh=Zk6yHET57f/wYXBe4yiexZ1AAMItVqOz1Jv1kut5E8E=;
+        b=IsM5N0dJ2jSYwlQl9rbwt+OLNPEKaCRVIniuh9/fK2UA5cEWqol8qEt2eY1KAFImh0
+         xgKtFlDvRwmal8EgGb4Op+XBno/E/HH8Bxy8BPnkUU2nIxz44g1exMkT0mBgnzczAkOM
+         jEEdvopg/k2e5S3/4OLDkdml7fNMgGZXJmK2pxORFJYNKUIs9dcrZpTPKP/PyTRRiDnU
+         4AbNyblEPeQVwrctPIK+zUGSC8WmuyEHQXK0TllYSTMZqHtKbYQ+rO3pNAksc0uoqvC9
+         H7uLLtXO9go/uW0Ye5nZLjgde4OuJHwsb257PiiTAEQZboCcDlee7NJuUdg+WQoQdZGF
+         8sKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :to:cc:references:content-language:from:in-reply-to
-         :content-transfer-encoding;
-        bh=5lOAn0h02VH6KBbt82jLFJtiXqqsxvMuF0TBeD3/U/s=;
-        b=m4UCrAXynulL4+PErJ+/GTOmk8fS+CpzpNho+x9Qyoxq+BIQXxlQw7Qu9o6esOhyZB
-         Iz3qTUwB6xAm7UHk0qqF7sOkP9CvpeCCtsN5I6J3Vk1QqMt4QhTlcc+JedgIwnG+Gpz7
-         ZdZ+2LdoT/in4VJhZvf2OsuEuE16AjnK/hbUljoQpDixhiTxMueMoFrtG2FfHDKk30q8
-         QboHsTh3avnsdT8LkDnfyJtYHnUaJaZ79pLgvtemeB4hJ1paK8Y9iQ3ZZ8zULiNnsNwL
-         +iLvyAHObhyEwKtA0vsn7tkTTJt3sviAnxTrh9ReCQ9IR/DpJD8YePTdwezUy/saZHwj
-         tT4w==
-X-Gm-Message-State: AJIora/zopeRzZSuCGW9WK97+Rw/XY4Y52OfY5oDUKtFTMGp1VUHYUzO
-        Q3Zqc4SHLG5wW/gPmX3rJQ6eZA==
-X-Google-Smtp-Source: AGRyM1udGOV6hEutqy9qMK9GUdJBG7rsDL3k+0eM+VMqDQV6f1A+Q0blzkBEsX7AJ7S6Ay6TVPxN5A==
-X-Received: by 2002:a05:600c:3b29:b0:3a3:1fa6:768 with SMTP id m41-20020a05600c3b2900b003a31fa60768mr1512480wms.193.1659081016616;
-        Fri, 29 Jul 2022 00:50:16 -0700 (PDT)
-Received: from [192.168.43.135] (40.164.185.81.rev.sfr.net. [81.185.164.40])
-        by smtp.gmail.com with ESMTPSA id q5-20020a1ce905000000b003a320e6f011sm3583283wmc.1.2022.07.29.00.50.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Jul 2022 00:50:15 -0700 (PDT)
-Message-ID: <7c14ebff-b449-84fc-f3da-af394b3fa371@baylibre.com>
-Date:   Fri, 29 Jul 2022 09:50:13 +0200
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=Zk6yHET57f/wYXBe4yiexZ1AAMItVqOz1Jv1kut5E8E=;
+        b=QV3GjVqcXmZkzYvOvw6OgT3i4XSD7Gfdy313J3JcSvuqH0c+EYx/ZOsdwC2ux5OW58
+         2tN1M7mF5DZYbELP0pwzMG/Pa2RuKLZAzhW+OlyYRvr0Rg2aaoqsbkxzOdw1QPztnc8l
+         KPkkL0D0qpWL9goqpbA5LaGeBEoPvCvTWTjz/7lRZQdBd+Zvx4F7A/cgHoH54/uiranJ
+         cE3PY7JtbB5HhpOtnKluTtn18C5Bj72TI1j1OCB2pJkrXa42kmZPURPQeTiQko+AQjHB
+         Gg/9S5LyLbL89/gOPWwJMmY5HnLamveXxTLeQG9poE5pDU23LBUXRUHxl2adb7g0BtVK
+         wH1Q==
+X-Gm-Message-State: AJIora90pI00yBVTJwuF7e7ebXlM+Me5FQxFoyqIf0VRtl9Qi19H3SCa
+        vpYjgYQdjSa8C1sVboZqseomTPcUf/IqlribDhE=
+X-Google-Smtp-Source: AGRyM1thJcc6VzDaeaE+EySViKuCRpu348iS7jC1QI3PpaFzkcmRpNMn9JsAnkR2MfsFuw188nD7QnVuUJohoFdGXiU=
+X-Received: by 2002:a05:6402:501d:b0:437:e000:a898 with SMTP id
+ p29-20020a056402501d00b00437e000a898mr2923947eda.265.1659090892398; Fri, 29
+ Jul 2022 03:34:52 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.0
-Subject: Re: [PATCH v3 2/2] iio: time: capture-tiecap: capture driver support
- for ECAP
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mranostay@ti.com, robh+dt@kernel.org
-References: <20220728175124.468461-1-jpanis@baylibre.com>
- <20220728175124.468461-3-jpanis@baylibre.com>
- <3033c2bb-bfe7-459c-2a2b-e99bf33b28b5@wanadoo.fr>
-Content-Language: en-US
-From:   Julien Panis <jpanis@baylibre.com>
-In-Reply-To: <3033c2bb-bfe7-459c-2a2b-e99bf33b28b5@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-13-peterwu.pub@gmail.com>
+ <CAHp75Vf85_uzA9fRxTizbPJxODcXFpM4wuU6DxP2j9UA47B_2g@mail.gmail.com> <CA+hk2fYcw0szJ7bBvfEjtyUE_Z61_A1vFWmPSdhe-gmd5jbC6g@mail.gmail.com>
+In-Reply-To: <CA+hk2fYcw0szJ7bBvfEjtyUE_Z61_A1vFWmPSdhe-gmd5jbC6g@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 29 Jul 2022 12:34:14 +0200
+Message-ID: <CAHp75VctFBkPYumu-4+iGNATt=zE7HJ3n0kRSdDduJZ=h6FDEQ@mail.gmail.com>
+Subject: Re: [PATCH v6 12/13] leds: flash: mt6370: Add MediaTek MT6370
+ flashlight support
+To:     szuni chen <szunichen@gmail.com>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        cy_huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Jul 29, 2022 at 8:17 AM szuni chen <szunichen@gmail.com> wrote:
+> Andy Shevchenko <andy.shevchenko@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=
+=9C=8825=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=884:51=E5=AF=AB=E9=81=
+=93=EF=BC=9A
+> > On Fri, Jul 22, 2022 at 12:25 PM ChiaEn Wu <peterwu.pub@gmail.com> wrot=
+e:
+> > >
+> > > From: Alice Chen <alice_chen@richtek.com>
 
+...
 
-On 28/07/2022 22:02, Christophe JAILLET wrote:
-> Le 28/07/2022 à 19:51, Julien Panis a écrit :
->> ECAP hardware on AM62x SoC supports capture feature. It can be used
->> to timestamp events (falling/rising edges) detected on signal input pin.
->>
->> This commit adds capture driver support for ECAP hardware on AM62x SoC.
->>
->> In the ECAP hardware, capture pin can also be configured to be in
->> PWM mode. Current implementation only supports capture operating mode.
->> Hardware also supports timebase sync between multiple instances, but
->> this driver supports simple independent capture functionality.
->>
->> Signed-off-by: Julien Panis 
->> <jpanis-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+> > > Signed-off-by: Alice Chen <alice_chen@richtek.com>
+> >
+> > This SoB chain is wrong. Prioritize and read Submitting Patches!
 >
-> [...]
->
->> +static int ecap_iio_remove(struct platform_device *pdev)
->> +{
->> +    struct iio_dev *indio_dev = platform_get_drvdata(pdev);
->> +    struct ecap_iio_dev *ecap_dev = iio_priv(indio_dev);
->> +
->> +    if (ecap_dev->enabled)
->> +        ecap_iio_capture_disable(indio_dev);
->> +
->> +    regmap_exit(ecap_dev->regmap);
->> +
->> +    pm_runtime_disable(&pdev->dev);
->
-> Hi,
->
-> should these 2 functions be part of an error handling path of the 
-> probe, or handled with a devm_add_action_or_reset()?
->
-> Just my 2c,
->
-> CJ
+> After reading the Submitted Patches,
+> ChiaEn Wu wasn't involved in the development but he submitted the patch,
+> So, ChiaEn Wu <chiaen_wu@richtek.com> should be the last SoB, right?
 
-Hi Christophe,
-That's right, that will be cleaner. Thank you for your suggestion, that 
-will be done in next version.
-Julien
+Right. Submitter's SoB is the last SoB in the chain.
 
+> I will revise SoB to
 >
->> +
->> +    return 0;
->> +}
->> +
+> Signed-off-by: SzuNi Chen <alice_chen@richtek.com>
 
+Not sure I understand the SzuNi <--> Alice transformation...
+
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+>
+> If there is anything else I need to fix, please let me know. Thank you.
+
+--=20
+With Best Regards,
+Andy Shevchenko

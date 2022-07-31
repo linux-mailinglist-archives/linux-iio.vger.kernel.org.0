@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E7AA585FD4
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BF3585FD7
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235773AbiGaQ1y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 12:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
+        id S229977AbiGaQ3U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 12:29:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233769AbiGaQ1x (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:27:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E023EE1D;
-        Sun, 31 Jul 2022 09:27:52 -0700 (PDT)
+        with ESMTP id S229674AbiGaQ3U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:29:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46131EE1E;
+        Sun, 31 Jul 2022 09:29:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 45980B80DA4;
-        Sun, 31 Jul 2022 16:27:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FFBC433D6;
-        Sun, 31 Jul 2022 16:27:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEAD160DE2;
+        Sun, 31 Jul 2022 16:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5298C433D6;
+        Sun, 31 Jul 2022 16:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659284869;
-        bh=9ZC34wAli/aaiEkK15JfWnC3zOSad40zrBFbrul0iFE=;
+        s=k20201202; t=1659284958;
+        bh=JthxeVFbfuzHSO33MDR1TYklhGOPp63bRbDdZ78ZHaM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=p1wgNzEcmc+3XI0X9qQVkfltQEsQOrzQUNCWhF3qmKAqxaUDyhY5dxrE++gNLHRSZ
-         MPeSq4te9jnNxxLd0nYH1835SlusNmtklXMfhPCWo6NQKYwHXwOG95abNxCZTOPD+C
-         9HfM0aEtnuai4P7Gw1jcWifyUdKHmAWlNlKTdULYnZo1x86QPWpJpPqY9FlYfKmMWg
-         IflLXh0C/eGHmWcYQU8yBS+NZ5Ouu939fKeYUFgRoaglqoBZglUjuWAX99jNql5I2P
-         yX/RFlQXpZu2tIQo8JI8b49Waa0sub2faRCnjZ9IIAD9wnm7Y7YB6I8ZzkDlN6q/vz
-         MrWsgP2DHyJXg==
-Date:   Sun, 31 Jul 2022 17:38:01 +0100
+        b=lGiQslx/VYA4rdAXbqi4fQ8TOLCyA90OD7AOWNXSDAO0gdidvYXfopnG6s00RU+gL
+         GIQjv16LA/NOQl5eIIP4Jv/4Xqp/elVNaIf2HHYIrVwBRDyyHowtpZnGk1i7t64jQB
+         SO38gIjsGXs2Ipjg0g9zbZwLw4RhxQnGZ8q30I6SP/uY/xd71XQ8JEHEXTDovccC0M
+         TiI6x7/8wsEeCFmawKLWLLT/gWZYwHZJ2alDBBN8PUo9Rq3zBq9xG77CdCpViurwRJ
+         aJZzj2O/pvd7Xw3NobsxwKI0Ml5ikrdbWraw14CKBxXN/G+CZSU3akM8Z0na3xNqm7
+         UKPwwvLZzxvjQ==
+Date:   Sun, 31 Jul 2022 17:39:29 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Marcus Folkesson <marcus.folkesson@gmail.com>
 Cc:     Kent Gustavsson <kent@minoris.se>,
@@ -43,7 +43,7 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v4 4/9] iio: adc: mcp3911: use resource-managed version
  of iio_device_register
-Message-ID: <20220731173801.47585fbe@jic23-huawei>
+Message-ID: <20220731173929.473bbf2e@jic23-huawei>
 In-Reply-To: <20220722130726.7627-5-marcus.folkesson@gmail.com>
 References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
         <20220722130726.7627-5-marcus.folkesson@gmail.com>
@@ -67,13 +67,6 @@ Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 > 
 > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-Hi Marcus,
-
-Not sure how I missed the below on previous versions :(
-
-Jonathan
-
 > ---
 >  drivers/iio/adc/Kconfig   |  2 ++
 >  drivers/iio/adc/mcp3911.c | 51 ++++++++++++++++++++-------------------
@@ -89,6 +82,16 @@ Jonathan
 >  	depends on SPI
 > +	select IIO_BUFFER
 > +	select IIO_TRIGGERED_BUFFER
+
+This is unrelated to the devm cleanups, so should be in the patch that
+introduces the code that needs them (next patch I think).
+
+Thanks,
+
+Jonathan
+
+
+
 >  	help
 >  	  Say yes here to build support for Microchip Technology's MCP3911
 >  	  analog to digital converter.
@@ -178,10 +181,6 @@ Jonathan
 >  }
 >  
 >  static void mcp3911_remove(struct spi_device *spi)
-
-There is no requirement to provide a remove function.  So not it
-is empty get rid of it completely.
-
 >  {
 > -	struct iio_dev *indio_dev = spi_get_drvdata(spi);
 > -	struct mcp3911 *adc = iio_priv(indio_dev);

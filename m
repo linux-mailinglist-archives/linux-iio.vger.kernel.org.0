@@ -2,111 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DACF585EE0
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9129E585F3D
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 16:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231631AbiGaMdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 08:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
+        id S233446AbiGaOTh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 10:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiGaMdj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:33:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB993BE30;
-        Sun, 31 Jul 2022 05:33:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 75829B80D12;
-        Sun, 31 Jul 2022 12:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02166C433D6;
-        Sun, 31 Jul 2022 12:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659270816;
-        bh=Cae8WTn1U5ue2ZooK/ujvkkFamJx/qU5ivCeIdOAFOA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JWfDw6CcxwDzOUPkOLDtFJayTcqjmPA1ymQBktM/jTno3PKJ1N2ys17Wl/kgJBKyK
-         k0CIG1LG2vTzXUKSng2Bykzj/9vpWSALZ8CKRXq0rbpZwQzfj3RuMeKBNWYzwloYnS
-         mRqkwdIOxBrAbQvlxsZu48HSsQMsvQeEmzSrg+vkDVFnTtZJ+HkeKGX6VoR+VVkNVu
-         BI1Whrh4dV5xKZeJ6QunNXScIGY/GocujEaM1e5y+e2MAext1JM+fCmDkc1RMAB5kp
-         UYQJezSmib3Xwp7dCWCD7S829x/7csMbOoZBq4VDzH2teh+6yT+kU5lwjN/AXki0MX
-         /1+Bzm6baJ8fg==
-Date:   Sun, 31 Jul 2022 13:43:47 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jason Gerecke <killertofu@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Wolfram Sang <wsa-dev@sang-engineering.com>,
-        linux-i2c <linux-i2c@vger.kernel.org>,
-        Ping Cheng <pinglinux@gmail.com>,
-        "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
-        Jason Gerecke <jason.gerecke@wacom.com>, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] i2c: Use u8 type in i2c transfer calls
-Message-ID: <20220731134347.19fcfbe7@jic23-huawei>
-In-Reply-To: <CANRwn3SH2Z5n5so4FcymzgN-KAciHGo=tuXUheVttc2+vQeRqg@mail.gmail.com>
-References: <202207190634.ToyhlXSz-lkp@intel.com>
-        <0551a3ad-8c42-78fe-5b50-ebbc003e55e6@intel.com>
-        <CANRwn3R48rvwnygdyKhmFE8wD+BCCHrTWa-M=uTvpnK5Jo3vww@mail.gmail.com>
-        <CANRwn3Tgumg-mZ9sV=8AXevag9z2s=mTF4qqZW2KenDmc9b1wQ@mail.gmail.com>
-        <CAHp75VfFrkDLOC2+5WUmVGBLfoxVbDzJKyLN0+Z+XrZzpkYDkQ@mail.gmail.com>
-        <CANRwn3SH2Z5n5so4FcymzgN-KAciHGo=tuXUheVttc2+vQeRqg@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S229639AbiGaOTg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 10:19:36 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3FEDEC9;
+        Sun, 31 Jul 2022 07:19:36 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id g1so6722409qki.7;
+        Sun, 31 Jul 2022 07:19:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=wjhOCEjtjLfjibZ6tVUb+knW39OSGuyczB8f45t6wRA=;
+        b=PN+B0TtFil8D6i80oaBJaEdn/j3r8FsfPz7APQycId4HQqUNBOCzbsFmakfxPSBvgQ
+         54TMcdXBeBwXf+bqYcklHsNWY9EzcWJbnt9V6T+hNFrU23jMWa68iVdkmQGZAzA0KMb3
+         uX8SnAbePvZIGcw6P9ri/4FhWe+MKY2SXUWFnJBJ9BupSHw6Ng/RkDmzsDQPcNreCaOG
+         RuJkTYrxZr7jWI4fDOfburSExNNJvVpp02v3Q7YF9dc8Me2lXIuiHdMvCPTMHrIjmu5a
+         EXbmoW2KbMLkSG+CxdW1rtQRORdLF1lhTEPrCxfYjDcpLuzs49GGet5cqHPq2KZoptDh
+         eoPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=wjhOCEjtjLfjibZ6tVUb+knW39OSGuyczB8f45t6wRA=;
+        b=OurM/Ck3RKP/17hlb2f6dcsHK4RPHBtFWkj9r7LoGOLGkeb5YVGjlNJ9kI9rc7P5IU
+         aXC9Y7uUDeQ9s26reLT9G/89aaWxrnwMtuB7vEk+jjRlwDaB6uNHgLlULuRHJbxeSfYy
+         pH7WzXfq9lgnvcIR1M/rA3kFeZ/DJRSOU0fI3kzJKanHRXL4Pu4nassH1/b7e5JMR4w6
+         XbiscztX9BsMNZ+W2/+3W0Jklf/nGuBKonBgHSt+WCv4vswVU/zL2F7pQU+Y3Du21l9g
+         xLG7f3gX63Fhoi6vSXarFnjbJ6rC2C+wFzlkdyGgxu4pWnXX7/aRH0lFv2Q3y+p63tuh
+         m8pA==
+X-Gm-Message-State: AJIora+QXTSgHWJAXaLWydAIIdt9xNffT/PSg/AubvOxJDKKrham2yjS
+        MynX9xFl+tLG/Zr62uK3zVGlV7aKgks=
+X-Google-Smtp-Source: AGRyM1uyz+9/NZ1MBJd9aAa2kRIkRe472vgZq8ZwlKubB7tQTZgg2ujqxVs8t7T56MryP8fmbaOw9Q==
+X-Received: by 2002:a05:620a:1929:b0:6b6:19c9:462f with SMTP id bj41-20020a05620a192900b006b619c9462fmr8600580qkb.688.1659277175066;
+        Sun, 31 Jul 2022 07:19:35 -0700 (PDT)
+Received: from spruce (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id h23-20020ac85497000000b0031f229d4427sm5382488qtq.96.2022.07.31.07.19.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 31 Jul 2022 07:19:34 -0700 (PDT)
+Date:   Sun, 31 Jul 2022 10:19:33 -0400
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: Be consistent with allocation result tests.
+Message-ID: <YuaPdctDFDIIVn9x@spruce>
+References: <20220718020348.32047-1-joetalbott@gmail.com>
+ <20220718174441.7967830c@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220718174441.7967830c@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Jul 2022 15:48:59 -0700
-Jason Gerecke <killertofu@gmail.com> wrote:
-
-> On Thu, Jul 28, 2022 at 1:48 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> >
-> > On Thu, Jul 28, 2022 at 4:30 PM Jason Gerecke <killertofu@gmail.com> wrote:  
-> > > On Wed, Jul 20, 2022 at 12:01 PM Jason Gerecke <killertofu@gmail.com> wrote:  
-> > > > On Tue, Jul 19, 2022 at 5:21 PM kernel test robot <rong.a.chen@intel.com> wrote:  
-> >  
-> > > > Writing a patch to fix the new warnings generated by my I2C patch is
-> > > > simple enough, but I'd like some help coordinating getting both
-> > > > patches landed. Should I wait for the I2C patch to land in "for-next"
-> > > > before sending the IIO fix, or would it be preferred to send the IIO
-> > > > fix right now so that both patches can be reviewed simultaneously?  
-> > >
-> > > It's been pretty quiet, so asking again for any thoughts on how to
-> > > best address this tangle...  
-> >
-> > The rule of thumb is not to introduce an additional warning or compile error.
-> > I haven't looked deeply into this case, but it smells to me as if you need a new
-> > version of your initial patch that includes a fix to IIO.
-> >
-> >
-> > --
-> > With Best Regards,
-> > Andy Shevchenko  
+On Mon, Jul 18, 2022 at 05:44:41PM +0100, Jonathan Cameron wrote:
+> On Sun, 17 Jul 2022 22:03:48 -0400
+> Joe Simmons-Talbott <joetalbott@gmail.com> wrote:
 > 
-> Thanks! Since the patch would touch both IIO and I2C I assume I would
-> submit it to both mailinglists. And that whichever maintainer gets to
-> it first would just give their Reviewed-by (if all looks good) and the
-> second applies the Signed-off-by and handles the merge?
+> > Make both allocation result tests use the same format
+> > 
+> >     if (!ptr)
+> > 
+> > Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
+> If you post two patches to the list that will cause each other to not
+> apply, please base one on top of the other and say so in the
+> patch description.
 > 
-> I'll work on the updated combined patch...
+> Anyhow, fixed up and applied by hand.
 
-I suspect this will be likely to create merge conflicts, so submit it like
-that and I'll probably ask Wolfram to do an immutable branch that I can
-then pull into IIO.  Hence we'll have exactly the same commits (IDs and all)
-in both IIO and I2C trees.
+I'm sorry for neglecting that and for creating extra work.  Thank you
+for fixing it.
 
-Jonathan
-
-> 
-> Jason
-
+Thanks,
+Joe

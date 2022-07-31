@@ -2,54 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49441585FED
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80640585FF7
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233536AbiGaQnU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 12:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
+        id S236937AbiGaQsk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 12:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbiGaQnT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:43:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0A660EE;
-        Sun, 31 Jul 2022 09:43:18 -0700 (PDT)
+        with ESMTP id S237030AbiGaQsi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:48:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE90101E3;
+        Sun, 31 Jul 2022 09:48:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 124D3B80D18;
-        Sun, 31 Jul 2022 16:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AC9C433C1;
-        Sun, 31 Jul 2022 16:43:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AF0E60F2F;
+        Sun, 31 Jul 2022 16:48:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138D8C433C1;
+        Sun, 31 Jul 2022 16:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659285795;
-        bh=yODnLkCIcxnOpTvOrqzkwVtA0k6gksw5LlC1e/KVsNE=;
+        s=k20201202; t=1659286116;
+        bh=IKkkDjy8UGLgZ46vcwSqvLNnr3yuB44rwZPMd7wRBsU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YjkwvDv9yxW2DmX2uylPK2rGXu4bJyTNsahanUKicwUS8D2puS02UvJgoAV/sajq2
-         3RwXMEA4xN5LgHorQWnjx3Yc0blZ92qNGgDoW/UXFX5G4ZCGpEHRgIOkbluWYrVDhv
-         aIAMKl1Q1fLKcF3WsgRUgH7vjrGw+X5KF2TgpT+3FbU3xcnCin/Lm+/1YEZvmlzLOe
-         ly/lxY/79ED+Bc1BxpbqWBkZJTkMoRueCU7F56YutZfin3qTr7culNyAWa1omoRf4K
-         eeihl5JHSvmV/5nekgwiAxWzPASIoNnFWdjZ+KWGB0NGAPv/vRklJjLtGsiYy6tDku
-         LfxbZP3RU9MVA==
-Date:   Sun, 31 Jul 2022 17:53:27 +0100
+        b=kkLoP54GuCdqkuHodDosluzdCfEstrjF5X2hR9Fr9/HtrJ2DqTPexZFYpo+7rfJgV
+         7zPNAvSsn0NuijKJnlH9UY7PzX3ocn1FADtMFK8iGNF3L+AMScinS7L22Zeh2BN5Bs
+         L7Ovs2A8mXooxDJs/AbDPGFkHY+Uh5eCdvmhjp4FEDOvcGHYgbwEr8MxSdY50Y6pKv
+         mjpRo3O3iBFDiRg3p2LeqOwhvZh/clIGeMXiCZpXGipVBpALLwt8ACgFQt7/vCj4Z8
+         SB1GMPJDqE9a5cFvYgio54kxVHQ6d5boTcxOLJy9rgSKa8moySCiZliqkgKkS711dP
+         p8ttstuvtUoiA==
+Date:   Sun, 31 Jul 2022 17:58:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 9/9] iio: adc: mcp3911: add support to set PGA
-Message-ID: <20220731175327.4223202d@jic23-huawei>
-In-Reply-To: <20220722130726.7627-10-marcus.folkesson@gmail.com>
-References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
-        <20220722130726.7627-10-marcus.folkesson@gmail.com>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Peter Rosin <peda@axentia.se>,
+        Lars-Peter Clausen <lars@metafoo.de>, list@opendingux.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] iio: afe/rescale: Add support for converting scale
+ avail table
+Message-ID: <20220731175848.3f557174@jic23-huawei>
+In-Reply-To: <MBZEFR.J5QW1P07Y388@crapouillou.net>
+References: <20220721191526.374152-1-paul@crapouillou.net>
+        <20220721191526.374152-4-paul@crapouillou.net>
+        <b413604e-8a94-a31d-35ce-52eb2cc78a46@axentia.se>
+        <MBZEFR.J5QW1P07Y388@crapouillou.net>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -59,196 +58,206 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Jul 2022 15:07:26 +0200
-Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+On Fri, 22 Jul 2022 09:52:34 +0100
+Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Add support for setting the Programmable Gain Amplifiers by adjust the
-> scale value.
-> 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Hi Peter,
+>=20
+> Le ven., juil. 22 2022 at 00:16:31 +0200, Peter Rosin <peda@axentia.se>=20
+> a =C3=A9crit :
+> > Hi!
+> >=20
+> > 2022-07-21 at 21:15, Paul Cercueil wrote: =20
+> >>  When the IIO channel has a scale_available attribute, we want the=20
+> >> values
+> >>  contained to be properly converted the same way the scale value is.
+> >>=20
+> >>  Since rescale_process_scale() may change the encoding type, we must
+> >>  convert the IIO_AVAIL_LIST to a IIO_AVAIL_LIST_WITH_TYPE.
+> >>=20
+> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> >>  ---
+> >>   drivers/iio/afe/iio-rescale.c   | 85=20
+> >> +++++++++++++++++++++++++++++++++
+> >>   include/linux/iio/afe/rescale.h |  2 +
+> >>   2 files changed, 87 insertions(+)
+> >>=20
+> >>  diff --git a/drivers/iio/afe/iio-rescale.c=20
+> >> b/drivers/iio/afe/iio-rescale.c
+> >>  index 6949d2151025..5c9970b93384 100644
+> >>  --- a/drivers/iio/afe/iio-rescale.c
+> >>  +++ b/drivers/iio/afe/iio-rescale.c
+> >>  @@ -232,6 +232,18 @@ static int rescale_read_avail(struct iio_dev=20
+> >> *indio_dev,
+> >>   		*type =3D IIO_VAL_INT;
+> >>   		return iio_read_avail_channel_raw(rescale->source,
+> >>   						  vals, length);
+> >>  +	case IIO_CHAN_INFO_SCALE:
+> >>  +		if (rescale->chan_processed) { =20
+> >=20
+> > I think it is wrong to simply feed the info-scale to the source=20
+> > channel if it
+> > happens to be processed. It still needs the inverse rescale. But see=20
+> > below. =20
+>=20
+> Yes, when I started working on that patchset, processed channels=20
+> weren't a thing, and I don't think I understood what they are about.
+>=20
+> >  =20
+> >>  +			return iio_read_avail_channel_attribute(rescale->source,
+> >>  +								vals, type,
+> >>  +								length,
+> >>  +								IIO_CHAN_INFO_SCALE);
+> >>  +		} else if (rescale->scale_len) {
+> >>  +			*length =3D rescale->scale_len;
+> >>  +			*vals =3D rescale->scale_data;
+> >>  +			return IIO_AVAIL_LIST_WITH_TYPE;
+> >>  +		}
+> >>  +		fallthrough;
+> >>   	default:
+> >>   		return -EINVAL;
+> >>   	}
+> >>  @@ -266,11 +278,74 @@ static ssize_t rescale_write_ext_info(struct=20
+> >> iio_dev *indio_dev,
+> >>   					  buf, len);
+> >>   }
+> >>=20
+> >>  +static int rescale_init_scale_avail(struct device *dev, struct=20
+> >> rescale *rescale)
+> >>  +{
+> >>  +	int ret, type, length, *data;
+> >>  +	const int *scale_raw;
+> >>  +	unsigned int i;
+> >>  +	size_t out_len;
+> >>  +
+> >>  +	ret =3D iio_read_avail_channel_attribute(rescale->source,=20
+> >> &scale_raw,
+> >>  +					       &type, &length,
+> >>  +					       IIO_CHAN_INFO_SCALE);
+> >>  +	if (ret < 0)
+> >>  +		return ret;
+> >>  +
+> >>  +	switch (ret) {
+> >>  +	case IIO_AVAIL_LIST_WITH_TYPE:
+> >>  +		out_len =3D length;
+> >>  +		break;
+> >>  +	case IIO_AVAIL_LIST:
+> >>  +		if (type =3D=3D IIO_VAL_INT)
+> >>  +			out_len =3D length * 3 / 1;
+> >>  +		else
+> >>  +			out_len =3D length * 3 / 2;
+> >>  +		break;
+> >>  +	default:
+> >>  +		/* TODO: Support IIO_AVAIL_RANGE */
+> >>  +		return -EOPNOTSUPP;
+> >>  +	}
+> >>  +
+> >>  +	data =3D devm_kzalloc(dev, sizeof(*data) * out_len, GFP_KERNEL);
+> >>  +	if (!data)
+> >>  +		return -ENOMEM;
+> >>  +
+> >>  +	if (ret =3D=3D IIO_AVAIL_LIST_WITH_TYPE) {
+> >>  +		memcpy(data, scale_raw, sizeof(*scale_raw) * length);
+> >>  +	} else if (type =3D=3D IIO_VAL_INT) {
+> >>  +		for (i =3D 0; i < length; i++) {
+> >>  +			data[i * 3 + 0] =3D scale_raw[i];
+> >>  +			data[i * 3 + 2] =3D IIO_VAL_INT;
+> >>  +		}
+> >>  +	} else {
+> >>  +		for (i =3D 0; i < length / 2; i++) {
+> >>  +			data[i * 3 + 0] =3D scale_raw[i * 2];
+> >>  +			data[i * 3 + 1] =3D scale_raw[i * 2 + 1];
+> >>  +			data[i * 3 + 2] =3D type;
+> >>  +		}
+> >>  +	}
+> >>  +
+> >>  +	for (i =3D 0; i < out_len; i +=3D 3) {
+> >>  +		ret =3D rescale_process_scale(rescale, data[i + 2],
+> >>  +					    &data[i], &data[i + 1]);
+> >>  +		if (ret < 0)
+> >>  +			return ret;
+> >>  +
+> >>  +		data[i + 2] =3D ret;
+> >>  +	}
+> >>  +
+> >>  +	rescale->scale_len =3D out_len;
+> >>  +	rescale->scale_data =3D data;
+> >>  +
+> >>  +	return 0;
+> >>  +}
+> >>  +
+> >>   static int rescale_configure_channel(struct device *dev,
+> >>   				     struct rescale *rescale)
+> >>   {
+> >>   	struct iio_chan_spec *chan =3D &rescale->chan;
+> >>   	struct iio_chan_spec const *schan =3D rescale->source->channel;
+> >>  +	int ret;
+> >>=20
+> >>   	chan->indexed =3D 1;
+> >>   	chan->output =3D schan->output;
+> >>  @@ -303,6 +378,16 @@ static int rescale_configure_channel(struct=20
+> >> device *dev,
+> >>   	    !rescale->chan_processed)
+> >>   		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_RAW);
+> >>=20
+> >>  +	if (iio_channel_has_available(schan, IIO_CHAN_INFO_SCALE)) {
+> >>  +		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_SCALE);
+> >>  +
+> >>  +		if (!rescale->chan_processed) {
+> >>  +			ret =3D rescale_init_scale_avail(dev, rescale);
+> >>  +			if (ret)
+> >>  +				return ret;
+> >>  +		}
+> >>  +	}
+> >>  + =20
+> >=20
+> > Does a (sane) processed channel really have a scale? That seems a bit=20
+> > fringe.
+> > Wouldn't it be better to conditionally publish availability of=20
+> > info-scale so
+> > that it isn't visible for processed channels and dodge that=20
+> > rabbit-hole? In
+> > either case, the above commented implementation of info-scale for=20
+> > rescaled
+> > processed channels is wrong (I think...). =20
+>=20
+> I could set the IIO_CHAN_INFO_SCALE only for non-processed channels,=20
+> since this is what I can test with.
 
-This and other patches I haven't commented on all look good to me.
+Indeed both nonsensical for PROCESSED channels to have a scale and in the
+rare corner case where it happens you shouldn't apply it anyway.
 
-> ---
->  drivers/iio/adc/mcp3911.c | 107 +++++++++++++++++++++++++++++---------
->  1 file changed, 83 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-> index 30c91ccc5fb6..22a43d3fe402 100644
-> --- a/drivers/iio/adc/mcp3911.c
-> +++ b/drivers/iio/adc/mcp3911.c
-> @@ -27,6 +27,8 @@
->  #define MCP3911_REG_MOD			0x06
->  #define MCP3911_REG_PHASE		0x07
->  #define MCP3911_REG_GAIN		0x09
-> +#define MCP3911_GAIN_MASK(ch)		(GENMASK(2, 0) << 3 * ch)
-> +#define MCP3911_GAIN_VAL(ch, val)      ((val << 3 * ch) & MCP3911_GAIN_MASK(ch))
->  
->  #define MCP3911_REG_STATUSCOM		0x0a
->  #define MCP3911_STATUSCOM_DRHIZ         BIT(12)
-> @@ -57,8 +59,10 @@
->  #define MCP3911_REG_WRITE(reg, id)	((((reg) << 1) | ((id) << 5) | (0 << 0)) & 0xff)
->  
->  #define MCP3911_NUM_CHANNELS		2
-> +#define MCP3911_NUM_SCALES		6
->  
->  static const int mcp3911_osr_table[] = { 32, 64, 128, 256, 512, 1024, 2048, 4096 };
-> +static u32 mcp3911_scale_table[MCP3911_NUM_SCALES][2];
->  
->  struct mcp3911 {
->  	struct spi_device *spi;
-> @@ -67,6 +71,7 @@ struct mcp3911 {
->  	struct clk *clki;
->  	u32 dev_addr;
->  	struct iio_trigger *trig;
-> +	u32 gain[MCP3911_NUM_CHANNELS];
->  	struct {
->  		u32 channels[MCP3911_NUM_CHANNELS];
->  		s64 ts __aligned(8);
-> @@ -143,6 +148,11 @@ static int mcp3911_read_avail(struct iio_dev *indio_dev,
->  		*vals = mcp3911_osr_table;
->  		*length = ARRAY_SIZE(mcp3911_osr_table);
->  		return IIO_AVAIL_LIST;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*type = IIO_VAL_INT_PLUS_NANO;
-> +		*vals = (int *)mcp3911_scale_table;
-> +		*length = ARRAY_SIZE(mcp3911_scale_table) * 2;
-> +		return IIO_AVAIL_LIST;
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -187,29 +197,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
->  		break;
->  
->  	case IIO_CHAN_INFO_SCALE:
-> -		if (adc->vref) {
-> -			ret = regulator_get_voltage(adc->vref);
-> -			if (ret < 0) {
-> -				dev_err(indio_dev->dev.parent,
-> -					"failed to get vref voltage: %d\n",
-> -				       ret);
-> -				goto out;
-> -			}
-> -
-> -			*val = ret / 1000;
-> -		} else {
-> -			*val = MCP3911_INT_VREF_MV;
-> -		}
-> -
-> -		/*
-> -		 * For 24bit Conversion
-> -		 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
-> -		 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
-> -		 */
-> -
-> -		/* val2 = (2^23 * 1.5) */
-> -		*val2 = 12582912;
-> -		ret = IIO_VAL_FRACTIONAL;
-> +		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
-> +		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
-> +		ret = IIO_VAL_INT_PLUS_NANO;
->  		break;
->  	}
->  
-> @@ -227,6 +217,18 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
->  
->  	mutex_lock(&adc->lock);
->  	switch (mask) {
-> +	case IIO_CHAN_INFO_SCALE:
-> +		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-> +			if (val == mcp3911_scale_table[i][0] &&
-> +				val2 == mcp3911_scale_table[i][1]) {
-> +
-> +				adc->gain[channel->channel] = BIT(i);
-> +				ret = mcp3911_update(adc, MCP3911_REG_GAIN,
-> +						MCP3911_GAIN_MASK(channel->channel),
-> +						MCP3911_GAIN_VAL(channel->channel, i), 1);
-> +			}
-> +		}
-> +		break;
->  	case IIO_CHAN_INFO_OFFSET:
->  		if (val2 != 0) {
->  			ret = -EINVAL;
-> @@ -262,6 +264,47 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
->  	return ret;
->  }
->  
-> +static int mcp3911_calc_scale_table(struct mcp3911 *adc)
-> +{
-> +	u32 ref = MCP3911_INT_VREF_MV;
-> +	u32 div;
-> +	int ret;
-> +	int tmp0, tmp1;
-> +	s64 tmp2;
-> +
-> +	if (adc->vref) {
-> +		ret = regulator_get_voltage(adc->vref);
-> +		if (ret < 0) {
-> +			dev_err(&adc->spi->dev,
-> +				"failed to get vref voltage: %d\n",
-> +			       ret);
-> +			return ret;
-> +		}
-> +
-> +		ref = ret / 1000;
-> +	}
-> +
-> +	/*
-> +	 * For 24-bit Conversion
-> +	 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
-> +	 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
-> +	 *
-> +	 * ref = Reference voltage
-> +	 * div = (2^23 * 1.5 * gain) = 12582912 * gain
-> +	 */
-> +	for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
-> +		div = 12582912 * BIT(i);
-> +		tmp2 = div_s64((s64)ref * 1000000000LL, div);
-> +		tmp1 = div;
-> +		tmp0 = (int)div_s64_rem(tmp2, 1000000000, &tmp1);
-> +
-> +		mcp3911_scale_table[i][0] = 0;
-> +		mcp3911_scale_table[i][1] = tmp1;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  #define MCP3911_CHAN(idx) {					\
->  		.type = IIO_VOLTAGE,				\
->  		.indexed = 1,					\
-> @@ -271,8 +314,10 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
->  			BIT(IIO_CHAN_INFO_OFFSET) |		\
->  			BIT(IIO_CHAN_INFO_SCALE),		\
-> -		.info_mask_shared_by_type_available =		\
-> +		.info_mask_shared_by_type_available =           \
->  			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-> +		.info_mask_separate_available =			\
-> +			BIT(IIO_CHAN_INFO_SCALE),		\
->  		.scan_type = {					\
->  			.sign = 's',				\
->  			.realbits = 24,				\
-> @@ -495,6 +540,20 @@ static int mcp3911_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> +	ret = mcp3911_calc_scale_table(adc);
-> +	if (ret)
-> +		return ret;
-> +
-> +       /* Set gain to 1 for all channels */
-> +	for (int i = 0; i < MCP3911_NUM_CHANNELS; i++) {
-> +		adc->gain[i] = 1;
-> +		ret = mcp3911_update(adc, MCP3911_REG_GAIN,
-> +				MCP3911_GAIN_MASK(i),
-> +				MCP3911_GAIN_VAL(i, 0), 1);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	indio_dev->name = spi_get_device_id(spi)->name;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->info = &mcp3911_info;
+I'm struggling to think of when it might happen due to maintaining
+backwards compatibility and similar (the reason we have channels with
+both PROCESSED and RAW) but in those cases I don't think we'd have
+SCALE because they tend to be devices with nasty non linear transfer
+functions where SCALE isn't appropriate.
+
+Jonathan
+
+
+>=20
+> Cheers,
+> -Paul
+>=20
+> >>   	return 0;
+> >>   }
+> >>=20
+> >>  diff --git a/include/linux/iio/afe/rescale.h=20
+> >> b/include/linux/iio/afe/rescale.h
+> >>  index 6eecb435488f..74de2962f864 100644
+> >>  --- a/include/linux/iio/afe/rescale.h
+> >>  +++ b/include/linux/iio/afe/rescale.h
+> >>  @@ -26,6 +26,8 @@ struct rescale {
+> >>   	s32 numerator;
+> >>   	s32 denominator;
+> >>   	s32 offset;
+> >>  +	int scale_len;
+> >>  +	int *scale_data;
+> >>   };
+> >>=20
+> >>   int rescale_process_scale(struct rescale *rescale, int scale_type, =
+=20
+>=20
+>=20
 

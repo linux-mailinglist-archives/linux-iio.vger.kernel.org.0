@@ -2,76 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C71058606C
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 20:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD945860AF
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 21:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230114AbiGaSwB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 14:52:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43046 "EHLO
+        id S237485AbiGaTLM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 15:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiGaSv7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 14:51:59 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE496959A;
-        Sun, 31 Jul 2022 11:51:58 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id bq11so9105401lfb.5;
-        Sun, 31 Jul 2022 11:51:58 -0700 (PDT)
+        with ESMTP id S237383AbiGaTLL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 15:11:11 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD4FE65EB;
+        Sun, 31 Jul 2022 12:11:10 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id r4so3580842edi.8;
+        Sun, 31 Jul 2022 12:11:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=BPufxihEl1ZxvR2qHTK7M69qWBoF8p5Z1If0kZuLz3c=;
-        b=adx9ZEid+lzU0z00DjYW4MNDq5wwJbRoO/2yx+nqJ9iBxfdBpqlZ9kCbuAm2N/zLn5
-         GqnCqXIPWUTOwau1JxKcBjavNYrFs3K2znfpEBNTNw9rMDl8ULAtZlP/wamHzmvMlvHd
-         98CFoNPMfnFzCQ/S1zH9VxRXnvp6YG4if/KwxnNe1n4vFNSXt+9aKC3kPA5BbS8qmmXh
-         26k5BnV/PDF7KuFRIt3XqPPVP73Cjg4ht0xZZP7ANwjka1b4GVC/WVFEdUmPZSrL0QGR
-         sm4xHRB+K6lB3xSYg0UsF2FgRxWD7KRTep+J2h12fEQCAFvNX1YWtQNaj1aeJLDldt3O
-         3Nwg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=N9TzygIlXLM3Z2KukcycWlOSx5kWJFifEhCzKRgF1gA=;
+        b=HNbVpHwWmTCmas9WysmtUinZwpcopaWvw3wyTXyvfs8hMHTdlN+e4YbkyPB/R37e6T
+         0lZKS+DHXVMtyTS8qA8aGH2vscG4Kk+hxS+/qOnLJtugCsTK/vsXUqSH26zWP10UaRZN
+         YIPBTCtnxfRZldIxNyVfhn+UgzDxGSIS3Ow48lLHEFZmk/a7G21FE5A81N6sUMD6byhR
+         jj7u5i/g4turdzS9xHikpdV4JEHmjuEkT3gQ0PLqRYpoHavDBQebUn9LcLR00piHNbBJ
+         0khY6FMSAhtA4Hu1cUTXTDAqfE35fuTlomUPXWaBm6wBevGuAI2Axwpb3wfOhritVM9X
+         fOow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=BPufxihEl1ZxvR2qHTK7M69qWBoF8p5Z1If0kZuLz3c=;
-        b=iqT7RUDUccpCXp75FSbUW7Tr5g8CrpdXRdGhy6oYNEpqNv1cST5QynmiOYoUpoDKNf
-         1UeiutQsYGeTmWdv87a73ELSNPSfTLKpDZO2WSMaxMMI7wccWu6SzYAFbjVV6156ZtRg
-         +or/3VT5/6lvFOo7s6Mxt/LZLbahFhOEFGnmu7lu819nN6URRZfyk5Os9IKSOMP+kJaO
-         JQD4a8LCUFj3NJgKAjrfBYsKCFkoDVif7PvdtMABBfIz8t5A9Yj+e0EAl0d31f2IfJOy
-         44qJ4TFpXk4+y2NDkG6ZXNAo2/5b7SLtkvXQWdJrg6hakbARzAvSbVULuNAtcp3T5iRN
-         87dg==
-X-Gm-Message-State: AJIora9I3xEzGvAc7X9F5Vyo3UsZ05ZOutyyKC4L4jnrg939neWRQhDz
-        FRhppYZWWemw2B6gjlLVdFM=
-X-Google-Smtp-Source: AGRyM1sdsLsoQ0rBhuEUsjIvk0l/hxioDbpNFKW38nE7+ArKMr3Wq6YACkVJCEE57ukhJSSp+3Nm8Q==
-X-Received: by 2002:a05:6512:3342:b0:48a:c0b4:75f2 with SMTP id y2-20020a056512334200b0048ac0b475f2mr4525038lfd.170.1659293517181;
-        Sun, 31 Jul 2022 11:51:57 -0700 (PDT)
-Received: from [192.168.0.108] (dsl-hkibng42-5673c7-93.dhcp.inet.fi. [86.115.199.93])
-        by smtp.googlemail.com with ESMTPSA id h13-20020a05651211cd00b0048a828b6b2dsm1419119lfr.182.2022.07.31.11.51.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 Jul 2022 11:51:56 -0700 (PDT)
-Message-ID: <6c839ba3-b671-76fb-95e1-94bf2f2da303@gmail.com>
-Date:   Sun, 31 Jul 2022 21:51:55 +0300
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=N9TzygIlXLM3Z2KukcycWlOSx5kWJFifEhCzKRgF1gA=;
+        b=RBNY8/+VGKVCnH0l1w3xpfL/y2SktAiL019v5jIQyz75PNJ7OeH8mQIp8XcOy7/1D2
+         svDsNuukbkx20to7X6RWp16pPSQXZWJNZvpJAbojmBOIVWW6cSX3nyavX5Ub5ZzHJQ6L
+         9/Y+I7rPL1FEorT/usXIP3R3xNZ3EbmMjkBmXmAp7OcLzOm6Cmisgy5X/iLxBZFmVIzp
+         r95zyg9rRzsWVKMBPeQc7ZdoWBu0I9YMDhzWhBefoaHoU1zduHCs6nYszho05f72XHrq
+         TrEsDb6/PERaTTGgDMIAPaNQp3FXEUdJfrz403UvZwf3NcwyrjbhD0qQDBKTY4qlF92q
+         +AJw==
+X-Gm-Message-State: AJIora+/NBv/pQaAVW7E+3dV0Yz72HzY5ZRJV8PnqxDiDLfC3CAfIM/Q
+        xCEaJvOC+W+I+Ez5uGTZTJeiDrymdrUqN0ZGB2KCgDomkTE=
+X-Google-Smtp-Source: AGRyM1syYtGLjvc5qY6nTrcS6BJOI5qSZHSFfA51YPadw3WE403l9yEgF4/WW19jPXYlUVuqO17uPZ+m/WIEErP/PcE=
+X-Received: by 2002:a05:6402:280b:b0:43b:5d75:fcfa with SMTP id
+ h11-20020a056402280b00b0043b5d75fcfamr12320552ede.114.1659294669132; Sun, 31
+ Jul 2022 12:11:09 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 1/2] iio: st_sensors: Retry ID verification on failure
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        linux-kernel@vger.kernel.org
-References: <20220724164316.68393-1-matti.lehtimaki@gmail.com>
- <20220731170057.2b8ac00e@jic23-huawei>
-From:   =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>
-In-Reply-To: <20220731170057.2b8ac00e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20220729154723.99947-1-matt.ranostay@konsulko.com>
+In-Reply-To: <20220729154723.99947-1-matt.ranostay@konsulko.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 31 Jul 2022 21:10:32 +0200
+Message-ID: <CAHp75VcOAbrZ2yciwH6teYs5L0vYnE4z==SQ6ejye63+_v9v+g@mail.gmail.com>
+Subject: Re: [PATCH] HID: mcp2221: add ADC/DAC support via iio subsystem
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     linux-input <linux-input@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Rishi Gupta <gupt21@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,46 +67,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 31.7.2022 19.00, Jonathan Cameron wrote:
-> On Sun, 24 Jul 2022 19:43:15 +0300
-> Matti Lehtimäki <matti.lehtimaki@gmail.com> wrote:
-> 
->> Some sensors do not always start fast enough to read a valid ID from
->> registers at first attempt. Let's retry at most 3 times with short sleep
->> in between to fix random timing issues.
->>
->> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> Hi Matti,
-> 
-> My gut feeling is this isn't in a fast path, so why not just wait
-> for whatever the documented power up time of the sensor is?
-> 
-> I'd expect to see a sleep in st_sensors_power_enable() if one is
-> required.
+On Fri, Jul 29, 2022 at 5:49 PM Matt Ranostay
+<matt.ranostay@konsulko.com> wrote:
+>
+> Add support for 3x 10-bit ADC and 1x DAC channels registered via
+> the iio subsystem.
+>
+> To prevent breakage and unexpected dependencies this support only is
+> only built if CONFIG_IIO is enabled, and is only weakly referenced by
+> 'imply IIO' within the respective Kconfig.
+>
+> Additionally the iio device only gets registered if at least one channel
+> is enabled in the power-on configuration read from SRAM.
 
-In the specification for the sensor (lis2hh12) I have on my device I
-found that the maximum boot time of the sensor (starting from Vdd power
-on) is defined as 20 ms. Not sure if the other sensors supported by the
-driver have different values but based on checking a couple of
-specifications I didn't find any bigger values so far.
+I tried to leave the comments not clashed with Jonathan's ones below.
 
->> +			msleep(20);
-> How do we know 60msecs is long enough for all sensors?
+...
 
-Based on the specification for the sensor I have and also driver used in
-Android kernel for my device (it uses a 3 x 20 ms loop) I think 20 ms is
-a good value but to be sure a slightly longer might make sense. As
-suggested in the other review comment by changing the regmap_read to
-regmap_read_poll_timeout the function doesn't always need to wait at
-least 20 ms in case first read doesn't provide the correct value, if a
-suitable shorter poll interval is used (something like 1-10 ms).
+> Cc: Rishi Gupta <gupt21@gmail.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-However testing on my device has shown that I still need to have a loop
-or at least a retry possibility because I have noticed a rare random
-read error (-6, happens after some time not at first read) when reading
-the id from the hardware. This could be due to for example internal
-init failure of the sensor chip causing an internal reset. Because of
-this read error regmap_read_poll_timeout returns with an error and
-without retrying to read the id the sensor probe fails.
+Use --cc in the parameters to `git format-patch` or move them after
+the cutter '---' line below, so they won't pollute the Git commit
+message.
 
--Matti
+...
+
+> -       depends on GPIOLIB
+> +       select GPIOLIB
+
+I'm not sure why.
+
+...
+
+>  #include <linux/hidraw.h>
+>  #include <linux/i2c.h>
+>  #include <linux/gpio/driver.h>
+
++ blank line.
+
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+
++ blank line.
+
+>  #include "hid-ids.h"
+
+> +#if IS_REACHABLE(CONFIG_IIO)
+> +       struct iio_chan_spec iio_channels[3];
+> +       struct iio_dev *indio_dev;
+> +       u16 adc_values[3];
+> +       u8 dac_value;
+> +#endif
+> +};
+
+...
+
+> +#if IS_REACHABLE(CONFIG_IIO)
+> +                       if (mcp->indio_dev)
+> +                               memcpy(&mcp->adc_values, &data[50], 6);
+
+sizeof()
+
+> +#endif
+
+...
+
+> +               // Confirm value is within 10-bit range
+> +               if (*val > GENMASK(9, 0))
+
+  if (*val >= BIT(10))
+
+ will make comment useless
+
+> +                       return -EINVAL;
+> +       }
+
+...
+
+> +       if (val < 0 || val > GENMASK(4, 0))
+
+In a similar way, val >= BIT(5).
+
+> +               return -EINVAL;
+
+...
+
+> +       memset(mcp->txbuf, 0, 12);
+
+sizeof() ?
+
+...
+
+> +       ret = mcp_send_data_req_status(mcp, mcp->txbuf, 12);
+
+Ditto,
+
+> +       hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
+
+Even in an error case?
+
+> +       if (ret) {
+> +               mutex_unlock(&mcp->lock);
+> +               return -EINVAL;
+> +       }
+
+...
+
+> +#if IS_REACHABLE(CONFIG_IIO)
+> +       if (mcp->indio_dev)
+
+Do you need this check?
+
+> +               iio_device_unregister(mcp->indio_dev);
+> +#endif
+
+...
+
+Overall what I really do not like is that ugly ifdeffery. Can we avoid
+adding it?
+
+-- 
+With Best Regards,
+Andy Shevchenko

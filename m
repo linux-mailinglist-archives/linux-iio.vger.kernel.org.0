@@ -2,44 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9034A585EC4
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1A6C585EC8
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:10:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236352AbiGaMGe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 08:06:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59496 "EHLO
+        id S236774AbiGaMKJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 08:10:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233137AbiGaMGd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:06:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B9911811;
-        Sun, 31 Jul 2022 05:06:30 -0700 (PDT)
+        with ESMTP id S233137AbiGaMKJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:10:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD28D2;
+        Sun, 31 Jul 2022 05:10:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BB5DDB80D22;
-        Sun, 31 Jul 2022 12:06:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2D0C433C1;
-        Sun, 31 Jul 2022 12:06:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15A5960CBB;
+        Sun, 31 Jul 2022 12:10:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32468C433C1;
+        Sun, 31 Jul 2022 12:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659269187;
-        bh=Se9FkQxANlAwHjxN1LjC3vcQxv0TnFP/HKCkwE0T6M4=;
+        s=k20201202; t=1659269406;
+        bh=4KI97k0DgnwajWPahn/uuCMNyFUWkGhGx/caSLwK5oI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Wjw5g8DRjJmSGtjsy1LbvwlnQD6A9I3CwUrbAyJcw5+oSDR0LQNNtLIvuZtQa5YQQ
-         8jDmK8mvpE448lObTZIXVmc/NOZgD33VTUaieN2gl5gyXyNVNgwgKdJikkDn/BvBtp
-         udRpw+U+1EPsEtNDjc1n3EyXpTEonb96FSFNlA2TmHHiDbFZKwxoCNTOfOTVGK0UGp
-         iElnN0V8HUc/KELY5s7qmjtuuYGgiAiCqrR84AJBEEpfguTJiT4VNS/MFDVnRbAeUu
-         hS3O4gacQZTWeASOw8Hesz6ua3g2Utv1qly302tu/s/UgTAIrapPcv2TJfcYnMekYc
-         p4Mj/lmw2pn8A==
-Date:   Sun, 31 Jul 2022 13:16:40 +0100
+        b=rTOg0/evvI8G2UEoMi6Ik3I9xtfC+uogodP/AcWlep4N2rXzQIKyZDZOusdHdGWQM
+         jh4SIazYlMWTHQAV29tEvm2Yg4KhYdf28B0I2jeWYwTo0y/kqKiODKS5W+QistXgUY
+         9sBV4kQtIuh24r2lRPBrZDzAA1jBBXxLjKRpXOlhFwmebn4dYqWj05iFbivjAWKeKW
+         CMf7N4b8L72gc2luv9CoUhneeimYLse6znzc4zH2OiTnyog2530oJD6LUfekvkUcoe
+         IEvnByIyjCbBnTltWtci0+5vfYsw7M411W1iZ7W3v7vjAjhYwKFcz9/kxrP/Xd7eUk
+         xkthq8UXcEwxg==
+Date:   Sun, 31 Jul 2022 13:20:18 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Simmons-Talbott <joetalbott@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] iio: Whitespace cleanup
-Message-ID: <20220731131640.6c3be253@jic23-huawei>
-In-Reply-To: <20220727181855.589052-1-joetalbott@gmail.com>
-References: <20220727181855.589052-1-joetalbott@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: ti,am3359-adc: add ti,am654-adc
+Message-ID: <20220731132018.058329d1@jic23-huawei>
+In-Reply-To: <20220728151650.GA899095-robh@kernel.org>
+References: <20220727155203.320929-1-krzysztof.kozlowski@linaro.org>
+        <20220728151650.GA899095-robh@kernel.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,28 +59,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 27 Jul 2022 14:18:53 -0400
-Joe Simmons-Talbott <joetalbott@gmail.com> wrote:
+On Thu, 28 Jul 2022 09:16:50 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> Fix whitespace warnings reported by checkpatch.pl.
-Hi Joe,
+> On Wed, 27 Jul 2022 17:52:03 +0200, Krzysztof Kozlowski wrote:
+> > Document the ti,am654-adc compatible already used in DTS:
+> > 
+> >   arch/arm64/boot/dts/ti/k3-am642-evm.dtb: adc: compatible:0: 'ti,am654-adc' is not one of ['ti,am3359-adc', 'ti,am4372-adc']
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > ---
+> >  .../devicetree/bindings/iio/adc/ti,am3359-adc.yaml    | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >   
+> 
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Series applied to the togreg branch of iio.git and pushed
-out as testing.  Note I'll rebase that branch on rc1 once
-available and not push out as togreg until after that.
+Applied to the togreg branch of iio.git, but note that I've sent my last pull request
+for the coming merge window, so this is queued up for next cycle now.
+
+Let me know if I should take this via a fixes path instead.
 
 Thanks,
 
 Jonathan
-
-> 
-> Joe Simmons-Talbott (2):
->   iio: Add blank lines after declarations.
->   iio: Fix indentation for multiline conditional.
-> 
->  drivers/iio/industrialio-buffer.c  | 5 +++--
->  drivers/iio/industrialio-core.c    | 7 +++++++
->  drivers/iio/industrialio-trigger.c | 1 +
->  3 files changed, 11 insertions(+), 2 deletions(-)
-> 
 

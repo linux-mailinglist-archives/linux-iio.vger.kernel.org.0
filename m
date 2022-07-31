@@ -2,44 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44705585E9A
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 13:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464C5585EA3
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 13:31:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232537AbiGaLUc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 07:20:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37466 "EHLO
+        id S229745AbiGaLbq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 07:31:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232378AbiGaLUb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 07:20:31 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B7D6428;
-        Sun, 31 Jul 2022 04:20:29 -0700 (PDT)
+        with ESMTP id S232558AbiGaLbq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 07:31:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3D3E00D;
+        Sun, 31 Jul 2022 04:31:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AE122B80D1D;
-        Sun, 31 Jul 2022 11:20:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B511C433D6;
-        Sun, 31 Jul 2022 11:20:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EE7660C78;
+        Sun, 31 Jul 2022 11:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419EFC433D6;
+        Sun, 31 Jul 2022 11:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659266427;
-        bh=K8XMnjLrVWD4hf/TSjDR6ccL8BtOsnjvFMSZEJF/67Y=;
+        s=k20201202; t=1659267104;
+        bh=38BTaASGYg5+Vs+XTa8bg9XAcJEvnldmFNzVWjYh5zg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lzL//zYodUHTGytXfvrpXUiDMZwS+emJlOHZ4IOBNn+zzSEpUy72POGAFWXIPXvgF
-         wGTNtID6YSbV4AW9KfkTx6Qs444rLO3VjwWoA9X0140p8P0bLVTiRl2iOiAqWtbJoG
-         cO3M9fApNzmD7qJKBpyQBF1gVT1SQuvJOwY0FQONvyi390ZzXEHaJ/KilrYpdrc0Zf
-         71HKqsYDKClaaK5kakwGNzKl3RmB3yIPDRbFkBJOoWF0/64CmN8dlf2kNYAGdMC15Y
-         N1AALLfxbOgc/UHEP1ajEu+FZA7HkqoMSqOvzab+LpQUPzsZ716MKNIjUeYNiMJxLq
-         JP1Dno34aCuGg==
-Date:   Sun, 31 Jul 2022 12:30:39 +0100
+        b=lxRnv2Jw7emD1Dq4XiFS5ZFs7+8Ry7VRxlMXXYlT9lbEnlva+Za3gM29Xk+xq4PuX
+         r/bY5LZQ9qQ4bYZiwijah8s26s285098TQKE/VhFxcrN6az3j+UkLlLLg/x4MhWD6E
+         eeXRslRxl/3dw36mkbuu0UU6LhlsGfmkOc6KQ4tema3XLpBIvwDNgJVKf5CA8TNWzU
+         QsZ31StzU9O76HsOoMtDkApRhUUchGdGHh4bWDAE/PP0IP4pCtcSUwuc4qVLVMe9IA
+         mxkcQ109zlP0mGTFn3FljLP6qXj4vv7H6FgiaelMJIsI5gitrIpuBor0zXG0hycNJs
+         cOcOMmMSIfiMA==
+Date:   Sun, 31 Jul 2022 12:41:55 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Simmons-Talbott <joetalbott@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: Use parens with sizeof
-Message-ID: <20220731123039.600347b0@jic23-huawei>
-In-Reply-To: <20220717153438.10800-1-joetalbott@gmail.com>
-References: <20220717153438.10800-1-joetalbott@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/3] units: complement the set of Hz units
+Message-ID: <20220731124140.777ddd05@jic23-huawei>
+In-Reply-To: <CAHp75VfGEPVBWbZ16widVCjgCnYAoUurjDj+-2pgC2oBQR12ZQ@mail.gmail.com>
+References: <20220729172332.19118-1-ddrokosov@sberdevices.ru>
+        <20220729172332.19118-2-ddrokosov@sberdevices.ru>
+        <CAHp75VfGEPVBWbZ16widVCjgCnYAoUurjDj+-2pgC2oBQR12ZQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,45 +65,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 17 Jul 2022 11:34:38 -0400
-Joe Simmons-Talbott <joetalbott@gmail.com> wrote:
+On Fri, 29 Jul 2022 20:02:42 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Prefer 'sizeof(var)' over 'sizeof var' as reported by checkpatch.pl.
+> On Fri, Jul 29, 2022 at 7:23 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> >
+> > Currently, Hz units do not have milli, micro and nano Hz coefficients.
+> > Some drivers (IIO especially) use their analogues to calculate
+> > appropriate Hz values. This patch includes them to units.h definitions,
+> > so they can be used from different kernel places.  
 > 
-> Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
-Applied to the togreg branch of iio.git and pushed out as testing
-to let 0-day take a poke at it.
+> ...
+> 
+> > +#define NHZ_PER_HZ             1000000000UL
+> > +#define UHZ_PER_HZ             1000000UL
+> > +#define MILLIHZ_PER_HZ         1000UL  
+> 
+> Oh, but then a bit of consistency?
+> 
+> MICRO
+> NANO
+Tricky given existing items, but I agree we shouldn't make
+it worse.
 
-oops. Email got stuck in my outbox when I went away for a week.
+However, I'm not 100% sold on why we need these conversions relative to HZ.
+What's wrong with using MILLI / NANO etc as already defined?  I guess
+there is a 'documentation' like effect of making it clear these are frequency
+unit conversions, but I don't think it makes sense to add it for all the other
+types of unit, so why is Hz special?
 
-Thanks,
+I'm not sure why we have the existing ones for HZ with the
+exception of KHZ_PER_MEGAHZ.
 
 Jonathan
 
-> ---
->  drivers/iio/industrialio-trigger.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index f504ed351b3e..88bccb0676c8 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -368,7 +368,7 @@ struct iio_poll_func
->  	va_list vargs;
->  	struct iio_poll_func *pf;
->  
-> -	pf = kmalloc(sizeof *pf, GFP_KERNEL);
-> +	pf = kmalloc(sizeof(*pf), GFP_KERNEL);
->  	if (pf == NULL)
->  		return NULL;
->  	va_start(vargs, fmt);
-> @@ -560,7 +560,7 @@ struct iio_trigger *viio_trigger_alloc(struct device *parent,
->  	struct iio_trigger *trig;
->  	int i;
->  
-> -	trig = kzalloc(sizeof *trig, GFP_KERNEL);
-> +	trig = kzalloc(sizeof(*trig), GFP_KERNEL);
->  	if (!trig)
->  		return NULL;
->  
 

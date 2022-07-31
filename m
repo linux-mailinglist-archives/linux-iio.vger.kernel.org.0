@@ -2,50 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A6C585EC8
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76971585ED4
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236774AbiGaMKJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 08:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32834 "EHLO
+        id S236863AbiGaMU0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 08:20:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233137AbiGaMKJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:10:09 -0400
+        with ESMTP id S232268AbiGaMUZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:20:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DD28D2;
-        Sun, 31 Jul 2022 05:10:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F22262A;
+        Sun, 31 Jul 2022 05:20:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15A5960CBB;
-        Sun, 31 Jul 2022 12:10:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32468C433C1;
-        Sun, 31 Jul 2022 12:10:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E321B60D14;
+        Sun, 31 Jul 2022 12:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D96C433C1;
+        Sun, 31 Jul 2022 12:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659269406;
-        bh=4KI97k0DgnwajWPahn/uuCMNyFUWkGhGx/caSLwK5oI=;
+        s=k20201202; t=1659270023;
+        bh=qqBUdT0ndApF5SxwPM8tKLaDalw/gd4HkR2N2VLe8A0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rTOg0/evvI8G2UEoMi6Ik3I9xtfC+uogodP/AcWlep4N2rXzQIKyZDZOusdHdGWQM
-         jh4SIazYlMWTHQAV29tEvm2Yg4KhYdf28B0I2jeWYwTo0y/kqKiODKS5W+QistXgUY
-         9sBV4kQtIuh24r2lRPBrZDzAA1jBBXxLjKRpXOlhFwmebn4dYqWj05iFbivjAWKeKW
-         CMf7N4b8L72gc2luv9CoUhneeimYLse6znzc4zH2OiTnyog2530oJD6LUfekvkUcoe
-         IEvnByIyjCbBnTltWtci0+5vfYsw7M411W1iZ7W3v7vjAjhYwKFcz9/kxrP/Xd7eUk
-         xkthq8UXcEwxg==
-Date:   Sun, 31 Jul 2022 13:20:18 +0100
+        b=o1HYkYrJ5mAuM/HSQd0kcsy1W7IKHhbYgvB57p5+FV0UnYoNdMbW2xzqVBBw+fBX+
+         R8BnDDA9+7mQFk5ZFVdgEl9UAHg78n8hDvfh6sUvUXslzvM+TQdURThQ+S2+YdlHM1
+         M/pY1fvJwFYMEGjFpjkAzNgoO0Ptf6oqx+siVpqCcnPUaAqFHD4p+cG0zTOY/hRPDS
+         EOP+t/A4oWcJYMNNSn24mS8nwXhlxKpyJyi4SdL/1+QwngRuvBm51IDrwo5Yx3u/pr
+         wqLBlmgwR9iG8bMafXzUFZvXH6tAeWZmpUomkxGFT/W0C1DitUd2nPlwHACRqxize+
+         bbUlb6ZyaeFgg==
+Date:   Sun, 31 Jul 2022 13:30:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: ti,am3359-adc: add ti,am654-adc
-Message-ID: <20220731132018.058329d1@jic23-huawei>
-In-Reply-To: <20220728151650.GA899095-robh@kernel.org>
-References: <20220727155203.320929-1-krzysztof.kozlowski@linaro.org>
-        <20220728151650.GA899095-robh@kernel.org>
+        "H. Nikolaus Schaller" <hns@goldelico.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: gyroscope: bosch,bmg160: correct
+ number of pins
+Message-ID: <20220731133034.034dced1@jic23-huawei>
+In-Reply-To: <20220727140148.223508-1-krzysztof.kozlowski@linaro.org>
+References: <20220727140148.223508-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,28 +58,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Jul 2022 09:16:50 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Wed, 27 Jul 2022 16:01:48 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On Wed, 27 Jul 2022 17:52:03 +0200, Krzysztof Kozlowski wrote:
-> > Document the ti,am654-adc compatible already used in DTS:
-> > 
-> >   arch/arm64/boot/dts/ti/k3-am642-evm.dtb: adc: compatible:0: 'ti,am654-adc' is not one of ['ti,am3359-adc', 'ti,am4372-adc']
-> > 
-> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > ---
-> >  .../devicetree/bindings/iio/adc/ti,am3359-adc.yaml    | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >   
+> BMG160 has two interrupt pins to which interrupts can be freely mapped.
+> Correct the schema to express such case and fix warnings like:
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
+>   qcom/msm8916-alcatel-idol347.dtb: gyroscope@68: interrupts: [[97, 1], [98, 1]] is too long
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Applied to the togreg branch of iio.git, but note that I've sent my last pull request
-for the coming merge window, so this is queued up for next cycle now.
+We may need more than this.  What if only INT2 is wired?  I'd expect such
+a device's binding to include interrupt-names to cover that case.
+We'd also need a bunch of driver code to route the resulting interrupts.
 
-Let me know if I should take this via a fixes path instead.
+I think the snag is that adding such support will break existing bindings using the
+below.
 
-Thanks,
-
-Jonathan
+> ---
+>  .../devicetree/bindings/iio/gyroscope/bosch,bmg160.yaml        | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/gyroscope/bosch,bmg160.yaml b/Documentation/devicetree/bindings/iio/gyroscope/bosch,bmg160.yaml
+> index b6bbc312a7cf..ebf98bc2eb7f 100644
+> --- a/Documentation/devicetree/bindings/iio/gyroscope/bosch,bmg160.yaml
+> +++ b/Documentation/devicetree/bindings/iio/gyroscope/bosch,bmg160.yaml
+> @@ -24,6 +24,9 @@ properties:
+>  
+>    interrupts:
+>      minItems: 1
+> +    items:
+> +      - description: INT1 pin
+> +      - description: INT2 pin
+>      description:
+>        Should be configured with type IRQ_TYPE_EDGE_RISING.
+>  
 

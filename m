@@ -2,49 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1307C585EBA
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 13:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69C61585EC1
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233137AbiGaL7t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 07:59:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55496 "EHLO
+        id S230487AbiGaMD2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 08:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbiGaL7s (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 07:59:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAF5BE1E;
-        Sun, 31 Jul 2022 04:59:47 -0700 (PDT)
+        with ESMTP id S229640AbiGaMD1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:03:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AF1211814;
+        Sun, 31 Jul 2022 05:03:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E1D60C8A;
-        Sun, 31 Jul 2022 11:59:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B794BC433D6;
-        Sun, 31 Jul 2022 11:59:44 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B7F9EB80D1D;
+        Sun, 31 Jul 2022 12:03:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E52CC433D6;
+        Sun, 31 Jul 2022 12:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659268786;
-        bh=80q4Ltg0o6rY6GppCDBJ4wyc9ow/K8xzIPlz++w22sI=;
+        s=k20201202; t=1659269003;
+        bh=dgiL09k3fn1iAi1x9FpXJw4FrC+NXMosnHbICt8S4Zs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qeZsVkWxlmCBhyscH/QajWGe1myEOA3S2qNYTXteESn5QzYWVvCrxhj/pDwCJrv3n
-         tqpJGs+pQ1fN1q2neh/Tk+oqX0MzqSjl1LvuWnlxKr7Hc93q4ZkIWR2VV05ybSK4iN
-         nH3vwTPX/esl61JOwkIugZWaj6nO9HXqXEgeTFl7wPuFYqiTSya7gfvBl8V6clV44D
-         EGi+nQ9ZRg9JLr/2Qk8ILCU1QvdhEY/qbuTwxSJzsk/llJM307SXWMpFnzOxAqbJ9k
-         JduveQIT/oBJWfDJB2jobSw7DrltN9GA6SAuLjOfK0hzhsIzMgEvqB4SU+aF1UEQS/
-         T1RuvZjkOa1VQ==
-Date:   Sun, 31 Jul 2022 13:09:59 +0100
+        b=JHQK9Pl3O8Vnrcfj3/YDIY+pWrMUG0hvj6nyIrkJ7tCFKK21Ncfec/QzojLSvDARe
+         lr7o0yzRQLgJPTbozA0g4qVRpxpOVddLE8Cbk9bzVU5MVbHHq3GPtsHTbYZl+9Bp0x
+         RDTc1fS9WNoDB3Z8Pa/hIeAwaidUaAqlEksqllwiqwL//DTKNHkAhEk9KcBqzekef6
+         MD/ktPdll/uLze02Gb3/vqdV89Tavmope2E223OB+k63KAOZoOjKqc8X7sTGh7Gob3
+         M3mQ4WKjwtOvXcsR/5y3dwsDMSuzK0agZtMtpBgA+MZ+XvgS1rGY9M64kPie3Rr9f7
+         Grz3f+dzYSQIA==
+Date:   Sun, 31 Jul 2022 13:13:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Potin Lai <potin.lai.pt@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: humidity: hdc100x: add manufacturer and
- device ID check
-Message-ID: <20220731130959.50826fc4@jic23-huawei>
-In-Reply-To: <20220728125435.3336618-3-potin.lai.pt@gmail.com>
-References: <20220728125435.3336618-1-potin.lai.pt@gmail.com>
-        <20220728125435.3336618-3-potin.lai.pt@gmail.com>
+To:     Daniel Lezcano <daniel.lezcano@linexp.org>
+Cc:     daniel.lezcano@linaro.org, rafael@kernel.org, rui.zhang@intel.com,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        khilman@baylibre.com, abailon@baylibre.com, lukasz.luba@arm.com,
+        broonie@kernel.org, damien.lemoal@opensource.wdc.com,
+        heiko@sntech.de, hayashi.kunihiko@socionext.com,
+        mhiramat@kernel.org, talel@amazon.com, thierry.reding@gmail.com,
+        digetx@gmail.com, jonathanh@nvidia.com, anarsoul@gmail.com,
+        tiny.windzz@gmail.com, baolin.wang7@gmail.com,
+        f.fainelli@gmail.com, bjorn.andersson@linaro.org,
+        mcoquelin.stm32@gmail.com, glaroque@baylibre.com,
+        miquel.raynal@bootlin.com, shawnguo@kernel.org,
+        niklas.soderlund@ragnatech.se, matthias.bgg@gmail.com,
+        j-keerthy@ti.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/Allwinner
+        sunXi SoC support),
+        linux-sunxi@lists.linux.dev (open list:ARM/Allwinner sunXi SoC support)
+Subject: Re: [PATCH v3 27/32] iio/drivers/sun4i_gpadc: Switch to new of
+ thermal API
+Message-ID: <20220731131328.7301de32@jic23-huawei>
+In-Reply-To: <20220727210253.3794069-28-daniel.lezcano@linexp.org>
+References: <20220727210253.3794069-1-daniel.lezcano@linexp.org>
+        <20220727210253.3794069-28-daniel.lezcano@linexp.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,159 +73,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 28 Jul 2022 12:54:35 +0000
-Potin Lai <potin.lai.pt@gmail.com> wrote:
+On Wed, 27 Jul 2022 23:02:48 +0200
+Daniel Lezcano <daniel.lezcano@linexp.org> wrote:
 
-> Add manufacturer and device ID checking during probe, and skip the
-> checking if chip model not supported.
+> The thermal OF code has a new API allowing to migrate the OF
+> initialization to a simpler approach. The ops are no longer device
+> tree specific and are the generic ones provided by the core code.
 > 
-> Supported:
-> - HDC1000
-> - HDC1010
-> - HDC1050
-> - HDC1080
+> Convert the ops to the thermal_zone_device_ops format and use the new
+> API to register the thermal zone with these generic ops.
 > 
-> Not supported:
-> - HDC1008
-> 
-> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+> Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+Whilst making no pretence at having checked what the new calls do, I'm fine with this
+patch affecting the driver in IIO and going through appropriate thermal tree.
 
-I need some more information on the 'why' of this patch.  There are a number
-of drivers that do a similar ID check but in recent times, that approach has
-been considered wrong because it breaks potential use of multiple compatible
-entries in device tree.   If a new device comes along and is backwards
-compatible with an existing one (maybe has new features, but using them is
-optional) then we want to have an entry that looks like
-
-compatible = "ti,hdc1099", "ti,hdc1080"
-
-If the new ID is not supported by the kernel that is being used, we still
-want the driver to 'work' using the fallback compatible.
-
-As such, we no generally do the following.
-
-1) If we have a match to a device we know about but it's not the one the
-   firmware tells us to expect, print a warning but operate as if the firmware
-   had been correct - particularly if we know the parts aren't compatible
-   with each other. (this bit is optional as we should be able to assume firmware
-   doesn't do stupid things :)
-2) If we don't match at all, print a warning about an unknown device but carry
-   on with assumption that the firmware is correct and this new device ID is
-   backwards compatible with the provided fallback compatible.
-
-So if this is just a bit of defensive programming (rather than necessary for some
-reason not yet explained) then change from returning an error on probe() to 
-printing an warning message but continuing anyway. (which is part (2) of the
-above)
-
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/iio/humidity/hdc100x.c | 67 ++++++++++++++++++++++++++++------
->  1 file changed, 56 insertions(+), 11 deletions(-)
+>  drivers/iio/adc/sun4i-gpadc-iio.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
-> index 0d514818635cb..31f18cc1cf63c 100644
-> --- a/drivers/iio/humidity/hdc100x.c
-> +++ b/drivers/iio/humidity/hdc100x.c
-> @@ -34,6 +34,23 @@
->  #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
->  #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
->  
-> +#define HDC100X_REG_MFR_ID	0xFE
-> +#define HDC100X_REG_DEV_ID	0xFF
-> +
-> +#define HDC100X_MFR_ID	0x5449
-> +
-> +struct hdc100x_chip_data {
-> +	bool support_mfr_check;
-> +};
-> +
-> +static const struct hdc100x_chip_data hdc100x_chip_data = {
-> +	.support_mfr_check	= true,
-> +};
-> +
-> +static const struct hdc100x_chip_data hdc1008_chip_data = {
-> +	.support_mfr_check	= false,
-> +};
-> +
->  struct hdc100x_data {
->  	struct i2c_client *client;
->  	struct mutex lock;
-> @@ -351,8 +368,32 @@ static const struct iio_info hdc100x_info = {
->  	.attrs = &hdc100x_attribute_group,
->  };
->  
-> +static int hdc100x_read_mfr_id(struct i2c_client *client)
-> +{
-> +	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
-> +}
-> +
-> +static int hdc100x_read_dev_id(struct i2c_client *client)
-> +{
-> +	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
-> +}
-> +
-> +static bool is_valid_hdc100x(struct i2c_client *client)
-> +{
-> +	int mfr_id, dev_id;
-> +
-> +	mfr_id = hdc100x_read_mfr_id(client);
-> +	dev_id = hdc100x_read_dev_id(client);
-> +	if (mfr_id == HDC100X_MFR_ID &&
-> +	   (dev_id == 0x1000 || dev_id == 0x1050))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->  static int hdc100x_probe(struct i2c_client *client)
->  {
-> +	const struct hdc100x_chip_data *chip_data;
->  	struct iio_dev *indio_dev;
->  	struct hdc100x_data *data;
->  	int ret;
-> @@ -361,6 +402,10 @@ static int hdc100x_probe(struct i2c_client *client)
->  				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
->  		return -EOPNOTSUPP;
->  
-> +	chip_data = device_get_match_data(&client->dev);
-> +	if (chip_data->support_mfr_check && !is_valid_hdc100x(client))
-> +		return -EINVAL;
-> +
->  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
->  	if (!indio_dev)
->  		return -ENOMEM;
-> @@ -396,22 +441,22 @@ static int hdc100x_probe(struct i2c_client *client)
+> diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+> index 2d393a4dfff6..13d1e937357c 100644
+> --- a/drivers/iio/adc/sun4i-gpadc-iio.c
+> +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+> @@ -412,9 +412,9 @@ static int sun4i_gpadc_runtime_resume(struct device *dev)
+>  	return 0;
 >  }
 >  
->  static const struct i2c_device_id hdc100x_id[] = {
-> -	{ "hdc100x", 0 },
-> -	{ "hdc1000", 0 },
-> -	{ "hdc1008", 0 },
-> -	{ "hdc1010", 0 },
-> -	{ "hdc1050", 0 },
-> -	{ "hdc1080", 0 },
-> +	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
-> +	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
-> +	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
-> +	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
-> +	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
-> +	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(i2c, hdc100x_id);
+> -static int sun4i_gpadc_get_temp(void *data, int *temp)
+> +static int sun4i_gpadc_get_temp(struct thermal_zone_device *tz, int *temp)
+>  {
+> -	struct sun4i_gpadc_iio *info = data;
+> +	struct sun4i_gpadc_iio *info = tz->devdata;
+>  	int val, scale, offset;
 >  
->  static const struct of_device_id hdc100x_dt_ids[] = {
-> -	{ .compatible = "ti,hdc1000" },
-> -	{ .compatible = "ti,hdc1008" },
-> -	{ .compatible = "ti,hdc1010" },
-> -	{ .compatible = "ti,hdc1050" },
-> -	{ .compatible = "ti,hdc1080" },
-> +	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
-> +	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
-> +	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
-> +	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
-> +	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
->  	{ }
+>  	if (sun4i_gpadc_temp_read(info->indio_dev, &val))
+> @@ -428,7 +428,7 @@ static int sun4i_gpadc_get_temp(void *data, int *temp)
+>  	return 0;
+>  }
+>  
+> -static const struct thermal_zone_of_device_ops sun4i_ts_tz_ops = {
+> +static const struct thermal_zone_device_ops sun4i_ts_tz_ops = {
+>  	.get_temp = &sun4i_gpadc_get_temp,
 >  };
->  MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
+>  
+> @@ -637,9 +637,9 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
+>  	pm_runtime_enable(&pdev->dev);
+>  
+>  	if (IS_ENABLED(CONFIG_THERMAL_OF)) {
+> -		info->tzd = thermal_zone_of_sensor_register(info->sensor_device,
+> -							    0, info,
+> -							    &sun4i_ts_tz_ops);
+> +		info->tzd = thermal_of_zone_register(info->sensor_device,
+> +						     0, info,
+> +						     &sun4i_ts_tz_ops);
+>  		/*
+>  		 * Do not fail driver probing when failing to register in
+>  		 * thermal because no thermal DT node is found.
 

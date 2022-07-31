@@ -2,45 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ACDA585EDB
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DACF585EE0
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 14:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233133AbiGaMZS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 08:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40674 "EHLO
+        id S231631AbiGaMdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 08:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233019AbiGaMZR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:25:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768A62DD2;
-        Sun, 31 Jul 2022 05:25:16 -0700 (PDT)
+        with ESMTP id S229745AbiGaMdj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 08:33:39 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB993BE30;
+        Sun, 31 Jul 2022 05:33:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1261460D17;
-        Sun, 31 Jul 2022 12:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1850DC433C1;
-        Sun, 31 Jul 2022 12:25:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 75829B80D12;
+        Sun, 31 Jul 2022 12:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02166C433D6;
+        Sun, 31 Jul 2022 12:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659270315;
-        bh=aJBSCZCKJ4tBgDgWlARQRxv+lVkfJRH7DAy3OuzHRDo=;
+        s=k20201202; t=1659270816;
+        bh=Cae8WTn1U5ue2ZooK/ujvkkFamJx/qU5ivCeIdOAFOA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GrPDz66c59Mq3cdJCsgFbrC93pnWhgxcEZ9rQH85F5igP2PxYdptfcHMBHEIgwe9Y
-         XDnJOLfMWpWP/IdCAdli61DhomE2ukeGup1u6ku8Lt58G0EyoVMaK5dgTdjkQIy3In
-         mjidBjo2S1dAQ87RV67bp+kclfXjq6Bt0ah8yyT7xiyzoMFWD/fV4jSp/WNYrrOlLu
-         guZdohuW/Hry76SKPZa6uerQB5nPh4rfmNBoNn6VQFyyTULUVyItBG64F3GGzsIE6Y
-         5OliWCEiGZOLOKlpf4Fr2QB7fPa91BJdNf7VKxts7hnG1eHV8pUMfyOlLlpTm7cPV1
-         mq53yCxTq49Nw==
-Date:   Sun, 31 Jul 2022 13:35:28 +0100
+        b=JWfDw6CcxwDzOUPkOLDtFJayTcqjmPA1ymQBktM/jTno3PKJ1N2ys17Wl/kgJBKyK
+         k0CIG1LG2vTzXUKSng2Bykzj/9vpWSALZ8CKRXq0rbpZwQzfj3RuMeKBNWYzwloYnS
+         mRqkwdIOxBrAbQvlxsZu48HSsQMsvQeEmzSrg+vkDVFnTtZJ+HkeKGX6VoR+VVkNVu
+         BI1Whrh4dV5xKZeJ6QunNXScIGY/GocujEaM1e5y+e2MAext1JM+fCmDkc1RMAB5kp
+         UYQJezSmib3Xwp7dCWCD7S829x/7csMbOoZBq4VDzH2teh+6yT+kU5lwjN/AXki0MX
+         /1+Bzm6baJ8fg==
+Date:   Sun, 31 Jul 2022 13:43:47 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: Update Microchip MCP3911 to Maintained
-Message-ID: <20220731133528.64c51e0f@jic23-huawei>
-In-Reply-To: <20220723092030.260812-1-marcus.folkesson@gmail.com>
-References: <20220723092030.260812-1-marcus.folkesson@gmail.com>
+To:     Jason Gerecke <killertofu@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Wolfram Sang <wsa-dev@sang-engineering.com>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        Ping Cheng <pinglinux@gmail.com>,
+        "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
+        Jason Gerecke <jason.gerecke@wacom.com>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, linux-iio <linux-iio@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] i2c: Use u8 type in i2c transfer calls
+Message-ID: <20220731134347.19fcfbe7@jic23-huawei>
+In-Reply-To: <CANRwn3SH2Z5n5so4FcymzgN-KAciHGo=tuXUheVttc2+vQeRqg@mail.gmail.com>
+References: <202207190634.ToyhlXSz-lkp@intel.com>
+        <0551a3ad-8c42-78fe-5b50-ebbc003e55e6@intel.com>
+        <CANRwn3R48rvwnygdyKhmFE8wD+BCCHrTWa-M=uTvpnK5Jo3vww@mail.gmail.com>
+        <CANRwn3Tgumg-mZ9sV=8AXevag9z2s=mTF4qqZW2KenDmc9b1wQ@mail.gmail.com>
+        <CAHp75VfFrkDLOC2+5WUmVGBLfoxVbDzJKyLN0+Z+XrZzpkYDkQ@mail.gmail.com>
+        <CANRwn3SH2Z5n5so4FcymzgN-KAciHGo=tuXUheVttc2+vQeRqg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,38 +65,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 23 Jul 2022 11:20:30 +0200
-Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+On Thu, 28 Jul 2022 15:48:59 -0700
+Jason Gerecke <killertofu@gmail.com> wrote:
 
-> The actual status of the code is Maintained.
+> On Thu, Jul 28, 2022 at 1:48 PM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> >
+> > On Thu, Jul 28, 2022 at 4:30 PM Jason Gerecke <killertofu@gmail.com> wrote:  
+> > > On Wed, Jul 20, 2022 at 12:01 PM Jason Gerecke <killertofu@gmail.com> wrote:  
+> > > > On Tue, Jul 19, 2022 at 5:21 PM kernel test robot <rong.a.chen@intel.com> wrote:  
+> >  
+> > > > Writing a patch to fix the new warnings generated by my I2C patch is
+> > > > simple enough, but I'd like some help coordinating getting both
+> > > > patches landed. Should I wait for the I2C patch to land in "for-next"
+> > > > before sending the IIO fix, or would it be preferred to send the IIO
+> > > > fix right now so that both patches can be reviewed simultaneously?  
+> > >
+> > > It's been pretty quiet, so asking again for any thoughts on how to
+> > > best address this tangle...  
+> >
+> > The rule of thumb is not to introduce an additional warning or compile error.
+> > I haven't looked deeply into this case, but it smells to me as if you need a new
+> > version of your initial patch that includes a fix to IIO.
+> >
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko  
 > 
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> Cc: Kent Gustavsson <kent@minoris.se>
-> Cc: Jonathan Cameron <jic23@kernel.org>
-> Cc: linux-iio <linux-iio@vger.kernel.org>
-Applied to the togreg branch of iio.git which I'll rebase after rc1.
-In meantime pushed out as testing where 0-day will probably ignore this particular
-patch.
+> Thanks! Since the patch would touch both IIO and I2C I assume I would
+> submit it to both mailinglists. And that whichever maintainer gets to
+> it first would just give their Reviewed-by (if all looks good) and the
+> second applies the Signed-off-by and handles the merge?
+> 
+> I'll work on the updated combined patch...
 
-Thanks,
+I suspect this will be likely to create merge conflicts, so submit it like
+that and I'll probably ask Wolfram to do an immutable branch that I can
+then pull into IIO.  Hence we'll have exactly the same commits (IDs and all)
+in both IIO and I2C trees.
 
 Jonathan
 
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 85147ee391d5..47dcbfabedf9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13085,7 +13085,7 @@ MICROCHIP MCP3911 ADC DRIVER
->  M:	Marcus Folkesson <marcus.folkesson@gmail.com>
->  M:	Kent Gustavsson <kent@minoris.se>
->  L:	linux-iio@vger.kernel.org
-> -S:	Supported
-> +S:	Maintained
->  F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
->  F:	drivers/iio/adc/mcp3911.c
->  
+> Jason
 

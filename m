@@ -2,56 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFDE6586019
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 19:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A298586023
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 19:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237159AbiGaRYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 13:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
+        id S237629AbiGaRg2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 13:36:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229495AbiGaRYC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 13:24:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71E0DE97;
-        Sun, 31 Jul 2022 10:24:00 -0700 (PDT)
+        with ESMTP id S237383AbiGaRg1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 13:36:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75FBEE0F4;
+        Sun, 31 Jul 2022 10:36:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61E9960F52;
-        Sun, 31 Jul 2022 17:24:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8881FC433C1;
-        Sun, 31 Jul 2022 17:23:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D03DD60F1F;
+        Sun, 31 Jul 2022 17:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6A4C433B5;
+        Sun, 31 Jul 2022 17:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659288239;
-        bh=QxJhA3XLqGjY6dj9UUns/GgVd9u2bI1FTYVP5CWajuw=;
+        s=k20201202; t=1659288983;
+        bh=OqNwzBhmxX6dCySjRRwiRk7M2ToU+sqEvLz6YZ7Jpxo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=C7TBaVuwvEc7pmRi8UAc0btyJBn1Rb6riYw3OHQQPHcrEHvn2jG8n3c/nQxnIn/YA
-         Fel3j8bQTsms4O9jfHXKJLS0r2jY05mGhSC4AtwGdkr2jHEMAZq5oiTzvK+g8/B1Kz
-         puTlFVN6+vTuw/dDZ9CfrMzcOWPbXwRIZcTGJYgVh7phzIoDt2W1fqWOV9hEhL31AN
-         WM4RzP6Y8QccRb+EX33O0lEkMK03nI6jy+05MfcMeCQtw01XMqNBFAznR3lbXBZvjn
-         sRoG9ZSwn5Z83Ked4ucyAek5I35D0BqIsUpjMVN7nPJDPlWaESA+LeNHhde6PNgOJD
-         hjATqFpOG1Gqw==
-Date:   Sun, 31 Jul 2022 18:34:11 +0100
+        b=ts+5xQgT0Y3OEh+8cSush5Lm+ldZ+OyV5KO5bZJfO69o5nQsLd+9KuTn19S0Q6cAP
+         22P+HAB9WDkqYqk9gtazyJprfFcO+yQlPBlBgmsc+2PX03iZwu39c78KoKr/f3v7JG
+         GxQwKItkPFhTsiK+toDY7vnPCwNpvxtrgHyTBimtLjODfQHq+Sb7kBIxvMuVZLX9qN
+         xLO/Vrdu04aQs5gjC9sCYPtgJGpKeJb04YMtr9+wGicr/vOmODjKon++Jcpwb+qDH9
+         8rP168f3WzEDZiEb31SiocAaFHQDfSWI1u47KvcaAnDonlt5WB9ZW57HMpyCjPTuKp
+         o+2s9nS/GLWaQ==
+Date:   Sun, 31 Jul 2022 18:46:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     ChiYuan Huang <u0084500@gmail.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        cy_huang <cy_huang@richtek.com>,
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-iio <linux-iio@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v8 2/3] iio: adc: Add rtq6056 support
-Message-ID: <20220731183411.5572c0c6@jic23-huawei>
-In-Reply-To: <CADiBU38OGHyAHReKhB7i_p6PUkGE5eCiN_G9_Es-DKtG0Yc71A@mail.gmail.com>
-References: <1658242365-27797-1-git-send-email-u0084500@gmail.com>
-        <1658242365-27797-3-git-send-email-u0084500@gmail.com>
-        <CADiBU38OGHyAHReKhB7i_p6PUkGE5eCiN_G9_Es-DKtG0Yc71A@mail.gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH v1 2/2] iio: accel: bma400: Add support for single and
+ double tap events
+Message-ID: <20220731184634.739e2d7f@jic23-huawei>
+In-Reply-To: <CAM+2EuL=ysbaGpsjgrpJw9T3pw7NKxwZhf4HS5EEVrFZPjU23g@mail.gmail.com>
+References: <20220613191706.31239-1-jagathjog1996@gmail.com>
+        <20220613191706.31239-3-jagathjog1996@gmail.com>
+        <20220619141814.4b2b3dee@jic23-huawei>
+        <CAM+2Eu+n40_WiQFJDWDeJxoSLxEKjNY1_vGxC_86DX7+jquPeg@mail.gmail.com>
+        <20220716162001.054cd77f@jic23-huawei>
+        <CAM+2EuL=ysbaGpsjgrpJw9T3pw7NKxwZhf4HS5EEVrFZPjU23g@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,860 +62,562 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Jul 2022 11:38:44 +0800
-ChiYuan Huang <u0084500@gmail.com> wrote:
+On Sat, 23 Jul 2022 14:29:33 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> Hi, Jonathan:
->=20
-> cy_huang <u0084500@gmail.com> =E6=96=BC 2022=E5=B9=B47=E6=9C=8819=E6=97=
-=A5 =E9=80=B1=E4=BA=8C =E6=99=9A=E4=B8=8A10:52=E5=AF=AB=E9=81=93=EF=BC=9A
+>  Hi Jonathan,
+> 
+> On Sat, Jul 16, 2022 at 8:40 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > >
-> > From: ChiYuan Huang <cy_huang@richtek.com>
+> > On Sun, 26 Jun 2022 18:53:11 +0530
+> > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> >  
+> > > Hi Jonathan,
+> > >
+> > > On Sun, Jun 19, 2022 at 6:38 PM Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > >
+> > > > On Tue, 14 Jun 2022 00:47:06 +0530
+> > > > Jagath Jog J <jagathjog1996@gmail.com> wrote:
+> > > >  
+> > > > > Add support for single and double tap events based on the tap threshold
+> > > > > value and minimum quiet time value between the taps. The INT1 pin is used
+> > > > > to interrupt and event is pushed to userspace.
+> > > > >
+> > > > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> > > > > ---
+> > > > >  drivers/iio/accel/bma400.h      |  11 ++
+> > > > >  drivers/iio/accel/bma400_core.c | 210 ++++++++++++++++++++++++++++++--
+> > > > >  2 files changed, 211 insertions(+), 10 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+> > > > > index e8f802a82300..d05edd9b009a 100644
+> > > > > --- a/drivers/iio/accel/bma400.h
+> > > > > +++ b/drivers/iio/accel/bma400.h
+> > > > > @@ -40,6 +40,7 @@
+> > > > >  #define BMA400_INT_STAT1_REG        0x0f
+> > > > >  #define BMA400_INT_STAT2_REG        0x10
+> > > > >  #define BMA400_INT12_MAP_REG        0x23
+> > > > > +#define BMA400_INT_ENG_OVRUN_MSK    BIT(4)
+> > > > >
+> > > > >  /* Temperature register */
+> > > > >  #define BMA400_TEMP_DATA_REG        0x11
+> > > > > @@ -105,6 +106,16 @@
+> > > > >  #define BMA400_INT_GEN2_MSK         BIT(3)
+> > > > >  #define BMA400_GEN_HYST_MSK         GENMASK(1, 0)
+> > > > >
+> > > > > +/* TAP config registers */
+> > > > > +#define BMA400_TAP_CONFIG           0x57
+> > > > > +#define BMA400_TAP_CONFIG1          0x58
+> > > > > +#define BMA400_S_TAP_MSK            BIT(2)
+> > > > > +#define BMA400_D_TAP_MSK            BIT(3)
+> > > > > +#define BMA400_INT_S_TAP_MSK        BIT(10)
+> > > > > +#define BMA400_INT_D_TAP_MSK        BIT(11)
+> > > > > +#define BMA400_TAP_SEN_MSK          GENMASK(2, 0)
+> > > > > +#define BMA400_TAP_QUIET_MSK        GENMASK(3, 2)  
+> > > >
+> > > > So following up on the 'what is the maximum time between double taps
+> > > > question I took a look at the datasheet.
+> > > >
+> > > > What about quiet_dt and tics_th?  
+> > >
+> > > I kept both of them as default values since there is only _period attribute
+> > > which matches these values.  
 > >
-> > Add Richtek rtq6056 supporting.
+> > Understood.  Definitely feels like we are stretching that ABI too far.
+> >  
+> > >  
+> > > >
+> > > > quiet_dt seems to be min time between taps in a double tap, and tics_th
+> > > > is about the 'tap' algorithm itself.
+> > > >
+> > > > Interesting, tics_th is kind of the opposite of what we'd normally use period
+> > > > for.  We only get event if the max to min of tap occur closer together than
+> > > > this value.
+> > > >
+> > > > quiet_dt seems a closer fit to what you documented period for.  quiet
+> > > > controls min space between single taps.  So related but indirectly to
+> > > > double tap detection.
+> > > > If I have understood this correctly.
+> > > >
+> > > > * If two taps are more that quiet apart then we get 2 single taps.
+> > > > * If two taps are more than quiet_dt apart but less than quiet apart then
+> > > >   we get a double tap.
+> > > > * If two taps are less than quiet_dt apart, then we probably detect them
+> > > >   as a single tap, as long as the tics_th timing condition is met.
+> > > >
+> > > > Whilst quiet effects both single and double tap I think we would have
+> > > > to define it as controls on both of them (linked by changing value of
+> > > > one effecting the other).
+> > > >
+> > > > Period doesn't fit any of these but I'm struggling to come up with
+> > > > good ABI.
+> > > >
+> > > > Maybe use "holdoff" for single tap to indicate minimum time after
+> > > > first tap before we can have another one.  (lifted from naming of
+> > > > controls on oscilloscope triggers).
+> > > >
+> > > > What to call the same time for double taps (which it's a limit on how
+> > > > far apart they can be) isn't obvious.  Nor is what would map to quiet_dt
+> > > > a they are both very specific to double taps.
+> > > > Maybe "period" makes sense for quiet (not quiet_dt) when applied to a double
+> > > > tap as it's time within which the event must have completed (got 2 taps)
+> > > > but it's a stetch.
+> > > >
+> > > > Anyhow, this needs more thought.  All suggestions welcome!  
+> > >
+> > > Thanks for the suggestion,
+> > > For double-tap, the quiet value represents window time which means both taps
+> > > should occur within this period of time.
+> > >
+> > > Please give me suggestions for the name "pulse window" or only "window" for
+> > > double tap quiet value and "latency" for the quiet_dt.  
 > >
-> > It can be used for the system to monitor load current and power with 16=
--bit
-> > resolution.
+> > Window doesn't really describe anything - it's too vague.
+> >  
+> > >
+> > > Most of the accelerometer sensors which support tap feature define
+> > > quite, quite_dt
+> > > register field with different names then, can I add these attributes in the core
+> > > with the final suggested name?  
 > >
-> > Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > ---
-> > Since v8
-> > - Instead of 'integraion_time' for voltage channel, use per channel sam=
-pling
-> >   frequency to be more generic. =20
-> For the v8 change, is there still anything need to be refined?
+> > ABI definition is tricky.  Normal trick is to look at other similar sorts of things
+> > (like oscilloscope triggers). https://download.tek.com/document/55W_17291_6_0.pdf (1st
+> > hit in google)
+> > So, one option is to use the concept of triggers resetting.
+> >
+> > Hence quiet might work as
+> > gesture_singletap_resettimeout (in seconds)  Until this time has passed the
+> > detector is not reset to look for another event.  
+> 
+> There is already IIO_EV_INFO_TIMEOUT defined which almost maps to the
+> given suggestion. Your thoughts on reusing the same for quiet
+> (gesture_singletap_timeout)?
 
-Nothing I can see. I was just on vacation so not reading much email ;)
+Despite similar name, I'm not sure it's a similar concept.  That timeout is
+about reset of a tracking value (typically low pass filtered version of the
+data) used for dynamic thresholding.  Same concept of 'something being reset' but
+in that case reset just means set to the current _raw value which is rather different
+from reenabling the detector.
 
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day=
- to
-see if it can find anything we missed. Note I'll be rebasing after rc1 is a=
-vailable
-and won't push the togreg branch out for linux-next to pick up until after =
-that.
+Probably shouldn't have used such a generic name for the existing _timeout, but
+that's been there a very long time IIRC :(
 
-Thanks,
+> 
+> >
+> > It's a bit of a stretch to use this for quiet_dt. There is a similar concept
+> > in the above scope manual, but it's defined as AB triggers and that's complex
+> > and doesn't map great to simple naming.
+> > gesture_doubletap_tap2mindelay (in seconds)  
+> 
+> Thanks for the suggestions.
+> I will send v2 soon so that I can get more comments on this from others also.
+> 
+> > maybe?  Note these are only vague suggestions.  There are a various userspace
+> > folk who are often kind enough to give us feedback on things affecting ABI.
+> > So +CC
+> > Bastien Nocera <hadess@hadess.net>
+> > Hans de Goede <hdegoede@redhat.com>
+> >
+> > (for Bastien and Hans: the aim here is to finally add ABI to IIO for single and double
+> >  tap detection from accelerometers - in particular trying to come up with sensible tunables
+> >  that are suitable for the algorithms various devices implement).
+> >  
+> > >
+> > > Since tics_th is specific to bma400 can I define this by creating custom
+> > > attributes with the same name using IIO_DEVICE_ATTR_RW()?  
+> >
+> > No.  Custom ABI is fine for a driver if needed like here, but it needs to be inline with
+> > the standard ABI such that if we make it standard later, we can hopefully make
+> > use of it.   I'm not sure this will ever be standards, but let's aim for
+> > something readable(ish).
+> >
+> > _maxtomin_time  (in seconds)  might work perhaps?  
+> 
+> This tics_th (_maxtomin_time) in seconds is more specific to bma400 so I thought
+> of providing a custom ABI for this, but the values are in floating
+> point. How can
+> I decode these floating point values (string) in the custom *_show and *_store?
+
+Actual floating point or something we can map to fixed point?
+The IIO format extraction routines can be used for non standard ABI and take 
+IIO_VAL_INT_PLUS_MICRO etc which often have enough precision for this sort of thing.
+> 
+> To avoid floating point operations, is there any helper similar to kstrtoint()?
+Nope, just the ones in IIO that I know of. May be others hiding elsewhere in the
+kernel, but they will all map to some fixed point representation I think.
+
+> 
+> For other ABI like _tap2mindelay and _resettimeout are also floating
+> point values
+> but the core will convert into micro since they are added in core as
+> standard ABI.
+
+Yup, that ABI is used in a few non core IIO places though as not uncommon to
+need something similar for custom attributes. Look at iio_str_to_fixpoint()
+usage in drivers.  e.g. (picking at random)
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/proximity/srf08.c#L300
+
+
+> 
+> >
+> > I've not looked at what the input subsystem does for touch screens. Feels like they'll
+> > have at least some of the same controls.  Perhaps there is something to be learnt
+> > from there?  
+> 
+> Input subsystem is using MT protocol for reporting multi-touch and events are
+> reported to userspace, but I didn't find attributes related to tap
+> configurations
+> that are being read or written from userspace.
+
+Curious.  I guess maybe for touchscreens it is mostly something device specific.
+There is probably some argument that these could be firmware things for IIO as well, but
+much like you can adjust things about mouse double click detection from userspace, it
+makes sense to provide the controls.  Maybe for touch screens it's all done in userspace
+(so there is no built in double tap detection?)
 
 Jonathan
 
+> 
+> There is an adxl34x accelerometer driver in the input subsystem which supports
+> tap but the configuration values for tap are hardcoded in the driver.
+> 
+> Thanks
+> Jagath
+> 
+> Jagath
 > >
-> > Since v7
-> > - Use 'DEFINE_RUNTIME_DEV_PM_OPS' to replace the explicit declaration o=
-f pm_ops.
+> > Jonathan
 > >
-> > Since v6
-> > - Remove specific rtq6056 ABI document.
-> > - Remove the redundant blank line.
-> > - To prevent the race condition for attribute wrtie and shunt resistor =
-write,
-> >   use 'iio_device_claim_direct_mode' API.
-> > - Refine the order for 'action_reset' and 'pm_runtime'.
-> > - Fix text typo in comment like as ohm to Ohm and timea to time.
-> >
-> > Since v5
-> > - Fix kernel version text for ABI.
-> >
-> > Since v4
-> > - Add '__aligned(8)' for timestamp member in buffer_trigger_handler fun=
-ction.
-> > - Declare timestamp from 'int64_t' to more unified 's64'.
-> >
-> > Since v3
-> > - Refine pm_runtime API calling order in 'read_channel' API.
-> > - Fix vshunt wrong scale for divider.
-> > - Refine the comment text.
-> > - Use 'devm_add_action_or_reset' to decrease the code usage in probe
-> >   function.
-> > - Use RUNTIME_PM_OPS to replace SET_RUNTIME_PM_OPS.
-> > - minor fix for the comma.
-> > - Use pm_ptr to replace the direct assigned pm_ops.
-> >
-> > Since v2
-> > - Rename file from 'rtq6056-adc' to 'rtq6056'.
-> > - Refine the ABI, if generic already defined it, remove it and check th=
-e channel
-> >   report unit.
-> > - Add copyright text.
-> > - include the correct header.
-> > - change the property parsing name.
-> > - To use iio_chan_spec address field.
-> > - Refine each channel separate and shared_by_all.
-> > - Use pm_runtime and pm_runtime_autosuspend.
-> > - Remove the shutdown callback. From the HW suggestion, it's not recomm=
-ended to
-> >   use battery as the power supply.
-> > - Check all scale unit (voltage->mV, current->mA, power->milliWatt).
-> > - Use the read_avail to provide the interface for attribute value list.
-> > - Add comma for the last element in the const integer array.
-> > - Refine each ADC label text.
-> > - In read_label callback, replace snprintf to sysfs_emit.
-> > ---
-> >  drivers/iio/adc/Kconfig   |  15 ++
-> >  drivers/iio/adc/Makefile  |   1 +
-> >  drivers/iio/adc/rtq6056.c | 661 ++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  3 files changed, 677 insertions(+)
-> >  create mode 100644 drivers/iio/adc/rtq6056.c
-> >
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index 48ace74..caebd1a 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -908,6 +908,21 @@ config ROCKCHIP_SARADC
-> >           To compile this driver as a module, choose M here: the
-> >           module will be called rockchip_saradc.
-> >
-> > +config RICHTEK_RTQ6056
-> > +       tristate "Richtek RTQ6056 Current and Power Monitor ADC"
-> > +       depends on I2C
-> > +       select REGMAP_I2C
-> > +       select IIO_BUFFER
-> > +       select IIO_TRIGGERED_BUFFER
-> > +       help
-> > +         Say yes here to enable RQT6056 ADC support.
-> > +         RTQ6056 is a high accuracy current-sense monitor with I2C and=
- SMBus
-> > +         compatible interface, and the device provides full informatio=
-n for
-> > +         system by reading out the load current and power.
-> > +
-> > +         This driver can also be built as a module. If so, the module =
-will be
-> > +         called rtq6056.
-> > +
-> >  config RZG2L_ADC
-> >         tristate "Renesas RZ/G2L ADC driver"
-> >         depends on ARCH_RZG2L || COMPILE_TEST
-> > diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> > index 39d806f..cda7580 100644
-> > --- a/drivers/iio/adc/Makefile
-> > +++ b/drivers/iio/adc/Makefile
-> > @@ -84,6 +84,7 @@ obj-$(CONFIG_QCOM_PM8XXX_XOADC) +=3D qcom-pm8xxx-xoad=
-c.o
-> >  obj-$(CONFIG_RCAR_GYRO_ADC) +=3D rcar-gyroadc.o
-> >  obj-$(CONFIG_RN5T618_ADC) +=3D rn5t618-adc.o
-> >  obj-$(CONFIG_ROCKCHIP_SARADC) +=3D rockchip_saradc.o
-> > +obj-$(CONFIG_RICHTEK_RTQ6056) +=3D rtq6056.o
-> >  obj-$(CONFIG_RZG2L_ADC) +=3D rzg2l_adc.o
-> >  obj-$(CONFIG_SC27XX_ADC) +=3D sc27xx_adc.o
-> >  obj-$(CONFIG_SPEAR_ADC) +=3D spear_adc.o
-> > diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
-> > new file mode 100644
-> > index 00000000..c1b2e8d
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/rtq6056.c
-> > @@ -0,0 +1,661 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Copyright (c) 2022 Richtek Technology Corp.
-> > + *
-> > + * ChiYuan Huang <cy_huang@richtek.com>
-> > + */
-> > +
-> > +#include <linux/bitops.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/module.h>
-> > +#include <linux/pm_runtime.h>
-> > +#include <linux/property.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/sysfs.h>
-> > +#include <linux/types.h>
-> > +#include <linux/util_macros.h>
-> > +
-> > +#include <linux/iio/buffer.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> > +
-> > +#define RTQ6056_REG_CONFIG     0x00
-> > +#define RTQ6056_REG_SHUNTVOLT  0x01
-> > +#define RTQ6056_REG_BUSVOLT    0x02
-> > +#define RTQ6056_REG_POWER      0x03
-> > +#define RTQ6056_REG_CURRENT    0x04
-> > +#define RTQ6056_REG_CALIBRATION        0x05
-> > +#define RTQ6056_REG_MASKENABLE 0x06
-> > +#define RTQ6056_REG_ALERTLIMIT 0x07
-> > +#define RTQ6056_REG_MANUFACTID 0xFE
-> > +#define RTQ6056_REG_DIEID      0xFF
-> > +
-> > +#define RTQ6056_VENDOR_ID      0x1214
-> > +#define RTQ6056_DEFAULT_CONFIG 0x4127
-> > +#define RTQ6056_CONT_ALLON     7
-> > +
-> > +enum {
-> > +       RTQ6056_CH_VSHUNT =3D 0,
-> > +       RTQ6056_CH_VBUS,
-> > +       RTQ6056_CH_POWER,
-> > +       RTQ6056_CH_CURRENT,
-> > +       RTQ6056_MAX_CHANNEL
-> > +};
-> > +
-> > +enum {
-> > +       F_OPMODE =3D 0,
-> > +       F_VSHUNTCT,
-> > +       F_VBUSCT,
-> > +       F_AVG,
-> > +       F_RESET,
-> > +       F_MAX_FIELDS
-> > +};
-> > +
-> > +struct rtq6056_priv {
-> > +       struct device *dev;
-> > +       struct regmap *regmap;
-> > +       struct regmap_field *rm_fields[F_MAX_FIELDS];
-> > +       u32 shunt_resistor_uohm;
-> > +       int vshuntct_us;
-> > +       int vbusct_us;
-> > +       int avg_sample;
-> > +};
-> > +
-> > +static const struct reg_field rtq6056_reg_fields[F_MAX_FIELDS] =3D {
-> > +       [F_OPMODE] =3D REG_FIELD(RTQ6056_REG_CONFIG, 0, 2),
-> > +       [F_VSHUNTCT] =3D REG_FIELD(RTQ6056_REG_CONFIG, 3, 5),
-> > +       [F_VBUSCT] =3D REG_FIELD(RTQ6056_REG_CONFIG, 6, 8),
-> > +       [F_AVG] =3D REG_FIELD(RTQ6056_REG_CONFIG, 9, 11),
-> > +       [F_RESET] =3D REG_FIELD(RTQ6056_REG_CONFIG, 15, 15),
-> > +};
-> > +
-> > +static const struct iio_chan_spec rtq6056_channels[RTQ6056_MAX_CHANNEL=
- + 1] =3D {
-> > +       {
-> > +               .type =3D IIO_VOLTAGE,
-> > +               .indexed =3D 1,
-> > +               .channel =3D 0,
-> > +               .address =3D RTQ6056_REG_SHUNTVOLT,
-> > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > +                                     BIT(IIO_CHAN_INFO_SCALE) |
-> > +                                     BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> > +               .info_mask_separate_available =3D BIT(IIO_CHAN_INFO_SAM=
-P_FREQ),
-> > +               .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMP=
-LING_RATIO),
-> > +               .info_mask_shared_by_all_available =3D BIT(IIO_CHAN_INF=
-O_OVERSAMPLING_RATIO),
-> > +               .scan_index =3D 0,
-> > +               .scan_type =3D {
-> > +                       .sign =3D 's',
-> > +                       .realbits =3D 16,
-> > +                       .storagebits =3D 16,
-> > +                       .endianness =3D IIO_CPU,
-> > +               },
-> > +       },
-> > +       {
-> > +               .type =3D IIO_VOLTAGE,
-> > +               .indexed =3D 1,
-> > +               .channel =3D 1,
-> > +               .address =3D RTQ6056_REG_BUSVOLT,
-> > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > +                                     BIT(IIO_CHAN_INFO_SCALE) |
-> > +                                     BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> > +               .info_mask_separate_available =3D BIT(IIO_CHAN_INFO_SAM=
-P_FREQ),
-> > +               .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMP=
-LING_RATIO),
-> > +               .info_mask_shared_by_all_available =3D BIT(IIO_CHAN_INF=
-O_OVERSAMPLING_RATIO),
-> > +               .scan_index =3D 1,
-> > +               .scan_type =3D {
-> > +                       .sign =3D 'u',
-> > +                       .realbits =3D 16,
-> > +                       .storagebits =3D 16,
-> > +                       .endianness =3D IIO_CPU,
-> > +               },
-> > +       },
-> > +       {
-> > +               .type =3D IIO_POWER,
-> > +               .indexed =3D 1,
-> > +               .channel =3D 2,
-> > +               .address =3D RTQ6056_REG_POWER,
-> > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > +                                     BIT(IIO_CHAN_INFO_SCALE) |
-> > +                                     BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> > +               .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMP=
-LING_RATIO),
-> > +               .info_mask_shared_by_all_available =3D BIT(IIO_CHAN_INF=
-O_OVERSAMPLING_RATIO),
-> > +               .scan_index =3D 2,
-> > +               .scan_type =3D {
-> > +                       .sign =3D 'u',
-> > +                       .realbits =3D 16,
-> > +                       .storagebits =3D 16,
-> > +                       .endianness =3D IIO_CPU,
-> > +               },
-> > +       },
-> > +       {
-> > +               .type =3D IIO_CURRENT,
-> > +               .indexed =3D 1,
-> > +               .channel =3D 3,
-> > +               .address =3D RTQ6056_REG_CURRENT,
-> > +               .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> > +                                     BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> > +               .info_mask_shared_by_all =3D BIT(IIO_CHAN_INFO_OVERSAMP=
-LING_RATIO),
-> > +               .info_mask_shared_by_all_available =3D BIT(IIO_CHAN_INF=
-O_OVERSAMPLING_RATIO),
-> > +               .scan_index =3D 3,
-> > +               .scan_type =3D {
-> > +                       .sign =3D 's',
-> > +                       .realbits =3D 16,
-> > +                       .storagebits =3D 16,
-> > +                       .endianness =3D IIO_CPU,
-> > +               },
-> > +       },
-> > +       IIO_CHAN_SOFT_TIMESTAMP(RTQ6056_MAX_CHANNEL),
-> > +};
-> > +
-> > +static int rtq6056_adc_read_channel(struct rtq6056_priv *priv,
-> > +                                   struct iio_chan_spec const *ch,
-> > +                                   int *val)
-> > +{
-> > +       struct device *dev =3D priv->dev;
-> > +       unsigned int addr =3D ch->address;
-> > +       unsigned int regval;
-> > +       int ret;
-> > +
-> > +       pm_runtime_get_sync(dev);
-> > +       ret =3D regmap_read(priv->regmap, addr, &regval);
-> > +       pm_runtime_mark_last_busy(dev);
-> > +       pm_runtime_put(dev);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       /* Power and VBUS is unsigned 16-bit, others are signed 16-bit =
-*/
-> > +       if (addr =3D=3D RTQ6056_REG_BUSVOLT || addr =3D=3D RTQ6056_REG_=
-POWER)
-> > +               *val =3D regval;
-> > +       else
-> > +               *val =3D sign_extend32(regval, 16);
-> > +
-> > +       return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int rtq6056_adc_read_scale(struct iio_chan_spec const *ch, int =
-*val,
-> > +                                 int *val2)
-> > +{
-> > +       switch (ch->address) {
-> > +       case RTQ6056_REG_SHUNTVOLT:
-> > +               /* VSHUNT lsb  2.5uV */
-> > +               *val =3D 2500;
-> > +               *val2 =3D 1000000;
-> > +               return IIO_VAL_FRACTIONAL;
-> > +       case RTQ6056_REG_BUSVOLT:
-> > +               /* VBUS lsb 1.25mV */
-> > +               *val =3D 1250;
-> > +               *val2 =3D 1000;
-> > +               return IIO_VAL_FRACTIONAL;
-> > +       case RTQ6056_REG_POWER:
-> > +               /* Power lsb 25mW */
-> > +               *val =3D 25;
-> > +               return IIO_VAL_INT;
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +/*
-> > + * Sample frequency for channel VSHUNT and VBUS. The indices correspond
-> > + * with the bit value expected by the chip. And it can be found at
-> > + * https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
-> > + */
-> > +static const int rtq6056_samp_freq_list[] =3D {
-> > +       7194, 4926, 3717, 1904, 964, 485, 243, 122,
-> > +};
-> > +
-> > +static int rtq6056_adc_set_samp_freq(struct rtq6056_priv *priv,
-> > +                                    struct iio_chan_spec const *ch, in=
-t val)
-> > +{
-> > +       struct regmap_field *rm_field;
-> > +       unsigned int selector;
-> > +       int *ct, ret;
-> > +
-> > +       if (val > 7194 || val < 122)
-> > +               return -EINVAL;
-> > +
-> > +       if (ch->address =3D=3D RTQ6056_REG_SHUNTVOLT) {
-> > +               rm_field =3D priv->rm_fields[F_VSHUNTCT];
-> > +               ct =3D &priv->vshuntct_us;
-> > +       } else if (ch->address =3D=3D RTQ6056_REG_BUSVOLT) {
-> > +               rm_field =3D priv->rm_fields[F_VBUSCT];
-> > +               ct =3D &priv->vbusct_us;
-> > +       } else
-> > +               return -EINVAL;
-> > +
-> > +       selector =3D find_closest_descending(val, rtq6056_samp_freq_lis=
-t,
-> > +                                          ARRAY_SIZE(rtq6056_samp_freq=
-_list));
-> > +
-> > +       ret =3D regmap_field_write(rm_field, selector);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       *ct =3D 1000000 / rtq6056_samp_freq_list[selector];
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +/*
-> > + * Available averaging rate for rtq6056. The indices correspond with t=
-he bit
-> > + * value expected by the chip. And it can be found at
-> > + * https://www.richtek.com/assets/product_file/RTQ6056/DSQ6056-00.pdf
-> > + */
-> > +static const int rtq6056_avg_sample_list[] =3D {
-> > +       1, 4, 16, 64, 128, 256, 512, 1024,
-> > +};
-> > +
-> > +static int rtq6056_adc_set_average(struct rtq6056_priv *priv, int val)
-> > +{
-> > +       unsigned int selector;
-> > +       int ret;
-> > +
-> > +       if (val > 1024 || val < 1)
-> > +               return -EINVAL;
-> > +
-> > +       selector =3D find_closest(val, rtq6056_avg_sample_list,
-> > +                               ARRAY_SIZE(rtq6056_avg_sample_list));
-> > +
-> > +       ret =3D regmap_field_write(priv->rm_fields[F_AVG], selector);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       priv->avg_sample =3D rtq6056_avg_sample_list[selector];
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static int rtq6056_adc_get_sample_freq(struct rtq6056_priv *priv,
-> > +                                      struct iio_chan_spec const *ch, =
-int *val)
-> > +{
-> > +       int sample_time;
-> > +
-> > +       if (ch->address =3D=3D RTQ6056_REG_SHUNTVOLT)
-> > +               sample_time =3D priv->vshuntct_us;
-> > +       else if (ch->address =3D=3D RTQ6056_REG_BUSVOLT)
-> > +               sample_time =3D priv->vbusct_us;
-> > +       else {
-> > +               sample_time =3D priv->vshuntct_us + priv->vbusct_us;
-> > +               sample_time *=3D priv->avg_sample;
-> > +       }
-> > +
-> > +       *val =3D 1000000 / sample_time;
-> > +
-> > +       return IIO_VAL_INT;
-> > +}
-> > +
-> > +static int rtq6056_adc_read_raw(struct iio_dev *indio_dev,
-> > +                               struct iio_chan_spec const *chan, int *=
-val,
-> > +                               int *val2, long mask)
-> > +{
-> > +       struct rtq6056_priv *priv =3D iio_priv(indio_dev);
-> > +
-> > +       switch (mask) {
-> > +       case IIO_CHAN_INFO_RAW:
-> > +               return rtq6056_adc_read_channel(priv, chan, val);
-> > +       case IIO_CHAN_INFO_SCALE:
-> > +               return rtq6056_adc_read_scale(chan, val, val2);
-> > +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +               *val =3D priv->avg_sample;
-> > +               return IIO_VAL_INT;
-> > +       case IIO_CHAN_INFO_SAMP_FREQ:
-> > +               return rtq6056_adc_get_sample_freq(priv, chan, val);
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +static int rtq6056_adc_read_avail(struct iio_dev *indio_dev,
-> > +                                 struct iio_chan_spec const *chan,
-> > +                                 const int **vals, int *type, int *len=
-gth,
-> > +                                 long mask)
-> > +{
-> > +       switch (mask) {
-> > +       case IIO_CHAN_INFO_SAMP_FREQ:
-> > +               *vals =3D rtq6056_samp_freq_list;
-> > +               *type =3D IIO_VAL_INT;
-> > +               *length =3D ARRAY_SIZE(rtq6056_samp_freq_list);
-> > +               return IIO_AVAIL_LIST;
-> > +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +               *vals =3D rtq6056_avg_sample_list;
-> > +               *type =3D IIO_VAL_INT;
-> > +               *length =3D ARRAY_SIZE(rtq6056_avg_sample_list);
-> > +               return IIO_AVAIL_LIST;
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +static int rtq6056_adc_write_raw(struct iio_dev *indio_dev,
-> > +                                struct iio_chan_spec const *chan, int =
-val,
-> > +                                int val2, long mask)
-> > +{
-> > +       struct rtq6056_priv *priv =3D iio_priv(indio_dev);
-> > +       int ret;
-> > +
-> > +       ret =3D iio_device_claim_direct_mode(indio_dev);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       switch (mask) {
-> > +       case IIO_CHAN_INFO_SAMP_FREQ:
-> > +               ret =3D rtq6056_adc_set_samp_freq(priv, chan, val);
-> > +               break;
-> > +       case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +               ret =3D rtq6056_adc_set_average(priv, val);
-> > +               break;
-> > +       default:
-> > +               ret =3D -EINVAL;
-> > +               break;
-> > +       }
-> > +
-> > +       iio_device_release_direct_mode(indio_dev);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> > +static const char *rtq6056_channel_labels[RTQ6056_MAX_CHANNEL] =3D {
-> > +       [RTQ6056_CH_VSHUNT] =3D "Vshunt",
-> > +       [RTQ6056_CH_VBUS] =3D "Vbus",
-> > +       [RTQ6056_CH_POWER] =3D "Power",
-> > +       [RTQ6056_CH_CURRENT] =3D "Current",
-> > +};
-> > +
-> > +static int rtq6056_adc_read_label(struct iio_dev *indio_dev,
-> > +                                 struct iio_chan_spec const *chan,
-> > +                                 char *label)
-> > +{
-> > +       return sysfs_emit(label, "%s\n", rtq6056_channel_labels[chan->c=
-hannel]);
-> > +}
-> > +
-> > +static int rtq6056_set_shunt_resistor(struct rtq6056_priv *priv,
-> > +                                     int resistor_uohm)
-> > +{
-> > +       unsigned int calib_val;
-> > +       int ret;
-> > +
-> > +       if (resistor_uohm <=3D 0) {
-> > +               dev_err(priv->dev, "Invalid resistor [%d]\n", resistor_=
-uohm);
-> > +               return -EINVAL;
-> > +       }
-> > +
-> > +       /* calibration =3D 5120000 / (Rshunt (uOhm) * current lsb (1mA)=
-) */
-> > +       calib_val =3D 5120000 / resistor_uohm;
-> > +       ret =3D regmap_write(priv->regmap, RTQ6056_REG_CALIBRATION, cal=
-ib_val);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       priv->shunt_resistor_uohm =3D resistor_uohm;
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static ssize_t shunt_resistor_show(struct device *dev,
-> > +                                  struct device_attribute *attr, char =
-*buf)
-> > +{
-> > +       struct rtq6056_priv *priv =3D iio_priv(dev_to_iio_dev(dev));
-> > +       int vals[2] =3D { priv->shunt_resistor_uohm, 1000000 };
-> > +
-> > +       return iio_format_value(buf, IIO_VAL_FRACTIONAL, 1, vals);
-> > +}
-> > +
-> > +static ssize_t shunt_resistor_store(struct device *dev,
-> > +                                   struct device_attribute *attr,
-> > +                                   const char *buf, size_t len)
-> > +{
-> > +       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> > +       struct rtq6056_priv *priv =3D iio_priv(indio_dev);
-> > +       int val, val_fract, ret;
-> > +
-> > +       ret =3D iio_device_claim_direct_mode(indio_dev);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       ret =3D iio_str_to_fixpoint(buf, 100000, &val, &val_fract);
-> > +       if (ret)
-> > +               goto out_store;
-> > +
-> > +       ret =3D rtq6056_set_shunt_resistor(priv, val * 1000000 + val_fr=
-act);
-> > +
-> > +out_store:
-> > +       iio_device_release_direct_mode(indio_dev);
-> > +
-> > +       return ret ?: len;
-> > +}
-> > +
-> > +static IIO_DEVICE_ATTR_RW(shunt_resistor, 0);
-> > +
-> > +static struct attribute *rtq6056_attributes[] =3D {
-> > +       &iio_dev_attr_shunt_resistor.dev_attr.attr,
-> > +       NULL
-> > +};
-> > +
-> > +static const struct attribute_group rtq6056_attribute_group =3D {
-> > +       .attrs =3D rtq6056_attributes,
-> > +};
-> > +
-> > +static const struct iio_info rtq6056_info =3D {
-> > +       .attrs =3D &rtq6056_attribute_group,
-> > +       .read_raw =3D rtq6056_adc_read_raw,
-> > +       .read_avail =3D rtq6056_adc_read_avail,
-> > +       .write_raw =3D rtq6056_adc_write_raw,
-> > +       .read_label =3D rtq6056_adc_read_label,
-> > +};
-> > +
-> > +static irqreturn_t rtq6056_buffer_trigger_handler(int irq, void *p)
-> > +{
-> > +       struct iio_poll_func *pf =3D p;
-> > +       struct iio_dev *indio_dev =3D pf->indio_dev;
-> > +       struct rtq6056_priv *priv =3D iio_priv(indio_dev);
-> > +       struct device *dev =3D priv->dev;
-> > +       struct {
-> > +               u16 vals[RTQ6056_MAX_CHANNEL];
-> > +               s64 timestamp __aligned(8);
-> > +       } data;
-> > +       unsigned int raw;
-> > +       int i =3D 0, bit, ret;
-> > +
-> > +       memset(&data, 0, sizeof(data));
-> > +
-> > +       pm_runtime_get_sync(dev);
-> > +
-> > +       for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->m=
-asklength) {
-> > +               unsigned int addr =3D rtq6056_channels[bit].address;
-> > +
-> > +               ret =3D regmap_read(priv->regmap, addr, &raw);
-> > +               if (ret)
-> > +                       goto out;
-> > +
-> > +               data.vals[i++] =3D raw;
-> > +       }
-> > +
-> > +       iio_push_to_buffers_with_timestamp(indio_dev, &data, iio_get_ti=
-me_ns(indio_dev));
-> > +
-> > +out:
-> > +       pm_runtime_mark_last_busy(dev);
-> > +       pm_runtime_put(dev);
-> > +
-> > +       iio_trigger_notify_done(indio_dev->trig);
-> > +
-> > +       return IRQ_HANDLED;
-> > +}
-> > +
-> > +static void rtq6056_enter_shutdown_state(void *dev)
-> > +{
-> > +       struct rtq6056_priv *priv =3D dev_get_drvdata(dev);
-> > +
-> > +       /* Enter shutdown state */
-> > +       regmap_field_write(priv->rm_fields[F_OPMODE], 0);
-> > +}
-> > +
-> > +static bool rtq6056_is_readable_reg(struct device *dev, unsigned int r=
-eg)
-> > +{
-> > +       switch (reg) {
-> > +       case RTQ6056_REG_CONFIG ... RTQ6056_REG_ALERTLIMIT:
-> > +       case RTQ6056_REG_MANUFACTID ... RTQ6056_REG_DIEID:
-> > +               return true;
-> > +       default:
-> > +               return false;
-> > +       }
-> > +}
-> > +
-> > +static bool rtq6056_is_writeable_reg(struct device *dev, unsigned int =
-reg)
-> > +{
-> > +       switch (reg) {
-> > +       case RTQ6056_REG_CONFIG:
-> > +       case RTQ6056_REG_CALIBRATION ... RTQ6056_REG_ALERTLIMIT:
-> > +               return true;
-> > +       default:
-> > +               return false;
-> > +       }
-> > +}
-> > +
-> > +static const struct regmap_config rtq6056_regmap_config =3D {
-> > +       .reg_bits =3D 8,
-> > +       .val_bits =3D 16,
-> > +       .val_format_endian =3D REGMAP_ENDIAN_BIG,
-> > +       .max_register =3D RTQ6056_REG_DIEID,
-> > +       .readable_reg =3D rtq6056_is_readable_reg,
-> > +       .writeable_reg =3D rtq6056_is_writeable_reg,
-> > +};
-> > +
-> > +static int rtq6056_probe(struct i2c_client *i2c)
-> > +{
-> > +       struct iio_dev *indio_dev;
-> > +       struct rtq6056_priv *priv;
-> > +       struct device *dev =3D &i2c->dev;
-> > +       struct regmap *regmap;
-> > +       unsigned int vendor_id, shunt_resistor_uohm;
-> > +       int ret;
-> > +
-> > +       if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_SMBUS_WORD_=
-DATA))
-> > +               return -EOPNOTSUPP;
-> > +
-> > +       indio_dev =3D devm_iio_device_alloc(dev, sizeof(*priv));
-> > +       if (!indio_dev)
-> > +               return -ENOMEM;
-> > +
-> > +       priv =3D iio_priv(indio_dev);
-> > +       priv->dev =3D dev;
-> > +       priv->vshuntct_us =3D priv->vbusct_us =3D 1037;
-> > +       priv->avg_sample =3D 1;
-> > +       i2c_set_clientdata(i2c, priv);
-> > +
-> > +       regmap =3D devm_regmap_init_i2c(i2c, &rtq6056_regmap_config);
-> > +       if (IS_ERR(regmap))
-> > +               return dev_err_probe(dev, PTR_ERR(regmap),
-> > +                                    "Failed to init regmap\n");
-> > +
-> > +       priv->regmap =3D regmap;
-> > +
-> > +       ret =3D regmap_read(regmap, RTQ6056_REG_MANUFACTID, &vendor_id);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret,
-> > +                                    "Failed to get manufacturer info\n=
-");
-> > +
-> > +       if (vendor_id !=3D RTQ6056_VENDOR_ID)
-> > +               return dev_err_probe(dev, -ENODEV,
-> > +                                    "Invalid vendor id 0x%04x\n", vend=
-or_id);
-> > +
-> > +       ret =3D devm_regmap_field_bulk_alloc(dev, regmap, priv->rm_fiel=
-ds,
-> > +                                          rtq6056_reg_fields, F_MAX_FI=
-ELDS);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret, "Failed to init regmap f=
-ield\n");
-> > +
-> > +       /*
-> > +        * By default, configure average sample as 1, bus and shunt con=
-version
-> > +        * time as 1037 microsecond, and operating mode to all on.
-> > +        */
-> > +       ret =3D regmap_write(regmap, RTQ6056_REG_CONFIG, RTQ6056_DEFAUL=
-T_CONFIG);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret,
-> > +                                    "Failed to enable continuous sensi=
-ng\n");
-> > +
-> > +       ret =3D devm_add_action_or_reset(dev, rtq6056_enter_shutdown_st=
-ate, dev);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
-> > +       pm_runtime_use_autosuspend(dev);
-> > +       pm_runtime_set_active(dev);
-> > +       pm_runtime_mark_last_busy(dev);
-> > +       ret =3D devm_pm_runtime_enable(dev);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret, "Failed to enable pm_run=
-time\n");
-> > +
-> > +       /* By default, use 2000 micro-Ohm resistor */
-> > +       shunt_resistor_uohm =3D 2000;
-> > +       device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> > +                                &shunt_resistor_uohm);
-> > +
-> > +       ret =3D rtq6056_set_shunt_resistor(priv, shunt_resistor_uohm);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret,
-> > +                                    "Failed to init shunt resistor\n");
-> > +
-> > +       indio_dev->name =3D "rtq6056";
-> > +       indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +       indio_dev->channels =3D rtq6056_channels;
-> > +       indio_dev->num_channels =3D ARRAY_SIZE(rtq6056_channels);
-> > +       indio_dev->info =3D &rtq6056_info;
-> > +
-> > +       ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
-> > +                                             rtq6056_buffer_trigger_ha=
-ndler,
-> > +                                             NULL);
-> > +       if (ret)
-> > +               return dev_err_probe(dev, ret,
-> > +                                    "Failed to allocate iio trigger bu=
-ffer\n");
-> > +
-> > +       return devm_iio_device_register(dev, indio_dev);
-> > +}
-> > +
-> > +static int rtq6056_runtime_suspend(struct device *dev)
-> > +{
-> > +       struct rtq6056_priv *priv =3D dev_get_drvdata(dev);
-> > +
-> > +       /* Configure to shutdown mode */
-> > +       return regmap_field_write(priv->rm_fields[F_OPMODE], 0);
-> > +}
-> > +
-> > +static int rtq6056_runtime_resume(struct device *dev)
-> > +{
-> > +       struct rtq6056_priv *priv =3D dev_get_drvdata(dev);
-> > +       int sample_rdy_time_us, ret;
-> > +
-> > +       ret =3D regmap_field_write(priv->rm_fields[F_OPMODE], RTQ6056_C=
-ONT_ALLON);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       sample_rdy_time_us =3D priv->vbusct_us + priv->vshuntct_us;
-> > +       sample_rdy_time_us *=3D priv->avg_sample;
-> > +
-> > +       usleep_range(sample_rdy_time_us, sample_rdy_time_us + 100);
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static DEFINE_RUNTIME_DEV_PM_OPS(rtq6056_pm_ops, rtq6056_runtime_suspe=
-nd,
-> > +                                rtq6056_runtime_resume, NULL);
-> > +
-> > +static const struct of_device_id rtq6056_device_match[] =3D {
-> > +       { .compatible =3D "richtek,rtq6056" },
-> > +       {}
-> > +};
-> > +MODULE_DEVICE_TABLE(of, rtq6056_device_match);
-> > +
-> > +static struct i2c_driver rtq6056_driver =3D {
-> > +       .driver =3D {
-> > +               .name =3D "rtq6056",
-> > +               .of_match_table =3D rtq6056_device_match,
-> > +               .pm =3D pm_ptr(&rtq6056_pm_ops),
-> > +       },
-> > +       .probe_new =3D rtq6056_probe,
-> > +};
-> > +module_i2c_driver(rtq6056_driver);
-> > +
-> > +MODULE_AUTHOR("ChiYuan Huang <cy_huang@richtek.com>");
-> > +MODULE_DESCRIPTION("Richtek RTQ6056 Driver");
-> > +MODULE_LICENSE("GPL v2");
-> > --
-> > 2.7.4
-> > =20
+> >  
+> > >
+> > > Thank you,
+> > > Jagath
+> > >
+> > >  
+> > > >
+> > > >
+> > > > A few trivial things inline as well.
+> > > >
+> > > >
+> > > >  
+> > > > > +
+> > > > >  /*
+> > > > >   * BMA400_SCALE_MIN macro value represents m/s^2 for 1 LSB before
+> > > > >   * converting to micro values for +-2g range.
+> > > > > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> > > > > index c31bdd9b168e..f8945dc0de04 100644
+> > > > > --- a/drivers/iio/accel/bma400_core.c
+> > > > > +++ b/drivers/iio/accel/bma400_core.c
+> > > > > @@ -29,6 +29,7 @@
+> > > > >  #include <linux/iio/trigger.h>
+> > > > >  #include <linux/iio/trigger_consumer.h>
+> > > > >  #include <linux/iio/triggered_buffer.h>
+> > > > > +#include <linux/iio/sysfs.h>
+> > > > >
+> > > > >  #include "bma400.h"
+> > > > >
+> > > > > @@ -88,6 +89,7 @@ struct bma400_data {
+> > > > >       bool step_event_en;
+> > > > >       bool activity_event_en;
+> > > > >       unsigned int generic_event_en;
+> > > > > +     unsigned int tap_event_en;
+> > > > >       /* Correct time stamp alignment */
+> > > > >       struct {
+> > > > >               __le16 buff[3];
+> > > > > @@ -216,6 +218,36 @@ static const struct iio_event_spec bma400_accel_event[] = {
+> > > > >                                      BIT(IIO_EV_INFO_HYSTERESIS) |
+> > > > >                                      BIT(IIO_EV_INFO_ENABLE),
+> > > > >       },
+> > > > > +     {
+> > > > > +             .type = IIO_EV_TYPE_GESTURE,
+> > > > > +             .dir = IIO_EV_DIR_SINGLETAP,
+> > > > > +             .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
+> > > > > +                                    BIT(IIO_EV_INFO_ENABLE),
+> > > > > +     },
+> > > > > +     {
+> > > > > +             .type = IIO_EV_TYPE_GESTURE,
+> > > > > +             .dir = IIO_EV_DIR_DOUBLETAP,
+> > > > > +             .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE) |
+> > > > > +                                    BIT(IIO_EV_INFO_PERIOD) |
+> > > > > +                                    BIT(IIO_EV_INFO_ENABLE),
+> > > > > +     },
+> > > > > +};
+> > > > > +
+> > > > > +/* List of sensitivity values available to configure tap interrupts */
+> > > > > +static IIO_CONST_ATTR(in_accel_gesture_value_available, "0 1 2 3 4 5 6 7");
+> > > > > +
+> > > > > +/* List of minimum quiet time before and after double tap, in data samples. */
+> > > > > +static IIO_CONST_ATTR(in_accel_gesture_doubletap_period_available,
+> > > > > +                   "60 80 100 120");
+> > > > > +
+> > > > > +static struct attribute *bma400_event_attributes[] = {
+> > > > > +     &iio_const_attr_in_accel_gesture_value_available.dev_attr.attr,
+> > > > > +     &iio_const_attr_in_accel_gesture_doubletap_period_available.dev_attr.attr,
+> > > > > +     NULL
+> > > > > +};
+> > > > > +
+> > > > > +static const struct attribute_group bma400_event_attribute_group = {
+> > > > > +     .attrs = bma400_event_attributes,
+> > > > >  };
+> > > > >
+> > > > >  #define BMA400_ACC_CHANNEL(_index, _axis) { \
+> > > > > @@ -1012,6 +1044,10 @@ static int bma400_read_event_config(struct iio_dev *indio_dev,
+> > > > >               case IIO_EV_DIR_FALLING:
+> > > > >                       return FIELD_GET(BMA400_INT_GEN2_MSK,
+> > > > >                                        data->generic_event_en);
+> > > > > +             case IIO_EV_DIR_SINGLETAP:
+> > > > > +                     return FIELD_GET(BMA400_S_TAP_MSK, data->tap_event_en);
+> > > > > +             case IIO_EV_DIR_DOUBLETAP:
+> > > > > +                     return FIELD_GET(BMA400_D_TAP_MSK, data->tap_event_en);
+> > > > >               default:
+> > > > >                       return -EINVAL;
+> > > > >               }
+> > > > > @@ -1101,6 +1137,80 @@ static int bma400_activity_event_en(struct bma400_data *data,
+> > > > >       return 0;
+> > > > >  }
+> > > > >
+> > > > > +static int bma400_tap_event_en(struct bma400_data *data,
+> > > > > +                            enum iio_event_direction dir, int state)
+> > > > > +{
+> > > > > +     int ret;
+> > > > > +     unsigned int mask, field_value;
+> > > > > +
+> > > > > +     /*
+> > > > > +      * Tap interrupts can be configured only in normal mode.
+> > > > > +      * See table in section 4.3 "Power modes - performance modes" of
+> > > > > +      * datasheet v1.2.
+> > > > > +      */
+> > > > > +     if (data->power_mode != POWER_MODE_NORMAL)
+> > > > > +             return -EINVAL;
+> > > > > +
+> > > > > +     /*
+> > > > > +      * Tap interrupts are operating with the data rate of 200Hz.
+> > > > > +      * See section 4.7 "Tap sensing interrupt" in datasheet v1.2.
+> > > > > +      */
+> > > > > +     if (data->sample_freq.hz != 200) {
+> > > > > +             dev_err(data->dev, "Invalid data rate for tap interrupts.\n");
+> > > > > +             return -EINVAL;
+> > > > > +     }
+> > > > > +
+> > > > > +     ret = regmap_update_bits(data->regmap, BMA400_INT12_MAP_REG,
+> > > > > +                              BMA400_S_TAP_MSK,
+> > > > > +                              FIELD_PREP(BMA400_S_TAP_MSK, state));
+> > > > > +     if (ret)
+> > > > > +             return ret;
+> > > > > +
+> > > > > +     switch (dir) {
+> > > > > +     case IIO_EV_DIR_SINGLETAP:
+> > > > > +             mask = BMA400_S_TAP_MSK;
+> > > > > +             set_mask_bits(&field_value, BMA400_S_TAP_MSK,
+> > > > > +                           FIELD_PREP(BMA400_S_TAP_MSK, state));
+> > > > > +             break;
+> > > > > +     case IIO_EV_DIR_DOUBLETAP:
+> > > > > +             mask = BMA400_D_TAP_MSK;
+> > > > > +             set_mask_bits(&field_value, BMA400_D_TAP_MSK,
+> > > > > +                           FIELD_PREP(BMA400_D_TAP_MSK, state));
+> > > > > +             break;
+> > > > > +     default:
+> > > > > +             return -EINVAL;
+> > > > > +     }
+> > > > > +
+> > > > > +     ret = regmap_update_bits(data->regmap, BMA400_INT_CONFIG1_REG, mask,
+> > > > > +                              field_value);
+> > > > > +     if (ret)
+> > > > > +             return ret;
+> > > > > +
+> > > > > +     set_mask_bits(&data->tap_event_en, mask, field_value);
+> > > > > +
+> > > > > +     return 0;
+> > > > > +}
+> > > > > +
+> > > > > +static int bma400_disable_adv_interrupt(struct bma400_data *data)
+> > > > > +{
+> > > > > +     int ret;
+> > > > > +
+> > > > > +     ret = regmap_write(data->regmap, BMA400_INT_CONFIG0_REG, 0);
+> > > > > +     if (ret)
+> > > > > +             return ret;
+> > > > > +
+> > > > > +     ret = regmap_write(data->regmap, BMA400_INT_CONFIG1_REG, 0);
+> > > > > +     if (ret)
+> > > > > +             return ret;
+> > > > > +
+> > > > > +     data->tap_event_en = 0;
+> > > > > +     data->generic_event_en = 0;
+> > > > > +     data->step_event_en = 0;
+> > > > > +     data->activity_event_en = 0;
+> > > > > +
+> > > > > +     return 0;
+> > > > > +}
+> > > > > +
+> > > > >  static int bma400_write_event_config(struct iio_dev *indio_dev,
+> > > > >                                    const struct iio_chan_spec *chan,
+> > > > >                                    enum iio_event_type type,
+> > > > > @@ -1111,10 +1221,20 @@ static int bma400_write_event_config(struct iio_dev *indio_dev,
+> > > > >
+> > > > >       switch (chan->type) {
+> > > > >       case IIO_ACCEL:
+> > > > > -             mutex_lock(&data->mutex);
+> > > > > -             ret = bma400_activity_event_en(data, dir, state);
+> > > > > -             mutex_unlock(&data->mutex);
+> > > > > -             return ret;
+> > > > > +             switch (type) {
+> > > > > +             case IIO_EV_TYPE_MAG:
+> > > > > +                     mutex_lock(&data->mutex);
+> > > > > +                     ret = bma400_activity_event_en(data, dir, state);
+> > > > > +                     mutex_unlock(&data->mutex);
+> > > > > +                     return ret;
+> > > > > +             case IIO_EV_TYPE_GESTURE:
+> > > > > +                     mutex_lock(&data->mutex);
+> > > > > +                     ret = bma400_tap_event_en(data, dir, state);
+> > > > > +                     mutex_unlock(&data->mutex);
+> > > > > +                     return ret;
+> > > > > +             default:
+> > > > > +                     return -EINVAL;
+> > > > > +             }
+> > > > >       case IIO_STEPS:
+> > > > >               mutex_lock(&data->mutex);
+> > > > >               ret = bma400_steps_event_enable(data, state);
+> > > > > @@ -1159,8 +1279,8 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
+> > > > >       struct bma400_data *data = iio_priv(indio_dev);
+> > > > >       int ret, reg;
+> > > > >
+> > > > > -     switch (chan->type) {
+> > > > > -     case IIO_ACCEL:
+> > > > > +     switch (type) {
+> > > > > +     case IIO_EV_TYPE_MAG:
+> > > > >               reg = get_gen_config_reg(dir);
+> > > > >               if (reg < 0)
+> > > > >                       return -EINVAL;
+> > > > > @@ -1196,6 +1316,25 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
+> > > > >               default:
+> > > > >                       return -EINVAL;
+> > > > >               }
+> > > > > +     case IIO_EV_TYPE_GESTURE:
+> > > > > +             switch (info) {
+> > > > > +             case IIO_EV_INFO_VALUE:
+> > > > > +                     ret = regmap_read(data->regmap, BMA400_TAP_CONFIG,
+> > > > > +                                       val);
+> > > > > +                     if (ret)
+> > > > > +                             return ret;
+> > > > > +                     *val = FIELD_GET(BMA400_TAP_SEN_MSK, *val);  
+> > > >
+> > > > I'd prefer a local variable for regval into which the regmap_read goes.
+> > > >
+> > > > Slightly more readable that way as *val then only ever means one thing.
+> > > >  
+> > > > > +                     return IIO_VAL_INT;
+> > > > > +             case IIO_EV_INFO_PERIOD:
+> > > > > +                     ret = regmap_read(data->regmap, BMA400_TAP_CONFIG1,
+> > > > > +                                       val);
+> > > > > +                     if (ret)
+> > > > > +                             return ret;
+> > > > > +                     *val = FIELD_GET(BMA400_TAP_QUIET_MSK, *val);
+> > > > > +                     return IIO_VAL_INT;
+> > > > > +             default:
+> > > > > +                     return -EINVAL;
+> > > > > +             }
+> > > > >       default:
+> > > > >               return -EINVAL;
+> > > > >       }
+> > > > > @@ -1209,10 +1348,10 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
+> > > > >                                   int val, int val2)
+> > > > >  {
+> > > > >       struct bma400_data *data = iio_priv(indio_dev);
+> > > > > -     int reg, ret;
+> > > > > +     int reg, ret, quiet_period;
+> > > > >
+> > > > > -     switch (chan->type) {
+> > > > > -     case IIO_ACCEL:
+> > > > > +     switch (type) {
+> > > > > +     case IIO_EV_TYPE_MAG:
+> > > > >               reg = get_gen_config_reg(dir);
+> > > > >               if (reg < 0)
+> > > > >                       return -EINVAL;
+> > > > > @@ -1228,7 +1367,6 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
+> > > > >               case IIO_EV_INFO_PERIOD:
+> > > > >                       if (val < 1 || val > 65535)
+> > > > >                               return -EINVAL;
+> > > > > -  
+> > > >
+> > > > Clear out this noise.
+> > > >  
+> > > > >                       mutex_lock(&data->mutex);
+> > > > >                       put_unaligned_be16(val, &data->duration);
+> > > > >                       ret = regmap_bulk_write(data->regmap,
+> > > > > @@ -1248,6 +1386,31 @@ static int bma400_write_event_value(struct iio_dev *indio_dev,
+> > > > >               default:
+> > > > >                       return -EINVAL;
+> > > > >               }
+> > > > > +     case IIO_EV_TYPE_GESTURE:
+> > > > > +             switch (info) {
+> > > > > +             case IIO_EV_INFO_VALUE:
+> > > > > +                     if (val < 0 || val > 7)
+> > > > > +                             return -EINVAL;
+> > > > > +
+> > > > > +                     return regmap_update_bits(data->regmap,
+> > > > > +                                               BMA400_TAP_CONFIG,
+> > > > > +                                               BMA400_TAP_SEN_MSK,
+> > > > > +                                               FIELD_PREP(BMA400_TAP_SEN_MSK,
+> > > > > +                                                          val));
+> > > > > +
+> > > > > +             case IIO_EV_INFO_PERIOD:
+> > > > > +                     quiet_period = (val / 20) - 3;
+> > > > > +                     if (quiet_period < 0 || quiet_period > 3)
+> > > > > +                             return -EINVAL;
+> > > > > +
+> > > > > +                     return regmap_update_bits(data->regmap,
+> > > > > +                                               BMA400_TAP_CONFIG1,
+> > > > > +                                               BMA400_TAP_QUIET_MSK,
+> > > > > +                                               FIELD_PREP(BMA400_TAP_QUIET_MSK,
+> > > > > +                                                          quiet_period));
+> > > > > +             default:
+> > > > > +                     return -EINVAL;
+> > > > > +             }
+> > > > >       default:
+> > > > >               return -EINVAL;
+> > > > >       }
+> > > > > @@ -1287,6 +1450,7 @@ static const struct iio_info bma400_info = {
+> > > > >       .write_event_config = bma400_write_event_config,
+> > > > >       .write_event_value = bma400_write_event_value,
+> > > > >       .read_event_value = bma400_read_event_value,
+> > > > > +     .event_attrs = &bma400_event_attribute_group,
+> > > > >  };
+> > > > >
+> > > > >  static const struct iio_trigger_ops bma400_trigger_ops = {
+> > > > > @@ -1350,6 +1514,32 @@ static irqreturn_t bma400_interrupt(int irq, void *private)
+> > > > >       if (ret || !data->status)
+> > > > >               goto unlock_err;
+> > > > >
+> > > > > +     /*
+> > > > > +      * Disable all advance interrupts if interrupt engine overrun occurs.
+> > > > > +      * See section 4.7 "Interrupt engine overrun" in datasheet v1.2.
+> > > > > +      */
+> > > > > +     if (FIELD_GET(BMA400_INT_ENG_OVRUN_MSK, le16_to_cpu(data->status))) {
+> > > > > +             bma400_disable_adv_interrupt(data);
+> > > > > +             dev_err(data->dev, "Interrupt engine overrun\n");
+> > > > > +             goto unlock_err;
+> > > > > +     }
+> > > > > +
+> > > > > +     if (FIELD_GET(BMA400_INT_S_TAP_MSK, le16_to_cpu(data->status)))
+> > > > > +             iio_push_event(indio_dev,
+> > > > > +                            IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> > > > > +                                               IIO_MOD_X_OR_Y_OR_Z,
+> > > > > +                                               IIO_EV_TYPE_GESTURE,
+> > > > > +                                               IIO_EV_DIR_SINGLETAP),
+> > > > > +                            timestamp);
+> > > > > +
+> > > > > +     if (FIELD_GET(BMA400_INT_D_TAP_MSK, le16_to_cpu(data->status)))
+> > > > > +             iio_push_event(indio_dev,
+> > > > > +                            IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
+> > > > > +                                               IIO_MOD_X_OR_Y_OR_Z,
+> > > > > +                                               IIO_EV_TYPE_GESTURE,
+> > > > > +                                               IIO_EV_DIR_DOUBLETAP),
+> > > > > +                            timestamp);
+> > > > > +
+> > > > >       if (FIELD_GET(BMA400_INT_GEN1_MSK, le16_to_cpu(data->status)))
+> > > > >               ev_dir = IIO_EV_DIR_RISING;
+> > > > >  
+> > > >  
+> >  
 

@@ -2,53 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80640585FF7
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F2CE586007
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 18:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236937AbiGaQsk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 12:48:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46934 "EHLO
+        id S232158AbiGaQ5F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 12:57:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237030AbiGaQsi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:48:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE90101E3;
-        Sun, 31 Jul 2022 09:48:37 -0700 (PDT)
+        with ESMTP id S231281AbiGaQ5E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 12:57:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BD765AB;
+        Sun, 31 Jul 2022 09:57:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AF0E60F2F;
-        Sun, 31 Jul 2022 16:48:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138D8C433C1;
-        Sun, 31 Jul 2022 16:48:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 0F421B80DB2;
+        Sun, 31 Jul 2022 16:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B5EC433C1;
+        Sun, 31 Jul 2022 16:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659286116;
-        bh=IKkkDjy8UGLgZ46vcwSqvLNnr3yuB44rwZPMd7wRBsU=;
+        s=k20201202; t=1659286620;
+        bh=C2gjWpdRXKf8H74OuiqBmJfM3oAyddv3Qxyb+Pg+zEU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kkLoP54GuCdqkuHodDosluzdCfEstrjF5X2hR9Fr9/HtrJ2DqTPexZFYpo+7rfJgV
-         7zPNAvSsn0NuijKJnlH9UY7PzX3ocn1FADtMFK8iGNF3L+AMScinS7L22Zeh2BN5Bs
-         L7Ovs2A8mXooxDJs/AbDPGFkHY+Uh5eCdvmhjp4FEDOvcGHYgbwEr8MxSdY50Y6pKv
-         mjpRo3O3iBFDiRg3p2LeqOwhvZh/clIGeMXiCZpXGipVBpALLwt8ACgFQt7/vCj4Z8
-         SB1GMPJDqE9a5cFvYgio54kxVHQ6d5boTcxOLJy9rgSKa8moySCiZliqkgKkS711dP
-         p8ttstuvtUoiA==
-Date:   Sun, 31 Jul 2022 17:58:48 +0100
+        b=aAd7Z4WkMcGJ0IgdUSaCVJZtQ2fq0bh1txcOGKRFpNj7Irte0y+Z6oF9HfeD/vJSk
+         QN7eLhjzDm27y1OKx0PqAV0Aww/tyxbQt2RB84iyRCdrHRJDKdoQstj0LKuPV4I/c1
+         SvuDLDGdvxBJ7oWSr8OEFJ8ytDPKiskjURPzOy+w1ZYSWiCJctV45CKgC5Fu30uOAF
+         M0qV29DCJJLcJFEuYRvjsJ5Skxb36ZB5pq34vkwK7H7q5bO/gdA9IUVfzoG3JN645a
+         jtSggRsOMuYgx6Inr6WHTTwkD8xT6ID0qUUIIhuwez8f2jfcJnt18iMoEVjPXON1Lq
+         q6ESDOWXVkRsQ==
+Date:   Sun, 31 Jul 2022 18:07:13 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Paul Cercueil <paul@crapouillou.net>
 Cc:     Peter Rosin <peda@axentia.se>,
         Lars-Peter Clausen <lars@metafoo.de>, list@opendingux.net,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] iio: afe/rescale: Add support for converting scale
- avail table
-Message-ID: <20220731175848.3f557174@jic23-huawei>
-In-Reply-To: <MBZEFR.J5QW1P07Y388@crapouillou.net>
+Subject: Re: [PATCH 1/4] iio: inkern: Remove useless argument to
+ iio_channel_read_max()
+Message-ID: <20220731180713.48349570@jic23-huawei>
+In-Reply-To: <20220721191526.374152-2-paul@crapouillou.net>
 References: <20220721191526.374152-1-paul@crapouillou.net>
-        <20220721191526.374152-4-paul@crapouillou.net>
-        <b413604e-8a94-a31d-35ce-52eb2cc78a46@axentia.se>
-        <MBZEFR.J5QW1P07Y388@crapouillou.net>
+        <20220721191526.374152-2-paul@crapouillou.net>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,206 +56,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 22 Jul 2022 09:52:34 +0100
+On Thu, 21 Jul 2022 20:15:23 +0100
 Paul Cercueil <paul@crapouillou.net> wrote:
 
-> Hi Peter,
->=20
-> Le ven., juil. 22 2022 at 00:16:31 +0200, Peter Rosin <peda@axentia.se>=20
-> a =C3=A9crit :
-> > Hi!
-> >=20
-> > 2022-07-21 at 21:15, Paul Cercueil wrote: =20
-> >>  When the IIO channel has a scale_available attribute, we want the=20
-> >> values
-> >>  contained to be properly converted the same way the scale value is.
-> >>=20
-> >>  Since rescale_process_scale() may change the encoding type, we must
-> >>  convert the IIO_AVAIL_LIST to a IIO_AVAIL_LIST_WITH_TYPE.
-> >>=20
-> >>  Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> >>  ---
-> >>   drivers/iio/afe/iio-rescale.c   | 85=20
-> >> +++++++++++++++++++++++++++++++++
-> >>   include/linux/iio/afe/rescale.h |  2 +
-> >>   2 files changed, 87 insertions(+)
-> >>=20
-> >>  diff --git a/drivers/iio/afe/iio-rescale.c=20
-> >> b/drivers/iio/afe/iio-rescale.c
-> >>  index 6949d2151025..5c9970b93384 100644
-> >>  --- a/drivers/iio/afe/iio-rescale.c
-> >>  +++ b/drivers/iio/afe/iio-rescale.c
-> >>  @@ -232,6 +232,18 @@ static int rescale_read_avail(struct iio_dev=20
-> >> *indio_dev,
-> >>   		*type =3D IIO_VAL_INT;
-> >>   		return iio_read_avail_channel_raw(rescale->source,
-> >>   						  vals, length);
-> >>  +	case IIO_CHAN_INFO_SCALE:
-> >>  +		if (rescale->chan_processed) { =20
-> >=20
-> > I think it is wrong to simply feed the info-scale to the source=20
-> > channel if it
-> > happens to be processed. It still needs the inverse rescale. But see=20
-> > below. =20
->=20
-> Yes, when I started working on that patchset, processed channels=20
-> weren't a thing, and I don't think I understood what they are about.
->=20
-> >  =20
-> >>  +			return iio_read_avail_channel_attribute(rescale->source,
-> >>  +								vals, type,
-> >>  +								length,
-> >>  +								IIO_CHAN_INFO_SCALE);
-> >>  +		} else if (rescale->scale_len) {
-> >>  +			*length =3D rescale->scale_len;
-> >>  +			*vals =3D rescale->scale_data;
-> >>  +			return IIO_AVAIL_LIST_WITH_TYPE;
-> >>  +		}
-> >>  +		fallthrough;
-> >>   	default:
-> >>   		return -EINVAL;
-> >>   	}
-> >>  @@ -266,11 +278,74 @@ static ssize_t rescale_write_ext_info(struct=20
-> >> iio_dev *indio_dev,
-> >>   					  buf, len);
-> >>   }
-> >>=20
-> >>  +static int rescale_init_scale_avail(struct device *dev, struct=20
-> >> rescale *rescale)
-> >>  +{
-> >>  +	int ret, type, length, *data;
-> >>  +	const int *scale_raw;
-> >>  +	unsigned int i;
-> >>  +	size_t out_len;
-> >>  +
-> >>  +	ret =3D iio_read_avail_channel_attribute(rescale->source,=20
-> >> &scale_raw,
-> >>  +					       &type, &length,
-> >>  +					       IIO_CHAN_INFO_SCALE);
-> >>  +	if (ret < 0)
-> >>  +		return ret;
-> >>  +
-> >>  +	switch (ret) {
-> >>  +	case IIO_AVAIL_LIST_WITH_TYPE:
-> >>  +		out_len =3D length;
-> >>  +		break;
-> >>  +	case IIO_AVAIL_LIST:
-> >>  +		if (type =3D=3D IIO_VAL_INT)
-> >>  +			out_len =3D length * 3 / 1;
-> >>  +		else
-> >>  +			out_len =3D length * 3 / 2;
-> >>  +		break;
-> >>  +	default:
-> >>  +		/* TODO: Support IIO_AVAIL_RANGE */
-> >>  +		return -EOPNOTSUPP;
-> >>  +	}
-> >>  +
-> >>  +	data =3D devm_kzalloc(dev, sizeof(*data) * out_len, GFP_KERNEL);
-> >>  +	if (!data)
-> >>  +		return -ENOMEM;
-> >>  +
-> >>  +	if (ret =3D=3D IIO_AVAIL_LIST_WITH_TYPE) {
-> >>  +		memcpy(data, scale_raw, sizeof(*scale_raw) * length);
-> >>  +	} else if (type =3D=3D IIO_VAL_INT) {
-> >>  +		for (i =3D 0; i < length; i++) {
-> >>  +			data[i * 3 + 0] =3D scale_raw[i];
-> >>  +			data[i * 3 + 2] =3D IIO_VAL_INT;
-> >>  +		}
-> >>  +	} else {
-> >>  +		for (i =3D 0; i < length / 2; i++) {
-> >>  +			data[i * 3 + 0] =3D scale_raw[i * 2];
-> >>  +			data[i * 3 + 1] =3D scale_raw[i * 2 + 1];
-> >>  +			data[i * 3 + 2] =3D type;
-> >>  +		}
-> >>  +	}
-> >>  +
-> >>  +	for (i =3D 0; i < out_len; i +=3D 3) {
-> >>  +		ret =3D rescale_process_scale(rescale, data[i + 2],
-> >>  +					    &data[i], &data[i + 1]);
-> >>  +		if (ret < 0)
-> >>  +			return ret;
-> >>  +
-> >>  +		data[i + 2] =3D ret;
-> >>  +	}
-> >>  +
-> >>  +	rescale->scale_len =3D out_len;
-> >>  +	rescale->scale_data =3D data;
-> >>  +
-> >>  +	return 0;
-> >>  +}
-> >>  +
-> >>   static int rescale_configure_channel(struct device *dev,
-> >>   				     struct rescale *rescale)
-> >>   {
-> >>   	struct iio_chan_spec *chan =3D &rescale->chan;
-> >>   	struct iio_chan_spec const *schan =3D rescale->source->channel;
-> >>  +	int ret;
-> >>=20
-> >>   	chan->indexed =3D 1;
-> >>   	chan->output =3D schan->output;
-> >>  @@ -303,6 +378,16 @@ static int rescale_configure_channel(struct=20
-> >> device *dev,
-> >>   	    !rescale->chan_processed)
-> >>   		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_RAW);
-> >>=20
-> >>  +	if (iio_channel_has_available(schan, IIO_CHAN_INFO_SCALE)) {
-> >>  +		chan->info_mask_separate_available |=3D BIT(IIO_CHAN_INFO_SCALE);
-> >>  +
-> >>  +		if (!rescale->chan_processed) {
-> >>  +			ret =3D rescale_init_scale_avail(dev, rescale);
-> >>  +			if (ret)
-> >>  +				return ret;
-> >>  +		}
-> >>  +	}
-> >>  + =20
-> >=20
-> > Does a (sane) processed channel really have a scale? That seems a bit=20
-> > fringe.
-> > Wouldn't it be better to conditionally publish availability of=20
-> > info-scale so
-> > that it isn't visible for processed channels and dodge that=20
-> > rabbit-hole? In
-> > either case, the above commented implementation of info-scale for=20
-> > rescaled
-> > processed channels is wrong (I think...). =20
->=20
-> I could set the IIO_CHAN_INFO_SCALE only for non-processed channels,=20
-> since this is what I can test with.
+> The 'type' argument was passed by the only caller of the
+> iio_channel_read_max() function as a pointer to return an extra value,
+> but the value of the variable passed by the caller was never read
+> afterwards.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-Indeed both nonsensical for PROCESSED channels to have a scale and in the
-rare corner case where it happens you shouldn't apply it anyway.
+Curious. I'm playing guess the intent here and I suspect that what
+we should really be doing is checking type in 
+iio_read_max_channel_raw() and returning an error if it is not IIO_VAL_INT
+(can only get there for IIO_AVAIL_RANGE currently as there is a FIXME for
+ IIO_AVAIL_LIST for non IIO_VAL_INT types)
 
-I'm struggling to think of when it might happen due to maintaining
-backwards compatibility and similar (the reason we have channels with
-both PROCESSED and RAW) but in those cases I don't think we'd have
-SCALE because they tend to be devices with nasty non linear transfer
-functions where SCALE isn't appropriate.
+I'm not sure we've ever documented that _RAW can't be non integer even if
+that makes relatively little sense most of the time..
 
 Jonathan
 
-
->=20
-> Cheers,
-> -Paul
->=20
-> >>   	return 0;
-> >>   }
-> >>=20
-> >>  diff --git a/include/linux/iio/afe/rescale.h=20
-> >> b/include/linux/iio/afe/rescale.h
-> >>  index 6eecb435488f..74de2962f864 100644
-> >>  --- a/include/linux/iio/afe/rescale.h
-> >>  +++ b/include/linux/iio/afe/rescale.h
-> >>  @@ -26,6 +26,8 @@ struct rescale {
-> >>   	s32 numerator;
-> >>   	s32 denominator;
-> >>   	s32 offset;
-> >>  +	int scale_len;
-> >>  +	int *scale_data;
-> >>   };
-> >>=20
-> >>   int rescale_process_scale(struct rescale *rescale, int scale_type, =
-=20
->=20
->=20
+> ---
+>  drivers/iio/inkern.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index df74765d33dc..e8a25852f0df 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -813,21 +813,22 @@ int iio_read_avail_channel_raw(struct iio_channel *chan,
+>  EXPORT_SYMBOL_GPL(iio_read_avail_channel_raw);
+>  
+>  static int iio_channel_read_max(struct iio_channel *chan,
+> -				int *val, int *val2, int *type,
+> +				int *val, int *val2,
+>  				enum iio_chan_info_enum info)
+>  {
+>  	int unused;
+>  	const int *vals;
+>  	int length;
+>  	int ret;
+> +	int type;
+>  
+>  	if (!val2)
+>  		val2 = &unused;
+>  
+> -	ret = iio_channel_read_avail(chan, &vals, type, &length, info);
+> +	ret = iio_channel_read_avail(chan, &vals, &type, &length, info);
+>  	switch (ret) {
+>  	case IIO_AVAIL_RANGE:
+> -		switch (*type) {
+> +		switch (type) {
+>  		case IIO_VAL_INT:
+>  			*val = vals[2];
+>  			break;
+> @@ -840,7 +841,7 @@ static int iio_channel_read_max(struct iio_channel *chan,
+>  	case IIO_AVAIL_LIST:
+>  		if (length <= 0)
+>  			return -EINVAL;
+> -		switch (*type) {
+> +		switch (type) {
+>  		case IIO_VAL_INT:
+>  			*val = vals[--length];
+>  			while (length) {
+> @@ -863,7 +864,6 @@ int iio_read_max_channel_raw(struct iio_channel *chan, int *val)
+>  {
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+>  	int ret;
+> -	int type;
+>  
+>  	mutex_lock(&iio_dev_opaque->info_exist_lock);
+>  	if (!chan->indio_dev->info) {
+> @@ -871,7 +871,7 @@ int iio_read_max_channel_raw(struct iio_channel *chan, int *val)
+>  		goto err_unlock;
+>  	}
+>  
+> -	ret = iio_channel_read_max(chan, val, NULL, &type, IIO_CHAN_INFO_RAW);
+> +	ret = iio_channel_read_max(chan, val, NULL, IIO_CHAN_INFO_RAW);
+>  err_unlock:
+>  	mutex_unlock(&iio_dev_opaque->info_exist_lock);
+>  
 

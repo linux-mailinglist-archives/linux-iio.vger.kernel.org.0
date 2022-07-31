@@ -2,45 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08FB1585EB5
-	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 13:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1307C585EBA
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Jul 2022 13:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233771AbiGaLrp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 07:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50136 "EHLO
+        id S233137AbiGaL7t (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 31 Jul 2022 07:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236651AbiGaLro (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 07:47:44 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6200910579;
-        Sun, 31 Jul 2022 04:47:43 -0700 (PDT)
+        with ESMTP id S229992AbiGaL7s (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 07:59:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAF5BE1E;
+        Sun, 31 Jul 2022 04:59:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E0345B80B20;
-        Sun, 31 Jul 2022 11:47:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AADC433C1;
-        Sun, 31 Jul 2022 11:47:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E1D60C8A;
+        Sun, 31 Jul 2022 11:59:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B794BC433D6;
+        Sun, 31 Jul 2022 11:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659268060;
-        bh=YOuvINDrMEu+uQVE4RQ1m3SGEuyLvk7r7BH2c8nML30=;
+        s=k20201202; t=1659268786;
+        bh=80q4Ltg0o6rY6GppCDBJ4wyc9ow/K8xzIPlz++w22sI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=caRjgR9wNJpCoR/y+rTm3GVX+Dm2tiVmjayQpS5KqVk4nbvSiJBBNyXRhcPl9CoBo
-         e7oi6Kg+daXnARshdp64/zk0Bz+Diw+LaURYkHCHoF6gLuQUUFQzOMVIlG/uoMCnUw
-         uFx25r9LNLwLKvNTKW4WcGuYl0hFIbsN/5KolfydSyZkOL19j2i7iekqGg6TU+FCw7
-         Z5kL5TYC0EMda5LIrCBluqmb4ls+QmlGv9V13vyViExUqWbDMNELv1KHWlEsVzBlbG
-         HW4mj092pz0wV+0B/RvhSYtb+X4MO0vfaffDS1MU2v3Rm7ZwczrRDXcf39WsuQoiGi
-         ZRuZOSYSxxgEg==
-Date:   Sun, 31 Jul 2022 12:57:52 +0100
+        b=qeZsVkWxlmCBhyscH/QajWGe1myEOA3S2qNYTXteESn5QzYWVvCrxhj/pDwCJrv3n
+         tqpJGs+pQ1fN1q2neh/Tk+oqX0MzqSjl1LvuWnlxKr7Hc93q4ZkIWR2VV05ybSK4iN
+         nH3vwTPX/esl61JOwkIugZWaj6nO9HXqXEgeTFl7wPuFYqiTSya7gfvBl8V6clV44D
+         EGi+nQ9ZRg9JLr/2Qk8ILCU1QvdhEY/qbuTwxSJzsk/llJM307SXWMpFnzOxAqbJ9k
+         JduveQIT/oBJWfDJB2jobSw7DrltN9GA6SAuLjOfK0hzhsIzMgEvqB4SU+aF1UEQS/
+         T1RuvZjkOa1VQ==
+Date:   Sun, 31 Jul 2022 13:09:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        Rishi Gupta <gupt21@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] HID: mcp2221: add ADC/DAC support via iio subsystem
-Message-ID: <20220731125752.3e6b1919@jic23-huawei>
-In-Reply-To: <20220729154723.99947-1-matt.ranostay@konsulko.com>
-References: <20220729154723.99947-1-matt.ranostay@konsulko.com>
+To:     Potin Lai <potin.lai.pt@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Patrick Williams <patrick@stwcx.xyz>,
+        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/2] iio: humidity: hdc100x: add manufacturer and
+ device ID check
+Message-ID: <20220731130959.50826fc4@jic23-huawei>
+In-Reply-To: <20220728125435.3336618-3-potin.lai.pt@gmail.com>
+References: <20220728125435.3336618-1-potin.lai.pt@gmail.com>
+        <20220728125435.3336618-3-potin.lai.pt@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,358 +58,159 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 29 Jul 2022 23:47:23 +0800
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Thu, 28 Jul 2022 12:54:35 +0000
+Potin Lai <potin.lai.pt@gmail.com> wrote:
 
-> Add support for 3x 10-bit ADC and 1x DAC channels registered via
-> the iio subsystem.
+> Add manufacturer and device ID checking during probe, and skip the
+> checking if chip model not supported.
 > 
-> To prevent breakage and unexpected dependencies this support only is
-> only built if CONFIG_IIO is enabled, and is only weakly referenced by
-> 'imply IIO' within the respective Kconfig.
-
-Seems ok, but I've not seen this done before, so will rely on others
-to feedback on that element.
-
-Otherwise, various comments inline.
-
+> Supported:
+> - HDC1000
+> - HDC1010
+> - HDC1050
+> - HDC1080
 > 
-> Additionally the iio device only gets registered if at least one channel
-> is enabled in the power-on configuration read from SRAM.
+> Not supported:
+> - HDC1008
 > 
-> Cc: Rishi Gupta <gupt21@gmail.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+
+I need some more information on the 'why' of this patch.  There are a number
+of drivers that do a similar ID check but in recent times, that approach has
+been considered wrong because it breaks potential use of multiple compatible
+entries in device tree.   If a new device comes along and is backwards
+compatible with an existing one (maybe has new features, but using them is
+optional) then we want to have an entry that looks like
+
+compatible = "ti,hdc1099", "ti,hdc1080"
+
+If the new ID is not supported by the kernel that is being used, we still
+want the driver to 'work' using the fallback compatible.
+
+As such, we no generally do the following.
+
+1) If we have a match to a device we know about but it's not the one the
+   firmware tells us to expect, print a warning but operate as if the firmware
+   had been correct - particularly if we know the parts aren't compatible
+   with each other. (this bit is optional as we should be able to assume firmware
+   doesn't do stupid things :)
+2) If we don't match at all, print a warning about an unknown device but carry
+   on with assumption that the firmware is correct and this new device ID is
+   backwards compatible with the provided fallback compatible.
+
+So if this is just a bit of defensive programming (rather than necessary for some
+reason not yet explained) then change from returning an error on probe() to 
+printing an warning message but continuing anyway. (which is part (2) of the
+above)
+
 > ---
->  drivers/hid/Kconfig       |   3 +-
->  drivers/hid/hid-mcp2221.c | 207 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 209 insertions(+), 1 deletion(-)
+>  drivers/iio/humidity/hdc100x.c | 67 ++++++++++++++++++++++++++++------
+>  1 file changed, 56 insertions(+), 11 deletions(-)
 > 
-> diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-> index 6ce92830b5d1..eb4f4bb05226 100644
-> --- a/drivers/hid/Kconfig
-> +++ b/drivers/hid/Kconfig
-> @@ -1298,7 +1298,8 @@ config HID_ALPS
->  config HID_MCP2221
->  	tristate "Microchip MCP2221 HID USB-to-I2C/SMbus host support"
->  	depends on USB_HID && I2C
-> -	depends on GPIOLIB
-> +	select GPIOLIB
-> +	imply IIO
->  	help
->  	Provides I2C and SMBUS host adapter functionality over USB-HID
->  	through MCP2221 device.
-> diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-> index de52e9f7bb8c..ab8ca2a65592 100644
-> --- a/drivers/hid/hid-mcp2221.c
-> +++ b/drivers/hid/hid-mcp2221.c
-> @@ -16,6 +16,8 @@
->  #include <linux/hidraw.h>
->  #include <linux/i2c.h>
->  #include <linux/gpio/driver.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-
-I can't immediately see why you need iio/sysfs.h
-That's normally only relevant if non standard ABI is in use.
-
->  #include "hid-ids.h"
+> diff --git a/drivers/iio/humidity/hdc100x.c b/drivers/iio/humidity/hdc100x.c
+> index 0d514818635cb..31f18cc1cf63c 100644
+> --- a/drivers/iio/humidity/hdc100x.c
+> +++ b/drivers/iio/humidity/hdc100x.c
+> @@ -34,6 +34,23 @@
+>  #define HDC100X_REG_CONFIG_ACQ_MODE		BIT(12)
+>  #define HDC100X_REG_CONFIG_HEATER_EN		BIT(13)
 >  
->  /* Commands codes in a raw output report */
-> @@ -30,6 +32,8 @@ enum {
->  	MCP2221_I2C_CANCEL = 0x10,
->  	MCP2221_GPIO_SET = 0x50,
->  	MCP2221_GPIO_GET = 0x51,
-> +	MCP2221_SET_SRAM_SETTINGS = 0x60,
-> +	MCP2221_GET_SRAM_SETTINGS = 0x61,
->  };
->  
->  /* Response codes in a raw input report */
-> @@ -89,6 +93,7 @@ struct mcp2221 {
->  	struct i2c_adapter adapter;
+> +#define HDC100X_REG_MFR_ID	0xFE
+> +#define HDC100X_REG_DEV_ID	0xFF
+> +
+> +#define HDC100X_MFR_ID	0x5449
+> +
+> +struct hdc100x_chip_data {
+> +	bool support_mfr_check;
+> +};
+> +
+> +static const struct hdc100x_chip_data hdc100x_chip_data = {
+> +	.support_mfr_check	= true,
+> +};
+> +
+> +static const struct hdc100x_chip_data hdc1008_chip_data = {
+> +	.support_mfr_check	= false,
+> +};
+> +
+>  struct hdc100x_data {
+>  	struct i2c_client *client;
 >  	struct mutex lock;
->  	struct completion wait_in_report;
-> +	struct delayed_work init_work;
->  	u8 *rxbuf;
->  	u8 txbuf[64];
->  	int rxbuf_idx;
-> @@ -97,6 +102,17 @@ struct mcp2221 {
->  	struct gpio_chip *gc;
->  	u8 gp_idx;
->  	u8 gpio_dir;
-> +	u8 mode[4];
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +	struct iio_chan_spec iio_channels[3];
-> +	struct iio_dev *indio_dev;
-> +	u16 adc_values[3];
-> +	u8 dac_value;
-> +#endif
-> +};
-> +
-> +struct mcp2221_iio {
-> +	struct mcp2221 *mcp;
+> @@ -351,8 +368,32 @@ static const struct iio_info hdc100x_info = {
+>  	.attrs = &hdc100x_attribute_group,
 >  };
 >  
->  /*
-> @@ -745,6 +761,10 @@ static int mcp2221_raw_event(struct hid_device *hdev,
->  				break;
->  			}
->  			mcp->status = mcp_get_i2c_eng_state(mcp, data, 8);
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +			if (mcp->indio_dev)
-> +				memcpy(&mcp->adc_values, &data[50], 6);
-> +#endif
->  			break;
->  		default:
->  			mcp->status = -EIO;
-> @@ -816,6 +836,32 @@ static int mcp2221_raw_event(struct hid_device *hdev,
->  		complete(&mcp->wait_in_report);
->  		break;
->  
-> +	case MCP2221_SET_SRAM_SETTINGS:
-> +		switch (data[1]) {
-> +		case MCP2221_SUCCESS:
-> +			mcp->status = 0;
-> +			break;
-> +		default:
-> +			mcp->status = -EAGAIN;
-> +		}
-> +		complete(&mcp->wait_in_report);
-> +		break;
-> +
-> +	case MCP2221_GET_SRAM_SETTINGS:
-> +		switch (data[1]) {
-> +		case MCP2221_SUCCESS:
-> +			memcpy(&mcp->mode, &data[22], 4);
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +			mcp->dac_value = data[6] & GENMASK(4, 0);
-Might be worth converting to more readable mask define and
-FIELD_GET()
-
-> +#endif
-> +			mcp->status = 0;
-> +			break;
-> +		default:
-> +			mcp->status = -EAGAIN;
-> +		}
-> +		complete(&mcp->wait_in_report);
-> +		break;
-> +
->  	default:
->  		mcp->status = -EIO;
->  		complete(&mcp->wait_in_report);
-> @@ -824,6 +870,158 @@ static int mcp2221_raw_event(struct hid_device *hdev,
->  	return 1;
->  }
->  
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +static int mcp2221_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *channel, int *val,
-> +			    int *val2, long mask)
+> +static int hdc100x_read_mfr_id(struct i2c_client *client)
 > +{
-> +
-No blank line here
-> +	struct mcp2221_iio *priv = iio_priv(indio_dev);
-> +	struct mcp2221 *mcp = priv->mcp;
-> +	int ret;
-> +
-> +	mutex_lock(&mcp->lock);
-For readability I'd prefer this duplicated in each of the
-branches so clearly matched against the unlocks.
-
-> +
-> +	if (channel->output) {
-> +		*val = mcp->dac_value;
-> +
-> +		mutex_unlock(&mcp->lock);
-> +	} else {
-> +		// Read ADC values
-As below.
-
-> +		ret = mcp_chk_last_cmd_status(mcp);
-> +		if (ret < 0) {
-> +			mutex_unlock(&mcp->lock);
-> +			return ret;
-> +		}
-> +
-> +		*val = le16_to_cpu(mcp->adc_values[channel->address]);
-> +
-> +		mutex_unlock(&mcp->lock);
-> +
-> +		// Confirm value is within 10-bit range
-> +		if (*val > GENMASK(9, 0))
-> +			return -EINVAL;
-> +	}
-> +
-> +	return IIO_VAL_INT;
+> +	return i2c_smbus_read_word_swapped(client, HDC100X_REG_MFR_ID);
 > +}
 > +
-> +static int mcp2221_write_raw(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     int val, int val2, long mask)
+> +static int hdc100x_read_dev_id(struct i2c_client *client)
 > +{
-> +	struct mcp2221_iio *priv = iio_priv(indio_dev);
-> +	struct mcp2221 *mcp = priv->mcp;
-> +	int ret;
-> +
-> +	if (val < 0 || val > GENMASK(4, 0))
-This is a bit wierd.  I'd either expect comparison with a number
-rather than a mask, or FIELD_FIT()
-
-
-> +		return -EINVAL;
-> +
-Single blank line is enough.
-> +
-> +	hid_hw_power(mcp->hdev, PM_HINT_FULLON);
-> +
-> +	mutex_lock(&mcp->lock);
-> +
-> +	memset(mcp->txbuf, 0, 12);
-> +	mcp->txbuf[0] = MCP2221_SET_SRAM_SETTINGS;
-> +	mcp->txbuf[4] = BIT(7) | val;
-
-Given GENMASK usage above, FIELD_PREP() would make this
-more 'self documenting' both for the val and BIT(7)
-
-> +
-> +	ret = mcp_send_data_req_status(mcp, mcp->txbuf, 12);
-> +
-> +	hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
-> +
-> +	if (ret) {
-> +		mutex_unlock(&mcp->lock);
-> +		return -EINVAL;
-> +	}
-> +
-> +	mcp->dac_value = val;
-> +
-> +	mutex_unlock(&mcp->lock);
-> +
-> +	return 0;
+> +	return i2c_smbus_read_word_swapped(client, HDC100X_REG_DEV_ID);
 > +}
 > +
-> +static const struct iio_info mcp2221_info = {
-> +	.read_raw = &mcp2221_read_raw,
-> +	.write_raw = &mcp2221_write_raw,
-> +};
-> +
-> +static int mcp_iio_channels(struct mcp2221 *mcp)
+> +static bool is_valid_hdc100x(struct i2c_client *client)
 > +{
-> +	int idx, cnt = 0;
-> +	bool dac_created = false;
+> +	int mfr_id, dev_id;
 > +
-> +	// GP0 doesn't have ADC/DAC alternative function
-
-Not consistent with comment style in this driver. /* ... */
-
-> +	for (idx = 1; idx < MCP_NGPIO; idx++) {
-> +		struct iio_chan_spec *chan = &mcp->iio_channels[cnt];
+> +	mfr_id = hdc100x_read_mfr_id(client);
+> +	dev_id = hdc100x_read_dev_id(client);
+> +	if (mfr_id == HDC100X_MFR_ID &&
+> +	   (dev_id == 0x1000 || dev_id == 0x1050))
+> +		return true;
 > +
-> +		switch (mcp->mode[idx]) {
-> +		case 2:
-> +			chan->address = idx - 1;
-> +			chan->channel = cnt++;
-> +			break;
-> +		case 3:
-> +			// GP1 doesn't have DAC alternative function
-
-As above.
-
-> +			if (idx == 1 || dac_created)
-> +				continue;
-> +			// DAC1 and DAC2 outputs are connected to the same DAC
-> +			dac_created = true;
-> +			chan->output = 1;
-> +			cnt++;
-> +			break;
-> +		default:
-> +			continue;
-> +		};
-> +
-> +		chan->type = IIO_VOLTAGE;
-> +		chan->indexed = 1;
-> +		chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
-> +		chan->scan_index = -1;
-> +	}
-> +
-> +	return cnt;
+> +	return false;
 > +}
 > +
-> +static void mcp_init_work(struct work_struct *work)
-> +{
-> +	struct mcp2221 *mcp = container_of(work, struct mcp2221, init_work.work);
-> +	struct mcp2221_iio *iio;
-> +	int ret, num_channels;
-> +
-> +	hid_hw_power(mcp->hdev, PM_HINT_FULLON);
-> +
-> +	mutex_lock(&mcp->lock);
-> +
-> +	mcp->txbuf[0] = MCP2221_GET_SRAM_SETTINGS;
-> +
-> +	ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
-> +
-> +	hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
-> +	mutex_unlock(&mcp->lock);
-> +
-> +	if (ret)
-> +		return;
-> +
-> +	num_channels = mcp_iio_channels(mcp);
-> +	if (!num_channels)
-> +		return;
-> +
-> +	mcp->indio_dev = devm_iio_device_alloc(&mcp->hdev->dev, sizeof(*iio));
-This can fail.
-> +
-> +	iio = iio_priv(mcp->indio_dev);
-> +	iio->mcp = mcp;
-> +
-> +	mcp->indio_dev->name = "mcp2221";
-> +	mcp->indio_dev->modes = INDIO_DIRECT_MODE;
-> +	mcp->indio_dev->info = &mcp2221_info;
-> +	mcp->indio_dev->channels = mcp->iio_channels;
-> +	mcp->indio_dev->num_channels = num_channels;
-> +
-> +	iio_device_register(mcp->indio_dev);
-As can this.  You need to check both.
-
-> +}
-> +#endif
-> +
->  static int mcp2221_probe(struct hid_device *hdev,
->  					const struct hid_device_id *id)
+>  static int hdc100x_probe(struct i2c_client *client)
 >  {
-> @@ -902,6 +1100,11 @@ static int mcp2221_probe(struct hid_device *hdev,
->  	if (ret)
->  		goto err_gc;
+> +	const struct hdc100x_chip_data *chip_data;
+>  	struct iio_dev *indio_dev;
+>  	struct hdc100x_data *data;
+>  	int ret;
+> @@ -361,6 +402,10 @@ static int hdc100x_probe(struct i2c_client *client)
+>  				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_I2C))
+>  		return -EOPNOTSUPP;
 >  
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +	INIT_DELAYED_WORK(&mcp->init_work, mcp_init_work);
-> +	schedule_delayed_work(&mcp->init_work, msecs_to_jiffies(500));
-> +#endif
+> +	chip_data = device_get_match_data(&client->dev);
+> +	if (chip_data->support_mfr_check && !is_valid_hdc100x(client))
+> +		return -EINVAL;
 > +
->  	return 0;
->  
->  err_gc:
-> @@ -920,6 +1123,10 @@ static void mcp2221_remove(struct hid_device *hdev)
->  	i2c_del_adapter(&mcp->adapter);
->  	hid_hw_close(mcp->hdev);
->  	hid_hw_stop(mcp->hdev);
-> +#if IS_REACHABLE(CONFIG_IIO)
-> +	if (mcp->indio_dev)
-> +		iio_device_unregister(mcp->indio_dev);
-> +#endif
-I'd expect remove to be reverse order of probe. Mind you this driver has a fun
-mix of devm and non devm which makes it very hard to reason about correctness
-and potential race conditions.  I would personally advocate preceding this
-patch with a cleanup of that side of things (probably mass usage of devm_add_action_or_reset()
-and appropriate callbacks).
-
-Jonathan
-
+>  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+> @@ -396,22 +441,22 @@ static int hdc100x_probe(struct i2c_client *client)
 >  }
 >  
->  static const struct hid_device_id mcp2221_devices[] = {
+>  static const struct i2c_device_id hdc100x_id[] = {
+> -	{ "hdc100x", 0 },
+> -	{ "hdc1000", 0 },
+> -	{ "hdc1008", 0 },
+> -	{ "hdc1010", 0 },
+> -	{ "hdc1050", 0 },
+> -	{ "hdc1080", 0 },
+> +	{ "hdc100X", (kernel_ulong_t)&hdc100x_chip_data },
+> +	{ "hdc1000", (kernel_ulong_t)&hdc100x_chip_data },
+> +	{ "hdc1008", (kernel_ulong_t)&hdc1008_chip_data },
+> +	{ "hdc1010", (kernel_ulong_t)&hdc100x_chip_data },
+> +	{ "hdc1050", (kernel_ulong_t)&hdc100x_chip_data },
+> +	{ "hdc1080", (kernel_ulong_t)&hdc100x_chip_data },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(i2c, hdc100x_id);
+>  
+>  static const struct of_device_id hdc100x_dt_ids[] = {
+> -	{ .compatible = "ti,hdc1000" },
+> -	{ .compatible = "ti,hdc1008" },
+> -	{ .compatible = "ti,hdc1010" },
+> -	{ .compatible = "ti,hdc1050" },
+> -	{ .compatible = "ti,hdc1080" },
+> +	{ .compatible = "ti,hdc1000", .data = &hdc100x_chip_data },
+> +	{ .compatible = "ti,hdc1008", .data = &hdc1008_chip_data },
+> +	{ .compatible = "ti,hdc1010", .data = &hdc100x_chip_data },
+> +	{ .compatible = "ti,hdc1050", .data = &hdc100x_chip_data },
+> +	{ .compatible = "ti,hdc1080", .data = &hdc100x_chip_data },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, hdc100x_dt_ids);
 

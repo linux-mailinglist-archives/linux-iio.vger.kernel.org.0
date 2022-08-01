@@ -2,144 +2,438 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B79EF586261
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 03:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2534586335
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 06:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbiHABwp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 31 Jul 2022 21:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56034 "EHLO
+        id S230126AbiHAEFH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 00:05:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbiHABwo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 31 Jul 2022 21:52:44 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31033101EC;
-        Sun, 31 Jul 2022 18:52:43 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id v16-20020a17090abb9000b001f25244c65dso13637293pjr.2;
-        Sun, 31 Jul 2022 18:52:43 -0700 (PDT)
+        with ESMTP id S229497AbiHAEFG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 00:05:06 -0400
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6354BCA1
+        for <linux-iio@vger.kernel.org>; Sun, 31 Jul 2022 21:05:04 -0700 (PDT)
+Received: by mail-io1-xd34.google.com with SMTP id z132so7613925iof.0
+        for <linux-iio@vger.kernel.org>; Sun, 31 Jul 2022 21:05:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=cts89Urg1Uc0LBv0m8WUOVTMu8H/nP9lQWVspGvxl/M=;
-        b=Yoyl7sblFAAr4nHx9Dw11RXEAxdHiU4x6bJUImWzvGs8+ogPEAD8n1G3W4OLAvcriP
-         XTjhuYo6QuntcB3so/5xBNA2YDR+GYuYl+MZ0EdsQ6oJ9YdTl7y2uDLaLvcOgbdfUou9
-         IOdgeaItYpET9I6Feq6O2WIx51DSLd7xTJFLL9+JzLCWhwQGXTYIZESs+dmFF8CjJlk9
-         NeT1k58fdutlDBeJEzgOHs8rAg67bFvrfwaHaEaqe7HLu/2q+J+IU5f8UrHjXFS+YNDD
-         xFaYIKJeH8S0d4LD2LMFOdMj4JIVaPCdSsYES8eAZLX1eDD9AKBzaM3M0LpLtKWJ36PM
-         VR6g==
+        d=konsulko.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=pTFXNdJ7FANVj/nV6EMUkIvCkQcIh5NNsEoFkkP5Jew=;
+        b=EcL2y5/yw2zgLLJYFyBAyLWrJ88piSBgJIsK4cRBYZWpDXIGoGkdkG+w3wSkynWCw8
+         EE4wSDeyrxldUqmyzr29JdbPTwhScdSj7G6nuaF3OFNhS335xxozCf5BfW15xrY7Elpv
+         cFkJFMe/NlgXWp9PC8qSUnedn0VEU+AGJeU+0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=cts89Urg1Uc0LBv0m8WUOVTMu8H/nP9lQWVspGvxl/M=;
-        b=xpa/oTCqJLOTi11UoSP3HD4ysuWco9ydaPoCvynLkhLvj6p/To98EUZ9HD518XtuvQ
-         n9S9FzZdGd3QOqNgDgFw9hIB4wuk7XAE7Irz0TrR3V1MNukIPMjVFhu899P61nlBQaDK
-         pV0l+Ea4VGi/+qx28AiFioP4dJkhc6PXwzZ4YljtpXk2taNjznY+qLBB8rFvL+a33CMz
-         bPMdql38fOQv7rELtgKoYnAIVHnJW1UTRQ72JtB875j+bft2p4KBgqosV3x2B0thn/ul
-         lOlMD7l+Qh72wqs2uJs7VEArCj46LHdIhX0Ac0HMzeMUpcXiquOOJHLR/2k5HBKFy3SY
-         4vGA==
-X-Gm-Message-State: ACgBeo0ZHS+4wIFsN6Ha5DukIhIU6LTBkyQKR5s3zwOGzGu5rq9zbNYd
-        vSaWitxdbRx+TYx5HI0QglA=
-X-Google-Smtp-Source: AA6agR6QZqDQ9TIbddaHajr6M7D7HTfebbIH2FC8Gj5rE5OFz3YWnlmS6T6dPK+JFQNL9it6Wi8rZA==
-X-Received: by 2002:a17:903:11d1:b0:16c:defc:a098 with SMTP id q17-20020a17090311d100b0016cdefca098mr14349003plh.50.1659318762325;
-        Sun, 31 Jul 2022 18:52:42 -0700 (PDT)
-Received: from [10.10.4.41] (125-228-123-29.hinet-ip.hinet.net. [125.228.123.29])
-        by smtp.gmail.com with ESMTPSA id v10-20020a63f20a000000b0041b672e93c2sm6292529pgh.17.2022.07.31.18.52.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 Jul 2022 18:52:41 -0700 (PDT)
-Message-ID: <4ea235d1-46c1-87de-760f-dc4775007ae0@gmail.com>
-Date:   Mon, 1 Aug 2022 09:50:28 +0800
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=pTFXNdJ7FANVj/nV6EMUkIvCkQcIh5NNsEoFkkP5Jew=;
+        b=w8ptnUPTTyfH8KWgCpPkVqkV7AxaOXlxo1VZ3vltqAA5JtUJwa2apixRdzsXsIIGQ4
+         WK0UdDESFSKdnzRtlAR7WEhqE9X2bCoYQcSgc0ZtP5APpUF9U9zqdrNfPp9OeWSiqBzP
+         0Jd4/YBZEaXI4jjknSbCRSqIH3JBMJUXZr/ZM9BeRRnqb5u8LA3ct4X6MqSEDJpdAyoT
+         48LLR7ZbS4UBeQrzAVTEZOTv8/2DWHdHX+pPm4eh46F1DWEi2Y5VQ94HZyWBpmnZ7/uK
+         prKJbsmOpXAkrpuc2LKQfJ83pc0SE1gURLEOOiu2190Ycb4NuKfv66nhXHlpbhI/Cwv/
+         QeWw==
+X-Gm-Message-State: AJIora+/UUNfWVMOzEnmuide9aI6xwO68wC9B/C5HzWhmBeuFXs++ou5
+        fHxgq/QO0WBCjtwVJB7pPqpEjSsgiOK6cJ9VSYe6gw==
+X-Google-Smtp-Source: AGRyM1vOrIiZsl7D0Uqri99gjfjJEOD7BG5Vaweh586eSS4Cpd3ChinEt0YiCYnp3XF3wQPV3oCGPaQO16zpwbcPLJc=
+X-Received: by 2002:a6b:7a41:0:b0:67b:ee1b:372d with SMTP id
+ k1-20020a6b7a41000000b0067bee1b372dmr4825112iop.3.1659326703979; Sun, 31 Jul
+ 2022 21:05:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v5 2/2] iio: humidity: hdc100x: add manufacturer and
- device ID check
-Content-Language: en-US
+References: <20220729154723.99947-1-matt.ranostay@konsulko.com> <20220731125752.3e6b1919@jic23-huawei>
+In-Reply-To: <20220731125752.3e6b1919@jic23-huawei>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Mon, 1 Aug 2022 12:04:52 +0800
+Message-ID: <CAJCx=g=jc9KFQeu3uAD--tMJcLrSzy45vijCPpcxnRrgiYo-=Q@mail.gmail.com>
+Subject: Re: [PATCH] HID: mcp2221: add ADC/DAC support via iio subsystem
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220728125435.3336618-1-potin.lai.pt@gmail.com>
- <20220728125435.3336618-3-potin.lai.pt@gmail.com>
- <20220731130959.50826fc4@jic23-huawei>
-From:   Potin Lai <potin.lai.pt@gmail.com>
-In-Reply-To: <20220731130959.50826fc4@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        Rishi Gupta <gupt21@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Jul 31, 2022 at 7:47 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Fri, 29 Jul 2022 23:47:23 +0800
+> Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+>
+> > Add support for 3x 10-bit ADC and 1x DAC channels registered via
+> > the iio subsystem.
+> >
+> > To prevent breakage and unexpected dependencies this support only is
+> > only built if CONFIG_IIO is enabled, and is only weakly referenced by
+> > 'imply IIO' within the respective Kconfig.
+>
+> Seems ok, but I've not seen this done before, so will rely on others
+> to feedback on that element.
+>
+> Otherwise, various comments inline.
+>
+> >
+> > Additionally the iio device only gets registered if at least one channel
+> > is enabled in the power-on configuration read from SRAM.
+> >
+> > Cc: Rishi Gupta <gupt21@gmail.com>
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > ---
+> >  drivers/hid/Kconfig       |   3 +-
+> >  drivers/hid/hid-mcp2221.c | 207 ++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 209 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+> > index 6ce92830b5d1..eb4f4bb05226 100644
+> > --- a/drivers/hid/Kconfig
+> > +++ b/drivers/hid/Kconfig
+> > @@ -1298,7 +1298,8 @@ config HID_ALPS
+> >  config HID_MCP2221
+> >       tristate "Microchip MCP2221 HID USB-to-I2C/SMbus host support"
+> >       depends on USB_HID && I2C
+> > -     depends on GPIOLIB
+> > +     select GPIOLIB
+> > +     imply IIO
+> >       help
+> >       Provides I2C and SMBUS host adapter functionality over USB-HID
+> >       through MCP2221 device.
+> > diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+> > index de52e9f7bb8c..ab8ca2a65592 100644
+> > --- a/drivers/hid/hid-mcp2221.c
+> > +++ b/drivers/hid/hid-mcp2221.c
+> > @@ -16,6 +16,8 @@
+> >  #include <linux/hidraw.h>
+> >  #include <linux/i2c.h>
+> >  #include <linux/gpio/driver.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+>
+> I can't immediately see why you need iio/sysfs.h
+> That's normally only relevant if non standard ABI is in use.
+>
+> >  #include "hid-ids.h"
+> >
+> >  /* Commands codes in a raw output report */
+> > @@ -30,6 +32,8 @@ enum {
+> >       MCP2221_I2C_CANCEL = 0x10,
+> >       MCP2221_GPIO_SET = 0x50,
+> >       MCP2221_GPIO_GET = 0x51,
+> > +     MCP2221_SET_SRAM_SETTINGS = 0x60,
+> > +     MCP2221_GET_SRAM_SETTINGS = 0x61,
+> >  };
+> >
+> >  /* Response codes in a raw input report */
+> > @@ -89,6 +93,7 @@ struct mcp2221 {
+> >       struct i2c_adapter adapter;
+> >       struct mutex lock;
+> >       struct completion wait_in_report;
+> > +     struct delayed_work init_work;
+> >       u8 *rxbuf;
+> >       u8 txbuf[64];
+> >       int rxbuf_idx;
+> > @@ -97,6 +102,17 @@ struct mcp2221 {
+> >       struct gpio_chip *gc;
+> >       u8 gp_idx;
+> >       u8 gpio_dir;
+> > +     u8 mode[4];
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +     struct iio_chan_spec iio_channels[3];
+> > +     struct iio_dev *indio_dev;
+> > +     u16 adc_values[3];
+> > +     u8 dac_value;
+> > +#endif
+> > +};
+> > +
+> > +struct mcp2221_iio {
+> > +     struct mcp2221 *mcp;
+> >  };
+> >
+> >  /*
+> > @@ -745,6 +761,10 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> >                               break;
+> >                       }
+> >                       mcp->status = mcp_get_i2c_eng_state(mcp, data, 8);
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +                     if (mcp->indio_dev)
+> > +                             memcpy(&mcp->adc_values, &data[50], 6);
+> > +#endif
+> >                       break;
+> >               default:
+> >                       mcp->status = -EIO;
+> > @@ -816,6 +836,32 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> >               complete(&mcp->wait_in_report);
+> >               break;
+> >
+> > +     case MCP2221_SET_SRAM_SETTINGS:
+> > +             switch (data[1]) {
+> > +             case MCP2221_SUCCESS:
+> > +                     mcp->status = 0;
+> > +                     break;
+> > +             default:
+> > +                     mcp->status = -EAGAIN;
+> > +             }
+> > +             complete(&mcp->wait_in_report);
+> > +             break;
+> > +
+> > +     case MCP2221_GET_SRAM_SETTINGS:
+> > +             switch (data[1]) {
+> > +             case MCP2221_SUCCESS:
+> > +                     memcpy(&mcp->mode, &data[22], 4);
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +                     mcp->dac_value = data[6] & GENMASK(4, 0);
+> Might be worth converting to more readable mask define and
+> FIELD_GET()
+>
+> > +#endif
+> > +                     mcp->status = 0;
+> > +                     break;
+> > +             default:
+> > +                     mcp->status = -EAGAIN;
+> > +             }
+> > +             complete(&mcp->wait_in_report);
+> > +             break;
+> > +
+> >       default:
+> >               mcp->status = -EIO;
+> >               complete(&mcp->wait_in_report);
+> > @@ -824,6 +870,158 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> >       return 1;
+> >  }
+> >
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +static int mcp2221_read_raw(struct iio_dev *indio_dev,
+> > +                         struct iio_chan_spec const *channel, int *val,
+> > +                         int *val2, long mask)
+> > +{
+> > +
+> No blank line here
+> > +     struct mcp2221_iio *priv = iio_priv(indio_dev);
+> > +     struct mcp2221 *mcp = priv->mcp;
+> > +     int ret;
+> > +
+> > +     mutex_lock(&mcp->lock);
+> For readability I'd prefer this duplicated in each of the
+> branches so clearly matched against the unlocks.
+>
+> > +
+> > +     if (channel->output) {
+> > +             *val = mcp->dac_value;
+> > +
+> > +             mutex_unlock(&mcp->lock);
+> > +     } else {
+> > +             // Read ADC values
+> As below.
+>
+> > +             ret = mcp_chk_last_cmd_status(mcp);
+> > +             if (ret < 0) {
+> > +                     mutex_unlock(&mcp->lock);
+> > +                     return ret;
+> > +             }
+> > +
+> > +             *val = le16_to_cpu(mcp->adc_values[channel->address]);
+> > +
+> > +             mutex_unlock(&mcp->lock);
+> > +
+> > +             // Confirm value is within 10-bit range
+> > +             if (*val > GENMASK(9, 0))
+> > +                     return -EINVAL;
+> > +     }
+> > +
+> > +     return IIO_VAL_INT;
+> > +}
+> > +
+> > +static int mcp2221_write_raw(struct iio_dev *indio_dev,
+> > +                          struct iio_chan_spec const *chan,
+> > +                          int val, int val2, long mask)
+> > +{
+> > +     struct mcp2221_iio *priv = iio_priv(indio_dev);
+> > +     struct mcp2221 *mcp = priv->mcp;
+> > +     int ret;
+> > +
+> > +     if (val < 0 || val > GENMASK(4, 0))
+> This is a bit wierd.  I'd either expect comparison with a number
+> rather than a mask, or FIELD_FIT()
 
-On 7/31/22 20:09, Jonathan Cameron wrote:
-> On Thu, 28 Jul 2022 12:54:35 +0000
-> Potin Lai <potin.lai.pt@gmail.com> wrote:
->
->> Add manufacturer and device ID checking during probe, and skip the
->> checking if chip model not supported.
->>
->> Supported:
->> - HDC1000
->> - HDC1010
->> - HDC1050
->> - HDC1080
->>
->> Not supported:
->> - HDC1008
->>
->> Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-> I need some more information on the 'why' of this patch.  There are a number
-> of drivers that do a similar ID check but in recent times, that approach has
-> been considered wrong because it breaks potential use of multiple compatible
-> entries in device tree.   If a new device comes along and is backwards
-> compatible with an existing one (maybe has new features, but using them is
-> optional) then we want to have an entry that looks like
->
-> compatible = "ti,hdc1099", "ti,hdc1080"
->
-> If the new ID is not supported by the kernel that is being used, we still
-> want the driver to 'work' using the fallback compatible.
->
-> As such, we no generally do the following.
->
-> 1) If we have a match to a device we know about but it's not the one the
->    firmware tells us to expect, print a warning but operate as if the firmware
->    had been correct - particularly if we know the parts aren't compatible
->    with each other. (this bit is optional as we should be able to assume firmware
->    doesn't do stupid things :)
-> 2) If we don't match at all, print a warning about an unknown device but carry
->    on with assumption that the firmware is correct and this new device ID is
->    backwards compatible with the provided fallback compatible.
->
-> So if this is just a bit of defensive programming (rather than necessary for some
-> reason not yet explained) then change from returning an error on probe() to 
-> printing an warning message but continuing anyway. (which is part (2) of the
-> above)
-Hi Jonathan,
-In our hardware board, we have "ti,hdc1080" as main source, and "silabs,si7020"
-for 2nd source. This two chip are locate at same bus and same slave address,
-and we want to use multiple compatibles to support both chips with single device
-node in device tree.
- 
-Ex:
-compatible = "ti,hdc1099", "silabs,si7020";
- 
-In order to support this, I need to add ID checking mechanism into the current
-hdc100x driver, so the si7020 chip will fail to probe with hdc100x driver
-(because the ID checking is not failed), then success probe with si7020.
- 
-Base on you explanation, it looks multiple compatibles is not suitable in this
-case? Would you mind advise us what would be the better approach for our case?
+Personally I'm fine with that or just using >= 31 for instance
 
-Thanks,
-Potin
+>
+>
+> > +             return -EINVAL;
+> > +
+> Single blank line is enough.
+> > +
+> > +     hid_hw_power(mcp->hdev, PM_HINT_FULLON);
+> > +
+> > +     mutex_lock(&mcp->lock);
+> > +
+> > +     memset(mcp->txbuf, 0, 12);
+> > +     mcp->txbuf[0] = MCP2221_SET_SRAM_SETTINGS;
+> > +     mcp->txbuf[4] = BIT(7) | val;
+>
+> Given GENMASK usage above, FIELD_PREP() would make this
+> more 'self documenting' both for the val and BIT(7)
 
+BIT(7) signals that the field is changed for the transaction so it can
+update the value.
+
+>
+> > +
+> > +     ret = mcp_send_data_req_status(mcp, mcp->txbuf, 12);
+> > +
+> > +     hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
+> > +
+> > +     if (ret) {
+> > +             mutex_unlock(&mcp->lock);
+> > +             return -EINVAL;
+> > +     }
+> > +
+> > +     mcp->dac_value = val;
+> > +
+> > +     mutex_unlock(&mcp->lock);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static const struct iio_info mcp2221_info = {
+> > +     .read_raw = &mcp2221_read_raw,
+> > +     .write_raw = &mcp2221_write_raw,
+> > +};
+> > +
+> > +static int mcp_iio_channels(struct mcp2221 *mcp)
+> > +{
+> > +     int idx, cnt = 0;
+> > +     bool dac_created = false;
+> > +
+> > +     // GP0 doesn't have ADC/DAC alternative function
+>
+> Not consistent with comment style in this driver. /* ... */
+>
+> > +     for (idx = 1; idx < MCP_NGPIO; idx++) {
+> > +             struct iio_chan_spec *chan = &mcp->iio_channels[cnt];
+> > +
+> > +             switch (mcp->mode[idx]) {
+> > +             case 2:
+> > +                     chan->address = idx - 1;
+> > +                     chan->channel = cnt++;
+> > +                     break;
+> > +             case 3:
+> > +                     // GP1 doesn't have DAC alternative function
+>
+> As above.
+>
+> > +                     if (idx == 1 || dac_created)
+> > +                             continue;
+> > +                     // DAC1 and DAC2 outputs are connected to the same DAC
+> > +                     dac_created = true;
+> > +                     chan->output = 1;
+> > +                     cnt++;
+> > +                     break;
+> > +             default:
+> > +                     continue;
+> > +             };
+> > +
+> > +             chan->type = IIO_VOLTAGE;
+> > +             chan->indexed = 1;
+> > +             chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+> > +             chan->scan_index = -1;
+> > +     }
+> > +
+> > +     return cnt;
+> > +}
+> > +
+> > +static void mcp_init_work(struct work_struct *work)
+> > +{
+> > +     struct mcp2221 *mcp = container_of(work, struct mcp2221, init_work.work);
+> > +     struct mcp2221_iio *iio;
+> > +     int ret, num_channels;
+> > +
+> > +     hid_hw_power(mcp->hdev, PM_HINT_FULLON);
+> > +
+> > +     mutex_lock(&mcp->lock);
+> > +
+> > +     mcp->txbuf[0] = MCP2221_GET_SRAM_SETTINGS;
+> > +
+> > +     ret = mcp_send_data_req_status(mcp, mcp->txbuf, 1);
+> > +
+> > +     hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
+> > +     mutex_unlock(&mcp->lock);
+> > +
+> > +     if (ret)
+> > +             return;
+> > +
+> > +     num_channels = mcp_iio_channels(mcp);
+> > +     if (!num_channels)
+> > +             return;
+> > +
+> > +     mcp->indio_dev = devm_iio_device_alloc(&mcp->hdev->dev, sizeof(*iio));
+> This can fail.
+
+Noted.
+
+> > +
+> > +     iio = iio_priv(mcp->indio_dev);
+> > +     iio->mcp = mcp;
+> > +
+> > +     mcp->indio_dev->name = "mcp2221";
+> > +     mcp->indio_dev->modes = INDIO_DIRECT_MODE;
+> > +     mcp->indio_dev->info = &mcp2221_info;
+> > +     mcp->indio_dev->channels = mcp->iio_channels;
+> > +     mcp->indio_dev->num_channels = num_channels;
+> > +
+> > +     iio_device_register(mcp->indio_dev);
+> As can this.  You need to check both.
+>
+
+Noted.
+
+> > +}
+> > +#endif
+> > +
+> >  static int mcp2221_probe(struct hid_device *hdev,
+> >                                       const struct hid_device_id *id)
+> >  {
+> > @@ -902,6 +1100,11 @@ static int mcp2221_probe(struct hid_device *hdev,
+> >       if (ret)
+> >               goto err_gc;
+> >
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +     INIT_DELAYED_WORK(&mcp->init_work, mcp_init_work);
+> > +     schedule_delayed_work(&mcp->init_work, msecs_to_jiffies(500));
+> > +#endif
+> > +
+> >       return 0;
+> >
+> >  err_gc:
+> > @@ -920,6 +1123,10 @@ static void mcp2221_remove(struct hid_device *hdev)
+> >       i2c_del_adapter(&mcp->adapter);
+> >       hid_hw_close(mcp->hdev);
+> >       hid_hw_stop(mcp->hdev);
+> > +#if IS_REACHABLE(CONFIG_IIO)
+> > +     if (mcp->indio_dev)
+> > +             iio_device_unregister(mcp->indio_dev);
+> > +#endif
+> I'd expect remove to be reverse order of probe. Mind you this driver has a fun
+> mix of devm and non devm which makes it very hard to reason about correctness
+> and potential race conditions.  I would personally advocate preceding this
+> patch with a cleanup of that side of things (probably mass usage of devm_add_action_or_reset()
+> and appropriate callbacks).
+
+Yeah the mix of devm and non-devm i agree is less than ideal..
+
+ - Matt
+>
+> Jonathan
+>
+> >  }
+> >
+> >  static const struct hid_device_id mcp2221_devices[] = {
+>

@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 881A5586587
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 09:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A74BB5865CB
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 09:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbiHAHNL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Aug 2022 03:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
+        id S229772AbiHAHlA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 03:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbiHAHNK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 03:13:10 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C6A326D2;
-        Mon,  1 Aug 2022 00:13:09 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id w15so2195983ljw.1;
-        Mon, 01 Aug 2022 00:13:09 -0700 (PDT)
+        with ESMTP id S229695AbiHAHk7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 03:40:59 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D93DEE59;
+        Mon,  1 Aug 2022 00:40:58 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id b21so11367299ljk.8;
+        Mon, 01 Aug 2022 00:40:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=tfEi2wATHr5s4kAbTzVzbDuu02MelmoOTRN0imH5lW8=;
-        b=lKuwDM5luzL0HuSV27/K8oRHXozyJBISiaUy73xruCv38UkGcbVNfgTQWJJseAW08I
-         ChOX8NOriHiLVOV2uIpKIrBq7GS0HwZ4+fGEoHpmsgFIKnArf7c7uqlCSMdUhkzvhM76
-         HCLdzTlQvmtf0HM1ALOImkUaM/+QVB5Bf1eaz9RSsguGg/FqiBRVyBhzGkhXk9Cw+ELH
-         fMLGhjeumaJ4I8dOVY+ND/whsG+ilHWQrnxPSc0kYcbIh2V4eu8SXpHz7PF24RDXBNs5
-         KZqnLUPp9JJF8Hq5kHCydF7TPr5GEgGJmlDoHsOf6aSdMDmYnzoPSFU6kLj5hFebAjEi
-         CE4Q==
+        bh=3CySBFeUWN85aXoonRz+AZDirKDNsX9iBAr2bBqFmHU=;
+        b=eTu6j9zzaLbBPXTYLnqfHsSDrQNeiG8n4svWVAROvuNolOkayxxX1ArmqdYOJngEM7
+         tIGROr+VLARtg1ZJXR/u1A0AgkXu+iespBhq2+tZ3yDLJc4D6QCAo8TlEGeBkhwrZzPP
+         u0h913n4nfmLmAjmTbd4j6qvRppKi0/FfQsVB4tSRdp2H3LuJiI1Ss4fQRZ7XixxC9hg
+         j0zJjX+wTo6lFctiIOdL5jC+pZsjxrsF48GWU40kvkGGQZF3aUmnSyVjTQZFy+nqrQun
+         w3zzVXIhw6XYfsP+1/h4jlbocUhf8aTI7J7Axrk64rZE+yUPJzoqvNyqkGPQ1cae8x4d
+         5D/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=tfEi2wATHr5s4kAbTzVzbDuu02MelmoOTRN0imH5lW8=;
-        b=nMBQpx3TnU29xqM0fuwRc+kIy/BFrteA3ritE0xUGVlcjywkXJrvN//tE8rI+4PaZk
-         ii5zs69Qw9+SqTAi/prfPF/keP8c2gL8C23wgxmEc1Q1c0I+1gFuKtjDyHWOgzkKKj1b
-         egSPpVnVpVjYwFuTQjv/bIoZ4X3wrTl88bhNZ4cTRSGcl3mDWTDWQT7ZAHcFUaEFYT2D
-         Bb+tROTjcctl/MszLsCfRBmvkzj+brTIhU+sVmGT8wjVGqiDZl/xil7CEIwbciBrhLjx
-         ZnO2fyHH9LTELbfb7929dyVdhHEg1ZkOWNSL/FicOEr5F4WwzaVhEgTRXPsu9dW9tBCd
-         QgtQ==
-X-Gm-Message-State: ACgBeo2w9SDpB9MQxEaobYq2+kBR1hPfAhyGMiMW56hLrT0BYgs40UFF
-        YHi4WuQbTTYYGEtwSdb0f6w=
-X-Google-Smtp-Source: AA6agR7vEFgdSYQVtY7U/GEd7y4UkOGiCvIE2pQTwLE1T3EdkgiOpNcpYXFaK6rn0MMLGWrDFxVyOw==
-X-Received: by 2002:a2e:9dcc:0:b0:25e:45d8:6184 with SMTP id x12-20020a2e9dcc000000b0025e45d86184mr2659982ljj.46.1659337987555;
-        Mon, 01 Aug 2022 00:13:07 -0700 (PDT)
+        bh=3CySBFeUWN85aXoonRz+AZDirKDNsX9iBAr2bBqFmHU=;
+        b=cKAhqCypgNHvugMsCARBwtVlP0dwuVnkYA3/xg41tzAedZu0cFtxM9Ld5SrhjV1E2B
+         JA7N5SLAEYR6/LrBHWypohgGor7HBUChB96jd1uvUsS9TZW+iqZZjmZZfqssBrMTdzbO
+         CgmREcx2+JqB9b5doRPXFUt1FH2dvmANpDdtGPIdypx1h/gOxj4XF2O1bLldIDkqAegK
+         wTe93dxEq8cMM/mNh71926qcYn1KX7ON6wrs1YuEbqm3FqVoZlA87eXZ6+vUSC1SFMcj
+         Mcqzw651SBJOOEJVLhKuAtrB7HlVtNjhJYuuvmDA+2eCBbmGbNpDfhrxhRlfFA47R7TM
+         EmwA==
+X-Gm-Message-State: ACgBeo2haNHbmC89WEm1HKypK0d0LfByw/z4z6GqNcZxxoLVZL2Oc8zK
+        LACZkKwlk2tCT0phrvdPLwY=
+X-Google-Smtp-Source: AA6agR60lgw2vb7OWO93hjNB85sYnk9WjvegobksCPHLQnpGTAEzdAsDbc8DqH5esnhPzmHMNcUpLg==
+X-Received: by 2002:a2e:a168:0:b0:25e:4dbc:2ac0 with SMTP id u8-20020a2ea168000000b0025e4dbc2ac0mr1359949ljl.187.1659339657265;
+        Mon, 01 Aug 2022 00:40:57 -0700 (PDT)
 Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id w11-20020a2e958b000000b0025d6ecbc897sm75939ljh.46.2022.08.01.00.13.06
+        by smtp.gmail.com with ESMTPSA id v8-20020a2ea448000000b0025e2c5a12b6sm1511078ljn.129.2022.08.01.00.40.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Aug 2022 00:13:06 -0700 (PDT)
-Date:   Mon, 1 Aug 2022 09:17:17 +0200
+        Mon, 01 Aug 2022 00:40:56 -0700 (PDT)
+Date:   Mon, 1 Aug 2022 09:45:07 +0200
 From:   Marcus Folkesson <marcus.folkesson@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Kent Gustavsson <kent@minoris.se>,
@@ -57,16 +57,15 @@ Cc:     Kent Gustavsson <kent@minoris.se>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 5/9] iio: adc: mcp3911: add support for buffers
-Message-ID: <Yud9/eDs4i36T7Gk@gmail.com>
+Subject: Re: [PATCH v4 0/9] Improve MCP3911 driver
+Message-ID: <YueEg0tmKpc4kdLO@gmail.com>
 References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
- <20220722130726.7627-6-marcus.folkesson@gmail.com>
- <20220731175121.5d9493a0@jic23-huawei>
+ <20220731174112.072345e3@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="duuZgvRLw+wN+EG6"
+        protocol="application/pgp-signature"; boundary="W/hEucp5LQz60B6z"
 Content-Disposition: inline
-In-Reply-To: <20220731175121.5d9493a0@jic23-huawei>
+In-Reply-To: <20220731174112.072345e3@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -78,224 +77,74 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---duuZgvRLw+wN+EG6
+--W/hEucp5LQz60B6z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jonathan,
-
-On Sun, Jul 31, 2022 at 05:51:21PM +0100, Jonathan Cameron wrote:
-> On Fri, 22 Jul 2022 15:07:22 +0200
+On Sun, Jul 31, 2022 at 05:41:12PM +0100, Jonathan Cameron wrote:
+> On Fri, 22 Jul 2022 15:07:17 +0200
 > Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 >=20
-> > Add support for buffers to make the driver fit for more usecases.
+> > Hi,
 > >=20
-> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > This patch series intend to fix bugs and improve functionality of the
+> > MCP3911 driver.
+> > The main features added are
+> > - Support for buffers
+> > - Interrupt driven readings
+> > - Support for oversampling ratio
+> > - Support for set scale values (Gain)
+> >=20
+> > Among the bug fixes, there are changes in the formula for calculate raw
+> > value and a fix for mismatch in the devicetree property.
+> >=20
+> > Another general improvement for the driver is to use managed resources
+> > for all allocated resources.
+> >=20
+> Hi Marcus,
 >=20
-> Assuming the Kconfig change from previous patch is pulled into this one...
+> The first 3 fixes look good to me.  Do you want me to pick those up to
+> go in after rc1 via my togreg-fixes branch?  The side effect of doing
+> that is it'll be a little while before they are upstream in the branch
+> I'll want to pick the rest of the series on top of.
+>=20
+> So it's a trade off between getting fixes in as soon as possible and
+> slowing down other improvements a little.
 
-Yep
+Both ways works for me.
+I guess it is preferable to get the fixes in as soon as possible?
 
->=20
-> A few questions / comments inline.
->=20
-> Thanks,
+If so, do you want me to rebase the series on your togreg-fixes branch
+or wait to send v5 until the patches are upstream?
+
+Or simply keep sending the whole series?
+
+Thanks,
+Marcus Folkesson
+
 >=20
 > Jonathan
 >=20
-> > ---
-> >  drivers/iio/adc/mcp3911.c | 96 ++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 89 insertions(+), 7 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-> > index 00dadb1761dc..96c0a2a50c7c 100644
-> > --- a/drivers/iio/adc/mcp3911.c
-> > +++ b/drivers/iio/adc/mcp3911.c
-> > @@ -5,15 +5,22 @@
-> >   * Copyright (C) 2018 Marcus Folkesson <marcus.folkesson@gmail.com>
-> >   * Copyright (C) 2018 Kent Gustavsson <kent@minoris.se>
-> >   */
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bits.h>
-> >  #include <linux/clk.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/err.h>
-> >  #include <linux/iio/iio.h>
-> > +#include <linux/iio/buffer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/trigger.h>
-> >  #include <linux/module.h>
-> >  #include <linux/mod_devicetable.h>
-> >  #include <linux/property.h>
-> >  #include <linux/regulator/consumer.h>
-> >  #include <linux/spi/spi.h>
->=20
-> Line break here to separate the 'chunks' of includes.
->=20
 
-OK
-
-> > +#include <asm/unaligned.h>
-> > =20
-> >  #define MCP3911_REG_CHANNEL0		0x00
-> >  #define MCP3911_REG_CHANNEL1		0x03
-> > @@ -22,6 +29,7 @@
-> >  #define MCP3911_REG_GAIN		0x09
-> > =20
-> >  #define MCP3911_REG_STATUSCOM		0x0a
-> > +#define MCP3911_STATUSCOM_READ		GENMASK(7, 6)
-> >  #define MCP3911_STATUSCOM_CH1_24WIDTH	BIT(4)
-> >  #define MCP3911_STATUSCOM_CH0_24WIDTH	BIT(3)
-> >  #define MCP3911_STATUSCOM_EN_OFFCAL	BIT(2)
-> > @@ -54,6 +62,13 @@ struct mcp3911 {
-> >  	struct regulator *vref;
-> >  	struct clk *clki;
-> >  	u32 dev_addr;
-> > +	struct {
-> > +		u32 channels[MCP3911_NUM_CHANNELS];
-> > +		s64 ts __aligned(8);
-> > +	} scan;
-> > +
-> > +	u8 tx_buf[MCP3911_NUM_CHANNELS * 3] __aligned(IIO_DMA_MINALIGN);
-> > +	u8 rx_buf[MCP3911_NUM_CHANNELS * 3];
-> >  };
-> > =20
-> >  static int mcp3911_read(struct mcp3911 *adc, u8 reg, u32 *val, u8 len)
-> > @@ -196,16 +211,63 @@ static int mcp3911_write_raw(struct iio_dev *indi=
-o_dev,
-> >  		.type =3D IIO_VOLTAGE,				\
-> >  		.indexed =3D 1,					\
-> >  		.channel =3D idx,					\
-> > +		.scan_index =3D idx,				\
-> >  		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |	\
-> >  			BIT(IIO_CHAN_INFO_OFFSET) |		\
-> >  			BIT(IIO_CHAN_INFO_SCALE),		\
-> > +		.scan_type =3D {					\
-> > +			.sign =3D 's',				\
-> > +			.realbits =3D 24,				\
-> > +			.storagebits =3D 32,			\
-> > +			.endianness =3D IIO_BE,			\
-> > +		},						\
-> >  }
-> > =20
-> >  static const struct iio_chan_spec mcp3911_channels[] =3D {
-> >  	MCP3911_CHAN(0),
-> >  	MCP3911_CHAN(1),
-> > +	IIO_CHAN_SOFT_TIMESTAMP(2),
-> >  };
-> > =20
-> > +static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf =3D p;
-> > +	struct iio_dev *indio_dev =3D pf->indio_dev;
-> > +	struct mcp3911 *adc =3D iio_priv(indio_dev);
-> > +	struct spi_transfer xfer =3D {
-> > +		.tx_buf =3D adc->tx_buf,
-> > +		.rx_buf =3D adc->rx_buf,
-> > +		.len =3D sizeof(adc->rx_buf),
-> > +	};
-> > +	int scan_index;
-> > +	int i =3D 0;
-> > +	int ret;
-> > +
-> > +	mutex_lock(&adc->lock);
-> > +	adc->tx_buf[0] =3D MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr=
-);
-> > +	ret =3D spi_sync_transfer(adc->spi, &xfer, 1);
-> > +	if (ret < 0) {
-> > +		dev_warn(&adc->spi->dev,
-> > +				"failed to get conversion data\n");
-> > +		goto out;
-> > +	}
-> > +
-> > +	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
-> > +			indio_dev->masklength) {
-> > +		const struct iio_chan_spec *scan_chan =3D &indio_dev->channels[scan_=
-index];
-> > +
-> > +		adc->scan.channels[i] =3D get_unaligned_be24(&adc->rx_buf[scan_chan-=
->channel * 3]);
->=20
-> This has me a little curious.  It seems to be potentially reading from by=
-te 0 which in the spi
-> transfer is at the same time as the tx that tells the device what the com=
-mand is.  I'd expect
-> it to be one byte later.  Easiest way to do that being to have two transf=
-ers (though you could
-> just add to the offset). I might be misremembering how the spi_transfer s=
-tuff works though.
-> Been a while since I hacked anything SPI based...
->=20
-
-Good catch.
-I did not even notice that the resolution of my plot-script was wrong...
-
-
-> > +		i++;
-> > +	}
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
-> > +			iio_get_time_ns(indio_dev));
-> > +out:
-> > +	mutex_unlock(&adc->lock);
-> > +	iio_trigger_notify_done(indio_dev->trig);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> >  static const struct iio_info mcp3911_info =3D {
-> >  	.read_raw =3D mcp3911_read_raw,
-> >  	.write_raw =3D mcp3911_write_raw,
-> > @@ -214,7 +276,7 @@ static const struct iio_info mcp3911_info =3D {
-> >  static int mcp3911_config(struct mcp3911 *adc)
-> >  {
-> >  	struct device *dev =3D &adc->spi->dev;
-> > -	u32 configreg;
-> > +	u32 regval;
-> >  	int ret;
-> > =20
-> >  	ret =3D device_property_read_u32(dev, "microchip,device-addr", &adc->=
-dev_addr);
-> > @@ -233,29 +295,43 @@ static int mcp3911_config(struct mcp3911 *adc)
-> >  	}
-> >  	dev_dbg(&adc->spi->dev, "use device address %i\n", adc->dev_addr);
-> > =20
-> > -	ret =3D mcp3911_read(adc, MCP3911_REG_CONFIG, &configreg, 2);
-> > +	ret =3D mcp3911_read(adc, MCP3911_REG_CONFIG, &regval, 2);
->=20
-> If I was being fussy I'd ask you to pull the refactoring in here out as a=
- precusor
-> patch to simplify reviewing the new stuff a little.  However it's fairly =
-minor
-> so I'll let that go this time.
-
-Ok, I got you wrong. Thanks.
-
-
-Best regards
-Marcus Folkesson
-
-
---duuZgvRLw+wN+EG6
+--W/hEucp5LQz60B6z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmLnffgACgkQiIBOb1ld
-UjJrsA//QNPLk1KdyBX/KMqbppkvEFxQ+f4oB2ZP4V2KTgYVKvHDPtIpMpee8CA7
-EJjJ/xNEsaFgF+OaYuAyuxSdutjELmhnahInt44U0vHjCJf8yjool08Ana+uZAdN
-Fs+ZbaCAZLaLgmYcZ3J73SnlsXLT1gLb5XLsKeajjPGL444pIL3WzYqgguRgANMv
-GQ5tz1cZbS2iKXUa0il6QoC6wGvoMR97nq8k5hAJAfcJMCrwDsjjIsiJBeiwX0Wu
-n6sfHH3XcGOtjeT6lywsGOR0k9X4M2gmZraOSr35laZeBF9XRoZWA9SJw2UKfYnz
-g+9sZj58umwqpCHYu7ylGi/yUVJY4Xzu+oFTvxaSbN9yiljPaoCHDBSw29KtXr/E
-YD20x0kIO7E5aoVZPiAn5vugC2OSubm0BoPPNRyKQMdfSiqmy+fVANjI46aA/lrl
-prkdWX4h3RPHqlGkwEI7kX1F7KxN5dPyYcWsY4tpsqQ2PBirTt8QBfySOU/B1Jxr
-Y1ZnOa2VZs5u1Wxy3qodui2NU6KCEKuAgKs4KpNKNKDZd2rgZO6qz1zMT0/NMWND
-uhgV+1E0kUrCY1fHh6scYFXwFf2tepMEHkY13dOobnVkby2FGMGeBc1uTx1d+WzG
-vqBlyw2rFhNshCEQPcHcDlBVd1GLhmjqZB4oQDu5t6Jf2IRPx34=
-=c9jC
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmLnhH4ACgkQiIBOb1ld
+UjKmEg//cqbYKmFpcnaOrWMfyZOZHbWE7RbHs+5DupY019C250WBr+p/esK/vNJU
+IsY2r2eHswuxECGCAU4BytjWcNDqLLSOZbewyJC5Xc6KhFZ/jmpsBjPPvr0ifSgd
+H+kFkuNuXWAuXwekJHycgyveghSpP3GhqFUR435pDrQhaW7Vqt9yiGccwqYcaE2n
+DJc7xkjYXF2k+KoNRwZ4LaDqUX/4450+wlHgBI6FRFMDESCdui9wXPl/D5tULYo1
+kGogWuZtwjYXW+Fjn5zsIwoNwJPZixNQl1pXQFd2TSoCtWM90ZcVHqMSkvuvZYTb
+fAOuv60VOXGvbB6yNPKPnnGL0JEOFeKXxRulm/Cn2nOTD2483wdR80DYChMuaHUL
+Y+OE9DVTz1sUXhW9Oae4af7A7CS6T5zxX5a3TjbmgjzPCs5FlfHOqpXf5AR9AzSp
+vEvyXTmyagLrFsDcxaAmEog7zFafWi4hnl4dgKdHTa5SfbHC2ws14BiyHZuk4zyx
+2Xqk1picambN3kaL3TbTGMruWFrgRVhav9GM4PBZZyGnx37pcB7UqEGu6Yea8nm6
+/sib0CgxwSmyXmg3kr9HxtGOOo7bADe4JK2MvJ9tHhz4oR37ruxS2E2SUI75Mlaf
+dA1kvXTzu1MwOEvEyRcRpcH2B2A+Dodmqjn7BqHtcFi7Z9lAQ/k=
+=xvHz
 -----END PGP SIGNATURE-----
 
---duuZgvRLw+wN+EG6--
+--W/hEucp5LQz60B6z--

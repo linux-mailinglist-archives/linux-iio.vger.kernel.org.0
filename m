@@ -2,88 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65038586563
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 08:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 881A5586587
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 09:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229725AbiHAGsu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Aug 2022 02:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48604 "EHLO
+        id S229606AbiHAHNL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 03:13:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234727AbiHAGsW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 02:48:22 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F96A13F49;
-        Sun, 31 Jul 2022 23:48:13 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id o1so7734990qkg.9;
-        Sun, 31 Jul 2022 23:48:13 -0700 (PDT)
+        with ESMTP id S229510AbiHAHNK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 03:13:10 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61C6A326D2;
+        Mon,  1 Aug 2022 00:13:09 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id w15so2195983ljw.1;
+        Mon, 01 Aug 2022 00:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0pCQwRUtQqbmZSwhlAYKv7D+OaWBuV6jzuOG3pLiqnE=;
-        b=ln2eP881w+pJWsnC+kYg6rYGAd3maj9S7mJ+gV/lLUoTHa07yJ7pdTT1iddtkvut7G
-         wCE3Vn0TT0sSu2CGZvq/wm0E+8dX8DAzc0wcrTU8f68Bf945HKsgWEqdxw/iLewJID2+
-         U3xISuK9fbiy0BRYeJ5aJIV0S+Q+NI5ty1LBv5VOtK4++uo7wdiHC9lGtmGhCbrpNouT
-         poWweP7l/AaVWeIy/2bVG85dC0G/EueHZA6lUebLElpHSoCxf4b25lXpFCUPSvI2lhdW
-         7jc02DOr4iyObq+BZvCMVIS2hbqCqgw3xx0epY1nfMPIBNYZpFTwGEBUDoh2MKMua6y2
-         T4rw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=tfEi2wATHr5s4kAbTzVzbDuu02MelmoOTRN0imH5lW8=;
+        b=lKuwDM5luzL0HuSV27/K8oRHXozyJBISiaUy73xruCv38UkGcbVNfgTQWJJseAW08I
+         ChOX8NOriHiLVOV2uIpKIrBq7GS0HwZ4+fGEoHpmsgFIKnArf7c7uqlCSMdUhkzvhM76
+         HCLdzTlQvmtf0HM1ALOImkUaM/+QVB5Bf1eaz9RSsguGg/FqiBRVyBhzGkhXk9Cw+ELH
+         fMLGhjeumaJ4I8dOVY+ND/whsG+ilHWQrnxPSc0kYcbIh2V4eu8SXpHz7PF24RDXBNs5
+         KZqnLUPp9JJF8Hq5kHCydF7TPr5GEgGJmlDoHsOf6aSdMDmYnzoPSFU6kLj5hFebAjEi
+         CE4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0pCQwRUtQqbmZSwhlAYKv7D+OaWBuV6jzuOG3pLiqnE=;
-        b=Y97cQMDQsqGK7AYWLfOKdA8pvvi9aEfceRVlMf3wL/m6lPqs47koW/+OhY9eyN1wkg
-         pK0cDrMXcIjTVa0EyQHvpuPLThUewNvCcuBk8viNdK4geO0JfT8x4FlZzB9ijjvsafqL
-         KGZz8LoxAzCVh4uFSLaGXCpBwaP9mVp1/VDGlXRyxduwr86NbL2cfvnGeSwXnQ1OZiNa
-         HxWPTomC4xKawKmjBpHtdNs1+5OKJir14AtnUFQTOiA7Q+mM7Kfb/oymAm4JETnVZ/9Q
-         RMw9vjpUaqQZ/AmqmQMHBTVIpccUTDMeLAFEpq1PPbX1LDJTcD1ghg4EnpiBZVuPmAsA
-         hzXw==
-X-Gm-Message-State: AJIora8FopjwlP1rSx/ZiX8GU9Ml6sQ5dwYKhNl+ABKNwpljS/SabVTB
-        3yFUopDMAgRVTFtAi/wOQsmnzKvv9Rzze5tpm3k=
-X-Google-Smtp-Source: AGRyM1vi8vD3grhYbZ/WLviZ2IFccZbjNO75ItldTtC+nPOI6OOaG7LKKV2FJNQbFGfWSid26gTwustg4ausWvfIn5M=
-X-Received: by 2002:a05:620a:1706:b0:6b8:705a:c61e with SMTP id
- az6-20020a05620a170600b006b8705ac61emr8915998qkb.129.1659336492750; Sun, 31
- Jul 2022 23:48:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-6-peterwu.pub@gmail.com>
-In-Reply-To: <20220722102407.2205-6-peterwu.pub@gmail.com>
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-Date:   Mon, 1 Aug 2022 14:47:36 +0800
-Message-ID: <CABtFH5L83d5Di6O9TC-L3UX2ma5J3PE47ihfJFfPD5YGJ43NxQ@mail.gmail.com>
-Subject: Re: [PATCH v6 05/13] dt-bindings: backlight: Add MediaTek MT6370 backlight
-To:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=tfEi2wATHr5s4kAbTzVzbDuu02MelmoOTRN0imH5lW8=;
+        b=nMBQpx3TnU29xqM0fuwRc+kIy/BFrteA3ritE0xUGVlcjywkXJrvN//tE8rI+4PaZk
+         ii5zs69Qw9+SqTAi/prfPF/keP8c2gL8C23wgxmEc1Q1c0I+1gFuKtjDyHWOgzkKKj1b
+         egSPpVnVpVjYwFuTQjv/bIoZ4X3wrTl88bhNZ4cTRSGcl3mDWTDWQT7ZAHcFUaEFYT2D
+         Bb+tROTjcctl/MszLsCfRBmvkzj+brTIhU+sVmGT8wjVGqiDZl/xil7CEIwbciBrhLjx
+         ZnO2fyHH9LTELbfb7929dyVdhHEg1ZkOWNSL/FicOEr5F4WwzaVhEgTRXPsu9dW9tBCd
+         QgtQ==
+X-Gm-Message-State: ACgBeo2w9SDpB9MQxEaobYq2+kBR1hPfAhyGMiMW56hLrT0BYgs40UFF
+        YHi4WuQbTTYYGEtwSdb0f6w=
+X-Google-Smtp-Source: AA6agR7vEFgdSYQVtY7U/GEd7y4UkOGiCvIE2pQTwLE1T3EdkgiOpNcpYXFaK6rn0MMLGWrDFxVyOw==
+X-Received: by 2002:a2e:9dcc:0:b0:25e:45d8:6184 with SMTP id x12-20020a2e9dcc000000b0025e45d86184mr2659982ljj.46.1659337987555;
+        Mon, 01 Aug 2022 00:13:07 -0700 (PDT)
+Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id w11-20020a2e958b000000b0025d6ecbc897sm75939ljh.46.2022.08.01.00.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Aug 2022 00:13:06 -0700 (PDT)
+Date:   Mon, 1 Aug 2022 09:17:17 +0200
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/9] iio: adc: mcp3911: add support for buffers
+Message-ID: <Yud9/eDs4i36T7Gk@gmail.com>
+References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
+ <20220722130726.7627-6-marcus.folkesson@gmail.com>
+ <20220731175121.5d9493a0@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="duuZgvRLw+wN+EG6"
+Content-Disposition: inline
+In-Reply-To: <20220731175121.5d9493a0@jic23-huawei>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -94,97 +77,225 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Jul 22, 2022 at 6:24 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> ---
 
-[snip]
+--duuZgvRLw+wN+EG6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> +  compatible:
-> +    const: mediatek,mt6370-backlight
-> +
-> +  default-brightness:
-> +    minimum: 0
-> +    maximum: 2048
-> +
-> +  max-brightness:
-> +    minimum: 0
-> +    maximum: 2048
-> +
+Hi Jonathan,
 
-Hi Rob, Krzysztof,
+On Sun, Jul 31, 2022 at 05:51:21PM +0100, Jonathan Cameron wrote:
+> On Fri, 22 Jul 2022 15:07:22 +0200
+> Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+>=20
+> > Add support for buffers to make the driver fit for more usecases.
+> >=20
+> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>=20
+> Assuming the Kconfig change from previous patch is pulled into this one...
 
-First, I'm so sorry for our SoB writing wrong, I'll fix it in the next patch.
-Because of this mail thread
-(https://lore.kernel.org/all/20220728113109.7gf3b36mqjxlhcq3@maple.lan/),
-I would like to discuss with you that I may change the following in
-this DT document, I am not sure whether you agree or not.
+Yep
 
-1. Add some descriptions about MT6372, which supports 16384 steps (14
-bits) and is different from MT6370/MT6371 (2048 steps, 11 bits)
-2. Modify the format of 'compatible' as follows to distinguish between
-MT6370/MT6371 or MT6372
-------------------------------------------
-properties:
-  compatible:
-    enum:
-      - mediatek,mt6370-backlight
-      - mediatek,mt6372-backlight
-------------------------------------------
+>=20
+> A few questions / comments inline.
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+> > ---
+> >  drivers/iio/adc/mcp3911.c | 96 ++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 89 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> > index 00dadb1761dc..96c0a2a50c7c 100644
+> > --- a/drivers/iio/adc/mcp3911.c
+> > +++ b/drivers/iio/adc/mcp3911.c
+> > @@ -5,15 +5,22 @@
+> >   * Copyright (C) 2018 Marcus Folkesson <marcus.folkesson@gmail.com>
+> >   * Copyright (C) 2018 Kent Gustavsson <kent@minoris.se>
+> >   */
+> > +#include <linux/bitfield.h>
+> > +#include <linux/bits.h>
+> >  #include <linux/clk.h>
+> >  #include <linux/delay.h>
+> >  #include <linux/err.h>
+> >  #include <linux/iio/iio.h>
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +#include <linux/iio/trigger.h>
+> >  #include <linux/module.h>
+> >  #include <linux/mod_devicetable.h>
+> >  #include <linux/property.h>
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/spi/spi.h>
+>=20
+> Line break here to separate the 'chunks' of includes.
+>=20
 
-3. Remove the 'maximum' value of 'default-brightness' and
-'max-brightness', and add "if-else" to determine the "maximum" value
-as follows
-------------------------------------------
-  default-brightness:
-    minimum: 0
+OK
 
-  max-brightness:
-    minimum: 0
+> > +#include <asm/unaligned.h>
+> > =20
+> >  #define MCP3911_REG_CHANNEL0		0x00
+> >  #define MCP3911_REG_CHANNEL1		0x03
+> > @@ -22,6 +29,7 @@
+> >  #define MCP3911_REG_GAIN		0x09
+> > =20
+> >  #define MCP3911_REG_STATUSCOM		0x0a
+> > +#define MCP3911_STATUSCOM_READ		GENMASK(7, 6)
+> >  #define MCP3911_STATUSCOM_CH1_24WIDTH	BIT(4)
+> >  #define MCP3911_STATUSCOM_CH0_24WIDTH	BIT(3)
+> >  #define MCP3911_STATUSCOM_EN_OFFCAL	BIT(2)
+> > @@ -54,6 +62,13 @@ struct mcp3911 {
+> >  	struct regulator *vref;
+> >  	struct clk *clki;
+> >  	u32 dev_addr;
+> > +	struct {
+> > +		u32 channels[MCP3911_NUM_CHANNELS];
+> > +		s64 ts __aligned(8);
+> > +	} scan;
+> > +
+> > +	u8 tx_buf[MCP3911_NUM_CHANNELS * 3] __aligned(IIO_DMA_MINALIGN);
+> > +	u8 rx_buf[MCP3911_NUM_CHANNELS * 3];
+> >  };
+> > =20
+> >  static int mcp3911_read(struct mcp3911 *adc, u8 reg, u32 *val, u8 len)
+> > @@ -196,16 +211,63 @@ static int mcp3911_write_raw(struct iio_dev *indi=
+o_dev,
+> >  		.type =3D IIO_VOLTAGE,				\
+> >  		.indexed =3D 1,					\
+> >  		.channel =3D idx,					\
+> > +		.scan_index =3D idx,				\
+> >  		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |	\
+> >  			BIT(IIO_CHAN_INFO_OFFSET) |		\
+> >  			BIT(IIO_CHAN_INFO_SCALE),		\
+> > +		.scan_type =3D {					\
+> > +			.sign =3D 's',				\
+> > +			.realbits =3D 24,				\
+> > +			.storagebits =3D 32,			\
+> > +			.endianness =3D IIO_BE,			\
+> > +		},						\
+> >  }
+> > =20
+> >  static const struct iio_chan_spec mcp3911_channels[] =3D {
+> >  	MCP3911_CHAN(0),
+> >  	MCP3911_CHAN(1),
+> > +	IIO_CHAN_SOFT_TIMESTAMP(2),
+> >  };
+> > =20
+> > +static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+> > +{
+> > +	struct iio_poll_func *pf =3D p;
+> > +	struct iio_dev *indio_dev =3D pf->indio_dev;
+> > +	struct mcp3911 *adc =3D iio_priv(indio_dev);
+> > +	struct spi_transfer xfer =3D {
+> > +		.tx_buf =3D adc->tx_buf,
+> > +		.rx_buf =3D adc->rx_buf,
+> > +		.len =3D sizeof(adc->rx_buf),
+> > +	};
+> > +	int scan_index;
+> > +	int i =3D 0;
+> > +	int ret;
+> > +
+> > +	mutex_lock(&adc->lock);
+> > +	adc->tx_buf[0] =3D MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr=
+);
+> > +	ret =3D spi_sync_transfer(adc->spi, &xfer, 1);
+> > +	if (ret < 0) {
+> > +		dev_warn(&adc->spi->dev,
+> > +				"failed to get conversion data\n");
+> > +		goto out;
+> > +	}
+> > +
+> > +	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
+> > +			indio_dev->masklength) {
+> > +		const struct iio_chan_spec *scan_chan =3D &indio_dev->channels[scan_=
+index];
+> > +
+> > +		adc->scan.channels[i] =3D get_unaligned_be24(&adc->rx_buf[scan_chan-=
+>channel * 3]);
+>=20
+> This has me a little curious.  It seems to be potentially reading from by=
+te 0 which in the spi
+> transfer is at the same time as the tx that tells the device what the com=
+mand is.  I'd expect
+> it to be one byte later.  Easiest way to do that being to have two transf=
+ers (though you could
+> just add to the offset). I might be misremembering how the spi_transfer s=
+tuff works though.
+> Been a while since I hacked anything SPI based...
+>=20
 
-...
+Good catch.
+I did not even notice that the resolution of my plot-script was wrong...
 
-if:
-  properties:
-    compatible:
-      contains:
-        const: mediatek,mt6372-backlight
 
-then:
-  properties:
-    default-brightness:
-      maximum: 16384
+> > +		i++;
+> > +	}
+> > +	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
+> > +			iio_get_time_ns(indio_dev));
+> > +out:
+> > +	mutex_unlock(&adc->lock);
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >  static const struct iio_info mcp3911_info =3D {
+> >  	.read_raw =3D mcp3911_read_raw,
+> >  	.write_raw =3D mcp3911_write_raw,
+> > @@ -214,7 +276,7 @@ static const struct iio_info mcp3911_info =3D {
+> >  static int mcp3911_config(struct mcp3911 *adc)
+> >  {
+> >  	struct device *dev =3D &adc->spi->dev;
+> > -	u32 configreg;
+> > +	u32 regval;
+> >  	int ret;
+> > =20
+> >  	ret =3D device_property_read_u32(dev, "microchip,device-addr", &adc->=
+dev_addr);
+> > @@ -233,29 +295,43 @@ static int mcp3911_config(struct mcp3911 *adc)
+> >  	}
+> >  	dev_dbg(&adc->spi->dev, "use device address %i\n", adc->dev_addr);
+> > =20
+> > -	ret =3D mcp3911_read(adc, MCP3911_REG_CONFIG, &configreg, 2);
+> > +	ret =3D mcp3911_read(adc, MCP3911_REG_CONFIG, &regval, 2);
+>=20
+> If I was being fussy I'd ask you to pull the refactoring in here out as a=
+ precusor
+> patch to simplify reviewing the new stuff a little.  However it's fairly =
+minor
+> so I'll let that go this time.
 
-    max-brightness:
-      maximum: 16384
+Ok, I got you wrong. Thanks.
 
-else:
-  properties:
-    default-brightness:
-      maximum: 2048
 
-    max-brightness:
-      maximum: 2048
-------------------------------------------
+Best regards
+Marcus Folkesson
 
-4. Add a new boolean property to allow the user to determine whether
-to enable the exponential mode of backlight brightness or not. Like
-this,
-------------------------------------------
-  mediatek,bled-exponential-mode-enable:
-    description: |
-      Enable the exponential mode of backlight brightness. If this property
-      is not enabled, the default is to use linear mode.
-    type: boolean
-------------------------------------------
 
-I hope these changes I have added will meet your expectations.
-And I'm not sure if I should remove 'Reviewed-By' first until it
-passes your review.
-Thanks.
+--duuZgvRLw+wN+EG6
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Best Regards,
-ChiaEn Wu
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmLnffgACgkQiIBOb1ld
+UjJrsA//QNPLk1KdyBX/KMqbppkvEFxQ+f4oB2ZP4V2KTgYVKvHDPtIpMpee8CA7
+EJjJ/xNEsaFgF+OaYuAyuxSdutjELmhnahInt44U0vHjCJf8yjool08Ana+uZAdN
+Fs+ZbaCAZLaLgmYcZ3J73SnlsXLT1gLb5XLsKeajjPGL444pIL3WzYqgguRgANMv
+GQ5tz1cZbS2iKXUa0il6QoC6wGvoMR97nq8k5hAJAfcJMCrwDsjjIsiJBeiwX0Wu
+n6sfHH3XcGOtjeT6lywsGOR0k9X4M2gmZraOSr35laZeBF9XRoZWA9SJw2UKfYnz
+g+9sZj58umwqpCHYu7ylGi/yUVJY4Xzu+oFTvxaSbN9yiljPaoCHDBSw29KtXr/E
+YD20x0kIO7E5aoVZPiAn5vugC2OSubm0BoPPNRyKQMdfSiqmy+fVANjI46aA/lrl
+prkdWX4h3RPHqlGkwEI7kX1F7KxN5dPyYcWsY4tpsqQ2PBirTt8QBfySOU/B1Jxr
+Y1ZnOa2VZs5u1Wxy3qodui2NU6KCEKuAgKs4KpNKNKDZd2rgZO6qz1zMT0/NMWND
+uhgV+1E0kUrCY1fHh6scYFXwFf2tepMEHkY13dOobnVkby2FGMGeBc1uTx1d+WzG
+vqBlyw2rFhNshCEQPcHcDlBVd1GLhmjqZB4oQDu5t6Jf2IRPx34=
+=c9jC
+-----END PGP SIGNATURE-----
+
+--duuZgvRLw+wN+EG6--

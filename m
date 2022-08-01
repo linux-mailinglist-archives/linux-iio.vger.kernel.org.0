@@ -2,65 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F225A586648
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 10:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2986A5866B8
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 11:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbiHAIW6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Aug 2022 04:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40048 "EHLO
+        id S229814AbiHAJJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 05:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229759AbiHAIW4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 04:22:56 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2306F32445;
-        Mon,  1 Aug 2022 01:22:55 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id fy29so18884271ejc.12;
-        Mon, 01 Aug 2022 01:22:55 -0700 (PDT)
+        with ESMTP id S229709AbiHAJJS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 05:09:18 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EDA2A942;
+        Mon,  1 Aug 2022 02:09:17 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id r4so5170549edi.8;
+        Mon, 01 Aug 2022 02:09:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=kjv0FJlI0lUU+rmPW0iCxfcBjoloU4HFBTK1BDc1WhU=;
-        b=SGiD99rnB9w5Lo0zaLyFYjCLUr+HfzQo4L/onIg5UCJ2abXcfrLk0Q2J/0NhGPIOl5
-         SxD7lkaGT75emAzQMOxY9SUdrDlDVUjzTEue0ynK8FRv5kPZFW2ayGmoNxxeliKJFp/j
-         5/S5bOQSX/Z7HFoP8EgvaxtAuDmKTtAJSoGK2a/AOcUnPis74wVBWkq9zDVXRgbiUSkZ
-         PWcapOxkFwNmFo2XT+47qaSwM9FjED5PGr+RFo/NrutdgfZ4ak0242zDBlgSWDTzpfew
-         NW1KJ9UWEpRlj37b5SyFi5Bt+lex0J00UJ/VsTNalRTVRp5W/P0/e51LNfs/JY9CDWI5
-         2XlQ==
+        bh=T8Dx1LB9nhk4V6gwNnrIDAbF7gw5C16RB9z39eBzzFQ=;
+        b=Xo6pOWUIV20zMi9pQiC0Iw3nM6uMtgVz1u65uQjxaYfL7JoNrYRBr9hymGxTBJpwcc
+         VO94cK7OifIKmeiHk06KBFa96UHeqYulBxY2BcwZOj2Dd2/boNoLyUg7xqI6OAXOZ6Kq
+         FH+cxNCIXBswsaFPzyWygxY2+dx3AU+d34kzpFFAHm0OYwNirnrAcdJFqlOeW6P80NFv
+         gw0QojPd0jIobAS4KkpCDX9lu+oO/lqWx4i7CqE4/jyE1LMkxahiXMvw8F6FbEFUOkgc
+         COwGJo6tpgptWuz/e/C5wPYC7wOq7ZpLIHe9PIgcD6hllPlJ2VYzS55Ljen6YJGkpgpr
+         TO0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=kjv0FJlI0lUU+rmPW0iCxfcBjoloU4HFBTK1BDc1WhU=;
-        b=5m70kx+5NY2MGTWdvU1K+HLvQ3DwpKoHAeQpTODE/X5vy75lRzLJIA9EPWY0/e0uSi
-         eN+xSbLv67RctiRsQ0lxulLGxThJ9QlrvQHKp9dJhCxVk15LT65EkCLOtdeca08ZAxC3
-         0qu42U/QFFPUpCfZV45SxISuq9co7XQwswWV/oEvGlQlNYALjzydCxYQYu5/1DMV5QzQ
-         KoIH3De11UAr0ZK1087ZJ2oAxgi+bvQrfKnyWezPFxOmxB3gr5MRIFhFIAV3dp9GhC3u
-         1XmjMXvFqEzNVy92ZYwkseUgCSpktMKF9M+SO1cFPriGOxyGaZfrTR5Q/kCTpPhZr0rj
-         PEhw==
-X-Gm-Message-State: ACgBeo27jFZGjAoIF2t6j7dYDWBk/jhq6FmS+jsww9Z/E7OcFGM4v+l2
-        EZnGWLw6s+sdLASBC5pXQtIaK+9iw6drCyW2DXA=
-X-Google-Smtp-Source: AA6agR7TnWJfR8dWO6hsj+nQSrs3tXP2aeFY2812Ck5pBsJqHWm0D1IIbq2EJIDt+JhUXE4Jac0EJWA+RjmNxfjA3us=
-X-Received: by 2002:a17:906:e8f:b0:730:9480:9728 with SMTP id
- p15-20020a1709060e8f00b0073094809728mr832222ejf.99.1659342173330; Mon, 01 Aug
- 2022 01:22:53 -0700 (PDT)
+        bh=T8Dx1LB9nhk4V6gwNnrIDAbF7gw5C16RB9z39eBzzFQ=;
+        b=DC9qms8axe9EvuJpteSbsJXXkCHHA2XQzNyOikjYMsPOPjiYnObiz002ze2UEbreJp
+         bXG5uxQzFeUNAIvYZlct3t2qFVYMKx+m3kxBov7fS05jMWyOF1OE6jVycCObnOIXU8Mf
+         hfjWrwHe0R/E/yU/P82bTHRe0Vm8WOnqJa0wBJHdq9CpXB5TL6SAGqiwTxYBxJk8h6Tr
+         3Mu+E/y0TF3JmtKon1sJoUCTMCrUijcYRpyzsuB5j3/TrKIASS8U8avZulivVOrd5ioK
+         tLbPMxRRdEjNiTd065qyjalJCxVTL9nTzyQDrp/s9uK11uzhDxDb7nLblZMk31S3son8
+         HLBQ==
+X-Gm-Message-State: AJIora/OSBCfIPJ7LkXXKx3xSX+3A0uVif9CrV3ts2iDCWVWyuKiAZfF
+        q7yjcDS3BP/XHYIpz9O/Kf4guhmhPyg4PKL/3Hg=
+X-Google-Smtp-Source: AGRyM1sCm2pwABAlv0cffLgHfmFtk4QVghaduQ8LEgkETjyxcra3eI6nckHfO20ctWM3XF9LKP6GNLKmhQ0zAysfxFo=
+X-Received: by 2002:a05:6402:40c3:b0:43b:d65a:cbf7 with SMTP id
+ z3-20020a05640240c300b0043bd65acbf7mr15224541edb.380.1659344956035; Mon, 01
+ Aug 2022 02:09:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220728125435.3336618-1-potin.lai.pt@gmail.com>
- <20220728125435.3336618-3-potin.lai.pt@gmail.com> <20220731130959.50826fc4@jic23-huawei>
- <4ea235d1-46c1-87de-760f-dc4775007ae0@gmail.com>
-In-Reply-To: <4ea235d1-46c1-87de-760f-dc4775007ae0@gmail.com>
+References: <20220729154723.99947-1-matt.ranostay@konsulko.com>
+ <CAHp75VcOAbrZ2yciwH6teYs5L0vYnE4z==SQ6ejye63+_v9v+g@mail.gmail.com> <CAJCx=gnxV7-oQCNE1LvpcFGhPCQ86rRbn_2NMh4MWpvmQ9WAYw@mail.gmail.com>
+In-Reply-To: <CAJCx=gnxV7-oQCNE1LvpcFGhPCQ86rRbn_2NMh4MWpvmQ9WAYw@mail.gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 1 Aug 2022 10:22:16 +0200
-Message-ID: <CAHp75VcZqTpmvVV=u4t=fdx=ffzksoWVDFZmq6Lfr6DrFrB2aA@mail.gmail.com>
-Subject: Re: [PATCH v5 2/2] iio: humidity: hdc100x: add manufacturer and
- device ID check
-To:     Potin Lai <potin.lai.pt@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai@quantatw.com>,
+Date:   Mon, 1 Aug 2022 11:08:39 +0200
+Message-ID: <CAHp75VfmdZQF7Kyu5ZsNpVfOoD3Dd2ShWOuuoauyJnV4t0w=XQ@mail.gmail.com>
+Subject: Re: [PATCH] HID: mcp2221: add ADC/DAC support via iio subsystem
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     linux-input <linux-input@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Rishi Gupta <gupt21@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -72,32 +68,100 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 1, 2022 at 3:52 AM Potin Lai <potin.lai.pt@gmail.com> wrote:
-> On 7/31/22 20:09, Jonathan Cameron wrote:
+On Mon, Aug 1, 2022 at 6:19 AM Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+> On Mon, Aug 1, 2022 at 3:11 AM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Fri, Jul 29, 2022 at 5:49 PM Matt Ranostay
+> > <matt.ranostay@konsulko.com> wrote:
+
+First of all, please, remove unneeded context when replying!
+(And I believe that non-commented stuff will be addressed as suggested)
 
 ...
 
-> In our hardware board, we have "ti,hdc1080" as main source, and "silabs,si7020"
-> for 2nd source. This two chip are locate at same bus and same slave address,
-> and we want to use multiple compatibles to support both chips with single device
-> node in device tree.
+> > > -       depends on GPIOLIB
+> > > +       select GPIOLIB
+> >
+> > I'm not sure why.
 >
-> Ex:
-> compatible = "ti,hdc1099", "silabs,si7020";
+> Changed to select from 'depends on' to avoid this circular dependency
 
-This is simply broken DT, you must not put incompatible hardware on
-the same compatible string. DT is by definition the description of a
-certain platform. What you showed is a combination of incompatible
-chips in a single DT.
+Was it before your patch? If so, it should be addressed separately as a fix.
 
-> In order to support this, I need to add ID checking mechanism into the current
-> hdc100x driver, so the si7020 chip will fail to probe with hdc100x driver
-> (because the ID checking is not failed), then success probe with si7020.
+>   SYNC    include/config/auto.conf.cmd
+> drivers/gpio/Kconfig:14:error: recursive dependency detected!
+
+> drivers/gpio/Kconfig:14:        symbol GPIOLIB is selected by I2C_MUX_LTC4306
+
+Isn't it the real problem here?
+
+> drivers/i2c/muxes/Kconfig:47:   symbol I2C_MUX_LTC4306 depends on I2C_MUX
+> drivers/i2c/Kconfig:62: symbol I2C_MUX is selected by MPU3050_I2C
+> drivers/iio/gyro/Kconfig:127:   symbol MPU3050_I2C depends on IIO
+> drivers/iio/Kconfig:6:  symbol IIO is implied by HID_MCP2221
+> drivers/hid/Kconfig:1298:       symbol HID_MCP2221 depends on GPIOLIB
+
+...
+
+> > > +                       if (mcp->indio_dev)
+> > > +                               memcpy(&mcp->adc_values, &data[50], 6);
+> >
+> > sizeof()
 >
-> Base on you explanation, it looks multiple compatibles is not suitable in this
-> case? Would you mind advise us what would be the better approach for our case?
+> sizeof(mcp->adc_values) would work here if needed.
 
-If I may advise... fix your DT by dropping the wrong compatible item.
+You need to write code to be more robust, using hardcoded magics when
+it's easy to derive is not good practice.
+
+...
+
+> > > +       memset(mcp->txbuf, 0, 12);
+> >
+> > sizeof() ?
+>
+> txbuf isn't 12 bytes long but 64 since that is the full max size a HID
+> transaction could
+> have. So sizeof() won't work in these cases..
+
+I see, what about a specific definition with a self-explanatory name?
+
+...
+
+> > > +       ret = mcp_send_data_req_status(mcp, mcp->txbuf, 12);
+> >
+> > Ditto,
+>
+> See above.
+
+See above.
+
+...
+
+> > > +       if (mcp->indio_dev)
+> >
+> > Do you need this check?
+>
+> Yes basically if no ADC or DAC channel is enabled then no iio_device
+> get allocated or registered.
+
+> > > +               iio_device_unregister(mcp->indio_dev);
+
+So, we have an inconvenience in the iio_device_unregister(), i.e. it
+doesn't perform the NULL-check by itself. I recommend fixing it there
+and dropping this check in the caller. This is standard practice in
+the Linux kernel for resource deallocator APIs.
+
+...
+
+> > Overall what I really do not like is that ugly ifdeffery. Can we avoid
+> > adding it?
+>
+> Could make CONFIG_IIO required for building but not sure we really
+> want to add as an additional dependency.
+> Which is way the imply is set for CONFIG_IIO
+
+The code looks ugly with this kind of ifdeffery. But okay, I leave it
+up to maintainers, just my 2cents.
 
 -- 
 With Best Regards,

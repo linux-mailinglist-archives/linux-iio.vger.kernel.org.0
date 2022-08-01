@@ -2,136 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23A7586CFB
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 16:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 285B6586E01
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 17:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232665AbiHAOi0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Aug 2022 10:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50400 "EHLO
+        id S231490AbiHAPpS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 11:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232608AbiHAOiY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 10:38:24 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA28E3206B;
-        Mon,  1 Aug 2022 07:38:20 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 3D9265FD1A;
-        Mon,  1 Aug 2022 17:38:19 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1659364699;
-        bh=TzU4kxbiPq2CIG0Dt3uNo8LzBU6MDWGbGwPmFW3Wyc8=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=VlLUIG3Nsh3HBx8Y94P845vJK+lGUUzd6zsG4gsX2iTaESCUzC0c3aYvRClq9sRRJ
-         hSveaGs+eglv0bSawAtNvXaS+/ulc8Y+e2SdPCm4TIu+XKtvgVdqIGDvb/x+vqgub8
-         tta6sf7yTHoPmA7jBIdiK2Bumn8uM5Q9u0A36DJ8Gb0Ow8XlYq5RLDqCSltynWRR4E
-         v6H9oMaZUT3muod1U1BYT70H99PnjKQ9wA7gNWSRATAA2opXf9S4UYfp46EDRigNi2
-         7VNlzSJBBc6I3JCQ/diTth1l72YF3sqc76lOY3SWkT2GBH+KWo9r4mOyZoO3HwN0D6
-         X7O8GLN0mn+QQ==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon,  1 Aug 2022 17:38:19 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Subject: [PATCH v3 3/3] iio: common: scmi_sensors: use HZ macro from units.h
-Thread-Topic: [PATCH v3 3/3] iio: common: scmi_sensors: use HZ macro from
- units.h
-Thread-Index: AQHYpbQ49S+/e7kzQkOrp2Q5bgYh0w==
-Date:   Mon, 1 Aug 2022 14:37:27 +0000
-Message-ID: <20220801143811.14817-4-ddrokosov@sberdevices.ru>
-References: <20220801143811.14817-1-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220801143811.14817-1-ddrokosov@sberdevices.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S232747AbiHAPpR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 11:45:17 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A165F64
+        for <linux-iio@vger.kernel.org>; Mon,  1 Aug 2022 08:45:14 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id bx38so2892840ljb.10
+        for <linux-iio@vger.kernel.org>; Mon, 01 Aug 2022 08:45:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=0zyZ2hFRDCL/PAB+77dCIxgz+ZJjPhAukCUQAK9K37I=;
+        b=NmBGuOwDmFWyAOTwqfb7d0MouyyUkpKz34kkXOGcVYw0WRLvLsRd4fzADyU365P/wJ
+         4/kuB9jG8oBgZrBtB86EZlee2Yt8ZPCxja9c1dHOFQz2eCXJfGsfdSxHPW9jdazR1A99
+         25LR9NouXBhS9+9ZbzDYMr7QxJlW/U+E96aX0ihqOp32X0ZnbLjk5f8MoUrW/RhkyuqC
+         HF+M5aB7NuAUv2biIB0egFdMSiT5o6au74UTgfRpQ02KgJmUlHYvIp+arg/VNkCjd/Oi
+         5woCRF4s/3oLhjdAdqLnJ+IRKxk1C2YZu1MVihCyHcCbBUIRxgiqNK5hZe+Bxt870hmG
+         dhsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=0zyZ2hFRDCL/PAB+77dCIxgz+ZJjPhAukCUQAK9K37I=;
+        b=yTFRPSZRVIXZ5gYRXvvgRz3vjdzgqyBgSJM6jvdQZq5t1oJ5iH8hrGJHS0wI++JYlm
+         aD3s4jN25MYMq8nduFWPZQxHRjbH5/Wzf33mLxado9Xu1cwuS5papxSBVWzfdHHs9Z39
+         Jv+kXH9eIr9rPZ6SaDcvcIeOnbpmR4MTCdWuQWXwk+PUVF+IOjUXLa8Tra+7N9wI7RD9
+         FFHWyOP8i281Zkfm57N/drd9pSYxz2SzFoG+0Du4lUbqk85ov9hDlWeJ5HyGd7wAkPeH
+         Ueutd9Yc3YCFnLdaCTp1LHSqEHLzhxxcsAxl6aIPBh7g3ao42524Y7pgQT7rK4Oyp0r1
+         olpw==
+X-Gm-Message-State: AJIora+5JqmnwlsMgGJo0XFqRT2fgP5J8YdXnD4hSRP0wY2RoUAIwvR2
+        6NcMvxwb1mp7H11SicND72yo8w==
+X-Google-Smtp-Source: AGRyM1tioJLRexsAbEzPR5s9tl1SAoqjdAsmrvPwSvCHuyovgYJvBqfWj3511GuPNaK88Y3DupzQPQ==
+X-Received: by 2002:a2e:8247:0:b0:25d:b515:92e with SMTP id j7-20020a2e8247000000b0025db515092emr5248224ljh.527.1659368713339;
+        Mon, 01 Aug 2022 08:45:13 -0700 (PDT)
+Received: from [192.168.1.6] ([213.161.169.44])
+        by smtp.gmail.com with ESMTPSA id g7-20020a056512118700b0047dace7c7e5sm1769765lfr.212.2022.08.01.08.45.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Aug 2022 08:45:12 -0700 (PDT)
+Message-ID: <bd829586-f052-03c3-aa68-e5a2be84b6bb@linaro.org>
+Date:   Mon, 1 Aug 2022 17:45:07 +0200
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/01 10:27:00 #20025860
-X-KSMG-AntiVirus-Status: Clean, skipped
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v2 00/10] dt-bindings: iio: use spi-peripheral-props.yaml
+Content-Language: en-US
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Robert Jones <rjones@gateworks.com>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
+ <20220730224643.GB11662@wunner.de>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220730224643.GB11662@wunner.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Remove duplicated definition of UHZ_PER_HZ, because it's available in
-the units.h as MICROHZ_PER_HZ.
+On 31/07/2022 00:46, Lukas Wunner wrote:
+> On Wed, Jul 27, 2022 at 06:46:36PM +0200, Krzysztof Kozlowski wrote:
+>>  78 files changed, 324 insertions(+), 249 deletions(-)
+> 
+> Pardon me for being dense, but what is the benefit of this series
+> that justifies inflating the schema definitions by a total of 75 lines?
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
----
- drivers/iio/common/scmi_sensors/scmi_iio.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The commits were explaining rationale, so let me bring it here. The
+benefits are:
+This allows using all properties typical for SPI-connected devices, even
+these which device bindings author did not tried yet.
 
-diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/commo=
-n/scmi_sensors/scmi_iio.c
-index 793d628db55f..54ccf19ab2bb 100644
---- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-+++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-@@ -18,6 +18,7 @@
- #include <linux/scmi_protocol.h>
- #include <linux/time.h>
- #include <linux/types.h>
-+#include <linux/units.h>
-=20
- #define SCMI_IIO_NUM_OF_AXIS 3
-=20
-@@ -130,7 +131,6 @@ static const struct iio_buffer_setup_ops scmi_iio_buffe=
-r_ops =3D {
- static int scmi_iio_set_odr_val(struct iio_dev *iio_dev, int val, int val2=
-)
- {
- 	struct scmi_iio_priv *sensor =3D iio_priv(iio_dev);
--	const unsigned long UHZ_PER_HZ =3D 1000000UL;
- 	u64 sec, mult, uHz, sf;
- 	u32 sensor_config;
- 	char buf[32];
-@@ -145,7 +145,7 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_dev=
-, int val, int val2)
- 		return err;
- 	}
-=20
--	uHz =3D val * UHZ_PER_HZ + val2;
-+	uHz =3D val * MICROHZ_PER_HZ + val2;
-=20
- 	/*
- 	 * The seconds field in the sensor interval in SCMI is 16 bits long
-@@ -156,10 +156,10 @@ static int scmi_iio_set_odr_val(struct iio_dev *iio_d=
-ev, int val, int val2)
- 	 * count the number of characters
- 	 */
- 	sf =3D (u64)uHz * 0xFFFF;
--	do_div(sf,  UHZ_PER_HZ);
-+	do_div(sf,  MICROHZ_PER_HZ);
- 	mult =3D scnprintf(buf, sizeof(buf), "%llu", sf) - 1;
-=20
--	sec =3D int_pow(10, mult) * UHZ_PER_HZ;
-+	sec =3D int_pow(10, mult) * MICROHZ_PER_HZ;
- 	do_div(sec, uHz);
- 	if (sec =3D=3D 0) {
- 		dev_err(&iio_dev->dev,
---=20
-2.36.0
+Also, what I did not mention in commit msg, this makes sure, that
+spi-xxx properties have a type, which is validated by
+spi-peripheral-props.yaml. Otherwise, when someone puts bogus data as
+spi-max-frequency (e.g. phandle) and checks only with that device
+schema, no errors are reported.
+
+Best regards,
+Krzysztof

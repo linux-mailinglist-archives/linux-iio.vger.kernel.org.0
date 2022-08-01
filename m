@@ -2,231 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E700586348
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 06:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65038586563
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Aug 2022 08:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239150AbiHAET7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 1 Aug 2022 00:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50102 "EHLO
+        id S229725AbiHAGsu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 1 Aug 2022 02:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiHAET6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 00:19:58 -0400
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E146B13DD7
-        for <linux-iio@vger.kernel.org>; Sun, 31 Jul 2022 21:19:49 -0700 (PDT)
-Received: by mail-io1-xd35.google.com with SMTP id v185so7567826ioe.11
-        for <linux-iio@vger.kernel.org>; Sun, 31 Jul 2022 21:19:49 -0700 (PDT)
+        with ESMTP id S234727AbiHAGsW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 1 Aug 2022 02:48:22 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F96A13F49;
+        Sun, 31 Jul 2022 23:48:13 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id o1so7734990qkg.9;
+        Sun, 31 Jul 2022 23:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=7y69nF8yylApvNF8tnbnFLvYv1tkhmPPUVUPa2891qc=;
-        b=DdXTOmV+TuIZy/mE4W6jNZd6uiwDY7MDmCSWRkBNW3cgfAqAI38xyqbn6VVnzEEAhb
-         8G4MUMe9Hy5VxVs9CTBDnrEEMkIReFp4kcAdZ6D9CR9PFIdm+C6XGZE1hd1vdvN00oOL
-         2RcgT4WsE2Y7qBZ8/6ootJRrgq5EGDvO0G2QI=
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0pCQwRUtQqbmZSwhlAYKv7D+OaWBuV6jzuOG3pLiqnE=;
+        b=ln2eP881w+pJWsnC+kYg6rYGAd3maj9S7mJ+gV/lLUoTHa07yJ7pdTT1iddtkvut7G
+         wCE3Vn0TT0sSu2CGZvq/wm0E+8dX8DAzc0wcrTU8f68Bf945HKsgWEqdxw/iLewJID2+
+         U3xISuK9fbiy0BRYeJ5aJIV0S+Q+NI5ty1LBv5VOtK4++uo7wdiHC9lGtmGhCbrpNouT
+         poWweP7l/AaVWeIy/2bVG85dC0G/EueHZA6lUebLElpHSoCxf4b25lXpFCUPSvI2lhdW
+         7jc02DOr4iyObq+BZvCMVIS2hbqCqgw3xx0epY1nfMPIBNYZpFTwGEBUDoh2MKMua6y2
+         T4rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=7y69nF8yylApvNF8tnbnFLvYv1tkhmPPUVUPa2891qc=;
-        b=bvD2x1GmtAd9oa3IIhYjWhPv+D5g5xedxte3z5qTo16CNFRoRbS7k9U1G6JoFLfBKW
-         RXDdL29jqjariSmIImIO4JZ3GEzofFG8DEwoyPM4h/j8NZz5BO3lQ2UcCX1mLTker5D7
-         ipGkCfI4YBefNjBG6WUEN+T3u7Pp5t0uEbVk8cBQHeoYlqc9hwZw9QfvAx/Szv2odbFV
-         BGf7Yw3qqpC2aCKkKZoe5yt6oQNS3ieNmjViuDt/cEaoShLWvmlFdlSDdP1Zlw4C9GTx
-         BEQWvjMyuM0A1Cl+UY7PmHSFeeWeTbAsbyR4qHUTbQnxm6ZwNX9EGwokl0lwI/mRRvHw
-         dlCQ==
-X-Gm-Message-State: AJIora9AJV1ebWrZNI9p33QQbnA/vAmGfnJZu95QQAp5FGY8SRB5HsKd
-        R3roBku9gOxguypOWYI2EJQLIXhBQyoSGy07ioRBjw==
-X-Google-Smtp-Source: AGRyM1tBcfkws8S5Mv3ZWo4TZS8WuMZ7q8sUQvrr9rAzPOy8paIkj6HqvTFTxnv3QpKTmLVLyVlVJB1j6A/PSngNKz0=
-X-Received: by 2002:a05:6638:dd1:b0:341:55c2:38b6 with SMTP id
- m17-20020a0566380dd100b0034155c238b6mr5539717jaj.245.1659327589288; Sun, 31
- Jul 2022 21:19:49 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0pCQwRUtQqbmZSwhlAYKv7D+OaWBuV6jzuOG3pLiqnE=;
+        b=Y97cQMDQsqGK7AYWLfOKdA8pvvi9aEfceRVlMf3wL/m6lPqs47koW/+OhY9eyN1wkg
+         pK0cDrMXcIjTVa0EyQHvpuPLThUewNvCcuBk8viNdK4geO0JfT8x4FlZzB9ijjvsafqL
+         KGZz8LoxAzCVh4uFSLaGXCpBwaP9mVp1/VDGlXRyxduwr86NbL2cfvnGeSwXnQ1OZiNa
+         HxWPTomC4xKawKmjBpHtdNs1+5OKJir14AtnUFQTOiA7Q+mM7Kfb/oymAm4JETnVZ/9Q
+         RMw9vjpUaqQZ/AmqmQMHBTVIpccUTDMeLAFEpq1PPbX1LDJTcD1ghg4EnpiBZVuPmAsA
+         hzXw==
+X-Gm-Message-State: AJIora8FopjwlP1rSx/ZiX8GU9Ml6sQ5dwYKhNl+ABKNwpljS/SabVTB
+        3yFUopDMAgRVTFtAi/wOQsmnzKvv9Rzze5tpm3k=
+X-Google-Smtp-Source: AGRyM1vi8vD3grhYbZ/WLviZ2IFccZbjNO75ItldTtC+nPOI6OOaG7LKKV2FJNQbFGfWSid26gTwustg4ausWvfIn5M=
+X-Received: by 2002:a05:620a:1706:b0:6b8:705a:c61e with SMTP id
+ az6-20020a05620a170600b006b8705ac61emr8915998qkb.129.1659336492750; Sun, 31
+ Jul 2022 23:48:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220729154723.99947-1-matt.ranostay@konsulko.com> <CAHp75VcOAbrZ2yciwH6teYs5L0vYnE4z==SQ6ejye63+_v9v+g@mail.gmail.com>
-In-Reply-To: <CAHp75VcOAbrZ2yciwH6teYs5L0vYnE4z==SQ6ejye63+_v9v+g@mail.gmail.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Mon, 1 Aug 2022 12:19:37 +0800
-Message-ID: <CAJCx=gnxV7-oQCNE1LvpcFGhPCQ86rRbn_2NMh4MWpvmQ9WAYw@mail.gmail.com>
-Subject: Re: [PATCH] HID: mcp2221: add ADC/DAC support via iio subsystem
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-input <linux-input@vger.kernel.org>,
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-6-peterwu.pub@gmail.com>
+In-Reply-To: <20220722102407.2205-6-peterwu.pub@gmail.com>
+From:   ChiaEn Wu <peterwu.pub@gmail.com>
+Date:   Mon, 1 Aug 2022 14:47:36 +0800
+Message-ID: <CABtFH5L83d5Di6O9TC-L3UX2ma5J3PE47ihfJFfPD5YGJ43NxQ@mail.gmail.com>
+Subject: Re: [PATCH v6 05/13] dt-bindings: backlight: Add MediaTek MT6370 backlight
+To:     Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
+        Helge Deller <deller@gmx.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        USB <linux-usb@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        Rishi Gupta <gupt21@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>, Rob Herring <robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 1, 2022 at 3:11 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+On Fri, Jul 22, 2022 at 6:24 PM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> On Fri, Jul 29, 2022 at 5:49 PM Matt Ranostay
-> <matt.ranostay@konsulko.com> wrote:
-> >
-> > Add support for 3x 10-bit ADC and 1x DAC channels registered via
-> > the iio subsystem.
-> >
-> > To prevent breakage and unexpected dependencies this support only is
-> > only built if CONFIG_IIO is enabled, and is only weakly referenced by
-> > 'imply IIO' within the respective Kconfig.
-> >
-> > Additionally the iio device only gets registered if at least one channel
-> > is enabled in the power-on configuration read from SRAM.
->
-> I tried to leave the comments not clashed with Jonathan's ones below.
->
-> ...
->
-> > Cc: Rishi Gupta <gupt21@gmail.com>
-> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Use --cc in the parameters to `git format-patch` or move them after
-> the cutter '---' line below, so they won't pollute the Git commit
-> message.
+> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> ---
 
-Noted for the future.
->
-> ...
->
-> > -       depends on GPIOLIB
-> > +       select GPIOLIB
->
-> I'm not sure why.
+[snip]
 
-Changed to select from 'depends on' to avoid this circular dependency
+> +  compatible:
+> +    const: mediatek,mt6370-backlight
+> +
+> +  default-brightness:
+> +    minimum: 0
+> +    maximum: 2048
+> +
+> +  max-brightness:
+> +    minimum: 0
+> +    maximum: 2048
+> +
 
-  SYNC    include/config/auto.conf.cmd
-drivers/gpio/Kconfig:14:error: recursive dependency detected!
-drivers/gpio/Kconfig:14:        symbol GPIOLIB is selected by I2C_MUX_LTC4306
-drivers/i2c/muxes/Kconfig:47:   symbol I2C_MUX_LTC4306 depends on I2C_MUX
-drivers/i2c/Kconfig:62: symbol I2C_MUX is selected by MPU3050_I2C
-drivers/iio/gyro/Kconfig:127:   symbol MPU3050_I2C depends on IIO
-drivers/iio/Kconfig:6:  symbol IIO is implied by HID_MCP2221
-drivers/hid/Kconfig:1298:       symbol HID_MCP2221 depends on GPIOLIB
-For a resolution refer to Documentation/kbuild/kconfig-language.rst
+Hi Rob, Krzysztof,
 
->
-> ...
->
-> >  #include <linux/hidraw.h>
-> >  #include <linux/i2c.h>
-> >  #include <linux/gpio/driver.h>
->
-> + blank line.
->
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
->
-> + blank line.
->
-> >  #include "hid-ids.h"
->
-> > +#if IS_REACHABLE(CONFIG_IIO)
-> > +       struct iio_chan_spec iio_channels[3];
-> > +       struct iio_dev *indio_dev;
-> > +       u16 adc_values[3];
-> > +       u8 dac_value;
-> > +#endif
-> > +};
->
-> ...
->
-> > +#if IS_REACHABLE(CONFIG_IIO)
-> > +                       if (mcp->indio_dev)
-> > +                               memcpy(&mcp->adc_values, &data[50], 6);
->
-> sizeof()
+First, I'm so sorry for our SoB writing wrong, I'll fix it in the next patch.
+Because of this mail thread
+(https://lore.kernel.org/all/20220728113109.7gf3b36mqjxlhcq3@maple.lan/),
+I would like to discuss with you that I may change the following in
+this DT document, I am not sure whether you agree or not.
 
-sizeof(mcp->adc_values) would work here if needed.
+1. Add some descriptions about MT6372, which supports 16384 steps (14
+bits) and is different from MT6370/MT6371 (2048 steps, 11 bits)
+2. Modify the format of 'compatible' as follows to distinguish between
+MT6370/MT6371 or MT6372
+------------------------------------------
+properties:
+  compatible:
+    enum:
+      - mediatek,mt6370-backlight
+      - mediatek,mt6372-backlight
+------------------------------------------
 
->
-> > +#endif
->
-> ...
->
-> > +               // Confirm value is within 10-bit range
-> > +               if (*val > GENMASK(9, 0))
->
->   if (*val >= BIT(10))
->
->  will make comment useless
->
-> > +                       return -EINVAL;
-> > +       }
->
-> ...
->
-> > +       if (val < 0 || val > GENMASK(4, 0))
->
-> In a similar way, val >= BIT(5).
->
-> > +               return -EINVAL;
->
-> ...
->
-> > +       memset(mcp->txbuf, 0, 12);
->
-> sizeof() ?
+3. Remove the 'maximum' value of 'default-brightness' and
+'max-brightness', and add "if-else" to determine the "maximum" value
+as follows
+------------------------------------------
+  default-brightness:
+    minimum: 0
 
-txbuf isn't 12 bytes long but 64 since that is the full max size a HID
-transaction could
-have. So sizeof() won't work in these cases..
+  max-brightness:
+    minimum: 0
 
->
-> ...
->
-> > +       ret = mcp_send_data_req_status(mcp, mcp->txbuf, 12);
->
-> Ditto,
+...
 
-See above.
+if:
+  properties:
+    compatible:
+      contains:
+        const: mediatek,mt6372-backlight
 
->
-> > +       hid_hw_power(mcp->hdev, PM_HINT_NORMAL);
->
-> Even in an error case?
+then:
+  properties:
+    default-brightness:
+      maximum: 16384
 
-hid_hw_power was set to PM_HINT_FULLON before the check, and in error case it
-should reset back to normal hint.
+    max-brightness:
+      maximum: 16384
 
->
-> > +       if (ret) {
-> > +               mutex_unlock(&mcp->lock);
-> > +               return -EINVAL;
-> > +       }
->
-> ...
->
-> > +#if IS_REACHABLE(CONFIG_IIO)
-> > +       if (mcp->indio_dev)
->
-> Do you need this check?
+else:
+  properties:
+    default-brightness:
+      maximum: 2048
 
-Yes basically if no ADC or DAC channel is enabled then no iio_device
-get allocated or registered.
+    max-brightness:
+      maximum: 2048
+------------------------------------------
 
->
-> > +               iio_device_unregister(mcp->indio_dev);
-> > +#endif
->
-> ...
->
-> Overall what I really do not like is that ugly ifdeffery. Can we avoid
-> adding it?
+4. Add a new boolean property to allow the user to determine whether
+to enable the exponential mode of backlight brightness or not. Like
+this,
+------------------------------------------
+  mediatek,bled-exponential-mode-enable:
+    description: |
+      Enable the exponential mode of backlight brightness. If this property
+      is not enabled, the default is to use linear mode.
+    type: boolean
+------------------------------------------
 
-Could make CONFIG_IIO required for building but not sure we really
-want to add as an additional dependency.
-Which is way the imply is set for CONFIG_IIO
+I hope these changes I have added will meet your expectations.
+And I'm not sure if I should remove 'Reviewed-By' first until it
+passes your review.
+Thanks.
 
-- Matt
-
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+-- 
+Best Regards,
+ChiaEn Wu

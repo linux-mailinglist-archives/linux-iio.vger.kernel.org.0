@@ -2,228 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55EAC587D15
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Aug 2022 15:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E84D9587EFE
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Aug 2022 17:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236651AbiHBN2Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 2 Aug 2022 09:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
+        id S229488AbiHBPdB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 2 Aug 2022 11:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232425AbiHBN2P (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Aug 2022 09:28:15 -0400
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B5916599
-        for <linux-iio@vger.kernel.org>; Tue,  2 Aug 2022 06:28:13 -0700 (PDT)
-Received: by mail-wr1-x432.google.com with SMTP id v3so16985396wrp.0
-        for <linux-iio@vger.kernel.org>; Tue, 02 Aug 2022 06:28:13 -0700 (PDT)
+        with ESMTP id S229460AbiHBPdA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 2 Aug 2022 11:33:00 -0400
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 383F5245
+        for <linux-iio@vger.kernel.org>; Tue,  2 Aug 2022 08:32:59 -0700 (PDT)
+Received: by mail-oi1-x229.google.com with SMTP id r13so16937811oie.1
+        for <linux-iio@vger.kernel.org>; Tue, 02 Aug 2022 08:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language
-         :from:to:cc:references:in-reply-to:content-transfer-encoding;
-        bh=zhQV6KklANoXAExR2SdxpOLIazXCUZND/JNIe+QuHXc=;
-        b=Ain8zt4q7eV7NL2VgVzu8tHPSmzLHBe2hlUNvqd30pvxjhbHbgdoyTEdzqnfozWlv1
-         8WK3K+/5FS9QkKqUBTR2sjb8MogLMszoK2fpRlRNv78dQ6o9rBDJwdOWwnMBpkKyasg1
-         8uGkcJvylDuzhbyBuCDbMdjtnqQVtvKWzGz88Ww1DdQjG7bN3HM9Vy6q1/5NmMMnZ23L
-         MQ3fxTgAE2hkUP9fduJHzfRhkUUe/OEQBUVkBjhPWe1dyMWzxgAxWlB/+IZ7lTVW1Q1H
-         5TAECFYVlHQC0liH1ZwhF+9qMfQz8nZ1XuIwhjoj5NXbGC1M0Sj/hRZp393I4IiVz2bU
-         x6MQ==
+        d=melexis.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=PSDPxM2By8vi0ZP2NPNQOJTJOQmur6WOk590MvQmElQ=;
+        b=JY7PQqVA34lrfStrOcPH7nqIj08Wwxr9DV6Dxz2WDid/GFoEsRJbX0c0A1fCjWPGqT
+         VtpiTZe67AzC+zxkNS1u7GhrIsc7yG5JThpTHSlfSAFlCLgrj9XNwozoJQpEE1BuB6iu
+         9fpIDGDd0zQRxi/B6HFJnFrtEPn7Bz0iG3eV8I2APHWaRNvAoBbacJIeztzkdlB3JPIA
+         lUYKNg0mAEjehpw4prvJ6WvSe5wS33gEaF0P472gD5ILfY/nh3lnjuaAqXeOOEtIcmBs
+         QNvimD5lXoHHPU3Cb/Eb8wSX1ibV5h81FL+zYSItSw53R++gJKV8vrMXrIMW3K6XkqkC
+         MPhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:from:to:cc:references:in-reply-to
-         :content-transfer-encoding;
-        bh=zhQV6KklANoXAExR2SdxpOLIazXCUZND/JNIe+QuHXc=;
-        b=ZaqYC+Ho2Hh7bKRey17TSySSduF2urhWtVqYSNdADTUDL7KiCO7jnmLx0T7j84Rnr1
-         nsqXxymW8olQTnejeNKwgrH13DW1RiDHnYIA+ZuBpfigG2uDE2VnrPng4OGMs7qW5Xw9
-         YSLV4J2AZ+ChBFo2VlN9nS2VYPYF3AcvjJNamgwbXdxZrnHaWL9Yd7pfmm4fpUmHNHIc
-         AzfE/uX149a3d9CpxWrG/r66qyq9pOS+mX6h16ZW4lFXV5u9f0H8qcBIKs+DZmtVCZvN
-         fa85CGsNLyo9BXvrv6FF6u2M/ot9E7waiTXpGvWftRrg7RfjLBNufzQQ9rusaQ95qkMm
-         1+EQ==
-X-Gm-Message-State: ACgBeo2fhCpx8qeJlCuzTSjZaLBpQ33xnv74babWrw6xC0yVqtxQQ7hS
-        M0nKd9dd0DzQxst2uVFWsSfZ3dKSOvzfnWZL
-X-Google-Smtp-Source: AA6agR4cSFplWRmJFt46bFuJLRjHgyuj120RsB6jAgbcAkjmDxvGeNISURre7kRy/h6qlASE0FOvUg==
-X-Received: by 2002:adf:d1ea:0:b0:220:6334:25e with SMTP id g10-20020adfd1ea000000b002206334025emr6527722wrd.32.1659446891922;
-        Tue, 02 Aug 2022 06:28:11 -0700 (PDT)
-Received: from [192.168.1.69] (32.31.102.84.rev.sfr.net. [84.102.31.32])
-        by smtp.gmail.com with ESMTPSA id i16-20020a05600c401000b003a305c0ab06sm22618640wmm.31.2022.08.02.06.28.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Aug 2022 06:28:11 -0700 (PDT)
-Message-ID: <98d17617-72b5-6330-d4f5-1bece928ceab@baylibre.com>
-Date:   Tue, 2 Aug 2022 15:28:09 +0200
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=PSDPxM2By8vi0ZP2NPNQOJTJOQmur6WOk590MvQmElQ=;
+        b=YzBNpIf2EC8RpzrXkYcYWZrsY1jaa4yTsSm3WfP3A/qyJY/M+p48suEy5px+tkCnT1
+         dWJVu036XAc3wrtTeZW1LFNFXBQxBcbw3VuOtuPVSbFYWlwooxzwtuO7qAS5QsQ8cpTw
+         JqqWrchhw8gQkMWbq5TbCrhR1M6Y+07jVCYryV7Zqd0u3Ins035ufuQXknVnVC1RhaGm
+         b0T7OguavPG46SVUhyXSgNJLaRlvsOtKfdrGPtcP0+KS0rnnUOarr8Q3ImRXUjJ1eXoW
+         AmcX/RBZFWaKx3Jmm5PyNIoloykwUWV+fwnP5En7PnHbm3ckAPZ8RI8QnJ24I1p1bAx/
+         vftg==
+X-Gm-Message-State: ACgBeo1h+27JJY3Phdg/3GuOv2VU+TLseIq+ymOp/gaDZa4g+w3i4tIs
+        RaF3at1Q0YtfHPIn+8pkLqAmQVq6J+L+08x4wUgci02KylkFgQ==
+X-Google-Smtp-Source: AA6agR7cNevxiBbSsfCCVKPtA951j1X6fgs+uBfk5dDr8yAhlx8qa9Pzev3TtmsM4nQv8QPJqy0MURH7bCyXGnnkVug=
+X-Received: by 2002:a05:6808:1708:b0:335:1b16:fb09 with SMTP id
+ bc8-20020a056808170800b003351b16fb09mr19114oib.7.1659454378466; Tue, 02 Aug
+ 2022 08:32:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.0
-Subject: Re: [PATCH v3 2/2] iio: time: capture-tiecap: capture driver support
- for ECAP
-Content-Language: en-US
-From:   Julien Panis <jpanis@baylibre.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lars@metafoo.de, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        mranostay@ti.com
-References: <20220728175124.468461-1-jpanis@baylibre.com>
- <20220728175124.468461-3-jpanis@baylibre.com>
- <20220731164116.30e91f34@jic23-huawei>
- <11b7436b-5c31-671e-ba77-435fe8e3b767@baylibre.com>
-In-Reply-To: <11b7436b-5c31-671e-ba77-435fe8e3b767@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
+ <CAHp75VcrFQXW10vkLSB5Yh2D24zPzKR9FtfDU8bsSqDwD7=zjg@mail.gmail.com>
+ <CAKv63uv12XWEEVAhUBuK9Botj4mCtKWwRL-YzxywOipTAHgQFg@mail.gmail.com> <CAHp75Vd7_Vz+kTEUzO+Pz3Bj5b7AYo=NMukL5dbX9HLXHE4K0Q@mail.gmail.com>
+In-Reply-To: <CAHp75Vd7_Vz+kTEUzO+Pz3Bj5b7AYo=NMukL5dbX9HLXHE4K0Q@mail.gmail.com>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Tue, 2 Aug 2022 17:32:22 +0200
+Message-ID: <CAKv63uuaVNoo7hG8bampmx1r5WH7=BdNVL-4HAgzPou9d58HDg@mail.gmail.com>
+Subject: Re: Controlling device power management from terminal
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Linux Iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Andy,
+Thanks for the explanation and help - now the PM runtime suspend and
+resume are triggered. It was indeed the combination of bad
+initialization and that I did not have "enter wakeup" on the read
+data.
 
+Currently, I view pm_runtime mode as a power saving mode (device
+should be in low power) and normal running as running mode. However,
+the sensor is able to report data in both modes - just reading is a
+bit different. I also do not have a problem with autosuspend after
+some time, but I do wonder how would user change the power mode from
+pm_runtime to normal mode (reading, in this case, should not change
+the mode). What is the recommended ABI for that?
 
-On 01/08/2022 16:08, Julien Panis wrote:
+On Mon, 25 Jul 2022 at 23:45, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 >
+> On Mon, Jul 25, 2022 at 11:36 PM Crt Mori <cmo@melexis.com> wrote:
+> > On Mon, 25 Jul 2022 at 23:27, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > On Mon, Jul 25, 2022 at 10:48 AM Crt Mori <cmo@melexis.com> wrote:
+> > > >
+> > > > Hi,
+> > > > I am implementing the power saving modes for mlx90632 device driver
+> > > > and while I have implemented routines for SET_RUNTIME_PM_OPS
+> > > > (runtime_pm_suspend and runtime_pm_resume) I am not able to find out
+> > > > how to trigger them from the terminal.
+> > > >
+> > > > It could be that my driver code for power management implementation is
+> > > > incomplete and I need to initialize something more.
+> > > >
+> > > > Maybe it is helpful, but the power submodule of the device contains below files:
+> > > >
+> > > > $ ls -al /sys/bus/iio/devices/iio\:device0/power
+> > > > total 0
+> > > > drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
+> > > > drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
+> > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
+> > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
+> > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
+> > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
+> > > >
+> > > > And control is already set to "auto" which according to documentation
+> > > > should allow the PM.
+> > >
+> > > 'auto' should enable it. So, whenever the driver thinks it's a time to
+> > > power off/on the device it will call the methods.
+> > >
+> > > You may hack a bit to enable autosuspend (which often is not a good
+> > > idea for IIO sensors) and see it done automatically after some time.
+> >
+> > So the idea is to wait?
 >
-> On 31/07/2022 17:41, Jonathan Cameron wrote:
->> On Thu, 28 Jul 2022 19:51:24 +0200
->> Julien Panis <jpanis@baylibre.com> wrote:
->>
->>> ECAP hardware on AM62x SoC supports capture feature. It can be used
->>> to timestamp events (falling/rising edges) detected on signal input 
->>> pin.
->>>
->>> This commit adds capture driver support for ECAP hardware on AM62x SoC.
->>>
->>> In the ECAP hardware, capture pin can also be configured to be in
->>> PWM mode. Current implementation only supports capture operating mode.
->>> Hardware also supports timebase sync between multiple instances, but
->>> this driver supports simple independent capture functionality.
->>>
->>> Signed-off-by: Julien Panis <jpanis@baylibre.com>
->> Hi Julien,
->>
->> So this isn't the first ecap driver we've had proposed, but the previous
->> one was a few years ago and never reached v2.
->> https://lore.kernel.org/all/20200818153614.6438-1-dts86@cornell.edu/
->>
->> Honestly I can't remember much about it, but maybe the discussion around
->> that will be worth a reread.
+> Yes.
 >
-> Hi Jonathan, thank you for your review.
+> > How would I enable autosuspend - by lowering
+> > the autosusped_delay_ms?
 >
-> I read the discussion about previous attempt, before submitting this 
-> patch. There were
-> interesting comments indeed.
->
-> But in this previous attempt, only one-shot pulses were handled 
-> (moreover, global IRQ flag
-> was not cleared, so I'm not sure that IRQ could be raised more than 
-> once).
->
-> However, ECAP can be used to make time measurements for any type of 
-> "square waveform".
-> That's why I tried to make this event mode configurable. Besides, 
-> using a continuous mode allows
-> handling much more signal types (not only single pulses).
->
->>
->> The use of ABI here is unusual. So I'd definitely like to see some 
->> documentation
->> probably as a file in the main kernel documentation to explain what 
->> the interface
->> is an how that relates to what is being captured.
->
-> OK, I will add some userspace documentation.
->
->>
->> First thing to note here is the channel type of IIO_INDEX is now not 
->> actually
->> used any more because we moved all the relevant drivers over to the 
->> counter
->> subsystem (and we failed to mark it deprecated).
->
-> I evaluated this counter subsystem before starting development. 
-> Counting events is not "a priori"
-> the goal when using ECAP.
->
-> Nevertheless, maybe "counter_push_event" function could do the job. If 
-> I use counter API :
-> # Option 1 : CAP1/2/3/4 registers could be seen as 4 channels of the 
-> same counter...
-> but there are not channels, there are just sequential timestamps 
-> actually. So I'm afraid this leads
-> to misunderstanding for the user.
-> Moreover, the user will have to read several entries (counts 1/2/3/4) 
-> to gather timestamps from
-> the same input signal, which is not very convenient.
-> # Option 2 : Either CAP 1/2/3/4 events could be gathered in a single 
-> channel...but then it will not
-> be possible to configure their polarity (rising/falling edge) 
-> individually (unless I did
-> not understand well counter framework documentation).
->
-> So, even with counter framework, it will lead to some diverted use of 
-> the framwork, since ECAP
-> is a very specific hardware that do not fit 100% counter philosophy.
->
-> I admit that ECAP do not fit 100% IIO philosophy either.
->
-> Maybe misc API would be more relevant actually. Any opinion about it 
-> will be welcome. :-)
+> Yep, if you wish. The driver should enable it though.
 
-[Answering my own mail]
-
-I got a closer look at counter framework. It is not suitable at all for 
-ECAP. Initially, I thought that
-"counter_push_event" function could be used, but the only timestamp 
-handled by this function
-is a software timestamp. I strongly doubt that counter framework 
-maintainer would accept
-some modification here to support hardware timestamp : a patch rejection 
-would be
-legitimate, since a counter is dedicated to "event counting". Whereas 
-ECAP is dedicated to
-"event timestamping".
-
-Beside, ECAP has 4 timestamp registers but they are used to capture 
-timestamps for a
-single input pin (only 1 channel). In ECAP context, 'index X" is used to 
-identify CAP X
-(used to capture event X detected on a single pin, with X = 0/1/2/3/0...).
-In counter framework, "index X" is used to identify channel X (among 
-several pins).
-So, the word "index" has not the same meaning in counter framework than 
-in ECAP device.
-Somehow, this ECAP index (0/1/2/3 for CAP1/2/3/4 registers) must be 
-logged with timestamp
-because it is an important part of signal info for the user (raw 
-consecutive timestamps
-are not enough).
-
-So, here is my proposal for my next version :
-(1) Replace IIO_INDEX by IIO_COUNT channel (already used in 
-"stm32-timer-trigger.c" driver)
-# In ECAP documentation, the word "index" is not used. The word used to 
-speak about this
-0->1->2->3->0 sequenced counter is "Mod4 counter".
-(2) Configure event mode with 4 sysfs entries (to remove the mix of 
-buffers and events interfaces)
-# User will see 4 files (1 file for each CAP timestamp) named 
-"falling_edge_active_0/1/2/3".
-Writing 1 will select falling edge/ Writing 0 will select rising edge.
-
-Would it be an acceptable alternative for you, Jonathan ? Would either 
-(1) and/or (2) be a "no-go" ?
+Is there a way for driver to attach a callback to
+power/autosuspend_delay_ms request or to power/control?
 
 >
->>
->> Anyhow, I've reviewed below, but need docs to discuss this in depth.  
->> In particular
->> the mix of buffers and events interfaces is unlikely to be an 
->> acceptable path
->> forwards.
+> > How does the driver decide that it is time to
+> > power off/on?
 >
-> OK, I will consider alternatives.
+> I'm not a driver author, it seems you , who should answer this
+> question (as you are about to add PM there, am I right?).
 >
->>
->> Jonathan
-
+> > Do I need something else enabled to have this done automatically?
+> > Autosuspend is 5000 in my case which would mean 5 seconds, so I am
+> > quite sure I waited that long and I did not see printk's from the
+> > driver.
+>
+> Something prevents it from doing (reference counting) or simply some
+> initialization / enablement is forgotten. For different buses
+> different PM runtime rules are applied (for example, IIRC, PCI core
+> does it for you, while platform bus is on what driver wants basis).
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

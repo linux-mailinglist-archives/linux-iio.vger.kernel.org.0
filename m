@@ -2,83 +2,173 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D8F5891FD
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 20:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A352589202
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 20:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbiHCSBF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 14:01:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37000 "EHLO
+        id S236555AbiHCSDX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 14:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230062AbiHCSBD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 14:01:03 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4DD19012
-        for <linux-iio@vger.kernel.org>; Wed,  3 Aug 2022 11:01:02 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id gk3so20647958ejb.8
-        for <linux-iio@vger.kernel.org>; Wed, 03 Aug 2022 11:01:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=FEstCjeeSsKgPzr0PUQYEeFkaVuCOOWn7ERWELXDCpI=;
-        b=J+DcTGWUKL+BYbQY//xOdo/6VcSLm7HJZREslX9QB4cLIqkKixszsVRbEV/HkqfcXM
-         6bUL17N59MRJUrt5UewksXafKwNL6uqDWwvmV9be7+IocWY7tckWt0i9P494nvEdMVw6
-         pGv7bqL+Bso+1R3aBFHWDuGVzK9gpe1pUX5Dh659atoeWU0vxCwbedf9rMB7A+zeoc1t
-         n+jepDHtq1wLOMiSmIJ//b14LKyS78HacTYUnmB7b1o1vDqlhIGskUpXJvkL/szboPHv
-         uG5CTBFnRsp5hYzB1Cebnpfw7L87V/5boadgXYF3UmTRTGPO2CGd9ZOA7yEXtcJ7vMLt
-         5zmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=FEstCjeeSsKgPzr0PUQYEeFkaVuCOOWn7ERWELXDCpI=;
-        b=BNdFRJt5muC5OB9QxszZN0PioUb3YIoC3x/cwoIArHj4WD1cVeBpaPUG0CVHH9qNHi
-         5ZxOytPPN+OqnMEXiCTNYQsBhfxYEWlb1vDWNyNQ7zdSjlEIkdr+nGEkWdZzDzmEhsgn
-         uJ1aBhuaPkPPrGp+ZABtzqfVd4H/5aR0SZer+9Es03W60L+gJsC4ByCCMct0qS6KEsuz
-         Vsv3zEuo+nNY201ouY9N7o+pd8uqB+6Fp/O2CzShjz+U1a/mlzO4QF1KqGboKDpIOQEx
-         X+7Pja6dkXPDxAyzdiJYI6u2je58S8sIXaaXdTYZZM7lklZjK/IcPMyRKfgoHq+uZldj
-         kocg==
-X-Gm-Message-State: ACgBeo33xx1zW56/ebX23UhTBy9MvRyE52T6WgDvu6H2o6tovTwCCNdo
-        D4wM7z0t6NeYjSQVVgOOabx1bVKH2i5a3q1rulU=
-X-Google-Smtp-Source: AA6agR7K9g3GYgSre8ghOM8oy1p5KcbvD4oVgcvlKt1LzFUWfT47ZHyidqO5vC7jMEK2k9Bdx5EcqtJ/TuL1Y3bWpj4=
-X-Received: by 2002:a17:906:e8f:b0:730:9480:9728 with SMTP id
- p15-20020a1709060e8f00b0073094809728mr10217278ejf.99.1659549661298; Wed, 03
- Aug 2022 11:01:01 -0700 (PDT)
+        with ESMTP id S229519AbiHCSDW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 14:03:22 -0400
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121AC19011;
+        Wed,  3 Aug 2022 11:03:20 -0700 (PDT)
+Received: (Authenticated sender: contact@artur-rojek.eu)
+        by mail.gandi.net (Postfix) with ESMTPA id 86971100003;
+        Wed,  3 Aug 2022 18:03:17 +0000 (UTC)
 MIME-Version: 1.0
-References: <20220803115720.89848-1-matt.ranostay@konsulko.com> <CAHp75VeBSxHK_Nf+PSvRtACeszGeomUyK8Cx1V1FpFiSS013Cw@mail.gmail.com>
-In-Reply-To: <CAHp75VeBSxHK_Nf+PSvRtACeszGeomUyK8Cx1V1FpFiSS013Cw@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 3 Aug 2022 20:00:24 +0200
-Message-ID: <CAHp75VegV4YiY5WZ8SXmK9DCS1msKpmAykgYTskkHi+Zfx-U_g@mail.gmail.com>
-Subject: Re: [PATCH] iio: add NULL pointer checks to iio device additional/removal
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Wed, 03 Aug 2022 20:03:17 +0200
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        dmitry.torokhov@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
+        jic23@kernel.org, paul@crapouillou.net,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Maya Matuszczyk <maccraft123mc@gmail.com>
+Subject: Re: [PATCH v10 2/3] Input: adc-joystick - Add polled input device
+ support
+In-Reply-To: <20220803174505.21420-3-macroalpha82@gmail.com>
+References: <20220803174505.21420-1-macroalpha82@gmail.com>
+ <20220803174505.21420-3-macroalpha82@gmail.com>
+Message-ID: <5feecb7813f9718c3d980fe548997bff@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 3, 2022 at 7:57 PM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Wed, Aug 3, 2022 at 2:04 PM Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-> >
-> > Check if __iio_device_register and iio_device_unregister indio_dev
-> > parameter isn't a NULL pointer.
-
-A couple more things:
-- make sure you include all maintainers and reviewers (you may use my
-"smart" script [1] for that)
-- explain why you are doing this change
-
-[1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
-
--- 
-With Best Regards,
-Andy Shevchenko
+On 2022-08-03 19:45, Chris Morgan wrote:
+> From: Chris Morgan <macromorgan@hotmail.com>
+> 
+> Add polled input device support to the adc-joystick driver. This is
+> useful for devices which do not have hardware capable triggers on
+> their SARADC. Code modified from adc-joystick.c changes made by Maya
+> Matuszczyk.
+> 
+> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> ---
+Chris,
+some minor details inline.
+>  drivers/input/joystick/adc-joystick.c | 53 ++++++++++++++++++++++++---
+>  1 file changed, 47 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/input/joystick/adc-joystick.c
+> b/drivers/input/joystick/adc-joystick.c
+> index 78ebca7d400a..a288ebfe254e 100644
+> --- a/drivers/input/joystick/adc-joystick.c
+> +++ b/drivers/input/joystick/adc-joystick.c
+> @@ -26,8 +26,23 @@ struct adc_joystick {
+>  	struct adc_joystick_axis *axes;
+>  	struct iio_channel *chans;
+>  	int num_chans;
+> +	bool polled;
+>  };
+> 
+> +static void adc_joystick_poll(struct input_dev *input)
+> +{
+> +	struct adc_joystick *joy = input_get_drvdata(input);
+> +	int i, val, ret;
+> +
+> +	for (i = 0; i < joy->num_chans; i++) {
+> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
+> +		if (ret < 0)
+> +			return;
+> +		input_report_abs(input, joy->axes[i].code, val);
+> +	}
+> +	input_sync(input);
+> +}
+> +
+>  static int adc_joystick_handle(const void *data, void *private)
+>  {
+>  	struct adc_joystick *joy = private;
+> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct 
+> platform_device *pdev)
+>  	int error;
+>  	int bits;
+>  	int i;
+> +	unsigned int poll_interval;
+> 
+>  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+>  	if (!joy)
+> @@ -192,11 +208,25 @@ static int adc_joystick_probe(struct
+> platform_device *pdev)
+>  		return error;
+>  	}
+> 
+> -	/* Count how many channels we got. NULL terminated. */
+> +	if (device_property_present(dev, "poll-interval")) {
+> +		error = device_property_read_u32(dev, "poll-interval",
+> +						 &poll_interval);
+> +		if (error)
+> +			return error;
+> +		joy->polled = true;
+> +	}
+> +
+> +	/*
+> +	 * Count how many channels we got. NULL terminated.
+> +	 * Do not check the storage size if using polling.
+> +	 */
+>  	for (i = 0; joy->chans[i].indio_dev; i++) {
+> +		if (joy->polled)
+> +			continue;
+>  		bits = joy->chans[i].channel->scan_type.storagebits;
+>  		if (!bits || bits > 16) {
+> -			dev_err(dev, "Unsupported channel storage size\n");
+> +			dev_err(dev,
+> +				"Unsupported channel storage size\n");
+This change is now unnecessary, as the line can fit in 80 chars again.
+>  			return -EINVAL;
+>  		}
+>  		if (bits != joy->chans[0].channel->scan_type.storagebits) {
+> @@ -215,8 +245,14 @@ static int adc_joystick_probe(struct 
+> platform_device *pdev)
+>  	joy->input = input;
+>  	input->name = pdev->name;
+>  	input->id.bustype = BUS_HOST;
+> -	input->open = adc_joystick_open;
+> -	input->close = adc_joystick_close;
+> +
+> +	if (joy->polled) {
+> +		input_setup_polling(input, adc_joystick_poll);
+> +		input_set_poll_interval(input, poll_interval);
+> +	} else {
+> +		input->open = adc_joystick_open;
+> +		input->close = adc_joystick_close;
+> +	}
+> 
+>  	error = adc_joystick_set_axes(dev, joy);
+>  	if (error)
+> @@ -229,13 +265,18 @@ static int adc_joystick_probe(struct
+> platform_device *pdev)
+>  		return error;
+>  	}
+> 
+> -	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+> +	if (joy->polled)
+> +		return 0;
+> +
+> +	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle,
+> +					     joy);
+Same here.
+>  	if (IS_ERR(joy->buffer)) {
+>  		dev_err(dev, "Unable to allocate callback buffer\n");
+>  		return PTR_ERR(joy->buffer);
+>  	}
+> 
+> -	error = devm_add_action_or_reset(dev, adc_joystick_cleanup, 
+> joy->buffer);
+> +	error = devm_add_action_or_reset(dev, adc_joystick_cleanup,
+> +					 joy->buffer);
+And here.
+>  	if (error)  {
+>  		dev_err(dev, "Unable to add action\n");
+>  		return error;

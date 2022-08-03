@@ -2,155 +2,177 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C854589205
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 20:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEFD58920E
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 20:11:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236481AbiHCSF4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 14:05:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39622 "EHLO
+        id S236581AbiHCSLN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 14:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiHCSF4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 14:05:56 -0400
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F8305F77;
-        Wed,  3 Aug 2022 11:05:55 -0700 (PDT)
-Received: by mail-yb1-xb2f.google.com with SMTP id y127so29547925yby.8;
-        Wed, 03 Aug 2022 11:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EbdbY8yIJ0uTWf9qBQFzv9nINeYGG1xxo79cVcNxuOM=;
-        b=p/1Iqv7TWGZVayT5NBG3z12I5BwshJFtf9TWoEZFTFDwxSRDRql8/+X6BmA7Lj1Ed9
-         1KbYWeUV2FHXogaHAo5+JKLkKoQ2/0zs4x5jLNeItJZFeef2vr/eiXTy+GJBBYzW2WRn
-         aCctA6DFwAx34OoeQHaGLFBT8PtWvmHX9XTNH17EfEf6Fe/bUhBk5SS+UrCQzAj6Elw7
-         R45SUz1YBQqvlbowOJkKPqVWZ/jU/Mv8zopLVZl67/L4U/pUx2xe0TznIvQswQRuyViE
-         Jd1SLP9dSw+ocrIUoo/iUlvNKdwgcjTyU0gHsWNX00sAv6+7jSWR1fUpDBKiwDdmnb0X
-         a1Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EbdbY8yIJ0uTWf9qBQFzv9nINeYGG1xxo79cVcNxuOM=;
-        b=wXcNlcDkAGSvfAAAz4dfX8UrT65+AZb/xhmZAIgiDWQvZ+5ZBjjIBn58N3seXa2vXh
-         QidVHdgt86nHtDb8K+Wdqus2ChKMorsnlkAZz2hkKm50fN/nTJjfouc4vv3SpoyjelC6
-         C4dg706BHIazpX3zhRuuWx1X4XgHQ49JJ9EEGl/2o1sRZ1ABu1+sKr8oggngPJngYgEU
-         iAFjUO1eab44LT1eOibO88kz2OdI9RgqwnHInKqjzZLwCfpHFd6d+/wcPUcF/Exij6wM
-         sGqoGl5kMndv8aldpMUf0PE8y0xIQHqbjL8lWph4vPJkAshyPdJP+teBya+SL/j+fmqe
-         4NoQ==
-X-Gm-Message-State: ACgBeo0vkj77faBmGqhdbs191U74iCQOg0J+jm1mPk4MPVHEuPHRJSue
-        yR9hdi/ZdamQAJGeZUwHmk6ufV+2SStnpgZ7e6N6gSCeWKk=
-X-Google-Smtp-Source: AA6agR6/GpsUxAsAd2SvFQEnjYRrDx7CLHP/H3v2FCH7RFWu3DCf8qB72XIkMLxWd3n3T7bVTBLjo6AgRxb1o35vEYg=
-X-Received: by 2002:a25:75d7:0:b0:66f:cdfc:a986 with SMTP id
- q206-20020a2575d7000000b0066fcdfca986mr19678173ybc.268.1659549954471; Wed, 03
- Aug 2022 11:05:54 -0700 (PDT)
+        with ESMTP id S235125AbiHCSLM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 14:11:12 -0400
+Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr [80.12.242.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7634E60F
+        for <linux-iio@vger.kernel.org>; Wed,  3 Aug 2022 11:11:10 -0700 (PDT)
+Received: from [192.168.1.18] ([90.11.190.129])
+        by smtp.orange.fr with ESMTPA
+        id JIploQDLd9RnzJIpmowjJ7; Wed, 03 Aug 2022 20:11:08 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Wed, 03 Aug 2022 20:11:08 +0200
+X-ME-IP: 90.11.190.129
+Message-ID: <67041dbe-ad6c-c53f-9760-bd7b5988d137@wanadoo.fr>
+Date:   Wed, 3 Aug 2022 20:11:05 +0200
 MIME-Version: 1.0
-References: <20220718153448.173652-1-jason.gerecke@wacom.com>
- <20220803145937.698603-1-jason.gerecke@wacom.com> <CAHp75Vd6yEctJoNT6TpJ1+h4ZQckyLsaUSeSCV4MHqg+LUDkcg@mail.gmail.com>
-In-Reply-To: <CAHp75Vd6yEctJoNT6TpJ1+h4ZQckyLsaUSeSCV4MHqg+LUDkcg@mail.gmail.com>
-From:   Jason Gerecke <killertofu@gmail.com>
-Date:   Wed, 3 Aug 2022 11:06:18 -0700
-Message-ID: <CANRwn3TutF6skHQHk08dFUa8gLMVGxui_QN7YK6nDacSpRHtLg@mail.gmail.com>
-Subject: Re: [PATCH v2] i2c: Use u8 type in i2c transfer calls
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-i2c <linux-i2c@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Wolfram Sang <wsa-dev@sang-engineering.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ping Cheng <pinglinux@gmail.com>,
-        "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
-        Jason Gerecke <jason.gerecke@wacom.com>,
-        Ping Cheng <ping.cheng@wacom.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Content-Language: en-US
+To:     ddrokosov@sberdevices.ru
+Cc:     andy.shevchenko@gmail.com, devicetree@vger.kernel.org,
+        jic23@kernel.org, kernel@sberdevices.ru, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        robh+dt@kernel.org, shawnguo@kernel.org, stano.jakubek@gmail.com,
+        stephan@gerhold.net
+References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
+ <20220803131132.19630-3-ddrokosov@sberdevices.ru>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20220803131132.19630-3-ddrokosov@sberdevices.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 3, 2022 at 9:47 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Aug 3, 2022 at 4:59 PM Jason Gerecke <killertofu@gmail.com> wrote:
-> >
-> > The 'i2c_transfer_buffer_flags' function (and related inlines) defines its
->
-> We refer to the functions like func() (without any quotes as well).
->
-> > 'buf' argument to be of type 'char*'. This is a poor choice of type given
->
-> char *
->
-> > that most callers actually pass a 'u8*' and that the function itself ends
->
-> most of the callers
->
-> u8 *
->
-> > up just storing the variable to a 'u8*'-typed member of 'struct i2c_msg'
->
-> u8 *
->
-> > anyway.
-> >
-> > Changing the type of the 'buf' argument to 'u8*' vastly reduces the number
->
-> u8 *
->
-> > of (admittedly usually-silent) Wpointer-sign warnings that are generated
->
-> -Wpointer-sign or replace with simple English words.
->
-> > as the types get needlessly juggled back and forth.
-> >
-> > At the same time, update the max1363 driver to match the new interface so
-> > we don't introduce a new Wincompatible-function-pointer-types warning.
->
-> -Wincompatible-function-pointer-types
->
-> ...
->
-Ack to all.
+Le 03/08/2022 à 15:11, Dmitry Rokosov a écrit :
+> MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
+> sensitivity consumer applications. It has dynamic user-selectable full
+> scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
+> with output data rates from 1Hz to 1000Hz.
+> 
+> Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
+> 
+> This driver supports following MSA311 features:
+>      - IIO interface
+>      - Different power modes: NORMAL and SUSPEND (using pm_runtime)
+>      - ODR (Output Data Rate) selection
+>      - Scale and samp_freq selection
+>      - IIO triggered buffer, IIO reg access
+>      - NEW_DATA interrupt + trigger
+> 
+> Below features to be done:
+>      - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
+>      - Low Power mode
+> 
+> Signed-off-by: Dmitry Rokosov <ddrokosov-i4r8oA+eLlH99rHkP+FxIw@public.gmane.org>
+> ---
+>   MAINTAINERS                |    6 +
+>   drivers/iio/accel/Kconfig  |   13 +
+>   drivers/iio/accel/Makefile |    2 +
+>   drivers/iio/accel/msa311.c | 1323 ++++++++++++++++++++++++++++++++++++
+>   4 files changed, 1344 insertions(+)
+>   create mode 100644 drivers/iio/accel/msa311.c
+> 
 
-> > Changes in v2:
-> >   - Added modifications to the max1363 driver required to avoid warnings
->
-> Have you really checked _all_ callers of APIs that you have changed here?
->
-> For example, drivers/media/usb/em28xx/em28xx-input.c still uses
-> unsigned char for i2c_master_recv().
->
+Hi,
+a few nits below.
 
-This particular example shouldn't result in a new warning since
-unsigned char and u8 are equivalent types, and u8 is used by the new
-API.
+[...]
 
-Assuming you're referring to callers that are still using *signed*
-variables with this API, however, I intentionally ignored them. IIRC,
-there were about 400 files using unsigned and about 60 files using
-signed. Those 60 files will now generate their own pointer-sign
-warnings, but I rationalized it as a still-substantial improvement
-over the current state of things.
+> +static int msa311_check_partid(struct msa311_priv *msa311)
+> +{
+> +	struct device *dev = msa311->dev;
+> +	unsigned int partid;
+> +	int err;
+> +
+> +	err = regmap_read(msa311->regs, MSA311_PARTID_REG, &partid);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "failed to read partid (%d)\n", err);
 
-As for normally-silent warnings *other* than Wpointer-sign (e.g. the
-Wincompatible-pointer-types in max1363), I also did not explicitly
-check for those. It is possible other warnings may be out there.
+No need for "(%d)" and err.
 
-> I believe you need to create a coccinelle script and run it over the
-> kernel source tree and then create a patch out of it.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+> +
+> +	if (partid == MSA311_WHO_AM_I)
+> +		dev_dbg(dev, "found MSA311 compatible chip[%#x]\n", partid);
+> +	else
+> +		dev_warn(dev, "invalid partid (%#x), expected (%#x)\n",
+> +			 partid, MSA311_WHO_AM_I);
+> +
+> +	return 0;
+> +}
 
-This would definitely be necessary to unify all callers to using
-unsigned variables rather than just swapping which callers generate
-the pointer-sign warnings.
+[...]
 
-Jason
+> +static int msa311_probe(struct i2c_client *i2c)
+> +{
+> +	struct device *dev = &i2c->dev;
+> +	struct msa311_priv *msa311;
+> +	struct iio_dev *indio_dev;
+> +	int err;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*msa311));
+> +	if (!indio_dev)
+> +		return dev_err_probe(dev, -ENOMEM,
+> +				     "iio device allocation failed\n");
+> +
+> +	msa311 = iio_priv(indio_dev);
+> +	msa311->dev = dev;
+> +	i2c_set_clientdata(i2c, indio_dev);
+> +
+> +	err = msa311_regmap_init(msa311);
+> +	if (err)
+> +		return err;
+> +
+> +	mutex_init(&msa311->lock);
+> +
+> +	msa311->vdd = devm_regulator_get_optional(dev, "vdd");
+> +	if (IS_ERR(msa311->vdd)) {
+> +		err = PTR_ERR(msa311->vdd);
+> +		if (err == -ENODEV)
+> +			msa311->vdd = NULL;
+> +		else
+> +			return dev_err_probe(dev, PTR_ERR(msa311->vdd),
+> +					     "cannot get vdd supply\n");
+> +	}
+> +
+> +	if (msa311->vdd) {
+> +		err = regulator_enable(msa311->vdd);
+> +		if (err)
+> +			return dev_err_probe(dev, err,
+> +					     "cannot enable vdd supply\n");
+> +
+> +		err = devm_add_action_or_reset(dev, msa311_vdd_disable,
+> +					       msa311->vdd);
+> +		if (err) {
+> +			regulator_disable(msa311->vdd);
+
+Double regulator_disable(), because of the _or_reset()?
+
+> +			return dev_err_probe(dev, err,
+> +					     "cannot add vdd disable action\n");
+> +		}
+> +	}
+> +
+> +	err = msa311_check_partid(msa311);
+> +	if (err)
+> +		return err;
+> +
+> +	err = msa311_soft_reset(msa311);
+> +	if (err)
+> +		return err;
+> +
+> +	err = msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_NORMAL);
+> +	if (err)
+> +		return dev_err_probe(dev, err,
+> +				     "failed to power on device (%d)\n", err);
+
+No need for "(%d)" and err
+
+CJ

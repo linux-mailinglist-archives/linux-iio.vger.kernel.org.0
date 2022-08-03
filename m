@@ -2,48 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA7258940C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 23:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02AEE589417
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 23:40:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236574AbiHCV3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 17:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46878 "EHLO
+        id S236259AbiHCVkH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 17:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231407AbiHCV3c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 17:29:32 -0400
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47CF19039;
-        Wed,  3 Aug 2022 14:29:31 -0700 (PDT)
-Received: by mail-il1-f169.google.com with SMTP id t15so9117379ilm.7;
-        Wed, 03 Aug 2022 14:29:31 -0700 (PDT)
+        with ESMTP id S234745AbiHCVkG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 17:40:06 -0400
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BB340BE2;
+        Wed,  3 Aug 2022 14:40:05 -0700 (PDT)
+Received: by mail-io1-f50.google.com with SMTP id e69so13901457iof.5;
+        Wed, 03 Aug 2022 14:40:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=f9z9dK9gA2venJcM+Ps6Eq8WAHFZdcYaDOsADmzzKJM=;
-        b=fWS/DW8E32o5lPuhuJllmdnNYjJb5RXZ8afAI2Ml4Nt7iaOD4vQgbYV566ASLkOBVz
-         RRTK25XvKiXPUjC8CBeKESBR0TZztVgO3Vct285D5XjqSos5FJ3kYabHuvYOyMzw4HF8
-         Gjyx5oTnUw+DDijY99B2/cBqISeA/pLTJt+y/oRWxJ0FcNiq60m/5PyM9C+RklAUfPkL
-         guNSGKJ9vokMyE3P5tPa3alUiFW/dSBJyUJ2eu88HrDdQNhhoDrZ4b3k81N/DBmd5sUX
-         TiXkPISWMFRR1BBLWPtUUFr1Bsgv1Y1I1U7GH9zSyNI1LPf8EyEdyk6pUPRtTq/T8nnf
-         0Brw==
-X-Gm-Message-State: ACgBeo1zZAwdq2RQdAvyJpy4rfRNd8/ggSjeyYyN7KbObQNQ6tyCVBFw
-        2QncZGFTfe1awP73gtj/sg==
-X-Google-Smtp-Source: AA6agR45hy/Rqr678r9u1i7F2l8fa2PcLMenAO+cXPDrjNWdbPfsgq4JOvN7Y9ATPWx78l9RcviHMw==
-X-Received: by 2002:a92:cc41:0:b0:2de:a27c:a2ba with SMTP id t1-20020a92cc41000000b002dea27ca2bamr6686570ilq.285.1659562171097;
-        Wed, 03 Aug 2022 14:29:31 -0700 (PDT)
+        bh=PoAbO2TJzV0lAh1cQiBoTvQXqo+RgOhm6j9tuBM+bjI=;
+        b=O40NjtNtw/dd9gbcbHz9QJsero9lCCmpjjlsgLNi46TQ9klvRBJPk4Qnbj6u0lOTVB
+         UYZ6if6R+AyLyTVfYvzhdcHK5zjshLSlUYCql5CE+Zx1fDyRVfuWFQ4Getk7kvgfynYA
+         DsSmQTO/Utfm/SyWRgoGlxjGV4BoXwd7GUr/NJsCsEo9zq7ZvqgKZ3xP4g3v8DUm/RWf
+         1OV+NGs6jRYlhsNtVJZzow2hd4iTB6DD3mzJfHEHUdtGKnQhkiEDTrVlc9JuBlABH9nU
+         OLvNqeXAQNPGV5oh7ozL776xAnZX7P0SKLlficJA3G8wuuR/5rsl0vtUg3H5t+qmZYui
+         QH4g==
+X-Gm-Message-State: ACgBeo3lMl5AAayu0tXVl9nGrEBbo/LQCP/C65YSjqw9M2sBFOqI257u
+        l9EbwfiiTINJXdXPvURcKA==
+X-Google-Smtp-Source: AA6agR74TqLpu6rXFlxDzpXKcwaDch4+hV9VRV/8owxn5cc8tUiYTeoIQKDKrn8CMLWJddeDtM0HWg==
+X-Received: by 2002:a05:6602:154c:b0:67f:c11a:6d7c with SMTP id h12-20020a056602154c00b0067fc11a6d7cmr2511343iow.176.1659562805005;
+        Wed, 03 Aug 2022 14:40:05 -0700 (PDT)
 Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id y19-20020a02ce93000000b003428d1fbf4asm1413340jaq.36.2022.08.03.14.29.27
+        by smtp.gmail.com with ESMTPSA id m7-20020a92c527000000b002dc3df1b345sm7339451ili.88.2022.08.03.14.40.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Aug 2022 14:29:30 -0700 (PDT)
-Received: (nullmailer pid 2654000 invoked by uid 1000);
-        Wed, 03 Aug 2022 21:29:26 -0000
-Date:   Wed, 3 Aug 2022 15:29:26 -0600
+        Wed, 03 Aug 2022 14:40:04 -0700 (PDT)
+Received: (nullmailer pid 2667120 invoked by uid 1000);
+        Wed, 03 Aug 2022 21:40:00 -0000
+Date:   Wed, 3 Aug 2022 15:40:00 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
+To:     Lukas Wunner <lukas@wunner.de>
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lucas Stankus <lucas.p.stankus@gmail.com>,
         Puranjay Mohan <puranjay12@gmail.com>,
@@ -84,24 +85,22 @@ Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Phil Reid <preid@electromag.com.au>,
         Michael Welling <mwelling@ieee.org>,
-        Lukas Wunner <lukas@wunner.de>,
         Robert Jones <rjones@gateworks.com>,
         Chris Coffey <cmc@babblebit.net>,
         Slawomir Stepien <sst@poczta.fm>,
         Sankar Velliangiri <navin@linumiz.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        broonie@kernel.org
-Subject: Re: [PATCH v2 02/10] dt-bindings: iio: accel: use
- spi-peripheral-props.yaml
-Message-ID: <20220803212926.GA2639296-robh@kernel.org>
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 00/10] dt-bindings: iio: use spi-peripheral-props.yaml
+Message-ID: <20220803214000.GB2639296-robh@kernel.org>
 References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
- <20220727164646.387541-3-krzysztof.kozlowski@linaro.org>
- <20220731164943.320babe4@jic23-huawei>
+ <20220730224643.GB11662@wunner.de>
+ <bd829586-f052-03c3-aa68-e5a2be84b6bb@linaro.org>
+ <20220801160410.GA6059@wunner.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220731164943.320babe4@jic23-huawei>
+In-Reply-To: <20220801160410.GA6059@wunner.de>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -112,36 +111,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Jul 31, 2022 at 04:49:43PM +0100, Jonathan Cameron wrote:
-> On Wed, 27 Jul 2022 18:46:38 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, Aug 01, 2022 at 06:04:10PM +0200, Lukas Wunner wrote:
+> On Mon, Aug 01, 2022 at 05:45:07PM +0200, Krzysztof Kozlowski wrote:
+> > On 31/07/2022 00:46, Lukas Wunner wrote:
+> > > On Wed, Jul 27, 2022 at 06:46:36PM +0200, Krzysztof Kozlowski wrote:
+> > >>  78 files changed, 324 insertions(+), 249 deletions(-)
+> > > 
+> > > Pardon me for being dense, but what is the benefit of this series
+> > > that justifies inflating the schema definitions by a total of 75 lines?
+> > 
+> > The commits were explaining rationale, so let me bring it here. The
+> > benefits are:
+> > This allows using all properties typical for SPI-connected devices, even
+> > these which device bindings author did not tried yet.
 > 
-> > Instead of listing directly properties typical for SPI peripherals,
-> > reference the spi-peripheral-props.yaml schema.  This allows using all
-> > properties typical for SPI-connected devices, even these which device
-> > bindings author did not tried yet.
-> > 
-> > Remove the spi-* properties which now come via spi-peripheral-props.yaml
-> > schema, except for the cases when device schema adds some constraints
-> > like maximum frequency.
-> > 
-> > While changing additionalProperties->unevaluatedProperties, put it in
-> > typical place, just before example DTS.
-> > 
-> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > 
-> > ---
-> > 
-> > I wonder if spi-3wire is device specific (not controller) and should be
-> > rather explicitly mentioned by device schema. Just like spi-cpol/cpha.
-> 
-> I think it is, but Mark is expert on this.
+> How do you know these untested properties work with the devices to which
+> you're adding them?
 
-I would say yes as it's the device with a single data line.
+How do we know anything DT works? We don't without testing on h/w. 
+That's not what the schemas provide.
 
-> In general I'm waiting on Mark's opinion on the whole idea!
+The spi-peripheral-props.yaml reference is needed in order to allow 
+controller specific timing properties and to prevent random 
+other undocumented properties from being present. There is not another 
+way to do both of those.
 
-The prerequisite changes (except for spi-3-wire) are already queued up 
-by Mark as are changes for other subsystems.
+Do I wish we didn't have these controller specific timing parameters, 
+yes! But that ship has sailed.
 
 Rob

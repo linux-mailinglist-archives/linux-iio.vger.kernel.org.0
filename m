@@ -2,176 +2,146 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9FB5892BC
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 21:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA7258940C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 23:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238602AbiHCT1k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 15:27:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
+        id S236574AbiHCV3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 17:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238594AbiHCT1Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 15:27:24 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 517725B787;
-        Wed,  3 Aug 2022 12:27:13 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id D07665FD36;
-        Wed,  3 Aug 2022 22:27:10 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1659554830;
-        bh=I6vdD/Bwy6gfYtG6Ow/MeIyIZrRN95jKhnC5qo+nMoA=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=R20dkrN/hY99HOi03dXLOFjJfOTxEkPMbN/c1Rbjbm0L+ieU3il+hG9UofVe6NM3C
-         WcKQh1pDwKd+6DBczGnZZr1T808zq+cyfK99cItwNR+xEH8ACpl0Usu70Cxl1AovPw
-         72StiN4LgKPgv8ONAoPqFouHdiKvfWKYJuLa5+Mtfhw3nGk4aY4IdrT6gvQ/QvAFf9
-         uVzPUZdPP9C3lAl0tCTN4mremYAPt9PEd//EpoWYkjOfKfukf8D/oSUBI00+dwv14J
-         s4pxPJPeVYyaNCq73eYhxXkN3cu63bsvx9zG3/ioPRrCjqEs/6n7PHq0MrgZfvfCKL
-         FPniNoUtu0+ew==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed,  3 Aug 2022 22:27:10 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>
-Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Topic: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62dSAuAgAAIFYCAAAq8AIAAAmwA
-Date:   Wed, 3 Aug 2022 19:26:55 +0000
-Message-ID: <20220803192706.ls6kizgqkw46thln@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
- <20220803131132.19630-3-ddrokosov@sberdevices.ru>
- <67041dbe-ad6c-c53f-9760-bd7b5988d137@wanadoo.fr>
- <20220803184001.fcappv7grdjyaetn@CAB-WSD-L081021.sigma.sbrf.ru>
- <1406f120-9542-d90e-1258-5a8a300c1822@wanadoo.fr>
-In-Reply-To: <1406f120-9542-d90e-1258-5a8a300c1822@wanadoo.fr>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <635E08126EDABF4E8786D6E8269D9479@sberdevices.ru>
-Content-Transfer-Encoding: base64
+        with ESMTP id S231407AbiHCV3c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 17:29:32 -0400
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47CF19039;
+        Wed,  3 Aug 2022 14:29:31 -0700 (PDT)
+Received: by mail-il1-f169.google.com with SMTP id t15so9117379ilm.7;
+        Wed, 03 Aug 2022 14:29:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=f9z9dK9gA2venJcM+Ps6Eq8WAHFZdcYaDOsADmzzKJM=;
+        b=fWS/DW8E32o5lPuhuJllmdnNYjJb5RXZ8afAI2Ml4Nt7iaOD4vQgbYV566ASLkOBVz
+         RRTK25XvKiXPUjC8CBeKESBR0TZztVgO3Vct285D5XjqSos5FJ3kYabHuvYOyMzw4HF8
+         Gjyx5oTnUw+DDijY99B2/cBqISeA/pLTJt+y/oRWxJ0FcNiq60m/5PyM9C+RklAUfPkL
+         guNSGKJ9vokMyE3P5tPa3alUiFW/dSBJyUJ2eu88HrDdQNhhoDrZ4b3k81N/DBmd5sUX
+         TiXkPISWMFRR1BBLWPtUUFr1Bsgv1Y1I1U7GH9zSyNI1LPf8EyEdyk6pUPRtTq/T8nnf
+         0Brw==
+X-Gm-Message-State: ACgBeo1zZAwdq2RQdAvyJpy4rfRNd8/ggSjeyYyN7KbObQNQ6tyCVBFw
+        2QncZGFTfe1awP73gtj/sg==
+X-Google-Smtp-Source: AA6agR45hy/Rqr678r9u1i7F2l8fa2PcLMenAO+cXPDrjNWdbPfsgq4JOvN7Y9ATPWx78l9RcviHMw==
+X-Received: by 2002:a92:cc41:0:b0:2de:a27c:a2ba with SMTP id t1-20020a92cc41000000b002dea27ca2bamr6686570ilq.285.1659562171097;
+        Wed, 03 Aug 2022 14:29:31 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id y19-20020a02ce93000000b003428d1fbf4asm1413340jaq.36.2022.08.03.14.29.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Aug 2022 14:29:30 -0700 (PDT)
+Received: (nullmailer pid 2654000 invoked by uid 1000);
+        Wed, 03 Aug 2022 21:29:26 -0000
+Date:   Wed, 3 Aug 2022 15:29:26 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Beniamin Bia <beniamin.bia@analog.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?Q?M=C3=A5rten_Lindahl?= <martenli@axis.com>,
+        Bogdan Pricop <bogdan.pricop@emutex.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Dan Murphy <dmurphy@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Robert Jones <rjones@gateworks.com>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        broonie@kernel.org
+Subject: Re: [PATCH v2 02/10] dt-bindings: iio: accel: use
+ spi-peripheral-props.yaml
+Message-ID: <20220803212926.GA2639296-robh@kernel.org>
+References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
+ <20220727164646.387541-3-krzysztof.kozlowski@linaro.org>
+ <20220731164943.320babe4@jic23-huawei>
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/03 16:08:00 #20044033
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220731164943.320babe4@jic23-huawei>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gV2VkLCBBdWcgMDMsIDIwMjIgYXQgMDk6MTg6MjZQTSArMDIwMCwgQ2hyaXN0b3BoZSBKQUlM
-TEVUIHdyb3RlOg0KPiBMZSAwMy8wOC8yMDIyIMOgIDIwOjM5LCBEbWl0cnkgUm9rb3NvdiBhIMOp
-Y3JpdMKgOg0KPiA+IEhlbGxvIENocmlzdG9waGUsDQo+ID4gDQo+ID4gVGhhbmsgeW91IGZvciBx
-dWljayByZXZpZXcNCj4gPiANCj4gPiBPbiBXZWQsIEF1ZyAwMywgMjAyMiBhdCAwODoxMTowNVBN
-ICswMjAwLCBDaHJpc3RvcGhlIEpBSUxMRVQgd3JvdGU6DQo+ID4gPiBMZSAwMy8wOC8yMDIyIMOg
-IDE1OjExLCBEbWl0cnkgUm9rb3NvdiBhIMOpY3JpdMKgOg0KPiA+ID4gPiBNU0EzMTEgaXMgYSB0
-cmktYXhpYWwsIGxvdy1nIGFjY2VsZXJvbWV0ZXIgd2l0aCBJMkMgZGlnaXRhbCBvdXRwdXQgZm9y
-DQo+ID4gPiA+IHNlbnNpdGl2aXR5IGNvbnN1bWVyIGFwcGxpY2F0aW9ucy4gSXQgaGFzIGR5bmFt
-aWMgdXNlci1zZWxlY3RhYmxlIGZ1bGwNCj4gPiA+ID4gc2NhbGVzIHJhbmdlIG9mICstMmcvKy00
-Zy8rLThnLystMTZnIGFuZCBhbGxvd3MgYWNjZWxlcmF0aW9uIG1lYXN1cmVtZW50cw0KPiA+ID4g
-PiB3aXRoIG91dHB1dCBkYXRhIHJhdGVzIGZyb20gMUh6IHRvIDEwMDBIei4NCj4gPiA+ID4gDQo+
-ID4gPiA+IFNwZWM6IGh0dHBzOi8vY2RuLXNob3AuYWRhZnJ1aXQuY29tL3Byb2R1Y3QtZmlsZXMv
-NTMwOS9NU0EzMTEtVjEuMS1FTkcucGRmDQo+ID4gPiA+IA0KPiA+ID4gPiBUaGlzIGRyaXZlciBz
-dXBwb3J0cyBmb2xsb3dpbmcgTVNBMzExIGZlYXR1cmVzOg0KPiA+ID4gPiAgICAgICAtIElJTyBp
-bnRlcmZhY2UNCj4gPiA+ID4gICAgICAgLSBEaWZmZXJlbnQgcG93ZXIgbW9kZXM6IE5PUk1BTCBh
-bmQgU1VTUEVORCAodXNpbmcgcG1fcnVudGltZSkNCj4gPiA+ID4gICAgICAgLSBPRFIgKE91dHB1
-dCBEYXRhIFJhdGUpIHNlbGVjdGlvbg0KPiA+ID4gPiAgICAgICAtIFNjYWxlIGFuZCBzYW1wX2Zy
-ZXEgc2VsZWN0aW9uDQo+ID4gPiA+ICAgICAgIC0gSUlPIHRyaWdnZXJlZCBidWZmZXIsIElJTyBy
-ZWcgYWNjZXNzDQo+ID4gPiA+ICAgICAgIC0gTkVXX0RBVEEgaW50ZXJydXB0ICsgdHJpZ2dlcg0K
-PiA+ID4gPiANCj4gPiA+ID4gQmVsb3cgZmVhdHVyZXMgdG8gYmUgZG9uZToNCj4gPiA+ID4gICAg
-ICAgLSBNb3Rpb24gRXZlbnRzOiBBQ1RJVkUsIFRBUCwgT1JJRU5ULCBGUkVFRkFMTA0KPiA+ID4g
-PiAgICAgICAtIExvdyBQb3dlciBtb2RlDQo+ID4gPiA+IA0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5
-OiBEbWl0cnkgUm9rb3NvdiA8ZGRyb2tvc292LWk0cjhvQStlTGxIOTlySGtQK0Z4SXdAcHVibGlj
-LmdtYW5lLm9yZz4NCj4gPiA+ID4gLS0tDQo+ID4gPiA+ICAgIE1BSU5UQUlORVJTICAgICAgICAg
-ICAgICAgIHwgICAgNiArDQo+ID4gPiA+ICAgIGRyaXZlcnMvaWlvL2FjY2VsL0tjb25maWcgIHwg
-ICAxMyArDQo+ID4gPiA+ICAgIGRyaXZlcnMvaWlvL2FjY2VsL01ha2VmaWxlIHwgICAgMiArDQo+
-ID4gPiA+ICAgIGRyaXZlcnMvaWlvL2FjY2VsL21zYTMxMS5jIHwgMTMyMyArKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysNCj4gPiA+ID4gICAgNCBmaWxlcyBjaGFuZ2VkLCAxMzQ0
-IGluc2VydGlvbnMoKykNCj4gPiA+ID4gICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvaWlv
-L2FjY2VsL21zYTMxMS5jDQo+ID4gPiA+IA0KPiA+ID4gDQo+ID4gPiBIaSwNCj4gPiA+IGEgZmV3
-IG5pdHMgYmVsb3cuDQo+ID4gPiANCj4gPiA+IFsuLi5dDQo+ID4gPiANCj4gPiA+ID4gK3N0YXRp
-YyBpbnQgbXNhMzExX2NoZWNrX3BhcnRpZChzdHJ1Y3QgbXNhMzExX3ByaXYgKm1zYTMxMSkNCj4g
-PiA+ID4gK3sNCj4gPiA+ID4gKwlzdHJ1Y3QgZGV2aWNlICpkZXYgPSBtc2EzMTEtPmRldjsNCj4g
-PiA+ID4gKwl1bnNpZ25lZCBpbnQgcGFydGlkOw0KPiA+ID4gPiArCWludCBlcnI7DQo+ID4gPiA+
-ICsNCj4gPiA+ID4gKwllcnIgPSByZWdtYXBfcmVhZChtc2EzMTEtPnJlZ3MsIE1TQTMxMV9QQVJU
-SURfUkVHLCAmcGFydGlkKTsNCj4gPiA+ID4gKwlpZiAoZXJyKQ0KPiA+ID4gPiArCQlyZXR1cm4g
-ZGV2X2Vycl9wcm9iZShkZXYsIGVyciwNCj4gPiA+ID4gKwkJCQkgICAgICJmYWlsZWQgdG8gcmVh
-ZCBwYXJ0aWQgKCVkKVxuIiwgZXJyKTsNCj4gPiA+IA0KPiA+ID4gTm8gbmVlZCBmb3IgIiglZCki
-IGFuZCBlcnIuDQo+ID4gPiANCj4gPiANCj4gPiBEbyB5b3UgbWVhbiBmb3IgYWxsIGRldl9lcnIo
-KSBjYWxscz8gSSB0aGluayBzb21ldGltZXMgaXQncyBoZWxwZnVsIHRvDQo+ID4ga25vdyB0aGUg
-YWN0dWFsIGVycm9yIHZhbHVlIGdvdCBmcm9tIGV4dGVybmFsIEFQSSwgaXNuJ3Q/IENvdWxkIHlv
-dSBwbGVhc2UNCj4gPiBleHBsYWluIHlvdXIgcG9pbnQgaWYgcG9zc2libGU/DQo+ID4gDQo+IA0K
-PiBObywgbXkgY29tbWVudCBpcyBvbmx5IGZvciBkZXZfZXJyX3Byb2JlKCkgZnVuY3Rpb24uDQo+
-IEhhdmluZyByZXQgZm9yIGRldl9lcnIoKSBjYWxscyBpcyBmaW5lLg0KPiANCj4gU2VlOiBodHRw
-czovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xOS9zb3VyY2UvZHJpdmVycy9iYXNlL2Nv
-cmUuYyNMNDczMg0KPiANCj4gZGV2X2Vycl9wcm9iZSgpIGFscmVhZHkgaGFzIGEgImVycm9yICVw
-ZTouLi4sIEVSUl9QVFIoZXJyKSINCj4gVGhpcyBtZWFucyB0aGF0IGlmIHJldCA9IC1FTk9NRU06
-DQo+ICAgICIoJWQpIiAgICAgICAtLT4gIigtMTIpIg0KPiAgICAiZXJyb3IgJXBlOiIgLS0+ICJl
-cnJvciAtRU5PTUVNOiINCj4gDQo+IFNvIHRoZXJlIGlzIG5vIHJlYWwgbmVlZCB0byBkdXBsaWNh
-dGUgdGhlIGVycm9yIGNvZGUgaW4gdGhlIG1lc3NhZ2UgaXRzZWxmLA0KPiBpdCBpcyBhbHJlYWR5
-IGRpc3BsYXllZCBpbiBhIGh1bWFuIHJlYWRhYmxlIG1hbm5lci4NCj4gDQo+IFdoYXQgeW91ciBj
-b2RlIGRvZXMgd291bGQgcmVzdWx0IGluOg0KPiAgICAiZXJyb3IgLUVOT01FTTogZmFpbGVkIHRv
-IHJlYWQgcGFydGlkICgtMTIpXG4iDQpodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92
-NS4xOS9zb3VyY2UvZHJpdmVycy9iYXNlL2NvcmUuYyNMNDczMj4gDQoNCkhtbSwgdmVyeSBpbnRl
-cmVzdGluZy4gVGhhbmsgeW91IGZvciBnb29kIHBvaW50LiBJIHdpbGwgZml4IGl0IGluIHRoZQ0K
-djUsIGFuZCB3aWxsIHVzZSAlcGUgZm9yIGFsbCBkZXZfZXJyKCkgY2FsbHMsIEkgc3VwcG9zZSBp
-dCdzIGhlbHBmdWwuDQoNClsuLi5dDQoNCj4gPiA+ID4gKwlpZiAobXNhMzExLT52ZGQpIHsNCj4g
-PiA+ID4gKwkJZXJyID0gcmVndWxhdG9yX2VuYWJsZShtc2EzMTEtPnZkZCk7DQo+ID4gPiA+ICsJ
-CWlmIChlcnIpDQo+ID4gPiA+ICsJCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIGVyciwNCj4g
-PiA+ID4gKwkJCQkJICAgICAiY2Fubm90IGVuYWJsZSB2ZGQgc3VwcGx5XG4iKTsNCj4gPiA+ID4g
-Kw0KPiA+ID4gPiArCQllcnIgPSBkZXZtX2FkZF9hY3Rpb25fb3JfcmVzZXQoZGV2LCBtc2EzMTFf
-dmRkX2Rpc2FibGUsDQo+ID4gPiA+ICsJCQkJCSAgICAgICBtc2EzMTEtPnZkZCk7DQo+ID4gPiA+
-ICsJCWlmIChlcnIpIHsNCj4gPiA+ID4gKwkJCXJlZ3VsYXRvcl9kaXNhYmxlKG1zYTMxMS0+dmRk
-KTsNCj4gPiA+IA0KPiA+ID4gRG91YmxlIHJlZ3VsYXRvcl9kaXNhYmxlKCksIGJlY2F1c2Ugb2Yg
-dGhlIF9vcl9yZXNldCgpPw0KPiA+ID4gDQo+ID4gDQo+ID4gWWVwLiBJZiBkZXZtX2FkZF9hY3Rp
-b25fb3JfcmVzZXQoKSByZXR1cm5zIGFuIGVycm9yLCB3ZSB3aWxsIG5vdA0KPiA+IGNhbGwgcmVn
-dWxhdG9yX2Rpc2FibGUoKSBieSBkZXZtIHN1YnN5c3RlbS4gSXQgbWVhbnMsIHdlIGhhdmUgdG8N
-Cj4gPiBjYWxsIGl0IGRpcmVjdGx5Lg0KPiANCj4gTm8uDQo+IA0KPiBTZWUNCmh0dHBzOi8vZWxp
-eGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5L3NvdXJjZS9pbmNsdWRlL2xpbnV4L2RldmljZS5o
-I0wyNDkNCj4gDQo+IElmIGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldCgpIGZhaWxzLCAiYWN0aW9u
-IiBpcyBjYWxsZWQuIFRoaXMgaXMgdGhlIG1lYW5pbmcNCj4gb2YgdGhlIF9vcl9yZXNldCBzdWZm
-aXguDQo+IA0KPiBTbyBoZXJlLCBtc2EzMTFfdmRkX2Rpc2FibGUoKSB3b3VsZCBiZSBjYWxsZWQg
-YW5kIHRoaXMgZnVuY3Rpb24gaXM6DQo+IA0KPiArc3RhdGljIHZvaWQgbXNhMzExX3ZkZF9kaXNh
-YmxlKHZvaWQgKnZkZCkNCj4gK3sNCj4gKwlyZWd1bGF0b3JfZGlzYWJsZSh2ZGQpOw0KPiArfQ0K
-PiANCj4gYW5kICJ2ZGQiIHdpbGwgYmUgdGhlIHZhbHVlIG9mICJtc2EzMTEtPnZkZCINCj4gDQo+
-IFNvLCB1bmxlc3MgSSBtaXNzZWQgc29tZXRoaW5nIG9idmlvdXMsIHlvdXIgY29kZSB3aWxsIGNh
-bGwgdHdpY2UNCj4gcmVndWxhdG9yX2Rpc2FibGUobXNhMzExLT52ZGQpLg0KPiANCj4gT25lIGlu
-IGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldCgpIGFuZCBvbmUgZXhwbGljaXRseSBhZnRlciB0aGUg
-ImlmIChlcnIpIg0KPiANCg0KWW91IGFyZSB0b3RhbGx5IHJpZ2h0LCB0aGFua3MgYSBsb3QgZm9y
-IHRoZSBleHBsYW5hdGlvbi4gSSB3aWxsIGZpeCB0aGF0DQppbiB0aGUgdjUuDQoNCj4gDQo+IEhv
-cGluZyBJJ20gY2xlYXIgYW5kIHRoYXQgSSBkaWRuJ3QgbWlzcyBzb21ldGhpbmcgb2J2aW91cy4N
-Cj4gDQo+IENKDQo+IA0KPiA+IA0KPiA+ID4gPiArCQkJcmV0dXJuIGRldl9lcnJfcHJvYmUoZGV2
-LCBlcnIsDQo+ID4gPiA+ICsJCQkJCSAgICAgImNhbm5vdCBhZGQgdmRkIGRpc2FibGUgYWN0aW9u
-XG4iKTsNCj4gPiA+ID4gKwkJfQ0KPiA+ID4gPiArCX0NCj4gPiA+ID4gKw0KPiA+ID4gPiArCWVy
-ciA9IG1zYTMxMV9jaGVja19wYXJ0aWQobXNhMzExKTsNCj4gPiA+ID4gKwlpZiAoZXJyKQ0KPiA+
-ID4gPiArCQlyZXR1cm4gZXJyOw0KPiA+ID4gPiArDQo+ID4gPiA+ICsJZXJyID0gbXNhMzExX3Nv
-ZnRfcmVzZXQobXNhMzExKTsNCj4gPiA+ID4gKwlpZiAoZXJyKQ0KPiA+ID4gPiArCQlyZXR1cm4g
-ZXJyOw0KPiA+ID4gPiArDQo+ID4gPiA+ICsJZXJyID0gbXNhMzExX3NldF9wd3JfbW9kZShtc2Ez
-MTEsIE1TQTMxMV9QV1JfTU9ERV9OT1JNQUwpOw0KPiA+ID4gPiArCWlmIChlcnIpDQo+ID4gPiA+
-ICsJCXJldHVybiBkZXZfZXJyX3Byb2JlKGRldiwgZXJyLA0KPiA+ID4gPiArCQkJCSAgICAgImZh
-aWxlZCB0byBwb3dlciBvbiBkZXZpY2UgKCVkKVxuIiwgZXJyKTsNCj4gPiA+IA0KPiA+ID4gTm8g
-bmVlZCBmb3IgIiglZCkiIGFuZCBlcnINCj4gPiANCj4gPiBBc2tlZCBmb3IgdGhlIGNsYXJpZmlj
-YXRpb24gYWJvdmUuDQo+ID4gDQo+ID4gPiANCj4gPiA+IENKDQo+ID4gDQo+IA0KDQotLSANClRo
-YW5rIHlvdSwNCkRtaXRyeQ==
+On Sun, Jul 31, 2022 at 04:49:43PM +0100, Jonathan Cameron wrote:
+> On Wed, 27 Jul 2022 18:46:38 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+> > Instead of listing directly properties typical for SPI peripherals,
+> > reference the spi-peripheral-props.yaml schema.  This allows using all
+> > properties typical for SPI-connected devices, even these which device
+> > bindings author did not tried yet.
+> > 
+> > Remove the spi-* properties which now come via spi-peripheral-props.yaml
+> > schema, except for the cases when device schema adds some constraints
+> > like maximum frequency.
+> > 
+> > While changing additionalProperties->unevaluatedProperties, put it in
+> > typical place, just before example DTS.
+> > 
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > 
+> > ---
+> > 
+> > I wonder if spi-3wire is device specific (not controller) and should be
+> > rather explicitly mentioned by device schema. Just like spi-cpol/cpha.
+> 
+> I think it is, but Mark is expert on this.
+
+I would say yes as it's the device with a single data line.
+
+> In general I'm waiting on Mark's opinion on the whole idea!
+
+The prerequisite changes (except for spi-3-wire) are already queued up 
+by Mark as are changes for other subsystems.
+
+Rob

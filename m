@@ -2,62 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 285FB588A8A
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 12:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03E32588A99
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 12:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237926AbiHCK3l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 06:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33730 "EHLO
+        id S237867AbiHCKcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 06:32:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237929AbiHCK3E (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 06:29:04 -0400
+        with ESMTP id S238015AbiHCKbY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 06:31:24 -0400
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5D35A8A0;
-        Wed,  3 Aug 2022 03:27:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F29E615F;
+        Wed,  3 Aug 2022 03:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1659522461; x=1691058461;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=492adnY+4HRanX5BgaE402Es3kYUyC03a+V2LT50GdM=;
-  b=ruCiOzB0RSYfqM3lN0SJpUJAXMtt50yOU2tbYYOHvkCOguffsIjzxLYT
-   mSNMRijSOM/OYyxQFC/ru9BO9miOuJHhKmKF66zZvCwqruwkE8EvOpdfl
-   kBZxk9+olGWH0lLjqwJPSndl2beYZ7tDJhcNGXOnDXWMBSav104yDJkuN
-   JBVraZQ00pZe/IMCydzwrM/kErPdnqp9cqHBwmNldXRxHq20g+X4Lnidr
-   +kWFi+HR1S3C7ikICdAPT3s9FFOhRgd7tzcljS0gQgiqJanOUAYqb/wm5
-   pDdgu9ETvE7JKXY4hCNwINyqq/33Rli4c58bUQp9/WI0T1AqJAbyK1SiZ
-   w==;
+  t=1659522619; x=1691058619;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=NCNhe5KCO0o0vNAr0gyW9oiHPtanxYlK95lMEK38vdk=;
+  b=YqsUZEwSVtpjap2vqsCFW0OlIMYsMTWmQOKf6HUumOnN0/AXH8qbeOHJ
+   SSd2Nkd4Y4klI0T793BnmXHYhse9fKUUrn1AtmbtuCXcxY+snusrP8qcB
+   qzkHCSR6cu1AHJoav1YYYqmVJeKMtRW4mB0ufCbQKujnWOqmneiTaNtJx
+   Bes8HdRoGOvA+J2xoOKoqj4KfP1w/0wwXDBSYOzDRJagPPNjnmuYAV7eR
+   QDZsAnr2eP5/wk7qTFqxDOLy90Q5UJJzm4fD5/F2SPMneRUDsZTk3cuxf
+   4WpdQX9GwChIAf65Vbdq8iV7gziVjXQMAMQKJDnpnXg+N/mxStfGqvTDF
+   g==;
 X-IronPort-AV: E=Sophos;i="5.93,214,1654585200"; 
-   d="scan'208";a="174882825"
+   d="scan'208";a="184901953"
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Aug 2022 03:27:39 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Aug 2022 03:30:18 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.28; Wed, 3 Aug 2022 03:27:39 -0700
-Received: from localhost.localdomain (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2375.28 via Frontend Transport; Wed, 3 Aug 2022 03:27:36 -0700
-From:   Claudiu Beznea <claudiu.beznea@microchip.com>
-To:     <eugen.hristev@microchip.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>, <ludovic.desroches@microchip.com>,
-        <robh+dt@kernel.org>
-CC:     <linux-iio@vger.kernel.org>,
+ 15.1.2375.28; Wed, 3 Aug 2022 03:30:17 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.87.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28 via Frontend Transport; Wed, 3 Aug 2022 03:30:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Hmz8cghhJDkWqwKnXEqBmZnm4zMsRHzJhX9sUZqg60P21Fn93gaN7oBe5WfDXg6apnrhNAUk8wcFrezD6mxg0WjeZwgHqn8i/y33tnOuy0tl3WlMAacc/jot7BxBvpDneCoDqhsDMb5xPWyFPEHBSe8PvTqyMnF9PI4XPzdaNgB9Yp3ZtME3U2mtdxZ3BgNuz975jCNKR8w9tyYzuCTDt5cMvmXyfasvEybVK5xDIpWCIwoyo/LZyDY2bsuWkmK/x88m0r1q27gBqEA2/3KjcQUu1/Rr004CUaxbUA/dm4WzgWuNpBCNhqG26rlsAzXE2dFNnY6on593mGwnOUBaaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NCNhe5KCO0o0vNAr0gyW9oiHPtanxYlK95lMEK38vdk=;
+ b=XJocGIQo8vBMo5nV5HqcNzfjP+vBxeaaiD4IYfu1qIPkKHNLgURsPLrwfRA71JubSG8oyhpAM7FL4vPitfjpEzDSVlttHazNTH6D50gTwAKBm8j5dJXInczecgpk5r6aFoGPUWhFNbpR/r06HecZcGuekHKFAMM1jeyuMv+gdOP4VuP9lWoOZR198J27L8HK0l6GINsrJsFpyyYLhSbnXt0EvwbWNBun7byebuay6ynL6kbDec2JM8jtpTfb5tAn5JPpdCLEgQMgLzpdoWF28sOnX5eqettRyG32VXMaAZuxKK1s5tO5TaHpq0vXcA2sMQvsNhLetnj/YpxcHAk43Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microchip.com; dmarc=pass action=none
+ header.from=microchip.com; dkim=pass header.d=microchip.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector2-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NCNhe5KCO0o0vNAr0gyW9oiHPtanxYlK95lMEK38vdk=;
+ b=M1pqohSZTfJ9DL8TkO2PfrD2WfYOIm6kMorqStTgvWqgQDRTOgqlQtYUiPZ/CYQDUOtW2kOlS9vA+nk9mslVPIDc41dYzWp/sXha4sGiLISlHte8b5Y9QYkgFg/0mF8399XIBbOGWlbz8w0x9lAQeeCcyoZ5t7O4v88ZbZzwWro=
+Received: from BN6PR11MB1953.namprd11.prod.outlook.com (2603:10b6:404:105::14)
+ by BL1PR11MB5526.namprd11.prod.outlook.com (2603:10b6:208:31d::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5482.14; Wed, 3 Aug
+ 2022 10:30:05 +0000
+Received: from BN6PR11MB1953.namprd11.prod.outlook.com
+ ([fe80::5c8c:c31f:454d:824c]) by BN6PR11MB1953.namprd11.prod.outlook.com
+ ([fe80::5c8c:c31f:454d:824c%8]) with mapi id 15.20.5504.014; Wed, 3 Aug 2022
+ 10:30:04 +0000
+From:   <Claudiu.Beznea@microchip.com>
+To:     <jic23@kernel.org>
+CC:     <Eugen.Hristev@microchip.com>, <lars@metafoo.de>,
+        <Nicolas.Ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <robh+dt@kernel.org>, <krzk+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH v3 19/19] iio: adc: at91-sama5d2_adc: add runtime pm support
-Date:   Wed, 3 Aug 2022 13:28:55 +0300
-Message-ID: <20220803102855.2191070-20-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20220803102855.2191070-1-claudiu.beznea@microchip.com>
-References: <20220803102855.2191070-1-claudiu.beznea@microchip.com>
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v2 00/19] iio: adc: at91-sama5d2_adc: add support for
+ temperature sensor
+Thread-Topic: [PATCH v2 00/19] iio: adc: at91-sama5d2_adc: add support for
+ temperature sensor
+Thread-Index: AQHYpYujfuYmEdrMxEKQa2/KlwzRGq2c/OSA
+Date:   Wed, 3 Aug 2022 10:30:04 +0000
+Message-ID: <b6819c63-07fb-3f58-56ee-22dbcfa2a216@microchip.com>
+References: <20220628151631.3116454-1-claudiu.beznea@microchip.com>
+ <20220716174249.687af22b@jic23-huawei> <20220731211351.072e3334@jic23-huawei>
+ <33008bfc-81f8-6943-0e72-70a1e91a10bf@microchip.com>
+In-Reply-To: <33008bfc-81f8-6943-0e72-70a1e91a10bf@microchip.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microchip.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 40e56242-7472-4221-eca6-08da753b2143
+x-ms-traffictypediagnostic: BL1PR11MB5526:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: QpSNgbWhizoOp+JeMlU8u+MfcXIKxlmp377eiWVxQDl8xbmZp2wkcIi3VqzV+NT+fIljGfwFM29qQBebkQ7JLwoswsWAB1SsvIMfnwye7K0qdiB4XnciX2NUBMq3lYCbDfkKljMky2MclvSk5El80K8a9ZCNXZuou223aExE6/2VuUdONpet4aj93Jm4fUeHxw+MX5TyuNkffnC9HzIuTss3XqlixNZLuhobXxNHBSQ9BD7Fqtn6ezzwJaOmP1+zxdGGJQuKt+QuTqQkoj/fqmZNVxzpp6RPD82wzjsevCSKgl73BCvBvRizqOXncYior7qgJvliWyIOV+fNr0WlKs6s6kctN1rKnBPwVRO9uhPDmAzlhZM3+894W117x7zNXEt2UDQ6e41/vxAY2JYG5mXcSUR390ds64x31F4T6KJOKzC1+o0/TBhnmRL4/cJDpMmtEu22GxKtdNxeK+sc2mAkS+Cd43mip1BnQ0ibkT2GG73ebaSMP/bi+8NMZ3JABdKUeJUc7KWeqU2/rMuzBDlsZWi9i/YP784Le9eX6N6VouiOAY39/PbatLex1P9VIqIbNJn85j1IOKQcTfYp9A4+4S3BG76ork18+x3xAr38sg4x8Ok3yOc5AjNu48SO06VucTWmJXs3M/9YxbBk9Y2WlUSYiWNCB/9s9BP9mXdgks7P14MHsw+gJjMWEtylF0+PsC21sMkKO+YfB5TPPXl8xhskprw82iu1fOzNn+jcvlGVe6aKRr+ACe6Dfo2bnvV9LkmmnaSZnuad6OuPdsrTkxLKNsk75dfr80A5N3Xi5lNnm19ZrtSxcyjIOmt0sCoyq4BniGOfgHFFtqGz/MJVW6V46Nc98qIGN4EpFAvrJfMntOTz0eYItRSNlrqUzejl3QiW6B/KiNqmfKVWFQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN6PR11MB1953.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(39860400002)(396003)(346002)(376002)(136003)(83380400001)(4326008)(2906002)(66556008)(66946007)(2616005)(186003)(91956017)(66446008)(76116006)(8676002)(66476007)(36756003)(64756008)(31686004)(5660300002)(8936002)(316002)(6486002)(966005)(26005)(53546011)(6512007)(6916009)(31696002)(41300700001)(71200400001)(54906003)(86362001)(478600001)(6506007)(38070700005)(38100700002)(122000001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bHF3cTJ4eUdkbXd0d1FVeWdjbmJYWmZkLzVjNUpSQ1Yya1c2djQraUdFaXZB?=
+ =?utf-8?B?YklWenFVUlpKZTcveGNFYnN6TXZkN0F1QVFBVU5VM2pwQ1Z0MVEza3greVBu?=
+ =?utf-8?B?dVlxc2VGTEpHNkY5OURtZmpNcWlLbTZmM3IxcnUwVmxjMDJLdjgxaWJBamto?=
+ =?utf-8?B?YlZWYjhoK3pBT3N1anQvYnh4L2pMN2s1elgxZC9LOWZ1Z29xUXNRN2RVYkhh?=
+ =?utf-8?B?N0lxN3dBeVYvQWd6QnUwdk5SeGZFek15YUh5dWhMcEhvcnRic1VyQ1JDVWhE?=
+ =?utf-8?B?Z0I3NmhXdlVmUHVQT0xQWWRMcTE4dzdQMk1yemF0b3VnRUF2djdlZThNMVV0?=
+ =?utf-8?B?c0xyZkhkRHFZeWdJTEN1S0FNYmV1cHEzOFlGd2VHSTlWYkxlYk5SN3ErOW8y?=
+ =?utf-8?B?OHFGd3ZHNlJVaHhWU1UrTGVzVVl6ZzhrMzRlNDZRYjl4ZEx6ay9tSmIwSDNq?=
+ =?utf-8?B?SDZOUjVDQml6NnpyQzlzTldaQ1JRcnNiYUtNKzhDY3dUQ1czditCYkF5bGVq?=
+ =?utf-8?B?d3dtWUVZbTNjaThXN1YrUDRXNXBJbXRWWmo5Q2tJSkdEOTZIZ2J1dHAvRytF?=
+ =?utf-8?B?b3Rycko4MlRwNWJHTVlrSU1JSXZrVENYM2szVkk4L2NTbWd3Ykk3L1FONk1u?=
+ =?utf-8?B?SlNVL0tHcUFndEFtdTRpUFNPTzEwQ0ZMQUpvTHJOaEIrTm1MTll1cExyamQ4?=
+ =?utf-8?B?QldTVWVnVDFjZW9sRjlYejhFRThib2Y4b3VhK0owTGxVTWl4bGowSTJZTjI5?=
+ =?utf-8?B?azlOYWUyWXFmT1o5RiszVkVKM1ozRzBzVnJsYng2d2F2K2tydE04dkFrdHlG?=
+ =?utf-8?B?anZPRnFoWjQyeFpncnMrbVpKbE1kS1FNNGtQazM4ZGYrRUg5SitMSUJ0L3lP?=
+ =?utf-8?B?YytCck9VSTA5QmpsZjlRMFlUZXdHTndaNTJ3STNLYS82U0lWMXoxSGxTN0hH?=
+ =?utf-8?B?dnFmZ2lMMHl0T3VadXhjWmdxZUNSUGVBcmRpRUNQZEVLQmJnUDJ3MlFpeU1Y?=
+ =?utf-8?B?YlppOEtlbUVMbzVTSklQcnFNcVJmYUpOZitMUkVacEJlV3hBU24zRDNQaFpQ?=
+ =?utf-8?B?VktycGNlbDJTU2ttTzlXRFo0VWdXQWF5RmVldy9MOWJ0NU5EM1l3eVNmRWFE?=
+ =?utf-8?B?OE5YeTR1ZEY0aDgwNjNSeTZ4Y0ExRTFxQm9sdm5YcnZkelhOc3p1OUVPU1R6?=
+ =?utf-8?B?NDJtdmhZQ2xHVGxRU2M2SmcxSU9qelJ4MHR4OS9zWHlHZ2NGZWFGSk54ZWpa?=
+ =?utf-8?B?YmNCclM3cXhHdXk0SHRzRGRYeXkyQnkvdjJhNUhOVWRaN0NXdkxWaXNYeGhF?=
+ =?utf-8?B?VktQbCs0cFRaVk9aRGdqMTl0Z3FxeTlSVzdSdkxWckx3YVEzVUJQWkJrUEEy?=
+ =?utf-8?B?WGlJOGRTMzN4VWR1d3dCaDJVeDVoeVVJVWkzR1lTSnNwZUdqK3NQRXNQQmYw?=
+ =?utf-8?B?eklyaHRSN2ZjRFJGbFBjSlNveFREVHNmV2FhamNrc3F5MjlPYW9UT0k1U2U4?=
+ =?utf-8?B?aWVoZFhGUHNBbjFVaHo5OUk3c20yYnNaWFFOSVhnMzFDeUJRMjBjd3AwZDFG?=
+ =?utf-8?B?T2VYMURVRHBFS2kvcVRNdUR4ZFpoa3p2M1BkQmswZWJ6YkZKVTNtYjZDalRH?=
+ =?utf-8?B?NlgySkpFQnd6WGROcnNMSDVRMTlMUEN5ck8wTDlBTGN4c2JwMnI2VEZXMGV4?=
+ =?utf-8?B?Y04zL1dJMElZL3oyWUhRakd5NmplSVhyMkdVQXZTUVBwNkcvSlhhQW94cHNZ?=
+ =?utf-8?B?QzllTjFUNFMza1VURDdHSStDUUlMZkVLZjMrV2VlNUpMQVZBNEFsZ1ZVY0Jo?=
+ =?utf-8?B?bWFidlgwQnUxOWZaWTBGcER0MXZCRllyMjAwcW5iOElibC96WGNnTFVHaTF0?=
+ =?utf-8?B?a0kvQ2s4V05HbXRDTndFWHAwaU9WRkpBWHVCbGFaTWY0cnRXUW8yWGp2dENT?=
+ =?utf-8?B?MUtjeHR6TGVvZmp4RTZjR3dZSGlrOWNPSGJBUXhWbnhTUHg3b01MdGFHdE9W?=
+ =?utf-8?B?NWJoeEszalpZZjVqTWxsZ2VNRjB2VVJRWUZpSHhIZXhyT2RqMjY0a0VzTHVl?=
+ =?utf-8?B?VzRSSVlaa0pWclBCaGdhTFI1V3BXNTl0V1FBaUlZSDV0S29BQ253c1hrb1VJ?=
+ =?utf-8?B?MkFrZ2x3aC9DWmRpdHcraE9nZjNrVDBLOEV3ak1FZnJuM25hTm95alA3c1Jm?=
+ =?utf-8?B?OHc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <2333D1A49DC3704AAE3553B2BFFC78B6@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN6PR11MB1953.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40e56242-7472-4221-eca6-08da753b2143
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2022 10:30:04.7653
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ficXg5tOxhBcJuUTlobfjMYA21LZWCItCdeOY0gDKaE1yoTMRIwTrKTOCxfSSUKgXESVbKlPAwjpIrGEv/uHFe8WKFepb8TZkEyiUyww1Bo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5526
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,474 +161,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add runtime PM support by disabling/enabling ADC's peripheral clock.
-On simple conversion the ADC's clock is kept enabled just while the
-conversion is in progress. This includes also temperature conversion.
-For triggered buffers and touch conversions the ADC clock is kept enabled
-while the triggered buffers or touch are enabled. Along with it removed
-the __maybe_unused on suspend() and resume() ops as the dev_pm_ops
-object members are now filled with SYSTEM_SLEEP_PM_OPS().
-
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 208 +++++++++++++++++++++++------
- 1 file changed, 166 insertions(+), 42 deletions(-)
-
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 94cb96ccd2ee..8d8aa9691499 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -29,6 +29,7 @@
- #include <linux/iio/triggered_buffer.h>
- #include <linux/nvmem-consumer.h>
- #include <linux/pinctrl/consumer.h>
-+#include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- 
- #include <dt-bindings/iio/adc/at91-sama5d2_adc.h>
-@@ -600,6 +601,7 @@ struct at91_adc_state {
- 	struct at91_adc_touch		touch_st;
- 	struct at91_adc_temp		temp_st;
- 	struct iio_dev			*indio_dev;
-+	struct device			*dev;
- 	/* Ensure naturally aligned timestamp */
- 	u16				buffer[AT91_BUFFER_MAX_HWORDS] __aligned(8);
- 	/*
-@@ -840,9 +842,9 @@ static int at91_adc_config_emr(struct at91_adc_state *st,
- 			       u32 oversampling_ratio, u32 trackx)
- {
- 	/* configure the extended mode register */
--	unsigned int emr = at91_adc_readl(st, EMR);
-+	unsigned int emr, osr;
- 	unsigned int osr_mask = st->soc_info.platform->osr_mask;
--	int i;
-+	int i, ret;
- 
- 	/* Check against supported oversampling values. */
- 	for (i = 0; i < st->soc_info.platform->oversampling_avail_no; i++) {
-@@ -852,40 +854,46 @@ static int at91_adc_config_emr(struct at91_adc_state *st,
- 	if (i == st->soc_info.platform->oversampling_avail_no)
- 		return -EINVAL;
- 
--	/* select oversampling per single trigger event */
--	emr |= AT91_SAMA5D2_EMR_ASTE(1);
--
--	/* delete leftover content if it's the case */
--	emr &= ~(osr_mask | AT91_SAMA5D2_TRACKX_MASK);
--
- 	/* select oversampling ratio from configuration */
- 	switch (oversampling_ratio) {
- 	case 1:
--		emr |= AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_1SAMPLES,
--					    osr_mask);
-+		osr = AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_1SAMPLES,
-+					   osr_mask);
- 		break;
- 	case 4:
--		emr |= AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_4SAMPLES,
--					    osr_mask);
-+		osr = AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_4SAMPLES,
-+					   osr_mask);
- 		break;
- 	case 16:
--		emr |= AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_16SAMPLES,
--					    osr_mask);
-+		osr = AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_16SAMPLES,
-+					   osr_mask);
- 		break;
- 	case 64:
--		emr |= AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_64SAMPLES,
--					    osr_mask);
-+		osr = AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_64SAMPLES,
-+					   osr_mask);
- 		break;
- 	case 256:
--		emr |= AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_256SAMPLES,
--					    osr_mask);
-+		osr = AT91_SAMA5D2_EMR_OSR(AT91_SAMA5D2_EMR_OSR_256SAMPLES,
-+					   osr_mask);
- 		break;
- 	}
- 
--	/* Update trackx. */
--	emr |= AT91_SAMA5D2_TRACKX(trackx);
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return ret;
-+
-+	emr = at91_adc_readl(st, EMR);
-+	/* select oversampling per single trigger event */
-+	emr |= AT91_SAMA5D2_EMR_ASTE(1);
-+	/* delete leftover content if it's the case */
-+	emr &= ~(osr_mask | AT91_SAMA5D2_TRACKX_MASK);
-+	/* Update osr and trackx. */
-+	emr |= osr | AT91_SAMA5D2_TRACKX(trackx);
- 	at91_adc_writel(st, EMR, emr);
- 
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+
- 	st->oversampling_ratio = oversampling_ratio;
- 
- 	return 0;
-@@ -944,15 +952,22 @@ static void at91_adc_adjust_val_osr_array(struct at91_adc_state *st, void *buf,
- static int at91_adc_configure_touch(struct at91_adc_state *st, bool state)
- {
- 	u32 clk_khz = st->current_sample_rate / 1000;
--	int i = 0;
-+	int i = 0, ret;
- 	u16 pendbc;
- 	u32 tsmr, acr;
- 
--	if (!state) {
-+	if (state) {
-+		ret = pm_runtime_resume_and_get(st->dev);
-+		if (ret < 0)
-+			return ret;
-+	} else {
- 		/* disabling touch IRQs and setting mode to no touch enabled */
- 		at91_adc_writel(st, IDR,
- 				AT91_SAMA5D2_IER_PEN | AT91_SAMA5D2_IER_NOPEN);
- 		at91_adc_writel(st, TSMR, 0);
-+
-+		pm_runtime_mark_last_busy(st->dev);
-+		pm_runtime_put_autosuspend(st->dev);
- 		return 0;
- 	}
- 	/*
-@@ -1093,10 +1108,9 @@ static int at91_adc_read_pressure(struct at91_adc_state *st, int chan, u16 *val)
- 	return IIO_VAL_INT;
- }
- 
--static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
-+static void at91_adc_configure_trigger_registers(struct at91_adc_state *st,
-+						 bool state)
- {
--	struct iio_dev *indio = iio_trigger_get_drvdata(trig);
--	struct at91_adc_state *st = iio_priv(indio);
- 	u32 status = at91_adc_readl(st, TRGR);
- 
- 	/* clear TRGMOD */
-@@ -1107,6 +1121,26 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
- 
- 	/* set/unset hw trigger */
- 	at91_adc_writel(st, TRGR, status);
-+}
-+
-+static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
-+{
-+	struct iio_dev *indio = iio_trigger_get_drvdata(trig);
-+	struct at91_adc_state *st = iio_priv(indio);
-+	int ret;
-+
-+	if (state) {
-+		ret = pm_runtime_resume_and_get(st->dev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	at91_adc_configure_trigger_registers(st, state);
-+
-+	if (!state) {
-+		pm_runtime_mark_last_busy(st->dev);
-+		pm_runtime_put_autosuspend(st->dev);
-+	}
- 
- 	return 0;
- }
-@@ -1265,11 +1299,15 @@ static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
- 	if (!(iio_device_get_current_mode(indio_dev) & INDIO_ALL_TRIGGERED_MODES))
- 		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* we continue with the triggered buffer */
- 	ret = at91_adc_dma_start(indio_dev);
- 	if (ret) {
- 		dev_err(&indio_dev->dev, "buffer prepare failed\n");
--		return ret;
-+		goto pm_runtime_put;
- 	}
- 
- 	for_each_set_bit(bit, indio_dev->active_scan_mask,
-@@ -1292,12 +1330,16 @@ static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
- 	if (at91_adc_buffer_check_use_irq(indio_dev, st))
- 		at91_adc_writel(st, IER, AT91_SAMA5D2_IER_DRDY);
- 
--	return 0;
-+pm_runtime_put:
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+	return ret;
- }
- 
- static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- {
- 	struct at91_adc_state *st = iio_priv(indio_dev);
-+	int ret;
- 	u8 bit;
- 
- 	/* check if we are disabling triggered buffer or the touchscreen */
-@@ -1308,6 +1350,10 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- 	if (!(iio_device_get_current_mode(indio_dev) & INDIO_ALL_TRIGGERED_MODES))
- 		return -EINVAL;
- 
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/*
- 	 * For each enable channel we must disable it in hardware.
- 	 * In the case of DMA, we must read the last converted value
-@@ -1343,6 +1389,9 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- 	if (st->dma_st.dma_chan)
- 		dmaengine_terminate_sync(st->dma_st.dma_chan);
- 
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+
- 	return 0;
- }
- 
-@@ -1531,12 +1580,17 @@ static void at91_adc_setup_samp_freq(struct iio_dev *indio_dev, unsigned freq,
- {
- 	struct at91_adc_state *st = iio_priv(indio_dev);
- 	unsigned f_per, prescal, startup, mr;
-+	int ret;
- 
- 	f_per = clk_get_rate(st->per_clk);
- 	prescal = (f_per / (2 * freq)) - 1;
- 
- 	startup = at91_adc_startup_time(startup_time, freq / 1000);
- 
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return;
-+
- 	mr = at91_adc_readl(st, MR);
- 	mr &= ~(AT91_SAMA5D2_MR_STARTUP_MASK | AT91_SAMA5D2_MR_PRESCAL_MASK);
- 	mr |= AT91_SAMA5D2_MR_STARTUP(startup);
-@@ -1544,6 +1598,9 @@ static void at91_adc_setup_samp_freq(struct iio_dev *indio_dev, unsigned freq,
- 	mr |= AT91_SAMA5D2_MR_TRACKTIM(tracktim);
- 	at91_adc_writel(st, MR, mr);
- 
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+
- 	dev_dbg(&indio_dev->dev, "freq: %u, startup: %u, prescal: %u, tracktim=%u\n",
- 		freq, startup, prescal, tracktim);
- 	st->current_sample_rate = freq;
-@@ -1680,6 +1737,10 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
- 	u16 tmp_val;
- 	int ret;
- 
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return ret;
-+
- 	/*
- 	 * Keep in mind that we cannot use software trigger or touchscreen
- 	 * if external trigger is enabled
-@@ -1691,7 +1752,7 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
- 		if (ret > 0)
- 			ret = at91_adc_adjust_val_osr(st, val);
- 
--		return ret;
-+		goto pm_runtime_put;
- 	}
- 	if (chan->type == IIO_PRESSURE) {
- 		ret = at91_adc_read_pressure(st, chan->channel,
-@@ -1700,7 +1761,7 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
- 		if (ret > 0)
- 			ret = at91_adc_adjust_val_osr(st, val);
- 
--		return ret;
-+		goto pm_runtime_put;
- 	}
- 
- 	/* in this case we have a voltage or temperature channel */
-@@ -1742,6 +1803,9 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
- 	/* Needed to ACK the DRDY interruption */
- 	at91_adc_readl(st, LCDR);
- 
-+pm_runtime_put:
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
- 	return ret;
- }
- 
-@@ -1811,6 +1875,10 @@ static int at91_adc_read_temp(struct iio_dev *indio_dev,
- 		return ret;
- 	mutex_lock(&st->lock);
- 
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		goto unlock;
-+
- 	at91_adc_temp_sensor_configure(st, true);
- 
- 	/* Read VBG. */
-@@ -1829,6 +1897,9 @@ static int at91_adc_read_temp(struct iio_dev *indio_dev,
- restore_config:
- 	/* Revert previous settings. */
- 	at91_adc_temp_sensor_configure(st, false);
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+unlock:
- 	mutex_unlock(&st->lock);
- 	iio_device_release_direct_mode(indio_dev);
- 	if (ret < 0)
-@@ -2373,13 +2444,19 @@ static int at91_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto vref_disable;
- 
--	at91_adc_hw_init(indio_dev);
--
- 	platform_set_drvdata(pdev, indio_dev);
-+	st->dev = &pdev->dev;
-+	pm_runtime_set_autosuspend_delay(st->dev, 500);
-+	pm_runtime_use_autosuspend(st->dev);
-+	pm_runtime_set_active(st->dev);
-+	pm_runtime_enable(st->dev);
-+	pm_runtime_get_noresume(st->dev);
-+
-+	at91_adc_hw_init(indio_dev);
- 
- 	ret = at91_adc_buffer_and_trigger_init(&pdev->dev, indio_dev);
- 	if (ret < 0)
--		goto per_clk_disable_unprepare;
-+		goto err_pm_disable;
- 
- 	if (dma_coerce_mask_and_coherent(&indio_dev->dev, DMA_BIT_MASK(32)))
- 		dev_info(&pdev->dev, "cannot set DMA mask to 32-bit\n");
-@@ -2395,11 +2472,18 @@ static int at91_adc_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "version: %x\n",
- 		 readl_relaxed(st->base + st->soc_info.platform->layout->VERSION));
- 
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
-+
- 	return 0;
- 
- dma_disable:
- 	at91_adc_dma_disable(st);
--per_clk_disable_unprepare:
-+err_pm_disable:
-+	pm_runtime_put_noidle(st->dev);
-+	pm_runtime_disable(st->dev);
-+	pm_runtime_set_suspended(st->dev);
-+	pm_runtime_dont_use_autosuspend(st->dev);
- 	clk_disable_unprepare(st->per_clk);
- vref_disable:
- 	regulator_disable(st->vref);
-@@ -2417,6 +2501,8 @@ static int at91_adc_remove(struct platform_device *pdev)
- 
- 	at91_adc_dma_disable(st);
- 
-+	pm_runtime_disable(st->dev);
-+	pm_runtime_set_suspended(st->dev);
- 	clk_disable_unprepare(st->per_clk);
- 
- 	regulator_disable(st->vref);
-@@ -2429,6 +2515,11 @@ static int at91_adc_suspend(struct device *dev)
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct at91_adc_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(st->dev);
-+	if (ret < 0)
-+		return ret;
- 
- 	if (iio_buffer_enabled(indio_dev))
- 		at91_adc_buffer_postdisable(indio_dev);
-@@ -2441,6 +2532,8 @@ static int at91_adc_suspend(struct device *dev)
- 	 */
- 	at91_adc_writel(st, CR, AT91_SAMA5D2_CR_SWRST);
- 
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_noidle(st->dev);
- 	clk_disable_unprepare(st->per_clk);
- 	regulator_disable(st->vref);
- 	regulator_disable(st->reg);
-@@ -2470,18 +2563,28 @@ static int at91_adc_resume(struct device *dev)
- 	if (ret)
- 		goto vref_disable_resume;
- 
-+	pm_runtime_get_noresume(st->dev);
-+
- 	at91_adc_hw_init(indio_dev);
- 
- 	/* reconfiguring trigger hardware state */
--	if (!iio_buffer_enabled(indio_dev))
--		return 0;
-+	if (iio_buffer_enabled(indio_dev)) {
-+		ret = at91_adc_buffer_prepare(indio_dev);
-+		if (ret)
-+			goto pm_runtime_put;
- 
--	ret = at91_adc_buffer_prepare(indio_dev);
--	if (ret)
--		goto vref_disable_resume;
-+		at91_adc_configure_trigger_registers(st, true);
-+	}
-+
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_autosuspend(st->dev);
- 
--	return at91_adc_configure_trigger(st->trig, true);
-+	return 0;
- 
-+pm_runtime_put:
-+	pm_runtime_mark_last_busy(st->dev);
-+	pm_runtime_put_noidle(st->dev);
-+	clk_disable_unprepare(st->per_clk);
- vref_disable_resume:
- 	regulator_disable(st->vref);
- reg_disable_resume:
-@@ -2491,8 +2594,29 @@ static int at91_adc_resume(struct device *dev)
- 	return ret;
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(at91_adc_pm_ops, at91_adc_suspend,
--				at91_adc_resume);
-+static int at91_adc_runtime_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct at91_adc_state *st = iio_priv(indio_dev);
-+
-+	clk_disable(st->per_clk);
-+
-+	return 0;
-+}
-+
-+static int at91_adc_runtime_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct at91_adc_state *st = iio_priv(indio_dev);
-+
-+	return clk_enable(st->per_clk);
-+}
-+
-+static const struct dev_pm_ops at91_adc_pm_ops = {
-+	SYSTEM_SLEEP_PM_OPS(at91_adc_suspend, at91_adc_resume)
-+	RUNTIME_PM_OPS(at91_adc_runtime_suspend, at91_adc_runtime_resume,
-+		       NULL)
-+};
- 
- static const struct of_device_id at91_adc_dt_match[] = {
- 	{
-@@ -2513,7 +2637,7 @@ static struct platform_driver at91_adc_driver = {
- 	.driver = {
- 		.name = "at91-sama5d2_adc",
- 		.of_match_table = at91_adc_dt_match,
--		.pm = pm_sleep_ptr(&at91_adc_pm_ops),
-+		.pm = pm_ptr(&at91_adc_pm_ops),
- 	},
- };
- module_platform_driver(at91_adc_driver)
--- 
-2.34.1
-
+T24gMDEuMDguMjAyMiAxMjo0NiwgQ2xhdWRpdSBCZXpuZWEgLSBNMTgwNjMgd3JvdGU6DQo+IE9u
+IDMxLjA3LjIwMjIgMjM6MTMsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+PiBFWFRFUk5BTCBF
+TUFJTDogRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9wZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSBr
+bm93IHRoZSBjb250ZW50IGlzIHNhZmUNCj4+DQo+PiBPbiBTYXQsIDE2IEp1bCAyMDIyIDE3OjQy
+OjQ5ICswMTAwDQo+PiBKb25hdGhhbiBDYW1lcm9uIDxqaWMyM0BrZXJuZWwub3JnPiB3cm90ZToN
+Cj4+DQo+Pj4gT24gVHVlLCAyOCBKdW4gMjAyMiAxODoxNjoxMiArMDMwMA0KPj4+IENsYXVkaXUg
+QmV6bmVhIDxjbGF1ZGl1LmJlem5lYUBtaWNyb2NoaXAuY29tPiB3cm90ZToNCj4+Pg0KPj4+PiBI
+aSwNCj4+Pj4NCj4+Pj4gVGhlIGZvbGxvd2luZyBzZXJpZXMgYWRkIHN1cHBvcnQgZm9yIHRlbXBl
+cmF0dXJlIHNlbnNvciBhdmFpbGFibGUgb24NCj4+Pj4gU0FNQTdHNS4NCj4+Pj4NCj4+Pj4gVGVt
+cGVyYXR1cmUgc2Vuc29yIGF2YWlsYWJsZSBvbiBTQU1BN0c1IHByb3ZpZGVzIDIgb3V0cHV0cyBW
+VEVNUCBhbmQgVkJHLg0KPj4+PiBWVEVNUCBpcyBwcm9wb3J0aW9uYWwgdG8gdGhlIGFic29sdXRl
+IHRlbXBlcmF0dXJlIHZvbHRhZ2UgYW5kIFZCRyBpcyBhDQo+Pj4+IHF1YXNpLXRlbXBlcmF0dXJl
+IGluZGVwZW5kZW50IHZvbHRhZ2UuIEJvdGggYXJlIG5lY2Vzc2FyeSBpbiBjb21wdXRpbmcNCj4+
+Pj4gdGhlIHRlbXBlcmF0dXJlIChmb3IgYmV0dGVyIGFjY3VyYWN5KS4gQWxzbywgZm9yIGJldHRl
+ciBhY2N1cmFjeSB0aGUNCj4+Pj4gZm9sbG93aW5nIHNldHRpbmdzIHdlcmUgaW1wb3NlZCB3aGVu
+IG1lYXN1c2luZyB0aGUgdGVtcGVyYXR1cmU6DQo+Pj4+IG92ZXJzYW1wbGluZyByYXRlIG9mIDI1
+Niwgc2FtcGxpbmcgZnJlcXVlbmN5IG9mIDEwTUh6LCBhIHN0YXJ0dXAgdGltZSBvZg0KPj4+PiA1
+MTIgdGlja3MsIE1SLnRyYWNrdGltPTB4ZiwgRU1SLnRyYWNreD0weDMuDQo+Pj4+DQo+Pj4+IEZv
+ciBjb21wdXRpbmcgdGhlIHRlbXBlcmF0dXJlIG1lYXN1cmVkIGJ5IEFEQyBjYWxpYnJhdGlvbiBk
+YXRhIGlzDQo+Pj4+IG5lY2Vzc2FyeS4gVGhpcyBpcyBwcm92aWRlZCB2aWEgT1RQIG1lbW9yeSBh
+dmFpbGFibGUgb24gU0FNQTdHNS4NCj4+Pj4NCj4+Pj4gUGF0Y2hlcyAxLzE5LTQvMTkgcHJvdmlk
+ZXMgc29tZSBmaXhlcy4NCj4+Pj4gUGF0Y2hlcyA1LzE5LTE2LzE5IHByZXBhcmVzIGZvciB0aGUg
+YWRkaXRpb24gb2YgdGVtcGVyYXR1cmUgc2Vuc29yDQo+Pj4+IHN1cHBvcnQuDQo+Pj4+IFBhdGNo
+IDE3LzE2IGFkZHMgdGhlIHRlbXBlcmF0dXJlIHNlbnNvciBzdXBwb3J0Lg0KPj4+Pg0KPj4+PiBB
+bG9uZyB3aXRoIHRlbXBlcmF0dXJlIHNlbnNvciBzdXBwb3J0IEkgdG9vayB0aGUgY2hhbmNlIGFu
+ZCBhZGRlZA0KPj4+PiBydW50aW1lIFBNIHN1cHBvcnQgaW4gdGhpcyBzZXJpZXMsIHRvbyAoaGFu
+ZGxlZCBpbiBwYXRjaCAxOS8xOSkuDQo+Pj4+DQo+Pj4+IFRoZSByZXN0IG9mIHBhdGNoZXMgaW4g
+dGhpcyBzZXJpZXMgYXJlIG1pbm9yIGNsZWFudXBzLg0KPj4+DQo+Pj4gT3RoZXIgdGhhbiB0aGUg
+dXNlIG9mIE1FR0EgaW4gcGF0Y2ggMTcsIEknbSBmaW5lIHdpdGggdGhpcyBub3csIGJ1dA0KPj4+
+IHdvdWxkIGxpa2UgdG8gbGVhdmUgbW9yZSB0aW1lIGZvciBFdWdlbiBhbmQgb3RoZXJzIHRvIGNv
+bW1lbnQgaWYgdGhleQ0KPj4+IHdpc2guICBHaXZlbiB0aW1pbmcsIEknbSBhZnJhaWQgdGhpcyBp
+cyB2ZXJ5IHVubGlrZWx5IHRvIG1ha2UgdGhlIG5leHQNCj4+PiBtZXJnZSB3aW5kb3cgYW55d2F5
+IG5vdywgc28gd2UgaGF2ZSBsb3RzIG9mIHRpbWUuDQo+Pg0KPj4gTG9uZyBlbm91Z2guICBJJ2xs
+IHF1ZXVlIHRoaXMgdXAgdGhvdWdoIGZvciBub3cgaXQnbGwgb25seSBiZSBleHBvc2VkIGFzIHRl
+c3RpbmcNCj4+IGFzIEknbGwgYmUgcmViYXNpbmcgdGhlIHRvZ3JlZyB0cmVlIG9uIHJjMSBvbmNl
+IGF2YWlsYWJsZS4NCj4gDQo+IEkgc2F3IHRoYXQga2J1aWxkIHJvYm90IGZvdW5kIHNvbWV0aGlu
+ZyAocmVwb3J0ZWQgYXQgWzFdKS4gSXMgaXQgT0sgdG8ganVzdA0KPiBzZW5kIGEgcGF0Y2ggZml4
+aW5nIHRoZSBpc3N1ZSBvciB3b3VsZCB5b3UgbGlrZSBtZSB0byBpbnRlZ3JhdGUgdGhlIGNoYW5n
+ZXMNCj4gaW4gcGF0Y2ggWzIxLzMwXSBpaW86IGFkYzogYXQ5MS1zYW1hNWQyX2FkYzogYWRqdXN0
+IG9zciBiYXNlZCBvbiBzcGVjaWZpYw0KPiBwbGF0Zm9ybSBkYXRhIGFuZCByZXNlbmQgdGhlIHdo
+b2xlIHNlcmllcy4NCg0KSGksIEpvbmF0aGFuLA0KDQpJJ3ZlIHBvc3RlZCBhIG5ldyB2ZXJzaW9u
+IGZpeGluZyB0aGUgY29tcGlsYXRpb24gd2FybmluZzogcGF0Y2hlcyAxMC8xOSBhbmQNCjExLzE5
+IHdlcmUgYWRhcHRlZC4NCg0KVGhhbmsgeW91LA0KQ2xhdWRpdSBCZXpuZWENCg0KPiANCj4gVGhh
+bmsgeW91LA0KPiBDbGF1ZGl1IEJlem5lYQ0KPiANCj4gWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwu
+b3JnL2FsbC8yMDIyMDgwMTA3NDUuUVpSWUNpaHUtbGtwQGludGVsLmNvbS8NCj4gDQo+Pg0KPj4g
+VGhhbmtzLA0KPj4NCj4+IEpvbmF0aGFuDQo+Pg0KPj4+DQo+Pj4gU29ycnkgZm9yIHRoZSBkZWxh
+eSBpbiBteSByZXZpZXdpbmcgdjIuIFBlc2t5IGNvdmlkLg0KPj4+DQo+Pj4gSm9uYXRoYW4NCj4+
+Pg0KPj4+Pg0KPj4+PiBUaGFuayB5b3UsDQo+Pj4+IENsYXVkaXUgQmV6bmVhDQo+Pj4+DQo+Pj4+
+IENoYW5nZXMgaW4gdjI6DQo+Pj4+IC0gYWRkcmVzc2VkIHJldmlldyBjb21tZW50cw0KPj4+PiAt
+IHdpdGggdGhpcywgbmV3IHBhdGNoZXMgd2VyZSBpbnRydWNlZCBpbiB0aGlzIHNlcmllczogMi8x
+OSwgNC8xOSwNCj4+Pj4gICA4LzE5LCA5LDE5DQo+Pj4+IC0gcnVudGltZSBwbSBzdXBwb3J0IGhh
+cyBiZWVuIGFkYXB0ZWQgdG8gd29yayBhbHNvIHdoZW4gQ09ORklHX1BNDQo+Pj4+ICAgaXMgbm90
+IGVuYWJsZWQNCj4+Pj4gLSBjb2xsZWN0ZWQgdGFncw0KPj4+Pg0KPj4+PiBDbGF1ZGl1IEJlem5l
+YSAoMTkpOg0KPj4+PiAgIGlpbzogYWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBmaXggQVQ5MV9TQU1B
+NUQyX01SX1RSQUNLVElNX01BWA0KPj4+PiAgIGlpbzogYWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBj
+aGVjayByZXR1cm4gc3RhdHVzIGZvciBwcmVzc3VyZSBhbmQgdG91Y2gNCj4+Pj4gICBpaW86IGFk
+YzogYXQ5MS1zYW1hNWQyX2FkYzogbG9jayBhcm91bmQgb3ZlcnNhbXBsaW5nIGFuZCBzYW1wbGUg
+ZnJlcQ0KPj4+PiAgIGlpbzogYWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBkaXNhYmxlL3ByZXBhcmUg
+YnVmZmVyIG9uIHN1c3BlbmQvcmVzdW1lDQo+Pj4+ICAgaWlvOiBhZGM6IGF0OTEtc2FtYTVkMl9h
+ZGM6IGV4aXQgZnJvbSB3cml0ZV9yYXcoKSB3aGVuIGJ1ZmZlcnMgYXJlDQo+Pj4+ICAgICBlbmFi
+bGVkDQo+Pj4+ICAgaWlvOiBhZGM6IGF0OTEtc2FtYTVkMl9hZGM6IGhhbmRsZSBkaWZmZXJlbnQg
+RU1SLk9TUiBmb3IgZGlmZmVyZW50IGh3DQo+Pj4+ICAgICB2ZXJzaW9ucw0KPj4+PiAgIGlpbzog
+YWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBtb3ZlIHRoZSBjaGVjayBvZiBvdmVyc2FtcGxpbmcgaW4g
+aXRzDQo+Pj4+ICAgICBmdW5jdGlvbg0KPj4+PiAgIGlpbzogYWRjOiBhdDkxLXNhbWE1ZDJfYWRj
+OiBkcm9wIEFUOTFfT1NSX1hTQU1QTEVTIGRlZmluZXMNCj4+Pj4gICBpaW86IGFkYzogYXQ5MS1z
+YW1hNWQyX2FkYzogYWRkIC5yZWFkX2F2YWlsKCkgY2hhbl9pbmZvIG9wcw0KPj4+PiAgIGlpbzog
+YWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBhZGp1c3Qgb3NyIGJhc2VkIG9uIHNwZWNpZmljIHBsYXRm
+b3JtIGRhdGENCj4+Pj4gICBpaW86IGFkYzogYXQ5MS1zYW1hNWQyX2FkYzogYWRkIDY0IGFuZCAy
+NTYgb3ZlcnNhbXBsaW5nIHJhdGlvDQo+Pj4+ICAgaWlvOiBhZGM6IGF0OTEtc2FtYTVkMl9hZGM6
+IG1vdmUgb3ZlcnNhbXBsaW5nIHN0b3JhZ2UgaW4gaXRzIGZ1bmN0aW9uDQo+Pj4+ICAgaWlvOiBh
+ZGM6IGF0OTEtc2FtYTVkMl9hZGM6IHVwZGF0ZSB0cmFja3ggb24gZW1yDQo+Pj4+ICAgaWlvOiBh
+ZGM6IGF0OTEtc2FtYTVkMl9hZGM6IGFkZCBzdGFydHVwIGFuZCB0cmFja3RpbSBhcyBwYXJhbWV0
+ZXIgZm9yDQo+Pj4+ICAgICBhdDkxX2FkY19zZXR1cF9zYW1wX2ZyZXEoKQ0KPj4+PiAgIGlpbzog
+YWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBsb2NrIGFyb3VuZCBhdDkxX2FkY19yZWFkX2luZm9fcmF3
+KCkNCj4+Pj4gICBkdC1iaW5kaW5nczogaWlvOiBhZGM6IGF0OTEtc2FtYTVkMl9hZGM6IGFkZCBp
+ZCBmb3IgdGVtcGVyYXR1cmUNCj4+Pj4gICAgIGNoYW5uZWwNCj4+Pj4gICBpaW86IGFkYzogYXQ5
+MS1zYW1hNWQyX2FkYzogYWRkIHN1cHBvcnQgZm9yIHRlbXBlcmF0dXJlIHNlbnNvcg0KPj4+PiAg
+IGlpbzogYWRjOiBhdDkxLXNhbWE1ZDJfYWRjOiBhZGQgZW1wdHkgbGluZSBhZnRlciBmdW5jdGlv
+bnMNCj4+Pj4gICBpaW86IGFkYzogYXQ5MS1zYW1hNWQyX2FkYzogYWRkIHJ1bnRpbWUgcG0gc3Vw
+cG9ydA0KPj4+Pg0KPj4+PiAgZHJpdmVycy9paW8vYWRjL2F0OTEtc2FtYTVkMl9hZGMuYyAgICAg
+ICAgICAgIHwgNjgzICsrKysrKysrKysrKysrKy0tLQ0KPj4+PiAgLi4uL2R0LWJpbmRpbmdzL2lp
+by9hZGMvYXQ5MS1zYW1hNWQyX2FkYy5oICAgIHwgICAzICsNCj4+Pj4gIDIgZmlsZXMgY2hhbmdl
+ZCwgNTY2IGluc2VydGlvbnMoKyksIDEyMCBkZWxldGlvbnMoLSkNCj4+Pj4NCj4+Pg0KPj4NCj4g
+DQoNCg==

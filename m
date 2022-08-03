@@ -2,66 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D73B589258
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 20:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6A825892A1
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 21:16:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238234AbiHCSkM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 14:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
+        id S236240AbiHCTQe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 15:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232488AbiHCSkL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 14:40:11 -0400
+        with ESMTP id S229985AbiHCTQd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 15:16:33 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BAA15A2EA;
-        Wed,  3 Aug 2022 11:40:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C729E18395;
+        Wed,  3 Aug 2022 12:16:30 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 3C42F5FD36;
-        Wed,  3 Aug 2022 21:40:05 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id E610E5FD36;
+        Wed,  3 Aug 2022 22:16:28 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1659552005;
-        bh=AFS79+dO5ikd1qNd+wJdt8tTXYQwYhcVieR97AhPH3Y=;
+        s=mail; t=1659554188;
+        bh=Kpzdj+AezZZQE2JzuZqUbOUqyj1bustjTvV/De0YWqE=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=BAeaxim9CAU+amvAX4NHDEXMsp7dIuSrcWpHX1VmzB/Osu7OGMHq2Zg8AT1POx6H/
-         nl41hH8V88HC5TwvP054amUGr4Phy72ZIftTE1TVd6/LvXJQaICYjdUy4hfjviXMrK
-         I5RDeonvwaL/s0LF+vR7LHnCn/zSKDSSvbLcJ35GnOvPOSGm06DrMlDpXxilukIwCY
-         ap/g+7zIs7pcMAlZW9uLfs1sxksegtsM7J+1H4GaxjlH0LjPrQK4fnaCYU6uSywa0Q
-         lhEw2JULCOiFJPz2t2vzuLJSOP7uvpQsaD/Pr8fJtqmxvbcq48wba58dl+3KnLlc4q
-         /DQtL//dRSBhw==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        b=rm/CXNZkJSKZKM9Y/WGj4EaMT8OLn8GD3SZOrSe3IGXh9ikmZDqrytLDcDHA10Fs+
+         UN8U1wk2ysxPK+WVGIXZQ+cVYB48LrgoL0fHV8VOMV7RdTFBUlvCOKLbf5RVTekyc7
+         JYiKVH9KWIh3tK03xUmPaW74DSTxGfj47TFaJEoOk/Uj0GI9U3aCB/8i0IBEiGDuMp
+         5BY4aMwtdK+UEEsBhCOuOIX0WHxwGDek3cGl+2/J2bFNrSZ3B5GcBfZjB/niM09sNl
+         dP5m1oky18sEcBwxhajdMl1Acl6wISZz0snNlO1RLFkLzwQCLuF6b/w7ZuDgFu0zjV
+         rn+doqUQUnBCg==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Wed,  3 Aug 2022 21:40:04 +0300 (MSK)
+        Wed,  3 Aug 2022 22:16:28 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
  driver
 Thread-Topic: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
  driver
-Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62dSAuAgAAIFYA=
-Date:   Wed, 3 Aug 2022 18:39:49 +0000
-Message-ID: <20220803184001.fcappv7grdjyaetn@CAB-WSD-L081021.sigma.sbrf.ru>
+Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62dQgeAgAAYQIA=
+Date:   Wed, 3 Aug 2022 19:16:13 +0000
+Message-ID: <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
 References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
  <20220803131132.19630-3-ddrokosov@sberdevices.ru>
- <67041dbe-ad6c-c53f-9760-bd7b5988d137@wanadoo.fr>
-In-Reply-To: <67041dbe-ad6c-c53f-9760-bd7b5988d137@wanadoo.fr>
+ <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+In-Reply-To: <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <08B9D705C7259E4B936A7AF48D49D8D2@sberdevices.ru>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <7FD1F7CB0435154A9FAC73ABD0CFD427@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
 X-KSMG-Message-Action: clean
@@ -79,80 +78,345 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-SGVsbG8gQ2hyaXN0b3BoZSwNCg0KVGhhbmsgeW91IGZvciBxdWljayByZXZpZXcNCg0KT24gV2Vk
-LCBBdWcgMDMsIDIwMjIgYXQgMDg6MTE6MDVQTSArMDIwMCwgQ2hyaXN0b3BoZSBKQUlMTEVUIHdy
-b3RlOg0KPiBMZSAwMy8wOC8yMDIyIMOgIDE1OjExLCBEbWl0cnkgUm9rb3NvdiBhIMOpY3JpdMKg
-Og0KPiA+IE1TQTMxMSBpcyBhIHRyaS1heGlhbCwgbG93LWcgYWNjZWxlcm9tZXRlciB3aXRoIEky
-QyBkaWdpdGFsIG91dHB1dCBmb3INCj4gPiBzZW5zaXRpdml0eSBjb25zdW1lciBhcHBsaWNhdGlv
-bnMuIEl0IGhhcyBkeW5hbWljIHVzZXItc2VsZWN0YWJsZSBmdWxsDQo+ID4gc2NhbGVzIHJhbmdl
-IG9mICstMmcvKy00Zy8rLThnLystMTZnIGFuZCBhbGxvd3MgYWNjZWxlcmF0aW9uIG1lYXN1cmVt
-ZW50cw0KPiA+IHdpdGggb3V0cHV0IGRhdGEgcmF0ZXMgZnJvbSAxSHogdG8gMTAwMEh6Lg0KPiA+
-IA0KPiA+IFNwZWM6IGh0dHBzOi8vY2RuLXNob3AuYWRhZnJ1aXQuY29tL3Byb2R1Y3QtZmlsZXMv
-NTMwOS9NU0EzMTEtVjEuMS1FTkcucGRmDQo+ID4gDQo+ID4gVGhpcyBkcml2ZXIgc3VwcG9ydHMg
-Zm9sbG93aW5nIE1TQTMxMSBmZWF0dXJlczoNCj4gPiAgICAgIC0gSUlPIGludGVyZmFjZQ0KPiA+
-ICAgICAgLSBEaWZmZXJlbnQgcG93ZXIgbW9kZXM6IE5PUk1BTCBhbmQgU1VTUEVORCAodXNpbmcg
-cG1fcnVudGltZSkNCj4gPiAgICAgIC0gT0RSIChPdXRwdXQgRGF0YSBSYXRlKSBzZWxlY3Rpb24N
-Cj4gPiAgICAgIC0gU2NhbGUgYW5kIHNhbXBfZnJlcSBzZWxlY3Rpb24NCj4gPiAgICAgIC0gSUlP
-IHRyaWdnZXJlZCBidWZmZXIsIElJTyByZWcgYWNjZXNzDQo+ID4gICAgICAtIE5FV19EQVRBIGlu
-dGVycnVwdCArIHRyaWdnZXINCj4gPiANCj4gPiBCZWxvdyBmZWF0dXJlcyB0byBiZSBkb25lOg0K
-PiA+ICAgICAgLSBNb3Rpb24gRXZlbnRzOiBBQ1RJVkUsIFRBUCwgT1JJRU5ULCBGUkVFRkFMTA0K
-PiA+ICAgICAgLSBMb3cgUG93ZXIgbW9kZQ0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6IERtaXRy
-eSBSb2tvc292IDxkZHJva29zb3YtaTRyOG9BK2VMbEg5OXJIa1ArRnhJd0BwdWJsaWMuZ21hbmUu
-b3JnPg0KPiA+IC0tLQ0KPiA+ICAgTUFJTlRBSU5FUlMgICAgICAgICAgICAgICAgfCAgICA2ICsN
-Cj4gPiAgIGRyaXZlcnMvaWlvL2FjY2VsL0tjb25maWcgIHwgICAxMyArDQo+ID4gICBkcml2ZXJz
-L2lpby9hY2NlbC9NYWtlZmlsZSB8ICAgIDIgKw0KPiA+ICAgZHJpdmVycy9paW8vYWNjZWwvbXNh
-MzExLmMgfCAxMzIzICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiA+ICAg
-NCBmaWxlcyBjaGFuZ2VkLCAxMzQ0IGluc2VydGlvbnMoKykNCj4gPiAgIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBkcml2ZXJzL2lpby9hY2NlbC9tc2EzMTEuYw0KPiA+IA0KPiANCj4gSGksDQo+IGEgZmV3
-IG5pdHMgYmVsb3cuDQo+IA0KPiBbLi4uXQ0KPiANCj4gPiArc3RhdGljIGludCBtc2EzMTFfY2hl
-Y2tfcGFydGlkKHN0cnVjdCBtc2EzMTFfcHJpdiAqbXNhMzExKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1
-Y3QgZGV2aWNlICpkZXYgPSBtc2EzMTEtPmRldjsNCj4gPiArCXVuc2lnbmVkIGludCBwYXJ0aWQ7
-DQo+ID4gKwlpbnQgZXJyOw0KPiA+ICsNCj4gPiArCWVyciA9IHJlZ21hcF9yZWFkKG1zYTMxMS0+
-cmVncywgTVNBMzExX1BBUlRJRF9SRUcsICZwYXJ0aWQpOw0KPiA+ICsJaWYgKGVycikNCj4gPiAr
-CQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIGVyciwNCj4gPiArCQkJCSAgICAgImZhaWxlZCB0
-byByZWFkIHBhcnRpZCAoJWQpXG4iLCBlcnIpOw0KPiANCj4gTm8gbmVlZCBmb3IgIiglZCkiIGFu
-ZCBlcnIuDQo+IA0KDQpEbyB5b3UgbWVhbiBmb3IgYWxsIGRldl9lcnIoKSBjYWxscz8gSSB0aGlu
-ayBzb21ldGltZXMgaXQncyBoZWxwZnVsIHRvDQprbm93IHRoZSBhY3R1YWwgZXJyb3IgdmFsdWUg
-Z290IGZyb20gZXh0ZXJuYWwgQVBJLCBpc24ndD8gQ291bGQgeW91IHBsZWFzZQ0KZXhwbGFpbiB5
-b3VyIHBvaW50IGlmIHBvc3NpYmxlPw0KDQo+ID4gKw0KPiA+ICsJaWYgKHBhcnRpZCA9PSBNU0Ez
-MTFfV0hPX0FNX0kpDQo+ID4gKwkJZGV2X2RiZyhkZXYsICJmb3VuZCBNU0EzMTEgY29tcGF0aWJs
-ZSBjaGlwWyUjeF1cbiIsIHBhcnRpZCk7DQo+ID4gKwllbHNlDQo+ID4gKwkJZGV2X3dhcm4oZGV2
-LCAiaW52YWxpZCBwYXJ0aWQgKCUjeCksIGV4cGVjdGVkICglI3gpXG4iLA0KPiA+ICsJCQkgcGFy
-dGlkLCBNU0EzMTFfV0hPX0FNX0kpOw0KPiA+ICsNCj4gPiArCXJldHVybiAwOw0KPiA+ICt9DQo+
-IA0KPiBbLi4uXQ0KPiANCj4gPiArc3RhdGljIGludCBtc2EzMTFfcHJvYmUoc3RydWN0IGkyY19j
-bGllbnQgKmkyYykNCj4gPiArew0KPiA+ICsJc3RydWN0IGRldmljZSAqZGV2ID0gJmkyYy0+ZGV2
-Ow0KPiA+ICsJc3RydWN0IG1zYTMxMV9wcml2ICptc2EzMTE7DQo+ID4gKwlzdHJ1Y3QgaWlvX2Rl
-diAqaW5kaW9fZGV2Ow0KPiA+ICsJaW50IGVycjsNCj4gPiArDQo+ID4gKwlpbmRpb19kZXYgPSBk
-ZXZtX2lpb19kZXZpY2VfYWxsb2MoZGV2LCBzaXplb2YoKm1zYTMxMSkpOw0KPiA+ICsJaWYgKCFp
-bmRpb19kZXYpDQo+ID4gKwkJcmV0dXJuIGRldl9lcnJfcHJvYmUoZGV2LCAtRU5PTUVNLA0KPiA+
-ICsJCQkJICAgICAiaWlvIGRldmljZSBhbGxvY2F0aW9uIGZhaWxlZFxuIik7DQo+ID4gKw0KPiA+
-ICsJbXNhMzExID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiArCW1zYTMxMS0+ZGV2ID0gZGV2
-Ow0KPiA+ICsJaTJjX3NldF9jbGllbnRkYXRhKGkyYywgaW5kaW9fZGV2KTsNCj4gPiArDQo+ID4g
-KwllcnIgPSBtc2EzMTFfcmVnbWFwX2luaXQobXNhMzExKTsNCj4gPiArCWlmIChlcnIpDQo+ID4g
-KwkJcmV0dXJuIGVycjsNCj4gPiArDQo+ID4gKwltdXRleF9pbml0KCZtc2EzMTEtPmxvY2spOw0K
-PiA+ICsNCj4gPiArCW1zYTMxMS0+dmRkID0gZGV2bV9yZWd1bGF0b3JfZ2V0X29wdGlvbmFsKGRl
-diwgInZkZCIpOw0KPiA+ICsJaWYgKElTX0VSUihtc2EzMTEtPnZkZCkpIHsNCj4gPiArCQllcnIg
-PSBQVFJfRVJSKG1zYTMxMS0+dmRkKTsNCj4gPiArCQlpZiAoZXJyID09IC1FTk9ERVYpDQo+ID4g
-KwkJCW1zYTMxMS0+dmRkID0gTlVMTDsNCj4gPiArCQllbHNlDQo+ID4gKwkJCXJldHVybiBkZXZf
-ZXJyX3Byb2JlKGRldiwgUFRSX0VSUihtc2EzMTEtPnZkZCksDQo+ID4gKwkJCQkJICAgICAiY2Fu
-bm90IGdldCB2ZGQgc3VwcGx5XG4iKTsNCj4gPiArCX0NCj4gPiArDQo+ID4gKwlpZiAobXNhMzEx
-LT52ZGQpIHsNCj4gPiArCQllcnIgPSByZWd1bGF0b3JfZW5hYmxlKG1zYTMxMS0+dmRkKTsNCj4g
-PiArCQlpZiAoZXJyKQ0KPiA+ICsJCQlyZXR1cm4gZGV2X2Vycl9wcm9iZShkZXYsIGVyciwNCj4g
-PiArCQkJCQkgICAgICJjYW5ub3QgZW5hYmxlIHZkZCBzdXBwbHlcbiIpOw0KPiA+ICsNCj4gPiAr
-CQllcnIgPSBkZXZtX2FkZF9hY3Rpb25fb3JfcmVzZXQoZGV2LCBtc2EzMTFfdmRkX2Rpc2FibGUs
-DQo+ID4gKwkJCQkJICAgICAgIG1zYTMxMS0+dmRkKTsNCj4gPiArCQlpZiAoZXJyKSB7DQo+ID4g
-KwkJCXJlZ3VsYXRvcl9kaXNhYmxlKG1zYTMxMS0+dmRkKTsNCj4gDQo+IERvdWJsZSByZWd1bGF0
-b3JfZGlzYWJsZSgpLCBiZWNhdXNlIG9mIHRoZSBfb3JfcmVzZXQoKT8NCj4gDQoNClllcC4gSWYg
-ZGV2bV9hZGRfYWN0aW9uX29yX3Jlc2V0KCkgcmV0dXJucyBhbiBlcnJvciwgd2Ugd2lsbCBub3QN
-CmNhbGwgcmVndWxhdG9yX2Rpc2FibGUoKSBieSBkZXZtIHN1YnN5c3RlbS4gSXQgbWVhbnMsIHdl
-IGhhdmUgdG8NCmNhbGwgaXQgZGlyZWN0bHkuDQoNCj4gPiArCQkJcmV0dXJuIGRldl9lcnJfcHJv
-YmUoZGV2LCBlcnIsDQo+ID4gKwkJCQkJICAgICAiY2Fubm90IGFkZCB2ZGQgZGlzYWJsZSBhY3Rp
-b25cbiIpOw0KPiA+ICsJCX0NCj4gPiArCX0NCj4gPiArDQo+ID4gKwllcnIgPSBtc2EzMTFfY2hl
-Y2tfcGFydGlkKG1zYTMxMSk7DQo+ID4gKwlpZiAoZXJyKQ0KPiA+ICsJCXJldHVybiBlcnI7DQo+
-ID4gKw0KPiA+ICsJZXJyID0gbXNhMzExX3NvZnRfcmVzZXQobXNhMzExKTsNCj4gPiArCWlmIChl
-cnIpDQo+ID4gKwkJcmV0dXJuIGVycjsNCj4gPiArDQo+ID4gKwllcnIgPSBtc2EzMTFfc2V0X3B3
-cl9tb2RlKG1zYTMxMSwgTVNBMzExX1BXUl9NT0RFX05PUk1BTCk7DQo+ID4gKwlpZiAoZXJyKQ0K
-PiA+ICsJCXJldHVybiBkZXZfZXJyX3Byb2JlKGRldiwgZXJyLA0KPiA+ICsJCQkJICAgICAiZmFp
-bGVkIHRvIHBvd2VyIG9uIGRldmljZSAoJWQpXG4iLCBlcnIpOw0KPiANCj4gTm8gbmVlZCBmb3Ig
-IiglZCkiIGFuZCBlcnINCg0KQXNrZWQgZm9yIHRoZSBjbGFyaWZpY2F0aW9uIGFib3ZlLg0KDQo+
-IA0KPiBDSg0KDQotLSANClRoYW5rIHlvdSwNCkRtaXRyeQ==
+Hello Andy,
+
+Thank you for quick review,
+
+On Wed, Aug 03, 2022 at 07:49:33PM +0200, Andy Shevchenko wrote:
+> On Wed, Aug 3, 2022 at 3:11 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> =
+wrote:
+> >
+> > MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
+> > sensitivity consumer applications. It has dynamic user-selectable full
+> > scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measuremen=
+ts
+> > with output data rates from 1Hz to 1000Hz.
+> >
+> > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.=
+pdf
+> >
+> > This driver supports following MSA311 features:
+> >     - IIO interface
+> >     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
+> >     - ODR (Output Data Rate) selection
+> >     - Scale and samp_freq selection
+> >     - IIO triggered buffer, IIO reg access
+> >     - NEW_DATA interrupt + trigger
+> >
+> > Below features to be done:
+> >     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
+> >     - Low Power mode
+>=20
+> Thanks for an update, my comments below.
+>=20
+> ...
+>=20
+> > +#include <linux/i2c.h>
+>=20
+> > +#include <linux/iio/buffer.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +#include <linux/iio/trigger.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +#include <linux/iio/triggered_buffer.h>
+>=20
+> I would split this group out of generic headers...
+>=20
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/pm.h>
+> > +#include <linux/pm_runtime.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/string_helpers.h>
+> > +#include <linux/units.h>
+> > +
+>=20
+> ...and move it here to clearly show that the driver belongs to the IIO
+> subsystem.
+
+Sure, no problem.
+
+>=20
+> ...
+>=20
+> > +/*
+> > + * Possible Full Scale ranges
+> > + *
+> > + * Axis data is 12-bit signed value, so
+> > + *
+> > + * fs0 =3D (2 + 2) * 9.81 / (2<<11) =3D 0.009580
+> > + * fs1 =3D (4 + 4) * 9.81 / (2<<11) =3D 0.019160
+> > + * fs2 =3D (8 + 8) * 9.81 / (2<<11) =3D 0.038320
+> > + * fs3 =3D (16 + 16) * 9.81 / (2<<11) =3D 0.076641
+>=20
+> I'm not sure if you are using programming language here or math language?
+> In math we refer to powers like 2^11, the 2<<11 puzzles me.
+>=20
+
+Agree, will change in the v5.
+
+> > + */
+>=20
+> ...
+>=20
+> > +static const struct {
+> > +       int val;
+> > +       int val2;
+> > +} msa311_fs_table[] =3D {
+> > +       {0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
+> > +};
+>=20
+> Besides that this struct is defined not only once in the file, this is
+> very well NIH struct s32_fract. Why not use the latter?
+>=20
+> ...
+>=20
+
+Good point, but looks like this struct is not so popular in the other
+kernel drivers:
+
+=3D=3D=3D
+grep "s32_fract" -r -l . | wc -l   =20
+3
+=3D=3D=3D
+
+[...]
+
+> > +static const char * const msa311_pwr_modes[] =3D {
+> > +       [MSA311_PWR_MODE_NORMAL] =3D "normal",
+> > +       [MSA311_PWR_MODE_LOW] =3D "low",
+> > +       [MSA311_PWR_MODE_UNKNOWN] =3D "unknown",
+> > +       [MSA311_PWR_MODE_SUSPEND] =3D "suspend"
+>=20
+> Leave a comma here even if we know that in the nearest future it won't
+> be changed.
+>=20
+
+Good catch, forgot it.
+
+> > +};
+>=20
+> ...
+>=20
+> > +       .cache_type =3D REGCACHE_RBTREE,
+>=20
+> Tree hash is good for sparse data, do you really have it sparse (a lot
+> of  big gaps in between)?
+
+I suppose so. MSA311 regmap has ~6 gaps.
+
+[...]
+
+>=20
+> > +               dev_err(dev,
+> > +                       "failed to set odr %u.%uHz, not available in %s=
+ mode\n",
+> > +                       msa311_odr_table[odr].val,
+> > +                       msa311_odr_table[odr].val2 / 1000,
+>=20
+> KILO ?
+
+MILLIHZ_PER_HZ :)
+
+>=20
+> > +                       msa311_pwr_modes[pwr_mode]);
+>=20
+> ...
+>=20
+> > +       static const int unintr_thresh_ms =3D 20;
+>=20
+> You seem not using it as _ms, but always as _us, why not define according=
+ly?
+> Also the other one is defined as unsigned long and this is as int. Why
+> not unsigned?
+>=20
+> ...
+>=20
+
+I compare unintr_thresh_ms with wait_ms and use wait_ms with
+msleep_interruptible(), and I think 20ms is more readable than 20000us
+or 20 * USEC_PER_MSEC us.
+
+But I agree about sign. It should be unsigned anyway.
+
+> > +       for (fs =3D 0; fs < ARRAY_SIZE(msa311_fs_table); ++fs)
+>=20
+> fs++ will work as well.
+>=20
+
+I would prefer ++fs if you don't mind :)
+
+> > +               /* Do not check msa311_fs_table[fs].val, it's always 0 =
+*/
+> > +               if (val2 =3D=3D msa311_fs_table[fs].val2) {
+> > +                       mutex_lock(&msa311->lock);
+> > +                       err =3D regmap_field_write(msa311->fields[F_FS]=
+, fs);
+> > +                       mutex_unlock(&msa311->lock);
+>=20
+> > +                       if (err)
+> > +                               dev_err(dev, "cannot update scale (%d)\=
+n", err);
+>=20
+> This can be done after putting the device back into (auto)sleep, right?
+>=20
+
+Are you talking about dev_err logging? Sure, it can be moved after
+pm_runtime* calls.
+
+> > +                       break;
+> > +               }
+> > +
+> > +       pm_runtime_mark_last_busy(dev);
+> > +       pm_runtime_put_autosuspend(dev);
+>=20
+> ...
+>=20
+> > +       for (odr =3D 0; odr < ARRAY_SIZE(msa311_odr_table); ++odr)
+>=20
+> odr++ works well also.
+
+I would prefer ++odr if you don't mind :)
+
+>=20
+> ...
+>=20
+> > +                               dev_err(dev, "cannot update freq (%d)\n=
+", err);
+>=20
+> frequency
+
+It will be more ugly due 80 symbols restriction.
+
+>=20
+> ...
+>=20
+> > +               dev_err(dev, "cannot %s register %u from debugfs (%d)\n=
+",
+> > +                       readval ? "read" : "write", reg, err);
+>=20
+> You may consider taking [1] as a precursor here and use str_read_write().
+>=20
+> [1]: https://lore.kernel.org/linux-i2c/20220703154232.55549-1-andriy.shev=
+chenko@linux.intel.com/
+
+Oh, really... Thank you for suggestion!
+>=20
+> ...
+>=20
+> > +       struct device *dev =3D msa311->dev;
+>=20
+> Isn't it the same as indio_dev->dev.parent?
+> Do you really need that member?
+
+Should be the same... I will check.
+
+>=20
+> ...
+>=20
+> > +       int bit =3D 0, err, i =3D 0;
+>=20
+> How is the bit initial assignment used?
+
+You are right, for for_each_set_bit() initializes bit inside.
+
+[...]
+
+> > +               dev_dbg(dev, "found MSA311 compatible chip[%#x]\n", par=
+tid);
+>=20
+> Useless message.
+>=20
+
+Why? It's under dynamic debug, so I will see it if I really want to.
+
+> ...
+>=20
+> > +               return dev_err_probe(dev, err, "cannot disable set0 int=
+rs\n");
+>=20
+> interrupts
+
+It will be more ugly due 80 symbols restriction.
+
+[...]
+
+> > +       /* Disable all axis by default */
+>=20
+> axis...
+>=20
+> > +       err =3D regmap_update_bits(msa311->regs, MSA311_ODR_REG,
+> > +                                MSA311_GENMASK(F_X_AXIS_DIS) |
+> > +                                MSA311_GENMASK(F_Y_AXIS_DIS) |
+> > +                                MSA311_GENMASK(F_Z_AXIS_DIS), 0);
+> > +       if (err)
+> > +               return dev_err_probe(dev, err, "cannot enable all axes\=
+n");
+>=20
+> ...or axes?
+
+Axes of course.
+
+>=20
+> ...
+>=20
+> > +               return dev_err_probe(dev, err, "failed to set accel fre=
+q\n");
+>=20
+> frequency
+>=20
+
+It will be more ugly due 80 symbols restriction.
+
+[...]
+
+> > +               return dev_err_probe(dev, -ENOMEM,
+> > +                                    "cannot allocate newdata trig\n");
+>=20
+> trigger
+
+It will be more ugly due 80 symbols restriction.
+
+[...]
+
+> > +               return dev_err_probe(dev, err, "cannot enable push-pull=
+ int\n");
+>=20
+> interrupt
+
+It will be more ugly due 80 symbols restriction.
+
+> > +       indio_dev->modes =3D 0; /* setup buffered mode later */
+>=20
+> Why explicit assignment to 0? Doesn't kzalloc() do it for you?
+
+kzalloc() will do it for me, of course. Previously, I initialized modes to
+INDIO_DIRECT_MODE to just provide default value for that. Jonathan
+suggested to replace it with 0. I can remove this line at all, no problem.
+I just thought, it's more readable.
+
+>=20
+> ...
+>=20
+> > +               return dev_err_probe(dev, err, "cannot setup iio trig b=
+uf\n");
+>=20
+> IIO trigger buffer
+
+It will be more ugly due 80 symbols restriction.
+
+>=20
+> ...
+>=20
+> > +               return dev_err_probe(dev, err, "iio device register fai=
+led\n");
+>=20
+> IIO
+>=20
+> --=20
+> With Best Regards,
+> Andy Shevchenko
+
+--=20
+Thank you,
+Dmitry=

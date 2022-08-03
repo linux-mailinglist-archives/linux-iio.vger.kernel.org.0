@@ -2,177 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA1B588A46
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 12:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C07B0588A50
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Aug 2022 12:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237406AbiHCKUM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 3 Aug 2022 06:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57644 "EHLO
+        id S234861AbiHCK0n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 3 Aug 2022 06:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbiHCKUK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 06:20:10 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 213B92635
-        for <linux-iio@vger.kernel.org>; Wed,  3 Aug 2022 03:20:09 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id e15so15694054lfs.0
-        for <linux-iio@vger.kernel.org>; Wed, 03 Aug 2022 03:20:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=T7u/vSnLYBLG2/cqPGx4+nzYlaGJoQWkAhUede1qgbE=;
-        b=dyZajjqvKdmd4vUZeecNmiaub4K5+6UqV+OCAP4uQKCkTqRR1VK5YgTlJQssOj68Nb
-         SEKK/+JG9y8NLJ0mXRBTBz2DNuJU4HdZ3szvsDW9LlKirGe1PBkbVJdDlehUiPrAOVAY
-         1wf82YnarJCnhUscFC5dkXVeUwFWoc3GCPqCJHfaoafrYhhTSvMNDcgArzmF9kmPaMgs
-         KO6+gf+thBG1PoC50WvR+7C/LLMcXEhU+Y6qprjK/kYmgYXpdcRK+vaiw6Dfw9AjRw/g
-         7GO51Dk14Mp+5OmIHT7iHQiuzzhZ9u7HJuT+SEZiJP5zClYVkc2ndYC6GOf8I5AjBtOI
-         lZRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=T7u/vSnLYBLG2/cqPGx4+nzYlaGJoQWkAhUede1qgbE=;
-        b=JJJMn6OMxJtLa5hWME7SNfhTYBP40MhMJf7fc7c6thy410lgtlYx0XBDlwR/v0taDg
-         Dd4GsFsqNfiQ+qamncJUmbPzGs3HfP57R4ylOUrYBNTVJJLgU9qAYnX+gCx5LlGFOZtH
-         8WWLA+ufbTa76ootU9gIMRhqTOI3dlTFfLWwG+5unf7y4H4yKnIJje3MGs7P8ZiCGL9s
-         xk9ovQOoHM417TuTgR5MlMBbPQQYJOOs8XCPzggVxX2xPZTi74nzhhQ/9ynS7pUQ/3Uu
-         Kx/8GsGZLukk2pbXOBM4EMIMBBBPAt81F1iv98quHVsw2v+lRzSzFlMqStfX9cjF81kQ
-         m1vw==
-X-Gm-Message-State: ACgBeo1DKAVnMd2nh3E8ZVfEr06w1NVxRa9d2UAR2k684gQXGwjnt568
-        5mZ2ntS96JgoK7JnyUP21CsiMQ==
-X-Google-Smtp-Source: AA6agR4+HTMc8onRirUA2Gvtf1run7QOLGwV+NRTf5J0dedKuHUNzmeyA9s6VpR+vuMrnzGH8UbMzw==
-X-Received: by 2002:ac2:44d2:0:b0:48b:18ae:7cde with SMTP id d18-20020ac244d2000000b0048b18ae7cdemr1627845lfm.193.1659522007423;
-        Wed, 03 Aug 2022 03:20:07 -0700 (PDT)
-Received: from [192.168.1.6] ([77.222.167.48])
-        by smtp.gmail.com with ESMTPSA id i15-20020a2ea36f000000b0025e6a0a504bsm216479ljn.25.2022.08.03.03.20.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Aug 2022 03:20:06 -0700 (PDT)
-Message-ID: <8afe7812-7dbd-7257-2a55-b4ae49f47381@linaro.org>
-Date:   Wed, 3 Aug 2022 12:20:04 +0200
+        with ESMTP id S233563AbiHCK0m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 3 Aug 2022 06:26:42 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3741F2DB;
+        Wed,  3 Aug 2022 03:26:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1659522399; x=1691058399;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9bP0d3qqmjGzLGVmWvrgp4/m2jcaKZ09NEpkHpIYWQU=;
+  b=c2AQIhbD5Cllsqu+K885QS/hSAW+lQnosszO3RsQ70UtJ3eNSPfU4yng
+   /XEABgR8vUu9Cj1Vc8ryQmtlGz/ma1Z6ULr3xllgK41Toz+zeW1tKmG8l
+   aoM7zrTZmft6trZu5orNvUz14mGc1/03A2EF4hOQVIzGcPthniTpAzIL0
+   1llBFkOZBnupEF7+Jj9VrvILnjiENc7nJbHTUJCeUhdoMB2ozd00kB/1c
+   AFpiGAAC9AL21t2q7eEWbvkXzTHQFlLDIh/FuVyfyiFoeBJ6JvCVIyeVd
+   hU2Cp5RRWjfpeiE+HpciDcBGgXQmJqu5Bbt5RvbIakrIbnJEw2mnqJK+Z
+   g==;
+X-IronPort-AV: E=Sophos;i="5.93,214,1654585200"; 
+   d="scan'208";a="174716534"
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 03 Aug 2022 03:26:38 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.28; Wed, 3 Aug 2022 03:26:38 -0700
+Received: from localhost.localdomain (10.10.115.15) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2375.28 via Frontend Transport; Wed, 3 Aug 2022 03:26:35 -0700
+From:   Claudiu Beznea <claudiu.beznea@microchip.com>
+To:     <eugen.hristev@microchip.com>, <jic23@kernel.org>,
+        <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
+        <alexandre.belloni@bootlin.com>, <ludovic.desroches@microchip.com>,
+        <robh+dt@kernel.org>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>
+Subject: [PATCH v3 00/19] iio: adc: at91-sama5d2_adc: add support for temperature sensor
+Date:   Wed, 3 Aug 2022 13:28:36 +0300
+Message-ID: <20220803102855.2191070-1-claudiu.beznea@microchip.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding documentation for
- NXP IMX93 ADC
-Content-Language: en-US
-To:     haibo.chen@nxp.com, jic23@kernel.org, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de
-Cc:     kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <1659517947-11207-1-git-send-email-haibo.chen@nxp.com>
- <1659517947-11207-2-git-send-email-haibo.chen@nxp.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1659517947-11207-2-git-send-email-haibo.chen@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 03/08/2022 11:12, haibo.chen@nxp.com wrote:
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> The IMX93 SoC has a new ADC IP, so add binding documentation
-> for NXP IMX93 ADC.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 65 +++++++++++++++++++
->  1 file changed, 65 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> new file mode 100644
-> index 000000000000..e0eac5aa81d7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> @@ -0,0 +1,65 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/nxp,imx93-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP ADC found on the imx93 SoC
+Hi,
 
-How different it is from ADC in imx8qxp?
+The following series add support for temperature sensor available on
+SAMA7G5.
 
-> +
-> +maintainers:
-> +  - Haibo Chen <haibo.chen@nxp.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: nxp,imx93-adc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 4
+Temperature sensor available on SAMA7G5 provides 2 outputs VTEMP and VBG.
+VTEMP is proportional to the absolute temperature voltage and VBG is a
+quasi-temperature independent voltage. Both are necessary in computing
+the temperature (for better accuracy). Also, for better accuracy the
+following settings were imposed when measusing the temperature:
+oversampling rate of 256, sampling frequency of 10MHz, a startup time of
+512 ticks, MR.tracktim=0xf, EMR.trackx=0x3.
 
-You need to describe items.
+For computing the temperature measured by ADC calibration data is
+necessary. This is provided via OTP memory available on SAMA7G5.
 
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    const: ipg
+Patches 1/19-4/19 provides some fixes.
+Patches 5/19-16/19 prepares for the addition of temperature sensor
+support.
+Patch 17/16 adds the temperature sensor support.
 
-No need for clock-names in such case.
+Along with temperature sensor support I took the chance and added
+runtime PM support in this series, too (handled in patch 19/19).
 
-> +
-> +  vref-supply: true
+The rest of patches in this series are minor cleanups.
 
-Missing description.
+Thank you,
+Claudiu Beznea
 
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - clocks
-> +  - clock-names
-> +  - vref-supply
-> +  - "#io-channel-cells"
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/clock/imx93-clock.h>
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +    soc {
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-> +        adc@44530000 {
-> +            compatible = "nxp,imx93-adc";
-> +            reg = <0x44530000 0x10000>;
-> +            interrupts = <GIC_SPI 217 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 218 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 219 IRQ_TYPE_LEVEL_HIGH>,
-> +                         <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
-> +            clocks = <&clk IMX93_CLK_ADC1_GATE>;
-> +            clock-names = "ipg";
-> +            vref-supply = <&reg_vref_1v8>;
-> +            status = "disabled";
+Changes in v3:
+- fixed compilation warning by adjusting patches 10/19, 11/19
 
-No status in the example.
+Changes in v2:
+- addressed review comments
+- with this, new patches were intruced in this series: 2/19, 4/19,
+  8/19, 9,19
+- runtime pm support has been adapted to work also when CONFIG_PM
+  is not enabled
+- collected tags
 
+Claudiu Beznea (19):
+  iio: adc: at91-sama5d2_adc: fix AT91_SAMA5D2_MR_TRACKTIM_MAX
+  iio: adc: at91-sama5d2_adc: check return status for pressure and touch
+  iio: adc: at91-sama5d2_adc: lock around oversampling and sample freq
+  iio: adc: at91-sama5d2_adc: disable/prepare buffer on suspend/resume
+  iio: adc: at91-sama5d2_adc: exit from write_raw() when buffers are
+    enabled
+  iio: adc: at91-sama5d2_adc: handle different EMR.OSR for different hw
+    versions
+  iio: adc: at91-sama5d2_adc: move the check of oversampling in its
+    function
+  iio: adc: at91-sama5d2_adc: drop AT91_OSR_XSAMPLES defines
+  iio: adc: at91-sama5d2_adc: add .read_avail() chan_info ops
+  iio: adc: at91-sama5d2_adc: adjust osr based on specific platform data
+  iio: adc: at91-sama5d2_adc: add 64 and 256 oversampling ratio
+  iio: adc: at91-sama5d2_adc: move oversampling storage in its function
+  iio: adc: at91-sama5d2_adc: update trackx on emr
+  iio: adc: at91-sama5d2_adc: add startup and tracktim as parameter for
+    at91_adc_setup_samp_freq()
+  iio: adc: at91-sama5d2_adc: lock around at91_adc_read_info_raw()
+  dt-bindings: iio: adc: at91-sama5d2_adc: add id for temperature
+    channel
+  iio: adc: at91-sama5d2_adc: add support for temperature sensor
+  iio: adc: at91-sama5d2_adc: add empty line after functions
+  iio: adc: at91-sama5d2_adc: add runtime pm support
 
+ drivers/iio/adc/at91-sama5d2_adc.c            | 684 +++++++++++++++---
+ .../dt-bindings/iio/adc/at91-sama5d2_adc.h    |   3 +
+ 2 files changed, 568 insertions(+), 119 deletions(-)
 
-Best regards,
-Krzysztof
+-- 
+2.34.1
+

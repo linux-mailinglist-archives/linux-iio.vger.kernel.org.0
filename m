@@ -2,145 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D283D589852
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Aug 2022 09:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED17589A24
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Aug 2022 11:53:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234510AbiHDH1r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 4 Aug 2022 03:27:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49086 "EHLO
+        id S238750AbiHDJxg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 4 Aug 2022 05:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230194AbiHDH1r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Aug 2022 03:27:47 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2A231CB07
-        for <linux-iio@vger.kernel.org>; Thu,  4 Aug 2022 00:27:45 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id s14so21230783ljh.0
-        for <linux-iio@vger.kernel.org>; Thu, 04 Aug 2022 00:27:45 -0700 (PDT)
+        with ESMTP id S232333AbiHDJxf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 4 Aug 2022 05:53:35 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF1B926AE5;
+        Thu,  4 Aug 2022 02:53:34 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id w185so18902174pfb.4;
+        Thu, 04 Aug 2022 02:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=aSyB3KJvrvJ0BogoctkXI4bVjQHmZ/gYUNXbje+/kOI=;
-        b=TU9evHAWie+NDvs31nlalQNM1idI+WkZwpcUz6CgiQBvPAoiFI2fyRqVlPHwBabC46
-         MGadz82yrmKN07C0zIhnmyQU+J/+O8cGd5vxvUUALAC8T1/hxIcD3DITYGbmcvCOIjty
-         i/pOoEXqxi5Pvu0s05LUVK2CBbvplob+asCuGESh0ZQHS3SXQv8NCezyjawaF6S3bdll
-         05mUpDIZ/oO9EDj015QqzR4IMsYC0dXjVdDzyzF6gdnqQ5zJSs2ULUgAvy+0a8pKI7fT
-         LPdo1vjDCi30zJI8DhsBsDj7pSnymij7ReeUrQASZX+MgXuo54tC2+ZbP1rafHAgwKXD
-         OFMw==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc;
+        bh=Yj4LnoCipKdQooHDqQkSzfPq9k+SbXM64sol04d/ofU=;
+        b=qVUuazv80uczwDUpa1W45XFLKQkv6E85jaluDS0qPCqx5UqLWXVRj7NNS3iB1u5yMk
+         BpAyrdAWbjN4xan/ozEhpBngVBm4vusnJrSXS6B5BtALu4Q7w0WkatMFosToCwAp0pxw
+         peyWEmojG15dUtIHplxLrARzYTKP87+hpzEs+qJ1Skx6IUC8ArRBWfpqh5foE/L0KuT3
+         5dl0vT47WvE/YFBfLMbib+8Ia4pPLthO02aty10gTq/7cMx0IUzGT+JIGnvuHvmlqhSG
+         +z4BOs0ydQYyC+O9uk363r+pOvEqCbU9PsjpybnRv4n2q2RjbjTJIV3fBXw17xudaCYj
+         TyKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=aSyB3KJvrvJ0BogoctkXI4bVjQHmZ/gYUNXbje+/kOI=;
-        b=WbwCs9SmcTrfb/9O4I42ZH9syE5umqujfZAaynmucoaB5WKCYcP4vxWuf5XTjnVa/H
-         DEiEKaXHr9c3lAtG9cPa0il7DqZ3fXYXxyYS4CSp2ffbAv0/VzMvZLJhUoBaDk1laSye
-         YB2eveo+gNE7Tjd0wWaqzUoCXY1dwYoC/ewhOccQBd8cRu9x2yme8mcKosll8P8k1liA
-         K7a07e01Y7Ls8QDe5+UFpD4PApil2KOmCdh9G3kSH71do4DTfMyhGHKz7aQ3ww51ygFf
-         V4w+4qLH71AHpsQy7YlJYte8R968l9gtO/hxc+2lPUCwem6zsGdBk6VTvrPuId/wruhC
-         TcnA==
-X-Gm-Message-State: ACgBeo2LfxdBwz1xmo1r/cjMkLQshoWndGDUl0Aqodn7lZP+kZjSd7FF
-        JHrzQZqrwWzmHSmHs5ugesLSBQ==
-X-Google-Smtp-Source: AA6agR7+xRRDz610IRndZlm62HvuIryr79N8uLtJ4lMJe0TKFOdU4fTobPtr6nSF4CDtBtL6EVRPoQ==
-X-Received: by 2002:a2e:83d0:0:b0:25e:4afd:b28d with SMTP id s16-20020a2e83d0000000b0025e4afdb28dmr152816ljh.507.1659598064158;
-        Thu, 04 Aug 2022 00:27:44 -0700 (PDT)
-Received: from [192.168.1.6] ([77.222.167.48])
-        by smtp.gmail.com with ESMTPSA id w4-20020ac25984000000b0048a9a756763sm32790lfn.19.2022.08.04.00.27.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Aug 2022 00:27:43 -0700 (PDT)
-Message-ID: <89ea12c2-d4ef-490d-ff28-27b636adb05f@linaro.org>
-Date:   Thu, 4 Aug 2022 09:27:37 +0200
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
+        bh=Yj4LnoCipKdQooHDqQkSzfPq9k+SbXM64sol04d/ofU=;
+        b=ewahLd3VOGPtQ3GZMq/EPtODImi2jZTqphBuCCDYg+JCH5gVokPpOQObRCVpDdMgUZ
+         rEDXp/jLA+GDqHdHEzM0xeHS6T7qcU/Tb2cHcDerozYtbX1mfGtwFns/f4GBTml2jBHK
+         s1fI0aoUNEXiLsd/GcQFwT9/b+aSb24lxmcP92hBelwINzw8MLks2NsUgyjEJQdKiwNK
+         mr0NMxeE9j7nsHXRNhor+MFJKynV8t3R5EHgB4GZjx+/Izh982dQ/nl4a+/lK9hrJWKB
+         ctDDGc79cK+1mjFcB3VMIagU8H7XjPVcvB6S/Q0OD9FgwhaQ2AQUGmkUd0mpNO/Njezz
+         l3gg==
+X-Gm-Message-State: ACgBeo3FtQjUtk8qNh02MJ6yiePvxaMUoVzkNrLu2YZLHGh2Qp95MOJY
+        P3QB1NLgFCVKolQTZYK8T/KQnEpiSWgQ4NuIvt8=
+X-Google-Smtp-Source: AA6agR6qwy7xIi0BGj0KdaE31bzJZvJiNHMC9+UQ+P/hml7eIyhBore8DXxCh12e0tZqDO9pfcvT3sY1+E56wep5ub0=
+X-Received: by 2002:a65:694f:0:b0:41c:cc1f:4440 with SMTP id
+ w15-20020a65694f000000b0041ccc1f4440mr1024346pgq.318.1659606814308; Thu, 04
+ Aug 2022 02:53:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 02/10] dt-bindings: iio: accel: use
- spi-peripheral-props.yaml
-Content-Language: en-US
-To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Ricardo Ribalda <ribalda@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Joachim Eastwood <manabian@gmail.com>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Beniamin Bia <beniamin.bia@analog.com>,
-        Patrick Vasseur <patrick.vasseur@c-s.fr>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
-        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?UTF-8?Q?M=c3=a5rten_Lindahl?= <martenli@axis.com>,
-        Bogdan Pricop <bogdan.pricop@emutex.com>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Dan Murphy <dmurphy@ti.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Michael Welling <mwelling@ieee.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Robert Jones <rjones@gateworks.com>,
-        Chris Coffey <cmc@babblebit.net>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        broonie@kernel.org
-References: <20220727164646.387541-1-krzysztof.kozlowski@linaro.org>
- <20220727164646.387541-3-krzysztof.kozlowski@linaro.org>
- <20220731164943.320babe4@jic23-huawei>
- <20220803212926.GA2639296-robh@kernel.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220803212926.GA2639296-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220722102407.2205-1-peterwu.pub@gmail.com> <20220722102407.2205-13-peterwu.pub@gmail.com>
+ <20220730214205.GK23307@duo.ucw.cz>
+In-Reply-To: <20220730214205.GK23307@duo.ucw.cz>
+From:   Alice Chen <szunichen@gmail.com>
+Date:   Thu, 4 Aug 2022 17:53:22 +0800
+Message-ID: <CA+hk2fbEvU2yJbowqKoozb2M0aQc9TFCaxAn++YrmEx+eWt_4w@mail.gmail.com>
+Subject: Re: [PATCH v6 12/13] leds: flash: mt6370: Add MediaTek MT6370
+ flashlight support
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     ChiaEn Wu <peterwu.pub@gmail.com>, lee.jones@linaro.org,
+        daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, sre@kernel.org, chunfeng.yun@mediatek.com,
+        gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de,
+        lgirdwood@gmail.com, broonie@kernel.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com, deller@gmx.de,
+        andy.shevchenko@gmail.com, chiaen_wu@richtek.com,
+        alice_chen@richtek.com, cy_huang@richtek.com,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 03/08/2022 23:29, Rob Herring wrote:
->>> I wonder if spi-3wire is device specific (not controller) and should be
->>> rather explicitly mentioned by device schema. Just like spi-cpol/cpha.
->>
->> I think it is, but Mark is expert on this.
-> 
-> I would say yes as it's the device with a single data line.
+Pavel Machek <pavel@ucw.cz> =E6=96=BC 2022=E5=B9=B47=E6=9C=8831=E6=97=A5 =
+=E9=80=B1=E6=97=A5 =E6=B8=85=E6=99=A85:42=E5=AF=AB=E9=81=93=EF=BC=9A
 
-I will move it to device schema, just like cpol/cpha, and send a v3.
-After the merge window.
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * Copyright (C) 2022 Richtek Technology Corp.
+> > + *
+> > + * Author: Alice Chen <alice_chen@richtek.com
+>
+> Add ">" at end of line.
+>
+> The series is quite big, would it be possible to submit LED changes
+> in separate series?
+>
+Hi Pavel,
 
-> 
->> In general I'm waiting on Mark's opinion on the whole idea!
-> 
-> The prerequisite changes (except for spi-3-wire) are already queued up 
-> by Mark as are changes for other subsystems.
+Our mfd dt-bindings depends on flash and LED dt-bindings,
+but our flash and LED config depend on mfd config.
+For the dependency consideration,
+we think submitting them in a patch series is better.
 
-
-Best regards,
-Krzysztof
+Best Regards,
+Alice

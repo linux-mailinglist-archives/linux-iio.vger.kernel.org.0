@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EABEF58AB42
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 15:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC35658AB58
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 15:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240860AbiHENHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 09:07:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59380 "EHLO
+        id S236786AbiHENKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Aug 2022 09:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240858AbiHENHQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 09:07:16 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899511A812;
-        Fri,  5 Aug 2022 06:06:58 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id j4so1761557qkl.10;
-        Fri, 05 Aug 2022 06:06:58 -0700 (PDT)
+        with ESMTP id S229640AbiHENKS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 09:10:18 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEF9F74;
+        Fri,  5 Aug 2022 06:10:16 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id 17so1779884qky.8;
+        Fri, 05 Aug 2022 06:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=3FEi1CuKFHPWHETXS5rrQ8s9GwbgPfiuBefvLvAoBsk=;
-        b=KgL/Ti/Sw5zH9EmMfo00bYbabUMlHnfPxzlYp138btnOZ5iHJws2jxCG33uwIKAM57
-         ZH9pcxSaQ3WAvKMK+rlXSIpmF9goTDadcJBOaraf9vF+AYXYuuUCk1nn9mZTAv7A84VS
-         IGN53sF6SexwC9WgkegcjbT+ydEtt7SJLKzuOXSjM7pv7pItuF3vkyrASesCL/DMFAma
-         rvrzVZQfTooocv0qvKbynXnxhJZQrwyBscixkLCW31xTQ5ekgGyzVfdw4/3LfOktLn40
-         aBpsyR98kiE/cfno9Vr7LLF4YuYZgav13rVMy6A3nxoUQo28k9pfuse69foAmsjNPvze
-         VLuQ==
+        bh=9J24cDKKqsOduTS9UUyGj2I+dc2JXq9COm3ho1bp/NE=;
+        b=NZ/lhCyR9M4uoWmE11gXdKIY5QHCgnKHevuKo4TMG1DjXmtxuHL9IGeJwZ4LfPJ5Sx
+         An9X10WyEwlH6gobWrRkcQrihAvfFo/NEkJHppMNCjVysFpqBcUQppBPmmWv/gJlRwNJ
+         AJ5R5hBz/6Z6zt3zcMCzNBlOWAFcgddiIbDO26176idaVxtdAeLEwOB83fyRhNgFshT0
+         PgEvwdsJAJBc7N5GmC3tSOdTGVFK5PY33vJvxUo6aKPI13T8ZPWktLxzYyY8DyD7/CRd
+         N6n68KF39/cpPvRO/LCj/Zk8AkuXDm7CeFfWTupOMgC5Oh24O5OoP7ydY1qxP317WUAG
+         zV8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=3FEi1CuKFHPWHETXS5rrQ8s9GwbgPfiuBefvLvAoBsk=;
-        b=ySiFODdYM7al7IA01RtrIGmH8x7fqHG1ACFrx2XxZCLAPHNiP4uI6FWcaVt5ihXIxM
-         /NDhDkXyJj00/ToPSxMfihJbHA60Elhg5NFJuSkHUxTfRWlQBmAbM3AxsrFcCGaEkBVf
-         g603QBriJxvLZtRsomS4977AYJ8F7BU4rbJb12InVW+KOIBS9Bg3gaUtek/pLH/zjGDQ
-         qa9WBkDfbe5ydGLWVe+qcDVJYqVOAYXZiTKJJEI1T2LDA+7PHXWesewlOsyKtxZsq9Cw
-         JYoBlpOxM+/xdR+C1hx3vP0LMoNMdmLx3qtkBw+b6D7QIkvs6ODZEGIQTugaRCYJ0yLc
-         zePw==
-X-Gm-Message-State: ACgBeo13FHeALHTaMh/wRLuHWKumYi2K83YMPXfoKbLtHiLHxaWUIdY6
-        dZkOLa22jGGEHNUZNpnyIqBoz/QbE7DmnFPz0P4=
-X-Google-Smtp-Source: AA6agR4j0zsJqZaQf0Yu4UVNEf1JelHQhvwq9j519MOA8iXjVXlQvyGrJ/GntjcmyE7xYpQsU0Y5iOHVvVZTTJcjLGA=
-X-Received: by 2002:a05:620a:31a:b0:6b9:1f1a:7e13 with SMTP id
- s26-20020a05620a031a00b006b91f1a7e13mr727146qkm.748.1659704817063; Fri, 05
- Aug 2022 06:06:57 -0700 (PDT)
+        bh=9J24cDKKqsOduTS9UUyGj2I+dc2JXq9COm3ho1bp/NE=;
+        b=imnwJFAhn0BzI6QmhPhz1U4EMSdkH2oU/MKgzSijN8NrAZvqPsT3SmYCIPaydWTw+W
+         C+GMV4zm+HDbL8yAK3bSXfIH9oCI0N8yLoDGYmil4Wz8nyLAwgQdvPUp0jcy4bCGFVWn
+         M/eCqLghhNqljBSHXy4itcoo9c0RP1CgGUlmLphYsDdQO4cXNKhwpaQGabHvlwHAeyBx
+         nqUHJQV6SGlz35n7NIvlJDDRfxc7pUPy/trsCkmVsxROIUbJKLs1Ry6Rd7oQCbRkWj7I
+         Sv5ATnTjtpPvfwg466Lk7ZGrOlpkE6+NswsjwEE5nYft3EmyxTiMBW2yWaYvaslAAtR2
+         jlrw==
+X-Gm-Message-State: ACgBeo0lApKLBx6Q3ehTsBJXbCCufPGZVxhm/wC5XpLUsJG5WoMhWrea
+        UYfQFHa2ttEgoUSEE/4r8eEwjRgXfaslLWLEAcI=
+X-Google-Smtp-Source: AA6agR6KCeqnEoqyKUTU9bwzHJxmJAXoC1uA/8jBqjS4KNKKgC3bBRK/UzGUzHpzrq29/PrSFNdU8y5czcT3jzWXnGE=
+X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
+ s13-20020a05620a254d00b006ab84b825ebmr5054205qko.383.1659705015729; Fri, 05
+ Aug 2022 06:10:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-14-peterwu.pub@gmail.com>
-In-Reply-To: <20220805070610.3516-14-peterwu.pub@gmail.com>
+References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-13-peterwu.pub@gmail.com>
+In-Reply-To: <20220805070610.3516-13-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 5 Aug 2022 15:06:19 +0200
-Message-ID: <CAHp75VfiYNzmcPN8LNqvU0jKuWVFR3ODY3iWaJwpDxUdSORTOg@mail.gmail.com>
-Subject: Re: [PATCH v7 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
+Date:   Fri, 5 Aug 2022 15:09:39 +0200
+Message-ID: <CAHp75VcdU6AVdksuhsHkzvD6mOBJ6G=yrmuHA9zAXLroXDFAjg@mail.gmail.com>
+Subject: Re: [PATCH v7 12/13] leds: flash: mt6370: Add MediaTek MT6370
+ flashlight support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -94,51 +95,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 9:08 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+On Fri, Aug 5, 2022 at 9:07 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> From: ChiaEn Wu <chiaen_wu@richtek.com>
+> From: Alice Chen <alice_chen@richtek.com>
 >
-> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
-> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
-> driver, display bias voltage supply, one general purpose LDO, and the
-> USB Type-C & PD controller complies with the latest USB Type-C and PD
-> standards.
+> The MediaTek MT6370 is a highly-integrated smart power management IC,
+> which includes a single cell Li-Ion/Li-Polymer switching battery
+> charger, a USB Type-C & Power Delivery (PD) controller, dual Flash
+> LED current sources, a RGB LED driver, a backlight WLED driver,
+> a display bias driver and a general LDO for portable devices.
 >
-> Add a support for the MediaTek MT6370 backlight driver.
-> It controls 4 channels of 8 series WLEDs in
-> 2048 (only for MT6370/MT6371) / 16384 (only for MT6372)
-> current steps (30 mA) in exponential or linear mapping curves.
+> Add a support for the MT6370 Flash LED driver. Flash LED in MT6370
+> has 2 channels and support torch/strobe mode.
 
-...
-
-> +#include <linux/backlight.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/bits.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/kernel.h>
-> +#include <linux/minmax.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-
-> +#include <linux/of_device.h>
-
-Why? Since below drop this and use fully fwnode / device property APIs.
-
-> +#include <linux/platform_device.h>
-
-Missed property.h which is heavily used in.the driver
-
-> +#include <linux/regmap.h>
+Same comments as per previous LED related patch.
 
 ...
 
 > +       /*
-> +        * MT6372 uses 14 bits to control the brightness but MT6370 and MT6371
-> +        * use 11 bits. They are different so we have to use this function to
-> +        * check the vendor ID and use different mask, shift and default
-> +        * maxiimum brightness value.
+> +        * For the flash to turn on/off, we need to wait HW ramping up/down time
+> +        * 5ms/500us to prevent the unexpected problem.
+> +        */
+> +       if (!priv->fled_strobe_used && curr)
+> +               usleep_range(5000, 6000);
+> +       else if (priv->fled_strobe_used && !curr)
+> +               usleep_range(500, 600);
 
-Use spell-checker for all your patches.
+Now it's much better!
+
+...
+
+> +       /*
+> +        * Always configure as min level when off to
+> +        * prevent flash current spike
+
+/*
+ * You need to check the style
+ * of multi-line comments like
+ * this one.
+ */
 
 > +        */
 

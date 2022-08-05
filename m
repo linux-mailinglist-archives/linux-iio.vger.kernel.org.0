@@ -2,37 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF2158AC4B
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 16:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2365458ADD3
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 18:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240487AbiHEOTz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 10:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
+        id S238058AbiHEQDx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Aug 2022 12:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbiHEOTx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 10:19:53 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EDC4199B;
-        Fri,  5 Aug 2022 07:19:51 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id E67115FD06;
-        Fri,  5 Aug 2022 17:19:49 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1659709189;
-        bh=2M6mlM/MoXNXXYasdLSREXOJkY3rzZBjBB//cb49t9k=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=DqYRfH8rbhQ8yil6RL8X69Jm4L0sa7CiOsZWykbaFOAobNc78Uniw5vSG+N4Hi8hW
-         BCmVSTD+hwpVuIrZGFmGVi9cbPVBCjv3Rh6HMZIeaiRurIZFAFBdrrsriNjvRnBngp
-         taSCRixmSQqjqh09YB3iO9ex2BOZMd5BKZxxvuYBvqRAhkGRClL9PHJ5MwZiDkmKOL
-         z9SlzhTludyLSoIXery+Ia6dhSxtDpHWDG0rj2nrysUhpDJDqhdBfyOYYGXtOqSqPE
-         ju3OzwovvK/9woRyyE6NrFUUynsr5WYDtQ566FJthpNv8Y9VBboU3dMuInddHsgBbN
-         En6wCIbsJX6+w==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Fri,  5 Aug 2022 17:19:49 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        with ESMTP id S234130AbiHEQDw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 12:03:52 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34A43F581;
+        Fri,  5 Aug 2022 09:03:50 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id v1so2146372qkg.11;
+        Fri, 05 Aug 2022 09:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=288X2VDrP2DG5uIW/Tl+V/IQYhuK5aN7/B0TNeGg6x0=;
+        b=nP3O7xgoPV6zNfddHMPrxmYdhB3DNflQN/hr4dvbav/GdhnyWDkejJVI/x1XTmxjXR
+         1c1hH2nqatXaI9tGzXniSExrQbpFAzzyLmIpkDbTjRPLGevFjxKQ/4uA6H2VwAww0g80
+         pcXA+dHmoAgXhzFjp0bzjVDYoOyxrHV7pDihkRI9kY6S1HmOioWNEo4d4vWg+TM3aV+o
+         0uJxIVqVJlPdzq55fbIizARdy5BhFqvDS8wMn0uYWsi1wzXy8A6+A0NJdjgHKnBxSW1f
+         RFrB0mNweyusXwy7DxEEC1iVlx2tyywg5+IS2NvpUi2B5tX8fc4uTIq2S7jNoVA9qbkc
+         jhNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=288X2VDrP2DG5uIW/Tl+V/IQYhuK5aN7/B0TNeGg6x0=;
+        b=b91KISZ8m9xTN4E9wh2sA1crvZM2fQIZZgxaTF/vwIzVoHEgC9hzoiSstN1XgmtAe4
+         hass22mlPgqFwuHqtqA7V+Bz8A8SkprZ9Vjh5JmsmKES6gsBaF7GcUjA6spez+zmRwn/
+         gX4GjKww7yj/M8BvekihHcM9U5CosSQeicS63kEXFsmPi/4/fInyRdsGRNjl69C5Yrwo
+         ej0wFFVcsw9cQ8MXhF/mmlkzXwFF8HYxEuLlQ0jC8GibclQN1B+D0hq7lXfevLDn+oHV
+         87+poe57AwdF5YyEtqvrc3rFKBY/aq4F3alEAp6uKG+jayZkLeU1Sd1DPJHvYz8+Nvv3
+         yvkg==
+X-Gm-Message-State: ACgBeo37NGpfUcyXWAF0+1NoKk5cAIUFtPUFxwTWFVp+t50cKP2vZam0
+        0r/I9nXQbCsb9kZzhbMSUiQXnSwm83VAYIVJKHo=
+X-Google-Smtp-Source: AA6agR5HcpJu0qkIJQb0mUob4lakApYVEcb7BtZU0NNfmbPRFGvVzIe5F2ndiOWwmfIZFnHBJPA0ow4rJ5My4We/7Ak=
+X-Received: by 2002:a05:620a:2809:b0:6b6:5908:316e with SMTP id
+ f9-20020a05620a280900b006b65908316emr5905506qkp.734.1659715428838; Fri, 05
+ Aug 2022 09:03:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
+ <20220803131132.19630-3-ddrokosov@sberdevices.ru> <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+ <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
+ <20220804181723.4bljpxcwkj6cnn2f@CAB-WSD-L081021.sigma.sbrf.ru>
+ <CAHp75Vcn6JCDDvugop2Ho1cayLi1CX78O42v3GifvnuSY5fvPA@mail.gmail.com> <20220805140430.c773smfzxg5zcj4b@CAB-WSD-L081021.sigma.sbrf.ru>
+In-Reply-To: <20220805140430.c773smfzxg5zcj4b@CAB-WSD-L081021.sigma.sbrf.ru>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 5 Aug 2022 18:03:12 +0200
+Message-ID: <CAHp75VeHXemqJH6rCfH5Tvoq=nDBM4d9nGr-b6LN-fKMEEvyfA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer driver
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "jic23@kernel.org" <jic23@kernel.org>,
@@ -42,148 +66,59 @@ CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Topic: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62dQgeAgAAYQICAAYT0AIABTNeA
-Date:   Fri, 5 Aug 2022 14:19:21 +0000
-Message-ID: <20220805141945.sqbhvojckfbmfh7w@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
- <20220803131132.19630-3-ddrokosov@sberdevices.ru>
- <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
- <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
- <CAHp75VdCWKCVws_xp7igCAGYFC7bxkQgCyXFohQR5PHzTkoSpg@mail.gmail.com>
-In-Reply-To: <CAHp75VdCWKCVws_xp7igCAGYFC7bxkQgCyXFohQR5PHzTkoSpg@mail.gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <700F76D94560BE41BF1C8EDED97E9E49@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/05 06:43:00 #20054623
-X-KSMG-AntiVirus-Status: Clean, skipped
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 04, 2022 at 08:28:28PM +0200, Andy Shevchenko wrote:
-> > > > +static const struct {
-> > > > +       int val;
-> > > > +       int val2;
-> > > > +} msa311_fs_table[] =3D {
-> > > > +       {0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
-> > > > +};
+On Fri, Aug 5, 2022 at 4:04 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+>
+> On Thu, Aug 04, 2022 at 08:30:12PM +0200, Andy Shevchenko wrote:
+> > > > > > +               dev_err(dev, "cannot %s register %u from debugfs (%d)\n",
+> > > > > > +                       readval ? "read" : "write", reg, err);
+> > > > >
+> > > > > You may consider taking [1] as a precursor here and use str_read_write().
+> > > > >
+> > > > > [1]: https://lore.kernel.org/linux-i2c/20220703154232.55549-1-andriy.shevchenko@linux.intel.com/
+> > > >
+> > > > Oh, really... Thank you for suggestion!
 > > >
-> > > Besides that this struct is defined not only once in the file, this i=
-s
-> > > very well NIH struct s32_fract. Why not use the latter?
->=20
-> > Good point, but looks like this struct is not so popular in the other
-> > kernel drivers:
->=20
-> It's simply new, it is not about popularity. I would put it as it's
-> not _yet_ so popular.
-
-Okay, no problem. I've already reworked it to s32_fract locally.
-
->=20
-> ...
->=20
-> > grep "s32_fract" -r -l . | wc -l
-> > 3
->=20
-> Hint: `git grep` much much faster on Git repositories (it goes via
-> index and not working copy) and see
-> `git grep -lw s32_fract`
->=20
-
-Thank you for the hint. Actually I'm using ripgrep for the kernel
-fuzzysearching, it's faster than git grep. Here I gave an example based
-on grep command, because it's general shell command for the searching
-substrings I suppose.
-
-> ...
->=20
-> > > > +       .cache_type =3D REGCACHE_RBTREE,
-> > >
-> > > Tree hash is good for sparse data, do you really have it sparse (a lo=
-t
-> > > of  big gaps in between)?
+> > > I have taken it closer, and it's really helpful and nice, but looks like
+> > > it's not merged to linux-next.
+> > > Please advise how I can use it in the driver. Should I provide
+> > > "Depends-On:" tag as I did for my HZ units patchset?
 > >
-> > I suppose so. MSA311 regmap has ~6 gaps.
->=20
-> Yes and how long is each gap in comparison to the overall space?
+> > No, just take that patch into your series.
+>
+> Do you mean include your patch to this reply-thread through the
+> message-id linking?
 
-The longest gap is 0xb bytes.
->=20
-> ...
->=20
-> > > > +       for (fs =3D 0; fs < ARRAY_SIZE(msa311_fs_table); ++fs)
-> > >
-> > > fs++ will work as well.
-> >
-> > I would prefer ++fs if you don't mind :)
->=20
-> Why? It's a non-standard pattern, and needs an explanation.
->=20
+No, just take it as a part of your series. Ah, I wrote almost the same
+thing above...
 
-From statistics point of view, you are right :)
+The idea is you rebase your tree interactively and put a breakpoint to
+the beginning of your series, then you take a link and run `b4 am -s
+...` (-s is important) followed by `git am ...` (b4 will show you the
+command you need to run). Then you continue your rebasing. Now, when
+you send a new version of the series, take one more patch into it by
+changing depth from 3 (the number of patches in your series) to 4 (+
+my patch).
 
-$ rg "for" | rg "\+\+[a-z]" | wc -l
-7271
-$ rg "for" | rg "[a-z]\+\+" | wc -l
-81247
+Generally speaking the HZ series is something different. It's a series
+which can't be simply taken because it might touch the different
+subsystem(s). Luckily for you the "different subsystem(s)" is the same
+subsystem you are taking these patches with. Hence it might not be a
+problem to attach it as well into a chain.
 
-[...]
+Speaking of lib/ code almost any maintainer can take it via their
+trees. So taking a _single_ patch against lib/ is fine in most cases.
 
-> > > > +                               dev_err(dev, "cannot update freq (%=
-d)\n", err);
-> > >
-> > > frequency
-> >
-> > It will be more ugly due 80 symbols restriction.
->=20
-> Nope, it will be understandable by the user. You do code for the user
-> and then for the developer, right?
-
-Sure, that's good point.
-
-[...]
-
->=20
-> ...
->=20
-> > > > +               dev_dbg(dev, "found MSA311 compatible chip[%#x]\n",=
- partid);
-> > >
-> > > Useless message.
-> >
-> > Why? It's under dynamic debug, so I will see it if I really want to.
->=20
-> So what the point of the _successful_ detection? You already know from
-> the code, that partid, you know by other means that probe was
-> successful, why this message is needed? Especially for debugging when
-> we have initcall_debug option.
->=20
-
-Agreed
-
-[...]
-
---=20
-Thank you,
-Dmitry=
+-- 
+With Best Regards,
+Andy Shevchenko

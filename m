@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D957258A9EC
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 13:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EABEF58AB42
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 15:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236596AbiHELH5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 07:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39534 "EHLO
+        id S240860AbiHENHV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Aug 2022 09:07:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232506AbiHELH4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 07:07:56 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7278606A1;
-        Fri,  5 Aug 2022 04:07:55 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id h22so1772775qta.3;
-        Fri, 05 Aug 2022 04:07:55 -0700 (PDT)
+        with ESMTP id S240858AbiHENHQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 09:07:16 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899511A812;
+        Fri,  5 Aug 2022 06:06:58 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id j4so1761557qkl.10;
+        Fri, 05 Aug 2022 06:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=xevi7s0+mr+ptfy7uVrWQvtAVkuN9tBhA8DON7VF3hc=;
-        b=a9+SkJgUlA0b0/BHR/ZnCRMvTgWWiTfbn+7hCLvZBsaMMCRDTPxUJBAC7vZNjxq/vo
-         k8OLi0uQ406lmhmpDT6bTA8Ln7hcqHBvrfJ6793g1OGhONtOUz8WZFu//S4D+ajPvm+/
-         HiavKm1cieEdFkxt1ha+nayBdzC2mzMdgbZG3PWagP1NkKBygX5opsEMSZg7lLxmqjo8
-         LBS37LwpObC3ROrIeGlDwWsw0zgdY3DWHlzFAJgr2ZjpMu5E7HGDXRWesXtLS8v9Z+Us
-         O4BT37Ii/msU+LJssnGZn5Y8/ZMnoo5h2TyNnno4biJLWE9r//68n4cVGwG19hhQqWRQ
-         N3Dg==
+        bh=3FEi1CuKFHPWHETXS5rrQ8s9GwbgPfiuBefvLvAoBsk=;
+        b=KgL/Ti/Sw5zH9EmMfo00bYbabUMlHnfPxzlYp138btnOZ5iHJws2jxCG33uwIKAM57
+         ZH9pcxSaQ3WAvKMK+rlXSIpmF9goTDadcJBOaraf9vF+AYXYuuUCk1nn9mZTAv7A84VS
+         IGN53sF6SexwC9WgkegcjbT+ydEtt7SJLKzuOXSjM7pv7pItuF3vkyrASesCL/DMFAma
+         rvrzVZQfTooocv0qvKbynXnxhJZQrwyBscixkLCW31xTQ5ekgGyzVfdw4/3LfOktLn40
+         aBpsyR98kiE/cfno9Vr7LLF4YuYZgav13rVMy6A3nxoUQo28k9pfuse69foAmsjNPvze
+         VLuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=xevi7s0+mr+ptfy7uVrWQvtAVkuN9tBhA8DON7VF3hc=;
-        b=sm5JrA6bYdtj87Ckqd8aZ8RxoIv3GyG38CZ8N7UmJFNpjIxZb3FmKdl8gfzW4nn6k3
-         7KcSZsLfpo1+dYFn639RMKnLI8QdjTDqAaRgsAfY/f4HBpBIF4MPMNRzzlo2276KReGz
-         AN/CO/oeQ+/v4mSeO1eB9t7O2Mk7K1hsy609OzmMw48+q2L6LjzmZe5cPbymL/w6Mc4+
-         uqJ/0Gjr8QOCn5t83Pi0pEsdIlyK7pekwFNUUQPchH0UvEUIVfHDE+DLYE2hAaPZTdej
-         WzR97EgX9aCPpQ6IwprcjHUViM/laq8Mpt7KhXp3+ATbTRnqObe2PhfFrBSyMLDoS8Ar
-         /XFw==
-X-Gm-Message-State: ACgBeo3JmxB5VDOC+Ob7cqtgv1SMy0kEQ3LHNtUg3UipsyiY3U6uID0i
-        kGhvFFg7x7va8tgDO+dNqSfAD8aoOxTwMJe/wt4=
-X-Google-Smtp-Source: AA6agR616g5NuJiBX7N2EN5Udk4icnJWQWfoN9qnVhTU27eNGicOdpHWiuxBhRNAeZcqXVc1r4KkqHm9jBQr5PV+ypI=
-X-Received: by 2002:ac8:5784:0:b0:31f:24e:93f5 with SMTP id
- v4-20020ac85784000000b0031f024e93f5mr5286928qta.429.1659697674792; Fri, 05
- Aug 2022 04:07:54 -0700 (PDT)
+        bh=3FEi1CuKFHPWHETXS5rrQ8s9GwbgPfiuBefvLvAoBsk=;
+        b=ySiFODdYM7al7IA01RtrIGmH8x7fqHG1ACFrx2XxZCLAPHNiP4uI6FWcaVt5ihXIxM
+         /NDhDkXyJj00/ToPSxMfihJbHA60Elhg5NFJuSkHUxTfRWlQBmAbM3AxsrFcCGaEkBVf
+         g603QBriJxvLZtRsomS4977AYJ8F7BU4rbJb12InVW+KOIBS9Bg3gaUtek/pLH/zjGDQ
+         qa9WBkDfbe5ydGLWVe+qcDVJYqVOAYXZiTKJJEI1T2LDA+7PHXWesewlOsyKtxZsq9Cw
+         JYoBlpOxM+/xdR+C1hx3vP0LMoNMdmLx3qtkBw+b6D7QIkvs6ODZEGIQTugaRCYJ0yLc
+         zePw==
+X-Gm-Message-State: ACgBeo13FHeALHTaMh/wRLuHWKumYi2K83YMPXfoKbLtHiLHxaWUIdY6
+        dZkOLa22jGGEHNUZNpnyIqBoz/QbE7DmnFPz0P4=
+X-Google-Smtp-Source: AA6agR4j0zsJqZaQf0Yu4UVNEf1JelHQhvwq9j519MOA8iXjVXlQvyGrJ/GntjcmyE7xYpQsU0Y5iOHVvVZTTJcjLGA=
+X-Received: by 2002:a05:620a:31a:b0:6b9:1f1a:7e13 with SMTP id
+ s26-20020a05620a031a00b006b91f1a7e13mr727146qkm.748.1659704817063; Fri, 05
+ Aug 2022 06:06:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-12-peterwu.pub@gmail.com>
-In-Reply-To: <20220805070610.3516-12-peterwu.pub@gmail.com>
+References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-14-peterwu.pub@gmail.com>
+In-Reply-To: <20220805070610.3516-14-peterwu.pub@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 5 Aug 2022 13:07:18 +0200
-Message-ID: <CAHp75VeL=GVMSQaxePwc47FsQczs10m0ZFc-Y3Z2rGx45vLnuQ@mail.gmail.com>
-Subject: Re: [PATCH v7 11/13] leds: rgb: mt6370: Add MediaTek MT6370 current
- sink type LED Indicator support
+Date:   Fri, 5 Aug 2022 15:06:19 +0200
+Message-ID: <CAHp75VfiYNzmcPN8LNqvU0jKuWVFR3ODY3iWaJwpDxUdSORTOg@mail.gmail.com>
+Subject: Re: [PATCH v7 13/13] video: backlight: mt6370: Add MediaTek MT6370 support
 To:     ChiaEn Wu <peterwu.pub@gmail.com>
 Cc:     Lee Jones <lee.jones@linaro.org>,
         Daniel Thompson <daniel.thompson@linaro.org>,
@@ -83,9 +82,7 @@ Cc:     Lee Jones <lee.jones@linaro.org>,
         USB <linux-usb@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
+        szuni chen <szunichen@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -97,96 +94,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 9:07 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+On Fri, Aug 5, 2022 at 9:08 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 >
-> From: ChiYuan Huang <cy_huang@richtek.com>
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
 >
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual
-> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
+> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> driver, display bias voltage supply, one general purpose LDO, and the
+> USB Type-C & PD controller complies with the latest USB Type-C and PD
+> standards.
 >
-> Add a support for the MediaTek MT6370 Current Sink Type LED Indicator
-
-Add support
-
-(This is also for all other commit messages)
-
-> driver. It can control four channels current-sink RGB LEDs with 3 modes,
-
-3 modes:
-
-> constant current, PWM, and breath mode.
+> Add a support for the MediaTek MT6370 backlight driver.
+> It controls 4 channels of 8 series WLEDs in
+> 2048 (only for MT6370/MT6371) / 16384 (only for MT6372)
+> current steps (30 mA) in exponential or linear mapping curves.
 
 ...
 
-> +static int mt6370_gen_breath_pattern(struct mt6370_priv *priv,
-> +                                    struct led_pattern *pattern, u32 len,
-> +                                    u8 *pattern_val, u32 val_len)
-> +{
-> +       enum mt6370_led_ranges sel_range;
-> +       struct led_pattern *curr;
-> +       unsigned int sel;
-> +       u32 val = 0;
-> +       int i;
-> +
-> +       if (len < P_MAX_PATTERNS && val_len < P_MAX_PATTERNS / 2)
-> +               return -EINVAL;
-> +
+> +#include <linux/backlight.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/bits.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/kernel.h>
+> +#include <linux/minmax.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+
+> +#include <linux/of_device.h>
+
+Why? Since below drop this and use fully fwnode / device property APIs.
+
+> +#include <linux/platform_device.h>
+
+Missed property.h which is heavily used in.the driver
+
+> +#include <linux/regmap.h>
+
+...
+
 > +       /*
-> +        * Pattern list
-> +        * tr1:  byte 0, b'[7: 4]
-> +        * tr2:  byte 0, b'[3: 0]
-> +        * tf1:  byte 1, b'[7: 4]
-> +        * tf2:  byte 1, b'[3: 0]
-> +        * ton:  byte 2, b'[7: 4]
-> +        * toff: byte 2, b'[3: 0]
+> +        * MT6372 uses 14 bits to control the brightness but MT6370 and MT6371
+> +        * use 11 bits. They are different so we have to use this function to
+> +        * check the vendor ID and use different mask, shift and default
+> +        * maxiimum brightness value.
+
+Use spell-checker for all your patches.
+
 > +        */
-> +       for (i = 0; i < P_MAX_PATTERNS; i++) {
-> +               curr = pattern + i;
-> +
-> +               sel_range = i == P_LED_TOFF ? R_LED_TOFF : R_LED_TRFON;
-> +
-> +               linear_range_get_selector_within(priv->ranges + sel_range,
-> +                                                curr->delta_t, &sel);
-> +
-> +               val <<= i % 2 == 0 ? 8 : 0;
-> +               val |= sel << (i % 2 == 0 ? 4 : 0);
-
-It's too cryptic, why not simply:
-
-  if (i % 2) {
-    val |= sel;
-  } else {
-    val <<= 8;
-    val |= sel << 4;
-  }
-
-?
-
-> +       }
-> +
-> +       put_unaligned_be24(val, pattern_val);
-> +
-> +       return 0;
-> +}
-
-...
-
-> +       const char * const states[] = { "off", "keep", "on" };
-
-> +       ret = fwnode_property_read_string(init_data->fwnode, "default-state",
-> +                                         &stat_str);
-> +       if (!ret) {
-> +               ret = match_string(states, ARRAY_SIZE(states), stat_str);
-> +               if (ret < 0)
-> +                       ret = STATE_OFF;
-> +
-> +               led->default_state = ret;
-> +       }
-
-Replace this by using led_init_default_state_get().
 
 -- 
 With Best Regards,

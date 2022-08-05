@@ -2,100 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DE958AEAD
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 19:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE72A58AF6B
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 20:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240921AbiHERKa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 13:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S234854AbiHESBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Aug 2022 14:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240754AbiHERK3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 13:10:29 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A73DF585;
-        Fri,  5 Aug 2022 10:10:28 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id q184so3326665oif.1;
-        Fri, 05 Aug 2022 10:10:28 -0700 (PDT)
+        with ESMTP id S241403AbiHESAd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 14:00:33 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32BC1260C;
+        Fri,  5 Aug 2022 11:00:22 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id u12so2635929qtk.0;
+        Fri, 05 Aug 2022 11:00:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=yrhBL50UTTJaHzMh461WNNj8NIR2DIRZ1vY8GGWYUG8=;
-        b=mIGjGFg02sqAPbhUSNTDaS3/qe+y4bTX1TzDIb+Et33IvTDUPkrlCnPrS4yd7IHRHS
-         t01d7Z7s+fZQGgfWPpZl/PafjNjLNyyvXZUhqLdgeifW9w32p1Gfuwxnj9vC/bmr3fOC
-         +obdjyeDxGBBmShNA2vrOdKPAui0a+kmlXiY9CF9Ej4zZe184rIs3QQ8x5VYec/aSBxY
-         kzYHKdPuoIaTq3Pe2isEMfWLSZ0z4umpkxUCOCcSWDL1FmlX8slSBD4iD1ScTNJeuJM6
-         4l+C34RoDhDzN5aQM+eFjmC7Vjpdog/BNRtzwZLaEWjWXin+XVjhSSoV0NhVTe93Rhss
-         6ijg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=4FpWqw9KDL4te8Y1a2j6cWDYoInxilQc57WR6jmkxYM=;
+        b=ZPwuuxotQz8JY/f5zETxBCz+Vmxug62tZZ5HxSaAbMWgYSZjd2PgqJX8lKsLcoLS96
+         UmCTvZyVTB7AoTjP7g00/7wEmyAD9U2zgZM3MRWPBp5pv+Y/ZdZN3umfWQJTX4+qkAV/
+         1FUvjbuQeRrBFE+XUCgf+C1Jk7j0oHGdFPaHD6ZOySR/ZeJnx70YOS1R3ft0OVDd81CM
+         KBepRchRs0PmmFGQISTGDfA5aWmgIRqZnIvaP1itAz7W6GTKLWzkSUenjNBr8UhdtxAw
+         9ksgTr8/is+bFvTL0ZoT17UGQptrx/wQmHSWnvD3FBZqMwcfUJYZuIBE11wi6CWjBMOv
+         PM7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=yrhBL50UTTJaHzMh461WNNj8NIR2DIRZ1vY8GGWYUG8=;
-        b=GTGjz4c+s4IAPoiFVo8BwxA9PVc1IYr6Ojd6zcm64eHmthNedup0Vu4rmbzYsfgqUw
-         m79yO56u6dJmBmDVGOkwQrxxnYkX+4St245nniUnSY42OQwpQX0fNYyv3I13EbB/l/FR
-         tflshddz/iijbe0AqnSpA52gWehJgo0zgg3ZM75Fu27xwH4oIM0rTWwStGZY7lAKd3Pw
-         7u0hAT3V3qyoLjH4Qj6dHo6o9UyWsNVRglqozZ2RYOhIozfp1TbDNRN4U3TFlW+qJxZE
-         duvSjynj43vSJKDxleuuS0c/FNeDkQVDoOxkUNoITGGqD8V/dctehQwYviXGx+itsEvx
-         wYmQ==
-X-Gm-Message-State: ACgBeo0U+tC7YVABhRbj/wWFe8iWyIdUxAJreZmtBY5oip727xN5e7yN
-        apBKuLjWKqmJbXtUpbpg/0wEVW3g4FM=
-X-Google-Smtp-Source: AA6agR5XPEWVJrEpt91ff0jdaKGEJFkP25ScqpyRE4I/WTkKJJ0d3sfqEmRaVjA0KXVwK515koIbFQ==
-X-Received: by 2002:aca:ab8c:0:b0:342:a1ad:cbef with SMTP id u134-20020acaab8c000000b00342a1adcbefmr3406341oie.97.1659719427604;
-        Fri, 05 Aug 2022 10:10:27 -0700 (PDT)
-Received: from wintermute.localdomain (cpe-76-183-134-35.tx.res.rr.com. [76.183.134.35])
-        by smtp.gmail.com with ESMTPSA id r32-20020a056870e9a000b0010e046491f8sm794126oao.57.2022.08.05.10.10.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Aug 2022 10:10:26 -0700 (PDT)
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     linux-input@vger.kernel.org
-Cc:     linux-iio@vger.kernel.org, dmitry.torokhov@gmail.com,
-        contact@artur-rojek.eu, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, heiko@sntech.de,
-        jic23@kernel.org, paul@crapouillou.net,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Maya Matuszczyk <maccraft123mc@gmail.com>
-Subject: [PATCH v12 3/3] arm64: dts: rockchip: Update joystick to polled for OG2
-Date:   Fri,  5 Aug 2022 12:10:16 -0500
-Message-Id: <20220805171016.21217-4-macroalpha82@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220805171016.21217-1-macroalpha82@gmail.com>
-References: <20220805171016.21217-1-macroalpha82@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=4FpWqw9KDL4te8Y1a2j6cWDYoInxilQc57WR6jmkxYM=;
+        b=6dyoJl6MS69hPlGYVWAwxUPuzpNVSt4SFHgaPWwvSQ/XkAKpWBKg0om6hxCkikbZuY
+         ZvUj6J24PYFFzWaYao1THI78hsaO7J4EfZDglPUl1+8ldEtP+ajTZLNHnKB1bty+vdt4
+         NFeESy4Fj9QLX9KzCQZ4Q9Ir671fVfGEpjEgnNGAKxzkXAzUtdVR84p8ABH4aJgXDpEI
+         JXantAYPdu6ZSFQhRXsNiIjPFW9n9bOjcHkEgf8KhHS5aGqdDexUtRejYtRhMT9XDH8G
+         2Tfm+qlSLIW3rEEUBPoeCApgnhdwQC7LMpWdLyGt24D+PuZECWkyMRoUiMuCh9UPzbP/
+         P/HA==
+X-Gm-Message-State: ACgBeo2BEtWOZoUPl7n2m+y6lTgHEU2tyiFY29qVZaFy1fQYoxdIvxV+
+        SIRzOrbsl/z95gN5Ql/dRquxcX2hEzaLxKMpT3k=
+X-Google-Smtp-Source: AA6agR5zPaHs541tDF34TbSaWnDGtMJwMbTfoUUH2+qekAz6EpMV40V6nfnw/vzhzyOLOZIcrwCbA2EC8/CDxIho5Uk=
+X-Received: by 2002:ac8:7f88:0:b0:342:e9dc:ee77 with SMTP id
+ z8-20020ac87f88000000b00342e9dcee77mr883714qtj.384.1659722421632; Fri, 05 Aug
+ 2022 11:00:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
+ <20220803131132.19630-3-ddrokosov@sberdevices.ru> <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+ <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
+ <20220804181723.4bljpxcwkj6cnn2f@CAB-WSD-L081021.sigma.sbrf.ru>
+ <CAHp75Vcn6JCDDvugop2Ho1cayLi1CX78O42v3GifvnuSY5fvPA@mail.gmail.com>
+ <20220805140430.c773smfzxg5zcj4b@CAB-WSD-L081021.sigma.sbrf.ru>
+ <CAHp75VeHXemqJH6rCfH5Tvoq=nDBM4d9nGr-b6LN-fKMEEvyfA@mail.gmail.com> <20220805162100.q4ol4go3ozefmqt6@CAB-WSD-L081021.sigma.sbrf.ru>
+In-Reply-To: <20220805162100.q4ol4go3ozefmqt6@CAB-WSD-L081021.sigma.sbrf.ru>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 5 Aug 2022 19:59:43 +0200
+Message-ID: <CAHp75Ved+vu5MjN3ATbSYUJ1eWZupwPnV+aVv=8_KfVGJjdAKQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer driver
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Chris Morgan <macromorgan@hotmail.com>
+On Fri, Aug 5, 2022 at 6:21 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> On Fri, Aug 05, 2022 at 06:03:12PM +0200, Andy Shevchenko wrote:
 
-Update the Odroid Go Advance to use "poll-interval" from the
-adc-joystick driver.
+...
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
----
- arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts | 1 +
- 1 file changed, 1 insertion(+)
+> Oh, got it. Thanks a lot for detailed explanation. I'll attach both of
+> them: my HZ units series and your str_read_write() patchset.
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-index 415aa9ff8bd4..3389755dbdc8 100644
---- a/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3326-odroid-go2.dts
-@@ -26,6 +26,7 @@ adc-joystick {
- 		compatible = "adc-joystick";
- 		io-channels = <&saradc 1>,
- 			      <&saradc 2>;
-+		poll-interval = <60>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
+s/patchset/single patch/
+The I2C patches mustn't be included (they are actually rejected,
+that's why you haven't seen the first patch in the Linux Next).
+
 -- 
-2.25.1
-
+With Best Regards,
+Andy Shevchenko

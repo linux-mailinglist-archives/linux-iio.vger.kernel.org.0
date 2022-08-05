@@ -2,141 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC35658AB58
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 15:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A29DD58AC1A
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 16:05:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236786AbiHENKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 09:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
+        id S240789AbiHEOFI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 5 Aug 2022 10:05:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiHENKS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 09:10:18 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAEF9F74;
-        Fri,  5 Aug 2022 06:10:16 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id 17so1779884qky.8;
-        Fri, 05 Aug 2022 06:10:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=9J24cDKKqsOduTS9UUyGj2I+dc2JXq9COm3ho1bp/NE=;
-        b=NZ/lhCyR9M4uoWmE11gXdKIY5QHCgnKHevuKo4TMG1DjXmtxuHL9IGeJwZ4LfPJ5Sx
-         An9X10WyEwlH6gobWrRkcQrihAvfFo/NEkJHppMNCjVysFpqBcUQppBPmmWv/gJlRwNJ
-         AJ5R5hBz/6Z6zt3zcMCzNBlOWAFcgddiIbDO26176idaVxtdAeLEwOB83fyRhNgFshT0
-         PgEvwdsJAJBc7N5GmC3tSOdTGVFK5PY33vJvxUo6aKPI13T8ZPWktLxzYyY8DyD7/CRd
-         N6n68KF39/cpPvRO/LCj/Zk8AkuXDm7CeFfWTupOMgC5Oh24O5OoP7ydY1qxP317WUAG
-         zV8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=9J24cDKKqsOduTS9UUyGj2I+dc2JXq9COm3ho1bp/NE=;
-        b=imnwJFAhn0BzI6QmhPhz1U4EMSdkH2oU/MKgzSijN8NrAZvqPsT3SmYCIPaydWTw+W
-         C+GMV4zm+HDbL8yAK3bSXfIH9oCI0N8yLoDGYmil4Wz8nyLAwgQdvPUp0jcy4bCGFVWn
-         M/eCqLghhNqljBSHXy4itcoo9c0RP1CgGUlmLphYsDdQO4cXNKhwpaQGabHvlwHAeyBx
-         nqUHJQV6SGlz35n7NIvlJDDRfxc7pUPy/trsCkmVsxROIUbJKLs1Ry6Rd7oQCbRkWj7I
-         Sv5ATnTjtpPvfwg466Lk7ZGrOlpkE6+NswsjwEE5nYft3EmyxTiMBW2yWaYvaslAAtR2
-         jlrw==
-X-Gm-Message-State: ACgBeo0lApKLBx6Q3ehTsBJXbCCufPGZVxhm/wC5XpLUsJG5WoMhWrea
-        UYfQFHa2ttEgoUSEE/4r8eEwjRgXfaslLWLEAcI=
-X-Google-Smtp-Source: AA6agR6KCeqnEoqyKUTU9bwzHJxmJAXoC1uA/8jBqjS4KNKKgC3bBRK/UzGUzHpzrq29/PrSFNdU8y5czcT3jzWXnGE=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr5054205qko.383.1659705015729; Fri, 05
- Aug 2022 06:10:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-13-peterwu.pub@gmail.com>
-In-Reply-To: <20220805070610.3516-13-peterwu.pub@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 5 Aug 2022 15:09:39 +0200
-Message-ID: <CAHp75VcdU6AVdksuhsHkzvD6mOBJ6G=yrmuHA9zAXLroXDFAjg@mail.gmail.com>
-Subject: Re: [PATCH v7 12/13] leds: flash: mt6370: Add MediaTek MT6370
- flashlight support
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        with ESMTP id S240823AbiHEOFE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 10:05:04 -0400
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3029257274
+        for <linux-iio@vger.kernel.org>; Fri,  5 Aug 2022 07:05:01 -0700 (PDT)
+Received: from localhost.localdomain (94-209-165-62.cable.dynamic.v4.ziggo.nl [94.209.165.62])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 540B91F9E2;
+        Fri,  5 Aug 2022 15:57:38 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Chunfeng Yun <chunfeng.yun@mediatek.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        "Krogerus, Heikki" <heikki.krogerus@linux.intel.com>,
-        Helge Deller <deller@gmx.de>,
-        ChiaEn Wu <chiaen_wu@richtek.com>,
-        Alice Chen <alice_chen@richtek.com>,
-        cy_huang <cy_huang@richtek.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:ARM/Mediatek SoC support" 
-        <linux-mediatek@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        USB <linux-usb@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
-        szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: [PATCH v2 0/5] Add Qcom PM6125 PMIC, and use in Sony Xperia Seine PDX201
+Date:   Fri,  5 Aug 2022 15:57:24 +0200
+Message-Id: <20220805135729.1037079-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 9:07 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> From: Alice Chen <alice_chen@richtek.com>
->
-> The MediaTek MT6370 is a highly-integrated smart power management IC,
-> which includes a single cell Li-Ion/Li-Polymer switching battery
-> charger, a USB Type-C & Power Delivery (PD) controller, dual Flash
-> LED current sources, a RGB LED driver, a backlight WLED driver,
-> a display bias driver and a general LDO for portable devices.
->
-> Add a support for the MT6370 Flash LED driver. Flash LED in MT6370
-> has 2 channels and support torch/strobe mode.
+This series adds initial support for the PM6125 PMIC, and its power key
+handling and thermal monitoring capabilities are configured for Sony's
+PDX201 (Xperia 10II).
 
-Same comments as per previous LED related patch.
+One patch for pm660 is included to fix a node address mismatch with its
+reg field.
 
-...
+Note that this series has been based on top of:
 
-> +       /*
-> +        * For the flash to turn on/off, we need to wait HW ramping up/down time
-> +        * 5ms/500us to prevent the unexpected problem.
-> +        */
-> +       if (!priv->fled_strobe_used && curr)
-> +               usleep_range(5000, 6000);
-> +       else if (priv->fled_strobe_used && !curr)
-> +               usleep_range(500, 600);
+  https://lore.kernel.org/linux-arm-msm/20220508100336.127176-1-marijn.suijten@somainline.org/T/#u
 
-Now it's much better!
+To prevent conflicts with the moving around of sdc2 nodes, presuming
+that series is applied first.
 
-...
+All dts patches are expected to go through the QCOM DTS tree, whereas
+the sole iio patch goes through the IIO tree.
 
-> +       /*
-> +        * Always configure as min level when off to
-> +        * prevent flash current spike
+Changes since v1:
+- Dropped both pinctrl patches that have already been applied;
+- Add -us suffix to qcom,hw-settle-time properties on ADC TM5 nodes
+  (this suffix is not present on regular ADC5/VADC nodes);
+- Add -state suffix to pm6125_gpio pinctrl nodes;
+- Use PMIC_GPIO_FUNC_NORMAL instead of the string-literal "normal";
+- Removed #address-cells and #size-cells from empty pmic@1 node;
+- Removed ADC5_AMUX_THM3 / ADC5_GPIO2_100K_PU channels from the ADC5
+  patch, these are unused on my board and hence untested.
 
-/*
- * You need to check the style
- * of multi-line comments like
- * this one.
- */
+v1: https://lore.kernel.org/phone-devel/20220511220613.1015472-1-marijn.suijten@somainline.org/T/#u
 
-> +        */
+Marijn Suijten (5):
+  arm64: dts: qcom: pm660: Use unique ADC5_VCOIN address in node name
+  iio: adc: qcom-spmi-adc5: Add missing VCOIN/GPIO[134] channels
+  arm64: dts: qcom: Add PM6125 PMIC
+  arm64: dts: qcom: sm6125-seine: Include PM6125 and configure PON
+  arm64: dts: qcom: sm6125-seine: Configure additional trinket
+    thermistors
+
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 154 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/pm660.dtsi           |   2 +-
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 162 +++++++++++++++++-
+ drivers/iio/adc/qcom-spmi-adc5.c              |   8 +
+ 4 files changed, 324 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/pm6125.dtsi
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.37.1
+

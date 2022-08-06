@@ -2,95 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE72A58AF6B
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Aug 2022 20:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6621858B5CA
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 15:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234854AbiHESBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 5 Aug 2022 14:01:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
+        id S230378AbiHFN6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 09:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241403AbiHESAd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 5 Aug 2022 14:00:33 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C32BC1260C;
-        Fri,  5 Aug 2022 11:00:22 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id u12so2635929qtk.0;
-        Fri, 05 Aug 2022 11:00:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=4FpWqw9KDL4te8Y1a2j6cWDYoInxilQc57WR6jmkxYM=;
-        b=ZPwuuxotQz8JY/f5zETxBCz+Vmxug62tZZ5HxSaAbMWgYSZjd2PgqJX8lKsLcoLS96
-         UmCTvZyVTB7AoTjP7g00/7wEmyAD9U2zgZM3MRWPBp5pv+Y/ZdZN3umfWQJTX4+qkAV/
-         1FUvjbuQeRrBFE+XUCgf+C1Jk7j0oHGdFPaHD6ZOySR/ZeJnx70YOS1R3ft0OVDd81CM
-         KBepRchRs0PmmFGQISTGDfA5aWmgIRqZnIvaP1itAz7W6GTKLWzkSUenjNBr8UhdtxAw
-         9ksgTr8/is+bFvTL0ZoT17UGQptrx/wQmHSWnvD3FBZqMwcfUJYZuIBE11wi6CWjBMOv
-         PM7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=4FpWqw9KDL4te8Y1a2j6cWDYoInxilQc57WR6jmkxYM=;
-        b=6dyoJl6MS69hPlGYVWAwxUPuzpNVSt4SFHgaPWwvSQ/XkAKpWBKg0om6hxCkikbZuY
-         ZvUj6J24PYFFzWaYao1THI78hsaO7J4EfZDglPUl1+8ldEtP+ajTZLNHnKB1bty+vdt4
-         NFeESy4Fj9QLX9KzCQZ4Q9Ir671fVfGEpjEgnNGAKxzkXAzUtdVR84p8ABH4aJgXDpEI
-         JXantAYPdu6ZSFQhRXsNiIjPFW9n9bOjcHkEgf8KhHS5aGqdDexUtRejYtRhMT9XDH8G
-         2Tfm+qlSLIW3rEEUBPoeCApgnhdwQC7LMpWdLyGt24D+PuZECWkyMRoUiMuCh9UPzbP/
-         P/HA==
-X-Gm-Message-State: ACgBeo2BEtWOZoUPl7n2m+y6lTgHEU2tyiFY29qVZaFy1fQYoxdIvxV+
-        SIRzOrbsl/z95gN5Ql/dRquxcX2hEzaLxKMpT3k=
-X-Google-Smtp-Source: AA6agR5zPaHs541tDF34TbSaWnDGtMJwMbTfoUUH2+qekAz6EpMV40V6nfnw/vzhzyOLOZIcrwCbA2EC8/CDxIho5Uk=
-X-Received: by 2002:ac8:7f88:0:b0:342:e9dc:ee77 with SMTP id
- z8-20020ac87f88000000b00342e9dcee77mr883714qtj.384.1659722421632; Fri, 05 Aug
- 2022 11:00:21 -0700 (PDT)
+        with ESMTP id S230018AbiHFN6N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 09:58:13 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FB410FC3;
+        Sat,  6 Aug 2022 06:58:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 838F6B8068F;
+        Sat,  6 Aug 2022 13:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99664C433D6;
+        Sat,  6 Aug 2022 13:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659794289;
+        bh=CLAku9OxZB+wAiKP6hS1ulXo84boQr4PJwDDM0jjDZ0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=bTkxT/hRoxSSXIMfNZP0dO4FMnWfvPegCIB0yD0g+iuYTl9WgGUPYM4y/1rq73nal
+         xKmiL5YrvnjgzEcZl0u4OIIOLXvGQ9wPqlAmL/ajj/WeSAEtTp23NWUDtavAkyVOMZ
+         BQAYqNh+Oe3RIbe7AEqEbU0XYJ4rUU2TNX3brcPhs0aILXVlgDWmburvX47HcqIhI7
+         7h2FCkJAx+QZaFOSAJZHZUTUQUQ38mYbWPYYUvqC/0V7RJ+wgb1h7ItLQSCuSLDc2Q
+         xjNv/fIAIGlLFbJs8iLUiOMVhCOVwcfZE/BkshEQDDcUv17i2gcT3r2F86QfUL4uKb
+         3VDk+hCloYKpw==
+Date:   Sat, 6 Aug 2022 15:08:27 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/9] Improve MCP3911 driver
+Message-ID: <20220806150827.1b28db62@jic23-huawei>
+In-Reply-To: <YueEg0tmKpc4kdLO@gmail.com>
+References: <20220722130726.7627-1-marcus.folkesson@gmail.com>
+        <20220731174112.072345e3@jic23-huawei>
+        <YueEg0tmKpc4kdLO@gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
- <20220803131132.19630-3-ddrokosov@sberdevices.ru> <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
- <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
- <20220804181723.4bljpxcwkj6cnn2f@CAB-WSD-L081021.sigma.sbrf.ru>
- <CAHp75Vcn6JCDDvugop2Ho1cayLi1CX78O42v3GifvnuSY5fvPA@mail.gmail.com>
- <20220805140430.c773smfzxg5zcj4b@CAB-WSD-L081021.sigma.sbrf.ru>
- <CAHp75VeHXemqJH6rCfH5Tvoq=nDBM4d9nGr-b6LN-fKMEEvyfA@mail.gmail.com> <20220805162100.q4ol4go3ozefmqt6@CAB-WSD-L081021.sigma.sbrf.ru>
-In-Reply-To: <20220805162100.q4ol4go3ozefmqt6@CAB-WSD-L081021.sigma.sbrf.ru>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 5 Aug 2022 19:59:43 +0200
-Message-ID: <CAHp75Ved+vu5MjN3ATbSYUJ1eWZupwPnV+aVv=8_KfVGJjdAKQ@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer driver
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 5, 2022 at 6:21 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
-> On Fri, Aug 05, 2022 at 06:03:12PM +0200, Andy Shevchenko wrote:
+On Mon, 1 Aug 2022 09:45:07 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-...
+> On Sun, Jul 31, 2022 at 05:41:12PM +0100, Jonathan Cameron wrote:
+> > On Fri, 22 Jul 2022 15:07:17 +0200
+> > Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+> >   
+> > > Hi,
+> > > 
+> > > This patch series intend to fix bugs and improve functionality of the
+> > > MCP3911 driver.
+> > > The main features added are
+> > > - Support for buffers
+> > > - Interrupt driven readings
+> > > - Support for oversampling ratio
+> > > - Support for set scale values (Gain)
+> > > 
+> > > Among the bug fixes, there are changes in the formula for calculate raw
+> > > value and a fix for mismatch in the devicetree property.
+> > > 
+> > > Another general improvement for the driver is to use managed resources
+> > > for all allocated resources.
+> > >   
+> > Hi Marcus,
+> > 
+> > The first 3 fixes look good to me.  Do you want me to pick those up to
+> > go in after rc1 via my togreg-fixes branch?  The side effect of doing
+> > that is it'll be a little while before they are upstream in the branch
+> > I'll want to pick the rest of the series on top of.
+> > 
+> > So it's a trade off between getting fixes in as soon as possible and
+> > slowing down other improvements a little.  
+> 
+> Both ways works for me.
+> I guess it is preferable to get the fixes in as soon as possible?
+> 
+> If so, do you want me to rebase the series on your togreg-fixes branch
+> or wait to send v5 until the patches are upstream?
+> 
+> Or simply keep sending the whole series?
 
-> Oh, got it. Thanks a lot for detailed explanation. I'll attach both of
-> them: my HZ units series and your str_read_write() patchset.
+For now resend the whole series. I don't want to pick anything up onto the fixes-togreg
+branch until rc1 (as good time to get it to a more recent base).  So I'll sit on these
+for another week anyway.
 
-s/patchset/single patch/
-The I2C patches mustn't be included (they are actually rejected,
-that's why you haven't seen the first patch in the Linux Next).
+Thanks,
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+Jonathan
+
+> 
+> Thanks,
+> Marcus Folkesson
+> 
+> > 
+> > Jonathan
+> >   
+

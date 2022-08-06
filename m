@@ -2,47 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA3758B628
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 16:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 354AA58B631
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 16:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231296AbiHFOgk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Aug 2022 10:36:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50722 "EHLO
+        id S230291AbiHFOpI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 10:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231204AbiHFOgj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 10:36:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CED86DFBE
-        for <linux-iio@vger.kernel.org>; Sat,  6 Aug 2022 07:36:38 -0700 (PDT)
+        with ESMTP id S230082AbiHFOpH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 10:45:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C54ECE020;
+        Sat,  6 Aug 2022 07:45:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8A212B8047E
-        for <linux-iio@vger.kernel.org>; Sat,  6 Aug 2022 14:36:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C7C433D7;
-        Sat,  6 Aug 2022 14:36:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 604776109A;
+        Sat,  6 Aug 2022 14:45:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B8DC433D6;
+        Sat,  6 Aug 2022 14:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659796596;
-        bh=IWSLPKEzLKcrcy/6Bda/9b8hMkNn3lWk1rxVlRzzCZE=;
+        s=k20201202; t=1659797104;
+        bh=jEFWSRkjcPJjtn2ZeKa0q1VbeEaRotlPyr2tjOftR/U=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lP/eo639FxXNySo2DmuD1tO7sGb5uhBOfFeuzB/k7AJ0XE5y8nx53NDzNc5+fF6mU
-         hn1+6uOPd3ZbLhRwJk7mT6tBBto/5S6QJv+wIXPHnptfYbaeUfr9gQYLeVprIo92fY
-         v+uQn4p7WYaEcPchuoHxyU8T+ik/KZ7wEtPK0BzJ17JuMgBW4gAvNPim1BBto7UY0y
-         vpNO5Oo5cJuiVVzQsM6bylXcG1jLnSanZ5Z125h/vrqqaz8PxB0FyGEwWUTPaW2+nc
-         YkECBGQYumD0sp+q/Pm/M4PtsgrmHBf2/fG7tJPrxxHUo2VSA9Ske9WWLzne/D0J4z
-         219xz8romL1yQ==
-Date:   Sat, 6 Aug 2022 15:46:56 +0100
+        b=HBhEvfP/RFNqVewgkGusiDopy4wrLQ5mCcD9MCDGHLlu0B+XCFh5lJGW1AToL36DL
+         8YncidWabZftcLcAtfHGvVohfZhPkmOZhlcVic2AyhiKBsrAvEQyPpkud5LpPCr1wK
+         tfWJ31ShtFJOzzWM5gPLfEefNtUfJZ8pqb2n3LZCMixdlV0amtn4EMUVDuOVxhrLBP
+         8JFOoYD3aNc42ObiJG3Pj5C5acBPwH84guQq61bx5n1Gh9GlhdWiWSDJUr+ziRTcDN
+         fA9Mj+nnCGo5J7YWePP+kf3w0Sb6o8lsgBqupY/8OPiycxJoaBX42ijXdnpwItFafi
+         RDV9F9z47hmkA==
+Date:   Sat, 6 Aug 2022 15:55:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Matt Ranostay <matt.ranostay@konsulko.com>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: add NULL pointer checks to iio device
- additional/removal
-Message-ID: <20220806154656.4aa6ad9f@jic23-huawei>
-In-Reply-To: <CAHp75VegV4YiY5WZ8SXmK9DCS1msKpmAykgYTskkHi+Zfx-U_g@mail.gmail.com>
-References: <20220803115720.89848-1-matt.ranostay@konsulko.com>
-        <CAHp75VeBSxHK_Nf+PSvRtACeszGeomUyK8Cx1V1FpFiSS013Cw@mail.gmail.com>
-        <CAHp75VegV4YiY5WZ8SXmK9DCS1msKpmAykgYTskkHi+Zfx-U_g@mail.gmail.com>
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Message-ID: <20220806155523.37c3e587@jic23-huawei>
+In-Reply-To: <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
+        <20220803131132.19630-3-ddrokosov@sberdevices.ru>
+        <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+        <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,31 +66,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 3 Aug 2022 20:00:24 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Wed, Aug 3, 2022 at 7:57 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Wed, Aug 3, 2022 at 2:04 PM Matt Ranostay <matt.ranostay@konsulko.com> wrote:  
-> > >
-> > > Check if __iio_device_register and iio_device_unregister indio_dev
-> > > parameter isn't a NULL pointer.  
 > 
-> A couple more things:
-> - make sure you include all maintainers and reviewers (you may use my
-> "smart" script [1] for that)
-> - explain why you are doing this change
+> [...]
 > 
-
-Agreed. I'm not sure of the reasoning for doing this.
-I'd also expect to see it as part of a series where we might pass NULL to these
-functions.
-
-Thanks,
-
-Jonathan
-
-
-> [1]: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
+> > > +               return dev_err_probe(dev, err, "cannot enable push-pull int\n");  
+> > 
+> > interrupt  
 > 
+> It will be more ugly due 80 symbols restriction.
 
+These days we let that stretch a little for cases like these.
+
+> 
+> > > +       indio_dev->modes = 0; /* setup buffered mode later */  
+> > 
+> > Why explicit assignment to 0? Doesn't kzalloc() do it for you?  
+> 
+> kzalloc() will do it for me, of course. Previously, I initialized modes to
+> INDIO_DIRECT_MODE to just provide default value for that. Jonathan
+> suggested to replace it with 0. 
+
+I did?  I wonder what I was smoking that day. 
+Should be set to INDIO_DIRECT_MODE as you had it previously.
+
+(From what I recall it will work either way but we have in the past had
+core code that checked this and may do again in the future so drivers should
+still be setting it to specify they provide sysfs interfaces to directly read
+the channels).
+
+> I can remove this line at all, no problem.
+> I just thought, it's more readable.

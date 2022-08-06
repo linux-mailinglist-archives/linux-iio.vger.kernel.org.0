@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A49A858B782
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 20:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF89558B7A3
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 20:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbiHFSKp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Aug 2022 14:10:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        id S242012AbiHFSUz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 14:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbiHFSKo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 14:10:44 -0400
+        with ESMTP id S242031AbiHFSUg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 14:20:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0103DFB5;
-        Sat,  6 Aug 2022 11:10:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDF3113D33;
+        Sat,  6 Aug 2022 11:20:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B6C461216;
-        Sat,  6 Aug 2022 18:10:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F72C433D6;
-        Sat,  6 Aug 2022 18:10:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 30DD361222;
+        Sat,  6 Aug 2022 18:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14EC4314B;
+        Sat,  6 Aug 2022 18:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659809441;
-        bh=lVKDHL6nifdg0VLVhM1MC1VYGdeoEDIVzY/AjMF7ZL8=;
+        s=k20201202; t=1659810007;
+        bh=cKFxoC7vA/Y8JVtO5ZGbKu05Jmpcm3DGgzXHEExY9Ro=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pjCnK65PNFpeA6AxZx8b5u8PZ5bhzCfpLoIc/0xo4LZ8R7Mg1JpqOlG/UZNsDj4Zq
-         75g6TtbT/aj9weiRyeXR8qyCeUKnMfSgZCAnuZ5au7SHOyZCRnMIfKDiRVKbkduFsl
-         OOhHuDOGKCSkSQ2uMJltFbbtU6mEN+dp1Uv1dlrNbuu1SgO4JizRbLds3ktZEFkG92
-         rE2OdnekNuDEQA5lrXKIC+AMVxT0TZkzcj7XJh6U6mX/OW8+hOw//OJRtvpvHCfdzR
-         MfoQRvjWRfDMFXsDi3jqpF5WLwGlNVaGp7BNBFVRb5jb4121GWtmw5kIwAe8JMLQFZ
-         OEF4XzdLWn9aQ==
-Date:   Sat, 6 Aug 2022 19:20:48 +0100
+        b=uehdPVFVEZhduXOFzIYYcUoxMxhuGoYzIFsS82t+e+i1tgP9Rz4m9dp3fw9tNBtEW
+         x1Wqqzem9nReSeo1fjzHqy80uMQqPZJcqfqk9vMmauwpA257qsJIboy9YR0rJlZRqX
+         8LFhLvv3zQWj2ZR0FRFe97tjnyU3GPDmJqgVynK/59y+acYs3db0We84k+CrsGXZ66
+         R4tvIV5DLSK5X1htaxET4Hb0YaPGEeK/8mj/8IP2rUFW0lPW6UOxPqi+ScPlXwVu82
+         bzUcNHYVdk+wTj0oHaGuO/PMKSlDUbGGI9IsoG5d/Gcv5NDtAtJ43HC218JEVPLkRl
+         PvshjCQRasvsA==
+Date:   Sat, 6 Aug 2022 19:30:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <openbmc@lists.ozlabs.org>, <linux-imx@nxp.com>,
@@ -84,14 +84,13 @@ Cc:     <openbmc@lists.ozlabs.org>, <linux-imx@nxp.com>,
         Amit Kucheria <amitk@kernel.org>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         "Haibo Chen" <haibo.chen@nxp.com>,
-        Jishnu Prakash <quic_jprakash@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Subject: Re: [PATCH v3 12/15] iio: adc: qcom-spmi-adc5: convert to device
- properties
-Message-ID: <20220806192048.0ca41cc5@jic23-huawei>
-In-Reply-To: <20220715122903.332535-13-nuno.sa@analog.com>
+        Jishnu Prakash <quic_jprakash@quicinc.com>
+Subject: Re: [PATCH v3 04/15] iio: inkern: split
+ of_iio_channel_get_by_name()
+Message-ID: <20220806193016.7ecf8857@jic23-huawei>
+In-Reply-To: <20220715122903.332535-5-nuno.sa@analog.com>
 References: <20220715122903.332535-1-nuno.sa@analog.com>
-        <20220715122903.332535-13-nuno.sa@analog.com>
+        <20220715122903.332535-5-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -106,244 +105,160 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 15 Jul 2022 14:29:00 +0200
+On Fri, 15 Jul 2022 14:28:52 +0200
 Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> Make the conversion to firmware agnostic device properties. As part of
-> the conversion the IIO inkern interface 'of_xlate()' is also converted to
-> 'fwnode_xlate()'. The goal is to completely drop 'of_xlate' and hence OF
-> dependencies from IIO.
+> This change splits of_iio_channel_get_by_name() so that it decouples
+> looking for channels in the current node from looking in it's parents
+> nodes. This will be helpful when moving to fwnode properties where we
+> need to release the handles when looking for channels in parent's nodes.
+>=20
+> No functional change intended...
 >=20
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
 > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-+CC Marijin who happend to post a patch for this driver that I just accepted
-and hence probably has hardware access.  Any chance of a test for this seri=
-es?
+A few things from a build test (after hand applying this because of
+issues with the comment thing following through the series).
 
-If not, no problem as this is fairly mechanical and we have testing on some=
- of
-the other drivers using the new code.
-
-I'll probably queue this up in the meantime but it won't end up upstream
-for a few weeks yet.
-
-Thanks,
-
-Jonathan
+Seem obvious so I fixed them up.
 
 > ---
->  drivers/iio/adc/qcom-spmi-adc5.c | 63 +++++++++++++++-----------------
->  1 file changed, 30 insertions(+), 33 deletions(-)
+>  drivers/iio/inkern.c | 109 ++++++++++++++++++++++++++-----------------
+>  1 file changed, 65 insertions(+), 44 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi=
--adc5.c
-> index 87438d1e5c0b..a23f9293d6c1 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -14,9 +14,9 @@
->  #include <linux/log2.h>
->  #include <linux/math64.h>
->  #include <linux/module.h>
-> -#include <linux/of.h>
-> -#include <linux/of_device.h>
-> +#include <linux/mod_devicetable.h>
->  #include <linux/platform_device.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/slab.h>
-> =20
-> @@ -403,8 +403,8 @@ static irqreturn_t adc5_isr(int irq, void *dev_id)
->  	return IRQ_HANDLED;
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index c6f1cfe09bd3..f97b7967d3d9 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -211,61 +211,82 @@ static struct iio_channel *of_iio_channel_get(struc=
+t device_node *np, int index)
+>  	return ERR_PTR(err);
 >  }
 > =20
-> -static int adc5_of_xlate(struct iio_dev *indio_dev,
-> -				const struct of_phandle_args *iiospec)
-> +static int adc5_fwnode_xlate(struct iio_dev *indio_dev,
-> +			     const struct fwnode_reference_args *iiospec)
->  {
->  	struct adc5_chip *adc =3D iio_priv(indio_dev);
->  	int i;
-> @@ -416,8 +416,8 @@ static int adc5_of_xlate(struct iio_dev *indio_dev,
->  	return -EINVAL;
->  }
-> =20
-> -static int adc7_of_xlate(struct iio_dev *indio_dev,
-> -				const struct of_phandle_args *iiospec)
-> +static int adc7_fwnode_xlate(struct iio_dev *indio_dev,
-> +			     const struct fwnode_reference_args *iiospec)
->  {
->  	struct adc5_chip *adc =3D iio_priv(indio_dev);
->  	int i, v_channel;
-> @@ -481,12 +481,12 @@ static int adc7_read_raw(struct iio_dev *indio_dev,
-> =20
->  static const struct iio_info adc5_info =3D {
->  	.read_raw =3D adc5_read_raw,
-> -	.of_xlate =3D adc5_of_xlate,
-> +	.fwnode_xlate =3D adc5_fwnode_xlate,
->  };
-> =20
->  static const struct iio_info adc7_info =3D {
->  	.read_raw =3D adc7_read_raw,
-> -	.of_xlate =3D adc7_of_xlate,
-> +	.fwnode_xlate =3D adc7_fwnode_xlate,
->  };
-> =20
->  struct adc5_channels {
-> @@ -611,18 +611,18 @@ static const struct adc5_channels adc5_chans_rev2[A=
-DC5_MAX_CHANNEL] =3D {
->  					SCALE_HW_CALIB_THERM_100K_PULLUP)
->  };
-> =20
-> -static int adc5_get_dt_channel_data(struct adc5_chip *adc,
-> +static int adc5_get_fw_channel_data(struct adc5_chip *adc,
->  				    struct adc5_channel_prop *prop,
-> -				    struct device_node *node,
-> +				    struct fwnode_handle *fwnode,
->  				    const struct adc5_data *data)
->  {
-> -	const char *name =3D node->name, *channel_name;
-> +	const char *name =3D fwnode_get_name(fwnode), *channel_name;
->  	u32 chan, value, varr[2];
->  	u32 sid =3D 0;
->  	int ret;
->  	struct device *dev =3D adc->dev;
-> =20
-> -	ret =3D of_property_read_u32(node, "reg", &chan);
-> +	ret =3D fwnode_property_read_u32(fwnode, "reg", &chan);
->  	if (ret) {
->  		dev_err(dev, "invalid channel number %s\n", name);
->  		return ret;
-> @@ -647,15 +647,13 @@ static int adc5_get_dt_channel_data(struct adc5_chi=
-p *adc,
->  	prop->channel =3D chan;
->  	prop->sid =3D sid;
-> =20
-> -	channel_name =3D of_get_property(node,
-> -				"label", NULL) ? : node->name;
-> -	if (!channel_name) {
-> -		dev_err(dev, "Invalid channel name\n");
-> -		return -EINVAL;
-> -	}
-> +	ret =3D fwnode_property_read_string(fwnode, "label", &channel_name);
-> +	if (ret)
-> +		channel_name =3D name;
+> +struct iio_channel *__of_iio_channel_get_by_name(struct device_node *np,
+static=20
+> +						 const char *name)
+> +{
+> +	struct iio_channel *chan;
+> +	int index =3D 0;
 > +
->  	prop->datasheet_name =3D channel_name;
-> =20
-> -	ret =3D of_property_read_u32(node, "qcom,decimation", &value);
-> +	ret =3D fwnode_property_read_u32(fwnode, "qcom,decimation", &value);
->  	if (!ret) {
->  		ret =3D qcom_adc5_decimation_from_dt(value, data->decimation);
->  		if (ret < 0) {
-> @@ -668,7 +666,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip =
-*adc,
->  		prop->decimation =3D ADC5_DECIMATION_DEFAULT;
->  	}
-> =20
-> -	ret =3D of_property_read_u32_array(node, "qcom,pre-scaling", varr, 2);
-> +	ret =3D fwnode_property_read_u32_array(fwnode, "qcom,pre-scaling", varr=
-, 2);
->  	if (!ret) {
->  		ret =3D qcom_adc5_prescaling_from_dt(varr[0], varr[1]);
->  		if (ret < 0) {
-> @@ -682,7 +680,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip =
-*adc,
->  			adc->data->adc_chans[prop->channel].prescale_index;
->  	}
-> =20
-> -	ret =3D of_property_read_u32(node, "qcom,hw-settle-time", &value);
-> +	ret =3D fwnode_property_read_u32(fwnode, "qcom,hw-settle-time", &value);
->  	if (!ret) {
->  		u8 dig_version[2];
-> =20
-> @@ -713,7 +711,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip =
-*adc,
->  		prop->hw_settle_time =3D VADC_DEF_HW_SETTLE_TIME;
->  	}
-> =20
-> -	ret =3D of_property_read_u32(node, "qcom,avg-samples", &value);
-> +	ret =3D fwnode_property_read_u32(fwnode, "qcom,avg-samples", &value);
->  	if (!ret) {
->  		ret =3D qcom_adc5_avg_samples_from_dt(value);
->  		if (ret < 0) {
-> @@ -726,7 +724,7 @@ static int adc5_get_dt_channel_data(struct adc5_chip =
-*adc,
->  		prop->avg_samples =3D VADC_DEF_AVG_SAMPLES;
->  	}
-> =20
-> -	if (of_property_read_bool(node, "qcom,ratiometric"))
-> +	if (fwnode_property_read_bool(fwnode, "qcom,ratiometric"))
->  		prop->cal_method =3D ADC5_RATIOMETRIC_CAL;
->  	else
->  		prop->cal_method =3D ADC5_ABSOLUTE_CAL;
-> @@ -801,16 +799,16 @@ static const struct of_device_id adc5_match_table[]=
- =3D {
->  };
->  MODULE_DEVICE_TABLE(of, adc5_match_table);
-> =20
-> -static int adc5_get_dt_data(struct adc5_chip *adc, struct device_node *n=
-ode)
-> +static int adc5_get_fw_data(struct adc5_chip *adc)
+> +	/*
+> +	 * For named iio channels, first look up the name in the
+> +	 * "io-channel-names" property.  If it cannot be found, the
+> +	 * index will be an error code, and of_iio_channel_get()
+> +	 * will fail.
+> +	 */
+> +	if (name)
+> +		index =3D of_property_match_string(np, "io-channel-names", name);
+> +
+> +	chan =3D of_iio_channel_get(np, index);
+> +	if (!IS_ERR(chan) || PTR_ERR(chan) =3D=3D -EPROBE_DEFER)
+> +		return chan;
+> +	if (name) {
+> +		if (index >=3D 0) {
+> +			pr_err("ERROR: could not get IIO channel %pOF:%s(%i)\n",
+> +			       np, name, index);
+> +			/*
+> +			 * In this case, we found 'name' in 'io-channel-names'
+> +			 * but somehow we still fail so that we should not proceed
+> +			 * with any other lookup. Hence, explicitly return -EINVAL
+> +			 * (maybe not the better error code) so that the caller
+> +			 * won't do a system lookup.
+> +			 */
+> +			return ERR_PTR(-EINVAL);
+> +		}
+> +		/* If index < 0, then of_parse_phandle_with_args() fails
+> +		 * with -EINVAL which is expected. We should not proceed
+> +		 * if we get any other error.
+> +		 */
+> +		if (PTR_ERR(chan) !=3D -EINVAL)
+> +			return chan;
+> +	} else if (PTR_ERR(chan) !=3D -ENOENT) {
+> +		/*
+> +		 * if !name, then we should only proceed the lookup if
+> +		 * of_parse_phandle_with_args() returns -ENOENT.
+> +		 */
+> +		return chan;
+> +	}
+> +
+> +	/* so we continue the lookup */
+> +	return ERR_PTR(-ENODEV);
+> +}
+> +
+>  struct iio_channel *of_iio_channel_get_by_name(struct device_node *np,
+>  					       const char *name)
 >  {
->  	const struct adc5_channels *adc_chan;
->  	struct iio_chan_spec *iio_chan;
->  	struct adc5_channel_prop prop, *chan_props;
-> -	struct device_node *child;
-> +	struct fwnode_handle *child;
->  	unsigned int index =3D 0;
->  	int ret;
+>  	struct iio_channel *chan;
 > =20
-> -	adc->nchannels =3D of_get_available_child_count(node);
-> +	adc->nchannels =3D device_get_child_node_count(adc->dev);
->  	if (!adc->nchannels)
->  		return -EINVAL;
+>  	/* Walk up the tree of devices looking for a matching iio channel */
+> +	chan =3D __of_iio_channel_get_by_name(np, name);
+> +	if (!IS_ERR(chan) || PTR_ERR(chan) !=3D -ENODEV)
+> +		return chan;
+> +
+> +	/*
+> +	 * No matching IIO channel found on this node.
+> +	 * If the parent node has a "io-channel-ranges" property,
+> +	 * then we can try one of its channels.
+> +	 */
+> +	np =3D np->parent;
+>  	while (np) {
+>  		int index =3D 0;
+Not used.
+
 > =20
-> @@ -826,14 +824,14 @@ static int adc5_get_dt_data(struct adc5_chip *adc, =
-struct device_node *node)
+> -		/*
+> -		 * For named iio channels, first look up the name in the
+> -		 * "io-channel-names" property.  If it cannot be found, the
+> -		 * index will be an error code, and of_iio_channel_get()
+> -		 * will fail.
+> -		 */
+> -		if (name)
+> -			index =3D of_property_match_string(np, "io-channel-names",
+> -							 name);
+> -		chan =3D of_iio_channel_get(np, index);
+> -		if (!IS_ERR(chan) || PTR_ERR(chan) =3D=3D -EPROBE_DEFER)
+> -			return chan;
+> -		if (name) {
+> -			if (index >=3D 0) {
+> -				pr_err("ERROR: could not get IIO channel %pOF:%s(%i)\n",
+> -				       np, name, index);
+> -				/*
+> -				 * In this case, we found 'name' in 'io-channel-names'
+> -				 * but somehow we still fail so that we should not proceed
+> -				 * with any other lookup. Hence, explicitly return -EINVAL
+> -				 * (maybe not the better error code) so that the caller
+> -				 * won't do a system lookup.
+> -				 */
+> -				return ERR_PTR(-EINVAL);
+> -			}
+> -			/* If index < 0, then of_parse_phandle_with_args() fails
+> -			 * with -EINVAL which is expected. We should not proceed
+> -			 * if we get any other error.
+> -			 */
+> -			if (PTR_ERR(chan) !=3D -EINVAL)
+> -				return chan;
+> -		} else if (PTR_ERR(chan) !=3D -ENOENT) {
+> -			/*
+> -			 * if !name, then we should only proceed the lookup if
+> -			 * of_parse_phandle_with_args() returns -ENOENT.
+> -			 */
+> +		if (!of_get_property(np, "io-channel-ranges", NULL))
+> +			return ERR_PTR(-ENODEV);
+> +
+> +		chan =3D __of_iio_channel_get_by_name(np, name);
+> +		if (!IS_ERR(chan) || PTR_ERR(chan) !=3D -ENODEV)
+>  			return chan;
+> -		}
+> -		/*
+> -		 * No matching IIO channel found on this node.
+> -		 * If the parent node has a "io-channel-ranges" property,
+> -		 * then we can try one of its channels.
+> -		 */
+> +
+>  		np =3D np->parent;
+> -		if (np && !of_get_property(np, "io-channel-ranges", NULL))
+> -			return ERR_PTR(-ENODEV);
+>  	}
 > =20
->  	chan_props =3D adc->chan_props;
->  	iio_chan =3D adc->iio_chans;
-> -	adc->data =3D of_device_get_match_data(adc->dev);
-> +	adc->data =3D device_get_match_data(adc->dev);
->  	if (!adc->data)
->  		adc->data =3D &adc5_data_pmic;
-> =20
-> -	for_each_available_child_of_node(node, child) {
-> -		ret =3D adc5_get_dt_channel_data(adc, &prop, child, adc->data);
-> +	device_for_each_child_node(adc->dev, child) {
-> +		ret =3D adc5_get_fw_channel_data(adc, &prop, child, adc->data);
->  		if (ret) {
-> -			of_node_put(child);
-> +			fwnode_handle_put(child);
->  			return ret;
->  		}
-> =20
-> @@ -858,7 +856,6 @@ static int adc5_get_dt_data(struct adc5_chip *adc, st=
-ruct device_node *node)
-> =20
->  static int adc5_probe(struct platform_device *pdev)
->  {
-> -	struct device_node *node =3D pdev->dev.of_node;
->  	struct device *dev =3D &pdev->dev;
->  	struct iio_dev *indio_dev;
->  	struct adc5_chip *adc;
-> @@ -870,7 +867,7 @@ static int adc5_probe(struct platform_device *pdev)
->  	if (!regmap)
->  		return -ENODEV;
-> =20
-> -	ret =3D of_property_read_u32(node, "reg", &reg);
-> +	ret =3D device_property_read_u32(dev, "reg", &reg);
->  	if (ret < 0)
->  		return ret;
-> =20
-> @@ -886,7 +883,7 @@ static int adc5_probe(struct platform_device *pdev)
->  	init_completion(&adc->complete);
->  	mutex_init(&adc->lock);
-> =20
-> -	ret =3D adc5_get_dt_data(adc, node);
-> +	ret =3D adc5_get_fw_data(adc);
->  	if (ret) {
->  		dev_err(dev, "adc get dt data failed\n");
->  		return ret;
+>  	return ERR_PTR(-ENODEV);
 

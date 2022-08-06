@@ -2,50 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB9658B5D6
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 16:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2546458B5F9
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 16:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbiHFOK0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Aug 2022 10:10:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
+        id S230246AbiHFOOE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 10:14:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbiHFOKZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 10:10:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D216474;
-        Sat,  6 Aug 2022 07:10:25 -0700 (PDT)
+        with ESMTP id S229983AbiHFOOD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 10:14:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA79311A22;
+        Sat,  6 Aug 2022 07:14:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3ED760FC9;
-        Sat,  6 Aug 2022 14:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89769C433C1;
-        Sat,  6 Aug 2022 14:10:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4692761045;
+        Sat,  6 Aug 2022 14:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2994C433C1;
+        Sat,  6 Aug 2022 14:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659795024;
-        bh=MZQl7VdV672uwUM+vZC1SSTejz5QkY4JjdAUiiBs6gY=;
+        s=k20201202; t=1659795241;
+        bh=TcspVgJMCYgRJe1eMgJY0EQUSYj1o9t3RcgqBFaD6jM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Gzb8JJ9we0dFTrJXCjp386RFwGwXU6pdhW9uwOOi72JA3efxobgZHN3X/T7Pfzn2V
-         eaFbeEEs0RvikxJ8EH6woxUvnFL8OCIdXBCuXWiwZ+rHGHt/rBGTBRNwhHjO+XiUdc
-         BuRGc0Sa40DJ5nXoHH+TrTiyjDAmWw39VvkKCkfkC95dxJZTPZj3idWDHeFRhhp5fX
-         79eZLacvBqQQhljq3K8B/0F9qwadfCB+D0NXrNDeYE+G2kD8MLKbkiIMXXZ7vHhghF
-         M6hm79wnia6UkDdDFHIygS0ie6d66a/IYaWaW13OVv1J+j6GzF7rZ2W5toxNpZ6UrH
-         bE6SnrKNDMXFw==
-Date:   Sat, 6 Aug 2022 15:20:42 +0100
+        b=E7HEm/cxP5ga25D9GTx/My1OddhV+gPSXfH+W3eQVgvrbODGwJzexiZDm6N5Kko/f
+         Z/MXzV1bm2Ls0ps/zf82Cp4Vv04LNzyKlB26JVREqMJ5+RqDOx0NDmrle4rjhkn0uX
+         d975ui65x8MuEfkUD/WzuURxnUlHBsGOAaF5UpGc65zwRFaKA7ezax1DQRfxiPBfiG
+         NU7OX9GyLJISqj6Iopd3mhmvsgAqad4+NgYBsKFFHs6mP0kp5Qz6OYsy7r26J0cOf1
+         9G1t+ke+oeCw1F/GpD+CWomewHuvRJSatpJF2YALZmnIwU0klyBWq7U4EHhG7g+/Vp
+         cBxH7bjBGcpAA==
+Date:   Sat, 6 Aug 2022 15:24:19 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chris Morgan <macroalpha82@gmail.com>
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        dmitry.torokhov@gmail.com, contact@artur-rojek.eu,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        heiko@sntech.de, paul@crapouillou.net,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Maya Matuszczyk <maccraft123mc@gmail.com>
-Subject: Re: [PATCH v12 2/3] Input: adc-joystick - Add polled input device
- support
-Message-ID: <20220806152042.39bc5351@jic23-huawei>
-In-Reply-To: <20220805171016.21217-3-macroalpha82@gmail.com>
-References: <20220805171016.21217-1-macroalpha82@gmail.com>
-        <20220805171016.21217-3-macroalpha82@gmail.com>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] iio: adc: qcom-spmi-adc5: Add missing
+ VCOIN/GPIO[134] channels
+Message-ID: <20220806152419.15a578be@jic23-huawei>
+In-Reply-To: <20220805135729.1037079-3-marijn.suijten@somainline.org>
+References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
+        <20220805135729.1037079-3-marijn.suijten@somainline.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,119 +67,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  5 Aug 2022 12:10:15 -0500
-Chris Morgan <macroalpha82@gmail.com> wrote:
+On Fri,  5 Aug 2022 15:57:26 +0200
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-> From: Chris Morgan <macromorgan@hotmail.com>
+> These channels are specified in downstream kernels [1] and actively used
+> by e.g. the Sony Seine platform on the SM6125 SoC.  Note that GPIO2
+> isn't used on this platform and, while the definition downstream is
+> identical to the other GPIOx_100K_PU definitions, has been omitted for
+> lack of proper testing.
 > 
-> Add polled input device support to the adc-joystick driver. This is
-> useful for devices which do not have hardware capable triggers on
-> their SARADC. Code modified from adc-joystick.c changes made by Maya
-> Matuszczyk.
+> [1]: https://source.codeaurora.org/quic/la/kernel/msm-4.14/tree/drivers/iio/adc/qcom-spmi-adc5.c?h=LA.UM.7.11.r1-05200-NICOBAR.0#n688
 > 
-> Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Hi Chris,
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Applied to the togreg branch of iio.git.  Note that I'll only push it out as testing
+for now as I plan to rebase after rc1 is available.
 
-Trying to avoid too much indentation has lead to an odd code structure.
-Still minor thing, so either way this looks fine to me.
+Thanks,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Jonathan
 
 > ---
->  drivers/input/joystick/adc-joystick.c | 44 +++++++++++++++++++++++++--
->  1 file changed, 41 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/qcom-spmi-adc5.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/drivers/input/joystick/adc-joystick.c b/drivers/input/joystick/adc-joystick.c
-> index 78ebca7d400a..77dfb7dd96eb 100644
-> --- a/drivers/input/joystick/adc-joystick.c
-> +++ b/drivers/input/joystick/adc-joystick.c
-> @@ -26,8 +26,23 @@ struct adc_joystick {
->  	struct adc_joystick_axis *axes;
->  	struct iio_channel *chans;
->  	int num_chans;
-> +	bool polled;
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index 87438d1e5c0b..0dc4fe612433 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -526,6 +526,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_VBAT_SNS]		= ADC5_CHAN_VOLT("vbat_sns", 1,
+>  					SCALE_HW_CALIB_DEFAULT)
+> +	[ADC5_VCOIN]		= ADC5_CHAN_VOLT("vcoin", 1,
+> +					SCALE_HW_CALIB_DEFAULT)
+>  	[ADC5_DIE_TEMP]		= ADC5_CHAN_TEMP("die_temp", 0,
+>  					SCALE_HW_CALIB_PMIC_THERM)
+>  	[ADC5_USB_IN_I]		= ADC5_CHAN_VOLT("usb_in_i_uv", 0,
+> @@ -549,6 +551,12 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
+>  					SCALE_HW_CALIB_THERM_100K_PULLUP)
+>  	[ADC5_AMUX_THM2]	= ADC5_CHAN_TEMP("amux_thm2", 0,
+>  					SCALE_HW_CALIB_PM5_SMB_TEMP)
+> +	[ADC5_GPIO1_100K_PU]	= ADC5_CHAN_TEMP("gpio1_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> +	[ADC5_GPIO3_100K_PU]	= ADC5_CHAN_TEMP("gpio3_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
+> +	[ADC5_GPIO4_100K_PU]	= ADC5_CHAN_TEMP("gpio4_100k_pu", 0,
+> +					SCALE_HW_CALIB_THERM_100K_PULLUP)
 >  };
 >  
-> +static void adc_joystick_poll(struct input_dev *input)
-> +{
-> +	struct adc_joystick *joy = input_get_drvdata(input);
-> +	int i, val, ret;
-> +
-> +	for (i = 0; i < joy->num_chans; i++) {
-> +		ret = iio_read_channel_raw(&joy->chans[i], &val);
-> +		if (ret < 0)
-> +			return;
-> +		input_report_abs(input, joy->axes[i].code, val);
-> +	}
-> +	input_sync(input);
-> +}
-> +
->  static int adc_joystick_handle(const void *data, void *private)
->  {
->  	struct adc_joystick *joy = private;
-> @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  	int error;
->  	int bits;
->  	int i;
-> +	unsigned int poll_interval;
->  
->  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
->  	if (!joy)
-> @@ -192,8 +208,21 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  		return error;
->  	}
->  
-> -	/* Count how many channels we got. NULL terminated. */
-> +	if (device_property_present(dev, "poll-interval")) {
-> +		error = device_property_read_u32(dev, "poll-interval",
-> +						 &poll_interval);
-> +		if (error)
-> +			return error;
-> +		joy->polled = true;
-> +	}
-> +
-> +	/*
-> +	 * Count how many channels we got. NULL terminated.
-> +	 * Do not check the storage size if using polling.
-> +	 */
->  	for (i = 0; joy->chans[i].indio_dev; i++) {
-> +		if (joy->polled)
-> +			continue;
-
-Whilst I can see why did this, it is a rather 'unusual' code structure
-and that makes me a tiny bit uncomfortable. However if everyone else
-is happy with this then fair enough (I see it was Artur's suggestion to
-handle it like this).
-
->  		bits = joy->chans[i].channel->scan_type.storagebits;
->  		if (!bits || bits > 16) {
->  			dev_err(dev, "Unsupported channel storage size\n");
-> @@ -215,8 +244,14 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  	joy->input = input;
->  	input->name = pdev->name;
->  	input->id.bustype = BUS_HOST;
-> -	input->open = adc_joystick_open;
-> -	input->close = adc_joystick_close;
-> +
-> +	if (joy->polled) {
-> +		input_setup_polling(input, adc_joystick_poll);
-> +		input_set_poll_interval(input, poll_interval);
-> +	} else {
-> +		input->open = adc_joystick_open;
-> +		input->close = adc_joystick_close;
-> +	}
->  
->  	error = adc_joystick_set_axes(dev, joy);
->  	if (error)
-> @@ -229,6 +264,9 @@ static int adc_joystick_probe(struct platform_device *pdev)
->  		return error;
->  	}
->  
-> +	if (joy->polled)
-> +		return 0;
-> +
->  	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
->  	if (IS_ERR(joy->buffer)) {
->  		dev_err(dev, "Unable to allocate callback buffer\n");
+>  static const struct adc5_channels adc7_chans_pmic[ADC5_MAX_CHANNEL] = {
 

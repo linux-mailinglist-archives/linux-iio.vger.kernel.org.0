@@ -2,54 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D5258B65F
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 17:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A7658B69B
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 17:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbiHFPVu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Aug 2022 11:21:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43696 "EHLO
+        id S230211AbiHFPwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 11:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231764AbiHFPVu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 11:21:50 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B76811A12;
-        Sat,  6 Aug 2022 08:21:48 -0700 (PDT)
+        with ESMTP id S230128AbiHFPwY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 11:52:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A7EE0C0;
+        Sat,  6 Aug 2022 08:52:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EF340B80025;
-        Sat,  6 Aug 2022 15:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A961C433C1;
-        Sat,  6 Aug 2022 15:21:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DBAB0B801B8;
+        Sat,  6 Aug 2022 15:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F536C433C1;
+        Sat,  6 Aug 2022 15:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659799305;
-        bh=XGP+EcZEOzVSFOo+6ddfdRfMGkTyuTlMgEE7CXSDNmI=;
+        s=k20201202; t=1659801139;
+        bh=rjJcGRiMxO3Dgy+zA6oxTwRdcgUNPc4FVsnQFLWLgeM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZJgwIc0rz9PUn0mOo89RfRGQ4kU4JXj8Ll1tl9YuZyjqGbXHU3cNUUnaOu9D4HFQm
-         fsM/v1jFfILAwE79r9i5odUZ/zM1aCzQrjgbDcMFsUgbr+OIFgrv5epTFy04C4+yz0
-         Ywj0cG5MB4mbzLgcGmdI9OiaVDOvtquyfZ5TjSfwFB2IhSdYEdlYfEEE/iyCmk/X8n
-         rBVmIF5hv7w9vwIgrL2w7MYsKfBmwLr/KS2bDrF4s/6bIHf6rBwiaiCUt7QSanGoHI
-         kwXH0/Y8BQdU7wPLjU9MknVVyHdQDcN/NipxAgMzdrv3FkAWJUU8A0BL4Lm4wt4QMV
-         ldAwP188PZFRg==
-Date:   Sat, 6 Aug 2022 16:32:04 +0100
+        b=LBTWpY511sVEhVDjOMAAzpeMha3rxlEAHt0vvtPX9N6Y6WAld1gCALguhZ2fHggNl
+         eJcowERwrCQCi+SHr0tltZ5vwVMfg1J/+1RhOjEkXGsuMcsIaEbD+w9JqX2auqzuA7
+         xmVXxYuVMcAt4iRLewP8Qgqv9vVu6ZiKrmuwQEE+FCijzrcbmxWZn20h6lPZS4/XYW
+         gw0TVdQtMLXGX7AlhjHFmO8hPe0r7GA5rPnTV0/bsrZAsS5ZOCFN6LTL1pFiKJgqUn
+         NRRnDR/nK3Q/+q3oof4AMeESicWDvxxC7L3wQJRnwuB+69pCmIHdG2vztdWP1CG1pT
+         9KPwLlhihuTXA==
+Date:   Sat, 6 Aug 2022 17:02:37 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Message-ID: <20220806163204.3262c0e7@jic23-huawei>
-In-Reply-To: <20220803131132.19630-3-ddrokosov@sberdevices.ru>
-References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
-        <20220803131132.19630-3-ddrokosov@sberdevices.ru>
+To:     haibo.chen@nxp.com
+Cc:     lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/3] iio: adc: add imx93 adc support
+Message-ID: <20220806170237.1c664675@jic23-huawei>
+In-Reply-To: <1659517947-11207-1-git-send-email-haibo.chen@nxp.com>
+References: <1659517947-11207-1-git-send-email-haibo.chen@nxp.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,353 +57,487 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 3 Aug 2022 13:11:25 +0000
-Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+On Wed,  3 Aug 2022 17:12:25 +0800
+haibo.chen@nxp.com wrote:
 
-> MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-> sensitivity consumer applications. It has dynamic user-selectable full
-> scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
-> with output data rates from 1Hz to 1000Hz.
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
+> The ADC in i.mx93 is a total new ADC IP, add a driver to support
+> this ADC.
 > 
-> This driver supports following MSA311 features:
->     - IIO interface
->     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
->     - ODR (Output Data Rate) selection
->     - Scale and samp_freq selection
->     - IIO triggered buffer, IIO reg access
->     - NEW_DATA interrupt + trigger
+> Currently, only support one shot normal conversion triggered by
+> software. For other mode, will add in future.
 > 
-> Below features to be done:
->     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
->     - Low Power mode
-> 
-> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Hi Dmitry, 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-A few small things I noticed whilst taking a quick look.
+Nice.
 
-> ---
+A few comments inline.
+
+Thanks,
+
+Jonathan
+
+
+> diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+> new file mode 100644
+> index 000000000000..6e3cf6d3e629
+> --- /dev/null
+> +++ b/drivers/iio/adc/imx93_adc.c
+> @@ -0,0 +1,448 @@
 
 ...
 
 > +
-> +/* Register map */
-I'm not a big fan of 'structure of code' type comments like this one.
-They tend to become wrong remarkably quickly. So unless they
-are adding significant value, I would drop them.
+> +/* ADC status */
+> +#define IDLE			0
 
-> +
-> +#define MSA311_SOFT_RESET_REG     0x00
-> +#define MSA311_PARTID_REG         0x01
-> +#define MSA311_ACC_X_REG          0x02
-> +#define MSA311_ACC_Y_REG          0x04
-> +#define MSA311_ACC_Z_REG          0x06
-,...
+Very generic names that are likely to clash with some define in a header
+introduced in the future.  Prefix them all with IMX93_ADC_ to scope
+them to this driver.
 
-> +/**
-> + * struct msa311_priv - MSA311 internal private state
-> + * @regs: Underlying I2C bus adapter used to abstract slave
-> + *        register accesses
-> + * @fields: Abstract objects for each registers fields access
-> + * @dev: Device handler associated with appropriate bus client
-> + * @lock: Protects msa311 device state between setup and data access routines
-> + *        (power transitions, samp_freq/scale tune, retrieving axes data, etc)
-> + * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
-> + *                 to notify external consumers a new sample is ready
-> + * @vdd: Optional external voltage regulator for the device power supply
-> + */
-> +struct msa311_priv {
-> +	struct regmap *regs;
-> +	struct regmap_field *fields[F_MAX_FIELDS];
+> +#define POWER_DOWN		1
+> +#define WAIT_STATE		2
+> +#define BUSY_IN_CALIBRATION	3
+> +#define SAMPLE			4
+> +#define CONVERSION		6
 > +
+> +#define IMX93_ADC_TIMEOUT		msecs_to_jiffies(100)
+> +
+> +struct imx93_adc {
 > +	struct device *dev;
-> +	struct mutex lock; /* state guard */
+> +	void __iomem *regs;
+> +	struct clk *ipg_clk;
+> +	struct regulator *vref;
+> +	struct mutex lock;
 
-Shouldn't need this comment given documentation above that provides
-more information.
+All locks should have documentation to explain what data they are protecting
+(that can be in memory, or in the registers etc, or on a bus, but it's normally
+some sort of data).
 
-> +
-> +	struct iio_trigger *new_data_trig;
-> +	struct regulator *vdd;
+> +	struct completion completion;
 > +};
->
-
-
-> +static irqreturn_t msa311_irq_thread(int irq, void *p)
-> +{
-> +	struct msa311_priv *msa311 = iio_priv(p);
-> +	unsigned int new_data_int_enabled;
-> +	struct device *dev = msa311->dev;
-> +	int err;
 > +
-> +	mutex_lock(&msa311->lock);
+> +#define IMX93_ADC_CHAN(_idx) {					\
+> +	.type = IIO_VOLTAGE,					\
+> +	.indexed = 1,						\
+> +	.channel = (_idx),					\
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+> +	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
+> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),	\
+> +}
+> +
+> +static const struct iio_chan_spec imx93_adc_iio_channels[] = {
+> +	IMX93_ADC_CHAN(0),
+> +	IMX93_ADC_CHAN(1),
+> +	IMX93_ADC_CHAN(2),
+> +	IMX93_ADC_CHAN(3),
+> +};
+> +
+> +static void imx93_adc_power_down(struct imx93_adc *adc)
+> +{
+> +	u32 mcr, msr;
+> +	int ret;
+> +
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr |= FIELD_PREP(IMX93_ADC_MCR_PWDN_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +
+> +	ret = readl_poll_timeout(adc->regs + IMX93_ADC_MSR, msr,
+> +		((msr & IMX93_ADC_MSR_ADCSTATUS_MASK) == POWER_DOWN), 1, 50);
+> +	if (ret == -ETIMEDOUT)
+> +		dev_warn(adc->dev,
+> +			 "ADC do not in power down mode, current MSR is %x\n",
+> +			 msr);
+> +}
+> +
+> +static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
+> +{
+> +	u32 mcr;
+> +
+> +	/* put adc in power down mode */
+> +	imx93_adc_power_down(adc);
+> +
+> +	/* config the AD_CLK equal to bus clock */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr |= FIELD_PREP(IMX93_ADC_MCR_ADCLKSE_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +
+> +	/* bring ADC out of power down state, in idle state */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_PWDN_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +}
+> +
+> +static int imx93_adc_calibration(struct imx93_adc *adc)
+> +{
+> +	u32 mcr, msr, adc_status;
+> +	int ret;
+> +
+> +	/* make sure ADC in power down mode */
 
+Is the (noop) write that would otherwise occur worth the code complexity here.
+Putting it another way, why not just call imx93_adc_powerdown() unconditionally
+and simplify this code?
+
+> +	msr = readl(adc->regs + IMX93_ADC_MSR);
+> +	adc_status = FIELD_GET(IMX93_ADC_MSR_ADCSTATUS_MASK, msr);
+> +	if (adc_status != POWER_DOWN)
+> +		imx93_adc_power_down(adc);
+> +
+> +	/* config SAR controller operating clock */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_ADCLKSE_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +
+> +	/* bring ADC out of power down state */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_PWDN_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
 > +
 > +	/*
-> +	 * We do not check NEW_DATA int status, because of based on
-> +	 * specification it's cleared automatically after a fixed time.
-> +	 * So just check that is enabled by driver logic.
-
-That is going to be very problematic if we can have this and events coming
-through the same interrupt pin.  Not harmful for now though given you are
-only supporting NEW_DATA for now.  Just something to watch out for.
-
+> +	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+> +	 * can add the setting of these bit if need in future.
 > +	 */
-> +	err = regmap_field_read(msa311->fields[F_NEW_DATA_INT_EN],
-> +				&new_data_int_enabled);
 > +
-> +	/* TODO: check motion interrupts status */
+> +	/* run calibration */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr |= FIELD_PREP(IMX93_ADC_MCR_CALSTART_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
 > +
-> +	mutex_unlock(&msa311->lock);
-> +	if (err) {
-> +		dev_err(dev, "cannot read new_data int state (%d)\n", err);
-> +		return IRQ_NONE;
+> +	/* wait calibration to be finished */
+> +	ret = readl_poll_timeout(adc->regs + IMX93_ADC_MSR, msr,
+> +		!(msr & IMX93_ADC_MSR_CALBUSY_MASK), 1000, 2000000);
+> +	if (ret == -ETIMEDOUT) {
+> +		dev_warn(adc->dev, "ADC do not finish calibration in 1 min!\n");
+> +		return ret;
 > +	}
 > +
-> +	if (new_data_int_enabled)
-> +		iio_trigger_poll_chained(msa311->new_data_trig);
+> +	/* check whether calbration is success or not */
+> +	msr = readl(adc->regs + IMX93_ADC_MSR);
+> +	if (msr & IMX93_ADC_MSR_CALFAIL_MASK) {
+> +		dev_warn(adc->dev, "ADC calibration failed!\n");
+> +		return -EAGAIN;
+> +	}
 > +
-> +	/* TODO: send motion events if needed */
+> +	return 0;
+> +}
+> +
+> +static int imx93_adc_read_raw(struct iio_dev *indio_dev,
+> +				struct iio_chan_spec const *chan,
+> +				int *val, int *val2, long mask)
+> +{
+> +	struct imx93_adc *adc = iio_priv(indio_dev);
+> +	struct device *dev = adc->dev;
+> +	u32 channel;
+> +	u32 imr, mcr, pcda;
+> +	long ret;
+> +	u32 vref_uv;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+
+This is a big block.  For readability I'd suggest factoring the channel read part out as
+a separate function that you then call from here.  Perhaps leaving hte runtime pm code and
+locking external to that call.
+
+> +		pm_runtime_get_sync(dev);
+> +		mutex_lock(&adc->lock);
+> +
+> +		reinit_completion(&adc->completion);
+> +
+> +		/* config channel mask register */
+> +		channel = 1 << chan->channel;
+> +		writel(channel, adc->regs + IMX93_ADC_NCMR0);
+> +
+> +		/* TODO: can config desired sample time in CTRn if need */
+> +
+> +		/* config interrupt mask */
+> +		imr = FIELD_PREP(IMX93_ADC_IMR_EOC_MASK, 1);
+> +		writel(imr, adc->regs + IMX93_ADC_IMR);
+> +		writel(channel, adc->regs + IMX93_ADC_CIMR0);
+> +
+> +		/* config one-shot mode */
+> +		mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +		mcr &= ~FIELD_PREP(IMX93_ADC_MCR_MODE_MASK, 1);
+> +		writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +
+> +		/* start normal conversion */
+> +		mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_NSTART_MASK, 1);
+> +		writel(mcr, adc->regs + IMX93_ADC_MCR);
+> +
+> +		ret = wait_for_completion_interruptible_timeout(&adc->completion,
+> +								IMX93_ADC_TIMEOUT);
+> +		if (ret == 0) {
+> +			mutex_unlock(&adc->lock);
+> +			return -ETIMEDOUT;
+> +		}
+> +		if (ret < 0) {
+> +			mutex_unlock(&adc->lock);
+> +			return ret;
+> +		}
+> +
+> +		pcda = readl(adc->regs + IMX93_ADC_PCDR0 + chan->channel * 4);
+> +
+> +		*val = FIELD_GET(IMX93_ADC_PCDR_CDATA_MASK, pcda);
+> +
+> +		mutex_unlock(&adc->lock);
+> +		pm_runtime_mark_last_busy(dev);
+> +		pm_runtime_put_sync_autosuspend(dev);
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		vref_uv = regulator_get_voltage(adc->vref);
+
+IIRC Can return an error.  You should check and pass that error on if there
+is one.
+
+> +		*val = vref_uv / 1000;
+> +		*val2 = 12;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*val = clk_get_rate(adc->ipg_clk);
+> +		return IIO_VAL_INT;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static irqreturn_t imx93_adc_isr(int irq, void *dev_id)
+> +{
+> +	struct imx93_adc *adc = dev_id;
+> +	u32 isr;
+> +
+> +	isr = readl(adc->regs + IMX93_ADC_ISR);
+> +	writel(isr, adc->regs + IMX93_ADC_ISR);
+
+I'm 'guessing' that ISR had multiple bits reflecting different
+causes of the interrupt.  Normally we'd only want to clear
+those bits that correspond to things we are expecting +
+return IRQ_NONE if none of the bits we expect to see set are
+(spurious interrupt).
+
+> +
+> +	if (FIELD_GET(IMX93_ADC_ISR_EOC_MASK, isr))
+> +		complete(&adc->completion);
 > +
 > +	return IRQ_HANDLED;
 > +}
 > +
-
+> +static const struct iio_info imx93_adc_iio_info = {
+> +	.read_raw = &imx93_adc_read_raw,
+> +};
 > +
-> +static int msa311_check_partid(struct msa311_priv *msa311)
+> +static int imx93_adc_probe(struct platform_device *pdev)
 > +{
-> +	struct device *dev = msa311->dev;
-> +	unsigned int partid;
-> +	int err;
-> +
-> +	err = regmap_read(msa311->regs, MSA311_PARTID_REG, &partid);
-> +	if (err)
-> +		return dev_err_probe(dev, err,
-> +				     "failed to read partid (%d)\n", err);
-> +
-> +	if (partid == MSA311_WHO_AM_I)
-> +		dev_dbg(dev, "found MSA311 compatible chip[%#x]\n", partid);
-
-I think I'd drop this dev_dbg as in most cases other tracing options + absence
-of the warning for when it doesn't match will be enough information.
-
-> +	else
-> +		dev_warn(dev, "invalid partid (%#x), expected (%#x)\n",
-> +			 partid, MSA311_WHO_AM_I);
-> +
-> +	return 0;
-> +}
-> +
-
-
-> +static int msa311_setup_interrupts(struct msa311_priv *msa311)
-> +{
-> +	struct device *dev = msa311->dev;
-> +	struct i2c_client *i2c = to_i2c_client(dev);
-> +	struct iio_dev *indio_dev = i2c_get_clientdata(i2c);
-> +	struct iio_trigger *trig;
-> +	int err;
-> +
-> +	/* Keep going without interrupts if no initialized I2C irq */
-> +	if (i2c->irq <= 0)
-> +		return 0;
-> +
-> +	err = devm_request_threaded_irq(&i2c->dev, i2c->irq,
-> +					NULL, msa311_irq_thread,
-> +					IRQF_ONESHOT,
-> +					i2c->name,
-
-As below. I'd prefer the name hardcoded over relying on particular
-firmwares having written the i2c name.
-
-> +					indio_dev);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "failed to request irq\n");
-> +
-> +	trig = devm_iio_trigger_alloc(dev, "%s-new-data", i2c->name);
-here too.
-> +	if (!trig)
-> +		return dev_err_probe(dev, -ENOMEM,
-> +				     "cannot allocate newdata trig\n");
-> +
-> +	msa311->new_data_trig = trig;
-> +	msa311->new_data_trig->dev.parent = dev;
-
-This is set by the IIO core as part of devm_iio_trigger_alloc()
-We moved it to allocation (from registration) very recently
-to simplify the few cases where it mattered. I don't think it did matter
-in this particular case though - shouldn't have been in this driver either
-way!
-
-> +	msa311->new_data_trig->ops = &msa311_new_data_trig_ops;
-> +	iio_trigger_set_drvdata(msa311->new_data_trig, indio_dev);
-> +
-> +	err = devm_iio_trigger_register(dev, msa311->new_data_trig);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "can't register newdata trig\n");
-> +
-> +	err = regmap_field_write(msa311->fields[F_INT1_OD],
-> +				 MSA311_INT1_OD_PUSH_PULL);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot enable push-pull int\n");
-> +
-> +	err = regmap_field_write(msa311->fields[F_INT1_LVL],
-> +				 MSA311_INT1_LVL_HIGH);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot set active int level\n");
-> +
-> +	err = regmap_field_write(msa311->fields[F_LATCH_INT],
-> +				 MSA311_LATCH_INT_LATCHED);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot latch int\n");
-> +
-> +	err = regmap_field_write(msa311->fields[F_RESET_INT], 1);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot reset int\n");
-> +
-> +	err = regmap_field_write(msa311->fields[F_INT1_NEW_DATA], 1);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot map new data int\n");
-> +
-> +	return 0;
-> +}
-> +
-
-> +
-> +static int msa311_probe(struct i2c_client *i2c)
-> +{
-> +	struct device *dev = &i2c->dev;
-> +	struct msa311_priv *msa311;
+> +	struct imx93_adc *adc;
 > +	struct iio_dev *indio_dev;
-> +	int err;
+> +	struct device *dev = &pdev->dev;
+> +	int irq, ret;
 > +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*msa311));
-> +	if (!indio_dev)
-> +		return dev_err_probe(dev, -ENOMEM,
-> +				     "iio device allocation failed\n");
-> +
-> +	msa311 = iio_priv(indio_dev);
-> +	msa311->dev = dev;
-> +	i2c_set_clientdata(i2c, indio_dev);
-> +
-> +	err = msa311_regmap_init(msa311);
-> +	if (err)
-> +		return err;
-> +
-> +	mutex_init(&msa311->lock);
-> +
-> +	msa311->vdd = devm_regulator_get_optional(dev, "vdd");
-> +	if (IS_ERR(msa311->vdd)) {
-> +		err = PTR_ERR(msa311->vdd);
-> +		if (err == -ENODEV)
-> +			msa311->vdd = NULL;
-> +		else
-> +			return dev_err_probe(dev, PTR_ERR(msa311->vdd),
-> +					     "cannot get vdd supply\n");
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+> +	if (!indio_dev) {
+> +		dev_err(dev, "Failed allocating iio device\n");
+> +		return -ENOMEM;
 > +	}
 > +
-> +	if (msa311->vdd) {
-> +		err = regulator_enable(msa311->vdd);
-> +		if (err)
-> +			return dev_err_probe(dev, err,
-> +					     "cannot enable vdd supply\n");
+> +	adc = iio_priv(indio_dev);
+> +	adc->dev = dev;
 > +
-> +		err = devm_add_action_or_reset(dev, msa311_vdd_disable,
-> +					       msa311->vdd);
-> +		if (err) {
-> +			regulator_disable(msa311->vdd);
-
-Don't need the regulator_disable() call here. If devm_add_action_or_reset() fails
-it will always call the callback (that's how it differs from devm_add_action())
-
-
-> +			return dev_err_probe(dev, err,
-> +					     "cannot add vdd disable action\n");
-> +		}
+> +	mutex_init(&adc->lock);
+> +	adc->regs = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(adc->regs))
+> +		return PTR_ERR(adc->regs);
+> +
+> +	/* The third irq is for ADC conversion usage */
+> +	irq = platform_get_irq(pdev, 2);
+> +	if (irq < 0)
+> +		return irq;
+> +
+> +	adc->ipg_clk = devm_clk_get(dev, "ipg");
+> +	if (IS_ERR(adc->ipg_clk))
+> +		return dev_err_probe(dev, PTR_ERR(adc->ipg_clk),
+> +				     "Failed getting clock\n");
+> +
+> +	adc->vref = devm_regulator_get(dev, "vref");
+> +	if (IS_ERR(adc->vref))
+> +		return dev_err_probe(dev, PTR_ERR(adc->vref),
+> +				     "Failed getting reference voltage\n");
+> +
+> +	ret = regulator_enable(adc->vref);
+> +	if (ret) {
+> +		dev_err(dev, "Can't enable adc reference top voltage\n");
+> +		return ret;
 > +	}
 > +
-> +	err = msa311_check_partid(msa311);
-> +	if (err)
-> +		return err;
+> +	platform_set_drvdata(pdev, indio_dev);
 > +
-> +	err = msa311_soft_reset(msa311);
-> +	if (err)
-> +		return err;
+> +	init_completion(&adc->completion);
 > +
-> +	err = msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_NORMAL);
-> +	if (err)
-> +		return dev_err_probe(dev, err,
-> +				     "failed to power on device (%d)\n", err);
+> +	indio_dev->name = IMX93_ADC_DRIVER_NAME;
+> +	indio_dev->info = &imx93_adc_iio_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = imx93_adc_iio_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(imx93_adc_iio_channels);
 > +
-> +	/*
-> +	 * Register powerdown deferred callback which suspends the chip
-> +	 * after module unloaded.
-> +	 *
-> +	 * MSA311 should be in SUSPEND mode in the two cases:
-> +	 * 1) When driver is loaded, but we do not have any data or
-> +	 *    configuration requests to it (we are solving it using
-> +	 *    autosuspend feature).
-> +	 * 2) When driver is unloaded and device is not used (devm action is
-> +	 *    used in this case).
-> +	 */
-> +	err = devm_add_action_or_reset(dev, msa311_powerdown, msa311);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot add powerdown action\n");
-> +
+> +	ret = clk_prepare_enable(adc->ipg_clk);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Could not prepare or enable the clock.\n");
+> +		return ret;
 
-Probably want a pm_runtime_set_active() call here to let runtime PM know we
-are starting it up with the chip turned on.  runtime pm gives me a headache
-though so possible you don't strictly need this.
+Regulator left powered up.  You need another label in the error handling below
+and appropriate goto.
 
-> +	err = devm_pm_runtime_enable(dev);
-> +	if (err)
-> +		return err;
+
+> +	}
 > +
-> +	pm_runtime_get_noresume(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, MSA311_PWR_SLEEP_DELAY_MS);
+> +	ret = devm_request_irq(dev, irq, imx93_adc_isr, 0, IMX93_ADC_DRIVER_NAME, adc);
+
+Do not mix devm managed and non devm managed code.  That just needs to difficult
+to reason about ordering in remove.  Two options to make this easy.
+
+1) After the first non devm_ managed call (here the regulator_enable() above,
+  stop using devm_ calls at all.
+2) Use devm_add_action_or_reset() to register custom cleanup callbacks so that
+   you can get rid of the remove() function and still guarantee the ordering
+   is what is expected (almost always should be reverse of what is in probe())
+
+I prefer option 2 personally but either is fine.  It can get a little fiddly to
+get runtime pm tear down right when using devm to do it.
+
+
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed requesting irq, irq = %d\n", irq);
+> +		goto error_ipg_clk_disable;
+> +	}
+> +
+> +	ret = imx93_adc_calibration(adc);
+> +	if (ret < 0)
+> +		goto error_ipg_clk_disable;
+> +
+> +	imx93_adc_config_ad_clk(adc);
+> +
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "Couldn't register the device.\n");
+> +		goto error_ipg_clk_disable;
+> +	}
+> +
+> +	pm_runtime_set_active(dev);
+> +	pm_runtime_set_autosuspend_delay(dev, 50);
 > +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_enable(dev);
 > +
-> +	err = msa311_chip_init(msa311);
-> +	if (err)
-> +		return err;
+> +	return 0;
 > +
-> +	indio_dev->modes = 0; /* setup buffered mode later */
+> +error_ipg_clk_disable:
+> +	clk_disable_unprepare(adc->ipg_clk);
+> +	regulator_disable(adc->vref);
+> +
+> +	return ret;
+> +}
+> +
+> +static int imx93_adc_remove(struct platform_device *pdev)
+> +{
+> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> +	struct imx93_adc *adc = iio_priv(indio_dev);
+> +	struct device *dev = adc->dev;
+> +
+> +	pm_runtime_get_sync(dev);
 
-As per other branch, I led you astray here it seems.
+I would prefer to see  the runtime pm tear down all up here
+as it corresponds to the setup at the end of probe()
+I don't it will make any functional difference and it makes
+the code easier to reason about in terms of ordering of calls.
 
-> +	indio_dev->channels = msa311_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(msa311_channels);
-> +	indio_dev->name = i2c->name;
-
-I'd rather see the part number encoded directly here as it should only ever
-take one value (and that value should be based on the chipID once we have
-multiple chipIDs supported - not what the firmware claims it is...)
-
-> +	indio_dev->info = &msa311_info;
 > +
-> +	err = devm_iio_triggered_buffer_setup(dev,
-> +					      indio_dev,
-> +					      iio_pollfunc_store_time,
-> +					      msa311_buffer_thread,
-> +					      &msa311_buffer_setup_ops);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "cannot setup iio trig buf\n");
+> +	iio_device_unregister(indio_dev);
+> +	imx93_adc_power_down(adc);
+> +	clk_disable_unprepare(adc->ipg_clk);
+> +	regulator_disable(adc->vref);
 > +
-> +	err = msa311_setup_interrupts(msa311);
-> +	if (err)
-> +		return err;
-> +
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +
-> +	err = devm_iio_device_register(dev, indio_dev);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "iio device register failed\n");
+> +	pm_runtime_disable(dev);
+> +	pm_runtime_put_noidle(dev);
 > +
 > +	return 0;
 > +}
+> +
+> +static int imx93_adc_runtime_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct imx93_adc *adc = iio_priv(indio_dev);
+> +
+> +	imx93_adc_power_down(adc);
+> +	clk_disable_unprepare(adc->ipg_clk);
+> +	regulator_disable(adc->vref);
+> +
+> +	return 0;
+> +}
+> +
+> +static int imx93_adc_runtime_resume(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct imx93_adc *adc = iio_priv(indio_dev);
+> +	int ret;
+> +	u32 mcr;
+> +
+> +	ret = regulator_enable(adc->vref);
+> +	if (ret) {
+> +		dev_err(dev,
+> +			"Can't enable adc reference top voltage, err = %d\n",
+> +			ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = clk_prepare_enable(adc->ipg_clk);
+> +	if (ret) {
+> +		dev_err(dev, "Could not prepare or enable clock.\n");
+> +		goto err_disable_reg;
+> +	}
+> +
+> +	/* bring ADC out of power down state, in idle state */
+> +	mcr = readl(adc->regs + IMX93_ADC_MCR);
+> +	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_PWDN_MASK, 1);
+> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
 
-...
+This 'power_up' code block occurs quite a few times. Probably
+worth factoring out as a separate call alongside imx93_adc_power_down()
+
+> +
+> +	return 0;
+> +
+> +err_disable_reg:
+> +	regulator_disable(adc->vref);
+> +
+> +	return ret;
+> +}
+> +
+> +static DEFINE_RUNTIME_DEV_PM_OPS(imx93_adc_pm_ops,
+> +				 imx93_adc_runtime_suspend,
+> +				 imx93_adc_runtime_resume, NULL);
+> +
+> +static const struct of_device_id imx93_adc_match[] = {
+> +	{ .compatible = "nxp,imx93-adc", },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, imx93_adc_match);
+> +
+> +static struct platform_driver imx93_adc_driver = {
+> +	.probe		= imx93_adc_probe,
+> +	.remove		= imx93_adc_remove,
+> +	.driver		= {
+> +		.name	= IMX93_ADC_DRIVER_NAME,
+> +		.of_match_table = imx93_adc_match,
+> +		.pm	= pm_ptr(&imx93_adc_pm_ops),
+> +	},
+> +};
+> +
+> +module_platform_driver(imx93_adc_driver);
+> +
+> +MODULE_DESCRIPTION("NXP i.MX93 ADC driver");
+> +MODULE_AUTHOR("Haibo Chen <haibo.chen@nxp.com>");
+> +MODULE_LICENSE("GPL");
 

@@ -2,59 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAE758B733
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 19:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9400058B73F
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Aug 2022 19:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231543AbiHFRCf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 6 Aug 2022 13:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
+        id S229736AbiHFRSH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 6 Aug 2022 13:18:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230255AbiHFRCe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 13:02:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01E9355A8;
-        Sat,  6 Aug 2022 10:02:34 -0700 (PDT)
+        with ESMTP id S229639AbiHFRSG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 6 Aug 2022 13:18:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD395E0F3
+        for <linux-iio@vger.kernel.org>; Sat,  6 Aug 2022 10:18:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D2D7611ED;
-        Sat,  6 Aug 2022 17:02:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABCCC433C1;
-        Sat,  6 Aug 2022 17:02:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A4E47B8077B
+        for <linux-iio@vger.kernel.org>; Sat,  6 Aug 2022 17:18:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F492C433D6;
+        Sat,  6 Aug 2022 17:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659805352;
-        bh=065uU3xsQXc3K3lPrTGT6NFVQ52mQXrrPRYVEbifapE=;
+        s=k20201202; t=1659806283;
+        bh=I+lirNVV8yUduBVxzKY76kRtJs8KfzWkF+UIvb2nInE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=TRdCuqPzo+OuUDezPf8bt7U2/rXipGVTXLwtvRvjE0zhqwkUcrmB4p2+jEd/hjfOX
-         Vp3YvlVFDjPRpMv+qVIQj8oyqpP4SLz0gIRxPmChEYjulDbO+WvvOXti1IZ7uzYLCx
-         dGBqU2cEyIbhtHarQaxEYdECfQ8xLf2WTEVeMz2rdctMf+UGyQdvdTtydi9WiHFVid
-         NphBW23AsUbwT2H6XkQl7QjvWMJ0sFxY8q7atnQSyUML9zvIYyutxsuoROi89NLZ9w
-         lQ0/tloxlxKMxPuJd3duJ/ZL1gsf9J9ms6tzWky4KEWF86QXm4RlJEKLnnYN7ddhxm
-         2VdH3qra+Tm6Q==
-Date:   Sat, 6 Aug 2022 18:12:52 +0100
+        b=CI1WDu2WXnf30n3VTMDe8RVJlnVCa/oYOwA3HJwglPiInjBrSl65fq8KYVA2R3mJM
+         NRpvb5Tq2OZ0fOxWUCibZmA0nxROFx7PgM9QABGI0PQZRG3n1HTuaVqj/Uf+fqPOI7
+         WR6jvmDwwi+TGjNDlEmnBnIq7Cb557dNh+xjg8/ED0/3al1zY2wME5daTWWadzLsg7
+         74679/XbC/9rye6kdFqDTER4Xeu+qEOXWAtYVVFrKzFJxdn5bYQ7w7pF+MBNF4boSO
+         5JLiMJ84aVH+PiHoIaqBx0SwLDGmifoiS0AFH0DyfJ78gKxTJatGYfmJQM4s4dlviE
+         IY/WmQhW24SSg==
+Date:   Sat, 6 Aug 2022 18:28:23 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Patrick Williams <patrick@stwcx.xyz>,
-        Potin Lai <potin.lai.pt@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Potin Lai <potin.lai@quantatw.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: humidity: hdc100x: add manufacturer and
- device ID check
-Message-ID: <20220806181252.7633f19d@jic23-huawei>
-In-Reply-To: <CAHp75VfOPgDbTdt1EXJ5+exGXCZeT9VdtcOUDt_g4fn20S2Qwg@mail.gmail.com>
-References: <20220728125435.3336618-1-potin.lai.pt@gmail.com>
-        <20220728125435.3336618-3-potin.lai.pt@gmail.com>
-        <20220731130959.50826fc4@jic23-huawei>
-        <4ea235d1-46c1-87de-760f-dc4775007ae0@gmail.com>
-        <CAHp75VcZqTpmvVV=u4t=fdx=ffzksoWVDFZmq6Lfr6DrFrB2aA@mail.gmail.com>
-        <Yuf7UAVrIJCnO40X@heinlein.stwcx.org.github.beta.tailscale.net>
-        <CAHp75Vfe33oJAf1j27B-pTd84kX5JNPd+e16ygLYgZjCs=ZJfQ@mail.gmail.com>
-        <CAHp75VfOPgDbTdt1EXJ5+exGXCZeT9VdtcOUDt_g4fn20S2Qwg@mail.gmail.com>
+To:     Crt Mori <cmo@melexis.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linux Iio <linux-iio@vger.kernel.org>
+Subject: Re: Controlling device power management from terminal
+Message-ID: <20220806182823.08d15b35@jic23-huawei>
+In-Reply-To: <CAKv63uuaVNoo7hG8bampmx1r5WH7=BdNVL-4HAgzPou9d58HDg@mail.gmail.com>
+References: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
+        <CAHp75VcrFQXW10vkLSB5Yh2D24zPzKR9FtfDU8bsSqDwD7=zjg@mail.gmail.com>
+        <CAKv63uv12XWEEVAhUBuK9Botj4mCtKWwRL-YzxywOipTAHgQFg@mail.gmail.com>
+        <CAHp75Vd7_Vz+kTEUzO+Pz3Bj5b7AYo=NMukL5dbX9HLXHE4K0Q@mail.gmail.com>
+        <CAKv63uuaVNoo7hG8bampmx1r5WH7=BdNVL-4HAgzPou9d58HDg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -69,93 +58,135 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 1 Aug 2022 18:30:16 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 2 Aug 2022 17:32:22 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-> On Mon, Aug 1, 2022 at 6:26 PM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > On Mon, Aug 1, 2022 at 6:12 PM Patrick Williams <patrick@stwcx.xyz> wrote:  
-> > > On Mon, Aug 01, 2022 at 10:22:16AM +0200, Andy Shevchenko wrote:  
-> > > > On Mon, Aug 1, 2022 at 3:52 AM Potin Lai <potin.lai.pt@gmail.com> wrote:  
-> > > > > On 7/31/22 20:09, Jonathan Cameron wrote:
-> > > > > In our hardware board, we have "ti,hdc1080" as main source, and "silabs,si7020"
-> > > > > for 2nd source. This two chip are locate at same bus and same slave address,
-> > > > > and we want to use multiple compatibles to support both chips with single device
-> > > > > node in device tree.
-> > > > >
-> > > > > Ex:
-> > > > > compatible = "ti,hdc1099", "silabs,si7020";  
-> > > >
-> > > > This is simply broken DT, you must not put incompatible hardware on
-> > > > the same compatible string. DT is by definition the description of a
-> > > > certain platform. What you showed is a combination of incompatible
-> > > > chips in a single DT.  
-> > >
-> > > We were mistaken that this is the appropriate way to specify this
-> > > behavior, partially because it works as long as the probe functions
-> > > return an error the next matching driver from the compatible will probe.
-> > > It does seem that specifying two different compatibles like this would
-> > > violate the intention of the DT spec:
-> > >
-> > >     The property value consists of a concatenated list of null terminated
-> > >     strings, from most specific to most general. They allow a device to
-> > >     express its compatibility with a family of similar devices, potentially
-> > >     allowing a single device driver to match against several devices.
-> > >  
-> > > >  
-> > > > > In order to support this, I need to add ID checking mechanism into the current
-> > > > > hdc100x driver, so the si7020 chip will fail to probe with hdc100x driver
-> > > > > (because the ID checking is not failed), then success probe with si7020.
-> > > > >
-> > > > > Base on you explanation, it looks multiple compatibles is not suitable in this
-> > > > > case? Would you mind advise us what would be the better approach for our case?  
-> > > >
-> > > > If I may advise... fix your DT by dropping the wrong compatible item.  
-> > >
-> > > This doesn't really give any helpful advice.  
-> >
-> > Sorry to hear this, but it's the best and correct solution to your
-> > problem. Believe me, many Linux people will tell you the same.
-> >  
-> > > The reality is that these two chips are pin compatible and function
-> > > compatible but not driver compatible.  Boards have been manufactured
-> > > which are identical except for this chip replaced, due various to chip
-> > > shortages.
-> > >
-> > > Making probe fail so that the next 'compatible' is chosen sounds like it
-> > > isn't desired.  I'm pretty sure you can't have two DT entries for the
-> > > same i2c address, but with different 'compatible" properties, and even
-> > > if we did you'd still need probe to fail on one of them.
-> > >
-> > > Are there any other suggestions for being able to inform the kernel that
-> > > one of two chips might be present?  
+> Hi Andy,
+> Thanks for the explanation and help - now the PM runtime suspend and
+> resume are triggered. It was indeed the combination of bad
+> initialization and that I did not have "enter wakeup" on the read
+> data.
 > 
-> Btw, how would it be solved in ACPI is the playing status bits by
-> firmware, depending on the run-time detected environment (straps,
-> other means). So, you may fix it on bootloader / firmware level by
-> patching DTB with status okay / disabled. I believe in DTB is the
-> number, which can be easily binary patched.
-> 
+> Currently, I view pm_runtime mode as a power saving mode (device
+> should be in low power) and normal running as running mode. However,
+> the sensor is able to report data in both modes - just reading is a
+> bit different. I also do not have a problem with autosuspend after
+> some time, but I do wonder how would user change the power mode from
+> pm_runtime to normal mode (reading, in this case, should not change
+> the mode). What is the recommended ABI for that?
 
-Indeed, it's common to have boot firmware prelinux modify the DT.
+This comes up from time to time.  Normally it's very hard for a user
+to know the right answer to power mode questions because they rarely
+know enough of the impacts, so we try to use things that do have obvious
+meaning.
 
-That firmware can do probing if necessary to find out which device is present
-and by the time Linux loads the DT should be correct for the particular
-hardware.  Often this is done from a high level 'board ID' but nothing
-stops you doing it this case.
+* If we are doing buffered capture, can assume the user wants good perf
+  so switch to a high power mode.  If doing sysfs reads they probably
+  care less about perf.  We could apply a heuristic along the lines of
+  they read it twice in the last second, keep it in high power mode.
 
-I've cc'd the device tree binding maintainers and list, who may be able
-to give you some useful pointers to examples of people doing this
-in their boot loaders etc.
+* Often power modes are reflected in sampling rate.  So just wire it up
+  to that (with possible side effects on other parameters). 
+  I took a quick look at the mlx90632 data sheet and it seems the modes
+  we have are.
 
-Thanks,
+Sleep step mode:  Goes to sleep between individual measurement sets. So
+each one has higher latency after request.  Various subtle complexities
+around control int his mode, but it's the latency at start and finish
+which differs from other modes
+
+Step mode: Stays powered up, but you need to poll to get a measurement.
+
+Continuous: Autonomous sampling mode.
+
+So fun device. I think you kind of have to implement a heuristic for this.
+Probably switch between step mode and sleep step mode based on time between
+last two accesses or similar.  If there haven't been 2 accesses yet
+stay in sleep step mode.
+
+Side note. As you presumably have hardware for this part, could you run
+a rest with UNIVERSAL_DEV_PM_OPS (which is deprecated) switched to
+DEFINE_RUNTIME_PM_OPS()  The RUNTIME version checks if we are already
+suspended on entry into a full suspend and only powers down the device
+if not already powered down.  I plan to spin a patch soon to do this
+anyway, but it is technically different behaviour so want it tested
+if at all possible! (feel free to not wait for my patch, or to send
+your own :)
 
 Jonathan
 
 
-> > I guess there is a gap in understanding what DT is. DT is the
-> > description of the *platform*. Changing any discrete component on the
-> > platform is changing the platform.  
 > 
+> On Mon, 25 Jul 2022 at 23:45, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >
+> > On Mon, Jul 25, 2022 at 11:36 PM Crt Mori <cmo@melexis.com> wrote:  
+> > > On Mon, 25 Jul 2022 at 23:27, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
+> > > > On Mon, Jul 25, 2022 at 10:48 AM Crt Mori <cmo@melexis.com> wrote:  
+> > > > >
+> > > > > Hi,
+> > > > > I am implementing the power saving modes for mlx90632 device driver
+> > > > > and while I have implemented routines for SET_RUNTIME_PM_OPS
+> > > > > (runtime_pm_suspend and runtime_pm_resume) I am not able to find out
+> > > > > how to trigger them from the terminal.
+> > > > >
+> > > > > It could be that my driver code for power management implementation is
+> > > > > incomplete and I need to initialize something more.
+> > > > >
+> > > > > Maybe it is helpful, but the power submodule of the device contains below files:
+> > > > >
+> > > > > $ ls -al /sys/bus/iio/devices/iio\:device0/power
+> > > > > total 0
+> > > > > drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
+> > > > > drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
+> > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
+> > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
+> > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
+> > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
+> > > > >
+> > > > > And control is already set to "auto" which according to documentation
+> > > > > should allow the PM.  
+> > > >
+> > > > 'auto' should enable it. So, whenever the driver thinks it's a time to
+> > > > power off/on the device it will call the methods.
+> > > >
+> > > > You may hack a bit to enable autosuspend (which often is not a good
+> > > > idea for IIO sensors) and see it done automatically after some time.  
+> > >
+> > > So the idea is to wait?  
+> >
+> > Yes.
+> >  
+> > > How would I enable autosuspend - by lowering
+> > > the autosusped_delay_ms?  
+> >
+> > Yep, if you wish. The driver should enable it though.  
 > 
+> Is there a way for driver to attach a callback to
+> power/autosuspend_delay_ms request or to power/control?
+> 
+> >  
+> > > How does the driver decide that it is time to
+> > > power off/on?  
+> >
+> > I'm not a driver author, it seems you , who should answer this
+> > question (as you are about to add PM there, am I right?).
+> >  
+> > > Do I need something else enabled to have this done automatically?
+> > > Autosuspend is 5000 in my case which would mean 5 seconds, so I am
+> > > quite sure I waited that long and I did not see printk's from the
+> > > driver.  
+> >
+> > Something prevents it from doing (reference counting) or simply some
+> > initialization / enablement is forgotten. For different buses
+> > different PM runtime rules are applied (for example, IIRC, PCI core
+> > does it for you, while platform bus is on what driver wants basis).
+> >
+> > --
+> > With Best Regards,
+> > Andy Shevchenko  
 

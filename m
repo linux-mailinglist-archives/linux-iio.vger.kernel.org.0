@@ -2,44 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA9758BC97
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5700658BC98
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbiHGSx7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 14:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
+        id S231393AbiHGSyB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 14:54:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231160AbiHGSx6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:53:58 -0400
+        with ESMTP id S231160AbiHGSyA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:54:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A5663DB
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:53:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC87E6381
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:53:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5278960FF8
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B07C433C1;
-        Sun,  7 Aug 2022 18:53:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72FE561031
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F335C433D6;
+        Sun,  7 Aug 2022 18:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659898436;
-        bh=dT3lR4gKdcfXboqILHTfqbspq7DQF37WU1geGrNSG2c=;
+        s=k20201202; t=1659898438;
+        bh=NjZ01vuK1u+MajVjMoSBUz3LQysA9iShSjjV89sBx2o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s2QaFhKyJVg7XB9e83yQBwc7rK7souDG8ieWDIpSLR+uUgZ2vrL9tDVPljAgaRI7/
-         PMZgVUpaAeGvKm90olPUXHfRkNjj37P8eeWkqIi8u7yfFTeydJSbQ4FkWbanWbzjiG
-         XI6s7T6Wm8hK/i+fMVg9FJdEly9b65dmwAW8Sle82bEQoSk6WvsCs8GH8Tngp2MPUM
-         XojIMO5xxcCFqgCmWnOhph/ZQgL8Grk+0uVS28fZa/304yPEZACVm1KKlmmdYhuHFG
-         kCzOpOBzGqHS6bHQOliWukCZMAJ4Xc9CP1W8zZS0nKgZmLO13f8etSok0rs6e844F6
-         sVlHAYdFWH89g==
+        b=cZHtZz1c4ZB1q823kyNyGutG9xbVutQe/Zgs8tFASzHuKGaPvvUf1ydIuDKOl/HK0
+         3uAxJQQvfKYQqfDk9xj3LzbQ2L6z9pPM8P3TaxLqBA5YY+8S/ouO51ldfZhDDPSA/P
+         5j7ZYmdgwP8tr7EK9Kd+COCYCt6RdIBM3to83n+Im8/ZkH9zRglz27tSW99qfpUn8q
+         kDCy3SsMM/PrgyjhmiQlQtVBKz9J96m/Qmc6IN4oM9zcDEu4stOcfr6bWmaVfFxqyF
+         CyfmuPBqaDzTY0jixeZeEIkZpbMMUrupk7GduYdFTuXScr1fsW+tKszPg9Gd5A5Xnt
+         dec9mUFAwoH0w==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
         Crt Mori <cmo@melexis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 1/2] iio: pressure: icp10100: Switch from UNIVERSAL to DEFINE_RUNTIME_DEV_PM_OPS().
-Date:   Sun,  7 Aug 2022 20:04:13 +0100
-Message-Id: <20220807190414.1039028-2-jic23@kernel.org>
+Subject: [PATCH 2/2] iio: temp: mlx90632: Switch form UNVIVERSAL to DEFINE_RUNTIME_DEV_PM_OPS()
+Date:   Sun,  7 Aug 2022 20:04:14 +0100
+Message-Id: <20220807190414.1039028-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220807190414.1039028-1-jic23@kernel.org>
 References: <20220807190414.1039028-1-jic23@kernel.org>
@@ -57,59 +57,59 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The suspend and resume callbacks in this driver appear to be safe
-to call repeatedly, but why do so when we can use the
-DEFINE_RUNTIME_DEV_PM_OPS() macro to supply callbacks that check if
-we are already runtime suspended before doing unnecessary work.
+The callbacks in this driver are simple and it doesn't matter if
+they are unnecessarily called multiple times.  However, we might as
+well not repeat the effort if the device is already suspended.
+The new DEFINE_RUNTIME_DEV_PM_OPS() has the advantage that we don't
+need to mark the callbacks __maybe_unused.  The compiler will still
+remove them for us if CONFIG_PM is not set.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: Crt Mori <cmo@melexis.com>
 ---
- drivers/iio/pressure/icp10100.c | 10 +++++-----
+ drivers/iio/temperature/mlx90632.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
-index af4621eaa6b5..b62f28585db5 100644
---- a/drivers/iio/pressure/icp10100.c
-+++ b/drivers/iio/pressure/icp10100.c
-@@ -595,7 +595,7 @@ static int icp10100_probe(struct i2c_client *client,
- 	return devm_iio_device_register(&client->dev, indio_dev);
- }
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 7ee7ff8047a4..9fc69d099784 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -952,7 +952,7 @@ static const struct of_device_id mlx90632_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mlx90632_of_match);
  
--static int __maybe_unused icp10100_suspend(struct device *dev)
-+static int icp10100_suspend(struct device *dev)
+-static int __maybe_unused mlx90632_pm_suspend(struct device *dev)
++static int mlx90632_pm_suspend(struct device *dev)
  {
- 	struct icp10100_state *st = iio_priv(dev_get_drvdata(dev));
- 	int ret;
-@@ -607,7 +607,7 @@ static int __maybe_unused icp10100_suspend(struct device *dev)
- 	return ret;
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct mlx90632_data *data = iio_priv(indio_dev);
+@@ -960,7 +960,7 @@ static int __maybe_unused mlx90632_pm_suspend(struct device *dev)
+ 	return mlx90632_sleep(data);
  }
  
--static int __maybe_unused icp10100_resume(struct device *dev)
-+static int icp10100_resume(struct device *dev)
+-static int __maybe_unused mlx90632_pm_resume(struct device *dev)
++static int mlx90632_pm_resume(struct device *dev)
  {
- 	struct icp10100_state *st = iio_priv(dev_get_drvdata(dev));
- 	int ret;
-@@ -626,8 +626,8 @@ static int __maybe_unused icp10100_resume(struct device *dev)
- 	return ret;
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+ 	struct mlx90632_data *data = iio_priv(indio_dev);
+@@ -968,14 +968,14 @@ static int __maybe_unused mlx90632_pm_resume(struct device *dev)
+ 	return mlx90632_wakeup(data);
  }
  
--static UNIVERSAL_DEV_PM_OPS(icp10100_pm, icp10100_suspend, icp10100_resume,
--			    NULL);
-+static DEFINE_RUNTIME_DEV_PM_OPS(icp10100_pm, icp10100_suspend, icp10100_resume,
-+				 NULL);
+-static UNIVERSAL_DEV_PM_OPS(mlx90632_pm_ops, mlx90632_pm_suspend,
+-			    mlx90632_pm_resume, NULL);
++static DEFINE_RUNTIME_DEV_PM_OPS(mlx90632_pm_ops, mlx90632_pm_suspend,
++				 mlx90632_pm_resume, NULL);
  
- static const struct of_device_id icp10100_of_match[] = {
- 	{
-@@ -646,7 +646,7 @@ MODULE_DEVICE_TABLE(i2c, icp10100_id);
- static struct i2c_driver icp10100_driver = {
+ static struct i2c_driver mlx90632_driver = {
  	.driver = {
- 		.name = "icp10100",
--		.pm = &icp10100_pm,
-+		.pm = pm_ptr(&icp10100_pm),
- 		.of_match_table = icp10100_of_match,
+ 		.name	= "mlx90632",
+ 		.of_match_table = mlx90632_of_match,
+-		.pm	= &mlx90632_pm_ops,
++		.pm	= pm_ptr(&mlx90632_pm_ops),
  	},
- 	.probe = icp10100_probe,
+ 	.probe = mlx90632_probe,
+ 	.remove = mlx90632_remove,
 -- 
 2.37.1
 

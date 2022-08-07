@@ -2,45 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4620558BC96
+	by mail.lfdr.de (Postfix) with ESMTP id DDA9758BC97
 	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:54:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230452AbiHGSx6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 14:53:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41826 "EHLO
+        id S229763AbiHGSx7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 14:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229763AbiHGSx5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:53:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193D06381
+        with ESMTP id S231160AbiHGSx6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:53:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0A5663DB
         for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:53:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B4D9FB80DCF
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:53:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7EFC433D6;
-        Sun,  7 Aug 2022 18:53:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5278960FF8
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:53:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B07C433C1;
+        Sun,  7 Aug 2022 18:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659898434;
-        bh=z+WiK8o4dSR9LF98NSaGNCOBWQU7HkFw0it16Aw1w+I=;
-        h=From:To:Cc:Subject:Date:From;
-        b=n/yC6Ndj1NfoTV3eOUB7P+BbHdz34Vr9uEUrec0qVCS8vuW3/c/IS13nHAu6BxPtD
-         P0IQvi1d3KGz8fqSD9UdRT0WWQu/KWUHNmCFQVAirTjbD/mahLwz2u3hAvysn4oxJV
-         Ud1arTQul3McZys/HHJvn6RZqdnYzffHQNoEkFoN9pkljg3q85rjFOWXeFiBF3YFiD
-         k7dy413XRz49fQ5EqAjMabAR7mYHvqnMqooESUIcBfuNUXRWWlV7ugC6Yp7CseYld1
-         voTqmOaVNpo18jxQL7TuXpk0wCN/6J8YrZ5kub2SSkuRxQSp8XWQXtlJZcXo8m9Ggu
-         YIyLN9WSz8kmg==
+        s=k20201202; t=1659898436;
+        bh=dT3lR4gKdcfXboqILHTfqbspq7DQF37WU1geGrNSG2c=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=s2QaFhKyJVg7XB9e83yQBwc7rK7souDG8ieWDIpSLR+uUgZ2vrL9tDVPljAgaRI7/
+         PMZgVUpaAeGvKm90olPUXHfRkNjj37P8eeWkqIi8u7yfFTeydJSbQ4FkWbanWbzjiG
+         XI6s7T6Wm8hK/i+fMVg9FJdEly9b65dmwAW8Sle82bEQoSk6WvsCs8GH8Tngp2MPUM
+         XojIMO5xxcCFqgCmWnOhph/ZQgL8Grk+0uVS28fZa/304yPEZACVm1KKlmmdYhuHFG
+         kCzOpOBzGqHS6bHQOliWukCZMAJ4Xc9CP1W8zZS0nKgZmLO13f8etSok0rs6e844F6
+         sVlHAYdFWH89g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
         Crt Mori <cmo@melexis.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 0/2] iio: Convert some drivers from deprecated UNIVERSAL_DEV_PM_OPS()
-Date:   Sun,  7 Aug 2022 20:04:12 +0100
-Message-Id: <20220807190414.1039028-1-jic23@kernel.org>
+Subject: [PATCH 1/2] iio: pressure: icp10100: Switch from UNIVERSAL to DEFINE_RUNTIME_DEV_PM_OPS().
+Date:   Sun,  7 Aug 2022 20:04:13 +0100
+Message-Id: <20220807190414.1039028-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20220807190414.1039028-1-jic23@kernel.org>
+References: <20220807190414.1039028-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -55,31 +57,59 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-During discussions of the new PM macro definitions, it because clear that
-UNIVERSAL_DEV_PM_OPS() generally doesn't make much sense as it can lead
-to unnecessary work.
+The suspend and resume callbacks in this driver appear to be safe
+to call repeatedly, but why do so when we can use the
+DEFINE_RUNTIME_DEV_PM_OPS() macro to supply callbacks that check if
+we are already runtime suspended before doing unnecessary work.
 
-For the drivers in this set I've taken a look at how the ops are used
-and believe we can just switch to DEFINE_RUNTIME_PM_OPS() which will only
-do the suspend if the device is not already runtime suspended.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+ drivers/iio/pressure/icp10100.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-I'd like some review of these (more than for the straight forward NOP conversions).
-
-Thanks,
-
-Jonathan
-
-
-Jonathan Cameron (2):
-  iio: pressure: icp10100: Switch from UNIVERSAL to
-    DEFINE_RUNTIME_DEV_PM_OPS().
-  iio: temp: mlx90632: Switch form UNVIVERSAL to
-    DEFINE_RUNTIME_DEV_PM_OPS()
-
- drivers/iio/pressure/icp10100.c    | 10 +++++-----
- drivers/iio/temperature/mlx90632.c | 10 +++++-----
- 2 files changed, 10 insertions(+), 10 deletions(-)
-
+diff --git a/drivers/iio/pressure/icp10100.c b/drivers/iio/pressure/icp10100.c
+index af4621eaa6b5..b62f28585db5 100644
+--- a/drivers/iio/pressure/icp10100.c
++++ b/drivers/iio/pressure/icp10100.c
+@@ -595,7 +595,7 @@ static int icp10100_probe(struct i2c_client *client,
+ 	return devm_iio_device_register(&client->dev, indio_dev);
+ }
+ 
+-static int __maybe_unused icp10100_suspend(struct device *dev)
++static int icp10100_suspend(struct device *dev)
+ {
+ 	struct icp10100_state *st = iio_priv(dev_get_drvdata(dev));
+ 	int ret;
+@@ -607,7 +607,7 @@ static int __maybe_unused icp10100_suspend(struct device *dev)
+ 	return ret;
+ }
+ 
+-static int __maybe_unused icp10100_resume(struct device *dev)
++static int icp10100_resume(struct device *dev)
+ {
+ 	struct icp10100_state *st = iio_priv(dev_get_drvdata(dev));
+ 	int ret;
+@@ -626,8 +626,8 @@ static int __maybe_unused icp10100_resume(struct device *dev)
+ 	return ret;
+ }
+ 
+-static UNIVERSAL_DEV_PM_OPS(icp10100_pm, icp10100_suspend, icp10100_resume,
+-			    NULL);
++static DEFINE_RUNTIME_DEV_PM_OPS(icp10100_pm, icp10100_suspend, icp10100_resume,
++				 NULL);
+ 
+ static const struct of_device_id icp10100_of_match[] = {
+ 	{
+@@ -646,7 +646,7 @@ MODULE_DEVICE_TABLE(i2c, icp10100_id);
+ static struct i2c_driver icp10100_driver = {
+ 	.driver = {
+ 		.name = "icp10100",
+-		.pm = &icp10100_pm,
++		.pm = pm_ptr(&icp10100_pm),
+ 		.of_match_table = icp10100_of_match,
+ 	},
+ 	.probe = icp10100_probe,
 -- 
 2.37.1
 

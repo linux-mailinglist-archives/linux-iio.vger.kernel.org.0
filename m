@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE2F58BE30
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 01:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDA1558BE32
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 01:04:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231964AbiHGXDu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 19:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56388 "EHLO
+        id S234913AbiHGXEC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 19:04:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234117AbiHGXDr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 19:03:47 -0400
-Received: from sonic308-19.consmr.mail.ir2.yahoo.com (sonic308-19.consmr.mail.ir2.yahoo.com [77.238.178.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937092BD1
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 16:03:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913424; bh=EuFGkupLjx9zPeG1GfBnRcBvJL6CsBo11j9xvtKmu7w=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=r10zRAa1E7+U+H3e+xn3yYVp/HhRH0Oq3RjXv6xENVoMJaLWVsCHEQrR0bZLvY8NTmQATq/Ky6psZI1xwD8WxM0oJd39Mmsek6tckiVCSlQZuuceYgtCT11zatrhVWDvSgTJr2EtXBK8eRDMtPvVoIXiUpUsk8dpk1jjeMpACVV6C7/44psaJiIEn1xz6jhpCVkmOrYJ3WYlUNBl9CzY7pDI/TMceyqQJXDWZbamrecaD5DArXC+kdpB0o90ZtFD97iFhPOcdlvwZZIJJRTLuG13dU/43iplMfa23B4w9qzJo+ATHUfLdQlJ7hLMS266mNTWxDYYyWnrxyVeJ7O+KQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913424; bh=MJx5cxsV7ELbkysUhaWazzJOoZLHteyrA68/h46TzPJ=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=jNZm0Ra9kwqEH4kjwXx60U6Z5tm6cFiv5ev3IqajKdee2w5unFzIgBUJCKaTuqWk3cj8K8Sind0PoFj1TcjkDgXXm0Ym2zF6Ow820KiuNRaK2rmqIWC9ahDs13VmFShUKIBfdGYqhIiv/xNplAIrRf+Ch7sguA7FuXgwvw0RG6jlOTIQXfy278W7W8xepw+DSlnwQ3tdchD6iFcWki+egWnaXl7aXSDu0pVKIfPpjHS9GIrrBOZJfVNNo491OB8a4j1BluJZVo6I1eG2/ElwsX235bSE8bN/cOmK5hW1U/HBzm11AsC2pvppGPLroHMi1amOLrpOWj8MtoUh0LM80A==
-X-YMail-OSG: Wl1IYUwVM1nFqfwwcWjP_jLpO4ICeZwCwANq7vdJYRU.XYkJD3cSxNWXPPL3Mz0
- 8CAWLyfRl0TsT4sPiWEdnQxUVuAZIM9GzeWJ.GPr6jQ6K0D9_KYg1impF7.vOwTpLmf1rg.yQ.Yu
- NQj60nGcWMEinZOqZe8U8rpGpf7IhN7x0kT_VgIp4B_kuqDpETqzrA5xUwQ.L3hc7yAiWLGBSKMz
- _SurRb5lJhK8kBmwtiDnnh.qrD3fUb3KVfm9zGvoPcn9sWigaB8te_dOtMv6g08O_UYsRRUgQXmX
- Mh2BjTldgVk3Y.pGpSzJ_iQC1u0d90.YM2EAGHaYVQ5aSA2SHar0MSCbF0rpPrTS7FwnHSUlb4aV
- 19AV_gLD9MLUhnlQCPBusu8zwaOf2H8TCA_8kq2Ge4WjzTAnVe_beDaUtmBQKJa0ICYe8fsHY29P
- HVdw_Hi8fYFbqeLZggzWxc_fAOU24USCWY5BRzu3u1WvPcTGByrP24oPUE94N5JDxxX6KjVuMr68
- sCpxXMgeUQfO6DZZgHtb.cbgdVa_FEJWKHqPILZZ4LrUiHszOCI6KHWLr6kchMrkhh8n_3wP30qu
- FjcQ2J6UM9vf2h6dcxaqvKpXBuxwNhEzs5zFIpO2EGE95dH2qMrlXe16_lHoJryOPSNBBshAjjFA
- HfBpII7bS8hGhRNah0FDa_KtB0btAPyoHUpHkq90h5KVFTmFSHBauFWFJAFn3e9my3uD9XFccSBq
- WJd.5tOfPgyQWJ4Pi6zWPDVAmC4zWTCKC.sEXERMy7ZGm96oCwL8JO037whtXzxOsxqW40OvlcYq
- FRUK5Lv0xqzMJV.ImuU7h_RAzyHSyPIY6nEX9et7y5a_3VpNgrgnfnwu6KcoLZsXHbWIkvhvCrwG
- owZnkKvy0hlrlM3.tTGtJ3gKVBgsNbFqnVnKtawJ_lofEX5LL18sXnLFoTBduw6pGUAW4lxoK4au
- 7DAdjtkJeZd132ah5U_KsfZen830r8X.mScxnPpv6scT1v39GLKAA8jsXewlMdBJlAxopg4ddobU
- 3641Q0Tlpi2kLhf4tXjWfJkhcHUlFZPCt9Ntoh7gxSV6JjR2IcHQRxc24c8U0US_sCSRWsmzb5Qj
- xdAt6fAy3uAL4FZNRcpBwedRo1ant52f5.5VQBZahKBluGBgRBH.nt3xD7Zc3ppz7lBN_G5BGkjc
- yZBUWRV6N5SSYZiMGRPsdgO.8oP.sd9FxjsjFdb.e7Gay7pgvLogopnlJSs_OOSNdxd22ojsOZmt
- RcrMu7J9PHni3x3CN66E.rlaul5uc6TIL3SaFtIA1BxTAyNUnVRHJ0RwX0ubZ7uszZONxRAOe4nV
- 6wYGcN4xFAL_95wW47WoB9bIg_IGfXvEIbnT5pnbkJ5B0Va4Re10OXTFegZlYRHYIFtBJNhSCLtg
- newngDc.Yp0bfbOVRJ0j6f8X4zcg4pFv3j68rww7hwAaq7W3Cvx71x2eoajGmhXySjT_7Qx439XE
- .l5ZMgd54T8BCC1lnRrXPcg7esuYUaWAN7k4XJagVXbD7UUZhawv8aX6qxGjUaJh1dFavtHhSur0
- U37gGv.HcVYZSW12lYKXQ1RAuIOL_fLz.LvSw38p.cGLyBBzKnb0j3vh5xYC_x87kQnYShOpQMRK
- Yjrtk67IUhjYVpda.e4QNy38uodFNIwVv.gdlVXVdgp7ajSQbtrAzLtMDITJqSibW3mvnJ5kpfRl
- IMEWqqixtk6Pu0xEpzdXXjvRRh0IL_4lOsIlg8E7KYQ.8M2OXTL4A_iRVq_JVHFVkqP6tDdR9y52
- Y7uEHk2MYNLQ2KcayqzbtFDae0KYxP9RrryFkOetjgHkhnVYTcpFBBh4outpR_xiRW8vdziIdsMk
- vPHA1paRlOnqlhVeb2TgSCfQ183obTuXbV7wC54Zl.tE3BecsKQIaCiBqMcXpm4wdFQj6MRG9v.x
- RhmTjML_bOZHEp5RivKciI1HOh8TRS05hwZbXvck1.skK4G7knSvZwXtLLaErncBCHAEqX569S45
- k.IobEAkyb56NntLSa2puJHmd.ooAC8ffMwHUQrwlNdOuzft61HScMFlMyrYEh_RHn68LsWRjXtg
- vmp7K0TFTZymbZ6BUlpkTrc3h0rV7V01ypBUma2jrDxUWn2QhCzEWz0hCqAntSZFcxFae6rNnItc
- iIBPRpJas8EcpGw1mB_bE_jUGDOFK0OvQQf7B6npjSPwiP47YpS4qVFEQtTD6s7Qscgh66jvP_N9
- 2Z3Yyy.kg06AdFbZWYzCMsyXq7sCCT5zachsXWNR1kPjpmdJQ6Sh2q9pPu_QvcEueLpkhV_jX_AW
- 7EWpFVCqfMwU634VeFTg-
+        with ESMTP id S234117AbiHGXDv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 19:03:51 -0400
+Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D5A32BFF
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 16:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913428; bh=8VJGl0MuSHhL28Kf4k+uCd0Gflpcbk+QqcZEf6TEyHU=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=nSgkCKPpBpgf34OQjXFnvRdv1OUWfDpTzc9uOZ8mw6hNQQIScQgJFH0HxfnOZCDXFHO1pRIXqo/W1WvuO8UzgMBYU4bLfRzDzmcmKO78Q5gHWsF+bC9ShL42Quy7FMGuYTkIBcKOdz8OR124vM3ZfXzpFFNE6VEXspG1sBR8g4d0mLdkIPZYpOmPt/SkkenPoWTPmqZJSF/kOiV+huSZPgHJP6j8e3rxG9+kQTpeVYJg/sH6px3qBEVPiNk+LBJHxGu5QzbMgVZTNMy9JcNWsxUm//dBTJn3+i8MYyqQj4m+m839MoQZnUzOK0lrlJmTM/rqPbWJLFdXOnSgSdsy4A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913428; bh=vSNsIW/Z1x5kP9oYVwwRlTHWqIHJMt9L3CEO+4nMkI9=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=eqNc0kdfTrNrhqrNtBWIoJVuxcVeMZCbt1Ypl/6DIaF/5TI0RytQ2OqAID3OJKa7uZT8XkHIulqXpyLQIVgFUbG8ik0ouDkRrlvIASD9PsOjTZ2zqBl6G5H0qxIqVoTJM9wc8GJb3b+GBPpEkXr7EV393OJl5yOzHTI9caLS34uGJd2wY6NCBbchiCj1ylKu5GjlFiXbqAomGsBcpCtuJHaDhCkMeqnfLqm6jayFZnNfoMjg46USZe0aBlZICvii1p2dcIlgieU4ndfpnxjSRcr+ePHuNVxAS7j5V8iaUemOV1kiNxxYzyZ0DY2+gnaaw9jzlqnHzN221QS8cBy8Cg==
+X-YMail-OSG: Ds.pkC4VM1lx8Qt68uiA6VTuQZATjiDFmQtFZRQRHzwNWbbCuXeWHOFrVwmS39x
+ 3Akkgt_1wqzRKrcG_x7FJA0_iu8OW9GlouwtTitr8LcrHP9YtuHCdZNnF04uzsgxzgs2rstD6VKF
+ L.Ln9LUor17I.G9wSj2TwtRYLw32_k1thdn5C15t1gHHIcy2HSi8P51a5CyEvp.FC_h953RpW.yY
+ jmIsnaNTg1HONSKawq4jR6_BKyU.NYWlmOIw.zlG0q31b4tERXKfqwBEVKgdcLLoCipRi9u9QKp7
+ GYCWe5oUDKtUB3f5seDiAU0FS05L1vKaYz_qsqxm7q0Ho0AUi6WwmCMQOZzusHhs1SKPBrMEvVhx
+ jOgrUGl58v9vgbl5FJQ5F9DVtP6B4jcrsqJ1VCOlgbx3M3KIh1vKY0oCz3VoA1xBvOzoy9b4Rcu2
+ Ydbfvj8SlIpqQUtu.9TdgdH4tN.rKwmRwwhOsaR.7vj9MOFayz8bbsI5cL90CIyXAwSI3fFqZh.y
+ GYYcjAp5PG6vmdkaT6aGQrQwTc9WnzXdxgE.Szp7kFh.5LyiEDghOEDhivVO7DB12_dRSdiwHvzI
+ biyz98sWh8iCBLR1v8Ea3mRaMBCJ1vuApuL8vJC6_eUwIDQ4j.KS8uRfYRMjak3SfrVo9M2220FY
+ OpgKCkYcBQ3c6Q.3RUk2yJyBYedSv5New3GPCgviwu34W.SsGWZq_rAl9Fy5ixghsAG62GZS26JB
+ hNZ8OjRZ1vHFafeir_puUrYiUoJ59dpnGP31J8tCRu0ZeAI4IuQxSwuXMfX747C61GB0ZE5NS0aB
+ 7fi742bUGmR1gOqj.SSlqF2UCo3dmWon1paL7sYO.OAl2DLjXtjd5NjYvrQfeiugM_.9dRfBD11.
+ _fHCm5xV29jECosVjipDdyAlqx9.14EefCCMApeVXsdzH0iOHeVvbBa0xAvXR95hCOiBmJ1tYosX
+ zzH8Iyryzcrz6r5VFMtpcqV88qkg_x4A8FZzEaor.0WzGIZvgxahOsxwMaY7EUtjZff8Wi12_5OI
+ FL2kfLe1DEj9nznv4johoq0YkEcY9_EQSPDWEufmePBbU_e_D6hW.PI.WWy7WRerrnoaAiGHG38x
+ rUEFRV1S8Fu_qSdZ_13CnGuW.Mh40Cl_AxK9i6nrm1a6lk58gGEnQbh4DaUDPxCkNgeOLQctYFhn
+ bnydJbzmhw7FYQI8y7BGw_VcuSMN1erJBvYlnIuBV.ALAFgvUlWAThF3h11dCuUKn2dt47CP7Grf
+ 5iiBlMQKy.1uvQTlbitATgld5w0kn418hOfdnMjKZvJan.Vi5.1xwaZR5mIruxzNy5iR9czRXbJg
+ Eg5zqTz6WpUA0qyi1OBfXI8lSJ094PDfZXPyHR2RrVg_Bbjy0s6O4gpPACqzDmV7IthSbKaGXAhI
+ FGpmN067RBYd0WfzvJ9XEQs4Ut630Guc_OaItoqvQ8FKAWPdP1GtwcYD2PEdmZb2QVQ5Gzkb8.i0
+ RtPGB2lqI0PBF7taTSkZ4t_J_8ot_DaAMgQAZ16vBbasQModjF3GLa5RzWrm3TknAxJ9n0lNER8A
+ 9J1nBeC08oUOPvVRuVFD6_GwuxeUq5xnV8_wEq5Rhx8s6KQzh6oab0LbynASKrEpW0Db2ZJlcMg_
+ KqklOF.zolAOesyXOnqNcMyDpm2x8zMtlLUF8.OayCBWB2732IwbD8rG_KfQVsFdo3yjhrRsBWPW
+ eIARH5N4DJg9t2ltYHo_ztvlYpt0Bxn7tkvXQ5ZeXbBBLORiPA4T__rXZs44s6.1MCnRASY_qXaO
+ vaDcRprSVjuP.Ae8AUs1HNPLctuioXMLtmlFm7OjhHPewxA3JtqOMn_XZd0GOJtAh387XQOGFDDx
+ b54izxj4bglezhXk.ss4cnp3L_RftX5YuctZIYny0SrFC7wTowOQFJg3fihyCXNRt55hyUEM8hQe
+ VyHSix9_LBxUEPEUGOh53SWWzqqNRlaoeZdHtSs5_jXj8ME30vfThp42RiMUeutd8HIR69OpGr1h
+ NnXE.F0HgA_nRkeItfnuqLh.CQBISjd_1svOn65AEYOThuxxe2ySPUK2dUAtTCxKnyOVL03mESDo
+ i8buxCFMUu3yumRogbdX9QkJArvU377iJ05sxt.Xukm2RMhDgOInn2OekbL98jcgAxx9Fr1k937f
+ ZE.iUTvKVzdHvTAeL50R3BYcvzkWUrYqxdhTy8.xupaT1X6HL9zrQJoy2Mh0UTOPemuRQd02IfAs
+ dP60gnr6hZ0JhIn1KnmY2S0JQINxslha_tAucdybAue8fa9KhLu0oSMD68bahBPUQFSuN.N6XSBN
+ r.t04n9AH3ZKBTJOPo6tJ
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:03:44 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:03:48 +0000
 Received: by hermes--canary-production-ir2-f74ffc99c-r76pr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 12b0bfa600682cb6edf92800aaf76d46;
-          Sun, 07 Aug 2022 23:03:42 +0000 (UTC)
+          Sun, 07 Aug 2022 23:03:46 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,84 +61,209 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v5 03/14] iio: magnetometer: yas530: Correct scaling of magnetic axes
-Date:   Mon,  8 Aug 2022 01:02:08 +0200
-Message-Id: <ac47901be69a5da59e06c913ee4dfc9be9eb3d36.1659909060.git.jahau@rocketmail.com>
+Subject: [PATCH v5 04/14] iio: magnetometer: yas530: Correct temperature handling
+Date:   Mon,  8 Aug 2022 01:02:09 +0200
+Message-Id: <cc21392ec84ec93c5e58659585cacb9e7c9831a9.1659909060.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1659909060.git.jahau@rocketmail.com>
 References: <cover.1659909060.git.jahau@rocketmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Looks like YAS530 raw values return picotesla and YAS532 nanotesla. Adapt
-comments and scaling.
+The raw temperature value is a number of counts from a certain starting
+point. The resolution of the temperature counts is different for the YAS
+variants.
+
+Temperature compensation for YAS532 version AC seems to be handled differently.
+It uses the deviation from 20 degree Celsius [1] whereas YAS530 and older
+versions of YAS532 apply solely the t value as a multiplier [2][3].
+
+In funtion yas5xx_read_raw(), add case IIO_CHAN_INFO_PROCESSED. Remove scale
+of temperature as this isn't applied.
+
+Additionally correct sign of temperature channel in iio_chan_spec. It's already
+defined that way in the yas5xx_get_measure() function.
+
+[1] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L442
+[2] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas_mag_driver-yas530.c#L881-L883
+[3] https://github.com/LineageOS/android_kernel_samsung_msm8930-common/blob/lineage-18.1/drivers/sensors/geomagnetic/yas_mag_driver-yas53x.c#L856-L858
 
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/iio/magnetometer/yamaha-yas530.c | 31 ++++++++++++++++--------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ drivers/iio/magnetometer/yamaha-yas530.c | 99 ++++++++++++++++++------
+ 1 file changed, 76 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 6fa29b96c013..8cad724fb328 100644
+index 8cad724fb328..c6889a30a1b5 100644
 --- a/drivers/iio/magnetometer/yamaha-yas530.c
 +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -310,8 +310,6 @@ static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)
-  * @yo: Y axis out
-  * @zo: Z axis out
-  * @return: 0 on success or error code
-- *
-- * Returned values are in nanotesla according to some code.
-  */
+@@ -77,6 +77,7 @@
+ #define YAS530_DATA_BITS		12
+ #define YAS530_DATA_CENTER		BIT(YAS530_DATA_BITS - 1)
+ #define YAS530_DATA_OVERFLOW		(BIT(YAS530_DATA_BITS) - 1)
++#define YAS530_20DEGREES		182 /* Counts starting at -62 °C */
+ 
+ #define YAS532_DEVICE_ID		0x02 /* YAS532/YAS533 (MS-3R/F) */
+ #define YAS532_VERSION_AB		0 /* YAS532/533 AB (MS-3R/F AB) */
+@@ -88,7 +89,7 @@
+ #define YAS532_DATA_BITS		13
+ #define YAS532_DATA_CENTER		BIT(YAS532_DATA_BITS - 1)
+ #define YAS532_DATA_OVERFLOW		(BIT(YAS532_DATA_BITS) - 1)
+-#define YAS532_20DEGREES		390 /* Looks like Kelvin */
++#define YAS532_20DEGREES		390 /* Counts starting at -50 °C */
+ 
+ /* These variant IDs are known from code dumps */
+ #define YAS537_DEVICE_ID		0x07 /* YAS537 (MS-3T) */
+@@ -314,7 +315,7 @@ static s32 yas5xx_linearize(struct yas5xx *yas5xx, u16 val, int axis)
  static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo, s32 *zo)
  {
-@@ -417,14 +415,27 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
- 			*val = 1;
- 			return IIO_VAL_INT;
+ 	struct yas5xx_calibration *c = &yas5xx->calibration;
+-	u16 t, x, y1, y2;
++	u16 t_ref, t, x, y1, y2;
+ 	/* These are "signed x, signed y1 etc */
+ 	s32 sx, sy1, sy2, sy, sz;
+ 	int ret;
+@@ -329,16 +330,46 @@ static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo,
+ 	sy1 = yas5xx_linearize(yas5xx, y1, 1);
+ 	sy2 = yas5xx_linearize(yas5xx, y2, 2);
+ 
+-	/*
+-	 * Temperature compensation for x, y1, y2 respectively:
+-	 *
+-	 *          Cx * t
+-	 * x' = x - ------
+-	 *           100
+-	 */
+-	sx = sx - (c->Cx * t) / 100;
+-	sy1 = sy1 - (c->Cy1 * t) / 100;
+-	sy2 = sy2 - (c->Cy2 * t) / 100;
++	/* Set the temperature reference value (unit: counts) */
++	switch (yas5xx->devid) {
++	case YAS530_DEVICE_ID:
++		t_ref = YAS530_20DEGREES;
++		break;
++	case YAS532_DEVICE_ID:
++		t_ref = YAS532_20DEGREES;
++		break;
++	default:
++		dev_err(yas5xx->dev, "unknown device type\n");
++		return -EINVAL;
++	}
++
++	/* Temperature compensation for x, y1, y2 respectively */
++	if (yas5xx->devid == YAS532_DEVICE_ID &&
++	    yas5xx->version == YAS532_VERSION_AC) {
++		/*
++		 * YAS532 version AC uses the temperature deviation as a
++		 * multiplier.
++		 *
++		 *          Cx * (t - t_ref)
++		 * x' = x - ----------------
++		 *                100
++		 */
++		sx = sx - (c->Cx * (t - t_ref)) / 100;
++		sy1 = sy1 - (c->Cy1 * (t - t_ref)) / 100;
++		sy2 = sy2 - (c->Cy2 * (t - t_ref)) / 100;
++	} else {
++		/*
++		 * YAS530 and YAS532 version AB use solely the t value as a
++		 * multiplier.
++		 *
++		 *          Cx * t
++		 * x' = x - ------
++		 *           100
++		 */
++		sx = sx - (c->Cx * t) / 100;
++		sy1 = sy1 - (c->Cy1 * t) / 100;
++		sy2 = sy2 - (c->Cy2 * t) / 100;
++	}
+ 
+ 	/*
+ 	 * Break y1 and y2 into y and z, y1 and y2 are apparently encoding
+@@ -347,11 +378,37 @@ static int yas5xx_get_measure(struct yas5xx *yas5xx, s32 *to, s32 *xo, s32 *yo,
+ 	sy = sy1 - sy2;
+ 	sz = -sy1 - sy2;
+ 
+-	/*
+-	 * FIXME: convert to Celsius? Just guessing this is given
+-	 * as 1/10:s of degrees so multiply by 100 to get millicentigrades.
+-	 */
+-	*to = t * 100;
++	/* Process temperature readout */
++	switch (yas5xx->devid) {
++	case YAS530_DEVICE_ID:
++		/*
++		 * Raw temperature value t is the number of counts starting
++		 * at -62 °C. Reference value t_ref is the number of counts
++		 * between -62 °C and 20 °C (82 °C range).
++		 *
++		 * Temperature in °C would be (82 / t_ref * t) - 62.
++		 *
++		 * Contrary to this, perform multiplication first and division
++		 * second due to calculating with integers.
++		 *
++		 * To get a nicer result, calculate with 1/10:s degrees Celsius
++		 * and finally multiply by 100 to return millidegrees Celsius.
++		 */
++		*to = ((820 * t / t_ref) - 620) * 100;
++		break;
++	case YAS532_DEVICE_ID:
++		/*
++		 * Actually same procedure for YAS532 but the starting point is
++		 * at -50 °C. Reference value t_ref is the number of counts
++		 * between -50 °C and 20 °C (70 °C range).
++		 */
++		*to = ((700 * t / t_ref) - 500) * 100;
++		break;
++	default:
++		dev_err(yas5xx->dev, "unknown device type\n");
++		return -EINVAL;
++	}
++
+ 	/*
+ 	 * Calibrate [x,y,z] with some formulas like this:
+ 	 *
+@@ -384,6 +441,7 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
+ 	int ret;
+ 
+ 	switch (mask) {
++	case IIO_CHAN_INFO_PROCESSED:
+ 	case IIO_CHAN_INFO_RAW:
+ 		pm_runtime_get_sync(yas5xx->dev);
+ 		ret = yas5xx_get_measure(yas5xx, &t, &x, &y, &z);
+@@ -410,11 +468,6 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
  		}
--		/*
--		 * The axis values are in nanotesla according to the vendor
--		 * drivers, but is clearly in microtesla according to
--		 * experiments. Since 1 uT = 0.01 Gauss, we need to divide
--		 * by 100000000 (10^8) to get to Gauss from the raw value.
--		 */
--		*val = 1;
--		*val2 = 100000000;
-+		switch (yas5xx->devid) {
-+		case YAS530_DEVICE_ID:
-+			/*
-+			 * Raw values of YAS530 are in picotesla. Divide by
-+			 * 100000000 (10^8) to get Gauss.
-+			 */
-+			*val = 1;
-+			*val2 = 100000000;
-+			break;
-+		case YAS532_DEVICE_ID:
-+			/*
-+			 * Raw values of YAS532 are in nanotesla. Divide by
-+			 * 100000 (10^5) to get Gauss.
-+			 */
-+			*val = 1;
-+			*val2 = 100000;
-+			break;
-+		default:
-+			dev_err(yas5xx->dev, "unknown device type\n");
-+			return -EINVAL;
-+		}
- 		return IIO_VAL_FRACTIONAL;
- 	default:
- 		/* Unknown request */
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		if (chan->address == 0) {
+-			/* Temperature is unscaled */
+-			*val = 1;
+-			return IIO_VAL_INT;
+-		}
+ 		switch (yas5xx->devid) {
+ 		case YAS530_DEVICE_ID:
+ 			/*
+@@ -516,7 +569,7 @@ static const struct iio_chan_spec yas5xx_channels[] = {
+ 		.address = 0,
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 'u',
++			.sign = 's',
+ 			.realbits = 32,
+ 			.storagebits = 32,
+ 			.endianness = IIO_CPU,
 -- 
 2.35.1
 

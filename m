@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98EA958BC8B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 170C358BC8C
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231853AbiHGSqP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 14:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38948 "EHLO
+        id S235603AbiHGSqT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 14:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235603AbiHGSqP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:46:15 -0400
+        with ESMTP id S235627AbiHGSqS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:46:18 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7C765F3
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:46:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D4E12DFB
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:46:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id EA95EB80DD0
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:46:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D303C433B5;
-        Sun,  7 Aug 2022 18:46:08 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4160CB80DD0
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:46:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB5DC433C1;
+        Sun,  7 Aug 2022 18:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659897971;
-        bh=VxC4Z2wVSbKteM6WBCSLw+7FQQcD4ALIS+uI0ALLZP0=;
+        s=k20201202; t=1659897975;
+        bh=yHxom/j6lLU4c8f8dLH2Segi9W2UPZI6Bwb0VQ3qAyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kb0wEwRnnS+auq8NG9rqoHOkT5jSqMNsCFWK1xGobNVpxBPGLWcoaKK5yEihm4gIm
-         pL+YBiFUKONnU9OACugWUp6QqGfC6gsXEb3iH/r6UJ9HkWyM2mN6uUn1gavO7F8mmV
-         XANX9Zl1L+125cdaapBpjkT6MTZRFFaZYacHpWDsW5RRhA8nQ/a97KFFFMcJOt7Rim
-         wuluWr9F5+6V7twXFPyuOzP+TOw39rj1f0yLIxVfPWmdJmTEzq5Q6m7xkEkNx3X8gf
-         f4bpSi+S367pd3lilaxP4gJQOhmm5UwwdgeXmlY7UGB1RwUsnFtwEqglgJC+opnvfU
-         766Fnt2ggKexQ==
+        b=deXdUDIFwyIH6P6j/2+mogTyTT9icJmrkjfZfA7qOsrQIxl9m0Z6FHpO4CnyPC8pa
+         EIa2LLfE4wQYtOfYrY8Cj15jcMt6BML1Ar2/bc4OqtKp/2I7PW8kE6pH/yHb0gxe1E
+         tw1VQp1glNHqqtilnNGI+3b9eH2cq618OXpeGdnzIogc1b39EexbffMjBDi+cbl/68
+         H/KkjYVs8BvCQ9OZHeXmuvdythbjQkh2syysnkrCxBp6hclumBN4xbDlwgckh53vE5
+         E5hLRLSB+tG5L8JZgWaA8ayckyvAl8mK2y/T5O+RKno0h6ovZIiIvla4XnLZvlSY3t
+         ah6FD7dczSIYA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
@@ -40,9 +40,9 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         Mike Looijmans <mike.looijmans@topic.nl>,
         Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 3/6] iio: proximity: sx9360: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
-Date:   Sun,  7 Aug 2022 19:56:15 +0100
-Message-Id: <20220807185618.1038812-4-jic23@kernel.org>
+Subject: [PATCH 4/6] iio: proximity: srf04: Use pm_ptr() to remove unused struct dev_pm_ops
+Date:   Sun,  7 Aug 2022 19:56:16 +0100
+Message-Id: <20220807185618.1038812-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220807185618.1038812-1-jic23@kernel.org>
 References: <20220807185618.1038812-1-jic23@kernel.org>
@@ -60,56 +60,64 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new macros avoid the need for marking the callbacks __maybe_unused
-whilst ensuring both callbacks and structure may be dropped by the compiler
-if CONFIG_PM_SLEEP is not enabled.
+If CONFIG_PM is not set, the pm_ptr() will ensure that the struct
+dev_pm_ops and callbacks are removed without the need for __maybe_unused
+markings.
+
+In this case we can't simply use DEFINE_RUNTIME_DEV_PM_OPS() because
+that would provide suspend and resume functions without the
+checks the driver is doing before calling runtime_pm functions
+(whether the necessary GPIO is provided).  It may be possible to
+clean that up in future by moving the checks into the callbacks.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gwendal Grignou <gwendal@chromium.org>
+Cc: Andreas Klinger <ak@it-klinger.de>
 ---
- drivers/iio/proximity/sx9360.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/proximity/srf04.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-index d9a12e6be6ca..7fa2213d23ba 100644
---- a/drivers/iio/proximity/sx9360.c
-+++ b/drivers/iio/proximity/sx9360.c
-@@ -819,7 +819,7 @@ static int sx9360_probe(struct i2c_client *client)
- 	return sx_common_probe(client, &sx9360_chip_info, &sx9360_regmap_config);
- }
- 
--static int __maybe_unused sx9360_suspend(struct device *dev)
-+static int sx9360_suspend(struct device *dev)
- {
- 	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
- 	unsigned int regval;
-@@ -844,7 +844,7 @@ static int __maybe_unused sx9360_suspend(struct device *dev)
- 	return ret;
- }
- 
--static int __maybe_unused sx9360_resume(struct device *dev)
-+static int sx9360_resume(struct device *dev)
- {
- 	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
- 	int ret;
-@@ -861,7 +861,7 @@ static int __maybe_unused sx9360_resume(struct device *dev)
+diff --git a/drivers/iio/proximity/srf04.c b/drivers/iio/proximity/srf04.c
+index 05015351a34a..faf2f806ce80 100644
+--- a/drivers/iio/proximity/srf04.c
++++ b/drivers/iio/proximity/srf04.c
+@@ -359,7 +359,7 @@ static int srf04_remove(struct platform_device *pdev)
  	return 0;
  }
  
--static SIMPLE_DEV_PM_OPS(sx9360_pm_ops, sx9360_suspend, sx9360_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(sx9360_pm_ops, sx9360_suspend, sx9360_resume);
+-static int __maybe_unused srf04_pm_runtime_suspend(struct device *dev)
++static int  srf04_pm_runtime_suspend(struct device *dev)
+ {
+ 	struct platform_device *pdev = container_of(dev,
+ 						struct platform_device, dev);
+@@ -371,7 +371,7 @@ static int __maybe_unused srf04_pm_runtime_suspend(struct device *dev)
+ 	return 0;
+ }
  
- static const struct acpi_device_id sx9360_acpi_match[] = {
- 	{ "STH9360", SX9360_WHOAMI_VALUE },
-@@ -886,7 +886,7 @@ static struct i2c_driver sx9360_driver = {
- 		.name	= "sx9360",
- 		.acpi_match_table = sx9360_acpi_match,
- 		.of_match_table = sx9360_of_match,
--		.pm = &sx9360_pm_ops,
-+		.pm = pm_sleep_ptr(&sx9360_pm_ops),
+-static int __maybe_unused srf04_pm_runtime_resume(struct device *dev)
++static int srf04_pm_runtime_resume(struct device *dev)
+ {
+ 	struct platform_device *pdev = container_of(dev,
+ 						struct platform_device, dev);
+@@ -385,8 +385,8 @@ static int __maybe_unused srf04_pm_runtime_resume(struct device *dev)
+ }
  
- 		/*
- 		 * Lots of i2c transfers in probe + over 200 ms waiting in
+ static const struct dev_pm_ops srf04_pm_ops = {
+-	SET_RUNTIME_PM_OPS(srf04_pm_runtime_suspend,
+-				srf04_pm_runtime_resume, NULL)
++	RUNTIME_PM_OPS(srf04_pm_runtime_suspend,
++		       srf04_pm_runtime_resume, NULL)
+ };
+ 
+ static struct platform_driver srf04_driver = {
+@@ -395,7 +395,7 @@ static struct platform_driver srf04_driver = {
+ 	.driver		= {
+ 		.name		= "srf04-gpio",
+ 		.of_match_table	= of_srf04_match,
+-		.pm		= &srf04_pm_ops,
++		.pm		= pm_ptr(&srf04_pm_ops),
+ 	},
+ };
+ 
 -- 
 2.37.1
 

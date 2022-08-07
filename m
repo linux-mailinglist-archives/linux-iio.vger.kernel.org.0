@@ -2,57 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EDCF58BE27
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 01:03:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C2758BE2A
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 01:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232538AbiHGXD3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 19:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
+        id S232842AbiHGXDk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 19:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231964AbiHGXD1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 19:03:27 -0400
-Received: from sonic308-19.consmr.mail.ir2.yahoo.com (sonic308-19.consmr.mail.ir2.yahoo.com [77.238.178.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA522AE7
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 16:03:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913404; bh=vRQhYZY4GnZeBblQP9hRKY+5MzyQSb0GARQBELLKxks=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=M/e6LXUmecZqfVM79ODH9/yPhLVNo0rBHDZYDmG37KnLMkGvcLBt3pHMa7vVGX1x8U6DBogMSOcFWIy7d+wsrf5RllEq2e+jl+0CGNqyM18v2Iy6iDrILeQuDl/PkfOi/viNBFNvX3gxAmrKgfbYAMA9lRE0RpLZH1h0uXYgR2ZynyS8qcw7MZPobkbqXTno+hBbuDsnpbOt/LoEHwx76cZJozdNdPxoJUjs6SXYMW/ugVi9nySBZUhx9SgMFMaVyupjxQ3Lq8tqhlVMUc0mXUrdRSpJ4YXD9IKNfRi6vzsQm5euR8xgJlSIVPytnwNpMGpJBX20Ol3tt0pqwNEQlA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913404; bh=IqXpvOqfvrb7ToBpKYa2ZPlvbJB7uOwlAT+Io0o55K0=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=OIIq5Wz2+fRO2kV9x/oWxKxGfUUXZZryBZPU15lCa8PECEUWi3i1qAAWahYTKnBr6lBSfBSs0mCTsc4oZCIiz62VXTLBBrGoWal1ZcHJNpUj2yd7t7rYxNJLb2kZ+4nk/K6trR3CIGriW/hWCMxwYTDqiMmfOj2R85YPiqVs3z9tIejiSuoeFE+45NrZO7BmVdAy7JqNaPxZVxhVhzlYwTBF0ooN2fYWYctTa089TtCjKrVAOI4zaWWm/OleN1DzUnqQoM9H6RNEv/VrKCb0Mp6wJGKmUGoze6/VePTc7Qc0g6sVEn6b0wiG6xi5c2f7Vcfznx4Ne1OQ+/zXNquBDg==
-X-YMail-OSG: 9DIYGLcVM1liONHU0dd9TnppKEcfRPLDyDqu3VP69CJOL2iLQHByjZMSUf_pUxC
- tUWQnRd25DQzXfIAXCwnrR3_h__BUIoMD1Hf0szHTKJWMVYKBIFwelZE9taxRXIfzmEeo9KyXTeS
- 3J.Pq.iaYrajF1jbFN3Jtre11K.CwhCKKQgYa7mPU5ezys3PB4oIa9ObH3VxDV1KTncNxm3j7vzE
- xDtiVgWUV.3_MwtD2Bc00nhRKWUEM5l2lEjIZP5Bj2c77fMgXC_X_u3PN32CvNzrTPdCGtwXbZ4F
- mySV3k3JU1vfuBM_XfsrykyVbfzb3WClR2DaTcIDjC_PkLW0cWA40HAEuSwQY5zSnM8Y8xJojSjc
- t2PzNM0hvmbQauMNanJzSBru1fM2LjASX5.WaNmgi41jNOq5zAJ7xVXgdE_Z6A1dTqvot9OlvNlX
- Zc.dP.B3o33IFjL2_mmpshMF94f3P6sr2WoZCuUe9KTniDOXpvLcIbSwIM6kwgkQdcIzH7795Q4n
- 22AnXhpJmBNzQoCzB4lxdmfUC38bLIBSUTeBSGz40pcdkoB4rqxKX7UTESYQOgTbWONmmmJB473a
- U2GHpgT93rg09Iy9FSwMBuTwSzjtRKUG.2fn8BGIuk44u20s.XVpp_JEFdDL9bl_ZdlhvF.oF3.i
- ElM_HgSDWl.g3mEAvD_zgpP4lq7Kk3mO0YyOCn.l_n0feRKvfXQs3aDX8Zg8CMA9x7Gs.BOrkJuf
- Dk1G5IRmzpdiYojX8RYnaCJVvESYRWnekE8xtYzhh9nGRl8_jUoQv2EdQ.bOfGKG.mKaV3l37kD6
- d8vDPo0nbp_5xs9_YXB9zNh1FSGONFPUqcwAX5.s9NUzpU2urnTU9kIKR97.QJL.7kWzjsg7aieC
- 4sZZ_kyWlegm5jSJtznBer84RX6hfpzJjf_QwsJRUlz6_1cV7TqHtu_r8l6Q7o0tJndOBM2ojwB1
- xyk7Z1BTArxVpHw0REARmKmcU3IqbaAW3WEl02wmsO2XAN68rzxxS12zMwPfulkUtF2J3m9lSEQr
- 8prPWz9XnroXO1ddcWi4cZYZCbriA1r_EqL.ykyrtJin_UmJ_rfBVTC4hOnHGfnQTaaMUEtHcQbS
- Tv3GNx8xmeKnik5oWIRadANlDaTcDZFhY41sqAQXVdJpWWZenKkGsyblWboJphMBT5BJHGQzro5n
- ostFKu0p7DswAhMDYx8HOlJxvbMOAiQvOOet4dajM2gl3vjxSxTSymjLGKxGzf5.pETKhEpyMcel
- yVVg87YVbUpJz3eGIqx21a4O9rgWmvzHb7q9xVxwUiex1cJmhYY4oCb2isYvx1_yo2z2e6ZUS8gh
- IZm.KtuUu3XR2ToeK1xlcC.RZH7pXyIbf5Q9gNmoXBy4_ldfbajX1nm8k7vYPhtzFvCcfUKtoHAK
- _IvokoBFFT1xkn74wh935KDWE2v5fhHgnzhN9bgikACnhRu.Bd1QAA7TdYrlsREg8w7aWLNttX9r
- wirdO9_2OJyRac9veAPyB2o7Jvov_mUHGYR0D_NYELJzD04xEZbCYVwzptKreIthYEhb3CBcB6ln
- qgKlhHz9Rau2LWC_EfjtqI57PFZiHYZ5NNzc9dDaGsnu3gjokbs7pE4IdSxXre5g4tqW7Ajm5GJU
- LiE14ZJ6hi.ILC_LEVS7enNSe7_8jbnLSDxrVRKuW5SGnM.8KtcTkPcDyKvFsfjDwTc0cN.BZPbv
- glkbRLkiQ6yl_usCM34.MC8lXO6FY0N96A39vCjuDwYZXLvis5mYjAd.vUgfknTRakhtFe8PzcxZ
- 21ZX0ZC9kgDyyYqSQ.WNDV_OZZofdwTVw4Xxks77Qkl5DdEKxtApw58nj9sEyjX4xEHwCZwOa9Mc
- EZKMWmO.V2QM2aLqhSMfLob_wRe7cWkGSVlBdnR9WSUmlGlqov9A0WnrDPBtAylldO6O07R.5wB7
- lfQW6u78RBCJJzvTLfyykxrEMKoHkQdXT9Hnx1iC2tPrajZ3.ph.DDAP1s3pM9h3iD3She9QzePi
- LQLxmBYH3O87Rnqcc6TcnwXYxv8fg2QBSgSRzsYBLuOBLHyJHXGNQ4PXaCoUs4tcO..jlAsjpflz
- ApAe7kEOo03gOpjGEMb0gdGB3ta4r0tn_CpsTo2F.b1ClqmU3_cGmuCMflLGW6Nv.iJI5HpZueFT
- N2ehzgmV.toQGKAS1Z.pVZgXW5MKn2kQbvbbAoRs524MxEXD.ObLdEVKo29bVlvYVOOYsa1vL5A8
- J7xLn_YEIbDfjrzG5mUb_S6wRMI.bd3rltiwYe5dITuJ6ery0TPht8MNFWIN1c_YIcPgnVsLaCPm
- rUEaBlyLcurz5shSA_HwKGqvdpYbUuZhd1YxtHe8shcTuJge_HmWIh50FjzZyzagHhM6ikswTizI
- x2YOfzVTW9yO.CzBamfvnLnY-
+        with ESMTP id S232816AbiHGXDj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 19:03:39 -0400
+Received: from sonic303-21.consmr.mail.ir2.yahoo.com (sonic303-21.consmr.mail.ir2.yahoo.com [77.238.178.202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 642832AF3
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 16:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913416; bh=RGArz7Zwo1YrpUAyYAm1grVSpdiCN8Oa/NeiK93F+nA=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=DtAKcIiE8ZhVLHjOTGR/SraZcdQGMYxByzyFLwKn7TmoOAWm0E/z+swGaCfk/Oyp3z1TDKRdUanK9sTd1d5fodH8r+xzjTGA68sywsb4oR9/ftJH7RghOof0uxRaOX1HahH7SDfXyEDm5lJ3EtQ1hySbPmJ3G3iiI/9kD5HlaojW+W/PsxJv5n9VYwe8GRBGEnM9VBUM4/PUXTYbQbFSUH8u7bGtJjqID9ejglg6ypCaOIFHNa9bXBbbFfEA3PMn5AsqFVDWVGVBlAUaAalWxup/M17OX3SAsMigl2c2qhQoJm1yYDmi3mPtMCX+QYZ24RVKh7LbWJdmnEtbEp50sA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913416; bh=jtL6asjC6CWMwjFIVecbhhHryD6TTv0fXDQbOeL1WUM=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=OKIWVG/GwrqYVsq+u3KLT7qKZs5gxtawZ38U2KBXrWjiTnpfpAfWMrxqAcDpLK/GgcB0Njq/pfh9jL+P+Fv5QMQAZ26nkyXVrtOO5C66nrBCyi1OXmrUDeBqiaSPpNbTwuKnJ06cLtLbz/YglFcczKaqkQWL3LY5/kqiORTuubgkkoFqpZNnomtAdOalowzq3tdpTqp6qioviJ87Ou6E/jLueRp35NtsPQU566256EfvlWJGejcg1kYNGIzZR6+xJoboPOb6T34Qcm5Fqv/nqtFlGU5BDlX2Uqdy51UbD9IwojiMgnmEhlQpW36h45ZqdmA01m3F64vNnvKQsI4RXA==
+X-YMail-OSG: glLGcR4VM1kdK15_ldsUx.EMpg6Cqm0GMjRAKexezHBwhKrq9qBGqdSYBqC3lhD
+ SWVLtU8ec0tbeIE72wW4ha_PiyBzR99XsBPZu2ySEtPQVtpqZk9SOWZEmQYqX3MGkon.FMkgcXWc
+ G8ENXRJJipV62qHqsRhEZzLhJmvzNhwOswFzUoJmI97V_R6_Y1w73vLC7lz.yxhaEYnBK2TDzdVl
+ DC74KDkX5AWoyNspLkzTLd7w3D8nPVaeTOJ1NB8qRvPufMdoJQ6JjpsvORnkoyiyj3.h.5ZXMIt2
+ ucii9s6AAS8cEN6Hrbh8mPYfWJzC6QjX9hyz7bm7fO2DP2xxw0cEBnhLxeRgJI7vpoyU4_9nOFu4
+ rIvelk8xWr5lBtTbx5fp1L3Yyj9x6HNGaRxmvBAMrFDJoI9DTOR9nlJg.DjKjyT84uOdlb4JswRy
+ 4SkGhWOcsIklg9De1Vn8yeV4LD2zZt7qqJCyK7T1y5MGF5YxPrI3m7VVV2nrfeGRloUdiBXX8KHQ
+ wXxg4OxSSbEBNyLkHm30Turwpu9aTd8wvWzpv7j_.YBF88.RNz0lhggkVhjilfSwm4IOik74gam9
+ Dk7Atcae_hzpWcFa0mtJQfyZ86Is6QS9puWtlaX9CkjE_Jcl11ZsGrr_Q1_pIvoxA9iVsd1Nkv0n
+ qn68aKjhNeGhv.WR9blQ.kFltLJk2RHDgXLaAwt5EcK7RN7vyeTnX6cqnXuxzaDlGpZEck1nw72K
+ uLOQnmeqYg9YkdWWgp1pX5eB8_Is7469rtpxQ6HgAlfkm3gYXqw7HKUPOmhW1uHVMBZYq9hahiPx
+ 67hSC5RohUoyk6VrvZ.ORPqLZjjAy45OezRLvIbBGmASB22elXg7v0Ozwxeecj.SsabPDsaLwriF
+ 7N.UDhUYw2rR3zTvE.t0JQ65JplYChkWEVW85SmUQ9Kot994j5L5KPWdgtVP5kcZkiDxDxC5bMvs
+ EuC_OatyF1eVbrEYxEj9GJ4itIzws8jWtvKdL1zacRWnq68LYFJA4qFVj4SSCBh04tPFzypgwhwO
+ QW1HA4_oMZbKJ1w8y2eqXpJp9B5xT2jedV4PutzasczQrPeaaRNlZHRNomFq.k_zsc2O1GHul65q
+ ss.69TBXgJ3Qy288NxxNmEJQfmdUW_JIQjbdbfz2nxdVqa1DkPvHT_TtJKdmFuqkEh5iR1Su2vMM
+ Pe6e_42gMWORmVgjNbuJVUP71wV5JJzaJmc50MuPozyBY7XFCHsKHEcgG7781SPR4vm3g_zDreqf
+ YisX6Ps5lcNVH5RUWW32ifyE7ipBSBsCYbrwESINKzmfTy1h4LbC_MgRyxM8S6XAmRBRQe4d6swp
+ tdb3oPqEUCRdld2Yg1m3iR9lKRu95zZ6V2XmrWyaZ9zhU4QplmlT9iVJGmcpxDZMxhefgfGRHZEM
+ t53avk3xMnzTLVVBOHMapRGln6z9CfBYPbzU7T3DNuQ3ri1eOKdLUvOcwhqAyN.UG9r1O.G6cYo9
+ l9ACnnajTVRlWTJzCK3QewGidfKWNFcRkFt1mQ3q7xi2ol3bunglQS6jPdLUzTFSkefncYSlIQap
+ 7tU1i0GZ5B6q4Kt6AGoD8Lr1NkjbeltNpOuvb68sCJMPieM8wZHkm8u9EfXNFwhYA4WrMciyyN3E
+ DsOJ2606KGfkpgs3Y2T3RTLwldbMdw21_.G20wbEuThpr4b7xTv8Cg4ogjYXUl2T6woUQUr0MYUE
+ nMDx1XVTwJSoTv8Qj5UENgKcuD2AIfDT4ljrDKUiIpVFvE5UKr_5Qd5NZmlJx0BylY6uKjqeks2p
+ ZB0uVIkDWShe.hURWpQIMKn2kUKA4xOtzVVWQTBKlLa_wnIwGGo9iZtPUpcpxprkqcHe33kWSvTA
+ zV_r5.VvkoyQwtb23fkO5I1A4rUCxru_yMkd7Z1WZZfpQEVpj8bQzoVmM.kJoNjDNzDAphvP79jI
+ 2YuGbatYDxU6fk0Urngq.jUXFo.iXdFcVw9fFoYfo2up6ehuqtGlTKVK5ZZWivOxwFEjgpiUefGz
+ FdlZekW4.osuOATkfdmptFZ9WO3MgKXSZWthwd4ys1s81HzsNF_qoLqPAMLKAkJdhSt66qiG50Pc
+ PR7M2AzTy8W_G_EMF2kGB9CPnW1Tbwqve.lHWgzpRqTrhJ.N4Zc74SgW22km8IFu5ZnsQWrW1DJX
+ 1t4KAgeOA8JjXZ59tCwLQ_MApT1uMS8W9bVyL5DTokZ5kZG0q5kWGJgCO.bkIDTkMdjRGPstI7CT
+ lkbBuzoDPzj7WyQTU8Wtg_v_OA6juXNSdR451RqYDmfuFRZWxMnfXr9CZ3na1kHvEOJoZT7in3lh
+ SdSciYlEtjKpuaA--
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:03:24 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:03:36 +0000
 Received: by hermes--canary-production-ir2-f74ffc99c-r76pr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 12b0bfa600682cb6edf92800aaf76d46;
-          Sun, 07 Aug 2022 23:03:23 +0000 (UTC)
+          Sun, 07 Aug 2022 23:03:34 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -62,13 +61,14 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH v5 00/14] Add support for magnetometer Yamaha YAS537
-Date:   Mon,  8 Aug 2022 01:02:05 +0200
-Message-Id: <cover.1659909060.git.jahau@rocketmail.com>
+Subject: [PATCH v5 01/14] iio: magnetometer: yas530: Change data type of hard_offsets to signed
+Date:   Mon,  8 Aug 2022 01:02:06 +0200
+Message-Id: <4293862b3deb526ee1163b6fc8d0786c3d9816fd.1659909060.git.jahau@rocketmail.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <cover.1659909060.git.jahau@rocketmail.com>
+References: <cover.1659909060.git.jahau@rocketmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <cover.1659909060.git.jahau.ref@rocketmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -79,174 +79,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patchset adds YAS537 variant to the already existing driver for
-Yamaha YAS magnetometers.
+The "hard_offsets" are currently unsigned u8 but they should be signed as they
+can get negative. They are signed in function yas5xx_meaure_offsets() and in the
+Yamaha drivers [1][2].
 
-Patch 1 is a fix on the current driver.
-Patches 2-13 are cleanups and refactoring.
-Patch 14 finally adds the YAS537 variant.
+[1] https://github.com/NovaFusion/android_kernel_samsung_golden/blob/cm-12.1/drivers/sensor/compass/yas.h#L156
+[2] https://github.com/msm8916-mainline/android_kernel_qcom_msm8916/blob/GT-I9195I/drivers/iio/magnetometer/yas_mag_drv-yas532.c#L91
 
-Changes in v5:
- - Rebased to torvalds/linux v5.19.
- - Patch 6: Moved 3x comment "Used by YAS530, YAS532 and YAS533" into
-   kernel doc.
- - Patch 6: Corrected missing renaming of 2x "yas530_get_measure",
-   1x "yas530_power_on", 1x "YAS530_ACTUATE_INIT_COIL", 1x "YAS530_MEASURE".
- - Patch 7: Added "Suggested-by:" tag.
- - Split patch 9 v4 "Introduce 'chip_info' structure" into five patches 9-13.
- - Patch 9: In commit message changed wording "Device Tree".
- - Patch 9: Added commas to non-terminating arrays of "yas5xx_product_name",
-   "yas5xx_version_name", and "yas5xx_chip_info".
- - Patch 9: Added "product_name" and "version_name" to "chip_info" struct.
- - Patch 9: Added "s" to array name "yas5xx_version_names".
- - Patch 9: Added indices to array "yas5xx_version_names".
- - Patch 9: For strings in arrays "yas5xx_product_name" and
-   "yas5xx_version_names", applied char * instead of char [].
- - Patch 9: Initialize struct "chip_info" as const.
- - Patch 9: In function yas5xx_probe(), moved declaration of "id_check"
-   to a new line.
- - Patch 9: In function yas5xx_probe(), after "if (id_check !=
-   yas5xx->chip_info->devid)" applied dev_err_probe().
- - Patch 10: In function yas5xx_volatile_reg(), renamed integer "j" into
-   "reg_qty".
- - Patch 12: Improved comments on arrays "t_ref_counts" and
-   "min_temp_celsius_x10".
- - Patch 12: Changed arrays "t_ref_counts" and "min_temp_celsius_x10"
-   to static.
- - Patch 12: Corrected wrong spelling of "celcius" with "c" in array
-   "min_temp_celsius_x10"
- - Patch 13: In function yas5xx_probe(), added the conditional
-   "if (yas5xx->chip_info->measure_offsets)" as a preparatory step for YAS537.
- - Patch 14: In function yas537_power_on(), replaced comment "Write registers
-   according to Android driver" by "Writing ADCCAL and TRM registers".
- - Patch 14: In function yas537_power_on(), write register ADCCAL as a
-   bulk write.
- - Patch 14: In function yas537_power_on(), in formula for "intrvl" replaced
-   value "1000" by MILLI. Added "linux/units.h" to includes.
+Fixes: de8860b1ed47 ("iio: magnetometer: Add driver for Yamaha YAS530")
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+ drivers/iio/magnetometer/yamaha-yas530.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v4:
- - Rebased to torvalds/linux v5.19-rc4, as this now includes Linus' patch
-   "Fix memchr_inv() misuse" on driver yamaha-yas530.
- - Removed redundant Cc tags.
- - Patch 2: Replaced "<= ... + 7" by "< ... + 8" and adapted commit message.
- - Patch 3: Added default for switch statement, I forgot to add this.
- - Patch 4: In function yas5xx_get_measure(), changed wording "milli degrees"
-   to "millidegrees".
- - Patch 6: Changed the renaming of function from "yas530_532_" to "yas530_".
-   Same for registers. Added additional comments where appropriate.
- - Patch 6: Removed "Reviewed-by:" tag of Andy.
- - Split patch 7 v3 into two patches -> patch 7 v4 and patch 8 v4.
- - Patch 8: Applied "if (a && b)" suggestion at memchr_inv() by Andy in
-   function yas532_get_calibration_data().
- - Patch 8: Removed defines for device IDs YAS537 and YAS539 and accordingly
-   the comment "These variant IDs are known from code dumps".
- - Patch 9: New patch to introduce the "chip_info" approach.
- - Patch 10: In function yas537_get_calibration_data(), removed "the exact
-   meaning is unknown" from comment "Writing SRST register".
- - Patch 10: Also applied "if (a && b)" suggestion at memchr_inv() by Andy
-   in function yas537_get_calibration_data(). Additionally changed the second
-   condition from "== 0" to "!".
- - Patch 10: In function yas537_get_calibration_data(), removed empty lines
-   within switch statement. In that context, removed comment "Get data into
-   these four blocks val1 to val4".
- - Patch 10: In Kconfig, simplified wording.
- - Patch 10: In function yas537_get_calibration_data() "case YAS537_VERSION_0",
-   reduced indent of "for" loop by splitting it into multiple loops. I didn't
-   use integer j, as it was suggested by Jonathan, because only using integer i
-   is more consistant with the loop in "case YAS537_VERSION_1".
- - Accordingly, split the "for" loop in "case YAS537_VERSION_1" into two loops
-   as well. Technically this isn't neccessary but it improves readability.
- - Patch 10: Added new defines of masks for YAS537 and applied these by
-   FIELD_PREP and FIELD_GET in function yas537_get_calibration_data()
-   within "case YAS537_VERSION_1".
- - Patch 10: In function yas537_power_on(), added spaced at "YAS537_ADCCAL + 1".
-
-Changes in v3:
- - In patch 3 fixed 2x typo "Divide".
- - In commit message of patch 4 fixed wording "in the yas5xx_get_measure()
-   function".
- - In patch 4 in the comment for the temperature calculation fixed wording
-   "is the number of counts".
- - In patch 4 added defaults to switch statements.
- - Splitted stray changes into new patch 7 v3. "Add YAS537 variant" is now
-   patch 8 v3. I haven't added "Reviewed-by:" tag of Linus to patch 7 v3
-   because as a separate patch these changes appear in a different context.
- - In new patch 7 v3, changed printk format specifiers in the function
-   yas530_get_calibration_data() to "%16ph" and in the function
-   yas532_get_calibration_data() to "%14ph". The first one is also a minor
-   correction in behaviour, as the calibration data array size of YAS530
-   is 16 (the dev_dbg printed 14 before).
- - Rebased to linux-next to include patch bb52d3691db8 "iio: magnetometer:
-   yas530: Fix memchr_inv() misuse".
- - In patch 7 v3, changed memchr_inv() line for YAS532.
- - In patch 8 v3 in the function yas537_get_calibration_data(), changed
-   memchr_inv() line for YAS537.
- - Removed comment "corresponds to 0x70" at define YAS537_MAG_AVERAGE_32_MASK.
- - Added suffixes _US and _MS in defines for YAS537.
- - In the function yas537_measure(), removed comments "Read data", "Arrange
-   data", "Assign data".
- - In the function yas537_measure(), replaced bitwise shift by
-   get_unaligned_be16().
- - Replaced "if (h[i] < -8192)" etc. by clamp_val().
- - In the functions yas537_measure() and yas537_get_measure(), replaced 8192
-   by BIT(13) and 16384 by BIT(14).
- - Fixed typo "resolution" in the function yas5xx_read_raw().
- - Fixed typo "Divide" in patch 8 v3 in the function yas5xx_read_raw().
- - In patch 8 v3 in the yas537_get_calibration_data(), changed printk format
-   specifier to "%17ph"
- - In the functions yas537_measure() and yas537_get_calibration_data(), drop
-   some parentheses in regmap_write().
- - In the function yas537_power_on(), added comment "Wait until the coil has
-   ramped up".
- - In the function yas5xx_probe(), put YAS537 variant and version printings
-   into one print.
- - In the function yas537_get_measure(), fixed wording "is the number of
-   counts" in the comment for the temperature calculation.
- - In the function yas537_get_measure(), added product description document No.
-   into the comment for the temperature calculation (as I first thought the
-   review comment "the number" is related to this).
- - In the function yas537_get_calibration_data(), corrected comment "Get data
-   into these four blocks val1 to val4".
-
-Changes in v2:
- - Reordered the patchset by moving patch 4 v1 to patch 1 v2.
- - Removed patch 6 v1 ("Remove redundant defaults on switch devid")
- - Accordingly, added "default:" to each switch statement in patch 7.
- - Moved renamings in patch 7 v1 into a separate new patch 6 v2. I added
-   the "Reviewed-by:" tag of Linus to both patches, hope that's ok, else
-   feel free to comment.
- - Removed regmap reads and related debug dumps in patch 7 in function
-   yas537_dump_calibration(). As this function now applies to version 1
-   only, replaced switch statement by if clause.
- - Also removed "hard_offsets" debug dumps in that function.
- - Fixed typo "initialized" in commit message of patch 7.
-
-v4: https://lore.kernel.org/linux-iio/cover.1656883851.git.jahau@rocketmail.com/T/#t
-v3: https://lore.kernel.org/linux-iio/cover.1655509425.git.jahau@rocketmail.com/T/#t
-v2: https://lore.kernel.org/linux-iio/cover.1655081082.git.jahau@rocketmail.com/T/#t
-v1: https://lore.kernel.org/linux-iio/cover.1654727058.git.jahau@rocketmail.com/T/#t
-
-Jakob Hauser (14):
-  iio: magnetometer: yas530: Change data type of hard_offsets to signed
-  iio: magnetometer: yas530: Change range of data in volatile register
-  iio: magnetometer: yas530: Correct scaling of magnetic axes
-  iio: magnetometer: yas530: Correct temperature handling
-  iio: magnetometer: yas530: Change data type of calibration
-    coefficients
-  iio: magnetometer: yas530: Rename functions and registers
-  iio: magnetometer: yas530: Move printk %*ph parameters out from stack
-  iio: magnetometer: yas530: Apply documentation and style fixes
-  iio: magnetometer: yas530: Introduce "chip_info" structure
-  iio: magnetometer: yas530: Add volatile registers to "chip_info"
-  iio: magnetometer: yas530: Add IIO scaling to "chip_info"
-  iio: magnetometer: yas530: Add temperature calculation to "chip_info"
-  iio: magnetometer: yas530: Add function pointers to "chip_info"
-  iio: magnetometer: yas530: Add YAS537 variant
-
- drivers/iio/magnetometer/Kconfig         |   4 +-
- drivers/iio/magnetometer/yamaha-yas530.c | 854 +++++++++++++++++++----
- 2 files changed, 727 insertions(+), 131 deletions(-)
-
+diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+index b2bc637150bf..40192aa46b04 100644
+--- a/drivers/iio/magnetometer/yamaha-yas530.c
++++ b/drivers/iio/magnetometer/yamaha-yas530.c
+@@ -132,7 +132,7 @@ struct yas5xx {
+ 	unsigned int version;
+ 	char name[16];
+ 	struct yas5xx_calibration calibration;
+-	u8 hard_offsets[3];
++	s8 hard_offsets[3];
+ 	struct iio_mount_matrix orientation;
+ 	struct regmap *map;
+ 	struct regulator_bulk_data regs[2];
 -- 
 2.35.1
 

@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 570ED58BCB1
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 21:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A55258BCB3
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 21:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbiHGTKq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 15:10:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47794 "EHLO
+        id S233225AbiHGTKr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 15:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234789AbiHGTKj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 15:10:39 -0400
+        with ESMTP id S234924AbiHGTKl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 15:10:41 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53DFE9;
-        Sun,  7 Aug 2022 12:10:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE037E9;
+        Sun,  7 Aug 2022 12:10:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 65538B80B84;
-        Sun,  7 Aug 2022 19:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4028C433D6;
-        Sun,  7 Aug 2022 19:10:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7EB9FB80DD0;
+        Sun,  7 Aug 2022 19:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838F2C433D7;
+        Sun,  7 Aug 2022 19:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659899435;
-        bh=4u3tuq6QE45CRWWudKG3wLPtrd4o8hv7arsU7yB12/Q=;
+        s=k20201202; t=1659899438;
+        bh=9rg7R3Rqz04Tp0YCZJt9Ddj6gzPV5rJdfyKyf8ZZknY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QnY+1uKDQiRzZVzAOoV3JTxPJMBcwGmL3e2TZ6CAC3EQMHnCblchn4nrlPQ8Xnw2T
-         HGdMuZYBUUll5Is9/QuDtjqCar8RHFashkEDkOot6BIJrTSjWtNbu8EcMdst9XVCLj
-         qGqAPvBr/RnmNBYsizt7CTXv5DdW4y1Ut+DzJIjHPl3exisASRZnsxgCXMOZdvLvcj
-         cQsiwAsiUkAjWMTzwUKG5J2TXr4yeXdK13P6MHe9wVdRoZ2k1+2vY+KY/d1PuB+e91
-         72SjUWOLk94z0/S9YhfMlwcyyvEOP5YqEbWVMVg+dUqeFot/f4DdyubTPRAT/VGoQB
-         AwVFoTfGechVA==
+        b=jC4q9svuGITmI4V5Wyz+8A9ilFS6JjUcn9BGXY5Xq9/+pE5k8tdmsC8PhV+p/aok3
+         SROYuNrBdGbWNHgPRlCH7u20uLMtpScw34r0N6n6LXtg/PUSUo6s5oGy/a64Bg2W9a
+         YVUM14GiW7ysQAUkybBHFK83ZVUl9KY3bg+ZYHSPtsn3sqog3Gmt5s4i02ucKBJIgF
+         LULIujQbTgmpGOB5nCYfqsahcbt8tsQUUBMn39Pz0Mo1PqT8/i7lmp130lUvw5oQnQ
+         gGtovT1+ADARkvLPHU8XFAIgQ5ZO9T2u3+z7eKvZYoGGPqpvNo2EUsoC5WIeyVW50T
+         ZFzQqCZspujPQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org,
         "Rafael J . Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org
@@ -40,9 +40,9 @@ Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
         Linus Walleij <linus.walleij@linaro.org>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4/5] iio: imu: inv_icm42600: Move exports to IIO_ICM42600 namespace
-Date:   Sun,  7 Aug 2022 20:20:37 +0100
-Message-Id: <20220807192038.1039771-5-jic23@kernel.org>
+Subject: [PATCH 5/5] iio: imu: inv_mpu: Move exports to IIO_MPU6050 namespace
+Date:   Sun,  7 Aug 2022 20:20:38 +0100
+Message-Id: <20220807192038.1039771-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220807192038.1039771-1-jic23@kernel.org>
 References: <20220807192038.1039771-1-jic23@kernel.org>
@@ -69,120 +69,107 @@ and callbacks without needing explicit __maybe_unused markings.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
- .../iio/imu/inv_icm42600/inv_icm42600_core.c  | 21 ++++++++-----------
- .../iio/imu/inv_icm42600/inv_icm42600_i2c.c   |  3 ++-
- .../iio/imu/inv_icm42600/inv_icm42600_spi.c   |  3 ++-
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 18 ++++++++----------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  |  3 ++-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c  |  3 ++-
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index ca85fccc9839..2dce708e6272 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -41,7 +41,7 @@ const struct regmap_config inv_icm42600_regmap_config = {
- 	.ranges = inv_icm42600_regmap_ranges,
- 	.num_ranges = ARRAY_SIZE(inv_icm42600_regmap_ranges),
- };
--EXPORT_SYMBOL_GPL(inv_icm42600_regmap_config);
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_regmap_config, IIO_ICM42600);
- 
- struct inv_icm42600_hw {
- 	uint8_t whoami;
-@@ -660,13 +660,13 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- 
- 	return devm_add_action_or_reset(dev, inv_icm42600_disable_pm, dev);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 86fbbe904050..27cbc07d6369 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -1653,9 +1653,9 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
+ 	inv_mpu6050_set_power_itg(st, false);
+ 	return result;
  }
--EXPORT_SYMBOL_GPL(inv_icm42600_core_probe);
-+EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, IIO_ICM42600);
+-EXPORT_SYMBOL_GPL(inv_mpu_core_probe);
++EXPORT_SYMBOL_NS_GPL(inv_mpu_core_probe, IIO_MPU6050);
  
- /*
-  * Suspend saves sensors state and turns everything off.
-  * Check first if runtime suspend has not already done the job.
-  */
--static int __maybe_unused inv_icm42600_suspend(struct device *dev)
-+static int inv_icm42600_suspend(struct device *dev)
+-static int __maybe_unused inv_mpu_resume(struct device *dev)
++static int inv_mpu_resume(struct device *dev)
  {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	int ret;
-@@ -706,7 +706,7 @@ static int __maybe_unused inv_icm42600_suspend(struct device *dev)
-  * System resume gets the system back on and restores the sensors state.
-  * Manually put runtime power management in system active state.
-  */
--static int __maybe_unused inv_icm42600_resume(struct device *dev)
-+static int inv_icm42600_resume(struct device *dev)
- {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	int ret;
-@@ -739,7 +739,7 @@ static int __maybe_unused inv_icm42600_resume(struct device *dev)
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+@@ -1687,7 +1687,7 @@ static int __maybe_unused inv_mpu_resume(struct device *dev)
+ 	return result;
  }
  
- /* Runtime suspend will turn off sensors that are enabled by iio devices. */
--static int __maybe_unused inv_icm42600_runtime_suspend(struct device *dev)
-+static int inv_icm42600_runtime_suspend(struct device *dev)
+-static int __maybe_unused inv_mpu_suspend(struct device *dev)
++static int inv_mpu_suspend(struct device *dev)
  {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	int ret;
-@@ -761,7 +761,7 @@ static int __maybe_unused inv_icm42600_runtime_suspend(struct device *dev)
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct inv_mpu6050_state *st = iio_priv(indio_dev);
+@@ -1730,7 +1730,7 @@ static int __maybe_unused inv_mpu_suspend(struct device *dev)
+ 	return result;
  }
  
- /* Sensors are enabled by iio devices, no need to turn them back on here. */
--static int __maybe_unused inv_icm42600_runtime_resume(struct device *dev)
-+static int inv_icm42600_runtime_resume(struct device *dev)
+-static int __maybe_unused inv_mpu_runtime_suspend(struct device *dev)
++static int inv_mpu_runtime_suspend(struct device *dev)
  {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	int ret;
-@@ -774,12 +774,9 @@ static int __maybe_unused inv_icm42600_runtime_resume(struct device *dev)
+ 	struct inv_mpu6050_state *st = iio_priv(dev_get_drvdata(dev));
+ 	unsigned int sensors;
+@@ -1755,7 +1755,7 @@ static int __maybe_unused inv_mpu_runtime_suspend(struct device *dev)
  	return ret;
  }
  
--const struct dev_pm_ops inv_icm42600_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(inv_icm42600_suspend, inv_icm42600_resume)
--	SET_RUNTIME_PM_OPS(inv_icm42600_runtime_suspend,
--			   inv_icm42600_runtime_resume, NULL)
--};
--EXPORT_SYMBOL_GPL(inv_icm42600_pm_ops);
-+EXPORT_NS_GPL_DEV_PM_OPS(inv_icm42600_pm_ops, inv_icm42600_suspend,
-+			 inv_icm42600_resume, inv_icm42600_runtime_suspend,
-+			 inv_icm42600_runtime_resume, NULL, IIO_ICM42600);
+-static int __maybe_unused inv_mpu_runtime_resume(struct device *dev)
++static int inv_mpu_runtime_resume(struct device *dev)
+ {
+ 	struct inv_mpu6050_state *st = iio_priv(dev_get_drvdata(dev));
+ 	int ret;
+@@ -1767,11 +1767,9 @@ static int __maybe_unused inv_mpu_runtime_resume(struct device *dev)
+ 	return inv_mpu6050_set_power_itg(st, true);
+ }
  
- MODULE_AUTHOR("InvenSense, Inc.");
- MODULE_DESCRIPTION("InvenSense ICM-426xx device driver");
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-index d4a692b838d0..4f96989ddf4a 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-@@ -93,7 +93,7 @@ static struct i2c_driver inv_icm42600_driver = {
- 	.driver = {
- 		.name = "inv-icm42600-i2c",
- 		.of_match_table = inv_icm42600_of_matches,
--		.pm = &inv_icm42600_pm_ops,
-+		.pm = pm_ptr(&inv_icm42600_pm_ops),
+-const struct dev_pm_ops inv_mpu_pmops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(inv_mpu_suspend, inv_mpu_resume)
+-	SET_RUNTIME_PM_OPS(inv_mpu_runtime_suspend, inv_mpu_runtime_resume, NULL)
+-};
+-EXPORT_SYMBOL_GPL(inv_mpu_pmops);
++EXPORT_NS_GPL_DEV_PM_OPS(inv_mpu_pmops, inv_mpu_suspend, inv_mpu_resume,
++			 inv_mpu_runtime_suspend, inv_mpu_runtime_resume, NULL,
++			 IIO_MPU6050);
+ 
+ MODULE_AUTHOR("Invensense Corporation");
+ MODULE_DESCRIPTION("Invensense device MPU6050 driver");
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+index 2aa647704a79..f89164fabf4b 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+@@ -269,7 +269,7 @@ static struct i2c_driver inv_mpu_driver = {
+ 		.of_match_table = inv_of_match,
+ 		.acpi_match_table = inv_acpi_match,
+ 		.name	=	"inv-mpu6050-i2c",
+-		.pm     =       &inv_mpu_pmops,
++		.pm     =       pm_ptr(&inv_mpu_pmops),
  	},
- 	.probe_new = inv_icm42600_probe,
  };
-@@ -102,3 +102,4 @@ module_i2c_driver(inv_icm42600_driver);
- MODULE_AUTHOR("InvenSense, Inc.");
- MODULE_DESCRIPTION("InvenSense ICM-426xx I2C driver");
+ 
+@@ -278,3 +278,4 @@ module_i2c_driver(inv_mpu_driver);
+ MODULE_AUTHOR("Invensense Corporation");
+ MODULE_DESCRIPTION("Invensense device MPU6050 driver");
  MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_ICM42600);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-index e6305e5fa975..486b46e53113 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -89,7 +89,7 @@ static struct spi_driver inv_icm42600_driver = {
- 	.driver = {
- 		.name = "inv-icm42600-spi",
- 		.of_match_table = inv_icm42600_of_matches,
--		.pm = &inv_icm42600_pm_ops,
-+		.pm = pm_ptr(&inv_icm42600_pm_ops),
++MODULE_IMPORT_NS(IIO_MPU6050);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+index e6107b0cc38f..89f46c2f213d 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_spi.c
+@@ -154,7 +154,7 @@ static struct spi_driver inv_mpu_driver = {
+ 		.of_match_table = inv_of_match,
+ 		.acpi_match_table = inv_acpi_match,
+ 		.name	=	"inv-mpu6000-spi",
+-		.pm     =       &inv_mpu_pmops,
++		.pm     =       pm_ptr(&inv_mpu_pmops),
  	},
- 	.probe = inv_icm42600_probe,
  };
-@@ -98,3 +98,4 @@ module_spi_driver(inv_icm42600_driver);
- MODULE_AUTHOR("InvenSense, Inc.");
- MODULE_DESCRIPTION("InvenSense ICM-426xx SPI driver");
+ 
+@@ -163,3 +163,4 @@ module_spi_driver(inv_mpu_driver);
+ MODULE_AUTHOR("Adriana Reus <adriana.reus@intel.com>");
+ MODULE_DESCRIPTION("Invensense device MPU6000 driver");
  MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_ICM42600);
++MODULE_IMPORT_NS(IIO_MPU6050);
 -- 
 2.37.1
 

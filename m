@@ -2,228 +2,251 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC7E58BD01
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 23:45:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDCF58BE27
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 01:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229632AbiHGVpa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 17:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43096 "EHLO
+        id S232538AbiHGXD3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 19:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiHGVp3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 17:45:29 -0400
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C81B614B
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 14:45:27 -0700 (PDT)
-Received: by mail-oi1-x231.google.com with SMTP id c185so8529618oia.7
-        for <linux-iio@vger.kernel.org>; Sun, 07 Aug 2022 14:45:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uP8NMqKcYNK4tXJeEhuj+OM5BxLcGWFwJ8A1QcLKjvg=;
-        b=oWqjMF6ealVXvgMUA18lnTJJ8zuujDFBwv+EpU1cYNobzv2GeBdscJqv6HHLE/eBBj
-         ND5fa31t11JxjdtGBr6VjUiPxgDjEHKRNxcEMMmbZqy2/AlsmsZylA4EQlrguwj+rhp+
-         P5cUBogFfadp+JNs/JpEBvcs9GcgK4Jq2R/ql8pAqiq/XsdprU2Ej7u2BC0Xlqfw000L
-         ZhFQ7W/y7DYqN+VThoC+MKGqfcjIoIijcL5P8KdSQCS+dF+KBnPjeqkpaijbOOcd0nLY
-         1MiYhvMe+qolNv5VGmKnk5ke2Sr+aIqZYWfRkiFJgE2B42nZn0gTifKS9QgWmflDKQNB
-         bZ2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uP8NMqKcYNK4tXJeEhuj+OM5BxLcGWFwJ8A1QcLKjvg=;
-        b=IXzIcdWn4g9jruZQuWYOv3cAIxyd5j2N3YVX9oBKUIzgtB0hR/sED4tORbxWmWuIey
-         DhAO86TQN5ZTVVljP0QaCyQE83LNFugm6PUQod4J6en5My1M057Pub5apmuqdoib2Cxm
-         PBYrDbHF294mv+rp0c+isQPsO3lTxlj2XIao/xaxW0SYop3P4yrVAuV2B6pAhjDtfp6h
-         QN/qL/kfZvxSbsojyIApGqFG8AaAVbgi6fdJkqbw6inXvYF41949W6EaBPks+AGM98nf
-         QySW53A8r1bMx/i9XWiTqpQaXii3UzdcYdKo3Gzx5h73zFdR54R9vCdhrYWU3iYGM1+u
-         qEiw==
-X-Gm-Message-State: ACgBeo2Vfnw5IeZp3pYkIyiyGeogxLqlUZM8xGzBIezBYhXXhp3LAP65
-        0OPJN5O0ZDWQqMctRk8UUNdKJPC9xEM/tcVPpd8YuWXwyv0XaA==
-X-Google-Smtp-Source: AA6agR4xlZAvv9reOCkbIzMTebfJ/axModdit3Yye5f7XTxfsyRRNyun/OciaPiQjGR0Uakm5iQ2mevwNJ3kPlrD8Qg=
-X-Received: by 2002:a05:6808:1708:b0:335:1b16:fb09 with SMTP id
- bc8-20020a056808170800b003351b16fb09mr10145576oib.7.1659908726092; Sun, 07
- Aug 2022 14:45:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAKv63uvFgLD8d5a4cc12OQZezHG2kfLuY=7X1obmZp4XYP7ANw@mail.gmail.com>
- <CAHp75VcrFQXW10vkLSB5Yh2D24zPzKR9FtfDU8bsSqDwD7=zjg@mail.gmail.com>
- <CAKv63uv12XWEEVAhUBuK9Botj4mCtKWwRL-YzxywOipTAHgQFg@mail.gmail.com>
- <CAHp75Vd7_Vz+kTEUzO+Pz3Bj5b7AYo=NMukL5dbX9HLXHE4K0Q@mail.gmail.com>
- <CAKv63uuaVNoo7hG8bampmx1r5WH7=BdNVL-4HAgzPou9d58HDg@mail.gmail.com> <20220806182823.08d15b35@jic23-huawei>
-In-Reply-To: <20220806182823.08d15b35@jic23-huawei>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Sun, 7 Aug 2022 23:44:50 +0200
-Message-ID: <CAKv63uvaQZO+RNDN-Mcn2uUzuSs8PFhGT=ex6HXCSp-aM03JLw@mail.gmail.com>
-Subject: Re: Controlling device power management from terminal
+        with ESMTP id S231964AbiHGXD1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 19:03:27 -0400
+Received: from sonic308-19.consmr.mail.ir2.yahoo.com (sonic308-19.consmr.mail.ir2.yahoo.com [77.238.178.147])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA522AE7
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 16:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1659913404; bh=vRQhYZY4GnZeBblQP9hRKY+5MzyQSb0GARQBELLKxks=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=M/e6LXUmecZqfVM79ODH9/yPhLVNo0rBHDZYDmG37KnLMkGvcLBt3pHMa7vVGX1x8U6DBogMSOcFWIy7d+wsrf5RllEq2e+jl+0CGNqyM18v2Iy6iDrILeQuDl/PkfOi/viNBFNvX3gxAmrKgfbYAMA9lRE0RpLZH1h0uXYgR2ZynyS8qcw7MZPobkbqXTno+hBbuDsnpbOt/LoEHwx76cZJozdNdPxoJUjs6SXYMW/ugVi9nySBZUhx9SgMFMaVyupjxQ3Lq8tqhlVMUc0mXUrdRSpJ4YXD9IKNfRi6vzsQm5euR8xgJlSIVPytnwNpMGpJBX20Ol3tt0pqwNEQlA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1659913404; bh=IqXpvOqfvrb7ToBpKYa2ZPlvbJB7uOwlAT+Io0o55K0=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=OIIq5Wz2+fRO2kV9x/oWxKxGfUUXZZryBZPU15lCa8PECEUWi3i1qAAWahYTKnBr6lBSfBSs0mCTsc4oZCIiz62VXTLBBrGoWal1ZcHJNpUj2yd7t7rYxNJLb2kZ+4nk/K6trR3CIGriW/hWCMxwYTDqiMmfOj2R85YPiqVs3z9tIejiSuoeFE+45NrZO7BmVdAy7JqNaPxZVxhVhzlYwTBF0ooN2fYWYctTa089TtCjKrVAOI4zaWWm/OleN1DzUnqQoM9H6RNEv/VrKCb0Mp6wJGKmUGoze6/VePTc7Qc0g6sVEn6b0wiG6xi5c2f7Vcfznx4Ne1OQ+/zXNquBDg==
+X-YMail-OSG: 9DIYGLcVM1liONHU0dd9TnppKEcfRPLDyDqu3VP69CJOL2iLQHByjZMSUf_pUxC
+ tUWQnRd25DQzXfIAXCwnrR3_h__BUIoMD1Hf0szHTKJWMVYKBIFwelZE9taxRXIfzmEeo9KyXTeS
+ 3J.Pq.iaYrajF1jbFN3Jtre11K.CwhCKKQgYa7mPU5ezys3PB4oIa9ObH3VxDV1KTncNxm3j7vzE
+ xDtiVgWUV.3_MwtD2Bc00nhRKWUEM5l2lEjIZP5Bj2c77fMgXC_X_u3PN32CvNzrTPdCGtwXbZ4F
+ mySV3k3JU1vfuBM_XfsrykyVbfzb3WClR2DaTcIDjC_PkLW0cWA40HAEuSwQY5zSnM8Y8xJojSjc
+ t2PzNM0hvmbQauMNanJzSBru1fM2LjASX5.WaNmgi41jNOq5zAJ7xVXgdE_Z6A1dTqvot9OlvNlX
+ Zc.dP.B3o33IFjL2_mmpshMF94f3P6sr2WoZCuUe9KTniDOXpvLcIbSwIM6kwgkQdcIzH7795Q4n
+ 22AnXhpJmBNzQoCzB4lxdmfUC38bLIBSUTeBSGz40pcdkoB4rqxKX7UTESYQOgTbWONmmmJB473a
+ U2GHpgT93rg09Iy9FSwMBuTwSzjtRKUG.2fn8BGIuk44u20s.XVpp_JEFdDL9bl_ZdlhvF.oF3.i
+ ElM_HgSDWl.g3mEAvD_zgpP4lq7Kk3mO0YyOCn.l_n0feRKvfXQs3aDX8Zg8CMA9x7Gs.BOrkJuf
+ Dk1G5IRmzpdiYojX8RYnaCJVvESYRWnekE8xtYzhh9nGRl8_jUoQv2EdQ.bOfGKG.mKaV3l37kD6
+ d8vDPo0nbp_5xs9_YXB9zNh1FSGONFPUqcwAX5.s9NUzpU2urnTU9kIKR97.QJL.7kWzjsg7aieC
+ 4sZZ_kyWlegm5jSJtznBer84RX6hfpzJjf_QwsJRUlz6_1cV7TqHtu_r8l6Q7o0tJndOBM2ojwB1
+ xyk7Z1BTArxVpHw0REARmKmcU3IqbaAW3WEl02wmsO2XAN68rzxxS12zMwPfulkUtF2J3m9lSEQr
+ 8prPWz9XnroXO1ddcWi4cZYZCbriA1r_EqL.ykyrtJin_UmJ_rfBVTC4hOnHGfnQTaaMUEtHcQbS
+ Tv3GNx8xmeKnik5oWIRadANlDaTcDZFhY41sqAQXVdJpWWZenKkGsyblWboJphMBT5BJHGQzro5n
+ ostFKu0p7DswAhMDYx8HOlJxvbMOAiQvOOet4dajM2gl3vjxSxTSymjLGKxGzf5.pETKhEpyMcel
+ yVVg87YVbUpJz3eGIqx21a4O9rgWmvzHb7q9xVxwUiex1cJmhYY4oCb2isYvx1_yo2z2e6ZUS8gh
+ IZm.KtuUu3XR2ToeK1xlcC.RZH7pXyIbf5Q9gNmoXBy4_ldfbajX1nm8k7vYPhtzFvCcfUKtoHAK
+ _IvokoBFFT1xkn74wh935KDWE2v5fhHgnzhN9bgikACnhRu.Bd1QAA7TdYrlsREg8w7aWLNttX9r
+ wirdO9_2OJyRac9veAPyB2o7Jvov_mUHGYR0D_NYELJzD04xEZbCYVwzptKreIthYEhb3CBcB6ln
+ qgKlhHz9Rau2LWC_EfjtqI57PFZiHYZ5NNzc9dDaGsnu3gjokbs7pE4IdSxXre5g4tqW7Ajm5GJU
+ LiE14ZJ6hi.ILC_LEVS7enNSe7_8jbnLSDxrVRKuW5SGnM.8KtcTkPcDyKvFsfjDwTc0cN.BZPbv
+ glkbRLkiQ6yl_usCM34.MC8lXO6FY0N96A39vCjuDwYZXLvis5mYjAd.vUgfknTRakhtFe8PzcxZ
+ 21ZX0ZC9kgDyyYqSQ.WNDV_OZZofdwTVw4Xxks77Qkl5DdEKxtApw58nj9sEyjX4xEHwCZwOa9Mc
+ EZKMWmO.V2QM2aLqhSMfLob_wRe7cWkGSVlBdnR9WSUmlGlqov9A0WnrDPBtAylldO6O07R.5wB7
+ lfQW6u78RBCJJzvTLfyykxrEMKoHkQdXT9Hnx1iC2tPrajZ3.ph.DDAP1s3pM9h3iD3She9QzePi
+ LQLxmBYH3O87Rnqcc6TcnwXYxv8fg2QBSgSRzsYBLuOBLHyJHXGNQ4PXaCoUs4tcO..jlAsjpflz
+ ApAe7kEOo03gOpjGEMb0gdGB3ta4r0tn_CpsTo2F.b1ClqmU3_cGmuCMflLGW6Nv.iJI5HpZueFT
+ N2ehzgmV.toQGKAS1Z.pVZgXW5MKn2kQbvbbAoRs524MxEXD.ObLdEVKo29bVlvYVOOYsa1vL5A8
+ J7xLn_YEIbDfjrzG5mUb_S6wRMI.bd3rltiwYe5dITuJ6ery0TPht8MNFWIN1c_YIcPgnVsLaCPm
+ rUEaBlyLcurz5shSA_HwKGqvdpYbUuZhd1YxtHe8shcTuJge_HmWIh50FjzZyzagHhM6ikswTizI
+ x2YOfzVTW9yO.CzBamfvnLnY-
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Aug 2022 23:03:24 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-r76pr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 12b0bfa600682cb6edf92800aaf76d46;
+          Sun, 07 Aug 2022 23:03:23 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Linux Iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH v5 00/14] Add support for magnetometer Yamaha YAS537
+Date:   Mon,  8 Aug 2022 01:02:05 +0200
+Message-Id: <cover.1659909060.git.jahau@rocketmail.com>
+X-Mailer: git-send-email 2.35.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+References: <cover.1659909060.git.jahau.ref@rocketmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 6 Aug 2022 at 19:18, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Tue, 2 Aug 2022 17:32:22 +0200
-> Crt Mori <cmo@melexis.com> wrote:
->
-> > Hi Andy,
-> > Thanks for the explanation and help - now the PM runtime suspend and
-> > resume are triggered. It was indeed the combination of bad
-> > initialization and that I did not have "enter wakeup" on the read
-> > data.
-> >
-> > Currently, I view pm_runtime mode as a power saving mode (device
-> > should be in low power) and normal running as running mode. However,
-> > the sensor is able to report data in both modes - just reading is a
-> > bit different. I also do not have a problem with autosuspend after
-> > some time, but I do wonder how would user change the power mode from
-> > pm_runtime to normal mode (reading, in this case, should not change
-> > the mode). What is the recommended ABI for that?
->
-> This comes up from time to time.  Normally it's very hard for a user
-> to know the right answer to power mode questions because they rarely
-> know enough of the impacts, so we try to use things that do have obvious
-> meaning.
->
-> * If we are doing buffered capture, can assume the user wants good perf
->   so switch to a high power mode.  If doing sysfs reads they probably
->   care less about perf.  We could apply a heuristic along the lines of
->   they read it twice in the last second, keep it in high power mode.
->
-I do not think the buffered mode is kinda something that would be
-applicable here since refresh rate is not really that fast. (64 Hz).
-Or you think I should implement this simply for continuous mode?
+This patchset adds YAS537 variant to the already existing driver for
+Yamaha YAS magnetometers.
 
-> * Often power modes are reflected in sampling rate.  So just wire it up
->   to that (with possible side effects on other parameters).
->   I took a quick look at the mlx90632 data sheet and it seems the modes
->   we have are.
->
-> Sleep step mode:  Goes to sleep between individual measurement sets. So
-> each one has higher latency after request.  Various subtle complexities
-> around control int his mode, but it's the latency at start and finish
-> which differs from other modes
-This is the new part of the driver I want to add. We call it Burst
-measurement mode, and it allows sensor to be in sleep step mode, while
-performing triggered measurements. This is the mode I would go after
-autosuspend.
+Patch 1 is a fix on the current driver.
+Patches 2-13 are cleanups and refactoring.
+Patch 14 finally adds the YAS537 variant.
 
->
-> Step mode: Stays powered up, but you need to poll to get a measurement.
-This mode I would skip. There is no bigger added value at least in Linux case.
+Changes in v5:
+ - Rebased to torvalds/linux v5.19.
+ - Patch 6: Moved 3x comment "Used by YAS530, YAS532 and YAS533" into
+   kernel doc.
+ - Patch 6: Corrected missing renaming of 2x "yas530_get_measure",
+   1x "yas530_power_on", 1x "YAS530_ACTUATE_INIT_COIL", 1x "YAS530_MEASURE".
+ - Patch 7: Added "Suggested-by:" tag.
+ - Split patch 9 v4 "Introduce 'chip_info' structure" into five patches 9-13.
+ - Patch 9: In commit message changed wording "Device Tree".
+ - Patch 9: Added commas to non-terminating arrays of "yas5xx_product_name",
+   "yas5xx_version_name", and "yas5xx_chip_info".
+ - Patch 9: Added "product_name" and "version_name" to "chip_info" struct.
+ - Patch 9: Added "s" to array name "yas5xx_version_names".
+ - Patch 9: Added indices to array "yas5xx_version_names".
+ - Patch 9: For strings in arrays "yas5xx_product_name" and
+   "yas5xx_version_names", applied char * instead of char [].
+ - Patch 9: Initialize struct "chip_info" as const.
+ - Patch 9: In function yas5xx_probe(), moved declaration of "id_check"
+   to a new line.
+ - Patch 9: In function yas5xx_probe(), after "if (id_check !=
+   yas5xx->chip_info->devid)" applied dev_err_probe().
+ - Patch 10: In function yas5xx_volatile_reg(), renamed integer "j" into
+   "reg_qty".
+ - Patch 12: Improved comments on arrays "t_ref_counts" and
+   "min_temp_celsius_x10".
+ - Patch 12: Changed arrays "t_ref_counts" and "min_temp_celsius_x10"
+   to static.
+ - Patch 12: Corrected wrong spelling of "celcius" with "c" in array
+   "min_temp_celsius_x10"
+ - Patch 13: In function yas5xx_probe(), added the conditional
+   "if (yas5xx->chip_info->measure_offsets)" as a preparatory step for YAS537.
+ - Patch 14: In function yas537_power_on(), replaced comment "Write registers
+   according to Android driver" by "Writing ADCCAL and TRM registers".
+ - Patch 14: In function yas537_power_on(), write register ADCCAL as a
+   bulk write.
+ - Patch 14: In function yas537_power_on(), in formula for "intrvl" replaced
+   value "1000" by MILLI. Added "linux/units.h" to includes.
 
->
-> Continuous: Autonomous sampling mode.
->
-> So fun device. I think you kind of have to implement a heuristic for this.
-> Probably switch between step mode and sleep step mode based on time between
-> last two accesses or similar.  If there haven't been 2 accesses yet
-> stay in sleep step mode.
-This mode I would have in repeated measurements. However, how do I
-define that? Is there a PM function that would tell me to switch from
-Sleep step mode to this? Because runtime_resume in this case would
-prevent sensor to work in sleep step mode, so like you suggested I
-will check for the time between last two accesses. Does this time need
-to be configurable, or can I hardcode it to some "reasonable" value?
+Changes in v4:
+ - Rebased to torvalds/linux v5.19-rc4, as this now includes Linus' patch
+   "Fix memchr_inv() misuse" on driver yamaha-yas530.
+ - Removed redundant Cc tags.
+ - Patch 2: Replaced "<= ... + 7" by "< ... + 8" and adapted commit message.
+ - Patch 3: Added default for switch statement, I forgot to add this.
+ - Patch 4: In function yas5xx_get_measure(), changed wording "milli degrees"
+   to "millidegrees".
+ - Patch 6: Changed the renaming of function from "yas530_532_" to "yas530_".
+   Same for registers. Added additional comments where appropriate.
+ - Patch 6: Removed "Reviewed-by:" tag of Andy.
+ - Split patch 7 v3 into two patches -> patch 7 v4 and patch 8 v4.
+ - Patch 8: Applied "if (a && b)" suggestion at memchr_inv() by Andy in
+   function yas532_get_calibration_data().
+ - Patch 8: Removed defines for device IDs YAS537 and YAS539 and accordingly
+   the comment "These variant IDs are known from code dumps".
+ - Patch 9: New patch to introduce the "chip_info" approach.
+ - Patch 10: In function yas537_get_calibration_data(), removed "the exact
+   meaning is unknown" from comment "Writing SRST register".
+ - Patch 10: Also applied "if (a && b)" suggestion at memchr_inv() by Andy
+   in function yas537_get_calibration_data(). Additionally changed the second
+   condition from "== 0" to "!".
+ - Patch 10: In function yas537_get_calibration_data(), removed empty lines
+   within switch statement. In that context, removed comment "Get data into
+   these four blocks val1 to val4".
+ - Patch 10: In Kconfig, simplified wording.
+ - Patch 10: In function yas537_get_calibration_data() "case YAS537_VERSION_0",
+   reduced indent of "for" loop by splitting it into multiple loops. I didn't
+   use integer j, as it was suggested by Jonathan, because only using integer i
+   is more consistant with the loop in "case YAS537_VERSION_1".
+ - Accordingly, split the "for" loop in "case YAS537_VERSION_1" into two loops
+   as well. Technically this isn't neccessary but it improves readability.
+ - Patch 10: Added new defines of masks for YAS537 and applied these by
+   FIELD_PREP and FIELD_GET in function yas537_get_calibration_data()
+   within "case YAS537_VERSION_1".
+ - Patch 10: In function yas537_power_on(), added spaced at "YAS537_ADCCAL + 1".
 
->
-> Side note. As you presumably have hardware for this part, could you run
-> a rest with UNIVERSAL_DEV_PM_OPS (which is deprecated) switched to
-> DEFINE_RUNTIME_PM_OPS()  The RUNTIME version checks if we are already
-> suspended on entry into a full suspend and only powers down the device
-> if not already powered down.  I plan to spin a patch soon to do this
-> anyway, but it is technically different behaviour so want it tested
-> if at all possible! (feel free to not wait for my patch, or to send
-> your own :)
->
-I see you already sent your patch, although what I am preparing (with
-runtime_pm) will probably overwrite it. I will test your patch
-tomorrow as my patches will probably take some time.
+Changes in v3:
+ - In patch 3 fixed 2x typo "Divide".
+ - In commit message of patch 4 fixed wording "in the yas5xx_get_measure()
+   function".
+ - In patch 4 in the comment for the temperature calculation fixed wording
+   "is the number of counts".
+ - In patch 4 added defaults to switch statements.
+ - Splitted stray changes into new patch 7 v3. "Add YAS537 variant" is now
+   patch 8 v3. I haven't added "Reviewed-by:" tag of Linus to patch 7 v3
+   because as a separate patch these changes appear in a different context.
+ - In new patch 7 v3, changed printk format specifiers in the function
+   yas530_get_calibration_data() to "%16ph" and in the function
+   yas532_get_calibration_data() to "%14ph". The first one is also a minor
+   correction in behaviour, as the calibration data array size of YAS530
+   is 16 (the dev_dbg printed 14 before).
+ - Rebased to linux-next to include patch bb52d3691db8 "iio: magnetometer:
+   yas530: Fix memchr_inv() misuse".
+ - In patch 7 v3, changed memchr_inv() line for YAS532.
+ - In patch 8 v3 in the function yas537_get_calibration_data(), changed
+   memchr_inv() line for YAS537.
+ - Removed comment "corresponds to 0x70" at define YAS537_MAG_AVERAGE_32_MASK.
+ - Added suffixes _US and _MS in defines for YAS537.
+ - In the function yas537_measure(), removed comments "Read data", "Arrange
+   data", "Assign data".
+ - In the function yas537_measure(), replaced bitwise shift by
+   get_unaligned_be16().
+ - Replaced "if (h[i] < -8192)" etc. by clamp_val().
+ - In the functions yas537_measure() and yas537_get_measure(), replaced 8192
+   by BIT(13) and 16384 by BIT(14).
+ - Fixed typo "resolution" in the function yas5xx_read_raw().
+ - Fixed typo "Divide" in patch 8 v3 in the function yas5xx_read_raw().
+ - In patch 8 v3 in the yas537_get_calibration_data(), changed printk format
+   specifier to "%17ph"
+ - In the functions yas537_measure() and yas537_get_calibration_data(), drop
+   some parentheses in regmap_write().
+ - In the function yas537_power_on(), added comment "Wait until the coil has
+   ramped up".
+ - In the function yas5xx_probe(), put YAS537 variant and version printings
+   into one print.
+ - In the function yas537_get_measure(), fixed wording "is the number of
+   counts" in the comment for the temperature calculation.
+ - In the function yas537_get_measure(), added product description document No.
+   into the comment for the temperature calculation (as I first thought the
+   review comment "the number" is related to this).
+ - In the function yas537_get_calibration_data(), corrected comment "Get data
+   into these four blocks val1 to val4".
 
-Thanks for the answers.
-Crt
-> Jonathan
->
->
-> >
-> > On Mon, 25 Jul 2022 at 23:45, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > >
-> > > On Mon, Jul 25, 2022 at 11:36 PM Crt Mori <cmo@melexis.com> wrote:
-> > > > On Mon, 25 Jul 2022 at 23:27, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > On Mon, Jul 25, 2022 at 10:48 AM Crt Mori <cmo@melexis.com> wrote:
-> > > > > >
-> > > > > > Hi,
-> > > > > > I am implementing the power saving modes for mlx90632 device driver
-> > > > > > and while I have implemented routines for SET_RUNTIME_PM_OPS
-> > > > > > (runtime_pm_suspend and runtime_pm_resume) I am not able to find out
-> > > > > > how to trigger them from the terminal.
-> > > > > >
-> > > > > > It could be that my driver code for power management implementation is
-> > > > > > incomplete and I need to initialize something more.
-> > > > > >
-> > > > > > Maybe it is helpful, but the power submodule of the device contains below files:
-> > > > > >
-> > > > > > $ ls -al /sys/bus/iio/devices/iio\:device0/power
-> > > > > > total 0
-> > > > > > drwxrwxr-x 2 root gpio    0 Apr  6 14:17 .
-> > > > > > drwxrwxr-x 3 root gpio    0 Apr  6 14:17 ..
-> > > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 async
-> > > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:17 autosuspend_delay_ms
-> > > > > > -rw-rw-r-- 1 root gpio 4096 Apr  6 14:18 control
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_kids
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_active_time
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_enabled
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_status
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_suspended_time
-> > > > > > -r--r--r-- 1 root gpio 4096 Apr  6 14:17 runtime_usage
-> > > > > >
-> > > > > > And control is already set to "auto" which according to documentation
-> > > > > > should allow the PM.
-> > > > >
-> > > > > 'auto' should enable it. So, whenever the driver thinks it's a time to
-> > > > > power off/on the device it will call the methods.
-> > > > >
-> > > > > You may hack a bit to enable autosuspend (which often is not a good
-> > > > > idea for IIO sensors) and see it done automatically after some time.
-> > > >
-> > > > So the idea is to wait?
-> > >
-> > > Yes.
-> > >
-> > > > How would I enable autosuspend - by lowering
-> > > > the autosusped_delay_ms?
-> > >
-> > > Yep, if you wish. The driver should enable it though.
-> >
-> > Is there a way for driver to attach a callback to
-> > power/autosuspend_delay_ms request or to power/control?
-> >
-> > >
-> > > > How does the driver decide that it is time to
-> > > > power off/on?
-> > >
-> > > I'm not a driver author, it seems you , who should answer this
-> > > question (as you are about to add PM there, am I right?).
-> > >
-> > > > Do I need something else enabled to have this done automatically?
-> > > > Autosuspend is 5000 in my case which would mean 5 seconds, so I am
-> > > > quite sure I waited that long and I did not see printk's from the
-> > > > driver.
-> > >
-> > > Something prevents it from doing (reference counting) or simply some
-> > > initialization / enablement is forgotten. For different buses
-> > > different PM runtime rules are applied (for example, IIRC, PCI core
-> > > does it for you, while platform bus is on what driver wants basis).
-> > >
-> > > --
-> > > With Best Regards,
-> > > Andy Shevchenko
->
+Changes in v2:
+ - Reordered the patchset by moving patch 4 v1 to patch 1 v2.
+ - Removed patch 6 v1 ("Remove redundant defaults on switch devid")
+ - Accordingly, added "default:" to each switch statement in patch 7.
+ - Moved renamings in patch 7 v1 into a separate new patch 6 v2. I added
+   the "Reviewed-by:" tag of Linus to both patches, hope that's ok, else
+   feel free to comment.
+ - Removed regmap reads and related debug dumps in patch 7 in function
+   yas537_dump_calibration(). As this function now applies to version 1
+   only, replaced switch statement by if clause.
+ - Also removed "hard_offsets" debug dumps in that function.
+ - Fixed typo "initialized" in commit message of patch 7.
+
+v4: https://lore.kernel.org/linux-iio/cover.1656883851.git.jahau@rocketmail.com/T/#t
+v3: https://lore.kernel.org/linux-iio/cover.1655509425.git.jahau@rocketmail.com/T/#t
+v2: https://lore.kernel.org/linux-iio/cover.1655081082.git.jahau@rocketmail.com/T/#t
+v1: https://lore.kernel.org/linux-iio/cover.1654727058.git.jahau@rocketmail.com/T/#t
+
+Jakob Hauser (14):
+  iio: magnetometer: yas530: Change data type of hard_offsets to signed
+  iio: magnetometer: yas530: Change range of data in volatile register
+  iio: magnetometer: yas530: Correct scaling of magnetic axes
+  iio: magnetometer: yas530: Correct temperature handling
+  iio: magnetometer: yas530: Change data type of calibration
+    coefficients
+  iio: magnetometer: yas530: Rename functions and registers
+  iio: magnetometer: yas530: Move printk %*ph parameters out from stack
+  iio: magnetometer: yas530: Apply documentation and style fixes
+  iio: magnetometer: yas530: Introduce "chip_info" structure
+  iio: magnetometer: yas530: Add volatile registers to "chip_info"
+  iio: magnetometer: yas530: Add IIO scaling to "chip_info"
+  iio: magnetometer: yas530: Add temperature calculation to "chip_info"
+  iio: magnetometer: yas530: Add function pointers to "chip_info"
+  iio: magnetometer: yas530: Add YAS537 variant
+
+ drivers/iio/magnetometer/Kconfig         |   4 +-
+ drivers/iio/magnetometer/yamaha-yas530.c | 854 +++++++++++++++++++----
+ 2 files changed, 727 insertions(+), 131 deletions(-)
+
+-- 
+2.35.1
+

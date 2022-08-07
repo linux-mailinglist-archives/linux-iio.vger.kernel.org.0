@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CAB658BB4F
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 16:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8ADB58BB50
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 16:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233410AbiHGOoq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 10:44:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45794 "EHLO
+        id S234064AbiHGOos (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 10:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbiHGOoo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 10:44:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2D99FF9
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 07:44:44 -0700 (PDT)
+        with ESMTP id S234041AbiHGOor (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 10:44:47 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81289FED
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 07:44:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D20860F1D
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 14:44:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA4FC433D7;
-        Sun,  7 Aug 2022 14:44:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9455BB80AB2
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 14:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68982C433D6;
+        Sun,  7 Aug 2022 14:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659883482;
-        bh=rBnfxeJCOY1ECv8hxk5mqJPG/ErPPWyKnVyhj/IQLA8=;
+        s=k20201202; t=1659883484;
+        bh=emMXobQHAjaV81zlCKMJm3uqmqTVUkg6kDRbBjwc7jw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A229qwMWrXJnGISIqRa5cfeEFPGUNVUKmX7dhZEF5FnNv6Hy7xwO/dK8RD2duuMXv
-         QjpvuzR5yj321KP1FZUIgpGqLmq/bCfO7aJQpBJRuK/CR2D6jL3ZJ69sFnkL0AeeDe
-         D1DWyA2Oe4ZBIhouEVuAGBxz7OABEnj+wP70paTPOFd0W4EJQp+n++Atzpu+TGcbjE
-         Go5r92qr55I4ooUqfkKjcl9Lpg/ta1gH3Y7q/yCFIBCyc518/PRht+EXNPQG7NA1i6
-         z6a+oiuoRApvJb3dp0BL3oq2yrTE7AH9dKh/Hr0zs9vwaEhGcwvwO/P0dKzEX/4WrB
-         pk9jEtEI9xptw==
+        b=cePllcOUsfNe7jxDmxz1XR4KIEIOcY1eoaU9Xht0eVcCyWcfd0XpoSUUUuVxgsq6b
+         PVvppblY0lrdQFakDgaB1D3rkMgVUXRfuujZSVAum+YqJg2OcDvHQz/FUZLj9hrexB
+         8Du5+f8i+ZYF4YZT96B0eTx1rbAMoNsk7gWS0YBLVJRi5CGsO0FkklbfGKP3r4qy9Y
+         sSm/ckux44RbtBvJJeKzrkyJ3+/EsJca42TTjDmt1gY/EtW8eipOHCRJtYOaCdHgJI
+         r8xhsGAz13m5GQ2zbouSV4zi2hti1uWfx65OGLLQW0Dkk774SEtFg7HUR0BkE5qZV1
+         f6Zyypr4n8g6g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Liam Beguin <liambeguin@gmail.com>
-Subject: [PATCH 1/2] iio: test: Mark file local structure arrays static.
-Date:   Sun,  7 Aug 2022 15:54:56 +0100
-Message-Id: <20220807145457.646062-2-jic23@kernel.org>
+        Kai-Heng Feng <kai.heng.feng@canonical.com>
+Subject: [PATCH 2/2] iio: light: cm32181: Mark the dev_pm_ops static.
+Date:   Sun,  7 Aug 2022 15:54:57 +0100
+Message-Id: <20220807145457.646062-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220807145457.646062-1-jic23@kernel.org>
 References: <20220807145457.646062-1-jic23@kernel.org>
@@ -55,38 +55,30 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Warning cleanup:
-  drivers/iio/test/iio-test-rescale.c:32:30: warning: symbol 'scale_cases' was not declared. Should it be static?
-  drivers/iio/test/iio-test-rescale.c:480:30: warning: symbol 'offset_cases' was not declared. Should it be static?
+Only accessed from the local file.
+Warning:
+  drivers/iio/light/cm32181.c:508:1: warning: symbol 'cm32181_pm_ops' was not declared. Should it be static?
 
+Fixes: 68c1b3dd5c48 ("iio: light: cm32181: Add PM support")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Liam Beguin <liambeguin@gmail.com>
+Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
- drivers/iio/test/iio-test-rescale.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/cm32181.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/test/iio-test-rescale.c b/drivers/iio/test/iio-test-rescale.c
-index cc782ccff880..31ee55a6faed 100644
---- a/drivers/iio/test/iio-test-rescale.c
-+++ b/drivers/iio/test/iio-test-rescale.c
-@@ -29,7 +29,7 @@ struct rescale_tc_data {
- 	const char *expected_off;
- };
+diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
+index edbe6a3138d0..001055d09750 100644
+--- a/drivers/iio/light/cm32181.c
++++ b/drivers/iio/light/cm32181.c
+@@ -505,7 +505,7 @@ static int cm32181_resume(struct device *dev)
+ 					 cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
+ }
  
--const struct rescale_tc_data scale_cases[] = {
-+static const struct rescale_tc_data scale_cases[] = {
- 	/*
- 	 * Typical use cases
- 	 */
-@@ -477,7 +477,7 @@ const struct rescale_tc_data scale_cases[] = {
- 	},
- };
+-DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
++static DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
  
--const struct rescale_tc_data offset_cases[] = {
-+static const struct rescale_tc_data offset_cases[] = {
- 	/*
- 	 * Typical use cases
- 	 */
+ static const struct of_device_id cm32181_of_match[] = {
+ 	{ .compatible = "capella,cm3218" },
 -- 
 2.37.1
 

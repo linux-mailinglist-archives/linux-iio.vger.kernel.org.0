@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D273758BC77
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:35:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE2BB58BC88
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Aug 2022 20:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233517AbiHGSfZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 14:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34258 "EHLO
+        id S235558AbiHGSqI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 7 Aug 2022 14:46:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232582AbiHGSfY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:35:24 -0400
+        with ESMTP id S231853AbiHGSqI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 14:46:08 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F08C8267E
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:35:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A6D95A7
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 11:46:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B1117B80B45
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4BEC433D7;
-        Sun,  7 Aug 2022 18:35:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C11DEB80D80
+        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 18:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F95DC433C1;
+        Sun,  7 Aug 2022 18:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659897320;
-        bh=ZQ6puuR9CJgu4vwsrRXnq3OLozFEZJMQXQEt1nfGFVI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JO/cVxsuRFjbeY4eGfPH+egER8r/tDF1HNkgcAh7/TNm9o+KtQwlyCvJE72OWqieO
-         ZkaQOgQ0QOvE+IziG32k3Mmfwfbto+asmZsEpzCE0EiGKMp2aPfNItMw4RSeVokMm9
-         glwJV6jKMun66Tg2IBbLtl4k/SW7RDsK5wloVkTZFmWi/LNHz0WA5Pq8cMY9+vad5k
-         iKy3VH0GoNYGDQ0ahCBBo3KtdGEyblN07kthMqPkuF10rQt+n19pTCSTlQLdow/NYf
-         HPp0T7EGZqPolpAIsyv/A9IIQMTINb53ZlfXZBiPQAfkRHuj5G3dJpxRC2uxIyj440
-         gQ7/94ybatYUA==
+        s=k20201202; t=1659897962;
+        bh=DEwlYjov5Pop1XXGP4M96Nf2J5xzWqQPIE7jH+bydhg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dfpHQn6HOyQI8UNPCeVnQl/OOzXzCI6pR67zhF+M9YNKGVsedHiFSWbU+Zcn4aHtJ
+         hyoDs9Psj2SZo7+lEeptpFJu4Tk3azs8DmnmiTcD9brYIHpgt+/YDv5gy0xu82/zL+
+         5IN7E16rFhsHvyGV/BvG1vx1cGp8nD6h/xFfcb911waHcefNrA6vaxemLX7kWrY8B8
+         4u5KPmAh+8vwwAGpoVic7RhS6HxQO+IZoUvvWX1dLwLMfiDnEzRCZM4hp7WK86lU7G
+         J7k5ywoh7sBVe1l6qbcVDTSSBeP0UOkBeg8F8fF3MkZbtrG3lISQpKAo8VWqSswlPo
+         jBoUU8wLHHHPQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 2/2] iio: magn: hmc5843: Move struct dev_pm_ops out of header
-Date:   Sun,  7 Aug 2022 19:45:34 +0100
-Message-Id: <20220807184534.1037363-3-jic23@kernel.org>
+Subject: [PATCH 0/6] iio: PM macro rework continued.
+Date:   Sun,  7 Aug 2022 19:56:12 +0100
+Message-Id: <20220807185618.1038812-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220807184534.1037363-1-jic23@kernel.org>
-References: <20220807184534.1037363-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -55,95 +58,33 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Having this structure defined static in the header lead to
-unnecessary duplication and required additional symbol exports.
-Use the EXPORT_NS_SIMPLE_DEV_PM_OPS() to clean this up in the same
-fashion as many other drivers do this.
+These are straight forward cases so I've grouped them together.
+Aim here is to move to the macros that don't need __maybe_unused markings
+and generally simplify the handling of different CONFIG_PM* options.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/magnetometer/hmc5843.h      | 13 +------------
- drivers/iio/magnetometer/hmc5843_core.c |  8 ++++----
- drivers/iio/magnetometer/hmc5843_i2c.c  |  2 +-
- drivers/iio/magnetometer/hmc5843_spi.c  |  2 +-
- 4 files changed, 7 insertions(+), 18 deletions(-)
+Jonathan Cameron (6):
+  iio: proximity: sx9310: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and
+    pm_sleep_ptr()
+  iio: proximity: sx9324: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and
+    pm_sleep_ptr()
+  iio: proximity: sx9360: Switch to DEFINE_SIMPLE_DEV_PM_OPS() and
+    pm_sleep_ptr()
+  iio: proximity: srf04: Use pm_ptr() to remove unused struct dev_pm_ops
+  iio: accel: bmi088: Use EXPORT_NS_GPL_RUNTIME_DEV_PM_OPS() and
+    pm_ptr()
+  iio: light: st_uvis25: Use EXPORT_NS_SIMPLE_DEV_PM_OPS()
 
-diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
-index 9120c8bbf3dd..60fbb5431c88 100644
---- a/drivers/iio/magnetometer/hmc5843.h
-+++ b/drivers/iio/magnetometer/hmc5843.h
-@@ -52,16 +52,5 @@ int hmc5843_common_probe(struct device *dev, struct regmap *regmap,
- 			 enum hmc5843_ids id, const char *name);
- void hmc5843_common_remove(struct device *dev);
- 
--int hmc5843_common_suspend(struct device *dev);
--int hmc5843_common_resume(struct device *dev);
--
--#ifdef CONFIG_PM_SLEEP
--static __maybe_unused SIMPLE_DEV_PM_OPS(hmc5843_pm_ops,
--					hmc5843_common_suspend,
--					hmc5843_common_resume);
--#define HMC5843_PM_OPS (&hmc5843_pm_ops)
--#else
--#define HMC5843_PM_OPS NULL
--#endif
--
-+extern const struct dev_pm_ops hmc5843_pm_ops;
- #endif /* HMC5843_CORE_H */
-diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-index 4a63b2da9df0..c5521d61da29 100644
---- a/drivers/iio/magnetometer/hmc5843_core.c
-+++ b/drivers/iio/magnetometer/hmc5843_core.c
-@@ -603,19 +603,19 @@ static const struct iio_info hmc5843_info = {
- 
- static const unsigned long hmc5843_scan_masks[] = {0x7, 0};
- 
--int hmc5843_common_suspend(struct device *dev)
-+static int hmc5843_common_suspend(struct device *dev)
- {
- 	return hmc5843_set_mode(iio_priv(dev_get_drvdata(dev)),
- 				HMC5843_MODE_SLEEP);
- }
--EXPORT_SYMBOL_NS(hmc5843_common_suspend, IIO_HMC5843);
- 
--int hmc5843_common_resume(struct device *dev)
-+static int hmc5843_common_resume(struct device *dev)
- {
- 	return hmc5843_set_mode(iio_priv(dev_get_drvdata(dev)),
- 		HMC5843_MODE_CONVERSION_CONTINUOUS);
- }
--EXPORT_SYMBOL_NS(hmc5843_common_resume, IIO_HMC5843);
-+EXPORT_NS_SIMPLE_DEV_PM_OPS(hmc5843_pm_ops, hmc5843_common_suspend,
-+			    hmc5843_common_resume, IIO_HMC5843);
- 
- int hmc5843_common_probe(struct device *dev, struct regmap *regmap,
- 			 enum hmc5843_ids id, const char *name)
-diff --git a/drivers/iio/magnetometer/hmc5843_i2c.c b/drivers/iio/magnetometer/hmc5843_i2c.c
-index 8d2ff8fc204d..825a881d37fb 100644
---- a/drivers/iio/magnetometer/hmc5843_i2c.c
-+++ b/drivers/iio/magnetometer/hmc5843_i2c.c
-@@ -93,7 +93,7 @@ MODULE_DEVICE_TABLE(of, hmc5843_of_match);
- static struct i2c_driver hmc5843_driver = {
- 	.driver = {
- 		.name	= "hmc5843",
--		.pm	= HMC5843_PM_OPS,
-+		.pm	= pm_sleep_ptr(&hmc5843_pm_ops),
- 		.of_match_table = hmc5843_of_match,
- 	},
- 	.id_table	= hmc5843_id,
-diff --git a/drivers/iio/magnetometer/hmc5843_spi.c b/drivers/iio/magnetometer/hmc5843_spi.c
-index 310027a53342..c42d2e2a6a6c 100644
---- a/drivers/iio/magnetometer/hmc5843_spi.c
-+++ b/drivers/iio/magnetometer/hmc5843_spi.c
-@@ -88,7 +88,7 @@ MODULE_DEVICE_TABLE(spi, hmc5843_id);
- static struct spi_driver hmc5843_driver = {
- 	.driver = {
- 		.name = "hmc5843",
--		.pm = HMC5843_PM_OPS,
-+		.pm = pm_sleep_ptr(&hmc5843_pm_ops),
- 	},
- 	.id_table = hmc5843_id,
- 	.probe = hmc5843_spi_probe,
+ drivers/iio/accel/bmi088-accel-core.c | 15 ++++++---------
+ drivers/iio/accel/bmi088-accel-spi.c  |  2 +-
+ drivers/iio/light/st_uvis25_core.c    |  9 +++------
+ drivers/iio/light/st_uvis25_i2c.c     |  2 +-
+ drivers/iio/light/st_uvis25_spi.c     |  2 +-
+ drivers/iio/proximity/srf04.c         | 10 +++++-----
+ drivers/iio/proximity/sx9310.c        |  8 ++++----
+ drivers/iio/proximity/sx9324.c        |  8 ++++----
+ drivers/iio/proximity/sx9360.c        |  8 ++++----
+ 9 files changed, 29 insertions(+), 35 deletions(-)
+
 -- 
 2.37.1
 

@@ -2,30 +2,30 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3552358CF57
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 22:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B60B658CF54
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 22:48:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238714AbiHHUsH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 16:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32846 "EHLO
+        id S238453AbiHHUsF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 16:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244222AbiHHUsE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 16:48:04 -0400
+        with ESMTP id S238305AbiHHUsD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 16:48:03 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D264C63A7
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2EEE9FE3
         for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 13:48:00 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1oL9fE-00046C-8y; Mon, 08 Aug 2022 22:47:52 +0200
+        id 1oL9fE-00046D-91; Mon, 08 Aug 2022 22:47:52 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1oL9f8-002ZZE-EJ; Mon, 08 Aug 2022 22:47:48 +0200
+        id 1oL9f8-002ZZM-KW; Mon, 08 Aug 2022 22:47:48 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1oL9fA-00ARBd-0S; Mon, 08 Aug 2022 22:47:48 +0200
+        id 1oL9fA-00ARBh-65; Mon, 08 Aug 2022 22:47:48 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Jonathan Cameron <jic23@kernel.org>
@@ -43,15 +43,15 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Nuno Sa <nuno.sa@analog.com>,
         Michal Simek <michal.simek@xilinx.com>
-Subject: [PATCH 09/13] iio: adc: xilinx-xadc: Benefit from devm_clk_get_enabled() to simplify
-Date:   Mon,  8 Aug 2022 22:47:36 +0200
-Message-Id: <20220808204740.307667-9-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 10/13] iio: frequency: adf4371: Benefit from devm_clk_get_enabled() to simplify
+Date:   Mon,  8 Aug 2022 22:47:37 +0200
+Message-Id: <20220808204740.307667-10-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
 References: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1487; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=Cen+BnX+Gka/l32eMMXQv6nBCxob9Rhniotz6JjoQfk=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBi8XZZK81bZN86tBgoyuaxx+QFNpfrGGg7sVsi3A4W Mjb5oSOJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYvF2WQAKCRDB/BR4rcrsCZsoB/ 0R65mc9cPcrP6hkbd0cwpPDNq5wy13DTVGnrnmCCwDzg6c4Xoa0YlaDIbZ2nE+OJzyGL6mOwsllA9G Akn/KDIr4I2FIO/+opwX71ppX0fihYpPFRLxn97oz/+XWYXe0kfKvP1JaNTZr3m/98WcgJ5AoR1rpk KkV5+qjaWPqvx8xt4Wr8dg+jUo+oYz10JchxD+vAZQa2mvRJgc95qFLKokVlbniQBW4QcOb2khDTWk wh7djLdv+cq1M3961rKtmU2pIvh4+R0YyWONdDTcoRwYJA5XYZGEN5Wlzg37wdmzOzfjMrUDkgynIu XWq6gQkwXRueJMZX5aJkIZE6YsAYaq
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1560; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=boJ/24StOtMRf3NcgdoVIWHEikIIuh9zjaBAbD28AqA=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBi8XZdqB9KasM1aVxdNSlZm6k6ZwJ3/wobV+H8OQ+i +ghyRV+JATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYvF2XQAKCRDB/BR4rcrsCeUVB/ 90QvUuFoPRFoKTXiLgpPoMSZbyzwy56y/Duv+3UjL//qayAyZm7czvONenFvNKqDg8oqzbBkT17lZi Ek/N+7HZlNq5xKepfc/mqTrmengV6V1ePHNyzCOqT5sJlSp1cy8ywjrDtfHT+RKBLNp4TDPe3PiOV8 FalcayrlKLU7HIWs3/mbAPf8/GDRAzGTGcc1j6Y1F+LO2QWmXPMrwzNVB29ENrfrSTa02yiADpjMXK CvY5z6FAgViER/4TIM2v64PHGZ6UME+gyAmrZII9/b9EHabsoDMu+/BaA9zclf+kcAHavHUTGriAmM CwY1ntmMftA00PMxFGqTQ4GAJ5FzTv
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -73,48 +73,47 @@ open codes this new function.
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/iio/frequency/adf4371.c | 17 +----------------
+ 1 file changed, 1 insertion(+), 16 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 823c8e5f9809..a520e07e4e08 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1299,13 +1299,6 @@ static const char * const xadc_type_names[] = {
- 	[XADC_TYPE_US] = "xilinx-system-monitor",
- };
+diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
+index ecd5e18995ad..54040b5fded0 100644
+--- a/drivers/iio/frequency/adf4371.c
++++ b/drivers/iio/frequency/adf4371.c
+@@ -540,13 +540,6 @@ static int adf4371_setup(struct adf4371_state *st)
+ 	return regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
+ }
  
--static void xadc_clk_disable_unprepare(void *data)
+-static void adf4371_clk_disable(void *data)
 -{
--	struct clk *clk = data;
+-	struct adf4371_state *st = data;
 -
--	clk_disable_unprepare(clk);
+-	clk_disable_unprepare(st->clkin);
 -}
 -
- static void xadc_cancel_delayed_work(void *data)
+ static int adf4371_probe(struct spi_device *spi)
  {
- 	struct delayed_work *work = data;
-@@ -1383,19 +1376,10 @@ static int xadc_probe(struct platform_device *pdev)
- 		}
- 	}
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
+@@ -579,18 +572,10 @@ static int adf4371_probe(struct spi_device *spi)
+ 	indio_dev->channels = st->chip_info->channels;
+ 	indio_dev->num_channels = st->chip_info->num_channels;
  
--	xadc->clk = devm_clk_get(dev, NULL);
-+	xadc->clk = devm_clk_get_enabled(dev, NULL);
- 	if (IS_ERR(xadc->clk))
- 		return PTR_ERR(xadc->clk);
+-	st->clkin = devm_clk_get(&spi->dev, "clkin");
++	st->clkin = devm_clk_get_enabled(&spi->dev, "clkin");
+ 	if (IS_ERR(st->clkin))
+ 		return PTR_ERR(st->clkin);
  
--	ret = clk_prepare_enable(xadc->clk);
+-	ret = clk_prepare_enable(st->clkin);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = devm_add_action_or_reset(&spi->dev, adf4371_clk_disable, st);
 -	if (ret)
 -		return ret;
 -
--	ret = devm_add_action_or_reset(dev,
--				       xadc_clk_disable_unprepare, xadc->clk);
--	if (ret)
--		return ret;
--
- 	/*
- 	 * Make sure not to exceed the maximum samplerate since otherwise the
- 	 * resulting interrupt storm will soft-lock the system.
+ 	st->clkin_freq = clk_get_rate(st->clkin);
+ 
+ 	ret = adf4371_setup(st);
 -- 
 2.36.1
 

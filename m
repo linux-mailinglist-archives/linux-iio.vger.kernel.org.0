@@ -2,110 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9D658C768
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418A258C772
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:22:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241937AbiHHLSr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 07:18:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
+        id S242723AbiHHLWw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 07:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236621AbiHHLSo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:18:44 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D603DDF31;
-        Mon,  8 Aug 2022 04:18:43 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id d8so1533218qkk.1;
-        Mon, 08 Aug 2022 04:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
-        b=Pir+jptX8VRJ8EVAtD6tXT5+75IX0KYzsXb9bbzvlPsJI4v1ChlsSUQ7ERx7dk3IiD
-         6Vyxl01O5eQ+gdH+SLwH5mCCzJk2nG3uFaUOCVQhIDdhFiRP/7/+c97MbodXqF0X55Cu
-         PM/DcIRZOcUy+MYek5vf88HN1bDpUcETG98sx61TJhRbn6Qcx3U+s2smusNgAgbjdsjw
-         96GZKaN4vc8R1s2kk7ysdIh7IcO98gKfWd/EYa9EsgSblJ7s7+LlrSRfkpTS51KVAdYZ
-         Qwym4B0UhzOJtiYK3E7kR5jhR5RchxKxhdf1dSCteua13+7/D5TlUWMILmQcY7M8DCtk
-         +d5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
-        b=ddx2oI6X0krNtkzIxRwePlsyyNqjAH/lq7H5aRICbRLNxMm4eQF1YVbU5VEzlQvGZT
-         TxKbxvuSllfsTMy90x5zkowl2KN7okUQ7FNq41PiVwaZ1HthrqJE4g9Jm+2YguG5vVkC
-         R4Kplxiv+9jr4YG9eHq5Mjwe6JaDH/5yQb7Q28n8A/Lii8qi5wzVib/An5ktgg/Z+/2K
-         KK5oR1eOFTiHGWIU1DcGzkbG94FTyFVX5Ci8C1/hqbfv+2BRX/b9vzb9DiGqqhJc0ABz
-         7PoF6HCRQSGjTUlFIq03rCwd+Qsub6/fYWugCyog8uCHuwGpM57/9PgRSsx4flUIZ4U0
-         ob3A==
-X-Gm-Message-State: ACgBeo2106K3d3wpEzsgrSWYLwWD1RQVfZvGPlGz++xMgSMtKTP1SNPq
-        iDNonIYFE0rzUQOiWS6gl3nGgf+602U5sJCbZ0U=
-X-Google-Smtp-Source: AA6agR4MPB6bchiE70z1ZxXE04FW0qRuKvTFfYUPlSOk6YpjiOc5I+b4ZgbaiH5i6eC9sCOplXqIf1+FTgSZmM9/U2g=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr13544878qko.383.1659957522822; Mon, 08
- Aug 2022 04:18:42 -0700 (PDT)
-MIME-Version: 1.0
-References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
- <202208081346.EWHUWCSa-lkp@intel.com>
-In-Reply-To: <202208081346.EWHUWCSa-lkp@intel.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Aug 2022 13:18:06 +0200
-Message-ID: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
-Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
-To:     kernel test robot <lkp@intel.com>
-Cc:     Jakob Hauser <jahau@rocketmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
+        with ESMTP id S242409AbiHHLWt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:22:49 -0400
+Received: from aposti.net (aposti.net [89.234.176.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6949643D;
+        Mon,  8 Aug 2022 04:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1659957766; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WncN/J6jFWmOuUfW/r0Cy7asGiQzUA6y7QhuiAhEaDc=;
+        b=go3y9ib6p4wlvAhqD+14udIU6ndNcNfw6Ei+gujiIZe2mDnjtCjzwBYhz3DCkW60MOWXwv
+        tWWeWR1683vpLlcMa4Ygfaha8bDQUqFbOQ9gJWO/AZ/zRoSwVBQ4TdjYPdTBZNUqOaxY6r
+        OhPbbWEtkIMqLLq4pZLiF59MhHq0XUI=
+Date:   Mon, 08 Aug 2022 13:22:37 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH 1/5] PM: core: Add EXPORT_NS_GPL_DEV_PM_OPS to avoid
+ drivers rolling own.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+        Sean Nyekjaer <sean@geanix.com>,
+        Rui Miguel Silva <rui.silva@linaro.org>,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Message-Id: <PLNAGR.UBLC121G9UCD2@crapouillou.net>
+In-Reply-To: <20220807192038.1039771-2-jic23@kernel.org>
+References: <20220807192038.1039771-1-jic23@kernel.org>
+        <20220807192038.1039771-2-jic23@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
+Hi Jonathan,
 
-...
+If you can wait a day or two - I would like to submit my own version of=20
+EXPORT_NS_GPL_DEV_PM_OPS, which should be more versatile than your=20
+version.
 
-> All errors (new ones prefixed by >>):
->
-> >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
->                    .product_name = yas5xx_product_name[yas530],
->                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
->    1 error generated.
+Cheers,
+-Paul
 
-What?!
 
-The yas530 is a part of the enum, how come that compiler can't see
-this? Looks like a Clang bug.
+Le dim., ao=FBt 7 2022 at 20:20:34 +0100, Jonathan Cameron=20
+<jic23@kernel.org> a =E9crit :
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> A driver wishing to export a struct dev_pm_ops with both suspend and
+> runtime ops provided could use _EXPORT_DEV_PM_OPS() directly but
+> that macro is not intended for use in drivers and requires non
+> intuitive aspect such as passing "_gpl" as one parameter and the
+> namespace as a string.  As such just provide a macro to cover
+> the GPL and NS case in a fashion that is in line with similar macros.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Paul Cercueil <paul@crapouillou.net>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+>  include/linux/pm.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/include/linux/pm.h b/include/linux/pm.h
+> index 871c9c49ec9d..18856e0d23ac 100644
+> --- a/include/linux/pm.h
+> +++ b/include/linux/pm.h
+> @@ -407,6 +407,11 @@ static __maybe_unused=20
+> _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
+>  #define EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn,=20
+> ns)	\
+>  	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL,=20
+> "_gpl", #ns)
+>=20
+> +#define EXPORT_NS_GPL_DEV_PM_OPS(name, suspend_fn, resume_fn,=20
+> runtime_suspend_fn, \
+> +			   runtime_resume_fn, idle_fn, ns) \
+> +	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn,=20
+> \
+> +			   runtime_resume_fn, idle_fn, "_gpl", #ns)
+> +
+>  /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+>  #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+>  const struct dev_pm_ops __maybe_unused name =3D { \
+> --
+> 2.37.1
+>=20
 
->    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
->    931          [yas530] = {
->    932                  .devid = YAS530_DEVICE_ID,
->  > 933                  .product_name = yas5xx_product_name[yas530],
->    934                  .version_name = yas5xx_version_names[yas530],
->    935          },
->    936          [yas532] = {
->    937                  .devid = YAS532_DEVICE_ID,
->    938                  .product_name = yas5xx_product_name[yas532],
->    939                  .version_name = yas5xx_version_names[yas532],
->    940          },
->    941          [yas533] = {
->    942                  .devid = YAS532_DEVICE_ID,
->    943                  .product_name = yas5xx_product_name[yas533],
->    944                  .version_name = yas5xx_version_names[yas533],
->    945          },
->    946  };
 
--- 
-With Best Regards,
-Andy Shevchenko

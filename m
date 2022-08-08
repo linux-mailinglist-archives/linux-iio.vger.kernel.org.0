@@ -2,174 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F2D58CD4A
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 20:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31CEE58CE04
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 20:52:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238393AbiHHSFB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 14:05:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39676 "EHLO
+        id S238393AbiHHSwH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 14:52:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237423AbiHHSFA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 14:05:00 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0411ABBD;
-        Mon,  8 Aug 2022 11:04:58 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id d8so2433398qkk.1;
-        Mon, 08 Aug 2022 11:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=iKTl1boGXs81S0XIZGy9zuT1guUTlkRSt68bNtAyj48=;
-        b=I1giIXQaXzxH7goOQX5E/XNsipIYPuw8rQam8eTB35oVRAp1WJs1nUSQXCxU5Kj/Ms
-         Mr8nKe4A3xA7orOG4APqoOrzzVYZjsbCOnem5ZnZYAkGRtRUev054yPmEPsSsbVGN+b4
-         8P6YqLmqOU5YQkGgmY5YKUNxd55gsihSVg0H/8d0l5PNRvhN/X0Wuma3Zgtz0pHmXKqv
-         a+JVOCG2Np3fNNpyi0SWhFamI48pFOcXMRY0L7g/TPBovXWQqYCqSV+dLDbJ15G+KLk/
-         5TGQi129z584uijis3a0oKfMC9Q7czqEnAUZc2U18fYtgV0IsEZYedX2mdxvDujaHoYp
-         ClIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=iKTl1boGXs81S0XIZGy9zuT1guUTlkRSt68bNtAyj48=;
-        b=221DgUaBnGVTS0uD1hK+I56pr0MdSzn4cgz1swvU93Jgb9pqExzLgLVM1X6AgaKUfz
-         cLY3OnRi6rs6OE4SdqIiv84g6HK936wwSV03PMO5SQaH0NTsIYSopYUK9E8Cwo0eomDR
-         45UVZICctBPHTYIwq0m0zVCNHvpIu8bDmUBmzPYOlG2dc2z05qVVBd3ff68x0WZYhAKQ
-         weedw/L69kDXOCyl9UJv0XvnWxaWPskIlJQrIx1M3Brw/FVzQw7dR6rh84wxdJQ6kK3h
-         PivUhV7c0WWFir2gnJHj3wUYGIdUsaJ2ad4PCIg5ml2Io04fwns010iev7XMVaSc0z/W
-         aFyw==
-X-Gm-Message-State: ACgBeo0NvXXV6j3T5nIiB7G87zhm2JknpKD6CZcBTixMOYRyYBPFSjXv
-        xO9CGBX7O8WgmkKbzd2MsktwwFTg8Xf0zaA8mDk=
-X-Google-Smtp-Source: AA6agR4a8AS6ZBY7Z9sWtHuV87khvS3reFLLGtpNLhyD4PMToqruZflY6B1UOYmD7cykvxPVLd9qSltfW+ghkgL6MQE=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr14918080qko.383.1659981897015; Mon, 08
- Aug 2022 11:04:57 -0700 (PDT)
+        with ESMTP id S232574AbiHHSwG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 14:52:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E080E2BE8;
+        Mon,  8 Aug 2022 11:52:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72D846123A;
+        Mon,  8 Aug 2022 18:52:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFE7C433D6;
+        Mon,  8 Aug 2022 18:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659984724;
+        bh=509Vlh0aaasSIvnKS+Wl7RWhla5F0k13Qa/Ysf/hWIQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QxKtOC/ccHzrXIeZMLSlvQph5yP51eHmcmjuHBs9Rm+3R7M7hKtWEqkr0g9jsCtF2
+         1IdikxPNDR5kSThNTeqGfE3dSPLwwBvL0HaG84/TVtuBsIY7BguX/mSC7/qX3XrGOo
+         AYClkonIzyrgrJO3OHqxafNecB1zeyCdz9qS6VH34b0Vub0dOtQyxDWH4yvLvrHglW
+         ZCP5NXAn/WfqBAqUa3+dTpIRmLBfJcugxLcOt5WDgG5uPMBobus3cmPDdF6fcIsj4W
+         B0zrapECVlc01kIbz57H55MXRkQJ31ffWOSIg1yXJ68vL0J8Hqgc4FGpHr6dvEGO4H
+         CgKm9GuZUy5gg==
+Date:   Mon, 8 Aug 2022 11:52:02 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Robert Jones <rjones@gateworks.com>,
+        Lee Jones <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ricardo Rivera-Matos <r-rivera-matos@ti.com>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-leds@vger.kernel.org,
+        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH 0/5] iio/hwmon/mfd/leds/net/power/ASoC: dt-bindings: few
+ stale maintainers cleanup
+Message-ID: <20220808115202.3175eb1f@kernel.org>
+In-Reply-To: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
+References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
- <202208081346.EWHUWCSa-lkp@intel.com> <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
- <YvEy9uq49ZiBHtFd@dev-arch.thelio-3990X>
-In-Reply-To: <YvEy9uq49ZiBHtFd@dev-arch.thelio-3990X>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Aug 2022 20:04:20 +0200
-Message-ID: <CAHp75VePJ2iKDx0Sj5SErW4nfpx-9KrN3c5yRFyfwgpfnMCkEg@mail.gmail.com>
-Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     kernel test robot <lkp@intel.com>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 8, 2022 at 5:59 PM Nathan Chancellor <nathan@kernel.org> wrote:
-> On Mon, Aug 08, 2022 at 01:18:06PM, +0200, Andy Shevchenko wrote:
-> > On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
-> >
-> > ...
-> >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > > >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initialize=
-r element is not a compile-time constant
-> > >                    .product_name =3D yas5xx_product_name[yas530],
-> > >                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >    1 error generated.
-> >
-> > What?!
-> >
-> > The yas530 is a part of the enum, how come that compiler can't see
-> > this? Looks like a Clang bug.
->
-> That is not what clang is complaining about here, you'll see the same
-> error even if you used '0', '1', or '2' here:
->
->   drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer ele=
-ment is not a compile-time constant
->                   .product_name =3D yas5xx_product_name[0],
->                                   ^~~~~~~~~~~~~~~~~~~~~~
->   1 error generated.
->
-> It is complaining that the initializer element
-> ('yas5xx_product_name[yas530]', rather than just 'yas530') is not
-> constant, which is a true complaint if I am reading C11 standard 6.6.7
-> correctly.
->
-> GCC 8+ has chosen to accept const structures as constant expressions in
-> designated initializers, which it is allowed to do per 6.6.10. Nick did
-> have a patch to try and match this behavior in clang but the work that
-> was requested doesn't seem to be trivial so it was never finalized:
-> https://reviews.llvm.org/D76096
->
-> You'll see the same error with GCC 7:
->
->   drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer ele=
-ment is not constant
->      .product_name =3D yas5xx_product_name[yas530],
->                      ^~~~~~~~~~~~~~~~~~~
->   drivers/iio/magnetometer/yamaha-yas530.c:933:19: note: (near initializa=
-tion for =E2=80=98yas5xx_chip_info_tbl[0].product_name=E2=80=99)
->   drivers/iio/magnetometer/yamaha-yas530.c:938:19: error: initializer ele=
-ment is not constant
->      .product_name =3D yas5xx_product_name[yas532],
->                      ^~~~~~~~~~~~~~~~~~~
->   drivers/iio/magnetometer/yamaha-yas530.c:938:19: note: (near initializa=
-tion for =E2=80=98yas5xx_chip_info_tbl[1].product_name=E2=80=99)
->   drivers/iio/magnetometer/yamaha-yas530.c:943:19: error: initializer ele=
-ment is not constant
->      .product_name =3D yas5xx_product_name[yas533],
->                      ^~~~~~~~~~~~~~~~~~~
->   drivers/iio/magnetometer/yamaha-yas530.c:943:19: note: (near initializa=
-tion for =E2=80=98yas5xx_chip_info_tbl[2].product_name=E2=80=99)
+On Mon,  8 Aug 2022 13:47:07 +0300 Krzysztof Kozlowski wrote:
+> Several of the bindings here had only one
+> maintainer and history does not always point to a new one (although I did not
+> perform extensive digging). I added subsystem maintainer, because dtschema
+> requires such entry. This is not the best choice as simply subsystem maintainer
+> might not have the actual device (or its datasheets or any interest in it).
+> 
+> However dtschema requires a maintainer. Maybe we could add some
+> "orphaned" entry in such case?
 
-> > >    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] =
-=3D {
-> > >    931          [yas530] =3D {
-> > >    932                  .devid =3D YAS530_DEVICE_ID,
-> > >  > 933                  .product_name =3D yas5xx_product_name[yas530]=
-,
-> > >    934                  .version_name =3D yas5xx_version_names[yas530=
-],
+Integrating it with MAINTAINERS would be another option worth exploring
+although slightly tangential.
 
-Would then
-
-  .product_name =3D "YAS530 MS-3E",
-  .version_names =3D { "A", "B" },
-
-work?
-
-Jakob, note 's' in the field name as well.
-
-> > >    935          },
-> > >    936          [yas532] =3D {
-> > >    937                  .devid =3D YAS532_DEVICE_ID,
-> > >    938                  .product_name =3D yas5xx_product_name[yas532]=
-,
-> > >    939                  .version_name =3D yas5xx_version_names[yas532=
-],
-> > >    940          },
-> > >    941          [yas533] =3D {
-> > >    942                  .devid =3D YAS532_DEVICE_ID,
-> > >    943                  .product_name =3D yas5xx_product_name[yas533]=
-,
-> > >    944                  .version_name =3D yas5xx_version_names[yas533=
-],
-> > >    945          },
-> > >    946  };
-
---=20
-With Best Regards,
-Andy Shevchenko
+How do you want this merged? It's all over the place subsystem-wise.

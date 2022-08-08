@@ -2,129 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC8A58CAFD
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 17:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B17D758CBBB
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 17:59:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236158AbiHHPFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 11:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53034 "EHLO
+        id S243763AbiHHP74 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 11:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234034AbiHHPFX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 11:05:23 -0400
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9D0E9F;
-        Mon,  8 Aug 2022 08:05:21 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 278F4JoD126550;
-        Mon, 8 Aug 2022 10:04:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1659971059;
-        bh=NdjYuYrRgfFqkXrI7faf1aVXflieuCOWZNGCJMFOx94=;
-        h=Date:Subject:To:References:From:In-Reply-To;
-        b=lmySqfLgt6rnGnRx3ZDw9pTF65QwTb++SXCsh9IxxF9MAQRftqsa/WREeGJ17tqpA
-         k/sw5R/YUoMY4tJ7HDRVaR9WOH2DGsonOxC62b5Vp7Cpp88RkVhE3Y2KkkcdnHE1Hm
-         UYW69jWcmfDjbrWDx4ioxp0dues0NZ0ZN0Pbdg8I=
-Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 278F4Jd1015602
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 8 Aug 2022 10:04:19 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 8
- Aug 2022 10:04:18 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
- Frontend Transport; Mon, 8 Aug 2022 10:04:18 -0500
-Received: from [10.250.34.173] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 278F4HdP032491;
-        Mon, 8 Aug 2022 10:04:17 -0500
-Message-ID: <6ae15e00-36a4-09a8-112e-553ed8c5f4da@ti.com>
-Date:   Mon, 8 Aug 2022 10:04:17 -0500
+        with ESMTP id S243283AbiHHP7z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 11:59:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5604315713;
+        Mon,  8 Aug 2022 08:59:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E95E96108A;
+        Mon,  8 Aug 2022 15:59:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95761C433C1;
+        Mon,  8 Aug 2022 15:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1659974393;
+        bh=Z53zG6cwPszYMRBJabN7oSlgPt8lpZ7x+FSQmyyFDUw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cCfbmwUe7iaiTW+EWQhXvzJsolUZNxsRviWkmW6HGvu9uraXyNRdoLV0TB7bjUjL6
+         1sxcZQDro9h/8RwZR5ZDZAj6dKZaD6vKK2J4xxcqSFLoLK5a01OdCvLW0Ke4bmCw79
+         /G1aOSgJCgBTQ/HKbgkBCXai9kB+ZqsW4iIxlu6CFClFXVfgnQi6JRAa3FqvKz5DQg
+         0NPEbqrUwV33NDfNrtlTHx53yMSWxqUr4bY7eDdGckhz0an/lDOxiE9VMBnYlpfcsj
+         qc8wzALJS0jAZM/N7oVkdpQyfEQrhKztUgw3M0JmK2Y/Bz5bePSBNF3N0wkv/o0V7u
+         eTTRyGGYeMi4Q==
+Date:   Mon, 8 Aug 2022 08:59:50 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     kernel test robot <lkp@intel.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce
+ "chip_info" structure
+Message-ID: <YvEy9uq49ZiBHtFd@dev-arch.thelio-3990X>
+References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+ <202208081346.EWHUWCSa-lkp@intel.com>
+ <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Pavel Machek <pavel@ucw.cz>,
-        Tim Harvey <tharvey@gateworks.com>,
-        Robert Jones <rjones@gateworks.com>,
-        Lee Jones <lee@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, <linux-hwmon@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-        <linux-leds@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <alsa-devel@alsa-project.org>
-References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
- <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
- <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/8/22 6:08 AM, Krzysztof Kozlowski wrote:
-> On 08/08/2022 13:47, Krzysztof Kozlowski wrote:
->> Emails to Dan Murphy bounce ("550 Invalid recipient <dmurphy@ti.com>
->> (#5.1.1)").
-> 
-> 
-> (...)
-> 
->>   description: |
->> diff --git a/Documentation/devicetree/bindings/power/supply/bq25980.yaml b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
->> index 4883527ab5c7..509a0667b04e 100644
->> --- a/Documentation/devicetree/bindings/power/supply/bq25980.yaml
->> +++ b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
->> @@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
->>   title: TI BQ25980 Flash Charger
->>   
->>   maintainers:
->> -  - Dan Murphy <dmurphy@ti.com>
->>     - Ricardo Rivera-Matos <r-rivera-matos@ti.com>
-> 
-> Ricardo's also bounces... Does it mean TI is not interested in
-> maintaining mainline support for its drivers?
-> 
+Hi Andy,
 
-TI is still interested in maintaining support here. But as we know folks
-come and go, so giving specific emails might not be the best option.
-Doesn't look like the schema here allows free-form strings, but if it did
-I'd recommend the TI E2E Power-Management support forum[0] added. Any
-questions on Linux/DT for these parts posted there would land on my desk
-just the same, or to whomever is assigned in the future with maintaining
-these drivers.
+On Mon, Aug 08, 2022 at 01:18:06PM, +0200, Andy Shevchenko wrote:
+> On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
+> 
+> ...
+> 
+> > All errors (new ones prefixed by >>):
+> >
+> > >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+> >                    .product_name = yas5xx_product_name[yas530],
+> >                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >    1 error generated.
+> 
+> What?!
+> 
+> The yas530 is a part of the enum, how come that compiler can't see
+> this? Looks like a Clang bug.
 
-Either way, I have several of these parts and can support these. Feel free
-to replace Dan's email with my email if that works better.
+That is not what clang is complaining about here, you'll see the same
+error even if you used '0', '1', or '2' here:
 
-Andrew
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+                  .product_name = yas5xx_product_name[0],
+                                  ^~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
 
-[0] https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum
+It is complaining that the initializer element
+('yas5xx_product_name[yas530]', rather than just 'yas530') is not
+constant, which is a true complaint if I am reading C11 standard 6.6.7
+correctly.
 
-> Best regards,
-> Krzysztof
+GCC 8+ has chosen to accept const structures as constant expressions in
+designated initializers, which it is allowed to do per 6.6.10. Nick did
+have a patch to try and match this behavior in clang but the work that
+was requested doesn't seem to be trivial so it was never finalized:
+https://reviews.llvm.org/D76096
+
+You'll see the same error with GCC 7:
+
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas530],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:933:19: note: (near initialization for ‘yas5xx_chip_info_tbl[0].product_name’)
+  drivers/iio/magnetometer/yamaha-yas530.c:938:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas532],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:938:19: note: (near initialization for ‘yas5xx_chip_info_tbl[1].product_name’)
+  drivers/iio/magnetometer/yamaha-yas530.c:943:19: error: initializer element is not constant
+     .product_name = yas5xx_product_name[yas533],
+                     ^~~~~~~~~~~~~~~~~~~
+  drivers/iio/magnetometer/yamaha-yas530.c:943:19: note: (near initialization for ‘yas5xx_chip_info_tbl[2].product_name’)
+
+Cheers,
+Nathan
+
+> >    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+> >    931          [yas530] = {
+> >    932                  .devid = YAS530_DEVICE_ID,
+> >  > 933                  .product_name = yas5xx_product_name[yas530],
+> >    934                  .version_name = yas5xx_version_names[yas530],
+> >    935          },
+> >    936          [yas532] = {
+> >    937                  .devid = YAS532_DEVICE_ID,
+> >    938                  .product_name = yas5xx_product_name[yas532],
+> >    939                  .version_name = yas5xx_version_names[yas532],
+> >    940          },
+> >    941          [yas533] = {
+> >    942                  .devid = YAS532_DEVICE_ID,
+> >    943                  .product_name = yas5xx_product_name[yas533],
+> >    944                  .version_name = yas5xx_version_names[yas533],
+> >    945          },
+> >    946  };
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 

@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D6E58C813
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 14:04:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D641058C817
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 14:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237284AbiHHMEh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 08:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35310 "EHLO
+        id S242251AbiHHMFb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 08:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbiHHMEg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 08:04:36 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A74181209F
-        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 05:04:34 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id a11so4673283wmq.3
-        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 05:04:34 -0700 (PDT)
+        with ESMTP id S242080AbiHHMF3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 08:05:29 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A271F9
+        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 05:05:26 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id ay12so1854356wmb.1
+        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 05:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=melexis.com; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=plnBWnVwXrE1lhxE5G1pC4DscYe+Aj6YcHEs3iVl5BA=;
-        b=epYC1saHxJBZkzzYKEtkae0XhMlNW/aWmXjFTyiuajUGHOH5oE9VpqewtvXMmYrwDc
-         c5G/p1xe/P8EEWbdZskA+FHo8Kaa++JVnNXFCGX9Wy55OFhsMY7TUrbHjsqmUUQP8SsR
-         sTZY8/VGmYPF0gdgFJ764riXGAF3p07Tzsl3h1BuhNftk6f/uxadx+f0pYYOGMOrATAy
-         AJbLK7x7XVArGMd/zShHShyCsWn6zWFdH8IzFSU2XzVWd3gDcBPhBIvy71rdXG0iAemb
-         Za3i72QIWN6qOUej/CDseah49peD6HxU5YolNjt4rigpRLU3BIKcP5Kh+fIxb+JxNba1
-         hJag==
+        bh=4za0UHhtOzS/+cksvATUbwHsHuuZed1iD70qbguxMDM=;
+        b=PneoR3vZf4ScDSFvZfyJdeVBNlyzN26XM/BWbF45+Dt4vng2UlSUEy4+eQ6dfnfKV6
+         NvSRf9qrd54r1jIWyCaXKiVI0Wo6rKEKICRvmi6x2aZUwrzrSnmB9yg8hp9FU7BtsK7F
+         jhGy373jJqTg7hMxwEo0OswEzZ51eGqGAevPd7KyEpCHexrwah7BRWBXc33wsNkldZyp
+         aPAqBlwC4MUoZha/MzfQ0e2nO7WLKUpoKzQ+3+1fIFTbHeFPQ8OOaQXDzqd3SqrSxsJ9
+         7URY0jLN6qoYXhBpXrs/DSzbAzDp/CAoAlYro74/CTWcNgQQLlLen1/hNRTYA5oLZp7+
+         oT4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=plnBWnVwXrE1lhxE5G1pC4DscYe+Aj6YcHEs3iVl5BA=;
-        b=DJY8sQi+jSeSHe+zu9E4A3ZZgzpTdHFiXVQ4EnFUn5aTEnFbWYznHy1wH8krQpSMMi
-         3gT6ApsEnZoW8pY0XWXb1KDCpPnpXC/AaSy+QfHx31EKCnoBC4ox6KLSlUcZAT0+BBaX
-         twqQ4Y2gvJ4jU2jOSQo7Bbo2J0LSEgRegtUKA3JGuhmJzzttE6uYSmisxl/u4kCf0OW4
-         d+bdUBcHyFaxU2S+pIn6TW/LKe12hMGH7Skob0SfN8tbBp912NKRY61xAgcqYWDZ8/N6
-         prioD2QYe+D4o7of3PVgEFV4HOXxcyY5VjDZGUzZlttzJMeEpFaOfSpHhbXa262semtt
-         ORZA==
-X-Gm-Message-State: ACgBeo0n8+vnaKY57czYDC9Po+6aYDV/xo0SQXrfP4dBdQgSMqF1jxDz
-        rRFreBug3batQVuMEFDlfbv1Yw==
-X-Google-Smtp-Source: AA6agR7JaoQKnBjEQaAhj5ksmilu1aeqBCtfchOYfNpkZrsQ+WH1he17WrY84Qy6dqTkGUPd+Jp11w==
-X-Received: by 2002:a05:600c:1e8a:b0:3a3:20fc:a651 with SMTP id be10-20020a05600c1e8a00b003a320fca651mr12632810wmb.39.1659960273119;
-        Mon, 08 Aug 2022 05:04:33 -0700 (PDT)
+        bh=4za0UHhtOzS/+cksvATUbwHsHuuZed1iD70qbguxMDM=;
+        b=7wI5NVlFQ2oKDICZnlPznrzkjuRI7hHJPGzAffWVRDi4EdjNdLNai5AxMmIQCkEQvg
+         TLTeGj1Yb/BBl7IJPTwaA0aAmC7Jc7SToCxPfkTJhAZq1baMiN3QUO4J/bVMeZznQQpN
+         nD8tX6DQjB5oK2IshECe9Ums168FSLhrem+ljks2KG54N/bFtPZXRzM3zPDN6yat7yVb
+         EzFonZQkBbkVXvWWbiH0T+bPhTeYqJ+EgAEjG9kZbcFJc/8dzlitgamoQd3T59tC7d2v
+         oU9fYYI5MiNB9dEgPicGo84nzd6veVB6rsef4aIxbjRJHuhO9XOVVVcOhazQbfDh6Pyq
+         LJ3g==
+X-Gm-Message-State: ACgBeo2q+iHFnhWa4U6uklWGTRK2sPzrQCmZgyObb3XBjfGkUKcfLjV8
+        ZeOD7Hsxfy8JS5sKZG5N3H6Qvg==
+X-Google-Smtp-Source: AA6agR5BLOyhCxqNHO8QEcjCixT3fG1P9ls+0kC02DYZHRzSOE9hOQbr6tEKLPufPeGYNsI47YRRjg==
+X-Received: by 2002:a05:600c:5118:b0:3a5:37bf:6c21 with SMTP id o24-20020a05600c511800b003a537bf6c21mr4701418wms.135.1659960324712;
+        Mon, 08 Aug 2022 05:05:24 -0700 (PDT)
 Received: from localhost.localdomain (ptr-4xh0y3vuv1059rd6h4r.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:cd22:c517:e143:e53b])
-        by smtp.gmail.com with ESMTPSA id u10-20020a05600c19ca00b003a31fd05e0fsm35293317wmq.2.2022.08.08.05.04.32
+        by smtp.gmail.com with ESMTPSA id d1-20020a5d6441000000b0021eb309c97dsm11087303wrw.25.2022.08.08.05.05.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Aug 2022 05:04:32 -0700 (PDT)
+        Mon, 08 Aug 2022 05:05:24 -0700 (PDT)
 From:   Crt Mori <cmo@melexis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Crt Mori <cmo@melexis.com>
-Subject: [PATCH v2 0/2] iio: temperature: mlx90632: Add supply regulator
-Date:   Mon,  8 Aug 2022 14:04:10 +0200
-Message-Id: <20220808120410.1543050-1-cmo@melexis.com>
+Subject: [PATCH v2 1/2] iio: temperature: mlx90632 Add supply regulator to sensor
+Date:   Mon,  8 Aug 2022 14:05:18 +0200
+Message-Id: <20220808120518.1543260-1-cmo@melexis.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,28 +68,130 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add supply regulator to the sensor as initial update before proper power
-management is presented. This will reduce the diff for the following
-patches.
+Provide possibility to toggle power supply to the sensor so that user
+can optimize their setup and not have the sensor constantly powered.
 
-Changes in v2:
+Signed-off-by: Crt Mori <cmo@melexis.com>
+---
+ drivers/iio/temperature/mlx90632.c | 63 +++++++++++++++++++++++++++---
+ 1 file changed, 58 insertions(+), 5 deletions(-)
 
- - Regulator voltage was removed as per comments from Jonathan Cameron
-   and Lars-Peter Clausen
- - Style handling for the error reporting of the regulator DT binding
-   was adjusted
- - NEW: Delay function was created and grouped together with call from
-   the reset command, to ensure consistency and reduce the amount of
-   code.
-
-Crt Mori (2):
-  iio: temperature: mlx90632 Add supply regulator to sensor
-  dt-bindings: iio: mlx90632 Add supply regulator documentation
-
- .../iio/temperature/melexis,mlx90632.yaml     |  4 ++
- drivers/iio/temperature/mlx90632.c            | 63 +++++++++++++++++--
- 2 files changed, 62 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+index 7ee7ff8047a4..238d639df385 100644
+--- a/drivers/iio/temperature/mlx90632.c
++++ b/drivers/iio/temperature/mlx90632.c
+@@ -18,6 +18,7 @@
+ #include <linux/math64.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -128,6 +129,7 @@
+  *        calculations
+  * @object_ambient_temperature: Ambient temperature at object (might differ of
+  *                              the ambient temperature of sensor.
++ * @regulator: Regulator of the device
+  */
+ struct mlx90632_data {
+ 	struct i2c_client *client;
+@@ -136,6 +138,7 @@ struct mlx90632_data {
+ 	u16 emissivity;
+ 	u8 mtyp;
+ 	u32 object_ambient_temperature;
++	struct regulator *regulator;
+ };
+ 
+ static const struct regmap_range mlx90632_volatile_reg_range[] = {
+@@ -207,6 +210,15 @@ static s32 mlx90632_pwr_continuous(struct regmap *regmap)
+ 				  MLX90632_PWR_STATUS_CONTINUOUS);
+ }
+ 
++/**
++ * mlx90632_reset_delay() - Give the mlx90632 some time to reset properly
++ * If this is not done, the following I2C command(s) will not be accepted.
++ */
++static void mlx90632_reset_delay(void)
++{
++	usleep_range(150, 200);
++}
++
+ /**
+  * mlx90632_perform_measurement() - Trigger and retrieve current measurement cycle
+  * @data: pointer to mlx90632_data object containing regmap information
+@@ -248,11 +260,7 @@ static int mlx90632_set_meas_type(struct regmap *regmap, u8 type)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	/*
+-	 * Give the mlx90632 some time to reset properly before sending a new I2C command
+-	 * if this is not done, the following I2C command(s) will not be accepted.
+-	 */
+-	usleep_range(150, 200);
++	mlx90632_reset_delay();
+ 
+ 	ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
+ 				 (MLX90632_CFG_MTYP_MASK | MLX90632_CFG_PWR_MASK),
+@@ -841,6 +849,32 @@ static int mlx90632_wakeup(struct mlx90632_data *data)
+ 	return mlx90632_pwr_continuous(data->regmap);
+ }
+ 
++static void mlx90632_disable_regulator(void *_data)
++{
++	struct mlx90632_data *data = _data;
++	int ret;
++
++	ret = regulator_disable(data->regulator);
++	if (ret < 0)
++		dev_err(regmap_get_device(data->regmap),
++			"Failed to disable power regulator: %d\n", ret);
++}
++
++static int mlx90632_enable_regulator(struct mlx90632_data *data)
++{
++	int ret;
++
++	ret = regulator_enable(data->regulator);
++	if (ret < 0) {
++		dev_err(regmap_get_device(data->regmap), "Failed to enable power regulator!\n");
++		return ret;
++	}
++
++	mlx90632_reset_delay();
++
++	return ret;
++}
++
+ static int mlx90632_probe(struct i2c_client *client,
+ 			  const struct i2c_device_id *id)
+ {
+@@ -876,6 +910,25 @@ static int mlx90632_probe(struct i2c_client *client,
+ 	indio_dev->channels = mlx90632_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(mlx90632_channels);
+ 
++	mlx90632->regulator = devm_regulator_get(&client->dev, "vdd");
++	if (IS_ERR(mlx90632->regulator))
++		return dev_err_probe(&client->dev,
++				     PTR_ERR(mlx90632->regulator),
++				     "failed to get vdd regulator");
++
++	ret = mlx90632_enable_regulator(mlx90632);
++	if (ret < 0)
++		return ret;
++
++	ret = devm_add_action_or_reset(&client->dev,
++				       mlx90632_disable_regulator,
++				       mlx90632);
++	if (ret < 0) {
++		dev_err(&client->dev, "Failed to setup regulator cleanup action %d\n",
++			ret);
++		return ret;
++	}
++
+ 	ret = mlx90632_wakeup(mlx90632);
+ 	if (ret < 0) {
+ 		dev_err(&client->dev, "Wakeup failed: %d\n", ret);
 -- 
 2.34.1
 

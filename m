@@ -2,74 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0BB58BE7A
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 02:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8678258C2EE
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 07:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232719AbiHHAbI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 7 Aug 2022 20:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59168 "EHLO
+        id S233794AbiHHFkQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 01:40:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232666AbiHHAbH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 7 Aug 2022 20:31:07 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B82270A
-        for <linux-iio@vger.kernel.org>; Sun,  7 Aug 2022 17:31:05 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id f14so5517541qkm.0
-        for <linux-iio@vger.kernel.org>; Sun, 07 Aug 2022 17:31:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=TTVL22SGy2kq4yoKLlxt4wtHFOcNG2UjyfoZb7+GPYc=;
-        b=Bqfs/jChXlFooFnJz+2onXIFBU/0f2/M/9bGouqL5DdwhiWsIZGRtzilB690W73ONK
-         3pKt3IN68CoidnFFb0PlmwjWUso5syJG+DMJsde2+uYrMzQEAfOvHsSRnsfm9QtzU6VH
-         e/6xD557EYfOQmW00ICN1ThiJKoJU/UI6sSsOFTHS/1FGkLFqR0rmLAf7mgHiKm24VDp
-         nD4mm01Zc3O3oZ6XRW6tyG4eu0SDTCHK/pxJ7EwlzyJ+rf3w6UNibc7jREMEcQTn2FD3
-         NcJVSOiip0LGv8s/+aYV13pN8B17H63uys7ODJwqy9PCRgGnMnOr9osBZPxs3Ew9knQh
-         P7Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=TTVL22SGy2kq4yoKLlxt4wtHFOcNG2UjyfoZb7+GPYc=;
-        b=yv9vf4x0sRFpB6sEBbmdAtxPoqbDWJai8LvtZmY692AnXou58KkakWKMNDh8itDKkb
-         khTaU2cM0UI6gLCmu5Y3+M5M5QOvrV0za2Fia4MBsucEl3X0yODraMLgO4o8FhqNRvE/
-         mgE1F2w1/R8Bp1m2WFyz/5/+xImOjq0JL3XFpPjFmfHPW9gju2Lnv58zVKZyrVHRu6CN
-         vk2HLEGc3J0mRI5ZxBBhAffXSVAvocn8afnSD5QSf+IXDsRKKVt1TGf/JRM9MuBkmtE6
-         ESRt9Bae2y/qbvORjoaO+YFXsDFFpRJC31DG8udvaPoWHz2KJP94T448g7ndhkHAs1Vt
-         Ad1g==
-X-Gm-Message-State: ACgBeo0rdOW0fW1tLS9+AHEoR44+unj//ae31jvckdG+QaDgb3jL4WRV
-        cPtP5Y/S75KZgfd7G/CTn24cAg==
-X-Google-Smtp-Source: AA6agR7y476NMI/Va5b5Wnm+3/tQDqWuNSVbx1d8PFcB+09gx3J9/jkL8mzqJW5eUOa6zFiSRmQSyA==
-X-Received: by 2002:a37:c4b:0:b0:6b9:3ff3:a8c with SMTP id 72-20020a370c4b000000b006b93ff30a8cmr4495591qkm.325.1659918664507;
-        Sun, 07 Aug 2022 17:31:04 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id k5-20020a05620a414500b006b93ef659c3sm3500813qko.39.2022.08.07.17.31.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Aug 2022 17:31:03 -0700 (PDT)
-Date:   Sun, 7 Aug 2022 20:30:58 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        with ESMTP id S230461AbiHHFkP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 01:40:15 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 679F3FA;
+        Sun,  7 Aug 2022 22:40:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1659937212; x=1691473212;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=L0AEyjOdy+rECcp7lQwc01b4Y++VmDWGY8GDnPBcItw=;
+  b=PtDNetw3BGlt0zYr7H7nH8HxSncsOjnaf4cA6yWqSQP/8SNXUmYdV1Ve
+   E4FohQwsQ/dipryXmo4sTT0MmBfaCu/DIX+QrnzF2iuVy+532xccQr+Qw
+   8VjXsFNWUZpJGFDRFl+IfF/hKOn9m2O4pEi0ZeZZarqZzFh0t5H9Ynd+G
+   owOE4q1psU2juqOMGh9r6GjWS0SfJliL82NsNfYiug6l5Takr3q6/7+lm
+   b8U9nQN3rzMDHwDbsgS+pHbTffRom5jTFxt7Dgq1lHwxhBRC5f/J3BpPQ
+   h7SfW1/15Rr+ABtV8+szIE9jhvrI00Vx8B2wamc4NuiOF/pUO7RSKaKTb
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10432"; a="288072216"
+X-IronPort-AV: E=Sophos;i="5.93,221,1654585200"; 
+   d="scan'208";a="288072216"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2022 22:40:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,221,1654585200"; 
+   d="scan'208";a="637165336"
+Received: from lkp-server01.sh.intel.com (HELO e0eace57cfef) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 07 Aug 2022 22:40:09 -0700
+Received: from kbuild by e0eace57cfef with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oKvUm-000Lwf-1R;
+        Mon, 08 Aug 2022 05:40:08 +0000
+Date:   Mon, 8 Aug 2022 13:39:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mranostay@ti.com
-Subject: Re: [PATCH v3 2/2] iio: time: capture-tiecap: capture driver support
- for ECAP
-Message-ID: <YvBZQsiAm6f3yxME@fedora>
-References: <20220728175124.468461-1-jpanis@baylibre.com>
- <20220728175124.468461-3-jpanis@baylibre.com>
- <20220731164116.30e91f34@jic23-huawei>
- <11b7436b-5c31-671e-ba77-435fe8e3b767@baylibre.com>
- <98d17617-72b5-6330-d4f5-1bece928ceab@baylibre.com>
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce
+ "chip_info" structure
+Message-ID: <202208081346.EWHUWCSa-lkp@intel.com>
+References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wLcvE1FSUtpXsS7A"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98d17617-72b5-6330-d4f5-1bece928ceab@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,230 +71,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Jakob,
 
---wLcvE1FSUtpXsS7A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch! Yet something to improve:
 
-On Tue, Aug 02, 2022 at 03:28:09PM +0200, Julien Panis wrote:
->=20
->=20
-> On 01/08/2022 16:08, Julien Panis wrote:
-> >=20
-> >=20
-> > On 31/07/2022 17:41, Jonathan Cameron wrote:
-> > > On Thu, 28 Jul 2022 19:51:24 +0200
-> > > Julien Panis <jpanis@baylibre.com> wrote:
-> > >=20
-> > > > ECAP hardware on AM62x SoC supports capture feature. It can be used
-> > > > to timestamp events (falling/rising edges) detected on signal
-> > > > input pin.
-> > > >=20
-> > > > This commit adds capture driver support for ECAP hardware on AM62x =
-SoC.
-> > > >=20
-> > > > In the ECAP hardware, capture pin can also be configured to be in
-> > > > PWM mode. Current implementation only supports capture operating mo=
-de.
-> > > > Hardware also supports timebase sync between multiple instances, but
-> > > > this driver supports simple independent capture functionality.
-> > > >=20
-> > > > Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> > > Hi Julien,
-> > >=20
-> > > So this isn't the first ecap driver we've had proposed, but the previ=
-ous
-> > > one was a few years ago and never reached v2.
-> > > https://lore.kernel.org/all/20200818153614.6438-1-dts86@cornell.edu/
-> > >=20
-> > > Honestly I can't remember much about it, but maybe the discussion aro=
-und
-> > > that will be worth a reread.
-> >=20
-> > Hi Jonathan, thank you for your review.
-> >=20
-> > I read the discussion about previous attempt, before submitting this
-> > patch. There were
-> > interesting comments indeed.
-> >=20
-> > But in this previous attempt, only one-shot pulses were handled
-> > (moreover, global IRQ flag
-> > was not cleared, so I'm not sure that IRQ could be raised more than
-> > once).
-> >=20
-> > However, ECAP can be used to make time measurements for any type of
-> > "square waveform".
-> > That's why I tried to make this event mode configurable. Besides, using
-> > a continuous mode allows
-> > handling much more signal types (not only single pulses).
-> >=20
-> > >=20
-> > > The use of ABI here is unusual. So I'd definitely like to see some
-> > > documentation
-> > > probably as a file in the main kernel documentation to explain what
-> > > the interface
-> > > is an how that relates to what is being captured.
-> >=20
-> > OK, I will add some userspace documentation.
-> >=20
-> > >=20
-> > > First thing to note here is the channel type of IIO_INDEX is now not
-> > > actually
-> > > used any more because we moved all the relevant drivers over to the
-> > > counter
-> > > subsystem (and we failed to mark it deprecated).
-> >=20
-> > I evaluated this counter subsystem before starting development. Counting
-> > events is not "a priori"
-> > the goal when using ECAP.
-> >=20
-> > Nevertheless, maybe "counter_push_event" function could do the job. If I
-> > use counter API :
-> > # Option 1 : CAP1/2/3/4 registers could be seen as 4 channels of the
-> > same counter...
-> > but there are not channels, there are just sequential timestamps
-> > actually. So I'm afraid this leads
-> > to misunderstanding for the user.
-> > Moreover, the user will have to read several entries (counts 1/2/3/4) to
-> > gather timestamps from
-> > the same input signal, which is not very convenient.
-> > # Option 2 : Either CAP 1/2/3/4 events could be gathered in a single
-> > channel...but then it will not
-> > be possible to configure their polarity (rising/falling edge)
-> > individually (unless I did
-> > not understand well counter framework documentation).
-> >=20
-> > So, even with counter framework, it will lead to some diverted use of
-> > the framwork, since ECAP
-> > is a very specific hardware that do not fit 100% counter philosophy.
-> >=20
-> > I admit that ECAP do not fit 100% IIO philosophy either.
-> >=20
-> > Maybe misc API would be more relevant actually. Any opinion about it
-> > will be welcome. :-)
->=20
-> [Answering my own mail]
->=20
-> I got a closer look at counter framework. It is not suitable at all for
-> ECAP. Initially, I thought that
-> "counter_push_event" function could be used, but the only timestamp handl=
-ed
-> by this function
-> is a software timestamp. I strongly doubt that counter framework maintain=
-er
-> would accept
-> some modification here to support hardware timestamp : a patch rejection
-> would be
-> legitimate, since a counter is dedicated to "event counting". Whereas ECAP
-> is dedicated to
-> "event timestamping".
->=20
-> Beside, ECAP has 4 timestamp registers but they are used to capture
-> timestamps for a
-> single input pin (only 1 channel). In ECAP context, 'index X" is used to
-> identify CAP X
-> (used to capture event X detected on a single pin, with X =3D 0/1/2/3/0..=
-=2E).
-> In counter framework, "index X" is used to identify channel X (among seve=
-ral
-> pins).
-> So, the word "index" has not the same meaning in counter framework than in
-> ECAP device.
-> Somehow, this ECAP index (0/1/2/3 for CAP1/2/3/4 registers) must be logged
-> with timestamp
-> because it is an important part of signal info for the user (raw consecut=
-ive
-> timestamps
-> are not enough).
->=20
-> So, here is my proposal for my next version :
-> (1) Replace IIO_INDEX by IIO_COUNT channel (already used in
-> "stm32-timer-trigger.c" driver)
-> # In ECAP documentation, the word "index" is not used. The word used to
-> speak about this
-> 0->1->2->3->0 sequenced counter is "Mod4 counter".
-> (2) Configure event mode with 4 sysfs entries (to remove the mix of buffe=
-rs
-> and events interfaces)
-> # User will see 4 files (1 file for each CAP timestamp) named
-> "falling_edge_active_0/1/2/3".
-> Writing 1 will select falling edge/ Writing 0 will select rising edge.
->=20
-> Would it be an acceptable alternative for you, Jonathan ? Would either (1)
-> and/or (2) be a "no-go" ?
+[auto build test ERROR on v5.19]
+[also build test ERROR on next-20220805]
+[cannot apply to jic23-iio/togreg linus/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Hi Julien,
+url:    https://github.com/intel-lab-lkp/linux/commits/Jakob-Hauser/iio-magnetometer-yas530-Change-data-type-of-hard_offsets-to-signed/20220808-080209
+base:    3d7cb6b04c3f3115719235cc6866b10326de34cd
+config: hexagon-randconfig-r045-20220807 (https://download.01.org/0day-ci/archive/20220808/202208081346.EWHUWCSa-lkp@intel.com/config)
+compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project 5f1c7e2cc5a3c07cbc2412e851a7283c1841f520)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/2e5a660a127b0fa7ca71e3e30356dc2254ec13eb
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jakob-Hauser/iio-magnetometer-yas530-Change-data-type-of-hard_offsets-to-signed/20220808-080209
+        git checkout 2e5a660a127b0fa7ca71e3e30356dc2254ec13eb
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/iio/magnetometer/
 
-I've taken a cursory look over the TI ECAP reference guide and your
-descriptions in this thread. I think a device driver for this would fit
-better in the Counter subsystem than IIO.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-First I want to correct a minor misunderstanding: the "timestamp"
-member of struct counter_event is simply a way to identify Counter
-events on the system as a way of grouping multiple Counter watches. In
-other words, the "timestamp" member here represents when a Counter event
-was detected by the system, not when an event was logged on the counter
-device hardware. Instead, hardware timestamps such as the CAPx registers
-would be provided by the "value" member of struct counter_event.
+All errors (new ones prefixed by >>):
 
-Now, I have a few ideas for how we could expose the timestamps using a
-Counter device driver, but first I want to make sure I understand
-correctly what's happening in this device. If I understand correctly, we
-have the following device components:
+>> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+                   .product_name = yas5xx_product_name[yas530],
+                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   1 error generated.
 
-* CTR: 32-bit counter timer
-* Mod4: 2-bit counter
-* CAP1-CAP4: four 32-bit registers, each indepedently store a timestamp
-* ECAP: input signal providing event trigger edges
 
-Four edge polarities are configured corresponding to each CAPx register,
-yet the input signal is still the same single ECAP pin. The event that
-is fired is instead determined by the Mod4 counter: when Mod4 is 0 and
-the edge of ECAP matches the polarity configured for CAP1 then an event
-is triggered which saves the current CTR value to CAP1 and increments
-Mod4 to 1, etc.
+vim +933 drivers/iio/magnetometer/yamaha-yas530.c
 
-Is my understanding of how this device behaves correct?
+   929	
+   930	static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+   931		[yas530] = {
+   932			.devid = YAS530_DEVICE_ID,
+ > 933			.product_name = yas5xx_product_name[yas530],
+   934			.version_name = yas5xx_version_names[yas530],
+   935		},
+   936		[yas532] = {
+   937			.devid = YAS532_DEVICE_ID,
+   938			.product_name = yas5xx_product_name[yas532],
+   939			.version_name = yas5xx_version_names[yas532],
+   940		},
+   941		[yas533] = {
+   942			.devid = YAS532_DEVICE_ID,
+   943			.product_name = yas5xx_product_name[yas533],
+   944			.version_name = yas5xx_version_names[yas533],
+   945		},
+   946	};
+   947	
 
-If so, then one possible way to represent this device in the Counter
-sysfs tree is something like this:
-
-* CTR: /sys/bus/counter/devices/counterX/count0/count
-* Mod4: /sys/bus/counter/devices/counterX/count1/count
-* CAP1: /sys/bus/counter/devices/counterX/count1/cap1
-* CAP2: /sys/bus/counter/devices/counterX/count1/cap2
-* CAP3: /sys/bus/counter/devices/counterX/count1/cap3
-* CAP4: /sys/bus/counter/devices/counterX/count1/cap4
-* ECAP: /sys/bus/counter/devices/counterX/signal0/signal
-* polarity1: /sys/bus/counter/devices/counterX/signal0/cap1_polarity
-* polarity2: /sys/bus/counter/devices/counterX/signal0/cap2_polarity
-* polarity3: /sys/bus/counter/devices/counterX/signal0/cap3_polarity
-* polarity4: /sys/bus/counter/devices/counterX/signal0/cap4_polarity
-
-This is just a tentative arrangement (you could also include "enable"
-attributes as well), but it should give you an idea of how it could be
-organized.
-
-In your driver, you could then use counter_push_event() whenever you get
-an event triggered. In userspace, your application will add Counter
-watches for the CAPx registers they want. When an event triggers,
-userspace can then received all four CAP register values at the same
-time via the respective /dev/counterX character device node.
-
-Would this design work for your needs?
-
-William Breathitt Gray
-
---wLcvE1FSUtpXsS7A
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYvBZQgAKCRC1SFbKvhIj
-K7+8AP0RAqFa0z7TA+xQGCCPd7QGkXZjANePk6mgACSxm/aTQAEA4/GTSnjLNJE7
-FQdnZ5N+3+xTiMjmZuE6p4VoavBaIAU=
-=F23d
------END PGP SIGNATURE-----
-
---wLcvE1FSUtpXsS7A--
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

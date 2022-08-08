@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 461F158C755
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9D658C768
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242910AbiHHLLS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 07:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56216 "EHLO
+        id S241937AbiHHLSr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 07:18:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242896AbiHHLLP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:11:15 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545D655A1;
-        Mon,  8 Aug 2022 04:11:14 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id e23so6191283qts.1;
-        Mon, 08 Aug 2022 04:11:14 -0700 (PDT)
+        with ESMTP id S236621AbiHHLSo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:18:44 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D603DDF31;
+        Mon,  8 Aug 2022 04:18:43 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id d8so1533218qkk.1;
+        Mon, 08 Aug 2022 04:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=bD323QQuqAe+LXYGC56aXlQXma7N6ziw8Qz1SvvzxhA=;
-        b=k7b0ow+WWazJJZUNXV8JHdGqiAevMn7m9/abZEw7UmJGK1U9BtoINtgGp6b6xmSryU
-         avrMmgPhZqvp1YtTyKu25u1eJLmOjEAu6Ub+5HgwxQF5ENZBljyZjPYhGm02xuHdYW3Q
-         iWTlut1Ll/y85fpXMWIxvTfo1/JJ3yvuuOQSfJ2ahiku93+xNH1XxonIcQHGj8ySoflj
-         1HtBmE7GwBS32NGyVpdkrhff4hkIVWVpmCDdaVql+8T/Lq42Ty0aJmShfQoE9kf9SuWD
-         C0rBMGvBa0qUOllKPr5e6z4w5J5aLE+vpRPULsSgkk0gkb332gS62z0TFKmgONw0DQpL
-         0XcQ==
+        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
+        b=Pir+jptX8VRJ8EVAtD6tXT5+75IX0KYzsXb9bbzvlPsJI4v1ChlsSUQ7ERx7dk3IiD
+         6Vyxl01O5eQ+gdH+SLwH5mCCzJk2nG3uFaUOCVQhIDdhFiRP/7/+c97MbodXqF0X55Cu
+         PM/DcIRZOcUy+MYek5vf88HN1bDpUcETG98sx61TJhRbn6Qcx3U+s2smusNgAgbjdsjw
+         96GZKaN4vc8R1s2kk7ysdIh7IcO98gKfWd/EYa9EsgSblJ7s7+LlrSRfkpTS51KVAdYZ
+         Qwym4B0UhzOJtiYK3E7kR5jhR5RchxKxhdf1dSCteua13+7/D5TlUWMILmQcY7M8DCtk
+         +d5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=bD323QQuqAe+LXYGC56aXlQXma7N6ziw8Qz1SvvzxhA=;
-        b=Kop3eCYluwRoEOdFr5gNTSyZPTe5NO0D9aUq4hli8dgP3F8qLlGk+IGnlMfPcJ68Bt
-         fHnq6etT9+ibJdbNhdn17/BPglNJ7G+kbUd2PAih6YQHdSYjeazLXyBzOyijUNYgPAAK
-         6MrnVgmPzTSzJVJTOcp1qn7vd1WnJfExEgtN3mp82NzgffTovjMoneaAT3BbIdMLHIqw
-         82ihRVNlAdFMR0bOQA7G9V8vMuu+JxMVcTDuEr7QObVqbJ1K5dDbwzzjoBQsoVUoVv1m
-         nXvLWNIU/5ygMtHRs08JbpYNbjnr7m2UsyyxHFpjF1y2wGW2VaB1GGqBhhDXnZXXqMyz
-         vMoA==
-X-Gm-Message-State: ACgBeo2huUHihcemEqxTkItXjtJO5dglGb2ESG6HSTp9nCNgbxLupi3w
-        E5vC9S+Mo/JR773ExDXyvvdn/88Nbu6k1Ebm5uc=
-X-Google-Smtp-Source: AA6agR70J6ArVi7L8rjGfmczhovJggsBFg8uGZPD0MPkgoASkl/Gr+DaxHNNSZtivFljaLuG3sTbXyf1Wfc1sTNYvJs=
-X-Received: by 2002:a05:622a:1105:b0:342:fb95:d7a with SMTP id
- e5-20020a05622a110500b00342fb950d7amr2180935qty.61.1659957073295; Mon, 08 Aug
- 2022 04:11:13 -0700 (PDT)
+        bh=Qo8m4+JaUBO8TwCYugZyrFg+A5kM5JeZCqY5kQmlmyU=;
+        b=ddx2oI6X0krNtkzIxRwePlsyyNqjAH/lq7H5aRICbRLNxMm4eQF1YVbU5VEzlQvGZT
+         TxKbxvuSllfsTMy90x5zkowl2KN7okUQ7FNq41PiVwaZ1HthrqJE4g9Jm+2YguG5vVkC
+         R4Kplxiv+9jr4YG9eHq5Mjwe6JaDH/5yQb7Q28n8A/Lii8qi5wzVib/An5ktgg/Z+/2K
+         KK5oR1eOFTiHGWIU1DcGzkbG94FTyFVX5Ci8C1/hqbfv+2BRX/b9vzb9DiGqqhJc0ABz
+         7PoF6HCRQSGjTUlFIq03rCwd+Qsub6/fYWugCyog8uCHuwGpM57/9PgRSsx4flUIZ4U0
+         ob3A==
+X-Gm-Message-State: ACgBeo2106K3d3wpEzsgrSWYLwWD1RQVfZvGPlGz++xMgSMtKTP1SNPq
+        iDNonIYFE0rzUQOiWS6gl3nGgf+602U5sJCbZ0U=
+X-Google-Smtp-Source: AA6agR4MPB6bchiE70z1ZxXE04FW0qRuKvTFfYUPlSOk6YpjiOc5I+b4ZgbaiH5i6eC9sCOplXqIf1+FTgSZmM9/U2g=
+X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
+ s13-20020a05620a254d00b006ab84b825ebmr13544878qko.383.1659957522822; Mon, 08
+ Aug 2022 04:18:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1659909060.git.jahau@rocketmail.com> <0f80659d4a5865a267cf75eaf14a23b8319ddb92.1659909060.git.jahau@rocketmail.com>
-In-Reply-To: <0f80659d4a5865a267cf75eaf14a23b8319ddb92.1659909060.git.jahau@rocketmail.com>
+References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
+ <202208081346.EWHUWCSa-lkp@intel.com>
+In-Reply-To: <202208081346.EWHUWCSa-lkp@intel.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 8 Aug 2022 13:10:36 +0200
-Message-ID: <CAHp75VdawuhW1gX8Ci5_6SLz+b9ehqFrAvFEMjLxiFjE4FkZig@mail.gmail.com>
-Subject: Re: [PATCH v5 07/14] iio: magnetometer: yas530: Move printk %*ph
- parameters out from stack
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Date:   Mon, 8 Aug 2022 13:18:06 +0200
+Message-ID: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
+Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
+To:     kernel test robot <lkp@intel.com>
+Cc:     Jakob Hauser <jahau@rocketmail.com>,
+        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
+        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
         Linus Walleij <linus.walleij@linaro.org>,
         Hans de Goede <hdegoede@redhat.com>,
         linux-iio <linux-iio@vger.kernel.org>,
@@ -71,51 +72,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 8, 2022 at 1:07 AM Jakob Hauser <jahau@rocketmail.com> wrote:
->
-> Use less stack by modifying %*ph parameters.
->
-> Additionally, in the function yas530_get_calibration_data(), the debug dump was
+On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
 
-Additionally --> While at it
+...
 
-(The difference is that "additionally" means you need to split to two
-changes, which makes a little sense in this case)
-
-> extended to 16 elements as this is the size of the calibration data array of
-> YAS530.
-
-Otherwise looks good,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
->  drivers/iio/magnetometer/yamaha-yas530.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> All errors (new ones prefixed by >>):
 >
-> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-> index b27cc2b432ee..48995176fa39 100644
-> --- a/drivers/iio/magnetometer/yamaha-yas530.c
-> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-> @@ -664,7 +664,7 @@ static int yas530_get_calibration_data(struct yas5xx *yas5xx)
->         ret = regmap_bulk_read(yas5xx->map, YAS530_CAL, data, sizeof(data));
->         if (ret)
->                 return ret;
-> -       dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
-> +       dev_dbg(yas5xx->dev, "calibration data: %16ph\n", data);
->
->         add_device_randomness(data, sizeof(data));
->         yas5xx->version = data[15] & GENMASK(1, 0);
-> @@ -711,7 +711,7 @@ static int yas532_get_calibration_data(struct yas5xx *yas5xx)
->         ret = regmap_bulk_read(yas5xx->map, YAS530_CAL, data, sizeof(data));
->         if (ret)
->                 return ret;
-> -       dev_dbg(yas5xx->dev, "calibration data: %*ph\n", 14, data);
-> +       dev_dbg(yas5xx->dev, "calibration data: %14ph\n", data);
->
->         /* Sanity check, is this all zeroes? */
->         if (memchr_inv(data, 0x00, 13) == NULL) {
+> >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
+>                    .product_name = yas5xx_product_name[yas530],
+>                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    1 error generated.
+
+What?!
+
+The yas530 is a part of the enum, how come that compiler can't see
+this? Looks like a Clang bug.
+
+>    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+>    931          [yas530] = {
+>    932                  .devid = YAS530_DEVICE_ID,
+>  > 933                  .product_name = yas5xx_product_name[yas530],
+>    934                  .version_name = yas5xx_version_names[yas530],
+>    935          },
+>    936          [yas532] = {
+>    937                  .devid = YAS532_DEVICE_ID,
+>    938                  .product_name = yas5xx_product_name[yas532],
+>    939                  .version_name = yas5xx_version_names[yas532],
+>    940          },
+>    941          [yas533] = {
+>    942                  .devid = YAS532_DEVICE_ID,
+>    943                  .product_name = yas5xx_product_name[yas533],
+>    944                  .version_name = yas5xx_version_names[yas533],
+>    945          },
+>    946  };
 
 -- 
 With Best Regards,

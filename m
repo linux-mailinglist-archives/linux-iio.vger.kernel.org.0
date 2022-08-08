@@ -2,72 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EC6358C70C
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE1058C744
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 13:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236156AbiHHLA5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 07:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46584 "EHLO
+        id S242214AbiHHLIL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 07:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237452AbiHHLAr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:00:47 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518F95F48
-        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 04:00:46 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id i14so15887356ejg.6
-        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 04:00:46 -0700 (PDT)
+        with ESMTP id S242340AbiHHLIJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 07:08:09 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F5BC1B
+        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 04:08:07 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id v10so5930634ljh.9
+        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 04:08:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=sDgE00TSYImsrZ8eUvhvRLyRwa/CwuKhww/PvBiXyo0=;
-        b=ezCd+qosLR/Jc6oUu5JRl2ht1Aj2dHh9IzM7OpMvphFEVNo0ModfeMaXR8Tnw2Zsqn
-         nfq5CfL2u9nE0vpfXFUGVypqNLobO6oZzKO/V6UsBogadHCt4RbPi2s9HoHvDRofKjGo
-         VRej3lM0t12sXhFYnqCbfiAQg2rO+BaxDhUix7yw5f0c459aiU7qov/SDMRY8kRu6pJK
-         Jt30x8XZBYTp8vgHIK1BWiXJJ1gV7+cghF90t5kRvv8MK1PjT7EyaE3M3hlmdSWyEdWB
-         6nMPPDcaCGUCD2On+We+mc91hUd1VMnhW9GHVzyQNss+x12DmnUPv+hhE7V2K+BXP+gY
-         Np+A==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :references:from:in-reply-to:content-transfer-encoding;
+        bh=G5McPA5IZBMFjJ0FWkBGoduD3K8bZspnlviNAqde1yc=;
+        b=U/8GdIPAOfjfBSkPjG5qZxEpHYx+/y1PqJjkW7q9XPKi+rNH9/dxiBi1yihCy+h293
+         iNwxkcW7qy7LPeMGxSs5rHpkJQq5EwzuHdr+LCPHKjOeQ83rg8iKzV3zZarNThEsWH0w
+         CmC/o7Zp4FC1+BWdTxPiNp8JkSwzUoXh7tQIU56sUavV8iNgWPijx/uuF0xZaPPcxocb
+         /f7wX+tz8FQi5OrTmy4E+tsl100B6B6g7NsVYajrm5YYsymY0zrRboDLbi4cvxNVYAbc
+         0EoeM/cP8He8woq/BuYMI7uO1xTTlUTwupdPNkoU6aX4x7Uw/vfB35BO1qPupE6jKKH6
+         esHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=sDgE00TSYImsrZ8eUvhvRLyRwa/CwuKhww/PvBiXyo0=;
-        b=leQCbUFplEY6vxLjOlygpe4ZTEp6EZwPbzLFsjKA8YZVEqQZhg+6xxbLw+jqFpRUFy
-         hbyU/lnGXH2S5PcGQ6kMdWV4qAFg4xJuMeQd8FOEX9j3yc6SM9RaEtTc6YwbWDVHwPzj
-         ibGIlwdjkC4hSAKFPpwdpiIPMZSWOC4Idc3nTXH5YnzqqMTyj+wVIeIVZveJFRaWATv0
-         MrFYAuZffzZCJnO1XRCbrpIR3VI7Sbgniai2tWdsBCYyVazv0Aj3c9YChnW2mjRLnpac
-         7617uYRvM1CLgvwWF713XTniBbiEQzqUTvHzhh1bb+G476txPW2llXZqEbdobNxU2wAj
-         lvyQ==
-X-Gm-Message-State: ACgBeo0roTrqyWRYSPNFG8IIyW7A+2AU9PZ4kI/Ta21gyg3mxuIdCALl
-        B6yPw2VmyTgUnJcqy9ek3p96xA==
-X-Google-Smtp-Source: AA6agR72d6ukddY5qJeAVt8KsDUBKUZegBbwzlVc/8G27Nj3mmNrQQImfvzoag/bC6kBlOUTsYNX5w==
-X-Received: by 2002:a17:907:9712:b0:731:67db:1b48 with SMTP id jg18-20020a170907971200b0073167db1b48mr2120070ejc.754.1659956444802;
-        Mon, 08 Aug 2022 04:00:44 -0700 (PDT)
-Received: from arch-thunder (a109-49-33-111.cpe.netcabo.pt. [109.49.33.111])
-        by smtp.gmail.com with ESMTPSA id d3-20020aa7ce03000000b0043e67f9028esm4415297edv.20.2022.08.08.04.00.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Aug 2022 04:00:44 -0700 (PDT)
-Date:   Mon, 8 Aug 2022 12:00:42 +0100
-From:   Rui Miguel Silva <rui.silva@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        "Rafael J . Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
-        Paul Cercueil <paul@crapouillou.net>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 3/5] iio: gyro: fxas210002c: Move exports to
- IIO_FXAS210002C namespace.
-Message-ID: <20220808110042.wc6x6z4pmphha5in@arch-thunder>
-References: <20220807192038.1039771-1-jic23@kernel.org>
- <20220807192038.1039771-4-jic23@kernel.org>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=G5McPA5IZBMFjJ0FWkBGoduD3K8bZspnlviNAqde1yc=;
+        b=QG9JnPs4ffyxNwTmInqXSMVajMHPkLW2cj2Ez3nmFHjOKojDmRJGp3abIwXqdr82ze
+         9XPctWyunC9KUXQ4nJdXG2AfcJ4BxjE9iHm5Z4raE1BDCygEmuUZfOCTpTx3aiEXmvzB
+         ZDx0uhQnueM7HlGd9UYQJ6Ajwf94wpvGSXMKlXL1RvSDI+ERIUVIEsrI1sjcWleYLGg6
+         iVFjZKOwmmS1C7ZD2oDRduD5le+D/u6bUskeShkfmolivUWGtHOyoIhHDboN4A+ws/Ja
+         4tkF34vAL/6hlTtTaxvvF4XCo/wUungqROyZjFOecHt3kdvzYIe/h8vw1THMfzYkJMJT
+         5NYQ==
+X-Gm-Message-State: ACgBeo2kUWRFJKUpkB3X8e3CSZdxgad2lejYe2jVlMuQZe+yNTG7RewI
+        bsTJNcXlFx/dLW+pudjhFDXglA==
+X-Google-Smtp-Source: AA6agR5I5A6dxgwMS+V5R6U4to3TDtNl7lNnpi0SFDGcuvZCIrUri2LyMgMT9eOhaBiYlWL8+eDong==
+X-Received: by 2002:a2e:2ac1:0:b0:25e:4b39:e3cb with SMTP id q184-20020a2e2ac1000000b0025e4b39e3cbmr5854240ljq.458.1659956886352;
+        Mon, 08 Aug 2022 04:08:06 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id t16-20020a2e9d10000000b0025e6a598019sm1338801lji.131.2022.08.08.04.08.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Aug 2022 04:08:05 -0700 (PDT)
+Message-ID: <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
+Date:   Mon, 8 Aug 2022 14:08:03 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220807192038.1039771-4-jic23@kernel.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
+Content-Language: en-US
+To:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Robert Jones <rjones@gateworks.com>,
+        Lee Jones <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Ricardo Rivera-Matos <r-rivera-matos@ti.com>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-leds@vger.kernel.org,
+        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
+ <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -76,132 +95,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hey Jonathan,
-On Sun, Aug 07, 2022 at 08:20:36PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Includes using EXPORT_NS_GPL_DEV_PM_OPS() and the simplifications that
-> brings by allowing the compiler to remove unused struct dev_pm_ops
-> and callbacks without needing explicit __maybe_unused markings.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Rui Miguel Silva <rui.silva@linaro.org>
+On 08/08/2022 13:47, Krzysztof Kozlowski wrote:
+> Emails to Dan Murphy bounce ("550 Invalid recipient <dmurphy@ti.com>
+> (#5.1.1)").
 
-This looks a sane and good improvement, thanks.
 
-Acked-by: Rui Miguel Silva <rui.silva@linaro.org>
+(...)
 
-Cheers,
-     Rui
+>  description: |
+> diff --git a/Documentation/devicetree/bindings/power/supply/bq25980.yaml b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+> index 4883527ab5c7..509a0667b04e 100644
+> --- a/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+> +++ b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+> @@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: TI BQ25980 Flash Charger
+>  
+>  maintainers:
+> -  - Dan Murphy <dmurphy@ti.com>
+>    - Ricardo Rivera-Matos <r-rivera-matos@ti.com>
 
-> ---
->  drivers/iio/gyro/fxas21002c_core.c | 21 +++++++++------------
->  drivers/iio/gyro/fxas21002c_i2c.c  |  3 ++-
->  drivers/iio/gyro/fxas21002c_spi.c  |  3 ++-
->  3 files changed, 13 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
-> index a36d71d9e3ea..9aee9096363f 100644
-> --- a/drivers/iio/gyro/fxas21002c_core.c
-> +++ b/drivers/iio/gyro/fxas21002c_core.c
-> @@ -998,7 +998,7 @@ int fxas21002c_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  
->  	return ret;
->  }
-> -EXPORT_SYMBOL_GPL(fxas21002c_core_probe);
-> +EXPORT_SYMBOL_NS_GPL(fxas21002c_core_probe, IIO_FXAS21002C);
->  
->  void fxas21002c_core_remove(struct device *dev)
->  {
-> @@ -1009,9 +1009,9 @@ void fxas21002c_core_remove(struct device *dev)
->  	pm_runtime_disable(dev);
->  	pm_runtime_set_suspended(dev);
->  }
-> -EXPORT_SYMBOL_GPL(fxas21002c_core_remove);
-> +EXPORT_SYMBOL_NS_GPL(fxas21002c_core_remove, IIO_FXAS21002C);
->  
-> -static int __maybe_unused fxas21002c_suspend(struct device *dev)
-> +static int fxas21002c_suspend(struct device *dev)
->  {
->  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
->  
-> @@ -1021,7 +1021,7 @@ static int __maybe_unused fxas21002c_suspend(struct device *dev)
->  	return 0;
->  }
->  
-> -static int __maybe_unused fxas21002c_resume(struct device *dev)
-> +static int fxas21002c_resume(struct device *dev)
->  {
->  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
->  	int ret;
-> @@ -1033,26 +1033,23 @@ static int __maybe_unused fxas21002c_resume(struct device *dev)
->  	return fxas21002c_mode_set(data, data->prev_mode);
->  }
->  
-> -static int __maybe_unused fxas21002c_runtime_suspend(struct device *dev)
-> +static int fxas21002c_runtime_suspend(struct device *dev)
->  {
->  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
->  
->  	return fxas21002c_mode_set(data, FXAS21002C_MODE_READY);
->  }
->  
-> -static int __maybe_unused fxas21002c_runtime_resume(struct device *dev)
-> +static int fxas21002c_runtime_resume(struct device *dev)
->  {
->  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
->  
->  	return fxas21002c_mode_set(data, FXAS21002C_MODE_ACTIVE);
->  }
->  
-> -const struct dev_pm_ops fxas21002c_pm_ops = {
-> -	SET_SYSTEM_SLEEP_PM_OPS(fxas21002c_suspend, fxas21002c_resume)
-> -	SET_RUNTIME_PM_OPS(fxas21002c_runtime_suspend,
-> -			   fxas21002c_runtime_resume, NULL)
-> -};
-> -EXPORT_SYMBOL_GPL(fxas21002c_pm_ops);
-> +EXPORT_NS_GPL_DEV_PM_OPS(fxas21002c_pm_ops, fxas21002c_suspend,
-> +			 fxas21002c_resume, fxas21002c_runtime_suspend,
-> +			 fxas21002c_runtime_resume, NULL, IIO_FXAS21002C);
->  
->  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/iio/gyro/fxas21002c_i2c.c b/drivers/iio/gyro/fxas21002c_i2c.c
-> index a7807fd97483..241401a9dfea 100644
-> --- a/drivers/iio/gyro/fxas21002c_i2c.c
-> +++ b/drivers/iio/gyro/fxas21002c_i2c.c
-> @@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, fxas21002c_i2c_of_match);
->  static struct i2c_driver fxas21002c_i2c_driver = {
->  	.driver = {
->  		.name = "fxas21002c_i2c",
-> -		.pm = &fxas21002c_pm_ops,
-> +		.pm = pm_ptr(&fxas21002c_pm_ops),
->  		.of_match_table = fxas21002c_i2c_of_match,
->  	},
->  	.probe_new	= fxas21002c_i2c_probe,
-> @@ -67,3 +67,4 @@ module_i2c_driver(fxas21002c_i2c_driver);
->  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
->  MODULE_LICENSE("GPL v2");
->  MODULE_DESCRIPTION("FXAS21002C I2C Gyro driver");
-> +MODULE_IMPORT_NS(IIO_FXAS21002C);
-> diff --git a/drivers/iio/gyro/fxas21002c_spi.c b/drivers/iio/gyro/fxas21002c_spi.c
-> index c3ac169facf9..4f633826547c 100644
-> --- a/drivers/iio/gyro/fxas21002c_spi.c
-> +++ b/drivers/iio/gyro/fxas21002c_spi.c
-> @@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, fxas21002c_spi_of_match);
->  static struct spi_driver fxas21002c_spi_driver = {
->  	.driver = {
->  		.name = "fxas21002c_spi",
-> -		.pm = &fxas21002c_pm_ops,
-> +		.pm = pm_ptr(&fxas21002c_pm_ops),
->  		.of_match_table = fxas21002c_spi_of_match,
->  	},
->  	.probe		= fxas21002c_spi_probe,
-> @@ -66,3 +66,4 @@ module_spi_driver(fxas21002c_spi_driver);
->  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
->  MODULE_LICENSE("GPL v2");
->  MODULE_DESCRIPTION("FXAS21002C SPI Gyro driver");
-> +MODULE_IMPORT_NS(IIO_FXAS21002C);
-> -- 
-> 2.37.1
-> 
+Ricardo's also bounces... Does it mean TI is not interested in
+maintaining mainline support for its drivers?
+
+Best regards,
+Krzysztof

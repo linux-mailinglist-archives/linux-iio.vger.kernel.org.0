@@ -2,105 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB2558CAC0
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 16:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC8A58CAFD
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 17:05:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238015AbiHHOt4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 10:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41896 "EHLO
+        id S236158AbiHHPFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 11:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242796AbiHHOtp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 10:49:45 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B74513CF8
-        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 07:49:44 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id b96so11731166edf.0
-        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 07:49:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Yv7/Ul3NtrsgwZNY2tz3vPTVziFu5q3/IA4UlHUJklg=;
-        b=S2IGJCwZMVPowoihlFkTDxVmPB6bfb6v8CYSoKyiiDobysypIl1hXJ9bnCssCL7z6R
-         hnCLVOMqoH3AAs1oNY9l7RCa47YrxS3zAqqiE++NncryABegZsFqN1iUrFpCQsfphRNi
-         lv6LOVXsh8rVqG9+wcm//7YhGKCWSktdVPiLOAbxre9yKwYKWOTcy/Wbhkgp66T1rTSm
-         kjepb6B9q8m4XlmzDvfET9FOpqjYeuW+vjjXGsswHD4W7j8UwMo/TXiFWzZ34bT0f0bL
-         8hZiXh5WDUZwJeniF0zGkjE1VyWAUXc59d5QxnpmBmHXFCrbuud3ke/fBFwgXQDLDzVw
-         7njQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Yv7/Ul3NtrsgwZNY2tz3vPTVziFu5q3/IA4UlHUJklg=;
-        b=xONh2fhX3KNNA3uIwIo4gtchbTYbNISnhfOw/dC2fLMj5zwqq6Y0Kv4RuntlOhX8U3
-         Pz1g0M/ctAGiXmBm1FNOZU9lXq0ApvIiZs9wzak4AJEy04OeiO0UmmWGxddMxkhzDhFX
-         gdHqKmlNmGzbeemTYMPG0RFIdfk2aCcZVsqDaMUOGlWxl8ozpxo8qb/iOkOTmViL9Vz0
-         v+kMFfi+B4KupsDOpsraf/nUafV5wqgvL/8QhZ8H+0BnCJtuIMGcH75oAh60MtgJRTCI
-         GzOd0nFudvQZpO6xNDFnanLGRRyOBUBiwK5nbE2osiaYW4iX3VUJ0nUYmgxN40l3V9O3
-         +ZKw==
-X-Gm-Message-State: ACgBeo1JTtQyoHb9LBhWJAT2PGaKHzpCg7jtnVNUlhqLyNVDmHhr0D5O
-        19PSO7D7lgyXcq0iModlthJGyCSZptd3/Q==
-X-Google-Smtp-Source: AA6agR4PPC/LIGsLNQk3+R+crCvb6P9SQUPULlkbuwDaegHTPO7e9Yd9cgP5Gw8qaQpkuiuHyVWarw==
-X-Received: by 2002:a05:6402:24a4:b0:440:8c0c:8d2b with SMTP id q36-20020a05640224a400b004408c0c8d2bmr6479287eda.311.1659970183080;
-        Mon, 08 Aug 2022 07:49:43 -0700 (PDT)
-Received: from localhost.localdomain (ptr-4xh0y3vuv1059rd6h4r.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:cd22:c517:e143:e53b])
-        by smtp.gmail.com with ESMTPSA id q4-20020a17090676c400b00722fc0779e3sm5056276ejn.85.2022.08.08.07.49.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Aug 2022 07:49:42 -0700 (PDT)
-From:   Crt Mori <cmo@melexis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Crt Mori <cmo@melexis.com>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 2/2] dt-bindings: iio: mlx90632 Add supply regulator documentation
-Date:   Mon,  8 Aug 2022 16:49:36 +0200
-Message-Id: <20220808144936.1559158-1-cmo@melexis.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S234034AbiHHPFX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 11:05:23 -0400
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9D0E9F;
+        Mon,  8 Aug 2022 08:05:21 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 278F4JoD126550;
+        Mon, 8 Aug 2022 10:04:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1659971059;
+        bh=NdjYuYrRgfFqkXrI7faf1aVXflieuCOWZNGCJMFOx94=;
+        h=Date:Subject:To:References:From:In-Reply-To;
+        b=lmySqfLgt6rnGnRx3ZDw9pTF65QwTb++SXCsh9IxxF9MAQRftqsa/WREeGJ17tqpA
+         k/sw5R/YUoMY4tJ7HDRVaR9WOH2DGsonOxC62b5Vp7Cpp88RkVhE3Y2KkkcdnHE1Hm
+         UYW69jWcmfDjbrWDx4ioxp0dues0NZ0ZN0Pbdg8I=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 278F4Jd1015602
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 8 Aug 2022 10:04:19 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14; Mon, 8
+ Aug 2022 10:04:18 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2308.14 via
+ Frontend Transport; Mon, 8 Aug 2022 10:04:18 -0500
+Received: from [10.250.34.173] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 278F4HdP032491;
+        Mon, 8 Aug 2022 10:04:17 -0500
+Message-ID: <6ae15e00-36a4-09a8-112e-553ed8c5f4da@ti.com>
+Date:   Mon, 8 Aug 2022 10:04:17 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        Tim Harvey <tharvey@gateworks.com>,
+        Robert Jones <rjones@gateworks.com>,
+        Lee Jones <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, <linux-hwmon@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
+        <linux-leds@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <alsa-devel@alsa-project.org>
+References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
+ <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+ <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
+From:   Andrew Davis <afd@ti.com>
+In-Reply-To: <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the newly added vdd supply option.
+On 8/8/22 6:08 AM, Krzysztof Kozlowski wrote:
+> On 08/08/2022 13:47, Krzysztof Kozlowski wrote:
+>> Emails to Dan Murphy bounce ("550 Invalid recipient <dmurphy@ti.com>
+>> (#5.1.1)").
+> 
+> 
+> (...)
+> 
+>>   description: |
+>> diff --git a/Documentation/devicetree/bindings/power/supply/bq25980.yaml b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>> index 4883527ab5c7..509a0667b04e 100644
+>> --- a/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>> +++ b/Documentation/devicetree/bindings/power/supply/bq25980.yaml
+>> @@ -8,7 +8,6 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>   title: TI BQ25980 Flash Charger
+>>   
+>>   maintainers:
+>> -  - Dan Murphy <dmurphy@ti.com>
+>>     - Ricardo Rivera-Matos <r-rivera-matos@ti.com>
+> 
+> Ricardo's also bounces... Does it mean TI is not interested in
+> maintaining mainline support for its drivers?
+> 
 
-Signed-off-by: Crt Mori <cmo@melexis.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/iio/temperature/melexis,mlx90632.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+TI is still interested in maintaining support here. But as we know folks
+come and go, so giving specific emails might not be the best option.
+Doesn't look like the schema here allows free-form strings, but if it did
+I'd recommend the TI E2E Power-Management support forum[0] added. Any
+questions on Linux/DT for these parts posted there would land on my desk
+just the same, or to whomever is assigned in the future with maintaining
+these drivers.
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-index b547ddcd544a..4a55e7f25ae7 100644
---- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-@@ -35,6 +35,9 @@ properties:
-     maxItems: 1
-     description: Default is 0x3a, but can be reprogrammed.
- 
-+  vdd-supply:
-+    description: provide VDD power to the sensor.
-+
- required:
-   - compatible
-   - reg
-@@ -50,6 +53,7 @@ examples:
-         temp-sensor@3a {
-             compatible = "melexis,mlx90632";
-             reg = <0x3a>;
-+            vdd-supply = <&ldo4_reg>;
-         };
-     };
- ...
--- 
-2.34.1
+Either way, I have several of these parts and can support these. Feel free
+to replace Dan's email with my email if that works better.
 
+Andrew
+
+[0] https://e2e.ti.com/support/power-management-group/power-management/f/power-management-forum
+
+> Best regards,
+> Krzysztof

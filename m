@@ -2,60 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B17D758CBBB
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 17:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2582458CC04
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 18:19:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243763AbiHHP74 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 11:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34458 "EHLO
+        id S243043AbiHHQTr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 12:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243283AbiHHP7z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 11:59:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5604315713;
-        Mon,  8 Aug 2022 08:59:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E95E96108A;
-        Mon,  8 Aug 2022 15:59:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95761C433C1;
-        Mon,  8 Aug 2022 15:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1659974393;
-        bh=Z53zG6cwPszYMRBJabN7oSlgPt8lpZ7x+FSQmyyFDUw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cCfbmwUe7iaiTW+EWQhXvzJsolUZNxsRviWkmW6HGvu9uraXyNRdoLV0TB7bjUjL6
-         1sxcZQDro9h/8RwZR5ZDZAj6dKZaD6vKK2J4xxcqSFLoLK5a01OdCvLW0Ke4bmCw79
-         /G1aOSgJCgBTQ/HKbgkBCXai9kB+ZqsW4iIxlu6CFClFXVfgnQi6JRAa3FqvKz5DQg
-         0NPEbqrUwV33NDfNrtlTHx53yMSWxqUr4bY7eDdGckhz0an/lDOxiE9VMBnYlpfcsj
-         qc8wzALJS0jAZM/N7oVkdpQyfEQrhKztUgw3M0JmK2Y/Bz5bePSBNF3N0wkv/o0V7u
-         eTTRyGGYeMi4Q==
-Date:   Mon, 8 Aug 2022 08:59:50 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     kernel test robot <lkp@intel.com>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, llvm@lists.linux.dev,
-        kbuild-all@lists.01.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce
- "chip_info" structure
-Message-ID: <YvEy9uq49ZiBHtFd@dev-arch.thelio-3990X>
-References: <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
- <202208081346.EWHUWCSa-lkp@intel.com>
- <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
+        with ESMTP id S242542AbiHHQTp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 12:19:45 -0400
+Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5D946305
+        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 09:19:43 -0700 (PDT)
+Received: by mail-qt1-x829.google.com with SMTP id bz13so6844829qtb.7
+        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 09:19:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=TMxAwwBuDIuNTxYXTvn6eaPztP+oVubZ7rDA0wooS+Q=;
+        b=II9WETClrsRAiCDqhnZmFzp1dBw++qogq2DHDbZTVQ6u1MGeIW8LBDr6DuqzJJbmRr
+         fEa9bgZTFe1Kl6rpEnyKMRbAEoMxDKm3NQawfMCiPvmDEdM+KYjh3aXWnr/aEIoyfEZf
+         lUL6JxZrVrn+VMSQLB1m6LOptKn/U10O5EBdvS3QAcWV1iWuFI2eNgKcEXFCg4i2rVBd
+         N/m4/qaF2eY3Da+9tut1Aa6ZwxQ/+bOziUg7Zu5Gio9/kPI+CbZPjCVAPe7vAyZp1UBc
+         2nYLWSozLq4iYAtFvyRW5fIevEWig+KzhDxt1Ct7RFKrZkVxVwO9miw6IE2U0/Rez0z0
+         IX5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=TMxAwwBuDIuNTxYXTvn6eaPztP+oVubZ7rDA0wooS+Q=;
+        b=ie7H2tx9IzGi2HQ3rj/IQ606Jk/UI2J5NVYmoNWyCP/UiPQYBu3hgW0tkdMMGBPY20
+         uaI2nxFiR33Yc05Dls663mEQ7MQxd3clq3tdOXcQgKWcxUb+Bw7wF/I+Zeb2tGHl5jNr
+         B9f8G7QXDhoG8Wv12UKB/NbKa/xHE+2lc5jMQMD2CHAp3qgu7pZ18gWb8m/rJHWznNCa
+         5FXp8qa0Gy+x6u7kZ5plA98OS6V2cpOBEL/vu47/jtR/NO6+EpWaRwlcqo1IIsriLcH2
+         b3F2vHw6ygYanL1jj9VcH3Hsqc2GU4FrIWvTVlyBM97cY0EHb75V134uq6Xirrtr5jGd
+         +SUA==
+X-Gm-Message-State: ACgBeo3U9dYlwnBVCBW0iRZA64rEB08Jg8Vv0rCYrmQmwHaXPrh3PvEV
+        YFfs5g9rtp6W5fhkXjUFePK0WQ==
+X-Google-Smtp-Source: AA6agR7XpylISJIhNtARrNWh9HAl2hX/LKk2L4+LIK4bFsg8V4DIyTe58ZP2EqdcKK84EuzKnCkQ9w==
+X-Received: by 2002:ac8:5ad0:0:b0:342:fc73:2aa4 with SMTP id d16-20020ac85ad0000000b00342fc732aa4mr3071075qtd.207.1659975582802;
+        Mon, 08 Aug 2022 09:19:42 -0700 (PDT)
+Received: from fedora ([23.82.142.208])
+        by smtp.gmail.com with ESMTPSA id y1-20020a05620a44c100b006b8c575ce27sm4105856qkp.109.2022.08.08.09.19.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Aug 2022 09:19:41 -0700 (PDT)
+Date:   Mon, 8 Aug 2022 12:19:39 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v3 2/2] iio: time: capture-tiecap: capture driver support
+ for ECAP
+Message-ID: <YvE3m+jLPuLvXXdS@fedora>
+References: <20220728175124.468461-1-jpanis@baylibre.com>
+ <20220728175124.468461-3-jpanis@baylibre.com>
+ <20220731164116.30e91f34@jic23-huawei>
+ <11b7436b-5c31-671e-ba77-435fe8e3b767@baylibre.com>
+ <98d17617-72b5-6330-d4f5-1bece928ceab@baylibre.com>
+ <YvBZQsiAm6f3yxME@fedora>
+ <d47c842b-579d-b119-73f9-e8c95984b30b@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6X5vf6Fz1F42Rx02"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VecMvtHwkA6=JxHbX0oeRg+-fXNraggBCaOxqhf9WUdzQ@mail.gmail.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <d47c842b-579d-b119-73f9-e8c95984b30b@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,81 +79,191 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
 
-On Mon, Aug 08, 2022 at 01:18:06PM, +0200, Andy Shevchenko wrote:
-> On Mon, Aug 8, 2022 at 7:40 AM kernel test robot <lkp@intel.com> wrote:
-> 
-> ...
-> 
-> > All errors (new ones prefixed by >>):
-> >
-> > >> drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
-> >                    .product_name = yas5xx_product_name[yas530],
-> >                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >    1 error generated.
-> 
-> What?!
-> 
-> The yas530 is a part of the enum, how come that compiler can't see
-> this? Looks like a Clang bug.
+--6X5vf6Fz1F42Rx02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-That is not what clang is complaining about here, you'll see the same
-error even if you used '0', '1', or '2' here:
+On Mon, Aug 08, 2022 at 10:58:22AM +0200, Julien Panis wrote:
+> On 08/08/2022 02:30, William Breathitt Gray wrote:
+> > Hi Julien,
+> >=20
+> > I've taken a cursory look over the TI ECAP reference guide and your
+> > descriptions in this thread. I think a device driver for this would fit
+> > better in the Counter subsystem than IIO.
+> >=20
+> > First I want to correct a minor misunderstanding: the "timestamp"
+> > member of struct counter_event is simply a way to identify Counter
+> > events on the system as a way of grouping multiple Counter watches. In
+> > other words, the "timestamp" member here represents when a Counter event
+> > was detected by the system, not when an event was logged on the counter
+> > device hardware. Instead, hardware timestamps such as the CAPx registers
+> > would be provided by the "value" member of struct counter_event.
+> >=20
+> > Now, I have a few ideas for how we could expose the timestamps using a
+> > Counter device driver, but first I want to make sure I understand
+> > correctly what's happening in this device. If I understand correctly, we
+> > have the following device components:
+> >=20
+> > * CTR: 32-bit counter timer
+> > * Mod4: 2-bit counter
+> > * CAP1-CAP4: four 32-bit registers, each indepedently store a timestamp
+> > * ECAP: input signal providing event trigger edges
+> >=20
+> > Four edge polarities are configured corresponding to each CAPx register,
+> > yet the input signal is still the same single ECAP pin. The event that
+> > is fired is instead determined by the Mod4 counter: when Mod4 is 0 and
+> > the edge of ECAP matches the polarity configured for CAP1 then an event
+> > is triggered which saves the current CTR value to CAP1 and increments
+> > Mod4 to 1, etc.
+> >=20
+> > Is my understanding of how this device behaves correct?
+>=20
+> Hi William. Thank you for your help.
+> Yes, your understanding of how this device behaves is correct.
+>=20
+> >=20
+> > If so, then one possible way to represent this device in the Counter
+> > sysfs tree is something like this:
+> >=20
+> > * CTR: /sys/bus/counter/devices/counterX/count0/count
+> > * Mod4: /sys/bus/counter/devices/counterX/count1/count
+> > * CAP1: /sys/bus/counter/devices/counterX/count1/cap1
+> > * CAP2: /sys/bus/counter/devices/counterX/count1/cap2
+> > * CAP3: /sys/bus/counter/devices/counterX/count1/cap3
+> > * CAP4: /sys/bus/counter/devices/counterX/count1/cap4
+> > * ECAP: /sys/bus/counter/devices/counterX/signal0/signal
+> > * polarity1: /sys/bus/counter/devices/counterX/signal0/cap1_polarity
+> > * polarity2: /sys/bus/counter/devices/counterX/signal0/cap2_polarity
+> > * polarity3: /sys/bus/counter/devices/counterX/signal0/cap3_polarity
+> > * polarity4: /sys/bus/counter/devices/counterX/signal0/cap4_polarity
+> >=20
+> > This is just a tentative arrangement (you could also include "enable"
+> > attributes as well), but it should give you an idea of how it could be
+> > organized.
+> >=20
+> > In your driver, you could then use counter_push_event() whenever you get
+> > an event triggered. In userspace, your application will add Counter
+> > watches for the CAPx registers they want. When an event triggers,
+> > userspace can then received all four CAP register values at the same
+> > time via the respective /dev/counterX character device node.
+> >=20
+> > Would this design work for your needs?
+>=20
+> Yes, that would work for my needs.
+> The "how" is not fully clear to me yet, since I never used counter
+> subsystem. But the
+> best way to understand better how it works is probably to start working w=
+ith
+> it. :-)
+> So, next patch version will be based on counter subsystem.
 
-  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not a compile-time constant
-                  .product_name = yas5xx_product_name[0],
-                                  ^~~~~~~~~~~~~~~~~~~~~~
-  1 error generated.
+The Counter subsystem is relatively nascent so the number of existing
+Counter device drivers to study is unfortunately sparse. If you
+encounter any trouble along the way as you work on this, please don't
+hestitate to reach out and I'll be happy to answer any questions you may
+have. That said, here are some more hints that can help guide you. :-)
 
-It is complaining that the initializer element
-('yas5xx_product_name[yas530]', rather than just 'yas530') is not
-constant, which is a true complaint if I am reading C11 standard 6.6.7
-correctly.
+Although we've been using CAPx to refer to these registers, in the
+context of sysfs it'll be better to call the attributes "capture1",
+"capture2", etc.; that will make their use as capture buffers more
+obvious. Furthermore, despite my previous example, I think it's better
+to have these exist underneath the CTR hierarchy rather than Mod4
+because they are captures of the CTR value:
 
-GCC 8+ has chosen to accept const structures as constant expressions in
-designated initializers, which it is allowed to do per 6.6.10. Nick did
-have a patch to try and match this behavior in clang but the work that
-was requested doesn't seem to be trivial so it was never finalized:
-https://reviews.llvm.org/D76096
+* CTR: /sys/bus/counter/devices/counterX/count0/count
+* CAP1: /sys/bus/counter/devices/counterX/count0/capture1
+* CAP2: /sys/bus/counter/devices/counterX/count0/capture2
+* CAP3: /sys/bus/counter/devices/counterX/count0/capture3
+* CAP4: /sys/bus/counter/devices/counterX/count0/capture4
 
-You'll see the same error with GCC 7:
+In your device driver, you would define a struct counter_count to
+represent CTR. In this struct counter_count there is an "ext" member
+where you provide an array of struct count_comp. Each CAPx will have a
+corresponding struct count_comp; it'll look something like this::
 
-  drivers/iio/magnetometer/yamaha-yas530.c:933:19: error: initializer element is not constant
-     .product_name = yas5xx_product_name[yas530],
-                     ^~~~~~~~~~~~~~~~~~~
-  drivers/iio/magnetometer/yamaha-yas530.c:933:19: note: (near initialization for ‘yas5xx_chip_info_tbl[0].product_name’)
-  drivers/iio/magnetometer/yamaha-yas530.c:938:19: error: initializer element is not constant
-     .product_name = yas5xx_product_name[yas532],
-                     ^~~~~~~~~~~~~~~~~~~
-  drivers/iio/magnetometer/yamaha-yas530.c:938:19: note: (near initialization for ‘yas5xx_chip_info_tbl[1].product_name’)
-  drivers/iio/magnetometer/yamaha-yas530.c:943:19: error: initializer element is not constant
-     .product_name = yas5xx_product_name[yas533],
-                     ^~~~~~~~~~~~~~~~~~~
-  drivers/iio/magnetometer/yamaha-yas530.c:943:19: note: (near initialization for ‘yas5xx_chip_info_tbl[2].product_name’)
+        static struct counter_comp ctr_count_ext[] =3D {
+                COUNTER_COMP_COUNT_U64("capture1", cap1_read, NULL),
+                COUNTER_COMP_COUNT_U64("capture2", cap2_read, NULL),
+                COUNTER_COMP_COUNT_U64("capture3", cap3_read, NULL),
+                COUNTER_COMP_COUNT_U64("capture4", cap4_read, NULL),
+        };
 
-Cheers,
-Nathan
+As you already know, counter_push_event() lets you push Counter events
+in your interrupt handler. I recommend introducing a new event type
+under enum counter_event_type in the include/uapi/linux/counter.h header
+file; something like COUNTER_EVENT_CAPTURE should be descriptive enough.
 
-> >    930  static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
-> >    931          [yas530] = {
-> >    932                  .devid = YAS530_DEVICE_ID,
-> >  > 933                  .product_name = yas5xx_product_name[yas530],
-> >    934                  .version_name = yas5xx_version_names[yas530],
-> >    935          },
-> >    936          [yas532] = {
-> >    937                  .devid = YAS532_DEVICE_ID,
-> >    938                  .product_name = yas5xx_product_name[yas532],
-> >    939                  .version_name = yas5xx_version_names[yas532],
-> >    940          },
-> >    941          [yas533] = {
-> >    942                  .devid = YAS532_DEVICE_ID,
-> >    943                  .product_name = yas5xx_product_name[yas533],
-> >    944                  .version_name = yas5xx_version_names[yas533],
-> >    945          },
-> >    946  };
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
+The "channel" member of struct counter_watch refers to Counter event
+channels; The purpose here is to allow us to support concurrent events
+of the same type (e.g. two COUNTER_EVENT_OVERFLOW but for different
+Counts). If I understand the TI ECAP device correctly, we'll be getting
+a COUNTER_EVENT_CAPTURE event whenever a CAPx register is updated with a
+new capture. It's up to you if you want to group them under the same
+channel or separate channels for each CAPx; you would just pass the
+channel in counter_push_event() to indicate which COUNTER_EVENT_CAPTURE
+event is being handled.
+
+Finally, you can take a look at tools/counter/counter_example.c as an
+example userspace application. The interesting bits for you are
+COUNTER_ADD_WATCH_IOCTL/COUNTER_ENABLE_EVENTS_IOCTL ioctl calls and
+reading the event data out of the queue. You will need to first define
+an array of struct counter_watch indicating that you want to watch the
+"capture" attributes of the CTR count; something like this (assuming
+event channel 0)::
+
+        /* assuming capture attributes are under the count0 directory */
+        #define CAPTURE_WATCH(_id, _channel) \
+        { \
+                .component.type =3D COUNTER_COMPONENT_EXTENSION, \
+                .component.scope =3D COUNTER_SCOPE_COUNT, \
+                .component.parent =3D 0, \
+                .component.id =3D _id, \
+                .event =3D COUNTER_EVENT_CAPTURE, \
+                .channel =3D _channel, \
+        }
+        /* get id from respective "captureX_component_id" attributes */
+        static struct counter_watch watches[4] =3D {
+                CAPTURE_WATCH(42, 0),
+                CAPTURE_WATCH(43, 0),
+                CAPTURE_WATCH(44, 0),
+                CAPTURE_WATCH(45, 0),
+        };
+
+Later you add the watches, enable events, and finally read the event
+data as it arrives::
+
+	struct counter_event event_data[4];
+       =20
+        ioctl(fd, COUNTER_ADD_WATCH_IOCTL, &watches[0]);
+        ioctl(fd, COUNTER_ADD_WATCH_IOCTL, &watches[1]);
+        ioctl(fd, COUNTER_ADD_WATCH_IOCTL, &watches[2]);
+        ioctl(fd, COUNTER_ADD_WATCH_IOCTL, &watches[3]);
+	ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
+       =20
+	for (;;) {
+	        read(fd, event_data, sizeof(event_data));
+		printf("cap1: %llu", event_data[0].value);
+		printf("cap2: %llu", event_data[1].value);
+		printf("cap3: %llu", event_data[2].value);
+		printf("cap4: %llu", event_data[3].value);
+	}
+
+If you want to keep track of channel, you can take a look under the
+event_data[i].watch.channel member.
+
+William Breathitt Gray
+
+--6X5vf6Fz1F42Rx02
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYvE3mwAKCRC1SFbKvhIj
+K/WxAP0RwkJd1BCye6EEjgg5pbBwk0uqoySGkHk/jt05NIx7nQD9Hl45FUL/NSy1
+vPrsUe9n5lcrJ4pR8w+USLnvPkCfJQ8=
+=Swu5
+-----END PGP SIGNATURE-----
+
+--6X5vf6Fz1F42Rx02--

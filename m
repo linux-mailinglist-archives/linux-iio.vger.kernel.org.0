@@ -2,82 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB6358CF47
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 22:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3085B58CF5D
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 22:48:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244420AbiHHUmP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 16:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57672 "EHLO
+        id S244285AbiHHUsN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 16:48:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236282AbiHHUmO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 16:42:14 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EF0A10FDF;
-        Mon,  8 Aug 2022 13:42:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-        bh=ZgX1+MCfF/NQe7YV4mbEzfn++YyLm+UWvyG7V14DLis=; b=Pfpag1Q+1mAb5ZtJYQawOMXgQn
-        OZvFLMYkavguq+1zGabZnEWkneHoBQqVWWji7PZvNWv+BItB0EceSVLsNHS+hpPDDWmHKeaZ7rIaT
-        q8JaLhyby8v1vHiyXONUKSr2NVY9gZxB9xxWkt9jvn81d+w4Oj1pAORjRrL7HKZin3eE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1oL9Yv-00ClV1-To; Mon, 08 Aug 2022 22:41:21 +0200
-Date:   Mon, 8 Aug 2022 22:41:21 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Andrew Davis <afd@ti.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S244329AbiHHUsE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 16:48:04 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CC8B1DD
+        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 13:48:01 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oL9fE-000464-8w; Mon, 08 Aug 2022 22:47:52 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oL9f6-002ZYl-OQ; Mon, 08 Aug 2022 22:47:47 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1oL9f8-00ARBB-Es; Mon, 08 Aug 2022 22:47:46 +0200
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Tomislav Denis <tomislav.denis@avl.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Pavel Machek <pavel@ucw.cz>,
-        Tim Harvey <tharvey@gateworks.com>,
-        Robert Jones <rjones@gateworks.com>,
-        Lee Jones <lee@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-hwmon@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        linux-leds@vger.kernel.org, netdev@vger.kernel.org,
-        linux-pm@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
-Message-ID: <YvF08ft7GiXr6Hd2@lunn.ch>
-References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
- <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
- <43b3c497-97fd-29aa-a07b-bcd6413802c4@linaro.org>
- <6ae15e00-36a4-09a8-112e-553ed8c5f4da@ti.com>
- <YvFtJRJHToDrfpkN@lunn.ch>
- <8b577a8e-26e3-c9db-dae1-7d74fc3334ad@ti.com>
+        Heiko Stuebner <heiko@sntech.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        kernel@pengutronix.de,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Michal Simek <michal.simek@xilinx.com>
+Subject: [PATCH 01/13] iio: adc: ad7124: Benefit from devm_clk_get_enabled() to simplify
+Date:   Mon,  8 Aug 2022 22:47:28 +0200
+Message-Id: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8b577a8e-26e3-c9db-dae1-7d74fc3334ad@ti.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1349; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=6MhAZxMoftj9x+FzMFLhO/Kc6uT7FQ38eSRlrngBJmo=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBi8XY6jfxJUlrQ+bVGqpuw9vmGHDDS7VgPkSr/1L0U vghl0UqJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYvF2OgAKCRDB/BR4rcrsCSbhB/ 9fBl6/YeqehD8NPK1ZeJyxhZhshfjPk+qh2sxekH00BOWCwM1T3EY/LLuE5b+YFntSen4GEDcIALP4 pXxcg8iJRVJ0BgLRre4aWY3qdY7ZicvKPDAc58Oo4EZAQsHxGbQ/7yolbtPbk8n7cJtUTi6BEDosaA mBdUCdAhPbkrx7JDzZqXce8Y5CR3oDVV8ekSf9zBWX3VL/wOFfevAujqoHNNXGT3DyK09yrPHGCUiO 7HWkRfhrOhRjhbbGn9ypvvojdojr2ak8f5i+z8tyaSeykwjzTH11WMFz+Kq9wU+o8XSPJmzdG6mrE3 fvvEmIITTCNNCn/bKY4uecxRxs2YPi
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> I'm not seeing his name in the latest MAINTAINERS, seem they all got
-> dropped in 57a9006240b2.
+Make use of devm_clk_get_enabled() to replace some code that effectively
+open codes this new function.
 
-Ah, great.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/iio/adc/ad7124.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-And there does not appear to be a MAINTAINERS entry for any of the TI
-PHYs, so giving the correct impression they are without a Maintainer.
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index c5b785d8b241..4088786e1026 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -936,11 +936,6 @@ static void ad7124_reg_disable(void *r)
+ 	regulator_disable(r);
+ }
+ 
+-static void ad7124_clk_disable(void *c)
+-{
+-	clk_disable_unprepare(c);
+-}
+-
+ static int ad7124_probe(struct spi_device *spi)
+ {
+ 	const struct ad7124_chip_info *info;
+@@ -993,18 +988,10 @@ static int ad7124_probe(struct spi_device *spi)
+ 			return ret;
+ 	}
+ 
+-	st->mclk = devm_clk_get(&spi->dev, "mclk");
++	st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
+ 	if (IS_ERR(st->mclk))
+ 		return PTR_ERR(st->mclk);
+ 
+-	ret = clk_prepare_enable(st->mclk);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = devm_add_action_or_reset(&spi->dev, ad7124_clk_disable, st->mclk);
+-	if (ret)
+-		return ret;
+-
+ 	ret = ad7124_soft_reset(st);
+ 	if (ret < 0)
+ 		return ret;
 
-	Andrew
+base-commit: 8b3d743fc9e2542822826890b482afabf0e7522a
+-- 
+2.36.1
+

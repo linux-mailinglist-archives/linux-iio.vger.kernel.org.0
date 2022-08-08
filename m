@@ -2,156 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E2258C564
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 11:17:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB1D158C56F
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 11:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242289AbiHHJRP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 05:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54880 "EHLO
+        id S242298AbiHHJTN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 05:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242261AbiHHJRO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 05:17:14 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A68513F41
-        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 02:17:12 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id x9so5465509ljj.13
-        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 02:17:12 -0700 (PDT)
+        with ESMTP id S242299AbiHHJTM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 05:19:12 -0400
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2D7913F6B
+        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 02:19:11 -0700 (PDT)
+Received: by mail-qv1-xf2a.google.com with SMTP id d10so365360qvn.8
+        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 02:19:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=pMpurfdUFUXUf7fmwUQBIqLSWGdQDW67AVZBUmy36+k=;
-        b=r1xUYo+L0qxJxm9/dIt6wup1Dpe9Iqw3qDUSVLixLXaD9QnyWNaW4VNjsbYKbLWG3m
-         +q1yNGFsnSUXflkalaqeWqEBgelbQNnpDPmaAoi6GLIcxwMfzVjgTYfmavGrl2i/pnW0
-         ikrVqDzQ6vhUgeAjf9nvoPt6MqZeO8D5UKUItp34rlp2tWDJ7uRwbcWQAyK3Gw1Ftg1+
-         6m+ezM2bRgBygZCRf5C2hNWtlDJkRL4OmClSWoOZTINDNnx7jHSWBdwCoZID2laakvdC
-         d/yOvWPt7cwGbIwrby0E5TYRWXuW7NizeqFUpc2Xv0iV9pkmO0bEquvydNBKJAcXp9XD
-         qG5Q==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=toARq6+YjfznU7JL+dv47/dc1C5Fjp6EKvhLDC54y0I=;
+        b=DUoC2Ri/o0/mDyneFFlNGIUo226h5aAG/Mx02/eufaYVV5II3zFmmaGaET3gTTuqD0
+         IvYcQ/NPD4LWvDMWKHUarHSs6EMNdQPEkFrcgwqNGrkRK13ix9ZMCImqdZmnIKjgO8Hz
+         FAH5UY2p9vTWL+5Nmp5abokeUF+xG717GnreWGXVlf7hQPcaCkQQ2HhlivpLq7sT4fr8
+         7shbXvr3HOT6kd16ndNXlbHRuxNF03AYPqM42IaU4pDQs0fPn6DkE9AzD3t3HDPTeMTO
+         Q3Osj3Cbit0Dn3Zk7aCCE0uhkgLYSFotLjCZonPsZAtduU5p7eXrcveg/BgYN3xuW9he
+         +JUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=pMpurfdUFUXUf7fmwUQBIqLSWGdQDW67AVZBUmy36+k=;
-        b=eaxeCpUHY9/jMokqXioXRPyUuiFiyU6Oo4FjY+lsYP+x3/iUY5O5/+IDWr/kgaR4Tb
-         XPXePEYkXWOqw8E1cxYNuL1frKFbk2am/7G0e1RBiRv85GNJzpAZHyNI4l+Y/K9xf1fv
-         wEyL4/YgSgdtAoqWGm4Au0+zIGeJmqswIValL5aZI7FnLWg9FXPIcTirpk9Ao2l41Y7C
-         dOTGTreh7eeKmooRIH0Z71lF7PcYXICl2vI37KMJ0IB386BbvckyEGN5EH59qX8SxBRP
-         OEq9IMGB8+cF6uHn+ur2UJYmljEOu6uwiNr9ctzxeMsggS5+Rl1VBtApmjPIsxiuqBes
-         b7VQ==
-X-Gm-Message-State: ACgBeo2N+gF4KJkFM2/OaUT1/h3AtdrmqtQkPt5gz+2A58J5e3+SqfTh
-        S6HiN2yS88lzathFRIJUaRsfFTl92dVxRJbi
-X-Google-Smtp-Source: AA6agR75FWgUDhN/Zq3dwh05o1Z/nJwA53vV5D3Tos8WHvDReDd8edBsXQCUqvN2Ob/upYWd966uvQ==
-X-Received: by 2002:a2e:8404:0:b0:250:cde7:e9e3 with SMTP id z4-20020a2e8404000000b00250cde7e9e3mr5291223ljg.289.1659950230860;
-        Mon, 08 Aug 2022 02:17:10 -0700 (PDT)
-Received: from [192.168.1.39] ([83.146.140.105])
-        by smtp.gmail.com with ESMTPSA id s13-20020a056512314d00b00477c0365b20sm1353560lfi.188.2022.08.08.02.17.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Aug 2022 02:17:09 -0700 (PDT)
-Message-ID: <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
-Date:   Mon, 8 Aug 2022 12:17:06 +0300
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=toARq6+YjfznU7JL+dv47/dc1C5Fjp6EKvhLDC54y0I=;
+        b=txD98Rrcu9DFhX86L1j1vDE/XgwNxBzO3eH+YM3Yv0hwRo7fYGCi2jjnSD24qKueB/
+         UEvALBOPt8cFtcFXMF1InEVbRG0vhqUrEqgvuHDSBsmpkbEIzOKA5eX4UfetAggCcukj
+         l3Lku0fQn0r0BHusgPvmTnOcxDHx1uV1fGYK0byZV3XfFFWdg92ToiQKZTFczCVvq3Bv
+         BVjUxmVxXdyGxNoeSWvPghzvUVGe9LByn2P+aUwXMzrpnGHX1/q+jqZI0rNXz4PTeRy1
+         vzxVejMF4M+DD1dYwa9znBdfpIG+d+ymR6wZ6D+hFYvIjX5d3sy60TOlCI6curtnQPiP
+         X30g==
+X-Gm-Message-State: ACgBeo36QJLSqNzF42IoY9tpU1+S9llJbPJ5ZNOHcnw49dAt/rCJALdx
+        LPtM5NE6yaE18O4kgZy/2YBEFe0RNjEoBRQxFFXWOnqVxus=
+X-Google-Smtp-Source: AA6agR6SvLrjuqZ5ewkzwzm1O6P3IimXu4Rul3LdIEO0OYYZpiLoceTkL+swutYQb44UUJQ4qcZHZo9u+GWVLcaOXtI=
+X-Received: by 2002:a05:6214:d07:b0:476:c32f:f4f4 with SMTP id
+ 7-20020a0562140d0700b00476c32ff4f4mr15407201qvh.11.1659950350879; Mon, 08 Aug
+ 2022 02:19:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v2 3/5] arm64: dts: qcom: Add PM6125 PMIC
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
- <20220805135729.1037079-4-marijn.suijten@somainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220805135729.1037079-4-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220807151218.656881-1-jic23@kernel.org> <20220807151218.656881-2-jic23@kernel.org>
+In-Reply-To: <20220807151218.656881-2-jic23@kernel.org>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Mon, 8 Aug 2022 11:18:34 +0200
+Message-ID: <CAHp75Vd34hOAMpeCwcYjnuVWUSN7WuGGwc1qiKqNp+xpmsEXkg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] staging: iio: frequency: ad9832: Fix alignment for
+ DMA safety
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 05/08/2022 16:57, Marijn Suijten wrote:
-> This PMIC is commonly used on boards with an SM6125 SoC and looks very
-> similar in layout to the PM6150.
-> 
-> Downstream declares more nodes to be available, but these have been
-> omitted from this patch: the pwm/lpg block is unused on my reference
-> device making it impossible to test/validate, and the spmi-clkdiv does
-> not have a single device-tree binding using this driver yet, hence
-> inclusion is better postponed until ie. audio which uses these clocks is
-> brought up.
-> 
+On Sun, Aug 7, 2022 at 5:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+> on platforms with 128 byte cachelines above L1.  Switch to the updated
+> IIO_DMA_MINALIGN definition.
 
-Thank you for your patch. There is something to discuss/improve.
+...
 
-> +
-> +			xo-therm@4c {
-> +				reg = <ADC5_XO_THERM_100K_PU>;
-> +				qcom,pre-scaling = <1 1>;
-> +				qcom,hw-settle-time = <200>;
-> +				qcom,ratiometric;
-> +			};
-> +		};
-> +
-> +		pm6125_adc_tm: adc-tm@3500 {
+>         union {
+> -               __be16                  freq_data[4]____cacheline_aligned;
+> +               __be16                  freq_data[4] __aligned(IIO_DMA_MINALIGN);
+>                 __be16                  phase_data[2];
+>                 __be16                  data;
+>         };
 
-Generic node names, so either this is adc or thermal-sensor. Looks like
-thermal-sensor.
+Hmm... Can we rather mark the entire union with it?
 
-> +			compatible = "qcom,spmi-adc-tm5";
-> +			reg = <0x3500>;
-> +			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			#thermal-sensor-cells = <1>;
-> +			status = "disabled";
-> +		};
-> +
-> +		pm6125_rtc: rtc@6000 {
-> +			compatible = "qcom,pm8941-rtc";
-> +			reg = <0x6000>, <0x6100>;
-> +			reg-names = "rtc", "alarm";
-> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
-> +			status = "disabled";
-> +		};
-> +
-> +		pm6125_gpio: gpios@c000 {
-
-s/gpios/gpio/
-
-> +			compatible = "qcom,pm6125-gpio", "qcom,spmi-gpio";
-> +			reg = <0xc000>;
-> +			gpio-controller;
-> +			gpio-ranges = <&pm6125_gpio 0 0 9>;
-> +			#gpio-cells = <2>;
-> +			interrupt-controller;
-> +			#interrupt-cells = <2>;
-> +		};
-> +	};
-> +
-> +	pmic@1 {
-> +		compatible = "qcom,pm6125", "qcom,spmi-pmic";
-> +		reg = <0x1 SPMI_USID>;
-> +	};
-> +};
-
-
-Best regards,
-Krzysztof
+-- 
+With Best Regards,
+Andy Shevchenko

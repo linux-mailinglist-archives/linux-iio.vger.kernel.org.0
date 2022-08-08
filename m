@@ -2,105 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B8E58C81D
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 14:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D45958C9D8
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Aug 2022 15:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233230AbiHHMGJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 8 Aug 2022 08:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
+        id S243026AbiHHN4Q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 8 Aug 2022 09:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242542AbiHHMGH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 08:06:07 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F3F5F64
-        for <linux-iio@vger.kernel.org>; Mon,  8 Aug 2022 05:05:55 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id ay36-20020a05600c1e2400b003a4e30d7995so7308908wmb.5
-        for <linux-iio@vger.kernel.org>; Mon, 08 Aug 2022 05:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Yv7/Ul3NtrsgwZNY2tz3vPTVziFu5q3/IA4UlHUJklg=;
-        b=dpXdQWxuBRSCqpfom0NwcrxvY0fURdxtGYuWn0dDyqb/eueUQAGz0+a/jmpILk8Wv6
-         p5CLIGaNGPaXx4US9/Mrp/sQqq4xH9Gqylc0FxO9NmSbnjqerwbPHgs7f3bEFsUgaEYP
-         cS9ZoFeyH+YfGRj6QZMRLNw2aauv/Txu7WxfgVCoLwywZxGLx2M5FJE0x8CGLqHfdmdJ
-         swNWUuceoBsNCj+p6ukU/si7CcmL0QQGAclsWuvYTk+sK0USnxN+nYcZ9CdFC6chGAu2
-         nsDiy0hSalEN84gtIAMNmHny/CQaStNZVqXP+7nFksTR3/E7oI/R59EabeEhddYo+tde
-         IW6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Yv7/Ul3NtrsgwZNY2tz3vPTVziFu5q3/IA4UlHUJklg=;
-        b=Axth/j6laMymeul0ct/PuDuCBCG2x1WQt2WaF4gQFvd7BLYL76cYfZX9D2DJVzFUOf
-         EvN9t0Ajm/Jog+4QiMNEcjF53Yc+6nj5Ml38D64kdnvDDEUu+0JzRiQzsBl9FB8Rbb4Z
-         MoQ6pMrso4vNCzMv+9G7NsoptcQPewR1J411icLN7YMveUtJ/50Gjw/lC1zLhhAFOSAZ
-         REDWIqejS0WMRG/ZyRZ7NNmDocl67HUe/CpPT9asfRAzxzV0Ugv5Xh/FTJmO+Ksn8YUx
-         /E9ilutHb14plhB2Ij1Pyx1ckHOrQJomHJOcMOtoIr4/na6KzfHaQtQ3QE9iJMsd5/yj
-         rtwg==
-X-Gm-Message-State: ACgBeo3xN9nlMYjPB7fQapTJgarKX0QTxhTSiLAyv0PwZyTwXU5yTaHy
-        /K/guF8aOZLh7ihAFcmagIDsnw==
-X-Google-Smtp-Source: AA6agR5McIiXqc3Z1dpu34Hdqbz9S9Td7lasSrfwR0gSLIBEoMFiIuqtX0Fk/2RcmdewAPxkE2rXHg==
-X-Received: by 2002:a05:600c:5123:b0:3a3:2543:be80 with SMTP id o35-20020a05600c512300b003a32543be80mr17215693wms.155.1659960353944;
-        Mon, 08 Aug 2022 05:05:53 -0700 (PDT)
-Received: from localhost.localdomain (ptr-4xh0y3vuv1059rd6h4r.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:cd22:c517:e143:e53b])
-        by smtp.gmail.com with ESMTPSA id n66-20020a1ca445000000b003a513ee7830sm15884560wme.27.2022.08.08.05.05.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Aug 2022 05:05:53 -0700 (PDT)
-From:   Crt Mori <cmo@melexis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Crt Mori <cmo@melexis.com>, Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S237479AbiHHN4P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 8 Aug 2022 09:56:15 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCA2D113;
+        Mon,  8 Aug 2022 06:56:12 -0700 (PDT)
+Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M1d5j361Yz6H74W;
+        Mon,  8 Aug 2022 21:56:09 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.24; Mon, 8 Aug 2022 15:56:09 +0200
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Mon, 8 Aug
+ 2022 14:56:09 +0100
+Date:   Mon, 8 Aug 2022 14:56:08 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v2 2/2] dt-bindings: iio: mlx90632 Add supply regulator documentation
-Date:   Mon,  8 Aug 2022 14:05:49 +0200
-Message-Id: <20220808120549.1543338-1-cmo@melexis.com>
-X-Mailer: git-send-email 2.34.1
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        "Tim Harvey" <tharvey@gateworks.com>,
+        Robert Jones <rjones@gateworks.com>,
+        "Lee Jones" <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Ricardo Rivera-Matos" <r-rivera-matos@ti.com>,
+        <linux-hwmon@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-fbdev@vger.kernel.org>, <linux-leds@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>
+Subject: Re: [PATCH 5/5] dt-bindings: Drop Dan Murphy
+Message-ID: <20220808145608.00002bf8@huawei.com>
+In-Reply-To: <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+References: <20220808104712.54315-1-krzysztof.kozlowski@linaro.org>
+        <20220808104712.54315-6-krzysztof.kozlowski@linaro.org>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the newly added vdd supply option.
+On Mon,  8 Aug 2022 13:47:12 +0300
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Signed-off-by: Crt Mori <cmo@melexis.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../devicetree/bindings/iio/temperature/melexis,mlx90632.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+> Emails to Dan Murphy bounce ("550 Invalid recipient <dmurphy@ti.com>
+> (#5.1.1)").
+> 
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml     | 2 +-
+>  .../devicetree/bindings/leds/leds-class-multicolor.yaml         | 2 +-
+>  Documentation/devicetree/bindings/leds/leds-lp50xx.yaml         | 2 +-
+>  Documentation/devicetree/bindings/net/ti,dp83822.yaml           | 2 +-
+>  Documentation/devicetree/bindings/net/ti,dp83867.yaml           | 2 +-
+>  Documentation/devicetree/bindings/net/ti,dp83869.yaml           | 2 +-
+>  Documentation/devicetree/bindings/power/supply/bq2515x.yaml     | 1 -
+>  Documentation/devicetree/bindings/power/supply/bq25980.yaml     | 1 -
+>  Documentation/devicetree/bindings/sound/tas2562.yaml            | 2 +-
+>  Documentation/devicetree/bindings/sound/tlv320adcx140.yaml      | 2 +-
+>  10 files changed, 8 insertions(+), 10 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml
+> index 9f5e96439c01..8f50f0f719df 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml
+> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: Texas Instruments' ads124s08 and ads124s06 ADC chip
+>  
+>  maintainers:
+> -  - Dan Murphy <dmurphy@ti.com>
+> +  - Jonathan Cameron <jic23@kernel.org>
+For this one,
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-index b547ddcd544a..4a55e7f25ae7 100644
---- a/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/melexis,mlx90632.yaml
-@@ -35,6 +35,9 @@ properties:
-     maxItems: 1
-     description: Default is 0x3a, but can be reprogrammed.
- 
-+  vdd-supply:
-+    description: provide VDD power to the sensor.
-+
- required:
-   - compatible
-   - reg
-@@ -50,6 +53,7 @@ examples:
-         temp-sensor@3a {
-             compatible = "melexis,mlx90632";
-             reg = <0x3a>;
-+            vdd-supply = <&ldo4_reg>;
-         };
-     };
- ...
--- 
-2.34.1
+(I'm fine with using my kernel.org address for bindings)
 

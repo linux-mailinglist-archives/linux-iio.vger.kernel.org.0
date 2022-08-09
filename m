@@ -2,85 +2,192 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BBB58D6A0
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 11:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E112D58D6B6
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 11:48:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232615AbiHIJld (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Aug 2022 05:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36100 "EHLO
+        id S233269AbiHIJsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Aug 2022 05:48:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230508AbiHIJld (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 05:41:33 -0400
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87512222B5;
-        Tue,  9 Aug 2022 02:41:32 -0700 (PDT)
-Received: by mail-qv1-xf2f.google.com with SMTP id i4so8131660qvv.7;
-        Tue, 09 Aug 2022 02:41:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=ci2ls7U2nuSCUe0dlH3AzImlyXCli4yH62m5As59nY8=;
-        b=FpTSUdjzNKGxsQw4Qr9Sw2khzp61ywT2GjN+Y47mcY+i8NsVEPI2HedFE7RWONyyfp
-         0Ho3kRzV5BtCtmmQkoYSTbVljV85r3JQ2y1FC3sxzjJ3wHf/nBPXkV0YByj6BcNydB/H
-         SyBcq51WqRLu5X9kVO470kXSsu7Khz3nUmPPDwNk2gmRVgY5/447yW4eQx6iVaQOlQAG
-         Jomn3U066VaN2wzXYSHiZHwdPZ24kmKdoefGi/8tpwasjVxIYE2aENZNKfZl+6Gb8APA
-         FDd3SQRY4682fwmAdh4PXs9Vnh56Squg5Qkj+/hJVqYiV6Dxen0INiDr/ffFC4AtgeCr
-         CKAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=ci2ls7U2nuSCUe0dlH3AzImlyXCli4yH62m5As59nY8=;
-        b=NrpFArST3DIqJUJLR0uucSr9LC6ohsCvG8h5DrSJnj+AuVaXvhcGD/ltztJOchnb8a
-         5DdCqShexk/eP6+qHJJgLYpSES1vTjkGJN+qv9+kLeERmqRiegKbNBJQe1WyZkGQJZUX
-         R8kyvtjNE1+9PzID1caBEfGTjbr7LuYxttw31zU4EgByQqlFHCCv5Jb81CPbp5+c0Rlh
-         khboNGTMmkIJ2Wl6OW8C9ko1NeJWWaeE150+N2ViUZIsmxlT/EK6SLxTg1si89PGIjf8
-         FL380oWBtnQhBQjBoqzTGA0SFBGkxNinG3IuE56RN3gq7UWyYx/Fia2hZFKLG/Qwd94E
-         XRaw==
-X-Gm-Message-State: ACgBeo2YUg+SgGF0GIba6KA6NCGOu6lUILfGCP2c1nq9eU+zdhEvg3G2
-        e1ddSdg7zBaOqjpLcZ98HWdL+q9EJKaEzZplcjM=
-X-Google-Smtp-Source: AA6agR4csQGQVizYsqrcvJGOpMqckJzg5kR2dW30zWgr1UqpI/7Tkg4pVVnw1mUPpeciubqQIbAU8SaX5SxEdRL5dHA=
-X-Received: by 2002:ad4:5cc3:0:b0:474:8dda:dfb6 with SMTP id
- iu3-20020ad45cc3000000b004748ddadfb6mr19208051qvb.82.1660038091542; Tue, 09
- Aug 2022 02:41:31 -0700 (PDT)
+        with ESMTP id S229963AbiHIJsE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 05:48:04 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D9B1F63A;
+        Tue,  9 Aug 2022 02:48:01 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 8A1815FD05;
+        Tue,  9 Aug 2022 12:47:59 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1660038479;
+        bh=1NkSog7fNwIuD5awyrROp78DqGLAA2ojxoXb1/HAoNk=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=hFDLqYrgj81gSOH5Urbg46yf1sLyfdAl9V/bmisWnmBKVIF4b1YmuFUt0gVGqYSQf
+         42GnCO8zJNeHd6h6UtfkdBIDNeY38CJvqV1Qegwbs59Pdq4q1VXqy+fg7Bk0vXulxz
+         juLR4kmdJ1Xf81UU+kwOUJlDS+kbIgYgE4u7Cu+ze6fXOsxrkBpZoW5+U0gUhde1rc
+         Hjc8yGiVmmTzkkHrKSq5UI0GCZcA3xtrrA3yqnqsSuIu+5f55A+weRfhHDUPCNPEUb
+         aC+EvHRee3fI3Cj2gAEP1KfaNPsRQqs5vq4lVJZAFLbl2Y6wGqPmm0M4L2lLhoTYaN
+         9Sc/qN+ZJDdgw==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Tue,  9 Aug 2022 12:47:58 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Topic: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62h0pwAgARW1QA=
+Date:   Tue, 9 Aug 2022 09:47:54 +0000
+Message-ID: <20220809094754.akfed7hxcdvxoacj@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
+ <20220803131132.19630-3-ddrokosov@sberdevices.ru>
+ <20220806163204.3262c0e7@jic23-huawei>
+In-Reply-To: <20220806163204.3262c0e7@jic23-huawei>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6373418BF86F2844AEE00C8459CE3039@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20220809073648.167821-1-marcus.folkesson@gmail.com>
- <20220809073648.167821-5-marcus.folkesson@gmail.com> <CAHp75Vc-cd_-+qyd62tcJGdXh917AgZY5VB0ztXR3zwrGoMCRQ@mail.gmail.com>
-In-Reply-To: <CAHp75Vc-cd_-+qyd62tcJGdXh917AgZY5VB0ztXR3zwrGoMCRQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 9 Aug 2022 11:40:55 +0200
-Message-ID: <CAHp75VdhdpKasyYrb1tkhL6yjfZwMcbWJYNc9bw8LDr7KLT6jw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/9] iio: adc: mcp3911: use resource-managed version of iio_device_register
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/09 07:32:00 #20083496
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 9, 2022 at 11:39 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
+Hello Jonathan,
 
-...
+On Sat, Aug 06, 2022 at 04:32:04PM +0100, Jonathan Cameron wrote:
 
-> You may rather switch to devm_clk_get_enabled() and drop this.
+[...]
 
-While doing this I would recommend to split the regulator case and clock case.
+> > +/**
+> > + * struct msa311_priv - MSA311 internal private state
+> > + * @regs: Underlying I2C bus adapter used to abstract slave
+> > + *        register accesses
+> > + * @fields: Abstract objects for each registers fields access
+> > + * @dev: Device handler associated with appropriate bus client
+> > + * @lock: Protects msa311 device state between setup and data access r=
+outines
+> > + *        (power transitions, samp_freq/scale tune, retrieving axes da=
+ta, etc)
+> > + * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
+> > + *                 to notify external consumers a new sample is ready
+> > + * @vdd: Optional external voltage regulator for the device power supp=
+ly
+> > + */
+> > +struct msa311_priv {
+> > +	struct regmap *regs;
+> > +	struct regmap_field *fields[F_MAX_FIELDS];
+> > +
+> > +	struct device *dev;
+> > +	struct mutex lock; /* state guard */
+>=20
+> Shouldn't need this comment given documentation above that provides
+> more information.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Without this comment checkpatch.pl raises a warning about uncommented
+lock definition.
+I agree with you, above comment is redundant, but is it okay to ignore
+such warnings before sending the patch?
+
+I'm talking about below checkpatch condition:
+=3D=3D=3D=3D=3D
+# check for spinlock_t definitions without a comment.
+		if ($line =3D~ /^.\s*(struct\s+mutex|spinlock_t)\s+\S+;/ ||
+		    $line =3D~ /^.\s*(DEFINE_MUTEX)\s*\(/) {
+			my $which =3D $1;
+			if (!ctx_has_comment($first_line, $linenr)) {
+				CHK("UNCOMMENTED_DEFINITION",
+				    "$1 definition without comment\n" . $herecurr);
+			}
+		}
+=3D=3D=3D=3D=3D
+
+>=20
+> > +
+> > +	struct iio_trigger *new_data_trig;
+> > +	struct regulator *vdd;
+> > +};
+> >
+>=20
+>=20
+> > +static irqreturn_t msa311_irq_thread(int irq, void *p)
+> > +{
+> > +	struct msa311_priv *msa311 =3D iio_priv(p);
+> > +	unsigned int new_data_int_enabled;
+> > +	struct device *dev =3D msa311->dev;
+> > +	int err;
+> > +
+> > +	mutex_lock(&msa311->lock);
+>=20
+> > +
+> > +	/*
+> > +	 * We do not check NEW_DATA int status, because of based on
+> > +	 * specification it's cleared automatically after a fixed time.
+> > +	 * So just check that is enabled by driver logic.
+>=20
+> That is going to be very problematic if we can have this and events comin=
+g
+> through the same interrupt pin.  Not harmful for now though given you are
+> only supporting NEW_DATA for now.  Just something to watch out for.
+>=20
+
+Actually, I have run some experiments with NEW_DATA status bits. And
+looks like we can't determince actual status of NEW_DATA virtual
+interrupt when physical IRQ is raised. I will back to this problem when
+begin Motion Events feature implementation.
+
+[...]
+
+> > +	err =3D devm_pm_runtime_enable(dev);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	pm_runtime_get_noresume(dev);
+> > +	pm_runtime_set_autosuspend_delay(dev, MSA311_PWR_SLEEP_DELAY_MS);
+> > +	pm_runtime_use_autosuspend(dev);
+> > +
+> > +	err =3D msa311_chip_init(msa311);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	indio_dev->modes =3D 0; /* setup buffered mode later */
+>=20
+> As per other branch, I led you astray here it seems.
+>=20
+
+Sorry, I've made a mistake. Comment about INDIO_DIRECT_MODE was left
+by Andy here:
+
+https://lore.kernel.org/linux-iio/CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNSh=
+FRG3kP8b6w@mail.gmail.com/
+
+[...]
+
+--=20
+Thank you,
+Dmitry=

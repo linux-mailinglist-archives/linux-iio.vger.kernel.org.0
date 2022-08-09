@@ -2,64 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D43158E3CA
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Aug 2022 01:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EADB58E3CF
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Aug 2022 01:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbiHIXin (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Aug 2022 19:38:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56286 "EHLO
+        id S229607AbiHIXle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Aug 2022 19:41:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbiHIXim (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 19:38:42 -0400
-Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202AD7FE40
-        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 16:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660088319; bh=TDGroOcJ5FlBomnwNgFChEWpHN3cLVGYpJ4lYuXKAXc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=qqi5ZywuE7tFuqgL5v59hBjBHt7cfUtXi0K63z9psBsxlU3axAT466xzzNCGG44x/pfXcs8z0QnuKL4TT7g4zOmsUqhe/7c+S38yPGqo1iDmEfpDfnZ6Sq/Oq6Y82YylWvvm7U7fk00zsy9f+dR0aurNWPITsidalLwah4U5kU4bbrSFiUae+Go4XaYDWRqAhWTJHvY8QjEK+pccuhFNKNzSbV/SG7fFeQRJCvupleHBOvRbUPLUlm99ZsRn0WhiudVWSjQbWzJFsDPsTrzT6OLAad7aydijcqDpDC/UwkkbsWKW6qeIwb/kiNR/eWotmXlQdi6Sixw/Zq1txpNvuw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660088319; bh=oACuPx5RawpOZlSEcm6Bkdj4Wbzgb2/t/6/J0kxTqfX=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=nzqFp5/h5gw2pigtkF63vVgnsJWE0m3o3cOG8MsCI0kG6JUjC6tEiRQaeJFSG31J2yjeLfaxTVsk2mC9E1JSiRHFSq35OBtfx7UGogSVrWoRScEKiSSq77StaudSMgcycfcKDHUDARpHLGrm7clrH6BJKQl6NUDwJm7sc1Iv13GQSJilwn6tJOvVaUrt8XxU+JximIxFeCDx574U4t9ZjAKljQ+CsBwT/6fvP9ybNbKrHnp/rOqBxPCrD0Yyy47/HF/o2YoJ0hgU0kkAtXAZwvykUBHdjGzHzwcWPjVw4rF1sQ7muXxGneFtQnFKyaz4v6S3xwAJ+t3gtG0+IKUZ5A==
-X-YMail-OSG: ok95tnkVM1kPLMoyo9a_8rr0EPbnRkBJWyR3Af4kW3a8lPJhqm6hsh3_LUPLaRT
- 8HGACom9oOAiPK61V.PRHLFA3KDEqo7tjZNMaW7Yy7hkBSN.C6nfLrprcV5BDjHVqUBgqN2b6t1D
- Hy6Lhyopd9.SIEHZdnw1HIPERwwqaZCRFJemr7jqhbID3BXzLfaOKJxWVPlEbMfWzK97dp4tz5O0
- W2ApLk.sNy8_GI4Ib52RgKZkSMklk.xlRKiFLhx9Hp9gQ.MYp8yMmRrdtas_qaNFZt6iItjT8iXC
- 6Z0YzRVFYZZlStC5k.gv9HCLJ_bkPXFO1bRI7H9hIqXink1W4.cIDKhkx31Zrb040jXWKdh5_NsE
- fYDp2buJU32nPYbNYjfQ4HjveqTI_M6GCW3pZYPc714FVRjD8IwfBcOfRePOJRlS8PDMyxiGI7LG
- WD8gAhJ9gmc5Ik15tOO1E7i.ChVvyGz.IkPOIx83cNco2kWyFLTm0la7CdCKpcjOBN3fK8TzIo7l
- udrJisecusE58d18KuunXpixTGKqg8Bqh0hhjXvBRX5FAO53wwYgfuEO9CnLeNZroq9ucIJBE62f
- tSn_u.6SrHlLU_LQqTaf2OdXtweF9EnDg9BJK4VV10BS0HClOWylkzYL9Uukvnds.25fsFTdZ3t0
- kUmYFrDRQKwFH3uOz9QoPveeM8KyxZTNZ2J34WtltNRqu_CrFxq5.w1A0QIfncarWM1lYgrwJHVi
- Zqzr971tJY4lM8x_0OtTClcXaOBb5V0J202uu3MPq8cqGDOCtYhLBy0iW2IfvLE5qGaY4Rcy7tzZ
- B_I3AQInnaSg0J4GovYjNup1oVUfKXW8bL8eRbRkUQDrUzNVxObAmAlkaEDWcM7fdttmh.c9l7cu
- g4L1rR07CiBCWPXOVb80IkoKN8ss.cOYu8S8GFzieTsy4r8fiK1rvomKDdIqw8c5nNFdXVwScC_S
- B2ZK4or3V0U0Il9UoLoVWzSsCuepp1kjQyXbt0OyQj3.nDgOivDdTKQA.QpNdnuC5dhHBIWemntB
- cwvpafoCqBnnUJPGYURHx4vWFd05jxJ.fq2MS2q8x1xeG3cjfI4MElW1F6qX3zukpaKd.m3aEdGv
- ORHIr5tNT4XxAttfloGRx0uyN4NfT5wdaVHaRE4FM1KU5tbLSqjCPjD5vNbgOmHBa4bx5L2wb6Kb
- OmFeYf0Md0xau7e3KWN5mCJvdtUBVf4WKliTxBgRez7_AF3l2MLAwUWD5UrMDUPO8rThJhPDpkY.
- V3pEwzEqo5LBKmng_fqaKe4McV_VQxQ.wd6083XnFHhRGvk69tscYoakE7Bnvvy_n05fqAymdF6Y
- 375_RzQbya5pIuXaLeOhC4RkfEhDK8SGPfEdap26STMUSrM7_qszWVZiZ0KZLp720NrJv5Fo50zK
- DirSk77NNpxi4ZnzEUq0zGnhVmIxtpzFJFgG8JzkFdqRTDMF9BVSWJQivF7dHd6zB4i5hxQCs04I
- aIpG6UFl_hVb.IeEe1Ns_BMGnuUgIr.u5F7Xpw1hQz7Ql4pZe4GgvZZ.8U49p04bE3QVZYlzmtpr
- pI3tZWJfyiK4wlc9Ps0fpMW8qkkJ7r9fWERjCNy3Nkk5VTGjlgQtdbBcekds9qa6F5HE3VButWpg
- 8KmruUSfJq0OpHwnYEdUwjAzVcVsZsDNZK0mkcq8ajiQC26zs8_t4C4tqUd_xsSMxWnn5c0tNIfZ
- gvbTejoTYyxMhTxQUqyW3E62.j9txAlNeVoVQoi9oE3KJO9ZGJEbWgXsJP_r.FJ_8zDqWq2izi.D
- XYVdfX5dV91hpZzIj.15ewGg.9633_iqM8Ip81EL9BK5RRHhChJ9pu6Nv0dvy4hAmf31_j9Cat.8
- e5I.j3CJhipZwjqKz1sZXs.05nTpSImL64N4lo3bLCWDXNf2hOTPduGqMgKRErpRHFbeG5wCQL8Z
- z4oHR1WxxzT49pVv_OU_D7kFGQeQAKMCn9CWMrzCnrtFto9FBfCCC1BIVOXtuJPhiAGEakQZoz.j
- ogzg1_2IaRPxoHDCpSOFtdUZ4tQDxPMuR8ROXaZOS4bnNjtzAc8wbC0T9tHFjAqcswD6EZ8Pp0Wf
- tqGo5elixv8GseRmI3YmKGlc8BecWuY4Q8T.aPRhSWRnU3DA8hrndMTbhawfrnTxRztv8ALmTFBH
- 5D6WUcyNTHNOKmG.DbnC_SJQ5FSDweARo5qLK4TbjQcZnxXTrij1Y0fM477qRS7I3veiHi9qAyHd
- wmmBPdp8MAeOZ_BrUAlkuzmH93zbta.qOnaVH1wpe7LDBZYQ_imsBn0aYvUQgYvpZpyjV2uljt1W
- fkzEVyw--
+        with ESMTP id S229569AbiHIXld (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 19:41:33 -0400
+Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C4407538C
+        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 16:41:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660088489; bh=yyj6auEMoO8WoL/D2T7k+nEJrDfdGoSfd6uX3RTsiS4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=D1qmxLEagnyIxsbZ+aER3M6AHhxprwGdTkSI6S5D/8L3WprNrxuy6bYBE5zTW+a2a8ugAmZbkltAnhU99TQYYCrZ3mU0WFLakFACJN2slI+oL2Pj2SWQExS8BD4+EsXO8TUlhsrB20KuXaki5IoR5G08YhoEGV3VoCYkJvjWzz0QhoWv7HbeA/GXuMqtb2SwctnE5uV0mC248qksjkkRHJWIxsj/BfVSzgvoy9T4kJ4VgfRZA0JxUSNLHrHs8JNxsejgUW4KIHKbkO7g+w/lLX20gyVHAHucTUoE4oDl2h9GTLqxiqwTSAQTecN0j3h7p0WjcTQjRNEbitzfJvpFIA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660088489; bh=kF8ohh8pY2wNuN21TGi/ByXdbwazhFEm/skMuH/4Uh9=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=N5A41AtF0Bh3N86HmVLmDbnBJSmjWcCbAIeIBO50XFp4hDyl1LaEtc1nAONqyKxjx9uasQTHi6Ls7zIG+DxMCaVnLc/kM7G4WSMq5WRD0UpQPfuaFcqQad1AuCVgxy5VhZw12ifTdSTSUPXRWAa5ZO13iTkF+WHaZX2EF9IzNUWHE6lIq1AVK9Wgk8vHoPUVT+KVup2s4ZLqd9T5F7BG3i0E5Ix8FQPS4red16Pi+/najeFzchwderBf4J6N9m6T3qLfMAeEBkkhqW8oCeLn+XbBMdVdFUznQI142hWSjh2OHIGhoGLQcdcHzaZE1L2StKOtr8AAQ2On3ooGNouZvw==
+X-YMail-OSG: EaNtiPoVM1lruehrOMuORG7I9_ZFgmCQPn67QSKWqHve1PDmacHM9NJFqPn4lKa
+ G7UIdD.sQiItTr.nqhaBNOeUBI39uxK8QsQaq8U9h80QEp9bvRGKzUP92hSK8z7tQB5RmVBPSyi0
+ DPbW0F5sWTYTPb9T8ehUEPuuqjaJiEZuHE3EyG_VHYV1gVj9fKlejRBnlE55P6wYDOGVDXv.XLH5
+ vQ69L31RfnouL7wJ192kRKYAISF1qh4_MVdze_.yzxIjuR_TeMN56m5MZAmSfuLLFvw5W2J9zzPO
+ zL89EeYtZmw74BNGCszMuWEB0S5di_PrP4JB_RmapyWwrJOaopL7BKYZl7kFnhP6D1hYZacq2mU5
+ OfF6zcnbb3ubu9_3LnhGkPNOZ6JYo9WJjzCO5m03UcZlbMh3N4POahW86S0k76Xa1lzzXqGHNFVi
+ Et_vijIV27jeNQAeVfWxn3f58YtA5apzB_c25bNJCSKluqwurW1y8oWfy0_yESEU3jlTwsA._pwo
+ dBRhZnjtqo2fnHi5aKzSoldwa5r4trPDvLmIhE6gVTulKIURo7r6zHWJGm8e6qJ51PWpHV2kAMU0
+ x63sWpaDhhAdUlqrNIb9vhRURm7p7O4EaYEBR5gCbcQXxkiH77ytJokdqpOcZj2hy_Hg4YlmXPzx
+ 17K79XfwKv6dGXOlNr0.ehR4JKMXvWzABTtuYgmBJrSWHbbqQChaXbTs0kUoo1MhEaa7ZOLoJ1bl
+ qtApzzou049024A1sMl1OBcZegne2EHui5eqjemzmv3NMMU2SCd7OHgvMMFIP1ifsDw.Di9mr6c5
+ _g5mUUvAFaOXN0N3aUMDMZXaA7GnbeYKKYKtxJSHdJbJxmw7HJxQHSGZnutP7qghDiQtLExvoh4x
+ bWZYJBHn3J5avjEOZQ0pmVL30jbNmA.daVOho7wdzbYzdhW8qzKqT9W.uTghXs84fbN8_dDeW4Xc
+ OaOsNnGUIKTqtDVoClN1HXRH6DUOnhTFI_8iWLcJs8k5lqqkBlMxXnmPF68iyeo966PIHQdxePEc
+ cLvioRbYU7.WaQ8aWwnWFk3oAMD.560uFuIDLcLjk3Wi9SQtbjcVNwJw1NwjnBOJXuN5UIdTBIkS
+ 7dKhZ4MJx7EfrlG2eau6J60EN9QJaS.SlC24jEoGvoEX5kOAZJ6qgJ.JDMym099bkySDwMQqhPI1
+ urC6CbyVI0f8IgzQgOJPbBn3JW40lYyNqvOLJv5FaMTnBDSMGR8j0YN6qv.LIc41_fC.uKvIaaZo
+ 9ZSvrc6Urslbbs3tn_dbtmZEUKs_no1amXU4WzVObefuZaZpioC6K5DSaPnfOTkjmGw.lZ2S3gu9
+ F6G6Mc.JFo5ieQo_QV_dXi7dAuYQsBvdatekWMocWpHWAzSgeO0mnV5v0aLq4Mvq.iwScvaEn1zm
+ xzst8X0nRsj2izFIbmGoksOLBRfVNA5i.aEgPa.X2WchSka43.EMrjovDwGVk9_IzLWX5jkVKuDx
+ vviF2LplBjeq7iCE.S.N4cJInot..VVvvhuGPTl4_bLnpHpzY0nZLcio5Go5pnQ5vRyzg8Rk28WT
+ AnP3QT6I3QZQWTZUGBuyDA2RfVloZcttcbzIlCI6KWNnMnUiWQI_ijlOrsZOFbZU_4xRo3Zzpkto
+ PgWwVuNVBnr_Vuk7DTwjFH_3_106nhL0UFZtuH_lJhvhKdQBUPE6iEdicdY0p575AcPDpsw2xxva
+ .Y592zFafQwGheUo9rmA3NggNC9UPK3IP5A8Tpg0a5p0_Zc_SPm7tepYkvl72NcY0R1FuUBvU5ld
+ kC8W6WihTR8h1wEpzJRfGkVw_8mO5RV1vxcm7I5k1rlfXX7PkZ_phsYYsrtSOmAvxzjVxkR19qBD
+ BIqFGZ_wUDQHKmPJgJTY4MmtEFCiPLITF4yKlmmukMhEPUjaCASytcSZzUAd2rCbmXAcbpL2Em4D
+ VEMqDgM693RK24ayiIR5vOu4Owj5CJWejTVKqX5S0ckn50YZbCS1PtOMagBIPsSUQUORimtV7xQP
+ m21y90EFea6KK4T0UO1jx8SxTWB8.KZ5TA7cvuwuM_ihr9UYPxwp75Vcd.4VGsjtRGXS8xTrUf3.
+ _LUfYMS9XoIt1UC0INUdigdOB4btN6sdaSbwxSlkVe1sCP7uWLOOCJ9tgNHLQJUiMe0hq1C17NlF
+ i77F.2xcM4SvTZQhnueqySPrA.AZkUyFMCf1siIfNk.hyKultK_jrMhdr95bN.iacJuHzVVcBDLR
+ NcbWXZddpU1yJsN5Asslq60DDQapE7fFRUMqmeYWZl8jv73bmxJ449ekA2lbIndOJW3WJcFX_51s
+ 8i3ND
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:38:39 +0000
-Received: by hermes--canary-production-ir2-f74ffc99c-r76pr (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 95a4f5784e1390987f7948589f0971ed;
-          Tue, 09 Aug 2022 23:38:37 +0000 (UTC)
-Message-ID: <4ad6942d-473a-ac04-6535-087c5860c77c@rocketmail.com>
-Date:   Wed, 10 Aug 2022 01:38:36 +0200
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:41:29 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-pzqbs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6f29886ae1a8611f7f272a0ac9c52f12;
+          Tue, 09 Aug 2022 23:41:25 +0000 (UTC)
+Message-ID: <850de937-8fe6-ebce-4e9d-35a617c3ade6@rocketmail.com>
+Date:   Wed, 10 Aug 2022 01:41:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v5 13/14] iio: magnetometer: yas530: Add function pointers
- to "chip_info"
-Content-Language: de-DE
+Subject: Re: [PATCH v5 14/14] iio: magnetometer: yas530: Add YAS537 variant
+Content-Language: en-US
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -69,18 +68,17 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <cover.1659909060.git.jahau@rocketmail.com>
- <20ad0e793df229e71575c4e7d0bc4f6a5fb49f29.1659909060.git.jahau@rocketmail.com>
- <CAHp75VdW1gtcH-S1O6FFPWF2hZrryDxL2hq+P4ncGpsKKuS6GQ@mail.gmail.com>
+ <a7bc9d7a7bb12a76fb217a1709fb09abd2b45892.1659909060.git.jahau@rocketmail.com>
+ <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com>
 From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <CAHp75VdW1gtcH-S1O6FFPWF2hZrryDxL2hq+P4ncGpsKKuS6GQ@mail.gmail.com>
+In-Reply-To: <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.20491 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -89,19 +87,71 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Andy,
 
-On 08.08.22 13:37, Andy Shevchenko wrote:
-> On Mon, Aug 8, 2022 at 1:07 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+On 08.08.22 13:47, Andy Shevchenko wrote:
+> On Mon, Aug 8, 2022 at 1:12 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 >>
->> Add funtion pointers to the "chip_info" structure to ease the handling of
+>> This adds support for the magnetometer Yamaha YAS537. The additions are based
 > 
-> function
+> Add support
 
-Oops. Will correct this.
+OK
 
->> different YAS variants.
+>> on comparison of Yamaha Android kernel drivers for YAS532 [1] and YAS537 [2].
 >>
+>> In the Yamaha YAS537 Android driver, there is an overflow/underflow control
+>> implemented. For regular usage, this seems not necessary. A similar overflow/
+>> underflow control of Yamaha YAS530/532 Android driver isn't integrated in the
+>> mainline driver. It is therefore skipped for YAS537 in mainline too.
+> 
+> the mainline
 
-...
+OK
+
+>> Also in the Yamaha YAS537 Android driver, at the end of the reset_yas537()
+>> function, a measurement is saved in "last_after_rcoil". Later on, this is
+>> compared to current measurements. If the difference gets too big, a new
+>> reset is initialized. The difference in measurements needs to be quite big,
+>> it's hard to say if this is necessary for regular operation. Therefore this
+>> isn't integrated in the mainline driver either.
+> 
+> ..
+> 
+>>         help
+>>           Say Y here to add support for the Yamaha YAS530 series of
+>> -         3-Axis Magnetometers. Right now YAS530, YAS532 and YAS533 are
+>> -         fully supported.
+>> +         3-Axis Magnetometers. YAS530, YAS532, YAS533 and YAS537 are
+>> +         supported.
+> 
+> So, after this change the rest become partially supported?
+> 
+> Perhaps you want to leave the original and add a new sentence like:
+> 
+>   "The YAS537 is partially supported."
+> 
+> ?
+
+All four variants are fully supported. I changed the sentence according
+to Jonathan's suggestion in v3:
+https://lore.kernel.org/linux-iio/cover.1655509425.git.jahau@rocketmail.com/T/#m6ba6b576cdf6f86f550f7598fcf7c408ac5f2d46
+
+> 
+> ..
+> 
+>> - * For YAS532/533, this value is known from the Android driver. For YAS530,
+> 
+> It seems this comma is unneeded in the original comment.
+
+I'll remove the comma here and in patch 12, where it was introduced.
+
+>> - * it was approximately measured.
+>> + * For YAS532/533, this value is known from the Android driver. For YAS530
+>> + * and YAS537, it was approximately measured.
+> 
+> P.S. Do you see now how your series and the end result become better?
+
+The driver improves. Though we kind of get lost in details, I have the
+impression we could go on like this forever.
 
 Kind regards,
 Jakob

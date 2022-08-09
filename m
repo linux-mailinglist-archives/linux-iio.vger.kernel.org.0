@@ -2,64 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B26A858E3C5
-	for <lists+linux-iio@lfdr.de>; Wed, 10 Aug 2022 01:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 376C558E3C8
+	for <lists+linux-iio@lfdr.de>; Wed, 10 Aug 2022 01:37:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229441AbiHIXc6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Aug 2022 19:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
+        id S229554AbiHIXhF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Aug 2022 19:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbiHIXc6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 19:32:58 -0400
-Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5FB7E833
-        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 16:32:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660087974; bh=h+nosmBX2YYbcoY4VZpLL7LMDSMIVR3mnEx0D5rs9Bo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=eUxD0Vd73e7/nL3bVm0dDM7A03DDg3Ibd6i/uPz7+uTlRIwSptRqqy//jyE8wwgUCPhBNHCnZfIPpkqFUCkLuvX6oBC8an/k6yIpcAWLZElUrWDqtezasx1HVsQPGEUPElaQlDsU6oUnNa6m5BVvwPQ4LjsFFUDZ+PsNFHoD4tzPCjQYpVxyb30NRtRr+v98LO2u+COPRJckyHoHnpv2cxKIypOpdyMA0EMUoGu8Xfa5F98eror8Vntojy+ha04etYlqinDQadW1Hqi2fb+eQwq63Cz7GmMy/1TsBniPV3pfu978epu4GeFb91zaBeDo4ANpPY71xKDKi/efbxEbEw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660087974; bh=LZ2snbXEf7pAnHz820mKrtA8fH13a1P0y9YODJYuO6P=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=CTwCKywWFRBm2YPS8XQM0WB6Qon7n//v6fm8ABrcJuq51SUWW1zGxNFLGHq77+3HfzHb+16DayL/udf9pblyn+2Vi6BNRTtvIkykLzdGWZgKVwPciObvunv4vKP0e6LjEYjWHNBJmCrKGO6wLHF26Fh7AeE+j/L6uA5M8IBqLnfJH2T7ZDF+gMriCg1KLb+8UuraD6XPK9WZDW8eopSycxagu+lia7FRTlEXqcERn+wX6HY6R3MJ8cwhr4mXWngb5Apk1cFXDfJs3KJJrH3QBpZrXC8WWKRyv2LfbWyxHdp7xumTKO4/LbS82QzzscDt1H6pRse6rxqA+sAWCYi0cA==
-X-YMail-OSG: xSxvYX4VM1mjhpXtp2wXwcdGpeSKUVenLi91DnIjewm7DaqlRpSZ5dpz9Tlit97
- DhLlMHUoOuK9X2wKCV8P18XX_Izqq_k.wTjaQp.9Kkor4wCoQX_g_zUIM7iIkR19WYd29LZts0iE
- nKtMeNzUPxWiv1nKo61ELxKt6eZ6BrZwHoKPySGa9lTivtIEj3X7w6vk.KeVLFvaITqDXJP0xlbL
- r0exwVLzH0QKxYDmOkct69mz9lmxi9vfRayL7Ag0y2pHpzrQ3JOjfKJWiqikfXjXce4AOXiCz_Na
- YIcRJhhV4bydMUsSIew8eZ.Xdgnb9yZVKtYOjp6KO45zrZqLqp7JwmneojN1NItnUpFxlJ.ChWIO
- JcrILo19vNVE2k38Wd2s3iDxMQfYJ0Taxx3qQKwDOo0xHgTIoFW.B3MR8znxkZYQkfidOgjL1f2Y
- 5qE38IkFEAnfwwSwe2_weHmL0u9SqVYD_I4zyu55xvklLUZc3qJwYR1IRkjBrLVelCtHtUdWmTHO
- J3Y_zXqJvwSA2plvRL9QfuWyzg.oCsBFH8umIoaf12TQjscakSe5DYL75OdU6xLtnUaSnus7lpCC
- qNmkvmk4hwatyVqhrAYeAgDHiHCTYBs3zXcdMkBDtoWWC1s_JlkVxup4Vzj5nCNJagnQFG6e8a5H
- BXSelkiIC1pBz.jmyz5kQ0PPLSp.bV1DQot9ohRfnRV4MBJWx7U4xJUBFqzU1ewkKSqi8W8bcxVv
- g5eoutWhwMd2jKUxRX_BXJ7fDYeRwkM9Bpeajko8Wqd7PyJrQ.apGwiREHwQaRd6BO9lAhuO8NtO
- CTreAAeLtuplBfam3Z032C_7iecv5EIwL6e028XN65vcuYtVx928fkXNLvpPLJO3NIut5Z4FYsWV
- ylGIuPw_nKubnJIXk6pjitvGhFDh.Vzje5f.ALwfR3AlspfvfrZyGcFMh8aZZOxXtXzKaJwGbya8
- 5P.sL8.n9h1tGGL3v9VZl10C3TkboXN1u._hjUKBhF2eeZALWAxejNebKhKdGHP5FMazEcOzzVgJ
- Bs4b0tji3Sw0PEPWN6PKowb.lXfdtMrcYUknQ.sXyg325W6lK6jDlKpoMz7iqHSUHMaTjPdAWPTw
- ANX3IifmnaUV5WLfceImXSyb5b4s94eLRferEL1pBF21XChrNGsPTXhQH9ca4..mwnU.Z4czQtx6
- LN1SvtxmNLUmxTqL3cyf.8pQuWZBtRb_XkEoaS_1TYFJYpSqeT17b7h5Zuo.mtzbt2v.Ajje6sLb
- MNw9ASziAzjJcKgX5l3LN21WZJJ8YwEdBeQFyfjULSxVMHhdiUOoExn60YxUym_c_M3DPiC0Bulj
- YEKtKs0U03hPFRvttrm3MZ2TWIAvKL6E_4BJrwrklwo552xzFdpkJ8yXbsTXcXNbPOUdet.wInzk
- l.nuJSDJZW9GynByYyyu08zcrZY8JYUBdDfCKq8Xh59ea2wu8VtF_V5WOQ8QHQX3iUK4BX06xK6r
- V2z._GEH_dl_10xk_3xjhP7oTfRHvt78Q03A1GVokk2yWyYM.Cw0acFBSle1itsF.xrhxph54uVU
- M9tfqhxNCSyqT60i.ezuXCz65ucav4W0._cJtLrAWKyOtzAiOKMZKzv2XsoIsQ5wEo0CIcE6cKVb
- 3qGZA5pr87r7y1JJbCuiT3FFdcf5ZPkhR8aGTnmoCb7Oa8MfFtx4Z4OVpOGEQtbxAQ9i54HUzrE7
- HS3psacHSheAVhpwJH3g3mIfbuG38W3tUeK.3_bWitg0PVkpuXU.osHkz8qvaJf3Bi_dpFrfPvLq
- uUTkQHfAVrdvHoJILeAhs11UVpgYhGC0qzUx6n4O5eyQKLw2NxA2BiNcFvvNky57MJlzV9ectO6a
- EXWvHsCpib62.OroAxkv_FnitiLFtOBQ7YnkLA8g5Gvxo4KM5U0_wjJ_bHUl9NyFt6pgmAY.rJrb
- 6ghNGzwFB4vsODy1SU.uScG1M5Zerka0OhThqfKPeAh0sJ4eV2qoL3hEp3ktwoMtPa_powU2Zkb_
- fIX4MJtKrcuuuqu76JDBovcNwUegB9xThB_wAim_nboWodB_9WfGmA8MDfDJO1rcgkbcsbHzq35u
- x03tPLs2GPUf2Ukt3F6NHI8Za3aD7QJN5UQ3DaXOjxENANl0zfpDPxvp2G5RPErieDgvQo4VkZzk
- 22J92CDnj2PR.CH_lxM1lu4fjCPwoXelJg4l22JF3gL1wEWc0oVvjyI9kr3jJ0WxwZKOiKStWimR
- qFPs_GbLDq2rOj8BoT7y6zkOMpuDvIjJYjlxFCXsp2V_td6MIId8tusPczs9YV3Eq.9lqrCyhaUR
- R8w4PzA--
+        with ESMTP id S229476AbiHIXhE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 19:37:04 -0400
+Received: from sonic308-19.consmr.mail.ir2.yahoo.com (sonic308-19.consmr.mail.ir2.yahoo.com [77.238.178.147])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 214717D7BF
+        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 16:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660088220; bh=vvdNEZJzPmOKnBpklilB720hYA7aUvvb/4g0VyOBQfQ=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=CIs5RdP/YoZ17l6BKeiz7+QM94KwbLEADF6R4IW2bvrz5qUnOaB2X/yheGtv6/LDp3hVS5SyLQHAQU0YoXOzrA0ddHVXBQIjrHpHJuDfMEOKflMtuIXvR/tYlEeTeuXWh6EBV22FYycPYtsgRGjPhyrvF8VajuMyOklDzD8Njr5X4xPZSZhOhxtIcXCg8OGP0x8nku+4NRiWNdiTfj4aIzuXJ8/OKFu4GL7mUsPgZoaBX+ApLk3NqoGX/6V3x019HlUBJzaPe2ETffCAh/ckZ2zVL2NEEpzHQ0E4qH7NV1dVbvFYxcb2lNhxpIPqh7byZPecL4KI4wjLAiOYfPcm/w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660088220; bh=z+FFMvyEO3mGj6tzFx7qesfvl/ayk3q0nYEyl/oRhki=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=VhpoyCb43TfM5xZPdKwm0KJ6DWhZ8hKUj7xOu5z985xBgfcpVW4s/US+yEhhM+eeigrBNJppA/BXs7as6w9yzriwypLe2urlxUsyBeWgHW2nzu694bCDPbK8XtoLx98ZZG3PDSu4bQNHw2sh6klS+Klpu+6cg85stHGzJUoLNB7NyrI6/EctSzejXct0sDHRZ/GezjLza8KzgefLUCSPuCwp3nmLb/bZ9YpqkiSxXhPo46Xqq16RutJBtmCgcrQvHb8gTnUmY9mCeETwfJDK1FPOg37mfwWasLFFhl5Vgm2wx/hPD1ahG5wGh6XQQU/iwic+9/IBEsFpVDtbPT3I1w==
+X-YMail-OSG: 0lzMhIgVM1msDNJnnvjh9.dp48kTvmScNIHrIMriY2a1qeu1FTrjQ4gxUJOMjCX
+ Y5s7miC20j1HEhxv9l9ubKpydx6Lhdq8w6WJOYYVjmUktpLz59bJsC3xvsQEk86VcgkOP_3t2Bq4
+ TK9UePKmH3RZG7tUKBOGobaw8x6RZmSNOAhZtNW6v5KtiprO4Pjkuf8m4Y7hpcDSmYdI.T9b6zSo
+ WIlNBR1DN9RNETgjrz0bp7SYvBwnfCtqloksLebvfhhCiHpic410feVqwmoZefVb.xsjtU4wCXVi
+ 3FQlJJf7hm7y38sSJ8b6aNUDkRC5._gN43I.hp.B.j4MGDT_L8vs3H7BUOwm7V6mWrA2UsT_2eI4
+ dHF81sj.JRUfFbfvPXepKZqlSrdyj.6pqB18wbZalIImDl5wBTPHcfSzKDmn39YLLhM5.wEnVF1Z
+ GQcasv7HMeEraNZgdR2GhU8DgNiXhTJnXmtMkhyhyf9ctWUJZGRhOVx1npDSMZPlnnqZFGOS8SkR
+ Wp.QOTEJ5nXqpW1WhoeqlvMzZ2bNIjLIrWEXgeOlNWNtYqQjfxfNbekpyZPdlEPImE8wrnK9ZRDO
+ WB_SjU5MXB_M60ypyQD8xargH256S9r2R7xyzVzHyDI9_AyY6_MC08NHMYj5kCgGvQH6lq6ixZAi
+ FP2NV2Z_0qhz3qf.OFbgYa1060VdtDb0hekNE5WE9LKnih8VYOP1BrFlWvTLuheksFPPiv0VIvGi
+ 5iP45AEG.4TwldcgLJ9j8X_61_8TjqVE12Oxgee8zQmy23CivftGy9X6W.wg.iBveEeWcV.KMIbi
+ VevDvXje3XUI.wlUfF5_PALkQ7ovm0eF9c9_K2ciA.9.YqKEaWtN1YT2n6883Gum2QO5PUUKjb8t
+ ksfu2tCHX8PL5ARQhbMPaskvpEMVY8UMD9AM4usrKw5Zn3yssrCza_0uq7vTaZ8gHP78G3EA59N0
+ Jd87nxuuHYtKXZ6ySZbEdl5tiv1lIJMqIQDadfw2eefpvZEKJ3Tlhq7kY4l6NhSjZr4fP2tXNZA0
+ 9aeadx5hCSRMrTTPkWPBMTs4RZVQHGqPfd3dkFIZ6fplzdQtHNvVyopzwyW1BLhKFnJ_QrNqv7y8
+ Kw6fyrAs_eSoZ1_WrBtu9OyXWDyPWfeOG_1dP4lCZhu0JtyaC__Bs3br2QNoPi6QpRHL.34m2hQ0
+ 5lRtxY7MhGi4hxW44d9ZV73evecLoG7SqhIauL_SBT.O06OC3KrKWj4OLbqHEhIF_1PxO0jXETAM
+ sGFJvZj3B4u6K7LfDXMV6_VnSSFOMW1B2nR95t6wYoVzhBhJi2AwtOHcw..Ls6i8X.MH6bwS0.qm
+ pXWDKIO8W98j38e7Q7tYV9ViJDVOLonZthnYchCfN2a27WDRiRF_FmybioTxMiaE7JSs3X0p7hp.
+ 4b5nxIgD6zlFzShhR2qsVzn5DGHSO8Tme8Yu7_wWYT_B8KggWm.Qx2fYO7z36fPqLgcrouBhLRcB
+ OMkYLQobx_NWomU6YPApL3C6UwYS_ChbhmNw9w0gfh7a5CQF40LJ8ER0K92eQ5eo8TR0sSR3T5Pr
+ .e1gTXwHocJZWiW3cKqunwf7x19OHyRj6gNkN.4J7hn9xHWygNPwWxviwMZ1OYKAu8ttrWDV2YAY
+ OiuidHwcWHFwC0d_dnMQSOEHOkFyEKKqf9.DbI8Hp4bd72BXnuzirLRmXX_i40xQZxzh7blAA6mm
+ t8uQtxJFep_eUAAWotjsSJ0bjHMcJh1_X5z.0G4IZKuekxjjKMhEIGpA4ztpdqNArGqBb2h7Xa9p
+ GxtZW0ShO8Zxl6HEjIkGFw3ITtHoxMDpacegu1RgcS.aRdqLXlnE.11SWU2vte5a2GIh9tx.QwqX
+ FS73ejIDKjWqV_XcyTmAGkEja8RUSUZGkmZcUqtXfTQMIzLQWk8pp_oKL2dYfThs_o_YB4kD6T7o
+ 3kYame.8WsBH6ACAMjyGPrWVLnIUta7SB4uABo2PQ.NqH6omtkFHDZjRiQ3W6A3cE0DqwhRPhAHn
+ 60MBAZefneTO73NpjsXhX5AWPXhTFrnaftjvE8z16aXaplHQOlPvN6qfdfy3NBO7lGxIjYL6Mdxp
+ 5KTP6A2vqrsoejijEJvmCpyyicu37QNnYb7cRWRmLXMf4wjd7MJIRO9MfGsMY5U00IKRT_D3SwAc
+ 3VLRCnZmZI110lLzafBolcSF_C.4p2h8mBqeLET9cS99RpZXVXH2wXpqdNiBl_a6OY5YAZvxUc9y
+ iAtqhDF4xE8Qi7hfEKmR0nAEb8tezT8x2JbkhW8_CpnFf3jAA0w4A8bho4HMoJHfGLnplpPIhREI
+ a3A--
 X-Sonic-MF: <jahau@rocketmail.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:32:54 +0000
-Received: by hermes--canary-production-ir2-f74ffc99c-5bdfc (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ba13ee3be7da56c92119090366e686d9;
-          Tue, 09 Aug 2022 23:32:53 +0000 (UTC)
-Message-ID: <2735d34c-a4c9-ce87-b29f-50e75c1fe4a3@rocketmail.com>
-Date:   Wed, 10 Aug 2022 01:32:52 +0200
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 Aug 2022 23:37:00 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-pzqbs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b025576e7c6b5e861c51e979db17d6bc;
+          Tue, 09 Aug 2022 23:36:56 +0000 (UTC)
+Message-ID: <42e40cc3-15ef-3481-f52f-5bb022b28280@rocketmail.com>
+Date:   Wed, 10 Aug 2022 01:36:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v5 09/14] iio: magnetometer: yas530: Introduce "chip_info"
- structure
-Content-Language: en-US
+Subject: Re: [PATCH v5 12/14] iio: magnetometer: yas530: Add temperature
+ calculation to "chip_info"
+Content-Language: de-DE
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -69,18 +69,17 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         devicetree <devicetree@vger.kernel.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <cover.1659909060.git.jahau@rocketmail.com>
- <8f5f58c9bf0f4006fabd01b5564af071d20f2a2d.1659909060.git.jahau@rocketmail.com>
- <CAHp75VdfketWiZc+72TLdabMN0Vw7VHBveGfVp8OHH5bzSkcrg@mail.gmail.com>
+ <2a93df6f99913e438dd2d394c074cf79544ab692.1659909060.git.jahau@rocketmail.com>
+ <CAHp75VfSx+bnNRqmkEP=NAM=yssw2xvtQ1qzrDw_J3eLZwaZYA@mail.gmail.com>
 From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <CAHp75VdfketWiZc+72TLdabMN0Vw7VHBveGfVp8OHH5bzSkcrg@mail.gmail.com>
+In-Reply-To: <CAHp75VfSx+bnNRqmkEP=NAM=yssw2xvtQ1qzrDw_J3eLZwaZYA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-Mailer: WebService/1.1.20491 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -89,155 +88,69 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Andy,
 
-On 08.08.22 13:32, Andy Shevchenko wrote:
-> On Mon, Aug 8, 2022 at 1:07 AM Jakob Hauser <jahau@rocketmail.com> wrote:
-> 
-> ..
-> 
->> +       yas5xx->chip = id->driver_data;
->> +       yas5xx->chip_info = &yas5xx_chip_info_tbl[yas5xx->chip];
-> 
-> I don't see how ->chip is being used, I would expect it is the part of
-> chip_info, if it's really needed. That said, please make it directly a
-> pointer, so the above becomes:
-> 
->   ... ->chip_info = (const struct ...)id->driver_data;
-> 
-> ..
-> 
->> +       {"yas530", yas530 },
->> +       {"yas532", yas532 },
->> +       {"yas533", yas533 },
-> 
-> Read above and here:
-> 
->   yas53... ==> (kernel_ulong_t)&...[yas53...]
-> 
+On 08.08.22 13:36, Andy Shevchenko wrote:
+> On Mon, Aug 8, 2022 at 1:07 AM Jakob Hauser <jahau@rocketmail.com> wrot=
+e:
+>>
+>> Add temperature calculation to the "chip_info" structure to ease the h=
+andling
+>> of different YAS variants.
+>=20
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-Generally on this part, I'm quite confused about the ...
+=2E..
 
-        enum chip_ids {
-                yas530,
-                yas532,
-                yas533,
-        };
+Due to C11 standard 6.6.7 considering array calls not as constant
+expression (discussion on patch 9), the temperature values need to be
+moved directly into the chip_info table as well.
 
-... at the beginning of the driver.
+I would move the comments in a reduced way into the kernel doc. It would
+look like this:
 
+/**
+ * struct yas5xx_chip_info - device-specific data and function pointers
+   ...
+ * @t_ref: number of counts at reference temperature 20 =C2=B0C
+ * @min_temp_x10: starting point of temperature counting in 1/10:s
+ * degrees Celsius
+   ...
+ *
+ * The "t_ref" value for YAS532/533 is known from the Android driver.
+ * For YAS530 it was approximately measured.
+ *
+ * The temperatures "min_temp_x10" are derived from the temperature
+ * resolutions given in the data sheets.
+ */
+struct yas5xx_chip_info {
+        ...
+        u16 t_ref;
+        s16 min_temp_x10;
+        ...
+};
 
-In my naive beginners approach I think that I have to initialize this
-enum. I did this by:
-
-        struct yas5xx {
+static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] =3D {
+        [yas530] =3D {
                 ...
-                enum chip_ids chip;
+                .t_ref =3D 182, /* counts */
+                .min_temp_x10 =3D -620, /* 1/10:s degrees Celsius */
                 ...
-        };
-
-        ...
-
-        yas5xx->chip = id->driver_data;
-
-The i2c_device_id at the end of the driver initially only contained the
-fist part, looking like this:
-
-        static const struct i2c_device_id yas5xx_id[] = {
-                {"yas530", },
-                {"yas532", },
-                {"yas533", },
-                {}
-        };
-
-This first part is "char name[I2C_NAME_SIZE]" according to [1]. I didn't
-manage to initialize the enum with "id->name"...
-
-        yas5xx->chip = id->name;
-
-... this resulted in a compiler error stating "incompatible types when
-assigning to type 'enum chip_ids' from type 'const char *'".
-
-This made me introduce the second part of i2c_device_id...
-
-        static const struct i2c_device_id yas5xx_id[] = {
-                {"yas530", yas530 },
-                {"yas532", yas532 },
-                {"yas533", yas533 },
-                {}
-        };
-
-... which is "kernel_ulong_t driver_data;". Initializing the enum by
-"id->driver_data" did work:
-
-        yas5xx->chip = id->driver_data;
-
-[1]
-https://github.com/torvalds/linux/blob/v5.19/include/linux/mod_devicetable.h#L465
-
---------------------
-
-I think in other drivers I've seen enums not being initialized. I don't
-understand how this works. Unfortunately I can't recall specific examples.
-
---------------------
-
-I now had a try with following changes...
-
-        struct yas5xx {
-                struct device *dev;
--               enum chip_ids chip;
-                const struct yas5xx_chip_info *chip_info;
+        },
+        [yas532] =3D {
                 ...
-        };
-
-        ...
-
--       yas5xx->chip = id->driver_data;
--       yas5xx->chip_info = &yas5xx_chip_info_tbl[yas5xx->chip];
-+       yas5xx->chip_info = &yas5xx_chip_info_tbl[id->driver_data];
-
-
-... or summarized as:
-
-        enum chip_ids {
-                yas530,
-                yas532,
-                yas533,
-        };
-
-        ...
-
-        struct yas5xx {
+                .t_ref =3D 390, /* counts */
+                .min_temp_x10 =3D -500, /* 1/10:s degrees Celsius */
                 ...
-        };
+        },
+        [yas533] =3D {
+                ...
+                .t_ref =3D 390, /* counts */
+                .min_temp_x10 =3D -500, /* 1/10:s degrees Celsius */
+                ...
+        },
+};
 
-        ...
-
-        yas5xx->chip_info = &yas5xx_chip_info_tbl[id->driver_data];
-
-        ...
-
-        static const struct i2c_device_id yas5xx_id[] = {
-                {"yas530", yas530 },
-                {"yas532", yas532 },
-                {"yas533", yas533 },
-                {}
-        };
-
-This seems to work. Therefore I would it implement it that way. I hope
-it works reliably, as I don't see a connection between the enum and the
-chip_info.
-
---------------------
-
-What I still can't manage is getting rid of the "id->driver_data" part.
-When trying the above with "id->name"...
-
-        yas5xx->chip_info = &yas5xx_chip_info_tbl[id->name];
-
-... the compiler complains about "array subscript is not an integer".
-When trying to add quotation marks to the enum chip_ids content, the
-compiler complains about this by "expected identifier before string
-constant".
+As this is quite some change on that patch, I'd skip your "Reviewed-by:"
+tag and you would need to review it again in v6.
 
 Kind regards,
 Jakob

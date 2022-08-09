@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E112D58D6B6
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 11:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA69658D6D1
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 11:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233269AbiHIJsE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Aug 2022 05:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40322 "EHLO
+        id S241312AbiHIJw7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Aug 2022 05:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229963AbiHIJsE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 05:48:04 -0400
+        with ESMTP id S239708AbiHIJw6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 05:52:58 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D9B1F63A;
-        Tue,  9 Aug 2022 02:48:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D391F2E5;
+        Tue,  9 Aug 2022 02:52:56 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 8A1815FD05;
-        Tue,  9 Aug 2022 12:47:59 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id 8CB585FD05;
+        Tue,  9 Aug 2022 12:52:54 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1660038479;
-        bh=1NkSog7fNwIuD5awyrROp78DqGLAA2ojxoXb1/HAoNk=;
+        s=mail; t=1660038774;
+        bh=M0hVkGi9BnyS4U+M2LNgZ5Fw0ElaAi8kx2AmE3MExoY=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=hFDLqYrgj81gSOH5Urbg46yf1sLyfdAl9V/bmisWnmBKVIF4b1YmuFUt0gVGqYSQf
-         42GnCO8zJNeHd6h6UtfkdBIDNeY38CJvqV1Qegwbs59Pdq4q1VXqy+fg7Bk0vXulxz
-         juLR4kmdJ1Xf81UU+kwOUJlDS+kbIgYgE4u7Cu+ze6fXOsxrkBpZoW5+U0gUhde1rc
-         Hjc8yGiVmmTzkkHrKSq5UI0GCZcA3xtrrA3yqnqsSuIu+5f55A+weRfhHDUPCNPEUb
-         aC+EvHRee3fI3Cj2gAEP1KfaNPsRQqs5vq4lVJZAFLbl2Y6wGqPmm0M4L2lLhoTYaN
-         9Sc/qN+ZJDdgw==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
+        b=RLqx64yr+XsKPVSFbN1Zoz+3FLdJgMubI21Aq+SJIsEC2E1uym6n/NVPoiPrlVGP9
+         B8LlJnnR9OjItI/KeSgXDkdLqj8ja5L/5mWQgFsy+FrMEp2wZLkIoTTmTYDwL59Pot
+         eX6EacdMlAfUZbwSmgLgmLqL1wRsFXqVR10lxrV4Agp289ISAsctR3c9YoZ2GV81Ru
+         gLTRs3Gss4f+GNIiXMJfKM2wsdQnjFY7BffJvbznRlVUAu7mhSi5YFGpO5je4W2zOR
+         w54KKIzntduQqyPaV5DTzsMaK9vrpqTwX0fJvB0daSJO5IE5kVb68NeGbFBX3ZguO/
+         y2lbqWHDsQ/XQ==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Tue,  9 Aug 2022 12:47:58 +0300 (MSK)
+        Tue,  9 Aug 2022 12:52:54 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
 To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
         "stephan@gerhold.net" <stephan@gerhold.net>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
@@ -46,20 +46,22 @@ Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
  driver
 Thread-Topic: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
  driver
-Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62h0pwAgARW1QA=
-Date:   Tue, 9 Aug 2022 09:47:54 +0000
-Message-ID: <20220809094754.akfed7hxcdvxoacj@CAB-WSD-L081021.sigma.sbrf.ru>
+Thread-Index: AQHYpzqIoQnaRj7vNkq2cXUUGjAB/62dQgeAgAAYQICABG4VgIAEYneA
+Date:   Tue, 9 Aug 2022 09:52:49 +0000
+Message-ID: <20220809095251.vpp6arac3pkntdlo@CAB-WSD-L081021.sigma.sbrf.ru>
 References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
  <20220803131132.19630-3-ddrokosov@sberdevices.ru>
- <20220806163204.3262c0e7@jic23-huawei>
-In-Reply-To: <20220806163204.3262c0e7@jic23-huawei>
+ <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+ <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
+ <20220806155523.37c3e587@jic23-huawei>
+In-Reply-To: <20220806155523.37c3e587@jic23-huawei>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <6373418BF86F2844AEE00C8459CE3039@sberdevices.ru>
+Content-ID: <12645F490CB8B346AFD6E29545FC300A@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
@@ -78,115 +80,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan,
-
-On Sat, Aug 06, 2022 at 04:32:04PM +0100, Jonathan Cameron wrote:
+On Sat, Aug 06, 2022 at 03:55:23PM +0100, Jonathan Cameron wrote:
 
 [...]
 
-> > +/**
-> > + * struct msa311_priv - MSA311 internal private state
-> > + * @regs: Underlying I2C bus adapter used to abstract slave
-> > + *        register accesses
-> > + * @fields: Abstract objects for each registers fields access
-> > + * @dev: Device handler associated with appropriate bus client
-> > + * @lock: Protects msa311 device state between setup and data access r=
-outines
-> > + *        (power transitions, samp_freq/scale tune, retrieving axes da=
-ta, etc)
-> > + * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
-> > + *                 to notify external consumers a new sample is ready
-> > + * @vdd: Optional external voltage regulator for the device power supp=
-ly
-> > + */
-> > +struct msa311_priv {
-> > +	struct regmap *regs;
-> > +	struct regmap_field *fields[F_MAX_FIELDS];
-> > +
-> > +	struct device *dev;
-> > +	struct mutex lock; /* state guard */
+> >=20
+> > > > +       indio_dev->modes =3D 0; /* setup buffered mode later */ =20
+> > >=20
+> > > Why explicit assignment to 0? Doesn't kzalloc() do it for you? =20
+> >=20
+> > kzalloc() will do it for me, of course. Previously, I initialized modes=
+ to
+> > INDIO_DIRECT_MODE to just provide default value for that. Jonathan
+> > suggested to replace it with 0.=20
 >=20
-> Shouldn't need this comment given documentation above that provides
-> more information.
+> I did?  I wonder what I was smoking that day.=20
+> Should be set to INDIO_DIRECT_MODE as you had it previously.
+>=20
+> (From what I recall it will work either way but we have in the past had
+> core code that checked this and may do again in the future so drivers sho=
+uld
+> still be setting it to specify they provide sysfs interfaces to directly =
+read
+> the channels).
 
-Without this comment checkpatch.pl raises a warning about uncommented
-lock definition.
-I agree with you, above comment is redundant, but is it okay to ignore
-such warnings before sending the patch?
-
-I'm talking about below checkpatch condition:
-=3D=3D=3D=3D=3D
-# check for spinlock_t definitions without a comment.
-		if ($line =3D~ /^.\s*(struct\s+mutex|spinlock_t)\s+\S+;/ ||
-		    $line =3D~ /^.\s*(DEFINE_MUTEX)\s*\(/) {
-			my $which =3D $1;
-			if (!ctx_has_comment($first_line, $linenr)) {
-				CHK("UNCOMMENTED_DEFINITION",
-				    "$1 definition without comment\n" . $herecurr);
-			}
-		}
-=3D=3D=3D=3D=3D
-
->=20
-> > +
-> > +	struct iio_trigger *new_data_trig;
-> > +	struct regulator *vdd;
-> > +};
-> >
->=20
->=20
-> > +static irqreturn_t msa311_irq_thread(int irq, void *p)
-> > +{
-> > +	struct msa311_priv *msa311 =3D iio_priv(p);
-> > +	unsigned int new_data_int_enabled;
-> > +	struct device *dev =3D msa311->dev;
-> > +	int err;
-> > +
-> > +	mutex_lock(&msa311->lock);
->=20
-> > +
-> > +	/*
-> > +	 * We do not check NEW_DATA int status, because of based on
-> > +	 * specification it's cleared automatically after a fixed time.
-> > +	 * So just check that is enabled by driver logic.
->=20
-> That is going to be very problematic if we can have this and events comin=
-g
-> through the same interrupt pin.  Not harmful for now though given you are
-> only supporting NEW_DATA for now.  Just something to watch out for.
->=20
-
-Actually, I have run some experiments with NEW_DATA status bits. And
-looks like we can't determince actual status of NEW_DATA virtual
-interrupt when physical IRQ is raised. I will back to this problem when
-begin Motion Events feature implementation.
-
-[...]
-
-> > +	err =3D devm_pm_runtime_enable(dev);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	pm_runtime_get_noresume(dev);
-> > +	pm_runtime_set_autosuspend_delay(dev, MSA311_PWR_SLEEP_DELAY_MS);
-> > +	pm_runtime_use_autosuspend(dev);
-> > +
-> > +	err =3D msa311_chip_init(msa311);
-> > +	if (err)
-> > +		return err;
-> > +
-> > +	indio_dev->modes =3D 0; /* setup buffered mode later */
->=20
-> As per other branch, I led you astray here it seems.
->=20
-
-Sorry, I've made a mistake. Comment about INDIO_DIRECT_MODE was left
-by Andy here:
+Jonathan, really sorry I referred to you. I'm confused. This comment was
+from Andy in the v3 discussion:
 
 https://lore.kernel.org/linux-iio/CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNSh=
 FRG3kP8b6w@mail.gmail.com/
 
-[...]
+I will revert this change. Thank you for feedback.
 
 --=20
 Thank you,

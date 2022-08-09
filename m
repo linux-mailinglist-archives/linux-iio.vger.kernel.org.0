@@ -2,120 +2,141 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0122658DB3E
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 17:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E96658DBE2
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Aug 2022 18:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243623AbiHIPhx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 9 Aug 2022 11:37:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S245000AbiHIQ2B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 9 Aug 2022 12:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244720AbiHIPhe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 11:37:34 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD40A47B
-        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 08:37:32 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id q30so14708802wra.11
-        for <linux-iio@vger.kernel.org>; Tue, 09 Aug 2022 08:37:32 -0700 (PDT)
+        with ESMTP id S244965AbiHIQ2A (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 9 Aug 2022 12:28:00 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870F318359
+        for <linux-iio@vger.kernel.org>; Tue,  9 Aug 2022 09:27:58 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id r17so17664072lfm.11
+        for <linux-iio@vger.kernel.org>; Tue, 09 Aug 2022 09:27:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=PtkDAKuLYtipKso/qtzcAxoyZFXE+gtPjmSjF2+dZT8=;
-        b=B4aSdALX+HOfDoK2RMhVxwCMY75Lvw/KvYO3H2Pp836XdkT7RwzrmfbytDbKOOJQIE
-         kiMgeho3WTxF0lRCKxiry19SGg4wVqXaXWhIpPGTRLVtf24VQH2yQ1da/InL1+a/vFUT
-         vbQh2m+R4oXo/CnacHGLNfs3MZc8MugsgbKxkPIWF++cNeCS8W+dju0WKSHHbQ4QDmd/
-         MVhzo3+9dqoCYaptzlMx78HrArs6dvvz/PAOgJSyNAmjOE4FneuFdiuYPoghL10e9mHF
-         V/Dw+/z785JI4VGewE/j8verPHsuw6KdmoWbb6Bb75cmiHRPxU2ONacU7fcILAbXcwcT
-         LXuA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AR+nnS9UZD6P2Hs8ZDImw5TD7p9NQC+KnqHa3zocRvk=;
+        b=scwhCRJP2cX92hQGoRkNYm1CP1o41FrEej53GLl6u8y5tLL91RoPRZ7d6703rgd6z4
+         y4xGg04FcmAIUHsFZQoz3WCYKNxzaLl/PR8KdfKG3pssC1Ay0wa0QlWGw/CoiJHSId30
+         hd2EyCkjzIer0sV5O8xkfFRvGUJS2udkZLP+LgpUOsffdh6Ohnu9uFOfrWIMHTe8lNIt
+         DcZEoqWOYX3F4kMr76HXbsT2Moht6G1fCn39Xyon/Lq04771JDKk12dmYO1wKfeq7bEo
+         IAX75aMK5gnpn0hTmsCJekxKFQfTF8tAtJGgWwg6FDMsH6NiNiY5SGBvidLvPPdbFP1v
+         gydA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=PtkDAKuLYtipKso/qtzcAxoyZFXE+gtPjmSjF2+dZT8=;
-        b=voJPTKtbGSjoVFDvilzEBIT1nOomuV0oq5LNQ9gX8upzyp/ABc6QzQc3wxKezLMvrS
-         rCCMQe93wjR+VhnWc6b1CIRsbqBvJPkQdi3YRKRcai0avnLJ3qlYHSYgKlQV923wxK8s
-         4jQZeesBB6n+DYXYahfazyRE6rQUR6jivxzTsgzPpQyBbm9G40V7KNkEc5JjrVAdTW6M
-         gaxV1DyWU9PN1mViRgLuztS6PsNcYkDebNRDMkjYRSzMXWTwZOodKys5ZwWMZ5XZOqmV
-         jFWI4l85R6u7asbAj4iH0QqKOtcMNC/+AfVGU/RQOdJroXhYML4tS3BPmasfFRTlCxwy
-         l/Ww==
-X-Gm-Message-State: ACgBeo2gp0pM7jUJ+3oxKvGNhuEPwZ7v/d0pVsgkW6l0YaY1cJ36aOb8
-        +yXgQnGnqXe73dzsoOUDksgErNT5POiGTA==
-X-Google-Smtp-Source: AA6agR7Rl6LrXJMccHtrODxJmUsBl/OXTkCxpvd9qLdL2g6K1oFbc81PrOCebZAftVyGx6FprERcaw==
-X-Received: by 2002:adf:fc08:0:b0:21e:d133:3500 with SMTP id i8-20020adffc08000000b0021ed1333500mr15478038wrr.353.1660059450864;
-        Tue, 09 Aug 2022 08:37:30 -0700 (PDT)
-Received: from google.com (cpc155339-bagu17-2-0-cust87.1-3.cable.virginm.net. [86.27.177.88])
-        by smtp.gmail.com with ESMTPSA id l8-20020a05600c4f0800b003a17ab4e7c8sm24014628wmq.39.2022.08.09.08.37.29
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=AR+nnS9UZD6P2Hs8ZDImw5TD7p9NQC+KnqHa3zocRvk=;
+        b=tZi9pK8epJ1+gTSW+c0mcW2gOflluCNjuThK1ScRN7czTE7Ynr0c/2himGHB+7KuXu
+         lmOGmGyFmk+/3FhDG2xCnY3QgS/Y4zp7c0V5yP5aeF8IdzqNdU+fNTO8r//sLmVHtp0h
+         +yPY/VLv+bikFBaSbBx6zAe/czVtzYhu6ZxlLNQovBwqZwBpx0JdfIZInGbukLt4sZwk
+         MPxdFOiCoJPChdNXquC7eJm55NzHrjmO5jMH/kOItPSfxmSuwK6KtoWstYejkSipi8Cj
+         5nHm2s8+ZVZT7wrdKW+uuWpvN14IS7ZqVJU9OsWrplfdnCZO7VXHLiOgFd/mEEt+oKE2
+         3G7w==
+X-Gm-Message-State: ACgBeo0LMs8NK0fozewzy/8gq+0INzDwNDJXZR2I2MbAG8H6jfgO9hCs
+        FWRTxLK3uGqKJfUMl6Ldq7UpiA==
+X-Google-Smtp-Source: AA6agR5TRVjeZwahd7WkFhqyuhqfwiPBYep94z8LyDAT7HAxO3MZrTjHFZMuFjki+w1nYUDsee4f8A==
+X-Received: by 2002:a05:6512:2a8d:b0:48b:7f1:fe46 with SMTP id dt13-20020a0565122a8d00b0048b07f1fe46mr7624887lfb.261.1660062476861;
+        Tue, 09 Aug 2022 09:27:56 -0700 (PDT)
+Received: from localhost.localdomain ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id h7-20020ac24d27000000b0048a8c907fe9sm20999lfk.167.2022.08.09.09.27.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Aug 2022 08:37:29 -0700 (PDT)
-Date:   Tue, 9 Aug 2022 16:37:27 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Tue, 09 Aug 2022 09:27:56 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-input@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Lee Jones <lee@kernel.org>
-Subject: Re: [PATCH v2 4/5] dt-bindings: iio: adc: stmpe: Remove node name
- requirement
-Message-ID: <YvJ/N2zulizbiU6u@google.com>
-References: <20220712163345.445811-1-francesco.dolcini@toradex.com>
- <20220712163345.445811-5-francesco.dolcini@toradex.com>
- <20220809134607.GA44926@francesco-nb.int.toradex.com>
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Pavel Machek <pavel@ucw.cz>,
+        Tim Harvey <tharvey@gateworks.com>, Lee Jones <lee@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Andrew Davis <afd@ti.com>,
+        linux-hwmon@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-leds@vger.kernel.org,
+        netdev@vger.kernel.org, linux-pm@vger.kernel.org,
+        alsa-devel@alsa-project.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 0/5] iio/hwmon/mfd/leds/net/power/ASoC: dt-bindings: few stale maintainers cleanup
+Date:   Tue,  9 Aug 2022 19:27:47 +0300
+Message-Id: <20220809162752.10186-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220809134607.GA44926@francesco-nb.int.toradex.com>
-X-Spam-Status: No, score=1.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 09 Aug 2022, Francesco Dolcini wrote:
+Hi,
 
-> Hello Jonathan, can you pick this? Patches 1 and 2 were applied to MFD
-> tree.
+Changes since v1
+================
+1. Patch #5: Drop also Ricardo Rivera-Matos and assign TI bindings to Andrew Davis
+2. Add acks.
 
-Sending out nags whilst the merge-window is open is seldom helpful.
+A question
+==========
 
-Also, please refrain from top-posting.
+Several of the bindings here had only one maintainer and history does not
+always point to a new one (although I did not perform extensive digging). I
+added subsystem maintainer, because dtschema requires an entry with valid email address.
 
-Thanks.
+This is not the best choice as simply subsystem maintainer might not have the
+actual device (or its datasheets or any interest in it).
 
-> On Tue, Jul 12, 2022 at 06:33:44PM +0200, Francesco Dolcini wrote:
-> > STMPE driver does not require a specific node name anymore, only the
-> > compatible is checked, update binding according to this.
-> > 
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
-> > index 9049c699152f..333744a2159c 100644
-> > --- a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
-> > @@ -13,8 +13,7 @@ description:
-> >    This ADC forms part of an ST microelectronics STMPE multifunction device .
-> >    The ADC is shared with the STMPE touchscreen. As a result some ADC related
-> >    settings are specified in the parent node.
-> > -  The node name myst be stmpe_adc and should be a child node of the stmpe node
-> > -  to which it belongs.
-> > +  The node should be a child node of the stmpe node to which it belongs.
-> >  
-> >  properties:
-> >    compatible:
-> 
+Maybe we could add some "orphaned" entry in such case?
+
+Best regards,
+Krzysztof
+
+Krzysztof Kozlowski (5):
+  dt-bindings: iio: Drop Joachim Eastwood
+  dt-bindings: iio: Drop Bogdan Pricop
+  dt-bindings: Drop Beniamin Bia and Stefan Popa
+  dt-bindings: Drop Robert Jones
+  dt-bindings: Drop Dan Murphy and Ricardo Rivera-Matos
+
+ Documentation/devicetree/bindings/hwmon/adi,adm1177.yaml       | 1 -
+ Documentation/devicetree/bindings/iio/accel/fsl,mma7455.yaml   | 1 -
+ Documentation/devicetree/bindings/iio/adc/adi,ad7091r5.yaml    | 2 +-
+ Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml      | 3 +--
+ Documentation/devicetree/bindings/iio/adc/nxp,lpc1850-adc.yaml | 2 +-
+ Documentation/devicetree/bindings/iio/adc/ti,adc108s102.yaml   | 2 +-
+ Documentation/devicetree/bindings/iio/adc/ti,ads124s08.yaml    | 2 +-
+ .../devicetree/bindings/iio/amplifiers/adi,hmc425a.yaml        | 1 -
+ Documentation/devicetree/bindings/iio/imu/nxp,fxos8700.yaml    | 2 +-
+ .../devicetree/bindings/leds/leds-class-multicolor.yaml        | 2 +-
+ Documentation/devicetree/bindings/leds/leds-lp50xx.yaml        | 2 +-
+ Documentation/devicetree/bindings/mfd/gateworks-gsc.yaml       | 1 -
+ Documentation/devicetree/bindings/net/ti,dp83822.yaml          | 2 +-
+ Documentation/devicetree/bindings/net/ti,dp83867.yaml          | 2 +-
+ Documentation/devicetree/bindings/net/ti,dp83869.yaml          | 2 +-
+ Documentation/devicetree/bindings/power/supply/bq2515x.yaml    | 3 +--
+ Documentation/devicetree/bindings/power/supply/bq256xx.yaml    | 2 +-
+ Documentation/devicetree/bindings/power/supply/bq25980.yaml    | 3 +--
+ Documentation/devicetree/bindings/sound/tas2562.yaml           | 2 +-
+ Documentation/devicetree/bindings/sound/tlv320adcx140.yaml     | 2 +-
+ 20 files changed, 16 insertions(+), 23 deletions(-)
 
 -- 
-DEPRECATED: Please use lee@kernel.org
+2.34.1
+

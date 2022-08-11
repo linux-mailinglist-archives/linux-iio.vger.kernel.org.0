@@ -2,234 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D69DE58F571
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Aug 2022 02:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B550358FA8F
+	for <lists+linux-iio@lfdr.de>; Thu, 11 Aug 2022 12:15:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232539AbiHKA67 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 10 Aug 2022 20:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39092 "EHLO
+        id S234479AbiHKKPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Aug 2022 06:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiHKA6y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 10 Aug 2022 20:58:54 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1BB647DE;
-        Wed, 10 Aug 2022 17:58:53 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id f11so15821569pgj.7;
-        Wed, 10 Aug 2022 17:58:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=k0bhUMiU7HDf8ByyUWn8v9bASxgxCe2ocaeUGV4VFSk=;
-        b=CJfZY3aExNLiELPRL69Xbai+jTrHNRWlkO3/tiVRZWuDzVwkRQ9icJmwwirqfCJksD
-         Uorpvrn/drkM17+vZj/ZE0Rpr61dZdPRtY3Rv1vhdjWWHnOsy9hs3Bgp//huYFykVXcW
-         Qx7DzH64XhoRqq6sz0PzfWnTTMZo7c9GXlZm6orBQhBWEjprEyAVLNZdeNkhrXg7olWw
-         aBzwy5ejz1OlcK3Z/XBNF6Ajh7+ls4ApuTnpcHEEAFs1iqJdruNFaB+Ns+b/4C4X+6YO
-         QGttH8bMn/g4/Kk8pZ1GbTiPyWg+H8cBn3EEzYSzMUB6OxbyVa0A33nrTMS2wnc0mRiF
-         Wa6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=k0bhUMiU7HDf8ByyUWn8v9bASxgxCe2ocaeUGV4VFSk=;
-        b=Ja1iQ6N5VhO+VDAxyjZI6ByneycOPIkgl7yas6N1RW4ALOG/QU+A9yoz85YJCsCwXh
-         fwWoNdzwsJFeP3oNFZSl0L/7eZtD78BWq5TNOausEOkrDq+coCMT4J1w7eOlnWC/rIrq
-         ugSY/ApcW49i+EIiitgwe3/siKDhi8mb5wypnpOvbakxNvium8u7QvPIz8NCbWtCHWtP
-         NwMwOC7Yr1XzviyaqrjT5t174XDp1HFZnwDLqX391qxVSNoKfc37Dmo1HqIYWLZGoR8s
-         uxYyIdG6tMlVWpM3qTyAm78epteHY6XqPG6ALYRi0x96JDWdqcrvDrQV/p4TBfkdU6SS
-         15nA==
-X-Gm-Message-State: ACgBeo2bhSyNpQb0oBnzNG1EUg3boDB1iNR98wrX3EGVlAFpcf7mrNCL
-        AUSGLgj0KKgjAO4ZUbRv5hM=
-X-Google-Smtp-Source: AA6agR70H85HGA3vVInnbpSwUrfmwyci7JmiXRzPSUpGbugeNcYRT+UHskzbJLTRUwIyGzGtchgB/A==
-X-Received: by 2002:a63:ff19:0:b0:41a:8f88:5703 with SMTP id k25-20020a63ff19000000b0041a8f885703mr25186834pgi.355.1660179532829;
-        Wed, 10 Aug 2022 17:58:52 -0700 (PDT)
-Received: from google.com ([2620:15c:202:201:a3c8:d6b9:a5c2:1eca])
-        by smtp.gmail.com with ESMTPSA id l17-20020a170902f69100b0016a091eb88esm13674287plg.126.2022.08.10.17.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Aug 2022 17:58:51 -0700 (PDT)
-Date:   Wed, 10 Aug 2022 17:58:48 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        heiko@sntech.de, paul@crapouillou.net,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Maya Matuszczyk <maccraft123mc@gmail.com>
-Subject: Re: [PATCH v12 2/3] Input: adc-joystick - Add polled input device
- support
-Message-ID: <YvRUSBFGuMmjGsb4@google.com>
-References: <20220805171016.21217-1-macroalpha82@gmail.com>
- <20220805171016.21217-3-macroalpha82@gmail.com>
- <20220806152042.39bc5351@jic23-huawei>
- <9399f54366be973dba36a70cb3dcbfd9@artur-rojek.eu>
+        with ESMTP id S234477AbiHKKPb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Aug 2022 06:15:31 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8DC1900C;
+        Thu, 11 Aug 2022 03:15:30 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2405:201:10:389d:42df:ae4c:c047:294c])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id BBEAF6601CE2;
+        Thu, 11 Aug 2022 11:15:27 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1660212929;
+        bh=zKeoj5xNpf9SpJXxagsMyA/3VCmfRNytMGTc1lfMEqQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=KLLHM19vgXRVv5ngGvek04gSMK60da91pwuHP5UnRlci9lBenNN2wZ7JyV588lvdw
+         bIG5UhQN+dmzJaTGAC6UUahXmsN1yM5B+XPVL3juXhEjCmY3zm71og/w5g3HojTwsK
+         Lb0lNzzr6UsAwn/3sZ5LtrXV2YC/aKr4ePf7A5503k65+KF70CqJNYB3g8NVAewp1A
+         2dwkoUi7dGlu8Tj1GWAg4o21BWcR84dBRfLkH2/bhM/3slkyPWGCeVBT0aaL33zI2L
+         hRINel3ykOoKTjskdinFavxtbP1HW9Eft9unAvmCF2u3jhfulFQS9aTxf9xnTQzGbe
+         h2lrLOxnmtikw==
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        krisman@collabora.com, kernel@collabora.com,
+        alvaro.soliverez@collabora.com,
+        Shreeya Patel <shreeya.patel@collabora.com>
+Subject: [PATCH] iio: light: Add raw attribute
+Date:   Thu, 11 Aug 2022 15:44:43 +0530
+Message-Id: <20220811101443.499761-1-shreeya.patel@collabora.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9399f54366be973dba36a70cb3dcbfd9@artur-rojek.eu>
-X-Spam-Status: No, score=1.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 06, 2022 at 04:19:21PM +0200, Artur Rojek wrote:
-> On 2022-08-06 16:20, Jonathan Cameron wrote:
-> > On Fri,  5 Aug 2022 12:10:15 -0500
-> > Chris Morgan <macroalpha82@gmail.com> wrote:
-> > 
-> > > From: Chris Morgan <macromorgan@hotmail.com>
-> > > 
-> > > Add polled input device support to the adc-joystick driver. This is
-> > > useful for devices which do not have hardware capable triggers on
-> > > their SARADC. Code modified from adc-joystick.c changes made by Maya
-> > > Matuszczyk.
-> > > 
-> > > Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> > > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> > Hi Chris,
-> > 
-> > Trying to avoid too much indentation has lead to an odd code structure.
-> > Still minor thing, so either way this looks fine to me.
-> > 
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > > ---
-> > >  drivers/input/joystick/adc-joystick.c | 44
-> > > +++++++++++++++++++++++++--
-> > >  1 file changed, 41 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/drivers/input/joystick/adc-joystick.c
-> > > b/drivers/input/joystick/adc-joystick.c
-> > > index 78ebca7d400a..77dfb7dd96eb 100644
-> > > --- a/drivers/input/joystick/adc-joystick.c
-> > > +++ b/drivers/input/joystick/adc-joystick.c
-> > > @@ -26,8 +26,23 @@ struct adc_joystick {
-> > >  	struct adc_joystick_axis *axes;
-> > >  	struct iio_channel *chans;
-> > >  	int num_chans;
-> > > +	bool polled;
-> > >  };
-> > > 
-> > > +static void adc_joystick_poll(struct input_dev *input)
-> > > +{
-> > > +	struct adc_joystick *joy = input_get_drvdata(input);
-> > > +	int i, val, ret;
-> > > +
-> > > +	for (i = 0; i < joy->num_chans; i++) {
-> > > +		ret = iio_read_channel_raw(&joy->chans[i], &val);
-> > > +		if (ret < 0)
-> > > +			return;
-> > > +		input_report_abs(input, joy->axes[i].code, val);
-> > > +	}
-> > > +	input_sync(input);
-> > > +}
-> > > +
-> > >  static int adc_joystick_handle(const void *data, void *private)
-> > >  {
-> > >  	struct adc_joystick *joy = private;
-> > > @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct
-> > > platform_device *pdev)
-> > >  	int error;
-> > >  	int bits;
-> > >  	int i;
-> > > +	unsigned int poll_interval;
-> > > 
-> > >  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
-> > >  	if (!joy)
-> > > @@ -192,8 +208,21 @@ static int adc_joystick_probe(struct
-> > > platform_device *pdev)
-> > >  		return error;
-> > >  	}
-> > > 
-> > > -	/* Count how many channels we got. NULL terminated. */
-> > > +	if (device_property_present(dev, "poll-interval")) {
-> > > +		error = device_property_read_u32(dev, "poll-interval",
-> > > +						 &poll_interval);
-> > > +		if (error)
-> > > +			return error;
-> > > +		joy->polled = true;
+Add IIO_CHAN_INFO_RAW to the mask to be able to read raw values
+from the light sensor.
 
+Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+---
+ drivers/iio/light/ltrf216a.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-device_property_read_u32() return -EINVAL if property is not present, so
-we can write:
-
-	error = device_property_read_u32(dev, "poll-interval", &poll_interval);
-	if (error) {
-		/* -EINVAL means the property is absent. */
-		if (error != -EINVAL)
-			return error;
-	} else if (poll_interval == 0) {
-		dev_err(...);
-		return -EINVAL;
-	} else {
-		joy->polled = true;
-	}
-
-> > > +	}
-> > > +
-> > > +	/*
-> > > +	 * Count how many channels we got. NULL terminated.
-> > > +	 * Do not check the storage size if using polling.
-> > > +	 */
-> > >  	for (i = 0; joy->chans[i].indio_dev; i++) {
-> > > +		if (joy->polled)
-> > > +			continue;
-> > 
-> > Whilst I can see why did this, it is a rather 'unusual' code structure
-> > and that makes me a tiny bit uncomfortable. However if everyone else
-> > is happy with this then fair enough (I see it was Artur's suggestion to
-> > handle it like this).
-> Yep, I'm fine with the way it is right now :)
-> 
-> Acked-by: Artur Rojek <contact@artur-rojek.eu>
-> 
-> > 
-> > >  		bits = joy->chans[i].channel->scan_type.storagebits;
-> > >  		if (!bits || bits > 16) {
-> > >  			dev_err(dev, "Unsupported channel storage size\n");
-> > > @@ -215,8 +244,14 @@ static int adc_joystick_probe(struct
-> > > platform_device *pdev)
-> > >  	joy->input = input;
-> > >  	input->name = pdev->name;
-> > >  	input->id.bustype = BUS_HOST;
-> > > -	input->open = adc_joystick_open;
-> > > -	input->close = adc_joystick_close;
-> > > +
-> > > +	if (joy->polled) {
-> > > +		input_setup_polling(input, adc_joystick_poll);
-> > > +		input_set_poll_interval(input, poll_interval);
-> > > +	} else {
-> > > +		input->open = adc_joystick_open;
-> > > +		input->close = adc_joystick_close;
-> > > +	}
-> > > 
-> > >  	error = adc_joystick_set_axes(dev, joy);
-> > >  	if (error)
-> > > @@ -229,6 +264,9 @@ static int adc_joystick_probe(struct
-> > > platform_device *pdev)
-> > >  		return error;
-> > >  	}
-> > > 
-> > > +	if (joy->polled)
-> > > +		return 0;
-> > > +
-
-This is no longer compatible with the latest driver code as input device
-registration has been moved to the very end, so you actually need to move
-getting bugger and setting up cleanup action into the "else" clause of "if
-(joy->polled)", even though it adds indentation level.
-
-> > >  	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
-> > >  	if (IS_ERR(joy->buffer)) {
-> > >  		dev_err(dev, "Unable to allocate callback buffer\n");
-
-Thanks.
-
+diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+index e6e24e70d2b9..a717bf99bd2a 100644
+--- a/drivers/iio/light/ltrf216a.c
++++ b/drivers/iio/light/ltrf216a.c
+@@ -93,6 +93,7 @@ static const struct iio_chan_spec ltrf216a_channels[] = {
+ 	{
+ 		.type = IIO_LIGHT,
+ 		.info_mask_separate =
++			BIT(IIO_CHAN_INFO_RAW) |
+ 			BIT(IIO_CHAN_INFO_PROCESSED) |
+ 			BIT(IIO_CHAN_INFO_INT_TIME),
+ 		.info_mask_separate_available =
+@@ -259,6 +260,18 @@ static int ltrf216a_read_raw(struct iio_dev *indio_dev,
+ 	int ret;
+ 
+ 	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = ltrf216a_set_power_state(data, true);
++		if (ret)
++			return ret;
++		mutex_lock(&data->lock);
++		ret = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
++		mutex_unlock(&data->lock);
++		if (ret < 0)
++			return ret;
++		*val = ret;
++		ltrf216a_set_power_state(data, false);
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		mutex_lock(&data->lock);
+ 		ret = ltrf216a_get_lux(data);
 -- 
-Dmitry
+2.30.2
+

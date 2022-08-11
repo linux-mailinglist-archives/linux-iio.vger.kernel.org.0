@@ -2,143 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0017058FE28
+	by mail.lfdr.de (Postfix) with ESMTP id 2533D58FE27
 	for <lists+linux-iio@lfdr.de>; Thu, 11 Aug 2022 16:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235312AbiHKOSn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 11 Aug 2022 10:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
+        id S234908AbiHKOSm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 11 Aug 2022 10:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235299AbiHKOSm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Aug 2022 10:18:42 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A28374368;
-        Thu, 11 Aug 2022 07:18:41 -0700 (PDT)
-Received: from [IPV6:2405:201:10:389d:42df:ae4c:c047:294c] (unknown [IPv6:2405:201:10:389d:42df:ae4c:c047:294c])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: shreeya)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2C53C6601D2F;
-        Thu, 11 Aug 2022 15:18:37 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1660227519;
-        bh=cxtX52V91rWJFD9wPxapVB6Hwe73avZEgO2Qdf4hr04=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=KbTB80ZWlWeZWqxytaJFOUXXSKsPz2KJ+RSf+REqW+DsjnZjt40AbMP1FJ4bMn9SY
-         Na8FnTNON/tlBd15EPd8sc9S0F3HBhxMVIRHEaSTnZeNU+FV2Cve/AD5wGXBzorAHx
-         AVTIlJthTpFxBL9zh327SNu/1VX0TpRHT1mdZyq1D3NWvnKIvds/6b7cEirtUlD8zt
-         8cvEBiSgId0BGnUZzqiuK6vhnJSCkWCLNE2VNc22MvnA6KYfLSax2G6kAFmAKAUIij
-         qH0RhF2d1GRGJW0Gu8wZIiEMYwjgohWX6HbV7etL46gljYjpOoTfQ2JWKc+cuxLRUz
-         vMB38egaHZ2GQ==
-Message-ID: <4e481aa6-eebd-a934-72de-27f0e5e04fb1@collabora.com>
-Date:   Thu, 11 Aug 2022 19:48:33 +0530
+        with ESMTP id S235299AbiHKOSk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 11 Aug 2022 10:18:40 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4869E6E2D3
+        for <linux-iio@vger.kernel.org>; Thu, 11 Aug 2022 07:18:39 -0700 (PDT)
+Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M3TS76DdGz688Z6;
+        Thu, 11 Aug 2022 22:18:31 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 11 Aug 2022 16:18:36 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 11 Aug
+ 2022 15:18:35 +0100
+Date:   Thu, 11 Aug 2022 15:18:34 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Crt Mori <cmo@melexis.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        "Paul Cercueil" <paul@crapouillou.net>,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH 2/2] iio: temp: mlx90632: Switch form UNVIVERSAL to
+ DEFINE_RUNTIME_DEV_PM_OPS()
+Message-ID: <20220811151834.000061da@huawei.com>
+In-Reply-To: <CAKv63us-VHQLwAMCbw9wMR=2KXGjWASgkDRVPgMg9zi1oRZmtA@mail.gmail.com>
+References: <20220807190414.1039028-1-jic23@kernel.org>
+        <20220807190414.1039028-3-jic23@kernel.org>
+        <CAKv63us-VHQLwAMCbw9wMR=2KXGjWASgkDRVPgMg9zi1oRZmtA@mail.gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] iio: light: Add raw attribute
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, krisman@collabora.com,
-        kernel@collabora.com, alvaro.soliverez@collabora.com
-References: <20220811101443.499761-1-shreeya.patel@collabora.com>
- <20220811142518.00000256@huawei.com>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20220811142518.00000256@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 8 Aug 2022 13:26:42 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-On 11/08/22 18:55, Jonathan Cameron wrote:
-> On Thu, 11 Aug 2022 15:44:43 +0530
-> Shreeya Patel <shreeya.patel@collabora.com> wrote:
->
->> Add IIO_CHAN_INFO_RAW to the mask to be able to read raw values
->> from the light sensor.
-> Why is this useful?  It's rare to support _PROCESSED and _RAW for the same channel.
-> Normally occurred to avoid breaking ABI.
+> Not sure if I should apply both but:
+> 
+> Acked-by: Crt Mori <cmo@melexis.com>
+> Tested-by: Crt Mori <cmo@melexis.com>
+Absolutely.  Both is perfect. Thanks!
+> 
+> 
+> On Sun, 7 Aug 2022 at 20:54, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > The callbacks in this driver are simple and it doesn't matter if
+> > they are unnecessarily called multiple times.  However, we might as
+> > well not repeat the effort if the device is already suspended.
+> > The new DEFINE_RUNTIME_DEV_PM_OPS() has the advantage that we don't
+> > need to mark the callbacks __maybe_unused.  The compiler will still
+> > remove them for us if CONFIG_PM is not set.
+> >
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Crt Mori <cmo@melexis.com>
+> > ---
+> >  drivers/iio/temperature/mlx90632.c | 10 +++++-----
+> >  1 file changed, 5 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+> > index 7ee7ff8047a4..9fc69d099784 100644
+> > --- a/drivers/iio/temperature/mlx90632.c
+> > +++ b/drivers/iio/temperature/mlx90632.c
+> > @@ -952,7 +952,7 @@ static const struct of_device_id mlx90632_of_match[] = {
+> >  };
+> >  MODULE_DEVICE_TABLE(of, mlx90632_of_match);
+> >
+> > -static int __maybe_unused mlx90632_pm_suspend(struct device *dev)
+> > +static int mlx90632_pm_suspend(struct device *dev)
+> >  {
+> >         struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> >         struct mlx90632_data *data = iio_priv(indio_dev);
+> > @@ -960,7 +960,7 @@ static int __maybe_unused mlx90632_pm_suspend(struct device *dev)
+> >         return mlx90632_sleep(data);
+> >  }
+> >
+> > -static int __maybe_unused mlx90632_pm_resume(struct device *dev)
+> > +static int mlx90632_pm_resume(struct device *dev)
+> >  {
+> >         struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> >         struct mlx90632_data *data = iio_priv(indio_dev);
+> > @@ -968,14 +968,14 @@ static int __maybe_unused mlx90632_pm_resume(struct device *dev)
+> >         return mlx90632_wakeup(data);
+> >  }
+> >
+> > -static UNIVERSAL_DEV_PM_OPS(mlx90632_pm_ops, mlx90632_pm_suspend,
+> > -                           mlx90632_pm_resume, NULL);
+> > +static DEFINE_RUNTIME_DEV_PM_OPS(mlx90632_pm_ops, mlx90632_pm_suspend,
+> > +                                mlx90632_pm_resume, NULL);
+> >
+> >  static struct i2c_driver mlx90632_driver = {
+> >         .driver = {
+> >                 .name   = "mlx90632",
+> >                 .of_match_table = mlx90632_of_match,
+> > -               .pm     = &mlx90632_pm_ops,
+> > +               .pm     = pm_ptr(&mlx90632_pm_ops),
+> >         },
+> >         .probe = mlx90632_probe,
+> >         .remove = mlx90632_remove,
+> > --
+> > 2.37.1
+> >  
 
-Hi Jonathan,
-
-For some context, we have been using a downstream driver for ltrf216a
-in steam deck. The formula for Lux calculation used in that driver is
-incorrect which we corrected in the driver that has been upstreamed now.
-
-The userspace code to handle brightness on steam deck uses the 
-in_illuminance_input
-value from sysfs and multiplies that value with some constant stored in 
-BIOS at
-factory calibration time.
-
-With the Lux calculation change in upstreamed driver, 
-in_illuminance_input gives us
-a different value leading to change in the brightness on steam deck. It 
-is also not possible
-for us to recalculate the constant stored in BIOS.
-
-We need a way to add some magic in userspace code so that brightness 
-adjustment
-works like before. So I'm trying to calculate a constant using the 
-current formula
-that we are using :-
-( greendata * 45 * LTRF216A_WIN_FAC ) / ( data->als_data_gain * 
-data->int_time_fac)
-
-Except for the greendata which is ALS_DATA, I have all the other values 
-to calculate
-a constant, hence, I added RAW attribute so I can read the ALS_DATA 
-value from userspace.
-
-
-Thanks,
-Shreeya Patel
-
->
-> Jonathan
->
->> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
->> ---
->>   drivers/iio/light/ltrf216a.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
->> index e6e24e70d2b9..a717bf99bd2a 100644
->> --- a/drivers/iio/light/ltrf216a.c
->> +++ b/drivers/iio/light/ltrf216a.c
->> @@ -93,6 +93,7 @@ static const struct iio_chan_spec ltrf216a_channels[] = {
->>   	{
->>   		.type = IIO_LIGHT,
->>   		.info_mask_separate =
->> +			BIT(IIO_CHAN_INFO_RAW) |
->>   			BIT(IIO_CHAN_INFO_PROCESSED) |
->>   			BIT(IIO_CHAN_INFO_INT_TIME),
->>   		.info_mask_separate_available =
->> @@ -259,6 +260,18 @@ static int ltrf216a_read_raw(struct iio_dev *indio_dev,
->>   	int ret;
->>   
->>   	switch (mask) {
->> +	case IIO_CHAN_INFO_RAW:
->> +		ret = ltrf216a_set_power_state(data, true);
->> +		if (ret)
->> +			return ret;
->> +		mutex_lock(&data->lock);
->> +		ret = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
->> +		mutex_unlock(&data->lock);
->> +		if (ret < 0)
->> +			return ret;
->> +		*val = ret;
->> +		ltrf216a_set_power_state(data, false);
->> +		return IIO_VAL_INT;
->>   	case IIO_CHAN_INFO_PROCESSED:
->>   		mutex_lock(&data->lock);
->>   		ret = ltrf216a_get_lux(data);

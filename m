@@ -2,41 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E56F5914A8
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 19:11:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 682145914B1
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 19:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238444AbiHLRLR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 13:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47260 "EHLO
+        id S238721AbiHLRPf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 13:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbiHLRLQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 13:11:16 -0400
+        with ESMTP id S234019AbiHLRPe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 13:15:34 -0400
 Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CD492F64;
-        Fri, 12 Aug 2022 10:11:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A7F76A4B6;
+        Fri, 12 Aug 2022 10:15:32 -0700 (PDT)
 Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id 2D8A35FD07;
-        Fri, 12 Aug 2022 20:11:13 +0300 (MSK)
+        by mail.sberdevices.ru (Postfix) with ESMTP id C74905FD07;
+        Fri, 12 Aug 2022 20:15:30 +0300 (MSK)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1660324273;
-        bh=khfS3tNU6teiR9cjTGL46mJ7z3D6ck0knm4eJ1iLa/Y=;
+        s=mail; t=1660324530;
+        bh=eWXwqhgdPV1eTqKNnJQ+Ha5K6D1MKORyyBt4mURjNrM=;
         h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=MlefdIawhFdXdAQpUe+vk4gGTDE37bozj1bcRKBiT/7zYrebBeBFhhvPdvSE6h3is
-         coQrmZsZN7proiIaHu/ABBRqmbHcPZRHIOjj7nzADQ4UMndeOf1ftACz1EcZcqZcK6
-         4d/yfIdZ7OIEaLw+N2kEIxsrftlwiHELbkjx7l/dxDRDhXq1cZmTWFgN/wZm/r2tWM
-         NyvLdOEEhIl1TH2ETEC+WIIX1VXrp4gK8SGAp0CHj1NpIPVf4JpRXyCw2NGSa7VgYp
-         VcQMJoe8IljnWdVGJU9ZonHVt7FhlvcJx4NLqemPZHgxNIJH6JdmyDFG6DzRZnio0h
-         zrxftpsdiEbDQ==
+        b=HxwwIYCzaqSnF3otq8qXX6bd095sQtfpl9hVBF0XApCRm/XHNyHePuYll5ruLa57t
+         dvhJY/Zfwx4Ag3PPbJ6oQv3vPHn20M9IYXoKCx7JYTVo5MTurpV0qKtjHC0geMq7xC
+         Br2ETjqfXVzs2tnyHBUXlhaP76sxz+Eh/zPa2LqOJO86MXiMfP8r5Z6sGYArd3cwSF
+         AkpcH7qZ0sItcBiza1/VgfBzotanjjUKIFUbA3fDDn/IEyPHoGqjKdO5RBSWZP5SLv
+         0kQFjF6rBRB3L3RT457bTBkJmVLSupCveJ+krDDjms8ZDl29EU0Qsj2XBwK0xe9u5/
+         aElLADejzqOzw==
 Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
         by mail.sberdevices.ru (Postfix) with ESMTP;
-        Fri, 12 Aug 2022 20:11:08 +0300 (MSK)
+        Fri, 12 Aug 2022 20:15:30 +0300 (MSK)
 From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+To:     "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
         "jic23@kernel.org" <jic23@kernel.org>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
         "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
@@ -48,28 +49,25 @@ To:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
         "jbhayana@google.com" <jbhayana@google.com>,
         "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
         "jani.nikula@intel.com" <jani.nikula@intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
         kernel <kernel@sberdevices.ru>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 6/7] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Topic: [PATCH v5 6/7] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Index: AQHYrmvoIVWL45TwmUSMsw+zEhPYFa2rTd8A
-Date:   Fri, 12 Aug 2022 17:10:38 +0000
-Message-ID: <20220812171104.vgvpobwovqlxggsd@CAB-WSD-L081021.sigma.sbrf.ru>
+Subject: Re: [PATCH v5 1/7] lib/string_helpers: Add str_read_write() helper
+Thread-Topic: [PATCH v5 1/7] lib/string_helpers: Add str_read_write() helper
+Thread-Index: AQHYrmvlXLMGJM4ctk2gw8SerH637a2rTxcA
+Date:   Fri, 12 Aug 2022 17:15:00 +0000
+Message-ID: <20220812171526.anjszroov76z4hrt@CAB-WSD-L081021.sigma.sbrf.ru>
 References: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
- <20220812165243.22177-7-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220812165243.22177-7-ddrokosov@sberdevices.ru>
+ <20220812165243.22177-2-ddrokosov@sberdevices.ru>
+In-Reply-To: <20220812165243.22177-2-ddrokosov@sberdevices.ru>
 Accept-Language: ru-RU, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [172.16.1.12]
 Content-Type: text/plain; charset="us-ascii"
-Content-ID: <AF575DA8D4514D469B85338ECBEC59CE@sberdevices.ru>
+Content-ID: <CD67D4ABED2DDE43A341CCD57C13E484@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-KSMG-Rule-ID: 4
@@ -88,115 +86,40 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Jonathan and Andy,
+Hello Andy,
 
-Please find a few comments below. They explain why I didn't do something
-which was mentioned or suggested in the v4.
+Please be informed, I've patched commit msg a little bit, replaced
+'retun' misstyping to 'return'.
 
-On Fri, Aug 12, 2022 at 04:52:29PM +0000, Dmitry Rokosov wrote:
-
-[...]
-
-> +/*
-> + * Possible Full Scale ranges
-> + *
-> + * Axis data is 12-bit signed value, so
-> + *
-> + * fs0 =3D (2 + 2) * 9.81 / (2^11) =3D 0.009580
-> + * fs1 =3D (4 + 4) * 9.81 / (2^11) =3D 0.019160
-> + * fs2 =3D (8 + 8) * 9.81 / (2^11) =3D 0.038320
-> + * fs3 =3D (16 + 16) * 9.81 / (2^11) =3D 0.076641
-> + */
-> +enum {
-> +	MSA311_FS_2G,
-> +	MSA311_FS_4G,
-> +	MSA311_FS_8G,
-> +	MSA311_FS_16G,
-> +};
+On Fri, Aug 12, 2022 at 04:52:25PM +0000, Dmitry Rokosov wrote:
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>=20
+> Add str_read_write() helper to return 'read' or 'write' string literal.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+> ---
+>  include/linux/string_helpers.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>=20
+> diff --git a/include/linux/string_helpers.h b/include/linux/string_helper=
+s.h
+> index 4d72258d42fd..9e22cd78f3b8 100644
+> --- a/include/linux/string_helpers.h
+> +++ b/include/linux/string_helpers.h
+> @@ -126,4 +126,9 @@ static inline const char *str_enabled_disabled(bool v=
+)
+>  	return v ? "enabled" : "disabled";
+>  }
+> =20
+> +static inline const char *str_read_write(bool v)
+> +{
+> +	return v ? "read" : "write";
+> +}
 > +
-> +static const struct {
-> +	int val;
-> +	int val2;
-> +} msa311_fs_table[] =3D {
-> +	{0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
-> +};
-> +
-> +/* Possible Output Data Rate values */
-> +enum {
-> +	MSA311_ODR_1_HZ,
-> +	MSA311_ODR_1_95_HZ,
-> +	MSA311_ODR_3_9_HZ,
-> +	MSA311_ODR_7_81_HZ,
-> +	MSA311_ODR_15_63_HZ,
-> +	MSA311_ODR_31_25_HZ,
-> +	MSA311_ODR_62_5_HZ,
-> +	MSA311_ODR_125_HZ,
-> +	MSA311_ODR_250_HZ,
-> +	MSA311_ODR_500_HZ,
-> +	MSA311_ODR_1000_HZ,
-> +};
-> +
-> +static const struct {
-> +	int val;
-> +	int val2;
-> +} msa311_odr_table[] =3D {
-> +	{1, 0}, {1, 950000}, {3, 900000}, {7, 810000}, {15, 630000},
-> +	{31, 250000}, {62, 500000}, {125, 0}, {250, 0}, {500, 0}, {1000, 0}
-> +};
-
-I didn't change odr and fs table structures to s32_fract, because they
-don't have numerator/denominator format, but it's an integer.fractional
-format. I didn't find such a common struct for this format. If we want to
-generalize such a fractional number format, I suppose it's better to do it
-in the separate patch series over the whole IIO subsystem, due to the many
-val.val2-like structures inside it.
-
-[...]
-
-> +/**
-> + * struct msa311_priv - MSA311 internal private state
-> + * @regs: Underlying I2C bus adapter used to abstract slave
-> + *        register accesses
-> + * @fields: Abstract objects for each registers fields access
-> + * @dev: Device handler associated with appropriate bus client
-> + * @lock: Protects msa311 device state between setup and data access rou=
-tines
-> + *        (power transitions, samp_freq/scale tune, retrieving axes data=
-, etc)
-> + * @chip_name: Chip name in the format "msa311-%hhx" % partid
-> + * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
-> + *                 to notify external consumers a new sample is ready
-> + * @vdd: Optional external voltage regulator for the device power supply
-> + */
-> +struct msa311_priv {
-> +	struct regmap *regs;
-> +	struct regmap_field *fields[F_MAX_FIELDS];
-> +
-> +	struct device *dev;
-
-I stay struct device *dev pointer in the msa311 private structure,
-because without it code looks more grubby and we can't retrieve indio_dev
-from msa311_priv object using container_of or something else
-(it's just a dynamic pointer).
-
-> +	struct mutex lock;
-
-I've removed the state guard comment, but checkpatch.pl is still raising
-a warning.
-
-[...]
-
-> +	err =3D msa311_chip_init(msa311);
-> +	if (err)
-> +		return err;
-> +
-> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-
-I returned INDIO_DIRECT_MODE initialization, but actually I'm not sure
-if it's needed when we setup buffer mode regardless of any optional
-parameters.
-
-[...]
+>  #endif
+> --=20
+> 2.36.0
 
 --=20
 Thank you,

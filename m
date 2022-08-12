@@ -2,97 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 195E8590EC0
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 12:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67FEA590EE3
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 12:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237863AbiHLKIm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 06:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
+        id S238243AbiHLKMn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 06:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237117AbiHLKIm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 06:08:42 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA9CA6C26;
-        Fri, 12 Aug 2022 03:08:40 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id j3so518602ljo.0;
-        Fri, 12 Aug 2022 03:08:40 -0700 (PDT)
+        with ESMTP id S238186AbiHLKMP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 06:12:15 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52FC7AB43C;
+        Fri, 12 Aug 2022 03:12:10 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id u1so721174lfq.4;
+        Fri, 12 Aug 2022 03:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc;
-        bh=Lmz4Vp5Brwa2cnS1Itqbq4P7WlJbdn5Ij99xtrfTr8M=;
-        b=iEyjjw4/6LOvsqXXLJfKSDsKCPFS1lsCd3GFjln5BRbpEVK+IxPLTm7rcyG93QIZk+
-         88yi8KH6gvXJDvAT2iJmEEgic6e5xx0q1DKAArQr6IsDtfmi59kqWYa2UGaGfXS3VSaK
-         Ue1RRivzkHWRRntJf8Nj3UygycU591g7FvDbXXPISHrJl0pSI+iaxhQbKbKFIDo009Nx
-         YRbrQ96bnjJ32m+mQlKOnmdnhn9CdHqdOUXvvoSlLCe1vmnHBmTBp6k2Z+fdg9MFNnzG
-         j1uItRCaZ/Xq/eonFgQcwhzRDK2O+3EbVyX7YZw1+qPPUoViEfraU5/ALcyhG2omF8g+
-         Zsbw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=DeD431ghxLD17wCgiWSV6MzDX9uBGSE2qzGxwjVq9ao=;
+        b=FVLMV6OrkixVc9xqZyTFxZ6fDC4wdgglZqQWmPC0gadPUxdsibc8yAymFp/f9fZ6qo
+         MA9WYi0FCl4LVSjs+akVCpLHqNirqxOnQyyrA8WdaJKt0AJPDOSBzL3uNrv5y5IRIDEg
+         QdA/skH1xWk/JYe924m+6Id0qZwQCGcmH2y62OkGuLJhglzcIQ8VwVmJ3/xNqCyJ5HVI
+         a7sPayaWEvmjpvPzgJySMbEV/OKPejNwCbT5X+aswGPfGZHuJXadw13LlIHAKC/3dnR4
+         kc6Nq3ruIInwKR4khTznbYKAwMqiTRzzPLhbQoityr3PiyIxEWuE6GRJ8nW4A2P3NYIz
+         H/yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc;
-        bh=Lmz4Vp5Brwa2cnS1Itqbq4P7WlJbdn5Ij99xtrfTr8M=;
-        b=scFRtmceAkTfJuf6YYgppAv7E88MgG3LVamnh2HDuGHT7WUqkCegxkJB9/AQJMs7w6
-         SIfDEDhOu3/1RaTCMOw/w3tO7iz6SVqejkVHYKiMdKEf4X9TmyXipx/GmEjsptQp0ri5
-         sy+KiclDtLDb0jBe0Mn/SXMZji9H2bLvYnG6/iRtCh4OKY/jitFn79VeTobD78i4/G+m
-         hEvDhYe34J9DQ4Fv2XxeGsiWbwJfh+Xr1Y/oxaEciVzxTP9BVhdfUKRgCyUutiQHl1n5
-         bPrD05zaXDAf0BgJI6dk+xQ8ogc/Xqgi4fDbDd6TnWID/ccAySA3EDS5TCr9fL5bcrZL
-         P/8Q==
-X-Gm-Message-State: ACgBeo32DCwA++mQXqQhJNiCkuHp8tyWKX1ROIvBqCKY0hfi/DUbXLS6
-        LGffRPxIhc9t8c5i/d1F0f07Ihynbc154w==
-X-Google-Smtp-Source: AA6agR48G+sAfnTk456AdMmoWmwqiUxwIqWZm+aCORAI6x+9Wf6EMIhQ9lCGq1KjCDmWMsEc4se5Fg==
-X-Received: by 2002:a2e:7311:0:b0:25e:c66f:2be0 with SMTP id o17-20020a2e7311000000b0025ec66f2be0mr908055ljc.100.1660298919064;
-        Fri, 12 Aug 2022 03:08:39 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=DeD431ghxLD17wCgiWSV6MzDX9uBGSE2qzGxwjVq9ao=;
+        b=K5f2oh68l8mk8aY+FDKgbFWYbavoTZVcMhO1/4tiRWFw0SMwNluaNFDZ/TpxCq7Ran
+         /FQ17Ho2OvtwuULmvHMoa2FSdBXXnV1rHyaoRqvPAf5G7CrR7wBBg5VNtL9LsvfZsmq0
+         ykywDmZX0xrs+LdjGbdyDIENwkV7K3JJSLZAbOY3cHDTpgujcAfrwTyu0+ACJS33EW4c
+         FlHDuWFY4pHSFbc+UYEUQMALPOs1I1H7dEX/ax06SPAjvlfAedmhrqISQOvf/9p1IwKA
+         4RK8EEbVvqPt7zHgIPNvpCGy8C2+pe+se6sIOVDKmGXQB6UM6vIOBUkLgWVCIXncPSWt
+         3obQ==
+X-Gm-Message-State: ACgBeo0OuYr+pVeOEgLJ/T8DeRsDkW5gORJgaTkg8Zc7yfqHfJN/i/hI
+        JH3sse+GBdzRkfo6kCOxYza1DhCuh+4+ew==
+X-Google-Smtp-Source: AA6agR7u7LbwWwJWt0KfxYKaZu/OiJn6LdLRjYedua1UfKa+8e1lE1IF9M/JPZzPYRHAmmjt7OQ4fA==
+X-Received: by 2002:a19:5e49:0:b0:48a:7697:ddb1 with SMTP id z9-20020a195e49000000b0048a7697ddb1mr1085776lfi.323.1660299128266;
+        Fri, 12 Aug 2022 03:12:08 -0700 (PDT)
 Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id k2-20020ac24562000000b0048a79e3dd6csm165585lfm.26.2022.08.12.03.08.37
+        by smtp.gmail.com with ESMTPSA id 10-20020ac2484a000000b0048af7e58c9dsm156345lfy.278.2022.08.12.03.12.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Aug 2022 03:08:38 -0700 (PDT)
-Date:   Fri, 12 Aug 2022 13:08:17 +0300
+        Fri, 12 Aug 2022 03:12:06 -0700 (PDT)
+Date:   Fri, 12 Aug 2022 13:12:02 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
         Lorenzo Bianconi <lorenzo@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
         Matti Vaittinen <mazziesaccount@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH v2 0/7] Devm helpers for regulator get and enable
-Message-ID: <cover.1660292316.git.mazziesaccount@gmail.com>
+        Miaoqian Lin <linmq006@gmail.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 7/7] iio: Simplify drivers using
+ devm_regulator_*get_enable()
+Message-ID: <13bb483e1f3ee003ca3a6949e27eee7f505e047d.1660292316.git.mazziesaccount@gmail.com>
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="THWirS5KE0K9xFXH"
+        protocol="application/pgp-signature"; boundary="SnNffchV/nAgRcji"
 Content-Disposition: inline
+In-Reply-To: <cover.1660292316.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -104,105 +81,281 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---THWirS5KE0K9xFXH
+--SnNffchV/nAgRcji
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Devm helpers for regulator get and enable
+adc/ad7192:
+Use devm_regulator_get_enable() instead of open coded get, enable,
+add-action-to-disable-at-detach - pattern. Also drop the seemingly unused
+struct member 'dvdd'.
 
-First patch in the series is actually just a simple documentation fix
-which could be taken in as it is now.
+dac/ltc2688:
+gyro/bmg160_core:
+Use devm_regulator_bulk_get_enable() instead of open coded bulk-get,
+bulk-enable, add-action-to-disable-at-detach - pattern.
 
-A few* drivers seem to use pattern demonstrated by pseudocode:
+imu/st_lsm6dsx:
+Use devm_regulator_bulk_get_enable() instead of open coded bulk-get,
+bulk-enable, add-action-to-disable-at-detach - pattern.
 
-- devm_regulator_get()
-- regulator_enable()
-- devm_add_action_or_reset(regulator_disable())
+A functional change (which seems like a bugfix) is that if
+regulator_bulk_get fails, the enable is not attempted.
 
-Introducing devm helpers for this pattern would remove bunch of code from
-drivers. Typically following:
-
-- replace 3 calls (devm_regulator_get[_optional](), regulator_enable(),
-  devm_add_action_or_reset()) with just one
-  (devm_regulator_get_enable[_optional]()).
-- drop disable callback.
-- remove stored pointer to struct regulator - which can lead to problem
-  when an devm action for regulator_disable is used.
-
-I believe this simplifies things by removing some dublicated code.
-
-The suggested managed 'get_enable' APIs do not return the pointer to
-regulators for user because any call to regulator_disable()
-(or regulator_enable()) may easily lead to regulator enable count imbalance
-upon device detach. (Eg, if someone calls regulator_disable() and the
-device is then detached before user has re-enabled the regulator). Not
-returning the pointer to obtained regulator to caller is a good hint that
-the enable/disable should not be manually handled when these APIs are used.
-
-OTOH, not returning the pointer reduces the use-cases by not allowing
-the consumers to perform other regulator actions. For example request the
-voltages. A few drivers which used the "get, enable,
-devm_action_to_disable" did also query the voltages. The API does not suit
-needs of such users.
-
-This series reowrks only a few drivers as I am short of time. So, there is
-still plenty of fish in the sea for people who like to improve the code
-(or count the beans ;]).
-
-Finally - most of the converted drivers have not been tested (other than
-compile-tested) due to lack of HW. All reviews and testing is _highly_
-appreciated (as always!).
-
-Revision history:
-
-RFCv1 =3D> v2:
-	- Add devm_regulator_bulk_get_enable() and
-	  devm_regulator_bulk_put()
-	- Convert a couple of drivers to use the new
-	  devm_regulator_bulk_get_enable().
-	- Squash all IIO patches into one.
-
-Patch 1:
-	Fix docmentation (devres API list) for regulator APIs
-Patch 2:
-	The new devm helpers.
-Patch 3:
-	Add new devm-helper APIs to docs.
-Patch 4:
-	simplified CLK driver(s)
-Patch 5:
-	simplified GPU driver(s)
-Patch 6:
-	simplified hwmon driver(s)
-Patch 7:
-	simplified IIO driver(s)
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
+RFCv1 =3D> v2:
+Squashed all IIO changes to one patch. Added use of
+devm_regulator_bulk_get_enable().
 
-Matti Vaittinen (7):
-  docs: devres: regulator: Add missing devm_* functions to devres.rst
-  regulator: Add devm helpers for get and enable
-  docs: devres: regulator: Add new get_enable functions to devres.rst
-  clk: cdce925: simplify using devm_regulator_get_enable()
-  gpu: drm: simplify drivers using devm_regulator_*get_enable*()
-  hwmon: lm90: simplify using devm_regulator_get_enable()
-  iio: Simplify drivers using devm_regulator_*get_enable()
+Please note - this is only compile-tested due to the lack of HW. Careful
+review and testing is _highly_ appreciated.
+---
+ drivers/iio/adc/ad7192.c                     | 15 ++--------
+ drivers/iio/dac/ltc2688.c                    | 23 ++-------------
+ drivers/iio/gyro/bmg160_core.c               | 24 ++--------------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h      |  2 --
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 30 ++++----------------
+ 5 files changed, 13 insertions(+), 81 deletions(-)
 
- .../driver-api/driver-model/devres.rst        |  11 ++
- drivers/clk/clk-cdce925.c                     |  21 +--
- drivers/gpu/drm/bridge/sii902x.c              |  22 +--
- drivers/gpu/drm/meson/meson_dw_hdmi.c         |  23 +--
- drivers/hwmon/lm90.c                          |  21 +--
- drivers/iio/adc/ad7192.c                      |  15 +-
- drivers/iio/dac/ltc2688.c                     |  23 +--
- drivers/iio/gyro/bmg160_core.c                |  24 +--
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |   2 -
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  |  30 +---
- drivers/regulator/devres.c                    | 164 ++++++++++++++++++
- include/linux/regulator/consumer.h            |  27 +++
- 12 files changed, 227 insertions(+), 156 deletions(-)
-
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index d71977be7d22..8a52c0dec3f9 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,7 +177,6 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
+-	struct regulator		*dvdd;
+ 	struct clk			*mclk;
+ 	u16				int_vref_mv;
+ 	u32				fclk;
+@@ -1015,19 +1014,9 @@ static int ad7192_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+=20
+-	st->dvdd =3D devm_regulator_get(&spi->dev, "dvdd");
+-	if (IS_ERR(st->dvdd))
+-		return PTR_ERR(st->dvdd);
+-
+-	ret =3D regulator_enable(st->dvdd);
+-	if (ret) {
+-		dev_err(&spi->dev, "Failed to enable specified DVdd supply\n");
+-		return ret;
+-	}
+-
+-	ret =3D devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->dvdd);
++	ret =3D devm_regulator_get_enable(&spi->dev, "dvdd");
+ 	if (ret)
+-		return ret;
++		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd su=
+pply\n");
+=20
+ 	ret =3D regulator_get_voltage(st->avdd);
+ 	if (ret < 0) {
+diff --git a/drivers/iio/dac/ltc2688.c b/drivers/iio/dac/ltc2688.c
+index 937b0d25a11c..1abc88cd99f9 100644
+--- a/drivers/iio/dac/ltc2688.c
++++ b/drivers/iio/dac/ltc2688.c
+@@ -84,7 +84,6 @@ struct ltc2688_chan {
+ struct ltc2688_state {
+ 	struct spi_device *spi;
+ 	struct regmap *regmap;
+-	struct regulator_bulk_data regulators[2];
+ 	struct ltc2688_chan channels[LTC2688_DAC_CHANNELS];
+ 	struct iio_chan_spec *iio_chan;
+ 	/* lock to protect against multiple access to the device and shared data =
+*/
+@@ -902,13 +901,6 @@ static int ltc2688_setup(struct ltc2688_state *st, str=
+uct regulator *vref)
+ 			       LTC2688_CONFIG_EXT_REF);
+ }
+=20
+-static void ltc2688_disable_regulators(void *data)
+-{
+-	struct ltc2688_state *st =3D data;
+-
+-	regulator_bulk_disable(ARRAY_SIZE(st->regulators), st->regulators);
+-}
+-
+ static void ltc2688_disable_regulator(void *regulator)
+ {
+ 	regulator_disable(regulator);
+@@ -970,6 +962,7 @@ static int ltc2688_probe(struct spi_device *spi)
+ 	struct regulator *vref_reg;
+ 	struct device *dev =3D &spi->dev;
+ 	int ret;
++	static const char * const regulators[] =3D {"vcc", "iovcc"};
+=20
+ 	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
+ 	if (!indio_dev)
+@@ -988,21 +981,11 @@ static int ltc2688_probe(struct spi_device *spi)
+ 		return dev_err_probe(dev, PTR_ERR(st->regmap),
+ 				     "Failed to init regmap");
+=20
+-	st->regulators[0].supply =3D "vcc";
+-	st->regulators[1].supply =3D "iovcc";
+-	ret =3D devm_regulator_bulk_get(dev, ARRAY_SIZE(st->regulators),
+-				      st->regulators);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+-
+-	ret =3D regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
++	ret =3D devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
++					     regulators);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to enable regulators\n");
+=20
+-	ret =3D devm_add_action_or_reset(dev, ltc2688_disable_regulators, st);
+-	if (ret)
+-		return ret;
+-
+ 	vref_reg =3D devm_regulator_get_optional(dev, "vref");
+ 	if (IS_ERR(vref_reg)) {
+ 		if (PTR_ERR(vref_reg) !=3D -ENODEV)
+diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
+index 81a6d09788bd..acfabac645b6 100644
+--- a/drivers/iio/gyro/bmg160_core.c
++++ b/drivers/iio/gyro/bmg160_core.c
+@@ -93,7 +93,6 @@
+=20
+ struct bmg160_data {
+ 	struct regmap *regmap;
+-	struct regulator_bulk_data regulators[2];
+ 	struct iio_trigger *dready_trig;
+ 	struct iio_trigger *motion_trig;
+ 	struct iio_mount_matrix orientation;
+@@ -1067,19 +1066,13 @@ static const char *bmg160_match_acpi_device(struct =
+device *dev)
+ 	return dev_name(dev);
+ }
+=20
+-static void bmg160_disable_regulators(void *d)
+-{
+-	struct bmg160_data *data =3D d;
+-
+-	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+-}
+-
+ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 		      const char *name)
+ {
+ 	struct bmg160_data *data;
+ 	struct iio_dev *indio_dev;
+ 	int ret;
++	static const char * const regulators[] =3D {"vdd", "vddio"};
+=20
+ 	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -1090,22 +1083,11 @@ int bmg160_core_probe(struct device *dev, struct re=
+gmap *regmap, int irq,
+ 	data->irq =3D irq;
+ 	data->regmap =3D regmap;
+=20
+-	data->regulators[0].supply =3D "vdd";
+-	data->regulators[1].supply =3D "vddio";
+-	ret =3D devm_regulator_bulk_get(dev, ARRAY_SIZE(data->regulators),
+-				      data->regulators);
++	ret =3D devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
++					     regulators);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+=20
+-	ret =3D regulator_bulk_enable(ARRAY_SIZE(data->regulators),
+-				    data->regulators);
+-	if (ret)
+-		return ret;
+-
+-	ret =3D devm_add_action_or_reset(dev, bmg160_disable_regulators, data);
+-	if (ret)
+-		return ret;
+-
+ 	ret =3D iio_read_mount_matrix(dev, &data->orientation);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_l=
+sm6dsx/st_lsm6dsx.h
+index a86dd29a4738..03238c64c777 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -372,7 +372,6 @@ struct st_lsm6dsx_sensor {
+  * struct st_lsm6dsx_hw - ST IMU MEMS hw instance
+  * @dev: Pointer to instance of struct device (I2C or SPI).
+  * @regmap: Register map of the device.
+- * @regulators: VDD/VDDIO voltage regulators.
+  * @irq: Device interrupt line (I2C or SPI).
+  * @fifo_lock: Mutex to prevent concurrent access to the hw FIFO.
+  * @conf_lock: Mutex to prevent concurrent FIFO configuration update.
+@@ -395,7 +394,6 @@ struct st_lsm6dsx_sensor {
+ struct st_lsm6dsx_hw {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+-	struct regulator_bulk_data regulators[2];
+ 	int irq;
+=20
+ 	struct mutex fifo_lock;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu=
+/st_lsm6dsx/st_lsm6dsx_core.c
+index 910397716833..7b40f6b58834 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2172,36 +2172,20 @@ static int st_lsm6dsx_irq_setup(struct st_lsm6dsx_h=
+w *hw)
+=20
+ static int st_lsm6dsx_init_regulators(struct device *dev)
+ {
+-	struct st_lsm6dsx_hw *hw =3D dev_get_drvdata(dev);
+ 	int err;
+-
+ 	/* vdd-vddio power regulators */
+-	hw->regulators[0].supply =3D "vdd";
+-	hw->regulators[1].supply =3D "vddio";
+-	err =3D devm_regulator_bulk_get(dev, ARRAY_SIZE(hw->regulators),
+-				      hw->regulators);
+-	if (err)
+-		return dev_err_probe(dev, err, "failed to get regulators\n");
++	static const char * const regulators[] =3D {"vdd", "vddio"};
+=20
+-	err =3D regulator_bulk_enable(ARRAY_SIZE(hw->regulators),
+-				    hw->regulators);
+-	if (err) {
+-		dev_err(dev, "failed to enable regulators: %d\n", err);
+-		return err;
+-	}
++	err =3D devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
++					     regulators);
++	if (err)
++		return dev_err_probe(dev, err, "failed to enable regulators\n");
+=20
+ 	msleep(50);
+=20
+ 	return 0;
+ }
+=20
+-static void st_lsm6dsx_chip_uninit(void *data)
+-{
+-	struct st_lsm6dsx_hw *hw =3D data;
+-
+-	regulator_bulk_disable(ARRAY_SIZE(hw->regulators), hw->regulators);
+-}
+-
+ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id,
+ 		     struct regmap *regmap)
+ {
+@@ -2225,10 +2209,6 @@ int st_lsm6dsx_probe(struct device *dev, int irq, in=
+t hw_id,
+ 	if (err)
+ 		return err;
+=20
+-	err =3D devm_add_action_or_reset(dev, st_lsm6dsx_chip_uninit, hw);
+-	if (err)
+-		return err;
+-
+ 	hw->buff =3D devm_kzalloc(dev, ST_LSM6DSX_BUFF_SIZE, GFP_KERNEL);
+ 	if (!hw->buff)
+ 		return -ENOMEM;
 --=20
 2.37.1
 
@@ -219,19 +372,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---THWirS5KE0K9xFXH
+--SnNffchV/nAgRcji
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL2JpAACgkQeFA3/03a
-ocUSNQgAuAnEh7oW1oRPo5wLIiymBTMRDGKLvapsGYq8bT8IiRWVR/NN37Qd9GHU
-VgE85GmmR24A+GFaR7q+L+mQWvDaumb+BgzGbPbeXnm5Dveh1vORzNhM6TvAgGCM
-VpCgwcMRbSzCGEiYEvHcp5tiZ5Np7fUSmSuLz30BMES+TDdENIMbxGWb4Qa1pG3o
-/5DaGsNxfF2H/5tdaH4S8t9MSKBvCXn4BmrIAEjCVRGZj9+2kSMb8cwNnrp9RBES
-aePeoFBXuq8yiDwtJZn4vkzSle448d+Sg/VqDI0CFD/DBCa1/TAhQmuUM0f17KSD
-wsLBh7G8SRracLoYB+zXLFT7fBaIHg==
-=AV00
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL2J3IACgkQeFA3/03a
+ocW2Ugf9GtyiWREszLlcfd7XlOiqb0aI8GXb9PRuL4pev4jWGaTsClRml6uKBlVw
+RQKfdrZrBrjfWhO6Ack3P5avUozowABn6AIyxR3iWldnFH7jF4/UAr6Q6LaRurMM
+N9WkwgAFi86+ZGxbdM7r24liigHd2ltZnt8OQ0FEQSyFyvu/9Co7UrJ3eWdOYNmm
+QKS+EJZTMC2TpSI0dLgVH6F9p3M53RN55hTwq4dNN/RKyLlmcq3xUHP+mfjDsoRa
+4y7k6xHFU5ZTDWOq/PLjHTLjUCEGPv69ry0ezJ+JunAXwlq8q9B9w3Z+T9v5scBk
+C2H0r3mup7RobLyOxbv7Q4rDeYG25w==
+=xFzp
 -----END PGP SIGNATURE-----
 
---THWirS5KE0K9xFXH--
+--SnNffchV/nAgRcji--

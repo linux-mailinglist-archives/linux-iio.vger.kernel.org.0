@@ -2,316 +2,166 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 714CF591713
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 00:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF95E591718
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 00:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233942AbiHLWEe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 18:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48578 "EHLO
+        id S235912AbiHLWFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 18:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231698AbiHLWEd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 18:04:33 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27A2B5150;
-        Fri, 12 Aug 2022 15:04:31 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id a15so1381832qko.4;
-        Fri, 12 Aug 2022 15:04:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=AzIu4aA/+AqKkggas3Kqyvru1P34qBu2L3JhdqfLcx8=;
-        b=PhF+gDMm+TCffCHQFFGVSeYt27NJu5EyoDUatrjS+kiB7VcIkyK9b6OWH/xm7ngJka
-         wlDVMv3uXm7rjUDwxGCS7LigIkLLuUyH2iMFYt3h3hksFRAMFXyIk3/HJ45OuSZG25ZJ
-         Hf7JXUK6p8IkBDVZCCJUCyoiB+DF6etM6/hbUs/rO2+5grbkYvyNP08xCYB0wO2lrV0h
-         nWM+EJWzlKYyYHyjjRogphcd80zwu1pmJkFoE8rArWZqPvQkYkuwhrSiubf38xB+PUb4
-         bUdKlHcrUYVWN+qIrfaME6Ei3OxnS61e3XSQIgo8mvaM2egxo0qXkVbGELayr5/2WAWt
-         cE+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=AzIu4aA/+AqKkggas3Kqyvru1P34qBu2L3JhdqfLcx8=;
-        b=xc8Ggk9hjXQ5+TZlao9cXhWHEWCQ7HWdOq4Hc04QkzjxarQNAjaBc6XEyHGxjE1cYj
-         uyTaIjsd55gJAmztqUiCEhYNXxdn64WbSw9vqvKPlWPcLFfSC3nSQsoyjLA+SILki8f9
-         ZrdvxGaUFTj1eIbZZ8zuL3m7QaiBS3vd2TY5Rj9FRHFeIddmtUPSUzWojUuHZeArzgYB
-         tSWk17ijFzNHlfDXxTVVLDJCQ24k4HCayCtG6csbEfanc16Gl1+lRBG4KX9vxJKQRLuZ
-         dwMPehpM03b3Yx30UC/jpEeCk4DXNdO5gPOD6CLK/35uLRATN2BjS0efs7dZmQifHNtS
-         Ykdw==
-X-Gm-Message-State: ACgBeo2c9N++K93/uKSrSMlFIi23VYAXYRPKRIQegNlhfxRdr4of7wVb
-        nEfTkubwGMFE1Touo2syMjHNIfMp2sW415VvfKJL0xZR
-X-Google-Smtp-Source: AA6agR7+7JyxkRGLPnsSMbBpb5xvTqoCDc/NLEbKqYteyXw98yvmpIUBq3M94HfA/95cALZi6fnDJ+iEJTbL1JjZcXg=
-X-Received: by 2002:ae9:e311:0:b0:6ba:e711:fb27 with SMTP id
- v17-20020ae9e311000000b006bae711fb27mr1548274qkf.320.1660341870794; Fri, 12
- Aug 2022 15:04:30 -0700 (PDT)
+        with ESMTP id S231698AbiHLWFX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 18:05:23 -0400
+Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76BF94C622
+        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 15:05:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1660341921; bh=PYe43HwPKQzTRJjNn52n7gP1CuESppOZLfs+lpCD3KA=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=IFKaUkFGeLCvYPu5vzbCjjmgJvWVbzr9LdJez8xdsIHD2Y/DVzHpX4LN30ww3Gop+kt+1d5RUoyxfarDV2Qm4yK2o6IjjH88rHVrRwUUBGOE89jOrGlZnuQywsKal+Dey78Z7cqbKIlspkLBAi3gDrZOyCcKhkyoCdQtuC4rzk5S2nRfb6Xu7qmf3s6dJNFAfnD88Uu9MGwyRI7nWa5Z0Y86oTuSpUof6bPz3+e0xAuBExyzrLh2jgib27ikCN14iyyjYAav7r+nDLJfnZhFLF56UwdwaOh9p6/7J1ALZKYSc0V0pFsz15Qq7M3pm8VaXb4wcmkZXnKA66r5EdfR2w==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1660341921; bh=Ug3RcSye99YjCtsKm5jteuI8mquFfcXpY+z9mqeyYQX=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=cp0auMe4gpq92spQpKoXOLGvN/RjgknZCZ/cztBlUzk1OJGrOqip3y8HfTB09iQP8vw+QR9NLJq+fw1Fy9mKvTPkdHRvAhl4vGi3z59UI8NSa95C4oH68UhOgNikDnFzMXW8qO2lwVOkYFOqP/ne7YRLVksGvJN/vjRuJO/RBtcF1g7oz2wqKmiyanIUCtZBW1bcSM5JPtvmX+6nUW6BQi3MQxd6k7zHPYtOkfG8JcrJsvmPVc2rgfPMEx9Q78+4/iym/jtxQMNkYr9s5zy84KDPw2FaofBZgzDvMDdCk9xfNR9vJu5RibLMqNt4WW6npswvKNzK04zLs4IhxtzEzA==
+X-YMail-OSG: FNUoAkYVM1laBS01NJCKE7M5jf69qU6ciT04GnBpN6Y4sos2CGzl7ZFgdDd0vwI
+ Ga7ogzm20DgTkIyAcL3vS3iQJ7nb2W3PsuaJl8eh0ojkNu8Ibe2GLuEJKYaEp90W.lef8GGGd2j1
+ xdLVaxrzcdQq4H0FrNXlFTb.EIQt3PfDBynWZmIOmRDuC4u65oeT7eso5_gnM5Pw2GAx4FTNjhzM
+ tCvjjnOKilFm1On8LMtZLsp6B.XwWjdM5iNLuSsUWHYClY9RP.qFoxHdqV5c3Zi.mLj5w.7OmGkM
+ E4tz6JvmVqc_qm7y73NAGXwS0SxUwul1D0__2SraTVHXdtYPxYT8wheI3oIONmBkN90dksH17NMj
+ S7vWRDKbZpnc5dkZPpj1fHFI_MpcO2Xeobu3g_0.UPvtZ_NLMUB_PZMoC6pjBXjWFzJPzPzyCCFa
+ U90LD4wpJbH4ZhU8okvZzwoLeORSH8GZuceCEmS7oL5DLunNwuzQESNP.nGFcpeRqHR6tJKZzqwo
+ 6zLJscI47tQA9crtUylXPVPctcHCgTLOalZLeYgTL90xwMRUlMkr2K.J4GcZVPwCwXRaNBT_H_HU
+ LGuIavS_DqQ.8UKh4_lCq..kfGQslQA.DbAzOq7iElmjJKfr_n5ci71Iail1eZ5msBC8yGk2v4Hx
+ FgFfT5C.VxFXONHZMMoCfXmwCWlS.V88hHotxpskZvq0RfzyKgxzbVzFD6cijrMkmGae02XE2yEJ
+ 7LfWLEkYs9JnZCDr5onwyywQ5Cn.iqQ4u_I2w15sys2sdOEasyaR.V0fpk84iYZhK_kZalg.SBYF
+ PLl.eZaStJqFL76JNi7ina75c0.dZxTwcQxl8hUUMiAOfRNDi1YCS58zJnggNURWUyRBupp8OlmU
+ mR.jTLlNmk9zv0hj0cROrFxjR6eXd99qay3lvbvWLtWLJK0QrpF6zUZeQNYSCH1ZYuMscjjLvQE8
+ UCdERuRXYK7Er68QwnSt84aqshRSvzIAVECcnuSMVsvn3E_5jLXvHwRiVLzFpaWEOszktdKSHzMZ
+ 0iRZIn.xXDc8SW0Tp7wC6bLYccNaiWV6fktpjTFiPMG3H85Y8n4Zji5AQ3JnFqG81JYGeJIp0zIe
+ SPdbCvmMy6OsxeqPmQj3uvVEWAZ9bfdP9OpMaBl3Duex8DLnOG.8mlCgUpMMrnwqNdiIS3ctTxba
+ vpYWF1mnjIaoLI2GLX9dE5.pGjdHQ8vrLc67XneEd1aItjo_HB469nCcXmftYQR_sA8nEIkmITiK
+ FoG6cufyIT05FFv.6MfeD8yqa4PxirASGIGnkFhUZqy_qKMFPMSJB_SXzcu6i4D0cl0fRBVw9.fT
+ UdbXN_p7UgBhujuCLkzAUkFWUQ.TJpKNB5E3K8P4SiAC5OwSEuQb_Ivt9wjjpCcgFO6YJqFQgDCW
+ icqUE_toG_FpeXdYzh_9Z_2pf1nxKpNKJMmdfeCtJccq3JJDpflEhG8qY.BMMHunGtKn3sK7AyVt
+ sVPhsSSWZ92o.vHprPgxdJLkuu.0Vt5pk.rGIQ38fEskoT2AyuBz0PcBW3WDwuVJ5oJu4bQZJE5M
+ FF_pVqSSKViWk68hGjIxK9YbT7NAn1Tk6nmyO7Ei8DAH4ixq6d8grmdI3Kp1nXh65a.KsuZyI5xP
+ E6mBotIwNCCStil5_ITklkQcWRZ8wHllZiAs27aPEOy_BXJu1I3g5YHz_FMpLeT6RGhrfJ443hXg
+ p.nXSBLROUiSm_pPUyrCuAJOXJVceERw1Ll7aoc5eM6eGEptQamO3.3BQoas3KAkZzCdU7yTCbSs
+ 36gWYNdu0bKb57VfZCBD0rWMkf49dhalx4FU0Ktu6JVD.g_ssfQ4eEELzmh4nStGePf9a8iaLB21
+ eiRk_tl7AdCQnFkFX7D1TuKy5c8g6dRYJnGD6NjJOI6j8K_oOxk23Xfx7Gu1Oc8zf6lGVr_e7dLn
+ G9.tQxNposF73syoZz8YssbVYr4.FczRIFZXIxqkIYcjy.JthVT1pzSomrvTnLsgY4OxEenr1qcv
+ Ki5fDHSzy_Z_2vMSOlJ.o3bIbCwrCgL0.UDXlhv3Y4FoiGR_uThmA5t.TWvAy7qeVffuMrI11lYG
+ KTgjbKpyEx4Hrr9ROIqaqm_vsvBhbN8BEyYqKljSuxhvuSL8CE8uk6abpnEH4P8GE9CXiQpyGrTI
+ IQm.IrBwXeig7Luplj2gu0u_5b810CJRAA8aXOUMUQM5aUnm8UmXhC0fEzsrH0yhqdyULOBzR8_N
+ 8iO_421DSNQXzucxTy2ptqeUL.ERdz22cmtBi_vKynAIVh5NylJJs6zXymhVOeQS7s..y8OKC7Ta
+ 1ObcENuV0MRZca6pHXSLc
+X-Sonic-MF: <jahau@rocketmail.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Fri, 12 Aug 2022 22:05:21 +0000
+Received: by hermes--canary-production-ir2-f74ffc99c-48gl8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c89c964524cd385a78dd9672c65b4e57;
+          Fri, 12 Aug 2022 22:05:16 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH v6 11/14] iio: magnetometer: yas530: Add IIO scaling to "chip_info"
+Date:   Sat, 13 Aug 2022 00:05:00 +0200
+Message-Id: <a12f892633bbee13a8856c231dc793ebbc5d3a03.1660337264.git.jahau@rocketmail.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <cover.1660337264.git.jahau@rocketmail.com>
+References: <cover.1660337264.git.jahau@rocketmail.com>
 MIME-Version: 1.0
-References: <20220809211246.251006-1-eajames@linux.ibm.com> <20220809211246.251006-2-eajames@linux.ibm.com>
-In-Reply-To: <20220809211246.251006-2-eajames@linux.ibm.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 13 Aug 2022 01:03:54 +0300
-Message-ID: <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] iio: pressure: dps310: Refactor startup procedure
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joel Stanley <joel@jms.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:
->
-> Move the startup procedure into a function, and correct a missing
-> check on the return code for writing the PRS_CFG register.
+Add IIO scaling to the "chip_info" structure to ease the handling to
+different YAS variants.
 
-Code looks good, one remark below.
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+ drivers/iio/magnetometer/yamaha-yas530.c | 28 ++++++------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
-> Signed-off-by: Eddie James <eajames@linux.ibm.com>
-> Reviewed-by: Joel Stanley <joel@jms.id.au>
-> ---
->  drivers/iio/pressure/dps310.c | 188 ++++++++++++++++++----------------
->  1 file changed, 99 insertions(+), 89 deletions(-)
->
-> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-> index 36fb7ae0d0a9..c706a8b423b5 100644
-> --- a/drivers/iio/pressure/dps310.c
-> +++ b/drivers/iio/pressure/dps310.c
-> @@ -159,6 +159,102 @@ static int dps310_get_coefs(struct dps310_data *data)
->         return 0;
->  }
->
-> +/*
-> + * Some versions of the chip will read temperatures in the ~60C range when
-> + * it's actually ~20C. This is the manufacturer recommended workaround
-> + * to correct the issue. The registers used below are undocumented.
-> + */
-> +static int dps310_temp_workaround(struct dps310_data *data)
-> +{
-> +       int rc;
-> +       int reg;
-> +
-> +       rc = regmap_read(data->regmap, 0x32, &reg);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /*
-> +        * If bit 1 is set then the device is okay, and the workaround does not
-> +        * need to be applied
-> +        */
-> +       if (reg & BIT(1))
-> +               return 0;
-> +
-> +       rc = regmap_write(data->regmap, 0x0e, 0xA5);
-> +       if (rc)
-> +               return rc;
-> +
-> +       rc = regmap_write(data->regmap, 0x0f, 0x96);
-> +       if (rc)
-> +               return rc;
-
-This code already exists, but still want to ask, is it really
-byte-registers here and not be16/le16 one? In such a case perhaps bulk
-write can be used to reflect it better?
-
-> +       rc = regmap_write(data->regmap, 0x62, 0x02);
-> +       if (rc)
-> +               return rc;
-> +
-> +       rc = regmap_write(data->regmap, 0x0e, 0x00);
-> +       if (rc)
-> +               return rc;
-> +
-> +       return regmap_write(data->regmap, 0x0f, 0x00);
-
-Ditto.
-
-> +}
-> +
-> +static int dps310_startup(struct dps310_data *data)
-> +{
-> +       int rc;
-> +       int ready;
-> +
-> +       /*
-> +        * Set up pressure sensor in single sample, one measurement per second
-> +        * mode
-> +        */
-> +       rc = regmap_write(data->regmap, DPS310_PRS_CFG, 0);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /*
-> +        * Set up external (MEMS) temperature sensor in single sample, one
-> +        * measurement per second mode
-> +        */
-> +       rc = regmap_write(data->regmap, DPS310_TMP_CFG, DPS310_TMP_EXT);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /* Temp and pressure shifts are disabled when PRC <= 8 */
-> +       rc = regmap_write_bits(data->regmap, DPS310_CFG_REG,
-> +                              DPS310_PRS_SHIFT_EN | DPS310_TMP_SHIFT_EN, 0);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /* MEAS_CFG doesn't update correctly unless first written with 0 */
-> +       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
-> +                              DPS310_MEAS_CTRL_BITS, 0);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /* Turn on temperature and pressure measurement in the background */
-> +       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
-> +                              DPS310_MEAS_CTRL_BITS, DPS310_PRS_EN |
-> +                              DPS310_TEMP_EN | DPS310_BACKGROUND);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /*
-> +        * Calibration coefficients required for reporting temperature.
-> +        * They are available 40ms after the device has started
-> +        */
-> +       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> +                                     ready & DPS310_COEF_RDY, 10000, 40000);
-> +       if (rc)
-> +               return rc;
-> +
-> +       rc = dps310_get_coefs(data);
-> +       if (rc)
-> +               return rc;
-> +
-> +       return dps310_temp_workaround(data);
-> +}
-> +
->  static int dps310_get_pres_precision(struct dps310_data *data)
->  {
->         int rc;
-> @@ -677,52 +773,12 @@ static const struct iio_info dps310_info = {
->         .write_raw = dps310_write_raw,
->  };
->
-> -/*
-> - * Some verions of chip will read temperatures in the ~60C range when
-> - * its actually ~20C. This is the manufacturer recommended workaround
-> - * to correct the issue. The registers used below are undocumented.
-> - */
-> -static int dps310_temp_workaround(struct dps310_data *data)
-> -{
-> -       int rc;
-> -       int reg;
-> -
-> -       rc = regmap_read(data->regmap, 0x32, &reg);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       /*
-> -        * If bit 1 is set then the device is okay, and the workaround does not
-> -        * need to be applied
-> -        */
-> -       if (reg & BIT(1))
-> -               return 0;
-> -
-> -       rc = regmap_write(data->regmap, 0x0e, 0xA5);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       rc = regmap_write(data->regmap, 0x0f, 0x96);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       rc = regmap_write(data->regmap, 0x62, 0x02);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       rc = regmap_write(data->regmap, 0x0e, 0x00);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       return regmap_write(data->regmap, 0x0f, 0x00);
-> -}
-> -
->  static int dps310_probe(struct i2c_client *client,
->                         const struct i2c_device_id *id)
->  {
->         struct dps310_data *data;
->         struct iio_dev *iio;
-> -       int rc, ready;
-> +       int rc;
->
->         iio = devm_iio_device_alloc(&client->dev,  sizeof(*data));
->         if (!iio)
-> @@ -747,54 +803,8 @@ static int dps310_probe(struct i2c_client *client,
->         if (rc)
->                 return rc;
->
-> -       /*
-> -        * Set up pressure sensor in single sample, one measurement per second
-> -        * mode
-> -        */
-> -       rc = regmap_write(data->regmap, DPS310_PRS_CFG, 0);
-> -
-> -       /*
-> -        * Set up external (MEMS) temperature sensor in single sample, one
-> -        * measurement per second mode
-> -        */
-> -       rc = regmap_write(data->regmap, DPS310_TMP_CFG, DPS310_TMP_EXT);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       /* Temp and pressure shifts are disabled when PRC <= 8 */
-> -       rc = regmap_write_bits(data->regmap, DPS310_CFG_REG,
-> -                              DPS310_PRS_SHIFT_EN | DPS310_TMP_SHIFT_EN, 0);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       /* MEAS_CFG doesn't update correctly unless first written with 0 */
-> -       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
-> -                              DPS310_MEAS_CTRL_BITS, 0);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       /* Turn on temperature and pressure measurement in the background */
-> -       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
-> -                              DPS310_MEAS_CTRL_BITS, DPS310_PRS_EN |
-> -                              DPS310_TEMP_EN | DPS310_BACKGROUND);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       /*
-> -        * Calibration coefficients required for reporting temperature.
-> -        * They are available 40ms after the device has started
-> -        */
-> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
-> -                                     ready & DPS310_COEF_RDY, 10000, 40000);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       rc = dps310_get_coefs(data);
-> -       if (rc < 0)
-> -               return rc;
-> -
-> -       rc = dps310_temp_workaround(data);
-> -       if (rc < 0)
-> +       rc = dps310_startup(data);
-> +       if (rc)
->                 return rc;
->
->         rc = devm_iio_device_register(&client->dev, iio);
-> --
-> 2.31.1
->
-
-
+diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+index fa317b975f8f..af5c090098fb 100644
+--- a/drivers/iio/magnetometer/yamaha-yas530.c
++++ b/drivers/iio/magnetometer/yamaha-yas530.c
+@@ -130,6 +130,7 @@ struct yas5xx;
+  * @version_names: version letters or namings
+  * @volatile_reg: device-specific volatile registers
+  * @volatile_reg_qty: quantity of device-specific volatile registers
++ * @scaling_val2: scaling value for IIO_CHAN_INFO_SCALE
+  */
+ struct yas5xx_chip_info {
+ 	unsigned int devid;
+@@ -137,6 +138,7 @@ struct yas5xx_chip_info {
+ 	char *version_names[2];
+ 	const int *volatile_reg;
+ 	int volatile_reg_qty;
++	u32 scaling_val2;
+ };
+ 
+ /**
+@@ -504,27 +506,8 @@ static int yas5xx_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		switch (ci->devid) {
+-		case YAS530_DEVICE_ID:
+-			/*
+-			 * Raw values of YAS530 are in picotesla. Divide by
+-			 * 100000000 (10^8) to get Gauss.
+-			 */
+-			*val = 1;
+-			*val2 = 100000000;
+-			break;
+-		case YAS532_DEVICE_ID:
+-			/*
+-			 * Raw values of YAS532 are in nanotesla. Divide by
+-			 * 100000 (10^5) to get Gauss.
+-			 */
+-			*val = 1;
+-			*val2 = 100000;
+-			break;
+-		default:
+-			dev_err(yas5xx->dev, "unknown device type\n");
+-			return -EINVAL;
+-		}
++		*val = 1;
++		*val2 = ci->scaling_val2;
+ 		return IIO_VAL_FRACTIONAL;
+ 	default:
+ 		/* Unknown request */
+@@ -951,6 +934,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+ 		.version_names = { "A", "B" },
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000000, /* picotesla to Gauss */
+ 	},
+ 	[yas532] = {
+ 		.devid = YAS532_DEVICE_ID,
+@@ -958,6 +942,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+ 		.version_names = { "AB", "AC" },
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000, /* nanotesla to Gauss */
+ 	},
+ 	[yas533] = {
+ 		.devid = YAS532_DEVICE_ID,
+@@ -965,6 +950,7 @@ static const struct yas5xx_chip_info yas5xx_chip_info_tbl[] = {
+ 		.version_names = { "AB", "AC" },
+ 		.volatile_reg = yas530_volatile_reg,
+ 		.volatile_reg_qty = ARRAY_SIZE(yas530_volatile_reg),
++		.scaling_val2 = 100000, /* nanotesla to Gauss */
+ 	},
+ };
+ 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.35.1
+

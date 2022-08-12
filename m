@@ -2,174 +2,251 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A9D5910A6
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 14:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B38475910DD
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 14:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238598AbiHLMQI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 08:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
+        id S235464AbiHLMkV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 08:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237181AbiHLMQH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 08:16:07 -0400
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2051.outbound.protection.outlook.com [40.107.20.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF6FB979C5;
-        Fri, 12 Aug 2022 05:16:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d6wWONf5F3frePLZZPw10bzoDkP7mWkYcQn4xTKvYGrD8sR4xH6R8OnlkJIrv0El7v26kDr7YHaWWMuZODak0NX2JW1hDSMN+ZIg46nQfOizxn/p6iRZyqSS7q1DOHjsEP5uAy15tt02aWosfbvPWCrWal28MQyxujmuUNnk2qeQmcR+lgLXJqW3vQ+8b/dAS646v5SBqaNSycWW3oqLRG2vrKz25kSH2gJDdvB6PJizDJkxTTj4MVy3DXldTb8KYjvF73WE0DksXr1CB46FeXjNVLuMjbJwEQ8h0FZmD4oMXQMU+mEijwwtSpGGyLLrmIAtkBVSzLkKX0wTGNLvKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v4hNuLVz1yuHh16u7VGWVDm7dvhhksKEL76e1OiDkmE=;
- b=HlFFAZ095gXfed+mtWQ8EUFeD/ln4y6n6HaaWgrkHebXocmtNv/wSHR0TWUVm7SJ6D70cFqmi/MbGEs6TO5eLJwksTTtfggT3bzzuIwCzEQ8vRzpoUtFSMbE1PxjaJpr5e1ArcN+jJXvcvc+kEFY3A2jkCici1vp9Ry82q/q1ppSm4kqnGOyd62+3x4+kqET2vLiHHLiro5n1YgNXKHJ6Q7nYOqxweUjz3yDtyvsPcG4kLn40kO+xopM+SDD3fSeEwecBOnaW/L1ydkG70n42RskcxvvjM0XMFFU2heNduLGg/tsl/T0Iuf1PFJ5C/obCOuRrY0UwuNGY0NJVKsFuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v4hNuLVz1yuHh16u7VGWVDm7dvhhksKEL76e1OiDkmE=;
- b=qtKMeel9c7vSRzbbslnt88uC+IZ49yhkuwZoNssB9d2FWNuph05Bvr/xtq9Jhe1sMazMpfsrJftiPwXu7/816f0IbsHKZiwpVhVwhmPgCxi6e9A1PA05n0fnqkmyxOl4mmND4CbyfQOCecT0vUvf5+wTa9fx1yFaO5FBCIXNxZQ=
-Received: from VI1PR04MB4016.eurprd04.prod.outlook.com (2603:10a6:803:4a::27)
- by AM0PR04MB6964.eurprd04.prod.outlook.com (2603:10a6:208:18a::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Fri, 12 Aug
- 2022 12:16:03 +0000
-Received: from VI1PR04MB4016.eurprd04.prod.outlook.com
- ([fe80::b020:6e17:a5ef:8871]) by VI1PR04MB4016.eurprd04.prod.outlook.com
- ([fe80::b020:6e17:a5ef:8871%7]) with mapi id 15.20.5525.010; Fri, 12 Aug 2022
- 12:16:03 +0000
-From:   Bough Chen <haibo.chen@nxp.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     "lars@metafoo.de" <lars@metafoo.de>,
+        with ESMTP id S234600AbiHLMkU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 08:40:20 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7E71F61B
+        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 05:40:18 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id v2so1189435lfi.6
+        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 05:40:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=YIfVk5qV6IbraaZwFyYTdjJsLosoEwiwnWTuuewGKd0=;
+        b=VwWImj/vpxXTYulf5oM9HbksWEM7P3NAlvpGxheI3yGdygbm5LJrFQhnHXqdOYmNJy
+         6nuA76C8u27+Kfdws/QR02EKqu2s25lH1omR3Gz9oXyzQ8YpP512w6uD5zyHIz6ykGyu
+         Tnj4yq7mvkNxK2C234kaIngg9FjiXjvqYBmWELtltMbiB4qoiJMrK4UdfL41o9t1OtVc
+         q6x0KoPOWCZxdFw2XfQr591ZmhOenocyiL19LUDkCFDxvN+88WH7lsvSefxsgpIdUkUq
+         37noCLlhTMwLcMRHd5Kq9HAyVvydyXA2pbhdWAPu817QV3hMaQf52ZFB+nwnZSJg8haV
+         ZkcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=YIfVk5qV6IbraaZwFyYTdjJsLosoEwiwnWTuuewGKd0=;
+        b=UaPPLcEcJvqYoXHoKw4wwCeMFwc7/bDiO6btY7QIeJV9qqXX2bTD4gEZKQ+3hVSlHg
+         hBr2Hw6tVg5Zu0pAmPKRVAFu+6tb5rtcivAggtwkHpJKQLwpvRCfSwAKkrsSycVy5mtg
+         yy8JT0g8j4Fx7guGXV1b0XEaNeePF823erkVXnVPiYpc6MA9loL0wAcAvRNdMKoNCIlW
+         pp9y7RiyyalkM1SQH4nasyRWsGqfhUhyTcavYfSE4OVXdLhHNU/d9sgw5FdIrDLnX9fE
+         /Z/FI3LbYcGE+ZC81K8vBEHgUb6OkO+kzAIqpRNYZ3e7G6ub+MZg0O3QT1h3eCEih2wi
+         e8OQ==
+X-Gm-Message-State: ACgBeo1SzBTU08BAKICd6awPT40Ka9uYl6DmUrga/yRdro+VeAPEMFfv
+        qobAZVm5vy7El4WFuS9nGohjzQ==
+X-Google-Smtp-Source: AA6agR4UqqikmP8ZbS4wWLYJAG6gvzcVxMKj9RfEA9uWOeRHCu89xYNR9VJlR6rA/hDlVVzFQscGbw==
+X-Received: by 2002:a05:6512:1320:b0:488:8fcc:e196 with SMTP id x32-20020a056512132000b004888fcce196mr1208711lfu.602.1660308016982;
+        Fri, 12 Aug 2022 05:40:16 -0700 (PDT)
+Received: from [192.168.1.39] ([83.146.140.105])
+        by smtp.gmail.com with ESMTPSA id q7-20020a056512210700b0048cf0fef301sm196719lfr.301.2022.08.12.05.40.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Aug 2022 05:40:16 -0700 (PDT)
+Message-ID: <039fc122-613c-093f-f89a-6479f76825dd@linaro.org>
+Date:   Fri, 12 Aug 2022 15:40:12 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding documentation for
+ NXP IMX93 ADC
+Content-Language: en-US
+To:     Bough Chen <haibo.chen@nxp.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
         "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "krzysztof.kozlowski+dt@linaro.org" 
         <krzysztof.kozlowski+dt@linaro.org>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
+Cc:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
         "festevam@gmail.com" <festevam@gmail.com>,
         dl-linux-imx <linux-imx@nxp.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: RE: [PATCH 1/3] iio: adc: add imx93 adc support
-Thread-Topic: [PATCH 1/3] iio: adc: add imx93 adc support
-Thread-Index: AQHYpxt8yI8fkFGGv0SarAxSnuMWwq2iDa2AgAkop/A=
-Date:   Fri, 12 Aug 2022 12:16:03 +0000
-Message-ID: <VI1PR04MB4016391B2B65023A5ABAF30E90679@VI1PR04MB4016.eurprd04.prod.outlook.com>
 References: <1659517947-11207-1-git-send-email-haibo.chen@nxp.com>
- <20220806170237.1c664675@jic23-huawei>
-In-Reply-To: <20220806170237.1c664675@jic23-huawei>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7332ccc5-06fb-4eaf-0c46-08da7c5c6cf0
-x-ms-traffictypediagnostic: AM0PR04MB6964:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GiwVAslB4oiL8GYAR//1xCQ5OCOofOnQnUyonrOhePXmXCMQAZf9lAFnxIdmu+Qr+qCm2Sls0HyBqIFzb93a43+X3Ug4EEhrkGq1Ar3IUyg6Tb/LjBOb9b9uvJ6WOEoJtO4OQSQEhoVPQ0aDylP0acU28OwooJbg3xqnsOfnxszKUbUMAFXHDPpP5YSgdNF1AbCqCKVxA4XcsuKbnKjUiGTHOH8GI/c9NqPffr+LyVB74+CtnitW8NOliH/AgGOhKCbjT3RiTLeL/o7KlyqB5/n/hzzGNjB/dZ5wv6tUI1WPU3CzOycxyvcoB4p1mYH1Nt4NPG2FQ70OKCN++c6h/KV6rJN+m7oeGl23WhTi2YUYOCK88CSfAqlUxAL3jdL/DYE5Nmwi8CA6LY/0r0p5GwqWUvOn9X3qx7m4fXmzqZonMqrPBgThyh3DwLAZREAk/FJfcTWTckCQg9Zib/tsN79ioX8Bop1Kl2FFiwedbWltf/+/w/yPEYGOwPhrdijurxRXz6Hs1G++e1WB66h1EyJarXH1PezbrBRSZ+Y+NAizX+g+prqvio8H4HWS+LwgBXxgLm/e4+N+fm8iYEXl03H47I9j0PW17VJxKgg6a5QjIMuUSwIeYpIFBTPBOM9z03ezZsPL2nlL+tAWdmGKytJODgxSMd88r3jNrVPFhxylVS5xuu48cEmjTijVEIO35J/jlj1HCm5fJY0lNaFoklbRFzvlQTrdRXHvKtx02ZAGckrD2QUYEQ2/oVhFCkCGeG8SqUiWYQQcRL5ep+W9BAB3lljG13nQFqNB2TM1LuUxg7aCYtJC5DxpNKFnKug8
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB4016.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(136003)(366004)(376002)(39860400002)(346002)(83380400001)(66476007)(5660300002)(41300700001)(64756008)(66556008)(4326008)(2906002)(186003)(66446008)(66946007)(76116006)(6916009)(54906003)(8676002)(55016003)(38100700002)(316002)(122000001)(26005)(9686003)(53546011)(6506007)(478600001)(8936002)(33656002)(71200400001)(7696005)(38070700005)(52536014)(86362001)(7416002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?gb2312?B?SFA5TjV5b2dwRlNUMkhObERCczh2dS9hS0R1WVlaT1Q3V0xvczJ6UDNOa0xP?=
- =?gb2312?B?T0tCWURxMUdSNmRFQVQybitCd0FVbnFIcHVoMlhwUlcrTFJvN2pNYkFwaDlD?=
- =?gb2312?B?YzRoTHZGa2gzazZhckl2aGpBSkxTcXpmRStGNzh4ekdJYU5yRWxMT092YjdB?=
- =?gb2312?B?dTRnTEJHN2NzaXMrZjdQOU45RGxNWm8wTXVRVi8zZUg4c05LU2ZrZnZhNk9V?=
- =?gb2312?B?N1MwYk4rWHJRRHloVkhwUWdNTldmb3M0blZQaGZudXQ1OTMyREx0czNFcDF5?=
- =?gb2312?B?b0w3K1hMODV0dUhud2hCZ2E3OEVsTEhBV1R5cDBmZFllVWIyQUp2U2hVZnlm?=
- =?gb2312?B?SHB4L2VSR1J0bVBIVzR5UmJQU0tFNnh4RURjVXZDT2RLTE1wc1Y5UWZUeHlD?=
- =?gb2312?B?Y2paTnJkQnMxaExKdUZadXFuVjhDbC8zb2xkOUlTUEg5UjBSeG5NSURQMVJt?=
- =?gb2312?B?MnlSYmpWdTNwS1FJWEppbDVKeXlCaURPTEcvMFZ6TUUrUEE2RnFjZ3BiZldW?=
- =?gb2312?B?N2FkTC9aUkoza0RkckRMbVFxMTgybm1PWVFnNzZGUTVZU3dhOGtLR2JSaWgv?=
- =?gb2312?B?TENvaG0zVVVBL2lNTDRVK3ovL3pEc2pmd0htVURUY2o0VnhHdTVuSUV6dDYz?=
- =?gb2312?B?SngyYjU0VXFDSmgxekROZ1lPbk9IekV2TVkvSkRhQnRrVnlrTzRCTWE2T3BL?=
- =?gb2312?B?OXR0dUdNWFpUMHFzRk5RcnZ1aUgxQTlhRzAzcDE1c2d1RUNxbWxYUjBxaEZa?=
- =?gb2312?B?aEF1WWZoYUdUUm9ObnlQWTQ0RnNiZERvUzhHcWRodEVYdHRqaDhUMGdIZlJT?=
- =?gb2312?B?QW9pa2djR3QwRWxwK3hhQnNXWGlQOThSQkRZeDNId3dabys3UkhkbDNSaWVz?=
- =?gb2312?B?SWR6VUt4dWdZd0NQeG1JM1A5Qk1rcDBjSFY1WjFxSWpaazFuOW5Pc3dPSEQr?=
- =?gb2312?B?ZjVmN01tY29NVkF1Y3hEYnRSR3dMMGtKb1lCOVl1aENNRGlqT1RTVTJKVXZl?=
- =?gb2312?B?WjhNdlZkaUdKaXZVbVNpOVZGTUk2b0ZRc2c0QXVSc1lsRTRPdWFzcEMxZWU0?=
- =?gb2312?B?OXp5UVpnaG1ldnA2S0VnWEtPMTNLUkR3VWNwTHNLUlNib3luVVNEa0YrREhH?=
- =?gb2312?B?cTV5OE9XMHVkVXp2TjMvdmZTRk9Od1l3MFR0N1NXZkZydVpJaHJxRCszYUVV?=
- =?gb2312?B?OXdHMmwzcVVuOFNCTS9WckRGaGt3M3BRY3VSM0lHM282ci90WHpiMFFxZUxO?=
- =?gb2312?B?SnlEUnVxR0ZnUjh1bzUvYnFZM2dsOWkrTW9RV2ErZFYySnhRMjU0ckRQOFc4?=
- =?gb2312?B?dXMvdTcyWDJrKzYrZGptcm1QSXZNOHdtYm1UYkgxTm56bzVwYmJyYVVpMU9P?=
- =?gb2312?B?K0V1S1I1a1pTKzVSclhiZTRSSzVzMEc5eG1RNlY4Q0l3dXJWaW9sV3hVTFh4?=
- =?gb2312?B?d3dadG4zeGhFMERkN0Y4RERGRGdwb2NSdWVpK1NaOFV3SzJhSTVxbDRpYjV3?=
- =?gb2312?B?WVBJVFhHWXRoQU1LOFZ2R2pPSGhtdjBWakxWVVBxYkkzTDVPTlZMOCs5L3VJ?=
- =?gb2312?B?MWJTS1IrcWFYdkxqMnMrOU01b1RqVlFMVjdpeHlMUEFpWHBMOFhuVEZwUzk1?=
- =?gb2312?B?UXVCUWpyS3RDdGtkMDhGaFZRWk1iOFZRSlhlRlJUaDl5YWo3UzFTSHZISC9F?=
- =?gb2312?B?Ym9IY1Y0Q0lKMTV2OEQ5cGdFM3VKcTAvaEUyczBLbE15SHlIMmk5dXYvSFBx?=
- =?gb2312?B?TzdRMWVQZmp1KzEvM3JNclpTY2lzdFpRSnJlZ0hYOVorR0pSeEhTWWhHT0NG?=
- =?gb2312?B?MlNvbVJEeGU1TUpUVkNpNTVSd2hidG5sRTNHanRrVXpUeDdpMHQ3WmpocmY3?=
- =?gb2312?B?TlNXNkNNVXNLK0s0SFRlSVRibHJrMlFmRWxqUHQ5d042ZmgwaHZvWmszYmhw?=
- =?gb2312?B?c2d2dUlOY3RsVUtsM1BmZ2l0YjFoTUdiVTUrR1gwOEd3aUp0NnNxK3hCMVJ2?=
- =?gb2312?B?RThPL0FrK3k5dGVlZGNNbHNMYklKYVJXSGhqbVoyVUVMWmJYRGdKK1U0eGhi?=
- =?gb2312?B?YnVNajZQN0ZFeFZmVFZMcFVBT0xrVm4wMXVDaHJOVWFodUVsYlAvVHorSSs2?=
- =?gb2312?Q?tvd9GzHxOs7Mp1YnwL0M2UvtY?=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB4016.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7332ccc5-06fb-4eaf-0c46-08da7c5c6cf0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Aug 2022 12:16:03.2540
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fwVJ2jV07UmO3z54X1uJXI9d3w4QfZyqiRjt8ah0MhBy0hUWHczKGWLKSxoazfVOGJOluUzqmpJ3roUZASOM0w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6964
+ <1659517947-11207-2-git-send-email-haibo.chen@nxp.com>
+ <8afe7812-7dbd-7257-2a55-b4ae49f47381@linaro.org>
+ <VI1PR04MB4016C146F9C8EF90557B362F909F9@VI1PR04MB4016.eurprd04.prod.outlook.com>
+ <d8fec5ab-2e03-4df0-f858-4a83c6f23233@linaro.org>
+ <VI1PR04MB40163F952AD90A73664A560A90679@VI1PR04MB4016.eurprd04.prod.outlook.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <VI1PR04MB40163F952AD90A73664A560A90679@VI1PR04MB4016.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKb25hdGhhbiBDYW1lcm9uIDxq
-aWMyM0BrZXJuZWwub3JnPg0KPiBTZW50OiAyMDIyxOo41MI3yNUgMDowMw0KPiBUbzogQm91Z2gg
-Q2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiBDYzogbGFyc0BtZXRhZm9vLmRlOyByb2JoK2R0
-QGtlcm5lbC5vcmc7IGtyenlzenRvZi5rb3psb3dza2krZHRAbGluYXJvLm9yZzsNCj4gc2hhd25n
-dW9Aa2VybmVsLm9yZzsgcy5oYXVlckBwZW5ndXRyb25peC5kZTsga2VybmVsQHBlbmd1dHJvbml4
-LmRlOw0KPiBmZXN0ZXZhbUBnbWFpbC5jb207IGRsLWxpbnV4LWlteCA8bGludXgtaW14QG54cC5j
-b20+Ow0KPiBsaW51eC1paW9Admdlci5rZXJuZWwub3JnOyBkZXZpY2V0cmVlQHZnZXIua2VybmVs
-Lm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIDEvM10gaWlvOiBhZGM6IGFkZCBpbXg5MyBhZGMg
-c3VwcG9ydA0KPiANCj4gT24gV2VkLCAgMyBBdWcgMjAyMiAxNzoxMjoyNSArMDgwMA0KPiBoYWli
-by5jaGVuQG54cC5jb20gd3JvdGU6DQo+IA0KPiA+IEZyb206IEhhaWJvIENoZW4gPGhhaWJvLmNo
-ZW5AbnhwLmNvbT4NCj4gPg0KPiA+IFRoZSBBREMgaW4gaS5teDkzIGlzIGEgdG90YWwgbmV3IEFE
-QyBJUCwgYWRkIGEgZHJpdmVyIHRvIHN1cHBvcnQgdGhpcw0KPiA+IEFEQy4NCj4gPg0KPiA+IEN1
-cnJlbnRseSwgb25seSBzdXBwb3J0IG9uZSBzaG90IG5vcm1hbCBjb252ZXJzaW9uIHRyaWdnZXJl
-ZCBieQ0KPiA+IHNvZnR3YXJlLiBGb3Igb3RoZXIgbW9kZSwgd2lsbCBhZGQgaW4gZnV0dXJlLg0K
-PiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogSGFpYm8gQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0K
-PiANCj4gTmljZS4NCj4gDQo+IEEgZmV3IGNvbW1lbnRzIGlubGluZS4NCj4gDQo+IFRoYW5rcywN
-Cj4gDQo+IEpvbmF0aGFuDQo+IA0KPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vYWRj
-L2lteDkzX2FkYy5jIGIvZHJpdmVycy9paW8vYWRjL2lteDkzX2FkYy5jDQo+ID4gbmV3IGZpbGUg
-bW9kZSAxMDA2NDQgaW5kZXggMDAwMDAwMDAwMDAwLi42ZTNjZjZkM2U2MjkNCj4gPiAtLS0gL2Rl
-di9udWxsDQo+ID4gKysrIGIvZHJpdmVycy9paW8vYWRjL2lteDkzX2FkYy5jDQo+ID4gQEAgLTAs
-MCArMSw0NDggQEANCj4gDQo+IC4uDQoNCi4NCi4uLg0KDQo+ID4gK3N0YXRpYyBpbnQgaW14OTNf
-YWRjX3JlbW92ZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KSB7DQo+ID4gKwlzdHJ1Y3Qg
-aWlvX2RldiAqaW5kaW9fZGV2ID0gcGxhdGZvcm1fZ2V0X2RydmRhdGEocGRldik7DQo+ID4gKwlz
-dHJ1Y3QgaW14OTNfYWRjICphZGMgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICsJc3RydWN0
-IGRldmljZSAqZGV2ID0gYWRjLT5kZXY7DQo+ID4gKw0KPiA+ICsJcG1fcnVudGltZV9nZXRfc3lu
-YyhkZXYpOw0KPiANCj4gSSB3b3VsZCBwcmVmZXIgdG8gc2VlICB0aGUgcnVudGltZSBwbSB0ZWFy
-IGRvd24gYWxsIHVwIGhlcmUgYXMgaXQgY29ycmVzcG9uZHMNCj4gdG8gdGhlIHNldHVwIGF0IHRo
-ZSBlbmQgb2YgcHJvYmUoKSBJIGRvbid0IGl0IHdpbGwgbWFrZSBhbnkgZnVuY3Rpb25hbCBkaWZm
-ZXJlbmNlDQo+IGFuZCBpdCBtYWtlcyB0aGUgY29kZSBlYXNpZXIgdG8gcmVhc29uIGFib3V0IGlu
-IHRlcm1zIG9mIG9yZGVyaW5nIG9mIGNhbGxzLg0KDQpIaSBKb25hdGhhbiwNCg0KSSBjYW4ndCBn
-ZXQgeW91ciBwb2ludCBoZXJlLCB5b3UgbWVhbiBjYWxsIHBtX3J1bnRpbWVfZGlzYWJsZSBhbmQg
-cG1fcnVudGltZV9wdXRfbm9pZGxlIGhlcmU/DQpJIGdldCBzeW5jIHRoZSBydW50aW1lIHBtIGhl
-cmUsIGJlY2F1c2UgdGhlcmUgYXJlIHJlZ2lzdGVyIG9wZXJhdGlvbiBpbiBpbXg5M19hZGNfcG93
-ZXJfZG93bigpLCBuZWVkIHRvIG1ha2Ugc3VyZSBjbG9jayBpcyBvbi4NCg0KQmVzdCBSZWdhcmRz
-DQpIYWlibyBDaGVuDQo+IA0KPiA+ICsNCj4gPiArCWlpb19kZXZpY2VfdW5yZWdpc3RlcihpbmRp
-b19kZXYpOw0KPiA+ICsJaW14OTNfYWRjX3Bvd2VyX2Rvd24oYWRjKTsNCj4gPiArCWNsa19kaXNh
-YmxlX3VucHJlcGFyZShhZGMtPmlwZ19jbGspOw0KPiA+ICsJcmVndWxhdG9yX2Rpc2FibGUoYWRj
-LT52cmVmKTsNCj4gPiArDQo+ID4gKwlwbV9ydW50aW1lX2Rpc2FibGUoZGV2KTsNCj4gPiArCXBt
-X3J1bnRpbWVfcHV0X25vaWRsZShkZXYpOw0KPiA+ICsNCj4gPiArCXJldHVybiAwOw0KPiA+ICt9
-DQo+ID4gKw0KDQo=
+On 12/08/2022 14:51, Bough Chen wrote:
+>> -----Original Message-----
+>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Sent: 2022年8月4日 15:11
+>> To: Bough Chen <haibo.chen@nxp.com>; jic23@kernel.org; lars@metafoo.de;
+>> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
+>> shawnguo@kernel.org; s.hauer@pengutronix.de
+>> Cc: kernel@pengutronix.de; festevam@gmail.com; dl-linux-imx
+>> <linux-imx@nxp.com>; linux-iio@vger.kernel.org; devicetree@vger.kernel.org
+>> Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding documentation for
+>> NXP IMX93 ADC
+>>
+>> On 04/08/2022 03:05, Bough Chen wrote:
+>>>> -----Original Message-----
+>>>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>>> Sent: 2022年8月3日 18:20
+>>>> To: Bough Chen <haibo.chen@nxp.com>; jic23@kernel.org;
+>>>> lars@metafoo.de;
+>>>> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
+>>>> shawnguo@kernel.org; s.hauer@pengutronix.de
+>>>> Cc: kernel@pengutronix.de; festevam@gmail.com; dl-linux-imx
+>>>> <linux-imx@nxp.com>; linux-iio@vger.kernel.org;
+>>>> devicetree@vger.kernel.org
+>>>> Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding
+>>>> documentation for NXP IMX93 ADC
+>>>>
+>>>> On 03/08/2022 11:12, haibo.chen@nxp.com wrote:
+>>>>> From: Haibo Chen <haibo.chen@nxp.com>
+>>>>>
+>>>>> The IMX93 SoC has a new ADC IP, so add binding documentation for NXP
+>>>>> IMX93 ADC.
+>>>>>
+>>>>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+>>>>> ---
+>>>>>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 65
+>>>> +++++++++++++++++++
+>>>>>  1 file changed, 65 insertions(+)
+>>>>>  create mode 100644
+>>>>> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>>
+>>>>> diff --git
+>>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> new file mode 100644
+>>>>> index 000000000000..e0eac5aa81d7
+>>>>> --- /dev/null
+>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>>>>> @@ -0,0 +1,65 @@
+>>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) %YAML 1.2
+>>>>> +---
+>>>>> +$id:
+>>>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fde
+>>>>> +vi
+>>>>>
+>>>>
+>> +cetree.org%2Fschemas%2Fiio%2Fadc%2Fnxp%2Cimx93-adc.yaml%23&amp;d
+>>>> ata=0
+>>>>>
+>>>>
+>> +5%7C01%7Chaibo.chen%40nxp.com%7Ca11cd128f8814929684b08da7539b
+>>>> dbc%7C68
+>>>>>
+>>>> +6ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637951188101491669%
+>>>> 7CUnknown
+>>>>>
+>>>> +%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
+>>>> WwiLC
+>>>>>
+>>>>
+>> +JXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=JFNr4telb4AovE62YaHQu
+>>>> KNr1ywL%2
+>>>>> +Blc0dJMFNN1OA1U%3D&amp;reserved=0
+>>>>> +$schema:
+>>>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fde
+>>>>> +vi
+>>>>>
+>>>>
+>> +cetree.org%2Fmeta-schemas%2Fcore.yaml%23&amp;data=05%7C01%7Chaib
+>>>> o.che
+>>>>>
+>>>> +n%40nxp.com%7Ca11cd128f8814929684b08da7539bdbc%7C686ea1d3bc2
+>>>> b4c6fa92c
+>>>>>
+>>>> +d99c5c301635%7C0%7C0%7C637951188101491669%7CUnknown%7CTWF
+>>>> pbGZsb3d8eyJ
+>>>>>
+>>>>
+>> +WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
+>>>> 7C300
+>>>>>
+>>>>
+>> +0%7C%7C%7C&amp;sdata=A1PPlSkOsS7nWFOPAokyA1F8%2BYFSZj5dY%2FO
+>>>> blm0U4UA%
+>>>>> +3D&amp;reserved=0
+>>>>> +
+>>>>> +title: NXP ADC found on the imx93 SoC
+>>>>
+>>>> How different it is from ADC in imx8qxp?
+>>>
+>>> They are totally two different ADC IP, no similar with each other.
+>>
+>> Each submitter responds like that... how much different? What is different?
+>> Driver has lots of copied pieces, so actually could be unified as well.
+> 
+> HI Krzysztof,
+> 
+> Sorry for the delay, high loading on my current work.
+> 
+> For the difference, in general,
+>  First, the register define is totally different.
+>  Second, the ADC architecture is different, For imx8qxp, it contains ADC input ctrl + ADC core + ADC out control
+>         For imx93 ADC, it called SAR_ADC, contain ADCD + ADCA, in detail, it also contain calibration/self-test/watch dog timer IP logic, 
+>  Third, different conversion mode, 8QXP ADC support single and continue conversion, support average conversion.
+>         For imx93 ADC, it support normal mode, include single and average conversion, inject mode, hardware trigger mode.
+> 
+> These two drivers architecture looks similar, because they all under IIO subsystem.
+> 
+> For 8qxp ADC, it's feature list in RM:
+> ? Support up to 16 analog inputs
+> ? Support five conversion pairs, can work simultaneously, with different conversion
+> priority.
+> ? Word size is 12-bits.
+> ? Support Single and Continue conversion.
+> ? Support Compare mode and channel auto disable if data match the requirement.
+> ? Support Average conversion, Support flexible 4, 8, 16, 32 number of conversion
+> data.
+> ? Configurable sample time and conversion speed / power. The ADC core clock can
+> vary from 300 kHz to 6 MHz, and the maximum sample rate is 1/6 ADC core clock.
+> ? Conversion complete, hardware average complete, compare, DMA, time out flag and
+> interrupt.
+> ? Automatic compare with interrupt for less than, greater than, and equal to, within
+> range, or out-of-range, programmable value.
+> 
+> For imx93 ADC, it's feature list in RM
+> ? 4'd12-bit resolution
+> ?Multiple modes of starting conversion (Normal, Injected)
+> —Normal mode supports One-Shot and Scan (continuous) conversions
+> —Injected mode supports One-Shot conversions only
+> ?Software-initiated conversions in Normal and Injected modes, or external hardware trigger
+> ?Two different abort features for either a single or chain conversion in Normal and Injected modes
+> ?Independent data registers for each channel contain information about mode of conversion, data validity, overwrite status, and conversion data
+> ?Alternate analog watchdog thresholds (threshold selected through input ports)
+> ?Programmable DMA enables for each channel
+> ?Individual interrupt flags for the following conditions:
+> —End of conversion of a single channel for Normal and Injected modes
+> —End of chain conversion for both Normal and Injected modes
+> —Watchdog threshold violations
+> ?Programmable presampling for channels
+> ?Auto-Clock-Off feature for improved power performance
+> ?Power-Down mode to place the SAR_ADC in power-down state
+> ?Programmable clock prescaler for SAR_ADC (bus clock, or bus clock divided by two or four)
+> ?Software-initiated calibration
+> ?Self-test feature
+
+By pasting big pieces of description from RM you do not prove what are
+the differences and it is not my task to find that one line which shows
+the decisive difference (e.g. support or lack of support for DMA).
+
+Best regards,
+Krzysztof

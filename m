@@ -2,251 +2,282 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B38475910DD
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 14:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3ECD591288
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 16:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbiHLMkV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 08:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54330 "EHLO
+        id S237768AbiHLO4J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 10:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234600AbiHLMkU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 08:40:20 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7E71F61B
-        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 05:40:18 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id v2so1189435lfi.6
-        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 05:40:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=YIfVk5qV6IbraaZwFyYTdjJsLosoEwiwnWTuuewGKd0=;
-        b=VwWImj/vpxXTYulf5oM9HbksWEM7P3NAlvpGxheI3yGdygbm5LJrFQhnHXqdOYmNJy
-         6nuA76C8u27+Kfdws/QR02EKqu2s25lH1omR3Gz9oXyzQ8YpP512w6uD5zyHIz6ykGyu
-         Tnj4yq7mvkNxK2C234kaIngg9FjiXjvqYBmWELtltMbiB4qoiJMrK4UdfL41o9t1OtVc
-         q6x0KoPOWCZxdFw2XfQr591ZmhOenocyiL19LUDkCFDxvN+88WH7lsvSefxsgpIdUkUq
-         37noCLlhTMwLcMRHd5Kq9HAyVvydyXA2pbhdWAPu817QV3hMaQf52ZFB+nwnZSJg8haV
-         ZkcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=YIfVk5qV6IbraaZwFyYTdjJsLosoEwiwnWTuuewGKd0=;
-        b=UaPPLcEcJvqYoXHoKw4wwCeMFwc7/bDiO6btY7QIeJV9qqXX2bTD4gEZKQ+3hVSlHg
-         hBr2Hw6tVg5Zu0pAmPKRVAFu+6tb5rtcivAggtwkHpJKQLwpvRCfSwAKkrsSycVy5mtg
-         yy8JT0g8j4Fx7guGXV1b0XEaNeePF823erkVXnVPiYpc6MA9loL0wAcAvRNdMKoNCIlW
-         pp9y7RiyyalkM1SQH4nasyRWsGqfhUhyTcavYfSE4OVXdLhHNU/d9sgw5FdIrDLnX9fE
-         /Z/FI3LbYcGE+ZC81K8vBEHgUb6OkO+kzAIqpRNYZ3e7G6ub+MZg0O3QT1h3eCEih2wi
-         e8OQ==
-X-Gm-Message-State: ACgBeo1SzBTU08BAKICd6awPT40Ka9uYl6DmUrga/yRdro+VeAPEMFfv
-        qobAZVm5vy7El4WFuS9nGohjzQ==
-X-Google-Smtp-Source: AA6agR4UqqikmP8ZbS4wWLYJAG6gvzcVxMKj9RfEA9uWOeRHCu89xYNR9VJlR6rA/hDlVVzFQscGbw==
-X-Received: by 2002:a05:6512:1320:b0:488:8fcc:e196 with SMTP id x32-20020a056512132000b004888fcce196mr1208711lfu.602.1660308016982;
-        Fri, 12 Aug 2022 05:40:16 -0700 (PDT)
-Received: from [192.168.1.39] ([83.146.140.105])
-        by smtp.gmail.com with ESMTPSA id q7-20020a056512210700b0048cf0fef301sm196719lfr.301.2022.08.12.05.40.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Aug 2022 05:40:16 -0700 (PDT)
-Message-ID: <039fc122-613c-093f-f89a-6479f76825dd@linaro.org>
-Date:   Fri, 12 Aug 2022 15:40:12 +0300
+        with ESMTP id S234450AbiHLO4I (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 10:56:08 -0400
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam07olkn2041.outbound.protection.outlook.com [40.92.15.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D8A816BB;
+        Fri, 12 Aug 2022 07:56:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZizceAtCryvgJ5paBMGpIlijbzddsYcATS4fQE+Fq8cubEhsS5D95r2AiExlcRdui6Vf7EANNXZ7aut2rrouVEUGGpIRoW4kcGoNL5WBUnDXhatTjAn34Dmu3ko0YT0DwWD3Y7QA4mTjCSSMUPjWr5jRxyySbodLmBwBc3RcBng/9+GakfNGfO17l3yrlk+AqhfaEhNz5LwtOCvWkUrprcWmHC35VpwDEvb9oQ9SEJR/j4JZooi2nehTMTdnyqVYucpM+PB3UB5tDxbQXG1JmApRIfhSsqSJKdoyzYPeyyxO3NEU+u33cGcvIQ4g2bi/i/eHEsg1kfjnS5Zxlze0aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mvo1OU0xHqJmdYnS1VO+MYWMfpQFpwtaRaJ7grMASsk=;
+ b=L5pMEsUZdhlOEgsfgB/wxHlAVRwOY5cltKKLXFjvIX53VoHcSrq7gpJe/aLbE3QXbHg6y8N6RaLtF6e40O4Fy64V0HzbkLsbHrYJ9gFTHsAf7dn8S1l8Tfg+2n0tjNRLstu+ew/IkYAvefIS5j3DATn39WQUXTo34Pxs0CwE7xjiTxM4SWviqehlzFGSNzcvKYoMvS8t+dY6GPQ2+9q8BCakMTi8Fj0hfBJQFSy7LPTXBWP4AaJ8mQLSwEr/6I1mVmnttdRg+dMrSBOMyVrU3G35Ii39Ne/e3LqAxTJhD3qOyYcBnNFyTy6c6LDq/R2MV7oaPasJssj97YuTsAFxvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mvo1OU0xHqJmdYnS1VO+MYWMfpQFpwtaRaJ7grMASsk=;
+ b=nIST//i409U8tmFcCFFwdKhTgSl9ELCy3vwDeEYMCBMw8XhkPxkNgFU0YUBUlV+BQUa2XnewgT1XlL2xeybBfPTQ1cbU3dN4RTJM4XPyeYXn6yK5sBrKVnwug2e0tr9w3d35AaDc4/ZDCh50SrjfzJ/b5P/6SB7OmdoeV7r5tZtnV5K9zp07wfhUUz/QzX4pBV3VBH8Bk2GeSq6vhbwoAFynnv1rY3ppZHIEgZJXowYuzVVUJeP+kJfeumseQzccAp5SGjZx6gSqEhz3c1UQvG0BLwGZalKJsFNcPTjDjY53PLbQOm70ShaeW+qiU6YyEGd4ipE1OI32GRzRWJgTsw==
+Received: from SN6PR06MB5342.namprd06.prod.outlook.com (2603:10b6:805:f9::31)
+ by BYAPR06MB5576.namprd06.prod.outlook.com (2603:10b6:a03:d6::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.17; Fri, 12 Aug
+ 2022 14:56:04 +0000
+Received: from SN6PR06MB5342.namprd06.prod.outlook.com
+ ([fe80::20e7:bc40:7e9d:b46e]) by SN6PR06MB5342.namprd06.prod.outlook.com
+ ([fe80::20e7:bc40:7e9d:b46e%4]) with mapi id 15.20.5504.025; Fri, 12 Aug 2022
+ 14:56:04 +0000
+Date:   Fri, 12 Aug 2022 09:56:00 -0500
+From:   Chris Morgan <macromorgan@hotmail.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Artur Rojek <contact@artur-rojek.eu>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Chris Morgan <macroalpha82@gmail.com>,
+        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        heiko@sntech.de, paul@crapouillou.net,
+        Maya Matuszczyk <maccraft123mc@gmail.com>
+Subject: Re: [PATCH v12 2/3] Input: adc-joystick - Add polled input device
+ support
+Message-ID: <SN6PR06MB5342FF12160366A57986D78DA5679@SN6PR06MB5342.namprd06.prod.outlook.com>
+References: <20220805171016.21217-1-macroalpha82@gmail.com>
+ <20220805171016.21217-3-macroalpha82@gmail.com>
+ <20220806152042.39bc5351@jic23-huawei>
+ <9399f54366be973dba36a70cb3dcbfd9@artur-rojek.eu>
+ <YvRUSBFGuMmjGsb4@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YvRUSBFGuMmjGsb4@google.com>
+X-TMN:  [wPuHaT8HM+wmeN/xlTk3298CYlPI1LjE]
+X-ClientProxiedBy: DS7PR06CA0053.namprd06.prod.outlook.com (2603:10b6:8:54::8)
+ To SN6PR06MB5342.namprd06.prod.outlook.com (2603:10b6:805:f9::31)
+X-Microsoft-Original-Message-ID: <20220812145600.GA26030@wintermute.localdomain>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding documentation for
- NXP IMX93 ADC
-Content-Language: en-US
-To:     Bough Chen <haibo.chen@nxp.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "krzysztof.kozlowski+dt@linaro.org" 
-        <krzysztof.kozlowski+dt@linaro.org>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Cc:     "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "festevam@gmail.com" <festevam@gmail.com>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <1659517947-11207-1-git-send-email-haibo.chen@nxp.com>
- <1659517947-11207-2-git-send-email-haibo.chen@nxp.com>
- <8afe7812-7dbd-7257-2a55-b4ae49f47381@linaro.org>
- <VI1PR04MB4016C146F9C8EF90557B362F909F9@VI1PR04MB4016.eurprd04.prod.outlook.com>
- <d8fec5ab-2e03-4df0-f858-4a83c6f23233@linaro.org>
- <VI1PR04MB40163F952AD90A73664A560A90679@VI1PR04MB4016.eurprd04.prod.outlook.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <VI1PR04MB40163F952AD90A73664A560A90679@VI1PR04MB4016.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: aad8311e-58ab-4a6b-9e05-08da7c72c78a
+X-MS-TrafficTypeDiagnostic: BYAPR06MB5576:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: of8SRmXr8Y6k60MWIF2AAsqRF8c98zqRV2v3ULjCg4UdfnML0NO8vzeakBlY+I7SgK4b9RdtuCiiCh52ig+UCuJ2QciZba8nvwxfqD60dIgLRPvSv+GAqLTvq4P29Rc8NSYjinvpURkUm9JXasyoQuWj91Ehj6xcjJjT6tmp3Dl2KBSy9KLM9rMdR2TrM3AcXPti+uMYcm/IQOjrPEb+xBskajDiW6afXRB9o6hqTDqUpABiGLVZ0yGxAlovuLoZsVkCzvvwIFZirmYcPnZq5CtCpbcYG+qFhB9+sR1moxAgkJbgKvqeEEjVJxtVcYmBF4kvKR22stJTeUyi26K26wE9NAxuIgkxkogpHqmK4KEk8F/Xv0EqEN0KM/R943cFNAdmfvYtSYFeUzB1R9ZTqqK7nfTWcUu/nm9u1b8dLvw3XvugGrvZOvADCHLu4BgdI2I1p3AK+cjpILMWWDzhbPZPWXlKmJ1zmPyDvZIf1Qsm7E82ZDkO2Z+gTJ76rEa+TBmmqZX4Qaqy9iyTHKVvmFxspBeyLhz+iVRYWmMKDky8eZ6V6JC8GrsfmIOroWdKRQ80c6QY9WyXaETvf6kReEtYkHJOVBVAQhI4N6eT9AsKFlFlZtY+Ch/brS53C16cq+govQOZqwa/B2F+Kyzzp4LKwbhLTG100Tv7jobc3l6zvMCBEPC9/XUq7DzsEpzl
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EJlGvuYxkJ2muTjle3BRxDiNGK40/rZswtQ5L2ODa3irgzUhvmc9qESTn4Rj?=
+ =?us-ascii?Q?Gb3Keg9KE1IHlokLQc6JhV/M6XM1EAX++sVLLXyloh8btk0E8iUzj8Ay4nHC?=
+ =?us-ascii?Q?ymPFETGmuhBGxUODhW8xYR1h3ItSfZWi8EMaYgTh4IRb6z0Mjn0/dyOyv+4b?=
+ =?us-ascii?Q?amvImwfV2kZlSf8u/K02/GiMMBVaoAn4YL6oTK96O5dwc7WFtHmDhUuX8p/M?=
+ =?us-ascii?Q?8uertvhIDHzkfiaOzYWokG4xsNV9NpcJvUzF/LFpTyxXYSzaOHjPmer8hPoY?=
+ =?us-ascii?Q?U7hsaNquLSMBVZ1dL5MPtAWNDpbKQCb6c48x9JL701/l3EupwNcPU/DspNoA?=
+ =?us-ascii?Q?VN1F7sIlQokU+fccqIc+BI5Npkb1hP9IuDajHBzR2uB2jxhJRbMOgJNGSzWA?=
+ =?us-ascii?Q?ocSh1ZFV2P5uVvBJqHhV1S7gDW5dQVoaiZECMb7ZEnvbjCzNHtDtP3lokvu0?=
+ =?us-ascii?Q?Dox49hYPtIL06szU0ND83sJcCutuUvnFm97ynIZWjdaTjrSctZ5j07Z03pV2?=
+ =?us-ascii?Q?ANqsGZ4H4M0wgG8wIVK9BDgtx2OZt8XDAatFKJLiwh9Gq6pzywdusWNsQSvx?=
+ =?us-ascii?Q?4oy9BY+vTuGqVdeVnZyQ+ruGasYff2SvwGU+tMUFXof67Kre3VaOW7bMfQCv?=
+ =?us-ascii?Q?mqrxXFCaaQ+2eunJp58QUbf4p1+3JlN8cBs7CSpZwt82AlNZY26yUcDBGYah?=
+ =?us-ascii?Q?OYcVZfePY7+UVM+EzC6LuG40F5P28uoFXnga5Ag5T88a6EANPBcqaHPfd4eQ?=
+ =?us-ascii?Q?R58tFcFw/y4WIdK7zvLUNY+LwGG/zHpZbyiN5gSBoSM29j6BNOYxvOJh1jZ9?=
+ =?us-ascii?Q?ydITVbGVZ3RYqEfHwAJhZHPpeMqT2gnP5FgRO7XXEVpn8Ac/jpXCorQNTsbc?=
+ =?us-ascii?Q?ALXGvYcxqFSCEvONUNPbCY9VLks4HI7ErIVeIZgz/roUtG3a7QMzYkcLFbwk?=
+ =?us-ascii?Q?k8NOIGUcANEZpX2v64om3E+c2UtSCLB5hacbTNR+ngJnjN1zxGJvolY93adV?=
+ =?us-ascii?Q?WsV+jmwC5PhVu9jXJfykOoQoznYjSgSAaL8zfEG6ntBsrJYjmWVgODddbRgu?=
+ =?us-ascii?Q?Lh+yEJYrlelNEhQBS3PMRmfyw1H9+h0VBLdl1S0uk5ZO77ahigiWxlO0dVcs?=
+ =?us-ascii?Q?01QnXnC0ohicWszuVf07k5rXg2M80d1eRLeR4slrsXAw1PaROTaoT40hJ/8S?=
+ =?us-ascii?Q?a3WUQ8lPYg3ED2DWEFSO+0unjESuqC1t1ehbZMPHPi+pDyiFA+7J+6b0Iq0I?=
+ =?us-ascii?Q?nKcApe+/Gq8fvj2e0U+ldT+skAlGIOoEDHRsraO24Q=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-89723.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: aad8311e-58ab-4a6b-9e05-08da7c72c78a
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR06MB5342.namprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2022 14:56:04.8931
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5576
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 12/08/2022 14:51, Bough Chen wrote:
->> -----Original Message-----
->> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> Sent: 2022年8月4日 15:11
->> To: Bough Chen <haibo.chen@nxp.com>; jic23@kernel.org; lars@metafoo.de;
->> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
->> shawnguo@kernel.org; s.hauer@pengutronix.de
->> Cc: kernel@pengutronix.de; festevam@gmail.com; dl-linux-imx
->> <linux-imx@nxp.com>; linux-iio@vger.kernel.org; devicetree@vger.kernel.org
->> Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding documentation for
->> NXP IMX93 ADC
->>
->> On 04/08/2022 03:05, Bough Chen wrote:
->>>> -----Original Message-----
->>>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>>> Sent: 2022年8月3日 18:20
->>>> To: Bough Chen <haibo.chen@nxp.com>; jic23@kernel.org;
->>>> lars@metafoo.de;
->>>> robh+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
->>>> shawnguo@kernel.org; s.hauer@pengutronix.de
->>>> Cc: kernel@pengutronix.de; festevam@gmail.com; dl-linux-imx
->>>> <linux-imx@nxp.com>; linux-iio@vger.kernel.org;
->>>> devicetree@vger.kernel.org
->>>> Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add binding
->>>> documentation for NXP IMX93 ADC
->>>>
->>>> On 03/08/2022 11:12, haibo.chen@nxp.com wrote:
->>>>> From: Haibo Chen <haibo.chen@nxp.com>
->>>>>
->>>>> The IMX93 SoC has a new ADC IP, so add binding documentation for NXP
->>>>> IMX93 ADC.
->>>>>
->>>>> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
->>>>> ---
->>>>>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 65
->>>> +++++++++++++++++++
->>>>>  1 file changed, 65 insertions(+)
->>>>>  create mode 100644
->>>>> Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>
->>>>> diff --git
->>>>> a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>> b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>> new file mode 100644
->>>>> index 000000000000..e0eac5aa81d7
->>>>> --- /dev/null
->>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>> @@ -0,0 +1,65 @@
->>>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) %YAML 1.2
->>>>> +---
->>>>> +$id:
->>>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fde
->>>>> +vi
->>>>>
->>>>
->> +cetree.org%2Fschemas%2Fiio%2Fadc%2Fnxp%2Cimx93-adc.yaml%23&amp;d
->>>> ata=0
->>>>>
->>>>
->> +5%7C01%7Chaibo.chen%40nxp.com%7Ca11cd128f8814929684b08da7539b
->>>> dbc%7C68
->>>>>
->>>> +6ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C637951188101491669%
->>>> 7CUnknown
->>>>>
->>>> +%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
->>>> WwiLC
->>>>>
->>>>
->> +JXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=JFNr4telb4AovE62YaHQu
->>>> KNr1ywL%2
->>>>> +Blc0dJMFNN1OA1U%3D&amp;reserved=0
->>>>> +$schema:
->>>>> +https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fde
->>>>> +vi
->>>>>
->>>>
->> +cetree.org%2Fmeta-schemas%2Fcore.yaml%23&amp;data=05%7C01%7Chaib
->>>> o.che
->>>>>
->>>> +n%40nxp.com%7Ca11cd128f8814929684b08da7539bdbc%7C686ea1d3bc2
->>>> b4c6fa92c
->>>>>
->>>> +d99c5c301635%7C0%7C0%7C637951188101491669%7CUnknown%7CTWF
->>>> pbGZsb3d8eyJ
->>>>>
->>>>
->> +WIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%
->>>> 7C300
->>>>>
->>>>
->> +0%7C%7C%7C&amp;sdata=A1PPlSkOsS7nWFOPAokyA1F8%2BYFSZj5dY%2FO
->>>> blm0U4UA%
->>>>> +3D&amp;reserved=0
->>>>> +
->>>>> +title: NXP ADC found on the imx93 SoC
->>>>
->>>> How different it is from ADC in imx8qxp?
->>>
->>> They are totally two different ADC IP, no similar with each other.
->>
->> Each submitter responds like that... how much different? What is different?
->> Driver has lots of copied pieces, so actually could be unified as well.
+On Wed, Aug 10, 2022 at 05:58:48PM -0700, Dmitry Torokhov wrote:
+> On Sat, Aug 06, 2022 at 04:19:21PM +0200, Artur Rojek wrote:
+> > On 2022-08-06 16:20, Jonathan Cameron wrote:
+> > > On Fri,  5 Aug 2022 12:10:15 -0500
+> > > Chris Morgan <macroalpha82@gmail.com> wrote:
+> > > 
+> > > > From: Chris Morgan <macromorgan@hotmail.com>
+> > > > 
+> > > > Add polled input device support to the adc-joystick driver. This is
+> > > > useful for devices which do not have hardware capable triggers on
+> > > > their SARADC. Code modified from adc-joystick.c changes made by Maya
+> > > > Matuszczyk.
+> > > > 
+> > > > Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+> > > > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> > > Hi Chris,
+> > > 
+> > > Trying to avoid too much indentation has lead to an odd code structure.
+> > > Still minor thing, so either way this looks fine to me.
+> > > 
+> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > 
+> > > > ---
+> > > >  drivers/input/joystick/adc-joystick.c | 44
+> > > > +++++++++++++++++++++++++--
+> > > >  1 file changed, 41 insertions(+), 3 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/input/joystick/adc-joystick.c
+> > > > b/drivers/input/joystick/adc-joystick.c
+> > > > index 78ebca7d400a..77dfb7dd96eb 100644
+> > > > --- a/drivers/input/joystick/adc-joystick.c
+> > > > +++ b/drivers/input/joystick/adc-joystick.c
+> > > > @@ -26,8 +26,23 @@ struct adc_joystick {
+> > > >  	struct adc_joystick_axis *axes;
+> > > >  	struct iio_channel *chans;
+> > > >  	int num_chans;
+> > > > +	bool polled;
+> > > >  };
+> > > > 
+> > > > +static void adc_joystick_poll(struct input_dev *input)
+> > > > +{
+> > > > +	struct adc_joystick *joy = input_get_drvdata(input);
+> > > > +	int i, val, ret;
+> > > > +
+> > > > +	for (i = 0; i < joy->num_chans; i++) {
+> > > > +		ret = iio_read_channel_raw(&joy->chans[i], &val);
+> > > > +		if (ret < 0)
+> > > > +			return;
+> > > > +		input_report_abs(input, joy->axes[i].code, val);
+> > > > +	}
+> > > > +	input_sync(input);
+> > > > +}
+> > > > +
+> > > >  static int adc_joystick_handle(const void *data, void *private)
+> > > >  {
+> > > >  	struct adc_joystick *joy = private;
+> > > > @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct
+> > > > platform_device *pdev)
+> > > >  	int error;
+> > > >  	int bits;
+> > > >  	int i;
+> > > > +	unsigned int poll_interval;
+> > > > 
+> > > >  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
+> > > >  	if (!joy)
+> > > > @@ -192,8 +208,21 @@ static int adc_joystick_probe(struct
+> > > > platform_device *pdev)
+> > > >  		return error;
+> > > >  	}
+> > > > 
+> > > > -	/* Count how many channels we got. NULL terminated. */
+> > > > +	if (device_property_present(dev, "poll-interval")) {
+> > > > +		error = device_property_read_u32(dev, "poll-interval",
+> > > > +						 &poll_interval);
+> > > > +		if (error)
+> > > > +			return error;
+> > > > +		joy->polled = true;
 > 
-> HI Krzysztof,
 > 
-> Sorry for the delay, high loading on my current work.
-> 
-> For the difference, in general,
->  First, the register define is totally different.
->  Second, the ADC architecture is different, For imx8qxp, it contains ADC input ctrl + ADC core + ADC out control
->         For imx93 ADC, it called SAR_ADC, contain ADCD + ADCA, in detail, it also contain calibration/self-test/watch dog timer IP logic, 
->  Third, different conversion mode, 8QXP ADC support single and continue conversion, support average conversion.
->         For imx93 ADC, it support normal mode, include single and average conversion, inject mode, hardware trigger mode.
-> 
-> These two drivers architecture looks similar, because they all under IIO subsystem.
-> 
-> For 8qxp ADC, it's feature list in RM:
-> ? Support up to 16 analog inputs
-> ? Support five conversion pairs, can work simultaneously, with different conversion
-> priority.
-> ? Word size is 12-bits.
-> ? Support Single and Continue conversion.
-> ? Support Compare mode and channel auto disable if data match the requirement.
-> ? Support Average conversion, Support flexible 4, 8, 16, 32 number of conversion
-> data.
-> ? Configurable sample time and conversion speed / power. The ADC core clock can
-> vary from 300 kHz to 6 MHz, and the maximum sample rate is 1/6 ADC core clock.
-> ? Conversion complete, hardware average complete, compare, DMA, time out flag and
-> interrupt.
-> ? Automatic compare with interrupt for less than, greater than, and equal to, within
-> range, or out-of-range, programmable value.
-> 
-> For imx93 ADC, it's feature list in RM
-> ? 4'd12-bit resolution
-> ?Multiple modes of starting conversion (Normal, Injected)
-> —Normal mode supports One-Shot and Scan (continuous) conversions
-> —Injected mode supports One-Shot conversions only
-> ?Software-initiated conversions in Normal and Injected modes, or external hardware trigger
-> ?Two different abort features for either a single or chain conversion in Normal and Injected modes
-> ?Independent data registers for each channel contain information about mode of conversion, data validity, overwrite status, and conversion data
-> ?Alternate analog watchdog thresholds (threshold selected through input ports)
-> ?Programmable DMA enables for each channel
-> ?Individual interrupt flags for the following conditions:
-> —End of conversion of a single channel for Normal and Injected modes
-> —End of chain conversion for both Normal and Injected modes
-> —Watchdog threshold violations
-> ?Programmable presampling for channels
-> ?Auto-Clock-Off feature for improved power performance
-> ?Power-Down mode to place the SAR_ADC in power-down state
-> ?Programmable clock prescaler for SAR_ADC (bus clock, or bus clock divided by two or four)
-> ?Software-initiated calibration
-> ?Self-test feature
+> device_property_read_u32() return -EINVAL if property is not present, so
+> we can write:
 
-By pasting big pieces of description from RM you do not prove what are
-the differences and it is not my task to find that one line which shows
-the decisive difference (e.g. support or lack of support for DMA).
+Understood. Both ways can work but when I do the next revision I'll change it
+to this.
 
-Best regards,
-Krzysztof
+> 
+> 	error = device_property_read_u32(dev, "poll-interval", &poll_interval);
+> 	if (error) {
+> 		/* -EINVAL means the property is absent. */
+> 		if (error != -EINVAL)
+> 			return error;
+> 	} else if (poll_interval == 0) {
+> 		dev_err(...);
+> 		return -EINVAL;
+> 	} else {
+> 		joy->polled = true;
+> 	}
+> 
+> > > > +	}
+> > > > +
+> > > > +	/*
+> > > > +	 * Count how many channels we got. NULL terminated.
+> > > > +	 * Do not check the storage size if using polling.
+> > > > +	 */
+> > > >  	for (i = 0; joy->chans[i].indio_dev; i++) {
+> > > > +		if (joy->polled)
+> > > > +			continue;
+> > > 
+> > > Whilst I can see why did this, it is a rather 'unusual' code structure
+> > > and that makes me a tiny bit uncomfortable. However if everyone else
+> > > is happy with this then fair enough (I see it was Artur's suggestion to
+> > > handle it like this).
+> > Yep, I'm fine with the way it is right now :)
+> > 
+> > Acked-by: Artur Rojek <contact@artur-rojek.eu>
+> > 
+> > > 
+> > > >  		bits = joy->chans[i].channel->scan_type.storagebits;
+> > > >  		if (!bits || bits > 16) {
+> > > >  			dev_err(dev, "Unsupported channel storage size\n");
+> > > > @@ -215,8 +244,14 @@ static int adc_joystick_probe(struct
+> > > > platform_device *pdev)
+> > > >  	joy->input = input;
+> > > >  	input->name = pdev->name;
+> > > >  	input->id.bustype = BUS_HOST;
+> > > > -	input->open = adc_joystick_open;
+> > > > -	input->close = adc_joystick_close;
+> > > > +
+> > > > +	if (joy->polled) {
+> > > > +		input_setup_polling(input, adc_joystick_poll);
+> > > > +		input_set_poll_interval(input, poll_interval);
+> > > > +	} else {
+> > > > +		input->open = adc_joystick_open;
+> > > > +		input->close = adc_joystick_close;
+> > > > +	}
+> > > > 
+> > > >  	error = adc_joystick_set_axes(dev, joy);
+> > > >  	if (error)
+> > > > @@ -229,6 +264,9 @@ static int adc_joystick_probe(struct
+> > > > platform_device *pdev)
+> > > >  		return error;
+> > > >  	}
+> > > > 
+> > > > +	if (joy->polled)
+> > > > +		return 0;
+> > > > +
+> 
+> This is no longer compatible with the latest driver code as input device
+> registration has been moved to the very end, so you actually need to move
+> getting bugger and setting up cleanup action into the "else" clause of "if
+> (joy->polled)", even though it adds indentation level.
+
+I'm afraid I don't understand the issue you are describing.
+input_register_device is called before this section, and since it's allocated
+with devm we shouldn't need to clean it up in the event of an error, right?
+The two functions below this line (including the one establishing the
+joystick cleanup) are only required for non-polled devices.
+
+Thank you.
+
+> 
+> > > >  	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
+> > > >  	if (IS_ERR(joy->buffer)) {
+> > > >  		dev_err(dev, "Unable to allocate callback buffer\n");
+> 
+> Thanks.
+> 
+> -- 
+> Dmitry

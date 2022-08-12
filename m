@@ -2,282 +2,305 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3ECD591288
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 16:56:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE6C591445
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 18:53:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237768AbiHLO4J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 10:56:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
+        id S237768AbiHLQxK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 12:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234450AbiHLO4I (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 10:56:08 -0400
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam07olkn2041.outbound.protection.outlook.com [40.92.15.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D8A816BB;
-        Fri, 12 Aug 2022 07:56:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZizceAtCryvgJ5paBMGpIlijbzddsYcATS4fQE+Fq8cubEhsS5D95r2AiExlcRdui6Vf7EANNXZ7aut2rrouVEUGGpIRoW4kcGoNL5WBUnDXhatTjAn34Dmu3ko0YT0DwWD3Y7QA4mTjCSSMUPjWr5jRxyySbodLmBwBc3RcBng/9+GakfNGfO17l3yrlk+AqhfaEhNz5LwtOCvWkUrprcWmHC35VpwDEvb9oQ9SEJR/j4JZooi2nehTMTdnyqVYucpM+PB3UB5tDxbQXG1JmApRIfhSsqSJKdoyzYPeyyxO3NEU+u33cGcvIQ4g2bi/i/eHEsg1kfjnS5Zxlze0aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mvo1OU0xHqJmdYnS1VO+MYWMfpQFpwtaRaJ7grMASsk=;
- b=L5pMEsUZdhlOEgsfgB/wxHlAVRwOY5cltKKLXFjvIX53VoHcSrq7gpJe/aLbE3QXbHg6y8N6RaLtF6e40O4Fy64V0HzbkLsbHrYJ9gFTHsAf7dn8S1l8Tfg+2n0tjNRLstu+ew/IkYAvefIS5j3DATn39WQUXTo34Pxs0CwE7xjiTxM4SWviqehlzFGSNzcvKYoMvS8t+dY6GPQ2+9q8BCakMTi8Fj0hfBJQFSy7LPTXBWP4AaJ8mQLSwEr/6I1mVmnttdRg+dMrSBOMyVrU3G35Ii39Ne/e3LqAxTJhD3qOyYcBnNFyTy6c6LDq/R2MV7oaPasJssj97YuTsAFxvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mvo1OU0xHqJmdYnS1VO+MYWMfpQFpwtaRaJ7grMASsk=;
- b=nIST//i409U8tmFcCFFwdKhTgSl9ELCy3vwDeEYMCBMw8XhkPxkNgFU0YUBUlV+BQUa2XnewgT1XlL2xeybBfPTQ1cbU3dN4RTJM4XPyeYXn6yK5sBrKVnwug2e0tr9w3d35AaDc4/ZDCh50SrjfzJ/b5P/6SB7OmdoeV7r5tZtnV5K9zp07wfhUUz/QzX4pBV3VBH8Bk2GeSq6vhbwoAFynnv1rY3ppZHIEgZJXowYuzVVUJeP+kJfeumseQzccAp5SGjZx6gSqEhz3c1UQvG0BLwGZalKJsFNcPTjDjY53PLbQOm70ShaeW+qiU6YyEGd4ipE1OI32GRzRWJgTsw==
-Received: from SN6PR06MB5342.namprd06.prod.outlook.com (2603:10b6:805:f9::31)
- by BYAPR06MB5576.namprd06.prod.outlook.com (2603:10b6:a03:d6::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5504.17; Fri, 12 Aug
- 2022 14:56:04 +0000
-Received: from SN6PR06MB5342.namprd06.prod.outlook.com
- ([fe80::20e7:bc40:7e9d:b46e]) by SN6PR06MB5342.namprd06.prod.outlook.com
- ([fe80::20e7:bc40:7e9d:b46e%4]) with mapi id 15.20.5504.025; Fri, 12 Aug 2022
- 14:56:04 +0000
-Date:   Fri, 12 Aug 2022 09:56:00 -0500
-From:   Chris Morgan <macromorgan@hotmail.com>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc:     Artur Rojek <contact@artur-rojek.eu>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Chris Morgan <macroalpha82@gmail.com>,
-        linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        heiko@sntech.de, paul@crapouillou.net,
-        Maya Matuszczyk <maccraft123mc@gmail.com>
-Subject: Re: [PATCH v12 2/3] Input: adc-joystick - Add polled input device
- support
-Message-ID: <SN6PR06MB5342FF12160366A57986D78DA5679@SN6PR06MB5342.namprd06.prod.outlook.com>
-References: <20220805171016.21217-1-macroalpha82@gmail.com>
- <20220805171016.21217-3-macroalpha82@gmail.com>
- <20220806152042.39bc5351@jic23-huawei>
- <9399f54366be973dba36a70cb3dcbfd9@artur-rojek.eu>
- <YvRUSBFGuMmjGsb4@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YvRUSBFGuMmjGsb4@google.com>
-X-TMN:  [wPuHaT8HM+wmeN/xlTk3298CYlPI1LjE]
-X-ClientProxiedBy: DS7PR06CA0053.namprd06.prod.outlook.com (2603:10b6:8:54::8)
- To SN6PR06MB5342.namprd06.prod.outlook.com (2603:10b6:805:f9::31)
-X-Microsoft-Original-Message-ID: <20220812145600.GA26030@wintermute.localdomain>
+        with ESMTP id S239395AbiHLQxF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 12:53:05 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8516ACA04;
+        Fri, 12 Aug 2022 09:52:58 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id 582645FD07;
+        Fri, 12 Aug 2022 19:52:55 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1660323175;
+        bh=1elLIuUIsjGoJqUAz1PxN9Dk+iJ1R25JyyRnLDFLN1Q=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=PTEvg8fl2bXgG6PXa++JOxuOo0KZliH831uxKc61qz2MzLCH/2r0coSOPOB8S+hEC
+         +bRIJGojRsNJtqkfB/CxZKzREUFDmCuFFh2vpW6QdBwBUU6WZGUln58ewuAfEYIfpd
+         m2Na9nXOAQ+uBQC7GV24UeyvTzYWkVAsALiLTpirdScVgYG3Pt5uNsqSw1WgbMwGl6
+         lJ8rFwQEt7c9ynDOym2ocsQwD6EaVCZZL5gFXbeVWn62OVF1RNTlbTK/sHqmvhdExg
+         WQ0MIvYqHGAcuxehIjvxDGcJSrKmkVpqCAf5n4VvjFMdvGVP3O3+gkYB1BX3qq7Bxh
+         hzf5pRetTM0Ig==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Fri, 12 Aug 2022 19:52:49 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
+To:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
+        "jani.nikula@intel.com" <jani.nikula@intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Subject: [PATCH v5 0/7] iio: accel: add MSA311 accelerometer driver
+Thread-Topic: [PATCH v5 0/7] iio: accel: add MSA311 accelerometer driver
+Thread-Index: AQHYrmvitOzGajbmTUWypVidxfU20A==
+Date:   Fri, 12 Aug 2022 16:52:19 +0000
+Message-ID: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: aad8311e-58ab-4a6b-9e05-08da7c72c78a
-X-MS-TrafficTypeDiagnostic: BYAPR06MB5576:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: of8SRmXr8Y6k60MWIF2AAsqRF8c98zqRV2v3ULjCg4UdfnML0NO8vzeakBlY+I7SgK4b9RdtuCiiCh52ig+UCuJ2QciZba8nvwxfqD60dIgLRPvSv+GAqLTvq4P29Rc8NSYjinvpURkUm9JXasyoQuWj91Ehj6xcjJjT6tmp3Dl2KBSy9KLM9rMdR2TrM3AcXPti+uMYcm/IQOjrPEb+xBskajDiW6afXRB9o6hqTDqUpABiGLVZ0yGxAlovuLoZsVkCzvvwIFZirmYcPnZq5CtCpbcYG+qFhB9+sR1moxAgkJbgKvqeEEjVJxtVcYmBF4kvKR22stJTeUyi26K26wE9NAxuIgkxkogpHqmK4KEk8F/Xv0EqEN0KM/R943cFNAdmfvYtSYFeUzB1R9ZTqqK7nfTWcUu/nm9u1b8dLvw3XvugGrvZOvADCHLu4BgdI2I1p3AK+cjpILMWWDzhbPZPWXlKmJ1zmPyDvZIf1Qsm7E82ZDkO2Z+gTJ76rEa+TBmmqZX4Qaqy9iyTHKVvmFxspBeyLhz+iVRYWmMKDky8eZ6V6JC8GrsfmIOroWdKRQ80c6QY9WyXaETvf6kReEtYkHJOVBVAQhI4N6eT9AsKFlFlZtY+Ch/brS53C16cq+govQOZqwa/B2F+Kyzzp4LKwbhLTG100Tv7jobc3l6zvMCBEPC9/XUq7DzsEpzl
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?EJlGvuYxkJ2muTjle3BRxDiNGK40/rZswtQ5L2ODa3irgzUhvmc9qESTn4Rj?=
- =?us-ascii?Q?Gb3Keg9KE1IHlokLQc6JhV/M6XM1EAX++sVLLXyloh8btk0E8iUzj8Ay4nHC?=
- =?us-ascii?Q?ymPFETGmuhBGxUODhW8xYR1h3ItSfZWi8EMaYgTh4IRb6z0Mjn0/dyOyv+4b?=
- =?us-ascii?Q?amvImwfV2kZlSf8u/K02/GiMMBVaoAn4YL6oTK96O5dwc7WFtHmDhUuX8p/M?=
- =?us-ascii?Q?8uertvhIDHzkfiaOzYWokG4xsNV9NpcJvUzF/LFpTyxXYSzaOHjPmer8hPoY?=
- =?us-ascii?Q?U7hsaNquLSMBVZ1dL5MPtAWNDpbKQCb6c48x9JL701/l3EupwNcPU/DspNoA?=
- =?us-ascii?Q?VN1F7sIlQokU+fccqIc+BI5Npkb1hP9IuDajHBzR2uB2jxhJRbMOgJNGSzWA?=
- =?us-ascii?Q?ocSh1ZFV2P5uVvBJqHhV1S7gDW5dQVoaiZECMb7ZEnvbjCzNHtDtP3lokvu0?=
- =?us-ascii?Q?Dox49hYPtIL06szU0ND83sJcCutuUvnFm97ynIZWjdaTjrSctZ5j07Z03pV2?=
- =?us-ascii?Q?ANqsGZ4H4M0wgG8wIVK9BDgtx2OZt8XDAatFKJLiwh9Gq6pzywdusWNsQSvx?=
- =?us-ascii?Q?4oy9BY+vTuGqVdeVnZyQ+ruGasYff2SvwGU+tMUFXof67Kre3VaOW7bMfQCv?=
- =?us-ascii?Q?mqrxXFCaaQ+2eunJp58QUbf4p1+3JlN8cBs7CSpZwt82AlNZY26yUcDBGYah?=
- =?us-ascii?Q?OYcVZfePY7+UVM+EzC6LuG40F5P28uoFXnga5Ag5T88a6EANPBcqaHPfd4eQ?=
- =?us-ascii?Q?R58tFcFw/y4WIdK7zvLUNY+LwGG/zHpZbyiN5gSBoSM29j6BNOYxvOJh1jZ9?=
- =?us-ascii?Q?ydITVbGVZ3RYqEfHwAJhZHPpeMqT2gnP5FgRO7XXEVpn8Ac/jpXCorQNTsbc?=
- =?us-ascii?Q?ALXGvYcxqFSCEvONUNPbCY9VLks4HI7ErIVeIZgz/roUtG3a7QMzYkcLFbwk?=
- =?us-ascii?Q?k8NOIGUcANEZpX2v64om3E+c2UtSCLB5hacbTNR+ngJnjN1zxGJvolY93adV?=
- =?us-ascii?Q?WsV+jmwC5PhVu9jXJfykOoQoznYjSgSAaL8zfEG6ntBsrJYjmWVgODddbRgu?=
- =?us-ascii?Q?Lh+yEJYrlelNEhQBS3PMRmfyw1H9+h0VBLdl1S0uk5ZO77ahigiWxlO0dVcs?=
- =?us-ascii?Q?01QnXnC0ohicWszuVf07k5rXg2M80d1eRLeR4slrsXAw1PaROTaoT40hJ/8S?=
- =?us-ascii?Q?a3WUQ8lPYg3ED2DWEFSO+0unjESuqC1t1ehbZMPHPi+pDyiFA+7J+6b0Iq0I?=
- =?us-ascii?Q?nKcApe+/Gq8fvj2e0U+ldT+skAlGIOoEDHRsraO24Q=3D=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-89723.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: aad8311e-58ab-4a6b-9e05-08da7c72c78a
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR06MB5342.namprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2022 14:56:04.8931
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR06MB5576
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/12 13:28:00 #20103614
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 10, 2022 at 05:58:48PM -0700, Dmitry Torokhov wrote:
-> On Sat, Aug 06, 2022 at 04:19:21PM +0200, Artur Rojek wrote:
-> > On 2022-08-06 16:20, Jonathan Cameron wrote:
-> > > On Fri,  5 Aug 2022 12:10:15 -0500
-> > > Chris Morgan <macroalpha82@gmail.com> wrote:
-> > > 
-> > > > From: Chris Morgan <macromorgan@hotmail.com>
-> > > > 
-> > > > Add polled input device support to the adc-joystick driver. This is
-> > > > useful for devices which do not have hardware capable triggers on
-> > > > their SARADC. Code modified from adc-joystick.c changes made by Maya
-> > > > Matuszczyk.
-> > > > 
-> > > > Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-> > > > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> > > Hi Chris,
-> > > 
-> > > Trying to avoid too much indentation has lead to an odd code structure.
-> > > Still minor thing, so either way this looks fine to me.
-> > > 
-> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > 
-> > > > ---
-> > > >  drivers/input/joystick/adc-joystick.c | 44
-> > > > +++++++++++++++++++++++++--
-> > > >  1 file changed, 41 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/input/joystick/adc-joystick.c
-> > > > b/drivers/input/joystick/adc-joystick.c
-> > > > index 78ebca7d400a..77dfb7dd96eb 100644
-> > > > --- a/drivers/input/joystick/adc-joystick.c
-> > > > +++ b/drivers/input/joystick/adc-joystick.c
-> > > > @@ -26,8 +26,23 @@ struct adc_joystick {
-> > > >  	struct adc_joystick_axis *axes;
-> > > >  	struct iio_channel *chans;
-> > > >  	int num_chans;
-> > > > +	bool polled;
-> > > >  };
-> > > > 
-> > > > +static void adc_joystick_poll(struct input_dev *input)
-> > > > +{
-> > > > +	struct adc_joystick *joy = input_get_drvdata(input);
-> > > > +	int i, val, ret;
-> > > > +
-> > > > +	for (i = 0; i < joy->num_chans; i++) {
-> > > > +		ret = iio_read_channel_raw(&joy->chans[i], &val);
-> > > > +		if (ret < 0)
-> > > > +			return;
-> > > > +		input_report_abs(input, joy->axes[i].code, val);
-> > > > +	}
-> > > > +	input_sync(input);
-> > > > +}
-> > > > +
-> > > >  static int adc_joystick_handle(const void *data, void *private)
-> > > >  {
-> > > >  	struct adc_joystick *joy = private;
-> > > > @@ -179,6 +194,7 @@ static int adc_joystick_probe(struct
-> > > > platform_device *pdev)
-> > > >  	int error;
-> > > >  	int bits;
-> > > >  	int i;
-> > > > +	unsigned int poll_interval;
-> > > > 
-> > > >  	joy = devm_kzalloc(dev, sizeof(*joy), GFP_KERNEL);
-> > > >  	if (!joy)
-> > > > @@ -192,8 +208,21 @@ static int adc_joystick_probe(struct
-> > > > platform_device *pdev)
-> > > >  		return error;
-> > > >  	}
-> > > > 
-> > > > -	/* Count how many channels we got. NULL terminated. */
-> > > > +	if (device_property_present(dev, "poll-interval")) {
-> > > > +		error = device_property_read_u32(dev, "poll-interval",
-> > > > +						 &poll_interval);
-> > > > +		if (error)
-> > > > +			return error;
-> > > > +		joy->polled = true;
-> 
-> 
-> device_property_read_u32() return -EINVAL if property is not present, so
-> we can write:
+MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
+sensitivity consumer applications. It has dynamic user-selectable full
+scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
+with output data rates from 1Hz to 1000Hz.
 
-Understood. Both ways can work but when I do the next revision I'll change it
-to this.
+Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
 
-> 
-> 	error = device_property_read_u32(dev, "poll-interval", &poll_interval);
-> 	if (error) {
-> 		/* -EINVAL means the property is absent. */
-> 		if (error != -EINVAL)
-> 			return error;
-> 	} else if (poll_interval == 0) {
-> 		dev_err(...);
-> 		return -EINVAL;
-> 	} else {
-> 		joy->polled = true;
-> 	}
-> 
-> > > > +	}
-> > > > +
-> > > > +	/*
-> > > > +	 * Count how many channels we got. NULL terminated.
-> > > > +	 * Do not check the storage size if using polling.
-> > > > +	 */
-> > > >  	for (i = 0; joy->chans[i].indio_dev; i++) {
-> > > > +		if (joy->polled)
-> > > > +			continue;
-> > > 
-> > > Whilst I can see why did this, it is a rather 'unusual' code structure
-> > > and that makes me a tiny bit uncomfortable. However if everyone else
-> > > is happy with this then fair enough (I see it was Artur's suggestion to
-> > > handle it like this).
-> > Yep, I'm fine with the way it is right now :)
-> > 
-> > Acked-by: Artur Rojek <contact@artur-rojek.eu>
-> > 
-> > > 
-> > > >  		bits = joy->chans[i].channel->scan_type.storagebits;
-> > > >  		if (!bits || bits > 16) {
-> > > >  			dev_err(dev, "Unsupported channel storage size\n");
-> > > > @@ -215,8 +244,14 @@ static int adc_joystick_probe(struct
-> > > > platform_device *pdev)
-> > > >  	joy->input = input;
-> > > >  	input->name = pdev->name;
-> > > >  	input->id.bustype = BUS_HOST;
-> > > > -	input->open = adc_joystick_open;
-> > > > -	input->close = adc_joystick_close;
-> > > > +
-> > > > +	if (joy->polled) {
-> > > > +		input_setup_polling(input, adc_joystick_poll);
-> > > > +		input_set_poll_interval(input, poll_interval);
-> > > > +	} else {
-> > > > +		input->open = adc_joystick_open;
-> > > > +		input->close = adc_joystick_close;
-> > > > +	}
-> > > > 
-> > > >  	error = adc_joystick_set_axes(dev, joy);
-> > > >  	if (error)
-> > > > @@ -229,6 +264,9 @@ static int adc_joystick_probe(struct
-> > > > platform_device *pdev)
-> > > >  		return error;
-> > > >  	}
-> > > > 
-> > > > +	if (joy->polled)
-> > > > +		return 0;
-> > > > +
-> 
-> This is no longer compatible with the latest driver code as input device
-> registration has been moved to the very end, so you actually need to move
-> getting bugger and setting up cleanup action into the "else" clause of "if
-> (joy->polled)", even though it adds indentation level.
+This driver supports following MSA311 features:
+    - IIO interface
+    - Different power modes: NORMAL and SUSPEND (using pm_runtime)
+    - ODR (Output Data Rate) selection
+    - Scale and samp_freq selection
+    - IIO triggered buffer, IIO reg access
+    - NEW_DATA interrupt + trigger
 
-I'm afraid I don't understand the issue you are describing.
-input_register_device is called before this section, and since it's allocated
-with devm we shouldn't need to clean it up in the event of an error, right?
-The two functions below this line (including the one establishing the
-joystick cleanup) are only required for non-polled devices.
+Below features to be done:
+    - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
+    - Low Power mode
 
-Thank you.
+Also this patchset has new vendor prefix for MEMSensing Microsystems and
+MSA311 dt-binding schema.
 
-> 
-> > > >  	joy->buffer = iio_channel_get_all_cb(dev, adc_joystick_handle, joy);
-> > > >  	if (IS_ERR(joy->buffer)) {
-> > > >  		dev_err(dev, "Unable to allocate callback buffer\n");
-> 
-> Thanks.
-> 
-> -- 
-> Dmitry
+You can test msa311 driver using libiio and gnuplot following below
+instructions:
+  $ # Create hrtimer trigger object
+  $ mkdir /sys/kernel/config/iio/triggers/hrtimer/iio_hrtimer_trigger
+  $ # Read 4K samples using msa311-13-new-data trigger (irq) and
+  $ # buffer with depth equals to 64 samples and rotate device a little bit
+  $ iio_readdev -u "local:" -b 64 -s 4096 -t msa311-13-new-data -T 0 \
+  $             msa311-13 > /tmp/msa311.dat
+  $ # Or using hrtimer trigger instead of msa311-13-new-data trigger
+  $ iio_readdev -u "local:" -b 64 -s 4096 -t iio_hrtimer_trigger -T 0 \
+  $                msa311 > /data/local/tmp/msa311.dat
+  $ cat <<EOF >> msa311_data.gnu
+  set title "MSA311 Accel Data"
+
+  set key below
+
+  set xdata time
+  set format x "%H:%M\n%.4S"
+  set xlabel "timestamp"
+
+  set autoscale y
+
+  plot 'msa311.dat' binary endian=3Dlittle \
+                    format=3D'%int16%int16%int16%uint16%uint64' using \
+                    (\$5/1000000000):(int(\$1)/16) title "acc_x" \
+                    with lines,\\
+       'msa311.dat' binary endian=3Dlittle \
+                    format=3D'%int16%int16%int16%uint16%uint64' using \
+                    (\$5/1000000000):(int(\$2)/16) title "acc_y" \
+                    with lines,\\
+       'msa311.dat' binary endian=3Dlittle \
+                    format=3D'%int16%int16%int16%uint16%uint64' using \
+                    (\$5/1000000000):(int(\$3)/16) title "acc_z" with lines
+  EOF
+  $ gnuplot --persist msa311_data.gnu
+
+Changes:
+* v4->v5:
+    - used chip_name for IRQ and trigger name generation in the form
+      msa311-%partid%-*
+    - split generic with IIO headers
+    - fixup some mathematical forms inside comments
+    - provided small code refactoring for commas, comments, and logs
+    - removed errno value logging from dev_err_probe() calls per
+      Christophe suggestion to avoid extra errno string output
+    - returned INDIO_DIRECT_MODE default initializer for indio_dev->modes
+    - provided pm_runtime_set_active() call during msa311 probing to let
+      runtime PM know that we are starting up with msa311 chip turned on
+      as Jonathan suggested
+    - used HZ units for hz calculations
+    - removed logging contractions
+    - removed double calling of regulator_disable() in the probe error
+      path
+    - used postfix increment operations instead of prefix form :)
+    - used %pe specifier to print errno as a string in the dev_err()
+    - merged with HZ units patchset from
+      https://lore.kernel.org/linux-iio/20220801143811.14817-1-ddrokosov@sb=
+erdevices.ru/
+    - merged with Andy's str_read_write() patch from
+      https://lore.kernel.org/linux-i2c/20220703154232.55549-1-andriy.shevc=
+henko@linux.intel.com/
+    - used str_read_write() string helper inside driver implementation
+
+* v3->v4:
+    - totally reworked pm_runtime flow based on Jonathan suggestions
+    - replaced temporary field variable with tmp pointer to field in the
+      MSA311_GENMASK macro helper
+    - removed i2c pointer from MSA311 private context, retrieved it from
+      msa311 object, if anything
+    - added struct device *dev reference to MSA311 private context for
+      easier msa311->dev translation
+    - moved regmap pointer to the beginning of MSA311 private context to
+      save some instructions
+    - refactored 'if' conditions to be positive and shorter
+    - moved msa311_check_partid() and msa311_soft_reset() to separate
+      routines and call them before powerup IP logic during probe()
+      execution
+    - used str_enable_disable() string helper as Andy suggested
+    - used msa311_pwr_modes const char * array to translate power modes
+      to strings
+    - reworked hz->ms translation, used MICROHZ_PER_HZ from the
+      following review:
+      https://lore.kernel.org/linux-iio/20220801143811.14817-1-ddrokosov@sb=
+erdevices.ru/
+    - moved dev_dbg() log about MSA311 compatible chip finding under
+      partid check
+    - refactored stack variables definitions based on "longer lines
+      first" thumb
+    - used 0 instead of INDIO_DIRECT_MODE before iio buffer setup
+    - moved i2c->irq check to msa311_setup_interrupts()
+    - removed dev_dbg() prints from ->resume() and ->suspend() callbacks
+    - removed "description" fields from "interrupts" and i2c "reg" YAML
+      schema nodes
+    - implemented simple power supply for MSA311 (vdd-supply)
+    - reworked shared_by_all info mask to shared_by_type for MSA311
+      accel channels
+    - tagged datasheet URL link in the commit message
+    - made mutex-based critical section shorter inside odr and fs loop as
+      Jonathan suggested
+    - fixed wording in the commit messages and comments a little bit,
+      refactored some indentations
+    - replaced blank lines between register offset definitions with
+      short comments
+
+* v2->v3:
+    - removed MSA311_TIMESTAMP_CHANNEL() macro, used IIO_CHAN_SOFT_TIMESTAM=
+P
+      directly
+    - do not call dev_err_probe() inside functions, which is used not only
+      from probe() path
+    - simplified error handling a little bit
+    - used iio_device_claim_direct_mode() and
+      iio_device_release_direct_mode() to lock attributes when buffer mode
+      is enabled
+    - prohibited sampling frequency changing during buffer usage because
+      otherwise sometimes MSA311 returns outliers when frequency values
+      grow up in the read operation moment
+    - allowed scale value changing when buffer mode is enabled
+    - removed IRQF_TRIGGER_RISING irq flag from irg registration because
+      it's provided from device tree directly
+    - do not switch off autosuspend from powerdown() devm callback,
+      because it's already done from pm_runtime_disable() during
+      devm pm_runtime actions
+    - provided more information why we need force suspend state for MSA311
+      in the powerdown flow
+    - reworked comments stuff: removed obvious extra comments, provided
+      more details in the complex driver code places
+
+* v1->v2:
+    - memsensing vendor prefix was moved to right place by
+      alphabetical order
+    - LOW mode mention was deleted, because LOW mode isn't supported
+      in the current driver version
+    - reworked some enums with gaps to defines
+    - reworked register names as Jonathan mentioned in the v1
+    - do not use regmap_field API for entire registers
+    - deleted all extra comments
+    - supported info_mask_*_avail bitmaps instead of explicit IIO attrs
+      definitions, implemented read_avail() callback for samp_freq and
+      scale values
+    - msa311 mutex is still used to protect msa311 power transitions,
+      samp_freq/scale tune and axes data handling; described this lock
+      more informative
+    - ask new_data interruption status from appropriate register,
+      do not hold atomic variable for that
+    - optimized reads of axes data by I2C using regmap_bulk API
+    - use dev_err_probe() instead of dev_err() for all probe() code paths
+    - from now all I2C bus communication failures are interpreted as errors
+    - described wait_from_next() semantic better
+    - deleted all unneeded pm wrappers
+    - interpreter all axes data as __le16 type and adjust them to right
+      format (endianness + sign) for raw() flow only
+    - redesigned msa311_fs_table[] to 2D matrix (it's more comfortable
+      format for read_avail() callback)
+    - align and initialize msa311 buffer before pushing properly
+    - use pm_runtime resume and suspend from buffer preenable/postdisable,
+      deleted them from trigger set_state
+    - supported multiple trigger usage (tested with external hrtimer
+      trigger and internal new_data trigger)
+    - moved all irq related stuff to msa311_setup_interrupts() routine
+    - implemented msa311_powerdown() devm release action
+    - reworked initialization of pm_runtime msa311 flow, use
+      autosuspend logic
+    - purged driver remove() callback, because of devm release logic runs
+      all deinit stuff fully
+    - fixed dts bindings problems
+    - changed irq type in the dt-binding description, because interrupt
+      type for msa311 should have the same type as i2c irq, for example
+      using the gpio_intc it's IRQ_TYPE_EDGE_RISING usually. Otherwise
+      we may lose irq map on the second and further insmod attempts
+
+Andy Shevchenko (1):
+  lib/string_helpers: Add str_read_write() helper
+
+Dmitry Rokosov (6):
+  units: complement the set of Hz units
+  iio: accel: adxl345: use HZ macro from units.h
+  iio: common: scmi_sensors: use HZ macro from units.h
+  dt-bindings: vendor-prefixes: add MEMSensing Microsystems Co., Ltd.
+  iio: add MEMSensing MSA311 3-axis accelerometer driver
+  dt-bindings: iio: accel: add dt-binding schema for msa311 accel driver
+
+ .../bindings/iio/accel/memsensing,msa311.yaml |   53 +
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
+ MAINTAINERS                                   |    7 +
+ drivers/iio/accel/Kconfig                     |   13 +
+ drivers/iio/accel/Makefile                    |    2 +
+ drivers/iio/accel/adxl345_core.c              |    7 +-
+ drivers/iio/accel/msa311.c                    | 1339 +++++++++++++++++
+ drivers/iio/common/scmi_sensors/scmi_iio.c    |    8 +-
+ include/linux/string_helpers.h                |    5 +
+ include/linux/units.h                         |    3 +
+ 10 files changed, 1432 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/memsensing,=
+msa311.yaml
+ create mode 100644 drivers/iio/accel/msa311.c
+
+--=20
+2.36.0

@@ -2,125 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 682145914B1
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 19:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 593945916CD
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Aug 2022 23:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238721AbiHLRPf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 12 Aug 2022 13:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
+        id S233964AbiHLVnb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 12 Aug 2022 17:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234019AbiHLRPe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 13:15:34 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A7F76A4B6;
-        Fri, 12 Aug 2022 10:15:32 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id C74905FD07;
-        Fri, 12 Aug 2022 20:15:30 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1660324530;
-        bh=eWXwqhgdPV1eTqKNnJQ+Ha5K6D1MKORyyBt4mURjNrM=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=HxwwIYCzaqSnF3otq8qXX6bd095sQtfpl9hVBF0XApCRm/XHNyHePuYll5ruLa57t
-         dvhJY/Zfwx4Ag3PPbJ6oQv3vPHn20M9IYXoKCx7JYTVo5MTurpV0qKtjHC0geMq7xC
-         Br2ETjqfXVzs2tnyHBUXlhaP76sxz+Eh/zPa2LqOJO86MXiMfP8r5Z6sGYArd3cwSF
-         AkpcH7qZ0sItcBiza1/VgfBzotanjjUKIFUbA3fDDn/IEyPHoGqjKdO5RBSWZP5SLv
-         0kQFjF6rBRB3L3RT457bTBkJmVLSupCveJ+krDDjms8ZDl29EU0Qsj2XBwK0xe9u5/
-         aElLADejzqOzw==
-Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Fri, 12 Aug 2022 20:15:30 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>,
-        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
-        "jani.nikula@intel.com" <jani.nikula@intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        kernel <kernel@sberdevices.ru>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 1/7] lib/string_helpers: Add str_read_write() helper
-Thread-Topic: [PATCH v5 1/7] lib/string_helpers: Add str_read_write() helper
-Thread-Index: AQHYrmvlXLMGJM4ctk2gw8SerH637a2rTxcA
-Date:   Fri, 12 Aug 2022 17:15:00 +0000
-Message-ID: <20220812171526.anjszroov76z4hrt@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
- <20220812165243.22177-2-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220812165243.22177-2-ddrokosov@sberdevices.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <CD67D4ABED2DDE43A341CCD57C13E484@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233784AbiHLVna (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 12 Aug 2022 17:43:30 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5536CB08AF
+        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 14:43:28 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id fy5so4083245ejc.3
+        for <linux-iio@vger.kernel.org>; Fri, 12 Aug 2022 14:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=VvRFceTANJWQeLG+LoGv/yVOevHtvwLrEgSV4FirR5w=;
+        b=J9cNAKCkzLz4gHqE62ACXGjorUEOL5wrzetBYv50p1cLZtpOhDMC8s7D9e8BOcsHkR
+         0TwGB6fPE287eLSlhEtlmy3YimW4uGzDFN0wz+WY2vwOnTaSuRfxT+2I6jgBptmIubHd
+         eogHj6RH9rWTNkaNfebzrbgS5glLb0E3CGiqYaN8fUzHiU+4cLt7wIMyUStMqeG30CQw
+         xxPznY26NbSM5YYDIrNQsrKrdkpWvtZbbbiRysmYex9p66LBH9rnlUulQefzb6qJis1t
+         ZreDDEtazo9VTB/MQEPNgNGL0Zmxwcw815XFrEUa2cUjof0IEo/lTZFLDzWADsl1RDf1
+         k/tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=VvRFceTANJWQeLG+LoGv/yVOevHtvwLrEgSV4FirR5w=;
+        b=1zkR7DNdlvriTB5cwvQN9JLuyYZbHFtjHX3yLvKkFIWliSTN2S7BgRw74Df6QbieVf
+         /ecZ5PEIlBd2+HajGkE4YMaG6th571OjYFxhux0wdgSgVMVIMPRiaSb06f9D1tjHoBjU
+         PiJ0QnQ9Am5f8gQ3TEobKoRpQDuLx2O7mkcS+vNouUUsJPWe0E4Vqr8HlbqS1YvxesSi
+         Mm5lHB9jO6KOZ9rdWfEHwpGgvsUxhiJgDtLYtLCvVldShNmGy2fMZqgs3WBu9Eir0tdh
+         Trr7erLmYwVDXNEv6SAYH32wEEM2OD6sizFUpnpRt0fXbJv11lBpwkih6QKSyqNTLLOb
+         THzg==
+X-Gm-Message-State: ACgBeo0PoalejeEFM2Cn6/war3uC1N5uxaUdJYymqiktAwPIdYBv8TCH
+        RGnpAq0k6qzwmJs8znCxrC7+7YE62Vn1DLDDXrVGvA==
+X-Google-Smtp-Source: AA6agR6X712x7TRB9fPQH2VDoUCEy1+d1Q7vla31HwrkzpfwMH7RbpdF1avnqsBEW4N6wKOcuAkn2F3m+b4FpR6Gi64=
+X-Received: by 2002:a17:907:3dab:b0:730:933d:ae69 with SMTP id
+ he43-20020a1709073dab00b00730933dae69mr3899423ejc.500.1660340606911; Fri, 12
+ Aug 2022 14:43:26 -0700 (PDT)
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/12 13:28:00 #20103614
-X-KSMG-AntiVirus-Status: Clean, skipped
+References: <cover.1659909060.git.jahau@rocketmail.com> <a7bc9d7a7bb12a76fb217a1709fb09abd2b45892.1659909060.git.jahau@rocketmail.com>
+ <CAHp75VegA6zzvQXEi_9-K3832o+j48Af3X8LivYY47Xav+w-xQ@mail.gmail.com> <850de937-8fe6-ebce-4e9d-35a617c3ade6@rocketmail.com>
+In-Reply-To: <850de937-8fe6-ebce-4e9d-35a617c3ade6@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 12 Aug 2022 23:43:15 +0200
+Message-ID: <CACRpkdbXNE17cOM2Kd+mUf7JMefZE+NBWxyHt4vkQWEF_3BtjA@mail.gmail.com>
+Subject: Re: [PATCH v5 14/14] iio: magnetometer: yas530: Add YAS537 variant
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello Andy,
+On Wed, Aug 10, 2022 at 1:41 AM Jakob Hauser <jahau@rocketmail.com> wrote:
+> On 08.08.22 13:47, Andy Shevchenko wrote:
 
-Please be informed, I've patched commit msg a little bit, replaced
-'retun' misstyping to 'return'.
+> > P.S. Do you see now how your series and the end result become better?
+>
+> The driver improves. Though we kind of get lost in details, I have the
+> impression we could go on like this forever.
 
-On Fri, Aug 12, 2022 at 04:52:25PM +0000, Dmitry Rokosov wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->=20
-> Add str_read_write() helper to return 'read' or 'write' string literal.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-> ---
->  include/linux/string_helpers.h | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/include/linux/string_helpers.h b/include/linux/string_helper=
-s.h
-> index 4d72258d42fd..9e22cd78f3b8 100644
-> --- a/include/linux/string_helpers.h
-> +++ b/include/linux/string_helpers.h
-> @@ -126,4 +126,9 @@ static inline const char *str_enabled_disabled(bool v=
-)
->  	return v ? "enabled" : "disabled";
->  }
-> =20
-> +static inline const char *str_read_write(bool v)
-> +{
-> +	return v ? "read" : "write";
-> +}
-> +
->  #endif
-> --=20
-> 2.36.0
+I think at one point Jonathan mentioned the phenomenon "perfect is the
+enemy of good", which even has its own Wikipedia article:
+https://en.wikipedia.org/wiki/Perfect_is_the_enemy_of_good
 
---=20
-Thank you,
-Dmitry=
+When I feel (for some intuitive definition of "feeling") that a patch
+series to my subsystem is getting over-reviewed, I usually just
+merge it and tell everyone involved to write and/or request
+additional patches if they are troubled by the result. It's a fine line,
+admittedly, it's not like I can define the trigger point.
+
+I wished some core parts of the kernel get as much attention
+and review as some IIO drivers get.
+
+Yours,
+Linus Walleij

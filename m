@@ -2,55 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E16591C72
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 21:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93231591C76
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 21:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237568AbiHMT6T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Aug 2022 15:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38590 "EHLO
+        id S238737AbiHMT6x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Aug 2022 15:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbiHMT6S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 15:58:18 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E870F13CC7
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:17 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id kb8so7289450ejc.4
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:17 -0700 (PDT)
+        with ESMTP id S237907AbiHMT6w (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 15:58:52 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0C613CCB
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:51 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id gk3so7267126ejb.8
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=prDaPxbuhI2YkS3ImxvqrOYZkOiTsYLmxAEmCgtIlts=;
-        b=sLfwXyQmojly/syV1/M+nIbRRfI+bvzJqfp15h7L2rghxQrWmiCPufxl8HX5WjOkJv
-         ycW0hSQG6nqui8O5W7njuGHpg/+O0N3unv8qeb7vQxDThEfe3uYElyLhkWxeZ0/iIzLC
-         2TbZzbzsH6onix6hw/OnpGviccv0xGSISZ+kw2m7Fg+1m4F7pRt7yT7SBA6POkVCoR2D
-         QKQHi4aQT/rHGVMEC8o4P19mF1HpHUo51hC5PE01P7lBQhyLm/86j9r1C8dUEwIORS97
-         y0pxW/NZXAQkI10j0y6sK16vBGseD+JzvHXpBb/X6uLxX4LtMZMpCGr+MYT1Bn8jF4Hu
-         rHfA==
+        bh=XrQDftGXFitjUNFRGu6XrmPWtayrmeolUFYvl4ZLhX8=;
+        b=f6NNe38/mu8L4AMIl5mKB6wFR3FloILWt5ehAIU46pwGmINSBG/+cygTh7SPtFvCfp
+         8G7ShN2LDFnlRbtJL7EuWgr3oc5o+TcQNnF5yDWn5hz1Yo9cbPAN7WOJI82o2P6sktjT
+         sxdFr/THihygFKsLsMGX3P6cxmF8vLM8+37Wh9evQtp8F/P8Xxf+fy7vYMhzPhqjkBxK
+         0gcww8x47eZUEaFylkoGGSNgRoDWn1A7ZgGBO0wH3OcH0ykqqtJ4zuN9X8MefN3KZTaR
+         nsiwE4w9cvSN8qS6BjQr1nlm5Niq68UlAuLC4OZG8sZldNZM35sk4Lnwui6QePbaHpMX
+         f16w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=prDaPxbuhI2YkS3ImxvqrOYZkOiTsYLmxAEmCgtIlts=;
-        b=6VX+DDw/ez4ByPkw1rm4uLvgR+y2B6zY8pGpNJFOofNvktwzrp9Ms96zTWoSyt+wOp
-         5lppIhgP9eQDru/5lVSnfRc6miH7yQ5ozHPxCZeZdP5hxwwuNBUTrkfBIYvjdO9vq5bj
-         +OHRbSTJldddzU4HNzO9iXYgGN83adt/TIsv1sWww2zHPtaxsAeQSvPLFvZt/sp5n6VF
-         mXz/8Ph+ARcikINMX75q9/KN0X1frm0pWgYRNL44tMHLK6rLWdR/AIb5vbboxC7CwHdQ
-         VoVtIpOYTXGMU6yNNITTnCNnHQ6Nr9LhDql/tmFcjYVN3J2y7yMrXcb/gMCywvXNws59
-         O1wQ==
-X-Gm-Message-State: ACgBeo025vWXsTH/wkAn5A897hPGDyQnwEUQnBlP9fn0hcGtQWOAq1jV
-        LggI2i0Wu0fMUtftKsrrCf9mRuOX6mrBvUPSWrPQMQ==
-X-Google-Smtp-Source: AA6agR6IfXdCivSE5cewvCGmPnQIwg1jOepXajVT2A87FTuCTWHbrrpeT53Y4tfWF+it90w56+o77Ec5RRPGCJwQ7AE=
-X-Received: by 2002:a17:906:58c8:b0:6fe:91d5:18d2 with SMTP id
- e8-20020a17090658c800b006fe91d518d2mr6312577ejs.190.1660420696554; Sat, 13
- Aug 2022 12:58:16 -0700 (PDT)
+        bh=XrQDftGXFitjUNFRGu6XrmPWtayrmeolUFYvl4ZLhX8=;
+        b=2lrlUO/hW7jt2Y4sQRCwIwYo9P/B1TumD89sWxLKDdqaHJrOirxnLd6LpGzvN1VD1y
+         8LrrvlS9KmwsKdxvQCjp5KZHsb2Vn9PaTtxbHlw4lIa+hLHebQimv0CJ47xOZN9mBFNS
+         MocK3Fm4nHVl4ORhUk6yxrS4S3SKwJjcVDXtLvuXZ76T5ESAojtTxtkWW7gfgIWdseXa
+         wwkiHpg88s6G7w7IjGzPIW6ig2OJa8sVGVHOCY1DlUFvJWo/FqxxkQyvUywar3O2f1Hl
+         p6Gnt0hnGG+YcTyjCCd703ORj46OvwHVquDCLF7TgH4X9sXjy4O1+Awxsfjbeh62q2Qd
+         y6iw==
+X-Gm-Message-State: ACgBeo0OKA2euk84Zrlv+mLznRUIw1vQOvPIBwLYLRDa/RxtjqdiLuK/
+        tkhohDaqgc4cy5kvkdLPMuXfPkZLufdR7U9955/xDg==
+X-Google-Smtp-Source: AA6agR4R7jyOAmdjkR6jEntGSuSattb6nI27wPdG/jrhMqpgkvVMkNU/fSXnW/Dq7xX0dHAwqyvvO7ibImcC8ukYAZQ=
+X-Received: by 2002:a17:907:a055:b0:730:a432:99d3 with SMTP id
+ gz21-20020a170907a05500b00730a43299d3mr5958066ejc.690.1660420730089; Sat, 13
+ Aug 2022 12:58:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1660337264.git.jahau@rocketmail.com> <57236545107286771d351b95091bf56815d3717d.1660337264.git.jahau@rocketmail.com>
-In-Reply-To: <57236545107286771d351b95091bf56815d3717d.1660337264.git.jahau@rocketmail.com>
+References: <cover.1660337264.git.jahau@rocketmail.com> <aeba3877933ba9d2c920b459a9037d9186c15a4f.1660337264.git.jahau@rocketmail.com>
+In-Reply-To: <aeba3877933ba9d2c920b459a9037d9186c15a4f.1660337264.git.jahau@rocketmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 13 Aug 2022 21:58:05 +0200
-Message-ID: <CACRpkdZB_JLJcCNAop-bnRG85Nid8MpJDui=RDNaxbebZuD=Wg@mail.gmail.com>
-Subject: Re: [PATCH v6 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
+Date:   Sat, 13 Aug 2022 21:58:38 +0200
+Message-ID: <CACRpkdb6PHoqwGHbNXCmjp_oCoqdPGYTtKwrmM+j4jVXkgYaow@mail.gmail.com>
+Subject: Re: [PATCH v6 10/14] iio: magnetometer: yas530: Add volatile
+ registers to "chip_info"
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -61,7 +62,7 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,13 +72,11 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Fri, Aug 12, 2022 at 11:59 PM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> Introduce the "chip_info" structure approach for better variant handling.
->
-> The variant to be used is now chosen by the Device Tree (enum "chip_ids"),
-> not by the chip ID in the register. However, there is a check to make sure
-> they match (using integer "id_check").
+> Add volatile registers to the "chip_info" structure to ease the handling of
+> different YAS variants.
 >
 > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 

@@ -2,74 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9EAA591AE1
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 16:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91C3C591B2A
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 16:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239517AbiHMOXd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Aug 2022 10:23:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47008 "EHLO
+        id S239504AbiHMOym (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Aug 2022 10:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235340AbiHMOXc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 10:23:32 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACAA921E3E
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 07:23:30 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id b6so1789860wmq.5
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 07:23:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=zXLI7lVM/yGaQM+ipIyUuHnVFPM6tjGTsAy6QU3E1Cg=;
-        b=PUO1hWJdiDKtzCpu0CyqmGKiuWjtXlKQQnRraSzE4Ak3kXH7seuBaipSUnC6bcJXzH
-         TrTkLo6RKwfucOlWOJJtJf/uFSc4a1ydliUAyg4dvBF66eatlcHHXfxJ9pHR3XwBn7W7
-         spU/gxIWAJ0Ui0r4ZLCWivrURD/GiDE7LzsiF+vGAnIxL7AhOxdcG7iLD1oFhfxZQjCE
-         GyJhcdQ2kUgV3rZ8SBW52EUKx8grpwVQ9TMnDXSeCYB7y7qwxLpZEyje11YJmjCN7pWb
-         f7is/ZrzlNMxrA63DIYL01JtFelrD/qBaWSZGTDRkPy4dTtV81qGHnUYqg8aKRKrYnIt
-         cwOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=zXLI7lVM/yGaQM+ipIyUuHnVFPM6tjGTsAy6QU3E1Cg=;
-        b=Pg+PUlgYk3mqHn1BCic4/kwZRdugJGNcBLZdwx13asSMYimPkG+iHDoFAuSp+bkOnf
-         Kq6cmD8VwCWrKrA0tON2Hyvduz9JoI8JmooNy4W9fZjQa99fD4r3AGHvEEWIRCXpqn20
-         srgBZgHDc9vGi64ou7JaO9BJhvqzRs5u7zY5e+ilBbkti/HZr4EC3uqRpcPtAm4Etm/f
-         NQoHVybRwAV0SKJcTIJ/HF36vAT9qj0JXH1BD1a0HPfz5z9vhQQfdzKDvzMVexRRqrxM
-         cWH5mf9snZBC+hYkGQVE83znlvxwHgvataUwJ/QZZQTosphjd3HEUB71/O/gYEDWvX2+
-         Mvgg==
-X-Gm-Message-State: ACgBeo13ZtgO1q0LpV08W4QLZJYeRI9ANMO52W8eY6HqFnnOLQslMWfs
-        s9Gk67LZe0xAyyqGJTIRVskW5A==
-X-Google-Smtp-Source: AA6agR6stw9SsC7wnvyfz/yYO+fUxPfEvU4bLProVHWPfvCSEo9WY85AwZJMDajIUsyLnh25UxX/eg==
-X-Received: by 2002:a1c:f716:0:b0:3a1:8f0e:66b4 with SMTP id v22-20020a1cf716000000b003a18f0e66b4mr5468290wmh.140.1660400609202;
-        Sat, 13 Aug 2022 07:23:29 -0700 (PDT)
-Received: from [192.168.1.12] ([81.178.197.238])
-        by smtp.gmail.com with ESMTPSA id j11-20020adfe50b000000b00224f67bfc95sm1050855wrm.62.2022.08.13.07.23.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Aug 2022 07:23:28 -0700 (PDT)
-Message-ID: <3cb611a1-590a-673f-99a8-d5da0c5f5790@linaro.org>
-Date:   Sat, 13 Aug 2022 15:23:27 +0100
+        with ESMTP id S235340AbiHMOyl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 10:54:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F56BF79;
+        Sat, 13 Aug 2022 07:54:40 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F1A960DEF;
+        Sat, 13 Aug 2022 14:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A87AC433D6;
+        Sat, 13 Aug 2022 14:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660402479;
+        bh=N4kjUi4PTo0aa0MQR9hcV00wsscIFyN4QydIKOaekVE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=vEWAmtylEsAaz9sRfKNI1rrv/BMqyZ4ZJUF1H1orjJXnEyhYNUeE3pI3zpwCr1kTf
+         BmLuFWw3QxsmuiIgUibCYimqbg2pRi0hmXfK27e/S9yKgHbBJyNv51mJiueVzi2pGA
+         U04Lz/yNTfJ1h2u7GBohGoVlEyCHbdbWyAwFeCo1HitQxQgnkZFkNs+lEyjv3eKJkF
+         w2rzkXCU+06L7LJj75hdt5SdpYQjTJ1WUEfwNyWAVdLhR7ATMlyo2vbEfzvOa9jLsO
+         q2wO/uAKz7hjsHqnxzsBIMfc/DtXsmGrO/pyepz98F2HELOBVpaRSx4J4rNPsmiCCD
+         zdQRipfyv2FYg==
+Date:   Sat, 13 Aug 2022 16:05:06 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-input@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Lee Jones <lee@kernel.org>
+Subject: Re: [PATCH v2 4/5] dt-bindings: iio: adc: stmpe: Remove node name
+ requirement
+Message-ID: <20220813160506.04be3760@jic23-huawei>
+In-Reply-To: <YvJ/N2zulizbiU6u@google.com>
+References: <20220712163345.445811-1-francesco.dolcini@toradex.com>
+        <20220712163345.445811-5-francesco.dolcini@toradex.com>
+        <20220809134607.GA44926@francesco-nb.int.toradex.com>
+        <YvJ/N2zulizbiU6u@google.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] mfd: qcom-spmi-pmic: Add more PMIC SUBTYPE IDs
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Lee Jones <lee.jones@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-kernel@vger.kernel.org
-References: <20220813114806.102466-1-luca.weiss@fairphone.com>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20220813114806.102466-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,62 +67,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Tue, 9 Aug 2022 16:37:27 +0100
+Lee Jones <lee.jones@linaro.org> wrote:
 
+> On Tue, 09 Aug 2022, Francesco Dolcini wrote:
+> 
+> > Hello Jonathan, can you pick this? Patches 1 and 2 were applied to MFD
+> > tree.  
+> 
+> Sending out nags whilst the merge-window is open is seldom helpful.
 
-On 13/08/2022 12:48, Luca Weiss wrote:
-> Add more IDs that are found in the downstream msm-4.19 kernel under the
-> path include/linux/qpnp/qpnp-revid.h.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> I've noticed that some hex numbers in this list have uppercase letters,
-> some have lower case ones.
-> If wanted I can add a patch converting all to either upper- or lower
-> case. Anyone have a preference here?
-I think(?) uppercase is the standard for Qualcomm stuff.
-> 
->   include/soc/qcom/qcom-spmi-pmic.h | 14 ++++++++++++++
->   1 file changed, 14 insertions(+)
-> 
-> diff --git a/include/soc/qcom/qcom-spmi-pmic.h b/include/soc/qcom/qcom-spmi-pmic.h
-> index 72398ff44719..bcb8e95d5dab 100644
-> --- a/include/soc/qcom/qcom-spmi-pmic.h
-> +++ b/include/soc/qcom/qcom-spmi-pmic.h
-> @@ -26,18 +26,32 @@
->   #define PM8901_SUBTYPE		0x0f
->   #define PM8950_SUBTYPE		0x10
->   #define PMI8950_SUBTYPE		0x11
-> +#define PMK8001_SUBTYPE		0x12
-> +#define PMI8996_SUBTYPE		0x13
->   #define PM8998_SUBTYPE		0x14
->   #define PMI8998_SUBTYPE		0x15
-> +#define SMB1381_SUBTYPE		0x17 >   #define PM8005_SUBTYPE		0x18
->   #define PM660L_SUBTYPE		0x1A
->   #define PM660_SUBTYPE		0x1B
-> +#define SMB1355_SUBTYPE		0x1C
-The SHIFT6mq uses this and schematics suggest it doesn't support SPMI. Does it 
-make sense to include these secondary charger chips here?
->   #define PM8150_SUBTYPE		0x1E
->   #define PM8150L_SUBTYPE		0x1f
->   #define PM8150B_SUBTYPE		0x20
->   #define PMK8002_SUBTYPE		0x21
-> +#define SMB1390_SUBTYPE		0x23
->   #define PM8009_SUBTYPE		0x24
-> +#define PMI632_SUBTYPE		0x25
->   #define PM8150C_SUBTYPE		0x26
-> +#define PM6150_SUBTYPE		0x28
->   #define SMB2351_SUBTYPE		0x29
-> +#define PM8008_SUBTYPE		0x2C
-> +#define PM6125_SUBTYPE		0x2D
-> +#define PM7250B_SUBTYPE		0x2E
-> +#define PMK8350_SUBTYPE		0x2F
-> +#define PMR735B_SUBTYPE		0x34
-> +#define PM6350_SUBTYPE		0x36
-> +#define PM2250_SUBTYPE		0x37
->   
->   #define PMI8998_FAB_ID_SMIC	0x11
->   #define PMI8998_FAB_ID_GF	0x30
+Agreed, next week would have been better.  I happen to be queuing stuff
+up ready for a rebase this cycle though so applied this one to what will
+be the togreg branch of iio.git after rc1 is available and I've rebased.
 
--- 
-Kind Regards,
-Caleb (they/he)
+Jonathan
+
+> 
+> Also, please refrain from top-posting.
+> 
+> Thanks.
+> 
+> > On Tue, Jul 12, 2022 at 06:33:44PM +0200, Francesco Dolcini wrote:  
+> > > STMPE driver does not require a specific node name anymore, only the
+> > > compatible is checked, update binding according to this.
+> > > 
+> > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
+> > > index 9049c699152f..333744a2159c 100644
+> > > --- a/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/adc/st,stmpe-adc.yaml
+> > > @@ -13,8 +13,7 @@ description:
+> > >    This ADC forms part of an ST microelectronics STMPE multifunction device .
+> > >    The ADC is shared with the STMPE touchscreen. As a result some ADC related
+> > >    settings are specified in the parent node.
+> > > -  The node name myst be stmpe_adc and should be a child node of the stmpe node
+> > > -  to which it belongs.
+> > > +  The node should be a child node of the stmpe node to which it belongs.
+> > >  
+> > >  properties:
+> > >    compatible:  
+> >   
+> 
+

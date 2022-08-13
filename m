@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91BA6591B5A
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 17:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC04D591B60
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 17:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239745AbiHMPYG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Aug 2022 11:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39354 "EHLO
+        id S239664AbiHMP2m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Aug 2022 11:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239739AbiHMPYF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 11:24:05 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927E115700;
-        Sat, 13 Aug 2022 08:24:03 -0700 (PDT)
+        with ESMTP id S239475AbiHMP2l (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 11:28:41 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E1B19C37;
+        Sat, 13 Aug 2022 08:28:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48DAAB80689;
-        Sat, 13 Aug 2022 15:24:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B258C433C1;
-        Sat, 13 Aug 2022 15:23:58 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A8A6DB80689;
+        Sat, 13 Aug 2022 15:28:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C383C433C1;
+        Sat, 13 Aug 2022 15:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660404241;
-        bh=b6AqnPbsc+T59VwdyA+H2w9UZXXLMHRrYjnllS8rbtw=;
+        s=k20201202; t=1660404516;
+        bh=qxeIggXC7oRB95XhY3WCaM1i9HTIJcso7OKVbHNJQPg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LXjzyKktxW6qtiUqZhuABTD6e+W9SgXhFOm7CTkonETMs0ilXL+Sx+lrlfcyK5WBj
-         3YZ4d1wNFk2ef5monqna1n32jsoMms/LYSG0krOgxbsuq4IHlPypLJlv+tLgqccw20
-         Z/Pjn0GZoLhIU3NlxWjKW4K97Yr+LlaHVgVXiBDDaI8LoNs+ZylGAVgiBXb24CEZXB
-         H1VHhcgUei99peiXwDh17qqFprlOrSPtbcisEHWjmx42UfzNa+F50DRjHy/GEcup/7
-         AA84TCHZMJ+bBE5ub2s8/+I/4TbGp2xeO56IslnVhoROfS/2zKfOuPu/CFRZa7M/r0
-         Cs43rkIwptZHg==
-Date:   Sat, 13 Aug 2022 16:34:28 +0100
+        b=GSXlESkBdqqh1+19Gh8pr3PG1Q2KijA0iTK7eztgGKmOfT7Q9/qBY5GeWCKj+pKlU
+         h4Guww520YnMNgSJ8Zp0Huf5EXUiwvHLmeE/VYp2IzeVU/hwIieWTI68W6K0H8pnoR
+         ibBigr2hayKKWzrYVrWi8tFTAB8Aw+s1ZRS0nQq+J11ywIClQuXbUlTgldwsZ7x9XQ
+         f3x3Xi03mcwZBn3uf22yNHJXIcNg5QdNSWrK37n8TTycHSPI7Rq8WmoAt/pw4jJ1Oq
+         2IeIcwy64XFK98Xo8qHETR5AQT463LOIMYvDMz0QlEM4mkdfhvlc9Sn72X/AWloXPK
+         sIr7+ltVYPB1w==
+Date:   Sat, 13 Aug 2022 16:39:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
         "shawnguo@kernel.org" <shawnguo@kernel.org>,
         "lars@metafoo.de" <lars@metafoo.de>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
         "stephan@gerhold.net" <stephan@gerhold.net>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
@@ -46,12 +46,17 @@ Cc:     "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v4 2/3] iio: add MEMSensing MSA311 3-axis accelerometer
  driver
-Message-ID: <20220813163428.0a181cc3@jic23-huawei>
-In-Reply-To: <20220809094754.akfed7hxcdvxoacj@CAB-WSD-L081021.sigma.sbrf.ru>
+Message-ID: <20220813163854.7815e0ee@jic23-huawei>
+In-Reply-To: <20220813162715.2c8bdc47@jic23-huawei>
 References: <20220803131132.19630-1-ddrokosov@sberdevices.ru>
         <20220803131132.19630-3-ddrokosov@sberdevices.ru>
-        <20220806163204.3262c0e7@jic23-huawei>
-        <20220809094754.akfed7hxcdvxoacj@CAB-WSD-L081021.sigma.sbrf.ru>
+        <CAHp75VcVuC6yVoB1kycCOfqMa=JfCtbe3WYSK5qndtYcJy3vpg@mail.gmail.com>
+        <20220803191621.tzrmndkygfe7nlpx@CAB-WSD-L081021.sigma.sbrf.ru>
+        <20220806155523.37c3e587@jic23-huawei>
+        <20220809095251.vpp6arac3pkntdlo@CAB-WSD-L081021.sigma.sbrf.ru>
+        <CAHp75Vc9LGX-=Y2smOrKuAgSRrhA0AgGuBE-0=_-q78FpSB6ag@mail.gmail.com>
+        <20220809103519.437rcude7fstxyy4@CAB-WSD-L081021.sigma.sbrf.ru>
+        <20220813162715.2c8bdc47@jic23-huawei>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -66,127 +71,76 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 Aug 2022 09:47:54 +0000
-Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+On Sat, 13 Aug 2022 16:27:15 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Hello Jonathan,
+> On Tue, 9 Aug 2022 10:35:19 +0000
+> Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 > 
-> On Sat, Aug 06, 2022 at 04:32:04PM +0100, Jonathan Cameron wrote:
-> 
-> [...]
-> 
-> > > +/**
-> > > + * struct msa311_priv - MSA311 internal private state
-> > > + * @regs: Underlying I2C bus adapter used to abstract slave
-> > > + *        register accesses
-> > > + * @fields: Abstract objects for each registers fields access
-> > > + * @dev: Device handler associated with appropriate bus client
-> > > + * @lock: Protects msa311 device state between setup and data access routines
-> > > + *        (power transitions, samp_freq/scale tune, retrieving axes data, etc)
-> > > + * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
-> > > + *                 to notify external consumers a new sample is ready
-> > > + * @vdd: Optional external voltage regulator for the device power supply
-> > > + */
-> > > +struct msa311_priv {
-> > > +	struct regmap *regs;
-> > > +	struct regmap_field *fields[F_MAX_FIELDS];
-> > > +
-> > > +	struct device *dev;
-> > > +	struct mutex lock; /* state guard */  
+> > On Tue, Aug 09, 2022 at 12:05:12PM +0200, Andy Shevchenko wrote:  
+> > > > > > > > +       indio_dev->modes = 0; /* setup buffered mode later */    
+> > > > > > >
+> > > > > > > Why explicit assignment to 0? Doesn't kzalloc() do it for you?    
+> > > > > >
+> > > > > > kzalloc() will do it for me, of course. Previously, I initialized modes to
+> > > > > > INDIO_DIRECT_MODE to just provide default value for that. Jonathan
+> > > > > > suggested to replace it with 0.    
+> > > > >
+> > > > > I did?  I wonder what I was smoking that day.
+> > > > > Should be set to INDIO_DIRECT_MODE as you had it previously.
+> > > > >
+> > > > > (From what I recall it will work either way but we have in the past had
+> > > > > core code that checked this and may do again in the future so drivers should
+> > > > > still be setting it to specify they provide sysfs interfaces to directly read
+> > > > > the channels).    
+> > > >
+> > > > Jonathan, really sorry I referred to you. I'm confused. This comment was
+> > > > from Andy in the v3 discussion:
+> > > >
+> > > > https://lore.kernel.org/linux-iio/CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNShFRG3kP8b6w@mail.gmail.com/    
+> > > 
+> > > Indeed. I was confused by the comment. My understanding at that time
+> > > was that the triggered mode is inevitable and hence assigning to
+> > > something which _will_ be reassigned later makes a little sense. So,
+> > > does it mean that triggered mode is optional and might not be set? In
+> > > such a case the comment is misleading.    
 > > 
-> > Shouldn't need this comment given documentation above that provides
-> > more information.  
-> 
-> Without this comment checkpatch.pl raises a warning about uncommented
-> lock definition.
-> I agree with you, above comment is redundant, but is it okay to ignore
-> such warnings before sending the patch?
-> 
-> I'm talking about below checkpatch condition:
-> =====
-> # check for spinlock_t definitions without a comment.
-> 		if ($line =~ /^.\s*(struct\s+mutex|spinlock_t)\s+\S+;/ ||
-> 		    $line =~ /^.\s*(DEFINE_MUTEX)\s*\(/) {
-> 			my $which = $1;
-> 			if (!ctx_has_comment($first_line, $linenr)) {
-> 				CHK("UNCOMMENTED_DEFINITION",
-> 				    "$1 definition without comment\n" . $herecurr);
-> 			}
-> 		}
-> =====
-
-Hmm. I guess checkpatch is more stupid than I thought on this. Definitely
-fine to ignore that shortcoming of checkpatch.
-
-> 
-> >   
-> > > +
-> > > +	struct iio_trigger *new_data_trig;
-> > > +	struct regulator *vdd;
-> > > +};
-> > >  
+> > Actually, this comment was introduced in the early MSA311 driver
+> > versions, when I have made buffer setup only if HW irq is enabled. In
+> > the newest versions buffer is setup unconditionally, because buffer mode
+> > can be used based on hrtimer software trigger.
 > > 
-> >   
-> > > +static irqreturn_t msa311_irq_thread(int irq, void *p)
-> > > +{
-> > > +	struct msa311_priv *msa311 = iio_priv(p);
-> > > +	unsigned int new_data_int_enabled;
-> > > +	struct device *dev = msa311->dev;
-> > > +	int err;
-> > > +
-> > > +	mutex_lock(&msa311->lock);  
-> >   
-> > > +
-> > > +	/*
-> > > +	 * We do not check NEW_DATA int status, because of based on
-> > > +	 * specification it's cleared automatically after a fixed time.
-> > > +	 * So just check that is enabled by driver logic.  
-> > 
-> > That is going to be very problematic if we can have this and events coming
-> > through the same interrupt pin.  Not harmful for now though given you are
-> > only supporting NEW_DATA for now.  Just something to watch out for.
+> > Jonathan, why we shouldn't delete INDIO_DIRECT_MODE initialization if
+> > after couple of lines we always setup buffer mode?
 > >   
 > 
-> Actually, I have run some experiments with NEW_DATA status bits. And
-> looks like we can't determince actual status of NEW_DATA virtual
-> interrupt when physical IRQ is raised. I will back to this problem when
-> begin Motion Events feature implementation.
+> The buffered mode setup does
+> modes |= INDIO_BUFFER_TRIGGERED;
+> https://elixir.bootlin.com/linux/latest/source/drivers/iio/buffer/industrialio-triggered-buffer.c#L71
 > 
-> [...]
+> Direct mode indicates that it is possible to read the channels without
+> using any of the triggered modes (there are devices - though rare - where
+> it is not set as they are only accessible through FIFOs for example).
 > 
-> > > +	err = devm_pm_runtime_enable(dev);
-> > > +	if (err)
-> > > +		return err;
-> > > +
-> > > +	pm_runtime_get_noresume(dev);
-> > > +	pm_runtime_set_autosuspend_delay(dev, MSA311_PWR_SLEEP_DELAY_MS);
-> > > +	pm_runtime_use_autosuspend(dev);
-> > > +
-> > > +	err = msa311_chip_init(msa311);
-> > > +	if (err)
-> > > +		return err;
-> > > +
-> > > +	indio_dev->modes = 0; /* setup buffered mode later */  
-> > 
-> > As per other branch, I led you astray here it seems.
-> >   
-> 
-> Sorry, I've made a mistake. Comment about INDIO_DIRECT_MODE was left
-> by Andy here:
-> 
-> https://lore.kernel.org/linux-iio/CAHp75Vc0+ckNnm2tzLMPrjeFRjwoj3zy0C4koNShFRG3kP8b6w@mail.gmail.com/
-> 
-> [...]
+> We don't make much use of IIO_DIRECT_MODE today (though we did until fairly
+> recently).  It could be replaced with a specific check on provision of
+> raw / processed channels I guess - but I'm not that keen to see it go without
+> thinking hard about whether we should be using that flag to catch misconfiguration
+> in some cases.  So I'd rather postpone any changes in that for now.
 
-No problem. That's an odd historical corner case.   I liked having
-clear values for 'currentmode' (now in iio_opaque) and those matching
-the bits set in available modes.  So even if we didn't set it we'd end up
-with a reserved bit which would add extra confusion.
+I remembered a bit more about this.  INDIO_DIRECT_MODE is used internally
+in the state machine for currentmode (now moved to the opaque structure but
+accessible via appropriate function). It's there to provide an explicit
+state rather than 0 which would be not in a particular state (that I don't
+like).  We'd have a somewhat odd (though possible) disconnect if we didn't
+have the state in the ->modes bitmask.  (We could reserve the first bit
+for example). However I'm still not keen in cleaning it up further.
 
-The direct mode is currently just used as a placeholder for 'not a buffered mode',
-rather than the state variable has never been set.
+Either way, we'd still need the various mode setting functions to carry only
+doing |= as the driver is permitted to support multiple buffered modes
+(unusual, but there are a few drivers doing so IIRC).
 
-Jonathan
-
+J
 > 
+> Jonathan
 

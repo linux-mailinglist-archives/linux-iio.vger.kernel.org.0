@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92CA591C7B
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 22:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C62E591C7E
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 22:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237727AbiHMUAE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Aug 2022 16:00:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
+        id S239501AbiHMUAp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Aug 2022 16:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236391AbiHMUAD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 16:00:03 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 162AA13CD0
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 13:00:02 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id kb8so7293359ejc.4
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 13:00:02 -0700 (PDT)
+        with ESMTP id S235596AbiHMUAo (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 16:00:44 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 182A313CFA
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 13:00:43 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id t5so5033096edc.11
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 13:00:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=SqEK3dSOL0OGEhaO3b0fErkGK/VagcMr1SpmxVH4cXk=;
-        b=ed2CnEFSDsafYfCoEs0urH2W3kw1Q8GXaSIt46m5U4f07agYes+gkKpVFexkMY52+u
-         btR2GK6n/aTgPUQk48FE7N0562Xzacv4PegAsz5pqK/Ghbj2bHNtKcd9Bk4FBhMWfT0Q
-         M9v0VWu31bvzyoltKEwtAhd1nGlxvE4nj/cgAXEFevE1yQF2lUHuoEDan4n6OQUAZvtx
-         VG24AUpqxzLmvOpt3Gxyf3erNKh+JkBXkIsgGvPbikekWEqX+vPnL1BrW6I6wXXS6FYp
-         y76DQ82oH6hN/lE0rarbMALPlEoSlVPzM44sXTTLWs8p9+yut/ey7Ka7QsClH4xN3VB4
-         gPGA==
+        bh=EM9tI5o7cu4wiEq6j04Cmkui79kRpVPDeO3r11cZxe8=;
+        b=sqniazV4HfGYr6Y5lGr2w+nYv0ovRj9lWzyMN64iOs9Wa7m3iMZDUV3sS75x9OClGZ
+         14HtY+kNYJIOLVkgcundqpwuv6VfKfvHqNn87AokRB/xnROLzdbOvrR1b7hDEgu2cVkb
+         2KOlRSfbd7dqK+HKObEyYmpzum2lPGGwJSgbQwUy/jx9Wl53DX8Nt4ffjGq+QOaSruNL
+         6sL0Nfk3bkkHpYEnr6g/Qxc/9Z+BFYzR05FQb1ZWoKmBU0fX5kr85haaGGob29g++1sb
+         SaAGndii+xVTXNoy21M9zs44NQPsLPnsTAJ82HDoPRbyWDYoKIqzG27oOGmvIB0wdKnt
+         Rniw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=SqEK3dSOL0OGEhaO3b0fErkGK/VagcMr1SpmxVH4cXk=;
-        b=Zv/gljKD9Ex0FVarz6WQW0O3BGcQNHAAaqIORAELOOw68CtOmf9JY2IdF5QC21S59a
-         Vn7J3sFErYWpNAv1O9D8wFR6ZGaUQliTxgoD0cwMCJFexkVq3yLzg1yFSqiy7O7fQmNZ
-         g8l/H7wqNofm/tBVDc2FRyi55CksSETIlzcwFR5lcg13W6qvz8CKV5EQe4jbiWy8Gqvw
-         DliJkQJPoWt6Z2whdbAqL8BWk6dxwNBQFsIimVQEdxx6uTLwKZAfXNCkkY1SAU/4fIyA
-         e2nphZGgFXzq8iHRGdMnvWNe6W9WR+jAPQYNkQtwSrrG9aO6k4/xahycdIyY5ZR8odBt
-         i1uw==
-X-Gm-Message-State: ACgBeo39gYGbCvhB8FcSOVgTIEHIMjyK7xc4tD523u8mwDdWg1NtS2Pe
-        BfNxjsL3nL9JdRddspYkmCgpllUFwikKGMK4hbdGCw==
-X-Google-Smtp-Source: AA6agR6ULIPx7Wq+VpWSTgoMR+Bq3GuaHe93aIu9VStvYfUxhfa3vVhwgsXQwaLQ2w4h9oZAVB/5AryDlgbH0fxkaHQ=
-X-Received: by 2002:a17:907:6d98:b0:731:2bb3:8e17 with SMTP id
- sb24-20020a1709076d9800b007312bb38e17mr6256678ejc.203.1660420800573; Sat, 13
- Aug 2022 13:00:00 -0700 (PDT)
+        bh=EM9tI5o7cu4wiEq6j04Cmkui79kRpVPDeO3r11cZxe8=;
+        b=NrQYCv54gyFaoBca7TQ1AsEGNMM8STTEy4pOy/DY2uiLmen+Lps99MsYo0GdIT19Ev
+         hGxXnkQraEBsR9OQa4vG7bhp2ayGJ4yZqXFv/ghFAfzCDUwz2fbtzGFOsPN5qmt4B4rw
+         DvQtYVxS+5yEFb3BkCpUM7Wwys3O/NiwDFeo+QCSh0AIznd/I6OJ1w823uZOmAyIS9dh
+         j2NP5574wFER+AL4FpZKxIIepTaAE6IQoDPo6tz0z03WIusjLM7BXeg7ALnCmJ3RpGXJ
+         d7OyqQXmAkw/ugv0ChA9yD6gGQnJMnr2FJlfWLLMJAhCh6SdCCQwMMxSagq8pXHRjoOo
+         tViQ==
+X-Gm-Message-State: ACgBeo0dtYCJzW0t1hZGCy9vHugqT6dJF35rN7hmMvmofNVUBjP+QKOn
+        UUZibJ0KRDtqohZjYeHEfuQUbnx5Cj6RfMgvM3/MDg==
+X-Google-Smtp-Source: AA6agR5xbJj3LSaTKcgbzrjTmuTwsd1hRBucjpSNxpitKDsathpH/EhPgeF0Iy6dS2vaO93Zx86YvqcnHdurVa2nWWA=
+X-Received: by 2002:a05:6402:4312:b0:43d:b9c0:65ee with SMTP id
+ m18-20020a056402431200b0043db9c065eemr8490816edc.205.1660420841724; Sat, 13
+ Aug 2022 13:00:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1660337264.git.jahau@rocketmail.com> <1a8bffdb7e807455620a73f2d61981e7f9aab8d5.1660337264.git.jahau@rocketmail.com>
-In-Reply-To: <1a8bffdb7e807455620a73f2d61981e7f9aab8d5.1660337264.git.jahau@rocketmail.com>
+References: <cover.1660337264.git.jahau@rocketmail.com> <4bd3f96262e0132b7f9720521a801da3c18abd95.1660337264.git.jahau@rocketmail.com>
+In-Reply-To: <4bd3f96262e0132b7f9720521a801da3c18abd95.1660337264.git.jahau@rocketmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 13 Aug 2022 21:59:49 +0200
-Message-ID: <CACRpkdaP9hH7LjJ_B2JvkgzmH_UZsW_oB2SYR4xqSp0LYgvBrg@mail.gmail.com>
-Subject: Re: [PATCH v6 12/14] iio: magnetometer: yas530: Add temperature
- calculation to "chip_info"
+Date:   Sat, 13 Aug 2022 22:00:30 +0200
+Message-ID: <CACRpkdbs-8GbDkrN3=QKvUrUd3Erm2JZtCqSC=W_5EsDMYr9dw@mail.gmail.com>
+Subject: Re: [PATCH v6 13/14] iio: magnetometer: yas530: Add function pointers
+ to "chip_info"
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -72,10 +72,15 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Sat, Aug 13, 2022 at 12:05 AM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> Add temperature calculation to the "chip_info" structure to ease the handling
-> of different YAS variants.
+> Add function pointers to the "chip_info" structure to ease the handling of
+> different YAS variants.
+>
+> In the function yas5xx_probe(), the function call for "measure_offsets" was
+> added as a conditional "if (ci->measure_offsets)". This is a preparatory step
+> for YAS537, as this variant doesn't need an offset measurement.
 >
 > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 

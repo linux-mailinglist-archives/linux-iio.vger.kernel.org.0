@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39BCA591C70
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 21:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E16591C72
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Aug 2022 21:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235437AbiHMT5j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 13 Aug 2022 15:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
+        id S237568AbiHMT6T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 13 Aug 2022 15:58:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbiHMT5i (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 15:57:38 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2E513CC4
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:57:37 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id i14so7266644ejg.6
-        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:57:37 -0700 (PDT)
+        with ESMTP id S229634AbiHMT6S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 13 Aug 2022 15:58:18 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E870F13CC7
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:17 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id kb8so7289450ejc.4
+        for <linux-iio@vger.kernel.org>; Sat, 13 Aug 2022 12:58:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=JGYHeKzOnPNjlc3OvvMKt2SLhpqG2CadqQbgqAwYLc8=;
-        b=cBu1gX955Ca5O0bgIBvDOeVQmOF+rnz03U2tY9avsgtMrBGu4SqEZOYSQN7zVxHoxp
-         zMYINRKP8R63yRW+WUQxe1bY/Ooy3Bw64feqNJ/2kk14MSeUuWOteO+y5r4dN+uzJTK4
-         LeoGB0XQM6xHxXKJE51Tz6/NwLY1vhbim6561V54zz9L6PqDmeE6wuCMWnbMkFLuA1bA
-         xJPd5CtB+WKYE27WuCUl6vxHmKetIfMF5TISbZRKrmdGsA9wV21lLAPyzPlB4dQaAKvc
-         wuP/zW6nWPfXhWAY7kjCeknHDRFiWXF45q5DKjlDVI+/rwSPOt0YBLz4wl8Yuq7rTKbt
-         2qSw==
+        bh=prDaPxbuhI2YkS3ImxvqrOYZkOiTsYLmxAEmCgtIlts=;
+        b=sLfwXyQmojly/syV1/M+nIbRRfI+bvzJqfp15h7L2rghxQrWmiCPufxl8HX5WjOkJv
+         ycW0hSQG6nqui8O5W7njuGHpg/+O0N3unv8qeb7vQxDThEfe3uYElyLhkWxeZ0/iIzLC
+         2TbZzbzsH6onix6hw/OnpGviccv0xGSISZ+kw2m7Fg+1m4F7pRt7yT7SBA6POkVCoR2D
+         QKQHi4aQT/rHGVMEC8o4P19mF1HpHUo51hC5PE01P7lBQhyLm/86j9r1C8dUEwIORS97
+         y0pxW/NZXAQkI10j0y6sK16vBGseD+JzvHXpBb/X6uLxX4LtMZMpCGr+MYT1Bn8jF4Hu
+         rHfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=JGYHeKzOnPNjlc3OvvMKt2SLhpqG2CadqQbgqAwYLc8=;
-        b=7Ja3eMBc1QzQRxqCVYc7PlZr3wxewP5o+P/0CdMDz9voVY4H8n8DLglpUgViK31sV9
-         /ei2MLQYZESbsUEE7P+XpP+QtLVRnpLraxVAwblIMUwbuzuW992oo/kUwjh07+qZpoYm
-         EkQLMCGo+PbnmD51f/Ek/J3NXVjdE0B9B7K+LMAWqlTCBMR4wefFEDB2NMGZPnA16ach
-         HVmmZqfQ45gajgkP+81BZLuweG+hTAhtIcvoZmLHaDcZnInkc4bswASDO+3yUKAPmuLN
-         TDka2io2qa817r/SS1kUYrjtnBzDZ7+k59RV3/AcEscts1fT7pWJCEbwatDTuPoLySdM
-         Y6Og==
-X-Gm-Message-State: ACgBeo2nX7nz2X6hhhhxtCChJALZ1zRMT0+E6VCJgjJxmTVTpl3D0rrE
-        WxR8hgVCKcPUvPiHf+CzT/4YJL4uwnLbiPzifV/VQQ==
-X-Google-Smtp-Source: AA6agR6byjWAkLF7RgcR8NnyDLpre6XNFIhaJVHwkXh8pa1vGfcsOAPQBNsnrWL7KbaJndQU0ecWXrunsUrX1jcv9Ag=
-X-Received: by 2002:a17:906:5a71:b0:730:aaa1:a9ec with SMTP id
- my49-20020a1709065a7100b00730aaa1a9ecmr6168817ejc.440.1660420656213; Sat, 13
- Aug 2022 12:57:36 -0700 (PDT)
+        bh=prDaPxbuhI2YkS3ImxvqrOYZkOiTsYLmxAEmCgtIlts=;
+        b=6VX+DDw/ez4ByPkw1rm4uLvgR+y2B6zY8pGpNJFOofNvktwzrp9Ms96zTWoSyt+wOp
+         5lppIhgP9eQDru/5lVSnfRc6miH7yQ5ozHPxCZeZdP5hxwwuNBUTrkfBIYvjdO9vq5bj
+         +OHRbSTJldddzU4HNzO9iXYgGN83adt/TIsv1sWww2zHPtaxsAeQSvPLFvZt/sp5n6VF
+         mXz/8Ph+ARcikINMX75q9/KN0X1frm0pWgYRNL44tMHLK6rLWdR/AIb5vbboxC7CwHdQ
+         VoVtIpOYTXGMU6yNNITTnCNnHQ6Nr9LhDql/tmFcjYVN3J2y7yMrXcb/gMCywvXNws59
+         O1wQ==
+X-Gm-Message-State: ACgBeo025vWXsTH/wkAn5A897hPGDyQnwEUQnBlP9fn0hcGtQWOAq1jV
+        LggI2i0Wu0fMUtftKsrrCf9mRuOX6mrBvUPSWrPQMQ==
+X-Google-Smtp-Source: AA6agR6IfXdCivSE5cewvCGmPnQIwg1jOepXajVT2A87FTuCTWHbrrpeT53Y4tfWF+it90w56+o77Ec5RRPGCJwQ7AE=
+X-Received: by 2002:a17:906:58c8:b0:6fe:91d5:18d2 with SMTP id
+ e8-20020a17090658c800b006fe91d518d2mr6312577ejs.190.1660420696554; Sat, 13
+ Aug 2022 12:58:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1660337264.git.jahau@rocketmail.com> <93b50c20adb1b2acb4cddb1ab25755070edd7c07.1660337264.git.jahau@rocketmail.com>
-In-Reply-To: <93b50c20adb1b2acb4cddb1ab25755070edd7c07.1660337264.git.jahau@rocketmail.com>
+References: <cover.1660337264.git.jahau@rocketmail.com> <57236545107286771d351b95091bf56815d3717d.1660337264.git.jahau@rocketmail.com>
+In-Reply-To: <57236545107286771d351b95091bf56815d3717d.1660337264.git.jahau@rocketmail.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 13 Aug 2022 21:57:25 +0200
-Message-ID: <CACRpkdZbbyiRBbdEGJAZwM7cWDWKaLLxyHV92j263cM6aQKwbw@mail.gmail.com>
-Subject: Re: [PATCH v6 07/14] iio: magnetometer: yas530: Move printk %*ph
- parameters out from stack
+Date:   Sat, 13 Aug 2022 21:58:05 +0200
+Message-ID: <CACRpkdZB_JLJcCNAop-bnRG85Nid8MpJDui=RDNaxbebZuD=Wg@mail.gmail.com>
+Subject: Re: [PATCH v6 09/14] iio: magnetometer: yas530: Introduce "chip_info" structure
 To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -70,17 +69,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 12, 2022 at 11:56 PM Jakob Hauser <jahau@rocketmail.com> wrote:
+On Fri, Aug 12, 2022 at 11:59 PM Jakob Hauser <jahau@rocketmail.com> wrote:
 
-> Use less stack by modifying %*ph parameters.
+> Introduce the "chip_info" structure approach for better variant handling.
 >
-> While at it, in the function yas530_get_calibration_data(), the debug dump was
-> extended to 16 elements as this is the size of the calibration data array of
-> YAS530.
+> The variant to be used is now chosen by the Device Tree (enum "chip_ids"),
+> not by the chip ID in the register. However, there is a check to make sure
+> they match (using integer "id_check").
 >
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 

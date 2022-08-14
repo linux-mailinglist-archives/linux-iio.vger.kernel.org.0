@@ -2,130 +2,198 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27CE1592030
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 956C5592033
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231902AbiHNOiE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 10:38:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54900 "EHLO
+        id S239814AbiHNOiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 10:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231892AbiHNOiD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:38:03 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B441581B;
-        Sun, 14 Aug 2022 07:38:01 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id bs25so6414387wrb.2;
-        Sun, 14 Aug 2022 07:38:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc;
-        bh=espo5Jw5sWu9O5noOsv3BtZvfu0CnVnvAhoBUKVmfr0=;
-        b=PJoPqZAYOVZ0/HM/DD7vPkhRRMoCL663palCKJjlwBO+bepesRU6eX6PEEsFslPnQE
-         7anhly6UjGx2p8Mt3BOAjipJ4BpJ4vnRxNp5OuV6tnDSMeP4lTo/wfznkRWd+5skeZYX
-         MglyrpMD6tbjzPSD2fxBiokrrneT3re5lJj4V11TrdFelL/GKcRF39z1zsEByxUvZjXD
-         IANWUEzy8l17KyMZlyyIgbeti1tSL+d6yz8UaBEHEkkWEHaSR8z+b5VCfBoD5YFbjtB2
-         fa0ytVBJaaC526pL4jzIc7oXTZnJ9yzHO8o1VXPbUWoWWc+rMRzSzw7W6Z/T5FSwLlZP
-         Q65w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc;
-        bh=espo5Jw5sWu9O5noOsv3BtZvfu0CnVnvAhoBUKVmfr0=;
-        b=QwqsGksw5d+AcS1pnLqG7dvmOXmBcjJH0gC3pfmRVpLrINYe2OLkDFCtpG6zv0DzBJ
-         YB4Sikb9rYIm9Gv3J+kdMxHb9+qxAvXXEVVKWUGGWV72f7/C57GR2a0TtGYSRnA+H6RA
-         g+EXuwbzGUC10UGPTD+RYqmdXhc7nBNrhTgU4ih79ybc2VZxJsiSGX56Vd4cfBpWyAN4
-         g302h7/tc20Gz0vD9xCoXZ5Own17JOv77du86EXKwdpxPWOCIbC4UXUuqSbWKf+lhN/T
-         y0joLqsrI/2bDrpsUVEQfnz7TFWYv8HnrxXqZKm6RLmWqQKH1vccQXHKiZ9ZgYXPPqC2
-         1WmQ==
-X-Gm-Message-State: ACgBeo1juV/IbVc+i3YTzN4kwoJTlyfFOpxJ3bKA+uAFjelVd0yQeTSc
-        T6M5XNZVaEiB+1n31uXKze8=
-X-Google-Smtp-Source: AA6agR7dxhtvBR7RZSWcvPn39LFFZm1dHGpaIpdtlSL3Uf1PD6Pa3ToS4qQCoim5h3SoH9xmqteo6A==
-X-Received: by 2002:a5d:64e9:0:b0:220:7dd7:63eb with SMTP id g9-20020a5d64e9000000b002207dd763ebmr6460123wri.590.1660487880069;
-        Sun, 14 Aug 2022 07:38:00 -0700 (PDT)
-Received: from [192.168.90.207] (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id h13-20020a5d430d000000b00224f605f39dsm3748037wrq.76.2022.08.14.07.37.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Aug 2022 07:37:59 -0700 (PDT)
-Message-ID: <53b0132936a98943fb4284c4f72e3f4e6faa402d.camel@gmail.com>
-Subject: Re: [PATCH v5 3/5] iio: pressure: bmp280: Add support for BMP380
- sensor family
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 14 Aug 2022 16:37:58 +0200
-In-Reply-To: <20220814151512.097c7779@jic23-huawei>
-References: <cover.1659872590.git.ang.iglesiasg@gmail.com>
-         <462251c4bca30b53f06307043ad52d859eb8d5c1.1659872590.git.ang.iglesiasg@gmail.com>
-         <20220814151512.097c7779@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.module_f35+14217+587aad52) 
+        with ESMTP id S239819AbiHNOiX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:38:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CC715823;
+        Sun, 14 Aug 2022 07:38:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AFCE3B80B43;
+        Sun, 14 Aug 2022 14:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C54C433D6;
+        Sun, 14 Aug 2022 14:38:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660487899;
+        bh=1R2kSsv8yxj/APAL46W0dsOZfWvi9UbUMoyn3yDzmdE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=pTluyPRKNy4j47RUrC6Foivinh94Npye4rXeja8ecySw8vPykANd8Lzd6bWjmLM0o
+         i4rztsSLv21ZV1EGPWCGLfdjVpRFVf98tlZmrQVkKnDG0dwVwceiGXJ3gS2sjx2fF1
+         VpSRVbkHUi3TywuxnbIp0YUSWHdZG4+HpxysqoQ8WADpu/Lmvr7YzM1lYqi9b/XHQ/
+         Q2F05pDdgaAtyCqnUpm9VoUIynl0uumS921RyJAY/rfEtKbcdYJWEQsp5w9lCjXURm
+         ynx3iouQAjxrb075t+XNXix24S83+EVbjj/Ou0aSciNxCdlXbu/OlysJRitcNqpGys
+         9N3O3+2rW0g/g==
+Date:   Sun, 14 Aug 2022 15:48:48 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     vilhelm.gray@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mranostay@ti.com
+Subject: Re: [PATCH v4 3/3] counter: capture-tiecap: capture driver support
+ for ECAP
+Message-ID: <20220814154848.24442d4c@jic23-huawei>
+In-Reply-To: <20220810140724.182389-4-jpanis@baylibre.com>
+References: <20220810140724.182389-1-jpanis@baylibre.com>
+        <20220810140724.182389-4-jpanis@baylibre.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2022-08-14 at 15:15 +0100, Jonathan Cameron wrote:
-> On Sun,  7 Aug 2022 13:55:52 +0200
-> Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
-> 
-> > Adds compatibility with the new generation of this sensor, the BMP380
-> > 
-> > Includes basic sensor initialization to do pressure and temp
-> > measurements and allows tuning oversampling settings for each channel.
-> > 
-> > The compensation algorithms are adapted from the device datasheet and
-> > the repository https://github.com/BoschSensortec/BMP3-Sensor-API
-> > 
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> 
-> One additional comment from me inline.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
-> >         }
-> > @@ -1124,6 +1471,13 @@ int bmp280_common_probe(struct device *dev,
-> >                 return -EINVAL;
-> >         }
-> >  
-> > +       /* BMP3xx requires soft-reset as part of initialization */
-> > +       if (chip_id == BMP380_CHIP_ID) {
-> 
-> I'd prefer this to be based on a flag in chip_info so that we can
-> trivially add it to future devices by just setting that flag for the
-> chip_info added for the new device.
+On Wed, 10 Aug 2022 16:07:24 +0200
+Julien Panis <jpanis@baylibre.com> wrote:
 
-How a new init or preinit callback? For now only BMP380 chip would use it, but I
-would like to get my hands on a BMP390 and the new BMP580 and extend the driver
-to support for them.
-
-> > +               ret = bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +       }
-> > +
-> >         ret = data->chip_info->chip_config(data);
-> >         if (ret < 0)
-> >                 return ret;
+> ECAP hardware on AM62x SoC supports capture feature. It can be used
+> to timestamp events (falling/rising edges) detected on signal input pin.
 > 
+> This commit adds capture driver support for ECAP hardware on AM62x SoC.
+> 
+> In the ECAP hardware, capture pin can also be configured to be in
+> PWM mode. Current implementation only supports capture operating mode.
+> Hardware also supports timebase sync between multiple instances, but
+> this driver supports simple independent capture functionality.
+> 
+> Signed-off-by: Julien Panis <jpanis@baylibre.com>
+> ---
+Hi Julien,
 
-Kind regards,
-Angel
+Been too long since I reviewed a counter driver, so I'll have
+to leave that side of things to William (or find a spare few days
+to remind myself of the details!)
+
+A few superficial things I notice below whilst taking a quick look.
+
+It might be worth adding a bit of description around what the
+result of the various runtime pm calls is (what's actually getting
+powered down?)
+
+Jonathan
+
+> +static int ecap_cnt_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct ecap_cnt_dev *ecap_dev;
+> +	struct counter_device *counter_dev;
+> +	void __iomem *mmio_base;
+> +	int ret;
+> +
+> +	counter_dev = devm_counter_alloc(dev, sizeof(*ecap_dev));
+> +	if (IS_ERR(counter_dev))
+> +		return PTR_ERR(counter_dev);
+> +
+> +	counter_dev->name = ECAP_DRV_NAME;
+> +	counter_dev->parent = dev;
+> +	counter_dev->ops = &ecap_cnt_ops;
+> +	counter_dev->signals = ecap_cnt_signals;
+> +	counter_dev->num_signals = ARRAY_SIZE(ecap_cnt_signals);
+> +	counter_dev->counts = ecap_cnt_counts;
+> +	counter_dev->num_counts = ARRAY_SIZE(ecap_cnt_counts);
+> +
+> +	ecap_dev = counter_priv(counter_dev);
+> +
+> +	ecap_dev->clk = devm_clk_get(dev, "fck");
+> +	if (IS_ERR(ecap_dev->clk))
+> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->clk), "failed to get clock\n");
+> +
+> +	ret = clk_prepare_enable(ecap_dev->clk);
+
+We now have dev_clk_get_enabled() in upstream - finally!
+Text book usecase for it here.
+
+> +	if (ret) {
+> +		dev_err(dev, "failed to enable clock\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(dev, ecap_cnt_clk_disable, ecap_dev->clk);
+> +	if (ret) {
+> +		dev_err(dev, "failed to add clock disable action\n");
+> +		return ret;
+> +	}
+> +
+> +	ecap_dev->clk_rate = clk_get_rate(ecap_dev->clk);
+> +	if (!ecap_dev->clk_rate) {
+> +		dev_err(dev, "failed to get clock rate\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	mmio_base = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(mmio_base))
+> +		return PTR_ERR(mmio_base);
+> +
+> +	ecap_dev->regmap = devm_regmap_init_mmio(dev, mmio_base, &ecap_cnt_regmap_config);
+> +	if (IS_ERR(ecap_dev->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->regmap), "failed to init regmap\n");
+> +
+> +	spin_lock_init(&ecap_dev->lock);
+> +
+> +	ret = platform_get_irq(pdev, 0);
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to get irq\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_request_irq(dev, ret, ecap_cnt_isr, 0, pdev->name, counter_dev);
+> +	if (ret) {
+> +		dev_err(dev, "failed to request irq\n");
+> +		return ret;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, counter_dev);
+> +	pm_runtime_enable(dev);
+> +
+> +	ecap_dev->enabled = 0;
+> +	ecap_cnt_capture_set_evmode(counter_dev, 0);
+> +
+> +	ret = devm_counter_add(dev, counter_dev);
+> +	if (ret) {
+> +		dev_err(dev, "failed to add counter\n");
+> +		pm_runtime_disable(dev);
+
+Unless there is a very good reason to mix devm and unmanaged
+code, it's best to not do so as it leads to much head scratching over
+whether there are race conditions.  Here I can't see a reason not
+to use devm_add_action_or_reset() to make the pm_runtime_disabled()
+into devm managed.
+
+Any setting of enabled occured after probe() was done so that's
+fine as unmanaged or you could register another devm_ callback
+if you prefer, but with a comment explaining the path to it needing
+to do anything.
+
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int ecap_cnt_remove(struct platform_device *pdev)
+> +{
+> +	struct counter_device *counter_dev = platform_get_drvdata(pdev);
+> +	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
+> +
+> +	if (ecap_dev->enabled)
+> +		ecap_cnt_capture_disable(counter_dev);
+> +
+> +	pm_runtime_disable(&pdev->dev);
+> +
+> +	return 0;
+> +}
+> +

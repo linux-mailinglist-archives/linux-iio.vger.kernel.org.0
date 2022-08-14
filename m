@@ -2,53 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E405925A3
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBED55925AA
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240258AbiHNQ4F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 12:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39916 "EHLO
+        id S241846AbiHNQ5Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 12:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242494AbiHNQzV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:55:21 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EBBB95A1;
-        Sun, 14 Aug 2022 09:43:49 -0700 (PDT)
+        with ESMTP id S241827AbiHNQ5B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:57:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403D11EC46;
+        Sun, 14 Aug 2022 09:46:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 49A53B80B79;
-        Sun, 14 Aug 2022 16:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938C1C433C1;
-        Sun, 14 Aug 2022 16:43:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF6E5603F6;
+        Sun, 14 Aug 2022 16:46:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0C2C433D6;
+        Sun, 14 Aug 2022 16:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660495421;
-        bh=w28eigQrYF9kqUXrPHiDGC54RLAzgkZZJ8ZUkhuRrDc=;
+        s=k20201202; t=1660495588;
+        bh=yyw6coq5uenQ2Z/EFRGEVGSSgqlo1xB9T6OhB8ulWI0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cko5FOh+GYBb9X32kNljB9YAmx7a2G1rWkTX1GYT5STm/8L0uzdqP1tThbHZ6WawQ
-         VIGjRPojcCITN76ZHRHy1HJW56ywLmQWsAm+ZBHpTKPx8DtAmnK3r6mcjD2rGFg5LM
-         PpGjJ5isZd7+5ggewIYeKoscNpH5rIn4nGLrRgq5kErlP3Vx8uw8TbktfS2J124XXH
-         npV5Xv3U6RT6uRazNV3qC2sjl1e6UQ7EEREB9xDw3nV+24c4k7qvWsvQvQ/0/OX7dg
-         AQ64Pp5or7XYABEI8h2O1z4S3PSN03dlJncyNHlBZCefYslSIbyLUgssz7HXkxlxCI
-         bJquOQSNo2xGA==
-Date:   Sun, 14 Aug 2022 17:54:10 +0100
+        b=n7vVb891z3+DuQcx4hnlX4aNALJLAaeRVMbG+VkIvLIIKeg9McY+1f7o9Z5b0ELr8
+         99woumZLIk41hUfOg6BLo1VP5+dqCGEDmgWoOFZ5e2Yqr3paMCwg1JKB+p7+Fpsi6U
+         QZgOTM2xoDeAXvr7bI4tv8I6z0NEKh3a24+MYnYdzSnrGVWwGkZg2d5fzaohEvSjpp
+         XsOa4owsGZuYsgcV2vMhw7c1w5QaoeSzGAfyG/r6UvU5WpwJCwSZaeNJ4iLoCi2Rk/
+         1NsI9NIBgklhFBaeQxLZWnViIscHRc+TQf+OnX7vEHf2EvcmAlOz0nX0P3Zec6AEas
+         VW6ymFlWyV0iA==
+Date:   Sun, 14 Aug 2022 17:56:56 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v6 00/14] Add support for magnetometer Yamaha YAS537
-Message-ID: <20220814175410.321a66bc@jic23-huawei>
-In-Reply-To: <cover.1660337264.git.jahau@rocketmail.com>
-References: <cover.1660337264.git.jahau.ref@rocketmail.com>
-        <cover.1660337264.git.jahau@rocketmail.com>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/5] iio: pressure: bmp280: Add support for BMP380
+ sensor family
+Message-ID: <20220814175656.1d09f897@jic23-huawei>
+In-Reply-To: <53b0132936a98943fb4284c4f72e3f4e6faa402d.camel@gmail.com>
+References: <cover.1659872590.git.ang.iglesiasg@gmail.com>
+        <462251c4bca30b53f06307043ad52d859eb8d5c1.1659872590.git.ang.iglesiasg@gmail.com>
+        <20220814151512.097c7779@jic23-huawei>
+        <53b0132936a98943fb4284c4f72e3f4e6faa402d.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -59,27 +64,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 12 Aug 2022 23:54:05 +0200
-Jakob Hauser <jahau@rocketmail.com> wrote:
+On Sun, 14 Aug 2022 16:37:58 +0200
+Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> This patchset adds YAS537 variant to the already existing driver for
-> Yamaha YAS magnetometers.
-> 
-> Patch 1 is a fix on the current driver.
-> Patches 2-13 are cleanups and refactoring.
-> Patch 14 finally adds the YAS537 variant.
+> On Sun, 2022-08-14 at 15:15 +0100, Jonathan Cameron wrote:
+> > On Sun,=C2=A0 7 Aug 2022 13:55:52 +0200
+> > Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+> >  =20
+> > > Adds compatibility with the new generation of this sensor, the BMP380
+> > >=20
+> > > Includes basic sensor initialization to do pressure and temp
+> > > measurements and allows tuning oversampling settings for each channel.
+> > >=20
+> > > The compensation algorithms are adapted from the device datasheet and
+> > > the repository https://github.com/BoschSensortec/BMP3-Sensor-API
+> > >=20
+> > > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com> =20
+> >=20
+> > One additional comment from me inline.
+> >=20
+> > Thanks,
+> >=20
+> > Jonathan
+> >=20
+> >  =20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > @@ -1124,6 +1471,13 @@ int bmp280_common_probe(struct device *dev,
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return -EINVAL;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > =C2=A0
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* BMP3xx requires soft-re=
+set as part of initialization */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (chip_id =3D=3D BMP380_=
+CHIP_ID) { =20
+> >=20
+> > I'd prefer this to be based on a flag in chip_info so that we can
+> > trivially add it to future devices by just setting that flag for the
+> > chip_info added for the new device. =20
+>=20
+> How a new init or preinit callback? For now only BMP380 chip would use it=
+, but I
+> would like to get my hands on a BMP390 and the new BMP580 and extend the =
+driver
+> to support for them.
 
-Series applied.  That build bot issue on v5 took me rather by surprise.
-Good to see the resolution looks pretty nice.
-
-I've applied this to what will become the togreg branch after rc1 is out
-and I can rebase. In the meantime pushed out as testing so the build bots
-are forced to take another look at it on top of my current tree.
-
-Thanks to all who have been reviewing this one and to Jakob for persisting.
-Unless anyone spots anything critical, let us do as Andy suggested and
-carry out any further tweaks as follow on patches.
-
-Thanks,
+Hmm. Good point, I'd failed to noticed the register is bmp380 specific curr=
+ently.
+Maybe one to leave for a future refactor if you get those newer parts.
 
 Jonathan
+
+>=20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0ret =3D bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0if (ret < 0)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret=
+urn ret;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > > +
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D data->chip_in=
+fo->chip_config(data);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret < 0)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret; =20
+> >  =20
+>=20
+> Kind regards,
+> Angel
+

@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 698085925B4
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 19:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 757C45925BB
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 19:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231990AbiHNRCv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 13:02:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44742 "EHLO
+        id S234174AbiHNREt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 13:04:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241053AbiHNRCd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 13:02:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B81A14096;
-        Sun, 14 Aug 2022 10:01:44 -0700 (PDT)
+        with ESMTP id S239828AbiHNREs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 13:04:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19585D50;
+        Sun, 14 Aug 2022 10:04:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2490C60CF2;
-        Sun, 14 Aug 2022 17:01:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD68C433D6;
-        Sun, 14 Aug 2022 17:01:41 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C5FFFB80B77;
+        Sun, 14 Aug 2022 17:04:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21287C433D6;
+        Sun, 14 Aug 2022 17:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660496503;
-        bh=C+NBUIt/OAPZ5ok6KDEfnNIxE6j/hCtl+wI/5p8/VEQ=;
+        s=k20201202; t=1660496685;
+        bh=/P+/y5T7E/iO62tMmf7CSjIs1wmxXta+jEI1b6cyvLM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CaIBR7n0o2HWHt1nvGMDVMISp52uros2CkV0utEBBDCCtSFEUS51UaxBQgqSX3yIW
-         HVm5Um6vduPB3xRzdtFnFY4+QQE6Gl6UaJishPEYj0JmuEdosaZUWldiZEMtTXniQy
-         sNtYKrbak2aDxp+g6gcl1uozBgennkKyCrz9Zt+qPoed7E8yKDeGYN1/X2ub9fI8hR
-         dkMoG+C7q50ixHigMsmV0IpjVvj2uQaKsM5Ob9E35EUVI36J9Ce6itVxWFHoenEDrs
-         iQDC9SFaU5vLbKM1HV5/eNKxfmxDNLK/rFWqDcLv6eCP8YphaS8SgFA7XulyPn/Hi5
-         U0Yjho3XHxOkQ==
-Date:   Sun, 14 Aug 2022 18:12:12 +0100
+        b=EoVFyOMTO+26aIQf0hxmNlyexW4kLOOoZyrYQIS+9X6Pi0h3CKNEXi44xYAqKA4Gn
+         MVjR5PBtVU/zvv6kVMkXaigJfpmPnu2kFEN0UfBcvWuXuLHxHDaLsgTCgXd6yy6ZVg
+         aSOlRjnfPIXQDs4TvwxU15l6frXpIZwMXCvXnYJETxMOHf+/8Dkn2riFrATo888Rn6
+         9rOXZJg6hBxCCEvh2oSbVsmzBq6hSeokNmEYxFAFpgznSC6zOU95LPe5q6YNr3nRXK
+         oXiLqa96fn7NTa3GxGTffrhW/+LQUZ65VzW2diMUDE+QSEBonaJHndRMIOcVRtFtRT
+         z6u/v1sQWf9Sg==
+Date:   Sun, 14 Aug 2022 18:15:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: accel: bma400: Add support for single and
- double tap events
-Message-ID: <20220814181212.2171bd34@jic23-huawei>
-In-Reply-To: <20220813071803.4692-3-jagathjog1996@gmail.com>
-References: <20220813071803.4692-1-jagathjog1996@gmail.com>
-        <20220813071803.4692-3-jagathjog1996@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/1] iio: pressure: dlhl60d: Don't take garbage into
+ consideration when reading data
+Message-ID: <20220814181514.3fe1107c@jic23-huawei>
+In-Reply-To: <20220731133357.5705df25@jic23-huawei>
+References: <20220726142048.4494-1-andriy.shevchenko@linux.intel.com>
+        <20220731133357.5705df25@jic23-huawei>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,82 +57,52 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 13 Aug 2022 12:48:03 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
+On Sun, 31 Jul 2022 13:33:57 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Add support for single and double tap events based on the tap threshold
-> value, minimum quiet time before and after the tap and minimum time
-> between the taps in the double tap. The INT1 pin is used to interrupt
-> and the event is pushed to userspace.
+> On Tue, 26 Jul 2022 17:20:48 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> > Both pressure and temperature are 24-bit long. Use proper accessors
+> > instead of overlapping readings.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> Looks correct to me, but it made me scratch my head just enough that I'd
+> like Tomislav to take a look if possible.  So give me a poke if this
+> hasn't progressed in a few weeks time.
 
-Hi Jagath,
+Long enough.
 
-As, for this series, the difficult bit from review point of view is the ABI
-I've only taken a quick look at the implementation.  Basically looks fine to me,
-but one trivial thing below (and that might just be me failing to read a diff)
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-...
->  		ret = bma400_steps_event_enable(data, state);
-> @@ -1157,10 +1379,10 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
->  				   int *val, int *val2)
->  {
->  	struct bma400_data *data = iio_priv(indio_dev);
-> -	int ret, reg;
-> +	int ret, reg, reg_val, raw;
->  
-> -	switch (chan->type) {
-> -	case IIO_ACCEL:
+Thanks,
 
-We've lost the check on ACCEL I think.  Might be worth putting
-it back as
-	if (chan->type != ACCEL)
-		return -EINVAL;
+Jonathan
 
-> +	switch (type) {
-> +	case IIO_EV_TYPE_MAG:
->  		reg = get_gen_config_reg(dir);
->  		if (reg < 0)
->  			return -EINVAL;
-> @@ -1196,6 +1418,39 @@ static int bma400_read_event_value(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_EV_TYPE_GESTURE:
-> +		switch (info) {
-> +		case IIO_EV_INFO_VALUE:
-> +			ret = regmap_read(data->regmap, BMA400_TAP_CONFIG,
-> +					  &reg_val);
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = FIELD_GET(BMA400_TAP_SEN_MSK, reg_val);
-> +			return IIO_VAL_INT;
-> +		case IIO_EV_INFO_RESET_TIMEOUT:
-> +			ret = regmap_read(data->regmap, BMA400_TAP_CONFIG1,
-> +					  &reg_val);
-> +			if (ret)
-> +				return ret;
-> +
-> +			raw = FIELD_GET(BMA400_TAP_QUIET_MSK, reg_val);
-> +			*val = 0;
-> +			*val2 = tap_timeout[raw];
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		case IIO_EV_INFO_TAP_2MIN_DELAY:
-> +			ret = regmap_read(data->regmap, BMA400_TAP_CONFIG1,
-> +					  &reg_val);
-> +			if (ret)
-> +				return ret;
-> +
-> +			raw = FIELD_GET(BMA400_TAP_QUIETDT_MSK, reg_val);
-> +			*val = 0;
-> +			*val2 = doubletap_2min_delay[raw];
-> +			return IIO_VAL_INT_PLUS_MICRO;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
->  		return -EINVAL;
->  	}
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  drivers/iio/pressure/dlhl60d.c | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
+> > index 5f6bb3603a8b..f0b0d198c6d4 100644
+> > --- a/drivers/iio/pressure/dlhl60d.c
+> > +++ b/drivers/iio/pressure/dlhl60d.c
+> > @@ -129,9 +129,8 @@ static int dlh_read_direct(struct dlh_state *st,
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	*pressure = get_unaligned_be32(&st->rx_buf[1]) >> 8;
+> > -	*temperature = get_unaligned_be32(&st->rx_buf[3]) &
+> > -		GENMASK(DLH_NUM_TEMP_BITS - 1, 0);
+> > +	*pressure = get_unaligned_be24(&st->rx_buf[1]);
+> > +	*temperature = get_unaligned_be24(&st->rx_buf[4]);
+> >  
+> >  	return 0;
+> >  }  
+> 
 

@@ -2,54 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 757C45925BB
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 19:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 279DF5925E5
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 20:00:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234174AbiHNREt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 13:04:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51970 "EHLO
+        id S231761AbiHNSAd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 14:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239828AbiHNREs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 13:04:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19585D50;
-        Sun, 14 Aug 2022 10:04:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C5FFFB80B77;
-        Sun, 14 Aug 2022 17:04:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21287C433D6;
-        Sun, 14 Aug 2022 17:04:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660496685;
-        bh=/P+/y5T7E/iO62tMmf7CSjIs1wmxXta+jEI1b6cyvLM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EoVFyOMTO+26aIQf0hxmNlyexW4kLOOoZyrYQIS+9X6Pi0h3CKNEXi44xYAqKA4Gn
-         MVjR5PBtVU/zvv6kVMkXaigJfpmPnu2kFEN0UfBcvWuXuLHxHDaLsgTCgXd6yy6ZVg
-         aSOlRjnfPIXQDs4TvwxU15l6frXpIZwMXCvXnYJETxMOHf+/8Dkn2riFrATo888Rn6
-         9rOXZJg6hBxCCEvh2oSbVsmzBq6hSeokNmEYxFAFpgznSC6zOU95LPe5q6YNr3nRXK
-         oXiLqa96fn7NTa3GxGTffrhW/+LQUZ65VzW2diMUDE+QSEBonaJHndRMIOcVRtFtRT
-         z6u/v1sQWf9Sg==
-Date:   Sun, 14 Aug 2022 18:15:14 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/1] iio: pressure: dlhl60d: Don't take garbage into
- consideration when reading data
-Message-ID: <20220814181514.3fe1107c@jic23-huawei>
-In-Reply-To: <20220731133357.5705df25@jic23-huawei>
-References: <20220726142048.4494-1-andriy.shevchenko@linux.intel.com>
-        <20220731133357.5705df25@jic23-huawei>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S231414AbiHNSAc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 14:00:32 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F9A911C12
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 11:00:31 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id t11so4246327qkt.6
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 11:00:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=qbgoZeZmViWvFKGo3vDKiMkLriw1iy/wD7V+tnwIV3E=;
+        b=F0gsWapUFAmXsS70/FT2w7UJfE2rokB7ixzPGczQfI07TuC1fc2U11uuBywngI/3jB
+         AFUpGhI20FQluH0MY1YaEo2CgZhfbMKboyXTDOyq386fsex/ELLlbbMIlMgzfzZfI6Kv
+         gkeNk+TmY40Cx7Rg6AeYI43982jGwi3XT1hv2vUQkJxW6aaYQvC8qaYN6x2gaaT4aZI3
+         ngaaN09zSOcTOnodJvLUORhTCtK5d/IJyhBAVekcWSRmcusK8/96so880hWPSkv7h+Dj
+         gqhwX70G3VFnYgxom2F9wWfPBgvgoQhPYNEkRwgXNndPiFaMrXcTUhazcMMUYqzUx75g
+         c/bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=qbgoZeZmViWvFKGo3vDKiMkLriw1iy/wD7V+tnwIV3E=;
+        b=P+ZH6gSPw6e2Fl4LCgaJXtZ5pPnmel5UrVqnC1Ki24nDi85N1iW8IkiYFoZs8fv9F5
+         mPTYyJ5XqEvsyz8+vvTzaXUmJs6fPortp13z3D1kIBGQlDucghsTeoBa1dOFR8YIQXqZ
+         yQQQHY2goRclivOlNyiU2PUUaYJTSIXr6N4rKZQP3RadhioySJAylJHrQ1HcFX5pMjYp
+         wsoSgrf/Q2C2qyEwM6jWrOiFVfbLUHUjOaMGO29az81TUYByHw0e+txJ6HLWuOQ5lDMb
+         JY9e69heIPirlhp+zYL6imPgr/4pUwHUN1+Yb2k4E//kH5b9aPk+h5XwHzJbhVX2wv8V
+         senw==
+X-Gm-Message-State: ACgBeo3kkVJEa4g7bPXKlwjsxcDcSqtF3g9B+X6fMXNXM40DlDU+suGS
+        BoqxvRz8LUCAytEoQmyExKXZJA==
+X-Google-Smtp-Source: AA6agR6yLu/QXtwon8Xp97JiVrlbGGdQdxYfHlgqI4icqpn3WSS1oA2Q8E+Mb8lZGhB4SpB3uShoVw==
+X-Received: by 2002:a05:620a:288f:b0:6b6:4e6e:c68c with SMTP id j15-20020a05620a288f00b006b64e6ec68cmr8883748qkp.240.1660500028773;
+        Sun, 14 Aug 2022 11:00:28 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id s16-20020a05620a255000b006b5f06186aesm6672551qko.65.2022.08.14.11.00.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 14 Aug 2022 11:00:28 -0700 (PDT)
+Date:   Sun, 14 Aug 2022 14:00:26 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     robh+dt@kernel.org, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mranostay@ti.com
+Subject: Re: [PATCH v4 0/3] ECAP support on TI AM62x SoC
+Message-ID: <Yvk4OijjBj+Wa7fT@fedora>
+References: <20220810140724.182389-1-jpanis@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="T5liTN5OdHlrk5BP"
+Content-Disposition: inline
+In-Reply-To: <20220810140724.182389-1-jpanis@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,52 +72,149 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 31 Jul 2022 13:33:57 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Tue, 26 Jul 2022 17:20:48 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > Both pressure and temperature are 24-bit long. Use proper accessors
-> > instead of overlapping readings.
-> > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
-> Looks correct to me, but it made me scratch my head just enough that I'd
-> like Tomislav to take a look if possible.  So give me a poke if this
-> hasn't progressed in a few weeks time.
+--T5liTN5OdHlrk5BP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Long enough.
+On Wed, Aug 10, 2022 at 04:07:21PM +0200, Julien Panis wrote:
+> The Enhanced Capture (ECAP) module can be used to timestamp events
+> detected on signal input pin. It can be used for time measurements
+> of pulse train signals.
+>=20
+> ECAP module includes 4 timestamp capture registers. For all 4 sequenced
+> timestamp capture events (1->2->3->4->1->...), edge polarity (falling/ris=
+ing
+> edge) can be selected.
+>=20
+> This driver leverages counter subsystem to :
+> - select edge polarity for all 4 capture events (event mode)
+> - log timestamps for each capture event
+> Event polarity, and CAP1/2/3/4 timestamps give all the information
+> about the input pulse train. Further information can easily be computed :
+> period and/or duty cycle if frequency is constant, elapsed time between
+> pulses, etc...
+>=20
+> Modifications since v3:
+> 	- Migrate driver from IIO to Counter subsystem
+> 	- Minor modification in yaml ($id) to match Counter subsystem
+> 	- Add ABI documentation
+>=20
+> Userspace commands :
+> 	### SIGNAL ###
+> 	cd /sys/bus/counter/devices/counter0/signal0
+>=20
+> 	# Get available polarities for each capture event
+> 	cat polarity1_available
+> 	cat polarity2_available
+> 	cat polarity3_available
+> 	cat polarity4_available
+>=20
+> 	# Get polarity for each capture event
+> 	cat polarity1
+> 	cat polarity2
+> 	cat polarity3
+> 	cat polarity4
+>=20
+> 	# Set polarity for each capture event
+> 	echo rising > polarity1
+> 	echo falling > polarity2
+> 	echo rising > polarity3
+> 	echo falling > polarity4
+>=20
+> 	### COUNT ###
+> 	cd /sys/bus/counter/devices/counter0/count0
+>=20
+> 	# Run ECAP
+> 	echo 1 > enable
+>=20
+> 	# Get current timebase counter value
+> 	cat count
+>=20
+> 	# Get captured timestamps
+> 	cat capture1
+> 	cat capture2
+> 	cat capture3
+> 	cat capture4
+>=20
+> 	# Note that counter watches can also be used to get
+> 	# data from userspace application
+> 	# -> see tools/counter/counter_example.c
+>=20
+> 	# Stop ECAP
+> 	echo 0 > enable
+>=20
+> Julien Panis (3):
+>   dt-binding: counter: add ti,am62-ecap-capture.yaml
+>   Documentation: ABI: add sysfs-bus-counter-ecap
+>   counter: capture-tiecap: capture driver support for ECAP
+>=20
+>  .../ABI/testing/sysfs-bus-counter-ecap        |  64 ++
+>  .../counter/ti,am62-ecap-capture.yaml         |  61 ++
+>  drivers/counter/Kconfig                       |  14 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/capture-tiecap.c              | 634 ++++++++++++++++++
+>  include/uapi/linux/counter.h                  |   2 +
+>  6 files changed, 776 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-counter-ecap
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti,am62-eca=
+p-capture.yaml
+>  create mode 100644 drivers/counter/capture-tiecap.c
+>=20
+> --=20
+> 2.25.1
 
-Applied to the togreg branch of iio.git and pushed out as testing.
+Something that has become apparent to me is the code repetition in this
+driver in order to support the capture buffer. Buffers are common
+components in devices, so it'll be good for us to standardize some of
+what we're exploring here into an interface that other drivers can also
+use. We have two ABIs to consider: the driver interface and the sysfs
+interface.
 
-Thanks,
+For the sysfs interface, I think we'll have to expose each element
+individually (e.g. capture1, capture2, etc.) because sysfs attributes
+are suppose to expose only a single datum for any given attribute.
 
-Jonathan
+For the driver side, we might want to introduce a new Counter component
+type for buffers and respective macros to streamline some of the code
+for driver authors. For example, a new COUNTER_COMP_BUFFER_U64 enum
+counter_comp_type constant could be introduced to represent a u64 buffer
+element; respective struct counter_comp read callbacks could be
+introduced::
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/pressure/dlhl60d.c | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-> > index 5f6bb3603a8b..f0b0d198c6d4 100644
-> > --- a/drivers/iio/pressure/dlhl60d.c
-> > +++ b/drivers/iio/pressure/dlhl60d.c
-> > @@ -129,9 +129,8 @@ static int dlh_read_direct(struct dlh_state *st,
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	*pressure = get_unaligned_be32(&st->rx_buf[1]) >> 8;
-> > -	*temperature = get_unaligned_be32(&st->rx_buf[3]) &
-> > -		GENMASK(DLH_NUM_TEMP_BITS - 1, 0);
-> > +	*pressure = get_unaligned_be24(&st->rx_buf[1]);
-> > +	*temperature = get_unaligned_be24(&st->rx_buf[4]);
-> >  
-> >  	return 0;
-> >  }  
-> 
+    int (*count_buffer_u64_read)(struct counter_device *counter,
+                                 struct counter_count *count,
+				 size_t index, u64 *val);
 
+So a driver author can use the "index" parameter to locate the buffer
+element and pass back its value via the "val" parameter. To define the
+buffer, maybe helper macros like this could be introduced::
+
+    COUNTER_COMP_COUNT_BUFFER_U64("capture", ecap_cnt_cap_read, 4)
+
+This would define four u64 buffer elements each named prefixed with
+"capture" and with their read callbacks set to ecap_cnt_cap_read().
+
+One problem however is that I'm not sure if the C preprocessor would be
+able to unroll the COUNTER_COMP_COUNT_BUFFER_U64 to a dynamic number of
+elements based on a macro parameter (maybe there is a GCC extension).
+
+I'm just throwing out ideas, so I'd like to hear some comments and
+suggestions from others about how we should add buffer support to the
+Counter subsystem.
+
+William Breathitt Gray
+
+--T5liTN5OdHlrk5BP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYvk4OgAKCRC1SFbKvhIj
+K1puAQCKVF17W73GrxMBUVmEpZBsMchm0VgY1hKbIVPA69IlsQEAxjCytel3C7oB
+cPBVwjGnEm0sDNveEi6Tbs+QjkxUNgI=
+=X96e
+-----END PGP SIGNATURE-----
+
+--T5liTN5OdHlrk5BP--

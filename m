@@ -2,54 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102B1591FE1
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 15:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 829CE591FE5
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 15:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbiHNNd0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 09:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56846 "EHLO
+        id S231631AbiHNNmZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 09:42:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229379AbiHNNdZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 09:33:25 -0400
+        with ESMTP id S229379AbiHNNmY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 09:42:24 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 530581759E;
-        Sun, 14 Aug 2022 06:33:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 727FB193FD;
+        Sun, 14 Aug 2022 06:42:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 090FEB80AEE;
-        Sun, 14 Aug 2022 13:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFF0C433D6;
-        Sun, 14 Aug 2022 13:33:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 231B4B80AEF;
+        Sun, 14 Aug 2022 13:42:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB60C433D6;
+        Sun, 14 Aug 2022 13:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660484001;
-        bh=cXQdMAxMMUixvPWaJ3r9QcDJ3wViHH+mep8Gcae419Y=;
+        s=k20201202; t=1660484540;
+        bh=+xdN7oEY+9WqrPGLxQ2PsJ7z5Wp8A3zEOWd7PA8ZFJI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=P5o05DPbrLAsxKagWvkNIPOOjaTB4sPKlYcOwxc0NFeKQkvpb9UnCX/OXhaDklARp
-         Zfo7t2f0YA8AjIbdtOWhsJPMmPe6A1n19kOVlrUpTjdiFbK2SKv2MxBSy5zGakCYoa
-         9a1z62vZOIjInVMDp2qR1i/mzuY3tUZcTMhqmF2esDh8xojw9Wkz1UlMGGQiDG16WU
-         JzRLfJgi7xHj/jVLNYNpBepzYQrH2e9VDdv23S1T+YU3WURAYpkZ0r50r2DCpmYecH
-         aNkspgkQF+6NrkaEMyRWvrmWC18WymC32xd04YPnqX7lM60W/+c3EUVfd6hFqqVb8B
-         GzBl+6u3Oyt/A==
-Date:   Sun, 14 Aug 2022 14:43:50 +0100
+        b=mMHxT07i2boHESQ31CF3NEOyDRe/KKj/BDNLEKuHp+1Swp8j3/HHNyU8Bv7kVCQ+S
+         4hzBsjfZhVvaW+07zODSxiALgmPNQyEpvHAgma2IpNnBVRRiLW2aax9nFmpu4pZBVD
+         RFdbPKxYJNnZ9miIjCKNCySWd3ll91CuCZ7huorMtkiiPwA0q8j6M/Uu+8dTcPCZMM
+         C8rxGEqifYP0jo+qBhqxVIo1+Jmew7LHnV43U/kN27Nnze9kO1s7Ng5fKszVRUybsQ
+         dfSVCHfBSoaYes3qfNNk8vk3qCQCqwA6Q0mG8yiYywEWa1GIPfX4/SHaiTLhJDEi/C
+         kyxXkdWkIUdFA==
+Date:   Sun, 14 Aug 2022 14:52:49 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/5] iio: pressure: bmp280: simplify driver
- initialization logic
-Message-ID: <20220814144350.7d0282e6@jic23-huawei>
-In-Reply-To: <602f032955b56eb367177d1de7536f18ad94bc87.1659872590.git.ang.iglesiasg@gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 2/5] iio: pressure: bmp280: Fix alignment for DMA
+ safety
+Message-ID: <20220814145249.701f1261@jic23-huawei>
+In-Reply-To: <ba71ba74e9115bebce82a2afbd5d62a2e4ecf666.camel@gmail.com>
 References: <cover.1659872590.git.ang.iglesiasg@gmail.com>
-        <602f032955b56eb367177d1de7536f18ad94bc87.1659872590.git.ang.iglesiasg@gmail.com>
+        <49086f5c1401d7d28ebf921a67b49f8403ddb16a.1659872590.git.ang.iglesiasg@gmail.com>
+        <CAHp75Vfanb+tZe_D5_hPWn2BrOEkds9i7AZzD5Xc1M5a9GK6qg@mail.gmail.com>
+        <ba71ba74e9115bebce82a2afbd5d62a2e4ecf666.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,238 +63,160 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  7 Aug 2022 13:54:40 +0200
+On Fri, 12 Aug 2022 11:59:50 +0200
 Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> Simplified common initialization logic of different sensor types
-> unifying calibration and initial configuration recovery.
-> 
-> Default config param values of each sensor type are stored inside
-> chip_info structure and used to initialize sensor data struct instance.
-> 
-> The helper functions for read each sensor type calibration are converted
-> to a callback available on the chip_info struct.
-> 
-> Revised BMP180 and BMP280 definitions and code functions to use GENMASK
-> and FIELD_PREP/FIELD_GET utilities to homogenize structure with more
-> recent drivers, in preparation for the patches adding support for the
-> BMP380 sensors.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Hi Angel, not sure if I commented on this before, but this patch is doing
-several different things, so in the ideal case it would be split into
-1: FIELD_PREP/FIELD_GET/GENMASK changes. 
-2: Chipinfo related changes
-3: Maybe the the reordering of defintions of local variables that Andy
-   indirectly referered to.
+> On lun, 2022-08-08 at 10:53 +0200, Andy Shevchenko wrote:
+> > On Sun, Aug 7, 2022 at 1:56 PM Angel Iglesias <ang.iglesiasg@gmail.com>=
+ wrote: =20
+> > >=20
+> > > Adds DMA-safe buffers to driver data struct to store raw data from se=
+nsors
+> > >=20
+> > > The multiple buffers used thorough the driver share the same memory
+> > > allocated as part of the device data instance. The union containing
+> > > the buffers is aligned to allow safe usage with DMA operations, such
+> > > as regmap bulk read calls. =20
+> >=20
+> > ...
+> >  =20
+> > > =C2=A0#include <linux/completion.h>
+> > > =C2=A0#include <linux/pm_runtime.h>
+> > > =C2=A0#include <linux/random.h> =20
+> >=20
+> > + Blank line.
+> >  =20
+> > > +#include <asm/unaligned.h> =20
+> >=20
+> > ...
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 union {
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* sensor data buffer */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 u8 data[3];
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 /* calibration data buffers */
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 __le16 bmp280_cal[BMP280_CONTIGUOUS_CALIB_REGS / 2];
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 __be16 bmp180_cal[BMP180_REG_CALIB_COUNT / 2];
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } buf __aligned(IIO_DMA_MINALIG=
+N); =20
+> >=20
+> > Hmm... And which field in the struct defines which of the buffers is be=
+ing
+> > used? =20
 
-However, this is short enough to be fairly reviewable as it stands
-so from my point of view I'll accept leaving 1 and 2 combined if it is
-going to be a lot of work to separate them. Doesn't look like it will be hard
-but without trying I'm not totally sure!
+I think the answer to this is which callback is set in the chip_data struct=
+ure
+defines which one of the calibration buffers is in use for that purpose.
+The one used for everything else is defined by the code path, not an explic=
+it
+variable.
 
-One question inline on what the chip parameter to the calibration functions
-is there for as it appears unused.
+There might be some (I haven't looked) but lock protection is unnecessary as
+_cal buffers used before we register the device so there is no concurrency =
+yet.
+
+>=20
+> There's no concurrent use of the buffers. Calibration data is read during=
+ the
+> initialization of the sensor. The data buffer is then used to store the r=
+aw data
+> read from the measurement regs, and is also used a few times to read a th=
+e humid
+> calibration on BME280, but again, in a sequential, non concurrent manner.
+>=20
+> Regarding which calibration buffer is used, is the same situation as the
+> calibration data union, helper functions and callback for the sensor use =
+the
+> buffer reserved for the sensor. I don't know if this is the best approach=
+, I
+> just followed what I saw previously on this drivers and others from IIO
+> subsystem.
+>=20
+> > Also, do you need a non-anonymous union? =20
+>=20
+> No I could use an anonymous function. Should I change it to an anonymous =
+union?
+yes.  That seems a good idea.
+
+It's worth giving unions a name if you are using them such that you write v=
+ia
+one element and read via another (e.g. for type conversion) but where it's =
+really
+just a case of potential space saving like this, nice to use an anonymous u=
+nion
+and shorten all the lines accessing the elements.
+
+>=20
+> > > =C2=A0}; =20
+> >=20
+> > ...
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* parse temperature calibratio=
+n data */ =20
+> >=20
+> > Be consistent! Check all your patches for the consistency (comments,
+> > other code style, etc).
+> >=20
+> > ...
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 calib->H5 =3D sign_extend32(((g=
+et_unaligned_le16(data->buf.data) >> 4)
+> > > & 0xfff), 11); =20
+> >=20
+> > (It's not directly related to this change, but good to ask)
+> > Are you going to change all those masks to use GENMASK()? =20
+>=20
+> I thought I made sense refresh previous code on the driver to use GENMASK=
+() and
+> FIELD_PREP and FIELD_GET helpers to use the same standards on the BMP380
+> codepath. Having in mind other feedback you gave me on this iteration, th=
+is
+> GENMASK() and FIELD_PREP/FIELD_GET changes make more sense in a prerequis=
+ite
+> patch and not as part of patch 1.
+
+Agreed. I was thinking the same thing.  Pulling out that conversion as a pr=
+ecursor
+nop cleanup will make all the subsequent changes more readable. Great!
+
+>=20
+> > ...
+> >  =20
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct bmp180_calib *calib =3D =
+&data->calib.bmp180;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int i;
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct bmp180_calib *calib =3D =
+&data->calib.bmp180; =20
+> >=20
+> > Exactly my point given the previous patch, now you have a ping-pong
+> > style of changes: the introduced line in the series is being touched
+> > again in the very same series without any need. =20
+>=20
+> Yup, apologies. I'll be more careful
+
+I'm not particularly fussy about reverse xmas tree so wouldn't normally
+advocate a cleanup patch just to reorder local variable definitions.
+However, I think in this case it would be good to have such a precursor
+patch so as to make the ordering more logical for the additions made
+by the rest of the series.
 
 Thanks,
 
 Jonathan
 
+>=20
+> > ...
+> >  =20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u8 oss =3D data->oversampl=
+ing_press;
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int ret; =20
+> >=20
+> > Ditto.
+> >  =20
+>=20
 
-> ---
->  drivers/iio/pressure/bmp280-core.c | 120 ++++++++++++++++++-----------
->  drivers/iio/pressure/bmp280.h      |  73 +++++++++---------
->  2 files changed, 113 insertions(+), 80 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index fe7aa81e7cc9..a109c2609896 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -16,6 +16,8 @@
->  
->  #define pr_fmt(fmt) "bmp280: " fmt
->  
-> +#include <linux/bitops.h>
-> +#include <linux/bitfield.h>
->  #include <linux/device.h>
->  #include <linux/module.h>
->  #include <linux/regmap.h>
-> @@ -107,19 +109,28 @@ struct bmp280_data {
->  };
->  
->  struct bmp280_chip_info {
-> +	unsigned int id_reg;
-> +
-> +	int num_channels;
-> +	unsigned int start_up_time;
-> +
->  	const int *oversampling_temp_avail;
->  	int num_oversampling_temp_avail;
-> +	int oversampling_temp_default;
->  
->  	const int *oversampling_press_avail;
->  	int num_oversampling_press_avail;
-> +	int oversampling_press_default;
->  
->  	const int *oversampling_humid_avail;
->  	int num_oversampling_humid_avail;
-> +	int oversampling_humid_default;
->  
->  	int (*chip_config)(struct bmp280_data *);
->  	int (*read_temp)(struct bmp280_data *, int *);
->  	int (*read_press)(struct bmp280_data *, int *, int *);
->  	int (*read_humid)(struct bmp280_data *, int *, int *);
-> +	int (*read_calib)(struct bmp280_data *, unsigned int);
->  };
->  
->  /*
-> @@ -147,15 +158,14 @@ static const struct iio_chan_spec bmp280_channels[] = {
->  	},
->  };
->  
-> -static int bmp280_read_calib(struct bmp280_data *data,
-> -			     struct bmp280_calib *calib,
-> -			     unsigned int chip)
-> +static int bmp280_read_calib(struct bmp280_data *data, unsigned int chip)
->  {
->  	int ret;
->  	unsigned int tmp;
->  	__le16 l16;
->  	__be16 b16;
->  	struct device *dev = data->dev;
-> +	struct bmp280_calib *calib = &data->calib.bmp280;
->  	__le16 t_buf[BMP280_COMP_TEMP_REG_COUNT / 2];
->  	__le16 p_buf[BMP280_COMP_PRESS_REG_COUNT / 2];
->  
-> @@ -611,8 +621,8 @@ static const struct iio_info bmp280_info = {
->  static int bmp280_chip_config(struct bmp280_data *data)
->  {
->  	int ret;
-> -	u8 osrs = BMP280_OSRS_TEMP_X(data->oversampling_temp + 1) |
-> -		  BMP280_OSRS_PRESS_X(data->oversampling_press + 1);
-> +	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-> +		  FIELD_PREP(BMP280_OSRS_PRESS_MASK, data->oversampling_press + 1);
->  
->  	ret = regmap_write_bits(data->regmap, BMP280_REG_CTRL_MEAS,
->  				 BMP280_OSRS_TEMP_MASK |
-> @@ -640,21 +650,38 @@ static int bmp280_chip_config(struct bmp280_data *data)
->  static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
->  
->  static const struct bmp280_chip_info bmp280_chip_info = {
-> +	.id_reg = BMP280_REG_ID,
-> +	.start_up_time = 2000,
-> +	.num_channels = 2,
-> +
->  	.oversampling_temp_avail = bmp280_oversampling_avail,
->  	.num_oversampling_temp_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-> +	/*
-> +	 * Oversampling config values on BMx280 have one additional setting
-> +	 * that other generations of the family don't:
-> +	 * The value 0 means the measurement is bypassed instead of
-> +	 * oversampling set to x1.
-> +	 *
-> +	 * To account for this difference, and preserve the same common
-> +	 * config logic, this is handled later on chip_config callback
-> +	 * incrementing one unit the oversampling setting.
-> +	 */
-> +	.oversampling_temp_default = BMP280_OSRS_TEMP_2X - 1,
->  
->  	.oversampling_press_avail = bmp280_oversampling_avail,
->  	.num_oversampling_press_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-> +	.oversampling_press_default = BMP280_OSRS_PRESS_16X - 1,
->  
->  	.chip_config = bmp280_chip_config,
->  	.read_temp = bmp280_read_temp,
->  	.read_press = bmp280_read_press,
-> +	.read_calib = bmp280_read_calib,
->  };
->  
->  static int bme280_chip_config(struct bmp280_data *data)
->  {
->  	int ret;
-> -	u8 osrs = BMP280_OSRS_HUMIDITIY_X(data->oversampling_humid + 1);
-> +	u8 osrs = FIELD_PREP(BMP280_OSRS_HUMIDITY_MASK, data->oversampling_humid + 1);
->  
->  	/*
->  	 * Oversampling of humidity must be set before oversampling of
-> @@ -670,19 +697,27 @@ static int bme280_chip_config(struct bmp280_data *data)
->  }
->  
->  static const struct bmp280_chip_info bme280_chip_info = {
-> +	.id_reg = BMP280_REG_ID,
-> +	.start_up_time = 2000,
-> +	.num_channels = 3,
-> +
->  	.oversampling_temp_avail = bmp280_oversampling_avail,
->  	.num_oversampling_temp_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-> +	.oversampling_temp_default = BMP280_OSRS_TEMP_2X - 1,
->  
->  	.oversampling_press_avail = bmp280_oversampling_avail,
->  	.num_oversampling_press_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-> +	.oversampling_press_default = BMP280_OSRS_PRESS_16X - 1,
->  
->  	.oversampling_humid_avail = bmp280_oversampling_avail,
->  	.num_oversampling_humid_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-> +	.oversampling_humid_default = BMP280_OSRS_HUMIDITY_16X - 1,
->  
->  	.chip_config = bme280_chip_config,
->  	.read_temp = bmp280_read_temp,
->  	.read_press = bmp280_read_press,
->  	.read_humid = bmp280_read_humid,
-> +	.read_calib = bmp280_read_calib,
->  };
->  
->  static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
-> @@ -710,7 +745,7 @@ static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
->  		if (!ret)
->  			dev_err(data->dev, "timeout waiting for completion\n");
->  	} else {
-> -		if (ctrl_meas == BMP180_MEAS_TEMP)
-> +		if (FIELD_GET(BMP180_MEAS_CTRL_MASK, ctrl_meas) == BMP180_MEAS_TEMP)
->  			delay_us = 4500;
->  		else
->  			delay_us =
-> @@ -735,7 +770,9 @@ static int bmp180_read_adc_temp(struct bmp280_data *data, int *val)
->  	__be16 tmp;
->  	int ret;
->  
-> -	ret = bmp180_measure(data, BMP180_MEAS_TEMP);
-> +	ret = bmp180_measure(data,
-> +			     FIELD_PREP(BMP180_MEAS_CTRL_MASK, BMP180_MEAS_TEMP) |
-> +			     BMP180_MEAS_SCO);
->  	if (ret)
->  		return ret;
->  
-> @@ -748,11 +785,11 @@ static int bmp180_read_adc_temp(struct bmp280_data *data, int *val)
->  	return 0;
->  }
->  
-> -static int bmp180_read_calib(struct bmp280_data *data,
-> -			     struct bmp180_calib *calib)
-> +static int bmp180_read_calib(struct bmp280_data *data, unsigned int chip)
-
-What is chip used for?  If there will be a need for it in later patches, then
-it's fine to add the additional parameter now but please say why in the patch
-description.
-
-
->  {
->  	int ret;
->  	int i;
-> +	struct bmp180_calib *calib = &data->calib.bmp180;
->  	__be16 buf[BMP180_REG_CALIB_COUNT / 2];
->  
->  	ret = regmap_bulk_read(data->regmap, BMP180_REG_CALIB_START, buf,
-> @@ -832,7 +869,10 @@ static int bmp180_read_adc_press(struct bmp280_data *data, int *val)
->  	__be32 tmp = 0;
->  	u8 oss = data->oversampling_press;
->  
-> -	ret = bmp180_measure(data, BMP180_MEAS_PRESS_X(oss));
-> +	ret = bmp180_measure(data,
-> +			     FIELD_PREP(BMP180_MEAS_CTRL_MASK, BMP180_MEAS_PRESS) |
-> +			     FIELD_PREP(BMP180_OSRS_PRESS_MASK, oss) |
-> +			     BMP180_MEAS_SCO);
->  	if (ret)
->  		return ret;
->  

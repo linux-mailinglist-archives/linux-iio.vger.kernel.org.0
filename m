@@ -2,75 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 098DB592615
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 21:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C678B592619
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 21:10:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229806AbiHNTFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 15:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40076 "EHLO
+        id S234623AbiHNTKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 15:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbiHNTFX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 15:05:23 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E01D1E3F7
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:05:12 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id cb8so4289974qtb.0
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:05:12 -0700 (PDT)
+        with ESMTP id S231390AbiHNTKT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 15:10:19 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53083CD2
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:10:18 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id v27so4312050qkj.8
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=BFAW2MwLVeguePUNy9UjAn731Itve3yGXDuc563clIQ=;
-        b=V+Qy5z48YBeKoJ95QQTf+2ljLdtU6JSW3oI9Y9bwifI9MzGqZygy/QxMUgIuv94SSC
-         Zi+1dU4e3AbF9Nwfr5vWg0vqaO4uNfqWT5PqdMfHLK2UoCMyY7FdXDYq7RlXYQHgFoWF
-         CY5A4FSlZxb34oBUI7ohnW2MM9OW0DQcjT/RR06yH2YgLDtkNy5O6pj83pye6uOQctO5
-         6ullCzjM1OXmc6VIC4OfYALVQ/rSB7WJFF+guAOFgDgo8rpBaiO8GcKkpz5ojegPF7CT
-         4q81TfodhB0FL6HJVu0nIEFztwKkGmLbmM3lDAxe/NZXY/fNSL+CbNIjE15+Ke+xS3OQ
-         LBOg==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=jAEysnNYmeCbaDAdFtRYNDgpiBvQ4/SysADkVoFqV/A=;
+        b=hLAk6fDA99ApWAKQx7KCyNzF5BQD7sviOJaZfGD1gwTVdBei7IUywfNHj6wlYYwtfg
+         SyA7KIMRdURuqA4RzCVVwW/rHvTsiXQNCJGcGCICT+GM5qsjkfxwrpho9RUJ0HoiaRIP
+         ZQB9c9uqOeIVwt7KBwB6DU4YO4vy+jgCU6WnIL+mpfC1YWsXxYt/+R6iJuvv4VDVF9sj
+         e1ftR1M/UcwZjodnhTygP5kP1XqgqIL24QyEEI9AcRo1xdLVHXthfheoeG5dvOQ/1QZG
+         cPwqPVBLpHoUgP/4GUu4RaGO66vZTWLZ0Q+0J8JKVxx//CRWm1GKEZwmiEGqPU7vQAYV
+         dHNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=BFAW2MwLVeguePUNy9UjAn731Itve3yGXDuc563clIQ=;
-        b=IgiExG1hhncGpmTQnnyngKqRnG9wgiNPGlAF73K9l8jNT1yX2AC7+2xwnjEaxrPwz+
-         gTfU7puS9CRafbzWhgzXCY9f6NPG+bRPaogUNC0AzfWL8CEWf2YmgC85nY9PonkIH1rR
-         GCmDB9pMffWoqPykyQoG2/cT6oGs0NZn8HRlWE7SXnDdpziNseYFaFHgfASZXtG2rjc4
-         9AVK3i9R7K06PYguVJZWxkJAsqS3hHER698obbw2FopVMAAW3CmXt4kR2+9ylNFrn33o
-         MCvUEZdyfzk454xAOXAdhBumkzUdDGHjy/OC+B7TaRbmmDX/mm0ugob0olDGHMT3fcqv
-         1aWA==
-X-Gm-Message-State: ACgBeo29AyceMrYIsQHrYPY8yw1OZWYf2flsiXf2qhRnEkBIC5qYLaf6
-        kNgfmndOwHFh7v/oe0QAyF8AUz7vowMWsErnrWY=
-X-Google-Smtp-Source: AA6agR5aFejDlLVxu9XNHh0hqVSWxHAXku6LRL/mi5tdBopccuVyt/6farVhs6GuR01ssPa8c376U0/U4Gshgkh2N6U=
-X-Received: by 2002:a05:622a:14cf:b0:343:5b6:68ca with SMTP id
- u15-20020a05622a14cf00b0034305b668camr11070115qtx.195.1660503911185; Sun, 14
- Aug 2022 12:05:11 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=jAEysnNYmeCbaDAdFtRYNDgpiBvQ4/SysADkVoFqV/A=;
+        b=7r5zBjCe0/uebfDJ5ouF/c6FT0Q0OZ9X8rI85lTzLajsvQqzuXrYRLOp8TMnASGV+0
+         qlQje6in5V1E3rq9WCfQWK02FNS0Uykoh4PomqCk0m9lBlK/OO1JjmLi3pnCK3p88PVr
+         QumGMyRmzXZBmY8ZwhX3AN8W1q7TngVkIb+0XXJqKVZh/krGRp5ImUXZCbteyUy9IlH2
+         w9/MGzObTmaTH44b3xT0fC+k+x1LkPRI03Wlh00/CCQuXELT8FE7bge0LUqhq1wdGjpo
+         0yDZ4mJKHT+Aw/IX2nx6PGl0idC2GoZn/YsIdhogLHOsgFcOVpzADrS+oH8vVZTt1Fjh
+         8IXA==
+X-Gm-Message-State: ACgBeo1+kgTT88tX2fzqtjvLwYGmpecD3Hv4Xe2/BVonbuUzwIcJ4XG6
+        so6ZCYcyC6d8GuqDwxv4Y8Q7mlFFx0YnvX/GWpQ=
+X-Google-Smtp-Source: AA6agR4Ym2qNMbJ0nu1gUQJPrFguZNceewGdEPrAl9p1jU9coQWLFnESs0fZ6OsfNSxZWqjb4DAsXD8IoQPxIxaS0mk=
+X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
+ s13-20020a05620a254d00b006ab84b825ebmr9233295qko.383.1660504217345; Sun, 14
+ Aug 2022 12:10:17 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
- <20220808204740.307667-11-u.kleine-koenig@pengutronix.de> <20220813173706.1cb77958@jic23-huawei>
-In-Reply-To: <20220813173706.1cb77958@jic23-huawei>
+References: <20220813160600.1157169-1-jic23@kernel.org>
+In-Reply-To: <20220813160600.1157169-1-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 14 Aug 2022 22:04:35 +0300
-Message-ID: <CAHp75VdkeckbaoLj7kyDdiy=BLo6WAaRsPCc+Ue2hwwBHCbNug@mail.gmail.com>
-Subject: Re: [PATCH 11/13] iio: frequency: admv1013: Benefit from
- devm_clk_get_enabled() to simplify
+Date:   Sun, 14 Aug 2022 22:09:41 +0300
+Message-ID: <CAHp75VeOAE81E3SZRbC8amvwF2yNOYv4XT+EsserOFZg+iQKWg@mail.gmail.com>
+Subject: Re: [PATCH v2] staging: iio: frequency: ad9832: Fix alignment for DMA safety
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Michal Simek <michal.simek@xilinx.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -81,46 +66,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 13, 2022 at 7:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Aug 13, 2022 at 6:55 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Mon,  8 Aug 2022 22:47:38 +0200
-> Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> > Make use of devm_clk_get_enabled() to replace some code that effectivel=
-y
-> > open codes this new function.
-> >
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> Looks fine to me, but there is a subtle reordering + it does even more
-> non parsing stuff in a function called _parse.
+> ____cacheline_aligned is an insufficient guarantee for non-coherent DMA
+> on platforms with 128 byte cachelines above L1.  Switch to the updated
+> IIO_DMA_MINALIGN definition.  Whilst here, move the marking to cover
+> the whole union. That has not functional affect, but makes it slightly
+
+not --> no ?
+
+> easier to see what is going on.
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >
-> Anyhow, would like Antoniu or someone else from ADI to take a quick look =
-if
-> possible before I pick this one up.
+> ---
+> v2: Move the alignment marking to the union rather than an element in the
+>     union. (Andy Shevchenko)
+>  drivers/staging/iio/frequency/ad9832.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+> index f43464db618a..6f9eebd6c7ee 100644
+> --- a/drivers/staging/iio/frequency/ad9832.c
+> +++ b/drivers/staging/iio/frequency/ad9832.c
+> @@ -112,10 +112,10 @@ struct ad9832_state {
+>          * transfer buffers to live in their own cache lines.
+>          */
+>         union {
+> -               __be16                  freq_data[4]____cacheline_aligned;
+> +               __be16                  freq_data[4];
+>                 __be16                  phase_data[2];
+>                 __be16                  data;
+> -       };
+> +       } __aligned(IIO_DMA_MINALIGN);
+>  };
+>
+>  static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
+> --
+> 2.37.1
+>
 
-...
 
-> > -     st->clkin =3D devm_clk_get(&spi->dev, "lo_in");
-> > +     st->clkin =3D devm_clk_get_enabled(&spi->dev, "lo_in");
-> >       if (IS_ERR(st->clkin))
-> >               return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
-> >                                    "failed to get the LO input clock\n"=
-);
-
-So it seems better to drop above and...
-
-> > -     ret =3D clk_prepare_enable(st->clkin);
-> > -     if (ret)
-> > -             return ret;
-> > -
-> > -     ret =3D devm_add_action_or_reset(&spi->dev, admv1013_clk_disable,=
- st->clkin);
-> > -     if (ret)
-> > -             return ret;
-
-...put a call here. This will make parse() look more parse.
-
---=20
+-- 
 With Best Regards,
 Andy Shevchenko

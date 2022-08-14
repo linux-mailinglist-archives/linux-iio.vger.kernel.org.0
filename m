@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 556AF592614
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 21:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 098DB592615
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 21:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229783AbiHNTBr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 15:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38636 "EHLO
+        id S229806AbiHNTFY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 15:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbiHNTBq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 15:01:46 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61AFF1D0E7
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:01:45 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id y18so4265055qtv.5
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:01:45 -0700 (PDT)
+        with ESMTP id S230388AbiHNTFX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 15:05:23 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E01D1E3F7
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:05:12 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id cb8so4289974qtb.0
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 12:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc;
-        bh=U6JfFQFT80vYLw0RLBv3MzTA19bCjUYMSJtsgkqtaBM=;
-        b=JYOSJ/Mzeo/4ng6OY2avGNQTDZOiF/WgxneKrlWhQsIFkvwW23mOhGDk22R0vxJEkD
-         uSRHDzPZ+NLgj4oA39LBdPbnKeRNKkqTefdCDnbDXiWW6L7iVb6zfbvCAq7t+44DCmbw
-         bFmi+bpFAGKSUoGYV2uzHMO8pwe3gu0x5iKjHqNfX0WzfAc0XuqVNXraxTdPaJqE29G0
-         1iRE8pZy8KOW4/gKOIrwZtIjIJNWM+QjHkUqrRSLyRn1w4d51gcMWA8hZkex93/h0ztQ
-         Jy6iFAch0Phwr+hLYGw5zkLPKJsyRlFcLluNTaFU44UwnplZLVpsBEQG22VG3xUyoGKQ
-         9cIw==
+        bh=BFAW2MwLVeguePUNy9UjAn731Itve3yGXDuc563clIQ=;
+        b=V+Qy5z48YBeKoJ95QQTf+2ljLdtU6JSW3oI9Y9bwifI9MzGqZygy/QxMUgIuv94SSC
+         Zi+1dU4e3AbF9Nwfr5vWg0vqaO4uNfqWT5PqdMfHLK2UoCMyY7FdXDYq7RlXYQHgFoWF
+         CY5A4FSlZxb34oBUI7ohnW2MM9OW0DQcjT/RR06yH2YgLDtkNy5O6pj83pye6uOQctO5
+         6ullCzjM1OXmc6VIC4OfYALVQ/rSB7WJFF+guAOFgDgo8rpBaiO8GcKkpz5ojegPF7CT
+         4q81TfodhB0FL6HJVu0nIEFztwKkGmLbmM3lDAxe/NZXY/fNSL+CbNIjE15+Ke+xS3OQ
+         LBOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=U6JfFQFT80vYLw0RLBv3MzTA19bCjUYMSJtsgkqtaBM=;
-        b=IOu2K9V7bdRciXnuZeDrnEBNBi8hjNXVvpTDmjA8KnU2OCrsVFY+iEz7cd0VicL2Eh
-         Q9UMzuy62TG5bMl0M7OQfepOysPmz3K0L6DJ6E2BtjBivORLPW/SFamVti7hrjfHtddo
-         E3xE5ibRgqjACpBwz7Ke8SBnbO3/Hz5zS2dpkWfttS0eIoHU0GPVM5bg6zOAtGvHOUOr
-         tCdSRMvIWsn3DHQbrVpq+BLz92eK3DlMS6fGIGsFM5VYUtvW3IYeSkksc77l9AV1f9ut
-         gwr2jBsNTCcup0h5vfn4KuhBLLcApbBhcdi/PHVVkNZhOJ43VJ/PQ319IxA5CyZ/myw3
-         COvg==
-X-Gm-Message-State: ACgBeo06K+ubaok8zTBtu3XBBUoRK1ZrNBjlAXECovSTsoQXdx8D0gOP
-        mSZPfGNNLBPXddL0HbcpPIcnSDIz52Kq0PJHA5Y=
-X-Google-Smtp-Source: AA6agR5vNEkRLCqxEeyfpI8IjKnY6JkryJl2iYAGDtj/XKDvL05k5QCt/zLhpaxYVnjxku33D5/Flml91AVucOywx3k=
-X-Received: by 2002:ac8:7f8e:0:b0:344:62c7:e6aa with SMTP id
- z14-20020ac87f8e000000b0034462c7e6aamr454991qtj.384.1660503704423; Sun, 14
- Aug 2022 12:01:44 -0700 (PDT)
+        bh=BFAW2MwLVeguePUNy9UjAn731Itve3yGXDuc563clIQ=;
+        b=IgiExG1hhncGpmTQnnyngKqRnG9wgiNPGlAF73K9l8jNT1yX2AC7+2xwnjEaxrPwz+
+         gTfU7puS9CRafbzWhgzXCY9f6NPG+bRPaogUNC0AzfWL8CEWf2YmgC85nY9PonkIH1rR
+         GCmDB9pMffWoqPykyQoG2/cT6oGs0NZn8HRlWE7SXnDdpziNseYFaFHgfASZXtG2rjc4
+         9AVK3i9R7K06PYguVJZWxkJAsqS3hHER698obbw2FopVMAAW3CmXt4kR2+9ylNFrn33o
+         MCvUEZdyfzk454xAOXAdhBumkzUdDGHjy/OC+B7TaRbmmDX/mm0ugob0olDGHMT3fcqv
+         1aWA==
+X-Gm-Message-State: ACgBeo29AyceMrYIsQHrYPY8yw1OZWYf2flsiXf2qhRnEkBIC5qYLaf6
+        kNgfmndOwHFh7v/oe0QAyF8AUz7vowMWsErnrWY=
+X-Google-Smtp-Source: AA6agR5aFejDlLVxu9XNHh0hqVSWxHAXku6LRL/mi5tdBopccuVyt/6farVhs6GuR01ssPa8c376U0/U4Gshgkh2N6U=
+X-Received: by 2002:a05:622a:14cf:b0:343:5b6:68ca with SMTP id
+ u15-20020a05622a14cf00b0034305b668camr11070115qtx.195.1660503911185; Sun, 14
+ Aug 2022 12:05:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
- <20220808204740.307667-6-u.kleine-koenig@pengutronix.de> <20220813173142.76774c97@jic23-huawei>
-In-Reply-To: <20220813173142.76774c97@jic23-huawei>
+ <20220808204740.307667-11-u.kleine-koenig@pengutronix.de> <20220813173706.1cb77958@jic23-huawei>
+In-Reply-To: <20220813173706.1cb77958@jic23-huawei>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 14 Aug 2022 22:01:08 +0300
-Message-ID: <CAHp75VeUV2+-V=TbQwx4Chr-xWU4AmRq-mG8Z8XTkwQmx4qvhQ@mail.gmail.com>
-Subject: Re: [PATCH 06/13] iio: adc: rockchip_saradc: Benefit from
+Date:   Sun, 14 Aug 2022 22:04:35 +0300
+Message-ID: <CAHp75VdkeckbaoLj7kyDdiy=BLo6WAaRsPCc+Ue2hwwBHCbNug@mail.gmail.com>
+Subject: Re: [PATCH 11/13] iio: frequency: admv1013: Benefit from
  devm_clk_get_enabled() to simplify
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
@@ -68,9 +68,7 @@ Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?=
         Sascha Hauer <kernel@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Nuno Sa <nuno.sa@analog.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        David Wu <david.wu@rock-chips.com>,
-        Simon Xue <xxm@rock-chips.com>
+        Michal Simek <michal.simek@xilinx.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -83,10 +81,10 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 13, 2022 at 7:21 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Aug 13, 2022 at 7:26 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> On Mon,  8 Aug 2022 22:47:33 +0200
-> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+> On Mon,  8 Aug 2022 22:47:38 +0200
+> Uwe Kleine-K=C3=B6nig         <u.kleine-koenig@pengutronix.de> wrote:
 >
 > > Make use of devm_clk_get_enabled() to replace some code that effectivel=
 y
@@ -94,20 +92,34 @@ y
 > >
 > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> Looks fine to me, but there is a subtle reordering + it does even more
+> non parsing stuff in a function called _parse.
 >
-> This might have side effects as it now enables the clock before calling
-> the clk_set_rate(). Also changes the clock start up ordering. Neither is =
-that
-> scary a change, but on really fussy hardware they might cause problems.
->
-> Add a few rock-chips people who have sent patches in last few years
-> to hopefully take a look or even better run a test.
+> Anyhow, would like Antoniu or someone else from ADI to take a quick look =
+if
+> possible before I pick this one up.
 
-I believe you found a bug in the patch. The possible solutions are:
-- not take the patch
-- disable and re-enable clock around clk_set_rate()
+...
 
-IIRC clk_set_rate() will spit a WARN if clock is enabled.
+> > -     st->clkin =3D devm_clk_get(&spi->dev, "lo_in");
+> > +     st->clkin =3D devm_clk_get_enabled(&spi->dev, "lo_in");
+> >       if (IS_ERR(st->clkin))
+> >               return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
+> >                                    "failed to get the LO input clock\n"=
+);
+
+So it seems better to drop above and...
+
+> > -     ret =3D clk_prepare_enable(st->clkin);
+> > -     if (ret)
+> > -             return ret;
+> > -
+> > -     ret =3D devm_add_action_or_reset(&spi->dev, admv1013_clk_disable,=
+ st->clkin);
+> > -     if (ret)
+> > -             return ret;
+
+...put a call here. This will make parse() look more parse.
 
 --=20
 With Best Regards,

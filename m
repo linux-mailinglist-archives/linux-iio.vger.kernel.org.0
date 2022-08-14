@@ -2,45 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAC159236E
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED10C592375
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:22:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241079AbiHNQVm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 12:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52266 "EHLO
+        id S240694AbiHNQWA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 12:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231503AbiHNQVT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:21:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41820BCAB;
-        Sun, 14 Aug 2022 09:12:05 -0700 (PDT)
+        with ESMTP id S240784AbiHNQVg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:21:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E04117E39;
+        Sun, 14 Aug 2022 09:15:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD51660F4E;
-        Sun, 14 Aug 2022 16:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD51C433C1;
-        Sun, 14 Aug 2022 16:12:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06C4760F4E;
+        Sun, 14 Aug 2022 16:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF469C433D6;
+        Sun, 14 Aug 2022 16:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660493524;
-        bh=xTjMqD+IdoL1cpjFNN0IwBiI/zTHumM+62VySxWgwE8=;
+        s=k20201202; t=1660493756;
+        bh=xVTcmGG9OL0uC/4v49WHvtlR/iFN2KD0cTGuGXzzoB4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D9BtwFwuLZCIOcFsE8XcTPKPF0bsxRj+Le2Fu6fpsqSkDz8bx6I3WMCGMvbRfOogn
-         pxFW7N3WIW/mHJVetpltFKKCIPKg9jpXvRXQYK2aog8h0Rx3KNgxVEZAh8dO/H1L7j
-         XR47qTGXluq4KaYUXoioa27EG+gTFTnrPi/SX3U6Hwo5LKFEOKF76kFeKXwZ8jpZc2
-         Vi0UREx02oVqDhq7QPiOClxjSCmp61rQkiLHDBPo58rPptlZ/d8hLbyS/KRZxZq/0Z
-         WMF6413ezVDjgMHxETzyuRCFUzMImqdpUSEmtA8cMGNX72PHeRxAh0UwriY9jRVeuC
-         Sr4xX6trRFekg==
-Date:   Sun, 14 Aug 2022 17:22:32 +0100
+        b=MrJglOx+bzOb4NgjUM6qveUa3aNC8MVxeIGJQbQq3IYD5iGJudyLgpT1Qs4W4gwcI
+         cODi7DldT5OrpeKE619yOGo1nIHj9/F+hesMvD0DX6DVkrQUvpNlwP4Gvo0F831oK9
+         kfRzC1034bJhpHE3hq2xQIcTeuMwxMnOAzuSWEiOsKDD5YdfXK9eALqO7y6pDUZi1r
+         /JNpEs78QN222ce2BHsUvtFCuZY8N6e+TdvEQrZH/TXRMBasDDctTIxDRUxvMCWM13
+         HrHa3fb7algVs+irilUEn09EkArG8v29rAK2tVdHMdpFN0P/4CMmYuI47nH/dmYupr
+         575LIQsPKQRlA==
+Date:   Sun, 14 Aug 2022 17:26:22 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Shreeya Patel <shreeya.patel@collabora.com>
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, krisman@collabora.com,
-        kernel@collabora.com, alvaro.soliverez@collabora.com
-Subject: Re: [PATCH v2] iio: light: ltrf216a: Add raw attribute
-Message-ID: <20220814172232.4caeaf1c@jic23-huawei>
-In-Reply-To: <20220812100424.529425-1-shreeya.patel@collabora.com>
-References: <20220812100424.529425-1-shreeya.patel@collabora.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
+        "jani.nikula@intel.com" <jani.nikula@intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 6/7] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Message-ID: <20220814172622.3b14ab3b@jic23-huawei>
+In-Reply-To: <CAHp75Ve8VtwGX6YeuGvhUat5UfoLXB4RdkW4vc1kQUk71+_aCA@mail.gmail.com>
+References: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
+        <20220812165243.22177-7-ddrokosov@sberdevices.ru>
+        <CAHp75Ve8VtwGX6YeuGvhUat5UfoLXB4RdkW4vc1kQUk71+_aCA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,103 +76,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 12 Aug 2022 15:34:24 +0530
-Shreeya Patel <shreeya.patel@collabora.com> wrote:
+On Sat, 13 Aug 2022 01:34:40 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Add IIO_CHAN_INFO_RAW to the mask to be able to read raw values
-> from the light sensor.
+> On Fri, Aug 12, 2022 at 7:52 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> >
+> > MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
+> > sensitivity consumer applications. It has dynamic user-selectable full
+> > scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
+> > with output data rates from 1Hz to 1000Hz.  
 > 
-> The userspace code for brightness control in steam deck uses the
-> in_illuminance_input value through sysfs and multiplies it
-> with a constant stored in BIOS at factory calibration time.
+> > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf  
 > 
-> The downstream driver for LTRF216A that we have been using
-> has incorrect formula for LUX calculation which we corrected
-> in the upstreamed driver.
+> Can you use Datasheet: tag below (just before your SoB tag)?
 > 
-> Now to be able to use the upstreamed driver, we need to add some
-> magic in userspace so that the brightness control works like before
-> even with the updated LUX formula.
+> > This driver supports following MSA311 features:
+> >     - IIO interface
+> >     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
+> >     - ODR (Output Data Rate) selection
+> >     - Scale and samp_freq selection
+> >     - IIO triggered buffer, IIO reg access
+> >     - NEW_DATA interrupt + trigger
+> >
+> > Below features to be done:
+> >     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
+> >     - Low Power mode  
 > 
-> Hence, we need the raw data to calculate a constant that can be
-> added in userspace code.
+> ...
 > 
-> Downstream driver LUX formula :-
-> (greendata*8*LTRF216A_WIN_FAC) / (data->als_gain_fac*data->int_time_fac*10)
+> > +static const struct {
+> > +       int val;
+> > +       int val2;
+> > +} msa311_fs_table[] = {
+> > +       {0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
+> > +};  
 > 
-> Upstreamed driver LUX formula :-
-> (greendata*45*LTRF216A_WIN_FAC) / (data->als_gain_fac*data->int_time_fac)
+> At least you may deduplicate the type definition for these data structures, like
 > 
-> greendata is the ALS_DATA which we would like to get through sysfs using
-> the raw attribute.
-> 
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> struct iio_float {
 
-Hi Shreeya.
+iio_int_plus_micro maybe...
+we have lots of fixed point types and they definitely are floats
+then integer, micro
 
-Your description above makes me wonder though if we should support
-this as an intensity channel as we did for many of the early Ambient light
-sensors.  Not sure why it's called 'greendata' btw!
-For those early tsl2583 IIRC and similar, we had two sensors with infrared vs
-visible+infrared (which is basically what clear is here).
-The readings given were of those two sensors then we did a bunch of maths
-to convert those to LUX (in simplest drivers we simply subtracted
-the infrared part from visible and applied a scale factor)
 
-That lead to IIO_TYPE_BOTH though we later added IIO_TYPE_CLEAR which is
-subtly different as that was for color sensors with RGB and clearish
-filters.  The value you want here doesn't really correspond to any of
-those modifiers
-
-I guess that brings us back around to LIGHT(illuminance) + raw as you have it.
-or adding a 'visible' modifier which is also rather ugly and hard
-to define.
-
-Let's leave this on list a while longer to see if others comment.
-For now I'm inclined to just accept this as a dirty hack needed for this
-corner case.
-
-Jonathan
-
-> ---
-> 
-> Changes in v2
->   - Add a better commit message explaining why we want this change.
->   - Call ltrf216a_set_power_state(data, false) before return.
-> 
-> 
->  drivers/iio/light/ltrf216a.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
-> index e6e24e70d2b9..4b8ef36b6912 100644
-> --- a/drivers/iio/light/ltrf216a.c
-> +++ b/drivers/iio/light/ltrf216a.c
-> @@ -93,6 +93,7 @@ static const struct iio_chan_spec ltrf216a_channels[] = {
->  	{
->  		.type = IIO_LIGHT,
->  		.info_mask_separate =
-> +			BIT(IIO_CHAN_INFO_RAW) |
->  			BIT(IIO_CHAN_INFO_PROCESSED) |
->  			BIT(IIO_CHAN_INFO_INT_TIME),
->  		.info_mask_separate_available =
-> @@ -259,6 +260,18 @@ static int ltrf216a_read_raw(struct iio_dev *indio_dev,
->  	int ret;
->  
->  	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = ltrf216a_set_power_state(data, true);
-> +		if (ret)
-> +			return ret;
-> +		mutex_lock(&data->lock);
-> +		ret = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
-> +		mutex_unlock(&data->lock);
-> +		ltrf216a_set_power_state(data, false);
-> +		if (ret < 0)
-> +			return ret;
-> +		*val = ret;
-> +		return IIO_VAL_INT;
->  	case IIO_CHAN_INFO_PROCESSED:
->  		mutex_lock(&data->lock);
->  		ret = ltrf216a_get_lux(data);
-
+>   int integer;
+>   int fract;
+> };
+>

@@ -2,54 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEB63592015
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:16:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C35C659201B
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239503AbiHNOQz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 10:16:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S239913AbiHNOVd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 10:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231268AbiHNOQx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:16:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CADEDEB0;
-        Sun, 14 Aug 2022 07:16:52 -0700 (PDT)
+        with ESMTP id S239901AbiHNOVc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:21:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE1FBE02;
+        Sun, 14 Aug 2022 07:21:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2556A60010;
-        Sun, 14 Aug 2022 14:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C820FC433C1;
-        Sun, 14 Aug 2022 14:16:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 32855B80AEF;
+        Sun, 14 Aug 2022 14:21:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37D1C433D6;
+        Sun, 14 Aug 2022 14:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660486611;
-        bh=uWoAq0ATnsOAbG/v53oGm0JhCatO2L0aeQdPfeB4Xq4=;
+        s=k20201202; t=1660486888;
+        bh=En3+VuMkA87sn2bRF2hyGdrJ4D418NzIDZAtlEGnp58=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iSkd0AHEsGvTF3NAwh5S7pfgNAE0lLcMvw6t0e2OsTxnEJ+izG/hfM9whbO4dOxvZ
-         tXRvMOQBCwFiUUIh6fNxUpl6VA4F9//fEuWOzW8k/bKb3RpgC1wft1QHsVaC+acxUg
-         KJgP8evn/SXnJsWo0uDsvVjkzMe5MeoWayLRIY8JQFvtWn06dm+APxYLo8u7nHVXuE
-         3c1YRsHcOwRHP1ajdDLpigYcJ5aqVnhCnkWJhdG2aOvV5FItYGRe7r6J2ALDfEaUlh
-         ta+gDC9PbF0NNoRzvapJ5Ox7YTdx0T262PsUzBbG4KntrBzMaejBcvsb2SAE+F6Oz2
-         OvVEKZ1XLRFEA==
-Date:   Sun, 14 Aug 2022 15:27:19 +0100
+        b=C+uK5dlBzLDq3i4IO4JuwnH47qUeo840PkcxnAS4TeCbLHyYQreJxEc5uLB96Jk21
+         /mt7rLtkxgnlvMOML+I7IMOsmby2YfOQeYJbOzI6IvPaYXh9Hx12UfiiuvhkDMCBxn
+         d+2WuRaewJC3rPZCdjBeLsth6hDv1qcoTWeplUazWw+vQP7NZWpstlm+nmb1+wWwVt
+         xYaA3EvpOHdKrdSUCAZ5ceBHDQC5DRq5wsYAqoBgwWiGPWrc+csfwlLIDKPVhjKEMJ
+         7S8j9xjwiTFavdAKONJahK7Xja5hlcQCALTGKCwIIUz0MozTWiHnDm1TYVOLrrGbex
+         +IOBtsHHqAWyQ==
+Date:   Sun, 14 Aug 2022 15:31:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 4/9] iio: adc: mcp3911: use resource-managed version
- of iio_device_register
-Message-ID: <20220814152719.17597442@jic23-huawei>
-In-Reply-To: <CAHp75VdhdpKasyYrb1tkhL6yjfZwMcbWJYNc9bw8LDr7KLT6jw@mail.gmail.com>
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 5/9] iio: adc: mcp3911: add support for buffers
+Message-ID: <20220814153157.5e26ebd8@jic23-huawei>
+In-Reply-To: <20220809073648.167821-6-marcus.folkesson@gmail.com>
 References: <20220809073648.167821-1-marcus.folkesson@gmail.com>
-        <20220809073648.167821-5-marcus.folkesson@gmail.com>
-        <CAHp75Vc-cd_-+qyd62tcJGdXh917AgZY5VB0ztXR3zwrGoMCRQ@mail.gmail.com>
-        <CAHp75VdhdpKasyYrb1tkhL6yjfZwMcbWJYNc9bw8LDr7KLT6jw@mail.gmail.com>
+        <20220809073648.167821-6-marcus.folkesson@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,30 +60,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 9 Aug 2022 11:40:55 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue,  9 Aug 2022 09:36:44 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-> On Tue, Aug 9, 2022 at 11:39 AM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
+> Add support for buffers to make the driver fit for more usecases.
 > 
-> ...
-> 
-> > You may rather switch to devm_clk_get_enabled() and drop this.  
-> 
-> While doing this I would recommend to split the regulator case and clock case.
-> 
-Hi Andy,
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-I read this and wasn't quite sure what you meant.  Do you mean splitting
-it into multiple patches?  
+One really trivial comment from me below if you are respinning anyway.
 
-If so I think that is probably taking "one thing one patch" a step too far.
-I wouldn't object it if were presented as separate patches, but I'm not
-sure I'd bother splitting them.
+> +static irqreturn_t mcp3911_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct mcp3911 *adc = iio_priv(indio_dev);
+> +	struct spi_transfer xfer[] = {
+> +		{
+> +			.tx_buf = &adc->tx_buf,
+> +			.len = 1,
+> +		}, {
+> +			.rx_buf = adc->rx_buf,
+> +			.len = sizeof(adc->rx_buf),
+> +		},
+> +	};
+> +
+> +	int scan_index;
+> +	int i = 0;
+> +	int ret;
+> +
+> +	mutex_lock(&adc->lock);
+> +	adc->tx_buf = MCP3911_REG_READ(MCP3911_CHANNEL(0), adc->dev_addr);
+> +	ret = spi_sync_transfer(adc->spi, xfer, ARRAY_SIZE(xfer));
+> +	if (ret < 0) {
+> +		dev_warn(&adc->spi->dev,
+> +				"failed to get conversion data\n");
+> +		goto out;
+> +	}
+> +
+> +	for_each_set_bit(scan_index, indio_dev->active_scan_mask,
+> +			indio_dev->masklength) {
+> +		const struct iio_chan_spec *scan_chan = &indio_dev->channels[scan_index];
+> +
+> +		adc->scan.channels[i] = get_unaligned_be24(&adc->rx_buf[scan_chan->channel * 3]);
+> +		i++;
+> +	}
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &adc->scan,
+> +			iio_get_time_ns(indio_dev));
+					   iio_get_time_ns(indio_dev));
 
-Definitely good to switch to devm_clk_get_enabled() now that's available.
-There is another go at adding devm_regulator_enable() under review at the
-moment, but we can tidy that up as a follow on patch (along with the 100s of
-other cases in IIO!)
+trivial: align with opening bracket unless the resulting line length is going to be very high as
+a result.  I could be wrong but I thought checkpatch warned on this...
 
-Jonathan
+> +out:
+> +	mutex_unlock(&adc->lock);
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}

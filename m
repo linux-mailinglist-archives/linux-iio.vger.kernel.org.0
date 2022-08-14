@@ -2,48 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 956C5592033
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9E3592035
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 16:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239814AbiHNOiY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 10:38:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S239819AbiHNOle (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 10:41:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239819AbiHNOiX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:38:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29CC715823;
-        Sun, 14 Aug 2022 07:38:22 -0700 (PDT)
+        with ESMTP id S231945AbiHNOld (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 10:41:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F202713D07
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 07:41:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AFCE3B80B43;
-        Sun, 14 Aug 2022 14:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C54C433D6;
-        Sun, 14 Aug 2022 14:38:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8373B60BC2
+        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 14:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5858C433D6;
+        Sun, 14 Aug 2022 14:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660487899;
-        bh=1R2kSsv8yxj/APAL46W0dsOZfWvi9UbUMoyn3yDzmdE=;
+        s=k20201202; t=1660488091;
+        bh=fjxatODcRUZ9eK5+iGW2XPF+/8rgUq+JR0xv0e3yh/s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pTluyPRKNy4j47RUrC6Foivinh94Npye4rXeja8ecySw8vPykANd8Lzd6bWjmLM0o
-         i4rztsSLv21ZV1EGPWCGLfdjVpRFVf98tlZmrQVkKnDG0dwVwceiGXJ3gS2sjx2fF1
-         VpSRVbkHUi3TywuxnbIp0YUSWHdZG4+HpxysqoQ8WADpu/Lmvr7YzM1lYqi9b/XHQ/
-         Q2F05pDdgaAtyCqnUpm9VoUIynl0uumS921RyJAY/rfEtKbcdYJWEQsp5w9lCjXURm
-         ynx3iouQAjxrb075t+XNXix24S83+EVbjj/Ou0aSciNxCdlXbu/OlysJRitcNqpGys
-         9N3O3+2rW0g/g==
-Date:   Sun, 14 Aug 2022 15:48:48 +0100
+        b=KjdMwbUvKHV9nb7PTAnI5VfV2YExMLXKq/pAcE4Izgixrl4KDKEwTuO+o3CSNQ7H0
+         50C9HsfE3F/JSO11w9wsOrXSPC+5xchGkn68cr0dEc9VtVOmwt6iz0XeMjfkkVvcp2
+         QWsw6s3VITuluc3pe9Z2k1yB+XxCRXfyxPVp26FKmBZyOoAVZ7qWtU+uXFj3Q7EzD2
+         LKJW7KM7G92jg4s4th1QY8tYu0muPPO+J3NveoSw88TGdmX0c1zSqVYfBWJyM2kzSw
+         ZizswMoJpYozwX07Vv7A3Kr2OrbE3g9jIVMC910vtzKM003N9sDV0EvMEPSyGciOa2
+         pn2tU7ZOpHwjA==
+Date:   Sun, 14 Aug 2022 15:52:01 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     vilhelm.gray@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mranostay@ti.com
-Subject: Re: [PATCH v4 3/3] counter: capture-tiecap: capture driver support
- for ECAP
-Message-ID: <20220814154848.24442d4c@jic23-huawei>
-In-Reply-To: <20220810140724.182389-4-jpanis@baylibre.com>
-References: <20220810140724.182389-1-jpanis@baylibre.com>
-        <20220810140724.182389-4-jpanis@baylibre.com>
+To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
+        <Nurettin.Bolucu@analog.com>
+Subject: Re: [PATCH v3 0/2] iio: adc: add max11410 adc driver
+Message-ID: <20220814155201.3fcb98b3@jic23-huawei>
+In-Reply-To: <20220811134243.111-1-Ibrahim.Tilki@analog.com>
+References: <20220811134243.111-1-Ibrahim.Tilki@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,142 +54,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 10 Aug 2022 16:07:24 +0200
-Julien Panis <jpanis@baylibre.com> wrote:
+On Thu, 11 Aug 2022 13:42:41 +0000
+Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
 
-> ECAP hardware on AM62x SoC supports capture feature. It can be used
-> to timestamp events (falling/rising edges) detected on signal input pin.
+> I added filter enable attributes for 50Hz and 60Hz FIR filters.
+> Disabling both will set filter to sinc4, allowing higher sampling rates.
 > 
-> This commit adds capture driver support for ECAP hardware on AM62x SoC.
+> Regards,
+> Ibrahim
 > 
-> In the ECAP hardware, capture pin can also be configured to be in
-> PWM mode. Current implementation only supports capture operating mode.
-> Hardware also supports timebase sync between multiple instances, but
-> this driver supports simple independent capture functionality.
+> Note: No sign-off tag for David as he was unreachable when the initial patch was sent.
 > 
-> Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> ---
-Hi Julien,
+> Changelog:
+> since v3:
+>   - prefix defines with MAX11410_
+>   - group vref regulators
+>   - use builtin iio_validate_scan_mask_onehot
+>   - validate iio trigger
+>   - move scan data into state struct
+>   - require vrefn regulator in DT if used by any channel
+>   - don't require irq for triggered buffer
+>   - remove filter sysfs attr and ABI documentation
+>   - add in_voltage_filter[0-1]_notch_{center,en} attrs
 
-Been too long since I reviewed a counter driver, so I'll have
-to leave that side of things to William (or find a spare few days
-to remind myself of the details!)
+I'm not seeing a documentation patch for this new ABI.
+It's subtly different from the existing entries in
+Documentation/ABI/testing/sysfs-bus-iio and the _en part is
+new in general for filters.
 
-A few superficial things I notice below whilst taking a quick look.
+I'll take a look at the rest of the code, but Docs need to
+be in place and reviewed before I can take the driver.
 
-It might be worth adding a bit of description around what the
-result of the various runtime pm calls is (what's actually getting
-powered down?)
+Thanks,
 
 Jonathan
 
-> +static int ecap_cnt_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct ecap_cnt_dev *ecap_dev;
-> +	struct counter_device *counter_dev;
-> +	void __iomem *mmio_base;
-> +	int ret;
-> +
-> +	counter_dev = devm_counter_alloc(dev, sizeof(*ecap_dev));
-> +	if (IS_ERR(counter_dev))
-> +		return PTR_ERR(counter_dev);
-> +
-> +	counter_dev->name = ECAP_DRV_NAME;
-> +	counter_dev->parent = dev;
-> +	counter_dev->ops = &ecap_cnt_ops;
-> +	counter_dev->signals = ecap_cnt_signals;
-> +	counter_dev->num_signals = ARRAY_SIZE(ecap_cnt_signals);
-> +	counter_dev->counts = ecap_cnt_counts;
-> +	counter_dev->num_counts = ARRAY_SIZE(ecap_cnt_counts);
-> +
-> +	ecap_dev = counter_priv(counter_dev);
-> +
-> +	ecap_dev->clk = devm_clk_get(dev, "fck");
-> +	if (IS_ERR(ecap_dev->clk))
-> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->clk), "failed to get clock\n");
-> +
-> +	ret = clk_prepare_enable(ecap_dev->clk);
 
-We now have dev_clk_get_enabled() in upstream - finally!
-Text book usecase for it here.
 
-> +	if (ret) {
-> +		dev_err(dev, "failed to enable clock\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action_or_reset(dev, ecap_cnt_clk_disable, ecap_dev->clk);
-> +	if (ret) {
-> +		dev_err(dev, "failed to add clock disable action\n");
-> +		return ret;
-> +	}
-> +
-> +	ecap_dev->clk_rate = clk_get_rate(ecap_dev->clk);
-> +	if (!ecap_dev->clk_rate) {
-> +		dev_err(dev, "failed to get clock rate\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	mmio_base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(mmio_base))
-> +		return PTR_ERR(mmio_base);
-> +
-> +	ecap_dev->regmap = devm_regmap_init_mmio(dev, mmio_base, &ecap_cnt_regmap_config);
-> +	if (IS_ERR(ecap_dev->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->regmap), "failed to init regmap\n");
-> +
-> +	spin_lock_init(&ecap_dev->lock);
-> +
-> +	ret = platform_get_irq(pdev, 0);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to get irq\n");
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_request_irq(dev, ret, ecap_cnt_isr, 0, pdev->name, counter_dev);
-> +	if (ret) {
-> +		dev_err(dev, "failed to request irq\n");
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, counter_dev);
-> +	pm_runtime_enable(dev);
-> +
-> +	ecap_dev->enabled = 0;
-> +	ecap_cnt_capture_set_evmode(counter_dev, 0);
-> +
-> +	ret = devm_counter_add(dev, counter_dev);
-> +	if (ret) {
-> +		dev_err(dev, "failed to add counter\n");
-> +		pm_runtime_disable(dev);
+> 
+> since v2:
+>   - remove bit position shifting, use field_prep instead
+>   - reduce the amount of reg writes in max11410_configure_channel
+>   - add error checking in max11410_parse_channels
+>   - remove some unneeded blank lines and minor style fixes
+>   - remove scan data assignment in max11410_trigger_handler
+> 
+> 
+> Ibrahim Tilki (2):
+>   iio: adc: add max11410 adc driver
+>   dt-bindings: iio: adc: add adi,max11410.yaml
+> 
+>  .../bindings/iio/adc/adi,max11410.yaml        | 165 +++
+>  drivers/iio/adc/Kconfig                       |  13 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/max11410.c                    | 954 ++++++++++++++++++
+>  4 files changed, 1133 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+>  create mode 100644 drivers/iio/adc/max11410.c
+> 
 
-Unless there is a very good reason to mix devm and unmanaged
-code, it's best to not do so as it leads to much head scratching over
-whether there are race conditions.  Here I can't see a reason not
-to use devm_add_action_or_reset() to make the pm_runtime_disabled()
-into devm managed.
-
-Any setting of enabled occured after probe() was done so that's
-fine as unmanaged or you could register another devm_ callback
-if you prefer, but with a comment explaining the path to it needing
-to do anything.
-
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int ecap_cnt_remove(struct platform_device *pdev)
-> +{
-> +	struct counter_device *counter_dev = platform_get_drvdata(pdev);
-> +	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-> +
-> +	if (ecap_dev->enabled)
-> +		ecap_cnt_capture_disable(counter_dev);
-> +
-> +	pm_runtime_disable(&pdev->dev);
-> +
-> +	return 0;
-> +}
-> +

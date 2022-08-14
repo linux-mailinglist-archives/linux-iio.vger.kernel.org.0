@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA83592353
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAC159236E
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Aug 2022 18:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240539AbiHNQHQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 12:07:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40578 "EHLO
+        id S241079AbiHNQVm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 14 Aug 2022 12:21:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240558AbiHNQHD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:07:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0BA12D1D
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 08:45:28 -0700 (PDT)
+        with ESMTP id S231503AbiHNQVT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 12:21:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41820BCAB;
+        Sun, 14 Aug 2022 09:12:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7CA8DB80B43
-        for <linux-iio@vger.kernel.org>; Sun, 14 Aug 2022 15:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65D4C433D6;
-        Sun, 14 Aug 2022 15:45:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD51660F4E;
+        Sun, 14 Aug 2022 16:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD51C433C1;
+        Sun, 14 Aug 2022 16:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660491925;
-        bh=udPXSbnjJFZ5XlYCsq72JifrzpccfF6ZOhTEKyVv1qQ=;
+        s=k20201202; t=1660493524;
+        bh=xTjMqD+IdoL1cpjFNN0IwBiI/zTHumM+62VySxWgwE8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qoJuoTLbY8gUCm8kHIVcZ/Q4PdNTll08STpB9cxUly+XtZvaxyiuc/Tvz3NPucpKi
-         vYy7bhU4H9z8aQjcsrGS72j2E69T7caNXuQceKAmg+30v9QTFjCrAs8cE+MdSJl2z0
-         d+FZn1s8BADR0k3Bxi1RPAnMk//YHD8aYyCN/BmEGZqEeGjgQAt63P405Qwy4YvsJT
-         XQ0xB+k8Pj6IsSQ0gAkPj4xCUb6fYv9XGLA5Kdzvq7251zUJqbSBlHaOBSuggGr+Gi
-         VaX4xz8OuXixyyLAwu5x1Dn6XMGyq2nGo5Hpa6lyErPW1uQw5TgD8T6Dkpy+fVUu3r
-         TIxO+HrG1tMLg==
-Date:   Sun, 14 Aug 2022 16:55:54 +0100
+        b=D9BtwFwuLZCIOcFsE8XcTPKPF0bsxRj+Le2Fu6fpsqSkDz8bx6I3WMCGMvbRfOogn
+         pxFW7N3WIW/mHJVetpltFKKCIPKg9jpXvRXQYK2aog8h0Rx3KNgxVEZAh8dO/H1L7j
+         XR47qTGXluq4KaYUXoioa27EG+gTFTnrPi/SX3U6Hwo5LKFEOKF76kFeKXwZ8jpZc2
+         Vi0UREx02oVqDhq7QPiOClxjSCmp61rQkiLHDBPo58rPptlZ/d8hLbyS/KRZxZq/0Z
+         WMF6413ezVDjgMHxETzyuRCFUzMImqdpUSEmtA8cMGNX72PHeRxAh0UwriY9jRVeuC
+         Sr4xX6trRFekg==
+Date:   Sun, 14 Aug 2022 17:22:32 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
-        <Nurettin.Bolucu@analog.com>
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: adc: add adi,max11410.yaml
-Message-ID: <20220814165554.4dabd716@jic23-huawei>
-In-Reply-To: <20220811134243.111-3-Ibrahim.Tilki@analog.com>
-References: <20220811134243.111-1-Ibrahim.Tilki@analog.com>
-        <20220811134243.111-3-Ibrahim.Tilki@analog.com>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, krisman@collabora.com,
+        kernel@collabora.com, alvaro.soliverez@collabora.com
+Subject: Re: [PATCH v2] iio: light: ltrf216a: Add raw attribute
+Message-ID: <20220814172232.4caeaf1c@jic23-huawei>
+In-Reply-To: <20220812100424.529425-1-shreeya.patel@collabora.com>
+References: <20220812100424.529425-1-shreeya.patel@collabora.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,218 +55,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 11 Aug 2022 13:42:43 +0000
-Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
+On Fri, 12 Aug 2022 15:34:24 +0530
+Shreeya Patel <shreeya.patel@collabora.com> wrote:
 
-> Adding devicetree binding documentation for max11410 adc.
+> Add IIO_CHAN_INFO_RAW to the mask to be able to read raw values
+> from the light sensor.
 > 
-> Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-> Reviewed-by: Nurettin Bolucu <Nurettin.Bolucu@analog.com>
+> The userspace code for brightness control in steam deck uses the
+> in_illuminance_input value through sysfs and multiplies it
+> with a constant stored in BIOS at factory calibration time.
+> 
+> The downstream driver for LTRF216A that we have been using
+> has incorrect formula for LUX calculation which we corrected
+> in the upstreamed driver.
+> 
+> Now to be able to use the upstreamed driver, we need to add some
+> magic in userspace so that the brightness control works like before
+> even with the updated LUX formula.
+> 
+> Hence, we need the raw data to calculate a constant that can be
+> added in userspace code.
+> 
+> Downstream driver LUX formula :-
+> (greendata*8*LTRF216A_WIN_FAC) / (data->als_gain_fac*data->int_time_fac*10)
+> 
+> Upstreamed driver LUX formula :-
+> (greendata*45*LTRF216A_WIN_FAC) / (data->als_gain_fac*data->int_time_fac)
+> 
+> greendata is the ALS_DATA which we would like to get through sysfs using
+> the raw attribute.
+> 
+> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
 
-As a general rule, prefer to see review on list.
-Whilst Analog folk are usually good at doing reviews properly some other companies have been
-known to add reviewed-by tags without doing a proper job of review.  Hence we prefer
-to hear from the reviewer on the public list if possible, even if it's a quick
-note to say what sort of review they have done (general correctness / check against
-datasheet / detailed subsystem interaction review etc) as that reduces the focus others
-may put on the same areas.
+Hi Shreeya.
 
-I regularly do this wrong in Huawei code btw as we still do more review before posting
-than we perhaps should :)
+Your description above makes me wonder though if we should support
+this as an intensity channel as we did for many of the early Ambient light
+sensors.  Not sure why it's called 'greendata' btw!
+For those early tsl2583 IIRC and similar, we had two sensors with infrared vs
+visible+infrared (which is basically what clear is here).
+The readings given were of those two sensors then we did a bunch of maths
+to convert those to LUX (in simplest drivers we simply subtracted
+the infrared part from visible and applied a scale factor)
 
-A few comments inline. Biggest is the interrupts description needing to be more
-general to avoid us having problems if we extend it in future to cover the other
-possible pin.
+That lead to IIO_TYPE_BOTH though we later added IIO_TYPE_CLEAR which is
+subtly different as that was for color sensors with RGB and clearish
+filters.  The value you want here doesn't really correspond to any of
+those modifiers
+
+I guess that brings us back around to LIGHT(illuminance) + raw as you have it.
+or adding a 'visible' modifier which is also rather ugly and hard
+to define.
+
+Let's leave this on list a while longer to see if others comment.
+For now I'm inclined to just accept this as a dirty hack needed for this
+corner case.
+
+Jonathan
 
 > ---
->  .../bindings/iio/adc/adi,max11410.yaml        | 165 ++++++++++++++++++
->  1 file changed, 165 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
-> new file mode 100644
-> index 000000000..a782bfcaf
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
-> @@ -0,0 +1,165 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2022 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,max11410.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices MAX11410 ADC device driver
-> +
-> +maintainers:
-> +  - Ibrahim Tilki <ibrahim.tilki@analog.com>
-> +
-> +description: |
-> +  Bindings for the Analog Devices MAX11410 ADC device. Datasheet can be
-> +  found here:
-> +    https://datasheets.maximintegrated.com/en/ds/MAX11410.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,max11410
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-
-There are at least two possible pins, so this binding needs to take into account which
-one / ones are wired.  Hence you need interrupt-names and the driver
-needs to route things appropriately or at very least give a clear 'I don't support
-GPIO0 usage' error message.
-
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  avdd-supply:
-> +    description: Necessarry avdd supply. Used as reference when no explicit reference supplied.
-> +
-> +  vref0p-supply:
-> +    description: vref0p supply can be used as reference for conversion.
-> +
-> +  vref1p-supply:
-> +    description: vref1p supply can be used as reference for conversion.
-> +
-> +  vref2p-supply:
-> +    description: vref2p supply can be used as reference for conversion.
-> +
-> +  vref0n-supply:
-> +    description: vref0n supply can be used as reference for conversion.
-> +
-> +  vref1n-supply:
-> +    description: vref1n supply can be used as reference for conversion.
-> +
-> +  vref2n-supply:
-> +    description: vref2n supply can be used as reference for conversion.
-> +
-> +  spi-max-frequency:
-> +    maximum: 8000000
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +
-> +patternProperties:
-> +  "^channel(@[0-9a-f]+)?$":
-> +    $ref: "adc.yaml"
-> +    type: object
-> +    description: Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number in single-ended mode.
-> +        minimum: 0
-> +        maximum: 10
-
-the @ address seems to allow more than 0 to 10. Perhaps need to bring those inline and
-make them both hex?  Curious. What's the 11th channel if max isn't 9?
-
-> +
-> +      adi,reference:
-> +        description: |
-> +          Select the reference source to use when converting on
-> +          the specific channel. Valid values are:
-> +          0: VREF0P/VREF0N
-> +          1: VREF1P/VREF1N
-> +          2: VREF2P/VREF2N
-> +          3: AVDD/AGND
-> +          4: VREF0P/AGND
-> +          5: VREF1P/AGND
-> +          6: VREF2P/AGND
-> +          If this field is left empty, AVDD/AGND is selected.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3, 4, 5, 6]
-> +        default: 3
-> +
-> +      adi,input-mode:
-> +        description: |
-> +          Select signal path of input channels. When PGA path is selected,
-> +          hardwaregain property is enabled for channel. Valid values are:
-
-A binding should not mention details of what the linux driver is doing, so drop
-that bit about hardwaregain.  Whilst bindings exist in the Linux tree they
-are used by various other bits of software.
-
-> +          0: Buffered, low-power, unity-gain path (default)
-> +          1: Bypass path
-> +          2: PGA path
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2]
-> +        default: 0
-> +
-> +      diff-channels: true
-> +
-> +      bipolar: true
-> +
-> +      settling-time-us: true
-> +
-> +      adi,buffered-vrefp:
-> +        description: Enable buffered mode for positive reference.
-> +        type: boolean
-> +
-> +      adi,buffered-vrefn:
-> +        description: Enable buffered mode for negative reference.
-> +        type: boolean
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adc@0 {
-> +        compatible = "adi,max11410";
-> +        reg = <0>;
-> +        spi-max-frequency = <8000000>;
-> +        interrupts = <25 2>;
-> +        interrupt-parent = <&gpio>;
-> +
-> +        avdd-supply = <&adc_avdd>;
-> +
-> +        vref1p-supply = <&adc_vref1p>;
-> +        vref1n-supply = <&adc_vref1n>;
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
-> +        };
-> +
-> +        channel@1 {
-> +          reg = <1>;
-> +          diff-channels = <2 3>;
-> +          adi,reference = <1>;
-> +          bipolar;
-> +          settling-time-us = <100000>;
-> +        };
-> +
-> +        channel@2 {
-> +          reg = <2>;
-> +          diff-channels = <7 9>;
-> +          adi,reference = <5>;
-> +          adi,input-mode = <2>;
-> +          settling-time-us = <50000>;
-> +        };
-> +      };
-> +    };
+> Changes in v2
+>   - Add a better commit message explaining why we want this change.
+>   - Call ltrf216a_set_power_state(data, false) before return.
+> 
+> 
+>  drivers/iio/light/ltrf216a.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+> index e6e24e70d2b9..4b8ef36b6912 100644
+> --- a/drivers/iio/light/ltrf216a.c
+> +++ b/drivers/iio/light/ltrf216a.c
+> @@ -93,6 +93,7 @@ static const struct iio_chan_spec ltrf216a_channels[] = {
+>  	{
+>  		.type = IIO_LIGHT,
+>  		.info_mask_separate =
+> +			BIT(IIO_CHAN_INFO_RAW) |
+>  			BIT(IIO_CHAN_INFO_PROCESSED) |
+>  			BIT(IIO_CHAN_INFO_INT_TIME),
+>  		.info_mask_separate_available =
+> @@ -259,6 +260,18 @@ static int ltrf216a_read_raw(struct iio_dev *indio_dev,
+>  	int ret;
+>  
+>  	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = ltrf216a_set_power_state(data, true);
+> +		if (ret)
+> +			return ret;
+> +		mutex_lock(&data->lock);
+> +		ret = ltrf216a_read_data(data, LTRF216A_ALS_DATA_0);
+> +		mutex_unlock(&data->lock);
+> +		ltrf216a_set_power_state(data, false);
+> +		if (ret < 0)
+> +			return ret;
+> +		*val = ret;
+> +		return IIO_VAL_INT;
+>  	case IIO_CHAN_INFO_PROCESSED:
+>  		mutex_lock(&data->lock);
+>  		ret = ltrf216a_get_lux(data);
 

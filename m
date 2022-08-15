@@ -2,64 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B64595243
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 07:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2491595235
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 07:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbiHPF6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 01:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S231459AbiHPFwl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 01:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbiHPF6A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 01:58:00 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF529D664
-        for <linux-iio@vger.kernel.org>; Mon, 15 Aug 2022 16:16:33 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id s11so7008100qtx.6
-        for <linux-iio@vger.kernel.org>; Mon, 15 Aug 2022 16:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=2NHSu+WR71bWEHouMtYEYWTZ2k/kphqS/Xaa0m4gsqo=;
-        b=RdxioX6rfZpldJqhwhtPJeZPySZfy2kj3BdriChWQwfUY6NXW7Q1VLICRE9Zqweb+r
-         gwrzBdCRX9ofe59/sA+Er7wcZ8SfrC0yQr0qZB22kyXtTztAb7qfOQwR0BTKByvh2Xrk
-         joGRbfm86wLLmTtUU7TYwtAh69+AuDDC0o0eBUeR6TMH8wLqlg1V+dx3+aoGzIgRzlM3
-         4vd6VJyB8xZYordFoEIVcdJqW/Kx15ZctZTc3e9XPPcF4WE29vwD5iiFCcDa4M2e8ZRw
-         6+zq8dzDFJ3sjxrvzA3MdARDyvfTOgJk+l9X0HGfcVt/BOEO685/Yfth3PuOYL0AbJbb
-         Ebiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=2NHSu+WR71bWEHouMtYEYWTZ2k/kphqS/Xaa0m4gsqo=;
-        b=JJv8cScjASxYolZs2632BTzgDVZ5MPKtQV/Dx4/No751YpKf/6KU4XMDbk2Ep2Zgcs
-         XfQeOjuCjRL7NyllvU8YMqyWjInJGjohrC94x6J6BWeBRzHaNO31j6yeDZejiCEMCGhn
-         DIgaBzv9k3Sn4f7olL0406/JPNaRJoopn8YEmJFZvVaZNmER5oa+S67pvFLAMenRLAQC
-         k3uqImg7HuBx1C0kGGGqTAY9MUr0LJ7KX48h2YQl/83yoSWfUZ2vWTxAhhur9tdiTqaj
-         +4AH5Y1CjNhyglb/ui+EhVruc+B7dd5o5lsHC3erpl9op7K03cPgSbpYG0zrr0jxdd0Y
-         LTzA==
-X-Gm-Message-State: ACgBeo00BZ67Cz7zmHKpUQDuO29GPHuTcMPsmN0w8mEWHlf5+mzAkEXv
-        Kf1/iASAzMtdIhCrAdUkH4Ae2A==
-X-Google-Smtp-Source: AA6agR5IQPzo2LnMl+iKR8S7dBMSEVPE5W7Xd5TxJPOPIUXUs6m6Q/yoaSd/tKdtwwHfQLCUx6+Wtw==
-X-Received: by 2002:ac8:7fc5:0:b0:343:681d:c3fb with SMTP id b5-20020ac87fc5000000b00343681dc3fbmr16179373qtk.157.1660605392431;
-        Mon, 15 Aug 2022 16:16:32 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id u11-20020a05620a430b00b006b99b78751csm10441188qko.112.2022.08.15.16.16.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Aug 2022 16:16:31 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     linux@rempel-privat.de, kernel@pengutronix.de
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH] counter: interrupt-cnt: Implement watch_validate callback
-Date:   Mon, 15 Aug 2022 18:50:58 -0400
-Message-Id: <20220815225058.144203-1-william.gray@linaro.org>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S229632AbiHPFwa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 01:52:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B31413B891;
+        Mon, 15 Aug 2022 15:56:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D631612D4;
+        Mon, 15 Aug 2022 22:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDF4C433C1;
+        Mon, 15 Aug 2022 22:55:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660604165;
+        bh=xMmA6oKgbgUn6m+9eT6q7pbLR6zVbVy796oIUBAaC34=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=F9SlKgjQLmKKrMBqJ3vvsBrd/Yrlq/4jXbrxweWPj+yty8ovPhmdnEnTIWpGowipZ
+         ECHdt+y2tO9y8qZfE+f+YPkED7huG/w9HkviixPVFvChrzkt8yQHvMo9O2VEBMNnzT
+         JrgsR7XULrWGVBkNhntK/xnHOk7eDkZMlqsrXDiqjhP0aUimZ6hEjHJq68SJqJNXZ8
+         Mn7TB54t7gXDP09+nIigfo9+G8xUNeiGZ8KoKq/3xI0hTgVnGoFpEhhQ4uxC2ZsnD5
+         nbKSi9SZujYbs+PUjccW7ijsGglrXKDh+DVk9PUS1QTRrpf9KPISuwCizKTspA2CBS
+         QyObtjpXNSFrg==
+Date:   Mon, 15 Aug 2022 23:55:54 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Stephen Boyd <sboyd@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        dri-devel@lists.freedesktop.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        linux-amlogic@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Michael Turq uette <mturquette@baylibre.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
+Message-ID: <YvrO+velKdYdGVve@sirena.org.uk>
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
+ <166057828406.697572.228317501909350108.b4-ty@kernel.org>
+ <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
+ <Yvp1Qkuh7xfeb/B2@sirena.org.uk>
+ <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com>
+ <20220815205857.308B1C433D6@smtp.kernel.org>
+ <Yvq33T+XCduoqv7Z@pendragon.ideasonboard.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="4yZYFMFbpCwRNWoh"
+Content-Disposition: inline
+In-Reply-To: <Yvq33T+XCduoqv7Z@pendragon.ideasonboard.com>
+X-Cookie: We have ears, earther...FOUR OF THEM!
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,48 +93,95 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The interrupt-cnt counter driver only pushes one type of event on only
-one channel: COUNTER_EVENT_CHANGE_OF_STATE on channel 0. The
-interrupt_cnt_watch_validate() watch_valid callback is implemented to
-ensure watch configurations are valid for this driver.
 
-Cc: Oleksij Rempel <linux@rempel-privat.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/counter/interrupt-cnt.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+--4yZYFMFbpCwRNWoh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-index 3b13f56bbb11..05a5d3e2d2b0 100644
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -139,12 +139,23 @@ static int interrupt_cnt_signal_read(struct counter_device *counter,
- 	return 0;
- }
- 
-+static int interrupt_cnt_watch_validate(struct counter_device *counter,
-+					const struct counter_watch *watch)
-+{
-+	if (watch->channel != 0 ||
-+	    watch->event != COUNTER_EVENT_CHANGE_OF_STATE)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static const struct counter_ops interrupt_cnt_ops = {
- 	.action_read = interrupt_cnt_action_read,
- 	.count_read = interrupt_cnt_read,
- 	.count_write = interrupt_cnt_write,
- 	.function_read = interrupt_cnt_function_read,
- 	.signal_read  = interrupt_cnt_signal_read,
-+	.watch_validate  = interrupt_cnt_watch_validate,
- };
- 
- static int interrupt_cnt_probe(struct platform_device *pdev)
+On Tue, Aug 16, 2022 at 12:17:17AM +0300, Laurent Pinchart wrote:
+> On Mon, Aug 15, 2022 at 01:58:55PM -0700, Stephen Boyd wrote:
 
-base-commit: 568035b01cfb107af8d2e4bd2fb9aea22cf5b868
--- 
-2.37.2
+> > The basic idea is that drivers should be focused on what they're
+> > driving, not navigating the (sometimes) complex integration that's
+> > taking place around them. When a device driver probe function is called
+> > the device should already be powered on.
 
+> No. ACPI does that in many cases, and that's a real bad idea. There are
+> devices that you do *not* want to power up on probe. I'm thinking, for
+> example, about camera sensors that have a privacy LED that will light up
+> when the sensor is powered up. You don't want it to flash on boot. There
+> are also other use cases related to fault tolerance where you want
+> drivers to initialize properly and only access the device later.
+
+I don't think it's an either/or thing in terms of approach here - we
+need a range of options to choose from.  ACPI is totally fine and solves
+real problems for the systems it targets, the problems we see with it
+are mainly that it has a very strong system abstraction and doesn't cope
+well when things go outside that coupled with the fact that Windows long
+ago decided that board files were totally fine for papering over any
+problems so people haven't worked on standardisation where they should.
+Some SoCs like to do similar things with their power controller cores.
+
+Conversely for example with many (but not all) SoC IPs the mechanics of
+the system integration and range of options available are such that
+dealing with them is kind of out of scope of the driver, but they're
+often very repetitive over any given SoC so there is a benefit in
+pushing things into power domains rather than having the driver for the
+IP manage everything.  We need to be able to be flexible so we can find
+the best idioms to represent the different systems in front of us rather
+than trying to force all systems into a single idiom.
+
+> These devres helpers go in the exact opposite direction of what we
+> should be doing, by telling driver authors it's totally fine to not
+> implement power management. Why don't we just drop error handling and go
+> back to the big kernel lock in that case ? That was much easier to
+> program too.
+
+Sometimes it's totally fine to not worry, at least at a first pass.
+Perhaps you're more concerned with real time, perhaps your system
+doesn't provide control for the relevant resources.  Sometimes the
+savings are so negligable that it's questionable if doing the power
+manageement is an overall power saving.
+
+> You will very quickly see drivers doing this (either directly or
+> indirectly):
+
+> probe()
+> {
+> 	devm_clk_get_enabled();
+> 	devm_regulator_get_enable();
+> }
+
+> Without a devres-based get+enable API drivers can get the resources they
+> need in any order, possibly moving some of those resource acquisition
+> operations to different functions, and then have a clear block of code
+> that enables the resources in the right order. These devres helpers give
+> a false sense of security to driver authors and they will end up
+> introducing problems, the same way that devm_kzalloc() makes it
+> outrageously easy to crash the kernel by disconnecting a device that is
+> in use.
+
+TBH I think the problem you have here is with devm not with this
+particular function.  That's a different conversation, and a totally
+valid one especially when you start looking at things like implementing
+userspace APIs which need to cope with hardware going away while still
+visible to userspace.  It's *probably* more of a subsystem conversation
+than a driver one though, or at least I think subsystems should try to
+arrange to make it so.
+
+--4yZYFMFbpCwRNWoh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmL6zvkACgkQJNaLcl1U
+h9BEBgf/WTDdAdcRZ8SC6FxARw3vM71UeFKkIqUwBU+PYuhgUK2NBJXqpbKPrtVC
+yhBxnG6LjbPlUdTmuHr7/VqE4w4fNgcbxFZcYvfbmC/oBSNtHkHDEQSOC8CTi5Ud
+BhNvQSBIa3+a6oHsz1yPIG8kL5noW4VKMVNiRuvR+6X8cSrXhZpk8GJLLWM0zBzX
+99KnGDVttgaVcftUhxYXdmdeGIIU2t9DH5HaUG3txWB3IuuRlyJxBPY1mCNfjXl2
+xZXp0tLQFshCLqDSYsTQbS8X+xDNxeBSG8hbWEDfvFHxX/YYBUAb3nZ4+npTcaVl
+gZBIzTYNJg5nvwsv+0jghdLDxGTLnQ==
+=WE6e
+-----END PGP SIGNATURE-----
+
+--4yZYFMFbpCwRNWoh--

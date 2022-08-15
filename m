@@ -2,87 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9796059311D
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 16:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 777BC593294
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 17:55:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232571AbiHOO5j (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Aug 2022 10:57:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36840 "EHLO
+        id S232120AbiHOPzH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 11:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241110AbiHOO50 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 10:57:26 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE7671D0E2;
-        Mon, 15 Aug 2022 07:57:25 -0700 (PDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27FEOq3K010791;
-        Mon, 15 Aug 2022 14:57:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=OvlQmTVemG8EiyWu0yU7RSGgTkAK6+cyFaZlq4Pif14=;
- b=kp+LstZm9FQh6AKzparnStKWEunea4bKHlByN3UOuKCK3VSfdBsYniWj2hGk+xfRzwxp
- hZun/T9dS3OmJXnth3BSEtwiOoBsoOYkNGoUVvtNubcn7Ae1La75ihi13WvzGpvfK8IO
- iDpeGJ+4BS4szhv9CrVQ7b2BItfBWFZ3JwtQ1XBmuE5P/hLjGR159R7GWa8S+fKHFojq
- +4i/BgfwxA9+x7+AKrIFsa7dBCfTBTUcBb/nEHYzG5aah5OGJ03wDOanl8/3TURil4KS
- HmQ67C44l42gdDXiy8Zn6JjwUHz3L73M2LQgzHU6MpVdvz8XrxbmJovjTUEH4YAIIGW5 WA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyqvtgtkh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 14:57:11 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27FEv4fA013401;
-        Mon, 15 Aug 2022 14:57:11 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyqvtgtjn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 14:57:11 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-        by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27FEoIN7018080;
-        Mon, 15 Aug 2022 14:57:10 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-        by ppma01wdc.us.ibm.com with ESMTP id 3hx3k94jas-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 14:57:10 +0000
-Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
-        by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27FEv9NQ2294400
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Aug 2022 14:57:09 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50A31136051;
-        Mon, 15 Aug 2022 14:57:09 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7A91613604F;
-        Mon, 15 Aug 2022 14:57:08 +0000 (GMT)
-Received: from slate16.aus.stglabs.ibm.com (unknown [9.77.146.160])
-        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Mon, 15 Aug 2022 14:57:08 +0000 (GMT)
-From:   Eddie James <eajames@linux.ibm.com>
-To:     jic23@kernel.org
-Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, eajames@linux.ibm.com,
-        andy.shevchenko@gmail.com, joel@jms.id.au
-Subject: [PATCH v5 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
-Date:   Mon, 15 Aug 2022 09:57:05 -0500
-Message-Id: <20220815145705.203017-3-eajames@linux.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220815145705.203017-1-eajames@linux.ibm.com>
-References: <20220815145705.203017-1-eajames@linux.ibm.com>
+        with ESMTP id S232201AbiHOPzF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 11:55:05 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F5191A05A;
+        Mon, 15 Aug 2022 08:55:02 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 26F5656D;
+        Mon, 15 Aug 2022 17:54:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1660578899;
+        bh=S8j7GbNbq17SRBvgGdMvUVVVDhDYQu28yqUMRIme4pw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KkMqLgeA3Hlou6eQxDNwuj/cAMOGRuZWf6psOJwAoE+lkqdgWTBYLUFWFiFmirC11
+         MV/sX2S9rJ9pHMvTFjbnnwFQbUhcqWxVXtYbPHGpZY4nQn8qmWU8YDavgsBevmlt5n
+         2eecXKodkdAhl5/HdCyGSGest6FWKhs5flNo+vq8=
+Date:   Mon, 15 Aug 2022 18:54:45 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        dri-devel@lists.freedesktop.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        linux-amlogic@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
+Message-ID: <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
+ <166057828406.697572.228317501909350108.b4-ty@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: p2d5rfkBPMceb7wf9FAXzPwN6vNY5AaJ
-X-Proofpoint-ORIG-GUID: c1KLPz-_6lUu6MSaGWcFDSpSpofrcSCq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-15_08,2022-08-15_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
- malwarescore=0 phishscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2208150056
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <166057828406.697572.228317501909350108.b4-ty@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -90,136 +78,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Corruption of the MEAS_CFG register has been observed soon after
-system boot. In order to recover this scenario, check MEAS_CFG if
-measurement isn't ready, and if it's incorrect, reset the DPS310
-and execute the startup procedure.
+On Mon, Aug 15, 2022 at 04:44:44PM +0100, Mark Brown wrote:
+> On Fri, 12 Aug 2022 13:08:17 +0300, Matti Vaittinen wrote:
+> > Devm helpers for regulator get and enable
+> > 
+> > First patch in the series is actually just a simple documentation fix
+> > which could be taken in as it is now.
+> > 
+> > A few* drivers seem to use pattern demonstrated by pseudocode:
+> > 
+> > [...]
+> 
+> Applied to
+> 
+>    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+> 
+> Thanks!
+> 
+> [1/7] docs: devres: regulator: Add missing devm_* functions to devres.rst
+>       commit: 9b6744f60b6b47bc0757a1955adb4d2c3ab22e13
+> [2/7] regulator: Add devm helpers for get and enable
+>       (no commit info)
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Reviewed-by: Joel Stanley <joel@jms.id.au>
----
- drivers/iio/pressure/dps310.c | 89 +++++++++++++++++++++++++++++------
- 1 file changed, 74 insertions(+), 15 deletions(-)
+I didn't have time to reply to the series yet, but I think this isn't a
+great idea. There are two issues:
 
-diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
-index c706a8b423b5..bbeb2f3bcc8a 100644
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -393,6 +393,45 @@ static int dps310_get_temp_k(struct dps310_data *data)
- 	return scale_factors[ilog2(rc)];
- }
- 
-+/*
-+ * Called with lock held. Returns a negative value on error, a positive value
-+ * when the device is not ready, and zero when the device is ready.
-+ */
-+static int dps310_check_reset_meas_cfg(struct dps310_data *data, int ready_bit)
-+{
-+	int rc;
-+	int meas_cfg;
-+
-+	rc = regmap_read(data->regmap, DPS310_MEAS_CFG, &meas_cfg);
-+	if (rc)
-+		return rc;
-+
-+	/* Device is ready, proceed to measurement */
-+	if (meas_cfg & ready_bit)
-+		return 0;
-+
-+	/* Device is OK, just not ready */
-+	if (meas_cfg & (DPS310_PRS_EN | DPS310_TEMP_EN | DPS310_BACKGROUND))
-+		return 1;
-+
-+	/* DPS310 register state corrupt, better start from scratch */
-+	rc = regmap_write(data->regmap, DPS310_RESET, DPS310_RESET_MAGIC);
-+	if (rc)
-+		return rc;
-+
-+	/* Wait for device chip access: 2.5ms in specification */
-+	usleep_range(2500, 12000);
-+
-+	/* Reinitialize the chip */
-+	rc = dps310_startup(data);
-+	if (rc)
-+		return rc;
-+
-+	dev_info(&data->client->dev,
-+		 "recovered from corrupted MEAS_CFG=%02x\n", meas_cfg);
-+	return 1;
-+}
-+
- static int dps310_read_pres_raw(struct dps310_data *data)
- {
- 	int rc;
-@@ -405,16 +444,26 @@ static int dps310_read_pres_raw(struct dps310_data *data)
- 	if (mutex_lock_interruptible(&data->lock))
- 		return -EINTR;
- 
--	rate = dps310_get_pres_samp_freq(data);
--	timeout = DPS310_POLL_TIMEOUT_US(rate);
--
--	/* Poll for sensor readiness; base the timeout upon the sample rate. */
--	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
--				      ready & DPS310_PRS_RDY,
--				      DPS310_POLL_SLEEP_US(timeout), timeout);
--	if (rc)
-+	rc = dps310_check_reset_meas_cfg(data, DPS310_PRS_RDY);
-+	if (rc < 0)
- 		goto done;
- 
-+	if (rc > 0) {
-+		rate = dps310_get_pres_samp_freq(data);
-+		timeout = DPS310_POLL_TIMEOUT_US(rate);
-+
-+		/*
-+		 * Poll for sensor readiness; base the timeout upon the sample
-+		 * rate.
-+		 */
-+		rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-+					      ready, ready & DPS310_PRS_RDY,
-+					      DPS310_POLL_SLEEP_US(timeout),
-+					      timeout);
-+		if (rc)
-+			goto done;
-+	}
-+
- 	rc = regmap_bulk_read(data->regmap, DPS310_PRS_BASE, val, sizeof(val));
- 	if (rc < 0)
- 		goto done;
-@@ -454,16 +503,26 @@ static int dps310_read_temp_raw(struct dps310_data *data)
- 	if (mutex_lock_interruptible(&data->lock))
- 		return -EINTR;
- 
--	rate = dps310_get_temp_samp_freq(data);
--	timeout = DPS310_POLL_TIMEOUT_US(rate);
--
--	/* Poll for sensor readiness; base the timeout upon the sample rate. */
--	rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
--				      ready & DPS310_TMP_RDY,
--				      DPS310_POLL_SLEEP_US(timeout), timeout);
-+	rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
- 	if (rc < 0)
- 		goto done;
- 
-+	if (rc > 0) {
-+		rate = dps310_get_temp_samp_freq(data);
-+		timeout = DPS310_POLL_TIMEOUT_US(rate);
-+
-+		/*
-+		 * Poll for sensor readiness; base the timeout upon the sample
-+		 * rate.
-+		 */
-+		rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
-+					      ready, ready & DPS310_TMP_RDY,
-+					      DPS310_POLL_SLEEP_US(timeout),
-+					      timeout);
-+		if (rc)
-+			goto done;
-+	}
-+
- 	rc = dps310_read_temp_ready(data);
- 
- done:
+- With devres, you don't have full control over the order in which
+  resources will be released, which means that you can't control the
+  power off sequence, in particular if it needs to be sequenced with
+  GPIOs and clocks. That's not a concern for all drivers, but this API
+  will creep in in places where it shouldn't be used, driver authours
+  should really pay attention to power management and not live with the
+  false impression that everything will be handled automatically for
+  them. In the worst cases, an incorrect power off sequence could lead
+  to hardware damage.
+
+- Powering regulators on at probe time and leaving them on is a very bad
+  practice from a power management point of view, and should really be
+  discouraged. Adding convenience helpers to make this easy is the wrong
+  message, we should instead push driver authors to implement proper
+  runtime PM.
+
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+
 -- 
-2.31.1
+Regards,
 
+Laurent Pinchart

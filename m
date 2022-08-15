@@ -2,126 +2,136 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 907ED5928D8
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 06:36:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7CF592918
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 07:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240784AbiHOEfE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Aug 2022 00:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60298 "EHLO
+        id S230470AbiHOFg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 01:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240892AbiHOEfA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 00:35:00 -0400
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D6B15718;
-        Sun, 14 Aug 2022 21:34:55 -0700 (PDT)
-Received: by mail-lf1-f45.google.com with SMTP id c28so5135531lfh.3;
-        Sun, 14 Aug 2022 21:34:55 -0700 (PDT)
+        with ESMTP id S229637AbiHOFg4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 01:36:56 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE35C12A88;
+        Sun, 14 Aug 2022 22:36:52 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id l4so7844939wrm.13;
+        Sun, 14 Aug 2022 22:36:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=iwr7XkJX8s+Vxxl+k0pY94n0/ODkYyQntmhI8k+Qn6I=;
+        b=ochcn0nAwaI+uZle8oxq2CMwsp35gCjwnpn4Q/BbMfX+/bVmddN92C70y9YQzJ8bk9
+         3YnkpIGDwNf+olWm8vc3x9RrD+G5wgQGS3MAgJZcxU6YZX1yYOG1exd2hYIaokrfH956
+         Doh55Xz+oDkE4li+WV9kkAnFw41V9U+30TY0TOjXQoGYbM69sLBEpzhqTwYI8mV5fLKW
+         WJRd6GNgOx87Afp83QtX5xz3iCja+EjwBtPFavqCbaH5k75Sbn9DsjVz5fWlEyx4T2Ao
+         CVtuCECiSvCTC8jfwK39UjB58B9BqZ+H5cqPn+MwyU9fzgAhXzV+uxTye3AslKkCpQPX
+         fj2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=koRe361yf+ju3e2grtdRsIwtJPcKdw6GpoFa2OUU6YY=;
-        b=afsAZELNeFWlzNYGj83UNLIQVgpGVhl4CjDXTewbDb2RaoNSX64KcWZjD75JqFaAzr
-         iJwogjuQ2fI4Zoo/BsXvM5AwWDnL96L1I1UprCDREI+RDlLm1gFYXvL/MW5ZMW1Febh6
-         6xz5sTGWI1dP5dejLmSPXLzPSxO4RhByjMiCMLG4hXca6axDTq8VwDLwTscXKqTEOEf7
-         ayi9lG4XzHSiFSxOyYU2eMQbLbKHea7G0Wk6IKC/PlEhW1qlWPY8oFCNc4Z3Gr57/8eY
-         v3KXnhaaijNzdYdA1x5ADZVvjLKvdKk6+SRq8Ua9pXP25WFXmpydpMChNJVtaufG/z8B
-         iaWQ==
-X-Gm-Message-State: ACgBeo3uQchoZPdxShtbv4LDHZMiUeOMg2Xe8WSpLfWu4zCqRAmURmtw
-        m4i74AYnb3SJqhH0zK76sCs=
-X-Google-Smtp-Source: AA6agR71B6BYC08TKQGaEQgjRLHE/P0rIJDvZLclVliQAyFVRPtTPVbYzi2sb6AgzdFgaR1Wnw1LvA==
-X-Received: by 2002:a05:6512:3f97:b0:48a:8549:2329 with SMTP id x23-20020a0565123f9700b0048a85492329mr4556426lfa.62.1660538093551;
-        Sun, 14 Aug 2022 21:34:53 -0700 (PDT)
-Received: from dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi (dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi. [2001:14ba:16ee:fa00::9])
-        by smtp.gmail.com with ESMTPSA id j5-20020ac24545000000b0048b28acab8csm979169lfm.64.2022.08.14.21.34.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Aug 2022 21:34:52 -0700 (PDT)
-Date:   Mon, 15 Aug 2022 07:34:36 +0300
-From:   Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 7/7] iio: Simplify drivers using
- devm_regulator_*get_enable()
-Message-ID: <YvnM3LvwRiUaLLAg@dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi>
-References: <cover.1660292316.git.mazziesaccount@gmail.com>
- <13bb483e1f3ee003ca3a6949e27eee7f505e047d.1660292316.git.mazziesaccount@gmail.com>
- <CAHp75Vcz_ufnLCE8TYBjM0b8BiS4W1AgXq8euNrUFo3WZy3=fA@mail.gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=iwr7XkJX8s+Vxxl+k0pY94n0/ODkYyQntmhI8k+Qn6I=;
+        b=3c27AUdYXzPTdvTlL7rM1hu7WbEcx4yAk2LlhLqJQWdWZsdlXeVHCG4r1o3Au2UOR2
+         BnH3TMtgXDF7XS1K0c1V2dW/MAcGe+3M/rx5TvWVIf6wLWmV0QNfEl/rRj8VMqci1Cap
+         6dVTOFGPzK1e/NoNOzHdwGyvy8Z81WVQU1yfKmg+mrc3xF4s38sxls50uTReU+XnXpIh
+         F6x7Uv+HxXfrsSvC2/SwrMau46CYS1lT51V/eWacbjjIo1eWcIYEsl1yqsotoQy7auki
+         RnDvDGPnoVhcmPEODnlVaDGLHNVA9wGChhxcXyasptz6ZkzCi6I7W5Viq38eUruhxGsD
+         mlPQ==
+X-Gm-Message-State: ACgBeo2ZdrtC657nry4AhpVWiQP5bN6euIZAyFeNs4it4oy3GTuadAW2
+        TwX3mW9OusQdnKlUZY0UovPcBRVgb4I4gpeuXJ4=
+X-Google-Smtp-Source: AA6agR6zEn89cFvufHE8chEgz2jlIkGasvC8tMwTtwMNFTMfHDOM1OkMTmoUyaytKEWPYis+Q6YeOgEF0rN7lxUcm98=
+X-Received: by 2002:a05:6000:178f:b0:221:7dcb:7cbf with SMTP id
+ e15-20020a056000178f00b002217dcb7cbfmr7791842wrg.58.1660541811221; Sun, 14
+ Aug 2022 22:36:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="41Y4qJgjVrNBiXfo"
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vcz_ufnLCE8TYBjM0b8BiS4W1AgXq8euNrUFo3WZy3=fA@mail.gmail.com>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <20220805070610.3516-1-peterwu.pub@gmail.com> <20220805070610.3516-11-peterwu.pub@gmail.com>
+In-Reply-To: <20220805070610.3516-11-peterwu.pub@gmail.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Date:   Mon, 15 Aug 2022 08:36:39 +0300
+Message-ID: <CANhJrGOmFiC42_F+vX9zxg0uP_wdjQbBCPyn6+Zy3DkBycnaGw@mail.gmail.com>
+Subject: Re: [PATCH v7 10/13] power: supply: mt6370: Add MediaTek MT6370
+ charger driver
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>, daniel.thompson@linaro.org,
+        jingoohan1@gmail.com, Pavel Machek <pavel@ucw.cz>,
+        Rob Herring <robh+dt@kernel.org>,
+        krzysztof.kozlowski+dt@linaro.org,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>, chunfeng.yun@mediatek.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        deller@gmx.de, Andy Shevchenko <andy.shevchenko@gmail.com>,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-usb@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, szunichen@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi ChiaEn,
 
---41Y4qJgjVrNBiXfo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+pe 5. elok. 2022 klo 10.09 ChiaEn Wu (peterwu.pub@gmail.com) kirjoitti:
+>
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>
+> MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> driver, display bias voltage supply, one general purpose LDO, and the
+> USB Type-C & PD controller complies with the latest USB Type-C and PD
+> standards.
+>
+> Add a support for the MediaTek MT6370 Charger driver. The charger module
+> of MT6370 supports High-Accuracy Voltage/Current Regulation,
+> Average Input Current Regulation, Battery Temperature Sensing,
+> Over-Temperature Protection, DPDM Detection for BC1.2.
+>
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+>
+> +
+> +#define MT6370_CHG_LINEAR_RANGE(_rfd, _min, _min_sel, _max_sel, _step) \
+> +[_rfd] = {                                                             \
+> +       .min = _min,                                                    \
+> +       .min_sel = _min_sel,                                            \
+> +       .max_sel = _max_sel,                                            \
+> +       .step = _step,                                                  \
+> +}
 
-Morning Andy,
-
-On Fri, Aug 12, 2022 at 09:05:52PM +0200, Andy Shevchenko wrote:
-> On Friday, August 12, 2022, Matti Vaittinen <mazziesaccount@gmail.com>
-> wrote:
->=20
-> > adc/ad7192:
-> > Use devm_regulator_get_enable() instead of open coded get, enable,
-> > add-action-to-disable-at-detach - pattern. Also drop the seemingly unus=
-ed
-> > struct member 'dvdd'.
->=20
-> In IIO we expect to have one patch per driver. Please split.
-
-Fine with me. I didn't go through too many drivers anyways. I'll split
-for the v3. I'll just wait for a while for other feedback.
+Just a minor thing but I think this macro could be useful also for
+other drivers. Do you think you could rename it to LINEAR_RANGE_IDX()
+(or some such) and move it to the linear_range.h? That would allow
+also other drivers to use it instead of reinventing the wheel :)
 
 Best Regards
-  Matti
+  -- Matti Vaittinen
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
 
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
 
---41Y4qJgjVrNBiXfo
-Content-Type: application/pgp-signature; name="signature.asc"
+---
 
------BEGIN PGP SIGNATURE-----
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL5zNgACgkQeFA3/03a
-ocV5EggAoPQpVk1csTJRDsQpNBj7nDvr8lCkwwJPlXJMMuTgB5+jz8TOInP16VXh
-KrKRjzLJqycV/Xz1u0OPIWryRQdQvHoKAHQjEbmiDVSNWNNvOMeSfHqRHT2XIPc2
-Owxsbaxj5e7+0NFK4wtGQ3juWkt561CvMPi1DfAjNXStPE/rxbkCDXZlA571RrWB
-eCn/DHJk9aNWeLNKNT8IZYVqjePmX3MDxbsP7oxMcs1hbddSrtowRnw6Ux+KZpRt
-1XsTIZ6S8kJuujMvhbjHZlYunIaTXvkyc4LqvXc7x8vR0NZpkh3z9v3Wy62VlHGL
-eRSwU4Vo5B451BagBtSxlp7+SYtL6g==
-=zIfe
------END PGP SIGNATURE-----
-
---41Y4qJgjVrNBiXfo--
+~~ When things go utterly wrong vim users can always type :help! ~~

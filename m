@@ -2,67 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BA7759302A
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 15:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A5759305B
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 15:59:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240428AbiHONn0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Aug 2022 09:43:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54828 "EHLO
+        id S232757AbiHON73 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 09:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232733AbiHONnV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 09:43:21 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B7B2251C;
-        Mon, 15 Aug 2022 06:43:19 -0700 (PDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27FDcklU009953;
-        Mon, 15 Aug 2022 13:43:00 GMT
+        with ESMTP id S231778AbiHON72 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 09:59:28 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC30922B23;
+        Mon, 15 Aug 2022 06:59:26 -0700 (PDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27FDhZRC010502;
+        Mon, 15 Aug 2022 13:59:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=/QejwWSv25AbtQ5g+A1KD9oPSOPx4OGfAYj3D1lM1fU=;
- b=XdBM1iijIgnU7DcQ2Hi0mvNSGnOebWBuy7TWXkRvGCcIHD1c7X3fgM9ExXcwaGU8br5t
- 2sow4tJPiH3svWgqdEG7WqnH4+1Mqj0ZkVeNSTnPwT2La7CgDBBwBFrR7eFV/Up9zbAF
- Ysg4AM6oFevM5lF2cPkrqsuQTU9gHR9QxkgjID4ztFSbltyC/PPT3r0jI+lqSBo+E9Zk
- b3KFViQWf3OtbobkVPItuVvG+ZyzAXVzQvfhcexWaChmXHTr8xCUqigC4wAl/xTILFR1
- lFPuK+DgqJl9Igcfqhl3xopHFHwQ1k5oDXY+hIIM42KwOha/nL35KjUDEMa4Nc0Ryouo QQ== 
+ bh=oyXLuDwoqKoBqtixFcLUxvAdEJpipLRmAoin7itaNu4=;
+ b=kHdRad97OBPdppFHAtUUKwazvszb+Ed1qRuHDoWeVXFbB8H3VTeEmpyZT9de4fxpzcDH
+ VS/Egyka1MzYlZmojnbxayWa2p0xrc3/zilxgejklkbVVMJXFbLl4n9LSnR1wepvVIfG
+ 0IpiwS17q4GFDlR5ZAAINXrUHeaLo0guvqGLE9hOUg3n3SD1q1+SXtiW9Okzdezro8bL
+ QOoXCe+fS6u0Kqhk8lfaqbeUMwP5OyQRvp/KlKqzy2sS5Nnce2hz/gI9fTYGJOo4uzSA
+ /1eufCnGlSJKkrbdfdydWY0FLnMDc//pDcXl219DKSr4ehjK2T2eyZMCBFJjDKIk1Phi iQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyny39w1u-1
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyq9h0cxg-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 13:42:59 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27FDdnKh013865;
-        Mon, 15 Aug 2022 13:42:59 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-        by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyny39w1h-1
+        Mon, 15 Aug 2022 13:59:06 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27FDiK5v014684;
+        Mon, 15 Aug 2022 13:59:06 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyq9h0cw1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 13:42:59 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-        by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27FDgXnG004229;
-        Mon, 15 Aug 2022 13:42:58 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
-        by ppma02dal.us.ibm.com with ESMTP id 3hx3k9qa2b-1
+        Mon, 15 Aug 2022 13:59:06 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+        by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27FDnjqM014593;
+        Mon, 15 Aug 2022 13:59:04 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+        by ppma02wdc.us.ibm.com with ESMTP id 3hx3k9m91d-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 15 Aug 2022 13:42:58 +0000
+        Mon, 15 Aug 2022 13:59:04 +0000
 Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com [9.57.199.108])
-        by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27FDgvAn29884696
+        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27FDx4RK1507942
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 15 Aug 2022 13:42:57 GMT
+        Mon, 15 Aug 2022 13:59:04 GMT
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 869BFB2064;
-        Mon, 15 Aug 2022 13:42:57 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id F2B14B205F;
+        Mon, 15 Aug 2022 13:59:03 +0000 (GMT)
 Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 09B28B205F;
-        Mon, 15 Aug 2022 13:42:57 +0000 (GMT)
+        by IMSVA (Postfix) with ESMTP id 80DCAB2064;
+        Mon, 15 Aug 2022 13:59:03 +0000 (GMT)
 Received: from [9.77.146.160] (unknown [9.77.146.160])
         by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
-        Mon, 15 Aug 2022 13:42:56 +0000 (GMT)
-Message-ID: <e35b595f-572e-a539-c550-831cdd02dbd3@linux.ibm.com>
-Date:   Mon, 15 Aug 2022 08:42:56 -0500
+        Mon, 15 Aug 2022 13:59:03 +0000 (GMT)
+Message-ID: <f56c7486-2b78-48ac-3c5d-c7c20d1e78f5@linux.ibm.com>
+Date:   Mon, 15 Aug 2022 08:59:03 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH v4 1/2] iio: pressure: dps310: Refactor startup procedure
+Subject: Re: [PATCH v4 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is
+ corrupt
 Content-Language: en-US
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
@@ -71,21 +72,21 @@ Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Joel Stanley <joel@jms.id.au>
 References: <20220809211246.251006-1-eajames@linux.ibm.com>
- <20220809211246.251006-2-eajames@linux.ibm.com>
- <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
+ <20220809211246.251006-3-eajames@linux.ibm.com>
+ <CAHp75VdbRiWxxbnW61SNdj+pC4skeRF3prXgPvKB+btjW3dLKw@mail.gmail.com>
 From:   Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
+In-Reply-To: <CAHp75VdbRiWxxbnW61SNdj+pC4skeRF3prXgPvKB+btjW3dLKw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _eQzC3Z0Yc7g2W_YwIW1yZYJV6yMex0F
-X-Proofpoint-ORIG-GUID: Q-YmOmomzNIFJE4sC72vP3YTKFL-XQRM
+X-Proofpoint-ORIG-GUID: eFzUiPUmn3NZt_6_sBugfKfki2IlSf4G
+X-Proofpoint-GUID: vYziDs7p1oPGlA5fHTRZq0IjfzH4MXk-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-08-15_08,2022-08-15_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 spamscore=0 mlxlogscore=999
- phishscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 bulkscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 mlxscore=0 impostorscore=0 priorityscore=1501
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
  definitions=main-2208150053
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -99,252 +100,152 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On 8/12/22 17:03, Andy Shevchenko wrote:
+On 8/12/22 17:13, Andy Shevchenko wrote:
 > On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:
->> Move the startup procedure into a function, and correct a missing
->> check on the return code for writing the PRS_CFG register.
-> Code looks good, one remark below.
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Corruption of the MEAS_CFG register has been observed soon after
+>> system boot. In order to recover this scenario, check MEAS_CFG if
+>> measurement isn't ready, and if it's incorrect, reset the DPS310
+>> and execute the startup procedure.
+> Looks like both patches miss the Fixes tag. Can you add them?
+
+
+Well this isn't really a software fix - there's no identifiable bug in 
+the driver. Just trying to recover the chip in this observed mystery 
+scenario.
+
+
 >
->> Signed-off-by: Eddie James <eajames@linux.ibm.com>
->> Reviewed-by: Joel Stanley <joel@jms.id.au>
->> ---
->>   drivers/iio/pressure/dps310.c | 188 ++++++++++++++++++----------------
->>   1 file changed, 99 insertions(+), 89 deletions(-)
->>
->> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
->> index 36fb7ae0d0a9..c706a8b423b5 100644
->> --- a/drivers/iio/pressure/dps310.c
->> +++ b/drivers/iio/pressure/dps310.c
->> @@ -159,6 +159,102 @@ static int dps310_get_coefs(struct dps310_data *data)
->>          return 0;
->>   }
->>
+> ...
+>
 >> +/*
->> + * Some versions of the chip will read temperatures in the ~60C range when
->> + * it's actually ~20C. This is the manufacturer recommended workaround
->> + * to correct the issue. The registers used below are undocumented.
+>> + * Called with lock held. Returns a negative value on error, a positive value
+>> + * when the device is not ready, and zero when the device is ready.
 >> + */
->> +static int dps310_temp_workaround(struct dps310_data *data)
+>> +static int dps310_check_reset_meas_cfg(struct dps310_data *data, int ready_bit)
 >> +{
->> +       int rc;
->> +       int reg;
+>> +       int meas_cfg;
+>> +       int rc = regmap_read(data->regmap, DPS310_MEAS_CFG, &meas_cfg);
 >> +
->> +       rc = regmap_read(data->regmap, 0x32, &reg);
->> +       if (rc)
+>> +       if (rc < 0)
 >> +               return rc;
->> +
->> +       /*
->> +        * If bit 1 is set then the device is okay, and the workaround does not
->> +        * need to be applied
->> +        */
->> +       if (reg & BIT(1))
+> Please, split definition and assignment.
+
+
+Ack.
+
+
+>
+>> +       /* Device is ready, proceed to measurement */
+>> +       if (meas_cfg & ready_bit)
 >> +               return 0;
 >> +
->> +       rc = regmap_write(data->regmap, 0x0e, 0xA5);
->> +       if (rc)
+>> +       /* Device is OK, just not ready */
+>> +       if (meas_cfg & (DPS310_PRS_EN | DPS310_TEMP_EN | DPS310_BACKGROUND))
+>> +               return 1;
+>> +
+>> +       /* DPS310 register state corrupt, better start from scratch */
+>> +       rc = regmap_write(data->regmap, DPS310_RESET, DPS310_RESET_MAGIC);
+>> +       if (rc < 0)
 >> +               return rc;
 >> +
->> +       rc = regmap_write(data->regmap, 0x0f, 0x96);
->> +       if (rc)
->> +               return rc;
-> This code already exists, but still want to ask, is it really
-> byte-registers here and not be16/le16 one? In such a case perhaps bulk
-> write can be used to reflect it better?
-
-
-The temperature and pressure regs are 24 bits big endian, and all the 
-rest are 8 bits. I think the existing approach is best.
-
-
-Thanks Andy!
-
-
->
->> +       rc = regmap_write(data->regmap, 0x62, 0x02);
->> +       if (rc)
->> +               return rc;
+>> +       /* Wait for device chip access: 2.5ms in specification */
+>> +       usleep_range(2500, 12000);
 >> +
->> +       rc = regmap_write(data->regmap, 0x0e, 0x00);
->> +       if (rc)
->> +               return rc;
->> +
->> +       return regmap_write(data->regmap, 0x0f, 0x00);
-> Ditto.
->
->> +}
->> +
->> +static int dps310_startup(struct dps310_data *data)
->> +{
->> +       int rc;
->> +       int ready;
->> +
->> +       /*
->> +        * Set up pressure sensor in single sample, one measurement per second
->> +        * mode
->> +        */
->> +       rc = regmap_write(data->regmap, DPS310_PRS_CFG, 0);
->> +       if (rc)
->> +               return rc;
->> +
->> +       /*
->> +        * Set up external (MEMS) temperature sensor in single sample, one
->> +        * measurement per second mode
->> +        */
->> +       rc = regmap_write(data->regmap, DPS310_TMP_CFG, DPS310_TMP_EXT);
->> +       if (rc)
->> +               return rc;
->> +
->> +       /* Temp and pressure shifts are disabled when PRC <= 8 */
->> +       rc = regmap_write_bits(data->regmap, DPS310_CFG_REG,
->> +                              DPS310_PRS_SHIFT_EN | DPS310_TMP_SHIFT_EN, 0);
->> +       if (rc)
->> +               return rc;
->> +
->> +       /* MEAS_CFG doesn't update correctly unless first written with 0 */
->> +       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
->> +                              DPS310_MEAS_CTRL_BITS, 0);
->> +       if (rc)
->> +               return rc;
->> +
->> +       /* Turn on temperature and pressure measurement in the background */
->> +       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
->> +                              DPS310_MEAS_CTRL_BITS, DPS310_PRS_EN |
->> +                              DPS310_TEMP_EN | DPS310_BACKGROUND);
->> +       if (rc)
->> +               return rc;
->> +
->> +       /*
->> +        * Calibration coefficients required for reporting temperature.
->> +        * They are available 40ms after the device has started
->> +        */
->> +       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
->> +                                     ready & DPS310_COEF_RDY, 10000, 40000);
->> +       if (rc)
->> +               return rc;
->> +
->> +       rc = dps310_get_coefs(data);
->> +       if (rc)
->> +               return rc;
->> +
->> +       return dps310_temp_workaround(data);
->> +}
->> +
->>   static int dps310_get_pres_precision(struct dps310_data *data)
->>   {
->>          int rc;
->> @@ -677,52 +773,12 @@ static const struct iio_info dps310_info = {
->>          .write_raw = dps310_write_raw,
->>   };
->>
->> -/*
->> - * Some verions of chip will read temperatures in the ~60C range when
->> - * its actually ~20C. This is the manufacturer recommended workaround
->> - * to correct the issue. The registers used below are undocumented.
->> - */
->> -static int dps310_temp_workaround(struct dps310_data *data)
->> -{
->> -       int rc;
->> -       int reg;
->> -
->> -       rc = regmap_read(data->regmap, 0x32, &reg);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       /*
->> -        * If bit 1 is set then the device is okay, and the workaround does not
->> -        * need to be applied
->> -        */
->> -       if (reg & BIT(1))
->> -               return 0;
->> -
->> -       rc = regmap_write(data->regmap, 0x0e, 0xA5);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       rc = regmap_write(data->regmap, 0x0f, 0x96);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       rc = regmap_write(data->regmap, 0x62, 0x02);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       rc = regmap_write(data->regmap, 0x0e, 0x00);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       return regmap_write(data->regmap, 0x0f, 0x00);
->> -}
->> -
->>   static int dps310_probe(struct i2c_client *client,
->>                          const struct i2c_device_id *id)
->>   {
->>          struct dps310_data *data;
->>          struct iio_dev *iio;
->> -       int rc, ready;
->> +       int rc;
->>
->>          iio = devm_iio_device_alloc(&client->dev,  sizeof(*data));
->>          if (!iio)
->> @@ -747,54 +803,8 @@ static int dps310_probe(struct i2c_client *client,
->>          if (rc)
->>                  return rc;
->>
->> -       /*
->> -        * Set up pressure sensor in single sample, one measurement per second
->> -        * mode
->> -        */
->> -       rc = regmap_write(data->regmap, DPS310_PRS_CFG, 0);
->> -
->> -       /*
->> -        * Set up external (MEMS) temperature sensor in single sample, one
->> -        * measurement per second mode
->> -        */
->> -       rc = regmap_write(data->regmap, DPS310_TMP_CFG, DPS310_TMP_EXT);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       /* Temp and pressure shifts are disabled when PRC <= 8 */
->> -       rc = regmap_write_bits(data->regmap, DPS310_CFG_REG,
->> -                              DPS310_PRS_SHIFT_EN | DPS310_TMP_SHIFT_EN, 0);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       /* MEAS_CFG doesn't update correctly unless first written with 0 */
->> -       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
->> -                              DPS310_MEAS_CTRL_BITS, 0);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       /* Turn on temperature and pressure measurement in the background */
->> -       rc = regmap_write_bits(data->regmap, DPS310_MEAS_CFG,
->> -                              DPS310_MEAS_CTRL_BITS, DPS310_PRS_EN |
->> -                              DPS310_TEMP_EN | DPS310_BACKGROUND);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       /*
->> -        * Calibration coefficients required for reporting temperature.
->> -        * They are available 40ms after the device has started
->> -        */
->> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
->> -                                     ready & DPS310_COEF_RDY, 10000, 40000);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       rc = dps310_get_coefs(data);
->> -       if (rc < 0)
->> -               return rc;
->> -
->> -       rc = dps310_temp_workaround(data);
->> -       if (rc < 0)
+>> +       /* Reinitialize the chip */
 >> +       rc = dps310_startup(data);
 >> +       if (rc)
->>                  return rc;
+>> +               return rc;
+>> +
+>> +       dev_info(&data->client->dev,
+>> +                "recovered from corrupted MEAS_CFG=%02x\n", meas_cfg);
+>> +       return 1;
+>> +}
+>> +
+>>   static int dps310_read_pres_raw(struct dps310_data *data)
+>>   {
+>>          int rc;
+>> @@ -405,16 +443,26 @@ static int dps310_read_pres_raw(struct dps310_data *data)
+>>          if (mutex_lock_interruptible(&data->lock))
+>>                  return -EINTR;
 >>
->>          rc = devm_iio_device_register(&client->dev, iio);
->> --
->> 2.31.1
+>> -       rate = dps310_get_pres_samp_freq(data);
+>> -       timeout = DPS310_POLL_TIMEOUT_US(rate);
+>> -
+>> -       /* Poll for sensor readiness; base the timeout upon the sample rate. */
+>> -       rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready,
+>> -                                     ready & DPS310_PRS_RDY,
+>> -                                     DPS310_POLL_SLEEP_US(timeout), timeout);
+>> -       if (rc)
+>> +       rc = dps310_check_reset_meas_cfg(data, DPS310_PRS_RDY);
+>> +       if (rc < 0)
+>>                  goto done;
 >>
+>> +       if (rc > 0) {
+>> +               rate = dps310_get_pres_samp_freq(data);
+>> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
+>> +
+>> +               /*
+>> +                * Poll for sensor readiness; base the timeout upon the sample
+>> +                * rate.
+>> +                */
+>> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
+>> +                                             ready, ready & DPS310_PRS_RDY,
+>> +                                             DPS310_POLL_SLEEP_US(timeout),
+>> +                                             timeout);
+>> +               if (rc)
+>> +                       goto done;
+>> +       }
+> If you split the condition body to a helper, it can be rewritten like
+> (also note special definition for positive returned numbers):
+>
+>    rc = ..._reset_meas_cfg(...);
+>    if (rc  == DPS310_MEAS_NOT_READY)
+>      rc = ..._new_helper_func(...);
+>    if (rc)
+>      goto done;
+>
+> and looking at this it might be worth considering calling that
+> conditional in the middle in the _reset_meas_cfg(), so the latter will
+> return either 0 or negative error code.
+
+
+To be honest that looks more complicated than the way it is now? And I 
+don't think I can make it common between the temp and pressure without 
+some complicated macro business.
+
+
+>
+>> +       rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
+>>          if (rc < 0)
+>>                  goto done;
+>>
+>> +       if (rc > 0) {
+>> +               rate = dps310_get_temp_samp_freq(data);
+> Okay, I see this function is different, but still you may realize a
+> helper from below and something like above suggestion can still be
+> achieved.
+>
+>> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
+>> +
+>> +               /*
+>> +                * Poll for sensor readiness; base the timeout upon the sample
+>> +                * rate.
+>> +                */
+>> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
+>> +                                             ready, ready & DPS310_TMP_RDY,
+>> +                                             DPS310_POLL_SLEEP_US(timeout),
+>> +                                             timeout);
+>> +               if (rc < 0)
+> Why out of a sudden ' < 0'?
+
+
+Good point, I'll fix that.
+
+
+>
+>> +                       goto done;
+>> +       }
+> As per above.
+>
+>>          rc = dps310_read_temp_ready(data);
 >

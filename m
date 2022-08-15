@@ -2,148 +2,182 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43F8B593350
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 18:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DEB8593908
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 21:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbiHOQdX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Aug 2022 12:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55398 "EHLO
+        id S245087AbiHOTFM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 15:05:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229754AbiHOQdW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 12:33:22 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753BA14D2A;
-        Mon, 15 Aug 2022 09:33:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 39891B80EF0;
-        Mon, 15 Aug 2022 16:33:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E692C433D6;
-        Mon, 15 Aug 2022 16:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660581199;
-        bh=kBOMgsseA60cqKb8ZaWTeKRcdiuM8BBVMgx3WGOT2Vw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rmTxXiWdCfaKxjfeSH/wn3LpbaEYrRaZCw1f92jgSGWCcG2dAITp6jUamOj/9Et5l
-         NLxQdQJ6bRwiBMzF3WOgxKy/ruO+5WFA5KyvFSSpRu6Jp4vPceQTBAGYsxJnkRaDiF
-         VQs4HiAFoB6wMNroGRnPP1YIk98jhwB97kSZHSmw+l5iAPSEtqIYeHeV+2kguNbDCh
-         OMOaadd3jKZLNLo5Ra4binpuaeeuHjzws48ygCy26/f3fh0/Z6Z2lPNoKbe/MHMGoD
-         GRXNAh75/ymq45hZtYg5HjEKzu7bs/86N8gD/EMtnzrZtzuqtoEpW8lvyZOhjfQys0
-         rKBQntmgxyAVw==
-Date:   Mon, 15 Aug 2022 17:33:06 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        dri-devel@lists.freedesktop.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Kevin Hilman <khilman@baylibre.com>,
-        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        linux-amlogic@lists.infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
-Message-ID: <Yvp1Qkuh7xfeb/B2@sirena.org.uk>
-References: <cover.1660292316.git.mazziesaccount@gmail.com>
- <166057828406.697572.228317501909350108.b4-ty@kernel.org>
- <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
+        with ESMTP id S245089AbiHOTDY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 15:03:24 -0400
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EE64357F7;
+        Mon, 15 Aug 2022 11:34:00 -0700 (PDT)
+Received: by mail-pl1-x634.google.com with SMTP id jm11so4845059plb.13;
+        Mon, 15 Aug 2022 11:34:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=aKqmajQ9X+EYzsYtEXOQFkHP1rwVZnhO5f2qFoxc1VE=;
+        b=BmF6atkwIPKXb6BsniFXPjql0MUeyRBrbnS1/YGf2d2mz2fta+bfm3CO4Puzpy9Vc6
+         Xq+txbm9ZPu99JX5OTQcuv0KiuNZIGMMbB9ehIM3vCGewBVQK8BLLFihFf2/yKM2R6p4
+         jntZcnwMXUAkRSRhBjvuPnouf+b5JhzPxSnBVEZ6QhtVAR6ZpBUGtagIECE30D7bjjDH
+         S2q73rOnErwSdWf+1iXdaktG4Or8cKh3NiCCFJ82qbbwn/4N3ittI4ec996wrryFcLRC
+         Eq2bx/BEbGNDlPXPKgKDbBMcVrTpOB2g0U3i1NwlxoAhbpbw/kiu/j1bTcr25KQjTIHb
+         JdUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=aKqmajQ9X+EYzsYtEXOQFkHP1rwVZnhO5f2qFoxc1VE=;
+        b=eW3hzj1Tr/ZCHtl8m5yzD8jC0pYO7auIAOJ606QNsv9BimoPntM4sxdqN+cePwTRLI
+         ZdhhsM9fRP/Fps3mJwvrjEcpCi9ZFf0uEJGVHTbC3xTneezkoY8lF+mALGNFdIETDRLI
+         pBv35VOH5Ud3bCMvZvSWGcU7dLlBvq8nViy7tqgSfb5tuUtH9DXlP0rRGwmAVjdxYBdQ
+         HNA2vagPUxaL2wrz6bb4vhG2298qo6zgBAZGqNB0S2DTv5bF9IIIQCfm2XUd9Dfm2vFf
+         aGvTQu4JLWk22QU4CujRdspVNMQtdN/UuVRmaqG4fjEsrbP3O/DVh26le/erbx4vD61g
+         iuxQ==
+X-Gm-Message-State: ACgBeo2IWDyixGmptDTkrIxlpYnjBbL11YM0Snzfzhi0nUbXKaaEpQW7
+        chr46j2o6h+8e4FQgjCBgB/ZBbnKXkG5ftlEuygAwL5yJqo=
+X-Google-Smtp-Source: AA6agR4GbyJlO7YOnmFCtWHmVv8XGdHtHQKpmW2JZwowFjFLQsWJ1WdTNi1d5MWhLR/SXsdZ6mhB/x/PuQXrbWp6zdQ=
+X-Received: by 2002:a17:902:d2c6:b0:16e:d285:c602 with SMTP id
+ n6-20020a170902d2c600b0016ed285c602mr18077608plc.81.1660588439508; Mon, 15
+ Aug 2022 11:33:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="EyxHVb4W1IFNOeWj"
-Content-Disposition: inline
-In-Reply-To: <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
-X-Cookie: We have ears, earther...FOUR OF THEM!
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220813071803.4692-1-jagathjog1996@gmail.com>
+ <20220813071803.4692-2-jagathjog1996@gmail.com> <20220814180451.44a27126@jic23-huawei>
+In-Reply-To: <20220814180451.44a27126@jic23-huawei>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Tue, 16 Aug 2022 00:03:47 +0530
+Message-ID: <CAM+2EuJu3g98NOt2tOxPzWnGO3kvFNkruuAeZBd-=VxYvw7x9Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: Add new event type gesture and use direction
+ for single and double tap
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi Jonathan,
 
---EyxHVb4W1IFNOeWj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Sun, Aug 14, 2022 at 10:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Sat, 13 Aug 2022 12:48:02 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> > Add new event type for tap called gesture and the direction can be used
+> > to differentiate single and double tap. This may be used by accelerometer
+> > sensors to express single and double tap events. For directional tap,
+> > modifiers like IIO_MOD_(X/Y/Z) can be used along with singletap and
+> > doubletap direction.
+> >
+> > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>
+> Hi Jagath,
+>
+> This ABI is definitely something I want more eyes than ours on, so
+> whatever happens I'll leave it on the list for a few weeks.
 
-On Mon, Aug 15, 2022 at 06:54:45PM +0300, Laurent Pinchart wrote:
+Sure, I will leave KernelVersion blank in the next series.
 
-> - With devres, you don't have full control over the order in which
->   resources will be released, which means that you can't control the
->   power off sequence, in particular if it needs to be sequenced with
->   GPIOs and clocks. That's not a concern for all drivers, but this API
->   will creep in in places where it shouldn't be used, driver authours
->   should really pay attention to power management and not live with the
->   false impression that everything will be handled automatically for
->   them. In the worst cases, an incorrect power off sequence could lead
->   to hardware damage.
+>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio | 41 +++++++++++++++++++++++++
+> >  drivers/iio/industrialio-event.c        |  7 ++++-
+> >  include/linux/iio/types.h               |  2 ++
+> >  include/uapi/linux/iio/types.h          |  3 ++
+> >  tools/iio/iio_event_monitor.c           |  8 ++++-
+> >  5 files changed, 59 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index e81ba6f5e1c8..54cb925f714c 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -2038,3 +2038,44 @@ Description:
+> >               Available range for the forced calibration value, expressed as:
+> >
+> >               - a range specified as "[min step max]"
+> > +
+> > +What:                /sys/.../events/in_accel_gesture_singletap_en
+> > +What:                /sys/.../events/in_accel_gesture_doubletap_en
+> > +KernelVersion:       5.21
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Device generates an event on a single or double tap.
+> > +
+> > +What:                /sys/.../events/in_accel_gesture_singletap_value
+> > +What:                /sys/.../events/in_accel_gesture_doubletap_value
+> > +KernelVersion:       5.21
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Specifies the threshold value that the device is comparing
+> > +             against to generate the tap gesture event. Units and exact
+> > +             meaning of value are device specific.
+>
+> I wonder if we should list a direction?  As in smaller is more sensitive?
 
-I basically agree with these concerns which is why I was only happy with
-this API when Matti suggested doing it in a way that meant that the
-callers are unable to access the regulator at runtime, this means that
-if anyone wants to do any kind of management of the power state outside
-of probe and remove they are forced to convert to the full fat APIs.
-The general ordering concern with devm is that the free happens too late
-but for the most part this isn't such a concern with regulators, they
-might have delayed power off anyway due to sharing - it's no worse than
-memory allocation AFAICT.  Given all the other APIs using devm it's
-probably going to end up fixing some bugs.
+Yeah in most of the devices which support tap, this value represents the
+threshold, the lower the value higher the tap sensitivity. I will add it to the
+description in the next series.
 
-For sequencing I'm not convinced it's much worse than the bulk API is
-anyway, and practically speaking I expect most devices that have
-problems here will also need more control over power anyway - it's
-certainly the common case that hardware has pretty basic requirements
-and is fairly tolerant.
+> (at least to first approximation)
+Do I need to add available attributes into ABI docs?
 
-> - Powering regulators on at probe time and leaving them on is a very bad
->   practice from a power management point of view, and should really be
->   discouraged. Adding convenience helpers to make this easy is the wrong
->   message, we should instead push driver authors to implement proper
->   runtime PM.
+> That way a user would at least be able to consistently decide if they should
+> raise or lower the number to get the perf the want.
+>
+> > +
+> > +What:                /sys/.../events/in_accel_gesture_singletap_reset_timeout
+> > +What:                /sys/.../events/in_accel_gesture_doubletap_reset_timeout
+> > +KernelVersion:       5.21
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Specifies the timeout value in seconds for the tap detector
+> > +             to not to look for another tap event after the event as
+> > +             occoured. Basically the minimum quiet time between the two
+> spelling.  occured
 
-The stick simply isn't working here as far as I can see.
+Sorry, I will correct this.
 
---EyxHVb4W1IFNOeWj
-Content-Type: application/pgp-signature; name="signature.asc"
+Thank you
+Jagath
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmL6dUIACgkQJNaLcl1U
-h9BS1Qf/aJ5FfSf2ZpgAnj2K1EYyJTQAf5hxweM6P8/UPf0PG25qZnrQ04w2KT+U
-J0dyFRSYl6wQbpFV7qxu5fLJC4OGjrDvyUmF+FgpX4qXSZYWhspqlsH73vA5olJB
-JssncwLyZQcX9kCua0RpN2NZ0+L7PAywvZ87c+2Ss00YkuS4GSE3CmeK3AhmHYfP
-4sjjQuZeLgAF3KmoG8ImBJh+a9aRORWWmvVboZ4reeEkMfnIC37kD92wTH6+ubec
-Rink1Toz39UYEOFWWLMmC9VkRDTunn4JGF6ei4tDrxADrV2aCJ+05N5wV7N0Eg/D
-37fKiGeyHN4cc64BVj5NW6aFp6UfgQ==
-=aGMq
------END PGP SIGNATURE-----
-
---EyxHVb4W1IFNOeWj--
+>
+> > +             single-tap's or two double-tap's.
+> > +
+> > +What:                /sys/.../events/in_accel_gesture_doubletap_tap_2min_delay
+>
+> I'm not sure this naming is intuitive enough. Might be a simple
+> as doubletap_tap2_min_delay?  My brain didn't parse 2min correctly.
+>
+> This one is a bit odd, so definitely want to hear more view points on whether
+> this is general enough to cover sensors and intuitive enough that people
+> have some hope of setting it right.
+>
+> > +KernelVersion:       5.21
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Specifies the minimum quiet time in seconds between the two
+> > +             taps of a double tap.
+> > +
+> > +What:                /sys/.../events/in_accel_gesture_maxtomin_time
+> > +KernelVersion:       5.21
+> > +Contact:     linux-iio@vger.kernel.org
+> > +Description:
+> > +             Specifies the maximum time difference allowed between upper
+> > +             and lower peak of tap to consider it as the valid tap event.
+> > +             Units in seconds.
+> Needs to be associated with 'tap' in the naming.
+> Easiest is probably only to define it as
+> singletap_maxtomin_time + doubletap_maxtomin_time and not have the
+> shared version as we'd lose the 'tap' part of the name.
+>
+>

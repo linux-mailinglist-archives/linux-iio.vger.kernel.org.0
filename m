@@ -2,249 +2,257 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A7555951B5
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 07:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C79D95951F5
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 07:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232122AbiHPFKo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 01:10:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49806 "EHLO
+        id S232193AbiHPF0s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 01:26:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233237AbiHPFK3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 01:10:29 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CFDEB7D;
-        Mon, 15 Aug 2022 14:17:33 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (62-78-145-57.bb.dnainternet.fi [62.78.145.57])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 4BAA14A8;
-        Mon, 15 Aug 2022 23:17:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1660598250;
-        bh=pCnWOyYQJD4j11XgJ0GlxYcAIBMe8A6Sxydodg9cSa8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gVUsIzyMoGKbH0xo1BXLI6EWSr453RLeYo6MozOHT1TRxdqNZJRRo/yuIxkYBHlv0
-         yE1Ild8p7WnalT/f7wtm1cFLxW/27Hu1BfW4LKKWM6mNPgqxh8mSjsEoG2P5mx/wwk
-         ki+Blo00JXPbpgGVIk59LB8Z06WIGqOQolVaEsW0=
-Date:   Tue, 16 Aug 2022 00:17:17 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Stephen Boyd <sboyd@kernel.org>
-Cc:     Mark Brown <broonie@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        dri-devel@lists.freedesktop.org,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Kevin Hilman <khilman@baylibre.com>,
-        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        linux-amlogic@lists.infradead.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Michael Turq uette <mturquette@baylibre.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
-Message-ID: <Yvq33T+XCduoqv7Z@pendragon.ideasonboard.com>
-References: <cover.1660292316.git.mazziesaccount@gmail.com>
- <166057828406.697572.228317501909350108.b4-ty@kernel.org>
- <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
- <Yvp1Qkuh7xfeb/B2@sirena.org.uk>
- <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com>
- <20220815205857.308B1C433D6@smtp.kernel.org>
+        with ESMTP id S232302AbiHPF0f (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 01:26:35 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C375113DF6
+        for <linux-iio@vger.kernel.org>; Mon, 15 Aug 2022 15:03:26 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id m5so6770697qkk.1
+        for <linux-iio@vger.kernel.org>; Mon, 15 Aug 2022 15:03:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=ikVyv3Nj/OCfAyLRBroKSzO1rCNd6fD5hCL0P0dEi4w=;
+        b=WElxrXXwMY01hED9C3n34QZdS5lGbKgu51+mv/JViPAV4w25oBAWNZlUzKpz4douBe
+         PbtZuEhrb6DD5u3PFC5O4lJQlaX6Q2+zIDljN8gn2gcvSovaRtO+cKmntlpJ56HgcRRL
+         5lKSKd2bHBAY+P7wNJ9ySX+NECdgq/15WDADQJL6JLxhOdBx4AEjpdSAsc75rstZ+2AT
+         clwbswHEaakCW1hYYNWdZGenxOqQJdr8kB7IG3Dtuqsst6pcfeFX+mQJI/FaagEKbN1i
+         cJP6LiSW40aVSKcaG8lAUWD+srJtBO8dZcPeHTVlkCk3T9g4gY9YzHqaOaAwZc0aPkay
+         uKqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=ikVyv3Nj/OCfAyLRBroKSzO1rCNd6fD5hCL0P0dEi4w=;
+        b=z+u/3umFfHYDVjOwrW0RLzjcVA2gdJNjKeI4nBiMCh4HR2tIhSfKRDBW0qOrldv0xS
+         KzbG6ciWCc5KQu8zxPwgg33EyPKTv+mitZM7YYUGMLaMhNIKmuxWeCPDho94Bf9Z80RH
+         xxzvtL9q1eMSIiZVN2FtYkDUT6pOigt12GCvo1kZcEOKdKtaPwq8cUmHTqISds/Dbt5x
+         7t1NZPEZ3Wy2ldcFWQ1EVWht2yFJinxvgjSaHiNxLFbKEpWzAe8ZzSUFvucXb+nOTB+S
+         mjOgPR4vS0D1p53u0GmZ5a1IwtsTSQM606EzvfTHhchVH6MY96MiunhKKcPztPesmpc6
+         UoyQ==
+X-Gm-Message-State: ACgBeo1D71tzKlK38BfHVzjJjR5qs3nTsysKVExBl5KvP6pn2ssL4Hkq
+        Wx275zmdN3RNMBXcmGMKp7T8QXbmnaAuqkU2
+X-Google-Smtp-Source: AA6agR7aFgUUiNSzVKx3EPZYfHModod2MDuo96s8nq0O3+F5wM8X0UjbCfH2Rd0mBkPoimTBsicvSg==
+X-Received: by 2002:a05:620a:4384:b0:6bb:268c:1c3c with SMTP id a4-20020a05620a438400b006bb268c1c3cmr5318691qkp.16.1660601005346;
+        Mon, 15 Aug 2022 15:03:25 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id gd24-20020a05622a5c1800b003445bb107basm3667300qtb.75.2022.08.15.15.03.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Aug 2022 15:03:24 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Patrick Havelange <patrick.havelange@essensium.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Kamel Bouhara <kamel.bouhara@bootlin.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        David Lechner <david@lechnology.com>
+Subject: [PATCH] counter: Move symbols into COUNTER namespace
+Date:   Mon, 15 Aug 2022 18:03:21 -0400
+Message-Id: <20220815220321.74161-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220815205857.308B1C433D6@smtp.kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Stephan,
+Counter subsystem symbols are only relevant to counter drivers. A
+COUNTER namespace is created to control the availability of these
+symbols to modules that import this namespace explicitly.
 
-On Mon, Aug 15, 2022 at 01:58:55PM -0700, Stephen Boyd wrote:
-> Quoting Laurent Pinchart (2022-08-15 11:52:36)
-> > On Mon, Aug 15, 2022 at 05:33:06PM +0100, Mark Brown wrote:
-> > > On Mon, Aug 15, 2022 at 06:54:45PM +0300, Laurent Pinchart wrote:
-> > > 
-> > > > - With devres, you don't have full control over the order in which
-> > > >   resources will be released, which means that you can't control the
-> > > >   power off sequence, in particular if it needs to be sequenced with
-> > > >   GPIOs and clocks. That's not a concern for all drivers, but this API
-> > > >   will creep in in places where it shouldn't be used, driver authours
-> > > >   should really pay attention to power management and not live with the
-> > > >   false impression that everything will be handled automatically for
-> > > >   them. In the worst cases, an incorrect power off sequence could lead
-> > > >   to hardware damage.
-> 
-> I think the main issue is that platform drivers are being asked to do
-> too much. We've put the burden on platform driver authors to intimately
-> understand how their devices are integrated, and as we all know they're
-> not very interested in these details because they already have a hard
-> time to write a driver just to make their latest gizmo whir. Throw in
-> power management and you get these wrappers that try to compartmentalize
-> power management logic away from the main part of the driver that's
-> plugging into the driver subsystem because the SoC integration logic is
-> constantly changing but the device core isn't.
-> 
-> We need to enhance the platform bus layer to make it SoC aware when the
-> platform device is inside an SoC, or "board" aware when the device lives
-> outside of an SoC, i.e. it's a discrete IC. The bus layer should manage
-> power state transitions for the platform devices, and the platform
-> drivers should only be able to request runtime power/performance state
-> changes through device PM APIs (dev_pm_*). If this can all be done
-> through genpds then it sounds great. We may need to write some generic
-> code for discrete ICs that enables regulators and then clks before
-> muxing out pins or something like that. Obviously, I don't have all the
-> details figured out.
-> 
-> The basic idea is that drivers should be focused on what they're
-> driving, not navigating the (sometimes) complex integration that's
-> taking place around them. When a device driver probe function is called
-> the device should already be powered on.
+Cc: Patrick Havelange <patrick.havelange@essensium.com>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: Oleksij Rempel <linux@rempel-privat.de>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: David Lechner <david@lechnology.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/counter/104-quad-8.c            |  1 +
+ drivers/counter/counter-chrdev.c        |  2 +-
+ drivers/counter/counter-core.c          | 14 +++++++-------
+ drivers/counter/ftm-quaddec.c           |  1 +
+ drivers/counter/intel-qep.c             |  1 +
+ drivers/counter/interrupt-cnt.c         |  1 +
+ drivers/counter/microchip-tcb-capture.c |  1 +
+ drivers/counter/stm32-lptimer-cnt.c     |  1 +
+ drivers/counter/stm32-timer-cnt.c       |  1 +
+ drivers/counter/ti-eqep.c               |  1 +
+ 10 files changed, 16 insertions(+), 8 deletions(-)
 
-No. ACPI does that in many cases, and that's a real bad idea. There are
-devices that you do *not* want to power up on probe. I'm thinking, for
-example, about camera sensors that have a privacy LED that will light up
-when the sensor is powered up. You don't want it to flash on boot. There
-are also other use cases related to fault tolerance where you want
-drivers to initialize properly and only access the device later.
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index 62c2b7ac4339..1323edfbe40c 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -1241,3 +1241,4 @@ module_isa_driver(quad8_driver, num_quad8);
+ MODULE_AUTHOR("William Breathitt Gray <vilhelm.gray@gmail.com>");
+ MODULE_DESCRIPTION("ACCES 104-QUAD-8 driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
+index 69d340be9c93..4e71a19d7e6a 100644
+--- a/drivers/counter/counter-chrdev.c
++++ b/drivers/counter/counter-chrdev.c
+@@ -574,4 +574,4 @@ void counter_push_event(struct counter_device *const counter, const u8 event,
+ 	if (copied)
+ 		wake_up_poll(&counter->events_wait, EPOLLIN);
+ }
+-EXPORT_SYMBOL_GPL(counter_push_event);
++EXPORT_SYMBOL_NS_GPL(counter_push_event, COUNTER);
+diff --git a/drivers/counter/counter-core.c b/drivers/counter/counter-core.c
+index 938651f9e9e0..09c77afb33ca 100644
+--- a/drivers/counter/counter-core.c
++++ b/drivers/counter/counter-core.c
+@@ -73,7 +73,7 @@ void *counter_priv(const struct counter_device *const counter)
+ 
+ 	return &ch->privdata;
+ }
+-EXPORT_SYMBOL_GPL(counter_priv);
++EXPORT_SYMBOL_NS_GPL(counter_priv, COUNTER);
+ 
+ /**
+  * counter_alloc - allocate a counter_device
+@@ -133,13 +133,13 @@ struct counter_device *counter_alloc(size_t sizeof_priv)
+ 
+ 	return NULL;
+ }
+-EXPORT_SYMBOL_GPL(counter_alloc);
++EXPORT_SYMBOL_NS_GPL(counter_alloc, COUNTER);
+ 
+ void counter_put(struct counter_device *counter)
+ {
+ 	put_device(&counter->dev);
+ }
+-EXPORT_SYMBOL_GPL(counter_put);
++EXPORT_SYMBOL_NS_GPL(counter_put, COUNTER);
+ 
+ /**
+  * counter_add - complete registration of a counter
+@@ -166,7 +166,7 @@ int counter_add(struct counter_device *counter)
+ 	/* implies device_add(dev) */
+ 	return cdev_device_add(&counter->chrdev, dev);
+ }
+-EXPORT_SYMBOL_GPL(counter_add);
++EXPORT_SYMBOL_NS_GPL(counter_add, COUNTER);
+ 
+ /**
+  * counter_unregister - unregister Counter from the system
+@@ -188,7 +188,7 @@ void counter_unregister(struct counter_device *const counter)
+ 
+ 	mutex_unlock(&counter->ops_exist_lock);
+ }
+-EXPORT_SYMBOL_GPL(counter_unregister);
++EXPORT_SYMBOL_NS_GPL(counter_unregister, COUNTER);
+ 
+ static void devm_counter_release(void *counter)
+ {
+@@ -223,7 +223,7 @@ struct counter_device *devm_counter_alloc(struct device *dev, size_t sizeof_priv
+ 
+ 	return counter;
+ }
+-EXPORT_SYMBOL_GPL(devm_counter_alloc);
++EXPORT_SYMBOL_NS_GPL(devm_counter_alloc, COUNTER);
+ 
+ /**
+  * devm_counter_add - complete registration of a counter
+@@ -244,7 +244,7 @@ int devm_counter_add(struct device *dev,
+ 
+ 	return devm_add_action_or_reset(dev, devm_counter_release, counter);
+ }
+-EXPORT_SYMBOL_GPL(devm_counter_add);
++EXPORT_SYMBOL_NS_GPL(devm_counter_add, COUNTER);
+ 
+ #define COUNTER_DEV_MAX 256
+ 
+diff --git a/drivers/counter/ftm-quaddec.c b/drivers/counter/ftm-quaddec.c
+index 2a58582a9df4..aea6622a9b13 100644
+--- a/drivers/counter/ftm-quaddec.c
++++ b/drivers/counter/ftm-quaddec.c
+@@ -325,3 +325,4 @@ module_platform_driver(ftm_quaddec_driver);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Kjeld Flarup <kfa@deif.com>");
+ MODULE_AUTHOR("Patrick Havelange <patrick.havelange@essensium.com>");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/intel-qep.c b/drivers/counter/intel-qep.c
+index 47a6a9dfc9e8..af5942e66f7d 100644
+--- a/drivers/counter/intel-qep.c
++++ b/drivers/counter/intel-qep.c
+@@ -523,3 +523,4 @@ MODULE_AUTHOR("Jarkko Nikula <jarkko.nikula@linux.intel.com>");
+ MODULE_AUTHOR("Raymond Tan <raymond.tan@intel.com>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Intel Quadrature Encoder Peripheral driver");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 3b13f56bbb11..5a11b65fc0e5 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -242,3 +242,4 @@ MODULE_ALIAS("platform:interrupt-counter");
+ MODULE_AUTHOR("Oleksij Rempel <o.rempel@pengutronix.de>");
+ MODULE_DESCRIPTION("Interrupt counter driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index 00844445143b..f9dee15d9777 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -394,3 +394,4 @@ module_platform_driver(mchp_tc_driver);
+ MODULE_AUTHOR("Kamel Bouhara <kamel.bouhara@bootlin.com>");
+ MODULE_DESCRIPTION("Microchip TCB Capture driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+index 68031d93ce89..d6b80b6dfc28 100644
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -520,3 +520,4 @@ MODULE_AUTHOR("Fabrice Gasnier <fabrice.gasnier@st.com>");
+ MODULE_ALIAS("platform:stm32-lptimer-counter");
+ MODULE_DESCRIPTION("STMicroelectronics STM32 LPTIM counter driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 5779ae7c73cf..9bf20a5d6bda 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -417,3 +417,4 @@ MODULE_AUTHOR("Benjamin Gaignard <benjamin.gaignard@st.com>");
+ MODULE_ALIAS("platform:stm32-timer-counter");
+ MODULE_DESCRIPTION("STMicroelectronics STM32 TIMER counter driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
+diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+index 0489d26eb47c..b0f24cf3e891 100644
+--- a/drivers/counter/ti-eqep.c
++++ b/drivers/counter/ti-eqep.c
+@@ -456,3 +456,4 @@ module_platform_driver(ti_eqep_driver);
+ MODULE_AUTHOR("David Lechner <david@lechnology.com>");
+ MODULE_DESCRIPTION("TI eQEP counter driver");
+ MODULE_LICENSE("GPL v2");
++MODULE_IMPORT_NS(COUNTER);
 
-> When the driver is
-> removed/unbound, the power should be removed after the driver's remove
-> function is called. We're only going to be able to solve the power
-> sequencing and ordering problem by taking away power control and
-> sequencing from drivers.
-
-For SoC devices we may be able to achieve this to some extent, at least
-for simple devices that don't have exotic requirements (by exotic I mean
-requiring more than one clock for instance, so it's not *that* exotic).
-For on-board devices that's impossible by nature, the power up/down
-constraints are specific to the device, it's the job of the driver to
-handle them, the same way it has to handle everything else that is
-device-specific.
-
-The right way to handle this in my opinion is to push for RPM support in
-drivers. The regulator, reset, clock & co. handling then happens in the
-RPM suspend and resume handlers, they're self-contained, well ordered,
-and much easier to review. The rest of the driver then only uses the RPM
-API. It's easy(er) and clean (at least when you don't throw ACPI to the
-mix, with its "peculiar" idea of calling probe with the device powered
-on *BUT* in the RPM suspended state - due to historical reasons I
-believe - but I think that should be fixable on the ACPI side, albeit
-perhaps not without substantial effort), and you get simple review
-rules: if the driver doesn't implement RPM, or handles resource
-enable/disable outside of the RPM suspend/resume handlers, it's most
-likely getting it wrong.
-
-These devres helpers go in the exact opposite direction of what we
-should be doing, by telling driver authors it's totally fine to not
-implement power management. Why don't we just drop error handling and go
-back to the big kernel lock in that case ? That was much easier to
-program too.
-
-> > > I basically agree with these concerns which is why I was only happy with
-> > > this API when Matti suggested doing it in a way that meant that the
-> > > callers are unable to access the regulator at runtime, this means that
-> > > if anyone wants to do any kind of management of the power state outside
-> > > of probe and remove they are forced to convert to the full fat APIs.
-> > > The general ordering concern with devm is that the free happens too late
-> > > but for the most part this isn't such a concern with regulators, they
-> > > might have delayed power off anyway due to sharing - it's no worse than
-> > > memory allocation AFAICT.  Given all the other APIs using devm it's
-> > > probably going to end up fixing some bugs.
-> > > 
-> > > For sequencing I'm not convinced it's much worse than the bulk API is
-> > > anyway, and practically speaking I expect most devices that have
-> > > problems here will also need more control over power anyway - it's
-> > > certainly the common case that hardware has pretty basic requirements
-> > > and is fairly tolerant.
-> > 
-> > I'm not extremely concerned here at the moment, as power should be the
-> > last thing to be turned off, after clocks and reset signals. As clocks
-> > and GPIOs will still be controlled manually in the driver .remove()
-> > function, it means that power will go last, which should be fine.
-> > However, should a devm_clk_get_enable() or similar function be
-> 
-> This API is implemented now.
-
-:-( We're really going straight into the wall.
-
-> > implemented, we'll run into trouble. Supplying active high input signals
-> > to a device that is not powered can lead to latch-up, which tends to
-> > only manifest after a statistically significant number of occurrences of
-> > the condition, and can slowly damage the hardware over time. This is a
-> > real concern as it will typically not be caught during early
-> > development. I think we would still be better off with requiring drivers
-> > to manually handle powering off the device until we provide a mechanism
-> > that can do so safely in an automated way.
-> 
-> Can you describe the error scenario further? I think it's driver author
-> error that would lead to getting and enabling the regulator after
-> getting and enabling a clk that drives out a clock signal on some pins
-> that aren't powered yet. I'm not sure that's all that much easier to do
-> with these sorts of devm APIs, but if it is then I'm concerned.
-
-You will very quickly see drivers doing this (either directly or
-indirectly):
-
-probe()
-{
-	devm_clk_get_enabled();
-	devm_regulator_get_enable();
-}
-
-Without a devres-based get+enable API drivers can get the resources they
-need in any order, possibly moving some of those resource acquisition
-operations to different functions, and then have a clear block of code
-that enables the resources in the right order. These devres helpers give
-a false sense of security to driver authors and they will end up
-introducing problems, the same way that devm_kzalloc() makes it
-outrageously easy to crash the kernel by disconnecting a device that is
-in use.
-
-> > > > - Powering regulators on at probe time and leaving them on is a very bad
-> > > >   practice from a power management point of view, and should really be
-> > > >   discouraged. Adding convenience helpers to make this easy is the wrong
-> > > >   message, we should instead push driver authors to implement proper
-> > > >   runtime PM.
-> > > 
-> > > The stick simply isn't working here as far as I can see.
-> > 
-> > Do you think there's no way we can get it to work, instead of giving up
-> > and adding an API that goes in the wrong direction ? :-( I'll give a
-> > talk about the dangers of devm_* at the kernel summit, this is something
-> > I can mention to raise awareness of the issue among maintainers,
-> > hopefully leading to improvements through better reviews.
-> 
-> I agree with Mark, the stick isn't working. We discussed these exact
-> same issues for years with the devm clk get APIs. Search the archives.
-
-And the conclusion was to just give up and do nothing ? :-(
-
+base-commit: 568035b01cfb107af8d2e4bd2fb9aea22cf5b868
 -- 
-Regards,
+2.37.2
 
-Laurent Pinchart

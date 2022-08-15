@@ -2,88 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 075BC59277C
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 03:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907ED5928D8
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 06:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240033AbiHOBaF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 14 Aug 2022 21:30:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45720 "EHLO
+        id S240784AbiHOEfE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 00:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240134AbiHOB3p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 14 Aug 2022 21:29:45 -0400
-Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1DA212ACF;
-        Sun, 14 Aug 2022 18:29:39 -0700 (PDT)
-Received: by mail-pf1-f193.google.com with SMTP id h28so5567481pfq.11;
-        Sun, 14 Aug 2022 18:29:39 -0700 (PDT)
+        with ESMTP id S240892AbiHOEfA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 00:35:00 -0400
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81D6B15718;
+        Sun, 14 Aug 2022 21:34:55 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id c28so5135531lfh.3;
+        Sun, 14 Aug 2022 21:34:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=nndRH9wcguEYZEjLtGM6nLmTtPovMPErPkqPa7bodQA=;
-        b=kOhJJg6djJlgzftuhYT+u2hoq50XDCsbE7goVXvP9/grszUYInXlECZOpLECxqVk0t
-         tn0fNjNM4peFOTUICU5/r07DjWI32rmT1Wn+EtP8llB7vDcxXWs/jKXR/xNiDvbcVztc
-         Gv+EMzE8cTnzHh/tl00/ZHFSkqj7XTDgTUQvxIyoPonU8LlTg2rcaFfzhiSEYG3ZIrq5
-         2fB7U2JGNQlunApLoH9rEjWRxhK4ypSW3GSMyW6RJUWl5Da3FhaDO90nAkpmwRUZ2XB8
-         N2uVCGh0f6mwkf1T5VIGCmdaTh6vVCT7sKl2ppov5cgZx0dzd4+qgWxg0koJN6eEDT5J
-         jXug==
-X-Gm-Message-State: ACgBeo28gApCVfA2pix2P6sj7tmd+W8EwWs2ZGrtDyyg2qKqOTkxKBuZ
-        FpZLcETSBA8gllVio6/ynOi3SO5xAcuh
-X-Google-Smtp-Source: AA6agR4QfEWswMpDq1HqtXKh9yUsblGeE/1wwg0AW1Kmgz4lD4PbvHWbPd7yjXvUZ7oTAQIVmM1GXw==
-X-Received: by 2002:a63:6909:0:b0:41c:9f4f:a63c with SMTP id e9-20020a636909000000b0041c9f4fa63cmr12294589pgc.76.1660526978756;
-        Sun, 14 Aug 2022 18:29:38 -0700 (PDT)
-Received: from localhost.localdomain ([156.146.53.107])
-        by smtp.gmail.com with ESMTPSA id i4-20020a17090aee8400b001f55dda84b3sm3659327pjz.22.2022.08.14.18.29.35
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=koRe361yf+ju3e2grtdRsIwtJPcKdw6GpoFa2OUU6YY=;
+        b=afsAZELNeFWlzNYGj83UNLIQVgpGVhl4CjDXTewbDb2RaoNSX64KcWZjD75JqFaAzr
+         iJwogjuQ2fI4Zoo/BsXvM5AwWDnL96L1I1UprCDREI+RDlLm1gFYXvL/MW5ZMW1Febh6
+         6xz5sTGWI1dP5dejLmSPXLzPSxO4RhByjMiCMLG4hXca6axDTq8VwDLwTscXKqTEOEf7
+         ayi9lG4XzHSiFSxOyYU2eMQbLbKHea7G0Wk6IKC/PlEhW1qlWPY8oFCNc4Z3Gr57/8eY
+         v3KXnhaaijNzdYdA1x5ADZVvjLKvdKk6+SRq8Ua9pXP25WFXmpydpMChNJVtaufG/z8B
+         iaWQ==
+X-Gm-Message-State: ACgBeo3uQchoZPdxShtbv4LDHZMiUeOMg2Xe8WSpLfWu4zCqRAmURmtw
+        m4i74AYnb3SJqhH0zK76sCs=
+X-Google-Smtp-Source: AA6agR71B6BYC08TKQGaEQgjRLHE/P0rIJDvZLclVliQAyFVRPtTPVbYzi2sb6AgzdFgaR1Wnw1LvA==
+X-Received: by 2002:a05:6512:3f97:b0:48a:8549:2329 with SMTP id x23-20020a0565123f9700b0048a85492329mr4556426lfa.62.1660538093551;
+        Sun, 14 Aug 2022 21:34:53 -0700 (PDT)
+Received: from dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi (dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi. [2001:14ba:16ee:fa00::9])
+        by smtp.gmail.com with ESMTPSA id j5-20020ac24545000000b0048b28acab8csm979169lfm.64.2022.08.14.21.34.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Aug 2022 18:29:38 -0700 (PDT)
-From:   sunliming <sunliming@kylinos.cn>
-To:     ktsai@capellamicro.com, jic23@kernel.org, lars@metafoo.de,
-        kai.heng.feng@canonical.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kelulanainsley@gmail.com, sunliming <sunliming@kylinos.cn>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: light: cm32181: make cm32181_pm_ops static
-Date:   Mon, 15 Aug 2022 09:29:30 +0800
-Message-Id: <20220815012930.150078-1-sunliming@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+        Sun, 14 Aug 2022 21:34:52 -0700 (PDT)
+Date:   Mon, 15 Aug 2022 07:34:36 +0300
+From:   Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 7/7] iio: Simplify drivers using
+ devm_regulator_*get_enable()
+Message-ID: <YvnM3LvwRiUaLLAg@dc73szyyyyyyyyyyyyyft-3.rev.dnainternet.fi>
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
+ <13bb483e1f3ee003ca3a6949e27eee7f505e047d.1660292316.git.mazziesaccount@gmail.com>
+ <CAHp75Vcz_ufnLCE8TYBjM0b8BiS4W1AgXq8euNrUFo3WZy3=fA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="41Y4qJgjVrNBiXfo"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vcz_ufnLCE8TYBjM0b8BiS4W1AgXq8euNrUFo3WZy3=fA@mail.gmail.com>
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This symbol is not used outside of cm32181.c, so marks it static.
 
-Fixes the following sparse warnings:
->> drivers/iio/light/cm32181.c:508:1: sparse: sparse: symbol 'cm32181_pm_ops'
-was not declared. Should it be static?
+--41Y4qJgjVrNBiXfo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: sunliming <sunliming@kylinos.cn>
----
- drivers/iio/light/cm32181.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Morning Andy,
 
-diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-index edbe6a3138d0..001055d09750 100644
---- a/drivers/iio/light/cm32181.c
-+++ b/drivers/iio/light/cm32181.c
-@@ -505,7 +505,7 @@ static int cm32181_resume(struct device *dev)
- 					 cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
- }
- 
--DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
- 
- static const struct of_device_id cm32181_of_match[] = {
- 	{ .compatible = "capella,cm3218" },
--- 
-2.25.1
+On Fri, Aug 12, 2022 at 09:05:52PM +0200, Andy Shevchenko wrote:
+> On Friday, August 12, 2022, Matti Vaittinen <mazziesaccount@gmail.com>
+> wrote:
+>=20
+> > adc/ad7192:
+> > Use devm_regulator_get_enable() instead of open coded get, enable,
+> > add-action-to-disable-at-detach - pattern. Also drop the seemingly unus=
+ed
+> > struct member 'dvdd'.
+>=20
+> In IIO we expect to have one patch per driver. Please split.
 
+Fine with me. I didn't go through too many drivers anyways. I'll split
+for the v3. I'll just wait for a while for other feedback.
+
+Best Regards
+  Matti
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--41Y4qJgjVrNBiXfo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL5zNgACgkQeFA3/03a
+ocV5EggAoPQpVk1csTJRDsQpNBj7nDvr8lCkwwJPlXJMMuTgB5+jz8TOInP16VXh
+KrKRjzLJqycV/Xz1u0OPIWryRQdQvHoKAHQjEbmiDVSNWNNvOMeSfHqRHT2XIPc2
+Owxsbaxj5e7+0NFK4wtGQ3juWkt561CvMPi1DfAjNXStPE/rxbkCDXZlA571RrWB
+eCn/DHJk9aNWeLNKNT8IZYVqjePmX3MDxbsP7oxMcs1hbddSrtowRnw6Ux+KZpRt
+1XsTIZ6S8kJuujMvhbjHZlYunIaTXvkyc4LqvXc7x8vR0NZpkh3z9v3Wy62VlHGL
+eRSwU4Vo5B451BagBtSxlp7+SYtL6g==
+=zIfe
+-----END PGP SIGNATURE-----
+
+--41Y4qJgjVrNBiXfo--

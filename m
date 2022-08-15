@@ -2,222 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFB5593069
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 16:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F0459311E
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Aug 2022 16:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242598AbiHOOCW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 15 Aug 2022 10:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
+        id S233700AbiHOO5k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 15 Aug 2022 10:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242584AbiHOOCU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 10:02:20 -0400
-Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 133E822B33;
-        Mon, 15 Aug 2022 07:02:15 -0700 (PDT)
-Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
-        by mail.sberdevices.ru (Postfix) with ESMTP id AA39A5FD05;
-        Mon, 15 Aug 2022 17:02:12 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
-        s=mail; t=1660572132;
-        bh=+gk1zIe/2wlOR10+rhMR8vZyUOoo8PbfRZUFI4FuEik=;
-        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
-        b=beWTLuaEQ+aONnlAW/G59TyPHF26QbQtq1PHhhYI4FDliH3UGPKs9yOyRIlhpwctO
-         DAUDcHOkAVEpjl4EUhBkWB6Gk8eFSBgYBlb2LJx7to8ff6ykVWbJ6SVcPkeUVbwXax
-         9RmU1axM5Jsq47aO/saV2qGRpu3BKLaxtv669qH5vA9praMXrISn0nSnM1t3awGlG0
-         kHrk/1zwedj0t8217KHVqD+cWi7zGOY4xWr8o0mrSUunwVTkQjA5aBBC2gDqM+w4Id
-         abdo8J8T+++caor/mkVjn+DrWWGMIO+cYRpNfsKiwwWBHTxxwk6tmv7IWR4/400fsB
-         dCVC3/bRNK47w==
-Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
-        by mail.sberdevices.ru (Postfix) with ESMTP;
-        Mon, 15 Aug 2022 17:02:05 +0300 (MSK)
-From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>,
-        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
-        "jani.nikula@intel.com" <jani.nikula@intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 6/7] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Topic: [PATCH v5 6/7] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Thread-Index: AQHYrmvoIVWL45TwmUSMsw+zEhPYFa2rqEkAgAQnwoA=
-Date:   Mon, 15 Aug 2022 14:01:13 +0000
-Message-ID: <20220815140201.5dpjpk35tdewcpvu@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
- <20220812165243.22177-7-ddrokosov@sberdevices.ru>
- <CAHp75Ve8VtwGX6YeuGvhUat5UfoLXB4RdkW4vc1kQUk71+_aCA@mail.gmail.com>
-In-Reply-To: <CAHp75Ve8VtwGX6YeuGvhUat5UfoLXB4RdkW4vc1kQUk71+_aCA@mail.gmail.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.16.1.12]
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <987B2D9B23A0EB4184D532ADE9321F15@sberdevices.ru>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S240377AbiHOO5Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 15 Aug 2022 10:57:24 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C510B1C114;
+        Mon, 15 Aug 2022 07:57:23 -0700 (PDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27FEsflu014721;
+        Mon, 15 Aug 2022 14:57:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=8ZTg0G+Wa4/8+mqlKuuc4tufXoqRTRsIKVo19S0zDC0=;
+ b=P3+NnXyCWwQT1/K4lvaBzOtLYCFi+n+K7f0STa4RjjMc94GQgTHWaA8OCUdcFxvT18Gu
+ o5cdIaYGwREx+OUQuHe/WLDrgcZfdBUsi2TyHT4suyta02Boq3XVuX4frYupeuYzPAOp
+ f8xbTTNc8266SiqFpaVSeImTn9gJSqNhui9gfTvH4m71AedrhXzluH50Llvy1ehj+aIX
+ unKDUI5jHYfFGqW7YMrdL1T7TNYxGnVKdZE8uPYGuVnYqct5gwgiHMlN4HRZOK5Dkezc
+ 2lYquK+gAipaYuwXV9YJ1B1PlI0KcA3sytLETHj16snFmhIniOtPRVvNVOfki0rr74vL 7A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyratr18c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Aug 2022 14:57:09 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 27FEsc9T014618;
+        Mon, 15 Aug 2022 14:57:09 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hyratr180-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Aug 2022 14:57:09 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+        by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 27FEoHIB018077;
+        Mon, 15 Aug 2022 14:57:08 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by ppma01wdc.us.ibm.com with ESMTP id 3hx3k94jan-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 15 Aug 2022 14:57:08 +0000
+Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 27FEv7o923593406
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 15 Aug 2022 14:57:07 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4AD0113604F;
+        Mon, 15 Aug 2022 14:57:07 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 683CA136051;
+        Mon, 15 Aug 2022 14:57:06 +0000 (GMT)
+Received: from slate16.aus.stglabs.ibm.com (unknown [9.77.146.160])
+        by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Mon, 15 Aug 2022 14:57:06 +0000 (GMT)
+From:   Eddie James <eajames@linux.ibm.com>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, eajames@linux.ibm.com,
+        andy.shevchenko@gmail.com, joel@jms.id.au
+Subject: [PATCH v5 0/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
+Date:   Mon, 15 Aug 2022 09:57:03 -0500
+Message-Id: <20220815145705.203017-1-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-KSMG-Rule-ID: 4
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiPhishing: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/15 12:17:00 #20121227
-X-KSMG-AntiVirus-Status: Clean, skipped
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 63zzjKSfGn8_H0hPmYbanUxRUB8zKibq
+X-Proofpoint-GUID: TLXgZYmcAp48EC3iOf81oHLjmYrDO9dm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-15_08,2022-08-15_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 spamscore=0 impostorscore=0 bulkscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208150056
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 13, 2022 at 01:34:40AM +0300, Andy Shevchenko wrote:
+Corruption of the MEAS_CFG register has been observed soon after
+system boot. In order to recover this scenario, check MEAS_CFG if
+measurement isn't ready, and if it's incorrect, reset the DPS310
+and execute the startup procedure. Include a patch to move the
+startup procedure into a function.
 
-[...]
+Changes since v4:
+ - Just check for rc rather than rc < 0 in some cases
+ - Split declaration and init of rc
 
-> > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.=
-pdf
->=20
-> Can you use Datasheet: tag below (just before your SoB tag)?
+Changes since v3:
+ - Don't check regmap* return codes for < 0
+ - Fix comment spelling
 
-Sure, I can move it on the previous line beforce SoB tag.
-But with Datasheet: tag this line will be over the commit msg line limit.
-If you don't mind I will stay with Spec: tag instead of Datasheet:
+Changes since v2:
+ - Add some comments
+ - Fix the clunky control flow
 
-[...]
+Changes since v1:
+ - Separate into two patches
+ - Rename 'dps310_verify_meas_cfg' to 'dps310_check_reset_meas_cfg'
 
-> > +static const struct {
-> > +       int val;
-> > +       int val2;
-> > +} msa311_fs_table[] =3D {
-> > +       {0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
-> > +};
->=20
-> At least you may deduplicate the type definition for these data structure=
-s, like
->=20
-> struct iio_float {
->   int integer;
->   int fract;
-> };
+Eddie James (2):
+  iio: pressure: dps310: Refactor startup procedure
+  iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
 
-Agreed. I will make deduplication of this type inside msa311 driver
-only.
+ drivers/iio/pressure/dps310.c | 277 +++++++++++++++++++++-------------
+ 1 file changed, 173 insertions(+), 104 deletions(-)
 
-[...]
+-- 
+2.31.1
 
-> > +               dev_err(dev,
-> > +                       "cannot set odr %u.%luHz, not available in %s m=
-ode\n",
-> > +                       msa311_odr_table[odr].val,
-> > +                       msa311_odr_table[odr].val2 / MILLIHZ_PER_HZ,
->=20
-> Logically it's MICROHZ_PER_MILLIHZ.
->=20
-
-You are right. But I think it would be better to print the original val2
-value with zero-padding.
-
-[...]
-
-> > +       freq_uhz =3D msa311_odr_table[odr].val * MICROHZ_PER_HZ +
-> > +                  msa311_odr_table[odr].val2;
-> > +       wait_ms =3D (MICROHZ_PER_HZ / freq_uhz) * MSEC_PER_SEC;
->=20
-> On the contrary this seems correct.
-
-Good
-
-> > +       err =3D iio_device_claim_direct_mode(indio_dev);
-> > +       if (err)
-> > +               return err;
-> > +
-> > +       mutex_lock(&msa311->lock);
-> > +       err =3D msa311_get_axis(msa311, chan, &axis);
-> > +       mutex_unlock(&msa311->lock);
-> > +
-> > +       iio_device_release_direct_mode(indio_dev);
-> > +
-> > +       if (err) {
-> > +               dev_err(dev, "cannot get axis %s (%pe)\n",
-> > +                       chan->datasheet_name, ERR_PTR(err));
-> > +               return err;
-> > +       }
-> > +
-> > +       pm_runtime_mark_last_busy(dev);
-> > +       pm_runtime_put_autosuspend(dev);
->=20
-> All error cases above miss the PM restoration. Is it on purpose?
-> Otherwise fix it here and check everywhere else.
-
-Nice catch! This is a bug. I'll fix it in v6
-
-> > +       used =3D scnprintf(msa311->chip_name, sizeof(msa311->chip_name)=
-,
-> > +                        "msa311-%hhx", partid);
->=20
-> > +       msa311->chip_name[used] =3D '\0';
->=20
-> What is this for exactly?
->=20
-
-Ah, you are right, scnprintf() makes null terminating inside.
-
-> > +       /* Disable all interrupts by default */
-> > +       err =3D regmap_write(msa311->regs, MSA311_INT_SET_0_REG, 0);
-> > +       if (err)
-> > +               return dev_err_probe(dev, err,
-> > +                                    "cannot disable set0 interrupts\n"=
-);
-> > +
-> > +       err =3D regmap_write(msa311->regs, MSA311_INT_SET_1_REG, 0);
-> > +       if (err)
-> > +               return dev_err_probe(dev, err,
-> > +                                    "cannot disable set1 interrupts\n"=
-);
->=20
-> Wondering if the above can be combined to bulk write.
->=20
-
-I will try and rework this place if it's workable.
-
-> > +       /* Unmap all INT1 interrupts by default */
-> > +       err =3D regmap_write(msa311->regs, MSA311_INT_MAP_0_REG, 0);
-> > +       if (err)
-> > +               return dev_err_probe(dev, err,
-> > +                                    "failed to unmap map0 interrupts\n=
-");
-> > +
-> > +       err =3D regmap_write(msa311->regs, MSA311_INT_MAP_1_REG, 0);
-> > +       if (err)
-> > +               return dev_err_probe(dev, err,
-> > +                                    "failed to unmap map1 interrupts\n=
-");
->=20
-> Ditto.
-
-The same as above.
-
-[...]
-
---=20
-Thank you,
-Dmitry=

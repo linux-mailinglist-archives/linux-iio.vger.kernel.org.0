@@ -2,86 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A5A595DE0
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 15:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC4D595D88
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 15:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234910AbiHPN7w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 09:59:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48966 "EHLO
+        id S235870AbiHPNkh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 09:40:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231539AbiHPN7v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 09:59:51 -0400
-X-Greylist: delayed 1316 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 16 Aug 2022 06:59:47 PDT
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8E6D59253;
-        Tue, 16 Aug 2022 06:59:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=e/P0dZRVpx52m88paCNMNBZULrSwc01U661inww9QsU=; b=dAkQZjGmyeiMijnr1kaFmUYc7Z
-        rhU2n+/3qXOA73chZadip7JBKrTxHD9lCube0YK7xTL9Vrr81Jcjr4Wn51G70wXNolnXPJrGOL9xQ
-        VQDY6cZ9QmAkkT21DHZ+j4PmKAjg7vnHiz2So2XNLnP4gNMe1zJNR9WImdISvG486PnAH/RSxL9FS
-        XUHjGIAxh81nOvFRVuyn5MucSSJJ3+BB92XxstegQcLbLWdXQx2PWC4SF7G1XBf1YtJUgSUNYbYFH
-        miQICmEem4emk6wcFgxLMWVVaghGvmker2M7/FDpBtIGfq1LwUhcQfPfY8kwoVFuvQxZil2XDF4jy
-        J+97E1Zg==;
-Received: from [2600:1700:4830:1658::fb2] (port=38832)
-        by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <david@lechnology.com>)
-        id 1oNwlO-0000Xz-03;
-        Tue, 16 Aug 2022 09:37:47 -0400
-Message-ID: <5d816181-65f1-0102-0faa-8940509ef0d3@lechnology.com>
-Date:   Tue, 16 Aug 2022 08:37:43 -0500
+        with ESMTP id S235864AbiHPNkf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 09:40:35 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B723574DD3;
+        Tue, 16 Aug 2022 06:40:33 -0700 (PDT)
+Received: from fraeml706-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M6XGN4YHBz67Mkv;
+        Tue, 16 Aug 2022 21:35:40 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml706-chm.china.huawei.com (10.206.15.55) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.24; Tue, 16 Aug 2022 15:40:31 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 16 Aug
+ 2022 14:40:31 +0100
+Date:   Tue, 16 Aug 2022 14:40:29 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC:     George Mois <george.mois@analog.com>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lucas.p.stankus@gmail.com>
+Subject: Re: [PATCH 2/2] drivers: iio: accel adxl312 and adxl314 support
+Message-ID: <20220816144029.00006dc3@huawei.com>
+In-Reply-To: <a882c594-564c-7e0c-0ede-aa27fcf8c79d@linaro.org>
+References: <20220816102828.182345-1-george.mois@analog.com>
+        <20220816102828.182345-3-george.mois@analog.com>
+        <8cf4ea9e-89a4-1ab0-334b-9ecc5b1e6f25@linaro.org>
+        <20220816134433.00002900@huawei.com>
+        <a882c594-564c-7e0c-0ede-aa27fcf8c79d@linaro.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] counter: Move symbols into COUNTER namespace
-Content-Language: en-US
-To:     William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Kamel Bouhara <kamel.bouhara@bootlin.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-References: <20220815220321.74161-1-william.gray@linaro.org>
-From:   David Lechner <david@lechnology.com>
-In-Reply-To: <20220815220321.74161-1-william.gray@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/15/22 5:03 PM, William Breathitt Gray wrote:
-> Counter subsystem symbols are only relevant to counter drivers. A
-> COUNTER namespace is created to control the availability of these
-> symbols to modules that import this namespace explicitly.
-> ---
+On Tue, 16 Aug 2022 16:34:59 +0300
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+
+> On 16/08/2022 15:44, Jonathan Cameron wrote:
+> >>>  
+> >>>  MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
+> >>>  
+> >>>  static const struct of_device_id adxl313_of_match[] = {
+> >>> +	{ .compatible = "adi,adxl312" },
+> >>>  	{ .compatible = "adi,adxl313" },
+> >>> +	{ .compatible = "adi,adxl314" },    
+> >>
+> >> You miss here driver data. I don't remember which driver matching takes
+> >> precedence (especially in various cases like DT platforms with device
+> >> instantiated by MFD), but for consistency I think both device id tables
+> >> should have same driver data.  
+> > 
+> > You can set it up to try device_get_match_data() first then fallback
+> > to the adxl313_spi_id[] table but there isn't a nice 'standard' way to
+> > do it.
+> > 
+> > If that isn't done, then IIRC the match is against the compatible with
+> > the vendor ID dropped and the table used is the spi_device_id one.
+> > Which is just annoyingly complex and relies on the strings matching.
+> > 
+> > In the ideal world the spi_device_id table would go away but there are
+> > still a few users (greybus - I think + remaining board files).
+> > So for now something like
+> > 
+> > a = device_get_match_data(dev);
+> > if (!a)
+> > 	a = &adxl31x_spi_regmap_config[id->data];
+> > 
+> > Provides a good way of ensuring the id tables don't need to remain
+> > in sync.
+> >   
+> 
+> I guess the only minor issue is that first driver data - ADXL312 - is
+> equal to 0, so above code would make consider ADXL312 as missing data.
+Should have given a type to a.
+
+struct adxl31x_chip_info *a;
+
+It would be a pointer not an enum.  Though we might run into some problems
+with that clang issue of whether array lookups are const (I've not really
+gotten my head around that yet). 
+
+Jonathan
 
 
-Acked-by: David Lechner <david@lechnology.com>
+> 
+> Best regards,
+> Krzysztof
+

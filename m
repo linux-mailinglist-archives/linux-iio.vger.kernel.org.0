@@ -2,214 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AFB1595C2D
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 14:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED29595C39
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 14:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234028AbiHPMpm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 08:45:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38708 "EHLO
+        id S232064AbiHPMqX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 08:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235565AbiHPMoo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 08:44:44 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4614E3C152
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 05:44:05 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id w15so10418419ljw.1
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 05:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc;
-        bh=DTTVWNUuMuaI4chfKvwmUvgtvzhYatcrU+SN3O9eX+s=;
-        b=Rz/Bg7RXfF9irofPn2f5JRMl6e7xpzl07U7q2YW7ggsvflNyOQXQetfbdsPZrj64dw
-         kjJLbrLhG/EJWS7zRk7OmFJtsxamRr88a9UNMtgl5BLF1MiJXIXwsogyQTRvU5+cmp8X
-         aikirXAb7svNW5KlQ8wRRA9rihIW3PB5/5LvJyn56MJPpGI/kzEUVaV1fdr5Tnd0Y5o2
-         GFWuXuG86Mj4cTUbJD0Q+/hXTH1CZMbipuGJNpObXdQ7CLvEMRWoRxCKod2o2IV2ndnL
-         FkyORuHzOIxP4HMz4niUBSyR4qeWl15yBwyT64yYxIO4vtBtkksCjzJFMx1TMrb9E/r9
-         Yc3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
-        bh=DTTVWNUuMuaI4chfKvwmUvgtvzhYatcrU+SN3O9eX+s=;
-        b=DjV62COCDAklrxoLTU4xZ0J4wt2LME76ZGr03o729/0g8vEsZzAYrrAzxxK0WDcXod
-         9QzmUgF1QEHluAEwDiA2kQ9yrKP2wG5wt6FPeJcdeYBJCeJ0fBKw/8L+I9oZHZaIs0qS
-         y4lffcOC48wT5rv53kui+j6dNzy84BHRJbzATzaHddUxoQMDy4jAXCvMmfP2//P+7DaM
-         xVqLoqyOyaEEu9IYR3InPxPEUcx1zWltrNs6XlaRBLD/Fi8ZVFhdIywcSXOhxiIYfkj+
-         uwB6J04jA3iZlQoiqQNcGb1koO+KlcaHj93j9+9dZJZVEpy3ujmD5Jx41aP3XNz7V+Ks
-         6Mkw==
-X-Gm-Message-State: ACgBeo2wbTqf9j37BWfW/FaVNS8ghGhX5LBtzEIgq8wItT9vUaQpwoMJ
-        wSTRxiSieWSmgEuueptiUqfKZA==
-X-Google-Smtp-Source: AA6agR6fGVu+pxqV/ukc2QaGNAOXAG0OJBCmVDysetGBzD8b2PceHFIC8XraGHh0rASo187HWNwA7Q==
-X-Received: by 2002:a05:651c:30d:b0:261:9979:5061 with SMTP id a13-20020a05651c030d00b0026199795061mr639524ljp.520.1660653842421;
-        Tue, 16 Aug 2022 05:44:02 -0700 (PDT)
-Received: from krzk-bin.. (d15l54g8c71znbtrbzt-4.rev.dnainternet.fi. [2001:14bb:ae:539c:1782:dd68:b0c1:c1a4])
-        by smtp.gmail.com with ESMTPSA id k14-20020ac257ce000000b0048ae4cf8a2csm1374331lfo.258.2022.08.16.05.43.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 05:44:01 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Lucas Stankus <lucas.p.stankus@gmail.com>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Tomislav Denis <tomislav.denis@avl.com>,
-        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Ricardo Ribalda <ribalda@kernel.org>,
-        Dragos Bogdan <dragos.bogdan@analog.com>,
-        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Tomas Melin <tomas.melin@vaisala.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Patrick Vasseur <patrick.vasseur@c-s.fr>,
-        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
-        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Philippe Reynes <tremyfr@yahoo.fr>,
-        Jacopo Mondi <jacopo@jmondi.org>,
-        Akinobu Mita <akinobu.mita@gmail.com>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Oskar Andero <oskar.andero@gmail.com>,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <martenli@axis.com>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Andrew Davis <afd@ti.com>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Phil Reid <preid@electromag.com.au>,
-        Michael Welling <mwelling@ieee.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Chris Coffey <cmc@babblebit.net>,
-        Slawomir Stepien <sst@poczta.fm>,
-        Sankar Velliangiri <navin@linumiz.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v3 10/10] dt-bindings: iio: temperature: use spi-peripheral-props.yaml
-Date:   Tue, 16 Aug 2022 15:43:21 +0300
-Message-Id: <20220816124321.67817-11-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220816124321.67817-1-krzysztof.kozlowski@linaro.org>
-References: <20220816124321.67817-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S232536AbiHPMpl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 08:45:41 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AD66606A9;
+        Tue, 16 Aug 2022 05:44:37 -0700 (PDT)
+Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M6W7B2srWz6889Z;
+        Tue, 16 Aug 2022 20:44:22 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 16 Aug 2022 14:44:34 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 16 Aug
+ 2022 13:44:34 +0100
+Date:   Tue, 16 Aug 2022 13:44:33 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC:     George Mois <george.mois@analog.com>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <lucas.p.stankus@gmail.com>
+Subject: Re: [PATCH 2/2] drivers: iio: accel adxl312 and adxl314 support
+Message-ID: <20220816134433.00002900@huawei.com>
+In-Reply-To: <8cf4ea9e-89a4-1ab0-334b-9ecc5b1e6f25@linaro.org>
+References: <20220816102828.182345-1-george.mois@analog.com>
+        <20220816102828.182345-3-george.mois@analog.com>
+        <8cf4ea9e-89a4-1ab0-334b-9ecc5b1e6f25@linaro.org>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Instead of listing directly properties typical for SPI peripherals,
-reference the spi-peripheral-props.yaml schema.  This allows using all
-properties typical for SPI-connected devices, even these which device
-bindings author did not tried yet.
+On Tue, 16 Aug 2022 14:16:13 +0300
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Remove the spi-* properties which now come via spi-peripheral-props.yaml
-schema, except for the cases when device schema adds some constraints
-like maximum frequency.
+> On 16/08/2022 13:28, George Mois wrote:
+> > ADXL312 and ADXL314 are small, thin, low power, 3-axis accelerometers
+> > with high resolution (13-bit) measurement up to +/-12 g and +/- 200 g
+> > respectively.
+> >   
+> 
+> Thank you for your patch. There is something to discuss/improve.
+> 
+> >  
+> >  static const struct spi_device_id adxl313_spi_id[] = {
+> > -	{ "adxl313" },
+> > +	{ "adxl312", ADXL312 },
+> > +	{ "adxl313", ADXL313 },
+> > +	{ "adxl314", ADXL314 },
+> >  	{ }
+> >  };
+> >  
+> >  MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
+> >  
+> >  static const struct of_device_id adxl313_of_match[] = {
+> > +	{ .compatible = "adi,adxl312" },
+> >  	{ .compatible = "adi,adxl313" },
+> > +	{ .compatible = "adi,adxl314" },  
+> 
+> You miss here driver data. I don't remember which driver matching takes
+> precedence (especially in various cases like DT platforms with device
+> instantiated by MFD), but for consistency I think both device id tables
+> should have same driver data.
 
-While changing additionalProperties->unevaluatedProperties, put it in
-typical place, just before example DTS.
+You can set it up to try device_get_match_data() first then fallback
+to the adxl313_spi_id[] table but there isn't a nice 'standard' way to
+do it.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../bindings/iio/temperature/maxim,max31855k.yaml           | 4 ++--
- .../devicetree/bindings/iio/temperature/maxim,max31856.yaml | 6 ++++--
- .../devicetree/bindings/iio/temperature/maxim,max31865.yaml | 6 ++++--
- 3 files changed, 10 insertions(+), 6 deletions(-)
+If that isn't done, then IIRC the match is against the compatible with
+the vendor ID dropped and the table used is the spi_device_id one.
+Which is just annoyingly complex and relies on the strings matching.
 
-diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml
-index 9969bac66aa1..0805ed7e2113 100644
---- a/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31855k.yaml
-@@ -32,7 +32,6 @@ properties:
-   reg:
-     maxItems: 1
- 
--  spi-max-frequency: true
-   spi-cpha: true
- 
- required:
-@@ -40,6 +39,7 @@ required:
-   - reg
- 
- allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-   - if:
-       properties:
-         compatible:
-@@ -53,7 +53,7 @@ allOf:
-       properties:
-         spi-cpha: false
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31856.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31856.yaml
-index 873b34766676..228a94165487 100644
---- a/Documentation/devicetree/bindings/iio/temperature/maxim,max31856.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31856.yaml
-@@ -19,7 +19,6 @@ properties:
-   reg:
-     maxItems: 1
- 
--  spi-max-frequency: true
-   spi-cpha: true
- 
-   thermocouple-type:
-@@ -34,7 +33,10 @@ required:
-   - reg
-   - spi-cpha
- 
--additionalProperties: false
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-index aafb33b16549..a2823ed6867b 100644
---- a/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/maxim,max31865.yaml
-@@ -25,7 +25,6 @@ properties:
-       enables 3-wire RTD connection. Else 2-wire or 4-wire RTD connection.
-     type: boolean
- 
--  spi-max-frequency: true
-   spi-cpha: true
- 
- required:
-@@ -33,7 +32,10 @@ required:
-   - reg
-   - spi-cpha
- 
--additionalProperties: false
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
- 
- examples:
-   - |
--- 
-2.34.1
+In the ideal world the spi_device_id table would go away but there are
+still a few users (greybus - I think + remaining board files).
+So for now something like
+
+a = device_get_match_data(dev);
+if (!a)
+	a = &adxl31x_spi_regmap_config[id->data];
+
+Provides a good way of ensuring the id tables don't need to remain
+in sync.
+
+Jonathan
+
+
+> 
+> 
+> Best regards,
+> Krzysztof
 

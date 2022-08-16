@@ -2,98 +2,92 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90612595907
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 12:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 414FA595937
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 13:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234912AbiHPKzP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 06:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51392 "EHLO
+        id S233257AbiHPLCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 07:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233257AbiHPKyv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 06:54:51 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 407A53D5A8
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 03:22:35 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id x19so14294269lfq.7
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 03:22:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=6y2krG3wAEmTknGGh9SWgv5ytZ0gHA2IN3Cns5M9GFw=;
-        b=BtvhQgdITP9SVWq42oqxksbehGD1ih5Kbh9JO7DR9OnzuTHyzSYHB6tux+eSg54c8R
-         /YYmMWImRp4q7iTHdyI5nHBhTJpLt2la8nLT0azQB5jK/LsSjdUnIQoM/3zv3toE+EpI
-         YZ7zs9n4oNjIvf/+FgEx4t1GK4fsgric7tF1bPURpLnWGynjTeaurVY8oNs5Tiv6XpDm
-         dAYw7Vm9fDYyInafZtJFjtfbeoUNRvIrPxMODgXeD/01TQWY3KvDwtzV4cE+Iz+LgdQS
-         1XGyVCCU8wfLF08ObAyR7JD+vAwdJWREjjtaWjuXC1TkqV7+pMrWWfb/pTcvOdF9m+rn
-         knvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=6y2krG3wAEmTknGGh9SWgv5ytZ0gHA2IN3Cns5M9GFw=;
-        b=0MVXZTsTdbFQkCW8f8Q9oxzXr4FRXeP+RJvk75kVzL377mQcrB4B9CCLYxtWZHJChX
-         gAoNCI7pxrJV/vfclxEH8e6WPQLkRez9pFZL6eZlVffWngsPSqqjS4szPhMJcrXsPQ8s
-         LRHaFmcNQX7TcYEI7sdKfrVYUw2FiAIvoPhM5+3oIoUUzjYMTwtXQbZgA2eZcnjZLWkw
-         JpyYCteBKfVSwKfh4hk8jXcTPRU8GCI1bNzXEbvfR5W5AJRs00qrwD+lp+8/Hk5jqNsI
-         gLYyn2ueAvp3HBu3NSg8Lr0EfvUW0rVJkYAKflp4LIG/qjRgOdtLP1D4BUK2r0r/Ryeo
-         OXVA==
-X-Gm-Message-State: ACgBeo2j+Fi+djX4UxBRfd8/RtMigQpP0VFZ0MXkmGfuAMXJFuwjDYBC
-        d8YwAKLYf+yH6XhKWCSQwyD6HZrS6RN/k0pU
-X-Google-Smtp-Source: AA6agR4DMyXo52/nUb1RZwWnixhPJUeaO3FFQ4Es1RNWx1ag+phFlD/ZNuPsKviV0NRpDtSdDjSUeg==
-X-Received: by 2002:a05:6512:22c3:b0:48b:882d:15b8 with SMTP id g3-20020a05651222c300b0048b882d15b8mr7147821lfu.459.1660645353651;
-        Tue, 16 Aug 2022 03:22:33 -0700 (PDT)
-Received: from ?IPV6:2001:14bb:ae:539c:1782:dd68:b0c1:c1a4? (d15l54g8c71znbtrbzt-4.rev.dnainternet.fi. [2001:14bb:ae:539c:1782:dd68:b0c1:c1a4])
-        by smtp.gmail.com with ESMTPSA id a24-20020a19ca18000000b0048a7ce3ff84sm1332728lfg.285.2022.08.16.03.22.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Aug 2022 03:22:33 -0700 (PDT)
-Message-ID: <99d7784e-e59f-b4f7-e275-935836e5d406@linaro.org>
-Date:   Tue, 16 Aug 2022 13:22:31 +0300
+        with ESMTP id S233344AbiHPLCE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 07:02:04 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1D7264B;
+        Tue, 16 Aug 2022 03:29:30 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27G89a8a003193;
+        Tue, 16 Aug 2022 06:29:21 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3hx8v6nrhv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 16 Aug 2022 06:29:21 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 27GATJZa037542
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 16 Aug 2022 06:29:19 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 16 Aug 2022 06:29:19 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 16 Aug 2022 06:29:19 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 16 Aug 2022 06:29:18 -0400
+Received: from george-precision5560.ad.analog.com ([10.48.65.128])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 27GAT2AO030411;
+        Tue, 16 Aug 2022 06:29:07 -0400
+From:   George Mois <george.mois@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <lucas.p.stankus@gmail.com>, George Mois <george.mois@analog.com>
+Subject: [PATCH 0/2] Add support for ADXL312 and ADXL314 accelerometers
+Date:   Tue, 16 Aug 2022 13:28:26 +0300
+Message-ID: <20220816102828.182345-1-george.mois@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v6 0/9] Improve MCP3911 driver
-Content-Language: en-US
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220815061625.35568-1-marcus.folkesson@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220815061625.35568-1-marcus.folkesson@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: WQs_oJE9Vd4gjH4zpWWmxCY2yPnH-Ztz
+X-Proofpoint-GUID: WQs_oJE9Vd4gjH4zpWWmxCY2yPnH-Ztz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-16_07,2022-08-16_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=765 priorityscore=1501
+ clxscore=1015 adultscore=0 impostorscore=0 spamscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208160040
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15/08/2022 09:16, Marcus Folkesson wrote:
-> v5:
-> - Drop remove function
-> - Split tx&rx transfers in mcp3911_trigger_handler()
-> - Moved Kconfig changes to right patch
-> 
-> v6:
-> - Go for devm_clk_get_enabled()
-> - Cosmetic cleanups
-> - Clarify the description of microchip,data-ready-hiz
-> 
+ADXL312 and ADXL314 are small, thin, low power, 3-axis accelerometers
+with high resolution (13-bit) measurement up to +/-12 g and +/- 200 g
+respectively.
 
-Please include the diffstat (format-patch does it for you, but if you
-prefer to use other tools - it's your job).
+Implement support for ADXL312 and ADXL314 by extending the ADXL313
+driver.
 
-Best regards,
-Krzysztof
+George Mois (2):
+  bindings: iio: accel: extend adxl313 documentation file
+  drivers: iio: accel adxl312 and adxl314 support
+
+ .../bindings/iio/accel/adi,adxl313.yaml       |   8 +-
+ drivers/iio/accel/adxl313.h                   |  17 +-
+ drivers/iio/accel/adxl313_core.c              | 165 +++++++++++++-----
+ drivers/iio/accel/adxl313_spi.c               |  42 ++++-
+ 4 files changed, 181 insertions(+), 51 deletions(-)
+
+-- 
+2.30.2
+

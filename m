@@ -2,121 +2,143 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 252F65956E1
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 11:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E68CF5956C2
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 11:41:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233864AbiHPJpQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 05:45:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
+        id S233578AbiHPJlO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 05:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233917AbiHPJoQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 05:44:16 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF17C6B73
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 01:11:39 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id tl27so17541100ejc.1
-        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 01:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=W5qjF+03yjl4vJJBs76s6kPKVqJeVUsMt0AyY8twYsQ=;
-        b=a31uzct1G3C9D+Hs2qHPBGDerVJo1D+cDFBOyXDZSEkBthnRBULx8L05BG1z4Nz+vB
-         DlWvwn77Tw3lX8P+LXQ1P+3WsLW4h4nq4mtuqyh233rjBsC0l+Z4ljNbcsh1tWBYy/cQ
-         TrvXLv3+OD7spjwanEqomikpoS2aXmgZ6O4kRPp5m0FeDgxEU4lYUr4zl6QjJLdnkHr0
-         wiIznDUa21X6AddFwyVviVV15YX3yGbXDhI1P3P13Vi4a9NzRijk9nXmDiEX4SiCzh2i
-         smMr8cxGrPjWXTRKjFfOwBEVcr3Fbz8TFyNWD6FbEJxSsDYLRgLKZd0/URunHsAi5UEm
-         NThw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=W5qjF+03yjl4vJJBs76s6kPKVqJeVUsMt0AyY8twYsQ=;
-        b=2NRL3O6TyZaogkB+CaG3jfvOKvzuQnN1g8sXqT0sIJZiwJxRmW0uVbAw5O3GTMvRVI
-         mBd0ixJ/v/epmYpA2AWb6QfJvRXqq6VC5VOx+1WY1VQL1lJ8DAG5quizy4gQfSCIAgGu
-         RJLo0Y//NqUqHNMghnfptso5AkEE1v6eFaucATJFq13CEBHgWhwNgyKEXR5M60ZwGEz4
-         TOU3iXCYt685nqwMpL+aZWYSmOJawl8OTntJPNIhdJg8JC1H/5O/3ScHL+BF65geiJau
-         U1Z9LvNUeR2JOthwPZ3CEhFm93F8TCKRIPm2EuRSAWuHzBofnGdclo82b+EIqEWlE1pR
-         dN1Q==
-X-Gm-Message-State: ACgBeo10n7bcP7dxZm8kB41fNItwWfNFhmshHV8VB7nh8OtjpOaOEEDB
-        GMvZpd9tBS8OaZBULuomoSw6KzcAbghqqg==
-X-Google-Smtp-Source: AA6agR4WrdhecqaaLYVQ7wHTuKDpRrGzTG8WAdXe81yRK8N0ygsJbeUh5JlV6PmM5HfJe1+47RuRww==
-X-Received: by 2002:a17:907:762f:b0:730:95d9:9955 with SMTP id jy15-20020a170907762f00b0073095d99955mr12330008ejc.505.1660637497239;
-        Tue, 16 Aug 2022 01:11:37 -0700 (PDT)
-Received: from [192.168.1.69] (120.205.87.79.rev.sfr.net. [79.87.205.120])
-        by smtp.gmail.com with ESMTPSA id f25-20020a50fc99000000b004424429afd4sm8078244edq.16.2022.08.16.01.11.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Aug 2022 01:11:36 -0700 (PDT)
-Message-ID: <0730c493-b49f-02f5-c0e7-999d5871dc4a@baylibre.com>
-Date:   Tue, 16 Aug 2022 10:11:35 +0200
+        with ESMTP id S233805AbiHPJkT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 05:40:19 -0400
+Received: from www381.your-server.de (www381.your-server.de [78.46.137.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34BBBF2
+        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 01:38:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=metafoo.de;
+         s=default2002; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+        References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=yihkoBO/Dy4FnV/5wBSubcJVcXV/eRF3FkM8sJzm8RA=; b=Jq7fkSINujChyxw8U9Lp/7ckol
+        pkp89Cf16fQjdfuHN0BaZs9z50Y3/oqGMmjeJU3vkD2RKpb39Zb1fKeKdCyvEgw637oJlbyvEd9Ax
+        r63q2yY5PP20NOWNR8vYefe0GdLPMBR5D6EaBLGySVKM9XI+lWq44d0gfBtUH8+fAM7Vt0CkVCMa6
+        OCZ+O+rI92sHb7BNY3PwFQtrS4oXhgNmzKdHETo+ky0H4C1Xaa1r60pcMBFyafK9VxYtD/ZTppb5s
+        rIJjcRd0WzaDffuUts4ZmxbY0H8MJE6rzNxj1vj14beO8SmMWKfpXzT0gunYXzX/xPXcKH7I/76dC
+        VnSBcH0A==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www381.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92.3)
+        (envelope-from <lars@metafoo.de>)
+        id 1oNs5y-0009XH-Jk; Tue, 16 Aug 2022 10:38:42 +0200
+Received: from [2001:a61:2a3c:f01:9e5c:8eff:fe01:8578]
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <lars@metafoo.de>)
+        id 1oNs5y-0005Sx-4q; Tue, 16 Aug 2022 10:38:42 +0200
+Message-ID: <bd8472f2-e4d0-2a63-98a5-5e1fe8ad6255@metafoo.de>
+Date:   Tue, 16 Aug 2022 10:38:41 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.0
-Subject: Re: [PATCH v4 3/3] counter: capture-tiecap: capture driver support
- for ECAP
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH 06/13] iio: adc: rockchip_saradc: Benefit from
+ devm_clk_get_enabled() to simplify
 Content-Language: en-US
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     vilhelm.gray@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mranostay@ti.com
-References: <20220810140724.182389-1-jpanis@baylibre.com>
- <20220810140724.182389-4-jpanis@baylibre.com> <Yvkq9Hy+hxAPQd8J@fedora>
- <YvosCeuntEKXJz+e@fedora>
-From:   Julien Panis <jpanis@baylibre.com>
-In-Reply-To: <YvosCeuntEKXJz+e@fedora>
+From:   Lars-Peter Clausen <lars@metafoo.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Heiko Stuebner <heiko@sntech.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        David Wu <david.wu@rock-chips.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Simon Xue <xxm@rock-chips.com>
+References: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
+ <20220808204740.307667-6-u.kleine-koenig@pengutronix.de>
+ <20220813173142.76774c97@jic23-huawei>
+ <CAHp75VeUV2+-V=TbQwx4Chr-xWU4AmRq-mG8Z8XTkwQmx4qvhQ@mail.gmail.com>
+ <20220814213058.dgoxpkoxpn6s4ojj@pengutronix.de>
+ <CAHp75VfD9xoDYyWH3NB9btNW2pBmTH_jBmwjOSUbOQ+Ei_k20w@mail.gmail.com>
+ <20220815074149.jrkeevc3uxoo6ueb@pengutronix.de>
+ <CAHp75VchZKRNtMU1awDczfx=Qq8_JsywXvLtrJJCY_8Y=n1W0g@mail.gmail.com>
+ <ec9275fd-cc9a-0f42-0595-d37fb3d568b6@metafoo.de>
+In-Reply-To: <ec9275fd-cc9a-0f42-0595-d37fb3d568b6@metafoo.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: lars@metafoo.de
+X-Virus-Scanned: Clear (ClamAV 0.103.6/26628/Mon Aug 15 09:51:41 2022)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 15/08/2022 13:20, William Breathitt Gray wrote:
-> On Sun, Aug 14, 2022 at 01:03:48PM -0400, William Breathitt Gray wrote:
->> On Wed, Aug 10, 2022 at 04:07:24PM +0200, Julien Panis wrote:
->>> +static int ecap_cnt_function_read(struct counter_device *counter,
->>> +				  struct counter_count *count,
->>> +				  enum counter_function *function)
->>> +{
->>> +	*function = COUNTER_FUNCTION_INCREASE;
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static int ecap_cnt_action_read(struct counter_device *counter,
->>> +				struct counter_count *count,
->>> +				struct counter_synapse *synapse,
->>> +				enum counter_synapse_action *action)
->>> +{
->>> +	*action = COUNTER_SYNAPSE_ACTION_BOTH_EDGES;
->>> +
->>> +	return 0;
->>> +}
->> Right now you have a Signal defined for the ECAPSIG line, but there is
->> at least one more relevant Signal to define: the clock updating ECAPCNT.
->> The Synapse action of COUNTER_SYNAPSE_ACTION_BOTH_EDGES is for that
->> clock Signal, but for the ECAPSIG Signal you will need to report a
->> Synapse action based on the polarity of the next capture (i.e. whether
->> high or low).
-> I need to make a correction here. IIUC, the ECAPSIG signal doesn't
-> affect the count value of ECAPCNT (ECAPSIG only triggers the captures),
-> so the Synapse action for ECAPSIG should always be
-> COUNTER_SYNAPSE_ACTION_NONE. You don't need to account for the capture
-> polarities because they're not relevant in this particular situation:
-> ECAPSIG doesn't trigger the ECAPCNT count function.
+On 8/16/22 10:27, Lars-Peter Clausen wrote:
+> On 8/16/22 10:20, Andy Shevchenko wrote:
+>> On Mon, Aug 15, 2022 at 10:42 AM Uwe Kleine-König
+>> <u.kleine-koenig@pengutronix.de> wrote:
+>>> On Mon, Aug 15, 2022 at 10:30:45AM +0300, Andy Shevchenko wrote:
+>>>> On Mon, Aug 15, 2022 at 12:31 AM Uwe Kleine-König
+>>>> <u.kleine-koenig@pengutronix.de> wrote:
+>>>>> On Sun, Aug 14, 2022 at 10:01:08PM +0300, Andy Shevchenko wrote:
+>>>>>> On Sat, Aug 13, 2022 at 7:21 PM Jonathan Cameron 
+>>>>>> <jic23@kernel.org> wrote:
+>>>>>>> On Mon,  8 Aug 2022 22:47:33 +0200
+>>>>>>> Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+>>>>>>>
+>>>>>>>> Make use of devm_clk_get_enabled() to replace some code that 
+>>>>>>>> effectively
+>>>>>>>> open codes this new function.
+>>>>>>>>
+>>>>>>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>>>>>>>> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>>>>>>> This might have side effects as it now enables the clock before 
+>>>>>>> calling
+>>>>>>> the clk_set_rate(). Also changes the clock start up ordering. 
+>>>>>>> Neither is that
+>>>>>>> scary a change, but on really fussy hardware they might cause 
+>>>>>>> problems.
+>>>>>>>
+>>>>>>> Add a few rock-chips people who have sent patches in last few years
+>>>>>>> to hopefully take a look or even better run a test.
+>>>>>> I believe you found a bug in the patch. The possible solutions are:
+>>>>>> - not take the patch
+>>>>>> - disable and re-enable clock around clk_set_rate()
+>>>>>>
+>>>>>> IIRC clk_set_rate() will spit a WARN if clock is enabled.
+>>>>> You mean in general? I think that's wrong. There might be some 
+>>>>> clks that
+>>>>> do that, but I'd consider them strange. If you ask me, calling
+>>>>> clk_set_rate() for a *disabled* clk is the strange concept ...
+>>>> I think it's correct from the logic and electrical perspective. That's
+>>>> why the preparation and enablement are separated in CCF. But please
+>>>> double check, because I can't remember everything by heart.
+>>> In my book the separation is done because "enabling" has to sleep for
+>>> some clks (e.g. PLLs) while a sleeping clk_enable() is bad for various
+>>> use cases and most clks don't sleep for enabling.
+>> Yeah, but the idea of changing clock rate on the fly may produce
+>> interesting side-effects on hardware level (with PLL latencies to lock
+>> the phase and possible glitches). So, changing clock against enabled
+>> hardware (not in reset / power off state) seems not a good idea.
 >
-> William Breathitt Gray
+> The clk_set_rate() API will internally disable the clock, if the clock 
+> chip requires it. See `CLK_SET_RATE_GATE` flag.
+Sorry, I misremembered. If `CLK_SET_RATE_GATE` is set `set_rate` will 
+return an error if the clock is enabled when `set_rate` is called.
+>
+> But I tend to agree, the better idiom is to `set_rate` we should do 
+> that before `enable`. This will avoid any unintentional glitches on 
+> the clock signal
+>
 
-It appears to me that you spoke about TSCNT register content (32 bits). 
-So, you were
-not talking about the Mod4 counter (2 bits).
-Do you confirm that ?

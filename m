@@ -2,76 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE91595EA4
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 16:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96BEE595ED7
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 17:13:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235701AbiHPO5X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 10:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53854 "EHLO
+        id S236039AbiHPPNA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 11:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234759AbiHPO5X (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 10:57:23 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EB42832CB;
-        Tue, 16 Aug 2022 07:57:22 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id e15so15323675lfs.0;
-        Tue, 16 Aug 2022 07:57:22 -0700 (PDT)
+        with ESMTP id S235053AbiHPPM6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 11:12:58 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86327549A
+        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 08:12:56 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id y18so8324642qtv.5
+        for <linux-iio@vger.kernel.org>; Tue, 16 Aug 2022 08:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc;
-        bh=DJpIhHSmwiUl0PVEL5w9r+ENFQO/Bo0qgvVnXHe+ILo=;
-        b=L282jd9/OJMbXjdVbGZ/ItWw29PVOL5oeUoysdLtcOkJXNf+yO+xTWKNg750ESjxPn
-         ITbu5qBzzdnDhXDt/lhB0scNeLuDr0HgD5PWOmDKnBoWOjphYu0Kb1dwEDiBj0XFZ1G6
-         tTiIh/0P7S+Jgim6ZeC2MBj3iE0aplO9lcZIftF+bI2bokna6TWXKmkRD0FBLb2Qerr0
-         9kyUgJ9kFuJGsmBBZj9boGdv/vliPzwwTqP5spvqjKpYk28SECid/4NM34A9qTNf6WaH
-         Hx8q58KGRH9X9M4bEPVcuiD6o7Bcp8qN+RdI6daE46LdWEKYNetbs4QReXWF5zPdAT/p
-         0DMA==
+        bh=avEs6sEaW7Q+OL4Qh4yPbVdUs0EXIhNSjWRflw76Ppw=;
+        b=K5leMx4ru2eHpqIqN6yh9fYk63nN/8kHAw5hGVYzSyZbH4vv58bKnm1zfGWGfJj0dY
+         YNI9j+a/AqUhvJPgTWJA1rHrw1DNDB0ogNX55VvSz4V1MaIpPM2x3G+KuKIE979P9a7q
+         RRctIYYRxxIn0ExPyJ62NrkY/Su9MJt14FbJwpd6jnjwjELpuKedacBPzJUy91k4Nfg/
+         rT9nU04unU5TMtljc9j0MB9/mEbbTHi1GAOAhaJLT+a6ClAA6WdiLO8QTAQ2U6Hol/xn
+         /q7vzA7j0QVy8+prWugH3SK6e7LKapie5BjQGDONgWESHawdl18kgT6XTMXvxAY+m+0r
+         whDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=DJpIhHSmwiUl0PVEL5w9r+ENFQO/Bo0qgvVnXHe+ILo=;
-        b=VTvSBywehVyFlOh/t0JpgpYXY5cBREVyh+tSETl7RZ0sK1gL5zqm958pXcjv9KUwFM
-         0RKrsZthCj4f3L/Z0AghRT9mLfJUyLxVm3e5eDWHDzI0UaVMVRehJVgZGUGJ3uUySh0O
-         iuaREiatgmBcKJJXzqycm72CgZmzWiNj0c8B36w7DEXDYSYKO/jA1Gaa/yVLtgUJg/WR
-         ICgpqdF9zUm4jjZ8zOU1sn26jlZtTGefLKMWHA0Es/sGugPdmuD2zUvgRRaqjZoLpJJU
-         BXiaAYmnq6pVU3Zn9SyxOcElBoJs8g7DVCr/VN6Opj7AkRZDk1ImkvCMNi2fNfbpePJo
-         /WzQ==
-X-Gm-Message-State: ACgBeo3QUDhA4aiKpTgfMK1qNgHHMuNc5ZjMHuqfPLgwqeP29bC1YoVX
-        s4lIkee92NY4ZeEMkYbJQ30JSkHoxVi+nQ==
-X-Google-Smtp-Source: AA6agR5n64pSYAYjJ3psI1/OGPnDHkFnVFQuqa/IHrtSvNgvBQbpBe461QAVeNPqV5N7o2KBBc+d1A==
-X-Received: by 2002:a05:6512:39cf:b0:48b:443:dce2 with SMTP id k15-20020a05651239cf00b0048b0443dce2mr7098507lfu.604.1660661840412;
-        Tue, 16 Aug 2022 07:57:20 -0700 (PDT)
-Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id z7-20020a2eb527000000b0025e337443dcsm1821369ljm.87.2022.08.16.07.57.19
+        bh=avEs6sEaW7Q+OL4Qh4yPbVdUs0EXIhNSjWRflw76Ppw=;
+        b=76Pe4UCnAm5PraCTSfqdM3Y21hIS/gTOlUT/UQZa9cFm6EXDJDgoKTUBRF1b2J58H3
+         +O2QGbJNHaRkQMU7hMxSmvJ8iS2ccwFWEJCh7sOdzU4CBCld/OJkzHIweHEhVUrBCaQZ
+         CgA28UGsV69LECWfHlqVZ+kB+XSb/cFNnGev+cJ9PmgbDFPTnkrlVOZlelgAFOyTgh8D
+         qAEcdQKAmAkqnmMHeEGb4r/GPD3YYnruvfn8osMiSS6f/86itB4C2ofdgjBOZMCm18O0
+         JUajFlhD0mANvhq/BhU0ApNuLPnbaFBF0p+DGwMqiK4z8c6vCqywtjvGPBSPeHmAKH6C
+         +GlQ==
+X-Gm-Message-State: ACgBeo2ao85aE5aLABQthE3qnVohZKeezudPcL8q/5U4H2lW+BOwgxHz
+        oRiTJG9CW+LZ73YetF0ZQx6sGA==
+X-Google-Smtp-Source: AA6agR5DYl6+KOIp1qdbG50xFGn9SzMOsy2QOvcbTXTSY8lNhZZ3LwPLbkRbboLOWtun0IQZhZWZ2A==
+X-Received: by 2002:a05:622a:1889:b0:343:19a6:d972 with SMTP id v9-20020a05622a188900b0034319a6d972mr18929013qtc.290.1660662775782;
+        Tue, 16 Aug 2022 08:12:55 -0700 (PDT)
+Received: from fedora ([23.82.142.208])
+        by smtp.gmail.com with ESMTPSA id i21-20020a05620a249500b006b5e1aeb777sm749802qkn.43.2022.08.16.08.12.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Aug 2022 07:57:19 -0700 (PDT)
-Date:   Tue, 16 Aug 2022 16:57:17 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/9] Improve MCP3911 driver
-Message-ID: <YvuwTVlgTeDvCTi+@gmail.com>
-References: <20220815061625.35568-1-marcus.folkesson@gmail.com>
- <99d7784e-e59f-b4f7-e275-935836e5d406@linaro.org>
+        Tue, 16 Aug 2022 08:12:55 -0700 (PDT)
+Date:   Tue, 16 Aug 2022 11:12:52 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     vilhelm.gray@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mranostay@ti.com
+Subject: Re: [PATCH v4 3/3] counter: capture-tiecap: capture driver support
+ for ECAP
+Message-ID: <Yvuz9NUWXPhXqzeU@fedora>
+References: <20220810140724.182389-1-jpanis@baylibre.com>
+ <20220810140724.182389-4-jpanis@baylibre.com>
+ <Yvkq9Hy+hxAPQd8J@fedora>
+ <fe0fe04e-5ac2-e8c2-d568-0976ba085d6a@baylibre.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DwBAA02a1nzZgzSv"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rkAt867fDpCKeN9q"
 Content-Disposition: inline
-In-Reply-To: <99d7784e-e59f-b4f7-e275-935836e5d406@linaro.org>
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+In-Reply-To: <fe0fe04e-5ac2-e8c2-d568-0976ba085d6a@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -79,55 +77,128 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---DwBAA02a1nzZgzSv
+--rkAt867fDpCKeN9q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 16, 2022 at 01:22:31PM +0300, Krzysztof Kozlowski wrote:
-> On 15/08/2022 09:16, Marcus Folkesson wrote:
-> > v5:
-> > - Drop remove function
-> > - Split tx&rx transfers in mcp3911_trigger_handler()
-> > - Moved Kconfig changes to right patch
-> >=20
-> > v6:
-> > - Go for devm_clk_get_enabled()
-> > - Cosmetic cleanups
-> > - Clarify the description of microchip,data-ready-hiz
-> >=20
+On Tue, Aug 16, 2022 at 09:58:10AM +0200, Julien Panis wrote:
+> On 14/08/2022 19:03, William Breathitt Gray wrote:
+> > On Wed, Aug 10, 2022 at 04:07:24PM +0200, Julien Panis wrote:
+> > > +static int ecap_cnt_function_read(struct counter_device *counter,
+> > > +				  struct counter_count *count,
+> > > +				  enum counter_function *function)
+> > > +{
+> > > +	*function =3D COUNTER_FUNCTION_INCREASE;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > > +static int ecap_cnt_action_read(struct counter_device *counter,
+> > > +				struct counter_count *count,
+> > > +				struct counter_synapse *synapse,
+> > > +				enum counter_synapse_action *action)
+> > > +{
+> > > +	*action =3D COUNTER_SYNAPSE_ACTION_BOTH_EDGES;
+> > > +
+> > > +	return 0;
+> > > +}
+> > Right now you have a Signal defined for the ECAPSIG line, but there is
+> > at least one more relevant Signal to define: the clock updating ECAPCNT.
+> > The Synapse action of COUNTER_SYNAPSE_ACTION_BOTH_EDGES is for that
+> > clock Signal, but for the ECAPSIG Signal you will need to report a
+> > Synapse action based on the polarity of the next capture (i.e. whether
+> > high or low).
 >=20
-> Please include the diffstat (format-patch does it for you, but if you
-> prefer to use other tools - it's your job).
+> Just to be sure : by using the word ECAPCNT, I guess that you speak about
+> the
+> Mod4 counter (0->1->2->3->0...), don't you ? (2 bits)
+> Or do you speak about ECAP_TSCNT_REG register content ? (32 bits)
 
-I'm sorry, I do not get you.
-The diffstat is included in the patches, should it be included here as
-well?
+Sorry for the confusion, I'm talking about ECAP_TSCNT_REG (32-bit) here.
+You should rename this Count in your ecap_cnt_counts array from
+"ECAPCNT" to "Time-Stamp Counter" to make it clearer to users as well;
+it would be prudent to rename "ECAPSIG" too.
 
-/Marcus
+I didn't know that there was a register exposing the Mod4 counter value.
+If that's true, then define a Count for the Mod4 counter in your
+ecap_cnt_counts array.
 
+> > > +static struct counter_comp ecap_cnt_count_ext[] =3D {
+> > > +	COUNTER_COMP_COUNT_U64("capture1", ecap_cnt_cap1_read, NULL),
+> > > +	COUNTER_COMP_COUNT_U64("capture2", ecap_cnt_cap2_read, NULL),
+> > > +	COUNTER_COMP_COUNT_U64("capture3", ecap_cnt_cap3_read, NULL),
+> > > +	COUNTER_COMP_COUNT_U64("capture4", ecap_cnt_cap4_read, NULL),
+> > > +	COUNTER_COMP_ENABLE(ecap_cnt_enable_read, ecap_cnt_enable_write),
+> > I just want to verify: this enable extension should disable the ECAPCNT
+> > count itself (i.e. no more increasing count value). Is that what's
+> > happening here, or is this meant to disable just the captures?
 >=20
-> Best regards,
-> Krzysztof
+> Yes, it is what's happening here : no more increasing count value.
 
---DwBAA02a1nzZgzSv
+Okay that's good. By the way, COUNTER_COMP_ENABLE ensures the enable
+value passed to ecap_cnt_enable_write() is either 0 or 1, so you don't
+need the enable > 1 check in your callback.
+
+> > > +static irqreturn_t ecap_cnt_isr(int irq, void *dev_id)
+> > > +{
+> > > +	struct counter_device *counter_dev =3D dev_id;
+> > > +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
+> > > +	unsigned int clr =3D 0;
+> > > +	unsigned int flg;
+> > > +	int i;
+> > > +	unsigned long flags;
+> > > +
+> > > +	regmap_read(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG, &flg);
+> > > +
+> > > +	for (i =3D ECAP_NB_CAP - 1 ; i < ECAP_NB_CEVT ; i++) {
+> > Would you walk me through the logic for this loop. Is this for-loop
+> > intended to loop through all four capture indices? ECAP_NB_CAP and
+> > ECAP_NB_CEVT are defines, so your for-loop has i=3D3 and i<5; is this w=
+hat
+> > you want?
+>=20
+> In previous versions (IIO subsys), this for-loop was intended to loop
+> through all 4 capture indices
+> and overflow flag.
+> In this version, it has been modified to loop only for the last capture
+> indice (the 4th)
+> and overflow flag : yes, this is intentional. Only 1 event has to be push=
+ed
+> so that the user
+> gets all 4 captured timestamps in a single-reading (using 4 watches).
+> But if I understand well your previous suggestion, you would like tracking
+> Mod4 counter value,
+> don't you ? So, I will change back this for-loop, so that it loops for all
+> capture indices (and
+> overflow flag) -> For all 4 capture indices, Mod4 count will be updated. =
+And
+> event will still be
+> pushed only for the 4th capture indice.
+
+Instead of limiting the event push to just the 4th capture, I'd push
+COUNTER_EVENT_CAPTURE on every capture but delegate them to their own
+channels::
+
+    counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, i);
+
+The captures operate as a circular buffer, so the user can determine the
+current capture index based on the watch channel reported and perform a
+modulo to read the buffers in right sequence. Alternatively, they can
+watch just channel 3 if they want to process only four captures at a
+time.
+
+William Breathitt Gray
+
+--rkAt867fDpCKeN9q
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmL7sEkACgkQiIBOb1ld
-UjKs/A/7BP7wFsxdmgbjUPjdcgbp3fxWSePvKM/TmsACZFj1Zwwux3q7SgrQLiOB
-n/FXcXjdY8riBJIthPJmVYRhRZ1O++YjQNkqLYPaGKbZRgbaJEtNmYK6go7i7Wz4
-lluK4BFyamxoz2GZsgr+8FM5SOxAsXS6QmFlKf+X8kBGRSBahfhs/FlJyRBuhV7f
-qkDbzTMm55WIwpz5/oZA5colUhEATf3toUEjMG1fuczv6aJ2yX/19KaKc7QjqhNA
-bWHxpDGeF/WpFOl6q3olvlK6j2kMxKS9BAoNI3ly5jq42++6+mDlRiP3CgwozB9K
-sgbxSUufJt/2d2ewVP+SUt42mrVenznUB+dDGdnTA5UJU/xhcxNiEANZpd/MGqEq
-b1ZWdOkSL2xXjsDkGK25PGVmYomglXQ0njyP8rgqIauP6QWYDXg7iLs/Gs5WTrqF
-vCdZfWuAzBi7zxh2x41QglQYxndryyYtoorJ8/fk7rBDAU+sP6OhHASm4ybDy4ND
-3I+pdVmbv50IEc1ayCvBiYP35Y8jbt1uB8OBg/oEgmfwrqMqcBZVjTFxcUEzEFHM
-B08lK52MUjQUeCai9t7p7xvnTJ4z8QJZXmIrvV8IeABEKgrMdqgq0oDa9mikwkxM
-0LgrNLxxECLK1RIb/dDT6nv95xcJNS5ZWK+v1WyFom2W/1RDslM=
-=eTW9
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYvuz9AAKCRC1SFbKvhIj
+K8mQAQCOs3D703lZxMBKK+yMQez6WY70xUMLnDKmlzE/2QGv6AD8C94wDbMxjYD2
+po8KeImSPXRMjLkgBlqZHKY+bmemGwI=
+=w7+f
 -----END PGP SIGNATURE-----
 
---DwBAA02a1nzZgzSv--
+--rkAt867fDpCKeN9q--

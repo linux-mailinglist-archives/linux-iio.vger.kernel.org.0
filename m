@@ -2,505 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3CB4595951
-	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 13:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB3D459597C
+	for <lists+linux-iio@lfdr.de>; Tue, 16 Aug 2022 13:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234256AbiHPLEg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 16 Aug 2022 07:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32846 "EHLO
+        id S235336AbiHPLJI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 16 Aug 2022 07:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235048AbiHPLEG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 07:04:06 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F27FCC32E;
-        Tue, 16 Aug 2022 03:29:30 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27G7q92n019081;
-        Tue, 16 Aug 2022 06:29:21 -0400
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3hx5t7xf10-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 16 Aug 2022 06:29:21 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 27GATJmF037539
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 16 Aug 2022 06:29:19 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 16 Aug
- 2022 06:29:19 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 16 Aug 2022 06:29:18 -0400
-Received: from george-precision5560.ad.analog.com ([10.48.65.128])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 27GAT2AQ030411;
-        Tue, 16 Aug 2022 06:29:14 -0400
-From:   George Mois <george.mois@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <lucas.p.stankus@gmail.com>, George Mois <george.mois@analog.com>
-Subject: [PATCH 2/2] drivers: iio: accel adxl312 and adxl314 support
-Date:   Tue, 16 Aug 2022 13:28:28 +0300
-Message-ID: <20220816102828.182345-3-george.mois@analog.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220816102828.182345-1-george.mois@analog.com>
-References: <20220816102828.182345-1-george.mois@analog.com>
+        with ESMTP id S235201AbiHPLIg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 16 Aug 2022 07:08:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2B379EE2;
+        Tue, 16 Aug 2022 03:36:36 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 940F060ED3;
+        Tue, 16 Aug 2022 10:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61562C433C1;
+        Tue, 16 Aug 2022 10:36:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660646195;
+        bh=iOXSGtGGb7/LTwG0TCouGLbcXIpY5jR5zxVoRU1xG64=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lUUOABwqNtfygdSbxVtRwiQcHdpC24YKzgZXj+DWz2eF1D/evnVSS/Hql8X4SdZ4L
+         WQQurTRAs+dB9imN/fIDHYslwtDrMHA/aTWmV+YgQy8OCApUny7L+zJ26fr/xB9NY+
+         BMghYD2aIx7nvS3FuCpENUJPvqy9djR3RCN/sUQqlRr+tw/RFZdWVtAmwngvEPnnJy
+         b7u6tPu0fiawHefOc7mUDgKaohbk7S1fNy5qwX0xIodIgMfgb8z81pEnRtw03EH2VN
+         jK2ekE0Cg1LOSL0u+FvR7jEsvnhly8YoYa9gDopXUFJLo399tuM0DdsIDu1am9P/gb
+         /YaPwx1XnpXSg==
+Date:   Tue, 16 Aug 2022 11:36:23 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        dri-devel@lists.freedesktop.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Kevin Hilman <khilman@baylibre.com>,
+        linux-kernel@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        linux-amlogic@lists.infradead.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-doc@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Michael Turq uette <mturquette@baylibre.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        linux-hwmon@vger.kernel.org, linux-clk@vger.kernel.org,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Robert Foss <robert.foss@linaro.org>,
+        Aswath Govindraju <a-govindraju@ti.com>,
+        David Airlie <airlied@linux.ie>, linux-iio@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/7] Devm helpers for regulator get and enable
+Message-ID: <YvtzJw3jmocM0JFi@sirena.org.uk>
+References: <cover.1660292316.git.mazziesaccount@gmail.com>
+ <166057828406.697572.228317501909350108.b4-ty@kernel.org>
+ <YvpsRbguMXn74GhR@pendragon.ideasonboard.com>
+ <Yvp1Qkuh7xfeb/B2@sirena.org.uk>
+ <YvqV9Mq6I3gXQaf2@pendragon.ideasonboard.com>
+ <20220815205857.308B1C433D6@smtp.kernel.org>
+ <Yvq33T+XCduoqv7Z@pendragon.ideasonboard.com>
+ <YvrO+velKdYdGVve@sirena.org.uk>
+ <57c312b3-ca5b-6efb-6356-43b6513a0c88@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: TO3QiTF9Q0jaBzTJU2j1laW9JZbMB9kw
-X-Proofpoint-GUID: TO3QiTF9Q0jaBzTJU2j1laW9JZbMB9kw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-08-16_07,2022-08-16_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2208160040
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="MVZ75Zz0qn0/IYvJ"
+Content-Disposition: inline
+In-Reply-To: <57c312b3-ca5b-6efb-6356-43b6513a0c88@gmail.com>
+X-Cookie: A bachelor is an unaltared male.
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ADXL312 and ADXL314 are small, thin, low power, 3-axis accelerometers
-with high resolution (13-bit) measurement up to +/-12 g and +/- 200 g
-respectively.
 
-Implement support for ADXL312 and ADXL314 by extending the ADXL313
-driver.
+--MVZ75Zz0qn0/IYvJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL312.pdf
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL314.pdf
+On Tue, Aug 16, 2022 at 07:56:06AM +0300, Matti Vaittinen wrote:
+> On 8/16/22 01:55, Mark Brown wrote:
+> > On Tue, Aug 16, 2022 at 12:17:17AM +0300, Laurent Pinchart wrote:
 
-Signed-off-by: George Mois <george.mois@analog.com>
----
- drivers/iio/accel/adxl313.h      |  15 ++-
- drivers/iio/accel/adxl313_core.c | 164 +++++++++++++++++++++++--------
- drivers/iio/accel/adxl313_spi.c  |  40 +++++++-
- 3 files changed, 173 insertions(+), 46 deletions(-)
+> > > These devres helpers give
+> > > a false sense of security to driver authors and they will end up
+> > > introducing problems, the same way that devm_kzalloc() makes it
+> > > outrageously easy to crash the kernel by disconnecting a device that is
+> > > in use.
 
-diff --git a/drivers/iio/accel/adxl313.h b/drivers/iio/accel/adxl313.h
-index 4415f2fc07e1..7428b1f7768f 100644
---- a/drivers/iio/accel/adxl313.h
-+++ b/drivers/iio/accel/adxl313.h
-@@ -26,6 +26,7 @@
- #define ADXL313_REG_FIFO_STATUS		0x39
- 
- #define ADXL313_DEVID0			0xAD
-+#define ADXL313_DEVID0_ADXL312_314	0xE5
- #define ADXL313_DEVID1			0x1D
- #define ADXL313_PARTID			0xCB
- #define ADXL313_SOFT_RESET		0x52
-@@ -37,18 +38,28 @@
- #define ADXL313_MEASUREMENT_MODE	BIT(3)
- 
- #define ADXL313_RANGE_MSK		GENMASK(1, 0)
--#define ADXL313_RANGE_4G		3
-+#define ADXL313_RANGE_MAX		3
- 
- #define ADXL313_FULL_RES		BIT(3)
- #define ADXL313_SPI_3WIRE		BIT(6)
- #define ADXL313_I2C_DISABLE		BIT(6)
- 
-+extern const struct regmap_access_table adxl312_readable_regs_table;
- extern const struct regmap_access_table adxl313_readable_regs_table;
-+extern const struct regmap_access_table adxl314_readable_regs_table;
- 
-+extern const struct regmap_access_table adxl312_writable_regs_table;
- extern const struct regmap_access_table adxl313_writable_regs_table;
-+extern const struct regmap_access_table adxl314_writable_regs_table;
-+
-+enum adxl313_device_type {
-+	ADXL312,
-+	ADXL313,
-+	ADXL314,
-+};
- 
- int adxl313_core_probe(struct device *dev,
- 		       struct regmap *regmap,
--		       const char *name,
-+		       const struct spi_device_id *id,
- 		       int (*setup)(struct device *, struct regmap *));
- #endif /* _ADXL313_H_ */
-diff --git a/drivers/iio/accel/adxl313_core.c b/drivers/iio/accel/adxl313_core.c
-index afeef779e1d0..eea7d235950e 100644
---- a/drivers/iio/accel/adxl313_core.c
-+++ b/drivers/iio/accel/adxl313_core.c
-@@ -11,9 +11,17 @@
- #include <linux/iio/iio.h>
- #include <linux/module.h>
- #include <linux/regmap.h>
-+#include <linux/spi/spi.h>
- 
- #include "adxl313.h"
- 
-+static const struct regmap_range adxl312_readable_reg_range[] = {
-+	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_DEVID0),
-+	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-+	regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-+	regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_FIFO_STATUS),
-+};
-+
- static const struct regmap_range adxl313_readable_reg_range[] = {
- 	regmap_reg_range(ADXL313_REG_DEVID0, ADXL313_REG_XID),
- 	regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
-@@ -22,12 +30,32 @@ static const struct regmap_range adxl313_readable_reg_range[] = {
- 	regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_FIFO_STATUS),
- };
- 
-+const struct regmap_access_table adxl312_readable_regs_table = {
-+	.yes_ranges = adxl312_readable_reg_range,
-+	.n_yes_ranges = ARRAY_SIZE(adxl312_readable_reg_range),
-+};
-+EXPORT_SYMBOL_NS_GPL(adxl312_readable_regs_table, IIO_ADXL312);
-+
- const struct regmap_access_table adxl313_readable_regs_table = {
- 	.yes_ranges = adxl313_readable_reg_range,
- 	.n_yes_ranges = ARRAY_SIZE(adxl313_readable_reg_range),
- };
- EXPORT_SYMBOL_NS_GPL(adxl313_readable_regs_table, IIO_ADXL313);
- 
-+const struct regmap_access_table adxl314_readable_regs_table = {
-+	.yes_ranges = adxl312_readable_reg_range,
-+	.n_yes_ranges = ARRAY_SIZE(adxl312_readable_reg_range),
-+};
-+EXPORT_SYMBOL_NS_GPL(adxl314_readable_regs_table, IIO_ADXL314);
-+
-+static const struct regmap_range adxl312_writable_reg_range[] = {
-+	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-+	regmap_reg_range(ADXL313_REG_THRESH_ACT, ADXL313_REG_ACT_INACT_CTL),
-+	regmap_reg_range(ADXL313_REG_BW_RATE, ADXL313_REG_INT_MAP),
-+	regmap_reg_range(ADXL313_REG_DATA_FORMAT, ADXL313_REG_DATA_FORMAT),
-+	regmap_reg_range(ADXL313_REG_FIFO_CTL, ADXL313_REG_FIFO_CTL),
-+};
-+
- static const struct regmap_range adxl313_writable_reg_range[] = {
- 	regmap_reg_range(ADXL313_REG_SOFT_RESET, ADXL313_REG_SOFT_RESET),
- 	regmap_reg_range(ADXL313_REG_OFS_AXIS(0), ADXL313_REG_OFS_AXIS(2)),
-@@ -37,16 +65,30 @@ static const struct regmap_range adxl313_writable_reg_range[] = {
- 	regmap_reg_range(ADXL313_REG_FIFO_CTL, ADXL313_REG_FIFO_CTL),
- };
- 
-+const struct regmap_access_table adxl312_writable_regs_table = {
-+	.yes_ranges = adxl312_writable_reg_range,
-+	.n_yes_ranges = ARRAY_SIZE(adxl312_writable_reg_range),
-+};
-+EXPORT_SYMBOL_NS_GPL(adxl312_writable_regs_table, IIO_ADXL312);
-+
- const struct regmap_access_table adxl313_writable_regs_table = {
- 	.yes_ranges = adxl313_writable_reg_range,
- 	.n_yes_ranges = ARRAY_SIZE(adxl313_writable_reg_range),
- };
- EXPORT_SYMBOL_NS_GPL(adxl313_writable_regs_table, IIO_ADXL313);
- 
-+const struct regmap_access_table adxl314_writable_regs_table = {
-+	.yes_ranges = adxl312_writable_reg_range,
-+	.n_yes_ranges = ARRAY_SIZE(adxl312_writable_reg_range),
-+};
-+EXPORT_SYMBOL_NS_GPL(adxl314_writable_regs_table, IIO_ADXL314);
-+
- struct adxl313_data {
- 	struct regmap	*regmap;
-+	const struct spi_device_id *id;
-+	int scale_factor;
- 	struct mutex	lock; /* lock to protect transf_buf */
--	__le16		transf_buf __aligned(IIO_DMA_MINALIGN);
-+	__le16		transf_buf ____cacheline_aligned;
- };
- 
- static const int adxl313_odr_freqs[][2] = {
-@@ -156,12 +198,10 @@ static int adxl313_read_raw(struct iio_dev *indio_dev,
- 		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		/*
--		 * Scale for any g range is given in datasheet as
--		 * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
--		 */
- 		*val = 0;
--		*val2 = 9576806;
-+
-+		*val2 = data->scale_factor;
-+
- 		return IIO_VAL_INT_PLUS_NANO;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		ret = regmap_read(data->regmap,
-@@ -170,7 +210,7 @@ static int adxl313_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 
- 		/*
--		 * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-+		 * 8-bit resolution at minimum range, that is 4x accel data scale
- 		 * factor at full resolution
- 		 */
- 		*val = sign_extend32(regval, 7) * 4;
-@@ -198,7 +238,7 @@ static int adxl313_write_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		/*
--		 * 8-bit resolution at +/- 0.5g, that is 4x accel data scale
-+		 * 8-bit resolution at minimum range, that is 4x accel data scale
- 		 * factor at full resolution
- 		 */
- 		if (clamp_val(val, -128 * 4, 127 * 4) != val)
-@@ -223,14 +263,17 @@ static const struct iio_info adxl313_info = {
- static int adxl313_setup(struct device *dev, struct adxl313_data *data,
- 			 int (*setup)(struct device *, struct regmap *))
- {
-+	enum adxl313_device_type dev_type = data->id->driver_data;
- 	unsigned int regval;
- 	int ret;
- 
--	/* Ensures the device is in a consistent state after start up */
--	ret = regmap_write(data->regmap, ADXL313_REG_SOFT_RESET,
--			   ADXL313_SOFT_RESET);
--	if (ret)
--		return ret;
-+	/* If ADXL313, ensures the device is in a consistent state after start up */
-+	if (dev_type == ADXL313) {
-+		ret = regmap_write(data->regmap, ADXL313_REG_SOFT_RESET,
-+				   ADXL313_SOFT_RESET);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (setup) {
- 		ret = setup(dev, data->regmap);
-@@ -242,41 +285,54 @@ static int adxl313_setup(struct device *dev, struct adxl313_data *data,
- 	if (ret)
- 		return ret;
- 
--	if (regval != ADXL313_DEVID0) {
-+	if (dev_type == ADXL313 && regval != ADXL313_DEVID0) {
- 		dev_err(dev, "Invalid manufacturer ID: 0x%02x\n", regval);
- 		return -ENODEV;
- 	}
- 
--	ret = regmap_read(data->regmap, ADXL313_REG_DEVID1, &regval);
--	if (ret)
--		return ret;
-+	/* If ADXL313, check DEVID1 and PARTID */
-+	if (regval == ADXL313_DEVID0) {
-+		ret = regmap_read(data->regmap, ADXL313_REG_DEVID1, &regval);
-+		if (ret)
-+			return ret;
- 
--	if (regval != ADXL313_DEVID1) {
--		dev_err(dev, "Invalid mems ID: 0x%02x\n", regval);
--		return -ENODEV;
--	}
-+		if (regval != ADXL313_DEVID1) {
-+			dev_err(dev, "Invalid mems ID: 0x%02x\n", regval);
-+			return -ENODEV;
-+		}
- 
--	ret = regmap_read(data->regmap, ADXL313_REG_PARTID, &regval);
--	if (ret)
--		return ret;
-+		ret = regmap_read(data->regmap, ADXL313_REG_PARTID, &regval);
-+		if (ret)
-+			return ret;
- 
--	if (regval != ADXL313_PARTID) {
--		dev_err(dev, "Invalid device ID: 0x%02x\n", regval);
-+		if (regval != ADXL313_PARTID) {
-+			dev_err(dev, "Invalid device ID: 0x%02x\n", regval);
-+			return -ENODEV;
-+		}
-+	}
-+
-+	/* If ADXL312 or ADXL314 device, check DEVID0 */
-+	if (dev_type != ADXL313 && regval != ADXL313_DEVID0_ADXL312_314) {
-+		dev_err(dev, "Invalid manufacturer ID: %#02x\n", regval);
- 		return -ENODEV;
- 	}
- 
--	/* Sets the range to +/- 4g */
--	ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
--				 ADXL313_RANGE_MSK,
--				 FIELD_PREP(ADXL313_RANGE_MSK, ADXL313_RANGE_4G));
--	if (ret)
--		return ret;
-+	dev_info(dev, "%s detected.\n", data->id->name);
- 
--	/* Enables full resolution */
--	ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
--				 ADXL313_FULL_RES, ADXL313_FULL_RES);
--	if (ret)
--		return ret;
-+	/* Sets the range to maximum, full resolution, for ADXL312 and ADXL313 */
-+	if (dev_type == ADXL312 || dev_type == ADXL313) {
-+		ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-+					 ADXL313_RANGE_MSK,
-+					 FIELD_PREP(ADXL313_RANGE_MSK, 0x02));
-+		if (ret)
-+			return ret;
-+
-+		/* Enables full resolution */
-+		ret = regmap_update_bits(data->regmap, ADXL313_REG_DATA_FORMAT,
-+					 ADXL313_FULL_RES, 0);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/* Enables measurement mode */
- 	return regmap_update_bits(data->regmap, ADXL313_REG_POWER_CTL,
-@@ -296,7 +352,7 @@ static int adxl313_setup(struct device *dev, struct adxl313_data *data,
-  */
- int adxl313_core_probe(struct device *dev,
- 		       struct regmap *regmap,
--		       const char *name,
-+		       const struct spi_device_id *id,
- 		       int (*setup)(struct device *, struct regmap *))
- {
- 	struct adxl313_data *data;
-@@ -309,9 +365,35 @@ int adxl313_core_probe(struct device *dev,
- 
- 	data = iio_priv(indio_dev);
- 	data->regmap = regmap;
-+	data->id = id;
-+
-+	if (id->driver_data == ADXL312)
-+		/*
-+		 * ADXL312
-+		 * Scale for any g range (full range) is given in datasheet as
-+		 * 345 LSB/g = 0.0028985507 * 9.80665 = 0.028425072222155 m/s^2
-+		 */
-+		data->scale_factor = 28425072;
-+
-+	if (id->driver_data == ADXL313)
-+		/*
-+		 * * ADXL313
-+		 * Scale for any g range is given in datasheet as
-+		 * 1024 LSB/g = 0.0009765625 * 9.80665 = 0.009576806640625 m/s^2
-+		 */
-+		data->scale_factor = 9576806;
-+
-+	if (id->driver_data == ADXL314)
-+		/*
-+		 * ADXL314
-+		 * At +/-200g with 13-bit resolution, scale factor is given in datasheet as
-+		 * 48.83 mg/LSB = 0.0488300 * 9.80665 = 0.4788587195 m/s^2.
-+		 */
-+		data->scale_factor = 478858719;
-+
- 	mutex_init(&data->lock);
- 
--	indio_dev->name = name;
-+	indio_dev->name = id->name;
- 	indio_dev->info = &adxl313_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = adxl313_channels;
-@@ -319,13 +401,13 @@ int adxl313_core_probe(struct device *dev,
- 
- 	ret = adxl313_setup(dev, data, setup);
- 	if (ret) {
--		dev_err(dev, "ADXL313 setup failed\n");
-+		dev_err(dev, "Device %s setup failed\n", id->name);
- 		return ret;
- 	}
- 
- 	return devm_iio_device_register(dev, indio_dev);
- }
--EXPORT_SYMBOL_NS_GPL(adxl313_core_probe, IIO_ADXL313);
-+EXPORT_SYMBOL_GPL(adxl313_core_probe);
- 
- MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
- MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer core driver");
-diff --git a/drivers/iio/accel/adxl313_spi.c b/drivers/iio/accel/adxl313_spi.c
-index a3c6d553462d..19cd096373b0 100644
---- a/drivers/iio/accel/adxl313_spi.c
-+++ b/drivers/iio/accel/adxl313_spi.c
-@@ -14,6 +14,16 @@
- 
- #include "adxl313.h"
- 
-+static const struct regmap_config adxl312_spi_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+	.rd_table	= &adxl312_readable_regs_table,
-+	.wr_table	= &adxl312_writable_regs_table,
-+	.max_register	= 0x39,
-+	 /* Setting bits 7 and 6 enables multiple-byte read */
-+	.read_flag_mask	= BIT(7) | BIT(6),
-+};
-+
- static const struct regmap_config adxl313_spi_regmap_config = {
- 	.reg_bits	= 8,
- 	.val_bits	= 8,
-@@ -24,6 +34,22 @@ static const struct regmap_config adxl313_spi_regmap_config = {
- 	.read_flag_mask	= BIT(7) | BIT(6),
- };
- 
-+static const struct regmap_config adxl314_spi_regmap_config = {
-+	.reg_bits	= 8,
-+	.val_bits	= 8,
-+	.rd_table	= &adxl314_readable_regs_table,
-+	.wr_table	= &adxl314_writable_regs_table,
-+	.max_register	= 0x39,
-+	 /* Setting bits 7 and 6 enables multiple-byte read */
-+	.read_flag_mask	= BIT(7) | BIT(6),
-+};
-+
-+static const struct regmap_config adxl31x_spi_regmap_config[] = {
-+	adxl312_spi_regmap_config,
-+	adxl313_spi_regmap_config,
-+	adxl314_spi_regmap_config
-+};
-+
- static int adxl313_spi_setup(struct device *dev, struct regmap *regmap)
- {
- 	struct spi_device *spi = container_of(dev, struct spi_device, dev);
-@@ -51,26 +77,32 @@ static int adxl313_spi_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	regmap = devm_regmap_init_spi(spi, &adxl313_spi_regmap_config);
-+	regmap = devm_regmap_init_spi(spi,
-+				      &adxl31x_spi_regmap_config[id->driver_data]);
-+
- 	if (IS_ERR(regmap)) {
- 		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
- 			PTR_ERR(regmap));
- 		return PTR_ERR(regmap);
- 	}
- 
--	return adxl313_core_probe(&spi->dev, regmap, id->name,
-+	return adxl313_core_probe(&spi->dev, regmap, id,
- 				  &adxl313_spi_setup);
- }
- 
- static const struct spi_device_id adxl313_spi_id[] = {
--	{ "adxl313" },
-+	{ "adxl312", ADXL312 },
-+	{ "adxl313", ADXL313 },
-+	{ "adxl314", ADXL314 },
- 	{ }
- };
- 
- MODULE_DEVICE_TABLE(spi, adxl313_spi_id);
- 
- static const struct of_device_id adxl313_of_match[] = {
-+	{ .compatible = "adi,adxl312" },
- 	{ .compatible = "adi,adxl313" },
-+	{ .compatible = "adi,adxl314" },
- 	{ }
- };
- 
-@@ -90,4 +122,6 @@ module_spi_driver(adxl313_spi_driver);
- MODULE_AUTHOR("Lucas Stankus <lucas.p.stankus@gmail.com>");
- MODULE_DESCRIPTION("ADXL313 3-Axis Digital Accelerometer SPI driver");
- MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_ADXL312);
- MODULE_IMPORT_NS(IIO_ADXL313);
-+MODULE_IMPORT_NS(IIO_ADXL314);
--- 
-2.30.2
+> I think this is going a bit "off-topic" but I'd like to understand what is
+> behind this statement? From device-writer's perspective - I don't know much
+> better alternatives to free up the memory. I don't see how freeing stuff at
+> .remove would be any better? As far as I understand - if someone is using
+> driver's resources after the device has gone and the driver is detached,
+> then there is not much the driver could do to free-up the stuff be it devm
+> or not? This sounds like fundamentally different problem (to me).
 
+If a driver has done something like create a file that's accessible to
+userspace then that file may be held open by userspace even after the
+device goes away, the driver that created the file needs to ensure that
+any storage that's used by the file remains allocated until the file is
+also freed (typically this is data specific to the file rather than the
+full device data).  Similar situations can exist elsewhere, that's just
+the common case.  There'll be a deletion callback on whatever other
+object causes the problem, the allocation needs to be reference counted
+against both the the device and whatever other users there might be.
+
+> > That's a different conversation, and a totally
+> > valid one especially when you start looking at things like implementing
+> > userspace APIs which need to cope with hardware going away while still
+> > visible to userspace.
+
+> This is interesting. It's not easy for me to spot how devm changes things
+> here? If we consider some removable device - then I guess also the .remove()
+> is ran only after HW has already gone? Yes, devm might make the time window
+> when userspace can see hardware that has gone longer but does it bring any
+> new problem there? It seems to me devm can make hitting the spot more likely
+> - but I don't think it brings completely new issues? (Well, I may be wrong
+> here - wouldn't be the first time :])
+
+See above, something can still know the device was there even after it's
+gone.
+
+--MVZ75Zz0qn0/IYvJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmL7cycACgkQJNaLcl1U
+h9CzyQf/bDMqScPGw8MQIW6yZaN+9P25oNyQJTQ0X6hRYgasG5lC1b2j2/0LCuJQ
+0Flnz8b/wQI5LbmpExV6c8/Kt/xKopO8No6Af3gUUtkUNPQYHn0CJoB9HDQmSBe+
+uVrf5bEH9+GCi7WumAXuvFxT73bF4jt4WVbhNzBAGDD4hnxAF9hpyhSJ9uWS+b2z
+f+b77s+ubFb6gbYAqAVnq06cStPvi8aZrAT3UjDUVe3vF8LGQiz7VIdeFA0m0nVl
+eQNPvf5a0fCYw0M93B570wvMMPiX1lmfNt6iAWHwq9rKryHWKxB3Ntj5z+5EKDep
+0DAfDf7LZH1UUNZzCXclRPka0Fd9kw==
+=RD3o
+-----END PGP SIGNATURE-----
+
+--MVZ75Zz0qn0/IYvJ--

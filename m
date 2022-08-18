@@ -2,103 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F0F598B1E
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Aug 2022 20:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 579DB598DA8
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Aug 2022 22:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242247AbiHRS2v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 18 Aug 2022 14:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38824 "EHLO
+        id S239031AbiHRURe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 18 Aug 2022 16:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345445AbiHRS2t (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Aug 2022 14:28:49 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10olkn2098.outbound.protection.outlook.com [40.92.41.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF01C32D8B;
-        Thu, 18 Aug 2022 11:28:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GCfPaMHP130j5G09A54Krsea4P6kvh22hscrcWq9Z7U4ABhMWZmph3WKOvR8ykkkPefSfzdidwSdCDDDiw5uU7S8QIdj6+UyAhHM+U+BsznpftE+u+QHGP+aUZNtwsbirla+NtHL017KWq0uGSuFrNewxCl+ZBahhaujuSsd8EMPfIn67Xn0O0trWNO4EvV1YYqvZJflbkn3IudsWUr0AsyxBsC8EJXaK6jZYO4p5SzQdq0vOsSdOJ0wPccl3rwSJq39sPVxdbrnge/AmbtBHSNZQayAhl5htf3VS77NdWoM0HjR40Sebdpnzc351bCkJ6LP6CnUXXlRcyg/WqH8Ug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xawoA86fzsEa+JCL6nr0tDPbuzJ2lvUjgLexXhPA0is=;
- b=lockPdETq3OYKVIBhjDuq6Hk+ydea894YnvW7xCPbchmTseoZy2sbWwwwwRg0Ag7c7DKORfc7VdRjTYZjWlnVrAHwWvpucVh8jVGsMu869ZcBvS5lMEzxBunkoq5Hck2AP6pTqR4kuAcsjst7XFRt8MVx34Iw9xMDQvg2A/P5R/JcLZax6yhW/pkoWiF03qOs9uwQ6VF7xijpl2dSa2vYE+GewY09NJ/jLPU51DzJUa7O+EcuKHcFx1W0mLyQRIOOd4QOydC1P/Y9J3uNrXHsanrMbzZW2dCEAW+qQqKFQGhQ6nrJTQAuddczNDlgxdUohawF5WQXj3njoXihdtrlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xawoA86fzsEa+JCL6nr0tDPbuzJ2lvUjgLexXhPA0is=;
- b=OHAddYOsbygptEvoQWVFsoX1WNDZ+D1qk/BmndNi7X88YOBxg38HK8618swgAOh2vP1xaRmUgButREd2W9ZzgPG001IDzwfB0Qr5VRNZwZ4DBtgbpnmXPPXEJer4aZb4JryNpTPAJMqC0kaesmKLAmhMO/rAeKmbtWtf9fMGqYqQEb7jDxfw/RiLQubPi3vCDg8Q66jpFQAt0fyN7SlkMhymrFV5sKQhRHiiykR5LhApEqRo2d/yAYE9oDxKIw0FM6BdWfaJeOIxdtQ/D3uEhKDxgkV7H9khzXiAMARozcCSqfqYT6ZhZm/CvLl6vLpxEKC9BeTJHlxNpF4nve7P2g==
-Received: from SN6PR06MB5342.namprd06.prod.outlook.com (2603:10b6:805:f9::31)
- by CO6PR06MB7345.namprd06.prod.outlook.com (2603:10b6:303:a9::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5525.11; Thu, 18 Aug
- 2022 18:28:45 +0000
-Received: from SN6PR06MB5342.namprd06.prod.outlook.com
- ([fe80::20e7:bc40:7e9d:b46e]) by SN6PR06MB5342.namprd06.prod.outlook.com
- ([fe80::20e7:bc40:7e9d:b46e%4]) with mapi id 15.20.5504.028; Thu, 18 Aug 2022
- 18:28:45 +0000
-Date:   Thu, 18 Aug 2022 13:28:39 -0500
-From:   Chris Morgan <macromorgan@hotmail.com>
-To:     Artur Rojek <contact@artur-rojek.eu>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH 0/4] iio/adc-joystick: buffer data parsing fixes
-Message-ID: <SN6PR06MB534245440C9A0EA1E0C11B12A56D9@SN6PR06MB5342.namprd06.prod.outlook.com>
-References: <20220817105643.95710-1-contact@artur-rojek.eu>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220817105643.95710-1-contact@artur-rojek.eu>
-X-TMN:  [Eec70N9eyO5HUp37L5lEvH7rR60u+0Sa]
-X-ClientProxiedBy: SN1PR12CA0079.namprd12.prod.outlook.com
- (2603:10b6:802:21::14) To SN6PR06MB5342.namprd06.prod.outlook.com
- (2603:10b6:805:f9::31)
-X-Microsoft-Original-Message-ID: <20220818182839.GA24350@wintermute.localdomain>
+        with ESMTP id S234847AbiHRURd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 18 Aug 2022 16:17:33 -0400
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D1C82C8;
+        Thu, 18 Aug 2022 13:17:32 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id l18so1980853qvt.13;
+        Thu, 18 Aug 2022 13:17:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=RagohbO1MrRrWCI7FxAgnpHfYGPZGQJMPyq1fVIpdc0=;
+        b=elX8w4NRHI1TPrW9IPRlh0Sldko1z5DP2VmIOK9FrwrqgLIBdCVWH+vUv2duAN5KFb
+         wXyUEIpMjFbh7RiJ8m3c9e14ccQjxjXlzY+cj0vyza1veRNaOXWwp632qON8YvPCIPGL
+         /1kH08HODSgleBSwWJAsiU4nWUrrw9XXwcfKdowh2kNSKmzCVTROqXOn4bBkxHdv/ffp
+         HkN8s09GpBRkFH+xMwvpxoUoDMu++JHK1eZVupXrJTQVBRGknkvU6PDMzHwvJNemHfR/
+         wy2o/2BU8o1KNJoW4/z28/35B4zSXoRS26NsBT+rinU3uj2dd+kfMMVBcN/1kkmjnVYG
+         KyEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=RagohbO1MrRrWCI7FxAgnpHfYGPZGQJMPyq1fVIpdc0=;
+        b=vFIs3sdfpsst0pcjNyTo6KylLLXgpbyVrLpfyIBdD5EaJYE25yWvNBpZyGAPGXCOBZ
+         kW1WC6Nb5kvlqy15h+0v5Y/ZehWjzagJledXTWCLUawLuIobLcKjmJCm8rU/N5XZMMKK
+         zILQIiHO2jcyXgjz6UsWJe21cumrCbZNT00uD9sjxR5/zs/gZ3oPUxwRYoI+Tah+28E5
+         WauoAcFjeim+YxZPo/Ja76g+2o/jMoKQlWV9XkurUsJ1iFeBGNdbNoqSrS4lNf8+u9zP
+         t0u+upnYGvM3HlfeClx1McISj4z9vOULKBgCf4kDOLmR+ngN3sMEPe2r0MCMf7pJK7R+
+         isTA==
+X-Gm-Message-State: ACgBeo3ATccPsJDBkPB6rtLVhSxOE/Y9gZa7tjEtLWqf+X63XMGIA/Zs
+        YZCmOQkRnR+rOK2qAbojCtBjo3pm+FYPpJu4U20=
+X-Google-Smtp-Source: AA6agR4jiGGNInYimiIdJD7xQgTdH41Rww1FvNd75BjW9IfyKYGQYONby44a1l3nUArt73ZaZVW8JiFSAcvLxedPATc=
+X-Received: by 2002:a05:6214:5290:b0:479:5df:e654 with SMTP id
+ kj16-20020a056214529000b0047905dfe654mr3842324qvb.97.1660853851615; Thu, 18
+ Aug 2022 13:17:31 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 73229ce6-6db3-43ac-59ca-08da81477bd2
-X-MS-TrafficTypeDiagnostic: CO6PR06MB7345:EE_
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zedhfNtkqGAHPYRGu+4CX1twqJd7h8frTfLmaXMH2dMbUsTUQPdlOylU02860W0CvosjPRp40abKNfUGCzwIt8SdY7jwgem4qFBZXfGTI8mJMtwaToiJskx/KT6EDoLaY12GA6ji3QoSNWEgOYxb/DEpqCwdJG2AVrYqE21CbjR/fpUMZSNN/A1iAVd7qzfrLGSvcEwnmt3eHUTaoYK5aNxSP9kGGRp1aWamgqlVuAQlfxYOl32ALkF1+obDZF5F2e/wBxN/bNdEEAkxIDdFCulNed49jzPRv1KYDlxbWcC/zRlE0wnR/PdF5lY2qfvN9jVPQZkQuxDvfVr2cZj0IAl5tdS3WqDTjnEECn0dSti+6Ij/L92m7N4bnp9hH4fk6tDrYTKJZjVjtuA+7PRHycht7HA2jSqgioraWOy5Z7pU/SxBwFCoOlcXZOUBiaRb1ZZFhKxrb9eD6nvrAPScE2c1CiHAj4XD7WzYBMPLSfyCj/NxkDpJdanU4DVjh5c17JQDrt7cpdCMZikwN2e597USBU3te21ftLZs4poboyDGTXGM5sKDIqzYDaFwzTfIwZE/yqgzVNeIBcxL69f15+iLP2H8yLJtJ9WAFjBIKGwQEoA5ajyCyM4faVt+k3a/UeKRfpywsKjuH5wIqU0sJQO1+PNrTRnS3/9Bwr8sNaWdXtfRKygBcoVfHkOclOaf
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?24wnFuafXrkPMzlMMnc1H8Gy9i8KfSjjfdk3x1T7h6L63PHZjbHjrNIg5fsd?=
- =?us-ascii?Q?rodWFsTICodkZPaXFYCizAE4zFxWKp8pGFdokErQleknPui4OUCqOwYaZWti?=
- =?us-ascii?Q?JH3fMvTsrcy4JtlBd+zpz+SKD0vqI/fqiAa2AOaJb9yRtxb3MbQcu32Nipc9?=
- =?us-ascii?Q?zlHG45BnP5SVUFprrqPFlUBjk0Ew5LZbpEwTCPyJpkeV0MfQJQT8MLxKTI17?=
- =?us-ascii?Q?rQWVf+rJ1+KgwYWXwGm88k5YbajOSRWWLD+nzbB3NzVW2iuaWKvmKFdGu9Cb?=
- =?us-ascii?Q?nQEs0ITLAkh19YfDNdiHetWdeQToADB5wpJ3qZgT/ljKAmMQgq+dCxJs8eza?=
- =?us-ascii?Q?01HhHS6nQ9JBKRji//Rld9mJ1x8p3rl9ao5dKDU7J3nVxvB4BUAHVgnEPPPI?=
- =?us-ascii?Q?gDLDakIA/HIPS5irV9zL6OPXc9tc9/MGVyii2gj/xEJk/xGT1FkxbRCAgZMh?=
- =?us-ascii?Q?LuXcuzqEZ8/1LjP7eobXDEvT2MxlcprRoJ2hWcD/sPY61d9Uhi4e86Y6k/Bv?=
- =?us-ascii?Q?m1PVn+HT8PQE6AXHyLr+1C0goAGi7BzG+0aana3eJkzDsbAskrokpYxzZucR?=
- =?us-ascii?Q?8s3Ps/kavaraFK4Rc2qXoXIjGvWr4TRNnUgC2qXFDUGuINbbbUeoA9w+eFmB?=
- =?us-ascii?Q?PzckaBwAd0ca9JGlMwSN+/2bFGzG6pgIdGkJDF5tOF+MCcf4240Gt6UErIAv?=
- =?us-ascii?Q?MBPm6aw8loWOn/rfnu8+qbtVoLllPEEPiVnJzuTebXgXJYWZTPiEaZGu1QQh?=
- =?us-ascii?Q?bo4Mrj/vrqWpY66AkBWk+n8mlqG+kcsm7tWtXvw4oxsp3fZ6GoYbCdNgXUq3?=
- =?us-ascii?Q?FnZrMHkXE0FurN5gajyHux0PFe7xgWkhlSd3UMpgWY29541BJEzm1HjEUYLV?=
- =?us-ascii?Q?kEH0e3ZtE1H/0kpaOxh+c30P0483QqWJJLiG3q9ZjaS6ruVzjrmjol0Cf4hX?=
- =?us-ascii?Q?12ADjomRzmE6iIVHwHReExlmVzsZS3c2SZxBlTVmG6XSXokQzOlhx5CpsOnv?=
- =?us-ascii?Q?in/z5HVBz0LdbAu6i/J1JlJgjBsXVBIRH4pZCV2zoawJfxSF56hFOJS8ZKes?=
- =?us-ascii?Q?wzf5eyb0LI8tQS3drNE7sLgp6AjWxyq0UeEw1jgS1QF9rWdWFxnvChNDiyy9?=
- =?us-ascii?Q?o958v2xS39A3nWLAmLyPw9vKDnVdcWqLxHTWJK0NXGDe+Wa/wCG33IIlTaGh?=
- =?us-ascii?Q?XZLzRstEA49Q88JY9SVBqVxRczdN7tH8D8jszvgYPlqh9/+Pn14qQjfBMYgI?=
- =?us-ascii?Q?7srO7GYyFuSy2xNwkGsEIiwl8WTfbiwgHJKxtLh8nA=3D=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-89723.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73229ce6-6db3-43ac-59ca-08da81477bd2
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR06MB5342.namprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2022 18:28:45.1077
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR06MB7345
+References: <20220815145705.203017-1-eajames@linux.ibm.com> <20220815145705.203017-3-eajames@linux.ibm.com>
+In-Reply-To: <20220815145705.203017-3-eajames@linux.ibm.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 18 Aug 2022 23:16:55 +0300
+Message-ID: <CAHp75VegQspJJ9YT=2E3YvKh-hp9-AGincp4z0GdQbA0Vq4Zug@mail.gmail.com>
+Subject: Re: [PATCH v5 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
+To:     Eddie James <eajames@linux.ibm.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joel Stanley <joel@jms.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -106,44 +68,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 17, 2022 at 12:56:39PM +0200, Artur Rojek wrote:
-> Hi all,
-> 
-> this patch set fixes the way channel data is being parsed in the
-> adc-joystick driver. To achieve that, it also introduces helpers in the
-> IIO subsystem. As a side effect of those changes, a bug in ingenic-adc
-> has been exposed, which this patch set promptly rectifies.
-> 
-> Tested on GCW Zero (by me) and on Anbernic RG350 (by Paul).
-> 
-> Chris:
-> As you have originally reported the issue, would you be able to test
-> the above changes on your setup (Odroid Go Advance, was it)?
+On Mon, Aug 15, 2022 at 5:57 PM Eddie James <eajames@linux.ibm.com> wrote:
+>
+> Corruption of the MEAS_CFG register has been observed soon after
+> system boot. In order to recover this scenario, check MEAS_CFG if
+> measurement isn't ready, and if it's incorrect, reset the DPS310
+> and execute the startup procedure.
 
-I can confirm this fixes the issue I experienced, I can see both
-channels of the joystick now when using an hrtimer as a trigger.
+...
 
-This patch also does not interfere with the polling work in progress,
-as that still works as expected too (polling work is still desired
-though).
+> + * Called with lock held. Returns a negative value on error, a positive value
+> + * when the device is not ready, and zero when the device is ready.
 
-Thank you.
+Can we have
 
-> 
-> Artur Rojek (4):
->   iio/adc: ingenic: fix channel offsets in buffer
->   iio: add iio_channel_cb_get_iio_buffer helper
->   iio: add helper function for reading channel offset in buffer
->   input: joystick: Fix buffer data parsing
-> 
->  drivers/iio/adc/ingenic-adc.c               |  7 +++---
->  drivers/iio/buffer/industrialio-buffer-cb.c |  7 ++++++
->  drivers/iio/industrialio-buffer.c           | 28 +++++++++++++++++++++
->  drivers/input/joystick/adc-joystick.c       | 26 ++++++++++++-------
->  include/linux/iio/buffer.h                  |  4 +++
->  include/linux/iio/consumer.h                | 12 +++++++++
->  6 files changed, 71 insertions(+), 13 deletions(-)
-> 
-> -- 
-> 2.37.2
-> 
+#define DPS310_DEVICE_NOT_READY  1
+
+(or anonymous enum) and return it instead of abstract 1 or any other
+positive number?
+
+...
+
+> +       rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
+>         if (rc < 0)
+>                 goto done;
+>
+> +       if (rc > 0) {
+> +               rate = dps310_get_temp_samp_freq(data);
+> +               timeout = DPS310_POLL_TIMEOUT_US(rate);
+> +
+> +               /*
+> +                * Poll for sensor readiness; base the timeout upon the sample
+> +                * rate.
+> +                */
+> +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
+> +                                             ready, ready & DPS310_TMP_RDY,
+> +                                             DPS310_POLL_SLEEP_US(timeout),
+> +                                             timeout);
+> +               if (rc)
+> +                       goto done;
+> +       }
+
+But have you tried to make a helper that takes a pointer to the
+respective function?
+
+-- 
+With Best Regards,
+Andy Shevchenko

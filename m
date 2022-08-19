@@ -2,101 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD017599A05
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4D65999F6
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347345AbiHSKdW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 06:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48460 "EHLO
+        id S1347764AbiHSKen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 06:34:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347614AbiHSKdV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:33:21 -0400
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D74A32B4;
-        Fri, 19 Aug 2022 03:33:14 -0700 (PDT)
-Received: (Authenticated sender: contact@artur-rojek.eu)
-        by mail.gandi.net (Postfix) with ESMTPA id 40ECBE000B;
-        Fri, 19 Aug 2022 10:33:09 +0000 (UTC)
+        with ESMTP id S1347454AbiHSKec (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:34:32 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9591A924B;
+        Fri, 19 Aug 2022 03:34:31 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id c20so2990796qtw.8;
+        Fri, 19 Aug 2022 03:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=y43Q4Ux8mzcAs/PRKLgB3PhAbbRFuFRwNvqbANaCmZQ=;
+        b=WCzWYNhe7Uos+2cSI8d1+g+RmMXisRI0OCPtLc8pLgBH0XA/Q8jgQ/tBCriBS/plKX
+         eaTd4DdHfZVz0DOG4feUrCLJrexHYMI1Q2awWoSCdiAZwMgNvUPXo9X49vEgr3qGhb7M
+         bvPboaOFVYvi+A3cRBv4+2CBzxZ81DlynNJ7L4JpNxUCQ0hGRuWVJh67WkGymLNzSdZl
+         If+S5KdKCITHYr9e6OT3xXAhIDV1hTvjT9q1s3IUtgnxhWRHyLayQbn6NKJcwydyKPn0
+         ITdpm64bppQOL504GAXAa/kmBQIn2S4uD/1AprPF7imSPdET3gcOGDGG3X4z52QoHMNz
+         sK1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=y43Q4Ux8mzcAs/PRKLgB3PhAbbRFuFRwNvqbANaCmZQ=;
+        b=y6kBwP10ppmXZwsSelNjKSCEcd1GSOypOTEafVx2BpuO2LdwcH7f9HZiHiTXq10vev
+         0IKvhI2m+12dpWCuvG/P7CSTSZWUiIKZaKk9ITna2vBCv+ITSN7hrTHWo7IawCb8cAuF
+         /6f/g2y/DCBVADVoX0lLFdEwAYs3jMORJQsCnJGU8ygbUSocOahlzPafyxCZySRPu01U
+         fOOQ0RBREk7mLM58iziNTDDrUxT5/0dPEx4tMFbIpq3bwSr2YwiHJzCSjLoslGXXhJkt
+         42B99Q9PmqJ/7FksR2se6FxiJXCvInORzEDkjZ9m5NzqXs7xkvbx/1mNKiV66wjLP/KP
+         CbPA==
+X-Gm-Message-State: ACgBeo06IEZHzM9H/TXhmlM9dZuiWw/NPc7lcTzmmikE5B4B0OUN6UJR
+        +e5KliyLO2dY3Iry1kD4GWKUXWvrf60PT9FKQbk=
+X-Google-Smtp-Source: AA6agR71z1/2SpT3yPpDi+nG8Mk5PMI4fgXgfA+vgEQzHAkvpZagpe1i71Ye/VpuaokPks7F+VLaUOX9ymA7jlbWiTU=
+X-Received: by 2002:a05:622a:40a:b0:343:77ba:727f with SMTP id
+ n10-20020a05622a040a00b0034377ba727fmr5973760qtx.481.1660905270646; Fri, 19
+ Aug 2022 03:34:30 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 19 Aug 2022 12:33:08 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Paul Cercueil <paul@crapouillou.net>,
+References: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
+ <CAHp75VdTZ_JYB2aYVdQTOx9QW1HPKhwYyQH-0tVCtpjHV=VcaQ@mail.gmail.com> <8a1f372f34be71895268e874bb3fbbf105dfabdb.camel@gmail.com>
+In-Reply-To: <8a1f372f34be71895268e874bb3fbbf105dfabdb.camel@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 19 Aug 2022 13:33:54 +0300
+Message-ID: <CAHp75VeSsVD8rMz-Cj6kFovqdQQPjbH7rUXWS6paRtsBaB-Kww@mail.gmail.com>
+Subject: Re: [PATCH] iio: pressure: bmp280: fix datasheet links
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-input <linux-input@vger.kernel.org>
-Subject: Re: [PATCH 3/4] iio: add helper function for reading channel offset
- in buffer
-In-Reply-To: <CAHp75VeierGKV7BqF+y-vxramA4nk24LOSPRxgmjots_amkg-w@mail.gmail.com>
-References: <20220817105643.95710-1-contact@artur-rojek.eu>
- <20220817105643.95710-4-contact@artur-rojek.eu>
- <CAHp75VeierGKV7BqF+y-vxramA4nk24LOSPRxgmjots_amkg-w@mail.gmail.com>
-Message-ID: <a9b3f2b469e26d13f1c37a6f10373e24@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-08-19 10:17, Andy Shevchenko wrote:
-> On Wed, Aug 17, 2022 at 1:58 PM Artur Rojek <contact@artur-rojek.eu> 
-> wrote:
->> 
->> This is useful for consumers that wish to parse raw buffer data.
-> 
-> ...
-> 
->> +int iio_find_channel_offset_in_buffer(struct iio_dev *indio_dev,
->> +                                     const struct iio_chan_spec 
->> *chan,
->> +                                     struct iio_buffer *buffer)
->> +{
->> +       int length, offset = 0;
->> +       unsigned int si;
->> +
->> +       if (chan->scan_index < 0 ||
->> +           !test_bit(chan->scan_index, buffer->scan_mask)) {
->> +               return -EINVAL;
->> +       }
-> 
-> Have you run checkpatch? The {} are redundant. But personally I would
-> split this into two separate conditionals.
-I did run checkpatch on it - all patches were ready for submission.
-I don't find the {} redundant for multi-line statements, like this one,
-and I personally prefer to check conditions that return the same error
-type together.
-> 
->> +       for (si = 0; si < chan->scan_index; ++si) {
-> 
-> Just a side crying: where did you, people, get this pre-increment 
-> pattern from?!
-> 
->> +               if (!test_bit(si, buffer->scan_mask))
->> +                       continue;
-> 
-> NIH for_each_set_bit()
-> 
->> +               length = iio_storage_bytes_for_si(indio_dev, si);
->> +
->> +               /* Account for channel alignment. */
->> +               if (offset % length)
->> +                       offset += length - (offset % length);
->> +               offset += length;
->> +       }
->> +
->> +       return offset;
->> +}
->> +EXPORT_SYMBOL_GPL(iio_find_channel_offset_in_buffer);
-> 
-> Same Q as per previous patch: IIO namespace?
+On Fri, Aug 19, 2022 at 1:31 PM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+> On Fri, 2022-08-19 at 12:37 +0300, Andy Shevchenko wrote:
+> > On Tue, Aug 16, 2022 at 2:39 AM Angel Iglesias <ang.iglesiasg@gmail.com>
+> > wrote:
+> > >
+> > > Updated links for BMP280 and BME280 datasheets on Bosch website.
+> >
+> > > Datasheet of BMP180 is no longer available on the manufacturer's website,
+> > > changed the link to a copy hosted by a third party.
+> >
+> > Note, that the version is downgraded (from 12.1 to 9).
+>
+> Apologies, I forgot to add a note about this. Changelog on datasheet 12.1 listed
+> these three changes from version 9:
+> * Page 26: Changed document referral from ANP015 to BST-MPS-AN004-00
+> * Chapter 3.5: New equation for B3 (adds a long cast to AC1)
+> * Page 26: Updated RoHS directive to 2011/65/EU effective 8 June 2011
+
+Perhaps you may add this to the comment below into the code.
+
+> Unfortunately, I couldn't find the most updated version in good quality hosted
+> in a trustworthy place.
+
+Me neither.
+
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+-- 
+With Best Regards,
+Andy Shevchenko

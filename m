@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B64F5996FA
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C0405996F6
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:18:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347480AbiHSINR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 04:13:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
+        id S1347642AbiHSIPY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 04:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345238AbiHSINQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:13:16 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB7F109F;
-        Fri, 19 Aug 2022 01:13:15 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id de16so515099qvb.12;
-        Fri, 19 Aug 2022 01:13:15 -0700 (PDT)
+        with ESMTP id S1347602AbiHSIPQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:15:16 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 638A1D25E0;
+        Fri, 19 Aug 2022 01:14:41 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id p4so2871725qvr.5;
+        Fri, 19 Aug 2022 01:14:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=8xRjWWqTqJR71ec9sr3LoeTgstJo+nK7ZM6OvQ/WbBc=;
-        b=DVv0rr+qy4mLu7yexcLS+HJNtsHJ5+uslwUhZzVTnQQFiAKL9OM3zDTELcxcOToPeK
-         JrX1c8AJSS+/htimLfCCSJSdlCqa6weM2cWriohpw+0gwek/ZFhlCR4sgCSAbG8hEsNn
-         5PQDvRHxPIqwQcUZxQlAV6MBazpbb4KGkoyuw5F56e5mTrFFEqtZqDEyoCwjY632jo1x
-         o35r1L530rnrkj8B/g/iS1LGckhsUZ+/disp4ieZ+YNapGpgXWMWP922BEzAO0FLg3DH
-         boKUdURD6zToLF/Ax/xHu3uwIe/biNd/GfXXNztp2t0/okr9wObJYoZR23HX2TPmkJF1
-         VnmQ==
+        bh=aCZoiGRwyMVY7WfRYM9uVBdL1wCHNtdff3dkV0mrBaQ=;
+        b=l8mR22plJrQHFDkgURsmJ/ehMSuSK3nSuiKCKt1T8hb2GxnoYwSDaj+cECpNaUBDO2
+         1v2p/E81hKOIGjR37Jvk+P0x5FakkubOPfBD6aLNPsNPf2cq97FSmhIR6HT+hW77M7P8
+         nPnPfBNAUid3865Z04uxhK+YbwK4AhTwC0KyClY9WD7iU+7+PVMSxZj46boFg1N6PV9X
+         GSkqKJzzO9b+MhaXRPeiDIroEQSv7w0AM++Abs2a7Cu9U+MTw85/FdWR7nuzrYDKkcgv
+         e9dEnpryil2rYJMCg75hzmcklJqqhKP0LqXcHbMMh3xG/F4G8Grai+0PBufg/ZyE1AZb
+         DNxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=8xRjWWqTqJR71ec9sr3LoeTgstJo+nK7ZM6OvQ/WbBc=;
-        b=erDCfnfy+PPohWSlm7ma0QWN0oD42r89B4Qy+7k8b9l49nEGRA16RCB6JIMvITK42W
-         iHhaHnv69Or/I5oTd7jJTK72k9eylpTL8pZXulnQOBaveAqrpjEShrNWseokrnExJYwE
-         unirH73SWsLj5Z+ARHoztFjGOhJYr6iilO9AwdLe+PeLFLU9T6zL9B4JErI8kuEGII+G
-         JE1366dfeB5Ba3h1k5XjgjihAVOoR7tI6MEBz5csbXw8/UJ8/+GsTd+PSirVBtBzsuNi
-         lglFaSr99exB/OQv+mB8CQmtKCLlnxq2nueuyWPtCdclFDXIOyKbkT2Z/6GrRMn4yZot
-         C8bw==
-X-Gm-Message-State: ACgBeo3a0Wkxr/BW37BDRB7rQGbYtOUjxQClQXad5rLbwBHYj4X4IxFz
-        WG1WywVs2qZ/L+t+dB6OFjub4DrbvjL0O3uIr14=
-X-Google-Smtp-Source: AA6agR7QeiiF9Fgn1+vYz0KTXJWVLHlcW9SAYPPFMlNenPsnnpM60xdb5eSHvet6ReebGjdcFjQAiwGzbcjgWETfc2g=
-X-Received: by 2002:a05:6214:d07:b0:476:c32f:f4f4 with SMTP id
- 7-20020a0562140d0700b00476c32ff4f4mr5460234qvh.11.1660896794198; Fri, 19 Aug
- 2022 01:13:14 -0700 (PDT)
+        bh=aCZoiGRwyMVY7WfRYM9uVBdL1wCHNtdff3dkV0mrBaQ=;
+        b=3hw4ZQhwvH1pbPhohph5pPKTEvTHstnxl5VLnrixe4Caje1XWBqEDploSFtOmcBesV
+         Dh/FK2XGKNpWBzHsVU/Jis+76t69695Jl7ZsoFNm1XwGLmPlenkl9rGWYTQ4eXS8bGFV
+         vseKrggBlT7wPB29g4xm3htT2sx04zhsRTPA7EFeZM7U14/gvSmNtgytgKCyG3BfN3dq
+         32Jk4B5EQtN4OfYsuZUuXRnZw6FoxKd4DyXPr+Pjah2ShfuYoOMtdcr0QhkbmjLaGSp6
+         jFJC5ac3hZEvcunVSSjygBWJmJhFXZd5PnOpe8zWQMwodgrjQENi1xtyvSbWacIdhsIN
+         hUIw==
+X-Gm-Message-State: ACgBeo39pGNBNkQR/SAIoqBfvca9o2DjxfM/3eXEn/+8w8m3/f9rTp6O
+        mi2agNbEg0mJpKHKpCG/Yf6gachk13pHYRm/ej8=
+X-Google-Smtp-Source: AA6agR5L+eaDB8mY1yhUSg6sgY+tLO/JsufbJsQH+fJX18C22+r/zLWgLTDHT638gikY5E6676jklqro6Bc//w1Y7sA=
+X-Received: by 2002:ad4:4eaf:0:b0:496:ac46:2d9c with SMTP id
+ ed15-20020ad44eaf000000b00496ac462d9cmr5395010qvb.82.1660896880435; Fri, 19
+ Aug 2022 01:14:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220817105643.95710-1-contact@artur-rojek.eu> <20220817105643.95710-2-contact@artur-rojek.eu>
-In-Reply-To: <20220817105643.95710-2-contact@artur-rojek.eu>
+References: <20220817105643.95710-1-contact@artur-rojek.eu> <20220817105643.95710-3-contact@artur-rojek.eu>
+In-Reply-To: <20220817105643.95710-3-contact@artur-rojek.eu>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 11:12:38 +0300
-Message-ID: <CAHp75Vd49aCKkK+KvmxJrW2mKk7=VgtSBCTYE9umOhZhc4Y8FA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] iio/adc: ingenic: fix channel offsets in buffer
+Date:   Fri, 19 Aug 2022 11:14:04 +0300
+Message-ID: <CAHp75VcrM53+GW8qN4H-8kxuBRStAXjpt5F7YD5R2nHhh-Wiww@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: add iio_channel_cb_get_iio_buffer helper
 To:     Artur Rojek <contact@artur-rojek.eu>
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -73,17 +73,14 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Aug 17, 2022 at 1:58 PM Artur Rojek <contact@artur-rojek.eu> wrote:
 >
-> Consumers expect the buffer to only contain enabled channels. While
-> preparing the buffer, the driver also (incorrectly) inserts empty data
-> for disabled channels, causing the enabled channels to appear at wrong
-> offsets. Fix that.
+> Introduce a helper function to retrieve an iio_buffer from
+> iio_cb_buffer.
+>
+> This is useful for consumers that need to extract metadata about
+> the buffer, e.g. get the channel offsets.
 
-What consumers? Have you tested on all of them? Please, elaborate. It
-might be that some of them have to be fixed. In such case you need to
-report the issue to their respective channels and put the
-corresponding links here.
-
-P.S. It doesn't mean I'm against the patch.
+I'm wondering if we should start using the IIO namespace for new
+exported symbols.
 
 -- 
 With Best Regards,

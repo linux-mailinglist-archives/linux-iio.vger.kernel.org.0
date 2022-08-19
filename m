@@ -2,120 +2,256 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C9F599A94
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 13:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90313599CA2
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 15:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348652AbiHSLJt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 07:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
+        id S1348546AbiHSM6r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 08:58:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348499AbiHSLJs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 07:09:48 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46CFDEEF29;
-        Fri, 19 Aug 2022 04:09:47 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id m3-20020a05600c3b0300b003a5e0557150so3770294wms.0;
-        Fri, 19 Aug 2022 04:09:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc;
-        bh=N1+SQP9/NNEeMXRgIAtNMNNPsYesv58EgfwcQ2TqP80=;
-        b=S46/LPn6eUw1mXd3EnYZ/rw4+v9qEbEUjrviABS48ma7s69nVa0g+uQfs1Dq82slMH
-         ROPd5ydcib/qy3b+5W4ga3AWw6vybxp2vbyW87dPKcyCq/cOjsPzAXb0JpPX+YEj0ktj
-         0useeDJY5oMfkDLSNy86a+FO+YJrxYYB9moxcguERDTimV2ZpgyImwFjc0atukt9Ufnk
-         wlLuhdovNL9TnUl95MpEcLNuLYYOMMLSMKYou97uUBsRSks5ZQw0awRYnc2MfIWrrVLp
-         y4h6qdUbvKFsssLIuQfbxEb7RGPrd7czpQWA+YeKplkVYs06YBsL/vFvmg9OGKq1WXUa
-         mcmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc;
-        bh=N1+SQP9/NNEeMXRgIAtNMNNPsYesv58EgfwcQ2TqP80=;
-        b=j86KbabbcVa+Q2Dy30OjUMcmVOvLdf1P0ZuTpL+8SvstPhcAjZEm5HPCQ+r2XHKM6e
-         13ZFjiW9Zo3ariLsIplz/yNZukE8q+O93tdgPpbrSmzkoxXci11lZIjyoqAu5gPluGRl
-         Rhl66WXp2alrsnFPj2JVOal9/VpZ6f7GBhrbt80CIqVW52PvsyhKkdgKhxK70JqBFEra
-         BtM1ydrgnhL7aXQebN1eihq72/Xl359WdQ/jD6itRwnNsUJBeRWLhy8LKCTxl2D0Qa60
-         Z2JC20RtRftp4cqdT3vsqR3svHdxERJ8DdWzSAbg+5SKsR+v+olClaPtqz1XjegtuiKG
-         2Vxg==
-X-Gm-Message-State: ACgBeo3lbjgwQz729DdP+2sicShiOE1iasDiI8PL+McO81e9y019IuGl
-        QcYwKyQT5/fie0FDrP3Z7qI=
-X-Google-Smtp-Source: AA6agR75FbIKZGPSpxBNj5h9oWPX52jL+AmyluIEK9LMg40HfqZM4n9G7Ou95KKB+qaSuE3srDGE6g==
-X-Received: by 2002:a05:600c:4f05:b0:3a5:ffec:b6b with SMTP id l5-20020a05600c4f0500b003a5ffec0b6bmr7525600wmq.199.1660907385752;
-        Fri, 19 Aug 2022 04:09:45 -0700 (PDT)
-Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id a13-20020a05600c348d00b003a5dfd7e9eesm5127117wmq.44.2022.08.19.04.09.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Aug 2022 04:09:45 -0700 (PDT)
-Message-ID: <269bf90a6cccb16e59f063b58f088ca6cd39c4b3.camel@gmail.com>
-Subject: Re: [PATCH] iio: pressure: bmp280: fix datasheet links
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+        with ESMTP id S1348571AbiHSM6h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 08:58:37 -0400
+Received: from mail.sberdevices.ru (mail.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5518E5AA12;
+        Fri, 19 Aug 2022 05:58:30 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mail.sberdevices.ru (Postfix) with ESMTP id AEE915FD0A;
+        Fri, 19 Aug 2022 15:58:28 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1660913908;
+        bh=mV32apQZiwpfkDAVJ5k4DpFpqFlO7XNn+FZ43GXY+9E=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=GZKDeT5nGi6bKKmu6VujALnQB2iPqGFXgb2IA3GxiFGQUyvy6flF5FWn+dBTn9M5Y
+         Dpu+VveeemJ1rPC5XN+Ib08fEkgtK8gGFBpENehKn1fM1GCgPWYpNlYclb1A2PXEVS
+         k8Z+IKYgxNJ5mr8mt0rO4VrG3GpdmyjyH0RViQ6HEcgbMcHUIMXV3xgAljs6EW169T
+         aZcwqy+4UoKB6i950/rDo169xTw0dP/CyNQvctr7jjLT8UBI7EQv9nO+GeyV1drhcq
+         7hYWFXEoZKJjcqvWfNyjpVs0aDISshrbZRhXH8hSMxpg9RkzewpHRodRVia2EMPdNX
+         IeLfqOMn9FiPA==
+Received: from S-MS-EXCH01.sberdevices.ru (S-MS-EXCH01.sberdevices.ru [172.16.1.4])
+        by mail.sberdevices.ru (Postfix) with ESMTP;
+        Fri, 19 Aug 2022 15:58:22 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Fri, 19 Aug 2022 13:09:44 +0200
-In-Reply-To: <CAHp75VeSsVD8rMz-Cj6kFovqdQQPjbH7rUXWS6paRtsBaB-Kww@mail.gmail.com>
-References: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
-         <CAHp75VdTZ_JYB2aYVdQTOx9QW1HPKhwYyQH-0tVCtpjHV=VcaQ@mail.gmail.com>
-         <8a1f372f34be71895268e874bb3fbbf105dfabdb.camel@gmail.com>
-         <CAHp75VeSsVD8rMz-Cj6kFovqdQQPjbH7rUXWS6paRtsBaB-Kww@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+CC:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
+        "jani.nikula@intel.com" <jani.nikula@intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 3/4] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Topic: [PATCH v6 3/4] iio: add MEMSensing MSA311 3-axis accelerometer
+ driver
+Thread-Index: AQHYsaUBRyDxGBAJ7E6dKrTfsTk6Jq21uX2AgABHogA=
+Date:   Fri, 19 Aug 2022 12:57:54 +0000
+Message-ID: <20220819125818.37qc66akgercd6zb@CAB-WSD-L081021.sigma.sbrf.ru>
+References: <20220816191842.14020-1-ddrokosov@sberdevices.ru>
+ <20220816191842.14020-4-ddrokosov@sberdevices.ru>
+ <CAHp75VewJ1taLhsCb4_yEQHpw4VDXRhkxpL0jzdu-JsajfF6oA@mail.gmail.com>
+In-Reply-To: <CAHp75VewJ1taLhsCb4_yEQHpw4VDXRhkxpL0jzdu-JsajfF6oA@mail.gmail.com>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <41BD410FFE7FDA4788784A43920F1154@sberdevices.ru>
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (by Flathub.org) 
 MIME-Version: 1.0
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/08/19 07:02:00 #20132955
+X-KSMG-AntiVirus-Status: Clean, skipped
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-08-19 at 13:33 +0300, Andy Shevchenko wrote:
-> On Fri, Aug 19, 2022 at 1:31 PM Angel Iglesias <ang.iglesiasg@gmail.com>
-> wrote:
-> > On Fri, 2022-08-19 at 12:37 +0300, Andy Shevchenko wrote:
-> > > On Tue, Aug 16, 2022 at 2:39 AM Angel Iglesias <ang.iglesiasg@gmail.c=
-om>
-> > > wrote:
-> > > >=20
-> > > > Updated links for BMP280 and BME280 datasheets on Bosch website.
-> > >=20
-> > > > Datasheet of BMP180 is no longer available on the manufacturer's
-> > > > website,
-> > > > changed the link to a copy hosted by a third party.
-> > >=20
-> > > Note, that the version is downgraded (from 12.1 to 9).
-> >=20
-> > Apologies, I forgot to add a note about this. Changelog on datasheet 12=
-.1
-> > listed
-> > these three changes from version 9:
-> > * Page 26: Changed document referral from ANP015 to BST-MPS-AN004-00
-> > * Chapter 3.5: New equation for B3 (adds a long cast to AC1)
-> > * Page 26: Updated RoHS directive to 2011/65/EU effective 8 June 2011
->=20
-> Perhaps you may add this to the comment below into the code.
+On Fri, Aug 19, 2022 at 11:41:55AM +0300, Andy Shevchenko wrote:
 
-Will do, thanks
+[...]
+
+> > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.=
+pdf
+>=20
+> Have you ever seen such a tag?
+> We have the Datasheet that is more or less established for this kind of l=
+inks.
+
+As I mentioned before, if I use Datasheet tag, line length limit will be
+exceeded. If it's okay, I don't mind.
+
+[...]
+
+> > +       char chip_name[10];
+>=20
+> Why limit it to 10? You may use devm_kasprintf()
+
+Oh, didn't know about that. Thank you for suggestion!
 
 >=20
-> > Unfortunately, I couldn't find the most updated version in good quality
-> > hosted
-> > in a trustworthy place.
+> > +       struct iio_trigger *new_data_trig;
+> > +       struct regulator *vdd;
+> > +};
 >=20
-> Me neither.
+> ...
 >=20
-> > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > +static inline int msa311_set_odr(struct msa311_priv *msa311, unsigned =
+int odr)
+>=20
+> Why inline?
 >=20
 
-Kind regards,
-Angel
+Why not? :) It's short function which is good to be inline, I think.
+
+> > +{
+> > +       struct device *dev =3D msa311->dev;
+> > +       unsigned int pwr_mode;
+>=20
+> > +       bool good_odr =3D false;
+>=20
+> Can it be split to see the assignments together below?
+>=20
+> > +       int err;
+> > +
+> > +       err =3D regmap_field_read(msa311->fields[F_PWR_MODE], &pwr_mode=
+);
+> > +       if (err)
+> > +               return err;
+> > +
+> > +       /* Filter bad ODR values */
+> > +       if (pwr_mode =3D=3D MSA311_PWR_MODE_NORMAL)
+> > +               good_odr =3D (odr > MSA311_ODR_1_95_HZ);
+>=20
+> else
+>   good_odr =3D false;
+>=20
+
+No problem.
+
+> > +       if (!good_odr) {
+> > +               dev_err(dev,
+> > +                       "can't set odr %u.%06uHz, not available in %s m=
+ode\n",
+> > +                       msa311_odr_table[odr].integral,
+> > +                       msa311_odr_table[odr].microfract,
+> > +                       msa311_pwr_modes[pwr_mode]);
+> > +               return -EINVAL;
+> > +       }
+> > +
+> > +       return regmap_field_write(msa311->fields[F_ODR], odr);
+> > +}
+>=20
+> ...
+>=20
+> > +       if (wait_ms < unintr_thresh_ms)
+> > +               usleep_range(wait_ms * USEC_PER_MSEC,
+> > +                            unintr_thresh_ms * USEC_PER_MSEC);
+> > +       else
+> > +               return msleep_interruptible(wait_ms) ? -EINTR : 0;
+>=20
+> Can be refactored to simple
+>=20
+> else if (msleep...)
+>   return -EINTR;
+>=20
+> Same amount of LoCs, but more readable.
+>=20
+
+Agreed.
+
+> > +       return 0;
+>=20
+> ...
+>=20
+> > +err:
+>=20
+> We usually name labels after what they are doing, I don't see any
+> error here, but notify done. Hence,
+>=20
+> out_notify_done:
+>=20
+
+Yes, usually I'm trying to fit the same rules. Will rework this place.
+
+
+> > +       iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +       return IRQ_HANDLED;
+>=20
+> ...
+>=20
+> > +       used =3D scnprintf(msa311->chip_name, sizeof(msa311->chip_name)=
+,
+> > +                        "msa311-%hhx", partid);
+>=20
+> How 'used' is being used?
+>=20
+
+Oops
+
+> > +       return 0;
+> > +}
+>=20
+> ...
+>=20
+> > +       const char zero_bulk[2] =3D {0};
+>=20
+> 0 is not needed, '{ }' will work.
+>=20
+> ...
+>=20
+> > +       /*
+> > +        * Register powerdown deferred callback which suspends the chip
+> > +        * after module unloaded.
+> > +        *
+> > +        * MSA311 should be in SUSPEND mode in the two cases:
+> > +        * 1) When driver is loaded, but we do not have any data or
+> > +        *    configuration requests to it (we are solving it using
+> > +        *    autosuspend feature).
+> > +        * 2) When driver is unloaded and device is not used (devm acti=
+on is
+> > +        *    used in this case).
+> > +        */
+>=20
+> ...
+>=20
+> > +static struct i2c_driver msa311_driver =3D {
+> > +       .driver =3D {
+> > +               .name =3D "msa311",
+>=20
+> > +               .owner =3D THIS_MODULE,
+>=20
+> Redundant.
+>=20
+
+You are right. I see that i2c_register_driver initialize .owner to
+THIS_MODULE. Thank you for pointing.
+
+[...]
+
+--=20
+Thank you,
+Dmitry=

@@ -2,99 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBDD59A62E
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 21:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F9859A65C
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 21:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351268AbiHSTRW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 15:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33640 "EHLO
+        id S1350882AbiHSTT5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 15:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350484AbiHSTRR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 15:17:17 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6BA112337;
-        Fri, 19 Aug 2022 12:17:14 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id o2so7315965lfb.1;
-        Fri, 19 Aug 2022 12:17:14 -0700 (PDT)
+        with ESMTP id S1351371AbiHSTTU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 15:19:20 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1BFF4F;
+        Fri, 19 Aug 2022 12:19:08 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id l1so6776390lfk.8;
+        Fri, 19 Aug 2022 12:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc;
-        bh=9edAeyqaKV/eGnwpb24p/sONsQF5z28Zi5ENLBQsjis=;
-        b=h6ypV1yJJL0qgQWg/+xo1mrjVedomBmbMvZzcElTA/w5mp5AzC6W+u6FM9JDglXkIG
-         f0EFLHWGo01cUs200DNYrrE6L7hXnRJgrmsN3nxPtq0WRtbiVaWN0fK7/Bozw+co8ct3
-         N7jegGVnAPQ6/HVWGzefch1Xj7qjpj5QD9aeg6b/BAwEzRoHMSeCzqFpyzI7bt44XxEf
-         PkgVNQHotIjqfqbYWMSGqsZl1QgjFRS16rUzvyO+euq9YakFRFWR0EKnqy86MKW/Qf2G
-         +C/mu5/XgdOkFRaygzwDwmWhPYn3zHZ7r39kQU7pF39sfCqo+neujKXn6s0k1jENe6My
-         ngQw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=AANLxeJ0LpA7gGpSl1Si3QPJ6JAdv159yU2e2glG7p8=;
+        b=DsvV8zNJOqwTBy5DNUpgWBkMYnMY5LZZwKR79UqkxspV1lqtqz3+WHbLFY9l/tQIGn
+         2C0XuxGAZ9AtM08pWBu2/uMDCtkNlICuR2SSN2gzsh5vAljxtJBI/m79Qi757gsTj6dA
+         82E9gFLnqgPB0pLzcLYCb+D6SFDYQSjeJGWyZYij3dMxtO1m0YFp4z82uIrFLCYgSMOj
+         sJb/I6jjHGvWq1qKKDOx4+ckdtDQZUW38H4kO+UYdOQmEyqii8i1IqnleyP11OKveFww
+         LB8rNoJnCMq3VfZbF3SpN9399ul+MVM+xMUmsNXQDCShjl4YGB4iIHwnCE0bXxEECfLR
+         VZbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc;
-        bh=9edAeyqaKV/eGnwpb24p/sONsQF5z28Zi5ENLBQsjis=;
-        b=bulWaGgbECiMzx4FEPgwRjWA7hqNXDHClm5ZZg0Yb7RUVAamY6AyP29d1knDRu8shf
-         JFEYXj8ov8aNikOrIYlRLtjUIlXrt+90AS6bMxv902jreuLRUneGCxNlIrCIM+aa9FqL
-         MXXgwx2/srk7sMc2I44RtZT2tDh7/azaW4RaPBkifsz+4YGqlOQ5UhcFF1aLy9PwPHVX
-         Jfhj5T6DXnLTbG5Qaz6X+/i5vFXVBv7YmLFws5ELCSQbzjgMTWRR5gehiuRhPbqyOXXr
-         scy0Lcyw27K5rOAUrCvhmJKR7/E2fJeFRRT8y/unhXRioY/ZhsK/a4t2Mvk4BUvjQUW+
-         X1ag==
-X-Gm-Message-State: ACgBeo2fNQRqP7LtIOTAtdjqVizNTEZC8keeuibgaXnGEyLeQXCUm1FX
-        9b7ErLiRGxbkiuYrMIO7FWI=
-X-Google-Smtp-Source: AA6agR6L/s1W7mzQnKhc+50x8bAWnpqHS1+yAXDPOhAZzl8NwA/GrakaeTQCnoodLt11WOWWYq+qjA==
-X-Received: by 2002:a05:6512:23a7:b0:492:b613:817 with SMTP id c39-20020a05651223a700b00492b6130817mr2872025lfv.492.1660936632748;
-        Fri, 19 Aug 2022 12:17:12 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=AANLxeJ0LpA7gGpSl1Si3QPJ6JAdv159yU2e2glG7p8=;
+        b=o9sQBA12lb0EpYS2u1h8WpDLebWcmZmaDollXpsyoXKOLoE9vOraYDfPqFi8BKyLer
+         qopRvqqaKPKYecbZpxCPAHAW17NBA5eZ7BTSclXH1SdMcAnAtqDhZqly9MVrSEb5jAm3
+         PsITmTYMJusnj+mnJYX7z8bSWwnEv2IjH6qH4Gt+NbklySvZxbtB/Tad9Jh8iG625Kkq
+         qfIIQVRJU55vjKlyQkeeEMA0hjSH32ZP+VmhDTt2cQbQQ7uytzS2dA+S8niaAkDmMwET
+         qrYmw+Od523X8roS9KPydDaQgkWraAYFj2+p1CaPWDwPuISDmDQ+wuWTPSGhahEdqDQN
+         Mntw==
+X-Gm-Message-State: ACgBeo2MIQQUIWyu2J1010bOCdTBahsNdEdRD86l/OvL50ujYd9IypJ7
+        enOxPR0qsgESdROG4rzhlHw=
+X-Google-Smtp-Source: AA6agR51+Y9+XrHdyIIEGtNp4Q/w/K7E3YqgGy2J+KZPVECydq1v4p4Cw5CW4w4QIEU3eTwkM5wpDA==
+X-Received: by 2002:ac2:4da2:0:b0:492:c6a9:f430 with SMTP id h2-20020ac24da2000000b00492c6a9f430mr1683375lfe.96.1660936747173;
+        Fri, 19 Aug 2022 12:19:07 -0700 (PDT)
 Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id u17-20020ac243d1000000b0048afeb4ea32sm737760lfl.100.2022.08.19.12.17.09
+        by smtp.gmail.com with ESMTPSA id a16-20020a056512391000b0048aa9d67483sm736249lfu.160.2022.08.19.12.19.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Aug 2022 12:17:11 -0700 (PDT)
-Date:   Fri, 19 Aug 2022 22:16:48 +0300
+        Fri, 19 Aug 2022 12:19:06 -0700 (PDT)
+Date:   Fri, 19 Aug 2022 22:19:01 +0300
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Robert Foss <robert.foss@linaro.org>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+Cc:     Alexandru Tachici <alexandru.tachici@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Aswath Govindraju <a-govindraju@ti.com>,
-        Peter Rosin <peda@axentia.se>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Cai Huoqing <cai.huoqing@linux.dev>,
-        Alexandru Lazar <alazar@startmail.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Xiang wangx <wangxiang@cdjrlc.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH v3 00/14] Use devm helpers for regulator get and enable
-Message-ID: <cover.1660934107.git.mazziesaccount@gmail.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 06/14] iio: ad7192: Simplify using
+ devm_regulator_get_enable()
+Message-ID: <9719c445c095d3d308e2fc9f4f93294f5806c41c.1660934107.git.mazziesaccount@gmail.com>
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="+OPEAUCAFHQMa3jU"
+        protocol="application/pgp-signature"; boundary="KxTzg4jangapt1lT"
 Content-Disposition: inline
+In-Reply-To: <cover.1660934107.git.mazziesaccount@gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -106,101 +76,59 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---+OPEAUCAFHQMa3jU
+--KxTzg4jangapt1lT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Use devm helpers for regulator get and enable
+Use devm_regulator_get_enable() instead of open coded get, enable,
+add-action-to-disable-at-detach - pattern. Also drop the seemingly unused
+struct member 'dvdd'.
 
-NOTE: The series depends on commit
-ee94aff2628b ("Devm helpers for regulator get and enable")
-which currently sits in Mark's regulator/for-next
-
-A few* drivers seem to pattern demonstrated by pseudocode:
-
-- devm_regulator_get()
-- regulator_enable()
-- devm_add_action_or_reset(regulator_disable())
-
-devm helpers for this pattern were added to remove bunch of code from
-drivers. Typically following:
-
-- replace 3 calls (devm_regulator_get[_optional](), regulator_enable(),
-  devm_add_action_or_reset()) with just one
-  (devm_regulator_get_enable[_optional]()).
-- drop disable callback.
-
-I believe this simplifies things by removing some dublicated code.
-
-This series reowrks a few drivers. There is still plenty of fish in the
-sea for people who like to improve the code (or count the beans ;]).
-
-Finally - most of the converted drivers have not been tested (other than
-compile-tested) due to lack of HW. All reviews and testing is _highly_
-appreciated (as always!).
-
-Revision history:
-
-v3:
-	- Drop already applied helper patches
-	- Add a few more drivers
-
-RFCv1 =3D> v2:
-	- Add devm_regulator_bulk_get_enable() and
-	  devm_regulator_bulk_put()
-	- Convert a couple of drivers to use the new
-	  devm_regulator_bulk_get_enable().
-	- Squash all IIO patches into one.
-
-Patch 1:
-	Add new devm-helper APIs to docs.
-Patch 2:
-	simplified CLK driver(s)
-Patch 3:
-	simplified GPU driver(s)
-Patch 4 - 5:
-	simplified hwmon driver(s)
-Patch 6 - 14:
-	simplified IIO driver(s)
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
+v2 =3D> v3
+Split to own patch.
+---
+ drivers/iio/adc/ad7192.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
-Matti Vaittinen (14):
-  docs: devres: regulator: Add new get_enable functions to devres.rst
-  clk: cdce925: simplify using devm_regulator_get_enable()
-  gpu: drm: simplify drivers using devm_regulator_*get_enable*()
-  hwmon: lm90: simplify using devm_regulator_get_enable()
-  hwmon: adm1177: simplify using devm_regulator_get_enable()
-  iio: ad7192: Simplify using devm_regulator_get_enable()
-  iio: ltc2688: Simplify using devm_regulator_*get_enable()
-  iio: bmg160_core: Simplify using devm_regulator_*get_enable()
-  iio: st_lsm6dsx: Simplify using devm_regulator_*get_enable()
-  iio: ad7476: simplify using devm_regulator_get_enable()
-  iio: ad7606: simplify using devm_regulator_get_enable()
-  iio: max1241: simplify using devm_regulator_get_enable()
-  iio: max1363: simplify using devm_regulator_get_enable()
-  iio: hmc425a: simplify using devm_regulator_get_enable()
-
- .../driver-api/driver-model/devres.rst        |  4 +++
- drivers/clk/clk-cdce925.c                     | 21 +++----------
- drivers/gpu/drm/bridge/sii902x.c              | 22 ++------------
- drivers/gpu/drm/meson/meson_dw_hdmi.c         | 23 ++------------
- drivers/hwmon/adm1177.c                       | 27 ++---------------
- drivers/hwmon/lm90.c                          | 15 ++--------
- drivers/iio/adc/ad7192.c                      | 15 ++--------
- drivers/iio/adc/ad7476.c                      | 11 +------
- drivers/iio/adc/ad7606.c                      | 22 ++------------
- drivers/iio/adc/ad7606.h                      |  1 -
- drivers/iio/adc/max1241.c                     | 28 ++---------------
- drivers/iio/adc/max1363.c                     | 11 +------
- drivers/iio/amplifiers/hmc425a.c              | 17 +----------
- drivers/iio/dac/ltc2688.c                     | 23 ++------------
- drivers/iio/gyro/bmg160_core.c                | 24 ++-------------
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       |  2 --
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 30 ++++---------------
- 17 files changed, 41 insertions(+), 255 deletions(-)
-
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index d71977be7d22..8a52c0dec3f9 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,7 +177,6 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
+-	struct regulator		*dvdd;
+ 	struct clk			*mclk;
+ 	u16				int_vref_mv;
+ 	u32				fclk;
+@@ -1015,19 +1014,9 @@ static int ad7192_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+=20
+-	st->dvdd =3D devm_regulator_get(&spi->dev, "dvdd");
+-	if (IS_ERR(st->dvdd))
+-		return PTR_ERR(st->dvdd);
+-
+-	ret =3D regulator_enable(st->dvdd);
+-	if (ret) {
+-		dev_err(&spi->dev, "Failed to enable specified DVdd supply\n");
+-		return ret;
+-	}
+-
+-	ret =3D devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->dvdd);
++	ret =3D devm_regulator_get_enable(&spi->dev, "dvdd");
+ 	if (ret)
+-		return ret;
++		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd su=
+pply\n");
+=20
+ 	ret =3D regulator_get_voltage(st->avdd);
+ 	if (ret < 0) {
 --=20
 2.37.1
 
@@ -217,19 +145,19 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---+OPEAUCAFHQMa3jU
+--KxTzg4jangapt1lT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL/4ZsACgkQeFA3/03a
-ocX/Ggf7BfEmlDeq8mQqIXNuIXUyS1wDwJS/W6gY4qdxaESlklGTEbvGXSG+Ve1e
-6z2kt2sAFyfZgJSLaTDNzwzp2ddc6FvVVxzdvFlb1cbJdr3Js/Tl+HGFM327Qjl3
-lP8vDwi2tXXnaVyjY0/18mp6HkaziCMhzqN9LNBmF2XSs3F8pGfu5cs+EabMIo7Q
-EOF+5ZbFeXeL9I7Kk5Y17WDenMn+glY/1mQnPjkSYoNX7riqZLY5clklNTHzcxPT
-ADtFQBjEbRSgWzs2BApI3nDFMtjzqHewqo4iLodHgg1REBOoPDCP6PaKfKVDcArw
-9GdbTYiQd0lG5g9zBodvD9ZjaVpRlQ==
-=C7qu
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL/4iUACgkQeFA3/03a
+ocUZLwf+JbL6zuVBJlnV46AIvw+ntaCXEUN/wFR0BZ8xSsci6CkfCOiJfQPfpKpj
+3JzYAZPNf8mAyGaSorL0C14Xcr5tMlRwFDST7dxK9VS0KeOzBCzCENuRoUjF2XAN
+UfzOzR+kL/dzBgYNamxYktwWxRcAdwjfSnaVYq8+Sg11aDr0SUg1E9fiG6Wk2mGk
+KTVKIasov6CEMM9zqOS/DJoZxqxd4alkC6x4F6t/vivhbNsCazkDXj+3qjZ5/9CC
+Ukua7P5azJA0+p+TuYCdpgGuZBq7DRI36kl5ARMpsSOCTLtj/5wcS+0JK1KDSRC8
+lJ3dgQDt5MCtzMmHTexoRv21Q2SWUA==
+=oIFB
 -----END PGP SIGNATURE-----
 
---+OPEAUCAFHQMa3jU--
+--KxTzg4jangapt1lT--

@@ -2,63 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28A305998DD
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 11:47:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D35E5998F7
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 11:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347928AbiHSJiC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 05:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
+        id S1346080AbiHSJml (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 05:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347163AbiHSJiB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 05:38:01 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563ADF2CAA;
-        Fri, 19 Aug 2022 02:38:00 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id j17so2912840qtp.12;
-        Fri, 19 Aug 2022 02:38:00 -0700 (PDT)
+        with ESMTP id S1348205AbiHSJmi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 05:42:38 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72EB79A61;
+        Fri, 19 Aug 2022 02:42:37 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id g16so2891967qkl.11;
+        Fri, 19 Aug 2022 02:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=2ZvHFToN8Dd1qgj57u+OE1lMQuyHL7jpimxd9I1F2Ww=;
-        b=JK187mUaQ2BGEhTlqcpxOSbM6UCjwFZ8WKw/e9kJ5lW8ox40U3ef3Fz8GXnk2lZaIZ
-         C4MlYA+y2wGH1whdds1cwnCYY8YOJH/aUmUM86vTL/yIrXLggSN7/hDTdTVHyxDAvWPd
-         ffhyzhHhCkTMfbUsJ0WagkRSneTYSxnU07Ru0vHxi6QVHcITYiKK3ourSloXgy31nUYl
-         fdQANwxAy3JNU/tEI6YIpuEKPg3eHqsWkpfxBTrqjMqXEbiVAPL519xLoA0D+QZGKjkN
-         jwHID+9pMayPzJV5QuBDl5AU3Fn0JPKZhzvuo7hXOny3KAumQLsR2qY7Tud+ZvNXvHJA
-         j9+A==
+        bh=Xra5wOcQVG12+wejDaPgCNN7Ex8BBmCGGrUkA59x0/w=;
+        b=dyjHy/dUBiUpNDsh5agSwMcEFKBaGt0DbaWswj2y5LuThuLI4ctgD8UpWiEOoaziYL
+         0hFauWnW0UQ0fkj6rRhBPM0QeyqCXrykAQ/u8Tagcy69jfOZkwvpArsH28W7MzHSvxOp
+         6C95gnqXqgDBsEpMPh0MGlwSdayCKyXvkooRjkKjVIm91wVdEin+62VCCR0sJEjNjVdf
+         H64CAzxtwBZurny/cWzvdcQutvJubaL0bwdMtVreLBia2WHddYh2/kkXn0StBxBvAhfM
+         gUzVVprAONXpaClFr6gF7s15Tp4ErtU2E8j8BhohcQaGc1kVKYlAAQY5AV0VVDqMH9Cf
+         cdVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=2ZvHFToN8Dd1qgj57u+OE1lMQuyHL7jpimxd9I1F2Ww=;
-        b=4kBWnJshfvJDlBP/ECtdZn+pdOAillV/IHHzol9WrJ8bbSggVX4neuzDsnmOc4FpTs
-         TTonAwzHagpTAf8WYfhyAB9FSJBKqMCrXNRBmXkdX6P+7IyOAV2D0o+tFInfJieOCaT/
-         wmBHLLeV5ENGgc7O+NTyvQvgGugq66+W4VR86T4AGk9/JBXFcmeMR0S19oULnH4DA7if
-         z++oPr0uFB6TWecwCJAwughEw07b77/ChPiPSnC553cH27SGGn6wJTSHLFaAUHyJ8Ksl
-         QC1/sNlA0OgdOjmDVmtJYkjWlqD6JVE36H88afXGyc0URVWmQpxeFUdsZkGU67xV/ovW
-         QTyw==
-X-Gm-Message-State: ACgBeo08MOkmS0Jcfaj/h8w4cvcJGmAKUENARalkjeLChNU7FkJ/mpMI
-        A/+Ps7fBP9IfFjMoRh5ZG/EFLSesjkuz7oKmHMbLURFkBpc=
-X-Google-Smtp-Source: AA6agR7o1puuoJSfrHhFyu86GOzh4LBgcVvXJuyhExfJe6WX0eF5AI/OommjDEYzFIn+bp84nDd7DisnZdiIAkzB2Pk=
-X-Received: by 2002:a05:622a:491:b0:344:95bf:8f05 with SMTP id
- p17-20020a05622a049100b0034495bf8f05mr4284991qtx.61.1660901879325; Fri, 19
- Aug 2022 02:37:59 -0700 (PDT)
+        bh=Xra5wOcQVG12+wejDaPgCNN7Ex8BBmCGGrUkA59x0/w=;
+        b=PpwIkk+Xzt4VmqOM+3Z3pIm3n8SZLUdXg+ehvWAZ4J1sB0DGQ8yxgTXi91F75vTdsY
+         FbE6zkk4bgB1FDsopfgfFu0dD+AX8iBxHe1+YhigqzRBlNx5wVd/bkAo7NddqnafNJH/
+         uw3Cv432wCcSVcW0aQ2FRpW+CqNVMBn8+Jy4bZ86xM58WjqwGSl0T1ENKwnCoU0DKZ+5
+         RxZm2bujBmmpExH6H2N9l51YFhWebyODmOHdnzSPK91TGHNSwUHCPV4g33XMaIYArxL0
+         I1xwqATxVKh9yG+OaveE+fwZ8nk8f1aUPUOGJpheh1rPfyoXpUdnidE7i80SuTwodvdX
+         doNg==
+X-Gm-Message-State: ACgBeo0Dib3a1jFRfkD7zDHFw/g4mB9aip8jqHg+oy2lDIqZ/p6JWkxf
+        AmQbTctrSKIK5OJstKtabdcMORKKlnxw0BpDd9s=
+X-Google-Smtp-Source: AA6agR4Z6wmjzS7ZzrDPS1R46n9TWvkPbnPGmGbxIKGId+2Mk9AjHiMyDcwH3/GlgzPyz3ryNW8/HRYHg49pqGVHr3s=
+X-Received: by 2002:a05:620a:2809:b0:6b6:5908:316e with SMTP id
+ f9-20020a05620a280900b006b65908316emr4716136qkp.734.1660902156806; Fri, 19
+ Aug 2022 02:42:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
-In-Reply-To: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
+References: <20220809211246.251006-1-eajames@linux.ibm.com>
+ <20220809211246.251006-2-eajames@linux.ibm.com> <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
+ <e35b595f-572e-a539-c550-831cdd02dbd3@linux.ibm.com>
+In-Reply-To: <e35b595f-572e-a539-c550-831cdd02dbd3@linux.ibm.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 12:37:23 +0300
-Message-ID: <CAHp75VdTZ_JYB2aYVdQTOx9QW1HPKhwYyQH-0tVCtpjHV=VcaQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: pressure: bmp280: fix datasheet links
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Date:   Fri, 19 Aug 2022 12:42:00 +0300
+Message-ID: <CAHp75VfU26QZ7Z1ApzRcFPudgsQc7zWF5g0kwn7Jzk1htXaWng@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] iio: pressure: dps310: Refactor startup procedure
+To:     Eddie James <eajames@linux.ibm.com>
 Cc:     linux-iio <linux-iio@vger.kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joel Stanley <joel@jms.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -70,46 +70,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 2:39 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
->
-> Updated links for BMP280 and BME280 datasheets on Bosch website.
+On Mon, Aug 15, 2022 at 4:42 PM Eddie James <eajames@linux.ibm.com> wrote:
+> On 8/12/22 17:03, Andy Shevchenko wrote:
+> > On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:
 
-> Datasheet of BMP180 is no longer available on the manufacturer's website,
-> changed the link to a copy hosted by a third party.
+...
 
-Note, that the version is downgraded (from 12.1 to 9).
+> >> +       rc = regmap_write(data->regmap, 0x0e, 0xA5);
+> >> +       if (rc)
+> >> +               return rc;
+> >> +
+> >> +       rc = regmap_write(data->regmap, 0x0f, 0x96);
+> >> +       if (rc)
+> >> +               return rc;
+> > This code already exists, but still want to ask, is it really
+> > byte-registers here and not be16/le16 one? In such a case perhaps bulk
+> > write can be used to reflect it better?
+>
+> The temperature and pressure regs are 24 bits big endian, and all the
+> rest are 8 bits. I think the existing approach is best.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+It doesn't look like you got what I was meaning... Or I misunderstood
+what you said.
 
-> Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> ---
->  drivers/iio/pressure/bmp280-core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index fe7aa81e7cc9..e98b024d510b 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -9,9 +9,9 @@
->   * Driver for Bosch Sensortec BMP180 and BMP280 digital pressure sensor.
->   *
->   * Datasheet:
-> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP180-DS000-121.pdf
-> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP280-DS001-12.pdf
-> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280_DS001-11.pdf
-> + * https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
-> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
-> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
->   */
->
->  #define pr_fmt(fmt) "bmp280: " fmt
->
-> base-commit: b82217e73b5aa6db8453ad91b929ca2366e47184
-> --
-> 2.37.2
->
+The code above writes two byte values to two sequential registers
+which make me think that they are 16-bit registers at offset 0x0e.
 
+...
+
+> >> +       rc = regmap_write(data->regmap, 0x0e, 0x00);
+> >> +       if (rc)
+> >> +               return rc;
+> >> +
+> >> +       return regmap_write(data->regmap, 0x0f, 0x00);
+
+Ditto.
 
 -- 
 With Best Regards,

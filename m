@@ -2,102 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4D65999F6
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953565999E9
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347764AbiHSKen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 06:34:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51602 "EHLO
+        id S1348315AbiHSKgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 06:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347454AbiHSKec (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:34:32 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9591A924B;
-        Fri, 19 Aug 2022 03:34:31 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id c20so2990796qtw.8;
-        Fri, 19 Aug 2022 03:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=y43Q4Ux8mzcAs/PRKLgB3PhAbbRFuFRwNvqbANaCmZQ=;
-        b=WCzWYNhe7Uos+2cSI8d1+g+RmMXisRI0OCPtLc8pLgBH0XA/Q8jgQ/tBCriBS/plKX
-         eaTd4DdHfZVz0DOG4feUrCLJrexHYMI1Q2awWoSCdiAZwMgNvUPXo9X49vEgr3qGhb7M
-         bvPboaOFVYvi+A3cRBv4+2CBzxZ81DlynNJ7L4JpNxUCQ0hGRuWVJh67WkGymLNzSdZl
-         If+S5KdKCITHYr9e6OT3xXAhIDV1hTvjT9q1s3IUtgnxhWRHyLayQbn6NKJcwydyKPn0
-         ITdpm64bppQOL504GAXAa/kmBQIn2S4uD/1AprPF7imSPdET3gcOGDGG3X4z52QoHMNz
-         sK1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=y43Q4Ux8mzcAs/PRKLgB3PhAbbRFuFRwNvqbANaCmZQ=;
-        b=y6kBwP10ppmXZwsSelNjKSCEcd1GSOypOTEafVx2BpuO2LdwcH7f9HZiHiTXq10vev
-         0IKvhI2m+12dpWCuvG/P7CSTSZWUiIKZaKk9ITna2vBCv+ITSN7hrTHWo7IawCb8cAuF
-         /6f/g2y/DCBVADVoX0lLFdEwAYs3jMORJQsCnJGU8ygbUSocOahlzPafyxCZySRPu01U
-         fOOQ0RBREk7mLM58iziNTDDrUxT5/0dPEx4tMFbIpq3bwSr2YwiHJzCSjLoslGXXhJkt
-         42B99Q9PmqJ/7FksR2se6FxiJXCvInORzEDkjZ9m5NzqXs7xkvbx/1mNKiV66wjLP/KP
-         CbPA==
-X-Gm-Message-State: ACgBeo06IEZHzM9H/TXhmlM9dZuiWw/NPc7lcTzmmikE5B4B0OUN6UJR
-        +e5KliyLO2dY3Iry1kD4GWKUXWvrf60PT9FKQbk=
-X-Google-Smtp-Source: AA6agR71z1/2SpT3yPpDi+nG8Mk5PMI4fgXgfA+vgEQzHAkvpZagpe1i71Ye/VpuaokPks7F+VLaUOX9ymA7jlbWiTU=
-X-Received: by 2002:a05:622a:40a:b0:343:77ba:727f with SMTP id
- n10-20020a05622a040a00b0034377ba727fmr5973760qtx.481.1660905270646; Fri, 19
- Aug 2022 03:34:30 -0700 (PDT)
+        with ESMTP id S1348128AbiHSKgK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:36:10 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621AEF2428;
+        Fri, 19 Aug 2022 03:36:08 -0700 (PDT)
+Received: (Authenticated sender: contact@artur-rojek.eu)
+        by mail.gandi.net (Postfix) with ESMTPA id 169CA4000C;
+        Fri, 19 Aug 2022 10:36:05 +0000 (UTC)
 MIME-Version: 1.0
-References: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
- <CAHp75VdTZ_JYB2aYVdQTOx9QW1HPKhwYyQH-0tVCtpjHV=VcaQ@mail.gmail.com> <8a1f372f34be71895268e874bb3fbbf105dfabdb.camel@gmail.com>
-In-Reply-To: <8a1f372f34be71895268e874bb3fbbf105dfabdb.camel@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 13:33:54 +0300
-Message-ID: <CAHp75VeSsVD8rMz-Cj6kFovqdQQPjbH7rUXWS6paRtsBaB-Kww@mail.gmail.com>
-Subject: Re: [PATCH] iio: pressure: bmp280: fix datasheet links
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
+Date:   Fri, 19 Aug 2022 12:36:05 +0200
+From:   Artur Rojek <contact@artur-rojek.eu>
+To:     Chris Morgan <macromorgan@hotmail.com>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
+Subject: Re: [PATCH 0/4] iio/adc-joystick: buffer data parsing fixes
+In-Reply-To: <SN6PR06MB534245440C9A0EA1E0C11B12A56D9@SN6PR06MB5342.namprd06.prod.outlook.com>
+References: <20220817105643.95710-1-contact@artur-rojek.eu>
+ <SN6PR06MB534245440C9A0EA1E0C11B12A56D9@SN6PR06MB5342.namprd06.prod.outlook.com>
+Message-ID: <085417ff80442dd7cc74e88d35423054@artur-rojek.eu>
+X-Sender: contact@artur-rojek.eu
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 1:31 PM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
-> On Fri, 2022-08-19 at 12:37 +0300, Andy Shevchenko wrote:
-> > On Tue, Aug 16, 2022 at 2:39 AM Angel Iglesias <ang.iglesiasg@gmail.com>
-> > wrote:
-> > >
-> > > Updated links for BMP280 and BME280 datasheets on Bosch website.
-> >
-> > > Datasheet of BMP180 is no longer available on the manufacturer's website,
-> > > changed the link to a copy hosted by a third party.
-> >
-> > Note, that the version is downgraded (from 12.1 to 9).
->
-> Apologies, I forgot to add a note about this. Changelog on datasheet 12.1 listed
-> these three changes from version 9:
-> * Page 26: Changed document referral from ANP015 to BST-MPS-AN004-00
-> * Chapter 3.5: New equation for B3 (adds a long cast to AC1)
-> * Page 26: Updated RoHS directive to 2011/65/EU effective 8 June 2011
+On 2022-08-18 20:28, Chris Morgan wrote:
+> On Wed, Aug 17, 2022 at 12:56:39PM +0200, Artur Rojek wrote:
+>> Hi all,
+>> 
+>> this patch set fixes the way channel data is being parsed in the
+>> adc-joystick driver. To achieve that, it also introduces helpers in 
+>> the
+>> IIO subsystem. As a side effect of those changes, a bug in ingenic-adc
+>> has been exposed, which this patch set promptly rectifies.
+>> 
+>> Tested on GCW Zero (by me) and on Anbernic RG350 (by Paul).
+>> 
+>> Chris:
+>> As you have originally reported the issue, would you be able to test
+>> the above changes on your setup (Odroid Go Advance, was it)?
+> 
+> I can confirm this fixes the issue I experienced, I can see both
+> channels of the joystick now when using an hrtimer as a trigger.
+> 
+> This patch also does not interfere with the polling work in progress,
+> as that still works as expected too (polling work is still desired
+> though).
+> 
+> Thank you.
+Perfect, thanks for testing!
 
-Perhaps you may add this to the comment below into the code.
+Can I add your Tested-by for v2 of this patchset?
 
-> Unfortunately, I couldn't find the most updated version in good quality hosted
-> in a trustworthy place.
-
-Me neither.
-
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
--- 
-With Best Regards,
-Andy Shevchenko
+Cheers,
+Artur
+> 
+>> 
+>> Artur Rojek (4):
+>>   iio/adc: ingenic: fix channel offsets in buffer
+>>   iio: add iio_channel_cb_get_iio_buffer helper
+>>   iio: add helper function for reading channel offset in buffer
+>>   input: joystick: Fix buffer data parsing
+>> 
+>>  drivers/iio/adc/ingenic-adc.c               |  7 +++---
+>>  drivers/iio/buffer/industrialio-buffer-cb.c |  7 ++++++
+>>  drivers/iio/industrialio-buffer.c           | 28 
+>> +++++++++++++++++++++
+>>  drivers/input/joystick/adc-joystick.c       | 26 ++++++++++++-------
+>>  include/linux/iio/buffer.h                  |  4 +++
+>>  include/linux/iio/consumer.h                | 12 +++++++++
+>>  6 files changed, 71 insertions(+), 13 deletions(-)
+>> 
+>> --
+>> 2.37.2
+>> 

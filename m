@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B92D599775
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C007459976F
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347600AbiHSITU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 04:19:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
+        id S1347560AbiHSIWG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 04:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347599AbiHSIS4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:18:56 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCBD13F1E2;
-        Fri, 19 Aug 2022 01:18:18 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id p5so1332776qvz.6;
-        Fri, 19 Aug 2022 01:18:18 -0700 (PDT)
+        with ESMTP id S236670AbiHSIWF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:22:05 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0FE564C8;
+        Fri, 19 Aug 2022 01:22:05 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id b9so2832052qka.2;
+        Fri, 19 Aug 2022 01:22:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=5w+/g5YGTVdUHyIqk02zSqLS8P5U5fB9MVF9V2agJs0=;
-        b=gdAXzwgCjGLoD1sElbapv4QEHxkB7G5webqH9OcGwe0JTZ+S3aa40oCN2BsF7UhTFi
-         dzC7tuI4ZcdBbTu+37Z5nQXVEzEYODot/JQoQutZHP4ZnBuvYgqUjNSd3Enm3uOfGDji
-         Z6jN086ldl3QK05dZ7sykm/vBoXyb3zqQThCN9UYV0aoY7Q253/gpc469j8wOMcAXhsk
-         +hcLDE88iyEwK7deBSl0itpcChEfyi/b2qjAgKVGExoFuVtfGgd8cE/3n8aQ/FngpoNb
-         kmAuCmFc5UybXNyQn+vbezSBfe3fj1p7BU70y/MbLRtvJkt3nPrjrwye7w5NJFWGQsrT
-         slcQ==
+        bh=jHoxLhPLeEqo5obusQoaXzvVIEivg5rvRbhCPfTpXxk=;
+        b=hc2mxNwi7xDgAVhriVTXaY/sUTFcIriBvXnIpSgHTw274P/ItF71a5Wqt0x87EIzqj
+         XM6uUUIWb3xc7Z8oZD8vW3thZn/fQF1af0Hofgb+VpO5S/TbpMQyKYOhrEOj5bMn4Lqk
+         UHVDOVUMtAZgVRG7+uNpXgtuGfTeOTBHo5FpAE9Ddu1oMm+zwpjxnNbhVbio5o7WwQKh
+         EVk3WmnnYS6Ikhhzme/7YZFlKejKMOHXkmR/1llPfAk29sD9E1m9horSF9qAJpDFbbLY
+         IbTfDzLPS+1lklKNMsjJL2R717q5278ir0ZZj3/vjVC5ZSBqjNDPhR/zfALEVaKd7oTC
+         +BnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=5w+/g5YGTVdUHyIqk02zSqLS8P5U5fB9MVF9V2agJs0=;
-        b=NR+OXYcnEmeC+noF5/ufQcsc11miCRICo0JQBPUeC2vmfCP12JNkS4DW4MZGEnJ+7/
-         ilkpqV+H2BfAnUTnxEW1GSCu7r2aZyDFBOFm5oJw32fLk9n4ZZGp5Qa47GhLPnpxTVX8
-         WAuknSrsF2H5+fmJtAqtmR7RsgJTGkThIp4n17lENEq2gXEXOcVHpf0TpktY35aWaIFR
-         0ssAZC4xY6vguMbGBaWYJYsDX+l9mFnigj0DYk4Rmnk4+rjgOcYMdY2J8RsA3Q4PMPUQ
-         i2K1PYT8M3oBHKuh6UKBeRXyGa1izy53kqK2Ij92ENOFBOY50rib6tlxYRSjZBDjk/sa
-         /iEg==
-X-Gm-Message-State: ACgBeo3hYw1Ouk1NEzERDNRa6lldaaRbMEwh3vXQP7aykcHoCfTsYYfy
-        4h5CZNLMejVTrn0Qs99h9UkwO17T6BClU6mDrTA=
-X-Google-Smtp-Source: AA6agR7LmW3N9z3MXZX9n9igF+gWSbyWFvq+FB6r3EgvE+6nZGrWjDoyV5HF2BTjg2dmSLl5DuAi/kX6oqCv1o7HUFw=
-X-Received: by 2002:a05:6214:e69:b0:476:b991:586f with SMTP id
- jz9-20020a0562140e6900b00476b991586fmr5323691qvb.48.1660897097715; Fri, 19
- Aug 2022 01:18:17 -0700 (PDT)
+        bh=jHoxLhPLeEqo5obusQoaXzvVIEivg5rvRbhCPfTpXxk=;
+        b=ZNW7MOloHs1XLIcJHZm0JeTVnW0i9HFrYlh+cjPKXs8qoB6gIPELGgv3RcCrSnH13+
+         9S4/Q6ODQwpdLE0AuOZgL8+gOe37/TTroSw468Z0aEDG2P3kCjB7rL0goD6AsvOTfjeu
+         hJB4MDe1feCqlf2M2DhSwFSZR39WUAPtCcIHFizu8L5zu+q15GINYvtBuggjDmAw/XjU
+         SxBg47guwdlgRkpcecm6/s2nTK6HW69kLwvGIoQBoeSfZMKxlke5Qfy9sTawNaqhadvF
+         IA3eCypDD6dQy9m0Y5dXfULE3saCL9UlmC3OGAlcbDuEPHvV5cxGz6rEuT7Wvm3eqd3g
+         an1g==
+X-Gm-Message-State: ACgBeo3llkbHgRqmuqdUuQev3IcJab7QCtyxwfj7iZWNZq39Fvr2tcCk
+        yYX0s4jQe2gde8gG3Cgf0kWrErW4FbwPZA1rywU=
+X-Google-Smtp-Source: AA6agR5eBbcKfnSc1FfOQbvYZmxUL3i/M2eCIy+d+iFu3GX882tOnfG70TQ+MOqjdMKbQQtt0KbIJ113x3c/7NXmE9o=
+X-Received: by 2002:a05:620a:2809:b0:6b6:5908:316e with SMTP id
+ f9-20020a05620a280900b006b65908316emr4607045qkp.734.1660897324141; Fri, 19
+ Aug 2022 01:22:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220817105643.95710-1-contact@artur-rojek.eu> <20220817105643.95710-4-contact@artur-rojek.eu>
-In-Reply-To: <20220817105643.95710-4-contact@artur-rojek.eu>
+References: <20220817105643.95710-1-contact@artur-rojek.eu> <20220817105643.95710-5-contact@artur-rojek.eu>
+In-Reply-To: <20220817105643.95710-5-contact@artur-rojek.eu>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 11:17:41 +0300
-Message-ID: <CAHp75VeierGKV7BqF+y-vxramA4nk24LOSPRxgmjots_amkg-w@mail.gmail.com>
-Subject: Re: [PATCH 3/4] iio: add helper function for reading channel offset
- in buffer
+Date:   Fri, 19 Aug 2022 11:21:28 +0300
+Message-ID: <CAHp75Vf=GpC6qv9bQNJ0ED8_aYJ9XNzD4e=1TWVVB6mraQcvHg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] input: joystick: Fix buffer data parsing
 To:     Artur Rojek <contact@artur-rojek.eu>
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -74,47 +73,32 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Aug 17, 2022 at 1:58 PM Artur Rojek <contact@artur-rojek.eu> wrote:
 >
-> This is useful for consumers that wish to parse raw buffer data.
+> Don't try to access buffer data of a channel by its scan index. Instead,
+> use the newly introduced `iio_find_channel_offset_in_buffer` to get the
+> correct data offset.
+>
+> The scan index of a channel does not represent its position in a buffer,
+> as the buffer will contain data for enabled channels only, affecting
+> data offsets and alignment.
 
-...
+> Fixes: 2c2b364fddd5 ("Input: joystick - add ADC attached joystick driver.")
 
-> +int iio_find_channel_offset_in_buffer(struct iio_dev *indio_dev,
-> +                                     const struct iio_chan_spec *chan,
-> +                                     struct iio_buffer *buffer)
-> +{
-> +       int length, offset = 0;
-> +       unsigned int si;
-> +
-> +       if (chan->scan_index < 0 ||
-> +           !test_bit(chan->scan_index, buffer->scan_mask)) {
-> +               return -EINVAL;
-> +       }
+You may not use Fixes here because it has dependencies. The possible
+solutions are:
+1/
+a) create a real fix for the existing code;
+b) refactor it.
 
-Have you run checkpatch? The {} are redundant. But personally I would
-split this into two separate conditionals.
+2/
+ put the Fixes tag to all dependencies (which is questionable).
 
-> +       for (si = 0; si < chan->scan_index; ++si) {
 
-Just a side crying: where did you, people, get this pre-increment pattern from?!
+> Reported-by: Chris Morgan <macromorgan@hotmail.com>
+> Tested-by: Paul Cercueil <paul@crapouillou.net>
+> Signed-off-by: Artur Rojek <contact@artur-rojek.eu>
 
-> +               if (!test_bit(si, buffer->scan_mask))
-> +                       continue;
-
-NIH for_each_set_bit()
-
-> +               length = iio_storage_bytes_for_si(indio_dev, si);
-> +
-> +               /* Account for channel alignment. */
-> +               if (offset % length)
-> +                       offset += length - (offset % length);
-> +               offset += length;
-> +       }
-> +
-> +       return offset;
-> +}
-> +EXPORT_SYMBOL_GPL(iio_find_channel_offset_in_buffer);
-
-Same Q as per previous patch: IIO namespace?
+Try to keep tags in chronological order, I do not believe the change
+may be tested before it has been created.
 
 -- 
 With Best Regards,

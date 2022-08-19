@@ -2,46 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9382E59A4C1
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7FF859A433
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354644AbiHSRo0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 13:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49096 "EHLO
+        id S1354817AbiHSRsQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 13:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354713AbiHSRn6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 13:43:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4ABCE0;
-        Fri, 19 Aug 2022 10:05:25 -0700 (PDT)
+        with ESMTP id S1352097AbiHSRr4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 13:47:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CABB2844;
+        Fri, 19 Aug 2022 10:15:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DEFD2617D0;
-        Fri, 19 Aug 2022 17:05:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0424C433D6;
-        Fri, 19 Aug 2022 17:05:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8F84617D7;
+        Fri, 19 Aug 2022 17:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C463DC433C1;
+        Fri, 19 Aug 2022 17:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660928724;
-        bh=QqRwdsza8GJAfdhc+fC/YMNne+B8UrtzLFfv6moaMWI=;
+        s=k20201202; t=1660929303;
+        bh=YMX+KaIq1TQ+gLn7mH2jPjTivQfw0jkmJhCSzBgZXaw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=F/Q8Qz2l7l623HUNNDi1K2lGey3wYZFZ/y8mlbz9Zdrju9l9NrtH9Zxgl/I/FHtuz
-         0WnZLeTQH11HWANEtMrEKO1+99XwEfcyeEg8YDifsXV1RRLyAp+PCdggDvyLvGpu4X
-         /vrP13c9oqt1ysvQvDn6h2ciSSvGBFZ/eKqZPVYZYp9JtriTeWZRrOccIicLUFBhvZ
-         ydQ8zfjl3jNyA9xWRggkaYGFf7jte9dRgs+gjqR5ELYKTWo+2/xjyJIP5HKA05YlWV
-         IfcdbNxaxgjyVSg189cd1e/0N4Fr8GRSU0hQ85OqivHPbzRB+nV9Ndxt37+OJTZ7qY
-         eBpqwHYKSftjw==
-Date:   Fri, 19 Aug 2022 18:16:00 +0100
+        b=oF5gRvBjJBHYMHiArma6zy/FxKEx6nu09qgf2RhpCWCP8UTRls+hXdEWDjDQAPid9
+         hcL8S7EmfKPxvNKF4gFFrvDbldYGrBOVe3fRHFOfbACn2zTqIt6GItapqvHioOAgc1
+         Re4tGl3mypmeOXNWYnqa91HFzxi3ZrF5yK22VDFqR+a2jKbyesWeIhgxvlsQvF5vtK
+         1wBnC+LqN0RFtRW4xwt6+fdXQIs0+uIIr62K7Ve482jSpNSf5YUS4gA/dmd98BQ/s2
+         bxq9CeL7iDllZoWXJFyxJOrEaxgGOPk5zYtvDwcKTakrETK37a+nMRKiD52FSJKTuO
+         m1h4unFnJdtHQ==
+Date:   Fri, 19 Aug 2022 18:25:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Joe Perches <joe@perches.com>
-Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>,
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: Avoid multiple line dereference for mask
-Message-ID: <20220819181600.638b82e9@jic23-huawei>
-In-Reply-To: <72bbd0126162b7f78291d3431d2a8c6730cc4ce7.camel@perches.com>
-References: <20220818125844.60762-1-joetalbott@gmail.com>
-        <72bbd0126162b7f78291d3431d2a8c6730cc4ce7.camel@perches.com>
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: move from strlcpy with unused retval to strscpy
+Message-ID: <20220819182539.44de60c8@jic23-huawei>
+In-Reply-To: <CAHp75Ve+xuqRAiRO=7wQBBmjKm9P-_iEiHWt23E7c82RcFutVA@mail.gmail.com>
+References: <20220818210017.6817-1-wsa+renesas@sang-engineering.com>
+        <CAHp75Ve+xuqRAiRO=7wQBBmjKm9P-_iEiHWt23E7c82RcFutVA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,56 +57,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 18 Aug 2022 20:08:27 -0400
-Joe Perches <joe@perches.com> wrote:
+On Fri, 19 Aug 2022 11:07:56 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Thu, 2022-08-18 at 08:58 -0400, Joe Simmons-Talbott wrote:
-> > Add a mask variable to hold dereferences that span multiple lines.
-> > Found with checkpatch.pl.  
-> []
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c  
-> []
-> > @@ -1301,10 +1302,9 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
-> >  		return ret;
-> >  	attrcount += ret;
-> >  
-> > +	mask = &chan->info_mask_separate_available;
-> >  	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
-> > -						  IIO_SEPARATE,
-> > -						  &chan->
-> > -						  info_mask_separate_available);
-> > +						  IIO_SEPARATE, mask);  
+> On Fri, Aug 19, 2022 at 12:02 AM Wolfram Sang
+> <wsa+renesas@sang-engineering.com> wrote:
+> >
+> > Follow the advice of the below link and prefer 'strscpy' in this
+> > subsystem. Conversion is 1:1 because the return value is not used.
+> > Generated by a coccinelle script.  
 > 
-> The issue is the conflict between using 30+ character identifiers and 80 column lines.
-> Perhaps it's better just to use a longer line instead of a temporary.
+> Same comments as per similar patch you submit to PDx86.
 > 
-> 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan, IIO_SEPARATE,
-> 						  &chan->info_mask_separate_available);
 
-Agreed. Looks nicer to me this way and still under the wider 100 char limit
-which is appropriate when readability is improved.
+Given it was an easy split, I've turned this into two patches
+and applied those to the togreg branch of iio.git - initially pushed
+out as testing for 0-day to poke at it.
 
-Some unfortunately long identifiers, that I think got there via evolution.
-We should consider shortening them that's a job for a separate patch.
+Thanks,
 
-
-> []
-> 
-> > @@ -1316,10 +1316,9 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
-> >  		return ret;
-> >  	attrcount += ret;
-> >  
-> > +	mask = &chan->info_mask_shared_by_type_available;
-> >  	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
-> > -						  IIO_SHARED_BY_TYPE,
-> > -						  &chan->
-> > -						  info_mask_shared_by_type_available);
-> > +						  IIO_SHARED_BY_TYPE, mask);  
-> 
-> 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan, IIO_SHARED_BY_TYPE,
-> 						  &chan->info_mask_shared_by_type_available);
-> 
-> etc...
-> 
-> 
+Jonathan
 

@@ -2,142 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6180959A6E0
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 22:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3214059A95F
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 01:26:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351577AbiHSUEH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 16:04:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43536 "EHLO
+        id S244434AbiHSXZQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 19:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351558AbiHSUEG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 16:04:06 -0400
-X-Greylist: delayed 312 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 19 Aug 2022 13:04:03 PDT
-Received: from mx-out1.startmail.com (mx-out1.startmail.com [145.131.90.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2230B7C747;
-        Fri, 19 Aug 2022 13:04:00 -0700 (PDT)
-Message-ID: <f8eaa7ce-8f33-b561-a9e1-a007f704af14@startmail.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=startmail.com;
-        s=2020-07; t=1660939127;
-        bh=mRQlqUiR3YkPKtD18b6chQglsvkhSFJ5UFwvj2kApEI=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-         In-Reply-To:Content-Type:Content-Transfer-Encoding:From:Subject:To:
-         Date:Sender:Content-Type:Content-Transfer-Encoding:
-         Content-Disposition:Mime-Version:Reply-To:In-Reply-To:References:
-         Message-Id:Autocrypt;
-        b=1fp7hkIpmhK1KOXcJv49p9XmUv83TCNwqfKyT94SLLlypMjol5NgvttGon/Xs9f0z
-         QXXmihvQuQikRXoIjNmXS8ljRgOcV1uuAJRkAR8jCxXNGmTFzufIcqRhwm5oA028Sp
-         2FcDh0jc8SK9tGXnQVlOpkeL758CE+VKnl6uLBUTaMC9cVWRZ5wfARvvtRD9pM/YuP
-         MUhMFoSgY7OloxXWBiOUGEe0krcZmRzwVCykRiwgLwHbYau5jQkphLgROSKH9MzW6b
-         BJh5brFnxgKxsYKfjSYTl4/hk27DpXvPcHWXtwKxPUcvxD/yI9FpVaiydHkzIKsLKv
-         YJLPnwuOKPwew==
-Date:   Fri, 19 Aug 2022 22:58:45 +0300
+        with ESMTP id S244280AbiHSXY6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 19:24:58 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA95B6029;
+        Fri, 19 Aug 2022 16:24:29 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id c20so4416244qtw.8;
+        Fri, 19 Aug 2022 16:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=9kj8YADm8du70l4gQ+EusuiOAvks8txJezrna7w9qAE=;
+        b=TLGJR6BH78Ku2XRy50XMpy9E0iSRYnRxuvCc+nA5yToS01jHWC0aYsueR14qRdZCRm
+         lvV/K9kkYKj8XK6zc9NKqNxeUNg228APIv07V9yhX6bMSMfLXgvBSxuGdHds+VCP4iVI
+         RCQju+JEVbtKiwVV2xcq/fSYZns1DCqj4koRA3Fw/Y+P0Bo/kkmE3AwNAam7Frh/vMbc
+         cBJjC1Z1hoawTDW5AQgswfvCCxtXVXv/Ogr0d26NpLFtX4thINlfoV7enGM/pENBKdey
+         GzQXYV+N/qwuD8wj2ib07utbZeBnQigUfT9TQnzERwmcG9z3SA3BBcx5xkS2T4qdgw2N
+         TOrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=9kj8YADm8du70l4gQ+EusuiOAvks8txJezrna7w9qAE=;
+        b=GP1GHYTPzcGy+sabJ7vm7OGRGVsTjL129AZkovvAaAfA1huFvtH8P/d/I9nd92nMgk
+         huf5taN8ZGG1noCG3ITy/TaVeL9h6SmOi1s9Erxrtx/GKHYkkjhxeHOE0iTR6sJRlo1I
+         Elup5hXI4TB5vnRCayt+DryMZNoVophM5CnbKdXcP7MlGNWvn3eJMV4ih3OyivCLR1uG
+         jlap8eAuY6zlYGRqRXdCSUza8RBuNEibpB3J0lV30Ws+u+YMqYF3N4EdrrCCaUzxbi33
+         /u81oJTEhUPdENyQ2icuJ/y/XGAh4iHup/HoE9gHdNxut9E9Jw0Sm1auv4mV7CyGjDay
+         KYjg==
+X-Gm-Message-State: ACgBeo0werKSf8IeXq6A9GmiIz9TrHl59nsZwalABltLoE0edO/00VnA
+        t5VQqSSGXTc/PyxjquhLnJz7qTfAXr6fKq0YO1c=
+X-Google-Smtp-Source: AA6agR7b9hjrEla6ZbAwec9YTGFqrakS7HOziDFtiFYKG01c+pvBlvapThT5k++u/jjDQvsh2a90zjYOrn0o5GYnN+0=
+X-Received: by 2002:a05:622a:491:b0:344:95bf:8f05 with SMTP id
+ p17-20020a05622a049100b0034495bf8f05mr6893450qtx.61.1660951468982; Fri, 19
+ Aug 2022 16:24:28 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 12/14] iio: max1241: simplify using
- devm_regulator_get_enable()
-Content-Language: en-US
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1660934107.git.mazziesaccount@gmail.com>
- <7c759bf6c06e72ae70bffeebc1939d9903427278.1660934107.git.mazziesaccount@gmail.com>
-From:   Alexandru Lazar <alazar@startmail.com>
-In-Reply-To: <7c759bf6c06e72ae70bffeebc1939d9903427278.1660934107.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20220816191842.14020-1-ddrokosov@sberdevices.ru>
+ <20220816191842.14020-4-ddrokosov@sberdevices.ru> <CAHp75VewJ1taLhsCb4_yEQHpw4VDXRhkxpL0jzdu-JsajfF6oA@mail.gmail.com>
+ <20220819125818.37qc66akgercd6zb@CAB-WSD-L081021.sigma.sbrf.ru>
+In-Reply-To: <20220819125818.37qc66akgercd6zb@CAB-WSD-L081021.sigma.sbrf.ru>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 20 Aug 2022 02:23:52 +0300
+Message-ID: <CAHp75VcUPQF21+gq3Hn_CLeY+y9sTFSLrbHYKgFJssveL+badg@mail.gmail.com>
+Subject: Re: [PATCH v6 3/4] iio: add MEMSensing MSA311 3-axis accelerometer driver
+To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
+Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "andriy.shevchenko@linux.intel.com" 
+        <andriy.shevchenko@linux.intel.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
+        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
+        "wsa@kernel.org" <wsa@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
+        "jbhayana@google.com" <jbhayana@google.com>,
+        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
+        "jani.nikula@intel.com" <jani.nikula@intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@sberdevices.ru>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Heya,
+On Fri, Aug 19, 2022 at 3:58 PM Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+> On Fri, Aug 19, 2022 at 11:41:55AM +0300, Andy Shevchenko wrote:
 
-I don't have the hardware at hand (long story, lots of smoke), so all I 
-can do for this patch at the moment is:
+...
 
-Acked-by: Alexandru Lazar <alazar@startmail.com>
+> > > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
+> >
+> > Have you ever seen such a tag?
+> > We have the Datasheet that is more or less established for this kind of links.
+>
+> As I mentioned before, if I use Datasheet tag, line length limit will be
+> exceeded. If it's okay, I don't mind.
 
-That being said, IIRC the MAX1241 has no special requirements in this 
-regard, so if other SPI devices work, this one ought to work as well. If 
-anyone's concerned, I can test it, but probably not sooner than a week 
-or so :-(.
+Tags must be one-liners, that's the convention. It doesn't matter how
+long they are.
 
-FWIW I really like this, the straightforward regulator boilerplate 
-always felt a tad wrong.
 
-All the best,
-Alex
-
-On 8/19/2022 10:20 PM, Matti Vaittinen wrote:
-> Drop open-coded pattern: 'devm_regulator_get(), regulator_enable(),
-> add_action_or_reset(regulator_disable)' and use the
-> devm_regulator_get_enable() and drop the pointer to the regulator.
-> This simplifies code and makes it less tempting to add manual control
-> for the regulator which is also controlled by devm.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> v2 => v3:
-> New patch
-> ---
->   drivers/iio/adc/max1241.c | 28 +++-------------------------
->   1 file changed, 3 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
-> index a815ad1f6913..500bb09ab19b 100644
-> --- a/drivers/iio/adc/max1241.c
-> +++ b/drivers/iio/adc/max1241.c
-> @@ -22,7 +22,6 @@ enum max1241_id {
->   struct max1241 {
->   	struct spi_device *spi;
->   	struct mutex lock;
-> -	struct regulator *vdd;
->   	struct regulator *vref;
->   	struct gpio_desc *shutdown;
->   
-> @@ -110,17 +109,6 @@ static const struct iio_info max1241_info = {
->   	.read_raw = max1241_read_raw,
->   };
->   
-> -static void max1241_disable_vdd_action(void *data)
-> -{
-> -	struct max1241 *adc = data;
-> -	struct device *dev = &adc->spi->dev;
-> -	int err;
-> -
-> -	err = regulator_disable(adc->vdd);
-> -	if (err)
-> -		dev_err(dev, "could not disable vdd regulator.\n");
-> -}
-> -
->   static void max1241_disable_vref_action(void *data)
->   {
->   	struct max1241 *adc = data;
-> @@ -147,20 +135,10 @@ static int max1241_probe(struct spi_device *spi)
->   	adc->spi = spi;
->   	mutex_init(&adc->lock);
->   
-> -	adc->vdd = devm_regulator_get(dev, "vdd");
-> -	if (IS_ERR(adc->vdd))
-> -		return dev_err_probe(dev, PTR_ERR(adc->vdd),
-> -				     "failed to get vdd regulator\n");
-> -
-> -	ret = regulator_enable(adc->vdd);
-> +	ret = devm_regulator_get_enable(dev, "vdd");
->   	if (ret)
-> -		return ret;
-> -
-> -	ret = devm_add_action_or_reset(dev, max1241_disable_vdd_action, adc);
-> -	if (ret) {
-> -		dev_err(dev, "could not set up vdd regulator cleanup action\n");
-> -		return ret;
-> -	}
-> +		return dev_err_probe(dev, ret,
-> +				     "failed to get/enable vdd regulator\n");
->   
->   	adc->vref = devm_regulator_get(dev, "vref");
->   	if (IS_ERR(adc->vref))
+-- 
+With Best Regards,
+Andy Shevchenko

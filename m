@@ -2,107 +2,147 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3453C59A556
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 028A059A598
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349919AbiHSSUh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 14:20:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
+        id S1350210AbiHSSb0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 14:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350655AbiHSSUW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 14:20:22 -0400
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A22B9FBA;
-        Fri, 19 Aug 2022 11:20:21 -0700 (PDT)
-Received: by mail-qv1-xf30.google.com with SMTP id n14so693829qvq.10;
-        Fri, 19 Aug 2022 11:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc;
-        bh=p22/6mglB2ypxlwst5KVNhgWzoj8TxPUFJeRuYhVrUI=;
-        b=O8bcs6Vc6NskQYMQGcIwBNPM8x7TBPMuq93c+ZJn1WtVCQUbuoBX9HcnpnTzwIDS2/
-         xrUcuIZfDFiQiV9ywPjWWD0ENdzBCJkZ2LTOsKYKFE6elRj4IWplhZtI8ZeOGKxGihFM
-         D1W36AyIhPfmB1kLLSex9bbxiYwxeAY75OA5Tx/7dO6sfqsCEjnwRAWhEoVxma59UGgy
-         ynn21o95jvjv6EHZULW2Lxsg/aIa2pNNfXQ/AX/tD/jyjpreyloubiLLIW/RPTkDYvTS
-         lcE4Z5To1toB6SAl6yZ5nCCXWIVtu1dXLp4XNTIwKkvlQxVYRoFhTuV1rqFyQ5lttyi0
-         e1CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc;
-        bh=p22/6mglB2ypxlwst5KVNhgWzoj8TxPUFJeRuYhVrUI=;
-        b=zQr+K+62d+1XusCDutQUvT3MmumcxYjOIABiqP/y+KHzi+pCNHXV0BESaFYGBR9ITU
-         adckRZB69O5AnKsDejV9gWEk0U92dOeGli3GStUn3kMpNyvhRMyoWW/MD6SfH8Rym0Fb
-         KWmSnQtVL4ECwlMy2E0fMI8I2JmK8Cg4XhM9Zcbad61mSi13p5DwGfUkeTuxlei3Dm6g
-         E32Um9FkyDtpcsa1l0BQSlmBFii8T7MmyIk414upTPPo07J2mGtkYb8xK1xS4DZBojoV
-         Z1kij9KNoeJ5dl6B/yNbrOLWBAnjpbUypDkZ7zmarq1wR09qGsa1Ia09aEd29zuPdTcj
-         lUHA==
-X-Gm-Message-State: ACgBeo0CivOrC5gDcHkYI5Pap9XLhxDblQ05KKuBu9XxAKMRkOwwPQEm
-        fQ2fmWFDlZSgJvAptyWMMeo=
-X-Google-Smtp-Source: AA6agR4oYEvRxhUPdR6vLzZ7Fw/zDC+ctWmsnKyw+4WUuSnnc9Cu+P2xDEsSinCovY9NcP5iFKCeKQ==
-X-Received: by 2002:a05:6214:ac3:b0:496:31f9:1877 with SMTP id g3-20020a0562140ac300b0049631f91877mr7660312qvi.12.1660933220633;
-        Fri, 19 Aug 2022 11:20:20 -0700 (PDT)
-Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
-        by smtp.gmail.com with ESMTPSA id u14-20020a05620a0c4e00b006bb568016easm4063767qki.116.2022.08.19.11.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Aug 2022 11:20:20 -0700 (PDT)
-From:   Joe Simmons-Talbott <joetalbott@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S1349745AbiHSSb0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 14:31:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6336C88AD;
+        Fri, 19 Aug 2022 11:31:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 613F760ED3;
+        Fri, 19 Aug 2022 18:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ABDC433C1;
+        Fri, 19 Aug 2022 18:31:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1660933883;
+        bh=QuVIEsO5UmTSs0WAutUfIo3fcQXR0O4vobQR36XYVSg=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=cSjeOqirADj4Mc3kI1ZuL8qZNGqPPgBJn9hY2YHPn3SQ1tTyxfIJNOdnsJsL/o5k/
+         Ua/O/sYZA5BSSACK4VYQnbdsrlVlJJvxXxZ8XSlTHSMNdSxueO5WoPN174PHR//gta
+         w3h1uVu45NCg0OMgIGLRaQcfI3XNRABlXxFaH1xehc/X7R9oj5b+n5q9HmX6ogPDgi
+         3zP60Z9aFLZICznzQrSfjkRd++M7wE8qhYd0RVvLPUkycIXDOB4vGU9vHYX1MpqJ87
+         Y/eUIERAJrU09SDuUX2pkBL4pa5ClmKufZeiVTDs1LSKzPMIgWeOmu2ML+0zYmHOqJ
+         9eiva/pJe+7sA==
+Date:   Fri, 19 Aug 2022 19:41:50 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>
-Subject: [PATCH v2] iio: Avoid multiple line dereference for mask
-Date:   Fri, 19 Aug 2022 14:20:12 -0400
-Message-Id: <20220819182012.219523-1-joetalbott@gmail.com>
-X-Mailer: git-send-email 2.37.2
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lucas Stankus <lucas.p.stankus@gmail.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Tomislav Denis <tomislav.denis@avl.com>,
+        Oleksij Rempel <linux@rempel-privat.de>, kernel@pengutronix.de,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Ricardo Ribalda <ribalda@kernel.org>,
+        Dragos Bogdan <dragos.bogdan@analog.com>,
+        Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Tomas Melin <tomas.melin@vaisala.com>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Patrick Vasseur <patrick.vasseur@c-s.fr>,
+        Charles-Antoine Couret <charles-antoine.couret@essensium.com>,
+        Vladimir Barinov <vladimir.barinov@cogentembedded.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Philippe Reynes <tremyfr@yahoo.fr>,
+        Jacopo Mondi <jacopo@jmondi.org>,
+        Akinobu Mita <akinobu.mita@gmail.com>,
+        Alexandru Lazar <alazar@startmail.com>,
+        Oskar Andero <oskar.andero@gmail.com>,
+        =?UTF-8?B?TcOlcnRlbg==?= Lindahl <martenli@axis.com>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Andrew Davis <afd@ti.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Phil Reid <preid@electromag.com.au>,
+        Michael Welling <mwelling@ieee.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Chris Coffey <cmc@babblebit.net>,
+        Slawomir Stepien <sst@poczta.fm>,
+        Sankar Velliangiri <navin@linumiz.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v3 00/10] dt-bindings: iio: use
+ spi-peripheral-props.yaml
+Message-ID: <20220819194150.23f47751@jic23-huawei>
+In-Reply-To: <20220818145248.GD1829017-robh@kernel.org>
+References: <20220816124321.67817-1-krzysztof.kozlowski@linaro.org>
+        <20220818145248.GD1829017-robh@kernel.org>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Prefer lines > 80 characters over splitting dereferences across multiple
-lines. Reported by checkpatch.pl.
+On Thu, 18 Aug 2022 08:52:48 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
----
-changes in v2:
-* Don't use a temporary variable.
+> On Tue, Aug 16, 2022 at 03:43:11PM +0300, Krzysztof Kozlowski wrote:
+> > Hi,
+> > 
+> > The patchset is independent of my other recent changes around SPI, so feel free
+> > to apply it for next release.
+> > 
+> > Changes since v2
+> > ================
+> > 1. Keep spi-3wire also in device bindings (not in spi-peripheral-props.yaml).
+> > 2. Add Rb tag.
+> > 
+> > Changes since v1
+> > ================
+> > 1. Continue the rework for entire IIO.
+> > v1: https://lore.kernel.org/all/20220715095302.214276-1-krzysztof.kozlowski@linaro.org/
+> > 
+> > Best regards,
+> > Krzysztof
+> > 
+> > Krzysztof Kozlowski (10):
+> >   dt-bindings: iio: adc: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: accel: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: amplifiers: adi,ada4250: use
+> >     spi-peripheral-props.yaml
+> >   dt-bindings: iio: dac: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: frequency: adf4371: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: health: ti,afe4403: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: imu: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: potentiometer: use spi-peripheral-props.yaml
+> >   dt-bindings: iio: samsung,sensorhub-rinato: use
+> >     spi-peripheral-props.yaml
+> >   dt-bindings: iio: temperature: use spi-peripheral-props.yaml  
+> 
+> For the series,
+> 
+> Reviewed-by: Rob Herring <robh@kernel.org>
 
- drivers/iio/industrialio-core.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Series applied to the togreg branch of iio.git and pushed out as testing
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 67d3d01d2dac..d38623c046cc 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1303,8 +1303,7 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
- 
- 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
- 						  IIO_SEPARATE,
--						  &chan->
--						  info_mask_separate_available);
-+						  &chan->info_mask_separate_available);
- 	if (ret < 0)
- 		return ret;
- 	attrcount += ret;
-@@ -1318,8 +1317,7 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
- 
- 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
- 						  IIO_SHARED_BY_TYPE,
--						  &chan->
--						  info_mask_shared_by_type_available);
-+						  &chan->info_mask_shared_by_type_available);
- 	if (ret < 0)
- 		return ret;
- 	attrcount += ret;
--- 
-2.37.2
+Thanks,
+
+Jonathan
 

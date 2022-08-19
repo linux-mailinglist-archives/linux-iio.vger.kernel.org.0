@@ -2,115 +2,107 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1E7259A52E
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3453C59A556
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:39:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350138AbiHSSEU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 14:04:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S1349919AbiHSSUh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 14:20:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349807AbiHSSD6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 14:03:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A53F63F2E;
-        Fri, 19 Aug 2022 10:49:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA4876186D;
-        Fri, 19 Aug 2022 17:49:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C1EC433D6;
-        Fri, 19 Aug 2022 17:49:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660931392;
-        bh=XMlk3D/uGMkXZBaYH68xGUpyRvK9o5OVs002Yxl4T9I=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YNIqkyrR2+wWSotUwuIYnIk4n45l9lpznKwr8ZqiJyDNHO/OcsQy6hx2H2o7XTNao
-         eJ+5fB6AgAxiRLRBfc8Co78SwJo7yEYSK166pzRK/crcVcQnbEJa7QZ92pFp0drhFF
-         6LxrgTpIwf1fAJGy6eyRvnGIoTykSm7gqb/4ABiUTibXIfwOLUNyeGWnD4S1SacmqH
-         pXM/yIHzGzykuL9cTqb5qKoZILio69MZIXNQy8oNyuxI3kaoemU9j1meqEYEWbkSfA
-         PCJgIBLYNiHMlxy1JIUVM95/elpq5lworGqlKLawK1oBlGBWWhbDGLvImOXu/KZ4Bk
-         vrHHbyczlLCUg==
-Date:   Fri, 19 Aug 2022 19:00:25 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>,
-        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
-        "jani.nikula@intel.com" <jani.nikula@intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 3/4] iio: add MEMSensing MSA311 3-axis accelerometer
- driver
-Message-ID: <20220819190025.7702573b@jic23-huawei>
-In-Reply-To: <20220819125818.37qc66akgercd6zb@CAB-WSD-L081021.sigma.sbrf.ru>
-References: <20220816191842.14020-1-ddrokosov@sberdevices.ru>
-        <20220816191842.14020-4-ddrokosov@sberdevices.ru>
-        <CAHp75VewJ1taLhsCb4_yEQHpw4VDXRhkxpL0jzdu-JsajfF6oA@mail.gmail.com>
-        <20220819125818.37qc66akgercd6zb@CAB-WSD-L081021.sigma.sbrf.ru>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S1350655AbiHSSUW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 14:20:22 -0400
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A22B9FBA;
+        Fri, 19 Aug 2022 11:20:21 -0700 (PDT)
+Received: by mail-qv1-xf30.google.com with SMTP id n14so693829qvq.10;
+        Fri, 19 Aug 2022 11:20:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=p22/6mglB2ypxlwst5KVNhgWzoj8TxPUFJeRuYhVrUI=;
+        b=O8bcs6Vc6NskQYMQGcIwBNPM8x7TBPMuq93c+ZJn1WtVCQUbuoBX9HcnpnTzwIDS2/
+         xrUcuIZfDFiQiV9ywPjWWD0ENdzBCJkZ2LTOsKYKFE6elRj4IWplhZtI8ZeOGKxGihFM
+         D1W36AyIhPfmB1kLLSex9bbxiYwxeAY75OA5Tx/7dO6sfqsCEjnwRAWhEoVxma59UGgy
+         ynn21o95jvjv6EHZULW2Lxsg/aIa2pNNfXQ/AX/tD/jyjpreyloubiLLIW/RPTkDYvTS
+         lcE4Z5To1toB6SAl6yZ5nCCXWIVtu1dXLp4XNTIwKkvlQxVYRoFhTuV1rqFyQ5lttyi0
+         e1CQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=p22/6mglB2ypxlwst5KVNhgWzoj8TxPUFJeRuYhVrUI=;
+        b=zQr+K+62d+1XusCDutQUvT3MmumcxYjOIABiqP/y+KHzi+pCNHXV0BESaFYGBR9ITU
+         adckRZB69O5AnKsDejV9gWEk0U92dOeGli3GStUn3kMpNyvhRMyoWW/MD6SfH8Rym0Fb
+         KWmSnQtVL4ECwlMy2E0fMI8I2JmK8Cg4XhM9Zcbad61mSi13p5DwGfUkeTuxlei3Dm6g
+         E32Um9FkyDtpcsa1l0BQSlmBFii8T7MmyIk414upTPPo07J2mGtkYb8xK1xS4DZBojoV
+         Z1kij9KNoeJ5dl6B/yNbrOLWBAnjpbUypDkZ7zmarq1wR09qGsa1Ia09aEd29zuPdTcj
+         lUHA==
+X-Gm-Message-State: ACgBeo0CivOrC5gDcHkYI5Pap9XLhxDblQ05KKuBu9XxAKMRkOwwPQEm
+        fQ2fmWFDlZSgJvAptyWMMeo=
+X-Google-Smtp-Source: AA6agR4oYEvRxhUPdR6vLzZ7Fw/zDC+ctWmsnKyw+4WUuSnnc9Cu+P2xDEsSinCovY9NcP5iFKCeKQ==
+X-Received: by 2002:a05:6214:ac3:b0:496:31f9:1877 with SMTP id g3-20020a0562140ac300b0049631f91877mr7660312qvi.12.1660933220633;
+        Fri, 19 Aug 2022 11:20:20 -0700 (PDT)
+Received: from spruce.. (c-71-206-142-238.hsd1.va.comcast.net. [71.206.142.238])
+        by smtp.gmail.com with ESMTPSA id u14-20020a05620a0c4e00b006bb568016easm4063767qki.116.2022.08.19.11.20.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Aug 2022 11:20:20 -0700 (PDT)
+From:   Joe Simmons-Talbott <joetalbott@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>
+Subject: [PATCH v2] iio: Avoid multiple line dereference for mask
+Date:   Fri, 19 Aug 2022 14:20:12 -0400
+Message-Id: <20220819182012.219523-1-joetalbott@gmail.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Aug 2022 12:57:54 +0000
-Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
+Prefer lines > 80 characters over splitting dereferences across multiple
+lines. Reported by checkpatch.pl.
 
-> On Fri, Aug 19, 2022 at 11:41:55AM +0300, Andy Shevchenko wrote:
-> 
-> [...]
-> 
-> > > Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf  
-> > 
-> > Have you ever seen such a tag?
-> > We have the Datasheet that is more or less established for this kind of links.  
-> 
-> As I mentioned before, if I use Datasheet tag, line length limit will be
-> exceeded. If it's okay, I don't mind.
-Fine to go long.  If someone can't see the remaining chars of a link on their 80
-character wide terminal - they can scroll sideways :)
+Signed-off-by: Joe Simmons-Talbott <joetalbott@gmail.com>
+---
+changes in v2:
+* Don't use a temporary variable.
 
+ drivers/iio/industrialio-core.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 67d3d01d2dac..d38623c046cc 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1303,8 +1303,7 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+ 
+ 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
+ 						  IIO_SEPARATE,
+-						  &chan->
+-						  info_mask_separate_available);
++						  &chan->info_mask_separate_available);
+ 	if (ret < 0)
+ 		return ret;
+ 	attrcount += ret;
+@@ -1318,8 +1317,7 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+ 
+ 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
+ 						  IIO_SHARED_BY_TYPE,
+-						  &chan->
+-						  info_mask_shared_by_type_available);
++						  &chan->info_mask_shared_by_type_available);
+ 	if (ret < 0)
+ 		return ret;
+ 	attrcount += ret;
+-- 
+2.37.2
 
-> >   
-> > > +static inline int msa311_set_odr(struct msa311_priv *msa311, unsigned int odr)  
-> > 
-> > Why inline?
-> >   
-> 
-> Why not? :) It's short function which is good to be inline, I think.
-
-Let the compiler decide that. Generally in kernel code, inline is reserved for
-the few places it's necessary or where compilers have been shown to get it wrong.
-
-> 
-> > > +{
-> > > +       struct device *dev = msa311->dev;
-> > > +       unsigned int pwr_mode;  
-> >   
-> > > +       bool good_odr = false;  
-> > 

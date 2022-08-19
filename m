@@ -2,78 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5AF5997AA
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3CD75997FE
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 11:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347505AbiHSImk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 04:42:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49838 "EHLO
+        id S1347876AbiHSIvU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 04:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347453AbiHSIme (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:42:34 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B6F65272;
-        Fri, 19 Aug 2022 01:42:32 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id j6so2827432qkl.10;
-        Fri, 19 Aug 2022 01:42:32 -0700 (PDT)
+        with ESMTP id S1345441AbiHSIvT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:51:19 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A206DAA3E;
+        Fri, 19 Aug 2022 01:51:18 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id l19so766746ljg.8;
+        Fri, 19 Aug 2022 01:51:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=VzSuewIjUQpDvic1Fgqa68zOGD3yBqaHvGhRdaClA3o=;
-        b=QudVAM6e29c3BuhMZSG1meem9oEv8vhzd9ac0cblLFbTKxCrZFYxcpWseE60QxQDMO
-         xpVysrbpSU+DI/sScbpd0OTEa1EPOni0+oEbUbWcX9kF2aOlA1tlho3MX1zBZZffo7hb
-         YLOhKTlScvnAUaQYkc1UcYmFdShrtv15LY5aCSgXpMFnXyR3dfHvYtltOjmEMJLDBvcV
-         tS6D6oAFmHvvhx0kYmH+nelet2CJ8s2wZWGWALYNC/qa8bvBuV1dURsX71b0vX6F7CLs
-         6Q2EQjVBMFxtemZEd3Q7VxHStmvj3tu/DQ8fqdtWGWRFoGaFe2vffVzFoTQdvgZR9HI0
-         +EUg==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc;
+        bh=YYb32OgkJ0s/CNydDFv99LO68KFPvhp/aUcVd7yfU0A=;
+        b=jbD8r2NhHlY02SxRUOwA3RQpK/gqw7eNTHa83A22RBQ2+gaewbboNWLxd/c4LeEgvI
+         J4B+z3TytiOuQMkJYOF6d0adc3kI7CG5fGTzLvAS0Njz8NgcSgbxnH0hLqp0dvBMNCWK
+         OXFN1+UxXKOPmUe+DKRTAXrRqRfXDaJxUQcw4jT8IzMnq+IUZnc1P4sl2ReAjCyiNobz
+         MF7G4sTirEimFBPQQmgkiWu5NxkEqCUel5wkEc3RVfLO19sEIjUYeof1UUDzxVMVLbTy
+         c7dTarxc835+ruifFHDvTwBBalUZADg5/3anDQDuOCxZWv41/yP9n67jE+Ruq+S9RF7V
+         WvIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=VzSuewIjUQpDvic1Fgqa68zOGD3yBqaHvGhRdaClA3o=;
-        b=0gBe24q8MemPMFtTbLYztvyYpWvrfj6KjcrYwRgcWagyG5ubh8oXPaQ3X7WQyBINs0
-         bf7yr9YKmC9uWxAza2iFc1cmuKhRl/V6uSGIH8CGdEO5GqLG9SGM+cwaomK3OuiaqhUl
-         VJXOa+6ufdnvNEitbqHJ7VdE44QVu+Axbm/86sA5rOfWWN+Ywzje/oprCX26JszWMDrE
-         bqPEzfO8++T/fSGar6Y2Po0MEKNCUjFiqv6wtLLQBZgRVVNB5Nvt/NEJc3QHi5JuMfKT
-         RQFaLR3UTDsye9+0al9LsMhrkwa3jwld5X6E4kqiwnC9/xVpwwq2+EC314qxv6+mv60r
-         sDWA==
-X-Gm-Message-State: ACgBeo2wixmvfTGlFuYnH4A/3oDm18UsIb/h9sY9Oju7RVLZ3GL/p7cm
-        thBnAG8dG/bFf2hRTp68tXPj4amOFiwrYfd8P0FIdIb9Px0=
-X-Google-Smtp-Source: AA6agR4e0ZjOWhcEmlN7CTN9pP31wSyMszjqo4JWtvtu5JWPM7UqVmowAdRcPEa5Em2eyaKswk3qEIZYp32z+IOrziU=
-X-Received: by 2002:a05:620a:2809:b0:6b6:5908:316e with SMTP id
- f9-20020a05620a280900b006b65908316emr4631678qkp.734.1660898551279; Fri, 19
- Aug 2022 01:42:31 -0700 (PDT)
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc;
+        bh=YYb32OgkJ0s/CNydDFv99LO68KFPvhp/aUcVd7yfU0A=;
+        b=TIZsIzmbOznuq/sxuCE3Cq7qfahvdDF40ItPQC5tjCHvFBlp4YFnGPI/dwnW85x2kE
+         fnszNtCOZcGWrdSimoQrrGb6lvDmQ1/B5ZAYCMn6Rds2BQgEP8TzNpjvRD0wuAeKmaWT
+         wyP10zPT5jrbtDsEZthdBwvfHaW3dTxqLcj5ow4DE5f9zY7GeZLO7O9sxC7cnvZylpzv
+         MVL3ezLF/f0xjcPHbgQXS+IPpIfNuDxrF63/iFTYoFJGDGgD9bnibt6bbQD9/kpYPAzd
+         ESyzNxntHpcfSSfwYQxk2Vhh3afGKsj2Gl45pne0LxaBr+U+tVxvzGq+5z00IeKplxSC
+         RiPg==
+X-Gm-Message-State: ACgBeo3Zk7dVpRSriZaArM8R27bt2UedGOYD4vlOFEbeh1jfZJ0sSZz/
+        6gxXGFVo5Im5uJuOPg5rSQ4=
+X-Google-Smtp-Source: AA6agR6bYlcupkF9JZiahcCo3EWFXSEOj21nhZRdfNbLZcZr/mmxykFhieCcfZEBT9nJBANXyBJDYA==
+X-Received: by 2002:a2e:844a:0:b0:255:46b9:5e86 with SMTP id u10-20020a2e844a000000b0025546b95e86mr1779635ljh.388.1660899076756;
+        Fri, 19 Aug 2022 01:51:16 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id x3-20020a056512046300b0047f7722b73csm557234lfd.142.2022.08.19.01.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Aug 2022 01:51:15 -0700 (PDT)
+Date:   Fri, 19 Aug 2022 11:51:07 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: ad7292: Prevent regulator double disable
+Message-ID: <Yv9O+9sxU7gAv3vM@fedora>
 MIME-Version: 1.0
-References: <20220816191842.14020-1-ddrokosov@sberdevices.ru> <20220816191842.14020-4-ddrokosov@sberdevices.ru>
-In-Reply-To: <20220816191842.14020-4-ddrokosov@sberdevices.ru>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 11:41:55 +0300
-Message-ID: <CAHp75VewJ1taLhsCb4_yEQHpw4VDXRhkxpL0jzdu-JsajfF6oA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/4] iio: add MEMSensing MSA311 3-axis accelerometer driver
-To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
-Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "robh+dt@kernel.org" <robh+dt@kernel.org>,
-        "andriy.shevchenko@linux.intel.com" 
-        <andriy.shevchenko@linux.intel.com>,
-        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
-        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
-        "shawnguo@kernel.org" <shawnguo@kernel.org>,
-        "stephan@gerhold.net" <stephan@gerhold.net>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "wsa@kernel.org" <wsa@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
-        "jbhayana@google.com" <jbhayana@google.com>,
-        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
-        "jani.nikula@intel.com" <jani.nikula@intel.com>,
-        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@sberdevices.ru>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="j8siMrN4F96COOfa"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -84,185 +72,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 16, 2022 at 10:18 PM Dmitry Rokosov
-<DDRokosov@sberdevices.ru> wrote:
->
-> MSA311 is a tri-axial, low-g accelerometer with I2C digital output for
-> sensitivity consumer applications. It has dynamic user-selectable full
-> scales range of +-2g/+-4g/+-8g/+-16g and allows acceleration measurements
-> with output data rates from 1Hz to 1000Hz.
->
-> This driver supports following MSA311 features:
->     - IIO interface
->     - Different power modes: NORMAL and SUSPEND (using pm_runtime)
->     - ODR (Output Data Rate) selection
->     - Scale and samp_freq selection
->     - IIO triggered buffer, IIO reg access
->     - NEW_DATA interrupt + trigger
->
-> Below features to be done:
->     - Motion Events: ACTIVE, TAP, ORIENT, FREEFALL
->     - Low Power mode
 
-> Spec: https://cdn-shop.adafruit.com/product-files/5309/MSA311-V1.1-ENG.pdf
+--j8siMrN4F96COOfa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Have you ever seen such a tag?
-We have the Datasheet that is more or less established for this kind of links.
+The ad7292 tries to add an devm_action for disabling a regulator at
+device detach using devm_add_action_or_reset(). The
+devm_add_action_or_reset() does call the release function should adding
+action fail. The driver inspects the value returned by
+devm_add_action_or_reset() and manually calls regulator_disable() if
+adding the action has failed. This leads to double disable and messes
+the enable count for regulator.
 
-The comments below are not a big deal, though.
+Do not manually call disable if devm_add_action_or_reset() fails.
 
-...
+Fixes: 506d2e317a0a ("iio: adc: Add driver support for AD7292")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-> +static const struct iio_decimal_fract msa311_fs_table[] = {
-> +       {0, 9580}, {0, 19160}, {0, 38320}, {0, 76641}
+---
 
-I would still keep the trailing comma for better consistency with a style.
+The bug was found during browsing the code. I don't have the hardware to
+test this so reviewing and testing is highly appreciated.
+---
+ drivers/iio/adc/ad7292.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> +};
+diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
+index 92c68d467c50..a2f9fda25ff3 100644
+--- a/drivers/iio/adc/ad7292.c
++++ b/drivers/iio/adc/ad7292.c
+@@ -287,10 +287,8 @@ static int ad7292_probe(struct spi_device *spi)
+=20
+ 		ret =3D devm_add_action_or_reset(&spi->dev,
+ 					       ad7292_regulator_disable, st);
+-		if (ret) {
+-			regulator_disable(st->reg);
++		if (ret)
+ 			return ret;
+-		}
+=20
+ 		ret =3D regulator_get_voltage(st->reg);
+ 		if (ret < 0)
+--=20
+2.37.1
 
-...
 
-> +static const struct iio_decimal_fract msa311_odr_table[] = {
-> +       {1, 0}, {1, 950000}, {3, 900000}, {7, 810000}, {15, 630000},
-> +       {31, 250000}, {62, 500000}, {125, 0}, {250, 0}, {500, 0}, {1000, 0}
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-Ditto.
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
 
-> +};
+--j8siMrN4F96COOfa
+Content-Type: application/pgp-signature; name="signature.asc"
 
-...
+-----BEGIN PGP SIGNATURE-----
 
-> +struct msa311_priv {
-> +       struct regmap *regs;
-> +       struct regmap_field *fields[F_MAX_FIELDS];
-> +
-> +       struct device *dev;
-> +       struct mutex lock;
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmL/Tu8ACgkQeFA3/03a
+ocUO4gf/azvFounl1vyk3T14IF7Feghc/XD57U3YdHlt7xSuxeimG0glII68S28H
+x59nP9Vrzr3xMTnAVIxqGLBDDvm1Gt8fCR/3w7fxQzxIZ5jq4XSi4FtBmSsdyev3
+kYFgtaK9tO+awvdBry7Kh9o7cCf5IQ+hdku+H7ADInC/jAOXquD7aUHUBOnaLirR
+/PS9zV3lIdKKkEPUh3sIcnMkODsKRjwPyWLRkNDDo5kinCbmSG5n0qt34aLyKBAR
+bmy7POEi7RMM7LBPmODHc85BFCD0UEEIp3tAdcOozzKp8HpuFyn9ilP8FSW7jo+K
+76lm1/T0VOVZ4z35+1M8ipEnXJB1hg==
+=wdVz
+-----END PGP SIGNATURE-----
 
-> +       char chip_name[10];
-
-Why limit it to 10? You may use devm_kasprintf()
-
-> +       struct iio_trigger *new_data_trig;
-> +       struct regulator *vdd;
-> +};
-
-...
-
-> +static inline int msa311_set_odr(struct msa311_priv *msa311, unsigned int odr)
-
-Why inline?
-
-> +{
-> +       struct device *dev = msa311->dev;
-> +       unsigned int pwr_mode;
-
-> +       bool good_odr = false;
-
-Can it be split to see the assignments together below?
-
-> +       int err;
-> +
-> +       err = regmap_field_read(msa311->fields[F_PWR_MODE], &pwr_mode);
-> +       if (err)
-> +               return err;
-> +
-> +       /* Filter bad ODR values */
-> +       if (pwr_mode == MSA311_PWR_MODE_NORMAL)
-> +               good_odr = (odr > MSA311_ODR_1_95_HZ);
-
-else
-  good_odr = false;
-
-> +       if (!good_odr) {
-> +               dev_err(dev,
-> +                       "can't set odr %u.%06uHz, not available in %s mode\n",
-> +                       msa311_odr_table[odr].integral,
-> +                       msa311_odr_table[odr].microfract,
-> +                       msa311_pwr_modes[pwr_mode]);
-> +               return -EINVAL;
-> +       }
-> +
-> +       return regmap_field_write(msa311->fields[F_ODR], odr);
-> +}
-
-...
-
-> +       if (wait_ms < unintr_thresh_ms)
-> +               usleep_range(wait_ms * USEC_PER_MSEC,
-> +                            unintr_thresh_ms * USEC_PER_MSEC);
-> +       else
-> +               return msleep_interruptible(wait_ms) ? -EINTR : 0;
-
-Can be refactored to simple
-
-else if (msleep...)
-  return -EINTR;
-
-Same amount of LoCs, but more readable.
-
-> +       return 0;
-
-...
-
-> +err:
-
-We usually name labels after what they are doing, I don't see any
-error here, but notify done. Hence,
-
-out_notify_done:
-
-> +       iio_trigger_notify_done(indio_dev->trig);
-> +
-> +       return IRQ_HANDLED;
-
-...
-
-> +       used = scnprintf(msa311->chip_name, sizeof(msa311->chip_name),
-> +                        "msa311-%hhx", partid);
-
-How 'used' is being used?
-
-> +       return 0;
-> +}
-
-...
-
-> +       const char zero_bulk[2] = {0};
-
-0 is not needed, '{ }' will work.
-
-...
-
-> +       /*
-> +        * Register powerdown deferred callback which suspends the chip
-> +        * after module unloaded.
-> +        *
-> +        * MSA311 should be in SUSPEND mode in the two cases:
-> +        * 1) When driver is loaded, but we do not have any data or
-> +        *    configuration requests to it (we are solving it using
-> +        *    autosuspend feature).
-> +        * 2) When driver is unloaded and device is not used (devm action is
-> +        *    used in this case).
-> +        */
-
-...
-
-> +static struct i2c_driver msa311_driver = {
-> +       .driver = {
-> +               .name = "msa311",
-
-> +               .owner = THIS_MODULE,
-
-Redundant.
-
-> +               .of_match_table = msa311_of_match,
-> +               .pm = pm_ptr(&msa311_pm_ops),
-> +       },
-> +       .probe_new      = msa311_probe,
-> +       .id_table       = msa311_i2c_id,
-> +};
-
--- 
-With Best Regards,
-Andy Shevchenko
+--j8siMrN4F96COOfa--

@@ -2,47 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C4A59A415
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9382E59A4C1
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 20:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354679AbiHSRnK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 13:43:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47762 "EHLO
+        id S1354644AbiHSRo0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 13:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354697AbiHSRml (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 13:42:41 -0400
+        with ESMTP id S1354713AbiHSRn6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 13:43:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99891133A4C;
-        Fri, 19 Aug 2022 10:01:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4ABCE0;
+        Fri, 19 Aug 2022 10:05:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0882F617C7;
-        Fri, 19 Aug 2022 17:01:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D991C433B5;
-        Fri, 19 Aug 2022 17:01:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEFD2617D0;
+        Fri, 19 Aug 2022 17:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0424C433D6;
+        Fri, 19 Aug 2022 17:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660928509;
-        bh=O5aPB64MRuuVf6y9WVzczPShckhm/cZfEc0YAuq8dDs=;
+        s=k20201202; t=1660928724;
+        bh=QqRwdsza8GJAfdhc+fC/YMNne+B8UrtzLFfv6moaMWI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JV4dbJxPPXjyoF+4bqMneL9I1M423zOu4WvyE3jhYcifaOCedSxsBTgyaTYgTOxjy
-         3SPO5kfdFp6nMRtSPppgzAUvUJ807J8Hd8GO3T0u4QBEpJ2fL0GiW2h442+ehtoufK
-         zp0wbi1+nfE5DmpGF7hIoF1XcvWBQK8FD2Ss2hSIZn7ot4fhNXqggtZ9BF+D+2UBFI
-         RI06wl/iOljj/B6v5ds8pmXnbi4ke9l8hs51DlSisnxSFnCVZHSDS6ua0UTJeGQKpg
-         Q7k9Vw8gtZ0XpH/RSt3lX14bwY5NCTXyF3m1z0krwx7ps2bbLwCiYxvS1bbPKDAUyS
-         WZfZEtEaet5QA==
-Date:   Fri, 19 Aug 2022 18:12:25 +0100
+        b=F/Q8Qz2l7l623HUNNDi1K2lGey3wYZFZ/y8mlbz9Zdrju9l9NrtH9Zxgl/I/FHtuz
+         0WnZLeTQH11HWANEtMrEKO1+99XwEfcyeEg8YDifsXV1RRLyAp+PCdggDvyLvGpu4X
+         /vrP13c9oqt1ysvQvDn6h2ciSSvGBFZ/eKqZPVYZYp9JtriTeWZRrOccIicLUFBhvZ
+         ydQ8zfjl3jNyA9xWRggkaYGFf7jte9dRgs+gjqR5ELYKTWo+2/xjyJIP5HKA05YlWV
+         IfcdbNxaxgjyVSg189cd1e/0N4Fr8GRSU0hQ85OqivHPbzRB+nV9Ndxt37+OJTZ7qY
+         eBpqwHYKSftjw==
+Date:   Fri, 19 Aug 2022 18:16:00 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+To:     Joe Perches <joe@perches.com>
+Cc:     Joe Simmons-Talbott <joetalbott@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: ad7292: Prevent regulator double disable
-Message-ID: <20220819181225.3f6851d1@jic23-huawei>
-In-Reply-To: <Yv9O+9sxU7gAv3vM@fedora>
-References: <Yv9O+9sxU7gAv3vM@fedora>
+Subject: Re: [PATCH] iio: Avoid multiple line dereference for mask
+Message-ID: <20220819181600.638b82e9@jic23-huawei>
+In-Reply-To: <72bbd0126162b7f78291d3431d2a8c6730cc4ce7.camel@perches.com>
+References: <20220818125844.60762-1-joetalbott@gmail.com>
+        <72bbd0126162b7f78291d3431d2a8c6730cc4ce7.camel@perches.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,49 +56,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Aug 2022 11:51:07 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Thu, 18 Aug 2022 20:08:27 -0400
+Joe Perches <joe@perches.com> wrote:
 
-> The ad7292 tries to add an devm_action for disabling a regulator at
-> device detach using devm_add_action_or_reset(). The
-> devm_add_action_or_reset() does call the release function should adding
-> action fail. The driver inspects the value returned by
-> devm_add_action_or_reset() and manually calls regulator_disable() if
-> adding the action has failed. This leads to double disable and messes
-> the enable count for regulator.
+> On Thu, 2022-08-18 at 08:58 -0400, Joe Simmons-Talbott wrote:
+> > Add a mask variable to hold dereferences that span multiple lines.
+> > Found with checkpatch.pl.  
+> []
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c  
+> []
+> > @@ -1301,10 +1302,9 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+> >  		return ret;
+> >  	attrcount += ret;
+> >  
+> > +	mask = &chan->info_mask_separate_available;
+> >  	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
+> > -						  IIO_SEPARATE,
+> > -						  &chan->
+> > -						  info_mask_separate_available);
+> > +						  IIO_SEPARATE, mask);  
 > 
-> Do not manually call disable if devm_add_action_or_reset() fails.
+> The issue is the conflict between using 30+ character identifiers and 80 column lines.
+> Perhaps it's better just to use a longer line instead of a temporary.
 > 
-> Fixes: 506d2e317a0a ("iio: adc: Add driver support for AD7292")
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-Good spot. Applied to the fixes-togreg branch of iio.git
-and marked for stable.
+> 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan, IIO_SEPARATE,
+> 						  &chan->info_mask_separate_available);
 
-Jonathan
+Agreed. Looks nicer to me this way and still under the wider 100 char limit
+which is appropriate when readability is improved.
 
-> ---
+Some unfortunately long identifiers, that I think got there via evolution.
+We should consider shortening them that's a job for a separate patch.
+
+
+> []
 > 
-> The bug was found during browsing the code. I don't have the hardware to
-> test this so reviewing and testing is highly appreciated.
-> ---
->  drivers/iio/adc/ad7292.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
+> > @@ -1316,10 +1316,9 @@ static int iio_device_add_channel_sysfs(struct iio_dev *indio_dev,
+> >  		return ret;
+> >  	attrcount += ret;
+> >  
+> > +	mask = &chan->info_mask_shared_by_type_available;
+> >  	ret = iio_device_add_info_mask_type_avail(indio_dev, chan,
+> > -						  IIO_SHARED_BY_TYPE,
+> > -						  &chan->
+> > -						  info_mask_shared_by_type_available);
+> > +						  IIO_SHARED_BY_TYPE, mask);  
 > 
-> diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
-> index 92c68d467c50..a2f9fda25ff3 100644
-> --- a/drivers/iio/adc/ad7292.c
-> +++ b/drivers/iio/adc/ad7292.c
-> @@ -287,10 +287,8 @@ static int ad7292_probe(struct spi_device *spi)
->  
->  		ret = devm_add_action_or_reset(&spi->dev,
->  					       ad7292_regulator_disable, st);
-> -		if (ret) {
-> -			regulator_disable(st->reg);
-> +		if (ret)
->  			return ret;
-> -		}
->  
->  		ret = regulator_get_voltage(st->reg);
->  		if (ret < 0)
+> 	ret = iio_device_add_info_mask_type_avail(indio_dev, chan, IIO_SHARED_BY_TYPE,
+> 						  &chan->info_mask_shared_by_type_available);
+> 
+> etc...
+> 
+> 
 

@@ -2,95 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 953565999E9
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A130599A09
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 12:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348315AbiHSKgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 06:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55512 "EHLO
+        id S1347535AbiHSKhg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 06:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348128AbiHSKgK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:36:10 -0400
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621AEF2428;
-        Fri, 19 Aug 2022 03:36:08 -0700 (PDT)
-Received: (Authenticated sender: contact@artur-rojek.eu)
-        by mail.gandi.net (Postfix) with ESMTPA id 169CA4000C;
-        Fri, 19 Aug 2022 10:36:05 +0000 (UTC)
+        with ESMTP id S1348258AbiHSKhg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 06:37:36 -0400
+Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2822FE8320;
+        Fri, 19 Aug 2022 03:37:35 -0700 (PDT)
+Received: by mail-qv1-xf2f.google.com with SMTP id d1so3083145qvs.0;
+        Fri, 19 Aug 2022 03:37:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=lokJF4O6M03HHXPKpndOhYyclhs0ThFtf9qgupdJTnM=;
+        b=aZ2WH8DU2MA3OKLch6q/LsNYENx2QyqJfchwoSdSgbsMeDVL7bcXtvgC1uHp1BDs5j
+         G4dA4QScIyV/GEsD8TKcw3FMn3fdh8kf2YOKukLkQ1ZA0Rv4v3A6+Qi6XuHPNTluTq6N
+         u3bfmFBvEI1cbYKkW3Te8TCVGnNswIfV6tGKXIMIZj68DFpkvNnn6XvhjdwKvOesNa4g
+         DeS8ysxrZrSh+fiVCYb2pIWJddDWQK6B7bWDV9WJuhdOSHoZiXj6kgFIuqWEP05m1gAM
+         VZWrage/W1CoAyLdHw/fHi9vCOoPmOOi14hJQnT6tWQwTLGtoETq8onfsGy9oBnSYmfS
+         0iDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=lokJF4O6M03HHXPKpndOhYyclhs0ThFtf9qgupdJTnM=;
+        b=ChwcIYBgSYp/bL98ppFxrY8Yxmveu9MM1NMVB+RSWGiiSsv2iFMtcOb4O1LrRafOLI
+         a5XOi7zhJwgeE0X5z7+9ImEQA400O/a+8KpyY1ecx2RSsyZ/X3ZuGY8luyaYmk3ffdGC
+         H+K4+7nOucNDHpN+cHLj0OIpFcX1UXoR9SURktT78KQI1HbZi01nTbIQ+FbN7q+gYTWS
+         qU8nnSdzvBEEtfU9USzs1ZPoj2G70yHCuK5G0aiGIB7ZPTEomaPjvClqQQNK/jkhAww1
+         nbwk6VKg0thziVdoCPDsxlnwM/kql4HRBzqR8/+xvhWbGyISC3NlX9Y5bLGxYNadGr7X
+         eHIg==
+X-Gm-Message-State: ACgBeo31/hP4XoKWErdhBp1RkGoMuIruXYJ4nvNuwAsrlRBX8FogH5XT
+        tmxpI0eUEy2fHuEuK1B9inNmwpIRFkhYnMhSc7tvUwvt02QG1w==
+X-Google-Smtp-Source: AA6agR4e5cQaLdtNZcSqXXklHF5BWT0t12YU2fgBHGVeu1sDrzF+xh0mvpskwIYrouMRO4AkUQyDlmt9G2EgVP0PH5w=
+X-Received: by 2002:a05:6214:202d:b0:496:cb8d:538f with SMTP id
+ 13-20020a056214202d00b00496cb8d538fmr48517qvf.97.1660905454209; Fri, 19 Aug
+ 2022 03:37:34 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 19 Aug 2022 12:36:05 +0200
-From:   Artur Rojek <contact@artur-rojek.eu>
-To:     Chris Morgan <macromorgan@hotmail.com>
+References: <20220817105643.95710-1-contact@artur-rojek.eu>
+ <20220817105643.95710-4-contact@artur-rojek.eu> <CAHp75VeierGKV7BqF+y-vxramA4nk24LOSPRxgmjots_amkg-w@mail.gmail.com>
+ <a9b3f2b469e26d13f1c37a6f10373e24@artur-rojek.eu>
+In-Reply-To: <a9b3f2b469e26d13f1c37a6f10373e24@artur-rojek.eu>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 19 Aug 2022 13:36:58 +0300
+Message-ID: <CAHp75VcT3ZbMyeSS6cvV5NY2YYWvDVw-MNwFEDy-S=_6sdbswA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] iio: add helper function for reading channel offset
+ in buffer
+To:     Artur Rojek <contact@artur-rojek.eu>
 Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mips@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH 0/4] iio/adc-joystick: buffer data parsing fixes
-In-Reply-To: <SN6PR06MB534245440C9A0EA1E0C11B12A56D9@SN6PR06MB5342.namprd06.prod.outlook.com>
-References: <20220817105643.95710-1-contact@artur-rojek.eu>
- <SN6PR06MB534245440C9A0EA1E0C11B12A56D9@SN6PR06MB5342.namprd06.prod.outlook.com>
-Message-ID: <085417ff80442dd7cc74e88d35423054@artur-rojek.eu>
-X-Sender: contact@artur-rojek.eu
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        Chris Morgan <macromorgan@hotmail.com>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 2022-08-18 20:28, Chris Morgan wrote:
-> On Wed, Aug 17, 2022 at 12:56:39PM +0200, Artur Rojek wrote:
->> Hi all,
->> 
->> this patch set fixes the way channel data is being parsed in the
->> adc-joystick driver. To achieve that, it also introduces helpers in 
->> the
->> IIO subsystem. As a side effect of those changes, a bug in ingenic-adc
->> has been exposed, which this patch set promptly rectifies.
->> 
->> Tested on GCW Zero (by me) and on Anbernic RG350 (by Paul).
->> 
->> Chris:
->> As you have originally reported the issue, would you be able to test
->> the above changes on your setup (Odroid Go Advance, was it)?
-> 
-> I can confirm this fixes the issue I experienced, I can see both
-> channels of the joystick now when using an hrtimer as a trigger.
-> 
-> This patch also does not interfere with the polling work in progress,
-> as that still works as expected too (polling work is still desired
-> though).
-> 
-> Thank you.
-Perfect, thanks for testing!
+On Fri, Aug 19, 2022 at 1:33 PM Artur Rojek <contact@artur-rojek.eu> wrote:
+> On 2022-08-19 10:17, Andy Shevchenko wrote:
+> > On Wed, Aug 17, 2022 at 1:58 PM Artur Rojek <contact@artur-rojek.eu>
+> > wrote:
 
-Can I add your Tested-by for v2 of this patchset?
+...
 
-Cheers,
-Artur
-> 
->> 
->> Artur Rojek (4):
->>   iio/adc: ingenic: fix channel offsets in buffer
->>   iio: add iio_channel_cb_get_iio_buffer helper
->>   iio: add helper function for reading channel offset in buffer
->>   input: joystick: Fix buffer data parsing
->> 
->>  drivers/iio/adc/ingenic-adc.c               |  7 +++---
->>  drivers/iio/buffer/industrialio-buffer-cb.c |  7 ++++++
->>  drivers/iio/industrialio-buffer.c           | 28 
->> +++++++++++++++++++++
->>  drivers/input/joystick/adc-joystick.c       | 26 ++++++++++++-------
->>  include/linux/iio/buffer.h                  |  4 +++
->>  include/linux/iio/consumer.h                | 12 +++++++++
->>  6 files changed, 71 insertions(+), 13 deletions(-)
->> 
->> --
->> 2.37.2
->> 
+> >> +       if (chan->scan_index < 0 ||
+> >> +           !test_bit(chan->scan_index, buffer->scan_mask)) {
+> >> +               return -EINVAL;
+> >> +       }
+> >
+> > Have you run checkpatch? The {} are redundant. But personally I would
+> > split this into two separate conditionals.
+> I did run checkpatch on it - all patches were ready for submission.
+> I don't find the {} redundant for multi-line statements, like this one,
+
+This is a one-line conditional. So, *unlike* this one.
+
+> and I personally prefer to check conditions that return the same error
+> type together.
+
+I see that the maintainer's input is needed here, because even if the
+error code is the same, the semantics are different and I consider
+that to prevail on the combining.
+
+-- 
+With Best Regards,
+Andy Shevchenko

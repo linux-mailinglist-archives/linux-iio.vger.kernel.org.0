@@ -2,64 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F2359987B
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 11:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28A305998DD
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 11:47:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348031AbiHSJOS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 05:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
+        id S1347928AbiHSJiC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 05:38:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348015AbiHSJOR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 05:14:17 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 476A43DBE6;
-        Fri, 19 Aug 2022 02:14:10 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id y18so2898617qtv.5;
-        Fri, 19 Aug 2022 02:14:10 -0700 (PDT)
+        with ESMTP id S1347163AbiHSJiB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 05:38:01 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563ADF2CAA;
+        Fri, 19 Aug 2022 02:38:00 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id j17so2912840qtp.12;
+        Fri, 19 Aug 2022 02:38:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=VKM8TcTJgGWEjr2El3gvJFe6zfmgEmlCrlb69frx1uI=;
-        b=isbPdSYqfliPlROpQuyUVQJ5e+6RWIqhR+PiC4x/6zDfdZNNVhX10kQ5f8fEhG/UUo
-         vB7d6vO002zZ7efDLx1mef8eT7/vQMvQI2boxdN9lqCQ5fQ585JPzJ2UFelZpJAmXJAs
-         fF35HtNq6uB+nay819J2UJWSmatnjH+boUkR8pl2tH6n9v+D4D9PetdP8RPBVrYKDEuY
-         xOEsek496Ri+Ahy3vEpxQg4MT2kDphNXink1qPNesBibDRpL1x5cXXexUozp/PoKgOtZ
-         uxgkhlF0m58y+9b44AvTExF3axrvCZmRHj94U4aT/gIHbB+V5nEN80pDFNJLofx9JevG
-         kiFg==
+        bh=2ZvHFToN8Dd1qgj57u+OE1lMQuyHL7jpimxd9I1F2Ww=;
+        b=JK187mUaQ2BGEhTlqcpxOSbM6UCjwFZ8WKw/e9kJ5lW8ox40U3ef3Fz8GXnk2lZaIZ
+         C4MlYA+y2wGH1whdds1cwnCYY8YOJH/aUmUM86vTL/yIrXLggSN7/hDTdTVHyxDAvWPd
+         ffhyzhHhCkTMfbUsJ0WagkRSneTYSxnU07Ru0vHxi6QVHcITYiKK3ourSloXgy31nUYl
+         fdQANwxAy3JNU/tEI6YIpuEKPg3eHqsWkpfxBTrqjMqXEbiVAPL519xLoA0D+QZGKjkN
+         jwHID+9pMayPzJV5QuBDl5AU3Fn0JPKZhzvuo7hXOny3KAumQLsR2qY7Tud+ZvNXvHJA
+         j9+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=VKM8TcTJgGWEjr2El3gvJFe6zfmgEmlCrlb69frx1uI=;
-        b=y+GY3iFDNTwMSbjwtSBQ1kIs8xk+IB8SnARar3JcFyGQCs9tKMyNM9bwVsbWcGX47c
-         DpLgG2mJ7mHvpJpqOXrnk2f2uh1/U1Zkm0tx9cSpwZRz9juujfaMCm7Yei2gngNZapH0
-         qD1ASGWTfG26BLyv+qec5Gw0XdH0RM1hfSrKaA1BbW3aKi3nQuko9ZSETFKBuRiUkUwI
-         3CwqlQ5roSIS4CfbBCG/90oogMVsoh6EyKu0Kmej799F9lJOihiOtiaQB9fsB3SIwBgW
-         0+ZaXzR4nBXi1rtS3UZniG6eUjWi9eq1lRPypILkLkxM8KlK6xxVPyWlsFYNSiLR0OLy
-         jZsw==
-X-Gm-Message-State: ACgBeo2QmrdRN/w5zMPSjXUcy3TUNy5C6bAUyKpzOBceh3rrMkdKts2b
-        UZMyLXh/eZ4N1s5snCMCbSU6fyymt1K0mva2brI=
-X-Google-Smtp-Source: AA6agR5Ihu8MycYundNRVHx2wexqtqdkevIKQSdCM+iIfxrz6lmiGwSQWVsh7JjQjEOT5OX3KL1k2FPHLVxdE7b6bz4=
+        bh=2ZvHFToN8Dd1qgj57u+OE1lMQuyHL7jpimxd9I1F2Ww=;
+        b=4kBWnJshfvJDlBP/ECtdZn+pdOAillV/IHHzol9WrJ8bbSggVX4neuzDsnmOc4FpTs
+         TTonAwzHagpTAf8WYfhyAB9FSJBKqMCrXNRBmXkdX6P+7IyOAV2D0o+tFInfJieOCaT/
+         wmBHLLeV5ENGgc7O+NTyvQvgGugq66+W4VR86T4AGk9/JBXFcmeMR0S19oULnH4DA7if
+         z++oPr0uFB6TWecwCJAwughEw07b77/ChPiPSnC553cH27SGGn6wJTSHLFaAUHyJ8Ksl
+         QC1/sNlA0OgdOjmDVmtJYkjWlqD6JVE36H88afXGyc0URVWmQpxeFUdsZkGU67xV/ovW
+         QTyw==
+X-Gm-Message-State: ACgBeo08MOkmS0Jcfaj/h8w4cvcJGmAKUENARalkjeLChNU7FkJ/mpMI
+        A/+Ps7fBP9IfFjMoRh5ZG/EFLSesjkuz7oKmHMbLURFkBpc=
+X-Google-Smtp-Source: AA6agR7o1puuoJSfrHhFyu86GOzh4LBgcVvXJuyhExfJe6WX0eF5AI/OommjDEYzFIn+bp84nDd7DisnZdiIAkzB2Pk=
 X-Received: by 2002:a05:622a:491:b0:344:95bf:8f05 with SMTP id
- p17-20020a05622a049100b0034495bf8f05mr4237877qtx.61.1660900449375; Fri, 19
- Aug 2022 02:14:09 -0700 (PDT)
+ p17-20020a05622a049100b0034495bf8f05mr4284991qtx.61.1660901879325; Fri, 19
+ Aug 2022 02:37:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220813071803.4692-1-jagathjog1996@gmail.com>
- <20220813071803.4692-2-jagathjog1996@gmail.com> <20220814180451.44a27126@jic23-huawei>
- <CAM+2EuJu3g98NOt2tOxPzWnGO3kvFNkruuAeZBd-=VxYvw7x9Q@mail.gmail.com>
-In-Reply-To: <CAM+2EuJu3g98NOt2tOxPzWnGO3kvFNkruuAeZBd-=VxYvw7x9Q@mail.gmail.com>
+References: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
+In-Reply-To: <6e908cc827c70b95dae683717592aff0b003e7c9.1660606478.git.ang.iglesiasg@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 12:13:33 +0300
-Message-ID: <CAHp75VcUb71tGKN8Pg0wy0+7739LzJKvUiN+rMCkQhMKJDpEMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: Add new event type gesture and use direction
- for single and double tap
-To:     Jagath Jog J <jagathjog1996@gmail.com>,
-        Joe Perches <joe@perches.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+Date:   Fri, 19 Aug 2022 12:37:23 +0300
+Message-ID: <CAHp75VdTZ_JYB2aYVdQTOx9QW1HPKhwYyQH-0tVCtpjHV=VcaQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: pressure: bmp280: fix datasheet links
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -72,14 +70,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 15, 2022 at 9:33 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> On Sun, Aug 14, 2022 at 10:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Tue, Aug 16, 2022 at 2:39 AM Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+>
+> Updated links for BMP280 and BME280 datasheets on Bosch website.
 
-> Sure, I will leave KernelVersion blank in the next series.
+> Datasheet of BMP180 is no longer available on the manufacturer's website,
+> changed the link to a copy hosted by a third party.
 
-You may use 6.1, that way we don't forget about it.
+Note, that the version is downgraded (from 12.1 to 9).
 
-I'm wondering if checkpatch or other tools can validate the ABI descriptions.
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index fe7aa81e7cc9..e98b024d510b 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -9,9 +9,9 @@
+>   * Driver for Bosch Sensortec BMP180 and BMP280 digital pressure sensor.
+>   *
+>   * Datasheet:
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP180-DS000-121.pdf
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP280-DS001-12.pdf
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280_DS001-11.pdf
+> + * https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
+> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
+> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
+>   */
+>
+>  #define pr_fmt(fmt) "bmp280: " fmt
+>
+> base-commit: b82217e73b5aa6db8453ad91b929ca2366e47184
+> --
+> 2.37.2
+>
+
 
 -- 
 With Best Regards,

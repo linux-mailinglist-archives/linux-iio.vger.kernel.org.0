@@ -2,60 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 259A55996F9
+	by mail.lfdr.de (Postfix) with ESMTP id 9B64F5996FA
 	for <lists+linux-iio@lfdr.de>; Fri, 19 Aug 2022 10:18:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347435AbiHSIIi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 19 Aug 2022 04:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37814 "EHLO
+        id S1347480AbiHSINR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 19 Aug 2022 04:13:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347437AbiHSIIf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:08:35 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E3B1F2E0;
-        Fri, 19 Aug 2022 01:08:34 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id y18so2821812qtv.5;
-        Fri, 19 Aug 2022 01:08:34 -0700 (PDT)
+        with ESMTP id S1345238AbiHSINQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 19 Aug 2022 04:13:16 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB7F109F;
+        Fri, 19 Aug 2022 01:13:15 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id de16so515099qvb.12;
+        Fri, 19 Aug 2022 01:13:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=Phy2kavk45HzuAR99SKpcbN4U9hypiQhPKgRRZqp7Do=;
-        b=ma8LA8qwXOWommtex1+VBB+xZNgJWmJWlNxr/798VJgFGYGZIimCjRxTJpEoD7rVM3
-         XLvpuvV9PyFIPH9ls48Ri8w1fIkikoWWxR9A+ODnu/mSWdgegrS5bP0J+lsGRwzSKAQv
-         QRGT115Z9Lqi48WO0ZSKoEEyLcrx1rMszzhwIUqi2uioKo6GV5udra2zt6Z5Ss10m94K
-         eZCOgx3iBIZq5/Ajm42XaozhtuqkOFIIMWPcxtmVJ3gysQqksOPU+QTe90DKrz5cJIFy
-         pRtTJ+bzwSgGb9vKm9uZIY0aLm5fge91t9Uxt5R/lXLYIRh3p5xAXQMZfutsZQ+Q/U+m
-         EAqg==
+        bh=8xRjWWqTqJR71ec9sr3LoeTgstJo+nK7ZM6OvQ/WbBc=;
+        b=DVv0rr+qy4mLu7yexcLS+HJNtsHJ5+uslwUhZzVTnQQFiAKL9OM3zDTELcxcOToPeK
+         JrX1c8AJSS+/htimLfCCSJSdlCqa6weM2cWriohpw+0gwek/ZFhlCR4sgCSAbG8hEsNn
+         5PQDvRHxPIqwQcUZxQlAV6MBazpbb4KGkoyuw5F56e5mTrFFEqtZqDEyoCwjY632jo1x
+         o35r1L530rnrkj8B/g/iS1LGckhsUZ+/disp4ieZ+YNapGpgXWMWP922BEzAO0FLg3DH
+         boKUdURD6zToLF/Ax/xHu3uwIe/biNd/GfXXNztp2t0/okr9wObJYoZR23HX2TPmkJF1
+         VnmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=Phy2kavk45HzuAR99SKpcbN4U9hypiQhPKgRRZqp7Do=;
-        b=DucFF0IyVn+l/g8wcn7BRaBqLoLzzHmSCX8EEdp8B7qofPASl1dhmFzN7wbML+zhUF
-         Mf6U1e+ziTVe3mWB03BKTbzEjQzOcgTwlaIeqsS/oGdRmXrKbXDQHpzcAMkVVY8r5slB
-         58n6jBptCIS6ql3k+ngvQ/WfTEhGsdPx8vylE83kf4dvKhra6qOer42pOuV4adV/VGdv
-         j9LXWe2/ja+fY9Xr5GYEbZXUrotHSRSZIqvqBXYEyjE/RFvAfxO1+EZKt2f1YhWgLrvF
-         wHPKLq3LPGG5GD+knG03h7loQ3Ebey6stWGBMEcmIFKFoEsemAUlVyKMSBWBInYNTFKx
-         hJuA==
-X-Gm-Message-State: ACgBeo1ta8OMmBXdAW2E9+lj9tlt2Rx5Q+bbq+72V9vdZP1ZjnpmSf0M
-        EkgJ9w2KVevoWRkAssLu8q4/sWsKGaLAnw8WiF8=
-X-Google-Smtp-Source: AA6agR4E11iRlTvq05swpUjD9iCFubVB68ZvURZJmtFuncbDZmR1eGMlJgTJbnoCJnuysTcMmt6mQEP5L2GYSE2eB38=
-X-Received: by 2002:ac8:5786:0:b0:343:3051:170d with SMTP id
- v6-20020ac85786000000b003433051170dmr5493279qta.429.1660896513674; Fri, 19
- Aug 2022 01:08:33 -0700 (PDT)
+        bh=8xRjWWqTqJR71ec9sr3LoeTgstJo+nK7ZM6OvQ/WbBc=;
+        b=erDCfnfy+PPohWSlm7ma0QWN0oD42r89B4Qy+7k8b9l49nEGRA16RCB6JIMvITK42W
+         iHhaHnv69Or/I5oTd7jJTK72k9eylpTL8pZXulnQOBaveAqrpjEShrNWseokrnExJYwE
+         unirH73SWsLj5Z+ARHoztFjGOhJYr6iilO9AwdLe+PeLFLU9T6zL9B4JErI8kuEGII+G
+         JE1366dfeB5Ba3h1k5XjgjihAVOoR7tI6MEBz5csbXw8/UJ8/+GsTd+PSirVBtBzsuNi
+         lglFaSr99exB/OQv+mB8CQmtKCLlnxq2nueuyWPtCdclFDXIOyKbkT2Z/6GrRMn4yZot
+         C8bw==
+X-Gm-Message-State: ACgBeo3a0Wkxr/BW37BDRB7rQGbYtOUjxQClQXad5rLbwBHYj4X4IxFz
+        WG1WywVs2qZ/L+t+dB6OFjub4DrbvjL0O3uIr14=
+X-Google-Smtp-Source: AA6agR7QeiiF9Fgn1+vYz0KTXJWVLHlcW9SAYPPFMlNenPsnnpM60xdb5eSHvet6ReebGjdcFjQAiwGzbcjgWETfc2g=
+X-Received: by 2002:a05:6214:d07:b0:476:c32f:f4f4 with SMTP id
+ 7-20020a0562140d0700b00476c32ff4f4mr5460234qvh.11.1660896794198; Fri, 19 Aug
+ 2022 01:13:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220818210017.6817-1-wsa+renesas@sang-engineering.com>
-In-Reply-To: <20220818210017.6817-1-wsa+renesas@sang-engineering.com>
+References: <20220817105643.95710-1-contact@artur-rojek.eu> <20220817105643.95710-2-contact@artur-rojek.eu>
+In-Reply-To: <20220817105643.95710-2-contact@artur-rojek.eu>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 19 Aug 2022 11:07:56 +0300
-Message-ID: <CAHp75Ve+xuqRAiRO=7wQBBmjKm9P-_iEiHWt23E7c82RcFutVA@mail.gmail.com>
-Subject: Re: [PATCH] iio: move from strlcpy with unused retval to strscpy
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 19 Aug 2022 11:12:38 +0300
+Message-ID: <CAHp75Vd49aCKkK+KvmxJrW2mKk7=VgtSBCTYE9umOhZhc4Y8FA@mail.gmail.com>
+Subject: Re: [PATCH 1/4] iio/adc: ingenic: fix channel offsets in buffer
+To:     Artur Rojek <contact@artur-rojek.eu>
+Cc:     Paul Cercueil <paul@crapouillou.net>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-input <linux-input@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -67,14 +71,19 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 12:02 AM Wolfram Sang
-<wsa+renesas@sang-engineering.com> wrote:
+On Wed, Aug 17, 2022 at 1:58 PM Artur Rojek <contact@artur-rojek.eu> wrote:
 >
-> Follow the advice of the below link and prefer 'strscpy' in this
-> subsystem. Conversion is 1:1 because the return value is not used.
-> Generated by a coccinelle script.
+> Consumers expect the buffer to only contain enabled channels. While
+> preparing the buffer, the driver also (incorrectly) inserts empty data
+> for disabled channels, causing the enabled channels to appear at wrong
+> offsets. Fix that.
 
-Same comments as per similar patch you submit to PDx86.
+What consumers? Have you tested on all of them? Please, elaborate. It
+might be that some of them have to be fixed. In such case you need to
+report the issue to their respective channels and put the
+corresponding links here.
+
+P.S. It doesn't mean I'm against the patch.
 
 -- 
 With Best Regards,

@@ -2,54 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E03559AD76
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B160359AD81
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344726AbiHTLaT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 07:30:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45786 "EHLO
+        id S1344637AbiHTLcG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 07:32:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231152AbiHTLaR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:30:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474587F114
-        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 04:30:17 -0700 (PDT)
+        with ESMTP id S231152AbiHTLcF (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:32:05 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3E4A7F274
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 04:32:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7415601C6
-        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 11:30:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEEAC433C1;
-        Sat, 20 Aug 2022 11:30:14 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 22C32CE0945
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 11:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B25C433D6;
+        Sat, 20 Aug 2022 11:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660995016;
-        bh=mlfJPma2hDp7Q9I5atvaTLFriRaOKxF/lcYTSyOnwkg=;
+        s=k20201202; t=1660995121;
+        bh=x92xyb/sVL3yQBwE0vJmCTZp2Quayp28o9eTGtsJK2s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=A+IMnbk/rP6aORGAvJRAgRrdxzm+Faf2Nf6e7xV9ky8o8E7A1ugbt1HMul7QjUfHu
-         FpCiHZyx9nUUoeuYG1Zq1kiWBXm1YvY92E2hIxiipFu2vGqDy9eBUb1PUgY2tiJ8+4
-         XsXi+Sx7Y0sVDp3GAnwmXwWJoh91xAUad51wYizXll67kmioIaqm18stYLP1fygTMC
-         nzDsr9wN2QDDsyknOE3GO3hyYHgtO+GQtvyh+xkImgCmpHbooDBGFT5xjkMpf1S/KV
-         OMf8pDAk3iSI+7ZkhyZ6mjUJF9zcleR2LDi40ZHo6Nr9lP6CHReRtp6mcxHWvD+qjX
-         8tqv/ec5pHTBA==
-Date:   Sat, 20 Aug 2022 12:40:52 +0100
+        b=FYzaAgMh36cJRHQPeKTYv295Q04JBUJz0rGQSeo8HUafGM+FWjQe5JjWfx8Y2ufWw
+         eXDI2xWuoIYya64wpmUknLB1wpkal+YEljiJ3x2CJ8ijWGy63FYkxRizX9InJloCRk
+         x4dQnjVfR9LdutFVcYAcWXYv9Gh2dgw8HU6Lt4lZlBWfu1ry99DfqjmQMqBt7tP+45
+         2LzOYzyvEjBVU4WLLXkMy7G5ZEm7pY+7vBFfEtWhuyIuaFRfIPiHQBAF+IdWqq2rVV
+         zDt0Uhupz2MnCPaOMc6wLnjigscuOvnSJcYxALY79wGCK5bwXWhUnwNYKFkO2w4ua3
+         tqYLp9iS2a6HQ==
+Date:   Sat, 20 Aug 2022 12:42:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
+To:     Lars-Peter Clausen <lars@metafoo.de>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Uwe =?UTF-8?B?S2xlaW5l?= =?UTF-8?B?LUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>, Heiko Stuebner <heiko@sntech.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        David Wu <david.wu@rock-chips.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
         Paul Cercueil <paul@crapouillou.net>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Sascha Hauer <kernel@pengutronix.de>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: Re: [PATCH] iio: adc: rzg2l: Use RUNTIME_PM_OPS() instead of SET_*
-Message-ID: <20220820124052.48d6686a@jic23-huawei>
-In-Reply-To: <CAHp75VdgcJ96tg-XMHAricQc9Dti3+PKhFiOtSnCn45ehpoxJA@mail.gmail.com>
-References: <20220807190712.1039403-1-jic23@kernel.org>
-        <CAHp75VfFGUQevM3skOF_wSxSvTTUy98KCDqyOXUhBLpZ6-g4UQ@mail.gmail.com>
-        <20220813171303.7b682989@jic23-huawei>
-        <CAHp75VdgcJ96tg-XMHAricQc9Dti3+PKhFiOtSnCn45ehpoxJA@mail.gmail.com>
+        Nuno Sa <nuno.sa@analog.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Simon Xue <xxm@rock-chips.com>
+Subject: Re: [PATCH 06/13] iio: adc: rockchip_saradc: Benefit from
+ devm_clk_get_enabled() to simplify
+Message-ID: <20220820124235.223d4a7e@jic23-huawei>
+In-Reply-To: <bd8472f2-e4d0-2a63-98a5-5e1fe8ad6255@metafoo.de>
+References: <20220808204740.307667-1-u.kleine-koenig@pengutronix.de>
+        <20220808204740.307667-6-u.kleine-koenig@pengutronix.de>
+        <20220813173142.76774c97@jic23-huawei>
+        <CAHp75VeUV2+-V=TbQwx4Chr-xWU4AmRq-mG8Z8XTkwQmx4qvhQ@mail.gmail.com>
+        <20220814213058.dgoxpkoxpn6s4ojj@pengutronix.de>
+        <CAHp75VfD9xoDYyWH3NB9btNW2pBmTH_jBmwjOSUbOQ+Ei_k20w@mail.gmail.com>
+        <20220815074149.jrkeevc3uxoo6ueb@pengutronix.de>
+        <CAHp75VchZKRNtMU1awDczfx=Qq8_JsywXvLtrJJCY_8Y=n1W0g@mail.gmail.com>
+        <ec9275fd-cc9a-0f42-0595-d37fb3d568b6@metafoo.de>
+        <bd8472f2-e4d0-2a63-98a5-5e1fe8ad6255@metafoo.de>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -60,51 +77,77 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 14 Aug 2022 22:12:59 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 16 Aug 2022 10:38:41 +0200
+Lars-Peter Clausen <lars@metafoo.de> wrote:
 
-> On Sat, Aug 13, 2022 at 7:02 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Mon, 8 Aug 2022 11:34:23 +0200
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:  
-> > > On Sun, Aug 7, 2022 at 9:11 PM Jonathan Cameron <jic23@kernel.org> wrote:  
-> 
-> > > > Here we could use DEFINE_RUNTIME_DEV_PM_OPS() but that would have the
-> > > > side effect of providing suspend and resume support.  That would be
-> > > > harmless but also of little purpose as this driver does very simplistic
-> > > > power management with synchronous power up and down around individual
-> > > > channel reads.
-> > > >
-> > > > In general these new PM macros avoid the need to mark functions
-> > > > __maybe_unused, whilst still allowing the compiler to remove them
-> > > > if they are unused.  
-> > >
-> > > ...
-> > >  
-> > > >  static const struct dev_pm_ops rzg2l_adc_pm_ops = {
-> > > > -       SET_RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend,
-> > > > -                          rzg2l_adc_pm_runtime_resume,
-> > > > -                          NULL)
-> > > > +       RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend,
-> > > > +                      rzg2l_adc_pm_runtime_resume,
-> > > > +                      NULL)
-> > > >  };  
-> > >
-> > > DEFINE_RUNTIME_DEV_PM_OPS() ?
-> > >  
-> > Disagreeing with the patch description argument on why I didn't do that?
-> > The extra ops set will never have anything to do...  Mostly harmless,
-> > but kind of gives the wrong impression of what is going on in this
-> > driver.  
-> 
-> As per thread with Paul, this patch has no function change intentions,
-> but also, if tested on hardware, enabling system sleep states
-> shouldn't be harmful.
-> 
+> On 8/16/22 10:27, Lars-Peter Clausen wrote:
+> > On 8/16/22 10:20, Andy Shevchenko wrote: =20
+> >> On Mon, Aug 15, 2022 at 10:42 AM Uwe Kleine-K=C3=B6nig
+> >> <u.kleine-koenig@pengutronix.de> wrote: =20
+> >>> On Mon, Aug 15, 2022 at 10:30:45AM +0300, Andy Shevchenko wrote: =20
+> >>>> On Mon, Aug 15, 2022 at 12:31 AM Uwe Kleine-K=C3=B6nig
+> >>>> <u.kleine-koenig@pengutronix.de> wrote: =20
+> >>>>> On Sun, Aug 14, 2022 at 10:01:08PM +0300, Andy Shevchenko wrote: =20
+> >>>>>> On Sat, Aug 13, 2022 at 7:21 PM Jonathan Cameron=20
+> >>>>>> <jic23@kernel.org> wrote: =20
+> >>>>>>> On Mon,=C2=A0 8 Aug 2022 22:47:33 +0200
+> >>>>>>> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+> >>>>>>> =20
+> >>>>>>>> Make use of devm_clk_get_enabled() to replace some code that=20
+> >>>>>>>> effectively
+> >>>>>>>> open codes this new function.
+> >>>>>>>>
+> >>>>>>>> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> >>>>>>>> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutroni=
+x.de> =20
+> >>>>>>> This might have side effects as it now enables the clock before=20
+> >>>>>>> calling
+> >>>>>>> the clk_set_rate(). Also changes the clock start up ordering.=20
+> >>>>>>> Neither is that
+> >>>>>>> scary a change, but on really fussy hardware they might cause=20
+> >>>>>>> problems.
+> >>>>>>>
+> >>>>>>> Add a few rock-chips people who have sent patches in last few yea=
+rs
+> >>>>>>> to hopefully take a look or even better run a test. =20
+> >>>>>> I believe you found a bug in the patch. The possible solutions are:
+> >>>>>> - not take the patch
+> >>>>>> - disable and re-enable clock around clk_set_rate()
+> >>>>>>
+> >>>>>> IIRC clk_set_rate() will spit a WARN if clock is enabled. =20
+> >>>>> You mean in general? I think that's wrong. There might be some=20
+> >>>>> clks that
+> >>>>> do that, but I'd consider them strange. If you ask me, calling
+> >>>>> clk_set_rate() for a *disabled* clk is the strange concept ... =20
+> >>>> I think it's correct from the logic and electrical perspective. That=
+'s
+> >>>> why the preparation and enablement are separated in CCF. But please
+> >>>> double check, because I can't remember everything by heart. =20
+> >>> In my book the separation is done because "enabling" has to sleep for
+> >>> some clks (e.g. PLLs) while a sleeping clk_enable() is bad for various
+> >>> use cases and most clks don't sleep for enabling. =20
+> >> Yeah, but the idea of changing clock rate on the fly may produce
+> >> interesting side-effects on hardware level (with PLL latencies to lock
+> >> the phase and possible glitches). So, changing clock against enabled
+> >> hardware (not in reset / power off state) seems not a good idea. =20
+> >
+> > The clk_set_rate() API will internally disable the clock, if the clock=
+=20
+> > chip requires it. See `CLK_SET_RATE_GATE` flag. =20
+> Sorry, I misremembered. If `CLK_SET_RATE_GATE` is set `set_rate` will=20
+> return an error if the clock is enabled when `set_rate` is called.
 
-This one is different from that case where there might be side effects.
-Here the suspend and resume are (I think) guaranteed to have nothing
-to do in all cases - because the driver does synchronous power
-up and power down in all paths. So in all cases we are already in runtime
-suspended state on a call to suspend.
+Thanks for chasing that down.
 
-Joanthan
+In that case I definitely don't want to take this without input from those
+who can test it!
+
+Jonathan
+
+> >
+> > But I tend to agree, the better idiom is to `set_rate` we should do=20
+> > that before `enable`. This will avoid any unintentional glitches on=20
+> > the clock signal
+> > =20
+>=20
+

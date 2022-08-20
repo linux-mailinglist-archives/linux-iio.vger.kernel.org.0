@@ -2,51 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0253E59AD96
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72BED59AD9A
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345390AbiHTLkR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 07:40:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58628 "EHLO
+        id S1345152AbiHTLnC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 07:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242181AbiHTLkQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:40:16 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13B499AFD4;
-        Sat, 20 Aug 2022 04:40:16 -0700 (PDT)
+        with ESMTP id S241192AbiHTLnB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:43:01 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5268B9BB77
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 04:43:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A79ECB80B8E;
-        Sat, 20 Aug 2022 11:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC45C433D6;
-        Sat, 20 Aug 2022 11:40:11 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id B955CCE0B72
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 11:42:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C05C433D7;
+        Sat, 20 Aug 2022 11:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660995613;
-        bh=EcUHd1SWLgvec3h1hgGjlCxBv5BJzZ8+dzXEcK4LL3Q=;
+        s=k20201202; t=1660995777;
+        bh=a8BGB0Q8EMGQlKveuOf9dpCP8sH1Xf6pezz3LuK1P0A=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Fbdj2EXsY4W47DuNQ5pBrs0wkqYfIttxu8Uh4cUt34F7eEj9+JPjk1XhmIArNQW0h
-         ZEZaRC5IrMNyZuYPbb4TXco1qb4PmYHmoP92iECSX90nf7uWeMdrwJ5YLkgTwNnFHV
-         aFmUP1mdqCLvJ53HKg62tbIWBY7Reu4MhuDzrPQUnuQoGnRS6+eJRhfijafW4pRNko
-         yke3ohY7AmtQZskcC/mJqsgTjl2AQegCidWKjZBQOCtceF1LfFWigfmz/sa3ENAUVS
-         K8Iow8bv7RaBwm+gkWRKkLX83Zw5tngJx2gl/F/WZOvDAmrNZz8oXjdoz2bHMSINAm
-         Cf+46OVN2FN9g==
-Date:   Sat, 20 Aug 2022 12:50:49 +0100
+        b=Z9nAEItO+iJwoRLpS+ajVPCciRVem511ChI+kY1/fEr2rjOsUGjJukkgpDPj+vsZV
+         CXLMO8K7uZ0qzy2ilFmDtaJ3JsoyBH6sqxTHyu3V12bdubPUmtHbR8xDeEh8j2Xy9p
+         pTOA/5VuGJqTs/OS7A8OSIf/Trq9Q+nWYTaE24T3f3zaED1eRc6xTOUBr6gIYgN4CT
+         pCQRdZO4WLhKc40ihTCJ7CYMV/FwuuwBxFAp1fQQKzlCN+GnG7LTHPcGsGQ+koKujf
+         CIlS3bgqPGtc+tzHfaOfns6LU9rkmtYO2r1XtfvNTaeoSslg/oDdU5DEdsABKTa7qj
+         LwiYVezNgIGuw==
+Date:   Sat, 20 Aug 2022 12:53:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH v4 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is
- corrupt
-Message-ID: <20220820125049.4e35e721@jic23-huawei>
-In-Reply-To: <f56c7486-2b78-48ac-3c5d-c7c20d1e78f5@linux.ibm.com>
-References: <20220809211246.251006-1-eajames@linux.ibm.com>
-        <20220809211246.251006-3-eajames@linux.ibm.com>
-        <CAHp75VdbRiWxxbnW61SNdj+pC4skeRF3prXgPvKB+btjW3dLKw@mail.gmail.com>
-        <f56c7486-2b78-48ac-3c5d-c7c20d1e78f5@linux.ibm.com>
+To:     "Bolucu, Nurettin" <Nurettin.Bolucu@analog.com>
+Cc:     "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Sa, Nuno" <Nuno.Sa@analog.com>
+Subject: Re: [PATCH v3 2/2] dt-bindings: iio: adc: add adi,max11410.yaml
+Message-ID: <20220820125333.4241b5ac@jic23-huawei>
+In-Reply-To: <MN2PR03MB47518AF619C17F5FB2F32333986C9@MN2PR03MB4751.namprd03.prod.outlook.com>
+References: <20220811134243.111-1-Ibrahim.Tilki@analog.com>
+        <20220811134243.111-3-Ibrahim.Tilki@analog.com>
+        <20220814165554.4dabd716@jic23-huawei>
+        <MN2PR03MB47518AF619C17F5FB2F32333986C9@MN2PR03MB4751.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,27 +58,266 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Aug 2022 08:59:03 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
+On Fri, 19 Aug 2022 06:32:42 +0000
+"Bolucu, Nurettin" <Nurettin.Bolucu@analog.com> wrote:
 
-> On 8/12/22 17:13, Andy Shevchenko wrote:
-> > On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:  
-> >> Corruption of the MEAS_CFG register has been observed soon after
-> >> system boot. In order to recover this scenario, check MEAS_CFG if
-> >> measurement isn't ready, and if it's incorrect, reset the DPS310
-> >> and execute the startup procedure.  
-> > Looks like both patches miss the Fixes tag. Can you add them?  
+> Hello Jonathan,
+> 
+> We are using private GitHub repository and review our projects during Pull Request. We reviewed the MAX11410 Linux driver based on the general correctness, best practices, Linux coding style and IIO Driver implementation. The repository also contains test scripts that we can review the test coverage as well.
 > 
 > 
-> Well this isn't really a software fix - there's no identifiable bug in 
-> the driver. Just trying to recover the chip in this observed mystery 
-> scenario.
 
-The tag is useful as well for where to backport this to.
-Probably just tag the driver introduction.
+While nice to know, that's not much use for the upstream community who
+can't see what level of review etc is going on.
 
-Your description makes it clear we aren't finding faults in the
-driver - just that it didn't cover this undocumented case!
+So probably better to drop the Reviewed-by tags from that process
+when upstreaming.
+
+Thanks,
 
 Jonathan
+
+
+> Best Regards,
+> 
+> Nurettin Bolucu
+> Senior MTS, Software - Istanbul Software Design Center
+> Eski Buyukdere Cad. Maslak No.1 6th Floor 34485 Sariyer Istanbul TR
+> 
+> Office_____ 90 (212) 952-5168
+> Mobile____ 90 (506) 992-7486
+> Web________ analog.com
+> 
+> _ ______
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org> 
+> Sent: Sunday, August 14, 2022 18:56
+> To: Tilki, Ibrahim <Ibrahim.Tilki@analog.com>
+> Cc: linux-iio@vger.kernel.org; Sa, Nuno <Nuno.Sa@analog.com>; Bolucu, Nurettin <Nurettin.Bolucu@analog.com>
+> Subject: Re: [PATCH v3 2/2] dt-bindings: iio: adc: add adi,max11410.yaml
+> 
+> [External]
+> 
+> On Thu, 11 Aug 2022 13:42:43 +0000
+> Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
+> 
+> > Adding devicetree binding documentation for max11410 adc.
+> > 
+> > Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+> > Reviewed-by: Nurettin Bolucu <Nurettin.Bolucu@analog.com>  
+> 
+> As a general rule, prefer to see review on list.
+> Whilst Analog folk are usually good at doing reviews properly some other companies have been known to add reviewed-by tags without doing a proper job of review.  Hence we prefer to hear from the reviewer on the public list if possible, even if it's a quick note to say what sort of review they have done (general correctness / check against datasheet / detailed subsystem interaction review etc) as that reduces the focus others may put on the same areas.
+> 
+> I regularly do this wrong in Huawei code btw as we still do more review before posting than we perhaps should :)
+> 
+> A few comments inline. Biggest is the interrupts description needing to be more general to avoid us having problems if we extend it in future to cover the other possible pin.
+> 
+> > ---
+> >  .../bindings/iio/adc/adi,max11410.yaml        | 165 ++++++++++++++++++
+> >  1 file changed, 165 insertions(+)
+> >  create mode 100644 
+> > Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+> > 
+> > diff --git 
+> > a/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml 
+> > b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+> > new file mode 100644
+> > index 000000000..a782bfcaf
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+> > @@ -0,0 +1,165 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause) # Copyright 2022 
+> > +Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: 
+> > +https://urldefense.com/v3/__http://devicetree.org/schemas/iio/adc/adi
+> > +,max11410.yaml*__;Iw!!A3Ni8CS0y2Y!7sok_RjOsQmX2sw37vgNw48j1VkwrSqKY0l
+> > +gDlIAlxYUTh6-mbuZqS6ysSEQcFSTmpRIinW_-cwEpcG7BSg$
+> > +$schema: 
+> > +https://urldefense.com/v3/__http://devicetree.org/meta-schemas/core.y
+> > +aml*__;Iw!!A3Ni8CS0y2Y!7sok_RjOsQmX2sw37vgNw48j1VkwrSqKY0lgDlIAlxYUTh
+> > +6-mbuZqS6ysSEQcFSTmpRIinW_-cwEqTILbNA$
+> > +
+> > +title: Analog Devices MAX11410 ADC device driver
+> > +
+> > +maintainers:
+> > +  - Ibrahim Tilki <ibrahim.tilki@analog.com>
+> > +
+> > +description: |
+> > +  Bindings for the Analog Devices MAX11410 ADC device. Datasheet can 
+> > +be
+> > +  found here:
+> > +    https://datasheets.maximintegrated.com/en/ds/MAX11410.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,max11410
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1  
+> 
+> There are at least two possible pins, so this binding needs to take into account which one / ones are wired.  Hence you need interrupt-names and the driver needs to route things appropriately or at very least give a clear 'I don't support
+> GPIO0 usage' error message.
+> 
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0
+> > +
+> > +  avdd-supply:
+> > +    description: Necessarry avdd supply. Used as reference when no explicit reference supplied.
+> > +
+> > +  vref0p-supply:
+> > +    description: vref0p supply can be used as reference for conversion.
+> > +
+> > +  vref1p-supply:
+> > +    description: vref1p supply can be used as reference for conversion.
+> > +
+> > +  vref2p-supply:
+> > +    description: vref2p supply can be used as reference for conversion.
+> > +
+> > +  vref0n-supply:
+> > +    description: vref0n supply can be used as reference for conversion.
+> > +
+> > +  vref1n-supply:
+> > +    description: vref1n supply can be used as reference for conversion.
+> > +
+> > +  vref2n-supply:
+> > +    description: vref2n supply can be used as reference for conversion.
+> > +
+> > +  spi-max-frequency:
+> > +    maximum: 8000000
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - avdd-supply
+> > +
+> > +patternProperties:
+> > +  "^channel(@[0-9a-f]+)?$":
+> > +    $ref: "adc.yaml"
+> > +    type: object
+> > +    description: Represents the external channels which are connected to the ADC.
+> > +
+> > +    properties:
+> > +      reg:
+> > +        description: The channel number in single-ended mode.
+> > +        minimum: 0
+> > +        maximum: 10  
+> 
+> the @ address seems to allow more than 0 to 10. Perhaps need to bring those inline and make them both hex?  Curious. What's the 11th channel if max isn't 9?
+> 
+> > +
+> > +      adi,reference:
+> > +        description: |
+> > +          Select the reference source to use when converting on
+> > +          the specific channel. Valid values are:
+> > +          0: VREF0P/VREF0N
+> > +          1: VREF1P/VREF1N
+> > +          2: VREF2P/VREF2N
+> > +          3: AVDD/AGND
+> > +          4: VREF0P/AGND
+> > +          5: VREF1P/AGND
+> > +          6: VREF2P/AGND
+> > +          If this field is left empty, AVDD/AGND is selected.
+> > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > +        enum: [0, 1, 2, 3, 4, 5, 6]
+> > +        default: 3
+> > +
+> > +      adi,input-mode:
+> > +        description: |
+> > +          Select signal path of input channels. When PGA path is selected,
+> > +          hardwaregain property is enabled for channel. Valid values are:  
+> 
+> A binding should not mention details of what the linux driver is doing, so drop that bit about hardwaregain.  Whilst bindings exist in the Linux tree they are used by various other bits of software.
+> 
+> > +          0: Buffered, low-power, unity-gain path (default)
+> > +          1: Bypass path
+> > +          2: PGA path
+> > +        $ref: /schemas/types.yaml#/definitions/uint32
+> > +        enum: [0, 1, 2]
+> > +        default: 0
+> > +
+> > +      diff-channels: true
+> > +
+> > +      bipolar: true
+> > +
+> > +      settling-time-us: true
+> > +
+> > +      adi,buffered-vrefp:
+> > +        description: Enable buffered mode for positive reference.
+> > +        type: boolean
+> > +
+> > +      adi,buffered-vrefn:
+> > +        description: Enable buffered mode for negative reference.
+> > +        type: boolean
+> > +
+> > +    required:
+> > +      - reg
+> > +
+> > +    additionalProperties: false
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    spi {
+> > +      #address-cells = <1>;
+> > +      #size-cells = <0>;
+> > +
+> > +      adc@0 {
+> > +        compatible = "adi,max11410";
+> > +        reg = <0>;
+> > +        spi-max-frequency = <8000000>;
+> > +        interrupts = <25 2>;
+> > +        interrupt-parent = <&gpio>;
+> > +
+> > +        avdd-supply = <&adc_avdd>;
+> > +
+> > +        vref1p-supply = <&adc_vref1p>;
+> > +        vref1n-supply = <&adc_vref1n>;
+> > +
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        channel@0 {
+> > +          reg = <0>;
+> > +        };
+> > +
+> > +        channel@1 {
+> > +          reg = <1>;
+> > +          diff-channels = <2 3>;
+> > +          adi,reference = <1>;
+> > +          bipolar;
+> > +          settling-time-us = <100000>;
+> > +        };
+> > +
+> > +        channel@2 {
+> > +          reg = <2>;
+> > +          diff-channels = <7 9>;
+> > +          adi,reference = <5>;
+> > +          adi,input-mode = <2>;
+> > +          settling-time-us = <50000>;
+> > +        };
+> > +      };
+> > +    };  
+> 
 

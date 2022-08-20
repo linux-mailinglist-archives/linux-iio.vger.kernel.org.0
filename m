@@ -2,68 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D1259AE68
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 15:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B0159AE75
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 15:26:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347146AbiHTNMD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 09:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
+        id S1345967AbiHTNUx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 09:20:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345677AbiHTNMD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 09:12:03 -0400
-X-Greylist: delayed 510 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 20 Aug 2022 06:12:02 PDT
-Received: from st43p00im-ztbu10073601.me.com (st43p00im-ztbu10073601.me.com [17.58.63.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6858E0CA
-        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 06:12:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-        s=1a1hai; t=1661000610;
-        bh=4ht9G50SlYlr7BPTCuy+KjNotHQlLEXbSKghIYlF3TI=;
-        h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To;
-        b=gPDPYZRYsPkQEjYBIv6re2uprVKRUlm0alDQDjd+s3kxjVEqrP+xK4ebQV6DQjQ+U
-         +rrhNHvWDFoVtncMtfiYNWnVT6uHjaUvfcZvMNL0uSulJjpD81S/8vdNHY+1HIb2gX
-         UIKjJbWMNG3DyI8fHImyWGwtcYNUajU598tMbv3Qk29TTb6QHgGGPxGNWkq3QaW/8a
-         J5pPpQvbHoPDamqBMx2SVf+AHyNfbAw99LV6Q7LtBRh4UyI929IMEEaU+BBA9XR1pj
-         xl+OcBSSJILEqohP9ctElfEIcDg0Xg3Wlur83Gd3a438BQwTqRUSuPfsTvUByANG9G
-         HimYxaFIaLjAg==
-Received: from smtpclient.apple (st43p00im-dlb-asmtp-mailmevip.me.com [17.42.251.41])
-        by st43p00im-ztbu10073601.me.com (Postfix) with ESMTPSA id B9A65180519;
-        Sat, 20 Aug 2022 13:03:29 +0000 (UTC)
-Content-Type: text/plain; charset=us-ascii
+        with ESMTP id S1345255AbiHTNUv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 09:20:51 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD405FAE9;
+        Sat, 20 Aug 2022 06:20:50 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id be9so1507884lfb.12;
+        Sat, 20 Aug 2022 06:20:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc;
+        bh=Lke/73Rmp7niK35XJWyQl9ZIar7NTQjMK2P4iameEwY=;
+        b=E4jklSQ5qHbB8qMlEKLH+rUzmbn/jD1XuQr6SAGAMb6YF2waNdNYo5QlKYvXqDd4Ew
+         KxAYkKSohiNzqz887rp3yWgD3ncAREknVlVTKQMDj3rt5V9R05lU4Jm6aLbvqSYCBYTX
+         FbNykDB4bEDwunK/fYVDjI7DnzEf+Q7KaMMJsS/SkZX1AnyTlwRtqDUn1vu2rNBL2VUg
+         onchQJbdvfwXtSxhwixbELZj5WaEovSasZxk94N3zevUROM/6juja5TctlPktOskqSul
+         oKV872QGQEGVJyYIpecNYI0T5Wynxe2sgJ/dGJu6fC7NT9ihO7hKxm/2anPhNGTaUtE7
+         OxNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc;
+        bh=Lke/73Rmp7niK35XJWyQl9ZIar7NTQjMK2P4iameEwY=;
+        b=IHtYgOtxKiDGgrq3+mwHxW3ApqqQJUrvuWf1OSr03FkS1EzeW0crA4/szUbA2NfYOY
+         liGk3fJHfo1DI++jTOvwKWKWAJjPt91pdc0gHrTzDRJjbxgmVAJYrJv95aV+mMtGhLih
+         f7EFnYlbdQIm221zv+/QNA/1HelBwBOHMECIjU6SAuSa/I//zz+0Sy66frTDfm9R7M7+
+         VDx+MYp21g4Y2P16p/PN79isZOJu61q9ckbiPc3SQegpZ5OyS2hrLfmMOebGeNKCQ6y1
+         cqPPaHksZWji8Vqu2TN7kSV6n90hAendzK8pEVJdKm1P368g3k/RAoLi5uJvOiRlyjj/
+         ZArg==
+X-Gm-Message-State: ACgBeo0pqIEH77hSJK3fV0sx17f/W0Y0Ftfc6YR95VJkM6FcSLM5gr0C
+        eQdGqPS1CxgbE2ABSOTTcDc=
+X-Google-Smtp-Source: AA6agR4iz98u2SmAALSSfpkdr55/2vxSWyxpTa98t8EU+8OPSU/bYEVcE9KuYxU4CYDpvEFF1e2T4g==
+X-Received: by 2002:a05:6512:3fa2:b0:48a:16df:266f with SMTP id x34-20020a0565123fa200b0048a16df266fmr3930967lfa.414.1661001648243;
+        Sat, 20 Aug 2022 06:20:48 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id w17-20020ac25991000000b00477c0365b20sm1065753lfn.188.2022.08.20.06.20.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Aug 2022 06:20:47 -0700 (PDT)
+Message-ID: <f0776904-7eff-8bbb-0ea9-f99379c8a200@gmail.com>
+Date:   Sat, 20 Aug 2022 16:20:46 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [PATCH v3 08/14] iio: bmg160_core: Simplify using
+ devm_regulator_*get_enable()
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Xiang wangx <wangxiang@cdjrlc.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
+ <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+ <CAHp75VePr790pXZ5AiRnrPmxkOgZ3YKRTbABE6dvk+udQYrXGA@mail.gmail.com>
+ <795d16f2-4dee-7492-4a87-e928020efebe@fi.rohmeurope.com>
+ <20220820123707.7f075381@jic23-huawei>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20220820123707.7f075381@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-From:   Adrian Ignac <ignacekadi123@icloud.com>
-Mime-Version: 1.0 (1.0)
-Date:   Sat, 20 Aug 2022 14:03:19 +0100
-Subject: Re: [PATCH v8 2/5] mfd: qcom-spmi-pmic: add support for PMP8074
-Message-Id: <8BE27709-378F-4C79-9CF6-EB3500F15D79@icloud.com>
-Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
-        devicetree@vger.kernel.org, jic23@kernel.org,
-        konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
-        lars@metafoo.de, lee.jones@linaro.org, lee@kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, robh+dt@kernel.org, sboyd@kernel.org
-To:     robimarko@gmail.com
-X-Mailer: iPhone Mail (20A5339d)
-X-Proofpoint-GUID: Efyf2fbJZLWHNHabz6nDOqlVLMfpjz6w
-X-Proofpoint-ORIG-GUID: Efyf2fbJZLWHNHabz6nDOqlVLMfpjz6w
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
- =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
- =?UTF-8?Q?=5F01_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 adultscore=0 bulkscore=0
- mlxscore=0 phishscore=0 mlxlogscore=539 suspectscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2208200055
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 8/20/22 14:38, Jonathan Cameron wrote:
+> On Sat, 20 Aug 2022 06:19:00 +0000
+> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+> 
+>> Thanks for the review Andy
+>>
+>> On 8/20/22 02:30, Andy Shevchenko wrote:
+>>> On Fri, Aug 19, 2022 at 10:21 PM Matti Vaittinen
+>>> <mazziesaccount@gmail.com> wrote:
+>> >>I
+>> don't expect this to be merged before the dependency is in rc1 - so I
+>> guess I will anyways need to respin this for next cycle. I can do the
+>> styling then.
+> I was a bit surprised Mark didn't do an immutable branch for this, but
+> indeed looks like it's going to be a multiple cycle thing - so we'll
+> probably have a bunch of new cases introduced in the meantime that
+> we need to tidy up.  Ah well.
+>
 
+I guess we can ask Mark what he thinks of the immutable branch ;) I 
+admit I am not too keen on rebasing this - especially if I find the time 
+to go through more drivers.
 
-Sent from my iPhone
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
+Discuss - Estimate - Plan - Report and finally accomplish this:
+void do_work(int time) __attribute__ ((const));

@@ -2,50 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B63759AD69
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72FF959AD79
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232131AbiHTLLx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 07:11:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49716 "EHLO
+        id S231132AbiHTL1d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 07:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241900AbiHTLLw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:11:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1532082F99;
-        Sat, 20 Aug 2022 04:11:52 -0700 (PDT)
+        with ESMTP id S241503AbiHTL1c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:27:32 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58DE220C2;
+        Sat, 20 Aug 2022 04:27:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5D406112F;
-        Sat, 20 Aug 2022 11:11:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4365FC433C1;
-        Sat, 20 Aug 2022 11:11:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 65FF6B80B8E;
+        Sat, 20 Aug 2022 11:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6ABC433C1;
+        Sat, 20 Aug 2022 11:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660993911;
-        bh=y2vku3FvPEfhoYdiY4rx+MWU5/bKcGIj2zg4fjtZwDw=;
+        s=k20201202; t=1660994849;
+        bh=2x0Gsy+of145puKe++xz+vCM/2yS9d9yxU3kwmjgqz4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cfDBajFqZs2e5jtj1TVRYAWlgl/C7kQU5PFChAh8IJpnpCN/5P+F3RhJmgmkt/Mtv
-         HUkiqt0GmzzaQ8+q/5nxxKqKe13ld6PlexUmE63OLTd3mWpgljCWR/ndsk9mO0iG1i
-         8b303WgAlYaQVCDggRWNBXlHi1eHw2PkUlxLjxWBgkQVJ+Zr801w+jf8PPgJgBX7nK
-         RBgqOc0PAlJ2lWpXl/plS1imOt2ILBHDMjZ6+RWc20qXjrrN2/NL3Y0I3d2lqXGc5z
-         YQmd+ud0rxT71I+9XZUfID7uuYERty50h8+GuIMMeIK++8XL0mlGVcFo1yxZPdQHUq
-         1sD8hcWYCkmKw==
-Date:   Sat, 20 Aug 2022 12:22:26 +0100
+        b=EETcnA+jD97hRAAmnT6LpnuOKiKz0cf2ZhDX152jOU+0vhd5JKKmDBWc6rU1ohN2X
+         HTJ+dGrH/kfKv/MI3DnWCuyHfW3ewXakq+65Qzzk1dLkfG/JmzIQRNIAeY+4qmv0Xg
+         un6NwC6pu458ZeCnSat1dDLnRUy0H+aBuSusBy71bCUW9IosftGlSn/I5RXQQD/D1Q
+         hI0OAK2T3DLQ3t/335ckA5T54Z96c5yYHnvyKEu23D0A2vhd9yhbf4Wx6ET7lSEszQ
+         YoNfp51NDCuN9a9oTLkNsjCWpJMoHbxLgqsQFQYEzmI+N9UMxFl6ZLeaxAmSdmU7GJ
+         8DRlVGzwMNc5g==
+Date:   Sat, 20 Aug 2022 12:38:04 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Miaoqian Lin <linmq006@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Xiang wangx <wangxiang@cdjrlc.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        Xiang wangx <wangxiang@cdjrlc.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH v3 08/14] iio: bmg160_core: Simplify using
  devm_regulator_*get_enable()
-Message-ID: <20220820122226.7f7d1b1a@jic23-huawei>
-In-Reply-To: <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+Message-ID: <20220820123707.7f075381@jic23-huawei>
+In-Reply-To: <795d16f2-4dee-7492-4a87-e928020efebe@fi.rohmeurope.com>
 References: <cover.1660934107.git.mazziesaccount@gmail.com>
         <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+        <CAHp75VePr790pXZ5AiRnrPmxkOgZ3YKRTbABE6dvk+udQYrXGA@mail.gmail.com>
+        <795d16f2-4dee-7492-4a87-e928020efebe@fi.rohmeurope.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,80 +64,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 19 Aug 2022 22:19:31 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sat, 20 Aug 2022 06:19:00 +0000
+"Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
 
-> Use devm_regulator_bulk_get_enable() instead of open coded bulk-get,
-> bulk-enable, add-action-to-disable-at-detach - pattern.
+> Thanks for the review Andy
 > 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> On 8/20/22 02:30, Andy Shevchenko wrote:
+> > On Fri, Aug 19, 2022 at 10:21 PM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote:  
+> >>
+> >> Use devm_regulator_bulk_get_enable() instead of open coded bulk-get,
+> >> bulk-enable, add-action-to-disable-at-detach - pattern.  
+> > 
+> > ...
+> >   
+> >>   int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+> >>                        const char *name)
+> >>   {
+> >>          struct bmg160_data *data;
+> >>          struct iio_dev *indio_dev;
+> >>          int ret;
+> >> +       static const char * const regulators[] = {"vdd", "vddio"};  
+> > 
+> > Please, keep this following the "longest line first" rule. Note, in  
 > 
-> ---
-> v2 => v3
-> Split to own patch.
-> ---
->  drivers/iio/gyro/bmg160_core.c | 24 +++---------------------
->  1 file changed, 3 insertions(+), 21 deletions(-)
+> This was not following the (IMO slightly silly) rule even prior my 
+> patch. I can for sure move my line up - but that won't give you the 
+> "reverse X-mas tree".
 > 
-> diff --git a/drivers/iio/gyro/bmg160_core.c b/drivers/iio/gyro/bmg160_core.c
-> index cedd9f02ea21..baa80980c99f 100644
-> --- a/drivers/iio/gyro/bmg160_core.c
-> +++ b/drivers/iio/gyro/bmg160_core.c
-> @@ -93,7 +93,6 @@
->  
->  struct bmg160_data {
->  	struct regmap *regmap;
-> -	struct regulator_bulk_data regulators[2];
->  	struct iio_trigger *dready_trig;
->  	struct iio_trigger *motion_trig;
->  	struct iio_mount_matrix orientation;
-> @@ -1067,19 +1066,13 @@ static const char *bmg160_match_acpi_device(struct device *dev)
->  	return dev_name(dev);
->  }
->  
-> -static void bmg160_disable_regulators(void *d)
-> -{
-> -	struct bmg160_data *data = d;
-> -
-> -	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
-> -}
-> -
->  int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  		      const char *name)
->  {
->  	struct bmg160_data *data;
->  	struct iio_dev *indio_dev;
->  	int ret;
-> +	static const char * const regulators[] = {"vdd", "vddio"};
+> I don't have any real objections on changing the styling though - I 
+> don't expect this to be merged before the dependency is in rc1 - so I 
+> guess I will anyways need to respin this for next cycle. I can do the 
+> styling then.
+I was a bit surprised Mark didn't do an immutable branch for this, but
+indeed looks like it's going to be a multiple cycle thing - so we'll
+probably have a bunch of new cases introduced in the meantime that
+we need to tidy up.  Ah well.
 
-As in previous, small preference for spaces after { and before }
-
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
->  	if (!indio_dev)
-> @@ -1090,22 +1083,11 @@ int bmg160_core_probe(struct device *dev, struct regmap *regmap, int irq,
->  	data->irq = irq;
->  	data->regmap = regmap;
->  
-> -	data->regulators[0].supply = "vdd";
-> -	data->regulators[1].supply = "vddio";
-> -	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->regulators),
-> -				      data->regulators);
-> +	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulators),
-> +					     regulators);
->  	if (ret)
->  		return dev_err_probe(dev, ret, "Failed to get regulators\n");
->  
-> -	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
-> -				    data->regulators);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = devm_add_action_or_reset(dev, bmg160_disable_regulators, data);
-> -	if (ret)
-> -		return ret;
-> -
->  	ret = iio_read_mount_matrix(dev, &data->orientation);
->  	if (ret)
->  		return ret;
+> 
+> > this case you even can move it out of the function, so we will see
+> > clearly that this is (not a hidden) global variable.  
+> 
+> Here I do disagree with you. Moving the array out of the function makes 
+> it _much_ less obvious it is not used outside this function. Reason for 
+> making is "static const" is to allow the data be placed in read-only 
+> area (thanks to Guenter who originally gave me this tip).
+> 
+> > P.S. Same applies for the rest of the similar places in your series.
+> >   
+> 
+> Br,
+> 	-- Matti
+> 
 

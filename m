@@ -2,189 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 050D459ADF3
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 14:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03D1259AE68
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 15:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343915AbiHTMfn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 08:35:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39154 "EHLO
+        id S1347146AbiHTNMD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 09:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231551AbiHTMfm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 08:35:42 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010266556;
-        Sat, 20 Aug 2022 05:35:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A2115B80B84;
-        Sat, 20 Aug 2022 12:35:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEE5C433D6;
-        Sat, 20 Aug 2022 12:35:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660998938;
-        bh=/kxfrBMwBdTRgx4ygvrsbAbpeVrdQeflgTjSdQfIRnU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Blqgbvd8Vl/5zDP9nGwffUwFOQGmttjU7ueMP1QOCuCF9TzXLM2aud7hEX+d83/v8
-         bkAvHLlOZrZVXmGNrREoz/INnuWIKM0e5so3QDZ+IzmrjuaylxoUX6ZP21+ymFZ90K
-         Ys9QNHSB0xpBOsRopHY4Lu2bHTAaYikEtKqX3f7YnIKH4kwqH1AjYYL5zueuhDJLyM
-         2MmpH/fMc0hKFOKkjVPh5Z/o4KYtZRTlmIRbPLLWqlF6eGPsF5nwnbuuPwnpmBnukN
-         BE+yk6LOT7/wPsAwSBt/LIt42KskoW9cD/4HQQ019wOAajzwBt1hsv28LSWCOAieiP
-         1QZHfhyt3PSbw==
-Date:   Sat, 20 Aug 2022 13:46:14 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jagath Jog J <jagathjog1996@gmail.com>
-Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] iio: Add new event type gesture and use
- direction for single and double tap
-Message-ID: <20220820134614.4a41df2f@jic23-huawei>
-In-Reply-To: <CAM+2EuJu3g98NOt2tOxPzWnGO3kvFNkruuAeZBd-=VxYvw7x9Q@mail.gmail.com>
-References: <20220813071803.4692-1-jagathjog1996@gmail.com>
-        <20220813071803.4692-2-jagathjog1996@gmail.com>
-        <20220814180451.44a27126@jic23-huawei>
-        <CAM+2EuJu3g98NOt2tOxPzWnGO3kvFNkruuAeZBd-=VxYvw7x9Q@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        with ESMTP id S1345677AbiHTNMD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 09:12:03 -0400
+X-Greylist: delayed 510 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 20 Aug 2022 06:12:02 PDT
+Received: from st43p00im-ztbu10073601.me.com (st43p00im-ztbu10073601.me.com [17.58.63.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D6858E0CA
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 06:12:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+        s=1a1hai; t=1661000610;
+        bh=4ht9G50SlYlr7BPTCuy+KjNotHQlLEXbSKghIYlF3TI=;
+        h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To;
+        b=gPDPYZRYsPkQEjYBIv6re2uprVKRUlm0alDQDjd+s3kxjVEqrP+xK4ebQV6DQjQ+U
+         +rrhNHvWDFoVtncMtfiYNWnVT6uHjaUvfcZvMNL0uSulJjpD81S/8vdNHY+1HIb2gX
+         UIKjJbWMNG3DyI8fHImyWGwtcYNUajU598tMbv3Qk29TTb6QHgGGPxGNWkq3QaW/8a
+         J5pPpQvbHoPDamqBMx2SVf+AHyNfbAw99LV6Q7LtBRh4UyI929IMEEaU+BBA9XR1pj
+         xl+OcBSSJILEqohP9ctElfEIcDg0Xg3Wlur83Gd3a438BQwTqRUSuPfsTvUByANG9G
+         HimYxaFIaLjAg==
+Received: from smtpclient.apple (st43p00im-dlb-asmtp-mailmevip.me.com [17.42.251.41])
+        by st43p00im-ztbu10073601.me.com (Postfix) with ESMTPSA id B9A65180519;
+        Sat, 20 Aug 2022 13:03:29 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Adrian Ignac <ignacekadi123@icloud.com>
+Mime-Version: 1.0 (1.0)
+Date:   Sat, 20 Aug 2022 14:03:19 +0100
+Subject: Re: [PATCH v8 2/5] mfd: qcom-spmi-pmic: add support for PMP8074
+Message-Id: <8BE27709-378F-4C79-9CF6-EB3500F15D79@icloud.com>
+Cc:     agross@kernel.org, bjorn.andersson@linaro.org,
+        devicetree@vger.kernel.org, jic23@kernel.org,
+        konrad.dybcio@somainline.org, krzysztof.kozlowski+dt@linaro.org,
+        lars@metafoo.de, lee.jones@linaro.org, lee@kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, robh+dt@kernel.org, sboyd@kernel.org
+To:     robimarko@gmail.com
+X-Mailer: iPhone Mail (20A5339d)
+X-Proofpoint-GUID: Efyf2fbJZLWHNHabz6nDOqlVLMfpjz6w
+X-Proofpoint-ORIG-GUID: Efyf2fbJZLWHNHabz6nDOqlVLMfpjz6w
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.517,18.0.883,17.11.64.514.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-06-21=5F08:2022-06-21=5F01,2022-06-21=5F08,2022-02-23?=
+ =?UTF-8?Q?=5F01_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1011 adultscore=0 bulkscore=0
+ mlxscore=0 phishscore=0 mlxlogscore=539 suspectscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2208200055
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 16 Aug 2022 00:03:47 +0530
-Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> Hi Jonathan,
-> 
-> On Sun, Aug 14, 2022 at 10:24 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Sat, 13 Aug 2022 12:48:02 +0530
-> > Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> >  
-> > > Add new event type for tap called gesture and the direction can be used
-> > > to differentiate single and double tap. This may be used by accelerometer
-> > > sensors to express single and double tap events. For directional tap,
-> > > modifiers like IIO_MOD_(X/Y/Z) can be used along with singletap and
-> > > doubletap direction.
-> > >
-> > > Signed-off-by: Jagath Jog J <jagathjog1996@gmail.com>  
-> > Hi Jagath,
-> >
-> > This ABI is definitely something I want more eyes than ours on, so
-> > whatever happens I'll leave it on the list for a few weeks.  
-> 
-> Sure, I will leave KernelVersion blank in the next series.
-Please don't.  Just take a guess at 6.1. That will probably be right
-and it'll save me effort when applying :) If it's not right then
-no harm done as I need to edit it anyway.
 
-> 
-> >  
-> > > ---
-> > >  Documentation/ABI/testing/sysfs-bus-iio | 41 +++++++++++++++++++++++++
-> > >  drivers/iio/industrialio-event.c        |  7 ++++-
-> > >  include/linux/iio/types.h               |  2 ++
-> > >  include/uapi/linux/iio/types.h          |  3 ++
-> > >  tools/iio/iio_event_monitor.c           |  8 ++++-
-> > >  5 files changed, 59 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > > index e81ba6f5e1c8..54cb925f714c 100644
-> > > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > > @@ -2038,3 +2038,44 @@ Description:
-> > >               Available range for the forced calibration value, expressed as:
-> > >
-> > >               - a range specified as "[min step max]"
-> > > +
-> > > +What:                /sys/.../events/in_accel_gesture_singletap_en
-> > > +What:                /sys/.../events/in_accel_gesture_doubletap_en
-> > > +KernelVersion:       5.21
-> > > +Contact:     linux-iio@vger.kernel.org
-> > > +Description:
-> > > +             Device generates an event on a single or double tap.
-> > > +
-> > > +What:                /sys/.../events/in_accel_gesture_singletap_value
-> > > +What:                /sys/.../events/in_accel_gesture_doubletap_value
-> > > +KernelVersion:       5.21
-> > > +Contact:     linux-iio@vger.kernel.org
-> > > +Description:
-> > > +             Specifies the threshold value that the device is comparing
-> > > +             against to generate the tap gesture event. Units and exact
-> > > +             meaning of value are device specific.  
-> >
-> > I wonder if we should list a direction?  As in smaller is more sensitive?  
-> 
-> Yeah in most of the devices which support tap, this value represents the
-> threshold, the lower the value higher the tap sensitivity. I will add it to the
-> description in the next series.
-> 
-> > (at least to first approximation)  
-> Do I need to add available attributes into ABI docs?
-
-Yes, though no need to give much description of them.
-There is a script that compares the ABI exposed on a given platform with
-these files and warns if things are missing.  Right now it gives so many
-warnings (outside of IIO) that it's more or less unusable but the end goal
-is to get to the pointer where systems doing build and boot tests will general
-warnings for undocumented ABI.
-
-> 
-> > That way a user would at least be able to consistently decide if they should
-> > raise or lower the number to get the perf the want.
-> >  
-> > > +
-> > > +What:                /sys/.../events/in_accel_gesture_singletap_reset_timeout
-> > > +What:                /sys/.../events/in_accel_gesture_doubletap_reset_timeout
-> > > +KernelVersion:       5.21
-> > > +Contact:     linux-iio@vger.kernel.org
-> > > +Description:
-> > > +             Specifies the timeout value in seconds for the tap detector
-> > > +             to not to look for another tap event after the event as
-> > > +             occoured. Basically the minimum quiet time between the two  
-> > spelling.  occured  
-> 
-> Sorry, I will correct this.
-> 
-> Thank you
-> Jagath
-> 
-> >  
-> > > +             single-tap's or two double-tap's.
-> > > +
-> > > +What:                /sys/.../events/in_accel_gesture_doubletap_tap_2min_delay  
-> >
-> > I'm not sure this naming is intuitive enough. Might be a simple
-> > as doubletap_tap2_min_delay?  My brain didn't parse 2min correctly.
-> >
-> > This one is a bit odd, so definitely want to hear more view points on whether
-> > this is general enough to cover sensors and intuitive enough that people
-> > have some hope of setting it right.
-> >  
-> > > +KernelVersion:       5.21
-> > > +Contact:     linux-iio@vger.kernel.org
-> > > +Description:
-> > > +             Specifies the minimum quiet time in seconds between the two
-> > > +             taps of a double tap.
-> > > +
-> > > +What:                /sys/.../events/in_accel_gesture_maxtomin_time
-> > > +KernelVersion:       5.21
-> > > +Contact:     linux-iio@vger.kernel.org
-> > > +Description:
-> > > +             Specifies the maximum time difference allowed between upper
-> > > +             and lower peak of tap to consider it as the valid tap event.
-> > > +             Units in seconds.  
-> > Needs to be associated with 'tap' in the naming.
-> > Easiest is probably only to define it as
-> > singletap_maxtomin_time + doubletap_maxtomin_time and not have the
-> > shared version as we'd lose the 'tap' part of the name.
-> >
-> >  
-
+Sent from my iPhone

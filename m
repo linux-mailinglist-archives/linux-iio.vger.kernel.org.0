@@ -2,142 +2,268 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6F259B085
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 22:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65AE659B0B0
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 00:09:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230111AbiHTUsB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 16:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
+        id S235800AbiHTWBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 18:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiHTUsB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 16:48:01 -0400
-Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F20A25C78;
-        Sat, 20 Aug 2022 13:48:00 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id k2so7574634vsk.8;
-        Sat, 20 Aug 2022 13:48:00 -0700 (PDT)
+        with ESMTP id S235824AbiHTWBM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 18:01:12 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9905D27FF5
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 15:01:00 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id m5so5578379qkk.1
+        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 15:01:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc;
-        bh=Wz1oeeUArHlim5LpcdQItAXe+EqMZtpBrl59xupd7zY=;
-        b=Q5o7uMpWNiJiS0NmuHgXnU3vWnWlXROKmTDVmYTt/IsERN1xApVIU0xaAEJqm41Mgw
-         QlC3Ksf12rYH5owT3T+GNzP7pD1MVcWtd6uY6iguexgEX3n4SwVhlhJ6A4S5xN0oDlo2
-         YTSNM+cQIB5V8P+P50aOkE8I5gzOF0q5EM9e0DIOr8QXj/Qt4hHdmTBEcw3S2cib8407
-         i/GFvzYC95o5qEqUOXoQ7EWToPm5Owk6eDo0oXSAI9kWokdthlXz/GFV+gayq3cF1t10
-         lenph6US6ebTHeXIfFsglKB3xgq+9wVKMmh4MBKHFlIaL8iyFAIyex2PPgH8kqjUbz2y
-         6xyA==
+        bh=KykEBBUCJiG8hWNQH+HNXVEIkWlq4MXZ6NZu3UE4RTg=;
+        b=ZkGSLVKi4sggsqFIAZKvovnEa0HXHlb7Ig9Ib3MAgXo1DMrVjhIpEvWDmF9jjk9p0S
+         GF8Tx0fbOr+Cy3EoYJwqS0QHgsnxJfboDwD1N5mW65A0O9grtdtImCJ+CH6otZ0LdAq/
+         cHD1Ug+1NUz8bXOuAT3n6vwgVWZGFRYB+BQcbqCf51MxNUETgJIf21uoVVsCYy/dauRH
+         Reaa40LHNi8/Q/ZzpvfXb+90mxmZ3RAorHnglDWVFPCMuUG2XXRR/2f4MxFRdhQZGctg
+         L4bzBbirr9kcBdXbOqp7fyST8FS5sgYv+OJZI8o8VuFO2JpI3AMTmL4WquUI5muqiM1T
+         RJcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=Wz1oeeUArHlim5LpcdQItAXe+EqMZtpBrl59xupd7zY=;
-        b=DnAC8PnsAjkNEU/AUT4rpi4I6TIG5RUSRBldAED81j3w2c0qcY8zJZkglx2HmvJcKu
-         S2VKy6pHp/sOIT9QFAKAdhEPygj1aYhBeib+CfI5yhpjUqCHc5W+3dn66r9ZoJyCsQUa
-         2e2kqN4Ke88y91VQ4wa9syqQIFy/DXhOqbCv3ci9+ZCFdXGOxrSI2c9FLQjsbf8RsWuO
-         o9ykMBhUoqkIuTYW2GVH26K0tcmBSCfsiwL2M89SDhW/78mt90OTLrcRmM8wn5DSwZwH
-         lSOb74PQislMy7S7erpiu3dJqJlZvnHNEr9oqWmRCoXHcu0ied8bCiDRKzzrM/GRcf2I
-         +hBw==
-X-Gm-Message-State: ACgBeo0eqqDSVyxDEioWev/6q6FT3vXEwDzLszyE2BMZZ6bzqV0k3XiK
-        Y3qFOIj4joShorY+/4iXROQ=
-X-Google-Smtp-Source: AA6agR75i+jLJNpMb551MJ64DCSPgX0eoBTW6F+NVzpxg/Sf65HlDa0utnppcvh6KxrcDXjCtmovOA==
-X-Received: by 2002:a67:e243:0:b0:387:3666:4e67 with SMTP id w3-20020a67e243000000b0038736664e67mr4793452vse.47.1661028479134;
-        Sat, 20 Aug 2022 13:47:59 -0700 (PDT)
-Received: from localhost ([2804:30c:1679:2000:dcdb:74d9:edea:13a6])
-        by smtp.gmail.com with ESMTPSA id g194-20020a1fb6cb000000b0037d0bb0a3c8sm5590947vkf.15.2022.08.20.13.47.58
+        bh=KykEBBUCJiG8hWNQH+HNXVEIkWlq4MXZ6NZu3UE4RTg=;
+        b=oqGSOmv6BSsgCtzxSjCIgjXmQRPtFWA71RuMyQzch6ztcNpGaG+TFDyGbn06IP/w3K
+         7jgCcwtIBBaXK36xM7NlL/K1xaCYBAjWet1FU27W8s6dqF0d8Hg46GOaGqg1wQWgpeiH
+         nvuMQQKDg047ske+/zFkBeCZllla7qGXNDnTSrJOqvIMzNmDkZJ+CgUQf1HAAcjoGewu
+         XDO0EMDAmd/FG0ZiKdNcfN9hJ8AUsvZH62h+6gDCE9EzOY5HXIlNLRiIosK/8gVyvEK7
+         igFCNFw9UPvD8cXNx3SzF/JOv39Mc7F+X5yBL0B1L2564weKJ3MdOxzT1oEHT/OcGhit
+         7E4A==
+X-Gm-Message-State: ACgBeo3yqWG3SfBuu3NJ67CCt82iwFehYhsYykA7KMq8nwTk0UcP6MFl
+        XKPwVJiX2+WX5Xx0teQffcapQw==
+X-Google-Smtp-Source: AA6agR6WU12+zbM5VGNizCLQfDVR1duJWik7phAdRLZddHz21A7bbu41K9rXQBRZdfh7P1Uif+Iv5w==
+X-Received: by 2002:a05:620a:2a0d:b0:6b6:6c75:f050 with SMTP id o13-20020a05620a2a0d00b006b66c75f050mr9016152qkp.199.1661032859180;
+        Sat, 20 Aug 2022 15:00:59 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id u9-20020a05620a430900b006af08c26774sm7071581qko.47.2022.08.20.15.00.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Aug 2022 13:47:58 -0700 (PDT)
-Date:   Sat, 20 Aug 2022 17:47:56 -0300
-From:   Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: ad7292: Prevent regulator double disable
-Message-ID: <YwFIfKvuuDYiJywk@marsc.168.1.7>
-References: <Yv9O+9sxU7gAv3vM@fedora>
+        Sat, 20 Aug 2022 15:00:58 -0700 (PDT)
+Date:   Sat, 20 Aug 2022 18:00:56 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mranostay@ti.com,
+        fabien.lahoudere@collabora.com, gwendal@chromium.org,
+        enric.balletbo@collabora.com, bleung@chromium.org,
+        groeck@chromium.org, jic23@kernel.org, david@lechnology.com,
+        robertcnelson@gmail.com
+Subject: Re: [PATCH v5 0/3] ECAP support on TI AM62x SoC
+Message-ID: <YwFZmN9H+Fjqm8sf@fedora>
+References: <20220817141620.256481-1-jpanis@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="y6Uakq24GtS4M/ov"
 Content-Disposition: inline
-In-Reply-To: <Yv9O+9sxU7gAv3vM@fedora>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220817141620.256481-1-jpanis@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Matti, thank you for this patch.
 
-On 08/19, Matti Vaittinen wrote:
-> The ad7292 tries to add an devm_action for disabling a regulator at
-> device detach using devm_add_action_or_reset(). The
-> devm_add_action_or_reset() does call the release function should adding
-> action fail. The driver inspects the value returned by
-> devm_add_action_or_reset() and manually calls regulator_disable() if
-> adding the action has failed. This leads to double disable and messes
-> the enable count for regulator.
-> 
-That's correct. The regulator device even issued a message saying so
-fixed-supply: Underflow of regulator enable count
+--y6Uakq24GtS4M/ov
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Verified driver behavior on a raspberry pi with eval board.
+On Wed, Aug 17, 2022 at 04:16:17PM +0200, Julien Panis wrote:
+> The Enhanced Capture (ECAP) module can be used to timestamp events
+> detected on signal input pin. It can be used for time measurements
+> of pulse train signals.
+>=20
+> ECAP module includes 4 timestamp capture registers. For all 4 sequenced
+> timestamp capture events (1->2->3->4->1->...), edge polarity (falling/ris=
+ing
+> edge) can be selected.
+>=20
+> This driver leverages counter subsystem to :
+> - select edge polarity for all 4 capture events (event mode)
+> - log timestamps for each capture event
+> Event polarity, and CAP1/2/3/4 timestamps give all the information
+> about the input pulse train. Further information can easily be computed :
+> period and/or duty cycle if frequency is constant, elapsed time between
+> pulses, etc...
+>=20
+> Modifications since v4:
+> 	- Modify yaml commit message prefix (dt-bindings)
+> 	- Modify driver file name & Makefile (ti-ecap-capture)
+> 	- Modify compilation flag name in Kconfig (TI_ECAP_CAPTURE)
+> 	- Select REGMAP_MMIO in Kconfig
+> 	- Add capture items to sysfs-bus-counter ABI documentation
+> 	- Cleanup probe function (dev_err_probe & devm_clk_get_enabled & devm_ad=
+d_action_or_reset for PM)
+> 	- Enable/Disable device clock in suspend/resume functions
+> 	- Add PM explanations
+> 	- Add ECAP clock signal & 'frequency' sysfs entry
+> 	- Replace elapsed_time & spinlock by nb_ovf (atomic_t) & 'count_cumul' s=
+ysfs entry
+> 	- Add counter overflow event
+> 	- Modify 'name' sysfs entry for signal0 & signal1 & count0
+> 	- Modify watch_validate function
+> 	- Add macros for callbacks related to cap1/2/3/4
+>=20
+> Userspace commands :
+> 	### SIGNAL INPUT ###
+> 	cd /sys/bus/counter/devices/counter0/signal0
+>=20
+> 	# Get available polarities for each capture event
+> 	cat polarity1_available
+> 	cat polarity2_available
+> 	cat polarity3_available
+> 	cat polarity4_available
+>=20
+> 	# Get polarity for each capture event
+> 	cat polarity1
+> 	cat polarity2
+> 	cat polarity3
+> 	cat polarity4
+>=20
+> 	# Set polarity for each capture event
+> 	echo rising edge > polarity1
+> 	echo falling edge > polarity2
+> 	echo rising edge > polarity3
+> 	echo falling edge > polarity4
+>=20
+> 	### SIGNAL CLOCK ###
+> 	cd /sys/bus/counter/devices/counter0/signal1
+>=20
+> 	# Get clock rate
+> 	cat frequency
+>=20
+> 	### COUNT ###
+> 	cd /sys/bus/counter/devices/counter0/count0
+>=20
+> 	# Run ECAP
+> 	echo 1 > enable
+>=20
+> 	# Get current timebase counter value
+> 	cat count
+>=20
+> 	# Get cumulated counter value
+> 	cat count_cumul
+>=20
+> 	# Get captured timestamps
+> 	cat capture1
+> 	cat capture2
+> 	cat capture3
+> 	cat capture4
+>=20
+> 	# Note that counter watches can also be used to get
+> 	# data from userspace application
+> 	# -> see tools/counter/counter_example.c
+>=20
+> 	# Stop ECAP
+> 	echo 0 > enable
+>=20
+> Julien Panis (3):
+>   dt-bindings: counter: add ti,am62-ecap-capture.yaml
+>   Documentation: ABI: sysfs-bus-counter: add capture items
+>   counter: ti-ecap-capture: capture driver support for ECAP
+>=20
+>  Documentation/ABI/testing/sysfs-bus-counter   |  49 ++
+>  .../counter/ti,am62-ecap-capture.yaml         |  61 ++
+>  drivers/counter/Kconfig                       |  15 +
+>  drivers/counter/Makefile                      |   1 +
+>  drivers/counter/ti-ecap-capture.c             | 624 ++++++++++++++++++
+>  include/uapi/linux/counter.h                  |   2 +
+>  6 files changed, 752 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/counter/ti,am62-eca=
+p-capture.yaml
+>  create mode 100644 drivers/counter/ti-ecap-capture.c
+>=20
+> --=20
+> 2.25.1
 
-Thanks again for this fix.
+Hello Julien,
 
-> Do not manually call disable if devm_add_action_or_reset() fails.
-> 
-> Fixes: 506d2e317a0a ("iio: adc: Add driver support for AD7292")
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+I'm CCing a number of other developers here who have indicated interest
+in counter timestamp functionality in past, just in case they would like
+to particpate in this discussion.
 
-Jonathan, can we still add more tags to this patch? If so, please add mine
+Adding buffers to the Counter subsystem will be a user-visible ABI
+change, so I want to make sure we get the interface design correct
+before we merge any of those changes; once it's exposed to userspace it
+can't be changed. However, we can still improve your patches while we
+develop this interface, so revisions are welcome even if I can't merge
+your counter driver until we iron out the Counter subsystem buffer
+interface.
 
-Tested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+So in the v4 patchset we discussed introducing a new counter_comp_type
+COUNTER_COMP_BUFFER_U64 enum constant with respective counter_comp read
+callbacks::
 
-> 
-> ---
-> 
-> The bug was found during browsing the code. I don't have the hardware to
-> test this so reviewing and testing is highly appreciated.
-> ---
->  drivers/iio/adc/ad7292.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7292.c b/drivers/iio/adc/ad7292.c
-> index 92c68d467c50..a2f9fda25ff3 100644
-> --- a/drivers/iio/adc/ad7292.c
-> +++ b/drivers/iio/adc/ad7292.c
-> @@ -287,10 +287,8 @@ static int ad7292_probe(struct spi_device *spi)
->  
->  		ret = devm_add_action_or_reset(&spi->dev,
->  					       ad7292_regulator_disable, st);
-> -		if (ret) {
-> -			regulator_disable(st->reg);
-> +		if (ret)
->  			return ret;
-> -		}
->  
->  		ret = regulator_get_voltage(st->reg);
->  		if (ret < 0)
-> -- 
-> 2.37.1
-> 
-> 
-> -- 
-> Matti Vaittinen, Linux device drivers
-> ROHM Semiconductors, Finland SWDC
-> Kiviharjunlenkki 1E
-> 90220 OULU
-> FINLAND
-> 
-> ~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-> Simon says - in Latin please.
-> ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-> Thanks to Simon Glass for the translation =] 
+     int (*count_buffer_u64_read)(struct counter_device *counter,
+                                  struct counter_count *count,
+                                  size_t index, u64 *val);=20
 
+Drive authors can then handle buffer reads by receiving an "index",
+locating the value at that buffer offset, and returning the value via
+the "val" u64 pointer.
 
+Defining a buffer as Count extensions could be done using a helper
+macro::
+
+     COUNTER_COMP_COUNT_BUFFER_U64("capture", ecap_cnt_cap_read, 4)
+
+Originally I considered unrolling this into four COUNTER_COMP_COUNT_U64,
+but I'm unsure if that is possible in GCC. Regardless, I believe it's
+feasible to implement this in counter-chrdev.c by passing the buffer
+length in the "priv" member of struct counter_comp and handling it when
+creating sysfs attributes. I might be able to write a prototype for this
+in the next couple weeks.
+
+In the end, we should have four buffer elements exposed as sysfs
+attributes under the respective count directory:
+
+* /sys/bus/counter/devices/counterX/count0/capture0
+* /sys/bus/counter/devices/counterX/count0/capture1
+* /sys/bus/counter/devices/counterX/count0/capture2
+* /sys/bus/counter/devices/counterX/count0/capture3=20
+
+One worry I do have is whether this will scale well enough; I can
+imagine some future device having a timestamp history buffer of much
+later than four elements. In cases with large buffers, it might be more
+practical to expose a FIFO queue to deliver buffer data. However, the
+existing Counter character device interface isn't designed for data of
+arbitrary length, so we'd likely have to introduce a secondary character
+device to provide the queue.
+
+We can postpone implementation of such a queue until the need arises and
+focus on just the sysfs interface for this particular driver. If we
+expose each element of the buffer as its own sysfs attribute, then the
+existing Counter character device interface gets access to these
+elements for free without any additional code changes to that part of
+the Counter subsystem.
+
+So my concerns right now are making sure this is a sane design and the
+right path forward to expose device buffer elements in sysfs.
+
+William Breathitt Gray
+
+--y6Uakq24GtS4M/ov
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYwFZmAAKCRC1SFbKvhIj
+K/ovAP47QIMo+w4JiGDrqtcUb5OvA8DBd6zMjz/pQ4jLO+MWsQD/ZE/q0/vn6zaq
+nx05yy65K++Fl4e6kQJF+/LC4i24fws=
+=dkgg
+-----END PGP SIGNATURE-----
+
+--y6Uakq24GtS4M/ov--

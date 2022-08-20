@@ -2,46 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 896FD59ADA2
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9937059ADAE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Aug 2022 13:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344758AbiHTLqg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 07:46:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36272 "EHLO
+        id S239429AbiHTLwT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 20 Aug 2022 07:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241192AbiHTLqf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:46:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A539C2CE;
-        Sat, 20 Aug 2022 04:46:34 -0700 (PDT)
+        with ESMTP id S241030AbiHTLwP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 07:52:15 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AF49E2C8;
+        Sat, 20 Aug 2022 04:52:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EE4160C9B;
-        Sat, 20 Aug 2022 11:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA217C433C1;
-        Sat, 20 Aug 2022 11:46:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7CDC3B80B92;
+        Sat, 20 Aug 2022 11:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE46C433C1;
+        Sat, 20 Aug 2022 11:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1660995993;
-        bh=KWya8Ir7VxqGsghF5iElXNfuH21OU6AhpqVzC3o0LYo=;
+        s=k20201202; t=1660996332;
+        bh=EHHFSu4yACtrEkdzmPcb5OuIYaJ/erGqHqabiAFd4n0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=vJmQ9cp7v+CbrquW5fjf4f9qTzptUSTBEtW3y07hTULnCx1gcBIJ1YEfkbHDWzSby
-         0ITtxpczsHUaf+wN0ev5KoyoIdCcZhqXjkO1gViZ5qPXjrgmPl+SnhW8qDKhL/Yf8/
-         Qa1EKlB9fKZWfWaAn0NcXQJwXn0KOZiIh1dd7Yb1xhjeJXJC5RrV1jhJHYDPlb7p0W
-         mIc+XHCGSXMh5f4UcsxGoBz1dypWOa62ZyslAICmma9wCTc8HdVjdfBpTVUWnYUE5K
-         CIwvMklQe6ow3g/hor/QDsYWbUFfDDbt8B6FqcUBZC5t/4UqtVyGJzfBM6xEkbDjOk
-         lO319oG8j397A==
-Date:   Sat, 20 Aug 2022 12:57:09 +0100
+        b=Uobzz6hGYwNST4mLp+32zhAK6hBM2uMuPL0tYHoaXf0VUw/lzTlKYbYBEwAIGG5s8
+         /vL9/34IUQoabbZ4/veM5PwU3SyN5rbMs0Mz2sefrt+/34t+6ENNsKzv8bhuZenELl
+         zUCZUKQdpFGSFl+ppucXaF3Lmn3ZDvxL2yRPzU7SJ2+uy7zHWoC6iiRqL5uN+Y6k1Z
+         eimAJsPvYMXo/c7OMoKd4vYV9B/vPYbyt2Y8BzIppm0iAfG3PoWDGT2a6mKurNo//g
+         UiqtAHhUizVfXi984+qDb/74ClB7njfQmhdHuH/LNFAEIWHR+0RMklLaEEnhvmTb+f
+         9pH+tXiyWvRBw==
+Date:   Sat, 20 Aug 2022 13:02:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     sunliming <sunliming@kylinos.cn>
-Cc:     ktsai@capellamicro.com, lars@metafoo.de,
-        kai.heng.feng@canonical.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kelulanainsley@gmail.com,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] iio: light: cm32181: make cm32181_pm_ops static
-Message-ID: <20220820125709.7df567c1@jic23-huawei>
-In-Reply-To: <20220815012930.150078-1-sunliming@kylinos.cn>
-References: <20220815012930.150078-1-sunliming@kylinos.cn>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Eddie James <eajames@linux.ibm.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Joel Stanley <joel@jms.id.au>
+Subject: Re: [PATCH v5 2/2] iio: pressure: dps310: Reset chip if MEAS_CFG is
+ corrupt
+Message-ID: <20220820130248.7773a6b3@jic23-huawei>
+In-Reply-To: <CAHp75VegQspJJ9YT=2E3YvKh-hp9-AGincp4z0GdQbA0Vq4Zug@mail.gmail.com>
+References: <20220815145705.203017-1-eajames@linux.ibm.com>
+        <20220815145705.203017-3-eajames@linux.ibm.com>
+        <CAHp75VegQspJJ9YT=2E3YvKh-hp9-AGincp4z0GdQbA0Vq4Zug@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,34 +60,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 15 Aug 2022 09:29:30 +0800
-sunliming <sunliming@kylinos.cn> wrote:
+On Thu, 18 Aug 2022 23:16:55 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> This symbol is not used outside of cm32181.c, so marks it static.
+> On Mon, Aug 15, 2022 at 5:57 PM Eddie James <eajames@linux.ibm.com> wrote:
+> >
+> > Corruption of the MEAS_CFG register has been observed soon after
+> > system boot. In order to recover this scenario, check MEAS_CFG if
+> > measurement isn't ready, and if it's incorrect, reset the DPS310
+> > and execute the startup procedure.  
 > 
-> Fixes the following sparse warnings:
-> >> drivers/iio/light/cm32181.c:508:1: sparse: sparse: symbol 'cm32181_pm_ops'  
-> was not declared. Should it be static?
+> ...
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: sunliming <sunliming@kylinos.cn>
+> > + * Called with lock held. Returns a negative value on error, a positive value
+> > + * when the device is not ready, and zero when the device is ready.  
+> 
+> Can we have
+> 
+> #define DPS310_DEVICE_NOT_READY  1
+> 
+> (or anonymous enum) and return it instead of abstract 1 or any other
+> positive number?
 
-Applied.  Thanks,
-> ---
->  drivers/iio/light/cm32181.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Perhaps make it even clearer by returning the need to wait via another parameter
+rather than this being (probably) the only place in driver with a postive rc.
+
+bool reset_done;
+
+rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY, &reset_done);
+
+if (reset_done) {
+}
+
 > 
-> diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-> index edbe6a3138d0..001055d09750 100644
-> --- a/drivers/iio/light/cm32181.c
-> +++ b/drivers/iio/light/cm32181.c
-> @@ -505,7 +505,7 @@ static int cm32181_resume(struct device *dev)
->  					 cm32181->conf_regs[CM32181_REG_ADDR_CMD]);
->  }
->  
-> -DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
-> +static DEFINE_SIMPLE_DEV_PM_OPS(cm32181_pm_ops, cm32181_suspend, cm32181_resume);
->  
->  static const struct of_device_id cm32181_of_match[] = {
->  	{ .compatible = "capella,cm3218" },
+> ...
+> 
+> > +       rc = dps310_check_reset_meas_cfg(data, DPS310_TMP_RDY);
+> >         if (rc < 0)
+> >                 goto done;
+> >
+> > +       if (rc > 0) {
+> > +               rate = dps310_get_temp_samp_freq(data);
+> > +               timeout = DPS310_POLL_TIMEOUT_US(rate);
+> > +
+> > +               /*
+> > +                * Poll for sensor readiness; base the timeout upon the sample
+> > +                * rate.
+> > +                */
+> > +               rc = regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG,
+> > +                                             ready, ready & DPS310_TMP_RDY,
+> > +                                             DPS310_POLL_SLEEP_US(timeout),
+> > +                                             timeout);
+> > +               if (rc)
+> > +                       goto done;
+> > +       }  
+> 
+> But have you tried to make a helper that takes a pointer to the
+> respective function?
+> 
 

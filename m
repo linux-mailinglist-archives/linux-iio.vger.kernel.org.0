@@ -2,143 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E07F059B3D9
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 15:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB1D59B582
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 18:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbiHUNNv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Aug 2022 09:13:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40866 "EHLO
+        id S229696AbiHUQpg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Aug 2022 12:45:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbiHUNNu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 09:13:50 -0400
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3E013D79;
-        Sun, 21 Aug 2022 06:13:48 -0700 (PDT)
-Received: by mail-qv1-xf35.google.com with SMTP id e4so6420577qvr.2;
-        Sun, 21 Aug 2022 06:13:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=DVYYQkpgpKgJVH0pRzj4zMYMOUP7iF2KNFjCHXK79jQ=;
-        b=pfmYWrgef2IB19viXabZpI/iK2diGQH8ZUwCTEzKcjpWGCuNHCeQ33tnF13l21WtON
-         2WnfUXgmF77GjBKWs8EhZ84XCGr4OxqWha7NixDGnE8FN/6eRrBOFVU67hZvR5GSwgPP
-         B2ceSvYLspYQNin8H/oo/2ncei6B4i/FRTKlR90bpyUtDlekzobogewHVEJBb1eHjsUr
-         Q6zaYQP5BxI8q20dDCRuu+QIbr3+cRbITz5nX6mF5jRFDJEEhHOJLpEPNrBRrqjgUxQ8
-         ZNq1e2/dzXVESPmZmh8P5vlFwqfmZaCEL297rGptIwiq9+pBDPDpdz4JcVQMYa++8c0K
-         lmJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=DVYYQkpgpKgJVH0pRzj4zMYMOUP7iF2KNFjCHXK79jQ=;
-        b=EeXCblkVxfKuxY4KSF5qPzWGBuvOn2zLBpa5JABeBcuQYZPfziPI6epp3xhaHouf/n
-         dE2NC56wc/kUTe5BF2kaW0gGixXqavMlpkcWHcQgnhkvE+IxZfkmI+RYDXyAzKIg3d2x
-         pewef0qeahhX6daVW5rgQNBA0bj2/DEVxmjEAQ+nWbc5iaeDXH4nvLWehAGRRkogz/83
-         hnDlMyyO97W9MW99D4VB1i7lRE77cc4zDvDHQP5Gk+N5gpQWplmSTGadrmEYH7QLhrXt
-         zbYNKqnqOwOWc4QFOu7TWvjgv0da/I2jyRpljicQyuWNbIWEStk1/FBTGTDKTJlrVlzV
-         Lw1g==
-X-Gm-Message-State: ACgBeo3H3KZHcT4e3ppO1QN/6YUQa/JYnB1CdvOM8CzHKrzz3XB0jIV5
-        P9rwr/y9kUFcRVMNJCfEHz+Ka2WT7cYvfPjvuKY=
-X-Google-Smtp-Source: AA6agR7RhA4NMn9ulbUAoaHTX1CvY477ewKXaIAGD/vR00gR46ZMbn4dwx0XQ1Ro2eKM0wKxjoVzOvB5nEm08WaBQSA=
-X-Received: by 2002:ad4:5baf:0:b0:476:6a9e:b5e1 with SMTP id
- 15-20020ad45baf000000b004766a9eb5e1mr12286096qvq.64.1661087627560; Sun, 21
- Aug 2022 06:13:47 -0700 (PDT)
+        with ESMTP id S231549AbiHUQpb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 12:45:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 852851AD90
+        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 09:45:30 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F0E960F1E
+        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 16:45:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF235C433D7;
+        Sun, 21 Aug 2022 16:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661100329;
+        bh=SdcjqKCI6Jn5UtVvfyoEo1n2bWlJ5r2/d5SFNaoVVXg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qxuqmnIZwxYOMmhQXF+vfp3vxJ33nRoLwlY2AIqlBGpgjrgune3+8wduBgfwuBvKO
+         mlSC8uRXqArUcbyR/fIJ+oEnaWm+gVqoNPGEpu6WFtqnFlzooh8m2kJbL/Sr7lPlmk
+         K/EQtzxYIciDKcP23mgA9zeu+A4jUSGlph7X7ZNyTlaX7tp4EXWuu9cVOvMicPyNE5
+         xJZTcJOMgMbV7s0gmtsxjlXt++zLdMfouhfvFf2SkLvf7MIpVEkWv1oMpO7GLEl5yA
+         V9Yug2isIY55iYAwe3Ad1V5YfBDxZURrhEIXUdaIRchG+l5uEweuIyEM5VSeacMw8V
+         rkOI635URuKHQ==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH] iio: adc: max1363: Drop provision to provide an IIO channel map via platform data
+Date:   Sun, 21 Aug 2022 17:10:58 +0100
+Message-Id: <20220821161058.2207185-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <cover.1660934107.git.mazziesaccount@gmail.com>
- <a29493f594c84b3bd852e462bbd3e591a8575a27.1660934107.git.mazziesaccount@gmail.com>
- <20220820122120.57dddcab@jic23-huawei> <412c5d22-d59b-9191-80dd-e3ca11360bc4@gmail.com>
- <CAHp75VdoKtc2QqFcDuJ00KBz6mjg0fnM_WhyVqhCmDVo_3K6kg@mail.gmail.com>
- <01fec744-f3d4-b633-d3ce-bcd86a153132@gmail.com> <CAHp75Vd3vyAZbWpZT9SmyD=ecGTAdVNWK=fs_n4OSAqGtGj_gg@mail.gmail.com>
- <103abfae-6c0d-9a2e-2d59-0da4c8be3eb4@gmail.com>
-In-Reply-To: <103abfae-6c0d-9a2e-2d59-0da4c8be3eb4@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 21 Aug 2022 16:13:11 +0300
-Message-ID: <CAHp75VchPCHsBcx7mMoGUjz=s4hmfnO6t7DqtpWfg=aGrbo1Fg@mail.gmail.com>
-Subject: Re: [PATCH v3 07/14] iio: ltc2688: Simplify using devm_regulator_*get_enable()
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 20, 2022 at 10:00 PM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
-> On 8/20/22 20:41, Andy Shevchenko wrote:
-> > On Sat, Aug 20, 2022 at 8:30 PM Matti Vaittinen
-> > <mazziesaccount@gmail.com> wrote:
-> >> On 8/20/22 19:09, Andy Shevchenko wrote:
-> >>> On Sat, Aug 20, 2022 at 4:45 PM Matti Vaittinen
-> >>> <mazziesaccount@gmail.com> wrote:
-> >>>> On 8/20/22 14:21, Jonathan Cameron wrote:
-> >>>>> On Fri, 19 Aug 2022 22:19:17 +0300
-> >>>>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >
-> > ...
-> >
-> >>>>> For the whole static / vs non static. My personal preference is not
-> >>>>> to have the static marking but I don't care that much.
-> >>>>
-> >>>> I'd like to stick with the static here. I know this one particular array
-> >>>> does not have much of a footprint - but I'd like to encourage the habit
-> >>>> of considering the memory usage. This discussion serves as an example of
-> >>>> how unknown the impact of making const data static is. I didn't know
-> >>>> this myself until Sebastian educated me :)  Hence my strong preference
-> >>>> on keeping this 'static' as an example for others who are as ignorant as
-> >>>> I were ;) After all, having const data arrays static is quite an easy
-> >>>> way of improving things - and it really does matter when there is many
-> >>>> of arrays - or when they contain large data.
-> >>>
-> >>> But still the same comment about global scope of the variable is applied.
-> >>
-> >> I don't understand why you keep claiming the variable is global when it
-> >> is not?
-> >
-> > It is. The static keyword makes it global, but putting the entire
-> > definition into the function is asking for troubles.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> Please, describe the trouble we can get with a local static const
-> variable? A real concrete threat there is. I have explained the benefit.
-> I have also explained the concrete possibility of name collision when we
-> really do a global out of local.
+Back in the days of board files, platform data was used to provide
+information on the mapping from ADC channel to an analog signal
+from another device. We've long since moved to doing this via
+device tree. Hence drop the support from the max1363 driver which is
+the only driver still providing this.
 
-I told you, the benefit is not to play dirty tricks on developers,
-maintainers and reviewers. It's simply harder to read the code and get
-the usage of the variable that lifetime is out of scope of the
-function.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/max1363.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-> > I guess some C standard chapter describes that in non-understandable language.
-> >
-> >>> As I explained before, hiding global variables inside a function is a
-> >>> bad code practice.
-> >>
-> >> I don't really get what you mean here. And I definitely don't see any
-> >> improvement if we would really use a global variable instead of a local one.
-> >
-> > The improvement is avoid hiding the global variable to the local namespace.
->
-> I guess you mean that you may miss the fact that a variable stays there
-> even after execution exits the function, right? Ok, let's assume someone
-> misses this point when reading the code. Now, please describe me the
-> potential issues this can cause knowing our static is const and doesn't
-> change the value.
-
-When you hide the static variable inside the function, you simply
-narrow visibility to the compiler, but the variable stays all the time
-the module is in.
-
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index eef55ed4814a..a28cf86cdce8 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -29,7 +29,6 @@
+ #include <linux/iio/sysfs.h>
+ #include <linux/iio/events.h>
+ #include <linux/iio/buffer.h>
+-#include <linux/iio/driver.h>
+ #include <linux/iio/kfifo_buf.h>
+ #include <linux/iio/trigger_consumer.h>
+ #include <linux/iio/triggered_buffer.h>
+@@ -1595,11 +1594,6 @@ static int max1363_probe(struct i2c_client *client,
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	ret = devm_iio_map_array_register(&client->dev, indio_dev,
+-					  client->dev.platform_data);
+-	if (ret < 0)
+-		return ret;
+-
+ 	st = iio_priv(indio_dev);
+ 
+ 	mutex_init(&st->lock);
 -- 
-With Best Regards,
-Andy Shevchenko
+2.37.2
+

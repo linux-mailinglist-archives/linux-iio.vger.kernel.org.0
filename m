@@ -2,54 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC05459B58C
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 19:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C1F59B6A3
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Aug 2022 00:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbiHUREE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Aug 2022 13:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S230281AbiHUWnK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Aug 2022 18:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbiHURED (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 13:04:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AE013FA6;
-        Sun, 21 Aug 2022 10:04:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C4E8FB80A08;
-        Sun, 21 Aug 2022 17:04:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E339C433D6;
-        Sun, 21 Aug 2022 17:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661101439;
-        bh=lmaONrarTYyoSnUieZtTg5QSSZi6JaipEBFE/NQounY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pGDQAKjwVlBFKJvENPzrYPhYN0hSeGlSggZ+IRf4mwFF3sI5/AQoAKnIi/dooYgD6
-         2e0dJyQh0fSaM67YFXxxR5ZPBiwu9ISBMmW7rKbP4PLSdy5C33ZkqQc7RznzEpGRD/
-         PNe8hvLJ+t9SJXPBbAvAC3GKvp3HEdCT2ZgOaza/FcDkGkAdBj3EPxz/fw25EdmvKo
-         YKEPUNT10ipfNJT0CGtS/T8LugldK5MpoyQmtO8r1cEX3XG38atRajOeBQPIPgqLe5
-         Bh/2MaUl1G5RZZDH92GfteF/Y4TUD+zrhBOk/x4IKUpLhTbEDC/OKu3E9x28neMZ9E
-         sBuT8qcc3U5SQ==
-Date:   Sun, 21 Aug 2022 17:29:30 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: frequency: admv1014: return -EINVAL directly
-Message-ID: <20220821172930.29e7a2fa@jic23-huawei>
-In-Reply-To: <CAHp75VfQY_7WQZTxGG17Ps=VHGrnGdUAdRpacPYeJEMK5PS6yA@mail.gmail.com>
-References: <20220819104117.4600-1-antoniu.miclaus@analog.com>
-        <20220819180856.5a1d4e5a@jic23-huawei>
-        <CAHp75VfQY_7WQZTxGG17Ps=VHGrnGdUAdRpacPYeJEMK5PS6yA@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S230456AbiHUWnJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 18:43:09 -0400
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09AC71A388
+        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 15:43:07 -0700 (PDT)
+Received: by mail-qv1-xf33.google.com with SMTP id m5so4164308qvo.4
+        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 15:43:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc;
+        bh=SLQM5J0xWlA5wbIdPKtFesag8huNtFa4txc60rMlobs=;
+        b=LCe/vgen+XCMH74gOLjR7bN1ArujZ6DZNPJ6V53+IEZ6OgRPAwymR/F67fphTrZJ7i
+         WX/OvPvYDb/q0lzT6y/ojevJgVtkkrJVME07VVUjhe+W7SrXZWha/xHvLbEo6dn99ALm
+         RnU0FdS39Zd379nE+54lq5MlVZdTagm7AXtwD5nlksNAy8MY/8Kd/r5nFNZmDzU9lks7
+         Kl8wGX1X2MLbJYkrWRYSh7eTAwvMiT/+8r/He0mVxOkpPhFRsaNUQXxkeIZIYl0Dclq2
+         /fa1qWEhJOXvtuNsFdztaVKjysOZ6qJ3qfrrLqosuTGWz6e0b+we+E1tOoYP6nMxFiPu
+         hQuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=SLQM5J0xWlA5wbIdPKtFesag8huNtFa4txc60rMlobs=;
+        b=LjI1T89NFiOsWy3zd2pV9PHK+zggxQrkX8kcYq8AUbGQSeM1wNOEPOON/wQ8+Iymg2
+         uGgIzaRvsAmmDeS/tddhj/i22V3x34PgZGImpn0wYRAbMjHrGjn3Ck6vlx5AtLaCS90l
+         o58esHwdeVi18B1QtTqYah4oG/N/9aOvQCBx92f+gOD1KL8aiIhl2bOMkEtJdLPhHmdj
+         Mmd8GwVBCzB7/o2/p24neCyMUXp7bgnpWkB8GVev8TQdsRay/Cv0D2G5aammbGgLkrfh
+         KTgwz1PDkLKoYaKc7EfydqozrU3JBo0wERvM9umnptgvqL72KA/ynWC4UYIV0z8Ac47s
+         GjEQ==
+X-Gm-Message-State: ACgBeo2wJFxkYZ/jv2MkE2OKpjqxoC0ebjAEwAy+JoBh+D2sYBk8ysj0
+        bSc7yaHWDcyRWFESt+PaBC0e8Q==
+X-Google-Smtp-Source: AA6agR4jUAHSGLWTrHVAFXBM1VWQtLl/q6Bx2pU2iMNntHvDE7gUn5RyeTtfpxPXQQyVdyC/TQ5EXQ==
+X-Received: by 2002:a05:6214:d6d:b0:496:e11b:69e9 with SMTP id 13-20020a0562140d6d00b00496e11b69e9mr2366488qvs.45.1661121786638;
+        Sun, 21 Aug 2022 15:43:06 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id g25-20020ac84b79000000b00342fc6a8e25sm7805333qts.50.2022.08.21.15.43.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Aug 2022 15:43:06 -0700 (PDT)
+Date:   Sun, 21 Aug 2022 18:43:04 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v5 2/3] Documentation: ABI: sysfs-bus-counter: add
+ capture items
+Message-ID: <YwK0+BNSo4X2KA29@fedora>
+References: <20220817141620.256481-1-jpanis@baylibre.com>
+ <20220817141620.256481-3-jpanis@baylibre.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2NJOCRB2znqdE3uV"
+Content-Disposition: inline
+In-Reply-To: <20220817141620.256481-3-jpanis@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,41 +73,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 20 Aug 2022 18:56:53 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Fri, Aug 19, 2022 at 8:41 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Fri, 19 Aug 2022 13:41:17 +0300
-> > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
-> >  
-> > > Remove extra step where the error code is assigned to the `ret`
-> > > variable.
-> > >
-> > > Return instead error code directly.  
-> 
-> ...
-> 
-> > Change is fine, but I've dropped the fixes tag. The code before this
-> > wasn't broken, just longer than it needed to be. We don't want the noise
-> > of this getting backported because someone sees the fixes tag and thinks
-> > there is a reason it needs to be.
-> >
-> > Applied to the togreg branch of iio.git  
-> 
-> Haven't checked myself if it's possible, but shouldn;'t we go further
-> and return dev_err_probe()?
+--2NJOCRB2znqdE3uV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Good idea, but only as part of a patch doing that throughout the driver.
-So follow up patch perhaps..
+On Wed, Aug 17, 2022 at 04:16:19PM +0200, Julien Panis wrote:
+> This commit adds capture items to counter ABI file
+> (e.g. TI ECAP used in capture operating mode).
+>=20
+> Signed-off-by: Julien Panis <jpanis@baylibre.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-counter | 49 +++++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>=20
+> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/=
+ABI/testing/sysfs-bus-counter
+> index 06c2b3e27e0b..52ddec7cc76a 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-counter
+> +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> @@ -203,6 +203,24 @@ Description:
+>  		both edges:
+>  			Any state transition.
+> =20
+> +What:		/sys/bus/counter/devices/counterX/countY/count_cumul
+> +KernelVersion:	6.0
+> +Contact:	jpanis@baylibre.com
+> +Description:
+> +		Read-only attribute that indicates the raw cumulated count
+> +		since count Y start, computed as follow:
+> +		count_cumul =3D (max_counter_val + 1) * nb_counter_overflows
 
-> 
-> > >       chip_id = FIELD_GET(ADMV1014_CHIP_ID_MSK, chip_id);
-> > >       if (chip_id != ADMV1014_CHIP_ID) {
-> > >               dev_err(&spi->dev, "Invalid Chip ID.\n");
-> > > -             ret = -EINVAL;
-> > > -             return ret;
-> > > +             return -EINVAL;
-> > >       }  
-> 
-> 
+Implement this instead as "num_overflows" (COUNTER_COMP_COUNT_U64) and
+"ceiling" (COUNTER_COMP_CEILING). You need to expose the count ceiling
+anyway and a new "num_overflows" attribute would be useful for other
+drivers as well.
 
+> +What:		/sys/bus/counter/devices/counterX/countY/captureZ
+> +KernelVersion:	6.0
+> +Contact:	jpanis@baylibre.com
+> +Description:
+> +		Read-only attributes that indicate the last raw timestamp captured
+> +		for the respective capture Z register.
+> +		Raw timestamp can be converted to nanoseconds as follow:
+> +		time_ns =3D 10^9 * (captureZ + count_cumul) / frequency
+> +		count_cumul and frequency parameters are described in this document.
+
+Rework this description to make it more general: remove the nanoseconds
+conversion formula and references to timestamps. The concept of a
+capture is general enough that it could be provided by counter devices
+that are not necessarily timestamping. Instead this description should
+simply state that this attribute is a historical capture of the Count Y
+count data where Z (if present) is the respective capture buffer element
+offset.
+
+>  What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/count_mode_component_id
+> @@ -213,6 +231,8 @@ What:		/sys/bus/counter/devices/counterX/countY/presc=
+aler_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/preset_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/preset_enable_component_=
+id
+>  What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component=
+_id
+> +What:		/sys/bus/counter/devices/counterX/countY/count_cumul_component_id
+> +What:		/sys/bus/counter/devices/counterX/countY/captureZ_component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_comp=
+onent_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_=
+component_id
+> @@ -345,3 +365,32 @@ Description:
+>  			via index_polarity. The index function (as enabled via
+>  			preset_enable) is performed synchronously with the
+>  			quadrature clock on the active level of the index input.
+> +
+> +What:		/sys/bus/counter/devices/counterX/signalY/polarityZ
+> +KernelVersion:	6.0
+> +Contact:	jpanis@baylibre.com
+> +Description:
+> +		Capture modules include N timestamp capture registers.
+> +		For all N sequenced timestamp capture events
+> +		(1->2->3->...->N->1->...), edge polarity can be selected.
+> +		The following polarities are available:
+> +
+> +		rising edge:
+> +			Low state transitions to high state.
+> +
+> +		falling edge:
+> +			High state transitions to low state.
+
+Other drivers could use "polarity" for signals that are not related to
+captures, so remove the language referencing timestamping and generalize
+it to simply refer to selecting the Signal Y edge polarity where Z (if
+present) is the respective polarity sequence position.
+
+William Breathitt Gray
+
+--2NJOCRB2znqdE3uV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHQEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYwK09wAKCRC1SFbKvhIj
+K8oDAPdLQOsV0FlcmpzhIjokWkcH5BVTKUkR7GjQ2TQlty8TAQCZWfBCROCuCvP5
+MmMLxq00AF6NW8X7KSdJEupDC04oCA==
+=WaOi
+-----END PGP SIGNATURE-----
+
+--2NJOCRB2znqdE3uV--

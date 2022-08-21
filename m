@@ -2,268 +2,284 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65AE659B0B0
-	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 00:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5834459B3D6
+	for <lists+linux-iio@lfdr.de>; Sun, 21 Aug 2022 15:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235800AbiHTWBS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 20 Aug 2022 18:01:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
+        id S229546AbiHUNJD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 21 Aug 2022 09:09:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235824AbiHTWBM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 20 Aug 2022 18:01:12 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9905D27FF5
-        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 15:01:00 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id m5so5578379qkk.1
-        for <linux-iio@vger.kernel.org>; Sat, 20 Aug 2022 15:01:00 -0700 (PDT)
+        with ESMTP id S230236AbiHUNJC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 09:09:02 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3377F103B;
+        Sun, 21 Aug 2022 06:08:59 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id p5so4869245qvz.6;
+        Sun, 21 Aug 2022 06:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=KykEBBUCJiG8hWNQH+HNXVEIkWlq4MXZ6NZu3UE4RTg=;
-        b=ZkGSLVKi4sggsqFIAZKvovnEa0HXHlb7Ig9Ib3MAgXo1DMrVjhIpEvWDmF9jjk9p0S
-         GF8Tx0fbOr+Cy3EoYJwqS0QHgsnxJfboDwD1N5mW65A0O9grtdtImCJ+CH6otZ0LdAq/
-         cHD1Ug+1NUz8bXOuAT3n6vwgVWZGFRYB+BQcbqCf51MxNUETgJIf21uoVVsCYy/dauRH
-         Reaa40LHNi8/Q/ZzpvfXb+90mxmZ3RAorHnglDWVFPCMuUG2XXRR/2f4MxFRdhQZGctg
-         L4bzBbirr9kcBdXbOqp7fyST8FS5sgYv+OJZI8o8VuFO2JpI3AMTmL4WquUI5muqiM1T
-         RJcA==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=yq7oEesPQ4/2tKJfKP5KNB31cxdetOGxvm5rT1u1LvM=;
+        b=p6RR42RMH63mo70QvxK9GlIGnpFXxwO64O/wa8F8JAM43u5/Mq3e4riGl4nRysocZz
+         UI2lw42DV/lDhVp6ruCX19jm/HwafZHl8o3vz4FZEFQ8Qk3ZvjuRGQwPiTjdjmPAbMFU
+         6d4qk7XcNfK4J1PYRhd2FGfIMeI2bY+xgN4ge9DisRj/2OBzkf80tgVIAtQABWV07g27
+         YI/Zmq63+Rs1JmYksRY5+9FenhESfgCo9qYWJLYPZmByKkZ3+X86NHBQGSzDDCrEwgJr
+         0azqRLorK87vmoqTVVq/mW2LlZg1Dw8Alxgiv06csnEJ9ACWs3gvxjg8kkPysDSFLxNb
+         6o8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=KykEBBUCJiG8hWNQH+HNXVEIkWlq4MXZ6NZu3UE4RTg=;
-        b=oqGSOmv6BSsgCtzxSjCIgjXmQRPtFWA71RuMyQzch6ztcNpGaG+TFDyGbn06IP/w3K
-         7jgCcwtIBBaXK36xM7NlL/K1xaCYBAjWet1FU27W8s6dqF0d8Hg46GOaGqg1wQWgpeiH
-         nvuMQQKDg047ske+/zFkBeCZllla7qGXNDnTSrJOqvIMzNmDkZJ+CgUQf1HAAcjoGewu
-         XDO0EMDAmd/FG0ZiKdNcfN9hJ8AUsvZH62h+6gDCE9EzOY5HXIlNLRiIosK/8gVyvEK7
-         igFCNFw9UPvD8cXNx3SzF/JOv39Mc7F+X5yBL0B1L2564weKJ3MdOxzT1oEHT/OcGhit
-         7E4A==
-X-Gm-Message-State: ACgBeo3yqWG3SfBuu3NJ67CCt82iwFehYhsYykA7KMq8nwTk0UcP6MFl
-        XKPwVJiX2+WX5Xx0teQffcapQw==
-X-Google-Smtp-Source: AA6agR6WU12+zbM5VGNizCLQfDVR1duJWik7phAdRLZddHz21A7bbu41K9rXQBRZdfh7P1Uif+Iv5w==
-X-Received: by 2002:a05:620a:2a0d:b0:6b6:6c75:f050 with SMTP id o13-20020a05620a2a0d00b006b66c75f050mr9016152qkp.199.1661032859180;
-        Sat, 20 Aug 2022 15:00:59 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id u9-20020a05620a430900b006af08c26774sm7071581qko.47.2022.08.20.15.00.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Aug 2022 15:00:58 -0700 (PDT)
-Date:   Sat, 20 Aug 2022 18:00:56 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mranostay@ti.com,
-        fabien.lahoudere@collabora.com, gwendal@chromium.org,
-        enric.balletbo@collabora.com, bleung@chromium.org,
-        groeck@chromium.org, jic23@kernel.org, david@lechnology.com,
-        robertcnelson@gmail.com
-Subject: Re: [PATCH v5 0/3] ECAP support on TI AM62x SoC
-Message-ID: <YwFZmN9H+Fjqm8sf@fedora>
-References: <20220817141620.256481-1-jpanis@baylibre.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=yq7oEesPQ4/2tKJfKP5KNB31cxdetOGxvm5rT1u1LvM=;
+        b=f+xCzNjX2huO/EVmtQCJW3gpbEfAq/b3LzGsAF5waiTQBGKbJX9J6mDtoK3s9ynf4+
+         XF4QiWNekXEm/+LAZuoOyG6wnKeG0grzqeZL5YfNBcg8dtdn5Sq0wdk+S6BW6eaaR/4+
+         ridWsb8gqwTJgubZXBDWY0QtBScIPUp1Y+rw8W9MF5t0h+Q+koj7D5YUaUy/wsf74urb
+         DEvvmX7ZA1ORjBWqi8S9CPrlfruwEu3pikhBrYS1rcrBMjipr9PdD0OTEIpytf+Mlr1S
+         rT9GRkOZPJfMWSIDt/C6XdGEGt4loo5SFHdRcnL1vk7nGvVIF9CsZ0xf17QUc9P/Okxd
+         sV4w==
+X-Gm-Message-State: ACgBeo3gebhyiw9woLZcg9E4PsgGOwwZemmcQKDs1X2cOFYhjySLwG8b
+        uGxtUAgV36FS+2Ir1rgNIwO8AJyhmxCOlmXxdHA=
+X-Google-Smtp-Source: AA6agR6pqZcSpKWhFwH89Atg/U5nAVY34CIb56+4cUR9j3hT7JKJg9TjbQxnsnGdouuxdr+ZoJxTq9V31j6dwO2PtwU=
+X-Received: by 2002:a05:6214:d07:b0:476:c32f:f4f4 with SMTP id
+ 7-20020a0562140d0700b00476c32ff4f4mr12551756qvh.11.1661087338146; Sun, 21 Aug
+ 2022 06:08:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="y6Uakq24GtS4M/ov"
-Content-Disposition: inline
-In-Reply-To: <20220817141620.256481-1-jpanis@baylibre.com>
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
+ <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+ <CAHp75VePr790pXZ5AiRnrPmxkOgZ3YKRTbABE6dvk+udQYrXGA@mail.gmail.com>
+ <795d16f2-4dee-7492-4a87-e928020efebe@fi.rohmeurope.com> <CAHp75VdGhXpD8YgwkVPLCBEMmupBiTDS4FChocJFVo+BBZ-2KA@mail.gmail.com>
+ <0823a6e8-b325-78c5-d060-c5f9442e3df8@fi.rohmeurope.com> <CAHp75VdMA5mkxkMrtiRTGn5F-5GWjxKyuD5iBuj3HKWqZZMxkg@mail.gmail.com>
+ <cff8d041-f3c4-3faf-85a9-acabe60d2de2@gmail.com> <CAHp75VcVziFMbPtKi1FgD1VR42HjeLUJ5fzxYSRqEbfSZ185oQ@mail.gmail.com>
+ <7c2651fe-4f3e-70fd-bdaa-35cb0d66a31a@gmail.com>
+In-Reply-To: <7c2651fe-4f3e-70fd-bdaa-35cb0d66a31a@gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sun, 21 Aug 2022 16:08:16 +0300
+Message-ID: <CAHp75VfOYrDvNJ-ikGN2EU1NRjmQbiyfX-5TL2cUpZ1dreFBUQ@mail.gmail.com>
+Subject: Re: [PATCH v3 08/14] iio: bmg160_core: Simplify using devm_regulator_*get_enable()
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Xiang wangx <wangxiang@cdjrlc.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sat, Aug 20, 2022 at 8:27 PM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
+> On 8/20/22 19:21, Andy Shevchenko wrote:
+> > On Sat, Aug 20, 2022 at 1:05 PM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote:
+> >> On 8/20/22 10:18, Andy Shevchenko wrote:
+> >>> On Sat, Aug 20, 2022 at 9:48 AM Vaittinen, Matti
+> >>> <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+> >>>> On 8/20/22 09:25, Andy Shevchenko wrote:
+> >>>>> On Sat, Aug 20, 2022 at 9:19 AM Vaittinen, Matti
+> >>>>> <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+> >>>>>> On 8/20/22 02:30, Andy Shevchenko wrote:
+> >>>>>>> On Fri, Aug 19, 2022 at 10:21 PM Matti Vaittinen
+> >>>>>>> <mazziesaccount@gmail.com> wrote:
+> >>>>>
+> >>>>> What did I miss?
+> >>>>
+> >>>>    >>>>           struct bmg160_data *data;
+> >>>>    >>>>           struct iio_dev *indio_dev;
+> >>>>
+> >>>> This does already violate the rule.
+> >>>
+> >>> Indeed, I am reading this with an MTA that has True Type fonts, and I
+> >>> can't see it at the first glance. But this breaks that rule slightly
+> >>> while your added line breaks it significantly.
+> >>
+> >> Yes. As I said, I think the reverse xmas tree rule is not too well
+> >> justified. Bunch of the subsystems do not really follow it, nor did this
+> >> function. Yet, as I said, I can move the array to the first line in the
+> >> function when I respin the series..
+> >
+> > You still can do better in _your_ series, right?
+>
+> I don't see the benefit of the reverse xmas tree. We have discussed this
+> already in the past :) I definitely have no need to start using reverse
+> xmas tree thingee somewhere it has not been previously used. It may be
+> better in _your_ opinion.
 
---y6Uakq24GtS4M/ov
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, this is a style issue and not a real coding problem. As a
+reviewer with some of a background I feel that reversed xmas tree
+ordering is better to read, maintain, and review. So, as a reviewer I
+have an opinion, as a maintainer I can speak for the IIO subsystem,
+since it's not on my watch.
 
-On Wed, Aug 17, 2022 at 04:16:17PM +0200, Julien Panis wrote:
-> The Enhanced Capture (ECAP) module can be used to timestamp events
-> detected on signal input pin. It can be used for time measurements
-> of pulse train signals.
->=20
-> ECAP module includes 4 timestamp capture registers. For all 4 sequenced
-> timestamp capture events (1->2->3->4->1->...), edge polarity (falling/ris=
-ing
-> edge) can be selected.
->=20
-> This driver leverages counter subsystem to :
-> - select edge polarity for all 4 capture events (event mode)
-> - log timestamps for each capture event
-> Event polarity, and CAP1/2/3/4 timestamps give all the information
-> about the input pulse train. Further information can easily be computed :
-> period and/or duty cycle if frequency is constant, elapsed time between
-> pulses, etc...
->=20
-> Modifications since v4:
-> 	- Modify yaml commit message prefix (dt-bindings)
-> 	- Modify driver file name & Makefile (ti-ecap-capture)
-> 	- Modify compilation flag name in Kconfig (TI_ECAP_CAPTURE)
-> 	- Select REGMAP_MMIO in Kconfig
-> 	- Add capture items to sysfs-bus-counter ABI documentation
-> 	- Cleanup probe function (dev_err_probe & devm_clk_get_enabled & devm_ad=
-d_action_or_reset for PM)
-> 	- Enable/Disable device clock in suspend/resume functions
-> 	- Add PM explanations
-> 	- Add ECAP clock signal & 'frequency' sysfs entry
-> 	- Replace elapsed_time & spinlock by nb_ovf (atomic_t) & 'count_cumul' s=
-ysfs entry
-> 	- Add counter overflow event
-> 	- Modify 'name' sysfs entry for signal0 & signal1 & count0
-> 	- Modify watch_validate function
-> 	- Add macros for callbacks related to cap1/2/3/4
->=20
-> Userspace commands :
-> 	### SIGNAL INPUT ###
-> 	cd /sys/bus/counter/devices/counter0/signal0
->=20
-> 	# Get available polarities for each capture event
-> 	cat polarity1_available
-> 	cat polarity2_available
-> 	cat polarity3_available
-> 	cat polarity4_available
->=20
-> 	# Get polarity for each capture event
-> 	cat polarity1
-> 	cat polarity2
-> 	cat polarity3
-> 	cat polarity4
->=20
-> 	# Set polarity for each capture event
-> 	echo rising edge > polarity1
-> 	echo falling edge > polarity2
-> 	echo rising edge > polarity3
-> 	echo falling edge > polarity4
->=20
-> 	### SIGNAL CLOCK ###
-> 	cd /sys/bus/counter/devices/counter0/signal1
->=20
-> 	# Get clock rate
-> 	cat frequency
->=20
-> 	### COUNT ###
-> 	cd /sys/bus/counter/devices/counter0/count0
->=20
-> 	# Run ECAP
-> 	echo 1 > enable
->=20
-> 	# Get current timebase counter value
-> 	cat count
->=20
-> 	# Get cumulated counter value
-> 	cat count_cumul
->=20
-> 	# Get captured timestamps
-> 	cat capture1
-> 	cat capture2
-> 	cat capture3
-> 	cat capture4
->=20
-> 	# Note that counter watches can also be used to get
-> 	# data from userspace application
-> 	# -> see tools/counter/counter_example.c
->=20
-> 	# Stop ECAP
-> 	echo 0 > enable
->=20
-> Julien Panis (3):
->   dt-bindings: counter: add ti,am62-ecap-capture.yaml
->   Documentation: ABI: sysfs-bus-counter: add capture items
->   counter: ti-ecap-capture: capture driver support for ECAP
->=20
->  Documentation/ABI/testing/sysfs-bus-counter   |  49 ++
->  .../counter/ti,am62-ecap-capture.yaml         |  61 ++
->  drivers/counter/Kconfig                       |  15 +
->  drivers/counter/Makefile                      |   1 +
->  drivers/counter/ti-ecap-capture.c             | 624 ++++++++++++++++++
->  include/uapi/linux/counter.h                  |   2 +
->  6 files changed, 752 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/counter/ti,am62-eca=
-p-capture.yaml
->  create mode 100644 drivers/counter/ti-ecap-capture.c
->=20
-> --=20
-> 2.25.1
+> >>>>>>> this case you even can move it out of the function, so we will see
+> >>>>>>> clearly that this is (not a hidden) global variable.
+> >>>>>>
+> >>>>>> Here I do disagree with you. Moving the array out of the function makes
+> >>>>>> it _much_ less obvious it is not used outside this function. Reason for
+> >>>>>> making is "static const" is to allow the data be placed in read-only
+> >>>>>> area (thanks to Guenter who originally gave me this tip).
+> >>
+> >> Just wanted to correct - it was Sebastian Reichel, not Guenter who
+> >> explained me why doing local static const arrays is better than plain const.
+> >
+> > Did he suggest putting it inside the function?
+>
+> He asked me to convert a local array to static const. I though like you
+> do now that the local array should not be static but just const - and he
+> corrected me in his reply. This can be seen in the discussion I linked
+> below.
 
-Hello Julien,
+Yes, and it's irrelevant to what I'm trying to tell you.
 
-I'm CCing a number of other developers here who have indicated interest
-in counter timestamp functionality in past, just in case they would like
-to particpate in this discussion.
+> >>>>> "static" in C language means two things (that's what come to my mind):
+> >>>>> - for functions this tells that a function is not used outside of the module;
+> >>>>> - for variables that it is a _global_ variable.
+> >>>>>
+> >>>>> Hiding static inside functions is not a good coding practice since it
+> >>>>> hides scope of the variable.
+> >>>>
+> >>>> For const arrays the static in function does make sense. Being able to
+> >>>> place the data in read-only areas do help with the memory on limited
+> >>>> systems.
+> >>>
+> >>> I'm not sure we are on the same page. I do not object to the "const"
+> >>> part and we are _not_ talking about that.
+> >>
+> >> Maybe the explanation by Sebastian here can put us on the same page:
+> >> https://lore.kernel.org/all/20190502073539.GB7864@localhost.localdomain/
+> >> https://lore.kernel.org/all/322fa765ddd72972aba931c706657661ca685afa.camel@fi.rohmeurope.com/
+> >
+> > Again, you are too focused on "const", I'm talking about "static". The
+> > above doesn't clear a bit regarding why you hide the global variable
+> > inside a function. I don't see either Sebastian's clear point on this.
+>
+> I don't really see why you talk about "hiding a global variable in a
+> function"? A static variable which is declared in function is not
+> global. It is local.
 
-Adding buffers to the Counter subsystem will be a user-visible ABI
-change, so I want to make sure we get the interface design correct
-before we merge any of those changes; once it's exposed to userspace it
-can't be changed. However, we can still improve your patches while we
-develop this interface, so revisions are welcome even if I can't merge
-your counter driver until we iron out the Counter subsystem buffer
-interface.
+SInce it's static it's global by nature, but local by namespace.
 
-So in the v4 patchset we discussed introducing a new counter_comp_type
-COUNTER_COMP_BUFFER_U64 enum constant with respective counter_comp read
-callbacks::
+> It causes no more name collisions than a regular
+> local variable does so I really don't understand your reasoning.
 
-     int (*count_buffer_u64_read)(struct counter_device *counter,
-                                  struct counter_count *count,
-                                  size_t index, u64 *val);=20
+And I have no other words to explain it to you. You are using a global
+variable in the scope of function. This is not good for the
+maintenance and development as it's prone to get an issue in the
+future.
 
-Drive authors can then handle buffer reads by receiving an "index",
-locating the value at that buffer offset, and returning the value via
-the "val" u64 pointer.
+> >>>>> And if you look into the kernel code, I
+> >>>>> believe the use you are proposing is in minority.
+> >>>>
+> >>>> I don't know about the statistics. What I know is that we do have a
+> >>>> technical benefits when we use static const arrays instead of non static
+> >>>> ones in the functions. I do also believe placing the variables in blocks
+> >>>> is a good practice.
+> >>>
+> >>> Yes, and global variables are better to be seen as global variables.
+> >>>
+> >>>> I tend to agree with you that using local, non const statics has
+> >>>> pitfalls - but the pitfalls do not really apply with const ones. You
+> >>>> know the value and have no races. Benefit is that just by seeing that no
+> >>>> pointer is returned you can be sure that no "sane code" uses the data
+> >>>> outside the function it resides.
+> >>>
+> >>> Putting a global variable (const or non-const) to the function will
+> >>> hide its scope and it is prone to getting two variables with the same
+> >>> or very similar names with quite different semantics.
+> >>
+> >> I don't see how moving something from a local block to a global scope
+> >> does make conflicts less of an issue?
+> >
+> > You may add a static variable inside each function in the same module
+> > and name it "foo" and there will be no conflict, but when you read the
+> > code your brain will be spoiled.
+>
+> And how is it different from reading functions where the regular
+> variables have identical names? I _really_ can't follow your reasoning.
 
-Defining a buffer as Count extensions could be done using a helper
-macro::
+Because they are on the stack and not one per module. When you read
+the code it's very easy to miss that the variable is static if you
+have a lot of other variables defined.
 
-     COUNTER_COMP_COUNT_BUFFER_U64("capture", ecap_cnt_cap_read, 4)
+> > This is simply _bad code practice_. I
+> > don't know how else I can explain this to you.
+> >
+> >> On the contrary, it makes things
+> >> worse as then the moved variable will collide with any other variable in
+> >> any of the functions in the whole file. Having the array as function
+> >> local static makes the naming collisions to be issue only if another
+> >> global variable has the same name.
+> >
+> > Again, you missed my point. I'm talking about reading and analysing
+> > the code.
+>
+> I _definitely_ miss your point here. I have zero problems reading code
+> where static const variables are used in a function. I think it is
+> pretty much as hard as seeing a #defined value - difference being that
+> one can point to the variable.
 
-Originally I considered unrolling this into four COUNTER_COMP_COUNT_U64,
-but I'm unsure if that is possible in GCC. Regardless, I believe it's
-feasible to implement this in counter-chrdev.c by passing the buffer
-length in the "priv" member of struct counter_comp and handling it when
-creating sysfs attributes. I might be able to write a prototype for this
-in the next couple weeks.
+Good for you.
 
-In the end, we should have four buffer elements exposed as sysfs
-attributes under the respective count directory:
+> I admit that static variables whose value is changed can be more of a
+> problem especially when access to function is not serialized.
+>
+> > Otherwise (good) compiler should spill a lot of warnings in
+> > case you have global vs. local naming collision.
+> >
+> >> And if that happened - the chances
+> >> are code would still be correct as the function here is clearly intended
+> >> to use the local one. If someone really later adds a global with the
+> >> same name - and uses the global in this function - then he should have
+> >> noted we have local variable with same name. Additionally - such user
+> >> would be using terribly bad name for a global variable.
+> >>
+> >> Please note that scope of the function local static variable is limited
+> >> to function even if the life-time is not just the life-time of a function.
+> >
+> > Nope. The RO section might be very well flashed into ROM, so...
+>
+> ...so?
 
-* /sys/bus/counter/devices/counterX/count0/capture0
-* /sys/bus/counter/devices/counterX/count0/capture1
-* /sys/bus/counter/devices/counterX/count0/capture2
-* /sys/bus/counter/devices/counterX/count0/capture3=20
+It won't be created by function, it's created by the compiler /
+linker. It won't gone if function gone. e.g.
 
-One worry I do have is whether this will scale well enough; I can
-imagine some future device having a timestamp history buffer of much
-later than four elements. In cases with large buffers, it might be more
-practical to expose a FIFO queue to deliver buffer data. However, the
-existing Counter character device interface isn't designed for data of
-arbitrary length, so we'd likely have to introduce a secondary character
-device to provide the queue.
+__init foo()
+{
+  static bar ...;
+}
 
-We can postpone implementation of such a queue until the need arises and
-focus on just the sysfs interface for this particular driver. If we
-expose each element of the buffer as its own sysfs attribute, then the
-existing Counter character device interface gets access to these
-elements for free without any additional code changes to that part of
-the Counter subsystem.
+is nonsense. And it takes a ROM space.
 
-So my concerns right now are making sure this is a sane design and the
-right path forward to expose device buffer elements in sysfs.
+> >>> That's why it's
+> >>> really not good practice. I would rather see it outside of the
+> >>> function _esp_ because it's static const.
+> >>
+> >> Sorry, I really don't agree with your reasoning here. :(
+> >
+> > So, whom should we listen to here? Because bad code is bad code. And
+> > this is code above.
+>
+> Bad is a subjective concept. I'd say the code gets much worse if we make
+> the local variable a global one.
 
-William Breathitt Gray
+...
 
---y6Uakq24GtS4M/ov
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+To summarize, we have a huge disagreement on the placement of the
+static variables. Not sure we ever get into compromize here, so I
+leave it up to maintainers, but my opinion that it is simply a bad
+code practice.
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYwFZmAAKCRC1SFbKvhIj
-K/ovAP47QIMo+w4JiGDrqtcUb5OvA8DBd6zMjz/pQ4jLO+MWsQD/ZE/q0/vn6zaq
-nx05yy65K++Fl4e6kQJF+/LC4i24fws=
-=dkgg
------END PGP SIGNATURE-----
-
---y6Uakq24GtS4M/ov--
+--
+With Best Regards,
+Andy Shevchenko

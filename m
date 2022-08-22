@@ -2,70 +2,144 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C23659B72D
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Aug 2022 03:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444AB59B8D6
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Aug 2022 07:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbiHVBRD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 21 Aug 2022 21:17:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42800 "EHLO
+        id S232565AbiHVFu2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 22 Aug 2022 01:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231922AbiHVBRC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 21 Aug 2022 21:17:02 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0199D1E3E2
-        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 18:17:01 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id b9so6931171qka.2
-        for <linux-iio@vger.kernel.org>; Sun, 21 Aug 2022 18:17:00 -0700 (PDT)
+        with ESMTP id S232615AbiHVFu1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 22 Aug 2022 01:50:27 -0400
+Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2096.outbound.protection.outlook.com [40.107.135.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3247E25EB0;
+        Sun, 21 Aug 2022 22:50:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=e2XQsDkQrMHtBR7IkILlxlrdi1tkJv2Q0YUbgRhO6/sz5XrxRfWM6rbVHKp9Ly1340Clx87zRdIXc1zko6WNMw0mlUM9FPh83LStuc8BW2KjikrUTlgToofQZqf5Brkb0PKzt8QXsEzCn+GQYD9bLPnrQuTKWMwdZb6u+bNxyv583wRKcc4JyRtWexiZDDGJo7ozNTaebLf8MKExnK9Bk0Iqvd8MIq4YEv2oUZF+iwjL9uaEta9bg12+Ty4eXU5ajoqcH0LwAON+H5kVNRo+uIgD/lS11twssEXmNdVPQgy+q0BOKpYOXz4E2MyK7ISa1X6rdZj8z0+siJjkF6Zh0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zQ6w+fRY8XwOi8WXehmrPlr6hIpFUiQDPKZ6SjLymdk=;
+ b=ZAhzDpJjDTVF+J/QU0pPdznGse5eF18te5JmdvhYSDrcgm/PR4caneKURWAl8DQQQ2qapKjuA8h8C6HpyIWNkfPhzNyHX+QU13slZdrkmCsdQnr/wN3cFVmZGqK0oTnTxFjryGA8hwdWp+e3xbEvW3cMAWFr1srcqWIUpI0dll1hnpwkkNuYF4T6fO3l43BfA1Y7sh2B4UMLMGE3brzDi8JFO8JWCVFN/yIYcuKfnDKSljsqK/9l7fe0gdcyDuFEFWRPN693ZWt0oIHPPeGM13F9vMhgaXZqMPG2EN1wttMH3lUDEdHo5KlZQYNBX20kRmw3E0pvQa+EzXbpZESpog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
+ header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=WVXAkdiIs8qCdp71kfWVrJfdNhiDPacGyIIrV/8vW3Q=;
-        b=yBid5atMicd3g3iBzJYgNAkNY3QBQMi8cKTVX1HIanJkuLa4mu+V2ylGtdXe6RymDk
-         ktZ3VtDvrI/BE7ewZnZqys/DlSn8NlsZqrMGE6Zp/CnP/uZfJX+r5C3+W4GZ9FZkJ3lM
-         OTKGY1PJU1MjuZF+xtUVWOTVofnMday8Cb+z1G3vnRjk14Yo/ogVLKhrizUrq8pctyNj
-         YvDd8frn8C5Od7nFVUaLNT9eE19lqz7pEQMskuzPvalFX3FnXpT1HbjpryIIkDD/rLLW
-         aisdYaI1aSNvC236QySl3KYZPcEA61lYvvCHtMIptgPkMkdFKFmSfQCyfETUtokADNPj
-         ToqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=WVXAkdiIs8qCdp71kfWVrJfdNhiDPacGyIIrV/8vW3Q=;
-        b=Js1ixZA6FDK0E4alla2IpO2LRYNpDee+Ai1WHmShI6kiqtg9qI1VQVK2twnnUZ+4hR
-         Pp5v2rBMnU27t2Dw1Knp1vfoitfZCAVeLPkMqhRF0Iz2H21UCV5n97Lx5WsX+trAB7NN
-         /LON3hk8LjPA9s5zcOxxDtVHnpyU15gosTVyslV4dEfknIEl29dpcysGt6IJP9j6zoUm
-         zyTB774FEl878vKXIBpCqknLk4ObQSojKqHGzhtZBfRAm8smf+0feEGEI90C1fjtVDav
-         pT1wg2s3C27aexVcT3anC8zuJcIMLE8NCDjsGwaKSMwvTlC+8nE7LhSCk0hERerDhlMG
-         DPCQ==
-X-Gm-Message-State: ACgBeo3DOFrWvi3daBdZ/CA48r6yBg69QkgGxB33bBlLR/+drgprJJCb
-        5rM02ADCZCgOHzTMt3cORqhh8A==
-X-Google-Smtp-Source: AA6agR73uQdLSwmBe0AE+AS0LAclYplv+xxA7AGMDiaBIdME6ytvL6kNk/hOS608W4jhBhiFKO03KQ==
-X-Received: by 2002:a05:620a:2721:b0:6ba:c74f:1e04 with SMTP id b33-20020a05620a272100b006bac74f1e04mr11271818qkp.605.1661131020037;
-        Sun, 21 Aug 2022 18:17:00 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id d23-20020ac851d7000000b00342f6c31da7sm7913187qtn.94.2022.08.21.18.16.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Aug 2022 18:16:59 -0700 (PDT)
-Date:   Sun, 21 Aug 2022 21:16:54 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mranostay@ti.com
-Subject: Re: [PATCH v5 3/3] counter: ti-ecap-capture: capture driver support
- for ECAP
-Message-ID: <YwLZBpeeqTnjspCQ@fedora>
-References: <20220817141620.256481-1-jpanis@baylibre.com>
- <20220817141620.256481-4-jpanis@baylibre.com>
+ d=rohmsemiconductor.onmicrosoft.com;
+ s=selector2-rohmsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zQ6w+fRY8XwOi8WXehmrPlr6hIpFUiQDPKZ6SjLymdk=;
+ b=lO/go5DPHyBydCOogixFlO5Ow/8fVRApYTjUzGe4Ia/j978zZEYdMTeNpmpKsCUDarB110l5ZaidwKUUYQO820A6v/rCbTjjaJNkCCHymw1qAksqVyEyTTk9EYCwzWHr5Az7yCCO1/cy75+NuVyj+8bP4awrKizQvRaYC/z0Xeg=
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
+ by FR0P281MB1516.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:86::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5566.14; Mon, 22 Aug
+ 2022 05:50:22 +0000
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::992c:32dd:290c:9688]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::992c:32dd:290c:9688%5]) with mapi id 15.20.5566.014; Mon, 22 Aug 2022
+ 05:50:22 +0000
+From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Xiang wangx <wangxiang@cdjrlc.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 08/14] iio: bmg160_core: Simplify using
+ devm_regulator_*get_enable()
+Thread-Topic: [PATCH v3 08/14] iio: bmg160_core: Simplify using
+ devm_regulator_*get_enable()
+Thread-Index: AQHYtACmW7LThFXrJk6XtUKUaL8f3K2230iAgAByLoCAAAHeAIAABmyAgAAIRACAAC62gIAAaR6AgAASRoCAAUoHAIABF/uA
+Date:   Mon, 22 Aug 2022 05:50:22 +0000
+Message-ID: <19d30866-1b2f-fd45-8ab7-3628319a70d2@fi.rohmeurope.com>
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
+ <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+ <CAHp75VePr790pXZ5AiRnrPmxkOgZ3YKRTbABE6dvk+udQYrXGA@mail.gmail.com>
+ <795d16f2-4dee-7492-4a87-e928020efebe@fi.rohmeurope.com>
+ <CAHp75VdGhXpD8YgwkVPLCBEMmupBiTDS4FChocJFVo+BBZ-2KA@mail.gmail.com>
+ <0823a6e8-b325-78c5-d060-c5f9442e3df8@fi.rohmeurope.com>
+ <CAHp75VdMA5mkxkMrtiRTGn5F-5GWjxKyuD5iBuj3HKWqZZMxkg@mail.gmail.com>
+ <cff8d041-f3c4-3faf-85a9-acabe60d2de2@gmail.com>
+ <CAHp75VcVziFMbPtKi1FgD1VR42HjeLUJ5fzxYSRqEbfSZ185oQ@mail.gmail.com>
+ <7c2651fe-4f3e-70fd-bdaa-35cb0d66a31a@gmail.com>
+ <CAHp75VfOYrDvNJ-ikGN2EU1NRjmQbiyfX-5TL2cUpZ1dreFBUQ@mail.gmail.com>
+In-Reply-To: <CAHp75VfOYrDvNJ-ikGN2EU1NRjmQbiyfX-5TL2cUpZ1dreFBUQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: dc68dad8-72ec-464b-808f-08da840233f4
+x-ms-traffictypediagnostic: FR0P281MB1516:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: th/sMJTBOUWSz9E/3NxtzndH2XUEJLToUDmbBs4vQ/Vi2r2UFNcEX8w3g/tDeE141ImAZEmD6tLZXOF5PvhlFOedglF5ozTnwXpksKTzlmvJyIej8xBIJo7FZ+Koq2WTMQ3o6R1UuSYKsYdhq4OWffQR/7t4GJDb9Fvm9wGRuY0jg31ogY2i2PKvx4VCN9bw96K3DJUBwV2c5pbVepRkhEOHJ5sHOjRXx8f/GW39UJidh4H2Me4NUPx9jFmySferob4+/lAvFC2pajaq3+Pz8OifhpAWlSNQcRU9D4V0rKTjCiYKN6WirpCJ68J6KRPLZ9kT9B+OhR8jkCOKCK54z+1MVtc9WhqCFoNHivm7ws9+ZWEADJ2zb3JojGje1Wc8yIfjtSRP7ntO2tS0Fvy9b8CNqPTcX6cR1GZt2ngoO+BVzKy3CwEOUjPsJhTDks4EX8O/Flq7BY3xNhdukacLNZfTGsULpi5VN0CtKUANMuvZanhnF06aPhx3UqM9odJHdPIzf9Zg+0I3Soq/ovA7L+h2l03ifljSxqVkCYVu/HDjviPvQ56xA9YQFphhsg82m1s1+nzv1dmVaiqa4tuCW0Yw28R5JPjKIO74giqnY2BU9pYODktat6ZO7kOaJ0QKCpY3E7Pf8z9QA3lx/UvYE/ww1tslv02lc9TKNwirRZYyhfX6v9+I3l2bXQb7fhQ59MwLbDp2eejh0MP1sgYY4xAuKuhlX/zRCB9vB9SrrGo3OGaCWIxHisvkK0VSqNOJfgVBDKzCR/BHIFQRydB5MmzTgUrMvAW6PHgDVH2eEwS5VmROaze5r4NyBsyx4mRfsxacrA7e/TJxqGKMsrWWYA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(396003)(39830400003)(376002)(366004)(346002)(136003)(6486002)(41300700001)(8676002)(478600001)(4326008)(316002)(91956017)(54906003)(38100700002)(110136005)(76116006)(66946007)(66446008)(66476007)(66556008)(64756008)(8936002)(2616005)(186003)(83380400001)(38070700005)(31696002)(122000001)(2906002)(71200400001)(31686004)(86362001)(6506007)(6512007)(53546011)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TDREd0t2cEh6bk0wUGY1dk9QQ0ZPUHRWOVhkdTBCcGRuQXd5OHZoN0NVS29w?=
+ =?utf-8?B?Zys3b1JNZHhGWjdmSXRqYjJNVFpmOTBKMG9aUHM3VncwcWhyTE5EcjZLeVlD?=
+ =?utf-8?B?YTdIV3JDSGFza1hmay94cG4ybXFxcWwyelgxU29iQ3Q4c0JWMW9FN3MxYUVr?=
+ =?utf-8?B?RTk5QmhwbHFYK1dZQkM0d0FkL01LOFBURE1FRTJDK3I3ZGpsYVdsOTVHeEE1?=
+ =?utf-8?B?cG5qZnY2VmwzRDlVUm5iYU9uWHhkdjdUdzRGK2ZYNk9na2JqZ3pwY2x2eXJ0?=
+ =?utf-8?B?RFI0VWhraTJ1Wlh1cy9zSnFsbWx1L1BHNDMwRWg0ZTcwdXNpc1I4d0pPSHpm?=
+ =?utf-8?B?QjRGcG9kTUV5dHptYnNQalo5cjdCY29tVXh2V0FVdkVYZXVXcHdOM1BqbjRw?=
+ =?utf-8?B?V1Jrc3VKeHF6b1FuVC9DWGloMnZLZjhCcjNwblBaaFhMMU1lMGt6U21ZbE9M?=
+ =?utf-8?B?dmNqS09vWkg0SWt2S2VoNDExblRlbWEzVnh0aGkzZXBWNEFkWVZSVUNIdHJo?=
+ =?utf-8?B?NGo0dzBZV1dVN3ozYnYvRU44OEd1dUNKb2RFQTNCR3IzZjMzSzdGcyt3Q1RI?=
+ =?utf-8?B?UlR1WFFmS2hLMURQUk5pdHVjMlVZaTNFVlFTblpPWXM4bW9XeGpEb3BiYzlS?=
+ =?utf-8?B?VEVOYTFWVnRET0o4Q2ZXYXNhVEYyVVUxTU1JcG95bjI0UlhoNWJ3ZC9WZmow?=
+ =?utf-8?B?a0RIV1pra0xnZ0N3NVc2RnhUU29RK05kL1RsWnpTcmlJc29ZWndCUTRXTDg5?=
+ =?utf-8?B?UWxZdmllempubFNaQmY1VC9EWEpLWUlQRGcwYWtoUm9McWJJUm5OWDdVSFVs?=
+ =?utf-8?B?Vmh5SVNBSkZEdDVMSGJueklTT0NOSEhBMUxKckFaU0hZd2s2MDlkYS80MXh4?=
+ =?utf-8?B?L0YrK3RlQkVJcjNpV05VVXBmMEd4OUpieTNDVWkwR1ZoVXVpakNXbjNQeEts?=
+ =?utf-8?B?K1BRQUR4ZGN4SHQ3TkRmOW9MWE51L2RCVVdRRStUc213UWhpVmgvYVpZbVZN?=
+ =?utf-8?B?OUlJUDVDRHd3U2UxdE4xZUFSVU5mSGpNQk1BdXVzdVMvdTdseWpkVHlJSHdL?=
+ =?utf-8?B?eHNqSWZxMjRzZklqVzFRdGxwNDBhYTdZZmh3WkxSaWl2SGhJMU54VjN2WFRI?=
+ =?utf-8?B?LzVjYVZzVkpMQ2E2YmpHM1h2K3JtMVV5d2NLMVBNM05WZTc4NHJ6a1pGeElr?=
+ =?utf-8?B?dlRrbjN4cEw1aXFMR1B1cXhIL1FDOTFjdFVMK2k2YnJPRit1aDg0KzdDTVVm?=
+ =?utf-8?B?TlJHN3krQkhaeC9aZDh3cURyUzVKZHdpMUtuVUhoQXd0NTFpa1dvUXlQSHFx?=
+ =?utf-8?B?dmRUZ2dqczVLUGZMZTQrV1ZpV01OVHgwTnExYTIyeWl4dGdPV3M3SjJqUDZw?=
+ =?utf-8?B?cWdtMHVSaTcxNjdIY21BcElSRWZMYkRNQTJlbHhwMWlpQytjSGMzYmR0MGNl?=
+ =?utf-8?B?RDlxcWtVLzhxTEtzZ1h2b3hsOEFGVnlUTU1wNjhEVTBPbGlMcjRUS0VhNUJV?=
+ =?utf-8?B?Tkp1VDFyV0ZjQ2ZucVovdnBpSU96R3hBTDlXT3g3SWFSS2k0Z1lWS21XWU9u?=
+ =?utf-8?B?Lyt4WXlOSit3N3ZTZDlBS0wzSmd5Y1NMSUkxMU90aWc2Z21NbWljU2hXYWlQ?=
+ =?utf-8?B?YWF4WXh3RFpGQi9iYjlxbVJVL050V2lRNzZ2WkxRc0tmSDJCeHRvcFYySnNW?=
+ =?utf-8?B?bGpXSUd4ZHdrREhJY2dFNHVrdS96WWRqbmlNdFdpTUdYTmtWdGQxR0tTVlVX?=
+ =?utf-8?B?MnFHbzlqbllaWDg2blcxVW1uRWQrS0dXaWFTT0ZxN1YvK2JWWHFZRk9FMEsz?=
+ =?utf-8?B?ajlaYUJud1hMQmpSZGRMYXNxYUhBaFpOYXZJYk5WY3VDL3o4SExtTFBURnpq?=
+ =?utf-8?B?bTk0WTYvaXBEaWpXTE1nMUFZalc5ZkpKTzFoN0ZZdkNVd01TQkEyUjVkWVhY?=
+ =?utf-8?B?L2dTaVpibUkxbTNWU2Fwa3FTbHlsSVhxUmMxbFZWNGFsdXZIeHo4S2ZRYS9G?=
+ =?utf-8?B?cUttU2Y3NEhOd3FzSVV4MzVvZ1V6UDBGTjBVajRHV3AvMlp3OHIvRWY1ckJT?=
+ =?utf-8?B?UE9HR3BEL2hMZExzelBBSjc1WVdNSlNBeTk4bW90WUcxQWdnL2ZMeVhYRTZD?=
+ =?utf-8?B?cXhDb0lNQy9pOWNvYko2L1dqdXgvQTFwdDFOU3k2WU5PQjBKODE3WnFwY1M2?=
+ =?utf-8?Q?P6etQbUwiuKrvmaXiWwS2Y4=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <12751AC1F7754444AA23A62E2C7D7916@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="PAd1UVqmvZMkWQHS"
-Content-Disposition: inline
-In-Reply-To: <20220817141620.256481-4-jpanis@baylibre.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-OriginatorOrg: fi.rohmeurope.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc68dad8-72ec-464b-808f-08da840233f4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2022 05:50:22.2184
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /84lD8vve5BY6yhdcbL9/FxrZdY0NXUIFUTEru/NJ4TH0A/pAVmeitwjNATxYCcuEb7YBr//Gj/+p+9i/kJhwB3C23neuWzADsV048AwBU02l6KkVVDR7t5aA4qFXCo7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB1516
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,433 +147,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---PAd1UVqmvZMkWQHS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Aug 17, 2022 at 04:16:20PM +0200, Julien Panis wrote:
-> ECAP hardware on TI AM62x SoC supports capture feature. It can be used
-> to timestamp events (falling/rising edges) detected on signal input pin.
->=20
-> This commit adds capture driver support for ECAP hardware on AM62x SoC.
->=20
-> In the ECAP hardware, capture pin can also be configured to be in
-> PWM mode. Current implementation only supports capture operating mode.
-> Hardware also supports timebase sync between multiple instances, but
-> this driver supports simple independent capture functionality.
->=20
-> Signed-off-by: Julien Panis <jpanis@baylibre.com>
-> ---
->  drivers/counter/Kconfig           |  15 +
->  drivers/counter/Makefile          |   1 +
->  drivers/counter/ti-ecap-capture.c | 624 ++++++++++++++++++++++++++++++
->  include/uapi/linux/counter.h      |   2 +
->  4 files changed, 642 insertions(+)
->  create mode 100644 drivers/counter/ti-ecap-capture.c
->=20
-> diff --git a/drivers/counter/Kconfig b/drivers/counter/Kconfig
-> index 5edd155f1911..08235268af0b 100644
-> --- a/drivers/counter/Kconfig
-> +++ b/drivers/counter/Kconfig
-> @@ -101,4 +101,19 @@ config INTEL_QEP
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called intel-qep.
-> =20
-> +config TI_ECAP_CAPTURE
-> +	tristate "TI eCAP capture driver"
-> +	depends on ARCH_OMAP2PLUS || ARCH_DAVINCI_DA8XX || ARCH_KEYSTONE || ARC=
-H_K3 || COMPILE_TEST
-> +	depends on HAS_IOMEM
-> +	select REGMAP_MMIO
-> +	help
-> +	  Select this option to enable the Texas Instruments Enhanced Capture
-> +	  (eCAP) driver in input mode.
-> +
-> +	  It can be used to timestamp events (falling/rising edges) detected
-> +	  on signal input pin.
-
-The phrase "signal input pin" sounds ambiguous; perhaps "ECAP input
-signal" or similar works better here.
-
-> +
-> +	  To compile this driver as a module, choose M here: the module
-> +	  will be called ti-ecap-capture.
-> +
->  endif # COUNTER
-> diff --git a/drivers/counter/Makefile b/drivers/counter/Makefile
-> index 8fde6c100ebc..b9a369e0d4fc 100644
-> --- a/drivers/counter/Makefile
-> +++ b/drivers/counter/Makefile
-> @@ -14,3 +14,4 @@ obj-$(CONFIG_TI_EQEP)		+=3D ti-eqep.o
->  obj-$(CONFIG_FTM_QUADDEC)	+=3D ftm-quaddec.o
->  obj-$(CONFIG_MICROCHIP_TCB_CAPTURE)	+=3D microchip-tcb-capture.o
->  obj-$(CONFIG_INTEL_QEP)		+=3D intel-qep.o
-> +obj-$(CONFIG_TI_ECAP_CAPTURE)	+=3D ti-ecap-capture.o
-> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-=
-capture.c
-> new file mode 100644
-> index 000000000000..b00ddf122bbd
-> --- /dev/null
-> +++ b/drivers/counter/ti-ecap-capture.c
-> @@ -0,0 +1,624 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * ECAP Capture driver
-> + *
-> + * Copyright (C) 2022 Julien Panis <jpanis@baylibre.com>
-> + */
-> +
-> +#include <linux/atomic.h>
-> +#include <linux/clk.h>
-> +#include <linux/counter.h>
-> +#include <linux/err.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm_runtime.h>
-> +#include <linux/regmap.h>
-> +
-> +#define ECAP_DRV_NAME "ecap"
-> +
-> +/* ECAP event IDs */
-> +enum ecap_event_id {
-> +	/* Capture events */
-> +	ECAP_CEVT1,
-> +	ECAP_CEVT2,
-> +	ECAP_CEVT3,
-> +	ECAP_CEVT4,
-> +	/* Counter overflow event */
-> +	ECAP_CNTOVF,
-> +	/* Helpers for capture events */
-> +	ECAP_CEVT_LAST =3D ECAP_CEVT4,
-> +	ECAP_NB_CEVT =3D ECAP_CEVT_LAST + 1,
-> +	/* Helpers for all events */
-> +	ECAP_EVT_LAST =3D ECAP_CNTOVF,
-> +	ECAP_NB_EVT =3D ECAP_EVT_LAST + 1,
-> +};
-
-You're relying on a side-effect of enum structures to define your ECAP_*
-constants in sequence; this obscures the intention of your code and
-makes it more difficult to understand the purpose of the constants.
-The enum structure is unnecessary; these are register flags so C defines
-are sufficent and clear enough to represent these values.
-
-> +static void ecap_cnt_capture_enable(struct counter_device *counter, bool=
- rearm)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +	unsigned int regval;
-> +
-> +	pm_runtime_get_sync(counter->parent);
-> +
-> +	/* Enable interrupts on events */
-> +	regmap_update_bits(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG,
-> +			   ECAP_EVT_EN_MASK, ECAP_EVT_EN_MASK);
-> +
-> +	/* Run counter */
-> +	regval =3D ECAP_SYNCO_DIS_MASK | ECAP_STOPVALUE_MASK | ECAP_ECCTL_EN_MA=
-SK;
-> +	if (rearm) {
-> +		atomic_set(&ecap_dev->nb_ovf, 0);
-> +		regmap_write(ecap_dev->regmap, ECAP_TSCNT_REG, 0);
-
-Looks like you're resetting both nb_ovf and TSCNT here. This combines
-too many operations in one extension, whereas extensions are intended to
-serve a restricted and well-defined scope of behavior. The "enable"
-extension is intended to serve as a pause/unpause mechanism for the
-respective Count, so don't reset the Count data here. Instead break
-these operations into their own extensions: implement a count_write()
-callback to reset TSCNT, and similarly for nb_ovf.
-
-> +static int ecap_cnt_action_read(struct counter_device *counter,
-> +				struct counter_count *count,
-> +				struct counter_synapse *synapse,
-> +				enum counter_synapse_action *action)
-> +{
-> +	*action =3D COUNTER_SYNAPSE_ACTION_NONE;
-> +
-> +	return 0;
-> +}
-
-This action_read() callback serves both "ECAP Input Signal" and "ECAP
-Clock Signal" so you need to check the struct counter_synapse to see
-which Signal is being handled. Return COUNTER_SYNAPSE_ACTION_NONE for
-ECAP_INPUT_SIG, and COUNTER_SYNAPSE_ACTION_BOTH_EDGES for ECAP_CLOCK_SIG
-(assuming TSCNT increments on both edges of the clock).
-
-> +
-> +static int ecap_cnt_watch_validate(struct counter_device *counter,
-> +				   const struct counter_watch *watch)
-> +{
-> +	return (watch->channel =3D=3D ECAP_CHAN &&
-> +		(watch->event =3D=3D COUNTER_EVENT_CAPTURE ||
-> +		 watch->event =3D=3D COUNTER_EVENT_OVERFLOW)) ? 0 : -EINVAL;
-
-One-liners are typically nice, but it is difficult to parse the meaning
-of expressions with multiple layers. The logic of this conditional check
-is clearer if you separate the channel validation from the event type
-validation with their own if-statement blocks.
-
-> +static int ecap_cnt_cap_set_pol(struct counter_device *counter,
-> +				struct counter_signal *signal,
-> +				u8 inst, u32 pol)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	if (ecap_dev->enabled)
-> +		return -EBUSY;
-> +	if (pol > 1)
-> +		return -EINVAL;
-
-The boundary check for "pol" can be removed; COUNTER_COMP_SIGNAL_ENUM
-already ensures that "pol" will be within the boundaries of your Counter
-enum array.
-
-> +static int ecap_cnt_count_cumul_read(struct counter_device *counter,
-> +				     struct counter_count *count, u64 *val)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	*val =3D ((u64)U32_MAX + 1) * atomic_read(&ecap_dev->nb_ovf);
-> +
-> +	return 0;
-> +}
-
-Reimplement this as "ceiling" and "num_overflows"; simply return U32_MAX
-and nb_ovf respectively.
-
-> +static int ecap_cnt_clk_get_freq(struct counter_device *counter,
-> +				 struct counter_signal *signal, u64 *freq)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	*freq =3D ecap_dev->clk_rate;
-
-Looks like this is the only place you ever use clk_rate. Just perform
-the clk_get_rate() call here and you won't need clk_rate in ecap_dev
-anymore.
-
-> +static const struct counter_ops ecap_cnt_ops =3D {
-> +	.count_read =3D ecap_cnt_count_read,
-> +	.function_read =3D ecap_cnt_function_read,
-> +	.action_read =3D ecap_cnt_action_read,
-> +	.watch_validate =3D ecap_cnt_watch_validate,
-> +};
-
-Add a count_write callback to set TSCNT. This will allow users to reset
-TSCNT back to 0 when desired.
-
-> +static const enum counter_synapse_action ecap_cnt_actions[] =3D {
-> +	COUNTER_SYNAPSE_ACTION_NONE,
-> +};
-
-Define a second array with just COUNTER_SYNAPSE_ACTION_BOTH_EDGES for
-the clock Signal (assuming the count increments on both edges) and pass
-it to the respective clock signal Synapse actions_list.
-
-> +static struct counter_comp ecap_cnt_signal_ext[] =3D {
-> +	COUNTER_COMP_SIGNAL_ENUM("polarity1", ecap_cnt_cap1_get_pol,
-> +				 ecap_cnt_cap1_set_pol, ecap_cnt_cap_avail_pol),
-> +	COUNTER_COMP_SIGNAL_ENUM("polarity2", ecap_cnt_cap2_get_pol,
-> +				 ecap_cnt_cap2_set_pol, ecap_cnt_cap_avail_pol),
-> +	COUNTER_COMP_SIGNAL_ENUM("polarity3", ecap_cnt_cap3_get_pol,
-> +				 ecap_cnt_cap3_set_pol, ecap_cnt_cap_avail_pol),
-> +	COUNTER_COMP_SIGNAL_ENUM("polarity4", ecap_cnt_cap4_get_pol,
-> +				 ecap_cnt_cap4_set_pol, ecap_cnt_cap_avail_pol),
-> +};
-
-Zero-based indexing is typically expected so start at polarity0 instead
-of polarity1.
-
-> +static struct counter_signal ecap_cnt_signals[] =3D {
-> +	{
-> +		.id =3D ECAP_INPUT_SIG,
-> +		.name =3D "ECAP Input Signal",
-> +		.ext =3D ecap_cnt_signal_ext,
-> +		.num_ext =3D ARRAY_SIZE(ecap_cnt_signal_ext),
-> +	},
-> +	{
-> +		.id =3D ECAP_CLOCK_SIG,
-> +		.name =3D "ECAP Clock Signal",
-> +		.ext =3D ecap_cnt_clock_ext,
-> +		.num_ext =3D ARRAY_SIZE(ecap_cnt_clock_ext),
-> +	},
-> +};
-> +
-> +static struct counter_synapse ecap_cnt_synapses[] =3D {
-> +	{
-> +		.actions_list =3D ecap_cnt_actions,
-> +		.num_actions =3D ARRAY_SIZE(ecap_cnt_actions),
-> +		.signal =3D &ecap_cnt_signals[ECAP_INPUT_SIG],
-> +	},
-> +	{
-> +		.actions_list =3D ecap_cnt_actions,
-> +		.num_actions =3D ARRAY_SIZE(ecap_cnt_actions),
-> +		.signal =3D &ecap_cnt_signals[ECAP_CLOCK_SIG],
-> +	},
-> +};
-
-I find it more natural to list the clock signal first because that's
-what's incrementing the TSCNT counter. But this isn't necessarily wrong,
-so I'll leave it up to you if you want to reorder your Signals and
-Synapses arrays.
-
-> +static struct counter_comp ecap_cnt_count_ext[] =3D {
-> +	COUNTER_COMP_COUNT_U64("capture1", ecap_cnt_cap1_read, NULL),
-> +	COUNTER_COMP_COUNT_U64("capture2", ecap_cnt_cap2_read, NULL),
-> +	COUNTER_COMP_COUNT_U64("capture3", ecap_cnt_cap3_read, NULL),
-> +	COUNTER_COMP_COUNT_U64("capture4", ecap_cnt_cap4_read, NULL),
-
-Same comment about zero-based indexing here as with the polarity
-extensions: start with capture0 instead of capture 1.
-
-> +	COUNTER_COMP_COUNT_U64("count_cumul", ecap_cnt_count_cumul_read, NULL),
-> +	COUNTER_COMP_ENABLE(ecap_cnt_enable_read, ecap_cnt_enable_write),
-> +};
-
-Replace "count_cumul" with "num_overflows" (COUNTER_COMP_COUNT_U64) and
-"ceiling" (COUNTER_COMP_CEILING).
-
-> +static struct counter_count ecap_cnt_counts[] =3D {
-> +	{
-> +		.id =3D 0,
-> +		.name =3D "ECAP Timestamp Counter",
-
-You probably don't need "ECAP" in the Count name because users already
-know they interacting with an ECAP device when they read the sysfs
-"counterX/name" attribute.
-
-> +static irqreturn_t ecap_cnt_isr(int irq, void *dev_id)
-> +{
-> +	struct counter_device *counter_dev =3D dev_id;
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
-> +	unsigned int clr =3D 0;
-> +	unsigned int flg;
-> +	int i;
-> +
-> +	regmap_read(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG, &flg);
-> +
-> +	for (i =3D ECAP_CEVT_LAST ; i <=3D ECAP_EVT_LAST ; i++) {
-> +		if (flg & ECAP_EVT_FLG_BIT(i)) {
-
-Use the for_each_set_bit() macro to simplify this for-loop+if check.
-
-> +			if (i !=3D ECAP_CNTOVF) {
-
-Move the check for overflow outside of the for-loop because it's
-conceptually unrelated to the other flags. The for-loop can then be
-focused on just the capture events.
-
-> +				/* Input signal edge detected on last CAP (CAP4) */
-> +				counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, ECAP_CHAN);
-
-Restricting event pushes to just CAP4 means losing three quarters of the
-possible captures events this device is capable of reporting. By pushing
-a Counter event on every capture, users have much finer control over the
-operation of their device, allowing them to perform measurements of
-instantaneous pulse widths among other such cycle analyses.
-
-Your particular use-case requires analysing four captures at a time. If
-you push every capture event on the same channel, you would have to
-ignore the majority of them; checking for CAP4 on every capture event is
-cumbersome for userspace in such a scenario. To reconcile the need to
-report all device events with the desire to filter some of those capture
-events, the solution is to push each CAPx event to respective Counter
-event channels::
-
-    counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, i);
-
-This intuitively matches an update to a capture buffer element with a
-respective Counter event channel. For your use-case, this requires no
-change to a userspace application reading the sysfs attributes, and a
-minimal change to one interacting with the character device node:
-specifying the particular Counter event channel in your Counter watches;
-the rest of users are able to watch all capture events, or just some, as
-they please.
-
-> +static int ecap_cnt_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct ecap_cnt_dev *ecap_dev;
-> +	struct counter_device *counter_dev;
-> +	void __iomem *mmio_base;
-> +	int ret;
-> +
-> +	counter_dev =3D devm_counter_alloc(dev, sizeof(*ecap_dev));
-> +	if (IS_ERR(counter_dev))
-> +		return PTR_ERR(counter_dev);
-> +
-> +	counter_dev->name =3D ECAP_DRV_NAME;
-> +	counter_dev->parent =3D dev;
-> +	counter_dev->ops =3D &ecap_cnt_ops;
-> +	counter_dev->signals =3D ecap_cnt_signals;
-> +	counter_dev->num_signals =3D ARRAY_SIZE(ecap_cnt_signals);
-> +	counter_dev->counts =3D ecap_cnt_counts;
-> +	counter_dev->num_counts =3D ARRAY_SIZE(ecap_cnt_counts);
-> +
-> +	ecap_dev =3D counter_priv(counter_dev);
-> +
-> +	ecap_dev->clk =3D devm_clk_get_enabled(dev, "fck");
-> +	if (IS_ERR(ecap_dev->clk))
-> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->clk), "failed to get clock=
-\n");
-> +
-> +	ecap_dev->clk_rate =3D clk_get_rate(ecap_dev->clk);
-> +	if (!ecap_dev->clk_rate) {
-> +		dev_err(dev, "failed to get clock rate\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	mmio_base =3D devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(mmio_base))
-> +		return PTR_ERR(mmio_base);
-> +
-> +	ecap_dev->regmap =3D devm_regmap_init_mmio(dev, mmio_base, &ecap_cnt_re=
-gmap_config);
-> +	if (IS_ERR(ecap_dev->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(ecap_dev->regmap), "failed to init r=
-egmap\n");
-> +
-> +	ret =3D platform_get_irq(pdev, 0);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to get irq\n");
-> +
-> +	ret =3D devm_request_irq(dev, ret, ecap_cnt_isr, 0, pdev->name, counter=
-_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to request irq\n");
-> +
-> +	platform_set_drvdata(pdev, counter_dev);
-> +
-> +	pm_runtime_enable(dev);
-> +
-> +	/* Register a cleanup callback to care for disabling PM */
-> +	ret =3D devm_add_action_or_reset(dev, ecap_cnt_pm_disable, dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to add pm disable action\n");
-> +
-> +	ecap_dev->enabled =3D 0;
-
-The devm_counter_alloc() function ensures your ecap_dev structure is
-zero-initialized so you don't need to explicitly set "enabled" to 0
-here. However, it's not harmful so I'll leave it up to you if you want
-to remove this line.
-
-William Breathitt Gray
-
---PAd1UVqmvZMkWQHS
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYwLZBgAKCRC1SFbKvhIj
-K7n6AQC6m1hZL7zaHXXgI7K3A2JfiIKjCFl5E8Yl493eZc2P6QD/c5LSpIIf7CVz
-4dkI9ONABCUAZ1f7aJRpj4SP5TqPFwo=
-=VYRz
------END PGP SIGNATURE-----
-
---PAd1UVqmvZMkWQHS--
+T24gOC8yMS8yMiAxNjowOCwgQW5keSBTaGV2Y2hlbmtvIHdyb3RlOg0KPiBPbiBTYXQsIEF1ZyAy
+MCwgMjAyMiBhdCA4OjI3IFBNIE1hdHRpIFZhaXR0aW5lbg0KPiA8bWF6emllc2FjY291bnRAZ21h
+aWwuY29tPiB3cm90ZToNCj4+IE9uIDgvMjAvMjIgMTk6MjEsIEFuZHkgU2hldmNoZW5rbyB3cm90
+ZToNCj4+PiBPbiBTYXQsIEF1ZyAyMCwgMjAyMiBhdCAxOjA1IFBNIE1hdHRpIFZhaXR0aW5lbg0K
+Pj4+IDxtYXp6aWVzYWNjb3VudEBnbWFpbC5jb20+IHdyb3RlOg0KPj4+PiBPbiA4LzIwLzIyIDEw
+OjE4LCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+Pj4+PiBPbiBTYXQsIEF1ZyAyMCwgMjAyMiBh
+dCA5OjQ4IEFNIFZhaXR0aW5lbiwgTWF0dGkNCj4+Pj4+IDxNYXR0aS5WYWl0dGluZW5AZmkucm9o
+bWV1cm9wZS5jb20+IHdyb3RlOg0KPj4+Pj4+IE9uIDgvMjAvMjIgMDk6MjUsIEFuZHkgU2hldmNo
+ZW5rbyB3cm90ZToNCj4+Pj4+Pj4gT24gU2F0LCBBdWcgMjAsIDIwMjIgYXQgOToxOSBBTSBWYWl0
+dGluZW4sIE1hdHRpDQo+Pj4+Pj4+IDxNYXR0aS5WYWl0dGluZW5AZmkucm9obWV1cm9wZS5jb20+
+IHdyb3RlOg0KPj4+Pj4+Pj4gT24gOC8yMC8yMiAwMjozMCwgQW5keSBTaGV2Y2hlbmtvIHdyb3Rl
+Og0KPj4+Pj4+Pj4+IE9uIEZyaSwgQXVnIDE5LCAyMDIyIGF0IDEwOjIxIFBNIE1hdHRpIFZhaXR0
+aW5lbg0KPj4+Pj4+Pj4+IDxtYXp6aWVzYWNjb3VudEBnbWFpbC5jb20+IHdyb3RlOg0KDQovL3Nu
+aXANCg0KPiBTSW5jZSBpdCdzIHN0YXRpYyBpdCdzIGdsb2JhbCBieSBuYXR1cmUsIGJ1dCBsb2Nh
+bCBieSBuYW1lc3BhY2UuDQoNCldoaWNoIGlzIGFuIF9pbXByb3ZlbWVudF8gb3ZlciBoYXZpbmcg
+aXQgaW4gZ2xvYmFsIG5hbWVzcGFjZT8NCg0KDQo+PiBJdCBjYXVzZXMgbm8gbW9yZSBuYW1lIGNv
+bGxpc2lvbnMgdGhhbiBhIHJlZ3VsYXINCj4+IGxvY2FsIHZhcmlhYmxlIGRvZXMgc28gSSByZWFs
+bHkgZG9uJ3QgdW5kZXJzdGFuZCB5b3VyIHJlYXNvbmluZy4NCj4gDQo+IEFuZCBJIGhhdmUgbm8g
+b3RoZXIgd29yZHMgdG8gZXhwbGFpbiBpdCB0byB5b3UuIFlvdSBhcmUgdXNpbmcgYSBnbG9iYWwN
+Cj4gdmFyaWFibGUgaW4gdGhlIHNjb3BlIG9mIGZ1bmN0aW9uLiBUaGlzIGlzIG5vdCBnb29kIGZv
+ciB0aGUNCj4gbWFpbnRlbmFuY2UgYW5kIGRldmVsb3BtZW50IGFzIGl0J3MgcHJvbmUgdG8gZ2V0
+IGFuIGlzc3VlIGluIHRoZQ0KPiBmdXR1cmUuDQoNCklmIHlvdSBmb3Jlc2VlIHNvbWUgaXNzdWVz
+LCBwbGVhc2UgZGVzY3JpYmUgdGhlbSBhcyBJIGRvbid0IHNlZSBvbmUgDQpzaW5nbGUgcHJvYmxl
+bSB3aXRoIGEgbG9jYWwgc3RhdGljIGNvbnN0IGRhdGEuIEkgaGF2ZSBzZWVuIHlvdSB0ZWxsaW5n
+IA0KbWUgdGhhdCAic3RhdGljIGNvbnN0IiB2YXJpYWJsZXMgYXJlIF9oYXJkZXJfIGZvciB5b3Ug
+dG8gcmV2aWV3LiBDb3VsZCANCnlvdSBwbGVhc2UgZXhwbGFpbiB3aGF0IGFyZSB0aGUgcG90ZW50
+aWFsIG1pc3Rha2UocykgYSByZXZpZXdlciBjYW4gZG8sIA0KYW5kIHdoYXQgaXMgdGhlICdpc3N1
+ZScgdGhhdCBtaXN0YWtlIGNhbiBjYXVzZT8NCg0KPj4+IFNvLCB3aG9tIHNob3VsZCB3ZSBsaXN0
+ZW4gdG8gaGVyZT8gQmVjYXVzZSBiYWQgY29kZSBpcyBiYWQgY29kZS4gQW5kDQo+Pj4gdGhpcyBp
+cyBjb2RlIGFib3ZlLg0KPj4NCj4+IEJhZCBpcyBhIHN1YmplY3RpdmUgY29uY2VwdC4gSSdkIHNh
+eSB0aGUgY29kZSBnZXRzIG11Y2ggd29yc2UgaWYgd2UgbWFrZQ0KPj4gdGhlIGxvY2FsIHZhcmlh
+YmxlIGEgZ2xvYmFsIG9uZS4NCj4gDQo+IC4uLg0KPiANCj4gDQo+IFRvIHN1bW1hcml6ZSwgd2Ug
+aGF2ZSBhIGh1Z2UgZGlzYWdyZWVtZW50IG9uIHRoZSBwbGFjZW1lbnQgb2YgdGhlDQo+IHN0YXRp
+YyB2YXJpYWJsZXMuIE5vdCBzdXJlIHdlIGV2ZXIgZ2V0IGludG8gY29tcHJvbWl6ZSBoZXJlLCBz
+byBJDQo+IGxlYXZlIGl0IHVwIHRvIG1haW50YWluZXJzLCBidXQgbXkgb3BpbmlvbiB0aGF0IGl0
+IGlzIHNpbXBseSBhIGJhZA0KPiBjb2RlIHByYWN0aWNlLg0KDQpCYWQgYW5kIGdvb2QgYXJlIGxh
+YmVscyB3ZSBjYW4gcGxhY2Ugb24gdGhpbmdzLiBXZSBob3dldmVyIG5lZWQgdG8gaGF2ZSANCnRo
+ZSByZWFzb24gZm9yIHRob3NlIGxhYmVscyB0byBiZSBtZWFuaW5nZnVsLiBJIGFtIHNvcnJ5IGJ1
+dCBJIGRvbid0IA0Kd2FudCB0byBsYWJlbCB0aGUgbG9jYWwgX2NvbnN0XyBzdGF0aWMgdmFyaWFi
+bGVzIGJhZCB3aXRob3V0IHJlYXNvbi4gDQpUaGlzIGRpc2N1c3Npb24gc3RhcnRzIHRvIHJlbWlu
+ZCBtZSBvbiBzdGF0ZW1lbnRzIGxpa2UgInVzaW5nIGdvdG8gaXMgDQphbHdheXMgYmFkIiBvciAi
+b25lIG11c3QgbmV2ZXIgdXNlIG1hY3JvcyBpbiBDIi4NCg0KWWVhaCAtIHVsdGltYXRlbHkgaXQg
+aXMgYSBtYWludGFpbmVyIGRlY2lzaW9uLg0KDQpCZXN0IFJlZ2FyZHMNCi0tIE1hdHRpDQoNCi0t
+IA0KVGhlIExpbnV4IEtlcm5lbCBndXkgYXQgUk9ITSBTZW1pY29uZHVjdG9ycw0KDQpNYXR0aSBW
+YWl0dGluZW4sIExpbnV4IGRldmljZSBkcml2ZXJzDQpST0hNIFNlbWljb25kdWN0b3JzLCBGaW5s
+YW5kIFNXREMNCktpdmloYXJqdW5sZW5ra2kgMUUNCjkwMjIwIE9VTFUNCkZJTkxBTkQNCg0Kfn4g
+dGhpcyB5ZWFyIGlzIHRoZSB5ZWFyIG9mIGEgc2lnbmF0dXJlIHdyaXRlcnMgYmxvY2sgfn4NCg==

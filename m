@@ -2,83 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED7559D45B
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Aug 2022 10:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 971DA59D4F6
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Aug 2022 11:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242845AbiHWIWQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Aug 2022 04:22:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
+        id S242052AbiHWIg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Aug 2022 04:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243800AbiHWIVn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Aug 2022 04:21:43 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7ADF71706;
-        Tue, 23 Aug 2022 01:12:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1661242378;
-  x=1692778378;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=dsmv2HWtXdyoSrM7X25yViaz1yQI9MEMGWUi+MfjE0g=;
-  b=BGbqcAusKcLIyRblNhfi4BhRxGfzA8XQ7BgxiegR9i/HxXXXVs5SgZO2
-   9pbFZgmUHz/amsdF+K3uPLFq9IdlOxtQ96qTxc3WbP4VeNhIECo8k0hB6
-   UcKz5OQfuCJa8083MXcuiGRZcE6HmM3//dlGI387AOlJTYOiaZSUXVq6T
-   j3jz/5ZUXYHydJ2cxJLax6fA0YGwNiDuTwSFJSvmTNDogXDxSczc/K5u+
-   7FT1OmJmRwO4Y7rLlEVKXwO838gAVmrkEvK3jaEAYJHUxeQ57UAK0XWLP
-   USH6IA+KEvmkLEgVdTs8YkKtjF5F8ugx5FivBrfsu2IRJ/KLVbc/pZdRX
-   w==;
-Date:   Tue, 23 Aug 2022 10:12:33 +0200
-From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-CC:     Jonathan Cameron <jic23@kernel.org>, kernel <kernel@axis.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH] iio: buffer: Silence lock nesting splat
-Message-ID: <YwSL8VD78u0ea0Qb@axis.com>
-References: <20220816080828.1218667-1-vincent.whitchurch@axis.com>
- <20220820120640.6d1b928d@jic23-huawei>
- <ff2bc13c-f66f-03f3-fc01-c4f962f7b694@metafoo.de>
+        with ESMTP id S1344297AbiHWIfV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Aug 2022 04:35:21 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6678275CE3;
+        Tue, 23 Aug 2022 01:16:44 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27N75sfw011035;
+        Tue, 23 Aug 2022 04:15:49 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3j2whtmpgc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 23 Aug 2022 04:15:49 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 27N8Fmem006842
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 23 Aug 2022 04:15:48 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 23 Aug 2022 04:15:47 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 23 Aug 2022 04:15:47 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 23 Aug 2022 04:15:47 -0400
+Received: from george-precision5560.ad.analog.com ([10.48.65.128])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 27N8FWog015257;
+        Tue, 23 Aug 2022 04:15:38 -0400
+From:   George Mois <george.mois@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <lucas.p.stankus@gmail.com>, George Mois <george.mois@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v2 1/2] bindings: iio: accel: extend adxl313 documentation file
+Date:   Tue, 23 Aug 2022 11:15:19 +0300
+Message-ID: <20220823081520.30313-1-george.mois@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ff2bc13c-f66f-03f3-fc01-c4f962f7b694@metafoo.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: myYw96VtKdCjSHSw8uZtuZAns7rHYWKk
+X-Proofpoint-GUID: myYw96VtKdCjSHSw8uZtuZAns7rHYWKk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-23_04,2022-08-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 clxscore=1011 malwarescore=0 mlxscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2208230032
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 20, 2022 at 01:08:28PM +0200, Lars-Peter Clausen wrote:
-> There are two different approaches for this kind of nested locking. One 
-> is to use mutex_lock_nested(). This works if there is a strict 
-> hierarchy. The I2C framework for example has a function to determine the 
-> position of a I2C mux in the hierarchy and uses that for locking. See 
-> https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L1151.
-> 
-> I'm not sure this directly translates to IIO since the 
-> consumers/producers don't have to be a in strict hierarchy.  And if it 
-> is a complex graph it can be difficult to figure out the right level for 
-> mutex_lock_nested().
-> 
-> The other method is to mark each mutex as its own class. lockdep does 
-> the lock checking based on the lock class and by default the same mutex 
-> of different instances is considered the same class to keep the resource 
-> requirements for the checker lower.
-> 
-> Regmap for example does this. See 
-> https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regmap.c#L795.
-> 
-> This could be a solution for IIO with the downside how the additional 
-> work for the checker. But as long as there are only a few IIO devices 
-> per system that should be OK. We could also only set the per device lock 
-> class if in kernel consumers are enabled.
+Extend the adi,adxl313.yaml file with information regrding the
+ADXL312 and ADXL314 devices.
 
-The second method certainly sounds like a better fix, since it also
-still warns if one actually takes the same iio_dev mutex twice.  I'll
-respin the patch.  Thanks.
+Signed-off-by: George Mois <george.mois@analog.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+no changes in v2.
+ .../devicetree/bindings/iio/accel/adi,adxl313.yaml     | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+index d6afc1b8c272..59d48ff1a16c 100644
+--- a/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+@@ -4,20 +4,24 @@
+ $id: http://devicetree.org/schemas/iio/accel/adi,adxl313.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: Analog Devices ADXL313 3-Axis Digital Accelerometer
++title: Analog Devices ADXL312, ADXL313, and ADXL314 3-Axis Digital Accelerometers
+ 
+ maintainers:
+   - Lucas Stankus <lucas.p.stankus@gmail.com>
+ 
+ description: |
+-  Analog Devices ADXL313 3-Axis Digital Accelerometer that supports
+-  both I2C & SPI interfaces.
++  Analog Devices ADXL312, ADXL313, and ADXL314 3-Axis Digital Accelerometer that
++  support both I2C & SPI interfaces.
++    https://www.analog.com/en/products/adxl312.html
+     https://www.analog.com/en/products/adxl313.html
++    https://www.analog.com/en/products/adxl314.html
+ 
+ properties:
+   compatible:
+     enum:
++      - adi,adxl312
+       - adi,adxl313
++      - adi,adxl314
+ 
+   reg:
+     maxItems: 1
+-- 
+2.30.2
+

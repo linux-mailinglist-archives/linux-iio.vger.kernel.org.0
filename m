@@ -2,47 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20ED859D3FF
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Aug 2022 10:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED7559D45B
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Aug 2022 10:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239138AbiHWIRg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 23 Aug 2022 04:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
+        id S242845AbiHWIWQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 23 Aug 2022 04:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242992AbiHWIQZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Aug 2022 04:16:25 -0400
+        with ESMTP id S243800AbiHWIVn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 23 Aug 2022 04:21:43 -0400
 Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACD36455;
-        Tue, 23 Aug 2022 01:10:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7ADF71706;
+        Tue, 23 Aug 2022 01:12:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1661242248;
-  x=1692778248;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1661242378;
+  x=1692778378;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=90lMTt/ZXObsrajbLvhxlhFniuNo3NYsG99rwzGubV4=;
-  b=QtHPZwfZYRIrxwYMvcrxSu9EztzKiz0nXdQYG4DB28m2xocRELb0vAac
-   OhEdvcjR859428A2NfsfbZwSyO+4PfruV4Xrt5pp7S1X/hc3vodDXj3cG
-   2RI/K3hPyQ2rOWbWuzXu5Fpu/UVYSNiNUnefOE7+O4BWwnFFzBd5/it3C
-   mbiNhFaZj7kJkkLjpl4qklEWfDw/3AAveXd0mEMY/HXgXzb5I3AmEnU/i
-   Ek3Ib0SDq2CuNV9451Mo6cNvm0XOp5IiDhQHiSKAYiz0O+mHhfYSauya1
-   bFBvqKWv+6iknPPLzCgJJnAZtJuLlIHLZDs0cwqsn7wYluqxOaxzFrHsA
-   A==;
-Date:   Tue, 23 Aug 2022 10:10:45 +0200
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=dsmv2HWtXdyoSrM7X25yViaz1yQI9MEMGWUi+MfjE0g=;
+  b=BGbqcAusKcLIyRblNhfi4BhRxGfzA8XQ7BgxiegR9i/HxXXXVs5SgZO2
+   9pbFZgmUHz/amsdF+K3uPLFq9IdlOxtQ96qTxc3WbP4VeNhIECo8k0hB6
+   UcKz5OQfuCJa8083MXcuiGRZcE6HmM3//dlGI387AOlJTYOiaZSUXVq6T
+   j3jz/5ZUXYHydJ2cxJLax6fA0YGwNiDuTwSFJSvmTNDogXDxSczc/K5u+
+   7FT1OmJmRwO4Y7rLlEVKXwO838gAVmrkEvK3jaEAYJHUxeQ57UAK0XWLP
+   USH6IA+KEvmkLEgVdTs8YkKtjF5F8ugx5FivBrfsu2IRJ/KLVbc/pZdRX
+   w==;
+Date:   Tue, 23 Aug 2022 10:12:33 +0200
 From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        kernel <kernel@axis.com>, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+To:     Lars-Peter Clausen <lars@metafoo.de>
+CC:     Jonathan Cameron <jic23@kernel.org>, kernel <kernel@axis.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Peter Rosin <peda@axentia.se>
 Subject: Re: [PATCH] iio: buffer: Silence lock nesting splat
-Message-ID: <YwSLhWFbGb26B3mx@axis.com>
+Message-ID: <YwSL8VD78u0ea0Qb@axis.com>
 References: <20220816080828.1218667-1-vincent.whitchurch@axis.com>
- <CAHp75VebQfdHrfYTmF0w9M556ZV8fG5jJ2rAN5a3mrB1mbvOQw@mail.gmail.com>
- <20220820120800.519b5eb5@jic23-huawei>
+ <20220820120640.6d1b928d@jic23-huawei>
+ <ff2bc13c-f66f-03f3-fc01-c4f962f7b694@metafoo.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Disposition: inline
-In-Reply-To: <20220820120800.519b5eb5@jic23-huawei>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ff2bc13c-f66f-03f3-fc01-c4f962f7b694@metafoo.de>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
@@ -53,20 +54,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Aug 20, 2022 at 01:08:00PM +0200, Jonathan Cameron wrote:
-> On Fri, 19 Aug 2022 11:03:55 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On top of that, Fixes tag?
-> It's going to be tricky to identify - the interface predates usecases that were IIO
-> drivers by a long way.  I guess introduction of first IIO driver that used
-> a callback buffer? No idea which one that was :(
+On Sat, Aug 20, 2022 at 01:08:28PM +0200, Lars-Peter Clausen wrote:
+> There are two different approaches for this kind of nested locking. One 
+> is to use mutex_lock_nested(). This works if there is a strict 
+> hierarchy. The I2C framework for example has a function to determine the 
+> position of a I2C mux in the hierarchy and uses that for locking. See 
+> https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L1151.
+> 
+> I'm not sure this directly translates to IIO since the 
+> consumers/producers don't have to be a in strict hierarchy.  And if it 
+> is a complex graph it can be difficult to figure out the right level for 
+> mutex_lock_nested().
+> 
+> The other method is to mark each mutex as its own class. lockdep does 
+> the lock checking based on the lock class and by default the same mutex 
+> of different instances is considered the same class to keep the resource 
+> requirements for the checker lower.
+> 
+> Regmap for example does this. See 
+> https://elixir.bootlin.com/linux/latest/source/drivers/base/regmap/regmap.c#L795.
+> 
+> This could be a solution for IIO with the downside how the additional 
+> work for the checker. But as long as there are only a few IIO devices 
+> per system that should be OK. We could also only set the per device lock 
+> class if in kernel consumers are enabled.
 
-AFAICS there's only one IIO driver upstream using a callback buffer, and
-it's lmp91000, so I can point the fixes tag to the patch which added
-that.
-
-By the way, note that lmp91000 actually fails to probe in mainline
-without extra patches, and it seems to have been that way for a while
-now.  I noticed this lockdep splat when working on a new driver which
-also uses a callback buffer.  I can post the fixes I used to get
-lmp91000 to probe successfully (in roadtest) separately.
+The second method certainly sounds like a better fix, since it also
+still warns if one actually takes the same iio_dev mutex twice.  I'll
+respin the patch.  Thanks.

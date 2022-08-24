@@ -2,168 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42AB059FADF
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Aug 2022 15:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0B6F5A0015
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Aug 2022 19:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237933AbiHXNHv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 24 Aug 2022 09:07:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42314 "EHLO
+        id S239028AbiHXRJh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 24 Aug 2022 13:09:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237944AbiHXNHu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Aug 2022 09:07:50 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE0F97534
-        for <linux-iio@vger.kernel.org>; Wed, 24 Aug 2022 06:07:44 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id s1so21114797lfp.6
-        for <linux-iio@vger.kernel.org>; Wed, 24 Aug 2022 06:07:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=07vPvByHp737Z4ko55zqWLWNBnP96zmWmjtNwCBec98=;
-        b=sTVjoh9c/E4kr0cniahRXMsvKK0b2tP3WbbNAyyeLZ0BjxqXHD15wAOoepB3jeaRgL
-         pICcDosxLt7ph0fVQJ17htSiwYxTDueBhpmX1bJNIgQuxNz/VOchbrsBOW2Hq2kWeZ50
-         /y5MCVTdM5aV0bKlL9nAlNIbVHC45X8SfuzTLullIpcZ6zzFosDqWO0/o++qvkiznOcI
-         NxtLkodrxpx4Z2y7gFtrmj8O/PPr9tlV9IJt0lcpHxrfMyw59gSsvcKzsXVPpshzz5xD
-         j2mMx81U8zbjJJjkSDEVMU0xZAtW7iq7zjYmcbPJeyfVcJffPCssM9BX3h9LepL7L5Al
-         4fWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=07vPvByHp737Z4ko55zqWLWNBnP96zmWmjtNwCBec98=;
-        b=xSWvzdj6DoCEpK1pyT+eHX/v11DVFvEyIFkXATvl/eMETz0kKVdiu/5+/C115sQi2z
-         qX/2lc0pr0CyDp/fLL/mvykKkH+UBFaRd/gUukBwVkewNtCgeceMYoxMNuxR7dtwDNg8
-         kNnL5PKuS69FCH7gdOYebyiyDfCrYhFXmtdoF+4+4gLuJGHdLdFoUrqnNRCQ94z8dQyl
-         rQDgg/pl1tOLlMdMNRSAlKg7k2UTa+e5MQJ+liniyQlsMkQUouNdagqHb3P1C9CkwF45
-         dbVoLHHZ7J806IUUHWxtDtRXBbC3QAYkNCEiS+H+/6rlPsHIw+XwmzGJF4sXi0e7T6We
-         MEVg==
-X-Gm-Message-State: ACgBeo2hyvxBT1qsIftdVCRdNDnw3b14Ivo0kzK4vWk1VF9sfcUcPdJT
-        eMD/iVCuPqD5/oH6dvf8LEybf9bGINR1gSDNNiU=
-X-Google-Smtp-Source: AA6agR4MCTFUzzLJVCo+j8gtwAABrGcjHkwermyL3XDTUedLgroX4T6ImdZs9pPR9Ms2iQ45ySG8XQ==
-X-Received: by 2002:a05:6512:1191:b0:493:57c:84e3 with SMTP id g17-20020a056512119100b00493057c84e3mr1194980lfr.177.1661346463003;
-        Wed, 24 Aug 2022 06:07:43 -0700 (PDT)
-Received: from [10.243.4.185] ([194.204.13.210])
-        by smtp.gmail.com with ESMTPSA id d4-20020a056512368400b00492daab838bsm2069672lfs.46.2022.08.24.06.07.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Aug 2022 06:07:42 -0700 (PDT)
-Message-ID: <33eb031c-f1b5-b80d-52b0-48bcab02d697@linaro.org>
-Date:   Wed, 24 Aug 2022 16:07:41 +0300
+        with ESMTP id S238311AbiHXRJh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 24 Aug 2022 13:09:37 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3122E7B799;
+        Wed, 24 Aug 2022 10:09:36 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 27OFf3rR012751;
+        Wed, 24 Aug 2022 13:09:34 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3j5ad45pd7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 24 Aug 2022 13:09:33 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 27OH9WDY051970
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 24 Aug 2022 13:09:32 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 24 Aug
+ 2022 13:09:31 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 24 Aug 2022 13:09:31 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com ([10.65.49.129])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 27OH9KIj018778;
+        Wed, 24 Aug 2022 13:09:23 -0400
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <cosmin.tanislav@analog.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH] MAINTAINERS: fix Analog Devices forum links
+Date:   Wed, 24 Aug 2022 20:09:13 +0300
+Message-ID: <20220824170913.13411-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH 1/2] bindings: iio: adc: Add max11205 documentation file
-Content-Language: en-US
-To:     Ramona Bolboaca <ramona.bolboaca@analog.com>, jic23@kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220824125203.685287-1-ramona.bolboaca@analog.com>
- <20220824125203.685287-2-ramona.bolboaca@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220824125203.685287-2-ramona.bolboaca@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 4cozLdUU-FzBA1a0vUbR2IrAnk9Xx-b-
+X-Proofpoint-ORIG-GUID: 4cozLdUU-FzBA1a0vUbR2IrAnk9Xx-b-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-08-24_09,2022-08-22_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1015 mlxscore=0 adultscore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2207270000 definitions=main-2208240064
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/08/2022 15:52, Ramona Bolboaca wrote:
-> Add bindings documentation file and MAINTAINERS entry for MAX11205.
-> 
-> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
-> ---
->  .../bindings/iio/adc/maxim,max11205.yaml      | 65 +++++++++++++++++++
->  MAINTAINERS                                   |  8 +++
->  2 files changed, 73 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/maxim,max11205.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max11205.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max11205.yaml
-> new file mode 100644
-> index 000000000000..bddd18a44969
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max11205.yaml
-> @@ -0,0 +1,65 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/maxim,max11205.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Maxim MAX11205 ADC
-> +
-> +maintainers:
-> +  - Ramona Bolboaca <ramona.bolboaca@analog.com>
-> +
-> +description: |
-> +  The MAX11205 is an ultra-low-power (< 300FA max
-> +  active current), high-resolution, serial-output ADC.
-> +
-> +  https://datasheets.maximintegrated.com/en/ds/MAX11205.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxim,max11205a
-> +      - maxim,max11205b
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 5000000
-> +
-> +  spi-cpha: true
+Fix the links to redirect to the correct forum subsection for the latest
+Analog Devices drivers added.
 
-Both properties are good, but still you should reference
-/schemas/spi/spi-peripheral-props.yaml in allOf and use
-unevaluatedProperties:false. See other bindings for SPI devices.
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ MAINTAINERS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator supply for the ADC reference voltage.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-max-frequency
-> +  - spi-cpha
-> +  - interrupts
-> +  - vref-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        max11205@0 {
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b7221f4143cb..2c440f3d90e3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -615,7 +615,7 @@ ADXL367 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
+ M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+-W:	http://ez.analog.com/community/linux-device-drivers
++W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
+ F:	drivers/iio/accel/adxl367*
+ 
+@@ -1147,7 +1147,7 @@ ANALOG DEVICES INC AD74413R DRIVER
+ M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+-W:	http://ez.analog.com/community/linux-device-drivers
++W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
+ F:	drivers/iio/addac/ad74413r.c
+ F:	include/dt-bindings/iio/addac/adi,ad74413r.h
+@@ -11913,7 +11913,7 @@ LTC2688 IIO DAC DRIVER
+ M:	Nuno Sá <nuno.sa@analog.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+-W:	http://ez.analog.com/community/linux-device-drivers
++W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
+ F:	drivers/iio/dac/ltc2688.c
+-- 
+2.37.1
 
-adc
-Node names should be generic.
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-> +                      compatible = "maxim,max11205a";
-
-Messed up indentation. Use 4 spaces.
-
-> +                      reg = <0>;
-> +                      spi-max-frequency = <5000000>;
-> +                      spi-cpha;
-
-Best regards,
-Krzysztof

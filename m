@@ -2,60 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6CB5A1A1A
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 22:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88FC75A1A34
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 22:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243489AbiHYUNV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Aug 2022 16:13:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51536 "EHLO
+        id S238683AbiHYUXn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Aug 2022 16:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243488AbiHYUNV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 16:13:21 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0C9B99E1;
-        Thu, 25 Aug 2022 13:13:20 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id l5so11475242qvs.13;
-        Thu, 25 Aug 2022 13:13:20 -0700 (PDT)
+        with ESMTP id S232230AbiHYUXn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 16:23:43 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00E1C04C5;
+        Thu, 25 Aug 2022 13:23:41 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id h27so16099112qkk.9;
+        Thu, 25 Aug 2022 13:23:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=CxBXybh+XyYwTdI+6deihNorwY+b7o3BjucUmO3qzcs=;
-        b=WV8wuXMJzwgYjzqCXonTbj9BbMCvoVv9v3zaJ1+kfFlC1Px6ePsgRpQCEhpi137+pA
-         wTukGUdummUx3sCKnrQQYYfRegvxJxuKzCrxOzX4KVUWmqxCQzZe6RgDC2+12+xqatUo
-         9XkjZ5YYRzGBYBxi1g1thkafvHRLZSuPsYCxU4LREgHDvCFNGZFb79AmwoDKqeVLEVaQ
-         VmMIra1ZOyTH9LUx4oPbYRi7gKaXn04Sz9Kmpk2tjSPpovl9GyUNHqHY276/SZSCahiv
-         2Xu1nSEgm0yB51D+wCKr27y6hCW4SRoZD1Pf/8VeDP9PeszYaZIAt4EBYepKLugSu+Md
-         TVMQ==
+        bh=i7uig6GCW5G9OShhUBzKaHOCH3kWh8nqS6+A+Fz4ITg=;
+        b=DJ7FjzNsyEs25UOe2Q6dHtgNhM+184PUi9EbLwHuxuMOaLr9zwf1ucWuonZP/J+BwF
+         sVTqyPH2NJoUbSpZZRjYyCVY+tZHGnWyiOXwjVhRYMqYEQfIFw4ckcSX/+mCjJuDEoGt
+         5peE4JVMEjxXlGAxPIA/BwfJQsCnVuh5ouvy4q9po+HRvKW+Bo/tdzR/skgWMqh7Wu7V
+         BbrrufeFw3gJWVrYyRD9QNglm/3OIWrGY3+/1nIJTF+HS1KtnclNoxyn33cS+R6Qjl0a
+         rLFtEkU6G/a7I07VcoxNFnYwhOmq7mF5UHrZHb/t0n83Ry67fPE3Y/4xSlkerqwTMJD2
+         0fXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=CxBXybh+XyYwTdI+6deihNorwY+b7o3BjucUmO3qzcs=;
-        b=6guzT9lYXW8aFLJjbdj/xN2+MLucSIszHf8gDzkSEWZ+o2hPFGfKkYdtP9GrZ4IpOy
-         EAbAe9PALVPSOVpKohWy7EFgndoeN5u9rN4ok3MwgRPiMBL0XoW9WYZ6lSpE37Xc3Ul0
-         sC7EgoAAaf2G8CHc3P+fn0XV79vyawhfh2gaiyxOi7aD0jd7NrjoLEyxd6jQh9qRf7OE
-         ZnmLNH5aSLLfQbVpsUWiQr9Mg5Ly49tOiPEe+vzT+WkZSmJcv1+WnC8IMNh6FbYi0pXp
-         uFKMChdrktBspR9vEHPJWP7QaVLWseC1oDsE6BRVT9qVcSNALoiik/gAf2AJwNCt2okv
-         ArUw==
-X-Gm-Message-State: ACgBeo2qyJ1lwKz99PFG7s2ajsQSI32P7rC807KqEWZWyF0vEUN8EJIG
-        k17gcqs1BcCqE+8TjN1VhNHDIzA4/u6F4h1lsJ4=
-X-Google-Smtp-Source: AA6agR7wav6AkPdzoNCgt29byNue24x8j0mQee95QhPSgT3efgrsS5jyu1tlJCpplKC0L3ic1AL/8pocg19Imub5Qhg=
-X-Received: by 2002:a05:6214:2022:b0:497:2c03:61 with SMTP id
- 2-20020a056214202200b004972c030061mr3035433qvf.11.1661458399483; Thu, 25 Aug
- 2022 13:13:19 -0700 (PDT)
+        bh=i7uig6GCW5G9OShhUBzKaHOCH3kWh8nqS6+A+Fz4ITg=;
+        b=0jVV4QKN5hHgH6uC82+l9sOnxgbiy7bm5pkD/ixuLxaf0hQncTrcPWu9V2YxTydcmH
+         y3SinpKLL980vqb7Mbw63LwT8RWZmiUk4NLkPb1XCnypVjuVsMUwTB5ufyheJJ85wxqU
+         lCVuXNdx502OvGzxw/UeIfvZidX9Hq/snm9WJopOzCNlyAD2H+NhrVmfjj3ybRdKtPfB
+         jieVjr16ofZyw3n+0weOtwVYO9YSPgwibbO/BZBXtxGoDTAVIJM0cdPtlUseJBOcd9cD
+         Ul6ROffHVuH0fUYlsrfjCkxlMvmPYSUS3tDjFwidKC2akITbrHNXL3TCEBonBudA8pgk
+         Dazg==
+X-Gm-Message-State: ACgBeo0/J+AyH71rCQBBgZfk26xkuW4tJLnccbsAGBFfNUQl/Ld+803t
+        4ROqrXmJOHNjw7I+PtypQW/gMRPpDOsvcnCsVr0=
+X-Google-Smtp-Source: AA6agR6AnxxjhypK6PyzKAtAaLJs6U1kJZj+wkJriceugjIVJAJXajNYh1S7iFmnfRj0wSBzv9Sz94UxEJciEp/FqGk=
+X-Received: by 2002:a05:620a:410e:b0:6bc:5cdc:88ec with SMTP id
+ j14-20020a05620a410e00b006bc5cdc88ecmr4371427qko.734.1661459020971; Thu, 25
+ Aug 2022 13:23:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220825144012.24a33bb0@endymion.delvare>
-In-Reply-To: <20220825144012.24a33bb0@endymion.delvare>
+References: <20220825194604.15645-1-jagathjog1996@gmail.com> <20220825194604.15645-3-jagathjog1996@gmail.com>
+In-Reply-To: <20220825194604.15645-3-jagathjog1996@gmail.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 25 Aug 2022 23:12:43 +0300
-Message-ID: <CAHp75VeSgmO_=mXVR4uSpbQDO8MBGZu4O2vLEqunHYuoPfJbbQ@mail.gmail.com>
-Subject: Re: [PATCH] iio:accel:dmard06: Optimize when CONFIG_OF isn't set
-To:     Jean Delvare <jdelvare@suse.de>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
+Date:   Thu, 25 Aug 2022 23:23:05 +0300
+Message-ID: <CAHp75Vc5048aQL5cLy-OfBfnH6tz_7z24sFX2H1oGRz+JUyq9Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: accel: bma400: Add support for single and
+ double tap events
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -67,12 +69,59 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Aug 25, 2022 at 3:54 PM Jean Delvare <jdelvare@suse.de> wrote:
+On Thu, Aug 25, 2022 at 10:46 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 >
-> When CONFIG_OF isn't set, we can optimize out dmard06_of_match as it
-> will never be used.
+> Add support for single and double tap events based on the tap threshold
+> value, minimum quiet time before and after the tap and minimum time
+> between the taps in the double tap. The INT1 pin is used to interrupt
+> and the event is pushed to userspace.
 
-NACK. There is a magic PRP0001 for ACPI case.
+...
+
+> +static int tap_reset_timeout[] = {
+> +       300000,
+> +       400000,
+> +       500000,
+> +       600000
+
++ Comma and so on for the rest of the similar cases.
+
+> +};
+
+...
+
+> +static int usec_to_tapreg_raw(int usec, const int *time_list)
+> +{
+> +       int index;
+> +
+> +       for (index = 0; index < 4; index++) {
+
+Magic. Shouldn't be defined?
+
+Also you may add it to each data structure in question.
+
+> +               if (usec == time_list[index])
+> +                       return index;
+> +       }
+> +       return -EINVAL;
+> +}
+
+...
+
+> +       int ret;
+> +       unsigned int mask, field_value;
+
+Reversed xmas tree order?
+
+...
+
+> +       /*
+> +        * Tap interrupts are operating with the data rate of 200Hz.
+
+a data
+
+> +        * See section 4.7 "Tap sensing interrupt" in datasheet v1.2.
+> +        */
 
 -- 
 With Best Regards,

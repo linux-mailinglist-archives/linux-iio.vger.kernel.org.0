@@ -2,95 +2,130 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A4B5A1925
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 20:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8CC5A19C1
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 21:46:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243107AbiHYSxR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Aug 2022 14:53:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57406 "EHLO
+        id S233745AbiHYTqO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Aug 2022 15:46:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243544AbiHYSxQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 14:53:16 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D83B516C;
-        Thu, 25 Aug 2022 11:53:15 -0700 (PDT)
-Received: from [192.168.2.145] (109-252-119-13.nat.spd-mgts.ru [109.252.119.13])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 21A4B6601EAE;
-        Thu, 25 Aug 2022 19:53:14 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1661453594;
-        bh=35eR4SmNOnxsneefZSjC8myV+5WcAzcuLRSjIAQ0igs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=PmVU/LPHdSBzeOb0JFlglye4sv4VgCDZPPwdyiSWOXfs3Ty+Uh2TIoPGFO3ehQRYR
-         exiL8ZpCMigtP0M2HpdH60t5c+o2s0BqmaXjTZbtI07EoYDHgUmn8VnQ7IgS9ls50B
-         cYU7wrBCQ5bGh/yD6HFaVRo7Z2kcl7l4KJkMG6G3CI/s+1qMPa9+P1ilnQadS4Ck0N
-         kvvKjzVBahduvk+xlkXv3hlXmb+9O2fW/vAs85ejGufbruMaB0Od5ngpWegXmqh8s7
-         XoOCOIyVMqmpO30lTYNdspi48ssncO8pNfnPpFyCI/75rI6IbvgHaAhmBS8zgSzf63
-         R4etMaDIM9Muw==
-Message-ID: <793d9ca8-47af-2f3d-6079-e0bbb8e7d898@collabora.com>
-Date:   Thu, 25 Aug 2022 21:53:09 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH] iio: light: tsl2583: Fix module unloading
-Content-Language: en-US
-To:     Shreeya Patel <shreeya.patel@collabora.com>, jic23@kernel.org,
-        lars@metafoo.de
-Cc:     krisman@collabora.com, kernel@collabora.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20220825092048.136973-1-shreeya.patel@collabora.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <20220825092048.136973-1-shreeya.patel@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229736AbiHYTqN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 15:46:13 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EA25721F;
+        Thu, 25 Aug 2022 12:46:10 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id f21so21294763pjt.2;
+        Thu, 25 Aug 2022 12:46:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:subject:cc:to:from:from:to:cc;
+        bh=phvXPw0XdkiODNy/kS+Pv7T5j0DMBhcOd/sLWO1Yx70=;
+        b=qSTCYSbWBt/iuyJ5M+3WQ+0JKgm5ZSuv0duWEiP8soEfkk4wIXdXKHAxF8KN7k5BDi
+         3FZcOsYOCSxuNW1lbVFI75R9Weun+VMTK/+sccAk1J0u7VDcVJ3YNsJ5v4KSI/NXTGxH
+         KZkYgWod/K2zqzn4tYywaoZNiqp0hraHTtNjuMggLtp7TYwAoJDWcpuwTG8isOgEMilf
+         sb+2C8oIK5JhVqheMA2FVcFE2vhEeSzzym1E7uFwlPp1QjL5EZ/pHyv2UhhqzWWb/FGr
+         PrABK8AbXj/y99zTtVUMLYcT2MKzkvGTjSLDmcoegxEEgOc3GOZ6zpj/Yj/xkl3VCV71
+         M14Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=phvXPw0XdkiODNy/kS+Pv7T5j0DMBhcOd/sLWO1Yx70=;
+        b=N7mnk/7nIKgYVgsXhH9RoRWFLsQ27b5P7yw3emWfgwAa81V6ljWn6Ar1uI7LstbzLa
+         rBFnUZ3phX9tk4cbKOLvVc8LUXo5QDgr3Jv241CnC1zcjml0iLvPG3MTTxe/wTZaY2kI
+         zVikw7czx7QKHlewN+QFizRmuKaW33j860ezKxnqJd0RDCOWyhhbUzc69Tivc0ERMVLk
+         iyCwig27e2dwBTJslaprxPgsM2kNW12PlzZ+Ft7xKbiCb9KdJT/EHLoSl6k6InHmCMkv
+         J6CCabbzX6VeK5+JVu0VH9ouUI8WlvObIwbo4FDP8hN7yaJCI5xvTNxGsF5jARzXFxB8
+         A2mA==
+X-Gm-Message-State: ACgBeo0Rbab+ynLXxirHGL2QDqqlXbPbwlPblCAkA8XZWIQI6Eb6tj0I
+        9r7HBYOb6K4pp/0NW9MqOkE=
+X-Google-Smtp-Source: AA6agR5zqSbctjUtIM+fHEMDJ3zDB24GXVc0jORouIpqrcA7Y7AVlYmG4IplCC84iP7iX1juPMrF9g==
+X-Received: by 2002:a17:90a:181:b0:1fb:824:d33f with SMTP id 1-20020a17090a018100b001fb0824d33fmr647470pjc.225.1661456770306;
+        Thu, 25 Aug 2022 12:46:10 -0700 (PDT)
+Received: from localhost.localdomain ([115.99.106.178])
+        by smtp.gmail.com with ESMTPSA id d32-20020a17090a6f2300b001f7a76d6f28sm108789pjk.18.2022.08.25.12.46.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Aug 2022 12:46:09 -0700 (PDT)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     jic23@kernel.org, andy.shevchenko@gmail.com, hadess@hadess.net,
+        hdegoede@redhat.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/2] iio: Add single and double tap events support
+Date:   Fri, 26 Aug 2022 01:16:02 +0530
+Message-Id: <20220825194604.15645-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+This patch series adds new event type for tap called gesture and direction
+is used to differentiate single and double tap. This series adds single
+and double tap support for bma400 accelerometer device driver.
 
-On 8/25/22 12:20, Shreeya Patel wrote:
-> tsl2583 uses devm_iio_device_register() function and
-> calling iio_device_unregister() in remove breaks the
-> module unloading.
-> Fix this by removing call to iio_device_unregister()
-> from tsl2583_remove().
-> 
-> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+Changes since v2
+1. Replaced doubletap_tap_2min to doubletap_tap2_min.
+2. Added ABI docs for available attributes which lists tap configurations
+   values.
+3. Added 'tap' in the naming of available attributes which are related to
+   tap configurations.
+5. Added check for channel type in _read_event_value() and
+   _write_event_value().
+6. KernelVersion changed to 6.1.
+7. Corrected typos.
 
-Stable and fixes tags are missing
+Changes since v1
+1. Included headers in alphabetical order.
+2. Changing tap_event_en variable name to tap_event_en_bitmask since it is
+   used in bit manipulation operation.
+3. Assigning boolean value to step_event_en and activity_event_en instead
+   of 0, since they are boolean type members.
+4. Using local variable for regmap_read() instead for *val itself.
+5. Correcting typos.
+6. Remove of IIO_EV_INFO_PERIOD.
+7. Now all 4 tap controls like threshold, quiet, tics_dt and quiet_dt can
+   be configured from the userspace.
+8. Introducing new event info IIO_EV_INFO_RESET_TIMEOUT, and
+   IIO_EV_INFO_TAP_2MIN_DELAY into iio_event_info.
+9. Creating custom read/write attributes for tics_dt called
+   in_accel_gesture_maxtomin_time.
+10. Time based tap controls can be configured in seconds instead of raw
+    values.
+11. Provided all available values for time base tap controls in seconds.
+12. Adding one more MODULE_AUTHOR().
 
-> ---
->  drivers/iio/light/tsl2583.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
-> index 82662dab87c0..36c25f79e6a6 100644
-> --- a/drivers/iio/light/tsl2583.c
-> +++ b/drivers/iio/light/tsl2583.c
-> @@ -878,8 +878,6 @@ static int tsl2583_remove(struct i2c_client *client)
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  	struct tsl2583_chip *chip = iio_priv(indio_dev);
->  
-> -	iio_device_unregister(indio_dev);
-> -
->  	pm_runtime_disable(&client->dev);
->  	pm_runtime_set_suspended(&client->dev);
->  
+Changes since RFC
+1. Corrected the "quite" typo to "quiet".
+2. Added proper reference and name of the section from datasheet.
+3. Changed the ABI documentation to make it more generic.
+4. Added ABI documentation for double tap quiet period.
+5. Added available list by registering new event attribute for tap
+   threshold values and double tap quiet period values.
+6. Sending both single and double tap events separately.
+8. Removed checking for tap enabled while changing data rate.
+9. Returning invalid with error message if the input data rate is not
+   200Hz while enabling tap interrupts.
+7. Added datasheet reference for interrupt engine overrun.
 
-Driver removal sequence should be opposite to the registration order.
-Could be better not to use the devm in this case.
+
+Jagath Jog J (2):
+  iio: Add new event type gesture and use direction for single and
+    double tap
+  iio: accel: bma400: Add support for single and double tap events
+
+ Documentation/ABI/testing/sysfs-bus-iio |  69 +++++
+ drivers/iio/accel/bma400.h              |  13 +
+ drivers/iio/accel/bma400_core.c         | 343 +++++++++++++++++++++++-
+ drivers/iio/industrialio-event.c        |   7 +-
+ include/linux/iio/types.h               |   2 +
+ include/uapi/linux/iio/types.h          |   3 +
+ tools/iio/iio_event_monitor.c           |   8 +-
+ 7 files changed, 433 insertions(+), 12 deletions(-)
 
 -- 
-Best regards,
-Dmitry
+2.17.1
+

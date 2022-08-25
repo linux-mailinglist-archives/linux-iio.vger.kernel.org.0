@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9EE5A19F6
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 22:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C67D5A1A01
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Aug 2022 22:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232541AbiHYUCh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 25 Aug 2022 16:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39542 "EHLO
+        id S232099AbiHYUGk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 25 Aug 2022 16:06:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbiHYUCh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 16:02:37 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07FAA6112B;
-        Thu, 25 Aug 2022 13:02:35 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id l5so11451867qvs.13;
-        Thu, 25 Aug 2022 13:02:34 -0700 (PDT)
+        with ESMTP id S230179AbiHYUGj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 25 Aug 2022 16:06:39 -0400
+Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B23CB99F3;
+        Thu, 25 Aug 2022 13:06:38 -0700 (PDT)
+Received: by mail-qv1-xf30.google.com with SMTP id l6so1634985qvu.2;
+        Thu, 25 Aug 2022 13:06:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=3iiGSa3yxPg/OvH82LwoDWy5saZ3dFlwATIdzY8AOwA=;
-        b=kBdqxyJMocrdpW29KsLwH9c7GMM0R18bL3lxqRpxkLqqZJvPNomrYPqMGFD/YoUq7h
-         qff+9pIg8fXWsmdaIz0aZGeNzC8U95zBuadLACUhH45CiqDVg3j/qGz7cDXd+fq4wSeR
-         Pe2S0ILeJRoGBu0uS4+/JI+NiFk9rjIlRu6b3JtcnouhEcxvo1lDGtW8xB8hRolO2UpK
-         G6tMnYLLTbg8YqQD1mWDi0uFEnDdODZYxPys6mehxv/C4rRsQ7syjKDp1fI6l4p2ol9K
-         tuI5GKQS7cP9NIdXkaFL2/8x2tR0EGNrAph7r7k9Gc55m3xY09HYNcU7xXjbvN1Pc2fT
-         bKIg==
+        bh=8iLLYSuwBsbFWNazD+YcxhnwcQwqu+V8M6v90VJ9A5Q=;
+        b=fO7t9suauyj8lDl/f4fu7cDnrnaQrxisyd/vrE400f3nJhsLD3qJuBdvXxnOZ6VJQG
+         VTX5n4SJAG1RIy5Elir11IzoHnI1iCDKMFTbddPumRfT8Y+fho7P3af5h+CRPpMCvCEe
+         VfT/s+SLdgt8XrIY1Qp4AEb/pZOm7/Bd+9TwzGS/tn4kKBwOaG0ZBfA2XdJflgHWZssQ
+         NGfXNTX6hIGwSOW7tJA7+gdyvq8rz5Q11ZkNcr81m9Gsg71e1LEgjuKN6cH4F1E6rDfZ
+         OCnAZ1KKhPd3qqLfktbtfogoyC9mTDBRTsJ5GcKgwbSRsKMO2CdQns9laiLIF7arAoFW
+         Vzeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=3iiGSa3yxPg/OvH82LwoDWy5saZ3dFlwATIdzY8AOwA=;
-        b=EKimSs6DciiKnMYQYWjvQ322WeomYBzeafNSZ0ZKCiCW2rXY/y0QJdC9M12x3T9k9Y
-         VpTQUGr10csLDQjR1k0agkF0P5DZaT3JOdk0Qo+yEMyJ5fEOkNsF9FZba34jxlHy4AD/
-         hoP7FonJwAHO866yXJcexfGoFeyg4J+tItcTCkpa+/WiUnjSRgt8JyUXcVtVEelt6oqG
-         q5xDJBv3HLAgOPpUADmbF8se1sPsPvrjCB8/xIIeOPpd9xg2oOcySsVklYw7ihycI2k+
-         NA/ea8eH7N0rW0+uCWoMZUbDaDpyhvPe+Yi8dQsiYlOiwzLTr7Xi2wU+/uu/71AJu2wd
-         8fNA==
-X-Gm-Message-State: ACgBeo1A8s46Ij58CU8oIJu8vH4lmm2ZSWgBucGqS7Ypl5R2h2OI1+zt
-        o7uLs1uv2DUoxxq7YvuxS26JTLUoEc3YYecaFcve1Ps2/fo=
-X-Google-Smtp-Source: AA6agR6bQFREHa+12QcRKY99/kXCXSBixummQ7F/I9U+de+i82EmIYofkoVcTRYkUnd3TKu0y4JT0jzp/ehI+gMSm2o=
-X-Received: by 2002:ad4:4eaf:0:b0:496:ac46:2d9c with SMTP id
- ed15-20020ad44eaf000000b00496ac462d9cmr5174751qvb.82.1661457754084; Thu, 25
- Aug 2022 13:02:34 -0700 (PDT)
+        bh=8iLLYSuwBsbFWNazD+YcxhnwcQwqu+V8M6v90VJ9A5Q=;
+        b=gDTkRiaiTOyhZTAaOO0MUXw55A6c+URvEKSL0bzIETiQUkVLOoTVebqmRR4PTPE9jh
+         wykvxb6QjQqfIs6wJDcP7uRbtmacMT157NcnwTpEppZw56WZvnhFYRbSoTUQjwWuEyyf
+         8MUNJeih0Xpch2hEeALlUY4kozYu1+As4fwNTEZ/W1MoXuYkjpAlIRvQiaPXU8nqsqkX
+         bpKYxYKGRxO4KbNj8IHZ1WWjeKOhu6M0YQLH0WJxjuMzsQ0umFUyCjmf9gsfGU+ZVSzr
+         W8OgoP/yoAud8Jb0wYS7bL21HoDSHPRStR50K+2eYLg4gqhpcOwiTjbxy+IzZGaw33+J
+         Ey6g==
+X-Gm-Message-State: ACgBeo317IewB8RRIONsrFibpTZT0cK20wikx5JKffmnJFEwNeBeyKnz
+        pC2BVFa4Edos28gyz5MciL80vFxusbYfRj7Ydu7r63j1UlU=
+X-Google-Smtp-Source: AA6agR4zvx9c6kvAtJ92VrRswCTUivG0i7b+sC4LBKbEuKiKCI1yAqPApWPlKMCZxtWX3c540hEHvGEtS69OwnH0k+0=
+X-Received: by 2002:a05:6214:c22:b0:497:10a8:3067 with SMTP id
+ a2-20020a0562140c2200b0049710a83067mr5088744qvd.48.1661457997423; Thu, 25 Aug
+ 2022 13:06:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220824104002.2749075-1-vincent.whitchurch@axis.com> <20220824104002.2749075-2-vincent.whitchurch@axis.com>
-In-Reply-To: <20220824104002.2749075-2-vincent.whitchurch@axis.com>
+References: <20220824104002.2749075-1-vincent.whitchurch@axis.com> <20220824104002.2749075-3-vincent.whitchurch@axis.com>
+In-Reply-To: <20220824104002.2749075-3-vincent.whitchurch@axis.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 25 Aug 2022 23:01:58 +0300
-Message-ID: <CAHp75Vf4C0hauoT7F26zS7815Cps=W3o1_HHmWKVbrUi90FcrQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: mcp320x: use device managed functions
+Date:   Thu, 25 Aug 2022 23:06:01 +0300
+Message-ID: <CAHp75Vda3bbsRw+mftXjrH445UqSkxcB7q9kXUc+-ODUE+VQ9g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: adc: mcp320x: add triggered buffer support
 To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>, kernel@axis.com,
         Lars-Peter Clausen <lars@metafoo.de>, axel.jonsson@axis.com,
@@ -70,18 +70,35 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Wed, Aug 24, 2022 at 1:46 PM Vincent Whitchurch
 <vincent.whitchurch@axis.com> wrote:
 >
-> Use devm_* functions in probe to remove some code and to make it easier
-> to add further calls to the probe function.
+> From: Axel Jonsson <axel.jonsson@axis.com>
+>
+> Add support for triggered buffers.  Just read the channels in a loop to
+> keep things simple.
 
 ...
 
-> +       mutex_init(&adc->lock);
+>  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/iio/iio.h>
+> +#include <linux/interrupt.h>
 
-> +       return devm_iio_device_register(&spi->dev, indio_dev);
+Ordering?
 
-Do you still need to destroy the mutex? If so, you may not call devm_
-variant of iio_device_register() or you have to wrap mutex_destroy()
-accordingly.
+But honestly, I prefer the linux/iio/* to be split in a separate group...
+
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
+>  #include <linux/regulator/consumer.h>
+>
+
+...and be put here.
+
+...
+
+> +       device_index = spi_get_device_id(adc->spi)->driver_data;
+
+Hmm... Wondering if this can be derived from channel number or alike.
 
 -- 
 With Best Regards,

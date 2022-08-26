@@ -2,92 +2,157 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE8135A2C09
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Aug 2022 18:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1AD5A31B6
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Aug 2022 00:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239224AbiHZQLQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Aug 2022 12:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41052 "EHLO
+        id S231557AbiHZWGj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Aug 2022 18:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbiHZQLP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Aug 2022 12:11:15 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4EEAC26E;
-        Fri, 26 Aug 2022 09:11:10 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id b9so1470142qka.2;
-        Fri, 26 Aug 2022 09:11:10 -0700 (PDT)
+        with ESMTP id S230436AbiHZWGj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Aug 2022 18:06:39 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CA6DF666;
+        Fri, 26 Aug 2022 15:06:37 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id y3so5563557ejc.1;
+        Fri, 26 Aug 2022 15:06:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=hUZ/i8qZ4uBMnmjSLX55Poh2FuPd4rO6x4KjLMimiTU=;
-        b=JbTsaEdoOtC7MMTlIebUwBUK0RGInSTlHucQtqu0MavdkPv9YjznVyDsiEguqCgGPZ
-         4e8tMZNQ/8Q3m8U3CfaKu8d65xNOb/L655Vn084qpG47pAVz3coz1vaPdDTeHa/cV5gp
-         9cpPqx4WWCi8N+QmicbcsMTEUSCeVDtW1Dkw3r0cauw4LRWDJ2tO6rgXkiNk4QhTWuwu
-         ml30y9DUkXyKP+W+c0yd+fU4Wac9V6GaY46ZOLvdG/thJQ4gSpDDvM5ax7Ytkw9v7O47
-         TXoCZP99ctTS4oENZeWo19MrtxnNsOgHjrb+sjR2WdgPi5SQ1VJu7PmBJxsQN/w5Kh0N
-         fOdQ==
+        bh=gxfAwMNo+XhGWxyftpO+6CnWOrfELB6W6KeuWQP0Tdk=;
+        b=JSn7nXQZqRXtCtjtjPrKqmpIQSbKBQrbylO8/4lyVncWoASGdXTvkdkWUAKChPwQr8
+         pNox49bzzudetwp6M8yEvHOWZRj+ePrSS6ejclBBF9bPOZGnw83YKLC80HF5wFTlDuXl
+         RYZ4U/u4UQS+zml8Ft3eC/DIHPGR3lZUDDkI8A8K50IJGpSf9vmn3Kytks2vm1S4vwy7
+         DJpCHERiBI7hxikEMYXkOYWG0gSa8AUpVfL9+FHIEZXQn9p6fhZsKFMXBTdnJdrEWMRH
+         ZoQe9LT1P9Iy3Xi2yt15ImYNJBpsWiPbkJMhLy175wv67d5GizMSFTxf1nlOhD5EbvJ2
+         dgrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=hUZ/i8qZ4uBMnmjSLX55Poh2FuPd4rO6x4KjLMimiTU=;
-        b=L0OjDyElkm4mGpqWS2Vcpm1OzkfCYl+JZMeN69aftRUE1DqwYyLczfCYNN9WK8C6TN
-         uZJ56CEEZnuknI8dLjD7po9Qm/ansG20SqigxIfxk79Zu+p3iJPqGve42UCqpnMKTMYr
-         NIo5Z76E6Kj/yGVdu5RY+gkKAM5V8YYdoI6562xw2VqdEFTHQM/MlJFoKewUkK59A6Gy
-         bMrAFzLD+XUORsbM4F1PU5YgHWeoGarPLj2p25xdUQOh1Y9Xk5R29EjvJQPl3jzkUZg7
-         /eQjdUEu/fPN/e9zpUaooszmI697Mej/MliGXiNPjIeyWTRJmOmWrHAPxh8VYI97vjjF
-         +E3Q==
-X-Gm-Message-State: ACgBeo3nqDRM3Ec0diMBlkwFYV203EOrm/EBJd64UDrtN3bHOpK3qQRd
-        9rsT620dR9fNEX1bUnhSS1j2ivqdWFHmlz6oX7D/RRJeTZk=
-X-Google-Smtp-Source: AA6agR5xFD0+4HiZewaXqQoEKR2gi2JWLNamkPELLfKvjkwS9GWLT/0oVdZ1mbJ2nxWTKwgXKedVpUDm5oZUPIdsKdY=
-X-Received: by 2002:ae9:e311:0:b0:6ba:e711:fb27 with SMTP id
- v17-20020ae9e311000000b006bae711fb27mr339089qkf.320.1661530269675; Fri, 26
- Aug 2022 09:11:09 -0700 (PDT)
+        bh=gxfAwMNo+XhGWxyftpO+6CnWOrfELB6W6KeuWQP0Tdk=;
+        b=rcjoqbyIjVHwmtHcLkJRE+y1Cn2nAG5gSzt0T+aogbA5nbSKGhgniAtvmDbGtfUJZV
+         CDHI9BTYPmDuthJ8/2HVqyKZoT8GH+H9eimK4JPMkFkKMzWjinI/22VnH4vEGJzq/B/K
+         H4hyQ4YURcZEx+aaxmqFRBUvlFBg3IIGAuNRyQPJ7DmwQCMYYBlVo3iKu8Mw3wtBO/BN
+         fFiBLjcjH/n6seu0cxDvBr6FoZE9je/2zUmNRN9MtDDBpdjYPOjesf0BOKd5VG+x79EX
+         aiOKCWNpFUQ9ixRKwXiMz/F/FjeLe8KJlQ2czX5o7dQl6rzVoM93GK/w6BZQFdE0eMNT
+         rZAw==
+X-Gm-Message-State: ACgBeo0P7KF2u/Ff3ravea4LrQ6hhGR75ylE9WIZngR6z/AR0B9jSDNX
+        zeFL8sk/BP822pGV2ERj4ePDOm8ICDkvMnpFFlg=
+X-Google-Smtp-Source: AA6agR54OERaFQ227DRip+YatbGP5ryKZCn+s70oVq/MUOKUUzRrRT1aksE/nBH1mqzT4YDDbGuNE6VuKbJMwm7N7vM=
+X-Received: by 2002:a17:907:31c9:b0:740:ef93:2ffd with SMTP id
+ xf9-20020a17090731c900b00740ef932ffdmr2430901ejb.584.1661551596454; Fri, 26
+ Aug 2022 15:06:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220825144012.24a33bb0@endymion.delvare> <CAHp75VeSgmO_=mXVR4uSpbQDO8MBGZu4O2vLEqunHYuoPfJbbQ@mail.gmail.com>
- <20220826124603.4a28a154@endymion.delvare> <CAHp75VcGopXaksmvXP_vMM-iGK0o_g5Fw_F5zvH+PXcCUx_cDQ@mail.gmail.com>
- <20220826180609.01262f0a@endymion.delvare>
-In-Reply-To: <20220826180609.01262f0a@endymion.delvare>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 26 Aug 2022 19:10:33 +0300
-Message-ID: <CAHp75VfP-5-MPJs81denx9MT_MY_gi_QXkYqm63FY2sK+Kykcg@mail.gmail.com>
-Subject: Re: [PATCH] iio:accel:dmard06: Optimize when CONFIG_OF isn't set
-To:     Jean Delvare <jdelvare@suse.de>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
+References: <20220825194604.15645-1-jagathjog1996@gmail.com>
+ <20220825194604.15645-3-jagathjog1996@gmail.com> <CAHp75Vc5048aQL5cLy-OfBfnH6tz_7z24sFX2H1oGRz+JUyq9Q@mail.gmail.com>
+In-Reply-To: <CAHp75Vc5048aQL5cLy-OfBfnH6tz_7z24sFX2H1oGRz+JUyq9Q@mail.gmail.com>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Sat, 27 Aug 2022 03:36:23 +0530
+Message-ID: <CAM+2Eu+a8LM+XBELAm9H51EWVwCDqcYaxfdj4_-Sk9TtJ0gLJA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] iio: accel: bma400: Add support for single and
+ double tap events
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Bastien Nocera <hadess@hadess.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Aug 26, 2022 at 7:06 PM Jean Delvare <jdelvare@suse.de> wrote:
-> On Fri, 26 Aug 2022 18:18:20 +0300, Andy Shevchenko wrote:
-> > On Fri, Aug 26, 2022 at 1:46 PM Jean Delvare <jdelvare@suse.de> wrote:
-> > > therefore of_match_ptr() should be
-> > > removed from the kernel entirely?
+Hi Andy,
+
+On Fri, Aug 26, 2022 at 1:53 AM Andy Shevchenko
+<andy.shevchenko@gmail.com> wrote:
+>
+> On Thu, Aug 25, 2022 at 10:46 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
 > >
-> > (...) But for some cases it still
-> > makes sense: platform is known to never be non-OF, component is known
-> > to be used only on such platforms, etc.
+> > Add support for single and double tap events based on the tap threshold
+> > value, minimum quiet time before and after the tap and minimum time
+> > between the taps in the double tap. The INT1 pin is used to interrupt
+> > and the event is pushed to userspace.
 >
-> Well, I can't see the value of of_match_ptr() in such case either. In
-> fact I've submitted a couple patches to remove such occurrences lately:
+> ...
 >
-> https://patchwork.kernel.org/project/linux-mediatek/patch/20220730144833.0a0d9825@endymion.delvare/
-> https://patchwork.kernel.org/project/linux-pm/patch/20220804135938.7f69f5d9@endymion.delvare/
+> > +static int tap_reset_timeout[] = {
+> > +       300000,
+> > +       400000,
+> > +       500000,
+> > +       600000
+>
+> + Comma and so on for the rest of the similar cases.
 
-They are different to what we are discussing here, but yes, in common
-denominator the of_match_ptr() is useless in almost 100% cases.
+This is the terminator case so I have not added a comma in the last.
+All three tap configurations have only 4 value options.
 
--- 
-With Best Regards,
-Andy Shevchenko
+>
+> > +};
+>
+> ...
+>
+> > +static int usec_to_tapreg_raw(int usec, const int *time_list)
+> > +{
+> > +       int index;
+> > +
+> > +       for (index = 0; index < 4; index++) {
+>
+> Magic. Shouldn't be defined?
+
+All tap configuration value arrays are of size 4, I will define a
+macro for that.
+
+>
+> Also you may add it to each data structure in question.
+
+Do you mean storing these values in the device's private structure?
+
+Tap configuration values are not stored in the device's private
+structure because.
+- I am directly accessing the device registers in _read_event_value()
+and _write_event_value().
+- These configuration values are not used in the other parts of
+the driver.
+- Two of these configurations have a default value so instead of
+reading and storing these values in the device's private structure
+during device init, I am directly accessing the device's register.
+
+>
+> > +               if (usec == time_list[index])
+> > +                       return index;
+> > +       }
+> > +       return -EINVAL;
+> > +}
+>
+> ...
+>
+> > +       int ret;
+> > +       unsigned int mask, field_value;
+>
+> Reversed xmas tree order?
+>
+> > +        * Tap interrupts are operating with the data rate of 200Hz.
+>
+> a data
+
+Sure, I will correct these in the next patch series.
+
+Thank you
+Jagath
+
+>
+> > +        * See section 4.7 "Tap sensing interrupt" in datasheet v1.2.
+> > +        */
+>
+> --
+> With Best Regards,
+> Andy Shevchenko

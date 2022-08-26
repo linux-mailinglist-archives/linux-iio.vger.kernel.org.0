@@ -2,71 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B09B5A2614
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Aug 2022 12:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FECE5A26F5
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Aug 2022 13:38:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343857AbiHZKqN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Aug 2022 06:46:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40186 "EHLO
+        id S229846AbiHZLip (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 26 Aug 2022 07:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbiHZKqL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Aug 2022 06:46:11 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FF8B3FA04;
-        Fri, 26 Aug 2022 03:46:06 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id B663E1FDA9;
-        Fri, 26 Aug 2022 10:46:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1661510764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aa/3ypYSJSQW433oi1w/2O4+8Mbdi8Blp1YdWljoRSg=;
-        b=rEmlke3oS5xgtWurko+VQbWOg814W/WaYopKvn6LehJnfbW1bMJQb5ur1/cVEQX3+KDwnz
-        Gn1H//eh+uuco2IKLZZdgmclsuQcjxMtuXfJek/bwGn4Qo5PsGpZjkdjfPUfWc46xQAnVY
-        WmZ670H63mvj+djY3YHiXM4D6KGCCEY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1661510764;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=aa/3ypYSJSQW433oi1w/2O4+8Mbdi8Blp1YdWljoRSg=;
-        b=tHGd5UQXO8TmzcCocfN/smLfbn4Z7fne2gDb+sUqnSK8WJWYedige4XOnK4eNNotFVfhx/
-        kLxQe2exohFupjBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7F09413A7E;
-        Fri, 26 Aug 2022 10:46:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id X2U2HWykCGNhYwAAMHmgww
-        (envelope-from <jdelvare@suse.de>); Fri, 26 Aug 2022 10:46:04 +0000
-Date:   Fri, 26 Aug 2022 12:46:03 +0200
-From:   Jean Delvare <jdelvare@suse.de>
+        with ESMTP id S229917AbiHZLio (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Aug 2022 07:38:44 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320A5DB7E2;
+        Fri, 26 Aug 2022 04:38:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1661513922;
+  x=1693049922;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=P9AsG7gThmUES9KSpQbh1/yQIt+a2Ly6k49idujfHCM=;
+  b=Az3mPGnggbKs/VBeSChAq+3SFUCiIgtREdgp2tQ90hj65Tvi8+P9BLA1
+   AlPUM44pHRBlXUa+d2UToIGlyi3BOTGQhm8WNj6ATwNd9PtiIF465xzPM
+   XsCN3wOzsbeMQzw/NXCQRoMukNw1cq+4MwdrD/nMZMr/QVSwIwUfr65+T
+   HH9hLJGj0zLgrAkZJFoKhJtljrgPiw3U3M77Ac3V3gRPs13nhZK7YGXLv
+   l96evXNcYOkYSxQHuBeBCj72yNEysvbxE4EvZ4un6XzKrLYBKl0aVwaVq
+   nUyhs4d0iT04lfBYzbjdKIH6QOUFupeKxZkvvXu1IH4roCePzcHujyNrx
+   w==;
+Date:   Fri, 26 Aug 2022 13:38:39 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
 To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] iio:accel:dmard06: Optimize when CONFIG_OF isn't set
-Message-ID: <20220826124603.4a28a154@endymion.delvare>
-In-Reply-To: <CAHp75VeSgmO_=mXVR4uSpbQDO8MBGZu4O2vLEqunHYuoPfJbbQ@mail.gmail.com>
-References: <20220825144012.24a33bb0@endymion.delvare>
-        <CAHp75VeSgmO_=mXVR4uSpbQDO8MBGZu4O2vLEqunHYuoPfJbbQ@mail.gmail.com>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
+CC:     Jonathan Cameron <jic23@kernel.org>, kernel <kernel@axis.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Axel Jonsson <Axel.Jonsson@axis.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] iio: adc: mcp320x: use device managed functions
+Message-ID: <Ywiwv8TZ5oomTuHK@axis.com>
+References: <20220824104002.2749075-1-vincent.whitchurch@axis.com>
+ <20220824104002.2749075-2-vincent.whitchurch@axis.com>
+ <CAHp75Vf4C0hauoT7F26zS7815Cps=W3o1_HHmWKVbrUi90FcrQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Vf4C0hauoT7F26zS7815Cps=W3o1_HHmWKVbrUi90FcrQ@mail.gmail.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,32 +54,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-
-On Thu, 25 Aug 2022 23:12:43 +0300, Andy Shevchenko wrote:
-> On Thu, Aug 25, 2022 at 3:54 PM Jean Delvare <jdelvare@suse.de> wrote:
+On Thu, Aug 25, 2022 at 10:01:58PM +0200, Andy Shevchenko wrote:
+> On Wed, Aug 24, 2022 at 1:46 PM Vincent Whitchurch
+> <vincent.whitchurch@axis.com> wrote:
 > >
-> > When CONFIG_OF isn't set, we can optimize out dmard06_of_match as it
-> > will never be used.  
+> > Use devm_* functions in probe to remove some code and to make it easier
+> > to add further calls to the probe function.
 > 
-> NACK. There is a magic PRP0001 for ACPI case.
+> ...
+> 
+> > +       mutex_init(&adc->lock);
+> 
+> > +       return devm_iio_device_register(&spi->dev, indio_dev);
+> 
+> Do you still need to destroy the mutex? If so, you may not call devm_
+> variant of iio_device_register() or you have to wrap mutex_destroy()
+> accordingly.
 
-OK, I wasn't aware of this. As of_match_device() is a stub when
-CONFIG_OF isn't set, I thought the table could never be used. But now I
-see that the acpi subsystem accesses the table directly, so you are
-correct, the optimization I suggested is bogus.
-
-Now I'm curious, is there a well-defined subset of device names that
-can be found in an ACPI table? If not, does that mean that any driver
-with an OF entry could match, therefore of_match_ptr() should be
-removed from the kernel entirely?
-
-Another possibility would be to stub out of_match_ptr() only if neither
-CONFIG_OF nor CONFIG_ACPI is set. But I'm not sure that would be worth,
-as I expected either to be set on almost all kernels in practice
-(except on s390x, but you wouldn't build any of these drivers there
-anyway).
-
--- 
-Jean Delvare
-SUSE L3 Support
+mutex_destroy() is only used to ensure that mutex debugging catches
+further use of the mutex.  Isn't it rather overkill to add specific
+cleanup to do only that, especially in this case when it's anyway going
+to get freed immediately afterwards?  The vast majority of IIO drivers
+don't call mutex_destroy() (256 calls to mutex_init() in HEAD vs 12 to
+mutex_destroy()).

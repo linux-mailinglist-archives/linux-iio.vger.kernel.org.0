@@ -2,157 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1AD5A31B6
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Aug 2022 00:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0AD5A372E
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Aug 2022 13:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231557AbiHZWGj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 26 Aug 2022 18:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55162 "EHLO
+        id S234135AbiH0LJu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 27 Aug 2022 07:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230436AbiHZWGj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 26 Aug 2022 18:06:39 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CA6DF666;
-        Fri, 26 Aug 2022 15:06:37 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id y3so5563557ejc.1;
-        Fri, 26 Aug 2022 15:06:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=gxfAwMNo+XhGWxyftpO+6CnWOrfELB6W6KeuWQP0Tdk=;
-        b=JSn7nXQZqRXtCtjtjPrKqmpIQSbKBQrbylO8/4lyVncWoASGdXTvkdkWUAKChPwQr8
-         pNox49bzzudetwp6M8yEvHOWZRj+ePrSS6ejclBBF9bPOZGnw83YKLC80HF5wFTlDuXl
-         RYZ4U/u4UQS+zml8Ft3eC/DIHPGR3lZUDDkI8A8K50IJGpSf9vmn3Kytks2vm1S4vwy7
-         DJpCHERiBI7hxikEMYXkOYWG0gSa8AUpVfL9+FHIEZXQn9p6fhZsKFMXBTdnJdrEWMRH
-         ZoQe9LT1P9Iy3Xi2yt15ImYNJBpsWiPbkJMhLy175wv67d5GizMSFTxf1nlOhD5EbvJ2
-         dgrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=gxfAwMNo+XhGWxyftpO+6CnWOrfELB6W6KeuWQP0Tdk=;
-        b=rcjoqbyIjVHwmtHcLkJRE+y1Cn2nAG5gSzt0T+aogbA5nbSKGhgniAtvmDbGtfUJZV
-         CDHI9BTYPmDuthJ8/2HVqyKZoT8GH+H9eimK4JPMkFkKMzWjinI/22VnH4vEGJzq/B/K
-         H4hyQ4YURcZEx+aaxmqFRBUvlFBg3IIGAuNRyQPJ7DmwQCMYYBlVo3iKu8Mw3wtBO/BN
-         fFiBLjcjH/n6seu0cxDvBr6FoZE9je/2zUmNRN9MtDDBpdjYPOjesf0BOKd5VG+x79EX
-         aiOKCWNpFUQ9ixRKwXiMz/F/FjeLe8KJlQ2czX5o7dQl6rzVoM93GK/w6BZQFdE0eMNT
-         rZAw==
-X-Gm-Message-State: ACgBeo0P7KF2u/Ff3ravea4LrQ6hhGR75ylE9WIZngR6z/AR0B9jSDNX
-        zeFL8sk/BP822pGV2ERj4ePDOm8ICDkvMnpFFlg=
-X-Google-Smtp-Source: AA6agR54OERaFQ227DRip+YatbGP5ryKZCn+s70oVq/MUOKUUzRrRT1aksE/nBH1mqzT4YDDbGuNE6VuKbJMwm7N7vM=
-X-Received: by 2002:a17:907:31c9:b0:740:ef93:2ffd with SMTP id
- xf9-20020a17090731c900b00740ef932ffdmr2430901ejb.584.1661551596454; Fri, 26
- Aug 2022 15:06:36 -0700 (PDT)
+        with ESMTP id S230283AbiH0LJt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 27 Aug 2022 07:09:49 -0400
+X-Greylist: delayed 25120 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 27 Aug 2022 04:09:44 PDT
+Received: from smtp1.csc.fi (smtp1.csc.fi [IPv6:2001:708:10:6004::14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD3417E3E;
+        Sat, 27 Aug 2022 04:09:44 -0700 (PDT)
+Received: from tapir.csc.fi (tapir.csc.fi [86.50.27.201])
+        by smtp1.csc.fi (8.14.4/8.14.4/CSC) with ESMTP id 27R4A37s029248
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Sat, 27 Aug 2022 07:10:04 +0300
+Received: from tapir.csc.fi (localhost [127.0.0.1])
+        by tapir.csc.fi (Postfix) with ESMTPS id CBDF5124339;
+        Sat, 27 Aug 2022 07:10:02 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by tapir.csc.fi (Postfix) with ESMTP id 5C3BB123739;
+        Sat, 27 Aug 2022 07:10:02 +0300 (EEST)
+Received: from tapir.csc.fi ([127.0.0.1])
+        by localhost (tapir.csc.fi [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id lh6E0DwmGv-k; Sat, 27 Aug 2022 07:10:02 +0300 (EEST)
+Received: from zebra.csc.fi (zebra.csc.fi [86.50.27.101])
+        by tapir.csc.fi (Postfix) with ESMTP id 9E5CCBE389;
+        Sat, 27 Aug 2022 07:10:00 +0300 (EEST)
+Date:   Sat, 27 Aug 2022 07:10:00 +0300 (EEST)
+From:   Chen Huaiyu <satu.hakanurmi@csc.fi>
+Reply-To: " Chen Huaiyu" <chenhuaiyui1@outlook.jp>
+Message-ID: <398792072.10087135.1661573400589.JavaMail.zimbra@csc.fi>
+Subject: Please get back to me
 MIME-Version: 1.0
-References: <20220825194604.15645-1-jagathjog1996@gmail.com>
- <20220825194604.15645-3-jagathjog1996@gmail.com> <CAHp75Vc5048aQL5cLy-OfBfnH6tz_7z24sFX2H1oGRz+JUyq9Q@mail.gmail.com>
-In-Reply-To: <CAHp75Vc5048aQL5cLy-OfBfnH6tz_7z24sFX2H1oGRz+JUyq9Q@mail.gmail.com>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Sat, 27 Aug 2022 03:36:23 +0530
-Message-ID: <CAM+2Eu+a8LM+XBELAm9H51EWVwCDqcYaxfdj4_-Sk9TtJ0gLJA@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: accel: bma400: Add support for single and
- double tap events
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [156.146.59.42]
+X-Mailer: Zimbra 8.8.15_GA_4372 (zclient/8.8.15_GA_4372)
+Thread-Index: W0q26sSq3qxwQG2mk9U47iQWDlGGjA==
+Thread-Topic: Please get back to me
+X-Spam-Score: undef - relay 86.50.27.201 marked with skip_spam_scan
+X-CanIt-Geo: ip=86.50.27.201; country=FI; region=Uusimaa; city=Espoo; latitude=60.2050; longitude=24.6455; http://maps.google.com/maps?q=60.2050,24.6455&z=6
+X-CanItPRO-Stream: outbound (inherits from 01_Tag_Only,default)
+X-Canit-Stats-ID: Bayes signature not available
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=csc.fi; h=date:from
+        :reply-to:message-id:subject:mime-version:content-type
+        :content-transfer-encoding; s=smtp; bh=q+e1fdFmUrE7U5olX0DQBQke2
+        Ke8NLlatQgVJI+ftgs=; b=tm9UnnJD8PAOBXhL6sGtgP4mURftc53iWRSMGpyOB
+        4P/L1vtkxWfQYTTdSxYGcjmdFspMRZLtLoH9Z7LdPBCPBr+1G37d8pdjQ0P3zyKO
+        W0xGmL/888zmO7QF4Mf8NB2Er7vWKZ3HVZ18/TwKtay3UnJiL28hyhdu7K8QgHB5
+        GWNM2wPsHkb9fN17ldwGomw5dXYmtUMKoi1ZZhVB0KqpbR87wN6gRWT4COIlObOC
+        BubAOGh/B5LrF1ZePoSMeJ3PEryiINOYIp5Iwj4vg+9dwFWMlqny44P97r4JwSds
+        ScHWtN39Qg0g/eJwtoB9p3yru3FUTIUyrzaEIIueVSoBg==
+X-Scanned-By: CanIt (www . roaringpenguin . com) on 86.50.27.145
+X-Spam-Status: Yes, score=6.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,FREEMAIL_REPLYTO_END_DIGIT,
+        HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_ENVFROM,HK_RANDOM_REPLYTO,
+        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.0 HK_RANDOM_ENVFROM Envelope sender username looks random
+        *  1.0 HK_RANDOM_REPLYTO Reply-To username looks random
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.2 HEADER_FROM_DIFFERENT_DOMAINS From and EnvelopeFrom 2nd level
+        *      mail domains are different
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [chenhuaiyui1[at]outlook.jp]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [chenhuaiyui1[at]outlook.jp]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [chenhuaiyui1[at]outlook.jp]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.2 FREEMAIL_FORGED_FROMDOMAIN 2nd level domains in From and
+        *      EnvelopeFrom freemail headers are different
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
 
-On Fri, Aug 26, 2022 at 1:53 AM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Thu, Aug 25, 2022 at 10:46 PM Jagath Jog J <jagathjog1996@gmail.com> wrote:
-> >
-> > Add support for single and double tap events based on the tap threshold
-> > value, minimum quiet time before and after the tap and minimum time
-> > between the taps in the double tap. The INT1 pin is used to interrupt
-> > and the event is pushed to userspace.
->
-> ...
->
-> > +static int tap_reset_timeout[] = {
-> > +       300000,
-> > +       400000,
-> > +       500000,
-> > +       600000
->
-> + Comma and so on for the rest of the similar cases.
 
-This is the terminator case so I have not added a comma in the last.
-All three tap configurations have only 4 value options.
-
->
-> > +};
->
-> ...
->
-> > +static int usec_to_tapreg_raw(int usec, const int *time_list)
-> > +{
-> > +       int index;
-> > +
-> > +       for (index = 0; index < 4; index++) {
->
-> Magic. Shouldn't be defined?
-
-All tap configuration value arrays are of size 4, I will define a
-macro for that.
-
->
-> Also you may add it to each data structure in question.
-
-Do you mean storing these values in the device's private structure?
-
-Tap configuration values are not stored in the device's private
-structure because.
-- I am directly accessing the device registers in _read_event_value()
-and _write_event_value().
-- These configuration values are not used in the other parts of
-the driver.
-- Two of these configurations have a default value so instead of
-reading and storing these values in the device's private structure
-during device init, I am directly accessing the device's register.
-
->
-> > +               if (usec == time_list[index])
-> > +                       return index;
-> > +       }
-> > +       return -EINVAL;
-> > +}
->
-> ...
->
-> > +       int ret;
-> > +       unsigned int mask, field_value;
->
-> Reversed xmas tree order?
->
-> > +        * Tap interrupts are operating with the data rate of 200Hz.
->
-> a data
-
-Sure, I will correct these in the next patch series.
-
-Thank you
-Jagath
-
->
-> > +        * See section 4.7 "Tap sensing interrupt" in datasheet v1.2.
-> > +        */
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Did you receive my previous email?

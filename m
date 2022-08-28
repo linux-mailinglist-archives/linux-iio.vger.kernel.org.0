@@ -2,54 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB8F5A3E8B
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Aug 2022 18:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C435A3E91
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Aug 2022 18:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbiH1QVe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Aug 2022 12:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44940 "EHLO
+        id S229606AbiH1QaN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Aug 2022 12:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbiH1QVd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Aug 2022 12:21:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C9C41CFFE;
-        Sun, 28 Aug 2022 09:21:31 -0700 (PDT)
+        with ESMTP id S229648AbiH1QaM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Aug 2022 12:30:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021597665;
+        Sun, 28 Aug 2022 09:30:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 432FD60B3E;
-        Sun, 28 Aug 2022 16:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA299C433D7;
-        Sun, 28 Aug 2022 16:21:27 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6886DB80A75;
+        Sun, 28 Aug 2022 16:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A44C433C1;
+        Sun, 28 Aug 2022 16:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661703690;
-        bh=qYruH8K/GFaVT47Q2Gp0/tqxVZZ0LOn2zgpb+Qy0tMk=;
+        s=k20201202; t=1661704205;
+        bh=hkP7Iyq9hIKsuHrAuDHR0IJBFhTR6IPli5jEcttyojE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LV9FfEsOCa+wpjcTo6584src7EGkGKYdBVjujp7f3pBNuPBKqXz6r6IMc0d6HIUpj
-         B1GbebuZvK6SNN41Za9QHOcnJZ4esq2/REoU3mkqWwGrf/nYrJvjJsutjPKEaZn1II
-         VEvBeaAhMjCNY8LbKFwI01+9KwtA72mCgw48hczTmbday4HA1wwJ2gHpDjImv9BEOE
-         llBLgphQePOuC2ffYZlX9MRr6gYfWd5aXZtANjfm8g/9JQfS6ZkuRESPTOWTXsxXPI
-         jKvYRF/omTJyC96i1+6uD5SqoBvqHoke9FamjSrwZ6+kiHlPHJ8OgFn9o9FSaZBcaA
-         KbxPpfhoyeh8Q==
-Date:   Sun, 28 Aug 2022 16:47:08 +0100
+        b=cR2REiNat4p0xCuT1FMAu78W4EF/Mxkhpixo+uhTzTMJki6wNWwKjKV0iWMjV/CAM
+         jtUnsJHG0vNVNn4YCqE9JXBqZ7MtvciMxrQ+Gnd6D/N+WSgkvKNZwKQL7moCMpEWsm
+         fiMHV3ajyZe6xxgcAx1Tazb88PXMWw6uYb/WsxkRIEwfHfBO70IXDqufUEGN31mC52
+         Wy2D7LS4ZPz4cGQTwBgV2P2Hy2KbGB8lV4LapwMkg+iW4/lr6heyT/rhg0z6geFZb6
+         wDeg65X2EJJw/Z56blAZ+a58oC6iGofjfo70294bJV+e+tzbouyUnQOJUU/eJw1Dfo
+         LSahyPGjnlgfw==
+Date:   Sun, 28 Aug 2022 16:55:41 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Dmitry Rokosov <DDRokosov@sberdevices.ru>
 Cc:     "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
         "andriy.shevchenko@linux.intel.com" 
         <andriy.shevchenko@linux.intel.com>,
+        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
+        "christophe.jaillet@wanadoo.fr" <christophe.jaillet@wanadoo.fr>,
+        "stano.jakubek@gmail.com" <stano.jakubek@gmail.com>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>,
+        "stephan@gerhold.net" <stephan@gerhold.net>,
         "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
         "wsa@kernel.org" <wsa@kernel.org>,
-        "andy.shevchenko@gmail.com" <andy.shevchenko@gmail.com>,
         "lars@metafoo.de" <lars@metafoo.de>,
         "Michael.Hennerich@analog.com" <Michael.Hennerich@analog.com>,
         "jbhayana@google.com" <jbhayana@google.com>,
+        "lucas.demarchi@intel.com" <lucas.demarchi@intel.com>,
+        "jani.nikula@intel.com" <jani.nikula@intel.com>,
+        "linus.walleij@linaro.org" <linus.walleij@linaro.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         kernel <kernel@sberdevices.ru>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 0/3] units: complement the set of Hz units
-Message-ID: <20220828164708.017c400d@jic23-huawei>
-In-Reply-To: <20220801143811.14817-1-ddrokosov@sberdevices.ru>
-References: <20220801143811.14817-1-ddrokosov@sberdevices.ru>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v5 2/7] units: complement the set of Hz units
+Message-ID: <20220828165541.2cd81c97@jic23-huawei>
+In-Reply-To: <20220812165243.22177-3-ddrokosov@sberdevices.ru>
+References: <20220812165243.22177-1-ddrokosov@sberdevices.ru>
+        <20220812165243.22177-3-ddrokosov@sberdevices.ru>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,46 +75,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 1 Aug 2022 14:37:23 +0000
+On Fri, 12 Aug 2022 16:52:26 +0000
 Dmitry Rokosov <DDRokosov@sberdevices.ru> wrote:
 
-> During msa311 accel IIO driver development
+> Currently, Hz units do not have milli, micro and nano Hz coefficients.
+> Some drivers (IIO especially) use their analogues to calculate
+> appropriate Hz values. This patch includes them to units.h definitions,
+> so they can be used from different kernel places.
 > 
-> https://lore.kernel.org/linux-iio/20220616104211.9257-1-ddrokosov@sberdevices.ru/
-> 
-> Andy requested to use proper units in the hz->ms calculation. Current
-> units.h header doesn't have milli, micro and nano HZ coefficients, so
-> some drivers (in the IIO subsystem) implement their own copies for that.
-> 
-> The current patchset resolves such a problem and intoduces general
-> MILLIHZ_PER_HZ, MICROHZ_PER_HZ and NANOHZ_PER_HZ definitions in the units.h,
-> and fixes all drivers which duplicate these units.
+> Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+I'm not really sure why Andrew Morton picked these up as no obviously
+dependencies outside of IIO and we have other patches under review that
+need these.
 
-Ok, I'm just about convinced this is worth doing given the precedence
-of similar cases. Applied to the togreg branch of iio.git and pushed
-out as testing.
+Anyhow, I see they are still in Andrew's nonmm-unstable tree, so
+assuming he won't mind me picking them up through IIO instead / as well.
+If nothing else git will sort this out when the two trees reach
+linux-next or upstream anyway.
+
++Cc Andrew Morton.
+
+this and next two patches applied to the togreg branch of iio.git.
+I'll push that out as testing for 0-day to do it's sanity checks then
+it'll go out as iio.git / togreg and get picked up by linux-next.
 
 Thanks,
 
 Jonathan
+
+> ---
+>  include/linux/units.h | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> Changes:
-> * v2->v3:
->     - changed UHZ_PER_HZ to MICROHZ_PER_HZ and NHZ_PER_HZ to
->       NANOHZ_PER_HZ to save name consistency for all new HZ units
-> 
-> * v1->v2:
->     - changed MHZ_PER_HZ to a different name as Andy suggested
->       (suppose MILLIHZ_PER_HZ is good enough)
-> 
-> Dmitry Rokosov (3):
->   units: complement the set of Hz units
->   iio: accel: adxl345: use HZ macro from units.h
->   iio: common: scmi_sensors: use HZ macro from units.h
-> 
->  drivers/iio/accel/adxl345_core.c           | 7 ++++---
->  drivers/iio/common/scmi_sensors/scmi_iio.c | 8 ++++----
->  include/linux/units.h                      | 3 +++
->  3 files changed, 11 insertions(+), 7 deletions(-)
-> 
+> diff --git a/include/linux/units.h b/include/linux/units.h
+> index 681fc652e3d7..2793a41e73a2 100644
+> --- a/include/linux/units.h
+> +++ b/include/linux/units.h
+> @@ -20,6 +20,9 @@
+>  #define PICO	1000000000000ULL
+>  #define FEMTO	1000000000000000ULL
+>  
+> +#define NANOHZ_PER_HZ		1000000000UL
+> +#define MICROHZ_PER_HZ		1000000UL
+> +#define MILLIHZ_PER_HZ		1000UL
+>  #define HZ_PER_KHZ		1000UL
+>  #define KHZ_PER_MHZ		1000UL
+>  #define HZ_PER_MHZ		1000000UL
 

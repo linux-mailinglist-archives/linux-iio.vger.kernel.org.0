@@ -2,48 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E36D5A3E99
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Aug 2022 18:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DE95A3EB0
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Aug 2022 18:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229963AbiH1Qmr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 28 Aug 2022 12:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35504 "EHLO
+        id S229519AbiH1Q5Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 28 Aug 2022 12:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229955AbiH1Qmq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Aug 2022 12:42:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA20119021;
-        Sun, 28 Aug 2022 09:42:44 -0700 (PDT)
+        with ESMTP id S229648AbiH1Q5X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 28 Aug 2022 12:57:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8E427159;
+        Sun, 28 Aug 2022 09:57:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75B4360BCB;
-        Sun, 28 Aug 2022 16:42:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7983FC433C1;
-        Sun, 28 Aug 2022 16:42:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DD366B80B08;
+        Sun, 28 Aug 2022 16:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F43C433C1;
+        Sun, 28 Aug 2022 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661704963;
-        bh=JavRS0yIcgCJ6XGZElu0UI5jqe+i4q1I3Arw8veH7oM=;
+        s=k20201202; t=1661705839;
+        bh=+gVdxXnMj9/yA6l4eDpVf7DZRA/bONWkROmhqNokrPI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YXGrnWl2L/o8sA74ajnAgikpdsB281eUsa687HzdLZweIK5TEnbobQv0WNkiDzrh9
-         2/hIm+ZwRPG5U/A6Oew8sOnhnBnH6Xz/repJL5B28MnHIWTgG+EEyQG7giB/IHJgyy
-         ZiGEOLaY295uNZr2l0d+E/Ekssc6xFOHQ91CpkG2Szw9nBcW53LlKqLaIn9tL4DTnk
-         SDYGEuAU+8pU4u1Fg22T5HdfsEcdfVl8W9VIBirwOB5C56kBITmHFT7mjXGBa8SNno
-         BHajFERviPe6ibc4jH/+0jATXwB5yBZR5dwjegbHsDGmpC2LLeIVsSGUelqRUCy2j1
-         IKecmIvZ+7dAg==
-Date:   Sun, 28 Aug 2022 17:08:23 +0100
+        b=hwQ6Do9fa4SfAFmSSS4Oryvivr4yMmb5xHM+0SOvG5c02e4lV3fGWz0OuAuHXZcUa
+         1l4LVcIlUmHJcKIHGPzP8DeiV2uRKHc7P5QBqelF4XnvG7bk3Ojz+QS/xEdgLnxe5G
+         +1gK4Zwz5f0ksANH+UfpleElIY2k4vMkTjohN/BYE52GDIjIIP1Zv3PhzxANFlPXYJ
+         NkqeT4e0jdV4P7SWGRhCWKMHQ0wrfnSP8522+DsHiJ2wVIaQq1UCVSWBqIiwHaAadH
+         1aQpYtvLXvkXxuhYD/1BhlXZUlTUVlFIasHtzTCMyNZMZxdMTF1wLS6skfBgHL4OF5
+         d4bgSeSMptYZA==
+Date:   Sun, 28 Aug 2022 17:22:58 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <nuno.sa@analog.com>, <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH] MAINTAINERS: fix Analog Devices forum links
-Message-ID: <20220828170823.13184817@jic23-huawei>
-In-Reply-To: <20220824170913.13411-1-antoniu.miclaus@analog.com>
-References: <20220824170913.13411-1-antoniu.miclaus@analog.com>
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Shreeya Patel <shreeya.patel@collabora.com>, lars@metafoo.de,
+        krisman@collabora.com, kernel@collabora.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: tsl2583: Fix module unloading
+Message-ID: <20220828172258.4a78152f@jic23-huawei>
+In-Reply-To: <793d9ca8-47af-2f3d-6079-e0bbb8e7d898@collabora.com>
+References: <20220825092048.136973-1-shreeya.patel@collabora.com>
+        <793d9ca8-47af-2f3d-6079-e0bbb8e7d898@collabora.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -54,52 +56,68 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 24 Aug 2022 20:09:13 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Thu, 25 Aug 2022 21:53:09 +0300
+Dmitry Osipenko <dmitry.osipenko@collabora.com> wrote:
 
-> Fix the links to redirect to the correct forum subsection for the latest
-> Analog Devices drivers added.
->=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Applied,
+> Hi,
+> 
+> On 8/25/22 12:20, Shreeya Patel wrote:
+> > tsl2583 uses devm_iio_device_register() function and
+> > calling iio_device_unregister() in remove breaks the
+> > module unloading.
+> > Fix this by removing call to iio_device_unregister()
+> > from tsl2583_remove().
+> > 
+> > Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>  
+> 
+> Stable and fixes tags are missing
 
-Thanks,
+Stable tags often added by maintainer when applying the patch
+rather than at submission: can take into account how they want to
+manage stable backports - some maintainers prefer to run a bunch
+of tests before asking for patches to be added to stable. I don't
+do that, but I don't always tag fixes for stable if I think there
+is some risk associated.
+
+Obviously this one is fine for stable material though and I would
+have tagged v2 whilst applying ;)
+> 
+> > ---
+> >  drivers/iio/light/tsl2583.c | 2 --
+> >  1 file changed, 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+> > index 82662dab87c0..36c25f79e6a6 100644
+> > --- a/drivers/iio/light/tsl2583.c
+> > +++ b/drivers/iio/light/tsl2583.c
+> > @@ -878,8 +878,6 @@ static int tsl2583_remove(struct i2c_client *client)
+> >  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> >  	struct tsl2583_chip *chip = iio_priv(indio_dev);
+> >  
+> > -	iio_device_unregister(indio_dev);
+> > -
+> >  	pm_runtime_disable(&client->dev);
+> >  	pm_runtime_set_suspended(&client->dev);
+> >    
+> 
+> Driver removal sequence should be opposite to the registration order.
+> Could be better not to use the devm in this case
+
+Agreed. Simplest fix is indeed to do what v2 does.
+
+Nicer tidy up after that is perhaps to switch to
+devm_pm_runtime_enable()
+which tidies up nicely on that and register a
+separate callback with devm_add_action_or_reset() to deal with
+the power down.  However, I'm struggling to follow how the device
+is powered up in the first place (particularly if we disable runtime
+pm to make the flow simpler). 
+
+I think the driver may only "work" today by merit of letting it 
+autosuspend then resuming. 
 
 Jonathan
 
-> ---
->  MAINTAINERS | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index b7221f4143cb..2c440f3d90e3 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -615,7 +615,7 @@ ADXL367 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
->  M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Supported
-> -W:	http://ez.analog.com/community/linux-device-drivers
-> +W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/accel/adi,adxl367.yaml
->  F:	drivers/iio/accel/adxl367*
-> =20
-> @@ -1147,7 +1147,7 @@ ANALOG DEVICES INC AD74413R DRIVER
->  M:	Cosmin Tanislav <cosmin.tanislav@analog.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Supported
-> -W:	http://ez.analog.com/community/linux-device-drivers
-> +W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/addac/adi,ad74413r.yaml
->  F:	drivers/iio/addac/ad74413r.c
->  F:	include/dt-bindings/iio/addac/adi,ad74413r.h
-> @@ -11913,7 +11913,7 @@ LTC2688 IIO DAC DRIVER
->  M:	Nuno S=C3=A1 <nuno.sa@analog.com>
->  L:	linux-iio@vger.kernel.org
->  S:	Supported
-> -W:	http://ez.analog.com/community/linux-device-drivers
-> +W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2688
->  F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2688.yaml
->  F:	drivers/iio/dac/ltc2688.c
+
+> 
 

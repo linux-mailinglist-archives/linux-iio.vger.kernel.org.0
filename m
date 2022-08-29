@@ -2,129 +2,278 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 472B65A533C
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 19:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97CC65A5460
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 21:15:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229965AbiH2Rew (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Aug 2022 13:34:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S229556AbiH2TPt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Aug 2022 15:15:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230356AbiH2Rev (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 13:34:51 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868CA9C;
-        Mon, 29 Aug 2022 10:34:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3EC04B8119D;
-        Mon, 29 Aug 2022 17:34:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5A4C433D7;
-        Mon, 29 Aug 2022 17:34:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661794481;
-        bh=gnf4Jlo1A0o7rUsp7O03aHFQN2TyPZez03WfQkmxHSs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ST3Da3EZaNBmtKV8anrXbMqMPWZjEhZf1rZXsTPeI6Ol6HCzQafhNJxg3yFfbBLWl
-         YWgpHzfWe7VrIkLPKrTXWmKHu8lxZJhx1GklCLlF2NOw1hY9XxOrP+qtd0hXugy4+C
-         uUqIl65z8IF6D630q/xhrxw4OMl4QI69HU7+opSDUXkefoWYqKefeAVFEiia6vuF2R
-         Y10aLyPS/ehmBFeatikwW4qCSJdatrWnLEhZ+XB6b8YMxWQCRiS8+Fip+3PqACYy/7
-         3PWSt3YlFnlaxDspvzGwFw6SmF8Fx5bRLDhvWyBp6d0yM4RrfbyguzE4+fm5ol/yaU
-         AOMIIG3wbLUvA==
-Date:   Mon, 29 Aug 2022 18:00:22 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jakob Hauser <jahau@rocketmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/4] iio: magnetometer: yamaha-yas530: Use pointers
- as driver data
-Message-ID: <20220829180022.18dac46a@jic23-huawei>
-In-Reply-To: <20220829112407.74917-1-andriy.shevchenko@linux.intel.com>
-References: <20220829112407.74917-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S229536AbiH2TPs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 15:15:48 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D01229C9B;
+        Mon, 29 Aug 2022 12:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661800546; x=1693336546;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sXsgyIvYKgoTog/eFw/57RxP3GihL0VylkQHwzGwnFQ=;
+  b=H7NfKPkEphlLcFii68CNquCnrHX9TuAeZWB7s380ualNQUi64TE6p9+w
+   Wy+Fliv+DtuVSpn8ooy1E4Ot0aoz4AQKf1W8PjYaH1WH9lkqxZbCIZMxk
+   ZtzcmoFc5BtidnjfJ7u0PJcOcS5p4i9+ABVJOb0tkW41+8o8ACT9TqoUP
+   7pyRuA1eMA1MLm9WLUOSezJcPOYqF1aKpmYeemfUXybmGXMT0l+fsyNoI
+   6Tr3aOB9/7cBAkIyrCXNKb//1wnDuD+3tG7Gz7iIobilSkobck8GWrDzd
+   ckI7tYuUcEaBdayt1tzOBeHCo3bmWAdCZ4I5Qrni05TLYBD4niN6xoK2q
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="281950289"
+X-IronPort-AV: E=Sophos;i="5.93,273,1654585200"; 
+   d="scan'208";a="281950289"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 12:15:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,273,1654585200"; 
+   d="scan'208";a="679739003"
+Received: from lkp-server02.sh.intel.com (HELO e45bc14ccf4d) ([10.239.97.151])
+  by fmsmga004.fm.intel.com with ESMTP; 29 Aug 2022 12:15:43 -0700
+Received: from kbuild by e45bc14ccf4d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oSkEZ-0000B7-0V;
+        Mon, 29 Aug 2022 19:15:43 +0000
+Date:   Tue, 30 Aug 2022 03:15:42 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-mm@kvack.org, linux-iio@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ b27a3ca08ba7abcf1a8af4dc3dce3e5221d91212
+Message-ID: <630d105e.ndcPUQJswrnHbuox%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Aug 2022 14:24:04 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: b27a3ca08ba7abcf1a8af4dc3dce3e5221d91212  Add linux-next specific files for 20220829
 
-> Unify ID tables to use pointers for driver data. It will allow
-> to simplify the driver later on.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  drivers/iio/magnetometer/yamaha-yas530.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-> index 026f71e524f3..03e0525e6364 100644
-> --- a/drivers/iio/magnetometer/yamaha-yas530.c
-> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-> @@ -32,6 +32,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/mutex.h>
->  #include <linux/pm_runtime.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/random.h>
-> @@ -1437,8 +1438,8 @@ static int yas5xx_probe(struct i2c_client *i2c,
->  		goto assert_reset;
->  	}
->  
-> -	yas5xx->chip_info = &yas5xx_chip_info_tbl[id->driver_data];
-> -	ci = yas5xx->chip_info;
-> +	ci = device_get_match_data(dev);
-> +	yas5xx->chip_info = ci;
+Error/Warning reports:
 
-Am I missing a path by which device_get_match_data() can use the i2c_device_id values?
-I'd expect to see a fallback to that if ci == NULL to cover the non firmware causes
-of probe().  I've seen a few patches without that fallback path recently so wondering
-if some magic has gotten hooked up and I've missed it (something to push that via
-a swnode perhaps?)
+https://lore.kernel.org/linux-mm/202208190147.RwbMifl8-lkp@intel.com
 
+Error/Warning: (recently discovered and may have been fixed)
 
->  
->  	ret = regmap_read(yas5xx->map, YAS5XX_DEVICE_ID, &id_check);
->  	if (ret)
-> @@ -1583,19 +1584,19 @@ static DEFINE_RUNTIME_DEV_PM_OPS(yas5xx_dev_pm_ops, yas5xx_runtime_suspend,
->  				 yas5xx_runtime_resume, NULL);
->  
->  static const struct i2c_device_id yas5xx_id[] = {
-> -	{"yas530", yas530 },
-> -	{"yas532", yas532 },
-> -	{"yas533", yas533 },
-> -	{"yas537", yas537 },
-> +	{"yas530", (kernel_ulong_t)&yas5xx_chip_info_tbl[yas530] },
-> +	{"yas532", (kernel_ulong_t)&yas5xx_chip_info_tbl[yas532] },
-> +	{"yas533", (kernel_ulong_t)&yas5xx_chip_info_tbl[yas533] },
-> +	{"yas537", (kernel_ulong_t)&yas5xx_chip_info_tbl[yas537] },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(i2c, yas5xx_id);
->  
->  static const struct of_device_id yas5xx_of_match[] = {
-> -	{ .compatible = "yamaha,yas530", },
-> -	{ .compatible = "yamaha,yas532", },
-> -	{ .compatible = "yamaha,yas533", },
-> -	{ .compatible = "yamaha,yas537", },
-> +	{ .compatible = "yamaha,yas530", &yas5xx_chip_info_tbl[yas530] },
-> +	{ .compatible = "yamaha,yas532", &yas5xx_chip_info_tbl[yas532] },
-> +	{ .compatible = "yamaha,yas533", &yas5xx_chip_info_tbl[yas533] },
-> +	{ .compatible = "yamaha,yas537", &yas5xx_chip_info_tbl[yas537] },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, yas5xx_of_match);
+drivers/base/regmap/regmap-mmio.c:221:17: error: implicit declaration of function 'writesb'; did you mean 'writeb'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:224:17: error: implicit declaration of function 'writesw'; did you mean 'writew'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:227:17: error: implicit declaration of function 'writesl'; did you mean 'writel'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:231:17: error: implicit declaration of function 'writesq'; did you mean 'writeq'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:231:17: error: implicit declaration of function 'writesq'; did you mean 'writesl'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:358:17: error: implicit declaration of function 'readsb'; did you mean 'readb'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:361:17: error: implicit declaration of function 'readsw'; did you mean 'readw'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:364:17: error: implicit declaration of function 'readsl'; did you mean 'readl'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:368:17: error: implicit declaration of function 'readsq'; did you mean 'readq'? [-Werror=implicit-function-declaration]
+drivers/base/regmap/regmap-mmio.c:368:17: error: implicit declaration of function 'readsq'; did you mean 'readsl'? [-Werror=implicit-function-declaration]
+drivers/iio/cdc/ad7746.c:336:14: warning: use of uninitialized value '<unknown>' [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+drivers/opp/core.c:2454:22: warning: use of uninitialized value '<unknown>' [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+drivers/platform/mellanox/mlxreg-lc.c:866 mlxreg_lc_probe() warn: passing zero to 'PTR_ERR'
 
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsq
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsw
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesq
+|   `-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesw
+|-- alpha-buildonly-randconfig-r003-20220828
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsq
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsw
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesq
+|   `-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesw
+|-- alpha-randconfig-r012-20220829
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsq
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsw
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesq
+|   `-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesw
+|-- alpha-randconfig-r032-20220828
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsq
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-readsw
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesb
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesl
+|   |-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesq
+|   `-- drivers-base-regmap-regmap-mmio.c:error:implicit-declaration-of-function-writesw
+|-- arm-randconfig-c002-20220829
+|   |-- drivers-iio-cdc-ad7746.c:warning:use-of-uninitialized-value-unknown-CWE
+|   `-- drivers-opp-core.c:warning:use-of-uninitialized-value-unknown-CWE
+|-- csky-randconfig-s043-20220829
+|   `-- mm-vmscan.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-lockdep_map-const-lock-got-struct-lockdep_map-noderef-__rcu
+|-- i386-randconfig-s001-20220829
+|   `-- include-trace-events-kmem.h:sparse:sparse:restricted-gfp_t-degrades-to-integer
+|-- i386-randconfig-s002-20220829
+|   `-- include-trace-events-kmem.h:sparse:sparse:restricted-gfp_t-degrades-to-integer
+|-- i386-randconfig-s003-20220829
+|   `-- include-trace-events-kmem.h:sparse:sparse:restricted-gfp_t-degrades-to-integer
+|-- loongarch-randconfig-s032-20220829
+|   `-- include-trace-events-kmem.h:sparse:sparse:restricted-gfp_t-degrades-to-integer
+|-- openrisc-randconfig-s032-20220828
+
+elapsed time: 725m
+
+configs tested: 124
+configs skipped: 4
+
+gcc tested configs:
+um                           x86_64_defconfig
+loongarch                         allnoconfig
+um                             i386_defconfig
+csky                                defconfig
+sparc                               defconfig
+x86_64                              defconfig
+x86_64                                  kexec
+loongarch                           defconfig
+arm                                 defconfig
+i386                        debian-10.3-kunit
+i386                         debian-10.3-func
+arc                                 defconfig
+i386                 randconfig-a001-20220829
+riscv                             allnoconfig
+i386                          debian-10.3-kvm
+parisc                           allyesconfig
+x86_64                               rhel-8.3
+parisc64                            defconfig
+i386                 randconfig-a002-20220829
+arm                           stm32_defconfig
+parisc                              defconfig
+i386                 randconfig-a005-20220829
+openrisc                 simple_smp_defconfig
+s390                             allmodconfig
+csky                              allnoconfig
+riscv                    nommu_virt_defconfig
+arc                               allnoconfig
+alpha                               defconfig
+nios2                               defconfig
+i386                 randconfig-a006-20220829
+x86_64                          rhel-8.3-func
+riscv                randconfig-r042-20220828
+alpha                             allnoconfig
+mips                             allyesconfig
+arc                          axs103_defconfig
+mips                         cobalt_defconfig
+nios2                            allyesconfig
+riscv                          rv32_defconfig
+s390                       zfcpdump_defconfig
+s390                             allyesconfig
+x86_64               randconfig-a003-20220829
+x86_64                         rhel-8.3-kunit
+s390                                defconfig
+sparc                            allyesconfig
+x86_64                           rhel-8.3-kvm
+x86_64               randconfig-a004-20220829
+x86_64                           allyesconfig
+i386                   debian-10.3-kselftests
+riscv             nommu_k210_sdcard_defconfig
+sh                                  defconfig
+arm                              allyesconfig
+x86_64               randconfig-a005-20220829
+i386                              debian-10.3
+x86_64               randconfig-a002-20220829
+arm                              allmodconfig
+arc                  randconfig-r043-20220829
+i386                                defconfig
+riscv                    nommu_k210_defconfig
+arc                  randconfig-r043-20220828
+powerpc                           allnoconfig
+powerpc                        cell_defconfig
+i386                 randconfig-a003-20220829
+x86_64               randconfig-a006-20220829
+powerpc                      mgcoge_defconfig
+xtensa                           allyesconfig
+arm64                            allyesconfig
+x86_64               randconfig-a001-20220829
+um                                  defconfig
+powerpc                          allmodconfig
+x86_64                    rhel-8.3-kselftests
+sh                               allmodconfig
+i386                 randconfig-a004-20220829
+arm64                               defconfig
+x86_64                           rhel-8.3-syz
+riscv                            allmodconfig
+m68k                             allyesconfig
+m68k                                defconfig
+arc                              allyesconfig
+powerpc                          allyesconfig
+s390                 randconfig-r044-20220828
+ia64                                defconfig
+riscv                            allyesconfig
+ia64                             allmodconfig
+i386                          randconfig-c001
+alpha                            allyesconfig
+arm                          gemini_defconfig
+xtensa                          iss_defconfig
+powerpc                       holly_defconfig
+arm                        multi_v7_defconfig
+m68k                            mac_defconfig
+um                               alldefconfig
+powerpc                         ps3_defconfig
+x86_64               randconfig-c001-20220829
+m68k                             allmodconfig
+i386                             allyesconfig
+arm                  randconfig-c002-20220829
+
+clang tested configs:
+x86_64               randconfig-a011-20220829
+x86_64               randconfig-a014-20220829
+x86_64               randconfig-a016-20220829
+arm                         bcm2835_defconfig
+i386                 randconfig-a011-20220829
+mips                        bcm63xx_defconfig
+powerpc                     akebono_defconfig
+mips                           ip28_defconfig
+powerpc                     tqm8560_defconfig
+powerpc                      walnut_defconfig
+x86_64               randconfig-a015-20220829
+arm                         mv78xx0_defconfig
+x86_64               randconfig-a012-20220829
+x86_64               randconfig-a013-20220829
+i386                 randconfig-a014-20220829
+hexagon              randconfig-r041-20220829
+i386                 randconfig-a013-20220829
+mips                       rbtx49xx_defconfig
+i386                 randconfig-a012-20220829
+i386                 randconfig-a016-20220829
+riscv                randconfig-r042-20220829
+i386                 randconfig-a015-20220829
+hexagon              randconfig-r041-20220828
+s390                 randconfig-r044-20220829
+arm                          moxart_defconfig
+mips                     cu1000-neo_defconfig
+x86_64                          rhel-8.3-rust
+x86_64               randconfig-k001-20220829
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

@@ -2,94 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D0405A5473
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 21:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BDE5A54B7
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 21:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229565AbiH2TXL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Aug 2022 15:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
+        id S229488AbiH2Trx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Aug 2022 15:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiH2TXJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 15:23:09 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B2587094;
-        Mon, 29 Aug 2022 12:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1661800988; x=1693336988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Eq6QU+bV4AEJdkrAkD7NtxB2iucXOSQ9z1L/6a5MV/8=;
-  b=dWzPdzMr2IQbc9+RANW8VHOOrkJzMCKWor6c/oeMKmYN6tfVl88F3nKB
-   MGAAUXqhbfpc/M7sknf/+rimOhk2vVUQyy4kwxfHEdzSHpIhzMejWyAs0
-   kOGEMy3QZWYelbLwGHxhMMXJTInYioGh1uOj6ie9Nrf3IKMW8k5hbKXIC
-   xA0NOKILZgLieZ1gHHZ2sgMDxfUZNVKJnJ0i471JYl6+6Vh7GnB4G0Xjh
-   vdGJPHphrJ5THl3RFNzaZhq/RJr5qHGWnCn3ze5DEUp4AWaSfL111s/Kh
-   TVHvR4QXudHdXvg++aV9VyVvUuMrk0TtSgxE6Q6iccfwEoZIOpkubw9m4
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10454"; a="381278641"
-X-IronPort-AV: E=Sophos;i="5.93,273,1654585200"; 
-   d="scan'208";a="381278641"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 12:23:07 -0700
-X-IronPort-AV: E=Sophos;i="5.93,273,1654585200"; 
-   d="scan'208";a="753743366"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2022 12:23:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oSkLe-005emK-3C;
-        Mon, 29 Aug 2022 22:23:02 +0300
-Date:   Mon, 29 Aug 2022 22:23:02 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jakob Hauser <jahau@rocketmail.com>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/4] iio: magnetometer: yamaha-yas530: Use pointers as
- driver data
-Message-ID: <Yw0SFjnUwcjs/DDE@smile.fi.intel.com>
-References: <20220829112407.74917-1-andriy.shevchenko@linux.intel.com>
- <20220829180022.18dac46a@jic23-huawei>
+        with ESMTP id S229468AbiH2Trw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 15:47:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC0E75CC9
+        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 12:47:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E8A66062B
+        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 19:47:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0D227C433D7
+        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 19:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661802471;
+        bh=uNnBbS5Q+s+KlX2ltnHL9UcvwS3FZnjpblm3nKRhgDw=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=uhUeTEYJk9QENKSeP1T66xnMXLW/meB3Dx25FJRnAZvyqMO0NOYre3OhV83rJutZr
+         yKTfERLBbkWiFwqxxd8w1LhdpjSoDUwp0dOU8aDMqKy+0jL0wj/kiQcSeLf0Abd8dJ
+         A/lged3SCJDN4NV23oHqP+wT0szwcmOSzboDYt+ez1tohWMWrGf/K1zgCzekMW78iY
+         m8zbe9MEPLAssaT50rNycXI4PyA4Vv0yEK14X2YK3HY34JWvQA808dZy4DwmFzJDJL
+         5yedOy7JHBdeqdFSjmA1fAb51oy7l7Ja0MJR2QS9UciO3R2Ae8ieVs733eYb7oqqNQ
+         xqbsDEnqXwwjg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+        id E3E24C433E4; Mon, 29 Aug 2022 19:47:50 +0000 (UTC)
+From:   bugzilla-daemon@kernel.org
+To:     linux-iio@vger.kernel.org
+Subject: [Bug 200775] Cannot read the accelerometer raw data from the sensor
+ LNG2DM
+Date:   Mon, 29 Aug 2022 19:47:50 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: srinivas.pandruvada@linux.intel.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-200775-217253-w3BktBUZkz@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-200775-217253@https.bugzilla.kernel.org/>
+References: <bug-200775-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220829180022.18dac46a@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Aug 29, 2022 at 06:00:22PM +0100, Jonathan Cameron wrote:
-> On Mon, 29 Aug 2022 14:24:04 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D200775
 
-...
+--- Comment #7 from Srinivas Pandruvada (srinivas.pandruvada@linux.intel.co=
+m) ---
+Without OEM's help, we can't resolve. It is possible that Windows also poll=
+ing.
 
-> > -	yas5xx->chip_info = &yas5xx_chip_info_tbl[id->driver_data];
-> > -	ci = yas5xx->chip_info;
-> > +	ci = device_get_match_data(dev);
-> > +	yas5xx->chip_info = ci;
-> 
-> Am I missing a path by which device_get_match_data() can use the i2c_device_id values?
-> I'd expect to see a fallback to that if ci == NULL to cover the non firmware causes
-> of probe().  I've seen a few patches without that fallback path recently so wondering
-> if some magic has gotten hooked up and I've missed it (something to push that via
-> a swnode perhaps?)
+--=20
+You may reply to this email to add a comment.
 
-No, there is no such magic behind. The idea is that we use DT / ACPI overlays when
-device needs to be established. But I have got your point.
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=

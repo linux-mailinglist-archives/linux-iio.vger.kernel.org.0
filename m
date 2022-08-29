@@ -2,114 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C895A4EDC
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 16:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F035A5005
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 17:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbiH2OKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Aug 2022 10:10:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55428 "EHLO
+        id S229611AbiH2PRu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Aug 2022 11:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230229AbiH2OKi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 10:10:38 -0400
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9AF6BD69;
-        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
-Received: by mail-ot1-f51.google.com with SMTP id z22-20020a056830129600b0063711f456ceso5963602otp.7;
-        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
+        with ESMTP id S229547AbiH2PRt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 11:17:49 -0400
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381007AC0D
+        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 08:17:49 -0700 (PDT)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-11eb44f520dso6490793fac.10
+        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 08:17:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=zR5b6bKWNfwu6igeVhleFnuDNx79NhHyc/5OQ//e33o=;
+        b=Zm+KThV9k9P+rrZ2djLzW1iuGExqNRFC89/UpvUGBT/V1FEbo2h6FV79ttDOITYzzI
+         2j7RPd/siRu6FMUA3f+5wjbcf8HItpWXUoMujaGF3zByls1IRTxJgasut2+0NjJPaZGh
+         h+m7DuTzWPNod5TNbN0SskcvCYrkS1O13/eM0oa1o6z3eU2lNcx2J+M8Qd6wClE++Ksx
+         bvBZ2nhgTlOHN8eOGOJYGII3m1rTLzewGMnEKw8qzmssQCYBMD4DPqYZWrpCK9bBq3h4
+         Sd8fddYeAm/pfTouGYDY5tIhbrc0awFwMVPme3vodlfou9lM44uh8X6EbQTT6Pcdr2oe
+         goNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=opbj1lT2rqww+Ko38iiUdytadU+k9CoQLS7KnrXSbyY=;
-        b=wbQbQl9+s2rVlBIofj2GiXT37b2zWTDhTmTcchKG7EIJvuRm4V0C23ExIvweNk/P5v
-         NM9DTrkW1fu7MSET6QkwIVaZfN06z5GYxSpAttJSoADwTaOH+vdNooBI4ZWNiUTAXCRe
-         T39xcUx0wox8tT+ggOuSHwuitD5C5kyPEF1rapK0qA+BssbcQc6rall9CN/lmDAZVG5S
-         QeCR0ZF4nGangKBkzpMi4rXLy93NWcrSLtdy/Rr5eJGqBRsjHLaifLpYf/zUZeQsWbQc
-         Z+raDVLMimDok94WonC107/7hGE4zgy+vXHXy+0Rt6+D8Lah7YKqmncpkIWtrx1Bh5Hg
-         Q2qA==
-X-Gm-Message-State: ACgBeo1gj1GxFjI8RC8StcDpqA7BjlP2Wvh0pAKmMX6PYlVNMOVkmsu/
-        i0jit8CUl1MsRFLozi+BQw==
-X-Google-Smtp-Source: AA6agR7WIHe/AiLYD102e5d5uKFjLIhVyxUpACShz6LmoyBGjUcs44MJ20snIPOKxNFUVwlVnmhpXw==
-X-Received: by 2002:a05:6830:3914:b0:638:f80c:e964 with SMTP id br20-20020a056830391400b00638f80ce964mr6530478otb.220.1661782231113;
-        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
-Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id y5-20020a056830070500b0063b2875246dsm2805095ots.49.2022.08.29.07.10.29
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=zR5b6bKWNfwu6igeVhleFnuDNx79NhHyc/5OQ//e33o=;
+        b=BS1jABr72AgesQHtckw0MPTpKsyVNZ7X9DWsgKGJ4UMuiLhuw7PkOUbkNGNcLZY3wf
+         80brb+LCEdbi4OXujbU3qwFnUzdPYpQkPTSEV3lrYSqvH9f6vxJxybB/I3nREBmUoHkL
+         i2IYF42VA/jAwCQOWWllDJWTp+dKSb/MpOHcMzJeZnC8SIPjTyNY2RiZbIdHkMGGhlHU
+         nnuMJq8kKGfRTaD2YXcWp0RwvQxRrvd6ULZZKFaE4cb5mguNiQynTaT2xheKFh/eAncT
+         fpUY0ZGlXpzRhnBhCHKWk2IezFqYtOjXln6hWw4gMMeFhx1AyM2kIY65ieOufbs7JFZE
+         kFYQ==
+X-Gm-Message-State: ACgBeo1e4fNeMVQiyN+gJgP1VV7jvuYt/Kc3KssYipvyuqbQBHdieWUp
+        h4Rrh0d5HY1Kh1s3gbPfOiCIanMIWEDVDQ==
+X-Google-Smtp-Source: AA6agR59u70qR1mZlWa6IsS7A8WgFmvFPsp80VJs8HNwUTkXfD+d0Je+aBTD4w0ckB7v4CihwvN9Yg==
+X-Received: by 2002:a05:6870:6107:b0:11c:2344:e050 with SMTP id s7-20020a056870610700b0011c2344e050mr8277549oae.267.1661786268419;
+        Mon, 29 Aug 2022 08:17:48 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id z14-20020a056830128e00b006389650374dsm5771320otp.54.2022.08.29.08.17.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Aug 2022 07:10:30 -0700 (PDT)
-Received: (nullmailer pid 1485236 invoked by uid 1000);
-        Mon, 29 Aug 2022 14:10:29 -0000
-Date:   Mon, 29 Aug 2022 09:10:29 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: iio: Add missing
- (unevaluated|additional)Properties on child nodes
-Message-ID: <20220829141029.GA1470207-robh@kernel.org>
-References: <20220823145649.3118479-2-robh@kernel.org>
- <99dfcc39-ab1b-1b24-c6b2-67de5509f5ac@linaro.org>
- <20220828180050.51c3e857@jic23-huawei>
+        Mon, 29 Aug 2022 08:17:48 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, mranostay@ti.com,
+        jpanis@baylibre.com, fabien.lahoudere@collabora.com,
+        gwendal@chromium.org, enric.balletbo@collabora.com,
+        bleung@chromium.org, groeck@chromium.org, jic23@kernel.org,
+        david@lechnology.com, robertcnelson@gmail.com,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [RFC PATCH 0/2] Add support for Counter array components
+Date:   Mon, 29 Aug 2022 11:17:29 -0400
+Message-Id: <cover.1661785438.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220828180050.51c3e857@jic23-huawei>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 28, 2022 at 06:01:41PM +0100, Jonathan Cameron wrote:
-> On Thu, 25 Aug 2022 15:04:33 +0300
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
-> > On 23/08/2022 17:56, Rob Herring wrote:
-> > > In order to ensure only documented properties are present, node schemas
-> > > must have unevaluatedProperties or additionalProperties set to false
-> > > (typically).
-> > >   
-> > 
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-> to poke at it before I push out as togreg for linux-next to pick up.
+The COUNTER_COMP_ARRAY_U64 Counter component type is introduced to
+enable support for Counter array components. With Counter array
+components, exposure for buffers on counter devices can be defined via
+new Counter array component macros. This should simplify code for driver
+authors who would otherwise need to define individual Counter components
+for each array element.
 
-Thanks.
+For example, suppose a driver wants to expose a Count's read-only
+capture buffer of four elements using a callback `foobar_read()`::
 
-> Side note. Some odd entries in your cc list...  alsa-devel?
+        COUNTER_COMP_COUNT_ARRAY_U64("capture", foobar_read, NULL, 4)
 
-Blame MAINTAINERS:
+Respective sysfs attributes for each array element would appear for the
+respective Count:
 
-STM32 AUDIO (ASoC) DRIVERS
-M:      Olivier Moysan <olivier.moysan@foss.st.com>
-M:      Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
-L:      alsa-devel@alsa-project.org (moderated for non-subscribers)
-S:      Maintained
-F:      Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
-F:      Documentation/devicetree/bindings/sound/st,stm32-*.yaml
-F:      sound/soc/stm/
+* /sys/bus/counter/devices/counterX/countY/capture0
+* /sys/bus/counter/devices/counterX/countY/capture1
+* /sys/bus/counter/devices/counterX/countY/capture2
+* /sys/bus/counter/devices/counterX/countY/capture3
+
+If a user tries to read _capture2_ for example, `idx` will be `2` when
+passed to the `foobar_read()` callback, and thus the driver knows which
+array element to handle.
+
+Currently, only u64 arrays are supported. One thing to consider is
+whether it would make sense to support arrays of other types. This would
+allow support for arrays that don't necessarily correlate to a buffer on
+the device, but rather serve as logical groupings of components.
+
+For example, if a Signal has four polarity modes, a driver author can
+define a Counter array component to handle the exposure of all four
+together rather than defining individual components for each one. This
+is the reason I've chosen the more generic "array" terminology for this
+feature rather than "buffer".
+
+William Breathitt Gray (2):
+  counter: Consolidate Counter extension sysfs attribute creation
+  counter: Introduce the COUNTER_COMP_ARRAY_U64 component type
+
+ drivers/counter/counter-sysfs.c | 210 ++++++++++++++++++++++++--------
+ include/linux/counter.h         |  78 ++++++++++++
+ 2 files changed, 239 insertions(+), 49 deletions(-)
+
+
+base-commit: a12224997bec72d231a8dd642876e6364decdc45
+-- 
+2.37.2
+

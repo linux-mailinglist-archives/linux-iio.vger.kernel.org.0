@@ -2,122 +2,158 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB845A44D2
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 10:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6301A5A45E7
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 11:18:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbiH2IRH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Aug 2022 04:17:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41060 "EHLO
+        id S229713AbiH2JSs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Aug 2022 05:18:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229800AbiH2IRG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 04:17:06 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768C353D30;
-        Mon, 29 Aug 2022 01:17:05 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id f14so5522894qkm.0;
-        Mon, 29 Aug 2022 01:17:05 -0700 (PDT)
+        with ESMTP id S229518AbiH2JSr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 05:18:47 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8FD5AA13;
+        Mon, 29 Aug 2022 02:18:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=npuoc/yi9Nf1Viofw3xXBfcM8tin3OMo3rNYgsJsIBQ=;
-        b=eha3/ykclVkNcWk+PSUSVGEG4xaMD8+gnkOvTuyVBOLJwWCLnNPyWQ5Hv6jTJq+Qzo
-         ilC7ELly7FcDoLz2FDUZwF9zKb3jXMoX3dKYNmSqXLzEh1bpB7Af61XPjm7k6lkVpQWz
-         uluJeC6i+g291l0U35SUgNlGy322TQOcBjc3ujUHfp8U3hkn3896twTAwcpzilg0jzbP
-         JcclfFvyHwZNWK15p0ds4tLukTXH1AcTYEAXHKrpw1Ympr/qpyaI2S84FCgNuMEM2uaq
-         MpztcaAXWtoskOoBO784u2NlAHM6q5K0cpQXeLZzg/IyEs+nA1s20gcEUnWQH7vhWxNL
-         2drg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=npuoc/yi9Nf1Viofw3xXBfcM8tin3OMo3rNYgsJsIBQ=;
-        b=fsCakfE36yLUVvE0sPLADOvL7SfJ+t5PFAs4MLd2Y2bahalONiOfh4Hw2cW1ztHMgW
-         JnJ9fk5viFAZTqmo2mPXg91HMmWg4MRpfUn9HscGk2MigRXD4/YlerCJFtDSYL/Ogbrc
-         4ZZ2n5U6Y313Jx3Si8OGFGpIEhzdE5gJ7ohhbPgNdJ2nDwibJxU+1pmc6JxjhGG43FkR
-         dTjsf95/chZ7MRgfZ67QS/OK02M1F5YiAXY/eaQFobzR6jmVC67kMJVM4YrOwvZ3efyC
-         AXEtoENKIwY019UsEOCar9sjID6BVcJP2jJ087pF8BSn+QLPuQdEHb00nWdTrothf38p
-         5hEA==
-X-Gm-Message-State: ACgBeo3x5sqQyj6CwhXqTOejw+UhZNTa2iXF1DdDftzli4WAAibbSnWh
-        gBCWDealfUQqbopTsCh6NWExa07zihvy2ZwF93T/C8QFZ/U=
-X-Google-Smtp-Source: AA6agR45L2sMoeZRBU05Cncz73wTxYa2pjfSlmuF5Q58NzJvbhzbRaO4dGm+JamGJNGgzI2KAWbjVmkIgmZKGHArnxw=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr7481158qko.383.1661761024589; Mon, 29
- Aug 2022 01:17:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220824104002.2749075-1-vincent.whitchurch@axis.com>
- <20220824104002.2749075-2-vincent.whitchurch@axis.com> <CAHp75Vf4C0hauoT7F26zS7815Cps=W3o1_HHmWKVbrUi90FcrQ@mail.gmail.com>
- <Ywiwv8TZ5oomTuHK@axis.com> <CAHp75VffYzNTfrki4+o8JJayUGo1n91bP0hSzB-fR=RfcFq-fw@mail.gmail.com>
- <20220828180623.54939dd7@jic23-huawei>
-In-Reply-To: <20220828180623.54939dd7@jic23-huawei>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 29 Aug 2022 11:16:28 +0300
-Message-ID: <CAHp75VfppWNbiPvF9Gem0JOhADwpiHRaJV9_c9NFtUfSK_PMrA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: mcp320x: use device managed functions
+  d=axis.com; q=dns/txt; s=axis-central1; t=1661764726;
+  x=1693300726;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HrikD+LuR2sVPUHOU5CUMyrG4nJVEC9Rl5WE5VrgimU=;
+  b=kPFnjXHdA5RpRZpFuC98vG+v9UqdVIVudmi92ozMpQhpBAfTYdVpyL6Y
+   7VP8BvNQAVlUlxdRWM85DpcG8RJIrhtEb0YNUmKHSpC+28CpaneRueVLM
+   HRmNDzs2I/LtPxJ2PAY823xjcuJg4zfzZYy3kiNz4MEPs/EjHyZKtdckV
+   wlvTmCOABmDUqIGdTEUIc1HLj+38CtjV3pEfJoTcktMXeRHrt8v+4MfKR
+   74yDFs87CSRX9kCmuTZYnhPeqPHePJzyUGh/eTEbBr1XQflL1gKB7N2rx
+   RYGZ3Ykngf8j7ppYdVKmwb673RZjYV36ov7e3zGPqTHjmTLB8k5CXegef
+   A==;
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        kernel <kernel@axis.com>, Lars-Peter Clausen <lars@metafoo.de>,
-        Axel Jonsson <Axel.Jonsson@axis.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+CC:     <kernel@axis.com>, <andy.shevchenko@gmail.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matt Ranostay <mranostay@gmail.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] iio: Use per-device lockdep class for mlock
+Date:   Mon, 29 Aug 2022 11:18:40 +0200
+Message-ID: <20220829091840.2791846-1-vincent.whitchurch@axis.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 28, 2022 at 8:40 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Fri, 26 Aug 2022 14:57:44 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Friday, August 26, 2022, Vincent Whitchurch <vincent.whitchurch@axis.com>
-> > wrote:
-> > > On Thu, Aug 25, 2022 at 10:01:58PM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Aug 24, 2022 at 1:46 PM Vincent Whitchurch
-> > > > <vincent.whitchurch@axis.com> wrote:
-> > > > >
-> > > > > Use devm_* functions in probe to remove some code and to make it easier
-> > > > > to add further calls to the probe function.
-> > > >
-> > > > ...
-> > > >
-> > > > > +       mutex_init(&adc->lock);
-> > > >
-> > > > > +       return devm_iio_device_register(&spi->dev, indio_dev);
-> > > >
-> > > > Do you still need to destroy the mutex? If so, you may not call devm_
-> > > > variant of iio_device_register() or you have to wrap mutex_destroy()
-> > > > accordingly.
-> > >
-> > > mutex_destroy() is only used to ensure that mutex debugging catches
-> > > further use of the mutex.  Isn't it rather overkill to add specific
-> > > cleanup to do only that, especially in this case when it's anyway going
-> > > to get freed immediately afterwards?  The vast majority of IIO drivers
-> > > don't call mutex_destroy() (256 calls to mutex_init() in HEAD vs 12 to
-> > > mutex_destroy()).
-> >
-> >  So 256 - 12 = 244 drivers are not pedantic.
->
-> I long ago decided mutex_destroy() in remove() paths just isn't worth the
-> effort. It makes absolute sense in more complex flows, but in cases
-> like this it's just annoying and makes the cleanup harder.
->
-> Hence I'd prefer we just ignore it's existence in cases like this.
->
-> If someone finds me a bug that it would have caught then I might
-> change my mind ;)
->
-> If anyone wants a giggle via adding a devm_mutex_init() call it
-> might be interesting to see the responses.  Would be unusual in
-> that it would just be mutex_init() in unless the mutex debugging
-> is turned on...
+If an IIO driver uses callbacks from another IIO driver and calls
+iio_channel_start_all_cb() from one of its buffer setup ops, then
+lockdep complains due to the lock nesting, as in the below example with
+lmp91000.
 
-Agree on these points. Sometimes too much pedanticy is too much.
+Since the locks are being taken on different IIO devices, there is no
+actual deadlock.  Fix the warning by telling lockdep to use a different
+class for each iio_device.
 
+ ============================================
+ WARNING: possible recursive locking detected
+ --------------------------------------------
+ python3/23 is trying to acquire lock:
+ (&indio_dev->mlock){+.+.}-{3:3}, at: iio_update_buffers
+
+ but task is already holding lock:
+ (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
+
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
+
+        CPU0
+        ----
+   lock(&indio_dev->mlock);
+   lock(&indio_dev->mlock);
+
+  *** DEADLOCK ***
+
+  May be due to missing lock nesting notation
+
+ 5 locks held by python3/23:
+  #0: (sb_writers#5){.+.+}-{0:0}, at: ksys_write
+  #1: (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter
+  #2: (kn->active#14){.+.+}-{0:0}, at: kernfs_fop_write_iter
+  #3: (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
+  #4: (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_update_buffers
+
+ Call Trace:
+  __mutex_lock
+  iio_update_buffers
+  iio_channel_start_all_cb
+  lmp91000_buffer_postenable
+  __iio_update_buffers
+  enable_store
+
+Fixes: 67e17300dc1d76 ("iio: potentiostat: add LMP91000 support")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+---
+
+Notes:
+    v2:
+    - Use a different lockdep class for each iio_device, instead of using
+      mutex_lock_nested.
+    - Add fixes tag pointing to first IIO driver which used this API.
+    - Trim call stack in commit message.
+
+ drivers/iio/industrialio-core.c | 5 +++++
+ include/linux/iio/iio-opaque.h  | 2 ++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 0f4dbda3b9d3..921d8e8643a2 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1621,6 +1621,8 @@ static void iio_dev_release(struct device *device)
+ 
+ 	iio_device_detach_buffers(indio_dev);
+ 
++	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
++
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+ 	kfree(iio_dev_opaque);
+ }
+@@ -1680,6 +1682,9 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
++	lockdep_register_key(&iio_dev_opaque->mlock_key);
++	lockdep_set_class(&indio_dev->mlock, &iio_dev_opaque->mlock_key);
++
+ 	return indio_dev;
+ }
+ EXPORT_SYMBOL(iio_device_alloc);
+diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+index 6b3586b3f952..d1f8b30a7c8b 100644
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -11,6 +11,7 @@
+  *				checked by device drivers but should be considered
+  *				read-only as this is a core internal bit
+  * @driver_module:		used to make it harder to undercut users
++ * @mlock_key:			lockdep class for iio_dev lock
+  * @info_exist_lock:		lock to prevent use during removal
+  * @trig_readonly:		mark the current trigger immutable
+  * @event_interface:		event chrdevs associated with interrupt lines
+@@ -42,6 +43,7 @@ struct iio_dev_opaque {
+ 	int				currentmode;
+ 	int				id;
+ 	struct module			*driver_module;
++	struct lock_class_key		mlock_key;
+ 	struct mutex			info_exist_lock;
+ 	bool				trig_readonly;
+ 	struct iio_event_interface	*event_interface;
 -- 
-With Best Regards,
-Andy Shevchenko
+2.34.1
+

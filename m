@@ -2,82 +2,114 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D395A4D09
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 15:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C895A4EDC
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Aug 2022 16:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230318AbiH2NI2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 29 Aug 2022 09:08:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
+        id S230257AbiH2OKl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 29 Aug 2022 10:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230262AbiH2NIM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 09:08:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95784AD50
-        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 06:02:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6AF2CB80F9F
-        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 12:57:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 19E03C433C1
-        for <linux-iio@vger.kernel.org>; Mon, 29 Aug 2022 12:57:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1661777861;
-        bh=/KzowYfFq8ADESJGEPiEPrMxBvQnCKmAC8tewrNF94U=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=uAj0AEzgl6SwbjnVU0Afg/BzVvEik+cNmGiqqPl9J+F4w4u/Dyxk2+nL4F3EE3v6R
-         VuM+JYJUfRPc+XfKXtFdQZLc6hjv7Iwx7a4rULBDi++5ylDfsqxujAGrnwdf7w7GaV
-         yA1WO9uj799fXiBOlO1H3xVaACIe+4WNkYFoXNHN4WPCMnKLd7XMdptrY2GL7mZdp0
-         GMmRHgntaCI5HCTzh0k4Khe6mnKN72bP0S/X3NSuY9O/CHvT68kyKD67MUsftrlkXx
-         zz24l078xrzBVny4iRSeTqxjFCflkWt7SHmo38/iMeDCU948oTdB8CRsovbQ2Hl3K9
-         a2SIdTbJPGcjg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-        id 09382C433E7; Mon, 29 Aug 2022 12:57:41 +0000 (UTC)
-From:   bugzilla-daemon@kernel.org
-To:     linux-iio@vger.kernel.org
-Subject: [Bug 200775] Cannot read the accelerometer raw data from the sensor
- LNG2DM
-Date:   Mon, 29 Aug 2022 12:57:40 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: andy.shevchenko@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-200775-217253-MSpOFfXy9G@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-200775-217253@https.bugzilla.kernel.org/>
-References: <bug-200775-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+        with ESMTP id S230229AbiH2OKi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 29 Aug 2022 10:10:38 -0400
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9AF6BD69;
+        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
+Received: by mail-ot1-f51.google.com with SMTP id z22-20020a056830129600b0063711f456ceso5963602otp.7;
+        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
+        bh=opbj1lT2rqww+Ko38iiUdytadU+k9CoQLS7KnrXSbyY=;
+        b=wbQbQl9+s2rVlBIofj2GiXT37b2zWTDhTmTcchKG7EIJvuRm4V0C23ExIvweNk/P5v
+         NM9DTrkW1fu7MSET6QkwIVaZfN06z5GYxSpAttJSoADwTaOH+vdNooBI4ZWNiUTAXCRe
+         T39xcUx0wox8tT+ggOuSHwuitD5C5kyPEF1rapK0qA+BssbcQc6rall9CN/lmDAZVG5S
+         QeCR0ZF4nGangKBkzpMi4rXLy93NWcrSLtdy/Rr5eJGqBRsjHLaifLpYf/zUZeQsWbQc
+         Z+raDVLMimDok94WonC107/7hGE4zgy+vXHXy+0Rt6+D8Lah7YKqmncpkIWtrx1Bh5Hg
+         Q2qA==
+X-Gm-Message-State: ACgBeo1gj1GxFjI8RC8StcDpqA7BjlP2Wvh0pAKmMX6PYlVNMOVkmsu/
+        i0jit8CUl1MsRFLozi+BQw==
+X-Google-Smtp-Source: AA6agR7WIHe/AiLYD102e5d5uKFjLIhVyxUpACShz6LmoyBGjUcs44MJ20snIPOKxNFUVwlVnmhpXw==
+X-Received: by 2002:a05:6830:3914:b0:638:f80c:e964 with SMTP id br20-20020a056830391400b00638f80ce964mr6530478otb.220.1661782231113;
+        Mon, 29 Aug 2022 07:10:31 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id y5-20020a056830070500b0063b2875246dsm2805095ots.49.2022.08.29.07.10.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Aug 2022 07:10:30 -0700 (PDT)
+Received: (nullmailer pid 1485236 invoked by uid 1000);
+        Mon, 29 Aug 2022 14:10:29 -0000
+Date:   Mon, 29 Aug 2022 09:10:29 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] dt-bindings: iio: Add missing
+ (unevaluated|additional)Properties on child nodes
+Message-ID: <20220829141029.GA1470207-robh@kernel.org>
+References: <20220823145649.3118479-2-robh@kernel.org>
+ <99dfcc39-ab1b-1b24-c6b2-67de5509f5ac@linaro.org>
+ <20220828180050.51c3e857@jic23-huawei>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220828180050.51c3e857@jic23-huawei>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D200775
+On Sun, Aug 28, 2022 at 06:01:41PM +0100, Jonathan Cameron wrote:
+> On Thu, 25 Aug 2022 15:04:33 +0300
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+> > On 23/08/2022 17:56, Rob Herring wrote:
+> > > In order to ensure only documented properties are present, node schemas
+> > > must have unevaluatedProperties or additionalProperties set to false
+> > > (typically).
+> > >   
+> > 
+> > 
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+> to poke at it before I push out as togreg for linux-next to pick up.
 
---- Comment #6 from Andy Shevchenko (andy.shevchenko@gmail.com) ---
-What's the status of the issue? Can we close it?
+Thanks.
 
---=20
-You may reply to this email to add a comment.
+> Side note. Some odd entries in your cc list...  alsa-devel?
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Blame MAINTAINERS:
+
+STM32 AUDIO (ASoC) DRIVERS
+M:      Olivier Moysan <olivier.moysan@foss.st.com>
+M:      Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+L:      alsa-devel@alsa-project.org (moderated for non-subscribers)
+S:      Maintained
+F:      Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+F:      Documentation/devicetree/bindings/sound/st,stm32-*.yaml
+F:      sound/soc/stm/

@@ -2,91 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C395A6651
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 16:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F4D5A670A
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 17:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbiH3Obh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Aug 2022 10:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55126 "EHLO
+        id S230249AbiH3PNT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Aug 2022 11:13:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbiH3Obg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 10:31:36 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF594A8331
-        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 07:31:34 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id b26so4655304ljk.12
-        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 07:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=pX0OlpLEvb4RPyJl58cTxMGgmyUm6YDNZgU2qeJsFjQ=;
-        b=Q/3wwt+uZ9O53+zsHKzMYwQbmb2b6eJDG99iQjMan6Uw0hMFUZBcJZOlCSNG1k9aPP
-         31YCofyBkD+mmM5+XWrHkFb+4bWyyQ+yMFvxQnA9qCVqwXJgrkARuYOdu33TghB1Mr4S
-         GJ95bzHGLC3pWrnAQYiQ4bWUm6aqF50YYW8VpvMBZYfNYnbEN1r11LKJ0l5+KKNl+F4Y
-         8Z2ET1TwKS34xlHPTUWeuR6itx3OZYW3p3YnYizNtCVF+wLZKlxOsqSsH5cpmvXrGYnG
-         KEfyF94oLXSAwVd6TQ8oQrc3tZvKoenbqI/eveOy4k0lpgIHyzDkL1vEopnLhapwTZ4g
-         re4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=pX0OlpLEvb4RPyJl58cTxMGgmyUm6YDNZgU2qeJsFjQ=;
-        b=KeSd4X/ZsTI5L2jB9wHZ0KMI4x/AqwWGj+kzXTA/R++PDe9exEIRbd+zy6ODJABhDD
-         ebYDAZ9BfLPK3G9qNOxKqdRwZdsDQ9fygarkj7es5MXzSrmCD7qX+G/A60FPU/UVF5YY
-         tvRfqCDOr2taxq/fpbQAY97Jgs9+kHG8pZ1MXy6ZfaELmW6qHY0RP91GwhSwr651DvZi
-         v6vXwX4lE6oM+cxOr/J/hM7Tii7ZuhB/2IkMu6MbDX6i3nk8Dktg8ED58cvxeeCWLzPF
-         frCpLA3Kd3qf4xqtVJmigrHrSqQXtGc8eGG6nX+f92pNY8EgeQAxk0Lg8HoYl8Bllddf
-         jPbA==
-X-Gm-Message-State: ACgBeo2YvEIXpK/qBityVZ1ho8HjlIw4TJObW6mJw7fLqexzh0ITtdPv
-        2IiIOrAK9qanNmXyiwHk/K585g==
-X-Google-Smtp-Source: AA6agR68vvQXFwNOUtVNjkp7Rvx2IDU0peYkOCAud31GCK6ryCiWT//uRQ7w48iVZUvB4ganFgT7xA==
-X-Received: by 2002:a2e:a5c2:0:b0:261:d23a:2009 with SMTP id n2-20020a2ea5c2000000b00261d23a2009mr6726085ljp.303.1661869893181;
-        Tue, 30 Aug 2022 07:31:33 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id t22-20020a2e5356000000b00261eb44bd16sm1814155ljd.5.2022.08.30.07.31.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 07:31:32 -0700 (PDT)
-Message-ID: <2e55c955-1a16-307d-34de-6b598f6e31a2@linaro.org>
-Date:   Tue, 30 Aug 2022 17:31:31 +0300
+        with ESMTP id S229736AbiH3PNN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 11:13:13 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049901286F7;
+        Tue, 30 Aug 2022 08:13:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1661872392; x=1693408392;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wTIUsBF5sTdJ6JbPdR2fBQZlqEWSeLoC7AVXPmb6j1c=;
+  b=cF8HA9zl2aRv0tb2hi69bsC/kc7LoUHCIqOZw0PlDqFTRx5Ycjh1pm//
+   s/S4nbwW6s8MIXUnx6LjAtUMfFuUo/bkSWcy3cxti0Kx2vs5LTVsYDZjt
+   dT3Tg48bdx3J3UdJPCjGzzBqA397zGaRb+EnJ5uIy/DvJJfZcvwXfRuGk
+   jaHIM6pUQIY6ZJ/3B+DmXUBqfac/adfYDlHaw32AZqJ9mviKY/U0LmiHz
+   63uFowhgaJMjEThcMONk3+LNEQnQrlqvzySmCS+7LXhkzNI+aIxOY/Qy+
+   UOas9UPM8uNHLNejFcoxHQeAZoaacAwWIfnm264tIvUcX4zy0ZE8rF6Th
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10455"; a="295984540"
+X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
+   d="scan'208";a="295984540"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:13:11 -0700
+X-IronPort-AV: E=Sophos;i="5.93,275,1654585200"; 
+   d="scan'208";a="562682956"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2022 08:13:05 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oT2vF-0060PI-2k;
+        Tue, 30 Aug 2022 18:13:01 +0300
+Date:   Tue, 30 Aug 2022 18:13:01 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     lee@kernel.org, daniel.thompson@linaro.org, jingoohan1@gmail.com,
+        pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        sre@kernel.org, jic23@kernel.org, lars@metafoo.de, deller@gmx.de,
+        broonie@kernel.org, mazziesaccount@gmail.com,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, szunichen@gmail.com
+Subject: Re: [PATCH v9 00/10] Add MediaTek MT6370 PMIC support
+Message-ID: <Yw4o/Sx6frEtaFDp@smile.fi.intel.com>
+References: <20220830033729.9219-1-peterwu.pub@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: adc: ti,tsc2046: add vref-supply
- property
-Content-Language: en-US
-To:     Oleksij Rempel <o.rempel@pengutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220830110709.2037302-1-o.rempel@pengutronix.de>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220830110709.2037302-1-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220830033729.9219-1-peterwu.pub@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 30/08/2022 14:07, Oleksij Rempel wrote:
-> Add property for the voltage reference supply.
+On Tue, Aug 30, 2022 at 11:37:20AM +0800, ChiaEn Wu wrote:
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> This patch series add MediaTek MT6370 PMIC support and add a index macro
+> to <linear_range.h>. The MT6370 is a highly-integrated smart power
+> management IC, which includes a single cell Li-Ion/Li-Polymer switching
+> battery charger, a USB Type-C & Power Delivery (PD) controller, dual
+> Flash LED current sources, a RGB LED driver, a backlight WLED driver,
+> a display bias driver and a general LDO for portable devices.
+> 
+> First, in this series of patches,
+> 'dt-binding: mfd', 'mfd driver' has been applied by Lee in the v7.
+> https://lore.kernel.org/all/YvJdpq0MWNPQZw5c@google.com/
+> https://lore.kernel.org/all/YvJdxEpC2cB58Bq9@google.com/
+> 
+> 'tcpci driver' has been applied by Greg in the v8.
+> https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git/commit/?h=usb-next&id=c2a8ea5997fdfeb43eda259d5533234c3cae05d7
+> 
+> Second, the LED RGB driver is based on Andy's patch which moves
+> led_init_default_state_get() to the global header.
+> https://lore.kernel.org/all/20220805154907.32263-3-andriy.shevchenko@linux.intel.com/
+> 
+> In addition, we added a macro to the <linear_range.h> for declaring the
+> linear_range struct simply (see patch v9-0005) and made some changes for
+> MT6370 drivers (see v9 section of the change log below).
+
+Your cover letter is dangling. Make sure you are using --cover-letter --thread
+when preparing the series.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
-Best regards,
-Krzysztof

@@ -2,54 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6C75A67E6
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 18:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A9905A6CC6
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 21:07:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230105AbiH3QHw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Aug 2022 12:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53286 "EHLO
+        id S229522AbiH3THw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Aug 2022 15:07:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiH3QHv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 12:07:51 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF022CDC4
-        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 09:07:50 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oT3mA-00071b-F1; Tue, 30 Aug 2022 18:07:42 +0200
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oT3m6-0004SO-0i; Tue, 30 Aug 2022 18:07:38 +0200
-Date:   Tue, 30 Aug 2022 18:07:37 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, kernel@pengutronix.de,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v1 3/3] iio: adc: tsc2046: silent spi_device_id warning
-Message-ID: <20220830160737.GC16715@pengutronix.de>
-References: <20220830110709.2037302-1-o.rempel@pengutronix.de>
- <20220830110709.2037302-3-o.rempel@pengutronix.de>
- <20220830140228.000013ca@huawei.com>
+        with ESMTP id S230142AbiH3THw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 15:07:52 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85D96726A4
+        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 12:07:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 41FFDB81D89
+        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 19:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3946BC433D7;
+        Tue, 30 Aug 2022 19:07:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1661886469;
+        bh=cnvIvgEyuItWFNNkOLX/DGI9r6ZQLOYG3GPvRG1pF/c=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LgeA5IJGdMypG3iWQ5XuMGTJyxVgKwIjjTzeAnHQhmRnIss62ytbxnUJKj/Xl4L8x
+         t4lHAni+qwyu0qlPYq/oySxvBAtNluZYCkqooY/quvtxOTp+OdKQ1lxPWTiKNbWLER
+         ViZqTjYsYIh81qaoUWgQW7QCCjq+A5UFl0fhmzmZF20MWZc//s/IT3NCMewLO1VsPd
+         1l2ZayoUZL3j+WIZ7/plkU7pUVzlJD1Pm6nnEDnVLjgUDrSpXr6HOuQdArZ+6H4Unu
+         7vQdOmHWPj4+19oqtE0LiYiNzMEbt8Hfey+lDMvc5+pYe2m6FT1KvM7F4bpdlcr8Gq
+         yar8vmmIqdMrA==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH] iio: cdc: ad7746: Suppress false uninitialized value warning.
+Date:   Tue, 30 Aug 2022 19:33:25 +0100
+Message-Id: <20220830183325.2641490-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220830140228.000013ca@huawei.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,50 +50,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 30, 2022 at 02:02:28PM +0100, Jonathan Cameron wrote:
-> On Tue, 30 Aug 2022 13:07:09 +0200
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > Add spi_device_id to silent following warning:
-> >  SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc
-> > 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> > ---
-> >  drivers/iio/adc/ti-tsc2046.c | 17 ++++++++++++++++-
-> >  1 file changed, 16 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-> > index bbc8b4137b0b1..b9a1fac659d46 100644
-> > --- a/drivers/iio/adc/ti-tsc2046.c
-> > +++ b/drivers/iio/adc/ti-tsc2046.c
-> > @@ -761,7 +761,15 @@ static int tsc2046_adc_probe(struct spi_device *spi)
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > -	dcfg = device_get_match_data(dev);
-> > +	if (!dev_fwnode(dev)) {
-> > +		const struct spi_device_id *id;
-> > +
-> > +		id = spi_get_device_id(spi);
-> > +		dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
-> 
-> Driver data not set below.
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-..facepalm..
+Fix warning:
+drivers/iio/cdc/ad7746.c:336:14: warning: use of uninitialized value '<unknown>' [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+reported on linux-next.  The compiler can't see into the implementation
+of kstrtobool() to identify that the if (ret < 0) condition is
+sufficient to detect cases where this parameter is not initialized.
 
-> Otherwise this looks good to me.  An alternative more common form (I think...)
-> is call device_get_match_data() unconditionally and if that is null follow
-> the driver_data path. Either way is fine though.
-> 
-> Could you add to the patch description where
-> the warning is coming from?   Build time / runtime etc and what tool?
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/cdc/ad7746.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-ack. It is runtime warning in the kernel log.
-
-Regards,
-Oleksij
+diff --git a/drivers/iio/cdc/ad7746.c b/drivers/iio/cdc/ad7746.c
+index b266f5328140..5a3863bcaac9 100644
+--- a/drivers/iio/cdc/ad7746.c
++++ b/drivers/iio/cdc/ad7746.c
+@@ -333,7 +333,7 @@ static inline ssize_t ad7746_start_calib(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7746_chip_info *chip = iio_priv(indio_dev);
+ 	int ret, timeout = 10;
+-	bool doit;
++	bool doit = false;
+ 
+ 	ret = kstrtobool(buf, &doit);
+ 	if (ret < 0)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.37.2
+

@@ -2,78 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81B455A643E
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 15:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3FC5A6450
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 15:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbiH3NAJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Aug 2022 09:00:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34604 "EHLO
+        id S229574AbiH3NCe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Aug 2022 09:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229652AbiH3NAG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 09:00:06 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25CEE0D1;
-        Tue, 30 Aug 2022 06:00:03 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id z20so11296524ljq.3;
-        Tue, 30 Aug 2022 06:00:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=TXqo6jqFFJO+5EXcJRS51k8mEsS8tkYLSHqnPARtF4Y=;
-        b=oPZzQlOssH7aV8JnOiAtZ5MMqpBWfo9On8CB+QzcsUyUkQt+9OLMCtaT0hbU8LnRP0
-         VM55bmQjNCPiLcwhwLdPrcFQO6ar9RjmZPn5RBf1q3L7RqXdrr+kFVODxioqWu6jC1/J
-         hNiZCNmQ5BYcrEyG4+n6s0ZClh6MqaEHAHWKHHfmw7qA/HMrkH+p8/15PZBIyXmt4PZX
-         g/CXh12+Hra431lQGAkb8OFYXMsIQXjXUMFB0vtI1zBCUfxnwU92f1RNDzRBC5MT8pYp
-         97C1PttHqhty6DdPOFxEZKACe9TW1ZDs6NNr6ENwjj/I/25P8U+JIjj9v+9vR3tU/MXh
-         p3fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=TXqo6jqFFJO+5EXcJRS51k8mEsS8tkYLSHqnPARtF4Y=;
-        b=UMkQ+kSTXegKUGsxnNthaJsVbS8cfOwI3hFA82TpefdvdAdCJmpRow0zYT8UyNuPQf
-         ylr9oPxf659wSduBUAlDaYb8hYqXh/znH+NkGfdiLgjKB5tg3km/AuPML1X+XiAAy5NO
-         iJ4P/SedCRXUWfNL8jOOkk8l1XTyf7RfytjLdT+N0Do8AVz8yJn3+I0Nets8btFgm8gC
-         EjM/jGhV95wDpxFKdM93LxPeSb0S1AWkAhesRAet8RCjD3U4vJIBpnsLWZCeYeho1G9t
-         KlbX4ET9rQlbFlFzK5oOMHpTI4FZ373uXUUYDeD2KqrM/FEtmHXWY2hV4tkC2TlScAvq
-         8flg==
-X-Gm-Message-State: ACgBeo0rueFyDMFNSbB/V/6r9bMHS+oZLdcfh+7VznglvyatCsPs1rol
-        7oEa2lP79wIPW/oRS4+Jskc=
-X-Google-Smtp-Source: AA6agR4gabFoz6Y6E2GV+9fQpfEMIy7tx92nadUdXSnpyzXqPsDOhKtNPT1wjyy/j0v62KBAC7QcqQ==
-X-Received: by 2002:a2e:8857:0:b0:261:b1b3:ab93 with SMTP id z23-20020a2e8857000000b00261b1b3ab93mr7443830ljj.270.1661864401596;
-        Tue, 30 Aug 2022 06:00:01 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id cf9-20020a056512280900b00494643505e1sm1053274lfb.79.2022.08.30.06.00.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Aug 2022 06:00:01 -0700 (PDT)
-Message-ID: <44f05a0b-01a7-775d-606c-d2f0ab94ae6e@gmail.com>
-Date:   Tue, 30 Aug 2022 16:00:00 +0300
+        with ESMTP id S230086AbiH3NCd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 09:02:33 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7AE7B2B4;
+        Tue, 30 Aug 2022 06:02:32 -0700 (PDT)
+Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MH6s14Zqdz686l0;
+        Tue, 30 Aug 2022 21:01:57 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 30 Aug 2022 15:02:29 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Tue, 30 Aug
+ 2022 14:02:29 +0100
+Date:   Tue, 30 Aug 2022 14:02:28 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        <kernel@pengutronix.de>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v1 3/3] iio: adc: tsc2046: silent spi_device_id warning
+Message-ID: <20220830140228.000013ca@huawei.com>
+In-Reply-To: <20220830110709.2037302-3-o.rempel@pengutronix.de>
+References: <20220830110709.2037302-1-o.rempel@pengutronix.de>
+        <20220830110709.2037302-3-o.rempel@pengutronix.de>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v3 14/14] iio: hmc425a: simplify using
- devm_regulator_get_enable()
-Content-Language: en-US
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <cover.1660934107.git.mazziesaccount@gmail.com>
- <8b1193fdefb231a6d721e2bded52c48e56039c20.1660934107.git.mazziesaccount@gmail.com>
- <SN4PR03MB678420C67AA8988CF706198399799@SN4PR03MB6784.namprd03.prod.outlook.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <SN4PR03MB678420C67AA8988CF706198399799@SN4PR03MB6784.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,47 +56,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 8/30/22 14:49, Sa, Nuno wrote:
+On Tue, 30 Aug 2022 13:07:09 +0200
+Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+
+> Add spi_device_id to silent following warning:
+>  SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc
 > 
->> From: Matti Vaittinen <mazziesaccount@gmail.com>
->> Sent: Friday, August 19, 2022 9:21 PM
->> To: Matti Vaittinen <mazziesaccount@gmail.com>; Matti Vaittinen
->> <matti.vaittinen@fi.rohmeurope.com>
->> Cc: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
->> <Michael.Hennerich@analog.com>; Jonathan Cameron
->> <jic23@kernel.org>; linux-iio@vger.kernel.org; linux-
->> kernel@vger.kernel.org
->> Subject: [PATCH v3 14/14] iio: hmc425a: simplify using
->> devm_regulator_get_enable()
->>
->> [External]
->>
->> Drop open-coded pattern: 'devm_regulator_get(), regulator_enable(),
->> add_action_or_reset(regulator_disable)' and use the
->> devm_regulator_get_enable() and drop the pointer to the regulator.
->> This simplifies code and makes it less tempting to add manual control
->> for the regulator which is also controlled by devm.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>
->> ---
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>  drivers/iio/adc/ti-tsc2046.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
-> Acked-by: Nuno Sá <nuno.sa@analog.com>
-> 
-> (I see that in this patch you are not using dev_err_probe(). Maybe some
-> consistency in the series and where applicable would be appropriate :))
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index bbc8b4137b0b1..b9a1fac659d46 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -761,7 +761,15 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+>  		return -EINVAL;
+>  	}
+>  
+> -	dcfg = device_get_match_data(dev);
+> +	if (!dev_fwnode(dev)) {
+> +		const struct spi_device_id *id;
+> +
+> +		id = spi_get_device_id(spi);
+> +		dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
 
-I don't think the driver did originally print an error if regulator get 
-or enable failed. I didn't want to add any new prints - just converted 
-the existing ones to use dev_err_probe(). I believe adding new prints 
-would've been somewhat unrelated change :)
+Driver data not set below.
 
-Yours,
-	-- Matti
+Otherwise this looks good to me.  An alternative more common form (I think...)
+is call device_get_match_data() unconditionally and if that is null follow
+the driver_data path. Either way is fine though.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+Could you add to the patch description where
+the warning is coming from?   Build time / runtime etc and what tool?
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+Thanks,
+
+Jonathan
+
+
+> +	} else {
+> +		dcfg = device_get_match_data(dev);
+> +	}
+> +
+>  	if (!dcfg)
+>  		return -EINVAL;
+>  
+> @@ -878,11 +886,18 @@ static const struct of_device_id ads7950_of_table[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ads7950_of_table);
+>  
+> +static const struct spi_device_id tsc2046_adc_spi_ids[] = {
+> +	{ "tsc2046e-adc" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(spi, tsc2046_adc_spi_ids);
+> +
+>  static struct spi_driver tsc2046_adc_driver = {
+>  	.driver = {
+>  		.name = "tsc2046",
+>  		.of_match_table = ads7950_of_table,
+>  	},
+> +	.id_table = tsc2046_adc_spi_ids,
+>  	.probe = tsc2046_adc_probe,
+>  	.remove = tsc2046_adc_remove,
+>  };
+

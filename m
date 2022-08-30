@@ -2,64 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC9B45A6E12
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 22:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9785A6E17
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 22:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbiH3UEP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Aug 2022 16:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41760 "EHLO
+        id S229476AbiH3UF1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 30 Aug 2022 16:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231894AbiH3UD7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 16:03:59 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF9C80511;
-        Tue, 30 Aug 2022 13:02:46 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id n4so6976186qvt.7;
-        Tue, 30 Aug 2022 13:02:46 -0700 (PDT)
+        with ESMTP id S229572AbiH3UFZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 16:05:25 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B2E2CCA2
+        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 13:05:23 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id s22so6829062qkj.3
+        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 13:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc;
-        bh=sKUb5B3iNP9JffwnPezxUr8DBbsDdDXj2jgeVcIymz0=;
-        b=A3OmI/NAKUxctLonPwyddHe16W4iMUhmCzfz5d7ui4tHfPU2KAupuIYIvihNmubfCx
-         U3vHOuKN0gXyrem202xA4EJJil22adqKJnpSLAQ+/vEzVns0fiAbnF0StHMOqRYoyPlX
-         p6MavOBNcnjfa2GrBNhEvPqowEdehgx5CSO5AQWshTW+tcES+lUq3iJ4oasuX972OtxP
-         JML0J+IljDep1TmtJea9Z+lYqrmsvFmX5qoTxyZuPCGtNdLlI7qrQpFa1nPyZV8IKnUi
-         EbFgOs8hJpOVeSTa/GoTXEyphH1U4KQWqo+dhrel8Qc5uKR05gZBZGfA+f2RckGKVzXy
-         I0Sw==
+        bh=FDjIWM3xWil1sQ/IcpT10UX6ICeya7wc03xyqbmLFrg=;
+        b=iXcPdykpSj9ina982A+gwG9G+a5RmGi7eX7lfsuEdwvFv1DiBZWSB/0reSY5blDQdC
+         NMpM12ELwAoPBqs7S8u8XVeBm/92ZQ8xUhgfWQIDiN8/Zc1ZuNkeT3rXg4EjVAaWOY3k
+         cIL8vHbEFpQrKmELjW+6vR/noIDnqhiI1A3TLTJ1QCAhpQ8ekhqysIB26inUABdfULsE
+         FsUqsyfrNUZSO3z0IspFzQNNNr1qDiseRMAmhG1cBm1UUKz2qzNkhpri+Mq53KzFty9h
+         JJy5v+oKGfIi46s0OaROGmQzujsJZOSBZYPbd/5bm9+/5LTJsSilcJ6CPyJ0RG/ZSFz2
+         hDhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc;
-        bh=sKUb5B3iNP9JffwnPezxUr8DBbsDdDXj2jgeVcIymz0=;
-        b=y4el+/MB/tFSi2K+JlgCXLBjzmEyTZk4nhbWHBpP7S556tx5jD71wwAiR7hU/J+f0i
-         1V9E+7GelegvlBEwBF+fH+O/nRjGxUQNfTrjlQ9HJbYybIcpxNAfvKeXbwSzPogIQYvt
-         97XP+itJkgVHbBhjC1m6HihN1ndZUV3PslQAsTF6wM4B1haHOVf1jXEL9GOqkFask3FL
-         8ek4wiVQb3UK7KOtRHzzFSdRtBwv83FUSIvN6TfRenJOC+3rszqAWtkgbELREt/ejfp5
-         j4b68/TYoHASU0aIuAjUBYrHyriw9psZh3gYvmRl7RCk9crzpuBzw+3uWirNXLq9GApN
-         csUA==
-X-Gm-Message-State: ACgBeo18LMqEVGz8Cltd2rLVrtPyGyWagQnLdTQ99/W8xL+d0PXAMMgz
-        iMc02Wd406cWPh0mGKfNOLvBS3NSz1exYgoc83c=
-X-Google-Smtp-Source: AA6agR6Q1ZPykvZNTAf+ebF6H58KCUdYQ+AG5QbdDvM+SLqBqlhLVQsL5sAJCupIpLaWn9he2SzgKpwrDmEvMkESArI=
-X-Received: by 2002:a05:6214:2022:b0:497:2c03:61 with SMTP id
- 2-20020a056214202200b004972c030061mr16994102qvf.11.1661889763980; Tue, 30 Aug
- 2022 13:02:43 -0700 (PDT)
+        bh=FDjIWM3xWil1sQ/IcpT10UX6ICeya7wc03xyqbmLFrg=;
+        b=oY93EAsX8SN5Jf7i2+LzJ/sd8K420ZZU/mLEFtUpPiq8O++W+pfBR5W5TWgbjekQNL
+         X+062dsQBZe9bjhgC/0ftcGje5xAuBXwrBJmsnqkvSkizsiPQssHYlqgfBSOnR1bcEUp
+         IFuqaRNWj40noFzYcjfBHkPNnUc2EjGECggSoMaD4ok1RHrPN38EIeAdFYSrE0/F5iS7
+         8xm2ZzbQO3tY9999JBEyelR/pN+y7zNKeXcU8C5fYFRN8PbUtcFcRS5+sw67taQxaYCe
+         F63V2An3OVLWfuz+xonEwT9TVxK6ueRMncpKgwllg49h/ZPAwd1rARbQXhgx59H5dFg9
+         7qYw==
+X-Gm-Message-State: ACgBeo0dz0NluZuMIIwSzeAWaLVEl81FhB8UOQ/cK3c8t+IknpMAI3q3
+        Bubcgu06DRzky4w+sQAR6Mhjl/22AV7N3e9a0Ts=
+X-Google-Smtp-Source: AA6agR7LZt3926FgbIFG1UJbeikzGbWDBCgwqEXoZvbt7QNaeOoymB9+OwyHMwP6rg7Rv8XUuO9/2xQ+wg0bWSCJunw=
+X-Received: by 2002:ae9:e311:0:b0:6ba:e711:fb27 with SMTP id
+ v17-20020ae9e311000000b006bae711fb27mr13385846qkf.320.1661889922934; Tue, 30
+ Aug 2022 13:05:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220830110709.2037302-1-o.rempel@pengutronix.de> <20220830110709.2037302-3-o.rempel@pengutronix.de>
-In-Reply-To: <20220830110709.2037302-3-o.rempel@pengutronix.de>
+References: <20220830183325.2641490-1-jic23@kernel.org>
+In-Reply-To: <20220830183325.2641490-1-jic23@kernel.org>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 30 Aug 2022 23:02:08 +0300
-Message-ID: <CAHp75Vc-NNZfSaM8wwf+558aHKU9ZL0Fp3aJEop475mHTExKjw@mail.gmail.com>
-Subject: Re: [PATCH v1 3/3] iio: adc: tsc2046: silent spi_device_id warning
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+Date:   Tue, 30 Aug 2022 23:04:47 +0300
+Message-ID: <CAHp75VfjWOdgAW=YuszG5Dih_2D78YB20ShaNWVxMGjOKQhsWQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: cdc: ad7746: Suppress false uninitialized value warning.
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -71,33 +65,21 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 30, 2022 at 2:19 PM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Tue, Aug 30, 2022 at 10:10 PM Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> Add spi_device_id to silent following warning:
->  SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> Fix warning:
+> drivers/iio/cdc/ad7746.c:336:14: warning: use of uninitialized value '<unknown>' [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
+> reported on linux-next.  The compiler can't see into the implementation
+> of kstrtobool() to identify that the if (ret < 0) condition is
+> sufficient to detect cases where this parameter is not initialized.
 
-Missed period.
-
-...
-
-> -       dcfg = device_get_match_data(dev);
-
-Why remove this and duplicate the check below with the inverted conditional?
-
-> +       if (!dev_fwnode(dev)) {
-> +               const struct spi_device_id *id;
-> +
-> +               id = spi_get_device_id(spi);
-> +               dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
-> +       } else {
-> +               dcfg = device_get_match_data(dev);
-> +       }
-
-if (!dcfg) {
-  ...try SPI ID...
-}
-if (!dfg)
-  return -E...
+Sorry, but to me this sounds like a false positive that provokes
+developer to add not only unneeded, but in some cases harmful code
+(yes, there were cases in the history when preinitializing variable
+with some value made a regression).
+NAK from me (but you always may overrule as a maintainer :-).
 
 -- 
 With Best Regards,

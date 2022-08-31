@@ -2,70 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DAC25A77FA
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 09:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE4E95A7AAB
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 11:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230248AbiHaHr5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Aug 2022 03:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
+        id S229655AbiHaJ4U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Aug 2022 05:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230138AbiHaHrz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 03:47:55 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86385A4051;
-        Wed, 31 Aug 2022 00:47:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1661932073;
-  x=1693468073;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aJUQjD5xtnOBGTEcIcJSA96Y6IzY+5A+14tz2WSnhO8=;
-  b=Spax2XgkoZ637D3HAnBRnu1YYqWmdK43aQrEjMATZrX5wqr+pxD3f/uW
-   siFSTJVg3jWpLPk4JgQqemMzn34/tE4SZUDEvKpCZ9dcPCfZZ4lh7UcOF
-   Vnq3+912os+f+pGSPvkE9s861Gk26tJ86t99X1twPkZS5Jcz44mZ2ulTL
-   O64TUOOg6CSMYs3WIrrgHcsX0lPGBa39SQum+SBjO7CaGPdPfLxH6MiJO
-   toL5aGWzPS/z3D5xEtv4ir+XoxlSqigIi5Yx6TVtAUW+6S4EQ+R0kQaYp
-   zg/XN9Ox34EzKa83wtMXRRp4jVDOw9vyEKJvxV1crBbUZnii0kFWGqE/Q
-   Q==;
-Date:   Wed, 31 Aug 2022 09:47:50 +0200
-From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     kernel <kernel@axis.com>, "lars@metafoo.de" <lars@metafoo.de>,
-        Axel Jonsson <Axel.Jonsson@axis.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: mcp320x: add triggered buffer support
-Message-ID: <Yw8SJil96IT6fP0n@axis.com>
-References: <20220824104002.2749075-1-vincent.whitchurch@axis.com>
- <20220824104002.2749075-3-vincent.whitchurch@axis.com>
- <20220828182430.533bf8e0@jic23-huawei>
+        with ESMTP id S230036AbiHaJ4U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 05:56:20 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76E50C579E
+        for <linux-iio@vger.kernel.org>; Wed, 31 Aug 2022 02:56:19 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1oTKS9-0000tg-GI; Wed, 31 Aug 2022 11:56:09 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1oTKS8-0032Z0-Hg; Wed, 31 Aug 2022 11:56:08 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1oTKS7-00HRUS-Sg; Wed, 31 Aug 2022 11:56:07 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Oleksij Rempel <o.rempel@pengutronix.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: [PATCH v2 1/3] dt-bindings: iio: adc: ti,tsc2046: add vref-supply property
+Date:   Wed, 31 Aug 2022 11:55:59 +0200
+Message-Id: <20220831095601.4157195-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20220828182430.533bf8e0@jic23-huawei>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Aug 28, 2022 at 07:24:30PM +0200, Jonathan Cameron wrote:
-> On Wed, 24 Aug 2022 12:40:02 +0200
-> Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
-> > Add support for triggered buffers.  Just read the channels in a loop to
-> > keep things simple.
-> 
-> Just curious, but what other options are there?  A quick datasheet scroll
-> through didn't seem to suggest you can overlap setup of next read with
-> reading out the previous (common on SPI ADCs).
+Add property for the voltage reference supply.
 
-You're right that the hardware doesn't support any special method to
-read out multiple channels; I can mention that in the commit message.
-But I think you could construct a spi_message which a bunch of
-spi_transfers which toggle the CS appropriately between them to read out
-multiple channels in one go?  (Note that the variants have different
-data formats, and many of the variants only have one channel.)
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+changes v2
+- add Acked-by: Krzysztof Kozlowski
+---
+ Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+index 601d69971d84a..7faf12b1598b9 100644
+--- a/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/ti,tsc2046.yaml
+@@ -25,6 +25,9 @@ properties:
+ 
+   spi-max-frequency: true
+ 
++  vref-supply:
++    description: Optional supply of the reference voltage
++
+   "#io-channel-cells":
+     const: 1
+ 
+-- 
+2.30.2
+

@@ -2,85 +2,134 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9785A6E17
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Aug 2022 22:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F7305A76A7
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 08:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbiH3UF1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 30 Aug 2022 16:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51656 "EHLO
+        id S230211AbiHaGbj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Aug 2022 02:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiH3UFZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 30 Aug 2022 16:05:25 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B2E2CCA2
-        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 13:05:23 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id s22so6829062qkj.3
-        for <linux-iio@vger.kernel.org>; Tue, 30 Aug 2022 13:05:23 -0700 (PDT)
+        with ESMTP id S230285AbiHaGbZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 02:31:25 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B546D5F202;
+        Tue, 30 Aug 2022 23:31:23 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id h11-20020a17090a470b00b001fbc5ba5224so14060030pjg.2;
+        Tue, 30 Aug 2022 23:31:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=FDjIWM3xWil1sQ/IcpT10UX6ICeya7wc03xyqbmLFrg=;
-        b=iXcPdykpSj9ina982A+gwG9G+a5RmGi7eX7lfsuEdwvFv1DiBZWSB/0reSY5blDQdC
-         NMpM12ELwAoPBqs7S8u8XVeBm/92ZQ8xUhgfWQIDiN8/Zc1ZuNkeT3rXg4EjVAaWOY3k
-         cIL8vHbEFpQrKmELjW+6vR/noIDnqhiI1A3TLTJ1QCAhpQ8ekhqysIB26inUABdfULsE
-         FsUqsyfrNUZSO3z0IspFzQNNNr1qDiseRMAmhG1cBm1UUKz2qzNkhpri+Mq53KzFty9h
-         JJy5v+oKGfIi46s0OaROGmQzujsJZOSBZYPbd/5bm9+/5LTJsSilcJ6CPyJ0RG/ZSFz2
-         hDhw==
+        h=message-id:date:subject:cc:to:from:from:to:cc;
+        bh=YWAShV8YZfHBQ9V1KHBqygpSP4XqwbQ+bpPaH2e34wI=;
+        b=cIr1uW4eW+yIwc2E1wmBEGnJFerOPvUXYtY/5kq08xIDgJRiKLsTFDENxkR4wisYzj
+         NhvaQhvXAcFNqOwL6D8XxJIXaiWIhzCFjyY8HPS48D+8pCKlC+fvEqXMEPCpAFrs1QHC
+         Qb4ExIaxqo5Do+RxwZs5LbOiCpMRibzMDqql6FWbBl0E6rYLlfZmsUvLtDX8Bm6HH/fc
+         6BIWX2CrrjSthXGQgCmHU0Tmgv/+wjnibEqa4dhI6sg50FrubZ2/jrXfpJfh0BfgBb/d
+         HZNRp3bluju0pSv4/sVZ+gYzaxxDs1/hCT5SlEkLJ6Mt+ASCqIpYboEeo7vVt7YWNbdS
+         kF4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=FDjIWM3xWil1sQ/IcpT10UX6ICeya7wc03xyqbmLFrg=;
-        b=oY93EAsX8SN5Jf7i2+LzJ/sd8K420ZZU/mLEFtUpPiq8O++W+pfBR5W5TWgbjekQNL
-         X+062dsQBZe9bjhgC/0ftcGje5xAuBXwrBJmsnqkvSkizsiPQssHYlqgfBSOnR1bcEUp
-         IFuqaRNWj40noFzYcjfBHkPNnUc2EjGECggSoMaD4ok1RHrPN38EIeAdFYSrE0/F5iS7
-         8xm2ZzbQO3tY9999JBEyelR/pN+y7zNKeXcU8C5fYFRN8PbUtcFcRS5+sw67taQxaYCe
-         F63V2An3OVLWfuz+xonEwT9TVxK6ueRMncpKgwllg49h/ZPAwd1rARbQXhgx59H5dFg9
-         7qYw==
-X-Gm-Message-State: ACgBeo0dz0NluZuMIIwSzeAWaLVEl81FhB8UOQ/cK3c8t+IknpMAI3q3
-        Bubcgu06DRzky4w+sQAR6Mhjl/22AV7N3e9a0Ts=
-X-Google-Smtp-Source: AA6agR7LZt3926FgbIFG1UJbeikzGbWDBCgwqEXoZvbt7QNaeOoymB9+OwyHMwP6rg7Rv8XUuO9/2xQ+wg0bWSCJunw=
-X-Received: by 2002:ae9:e311:0:b0:6ba:e711:fb27 with SMTP id
- v17-20020ae9e311000000b006bae711fb27mr13385846qkf.320.1661889922934; Tue, 30
- Aug 2022 13:05:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220830183325.2641490-1-jic23@kernel.org>
-In-Reply-To: <20220830183325.2641490-1-jic23@kernel.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 30 Aug 2022 23:04:47 +0300
-Message-ID: <CAHp75VfjWOdgAW=YuszG5Dih_2D78YB20ShaNWVxMGjOKQhsWQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: cdc: ad7746: Suppress false uninitialized value warning.
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=YWAShV8YZfHBQ9V1KHBqygpSP4XqwbQ+bpPaH2e34wI=;
+        b=wHT43Q5sk7KUVwOBjV4s1XyViJDMkUfNNThWAt/gufnoZ6wsrNkLI1tCBRmTh/hpce
+         lFkzpU/39Y2j62S+dKE3VeecZACigbl9gdDbztd9zHhb/HRyyu7N7Sd7B5CZHeKQBPq+
+         dgcTp57dtBg3nbb4gwVm6eqENuC2PFukBfHTOFmnSiwad2DdOu9z/B6TT4ByY49GSIgH
+         dUFu0qrRoszIgIg2ftOLzPxuyVvh1pW/SlmczaKln6jFR496xNtWgoRdVsjIu1J0TD0G
+         4FpevZ6K8J4yYmgSMKwDDZCzmm8729OpYLnpjrlyY7plrvc5FSo7ZWQJhPQEX0BLecR9
+         TMBQ==
+X-Gm-Message-State: ACgBeo3E3fn0pPNRDpY87XCVSmml6YfzHe61jL9BqyrhFbi+IHNOHvZ4
+        VvvcczeXDvszAwFrh7OecRI=
+X-Google-Smtp-Source: AA6agR4t/Q7VZV1gHbT89eFvrAoVkSrvnR+hJ5W1paPb/Isz6yHWshgR/UJHztM68o9vekevUVTGzA==
+X-Received: by 2002:a17:902:7b86:b0:174:231f:b6bf with SMTP id w6-20020a1709027b8600b00174231fb6bfmr24592003pll.172.1661927482370;
+        Tue, 30 Aug 2022 23:31:22 -0700 (PDT)
+Received: from localhost.localdomain ([115.99.190.245])
+        by smtp.gmail.com with ESMTPSA id z30-20020a62d11e000000b0052d24402e52sm10362220pfg.79.2022.08.30.23.31.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Aug 2022 23:31:21 -0700 (PDT)
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+To:     jic23@kernel.org, andy.shevchenko@gmail.com, hadess@hadess.net,
+        hdegoede@redhat.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] iio: Add single and double tap events support
+Date:   Wed, 31 Aug 2022 12:01:15 +0530
+Message-Id: <20220831063117.4141-1-jagathjog1996@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Aug 30, 2022 at 10:10 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> Fix warning:
-> drivers/iio/cdc/ad7746.c:336:14: warning: use of uninitialized value '<unknown>' [CWE-457] [-Wanalyzer-use-of-uninitialized-value]
-> reported on linux-next.  The compiler can't see into the implementation
-> of kstrtobool() to identify that the if (ret < 0) condition is
-> sufficient to detect cases where this parameter is not initialized.
+This patch series adds new event type for tap called gesture and direction
+is used to differentiate single and double tap. This series adds single
+and double tap support for bma400 accelerometer device driver.
 
-Sorry, but to me this sounds like a false positive that provokes
-developer to add not only unneeded, but in some cases harmful code
-(yes, there were cases in the history when preinitializing variable
-with some value made a regression).
-NAK from me (but you always may overrule as a maintainer :-).
+Changes since v3
+1. Added a macro for the length of the tap configuration arrays.
+2. Corrected a grammar mistake.
+3. Arranged the local variables in reverse Xmas tree order.
+
+Changes since v2
+1. Replaced doubletap_tap_2min to doubletap_tap2_min.
+2. Added ABI docs for available attributes which lists tap configurations
+   values.
+3. Added 'tap' in the naming of available attributes which are related to
+   tap configurations.
+5. Added check for channel type in _read_event_value() and
+   _write_event_value().
+6. KernelVersion changed to 6.1.
+7. Corrected typos.
+
+Changes since v1
+1. Included headers in alphabetical order.
+2. Changing tap_event_en variable name to tap_event_en_bitmask since it is
+   used in bit manipulation operation.
+3. Assigning boolean value to step_event_en and activity_event_en instead
+   of 0, since they are boolean type members.
+4. Using local variable for regmap_read() instead for *val itself.
+5. Correcting typos.
+6. Remove of IIO_EV_INFO_PERIOD.
+7. Now all 4 tap controls like threshold, quiet, tics_dt and quiet_dt can
+   be configured from the userspace.
+8. Introducing new event info IIO_EV_INFO_RESET_TIMEOUT, and
+   IIO_EV_INFO_TAP_2MIN_DELAY into iio_event_info.
+9. Creating custom read/write attributes for tics_dt called
+   in_accel_gesture_maxtomin_time.
+10. Time based tap controls can be configured in seconds instead of raw
+    values.
+11. Provided all available values for time base tap controls in seconds.
+12. Adding one more MODULE_AUTHOR().
+
+Changes since RFC
+1. Corrected the "quite" typo to "quiet".
+2. Added proper reference and name of the section from datasheet.
+3. Changed the ABI documentation to make it more generic.
+4. Added ABI documentation for double tap quiet period.
+5. Added available list by registering new event attribute for tap
+   threshold values and double tap quiet period values.
+6. Sending both single and double tap events separately.
+8. Removed checking for tap enabled while changing data rate.
+9. Returning invalid with error message if the input data rate is not
+   200Hz while enabling tap interrupts.
+7. Added datasheet reference for interrupt engine overrun.
+
+Jagath Jog J (2):
+  iio: Add new event type gesture and use direction for single and
+    double tap
+  iio: accel: bma400: Add support for single and double tap events
+
+ Documentation/ABI/testing/sysfs-bus-iio |  69 +++++
+ drivers/iio/accel/bma400.h              |  14 +
+ drivers/iio/accel/bma400_core.c         | 343 +++++++++++++++++++++++-
+ drivers/iio/industrialio-event.c        |   7 +-
+ include/linux/iio/types.h               |   2 +
+ include/uapi/linux/iio/types.h          |   3 +
+ tools/iio/iio_event_monitor.c           |   8 +-
+ 7 files changed, 434 insertions(+), 12 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.17.1
+

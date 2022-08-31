@@ -2,62 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A232A5A7822
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 09:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DAC25A77FA
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 09:47:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbiHaHwW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Aug 2022 03:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59272 "EHLO
+        id S230248AbiHaHr5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Aug 2022 03:47:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231168AbiHaHwE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 03:52:04 -0400
-X-Greylist: delayed 339 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 Aug 2022 00:51:19 PDT
-Received: from mail.puregrowthonline.pl (mail.puregrowthonline.pl [51.38.124.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7B52AD8
-        for <linux-iio@vger.kernel.org>; Wed, 31 Aug 2022 00:51:17 -0700 (PDT)
-Received: by mail.puregrowthonline.pl (Postfix, from userid 1002)
-        id E9D14A28BE; Wed, 31 Aug 2022 07:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puregrowthonline.pl;
-        s=mail; t=1661931936;
-        bh=CSKXLMgcdpWkXuTgJn5+jsCVobtU9JEF4vCnS5z6McM=;
-        h=Date:From:To:Subject:From;
-        b=Iv12rJsj/9vRe3TP6f05aHCv+lv1cH7w4vN4uYt9PStK1nO15kEAT0t7bVPbrd+zA
-         d8ZDzEZzTCVwZYOpTVyDwKqooqVUewkGnN5aeWbFh8ncKe9DlUYIWkGLiGPIjgH/y6
-         ReyBWSfMTGA0Hx2gD0/PxadYv9aDWo/BQyxiuh5rLnWZHU8DZlL7yZ455UPlcwlrQu
-         J5wZWtL+4otDJCM6UW50yqTBtcvnurfE5Ds1s5n56Rrb4bge3k/OpF+6+YtLMuXudQ
-         q/JrQk7cx5UcCQvUYwS7Xmwv/Z6O0cxJm5HTYOJenEp1Ny9nPpTlI/KQTAeyKzoMfJ
-         JmnlUNgN9DICA==
-Received: by mail.puregrowthonline.pl for <linux-iio@vger.kernel.org>; Wed, 31 Aug 2022 07:45:11 GMT
-Message-ID: <20220831064500-0.1.59.j5ty.0.u9hr2f1lfj@puregrowthonline.pl>
-Date:   Wed, 31 Aug 2022 07:45:11 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@puregrowthonline.pl>
-To:     <linux-iio@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.puregrowthonline.pl
+        with ESMTP id S230138AbiHaHrz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 03:47:55 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86385A4051;
+        Wed, 31 Aug 2022 00:47:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1661932073;
+  x=1693468073;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aJUQjD5xtnOBGTEcIcJSA96Y6IzY+5A+14tz2WSnhO8=;
+  b=Spax2XgkoZ637D3HAnBRnu1YYqWmdK43aQrEjMATZrX5wqr+pxD3f/uW
+   siFSTJVg3jWpLPk4JgQqemMzn34/tE4SZUDEvKpCZ9dcPCfZZ4lh7UcOF
+   Vnq3+912os+f+pGSPvkE9s861Gk26tJ86t99X1twPkZS5Jcz44mZ2ulTL
+   O64TUOOg6CSMYs3WIrrgHcsX0lPGBa39SQum+SBjO7CaGPdPfLxH6MiJO
+   toL5aGWzPS/z3D5xEtv4ir+XoxlSqigIi5Yx6TVtAUW+6S4EQ+R0kQaYp
+   zg/XN9Ox34EzKa83wtMXRRp4jVDOw9vyEKJvxV1crBbUZnii0kFWGqE/Q
+   Q==;
+Date:   Wed, 31 Aug 2022 09:47:50 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     kernel <kernel@axis.com>, "lars@metafoo.de" <lars@metafoo.de>,
+        Axel Jonsson <Axel.Jonsson@axis.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio: adc: mcp320x: add triggered buffer support
+Message-ID: <Yw8SJil96IT6fP0n@axis.com>
+References: <20220824104002.2749075-1-vincent.whitchurch@axis.com>
+ <20220824104002.2749075-3-vincent.whitchurch@axis.com>
+ <20220828182430.533bf8e0@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220828182430.533bf8e0@jic23-huawei>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Sun, Aug 28, 2022 at 07:24:30PM +0200, Jonathan Cameron wrote:
+> On Wed, 24 Aug 2022 12:40:02 +0200
+> Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
+> > Add support for triggered buffers.  Just read the channels in a loop to
+> > keep things simple.
+> 
+> Just curious, but what other options are there?  A quick datasheet scroll
+> through didn't seem to suggest you can overlap setup of next read with
+> reading out the previous (common on SPI ADCs).
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
-
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
-
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
-
-
-Pozdrawiam serdecznie,
-Wiktor Nurek
+You're right that the hardware doesn't support any special method to
+read out multiple channels; I can mention that in the commit message.
+But I think you could construct a spi_message which a bunch of
+spi_transfers which toggle the CS appropriately between them to read out
+multiple channels in one go?  (Note that the variants have different
+data formats, and many of the variants only have one channel.)

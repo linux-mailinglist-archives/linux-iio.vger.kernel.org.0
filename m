@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6F825A8776
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 22:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52BF05A877E
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 22:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbiHaUVA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Aug 2022 16:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51838 "EHLO
+        id S229531AbiHaUWZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Aug 2022 16:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiHaUVA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 16:21:00 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DD51D2927;
-        Wed, 31 Aug 2022 13:20:58 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id b2so11731777qkh.12;
-        Wed, 31 Aug 2022 13:20:58 -0700 (PDT)
+        with ESMTP id S230241AbiHaUWY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 16:22:24 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EE4BD91E3;
+        Wed, 31 Aug 2022 13:22:23 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id a15so11751380qko.4;
+        Wed, 31 Aug 2022 13:22:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=AThWrQfN6/eN3KCXa9I/bfm86yJ82jDlu5BASjK5tqc=;
-        b=m3LKEXtbRN8bk8yRrBJ0UJkyUNH9f0kdP7TqRpEfHYsaUYQvadMdux0zJAlkHV1vas
-         DyN3tgUeLaNC/n8n68XbFB5oxcyfcahG2D/An+MQ2FUa9oK834xzYPRsxhgq0H+CpGVf
-         WK+nRnSrbwnnu7g8Rm/TekCwDYh3byZhLxCmzd2Bi4GdypOXAN8+xdCkUgtEHOWYt3ro
-         N8+iWfdMlGvvIRSUh2RjSfXIVa0984uIy/uU96tmM+CvO4Zw3ZVsdVR56Tdr0y4T0Gwl
-         B7GybI5AWnoWxrPIi6ONw08WZO9r404YmT/+iPLG0IdBScl1XJdvR6qxK857m7Q485pg
-         PjCA==
+        bh=aMjCOGjnBUx54TRXPoHZ+EBmpoeeI1dfZnROfWg9ciQ=;
+        b=QLLI9KcJVZZBfr8hTLfqVotJeC1mqDmH4oTbWTFf0s9RlSKjRD2puasLTD0d5Kk689
+         MNnfgPoRgp1D4YdWxVaktZIvwKgRTcQZ4kF1cl/UXG6Csd6F0rKZYrvUBkJ7nmc9miLG
+         3roAfYiM87IEIZtGdGVKwvcewQCG7dmZ/LMpSohhuPFsJNjkebHYUfcQHYGr45mJF7Ba
+         lVp8PselLF8Fzvq0LSEcvLvM3V63bHaXCKm6X6LInE6YNm9vJDwFjtzQ+FzYjUWZ4mpQ
+         JaRMHEe5qpmW/7HSGS4Bu0pHiwAPuh9euPMMwurw8hqcOsAmCK9mMz1hH3fVL3f6ZH9H
+         tx5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=AThWrQfN6/eN3KCXa9I/bfm86yJ82jDlu5BASjK5tqc=;
-        b=UchvNTVMSq6alZGdRE61Rpt8BErzL3y3Pfx/0YD8l60Aar7sTYhPbe8UVLxVzAUJ/Q
-         1DE+CHJ97dDoautW/QA1KXEcj3b4Lpqt+BSxblQwcJ/yd4hrRN3l3FDJqFpsI5jlyWJ+
-         BNi8p6xfKktHIEg0PThF7/Jrghpe4f2uRfWqG2FLzC0tkm663vQcFzr2cjdpaujdFlcr
-         8l943n2oTiQUUE4yvaCIlFliasObAVNIXNzCpiRQgAAK+GOBhSZqraiybSbaMInxmQDZ
-         Xgpe/zpLR6MvXDTg/T+cXrb0oVOruqIM+Tf9jXNz724TZ2KJZAHgSLRHRwre3oyCT4gL
-         gKvA==
-X-Gm-Message-State: ACgBeo0tE9aHzOKYIyglW03YyLYHj3wj+7SHGQw1nOLVzs7nT12Y2a/O
-        1OWhdGHyXKKhSeRoXOlE5PjacaXdyC5hfMlGeSQ=
-X-Google-Smtp-Source: AA6agR4WcEVXsR64EKTa6zlaLNT8Hjof8P9Kyd7ccFS8v0/+jw8xvASNxax8J0TfAnwHLSmaQDvcwWdVCPmChWagnD8=
-X-Received: by 2002:a05:620a:2987:b0:6ba:dc04:11ae with SMTP id
- r7-20020a05620a298700b006badc0411aemr16838270qkp.748.1661977257251; Wed, 31
- Aug 2022 13:20:57 -0700 (PDT)
+        bh=aMjCOGjnBUx54TRXPoHZ+EBmpoeeI1dfZnROfWg9ciQ=;
+        b=URHH5lCC3wLl6QBI1R/nTCcMV7n9aTrKiR78X0EDMKaYZU2jAuxkvUZIrP7hEgYYKe
+         0f3btPfXHV5atq0ATLrJxecP5PKbISaXy5syeenEoJ0fq5ZIzzcM1V85duX/7EivGACg
+         eB4h7+k+CjXh6WsE3jcZSs1Kyjjzy7eXiiaQ8/6rl0zbZvSnEXfsf8INQEr94tknvZnr
+         I3VT59eNIhkvHGQVEq5g1kmna7M1uNzRi81Okfsy6+bIzm70OjOT6n5pVAOcEhcv5Wy5
+         yy86QqsHTDOWgdnnyZOdH98JtDynh660KcOGoWQwaH+o4ajjXQkunmEyLnT4drs2eK1N
+         uLww==
+X-Gm-Message-State: ACgBeo1pM5YhCIgoTRh/x9Z6j0W331tJtxmgxlw3n0obx5QDgp3Ubm/Q
+        FYiAQqp/XNq9H84LysNdiNQOQ7d0xizJz7yomNU=
+X-Google-Smtp-Source: AA6agR6Az/ybYGFGYQ659ca2PSf1Yvm0jf3Gty57VLPXAuckkyMu9PC8qEuBnVswDH4idhL6eWmU9wfU35Pc4VB+Zww=
+X-Received: by 2002:a05:620a:288a:b0:6b8:fcfe:db02 with SMTP id
+ j10-20020a05620a288a00b006b8fcfedb02mr17481309qkp.504.1661977342561; Wed, 31
+ Aug 2022 13:22:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220831133021.215625-1-ramona.bolboaca@analog.com> <20220831133021.215625-2-ramona.bolboaca@analog.com>
-In-Reply-To: <20220831133021.215625-2-ramona.bolboaca@analog.com>
+References: <20220831100506.3368103-1-vincent.whitchurch@axis.com>
+ <20220831100506.3368103-2-vincent.whitchurch@axis.com> <CAHp75Vek8tLnwYWZO91HHr1_i7G_F9tErnRsq-GwfQcpR0FaTw@mail.gmail.com>
+ <Yw9t55YVm3YfAs5E@axis.com>
+In-Reply-To: <Yw9t55YVm3YfAs5E@axis.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 31 Aug 2022 23:20:20 +0300
-Message-ID: <CAHp75Vco8ftAkjVEmKGKKYHS-1mnZzLuPA+N98giqi17mqQnRw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: add max11205 adc driver
-To:     Ramona Bolboaca <ramona.bolboaca@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+Date:   Wed, 31 Aug 2022 23:21:46 +0300
+Message-ID: <CAHp75Vd-1hCy9Hrv7B6rnvxVo-fOgP5bEy0YvnfcBq9Jjs22OA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] iio: adc: mcp320x: use callbacks for RX conversion
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, kernel <kernel@axis.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -69,279 +69,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Aug 31, 2022 at 4:36 PM Ramona Bolboaca
-<ramona.bolboaca@analog.com> wrote:
+On Wed, Aug 31, 2022 at 5:19 PM Vincent Whitchurch
+<vincent.whitchurch@axis.com> wrote:
+> On Wed, Aug 31, 2022 at 02:40:49PM +0200, Andy Shevchenko wrote:
+> > On Wed, Aug 31, 2022 at 1:05 PM Vincent Whitchurch
+> > <vincent.whitchurch@axis.com> wrote:
+> > > Replace the device_index switch with callbacks from the chip_info
+> > > structure, so that the latter has all the information needed to handle
+> > > the variants.
+> >
+> > Below are for the further patches, as I see the original code has the
+> > same disadvantages.
 >
-> Adding support for max11205 16-bit single-channel ultra-low power
-> delta-sigma adc.
-> The MAX11205 is compatible with the 2-wire interface and uses
-> SCLK and RDY/DOUT for serial communications. In this mode, all
-> controls are implemented by timing the high or low phase of the SCLK.
-> The 2-wire serial interface only allows for data to be read out through
-> the RDY/DOUT output.
-
-Couple of minor comments, if you are going to address them,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX11205.pdf
-> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
-> ---
-> changes in v2:
->  - add chip_info null pointer check
->  - add support for probing with ACPI table
->  - remove function for module removal
->  - remove irq flag from max11205_sigma_delta_info
->  - add missing commas and missing spaces
->  - remove redundant blank line
->  - wrap text to 75-80 chars
->  - removed typos in commit message
->  drivers/iio/adc/Kconfig    |  14 +++
->  drivers/iio/adc/Makefile   |   1 +
->  drivers/iio/adc/max11205.c | 183 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 198 insertions(+)
->  create mode 100644 drivers/iio/adc/max11205.c
+> Right, these comments are in the original code that is either being just
+> being moved or that even just happens to be in the context of the diff.
 >
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 7fe5930891e0..0c8f376b65d8 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -653,6 +653,20 @@ config MAX1118
->           To compile this driver as a module, choose M here: the module will be
->           called max1118.
->
-> +config MAX11205
-> +       tristate "Maxim max11205 ADC driver"
-> +       depends on SPI
-> +       select AD_SIGMA_DELTA
-> +       select IIO_BUFFER
-> +       select IIO_TRIGGERED_BUFFER
-> +
-> +       help
-> +         Say yes here to build support for Maxim max11205 16-bit, single-channel
-> +         ultra-low power delta-sigma ADC.
-> +
-> +         To compile this driver as a module, choose M here: the module will be
-> +         called max11205.
-> +
->  config MAX1241
->         tristate "Maxim max1241 ADC driver"
->         depends on SPI_MASTER
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index 1772a549a3c8..bb681844e497 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -61,6 +61,7 @@ obj-$(CONFIG_LTC2497) += ltc2497.o ltc2497-core.o
->  obj-$(CONFIG_MAX1027) += max1027.o
->  obj-$(CONFIG_MAX11100) += max11100.o
->  obj-$(CONFIG_MAX1118) += max1118.o
-> +obj-$(CONFIG_MAX11205) += max11205.o
->  obj-$(CONFIG_MAX1241) += max1241.o
->  obj-$(CONFIG_MAX1363) += max1363.o
->  obj-$(CONFIG_MAX9611) += max9611.o
-> diff --git a/drivers/iio/adc/max11205.c b/drivers/iio/adc/max11205.c
-> new file mode 100644
-> index 000000000000..68e6082e70e5
-> --- /dev/null
-> +++ b/drivers/iio/adc/max11205.c
-> @@ -0,0 +1,183 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * max11205 16-Bit Delta-Sigma ADC
+> Just to clarify, do you mean by "further patches" that you expect
+> patches to fix these comments to be added to this series which adds
+> triggered buffer support?
 
-Can you spell the vendor and part number verbosely?
-Something like "Maxim MAX11205" or similar.
-
-> + *
-> + * Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX1240-max11205.pdf
-> + * Copyright (C) 2022 Analog Devices, Inc.
-> + * Author: Ramona Bolboaca <ramona.bolboaca@analog.com>
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/module.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/adc/ad_sigma_delta.h>
-> +
-> +#define MAX11205_BIT_SCALE     15
-> +#define MAX11205A_OUT_DATA_RATE        116
-> +#define MAX11205B_OUT_DATA_RATE        13
-> +
-> +enum chip_type {
-> +       TYPE_MAX11205A,
-> +       TYPE_MAX11205B,
-> +};
-> +
-> +struct chip_info {
-> +       unsigned int    out_data_rate;
-> +       const char      *name;
-> +};
-> +
-> +struct max11205_state {
-> +       const struct chip_info  *chip_info;
-> +       struct regulator        *vref;
-> +       struct ad_sigma_delta   sd;
-> +};
-> +
-> +static const struct ad_sigma_delta_info max11205_sigma_delta_info = {
-> +       .has_registers = false,
-> +};
-> +
-> +static int max11205_read_raw(struct iio_dev *indio_dev,
-> +                            struct iio_chan_spec const *chan,
-> +                            int *val, int *val2, long mask)
-> +{
-> +       struct max11205_state *st = iio_priv(indio_dev);
-> +       int reg_mv;
-> +
-> +       switch (mask) {
-> +       case IIO_CHAN_INFO_RAW:
-> +               return ad_sigma_delta_single_conversion(indio_dev, chan, val);
-> +       case IIO_CHAN_INFO_SCALE:
-> +               reg_mv = regulator_get_voltage(st->vref);
-> +               if (reg_mv < 0)
-> +                       return reg_mv;
-> +               reg_mv /= 1000;
-> +               *val = reg_mv;
-> +               *val2 = MAX11205_BIT_SCALE;
-> +               return IIO_VAL_FRACTIONAL_LOG2;
-> +       case IIO_CHAN_INFO_SAMP_FREQ:
-> +               *val = st->chip_info->out_data_rate;
-> +               return IIO_VAL_INT;
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static const struct iio_info max11205_iio_info = {
-> +       .read_raw = max11205_read_raw,
-> +       .validate_trigger = ad_sd_validate_trigger,
-> +};
-> +
-> +static const struct iio_chan_spec max11205_channels[] = {
-> +       {
-> +               .type = IIO_VOLTAGE,
-> +               .indexed = 1,
-> +               .scan_type = {
-> +                       .sign = 's',
-> +                       .realbits = 16,
-> +                       .storagebits = 16,
-> +                       .endianness = IIO_BE
-> +               },
-> +               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +               BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> +               BIT(IIO_CHAN_INFO_SCALE),
-> +       },
-> +};
-> +
-> +static const struct chip_info max11205_chip_info[] = {
-> +       [TYPE_MAX11205A] = {
-> +               .out_data_rate = MAX11205A_OUT_DATA_RATE,
-> +               .name = "max11205a",
-> +       },
-> +       [TYPE_MAX11205B] = {
-> +               .out_data_rate = MAX11205B_OUT_DATA_RATE,
-> +               .name = "max11205b",
-> +       },
-> +};
-> +
-> +static void max11205_reg_disable(void *reg)
-> +{
-> +       regulator_disable(reg);
-> +}
-> +
-> +static int max11205_probe(struct spi_device *spi)
-> +{
-> +       struct max11205_state *st;
-> +       struct iio_dev *indio_dev;
-> +       int ret;
-> +
-> +       indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +       if (!indio_dev)
-> +               return -ENOMEM;
-> +
-> +       st = iio_priv(indio_dev);
-> +
-> +       ad_sd_init(&st->sd, indio_dev, spi, &max11205_sigma_delta_info);
-
-> +       st->chip_info = device_get_match_data(&spi->dev);
-
-> +
-
-Unneeded blank line.
-
-> +       if (!st->chip_info)
-> +               st->chip_info = (const struct chip_info *)spi_get_device_id(spi)->driver_data;
-> +
-> +       indio_dev->name = st->chip_info->name;
-> +       indio_dev->modes = INDIO_DIRECT_MODE;
-> +       indio_dev->channels = max11205_channels;
-> +       indio_dev->num_channels = 1;
-> +       indio_dev->info = &max11205_iio_info;
-> +
-> +       st->vref = devm_regulator_get(&spi->dev, "vref");
-
-devm_regulator_get_enable() ?
-
-> +       if (IS_ERR(st->vref))
-> +               return dev_err_probe(&spi->dev, PTR_ERR(st->vref),
-> +                                    "Failed to get vref regulator\n");
-> +
-> +       ret = regulator_enable(st->vref);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = devm_add_action_or_reset(&spi->dev, max11205_reg_disable, st->vref);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = devm_ad_sd_setup_buffer_and_trigger(&spi->dev, indio_dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-> +
-> +static const struct spi_device_id max11205_spi_ids[] = {
-> +       { "max11205a", (kernel_ulong_t)&max11205_chip_info[TYPE_MAX11205A] },
-> +       { "max11205b", (kernel_ulong_t)&max11205_chip_info[TYPE_MAX11205B] },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(spi, max11205_spi_ids);
-> +
-> +static const struct of_device_id max11205_dt_ids[] = {
-> +       {
-> +               .compatible = "maxim,max11205a",
-> +               .data = &max11205_chip_info[TYPE_MAX11205A],
-> +       },
-> +       {
-> +               .compatible = "maxim,max11205b",
-> +               .data = &max11205_chip_info[TYPE_MAX11205B],
-> +       },
-> +       { }
-> +};
-> +MODULE_DEVICE_TABLE(of, max11205_dt_ids);
-> +
-> +static struct spi_driver max11205_spi_driver = {
-> +       .driver = {
-> +               .name = "max11205",
-> +               .of_match_table = max11205_dt_ids,
-> +       },
-> +       .probe = max11205_probe,
-> +       .id_table = max11205_spi_ids,
-> +};
-> +module_spi_driver(max11205_spi_driver);
-> +
-> +MODULE_AUTHOR("Ramona Bolboaca <ramona.bolboaca@analog.com>");
-> +MODULE_DESCRIPTION("MAX11205 ADC driver");
-> +MODULE_LICENSE("GPL v2");
-> +MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
-> --
-> 2.25.1
->
-
+Yes.
 
 -- 
 With Best Regards,

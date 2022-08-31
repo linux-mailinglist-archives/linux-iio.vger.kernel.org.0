@@ -2,108 +2,86 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98145A7AAF
-	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 11:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D735A7AE2
+	for <lists+linux-iio@lfdr.de>; Wed, 31 Aug 2022 12:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230322AbiHaJ4X (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 31 Aug 2022 05:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45360 "EHLO
+        id S230080AbiHaKFS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 31 Aug 2022 06:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbiHaJ4V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 05:56:21 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77896C579E
-        for <linux-iio@vger.kernel.org>; Wed, 31 Aug 2022 02:56:20 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTKSB-0000vx-Ri; Wed, 31 Aug 2022 11:56:11 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTKSA-0032Z6-UO; Wed, 31 Aug 2022 11:56:10 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTKSA-00HRUl-CE; Wed, 31 Aug 2022 11:56:10 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: [PATCH v2 3/3] iio: adc: tsc2046: silent spi_device_id warning
-Date:   Wed, 31 Aug 2022 11:56:01 +0200
-Message-Id: <20220831095601.4157195-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220831095601.4157195-1-o.rempel@pengutronix.de>
-References: <20220831095601.4157195-1-o.rempel@pengutronix.de>
+        with ESMTP id S230020AbiHaKFP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 31 Aug 2022 06:05:15 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0783B6E8A2;
+        Wed, 31 Aug 2022 03:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1661940312;
+  x=1693476312;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=vUrM9ZM91DzPeAfuKiBbAxb18ShY/Z4MIs2oFy4nP+8=;
+  b=YK1+mNlTNzlA013Mfv7+uEcS6hwmhxNkz04Jxm/etwyPgXo76Gxw4kgH
+   EAj7iMmXd5+nVsxYcv4+7/tF3UR9o3e4cfrNYI0/qJBE6ubdFmozmGuhq
+   VzSEVU5R0eARd7aCrFa0lJkuHlwj2dNgztaMfqjUyOER2SlonqpDeXXCq
+   Jv+9+dWQhUPIs6KFZ3WbDUS75b5ppXR6EMoWJgk7Ix5rKD1Y7INu6chDG
+   YoPPlSmwIYmMoM4Ru+aRqotpBitdpFRwdrjsjAbBr0BxT3rEYN/LRg2hs
+   +e69HlrKmFQDS+pUf6QUlXiknCAVEZ0V7zg7fdDCghfHHysAU3fIbBKnl
+   g==;
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     <jic23@kernel.org>
+CC:     <kernel@axis.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        <andy.shevchenko@gmail.com>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/5] iio: adc: mcp320x: Add triggered buffer support
+Date:   Wed, 31 Aug 2022 12:05:01 +0200
+Message-ID: <20220831100506.3368103-1-vincent.whitchurch@axis.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add spi_device_id to silent following kernel runtime warning:
-"SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc"
+This series makes some suggested cleanups and then adds triggered buffer
+support to the mcp320x ADC driver.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v2:
-- attach actual driver_data
-- use spi_get_device_id fallback
----
- drivers/iio/adc/ti-tsc2046.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+v2:
+- Replace device_index rx switch with callbacks in chip_info
+- Replace device_index tx switch with computation based
+  on number of channels.
+- Use conv_time instead of device_index switch when initializing
+  conv_msg.
+- Keep includes in alphabetical order with iio includes in a separate group
+- Replace diff_off with scan_index as parameter to macro
+- Remove reformatting of macros which makes the real change hard
+  to spot
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index bbc8b4137b0b1..ef78826241ee8 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -762,6 +762,13 @@ static int tsc2046_adc_probe(struct spi_device *spi)
- 	}
- 
- 	dcfg = device_get_match_data(dev);
-+	if (!dcfg) {
-+		const struct spi_device_id *id;
-+
-+		id = spi_get_device_id(spi);
-+		dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
-+	}
-+
- 	if (!dcfg)
- 		return -EINVAL;
- 
-@@ -878,11 +885,18 @@ static const struct of_device_id ads7950_of_table[] = {
- };
- MODULE_DEVICE_TABLE(of, ads7950_of_table);
- 
-+static const struct spi_device_id tsc2046_adc_spi_ids[] = {
-+	{ "tsc2046e-adc", (unsigned long)&tsc2046_adc_dcfg_tsc2046e },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, tsc2046_adc_spi_ids);
-+
- static struct spi_driver tsc2046_adc_driver = {
- 	.driver = {
- 		.name = "tsc2046",
- 		.of_match_table = ads7950_of_table,
- 	},
-+	.id_table = tsc2046_adc_spi_ids,
- 	.probe = tsc2046_adc_probe,
- 	.remove = tsc2046_adc_remove,
- };
+Cc: andy.shevchenko@gmail.com
+Cc: lars@metafoo.de
+Cc: linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Axel Jonsson (1):
+  iio: adc: mcp320x: add triggered buffer support
+
+Vincent Whitchurch (4):
+  iio: adc: mcp320x: use callbacks for RX conversion
+  iio: adc: mcp320x: remove device_index check for TX
+  iio: adc: mcp320x: use conv_time instead of device_index switch
+  iio: adc: mcp320x: use device managed functions
+
+ drivers/iio/adc/Kconfig   |   2 +
+ drivers/iio/adc/mcp320x.c | 297 +++++++++++++++++++++++---------------
+ 2 files changed, 183 insertions(+), 116 deletions(-)
+
 -- 
-2.30.2
+2.34.1
 

@@ -2,204 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AC8C5A9614
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 13:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D1185A968B
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 14:19:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232332AbiIALxe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Sep 2022 07:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42254 "EHLO
+        id S233048AbiIAMT0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Sep 2022 08:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbiIALxd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 07:53:33 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4711EEDA
-        for <linux-iio@vger.kernel.org>; Thu,  1 Sep 2022 04:53:32 -0700 (PDT)
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTil8-0001z1-W1; Thu, 01 Sep 2022 13:53:22 +0200
-Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTil6-0004PT-J1; Thu, 01 Sep 2022 13:53:20 +0200
-Date:   Thu, 1 Sep 2022 13:53:20 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, kernel@pengutronix.de,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v3 2/3] iio: adc: tsc2046: add vref support
-Message-ID: <20220901115320.GD2479@pengutronix.de>
-References: <20220901041146.3652287-1-o.rempel@pengutronix.de>
- <20220901041146.3652287-2-o.rempel@pengutronix.de>
- <20220901124549.00002287@huawei.com>
+        with ESMTP id S229892AbiIAMTZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 08:19:25 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53481195F4;
+        Thu,  1 Sep 2022 05:19:23 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28191bLp015793;
+        Thu, 1 Sep 2022 08:19:20 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3japt6246s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 01 Sep 2022 08:19:20 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 281CJHGT007878
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 1 Sep 2022 08:19:17 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 1 Sep 2022 08:19:16 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 1 Sep 2022 08:19:16 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 1 Sep 2022 08:19:16 -0400
+Received: from debian.ad.analog.com ([10.48.65.119])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 281CJ1FO010547;
+        Thu, 1 Sep 2022 08:19:06 -0400
+From:   Ciprian Regus <ciprian.regus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Ciprian Regus <ciprian.regus@analog.com>
+Subject: [PATCH v2 1/5] dt-bindings: iio: adc: Add docs for LTC2499
+Date:   Thu, 1 Sep 2022 15:16:56 +0300
+Message-ID: <20220901121700.1325733-1-ciprian.regus@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20220901124549.00002287@huawei.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: eUtDTgLfYNMv1_9SOqU4aPLrYMmjpnQU
+X-Proofpoint-ORIG-GUID: eUtDTgLfYNMv1_9SOqU4aPLrYMmjpnQU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-01_08,2022-08-31_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ mlxlogscore=999 malwarescore=0 priorityscore=1501 adultscore=0 spamscore=0
+ lowpriorityscore=0 mlxscore=0 phishscore=0 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
+ definitions=main-2209010056
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 01, 2022 at 12:45:49PM +0100, Jonathan Cameron wrote:
-> On Thu, 1 Sep 2022 06:11:45 +0200
-> Oleksij Rempel <o.rempel@pengutronix.de> wrote:
-> 
-> > If VREF pin is attached, we should use external VREF source instead of
-> > the internal. Otherwise we will get wrong measurements on some of channel
-> > types.
-> > 
-> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Hi Oleksij,
-> 
-> I'm not sure why I didn't review this patch in v1...
-> 
-> Anyhow, some comments below.
-> 
-> Jonathan
-> 
-> > ---
-> >  drivers/iio/adc/ti-tsc2046.c | 64 +++++++++++++++++++++++++++++++-----
-> >  1 file changed, 55 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-> > index 0d9436a69cbfb..bbc8b4137b0b1 100644
-> > --- a/drivers/iio/adc/ti-tsc2046.c
-> > +++ b/drivers/iio/adc/ti-tsc2046.c
-> > @@ -8,6 +8,7 @@
-> >  #include <linux/bitfield.h>
-> >  #include <linux/delay.h>
-> >  #include <linux/module.h>
-> > +#include <linux/regulator/consumer.h>
-> >  #include <linux/spi/spi.h>
-> >  
-> >  #include <asm/unaligned.h>
-> > @@ -175,6 +176,9 @@ struct tsc2046_adc_priv {
-> >  	u32 time_per_bit_ns;
-> >  
-> >  	struct tsc2046_adc_ch_cfg ch_cfg[TI_TSC2046_MAX_CHAN];
-> > +	bool use_internal_vref;
-> > +	unsigned int vref_mv;
-> > +	struct regulator *vref_reg;
-> >  };
-> >  
-> >  #define TI_TSC2046_V_CHAN(index, bits, name)			\
-> > @@ -252,7 +256,9 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
-> >  	case TI_TSC2046_ADDR_AUX:
-> >  	case TI_TSC2046_ADDR_VBAT:
-> >  	case TI_TSC2046_ADDR_TEMP0:
-> > -		pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
-> > +		pd |= TI_TSC2046_SER;
-> > +		if (priv->use_internal_vref)
-> > +			pd |= TI_TSC2046_PD1_VREF_ON;
-> >  	}
-> >  
-> >  	return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
-> > @@ -468,7 +474,7 @@ static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
-> >  		 * So, it is better to use external voltage-divider driver
-> >  		 * instead, which is calculating complete chain.
-> >  		 */
-> > -		*val = TI_TSC2046_INT_VREF;
-> > +		*val = priv->vref_mv;
-> >  		*val2 = chan->scan_type.realbits;
-> >  		return IIO_VAL_FRACTIONAL_LOG2;
-> >  	}
-> > @@ -781,22 +787,42 @@ static int tsc2046_adc_probe(struct spi_device *spi)
-> >  	indio_dev->num_channels = dcfg->num_channels;
-> >  	indio_dev->info = &tsc2046_adc_info;
-> >  
-> > +	priv->vref_reg = devm_regulator_get_optional(&spi->dev, "vref");
-> > +	if (!IS_ERR(priv->vref_reg)) {
-> > +		ret = regulator_enable(priv->vref_reg);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		ret = regulator_get_voltage(priv->vref_reg);
-> > +		if (ret < 0)
-> > +			goto err_regulator_disable;
-> 
-> Whilst regulators voltages of references rarely change at runtime
-> they are allowed to, so it is logically better to query the
-> voltage at the point of use. Requests for scale should be
-> rare (unless there is a consumer that keeps querying this?)
-> so the slightly overhead there
-> shouldn't matter.
+Update the bindings documentation for ltc2497 to include the ltc2499.
 
-The voltage scale is related to actual adc measurements. If it variates,
-we will have different scale of challenges.
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+---
+changes in v2:
+ - added dashes in front of enum elements.
+ .../devicetree/bindings/iio/adc/lltc,ltc2497.yaml         | 8 ++++++--
+ MAINTAINERS                                               | 1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-> > +
-> > +		priv->vref_mv = ret / 1000;
-> > +		priv->use_internal_vref = false;
-> > +	} else {
-> > +		/* Use internal reference */
-> > +		priv->vref_mv = TI_TSC2046_INT_VREF;
-> > +		priv->use_internal_vref = true;
-> > +	}
-> > +
-> >  	tsc2046_adc_parse_fwnode(priv);
-> >  
-> >  	ret = tsc2046_adc_setup_spi_msg(priv);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto err_regulator_disable;
-> >  
-> >  	mutex_init(&priv->slock);
-> >  
-> >  	ret = devm_request_irq(dev, spi->irq, &tsc2046_adc_irq,
-> >  			       IRQF_NO_AUTOEN, indio_dev->name, indio_dev);
-> >  	if (ret)
-> > -		return ret;
-> > +		goto err_regulator_disable;
-> >  
-> >  	trig = devm_iio_trigger_alloc(dev, "touchscreen-%s", indio_dev->name);
-> > -	if (!trig)
-> > -		return -ENOMEM;
-> > +	if (!trig) {
-> > +		ret = -ENOMEM;
-> > +		goto err_regulator_disable;
-> > +	}
-> >  
-> >  	priv->trig = trig;
-> >  	iio_trigger_set_drvdata(trig, indio_dev);
-> > @@ -811,20 +837,39 @@ static int tsc2046_adc_probe(struct spi_device *spi)
-> >  	ret = devm_iio_trigger_register(dev, trig);
-> >  	if (ret) {
-> >  		dev_err(dev, "failed to register trigger\n");
-> > -		return ret;
-> > +		goto err_regulator_disable;
-> 
-> Please don't mix devm and non devm calls. It makes it much harder to reason about
-> the correctness of ordering.
-> Use devm_add_action_or_reset() to register a callback to disable the
-> vref regulator.
-> 
-> Alternative is back out the devm_ based registration of everything after
-> the regulator enable.
-
-ok.
-
-Regards,
-Oleksij
+diff --git a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
+index c1772b568cd1..875f394576c2 100644
+--- a/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
+@@ -13,10 +13,14 @@ description: |
+   16bit ADC supporting up to 16 single ended or 8 differential inputs.
+   I2C interface.
+ 
++  https://www.analog.com/media/en/technical-documentation/data-sheets/2497fb.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/2499fe.pdf
++
+ properties:
+   compatible:
+-    const:
+-      lltc,ltc2497
++    enum:
++      - lltc,ltc2497
++      - lltc,ltc2499
+ 
+   reg: true
+   vref-supply: true
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9d7f64dc0efe..3c847619ceb1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1327,6 +1327,7 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/ABI/testing/sysfs-bus-iio-frequency-ad9523
+ F:	Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4350
+ F:	Documentation/devicetree/bindings/iio/*/adi,*
++F:	Documentation/devicetree/bindings/iio/adc/lltc,ltc2497.yaml
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
+ F:	drivers/iio/*/ad*
+ F:	drivers/iio/adc/ltc249*
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+

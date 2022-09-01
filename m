@@ -2,87 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA8D5A98E2
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 15:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E495A9A1C
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 16:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234456AbiIANbX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Sep 2022 09:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
+        id S234621AbiIAOV7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Sep 2022 10:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbiIANbC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 09:31:02 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 347799A9F2
-        for <linux-iio@vger.kernel.org>; Thu,  1 Sep 2022 06:27:09 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id k18so11486919lji.13
-        for <linux-iio@vger.kernel.org>; Thu, 01 Sep 2022 06:27:08 -0700 (PDT)
+        with ESMTP id S234577AbiIAOVp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 10:21:45 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DA07170D;
+        Thu,  1 Sep 2022 07:21:26 -0700 (PDT)
+Received: by mail-qt1-x82a.google.com with SMTP id e28so13499212qts.1;
+        Thu, 01 Sep 2022 07:21:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc;
-        bh=EcDrZFdluBLqgSl5y1ge/xoHolSS2B2PXo4EVlgY9h8=;
-        b=j6IU/3o+B9aEmh+ikjTzDwhSeMNO1INjgkzCxiPuyNnqIi3323Gd0aOQh06w1RJhme
-         5SOCFmnBfbgt2RzJClw06E4PZmEDSjfLwsu/73EngsMnRKi3bsQWqAhNY9a37Dv8sXCs
-         q5MsU4p6YsaZaf+iMl0cpibYG6qHz9aFgLW448Y1l//uAm0SNXZhQivcB9QOg91KdOgZ
-         Xc4Atvk5wuVfydlEhYbtt+xcfjGKLHnZNzxij+spb8O+C8LCwreg3fBXAl6xIaYB9SX0
-         AZWi5JFPzIhw5PKq+kjqkHeKQ3enl+V5ogJtPLW0rVpK+4h8lw08Yw2iETEIG3T7/vZu
-         yUZQ==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=2guHmUXUEgWXxY+gDQPqQNXNAZmLdx374eGlGLm8JNw=;
+        b=a8+nJXBWvMhetvStRLQPqahJmbFu7Dao9kOOfWM86IQXi8DH3BFzjepBnqbbEA653i
+         9oU5l1U2WPuFJ0V15f4G6OZklMqGb8r3YWIBOdNYxKYqhUi4//ATYWy/sXa04Sv9sASg
+         FIlujEr1uXU+SsAzDwufG5Pw0F5lekxMciTGb1/a25LxOkawDHkUcpoZDxMZFz1HCWfm
+         K9JlSzEpPuN2ulZvEkthvMp7ZYf80tzZQPua69Unb8XWUdsL7PZCS2H60IFIauE0cnRs
+         AGOWzsdBm/h/BOCm9sySjCfi8evVGHOEO7p6nYfQMI++yXnKj22f8Wqdry2pV2HMKwpW
+         Fj5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc;
-        bh=EcDrZFdluBLqgSl5y1ge/xoHolSS2B2PXo4EVlgY9h8=;
-        b=Pe9orojn1G2MTk9cY4pJ4gSokBuWZZLcPbtvo3x+BhETKQl67w6WVmE4s86GnYIRw5
-         nfa2FYEPSlVTiEi2oWfF+OCP9hvAC8UUcjtbi2HxrMdRPBhcGz+tp47UIki3I7k0GmZi
-         wpaASj9ifvulHlJZv7t72A6P7phhre73faPR+eZJHe+8dte2du7LzN6O0dABfPqLKqni
-         lq6ARDSLZmTxpPmsN80FoAnhQcMWROXIbj9Rofc5KPqfTdWmAdSkLfcgPY0UH/KaqrGx
-         9AqfKPoEujwhC/iBIDa4c0fV6tlHcjd6YDgQn2b2PXVX5DFvcfMlhAvD6imuWhrHK8bh
-         mARQ==
-X-Gm-Message-State: ACgBeo2JmayNrNnWr/xPvnFi71sCIY1Hl0jS5iJYSQRbeKxDx+aais4/
-        UCwsj2e7NF/CDllS3bELn3Idtg==
-X-Google-Smtp-Source: AA6agR66LdtSQj0ErovOdBSUE2/wMNblh1NMSJXQ+hi1C75YSFN3XvuzmmLIIMrUbY62tKyIE7rVcQ==
-X-Received: by 2002:a2e:b052:0:b0:268:87be:ebc0 with SMTP id d18-20020a2eb052000000b0026887beebc0mr2434520ljl.203.1662038826500;
-        Thu, 01 Sep 2022 06:27:06 -0700 (PDT)
-Received: from [192.168.28.124] (balticom-73-99-134.balticom.lv. [109.73.99.134])
-        by smtp.gmail.com with ESMTPSA id q14-20020ac25fce000000b00492f1b2ac0bsm2346542lfg.101.2022.09.01.06.27.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Sep 2022 06:27:06 -0700 (PDT)
-Message-ID: <05eb3c6a-404d-1bfd-1361-cff952b68400@linaro.org>
-Date:   Thu, 1 Sep 2022 16:27:05 +0300
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=2guHmUXUEgWXxY+gDQPqQNXNAZmLdx374eGlGLm8JNw=;
+        b=LsPkwHI7XUA7FekJ5GMfuqJPWcppc5hZl0QVR+pk/5TuxJWWRJW70dVhUyUmZIAiKT
+         1EQwvkbUHZkkvy4hlEzzM0WaklH1xSniXmGeFHWwT5zkkyNduvmbgWXKoLEUfE4Lp/Dm
+         ylE8n16PufRHdSl0No1mdVBoMDAureTadW4mOCRgsq2xTyI+t9LjIDxT0McTxeIB8MNI
+         ZA8Nd0+Yoso+U15rlfnDWuW0RIPI0VRKRWWXVJJ3tCOfDl8gjDjMUqxRFPOhU4FQ0hKt
+         huNtBD9gA7OR8P1QEVPtHVq9Hd0bmz6g1eGhy6Cu5rPwYHcQGOO23qnw2mDTypEk+m7p
+         zevw==
+X-Gm-Message-State: ACgBeo0VZPdTvUREaqUZEUyyAtxEJ078zVQr+UplrZUyOS00566Z6uzm
+        vLzoenL2HD0AzWtBp6joV5fLh8WQkcpY8yo4fGs=
+X-Google-Smtp-Source: AA6agR7tDKBNZvk98n4eDs3dYrIf0a4H7sAbgfySK+duWCSFYdeYrDXJ7C5A15IlzUcI1brpxEFUWkcd9arrf4p/w+o=
+X-Received: by 2002:a05:622a:40a:b0:343:77ba:727f with SMTP id
+ n10-20020a05622a040a00b0034377ba727fmr24092510qtx.481.1662042085616; Thu, 01
+ Sep 2022 07:21:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH v2 1/5] dt-bindings: iio: adc: Add docs for LTC2499
-Content-Language: en-US
-To:     Ciprian Regus <ciprian.regus@analog.com>, jic23@kernel.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220901121700.1325733-1-ciprian.regus@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220901121700.1325733-1-ciprian.regus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220901041146.3652287-1-o.rempel@pengutronix.de> <20220901041146.3652287-3-o.rempel@pengutronix.de>
+In-Reply-To: <20220901041146.3652287-3-o.rempel@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 1 Sep 2022 17:20:49 +0300
+Message-ID: <CAHp75VcXS0inektGRKPCgqHv81c8gL29iiJSQKOL-c4u9kcz6A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] iio: adc: tsc2046: silent spi_device_id warning
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 01/09/2022 15:16, Ciprian Regus wrote:
-> Update the bindings documentation for ltc2497 to include the ltc2499.
-> 
-> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+On Thu, Sep 1, 2022 at 7:12 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+>
+> Add spi_device_id to silent following kernel runtime warning:
+> "SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc".
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
+> changes v3:
+> - add missing point
+> - remove unneeded blank line
+> - assignment id at the definition line
+> changes v2:
+> - attach actual driver_data
+> - use spi_get_device_id fallback
+> ---
+>  drivers/iio/adc/ti-tsc2046.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index bbc8b4137b0b1..d5d799972fefd 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -762,6 +762,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+>         }
+>
+>         dcfg = device_get_match_data(dev);
+> +       if (!dcfg) {
+> +               const struct spi_device_id *id = spi_get_device_id(spi);
+> +
+> +               dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
+> +       }
+>         if (!dcfg)
+>                 return -EINVAL;
+>
+> @@ -878,11 +883,18 @@ static const struct of_device_id ads7950_of_table[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ads7950_of_table);
+>
+> +static const struct spi_device_id tsc2046_adc_spi_ids[] = {
+> +       { "tsc2046e-adc", (unsigned long)&tsc2046_adc_dcfg_tsc2046e },
+> +       { }
+> +};
+> +MODULE_DEVICE_TABLE(spi, tsc2046_adc_spi_ids);
+> +
+>  static struct spi_driver tsc2046_adc_driver = {
+>         .driver = {
+>                 .name = "tsc2046",
+>                 .of_match_table = ads7950_of_table,
+>         },
+> +       .id_table = tsc2046_adc_spi_ids,
+>         .probe = tsc2046_adc_probe,
+>         .remove = tsc2046_adc_remove,
+>  };
+> --
+> 2.30.2
+>
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-
-Best regards,
-Krzysztof
+-- 
+With Best Regards,
+Andy Shevchenko

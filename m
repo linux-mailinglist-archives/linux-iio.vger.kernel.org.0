@@ -2,111 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9825A8C2B
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 06:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFDB5A8F2F
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 09:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232347AbiIAEMC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Sep 2022 00:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
+        id S233545AbiIAHFB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Sep 2022 03:05:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbiIAEMA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 00:12:00 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F10B161289
-        for <linux-iio@vger.kernel.org>; Wed, 31 Aug 2022 21:11:59 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTbYT-0003Jz-SL; Thu, 01 Sep 2022 06:11:49 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTbYQ-003E5p-Oz; Thu, 01 Sep 2022 06:11:48 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1oTbYR-00FK95-Me; Thu, 01 Sep 2022 06:11:47 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v3 3/3] iio: adc: tsc2046: silent spi_device_id warning
-Date:   Thu,  1 Sep 2022 06:11:46 +0200
-Message-Id: <20220901041146.3652287-3-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220901041146.3652287-1-o.rempel@pengutronix.de>
-References: <20220901041146.3652287-1-o.rempel@pengutronix.de>
+        with ESMTP id S232853AbiIAHEb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 03:04:31 -0400
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48FDF12269C;
+        Thu,  1 Sep 2022 00:04:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1662015867;
+  x=1693551867;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B35oMFhDMKzvzRhhioWCKHFgJQhO941LvgwXlwMswl4=;
+  b=S64KEHFY8uXZGYa4rWPIsqintFKOpy4F+JgI6U5q9OGODldjXEKst40+
+   jmaNNt8tUQRThnU4XitjffmsImioz2PPi/tTLal35MXN31NOLyGytMHfG
+   3nZKKmjhmX8E49Pbg2LIp1v6CxeT5CDWFer/hfUUA/Uh1XK9oRulAaBrv
+   4urDJ3CfWqleE90iEt2ATv6rts2UEuLZ9RR+8lZSG/k/adjBOYjdZFZdf
+   aMI+VVrzvfpgsSG4alTKWfS/pdnv7ifgCnxXvgEFpGyDhDa6F+8k+LYbN
+   d1OFsNDCEHQDYSz9gbEuPglLFDv3qAsPx4g1DJBySno2bdZftQFkc7WkC
+   Q==;
+Date:   Thu, 1 Sep 2022 09:04:23 +0200
+From:   Vincent Whitchurch <vincent.whitchurch@axis.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        kernel <kernel@axis.com>, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: buffer: Silence lock nesting splat
+Message-ID: <YxBZd9Ivg5+zGUEb@axis.com>
+References: <20220816080828.1218667-1-vincent.whitchurch@axis.com>
+ <CAHp75VebQfdHrfYTmF0w9M556ZV8fG5jJ2rAN5a3mrB1mbvOQw@mail.gmail.com>
+ <20220820120800.519b5eb5@jic23-huawei>
+ <YwSLhWFbGb26B3mx@axis.com>
+ <20220828163247.3d6417d9@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20220828163247.3d6417d9@jic23-huawei>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add spi_device_id to silent following kernel runtime warning:
-"SPI driver tsc2046 has no spi_device_id for ti,tsc2046e-adc".
+On Sun, Aug 28, 2022 at 05:32:47PM +0200, Jonathan Cameron wrote:
+> Any plans to post updated roadtest soon?  I'm keen to add more test cases
+> and use it to cleanup the remaining staging drivers.  Very helpful tool,
+> but I don't want to be developing test sets against an old version if
+> it's going to be costly to forward port it.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v3:
-- add missing point
-- remove unneeded blank line
-- assignment id at the definition line
-changes v2:
-- attach actual driver_data
-- use spi_get_device_id fallback
----
- drivers/iio/adc/ti-tsc2046.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+I don't think it's ready for a new posting, but I pushed the version I
+currently have here:
 
-diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-index bbc8b4137b0b1..d5d799972fefd 100644
---- a/drivers/iio/adc/ti-tsc2046.c
-+++ b/drivers/iio/adc/ti-tsc2046.c
-@@ -762,6 +762,11 @@ static int tsc2046_adc_probe(struct spi_device *spi)
- 	}
- 
- 	dcfg = device_get_match_data(dev);
-+	if (!dcfg) {
-+		const struct spi_device_id *id = spi_get_device_id(spi);
-+
-+		dcfg = (const struct tsc2046_adc_dcfg *)id->driver_data;
-+	}
- 	if (!dcfg)
- 		return -EINVAL;
- 
-@@ -878,11 +883,18 @@ static const struct of_device_id ads7950_of_table[] = {
- };
- MODULE_DEVICE_TABLE(of, ads7950_of_table);
- 
-+static const struct spi_device_id tsc2046_adc_spi_ids[] = {
-+	{ "tsc2046e-adc", (unsigned long)&tsc2046_adc_dcfg_tsc2046e },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, tsc2046_adc_spi_ids);
-+
- static struct spi_driver tsc2046_adc_driver = {
- 	.driver = {
- 		.name = "tsc2046",
- 		.of_match_table = ads7950_of_table,
- 	},
-+	.id_table = tsc2046_adc_spi_ids,
- 	.probe = tsc2046_adc_probe,
- 	.remove = tsc2046_adc_remove,
- };
--- 
-2.30.2
+ https://github.com/vwax/linux/commits/roadtest/devel
 
+The tests only pass on v5.19 since there are a couple of regressions
+(which affect real hardware too) in mainline:
+
+ https://lore.kernel.org/all/a48011b9-a551-3547-34b6-98b10e7ff2eb@redhat.com/
+ https://lore.kernel.org/all/YxBX4bXG02E4lSUW@axis.com/

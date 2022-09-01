@@ -2,46 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 255415AA097
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 22:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 887E15AA0B2
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Sep 2022 22:11:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234775AbiIAUBA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Sep 2022 16:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+        id S229584AbiIAULH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Sep 2022 16:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234727AbiIAUBA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 16:01:00 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FAE82B63F;
-        Thu,  1 Sep 2022 13:00:57 -0700 (PDT)
+        with ESMTP id S234858AbiIAUK6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Sep 2022 16:10:58 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FA969F7C;
+        Thu,  1 Sep 2022 13:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662062457; x=1693598457;
+  t=1662063057; x=1693599057;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=f9CNCdh37HQpXfoKag83bABbqLmKvR1bu2wVfZ/FQCA=;
-  b=MBnfZO9fxP3jF/h+wNKfg9L5y0TvynxebcEuYGCKVv2kzZsxdqFQFfa2
-   XyH+FR0Ny0PMKMLzF0nZ8PpMoH0RFal0nyvNfLWK/MaV0DF5ezIpUQR3C
-   fKXfn/ldjiWz7NfH80TnRDr+oBnixyGzIVnRC3mA3YDZOUHocnKWAa2NJ
-   U6s8DwxY9ZJZwxbG33V6M390E6yMPFubyJ39bePj5J/sQyD1dgLrsDd5H
-   7j61DKQqaXB9pCtZEbNduV6+C/24tYZbMmrslu7+Ykk8czfm9HBk9BlH0
-   SsKtVpBMAxN3DTG/fmbkEiakVZM+JrfL2hMD7yiqWq3ucNwa+PmPXzIV4
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10457"; a="297099502"
+  bh=yh2FNOyc0UXHkef9LUAUICcRZEZhVKgffrZApOd/DcY=;
+  b=RPQBc0RgwmPUGD5Bw2y1m2YBSlAyLvwB0aBrS8GhB9zgKKHSWzMeIrF/
+   J4LrUYZ+y2FnB1EKLUXuRc1p1QSLaTjbg/QTwlIeYWrCBnwApUyHyGz9d
+   yuxq3llC0/NK/6O3MfbQDAdTHrYxUFruuLomFEKAFZYoi8W/3CIjl3m0U
+   F1KGySRCfuk1ql2+0LzudJqYUQOS7wEtKi+OvV1Z+1ueH4Oc8aaCQlB6l
+   Emm6ELmYDeCCh1p1h2qmGFj0ifJ0wcLDx4p7uSE7phDs1PB9kvmDE8RTU
+   y/j1RuAY1LHZJvOxvBMdfCnpdIaX7mGEGGYishBb1y4Hm8PYkRusI4Ru8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10457"; a="296600811"
 X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="297099502"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 13:00:56 -0700
+   d="scan'208";a="296600811"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2022 13:10:56 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,281,1654585200"; 
-   d="scan'208";a="681002984"
+   d="scan'208";a="645828086"
 Received: from lkp-server02.sh.intel.com (HELO b138c9e8658c) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 01 Sep 2022 13:00:54 -0700
+  by orsmga001.jf.intel.com with ESMTP; 01 Sep 2022 13:10:54 -0700
 Received: from kbuild by b138c9e8658c with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1oTqMv-0000ig-1a;
-        Thu, 01 Sep 2022 20:00:53 +0000
-Date:   Fri, 2 Sep 2022 04:00:05 +0800
+        id 1oTqWb-0000jN-36;
+        Thu, 01 Sep 2022 20:10:53 +0000
+Date:   Fri, 2 Sep 2022 04:10:26 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Ciprian Regus <ciprian.regus@analog.com>, jic23@kernel.org,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -50,7 +50,7 @@ To:     Ciprian Regus <ciprian.regus@analog.com>, jic23@kernel.org,
 Cc:     llvm@lists.linux.dev, kbuild-all@lists.01.org,
         Ciprian Regus <ciprian.regus@analog.com>
 Subject: Re: [PATCH v2 4/5] drivers: iio: adc: LTC2499 support
-Message-ID: <202209020359.vCYzjn4X-lkp@intel.com>
+Message-ID: <202209020413.akDnDcLc-lkp@intel.com>
 References: <20220901121700.1325733-4-ciprian.regus@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -58,8 +58,8 @@ Content-Disposition: inline
 In-Reply-To: <20220901121700.1325733-4-ciprian.regus@analog.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,8 +78,8 @@ https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Ciprian-Regus/dt-bindings-iio-adc-Add-docs-for-LTC2499/20220901-202115
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-config: hexagon-randconfig-r003-20220901 (https://download.01.org/0day-ci/archive/20220902/202209020359.vCYzjn4X-lkp@intel.com/config)
-compiler: clang version 16.0.0 (https://github.com/llvm/llvm-project c55b41d5199d2394dd6cdb8f52180d8b81d809d4)
+config: i386-randconfig-a015 (https://download.01.org/0day-ci/archive/20220902/202209020413.akDnDcLc-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project f28c006a5895fc0e329fe15fead81e37457cb1d1)
 reproduce (this is a W=1 build):
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
@@ -89,14 +89,14 @@ reproduce (this is a W=1 build):
         git checkout 08ff9ae09bfde86fc512e13a4ea2af894e4aa442
         # save the config file
         mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/iio/adc/
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash drivers/iio/adc/
 
 If you fix the issue, kindly add following tag where applicable
 Reported-by: kernel test robot <lkp@intel.com>
 
 All errors (new ones prefixed by >>):
 
->> drivers/iio/adc/ltc2497.c:60:12: error: call to undeclared function 'get_unaligned_be24'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>> drivers/iio/adc/ltc2497.c:60:12: error: implicit declaration of function 'get_unaligned_be24' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
                            *val = (get_unaligned_be24(st->data.d8) >> st->sub_lsb)
                                    ^
    drivers/iio/adc/ltc2497.c:122:4: error: field designator 'name' does not refer to any field in type 'const struct ltc2497_chip_info'

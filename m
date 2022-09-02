@@ -2,298 +2,184 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D99F5AB7DC
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Sep 2022 20:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9288A5AB864
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Sep 2022 20:39:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235912AbiIBSAG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Sep 2022 14:00:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
+        id S229646AbiIBSjC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Sep 2022 14:39:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235956AbiIBSAB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Sep 2022 14:00:01 -0400
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 120682251A
-        for <linux-iio@vger.kernel.org>; Fri,  2 Sep 2022 10:59:59 -0700 (PDT)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-11f4e634072so6466939fac.13
-        for <linux-iio@vger.kernel.org>; Fri, 02 Sep 2022 10:59:59 -0700 (PDT)
+        with ESMTP id S229512AbiIBSjB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Sep 2022 14:39:01 -0400
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED37883E2;
+        Fri,  2 Sep 2022 11:39:00 -0700 (PDT)
+Received: by mail-qt1-x833.google.com with SMTP id x5so2138843qtv.9;
+        Fri, 02 Sep 2022 11:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
+        d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=Q+oZ55NYjiT65t5Vl1iqL+8XrTwjqiacXY2n398AtS0=;
-        b=kkyUuG7am/novr7UV11HsU6OouGiWBJkrJ1dE9kZZEvo5Z8XdtN0315MssKWtF41Sw
-         SHKIJef8pwNmufB5/bSZ75YWF5UNFDYoqtExjJSgmGCugpZ9NcPalBoeq80y/l80fkPh
-         tIqZa9O5fEcn84B73PTGl1R5G98tzbJdDmB3uNNish2A/9gjwJv4BLPmFGLE8peCX0Hl
-         +xeU0Y9SY8tOH32P+Z2Ve38/ckpZc9ECe8+kEHQO3wSkShRjSnWuHIqMncXUniB8pfRE
-         PBZgWNcJ8WtRbU4Czkxqdf+1L7lTDEmRaoXHVuz1h+kOWV6+ptZlxHVW8CPipt9gzYYf
-         K9Nw==
+        bh=f8Lo6s5cYCeKgTcqKpSELWdXg3AuzkYKun3u5MU/k/U=;
+        b=hMWa7AByuX/kCqdyvO9V43nK37LvjnBUeACqhKSmH04hU45/R7SSRy5uBsXpx9Idl9
+         xsQjRaeW45WFt2yLXqAz8zqwUo3JkXsqPB9/0v208+Ov+z6Yf3xT29hvX2U3+6nYs/0S
+         P4BWtWjfm9CMLumm9DeZiN6wxE5YZJbLkeQffwP0XzxHQxe/NMQ0Wo6ADacvXwk4G4kG
+         O60K7M+Fe6P3dWUH3jImmAUacgumi0qnCVRi9LVT9meQyCB2ktdt2QtWOb3I+iFNgP2f
+         JZZmXlx1RjQcX5LjSSAa5YvhBUyhUrhm9AOZ3TvYmTHNsUkG15EnL13daG7laPjEwkcj
+         uTng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Q+oZ55NYjiT65t5Vl1iqL+8XrTwjqiacXY2n398AtS0=;
-        b=p16r79ZcZp5KD4aYGy7lvzMdttFS5GQBxW/3t5HYsI5AchMOKcEQpOgU6K0dKWFlUK
-         Yyif05mLtVP01P6HYiuMIa+Nq/a4mYFWnoJ8IeoD2xpoOEoN0fyNC7YErDZgDp2+urHo
-         1gyXexsbz/GGXOv2YjfAlkRWEJqw0T+VADBfnyzytarqKGNbrQsIS7UvTbHjs6WFt/qD
-         6lk2n43lfKnzMKVRRBbeyYOY9CnyHu1vTPFzF5TDywTI0oPhzgjmyVZ5x1OVIULriR3Y
-         Vw14WlpfGlOnArQ9yK5p6HWzuwzCF0xHfr7k9t+6/vEojL72uJlKs93YovbZ1NBM296i
-         hvZQ==
-X-Gm-Message-State: ACgBeo0B7fq//HSziwHsUJASF0pICS38PYddDHYszhCwmPmruv5nUaBw
-        MajLP0cevMJ/M7BM2BdLCmbwPi8UFkdoQvAJgFspgd1sfN0=
-X-Google-Smtp-Source: AA6agR4lc8YAHJwrA0snISWdcfeetYmnSJAYib5dTyVyJGE8y6gfVmBogbZ5PvjlQreCbkMykat1Av6txRevneDW3dk=
-X-Received: by 2002:a05:6808:e90:b0:345:49f2:a112 with SMTP id
- k16-20020a0568080e9000b0034549f2a112mr2503259oil.7.1662141598208; Fri, 02 Sep
- 2022 10:59:58 -0700 (PDT)
+        bh=f8Lo6s5cYCeKgTcqKpSELWdXg3AuzkYKun3u5MU/k/U=;
+        b=s1p9T45EzZ7zzL9OHLRxjwXTvxL+AEhf6uLCFMYjP7sO74C3OhGjgSDanaLLYGSt7B
+         otBpxtut7GMLMJ+j/RFQA3bZM1QQ1/NsAhb9m76NujxvrJetRh91DRp1noxHBv2+aUM3
+         zn9LhgSBIM6RF9dVG/L5FELEaNI75piDh2Ytt2nznUVtFt1vtUbUFWtlh2SBWrSsbxO4
+         MRuiRHvuhz4cWH4xE9UVlqDnun8D1KmmqNrAgCGTS5Qfh4CpObuLhjZ3N+BhGykS9Ffo
+         rpEdzszg7K+eTVgG90+R68Tti9B8m4ZsHHu1vp9oaYtWlmKwFBs7c1GYQo9RMepnt2Z7
+         9PqQ==
+X-Gm-Message-State: ACgBeo21eFt8rSQuJWjAfeapNfSrGr3nACUAJVGsnaKMD5/gi7ETJ7uZ
+        C2FLXqHNSFjejJGlTHbrgzarfrj0GpWeQBeinUaeWTA2nfY=
+X-Google-Smtp-Source: AA6agR6B8SJbUaGsNAIZi3LkSflXhd2O/YwCNpTvRUUD2ELXsv6+x0S5QlJ78ehztCME2jTJ/WxrpkPUxQY6Le3O3EE=
+X-Received: by 2002:ac8:5786:0:b0:343:3051:170d with SMTP id
+ v6-20020ac85786000000b003433051170dmr29248087qta.429.1662143939459; Fri, 02
+ Sep 2022 11:38:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220902131258.3316367-1-cmo@melexis.com> <CAHp75VdOHDHUVhVXj4L-6ZV25mTWTeO3s3EJQVgLxknXHKRUMg@mail.gmail.com>
-In-Reply-To: <CAHp75VdOHDHUVhVXj4L-6ZV25mTWTeO3s3EJQVgLxknXHKRUMg@mail.gmail.com>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Fri, 2 Sep 2022 19:59:21 +0200
-Message-ID: <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com>
+ <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com>
+In-Reply-To: <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 2 Sep 2022 21:38:23 +0300
+Message-ID: <CAHp75VfJMpf3GeOryt9cH6-tK48BB8ZcfuGxhXovObBanDcc7w@mail.gmail.com>
 Subject: Re: [PATCH 1/3] iio: temperature: mlx90632 Add runtime
  powermanagement modes
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+To:     Crt Mori <cmo@melexis.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy,
-Thanks for the review. I have few questions about your remarks below.
+On Fri, Sep 2, 2022 at 8:59 PM Crt Mori <cmo@melexis.com> wrote:
+> On Fri, 2 Sept 2022 at 17:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > On Fri, Sep 2, 2022 at 4:13 PM <cmo@melexis.com> wrote:
 
-On Fri, 2 Sept 2022 at 17:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> On Fri, Sep 2, 2022 at 4:13 PM <cmo@melexis.com> wrote:
+For future replies, please remove unnecessary context when replying
+(I'm wasting my time for that)!
+
+...
+
+> > > +static int mlx90632_wakeup(struct mlx90632_data *data);
 > >
-> > From: Crt Mori <cmo@melexis.com>
+> > Can we avoid forward declaration? (I don't even see how it is used
+> > among dozens of lines of below code in the patch)
 > >
-> > Sensor can operate in lower power modes and even make measurements when
->
-> The sensor
-> ...or..
-> Sensors
->
-> > in those lower powered modes. The decision was taken that if measurement
-> > is not requested within 2 seconds the sensor will remain in SLEEP_STEP
-> > power mode, where measurements are triggered on request with setting the
-> > start of measurement bit (SOB). In this mode the measurements are taking
-> > a bit longer because we need to start it and complete it. Currently, in
-> > continuous mode we read ready data and this mode is activated if sensor
-> > measurement is requested within 2 seconds. The suspend timeout is
-> > increased to 6 seconds (instead of 3 before), because that enables more
-> > measurements in lower power mode (SLEEP_STEP), with the lowest refresh
-> > rate (2 seconds).
->
-> ...
->
-> >  #define MLX90632_PWR_STATUS_CONTINUOUS MLX90632_PWR_STATUS(3) /* continuous*/
+> This is existing function that I did not want to move upwards. Should
+> I have just moved it rather?
+
+Yes, move it in the preparatory (separate) patch.
+
+...
+
+> > > +       s32 ret = 0;
 > >
-> > +#define MLX90632_EE_RR(ee_val) (ee_val & GENMASK(10, 8)) /* Only Refresh Rate bits*/
->
-> Missed space. Seems like a copy'n'paste from previous comments that
-> lacks the space as well.
->
-> ...
->
-> > +       unsigned long interraction_timestamp; /* in jiffies */
->
-> _ts for timestamp is a fine abbreviation. Also move comment to the kernel doc.
->
-> ...
->
-> > +static int mlx90632_wakeup(struct mlx90632_data *data);
->
-> Can we avoid forward declaration? (I don't even see how it is used
-> among dozens of lines of below code in the patch)
->
-This is existing function that I did not want to move upwards. Should
-I have just moved it rather?
-
-> >  static s32 mlx90632_pwr_set_sleep_step(struct regmap *regmap)
-> >  {
->
-> > +       struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(regmap_get_device(regmap)));
->
-> Why ping-ponging here and not using dev_get_drvdata()? Ditto for similar cases.
->
-> > +       struct mlx90632_data *data = iio_priv(indio_dev);
-> > +       s32 ret = 0;
->
-> Assignment is not needed, use 'return 0;' directly. Ditto for all
-> cases like this.
->
-This is used, because when powerstatus is not equal to sleep_step it
-returns, otherwise the ret is changed in the function.
-
-> > +       if (data->powerstatus != MLX90632_PWR_STATUS_SLEEP_STEP) {
-> > +               ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
-> > +                                       MLX90632_CFG_PWR_MASK,
-> > +                                       MLX90632_PWR_STATUS_SLEEP_STEP);
-> > +               if (ret < 0)
-> > +                       return ret;
-> > +
-> > +               data->powerstatus = MLX90632_PWR_STATUS_SLEEP_STEP;
-> > +       }
-> > +       return ret;
-> >  }
->
-> ...
->
-> > +       reg = MLX90632_EE_RR(reg) >> 8;
->
-> This makes it harder to understand the semantics of reg, can we simply
-> unite this line with the below?
->
-I find it easier to have it split but I can make one long statement.
-> > +       return MLX90632_MEAS_MAX_TIME >> reg;
->
-> ...
->
-> > +               refresh_time = refresh_time + ret;
->
-> += ?
->
-> ...
->
-> > +               refresh_time = refresh_time + ret;
->
-> +=
->
-> ...
->
-> > +               refresh_time = refresh_time + ret;
->
-> Ditto.
->
-> ...
->
-> > +       unsigned int reg_status;
-> >         int ret;
->
-> Keep the reversed xmas tree order (like here!) elsewhere for the sake
-> of consistency.
->
-> ...
->
-> > +       ret = regmap_read_poll_timeout(data->regmap, MLX90632_REG_STATUS,
-> > +                                      reg_status,
-> > +                                      ((reg_status & MLX90632_STAT_BUSY) == 0),
->
-> Too many parentheses
->
-I like the outer parentheses it shows that it is a break condition. I
-have same in another function in this file.
-
-> > +                                      10000, 100 * 10000);
-> > +       if (ret < 0) {
-> > +               dev_err(&data->client->dev, "data not ready");
-> > +               return -ETIMEDOUT;
-> > +       }
->
-> ...
->
-> > +       int current_powerstatus = data->powerstatus;
->
-> Please, split the assignment and move it closer to the first user.
->
-> ...
->
-> > +       data->powerstatus = MLX90632_PWR_STATUS_HALT;
-> > +
-> > +       if (current_powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP)
-> > +               return mlx90632_pwr_set_sleep_step(data->regmap);
->
-> > +       else
->
-> Redundant.
->
-No, the powermode changes among the type.
-
-> > +               return mlx90632_pwr_continuous(data->regmap);
->
-> ...
->
-> > +               ret = read_poll_timeout(mlx90632_perform_measurement, meas, meas == 19,
-> > +                                       50000, 800000, false, data);
-> > +               if (ret != 0)
->
-> Drop this ' != 0' part. It's useless.
->
-> > +                       goto read_unlock;
->
-> > +
->
-> Seems redundant blank line.
->
-> ...
->
-> > +       }
-> > +
+> > Assignment is not needed, use 'return 0;' directly. Ditto for all
+> > cases like this.
 > >
->
-> Ditto.
->
-> ...
->
-> > +       int ret = 0;
->
-> Redundant assignment. Use return 0; directly.
->
-> ...
->
-> > +       if (time_in_range(now, data->interraction_timestamp,
-> > +                         data->interraction_timestamp +
->
-> > +                         msecs_to_jiffies(MLX90632_MEAS_MAX_TIME + 100))) {
->
-> With a local variable you will have better to read code.
->
-> > +       }
->
->
-> ...
->
-> >         struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
->
-> Maybe a separate patch to drop these here-there dereferences...
->
-> ...
->
-> > +static int __maybe_unused mlx90632_pm_runtime_suspend(struct device *dev)
->
-> No __maybe_unused, use pm_ptr() / pm_sleep_ptr() below.
->
-Care to explain a bit more about this? I just followed what other
-drivers have...
+> This is used, because when powerstatus is not equal to sleep_step it
+> returns, otherwise the ret is changed in the function.
 
-> > +{
-> > +       struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> > +       struct mlx90632_data *data = iio_priv(indio_dev);
-> > +
-> > +       return mlx90632_pwr_set_sleep_step(data->regmap);
-> > +}
-> > +
-> > +const struct dev_pm_ops mlx90632_pm_ops = {
-> > +       SET_SYSTEM_SLEEP_PM_OPS(mlx90632_pm_suspend, mlx90632_pm_resume)
-> > +       SET_RUNTIME_PM_OPS(mlx90632_pm_runtime_suspend,
-> > +                          NULL, NULL)
->
-> Please, use new macros from pm.h / runtime_pm.h
->
-> > +};
-> > +EXPORT_SYMBOL_GPL(mlx90632_pm_ops);
->
-> Can we use special EXPORT macro from pm.h
->
-> --
-> With Best Regards,
-> Andy Shevchenko
+Please, read what I have suggested.
+
+> > > +       if (data->powerstatus != MLX90632_PWR_STATUS_SLEEP_STEP) {
+> > > +               ret = regmap_write_bits(regmap, MLX90632_REG_CONTROL,
+> > > +                                       MLX90632_CFG_PWR_MASK,
+> > > +                                       MLX90632_PWR_STATUS_SLEEP_STEP);
+> > > +               if (ret < 0)
+> > > +                       return ret;
+> > > +
+> > > +               data->powerstatus = MLX90632_PWR_STATUS_SLEEP_STEP;
+> > > +       }
+> > > +       return ret;
+
+For your convenience...
+
+    return 0;
+
+...here.
+
+Or do you state that ret can be a positive number? In such cases,
+elaboration is required.
+
+...
+
+> > > +       reg = MLX90632_EE_RR(reg) >> 8;
+> >
+> > This makes it harder to understand the semantics of reg, can we simply
+> > unite this line with the below?
+> >
+> I find it easier to have it split but I can make one long statement.
+> > > +       return MLX90632_MEAS_MAX_TIME >> reg;
+
+If so, you need another variable with better naming to show what is in it.
+
+...
+
+> > > +       ret = regmap_read_poll_timeout(data->regmap, MLX90632_REG_STATUS,
+> > > +                                      reg_status,
+> > > +                                      ((reg_status & MLX90632_STAT_BUSY) == 0),
+> >
+> > Too many parentheses
+> >
+> I like the outer parentheses it shows that it is a break condition. I
+> have same in another function in this file.
+
+It's not a Lisp, we don't need to pollute code with unneeded obstacles.
+
+> > > +                                      10000, 100 * 10000);
+
+...
+
+> > > +       if (current_powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP)
+> > > +               return mlx90632_pwr_set_sleep_step(data->regmap);
+> >
+> > > +       else
+> >
+> > Redundant.
+> >
+> No, the powermode changes among the type.
+
+Yes. 'else' keyword is always redundant in the
+
+  if (...)
+    return / break / continue / goto
+  else
+
+cases.
+
+> > > +               return mlx90632_pwr_continuous(data->regmap);
+
+...
+
+> > > +static int __maybe_unused mlx90632_pm_runtime_suspend(struct device *dev)
+> >
+> > No __maybe_unused, use pm_ptr() / pm_sleep_ptr() below.
+> >
+> Care to explain a bit more about this? I just followed what other
+> drivers have...
+
+And other drivers have what I said, but it's a new feature.
+If you run `git log --no-merges --grep 'pm_ptr' -- drivers/iio
+include/linux/` and read the history it will explain the case.
+
+-- 
+With Best Regards,
+Andy Shevchenko

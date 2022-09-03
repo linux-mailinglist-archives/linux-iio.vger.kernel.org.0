@@ -2,166 +2,212 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 770015ABD83
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Sep 2022 08:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A04325ABDF8
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Sep 2022 11:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232235AbiICGs4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Sep 2022 02:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
+        id S232303AbiICJ1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Sep 2022 05:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbiICGsz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 02:48:55 -0400
-Received: from loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5CF46A59BD;
-        Fri,  2 Sep 2022 23:48:53 -0700 (PDT)
-Received: from [192.168.100.8] (unknown [112.20.110.237])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxnmvO+BJj3VsQAA--.55696S3;
-        Sat, 03 Sep 2022 14:48:47 +0800 (CST)
-Message-ID: <f05f2c68-70cf-60b7-49a9-f531f329de5c@loongson.cn>
-Date:   Sat, 3 Sep 2022 14:48:41 +0800
+        with ESMTP id S229667AbiICJ1M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 05:27:12 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D599ABD5B;
+        Sat,  3 Sep 2022 02:27:11 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id a10so3399784qkl.13;
+        Sat, 03 Sep 2022 02:27:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=FMss4nvageHB6cqXPlGEFtiQOpQh9GnVLRZoHj1mbA8=;
+        b=jtriAd1CLHhcG1iTDUlsp34s74uPtVr3bly1796PlHwrIik6+ac+pXJN6MKF2/RKzG
+         37eoexXnTlKAvs1yare8K6DMDcOWMnVyoT0RrzAHD+nCqeCjSCArK1X8S/MZ/Yy0ItRy
+         LIlv9suNc6YCTOe2r88yIWBXmY2VIOhogiYB+5ToIMohDWS6FveJkwHbOqrEGyLyAQGJ
+         XqxjPreSBAlwPyaTFNbCqiQYzzFWot574rF71XAmpHtJXoucbqhKpWJKWA6tPsMGuyWb
+         dXT5cCkKBFnbNUAzETGYiKJ3ogBkENPMngNnK6/rfeC0Id0HZ5V2+9MEKLhaiLoCq++l
+         fJmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=FMss4nvageHB6cqXPlGEFtiQOpQh9GnVLRZoHj1mbA8=;
+        b=lhrHToA+dhpeWsUIPtPFn/PvdoBJxbpp5pWpviPLZWOLk0+dF9dKDhvMLE5yruOlti
+         1AsY0ZTNVXJr1xnWl58OpNAGjR2sFvRnH93IM3CDIMo+Oo/gIhPURh0XXic2GWSiMT0w
+         0gQexLelcCyg4HmODWsTVU89x51o/bGbOwvZNWlfArYs2DVqyLfYwm5hP9b7525HmNLE
+         4pLbWuwmjgRG/9aP7eLwosXIdstwjj0zK00JBU5RJtxd4llPUvPTADKowP0hbBiiF0cT
+         pg2yhAR8s26CJAtKfpUYp11dIKZDElIKPV/sfK+GSXdXv+1JN2uFyfr5oxhMJlI8HzYy
+         kDAQ==
+X-Gm-Message-State: ACgBeo0+0PnXphvL4wWxJtXIQRMQK2ehRp16Gdn+kt8CpuGK8F/gJEbr
+        LcnqJF+IbuUq47g5mIbw3CB/k3TpijrtZ8rE0ZsB3EG270c=
+X-Google-Smtp-Source: AA6agR4ea/vo9mWWNQFqdXnMV81u7jF5AoHAj26MN+aoZ6NOkdj/ds3sYW4lAEIlHWkn1f9wSLhMwZw9jtnavgYZFiY=
+X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
+ s13-20020a05620a254d00b006ab84b825ebmr26052121qko.383.1662197230214; Sat, 03
+ Sep 2022 02:27:10 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH] counter: Realign counter_comp comment block to 80
- characters
-To:     William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-References: <20220902120839.4260-1-william.gray@linaro.org>
-From:   YanTeng Si <siyanteng@loongson.cn>
-In-Reply-To: <20220902120839.4260-1-william.gray@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxnmvO+BJj3VsQAA--.55696S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxtFW5Zr1xZr4UKr48Gw48JFb_yoW7trW5pF
-        Wq9rs8Cw1293W8Z3sFyw48X3W5Gw4FvF43Ca9Fga4UArnFk3s5WFyDKr10qw4UJanYyFyD
-        A3W8X34UXa18GaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvIb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwV
-        C2z280aVCY1x0267AKxVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-        Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-        W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG
-        8wCY02Avz4vE14v_GF1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2
-        IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v2
-        6r1Y6r17MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2
-        IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv
-        67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf
-        9x07bwQ6XUUUUU=
-X-CM-SenderInfo: pvl1t0pwhqwqxorr0wxvrqhubq/
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220903050252.2711950-1-o.rempel@pengutronix.de> <20220903050252.2711950-2-o.rempel@pengutronix.de>
+In-Reply-To: <20220903050252.2711950-2-o.rempel@pengutronix.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 3 Sep 2022 12:26:32 +0300
+Message-ID: <CAHp75Veyyd9XEom4ya0ZcKoxzbtJ4kKLCSUzwiLxzfnMkpMGXg@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] iio: adc: tsc2046: add vref support
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Sascha Hauer <kernel@pengutronix.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-在 2022/9/2 20:08, William Breathitt Gray 写道:
-> The member documentation comment lines for struct counter_comp extend
-> past the 80-characters column boundary due to extra identation at the
-> start of each section. This patch realigns the comment block within the
-> 80-characters boundary by removing these superfluous indents.
+On Sat, Sep 3, 2022 at 8:03 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
 >
-> Cc: Yanteng Si <siyanteng@loongson.cn>
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Reviewed-by: Yanteng Si <siyanteng@loongson.cn>
+> If VREF pin is attached, we should use external VREF source instead of
+> the internal. Otherwise we will get wrong measurements on some of the channel
+> types.
+
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->   include/linux/counter.h | 40 ++++++++++++++++++++--------------------
->   1 file changed, 20 insertions(+), 20 deletions(-)
+> changes v5:
+> - add "the" before channel
+> - refactor error handling on regulator registration
+> - use MILLI instead of 1000
+> changes v4:
+> - use vref_reg pointer instead of bool use_internal_vref
+> - move regulator registration to a separate function
+> - rework error handling
+> - add devm_add_action_or_reset
+> ---
+>  drivers/iio/adc/ti-tsc2046.c | 57 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 55 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/linux/counter.h b/include/linux/counter.h
-> index 1fe17f5adb09..a81234bc8ea8 100644
-> --- a/include/linux/counter.h
-> +++ b/include/linux/counter.h
-> @@ -38,64 +38,64 @@ enum counter_comp_type {
->    * @type:		Counter component data type
->    * @name:		device-specific component name
->    * @priv:		component-relevant data
-> - * @action_read:		Synapse action mode read callback. The read value of the
-> + * @action_read:	Synapse action mode read callback. The read value of the
->    *			respective Synapse action mode should be passed back via
->    *			the action parameter.
-> - * @device_u8_read:		Device u8 component read callback. The read value of the
-> + * @device_u8_read:	Device u8 component read callback. The read value of the
->    *			respective Device u8 component should be passed back via
->    *			the val parameter.
-> - * @count_u8_read:		Count u8 component read callback. The read value of the
-> + * @count_u8_read:	Count u8 component read callback. The read value of the
->    *			respective Count u8 component should be passed back via
->    *			the val parameter.
-> - * @signal_u8_read:		Signal u8 component read callback. The read value of the
-> + * @signal_u8_read:	Signal u8 component read callback. The read value of the
->    *			respective Signal u8 component should be passed back via
->    *			the val parameter.
-> - * @device_u32_read:		Device u32 component read callback. The read value of
-> + * @device_u32_read:	Device u32 component read callback. The read value of
->    *			the respective Device u32 component should be passed
->    *			back via the val parameter.
-> - * @count_u32_read:		Count u32 component read callback. The read value of the
-> + * @count_u32_read:	Count u32 component read callback. The read value of the
->    *			respective Count u32 component should be passed back via
->    *			the val parameter.
-> - * @signal_u32_read:		Signal u32 component read callback. The read value of
-> + * @signal_u32_read:	Signal u32 component read callback. The read value of
->    *			the respective Signal u32 component should be passed
->    *			back via the val parameter.
-> - * @device_u64_read:		Device u64 component read callback. The read value of
-> + * @device_u64_read:	Device u64 component read callback. The read value of
->    *			the respective Device u64 component should be passed
->    *			back via the val parameter.
-> - * @count_u64_read:		Count u64 component read callback. The read value of the
-> + * @count_u64_read:	Count u64 component read callback. The read value of the
->    *			respective Count u64 component should be passed back via
->    *			the val parameter.
-> - * @signal_u64_read:		Signal u64 component read callback. The read value of
-> + * @signal_u64_read:	Signal u64 component read callback. The read value of
->    *			the respective Signal u64 component should be passed
->    *			back via the val parameter.
-> - * @action_write:		Synapse action mode write callback. The write value of
-> + * @action_write:	Synapse action mode write callback. The write value of
->    *			the respective Synapse action mode is passed via the
->    *			action parameter.
-> - * @device_u8_write:		Device u8 component write callback. The write value of
-> + * @device_u8_write:	Device u8 component write callback. The write value of
->    *			the respective Device u8 component is passed via the val
->    *			parameter.
-> - * @count_u8_write:		Count u8 component write callback. The write value of
-> + * @count_u8_write:	Count u8 component write callback. The write value of
->    *			the respective Count u8 component is passed via the val
->    *			parameter.
-> - * @signal_u8_write:		Signal u8 component write callback. The write value of
-> + * @signal_u8_write:	Signal u8 component write callback. The write value of
->    *			the respective Signal u8 component is passed via the val
->    *			parameter.
-> - * @device_u32_write:		Device u32 component write callback. The write value of
-> + * @device_u32_write:	Device u32 component write callback. The write value of
->    *			the respective Device u32 component is passed via the
->    *			val parameter.
-> - * @count_u32_write:		Count u32 component write callback. The write value of
-> + * @count_u32_write:	Count u32 component write callback. The write value of
->    *			the respective Count u32 component is passed via the val
->    *			parameter.
-> - * @signal_u32_write:		Signal u32 component write callback. The write value of
-> + * @signal_u32_write:	Signal u32 component write callback. The write value of
->    *			the respective Signal u32 component is passed via the
->    *			val parameter.
-> - * @device_u64_write:		Device u64 component write callback. The write value of
-> + * @device_u64_write:	Device u64 component write callback. The write value of
->    *			the respective Device u64 component is passed via the
->    *			val parameter.
-> - * @count_u64_write:		Count u64 component write callback. The write value of
-> + * @count_u64_write:	Count u64 component write callback. The write value of
->    *			the respective Count u64 component is passed via the val
->    *			parameter.
-> - * @signal_u64_write:		Signal u64 component write callback. The write value of
-> + * @signal_u64_write:	Signal u64 component write callback. The write value of
->    *			the respective Signal u64 component is passed via the
->    *			val parameter.
->    */
+> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
+> index 0d9436a69cbfb..c7601b29b3bef 100644
+> --- a/drivers/iio/adc/ti-tsc2046.c
+> +++ b/drivers/iio/adc/ti-tsc2046.c
+> @@ -8,7 +8,9 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/delay.h>
+>  #include <linux/module.h>
+> +#include <linux/regulator/consumer.h>
+>  #include <linux/spi/spi.h>
+> +#include <linux/units.h>
 >
-> base-commit: a12224997bec72d231a8dd642876e6364decdc45
+>  #include <asm/unaligned.h>
+>
+> @@ -175,6 +177,8 @@ struct tsc2046_adc_priv {
+>         u32 time_per_bit_ns;
+>
+>         struct tsc2046_adc_ch_cfg ch_cfg[TI_TSC2046_MAX_CHAN];
+> +       unsigned int vref_mv;
+> +       struct regulator *vref_reg;
 
+I would put pointer first since it will make sizeof(priv) 4 bytes less
+on some architectures due to padding elimination.
+
+>  };
+>
+>  #define TI_TSC2046_V_CHAN(index, bits, name)                   \
+> @@ -252,7 +256,9 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
+>         case TI_TSC2046_ADDR_AUX:
+>         case TI_TSC2046_ADDR_VBAT:
+>         case TI_TSC2046_ADDR_TEMP0:
+> -               pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
+> +               pd |= TI_TSC2046_SER;
+> +               if (!priv->vref_reg)
+> +                       pd |= TI_TSC2046_PD1_VREF_ON;
+>         }
+>
+>         return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
+> @@ -468,7 +474,7 @@ static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
+>                  * So, it is better to use external voltage-divider driver
+>                  * instead, which is calculating complete chain.
+>                  */
+> -               *val = TI_TSC2046_INT_VREF;
+> +               *val = priv->vref_mv;
+>                 *val2 = chan->scan_type.realbits;
+>                 return IIO_VAL_FRACTIONAL_LOG2;
+>         }
+> @@ -740,6 +746,49 @@ static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
+>         }
+>  }
+>
+> +static void tsc2046_adc_regulator_disable(void *data)
+> +{
+> +       struct tsc2046_adc_priv *priv = data;
+> +
+> +       regulator_disable(priv->vref_reg);
+> +}
+> +
+> +static int tsc2046_adc_configure_regulator(struct tsc2046_adc_priv *priv)
+> +{
+> +       struct device *dev = &priv->spi->dev;
+> +       int ret;
+> +
+> +       priv->vref_reg = devm_regulator_get_optional(dev, "vref");
+> +       if (IS_ERR(priv->vref_reg)) {
+> +               /* If regulator exists but can't be get, return an error */
+> +               if (PTR_ERR(priv->vref_reg) != -ENODEV)
+> +                       return PTR_ERR(priv->vref_reg);
+> +               priv->vref_reg = NULL;
+> +       }
+> +       if (!priv->vref_reg) {
+> +               /* Use internal reference */
+> +               priv->vref_mv = TI_TSC2046_INT_VREF;
+> +               return 0;
+> +       }
+> +
+> +       ret = regulator_enable(priv->vref_reg);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = devm_add_action_or_reset(dev, tsc2046_adc_regulator_disable,
+> +                                      priv);
+> +       if (ret)
+> +               return ret;
+> +
+> +       ret = regulator_get_voltage(priv->vref_reg);
+> +       if (ret < 0)
+> +               return ret;
+> +
+> +       priv->vref_mv = ret / MILLI;
+> +
+> +       return 0;
+> +}
+> +
+>  static int tsc2046_adc_probe(struct spi_device *spi)
+>  {
+>         const struct tsc2046_adc_dcfg *dcfg;
+> @@ -781,6 +830,10 @@ static int tsc2046_adc_probe(struct spi_device *spi)
+>         indio_dev->num_channels = dcfg->num_channels;
+>         indio_dev->info = &tsc2046_adc_info;
+>
+> +       ret = tsc2046_adc_configure_regulator(priv);
+> +       if (ret)
+> +               return ret;
+> +
+>         tsc2046_adc_parse_fwnode(priv);
+>
+>         ret = tsc2046_adc_setup_spi_msg(priv);
+> --
+> 2.30.2
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

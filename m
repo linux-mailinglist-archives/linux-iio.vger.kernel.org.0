@@ -2,109 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B3C65ABF2F
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Sep 2022 15:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7968B5AC191
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 00:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbiICN7F (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Sep 2022 09:59:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56978 "EHLO
+        id S229906AbiICWXW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Sep 2022 18:23:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbiICN7E (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 09:59:04 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB655C95D;
-        Sat,  3 Sep 2022 06:59:03 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id p2so81975qvq.12;
-        Sat, 03 Sep 2022 06:59:03 -0700 (PDT)
+        with ESMTP id S229537AbiICWXV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 18:23:21 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5375072A
+        for <linux-iio@vger.kernel.org>; Sat,  3 Sep 2022 15:23:20 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id kk26so10276477ejc.11
+        for <linux-iio@vger.kernel.org>; Sat, 03 Sep 2022 15:23:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=iiL6z23t62qbAi4c25YcyuZvR6RVB1jjAlc6NDXVf3k=;
-        b=ZYine8pU56VTmIXvbF5M45dL3VPSMZiDchpVrbwKqy2WHRq4DB8UYylvaFKv6GcGSZ
-         HZm4+3hhIQU2tlDBfbVyq8QX4Eh1gwcV5K02rFuPKJ8fy9bP1C/Cm4Of8EG+d1pbcNSr
-         aDWTkRgXSkdagG/KDtRuCTQHP4d/wDpiMgYTxjcVnugWkfGcEjwtLwIjnPQca9Tz1O3k
-         gHW5RWVBtKa28D4PFJiKJ9NMex+8ivNqrz8+QaH+eO6QhlL61C1g95StQ9eEN8wPrRjV
-         o4v7UU6oDw0BY+xTxX6NAizD/fOA6TpGxSWOQ+iwJUiqynZXjRbh1/ZUsCZiOBbbvcjG
-         F2hw==
+        d=melexis.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=RikyeRhtTjZQf6Z0LsrWIp4MCeNe6eLO0VxkuE+qkkA=;
+        b=eIjuYfkQrDxnrBhwfjg4I9hBju/kaQWdcPKaO/xmz1BuUewAAVC861WDsOaZVOYMxC
+         OZvMvtnVw/qLwo94/i4Ro4F2Frxyq2UcCFmQuCnNbUod+Yio689NFjW61yef0BOEs8DN
+         5JM9AwHfm2sc1rNxFKyTZY+eILPYE4IU/gw5W3BYOv2cC/U5byrR4Fp2mp9FcWRB69WL
+         benBRKbTkfdR1iclyXYz3qvroT8sPF/yTqEbadm7wyPjDSUFfT1ZO8bq/nNbAOViXFfA
+         AtVWhDN3ClB0za8GEWc5NpE20mKWW6kXS2nDJG1OjPb0uWzp8Fr36o13XpHln9N3LNbh
+         ng/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=iiL6z23t62qbAi4c25YcyuZvR6RVB1jjAlc6NDXVf3k=;
-        b=ijIha94q/brndzbE9LvbEdavnPkodeJ3uyDYcZHWMJLfjjLlMOMmfH4M4yvpf30g3H
-         j1UygFfmm+I2FW/1KImeBlCQMfRTraj6r6kHD/g0DdkGSQAkzrZFks4jRybtku1lhuRP
-         6QDLDU/q+Mum/yEJzZCCY19e4EAMXkI9AvX7zY6AomEDbrwTX6H5ANmMgGoFucMmFv1U
-         kVhhHRKyx/4znBR5NxfsJpWaXRVC7/li1q6WflLB4I1uuRk3u8vSXeRbDurg9jNW3A16
-         vYPWbeNbkQicImc/ZyDGYurwHE+m+AC+WBKmQWmtlfedhLiuLfm0nEk+XLpeZZq/YcFj
-         fFxg==
-X-Gm-Message-State: ACgBeo05AsAl/tRwUww3Z5C7tJ4nBI5kQveZmeMq60yf5UdvhpiHEqz9
-        vm0Y0dloXnIxl8y0KPHZOqZI1EjsVI4m27538LE=
-X-Google-Smtp-Source: AA6agR4RbdHvNJ3iwQ7oeScf7KMGnkXTK1Z8x1HnTsRLtFjgKU/8oZ5xCFTkQUf4MVtgCv3Tsr911GJP08rsXSRaCbE=
-X-Received: by 2002:a05:6214:27ca:b0:499:95f:6379 with SMTP id
- ge10-20020a05621427ca00b00499095f6379mr24017908qvb.82.1662213542328; Sat, 03
- Sep 2022 06:59:02 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=RikyeRhtTjZQf6Z0LsrWIp4MCeNe6eLO0VxkuE+qkkA=;
+        b=Z8nvxnSkQ7+L/hdfT1nIHMIrC2R0bF5b76UyPmQJPvkZuQQa9rSNchT8s0NjzBG+3L
+         qbzYL44/G4vENtW/rhNGUrolZvKUvuGCjI6RGhf+NIT/NvcPSG8KM1oziepfe33LaYAh
+         d1efcNM7WpvDQ06JSg6BCoaxN99zM8lvwHbM80Rl1LPlO4pmm3gh5QKDFF3Q2lEq2npj
+         TRJYMGrTW1isM6Lu+nbZySRnRONleExCS51o7/QIvluk5rG0iMBXzPpo0Ddj1NpFmrBf
+         MLu6yDwgMw2ObbAf8maCYeJM9RnmDGrTqH7hIi+58GupRAbPwuhHGBb2+yRjS2YrjHmI
+         rndA==
+X-Gm-Message-State: ACgBeo0xQ/ATiz716juqTxdHIoXQKJeKX6CCpwCiQ4g+Um6DAciuSWSD
+        eqoIGHz8BdqajQbaaJHZG3Y1xQ==
+X-Google-Smtp-Source: AA6agR6GOIH/BsTE0X08m/aK8ufZqc8tFC0gEmADamEnmioH96FH76Mo3DJe9L4a1Y3NPU8eWia52g==
+X-Received: by 2002:a17:906:cc12:b0:741:64ed:125a with SMTP id ml18-20020a170906cc1200b0074164ed125amr23073729ejb.713.1662243798565;
+        Sat, 03 Sep 2022 15:23:18 -0700 (PDT)
+Received: from cmo-ThinkPad-T495.telenet.be (ptr-4xh0y3sxu2v33e81l49.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:d4a:f526:3662:1129])
+        by smtp.gmail.com with ESMTPSA id n27-20020a056402515b00b0043cf2e0ce1csm3788106edd.48.2022.09.03.15.23.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Sep 2022 15:23:17 -0700 (PDT)
+From:   cmo@melexis.com
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Crt Mori <cmo@melexis.com>
+Subject: [PATCH v2 0/3] iio: temperature: mlx90632: Add powermanagement
+Date:   Sun,  4 Sep 2022 00:22:48 +0200
+Message-Id: <20220903222248.3425902-1-cmo@melexis.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20220902131258.3316367-1-cmo@melexis.com> <CAHp75VdOHDHUVhVXj4L-6ZV25mTWTeO3s3EJQVgLxknXHKRUMg@mail.gmail.com>
- <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com>
- <CAHp75VfJMpf3GeOryt9cH6-tK48BB8ZcfuGxhXovObBanDcc7w@mail.gmail.com> <CAKv63us6OLg8ahdbKvd8c4x9-Ri4aDwNvgc_oov7wZnSBmJGVA@mail.gmail.com>
-In-Reply-To: <CAKv63us6OLg8ahdbKvd8c4x9-Ri4aDwNvgc_oov7wZnSBmJGVA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 3 Sep 2022 16:58:25 +0300
-Message-ID: <CAHp75Vcec-umx927+octdFDLHwNTmk7wm8iG6_6bR-fAW_wM2A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Sep 3, 2022 at 3:06 PM Crt Mori <cmo@melexis.com> wrote:
-> On Fri, 2 Sept 2022 at 20:39, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Fri, Sep 2, 2022 at 8:59 PM Crt Mori <cmo@melexis.com> wrote:
-> > > On Fri, 2 Sept 2022 at 17:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > On Fri, Sep 2, 2022 at 4:13 PM <cmo@melexis.com> wrote:
+From: Crt Mori <cmo@melexis.com>
 
-...
+As discussed previously on the group under the
+"Controlling device power management from terminal" thread the mlx90632
+sensor provides measurement capabilities under sleep_step mode. This
+series runtime suspends the unused chip to sleep step mode to save power
+but in case of continuous sequential reading it switches to continuous
+mode for faster readouts. This value is hardcoded to
+MLX90632_MEAS_MAX_TIME (with some buffer) and not user configurable.
 
+The sensor runtime suspension is set to MLX90632_SLEEP_DELAY_MS which is
+hardcoded to 3 times as much as MEAS_MAX_TIME.
 
-> > > > > +       if (current_powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP)
-> > > > > +               return mlx90632_pwr_set_sleep_step(data->regmap);
-> > > >
-> > > > > +       else
-> > > >
-> > > > Redundant.
-> > > >
-> > > No, the powermode changes among the type.
-> >
-> > Yes. 'else' keyword is always redundant in the
-> >
-> >   if (...)
-> >     return / break / continue / goto
-> >   else
+Changes in v2:
 
-> > cases.
-> >
-> In this case current power mode of the sensor is halt, so the else is
-> needed to set it to continuous mode, which means I can't just remove
-> the else here because this statement restores the power mode before
-> this function was entered (and changed powermode for the setup).
+ - apply review comments from Andy Shevchenko
 
-What do you mean by all this? Read your code again and see what I'm
-talking about...
+Crt Mori (3):
+  iio: temperature: mlx90632 Add runtime powermanagement modes
+  iio: temperature: mlx90632 Read sampling frequency
+  iio: temperature: mlx90632 Change return value of sensor measurement
+    channel
 
-> > > > > +               return mlx90632_pwr_continuous(data->regmap);
+ drivers/iio/temperature/mlx90632.c | 361 +++++++++++++++++++++++++----
+ 1 file changed, 314 insertions(+), 47 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.34.1
+

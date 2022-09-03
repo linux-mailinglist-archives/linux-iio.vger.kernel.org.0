@@ -2,212 +2,112 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A04325ABDF8
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Sep 2022 11:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E46745ABEDB
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Sep 2022 14:06:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232303AbiICJ1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Sep 2022 05:27:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
+        id S229506AbiICMGR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Sep 2022 08:06:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229667AbiICJ1M (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 05:27:12 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D599ABD5B;
-        Sat,  3 Sep 2022 02:27:11 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id a10so3399784qkl.13;
-        Sat, 03 Sep 2022 02:27:11 -0700 (PDT)
+        with ESMTP id S230301AbiICMGQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Sep 2022 08:06:16 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C7574358
+        for <linux-iio@vger.kernel.org>; Sat,  3 Sep 2022 05:06:14 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-11eab59db71so11026793fac.11
+        for <linux-iio@vger.kernel.org>; Sat, 03 Sep 2022 05:06:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=melexis.com; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=FMss4nvageHB6cqXPlGEFtiQOpQh9GnVLRZoHj1mbA8=;
-        b=jtriAd1CLHhcG1iTDUlsp34s74uPtVr3bly1796PlHwrIik6+ac+pXJN6MKF2/RKzG
-         37eoexXnTlKAvs1yare8K6DMDcOWMnVyoT0RrzAHD+nCqeCjSCArK1X8S/MZ/Yy0ItRy
-         LIlv9suNc6YCTOe2r88yIWBXmY2VIOhogiYB+5ToIMohDWS6FveJkwHbOqrEGyLyAQGJ
-         XqxjPreSBAlwPyaTFNbCqiQYzzFWot574rF71XAmpHtJXoucbqhKpWJKWA6tPsMGuyWb
-         dXT5cCkKBFnbNUAzETGYiKJ3ogBkENPMngNnK6/rfeC0Id0HZ5V2+9MEKLhaiLoCq++l
-         fJmw==
+        bh=uy6b604W6fPaKBQUMKEMdXcHLnIEaX4Dt4TqfHX1c5o=;
+        b=Xg6epoTbQ6LvJIss0GUUMax4qm/ljJ+FA8Bb6m0daylOP6wi6huZxYeNDIJ0MHRW8a
+         Vhknw3kpS37z11USHL5oknH8I5Y6e5xefbrDTm9NNd0vOp80YyrXrzoVXEIh3eM1LLP1
+         LSSz06ugyyiAuQgUOwXFa+SmLv6HxVtriZ3hxZQ3ftTEItwjLx7aE5S7BZkoJi1Qsxvc
+         o5Zv8tkfi3CNMfjzpuFHHWiLU6xkoL/cHIxy9aoj5X7ftruD55jyN0WJwo7U1YPMvgpQ
+         x8/pIdBFZoWiCdSXrozLRFWufg7H2kkQDqPPze2lhizyrYMdnpcxIo2XWj/CdZ0z+4ha
+         TBoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=FMss4nvageHB6cqXPlGEFtiQOpQh9GnVLRZoHj1mbA8=;
-        b=lhrHToA+dhpeWsUIPtPFn/PvdoBJxbpp5pWpviPLZWOLk0+dF9dKDhvMLE5yruOlti
-         1AsY0ZTNVXJr1xnWl58OpNAGjR2sFvRnH93IM3CDIMo+Oo/gIhPURh0XXic2GWSiMT0w
-         0gQexLelcCyg4HmODWsTVU89x51o/bGbOwvZNWlfArYs2DVqyLfYwm5hP9b7525HmNLE
-         4pLbWuwmjgRG/9aP7eLwosXIdstwjj0zK00JBU5RJtxd4llPUvPTADKowP0hbBiiF0cT
-         pg2yhAR8s26CJAtKfpUYp11dIKZDElIKPV/sfK+GSXdXv+1JN2uFyfr5oxhMJlI8HzYy
-         kDAQ==
-X-Gm-Message-State: ACgBeo0+0PnXphvL4wWxJtXIQRMQK2ehRp16Gdn+kt8CpuGK8F/gJEbr
-        LcnqJF+IbuUq47g5mIbw3CB/k3TpijrtZ8rE0ZsB3EG270c=
-X-Google-Smtp-Source: AA6agR4ea/vo9mWWNQFqdXnMV81u7jF5AoHAj26MN+aoZ6NOkdj/ds3sYW4lAEIlHWkn1f9wSLhMwZw9jtnavgYZFiY=
-X-Received: by 2002:a05:620a:254d:b0:6ab:84b8:25eb with SMTP id
- s13-20020a05620a254d00b006ab84b825ebmr26052121qko.383.1662197230214; Sat, 03
- Sep 2022 02:27:10 -0700 (PDT)
+        bh=uy6b604W6fPaKBQUMKEMdXcHLnIEaX4Dt4TqfHX1c5o=;
+        b=sYw0EncG3DQKxPtJM8MeWEbV5LWrvf/YYSTbGM864WW3gAQ/6xeePCThsmEVQ4Tf2C
+         oTLig4KGBECGnu5CiHOg9+hFnIOluBjNXexIi2K5sM/6ZQw3sV6vkmNSxPwNPhBK95z8
+         wnly1apUvqaGwtVjPxyHa1pruNYiHhRSt7FvhnqO+OTlZga7I1p23AswjtC1JSEB85Kd
+         Z4PjtPUWl4dZi5J1udUN3MWHt14F52n2knbAdyeiWf0xCyfNbdnE6NEU9gvoETrDhZZN
+         aRxuG5kqHqPi+HEUk7HjSQgG5YFwcJ1DD6W5qdIsblE+kERyvIsrdm1pNxHpEjy/cUxz
+         ORJA==
+X-Gm-Message-State: ACgBeo3AXSUaAjSRpOhCVj4BqVP5bOfIUXLo8+q34e5tCskQ3Oel6pf9
+        WnweCfRcLiuX8RKepV95OYJC85a+pJl4mRxGUEbnfhVORe0=
+X-Google-Smtp-Source: AA6agR4bm7j3g8DW0HLMGctDD4s5gdb3iwsUqNW1GTNBe0naylGwNiOVUtNtINzwcvenxERaHlGBtsxMZgguG3a3EAg=
+X-Received: by 2002:a05:6808:21a6:b0:344:beb5:1fb1 with SMTP id
+ be38-20020a05680821a600b00344beb51fb1mr3756947oib.175.1662206774175; Sat, 03
+ Sep 2022 05:06:14 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220903050252.2711950-1-o.rempel@pengutronix.de> <20220903050252.2711950-2-o.rempel@pengutronix.de>
-In-Reply-To: <20220903050252.2711950-2-o.rempel@pengutronix.de>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sat, 3 Sep 2022 12:26:32 +0300
-Message-ID: <CAHp75Veyyd9XEom4ya0ZcKoxzbtJ4kKLCSUzwiLxzfnMkpMGXg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] iio: adc: tsc2046: add vref support
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
+References: <20220902131258.3316367-1-cmo@melexis.com> <CAHp75VdOHDHUVhVXj4L-6ZV25mTWTeO3s3EJQVgLxknXHKRUMg@mail.gmail.com>
+ <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com> <CAHp75VfJMpf3GeOryt9cH6-tK48BB8ZcfuGxhXovObBanDcc7w@mail.gmail.com>
+In-Reply-To: <CAHp75VfJMpf3GeOryt9cH6-tK48BB8ZcfuGxhXovObBanDcc7w@mail.gmail.com>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Sat, 3 Sep 2022 14:05:38 +0200
+Message-ID: <CAKv63us6OLg8ahdbKvd8c4x9-Ri4aDwNvgc_oov7wZnSBmJGVA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: temperature: mlx90632 Add runtime
+ powermanagement modes
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sascha Hauer <kernel@pengutronix.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         linux-iio <linux-iio@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Sep 3, 2022 at 8:03 AM Oleksij Rempel <o.rempel@pengutronix.de> wrote:
+On Fri, 2 Sept 2022 at 20:39, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 >
-> If VREF pin is attached, we should use external VREF source instead of
-> the internal. Otherwise we will get wrong measurements on some of the channel
-> types.
+> On Fri, Sep 2, 2022 at 8:59 PM Crt Mori <cmo@melexis.com> wrote:
+> > On Fri, 2 Sept 2022 at 17:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > > On Fri, Sep 2, 2022 at 4:13 PM <cmo@melexis.com> wrote:
+> > > > +       if (current_powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP)
+> > > > +               return mlx90632_pwr_set_sleep_step(data->regmap);
+> > >
+> > > > +       else
+> > >
+> > > Redundant.
+> > >
+> > No, the powermode changes among the type.
+>
+> Yes. 'else' keyword is always redundant in the
+>
+>   if (...)
+>     return / break / continue / goto
+>   else
+>
+> cases.
+>
+In this case current power mode of the sensor is halt, so the else is
+needed to set it to continuous mode, which means I can't just remove
+the else here because this statement restores the power mode before
+this function was entered (and changed powermode for the setup).
 
-FWIW,
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
-> changes v5:
-> - add "the" before channel
-> - refactor error handling on regulator registration
-> - use MILLI instead of 1000
-> changes v4:
-> - use vref_reg pointer instead of bool use_internal_vref
-> - move regulator registration to a separate function
-> - rework error handling
-> - add devm_add_action_or_reset
-> ---
->  drivers/iio/adc/ti-tsc2046.c | 57 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 55 insertions(+), 2 deletions(-)
+> > > > +               return mlx90632_pwr_continuous(data->regmap);
 >
-> diff --git a/drivers/iio/adc/ti-tsc2046.c b/drivers/iio/adc/ti-tsc2046.c
-> index 0d9436a69cbfb..c7601b29b3bef 100644
-> --- a/drivers/iio/adc/ti-tsc2046.c
-> +++ b/drivers/iio/adc/ti-tsc2046.c
-> @@ -8,7 +8,9 @@
->  #include <linux/bitfield.h>
->  #include <linux/delay.h>
->  #include <linux/module.h>
-> +#include <linux/regulator/consumer.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/units.h>
+> ...
 >
->  #include <asm/unaligned.h>
+> > > > +static int __maybe_unused mlx90632_pm_runtime_suspend(struct device *dev)
+> > >
+> > > No __maybe_unused, use pm_ptr() / pm_sleep_ptr() below.
+> > >
+> > Care to explain a bit more about this? I just followed what other
+> > drivers have...
 >
-> @@ -175,6 +177,8 @@ struct tsc2046_adc_priv {
->         u32 time_per_bit_ns;
+> And other drivers have what I said, but it's a new feature.
+> If you run `git log --no-merges --grep 'pm_ptr' -- drivers/iio
+> include/linux/` and read the history it will explain the case.
 >
->         struct tsc2046_adc_ch_cfg ch_cfg[TI_TSC2046_MAX_CHAN];
-> +       unsigned int vref_mv;
-> +       struct regulator *vref_reg;
-
-I would put pointer first since it will make sizeof(priv) 4 bytes less
-on some architectures due to padding elimination.
-
->  };
->
->  #define TI_TSC2046_V_CHAN(index, bits, name)                   \
-> @@ -252,7 +256,9 @@ static u8 tsc2046_adc_get_cmd(struct tsc2046_adc_priv *priv, int ch_idx,
->         case TI_TSC2046_ADDR_AUX:
->         case TI_TSC2046_ADDR_VBAT:
->         case TI_TSC2046_ADDR_TEMP0:
-> -               pd |= TI_TSC2046_SER | TI_TSC2046_PD1_VREF_ON;
-> +               pd |= TI_TSC2046_SER;
-> +               if (!priv->vref_reg)
-> +                       pd |= TI_TSC2046_PD1_VREF_ON;
->         }
->
->         return TI_TSC2046_START | FIELD_PREP(TI_TSC2046_ADDR, ch_idx) | pd;
-> @@ -468,7 +474,7 @@ static int tsc2046_adc_read_raw(struct iio_dev *indio_dev,
->                  * So, it is better to use external voltage-divider driver
->                  * instead, which is calculating complete chain.
->                  */
-> -               *val = TI_TSC2046_INT_VREF;
-> +               *val = priv->vref_mv;
->                 *val2 = chan->scan_type.realbits;
->                 return IIO_VAL_FRACTIONAL_LOG2;
->         }
-> @@ -740,6 +746,49 @@ static void tsc2046_adc_parse_fwnode(struct tsc2046_adc_priv *priv)
->         }
->  }
->
-> +static void tsc2046_adc_regulator_disable(void *data)
-> +{
-> +       struct tsc2046_adc_priv *priv = data;
-> +
-> +       regulator_disable(priv->vref_reg);
-> +}
-> +
-> +static int tsc2046_adc_configure_regulator(struct tsc2046_adc_priv *priv)
-> +{
-> +       struct device *dev = &priv->spi->dev;
-> +       int ret;
-> +
-> +       priv->vref_reg = devm_regulator_get_optional(dev, "vref");
-> +       if (IS_ERR(priv->vref_reg)) {
-> +               /* If regulator exists but can't be get, return an error */
-> +               if (PTR_ERR(priv->vref_reg) != -ENODEV)
-> +                       return PTR_ERR(priv->vref_reg);
-> +               priv->vref_reg = NULL;
-> +       }
-> +       if (!priv->vref_reg) {
-> +               /* Use internal reference */
-> +               priv->vref_mv = TI_TSC2046_INT_VREF;
-> +               return 0;
-> +       }
-> +
-> +       ret = regulator_enable(priv->vref_reg);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = devm_add_action_or_reset(dev, tsc2046_adc_regulator_disable,
-> +                                      priv);
-> +       if (ret)
-> +               return ret;
-> +
-> +       ret = regulator_get_voltage(priv->vref_reg);
-> +       if (ret < 0)
-> +               return ret;
-> +
-> +       priv->vref_mv = ret / MILLI;
-> +
-> +       return 0;
-> +}
-> +
->  static int tsc2046_adc_probe(struct spi_device *spi)
->  {
->         const struct tsc2046_adc_dcfg *dcfg;
-> @@ -781,6 +830,10 @@ static int tsc2046_adc_probe(struct spi_device *spi)
->         indio_dev->num_channels = dcfg->num_channels;
->         indio_dev->info = &tsc2046_adc_info;
->
-> +       ret = tsc2046_adc_configure_regulator(priv);
-> +       if (ret)
-> +               return ret;
-> +
->         tsc2046_adc_parse_fwnode(priv);
->
->         ret = tsc2046_adc_setup_spi_msg(priv);
-> --
-> 2.30.2
->
-
-
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks for the hint.

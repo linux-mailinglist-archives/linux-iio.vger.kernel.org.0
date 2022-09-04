@@ -2,49 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5F45AC58F
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 19:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 172075AC591
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 19:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbiIDRDK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Sep 2022 13:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39458 "EHLO
+        id S234566AbiIDRGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Sep 2022 13:06:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiIDRDJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 13:03:09 -0400
+        with ESMTP id S229627AbiIDRGA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 13:06:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C35CE2B273;
-        Sun,  4 Sep 2022 10:03:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEF22CDD2;
+        Sun,  4 Sep 2022 10:05:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C5C960FC4;
-        Sun,  4 Sep 2022 17:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A857C433C1;
-        Sun,  4 Sep 2022 17:03:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A4CC60FBD;
+        Sun,  4 Sep 2022 17:05:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5011C433D6;
+        Sun,  4 Sep 2022 17:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662310987;
-        bh=EcXPP6Y1c06oVCwaXq53q7wHe38vVS+n7PCI/+LSJlU=;
+        s=k20201202; t=1662311158;
+        bh=CePVn9u7PkOpHXPo/gBA1OjwQOJGxP0zYwkHdGW41uo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=r6SEjWAgDGaLrHQguYgL/Gh3uSkNLN/+SuAki6ImXRJ4SxfKHpNg0XOK1i24G1EiX
-         yiFzDzS7NvW0fg61wG+3JDJVZUqAZm2D5S7fXS2RSHcpnwvR1XcAMeE4jdcDFUa7De
-         ICIceCPpLVgapZLRKtdMVFNHrOKa9VzbQk9y3+cav6RdMoQzzIrc9HZHwGBFTpmEXw
-         bG6fRSrov3nOnvYIeMkAVJo0qsFdMrp6EaXyuoZPG3EwE2D9PEzRbcSUPEW5/pSeZ8
-         twHu53h8YbvX2VdyqWp/6g1eHIzCU8OsB4+1kaGECTi+Bnj/h7qiDV2+N5484zxi3l
-         TKUbU2eptjHOw==
-Date:   Sun, 4 Sep 2022 17:29:00 +0100
+        b=uxN5TxU8ujKBqEzFDoKZ63rhjF/hhX5YVVv7ywXUq+YqTn6p7rS45KZ4PU54nnNvU
+         wtylYt55FeNpYfiLOGCrXyEqtvJZCkKbGKn9q1DI3SfD1b8Ja/84lqirNrIUG76d67
+         7hg7rcV9hO5hT6BDwI1s33oZERol1WNCaBLV1cu5+dc9PX2M3g4UFVDlMa2J8tOxpj
+         5bcGTbcqsD6j6GrvtFaaPhZ+U+F5VsITykc8RtTcm2BuCKsrR9/mN8GmC9W+OuFOxa
+         9iRQ1Ja435KVITO4s+rTF8IL/M+vmTBe+++RIXa2VBLupjDWo1lqS2lDDLQBkPxMBl
+         cJF3BH7K3gvGw==
+Date:   Sun, 4 Sep 2022 17:31:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
-Cc:     kernel <kernel@axis.com>, "lars@metafoo.de" <lars@metafoo.de>,
-        Axel Jonsson <Axel.Jonsson@axis.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: mcp320x: add triggered buffer support
-Message-ID: <20220904172900.099ed1d0@jic23-huawei>
-In-Reply-To: <Yw8SJil96IT6fP0n@axis.com>
-References: <20220824104002.2749075-1-vincent.whitchurch@axis.com>
-        <20220824104002.2749075-3-vincent.whitchurch@axis.com>
-        <20220828182430.533bf8e0@jic23-huawei>
-        <Yw8SJil96IT6fP0n@axis.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>, kernel@axis.com,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matt Ranostay <mranostay@gmail.com>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: Use per-device lockdep class for mlock
+Message-ID: <20220904173150.2d9cdfe4@jic23-huawei>
+In-Reply-To: <CAHp75Vd2q13864ynhSCvPXAGH3fFeSrcQYWL3eMHm4HY8Ujqzg@mail.gmail.com>
+References: <20220829091840.2791846-1-vincent.whitchurch@axis.com>
+        <CAHp75Vd2q13864ynhSCvPXAGH3fFeSrcQYWL3eMHm4HY8Ujqzg@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,32 +58,133 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 31 Aug 2022 09:47:50 +0200
-Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
+On Mon, 29 Aug 2022 13:27:54 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Sun, Aug 28, 2022 at 07:24:30PM +0200, Jonathan Cameron wrote:
-> > On Wed, 24 Aug 2022 12:40:02 +0200
-> > Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:  
-> > > Add support for triggered buffers.  Just read the channels in a loop to
-> > > keep things simple.  
-> > 
-> > Just curious, but what other options are there?  A quick datasheet scroll
-> > through didn't seem to suggest you can overlap setup of next read with
-> > reading out the previous (common on SPI ADCs).  
+> On Mon, Aug 29, 2022 at 12:18 PM Vincent Whitchurch
+> <vincent.whitchurch@axis.com> wrote:
+> >
+> > If an IIO driver uses callbacks from another IIO driver and calls
+> > iio_channel_start_all_cb() from one of its buffer setup ops, then
+> > lockdep complains due to the lock nesting, as in the below example with
+> > lmp91000.
+> >
+> > Since the locks are being taken on different IIO devices, there is no
+> > actual deadlock.  Fix the warning by telling lockdep to use a different
+> > class for each iio_device.
+> >
+> >  ============================================
+> >  WARNING: possible recursive locking detected
+> >  --------------------------------------------
+> >  python3/23 is trying to acquire lock:
+> >  (&indio_dev->mlock){+.+.}-{3:3}, at: iio_update_buffers
+> >
+> >  but task is already holding lock:
+> >  (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
+> >
+> >  other info that might help us debug this:
+> >   Possible unsafe locking scenario:
+> >
+> >         CPU0
+> >         ----
+> >    lock(&indio_dev->mlock);
+> >    lock(&indio_dev->mlock);
+> >
+> >   *** DEADLOCK ***
+> >
+> >   May be due to missing lock nesting notation
+> >
+> >  5 locks held by python3/23:
+> >   #0: (sb_writers#5){.+.+}-{0:0}, at: ksys_write
+> >   #1: (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter
+> >   #2: (kn->active#14){.+.+}-{0:0}, at: kernfs_fop_write_iter
+> >   #3: (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
+> >   #4: (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_update_buffers
+> >
+> >  Call Trace:
+> >   __mutex_lock
+> >   iio_update_buffers
+> >   iio_channel_start_all_cb
+> >   lmp91000_buffer_postenable
+> >   __iio_update_buffers
+> >   enable_store  
 > 
-> You're right that the hardware doesn't support any special method to
-> read out multiple channels; I can mention that in the commit message.
-> But I think you could construct a spi_message which a bunch of
-> spi_transfers which toggle the CS appropriately between them to read out
-> multiple channels in one go?  (Note that the variants have different
-> data formats, and many of the variants only have one channel.)
+> 
+> This looks much better than the previous version, thanks!
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> 
+> > Fixes: 67e17300dc1d76 ("iio: potentiostat: add LMP91000 support")
+> > Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-That might be a little more efficient on a suitably advanced
-SPI controller, or where the overhead of jumping between drivers
-is large, but in many cases it won't save that much.
+Given we only have one known effected driver (and that has other issues),
+I'm going to take this the slow route and queue it up for next merge window.
 
-Would need an experiment on a platform someone cares about to decide
-if it is worthwhile.
+Applied to the togreg branch of iio.git and pushed out as testing for
+0-day to poke at it.
+
+Thanks,
 
 Jonathan
+
+> > ---
+> >
+> > Notes:
+> >     v2:
+> >     - Use a different lockdep class for each iio_device, instead of using
+> >       mutex_lock_nested.
+> >     - Add fixes tag pointing to first IIO driver which used this API.
+> >     - Trim call stack in commit message.
+> >
+> >  drivers/iio/industrialio-core.c | 5 +++++
+> >  include/linux/iio/iio-opaque.h  | 2 ++
+> >  2 files changed, 7 insertions(+)
+> >
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> > index 0f4dbda3b9d3..921d8e8643a2 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -1621,6 +1621,8 @@ static void iio_dev_release(struct device *device)
+> >
+> >         iio_device_detach_buffers(indio_dev);
+> >
+> > +       lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+> > +
+> >         ida_free(&iio_ida, iio_dev_opaque->id);
+> >         kfree(iio_dev_opaque);
+> >  }
+> > @@ -1680,6 +1682,9 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+> >         INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+> >         INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+> >
+> > +       lockdep_register_key(&iio_dev_opaque->mlock_key);
+> > +       lockdep_set_class(&indio_dev->mlock, &iio_dev_opaque->mlock_key);
+> > +
+> >         return indio_dev;
+> >  }
+> >  EXPORT_SYMBOL(iio_device_alloc);
+> > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+> > index 6b3586b3f952..d1f8b30a7c8b 100644
+> > --- a/include/linux/iio/iio-opaque.h
+> > +++ b/include/linux/iio/iio-opaque.h
+> > @@ -11,6 +11,7 @@
+> >   *                             checked by device drivers but should be considered
+> >   *                             read-only as this is a core internal bit
+> >   * @driver_module:             used to make it harder to undercut users
+> > + * @mlock_key:                 lockdep class for iio_dev lock
+> >   * @info_exist_lock:           lock to prevent use during removal
+> >   * @trig_readonly:             mark the current trigger immutable
+> >   * @event_interface:           event chrdevs associated with interrupt lines
+> > @@ -42,6 +43,7 @@ struct iio_dev_opaque {
+> >         int                             currentmode;
+> >         int                             id;
+> >         struct module                   *driver_module;
+> > +       struct lock_class_key           mlock_key;
+> >         struct mutex                    info_exist_lock;
+> >         bool                            trig_readonly;
+> >         struct iio_event_interface      *event_interface;
+> > --
+> > 2.34.1
+> >  
+> 
+> 
 

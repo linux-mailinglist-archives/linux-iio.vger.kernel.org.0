@@ -2,59 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3775AC5FB
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 21:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DB635AC60A
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 21:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229748AbiIDTIx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Sep 2022 15:08:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42064 "EHLO
+        id S229868AbiIDTUW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Sep 2022 15:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbiIDTIw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 15:08:52 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E3652BB2B;
-        Sun,  4 Sep 2022 12:08:52 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id j1so5177924qvv.8;
-        Sun, 04 Sep 2022 12:08:52 -0700 (PDT)
+        with ESMTP id S229627AbiIDTUV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 15:20:21 -0400
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6994D1ADAC;
+        Sun,  4 Sep 2022 12:20:20 -0700 (PDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id kh8so5205691qvb.1;
+        Sun, 04 Sep 2022 12:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date;
-        bh=juGsLKnqTXsnwZqRs+MmcAEQwaIZtbGH5Zi0HPPGJzk=;
-        b=mZi3BejmzkopJJwZy4mQLPZIKs10+v92BcLT/ZV+n/ZEI86GF/1zaJvhBrO5dchPOp
-         K519FXbBIvbMjclN3fBufHSIIqRWjLlqEGZL4LdXR+bodb+6V9Ko6hpPeYMWK0T5MLC5
-         V0WCY/En33bYc0bh4BzwDpnM5sJbTzJnbqPQeypnaS+IrzVidbZeCCPl8KnL+T4zSHrO
-         PotUylI8PJQ2xb4atCYUUMefHJusVZkw8sTAX9Xl/8NmrpGg8U2rYtAM3ALvi64PgPiX
-         fxiEPm9eYvNK1LK5Z5MBNDN7tVmPVv6o9xpKbnp5LMVSpDPTQoI0sqmE5RQ7oqYzhEkE
-         JA7w==
+        bh=ylmQbLNcXArcx2T18HQa+1UhiZ6tItjmMAQcUFUjyzo=;
+        b=q57xgdVAAEK8pSr9sj2gBRWm6w2UPOI5fYE65EZjXxlN5y61EkhZswF7TIlhFlv3Mh
+         q3djfE/VzFg0LPVymHa4nmGocfJ+sd1QqkyIiSmus26uoLKk6PPkFdRKa9/1uTji0VHY
+         2A7vx8HZ1earBnJtNf0IaOjR05uoTsBvTLA+4o6vm319C6XKC2Z+QJa6s90JhzfdTQSf
+         WI2R8Ba51PSueUW1dZ4yXNw7NOZzI6kb7S9CnQXTgPY7luVb9VfbaA4/SpVG6XocRtGF
+         iHrd4WLVuIwCrjyzgXgRUzMSzULaWmxOph70b/WoBepH8OJcrrKBTXWVL+LZznmjxrrE
+         ftxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=juGsLKnqTXsnwZqRs+MmcAEQwaIZtbGH5Zi0HPPGJzk=;
-        b=nknfKi8VWb6EV4vwUhideKk1lJUrv1Sdq6tTRug5zxZkFZ2cOXPdyy6cxTwI2Pr374
-         /26JnCRE9LR2xt3r/yGduvul+rpI8S2iWmDMrmyzXLCwJnLB4iW72hy5FC9lOfF1Hewx
-         Z2APZZ+3YkA3o1untfcm8lwKuRp42HGzIZbUj75Xej5YWlk1aNtTOWPz9UxQ7CXSalE5
-         CDgefJd3yPyk3fEtqqmNyr1iCj0ty9j7ff8DixMBIgp0kM3wp1RQBPIh4ZAIJnM/Yz87
-         ibLDs0ACPIHRqMXYJzlcnzbyuZxuv24HdTMT1JYLi0L++ZXRw2T4jFbRAu2VgrZk/XUo
-         6FfQ==
-X-Gm-Message-State: ACgBeo26m+bflJBk3CV+QlV56QVtuPtRzXjf6+D3o1wATkr5IfBGw86i
-        bfQO7mcLMtGFi6iOBhRQ5s2CnzWiWOH+s4bg2GN781BCY5g=
-X-Google-Smtp-Source: AA6agR6hWx2DZCWskDIHl/i4XU4bpGVxGVqmo4490iUi1W8K8zuZGqNfWzfJwl/Kzp5EEXnep6Y8SyDDhiDUVoLc3+A=
-X-Received: by 2002:a0c:e24b:0:b0:4a1:d41b:e280 with SMTP id
- x11-20020a0ce24b000000b004a1d41be280mr3423294qvl.11.1662318531239; Sun, 04
- Sep 2022 12:08:51 -0700 (PDT)
+        bh=ylmQbLNcXArcx2T18HQa+1UhiZ6tItjmMAQcUFUjyzo=;
+        b=4iOpRSViunezoUaxGyjbcapiwzGBEN9fmzoqszjGGZeXnbklv4yeudESnXFgPKnlhg
+         1MvYPrdi59wy9g1q27VfvbJxstpBuqsapXH+tGNI9t9fzAVQGane4KPU/9Lwgofonqeb
+         bNa+JGbjtYCl902FSOxx/0qtnq2i9ZvVNrlw4qWd/EX81QDfe4wgfptJUTrCiUqTuvOk
+         K4ooCEtgjV/v9eZcCkfEqzUtFfZJfbY8RonysULxyA56UFPq4Hu7CCog37SFM144ZRzV
+         hVeeyFTEVTGnIiZZvV3wVn8dHXVmURBNIwHktQCqGBzDnRBtsyABICq3un3g7qXFxXrY
+         9T2Q==
+X-Gm-Message-State: ACgBeo2KQmKJPgk3WcIPvDLdC7ESgu0yuVUrFdlMvljgj0SyqujESED8
+        mC17UHcsdOAa9lfdpxHdzgPYaBlFoq1NAYcLNes=
+X-Google-Smtp-Source: AA6agR4KiFwQ1CNJPfxi1qbsH9IyNiFfvb4kiHCDlP67AqmzL8Skx2d/YRndh7prCZLCCy6ZnEdzBLZXd+Z62H+ISMc=
+X-Received: by 2002:a05:6214:27ca:b0:499:95f:6379 with SMTP id
+ ge10-20020a05621427ca00b00499095f6379mr28292109qvb.82.1662319219518; Sun, 04
+ Sep 2022 12:20:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220902131258.3316367-1-cmo@melexis.com> <CAHp75VdOHDHUVhVXj4L-6ZV25mTWTeO3s3EJQVgLxknXHKRUMg@mail.gmail.com>
- <CAKv63ut0rtTFh3XdF3oR6fxQSLzNkFRS+HPPOY8Xp4LX0OY4Tg@mail.gmail.com>
- <CAHp75VfJMpf3GeOryt9cH6-tK48BB8ZcfuGxhXovObBanDcc7w@mail.gmail.com>
- <CAKv63us6OLg8ahdbKvd8c4x9-Ri4aDwNvgc_oov7wZnSBmJGVA@mail.gmail.com> <20220904150346.0c56de9d@jic23-huawei>
-In-Reply-To: <20220904150346.0c56de9d@jic23-huawei>
+References: <20220903222422.3426156-1-cmo@melexis.com> <20220904154923.33b79d83@jic23-huawei>
+ <CAKv63uviUbiAy6tYjkqFP-Qgs7dwAV5BPrr2aTTxQyjPBeA+Og@mail.gmail.com> <20220904165634.5cde87fd@jic23-huawei>
+In-Reply-To: <20220904165634.5cde87fd@jic23-huawei>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 4 Sep 2022 22:08:15 +0300
-Message-ID: <CAHp75VdMZYD4AwXjoy6dbopUyv4=qwzfgnVpSu_-_ZWtYMG92Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
+Date:   Sun, 4 Sep 2022 22:19:43 +0300
+Message-ID: <CAHp75VdVLO5J-S7PPupJv0K0T5UAovCUP_0ZobyKaoHHtE-YuQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] iio: temperature: mlx90632 Change return value of
+ sensor measurement channel
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Crt Mori <cmo@melexis.com>, linux-iio <linux-iio@vger.kernel.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
@@ -69,35 +67,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Sep 4, 2022 at 5:37 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> On Sat, 3 Sep 2022 14:05:38 +0200
+On Sun, Sep 4, 2022 at 7:30 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Sun, 4 Sep 2022 17:27:28 +0200
 > Crt Mori <cmo@melexis.com> wrote:
-> > On Fri, 2 Sept 2022 at 20:39, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > On Fri, Sep 2, 2022 at 8:59 PM Crt Mori <cmo@melexis.com> wrote:
-> > > > On Fri, 2 Sept 2022 at 17:28, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > > On Fri, Sep 2, 2022 at 4:13 PM <cmo@melexis.com> wrote:
-
-...
-
-> > > > > > +static int __maybe_unused mlx90632_pm_runtime_suspend(struct device *dev)
-> > > > >
-> > > > > No __maybe_unused, use pm_ptr() / pm_sleep_ptr() below.
-> > > > >
-> > > > Care to explain a bit more about this? I just followed what other
-> > > > drivers have...
+> > On Sun, 4 Sept 2022 at 17:23, Jonathan Cameron <jic23@kernel.org> wrote:
+> > > On Sun,  4 Sep 2022 00:24:22 +0200
+> > > cmo@melexis.com wrote:
 > > >
-> > > And other drivers have what I said, but it's a new feature.
-> > > If you run `git log --no-merges --grep 'pm_ptr' -- drivers/iio
-> > > include/linux/` and read the history it will explain the case.
+> > > > From: Crt Mori <cmo@melexis.com>
+> > > >
+> > > > The current EINVAL value is more applicable to embedded library, where
+> > > > user can actually put the fixed value to the sensor. In case of the
+> > > > driver if the value of the channel is invalid it is better in inform
+> > > > userspace that Channel was out of range as that implies more to internal
+> > > > driver error than invalid input. It also makes for easier debugging of
+> > > > where the error comes from during the development.
+> > > >
+> > > > Signed-off-by: Crt Mori <cmo@melexis.com>
+> > > Hmm. That's an obscure return value - I think it's mostly going to confuse
+> > > anyone who ever gets it.  So not sure this change is wise even though the
+> > > descriptive text for that one does seem very much suited to this usecase.
 > > >
-> > Thanks for the hint.
+> > I did get it few times during the development due to read when sensor
+> > is not busy, but the measurement data not yet updated correctly due to
+> > powermode switch. I think I added enough delays all around to avoid
+> > hitting it and with proper power mode switching, but there might be a
+> > case, so it will be easier to spot in the source code in future. I
+> > would not remove it, if that is what you are proposing.
 >
-> The relevant EXPORT_ for this particular case isn't upstream yet
-> We had a proposal on IIO list, but there was a better one as part of
-> cleaning this up for MFD.  I haven't checked if there is a suitable
-> immutable branch for that patch yet...
+> I meant leave it as EINVAL. The users of ECHRNG are very very
+> few in number, so I don't have a good understanding of it's expected
+> uses..
 
-Oh, well to know. But in any case pm_ptr() / DEFINE_*PM_OPS can still be used.
+The problem with EINVAL is that it happens in 95% of error cases and
+you really need to rebuild the module to get it where it occurs. I
+kinda tend to acknowledge the patch, because we still miss the JSON
+error reporting in the kernel which would fix most annoying problems
+with debugging kernel code.
 
 -- 
 With Best Regards,

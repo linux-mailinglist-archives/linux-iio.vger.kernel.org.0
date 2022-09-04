@@ -2,49 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B9F5AC57C
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 18:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 700285AC58C
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 19:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234613AbiIDQuO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Sep 2022 12:50:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53460 "EHLO
+        id S229596AbiIDRAg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Sep 2022 13:00:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbiIDQuN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 12:50:13 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1028140B0;
-        Sun,  4 Sep 2022 09:50:11 -0700 (PDT)
+        with ESMTP id S234016AbiIDRAf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 13:00:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3581A813;
+        Sun,  4 Sep 2022 10:00:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 20BC7CE0B97;
-        Sun,  4 Sep 2022 16:50:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11AFC433D6;
-        Sun,  4 Sep 2022 16:50:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFBD660F81;
+        Sun,  4 Sep 2022 17:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5359EC433D6;
+        Sun,  4 Sep 2022 17:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662310207;
-        bh=jcxJce531SFVVxvZzrqQFD0MFmKdV7Jnsc1mjlOBdH0=;
+        s=k20201202; t=1662310833;
+        bh=Qf0xv3a89g53tL4dSAy1At+cIBeCd34Psk4kdg/i7qI=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J7czZ7K90dD5MorIwSTBO+HK60CbLbXiKx1GZyAWq9Itc2mhUkkD0Ui+aaetC4M3g
-         AATQWY9uDA6I6apWKBQ4Udz5ZDh09uD3gRHQdq0FOZeWdY6GdDlf7NHIH6pKfvLMCQ
-         rX+5ru+meCvjfSvONQlsu5xEUD6ssnow2nFvuEYjLlDTGi6/jcUH26Fe9YJiRYTt8a
-         gfMLBfEtWR6+KWVvSDDdKfZ9CvcPcym1HaeKh84HqlYdgJUWRla3/POpBJaxSY66e9
-         ccSHzFJ5358YaNPv4qqPHegA/qgbSPB9arqdFcTPM7hqyHC+z3C2BWg9LWfeyRNshM
-         z2+hWWGxVJFdg==
-Date:   Sun, 4 Sep 2022 17:15:59 +0100
+        b=FMXadKADdNn0oEiYbTur8ym6j601V52Gub/5YuxcsAJ8nPlRCAQoBooQGq0AOpPkI
+         lBLyR+Uio4TppucHOrH1vPdx5/X765dXgTPtfXjNVY+MlMKJSUgJiNZynEh30/V5Gh
+         +qalsD+Elvxg1+VaROhT1GI8vD25LpxzVfK5XHTIi9yii63V+6qcyOUx7ll/Qxef+f
+         Z1FHMJ7mHB883mRBmXEHMTajzt58Xsa/nF3seA/gQ2zDXoqYbBR+VGKIP6HyzOq9QD
+         +ynt0V7P9EuzunrO0Jl5iCsVX4u8HFmHTz8UK37TOz7ZDTvWhgIy2Dwcy3ALKjPitr
+         DHRULFopvq8ew==
+Date:   Sun, 4 Sep 2022 17:26:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        kernel <kernel@axis.com>, Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/5] iio: adc: mcp320x: use callbacks for RX
- conversion
-Message-ID: <20220904171559.1bf77d42@jic23-huawei>
-In-Reply-To: <CAHp75Vek8tLnwYWZO91HHr1_i7G_F9tErnRsq-GwfQcpR0FaTw@mail.gmail.com>
+To:     Vincent Whitchurch <vincent.whitchurch@axis.com>
+Cc:     <kernel@axis.com>, <andy.shevchenko@gmail.com>, <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Axel Jonsson <axel.jonsson@axis.com>
+Subject: Re: [PATCH v2 5/5] iio: adc: mcp320x: add triggered buffer support
+Message-ID: <20220904172625.588a2e64@jic23-huawei>
+In-Reply-To: <20220831100506.3368103-6-vincent.whitchurch@axis.com>
 References: <20220831100506.3368103-1-vincent.whitchurch@axis.com>
-        <20220831100506.3368103-2-vincent.whitchurch@axis.com>
-        <CAHp75Vek8tLnwYWZO91HHr1_i7G_F9tErnRsq-GwfQcpR0FaTw@mail.gmail.com>
+        <20220831100506.3368103-6-vincent.whitchurch@axis.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,92 +56,225 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 31 Aug 2022 15:40:49 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Wed, 31 Aug 2022 12:05:06 +0200
+Vincent Whitchurch <vincent.whitchurch@axis.com> wrote:
 
-> On Wed, Aug 31, 2022 at 1:05 PM Vincent Whitchurch
-> <vincent.whitchurch@axis.com> wrote:
-> >
-> > Replace the device_index switch with callbacks from the chip_info
-> > structure, so that the latter has all the information needed to handle
-> > the variants.  
+> From: Axel Jonsson <axel.jonsson@axis.com>
 > 
-> Below are for the further patches, as I see the original code has the
-> same disadvantages.
+> Add support for triggered buffers.  The hardware doesn't provide any
+> special method of reading multiple channels, so just read the channels
+> in a loop to keep things simple.
 > 
-> ...
-> 
-> >  struct mcp320x_chip_info {
-> >         const struct iio_chan_spec *channels;
-> >         unsigned int num_channels;
-> >         unsigned int resolution;  
-> 
-> >         unsigned int conv_time; /* usec */  
-> 
-> Instead of a comment, I would rename it to conv_time_us.
-> 
-> > +       int (*convert_rx)(struct mcp320x *adc);
-> >  };  
-> 
-> ...
-> 
-> > +       return adc->rx_buf[0] << 5 | adc->rx_buf[1] >> 3;  
-> 
-> > +       return adc->rx_buf[0] << 2 | adc->rx_buf[1] >> 6;  
-> 
-> > +       return adc->rx_buf[0] << 7 | adc->rx_buf[1] >> 1;  
-> 
-> > +       return adc->rx_buf[0] << 4 | adc->rx_buf[1] >> 4;  
-> 
-> > +       return sign_extend32((adc->rx_buf[0] & 0x1f) << 8 | adc->rx_buf[1], 12);  
-> 
-> All above should really use
-> 
-> u16 buf = be16_to_cpu(&adc->rx_buf[0]);
-> 
-> return buf >> 3 /* 6, 1, 4 (respectively) */;
+> Signed-off-by: Axel Jonsson <axel.jonsson@axis.com>
+> Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-This made me look a bit closer at the code.  
-rx_buf isn't necessarily aligned...
-This may be a good usecase for an anonymous union.
+Hi.  
 
-Which would be fine except one of the callbacks (and original
-code) uses be32_to_cpup() which is not unaligned safe.
-
-I'm not keen to push unrelated work onto someone doing good stuff
-on a driver, but in this particular case it does seem reasonable to
-tidy all this up given you are moving the code anyway.
+Just one question inline:  Is it worth providing the option of a timestamp?
+Adds very little complexity to the code and sometimes very useful depending
+on application.  Obviously, on a device like this it's very approximate and
+is more or less just the time at which you start the read with no info on
+how long that scan readout took. Still handy for some usecases - such as
+when a sysfs trigger is being used to grab data in an uneven fashion.
 
 Jonathan
 
+
+> ---
+>  drivers/iio/adc/Kconfig   |   2 +
+>  drivers/iio/adc/mcp320x.c | 100 ++++++++++++++++++++++++++++++--------
+>  2 files changed, 82 insertions(+), 20 deletions(-)
 > 
-> ...
-> 
-> > +       if (raw & BIT(22) && raw & BIT(23))  
-> 
-> > +               return -EIO; /* cannot have overrange AND underrange */
-> > +       else if (raw & BIT(22))  
-> 
-> Redundant  'else'.
-> 
-> > +               raw &= ~BIT(22); /* overrange */
-> > +       else if (raw & BIT(23) || raw & BIT(21))  
-> 
-> if (raw & (BIT(23) | BIT(21))) ?
-> 
-> > +               raw |= GENMASK(31, 22); /* underrange or negative */  
-> 
-> ...
-> 
-> >         [mcp3201] = {
-> >                 .channels = mcp3201_channels,
-> >                 .num_channels = ARRAY_SIZE(mcp3201_channels),
-> > +               .convert_rx = mcp3201_convert_rx,  
-> 
-> >                 .resolution = 12  
-> 
-> + Comma in such lines.
-> 
-> >         },  
-> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 48ace7412874..9f2628120885 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -696,6 +696,8 @@ config MAX9611
+>  config MCP320X
+>  	tristate "Microchip Technology MCP3x01/02/04/08 and MCP3550/1/3"
+>  	depends on SPI
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say yes here to build support for Microchip Technology's
+>  	  MCP3001, MCP3002, MCP3004, MCP3008, MCP3201, MCP3202, MCP3204,
+> diff --git a/drivers/iio/adc/mcp320x.c b/drivers/iio/adc/mcp320x.c
+> index b1c1bf4b8047..bdc986285e1b 100644
+> --- a/drivers/iio/adc/mcp320x.c
+> +++ b/drivers/iio/adc/mcp320x.c
+> @@ -37,13 +37,18 @@
+>   * http://ww1.microchip.com/downloads/en/DeviceDoc/21950D.pdf  mcp3550/1/3
+>   */
+>  
+> -#include <linux/err.h>
+>  #include <linux/delay.h>
+> -#include <linux/spi/spi.h>
+> -#include <linux/module.h>
+> +#include <linux/err.h>
+> +#include <linux/interrupt.h>
+>  #include <linux/mod_devicetable.h>
+> -#include <linux/iio/iio.h>
+> +#include <linux/module.h>
+>  #include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+
+Would have slightly preferred to see header reorg in a separate patch
+as then easier to see what is being added rather than moved, but I'll cope
+if it's a pain to factor out.
+
+> +
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+>  
+>  enum {
+>  	mcp3001,
+> @@ -243,31 +248,45 @@ static int mcp320x_read_raw(struct iio_dev *indio_dev,
+>  		.indexed = 1,					\
+>  		.channel = (num),				\
+>  		.address = (num),				\
+> +		.scan_index = (num),				\
+> +		.scan_type = {					\
+> +			.sign = 's',				\
+> +			.realbits = 32,				\
+> +			.storagebits = 32,			\
+> +			.endianness = IIO_CPU,			\
+> +		},						\
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+>  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
+>  	}
+>  
+> -#define MCP320X_VOLTAGE_CHANNEL_DIFF(chan1, chan2)		\
+> +#define MCP320X_VOLTAGE_CHANNEL_DIFF(si, chan1, chan2)		\
+>  	{							\
+>  		.type = IIO_VOLTAGE,				\
+>  		.indexed = 1,					\
+>  		.channel = (chan1),				\
+>  		.channel2 = (chan2),				\
+>  		.address = (chan1),				\
+> +		.scan_index = (si),				\
+> +		.scan_type = {					\
+> +			.sign = 's',				\
+> +			.realbits = 32,				\
+> +			.storagebits = 32,			\
+> +			.endianness = IIO_CPU,			\
+> +		},						\
+>  		.differential = 1,				\
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
+>  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
+>  	}
+>  
+>  static const struct iio_chan_spec mcp3201_channels[] = {
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 1),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 0, 1),
+>  };
+>  
+>  static const struct iio_chan_spec mcp3202_channels[] = {
+>  	MCP320X_VOLTAGE_CHANNEL(0),
+>  	MCP320X_VOLTAGE_CHANNEL(1),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 1),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(1, 0),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(2, 0, 1),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(3, 1, 0),
+>  };
+>  
+>  static const struct iio_chan_spec mcp3204_channels[] = {
+> @@ -275,10 +294,10 @@ static const struct iio_chan_spec mcp3204_channels[] = {
+>  	MCP320X_VOLTAGE_CHANNEL(1),
+>  	MCP320X_VOLTAGE_CHANNEL(2),
+>  	MCP320X_VOLTAGE_CHANNEL(3),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 1),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(1, 0),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(2, 3),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(3, 2),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(4, 0, 1),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(5, 1, 0),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(6, 2, 3),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(7, 3, 2),
+>  };
+>  
+>  static const struct iio_chan_spec mcp3208_channels[] = {
+> @@ -290,14 +309,14 @@ static const struct iio_chan_spec mcp3208_channels[] = {
+>  	MCP320X_VOLTAGE_CHANNEL(5),
+>  	MCP320X_VOLTAGE_CHANNEL(6),
+>  	MCP320X_VOLTAGE_CHANNEL(7),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 1),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(1, 0),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(2, 3),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(3, 2),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(4, 5),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(5, 4),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(6, 7),
+> -	MCP320X_VOLTAGE_CHANNEL_DIFF(7, 6),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(8, 0, 1),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(9, 1, 0),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(10, 2, 3),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(11, 3, 2),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(12, 4, 5),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(13, 5, 4),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(14, 6, 7),
+> +	MCP320X_VOLTAGE_CHANNEL_DIFF(15, 7, 6),
+>  };
+>  
+>  static const struct iio_info mcp320x_info = {
+> @@ -390,6 +409,41 @@ static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
+>  	},
+>  };
+>  
+> +static irqreturn_t mcp320x_buffer_trigger_handler(int irq, void *pollfunc)
+> +{
+> +	struct iio_poll_func *pf = pollfunc;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct mcp320x *adc = iio_priv(indio_dev);
+> +	s32 data[ARRAY_SIZE(mcp3208_channels)];
+> +	int i = 0;
+> +	int chan;
+> +
+> +	mutex_lock(&adc->lock);
+> +
+> +	for_each_set_bit(chan, indio_dev->active_scan_mask, indio_dev->masklength) {
+> +		const struct iio_chan_spec *spec = &indio_dev->channels[chan];
+> +		int ret, val;
+> +
+> +		ret = mcp320x_adc_conversion(adc, spec, &val);
+> +		if (ret < 0) {
+> +			dev_err_ratelimited(&adc->spi->dev, "Failed to read data: %d\n",
+> +					    ret);
+> +			goto out;
+> +		}
+> +
+> +		data[i++] = val;
+> +	}
+> +
+> +	iio_push_to_buffers(indio_dev, data);
+
+Worth option of a timestamp?  If you do add one, you'll need to expand data and
+force alignment to be at least 8 bytes.
+
+> +
+> +out:
+> +	mutex_unlock(&adc->lock);
+> +
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+>  static void mcp320x_reg_disable(void *reg)
+>  {
+>  	regulator_disable(reg);
+> @@ -471,6 +525,12 @@ static int mcp320x_probe(struct spi_device *spi)
+>  
+>  	mutex_init(&adc->lock);
+>  
+> +	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev, NULL,
+> +					      mcp320x_buffer_trigger_handler,
+> +					      NULL);
+> +	if (ret)
+> +		return ret;
+> +
+>  	return devm_iio_device_register(&spi->dev, indio_dev);
+>  }
+>  
 

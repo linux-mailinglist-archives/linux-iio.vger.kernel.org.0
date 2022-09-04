@@ -2,48 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172075AC591
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 19:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DD3D5AC598
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 19:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234566AbiIDRGB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Sep 2022 13:06:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43798 "EHLO
+        id S230263AbiIDRMw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Sep 2022 13:12:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229627AbiIDRGA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 13:06:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEF22CDD2;
-        Sun,  4 Sep 2022 10:05:59 -0700 (PDT)
+        with ESMTP id S229748AbiIDRMv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 13:12:51 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DFE1E3F3;
+        Sun,  4 Sep 2022 10:12:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A4CC60FBD;
-        Sun,  4 Sep 2022 17:05:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5011C433D6;
-        Sun,  4 Sep 2022 17:05:56 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 97C87B80D5A;
+        Sun,  4 Sep 2022 17:12:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B803BC433C1;
+        Sun,  4 Sep 2022 17:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662311158;
-        bh=CePVn9u7PkOpHXPo/gBA1OjwQOJGxP0zYwkHdGW41uo=;
+        s=k20201202; t=1662311567;
+        bh=O6rToCUb5zLmWDKVsvsmaT9CaDZVvE7JM7ebxX/EoGo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uxN5TxU8ujKBqEzFDoKZ63rhjF/hhX5YVVv7ywXUq+YqTn6p7rS45KZ4PU54nnNvU
-         wtylYt55FeNpYfiLOGCrXyEqtvJZCkKbGKn9q1DI3SfD1b8Ja/84lqirNrIUG76d67
-         7hg7rcV9hO5hT6BDwI1s33oZERol1WNCaBLV1cu5+dc9PX2M3g4UFVDlMa2J8tOxpj
-         5bcGTbcqsD6j6GrvtFaaPhZ+U+F5VsITykc8RtTcm2BuCKsrR9/mN8GmC9W+OuFOxa
-         9iRQ1Ja435KVITO4s+rTF8IL/M+vmTBe+++RIXa2VBLupjDWo1lqS2lDDLQBkPxMBl
-         cJF3BH7K3gvGw==
-Date:   Sun, 4 Sep 2022 17:31:50 +0100
+        b=DUXlaObT+cCno0w2q1ivca9XjqDxKGW4ZGjqNi4Y77O4TNL11RJJq0N94FLqFBj5s
+         dW5p5+dhqHTEQUgHkNPnpXGY+Ukpzvp1K3HVwfzLmXsvegPrtrVBL0QUXBJfusr8f+
+         nAkqUA6+Bz2N52VjV2Fcd+opuEeNjL2eBssDjcVTzWuBJKfrDCZB7HuJC0zotThl8C
+         yjMgBAcfjn3Xyb8GQ0F1t2b6g8NarjO1v/pL0BsUdWwcWT+z6pe/mj7GBnQOd2TJCo
+         OOfLHXQQxstZY+fZBwWmsbe4dXYcKcFNVPgwoQNIYOJxzFG6aibxGTQENqquDziZyU
+         GK4PKWqEmsjxA==
+Date:   Sun, 4 Sep 2022 17:38:39 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Vincent Whitchurch <vincent.whitchurch@axis.com>, kernel@axis.com,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Matt Ranostay <mranostay@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: Use per-device lockdep class for mlock
-Message-ID: <20220904173150.2d9cdfe4@jic23-huawei>
-In-Reply-To: <CAHp75Vd2q13864ynhSCvPXAGH3fFeSrcQYWL3eMHm4HY8Ujqzg@mail.gmail.com>
-References: <20220829091840.2791846-1-vincent.whitchurch@axis.com>
-        <CAHp75Vd2q13864ynhSCvPXAGH3fFeSrcQYWL3eMHm4HY8Ujqzg@mail.gmail.com>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] iio: Add single and double tap events support
+Message-ID: <20220904173839.226167ad@jic23-huawei>
+In-Reply-To: <20220831063117.4141-1-jagathjog1996@gmail.com>
+References: <20220831063117.4141-1-jagathjog1996@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,133 +54,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 29 Aug 2022 13:27:54 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Wed, 31 Aug 2022 12:01:15 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> On Mon, Aug 29, 2022 at 12:18 PM Vincent Whitchurch
-> <vincent.whitchurch@axis.com> wrote:
-> >
-> > If an IIO driver uses callbacks from another IIO driver and calls
-> > iio_channel_start_all_cb() from one of its buffer setup ops, then
-> > lockdep complains due to the lock nesting, as in the below example with
-> > lmp91000.
-> >
-> > Since the locks are being taken on different IIO devices, there is no
-> > actual deadlock.  Fix the warning by telling lockdep to use a different
-> > class for each iio_device.
-> >
-> >  ============================================
-> >  WARNING: possible recursive locking detected
-> >  --------------------------------------------
-> >  python3/23 is trying to acquire lock:
-> >  (&indio_dev->mlock){+.+.}-{3:3}, at: iio_update_buffers
-> >
-> >  but task is already holding lock:
-> >  (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
-> >
-> >  other info that might help us debug this:
-> >   Possible unsafe locking scenario:
-> >
-> >         CPU0
-> >         ----
-> >    lock(&indio_dev->mlock);
-> >    lock(&indio_dev->mlock);
-> >
-> >   *** DEADLOCK ***
-> >
-> >   May be due to missing lock nesting notation
-> >
-> >  5 locks held by python3/23:
-> >   #0: (sb_writers#5){.+.+}-{0:0}, at: ksys_write
-> >   #1: (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter
-> >   #2: (kn->active#14){.+.+}-{0:0}, at: kernfs_fop_write_iter
-> >   #3: (&indio_dev->mlock){+.+.}-{3:3}, at: enable_store
-> >   #4: (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_update_buffers
-> >
-> >  Call Trace:
-> >   __mutex_lock
-> >   iio_update_buffers
-> >   iio_channel_start_all_cb
-> >   lmp91000_buffer_postenable
-> >   __iio_update_buffers
-> >   enable_store  
-> 
-> 
-> This looks much better than the previous version, thanks!
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> 
-> > Fixes: 67e17300dc1d76 ("iio: potentiostat: add LMP91000 support")
-> > Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+> This patch series adds new event type for tap called gesture and direction
+> is used to differentiate single and double tap. This series adds single
+> and double tap support for bma400 accelerometer device driver.
 
-Given we only have one known effected driver (and that has other issues),
-I'm going to take this the slow route and queue it up for next merge window.
+Applied to the togreg branch of iio.git and initially pushed out as testing
+for 0-day to see if it can find things we missed.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to poke at it.
+I'm still open for comments on this if anyone interested has a chance to look
+at the ABI, but changes will need to come as patches after I push the
+tree out as non rebasing later this week.
 
-Thanks,
+Thanks for your hard work on this Jagath - it's a hole that's been there
+a very long time so good to fill it in :)
+
 
 Jonathan
-
-> > ---
-> >
-> > Notes:
-> >     v2:
-> >     - Use a different lockdep class for each iio_device, instead of using
-> >       mutex_lock_nested.
-> >     - Add fixes tag pointing to first IIO driver which used this API.
-> >     - Trim call stack in commit message.
-> >
-> >  drivers/iio/industrialio-core.c | 5 +++++
-> >  include/linux/iio/iio-opaque.h  | 2 ++
-> >  2 files changed, 7 insertions(+)
-> >
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> > index 0f4dbda3b9d3..921d8e8643a2 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1621,6 +1621,8 @@ static void iio_dev_release(struct device *device)
-> >
-> >         iio_device_detach_buffers(indio_dev);
-> >
-> > +       lockdep_unregister_key(&iio_dev_opaque->mlock_key);
-> > +
-> >         ida_free(&iio_ida, iio_dev_opaque->id);
-> >         kfree(iio_dev_opaque);
-> >  }
-> > @@ -1680,6 +1682,9 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
-> >         INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
-> >         INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
-> >
-> > +       lockdep_register_key(&iio_dev_opaque->mlock_key);
-> > +       lockdep_set_class(&indio_dev->mlock, &iio_dev_opaque->mlock_key);
-> > +
-> >         return indio_dev;
-> >  }
-> >  EXPORT_SYMBOL(iio_device_alloc);
-> > diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-> > index 6b3586b3f952..d1f8b30a7c8b 100644
-> > --- a/include/linux/iio/iio-opaque.h
-> > +++ b/include/linux/iio/iio-opaque.h
-> > @@ -11,6 +11,7 @@
-> >   *                             checked by device drivers but should be considered
-> >   *                             read-only as this is a core internal bit
-> >   * @driver_module:             used to make it harder to undercut users
-> > + * @mlock_key:                 lockdep class for iio_dev lock
-> >   * @info_exist_lock:           lock to prevent use during removal
-> >   * @trig_readonly:             mark the current trigger immutable
-> >   * @event_interface:           event chrdevs associated with interrupt lines
-> > @@ -42,6 +43,7 @@ struct iio_dev_opaque {
-> >         int                             currentmode;
-> >         int                             id;
-> >         struct module                   *driver_module;
-> > +       struct lock_class_key           mlock_key;
-> >         struct mutex                    info_exist_lock;
-> >         bool                            trig_readonly;
-> >         struct iio_event_interface      *event_interface;
-> > --
-> > 2.34.1
-> >  
 > 
+> Changes since v3
+> 1. Added a macro for the length of the tap configuration arrays.
+> 2. Corrected a grammar mistake.
+> 3. Arranged the local variables in reverse Xmas tree order.
+> 
+> Changes since v2
+> 1. Replaced doubletap_tap_2min to doubletap_tap2_min.
+> 2. Added ABI docs for available attributes which lists tap configurations
+>    values.
+> 3. Added 'tap' in the naming of available attributes which are related to
+>    tap configurations.
+> 5. Added check for channel type in _read_event_value() and
+>    _write_event_value().
+> 6. KernelVersion changed to 6.1.
+> 7. Corrected typos.
+> 
+> Changes since v1
+> 1. Included headers in alphabetical order.
+> 2. Changing tap_event_en variable name to tap_event_en_bitmask since it is
+>    used in bit manipulation operation.
+> 3. Assigning boolean value to step_event_en and activity_event_en instead
+>    of 0, since they are boolean type members.
+> 4. Using local variable for regmap_read() instead for *val itself.
+> 5. Correcting typos.
+> 6. Remove of IIO_EV_INFO_PERIOD.
+> 7. Now all 4 tap controls like threshold, quiet, tics_dt and quiet_dt can
+>    be configured from the userspace.
+> 8. Introducing new event info IIO_EV_INFO_RESET_TIMEOUT, and
+>    IIO_EV_INFO_TAP_2MIN_DELAY into iio_event_info.
+> 9. Creating custom read/write attributes for tics_dt called
+>    in_accel_gesture_maxtomin_time.
+> 10. Time based tap controls can be configured in seconds instead of raw
+>     values.
+> 11. Provided all available values for time base tap controls in seconds.
+> 12. Adding one more MODULE_AUTHOR().
+> 
+> Changes since RFC
+> 1. Corrected the "quite" typo to "quiet".
+> 2. Added proper reference and name of the section from datasheet.
+> 3. Changed the ABI documentation to make it more generic.
+> 4. Added ABI documentation for double tap quiet period.
+> 5. Added available list by registering new event attribute for tap
+>    threshold values and double tap quiet period values.
+> 6. Sending both single and double tap events separately.
+> 8. Removed checking for tap enabled while changing data rate.
+> 9. Returning invalid with error message if the input data rate is not
+>    200Hz while enabling tap interrupts.
+> 7. Added datasheet reference for interrupt engine overrun.
+> 
+> Jagath Jog J (2):
+>   iio: Add new event type gesture and use direction for single and
+>     double tap
+>   iio: accel: bma400: Add support for single and double tap events
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio |  69 +++++
+>  drivers/iio/accel/bma400.h              |  14 +
+>  drivers/iio/accel/bma400_core.c         | 343 +++++++++++++++++++++++-
+>  drivers/iio/industrialio-event.c        |   7 +-
+>  include/linux/iio/types.h               |   2 +
+>  include/uapi/linux/iio/types.h          |   3 +
+>  tools/iio/iio_event_monitor.c           |   8 +-
+>  7 files changed, 434 insertions(+), 12 deletions(-)
 > 
 

@@ -2,90 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC415AC7D3
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Sep 2022 23:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 594D45ACCA2
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 09:28:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236184AbiIDVuR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Sep 2022 17:50:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
+        id S237350AbiIEH1J convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 5 Sep 2022 03:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236179AbiIDVt4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Sep 2022 17:49:56 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494B23CBDA;
-        Sun,  4 Sep 2022 14:46:05 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id y18so5094195qtv.5;
-        Sun, 04 Sep 2022 14:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=UlpWR5ed2XZK5Klo5/xjkHWkHkKItDNcFW7lQvP6GKc=;
-        b=k3pluWbY2w8W4nYjcaId8Fh/lc2BZIjt+CjUl6ls86MVYvI9KZzwPE68URfCVj62z4
-         2g2K2Hu/aKbdNSOAci/E4coAoridFV3GGMqkQkefHtARk9nJYd+022KSYb3AeJKi25hk
-         XMTgHi3r6vHZxUmOaZseWixnvu5bQYjEqL+NpkjvMBBAWGAPCNaB/PafDwzCNiTo5AEI
-         9a60mnfrybNGaGhXM2QS2CxIwQkF9pWVKfCYBBA0NCIARCJl5AR/HizMB0E9tFJBcXJF
-         wLQnnzmBq+sE2CWQkCxEcLwUAVH7ZQP0T7JCNIRbT1YVzZRpDJJOjm6iJ4NOhIb/rQP8
-         XrpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=UlpWR5ed2XZK5Klo5/xjkHWkHkKItDNcFW7lQvP6GKc=;
-        b=0N6gweSfEjx24BGLeZTPU4DSnqeslU1yTKEu9hZNj9r2Ld5sewIEBV+wvilvqhNVzP
-         Rouu+8pnkwmmSGmtYT1J+mFMK6m4MhW9VJH7oAuZJzzgtLnjdayYm0wWKIORXU4p6Urx
-         Te1WG4OxzFzh28mb59M3Dr2dJH38fYmuzCJ21qh+0JqSJuGVP55bvqHWPJMO7h2NI2Dr
-         fZuo1dlPd+QktDMDAdAg0fIxh7Y5mRI3lSmzv1zIn3dFFUkXUdpzY73Cp5PrkWI/TitD
-         XdjuvIRwGxfC0a4hQu9MYoaLlbquoeK+e/roRNgYWohHMjcTEqegcWRly/ZeiNMK8za5
-         qZ/Q==
-X-Gm-Message-State: ACgBeo3ZlNkpMEqeKtFnARNZ5PV7IIvqeATYHak4d8AZyOMkwTXTQWSk
-        O/W2PyRsTGjHMkczxX/F/CMgRgEV8KhkeNY86xw=
-X-Google-Smtp-Source: AA6agR4/3egl8vc0J2M9+gA8XZdBh3sl6ViZ5Kf6sO3RC0Rc7qjiHhH0rVIy3TrUZovFXOvF0/9H+hd3hlMnrYMerrk=
-X-Received: by 2002:ac8:7f92:0:b0:344:8cd8:59a1 with SMTP id
- z18-20020ac87f92000000b003448cd859a1mr38079150qtj.384.1662327926996; Sun, 04
- Sep 2022 14:45:26 -0700 (PDT)
+        with ESMTP id S236320AbiIEH0r (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 03:26:47 -0400
+Received: from de-smtp-delivery-113.mimecast.com (de-smtp-delivery-113.mimecast.com [194.104.109.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15255F43
+        for <linux-iio@vger.kernel.org>; Mon,  5 Sep 2022 00:24:30 -0700 (PDT)
+Received: from CHE01-GV0-obe.outbound.protection.outlook.com
+ (mail-gv0che01lp2043.outbound.protection.outlook.com [104.47.22.43]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ de-mta-45-Xuy4fWX6MpeOuEZGFQC6IA-2; Mon, 05 Sep 2022 09:22:19 +0200
+X-MC-Unique: Xuy4fWX6MpeOuEZGFQC6IA-2
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:2e::8) by
+ ZR0P278MB0758.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:43::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5588.10; Mon, 5 Sep 2022 07:22:18 +0000
+Received: from ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::6c6d:333:ab23:3f5b]) by ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::6c6d:333:ab23:3f5b%2]) with mapi id 15.20.5588.018; Mon, 5 Sep 2022
+ 07:22:17 +0000
+Date:   Mon, 5 Sep 2022 09:22:16 +0200
+From:   Francesco Dolcini <francesco.dolcini@toradex.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-input@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2 5/5] dt-bindings: input: touchscreen: stmpe: Remove
+ node name requirement
+Message-ID: <20220905072216.GA6496@francesco-nb.int.toradex.com>
+References: <20220712163345.445811-1-francesco.dolcini@toradex.com>
+ <20220712163345.445811-6-francesco.dolcini@toradex.com>
+In-Reply-To: <20220712163345.445811-6-francesco.dolcini@toradex.com>
+X-ClientProxiedBy: MR1P264CA0133.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:51::18) To ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:2e::8)
 MIME-Version: 1.0
-References: <20220903222336.3426005-1-cmo@melexis.com> <20220904153947.2b61bbdf@jic23-huawei>
- <CAKv63ushE8br=weV0GYQ1v7K1p=uP=tXeXRSJTy+VVO8bsPZBQ@mail.gmail.com>
-In-Reply-To: <CAKv63ushE8br=weV0GYQ1v7K1p=uP=tXeXRSJTy+VVO8bsPZBQ@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 5 Sep 2022 00:44:50 +0300
-Message-ID: <CAHp75VeHOQ1eETO7_2Fet=wBOhCSAK=a9qiDb40xvhuBLDuZcg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8795ca12-5361-45da-5f93-08da8f0f5d43
+X-MS-TrafficTypeDiagnostic: ZR0P278MB0758:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0
+X-Microsoft-Antispam-Message-Info: IZFINbnydV+tfarHSvJrhsU2qdskQ8S2O2wFg7LmCrRxeE4TR1whdnh8r86nVn3rWRBDPWs9qO+t0uSIkD2UM22531wA/d/dVbvh5NfFKmH08uMgqxwFI/prIIh78jVuykcR+UHi2b94/WeHvOE+mC5/x4czPDz4vzO4+ptKvKDCWujEZJfHD6Z+ydbp8W7xCS3BvpTSxWWZoTM7w/vWO+UsVMYs6VxtIO681pEhuIPo9+ycPVy3ockVUfaSh4FOanbtXt1fbxOv/GzZS/vm3lhP7XzYPqs1aA7wtvwif1Dj0qpkdSN+7ES97tD8GObUiQqTmIvNr/B6mIydoV+sFK+5CpKWdhtAPcdpqY4F9f9EMGDIJ+XfLM5UNaXGWJId0sx724YqY0AdXqFSzAiENOriToGAH5ihKVgehaDRTJnOWSazsT6Ob2GFph9Okq3oIs+sjpRzFqeRJWe+KX++VNdBwffdGMHYifmP6dHaPDF3xXoSeJCXzNYDI0ihYURBN41pi6wZ2k0nFcH5jJCePYHM15ZaZYCe8C+5vcxmvAcL6r/wl8quwGJOx0XbqVPILPkifrYM8S+Lw8Oow46cePDnmUY9bLVP2APAxXoioAZShiPiUhq6UcMicMQSbX+rf8eRZyVF7CtnVc1yI1JnOZKqg9z5FevRl9OuvMH/ExHsf/qmftnmbgyobX28piCTxS7zH16FyKZbKxiQCAB6PbSIcOTzzeczWrd3MtSF39GhniGIM176R98XpEju35um5slquZIIOcvX8mP42RoLQQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(376002)(136003)(39830400003)(396003)(366004)(346002)(2906002)(66556008)(8676002)(66946007)(66476007)(54906003)(4326008)(7416002)(4744005)(6916009)(44832011)(5660300002)(8936002)(33656002)(316002)(6486002)(478600001)(41300700001)(6512007)(186003)(1076003)(107886003)(38100700002)(52116002)(6506007)(83380400001)(26005)(86362001)(38350700002);DIR:OUT;SFP:1102
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QzqCutbkbZUFKoXaBa85Qfkm9vxwTyqkw5SkzGwEF1nFUhWTnhBxZAMwWVeA?=
+ =?us-ascii?Q?NpvvKr2dCFdy9/11y34yx/e549h/Bj2WfnUlTQvtXNb3WOtDPIZccBh47Xhp?=
+ =?us-ascii?Q?ZCMZhlB+SYH/Zs9D0ThJdSD8TGDXJIFdhEaMc9Drmqas14T8ckphOaixeS7a?=
+ =?us-ascii?Q?CHBlMM1623cHGemuZ9AInaXJ68wPjBV7ij/OjijQRt1lEnkfitZqKNX4nrew?=
+ =?us-ascii?Q?CWzGfxYSjKH6+zG0HaW8P/MGmgY5coioOwQTwD/z5JeYp9t+ZppSkJOz4C+W?=
+ =?us-ascii?Q?hMGMS16bEFUKjGwM9o6b51vF1jmU50ClfaIONgUu5xc6lo7rcd/RaCnF+mhb?=
+ =?us-ascii?Q?nS6O+ArbUbf20FB5M9Z12Wu9piYJ4xYKGMNwlAWrAbVS1aH2/qpw//iWQJNa?=
+ =?us-ascii?Q?/2k7QWXhdhQvVQJeEiiLgIy7Yrf/ss2lqoVTBK9918iXsvUMO2Puv8GgQvoC?=
+ =?us-ascii?Q?bF0iTz3mxe8p834s8GrPvOirjARKCJUGg75cpEkIiovXlFPM17lN+Roaug39?=
+ =?us-ascii?Q?JWQK3XSAj3G+iHZIl8u2WhNtFW9FwWJXh3EiNqryh60JTdnk2/+OfvMNaicG?=
+ =?us-ascii?Q?emK+Qz79c7fAW1Dg5nEgsizTqBeYzjFdv77ABL+RQW4zjcKMii8kh3YW8u7B?=
+ =?us-ascii?Q?h7XEv4FZxIYr8OFYxeTq+qc+NKsl0g0su3At2yS1i+jFP2XaOyrAC+da5nyY?=
+ =?us-ascii?Q?pMST+gW+M+4eLiRtyLlQ3d2ASv1dex1f8U6Sj1YP3PTpBtSvgJhei7dxviRT?=
+ =?us-ascii?Q?SapgzAVpGzI0MzGs23tLoIS9ExRDdIHeX4Mq9kkQYjN95PTNhkfoXDeNK+ky?=
+ =?us-ascii?Q?NN5GrAIo6DtvUMgbGMIquuhcTmLkhDNjHKnZn2PepJzcbriRzogb5tYSxzsY?=
+ =?us-ascii?Q?QIasS9jxw0qljM36Qs9OQT8Kr4yBtjVbkIRzyrT3vTYGTBrorPj8EmlR7cyC?=
+ =?us-ascii?Q?8KGAbQKQ6aa7m7ngPOmW/g6Ky16yZ5+M8VNJQtuUlnPElABb/JmzqQAqgXOl?=
+ =?us-ascii?Q?DwjcSXKrGw2Rf2id6nQ6o6v1Cf0OttQ6PDyJ6m5IV9s2detHAsUELu86hm+I?=
+ =?us-ascii?Q?RgnnOsfKe3FWwVHP6B85Fc99dNKP58m6M74cudnbp2HwiRlD5zfyn+Bx+dAt?=
+ =?us-ascii?Q?elVoLhAO06zL2tWYiPTRh17hFePDRx9YHjt7ODnzS6wx84GDUEymqCDJHpbi?=
+ =?us-ascii?Q?lZTQuQpRc2p9S5K+CkLBdbuKJ+QTNFuLj0Qq9MfYG7EIHyif111pL0rFlwRs?=
+ =?us-ascii?Q?X0gbSiqSHsOnKV+ACw9lCY34G6BpF/fhEzEFWJdhHy2TfgN8HiGeLmNSp8tu?=
+ =?us-ascii?Q?8+8/2OMOpS9dF9kQyu5CsoZZvzmJsKIPTwxRqMMqRCjSjudqjFmn+a2HdcAo?=
+ =?us-ascii?Q?kayyFjuadRACHULGNFS2Lh0ofIGEQ+m2NiZMU4XTH4nwuMOMbTnWilWdZRmf?=
+ =?us-ascii?Q?HW/uu2LllKckdqWXVyMWY+g4G2AVUE8oN05K/fBosAs+aDYbZtPajf9CPSQe?=
+ =?us-ascii?Q?uTNP5O0tt+yD+U2z6cOt0hQ6C6bQStOG/+6d7jalBbAfEQ7RfEGFcLbNBYrm?=
+ =?us-ascii?Q?DK+AWRZvlME7N3V4CgwuFWNAxw4S17jX8FFr9OxWq/TszeFox354WhWS4xXI?=
+ =?us-ascii?Q?Cg=3D=3D?=
+X-OriginatorOrg: toradex.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8795ca12-5361-45da-5f93-08da8f0f5d43
+X-MS-Exchange-CrossTenant-AuthSource: ZRAP278MB0495.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2022 07:22:17.9261
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: d9995866-0d9b-4251-8315-093f062abab4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JQNHazLp87XMrMuDQD2HLCc66gyAjVLin2V426cRgUZfKpkNUNOxS9aCwZI1udGTxzqL9nboAA+/Zz3kN80Q2kWnWELRULAl+50kcqpwTfc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR0P278MB0758
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: toradex.com
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Sep 5, 2022 at 12:36 AM Crt Mori <cmo@melexis.com> wrote:
-> On Sun, 4 Sept 2022 at 17:13, Jonathan Cameron <jic23@kernel.org> wrote:
-> > On Sun,  4 Sep 2022 00:23:36 +0200
-> > cmo@melexis.com wrote:
+Hello Dmitry,
 
-First of _all_, please remove unnecessary context when replying!
+On Tue, Jul 12, 2022 at 06:33:45PM +0200, Francesco Dolcini wrote:
+> STMPE driver does not require a specific node name anymore, only the
+> compatible is checked, update binding according to this.
+> 
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-...
+Just a gently ping, this is the last patch of this series not merged, all
+the rest was merged through the respective subsystems. Can you merge it?
 
-> > If you can fix the patch threading (patches should be replies to the cover letter)
-> > that would be great.
-> Can you help me with a bit more details? I use simple git send-mail
-> and I added a sendmail.from option in gitconfig as you complained that
-> patches have no from, but I still send patch per patch. How do I make
-> it as reply to cover letter?
+Thanks,
+Francesco
 
-`git format-patch --cover-letter --thread ...`
-
--- 
-With Best Regards,
-Andy Shevchenko

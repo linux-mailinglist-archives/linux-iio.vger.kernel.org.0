@@ -2,87 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D9A5AD611
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 17:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 148A55AD8C2
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 20:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbiIEPTD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Sep 2022 11:19:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46508 "EHLO
+        id S231635AbiIESE0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Sep 2022 14:04:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238684AbiIEPSm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 11:18:42 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37AFF2496A;
-        Mon,  5 Sep 2022 08:18:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E7C3DB811E0;
-        Mon,  5 Sep 2022 15:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD902C433C1;
-        Mon,  5 Sep 2022 15:18:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662391115;
-        bh=OYPiTnXo7bb7hJwVSPWes/+Nq+zYOTrTHyss+h6VYo4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SDxfRg7k2JMjGFkMn8+/LTZSQNlWWnzMBv8TiM+aZG8WfpCklOb/zYAqZM4XE+fpY
-         rs2rNTcqypi/Ymx66IECFIq8P0LnEAeumaycw1PLF94hacP8yD68/JeeoptW5Lx5Vl
-         57nufRRk4GhwDzlKg7oQMkrAgFpjFa1ZtYo0fvLh0XnVE5uTfTSh5+kjy7DoDp/wOY
-         xqntjmtzikCy2OmKXCYmmlAohAO13PluvsZ8YxrWTYJey/1rAIgZG58iRjY3eGIGLB
-         1Fwo6+Ls6SieLxlyJ4ygC8DlLJX7pxvZm78wBH1qEClQCJdIiEF/JnguTag1WzkZLm
-         04sga6uQd9+uA==
-Date:   Mon, 5 Sep 2022 16:18:12 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     ChiaEn Wu <peterwu.pub@gmail.com>
-Cc:     daniel.thompson@linaro.org, jingoohan1@gmail.com, pavel@ucw.cz,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        matthias.bgg@gmail.com, sre@kernel.org, jic23@kernel.org,
-        lars@metafoo.de, deller@gmx.de, broonie@kernel.org,
-        mazziesaccount@gmail.com, andriy.shevchenko@linux.intel.com,
-        chiaen_wu@richtek.com, alice_chen@richtek.com,
-        cy_huang@richtek.com, dri-devel@lists.freedesktop.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-fbdev@vger.kernel.org, szunichen@gmail.com,
-        andy.shevchenko@gmail.com, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v9 04/10] dt-bindings: backlight: Add MediaTek MT6370
- backlight
-Message-ID: <YxYSDSlnOELL2mPF@google.com>
-References: <20220830034042.9354-2-peterwu.pub@gmail.com>
- <20220830034042.9354-5-peterwu.pub@gmail.com>
+        with ESMTP id S231545AbiIESEY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 14:04:24 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826D338F;
+        Mon,  5 Sep 2022 11:04:23 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id z8so12241085edb.6;
+        Mon, 05 Sep 2022 11:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=3C/5tWJzLnB1uE6HL3jJHlbk4fX0FVnZnTVN3xVcPmI=;
+        b=UiIazjEkKmRM+x0DfJ6Vk+Bl7Ev6hqDCSjisqWYrV2B/uOnjhmKHz00Uw5uWJ0MJGI
+         wM8Nl/NLVJoVdxTi1eqlUghyVfSeV1j6nOsih6vqmKtLbjss6B8TAuNO4sUfX3hgfVhr
+         ni2waPQeYE2MKe5tJGZtSZG2NAeoqYn/dOvsdD+i95K+hn3qBtZBlBXI/CvedeqpoT4k
+         lGMSAarIa4JNNd0DftcTaCUsIbKw8B9viYKUY73vG8wj+Ckg/fN/ifDTYbasD8OHT3mr
+         qSQkersOHBMB0uLN+uaVOwb63Hn6TDogW20zjoP9hMnnZFcDbYSSPZGwDDomnvM1hKEZ
+         63gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=3C/5tWJzLnB1uE6HL3jJHlbk4fX0FVnZnTVN3xVcPmI=;
+        b=WxeNPD64my9ijFlNAE2ZnGypupq4YJP7MqI42/onfbY06qp0Ep/mUMnnA5z0nM3M4J
+         BKZRCc/OijaUduGuhVpsQE743lRzkEqap9phLZW79OoUJUPn9KFgcUO8mmwjOEkK+XPx
+         Ck9XibsPYBe1cVeQ925jgjzexcmg4vZQ1bY7YprI7W1ZWkccyEGehR1xA0uHBi8fcw+U
+         KuCXldniBB3SpKECVVRR+QpdmIg4L9NzcFj8djbhEg4JUnSrRxzSvazMlbPug6P8kf2n
+         aaKc0QLo+wZSSGbsw0orbgBqoPS1ix/MlrpxtfKt3N29inGrURByQVUM0to1t32pZRSt
+         e7fA==
+X-Gm-Message-State: ACgBeo0pdNuPEzUqG3Cz5WuQWxSe8js7jkp3vzbmCABSMCeFoo2YJhz8
+        MqZukSqde/zydHzueQjPXgSSbk0B9qQsIshA9oI=
+X-Google-Smtp-Source: AA6agR4kpVggJLEnlqcW7ccGE3e2XeB/U3PfF4AlpO50c47FYYWf9zm0meONWHHZSke6F5OwYTA5peMlfQwrAkHoFjg=
+X-Received: by 2002:a05:6402:17d7:b0:44e:95b0:3741 with SMTP id
+ s23-20020a05640217d700b0044e95b03741mr3689380edy.281.1662401061871; Mon, 05
+ Sep 2022 11:04:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220830034042.9354-5-peterwu.pub@gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220831063117.4141-1-jagathjog1996@gmail.com> <20220904173839.226167ad@jic23-huawei>
+In-Reply-To: <20220904173839.226167ad@jic23-huawei>
+From:   Jagath Jog J <jagathjog1996@gmail.com>
+Date:   Mon, 5 Sep 2022 23:34:09 +0530
+Message-ID: <CAM+2Eu+fLvRQg0iJ13JV071khGeaFx_VnVpJrzGLw==iEyEzkg@mail.gmail.com>
+Subject: Re: [PATCH v4 0/2] iio: Add single and double tap events support
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 30 Aug 2022, ChiaEn Wu wrote:
+Hi,
 
-> From: ChiYuan Huang <cy_huang@richtek.com>
-> 
-> Add MT6370 backlight binding documentation.
-> 
-> Reviewed-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
-> ---
->  .../leds/backlight/mediatek,mt6370-backlight.yaml  | 121 +++++++++++++++++++++
->  1 file changed, 121 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/leds/backlight/mediatek,mt6370-backlight.yaml
+On Sun, Sep 4, 2022 at 10:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> On Wed, 31 Aug 2022 12:01:15 +0530
+> Jagath Jog J <jagathjog1996@gmail.com> wrote:
+>
+> > This patch series adds new event type for tap called gesture and direction
+> > is used to differentiate single and double tap. This series adds single
+> > and double tap support for bma400 accelerometer device driver.
+>
+> Applied to the togreg branch of iio.git and initially pushed out as testing
+> for 0-day to see if it can find things we missed.
+>
+> I'm still open for comments on this if anyone interested has a chance to look
+> at the ABI, but changes will need to come as patches after I push the
+> tree out as non rebasing later this week.
+>
+> Thanks for your hard work on this Jagath - it's a hole that's been there
+> a very long time so good to fill it in :)
 
-Applied, thanks.
+Thank you Jonathan and Andy for your suggestions and the detailed review.
 
--- 
-Lee Jones [李琼斯]
+Jagath
+
+>
+>
+> Jonathan
+> >
+> > Changes since v3
+> > 1. Added a macro for the length of the tap configuration arrays.
+> > 2. Corrected a grammar mistake.
+> > 3. Arranged the local variables in reverse Xmas tree order.
+> >
+> > Changes since v2
+> > 1. Replaced doubletap_tap_2min to doubletap_tap2_min.
+> > 2. Added ABI docs for available attributes which lists tap configurations
+> >    values.
+> > 3. Added 'tap' in the naming of available attributes which are related to
+> >    tap configurations.
+> > 5. Added check for channel type in _read_event_value() and
+> >    _write_event_value().
+> > 6. KernelVersion changed to 6.1.
+> > 7. Corrected typos.
+> >
+> > Changes since v1
+> > 1. Included headers in alphabetical order.
+> > 2. Changing tap_event_en variable name to tap_event_en_bitmask since it is
+> >    used in bit manipulation operation.
+> > 3. Assigning boolean value to step_event_en and activity_event_en instead
+> >    of 0, since they are boolean type members.
+> > 4. Using local variable for regmap_read() instead for *val itself.
+> > 5. Correcting typos.
+> > 6. Remove of IIO_EV_INFO_PERIOD.
+> > 7. Now all 4 tap controls like threshold, quiet, tics_dt and quiet_dt can
+> >    be configured from the userspace.
+> > 8. Introducing new event info IIO_EV_INFO_RESET_TIMEOUT, and
+> >    IIO_EV_INFO_TAP_2MIN_DELAY into iio_event_info.
+> > 9. Creating custom read/write attributes for tics_dt called
+> >    in_accel_gesture_maxtomin_time.
+> > 10. Time based tap controls can be configured in seconds instead of raw
+> >     values.
+> > 11. Provided all available values for time base tap controls in seconds.
+> > 12. Adding one more MODULE_AUTHOR().
+> >
+> > Changes since RFC
+> > 1. Corrected the "quite" typo to "quiet".
+> > 2. Added proper reference and name of the section from datasheet.
+> > 3. Changed the ABI documentation to make it more generic.
+> > 4. Added ABI documentation for double tap quiet period.
+> > 5. Added available list by registering new event attribute for tap
+> >    threshold values and double tap quiet period values.
+> > 6. Sending both single and double tap events separately.
+> > 8. Removed checking for tap enabled while changing data rate.
+> > 9. Returning invalid with error message if the input data rate is not
+> >    200Hz while enabling tap interrupts.
+> > 7. Added datasheet reference for interrupt engine overrun.
+> >
+> > Jagath Jog J (2):
+> >   iio: Add new event type gesture and use direction for single and
+> >     double tap
+> >   iio: accel: bma400: Add support for single and double tap events
+> >
+> >  Documentation/ABI/testing/sysfs-bus-iio |  69 +++++
+> >  drivers/iio/accel/bma400.h              |  14 +
+> >  drivers/iio/accel/bma400_core.c         | 343 +++++++++++++++++++++++-
+> >  drivers/iio/industrialio-event.c        |   7 +-
+> >  include/linux/iio/types.h               |   2 +
+> >  include/uapi/linux/iio/types.h          |   3 +
+> >  tools/iio/iio_event_monitor.c           |   8 +-
+> >  7 files changed, 434 insertions(+), 12 deletions(-)
+> >
+>

@@ -2,109 +2,119 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EEDB5AD1EE
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 13:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB735AD3B8
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 15:23:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236214AbiIELzH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Sep 2022 07:55:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45698 "EHLO
+        id S237696AbiIENVP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Sep 2022 09:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237713AbiIELzG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 07:55:06 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32BD1B7A0
-        for <linux-iio@vger.kernel.org>; Mon,  5 Sep 2022 04:55:05 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id z187so8389969pfb.12
-        for <linux-iio@vger.kernel.org>; Mon, 05 Sep 2022 04:55:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=3heU9XnQLBxOKcLg4YsF7ZYEM3SBcg+5pXKhqb5TwPI=;
-        b=oSWMFsVerK3P9BYD8DCKg0VYtamA/CK8Qx54UYBBLH22jCXmBjWEh/cd5/qiqd1CBl
-         Jl9hvSfrzJou0jAw7uJjAp+i/3YFNyTfQz8NNE7NaDp9XbsIUNp/eyGxzmI3ThObk0id
-         1VvzQvKSqWVZf/rXv5mpIMCVOLw9Lw514mhy5NW7x7rhC5LHF5muh0p+cASrDVPRbYKg
-         JdtMCtcY34Lq6QBySAV7VFCAmfYDjqwvsgdcWfw+lqjAo0n/cSGcusvs3GhlEdhIf5CZ
-         E9oEIijQJAN4BASREpbEOiN8ll7GD6lCxKm8+YosrBdt0VB2ptg5h+wvXQFTMeOHhVw0
-         yUDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=3heU9XnQLBxOKcLg4YsF7ZYEM3SBcg+5pXKhqb5TwPI=;
-        b=JqC5t+YXID22kpa2fFVSar/kkRacFZcv6SytbdtShZ8WAZDL+s6JlgWwyRw0GreCwt
-         Jirg9iWyCPuTIrnYeLCnMw5CzrrhcurH9k2PiUAnv1fwWwUeCu4i+C4bbPhDt0wn61E+
-         YOXb8aTJjbPin4pFruzXimvnzPVyjW0HtbdUtcFO5TuNPZS2pTQIJtlOdW3fz97bw/MF
-         Ille5KkWXQmNZKAV1p1g6/xsFyvtP3nFm3R1TWpeU454FLhPvKNfZlRsEOxvRs6jiShm
-         CPyh+NALpX/Jp5o2a+viob2fFK4QjlktMsz0A61QpJInvsWUvFFtSoknnBMOHlXjFM98
-         jxig==
-X-Gm-Message-State: ACgBeo3JyGZGQdvM275A1NZ38aKFJpluEUzgxUkbf3LhqUphP+G6tcKZ
-        wB0E9I5bbhDKsSmJW/ztcekaDMEoPv75eMAnOBI=
-X-Google-Smtp-Source: AA6agR77IV0BZfIy/jLAPSyjlp44DOGt+dT5SaNwNxz4imBZ8J6UGqrsLLvC30g9Dxf8Nhfo9nxjIRC3dM2yQtIP9uw=
-X-Received: by 2002:a05:6a00:23c5:b0:535:5c24:68df with SMTP id
- g5-20020a056a0023c500b005355c2468dfmr49978045pfc.62.1662378905208; Mon, 05
- Sep 2022 04:55:05 -0700 (PDT)
+        with ESMTP id S237621AbiIENVL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 09:21:11 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C041547BBF;
+        Mon,  5 Sep 2022 06:20:57 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 285CXuOL022519;
+        Mon, 5 Sep 2022 09:20:53 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jc3u5vt6t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 05 Sep 2022 09:20:53 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 285DKpTk029090
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 5 Sep 2022 09:20:51 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 5 Sep 2022 09:20:50 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 5 Sep 2022 09:20:50 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 5 Sep 2022 09:20:50 -0400
+Received: from george-precision5560.ad.analog.com ([10.48.65.141])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 285DKaY8000352;
+        Mon, 5 Sep 2022 09:20:39 -0400
+From:   George Mois <george.mois@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <lucas.p.stankus@gmail.com>, George Mois <george.mois@analog.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v4 1/2] dt-bindings: iio: accel: adxl313: Add compatibles for adxl312 and adxl314
+Date:   Mon, 5 Sep 2022 16:20:17 +0300
+Message-ID: <20220905132018.364900-1-george.mois@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Received: by 2002:ac4:a093:0:b0:569:502d:4e6f with HTTP; Mon, 5 Sep 2022
- 04:55:03 -0700 (PDT)
-Reply-To: almondd797@gmail.com
-From:   Duke Almond <bosssalomon269@gmail.com>
-Date:   Mon, 5 Sep 2022 04:55:03 -0700
-Message-ID: <CAJoaEJ==v6NoJY5t9XYonJwk=6MSzCAjk6MfzjQvVmXOaUfe=w@mail.gmail.com>
-Subject: From Captain.Duke Almond
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:42c listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5001]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [almondd797[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [bosssalomon269[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [bosssalomon269[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: Rp_oEBMQY74BU084GlBYQo_k-cW6Gr3V
+X-Proofpoint-ORIG-GUID: Rp_oEBMQY74BU084GlBYQo_k-cW6Gr3V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-09-05_09,2022-09-05_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
+ phishscore=0 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
+ mlxscore=0 priorityscore=1501 impostorscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209050063
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Good Day,
+Extend the adi,adxl313.yaml file with information regrding the
+ADXL312 and ADXL314 devices.
 
-I know this email might come to you as a surprise because is coming
-from someone you haven=E2=80=99t met with before. I am Duke Almond, From
-Cyprus A Military Man, I would like to
-establish with you in any profitable business there in your country
-with my saved money here in the military peacekeeping mission.
+Signed-off-by: George Mois <george.mois@analog.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+changes in v4:
+ - rename patch title to comply with dt-bindings patches title format
+ .../devicetree/bindings/iio/accel/adi,adxl313.yaml     | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-I will introduce Myself better and send you my photos and more Details
-as soon as I receive your reply.
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+index d6afc1b8c272..59d48ff1a16c 100644
+--- a/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl313.yaml
+@@ -4,20 +4,24 @@
+ $id: http://devicetree.org/schemas/iio/accel/adi,adxl313.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: Analog Devices ADXL313 3-Axis Digital Accelerometer
++title: Analog Devices ADXL312, ADXL313, and ADXL314 3-Axis Digital Accelerometers
+ 
+ maintainers:
+   - Lucas Stankus <lucas.p.stankus@gmail.com>
+ 
+ description: |
+-  Analog Devices ADXL313 3-Axis Digital Accelerometer that supports
+-  both I2C & SPI interfaces.
++  Analog Devices ADXL312, ADXL313, and ADXL314 3-Axis Digital Accelerometer that
++  support both I2C & SPI interfaces.
++    https://www.analog.com/en/products/adxl312.html
+     https://www.analog.com/en/products/adxl313.html
++    https://www.analog.com/en/products/adxl314.html
+ 
+ properties:
+   compatible:
+     enum:
++      - adi,adxl312
+       - adi,adxl313
++      - adi,adxl314
+ 
+   reg:
+     maxItems: 1
+-- 
+2.30.2
 
-Captain.Duke Almond.

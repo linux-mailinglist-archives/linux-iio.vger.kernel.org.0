@@ -2,159 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 148A55AD8C2
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Sep 2022 20:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BEBD5ADDD7
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 05:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231635AbiIESE0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Sep 2022 14:04:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42736 "EHLO
+        id S232684AbiIFDPe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Sep 2022 23:15:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231545AbiIESEY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 14:04:24 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826D338F;
-        Mon,  5 Sep 2022 11:04:23 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id z8so12241085edb.6;
-        Mon, 05 Sep 2022 11:04:23 -0700 (PDT)
+        with ESMTP id S229472AbiIFDPd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Sep 2022 23:15:33 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C7B22BE4;
+        Mon,  5 Sep 2022 20:15:32 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id z187so10050954pfb.12;
+        Mon, 05 Sep 2022 20:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=3C/5tWJzLnB1uE6HL3jJHlbk4fX0FVnZnTVN3xVcPmI=;
-        b=UiIazjEkKmRM+x0DfJ6Vk+Bl7Ev6hqDCSjisqWYrV2B/uOnjhmKHz00Uw5uWJ0MJGI
-         wM8Nl/NLVJoVdxTi1eqlUghyVfSeV1j6nOsih6vqmKtLbjss6B8TAuNO4sUfX3hgfVhr
-         ni2waPQeYE2MKe5tJGZtSZG2NAeoqYn/dOvsdD+i95K+hn3qBtZBlBXI/CvedeqpoT4k
-         lGMSAarIa4JNNd0DftcTaCUsIbKw8B9viYKUY73vG8wj+Ckg/fN/ifDTYbasD8OHT3mr
-         qSQkersOHBMB0uLN+uaVOwb63Hn6TDogW20zjoP9hMnnZFcDbYSSPZGwDDomnvM1hKEZ
-         63gw==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=2Cv4J+G1ogeuhW2nYiMPfNrTRhf6xVCDkRcJYgEDOdo=;
+        b=RPxZo+YsQb6XwjGWPcxzjVJSos/O53ZGOILrimS02m6F670i9ysff+OX6eOjWZqUKF
+         kB9qKf3w2fGJ/6EBg+fogISllEmQ5S9DuNQ2ZQlYxvlRtaMKC3lsFb4qk2XCNkQcAR7f
+         pZTesvWgOQbM29Me0oakWTpptZHxRYEHV4CbODiBdIKAQPIuIy34VW2C8v1sd+64gKWt
+         YPvkBXlesFL2qPJdCzprNYsEAcdY23L9noBBPJemNg71shyh9VSzsS++SJdtDjHZ4O2V
+         ZyfXPxJiA1WhANM2OjAYmL7Agwz6aC3cd+9RobBU/QJG/cMVB0+TLJD9UIFj+jg3Hq32
+         8dPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=3C/5tWJzLnB1uE6HL3jJHlbk4fX0FVnZnTVN3xVcPmI=;
-        b=WxeNPD64my9ijFlNAE2ZnGypupq4YJP7MqI42/onfbY06qp0Ep/mUMnnA5z0nM3M4J
-         BKZRCc/OijaUduGuhVpsQE743lRzkEqap9phLZW79OoUJUPn9KFgcUO8mmwjOEkK+XPx
-         Ck9XibsPYBe1cVeQ925jgjzexcmg4vZQ1bY7YprI7W1ZWkccyEGehR1xA0uHBi8fcw+U
-         KuCXldniBB3SpKECVVRR+QpdmIg4L9NzcFj8djbhEg4JUnSrRxzSvazMlbPug6P8kf2n
-         aaKc0QLo+wZSSGbsw0orbgBqoPS1ix/MlrpxtfKt3N29inGrURByQVUM0to1t32pZRSt
-         e7fA==
-X-Gm-Message-State: ACgBeo0pdNuPEzUqG3Cz5WuQWxSe8js7jkp3vzbmCABSMCeFoo2YJhz8
-        MqZukSqde/zydHzueQjPXgSSbk0B9qQsIshA9oI=
-X-Google-Smtp-Source: AA6agR4kpVggJLEnlqcW7ccGE3e2XeB/U3PfF4AlpO50c47FYYWf9zm0meONWHHZSke6F5OwYTA5peMlfQwrAkHoFjg=
-X-Received: by 2002:a05:6402:17d7:b0:44e:95b0:3741 with SMTP id
- s23-20020a05640217d700b0044e95b03741mr3689380edy.281.1662401061871; Mon, 05
- Sep 2022 11:04:21 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=2Cv4J+G1ogeuhW2nYiMPfNrTRhf6xVCDkRcJYgEDOdo=;
+        b=BAPGCBur5B1Y1TeEiVvdM/StyaPZhnrg864JtVjWkoUip6VHH8TqPBcDyZ3TNenVub
+         iVBX2UYV1jGQdIr+OtIdjRnzVVL67BVvVsfLTpmpvqYFL2iRRqBqrJ5XAXFSO2mowGNO
+         gPRN7+gXbGe7t/Li7SW9cS8g3Cgt93EjX7G3vghFhdpTS1f0ZZHdh9W8pKcEB/Dxyv71
+         9d5DEaQF5h1Bd+ZcC+jIVPFQ09dMsc5iUxdEt5smlxTSddZUU5k6h6mZ5Oj0pJE8rcVX
+         qhbRFpZJRGtRm9kvgNy2840mPAWTyymJ7Z1dEJ5CtzJvSgCMYjVyTB9P6Zx5qxM4C3Kk
+         PmtA==
+X-Gm-Message-State: ACgBeo2esZn0R/9ttq2TEX78bBRPVJel9hLDZAeZhyUUeKVrAIETUvDy
+        hgh/bm6z7Ci3rrx/c8bdS3o=
+X-Google-Smtp-Source: AA6agR59Zl9XsjGYaA4xg8qC96Keihi4AwL8NlIKwkoOLV6Y1fdv9933OpmqptlzVYdQqPnKnvvWfw==
+X-Received: by 2002:aa7:8b44:0:b0:537:a35d:3c11 with SMTP id i4-20020aa78b44000000b00537a35d3c11mr52527144pfd.76.1662434132005;
+        Mon, 05 Sep 2022 20:15:32 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:1190:fbfa:ae95:111c])
+        by smtp.gmail.com with ESMTPSA id s17-20020a635251000000b0041d628dde58sm7303516pgl.30.2022.09.05.20.15.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Sep 2022 20:15:31 -0700 (PDT)
+Date:   Mon, 5 Sep 2022 20:15:28 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc:     Lee Jones <lee.jones@linaro.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-input@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] dt-bindings: input: touchscreen: stmpe: Remove
+ node name requirement
+Message-ID: <Yxa7UCcheX5M/XKY@google.com>
+References: <20220712163345.445811-1-francesco.dolcini@toradex.com>
+ <20220712163345.445811-6-francesco.dolcini@toradex.com>
 MIME-Version: 1.0
-References: <20220831063117.4141-1-jagathjog1996@gmail.com> <20220904173839.226167ad@jic23-huawei>
-In-Reply-To: <20220904173839.226167ad@jic23-huawei>
-From:   Jagath Jog J <jagathjog1996@gmail.com>
-Date:   Mon, 5 Sep 2022 23:34:09 +0530
-Message-ID: <CAM+2Eu+fLvRQg0iJ13JV071khGeaFx_VnVpJrzGLw==iEyEzkg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] iio: Add single and double tap events support
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     andy.shevchenko@gmail.com, hadess@hadess.net, hdegoede@redhat.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220712163345.445811-6-francesco.dolcini@toradex.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Tue, Jul 12, 2022 at 06:33:45PM +0200, Francesco Dolcini wrote:
+> STMPE driver does not require a specific node name anymore, only the
+> compatible is checked, update binding according to this.
+> 
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-On Sun, Sep 4, 2022 at 10:42 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Wed, 31 Aug 2022 12:01:15 +0530
-> Jagath Jog J <jagathjog1996@gmail.com> wrote:
->
-> > This patch series adds new event type for tap called gesture and direction
-> > is used to differentiate single and double tap. This series adds single
-> > and double tap support for bma400 accelerometer device driver.
->
-> Applied to the togreg branch of iio.git and initially pushed out as testing
-> for 0-day to see if it can find things we missed.
->
-> I'm still open for comments on this if anyone interested has a chance to look
-> at the ABI, but changes will need to come as patches after I push the
-> tree out as non rebasing later this week.
->
-> Thanks for your hard work on this Jagath - it's a hole that's been there
-> a very long time so good to fill it in :)
+Applied, thank you.
 
-Thank you Jonathan and Andy for your suggestions and the detailed review.
-
-Jagath
-
->
->
-> Jonathan
-> >
-> > Changes since v3
-> > 1. Added a macro for the length of the tap configuration arrays.
-> > 2. Corrected a grammar mistake.
-> > 3. Arranged the local variables in reverse Xmas tree order.
-> >
-> > Changes since v2
-> > 1. Replaced doubletap_tap_2min to doubletap_tap2_min.
-> > 2. Added ABI docs for available attributes which lists tap configurations
-> >    values.
-> > 3. Added 'tap' in the naming of available attributes which are related to
-> >    tap configurations.
-> > 5. Added check for channel type in _read_event_value() and
-> >    _write_event_value().
-> > 6. KernelVersion changed to 6.1.
-> > 7. Corrected typos.
-> >
-> > Changes since v1
-> > 1. Included headers in alphabetical order.
-> > 2. Changing tap_event_en variable name to tap_event_en_bitmask since it is
-> >    used in bit manipulation operation.
-> > 3. Assigning boolean value to step_event_en and activity_event_en instead
-> >    of 0, since they are boolean type members.
-> > 4. Using local variable for regmap_read() instead for *val itself.
-> > 5. Correcting typos.
-> > 6. Remove of IIO_EV_INFO_PERIOD.
-> > 7. Now all 4 tap controls like threshold, quiet, tics_dt and quiet_dt can
-> >    be configured from the userspace.
-> > 8. Introducing new event info IIO_EV_INFO_RESET_TIMEOUT, and
-> >    IIO_EV_INFO_TAP_2MIN_DELAY into iio_event_info.
-> > 9. Creating custom read/write attributes for tics_dt called
-> >    in_accel_gesture_maxtomin_time.
-> > 10. Time based tap controls can be configured in seconds instead of raw
-> >     values.
-> > 11. Provided all available values for time base tap controls in seconds.
-> > 12. Adding one more MODULE_AUTHOR().
-> >
-> > Changes since RFC
-> > 1. Corrected the "quite" typo to "quiet".
-> > 2. Added proper reference and name of the section from datasheet.
-> > 3. Changed the ABI documentation to make it more generic.
-> > 4. Added ABI documentation for double tap quiet period.
-> > 5. Added available list by registering new event attribute for tap
-> >    threshold values and double tap quiet period values.
-> > 6. Sending both single and double tap events separately.
-> > 8. Removed checking for tap enabled while changing data rate.
-> > 9. Returning invalid with error message if the input data rate is not
-> >    200Hz while enabling tap interrupts.
-> > 7. Added datasheet reference for interrupt engine overrun.
-> >
-> > Jagath Jog J (2):
-> >   iio: Add new event type gesture and use direction for single and
-> >     double tap
-> >   iio: accel: bma400: Add support for single and double tap events
-> >
-> >  Documentation/ABI/testing/sysfs-bus-iio |  69 +++++
-> >  drivers/iio/accel/bma400.h              |  14 +
-> >  drivers/iio/accel/bma400_core.c         | 343 +++++++++++++++++++++++-
-> >  drivers/iio/industrialio-event.c        |   7 +-
-> >  include/linux/iio/types.h               |   2 +
-> >  include/uapi/linux/iio/types.h          |   3 +
-> >  tools/iio/iio_event_monitor.c           |   8 +-
-> >  7 files changed, 434 insertions(+), 12 deletions(-)
-> >
->
+-- 
+Dmitry

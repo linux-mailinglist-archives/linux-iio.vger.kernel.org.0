@@ -2,156 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4AFF5AF4B4
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 21:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0270C5AF580
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 22:12:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229484AbiIFTsm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Sep 2022 15:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34972 "EHLO
+        id S231259AbiIFULf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Sep 2022 16:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiIFTsl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 15:48:41 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CB9388DC8;
-        Tue,  6 Sep 2022 12:48:39 -0700 (PDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 286JH1v0003042;
-        Tue, 6 Sep 2022 19:48:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=OujVUnVk+XFo1lwQ6hOBY2ejWHuVgo8Nja2nbuNrs+Y=;
- b=kRGhHHWro42WmadVLpkbqMoATZrqSHZ5ERgje5t6ft+CGClR6KqLQmB/jWyr30KJayVg
- hU47Fv/xJ5kEuedBTQ5LWOvASu/fe8Hz7AVv4nmbpY51DPSpYRbysYcKSv00pvrNPYuq
- ouow9tLOfIsvmIU+CGEmolMRyAtTjiKysGpNIRdrdPCaDd0joZ11TmnRMXLUgdRLWc5i
- K4BRZlIi5jj5+ki9OkJJClEdBKqDUIc4UOLyJY5+EoBlPRVeP7fkJoQ935g6biYXvgmL
- 2Ed6+e52w16AgIVylZq0q55nKyptDfeBEwyZFP7PnJbhUIoR73SeZLG1nt22WggT6fBr dg== 
+        with ESMTP id S229482AbiIFULM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 16:11:12 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97301C0E67;
+        Tue,  6 Sep 2022 13:05:54 -0700 (PDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 286JuvSA017509;
+        Tue, 6 Sep 2022 20:05:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=0hl2TCrGpmkN+t5opJ/VRV+GU+XGbjWuWsWc2hZOqqc=;
+ b=NXXU67dauH6qJW5noUKT7c0TeKKO3gxG/xglJ5aBNQhJgoe3ECvKA73Jmnb+krRYy9xZ
+ +jssB4j80N57ocNIQOKTmjobAro787jPKmb/qZq7XWREXXJi3fhUndVrUEuyprb6O+ok
+ H7yCcAwVw4eFEKGQLuQnd4F69pzgWfZjw71YdTxjD5ItczHAJixisJsgoEXScqFueDad
+ p8GygmDzjNBXKZijStiWsmgswgYLNkn+0aiaxssAE5AVMK4Ig/n9r26ie833uvJr14o1
+ S4lz1M5lsDB495jjEPmJms0+Xq76MID3uu1pF3QMVtJx7X6tU0cVq/4FAOAplfY00Q+n ww== 
 Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jec7t0sfh-1
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jecthg8j5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Sep 2022 19:48:24 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 286JI49C007696;
-        Tue, 6 Sep 2022 19:48:23 GMT
+        Tue, 06 Sep 2022 20:05:39 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 286K5HP3025780;
+        Tue, 6 Sep 2022 20:05:38 GMT
 Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jec7t0sex-1
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3jecthg8hu-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Sep 2022 19:48:23 +0000
+        Tue, 06 Sep 2022 20:05:38 +0000
 Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 286JZOr9009557;
-        Tue, 6 Sep 2022 19:48:22 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-        by ppma01dal.us.ibm.com with ESMTP id 3jbxj9tuv2-1
+        by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 286K5NKW010685;
+        Tue, 6 Sep 2022 20:05:37 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+        by ppma01dal.us.ibm.com with ESMTP id 3jbxj9ty10-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 06 Sep 2022 19:48:22 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-        by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 286JmLHP66257302
+        Tue, 06 Sep 2022 20:05:37 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 286K5a7a40108686
         (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 6 Sep 2022 19:48:21 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7D775AC05F;
-        Tue,  6 Sep 2022 19:48:21 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 12138AC059;
-        Tue,  6 Sep 2022 19:48:21 +0000 (GMT)
-Received: from [9.160.74.237] (unknown [9.160.74.237])
-        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue,  6 Sep 2022 19:48:20 +0000 (GMT)
-Message-ID: <85280d48-4251-2811-b66d-092f4153fbb5@linux.ibm.com>
-Date:   Tue, 6 Sep 2022 14:48:20 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.12.0
-Subject: Re: [PATCH v4 1/2] iio: pressure: dps310: Refactor startup procedure
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joel Stanley <joel@jms.id.au>
-References: <20220809211246.251006-1-eajames@linux.ibm.com>
- <20220809211246.251006-2-eajames@linux.ibm.com>
- <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
- <e35b595f-572e-a539-c550-831cdd02dbd3@linux.ibm.com>
- <CAHp75VfU26QZ7Z1ApzRcFPudgsQc7zWF5g0kwn7Jzk1htXaWng@mail.gmail.com>
- <20220820124915.5dd5b745@jic23-huawei>
+        Tue, 6 Sep 2022 20:05:36 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9BA756E052;
+        Tue,  6 Sep 2022 20:05:36 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BC1E66E04E;
+        Tue,  6 Sep 2022 20:05:35 +0000 (GMT)
+Received: from slate16.aus.stglabs.ibm.com (unknown [9.160.74.237])
+        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+        Tue,  6 Sep 2022 20:05:35 +0000 (GMT)
 From:   Eddie James <eajames@linux.ibm.com>
-In-Reply-To: <20220820124915.5dd5b745@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, joel@jms.id.au,
+        andy.shevchenko@gmail.com, eajames@linux.ibm.com
+Subject: [PATCH v6 0/2] iio: pressure: dps310: Reset chip if MEAS_CFG is corrupt
+Date:   Tue,  6 Sep 2022 15:05:33 -0500
+Message-Id: <20220906200535.1919398-1-eajames@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Z1R8v4d-APcFHezH-Vaw1xMjvgw7wGyQ
-X-Proofpoint-GUID: akQIzJwyKuoJW_lSwCdH3dALnWcWuCo8
+X-Proofpoint-ORIG-GUID: 4uK95e48RDHFrgbcTj3oxGJNfarBe5sQ
+X-Proofpoint-GUID: 6XZVNeM2AT_KwjysmgEKYiPkrOIvK9Ev
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-09-06_09,2022-09-06_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 mlxlogscore=999 spamscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 bulkscore=0 suspectscore=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209060090
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 spamscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2207270000 definitions=main-2209060093
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The DPS310 chip has been observed to get "stuck" such that pressure
+and temperature measurements are never indicated as "ready" in the
+MEAS_CFG register. The only solution is to reset the device and try
+again. In order to avoid continual failures, use a boolean flag to
+only try the reset after timeout once if errors persist. Include a
+patch to move the startup procedure into a function.
 
-On 8/20/22 06:49, Jonathan Cameron wrote:
-> On Fri, 19 Aug 2022 12:42:00 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
->> On Mon, Aug 15, 2022 at 4:42 PM Eddie James <eajames@linux.ibm.com> wrote:
->>> On 8/12/22 17:03, Andy Shevchenko wrote:
->>>> On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:
->> ...
->>
->>>>> +       rc = regmap_write(data->regmap, 0x0e, 0xA5);
->>>>> +       if (rc)
->>>>> +               return rc;
->>>>> +
->>>>> +       rc = regmap_write(data->regmap, 0x0f, 0x96);
->>>>> +       if (rc)
->>>>> +               return rc;
->>>> This code already exists, but still want to ask, is it really
->>>> byte-registers here and not be16/le16 one? In such a case perhaps bulk
->>>> write can be used to reflect it better?
->>> The temperature and pressure regs are 24 bits big endian, and all the
->>> rest are 8 bits. I think the existing approach is best.
->> It doesn't look like you got what I was meaning... Or I misunderstood
->> what you said.
->>
->> The code above writes two byte values to two sequential registers
->> which make me think that they are 16-bit registers at offset 0x0e.
-> Given they are undocumented, this is guessing territory.
-> Probably best to just leave them as is.
-> You could do a bulk write on an array though as that implies
-> nothing about what's in the registers -just that they happen
-> to be next to each other.
+Changes since v5:
+ - Completely rework the second patch to reset and reinit in any
+   timeout condition, if there haven't been previous timeouts that
+   failed to recover the chip.
 
+Changes since v4:
+ - Just check for rc rather than rc < 0 in some cases
+ - Split declaration and init of rc
 
-Indeed. Is it worth it to switch to bulk write for two 2-byte writes? 
-I'm inclined to say no and will leave this as-is for v6, but if you 
-think it is, I can switch it.
+Changes since v3:
+ - Don't check regmap* return codes for < 0
+ - Fix comment spelling
 
+Changes since v2:
+ - Add some comments
+ - Fix the clunky control flow
 
-Thanks,
+Changes since v1:
+ - Separate into two patches
+ - Rename 'dps310_verify_meas_cfg' to 'dps310_check_reset_meas_cfg'
 
-Eddie
+Eddie James (2):
+  iio: pressure: dps310: Refactor startup procedure
+  iio: pressure: dps310: Reset chip after timeout
 
+ drivers/iio/pressure/dps310.c | 266 +++++++++++++++++++++-------------
+ 1 file changed, 167 insertions(+), 99 deletions(-)
 
->
->> ...
->>
->>>>> +       rc = regmap_write(data->regmap, 0x0e, 0x00);
->>>>> +       if (rc)
->>>>> +               return rc;
->>>>> +
->>>>> +       return regmap_write(data->regmap, 0x0f, 0x00);
->> Ditto.
->>
+-- 
+2.31.1
+

@@ -2,160 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9426F5AE68E
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 13:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A1C25AE881
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 14:37:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbiIFL0r (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Sep 2022 07:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44858 "EHLO
+        id S232626AbiIFMhN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Sep 2022 08:37:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229916AbiIFL0r (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 07:26:47 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A6444F1AF
-        for <linux-iio@vger.kernel.org>; Tue,  6 Sep 2022 04:26:45 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id gb36so22418672ejc.10
-        for <linux-iio@vger.kernel.org>; Tue, 06 Sep 2022 04:26:45 -0700 (PDT)
+        with ESMTP id S232190AbiIFMhM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 08:37:12 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560D82408D;
+        Tue,  6 Sep 2022 05:37:11 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id j1so8165776qvv.8;
+        Tue, 06 Sep 2022 05:37:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=XyJKVGE0cD/925orO/HXak99UYJgYNpKUPooDkzvfhg=;
-        b=YNaLRjPAI6HE/oMyHjRmptBtO0czvRuRep/SybAqxLi3sij+gq+SpkrrYJyfT0c9Vs
-         oIpm8H9JSRvaS7soQue2jz38q3KxMszb++YocStDax3w7KvRD2/xVB4zUTJ8s+MIpYnP
-         5530UTobZsnos0Y/ybyG77PEK1ZxnxZYI2SOsiXkdtF4popIQ/1hO6SwqZaAaqFkg2eu
-         RNDYrteHXE9DOAHLDObRTFvStb4kZ7c8Bex/YxEyx8yCTM3Ja+sN3+fMNjTyBDFPepOn
-         qJ4Qbl9xpxjLI+rVBkXUpuAV5HxzJQjruGSfmJaQRHG6QESxRGnBfSrq7Otk9hz33B5Q
-         H7uQ==
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=xpQtocT5Zisw3O9+aeFWboKbjJDP0EWoNrPcWVo7piw=;
+        b=YVI/aM+ELJNZDNwkFkIDb1ee3t0OHhCnXR19746BpxdKzbjfIyXfdR9WYP/xCTgvY6
+         +f+lwJ6Uvkuaqh7l28Cyeh0aYnAwg2KBoS4KQ72O4mNZtzp/OZKLOzHys1PbPobd4DdZ
+         +Sz81M+K/nAN93Ubh6+yydU/4pDEavsPoolCdSzOVWm4Dp53XOGbnAf9FSN1B8bbVhPO
+         KizOsX0A0CPXnbpzEGjNYuehR9KUg71pwlD5MzXTIu5PmmpKNr3MxY4FxJ3cgN+gmAL2
+         ksntbEcfFMe7kVAz+d45nYoHd5I73gSBLEn+eJcRQuQqxqpWSQLOpF85FeGZGkxfusW6
+         2/iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=XyJKVGE0cD/925orO/HXak99UYJgYNpKUPooDkzvfhg=;
-        b=NSfeLSn/GRleyRtsQSAt9oMT5h9piI1TDpyjnLuzprLbuYxBQbfoO+WvAjt2vRN5ao
-         zNC4GIdxFEu0b0q53ypIJJujVNeP2OKAZoFzPjmeHVt0bN2PI1fT0hrzccABZznnKeU7
-         c0ooEqys4ttg31qauui3EyQxDgdD3AFoXr5osOilPSS7FLlBhKcaLKqe5T+REwbfgIhX
-         YQRxRRaIyLVM1nMuVkt2WLWFPehm8nTvGTGNC1PWbanJcMTS/R+jscQm3wwyiCiRQ4qE
-         yqFLn41yvTh937XtVrKFh4bN5F9cnlk1Rx84YBi6lDRYbd44P2+nhNa+Dm6zHo1zKOVG
-         8MFw==
-X-Gm-Message-State: ACgBeo0Hic4XUAwLzQ/FZzhZiPYYXc8qEvV8arIXrYeTN+zlkmWLp3+e
-        KhdoqtdmgTBgf4tw8k2+PtUPlg==
-X-Google-Smtp-Source: AA6agR4ZyeXLSEhMi1dcy3MJJxfdhL/tgUBQixZK3GdCiGoHRrYPA2/r6QQn1Arm6OJyHPsEG5YVMQ==
-X-Received: by 2002:a17:907:781a:b0:730:ccea:7c29 with SMTP id la26-20020a170907781a00b00730ccea7c29mr39108019ejc.85.1662463603472;
-        Tue, 06 Sep 2022 04:26:43 -0700 (PDT)
-Received: from cmo-ThinkPad-T495.telenet.be ([194.150.35.21])
-        by smtp.gmail.com with ESMTPSA id 9-20020a170906210900b0074136cac2e7sm6395669ejt.81.2022.09.06.04.26.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Sep 2022 04:26:42 -0700 (PDT)
-From:   cmo@melexis.com
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Crt Mori <cmo@melexis.com>
-Subject: [PATCH] iio: temperature: mlx90614 Refactoring available filter attributes
-Date:   Tue,  6 Sep 2022 13:26:32 +0200
-Message-Id: <20220906112632.244453-1-cmo@melexis.com>
-X-Mailer: git-send-email 2.34.1
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=xpQtocT5Zisw3O9+aeFWboKbjJDP0EWoNrPcWVo7piw=;
+        b=olDI6QZ1xNpRHRZSEeBw4izPa6HhdrltSVY/LYeOqrcvoieKzOh6DgcCdt4mYNRaMh
+         RVX116Wm++zN0qi+UDUfq/2xFOiSHdITeRx11Hm5XwZS5+hQAyjb6lUsnow/nt//s/ZT
+         N4+joD/cXK5k6vtRQviLn6zbI0c8/nlxIKNk1xawq9uioRLLthFWA6mTbfbn3mQtw0ZD
+         ZIEO8MJGPhizX6xeGmWe7Xk+kL3fUxAWOCIKMzJacUb1ks4+r7l2HdWdSDMvPU7fbI2O
+         8NsrzDLih2y+2AfTLT8fgROZqmf9/U7WX9ve6TSjSamYTW67OqAFp5rcFYP4ZUr1n1qU
+         P9NQ==
+X-Gm-Message-State: ACgBeo0ih9keBaCuXC3wNuigoCd0dNc5Jb6ZgCHdT96Pe90iw62ECA9V
+        Y9D+M9AV3Hgw7LMwviOScCDSSDqLg65jiCnpKRZTlLyoC+OEOg==
+X-Google-Smtp-Source: AA6agR5xg7xsGW4UZ7tl+m6D3eixtJ14kZjmmZ8LYgKwueY9tqDc8gWdClFu2ozn1PkQGJx3BYbrRXBW8DnqZkE2q94=
+X-Received: by 2002:a05:6214:c8f:b0:499:21eb:ba3b with SMTP id
+ r15-20020a0562140c8f00b0049921ebba3bmr25835843qvr.97.1662467830452; Tue, 06
+ Sep 2022 05:37:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1662454215.git.cmo@melexis.com> <32c4b72624e4a3480b202f24f506ca91029e47f7.1662454215.git.cmo@melexis.com>
+ <CAHp75VezNufWGW6sC+ALmX9H4yavWRCmpHuv9ZVoRycQxZ-uQg@mail.gmail.com> <CAKv63utD2NzbUYR2=rrmZtkdtwOzoQBW7dZ5yzNa-r8uKmqXaw@mail.gmail.com>
+In-Reply-To: <CAKv63utD2NzbUYR2=rrmZtkdtwOzoQBW7dZ5yzNa-r8uKmqXaw@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 6 Sep 2022 15:36:34 +0300
+Message-ID: <CAHp75Vc1a1bguLxX7Laewa9f2k9c38KeOD1zsikmC+3=21MnyQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] iio: temperature: mlx90632 Add runtime
+ powermanagement modes
+To:     Crt Mori <cmo@melexis.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Crt Mori <cmo@melexis.com>
+On Tue, Sep 6, 2022 at 1:52 PM Crt Mori <cmo@melexis.com> wrote:
+> On Tue, 6 Sept 2022 at 12:21, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >
+> > Very good and documented code, thanks!
+> > I believe you better to use DEFINE_.*_PM_OPS instead of legacy ones
+> > (due to pm_ptr() usage).
+> > Otherwise, with some nitpicks that wouldn't prevent a green light,
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> >
+> I checked DEFINE_.*_PM_OPS usage around drivers and you either have
+> SIMPLE (where you define suspend/resume) or you have RUNTIME (for
+> runtime suspend/resume), but never are those two together. So I am a
+> bit puzzled how to get this working.
 
-Change/refactor to the new way of defining available attribute values.
+The one which suits here is called _DEFINE_DEV_PM_OPS(). But it's
+basically the same what you put here with the possible unused case.
 
-Signed-off-by: Crt Mori <cmo@melexis.com>
----
- drivers/iio/temperature/mlx90614.c | 41 ++++++++++++++++++++++--------
- 1 file changed, 30 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature/mlx90614.c
-index c253a5315988..3157416be912 100644
---- a/drivers/iio/temperature/mlx90614.c
-+++ b/drivers/iio/temperature/mlx90614.c
-@@ -79,16 +79,15 @@ struct mlx90614_data {
- 
- /* Bandwidth values for IIR filtering */
- static const int mlx90614_iir_values[] = {77, 31, 20, 15, 723, 153, 110, 86};
--static IIO_CONST_ATTR(in_temp_object_filter_low_pass_3db_frequency_available,
--		      "0.15 0.20 0.31 0.77 0.86 1.10 1.53 7.23");
--
--static struct attribute *mlx90614_attributes[] = {
--	&iio_const_attr_in_temp_object_filter_low_pass_3db_frequency_available.dev_attr.attr,
--	NULL,
--};
--
--static const struct attribute_group mlx90614_attr_group = {
--	.attrs = mlx90614_attributes,
-+static const int mlx90614_freqs[][2] = {
-+	{0, 150000},
-+	{0, 200000},
-+	{0, 310000},
-+	{0, 770000},
-+	{0, 860000},
-+	{1, 100000},
-+	{1, 530000},
-+	{7, 230000}
- };
- 
- /*
-@@ -373,6 +372,22 @@ static int mlx90614_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static int mlx90614_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type, int *length,
-+			       long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		*vals = (int *)mlx90614_freqs;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*length = 2 * ARRAY_SIZE(mlx90614_freqs);
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static const struct iio_chan_spec mlx90614_channels[] = {
- 	{
- 		.type = IIO_TEMP,
-@@ -389,6 +404,8 @@ static const struct iio_chan_spec mlx90614_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 		    BIT(IIO_CHAN_INFO_CALIBEMISSIVITY) |
- 			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+		.info_mask_separate_available =
-+			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
- 		    BIT(IIO_CHAN_INFO_SCALE),
- 	},
-@@ -401,6 +418,8 @@ static const struct iio_chan_spec mlx90614_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 		    BIT(IIO_CHAN_INFO_CALIBEMISSIVITY) |
- 			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+		.info_mask_separate_available =
-+			BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |
- 		    BIT(IIO_CHAN_INFO_SCALE),
- 	},
-@@ -410,7 +429,7 @@ static const struct iio_info mlx90614_info = {
- 	.read_raw = mlx90614_read_raw,
- 	.write_raw = mlx90614_write_raw,
- 	.write_raw_get_fmt = mlx90614_write_raw_get_fmt,
--	.attrs = &mlx90614_attr_group,
-+	.read_avail = mlx90614_read_avail,
- };
- 
- #ifdef CONFIG_PM
 -- 
-2.34.1
-
+With Best Regards,
+Andy Shevchenko

@@ -2,99 +2,106 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9869D5AE938
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 15:16:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF355AEA9B
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Sep 2022 15:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234408AbiIFNQt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Sep 2022 09:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56542 "EHLO
+        id S231569AbiIFNon (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Sep 2022 09:44:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234277AbiIFNQs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 09:16:48 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67EDE6C106;
-        Tue,  6 Sep 2022 06:16:44 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id a22so7916336qtw.10;
-        Tue, 06 Sep 2022 06:16:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=NoCbebGaOWxkwqZQWcLHo7uI1OK/Nn+DHDHQ7NFsadc=;
-        b=jYp77ldm+4lVSZXDHm2hhZj1UVisPG2zTYgIgaIfWxFZW1nIM2l0UC6+Fo6MXviZdR
-         Y9P0mg7I4yTrG7pd2splD69vkgwTcj6+0AYqNUUT68bC7+5rRpGCey2s5NFCvXlOK62t
-         iTRAsGQWpPEzUOHESPOo5lskqEbuUwGR5eb5/cP+J0R92gipJoOm2/PyaRD0Bm27Ni4F
-         EGlHiSRK6HWmpzXVT+QKGrkD4W+zzUf0zRFPAcdx4hR9rvPbeXFNoYOwT0b9yyp51jh7
-         u7pRu9aTfjT4Ohqs0XnmK1h4Pk1//urX5l7pdZedkcrA/HkLE/notVUO7QOwm1Nf9zVv
-         YS1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=NoCbebGaOWxkwqZQWcLHo7uI1OK/Nn+DHDHQ7NFsadc=;
-        b=gCR3hDxWgZ1IwIp7nJPaVImDEx8YaJDu5q1P+B8ODoCu0kSlUNFO8HbBSyYEgppDdh
-         sWezRoYQmhaBDDOJbcP+bP49OIKN8qE8Fp3bM96IfhDQGMKDhahFMrhz+3Pv8iyv6iO4
-         q5YnMeaJ5A2uU2gr85YeLqvHCuLxSAGpgPSW7VzA3pM/FMrwDzOD0i31QvHBPZhISRBT
-         1eKg13SFlu1unpQthH+XwqK6nyRqhSXjYRO7Qxkj6vUUx1Sgqw/4qUpEdkrXeeQn18Aa
-         t8KEwlfUPMhAV/MQAnynfXc7F4du93p2g/6yg/NXnagab+0HVFZWg8GRWa37ZDubMBne
-         9/yQ==
-X-Gm-Message-State: ACgBeo1F+V1lOow1ErY3Yux4/ThrIG8BoD4M5O5PDb34fuTsCbqkWwV/
-        hLZHv7mQucjGytrfvr/PjnVPrA5hZq6MsdkVskE=
-X-Google-Smtp-Source: AA6agR6i7B+oUyRuVMipuDEgzBmFB2WR/0ilFHjBm/eE8ykTIP5wbce/mr2hbsEUK+C6GBDvn2dvfWF75D5NHNiyxcg=
-X-Received: by 2002:a05:622a:40a:b0:343:77ba:727f with SMTP id
- n10-20020a05622a040a00b0034377ba727fmr44328260qtx.481.1662470203427; Tue, 06
- Sep 2022 06:16:43 -0700 (PDT)
+        with ESMTP id S233688AbiIFNm7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Sep 2022 09:42:59 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3ED7E327;
+        Tue,  6 Sep 2022 06:37:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662471474; x=1694007474;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0AVHmV4j+CGqbHA0Zsx4yKELCU1KzKM2ua3IIG4LOjw=;
+  b=OlCgQOfPkfcHaWWyLGbWjgM8UBsh3PYTJApnX0+s9wo5BUA4VZzO+y+S
+   rRVLm0hWXPNbAc1dM77+p2c80DGcH2fNr6V0lg68WDOzgh7WNp/9evNl1
+   Ii2DjChUl7FL7Yz0/1+wTKq/162SlVv0tmrVBRQx0vJwceHjsg2Alq84s
+   pWlkLfivdP5Kp0jy4hLevV+jPaQZbwFZrl/3Mzke8MHldJF134XY6bD+d
+   63bBqqD+gQR+ewIbO5BV+vlNnjv/BooVZ3yJklFRINwZpInuOrz3MU2EQ
+   /ltbvKVLf8WXa6OpxrNQWV9PoGDq5X2JPJNXYyaisTJwzKuc7PutKD9Ps
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10462"; a="297378054"
+X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
+   d="scan'208";a="297378054"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:36:26 -0700
+X-IronPort-AV: E=Sophos;i="5.93,294,1654585200"; 
+   d="scan'208";a="682398883"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2022 06:36:24 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oVYkW-0098Zi-2d;
+        Tue, 06 Sep 2022 16:36:20 +0300
+Date:   Tue, 6 Sep 2022 16:36:20 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
+Message-ID: <YxdM1KUFcdVlnKuO@smile.fi.intel.com>
+References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
+ <20220603181006.2c5cc6c4@jic23-huawei>
+ <20220620204225.34d40a3f@jic23-huawei>
 MIME-Version: 1.0
-References: <cover.1662454215.git.cmo@melexis.com> <32c4b72624e4a3480b202f24f506ca91029e47f7.1662454215.git.cmo@melexis.com>
- <CAHp75VezNufWGW6sC+ALmX9H4yavWRCmpHuv9ZVoRycQxZ-uQg@mail.gmail.com>
- <CAKv63utD2NzbUYR2=rrmZtkdtwOzoQBW7dZ5yzNa-r8uKmqXaw@mail.gmail.com>
- <CAHp75Vc1a1bguLxX7Laewa9f2k9c38KeOD1zsikmC+3=21MnyQ@mail.gmail.com> <CAKv63utCSXVgOP4JkEBQSzDWF_s443a-ZbCd8V4tP9=z461McA@mail.gmail.com>
-In-Reply-To: <CAKv63utCSXVgOP4JkEBQSzDWF_s443a-ZbCd8V4tP9=z461McA@mail.gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 6 Sep 2022 16:16:07 +0300
-Message-ID: <CAHp75VcAhDPLyS=f07qVyiUY_Bh-ZrovWcajn2UkugQt=OCNNQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220620204225.34d40a3f@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 6, 2022 at 4:04 PM Crt Mori <cmo@melexis.com> wrote:
-> On Tue, 6 Sept 2022 at 14:37, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Tue, Sep 6, 2022 at 1:52 PM Crt Mori <cmo@melexis.com> wrote:
-> > > On Tue, 6 Sept 2022 at 12:21, Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > >
-> > > > Very good and documented code, thanks!
-> > > > I believe you better to use DEFINE_.*_PM_OPS instead of legacy ones
-> > > > (due to pm_ptr() usage).
-> > > > Otherwise, with some nitpicks that wouldn't prevent a green light,
-> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > > >
-> > > I checked DEFINE_.*_PM_OPS usage around drivers and you either have
-> > > SIMPLE (where you define suspend/resume) or you have RUNTIME (for
-> > > runtime suspend/resume), but never are those two together. So I am a
-> > > bit puzzled how to get this working.
-> >
-> > The one which suits here is called _DEFINE_DEV_PM_OPS(). But it's
-> > basically the same what you put here with the possible unused case.
-> >
-> I thought underscore prefixed macros are the ones not to be used
-> directly by drivers. I also found no occurrence in current drivers, so
-> it was not something that was done so far?
+On Mon, Jun 20, 2022 at 08:42:25PM +0100, Jonathan Cameron wrote:
+> On Fri, 3 Jun 2022 18:10:06 +0100
+> Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Mon, 30 May 2022 20:33:24 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > 
+> > > First of all, the additional conversion from vIRQ, and this is exactly
+> > > what is returned by platform_get_irq_byname(), to vIRQ is not needed.  
+> > Confusing sentence form.  Perhaps:
+> > 
+> > First, the additional conversion from vIRQ (returned by platform_get_irq_byname())
+> > to vIRQ is not needed.
+> > 
+> > > Hence, drop no-op call to irq_of_parse_and_map().
+> > > 
+> > > Second, assign the firmware node instead of of_node.
 
-Looks like... Okay, then let's leave it to the maintainer to decide.
+...
+
+> > Seems sensible to me, but I'd like a sanity check from someone more
+> > familiar with this driver.
+> 
+> This one has been outstanding for a few weeks. I'd still like
+> an Ack or similar form someone who knows this device well.
+> 
+> If no one has looked at it in a week or so I'll just go with
+> my judgement and pick it up.
+
+Any news on this one? Maybe I need to resend with the better commit message?
 
 -- 
 With Best Regards,
 Andy Shevchenko
+
+

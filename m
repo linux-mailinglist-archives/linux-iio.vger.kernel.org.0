@@ -2,161 +2,101 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 113745B1594
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 09:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 701CA5B15B7
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 09:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231276AbiIHH0d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 03:26:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
+        id S230061AbiIHHdG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Sep 2022 03:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231270AbiIHH0b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 03:26:31 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E4C8A6E3
-        for <linux-iio@vger.kernel.org>; Thu,  8 Sep 2022 00:26:29 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id k10so11674792lfm.4
-        for <linux-iio@vger.kernel.org>; Thu, 08 Sep 2022 00:26:29 -0700 (PDT)
+        with ESMTP id S229552AbiIHHdE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 03:33:04 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930B3A1D48;
+        Thu,  8 Sep 2022 00:33:02 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id x1so12634776plv.5;
+        Thu, 08 Sep 2022 00:33:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=zV14ZrPb0sLe3LlJJhGfIpC1GJYkmJpmWMU/WGtehbI=;
-        b=gfOOKl14bPeQJmyQHPROYW1RZ6gTeG51WxCl8wVG5NKJ9qO4xuN/gfd0gCd4kxvBqU
-         DMWe+mlHCMvBDwxho76t33439XmBey5up5wN01r1TrCXG164S92RApQW/hXZ3NmmWjPo
-         uUgll2Q7BTWa3vnxZIQCOti65s+zn0sggUR8BChQF16uIDdjvysr3q2+LvQWIiIAqJwO
-         Gr8c/A5KQASdWuYHcUUrdeWZ4gZslrggA7I/uaENKqn6XQ4FcuAYoIChNLCaG8vMey/V
-         nb8SvxQn1hd4owrRQdZqwzQHKrAUGQ47veTnzEuliXrZ8Wbmo7W5bsErADh0XrWdawRv
-         Ohig==
+        bh=B8tgrxk79xHPz1l1wMBtMK+SqLA6DxQq1jBnPGwyQdw=;
+        b=Q2Re0VL533BkmGPXbTegt5bw9YtJZsBIbhzfnqYTFbsj4seIovNfeXuOrNs7q+A9iB
+         6fiTzLzck4t6kmADNojQ3nbPqs0VFhL/HL0dgw9w15700bauQggqdIsh6GipozpiY1H1
+         ARM2G7LvrSLkI5AVdmbFVfJymyvXUEAs9cnJzcqWxo/hACBSFjNYnz/cPBbLz7USbaph
+         n+4b4vXjh7HqxVdzYXSzaOQCkMZYwlPgidJv6YapBrO2UPJq0xH1M4NBledbQGThG+4t
+         pS6l4pW05Voe3j6JNrZaQeqo5R1Ll5EV8aIMrLsVnmoF9r6d3fmlDpEiGipiee6yPlAy
+         IJjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=zV14ZrPb0sLe3LlJJhGfIpC1GJYkmJpmWMU/WGtehbI=;
-        b=1Me4zKLp9qWZb2v7xY6FA2j+FU3Efzut+tBipMmwGFcFjRHxaq4xS24M0Ssu54BAp+
-         LJV9Vansr6nsMgbfZoaCEOPAgsw10dHr5d2dVa+JLwMFSSH73zn4uweEUYRcF0NvUOvD
-         BGQigqvUaivPHGn7X/vzFKDzu1vCMHs8TRmgeWEvecTSL/pCS8rNllaEor1YGbKOZsjs
-         odjWfMd68ieq8X5okdjQJssjGRX7rtXdlNXZY39J7hmbbVT+abiAYvfPHeC0SraKXwGx
-         QUfqUfZ5SVqPEy+SpcgtfGcKbP8Nz5yqqb5bafJn2Mr+ucO4So+rumklbl8tN6SWDea1
-         N+Ww==
-X-Gm-Message-State: ACgBeo3Q7xlgTOW67+yuYSCYd1T0XctXRexhdmj7Sgq72amtD3RLF5gW
-        2tsFrHJeCOq4FleBPBkBo8xpUQ==
-X-Google-Smtp-Source: AA6agR6hfBQxU5tREXAYW7heBGTbG9JR2EcyRgYr5+8t111tVvCNN1TGQEysisztgbCCE4VCgUeb8Q==
-X-Received: by 2002:a05:6512:e99:b0:492:cf19:875 with SMTP id bi25-20020a0565120e9900b00492cf190875mr2349119lfb.690.1662621987999;
-        Thu, 08 Sep 2022 00:26:27 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id 18-20020a2eb952000000b00268335eaa8asm3072406ljs.51.2022.09.08.00.26.26
+        bh=B8tgrxk79xHPz1l1wMBtMK+SqLA6DxQq1jBnPGwyQdw=;
+        b=p6nJTeb5ownuoCs44odHoIfnTuQBZxtvpMuGz4PIQdFF9UkVWV9A6KWMnM9KeLWvKb
+         +Ipzdtti0XbR5ZROkyypL7OP1K2DLm4eGjvKjaSPHv5GrYfPfd1quI3cqgY1/hTYzQJs
+         ch1jpp4HXYNIPkg4xKAyf+IrZHk24ZmibzHUbHMmFgVZKeINudLP/b32fQQGtN4RpUpP
+         0l3JW2aBpIxNxZqM4qFkIZWTTrPFjhoeFVIIM0+V0o1The75cpHcWjLmIgZvdc3Ecq8N
+         qGt/O9RffNZrsNlnqAY6T9ZUxvr3hwixAy30z65O95OMSJ4mCkMSWly7OeO3nUwZk24f
+         nnJw==
+X-Gm-Message-State: ACgBeo0dZF3Ro2d+qqKIYQ2eZbGNc3sWBfe/Lm/ZBX7lqReNp+gEiJEH
+        yW8+vzqkTm7Ve9sRxTOempM=
+X-Google-Smtp-Source: AA6agR4PSHVFRGYzYiymC5ZQ8p/qRragiKAoPQMeOY/ALRkyDJHEi4S1+kNMKsc4IBElgaOBqHSctg==
+X-Received: by 2002:a17:90a:ab0a:b0:200:9339:3935 with SMTP id m10-20020a17090aab0a00b0020093393935mr2672902pjq.141.1662622382049;
+        Thu, 08 Sep 2022 00:33:02 -0700 (PDT)
+Received: from [192.168.43.80] (subs02-180-214-232-7.three.co.id. [180.214.232.7])
+        by smtp.gmail.com with ESMTPSA id z6-20020a623306000000b005321340753fsm5620781pfz.103.2022.09.08.00.32.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Sep 2022 00:26:27 -0700 (PDT)
-Message-ID: <5bf2258e-9d98-8427-07eb-f2577e6f3b54@linaro.org>
-Date:   Thu, 8 Sep 2022 09:26:26 +0200
+        Thu, 08 Sep 2022 00:33:01 -0700 (PDT)
+Message-ID: <dda8346f-2cfb-4d85-607c-553625cc98d4@gmail.com>
+Date:   Thu, 8 Sep 2022 14:32:49 +0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.13.0
-Subject: Re: [PATCH v2 3/5] arm64: dts: qcom: Add PM6125 PMIC
+Subject: Re: [v7 00/14] Add support for Bosch BNO055 IMU
 Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
- <20220805135729.1037079-4-marijn.suijten@somainline.org>
- <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
- <20220907212747.i2y6qi75avhavyr4@SoMainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220907212747.i2y6qi75avhavyr4@SoMainline.org>
+To:     andrea.merello@gmail.com
+Cc:     andrea.merello@iit.it, jic23@kernel.org, mchehab+huawei@kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
+        ardeleanalex@gmail.com, jacopo@jmondi.org
+References: <20220907132205.28021-1-andrea.merello@iit.it>
+ <1b30d814-3570-1cb7-573b-9bca90d5d3fd@gmail.com>
+ <CAN8YU5P1qjKtmSskA_+vLMnC6wHFmhk4ZvP+a-9KLr0OsY0FdA@mail.gmail.com>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <CAN8YU5P1qjKtmSskA_+vLMnC6wHFmhk4ZvP+a-9KLr0OsY0FdA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 07/09/2022 23:27, Marijn Suijten wrote:
-> On 2022-08-08 12:17:06, Krzysztof Kozlowski wrote:
->> On 05/08/2022 16:57, Marijn Suijten wrote:
->>> This PMIC is commonly used on boards with an SM6125 SoC and looks very
->>> similar in layout to the PM6150.
->>>
->>> Downstream declares more nodes to be available, but these have been
->>> omitted from this patch: the pwm/lpg block is unused on my reference
->>> device making it impossible to test/validate, and the spmi-clkdiv does
->>> not have a single device-tree binding using this driver yet, hence
->>> inclusion is better postponed until ie. audio which uses these clocks is
->>> brought up.
->>>
->>
->> Thank you for your patch. There is something to discuss/improve.
+On 9/8/22 13:51, Andrea Merello wrote:
+>> Rebased on what tree (and what commit)? I can't cleanly apply patch
+>> [05/14].
 > 
-> I can respin the series with the suggested changes (and the iio patch
-> removed as that has now been applied), but note that all other PMIC dtsi
-> files as of -next today still carry the "wrong" adc-tm or gpios node
-> names.  Are there plans to patch those up too (if not already in a
-> series that I missed)?
-
-See below
-
+> Sorry, it looks like I've raced against recent updates on iio-togreg
+> branch (i.e. I've rebased, then I've got preemped by something else,
+> then I've tested and sent the series some days later - I should have
+> rebased again).
 > 
-> - Marijn
+> BTW patches can be applied on the top of this
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=2bc9cd66eb25d0fefbb081421d6586495e25840e
 > 
->>> +
->>> +			xo-therm@4c {
->>> +				reg = <ADC5_XO_THERM_100K_PU>;
->>> +				qcom,pre-scaling = <1 1>;
->>> +				qcom,hw-settle-time = <200>;
->>> +				qcom,ratiometric;
->>> +			};
->>> +		};
->>> +
->>> +		pm6125_adc_tm: adc-tm@3500 {
->>
->> Generic node names, so either this is adc or thermal-sensor. Looks like
->> thermal-sensor.
+> I'll prepare a v8 anyway.
+> 
 
-My comment was here not correct. The schema indeed expects this to be
-adc-tm. I did not plan to change it, so let's keep adc-tm also here.
+OK.
 
->>
->>> +			compatible = "qcom,spmi-adc-tm5";
->>> +			reg = <0x3500>;
->>> +			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
->>> +			#address-cells = <1>;
->>> +			#size-cells = <0>;
->>> +			#thermal-sensor-cells = <1>;
->>> +			status = "disabled";
->>> +		};
->>> +
->>> +		pm6125_rtc: rtc@6000 {
->>> +			compatible = "qcom,pm8941-rtc";
->>> +			reg = <0x6000>, <0x6100>;
->>> +			reg-names = "rtc", "alarm";
->>> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
->>> +			status = "disabled";
->>> +		};
->>> +
->>> +		pm6125_gpio: gpios@c000 {
->>
->> s/gpios/gpio/
+Don't forget to pass --base to git-format-patch(1) when preparing v8.
 
-Both are allowed by schema, but convention in all other cases is "gpio",
-so let's change it. I'll send a patch for other files.
-
-Best regards,
-Krzysztof
+-- 
+An old man doll... just what I always wanted! - Clara

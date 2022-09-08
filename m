@@ -2,90 +2,133 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE795B1D47
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 14:40:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD315B1D59
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 14:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbiIHMkk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 08:40:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
+        id S231892AbiIHMlR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Sep 2022 08:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbiIHMkj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 08:40:39 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81C9BC59D3;
-        Thu,  8 Sep 2022 05:40:38 -0700 (PDT)
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MNdsT3ZPFz67n8d;
-        Thu,  8 Sep 2022 20:36:29 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 8 Sep 2022 14:40:36 +0200
-Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 8 Sep
- 2022 13:40:36 +0100
-Date:   Thu, 8 Sep 2022 13:40:35 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-CC:     <andrea.merello@gmail.com>, <andrea.merello@iit.it>,
-        <jic23@kernel.org>, <mchehab+huawei@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <lars@metafoo.de>,
-        <robh+dt@kernel.org>, <andy.shevchenko@gmail.com>,
-        <matt.ranostay@konsulko.com>, <ardeleanalex@gmail.com>,
-        <jacopo@jmondi.org>
-Subject: Re: [v7 00/14] Add support for Bosch BNO055 IMU
-Message-ID: <20220908134035.000027ca@huawei.com>
-In-Reply-To: <dda8346f-2cfb-4d85-607c-553625cc98d4@gmail.com>
-References: <20220907132205.28021-1-andrea.merello@iit.it>
-        <1b30d814-3570-1cb7-573b-9bca90d5d3fd@gmail.com>
-        <CAN8YU5P1qjKtmSskA_+vLMnC6wHFmhk4ZvP+a-9KLr0OsY0FdA@mail.gmail.com>
-        <dda8346f-2cfb-4d85-607c-553625cc98d4@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S231880AbiIHMlN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 08:41:13 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 787BDD0774
+        for <linux-iio@vger.kernel.org>; Thu,  8 Sep 2022 05:41:03 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id nc14so37716486ejc.4
+        for <linux-iio@vger.kernel.org>; Thu, 08 Sep 2022 05:41:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=7Cc3JjRoygtSTXogpO0wdGB24mbzR+AXN+9ZoeSda84=;
+        b=j8VC/Ra6EgN8dGVA8AGrHXrS2XVoT2RFYj7AiY9Kg1ZrZOYenCJQ9ZZs/P1OwLwVgE
+         GYRrhQiMJVpqNMgAhWw1VEkgfMZ2XbKsAM6JyAwCDuwCGGyCdUB8UO3jI3V1j8qUJI3m
+         GXxk1zOW1GrVfDFB0NIYfVSouOMvgM5GObi3+cytemoNKSwZzHgtdZ9mOztX59/725+m
+         XKDckNZWnY2Zm7u59hgL4tcFpPWEnKVQ1mim/jbUPo1zgVaCVgEfcbyOhmfgOLx0OjTu
+         57FHnlFYgrmQYGm+4ts84xs9kVOaO9z4+KedejqfIzApOVBGVSYyB07+74yYKDi6K0mL
+         jLIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=7Cc3JjRoygtSTXogpO0wdGB24mbzR+AXN+9ZoeSda84=;
+        b=Cc2QecexkRQlnak3NEBO3em/rxGLUEw2bZ5JcDDEf5dIZ4fB1wKdAG0oz4eFU5S5LI
+         zClbQBqb3sov6QCGfBDnEPcW2NCYVkChFpi10dNWePTxRg7s6d/1PTbKVk6DLob/52Xa
+         AAwN6clMSZZUDfjyN25VN7GLfOheB5sunxcixq/zKklO768pr7fkgUpm/1eDiINpgBJa
+         XE6hL39mvsGANfeh4oqrQ4SlJzFurED0GYIxfDQrL71Kc49MRUvtNyYoFcvYu7tuhW7z
+         12fdwlrfB3X9GObW1LZky1GdUmsBg8x2SVtSuVE4AZhMlcGcLC4GkUXWlh09FuSHPxC8
+         Zmjg==
+X-Gm-Message-State: ACgBeo1rWkDx2VhNfCuD7J381GtGsEADVp58vqo5Axevq81ZEh4y7VnI
+        k5JwzdSw1wK6K4eAx2Ru+hob6uSsAwgKlEI4+XTEbg==
+X-Google-Smtp-Source: AA6agR4ePYuOmtxrt0CjkIai+xgdE7eucVDz1eLZcaM3bclYP+MlyvscuYoZ4xtEj0w8eM8TXWU86P2R5T/DfYJ4pZ4=
+X-Received: by 2002:a17:907:1c89:b0:741:4453:75be with SMTP id
+ nb9-20020a1709071c8900b00741445375bemr6018030ejc.208.1662640862005; Thu, 08
+ Sep 2022 05:41:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220715044948.434149-1-cosmin.tanislav@analog.com>
+ <20220715044948.434149-2-cosmin.tanislav@analog.com> <CACRpkdZVkXM-8DZjTaOxnS05Wz5GHon0sK1g7hDbz5SDJf9A=A@mail.gmail.com>
+ <06476041-e8d6-7030-2f46-ace964c42513@gmail.com>
+In-Reply-To: <06476041-e8d6-7030-2f46-ace964c42513@gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 8 Sep 2022 14:40:50 +0200
+Message-ID: <CACRpkda=JdgBqFvY_7q_Zv0HJx1wmtMEfB9heycy5PuEE4mrSA@mail.gmail.com>
+Subject: Re: [PATCH v8 1/2] dt-bindings: iio: adc: add AD4130
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 8 Sep 2022 14:32:49 +0700
-Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+On Thu, Sep 8, 2022 at 9:03 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> On 9/8/22 13:51, Andrea Merello wrote:
-> >> Rebased on what tree (and what commit)? I can't cleanly apply patch
-> >> [05/14].  
-> > 
-> > Sorry, it looks like I've raced against recent updates on iio-togreg
-> > branch (i.e. I've rebased, then I've got preemped by something else,
-> > then I've tested and sent the series some days later - I should have
-> > rebased again).
-> > 
-> > BTW patches can be applied on the top of this
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=2bc9cd66eb25d0fefbb081421d6586495e25840e
-> > 
-> > I'll prepare a v8 anyway.
-For minor stuff like Doc updates, don't about rebase if everything else
-is fine. I can fix little merge conflicts whilst applying.
+> >> +  adi,ext-clk-freq-hz:
+> >> +    description: Specify the frequency of the external clock.
+> >> +    enum: [76800, 153600]
+> >> +    default: 76800
+> >
+> > This looks like cheating, i.e just outputting a clock on that pin
+> > and ignoring to model the consumer.
+>
+> You got this wrong.
+>
+> The chip has 4 operating modes regarding clocking.
+>
+> Internal 76.8kHz clock (clkout can be used as an interrupt pin).
+> Internal 76.8kHz clock, available externally on the clkout pin (clkout
+> becomes an output).
+> External 76.8kHz clock (clkout is an input).
+> External 153.6kHz clock, internally divided by two (clkout is an input).
+>
+> This property is used to choose between what frequency to set the
+> external clock up with. Indeed, if the external clock is not present,
+> then exposing the 76.8kHz clock using the clock framework would be fine.
+>
+> Maybe you have a better suggestion about what to do with this?
+> How do I tell the chip what frequency the external clock is, but also
+> tell the clock what frequency to use? It's a bit of a conundrum for me.
 
-Thanks,
+I would imagine not specify in the device tree what frequency to use
+at all.
 
-Jonathan
+Instead use software for that.
 
-> >   
-> 
-> OK.
-> 
-> Don't forget to pass --base to git-format-patch(1) when preparing v8.
-> 
+The clock provide for the clkout should provide
 
+static const struct clk_ops extclk_ops = {
+        .recalc_rate = extclk_recalc_rate,
+        .round_rate = extclk_round_rate,
+        .set_rate = extclk_set_rate,
+};
+
+This way the consumer driver can issue clk_round_rate(),
+clk_set_rate() etc to make the clk driver determine which parent
+to use for the consumer. Likewise .enable or .prepare should
+then mux out the desired clock.
+
+> >> +  adi,bipolar:
+> >> +    description: Specify if the device should be used in bipolar mode.
+> >> +    type: boolean
+> >
+> > Can you explain what this means? I don't understand what it would
+> > mean for an analog device / AFE to be in bipolar mode.
+> >
+>
+> Range becomes [-VRef, VRef], as opposed to [0, VRef], resolution is
+> halved.
+
+OK that makes sense, put that in the binding description.
+
+Yours,
+Linus Walleij

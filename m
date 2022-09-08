@@ -2,175 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F40C5B1552
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 09:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 113745B1594
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 09:26:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231265AbiIHHDu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 03:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59310 "EHLO
+        id S231276AbiIHH0d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Sep 2022 03:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbiIHHDt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 03:03:49 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9257CC2EA6;
-        Thu,  8 Sep 2022 00:03:37 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id nc14so35844860ejc.4;
-        Thu, 08 Sep 2022 00:03:37 -0700 (PDT)
+        with ESMTP id S231270AbiIHH0b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 03:26:31 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4E4C8A6E3
+        for <linux-iio@vger.kernel.org>; Thu,  8 Sep 2022 00:26:29 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id k10so11674792lfm.4
+        for <linux-iio@vger.kernel.org>; Thu, 08 Sep 2022 00:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date;
-        bh=02XXAQ3uOpN3dH9E7JIiJKNVPEVhN/C9uK0JMwrUFlA=;
-        b=MYA/7io0JQzjMRQAtwYV8HWCMQnKfxlmg0EizInlFB7c/Nr4aLdcByGIU1U8ApReR3
-         5G5R2GdXTrhvbmwOWzojZA4M1JFSJ2oHXKtje6lgsgOqE3XKWNIwM3gvvDM/kRpziKL4
-         kgz7DPXnTVwXKtoIPJq4ivVLMePbTbHaGbufqhTfTvfXa6Zav7f8azD6oHDiP1AW2PsE
-         GagivQG0BFf4FJczzHdGktl7rLMJVrja9nfuUU6PQPvc99o9+OERpVtHPDrxo0j/ch4t
-         YCQ5xHAqUQ3xvmtJAbdbApKaQqnFdQEaaVSJ5s5oC9cEw5ZGqNXGAUWKz70VZ7V4tfWd
-         08gQ==
+        bh=zV14ZrPb0sLe3LlJJhGfIpC1GJYkmJpmWMU/WGtehbI=;
+        b=gfOOKl14bPeQJmyQHPROYW1RZ6gTeG51WxCl8wVG5NKJ9qO4xuN/gfd0gCd4kxvBqU
+         DMWe+mlHCMvBDwxho76t33439XmBey5up5wN01r1TrCXG164S92RApQW/hXZ3NmmWjPo
+         uUgll2Q7BTWa3vnxZIQCOti65s+zn0sggUR8BChQF16uIDdjvysr3q2+LvQWIiIAqJwO
+         Gr8c/A5KQASdWuYHcUUrdeWZ4gZslrggA7I/uaENKqn6XQ4FcuAYoIChNLCaG8vMey/V
+         nb8SvxQn1hd4owrRQdZqwzQHKrAUGQ47veTnzEuliXrZ8Wbmo7W5bsErADh0XrWdawRv
+         Ohig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=02XXAQ3uOpN3dH9E7JIiJKNVPEVhN/C9uK0JMwrUFlA=;
-        b=TTw/T5789m0aMbKvbHNdgOciiXS+Sq4efGr4WRcosshdLXBaGy+F7CYj8WiOuDYgHN
-         hD0EYsn/V/GJ2X17taPRgV45DHjBlgVquoG7Fu3uBIg10TUmdwXDLrd9oZ0LVzs2tAqj
-         gBIVRbpO/R8sdtXJvdmi/HBuj79AJejO+TrEManTmw3TXktdBMtSll2ITgzoVR4muoM0
-         wk7RyWOZ9zxXNKwikvvCV9p5njtD98K/f8iyrEjpT67BNwEXDqPCVOdEuRPYeNz/TPnV
-         MRjjL0Ou5eHQUWUP3TWDHF6dKoK4AeIfQjUT8e+G3zDsKNcUtLQVOhYvHaQOUj7OWLop
-         TDNg==
-X-Gm-Message-State: ACgBeo1mIEq4bhCQA8BppC/BCDZFJxmf3DkS1ay59nCnT76negxzlNlk
-        9f984vOQHQxZUzp9PBUWu/E=
-X-Google-Smtp-Source: AA6agR4hR5ICYTsCtOG7Yrfqdg2H6b2VHaWBOqzPTMELn6zg+HYHpK5WxgNPyjX4AVmBCRue6yaNcg==
-X-Received: by 2002:a17:907:8687:b0:730:7c7b:b9ce with SMTP id qa7-20020a170907868700b007307c7bb9cemr4973642ejc.656.1662620615982;
-        Thu, 08 Sep 2022 00:03:35 -0700 (PDT)
-Received: from [192.168.0.182] ([188.24.116.38])
-        by smtp.gmail.com with ESMTPSA id b23-20020aa7d497000000b0044ec3285b23sm5255480edr.58.2022.09.08.00.03.34
+        bh=zV14ZrPb0sLe3LlJJhGfIpC1GJYkmJpmWMU/WGtehbI=;
+        b=1Me4zKLp9qWZb2v7xY6FA2j+FU3Efzut+tBipMmwGFcFjRHxaq4xS24M0Ssu54BAp+
+         LJV9Vansr6nsMgbfZoaCEOPAgsw10dHr5d2dVa+JLwMFSSH73zn4uweEUYRcF0NvUOvD
+         BGQigqvUaivPHGn7X/vzFKDzu1vCMHs8TRmgeWEvecTSL/pCS8rNllaEor1YGbKOZsjs
+         odjWfMd68ieq8X5okdjQJssjGRX7rtXdlNXZY39J7hmbbVT+abiAYvfPHeC0SraKXwGx
+         QUfqUfZ5SVqPEy+SpcgtfGcKbP8Nz5yqqb5bafJn2Mr+ucO4So+rumklbl8tN6SWDea1
+         N+Ww==
+X-Gm-Message-State: ACgBeo3Q7xlgTOW67+yuYSCYd1T0XctXRexhdmj7Sgq72amtD3RLF5gW
+        2tsFrHJeCOq4FleBPBkBo8xpUQ==
+X-Google-Smtp-Source: AA6agR6hfBQxU5tREXAYW7heBGTbG9JR2EcyRgYr5+8t111tVvCNN1TGQEysisztgbCCE4VCgUeb8Q==
+X-Received: by 2002:a05:6512:e99:b0:492:cf19:875 with SMTP id bi25-20020a0565120e9900b00492cf190875mr2349119lfb.690.1662621987999;
+        Thu, 08 Sep 2022 00:26:27 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id 18-20020a2eb952000000b00268335eaa8asm3072406ljs.51.2022.09.08.00.26.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Sep 2022 00:03:35 -0700 (PDT)
-Message-ID: <06476041-e8d6-7030-2f46-ace964c42513@gmail.com>
-Date:   Thu, 8 Sep 2022 10:03:35 +0300
+        Thu, 08 Sep 2022 00:26:27 -0700 (PDT)
+Message-ID: <5bf2258e-9d98-8427-07eb-f2577e6f3b54@linaro.org>
+Date:   Thu, 8 Sep 2022 09:26:26 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.0
-Subject: Re: [PATCH v8 1/2] dt-bindings: iio: adc: add AD4130
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Rob Herring <robh@kernel.org>
-References: <20220715044948.434149-1-cosmin.tanislav@analog.com>
- <20220715044948.434149-2-cosmin.tanislav@analog.com>
- <CACRpkdZVkXM-8DZjTaOxnS05Wz5GHon0sK1g7hDbz5SDJf9A=A@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v2 3/5] arm64: dts: qcom: Add PM6125 PMIC
 Content-Language: en-US
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-In-Reply-To: <CACRpkdZVkXM-8DZjTaOxnS05Wz5GHon0sK1g7hDbz5SDJf9A=A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20220805135729.1037079-1-marijn.suijten@somainline.org>
+ <20220805135729.1037079-4-marijn.suijten@somainline.org>
+ <4cef00b4-c184-ae78-3709-5ed520ca3375@linaro.org>
+ <20220907212747.i2y6qi75avhavyr4@SoMainline.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220907212747.i2y6qi75avhavyr4@SoMainline.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-
-On 7/18/22 16:14, Linus Walleij wrote:
-> Hi Cosmin,
-> 
-> thanks for your patch!
-> 
-> On Fri, Jul 15, 2022 at 6:50 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
-> 
->> AD4130-8 is an ultra-low power, high precision, measurement solution for
->> low bandwidth battery operated applications.
+On 07/09/2022 23:27, Marijn Suijten wrote:
+> On 2022-08-08 12:17:06, Krzysztof Kozlowski wrote:
+>> On 05/08/2022 16:57, Marijn Suijten wrote:
+>>> This PMIC is commonly used on boards with an SM6125 SoC and looks very
+>>> similar in layout to the PM6150.
+>>>
+>>> Downstream declares more nodes to be available, but these have been
+>>> omitted from this patch: the pwm/lpg block is unused on my reference
+>>> device making it impossible to test/validate, and the spmi-clkdiv does
+>>> not have a single device-tree binding using this driver yet, hence
+>>> inclusion is better postponed until ie. audio which uses these clocks is
+>>> brought up.
+>>>
 >>
->> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
->> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
->> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
->> selectable filter options, smart sequencer, sensor biasing and excitation
->> options, diagnostics, and a FIFO buffer.
+>> Thank you for your patch. There is something to discuss/improve.
+> 
+> I can respin the series with the suggested changes (and the iio patch
+> removed as that has now been applied), but note that all other PMIC dtsi
+> files as of -next today still carry the "wrong" adc-tm or gpios node
+> names.  Are there plans to patch those up too (if not already in a
+> series that I missed)?
+
+See below
+
+> 
+> - Marijn
+> 
+>>> +
+>>> +			xo-therm@4c {
+>>> +				reg = <ADC5_XO_THERM_100K_PU>;
+>>> +				qcom,pre-scaling = <1 1>;
+>>> +				qcom,hw-settle-time = <200>;
+>>> +				qcom,ratiometric;
+>>> +			};
+>>> +		};
+>>> +
+>>> +		pm6125_adc_tm: adc-tm@3500 {
 >>
->> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
->> Reviewed-by: Rob Herring <robh@kernel.org>
-> (...)
-> 
-> This caught my eye:
-> 
->> +  adi,int-clk-out:
->> +    description: Specify if the internal clock should be exposed on the CLK pin.
->> +    type: boolean
-> 
-> Okay, but would it not make more sense to just imply this if the clock
-> on the CLK
-> pin has any consumers? Like update this setting in hardware when the consumer
-> does clk_prepare() or so on that externally routed clock?
-> 
+>> Generic node names, so either this is adc or thermal-sensor. Looks like
+>> thermal-sensor.
 
-You're right, this is indeed fit for being implemented using the clock
-framework.
+My comment was here not correct. The schema indeed expects this to be
+adc-tm. I did not plan to change it, so let's keep adc-tm also here.
 
->> +  adi,ext-clk-freq-hz:
->> +    description: Specify the frequency of the external clock.
->> +    enum: [76800, 153600]
->> +    default: 76800
-> 
-> This looks like cheating, i.e just outputting a clock on that pin
-> and ignoring to model the consumer.
+>>
+>>> +			compatible = "qcom,spmi-adc-tm5";
+>>> +			reg = <0x3500>;
+>>> +			interrupts = <0x0 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
+>>> +			#address-cells = <1>;
+>>> +			#size-cells = <0>;
+>>> +			#thermal-sensor-cells = <1>;
+>>> +			status = "disabled";
+>>> +		};
+>>> +
+>>> +		pm6125_rtc: rtc@6000 {
+>>> +			compatible = "qcom,pm8941-rtc";
+>>> +			reg = <0x6000>, <0x6100>;
+>>> +			reg-names = "rtc", "alarm";
+>>> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
+>>> +			status = "disabled";
+>>> +		};
+>>> +
+>>> +		pm6125_gpio: gpios@c000 {
+>>
+>> s/gpios/gpio/
 
-You got this wrong.
+Both are allowed by schema, but convention in all other cases is "gpio",
+so let's change it. I'll send a patch for other files.
 
-The chip has 4 operating modes regarding clocking.
-
-Internal 76.8kHz clock (clkout can be used as an interrupt pin).
-Internal 76.8kHz clock, available externally on the clkout pin (clkout
-becomes an output).
-External 76.8kHz clock (clkout is an input).
-External 153.6kHz clock, internally divided by two (clkout is an input).
-
-This property is used to choose between what frequency to set the
-external clock up with. Indeed, if the external clock is not present,
-then exposing the 76.8kHz clock using the clock framework would be fine.
-
-Maybe you have a better suggestion about what to do with this?
-How do I tell the chip what frequency the external clock is, but also
-tell the clock what frequency to use? It's a bit of a conundrum for me.
-
-> 
-> Shouldn't this rather be a clkout subnode with 2 #clock-cells
-> and the fequency set in a cell in a consumer phandle?
-> Like how I did in
-> commit 7335631fcd5eecfa84555bd57433e6446d06ad21
-> "dt-bindings: clock: u8500: Add clkout clock bindings"
-> 
-> Usually it is the consumer that requests a specific clock and then the
-> producer will respond.
-> 
-> Certainly whatever is consuming this clock needs to be in the device tree
-> as well, and then this is the right pattern.
-> 
-> (In Linux you will then use the clk framework to manage the clock and callbacks
-> but that is irrelevant for the DT bindings.)
-> 
->> +  adi,bipolar:
->> +    description: Specify if the device should be used in bipolar mode.
->> +    type: boolean
-> 
-> Can you explain what this means? I don't understand what it would
-> mean for an analog device / AFE to be in bipolar mode.
-> 
-
-Range becomes [-VRef, VRef], as opposed to [0, VRef], resolution is
-halved.
-
-> Other than that it looks very nice!
-> 
-> Yours,
-> Linus Walleij
+Best regards,
+Krzysztof

@@ -2,65 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E445B1526
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 08:51:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F40C5B1552
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 09:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbiIHGvi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 02:51:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36558 "EHLO
+        id S231265AbiIHHDu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Sep 2022 03:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231132AbiIHGvg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 02:51:36 -0400
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 636773887;
-        Wed,  7 Sep 2022 23:51:35 -0700 (PDT)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-11eab59db71so41871030fac.11;
-        Wed, 07 Sep 2022 23:51:35 -0700 (PDT)
+        with ESMTP id S229795AbiIHHDt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 03:03:49 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9257CC2EA6;
+        Thu,  8 Sep 2022 00:03:37 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id nc14so35844860ejc.4;
+        Thu, 08 Sep 2022 00:03:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=nZhyFiVZ5FmrbCVH3yiFfyThQCmFYCChpsu7PErUvUk=;
-        b=lWy18AVfC9mgtwSPqch+EKd2XTjoLOFtwelwrOSL/GZJwaVyr5KcfrNAZgLroHNkrU
-         vTrueWx9317OF1LRT1a4EaVzulQAN1yBKMHvLbw09oWGyD1i3w+iicbBIRKwkB5qPhwp
-         MkCnjE7nc6+M0TX+bI2On7eZB9WcAi2utbEEjJRz+0e073aTCYVG0HetWnXkk/4MEK8D
-         vMvA76yaxH+jcGUCY+djNTwjnfnsdGwh8AYZs1Zv2Vh796uxf3NoabvCB2058ez/XPL4
-         ymtMTtTyfM56Yjf3SH8q65dAd4D8e9Mx5Cgc49B3vt8+cGBy7jOf+paBc7FiyOQLFir3
-         k7bA==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=02XXAQ3uOpN3dH9E7JIiJKNVPEVhN/C9uK0JMwrUFlA=;
+        b=MYA/7io0JQzjMRQAtwYV8HWCMQnKfxlmg0EizInlFB7c/Nr4aLdcByGIU1U8ApReR3
+         5G5R2GdXTrhvbmwOWzojZA4M1JFSJ2oHXKtje6lgsgOqE3XKWNIwM3gvvDM/kRpziKL4
+         kgz7DPXnTVwXKtoIPJq4ivVLMePbTbHaGbufqhTfTvfXa6Zav7f8azD6oHDiP1AW2PsE
+         GagivQG0BFf4FJczzHdGktl7rLMJVrja9nfuUU6PQPvc99o9+OERpVtHPDrxo0j/ch4t
+         YCQ5xHAqUQ3xvmtJAbdbApKaQqnFdQEaaVSJ5s5oC9cEw5ZGqNXGAUWKz70VZ7V4tfWd
+         08gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=nZhyFiVZ5FmrbCVH3yiFfyThQCmFYCChpsu7PErUvUk=;
-        b=Lkll/IXxK9l/Y32hDvt+g2NIpeHvQ6mOXA6WTPdUZgTPoDN0QwS52qmoBejZkVUqlV
-         BrAv2Wv29nujZXNF9S4Q3mDj23+dDp2i0oTPci4YJPJfuz6kTd0pbUfNT9/vLQ+H3H4c
-         ZLjmKy1NpvJYL494qDXFBRWSs+Rm+nlvZFEw10V2hGvfZBPYC7Vs/qfAVoYIXhrKului
-         gGujMQxKrm4ro79IVfk6TyVnIlShmIF3pKREVVvlPeVNlObs0pMixFhs0IFcKTwyzWi2
-         5Hup717Gz9ARTByreEmefjqk7NXMAsQU1D8T5luObO0elejuafs2lfJfMetqgdoewTOC
-         2PLw==
-X-Gm-Message-State: ACgBeo0A6AVGZSQF7BcwMcp7eQwrm3QglXOu607ze9nWE5i+6DtD6ext
-        CEGZmGFutNpPoYGYPC9qsiExOJxjOQnAQWa6MhxzSWMUeAQ0wg==
-X-Google-Smtp-Source: AA6agR4WYyumoB3bBlR7x1MAZJ6ZRBxi4dFfUksq/C+dxYntHY1I5leYEOMrhfoOVGXygUbS06bZQbdklwokgBOmahg=
-X-Received: by 2002:a05:6870:4586:b0:10d:2ec7:be6 with SMTP id
- y6-20020a056870458600b0010d2ec70be6mr1134861oao.7.1662619894223; Wed, 07 Sep
- 2022 23:51:34 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=02XXAQ3uOpN3dH9E7JIiJKNVPEVhN/C9uK0JMwrUFlA=;
+        b=TTw/T5789m0aMbKvbHNdgOciiXS+Sq4efGr4WRcosshdLXBaGy+F7CYj8WiOuDYgHN
+         hD0EYsn/V/GJ2X17taPRgV45DHjBlgVquoG7Fu3uBIg10TUmdwXDLrd9oZ0LVzs2tAqj
+         gBIVRbpO/R8sdtXJvdmi/HBuj79AJejO+TrEManTmw3TXktdBMtSll2ITgzoVR4muoM0
+         wk7RyWOZ9zxXNKwikvvCV9p5njtD98K/f8iyrEjpT67BNwEXDqPCVOdEuRPYeNz/TPnV
+         MRjjL0Ou5eHQUWUP3TWDHF6dKoK4AeIfQjUT8e+G3zDsKNcUtLQVOhYvHaQOUj7OWLop
+         TDNg==
+X-Gm-Message-State: ACgBeo1mIEq4bhCQA8BppC/BCDZFJxmf3DkS1ay59nCnT76negxzlNlk
+        9f984vOQHQxZUzp9PBUWu/E=
+X-Google-Smtp-Source: AA6agR4hR5ICYTsCtOG7Yrfqdg2H6b2VHaWBOqzPTMELn6zg+HYHpK5WxgNPyjX4AVmBCRue6yaNcg==
+X-Received: by 2002:a17:907:8687:b0:730:7c7b:b9ce with SMTP id qa7-20020a170907868700b007307c7bb9cemr4973642ejc.656.1662620615982;
+        Thu, 08 Sep 2022 00:03:35 -0700 (PDT)
+Received: from [192.168.0.182] ([188.24.116.38])
+        by smtp.gmail.com with ESMTPSA id b23-20020aa7d497000000b0044ec3285b23sm5255480edr.58.2022.09.08.00.03.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Sep 2022 00:03:35 -0700 (PDT)
+Message-ID: <06476041-e8d6-7030-2f46-ace964c42513@gmail.com>
+Date:   Thu, 8 Sep 2022 10:03:35 +0300
 MIME-Version: 1.0
-References: <20220907132205.28021-1-andrea.merello@iit.it> <1b30d814-3570-1cb7-573b-9bca90d5d3fd@gmail.com>
-In-Reply-To: <1b30d814-3570-1cb7-573b-9bca90d5d3fd@gmail.com>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Thu, 8 Sep 2022 08:51:23 +0200
-Message-ID: <CAN8YU5P1qjKtmSskA_+vLMnC6wHFmhk4ZvP+a-9KLr0OsY0FdA@mail.gmail.com>
-Subject: Re: [v7 00/14] Add support for Bosch BNO055 IMU
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     andrea.merello@iit.it, jic23@kernel.org, mchehab+huawei@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
-        ardeleanalex@gmail.com, jacopo@jmondi.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v8 1/2] dt-bindings: iio: adc: add AD4130
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, linux-iio@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Rob Herring <robh@kernel.org>
+References: <20220715044948.434149-1-cosmin.tanislav@analog.com>
+ <20220715044948.434149-2-cosmin.tanislav@analog.com>
+ <CACRpkdZVkXM-8DZjTaOxnS05Wz5GHon0sK1g7hDbz5SDJf9A=A@mail.gmail.com>
+Content-Language: en-US
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+In-Reply-To: <CACRpkdZVkXM-8DZjTaOxnS05Wz5GHon0sK1g7hDbz5SDJf9A=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,34 +80,97 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno gio 8 set 2022 alle ore 05:47 Bagas Sanjaya
-<bagasdotme@gmail.com> ha scritto:
->
-> On 9/7/22 20:21, andrea.merello@iit.it wrote:
-> > Differences wrt v6:
-> >
-> > - fix some typos.
-> > - fix some style issues.
-> > - get rid of ifdefs for CONFIG_DEBUG_FS.
-> > - avoid pushing data to the IIO layer if we actually failed reading it.
-> > - rework debugfs file creating failure path.
-> > - fix errors and warning found by kernel test robot <lkp@intel.com>
-> > - rebase
->
-> Rebased on what tree (and what commit)? I can't cleanly apply patch
-> [05/14].
 
-Sorry, it looks like I've raced against recent updates on iio-togreg
-branch (i.e. I've rebased, then I've got preemped by something else,
-then I've tested and sent the series some days later - I should have
-rebased again).
 
-BTW patches can be applied on the top of this
-https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=togreg&id=2bc9cd66eb25d0fefbb081421d6586495e25840e
+On 7/18/22 16:14, Linus Walleij wrote:
+> Hi Cosmin,
+> 
+> thanks for your patch!
+> 
+> On Fri, Jul 15, 2022 at 6:50 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> 
+>> AD4130-8 is an ultra-low power, high precision, measurement solution for
+>> low bandwidth battery operated applications.
+>>
+>> The fully integrated AFE (Analog Front-End) includes a multiplexer for up
+>> to 16 single-ended or 8 differential inputs, PGA (Programmable Gain
+>> Amplifier), 24-bit Sigma-Delta ADC, on-chip reference and oscillator,
+>> selectable filter options, smart sequencer, sensor biasing and excitation
+>> options, diagnostics, and a FIFO buffer.
+>>
+>> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+>> Reviewed-by: Rob Herring <robh@kernel.org>
+> (...)
+> 
+> This caught my eye:
+> 
+>> +  adi,int-clk-out:
+>> +    description: Specify if the internal clock should be exposed on the CLK pin.
+>> +    type: boolean
+> 
+> Okay, but would it not make more sense to just imply this if the clock
+> on the CLK
+> pin has any consumers? Like update this setting in hardware when the consumer
+> does clk_prepare() or so on that externally routed clock?
+> 
 
-I'll prepare a v8 anyway.
+You're right, this is indeed fit for being implemented using the clock
+framework.
 
-> Thanks.
->
-> --
-> An old man doll... just what I always wanted! - Clara
+>> +  adi,ext-clk-freq-hz:
+>> +    description: Specify the frequency of the external clock.
+>> +    enum: [76800, 153600]
+>> +    default: 76800
+> 
+> This looks like cheating, i.e just outputting a clock on that pin
+> and ignoring to model the consumer.
+
+You got this wrong.
+
+The chip has 4 operating modes regarding clocking.
+
+Internal 76.8kHz clock (clkout can be used as an interrupt pin).
+Internal 76.8kHz clock, available externally on the clkout pin (clkout
+becomes an output).
+External 76.8kHz clock (clkout is an input).
+External 153.6kHz clock, internally divided by two (clkout is an input).
+
+This property is used to choose between what frequency to set the
+external clock up with. Indeed, if the external clock is not present,
+then exposing the 76.8kHz clock using the clock framework would be fine.
+
+Maybe you have a better suggestion about what to do with this?
+How do I tell the chip what frequency the external clock is, but also
+tell the clock what frequency to use? It's a bit of a conundrum for me.
+
+> 
+> Shouldn't this rather be a clkout subnode with 2 #clock-cells
+> and the fequency set in a cell in a consumer phandle?
+> Like how I did in
+> commit 7335631fcd5eecfa84555bd57433e6446d06ad21
+> "dt-bindings: clock: u8500: Add clkout clock bindings"
+> 
+> Usually it is the consumer that requests a specific clock and then the
+> producer will respond.
+> 
+> Certainly whatever is consuming this clock needs to be in the device tree
+> as well, and then this is the right pattern.
+> 
+> (In Linux you will then use the clk framework to manage the clock and callbacks
+> but that is irrelevant for the DT bindings.)
+> 
+>> +  adi,bipolar:
+>> +    description: Specify if the device should be used in bipolar mode.
+>> +    type: boolean
+> 
+> Can you explain what this means? I don't understand what it would
+> mean for an analog device / AFE to be in bipolar mode.
+> 
+
+Range becomes [-VRef, VRef], as opposed to [0, VRef], resolution is
+halved.
+
+> Other than that it looks very nice!
+> 
+> Yours,
+> Linus Walleij

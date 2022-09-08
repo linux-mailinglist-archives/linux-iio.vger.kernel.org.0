@@ -2,104 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2C15B212A
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 16:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0EC5B264E
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 20:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbiIHOuW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 10:50:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58706 "EHLO
+        id S229933AbiIHS4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Sep 2022 14:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229966AbiIHOuV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 10:50:21 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FEC95AA1B
-        for <linux-iio@vger.kernel.org>; Thu,  8 Sep 2022 07:50:20 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 288E9ZCI031612;
-        Thu, 8 Sep 2022 10:50:18 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jf8ybuwap-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 08 Sep 2022 10:50:17 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 288EoGsX049949
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 8 Sep 2022 10:50:16 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 8 Sep 2022 10:50:15 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 8 Sep 2022 10:50:13 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 8 Sep 2022 10:50:13 -0400
-Received: from ibrahim-vm.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.132])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 288EnsW4023822;
-        Thu, 8 Sep 2022 10:50:07 -0400
-From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-To:     <jic23@kernel.org>
-CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
-        <Nurettin.Bolucu@analog.com>
-Subject: [PATCH v4 3/3] Documentation: ABI: testing: add max11410 doc
-Date:   Thu, 8 Sep 2022 17:49:24 +0300
-Message-ID: <20220908144924.205547-4-Ibrahim.Tilki@analog.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220908144924.205547-1-Ibrahim.Tilki@analog.com>
-References: <20220908144924.205547-1-Ibrahim.Tilki@analog.com>
+        with ESMTP id S230338AbiIHS4G (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 14:56:06 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5584FE127B;
+        Thu,  8 Sep 2022 11:55:56 -0700 (PDT)
+Received: from [IPV6:2405:201:10:389d:42df:ae4c:c047:294c] (unknown [IPv6:2405:201:10:389d:42df:ae4c:c047:294c])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: shreeya)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3CB6E6601FA5;
+        Thu,  8 Sep 2022 19:55:53 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1662663354;
+        bh=/0YQxiGiLijwA+CaDfO6VApaf51Pu3uEzYBqsFWNDnw=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=cxIwTkGycIMA7GAM3ra/IVSHuLzHqPCwvCz7XjjXY6zvp16dd3wajqf1TochqyAPX
+         IFOX0Ot8316hrizIr9QDyLkgbLvrac/DTVEygCgfZhU2D+BEHEBiZo2AfYSxSFtpbZ
+         1c2btO2k8i92Rby9J2O9MwcHjfbWIL8Ixtx6Lek11OCW/CuvUqXy03xzOGiMlcGzKm
+         vBH7yV5mSvXMBR1RfqGJwhiGJVm5xyQM2SBEbQzX3IhMiay5/Zy/GSmWypHN47THqp
+         BDyjozTp5CZdil53SJxvbiJn8DG+28tlRpvQXlcEAl7W1nwOtVo7qUgJtfoexpgD9/
+         0UIebZIEFTMzg==
+Message-ID: <03401e6f-f660-9313-61dc-a930675c82ec@collabora.com>
+Date:   Fri, 9 Sep 2022 00:25:49 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: GVTe4Caj4Hlzf3d4hVVGo9L_r7YImJ-U
-X-Proofpoint-ORIG-GUID: GVTe4Caj4Hlzf3d4hVVGo9L_r7YImJ-U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-08_10,2022-09-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=890
- lowpriorityscore=0 mlxscore=0 bulkscore=0 spamscore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209080054
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v2] iio: light: tsl2583: Fix module unloading
+Content-Language: en-US
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, krisman@collabora.com,
+        dmitry.osipenko@collabora.com, kernel@collabora.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20220826122352.288438-1-shreeya.patel@collabora.com>
+ <20220828173327.7949ad73@jic23-huawei>
+From:   Shreeya Patel <shreeya.patel@collabora.com>
+In-Reply-To: <20220828173327.7949ad73@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Adding documentation for Analog Devices max11410 adc userspace sysfs.
 
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
----
- .../ABI/testing/sysfs-bus-iio-adc-max11410          | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
+On 28/08/22 22:03, Jonathan Cameron wrote:
+> On Fri, 26 Aug 2022 17:53:52 +0530
+> Shreeya Patel <shreeya.patel@collabora.com> wrote:
+>
+>> tsl2583 uses devm_iio_device_register() function and
+>> calling iio_device_unregister() in remove breaks the
+>> module unloading.
+>> Fix this by using iio_device_register() instead of
+>> devm_iio_device_register() function in probe.
+> Not sure why you are wrapping at 55 chars. I rewrapped this whilst applying.
+>
+> Reworded it a little too as I was touching it anyway.
+>
+> Applied to the fixes-togreg branch of iio.git.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410 b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-new file mode 100644
-index 000000000..2a53c6b37
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-@@ -0,0 +1,13 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_en
-+Date:		September 2022
-+KernelVersion:  6.0
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Enable or disable a notch filter.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_center
-+Date:		September 2022
-+KernelVersion:  6.0
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Center frequency of the notch filter in Hz.
--- 
-2.36.1
+Hi Jonathan,
 
+I was wondering if this got picked by you. I don't see it in 
+fixes-togreg that's why wanted to just confirm if you aren't looking for 
+some extra changes in this.
+
+
+Thanks
+Shreeya Patel
+
+>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 371894f5d1a0 ("iio: tsl2583: add runtime power management support")
+> I took a look at this patch and it introduces the issue I just pointed
+> out in replying to your v1 by dropping the
+> /* Make sure the chip is on */
+> Which was correct even with runtime pm because it covered the case of
+> runtime_pm being disabled.   We probably need to bring that back as well,
+> perhaps as part of a cleanup patch taking this fully devm_
+>
+> This driver has another issue for working if runtime PM isn't built into
+> the kernel which is that it checks the return of pm_runtime_put_autosuspend()
+> which calls
+>
+> static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
+> {
+> 	return -ENOSYS;
+> }
+>
+> I've been meaning to do an audit for drivers that have this problem for
+> a while, but not yet gotten to it.
+>
+> An ideal IIO driver needs to work correctly whether or not CONFIG_PM is
+> enabled.
+>
+> Jonathan
+>
+>
+>> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+>> ---
+>> Changes in v2
+>>    - Use iio_device_register() instead of devm_iio_device_register()
+>>    - Add fixes and stable tags
+>>
+>>   drivers/iio/light/tsl2583.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+>> index 82662dab87c0..94d75ec687c3 100644
+>> --- a/drivers/iio/light/tsl2583.c
+>> +++ b/drivers/iio/light/tsl2583.c
+>> @@ -858,7 +858,7 @@ static int tsl2583_probe(struct i2c_client *clientp,
+>>   					 TSL2583_POWER_OFF_DELAY_MS);
+>>   	pm_runtime_use_autosuspend(&clientp->dev);
+>>   
+>> -	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
+>> +	ret = iio_device_register(indio_dev);
+>>   	if (ret) {
+>>   		dev_err(&clientp->dev, "%s: iio registration failed\n",
+>>   			__func__);
+>

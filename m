@@ -2,137 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D0EC5B264E
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Sep 2022 20:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF3BD5B2ECC
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Sep 2022 08:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229933AbiIHS4I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Sep 2022 14:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47300 "EHLO
+        id S230443AbiIIGYz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Sep 2022 02:24:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230338AbiIHS4G (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Sep 2022 14:56:06 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5584FE127B;
-        Thu,  8 Sep 2022 11:55:56 -0700 (PDT)
-Received: from [IPV6:2405:201:10:389d:42df:ae4c:c047:294c] (unknown [IPv6:2405:201:10:389d:42df:ae4c:c047:294c])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: shreeya)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3CB6E6601FA5;
-        Thu,  8 Sep 2022 19:55:53 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1662663354;
-        bh=/0YQxiGiLijwA+CaDfO6VApaf51Pu3uEzYBqsFWNDnw=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=cxIwTkGycIMA7GAM3ra/IVSHuLzHqPCwvCz7XjjXY6zvp16dd3wajqf1TochqyAPX
-         IFOX0Ot8316hrizIr9QDyLkgbLvrac/DTVEygCgfZhU2D+BEHEBiZo2AfYSxSFtpbZ
-         1c2btO2k8i92Rby9J2O9MwcHjfbWIL8Ixtx6Lek11OCW/CuvUqXy03xzOGiMlcGzKm
-         vBH7yV5mSvXMBR1RfqGJwhiGJVm5xyQM2SBEbQzX3IhMiay5/Zy/GSmWypHN47THqp
-         BDyjozTp5CZdil53SJxvbiJn8DG+28tlRpvQXlcEAl7W1nwOtVo7qUgJtfoexpgD9/
-         0UIebZIEFTMzg==
-Message-ID: <03401e6f-f660-9313-61dc-a930675c82ec@collabora.com>
-Date:   Fri, 9 Sep 2022 00:25:49 +0530
+        with ESMTP id S230429AbiIIGYt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Sep 2022 02:24:49 -0400
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077BB20BC7
+        for <linux-iio@vger.kernel.org>; Thu,  8 Sep 2022 23:24:43 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id l7-20020a056830154700b0065563d564dfso459576otp.0
+        for <linux-iio@vger.kernel.org>; Thu, 08 Sep 2022 23:24:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=WcH6UHGbsWFkewU/wT0fJawZxX15Zl4hkDGkeADuGdJGmv3t1iQNtgSoMnFwdIiKsl
+         x0SFF8bkohRdk9mKGKM+s9gauDKjJXrvYE2yTKQmchoZQEeCIon6bMdclwr30NYYePtN
+         LlWsahNYX+ZnmYtHuo+L3HiSHKxAxOAJsjY/zT5bRdtKkslqggYR6PeuSVU/Upq3p6Lx
+         v7+3Sl0ycmpNJAkDyyfB3vDmj0Ku1DLMT5UNXcPYiD+ne677L4tBdx+wZ+UEyMq3qhuC
+         L3qiWtmRltydGdTH8yRtHUUCoYBmNYblSu9kOey2R0GaJCd4zJFwUrFzR3gFC4Ma5YBK
+         ywXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ZwPxd8LtjEuPX3lP8M/ewsRzKiwOr4k1fCds3gC7Jk4=;
+        b=A4jFGjrpHIzVOEfxkPq/26tbd05KvU+awO+CcqzM/QnjLpJzYp/bRVk0/gQ5RSEe6D
+         CiP1XM9v/lfHmdk8WA1TJB5xNHhil0yVj7/foj2KJNRvVNPbczVAztciFk/30vQLK6EU
+         PbhmuVC+q+Dd1FBXPsKce8rhRUz/ahYHK85LCvcoY/FVVEClWTFcYsTwJR/+PwyWtw6K
+         guKlkU6yYZBH7l2K5bIqhmF2K24ZrDtK/bzy/2HVF5gF2yDiICkGxbqw3N6be9gH3had
+         QDAyyAAHRexhm3yGvZWCMpQrzUKsiJ5H7jeegEMieMn1nzWz+yHgb3PPHrGuQo7gskFv
+         Lj+A==
+X-Gm-Message-State: ACgBeo2AzBXRcrIHVUOePR+Ch6sqj7nWQ5XDkLFTT9nkqob+h//AbPlz
+        pxtabMopnFaI42BD1hk8nwX/3uxjqO+HPxqsejE=
+X-Google-Smtp-Source: AA6agR5oQwYexb5IuYa5dQgOTrJVTByrVtuS9dapD7VlJ47FKqY17GiN0xDTC5NddRnxIwHXasBmKTYYBxKZ43rAUg0=
+X-Received: by 2002:a9d:6e0e:0:b0:652:6ed2:eb83 with SMTP id
+ e14-20020a9d6e0e000000b006526ed2eb83mr3789515otr.308.1662704682511; Thu, 08
+ Sep 2022 23:24:42 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v2] iio: light: tsl2583: Fix module unloading
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     lars@metafoo.de, krisman@collabora.com,
-        dmitry.osipenko@collabora.com, kernel@collabora.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20220826122352.288438-1-shreeya.patel@collabora.com>
- <20220828173327.7949ad73@jic23-huawei>
-From:   Shreeya Patel <shreeya.patel@collabora.com>
-In-Reply-To: <20220828173327.7949ad73@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6358:c27:b0:bc:944f:7c4e with HTTP; Thu, 8 Sep 2022
+ 23:24:42 -0700 (PDT)
+Reply-To: stefanopessina14@gmail.com
+From:   Stefano Pessina <prniceugochukwu@gmail.com>
+Date:   Thu, 8 Sep 2022 23:24:42 -0700
+Message-ID: <CA+eeEkAUSxvd2fRt0O=B0KtG8hzLpcviCGXBvO_1bui7P5TghQ@mail.gmail.com>
+Subject: Donation
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:342 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stefanopessina14[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [prniceugochukwu[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On 28/08/22 22:03, Jonathan Cameron wrote:
-> On Fri, 26 Aug 2022 17:53:52 +0530
-> Shreeya Patel <shreeya.patel@collabora.com> wrote:
->
->> tsl2583 uses devm_iio_device_register() function and
->> calling iio_device_unregister() in remove breaks the
->> module unloading.
->> Fix this by using iio_device_register() instead of
->> devm_iio_device_register() function in probe.
-> Not sure why you are wrapping at 55 chars. I rewrapped this whilst applying.
->
-> Reworded it a little too as I was touching it anyway.
->
-> Applied to the fixes-togreg branch of iio.git.
-
-Hi Jonathan,
-
-I was wondering if this got picked by you. I don't see it in 
-fixes-togreg that's why wanted to just confirm if you aren't looking for 
-some extra changes in this.
-
-
-Thanks
-Shreeya Patel
-
->
->> Cc: stable@vger.kernel.org
->> Fixes: 371894f5d1a0 ("iio: tsl2583: add runtime power management support")
-> I took a look at this patch and it introduces the issue I just pointed
-> out in replying to your v1 by dropping the
-> /* Make sure the chip is on */
-> Which was correct even with runtime pm because it covered the case of
-> runtime_pm being disabled.   We probably need to bring that back as well,
-> perhaps as part of a cleanup patch taking this fully devm_
->
-> This driver has another issue for working if runtime PM isn't built into
-> the kernel which is that it checks the return of pm_runtime_put_autosuspend()
-> which calls
->
-> static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
-> {
-> 	return -ENOSYS;
-> }
->
-> I've been meaning to do an audit for drivers that have this problem for
-> a while, but not yet gotten to it.
->
-> An ideal IIO driver needs to work correctly whether or not CONFIG_PM is
-> enabled.
->
-> Jonathan
->
->
->> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
->> ---
->> Changes in v2
->>    - Use iio_device_register() instead of devm_iio_device_register()
->>    - Add fixes and stable tags
->>
->>   drivers/iio/light/tsl2583.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
->> index 82662dab87c0..94d75ec687c3 100644
->> --- a/drivers/iio/light/tsl2583.c
->> +++ b/drivers/iio/light/tsl2583.c
->> @@ -858,7 +858,7 @@ static int tsl2583_probe(struct i2c_client *clientp,
->>   					 TSL2583_POWER_OFF_DELAY_MS);
->>   	pm_runtime_use_autosuspend(&clientp->dev);
->>   
->> -	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
->> +	ret = iio_device_register(indio_dev);
->>   	if (ret) {
->>   		dev_err(&clientp->dev, "%s: iio registration failed\n",
->>   			__func__);
->
+-- 
+I am Stefano Pessina, an  Italian business tycoon, investor, and
+philanthropist. the vice chairman, chief executive officer (CEO), and
+the single largest shareholder of Walgreens Boots Alliance. I gave
+away 25 percent of my personal wealth to charity. And I also pledged
+to give away the rest of 25% this year 2022 to Individuals.. I have
+decided to donate $2,200,000.00 to you. If you are interested in my
+donation, do contact me for more info

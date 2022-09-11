@@ -2,54 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1CAE5B4D67
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Sep 2022 12:30:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F38815B4D71
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Sep 2022 12:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230087AbiIKKae (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Sep 2022 06:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38802 "EHLO
+        id S229966AbiIKKdI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Sep 2022 06:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230142AbiIKKad (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Sep 2022 06:30:33 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F53037F9D;
-        Sun, 11 Sep 2022 03:30:32 -0700 (PDT)
+        with ESMTP id S229437AbiIKKdG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Sep 2022 06:33:06 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A1F3C151;
+        Sun, 11 Sep 2022 03:33:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A95F4B802BD;
-        Sun, 11 Sep 2022 10:30:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038BCC433C1;
-        Sun, 11 Sep 2022 10:30:26 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 88A86B80AFD;
+        Sun, 11 Sep 2022 10:33:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0B5C433C1;
+        Sun, 11 Sep 2022 10:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1662892229;
-        bh=rNnbtRFKYREYyqEB7cI/f2rBcfDDV7x9aQ18P6n205U=;
+        s=k20201202; t=1662892382;
+        bh=cssxUf85fo3xwMVXH/oVbDV1rjWJb8y2wy7UmYIaa/E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N7+so8nMUS8AntI37LqQR6aolHFhmwsq60lvM/jMkeiTpXQFl68I22dUsOd8WwsGD
-         6EPkPkpxMqb8qSSzQxuD+ggBeil1U8iAPZJXFfK2VfkSRaK2R9CAoKIMEe6vDJORzY
-         S7BahXqRiDLkAYhT3T62SHhCLs7X5d26ZGOIK3q8yI6vVWDZbMEP/8e2+p1KNnNAad
-         y+ydJKlisNDGP9uByVGa92KVdo5O/3QNjdH2VzYdFZAH7q67QVh7nHMgRHVWKwge1p
-         kde/pwUpH1pGbdKTQW8ZEXcx4J1HjQ8cxm2QQn1aWukNMU2wHQyLYyz2H2MIpnb8ZE
-         JE8j9S0/RFfMA==
-Date:   Sun, 11 Sep 2022 10:56:25 +0100
+        b=XhS4kISCYFy6qLa6qqROP8fKIKO2yZ7KB3lILrsOWftAH4qhs7fP9GJNhGGgIf0mV
+         tgsdv8Hp9Mh65yi1xD1HgolYEFzi9moGvQiLZkmA0QYx3wvg+jTpT/bMx64kWwX4MT
+         T77oD/VHNrpD0k0tp9zTOqGHmUavTYm9QG6uYgFQudGTQOm4nfrDE+N6FuqhLfpg2O
+         ZRCbPokf5+pXGG2vYiGAbA0oKhTOjCtU0d2CjAcjTQUMM8TYsvrxc3/jZfYs2hMVLw
+         7QYrLteGR+Mt8OW/FzFjZ4N9Qv/YjOItXlC16XCsvOlmVApc4bs+uw9a390RCDuljs
+         QxvNmLSs+IvAQ==
+Date:   Sun, 11 Sep 2022 10:58:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Eddie James <eajames@linux.ibm.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH v4 1/2] iio: pressure: dps310: Refactor startup
- procedure
-Message-ID: <20220911105625.348e3861@jic23-huawei>
-In-Reply-To: <85280d48-4251-2811-b66d-092f4153fbb5@linux.ibm.com>
-References: <20220809211246.251006-1-eajames@linux.ibm.com>
-        <20220809211246.251006-2-eajames@linux.ibm.com>
-        <CAHp75Vf5wcabm_-oKGN2m7z=L2xu1D6wtzKLhu6n19Uhq8yijQ@mail.gmail.com>
-        <e35b595f-572e-a539-c550-831cdd02dbd3@linux.ibm.com>
-        <CAHp75VfU26QZ7Z1ApzRcFPudgsQc7zWF5g0kwn7Jzk1htXaWng@mail.gmail.com>
-        <20220820124915.5dd5b745@jic23-huawei>
-        <85280d48-4251-2811-b66d-092f4153fbb5@linux.ibm.com>
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     lars@metafoo.de, krisman@collabora.com,
+        dmitry.osipenko@collabora.com, kernel@collabora.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] iio: light: tsl2583: Fix module unloading
+Message-ID: <20220911105855.4acad644@jic23-huawei>
+In-Reply-To: <03401e6f-f660-9313-61dc-a930675c82ec@collabora.com>
+References: <20220826122352.288438-1-shreeya.patel@collabora.com>
+        <20220828173327.7949ad73@jic23-huawei>
+        <03401e6f-f660-9313-61dc-a930675c82ec@collabora.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,65 +58,87 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 6 Sep 2022 14:48:20 -0500
-Eddie James <eajames@linux.ibm.com> wrote:
+On Fri, 9 Sep 2022 00:25:49 +0530
+Shreeya Patel <shreeya.patel@collabora.com> wrote:
 
-> On 8/20/22 06:49, Jonathan Cameron wrote:
-> > On Fri, 19 Aug 2022 12:42:00 +0300
-> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> On 28/08/22 22:03, Jonathan Cameron wrote:
+> > On Fri, 26 Aug 2022 17:53:52 +0530
+> > Shreeya Patel <shreeya.patel@collabora.com> wrote:
 > >  
-> >> On Mon, Aug 15, 2022 at 4:42 PM Eddie James <eajames@linux.ibm.com> wrote:  
-> >>> On 8/12/22 17:03, Andy Shevchenko wrote:  
-> >>>> On Wed, Aug 10, 2022 at 12:12 AM Eddie James <eajames@linux.ibm.com> wrote:  
-> >> ...
-> >>  
-> >>>>> +       rc = regmap_write(data->regmap, 0x0e, 0xA5);
-> >>>>> +       if (rc)
-> >>>>> +               return rc;
-> >>>>> +
-> >>>>> +       rc = regmap_write(data->regmap, 0x0f, 0x96);
-> >>>>> +       if (rc)
-> >>>>> +               return rc;  
-> >>>> This code already exists, but still want to ask, is it really
-> >>>> byte-registers here and not be16/le16 one? In such a case perhaps bulk
-> >>>> write can be used to reflect it better?  
-> >>> The temperature and pressure regs are 24 bits big endian, and all the
-> >>> rest are 8 bits. I think the existing approach is best.  
-> >> It doesn't look like you got what I was meaning... Or I misunderstood
-> >> what you said.
-> >>
-> >> The code above writes two byte values to two sequential registers
-> >> which make me think that they are 16-bit registers at offset 0x0e.  
-> > Given they are undocumented, this is guessing territory.
-> > Probably best to just leave them as is.
-> > You could do a bulk write on an array though as that implies
-> > nothing about what's in the registers -just that they happen
-> > to be next to each other.  
+> >> tsl2583 uses devm_iio_device_register() function and
+> >> calling iio_device_unregister() in remove breaks the
+> >> module unloading.
+> >> Fix this by using iio_device_register() instead of
+> >> devm_iio_device_register() function in probe.  
+> > Not sure why you are wrapping at 55 chars. I rewrapped this whilst applying.
+> >
+> > Reworded it a little too as I was touching it anyway.
+> >
+> > Applied to the fixes-togreg branch of iio.git.  
+> 
+> Hi Jonathan,
+> 
+> I was wondering if this got picked by you. I don't see it in 
+> fixes-togreg that's why wanted to just confirm if you aren't looking for 
+> some extra changes in this.
 > 
 > 
-> Indeed. Is it worth it to switch to bulk write for two 2-byte writes? 
-> I'm inclined to say no and will leave this as-is for v6, but if you 
-> think it is, I can switch it.
-> 
-
-As far as I'm concerned, fine either way.
+oops. I forgot to push that branch out. Done so now.
 
 Jonathan
 
-> 
-> Thanks,
-> 
-> Eddie
-> 
+> Thanks
+> Shreeya Patel
 > 
 > >  
-> >> ...
-> >>  
-> >>>>> +       rc = regmap_write(data->regmap, 0x0e, 0x00);
-> >>>>> +       if (rc)
-> >>>>> +               return rc;
-> >>>>> +
-> >>>>> +       return regmap_write(data->regmap, 0x0f, 0x00);  
-> >> Ditto.
-> >>  
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 371894f5d1a0 ("iio: tsl2583: add runtime power management support")  
+> > I took a look at this patch and it introduces the issue I just pointed
+> > out in replying to your v1 by dropping the
+> > /* Make sure the chip is on */
+> > Which was correct even with runtime pm because it covered the case of
+> > runtime_pm being disabled.   We probably need to bring that back as well,
+> > perhaps as part of a cleanup patch taking this fully devm_
+> >
+> > This driver has another issue for working if runtime PM isn't built into
+> > the kernel which is that it checks the return of pm_runtime_put_autosuspend()
+> > which calls
+> >
+> > static inline int __pm_runtime_suspend(struct device *dev, int rpmflags)
+> > {
+> > 	return -ENOSYS;
+> > }
+> >
+> > I've been meaning to do an audit for drivers that have this problem for
+> > a while, but not yet gotten to it.
+> >
+> > An ideal IIO driver needs to work correctly whether or not CONFIG_PM is
+> > enabled.
+> >
+> > Jonathan
+> >
+> >  
+> >> Signed-off-by: Shreeya Patel <shreeya.patel@collabora.com>
+> >> ---
+> >> Changes in v2
+> >>    - Use iio_device_register() instead of devm_iio_device_register()
+> >>    - Add fixes and stable tags
+> >>
+> >>   drivers/iio/light/tsl2583.c | 2 +-
+> >>   1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/light/tsl2583.c b/drivers/iio/light/tsl2583.c
+> >> index 82662dab87c0..94d75ec687c3 100644
+> >> --- a/drivers/iio/light/tsl2583.c
+> >> +++ b/drivers/iio/light/tsl2583.c
+> >> @@ -858,7 +858,7 @@ static int tsl2583_probe(struct i2c_client *clientp,
+> >>   					 TSL2583_POWER_OFF_DELAY_MS);
+> >>   	pm_runtime_use_autosuspend(&clientp->dev);
+> >>   
+> >> -	ret = devm_iio_device_register(indio_dev->dev.parent, indio_dev);
+> >> +	ret = iio_device_register(indio_dev);
+> >>   	if (ret) {
+> >>   		dev_err(&clientp->dev, "%s: iio registration failed\n",
+> >>   			__func__);  
+> >  
 

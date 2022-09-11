@@ -2,102 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B00875B55C2
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 10:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26D15B584B
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbiILILq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Sep 2022 04:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
+        id S230016AbiILK2i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 06:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbiILILn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 04:11:43 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E8DD25280;
-        Mon, 12 Sep 2022 01:11:42 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28C6HoTN024194;
-        Mon, 12 Sep 2022 04:11:23 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jgqg5kyq1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 12 Sep 2022 04:11:23 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 28C8BMgG062626
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 12 Sep 2022 04:11:22 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 12 Sep 2022 04:11:21 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 12 Sep 2022 04:11:21 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 12 Sep 2022 04:11:21 -0400
-Received: from nsa.ad.analog.com ([10.44.3.57])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28C8B4Hh011932;
-        Mon, 12 Sep 2022 04:11:15 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v2 3/3] dt-bindings: iio: adi,ad7923: add adi,range-double property
-Date:   Mon, 12 Sep 2022 10:12:23 +0200
-Message-ID: <20220912081223.173584-4-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220912081223.173584-1-nuno.sa@analog.com>
-References: <20220912081223.173584-1-nuno.sa@analog.com>
+        with ESMTP id S229718AbiILK2h (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:28:37 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EE639B9C;
+        Mon, 12 Sep 2022 03:28:36 -0700 (PDT)
+Received: from mercury (unknown [185.122.133.20])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id D43596601FDD;
+        Mon, 12 Sep 2022 11:28:34 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1662978515;
+        bh=Xjl7kTJeZ2nONpBk10Yzpv6u6vfACUqH8y3R+xm4q+8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=I0M9rjwy5Q2EeroeuXJ11DmtRSQe8LkTof/d8GMVwx5v6wpaYrt7V0jlMzmODNZw6
+         2U9tBHjFMfArkXA6FvEEeLikNsCPUz5DfIYOk7pPEg0ez7Ifr5/EvM3VyeBqMfXNZO
+         QnS9W8ZafXgA+yYcskSaNJR3BUi5sbOUA5JKu7310dfyoJvG+cm0vHOwGzq1mlZsEc
+         FxvVIMdljhnGWWJJEG4vcyTNOP9eIIH6yFOnHplJhX+lqRRoaSWhViN4B2fuGiQZD4
+         XKuQMaSEEjmTNObtFKfBRMUKvKQMbsXBmVzzn0F04avbjWpoZD8n8uWSA1jYKrhCxo
+         ZqRyPIK892MEg==
+Received: by mercury (Postfix, from userid 1000)
+        id 641E71063363; Sun, 11 Sep 2022 15:31:01 +0200 (CEST)
+Date:   Sun, 11 Sep 2022 15:31:01 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 5/6] power: supply: Add support for mp2733 battery
+ charger
+Message-ID: <20220911133101.7g6hnwp3dnnqrmgb@mercury.elektranox.org>
+References: <20220615145357.2370044-1-sravanhome@gmail.com>
+ <20220615145357.2370044-6-sravanhome@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: fpN74hPfDXWOdTPFxE4RaL7ZhaywPPVH
-X-Proofpoint-ORIG-GUID: fpN74hPfDXWOdTPFxE4RaL7ZhaywPPVH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-12_04,2022-09-09_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
- malwarescore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 adultscore=0 suspectscore=0 impostorscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2207270000 definitions=main-2209120027
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="qcqgmqhaojla5l7i"
+Content-Disposition: inline
+In-Reply-To: <20220615145357.2370044-6-sravanhome@gmail.com>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Document the new property to enable doubling the analog input range.
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+--qcqgmqhaojla5l7i
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-index 40b0a887db57..07f9d1c09c7d 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
-@@ -36,6 +36,10 @@ properties:
-     description: |
-       The regulator supply for ADC reference voltage.
- 
-+  adi,range-double:
-+    description: Sets the analog input range from 0 to 2xVREF.
-+    type: boolean
-+
-   '#address-cells':
-     const: 1
- 
--- 
-2.37.3
+Hi,
 
+On Wed, Jun 15, 2022 at 04:53:56PM +0200, Saravanan Sekar wrote:
+> mp2733 is updated version of mp2629 battery charge management
+> which supports USB fast-charge and higher range of input voltage.
+>=20
+> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+> [...]
+>  	psy_cfg.drv_data =3D charger;
+> -	psy_cfg.attr_grp =3D mp2629_charger_sysfs_groups;
+> +	if (charger->chip_info->has_impedance)
+> +		psy_cfg.attr_grp =3D mp2629_charger_sysfs_groups;
+> +
+> +	if (charger->chip_info->has_fast_charge)
+> +		psy_cfg.attr_grp =3D mp2733_charger_sysfs_groups;
+> +
+>  	charger->battery =3D devm_power_supply_register(dev,
+>  					 &mp2629_battery_desc, &psy_cfg);
+>  	if (IS_ERR(charger->battery)) {
+
+Instead of having has_impedance and has_fast_charge feature
+flag that are mutual exclusive, store the device type and
+use if/else or switch statement to chose the correct attr_grp.
+Other than that:
+
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+-- Sebastian
+
+--qcqgmqhaojla5l7i
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmMd4xEACgkQ2O7X88g7
++poocA/+Lz3J1X/X7Tv6Qr1eROOD7GUNz0r9mAnvehTOu5seQCOA4N/RO8m9UlOg
+94ZqS8NjdOUyr4QuRDmr6fH8WkgTrBzeW4bDHp+tIEwhIsxp6LGwxet3A6165mkB
+99Tg0KEddnfGxSQ06ma2Fda8yWPKeYimHgETJLI+e3A7fOeVTnCSB+AOUNpnmc+J
+r8Xqbj0uckH4hTecKJPMPRpzMoDmjJh5LDpXN4QM5MnjMXlMLrbEl8XRoNsUMeg+
+TeQcsSwPJs+QwyokMUN6odEkuLKjxc64KNovztyhrFYq+ysVOwCYiLD+9yiMqkyQ
+A3N3T1Y8/3gHCNuV+3O+ORGsZT7hcUceTzFiRVzGknJpZU0fnRMxv4BUaC6aosHH
+r+J4WfD5pJP/O7Ji3y/uhCNHhgXtDQtaqrZlQEUIej+V9FxVGcxJGFeKw9jZkCHJ
++aYW7fT1hg4bkzYZpUcMdkkcc/Y8iHmHvmS4c0iPh6USP66nIGknfxGez5HeVF+E
+efr6/kmDDw4gkB9NIA2QFRbfyikPNyW3d48ahY4N9U3cWYq7oGRMmDopQVhq9Ho4
+Brl7PjjebDyauG0QGFEaxamtYvg6clTkenevN1BiEGCdnQRsKqG3poh6Gh2iuTtZ
+m/DW9+cyjE57uWSIQZ3MDcL4ROK77FLNJ+FNErt1cqbAqOQ4A2k=
+=8nRK
+-----END PGP SIGNATURE-----
+
+--qcqgmqhaojla5l7i--

@@ -2,83 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3F815B4CF3
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Sep 2022 11:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321135B4D59
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Sep 2022 12:26:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229908AbiIKJTP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Sep 2022 05:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42454 "EHLO
+        id S230116AbiIKK0e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Sep 2022 06:26:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbiIKJTO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Sep 2022 05:19:14 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3542B3C8D9
-        for <linux-iio@vger.kernel.org>; Sun, 11 Sep 2022 02:19:13 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id w8so10102228lft.12
-        for <linux-iio@vger.kernel.org>; Sun, 11 Sep 2022 02:19:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date;
-        bh=K7SOn56lpl3rQ4W5ApgRofuOiIiXGC1PeTTRy4o8CDc=;
-        b=O1ZK29+wped5PqHbSlaM3sZKDCxoM15vD8it+9uD/87W093Eu05bO+w0hZgTwhnYv9
-         755v63B49BsI+7lb8Ju79Y9Bua5AdOsTAq8fX0ljDPTTrTJcv4RSFucYPEg54dUZNh0y
-         Tsdq372d567n7EsZva2+mxphdfURsxBWAdy6NTOohHGe/PZ9hTKNmj+PhJoKHUWyjnc9
-         /tphsPPZrKKCRW8mjWqoLhK3cKMqa0RKabLJ+qGkWf9OEq5wR3LYvdxsm0oSlcyP5tBO
-         7SLKUG3as6VtBvafQSlZ8AagBnFQ7VW34trFvoiP0uYiWt6NjeVzXvcAqc3JSxXnuLk9
-         /6WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=K7SOn56lpl3rQ4W5ApgRofuOiIiXGC1PeTTRy4o8CDc=;
-        b=yyKWpXXmZ4lAy+fz8KQTPbL6E/2DA+uEpE52+BJWBJlofpG3pBhr3N5cQn947gz11T
-         FwkFD6mizCKMM+z99bqSUc+NMQb6B08tqfhU4WYuvcvV5dCS+S5AM5v2WBXk8+qVyQy7
-         3iy+z3O0UzF/g7xkBpS4EWeXDmRxj3R4SGYAvpztoYlTcUxpwkOmk30L+KKflufD5kIu
-         pTvZ8ATZ/GM9XU0vOvC/xWnrATqe4niwmVg7PR+PRbGuwB1Et9M+qDaZtnXjS8A43pKl
-         QRyajUuH+DF/XTgoZG1RRB7oqh+qnGw7044LXHnxXGzXD++xAs+OjJTuP8CiGiNIeVjI
-         ofOg==
-X-Gm-Message-State: ACgBeo2spysFCkvlgeSTvokBFsav6k8juhbK7lho8G1u4J8xRpVRH/iZ
-        ZGLVBIDNoj5SSL8rHexnMOKKiHMrug/VXZv2+c0=
-X-Google-Smtp-Source: AA6agR5+ErzKWcbNOoOALhjqV2nCPZuhDtc+fgIkgWKdTFQURcTcNctvVsThUQtH9DdNxU5+gaMODxgg4TQ8GWDWrV0=
-X-Received: by 2002:ac2:5d6e:0:b0:494:99aa:6548 with SMTP id
- h14-20020ac25d6e000000b0049499aa6548mr6874084lft.508.1662887951223; Sun, 11
- Sep 2022 02:19:11 -0700 (PDT)
+        with ESMTP id S230138AbiIKK00 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Sep 2022 06:26:26 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5733AE60;
+        Sun, 11 Sep 2022 03:26:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 0AEC4CE0B69;
+        Sun, 11 Sep 2022 10:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F77C433C1;
+        Sun, 11 Sep 2022 10:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1662891981;
+        bh=CX0IateX3sJ2WEFjcCnlZ/1dbHOryL+D+S1Du/XSe+Q=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=J2ZGYSj70hjY6RGmsJlpMEpjgHhvlx6MVM1y8tn9GkJFzsuEfjkSmHVGYVwqTRe7C
+         NDzEjHpekCG2hi9BfuN1vhpXn8KLvC502VmJPgDYK66rN4mAzCVe9LW/el0awP48kb
+         8VZWkGVd2raOEWb3P8iYA/0sWBpQqwDV9ifuilTy3Fv2t7ca2URMRuFK9woMAQFa+3
+         nDIDTugFlhwnfyi9JbB503upsla2P9vGWxzHilcEIx4jiJoH1YN40fGQ+llSOXp04Z
+         e7EOAxbow9hmmGuubvL5aKa6Eo/P3rg3JGdyVaJII7+rrpxtkDDoARz4gSRnuzAYif
+         LxDiWtxfvcMyg==
+Date:   Sun, 11 Sep 2022 10:52:15 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
+Message-ID: <20220911105215.72bd79f3@jic23-huawei>
+In-Reply-To: <YxdM1KUFcdVlnKuO@smile.fi.intel.com>
+References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
+        <20220603181006.2c5cc6c4@jic23-huawei>
+        <20220620204225.34d40a3f@jic23-huawei>
+        <YxdM1KUFcdVlnKuO@smile.fi.intel.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Sender: michealkevin175@gmail.com
-Received: by 2002:a05:6512:2216:0:0:0:0 with HTTP; Sun, 11 Sep 2022 02:19:10
- -0700 (PDT)
-From:   Aisha Al-Qaddafi <aisha.gdaff21@gmail.com>
-Date:   Sat, 10 Sep 2022 21:19:10 -1200
-X-Google-Sender-Auth: 4eVJPsKzTTt2th9Zsxik2nh3Jm0
-Message-ID: <CAFDyLcys_LJyNwaxytzexNs9y3N=hzOHqO6RUnr4daVZHOn_-g@mail.gmail.com>
-Subject: please i need your assistance
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_95,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,MILLION_USD,MONEY_FRAUD_5,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I came across your e-mail contact prior to a private search while in need
-of your assistance. I am Aisha Al-Qaddafi, the only biological
-Daughter of Former President of Libya Col. Muammar Al-Qaddafi. Am a single
-Mother and a Widow with three Children. I have investment funds worth
-Twenty Seven Million Five Hundred Thousand  United State Dollar
-($27.500.000.00 ) and i need a trusted investment Manager/Partner
-because of my current refugee status, however, I
-am interested in you for investment project assistance in your
-country, may be from there, we can build business relationship in the
-nearest future. I am willing to negotiate an investment/business
-profit sharing ratio with you based on the future investment earning
-profits. If you are willing to handle this project on my behalf kindly
-reply urgently to enable me to provide you more information about the
-investment
-funds
+On Tue, 6 Sep 2022 16:36:20 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+
+> On Mon, Jun 20, 2022 at 08:42:25PM +0100, Jonathan Cameron wrote:
+> > On Fri, 3 Jun 2022 18:10:06 +0100
+> > Jonathan Cameron <jic23@kernel.org> wrote: =20
+> > > On Mon, 30 May 2022 20:33:24 +0300
+> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > >  =20
+> > > > First of all, the additional conversion from vIRQ, and this is exac=
+tly
+> > > > what is returned by platform_get_irq_byname(), to vIRQ is not neede=
+d.   =20
+> > > Confusing sentence form.  Perhaps:
+> > >=20
+> > > First, the additional conversion from vIRQ (returned by platform_get_=
+irq_byname())
+> > > to vIRQ is not needed.
+> > >  =20
+> > > > Hence, drop no-op call to irq_of_parse_and_map().
+> > > >=20
+> > > > Second, assign the firmware node instead of of_node. =20
+>=20
+> ...
+>=20
+> > > Seems sensible to me, but I'd like a sanity check from someone more
+> > > familiar with this driver. =20
+> >=20
+> > This one has been outstanding for a few weeks. I'd still like
+> > an Ack or similar form someone who knows this device well.
+> >=20
+> > If no one has looked at it in a week or so I'll just go with
+> > my judgement and pick it up. =20
+>=20
+> Any news on this one? Maybe I need to resend with the better commit messa=
+ge?
+>=20
+
+=46rom glancing back at the thread, looks like you said you were going to send
+a v2 with property.h include.  I think the rest of the thread is concerned
+with a different issue entirely.
+
+Jonathan
+
+

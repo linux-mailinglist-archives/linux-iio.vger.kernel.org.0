@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20CFD5B54EC
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 09:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C6C5B54F6
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 09:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiILHBJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Sep 2022 03:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
+        id S229658AbiILHD1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 03:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiILHBG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 03:01:06 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB667248E1;
-        Mon, 12 Sep 2022 00:01:04 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1279948d93dso20942097fac.10;
-        Mon, 12 Sep 2022 00:01:04 -0700 (PDT)
+        with ESMTP id S229543AbiILHD0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 03:03:26 -0400
+Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A6124965;
+        Mon, 12 Sep 2022 00:03:22 -0700 (PDT)
+Received: by mail-oo1-xc30.google.com with SMTP id k10-20020a4ad10a000000b004756ab911f8so359349oor.2;
+        Mon, 12 Sep 2022 00:03:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date;
-        bh=0XqePnbUiZRUs1aoZwR1nk/QBuAoAA0VQaa7BjnVFKc=;
-        b=A6Q5Hv6Il8qOaS54NO2Ry9eBN6HQFkccYnhowINrA1kwFRMRRoOR/cddqU3nRmeg7B
-         +Xast8Kr3pNn0JRMSjgQwFsCSWZfarok0cmmZawlRICgVvVhcXqztq6YTYmjQZ/4zUaT
-         nHeWcfY/PgpWFIy/2ckCt5phDPezDId+hQjOjmcdhIj/RER4kPsQuUUePSHayNRHwwEO
-         /un/F1CPqQ6cP5ns92/66M5fpc+tDI55qOdIJNzk2e9XQtq0/eTC130Q0r+sgOIRuU6t
-         BO2NiBN4Ngm41/DMS4bdhdONkwpxuVTz2W9v43Y4QtmSR/GxA5prMFof4vWwOceinU3B
-         1Jvw==
+        bh=ZjMf67jo/QZIHrKGou8gdD+3vb4igcY1foOhJ2pOmAk=;
+        b=clbA+6MiReyVGEURI/GTysFG+L/r+zT0Tnbp/hYqRYMDo6dCeIEaXiwazwPMHJwAbB
+         WdTj73+o0w55jBsNeac5kuWdoVSLfZ6n1fx6WVSMnfQhozUyutHn/5fiMHxaaTm5t486
+         /WXFlyk32HrUaNiVIZeiZYud8+o8OJH20Ss1OGSLx1I3IfXjMEh4qpOBbywbuYKo4heu
+         3gbfQAfsx511iQTm6rw2t4tCA7IJt/JOHCKwkLOnjFvErGRDYhEzCzCHmY9K1nbG6Ltw
+         j5MhI5C196sxMnRDR47SbtH+Sy9goQvgUfD3grJYRfq7fxr4sW/iq8lAfJGciTr0yVIC
+         8ykQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date;
-        bh=0XqePnbUiZRUs1aoZwR1nk/QBuAoAA0VQaa7BjnVFKc=;
-        b=bDAOumjDwM4UDfzQfCsaoKLrbQ7tzExSV5bJQjp9t5+ZRvXdKDeFjVxTa565NzuTT6
-         AocOQgp20wotJQFZl2dOXJPbJqR8+OCrI3zKeRyM1ELwpdO5XiaY6y1r5R15gHmfb7Rq
-         xsQSG6gXQoEca9CvKZeB4i8YEoEb0StOUVUKmVCvl2pIYUhNOBa8kqWg45VKzHjs7ppe
-         YWm0R2/ImJqIN8WHIWttLRVo5tXgBJebYVVKPRy99YVXlyKWy/ot5n/ISyf4qz7GHeOw
-         J/ytZMwfbaaq10YEy3P1zhCLthNOnR5ng/jXcXsIFx1+SayyglHlJYWm28gk1fcQyiE3
-         eR0A==
-X-Gm-Message-State: ACgBeo0VFL78ssT5bifOF2Ahh1roF+fji0nMOpn90VzPkzNFSxasAeuI
-        PfOx6ZvL0RpU8gVORlpXfTA=
-X-Google-Smtp-Source: AA6agR5Dfm7ftir3Lu6vuv1Hee8MmOKzMhyPyHFYr6COnsiaPhm+rn/kPOZouXsDMgUjf2AQKpCVBA==
-X-Received: by 2002:a05:6808:1156:b0:34d:c734:6a79 with SMTP id u22-20020a056808115600b0034dc7346a79mr5937865oiu.161.1662966062857;
-        Mon, 12 Sep 2022 00:01:02 -0700 (PDT)
+        bh=ZjMf67jo/QZIHrKGou8gdD+3vb4igcY1foOhJ2pOmAk=;
+        b=j7QFLh1f8ypb9D2MX2zX1FEK2wkVYvxCUG9NY2scxgBqnpgchy4MDhYtqSshR8R2dZ
+         HSMEw/4zgHZtc32syvXYVsGnXVALJMq7spIvIJMjAi2Zn/HfLo/NEK/9kCZHS1i2r1y5
+         A3lFaR9k4K7FVCGjiGITEaWLGkV2UfX6tuTKNxzOqIfvIwjcQSoeem4iP/LntU0GAfd4
+         Gf2cf+Sp6hP7/1S122idbsIvqDuWqrMIJvVO46nWiTuvh/8AsCMCnjtUptH3psPGXfnP
+         cwyBzCiHm0yOHX670rCOarbOnTlSsBlzg2ss2Lmc6OmSBOGXZTLpZ45rtZCfreO08+GY
+         Almw==
+X-Gm-Message-State: ACgBeo2hlS8CfjJysn4Wp0lpG7YvuUQCWhed0Z5evxgA1ivXTex3MZD1
+        NoiZCLLMT0QJcVFm16F7Vrw=
+X-Google-Smtp-Source: AA6agR7px5WNS/7fq2Mn519x1104BSdYvjczwBwqVpHVYKumzAeSEBpraexJ6+gFcOJj634Q0WAREA==
+X-Received: by 2002:a05:6820:1610:b0:44a:8ed8:58a4 with SMTP id bb16-20020a056820161000b0044a8ed858a4mr8803463oob.43.1662966201799;
+        Mon, 12 Sep 2022 00:03:21 -0700 (PDT)
 Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id e5-20020a056808148500b003432bb4322esm3502490oiw.40.2022.09.12.00.01.00
+        by smtp.gmail.com with ESMTPSA id a20-20020a9d6e94000000b00636e9a0cce5sm4139771otr.60.2022.09.12.00.03.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Sep 2022 00:01:01 -0700 (PDT)
-Message-ID: <a8bcba9c64a6d38a82094aa38a4a7da1b2897fdf.camel@gmail.com>
-Subject: Re: [PATCH 1/3] iio: adc: ad7923: fix channel readings for some
- variants
+        Mon, 12 Sep 2022 00:03:21 -0700 (PDT)
+Message-ID: <ae55b3083389b977e946a6e79ee3faf2c62a79c3.camel@gmail.com>
+Subject: Re: [PATCH 3/3] dt-bindings: iio: adi,ad7923: add range-select
+ property
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>,
         Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
@@ -60,11 +60,11 @@ Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Date:   Mon, 12 Sep 2022 09:02:16 +0200
-In-Reply-To: <20220911122644.4d408fe6@jic23-huawei>
+Date:   Mon, 12 Sep 2022 09:04:35 +0200
+In-Reply-To: <20220911122800.7af5224c@jic23-huawei>
 References: <20220909151413.1164754-1-nuno.sa@analog.com>
-         <20220909151413.1164754-2-nuno.sa@analog.com>
-         <20220911122644.4d408fe6@jic23-huawei>
+         <20220909151413.1164754-4-nuno.sa@analog.com>
+         <20220911122800.7af5224c@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 
@@ -79,38 +79,45 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2022-09-11 at 12:26 +0100, Jonathan Cameron wrote:
-> On Fri, 9 Sep 2022 17:14:11 +0200
+On Sun, 2022-09-11 at 12:28 +0100, Jonathan Cameron wrote:
+> On Fri, 9 Sep 2022 17:14:13 +0200
 > Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >=20
-> > Some of the supported devices have 4 or 2 LSB trailing bits that
-> > should
-> > not be taken into account. Hence we need to shift these bits out
-> > which
-> > fits perfectly on the scan type shift property. This change fixes
-> > both
-> > raw and buffered reads.
+> > Document the new property to select the desired analog input range.
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml | 8
+> > ++++++++
+> > =C2=A01 file changed, 8 insertions(+)
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> > b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> > index 40b0a887db57..9041020bdb81 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> > @@ -36,6 +36,14 @@ properties:
+> > =C2=A0=C2=A0=C2=A0=C2=A0 description: |
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 The regulator supply for ADC refer=
+ence voltage.
+> > =C2=A0
+> > +=C2=A0 adi,range-select:
+> > +=C2=A0=C2=A0=C2=A0 description: Selects the analog input range.
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 - 0 to 2xVREF
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 - 0 to VREF
+> > +=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.yaml#/definitions/uint32
+> > +=C2=A0=C2=A0=C2=A0 enum: [0, 1]
+> > +=C2=A0=C2=A0=C2=A0 default: 1
+> > +
 >=20
-> Hi Nuno,
-
-Hi Jonathan,
-
->=20
-> Seems that all the values of shift are 12 - realbits.
-> If that's the case, can we reduce the noise this patch creates by
-> just
-> updating AD7923_V_CHAN() to set .shift =3D 12 - (bits) ?
+> Would this be better as a flag / boolean called something like
+> adi,range-double?
 >=20
 
-Yes, it should be pretty much the same... As I don't have any strong
-feelings I can do as you suggest.
-
-> I guess that's not as flexible if anyone adds support for a device
-> with different shifts, but I suspect that may never happen.
+In my first draft I actually had something like 'adi,range-disable' but
+that felt strange and hacky... Your boolean suggestion is much better
+and I have no problems in changing (as the code will also be simpler).
 >=20
-
-Or a device with realbits > 12. But yeah, I'm also fairly positive we
-won't see that happening...
 
 - Nuno S=C3=A1
-

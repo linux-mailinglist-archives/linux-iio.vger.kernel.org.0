@@ -2,73 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A49C5B5250
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 02:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CFD5B54EC
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 09:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbiILAxN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Sep 2022 20:53:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35104 "EHLO
+        id S229533AbiILHBJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 03:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiILAxL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Sep 2022 20:53:11 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591FD27DC3;
-        Sun, 11 Sep 2022 17:53:10 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id k9so12991148wri.0;
-        Sun, 11 Sep 2022 17:53:10 -0700 (PDT)
+        with ESMTP id S229744AbiILHBG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 03:01:06 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB667248E1;
+        Mon, 12 Sep 2022 00:01:04 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1279948d93dso20942097fac.10;
+        Mon, 12 Sep 2022 00:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date;
-        bh=971Ys11giqdQ7Pxgjb3QEhmcSxe6t7p1+SdsY+akN0k=;
-        b=BBSDEKnmLqRLi/iLyUjwCZrzU6e5lTRXiYE/QFs7dU4CgNx6ZMurZL5CNdK4zDPeWL
-         u09fQ5yfla5TDq063vmoDFBjrKjwPUWEkGABbPOtSc1JmJ88j/rpQ4VTGqgIqASpCXKL
-         piLA+/KVh67f70nnfKeRLKviAQ9DezLsJVyBv5nzBUHcnVWp22cItbFEupPU4nrD58Jr
-         iWOaQ5vl7/wM5NIlfF55KrF8Pem/bUR5BbkBnU52dLQFzrMBVM6jPpJb9Z5oOeHV8jaA
-         2YIHcZu05jnZZzfcexAONZQu5qsv/JQNKTCt4A8E3BkJOWGXaThhWlQgEFSUCPDR72Ef
-         91Lw==
+        bh=0XqePnbUiZRUs1aoZwR1nk/QBuAoAA0VQaa7BjnVFKc=;
+        b=A6Q5Hv6Il8qOaS54NO2Ry9eBN6HQFkccYnhowINrA1kwFRMRRoOR/cddqU3nRmeg7B
+         +Xast8Kr3pNn0JRMSjgQwFsCSWZfarok0cmmZawlRICgVvVhcXqztq6YTYmjQZ/4zUaT
+         nHeWcfY/PgpWFIy/2ckCt5phDPezDId+hQjOjmcdhIj/RER4kPsQuUUePSHayNRHwwEO
+         /un/F1CPqQ6cP5ns92/66M5fpc+tDI55qOdIJNzk2e9XQtq0/eTC130Q0r+sgOIRuU6t
+         BO2NiBN4Ngm41/DMS4bdhdONkwpxuVTz2W9v43Y4QtmSR/GxA5prMFof4vWwOceinU3B
+         1Jvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date;
-        bh=971Ys11giqdQ7Pxgjb3QEhmcSxe6t7p1+SdsY+akN0k=;
-        b=opcvMNouHLhZqIA1/Wf90KtJyOI2P+6PRaSuxohqhq0aePH5bJP0M9evM0+l8KrnCT
-         GMS1x6yHSXGGYupyjJCUazhkq1mK0cQgakDEIhyNBDRpuOfZBgnmIavSMZWgdMDIlP66
-         Try1+nqHIBNQ4QKGWraMJHAIdj4XOOCT0+GI3NLcDoia7yN7zlG7dl0frAPGwrs4qFhV
-         Wz5tyDXtmdziZQq6turiFD8aNO7SeUE7Trbdup0dUc1hpUyqY8dE7sUBFzkp2ZQ9lcWk
-         SKyXyv59+28bppt6UUvwMPMoKcrgCK8WlW+5vbmnla94qDeFwYtq5HKxqT/PYXTEfFFv
-         Wexw==
-X-Gm-Message-State: ACgBeo1gmrlzoxsAAf6fzwpZTwxBQH6UUWYQlVzHTIt0oVBqKMP43ZnL
-        A+QfBcHx48Bsmi65baFRZgZATHKWZb8=
-X-Google-Smtp-Source: AA6agR6ybRz+uVwRk8e3m2pRRzoSWMcu0azK2Vi1oBoha4jJDAdo3hHu/WH/Fh0E15o8Lsf4DXYFAA==
-X-Received: by 2002:a5d:648c:0:b0:22a:2c04:97a5 with SMTP id o12-20020a5d648c000000b0022a2c0497a5mr11138308wri.326.1662943988842;
-        Sun, 11 Sep 2022 17:53:08 -0700 (PDT)
-Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id l31-20020a05600c1d1f00b003a601a1c2f7sm8390872wms.19.2022.09.11.17.53.07
+        bh=0XqePnbUiZRUs1aoZwR1nk/QBuAoAA0VQaa7BjnVFKc=;
+        b=bDAOumjDwM4UDfzQfCsaoKLrbQ7tzExSV5bJQjp9t5+ZRvXdKDeFjVxTa565NzuTT6
+         AocOQgp20wotJQFZl2dOXJPbJqR8+OCrI3zKeRyM1ELwpdO5XiaY6y1r5R15gHmfb7Rq
+         xsQSG6gXQoEca9CvKZeB4i8YEoEb0StOUVUKmVCvl2pIYUhNOBa8kqWg45VKzHjs7ppe
+         YWm0R2/ImJqIN8WHIWttLRVo5tXgBJebYVVKPRy99YVXlyKWy/ot5n/ISyf4qz7GHeOw
+         J/ytZMwfbaaq10YEy3P1zhCLthNOnR5ng/jXcXsIFx1+SayyglHlJYWm28gk1fcQyiE3
+         eR0A==
+X-Gm-Message-State: ACgBeo0VFL78ssT5bifOF2Ahh1roF+fji0nMOpn90VzPkzNFSxasAeuI
+        PfOx6ZvL0RpU8gVORlpXfTA=
+X-Google-Smtp-Source: AA6agR5Dfm7ftir3Lu6vuv1Hee8MmOKzMhyPyHFYr6COnsiaPhm+rn/kPOZouXsDMgUjf2AQKpCVBA==
+X-Received: by 2002:a05:6808:1156:b0:34d:c734:6a79 with SMTP id u22-20020a056808115600b0034dc7346a79mr5937865oiu.161.1662966062857;
+        Mon, 12 Sep 2022 00:01:02 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id e5-20020a056808148500b003432bb4322esm3502490oiw.40.2022.09.12.00.01.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Sep 2022 17:53:08 -0700 (PDT)
-Message-ID: <505a681fe6f18139c8cb0e966a706979f41b7d7e.camel@gmail.com>
-Subject: Re: [PATCH v5 5/5] iio: pressure: bmp280: Add more tunable config
- parameters for BMP380
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        Mon, 12 Sep 2022 00:01:01 -0700 (PDT)
+Message-ID: <a8bcba9c64a6d38a82094aa38a4a7da1b2897fdf.camel@gmail.com>
+Subject: Re: [PATCH 1/3] iio: adc: ad7923: fix channel readings for some
+ variants
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Date:   Mon, 12 Sep 2022 02:53:06 +0200
-In-Reply-To: <CAHp75VeNctrQjW4RHwbsF-y--9bAzg3XTFTZzXk+6whRFJcFYg@mail.gmail.com>
-References: <cover.1659872590.git.ang.iglesiasg@gmail.com>
-         <680e7218234676ba78fc5eccd5f93e29c06c3983.1659872590.git.ang.iglesiasg@gmail.com>
-         <CAHp75VeNctrQjW4RHwbsF-y--9bAzg3XTFTZzXk+6whRFJcFYg@mail.gmail.com>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Date:   Mon, 12 Sep 2022 09:02:16 +0200
+In-Reply-To: <20220911122644.4d408fe6@jic23-huawei>
+References: <20220909151413.1164754-1-nuno.sa@analog.com>
+         <20220909151413.1164754-2-nuno.sa@analog.com>
+         <20220911122644.4d408fe6@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.44.4 (by Flathub.org) 
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -80,58 +79,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gTW9uLCAyMDIyLTA4LTA4IGF0IDExOjEzICswMjAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
-Cj4gT24gU3VuLCBBdWcgNywgMjAyMiBhdCAyOjQ0IFBNIEFuZ2VsIElnbGVzaWFzIDxhbmcuaWds
-ZXNpYXNnQGdtYWlsLmNvbT4gd3JvdGU6Cj4gPiAKPiA+IEFsbG93cyBzYW1wbGluZyBmcmVxdWVu
-Y3kgYW5kIElJUiBmaWx0ZXIgY29lZmZpY2llbnRzIGNvbmZpZ3VyYXRpb24KPiA+IHVzaW5nIHN5
-c2ZzIEFCSS4KPiA+IAo+ID4gVGhlIElJUiBmaWx0ZXIgY29lZmZpY2llbnQgaXMgY29uZmlndXJh
-YmxlIHVzaW5nIHRoZSBzeXNmcyBhdHRyaWJ1dGUKPiA+ICJmaWx0ZXJfbG93X3Bhc3NfM2RiX2Zy
-ZXF1ZW5jeSIuCj4gCj4gLi4uCj4gCj4gPiArc3RhdGljIGNvbnN0IGludCBibXAzODBfb2RyX3Rh
-YmxlW11bMl0gPSB7Cj4gCj4gczMyX2ZyYWN0ID8KCkkgbW9kZWxlZCB0aGlzIGJpdCBhbmQgb3Ro
-ZXIgT0RSIHJlcHJlc2VudGF0aW9ucyBhZnRlciB0aGUgYWR4bDM1NSBkcml2ZXIuIEkgc2VlCnRo
-YXQgczMyX2ZyYWN0IHdvdWxkIGJlIGEgYml0IGNsZWFuZXIgdGhhbiBoYXZpbmcgYXJyYXlzIGlu
-c2lkZSBhcnJheXMsIGJ1dCBJJ20KZmFpbGluZyB0byBzZWUgd2hpY2ggYWRkaXRpb25hbCBhZHZh
-bnRhZ2VzIHdvdWxkIHByb3ZpZGUuCkFsc28sIHRlY2huaWNhbGx5LCB0aGVzZSBhcmUgcHJlY29t
-cHV0ZWQgZnJlcXVlbmNpZXMsIHRoZSBmaXJzdCBpbmRleCBpcyB0aGUKaW50ZWdlciBwYXJ0IGFu
-ZCB0aGUgc2Vjb25kIGlzIHRoZSBmcmFjdGlvbmFsIHBhcnQuIFRoZSBmcmFjdGlvbnMgd291bGQg
-YmUKMjAwLzEsIDIwMC8yLCAyMDAvNCAuLi4gMjAwLzEzMTA3MgoKPiA+ICvCoMKgwqDCoMKgwqAg
-W0JNUDM4MF9PRFJfMjAwSFpdwqDCoMKgwqDCoCA9IHsyMDAsIDB9LAo+ID4gK8KgwqDCoMKgwqDC
-oCBbQk1QMzgwX09EUl8xMDBIWl3CoMKgwqDCoMKgID0gezEwMCwgMH0sCj4gPiArwqDCoMKgwqDC
-oMKgIFtCTVAzODBfT0RSXzUwSFpdwqDCoMKgwqDCoMKgID0gezUwLCAwfSwKPiA+ICvCoMKgwqDC
-oMKgwqAgW0JNUDM4MF9PRFJfMjVIWl3CoMKgwqDCoMKgwqAgPSB7MjUsIDB9LAo+ID4gK8KgwqDC
-oMKgwqDCoCBbQk1QMzgwX09EUl8xMl81SFpdwqDCoMKgwqAgPSB7MTIsIDUwMDAwMH0sCj4gPiAr
-wqDCoMKgwqDCoMKgIFtCTVAzODBfT0RSXzZfMjVIWl3CoMKgwqDCoCA9IHs2LCAyNTAwMDB9LAo+
-ID4gK8KgwqDCoMKgwqDCoCBbQk1QMzgwX09EUl8zXzEyNUhaXcKgwqDCoCA9IHszLCAxMjUwMDB9
-LAo+ID4gK8KgwqDCoMKgwqDCoCBbQk1QMzgwX09EUl8xXzU2MjVIWl3CoMKgID0gezEsIDU2MjUw
-MH0sCj4gPiArwqDCoMKgwqDCoMKgIFtCTVAzODBfT0RSXzBfNzhIWl3CoMKgwqDCoCA9IHswLCA3
-ODEyNTB9LAo+ID4gK8KgwqDCoMKgwqDCoCBbQk1QMzgwX09EUl8wXzM5SFpdwqDCoMKgwqAgPSB7
-MCwgMzkwNjI1fSwKPiA+ICvCoMKgwqDCoMKgwqAgW0JNUDM4MF9PRFJfMF8ySFpdwqDCoMKgwqDC
-oCA9IHswLCAxOTUzMTN9LAo+ID4gK8KgwqDCoMKgwqDCoCBbQk1QMzgwX09EUl8wXzFIWl3CoMKg
-wqDCoMKgID0gezAsIDk3NjU2fSwKPiA+ICvCoMKgwqDCoMKgwqAgW0JNUDM4MF9PRFJfMF8wNUha
-XcKgwqDCoMKgID0gezAsIDQ4ODI4fSwKPiA+ICvCoMKgwqDCoMKgwqAgW0JNUDM4MF9PRFJfMF8w
-MkhaXcKgwqDCoMKgID0gezAsIDI0NDE0fSwKPiA+ICvCoMKgwqDCoMKgwqAgW0JNUDM4MF9PRFJf
-MF8wMUhaXcKgwqDCoMKgID0gezAsIDEyMjA3fSwKPiA+ICvCoMKgwqDCoMKgwqAgW0JNUDM4MF9P
-RFJfMF8wMDZIWl3CoMKgwqAgPSB7MCwgNjEwNH0sCj4gPiArwqDCoMKgwqDCoMKgIFtCTVAzODBf
-T0RSXzBfMDAzSFpdwqDCoMKgID0gezAsIDMwNTJ9LAo+ID4gK8KgwqDCoMKgwqDCoCBbQk1QMzgw
-X09EUl8wXzAwMTVIWl3CoMKgID0gezAsIDE1MjZ9LAo+ID4gK307Cj4gCj4gLi4uCj4gCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSByZWdtYXBfd3JpdGVfYml0cyhkYXRh
-LT5yZWdtYXAsCj4gPiBCTVAzODBfUkVHX1BPV0VSX0NPTlRST0wsCj4gPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBCTVAzODBfTU9ERV9NQVNLLAo+IAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgRklF
-TERfUFJFUChCTVAzODBfTU9ERV9NQVNLLAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIEJNUDM4MF9NT0RFX1NMRUVQKSk7Cj4gCj4gT25lIGxpbmU/Cj4gCj4g
-Li4uCj4gCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSByZWdtYXBfd3Jp
-dGVfYml0cyhkYXRhLT5yZWdtYXAsCj4gPiBCTVAzODBfUkVHX1BPV0VSX0NPTlRST0wsCj4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBCTVAzODBfTU9ERV9NQVNLLAo+IAo+ID4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgRklFTERfUFJFUChCTVAzODBfTU9ERV9NQVNLLAo+ID4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIEJNUDM4MF9NT0RFX05PUk1BTCkpOwo+IAo+IERp
-dHRvLgo+IAo+IC4uLgo+IAo+ID4gK3N0YXRpYyBjb25zdCBpbnQgYm1wMzgwX2lpcl9maWx0ZXJf
-Y29lZmZzX2F2YWlsW10gPSB7IDAsIDEsIDMsIDcsIDE1LCAzMSwKPiA+IDYzLCAxMjcgfTsKPiAK
-PiBUaGlzIHNlZW1zIGxpa2UgYSBwb3dlciBvZiB0d28gLSAxLCBjYW4gaXQgYmUgcmVwbGFjZWQg
-YnkgYSBmb3JtdWxhIGluIHRoZQo+IGNvZGU/Cj4gCgo=
+On Sun, 2022-09-11 at 12:26 +0100, Jonathan Cameron wrote:
+> On Fri, 9 Sep 2022 17:14:11 +0200
+> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>=20
+> > Some of the supported devices have 4 or 2 LSB trailing bits that
+> > should
+> > not be taken into account. Hence we need to shift these bits out
+> > which
+> > fits perfectly on the scan type shift property. This change fixes
+> > both
+> > raw and buffered reads.
+>=20
+> Hi Nuno,
+
+Hi Jonathan,
+
+>=20
+> Seems that all the values of shift are 12 - realbits.
+> If that's the case, can we reduce the noise this patch creates by
+> just
+> updating AD7923_V_CHAN() to set .shift =3D 12 - (bits) ?
+>=20
+
+Yes, it should be pretty much the same... As I don't have any strong
+feelings I can do as you suggest.
+
+> I guess that's not as flexible if anyone adds support for a device
+> with different shifts, but I suspect that may never happen.
+>=20
+
+Or a device with realbits > 12. But yeah, I'm also fairly positive we
+won't see that happening...
+
+- Nuno S=C3=A1
 

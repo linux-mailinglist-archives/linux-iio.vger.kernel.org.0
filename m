@@ -2,105 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6E45B58AE
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:47:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E05355B58DA
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229727AbiILKrB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Sep 2022 06:47:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48968 "EHLO
+        id S229959AbiILK5N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 06:57:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbiILKq6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:46:58 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B563205D
-        for <linux-iio@vger.kernel.org>; Mon, 12 Sep 2022 03:46:55 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oXgxc-0008D1-QD; Mon, 12 Sep 2022 12:46:40 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oXgxW-000HXz-Og; Mon, 12 Sep 2022 12:46:33 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oXgxU-000MJM-Il; Mon, 12 Sep 2022 12:46:32 +0200
-Date:   Mon, 12 Sep 2022 12:46:31 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+        with ESMTP id S229931AbiILK5M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:57:12 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C43399E6;
+        Mon, 12 Sep 2022 03:57:06 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id a8so14123824lff.13;
+        Mon, 12 Sep 2022 03:57:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date;
+        bh=SfQ57WCd2filUQKaiahUm3tHK33Vpzs3bBhJ7Iu9Mas=;
+        b=pahlf/KkG2TqqRIkSUFAssCyCUSn32bhXczkTl98v792cAqfsrDghieOW+wV1nfaDC
+         PKbvX7tCxIfIy4qoFCrQKICFzHz82bTwOFc+/N2DYHw5mpKNR9H2qrZMUIdroCG9TTkS
+         mWwtgpxkz14pIUW8kCFCUTrhjXWFHJM7K0mVDkr5zUOvDZ15odhYX94yTH6jSnJ4UyG/
+         T6cMrn+2bXu4RcMG/mogtCTZTS7+UcWOcx8AhFkbQjkBlpp3xpmuprq4KyzmEmnb9Fkb
+         2IQGeQsT7KJ0JkKewO3c8wptoiEwy5S4bxOsL6aaasRcdajYevsur5NXAYgkcmVr+5DA
+         x1vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=SfQ57WCd2filUQKaiahUm3tHK33Vpzs3bBhJ7Iu9Mas=;
+        b=Wo911hPFBzByuWgTHq6q/BLIIQQ8EAICGKgtNj9Gg5bFF8bts/2s0uxyw4meVoqgLP
+         C6OX1Y7q/lJ7tJpmK+HGa50WS1n9za7bmDN9XuhjjyMm8l2cnsFbVdV0Ri8QAcmkNIdr
+         bGedFqLDAo6iMrnCEGFajEQbLcnBkJW9+2d2LReXzQuXR5H1qmGxUv8evG5YbbdVlXf4
+         PqTLeXqsl1QFitHitCYHtaqnpEdRTxKshLW1GaqNx9GWBnGp7VqLl3GqlweXsejKs4Vj
+         RvY08mwihTfAXZi6UgEafmS7jsgkmqRZmEL1DYBu8+++TYqcHgxUvs1/YpBNFNv2Fik4
+         DJZQ==
+X-Gm-Message-State: ACgBeo3Rgtk+WKkBFkOklO1Dl+updUpHbaKJyWGzVfI8q2W3H2qn6vw3
+        z0r76Q0NLfGiGKGj6wKrg9I=
+X-Google-Smtp-Source: AA6agR7ZSaCF1JNh7jJYFNvT/rUQTL1Ugzt7WYhpjAh72ciQd3+jLN/b1KQ83Q4KpArjnx9LVzpgEA==
+X-Received: by 2002:a05:6512:3ca8:b0:499:2f89:cb42 with SMTP id h40-20020a0565123ca800b004992f89cb42mr4210284lfv.227.1662980224856;
+        Mon, 12 Sep 2022 03:57:04 -0700 (PDT)
+Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id d19-20020a2e3313000000b0025d5eb5dde7sm427198ljc.104.2022.09.12.03.57.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Sep 2022 03:57:04 -0700 (PDT)
+Date:   Mon, 12 Sep 2022 13:02:19 +0200
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Denys Zagorui <dzagorui@cisco.com>, Meng.Li@windriver.com,
-        lars@metafoo.de, Michael.Hennerich@analog.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: ltc2497: Fix reading conversion results
-Message-ID: <20220912104631.zysrv2qqxvsjfbxc@pengutronix.de>
-References: <20220815091647.1523532-1-dzagorui@cisco.com>
- <20220820130648.5b9bc66f@jic23-huawei>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 4/9] iio: adc: mcp3911: use resource-managed version
+ of iio_device_register
+Message-ID: <Yx8Ru3x1IgmUYzUA@gmail.com>
+References: <20220815061625.35568-1-marcus.folkesson@gmail.com>
+ <20220815061625.35568-5-marcus.folkesson@gmail.com>
+ <20220820134150.2b45339c@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ezvf3oge3bxykhco"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220820130648.5b9bc66f@jic23-huawei>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220820134150.2b45339c@jic23-huawei>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi,
 
---ezvf3oge3bxykhco
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Aug 20, 2022 at 01:06:48PM +0100, Jonathan Cameron wrote:
-> On Mon, 15 Aug 2022 09:16:47 +0000
-> Denys Zagorui <dzagorui@cisco.com> wrote:
+On Sat, Aug 20, 2022 at 01:41:50PM +0100, Jonathan Cameron wrote:
+> On Mon, 15 Aug 2022 08:16:20 +0200
+> Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 >=20
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > Keep using managed resources as much as possible.
 > >=20
-> > After the result of the previous conversion is read the chip
-> > automatically starts a new conversion and doesn't accept new i2c
-> > transfers until this conversion is completed which makes the function
-> > return failure.
+> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > ---
+> >  drivers/iio/adc/mcp3911.c | 53 ++++++++++++---------------------------
+> >  1 file changed, 16 insertions(+), 37 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> > index 890af7dca62d..7e2efe702e57 100644
+> > --- a/drivers/iio/adc/mcp3911.c
+> > +++ b/drivers/iio/adc/mcp3911.c
+> > @@ -258,6 +258,13 @@ static int mcp3911_config(struct mcp3911 *adc)
+> >  	return  mcp3911_write(adc, MCP3911_REG_CONFIG, configreg, 2);
+> >  }
+> > =20
+> > +static void mcp3911_cleanup_regulator(void *_adc)
 >=20
-> That's rather nasty.
+> Missed this on previous versions, but why not pass
+> the regulator pointer in as the parameter for the callback?
 >=20
-> Could we add a cheeky sleep in the other path to ensure there is always
-> time for the conversion to be done?  Not ideal, but might ensure
-> there isn't a known problem path without introducing much complexity.
+> static void mcp391_cleanup_regulator(void *reg)
+> {
+> 	regulator_disable(adc->vref);
+> }
+>=20
+> Note this can't use the new devm_regulator_get_enable()
+> because we need access to the regulator within the driver.
+>=20
+> I can tidy this up whilst applying (or given it's really minor I might
+> not bother :)
+>=20
+> Note we are stalled at the moment with this series on getting the
+> fixes upstream.  I'll probably send that pull request shortly.
 
-FTR: While the patch was originally authored by me, I don't currently
-have access to a machine with that chip. So currently there will be no
-incentive on my side to address this feedback.
+Just a friendly reminder to not forget to pick up this series.
 
-Best regards
-Uwe
+Thanks,
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ezvf3oge3bxykhco
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmMfDgQACgkQwfwUeK3K
-7AmQ6gf+NR1FwVMFUWi//G/dOvI5TtKnE0cBWo/3lgdWKrl4gI23fUrjPzLtj6NL
-gFNMKWNV9IXtcAlgqsupSgijpP1Z7Ekyy+J8tEmFEoxpSVwLD4f+teYSQfSsuufa
-GougDEpKASI4zg+IICkN1d7aqKb6oDbGEZgZyO1AxwveJka7h+Fs58m6dOd1F0LE
-VtxTJtNeQa5ZiNJBu51a6xKatwM/bksdyjDYhLbC7bH6pGZWxeHBQBt5o/3fNBVi
-L7gqYWoAhSvUMooGJaTOlJjtxsGvNBL1l4krxpsvhkjDWclfa+d3D2IUKklTWxGh
-y3WVQ5YzOb9nDZachCn/42qSkaE29Q==
-=4MJU
------END PGP SIGNATURE-----
-
---ezvf3oge3bxykhco--
+/Marcus

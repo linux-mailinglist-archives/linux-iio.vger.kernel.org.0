@@ -2,120 +2,94 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A26D15B584B
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00555B581B
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbiILK2i (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Sep 2022 06:28:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
+        id S230091AbiILKWL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 06:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229718AbiILK2h (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:28:37 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EE639B9C;
-        Mon, 12 Sep 2022 03:28:36 -0700 (PDT)
-Received: from mercury (unknown [185.122.133.20])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id D43596601FDD;
-        Mon, 12 Sep 2022 11:28:34 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1662978515;
-        bh=Xjl7kTJeZ2nONpBk10Yzpv6u6vfACUqH8y3R+xm4q+8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I0M9rjwy5Q2EeroeuXJ11DmtRSQe8LkTof/d8GMVwx5v6wpaYrt7V0jlMzmODNZw6
-         2U9tBHjFMfArkXA6FvEEeLikNsCPUz5DfIYOk7pPEg0ez7Ifr5/EvM3VyeBqMfXNZO
-         QnS9W8ZafXgA+yYcskSaNJR3BUi5sbOUA5JKu7310dfyoJvG+cm0vHOwGzq1mlZsEc
-         FxvVIMdljhnGWWJJEG4vcyTNOP9eIIH6yFOnHplJhX+lqRRoaSWhViN4B2fuGiQZD4
-         XKuQMaSEEjmTNObtFKfBRMUKvKQMbsXBmVzzn0F04avbjWpoZD8n8uWSA1jYKrhCxo
-         ZqRyPIK892MEg==
-Received: by mercury (Postfix, from userid 1000)
-        id 641E71063363; Sun, 11 Sep 2022 15:31:01 +0200 (CEST)
-Date:   Sun, 11 Sep 2022 15:31:01 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] power: supply: Add support for mp2733 battery
- charger
-Message-ID: <20220911133101.7g6hnwp3dnnqrmgb@mercury.elektranox.org>
-References: <20220615145357.2370044-1-sravanhome@gmail.com>
- <20220615145357.2370044-6-sravanhome@gmail.com>
+        with ESMTP id S230088AbiILKWK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:22:10 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 881B219008;
+        Mon, 12 Sep 2022 03:22:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1662978129; x=1694514129;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4rxBZKYDOZuMKZRytFXmRlZ/iZ+Bdj+rZ4hPsk3ezMs=;
+  b=BTH2dlwA/z48aaS/xhdifxrXkw8I9SAKzHhU/XWjngw7oNGCsWgsRpwy
+   fUxmvgBSTWN/EhfVyb/0+0E6YSoH3ociFbuTpw09ITZM3djtLXNQVza9B
+   EzxAkgqyBMMhN56JitgVeZHb5J/cT/Z88keYCh6xNaSScmPSr4OgHFoeC
+   ZLKNrtJqaUKLwk0aUNaXyQjtoBO2MxjfD+Q1mVd5P+dUNW435LF6oBWIC
+   oVia3/Nzrp0gUBSt+YGejrTvlErs0F8HBoruP1PxAQHr516I/+L8TgK+N
+   vhhYAkcCaJtZyYbtVqqC/rRZGouB3iYDH8kqEwepYWPb3wHdzCo42mcR5
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10467"; a="284851957"
+X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
+   d="scan'208";a="284851957"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:21:58 -0700
+X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
+   d="scan'208";a="649200810"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:21:55 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oXgZc-001IT9-1W;
+        Mon, 12 Sep 2022 13:21:52 +0300
+Date:   Mon, 12 Sep 2022 13:21:52 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
+Message-ID: <Yx8IQHLBhIilMfEw@smile.fi.intel.com>
+References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
+ <20220603181006.2c5cc6c4@jic23-huawei>
+ <20220620204225.34d40a3f@jic23-huawei>
+ <YxdM1KUFcdVlnKuO@smile.fi.intel.com>
+ <20220911105215.72bd79f3@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qcqgmqhaojla5l7i"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220615145357.2370044-6-sravanhome@gmail.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20220911105215.72bd79f3@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Sun, Sep 11, 2022 at 10:52:15AM +0100, Jonathan Cameron wrote:
+> On Tue, 6 Sep 2022 16:36:20 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Mon, Jun 20, 2022 at 08:42:25PM +0100, Jonathan Cameron wrote:
 
---qcqgmqhaojla5l7i
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+...
 
-Hi,
+> > Any news on this one? Maybe I need to resend with the better commit message?
+> 
+> From glancing back at the thread, looks like you said you were going to send
+> a v2 with property.h include.  I think the rest of the thread is concerned
+> with a different issue entirely.
 
-On Wed, Jun 15, 2022 at 04:53:56PM +0200, Saravanan Sekar wrote:
-> mp2733 is updated version of mp2629 battery charge management
-> which supports USB fast-charge and higher range of input voltage.
->=20
-> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> ---
-> [...]
->  	psy_cfg.drv_data =3D charger;
-> -	psy_cfg.attr_grp =3D mp2629_charger_sysfs_groups;
-> +	if (charger->chip_info->has_impedance)
-> +		psy_cfg.attr_grp =3D mp2629_charger_sysfs_groups;
-> +
-> +	if (charger->chip_info->has_fast_charge)
-> +		psy_cfg.attr_grp =3D mp2733_charger_sysfs_groups;
-> +
->  	charger->battery =3D devm_power_supply_register(dev,
->  					 &mp2629_battery_desc, &psy_cfg);
->  	if (IS_ERR(charger->battery)) {
+Ah, I only read last messages in the thread and didn't realized that I have
+some ARs to accomplish. OK, v2 will come soon, thanks!
 
-Instead of having has_impedance and has_fast_charge feature
-flag that are mutual exclusive, store the device type and
-use if/else or switch statement to chose the correct attr_grp.
-Other than that:
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 
--- Sebastian
-
---qcqgmqhaojla5l7i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmMd4xEACgkQ2O7X88g7
-+poocA/+Lz3J1X/X7Tv6Qr1eROOD7GUNz0r9mAnvehTOu5seQCOA4N/RO8m9UlOg
-94ZqS8NjdOUyr4QuRDmr6fH8WkgTrBzeW4bDHp+tIEwhIsxp6LGwxet3A6165mkB
-99Tg0KEddnfGxSQ06ma2Fda8yWPKeYimHgETJLI+e3A7fOeVTnCSB+AOUNpnmc+J
-r8Xqbj0uckH4hTecKJPMPRpzMoDmjJh5LDpXN4QM5MnjMXlMLrbEl8XRoNsUMeg+
-TeQcsSwPJs+QwyokMUN6odEkuLKjxc64KNovztyhrFYq+ysVOwCYiLD+9yiMqkyQ
-A3N3T1Y8/3gHCNuV+3O+ORGsZT7hcUceTzFiRVzGknJpZU0fnRMxv4BUaC6aosHH
-r+J4WfD5pJP/O7Ji3y/uhCNHhgXtDQtaqrZlQEUIej+V9FxVGcxJGFeKw9jZkCHJ
-+aYW7fT1hg4bkzYZpUcMdkkcc/Y8iHmHvmS4c0iPh6USP66nIGknfxGez5HeVF+E
-efr6/kmDDw4gkB9NIA2QFRbfyikPNyW3d48ahY4N9U3cWYq7oGRMmDopQVhq9Ho4
-Brl7PjjebDyauG0QGFEaxamtYvg6clTkenevN1BiEGCdnQRsKqG3poh6Gh2iuTtZ
-m/DW9+cyjE57uWSIQZ3MDcL4ROK77FLNJ+FNErt1cqbAqOQ4A2k=
-=8nRK
------END PGP SIGNATURE-----
-
---qcqgmqhaojla5l7i--

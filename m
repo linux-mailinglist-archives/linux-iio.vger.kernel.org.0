@@ -2,69 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C00555B581B
-	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9897F5B582A
+	for <lists+linux-iio@lfdr.de>; Mon, 12 Sep 2022 12:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbiILKWL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 12 Sep 2022 06:22:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
+        id S229920AbiILKYO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 12 Sep 2022 06:24:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230088AbiILKWK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:22:10 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 881B219008;
-        Mon, 12 Sep 2022 03:22:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662978129; x=1694514129;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4rxBZKYDOZuMKZRytFXmRlZ/iZ+Bdj+rZ4hPsk3ezMs=;
-  b=BTH2dlwA/z48aaS/xhdifxrXkw8I9SAKzHhU/XWjngw7oNGCsWgsRpwy
-   fUxmvgBSTWN/EhfVyb/0+0E6YSoH3ociFbuTpw09ITZM3djtLXNQVza9B
-   EzxAkgqyBMMhN56JitgVeZHb5J/cT/Z88keYCh6xNaSScmPSr4OgHFoeC
-   ZLKNrtJqaUKLwk0aUNaXyQjtoBO2MxjfD+Q1mVd5P+dUNW435LF6oBWIC
-   oVia3/Nzrp0gUBSt+YGejrTvlErs0F8HBoruP1PxAQHr516I/+L8TgK+N
-   vhhYAkcCaJtZyYbtVqqC/rRZGouB3iYDH8kqEwepYWPb3wHdzCo42mcR5
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10467"; a="284851957"
-X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
-   d="scan'208";a="284851957"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:21:58 -0700
-X-IronPort-AV: E=Sophos;i="5.93,310,1654585200"; 
-   d="scan'208";a="649200810"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2022 03:21:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oXgZc-001IT9-1W;
-        Mon, 12 Sep 2022 13:21:52 +0300
-Date:   Mon, 12 Sep 2022 13:21:52 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>
-Subject: Re: [PATCH v1 1/1] iio: adc: mxs-lradc-adc: Get rid of OF specifics
-Message-ID: <Yx8IQHLBhIilMfEw@smile.fi.intel.com>
-References: <20220530173324.921-1-andriy.shevchenko@linux.intel.com>
- <20220603181006.2c5cc6c4@jic23-huawei>
- <20220620204225.34d40a3f@jic23-huawei>
- <YxdM1KUFcdVlnKuO@smile.fi.intel.com>
- <20220911105215.72bd79f3@jic23-huawei>
+        with ESMTP id S229842AbiILKYN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 12 Sep 2022 06:24:13 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F3F357DE;
+        Mon, 12 Sep 2022 03:24:12 -0700 (PDT)
+Received: from mercury (unknown [185.122.133.20])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 23F4A6601FD2;
+        Mon, 12 Sep 2022 11:24:11 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1662978251;
+        bh=wGBIlvKje4FgHqTdo2MburWH2bvJgnDyHAqqfxkP0yo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MSBzYp8s99gXfGN5lZJrpXNDS7i0MFjnjP5ccBa7zLkGNKTJU7vNZMzNObIZ3AjMD
+         ZRPA+eXE7rj+nhMfMpi2qdru9eMKj9cMJ9VHNl6MOMqyqvSFHQpoYTDkbRLo4sYKjk
+         gAVm4qZa8blIyMFgD4nwahT9lT+8CHrI5ioAyAhAc7podq+Iiu0oc8LIY8ej9I4ixf
+         /WaK2BnKU4KygHuXdc1lHYdk3Jr2F0PE5TcLqvbRp9j+SQ2xHCMF+gUT/W/NMgTY0I
+         mMm0KxoDCrM/2+5c2bOZCgd2PouSmTprbUQxTwufEv7Zjv8cea4dLG/ShWumhcbuRA
+         kWoWLo09WYfKw==
+Received: by mercury (Postfix, from userid 1000)
+        id E32EA106084A; Mon, 12 Sep 2022 12:24:07 +0200 (CEST)
+Date:   Mon, 12 Sep 2022 12:24:07 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        jic23@kernel.org, lars@metafoo.de, broonie@kernel.org,
+        mazziesaccount@gmail.com, chiaen_wu@richtek.com,
+        alice_chen@richtek.com, cy_huang@richtek.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
+        szunichen@gmail.com,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v10 1/8] dt-bindings: power: supply: Add MediaTek MT6370
+ Charger
+Message-ID: <20220912102407.znzd2buqpkopvawp@mercury.elektranox.org>
+References: <cover.1662476695.git.chiaen_wu@richtek.com>
+ <3184e9e5f59edf41788bb95e2ad496772dc70a4a.1662476695.git.chiaen_wu@richtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="zly4a6vosjjv2mrv"
 Content-Disposition: inline
-In-Reply-To: <20220911105215.72bd79f3@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+In-Reply-To: <3184e9e5f59edf41788bb95e2ad496772dc70a4a.1662476695.git.chiaen_wu@richtek.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,24 +66,162 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Sep 11, 2022 at 10:52:15AM +0100, Jonathan Cameron wrote:
-> On Tue, 6 Sep 2022 16:36:20 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Mon, Jun 20, 2022 at 08:42:25PM +0100, Jonathan Cameron wrote:
 
-...
+--zly4a6vosjjv2mrv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > Any news on this one? Maybe I need to resend with the better commit message?
-> 
-> From glancing back at the thread, looks like you said you were going to send
-> a v2 with property.h include.  I think the rest of the thread is concerned
-> with a different issue entirely.
+Hi,
 
-Ah, I only read last messages in the thread and didn't realized that I have
-some ARs to accomplish. OK, v2 will come soon, thanks!
+On Tue, Sep 06, 2022 at 04:33:57PM +0800, ChiaEn Wu wrote:
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>=20
+> Add MediaTek MT6370 Charger binding documentation.
+>=20
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+>  .../power/supply/mediatek,mt6370-charger.yaml      | 88 ++++++++++++++++=
+++++++
+>  1 file changed, 88 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/mediat=
+ek,mt6370-charger.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt63=
+70-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,m=
+t6370-charger.yaml
+> new file mode 100644
+> index 0000000..bd09a0a
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-char=
+ger.yaml
+> @@ -0,0 +1,88 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.=
+yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MediaTek MT6370 Battery Charger
+> +
+> +maintainers:
+> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+> +
+> +description: |
+> +  This module is part of the MT6370 MFD device.
+> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
+> +
+> +properties:
+> +  compatible:
+> +    const: mediatek,mt6370-charger
+> +
+> +  interrupts:
+> +    description: |
+> +      Specify what irqs are needed to be handled by MT6370 Charger drive=
+r. IRQ
+> +      "MT6370_IRQ_CHG_MIVR", "MT6370_IRQ_ATTACH" and "MT6370_IRQ_OVPCTRL=
+_UVP_D"
+> +      are required.
 
--- 
-With Best Regards,
-Andy Shevchenko
+This does not look like a useful description. It just lists the
+below in wrong order?
 
+> +    items:
+> +      - description: BC1.2 done irq
+> +      - description: usb plug in irq
+> +      - description: mivr irq
 
+I had to lookup, that mivr is supposed to mean "minimum input voltage regul=
+ation"
+for Mediatek/Richtek. Please spell it out here.
+
+-- Sebastian
+
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: attach_i
+> +      - const: uvp_d_evt
+> +      - const: mivr
+> +
+> +  io-channels:
+> +    description: |
+> +      Use ADC channel to read VBUS, IBUS, IBAT, etc., info.
+> +    minItems: 1
+> +    items:
+> +      - description: |
+> +          VBUS voltage with lower accuracy (+-75mV) but higher measure
+> +          range (1~22V)
+> +      - description: |
+> +          VBUS voltage with higher accuracy (+-30mV) but lower measure
+> +          range (1~9.76V)
+> +      - description: the main system input voltage
+> +      - description: battery voltage
+> +      - description: battery temperature-sense input voltage
+> +      - description: IBUS current (required)
+> +      - description: battery current
+> +      - description: |
+> +          regulated output voltage to supply for the PWM low-side gate d=
+river
+> +          and the bootstrap capacitor
+> +      - description: IC junction temperature
+> +
+> +  io-channel-names:
+> +    minItems: 1
+> +    items:
+> +      - const: vbusdiv5
+> +      - const: vbusdiv2
+> +      - const: vsys
+> +      - const: vbat
+> +      - const: ts_bat
+> +      - const: ibus
+> +      - const: ibat
+> +      - const: chg_vddp
+> +      - const: temp_jc
+> +
+> +  usb-otg-vbus-regulator:
+> +    type: object
+> +    description: OTG boost regulator.
+> +    unevaluatedProperties: false
+> +    $ref: /schemas/regulator/regulator.yaml#
+> +
+> +    properties:
+> +      enable-gpios:
+> +        maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +  - interrupt-names
+> +  - io-channels
+> +
+> +additionalProperties: false
+> +
+> +...
+> --=20
+> 2.7.4
+>=20
+
+--zly4a6vosjjv2mrv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmMfCMMACgkQ2O7X88g7
++prG+g/+IL/Rc+kycHrb7Jfw2EV0b6A+45R087Ob3Dy1Kf/LHxOHOeyD31c7AMTI
+aicts0U9FYihYjdXrnAVp32UYgCFQW3HWd0SEcLFqgKaU8Xa/5zy40rCqPmEhc1X
+PjU6pasOjIhT2uVxqTjdeI3rX7zatlnqAQBEkmRbdfCs9TZY2FPZVt/6916scKjl
+KzyHyHMaXM/I8BaADFri0bm0SCUSfiewje4R2T6qFYRPYQ3f2K0SJq2lJBDi2qp/
+JuFhd/DyvD6C5CrZrF80z6yL8m0XPXWLa58qPSTY8ytmoB7aECt+Xz9J4KFUJJpW
+AasdfJLmyITBw2c5YJ4tZTice8w3WzijRPI6RCmTgncB0t7NkEt4CXUosXI/A0Tv
+sM/o/17Av/2XvKbmMHCeoaPaPqnO6qo18aaHpBLbXHHTS503k1SOpYZFtzTPYO0Z
+5B09/S1HZGJ6qxcBPRwfzW0Pg9O2lrlKhaExg0RgInRpAZaYDJfC+7UP+oZfmr3K
+4P9wim6khdqaAg8b7tFcCYEvjFyIouV4ObwR69WZS6JFyjZAP5QKAOPhvGjn5RPK
+4rW77VttfIARWAjtRbqq7LU1N8yu2gwe2OwW6++TNnpS72cBhuKeNd3R9eyS7Ki+
+zko36FKuEdMnU5LCWUBDmbHXBvrovj++3N4s5qB5tZCSmvD+os8=
+=QiKk
+-----END PGP SIGNATURE-----
+
+--zly4a6vosjjv2mrv--

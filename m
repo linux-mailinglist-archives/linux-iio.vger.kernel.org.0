@@ -2,103 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4ABB5B850F
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Sep 2022 11:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CD175B86D6
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Sep 2022 12:58:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbiINJfL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Sep 2022 05:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
+        id S229743AbiINK6I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Sep 2022 06:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231289AbiINJer (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Sep 2022 05:34:47 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845406FA2D;
-        Wed, 14 Sep 2022 02:30:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663147824; x=1694683824;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=T5jnO+Ie7Vt0jOGwvqFmCe1MFW3TbQr61mse3YdukZo=;
-  b=eGDE03LHGAbn/tcfCVuye7GpCSt8hYlsxf4v1NktlWtsPyr35v8rPRFp
-   KpGO1MtQWqQ7CLLVB+5Dz30tfQt1iFZ+LhWWJUJhrMWeZ8um49IxeGngT
-   a8maUVicoCxR7PJQT15HNCq/Mez7AFAn52W5FECxjvZbaPffzfFp8g04Q
-   LHFCqhEX8FgwM8LTiBvUecjqCWq9fJ5fPbJkd32pOKOJRy48VbzNEXA4Z
-   cj5GfixH+A7nwYW+DEUx+1oExDwDwAnotGT28C13umxixj23FSkOkMcer
-   1S4B7imSe5dm9lqnCCi5p1EimihDX0EEXCOWUnrGWWkUXAfVWkupjDWt4
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10469"; a="297113161"
-X-IronPort-AV: E=Sophos;i="5.93,315,1654585200"; 
-   d="scan'208";a="297113161"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2022 02:30:23 -0700
-X-IronPort-AV: E=Sophos;i="5.93,315,1654585200"; 
-   d="scan'208";a="861879636"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2022 02:30:21 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1oYOio-0028Sm-1M;
-        Wed, 14 Sep 2022 12:30:18 +0300
-Date:   Wed, 14 Sep 2022 12:30:18 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 7/9] iio: pressure: bmp280: Add support for BMP380
- sensor family
-Message-ID: <YyGfKhXCH6TPj8Ut@smile.fi.intel.com>
-References: <cover.1663025017.git.ang.iglesiasg@gmail.com>
- <f1da2a2f1bc5bb083f318335c23b4f3d9bb8e536.1663025017.git.ang.iglesiasg@gmail.com>
- <YyCz7HR+0xsyw21M@smile.fi.intel.com>
- <00db702daded3ba25efe4cd44c5a79ffb735434e.camel@gmail.com>
+        with ESMTP id S229728AbiINK57 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Sep 2022 06:57:59 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D50B04;
+        Wed, 14 Sep 2022 03:57:57 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id w2so7172993qtv.9;
+        Wed, 14 Sep 2022 03:57:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=VXqeZNDwuddQ69zEr78QRQZs4hRIQp4UvJ0xD8IfB4E=;
+        b=ja16G3hlNROnLQ89Ts82e/sNzorvDWE0AzfoUXsW1n9Y4cpNqIG41Ss64donlVdhHo
+         32ClPPU1zP6hal/R1ZAcIEC0Y4tRgOZvmWv0b9pb/XqfsEz97SjGlfbLWwF4RiEbnR47
+         9Ol+bWCYf96FOA7KaMQ36MZ+pHSGW3d/quTF2BWW+wOpxhU8KbZetCRbB+ikgtT3Wnm1
+         UPBPuuRh+0UAuk7RKQ89ZF/ZVNn6U0eeZCPN8lXvSmPu3Yw7GPrkTJSCm62LP9/iyrZd
+         N57KsJ2ljvy5IasWSiZutN+TTkAgJrfmsDEgXVZC4AwBf2FljdtWBl4hwGmcOqRyEv5u
+         0Tkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=VXqeZNDwuddQ69zEr78QRQZs4hRIQp4UvJ0xD8IfB4E=;
+        b=edku/LXIbBiAKYIgmLNGmEmkpQH/+TrG8g89KMXMES4+G1SwziCgCR1WG36V8X5bBL
+         rXO+W5iCKmqIjaxxX95/bma076lerNZUm2GQilfYU3pWXZwi6LBcpt0YS5hrUL1MIBeK
+         GaiWfTI6w0SrUA2vBE4sFgvZdo6NeVwpBwt8s0E5XEu6LKMurjO5LLm6kCiY1s8I3UXm
+         /2/FvUyUPK+vTBs2nlEprA80gvH0dexZDwLrnn9LRiIz2n8gQrwNo0WkL1onAvcgAUbs
+         11CeeyCTTVpiwhW39dUh7ttKhRa/P06vG4+d++3DtXXR1pLR97fz+n/MV4WP4TlEPRRq
+         0f3A==
+X-Gm-Message-State: ACgBeo0mNSOHASLRgh5nzGFvW+/KToQjqQxehOOCQb3Sy35K3lRS3zO+
+        cse8wbkfXH120orxJDrAwty0buVR5abQ/LiVKbs=
+X-Google-Smtp-Source: AA6agR7ACG2IpcCo/COMlzVhleq0fXRcR/7Ddpg9g1emjHR0DCb1yao5dwtqu4B+26ezK3zdONa1FUCvW1sMzvG2S+A=
+X-Received: by 2002:a05:622a:40a:b0:343:77ba:727f with SMTP id
+ n10-20020a05622a040a00b0034377ba727fmr32433810qtx.481.1663153076699; Wed, 14
+ Sep 2022 03:57:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <00db702daded3ba25efe4cd44c5a79ffb735434e.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220912212743.37365-1-eajames@linux.ibm.com> <20220912212743.37365-3-eajames@linux.ibm.com>
+In-Reply-To: <20220912212743.37365-3-eajames@linux.ibm.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 14 Sep 2022 13:57:20 +0300
+Message-ID: <CAHp75Vfo4Ke9d-ZJ-BffYDbT9ppEQVOQbVpu1y_F2vXd+52YPQ@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] iio: pressure: dps310: Reset chip after timeout
+To:     Eddie James <eajames@linux.ibm.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+        joel@jms.id.au, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 13, 2022 at 11:19:37PM +0200, Angel Iglesias wrote:
-> On Tue, 2022-09-13 at 19:46 +0300, Andy Shevchenko wrote:
-> > On Tue, Sep 13, 2022 at 01:52:13AM +0200, Angel Iglesias wrote:
+On Tue, Sep 13, 2022 at 12:27 AM Eddie James <eajames@linux.ibm.com> wrote:
+>
+> The DPS310 chip has been observed to get "stuck" such that pressure
+> and temperature measurements are never indicated as "ready" in the
+> MEAS_CFG register. The only solution is to reset the device and try
+> again. In order to avoid continual failures, use a boolean flag to
+> only try the reset after timeout once if errors persist.
 
 ...
 
-> > >   *
-> > > https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP180-DS000-121.pdf
-> > >   *
-> > > https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP280-DS001-12.pdf
-> > >   *
-> > > https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280_DS001-11.pdf
-> > > + *
-> > > https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp388-ds001.pdf
-> > >   */
-> > 
-> > Shouldn't it be based on your patch to fix the links?
-> > 
-> I thought of adding the patch fixing the links as a prerequisite commit, but in
-> the end decided to keep the patchsets independent to avoid codependencies.
+> +static int dps310_ready_status(struct dps310_data *data, int ready_bit, int timeout)
+> +{
+> +       int ready;
+> +       int sleep = DPS310_POLL_SLEEP_US(timeout);
 
-I see, then whatever Jonathan decides.
+Longer line first?
+
+> +       return regmap_read_poll_timeout(data->regmap, DPS310_MEAS_CFG, ready, ready & ready_bit,
+> +                                       sleep, timeout);
+> +}
+
+...
+
+> +static int dps310_ready(struct dps310_data *data, int ready_bit, int timeout)
+> +{
+> +       int rc;
+> +
+> +       rc = dps310_ready_status(data, ready_bit, timeout);
+> +       if (rc) {
+> +               if (rc == -ETIMEDOUT && !data->timeout_recovery_failed) {
+> +                       int rc2;
+> +
+> +                       /* Reset and reinitialize the chip. */
+> +                       rc2 = dps310_reset_reinit(data);
+> +                       if (rc2) {
+
+With below in mind this might become
+
+  if (dps310_reset_init(...))
+    ... = true;
+
+> +                               data->timeout_recovery_failed = true;
+> +                       } else {
+> +                               /* Try again to get sensor ready status. */
+
+> +                               rc2 = dps310_ready_status(data, ready_bit, timeout);
+> +                               if (rc2)
+> +                                       data->timeout_recovery_failed = true;
+
+Shouldn't you re-use rc here again?
+
+> +                               else
+> +                                       return 0;
+> +                       }
+> +               }
+> +
+> +               return rc;
+> +       }
 
 -- 
 With Best Regards,
 Andy Shevchenko
-
-

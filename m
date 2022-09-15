@@ -2,289 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F02F5B9C73
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 15:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86A95B9C94
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 16:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbiION47 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Sep 2022 09:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52134 "EHLO
+        id S229621AbiIOOH4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Sep 2022 10:07:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbiION46 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 09:56:58 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6128199B6E;
-        Thu, 15 Sep 2022 06:56:56 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28FAnXa1009079;
-        Thu, 15 Sep 2022 15:55:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=1Xm/mfoQjs1H/EX/Br7susGlvvak70eEpiGUWaULtQU=;
- b=TqitLs880FwJU4yGQ5USqr3c+vMhe6zgBdY35jiE/g3x1l5RXTTxmQBCLdB55n0N6IM1
- ei/Cd969hHwbmY/lSBW9r6RakPOY8fuIYEGwvrMC5T39k8A6YIxI/iWSKWi1o5eXwkJr
- XTRJIYAh3ya/KjwrcDG+XxgfIa1tU5Guv4cMlg7a592mcjQ2Pi7rnQT+tS/j+dvy9gnO
- BsWR/XgNWv4pQoe+/TkloMMJHCJSIlIGKXVdibYkS092apXUwwhCUERQakIRCCxaa+kQ
- nMRY3KKAA4bkj1AjU3IG/jBGSw+9z7fOrYAtB8X76KUwCaVvtAqMrZM01ZfzVDdTTf/k Kg== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3jjxxawq6e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 15 Sep 2022 15:55:56 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4D4F310002A;
-        Thu, 15 Sep 2022 15:55:55 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3DD0C22FA28;
-        Thu, 15 Sep 2022 15:55:55 +0200 (CEST)
-Received: from localhost (10.75.127.116) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.31; Thu, 15 Sep
- 2022 15:55:55 +0200
-From:   Olivier Moysan <olivier.moysan@foss.st.com>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Yannick Brosseau <yannick.brosseau@gmail.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>
-Subject: [PATCH 1/1] iio: adc: stm32-adc: add id registers support
-Date:   Thu, 15 Sep 2022 15:54:52 +0200
-Message-ID: <20220915135452.1712453-1-olivier.moysan@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229602AbiIOOHz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 10:07:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C1D9BB68;
+        Thu, 15 Sep 2022 07:07:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC0761596;
+        Thu, 15 Sep 2022 14:07:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7F8C433C1;
+        Thu, 15 Sep 2022 14:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663250873;
+        bh=HxlRuhoGcTxGqqXgKJmA6+MnE6LBLOge8LuTDWJ4KRk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=fGsnt+uO3gA7zuYabdAm2RR0ZftsGM27oRNKu4tgZdjau8SOmAo+Lpr6dA6Qo1a36
+         T9tN198SkyqDAU5LpSyLYvNf6O5LRPcuyYNlOYCom1olN94fModxGnRg5raZmhPItj
+         Hm0i7XCbLC8PAcFG/lr/flZP3Yf4eor+raEGYxLy7Xc0Er8Rgv3Kyp71BAiud83rHo
+         pa4enNG3QrfcnphTEp/g6hqPDCfonOHADoFV7YQH3/igxD1n1PDVqSWjN2tTDxoLsM
+         WD7jrQ5CIa78T7moTxKq5AEhKIUZ/svtRFvUbKIRVw3qp8mWjQy7rkUy/TATUubIEa
+         GLUAu3b1tUqTw==
+Date:   Thu, 15 Sep 2022 15:07:52 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     cmo@melexis.com
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v3 1/3] iio: temperature: mlx90632 Add runtime
+ powermanagement modes
+Message-ID: <20220915150752.643a3e7d@jic23-huawei>
+In-Reply-To: <32c4b72624e4a3480b202f24f506ca91029e47f7.1662454215.git.cmo@melexis.com>
+References: <cover.1662454215.git.cmo@melexis.com>
+        <32c4b72624e4a3480b202f24f506ca91029e47f7.1662454215.git.cmo@melexis.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.116]
-X-ClientProxiedBy: GPXDAG2NODE6.st.com (10.75.127.70) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-15_08,2022-09-14_04,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support of identification registers to STM32 ADC.
+On Tue,  6 Sep 2022 11:04:30 +0200
+cmo@melexis.com wrote:
 
-By default the ADC hardware instance number is retrieved from
-the compatible configuration data. Get the available ADC number
-per ADC block, from hardware configuration register,
-when this register exists.
+> From: Crt Mori <cmo@melexis.com>
+> 
+> The sensor can operate in lower power modes and even make measurements when
+> in those lower powered modes. The decision was taken that if measurement
+> is not requested within 2 seconds the sensor will remain in SLEEP_STEP
+> power mode, where measurements are triggered on request with setting the
+> start of measurement bit (SOB). In this mode the measurements are taking
+> a bit longer because we need to start it and complete it. Currently, in
+> continuous mode we read ready data and this mode is activated if sensor
+> measurement is requested within 2 seconds. The suspend timeout is
+> increased to 6 seconds (instead of 3 before), because that enables more
+> measurements in lower power mode (SLEEP_STEP), with the lowest refresh
+> rate (2 seconds).
+> 
+> Signed-off-by: Crt Mori <cmo@melexis.com>
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
----
- drivers/iio/adc/stm32-adc-core.c | 59 ++++++++++++++++++++++++++++++--
- drivers/iio/adc/stm32-adc-core.h | 31 +++++++++++++++++
- 2 files changed, 87 insertions(+), 3 deletions(-)
+This is missing necessary disabling of autosuspend (see inline).
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 1ce52af3fe8b..81d5db91c67b 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -9,6 +9,7 @@
-  *
-  */
+Also, I just realised you have the original pm disables in remove after
+this patch - so effectively you disable runtime pm twice.
+
+There is a sleep in that remove function which can also be done with
+a devm_add_action_or_reset().  Do that as well and you can move
+the device register to the devm form and drop the remove() function entirely.
+
+
+> ---
+>  drivers/iio/temperature/mlx90632.c | 347 +++++++++++++++++++++++++----
+>  1 file changed, 302 insertions(+), 45 deletions(-)
+
+> +	return 2;
+> +}
+> +
+
+Nitpick, but single line is plenty.
+
+> +
+> +static int mlx90632_set_meas_type(struct mlx90632_data *data, u8 type)
+> +{
+
+
+>  
+>  static int mlx90632_write_raw(struct iio_dev *indio_dev,
+> @@ -875,6 +1096,15 @@ static int mlx90632_enable_regulator(struct mlx90632_data *data)
+>  	return ret;
+>  }
+>  
+> +static void mlx90632_pm_disable(void *data)
+> +{
+> +	struct device *dev = data;
+> +
+> +	pm_runtime_get_sync(dev);
+So, this isn't quite enough.
+
+Take a look at what devm_pm_runtime_enable()
+does as the documentation for
+pm_runtime_use_autosuspend()
+
+I'd suggest using devm_pm_runtime_enable() and
+an additional callback to turn the device on that
+is registered after devm_pm_runtime_enable()
+(so will maintain the ordering you have here).
+
+
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/interrupt.h>
- #include <linux/irqchip/chained_irq.h>
-@@ -62,6 +63,7 @@ struct stm32_adc_priv;
-  * @regs:	common registers for all instances
-  * @clk_sel:	clock selection routine
-  * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
-+ * @ipid:	adc identification number
-  * @has_syscfg: SYSCFG capability flags
-  * @num_irqs:	number of interrupt lines
-  * @num_adcs:   maximum number of ADC instances in the common registers
-@@ -70,6 +72,7 @@ struct stm32_adc_priv_cfg {
- 	const struct stm32_adc_common_regs *regs;
- 	int (*clk_sel)(struct platform_device *, struct stm32_adc_priv *);
- 	u32 max_clk_rate_hz;
-+	u32 ipid;
- 	unsigned int has_syscfg;
- 	unsigned int num_irqs;
- 	unsigned int num_adcs;
-@@ -78,6 +81,7 @@ struct stm32_adc_priv_cfg {
- /**
-  * struct stm32_adc_priv - stm32 ADC core private data
-  * @irq:		irq(s) for ADC block
-+ * @nb_adc_max:		actual maximum number of instance per ADC block
-  * @domain:		irq domain reference
-  * @aclk:		clock reference for the analog circuitry
-  * @bclk:		bus clock common for all ADCs, depends on part used
-@@ -95,6 +99,7 @@ struct stm32_adc_priv_cfg {
-  */
- struct stm32_adc_priv {
- 	int				irq[STM32_ADC_MAX_ADCS];
-+	unsigned int			nb_adc_max;
- 	struct irq_domain		*domain;
- 	struct clk			*aclk;
- 	struct clk			*bclk;
-@@ -354,7 +359,7 @@ static void stm32_adc_irq_handler(struct irq_desc *desc)
- 	 * before invoking the interrupt handler (e.g. call ISR only for
- 	 * IRQ-enabled ADCs).
- 	 */
--	for (i = 0; i < priv->cfg->num_adcs; i++) {
-+	for (i = 0; i < priv->nb_adc_max; i++) {
- 		if ((status & priv->cfg->regs->eoc_msk[i] &&
- 		     stm32_adc_eoc_enabled(priv, i)) ||
- 		     (status & priv->cfg->regs->ovr_msk[i]))
-@@ -424,7 +429,7 @@ static void stm32_adc_irq_remove(struct platform_device *pdev,
- 	int hwirq;
- 	unsigned int i;
- 
--	for (hwirq = 0; hwirq < STM32_ADC_MAX_ADCS; hwirq++)
-+	for (hwirq = 0; hwirq < priv->nb_adc_max; hwirq++)
- 		irq_dispose_mapping(irq_find_mapping(priv->domain, hwirq));
- 	irq_domain_remove(priv->domain);
- 
-@@ -642,6 +647,49 @@ static int stm32_adc_core_switches_probe(struct device *dev,
- 	return 0;
- }
- 
-+static int stm32_adc_probe_identification(struct platform_device *pdev,
-+					  struct stm32_adc_priv *priv)
-+{
-+	struct device_node *np = pdev->dev.of_node;
-+	struct device_node *child;
-+	const char *compat;
-+	int ret, count = 0;
-+	u32 id, val;
-+
-+	if (!priv->cfg->ipid)
-+		return 0;
-+
-+	id = FIELD_GET(STM32MP1_IPIDR_MASK,
-+		       readl_relaxed(priv->common.base + STM32MP1_ADC_IPDR));
-+	if (id != priv->cfg->ipid) {
-+		dev_err(&pdev->dev, "Unexpected IP version: 0x%x", id);
-+		return -EINVAL;
-+	}
-+
-+	for_each_child_of_node(np, child) {
-+		ret = of_property_read_string(child, "compatible", &compat);
-+		if (ret)
-+			continue;
-+		/* Count child nodes with stm32 adc compatible */
-+		if (strstr(compat, "st,stm32") && strstr(compat, "adc"))
-+			count++;
-+	}
-+
-+	val = readl_relaxed(priv->common.base + STM32MP1_ADC_HWCFGR0);
-+	priv->nb_adc_max = FIELD_GET(STM32MP1_ADCNUM_MASK, val);
-+	if (count > priv->nb_adc_max) {
-+		dev_err(&pdev->dev, "Unexpected child number: %d", count);
-+		return -EINVAL;
-+	}
-+
-+	val = readl_relaxed(priv->common.base + STM32MP1_ADC_VERR);
-+	dev_dbg(&pdev->dev, "ADC version: %lu.%lu\n",
-+		FIELD_GET(STM32MP1_MAJREV_MASK, val),
-+		FIELD_GET(STM32MP1_MINREV_MASK, val));
-+
-+	return 0;
-+}
-+
- static int stm32_adc_probe(struct platform_device *pdev)
- {
- 	struct stm32_adc_priv *priv;
-@@ -661,6 +709,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 
- 	priv->cfg = (const struct stm32_adc_priv_cfg *)
- 		of_match_device(dev->driver->of_match_table, dev)->data;
-+	priv->nb_adc_max = priv->cfg->num_adcs;
- 	spin_lock_init(&priv->common.lock);
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -703,6 +752,10 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_pm_stop;
- 
-+	ret = stm32_adc_probe_identification(pdev, priv);
-+	if (ret < 0)
-+		goto err_hw_stop;
-+
- 	ret = regulator_get_voltage(priv->vref);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "vref get voltage failed, %d\n", ret);
-@@ -811,8 +864,8 @@ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
- 	.clk_sel = stm32h7_adc_clk_sel,
- 	.max_clk_rate_hz = 36000000,
- 	.has_syscfg = HAS_VBOOSTER | HAS_ANASWVDD,
-+	.ipid = STM32MP15_IPIDR_NUMBER,
- 	.num_irqs = 2,
--	.num_adcs = 2,
- };
- 
- static const struct of_device_id stm32_adc_of_match[] = {
-diff --git a/drivers/iio/adc/stm32-adc-core.h b/drivers/iio/adc/stm32-adc-core.h
-index faedf7a49555..2118ef63843d 100644
---- a/drivers/iio/adc/stm32-adc-core.h
-+++ b/drivers/iio/adc/stm32-adc-core.h
-@@ -24,6 +24,7 @@
-  * | 0x300  |         Master & Slave common regs          |
-  * --------------------------------------------------------
-  */
-+/* Maximum ADC instances number per ADC block for all supported SoCs */
- #define STM32_ADC_MAX_ADCS		3
- #define STM32_ADC_OFFSET		0x100
- #define STM32_ADCX_COMN_OFFSET		0x300
-@@ -105,6 +106,12 @@
- /* STM32MP1 - ADC2 instance option register */
- #define STM32MP1_ADC2_OR		0xD0
- 
-+/* STM32MP1 - Identification registers */
-+#define STM32MP1_ADC_HWCFGR0		0x3F0
-+#define STM32MP1_ADC_VERR		0x3F4
-+#define STM32MP1_ADC_IPDR		0x3F8
-+#define STM32MP1_ADC_SIDR		0x3FC
-+
- /* STM32H7 - common registers for all ADC instances */
- #define STM32H7_ADC_CSR			(STM32_ADCX_COMN_OFFSET + 0x00)
- #define STM32H7_ADC_CCR			(STM32_ADCX_COMN_OFFSET + 0x08)
-@@ -181,6 +188,30 @@ enum stm32h7_adc_dmngt {
- /* STM32MP1_ADC2_OR - bit fields */
- #define STM32MP1_VDDCOREEN		BIT(0)
- 
-+/* STM32MP1_ADC_HWCFGR0 - bit fields */
-+#define STM32MP1_ADCNUM_SHIFT		0
-+#define STM32MP1_ADCNUM_MASK		GENMASK(3, 0)
-+#define STM32MP1_MULPIPE_SHIFT		4
-+#define STM32MP1_MULPIPE_MASK		GENMASK(7, 4)
-+#define STM32MP1_OPBITS_SHIFT		8
-+#define STM32MP1_OPBITS_MASK		GENMASK(11, 8)
-+#define STM32MP1_IDLEVALUE_SHIFT	12
-+#define STM32MP1_IDLEVALUE_MASK	GENMASK(15, 12)
-+
-+/* STM32MP1_ADC_VERR - bit fields */
-+#define STM32MP1_MINREV_SHIFT		0
-+#define STM32MP1_MINREV_MASK		GENMASK(3, 0)
-+#define STM32MP1_MAJREV_SHIFT		4
-+#define STM32MP1_MAJREV_MASK		GENMASK(7, 4)
-+
-+/* STM32MP1_ADC_IPDR - bit fields */
-+#define STM32MP1_IPIDR_MASK		GENMASK(31, 0)
-+
-+/* STM32MP1_ADC_SIDR - bit fields */
-+#define STM32MP1_SIDR_MASK		GENMASK(31, 0)
-+
-+#define STM32MP15_IPIDR_NUMBER		0x00110005
-+
- /**
-  * struct stm32_adc_common - stm32 ADC driver common data (for all instances)
-  * @base:		control registers base cpu addr
--- 
-2.25.1
+> +	pm_runtime_put_noidle(dev);
+> +	pm_runtime_disable(dev);
+> +}
+> +
+>  static int mlx90632_probe(struct i2c_client *client,
+>  			  const struct i2c_device_id *id)
+>  {
+> @@ -902,6 +1132,7 @@ static int mlx90632_probe(struct i2c_client *client,
+>  	mlx90632->client = client;
+>  	mlx90632->regmap = regmap;
+>  	mlx90632->mtyp = MLX90632_MTYP_MEDICAL;
+> +	mlx90632->powerstatus = MLX90632_PWR_STATUS_HALT;
+>  
+>  	mutex_init(&mlx90632->lock);
+>  	indio_dev->name = id->name;
+> @@ -961,16 +1192,25 @@ static int mlx90632_probe(struct i2c_client *client,
+>  
+>  	mlx90632->emissivity = 1000;
+>  	mlx90632->object_ambient_temperature = 25000; /* 25 degrees milliCelsius */
+> +	mlx90632->interaction_ts = jiffies; /* Set initial value */
+>  
+> -	pm_runtime_disable(&client->dev);
+> +	pm_runtime_get_noresume(&client->dev);
+>  	ret = pm_runtime_set_active(&client->dev);
+>  	if (ret < 0) {
+>  		mlx90632_sleep(mlx90632);
+>  		return ret;
+>  	}
+> +
+>  	pm_runtime_enable(&client->dev);
+>  	pm_runtime_set_autosuspend_delay(&client->dev, MLX90632_SLEEP_DELAY_MS);
+>  	pm_runtime_use_autosuspend(&client->dev);
+> +	pm_runtime_put_autosuspend(&client->dev);
+> +
+> +	ret = devm_add_action_or_reset(&client->dev, mlx90632_pm_disable, &client->dev);
+
+Having moved those over to devm you need to also have dropped the calls in remove()
+(I only noticed this whilst trying to fix the autosuspend issue above.)
+> +	if (ret) {
+> +		mlx90632_sleep(mlx90632);
+> +		return ret;
+> +	}
+>  
+>  	return iio_device_register(indio_dev);
+>  }
 

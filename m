@@ -2,57 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5648C5B9BDE
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 15:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29CF15B9C1C
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 15:39:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbiIONd0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Sep 2022 09:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43872 "EHLO
+        id S229741AbiIONju (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Sep 2022 09:39:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbiIONdZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 09:33:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473DB915F2;
-        Thu, 15 Sep 2022 06:33:21 -0700 (PDT)
+        with ESMTP id S229580AbiIONjt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 09:39:49 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C6712A9F;
+        Thu, 15 Sep 2022 06:39:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0DFB623D1;
-        Thu, 15 Sep 2022 13:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD43C433C1;
-        Thu, 15 Sep 2022 13:33:16 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C9C33B82054;
+        Thu, 15 Sep 2022 13:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18B0C433C1;
+        Thu, 15 Sep 2022 13:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663248799;
-        bh=kt02/lYM/nXNYS/sA9FY5uDsp9UoiQbwCjmcrQB3SP4=;
+        s=k20201202; t=1663249185;
+        bh=EnFkkERMLTpjtQ/t2B9lWfX7du1ItkBYOZh8dr/GFKU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GcfK0Cg95szDdUA1f6QcCW77hz7+R9uY/IeuL4tcF0/28pEY06FFpEYxNg4BjOfBG
-         yKr1RGAu5xM1MoJFXfFfZouzCU/58QcN1RfYLSTUMJr2ZT7e3/Rl5PO4q+wl13Jykz
-         ecNf8TLp9708yO3CSAxzfPAIhVQM2SkwseaQNcsc49RVzQ14Mw9gyZWi6RbVPNLUS4
-         V9y9ACQg/ql4YkENREAig73VBZLSAt+rKVVF8+2VJLnF4Lpxdz5b1Se7QMSwYpvqb1
-         sSTwuUcd0YAqYhwlVdg4OWJLRJPgGzIKluKGMX9wJTJ92gVKjZ271DPYn2fg+oIl6e
-         JWfV5Hgw0nhIg==
-Date:   Thu, 15 Sep 2022 14:33:17 +0100
+        b=NY7iVb7Ut5hSSPuz+7lWrUwDsbFrpB/e1y4EII6GH3M/gG188ldhGty/zkAjGJAed
+         GTLt95JXYdws18O3ky3bEYUuiJlihHAkQ3RqrEAD4roIaSpSbUXXhb4PuLE8yuVjbO
+         0cKd0tH2u/wHhIAstRBLsVmBsoCBkLge/vKauvDw4n/AksVMn6ibIyAotxFjgDFrCu
+         EhxmUtrlgRxqTq4Wr0y0IAzmHRK93fTxkx3srIE4DpX6dnpk6/7E3IE/Wi2sZfk2O7
+         UNV0s9dpprajNQX9UNDbdULpYUBBwCLWp6jYhoTRu4xjdgGfo3q9V2nShCw8SC5eYu
+         HJQ8WOQjQ5+Nw==
+Date:   Thu, 15 Sep 2022 14:39:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-iio <linux-iio@vger.kernel.org>,
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 5/5] iio: pressure: bmp280: Add more tunable config
- parameters for BMP380
-Message-ID: <20220915143317.11073134@jic23-huawei>
-In-Reply-To: <505a681fe6f18139c8cb0e966a706979f41b7d7e.camel@gmail.com>
-References: <cover.1659872590.git.ang.iglesiasg@gmail.com>
-        <680e7218234676ba78fc5eccd5f93e29c06c3983.1659872590.git.ang.iglesiasg@gmail.com>
-        <CAHp75VeNctrQjW4RHwbsF-y--9bAzg3XTFTZzXk+6whRFJcFYg@mail.gmail.com>
-        <505a681fe6f18139c8cb0e966a706979f41b7d7e.camel@gmail.com>
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: pressure: bmp280: fix datasheet links
+Message-ID: <20220915143944.79348ecb@jic23-huawei>
+In-Reply-To: <20220912222645.377874-1-ang.iglesiasg@gmail.com>
+References: <CAHp75VeSsVD8rMz-Cj6kFovqdQQPjbH7rUXWS6paRtsBaB-Kww@mail.gmail.com>
+        <20220912222645.377874-1-ang.iglesiasg@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,130 +59,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 12 Sep 2022 02:53:06 +0200
+On Tue, 13 Sep 2022 00:26:44 +0200
 Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> On Mon, 2022-08-08 at 11:13 +0200, Andy Shevchenko wrote:
-> > On Sun, Aug 7, 2022 at 2:44 PM Angel Iglesias <ang.iglesiasg@gmail.com>=
- wrote: =20
-> > >=20
-> > > Allows sampling frequency and IIR filter coefficients configuration
-> > > using sysfs ABI.
-> > >=20
-> > > The IIR filter coefficient is configurable using the sysfs attribute
-> > > "filter_low_pass_3db_frequency". =20
-> >=20
-> > ...
-> >  =20
-> > > +static const int bmp380_odr_table[][2] =3D { =20
-> >=20
-> > s32_fract ? =20
->=20
-> I modeled this bit and other ODR representations after the adxl355 driver=
-. I see
-> that s32_fract would be a bit cleaner than having arrays inside arrays, b=
-ut I'm
-> failing to see which additional advantages would provide.
-> Also, technically, these are precomputed frequencies, the first index is =
-the
-> integer part and the second is the fractional part. The fractions would be
-> 200/1, 200/2, 200/4 ... 200/131072
->=20
-Agreed. Don't use s32_fract for this.  It would be misleading.
+> Updated links for BMP280 and BME280 datasheets on Bosch website.
+> Datasheet of BMP180 is no longer available on the manufacturer's website,
+> changed the link to a copy hosted by a third party.
+> 
+> Changelog in v2:
+> * Added a notice about the situation with bmp180 datasheet and list
+>   missing changes from newer versions.
+Change log needs to be below the ---
+
+We don't want that level of detail in the git logs.
+
+I tidied that up whilst applying. 
+
+Also, it's not a good idea to have new versions as replies
+to older ones.  Leads to very deep nesting in email threads
+and generally makes things less readable.  Just post
+a fresh series each time.
+
+Applied to the togreg branch of iio.git and pushed out as testing 
+for 0-day to see if it can find anything (rather unlikely on this
+patch!)
 
 Jonathan
 
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_200HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 =3D {200, 0},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_100HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 =3D {100, 0},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_50HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 =3D {50, 0},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_25HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 =3D {25, 0},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_12_5HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {12, 500000},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_6_25HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {6, 250000},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_3_125HZ]=C2=A0=C2=
-=A0=C2=A0 =3D {3, 125000},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_1_5625HZ]=C2=A0=C2=
-=A0 =3D {1, 562500},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_78HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {0, 781250},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_39HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {0, 390625},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_2HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 =3D {0, 195313},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_1HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 =3D {0, 97656},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_05HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {0, 48828},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_02HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {0, 24414},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_01HZ]=C2=A0=C2=A0=
-=C2=A0=C2=A0 =3D {0, 12207},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_006HZ]=C2=A0=C2=
-=A0=C2=A0 =3D {0, 6104},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_003HZ]=C2=A0=C2=
-=A0=C2=A0 =3D {0, 3052},
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [BMP380_ODR_0_0015HZ]=C2=A0=C2=
-=A0 =3D {0, 1526},
-> > > +}; =20
-> >=20
-> > ...
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 ret =3D regmap_write_bits(data->regmap,
-> > > BMP380_REG_POWER_CONTROL,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 BMP380_MODE_MASK, =20
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 FIELD_PREP(BMP380_MODE_MASK,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 BMP380_MODE_SLEEP)); =20
-> >=20
-> > One line?
-> >=20
-> > ...
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 ret =3D regmap_write_bits(data->regmap,
-> > > BMP380_REG_POWER_CONTROL,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 BMP380_MODE_MASK, =20
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 FIELD_PREP(BMP380_MODE_MASK,
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 BMP380_MODE_NORMAL)); =20
-> >=20
-> > Ditto.
-> >=20
-> > ...
-> >  =20
-> > > +static const int bmp380_iir_filter_coeffs_avail[] =3D { 0, 1, 3, 7, =
-15, 31,
-> > > 63, 127 }; =20
-> >=20
-> > This seems like a power of two - 1, can it be replaced by a formula in =
-the
-> > code?
-> >  =20
->=20
+
+
+> 
+> Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index fe7aa81e7cc9..01cd32003ca8 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -9,9 +9,15 @@
+>   * Driver for Bosch Sensortec BMP180 and BMP280 digital pressure sensor.
+>   *
+>   * Datasheet:
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP180-DS000-121.pdf
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMP280-DS001-12.pdf
+> - * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME280_DS001-11.pdf
+> + * https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
+> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bmp280-ds001.pdf
+> + * https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf
+> + *
+> + * Notice:
+> + * The link to the bmp180 datasheet points to an outdated version missing these changes:
+> + * - Changed document referral from ANP015 to BST-MPS-AN004-00 on page 26
+> + * - Updated equation for B3 param on section 3.5 to ((((long)AC1 * 4 + X3) << oss) + 2) / 4
+> + * - Updated RoHS directive to 2011/65/EU effective 8 June 2011 on page 26
+>   */
+>  
+>  #define pr_fmt(fmt) "bmp280: " fmt
+> 
+> base-commit: 2f61ff8272967c9bdcba810aa978170814b08f7c
 

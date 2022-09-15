@@ -2,136 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 325565B9D72
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 16:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 302205B9D8B
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Sep 2022 16:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230241AbiIOOiG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Sep 2022 10:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50636 "EHLO
+        id S229813AbiIOOlS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Sep 2022 10:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229809AbiIOOhb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 10:37:31 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8769E6B4
-        for <linux-iio@vger.kernel.org>; Thu, 15 Sep 2022 07:36:10 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-127f5411b9cso47765034fac.4
-        for <linux-iio@vger.kernel.org>; Thu, 15 Sep 2022 07:36:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=Zr0MOjMyJ6WGRsERkhoXjTXWIw4oT4dBi2Wz+SVWe98=;
-        b=MWwj6VeFoHgj5/3eit/oxW6bAWnNYIjrRgjtLUhPpVWH4i3gh6+Kdhwe6G9kKWK7Y+
-         Wtyll+uKUfso51oiIxfuu6OByixdV1/4tYlDoL1yyBnNtmILX50Gx0qd727qrXPdbrl1
-         +/DGmiBGNF34sz6OOO+++bJw1FrDKV2SCcG5CWCULCt6WP+CWo4BiOAb7aH9fudiZLx2
-         ioigFbhWdhcm+5WOvNC1odH68jQ1aYOd8wAK0NOcND5NmlSSRJE80R+WDS+bMX5rQUsT
-         ryzgwTe68xOmq3LvDm6UvlHDLNxZoQAw0cFW7LwbDK/iZnBWMuUm47LH8ZsDno9B82Cm
-         sqfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Zr0MOjMyJ6WGRsERkhoXjTXWIw4oT4dBi2Wz+SVWe98=;
-        b=MFlAaI0PqXHoYnw6hEnoahzh3z8pJWvv/YRVrSV7AejSz0Yxeq+Y7MD34Qm4kYSC50
-         ScHi5TVyRzOuZzPf6D6Ld4T9NRPNJ1Ty6ahXSq+d6iHPrMXgKRpwuMdMoCQ1QRjJonnx
-         W+W3XYkHYWDJ6EbBnAfmGekFA7wIfoSWeRMJuZc5jUrPZdXhykXoIA/7KTjdfU8G5TZN
-         +ymq9TLLd704fCnQjNQDf7hFCBzHpP7HxyWw0Fu6olEVz/NcUEp4IbprsPLnv2o7ubyj
-         oVF0usMTtWiS/gAe7DPdwI18MSf9U1k2O9JKFo9ozblG+hSpgSbNuEiZfbh2Opxd6vBM
-         0PUw==
-X-Gm-Message-State: ACgBeo2ApKM9S/CJp//j9f6SdW2J4HLdDbYVUC/fG+hWGZNf0u9fJotH
-        urkKnQenGS8H2qj+8CVapUJxaKNg/XFoutP7cpbLeNz7w7o=
-X-Google-Smtp-Source: AA6agR5lghRRXWw0R59Hhnd0mNw6jUREHggPbSqfDKsiOlYodoP3EA7gazsus1vkNSFxYZ70kYfDIkkwjmQvgqlsmzQ=
-X-Received: by 2002:a05:6870:4586:b0:10d:2ec7:be6 with SMTP id
- y6-20020a056870458600b0010d2ec70be6mr5732908oao.7.1663252569231; Thu, 15 Sep
- 2022 07:36:09 -0700 (PDT)
+        with ESMTP id S230086AbiIOOlA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Sep 2022 10:41:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8E4CF7
+        for <linux-iio@vger.kernel.org>; Thu, 15 Sep 2022 07:38:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B79062269
+        for <linux-iio@vger.kernel.org>; Thu, 15 Sep 2022 14:38:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81661C433D6;
+        Thu, 15 Sep 2022 14:38:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663252716;
+        bh=HYLAZC3cEmrK4aWVhGVaCsLrBbMGmkuK0ohk4GjutcE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=H7jJQUApyMQeltc1GtlL66AwjkdUyMx5VfUd6h9KttmGguyP8MOz8v538lx+Mj17w
+         EGQ5dI6uhhvzsch5YmqWVw3HO7QpK7mfrSGM6vRisQQ290ACJhIenQlTI+E+r0+wSq
+         tioUlrkoKjqiNq5TVpjEB51PuP2xZdV0RjRVe19CEjWsAHV3hlx1YM9/LCnUvYEyNt
+         gnpS8gWtS2STJL8ZhNGDiTItkWuSd4vUcV+NLQ3Xt0kV3bm2tQk1CtiT/WRiIv34QT
+         A0Uxrj3tniv/F1Oc0D18zfgfTCIOkk7C3HvGeUfBHyJ7W5k0MxSTPd1jS3ARxdxfum
+         3jzhXSTMFnPbg==
+Date:   Thu, 15 Sep 2022 15:38:36 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-iio@vger.kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 0/2] ad5593r fix read protocol
+Message-ID: <20220915153836.7f8ef80e@jic23-huawei>
+In-Reply-To: <20220913073413.140475-1-nuno.sa@analog.com>
+References: <20220913073413.140475-1-nuno.sa@analog.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1662454215.git.cmo@melexis.com> <32c4b72624e4a3480b202f24f506ca91029e47f7.1662454215.git.cmo@melexis.com>
- <20220915150752.643a3e7d@jic23-huawei>
-In-Reply-To: <20220915150752.643a3e7d@jic23-huawei>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Thu, 15 Sep 2022 16:35:33 +0200
-Message-ID: <CAKv63utO6_vPtuCZKSa5MFFKbSYPQbrAGytiiqT+CZ402rO9fA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> > +     pm_runtime_get_sync(dev);
-> So, this isn't quite enough.
->
-> Take a look at what devm_pm_runtime_enable()
-> does as the documentation for
-> pm_runtime_use_autosuspend()
->
-> I'd suggest using devm_pm_runtime_enable() and
-> an additional callback to turn the device on that
-> is registered after devm_pm_runtime_enable()
-> (so will maintain the ordering you have here).
->
->
->
-I copied this from pressure/bmp280-core driver. I had devm_pm
-originally, but was asked to replace it.
+On Tue, 13 Sep 2022 09:34:11 +0200
+Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
-> > +     pm_runtime_put_noidle(dev);
-> > +     pm_runtime_disable(dev);
-> > +}
-> > +
-> >  static int mlx90632_probe(struct i2c_client *client,
-> >                         const struct i2c_device_id *id)
-> >  {
-> > @@ -902,6 +1132,7 @@ static int mlx90632_probe(struct i2c_client *client,
-> >       mlx90632->client = client;
-> >       mlx90632->regmap = regmap;
-> >       mlx90632->mtyp = MLX90632_MTYP_MEDICAL;
-> > +     mlx90632->powerstatus = MLX90632_PWR_STATUS_HALT;
-> >
-> >       mutex_init(&mlx90632->lock);
-> >       indio_dev->name = id->name;
-> > @@ -961,16 +1192,25 @@ static int mlx90632_probe(struct i2c_client *client,
-> >
-> >       mlx90632->emissivity = 1000;
-> >       mlx90632->object_ambient_temperature = 25000; /* 25 degrees milliCelsius */
-> > +     mlx90632->interaction_ts = jiffies; /* Set initial value */
-> >
-> > -     pm_runtime_disable(&client->dev);
-> > +     pm_runtime_get_noresume(&client->dev);
-> >       ret = pm_runtime_set_active(&client->dev);
-> >       if (ret < 0) {
-> >               mlx90632_sleep(mlx90632);
-> >               return ret;
-> >       }
-> > +
-> >       pm_runtime_enable(&client->dev);
-> >       pm_runtime_set_autosuspend_delay(&client->dev, MLX90632_SLEEP_DELAY_MS);
-> >       pm_runtime_use_autosuspend(&client->dev);
-> > +     pm_runtime_put_autosuspend(&client->dev);
-> > +
-> > +     ret = devm_add_action_or_reset(&client->dev, mlx90632_pm_disable, &client->dev);
->
-> Having moved those over to devm you need to also have dropped the calls in remove()
-> (I only noticed this whilst trying to fix the autosuspend issue above.)
+> This patchset fixes the read protocol since it needs a STOP condition
+> between address write and data read.
+>=20
+> The second change is trivial and only adds an i2c functionality check.
 
-So in remove, there should be no pm calls, because mlx90632_pm_disable
-function handle all of it? I still keep the sleep call, so that it
-also puts the sensor in lowest state, or I rather keep it only in
-regulator_disable (which should also be called at removal)?
+Given we are late in the cycle, I've queued this up for the next merge
+window, with a stable tag for the first paatch so it'll get backported
+after the merge window.
 
-> > +     if (ret) {
-> > +             mlx90632_sleep(mlx90632);
-> > +             return ret;
-> > +     }
-> >
-> >       return iio_device_register(indio_dev);
-> >  }
->
+Thanks,
+
+Jonathan
+
+
+>=20
+> Michael Hennerich (1):
+>   iio: dac: ad5593r: Fix i2c read protocol requirements
+>=20
+> Nuno S=C3=A1 (1):
+>   iio: dac: ad5593r: add check for i2c functionality
+>=20
+>  drivers/iio/dac/ad5593r.c | 48 +++++++++++++++++++++++----------------
+>  1 file changed, 28 insertions(+), 20 deletions(-)
+>=20
+

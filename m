@@ -2,102 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 863975BA978
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Sep 2022 11:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF0D5BABD6
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Sep 2022 12:59:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbiIPJdS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Sep 2022 05:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38380 "EHLO
+        id S232396AbiIPK7e (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Sep 2022 06:59:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbiIPJdQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 05:33:16 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22B98AA35D
-        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 02:33:16 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28G6c1u8021182;
-        Fri, 16 Sep 2022 05:32:09 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jm8x5mv48-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Sep 2022 05:32:09 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 28G9W8UT036336
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 16 Sep 2022 05:32:08 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 16 Sep
- 2022 05:32:07 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 16 Sep 2022 05:32:07 -0400
-Received: from nsa.ad.analog.com ([10.44.3.57])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28G9VpUF000969;
-        Fri, 16 Sep 2022 05:31:54 -0400
-From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
-To:     <linux-iio@vger.kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH] iio: dac: ad5593r: prevent use of uninitialized variable
-Date:   Fri, 16 Sep 2022 11:33:07 +0200
-Message-ID: <20220916093307.612830-1-nuno.sa@analog.com>
-X-Mailer: git-send-email 2.37.3
+        with ESMTP id S231508AbiIPK6P (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 06:58:15 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C79B6D74
+        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 03:46:16 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id z21so30902274edi.1
+        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 03:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=9nGXI3rWxOZ8NHTVQvlMO9I4kmNG+wDn/0VKOuYYbWY=;
+        b=fE2f0sdwj7xt5sk8vnG5J2uHo1AAJ25Dy0BoEyDsqQy1D4SUogDm9xAJtD77fIN+Ie
+         EEEQ902UP8j0IXjey3sbypI3qT2R7G0xHLLkppeHs700m7BBUNXXqNzIK5s9F9Ul0ohV
+         oM+NGwPtcgVuLjwxXSS75Mq7qccOBlAMU4lQd5bum18LC6i+DLvuZmT6McfX4wGETGL+
+         1tGTVdWUzjm3bungP1MSKwCx3MiRE1aDtfjxlCOrH8dOzGYPjU7hFQNMNheIWnRuRRHH
+         1VcT4Of+KhH4RkyguiX6wvJx26akjR9hLhrc/PDca1n1c23PW9JocEvtM7OFpXFJBnrh
+         Afkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=9nGXI3rWxOZ8NHTVQvlMO9I4kmNG+wDn/0VKOuYYbWY=;
+        b=cpsXChkbxGD07j4D2PkT0WGdhGKEUmancvRZCORCwc3PnM/AonPzU7Uzwi4ldm9ckR
+         S0Gq8Kz+oEEg+Hj4w3GoIQQ9ePu9uh2VwYrEiszp2Mds+n65gnLvs7i9vrRieqzOv44G
+         AyXXVGbhGS5mL4pnajT8PM0njNmz+TxOTMVKi0SKOkLPsKqOe0APOieoBngKrmgShNHd
+         yr+cJzUVy+EbcR4xolKDxuxGrzAFSZT3o4vUw7r9ygUsPUww5SOKrOL+byhaV8bv20P9
+         U1y1aO/QMMqd/KqFwMNA/3jHeUxiYVbbimT1Rem+ZQUHGRb5g7Tm9dJ/WInzX2iKSXQN
+         Gx2Q==
+X-Gm-Message-State: ACrzQf0GOvUIyzqfVD/439kaQ/FUl2/Qo++pkYqf2YwP4GlaiBa23VHv
+        nfyErtx41xppNfiRtlW/JDaLhg==
+X-Google-Smtp-Source: AMsMyM6bpuSzPsKAI4XGGueEEUQjuAHWhExoZiL6HgwVKGcwKfqvm+/F3L+9U6zXVBBpLocLWodR6A==
+X-Received: by 2002:aa7:d614:0:b0:453:f01:75c4 with SMTP id c20-20020aa7d614000000b004530f0175c4mr3431232edr.302.1663325170983;
+        Fri, 16 Sep 2022 03:46:10 -0700 (PDT)
+Received: from cmo-ThinkPad-T495.telenet.be (ptr-4xh0y3vvunoijj2gi1k.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:cef1:93b4:727b:dd58])
+        by smtp.gmail.com with ESMTPSA id fi24-20020a1709073ad800b0072af4af2f46sm10148434ejc.74.2022.09.16.03.46.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Sep 2022 03:46:10 -0700 (PDT)
+From:   cmo@melexis.com
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Crt Mori <cmo@melexis.com>
+Subject: [PATCH v4 0/3] iio: temperature: mlx90632: Add powermanagement
+Date:   Fri, 16 Sep 2022 12:45:49 +0200
+Message-Id: <cover.1663324968.git.cmo@melexis.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: KBSICfUFUYG2bhvtCLSWXIJQt1gs-PE_
-X-Proofpoint-ORIG-GUID: KBSICfUFUYG2bhvtCLSWXIJQt1gs-PE_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-16_04,2022-09-14_04,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0 phishscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2209160069
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Properly error check the call to ad5593r_read_word() so that we do not
-end up (would be unlikely but possible) touching uninitialized data.
+From: Crt Mori <cmo@melexis.com>
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Fixes: 53b6e3b2164c ("iio: dac: ad5593r: Fix i2c read protocol requirements")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/dac/ad5593r.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+As discussed previously on the group under the
+"Controlling device power management from terminal" thread the mlx90632
+sensor provides measurement capabilities under sleep_step mode. This
+series runtime suspends the unused chip to sleep step mode to save power
+but in case of continuous sequential reading it switches to continuous
+mode for faster readouts. This value is hardcoded to
+MLX90632_MEAS_MAX_TIME (with some buffer) and not user configurable.
 
-diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
-index bb5e3fe90e89..420981e7c5c3 100644
---- a/drivers/iio/dac/ad5593r.c
-+++ b/drivers/iio/dac/ad5593r.c
-@@ -83,10 +83,12 @@ static int ad5593r_gpio_read(struct ad5592r_state *st, u8 *value)
- 	int ret;
- 
- 	ret = ad5593r_read_word(i2c, AD5593R_MODE_GPIO_READBACK, &val);
-+	if (ret)
-+		return ret;
- 
- 	*value = (u8) val;
- 
--	return ret;
-+	return 0;
- }
- 
- static const struct ad5592r_rw_ops ad5593r_rw_ops = {
+The sensor runtime suspension is set to MLX90632_SLEEP_DELAY_MS which is
+hardcoded to 3 times as much as MEAS_MAX_TIME.
+
+Changes in v4 (per review comments from Jonathan Cameron):
+
+ - Migrate back to devm_pm_runtime_enable and remove the pm_disable function
+ - Remove pm stuff from remove and also sleep, since when iio device is
+   not registered also sleep makes no sense.
+ - Replace use EOPNOTSUPP as per checkpatch suggestion although some drivers
+   still use ENOTSUPP.
+ - Change the style of read frequency
+
+Changes in v3 (per review comments from Jonathan Cameron):
+
+ - Change the "available" attribute presentation to more recent way
+   suggested
+ - Replace devm_pm_runtime_enable with enable and devm_add_action_or_reset
+ - When suspending device also put it to lower power mode in case there is
+   dummy regulator
+ - Use more switch cases instead of if/else
+
+Changes in v2:
+
+ - apply review comments from Andy Shevchenko
+
+Crt Mori (3):
+  iio: temperature: mlx90632 Add runtime powermanagement modes
+  iio: temperature: mlx90632 Read sampling frequency
+  iio: temperature: mlx90632 Change return value of sensor measurement
+    channel
+
+ drivers/iio/temperature/mlx90632.c | 402 +++++++++++++++++++++++++----
+ 1 file changed, 347 insertions(+), 55 deletions(-)
+
 -- 
-2.37.3
+2.34.1
 

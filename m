@@ -2,160 +2,232 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F33505BAF06
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Sep 2022 16:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 225255BAF18
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Sep 2022 16:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231938AbiIPOMM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Sep 2022 10:12:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
+        id S231531AbiIPOS4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Sep 2022 10:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbiIPOMG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 10:12:06 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2866DB08AE;
-        Fri, 16 Sep 2022 07:12:05 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28GE36HU020563;
-        Fri, 16 Sep 2022 10:12:03 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jm8x5pbbr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 16 Sep 2022 10:12:03 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 28GEC2mr057789
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 16 Sep 2022 10:12:02 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 16 Sep 2022 10:12:01 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 16 Sep 2022 10:12:01 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 16 Sep 2022 10:12:01 -0400
-Received: from debian.ad.analog.com ([10.48.65.127])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28GEBfso020264;
-        Fri, 16 Sep 2022 10:11:54 -0400
-From:   Ciprian Regus <ciprian.regus@analog.com>
-To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Ciprian Regus <ciprian.regus@analog.com>
-Subject: [PATCH 5/5] drivers: iio: adc: Rename the LTC2499 iio device
-Date:   Fri, 16 Sep 2022 17:09:22 +0300
-Message-ID: <20220916140922.2506248-6-ciprian.regus@analog.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220916140922.2506248-1-ciprian.regus@analog.com>
-References: <20220916140922.2506248-1-ciprian.regus@analog.com>
+        with ESMTP id S231588AbiIPOSx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 10:18:53 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30618B1B83;
+        Fri, 16 Sep 2022 07:18:52 -0700 (PDT)
+Received: from mercury (unknown [82.141.252.181])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0DC40660203B;
+        Fri, 16 Sep 2022 15:18:50 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1663337930;
+        bh=ZLM9d9F/EoTTN2+Qe1HJE5YhJNqZQ6yu6k4zqiLIIBk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=huXbpgc/7LoK2ak5zlFNwWRCFsHcpe2bvGGx7ThsS5scPh6K7Fn0mt0lww5ikW0tG
+         w0W/TaSEUrdjnfXJU8qjV+68/ExoMY52Kws5VvW/BCO+6tArhHngiPcH4NBl3H+RTH
+         c0xBYC3GDN149VGjFUkBwDt+WnI0ptKn5t4NETAyuVEjcqPW6vZN4h9I4WJ+Yas3JC
+         9uH0NuLiXVeVIHCEP8xYnsVEXs2VHh9h5ffDKRi30kq53g33MQIcHyxyd368LUStkZ
+         q8GZBebRE7ZX41GTnUzM7MSfD5TapID8gkOSVUFYc+q/Xbmibv8taKed8TLIThv0cq
+         qxwNucN8tKQnw==
+Received: by mercury (Postfix, from userid 1000)
+        id BA4751060849; Fri, 16 Sep 2022 16:18:43 +0200 (CEST)
+Date:   Fri, 16 Sep 2022 16:18:43 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     pavel@ucw.cz, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        jic23@kernel.org, lars@metafoo.de, broonie@kernel.org,
+        mazziesaccount@gmail.com, andriy.shevchenko@linux.intel.com,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
+        szunichen@gmail.com,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v11 1/8] dt-bindings: power: supply: Add MediaTek MT6370
+ Charger
+Message-ID: <20220916141843.pmlg3x7yrnkdr26r@mercury.elektranox.org>
+References: <cover.1663254344.git.chiaen_wu@richtek.com>
+ <9382254831bb6ed8c228398a68896b0e8e61c7c4.1663254344.git.chiaen_wu@richtek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: t7NyyDnvjP0QQERHa8bvwnhTrVE8H0g3
-X-Proofpoint-ORIG-GUID: t7NyyDnvjP0QQERHa8bvwnhTrVE8H0g3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-16_08,2022-09-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0 phishscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 impostorscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2209130000 definitions=main-2209160105
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fwbn4zdugcfjfhv7"
+Content-Disposition: inline
+In-Reply-To: <9382254831bb6ed8c228398a68896b0e8e61c7c4.1663254344.git.chiaen_wu@richtek.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Set the iio device's name based on the chip used for the
-LTC2499 only. The most common way for IIO clients to interact
-with a device is to address it based on it's name. By using
-the dev_name() function, the name will be set based on a
-i2c_client's kobj name, which has the format i2c_instance-i2c_address
-(1-0076 for example). This is not ideal, since it makes a
-requirement for userspace to have knowledge about the hardware
-connections of the device.
 
-The name field is set to NULL for the LTC2497 and LTC2496, so
-that the old name can kept as it is, since changing it will
-result in an ABI breakage.
+--fwbn4zdugcfjfhv7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
----
- changes in v3:
-  - moved the chip info name field setting in this patch.
- drivers/iio/adc/ltc2496.c      |  1 +
- drivers/iio/adc/ltc2497-core.c | 10 +++++++++-
- drivers/iio/adc/ltc2497.c      |  2 ++
- drivers/iio/adc/ltc2497.h      |  1 +
- 4 files changed, 13 insertions(+), 1 deletion(-)
+Hi,
 
-diff --git a/drivers/iio/adc/ltc2496.c b/drivers/iio/adc/ltc2496.c
-index bf89d5ae19af..2593fa4322eb 100644
---- a/drivers/iio/adc/ltc2496.c
-+++ b/drivers/iio/adc/ltc2496.c
-@@ -89,6 +89,7 @@ static void ltc2496_remove(struct spi_device *spi)
- 
- static const struct ltc2497_chip_info ltc2496_info = {
- 	.resolution = 16,
-+	.name = NULL,
- };
- 
- static const struct of_device_id ltc2496_of_match[] = {
-diff --git a/drivers/iio/adc/ltc2497-core.c b/drivers/iio/adc/ltc2497-core.c
-index b2752399402c..f52d37af4d1f 100644
---- a/drivers/iio/adc/ltc2497-core.c
-+++ b/drivers/iio/adc/ltc2497-core.c
-@@ -169,7 +169,15 @@ int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev)
- 	struct ltc2497core_driverdata *ddata = iio_priv(indio_dev);
- 	int ret;
- 
--	indio_dev->name = dev_name(dev);
-+	/*
-+	 * Keep using dev_name() for the iio_dev's name on some of the parts,
-+	 * since updating it would result in a ABI breakage.
-+	 */
-+	if (ddata->chip_info->name)
-+		indio_dev->name = ddata->chip_info->name;
-+	else
-+		indio_dev->name = dev_name(dev);
-+
- 	indio_dev->info = &ltc2497core_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ltc2497core_channel;
-diff --git a/drivers/iio/adc/ltc2497.c b/drivers/iio/adc/ltc2497.c
-index 36248423a7a6..ea76436adaf3 100644
---- a/drivers/iio/adc/ltc2497.c
-+++ b/drivers/iio/adc/ltc2497.c
-@@ -126,9 +126,11 @@ static int ltc2497_remove(struct i2c_client *client)
- static const struct ltc2497_chip_info ltc2497_info[] = {
- 	[TYPE_LTC2497] = {
- 		.resolution = 16,
-+		.name = NULL,
- 	},
- 	[TYPE_LTC2499] = {
- 		.resolution = 24,
-+		.name = "ltc2499",
- 	},
- };
- 
-diff --git a/drivers/iio/adc/ltc2497.h b/drivers/iio/adc/ltc2497.h
-index 71957fc7e1ba..e023de0d88c4 100644
---- a/drivers/iio/adc/ltc2497.h
-+++ b/drivers/iio/adc/ltc2497.h
-@@ -6,6 +6,7 @@
- 
- struct ltc2497_chip_info {
- 	u32 resolution;
-+	const char *name;
- };
- 
- struct ltc2497core_driverdata {
--- 
-2.30.2
+On Thu, Sep 15, 2022 at 05:47:29PM +0800, ChiaEn Wu wrote:
+> From: ChiaEn Wu <chiaen_wu@richtek.com>
+>=20
+> Add MediaTek MT6370 Charger binding documentation.
+>=20
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> ---
+> v11
+> - Add more detailed description of irqs.
+> - Adujust the order of irqs
+> ---
 
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+
+-- Sebastian
+
+>  .../power/supply/mediatek,mt6370-charger.yaml      | 96 ++++++++++++++++=
+++++++
+>  1 file changed, 96 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/mediat=
+ek,mt6370-charger.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/power/supply/mediatek,mt63=
+70-charger.yaml b/Documentation/devicetree/bindings/power/supply/mediatek,m=
+t6370-charger.yaml
+> new file mode 100644
+> index 0000000..fd491c5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/mediatek,mt6370-char=
+ger.yaml
+> @@ -0,0 +1,96 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/mediatek,mt6370-charger.=
+yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: MediaTek MT6370 Battery Charger
+> +
+> +maintainers:
+> +  - ChiaEn Wu <chiaen_wu@richtek.com>
+> +
+> +description: |
+> +  This module is part of the MT6370 MFD device.
+> +  Provides Battery Charger, Boost for OTG devices and BC1.2 detection.
+> +
+> +properties:
+> +  compatible:
+> +    const: mediatek,mt6370-charger
+> +
+> +  interrupts:
+> +    description: |
+> +      Specify what irqs are needed to be handled by MT6370 Charger drive=
+r.
+> +      We need to use the IRQ "MT6370_IRQ_OVPCTRL_UVP_D" to know when USB
+> +      is plugged in, and then the driver will enable BC1.2 detection.
+> +      After the hardware of MT6370 completes the BC1.2 detection,
+> +      IRQ "MT6370_IRQ_ATTACH" will be triggered, and the driver will know
+> +      the result of BC1.2 detection.
+> +      When the IRQ "MT6370_IRQ_CHG_MIVR" is triggered, it means that the
+> +      hardware enters the "Minimum Input Voltage Regulation loop" and
+> +      a workaround needs to be applied at this time.
+> +      In summary, "MT6370_IRQ_OVPCTRL_UVP_D", "MT6370_IRQ_ATTACH" and
+> +      "MT6370_IRQ_CHG_MIVR" are required in this charger driver.
+> +    items:
+> +      - description: irq of "USB is plugged in"
+> +      - description: irq of "BC1.2 is done"
+> +      - description: irq of "Minimum Input Voltage Regulation loop is ac=
+tive"
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: uvp_d_evt
+> +      - const: attach_i
+> +      - const: mivr
+> +
+> +  io-channels:
+> +    description: |
+> +      Use ADC channel to read VBUS, IBUS, IBAT, etc., info.
+> +    minItems: 1
+> +    items:
+> +      - description: |
+> +          VBUS voltage with lower accuracy (+-75mV) but higher measure
+> +          range (1~22V)
+> +      - description: |
+> +          VBUS voltage with higher accuracy (+-30mV) but lower measure
+> +          range (1~9.76V)
+> +      - description: the main system input voltage
+> +      - description: battery voltage
+> +      - description: battery temperature-sense input voltage
+> +      - description: IBUS current (required)
+> +      - description: battery current
+> +      - description: |
+> +          regulated output voltage to supply for the PWM low-side gate d=
+river
+> +          and the bootstrap capacitor
+> +      - description: IC junction temperature
+> +
+> +  io-channel-names:
+> +    minItems: 1
+> +    items:
+> +      - const: vbusdiv5
+> +      - const: vbusdiv2
+> +      - const: vsys
+> +      - const: vbat
+> +      - const: ts_bat
+> +      - const: ibus
+> +      - const: ibat
+> +      - const: chg_vddp
+> +      - const: temp_jc
+> +
+> +  usb-otg-vbus-regulator:
+> +    type: object
+> +    description: OTG boost regulator.
+> +    unevaluatedProperties: false
+> +    $ref: /schemas/regulator/regulator.yaml#
+> +
+> +    properties:
+> +      enable-gpios:
+> +        maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - interrupts
+> +  - interrupt-names
+> +  - io-channels
+> +
+> +additionalProperties: false
+> +
+> +...
+> --=20
+> 2.7.4
+>=20
+
+--fwbn4zdugcfjfhv7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmMkhcAACgkQ2O7X88g7
++prLghAAgaMdleTOkYQYJw7BnJdS13FoSXBt0v+LtednJi/uKwwDFWX9R6t04m4c
+fxSU/K1LiIkUQWw/iT0YXM5m2xl2tbFwTYq7fUwj6soTbHjCuv5ii6b2cQw5+bTe
+SBRQWf4OJqqU0Wo2IpjdsVQeKSCpCoUUjgAf1VWwGh80SH4lXdpKlNuZIlYo6m4R
+S86iaJLgM1Zaf1y4xV1MBoVyhC4peHPlcYl+zqTalN9tRXthDjEbGKsodbxSv3yX
+tVAYuY3YXLmmHfCASxbaFeDxW7GzgmQiHV1a7c5rjvaPqpO1lFJ4+sl04mFPQ+u/
+ZkvT9Dw8SawWQOUa4S/myktxiUrZlEaIVCj+iW0yE0yN03ARG2Le6n3JSFE2Spt5
+4jUjo3VFyFFJNrRzFS00lO8Pwrs143mvKuD28Dh6g4Gdi7IJz6aRZdM2fx9SwwS9
+iQn4Hp/0lrdhpmecZZSS2awHnuGv+wi++Jpx4/GDhE7OMHjWX+pZA7spNJZhb/e6
+DwbIo8zM+y3wosRM8kcxR9PPmLaPpMsP6WkUHDuSaiCzzYPxEWA8g276IUjCtWUs
+gCqHcb7/a+CuMKbVwmqemzhaxcekH5fqdpTqIWEA+QkxCOqCqG5KqK7tw/tg5fYe
+6DUSkNR6hysUsU6DgjeopXNXhPhyE7F8odG1MkFPFcw2EDNskxU=
+=KswM
+-----END PGP SIGNATURE-----
+
+--fwbn4zdugcfjfhv7--

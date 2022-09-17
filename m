@@ -2,106 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2945BB038
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Sep 2022 17:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 404B75BB53C
+	for <lists+linux-iio@lfdr.de>; Sat, 17 Sep 2022 03:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230238AbiIPPau convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Fri, 16 Sep 2022 11:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46008 "EHLO
+        id S229647AbiIQBQd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Sep 2022 21:16:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiIPPat (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 11:30:49 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A9305AC75
-        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 08:30:49 -0700 (PDT)
-Received: from fraeml707-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MTdFh6xV9z67MnF;
-        Fri, 16 Sep 2022 23:26:16 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml707-chm.china.huawei.com (10.206.15.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 16 Sep 2022 17:30:47 +0200
-Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 16 Sep
- 2022 16:30:46 +0100
-Date:   Fri, 16 Sep 2022 16:30:43 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH 0/2] ad5593r fix read protocol
-Message-ID: <20220916163043.000059b3@huawei.com>
-In-Reply-To: <d3d6ee8fdbbcf78a4b8b7f93bc8a417c811be18a.camel@gmail.com>
-References: <20220913073413.140475-1-nuno.sa@analog.com>
-        <20220915153836.7f8ef80e@jic23-huawei>
-        <d3d6ee8fdbbcf78a4b8b7f93bc8a417c811be18a.camel@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S229507AbiIQBQc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Sep 2022 21:16:32 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B739BB038
+        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 18:16:31 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id b23so12294942qtr.13
+        for <linux-iio@vger.kernel.org>; Fri, 16 Sep 2022 18:16:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=TapueQ5b1Bvm8CCBp00PaYkfMjxgzKZ89MFFT3rwJ2Q=;
+        b=wcabjB6teeuSUmyhpUBBgOuPkJzOOJdGbKpxbHRNOBrPHLh4t7mmYKfHDV489WDwSI
+         wHLi99nCJMNLLjfX8BK7qJljdsN+2vpaLPDDxVMcslMqdStONxQOb//wqUZJCA5As579
+         7aDK2gjyn+4LDdpvuZSHHyR2mUayslhDQzE7Phq6zhfQvChjc3OUAXNKMCQV2NuIyy+l
+         VQmajsF4dQgRZBO/9RkFTr+eTgRonWaIHj0aRDcP9DGBUf92S1DmJmYNMuHnXV3Cn0f2
+         6xK4bQD0jYX+iBHtLXvhpkCVQlszPFdtMjcN97NXerlLWdonmDfFj+/buYOtBNTY/kGX
+         BqKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=TapueQ5b1Bvm8CCBp00PaYkfMjxgzKZ89MFFT3rwJ2Q=;
+        b=1fMUSQ9O6flKPGpCHHeCgl4GIAEWsXfg4NwTwCSp+booe5z7ZEhz0r+fHFfBbsGth3
+         2TucYNmiLxYS4eVkILx+h0BpU2RT2w/TCZojOTTC4oyJh2Zsh7zQ1yoH4ryamZPw6Hje
+         HU3mvsrQgG314CTzgewfYrsupV4fL6WaV4SMQuWOnzs6et+2G/yYUML4cdacbt/EXufT
+         y7ThspT+pSgeItgqEOdeX9WUNoASsIwbMSjBoQzs4p8mYZ7hgZxm6I5iHbtKJXvzhFPa
+         Si9l9moa4vwTSPE+P9t4XaG/bhMcO7leZ3IzEkc1ODwLjXTEde7yU9MWfTix0RAh5ubD
+         XVYQ==
+X-Gm-Message-State: ACrzQf1XsrIwTAePom/lnCV95XBESOxnAadfG8qIxEMSJTelOk/SLUX1
+        WAwWCqvX3Kb6YoipYG2eMw/QE8JMPmrlMQ==
+X-Google-Smtp-Source: AMsMyM5LXyXf9hP8WDxaYOjxpFqyakGdtbuUiObd4/AeVkX45JUzQ4kC2Ub1xhMCEOZrvmO3ROIs9w==
+X-Received: by 2002:ac8:5e49:0:b0:35b:b456:7261 with SMTP id i9-20020ac85e49000000b0035bb4567261mr6896652qtx.490.1663377390059;
+        Fri, 16 Sep 2022 18:16:30 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id v6-20020a05620a440600b006bb87c4833asm8085434qkp.109.2022.09.16.18.16.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Sep 2022 18:16:29 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, mranostay@ti.com,
+        jpanis@baylibre.com, gwendal@chromium.org, bleung@chromium.org,
+        groeck@chromium.org, jic23@kernel.org, david@lechnology.com,
+        robertcnelson@gmail.com,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH v2 0/4] Add support for Counter array components
+Date:   Fri, 16 Sep 2022 20:39:24 -0400
+Message-Id: <cover.1663372750.git.william.gray@linaro.org>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Sep 2022 08:05:29 +0200
-Nuno Sá <noname.nuno@gmail.com> wrote:
+Changes in v2:
+ - Fixed Counter array component id allocation; was previously
+   allocating duplicate ids to subsequent components
+ - Introduced the Signal polarity component
+ - Added Signal polarity component for 104-quad-8 driver
+ - Converted COUNTER_COMP_ARRAY_U64 to COUNTER_COMP_ARRAY
+ - Added support for Counter arrays of Signal polarity component type
+ - Introduced DEFINE_COUNTER_ARRAY helper macro to define Counter arrays
 
-> On Thu, 2022-09-15 at 15:38 +0100, Jonathan Cameron wrote:
-> > On Tue, 13 Sep 2022 09:34:11 +0200
-> > Nuno Sá <nuno.sa@analog.com> wrote:
-> >   
-> > > This patchset fixes the read protocol since it needs a STOP
-> > > condition
-> > > between address write and data read.
-> > > 
-> > > The second change is trivial and only adds an i2c functionality
-> > > check.  
-> > 
-> > Given we are late in the cycle, I've queued this up for the next
-> > merge
-> > window, with a stable tag for the first paatch so it'll get
-> > backported
-> > after the merge window.
-> > 
-> >   
-> 
-> Alright. BTW, not sure If I already asked this but do you have any
-> preference with regards to CCing stable? Should I have done it when
-> submitting or do you prefer to handle it yourself?
+The COUNTER_COMP_ARRAY Counter component type is introduced to enable
+support for Counter array components. With Counter array components,
+exposure for buffers on counter devices can be defined via new Counter
+array component macros. This should simplify code for driver authors who
+would otherwise need to define individual Counter components for each
+array element.
 
-Generally I prefer submitters to not tag for stable and let me make that
-decision.  Often I'll decide to not tag because I'm a little worried
-about a fix and want it to be in mainline a little while before we
-backport.  I don't mind people sending explicit backport requests
-though once it's soaked a bit.
+Driver authors can handle reads/writes for an array component by
+receiving an element index via the `idx` parameter and processing the
+respective value via the `val` parameter.
 
-Mind you, these days the scripts that check for possible fixes
-often pick these up before I've gotten to sending a backport
-request. Sometimes I send a note when that happens to ask for
-it to soak longer, but mostly the delay is enough that I'm happy
-the patch got enough soaking before that happens.
+For example, suppose a driver wants to expose a Count's read-only
+capture buffer of four elements using a callback
+`foobar_capture_read()`::
 
-Occasionally I just forget to tag with stable. If that happens
-then I'm fine with a request to pick it up being sent out once
-it is upstream!
+        DEFINE_COUNTER_ARRAY(foobar_capture_array, COUNTER_COMP_U64,
+                             NULL, 4)
+        COUNTER_COMP_COUNT_ARRAY_U64("capture", foobar_capture_read,
+                                     NULL, foobar_capture_array)
 
-Jonathan
+Respective sysfs attributes for each array element would appear for the
+respective Count:
 
-> 
-> - Nuno Sá
-> 
-> 
+* /sys/bus/counter/devices/counterX/countY/capture0
+* /sys/bus/counter/devices/counterX/countY/capture1
+* /sys/bus/counter/devices/counterX/countY/capture2
+* /sys/bus/counter/devices/counterX/countY/capture3
+
+If a user tries to read _capture2_ for example, `idx` will be `2` when
+passed to the `foobar_capture_read()` callback, and thus the driver
+knows which array element to handle.
+
+In addition, this patchset introduces the Signal polarity component,
+which represents the active level of a respective Signal. There are two
+possible states: positive (rising edge) and negative (falling edge). The
+104-quad-8 driver is updated to expose its index_polarity functionality
+via this new polarity component.
+
+A macro COUNTER_COMP_ARRAY_POLARITY() is provided for driver authors to
+support Counter arrays of Signal polarity component type;
+DEFINE_COUNTER_AVAILABLE may be used to define the polarity modes that
+are passed to DEFINE_COUNTER_ARRAY.
+
+William Breathitt Gray (4):
+  counter: Introduce the Signal polarity component
+  counter: 104-quad-8: Add Signal polarity component
+  counter: Consolidate Counter extension sysfs attribute creation
+  counter: Introduce the COUNTER_COMP_ARRAY component type
+
+ Documentation/ABI/testing/sysfs-bus-counter |  13 +
+ drivers/counter/104-quad-8.c                |  35 +++
+ drivers/counter/counter-sysfs.c             | 298 ++++++++++++++++----
+ include/linux/counter.h                     | 131 +++++++++
+ include/uapi/linux/counter.h                |   6 +
+ 5 files changed, 434 insertions(+), 49 deletions(-)
+
+
+base-commit: a12224997bec72d231a8dd642876e6364decdc45
+-- 
+2.37.3
 

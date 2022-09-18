@@ -2,49 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E827B5BBEC2
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E885BBF1D
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 19:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbiIRPwq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 11:52:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
+        id S229542AbiIRR02 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 13:26:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbiIRPwp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:52:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706A41E3EE;
-        Sun, 18 Sep 2022 08:52:44 -0700 (PDT)
+        with ESMTP id S229458AbiIRR01 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 13:26:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E19D7186C8;
+        Sun, 18 Sep 2022 10:26:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 183A8B81054;
-        Sun, 18 Sep 2022 15:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5937C433D6;
-        Sun, 18 Sep 2022 15:52:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71D9D615B3;
+        Sun, 18 Sep 2022 17:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB17C433C1;
+        Sun, 18 Sep 2022 17:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663516361;
-        bh=SVK3Agc3LNoXUChFnh7QveTqHR+NtRh1+3bGbG8NVkc=;
+        s=k20201202; t=1663521984;
+        bh=LFojQE3Tofgqym9S96rNzo5hxMzpgPxPJkTV1h+fBII=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N0OGAnMxbckfHkBPRrvTlxyGZUNLlQhK6byDCTOvgq+GI25wge7Z//XrI1JBicbii
-         kbvEWgd2VHMbe0Z9N7+7ezltBLCA+WpnQCdsaaPPmPrVMTLt8DETtQNbMoVZYrJaa8
-         ZnFa8JYH4fA7y9WfVIM9MrkYWslHlY7fPX/xDV4mZDHFq2RDGMMAhZmDPfJQYBh2sE
-         cCuCncaYqGH0bY1fRv02DSPp/tTAYVNZ2R7+rt5xAgu8WJauQw7T6UMx6Mve6La+Yx
-         wos4YjygFZ9nKLzJToBOjkjHKTYL28JYuMM8G+kxI2gmOau2WVViRELHO23S5W4Ze0
-         ZxNm52PkXLcsw==
-Date:   Sun, 18 Sep 2022 16:52:45 +0100
+        b=L2tBmmhEOVDk6M6LGlh/D76yQd9iS8OhTLshev0q8bd5fPOm7KnfnphFY/Lx3Th70
+         u6p5p8mvvQ8R8cJtsR4Jfa/Uj8BJnHHUC/2mN0EN7Ftr5Ece4+A6TCcp6iWkUPrTr8
+         8NZNGg10a/e14InFy32JuaL1A8VRtqthw7SGVq+odKjHxFv49bF+bl12fh3NAdE/qI
+         VmHwWoRuIq01grHs+3vSD3LDTf8IBric47qJiLNG3nIM/8g18KBzEvAUf28roi0c97
+         zBbOYgqT2grv+KyqMI2Ca0tINvA3vJPCoDVqWyWcyQIXDuinjPYGKyiNfDOlKT3Vgh
+         JanupFjNjU2XQ==
+Date:   Sun, 18 Sep 2022 18:26:26 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Andrea Merello <andrea.merello@gmail.com>
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Eddie James <eajames@linux.ibm.com>, <lars@metafoo.de>,
-        <linux-iio@vger.kernel.org>, <joel@jms.id.au>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v8 2/2] iio: pressure: dps310: Reset chip after timeout
-Message-ID: <20220918165245.005c757a@jic23-huawei>
-In-Reply-To: <20220916162535.00000cf6@huawei.com>
-References: <20220915195719.136812-1-eajames@linux.ibm.com>
-        <20220915195719.136812-3-eajames@linux.ibm.com>
-        <CAHp75VfEktq10YcQMF9D9cQWtVsR+gx+3_PAq1YNoKUWEZaC1Q@mail.gmail.com>
-        <20220916162535.00000cf6@huawei.com>
+        Andrea Merello <andrea.merello@iit.it>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Matt Ranostay <matt.ranostay@konsulko.com>,
+        Alexandru Ardelean <ardeleanalex@gmail.com>,
+        jmondi <jacopo@jmondi.org>, Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Re: [v7 13/14] iio: imu: add BNO055 I2C driver
+Message-ID: <20220918182626.00aae26d@jic23-huawei>
+In-Reply-To: <CAN8YU5MbGWbE6nRBCs3gYwyN2yYk7OsmaQsTrZvJctQOhgLBng@mail.gmail.com>
+References: <20220907132205.28021-1-andrea.merello@iit.it>
+        <20220907132205.28021-14-andrea.merello@iit.it>
+        <CAHp75Vdc8bAiqiUhEmgjNmcpY5s0fArTy26g2i0wH7srwY6RQA@mail.gmail.com>
+        <CAN8YU5MbGWbE6nRBCs3gYwyN2yYk7OsmaQsTrZvJctQOhgLBng@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,87 +65,23 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Sep 2022 16:25:35 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Thu, 8 Sep 2022 08:42:01 +0200
+Andrea Merello <andrea.merello@gmail.com> wrote:
 
-> On Fri, 16 Sep 2022 08:51:13 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > Hmm... It has my tag but I have noticed something to improve.  
 > 
-> > On Thu, Sep 15, 2022 at 10:57 PM Eddie James <eajames@linux.ibm.com> wrote:  
-> > >
-> > > The DPS310 chip has been observed to get "stuck" such that pressure
-> > > and temperature measurements are never indicated as "ready" in the
-> > > MEAS_CFG register. The only solution is to reset the device and try
-> > > again. In order to avoid continual failures, use a boolean flag to
-> > > only try the reset after timeout once if errors persist.    
-> > 
+> One comment below, OK for the rest.
+> 
 > > ...
-> >   
-> > > +static int dps310_ready(struct dps310_data *data, int ready_bit, int timeout)
-> > > +{
-> > > +       int rc;
-> > > +
-> > > +       rc = dps310_ready_status(data, ready_bit, timeout);
-> > > +       if (rc) {    
-> >   
-> > > +               if (rc == -ETIMEDOUT && !data->timeout_recovery_failed) {    
-> > 
-> > Here you compare rc with a certain error code...
-> >   
-> > > +                       /* Reset and reinitialize the chip. */
-> > > +                       if (dps310_reset_reinit(data)) {
-> > > +                               data->timeout_recovery_failed = true;
-> > > +                       } else {
-> > > +                               /* Try again to get sensor ready status. */    
-> >   
-> > > +                               if (dps310_ready_status(data, ready_bit, timeout))    
-> > 
-> > ...but here you assume that the only error code is -ETIMEDOUT. It's
-> > kinda inconsistent (if you rely on internals of ready_status, then why
-> > to check the certain error code, or otherwise why not to return a real
-> > second error code). That's why I asked about re-using rc here.  
+> >  
+> > > +#define BNO055_I2C_XFER_BURST_BREAK_THRESHOLD 3 /* FIXME */  
+> >
+> > Can we elaborate what to fix and why it can't be fixed right now?  
 > 
-> Hmm.
-> 
-> 1st time around, any other error code would result in us just returning directly
-> which is fine.
-> 2nd time around I'm not sure we care about what the error code is.  Even if
-> something else went wrong we failed to recover and the first error
-> that lead to that was -ETIMEDOUT.
-> 
-> So I think this is correct as is, be it a little unusual!
+> Ah, this is a stale comment; I'll drop it..
 
-Given timing late in the cycle, I've queued this up for the next merge
-window rather than rushing it in.
-
-Applied to the togreg branch of iio.git and pushed out as testing.
-Note I plan to rebase that branch shortly as I need some stuff that
-is in upstream for other series.  Hence still time for this discussion to
-continue if anyone wants to!
+I fixed up Andy's comments on this patch whilst applying.
 
 Thanks,
 
 Jonathan
-
-> 
-> Jonathan
-> 
-> > 
-> > In any case I don't think this justifies a v9, let's wait for your
-> > answer and Jonathan's opinion.
-> >   
-> > > +                                       data->timeout_recovery_failed = true;
-> > > +                               else
-> > > +                                       return 0;
-> > > +                       }
-> > > +               }
-> > > +
-> > > +               return rc;
-> > > +       }
-> > > +
-> > > +       data->timeout_recovery_failed = false;
-> > > +       return 0;
-> > > +}    
-> >   
-> 
-

@@ -2,45 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20565BBE9F
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56CC35BBEA3
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbiIRPWN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 11:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60854 "EHLO
+        id S229813AbiIRP0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 11:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbiIRPWM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:22:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3457A186D0
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 08:22:10 -0700 (PDT)
+        with ESMTP id S229821AbiIRP0O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:26:14 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2EC11810
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 08:26:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CBF60B8104F
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 15:22:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869F2C433C1;
-        Sun, 18 Sep 2022 15:22:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B0381B8104A
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 15:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED933C433C1;
+        Sun, 18 Sep 2022 15:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663514527;
-        bh=ALZrvovsnQY3G8nujPRiUraQQsENtIHSmObAeZtJZAE=;
+        s=k20201202; t=1663514771;
+        bh=S2rdJKs28UpDvY31sBuIrleKVNyseU81nhrs3pFsJ8I=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=JYCXvTByBikrq96it+x2qry92kfxLDV9jqNU54vR2y5LA2e7x2LZk8ffM4Z5IkJGj
-         ggesukuNmjGjIlOdzrpDVuZmTL2fsHCgSLnboO3kQPD2qv5KlhVegQs5zw/Mv1wSa/
-         sdtavZMM4j3eFdK74wYasAUiRIji0TTnLMWhVyFvIkCjeOb4pk10AKxiHW7nHYTlAA
-         0bCS8Qf5rR1M07dO7AhddOHb+3T3MaRu86xsAEHa7ISQ4oYrLunNbTFYL8MPRJLsqg
-         96KMKXfLa+TLUQlhzak2EQmz2IGCgh2HmFt50cTZDWFoXi1B5b14MxTL4SH9i6TEw9
-         TcB+E8LFmV27g==
-Date:   Sun, 18 Sep 2022 16:22:11 +0100
+        b=QYCaG+HXCk6dpN2uGe370tgnPaOw4NmlsZoZyCTvBAHGbSaHSFgw5ARkrfPrLNFIf
+         YhwRYB10v1tW9GCvKCReBTQkHHagyVNnQ5o9eaaq+Zom3LEj+DhcnasM5oXryLPrAK
+         xyJpFXsoIhU2VaXYTv21NYY8VK3uo+3KwTt/ECSUi9pm6uLObH4StU4P/vAU9yzNMw
+         IDeoH7X4M6ukk3I37gYYnNH6zOgetoKwjOIpMcvOsPQWCz/NRs3Eud7IwJrB8Ul7Ju
+         iWRFHpLqFZ7EdxfKuBPM0TeyPLcfXScV923PX1aIvSwSctOTKh5pBLXjIcOKKn7Btr
+         WxHX1V3yCBW0Q==
+Date:   Sun, 18 Sep 2022 16:26:14 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>
 Cc:     <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
         <Nurettin.Bolucu@analog.com>
-Subject: Re: [PATCH v4 2/3] dt-bindings: iio: adc: add adi,max11410.yaml
-Message-ID: <20220918162211.7a5ebdac@jic23-huawei>
-In-Reply-To: <20220908144924.205547-3-Ibrahim.Tilki@analog.com>
+Subject: Re: [PATCH v4 3/3] Documentation: ABI: testing: add max11410 doc
+Message-ID: <20220918162614.4def922c@jic23-huawei>
+In-Reply-To: <20220908144924.205547-4-Ibrahim.Tilki@analog.com>
 References: <20220908144924.205547-1-Ibrahim.Tilki@analog.com>
-        <20220908144924.205547-3-Ibrahim.Tilki@analog.com>
+        <20220908144924.205547-4-Ibrahim.Tilki@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,217 +54,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 8 Sep 2022 17:49:23 +0300
+On Thu, 8 Sep 2022 17:49:24 +0300
 Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
 
-> Adding devicetree binding documentation for max11410 adc.
+> Adding documentation for Analog Devices max11410 adc userspace sysfs.
 > 
 > Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+
+I debated a bit with myself when reviewing the driver this time on whether
+we wanted
+filter_notchY_en or as you have it filterY_notch_en
+
+It's a bit similar to channel naming in which we potentially allow
+in_accel0_x_raw
+in_accel1_x_raw
+in_accel0_y_raw
+
+or
+in_accel0_x_raw
+in_accel1_x_raw
+in_accel2_y_raw
+
+etc depending on whether the index is considered global across all modifiers
+or not.  We decided long ago that either was fine as they are uniquely
+identifiable either by channel index, or by index + modifier.
+
+Anyhow, upshot is I'm fine with the ordering you have here - but if anyone
+else has time to take a look and comment on why one option is better than
+the other that would be great.
+
+Thanks,
+
+Jonathan
+ 
+
 > ---
->  .../bindings/iio/adc/adi,max11410.yaml        | 174 ++++++++++++++++++
->  1 file changed, 174 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+>  .../ABI/testing/sysfs-bus-iio-adc-max11410          | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410 b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
 > new file mode 100644
-> index 000000000..3ffab284b
+> index 000000000..2a53c6b37
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
-> @@ -0,0 +1,174 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2022 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,max11410.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
+> @@ -0,0 +1,13 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_en
+> +Date:		September 2022
+> +KernelVersion:  6.0
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Enable or disable a notch filter.
 > +
-> +title: Analog Devices MAX11410 ADC device driver
-> +
-> +maintainers:
-> +  - Ibrahim Tilki <ibrahim.tilki@analog.com>
-> +
-> +description: |
-> +  Bindings for the Analog Devices MAX11410 ADC device. Datasheet can be
-> +  found here:
-> +    https://datasheets.maximintegrated.com/en/ds/MAX11410.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,max11410
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-
-Why?  If someone wants to wire both lines, they can do so.
-Then it will be up to the driver to pick which one to use.
-Given we have names, we will know which is which and be able
-to pick our favourite line to use.
-
-> +
-> +  interrupt-names:
-> +    description: Name of the gpio pin of max11410 used for IRQ
-> +    maxItems: 1
-> +    items:
-> +      enum:
-> +        - gpio0
-> +        - gpio1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  avdd-supply:
-> +    description: Necessarry avdd supply. Used as reference when no explicit reference supplied.
-> +
-> +  vref0p-supply:
-> +    description: vref0p supply can be used as reference for conversion.
-> +
-> +  vref1p-supply:
-> +    description: vref1p supply can be used as reference for conversion.
-> +
-> +  vref2p-supply:
-> +    description: vref2p supply can be used as reference for conversion.
-> +
-> +  vref0n-supply:
-> +    description: vref0n supply can be used as reference for conversion.
-> +
-> +  vref1n-supply:
-> +    description: vref1n supply can be used as reference for conversion.
-> +
-> +  vref2n-supply:
-> +    description: vref2n supply can be used as reference for conversion.
-> +
-> +  spi-max-frequency:
-> +    maximum: 8000000
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-hmm.
-
-If explicit references are supplied and used, then will we query the voltage
-of the avdd supply?  If not, it doesn't need to be supplied. Power is needed
-but it might be coming from a fixed regulator no one bothered to put
-in the device tree.  Perhaps we just don't care about that corner case?
-
-> +
-> +patternProperties:
-> +  "^channel(@[0-9a-f]+)?$":
-
-name isn't that flexible as we only allow reg 0-9
-
-> +    $ref: "adc.yaml"
-> +    type: object
-> +    description: Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number in single-ended mode.
-> +        minimum: 0
-> +        maximum: 9
-> +
-> +      adi,reference:
-> +        description: |
-> +          Select the reference source to use when converting on
-> +          the specific channel. Valid values are:
-> +          0: VREF0P/VREF0N
-> +          1: VREF1P/VREF1N
-> +          2: VREF2P/VREF2N
-> +          3: AVDD/AGND
-> +          4: VREF0P/AGND
-> +          5: VREF1P/AGND
-> +          6: VREF2P/AGND
-> +          If this field is left empty, AVDD/AGND is selected.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3, 4, 5, 6]
-> +        default: 3
-> +
-> +      adi,input-mode:
-> +        description: |
-> +          Select signal path of input channels. Valid values are:
-> +          0: Buffered, low-power, unity-gain path (default)
-> +          1: Bypass path
-> +          2: PGA path
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2]
-> +        default: 0
-> +
-> +      diff-channels: true
-> +
-> +      bipolar: true
-> +
-> +      settling-time-us: true
-> +
-> +      adi,buffered-vrefp:
-> +        description: Enable buffered mode for positive reference.
-> +        type: boolean
-> +
-> +      adi,buffered-vrefn:
-> +        description: Enable buffered mode for negative reference.
-> +        type: boolean
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +additionalProperties: false
-
-This now needs to use the new spi-peripheral-props.yaml 
-https://lore.kernel.org/all/20220816124321.67817-1-krzysztof.kozlowski@linaro.org/
-
-Your series crossed with that cleanup / binding documentation refactor.
-
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +
-> +      adc@0 {
-> +        reg = <0>;
-> +        compatible = "adi,max11410";
-> +        spi-max-frequency = <8000000>;
-> +
-> +        interrupt-parent = <&gpio>;
-> +        interrupts = <25 2>;
-> +        interrupt-names = "gpio1";
-> +
-> +        avdd-supply = <&adc_avdd>;
-> +
-> +        vref1p-supply = <&adc_vref1p>;
-> +        vref1n-supply = <&adc_vref1n>;
-> +
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        channel@0 {
-> +          reg = <0>;
-> +        };
-> +
-> +        channel@1 {
-> +          reg = <1>;
-> +          diff-channels = <2 3>;
-> +          adi,reference = <1>;
-> +          bipolar;
-> +          settling-time-us = <100000>;
-> +        };
-> +
-> +        channel@2 {
-> +          reg = <2>;
-> +          diff-channels = <7 9>;
-> +          adi,reference = <5>;
-> +          adi,input-mode = <2>;
-> +          settling-time-us = <50000>;
-> +        };
-> +      };
-> +    };
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_center
+> +Date:		September 2022
+> +KernelVersion:  6.0
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Center frequency of the notch filter in Hz.
 

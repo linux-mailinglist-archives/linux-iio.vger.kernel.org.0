@@ -2,107 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 283725BB88B
-	for <lists+linux-iio@lfdr.de>; Sat, 17 Sep 2022 15:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB3C55BBD5E
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 12:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229483AbiIQNiU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 17 Sep 2022 09:38:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
+        id S229514AbiIRKGw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 06:06:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbiIQNiT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 17 Sep 2022 09:38:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EAC37F95
-        for <linux-iio@vger.kernel.org>; Sat, 17 Sep 2022 06:38:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A845FB80D79
-        for <linux-iio@vger.kernel.org>; Sat, 17 Sep 2022 13:38:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917FAC433D6;
-        Sat, 17 Sep 2022 13:38:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663421893;
-        bh=iowlPyVLgjUQqs6U64E7NkLW4faa0mRDGEMCkg0RGHk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Q8J77YIOUxndgHRaQCY3d37Bvw7SyEQo7TLYYYrkiJiEJWLHDRv+kPoFE3pcrhSYL
-         xJDh6ViDc5UDznxzy5d2Bc+P4FxeowKQ3tuJm30cG2ZWmMq6j/Tgp8V+GVI4LHWoBg
-         x/Aj/QvqMRN+SxszUbO/w20aDyPjs7OwITLRIt+umN4jippbiM9C79ROPz4eLyr7Vu
-         G0VGd9G4K7z7QgzGlsAX+/oRc5QP4fapOrrx0hCMRXLfkaljT18rsa03VOYd36GJz+
-         avLto/f2DMH/pyaMbfw1V1NRJpR7T8uRzYUPNyhClX3MMuN9EZf0QocrCnn8gyflIe
-         N+HluPQl+x4DA==
-Date:   Sat, 17 Sep 2022 14:38:15 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH] iio: dac: ad5593r: prevent use of uninitialized
- variable
-Message-ID: <20220917143815.311539d8@jic23-huawei>
-In-Reply-To: <20220916093307.612830-1-nuno.sa@analog.com>
-References: <20220916093307.612830-1-nuno.sa@analog.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S229458AbiIRKGv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 06:06:51 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF101CB3D;
+        Sun, 18 Sep 2022 03:06:49 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id g3so21823737wrq.13;
+        Sun, 18 Sep 2022 03:06:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date;
+        bh=o4PKrtOV3hjZ2HciWVNIW8JEQ2vqAcG4T6c1ePMa+qI=;
+        b=R0jgj/WbIk7Z2FU7IsoyaKmcgP+KLGEE4wA6hbE/kHxKM7o4ymeqUJKYa8TNSMsaNS
+         wush0w73fVn/Q6NnV4WQ1YgH6ZimRdz64umXuIQrd6CTZBnfMG/cWhokwUWaqeQJuTBB
+         Krmj/aIk2nnTsxOHREiUW87mAGI4tvYczei0lw8fEmD2AUh23UoxgXTVAfCyEHGVVGDY
+         h2+zpPdFKZXqA3SGSyPuIPmlDwm6V/rVBhRj6JRPRk94RUfyoQ0esjA3c+7C3qm6xq7X
+         opArCWIXAt+ClMY1Ev07X5poo1TRBHt/EHD2VyrWzpZDfdbdR/VfsiOm0IAOCeZUfpqH
+         bosg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=o4PKrtOV3hjZ2HciWVNIW8JEQ2vqAcG4T6c1ePMa+qI=;
+        b=iLYWyI054jqcIO9RyEDFEZP4AxxbV9qculcxQSJ89hu+yPGADeUtMjmS3eiQ5Lsgc0
+         J4rxufG5hSbrdTlRIAocztBqSGgbMhDvGwZzfr4LDW5vgQznH3zXnw5BPo78vJ7t1NeJ
+         Xu1/SYnJcR+CADBHCjTDfSyShP5edyAC4AdAWvsYW+cBIHbaSqMGEPIBxEBvdD/EeUmq
+         PAIFkCXyoYu9iosUCKW8nHg+sgnjFp+Klm4Ac781i5K2EYMToV1w6CcI1dZLXb8lP5gY
+         IvuzG7jQHfVsYLjLR9nT6ItNqMwl7P0l/lsyPEOZRevSkjNFXILWzGKEUlS04kwOyxwY
+         FT9Q==
+X-Gm-Message-State: ACrzQf0ABF7MbB98PYWQo9aFEUCGLBBWQim/luWFDemQVnHs1soE0+kT
+        Rfq5WFyXndZ9D+IiiiOz+mXbguNDslI=
+X-Google-Smtp-Source: AMsMyM65sxGvvK6izucDWRcbwfmARi57unwdhE65miZvGQTlbgQmngF2v54PiVmH9J/zUl31TwhR7w==
+X-Received: by 2002:a05:6000:1548:b0:22a:c113:c9d0 with SMTP id 8-20020a056000154800b0022ac113c9d0mr8015829wry.653.1663495607871;
+        Sun, 18 Sep 2022 03:06:47 -0700 (PDT)
+Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
+        by smtp.gmail.com with ESMTPSA id t5-20020a5d6a45000000b00229e0def760sm9883580wrw.88.2022.09.18.03.06.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Sep 2022 03:06:47 -0700 (PDT)
+Message-ID: <2d7334210b41b256f6d7dc2cfd34036375ebf755.camel@gmail.com>
+Subject: Re: [PATCH v6 7/9] iio: pressure: bmp280: Add support for BMP380
+ sensor family
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio <linux-iio@vger.kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-kernel@vger.kernel.org
+Date:   Sun, 18 Sep 2022 12:06:45 +0200
+In-Reply-To: <20220917142516.3fc145b6@jic23-huawei>
+References: <cover.1663025017.git.ang.iglesiasg@gmail.com>
+         <f1da2a2f1bc5bb083f318335c23b4f3d9bb8e536.1663025017.git.ang.iglesiasg@gmail.com>
+         <20220917142516.3fc145b6@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Evolution 3.44.4 (by Flathub.org) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 16 Sep 2022 11:33:07 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-
-> Properly error check the call to ad5593r_read_word() so that we do not
-> end up (would be unlikely but possible) touching uninitialized data.
+On Sat, 2022-09-17 at 14:25 +0100, Jonathan Cameron wrote:
+> On Tue, 13 Sep 2022 01:52:13 +0200
+> Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 >=20
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Fixes: 53b6e3b2164c ("iio: dac: ad5593r: Fix i2c read protocol requiremen=
-ts")
-That's not a stable commit ID.
+> > Adds compatibility with the new generation of this sensor, the BMP380.
+> >=20
+> > Includes basic sensor initialization to do pressure and temp
+> > measurements and allows tuning oversampling settings for each channel.
+> >=20
+> > The compensation algorithms are adapted from the device datasheet and
+> > the repository https://github.com/BoschSensortec/BMP3-Sensor-API.
+> >=20
+> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> There is one place (around the reset handing) in here where I
+> suspect we'll end up revisiting it because the matching by
+> device ID is not particularly extensible to new devices.
 
-Normally I mostly try and keep these stable even before pushing out as non
-rebasing / togreg.  This time around I want to fast forward the tree
-after the current pull request merges because I need some dependencies that
-are in char-misc-next for other patches.
+Yeah, after the first time you raised that concern I've been thinking that =
+maybe
+it would be better to add a new "init" or "preinit" callback executing firs=
+t
+boot tasks for a sensor, such as this reset. Please, let me know how I can =
+help
+with this matter. On the other hand, I'll have the BMP390 and BMP581 on my =
+hands
+in a week or two. The BMP390 is almost the same regmap and operations as th=
+e
+BMP380, so I think it will be an easy addition. The BMP581 is a new beast t=
+hat
+brings in lots of changes, but still has a good bunch of similarities.
 
-I didn't think this through when I said I preferred a separate patch.
-Anyhow, I've squashed this with the original patch.
-
-Thanks,
-
-Jonathan
-
-
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
->  drivers/iio/dac/ad5593r.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Anyhow, can handle that at the time.
 >=20
-> diff --git a/drivers/iio/dac/ad5593r.c b/drivers/iio/dac/ad5593r.c
-> index bb5e3fe90e89..420981e7c5c3 100644
-> --- a/drivers/iio/dac/ad5593r.c
-> +++ b/drivers/iio/dac/ad5593r.c
-> @@ -83,10 +83,12 @@ static int ad5593r_gpio_read(struct ad5592r_state *st=
-, u8 *value)
->  	int ret;
-> =20
->  	ret =3D ad5593r_read_word(i2c, AD5593R_MODE_GPIO_READBACK, &val);
-> +	if (ret)
-> +		return ret;
-> =20
->  	*value =3D (u8) val;
-> =20
-> -	return ret;
-> +	return 0;
->  }
-> =20
->  static const struct ad5592r_rw_ops ad5593r_rw_ops =3D {
+> I had to hand apply parts of this because of the clash Andy
+> raised.=C2=A0 As a general rule it's better to keep one linear
+> flow of patches unless they are on well separate parts of
+> a driver.=C2=A0 Saves me effort :)=C2=A0 Here it was just one line to
+> cut and paste, but you still get to now check I didn't mess
+> that up ;)
+
+Sorry about that. Thanks to you and Andy for the extra patience with my mes=
+sy
+patches.
+
+> Applied - please check result in testing branch of iio.git.
+>=20
+> Note I plan to rebase that branch after the first pull request
+> is accepted as I have some dependencies blocking other
+> patches and a fast forward rebase is the easiest way to deal
+> with those cleanly.
+>=20
+> Jonathan
+
+With kind regards,
+Angel
 

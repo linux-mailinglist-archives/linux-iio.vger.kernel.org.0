@@ -2,55 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 034E65BBF24
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 19:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45BE35BBF27
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 19:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiIRRat (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 13:30:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46162 "EHLO
+        id S229552AbiIRRdt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 13:33:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiIRRas (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 13:30:48 -0400
+        with ESMTP id S229479AbiIRRds (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 13:33:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EA013EBF;
-        Sun, 18 Sep 2022 10:30:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EA313EBF
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 10:33:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2BB9F6160E;
-        Sun, 18 Sep 2022 17:30:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E9FC433D6;
-        Sun, 18 Sep 2022 17:30:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CD9461165
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 17:33:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B741BC433C1;
+        Sun, 18 Sep 2022 17:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663522246;
-        bh=9bN4Sb6zWpLjEIEJ93UIyNQBpe7ibahRuy5/W0f0PMo=;
+        s=k20201202; t=1663522426;
+        bh=vqn/8JdolGCqvEmVc+QKT9pOJ+MSJu8xIFtzK6wOyro=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=tUt7AsytnOHNhH6ka+yWLnmFH6/X035Qlo6kPaJJSEu1PDkzkPASZ3B9QVjHP4eUo
-         Dlp3rW7rqmTIEIma43BW+yaX0AC3rCtONmMY+DsijX+p497Le8x7sN+7PBZ7ygstFe
-         QSmym++KMrCTZwSB2Vlw3DOEYcFrTKHCpCL/1QAXBMCyL5flvcbj87mrOR0PncydJK
-         9jWN64vthnqHyX5CW0O/3LoV+oJoitqHQhG0pV0weoHrrWA0cab2C1XNXQ4DRt61OQ
-         pCe5BRVWqbx5KwoE3TtXSIEg8YBOrHkA6G+9i0eWhvpV7sqywqA+E2U18KQL35EUy4
-         qFtI3qna63+/A==
-Date:   Sun, 18 Sep 2022 18:30:48 +0100
+        b=IfJ1RmjoDP8MjidrkcyPZ58ppHshN8Z3C3R0HRxVOefDGANViQPwMI7rDAyfp19/3
+         RKf/XtS40V1oDgvl0D6tin+qt+lrYTIb3k7/SucbA8R29GWydb1FfskA1zl6rCdJzR
+         OA5uGu3BwZ45SLv2Z1kQVW1RXpeQleAqGLVRgR92oqyZhPDbhNPo+W7/CMvADC5d3J
+         Cm2pNizHw180FjYYl4txSQaA2w/IlIQrRC64Ya3fLoO5Y7ic3mxcUu5yFkucBrjbdG
+         ry1HPBpU3fLXOmczLfI7wXzsMPUXiC+n9uED1BSLijnYN/ST5BNCwbyVinFV5F1XaN
+         +7uCKfisx49AA==
+Date:   Sun, 18 Sep 2022 18:33:50 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Andrea Merello <andrea.merello@iit.it>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-iio <linux-iio@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        devicetree <devicetree@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Matt Ranostay <matt.ranostay@konsulko.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>,
-        jmondi <jacopo@jmondi.org>,
-        Andrea Merello <andrea.merello@gmail.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Subject: Re: [v7 00/14] Add support for Bosch BNO055 IMU
-Message-ID: <20220918183048.3eb64f40@jic23-huawei>
-In-Reply-To: <CAHp75Vd6wGPd6MJjEqB=dyrFj36CJi-QRFzy7WsvYgHZDNgG=Q@mail.gmail.com>
-References: <20220907132205.28021-1-andrea.merello@iit.it>
-        <CAHp75Vd6wGPd6MJjEqB=dyrFj36CJi-QRFzy7WsvYgHZDNgG=Q@mail.gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Paul Cercueil <paul@crapouillou.net>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Andreas Klinger <ak@it-klinger.de>,
+        LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 1/6] iio: proximity: sx9310: Switch to
+ DEFINE_SIMPLE_DEV_PM_OPS() and pm_sleep_ptr()
+Message-ID: <20220918183350.7cbc5cdf@jic23-huawei>
+In-Reply-To: <20220807185618.1038812-2-jic23@kernel.org>
+References: <20220807185618.1038812-1-jic23@kernel.org>
+        <20220807185618.1038812-2-jic23@kernel.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -64,45 +60,61 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Sep 2022 17:12:09 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sun,  7 Aug 2022 19:56:13 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Wed, Sep 7, 2022 at 4:22 PM <andrea.merello@iit.it> wrote:
-> >
-> > From: Andrea Merello <andrea.merello@iit.it>
-> >
-> > This series (tries to) add support for Bosch BNO055 IMU to Linux IIO
-> > subsystem. It is made up several patches:  
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
+> These new macros avoid the need for marking the callbacks __maybe_unused
+> whilst ensuring both callbacks and structure may be dropped by the compiler
+> if CONFIG_PM_SLEEP is not enabled.
 > 
-> These
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+Applied
+
+> ---
+>  drivers/iio/proximity/sx9310.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> >   iio: imu: add Bosch Sensortec BNO055 core driver  
-> 
-> >   iio: imu: add BNO055 serdev driver  
-> 
-> are huge and I will look at them later on.
-> 
-
-I've taken another look at those and think that anything that comes
-up should be minor enough we should fix / tidy up as follow on patches.
-
-I'd like to get this some build coverage as it's big and complex. Hence I've
-applied it to the togreg branch of iio.git / pushed out as testing.
-
-More comments still welcome! Andy, if you get time to look at those two
-large patches, that would still be great + thanks for all your work reviewing
-this series and in general - it's a great help to me in keeping up with things.
-
-Note I'll be rebasing that tree in the near future to get some dependencies
-for other sets.
-
-Andrea, nice work getting support in place for this complex / buggy / messy
-device :)
-
-Jonathan
-
-> --
-> With Best Regards,
-> Andy Shevchenko
+> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
+> index ea7318b508ea..0e4747ccd3cf 100644
+> --- a/drivers/iio/proximity/sx9310.c
+> +++ b/drivers/iio/proximity/sx9310.c
+> @@ -965,7 +965,7 @@ static int sx9310_probe(struct i2c_client *client)
+>  	return sx_common_probe(client, &sx9310_chip_info, &sx9310_regmap_config);
+>  }
+>  
+> -static int __maybe_unused sx9310_suspend(struct device *dev)
+> +static int sx9310_suspend(struct device *dev)
+>  {
+>  	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
+>  	u8 ctrl0;
+> @@ -991,7 +991,7 @@ static int __maybe_unused sx9310_suspend(struct device *dev)
+>  	return ret;
+>  }
+>  
+> -static int __maybe_unused sx9310_resume(struct device *dev)
+> +static int sx9310_resume(struct device *dev)
+>  {
+>  	struct sx_common_data *data = iio_priv(dev_get_drvdata(dev));
+>  	int ret;
+> @@ -1013,7 +1013,7 @@ static int __maybe_unused sx9310_resume(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static SIMPLE_DEV_PM_OPS(sx9310_pm_ops, sx9310_suspend, sx9310_resume);
+> +static DEFINE_SIMPLE_DEV_PM_OPS(sx9310_pm_ops, sx9310_suspend, sx9310_resume);
+>  
+>  static const struct acpi_device_id sx9310_acpi_match[] = {
+>  	{ "STH9310", SX9310_WHOAMI_VALUE },
+> @@ -1041,7 +1041,7 @@ static struct i2c_driver sx9310_driver = {
+>  		.name	= "sx9310",
+>  		.acpi_match_table = sx9310_acpi_match,
+>  		.of_match_table = sx9310_of_match,
+> -		.pm = &sx9310_pm_ops,
+> +		.pm = pm_sleep_ptr(&sx9310_pm_ops),
+>  
+>  		/*
+>  		 * Lots of i2c transfers in probe + over 200 ms waiting in
 

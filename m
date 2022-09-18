@@ -2,138 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB3C55BBD5E
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 12:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70DA05BBE59
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 16:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiIRKGw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 06:06:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50578 "EHLO
+        id S229579AbiIROWX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 10:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbiIRKGv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 06:06:51 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF101CB3D;
-        Sun, 18 Sep 2022 03:06:49 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id g3so21823737wrq.13;
-        Sun, 18 Sep 2022 03:06:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date;
-        bh=o4PKrtOV3hjZ2HciWVNIW8JEQ2vqAcG4T6c1ePMa+qI=;
-        b=R0jgj/WbIk7Z2FU7IsoyaKmcgP+KLGEE4wA6hbE/kHxKM7o4ymeqUJKYa8TNSMsaNS
-         wush0w73fVn/Q6NnV4WQ1YgH6ZimRdz64umXuIQrd6CTZBnfMG/cWhokwUWaqeQJuTBB
-         Krmj/aIk2nnTsxOHREiUW87mAGI4tvYczei0lw8fEmD2AUh23UoxgXTVAfCyEHGVVGDY
-         h2+zpPdFKZXqA3SGSyPuIPmlDwm6V/rVBhRj6JRPRk94RUfyoQ0esjA3c+7C3qm6xq7X
-         opArCWIXAt+ClMY1Ev07X5poo1TRBHt/EHD2VyrWzpZDfdbdR/VfsiOm0IAOCeZUfpqH
-         bosg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=o4PKrtOV3hjZ2HciWVNIW8JEQ2vqAcG4T6c1ePMa+qI=;
-        b=iLYWyI054jqcIO9RyEDFEZP4AxxbV9qculcxQSJ89hu+yPGADeUtMjmS3eiQ5Lsgc0
-         J4rxufG5hSbrdTlRIAocztBqSGgbMhDvGwZzfr4LDW5vgQznH3zXnw5BPo78vJ7t1NeJ
-         Xu1/SYnJcR+CADBHCjTDfSyShP5edyAC4AdAWvsYW+cBIHbaSqMGEPIBxEBvdD/EeUmq
-         PAIFkCXyoYu9iosUCKW8nHg+sgnjFp+Klm4Ac781i5K2EYMToV1w6CcI1dZLXb8lP5gY
-         IvuzG7jQHfVsYLjLR9nT6ItNqMwl7P0l/lsyPEOZRevSkjNFXILWzGKEUlS04kwOyxwY
-         FT9Q==
-X-Gm-Message-State: ACrzQf0ABF7MbB98PYWQo9aFEUCGLBBWQim/luWFDemQVnHs1soE0+kT
-        Rfq5WFyXndZ9D+IiiiOz+mXbguNDslI=
-X-Google-Smtp-Source: AMsMyM65sxGvvK6izucDWRcbwfmARi57unwdhE65miZvGQTlbgQmngF2v54PiVmH9J/zUl31TwhR7w==
-X-Received: by 2002:a05:6000:1548:b0:22a:c113:c9d0 with SMTP id 8-20020a056000154800b0022ac113c9d0mr8015829wry.653.1663495607871;
-        Sun, 18 Sep 2022 03:06:47 -0700 (PDT)
-Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id t5-20020a5d6a45000000b00229e0def760sm9883580wrw.88.2022.09.18.03.06.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Sep 2022 03:06:47 -0700 (PDT)
-Message-ID: <2d7334210b41b256f6d7dc2cfd34036375ebf755.camel@gmail.com>
-Subject: Re: [PATCH v6 7/9] iio: pressure: bmp280: Add support for BMP380
- sensor family
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio <linux-iio@vger.kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 18 Sep 2022 12:06:45 +0200
-In-Reply-To: <20220917142516.3fc145b6@jic23-huawei>
-References: <cover.1663025017.git.ang.iglesiasg@gmail.com>
-         <f1da2a2f1bc5bb083f318335c23b4f3d9bb8e536.1663025017.git.ang.iglesiasg@gmail.com>
-         <20220917142516.3fc145b6@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (by Flathub.org) 
+        with ESMTP id S229483AbiIROWW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 10:22:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC241EAE3;
+        Sun, 18 Sep 2022 07:22:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8977360C55;
+        Sun, 18 Sep 2022 14:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BECC433C1;
+        Sun, 18 Sep 2022 14:22:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663510940;
+        bh=z4w4Jd6Yw1OP2BhleHWvgUNU4yfAz6x/VUTv668v3Kw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HUs5os1a2lRyrvWD3ybe8gDorfa+QU5tTeXFoRFHXT1MkeZTxKtLHsSYUBT67hipM
+         OhaQE6riClZjjG6Ohrtf6POn2RRUJRlu/LW3Vs+VbpqBK271GUhdl9ZV+kMRVUOzxu
+         x+2XupNxl1zxh6DKWveI1GRTbF+DuanMaRP1wkxuTQ9/7SGPFeeXv/RoLu9jt8b2b6
+         Qzne4wqiXhmY+nOhrskQ+ldWQhJ1YbuoNRgptxHnoPtrLPZm03nB1W2O4LhhqYGGCD
+         l/CQ8F5rrslGWdeDvV9rbYx595j7cp4Gch1Kz768l5YGtX9gUpild9AwOGl8tD1Dv7
+         dJG1aprR6sbvQ==
+Date:   Sun, 18 Sep 2022 15:22:24 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Denys Zagorui <dzagorui@cisco.com>, Meng.Li@windriver.com,
+        lars@metafoo.de, Michael.Hennerich@analog.com,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: ltc2497: Fix reading conversion results
+Message-ID: <20220918152224.14f874c1@jic23-huawei>
+In-Reply-To: <20220912104631.zysrv2qqxvsjfbxc@pengutronix.de>
+References: <20220815091647.1523532-1-dzagorui@cisco.com>
+        <20220820130648.5b9bc66f@jic23-huawei>
+        <20220912104631.zysrv2qqxvsjfbxc@pengutronix.de>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2022-09-17 at 14:25 +0100, Jonathan Cameron wrote:
-> On Tue, 13 Sep 2022 01:52:13 +0200
-> Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
->=20
-> > Adds compatibility with the new generation of this sensor, the BMP380.
+On Mon, 12 Sep 2022 12:46:31 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+
+> On Sat, Aug 20, 2022 at 01:06:48PM +0100, Jonathan Cameron wrote:
+> > On Mon, 15 Aug 2022 09:16:47 +0000
+> > Denys Zagorui <dzagorui@cisco.com> wrote:
+> >  =20
+> > > From: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > >=20
+> > > After the result of the previous conversion is read the chip
+> > > automatically starts a new conversion and doesn't accept new i2c
+> > > transfers until this conversion is completed which makes the function
+> > > return failure. =20
 > >=20
-> > Includes basic sensor initialization to do pressure and temp
-> > measurements and allows tuning oversampling settings for each channel.
+> > That's rather nasty.
 > >=20
-> > The compensation algorithms are adapted from the device datasheet and
-> > the repository https://github.com/BoschSensortec/BMP3-Sensor-API.
-> >=20
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> There is one place (around the reset handing) in here where I
-> suspect we'll end up revisiting it because the matching by
-> device ID is not particularly extensible to new devices.
-
-Yeah, after the first time you raised that concern I've been thinking that =
-maybe
-it would be better to add a new "init" or "preinit" callback executing firs=
-t
-boot tasks for a sensor, such as this reset. Please, let me know how I can =
-help
-with this matter. On the other hand, I'll have the BMP390 and BMP581 on my =
-hands
-in a week or two. The BMP390 is almost the same regmap and operations as th=
-e
-BMP380, so I think it will be an easy addition. The BMP581 is a new beast t=
-hat
-brings in lots of changes, but still has a good bunch of similarities.
-
-> Anyhow, can handle that at the time.
+> > Could we add a cheeky sleep in the other path to ensure there is always
+> > time for the conversion to be done?  Not ideal, but might ensure
+> > there isn't a known problem path without introducing much complexity. =
+=20
 >=20
-> I had to hand apply parts of this because of the clash Andy
-> raised.=C2=A0 As a general rule it's better to keep one linear
-> flow of patches unless they are on well separate parts of
-> a driver.=C2=A0 Saves me effort :)=C2=A0 Here it was just one line to
-> cut and paste, but you still get to now check I didn't mess
-> that up ;)
+> FTR: While the patch was originally authored by me, I don't currently
+> have access to a machine with that chip. So currently there will be no
+> incentive on my side to address this feedback.
 
-Sorry about that. Thanks to you and Andy for the extra patience with my mes=
-sy
-patches.
+I'm not keen to keep changes to this driver queued up on improving this pat=
+ch.
+Hence applied to the togreg branch of iio.git and I'll push that out as tes=
+ting
+shortly for the autobuilders to poke at it.
 
-> Applied - please check result in testing branch of iio.git.
+I have also marked it for stable.
+
+Thanks,
+
+Jonathan
+
 >=20
-> Note I plan to rebase that branch after the first pull request
-> is accepted as I have some dependencies blocking other
-> patches and a fast forward rebase is the easiest way to deal
-> with those cleanly.
+> Best regards
+> Uwe
 >=20
-> Jonathan
-
-With kind regards,
-Angel
 

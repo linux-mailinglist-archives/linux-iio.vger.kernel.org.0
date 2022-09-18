@@ -2,51 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F42A5BBF2C
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 19:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B371B5BBF2E
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 19:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229599AbiIRRmA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 13:42:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52448 "EHLO
+        id S229498AbiIRRpE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 13:45:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiIRRl7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 13:41:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F368120B4
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 10:41:58 -0700 (PDT)
+        with ESMTP id S229604AbiIRRpD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 13:45:03 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2AAA12619
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 10:45:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B9356163C
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 17:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A02C433D6;
-        Sun, 18 Sep 2022 17:41:54 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8F1D2B81161
+        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 17:45:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23099C433D6;
+        Sun, 18 Sep 2022 17:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663522917;
-        bh=5cR8leTuidRg+pXYq4omcIKIE5bmdA17myjJqPvQ7fg=;
+        s=k20201202; t=1663523099;
+        bh=gTsTMslYq63p4MPVyfgJBCusWYIPoZb4yRy8hEqJSG8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=f05A0Au13TNsKZBR9Regg0CrYZAceKm2TybNU0g+VTq1IxdgITWmxGuip89nczyKZ
-         QVfl/9swH36AB8KgcQsYtq7LSLIJ4ugdokNyYOHsaoW23xYXaqL+eq6bEGQkqB0We7
-         JyMkaOavlHVAGdtoFTsBU/aPa8yYm0Qcb3Ub4m6GL9RzLfJ//Q8doYx3jNmmj+Rldt
-         pTZ+rgQICmtef4xCmwVLCSpCSeM2F9B1omlC0cKXxconu4GzwE/OZr+bwVxrTHzJ1Q
-         6GZpk5IeQRKEFNILKol9uVz2OewVTLu5SH9wXNpkuZ/4rPKQOeLpdRLQANgqFfkQ2F
-         7rMdVoN4uQbog==
-Date:   Sun, 18 Sep 2022 18:42:00 +0100
+        b=qzm6HNYVZl+ykR4mR4Pb8vugFoVBVj0VkrByw0+oy+pym4eAFuYHFu8Wu6hcxx/su
+         gXy4DJQuCvcv3Epd0XGNI08KAB2SkW4QVz9sqtBlISAuf4c/8rJl1leXQrNnN9HPfY
+         +vdUX56jwshfYQn0Tb70iW8CbH+e9NiP3Gpn/viAvM5f5hlRUkVmH5bnaioAb8CUdN
+         7gJqOR6RODX1w+0prt3Ievm30hAYSasaZUbo6eLJsuu9zA6yawhsq63pXrZHwFNqr5
+         aLciPfdKOGQqua97syfHgIOMxG9rnz5+YpRWpfhzQ1m1Wp2vyMU9YX6KJmQNWijLBJ
+         2qOVURkriXKYQ==
+Date:   Sun, 18 Sep 2022 18:45:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     linux-iio@vger.kernel.org
-Cc:     Paul Cercueil <paul@crapouillou.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 6/6] iio: light: st_uvis25: Use
- EXPORT_NS_SIMPLE_DEV_PM_OPS()
-Message-ID: <20220918184200.00b663aa@jic23-huawei>
-In-Reply-To: <20220807185618.1038812-7-jic23@kernel.org>
-References: <20220807185618.1038812-1-jic23@kernel.org>
-        <20220807185618.1038812-7-jic23@kernel.org>
+To:     Jagath Jog J <jagathjog1996@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH] iio: accel: bma400: Fix smatch warning based on use of
+ unintialized value.
+Message-ID: <20220918184503.0db7e82a@jic23-huawei>
+In-Reply-To: <CAM+2Eu+YCtCMKoWS9yJToEV__YB=enh=54b5thO+q4wGE80wZA@mail.gmail.com>
+References: <20220917131401.2815486-1-jic23@kernel.org>
+        <CAM+2Eu+YCtCMKoWS9yJToEV__YB=enh=54b5thO+q4wGE80wZA@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,17 +57,66 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun,  7 Aug 2022 19:56:18 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Sun, 18 Sep 2022 20:05:48 +0530
+Jagath Jog J <jagathjog1996@gmail.com> wrote:
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Hi Jonathan,
 > 
-> Using this new macro removes the need to mark the callbacks
-> __maybe_unused.  One slightly complexity in this case is that
-> the export will exist if CONFIG_PM is set, but only be used
-> if CONFIG_PM_SLEEP is also set. This is harmless.
+> Thank you for sending this patch.
+> If you need a tag for this fix.
 > 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>
-Applied
+> Fixes: 961db2da159d ("iio: accel: bma400: Add support for single and
+> double tap events")
+Good point. I'm careful about fixes tags to stuff still not upstream
+because they tend to be a little unstable. This should be fine.
+I'll see if it's valid when I rebase the tree (hopefully in a few days
+time).
+
+Also helpful if you give an Acked-by!
+
+Thanks,
+
+Jonathan
+
+> 
+> Thank you
+> Jagath
+> 
+> On Sat, Sep 17, 2022 at 6:44 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > Only specific bits in this value are ever used and those are initialized,
+> > but that is complex to reason about in a checker. Hence, initialize
+> > the value to zero and avoid the complexity.
+> >
+> > Smatch warning:
+> > drivers/iio/accel/bma400_core.c:1287 bma400_tap_event_en()
+> > error: uninitialized symbol 'field_value'.
+> >
+> > Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Cc: Jagath Jog J <jagathjog1996@gmail.com>
+> > Cc: Alexander Potapenko <glider@google.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  drivers/iio/accel/bma400_core.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> > index eceb1f8d338d..ad8fce3e08cd 100644
+> > --- a/drivers/iio/accel/bma400_core.c
+> > +++ b/drivers/iio/accel/bma400_core.c
+> > @@ -1184,7 +1184,8 @@ static int bma400_activity_event_en(struct bma400_data *data,
+> >                                     enum iio_event_direction dir,
+> >                                     int state)
+> >  {
+> > -       int ret, reg, msk, value, field_value;
+> > +       int ret, reg, msk, value;
+> > +       int field_value = 0;
+> >
+> >         switch (dir) {
+> >         case IIO_EV_DIR_RISING:
+> > --
+> > 2.37.2
+> >  
 

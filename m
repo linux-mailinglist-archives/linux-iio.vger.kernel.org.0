@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C786D5BD809
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 01:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8E25BD80B
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 01:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229892AbiISXRm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Sep 2022 19:17:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43380 "EHLO
+        id S229657AbiISXRo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Sep 2022 19:17:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbiISXRk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 19:17:40 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48CCD4B49F
-        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 16:17:39 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id s9so555067qkg.4
-        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 16:17:39 -0700 (PDT)
+        with ESMTP id S229877AbiISXRl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 19:17:41 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FB74D817
+        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 16:17:40 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id f26so619001qto.11
+        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 16:17:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=WopcYcPly2clGQMko18Z5Oo2qU5OZoDnJ7KQZMk3xww=;
-        b=LamPOf6Xv6PxDji/NDvDyiv2TYSbNPa+hFBFgCpeuqYRaIFpaU24B/fRlRM4hp0470
-         +OKA6GsYE7T7REOH/DJkrCEw3WiQSIJ/pDsm9wqU14WhB+j2hdO1zTTLoO5FctZ+Oa/x
-         AnhLtU+TNgk5zVLUgJD+XNmsGHctj3YjRJxrxpUkFs90YaQIXb+4Fk+NBir6KqlhNz79
-         /hE7KoavKgiikjjtR69fSWUg86ve7j/TJ2FZn0H4p38ORN6NJvGjx2cttjIfjRKenxm7
-         AUUqV2WNwi2k4amsIPf5D4vl/ms1uJYIQ6X3Ml9NJhcExHb+RNime0F8rjJEMw1eKBbd
-         WRKw==
+        bh=B1QW5eCktyNKF1Kabrt/RgSIFVK+r7/SbP4DaTVv7K4=;
+        b=Flfj3bfbuMcJgkc5VwyXJ5HLfoFARhjJ/1Dg89a63HO9anhnDH4YjH6mIm5yP6kcGF
+         joXSUtDg6hfeKbKbvmMOF/ol5sXQmmrInzTPTcPYk9JcgRLcl/78AVu2P+p9VrzGrNQF
+         TgoT/W6QHLrqI/N7T/sEjLqpqWrlfTXfoJC+0pTXs75IvLGBBGzJs6SfTXgSNyNs/OF/
+         FnKiClf8JobkL37MDh70WvW+9tbSAJYTZGJ/UFiGJmSq8Cc5T5Ne23GjEZZdWjWXl0Vd
+         7hh8963tvSMJzMot7TDo6M9QeVva3U4CFg4V/nJnRJ8bxjINxtHwNK2CbY/y6WGFNdKq
+         o4GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=WopcYcPly2clGQMko18Z5Oo2qU5OZoDnJ7KQZMk3xww=;
-        b=T/fBbqs7tRoCu2dXR1ESO1HLim/SPZDVRZrLcyN5Cy/amFTihQBylBSRPGDi+AcE4H
-         4QwFIVUMOAS6ZtV0TdZSvK9RMdlEWxE1HQwBkRMQiyjdThGvs4CZXTSzd+v5qr9Xmxz7
-         uWZrhTdQNOxRyU9qKL3H7MyUluf/VdlgE9nzCzuIyUEhUKjXvE8jRA3ceD9vcgK+QTuR
-         q7WXsf5Ce7gxGprJBxtCsqEZRRU7PkETA/2LPUZVMgLcBZ9ELSvnshSgUk+4Cpybh1+O
-         wu9yixFrgFsHpm3ihLi8yZ+K2IA57xbg0CV1dUzVauzykn2WOjmwRGHqFp1KS8OrEgHx
-         CMlQ==
-X-Gm-Message-State: ACrzQf3h0GE9FH0jfUR2m4zR0kP/KTyf/Z4ummar2Jt4eLW+mxHXyGB8
-        He21/SZiJfedKl5BRAOuMPkoNc/EAhBoiQ==
-X-Google-Smtp-Source: AMsMyM4ILoEcv/6xCcEEodsafunFHi1qVBkYah5xudFsxSBUnp+9v4sOt3MFyKkfXgdtvPcPfNyyCw==
-X-Received: by 2002:a05:620a:2793:b0:6cb:c11a:130f with SMTP id g19-20020a05620a279300b006cbc11a130fmr14332366qkp.549.1663629458118;
+        bh=B1QW5eCktyNKF1Kabrt/RgSIFVK+r7/SbP4DaTVv7K4=;
+        b=TjJinCUWc6jXyuKkdqyfxNhtOjVNUVOCGxiVSMLp05L04OzJCib3tuxH7qXEom7IuR
+         B9axV8Rr4iZOGw/B/6LB+VdbPiUKzVjfhNIVQUwFhfvKlXWLcoSCIHGMm1mGk+zkvA15
+         XKf4DoVmElRnEzL0kwRaGEfbuFjrXVUME/UT37XHGY/OAuwUypJ3eW49DRvUF4JoxY5M
+         aKXcNsQK1TGQe3Srvi2armiZbEWjAMmMU7vpwH6NrQusD6Y+RpKog5eDiAn0GDl51QFj
+         AHd1k4BNkT6htqpD3iyNBtgnWd41jS8za6bz1ENBKKON17Jf/axYQbAB/5Y0i17ZiDdk
+         /EEg==
+X-Gm-Message-State: ACrzQf227VPunRG4CFJ8HFyWKmdhcEmlHeSvyzDZ6ab6SgaV2slOLA2q
+        l0uuI0OFfCzBcrvaHFczwsyEOXLDA1SsIQ==
+X-Google-Smtp-Source: AMsMyM56OLvIROJZ9in53bmsw3MfHKFylkUrr8O+74j0n9sqi1o7xOGzblnkNwTC27YkNfRrM7hH0Q==
+X-Received: by 2002:ac8:5a8c:0:b0:35b:b2f7:7e96 with SMTP id c12-20020ac85a8c000000b0035bb2f77e96mr16996691qtc.659.1663629458980;
         Mon, 19 Sep 2022 16:17:38 -0700 (PDT)
 Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id d4-20020ac80604000000b0035cebb79aaesm2547005qth.18.2022.09.19.16.17.37
+        by smtp.gmail.com with ESMTPSA id d4-20020ac80604000000b0035cebb79aaesm2547005qth.18.2022.09.19.16.17.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Sep 2022 16:17:37 -0700 (PDT)
+        Mon, 19 Sep 2022 16:17:38 -0700 (PDT)
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     linux-iio@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, mranostay@ti.com,
@@ -55,9 +55,9 @@ Cc:     linux-kernel@vger.kernel.org, mranostay@ti.com,
         groeck@chromium.org, jic23@kernel.org, david@lechnology.com,
         robertcnelson@gmail.com,
         William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH v4 2/4] counter: 104-quad-8: Add Signal polarity component
-Date:   Sun, 18 Sep 2022 14:22:05 -0400
-Message-Id: <8f1e5d7a264f0a40422733775ea63d39027ecec7.1663524845.git.william.gray@linaro.org>
+Subject: [PATCH v4 3/4] counter: Consolidate Counter extension sysfs attribute creation
+Date:   Sun, 18 Sep 2022 14:22:06 -0400
+Message-Id: <a439d5a45691b6280c597f3ab84640d86f451162.1663524845.git.william.gray@linaro.org>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <cover.1663524845.git.william.gray@linaro.org>
 References: <cover.1663524845.git.william.gray@linaro.org>
@@ -72,75 +72,167 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The 104-quad-8 driver provides support for Index signal polarity modes
-via the "index_polarity" Signal component. This patch exposes the same
-functionality through the more standard "polarity" Signal component.
+Counter extensions are handled for the Device, Counts, and Signals. The
+code loops through each Counter extension and creates the expected sysfs
+attributes. This patch consolidates that code into functions to reduce
+redundancy and make the intention of the code clearer.
 
 Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 ---
- drivers/counter/104-quad-8.c | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/counter/counter-sysfs.c | 98 ++++++++++++++++-----------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 1323edfbe40c..2a9d8259ed4b 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -549,6 +549,32 @@ static int quad8_index_polarity_set(struct counter_device *counter,
+diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+index e5dd36e1a45f..b393da402e0b 100644
+--- a/drivers/counter/counter-sysfs.c
++++ b/drivers/counter/counter-sysfs.c
+@@ -592,6 +592,46 @@ static int counter_comp_id_attr_create(struct device *const dev,
  	return 0;
  }
  
-+static int quad8_polarity_read(struct counter_device *counter,
-+			       struct counter_signal *signal,
-+			       enum counter_signal_polarity *polarity)
++static int counter_ext_attrs_create(struct device *const dev,
++				    struct counter_attribute_group *const group,
++				    const struct counter_comp *const ext,
++				    const enum counter_scope scope,
++				    void *const parent, const size_t id)
 +{
 +	int err;
-+	u32 index_polarity;
 +
-+	err = quad8_index_polarity_get(counter, signal, &index_polarity);
-+	if (err)
++	/* Create main extension attribute */
++	err = counter_attr_create(dev, group, ext, scope, parent);
++	if (err < 0)
 +		return err;
 +
-+	*polarity = (index_polarity) ? COUNTER_SIGNAL_POLARITY_POSITIVE :
-+		COUNTER_SIGNAL_POLARITY_NEGATIVE;
++	/* Create extension id attribute */
++	return counter_comp_id_attr_create(dev, group, ext->name, id);
++}
++
++static int counter_sysfs_exts_add(struct device *const dev,
++				  struct counter_attribute_group *const group,
++				  const struct counter_comp *const exts,
++				  const size_t num_ext,
++				  const enum counter_scope scope,
++				  void *const parent)
++{
++	size_t i;
++	const struct counter_comp *ext;
++	int err;
++
++	/* Create attributes for each extension */
++	for (i = 0; i < num_ext; i++) {
++		ext = &exts[i];
++		err = counter_ext_attrs_create(dev, group, ext, scope, parent,
++					       i);
++		if (err < 0)
++			return err;
++	}
 +
 +	return 0;
 +}
 +
-+static int quad8_polarity_write(struct counter_device *counter,
-+				struct counter_signal *signal,
-+				enum counter_signal_polarity polarity)
-+{
-+	const u32 pol = (polarity == COUNTER_SIGNAL_POLARITY_POSITIVE) ? 1 : 0;
-+
-+	return quad8_index_polarity_set(counter, signal, pol);
-+}
-+
- static const char *const quad8_synchronous_modes[] = {
- 	"non-synchronous",
- 	"synchronous"
-@@ -977,6 +1003,13 @@ static struct counter_comp quad8_signal_ext[] = {
- 			       quad8_signal_fck_prescaler_write)
- };
+ static struct counter_comp counter_signal_comp = {
+ 	.type = COUNTER_COMP_SIGNAL_LEVEL,
+ 	.name = "signal",
+@@ -605,8 +645,6 @@ static int counter_signal_attrs_create(struct counter_device *const counter,
+ 	struct device *const dev = &counter->dev;
+ 	int err;
+ 	struct counter_comp comp;
+-	size_t i;
+-	struct counter_comp *ext;
  
-+static const enum counter_signal_polarity quad8_polarities[] = {
-+	COUNTER_SIGNAL_POLARITY_POSITIVE,
-+	COUNTER_SIGNAL_POLARITY_NEGATIVE,
-+};
-+
-+static DEFINE_COUNTER_AVAILABLE(quad8_polarity_available, quad8_polarities);
-+
- static DEFINE_COUNTER_ENUM(quad8_index_pol_enum, quad8_index_polarity_modes);
- static DEFINE_COUNTER_ENUM(quad8_synch_mode_enum, quad8_synchronous_modes);
+ 	/* Create main Signal attribute */
+ 	comp = counter_signal_comp;
+@@ -620,21 +658,9 @@ static int counter_signal_attrs_create(struct counter_device *const counter,
+ 	if (err < 0)
+ 		return err;
  
-@@ -984,6 +1017,8 @@ static struct counter_comp quad8_index_ext[] = {
- 	COUNTER_COMP_SIGNAL_ENUM("index_polarity", quad8_index_polarity_get,
- 				 quad8_index_polarity_set,
- 				 quad8_index_pol_enum),
-+	COUNTER_COMP_POLARITY(quad8_polarity_read, quad8_polarity_write,
-+			      quad8_polarity_available),
- 	COUNTER_COMP_SIGNAL_ENUM("synchronous_mode", quad8_synchronous_mode_get,
- 				 quad8_synchronous_mode_set,
- 				 quad8_synch_mode_enum),
+-	/* Create an attribute for each extension */
+-	for (i = 0; i < signal->num_ext; i++) {
+-		ext = &signal->ext[i];
+-
+-		err = counter_attr_create(dev, cattr_group, ext, scope, signal);
+-		if (err < 0)
+-			return err;
+-
+-		err = counter_comp_id_attr_create(dev, cattr_group, ext->name,
+-						  i);
+-		if (err < 0)
+-			return err;
+-	}
+-
+-	return 0;
++	/* Add Signal extensions */
++	return counter_sysfs_exts_add(dev, cattr_group, signal->ext,
++				      signal->num_ext, scope, signal);
+ }
+ 
+ static int counter_sysfs_signals_add(struct counter_device *const counter,
+@@ -719,8 +745,6 @@ static int counter_count_attrs_create(struct counter_device *const counter,
+ 	struct device *const dev = &counter->dev;
+ 	int err;
+ 	struct counter_comp comp;
+-	size_t i;
+-	struct counter_comp *ext;
+ 
+ 	/* Create main Count attribute */
+ 	comp = counter_count_comp;
+@@ -743,21 +767,9 @@ static int counter_count_attrs_create(struct counter_device *const counter,
+ 	if (err < 0)
+ 		return err;
+ 
+-	/* Create an attribute for each extension */
+-	for (i = 0; i < count->num_ext; i++) {
+-		ext = &count->ext[i];
+-
+-		err = counter_attr_create(dev, cattr_group, ext, scope, count);
+-		if (err < 0)
+-			return err;
+-
+-		err = counter_comp_id_attr_create(dev, cattr_group, ext->name,
+-						  i);
+-		if (err < 0)
+-			return err;
+-	}
+-
+-	return 0;
++	/* Add Count extensions */
++	return counter_sysfs_exts_add(dev, cattr_group, count->ext,
++				      count->num_ext, scope, count);
+ }
+ 
+ static int counter_sysfs_counts_add(struct counter_device *const counter,
+@@ -850,8 +862,6 @@ static int counter_sysfs_attr_add(struct counter_device *const counter,
+ 	const enum counter_scope scope = COUNTER_SCOPE_DEVICE;
+ 	struct device *const dev = &counter->dev;
+ 	int err;
+-	size_t i;
+-	struct counter_comp *ext;
+ 
+ 	/* Add Signals sysfs attributes */
+ 	err = counter_sysfs_signals_add(counter, cattr_group);
+@@ -888,19 +898,9 @@ static int counter_sysfs_attr_add(struct counter_device *const counter,
+ 	if (err < 0)
+ 		return err;
+ 
+-	/* Create an attribute for each extension */
+-	for (i = 0; i < counter->num_ext; i++) {
+-		ext = &counter->ext[i];
+-
+-		err = counter_attr_create(dev, cattr_group, ext, scope, NULL);
+-		if (err < 0)
+-			return err;
+-
+-		err = counter_comp_id_attr_create(dev, cattr_group, ext->name,
+-						  i);
+-		if (err < 0)
+-			return err;
+-	}
++	/* Add device extensions */
++	return counter_sysfs_exts_add(dev, cattr_group, counter->ext,
++				      counter->num_ext, scope, NULL);
+ 
+ 	return 0;
+ }
 -- 
 2.37.3
 

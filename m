@@ -2,45 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56CC35BBEA3
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:26:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 840D95BBEA6
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbiIRP0P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 11:26:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36090 "EHLO
+        id S229933AbiIRP3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 11:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbiIRP0O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:26:14 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2EC11810
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 08:26:13 -0700 (PDT)
+        with ESMTP id S229479AbiIRP3X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:29:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FF711810;
+        Sun, 18 Sep 2022 08:29:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B0381B8104A
-        for <linux-iio@vger.kernel.org>; Sun, 18 Sep 2022 15:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED933C433C1;
-        Sun, 18 Sep 2022 15:26:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9816C61531;
+        Sun, 18 Sep 2022 15:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E137C433C1;
+        Sun, 18 Sep 2022 15:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663514771;
-        bh=S2rdJKs28UpDvY31sBuIrleKVNyseU81nhrs3pFsJ8I=;
+        s=k20201202; t=1663514962;
+        bh=SqII8RWmHqTCuhy0RR1lgr/BKN5AZ4j2RKrCloAyvL0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QYCaG+HXCk6dpN2uGe370tgnPaOw4NmlsZoZyCTvBAHGbSaHSFgw5ARkrfPrLNFIf
-         YhwRYB10v1tW9GCvKCReBTQkHHagyVNnQ5o9eaaq+Zom3LEj+DhcnasM5oXryLPrAK
-         xyJpFXsoIhU2VaXYTv21NYY8VK3uo+3KwTt/ECSUi9pm6uLObH4StU4P/vAU9yzNMw
-         IDeoH7X4M6ukk3I37gYYnNH6zOgetoKwjOIpMcvOsPQWCz/NRs3Eud7IwJrB8Ul7Ju
-         iWRFHpLqFZ7EdxfKuBPM0TeyPLcfXScV923PX1aIvSwSctOTKh5pBLXjIcOKKn7Btr
-         WxHX1V3yCBW0Q==
-Date:   Sun, 18 Sep 2022 16:26:14 +0100
+        b=Kv0uyYXLoUQG960i8vSa4xEEPOh3+g92UppdM1uqJMkieJ/RVsWtt1IYFl6ByQ0na
+         yCUoLDeOjB8NIu9erY6gY5zKqkxWDN9jUb2l9PDS6UAMzndYWtf8Mf5zLPsXvH34id
+         0yBA69Dg8bm7Ind6WIE408p+XPksOaOit+91OnAAq2cx8qfvca67++KvxOL/0c5aTw
+         jj29NKkWqQxUVisoYDFETN+CQaMX+GQi4tuqf3kHL7CiZ9V9hzuUKh8MQOYIoQZTwC
+         Dqcn5MxDuZxnJXSZf2SryDHU4RwdfdIiQ0f9H9OKWSRrRvRPBWnwucO0n50hd4C0+x
+         3LWIVHmko9G+w==
+Date:   Sun, 18 Sep 2022 16:29:25 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
-        <Nurettin.Bolucu@analog.com>
-Subject: Re: [PATCH v4 3/3] Documentation: ABI: testing: add max11410 doc
-Message-ID: <20220918162614.4def922c@jic23-huawei>
-In-Reply-To: <20220908144924.205547-4-Ibrahim.Tilki@analog.com>
-References: <20220908144924.205547-1-Ibrahim.Tilki@analog.com>
-        <20220908144924.205547-4-Ibrahim.Tilki@analog.com>
+To:     Lorenzo Bianconi <lorenzo@kernel.org>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        lorenzo.bianconi@redhat.com, robh@kernel.org
+Subject: Re: [PATCH 0/2] add support for LSM6DSTX
+Message-ID: <20220918162925.3c4f5e09@jic23-huawei>
+In-Reply-To: <cover.1663262890.git.lorenzo@kernel.org>
+References: <cover.1663262890.git.lorenzo@kernel.org>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,62 +53,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 8 Sep 2022 17:49:24 +0300
-Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
+On Thu, 15 Sep 2022 19:34:58 +0200
+Lorenzo Bianconi <lorenzo@kernel.org> wrote:
 
-> Adding documentation for Analog Devices max11410 adc userspace sysfs.
-> 
-> Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+> Add support for LSM6DSTX IMU mems sensor
+> https://www.st.com/resource/en/datasheet/lsm6dstx.pdf
 
-I debated a bit with myself when reviewing the driver this time on whether
-we wanted
-filter_notchY_en or as you have it filterY_notch_en
+Looks trivial enough that I've queued it up on my togreg branch and
+pushed out as testing for 0-day to take a look.
 
-It's a bit similar to channel naming in which we potentially allow
-in_accel0_x_raw
-in_accel1_x_raw
-in_accel0_y_raw
-
-or
-in_accel0_x_raw
-in_accel1_x_raw
-in_accel2_y_raw
-
-etc depending on whether the index is considered global across all modifiers
-or not.  We decided long ago that either was fine as they are uniquely
-identifiable either by channel index, or by index + modifier.
-
-Anyhow, upshot is I'm fine with the ordering you have here - but if anyone
-else has time to take a look and comment on why one option is better than
-the other that would be great.
+I will be rebasing that tree shortly for other reasons, so a bit 
+of time for reviews to still come in before this hits a non rebasing
+tree.
 
 Thanks,
 
 Jonathan
- 
 
-> ---
->  .../ABI/testing/sysfs-bus-iio-adc-max11410          | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410 b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-> new file mode 100644
-> index 000000000..2a53c6b37
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-> @@ -0,0 +1,13 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_en
-> +Date:		September 2022
-> +KernelVersion:  6.0
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Enable or disable a notch filter.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_center
-> +Date:		September 2022
-> +KernelVersion:  6.0
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Center frequency of the notch filter in Hz.
+> Lorenzo Bianconi (2):
+>   iio: imu: st_lsm6dsx: add support to LSM6DSTX
+>   dt-bindings: iio: imu: st_lsm6dsx: add lsm6dstx device bindings
+> 
+>  Documentation/devicetree/bindings/iio/imu/st,lsm6dsx.yaml | 3 +++
+>  drivers/iio/imu/st_lsm6dsx/Kconfig                        | 2 +-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h                   | 2 ++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c            | 2 +-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c              | 7 ++++++-
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_i2c.c               | 5 +++++
+>  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_spi.c               | 5 +++++
+>  7 files changed, 23 insertions(+), 3 deletions(-)
+> 
 

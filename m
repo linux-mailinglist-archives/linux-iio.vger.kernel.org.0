@@ -2,51 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FCB35BBEB1
-	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE4D5BBEB4
+	for <lists+linux-iio@lfdr.de>; Sun, 18 Sep 2022 17:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229541AbiIRPdt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 18 Sep 2022 11:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40722 "EHLO
+        id S229518AbiIRPjd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 18 Sep 2022 11:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiIRPds (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:33:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6BE51AF0D;
-        Sun, 18 Sep 2022 08:33:47 -0700 (PDT)
+        with ESMTP id S229564AbiIRPjc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 18 Sep 2022 11:39:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE07D9C;
+        Sun, 18 Sep 2022 08:39:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 76AD3B80E4F;
-        Sun, 18 Sep 2022 15:33:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A6AC433D6;
-        Sun, 18 Sep 2022 15:33:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A76A61579;
+        Sun, 18 Sep 2022 15:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCBBC433D6;
+        Sun, 18 Sep 2022 15:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663515225;
-        bh=yTfmFSAnZLXn9BbwGI+IzTH627rEDnJKQQ7GjV3lwEA=;
+        s=k20201202; t=1663515569;
+        bh=eoh5wKV0bhC+uVW0zG39LMfRVLlky4WPRI9zCyibDdk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GJCOJOs8N0qh3RAysLC0xJ9Zh/Vq2lwBjvnaDUUSnGNpytymmdqZ67aaxLgw2aphX
-         bocqCvvIPGcR11ccAoj2Bz2suDS43+xfMmlrVzKwlcv/4gL3nVz+uwy11RLpocCZcv
-         gVGiEPLsMTwEmZa3B8SH42dmnA0xH+Dwv8fO+s5gKptLPMNhuJVbxQZcQT+NTanykR
-         570BdQh+JWIaLPksJzEKYIwLhI9USQmnsTKvf2AyB8nuQ4QXnsPUK4vfBE/bakzqPB
-         yUlDbSnvE+Q/o/SJXxeetv7vibwkZUCifzHL+p8jCRrgam9lBqU0gCk17g0tjcosvH
-         mY1CwoQPux7hQ==
-Date:   Sun, 18 Sep 2022 16:33:48 +0100
+        b=XzWY4GGAQw3LFp9z4JxPO8Vi9FpfEvM8Q18dJzeaFBlnYDxyY9J2yc9qWeiM8J/oc
+         A/TqEeSSW8LjT/4/ilci23/H+mmQUSEJQ1KdkLiphyoozm3UIVfDt0xVPa6vxjL1qH
+         7f1bAH0A04i1aWha84zHwlkykUIimL4LizDlzdbKMsV3qeeAG65qwaiwjmq+iKs6Ls
+         CxqK92fBojx4u0LnXNrxaX49E0GHcacVw7GIkj6LyoZ6/UukcicsLccSfeKbefZdmF
+         uAGzgyqxKTIDMM2hzCRgMYJY/zrkIBFEihKQt0ecXg5XYw7DORtzVVtzN300ESHHz/
+         7H407cZpLV/KQ==
+Date:   Sun, 18 Sep 2022 16:39:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>
-Subject: Re: [PATCH v2 0/3] ad7923 fixes and full range support
-Message-ID: <20220918163348.6b681e57@jic23-huawei>
-In-Reply-To: <20220912081223.173584-1-nuno.sa@analog.com>
-References: <20220912081223.173584-1-nuno.sa@analog.com>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     gupt21@gmail.com, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 4/5] HID: mcp2221: switch i2c registration to devm
+ functions
+Message-ID: <20220918163933.0e52b581@jic23-huawei>
+In-Reply-To: <20220912173202.16723-5-matt.ranostay@konsulko.com>
+References: <20220912173202.16723-1-matt.ranostay@konsulko.com>
+        <20220912173202.16723-5-matt.ranostay@konsulko.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -56,40 +55,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 12 Sep 2022 10:12:20 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+On Mon, 12 Sep 2022 10:32:01 -0700
+Matt Ranostay <matt.ranostay@konsulko.com> wrote:
 
-> This patchset adds important fixes for some of the variants supported by =
-the
-> driver with respect with raw and buffered reads. On top of this way, adds
-> a new firmware property to be able to support all the scales supported by
-> the hardware.
+> Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
+> for matching rest of driver initialization, and more concise code.
+> 
+> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 
-Applied.
+This doesn't necessarily make things worse, but I'm not keen on the
+potential ordering issues that result form mixed devm / non-devm
+in this function.  It's too hard too think about!
 
-Thanks,
+Easiest way to avoid people staring at the code to figure out if
+there are nasty issues would be to take the whole thing devm
+with a couple of devm_add_action_or_reset() to handle the
+hid_hw_stop()/hid_hw_close() at right points in the error / remove
+flows.
 
 Jonathan
 
->=20
-> v2:
->=20
-> [1/3]
->  * Calculate shift using 12 - realbits.
->=20
-> [2/3]
->  * Use a boolean property and change the code accordingly.
->=20
-> [3/3]
->  * Use a boolean property (adi,range-double).
->=20
-> Nuno S=C3=A1 (3):
->   iio: adc: ad7923: fix channel readings for some variants
->   iio: adc: ad7923: support extended range
->   dt-bindings: iio: adi,ad7923: add adi,range-double property
->=20
->  .../devicetree/bindings/iio/adc/adi,ad7923.yaml       |  4 ++++
->  drivers/iio/adc/ad7923.c                              | 11 +++++++++--
->  2 files changed, 13 insertions(+), 2 deletions(-)
->=20
+
+> ---
+>  drivers/hid/hid-mcp2221.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+> index de52e9f7bb8c..29e69576c3d4 100644
+> --- a/drivers/hid/hid-mcp2221.c
+> +++ b/drivers/hid/hid-mcp2221.c
+> @@ -873,7 +873,7 @@ static int mcp2221_probe(struct hid_device *hdev,
+>  			"MCP2221 usb-i2c bridge on hidraw%d",
+>  			((struct hidraw *)hdev->hidraw)->minor);
+>  
+> -	ret = i2c_add_adapter(&mcp->adapter);
+> +	ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
+>  	if (ret) {
+>  		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+>  		goto err_i2c;
+> @@ -884,7 +884,7 @@ static int mcp2221_probe(struct hid_device *hdev,
+>  	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
+>  	if (!mcp->gc) {
+>  		ret = -ENOMEM;
+> -		goto err_gc;
+> +		goto err_i2c;
+>  	}
+>  
+>  	mcp->gc->label = "mcp2221_gpio";
+> @@ -900,12 +900,10 @@ static int mcp2221_probe(struct hid_device *hdev,
+>  
+>  	ret = devm_gpiochip_add_data(&hdev->dev, mcp->gc, mcp);
+>  	if (ret)
+> -		goto err_gc;
+> +		goto err_i2c;
+>  
+>  	return 0;
+>  
+> -err_gc:
+> -	i2c_del_adapter(&mcp->adapter);
+>  err_i2c:
+>  	hid_hw_close(mcp->hdev);
+>  err_hstop:
+> @@ -917,7 +915,6 @@ static void mcp2221_remove(struct hid_device *hdev)
+>  {
+>  	struct mcp2221 *mcp = hid_get_drvdata(hdev);
+>  
+> -	i2c_del_adapter(&mcp->adapter);
+>  	hid_hw_close(mcp->hdev);
+>  	hid_hw_stop(mcp->hdev);
+>  }
 

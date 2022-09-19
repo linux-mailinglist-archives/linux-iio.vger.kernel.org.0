@@ -2,62 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 664765BD37E
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Sep 2022 19:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 981295BD3BC
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Sep 2022 19:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229750AbiISRS6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Sep 2022 13:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50650 "EHLO
+        id S231389AbiISRbB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Sep 2022 13:31:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229724AbiISRS5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 13:18:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AD11FCF5;
-        Mon, 19 Sep 2022 10:18:55 -0700 (PDT)
+        with ESMTP id S231390AbiISRax (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 13:30:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554043ED50;
+        Mon, 19 Sep 2022 10:30:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7121FB8069D;
-        Mon, 19 Sep 2022 17:18:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B8AC433D6;
-        Mon, 19 Sep 2022 17:18:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED1DD6120D;
+        Mon, 19 Sep 2022 17:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4498DC433D7;
+        Mon, 19 Sep 2022 17:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1663607933;
-        bh=9ZvJnawDlxY9dZtU1p0CXXCvVjy3I23Z9TlaleTFuPQ=;
+        s=k20201202; t=1663608644;
+        bh=J59YjmE5HZxnFi8I5AwnSftZSu1bwZZJpYWsif3Fyxg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=MsVjJ6AioCtwqKEp5Uy3poH+nqi0N+rPq/ItcSpu8UbHmfRzCa5FKRFLyEUDJtD8Q
-         C5VaVKvDDyHrMXGLiNG947QlmCYrNyi/Z7c65jTdA/+y5sfPPLHjWYPZ5eThTiVNp5
-         zMPrzhrpdjgt8XrCc/jSdZTut4Cn4aGRA3r4cRWT1tzdtMFi9UrV+c4sJBO+jELULQ
-         ivdUqBgBeY+bW/qGMPaiQyOe/eGuSj0PfDNMsRQ95KGmOOTeyJzDCyLRXfKi9LyCuj
-         eQjRwjAmzP44Vb/Zsr9tmhnVk40QQR5K1XVHLrincl2w/oaukIjIeXH+GEDoHnvnnN
-         GqxYouMYWUaeQ==
-Date:   Mon, 19 Sep 2022 18:18:54 +0100
+        b=fefVOgkiTTAJi/tfVQPjrBF7EIidq28xbT7vg9BMSNZWyBi0uU33Bj7SOpvr9UlLa
+         cx4QVUKQje+ouf/cj7HQuZB0XO0d/ulnT4M5u76e6sfcqW7LacXp8wLxdi2bzxJk83
+         4Rh8zlmRaWM1NS+4777KZ1fxdRpA7aKlpR/M+yWskFOlzK2oKTfRYq1B+EIBf74Kkv
+         fe2sHaaj+SmTXodNafwH7BB7fkaOGNbNfV+wU750QQ6o+rN4pUK9iHw1WmqO8VLkvz
+         wSKwBZHrjIGhifphaIDMNWjfpbtd3lcx2YNOjrYvhi/hohDy9IQmCJpajDXgsi6z69
+         SVavFBD6sd5bg==
+Date:   Mon, 19 Sep 2022 18:30:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "dragos.bogdan@analog.com" <dragos.bogdan@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [RFT] potential bug with IIO_CONST_ATTR usage with triggered
- buffers
-Message-ID: <20220919181854.01214355@jic23-huawei>
-In-Reply-To: <20220919163214.5b757903@jic23-huawei>
-References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
-        <20210215104043.91251-15-alexandru.ardelean@analog.com>
-        <aecd6a19-79a8-d9a6-2dc4-73dcd756c92d@fi.rohmeurope.com>
-        <87fbfc8e-fb17-444d-22a2-3738ade77cb5@fi.rohmeurope.com>
-        <20220919163214.5b757903@jic23-huawei>
+To:     Crt Mori <cmo@melexis.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v5 1/3] iio: temperature: mlx90632 Add runtime
+ powermanagement modes
+Message-ID: <20220919183048.00c68a04@jic23-huawei>
+In-Reply-To: <CAKv63usAjTh9b-HuVdikbtdPKeyFYPy0kENQpkGo6jWXkE_Quw@mail.gmail.com>
+References: <cover.1663577091.git.cmo@melexis.com>
+        <dadcba138c48286944cc03563967de9b4daddaaa.1663577091.git.cmo@melexis.com>
+        <20220919172420.1a6fd52f@jic23-huawei>
+        <CAKv63usAjTh9b-HuVdikbtdPKeyFYPy0kENQpkGo6jWXkE_Quw@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -71,151 +57,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Sep 2022 16:32:14 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 19 Sep 2022 19:09:13 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-> On Mon, 19 Sep 2022 08:52:38 +0000
-> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+> On Mon, 19 Sept 2022 at 18:24, Jonathan Cameron <jic23@kernel.org> wrote:
+> >
+> > On Mon, 19 Sep 2022 10:48:16 +0200
+> > cmo@melexis.com wrote:
+> >  
+> > > From: Crt Mori <cmo@melexis.com>
+> > >
+> > > measurements in lower power mode (SLEEP_STEP), with the lowest refresh
+> > > rate (2 seconds).  
+> > Hi Crt,
+> >
+> > I'm a little nervous about one change in the flow from earlier versions.
+> > I'm assuming you are sure it is always fine though!
+> >
+> > Previously before calling the _sleep() in remove we ensured the device
+> > was powered up. Now that's no longer true. If runtime pm has it in
+> > a low power state it will remain in that state at the point where we call
+> > _sleep().
+> >
+> > One note/question on original code...  Why bother marking regcache dirty when
+> > we are going down anyway?  It's not wrong as such, just probably not
+> > that useful unless I'm missing something.  Same in the *_wakeup()
+> > that puts the cache back but is only called in probe now.  
 > 
-> > On 9/9/22 11:12, Vaittinen, Matti wrote:  
-> > > Hi dee Ho peeps!
-> > > 
-> > > Disclaimer - I have no HW to test this using real in-tree drivers. If
-> > > someone has a device with a variant of bmc150 or adxl372 or  - it'd be
-> > > nice to see if reading hwfifo_watermark_max or hwfifo_watermark_min
-> > > works with the v6.0-rc4. Maybe I am misreading code and have my own
-> > > issues - in which case I apologize already now and go to the corner
-> > > while being deeply ashamed :)    
-> > 
-> > I would like to add at least the at91-sama5d2_adc (conditonally 
-> > registers the IIO_CONST_ATTR for triggered-buffer) to the list of 
-> > devices that could be potentially tested. I hope some of these devices 
-> > had a user who could either make us worried and verify my assumption - 
-> > or make me ashamed but rest of us relieved :) Eg - I second my request 
-> > for testing this - and add potential owners of at91-sama5d2_adc to the list.
-> >   
-> > > On 2/15/21 12:40, Alexandru Ardelean wrote:    
-> > >> This change wraps all buffer attributes into iio_dev_attr objects, and
-> > >> assigns a reference to the IIO buffer they belong to.
-> > >>
-> > >> With the addition of multiple IIO buffers per one IIO device, we need a way
-> > >> to know which IIO buffer is being enabled/disabled/controlled.
-> > >>
-> > >> We know that all buffer attributes are device_attributes.    
-> > > 
-> > > I think this assumption is slightly unsafe. I see few drivers adding
-> > > IIO_CONST_ATTRs in attribute groups. For example the bmc150 and adxl372
-> > > add the hwfifo_watermark_min and hwfifo_watermark_max.
-> > >    
-> > 
-> > and at91-sama5d2_adc
-> > 
-> > //snip
-> >   
-> > >I noticed that using
-> > > IIO_CONST_ATTRs for triggered buffers seem to cause access to somewhere
-> > > it shouldn't... Oops.
-> > > 
-> > > Reading the code allows me to assume the problem is wrapping the
-> > > attributes to IIO_DEV_ATTRs.
-> > > 
-> > > static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
-> > > +					      struct attribute *attr)
+> Previously when powered on the device the cache was not updated
+
+ah. Got it.  Doing this makes sense if we don't provide the default register
+values as there is nothing else to get them from.
+
+However, I think the regmap core does this for us if defaults are not provided:
+https://elixir.bootlin.com/linux/v6.0-rc5/source/drivers/base/regmap/regcache.c#L180
+
+Does that not work here for some reason?  If so add a comment.
+
+We do need the dance in the suspend and resume though as regcache code has no
+way to know if the values are retained or not so we have to let it know.
+
+>, so I
+> added the marking of regcache at wakeup and saw that the same thing
+> happens when in resume after powering on. I should keep this
+> assumption still, so I will re-add the wakeup to resume (not runtime
+> resume). I did not test this part as I focused on runtime resume so
+> thanks for noticing.
+> 
+> >
+> > Which then raises question of why we don't need to deal with the regcache
+> > any more when we turn power off in suspend?
+> >  
+> 
+> It just did not work properly without this. Not correct EEPROM
+> coefficients were used for calculations.
+> 
+> > So either we need a statement of why the register state is maintained,
+> > or add the maintenance for that.  Also probably makes sense to drop
+> > the left over maintenance from the probe() and remove() (via devm) paths.
+> >  
+> I thought I did that by completely removing _remove() and using
+> devm_actions for cleanup. Do you see a spot I missed?
+> 
+
+I don't think marking the regcache dirty in remove (via the _sleep() call)
+does anything useful.  On fresh probe of the driver, we get a new regcache which
+we can then sync as you are doing - so no point in marking the one we are about
+to delete as dirty that I can see.
+
+
+> > Jonathan
+> >  
+> > >
+> > > -static int __maybe_unused mlx90632_pm_resume(struct device *dev)
+> > > +static int mlx90632_pm_resume(struct device *dev)
+> > >  {
+> > > -     struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> > > -     struct mlx90632_data *data = iio_priv(indio_dev);
+> > > +     struct mlx90632_data *data = iio_priv(dev_get_drvdata(dev));
+> > > +
+> > > +     return mlx90632_enable_regulator(data);
+> > > +}
+> > > +
+> > > +static int mlx90632_pm_runtime_suspend(struct device *dev)
 > > > +{
-> > > +	struct device_attribute *dattr = to_dev_attr(attr);
-> > > +	struct iio_dev_attr *iio_attr;
-> > > +
-> > > +	iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
-> > > +	if (!iio_attr)
-> > > +		return NULL;
-> > > +
-> > > +	iio_attr->buffer = buffer;
-> > > +	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
-> > > 
-> > > This copy does assume all attributes are device_attrs, and does not take
-> > > into account that IIO_CONST_ATTRS have the string stored in a struct
-> > > iio_const_attr which is containing the dev_attr. Eg, copying in the
-> > > iio_buffer_wrap_attr() does not copy the string - and later invoking the
-> > > 'show' callback goes reading something else than the mentioned string
-> > > because the pointer is not copied.    
-> > 
-> > Yours,
-> > 	-- Matti  
-> Hi Matti,
-> 
-> +CC Alexandru on a current email address.
-> 
-> I saw this whilst travelling and completely forgot about when
-> I was back to normal - so great you sent a follow up!
-> 
-> Anyhow, your reasoning seems correct and it would be easy enough
-> to add such a case to iio/dummy/iio_simple_dummy_buffer.c and
-> provide a clear test for the problem.
-> 
-> As to solutions. The quickest is probably to switch these const attrs
-> over to a non const form and add a comment to the header to say they are
-> unsuitable for use with buffers.
+> > > +     struct mlx90632_data *data = iio_priv(dev_get_drvdata(dev));
+> > >
+> > > -     return mlx90632_wakeup(data);  
+> > Previously we called wakeup here which writes the regcache back to
+> > the device. Now I'm not seeing that happening anywhere in new code.
+> > Why is it not needed?
+> >  
+> I had the same question before, why cache was needed to be marked
+> dirty, but without it, CPU did not properly obtain the calculation
+> coefficients. What happens now is that we are in step_sleep mode so
+> measurements are triggered and it also takes the 2 seconds before they
+> are updated. I did not check the line with scope, but I have yet to
+> see the strange temperature output which would indicate that not
+> proper EEPROM data is used. But I did focus on sleep mostly, so deeper
+> sleep I did not retest.
 
-Thinking a little more on this - all / (most?) of the users pass a null terminated
-array of struct device_attribute * to *iio_triggered_buffer_setup_ext()
-
-That's then assigned to buffer->attrs. 
-We could add an additional pointer to the struct iio_buffer to take
-a null terminated array of struct iio_dev_attr *
-and change the signature of that function to take one of those, thus
-preventing us using iio_const_attr structures for this.
-
-Then we can wrap those just fine in the code you highlighted and assign the
-result into buffer->attrs.
-
-We'd need to precede that change with fixes that just switch the
-iio_const_attr uses over to iio_dev_attr but changing this would ensure no
-accidental reintroductions of the problem in future drivers (typically
-as a result of someone forward porting a driver that is out of tree).
-
-I think this combination of fix then prevent future problems is what
-I would prefer.
+I'd hope runtime pm doesn't need the dance with the cache as the
+values should be retained.  It's the deeper sleep that is where I'd
+see potential problems as you observed.
 
 Jonathan
 
-
-
 > 
-> An alternative would be to make it 'safe' by making the data layouts
-> match up.
-> 
-> struct iio_attr {
-> 	struct device_attribute dev_attr;
-> 	union {
-> 		u64 address;
-> 		const char *string;
-> 	};
-> 	struct list_head l;
-> 	struct iio_chan_spec const *c;
-> 	struct iio_buffer *buffer;
-> };
-> 
-> #define iio_dev_attr iio_attr
-> #define iio_const_attr iio_attr
-> 
-> Looking at this raises another potential problem.
-> Where is the address copied over for attributes using IIO_DEVICE_ATTR()?
-> Maybe I'm just missing it somewhere.  Grepping suggests we've been
-> lucky and there are no users of that field in buffer attributes.
-> 
-> Detecting the problem you found is going to be inherently tricky - though maybe
-> could rely on the naming of the attributes passed in (iio_const...)
-> and some scripting magic. 
-> 
-> Longer term, it's this sort of thing that motivates protections / runnable
-> CI self tests with, for example, the roadtest framework that I'm hoping
-> will be available upstream soonish!
-> 
-> Would you like to send patches given you identified the problem?
-> 
-> If not I'm happy to fix these up. My grepping identified the same 3 cases
-> you found.
-> 
-> Jonathan
-> 
+> > > +     return mlx90632_pwr_set_sleep_step(data->regmap);
+> > >  }  
+> >  
 

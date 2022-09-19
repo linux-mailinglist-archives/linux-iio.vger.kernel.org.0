@@ -2,93 +2,117 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 176B75BD17D
-	for <lists+linux-iio@lfdr.de>; Mon, 19 Sep 2022 17:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD3EE5BD17F
+	for <lists+linux-iio@lfdr.de>; Mon, 19 Sep 2022 17:56:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbiISP4B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 19 Sep 2022 11:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
+        id S229911AbiISP44 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 19 Sep 2022 11:56:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229842AbiISP4A (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 11:56:00 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCF7E1182F
-        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 08:55:59 -0700 (PDT)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4MWTg92T0bzMn1g;
-        Mon, 19 Sep 2022 23:51:17 +0800 (CST)
-Received: from [10.174.178.165] (10.174.178.165) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 19 Sep 2022 23:55:57 +0800
-Subject: Re: [PATCH] iio: adc: ad7124: Silent no spi_device_id warnings
-To:     Jonathan Cameron <jic23@kernel.org>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Wei Yongjun <weiyongjun@huaweicloud.com>,
+        with ESMTP id S229871AbiISP4y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 19 Sep 2022 11:56:54 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 278C710544
+        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 08:56:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DE758B8085E
+        for <linux-iio@vger.kernel.org>; Mon, 19 Sep 2022 15:56:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE94C433C1;
+        Mon, 19 Sep 2022 15:56:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663603011;
+        bh=7SXua5PPtbFYIa4WGA1/9KpwNtmF6YqxdH4oxtz+cMs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=r70zsNCrcMgwzrhbV4Mj8IYr0MLWOonuUSIGoi/dFs/taahXVB46lAsgRHGNxwzHS
+         3LRjRvyunUHJoz97UI+517ft9hPIc3lUUVy+s2kW+j51fZfzpc+QkLoKPg9a/2QqTH
+         mpDczN8o/5j0yqTy25TAAlSAfmHE3XThdqIY6GBu6oKyRRcpj5hgpCg1gmNi9JGbim
+         bYqtFWQGeSGaZ3ncFeIzy4xWXxgVX1UJ8GkOuHNtHDyouKiZHQHvv+vztM4aM3E/8w
+         kvM7qu5BNiIjHFM/eixGw7YIaixLQu0sinbz5KYEDW4rkqFYdiDeqPUY4QafHrWADG
+         jn25U8OaYWk5Q==
+Date:   Mon, 19 Sep 2022 16:56:55 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Wei Yongjun <weiyongjun@huaweicloud.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        <linux-iio@vger.kernel.org>
-References: <20220919145945.823327-1-weiyongjun@huaweicloud.com>
- <d4fa7502-d5a5-9849-8daf-efc25a22ae81@metafoo.de>
- <d7afc35d-e764-609c-003c-5ff664649eb4@huawei.com>
- <20220919165300.71e8012f@jic23-huawei>
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-Message-ID: <c63a3c37-ae92-b41e-80a3-a1472cacfc25@huawei.com>
-Date:   Mon, 19 Sep 2022 23:55:56 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.1
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Wei Yongjun <weiyongjun1@huawei.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: Silent no spi_device_id warnings
+Message-ID: <20220919165655.31b7fcb2@jic23-huawei>
+In-Reply-To: <20220919145955.823346-1-weiyongjun@huaweicloud.com>
+References: <20220919145955.823346-1-weiyongjun@huaweicloud.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20220919165300.71e8012f@jic23-huawei>
-Content-Type: text/plain; charset="gbk"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.165]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 19 Sep 2022 14:59:55 +0000
+Wei Yongjun <weiyongjun@huaweicloud.com> wrote:
+
+> From: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> Add spi_device_id entries to silent following SPI warnings:
+> 
+> SPI driver ad7192 has no spi_device_id for adi,ad7190
+> SPI driver ad7192 has no spi_device_id for adi,ad7193
+> SPI driver ad7192 has no spi_device_id for adi,ad7195
+> 
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+
+Hi Wei Yongjun,
+
+Please also make use of the spi_get_device_id(spi)->driver_data
+path to provide the chip info structure if
+of_device_get_match_data() returns NULL.
+
+Interesting that this driver has not yet been converted to
+generic device properties.  Looks straight forward if anyone
+wants to tidy that up as well. Just convert all the
+of specific calls over to generic forms from linux/property.h
+
+Thanks,
+
+Jonathan
 
 
-On 2022/9/19 23:53, Jonathan Cameron wrote:
-> On Mon, 19 Sep 2022 22:50:35 +0800
-> Wei Yongjun <weiyongjun1@huawei.com> wrote:
+> ---
+>  drivers/iio/adc/ad7192.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
->> On 2022/9/19 22:46, Lars-Peter Clausen wrote:
->>> On 9/19/22 16:59, Wei Yongjun wrote:  
->>>> From: Wei Yongjun <weiyongjun1@huawei.com>
-> Hi Wei Yongjun,
-> 
->>>>
->>>> Add spi_device_id entries to silent following SPI warnings:
-> 
-> silence rather than silent (also in patch titles)
-> 
->>>>
->>>> SPI driver ad7124 has no spi_device_id for adi,ad7124-4
->>>> SPI driver ad7124 has no spi_device_id for adi,ad7124-8  
->>> What generates those warnings?
->>>   
->>
->> Commit 5fa6863ba692 ("spi: Check we have a spi_device_id for each DT
->> compatible") added a test to check that every SPI driver has a
->> spi_device_id for each DT compatiable string defined by the driver
->> and warns if the spi_device_id is missing.
-> 
-> When sending a series of similar fixes to a given subsystem together
-> it's helpful to group them into a series, so that comments that
-> apply series wide can easily be easily found.
-> 
-> A cover letter is also useful to provide a little more information on
-> what is being fixed.
-
-
-Sure, will update in v3.
-
-Thanks.
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index d71977be7d22..029025878bb0 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -1098,12 +1098,22 @@ static const struct of_device_id ad7192_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ad7192_of_match);
+>  
+> +static const struct spi_device_id ad7192_ids[] = {
+> +	{ "ad7190", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7190] },
+> +	{ "ad7192", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7192] },
+> +	{ "ad7193", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7193] },
+> +	{ "ad7195", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7195] },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad7192_ids);
+> +
+>  static struct spi_driver ad7192_driver = {
+>  	.driver = {
+>  		.name	= "ad7192",
+>  		.of_match_table = ad7192_of_match,
+>  	},
+>  	.probe		= ad7192_probe,
+> +	.id_table	= ad7192_ids,
+>  };
+>  module_spi_driver(ad7192_driver);
+>  
 

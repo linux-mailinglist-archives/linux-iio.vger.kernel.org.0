@@ -2,31 +2,31 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 715E35BEF8C
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 00:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3DB5BEFD7
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 00:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbiITWBh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Sep 2022 18:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59628 "EHLO
+        id S230126AbiITWMm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Sep 2022 18:12:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229599AbiITWBg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 18:01:36 -0400
+        with ESMTP id S229785AbiITWMk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 18:12:40 -0400
 Received: from aposti.net (aposti.net [89.234.176.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B78275FF3
-        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 15:01:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A9478218
+        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 15:12:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-        s=mail; t=1663711293; h=from:from:sender:reply-to:subject:subject:date:date:
+        s=mail; t=1663711956; h=from:from:sender:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:cc:mime-version:mime-version:
          content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=fptKGAw9F2Rj/FmQsFzOAHWTZNlnm287yzLWxYekM4k=;
-        b=h3/pKOYq16SO+ltMOEzuVggKAw/YcREsufAhNLsna6GVUMg4mSMY+LOkabyanmRr59NWqe
-        d2vqD0VHSvhSzFHqffpOskh0R2UNGzXKrqR8sUSaaCBPZdmT4clzsy5yYt6N6hbdh1slPN
-        ZXohW5TGgvrIHwT4BmS3tCb6+dx8Veg=
-Date:   Tue, 20 Sep 2022 23:01:24 +0100
+        bh=+XA76AuXwTq3DMDU3xC0EEyRBJ8pTQWNisOVYuuxJ2w=;
+        b=I10zOYUBikWkYyrfsDTLVWfwzEstqJL3d40czZJO3R8GKT0CQmsHDThOVkG9IPHEPHYwUP
+        JYdkkvkSCqJx8pQXTKetIdwm7cowNfL4712guMnbLka+HTXcVZjbwV4skYWWOZUFL0Yf1D
+        sqUp7DuUUMU/2B9B9c6ENzBvKtAVk/s=
+Date:   Tue, 20 Sep 2022 23:12:27 +0100
 From:   Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH 2/3] iio: light: vcnl4000: Add enable attributes for
+Subject: Re: [PATCH 3/3] iio: light: vcnl4000: Add ps_it attributes for
  vcnl4040
 To:     =?iso-8859-1?q?M=E5rten?= Lindahl <marten.lindahl@axis.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
@@ -34,10 +34,10 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Uwe =?iso-8859-1?q?Kleine-K=F6nig?= 
         <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
         kernel@axis.com
-Message-Id: <CU3JIR.R6ZZ1TYIUTVP3@crapouillou.net>
-In-Reply-To: <20220920180958.2308229-3-marten.lindahl@axis.com>
+Message-Id: <RC4JIR.84Y31Q6YBI06@crapouillou.net>
+In-Reply-To: <20220920180958.2308229-4-marten.lindahl@axis.com>
 References: <20220920180958.2308229-1-marten.lindahl@axis.com>
-        <20220920180958.2308229-3-marten.lindahl@axis.com>
+        <20220920180958.2308229-4-marten.lindahl@axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Transfer-Encoding: quoted-printable
@@ -52,190 +52,191 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi M=E5rten,
 
-Le mar., sept. 20 2022 at 20:09:57 +0200, M=E5rten Lindahl=20
+Le mar., sept. 20 2022 at 20:09:58 +0200, M=E5rten Lindahl=20
 <marten.lindahl@axis.com> a =E9crit :
-> Add channel attribute in_illuminance_en and in_proximity_en with
-> read/write access for vcnl4040. If automatic runtime power management=20
-> is
-> turned off (power/control =3D on), both sensors can be kept on or off by
-> userspace.
+> Add read/write attribute for proximity integration time, and a read
+> attribute for available integration times for the vcnl4040 chip.
+>=20
+> Signed-off-by: M=E5rten Lindahl <marten.lindahl@axis.com>
+> ---
+>  drivers/iio/light/vcnl4000.c | 83=20
+> +++++++++++++++++++++++++++++++++++-
+>  1 file changed, 82 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/light/vcnl4000.c=20
+> b/drivers/iio/light/vcnl4000.c
+> index 9838f0868372..7a207e48335d 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -76,6 +76,8 @@
+>=20
+>  #define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light=20
+> sensor */
+>  #define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
+> +#define VCNL4040_PS_CONF2_PS_IT \
+> +	(BIT(3) | BIT(2) | BIT(1)) /* Proximity integration time */
 
-I don't really understand this. If automatic runtime power management=20
-is turned OFF, I would expect both sensors to be kept ON always.
+Use the GENMASK() macro.
 
-It's not userspace's job to do power management of the chip. Why are=20
-these channel attributes needed?
+>=20
+>  /* Bit masks for interrupt registers. */
+>  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt=20
+> source */
+> @@ -103,6 +105,16 @@ static const int=20
+> vcnl4010_prox_sampling_frequency[][2] =3D {
+>  	{125, 0},
+>  	{250, 0},
+>  };
+> +static const int vcnl4040_ps_it_times[][2] =3D {
+> +	{0, 100},
+> +	{0, 150},
+> +	{0, 200},
+> +	{0, 250},
+> +	{0, 300},
+> +	{0, 350},
+> +	{0, 400},
+> +	{0, 800},
+> +};
+>=20
+>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter=20
+> pm_runtime_suspend */
+>=20
+> @@ -486,6 +498,49 @@ static int vcnl4000_set_pm_runtime_state(struct=20
+> vcnl4000_data *data, bool on)
+>  	return ret;
+>  }
+>=20
+> +static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val,=20
+> int *val2)
+> +{
+> +	int ret;
+> +
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D (ret & VCNL4040_PS_CONF2_PS_IT) >> 1;
+
+Use the FIELD_GET() macro.
+
+> +
+> +	if (ret >=3D ARRAY_SIZE(vcnl4040_ps_it_times))
+> +		return -EINVAL;
+> +
+> +	*val =3D vcnl4040_ps_it_times[ret][0];
+> +	*val2 =3D vcnl4040_ps_it_times[ret][1];
+> +
+> +	return 0;
+> +}
+> +
+> +static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int=20
+> val)
+> +{
+> +	unsigned int i;
+> +	int ret, index =3D -1;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(vcnl4040_ps_it_times); i++) {
+> +		if (val =3D=3D vcnl4040_ps_it_times[i][1]) {
+> +			index =3D i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (index < 0)
+> +		return -EINVAL;
+> +
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D (ret & ~VCNL4040_PS_CONF2_PS_IT) | (index << 1);
+
+Use the FIELD_PREP() macro.
+
+> +
+> +	return i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1,=20
+> ret);
+> +}
+> +
+>  static int vcnl4000_read_raw(struct iio_dev *indio_dev,
+>  				struct iio_chan_spec const *chan,
+>  				int *val, int *val2, long mask)
+> @@ -533,6 +588,13 @@ static int vcnl4000_read_raw(struct iio_dev=20
+> *indio_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_CHAN_INFO_INT_TIME:
+> +		if (chan->type !=3D IIO_PROXIMITY)
+> +			return -EINVAL;
+> +		ret =3D vcnl4040_read_ps_it(data, val, val2);
+> +		if (ret < 0)
+> +			return ret;
+> +		return IIO_VAL_INT_PLUS_MICRO;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -554,6 +616,12 @@ static int vcnl4040_write_raw(struct iio_dev=20
+> *indio_dev,
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	case IIO_CHAN_INFO_INT_TIME:
+> +		if (val !=3D 0)
+> +			return -EINVAL;
+> +		if (chan->type !=3D IIO_PROXIMITY)
+> +			return -EINVAL;
+> +		return vcnl4040_write_ps_it(data, val2);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -900,11 +968,23 @@ static const struct iio_chan_spec=20
+> vcnl4040_channels[] =3D {
+>  	}, {
+>  		.type =3D IIO_PROXIMITY,
+>  		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> -			BIT(IIO_CHAN_INFO_ENABLE),
+> +			BIT(IIO_CHAN_INFO_ENABLE) | BIT(IIO_CHAN_INFO_INT_TIME),
+>  		.ext_info =3D vcnl4000_ext_info,
+>  	}
+>  };
+>=20
+> +static IIO_CONST_ATTR(in_proximity_integration_time_available,
+> +	"0.000100 0.000150 0.000200 0.000250 0.000300 0.000350 0.000400=20
+> 0.000800");
+
+Hmm, this is not how you define a "_available" attribute.
+
+You need to add a
+.info_mask_separate_available =3D BIT(IIO_CHAN_INFO_INT_TIME)
+
+to your iio_chan_spec, then implement the .read_avail callback in your=20
+iio_info structure.
 
 Cheers,
 -Paul
 
-> Signed-off-by: M=E5rten Lindahl <marten.lindahl@axis.com>
-> ---
->  drivers/iio/light/vcnl4000.c | 79=20
-> ++++++++++++++++++++++++++++++++----
->  1 file changed, 72 insertions(+), 7 deletions(-)
->=20
-> diff --git a/drivers/iio/light/vcnl4000.c=20
-> b/drivers/iio/light/vcnl4000.c
-> index 0b226c684957..9838f0868372 100644
-> --- a/drivers/iio/light/vcnl4000.c
-> +++ b/drivers/iio/light/vcnl4000.c
-> @@ -125,6 +125,9 @@ struct vcnl4000_data {
->  	enum vcnl4000_device_ids id;
->  	int rev;
->  	int al_scale;
-> +	bool als_enable;
-> +	bool ps_enable;
 > +
->  	const struct vcnl4000_chip_spec *chip_spec;
->  	struct mutex vcnl4000_lock;
->  	struct vcnl4200_channel vcnl4200_al;
-> @@ -202,10 +205,13 @@ static ssize_t vcnl4000_write_als_enable(struct=20
-> vcnl4000_data *data, int val)
->  		if (ret < 0)
->  			return ret;
->=20
-> -		if (val)
-> +		if (val) {
->  			ret &=3D ~VCNL4040_ALS_CONF_ALS_SD;
-> -		else
-> +			data->als_enable =3D true;
-> +		} else {
->  			ret |=3D VCNL4040_ALS_CONF_ALS_SD;
-> +			data->als_enable =3D false;
-> +		}
->=20
->  		return i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF,
->  						 ret);
-> @@ -225,10 +231,13 @@ static ssize_t vcnl4000_write_ps_enable(struct=20
-> vcnl4000_data *data, int val)
->  		if (ret < 0)
->  			return ret;
->=20
-> -		if (val)
-> +		if (val) {
->  			ret &=3D ~VCNL4040_PS_CONF1_PS_SD;
-> -		else
-> +			data->ps_enable =3D true;
-> +		} else {
->  			ret |=3D VCNL4040_PS_CONF1_PS_SD;
-> +			data->ps_enable =3D false;
-> +		}
->=20
->  		return i2c_smbus_write_word_data(data->client,
->  						 VCNL4200_PS_CONF1, ret);
-> @@ -283,6 +292,8 @@ static int vcnl4200_init(struct vcnl4000_data=20
-> *data)
->  	dev_dbg(&data->client->dev, "device id 0x%x", id);
->=20
->  	data->rev =3D (ret >> 8) & 0xf;
-> +	data->als_enable =3D false;
-> +	data->ps_enable =3D false;
->=20
->  	data->vcnl4200_al.reg =3D VCNL4200_AL_DATA;
->  	data->vcnl4200_ps.reg =3D VCNL4200_PS_DATA;
-> @@ -459,8 +470,12 @@ static bool vcnl4010_is_in_periodic_mode(struct=20
-> vcnl4000_data *data)
->  static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data,=20
-> bool on)
->  {
->  	struct device *dev =3D &data->client->dev;
-> +	struct iio_dev *indio_dev =3D i2c_get_clientdata(data->client);
->  	int ret;
->=20
-> +	if (!indio_dev->dev.power.runtime_auto)
-> +		return 0;
+> +static struct attribute *vcnl4040_attributes[] =3D {
+> +	&iio_const_attr_in_proximity_integration_time_available.dev_attr.attr,
+> +	NULL,
+> +};
 > +
->  	if (on) {
->  		ret =3D pm_runtime_resume_and_get(dev);
->  	} else {
-> @@ -507,6 +522,38 @@ static int vcnl4000_read_raw(struct iio_dev=20
-> *indio_dev,
->  		*val =3D 0;
->  		*val2 =3D data->al_scale;
->  		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_ENABLE:
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			*val =3D data->als_enable;
-> +			return IIO_VAL_INT;
-> +		case IIO_PROXIMITY:
-> +			*val =3D data->ps_enable;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int vcnl4040_write_raw(struct iio_dev *indio_dev,
-> +				struct iio_chan_spec const *chan,
-> +				int val, int val2, long mask)
-> +{
-> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_ENABLE:
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			return vcnl4000_write_als_enable(data, val);
-> +		case IIO_PROXIMITY:
-> +			return vcnl4000_write_ps_enable(data, val);
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -845,6 +892,19 @@ static const struct iio_chan_spec=20
-> vcnl4010_channels[] =3D {
->  	IIO_CHAN_SOFT_TIMESTAMP(1),
->  };
->=20
-> +static const struct iio_chan_spec vcnl4040_channels[] =3D {
-> +	{
-> +		.type =3D IIO_LIGHT,
-> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_ENABLE),
-> +	}, {
-> +		.type =3D IIO_PROXIMITY,
-> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_ENABLE),
-> +		.ext_info =3D vcnl4000_ext_info,
-> +	}
+> +static const struct attribute_group vcnl4040_attribute_group =3D {
+> +	.attrs =3D vcnl4040_attributes,
 > +};
 > +
 >  static const struct iio_info vcnl4000_info =3D {
 >  	.read_raw =3D vcnl4000_read_raw,
 >  };
-> @@ -859,6 +919,11 @@ static const struct iio_info vcnl4010_info =3D {
->  	.write_event_config =3D vcnl4010_write_event_config,
+> @@ -922,6 +1002,7 @@ static const struct iio_info vcnl4010_info =3D {
+>  static const struct iio_info vcnl4040_info =3D {
+>  	.read_raw =3D vcnl4000_read_raw,
+>  	.write_raw =3D vcnl4040_write_raw,
+> +	.attrs =3D &vcnl4040_attribute_group,
 >  };
 >=20
-> +static const struct iio_info vcnl4040_info =3D {
-> +	.read_raw =3D vcnl4000_read_raw,
-> +	.write_raw =3D vcnl4040_write_raw,
-> +};
-> +
 >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] =3D {
->  	[VCNL4000] =3D {
->  		.prod =3D "VCNL4000",
-> @@ -888,9 +953,9 @@ static const struct vcnl4000_chip_spec=20
-> vcnl4000_chip_spec_cfg[] =3D {
->  		.measure_light =3D vcnl4200_measure_light,
->  		.measure_proximity =3D vcnl4200_measure_proximity,
->  		.set_power_state =3D vcnl4200_set_power_state,
-> -		.channels =3D vcnl4000_channels,
-> -		.num_channels =3D ARRAY_SIZE(vcnl4000_channels),
-> -		.info =3D &vcnl4000_info,
-> +		.channels =3D vcnl4040_channels,
-> +		.num_channels =3D ARRAY_SIZE(vcnl4040_channels),
-> +		.info =3D &vcnl4040_info,
->  		.irq_support =3D false,
->  	},
->  	[VCNL4200] =3D {
 > --
 > 2.30.2
 >=20

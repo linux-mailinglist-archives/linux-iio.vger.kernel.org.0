@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 534E25BE475
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 13:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F0BC5BE476
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 13:29:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229724AbiITL3W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Sep 2022 07:29:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45102 "EHLO
+        id S230112AbiITL32 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Sep 2022 07:29:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230108AbiITL3W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 07:29:22 -0400
+        with ESMTP id S230108AbiITL31 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 07:29:27 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765876BD7D
-        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 04:29:21 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28K81m5G025096;
-        Tue, 20 Sep 2022 07:28:39 -0400
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07A06BD7D
+        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 04:29:26 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28K89N8X006313;
+        Tue, 20 Sep 2022 07:28:45 -0400
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jpn468r4h-1
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jn835muv6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 20 Sep 2022 07:28:39 -0400
+        Tue, 20 Sep 2022 07:28:45 -0400
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 28KBScUJ062625
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 28KBSi85062651
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 20 Sep 2022 07:28:38 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+        Tue, 20 Sep 2022 07:28:44 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
  ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 20 Sep 2022 07:28:37 -0400
+ 15.2.986.14; Tue, 20 Sep 2022 07:28:43 -0400
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 20 Sep 2022 07:28:36 -0400
+ 15.2.986.14; Tue, 20 Sep 2022 07:28:42 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 20 Sep 2022 07:28:36 -0400
+ Transport; Tue, 20 Sep 2022 07:28:42 -0400
 Received: from nsa.ad.analog.com ([10.44.3.57])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28KBR4UY021723;
-        Tue, 20 Sep 2022 07:28:29 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28KBR4UZ021723;
+        Tue, 20 Sep 2022 07:28:33 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-arm-kernel@lists.infradead.org>,
         <linux-rockchip@lists.infradead.org>,
@@ -71,9 +71,9 @@ CC:     Chunyan Zhang <zhang.lyra@gmail.com>,
         Jyoti Bhayana <jbhayana@google.com>,
         =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Subject: [PATCH 12/15] iio: fyro: itg3200_core: do not use internal iio_dev lock
-Date:   Tue, 20 Sep 2022 13:28:18 +0200
-Message-ID: <20220920112821.975359-13-nuno.sa@analog.com>
+Subject: [PATCH 13/15] iio: health: max30100: do not use internal iio_dev lock
+Date:   Tue, 20 Sep 2022 13:28:19 +0200
+Message-ID: <20220920112821.975359-14-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20220920112821.975359-1-nuno.sa@analog.com>
 References: <20220920112821.975359-1-nuno.sa@analog.com>
@@ -81,16 +81,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: bP0zvKO0a6s5ksKS6arYuRpCcExLgKHA
-X-Proofpoint-GUID: bP0zvKO0a6s5ksKS6arYuRpCcExLgKHA
+X-Proofpoint-ORIG-GUID: bI2aLY9E-BSswkh0PqL80oN4pEXUQtzZ
+X-Proofpoint-GUID: bI2aLY9E-BSswkh0PqL80oN4pEXUQtzZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-20_02,2022-09-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- phishscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2209200068
+ definitions=2022-09-20_03,2022-09-16_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2209130000
+ definitions=main-2209200068
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
@@ -100,79 +100,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The iio_device lock is only meant for internal use. Hence define a
-device local lock to protect against concurrent accesses.
+The pattern used in this device does not quite fit in the
+iio_device_claim_direct_mode() typical usage. In this case,
+iio_buffer_enabled() was being used not to prevent the raw access but to
+allow it. Hence to get rid of the 'mlock' we need to:
+
+1. Use iio_device_claim_direct_mode() to check if direct mode can be
+claimed and if we can return -EINVAL (as the original code);
+2. Make sure that buffering is not disabled while doing a raw read. For
+that, we can make use of the local lock that already exists.
+
+While at it, fixed a minor coding style complain...
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/gyro/itg3200_core.c  | 9 ++++++---
- include/linux/iio/gyro/itg3200.h | 2 ++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/iio/health/max30100.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_core.c
-index 0491c64e1b32..358aa8ac0c6b 100644
---- a/drivers/iio/gyro/itg3200_core.c
-+++ b/drivers/iio/gyro/itg3200_core.c
-@@ -18,6 +18,7 @@
- #include <linux/slab.h>
- #include <linux/stat.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/delay.h>
- 
- #include <linux/iio/iio.h>
-@@ -131,6 +132,7 @@ static int itg3200_write_raw(struct iio_dev *indio_dev,
- 			     int val2,
- 			     long mask)
+diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.c
+index ad5717965223..aa494cad5df0 100644
+--- a/drivers/iio/health/max30100.c
++++ b/drivers/iio/health/max30100.c
+@@ -185,8 +185,19 @@ static int max30100_buffer_postenable(struct iio_dev *indio_dev)
+ static int max30100_buffer_predisable(struct iio_dev *indio_dev)
  {
-+	struct itg3200 *st = iio_priv(indio_dev);
- 	int ret;
- 	u8 t;
+ 	struct max30100_data *data = iio_priv(indio_dev);
++	int ret;
++
++	/*
++	 * As stated in the comment in the read_raw() function, temperature
++	 * can only be acquired if the engine is running. As such the mutex
++	 * is used to make sure we do not power down while doing a temperature
++	 * reading.
++	 */
++	mutex_lock(&data->lock);
++	ret = max30100_set_powermode(data, false);
++	mutex_unlock(&data->lock);
  
-@@ -139,11 +141,11 @@ static int itg3200_write_raw(struct iio_dev *indio_dev,
- 		if (val == 0 || val2 != 0)
- 			return -EINVAL;
+-	return max30100_set_powermode(data, false);
++	return ret;
+ }
  
+ static const struct iio_buffer_setup_ops max30100_buffer_setup_ops = {
+@@ -387,18 +398,17 @@ static int max30100_read_raw(struct iio_dev *indio_dev,
+ 		 * Temperature reading can only be acquired while engine
+ 		 * is running
+ 		 */
 -		mutex_lock(&indio_dev->mlock);
-+		mutex_lock(&st->lock);
- 
- 		ret = itg3200_read_reg_8(indio_dev, ITG3200_REG_DLPF, &t);
- 		if (ret) {
--			mutex_unlock(&indio_dev->mlock);
-+			mutex_unlock(&st->lock);
- 			return ret;
+-
+-		if (!iio_buffer_enabled(indio_dev))
++		if (!iio_device_claim_direct_mode(indio_dev)) {
+ 			ret = -EAGAIN;
+-		else {
++			iio_device_release_direct_mode(indio_dev);
++		} else {
++			mutex_lock(&data->lock);
+ 			ret = max30100_get_temp(data, val);
+ 			if (!ret)
+ 				ret = IIO_VAL_INT;
+-
++			mutex_unlock(&data->lock);
  		}
- 		t = ((t & ITG3200_DLPF_CFG_MASK) ? 1000u : 8000u) / val - 1;
-@@ -152,7 +154,7 @@ static int itg3200_write_raw(struct iio_dev *indio_dev,
- 					  ITG3200_REG_SAMPLE_RATE_DIV,
- 					  t);
  
 -		mutex_unlock(&indio_dev->mlock);
-+		mutex_unlock(&st->lock);
- 		return ret;
- 
- 	default:
-@@ -307,6 +309,7 @@ static int itg3200_probe(struct i2c_client *client,
- 		return -ENOMEM;
- 
- 	st = iio_priv(indio_dev);
-+	mutex_init(&st->lock);
- 
- 	ret = iio_read_mount_matrix(&client->dev, &st->orientation);
- 	if (ret)
-diff --git a/include/linux/iio/gyro/itg3200.h b/include/linux/iio/gyro/itg3200.h
-index a602fe7b84fa..74b6d1cadc86 100644
---- a/include/linux/iio/gyro/itg3200.h
-+++ b/include/linux/iio/gyro/itg3200.h
-@@ -102,6 +102,8 @@ struct itg3200 {
- 	struct i2c_client	*i2c;
- 	struct iio_trigger	*trig;
- 	struct iio_mount_matrix orientation;
-+	/* lock to protect against multiple access to the device */
-+	struct mutex		lock;
- };
- 
- enum ITG3200_SCAN_INDEX {
+ 		break;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 1;  /* 0.0625 */
 -- 
 2.37.3
 

@@ -2,99 +2,68 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC5E95BE9CB
-	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 17:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98CF35BEA27
+	for <lists+linux-iio@lfdr.de>; Tue, 20 Sep 2022 17:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbiITPNK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 20 Sep 2022 11:13:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54254 "EHLO
+        id S231482AbiITP1H (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 20 Sep 2022 11:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbiITPNI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 11:13:08 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867255A3EE
-        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 08:13:07 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id y2so1798975qkl.11
-        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 08:13:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=H/fELBq8CrA1DvGdURv9OEhTBXymuyG0Ndt8d3ITimI=;
-        b=odqvhHE4k7/usvdUB+d9hXNls03VbsjsLLXsqVMWrIxb23eU4DkX5vrM83VTLppWKR
-         ymCHStOYHe2be/kpoRTfwTZRUih7KT3hKhI+EwPdNWOworFuN5vnqpv5ga5Q2CmWxQI4
-         vBZbTCdhXulCvdJxEBXNPZsjosvrBDFPMj8wZ+qAhGlKaVpt5KG0lES84qXE7u/zCbrD
-         gxEWm2RSk2S9pVLQtOYUlYm/2H7Oe6Qw5ll0092KQVutYVagKSLJ+FsgJOq9N9cKYiY4
-         7feqMG6EocZdNCOboZ/98Q0ELa4zmBDN6KPGZHkN6mjeGrt2rbZIjbOCIO66f138shzq
-         hK0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=H/fELBq8CrA1DvGdURv9OEhTBXymuyG0Ndt8d3ITimI=;
-        b=2DKIiiH6ZxnRaQvLlkQlHi3hUL7YjQUAWCNTvWu7bbLua63OLjqZa46qeDwf+wsN2e
-         k31PNTUc617Omm2EjfyWwlxygeRVp415Y3Oaw0obTY+e5py7Cg4xwe8W9GaQIyBVu/AU
-         bierguyZr4F6wn146zoulRnh3hF8pX5mjugkkWBGVclNAJRecG/zE26coJgd+tmu1oFf
-         NV/Ms2B5i8Esb8PSFWz47XmAFbPpSmKd4qN2YyLmMn4V8MJQcIxIDsLYQ1hbfNnerVJG
-         YGM8Ii3i+pUbjYIXwd3xbOV7itVboGrszO0iVR8RrgNUMtHRAJY9FyfdBETTn7379X8/
-         2rIw==
-X-Gm-Message-State: ACrzQf1RtDIgKutqMXoLr6jJQp3ZMxk+hx8CutHk9j1rwT2oY4IaGLzO
-        7gPmRlnpkUgoiixRexOwPkeC21qKf7/ON1yjpY8=
-X-Google-Smtp-Source: AMsMyM7fL5q6SxxEBDkVEF8PUG8Ss/gYOHVmtrul7fepLnHVvvy+tkwmPheD5VX2p+fX+A0Nn5TkJJig9fnXZsuGYMI=
-X-Received: by 2002:a05:620a:410e:b0:6bc:5cdc:88ec with SMTP id
- j14-20020a05620a410e00b006bc5cdc88ecmr17318786qko.734.1663686786455; Tue, 20
- Sep 2022 08:13:06 -0700 (PDT)
+        with ESMTP id S231446AbiITP1E (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 20 Sep 2022 11:27:04 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99ED1659E0
+        for <linux-iio@vger.kernel.org>; Tue, 20 Sep 2022 08:27:03 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 28KETVTj025060;
+        Tue, 20 Sep 2022 11:27:01 -0400
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jpn46a6dd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Sep 2022 11:27:01 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 28KFQxsg030628
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 20 Sep 2022 11:26:59 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 20 Sep 2022 11:26:59 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 20 Sep 2022 11:26:59 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 20 Sep 2022 11:26:58 -0400
+Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.36.24])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 28KFQl8E007289;
+        Tue, 20 Sep 2022 11:26:50 -0400
+From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+To:     <jic23@kernel.org>
+CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
+        <Nurettin.Bolucu@analog.com>
+Subject: [PATCH v5 0/3] iio: adc: add max11410 adc driver
+Date:   Tue, 20 Sep 2022 18:26:25 +0300
+Message-ID: <20220920152628.285-1-Ibrahim.Tilki@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220920112821.975359-1-nuno.sa@analog.com> <20220920112821.975359-4-nuno.sa@analog.com>
- <CAHp75VeA48FbKy2uUjW4T19=Vn-UEznT7prkXZq4sdZ4Q9o-YA@mail.gmail.com>
- <SJ0PR03MB6778FFE254E9DDC103258FE8994C9@SJ0PR03MB6778.namprd03.prod.outlook.com>
- <CAHp75VdVbkXCC1PpT4h-+4HHpZX-zK34xH9dVG8vGcpQhXaQHQ@mail.gmail.com>
- <CAHp75VfdUOTd9tRXdTVq_prNf_T2=iQ4tEjusHC=gXDZvb3Qeg@mail.gmail.com> <SJ0PR03MB6778EEF81693C026CE131B49994C9@SJ0PR03MB6778.namprd03.prod.outlook.com>
-In-Reply-To: <SJ0PR03MB6778EEF81693C026CE131B49994C9@SJ0PR03MB6778.namprd03.prod.outlook.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 20 Sep 2022 18:12:30 +0300
-Message-ID: <CAHp75VdT0a2DevybjT4HN8xGFrKzrR0sPXA6P89xnBg1xcqbQA@mail.gmail.com>
-Subject: Re: [PATCH 03/15] iio: adc: axp288_adc: do not use internal iio_dev lock
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-imx@nxp.com" <linux-imx@nxp.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Cixi Geng <cixi.geng1@unisoc.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Florian Boor <florian.boor@kernelconcepts.de>,
-        "Regus, Ciprian" <Ciprian.Regus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 8P7xeT_1Bfjs_C4pGSZM85yk8RIS8dPP
+X-Proofpoint-GUID: 8P7xeT_1Bfjs_C4pGSZM85yk8RIS8dPP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-09-20_06,2022-09-20_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ phishscore=0 clxscore=1015 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2209200091
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -102,66 +71,64 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Sep 20, 2022 at 4:46 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
-> > -----Original Message-----
-> > From: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Sent: Tuesday, September 20, 2022 3:39 PM
-> > On Tue, Sep 20, 2022 at 4:37 PM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> > > On Tue, Sep 20, 2022 at 4:18 PM Sa, Nuno <Nuno.Sa@analog.com> wrote:
-> > > > > On Tue, Sep 20, 2022 at 2:28 PM Nuno S=C3=A1 <nuno.sa@analog.com>
-> > wrote:
-> >
-> > ...
-> >
-> > > > > >         info =3D iio_priv(indio_dev);
-> > > > > > +       mutex_init(&info->lock);
-> > > > > >         info->irq =3D platform_get_irq(pdev, 0);
-> > > > > >         if (info->irq < 0)
-> > > > > >                 return info->irq;
-> > > > >
-> > > > > Consider initializing it as late as possible, like after IRQ retr=
-ieval
-> > > > > in this context (maybe even deeper, but no context available). Di=
-tto
-> > > > > for the rest of the series.
-> > > >
-> > > > Any special reason for it (maybe related to lockdep :wondering: ) ?=
- Just
-> > > > curious as I never noticed such a pattern when initializing mutexes=
-.
-> > >
-> > > Yes. Micro-optimization based on the rule "don't create a resource in
-> > > case of known error".
-> > >
-> > > OTOH, you have to be sure that the mutex (and generally speaking a
-> > > locking) should be initialized early enough.
->
-> Typically not really needed during probe...
 
-Actually as long as you expose the ABI to the user anything can
-happen, means that your code should be ready to receive the requests
-in any possible callbacks / file ops. Same applies to the IRQ handler.
-So it's very important to initialize locking just in time. Hence I can
-say that "typically it needs to be carefully placed".
+Note: No sign-off tag for David as he was unreachable when the initial patch was sent.
 
-> > Note that "micro" in the above can be multiplied by 'k', where 'k' is
-> > the amount of deferred probes (probably not the case here, but again,
-> > "generally speaking").
->
-> Well, I don't think 'mutex_init()' does that much that really matters in
-> these patches but ok, that rule is indeed a good practice that sometimes
-> makes a difference. And since I will definitely need a v2, I can make tha=
-t
-> change. Where applicable, the best place is probably before registering t=
-he
-> IIO device...
+Changelog:
 
-Some drivers are pedantic and want to have mutex_destroy() to be
-called, it also reduces the surface of returning with an undestroyed
-object (let's not discuss the usefulness of such destruction, but in
-principle).
+since v5:
+  - allow user to specify both interrupt pins
+  - keep irq info in max11410_state struct and use irq by name
+  - get irqs by fwnode_get_irq_byname
+  - don't allocate trigger when no irq supplied
+  - fix deadlock condition in write_raw
+  - minor style fixes
+  - fix devicetree binding errors reported by dt_binding_check
+  - convert module license to GPL as suggested by checkpatch
 
---=20
-With Best Regards,
-Andy Shevchenko
+since v4:
+  - add in_voltage_filter2_notch_{center,en} attrs for sinc4 filter
+  - add ABI documentation for filter sysfs
+  - check interrupt-names property for configuring gpio of max11410
+  - remove hardwaregain property
+  - add scale_available property for channes using PGA
+  - separate vref regulator error -ENODEV from other errors
+  - don't register trigger if no irq specified
+  - style fixes
+
+since v3:
+  - prefix defines with MAX11410_
+  - group vref regulators
+  - use builtin iio_validate_scan_mask_onehot
+  - validate iio trigger
+  - move scan data into state struct
+  - require vrefn regulator in DT if used by any channel
+  - don't require irq for triggered buffer
+  - remove filter sysfs attr and ABI documentation
+  - add in_voltage_filter[0-1]_notch_{center,en} attrs
+
+since v2:
+  - remove bit position shifting, use field_prep instead
+  - reduce the amount of reg writes in max11410_configure_channel
+  - add error checking in max11410_parse_channels
+  - remove some unneeded blank lines and minor style fixes
+  - remove scan data assignment in max11410_trigger_handler
+
+Ibrahim Tilki (3):
+  iio: adc: add max11410 adc driver
+  dt-bindings: iio: adc: add adi,max11410.yaml
+  Documentation: ABI: testing: add max11410 doc
+
+ .../ABI/testing/sysfs-bus-iio-adc-max11410    |   13 +
+ .../bindings/iio/adc/adi,max11410.yaml        |  177 +++
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/max11410.c                    | 1058 +++++++++++++++++
+ 5 files changed, 1262 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+ create mode 100644 drivers/iio/adc/max11410.c
+
+-- 
+2.25.1
+

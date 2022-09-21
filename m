@@ -1,227 +1,199 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61FF25D0224
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 20:00:28 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 4D3705DC35F
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 20:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229900AbiIUR5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 13:57:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
+        id S230484AbiIUSL1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 14:11:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbiIUR5b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 13:57:31 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72F06CD0F
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 10:57:29 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id d8so5665331iof.11
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 10:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=lWz9vmTktmlnF8P5ct/IitkPDKwxx7s+v31tQx0NTfE=;
-        b=hPwgMa4Vzn+dr/R9yowxrWVRYm8GRaOYX2QoyN8KqjKAruRAR8nNeUXwTE8lnoP0Ri
-         UDKRiMuYU5L6x/cudqgLDdfD0EH/YL4CBP0B+PQHMz1Rbhy633LVkXBMEBO+nks+xWeP
-         WzDL/YlaWVONcpKPFD5/SY7FFqH99eKHZw8X8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=lWz9vmTktmlnF8P5ct/IitkPDKwxx7s+v31tQx0NTfE=;
-        b=ecTviMfXwgv/qB5K2XoHJANpgQi5kPSNghnsMqez8Ldi7ulxGRopys0N3aXT5LjMz4
-         1rMcfhFuHjkg2Xx6nUVAak4RXadHR/zMRHCd1cZCX0Bk2ulo6qYJH/icx2lELymDyg1U
-         apR+x5VCzZafl7JpkKwAfC8oW8xZHU8BaVVrEinHbehFhOYtUYX9MUL9MXqBQafdYvye
-         PKYukhZSrhXOjQLIH1sCWuNzRjuDnh4NJdPifkm87238KEHeSgfjTlklFM0FbWDmAsDM
-         C9fcXOjwNuSVWMcj5YrPN7pKIW31oL3N+sosmDiy5nxddw2LSpLuPwXac+EwXX+nSx0I
-         affw==
-X-Gm-Message-State: ACrzQf1IKRsyXX1Fxpo/ugw0R5OQiQxkIBMzAR6APWjtIF1NyxaFxxMH
-        mydo0B9XElS5+95u6NXeyXz1olSI6FRsfnJDEK1Qkw==
-X-Google-Smtp-Source: AMsMyM57bNVpIjGiIB5AzUj9jqWSl+gKbWzjqH3/K8KuyS1WQHhDHUSCV967QoGMG6sBH4ZRz7Psmf7S6Nv8biJzb6I=
-X-Received: by 2002:a05:6638:3818:b0:35a:8cf5:e007 with SMTP id
- i24-20020a056638381800b0035a8cf5e007mr12843820jav.227.1663783049239; Wed, 21
- Sep 2022 10:57:29 -0700 (PDT)
+        with ESMTP id S230483AbiIUSLT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 14:11:19 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CFB80516;
+        Wed, 21 Sep 2022 11:11:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1663783871; x=1695319871;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WckjFb8TNTyStYJTGw886rcvghznTu4Iq8hyPcV6+aA=;
+  b=BtU2tGR5gRM/dX86a2L4FZ8t4STOryFNG50H+tqO5UaeYZQXq0hGguyK
+   D9fpGkbyxk2T+eaeJHurdaYn2puwCGx3OVjZQpQlwsHffu19LjcPW47A9
+   e6Hh1fvBZ1XCmZEiz/aKlGDZu4S4yVF+of2n4kvSO+jNi+DCIWFPW/e8p
+   rmItMBa6S54yKajsVoOln7/wrMRf5SPb55uiga/8iU63LMTaAR6RwEPnK
+   SlbFMKUP8IOdzjDUyY5OZtffw4FEfyuuhR7Bt9KA17AxbaKtc7ZEg2ksB
+   kKHCb8yh4vCG1SjFRzG2wb1ycH1fyHbv2qIaG5cqAg0zHDE3OAWUC1wt/
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10477"; a="300925913"
+X-IronPort-AV: E=Sophos;i="5.93,333,1654585200"; 
+   d="scan'208";a="300925913"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2022 11:10:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.93,333,1654585200"; 
+   d="scan'208";a="652641729"
+Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 21 Sep 2022 11:10:32 -0700
+Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ob4B5-0003pz-2H;
+        Wed, 21 Sep 2022 18:10:31 +0000
+Date:   Thu, 22 Sep 2022 02:10:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Julien Panis <jpanis@baylibre.com>, william.gray@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
+Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        mranostay@ti.com
+Subject: Re: [PATCH v7 3/4] counter: ti-ecap-capture: capture driver support
+ for ECAP
+Message-ID: <202209220145.SYlF1Xt8-lkp@intel.com>
+References: <20220921100627.124085-4-jpanis@baylibre.com>
 MIME-Version: 1.0
-References: <20220921063026.89619-1-matt.ranostay@konsulko.com>
- <20220921063026.89619-5-matt.ranostay@konsulko.com> <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
-In-Reply-To: <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Wed, 21 Sep 2022 10:57:18 -0700
-Message-ID: <CAJCx=gn0bZp3fToF+LZE+evR2m4nWMueusjysxcrvimH0wRhaA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/5] HID: mcp2221: switch i2c registration to devm functions
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc:     gupt21@gmail.com, jic23@kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        Jiri Kosina <jikos@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220921100627.124085-4-jpanis@baylibre.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 21, 2022 at 1:05 AM Benjamin Tissoires
-<benjamin.tissoires@redhat.com> wrote:
->
-> [foreword: please keep Jiri and myself (the HID maintainers) CC-ed to
-> the series, as you will need ack from us and we don't necessarily monitor
-> every single message on linux-input]
->
-> On Sep 20 2022, Matt Ranostay wrote:
-> > Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
-> > for matching rest of driver initialization, and more concise code.
-> >
-> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> > ---
-> >  drivers/hid/hid-mcp2221.c | 45 +++++++++++++++++----------------------
-> >  1 file changed, 19 insertions(+), 26 deletions(-)
-> >
-> > diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-> > index de52e9f7bb8c..7ba63bcd66de 100644
-> > --- a/drivers/hid/hid-mcp2221.c
-> > +++ b/drivers/hid/hid-mcp2221.c
-> > @@ -824,6 +824,14 @@ static int mcp2221_raw_event(struct hid_device *hdev,
-> >       return 1;
-> >  }
-> >
-> > +static void mcp2221_hid_remove(void *ptr)
-> > +{
-> > +     struct hid_device *hdev = ptr;
-> > +
-> > +     hid_hw_close(hdev);
-> > +     hid_hw_stop(hdev);
->
-> By default, if you remove the .remove() callback, hid_hw_stop() will get
-> automatically called by hid-core.c. So we are now calling it twice,
-> which, in a way is not a big deal but it might be an issue in the long
-> run.
->
-> Generally speaking, in the HID subsystem, that situation doesn't happen
-> a lot because hid_hw_start() is usually the last command of probe, and
-> we don't need to open the device in the driver itself.
->
-> Here, I guess as soon as you add the i2c adapter, you might want to have
-> the communication channels ready, and thus you need to have it open
-> *before* i2c_add_adapter.
->
-> I would suggest the following if you want to keep the devm release of
-> stop and close: please put a big fat warning before mcp2221_hid_remove()
-> explaining that this is called in devm management, *and* add a function
-> that would just return 0 as the .remove() callback with another big fat
-> warning explaining that we don't want hid-core.c to call hid_hw_stop()
-> because we are doing it ourself through devres.
->
+Hi Julien,
 
-Yeah maybe best to keep the non-devres if it isn't going to affect how the last
-change in this series is trying to implement with iio.
+Thank you for the patch! Perhaps something to improve:
 
-I'll wait for Jonathan to chime in on this thread.
+[auto build test WARNING on robh/for-next]
+[also build test WARNING on linus/master v6.0-rc6 next-20220921]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Last, in the HID subsystem, we often interleave non devres with devres
-> for resource allocation, given that .remove() will be called before any
-> devres release. But that is assuming this ordering is OK, which doesn't
-> seem to be the case here. We first need to unregister the i2c adapter
-> and then close/stop the HID device.
+url:    https://github.com/intel-lab-lkp/linux/commits/Julien-Panis/ECAP-support-on-TI-AM62x-SoC/20220921-180742
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20220922/202209220145.SYlF1Xt8-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/f8a0bbe39ba2d6018559e92fb0c66b789387b293
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Julien-Panis/ECAP-support-on-TI-AM62x-SoC/20220921-180742
+        git checkout f8a0bbe39ba2d6018559e92fb0c66b789387b293
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/counter/
 
-Noted.
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
 
--  Matt
+All warnings (new ones prefixed by >>):
 
->
-> > +}
-> > +
-> >  static int mcp2221_probe(struct hid_device *hdev,
-> >                                       const struct hid_device_id *id)
-> >  {
-> > @@ -849,7 +857,8 @@ static int mcp2221_probe(struct hid_device *hdev,
-> >       ret = hid_hw_open(hdev);
-> >       if (ret) {
-> >               hid_err(hdev, "can't open device\n");
-> > -             goto err_hstop;
-> > +             hid_hw_stop(hdev);
-> > +             return ret;
-> >       }
-> >
-> >       mutex_init(&mcp->lock);
-> > @@ -857,6 +866,10 @@ static int mcp2221_probe(struct hid_device *hdev,
-> >       hid_set_drvdata(hdev, mcp);
-> >       mcp->hdev = hdev;
-> >
-> > +     ret = devm_add_action_or_reset(&hdev->dev, mcp2221_hid_remove, hdev);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> >       /* Set I2C bus clock diviser */
-> >       if (i2c_clk_freq > 400)
-> >               i2c_clk_freq = 400;
-> > @@ -873,19 +886,17 @@ static int mcp2221_probe(struct hid_device *hdev,
-> >                       "MCP2221 usb-i2c bridge on hidraw%d",
-> >                       ((struct hidraw *)hdev->hidraw)->minor);
-> >
-> > -     ret = i2c_add_adapter(&mcp->adapter);
-> > +     ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
-> >       if (ret) {
-> >               hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
-> > -             goto err_i2c;
-> > +             return ret;
-> >       }
-> >       i2c_set_adapdata(&mcp->adapter, mcp);
-> >
-> >       /* Setup GPIO chip */
-> >       mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
-> > -     if (!mcp->gc) {
-> > -             ret = -ENOMEM;
-> > -             goto err_gc;
-> > -     }
-> > +     if (!mcp->gc)
-> > +             return -ENOMEM;
-> >
-> >       mcp->gc->label = "mcp2221_gpio";
-> >       mcp->gc->direction_input = mcp_gpio_direction_input;
-> > @@ -900,26 +911,9 @@ static int mcp2221_probe(struct hid_device *hdev,
-> >
-> >       ret = devm_gpiochip_add_data(&hdev->dev, mcp->gc, mcp);
-> >       if (ret)
-> > -             goto err_gc;
-> > +             return ret;
-> >
-> >       return 0;
-> > -
-> > -err_gc:
-> > -     i2c_del_adapter(&mcp->adapter);
-> > -err_i2c:
-> > -     hid_hw_close(mcp->hdev);
-> > -err_hstop:
-> > -     hid_hw_stop(mcp->hdev);
-> > -     return ret;
-> > -}
-> > -
-> > -static void mcp2221_remove(struct hid_device *hdev)
-> > -{
-> > -     struct mcp2221 *mcp = hid_get_drvdata(hdev);
-> > -
-> > -     i2c_del_adapter(&mcp->adapter);
-> > -     hid_hw_close(mcp->hdev);
-> > -     hid_hw_stop(mcp->hdev);
-> >  }
-> >
-> >  static const struct hid_device_id mcp2221_devices[] = {
-> > @@ -932,7 +926,6 @@ static struct hid_driver mcp2221_driver = {
-> >       .name           = "mcp2221",
-> >       .id_table       = mcp2221_devices,
-> >       .probe          = mcp2221_probe,
-> > -     .remove         = mcp2221_remove,
-> >       .raw_event      = mcp2221_raw_event,
-> >  };
-> >
-> > --
-> > 2.37.2
-> >
->
-> Cheers,
-> Benjamin
->
+   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_watch_validate':
+   drivers/counter/ti-ecap-capture.c:234:66: error: 'COUNTER_EVENT_CAPTURE' undeclared (first use in this function); did you mean 'COUNTER_EVENT_INDEX'?
+     234 |         if ((watch->channel <= ECAP_CEVT_LAST && watch->event == COUNTER_EVENT_CAPTURE) ||
+         |                                                                  ^~~~~~~~~~~~~~~~~~~~~
+         |                                                                  COUNTER_EVENT_INDEX
+   drivers/counter/ti-ecap-capture.c:234:66: note: each undeclared identifier is reported only once for each function it appears in
+   drivers/counter/ti-ecap-capture.c: At top level:
+>> drivers/counter/ti-ecap-capture.c:253:47: warning: 'enum counter_signal_polarity' declared inside parameter list will not be visible outside of this definition or declaration
+     253 |                              size_t idx, enum counter_signal_polarity *pol)
+         |                                               ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_pol_read':
+   drivers/counter/ti-ecap-capture.c:259:16: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared (first use in this function)
+     259 |                COUNTER_SIGNAL_POLARITY_NEGATIVE :
+         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:260:16: error: 'COUNTER_SIGNAL_POLARITY_POSITIVE' undeclared (first use in this function)
+     260 |                COUNTER_SIGNAL_POLARITY_POSITIVE;
+         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:258:14: error: invalid use of undefined type 'enum counter_signal_polarity'
+     258 |         *pol = regmap_test_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_CAPPOL_BIT(idx)) ?
+         |              ^
+   drivers/counter/ti-ecap-capture.c: At top level:
+   drivers/counter/ti-ecap-capture.c:268:48: warning: 'enum counter_signal_polarity' declared inside parameter list will not be visible outside of this definition or declaration
+     268 |                               size_t idx, enum counter_signal_polarity pol)
+         |                                                ^~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:268:72: error: parameter 4 ('pol') has incomplete type
+     268 |                               size_t idx, enum counter_signal_polarity pol)
+         |                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+   drivers/counter/ti-ecap-capture.c:266:12: error: function declaration isn't a prototype [-Werror=strict-prototypes]
+     266 | static int ecap_cnt_pol_write(struct counter_device *counter,
+         |            ^~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_pol_write':
+   drivers/counter/ti-ecap-capture.c:276:20: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared (first use in this function)
+     276 |         if (pol == COUNTER_SIGNAL_POLARITY_NEGATIVE)
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c: At top level:
+   drivers/counter/ti-ecap-capture.c:375:43: error: array type has incomplete element type 'enum counter_signal_polarity'
+     375 | static const enum counter_signal_polarity ecap_cnt_pol_avail[] = {
+         |                                           ^~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:376:9: error: 'COUNTER_SIGNAL_POLARITY_POSITIVE' undeclared here (not in a function)
+     376 |         COUNTER_SIGNAL_POLARITY_POSITIVE,
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:377:9: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared here (not in a function)
+     377 |         COUNTER_SIGNAL_POLARITY_NEGATIVE,
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:380:77: error: expected ')' before '(' token
+     380 | static DEFINE_COUNTER_ARRAY_POLARITY(ecap_cnt_pol_array, ecap_cnt_pol_avail, ECAP_NB_CEVT);
+         |                                                                             ^
+         |                                                                             )
+   drivers/counter/ti-ecap-capture.c:383:9: error: implicit declaration of function 'COUNTER_COMP_ARRAY_POLARITY' [-Werror=implicit-function-declaration]
+     383 |         COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/counter/ti-ecap-capture.c:383:76: error: 'ecap_cnt_pol_array' undeclared here (not in a function); did you mean 'ecap_cnt_pol_read'?
+     383 |         COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
+         |                                                                            ^~~~~~~~~~~~~~~~~~
+         |                                                                            ecap_cnt_pol_read
+   drivers/counter/ti-ecap-capture.c:414:52: error: expected ')' before '(' token
+     414 | static DEFINE_COUNTER_ARRAY_U64(ecap_cnt_cap_array, ECAP_NB_CEVT);
+         |                                                    ^
+         |                                                    )
+   drivers/counter/ti-ecap-capture.c:417:9: error: implicit declaration of function 'COUNTER_COMP_COUNT_ARRAY_U64'; did you mean 'COUNTER_COMP_COUNT_U64'? [-Werror=implicit-function-declaration]
+     417 |         COUNTER_COMP_COUNT_ARRAY_U64("capture", ecap_cnt_cap_read, NULL, ecap_cnt_cap_array),
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |         COUNTER_COMP_COUNT_U64
+   drivers/counter/ti-ecap-capture.c:417:74: error: 'ecap_cnt_cap_array' undeclared here (not in a function); did you mean 'ecap_cnt_cap_read'?
+     417 |         COUNTER_COMP_COUNT_ARRAY_U64("capture", ecap_cnt_cap_read, NULL, ecap_cnt_cap_array),
+         |                                                                          ^~~~~~~~~~~~~~~~~~
+         |                                                                          ecap_cnt_cap_read
+   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_isr':
+   drivers/counter/ti-ecap-capture.c:449:57: error: 'COUNTER_EVENT_CAPTURE' undeclared (first use in this function); did you mean 'COUNTER_EVENT_INDEX'?
+     449 |                         counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, i);
+         |                                                         ^~~~~~~~~~~~~~~~~~~~~
+         |                                                         COUNTER_EVENT_INDEX
+   drivers/counter/ti-ecap-capture.c: At top level:
+   drivers/counter/ti-ecap-capture.c:375:43: warning: 'ecap_cnt_pol_avail' defined but not used [-Wunused-variable]
+     375 | static const enum counter_signal_polarity ecap_cnt_pol_avail[] = {
+         |                                           ^~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +253 drivers/counter/ti-ecap-capture.c
+
+   250	
+   251	static int ecap_cnt_pol_read(struct counter_device *counter,
+   252				     struct counter_signal *signal,
+ > 253				     size_t idx, enum counter_signal_polarity *pol)
+   254	{
+   255		struct ecap_cnt_dev *ecap_dev = counter_priv(counter);
+   256	
+   257		pm_runtime_get_sync(counter->parent);
+   258		*pol = regmap_test_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_CAPPOL_BIT(idx)) ?
+   259		       COUNTER_SIGNAL_POLARITY_NEGATIVE :
+   260		       COUNTER_SIGNAL_POLARITY_POSITIVE;
+   261		pm_runtime_put_sync(counter->parent);
+   262	
+   263		return 0;
+   264	}
+   265	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

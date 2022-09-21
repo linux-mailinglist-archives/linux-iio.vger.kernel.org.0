@@ -2,43 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C1F45BFEEC
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 15:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BADE5BFF8D
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 16:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbiIUN0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 09:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48870 "EHLO
+        id S229610AbiIUOJN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 10:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbiIUN0W (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 09:26:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA90915C9
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 06:26:21 -0700 (PDT)
+        with ESMTP id S229695AbiIUOJM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 10:09:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF8BA95AFE
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 07:09:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9054D62B84
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 13:26:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EA5C433D6;
-        Wed, 21 Sep 2022 13:26:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A625AB82F32
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 14:09:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85E6C433C1;
+        Wed, 21 Sep 2022 14:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1663766780;
-        bh=4E09QZSMx/7gmRFKwUnjkowcOZndZZ8a0tQ0CJtpFNg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hixZS/K0L+PoZFVMLVx66p8BLc9pssXJR5N8aRmXQNQxXj4/EEok/dqe0bSsPHyJu
-         0422XqTrDSthi0z9+BgFpWsGgv+gr2JgaHTQ+9V7GGWwdagKAphfLm7hVr6zaZ48pw
-         Yv03pwldqFGjMgnxqh6hBGq9Z06GyyRYQU6mbL08=
-Date:   Wed, 21 Sep 2022 15:26:16 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     William Breathitt Gray <wbg@kernel.org>
-Cc:     linux-iio@vger.kernel.org
-Subject: Re: [PULL] counter: First set of Counter fixes for 6.0-rc5
-Message-ID: <YysQ+JUP0u3kge53@kroah.com>
-References: <YyNWADWgfl1sL10S@ishi>
+        s=korg; t=1663769349;
+        bh=9QQ/7KzsmKMhd/P1+l2zohpVkqsHM4fUnso1sNEwspw=;
+        h=Subject:To:From:Date:From;
+        b=jxJb8mj+FIu99o19Hv94+F38UDPlK6pIK9l+9ls0dypj1iymd4tP5dyXp9Mc4Z4iP
+         9XAre8Jeo1BWbQhz6627CnM8mI82zoJvwkHsIvhRBukNWzDeFblpxdr/ldh5MMlNeg
+         IfjSdlttT6GpL4h8EN5goH2zQO1Y1/wD2QUGHNsQ=
+Subject: patch "MAINTAINERS: Update Microchip MCP3911 to Maintained" added to char-misc-testing
+To:     marcus.folkesson@gmail.com, Jonathan.Cameron@huawei.com,
+        jic23@kernel.org, kent@minoris.se, linux-iio@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 21 Sep 2022 16:08:52 +0200
+Message-ID: <1663769332481@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YyNWADWgfl1sL10S@ishi>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -48,47 +46,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 15, 2022 at 12:42:40PM -0400, William Breathitt Gray wrote:
-> The following changes since commit 568035b01cfb107af8d2e4bd2fb9aea22cf5b868:
-> 
->   Linux 6.0-rc1 (2022-08-14 15:50:18 -0700)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.0a
-> 
-> for you to fetch changes up to 8294b04153c33602e9c3dd21ac90c1e99bd0fdaf:
-> 
->   counter: Realign counter_comp comment block to 80 characters (2022-09-11 11:45:02 -0400)
-> 
-> ----------------------------------------------------------------
-> counter: First set of Counter fixes for 6.0-rc5
-> 
-> counter
->  - Realign counter_comp comment block to 80 characters
-> 
-> 104-quad-8
->  - Fix skipped IRQ lines during events configuration
-> 
-> ----------------------------------------------------------------
-> William Breathitt Gray (2):
->       counter: 104-quad-8: Fix skipped IRQ lines during events configuration
->       counter: Realign counter_comp comment block to 80 characters
-> 
->  drivers/counter/104-quad-8.c |  6 +++---
->  include/linux/counter.h      | 40 ++++++++++++++++++++--------------------
->  2 files changed, 23 insertions(+), 23 deletions(-)
+
+This is a note to let you know that I've just added the patch titled
+
+    MAINTAINERS: Update Microchip MCP3911 to Maintained
+
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
+
+If you have any questions about this process, please let me know.
 
 
-You signed this pull request, yet I don't see your key in the kernel.org
-pgp repo, and so I get this error when trying to merge:
+From 9e8284501c8d9e2bde4dfcddaf0201ee7cc8f2a7 Mon Sep 17 00:00:00 2001
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+Date: Sat, 23 Jul 2022 11:20:30 +0200
+Subject: MAINTAINERS: Update Microchip MCP3911 to Maintained
 
-# gpg: Signature made Thu 15 Sep 2022 06:40:07 PM CEST
-# gpg:                using EDDSA key 8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-# gpg: Can't check signature: No public key
+The actual status of the code is Maintained.
 
-Did you use the right key, or is it somewhere else?
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc: Kent Gustavsson <kent@minoris.se>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio <linux-iio@vger.kernel.org>
+Link: https://lore.kernel.org/r/20220723092030.260812-1-marcus.folkesson@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks,
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8a5012ba6ff9..b8b6544ba27c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13405,7 +13405,7 @@ MICROCHIP MCP3911 ADC DRIVER
+ M:	Marcus Folkesson <marcus.folkesson@gmail.com>
+ M:	Kent Gustavsson <kent@minoris.se>
+ L:	linux-iio@vger.kernel.org
+-S:	Supported
++S:	Maintained
+ F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
+ F:	drivers/iio/adc/mcp3911.c
+ 
+-- 
+2.37.3
 
-greg k-h
+

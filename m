@@ -2,209 +2,201 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7983E5BF891
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 10:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76E425BFA0C
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 11:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbiIUIFK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 04:05:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45462 "EHLO
+        id S230030AbiIUJEO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 05:04:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbiIUIFI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 04:05:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD5EB3341D
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 01:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1663747506;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HnY+1lvfj8xHoPaa5HzewzJmcN9dGQ94wGZa8thXkCk=;
-        b=OBU37koh/nifM7JCppzKp36KORqybizVTHX76AckSkS8kc07bX9yDmsZk5dRf1gpVL21pj
-        QrClysMJWCGVeEv6YG3TOguJ+NKmu0WzjPNuxlRtQ/7NgwUSfpJR70am/yDZFfA5hoTBKA
-        Ol8m+a3tifYkXw3FNDhXQqi6Mjs4Iy8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-67-u0BpkkqeMUqhj1Pg90-OwQ-1; Wed, 21 Sep 2022 04:05:03 -0400
-X-MC-Unique: u0BpkkqeMUqhj1Pg90-OwQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5AF5538164D5;
-        Wed, 21 Sep 2022 08:05:02 +0000 (UTC)
-Received: from mail.corp.redhat.com (unknown [10.39.194.185])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 9618F40C2064;
-        Wed, 21 Sep 2022 08:05:00 +0000 (UTC)
-Date:   Wed, 21 Sep 2022 10:04:58 +0200
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     gupt21@gmail.com, jic23@kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        benjamin.tissoires@redhat.com, Jiri Kosina <jikos@kernel.org>
-Subject: Re: [PATCH v4 4/5] HID: mcp2221: switch i2c registration to devm
- functions
-Message-ID: <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
-References: <20220921063026.89619-1-matt.ranostay@konsulko.com>
- <20220921063026.89619-5-matt.ranostay@konsulko.com>
+        with ESMTP id S229975AbiIUJEM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 05:04:12 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1E9844F8
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 02:04:10 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id dv25so11983731ejb.12
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 02:04:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=K3i2fg7vMM7UlC2wuIrKX4hyxkogLfXc573OhDqcaes=;
+        b=OxFhTIMR/HQv2erN8faakUuzBpfKE4FIqMx2gUyA8n8Z9irNnHmiX1UhsdymQe6/dp
+         x3sT1HxUQEd4grlAJNCwy4oCg8OiNj8tYsQ4n19IZmQ+Etf4/p9p3Byk/CfmmF6aH5T6
+         27weKQW33OWcNOFbJ9Pz820Dj08b2K6oNc1dwo+PyvHQOqBzfhmLtqtRebluMz8mblwo
+         Vz7ZHQENgBtQk4jLV9UFoH5GnEyNqWrNDrkviKmVL1geVxCdTaEvxt47pMy88q0D+ePt
+         oaJyiKHhdNF/Bm7fOezFxReal0YN9zPSb7/2uPBDvblxLMx6tbP7anzwxSRYfiF/WnG2
+         tYjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=K3i2fg7vMM7UlC2wuIrKX4hyxkogLfXc573OhDqcaes=;
+        b=fG4KyyyYMNcQfeLpwLwCZNsDlUCO801iRiP+dW6mZ69WacoDtN82YVpdQVqpiynF/Y
+         u9i4ysKE94o3o3mo5jP0K06qEhF2Oun5oZE1DKhJNArguKYY5uSfmfo3uSn51NDlNTDM
+         GFryb4AxlA9oA8zZC8yKGLJttSLh/1MkHRUAsvyPlDud4TG1ulTajQTUxC6UT9D3RNtI
+         p6ylSYmF0RY9VNWDpOzYDueeAKYKky6REr6iGaqA/AQttZtI4BFemkDtekhYyEdVkmq4
+         mA5CbyltrwPvA4Zp0K6pg+hHR7BtgZBB5DrOkAqzRM3/h8aUb79Rr1PH8d/HQQSJZfWl
+         mEZg==
+X-Gm-Message-State: ACrzQf1EwRLDBrhCfyj59/mihKcg2IH033d+0Xc2haoQmgOdrlBuMT5w
+        JTQXGPhsBiqkbiMp1MY7TPMgSA==
+X-Google-Smtp-Source: AMsMyM4QLuRr9Tx8KRrtESiDpZLnQmD9UPc6aiFauykm6hRCCSam+02DJxU2vae0EUdO3q/6vhqhIA==
+X-Received: by 2002:a17:906:cc4a:b0:779:ed37:b5a3 with SMTP id mm10-20020a170906cc4a00b00779ed37b5a3mr19848052ejb.626.1663751048731;
+        Wed, 21 Sep 2022 02:04:08 -0700 (PDT)
+Received: from [192.168.1.70] (32.31.102.84.rev.sfr.net. [84.102.31.32])
+        by smtp.gmail.com with ESMTPSA id z26-20020a170906945a00b0077016f4c6d4sm1017632ejx.55.2022.09.21.02.04.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Sep 2022 02:04:08 -0700 (PDT)
+Message-ID: <05c0501f-9843-88df-0a55-1ce4969df2f1@baylibre.com>
+Date:   Wed, 21 Sep 2022 11:04:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220921063026.89619-5-matt.ranostay@konsulko.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v5 0/5] Add support for Counter array components
+To:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, mranostay@ti.com,
+        gwendal@chromium.org, bleung@chromium.org, groeck@chromium.org,
+        jic23@kernel.org, david@lechnology.com, robertcnelson@gmail.com
+References: <cover.1663693757.git.william.gray@linaro.org>
+Content-Language: en-US
+From:   Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <cover.1663693757.git.william.gray@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-[foreword: please keep Jiri and myself (the HID maintainers) CC-ed to
-the series, as you will need ack from us and we don't necessarily monitor
-every single message on linux-input]
+Hi William,
 
-On Sep 20 2022, Matt Ranostay wrote:
-> Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
-> for matching rest of driver initialization, and more concise code.
-> 
-> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> ---
->  drivers/hid/hid-mcp2221.c | 45 +++++++++++++++++----------------------
->  1 file changed, 19 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-> index de52e9f7bb8c..7ba63bcd66de 100644
-> --- a/drivers/hid/hid-mcp2221.c
-> +++ b/drivers/hid/hid-mcp2221.c
-> @@ -824,6 +824,14 @@ static int mcp2221_raw_event(struct hid_device *hdev,
->  	return 1;
->  }
->  
-> +static void mcp2221_hid_remove(void *ptr)
-> +{
-> +	struct hid_device *hdev = ptr;
-> +
-> +	hid_hw_close(hdev);
-> +	hid_hw_stop(hdev);
+On 20/09/2022 19:21, William Breathitt Gray wrote:
+> Changes in v5:
+>   - Introduce the Count capture component
+>   - Add DEFINE_COUNTER_ARRAY_CAPTURE macro and COUNTER_COMP_ARRAY_CAPTURE
+>     for Counter arrays of capture elements
+>   - Fix Counter array handling in counter-chrdev.c; previously
+>     misinterpreted component id for COUNTER_COMPONENT_EXTENSION type when
+>     Counter array components were present
 
-By default, if you remove the .remove() callback, hid_hw_stop() will get
-automatically called by hid-core.c. So we are now calling it twice,
-which, in a way is not a big deal but it might be an issue in the long
-run.
+This v5 works with TI ECAP capture driver !
 
-Generally speaking, in the HID subsystem, that situation doesn't happen
-a lot because hid_hw_start() is usually the last command of probe, and
-we don't need to open the device in the driver itself.
+Tested-by: Julien Panis <jpanis@baylibre.com>
 
-Here, I guess as soon as you add the i2c adapter, you might want to have
-the communication channels ready, and thus you need to have it open
-*before* i2c_add_adapter.
+Julien
 
-I would suggest the following if you want to keep the devm release of
-stop and close: please put a big fat warning before mcp2221_hid_remove()
-explaining that this is called in devm management, *and* add a function
-that would just return 0 as the .remove() callback with another big fat
-warning explaining that we don't want hid-core.c to call hid_hw_stop()
-because we are doing it ourself through devres.
-
-Last, in the HID subsystem, we often interleave non devres with devres
-for resource allocation, given that .remove() will be called before any
-devres release. But that is assuming this ordering is OK, which doesn't
-seem to be the case here. We first need to unregister the i2c adapter
-and then close/stop the HID device.
-
-> +}
-> +
->  static int mcp2221_probe(struct hid_device *hdev,
->  					const struct hid_device_id *id)
->  {
-> @@ -849,7 +857,8 @@ static int mcp2221_probe(struct hid_device *hdev,
->  	ret = hid_hw_open(hdev);
->  	if (ret) {
->  		hid_err(hdev, "can't open device\n");
-> -		goto err_hstop;
-> +		hid_hw_stop(hdev);
-> +		return ret;
->  	}
->  
->  	mutex_init(&mcp->lock);
-> @@ -857,6 +866,10 @@ static int mcp2221_probe(struct hid_device *hdev,
->  	hid_set_drvdata(hdev, mcp);
->  	mcp->hdev = hdev;
->  
-> +	ret = devm_add_action_or_reset(&hdev->dev, mcp2221_hid_remove, hdev);
-> +	if (ret)
-> +		return ret;
-> +
->  	/* Set I2C bus clock diviser */
->  	if (i2c_clk_freq > 400)
->  		i2c_clk_freq = 400;
-> @@ -873,19 +886,17 @@ static int mcp2221_probe(struct hid_device *hdev,
->  			"MCP2221 usb-i2c bridge on hidraw%d",
->  			((struct hidraw *)hdev->hidraw)->minor);
->  
-> -	ret = i2c_add_adapter(&mcp->adapter);
-> +	ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
->  	if (ret) {
->  		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
-> -		goto err_i2c;
-> +		return ret;
->  	}
->  	i2c_set_adapdata(&mcp->adapter, mcp);
->  
->  	/* Setup GPIO chip */
->  	mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
-> -	if (!mcp->gc) {
-> -		ret = -ENOMEM;
-> -		goto err_gc;
-> -	}
-> +	if (!mcp->gc)
-> +		return -ENOMEM;
->  
->  	mcp->gc->label = "mcp2221_gpio";
->  	mcp->gc->direction_input = mcp_gpio_direction_input;
-> @@ -900,26 +911,9 @@ static int mcp2221_probe(struct hid_device *hdev,
->  
->  	ret = devm_gpiochip_add_data(&hdev->dev, mcp->gc, mcp);
->  	if (ret)
-> -		goto err_gc;
-> +		return ret;
->  
->  	return 0;
-> -
-> -err_gc:
-> -	i2c_del_adapter(&mcp->adapter);
-> -err_i2c:
-> -	hid_hw_close(mcp->hdev);
-> -err_hstop:
-> -	hid_hw_stop(mcp->hdev);
-> -	return ret;
-> -}
-> -
-> -static void mcp2221_remove(struct hid_device *hdev)
-> -{
-> -	struct mcp2221 *mcp = hid_get_drvdata(hdev);
-> -
-> -	i2c_del_adapter(&mcp->adapter);
-> -	hid_hw_close(mcp->hdev);
-> -	hid_hw_stop(mcp->hdev);
->  }
->  
->  static const struct hid_device_id mcp2221_devices[] = {
-> @@ -932,7 +926,6 @@ static struct hid_driver mcp2221_driver = {
->  	.name		= "mcp2221",
->  	.id_table	= mcp2221_devices,
->  	.probe		= mcp2221_probe,
-> -	.remove		= mcp2221_remove,
->  	.raw_event	= mcp2221_raw_event,
->  };
->  
-> -- 
-> 2.37.2
-> 
-
-Cheers,
-Benjamin
+>
+> The COUNTER_COMP_ARRAY Counter component type is introduced to enable
+> support for Counter array components. With Counter array components,
+> exposure for buffers on counter devices can be defined via new Counter
+> array component macros. This should simplify code for driver authors who
+> would otherwise need to define individual Counter components for each
+> array element.
+>
+> Eight Counter array component macros are introduced::
+>
+>          DEFINE_COUNTER_ARRAY_U64(_name, _length)
+>          DEFINE_COUNTER_ARRAY_CAPTURE(_name, _length)
+>          DEFINE_COUNTER_ARRAY_POLARITY(_name, _enums, _length)
+>          COUNTER_COMP_DEVICE_ARRAY_U64(_name, _read, _write, _array)
+>          COUNTER_COMP_COUNT_ARRAY_U64(_name, _read, _write, _array)
+>          COUNTER_COMP_SIGNAL_ARRAY_U64(_name, _read, _write, _array)
+>          COUNTER_COMP_ARRAY_CAPTURE(_read, _write, _array)
+>          COUNTER_COMP_ARRAY_POLARITY(_read, _write, _array)
+>
+> Eight Counter array callbacks are introduced as well::
+>
+>          int (*signal_array_u32_read)(struct counter_device *counter,
+>                                       struct counter_signal *signal,
+>                                       size_t idx, u32 *val);
+>          int (*signal_array_u32_write)(struct counter_device *counter,
+>                                        struct counter_signal *signal,
+>                                        size_t idx, u32 val);
+>          int (*device_array_u64_read)(struct counter_device *counter,
+>                                       size_t idx, u64 *val);
+>          int (*count_array_u64_read)(struct counter_device *counter,
+>                                      struct counter_count *count,
+>                                      size_t idx, u64 *val);
+>          int (*signal_array_u64_read)(struct counter_device *counter,
+>                                       struct counter_signal *signal,
+>                                       size_t idx, u64 *val);
+>          int (*device_array_u64_write)(struct counter_device *counter,
+>                                        size_t idx, u64 val);
+>          int (*count_array_u64_write)(struct counter_device *counter,
+>                                       struct counter_count *count,
+>                                       size_t idx, u64 val);
+>          int (*signal_array_u64_write)(struct counter_device *counter,
+>                                        struct counter_signal *signal,
+>                                        size_t idx, u64 val);
+>
+> Driver authors can handle reads/writes for an array component by
+> receiving an element index via the `idx` parameter and processing the
+> respective value via the `val` parameter.
+>
+> For example, suppose a driver wants to expose a Count's read-only
+> capture buffer of four elements using a callback
+> `foobar_capture_read()`::
+>
+>          DEFINE_COUNTER_ARRAY_CAPTURE(foobar_capture_array, 4);
+>          COUNTER_COMP_ARRAY_CAPTURE(foobar_capture_read, NULL,
+>                                     foobar_capture_array)
+>
+> Respective sysfs attributes for each array element would appear for the
+> respective Count:
+>
+> * /sys/bus/counter/devices/counterX/countY/capture0
+> * /sys/bus/counter/devices/counterX/countY/capture1
+> * /sys/bus/counter/devices/counterX/countY/capture2
+> * /sys/bus/counter/devices/counterX/countY/capture3
+>
+> If a user tries to read _capture2_ for example, `idx` will be `2` when
+> passed to the `foobar_capture_read()` callback, and thus the driver
+> knows which array element to handle.
+>
+> In addition, this patchset introduces the Signal polarity component,
+> which represents the active level of a respective Signal. There are two
+> possible states: positive (rising edge) and negative (falling edge). The
+> 104-quad-8 driver is updated to expose its index_polarity functionality
+> via this new polarity component.
+>
+> Counter arrays for polarity elements can be defined in a similar
+> manner as u64 elements::
+>
+>          const enum counter_signal_polarity foobar_polarity_states[] = {
+>                  COUNTER_SIGNAL_POLARITY_POSITIVE,
+>                  COUNTER_SIGNAL_POLARITY_NEGATIVE,
+>          };
+>          DEFINE_COUNTER_ARRAY_POLARITY(foobar_polarity_array,
+>                                        foobar_polarity_states, 4);
+>          COUNTER_COMP_ARRAY_POLARITY(foobar_polarity_read,
+>                                      foobar_polarity_write,
+>                                      foobar_polarity_array)
+>
+> The only component types supported for Counter arrays currently are
+> COUNTER_COMP_U64 and COUNTER_COMP_SIGNAL_POLARITY.
+>
+> William Breathitt Gray (5):
+>    counter: Introduce the Signal polarity component
+>    counter: 104-quad-8: Add Signal polarity component
+>    counter: Introduce the Count capture component
+>    counter: Consolidate Counter extension sysfs attribute creation
+>    counter: Introduce the COUNTER_COMP_ARRAY component type
+>
+>   Documentation/ABI/testing/sysfs-bus-counter |  19 ++
+>   drivers/counter/104-quad-8.c                |  35 +++
+>   drivers/counter/counter-chrdev.c            | 135 +++++++--
+>   drivers/counter/counter-sysfs.c             | 304 ++++++++++++++++----
+>   include/linux/counter.h                     | 147 ++++++++++
+>   include/uapi/linux/counter.h                |   8 +
+>   6 files changed, 581 insertions(+), 67 deletions(-)
+>
+>
+> base-commit: f95ec98139dc58db72e4bd0df049a3097990a8e7
 

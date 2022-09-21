@@ -1,118 +1,227 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7C125C044F
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 18:36:34 +0200 (CEST)
+Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
+	by mail.lfdr.de (Postfix) with ESMTP id 61FF25D0224
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 20:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbiIUQgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 12:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36638 "EHLO
+        id S229900AbiIUR5b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 13:57:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230145AbiIUQgP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 12:36:15 -0400
-Received: from dggsgout12.his.huawei.com (unknown [45.249.212.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75A79AB06B
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 09:19:11 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.153])
-        by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4MXk865tQYz6T8ly
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 00:17:10 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.102.38])
-        by APP1 (Coremail) with SMTP id cCh0CgCHDTF5OStjcRGBBA--.52958S9;
-        Thu, 22 Sep 2022 00:19:09 +0800 (CST)
-From:   Wei Yongjun <weiyongjun@huaweicloud.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>, linux-iio@vger.kernel.org
-Subject: [PATCH 5/5 v3] iio: adc: ad7124: Silence no spi_device_id warnings
-Date:   Wed, 21 Sep 2022 16:36:20 +0000
-Message-Id: <20220921163620.805879-6-weiyongjun@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220921163620.805879-1-weiyongjun@huaweicloud.com>
-References: <20220921163620.805879-1-weiyongjun@huaweicloud.com>
+        with ESMTP id S229499AbiIUR5b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 13:57:31 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72F06CD0F
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 10:57:29 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id d8so5665331iof.11
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 10:57:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=lWz9vmTktmlnF8P5ct/IitkPDKwxx7s+v31tQx0NTfE=;
+        b=hPwgMa4Vzn+dr/R9yowxrWVRYm8GRaOYX2QoyN8KqjKAruRAR8nNeUXwTE8lnoP0Ri
+         UDKRiMuYU5L6x/cudqgLDdfD0EH/YL4CBP0B+PQHMz1Rbhy633LVkXBMEBO+nks+xWeP
+         WzDL/YlaWVONcpKPFD5/SY7FFqH99eKHZw8X8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=lWz9vmTktmlnF8P5ct/IitkPDKwxx7s+v31tQx0NTfE=;
+        b=ecTviMfXwgv/qB5K2XoHJANpgQi5kPSNghnsMqez8Ldi7ulxGRopys0N3aXT5LjMz4
+         1rMcfhFuHjkg2Xx6nUVAak4RXadHR/zMRHCd1cZCX0Bk2ulo6qYJH/icx2lELymDyg1U
+         apR+x5VCzZafl7JpkKwAfC8oW8xZHU8BaVVrEinHbehFhOYtUYX9MUL9MXqBQafdYvye
+         PKYukhZSrhXOjQLIH1sCWuNzRjuDnh4NJdPifkm87238KEHeSgfjTlklFM0FbWDmAsDM
+         C9fcXOjwNuSVWMcj5YrPN7pKIW31oL3N+sosmDiy5nxddw2LSpLuPwXac+EwXX+nSx0I
+         affw==
+X-Gm-Message-State: ACrzQf1IKRsyXX1Fxpo/ugw0R5OQiQxkIBMzAR6APWjtIF1NyxaFxxMH
+        mydo0B9XElS5+95u6NXeyXz1olSI6FRsfnJDEK1Qkw==
+X-Google-Smtp-Source: AMsMyM57bNVpIjGiIB5AzUj9jqWSl+gKbWzjqH3/K8KuyS1WQHhDHUSCV967QoGMG6sBH4ZRz7Psmf7S6Nv8biJzb6I=
+X-Received: by 2002:a05:6638:3818:b0:35a:8cf5:e007 with SMTP id
+ i24-20020a056638381800b0035a8cf5e007mr12843820jav.227.1663783049239; Wed, 21
+ Sep 2022 10:57:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgCHDTF5OStjcRGBBA--.52958S9
-X-Coremail-Antispam: 1UD129KBjvJXoW7CF48CF4UGr45ZF4rGrWfKrg_yoW8Ww4kpa
-        1rXFyrArZrWFs3CFn3Xw4UuFy5Gw1Sk3yFgF47Ga9I93ZxZa4rWa1xtF17Ar1UtFWUGay3
-        tFW7JryUWF4rArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-        Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-        rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-        AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7Cj
-        xVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4
-        xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCa
-        FVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFV
-        Cjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
-        x4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r
-        4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
-        JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
-        sGvfC2KfnxnUUI43ZEXa7IU13l1DUUUUU==
-X-CM-SenderInfo: 5zhl50pqjm3046kxt4xhlfz01xgou0bp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+References: <20220921063026.89619-1-matt.ranostay@konsulko.com>
+ <20220921063026.89619-5-matt.ranostay@konsulko.com> <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
+In-Reply-To: <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Wed, 21 Sep 2022 10:57:18 -0700
+Message-ID: <CAJCx=gn0bZp3fToF+LZE+evR2m4nWMueusjysxcrvimH0wRhaA@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] HID: mcp2221: switch i2c registration to devm functions
+To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     gupt21@gmail.com, jic23@kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        Jiri Kosina <jikos@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+On Wed, Sep 21, 2022 at 1:05 AM Benjamin Tissoires
+<benjamin.tissoires@redhat.com> wrote:
+>
+> [foreword: please keep Jiri and myself (the HID maintainers) CC-ed to
+> the series, as you will need ack from us and we don't necessarily monitor
+> every single message on linux-input]
+>
+> On Sep 20 2022, Matt Ranostay wrote:
+> > Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
+> > for matching rest of driver initialization, and more concise code.
+> >
+> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > ---
+> >  drivers/hid/hid-mcp2221.c | 45 +++++++++++++++++----------------------
+> >  1 file changed, 19 insertions(+), 26 deletions(-)
+> >
+> > diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+> > index de52e9f7bb8c..7ba63bcd66de 100644
+> > --- a/drivers/hid/hid-mcp2221.c
+> > +++ b/drivers/hid/hid-mcp2221.c
+> > @@ -824,6 +824,14 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> >       return 1;
+> >  }
+> >
+> > +static void mcp2221_hid_remove(void *ptr)
+> > +{
+> > +     struct hid_device *hdev = ptr;
+> > +
+> > +     hid_hw_close(hdev);
+> > +     hid_hw_stop(hdev);
+>
+> By default, if you remove the .remove() callback, hid_hw_stop() will get
+> automatically called by hid-core.c. So we are now calling it twice,
+> which, in a way is not a big deal but it might be an issue in the long
+> run.
+>
+> Generally speaking, in the HID subsystem, that situation doesn't happen
+> a lot because hid_hw_start() is usually the last command of probe, and
+> we don't need to open the device in the driver itself.
+>
+> Here, I guess as soon as you add the i2c adapter, you might want to have
+> the communication channels ready, and thus you need to have it open
+> *before* i2c_add_adapter.
+>
+> I would suggest the following if you want to keep the devm release of
+> stop and close: please put a big fat warning before mcp2221_hid_remove()
+> explaining that this is called in devm management, *and* add a function
+> that would just return 0 as the .remove() callback with another big fat
+> warning explaining that we don't want hid-core.c to call hid_hw_stop()
+> because we are doing it ourself through devres.
+>
 
-SPI devices use the spi_device_id for module autoloading even on
-systems using device tree, after commit 5fa6863ba692 ("spi: Check
-we have a spi_device_id for each DT compatible"), kernel warns as
-follows since the spi_device_id is missing:
+Yeah maybe best to keep the non-devres if it isn't going to affect how the last
+change in this series is trying to implement with iio.
 
-SPI driver ad7124 has no spi_device_id for adi,ad7124-4
-SPI driver ad7124 has no spi_device_id for adi,ad7124-8
+I'll wait for Jonathan to chime in on this thread.
 
-Add spi_device_id entries to silence the warnings, and ensure driver
-module autoloading works.
+> Last, in the HID subsystem, we often interleave non devres with devres
+> for resource allocation, given that .remove() will be called before any
+> devres release. But that is assuming this ordering is OK, which doesn't
+> seem to be the case here. We first need to unregister the i2c adapter
+> and then close/stop the HID device.
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/iio/adc/ad7124.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Noted.
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 4088786e1026..050a2fbf5c49 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -944,6 +944,8 @@ static int ad7124_probe(struct spi_device *spi)
- 	int i, ret;
- 
- 	info = of_device_get_match_data(&spi->dev);
-+	if (!info)
-+		info = (void *)spi_get_device_id(spi)->driver_data;
- 	if (!info)
- 		return -ENODEV;
- 
-@@ -1021,12 +1023,20 @@ static const struct of_device_id ad7124_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, ad7124_of_match);
- 
-+static const struct spi_device_id ad71124_ids[] = {
-+	{ "ad7124-4", (kernel_ulong_t)&ad7124_chip_info_tbl[ID_AD7124_4] },
-+	{ "ad7124-8", (kernel_ulong_t)&ad7124_chip_info_tbl[ID_AD7124_8] },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, ad71124_ids);
-+
- static struct spi_driver ad71124_driver = {
- 	.driver = {
- 		.name = "ad7124",
- 		.of_match_table = ad7124_of_match,
- 	},
- 	.probe = ad7124_probe,
-+	.id_table = ad71124_ids,
- };
- module_spi_driver(ad71124_driver);
- 
--- 
-2.34.1
+-  Matt
 
+>
+> > +}
+> > +
+> >  static int mcp2221_probe(struct hid_device *hdev,
+> >                                       const struct hid_device_id *id)
+> >  {
+> > @@ -849,7 +857,8 @@ static int mcp2221_probe(struct hid_device *hdev,
+> >       ret = hid_hw_open(hdev);
+> >       if (ret) {
+> >               hid_err(hdev, "can't open device\n");
+> > -             goto err_hstop;
+> > +             hid_hw_stop(hdev);
+> > +             return ret;
+> >       }
+> >
+> >       mutex_init(&mcp->lock);
+> > @@ -857,6 +866,10 @@ static int mcp2221_probe(struct hid_device *hdev,
+> >       hid_set_drvdata(hdev, mcp);
+> >       mcp->hdev = hdev;
+> >
+> > +     ret = devm_add_action_or_reset(&hdev->dev, mcp2221_hid_remove, hdev);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> >       /* Set I2C bus clock diviser */
+> >       if (i2c_clk_freq > 400)
+> >               i2c_clk_freq = 400;
+> > @@ -873,19 +886,17 @@ static int mcp2221_probe(struct hid_device *hdev,
+> >                       "MCP2221 usb-i2c bridge on hidraw%d",
+> >                       ((struct hidraw *)hdev->hidraw)->minor);
+> >
+> > -     ret = i2c_add_adapter(&mcp->adapter);
+> > +     ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
+> >       if (ret) {
+> >               hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+> > -             goto err_i2c;
+> > +             return ret;
+> >       }
+> >       i2c_set_adapdata(&mcp->adapter, mcp);
+> >
+> >       /* Setup GPIO chip */
+> >       mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
+> > -     if (!mcp->gc) {
+> > -             ret = -ENOMEM;
+> > -             goto err_gc;
+> > -     }
+> > +     if (!mcp->gc)
+> > +             return -ENOMEM;
+> >
+> >       mcp->gc->label = "mcp2221_gpio";
+> >       mcp->gc->direction_input = mcp_gpio_direction_input;
+> > @@ -900,26 +911,9 @@ static int mcp2221_probe(struct hid_device *hdev,
+> >
+> >       ret = devm_gpiochip_add_data(&hdev->dev, mcp->gc, mcp);
+> >       if (ret)
+> > -             goto err_gc;
+> > +             return ret;
+> >
+> >       return 0;
+> > -
+> > -err_gc:
+> > -     i2c_del_adapter(&mcp->adapter);
+> > -err_i2c:
+> > -     hid_hw_close(mcp->hdev);
+> > -err_hstop:
+> > -     hid_hw_stop(mcp->hdev);
+> > -     return ret;
+> > -}
+> > -
+> > -static void mcp2221_remove(struct hid_device *hdev)
+> > -{
+> > -     struct mcp2221 *mcp = hid_get_drvdata(hdev);
+> > -
+> > -     i2c_del_adapter(&mcp->adapter);
+> > -     hid_hw_close(mcp->hdev);
+> > -     hid_hw_stop(mcp->hdev);
+> >  }
+> >
+> >  static const struct hid_device_id mcp2221_devices[] = {
+> > @@ -932,7 +926,6 @@ static struct hid_driver mcp2221_driver = {
+> >       .name           = "mcp2221",
+> >       .id_table       = mcp2221_devices,
+> >       .probe          = mcp2221_probe,
+> > -     .remove         = mcp2221_remove,
+> >       .raw_event      = mcp2221_raw_event,
+> >  };
+> >
+> > --
+> > 2.37.2
+> >
+>
+> Cheers,
+> Benjamin
+>

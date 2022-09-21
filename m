@@ -2,198 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3705DC35F
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 20:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB5A55E53A0
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 21:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230484AbiIUSL1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 14:11:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45024 "EHLO
+        id S229456AbiIUTL6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 15:11:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230483AbiIUSLT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 14:11:19 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52CFB80516;
-        Wed, 21 Sep 2022 11:11:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1663783871; x=1695319871;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WckjFb8TNTyStYJTGw886rcvghznTu4Iq8hyPcV6+aA=;
-  b=BtU2tGR5gRM/dX86a2L4FZ8t4STOryFNG50H+tqO5UaeYZQXq0hGguyK
-   D9fpGkbyxk2T+eaeJHurdaYn2puwCGx3OVjZQpQlwsHffu19LjcPW47A9
-   e6Hh1fvBZ1XCmZEiz/aKlGDZu4S4yVF+of2n4kvSO+jNi+DCIWFPW/e8p
-   rmItMBa6S54yKajsVoOln7/wrMRf5SPb55uiga/8iU63LMTaAR6RwEPnK
-   SlbFMKUP8IOdzjDUyY5OZtffw4FEfyuuhR7Bt9KA17AxbaKtc7ZEg2ksB
-   kKHCb8yh4vCG1SjFRzG2wb1ycH1fyHbv2qIaG5cqAg0zHDE3OAWUC1wt/
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10477"; a="300925913"
-X-IronPort-AV: E=Sophos;i="5.93,333,1654585200"; 
-   d="scan'208";a="300925913"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2022 11:10:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.93,333,1654585200"; 
-   d="scan'208";a="652641729"
-Received: from lkp-server01.sh.intel.com (HELO c0a60f19fe7e) ([10.239.97.150])
-  by orsmga001.jf.intel.com with ESMTP; 21 Sep 2022 11:10:32 -0700
-Received: from kbuild by c0a60f19fe7e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ob4B5-0003pz-2H;
-        Wed, 21 Sep 2022 18:10:31 +0000
-Date:   Thu, 22 Sep 2022 02:10:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Julien Panis <jpanis@baylibre.com>, william.gray@linaro.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Cc:     kbuild-all@lists.01.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        mranostay@ti.com
-Subject: Re: [PATCH v7 3/4] counter: ti-ecap-capture: capture driver support
- for ECAP
-Message-ID: <202209220145.SYlF1Xt8-lkp@intel.com>
-References: <20220921100627.124085-4-jpanis@baylibre.com>
+        with ESMTP id S229624AbiIUTL5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 15:11:57 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9917E71727
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 12:11:55 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id a2so10834119lfb.6
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 12:11:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=DsL/1QAW5Bz74NZ7JK4PQf/yeBCXaXFI7fLPgzIIgJ4=;
+        b=QTCIWf1sf8YYJTHRUCzPsvcipWx3NlPq4la99JrxuUSJ6+dCeA1P9nVQtc/kmAHl7Y
+         DM9So4VlJzfCgzpKxBSGKyQPEZJyDkAgL1++XZY3kDeYKTJQCvVZl9TvlsqBZmvVhmb9
+         JLVBswq48TeMuQRgDGiiSiPGYeJ0jY7TkuAsNfZsqwjrn1eed2dr2ny0+VQIb78q9ie6
+         ANrQpu6eG1QRDEiC5tPQMyFgOBrZAa+ofcrIPPiSPo7N+Am4U+cc78FVwCBOBw1b3bqD
+         b2r9+3mw4L0fe6hlSUyrxV4e0A670NyLbcuPfNh1menjQTxQ0xtOzRsV6yDB9j5A2Ce6
+         5v7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=DsL/1QAW5Bz74NZ7JK4PQf/yeBCXaXFI7fLPgzIIgJ4=;
+        b=n5yZMdfwBfmfc4WVROST+Z8OmyDs1sy1ozPaFWzHFvYEuqbRZhZKUnwGGLc15XGMqQ
+         pM43WgVXriDOgUrfTlr05Or2nFv3Qk2KQ3gw7B0UwfKwKI2p5Qz1FSIuEU8pxURLit4+
+         zwFh7TVH4dkCGYa6xYEj8aaju/igfMfnh8/t2685N9PtZNVuCWkX3r77BzvJoCKk1jwM
+         YmnHYzrKwbrPOHol9g79ILiVXbd67p3YwI8HNTrhOmxUjPGH/6c+MKeLIuWwJrbp9v3R
+         e2I+w1W/SkFkuoEBmx2Ip/gdS/ykhboc1Vy7RVWDYtcMZyqCBMDwpgcklHeVXbczMLgo
+         QYyQ==
+X-Gm-Message-State: ACrzQf1BOjKmTLPCRceMSG5q+kRqQBAnSYg34OuVcp5uCEZzzW35LiNR
+        q+z7LgB1ZxnA98/uHid04SOUHA==
+X-Google-Smtp-Source: AMsMyM5JtXoqCMkS9rVMqv5o56OnDmtdacZs1FE4sReyzPtkUfqOz9nwTvu+zeti+lCGbtRNZmO3vQ==
+X-Received: by 2002:a05:6512:2006:b0:49f:6087:124a with SMTP id a6-20020a056512200600b0049f6087124amr9099091lfb.163.1663787513970;
+        Wed, 21 Sep 2022 12:11:53 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id k10-20020ac257ca000000b004998d9ccb62sm557803lfo.99.2022.09.21.12.11.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Sep 2022 12:11:53 -0700 (PDT)
+Message-ID: <482c5a54-3d53-5760-fc8e-8aa3b9341707@linaro.org>
+Date:   Wed, 21 Sep 2022 21:11:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220921100627.124085-4-jpanis@baylibre.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [RFC PATCH 3/5] dt-bindings: iio: Add KX022A accelerometer
+Content-Language: en-US
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1663760018.git.mazziesaccount@gmail.com>
+ <eb3edbb63c117f93e8ec534f50d8e3cf91ab3041.1663760018.git.mazziesaccount@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <eb3edbb63c117f93e8ec534f50d8e3cf91ab3041.1663760018.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Julien,
+On 21/09/2022 13:45, Matti Vaittinen wrote:
+> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The senor features
+> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
 
-Thank you for the patch! Perhaps something to improve:
+Thank you for your patch. There is something to discuss/improve.
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.0-rc6 next-20220921]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+> ranges (2, 4, 8 and 16g) and probably some other cool fatures.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Julien-Panis/ECAP-support-on-TI-AM62x-SoC/20220921-180742
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20220922/202209220145.SYlF1Xt8-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/f8a0bbe39ba2d6018559e92fb0c66b789387b293
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Julien-Panis/ECAP-support-on-TI-AM62x-SoC/20220921-180742
-        git checkout f8a0bbe39ba2d6018559e92fb0c66b789387b293
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash drivers/counter/
+s/fatures/features/
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
+> +$id: http://devicetree.org/schemas/iio/accel/kionix,kx022a.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: ROHM/Kionix KX022A Accelerometer bindings
 
-All warnings (new ones prefixed by >>):
+Drop "bindings"
 
-   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_watch_validate':
-   drivers/counter/ti-ecap-capture.c:234:66: error: 'COUNTER_EVENT_CAPTURE' undeclared (first use in this function); did you mean 'COUNTER_EVENT_INDEX'?
-     234 |         if ((watch->channel <= ECAP_CEVT_LAST && watch->event == COUNTER_EVENT_CAPTURE) ||
-         |                                                                  ^~~~~~~~~~~~~~~~~~~~~
-         |                                                                  COUNTER_EVENT_INDEX
-   drivers/counter/ti-ecap-capture.c:234:66: note: each undeclared identifier is reported only once for each function it appears in
-   drivers/counter/ti-ecap-capture.c: At top level:
->> drivers/counter/ti-ecap-capture.c:253:47: warning: 'enum counter_signal_polarity' declared inside parameter list will not be visible outside of this definition or declaration
-     253 |                              size_t idx, enum counter_signal_polarity *pol)
-         |                                               ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_pol_read':
-   drivers/counter/ti-ecap-capture.c:259:16: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared (first use in this function)
-     259 |                COUNTER_SIGNAL_POLARITY_NEGATIVE :
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:260:16: error: 'COUNTER_SIGNAL_POLARITY_POSITIVE' undeclared (first use in this function)
-     260 |                COUNTER_SIGNAL_POLARITY_POSITIVE;
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:258:14: error: invalid use of undefined type 'enum counter_signal_polarity'
-     258 |         *pol = regmap_test_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_CAPPOL_BIT(idx)) ?
-         |              ^
-   drivers/counter/ti-ecap-capture.c: At top level:
-   drivers/counter/ti-ecap-capture.c:268:48: warning: 'enum counter_signal_polarity' declared inside parameter list will not be visible outside of this definition or declaration
-     268 |                               size_t idx, enum counter_signal_polarity pol)
-         |                                                ^~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:268:72: error: parameter 4 ('pol') has incomplete type
-     268 |                               size_t idx, enum counter_signal_polarity pol)
-         |                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
-   drivers/counter/ti-ecap-capture.c:266:12: error: function declaration isn't a prototype [-Werror=strict-prototypes]
-     266 | static int ecap_cnt_pol_write(struct counter_device *counter,
-         |            ^~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_pol_write':
-   drivers/counter/ti-ecap-capture.c:276:20: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared (first use in this function)
-     276 |         if (pol == COUNTER_SIGNAL_POLARITY_NEGATIVE)
-         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c: At top level:
-   drivers/counter/ti-ecap-capture.c:375:43: error: array type has incomplete element type 'enum counter_signal_polarity'
-     375 | static const enum counter_signal_polarity ecap_cnt_pol_avail[] = {
-         |                                           ^~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:376:9: error: 'COUNTER_SIGNAL_POLARITY_POSITIVE' undeclared here (not in a function)
-     376 |         COUNTER_SIGNAL_POLARITY_POSITIVE,
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:377:9: error: 'COUNTER_SIGNAL_POLARITY_NEGATIVE' undeclared here (not in a function)
-     377 |         COUNTER_SIGNAL_POLARITY_NEGATIVE,
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:380:77: error: expected ')' before '(' token
-     380 | static DEFINE_COUNTER_ARRAY_POLARITY(ecap_cnt_pol_array, ecap_cnt_pol_avail, ECAP_NB_CEVT);
-         |                                                                             ^
-         |                                                                             )
-   drivers/counter/ti-ecap-capture.c:383:9: error: implicit declaration of function 'COUNTER_COMP_ARRAY_POLARITY' [-Werror=implicit-function-declaration]
-     383 |         COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/counter/ti-ecap-capture.c:383:76: error: 'ecap_cnt_pol_array' undeclared here (not in a function); did you mean 'ecap_cnt_pol_read'?
-     383 |         COUNTER_COMP_ARRAY_POLARITY(ecap_cnt_pol_read, ecap_cnt_pol_write, ecap_cnt_pol_array),
-         |                                                                            ^~~~~~~~~~~~~~~~~~
-         |                                                                            ecap_cnt_pol_read
-   drivers/counter/ti-ecap-capture.c:414:52: error: expected ')' before '(' token
-     414 | static DEFINE_COUNTER_ARRAY_U64(ecap_cnt_cap_array, ECAP_NB_CEVT);
-         |                                                    ^
-         |                                                    )
-   drivers/counter/ti-ecap-capture.c:417:9: error: implicit declaration of function 'COUNTER_COMP_COUNT_ARRAY_U64'; did you mean 'COUNTER_COMP_COUNT_U64'? [-Werror=implicit-function-declaration]
-     417 |         COUNTER_COMP_COUNT_ARRAY_U64("capture", ecap_cnt_cap_read, NULL, ecap_cnt_cap_array),
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |         COUNTER_COMP_COUNT_U64
-   drivers/counter/ti-ecap-capture.c:417:74: error: 'ecap_cnt_cap_array' undeclared here (not in a function); did you mean 'ecap_cnt_cap_read'?
-     417 |         COUNTER_COMP_COUNT_ARRAY_U64("capture", ecap_cnt_cap_read, NULL, ecap_cnt_cap_array),
-         |                                                                          ^~~~~~~~~~~~~~~~~~
-         |                                                                          ecap_cnt_cap_read
-   drivers/counter/ti-ecap-capture.c: In function 'ecap_cnt_isr':
-   drivers/counter/ti-ecap-capture.c:449:57: error: 'COUNTER_EVENT_CAPTURE' undeclared (first use in this function); did you mean 'COUNTER_EVENT_INDEX'?
-     449 |                         counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, i);
-         |                                                         ^~~~~~~~~~~~~~~~~~~~~
-         |                                                         COUNTER_EVENT_INDEX
-   drivers/counter/ti-ecap-capture.c: At top level:
-   drivers/counter/ti-ecap-capture.c:375:43: warning: 'ecap_cnt_pol_avail' defined but not used [-Wunused-variable]
-     375 | static const enum counter_signal_polarity ecap_cnt_pol_avail[] = {
-         |                                           ^~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+> +
+> +maintainers:
+> +  - Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+> +
+> +description: |
+> +  KX022A is a 3-axis accelerometer supporting +/- 2G, 4G, 8G and 16G ranges,
+> +  output data-rates from 0.78Hz to 1600Hz and a hardware-fifo buffering.
+> +  KX022A can be accessed either via I2C or SPI.
+> +
+> +properties:
+> +  compatible: kionix,kx022a
 
+Missing const. I wonder how did it pass testing...
 
-vim +253 drivers/counter/ti-ecap-capture.c
+> +
+> +  reg:
+> +    description:
+> +      I2C slave address or SPI chip-select.
 
-   250	
-   251	static int ecap_cnt_pol_read(struct counter_device *counter,
-   252				     struct counter_signal *signal,
- > 253				     size_t idx, enum counter_signal_polarity *pol)
-   254	{
-   255		struct ecap_cnt_dev *ecap_dev = counter_priv(counter);
-   256	
-   257		pm_runtime_get_sync(counter->parent);
-   258		*pol = regmap_test_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_CAPPOL_BIT(idx)) ?
-   259		       COUNTER_SIGNAL_POLARITY_NEGATIVE :
-   260		       COUNTER_SIGNAL_POLARITY_POSITIVE;
-   261		pm_runtime_put_sync(counter->parent);
-   262	
-   263		return 0;
-   264	}
-   265	
+Skip description, it's obvious.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vdd-supply: true
+> +  io_vdd-supply: true
+
+No underscores, so io-vdd-supply
+
+> +
+> +  mount-matrix:
+> +    description: |
+> +      an optional 3x3 mounting rotation matrix.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +          accel@1f {
+
+Messed up indentation.
+
+> +            compatible = "kionix,kx022a";
+> +            reg = <0x1f>;
+
+Best regards,
+Krzysztof
+

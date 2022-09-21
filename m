@@ -2,144 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 878DC5E540F
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 21:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F365E5443
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 22:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230108AbiIUT45 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 15:56:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39394 "EHLO
+        id S230357AbiIUUND (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 16:13:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229745AbiIUT44 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 15:56:56 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7ED1A2843
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 12:56:54 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id j24so7844762lja.4
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 12:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=ts6mTIVj3GUb0HyDnQ+6CalSe/1ccgmMXVSnsRxM15k=;
-        b=JB0EZ2tr5xSg7XopD144mNITvNP5pWxOGv/SilIBThY1Rp67vkOGPqXPFBwiSSDsSu
-         Zp8aRXQtJUPBFzhWAJYDdnv67MYG8D7rfWlSDNnW2UxWi2fJz1RZOoN06zwRkT2E1ECi
-         fpAq9jkEm3os+T8LV2YEpDyGac4X/Z2wyZlRIE/j+c1B58qMtmcxEPRCnYkQO1hhulbt
-         F5GTzvXlaUs5LI9ZNYpJf7yg6JBk2CjQDaRkgx9E6NggXoyOO3/tMSX/6nEzOW3QIgs9
-         gHoVpw1DpgvovkxCJ6MrFZ33KnFHEUNF8nJv2ovNfrFd98HJJxY51026i5ud1bew/cKi
-         JOWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ts6mTIVj3GUb0HyDnQ+6CalSe/1ccgmMXVSnsRxM15k=;
-        b=TfjUXKfsN7dY48MaY7dS4NxCzJhjXkBbRqmjEHWoi2MHL/1C1U5ayy3Dwjxyh5b2H5
-         IVvXJywoAFpo7p0Oykd+76wVPAyTNBmYVNkA+Y1XZr+PeXqj1ebNxRYGxFnqsR3JUtXU
-         5mo+qIQ8sA4wFIJl1lw3FnLyP/5LSrOn8eFyRZh+M6WObhTwhW6U5gTgwUtIIdXTF3qQ
-         6im80MGpsgZfhPSavjAwPFuNPlkOWmKoCrGgBNJBwda2vL4i87Hn1hxPkRgcF5ny4VSM
-         aC1ZZw2/iyhs9qkUmr9RA0AfGo0kTgwIJgPNZOSsTqCugcMwIGNauICLHVe6NIPEL2m+
-         emHg==
-X-Gm-Message-State: ACrzQf25HLogQgHq0tZMsKv81B372cWz6DC/obfP164kXeHFTZeiEIWr
-        xB6bDEHIkq2GowwCavBfwEMIaw==
-X-Google-Smtp-Source: AMsMyM5SC1mTsc8nBzA6A168PJOSEtUG1ojuQBjYyuIkVsOk+8i7g6xqhicMyaksLX40LCfpOLViXA==
-X-Received: by 2002:a2e:a910:0:b0:26a:ed13:cda6 with SMTP id j16-20020a2ea910000000b0026aed13cda6mr8961558ljq.250.1663790213270;
-        Wed, 21 Sep 2022 12:56:53 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id p8-20020a2ea4c8000000b002682754293fsm585437ljm.1.2022.09.21.12.56.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Sep 2022 12:56:52 -0700 (PDT)
-Message-ID: <1e9b83f5-67a9-c5ee-3ede-b26a6bde2263@linaro.org>
-Date:   Wed, 21 Sep 2022 21:56:51 +0200
+        with ESMTP id S230402AbiIUUM5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 16:12:57 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 860F1A4B02
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 13:12:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id A51CFCE1BA3
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 20:12:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D5AC433C1;
+        Wed, 21 Sep 2022 20:12:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1663791170;
+        bh=K/kA8UuArYRUwQ/2fiMrAty2fUX0/dIW4/X56IAg/Tw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ep5a9KL8dwcgAXv+Lizuc8tQcPaWOrQ2Y4tA1hyKrYhAWbw4mIICNiPrfj0FZJeIN
+         F7tIyWEJ7vWcQ8CoIgBx2g262Cm4pucRA2wdK2pupEbRGK5HkPlRThSIYYCb7SxsRM
+         6Fvp4v1NoycwHEcxl6NZoj2UvQH4N0T8bJfhhNjIUqUpBjsow2HMfXqPi+ksmOVda3
+         v+I8FzDK6XjpkqeO06SDg0z0RjZwUeQhQZUClrZP3Nm4YyXxcJRUagoEgY074SuXym
+         VP/cl8U91tTQPFEFtBvV9VVewbO5SvLAeRVHLsHlgCnMawuCIMG5uJVMUfqmiokS+g
+         /xjN2WkQ/Ia6A==
+Date:   Wed, 21 Sep 2022 16:12:48 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     linux-iio@vger.kernel.org
+Subject: Re: [PULL] counter: First set of Counter fixes for 6.0-rc5
+Message-ID: <YytwQEV+ajrZELTm@ishi>
+References: <YyNWADWgfl1sL10S@ishi>
+ <YysQ+JUP0u3kge53@kroah.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [RFC PATCH 3/5] dt-bindings: iio: Add KX022A accelerometer
-Content-Language: en-US
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <cover.1663760018.git.mazziesaccount@gmail.com>
- <eb3edbb63c117f93e8ec534f50d8e3cf91ab3041.1663760018.git.mazziesaccount@gmail.com>
- <482c5a54-3d53-5760-fc8e-8aa3b9341707@linaro.org>
- <7582e9e9-4558-ac33-a0f8-cb4e69d0628e@fi.rohmeurope.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <7582e9e9-4558-ac33-a0f8-cb4e69d0628e@fi.rohmeurope.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="OkmhcYLR+PlewFIb"
+Content-Disposition: inline
+In-Reply-To: <YysQ+JUP0u3kge53@kroah.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/09/2022 21:30, Vaittinen, Matti wrote:
-> Hi dee Ho Krzysztof,
-> 
-> Thanks for looking through this!
-> 
-> On 9/21/22 22:11, Krzysztof Kozlowski wrote:
->> On 21/09/2022 13:45, Matti Vaittinen wrote:
->>> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The senor features
->>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
->>> +
->>> +maintainers:
->>> +  - Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-> 
-> My own comment - switch the email to the gmail-one. Company mail is 
-> unreliable at best..
-> 
->>> +
->>> +description: |
->>> +  KX022A is a 3-axis accelerometer supporting +/- 2G, 4G, 8G and 16G ranges,
->>> +  output data-rates from 0.78Hz to 1600Hz and a hardware-fifo buffering.
->>> +  KX022A can be accessed either via I2C or SPI.
->>> +
->>> +properties:
->>> +  compatible: kionix,kx022a
->>
->> Missing const. I wonder how did it pass testing...
-> 
-> I originally had
-> oneOf:
->   items const ...
-> construct here as I had separate compatibles for *-spi and *-i2c. I am 
-> unsure if I remembered to run the tests after dropping the extra 
-> compatibles :| - Sorry! I'll fix this.
 
-This should be just:
-  compatible:
-    const: foo,bar
+--OkmhcYLR+PlewFIb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
->>> +  io_vdd-supply: true
->>
->> No underscores, so io-vdd-supply
-> 
-> The rationale behind the underscore is that the data-sheet uses terms 
-> vdd and vdd_io (with underscore). I wanted to match the supply name to 
-> what is used in the data-sheet. Not a big thing but I'd rather kept if 
-> same as the data-sheet if the requirement of "no-underscores" is not 
-> "hard". (If it is, then I'll drop the underscore).
+On Wed, Sep 21, 2022 at 03:26:16PM +0200, Greg KH wrote:
+> On Thu, Sep 15, 2022 at 12:42:40PM -0400, William Breathitt Gray wrote:
+> > The following changes since commit 568035b01cfb107af8d2e4bd2fb9aea22cf5=
+b868:
+> >=20
+> >   Linux 6.0-rc1 (2022-08-14 15:50:18 -0700)
+> >=20
+> > are available in the Git repository at:
+> >=20
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/co=
+unter-fixes-for-6.0a
+> >=20
+> > for you to fetch changes up to 8294b04153c33602e9c3dd21ac90c1e99bd0fdaf:
+> >=20
+> >   counter: Realign counter_comp comment block to 80 characters (2022-09=
+-11 11:45:02 -0400)
+> >=20
+> > ----------------------------------------------------------------
+> > counter: First set of Counter fixes for 6.0-rc5
+> >=20
+> > counter
+> >  - Realign counter_comp comment block to 80 characters
+> >=20
+> > 104-quad-8
+> >  - Fix skipped IRQ lines during events configuration
+> >=20
+> > ----------------------------------------------------------------
+> > William Breathitt Gray (2):
+> >       counter: 104-quad-8: Fix skipped IRQ lines during events configur=
+ation
+> >       counter: Realign counter_comp comment block to 80 characters
+> >=20
+> >  drivers/counter/104-quad-8.c |  6 +++---
+> >  include/linux/counter.h      | 40 ++++++++++++++++++++----------------=
+----
+> >  2 files changed, 23 insertions(+), 23 deletions(-)
+>=20
+>=20
+> You signed this pull request, yet I don't see your key in the kernel.org
+> pgp repo, and so I get this error when trying to merge:
+>=20
+> # gpg: Signature made Thu 15 Sep 2022 06:40:07 PM CEST
+> # gpg:                using EDDSA key 8D37CDDDE0D22528F8E89FB6B54856CABE1=
+2232B
+> # gpg: Can't check signature: No public key
+>=20
+> Did you use the right key, or is it somewhere else?
+>=20
+> thanks,
+>=20
+> greg k-h
 
-Underscores trigger warnings at some dtc W level (W=1 or W=2) so they
-are not allowed.
+It's located under pgpkeys/keys/B54856CABE12232B.asc in the kernel.org
+pgp repo: https://git.kernel.org/pub/scm/docs/kernel/pgpkeys.git/tree/keys/=
+B54856CABE12232B.asc
 
+I added wbg@kernel.org as a new UID and uploaded it to keys.openpgp.org:
+https://keys.openpgp.org/search?q=3D8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 
-Best regards,
-Krzysztof
+Looks like the kernel.org pgp repo hasn't been synchronized yet with the
+updated key from keys.openpgp.org, so I suspect that's why you're
+getting the error right now.
 
+William Breathitt Gray
+
+--OkmhcYLR+PlewFIb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYytwQAAKCRC1SFbKvhIj
+K/KlAPwKfrAiRAdEDmtT7enQHgfCcxZP+eb5I4XbrmzdQeatnQEAvGsmMgLdzosr
+/3R2HQ3bap7kO1Hiry4BeyWKZx4nPQ4=
+=nvtb
+-----END PGP SIGNATURE-----
+
+--OkmhcYLR+PlewFIb--

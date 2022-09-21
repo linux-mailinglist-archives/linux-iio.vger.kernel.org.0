@@ -2,74 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B915BFD2B
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 13:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3CE5BFD4E
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 13:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbiIULq2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 07:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58964 "EHLO
+        id S230255AbiIULty (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 07:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbiIULq0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 07:46:26 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B56D88274E;
-        Wed, 21 Sep 2022 04:46:25 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id j16so8769395lfg.1;
-        Wed, 21 Sep 2022 04:46:25 -0700 (PDT)
+        with ESMTP id S229521AbiIULtY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 07:49:24 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B63495E49;
+        Wed, 21 Sep 2022 04:48:24 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id a20so3810283qtw.10;
+        Wed, 21 Sep 2022 04:48:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=cGOSHWHf030IkSak76+na5Q86ksMR3Kog0w1HGe6B7w=;
-        b=YvwQVCEcOX+91V2ztGsfXdJEhHHJWkRHmJM6klWRQDY+2Dn3XwragRB47ZO1bQbgxr
-         vi8J9f7TWxX3e7SEHx0osYHkk52Cyf1x8ASWd4RcAeIbktWq0d6fqlu/9Hrv1NmWHtjk
-         8tEYkFiAlYn+cbltH5A5dS2DrqzSB04pm7QJhJyBmZlj1OamQMFiJBsD0LHygCgO4Q+A
-         vwMxQ4qb/76oXmepA/ZQU4QjNjNqk4tqGTW6q0prF5aH9Kkc3UZx+K1QaEkljXnZ7YTR
-         xyXHgADYfq1fmiGpls5UeSjyFtJsFdNq4wBlQ1upnUmfDQQfv+BEEi8v9nX7qjTTv3DL
-         rXFA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=HcWKSOQfnh3ALysQmzthyFKSaMJvE4eOBrZ5WykYnf0=;
+        b=HfVB+cBHeUsQkTV1IF9sAKMKS/kfT/Ev0F60sC685i2kFcutzNrfuaR5hD53IQByBD
+         9jivhTdsPvvs9lm5s9kXj+as2t8kAgL1f43MFcqX9USDOu2lzD+2ybZqMBbG4XjQgQ4Y
+         jgCd4dOsRnsjo+D/4PaHD504CDzEYM9SJ2KgM046n1ux86DUbQlEjZm/iIajLF0rSeEV
+         P//RD6N416qpoC6TwB3WBhbRgASsfx49tC7zYBmYWU1FUcKvYqXMPYCf8BhyzBlmv2s2
+         9Zr3PFAQ2AikJFRKDDuta9GMnT5+GY/mdV/Fqdk13QWG5P6njup+PIsHziVHd+GZKtJz
+         y93Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=cGOSHWHf030IkSak76+na5Q86ksMR3Kog0w1HGe6B7w=;
-        b=yij/uo7qtgZWLZcGUXDO00wQ8X/MH5ydr77o37ToKoK2wp46xEq1oZnD/6A7HGCgHQ
-         qT6hKvi5XFiw9UE9k5qNDhjoGzbW8WYOTJLumJMk3RG5UWSKcYU5AvlKmaWXMMdR3MRW
-         uSx5gwzGweN6nMCmNeakWaKg7KJ6hE2nPSWvSYtYhKEt+rHKCVITOB/9za6ypNDv/NuT
-         t+3f7Kh/V5oWXx8mPDpJakh6y4NBMmXwoK/s3H1z+3DC2wHRJByL1S/nMM25DuoHuce5
-         pwTLpGWQLnJtmpgk4MmTxgTuss5PsIOW8avgUgpPLJ/P2A1Ia+JAews2THF9UW0riGqN
-         6DmA==
-X-Gm-Message-State: ACrzQf0XtKHgRN2r1CwgxXvAMdxxDHy9LzDHTkNRNA338h+2TZpITmvB
-        jPtNhRjcCVLOTOgc2KN8oSE=
-X-Google-Smtp-Source: AMsMyM7t/VO2lT3aSQgvK3Lr8FxWhe6n1kmdTneSbtTNXnbiiAq2oAiNTphzCbeeAnDpoCp63DKeww==
-X-Received: by 2002:a05:6512:3295:b0:497:a156:795a with SMTP id p21-20020a056512329500b00497a156795amr9532093lfe.345.1663760783934;
-        Wed, 21 Sep 2022 04:46:23 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id y18-20020a197512000000b004946aef1814sm396307lfe.137.2022.09.21.04.46.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 04:46:23 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 14:46:18 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 5/5] MAINTAINERS: Add KX022A maintainer entry
-Message-ID: <68ac8d4bb3f8bd1239bd22db43b5bf64f149fd79.1663760018.git.mazziesaccount@gmail.com>
-References: <cover.1663760018.git.mazziesaccount@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=HcWKSOQfnh3ALysQmzthyFKSaMJvE4eOBrZ5WykYnf0=;
+        b=t1KWZ3zTwyO/XVYH9VuY6mGtk7eJzlqsNwemTDPChMdc6/D4I+b/A4QNx200EEB4Hs
+         IOL9CKXwCOf3DrRPKD7lfSNkZ4QLX0BkF4h8z+RAxcrWbFdOCPnQCfxvIp8T7IgXCgEx
+         A6cBV85TslTyL3Rg8ZWzOGmjk/v2jcgMlpVAe/rB11ketIUCOXqrV/u8wO3NcHaToZXW
+         ZRtu7ZQwlJck8FXrDrNc6xxEioVHH/Lyy3+0lkc8oTAP3YxN8k7Nj475ygrjBSlTlZ6D
+         xeo3CVOjR9T8FOx7cvhtbMuAAyhRJDGW8kIq2KC4MbrEqg99XjOtpyDe9tq5vl96pKYQ
+         mQOg==
+X-Gm-Message-State: ACrzQf3mzjaIgCA/IXIesECcVYpiw8opqdb1xl/IoUyA5Ycma0BJVIf3
+        9O/1trs1RtuzzNp7/g2SwwD1ZHu8FEZRyGtx+t8=
+X-Google-Smtp-Source: AMsMyM6G55bRb+0Lbv2MWoChlYMO/VkxvcVvZF6+qxE/8auesJXC3OqMo6uD5hrChQNEavPXUJ5w0Du+HXIis6UE2X0=
+X-Received: by 2002:ac8:5e07:0:b0:35c:e7fd:1e94 with SMTP id
+ h7-20020ac85e07000000b0035ce7fd1e94mr12904471qtx.384.1663760894316; Wed, 21
+ Sep 2022 04:48:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="7wJkDbAIU0Z2c5qr"
-Content-Disposition: inline
-In-Reply-To: <cover.1663760018.git.mazziesaccount@gmail.com>
+References: <20220830034042.9354-2-peterwu.pub@gmail.com> <20220830034042.9354-10-peterwu.pub@gmail.com>
+ <CAPOBaE7rz2F-sij-LbYau6TRxFoOfmoUc=R__Z7iUrFWmZPgrg@mail.gmail.com> <CABtFH5+PuK4vptVNmpn4h2FCxNFp3wWvhUrOxgqArx4YxCY99w@mail.gmail.com>
+In-Reply-To: <CABtFH5+PuK4vptVNmpn4h2FCxNFp3wWvhUrOxgqArx4YxCY99w@mail.gmail.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 21 Sep 2022 14:47:38 +0300
+Message-ID: <CAHp75VeRgRdv54yO51nBwKx8O2pNLvOD2mrqn31zvx4ffSpCHw@mail.gmail.com>
+Subject: Re: [PATCH v9 09/10] leds: flash: mt6370: Add MediaTek MT6370
+ flashlight support
+To:     ChiaEn Wu <peterwu.pub@gmail.com>
+Cc:     Han Jingoo <jingoohan1@gmail.com>, lee@kernel.org,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Helge Deller <deller@gmx.de>, Mark Brown <broonie@kernel.org>,
+        mazziesaccount@gmail.com, andriy.shevchenko@linux.intel.com,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Alice Chen <alice_chen@richtek.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux LED Subsystem <linux-leds@vger.kernel.org>,
+        devicetree <devicetree@vger.kernel.org>,
+        linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+        "moderated list:ARM/Mediatek SoC support" 
+        <linux-mediatek@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
+        szuni chen <szunichen@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -80,64 +89,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, Sep 21, 2022 at 4:48 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> On Sun, Sep 18, 2022 at 3:22 AM Han Jingoo <jingoohan1@gmail.com> wrote:
+> > On Mon, Aug 29, 2022 ChiaEn Wu <peterwu.pub@gmail.com> wrote:
 
---7wJkDbAIU0Z2c5qr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > > +#define MT6370_ITORCH_MIN_uA           25000
+> > > +#define MT6370_ITORCH_STEP_uA          12500
+> > > +#define MT6370_ITORCH_MAX_uA           400000
+> > > +#define MT6370_ITORCH_DOUBLE_MAX_uA    800000
+> > > +#define MT6370_ISTRB_MIN_uA            50000
+> > > +#define MT6370_ISTRB_STEP_uA           12500
+> > > +#define MT6370_ISTRB_MAX_uA            1500000
+> > > +#define MT6370_ISTRB_DOUBLE_MAX_uA     3000000
+> >
+> > Use upper letters as below:
 
-Add maintainer entry for ROHM/Kionix KX022A accelerometer senor driver.
+For microseconds (and other -seconds) the common practice (I assume
+historically) is to use upper letters, indeed. But for current it's
+more natural to use small letters for unit multiplier as it's easier
+to read and understand.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+> > #define MT6370_ITORCH_MIN_UA           25000
+> > #define MT6370_ITORCH_STEP_UA          12500
+> > #define MT6370_ITORCH_MAX_UA           400000
+> > #define MT6370_ITORCH_DOUBLE_MAX_UA    800000
+> > #define MT6370_ISTRB_MIN_UA            50000
+> > #define MT6370_ISTRB_STEP_UA           12500
+> > #define MT6370_ISTRB_MAX_UA            1500000
+> > #define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
+> >
+> > > +#define MT6370_STRBTO_MIN_US           64000
+> > > +#define MT6370_STRBTO_STEP_US          32000
+> > > +#define MT6370_STRBTO_MAX_US           2432000
+>
+> Hi Jingoo,
+>
+> This coding style is in accordance with Andy's opinion in this mail:
+> https://lore.kernel.org/linux-arm-kernel/CAHp75Vciq4M4kVrabNV9vTLLcd1vR=bMe8JLEdAF9MkRTpcB5g@mail.gmail.com/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d30f26e07cd3..74f1c75775b5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11355,6 +11355,11 @@ F:	drivers/mfd/khadas-mcu.c
- F:	include/linux/mfd/khadas-mcu.h
- F:	drivers/thermal/khadas_mcu_fan.c
-=20
-+KIONIX/ROHM KX022A ACCELEROMETER
-+R:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/accel/kionix-kx022a*
-+
- KMEMLEAK
- M:	Catalin Marinas <catalin.marinas@arm.com>
- S:	Maintained
---=20
-2.37.1
+True.
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---7wJkDbAIU0Z2c5qr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmMq+YoACgkQeFA3/03a
-ocWAowgAk6DuKJCcAgFOYZfnpkzj7hW+EVAABH6aWX3iRepXOIrVFezMfQKNCvvm
-7KLu2JVZvrA8QwrVPBJFqWnORyDHL983RN3vuy7YfpOR1bXIdJk2567o8dIlfUM5
-XfutdC9JStRt+Mrz3F+dr3yWf3V7rrilCoFiy41yWwwGtDpkHtrdE5caDziZuqGw
-SoisqFraFm/+rbU5QwH3POUtT4cfZ46A5KTQKTvHdv3Ezvni8HVTNswcjjjhnzcF
-dCYJeMLSpuFuKCummrcJ8uWaqtfpMv60GHmoNESBJ/CoOqF0PHfxSBu6yPsmeSDB
-EkI8akyZtxYHJgWnqTjmElIzItKAhg==
-=+gvv
------END PGP SIGNATURE-----
-
---7wJkDbAIU0Z2c5qr--
+-- 
+With Best Regards,
+Andy Shevchenko

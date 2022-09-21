@@ -2,99 +2,95 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4545BFFB6
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 16:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 587875C044B
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Sep 2022 18:36:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbiIUOQe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 10:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51172 "EHLO
+        id S230263AbiIUQg3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 12:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbiIUOQe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 10:16:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38187642E3
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 07:16:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8B4762BEE
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 14:16:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7E9C433D6;
-        Wed, 21 Sep 2022 14:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1663769792;
-        bh=TKXpX1K8bLo3a98p81KukESDdLEdzDsFxaMcOdlja3U=;
-        h=Subject:To:From:Date:From;
-        b=0vaaIXFUY7LBNlw9qkdrcGozmX6/gfZeHCBibrbz4qpbDRb+kuKDc588c6LUx8sVs
-         wSITG7Ovra5ymTmkXM8aWs93ItjPkS6Ggl2bYLlvFD0yJayJZKbPcgtac4qJ7F4Uuh
-         22/OkzEfNRSpx1BlZGVR5a1fdwjooOcX7PedST84=
-Subject: patch "MAINTAINERS: Update Microchip MCP3911 to Maintained" added to char-misc-next
-To:     marcus.folkesson@gmail.com, Jonathan.Cameron@huawei.com,
-        jic23@kernel.org, kent@minoris.se, linux-iio@vger.kernel.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 21 Sep 2022 16:11:51 +0200
-Message-ID: <1663769511205149@kroah.com>
+        with ESMTP id S230315AbiIUQgO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 12:36:14 -0400
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F8EAB05A
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 09:19:10 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.30.67.153])
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4MXk8Q0F4KzlDj9
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 00:17:26 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.102.38])
+        by APP1 (Coremail) with SMTP id cCh0CgCHDTF5OStjcRGBBA--.52958S4;
+        Thu, 22 Sep 2022 00:19:07 +0800 (CST)
+From:   Wei Yongjun <weiyongjun@huaweicloud.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>, linux-iio@vger.kernel.org
+Subject: [PATCH 0/5 v3] iio: Silence no spi_device_id warnings
+Date:   Wed, 21 Sep 2022 16:36:15 +0000
+Message-Id: <20220921163620.805879-1-weiyongjun@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-CM-TRANSID: cCh0CgCHDTF5OStjcRGBBA--.52958S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Gw4DXw1rXF18Aw47Xr4rGrg_yoW8JF45pF
+        WUKF90yryDuFn2kan3Zan7CFy5KF4SyayrX3W7K3Wj9wsxZa45JFWftFyjyw1DJay7t3ZF
+        qFy2gr18GF18Ar7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUy0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7
+        CjxVAFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAq
+        x4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6x
+        CaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCa
+        FVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_Jr
+        Wlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j
+        6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_WF
+        yUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4U
+        YxBIdaVFxhVjvjDU0xZFpf9x07UWE__UUUUU=
+X-CM-SenderInfo: 5zhl50pqjm3046kxt4xhlfz01xgou0bp/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-This is a note to let you know that I've just added the patch titled
+SPI devices use the spi_device_id for module autoloading even on
+systems using device tree.
 
-    MAINTAINERS: Update Microchip MCP3911 to Maintained
+Commit 5fa6863ba692 ("spi: Check we have a spi_device_id for each DT
+compatible") added a test to check that every SPI driver has a
+spi_device_id for each DT compatiable string defined by driver
+and warns if the spi_device_id is missing.
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-next branch.
+This series add spi_device_id entries to silence the warnings, and
+ensure driver module autoloading works.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+v2 -> v3:
+ - post as patch series
+ - make use of the spi_get_device_id(spi)->driver_data
+   path to provide the chip info structure if
+   of_device_get_match_data() returns NULL.
 
-The patch will also be merged in the next major kernel release
-during the merge window.
+Wei Yongjun (5):
+  iio: adc: ti-ads131e08: Silence no spi_device_id warnings
+  iio: accel: sca3300: Silence no spi_device_id warning
+  iio: adc: ad9467: Silence no spi_device_id warnings
+  iio: adc: ad7192: Silence no spi_device_id warnings
+  iio: adc: ad7124: Silence no spi_device_id warnings
 
-If you have any questions about this process, please let me know.
+ drivers/iio/accel/sca3300.c    | 12 ++++++++++--
+ drivers/iio/adc/ad7124.c       | 10 ++++++++++
+ drivers/iio/adc/ad7192.c       | 12 ++++++++++++
+ drivers/iio/adc/ad9467.c       | 11 +++++++++++
+ drivers/iio/adc/ti-ads131e08.c | 11 +++++++++++
+ 5 files changed, 54 insertions(+), 2 deletions(-)
 
-
-From 9e8284501c8d9e2bde4dfcddaf0201ee7cc8f2a7 Mon Sep 17 00:00:00 2001
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
-Date: Sat, 23 Jul 2022 11:20:30 +0200
-Subject: MAINTAINERS: Update Microchip MCP3911 to Maintained
-
-The actual status of the code is Maintained.
-
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc: Kent Gustavsson <kent@minoris.se>
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio <linux-iio@vger.kernel.org>
-Link: https://lore.kernel.org/r/20220723092030.260812-1-marcus.folkesson@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8a5012ba6ff9..b8b6544ba27c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13405,7 +13405,7 @@ MICROCHIP MCP3911 ADC DRIVER
- M:	Marcus Folkesson <marcus.folkesson@gmail.com>
- M:	Kent Gustavsson <kent@minoris.se>
- L:	linux-iio@vger.kernel.org
--S:	Supported
-+S:	Maintained
- F:	Documentation/devicetree/bindings/iio/adc/microchip,mcp3911.yaml
- F:	drivers/iio/adc/mcp3911.c
- 
 -- 
-2.37.3
-
+2.34.1
 

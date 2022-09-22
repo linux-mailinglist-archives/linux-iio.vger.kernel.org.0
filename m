@@ -2,346 +2,268 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBE9F5E6B1E
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 20:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB8F5E6BE3
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 21:41:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbiIVSkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Sep 2022 14:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
+        id S232380AbiIVTk7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 15:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbiIVSkC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 14:40:02 -0400
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85103FA2C
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 11:39:58 -0700 (PDT)
+        with ESMTP id S232372AbiIVTk5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 15:40:57 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 896D610AB22;
+        Thu, 22 Sep 2022 12:40:56 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id s6so16393967lfo.7;
+        Thu, 22 Sep 2022 12:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1663871999;
-  x=1695407999;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=OUB2PR5yIZttOiNYYHWuWPavjelX2m3ytWnWZspQAzA=;
-  b=eknGD5tUU87yWFzwgXEb2wRSseZcB2xQrc5prEMpCQ3yYKMK1Q+Mgreq
-   pRZ5mTZraE4mNkSekqNZPLCucEYexuJkczeeoLygN89LK9kVKe1SBboqB
-   J/NPSiW21y815Z6y60+WkhQgreauFiLu2dHhWuseX7ojWsZ0EHyd9mw88
-   f0+MAOtRPsAU7WAl1KT+2M3c8KS/7jlUUBc+J6df+vIKhVHjCw6+bPKfQ
-   vrQVUr7gkxdTSOpA6SQEHrPEvUvZC8vGaj4dJsNHmMDa2wwchVJBWSB+a
-   PREKPlmfpSr/Az+MgMpgei4rBgAt2jDoQNBb7Hjhduv+Zt69z1DzVxxcQ
-   g==;
-Date:   Thu, 22 Sep 2022 20:39:55 +0200
-To:     Paul Cercueil <paul@crapouillou.net>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        "Jonathan Cameron" <jic23@kernel.org>,
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=+YunCiI/l6Z7qKaiyJ+DMxs5W2Cc46FIVZFBzWUicCk=;
+        b=TOK40L8LQGYIieJpSxwQAbJ8BAwpKgihofjDPWldoRVnE0F70wfg2mzXRVmU4K7brt
+         XcnT1MYew5C6muAbd7Q5yPyHNYc4Ksw0NIotq03AqL3a+f4zH1l3MsUMQt44J4bCOJSR
+         Zz4TimhnPKk/GnQtg0RNtEk914zNQWNPMWCE61RzrFXZAGL1Lz9+4ly7hPFtS94EYk8O
+         HGQvTWGcvU4DJIuOPv4ilMXX8WMvHlPX+x63XljiJgnRL7xF3DWLXNerE2Mdi4wRQxxZ
+         7uDo5N8jCtUt0EYCrcRo+nApK6GBYtPlw1gmNUkO/4qw88papQtEbQ4Yylp4lSPoUowO
+         LKoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=+YunCiI/l6Z7qKaiyJ+DMxs5W2Cc46FIVZFBzWUicCk=;
+        b=TtSSgu1rURwPV1fYk6+hFsanBGiHfMP8Q8peWq2hbOxrFPscoetl+lok9IFnpMGPVA
+         wfWldDR6PnwXpgqPpme0q+cEAYI/DINXJhbAzKUpNMnpLVvuqns2FpMtSuUC/+gqq4oI
+         geLeAOlDRPq9fGkejG6ZiJ2utcOAwiYse3QftPav313TakS3IsKABP1OMzOevNqNug09
+         FLaiAowwS/vcg9nBJEFtqjCZwbkuOH8PEIAq1FNmq0cIvOx8Y1sdDSmmDBjcfURSHmOe
+         BJO8Ql6B17tpM8+48SvYLrJgKCKDbBpxXV8+rm90dDul39CMiAr7vXJwmxy2LeBFIkZA
+         pxXA==
+X-Gm-Message-State: ACrzQf3ENN1zoE7tlsROrSHtLKKtoEhIRHYrUvpkPzPiYtAi8IzddA6w
+        P4jGbSU3NowcFsWxKc2CYOciNcrqIRUbBA==
+X-Google-Smtp-Source: AMsMyM4DxCmDd2KIWbBYZHeuhHYrzjjpmctSPxbTJzq574ZXEPFupXl0u52dbi7dwR/09Vdz0FXI7g==
+X-Received: by 2002:a05:6512:3b06:b0:498:fa72:c24d with SMTP id f6-20020a0565123b0600b00498fa72c24dmr1935747lfv.538.1663875654622;
+        Thu, 22 Sep 2022 12:40:54 -0700 (PDT)
+Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
+        by smtp.gmail.com with ESMTPSA id m6-20020a056512114600b004896ed8dce3sm1088824lfg.2.2022.09.22.12.40.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Sep 2022 12:40:53 -0700 (PDT)
+From:   Marcus Folkesson <marcus.folkesson@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Subject: Re: [PATCH 2/3] iio: light: vcnl4000: Add enable attributes for
- vcnl4040
-Message-ID: <Yyyr+4yNbgbCe6lp@axis.com>
-References: <20220920180958.2308229-1-marten.lindahl@axis.com>
- <20220920180958.2308229-3-marten.lindahl@axis.com>
- <CU3JIR.R6ZZ1TYIUTVP3@crapouillou.net>
- <Yyxdb6KFxOgb2WGA@axis.com>
- <6E7MIR.YSB8G5DRB84E1@crapouillou.net>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v7] iio: adc: mcp3911: add support to set PGA
+Date:   Thu, 22 Sep 2022 21:46:39 +0200
+Message-Id: <20220922194639.1118971-1-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6E7MIR.YSB8G5DRB84E1@crapouillou.net>
-From:   Marten Lindahl <martenli@axis.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 04:10:54PM +0200, Paul Cercueil wrote:
-> 
-> 
-> Le jeu., sept. 22 2022 at 15:04:47 +0200, Marten Lindahl 
-> <martenli@axis.com> a écrit :
-> > On Wed, Sep 21, 2022 at 12:01:24AM +0200, Paul Cercueil wrote:
-> >>  Hi Mårten,
-> >> 
-> >>  Le mar., sept. 20 2022 at 20:09:57 +0200, Mårten Lindahl
-> >>  <marten.lindahl@axis.com> a écrit :
-> >>  > Add channel attribute in_illuminance_en and in_proximity_en with
-> >>  > read/write access for vcnl4040. If automatic runtime power 
-> >> management
-> >>  > is
-> >>  > turned off (power/control = on), both sensors can be kept on or 
-> >> off by
-> >>  > userspace.
-> >> 
-> > 
-> > Hi Paul!
-> > 
-> >>  I don't really understand this. If automatic runtime power 
-> >> management
-> >>  is turned OFF, I would expect both sensors to be kept ON always.
-> >> 
-> >>  It's not userspace's job to do power management of the chip. Why are
-> >>  these channel attributes needed?
-> > 
-> > I think I understand the problem here. I added the *_en attributes
-> > because I couldn't see any way to turn the sensors on without forcing 
-> > it
-> > on during the *_raw read operation (with 
-> > vcnl4000_set_pm_runtime_state(true))
-> > after which it is turned off again (false).
-> 
-> What's wrong with doing that?
+Add support for setting the Programmable Gain Amplifiers by adjust the
+scale value.
 
-Hi!
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
 
-No, nothing is wrong with that. I was just confused by the fact that
-power/control=on didn't have any effect on the device. 
+Notes:
+    Based on
+    Link: https://lore.kernel.org/all/20220815061625.35568-1-marcus.folkesson@gmail.com/
+    
+    But with tmp0, tmp1 and tmp2 removed as those are not needed.
+    Link: https://lore.kernel.org/all/202209220648.Wb6EtPat-lkp@intel.com/
 
-> 
-> > Even if the power/control is set to 'on', there will be no callback 
-> > for
-> > changing the state to active.
-> > 
-> > It seems this does not work in this driver (with or without my 
-> > patches) and I
-> > was confused by how it was supposed to work. But after some digging I 
-> > suspect
-> > there could be a bug in the driver since the sysfs control/* nodes 
-> > seems to
-> > operate on the indio_dev->dev and not on the driver dev, which is 
-> > used for
-> > the vcnl4000 driver pm_runtime operations.
-> 
-> I believe this is normal. The devm_iio_device_alloc() creates a new 
-> device, whose parent is your i2c_client->dev.
+ drivers/iio/adc/mcp3911.c | 104 +++++++++++++++++++++++++++++---------
+ 1 file changed, 80 insertions(+), 24 deletions(-)
 
-Ok
-> 
-> > Setting the power/control to 'on' invokes the rpm_resume function 
-> > which
-> > checks the dev.power.disable_depth attribute before it calls the
-> > resume_callback for setting the active state on the driver. But if the
-> > dev.power.disable_depth == 1 (which is the init value) the callback 
-> > will not
-> > be called. And nothing happens. And I suspect the reason why the
-> > dev.power.disable_depth is 1 may be that it is not the vcnl4000 dev
-> > object that is being checked, but the indio_dev->dev object, which 
-> > has not
-> > been configured for pm_runtime operations in the driver.
-> > 
-> > Sorry for a long reply to your question, but I suspect that if the
-> > automatic pm_runtime for this driver can be disabled by the sysfs
-> > power/control, the *_en attributes wont be needed.
-> > 
-> > I will look into why it does not work.
-> 
-> I still don't understand. Why do you *need* to disable runtime PM?
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index 0151258b456c..0d768006eabb 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -29,6 +29,8 @@
+ #define MCP3911_REG_MOD			0x06
+ #define MCP3911_REG_PHASE		0x07
+ #define MCP3911_REG_GAIN		0x09
++#define MCP3911_GAIN_MASK(ch)		(GENMASK(2, 0) << 3 * ch)
++#define MCP3911_GAIN_VAL(ch, val)      ((val << 3 * ch) & MCP3911_GAIN_MASK(ch))
+ 
+ #define MCP3911_REG_STATUSCOM		0x0a
+ #define MCP3911_STATUSCOM_DRHIZ         BIT(12)
+@@ -59,8 +61,10 @@
+ #define MCP3911_REG_WRITE(reg, id)	((((reg) << 1) | ((id) << 5) | (0 << 0)) & 0xff)
+ 
+ #define MCP3911_NUM_CHANNELS		2
++#define MCP3911_NUM_SCALES		6
+ 
+ static const int mcp3911_osr_table[] = { 32, 64, 128, 256, 512, 1024, 2048, 4096 };
++static u32 mcp3911_scale_table[MCP3911_NUM_SCALES][2];
+ 
+ struct mcp3911 {
+ 	struct spi_device *spi;
+@@ -69,6 +73,7 @@ struct mcp3911 {
+ 	struct clk *clki;
+ 	u32 dev_addr;
+ 	struct iio_trigger *trig;
++	u32 gain[MCP3911_NUM_CHANNELS];
+ 	struct {
+ 		u32 channels[MCP3911_NUM_CHANNELS];
+ 		s64 ts __aligned(8);
+@@ -145,6 +150,11 @@ static int mcp3911_read_avail(struct iio_dev *indio_dev,
+ 		*vals = mcp3911_osr_table;
+ 		*length = ARRAY_SIZE(mcp3911_osr_table);
+ 		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SCALE:
++		*type = IIO_VAL_INT_PLUS_NANO;
++		*vals = (int *)mcp3911_scale_table;
++		*length = ARRAY_SIZE(mcp3911_scale_table) * 2;
++		return IIO_AVAIL_LIST;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -189,29 +199,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+ 		break;
+ 
+ 	case IIO_CHAN_INFO_SCALE:
+-		if (adc->vref) {
+-			ret = regulator_get_voltage(adc->vref);
+-			if (ret < 0) {
+-				dev_err(indio_dev->dev.parent,
+-					"failed to get vref voltage: %d\n",
+-				       ret);
+-				goto out;
+-			}
+-
+-			*val = ret / 1000;
+-		} else {
+-			*val = MCP3911_INT_VREF_MV;
+-		}
+-
+-		/*
+-		 * For 24bit Conversion
+-		 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
+-		 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
+-		 */
+-
+-		/* val2 = (2^23 * 1.5) */
+-		*val2 = 12582912;
+-		ret = IIO_VAL_FRACTIONAL;
++		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
++		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
++		ret = IIO_VAL_INT_PLUS_NANO;
+ 		break;
+ 	}
+ 
+@@ -229,6 +219,18 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 
+ 	mutex_lock(&adc->lock);
+ 	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
++			if (val == mcp3911_scale_table[i][0] &&
++				val2 == mcp3911_scale_table[i][1]) {
++
++				adc->gain[channel->channel] = BIT(i);
++				ret = mcp3911_update(adc, MCP3911_REG_GAIN,
++						MCP3911_GAIN_MASK(channel->channel),
++						MCP3911_GAIN_VAL(channel->channel, i), 1);
++			}
++		}
++		break;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		if (val2 != 0) {
+ 			ret = -EINVAL;
+@@ -264,6 +266,44 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 	return ret;
+ }
+ 
++static int mcp3911_calc_scale_table(struct mcp3911 *adc)
++{
++	u32 ref = MCP3911_INT_VREF_MV;
++	u32 div;
++	int ret;
++	u64 tmp;
++
++	if (adc->vref) {
++		ret = regulator_get_voltage(adc->vref);
++		if (ret < 0) {
++			dev_err(&adc->spi->dev,
++				"failed to get vref voltage: %d\n",
++			       ret);
++			return ret;
++		}
++
++		ref = ret / 1000;
++	}
++
++	/*
++	 * For 24-bit Conversion
++	 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
++	 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
++	 *
++	 * ref = Reference voltage
++	 * div = (2^23 * 1.5 * gain) = 12582912 * gain
++	 */
++	for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
++		div = 12582912 * BIT(i);
++		tmp = div_s64((s64)ref * 1000000000LL, div);
++
++		mcp3911_scale_table[i][0] = 0;
++		mcp3911_scale_table[i][1] = tmp;
++	}
++
++	return 0;
++}
++
+ #define MCP3911_CHAN(idx) {					\
+ 		.type = IIO_VOLTAGE,				\
+ 		.indexed = 1,					\
+@@ -273,8 +313,10 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
+ 			BIT(IIO_CHAN_INFO_OFFSET) |		\
+ 			BIT(IIO_CHAN_INFO_SCALE),		\
+-		.info_mask_shared_by_type_available =		\
++		.info_mask_shared_by_type_available =           \
+ 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
++		.info_mask_separate_available =			\
++			BIT(IIO_CHAN_INFO_SCALE),		\
+ 		.scan_type = {					\
+ 			.sign = 's',				\
+ 			.realbits = 24,				\
+@@ -483,6 +525,20 @@ static int mcp3911_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+ 
++	ret = mcp3911_calc_scale_table(adc);
++	if (ret)
++		return ret;
++
++       /* Set gain to 1 for all channels */
++	for (int i = 0; i < MCP3911_NUM_CHANNELS; i++) {
++		adc->gain[i] = 1;
++		ret = mcp3911_update(adc, MCP3911_REG_GAIN,
++				MCP3911_GAIN_MASK(i),
++				MCP3911_GAIN_VAL(i, 0), 1);
++		if (ret)
++			return ret;
++	}
++
+ 	indio_dev->name = spi_get_device_id(spi)->name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->info = &mcp3911_info;
+-- 
+2.37.1
 
-There is no special reason to disable runtime PM for the usecases we
-have. The original reason behind this patch is a local patch from the
-4.19 kernel when runtime PM did not exist in the driver. The local
-patch added *_en attributes for turning the sensors on/off.
-
-I will gladly skip this patch, since it has come clear to me that it
-doesn't bring any value to the current version of the driver. I will
-probably look at a fix for the power/control=on problem, but any fix
-for that will be a separate patch.
-
-Kind regards
-Mårten
-
-> 
-> -Paul
-> 
-> > Kind regards
-> > Mårten
-> > 
-> >> 
-> >>  Cheers,
-> >>  -Paul
-> >> 
-> >>  > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
-> >>  > ---
-> >>  >  drivers/iio/light/vcnl4000.c | 79
-> >>  > ++++++++++++++++++++++++++++++++----
-> >>  >  1 file changed, 72 insertions(+), 7 deletions(-)
-> >>  >
-> >>  > diff --git a/drivers/iio/light/vcnl4000.c
-> >>  > b/drivers/iio/light/vcnl4000.c
-> >>  > index 0b226c684957..9838f0868372 100644
-> >>  > --- a/drivers/iio/light/vcnl4000.c
-> >>  > +++ b/drivers/iio/light/vcnl4000.c
-> >>  > @@ -125,6 +125,9 @@ struct vcnl4000_data {
-> >>  >  	enum vcnl4000_device_ids id;
-> >>  >  	int rev;
-> >>  >  	int al_scale;
-> >>  > +	bool als_enable;
-> >>  > +	bool ps_enable;
-> >>  > +
-> >>  >  	const struct vcnl4000_chip_spec *chip_spec;
-> >>  >  	struct mutex vcnl4000_lock;
-> >>  >  	struct vcnl4200_channel vcnl4200_al;
-> >>  > @@ -202,10 +205,13 @@ static ssize_t 
-> >> vcnl4000_write_als_enable(struct
-> >>  > vcnl4000_data *data, int val)
-> >>  >  		if (ret < 0)
-> >>  >  			return ret;
-> >>  >
-> >>  > -		if (val)
-> >>  > +		if (val) {
-> >>  >  			ret &= ~VCNL4040_ALS_CONF_ALS_SD;
-> >>  > -		else
-> >>  > +			data->als_enable = true;
-> >>  > +		} else {
-> >>  >  			ret |= VCNL4040_ALS_CONF_ALS_SD;
-> >>  > +			data->als_enable = false;
-> >>  > +		}
-> >>  >
-> >>  >  		return i2c_smbus_write_word_data(data->client, 
-> >> VCNL4200_AL_CONF,
-> >>  >  						 ret);
-> >>  > @@ -225,10 +231,13 @@ static ssize_t 
-> >> vcnl4000_write_ps_enable(struct
-> >>  > vcnl4000_data *data, int val)
-> >>  >  		if (ret < 0)
-> >>  >  			return ret;
-> >>  >
-> >>  > -		if (val)
-> >>  > +		if (val) {
-> >>  >  			ret &= ~VCNL4040_PS_CONF1_PS_SD;
-> >>  > -		else
-> >>  > +			data->ps_enable = true;
-> >>  > +		} else {
-> >>  >  			ret |= VCNL4040_PS_CONF1_PS_SD;
-> >>  > +			data->ps_enable = false;
-> >>  > +		}
-> >>  >
-> >>  >  		return i2c_smbus_write_word_data(data->client,
-> >>  >  						 VCNL4200_PS_CONF1, ret);
-> >>  > @@ -283,6 +292,8 @@ static int vcnl4200_init(struct vcnl4000_data
-> >>  > *data)
-> >>  >  	dev_dbg(&data->client->dev, "device id 0x%x", id);
-> >>  >
-> >>  >  	data->rev = (ret >> 8) & 0xf;
-> >>  > +	data->als_enable = false;
-> >>  > +	data->ps_enable = false;
-> >>  >
-> >>  >  	data->vcnl4200_al.reg = VCNL4200_AL_DATA;
-> >>  >  	data->vcnl4200_ps.reg = VCNL4200_PS_DATA;
-> >>  > @@ -459,8 +470,12 @@ static bool 
-> >> vcnl4010_is_in_periodic_mode(struct
-> >>  > vcnl4000_data *data)
-> >>  >  static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data 
-> >> *data,
-> >>  > bool on)
-> >>  >  {
-> >>  >  	struct device *dev = &data->client->dev;
-> >>  > +	struct iio_dev *indio_dev = i2c_get_clientdata(data->client);
-> >>  >  	int ret;
-> >>  >
-> >>  > +	if (!indio_dev->dev.power.runtime_auto)
-> >>  > +		return 0;
-> >>  > +
-> >>  >  	if (on) {
-> >>  >  		ret = pm_runtime_resume_and_get(dev);
-> >>  >  	} else {
-> >>  > @@ -507,6 +522,38 @@ static int vcnl4000_read_raw(struct iio_dev
-> >>  > *indio_dev,
-> >>  >  		*val = 0;
-> >>  >  		*val2 = data->al_scale;
-> >>  >  		return IIO_VAL_INT_PLUS_MICRO;
-> >>  > +	case IIO_CHAN_INFO_ENABLE:
-> >>  > +		switch (chan->type) {
-> >>  > +		case IIO_LIGHT:
-> >>  > +			*val = data->als_enable;
-> >>  > +			return IIO_VAL_INT;
-> >>  > +		case IIO_PROXIMITY:
-> >>  > +			*val = data->ps_enable;
-> >>  > +			return IIO_VAL_INT;
-> >>  > +		default:
-> >>  > +			return -EINVAL;
-> >>  > +		}
-> >>  > +	default:
-> >>  > +		return -EINVAL;
-> >>  > +	}
-> >>  > +}
-> >>  > +
-> >>  > +static int vcnl4040_write_raw(struct iio_dev *indio_dev,
-> >>  > +				struct iio_chan_spec const *chan,
-> >>  > +				int val, int val2, long mask)
-> >>  > +{
-> >>  > +	struct vcnl4000_data *data = iio_priv(indio_dev);
-> >>  > +
-> >>  > +	switch (mask) {
-> >>  > +	case IIO_CHAN_INFO_ENABLE:
-> >>  > +		switch (chan->type) {
-> >>  > +		case IIO_LIGHT:
-> >>  > +			return vcnl4000_write_als_enable(data, val);
-> >>  > +		case IIO_PROXIMITY:
-> >>  > +			return vcnl4000_write_ps_enable(data, val);
-> >>  > +		default:
-> >>  > +			return -EINVAL;
-> >>  > +		}
-> >>  >  	default:
-> >>  >  		return -EINVAL;
-> >>  >  	}
-> >>  > @@ -845,6 +892,19 @@ static const struct iio_chan_spec
-> >>  > vcnl4010_channels[] = {
-> >>  >  	IIO_CHAN_SOFT_TIMESTAMP(1),
-> >>  >  };
-> >>  >
-> >>  > +static const struct iio_chan_spec vcnl4040_channels[] = {
-> >>  > +	{
-> >>  > +		.type = IIO_LIGHT,
-> >>  > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >>  > +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_ENABLE),
-> >>  > +	}, {
-> >>  > +		.type = IIO_PROXIMITY,
-> >>  > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> >>  > +			BIT(IIO_CHAN_INFO_ENABLE),
-> >>  > +		.ext_info = vcnl4000_ext_info,
-> >>  > +	}
-> >>  > +};
-> >>  > +
-> >>  >  static const struct iio_info vcnl4000_info = {
-> >>  >  	.read_raw = vcnl4000_read_raw,
-> >>  >  };
-> >>  > @@ -859,6 +919,11 @@ static const struct iio_info vcnl4010_info = 
-> >> {
-> >>  >  	.write_event_config = vcnl4010_write_event_config,
-> >>  >  };
-> >>  >
-> >>  > +static const struct iio_info vcnl4040_info = {
-> >>  > +	.read_raw = vcnl4000_read_raw,
-> >>  > +	.write_raw = vcnl4040_write_raw,
-> >>  > +};
-> >>  > +
-> >>  >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] 
-> >> = {
-> >>  >  	[VCNL4000] = {
-> >>  >  		.prod = "VCNL4000",
-> >>  > @@ -888,9 +953,9 @@ static const struct vcnl4000_chip_spec
-> >>  > vcnl4000_chip_spec_cfg[] = {
-> >>  >  		.measure_light = vcnl4200_measure_light,
-> >>  >  		.measure_proximity = vcnl4200_measure_proximity,
-> >>  >  		.set_power_state = vcnl4200_set_power_state,
-> >>  > -		.channels = vcnl4000_channels,
-> >>  > -		.num_channels = ARRAY_SIZE(vcnl4000_channels),
-> >>  > -		.info = &vcnl4000_info,
-> >>  > +		.channels = vcnl4040_channels,
-> >>  > +		.num_channels = ARRAY_SIZE(vcnl4040_channels),
-> >>  > +		.info = &vcnl4040_info,
-> >>  >  		.irq_support = false,
-> >>  >  	},
-> >>  >  	[VCNL4200] = {
-> >>  > --
-> >>  > 2.30.2
-> >>  >
-> >> 
-> >> 
-> 
-> 

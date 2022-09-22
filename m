@@ -2,99 +2,346 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31E5C5E6922
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 19:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE9F5E6B1E
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 20:40:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231788AbiIVRES (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Sep 2022 13:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54640 "EHLO
+        id S231984AbiIVSkE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 14:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231779AbiIVREO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 13:04:14 -0400
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE45FCA64
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 10:04:11 -0700 (PDT)
-Received: by mail-wr1-x42a.google.com with SMTP id z6so16614516wrq.1
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 10:04:11 -0700 (PDT)
+        with ESMTP id S229705AbiIVSkC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 14:40:02 -0400
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85103FA2C
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 11:39:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=GR6QqlWwcUCHVPDy1PIJ3cv5rzI8XO1SG3L1WODR4pQ=;
-        b=5/xG4bNfcawZqP5d1tciuXBStQXxGo/tY+dSf7Oa5JslTzHv70UBaJZhOWVgMJhAjB
-         r2srFqm3rE9CtuX4U9mqgTT8du1sDAiVqHtXUxRtaW65eLxZXvO6sFyA/rlf40aNHJFa
-         bajB4AtAHtfaa3p1XiKlPmekaJJ6lFcu64+WvfQjjFfagMCX5T2uHNHc2pEb61+7q3K/
-         vj2Sc4pgExtEQdi0jDt/e7wRbejb1vuw0fYRFbDfuEEaXk6on1UmpWHWbAZzK5l7ZUa9
-         fuxnx4uidHhX4aEvbBxOAfkHUhAOlsrUIM8Z1TCNj6tfv3L/1wgVAFnAOt0R3WN0rIfM
-         nxfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=GR6QqlWwcUCHVPDy1PIJ3cv5rzI8XO1SG3L1WODR4pQ=;
-        b=6Bxs1i89HLkyu/RIri3/Vpr/k+j8ZolVc7UFac4PHd2i91qKuETO7mqUzOm4T426/Y
-         mcKlBKO0ZM6L3O+wAQK9Fgon0cKN5Ap/MlJt0GqIhBIkOSYGzuADOXMOCtU+WLYNH7z7
-         6+NjIk3n47Uz2RatNjUNs/oEhc8Ivva+dGb2mUAI2qJJMRPp8TM6f1nG/Nd4l4BmC2TX
-         lPXMTUqqa/Px7WvfLZmlv0S7vwg55T6T7DoFnR9V/IWiV3LaB1QTZ6BV32tmZpsKE37M
-         VRLJO5N8v5QOVQDJQWNDzPYzQ1/B6pvsSRbaxQosURqo09/c4ZuCd+vqlqzs/eoqzx6L
-         POWg==
-X-Gm-Message-State: ACrzQf1ylTRCoOD8Xw1A5l9rBFCxFpOEA11bx70ntt35U5MEnQjle+mY
-        2HPyhepyq33vUciX0rGl2FxblZ5V6MsNPA==
-X-Google-Smtp-Source: AMsMyM6lUAz4T7XZ1WtDGRMTGXtFvw6AwsVg2d8BrgUmXBgVc4MeLXk7GbrTV/Mo7lkRfVPha9S0lg==
-X-Received: by 2002:a5d:4688:0:b0:22a:f718:7f36 with SMTP id u8-20020a5d4688000000b0022af7187f36mr2662331wrq.315.1663866249650;
-        Thu, 22 Sep 2022 10:04:09 -0700 (PDT)
-Received: from baylibre-ThinkPad-T14s-Gen-2i.. (32.31.102.84.rev.sfr.net. [84.102.31.32])
-        by smtp.gmail.com with ESMTPSA id w21-20020a1cf615000000b003a604a29a34sm20334wmc.35.2022.09.22.10.04.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 10:04:09 -0700 (PDT)
-From:   Julien Panis <jpanis@baylibre.com>
-To:     william.gray@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mranostay@ti.com
-Subject: [PATCH v8 4/4] MAINTAINERS: add TI ECAP driver info
-Date:   Thu, 22 Sep 2022 19:04:02 +0200
-Message-Id: <20220922170402.403683-5-jpanis@baylibre.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220922170402.403683-1-jpanis@baylibre.com>
-References: <20220922170402.403683-1-jpanis@baylibre.com>
+  d=axis.com; q=dns/txt; s=axis-central1; t=1663871999;
+  x=1695407999;
+  h=date:to:cc:subject:message-id:references:mime-version:
+   content-transfer-encoding:in-reply-to:from;
+  bh=OUB2PR5yIZttOiNYYHWuWPavjelX2m3ytWnWZspQAzA=;
+  b=eknGD5tUU87yWFzwgXEb2wRSseZcB2xQrc5prEMpCQ3yYKMK1Q+Mgreq
+   pRZ5mTZraE4mNkSekqNZPLCucEYexuJkczeeoLygN89LK9kVKe1SBboqB
+   J/NPSiW21y815Z6y60+WkhQgreauFiLu2dHhWuseX7ojWsZ0EHyd9mw88
+   f0+MAOtRPsAU7WAl1KT+2M3c8KS/7jlUUBc+J6df+vIKhVHjCw6+bPKfQ
+   vrQVUr7gkxdTSOpA6SQEHrPEvUvZC8vGaj4dJsNHmMDa2wwchVJBWSB+a
+   PREKPlmfpSr/Az+MgMpgei4rBgAt2jDoQNBb7Hjhduv+Zt69z1DzVxxcQ
+   g==;
+Date:   Thu, 22 Sep 2022 20:39:55 +0200
+To:     Paul Cercueil <paul@crapouillou.net>
+CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
+        "Jonathan Cameron" <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@axis.com>
+Subject: Re: [PATCH 2/3] iio: light: vcnl4000: Add enable attributes for
+ vcnl4040
+Message-ID: <Yyyr+4yNbgbCe6lp@axis.com>
+References: <20220920180958.2308229-1-marten.lindahl@axis.com>
+ <20220920180958.2308229-3-marten.lindahl@axis.com>
+ <CU3JIR.R6ZZ1TYIUTVP3@crapouillou.net>
+ <Yyxdb6KFxOgb2WGA@axis.com>
+ <6E7MIR.YSB8G5DRB84E1@crapouillou.net>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <6E7MIR.YSB8G5DRB84E1@crapouillou.net>
+From:   Marten Lindahl <martenli@axis.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This commit adds driver info for TI ECAP used in capture operating mode.
+On Thu, Sep 22, 2022 at 04:10:54PM +0200, Paul Cercueil wrote:
+> 
+> 
+> Le jeu., sept. 22 2022 at 15:04:47 +0200, Marten Lindahl 
+> <martenli@axis.com> a écrit :
+> > On Wed, Sep 21, 2022 at 12:01:24AM +0200, Paul Cercueil wrote:
+> >>  Hi Mårten,
+> >> 
+> >>  Le mar., sept. 20 2022 at 20:09:57 +0200, Mårten Lindahl
+> >>  <marten.lindahl@axis.com> a écrit :
+> >>  > Add channel attribute in_illuminance_en and in_proximity_en with
+> >>  > read/write access for vcnl4040. If automatic runtime power 
+> >> management
+> >>  > is
+> >>  > turned off (power/control = on), both sensors can be kept on or 
+> >> off by
+> >>  > userspace.
+> >> 
+> > 
+> > Hi Paul!
+> > 
+> >>  I don't really understand this. If automatic runtime power 
+> >> management
+> >>  is turned OFF, I would expect both sensors to be kept ON always.
+> >> 
+> >>  It's not userspace's job to do power management of the chip. Why are
+> >>  these channel attributes needed?
+> > 
+> > I think I understand the problem here. I added the *_en attributes
+> > because I couldn't see any way to turn the sensors on without forcing 
+> > it
+> > on during the *_raw read operation (with 
+> > vcnl4000_set_pm_runtime_state(true))
+> > after which it is turned off again (false).
+> 
+> What's wrong with doing that?
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+Hi!
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d4999f68bda8..906b93e266f2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20322,6 +20322,13 @@ T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_devices.git
- F:	drivers/media/platform/ti/davinci/
- F:	include/media/davinci/
- 
-+TI ENHANCED CAPTURE (eCAP) DRIVER
-+M:	Julien Panis <jpanis@baylibre.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/counter/ti,am62-ecap-capture.yaml
-+F:	drivers/counter/ti-ecap-capture.c
-+
- TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
- R:	David Lechner <david@lechnology.com>
- L:	linux-iio@vger.kernel.org
--- 
-2.37.3
+No, nothing is wrong with that. I was just confused by the fact that
+power/control=on didn't have any effect on the device. 
 
+> 
+> > Even if the power/control is set to 'on', there will be no callback 
+> > for
+> > changing the state to active.
+> > 
+> > It seems this does not work in this driver (with or without my 
+> > patches) and I
+> > was confused by how it was supposed to work. But after some digging I 
+> > suspect
+> > there could be a bug in the driver since the sysfs control/* nodes 
+> > seems to
+> > operate on the indio_dev->dev and not on the driver dev, which is 
+> > used for
+> > the vcnl4000 driver pm_runtime operations.
+> 
+> I believe this is normal. The devm_iio_device_alloc() creates a new 
+> device, whose parent is your i2c_client->dev.
+
+Ok
+> 
+> > Setting the power/control to 'on' invokes the rpm_resume function 
+> > which
+> > checks the dev.power.disable_depth attribute before it calls the
+> > resume_callback for setting the active state on the driver. But if the
+> > dev.power.disable_depth == 1 (which is the init value) the callback 
+> > will not
+> > be called. And nothing happens. And I suspect the reason why the
+> > dev.power.disable_depth is 1 may be that it is not the vcnl4000 dev
+> > object that is being checked, but the indio_dev->dev object, which 
+> > has not
+> > been configured for pm_runtime operations in the driver.
+> > 
+> > Sorry for a long reply to your question, but I suspect that if the
+> > automatic pm_runtime for this driver can be disabled by the sysfs
+> > power/control, the *_en attributes wont be needed.
+> > 
+> > I will look into why it does not work.
+> 
+> I still don't understand. Why do you *need* to disable runtime PM?
+
+There is no special reason to disable runtime PM for the usecases we
+have. The original reason behind this patch is a local patch from the
+4.19 kernel when runtime PM did not exist in the driver. The local
+patch added *_en attributes for turning the sensors on/off.
+
+I will gladly skip this patch, since it has come clear to me that it
+doesn't bring any value to the current version of the driver. I will
+probably look at a fix for the power/control=on problem, but any fix
+for that will be a separate patch.
+
+Kind regards
+Mårten
+
+> 
+> -Paul
+> 
+> > Kind regards
+> > Mårten
+> > 
+> >> 
+> >>  Cheers,
+> >>  -Paul
+> >> 
+> >>  > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+> >>  > ---
+> >>  >  drivers/iio/light/vcnl4000.c | 79
+> >>  > ++++++++++++++++++++++++++++++++----
+> >>  >  1 file changed, 72 insertions(+), 7 deletions(-)
+> >>  >
+> >>  > diff --git a/drivers/iio/light/vcnl4000.c
+> >>  > b/drivers/iio/light/vcnl4000.c
+> >>  > index 0b226c684957..9838f0868372 100644
+> >>  > --- a/drivers/iio/light/vcnl4000.c
+> >>  > +++ b/drivers/iio/light/vcnl4000.c
+> >>  > @@ -125,6 +125,9 @@ struct vcnl4000_data {
+> >>  >  	enum vcnl4000_device_ids id;
+> >>  >  	int rev;
+> >>  >  	int al_scale;
+> >>  > +	bool als_enable;
+> >>  > +	bool ps_enable;
+> >>  > +
+> >>  >  	const struct vcnl4000_chip_spec *chip_spec;
+> >>  >  	struct mutex vcnl4000_lock;
+> >>  >  	struct vcnl4200_channel vcnl4200_al;
+> >>  > @@ -202,10 +205,13 @@ static ssize_t 
+> >> vcnl4000_write_als_enable(struct
+> >>  > vcnl4000_data *data, int val)
+> >>  >  		if (ret < 0)
+> >>  >  			return ret;
+> >>  >
+> >>  > -		if (val)
+> >>  > +		if (val) {
+> >>  >  			ret &= ~VCNL4040_ALS_CONF_ALS_SD;
+> >>  > -		else
+> >>  > +			data->als_enable = true;
+> >>  > +		} else {
+> >>  >  			ret |= VCNL4040_ALS_CONF_ALS_SD;
+> >>  > +			data->als_enable = false;
+> >>  > +		}
+> >>  >
+> >>  >  		return i2c_smbus_write_word_data(data->client, 
+> >> VCNL4200_AL_CONF,
+> >>  >  						 ret);
+> >>  > @@ -225,10 +231,13 @@ static ssize_t 
+> >> vcnl4000_write_ps_enable(struct
+> >>  > vcnl4000_data *data, int val)
+> >>  >  		if (ret < 0)
+> >>  >  			return ret;
+> >>  >
+> >>  > -		if (val)
+> >>  > +		if (val) {
+> >>  >  			ret &= ~VCNL4040_PS_CONF1_PS_SD;
+> >>  > -		else
+> >>  > +			data->ps_enable = true;
+> >>  > +		} else {
+> >>  >  			ret |= VCNL4040_PS_CONF1_PS_SD;
+> >>  > +			data->ps_enable = false;
+> >>  > +		}
+> >>  >
+> >>  >  		return i2c_smbus_write_word_data(data->client,
+> >>  >  						 VCNL4200_PS_CONF1, ret);
+> >>  > @@ -283,6 +292,8 @@ static int vcnl4200_init(struct vcnl4000_data
+> >>  > *data)
+> >>  >  	dev_dbg(&data->client->dev, "device id 0x%x", id);
+> >>  >
+> >>  >  	data->rev = (ret >> 8) & 0xf;
+> >>  > +	data->als_enable = false;
+> >>  > +	data->ps_enable = false;
+> >>  >
+> >>  >  	data->vcnl4200_al.reg = VCNL4200_AL_DATA;
+> >>  >  	data->vcnl4200_ps.reg = VCNL4200_PS_DATA;
+> >>  > @@ -459,8 +470,12 @@ static bool 
+> >> vcnl4010_is_in_periodic_mode(struct
+> >>  > vcnl4000_data *data)
+> >>  >  static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data 
+> >> *data,
+> >>  > bool on)
+> >>  >  {
+> >>  >  	struct device *dev = &data->client->dev;
+> >>  > +	struct iio_dev *indio_dev = i2c_get_clientdata(data->client);
+> >>  >  	int ret;
+> >>  >
+> >>  > +	if (!indio_dev->dev.power.runtime_auto)
+> >>  > +		return 0;
+> >>  > +
+> >>  >  	if (on) {
+> >>  >  		ret = pm_runtime_resume_and_get(dev);
+> >>  >  	} else {
+> >>  > @@ -507,6 +522,38 @@ static int vcnl4000_read_raw(struct iio_dev
+> >>  > *indio_dev,
+> >>  >  		*val = 0;
+> >>  >  		*val2 = data->al_scale;
+> >>  >  		return IIO_VAL_INT_PLUS_MICRO;
+> >>  > +	case IIO_CHAN_INFO_ENABLE:
+> >>  > +		switch (chan->type) {
+> >>  > +		case IIO_LIGHT:
+> >>  > +			*val = data->als_enable;
+> >>  > +			return IIO_VAL_INT;
+> >>  > +		case IIO_PROXIMITY:
+> >>  > +			*val = data->ps_enable;
+> >>  > +			return IIO_VAL_INT;
+> >>  > +		default:
+> >>  > +			return -EINVAL;
+> >>  > +		}
+> >>  > +	default:
+> >>  > +		return -EINVAL;
+> >>  > +	}
+> >>  > +}
+> >>  > +
+> >>  > +static int vcnl4040_write_raw(struct iio_dev *indio_dev,
+> >>  > +				struct iio_chan_spec const *chan,
+> >>  > +				int val, int val2, long mask)
+> >>  > +{
+> >>  > +	struct vcnl4000_data *data = iio_priv(indio_dev);
+> >>  > +
+> >>  > +	switch (mask) {
+> >>  > +	case IIO_CHAN_INFO_ENABLE:
+> >>  > +		switch (chan->type) {
+> >>  > +		case IIO_LIGHT:
+> >>  > +			return vcnl4000_write_als_enable(data, val);
+> >>  > +		case IIO_PROXIMITY:
+> >>  > +			return vcnl4000_write_ps_enable(data, val);
+> >>  > +		default:
+> >>  > +			return -EINVAL;
+> >>  > +		}
+> >>  >  	default:
+> >>  >  		return -EINVAL;
+> >>  >  	}
+> >>  > @@ -845,6 +892,19 @@ static const struct iio_chan_spec
+> >>  > vcnl4010_channels[] = {
+> >>  >  	IIO_CHAN_SOFT_TIMESTAMP(1),
+> >>  >  };
+> >>  >
+> >>  > +static const struct iio_chan_spec vcnl4040_channels[] = {
+> >>  > +	{
+> >>  > +		.type = IIO_LIGHT,
+> >>  > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> >>  > +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_ENABLE),
+> >>  > +	}, {
+> >>  > +		.type = IIO_PROXIMITY,
+> >>  > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> >>  > +			BIT(IIO_CHAN_INFO_ENABLE),
+> >>  > +		.ext_info = vcnl4000_ext_info,
+> >>  > +	}
+> >>  > +};
+> >>  > +
+> >>  >  static const struct iio_info vcnl4000_info = {
+> >>  >  	.read_raw = vcnl4000_read_raw,
+> >>  >  };
+> >>  > @@ -859,6 +919,11 @@ static const struct iio_info vcnl4010_info = 
+> >> {
+> >>  >  	.write_event_config = vcnl4010_write_event_config,
+> >>  >  };
+> >>  >
+> >>  > +static const struct iio_info vcnl4040_info = {
+> >>  > +	.read_raw = vcnl4000_read_raw,
+> >>  > +	.write_raw = vcnl4040_write_raw,
+> >>  > +};
+> >>  > +
+> >>  >  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] 
+> >> = {
+> >>  >  	[VCNL4000] = {
+> >>  >  		.prod = "VCNL4000",
+> >>  > @@ -888,9 +953,9 @@ static const struct vcnl4000_chip_spec
+> >>  > vcnl4000_chip_spec_cfg[] = {
+> >>  >  		.measure_light = vcnl4200_measure_light,
+> >>  >  		.measure_proximity = vcnl4200_measure_proximity,
+> >>  >  		.set_power_state = vcnl4200_set_power_state,
+> >>  > -		.channels = vcnl4000_channels,
+> >>  > -		.num_channels = ARRAY_SIZE(vcnl4000_channels),
+> >>  > -		.info = &vcnl4000_info,
+> >>  > +		.channels = vcnl4040_channels,
+> >>  > +		.num_channels = ARRAY_SIZE(vcnl4040_channels),
+> >>  > +		.info = &vcnl4040_info,
+> >>  >  		.irq_support = false,
+> >>  >  	},
+> >>  >  	[VCNL4200] = {
+> >>  > --
+> >>  > 2.30.2
+> >>  >
+> >> 
+> >> 
+> 
+> 

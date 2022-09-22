@@ -2,51 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DF6D5E60AA
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 13:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5185E60C1
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 13:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230147AbiIVLOO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 22 Sep 2022 07:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56516 "EHLO
+        id S230440AbiIVLS4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 07:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231183AbiIVLON (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 07:14:13 -0400
+        with ESMTP id S229649AbiIVLSz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 07:18:55 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B701EDCEAB
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 04:13:57 -0700 (PDT)
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MYCFc4pqHz67vBH;
-        Thu, 22 Sep 2022 19:08:36 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78889DED5D;
+        Thu, 22 Sep 2022 04:18:54 -0700 (PDT)
+Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MYCMx3fZZz688vP;
+        Thu, 22 Sep 2022 19:14:05 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
+ fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 22 Sep 2022 13:13:23 +0200
+ 15.1.2375.31; Thu, 22 Sep 2022 13:18:52 +0200
 Received: from localhost (10.81.208.231) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 22 Sep
- 2022 12:13:22 +0100
-Date:   Thu, 22 Sep 2022 12:13:21 +0100
+ 2022 12:18:51 +0100
+Date:   Thu, 22 Sep 2022 12:18:50 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-CC:     Wei Yongjun <weiyongjun@huaweicloud.com>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Mark Brown <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Wei Yongjun <weiyongjun@huaweicloud.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
         <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/5 v3] iio: adc: ti-ads131e08: Silence no spi_device_id
- warnings
-Message-ID: <20220922121321.000026ea@huawei.com>
-In-Reply-To: <20220922054334.a5t6zdxayx2zwjwd@pengutronix.de>
-References: <20220921163620.805879-1-weiyongjun@huaweicloud.com>
-        <20220921163620.805879-2-weiyongjun@huaweicloud.com>
-        <20220922054334.a5t6zdxayx2zwjwd@pengutronix.de>
+Subject: Re: [PATCH v1 1/1] spi: Introduce spi_get_device_match_data()
+ helper
+Message-ID: <20220922121850.000006f3@huawei.com>
+In-Reply-To: <20220921204520.23984-1-andriy.shevchenko@linux.intel.com>
+References: <20220921204520.23984-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.81.208.231]
 X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -60,82 +55,75 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 22 Sep 2022 07:43:34 +0200
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de> wrote:
+On Wed, 21 Sep 2022 23:45:20 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Wed, Sep 21, 2022 at 04:36:16PM +0000, Wei Yongjun wrote:
-> > From: Wei Yongjun <weiyongjun1@huawei.com>
-> > 
-> > SPI devices use the spi_device_id for module autoloading even on
-> > systems using device tree, after commit 5fa6863ba692 ("spi: Check
-> > we have a spi_device_id for each DT compatible"), kernel warns as
-> > follows since the spi_device_id is missing:
-> > 
-> > SPI driver ads131e08 has no spi_device_id for ti,ads131e04
-> > SPI driver ads131e08 has no spi_device_id for ti,ads131e06
-> > 
-> > Add spi_device_id entries to silence the warnings, and ensure driver
-> > module autoloading works.
-> > 
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > ---
-> >  drivers/iio/adc/ti-ads131e08.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/ti-ads131e08.c b/drivers/iio/adc/ti-ads131e08.c
-> > index 5235a93f28bc..fcfc46254313 100644
-> > --- a/drivers/iio/adc/ti-ads131e08.c
-> > +++ b/drivers/iio/adc/ti-ads131e08.c
-> > @@ -807,6 +807,8 @@ static int ads131e08_probe(struct spi_device *spi)
-> >  	int ret;
-> >  
-> >  	info = device_get_match_data(&spi->dev);
-> > +	if (!info)
-> > +		info = (void *)spi_get_device_id(spi)->driver_data;  
+> The proposed spi_get_device_match_data() helper is for retrieving
+> a driver data associated with the ID in an ID table. First, it tries
+> to get driver data of the device enumerated by firmware interface
+> (usually Device Tree or ACPI). If none is found it falls back to
+> the SPI ID table matching.
 > 
-> I wonder if this hunk is orthogonal to the patch? For the purpose
-> mentioned in the commit log it would be enough to skip this hunk and
-> don't provide driver_data in ads131e08_ids[] below, wouldn't it?
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Maybe need to expand the patch description, but this is needed.
-Without it the patch is buggy...
 
-By providing the new table, non firmware registration paths are enabled
-that were not before (board files + I think Greybus still uses that path?)
-If those are used they will get NULL from device_get_match_data() with
-predictable bad results.
+I like this in general, but we need to keep a close eye on usecases
+that are introduced to make sure that there is alignment between the
+contents of the tables.
+
+Perhaps the text should also explain a bit about why we would allow
+both paths (in many case, the fallback will work fine)...
+Previously a strong reason for that was that there was nothing to ensure
+that all dt table entries were mirrored in the spi_device_id table.
+As a side effect of the check to ensure module autoloading works, there
+is now a check for that.
+
+My personal view is we should still use the more generic path, even if
+magic under the hood puts the data in spi_id->driver_data.
 
 Jonathan
 
 
-
+> ---
+>  drivers/spi/spi.c       | 12 ++++++++++++
+>  include/linux/spi/spi.h |  3 +++
+>  2 files changed, 15 insertions(+)
 > 
-> >  	if (!info) {
-> >  		dev_err(&spi->dev, "failed to get match data\n");
-> >  		return -ENODEV;
-> > @@ -926,12 +928,21 @@ static const struct of_device_id ads131e08_of_match[] = {
-> >  };
-> >  MODULE_DEVICE_TABLE(of, ads131e08_of_match);
-> >  
-> > +static const struct spi_device_id ads131e08_ids[] = {
-> > +	{ "ads131e04", (kernel_ulong_t)&ads131e08_info_tbl[ads131e04] },
-> > +	{ "ads131e06", (kernel_ulong_t)&ads131e08_info_tbl[ads131e06] },
-> > +	{ "ads131e08", (kernel_ulong_t)&ads131e08_info_tbl[ads131e08] },
-> > +	{}
-> > +};
-> > +MODULE_DEVICE_TABLE(spi, ads131e08_ids);
-> > +
-> >  static struct spi_driver ads131e08_driver = {
-> >  	.driver = {
-> >  		.name = "ads131e08",
-> >  		.of_match_table = ads131e08_of_match,
-> >  	},
-> >  	.probe = ads131e08_probe,
-> > +	.id_table = ads131e08_ids,
-> >  };
-> >  module_spi_driver(ads131e08_driver);  
-> 
-> Best regards
-> Uwe
-> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index ad254b94308e..a0947d63afbc 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -360,6 +360,18 @@ const struct spi_device_id *spi_get_device_id(const struct spi_device *sdev)
+>  }
+>  EXPORT_SYMBOL_GPL(spi_get_device_id);
+>  
+> +const void *spi_get_device_match_data(const struct spi_device *sdev)
+> +{
+> +	const void *match;
+> +
+> +	match = device_get_match_data(&sdev->dev);
+> +	if (match)
+> +		return match;
+> +
+> +	return (const void *)spi_get_device_id(sdev)->driver_data;
+> +}
+> +EXPORT_SYMBOL_GPL(spi_get_device_match_data);
+> +
+>  static int spi_match_device(struct device *dev, struct device_driver *drv)
+>  {
+>  	const struct spi_device	*spi = to_spi_device(dev);
+> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> index 6ea889df0813..f2565c24ef27 100644
+> --- a/include/linux/spi/spi.h
+> +++ b/include/linux/spi/spi.h
+> @@ -1510,6 +1510,9 @@ extern void spi_unregister_device(struct spi_device *spi);
+>  extern const struct spi_device_id *
+>  spi_get_device_id(const struct spi_device *sdev);
+>  
+> +extern const void *
+> +spi_get_device_match_data(const struct spi_device *sdev);
+> +
+>  static inline bool
+>  spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
+>  {
 

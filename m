@@ -2,66 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 310435E587C
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 04:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEEE05E588F
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 04:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229822AbiIVCT3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 22:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
+        id S229523AbiIVC1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 22:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbiIVCT2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 22:19:28 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 338239C235
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:19:27 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id s125so10597637oie.4
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:19:27 -0700 (PDT)
+        with ESMTP id S229779AbiIVC1u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 22:27:50 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB386ABF23
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:27:47 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id g2so5343736qkk.1
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=q7LU/8PQyoDrnPpaYwcGUoi3e7+VI2dbaGmtFZ+Rqy8=;
-        b=KeoX4RCwJy4wo4dx7VX3EcK3tEyBEpglLldC9FIYue1shv0pTbGvPRuOQfIuLTs/V3
-         LOu0svobJ0PS1akGS+v64ud1KBaJcW/qCW7aygS2aN80czEJ/plaKwlZHU/dTntknLRc
-         7XtizAC8vLxItADG2NZrL+sSSnfpXmB/RkdH6HHgodbkj568UDNO/M9flSPGWFHeYqcm
-         kb+LSQH4FZhR9LdycukW84iWFg+BBZBWiDnTenci6BkQjleFBb1j3Lg4hzUkzQkLUkxZ
-         LK1DSrfq1chNk6pGL7QCZBn9AdfqwA4d/Qtj4m7e9NaRbhljpNgKmM6nJlgIdw2m6GC/
-         rUAA==
+        bh=ty4PinqrzTrMwfXfFSwnwSe5AmVNGOOjp1shLYbbf04=;
+        b=Iyhr/gkp1eLOUDpvKWEfkIYzrC45QnnjQGpAKyfT5B5ol/KBYKsO9p8gZyI4X82wps
+         HP9Q2D/Brw9YCCUdNo0QTwyFj4gEkIpTMXduYrIz0xg9yXJusw5DcCcbBckUn+F39+jq
+         ryi1rfX4I2iY+YhVZ4baeWJSHfJFjWK3XyhOe+VltfnIUuGjizoIYz0tRQ3ggebEBzIp
+         ccbRug/n5fNDSlq2WSLBu7c0x1SxjPzU6vCeqefzWjjlMTMaK3tPlhA/cTvMCuSBAUEJ
+         RQKOz8/sdXlN0TRuHvP2Xl6hbv5ECtJobb74J4B7xb4nQwxjLoGZ8e2+4f6bTbcUCKXD
+         QpBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=q7LU/8PQyoDrnPpaYwcGUoi3e7+VI2dbaGmtFZ+Rqy8=;
-        b=sdDM72ySzIptGgExh/F3mVywZkS2aCl5BM8sOdU6UPinAULhDLsY4DCyu1eGFARpqm
-         0D4MTeC73X3jXNDhaTuvWl4Au66SBN3FWsj58CuxHI2TcNmQH3gy7TfiaVlMaY68+3Md
-         W/+8gPwPR+x+e8rpNIBH4ldIPBl77GUSTyhx24/6vphGHv2eTK75FisvPUqgh2Zfqi9p
-         sVApTReua5yaXMkHjYRnDb9Ufam6BmIUIe7rcEeSqRwVwP2kBS3oK7E/dLhkZ9Lh9IzA
-         Ub3A7TMTS7LOtMf0xt5X2pCWRCNGXZ4NDcaioyBKvfsacRyIHUDQdklHBFnsOUo4nOyo
-         FhCQ==
-X-Gm-Message-State: ACrzQf0vtZ5xom2OYXQACSd+F6jhXoBbTn+Y2Gqs9fkkx7fC+lgYHyY5
-        daKGY4kAS3KLXtyjG5lQzxzPQg==
-X-Google-Smtp-Source: AMsMyM7eElVxy+gKV32xN12V0S+ruBc5RIsvlQlqE+CdB9iaoiqD0zW+Ij+QhXwzmnZNiDqQLXHxzg==
-X-Received: by 2002:a05:6808:f90:b0:350:6c57:eba5 with SMTP id o16-20020a0568080f9000b003506c57eba5mr5189849oiw.265.1663813166121;
-        Wed, 21 Sep 2022 19:19:26 -0700 (PDT)
+        bh=ty4PinqrzTrMwfXfFSwnwSe5AmVNGOOjp1shLYbbf04=;
+        b=tZNFU+emnvMsxHH5h6PExgBdjXpu0UwjEafLXrDMxLDuU0RX7AID3U/t0TtQXLPRX0
+         mlRiE6ITzNnrQMVwkGStTUbvvzoHQNut16EEOljdy4s/vi/4ocG7R3S9oINI5Vu1pfkq
+         sbCJiaQDbHZg7vLgmfV0sTDcQDEOMzu+jZrJSzf70h/6N/n88OThvZmw4Geyq8FMwDxb
+         6qyQgLlQ7j9TcgDrUDfF5YGz7c2lo51i5d+m5FcfQQE3OpxHFqPOgE3dh4I352CfNdaw
+         lmqM8tlCzucGcC1NtrurcEIicpfMMkcexUzze3xvmo7+d4QI9xwH9gqrmNCNR6duRraQ
+         m+Gw==
+X-Gm-Message-State: ACrzQf3AfYOy/2zo8yqYWFUftP9BxJQAs6F42frAGjseskOzCVO70qoR
+        9hU0eeJRSTe7Qk7R6vGFr576Gw==
+X-Google-Smtp-Source: AMsMyM6/mPZWzaV368lIzEXjCUOL5beXwuLjqbU4xesZ3BwBSr8blaMdZAs73XFI/XO8nFukxJ+hlw==
+X-Received: by 2002:a05:620a:2683:b0:6cf:3a7e:e006 with SMTP id c3-20020a05620a268300b006cf3a7ee006mr746948qkp.474.1663813666851;
+        Wed, 21 Sep 2022 19:27:46 -0700 (PDT)
 Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id j1-20020a9d7381000000b00655dda40f54sm2078632otk.78.2022.09.21.19.19.25
+        by smtp.gmail.com with ESMTPSA id x17-20020a05620a449100b006b9264191b5sm3114533qkp.32.2022.09.21.19.27.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 19:19:25 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 22:19:23 -0400
+        Wed, 21 Sep 2022 19:27:46 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 22:27:44 -0400
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     Julien Panis <jpanis@baylibre.com>
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vgevr.kernel.org, mranostay@ti.com
-Subject: Re: [PATCH v7 4/4] MAINTAINERS: add TI ECAP driver info
-Message-ID: <YyvGKzd9Cw/zTt6a@fedora>
+        devicetree@vger.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v7 2/4] Documentation: ABI: sysfs-bus-counter: add
+ frequency & num_overflows items
+Message-ID: <YyvIINj7RFy6/LM7@fedora>
 References: <20220921100627.124085-1-jpanis@baylibre.com>
- <20220921100627.124085-5-jpanis@baylibre.com>
+ <20220921100627.124085-3-jpanis@baylibre.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6vauxs2ZcvOv8QeW"
+        protocol="application/pgp-signature"; boundary="NhJALy4zGia5d0tl"
 Content-Disposition: inline
-In-Reply-To: <20220921100627.124085-5-jpanis@baylibre.com>
+In-Reply-To: <20220921100627.124085-3-jpanis@baylibre.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -73,57 +74,90 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---6vauxs2ZcvOv8QeW
+--NhJALy4zGia5d0tl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 21, 2022 at 12:06:27PM +0200, Julien Panis wrote:
-> This commit adds driver info for TI ECAP used in capture operating mode.
+On Wed, Sep 21, 2022 at 12:06:25PM +0200, Julien Panis wrote:
+> This commit adds frequency and num_overflows items to counter ABI file
+> (e.g. for TI ECAP hardware used in capture operating mode).
 >=20
 > Signed-off-by: Julien Panis <jpanis@baylibre.com>
+> ---
+>  Documentation/ABI/testing/sysfs-bus-counter | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>=20
+> diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/=
+ABI/testing/sysfs-bus-counter
+> index 30b6e1faa6f6..aea0adc3938f 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-counter
+> +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> @@ -209,6 +209,12 @@ Description:
+>  		both edges:
+>  			Any state transition.
+> =20
+> +What:		/sys/bus/counter/devices/counterX/countY/num_overflows
+> +KernelVersion:	6.0
+> +Contact:	jpanis@baylibre.com
+> +Description:
+> +		This attribute indicates the number of overflows since count Y start.
+> +
 
-I'd like to see at least an "S: Maintained" line before I pick this up.
-An "M:" line would also be appreciated if available; it can be a company
-team address or mailing list if preferred.
+Update KernelVersion to "6.1" because that is the next merge target.
+Change Contact to "linux-iio@vger.kernel.org" since this ABI is
+available for all Counter drivers.
+
+Since num_overflows can be reset, replace the "since count Y start"
+phrase with "of Count Y" instead.
+
+>  What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/count_mode_component_id
+> @@ -219,11 +225,13 @@ What:		/sys/bus/counter/devices/counterX/countY/pre=
+scaler_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/preset_component_id
+>  What:		/sys/bus/counter/devices/counterX/countY/preset_enable_component_=
+id
+>  What:		/sys/bus/counter/devices/counterX/countY/signalZ_action_component=
+_id
+> +What:		/sys/bus/counter/devices/counterX/countY/num_overflows_component_=
+id
+>  What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/cable_fault_enable_comp=
+onent_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/filter_clock_prescaler_=
+component_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/index_polarity_componen=
+t_id
+>  What:		/sys/bus/counter/devices/counterX/signalY/synchronous_mode_compon=
+ent_id
+> +What:		/sys/bus/counter/devices/counterX/signalY/frequency_component_id
+>  KernelVersion:	5.16
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> @@ -364,3 +372,9 @@ Description:
+>  			via index_polarity. The index function (as enabled via
+>  			preset_enable) is performed synchronously with the
+>  			quadrature clock on the active level of the index input.
+> +
+> +What:		/sys/bus/counter/devices/counterX/signalY/frequency
+> +KernelVersion:	6.0
+> +Contact:	jpanis@baylibre.com
+
+Same changes for  KernelVersion and Contact here as above.
 
 William Breathitt Gray
 
-> ---
->  MAINTAINERS | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d4999f68bda8..fa92518b22ef 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -20322,6 +20322,12 @@ T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_=
-devices.git
->  F:	drivers/media/platform/ti/davinci/
->  F:	include/media/davinci/
-> =20
-> +TI ENHANCED CAPTURE (eCAP) DRIVER
-> +R:	Julien Panis <jpanis@baylibre.com>
-> +L:	linux-iio@vger.kernel.org
-> +F:	Documentation/devicetree/bindings/counter/ti,am62-ecap-capture.yaml
-> +F:	drivers/counter/ti-ecap-capture.c
-> +
->  TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
->  R:	David Lechner <david@lechnology.com>
->  L:	linux-iio@vger.kernel.org
-> --=20
-> 2.37.3
->=20
-
---6vauxs2ZcvOv8QeW
+--NhJALy4zGia5d0tl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYyvGKwAKCRC1SFbKvhIj
-Kyg/AQDG0hUwqkF7voIbXqiLEHfJpbZDxxHBbGHOcREzTAL1rAD9HVCH1s1WWXM5
-B7acbPOcQUrY1K5y9WT9eBO7v4wpmQc=
-=fNNE
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYyvIIAAKCRC1SFbKvhIj
+K8J1AP9nM1HjVIT1zvrvAVBMEc4rYkWHj+NAJ1xMtA4Ru5vkfAEA61lcnOCUTPhj
+Af/9fsODaYA5aTWfpKRD8bln8iVP5QQ=
+=N8ey
 -----END PGP SIGNATURE-----
 
---6vauxs2ZcvOv8QeW--
+--NhJALy4zGia5d0tl--

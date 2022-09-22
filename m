@@ -2,67 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A5E45E585F
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 04:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 310435E587C
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 04:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230196AbiIVCIC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Sep 2022 22:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
+        id S229822AbiIVCT3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 21 Sep 2022 22:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbiIVCIA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 22:08:00 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959F19A9E6
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:07:58 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id d64so7559896oia.9
-        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:07:58 -0700 (PDT)
+        with ESMTP id S229612AbiIVCT2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Sep 2022 22:19:28 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 338239C235
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:19:27 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id s125so10597637oie.4
+        for <linux-iio@vger.kernel.org>; Wed, 21 Sep 2022 19:19:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=oFx+HsY7kvI5Lex3d1+0gi4P29rbHEzC8zGsu9GNCOg=;
-        b=SUsCkgJIsBTElgdKCeb3MhyA1ss25hmQemd5MhFP0sT8KmLTWsmAgUST8NZjgD037b
-         7t6GzzkKbOCXTKOljbgOptrWw9FAj4ogM8K37cNkURElNmbKZDJFnL4IsUtSqV1ZVprS
-         QHt0+Iko0sKOXr8U1/736xbd0jESqdMH7PxdeaDhGw87M+MoW9OHgqN7566vD+PGganX
-         iz5DZcE1GUE7pWdZMspIZums2z/iZmLZVEW7EDD+QHW/NFiVx1rJCEVbIZyKrn14jhaj
-         pNSIN8voLCVziERn92I2A5ZIr3ZJLzieW9N09N/XZk7amb2ucPa2Lst8Plwvpe4gPVT1
-         wH+g==
+        bh=q7LU/8PQyoDrnPpaYwcGUoi3e7+VI2dbaGmtFZ+Rqy8=;
+        b=KeoX4RCwJy4wo4dx7VX3EcK3tEyBEpglLldC9FIYue1shv0pTbGvPRuOQfIuLTs/V3
+         LOu0svobJ0PS1akGS+v64ud1KBaJcW/qCW7aygS2aN80czEJ/plaKwlZHU/dTntknLRc
+         7XtizAC8vLxItADG2NZrL+sSSnfpXmB/RkdH6HHgodbkj568UDNO/M9flSPGWFHeYqcm
+         kb+LSQH4FZhR9LdycukW84iWFg+BBZBWiDnTenci6BkQjleFBb1j3Lg4hzUkzQkLUkxZ
+         LK1DSrfq1chNk6pGL7QCZBn9AdfqwA4d/Qtj4m7e9NaRbhljpNgKmM6nJlgIdw2m6GC/
+         rUAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=oFx+HsY7kvI5Lex3d1+0gi4P29rbHEzC8zGsu9GNCOg=;
-        b=AfakgkAG9T9mqBziBYO1CtopQV0j0r2YCCyWFZ2Sm81Yj+SqSTrRaNwYH537QuFJMx
-         A/Uo4bE9Pn1R8fFjYYjBThRo38XQW+aS1MBN3+9v75NrJs0mna1Yt7/yHyDLA7y42UaV
-         W3HLd2NSFPwbDy1JtiuV8iX+KFO8Z7LVbT4vslaigTJEqirzIVDhk2NO/35sxc2HbBJS
-         oKm40QFnUYvAtjk6nMZ30XMKs69lXvAQnTRRtvWOhOqb0a8GD9bHIWD6o5UMy9o8sa0o
-         DFIwzZvlnzYfUiRDtPDWWcHkkpu2ZyvTx9lRITlHzmPUktthM30TvzcuJJfmXOqdiINy
-         Gb9w==
-X-Gm-Message-State: ACrzQf2WOLWnWwMXS1XHHs8y7lMSnjo0MHtl/vhEOPk7RlC+9WU+lQl4
-        ELSgazlJcRcSMRfYvyeIvKShlw==
-X-Google-Smtp-Source: AMsMyM7hUmFAqevf8efSZ+qUrwotMzy/7hT4SuKlfx8D2LL0w+WWXW+GX5V7DTQxwahCp87Bxx4oog==
-X-Received: by 2002:a05:6808:1a24:b0:350:78b0:9c2c with SMTP id bk36-20020a0568081a2400b0035078b09c2cmr5197313oib.143.1663812477760;
-        Wed, 21 Sep 2022 19:07:57 -0700 (PDT)
+        bh=q7LU/8PQyoDrnPpaYwcGUoi3e7+VI2dbaGmtFZ+Rqy8=;
+        b=sdDM72ySzIptGgExh/F3mVywZkS2aCl5BM8sOdU6UPinAULhDLsY4DCyu1eGFARpqm
+         0D4MTeC73X3jXNDhaTuvWl4Au66SBN3FWsj58CuxHI2TcNmQH3gy7TfiaVlMaY68+3Md
+         W/+8gPwPR+x+e8rpNIBH4ldIPBl77GUSTyhx24/6vphGHv2eTK75FisvPUqgh2Zfqi9p
+         sVApTReua5yaXMkHjYRnDb9Ufam6BmIUIe7rcEeSqRwVwP2kBS3oK7E/dLhkZ9Lh9IzA
+         Ub3A7TMTS7LOtMf0xt5X2pCWRCNGXZ4NDcaioyBKvfsacRyIHUDQdklHBFnsOUo4nOyo
+         FhCQ==
+X-Gm-Message-State: ACrzQf0vtZ5xom2OYXQACSd+F6jhXoBbTn+Y2Gqs9fkkx7fC+lgYHyY5
+        daKGY4kAS3KLXtyjG5lQzxzPQg==
+X-Google-Smtp-Source: AMsMyM7eElVxy+gKV32xN12V0S+ruBc5RIsvlQlqE+CdB9iaoiqD0zW+Ij+QhXwzmnZNiDqQLXHxzg==
+X-Received: by 2002:a05:6808:f90:b0:350:6c57:eba5 with SMTP id o16-20020a0568080f9000b003506c57eba5mr5189849oiw.265.1663813166121;
+        Wed, 21 Sep 2022 19:19:26 -0700 (PDT)
 Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id w25-20020a9d77d9000000b00656039161b1sm2129577otl.40.2022.09.21.19.07.56
+        by smtp.gmail.com with ESMTPSA id j1-20020a9d7381000000b00655dda40f54sm2078632otk.78.2022.09.21.19.19.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Sep 2022 19:07:56 -0700 (PDT)
-Date:   Wed, 21 Sep 2022 22:07:54 -0400
+        Wed, 21 Sep 2022 19:19:25 -0700 (PDT)
+Date:   Wed, 21 Sep 2022 22:19:23 -0400
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     Julien Panis <jpanis@baylibre.com>
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mranostay@ti.com
-Subject: Re: [PATCH v7 3/4] counter: ti-ecap-capture: capture driver support
- for ECAP
-Message-ID: <YyvDeuHgWPmcrqPR@fedora>
+        devicetree@vgevr.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v7 4/4] MAINTAINERS: add TI ECAP driver info
+Message-ID: <YyvGKzd9Cw/zTt6a@fedora>
 References: <20220921100627.124085-1-jpanis@baylibre.com>
- <20220921100627.124085-4-jpanis@baylibre.com>
+ <20220921100627.124085-5-jpanis@baylibre.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="CIfG5Izydz6MDoAL"
+        protocol="application/pgp-signature"; boundary="6vauxs2ZcvOv8QeW"
 Content-Disposition: inline
-In-Reply-To: <20220921100627.124085-4-jpanis@baylibre.com>
+In-Reply-To: <20220921100627.124085-5-jpanis@baylibre.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -74,242 +73,57 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---CIfG5Izydz6MDoAL
+--6vauxs2ZcvOv8QeW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 21, 2022 at 12:06:26PM +0200, Julien Panis wrote:
-> ECAP hardware on TI AM62x SoC supports capture feature. It can be used
-> to timestamp events (falling/rising edges) detected on input signal.
->=20
-> This commit adds capture driver support for ECAP hardware on AM62x SoC.
->=20
-> In the ECAP hardware, capture pin can also be configured to be in
-> PWM mode. Current implementation only supports capture operating mode.
-> Hardware also supports timebase sync between multiple instances, but
-> this driver supports simple independent capture functionality.
+On Wed, Sep 21, 2022 at 12:06:27PM +0200, Julien Panis wrote:
+> This commit adds driver info for TI ECAP used in capture operating mode.
 >=20
 > Signed-off-by: Julien Panis <jpanis@baylibre.com>
 
-Hi Julien,
-
-This driver is almost there; some comments follow below.
-
-> +static u8 ecap_cnt_capture_get_evmode(struct counter_device *counter)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +	u8 ev_mode =3D 0;
-> +	unsigned int regval;
-> +	int i;
-> +
-> +	pm_runtime_get_sync(counter->parent);
-> +	regmap_read(ecap_dev->regmap, ECAP_ECCTL_REG, &regval);
-> +	pm_runtime_put_sync(counter->parent);
-> +
-> +	for (i =3D 0 ; i < ECAP_NB_CEVT ; i++) {
-> +		if (regval & ECAP_CAPPOL_BIT(i))
-> +			ev_mode |=3D ECAP_EV_MODE_BIT(i);
-> +	}
-
-Looks like this for loop is just remapping the set bits in regval to
-ev_mode. You can use bitmap_remap() here instead to simplify this
-section of code.
-
-> +static void ecap_cnt_capture_set_evmode(struct counter_device *counter, =
-u8 ev_mode)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +	unsigned int regval =3D 0;
-> +	int i;
-> +
-> +	for (i =3D 0 ; i < ECAP_NB_CEVT ; i++) {
-> +		if (ev_mode & ECAP_EV_MODE_BIT(i))
-> +			regval |=3D ECAP_CAPPOL_BIT(i);
-> +	}
-
-Use bitmap_remap() here as well (just in the reverse direction).
-
-> +static int ecap_cnt_count_write(struct counter_device *counter,
-> +				struct counter_count *count, u64 val)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	if (ecap_dev->enabled)
-> +		return -EBUSY;
-> +	if (val > 0)
-> +		return -EINVAL;
-
-The ECAP_TSCNT_REG can be set to an arbitrary count value so there's no
-need to restrict val here to 0. Instead, check that val is within the
-ceiling value (<=3D U32_MAX) and return -ERANGE if it is not.
-
-> +static int ecap_cnt_watch_validate(struct counter_device *counter,
-> +				   const struct counter_watch *watch)
-> +{
-> +	if ((watch->channel <=3D ECAP_CEVT_LAST && watch->event =3D=3D COUNTER_=
-EVENT_CAPTURE) ||
-> +	    (watch->channel =3D=3D ECAP_CNTOVF && watch->event =3D=3D COUNTER_E=
-VENT_OVERFLOW))
-> +		return 0;
-> +
-> +	return -EINVAL;
-
-COUNTER_EVENT_OVERFLOW shouldn't be on a separate channel; I'll explain
-why later below in the interrupt handler review.
-
-For this callback, you can separate the channel and event type checks to
-their own blocks:
-
-    if (watch->channel > ECAP_CEVT_LAST)
-            return -EINVAL;
-   =20
-    switch (watch->event) {
-    case COUNTER_EVENT_CAPTURE:
-    case COUNTER_EVENT_OVERFLOW:
-            return 0;
-    default:
-            return -EINVAL;
-    }
-
-> +static int ecap_cnt_pol_read(struct counter_device *counter,
-> +			     struct counter_signal *signal,
-> +			     size_t idx, enum counter_signal_polarity *pol)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	pm_runtime_get_sync(counter->parent);
-> +	*pol =3D regmap_test_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_CAPPOL=
-_BIT(idx)) ?
-> +	       COUNTER_SIGNAL_POLARITY_NEGATIVE :
-> +	       COUNTER_SIGNAL_POLARITY_POSITIVE;
-
-This single line is doing a lot of things so I would rather see it
-broken down. Save the regmap_test_bits() to a temporary local variable
-first before evaluating to set *pol. This allows you to move the *pol
-set operation to outside of the pm runtime syncs, possibly giving you a
-marginal improvement in latency as well.
-
-> +static inline int ecap_cnt_cap_read(struct counter_device *counter,
-> +				    struct counter_count *count,
-> +				    size_t idx, u64 *cap)
-> +{
-> +	return ecap_cnt_count_get_val(counter, ECAP_CAP_REG(idx), cap);
-> +}
-
-I don't remember if we've discussed this before, but if these capture
-registers can be set then it'll be useful to provide a corresponding
-ecap_cnt_cap_write() function for them as well.
-
-> +static int ecap_cnt_nb_ovf_write(struct counter_device *counter,
-> +				 struct counter_count *count, u64 val)
-> +{
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
-> +
-> +	if (ecap_dev->enabled)
-> +		return -EBUSY;
-> +	if (val > 0)
-> +		return -EINVAL;
-
-Similar to the count_write() callback, check that val is <=3D U32_MAX and
-return -ERANGE otherwise.
-
-> +static DEFINE_COUNTER_ARRAY_U64(ecap_cnt_cap_array, ECAP_NB_CEVT);
-> +
-> +static struct counter_comp ecap_cnt_count_ext[] =3D {
-> +	COUNTER_COMP_COUNT_ARRAY_U64("capture", ecap_cnt_cap_read, NULL, ecap_c=
-nt_cap_array),
-
-Use the DEFINE_COUNTER_ARRAY_CAPTURE() and COUNTER_COMP_ARRAY_CAPTURE()
-macros.
-
-> +static irqreturn_t ecap_cnt_isr(int irq, void *dev_id)
-> +{
-> +	struct counter_device *counter_dev =3D dev_id;
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
-> +	unsigned int clr =3D 0;
-> +	unsigned int flg;
-> +	int i;
-> +
-> +	regmap_read(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG, &flg);
-> +
-> +	/* Check capture events */
-> +	for (i =3D 0 ; i < ECAP_NB_CEVT ; i++) {
-> +		if (flg & ECAP_EVT_FLG_BIT(i)) {
-> +			counter_push_event(counter_dev, COUNTER_EVENT_CAPTURE, i);
-> +			clr |=3D ECAP_EVT_CLR_BIT(i);
-> +		}
-> +	}
-> +
-> +	/* Check counter overflow */
-> +	if (flg & ECAP_EVT_FLG_BIT(ECAP_CNTOVF)) {
-> +		atomic_inc(&ecap_dev->nb_ovf);
-> +		counter_push_event(counter_dev, COUNTER_EVENT_OVERFLOW, ECAP_CNTOVF);
-
-COUNTER_EVENT_OVERFLOW doesn't conflict with COUNTER_EVENT_CAPTURE
-(they're different event types) so they can both be pushed on the same
-channel; in general, events of different type can share the same event
-channels. In this case, you should push COUNTER_EVENT_OVERFLOW to all
-four channels whenever you detect an overflow, so that users can receive
-those events regardless of which channels they are watching:
-
-    counter_push_event(counter_dev, COUNTER_EVENT_OVERFLOW, 0);
-    counter_push_event(counter_dev, COUNTER_EVENT_OVERFLOW, 1);
-    counter_push_event(counter_dev, COUNTER_EVENT_OVERFLOW, 2);
-    counter_push_event(counter_dev, COUNTER_EVENT_OVERFLOW, 3);
-
-There's no additional cost to pushing to these channels because events
-get dropped by the Counter chrdev code if the user is not watching the
-particular event on a channel.
-
-> +static int ecap_cnt_suspend(struct device *dev)
-> +{
-> +	struct counter_device *counter_dev =3D dev_get_drvdata(dev);
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
-> +
-> +	/* If eCAP is running, stop capture then save timestamp counter */
-> +	if (ecap_dev->enabled) {
-> +		/*
-> +		 * Disabling capture has the following effects:
-> +		 * - interrupts are disabled
-> +		 * - loading of capture registers is disabled
-> +		 * - timebase counter is stopped
-> +		 */
-> +		ecap_cnt_capture_disable(counter_dev);
-> +		ecap_cnt_count_get_val(counter_dev, ECAP_TSCNT_REG, &ecap_dev->pm_ctx.=
-time_cntr);
-
-I see time_cntr define as u64, but if count value is always <=3D U32_MAX
-you could redefine both ecap_cnt_count_get_val()'s val and time_cntr to
-u32 instead.
-
-> +static int ecap_cnt_resume(struct device *dev)
-> +{
-> +	struct counter_device *counter_dev =3D dev_get_drvdata(dev);
-> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter_dev);
-> +
-> +	clk_enable(ecap_dev->clk);
-> +
-> +	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
-> +
-> +	/* If eCAP was running, restore timestamp counter then run capture */
-> +	if (ecap_dev->enabled) {
-> +		ecap_cnt_count_set_val(counter_dev, ECAP_TSCNT_REG, ecap_dev->pm_ctx.t=
-ime_cntr);
-
-Same as above would apply for ecap_cnt_count_set_val() too I think.
+I'd like to see at least an "S: Maintained" line before I pick this up.
+An "M:" line would also be appreciated if available; it can be a company
+team address or mailing list if preferred.
 
 William Breathitt Gray
 
---CIfG5Izydz6MDoAL
+> ---
+>  MAINTAINERS | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d4999f68bda8..fa92518b22ef 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -20322,6 +20322,12 @@ T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_=
+devices.git
+>  F:	drivers/media/platform/ti/davinci/
+>  F:	include/media/davinci/
+> =20
+> +TI ENHANCED CAPTURE (eCAP) DRIVER
+> +R:	Julien Panis <jpanis@baylibre.com>
+> +L:	linux-iio@vger.kernel.org
+> +F:	Documentation/devicetree/bindings/counter/ti,am62-ecap-capture.yaml
+> +F:	drivers/counter/ti-ecap-capture.c
+> +
+>  TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
+>  R:	David Lechner <david@lechnology.com>
+>  L:	linux-iio@vger.kernel.org
+> --=20
+> 2.37.3
+>=20
+
+--6vauxs2ZcvOv8QeW
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYyvDegAKCRC1SFbKvhIj
-K9G+AP4xMrC13fuL8/1x33pIHZ2bXzKzLdoRWNe6HFvtfQEt6gD8CIWTic8ORaRY
-GpuhxVimnt2gc/D8fuln+Ozm4I4Mcw8=
-=pXZN
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYyvGKwAKCRC1SFbKvhIj
+Kyg/AQDG0hUwqkF7voIbXqiLEHfJpbZDxxHBbGHOcREzTAL1rAD9HVCH1s1WWXM5
+B7acbPOcQUrY1K5y9WT9eBO7v4wpmQc=
+=fNNE
 -----END PGP SIGNATURE-----
 
---CIfG5Izydz6MDoAL--
+--6vauxs2ZcvOv8QeW--

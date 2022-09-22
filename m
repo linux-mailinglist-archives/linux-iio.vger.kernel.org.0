@@ -2,65 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DBD5E6DA6
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Sep 2022 23:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 795AB5E6FF1
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 00:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbiIVVHz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Sep 2022 17:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53466 "EHLO
+        id S229603AbiIVWuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 18:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbiIVVHx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 17:07:53 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5F110FE17;
-        Thu, 22 Sep 2022 14:07:48 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id a20so7216692qtw.10;
-        Thu, 22 Sep 2022 14:07:48 -0700 (PDT)
+        with ESMTP id S229731AbiIVWue (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 18:50:34 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BEDEEB60
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 15:50:33 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id d64-20020a17090a6f4600b00202ce056566so3915125pjk.4
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 15:50:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=ecyshP9j3ieQiVtqcrVKcfHI+EZgR+N9QT1aadqbnBw=;
-        b=gTyMCru59o6lN/Zq9tmcC1ZzFBktfSE5fxq6a6up/wIo0a0Mx/LTn8c1bLGtsDSYRR
-         uPnypacwHSgf1OlCSaJB3WAZ1uTtUpbqBMgSO99VrPw+ruJI2eBzr+huVdTFmVz08duQ
-         rdNelC/XUROr7FRqgUSyTLFvHUOCccoqXyInZC34Wp1jnDqZpK4PqdNh9Z+NhAGnZh/b
-         N5V0L4SeHzDRBImoty6ny35j2dF9EQ3yZcdEYD6YVGB4935QQaF2kW8jxVPJFtCl/T/C
-         YYSPDwJffq2ENYK+2O6SW9UnC8agsv73jJ3avj5baP0zQ1evImioxXfKwAI0XeJh0pNZ
-         1hNw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=aUsvRZZI7T1y4lULyz+no0ZVbiyfe4QpyexoidfYtdQ=;
+        b=SgPZAe0IfcJAICF/KlO9tfwf7k/nCrqr6QJ09tc4ZLiqBiSgzjV/uiT6LUZGz3ldvb
+         CLvG/x+G+u5wm0nVcFCmp8fgewo9G3MYl+MxQ6XJFtw/BdyOQLWAH1hDpMRRrmDNfljy
+         Tejf6+99+ngzW+msmzBDEZ6CA5u6SSXiKr5T43W5rfzUdDENqTne2LvsX3b7YJmd45O0
+         0iLcdOQWtMtJpfsIOypaYiekFiTZf+q2f+SShsZD93tdcPwAS+trBY1nW4fGEX1UPf5K
+         1vaEyeart5YCqMYRWD23MHQ2YxD4sUaLhalk/U3sGFZpg/8bqpXzHpQj44fiLg0GmrlF
+         Gz7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=ecyshP9j3ieQiVtqcrVKcfHI+EZgR+N9QT1aadqbnBw=;
-        b=ItCQtYQFo5BcP5B7ZnzGaWCckVPX7Pk4QVAPW5nYqnRY8V/q1NotEDYRaFcNRAMgi1
-         p63U4WM63CoDu+ltIAI/RTe499LlRPJJgT+ywO7hdfK8k7tA7htTI8qbalfQMNd94GB8
-         dKfyHTT9DLruyEcwedmiSItYOcFmQKF2B5ACSp3y0iwwiqTvIyV/msRWHmxSGlWfjNdK
-         60PgEQvHUwKHqicBJAoutPaTOOnt2b6IjHfuJk5XJRaxnaQYHsaZlnIbaNsZXwbn9cea
-         1tdfKEJnHPwdnhhO8l0vwov0cOvd4Jmsolt6x00TSxolikRQtP8mW5DZW72tIzyA3Fid
-         rqog==
-X-Gm-Message-State: ACrzQf1OMI5mh5YXO3XpeQk0W0HDFLfIHkIuYM+HD5aO7/eJCC4QE/Ja
-        Fg3d2Cb16eGl0v1nyXql/Or1QA4WCufPlbRoBpk=
-X-Google-Smtp-Source: AMsMyM69eEo3i/ESrpEvHhGexOjR9B9Yk2Z6Gspua69uCRdZDofYp8r+H0PusLOCxunDgmLXDKd+llmY5d4gwTyyfk8=
-X-Received: by 2002:ac8:5e07:0:b0:35c:e7fd:1e94 with SMTP id
- h7-20020ac85e07000000b0035ce7fd1e94mr4650112qtx.384.1663880867897; Thu, 22
- Sep 2022 14:07:47 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=aUsvRZZI7T1y4lULyz+no0ZVbiyfe4QpyexoidfYtdQ=;
+        b=JmuuQpP1T4l83qYTGrPcxtuVNWJp1bWLIqRpoCEIzgBH3pPi0deTUMK/qTy17jhoC6
+         Hd3rEtQ2RRIExhFDgJyBi8WeSPDTc14nw/rIlp9BzfAAlDc0uZSx6MiSIFQ5V/yrOCse
+         p2SZAMQxfd9JneaykcWQ3p5tALre8GZRE5bZv+pQp7tYlUIDvXrIBhKjeYG2SaX37u/Q
+         stu0fg3LPj1HCy0+oCycUtHkSnnVvvZ2HXrlkGdeCMzZfgJiZRl6+fkk4VXePVk5noFk
+         eW/T0C02J6vSqduygXQofex1t2HPYvbaPgbfg1U8esquzCWLdRyxl0NihrPaNQtzedb3
+         7HEA==
+X-Gm-Message-State: ACrzQf3nAKpm6W3lfVLVHWmxEBAjVbHCCvU0NyIqDHMiMvwU7CkLvdaS
+        JKJ8bWXeIfFmyl1QRRGmMI9rUg2e+P8aAw==
+X-Google-Smtp-Source: AMsMyM68UWImP3j/04nuvpSTAmAU38fG0iJWu3pUmRc70XQY007sazvcDf1dkoh8jC61cRihyzirmw==
+X-Received: by 2002:a17:902:c7cc:b0:176:9fdd:ddb7 with SMTP id r12-20020a170902c7cc00b001769fddddb7mr5473251pla.150.1663887032733;
+        Thu, 22 Sep 2022 15:50:32 -0700 (PDT)
+Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
+        by smtp.googlemail.com with ESMTPSA id 14-20020a17090a190e00b002032bda9a5dsm285189pjg.41.2022.09.22.15.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Sep 2022 15:50:32 -0700 (PDT)
+From:   Li Zhong <floridsleeves@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     matt.ranostay@konsulko.com, zheyuma97@gmail.com, nathan@kernel.org,
+        paul@crapouillou.net, lars@metafoo.de, jic23@kernel.org,
+        Li Zhong <floridsleeves@gmail.com>
+Subject: [PATCH v1] drivers/magnetometer/ak8975: check the return value of ak8975_set_mode
+Date:   Thu, 22 Sep 2022 15:50:12 -0700
+Message-Id: <20220922225012.1709173-1-floridsleeves@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220922194639.1118971-1-marcus.folkesson@gmail.com> <a34d9ee8-8bf8-3158-7fe6-cbde513aa1a7@linaro.org>
-In-Reply-To: <a34d9ee8-8bf8-3158-7fe6-cbde513aa1a7@linaro.org>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 23 Sep 2022 00:07:11 +0300
-Message-ID: <CAHp75VcEGb3kS03QG0ebOJYH1X_D5EbBjL6iNWUxQ5j=aCu29A@mail.gmail.com>
-Subject: Re: [PATCH v7] iio: adc: mcp3911: add support to set PGA
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,19 +68,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 11:00 PM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
-> On 22/09/2022 21:46, Marcus Folkesson wrote:
+Check the return value of ak8975_set_mode(). When it fails to write the
+register, the error should at least be propagated to the caller.
+Currently function ak8975_remove() returns the success value 0
+no matter the execution fails or not, which will silently leave the
+error unhandled.
 
-...
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+---
+ drivers/iio/magnetometer/ak8975.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> No need to cc-us. Use scripts/get_maintainers.pl.
-
-While I understand your point it's much easier to Cc all related
-people for all patches in the series, given the fact that many (code)
-maintainers ask for that (Cc'ing them all patches). So I prefer to be
-on the contributor side for the sake of ease of contribution.
-
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index 2432e697150c..e08f10fe16d0 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -1022,16 +1022,17 @@ static int ak8975_remove(struct i2c_client *client)
+ {
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+ 	struct ak8975_data *data = iio_priv(indio_dev);
++	int err = 0;
+ 
+ 	pm_runtime_get_sync(&client->dev);
+ 	pm_runtime_put_noidle(&client->dev);
+ 	pm_runtime_disable(&client->dev);
+ 	iio_device_unregister(indio_dev);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+-	ak8975_set_mode(data, POWER_DOWN);
++	err = ak8975_set_mode(data, POWER_DOWN);
+ 	ak8975_power_off(data);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ static int ak8975_runtime_suspend(struct device *dev)
 -- 
-With Best Regards,
-Andy Shevchenko
+2.25.1
+

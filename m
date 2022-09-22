@@ -2,107 +2,238 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 795AB5E6FF1
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 00:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9D145E704A
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 01:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbiIVWuf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Sep 2022 18:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50040 "EHLO
+        id S229774AbiIVXpC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 19:45:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229731AbiIVWue (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 18:50:34 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4BEDEEB60
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 15:50:33 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id d64-20020a17090a6f4600b00202ce056566so3915125pjk.4
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 15:50:33 -0700 (PDT)
+        with ESMTP id S229543AbiIVXpA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 19:45:00 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1BBA51A1A
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 16:44:58 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id g2so7346256qkk.1
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 16:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=aUsvRZZI7T1y4lULyz+no0ZVbiyfe4QpyexoidfYtdQ=;
-        b=SgPZAe0IfcJAICF/KlO9tfwf7k/nCrqr6QJ09tc4ZLiqBiSgzjV/uiT6LUZGz3ldvb
-         CLvG/x+G+u5wm0nVcFCmp8fgewo9G3MYl+MxQ6XJFtw/BdyOQLWAH1hDpMRRrmDNfljy
-         Tejf6+99+ngzW+msmzBDEZ6CA5u6SSXiKr5T43W5rfzUdDENqTne2LvsX3b7YJmd45O0
-         0iLcdOQWtMtJpfsIOypaYiekFiTZf+q2f+SShsZD93tdcPwAS+trBY1nW4fGEX1UPf5K
-         1vaEyeart5YCqMYRWD23MHQ2YxD4sUaLhalk/U3sGFZpg/8bqpXzHpQj44fiLg0GmrlF
-         Gz7w==
+        d=konsulko.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=0Hb5HGp+k2XflhkoKgDKjNTvMxi7xMzwldrOdX8+I+g=;
+        b=OUEpNXvvSeMMe+CcI3u8etC80T82EUY1ydti5DKjOJ0nHC1OMXAURoia0kfTrGIU4v
+         CBOCdWZlSGSuxh+V9z4CRBAmsHN2RqMRWshHkVGOzZQyvkwBjXKe0vbAvR2WWcFTiGnq
+         yW8yc8dlNL9UUrxF3POgIYWJmznfgbZpJz6ac=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=aUsvRZZI7T1y4lULyz+no0ZVbiyfe4QpyexoidfYtdQ=;
-        b=JmuuQpP1T4l83qYTGrPcxtuVNWJp1bWLIqRpoCEIzgBH3pPi0deTUMK/qTy17jhoC6
-         Hd3rEtQ2RRIExhFDgJyBi8WeSPDTc14nw/rIlp9BzfAAlDc0uZSx6MiSIFQ5V/yrOCse
-         p2SZAMQxfd9JneaykcWQ3p5tALre8GZRE5bZv+pQp7tYlUIDvXrIBhKjeYG2SaX37u/Q
-         stu0fg3LPj1HCy0+oCycUtHkSnnVvvZ2HXrlkGdeCMzZfgJiZRl6+fkk4VXePVk5noFk
-         eW/T0C02J6vSqduygXQofex1t2HPYvbaPgbfg1U8esquzCWLdRyxl0NihrPaNQtzedb3
-         7HEA==
-X-Gm-Message-State: ACrzQf3nAKpm6W3lfVLVHWmxEBAjVbHCCvU0NyIqDHMiMvwU7CkLvdaS
-        JKJ8bWXeIfFmyl1QRRGmMI9rUg2e+P8aAw==
-X-Google-Smtp-Source: AMsMyM68UWImP3j/04nuvpSTAmAU38fG0iJWu3pUmRc70XQY007sazvcDf1dkoh8jC61cRihyzirmw==
-X-Received: by 2002:a17:902:c7cc:b0:176:9fdd:ddb7 with SMTP id r12-20020a170902c7cc00b001769fddddb7mr5473251pla.150.1663887032733;
-        Thu, 22 Sep 2022 15:50:32 -0700 (PDT)
-Received: from localhost.localdomain (lily-optiplex-3070.dynamic.ucsd.edu. [2607:f720:1300:3033::1:4dd])
-        by smtp.googlemail.com with ESMTPSA id 14-20020a17090a190e00b002032bda9a5dsm285189pjg.41.2022.09.22.15.50.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Sep 2022 15:50:32 -0700 (PDT)
-From:   Li Zhong <floridsleeves@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     matt.ranostay@konsulko.com, zheyuma97@gmail.com, nathan@kernel.org,
-        paul@crapouillou.net, lars@metafoo.de, jic23@kernel.org,
-        Li Zhong <floridsleeves@gmail.com>
-Subject: [PATCH v1] drivers/magnetometer/ak8975: check the return value of ak8975_set_mode
-Date:   Thu, 22 Sep 2022 15:50:12 -0700
-Message-Id: <20220922225012.1709173-1-floridsleeves@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=0Hb5HGp+k2XflhkoKgDKjNTvMxi7xMzwldrOdX8+I+g=;
+        b=Dr3bq8JOfpRyY1coA8wcpF75/owFSPcHvzJr+wmotfcCeSwEgLtWjJc1LwrGZMSI+o
+         TM6UW9MrmZ1Wjl7a4FVYcrLJ9FzSqU9pQRGyzUY+MlaRNd+R+67C/z975Qo37whwM99O
+         6C+6/+hQTBacAqmqXEHZ7Q2RvhQievVD+tNbV49j0VbJM5eEwthWJuIpruU65tmAv5E9
+         YILnVJwq5U64q/JpRjfT9vS3/9iy3KEWx6HcXfuw3Ib/7hGe/IuTYHuOGWOHBiVytwVU
+         MRo66pD3jklMX7Zs5v8hLRbACTHO1dkBesSfJMJ9IO/PkueGLcdjCu/Mdh4VF6HCNGaC
+         1okg==
+X-Gm-Message-State: ACrzQf32R5bzNYwy01luBIpUh+PH0g6DjZNd1Y6dZeDEnoLNPfGPIuDC
+        6ZVFMKOA3u2J/DPayhycmK1FKs0jIXBUmOtecAubVw==
+X-Google-Smtp-Source: AMsMyM4lzGrAhbGpiWu+pLgXbcf3Ed0LZQW8B+2iJP5rYUG4K+19xk2aBZ0atCNaYzbt5RRCc09JWwoR7UEvWbHdF3E=
+X-Received: by 2002:a05:620a:c41:b0:6b6:bc8:2051 with SMTP id
+ u1-20020a05620a0c4100b006b60bc82051mr4013261qki.410.1663890297830; Thu, 22
+ Sep 2022 16:44:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220921063026.89619-1-matt.ranostay@konsulko.com>
+ <20220921063026.89619-5-matt.ranostay@konsulko.com> <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
+ <CAJCx=gn0bZp3fToF+LZE+evR2m4nWMueusjysxcrvimH0wRhaA@mail.gmail.com>
+In-Reply-To: <CAJCx=gn0bZp3fToF+LZE+evR2m4nWMueusjysxcrvimH0wRhaA@mail.gmail.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Thu, 22 Sep 2022 16:44:47 -0700
+Message-ID: <CAJCx=gmAyae-_VmYpVw=q4+34zraxQ4d2E3DTjjRX4OWqaWwHg@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] HID: mcp2221: switch i2c registration to devm functions
+To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     gupt21@gmail.com, jic23@kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        Jiri Kosina <jikos@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Check the return value of ak8975_set_mode(). When it fails to write the
-register, the error should at least be propagated to the caller.
-Currently function ak8975_remove() returns the success value 0
-no matter the execution fails or not, which will silently leave the
-error unhandled.
+On Wed, Sep 21, 2022 at 10:57 AM Matt Ranostay
+<matt.ranostay@konsulko.com> wrote:
+>
+> On Wed, Sep 21, 2022 at 1:05 AM Benjamin Tissoires
+> <benjamin.tissoires@redhat.com> wrote:
+> >
+> > [foreword: please keep Jiri and myself (the HID maintainers) CC-ed to
+> > the series, as you will need ack from us and we don't necessarily monitor
+> > every single message on linux-input]
+> >
+> > On Sep 20 2022, Matt Ranostay wrote:
+> > > Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
+> > > for matching rest of driver initialization, and more concise code.
+> > >
+> > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > > ---
+> > >  drivers/hid/hid-mcp2221.c | 45 +++++++++++++++++----------------------
+> > >  1 file changed, 19 insertions(+), 26 deletions(-)
+> > >
+> > > diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+> > > index de52e9f7bb8c..7ba63bcd66de 100644
+> > > --- a/drivers/hid/hid-mcp2221.c
+> > > +++ b/drivers/hid/hid-mcp2221.c
+> > > @@ -824,6 +824,14 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> > >       return 1;
+> > >  }
+> > >
+> > > +static void mcp2221_hid_remove(void *ptr)
+> > > +{
+> > > +     struct hid_device *hdev = ptr;
+> > > +
+> > > +     hid_hw_close(hdev);
+> > > +     hid_hw_stop(hdev);
+> >
+> > By default, if you remove the .remove() callback, hid_hw_stop() will get
+> > automatically called by hid-core.c. So we are now calling it twice,
+> > which, in a way is not a big deal but it might be an issue in the long
+> > run.
+> >
+> > Generally speaking, in the HID subsystem, that situation doesn't happen
+> > a lot because hid_hw_start() is usually the last command of probe, and
+> > we don't need to open the device in the driver itself.
+> >
+> > Here, I guess as soon as you add the i2c adapter, you might want to have
+> > the communication channels ready, and thus you need to have it open
+> > *before* i2c_add_adapter.
+> >
+> > I would suggest the following if you want to keep the devm release of
+> > stop and close: please put a big fat warning before mcp2221_hid_remove()
+> > explaining that this is called in devm management, *and* add a function
+> > that would just return 0 as the .remove() callback with another big fat
+> > warning explaining that we don't want hid-core.c to call hid_hw_stop()
+> > because we are doing it ourself through devres.
+> >
+>
+> Yeah maybe best to keep the non-devres if it isn't going to affect how the last
+> change in this series is trying to implement with iio.
+>
+> I'll wait for Jonathan to chime in on this thread.
+>
+> > Last, in the HID subsystem, we often interleave non devres with devres
+> > for resource allocation, given that .remove() will be called before any
+> > devres release. But that is assuming this ordering is OK, which doesn't
+> > seem to be the case here. We first need to unregister the i2c adapter
+> > and then close/stop the HID device.
 
-Signed-off-by: Li Zhong <floridsleeves@gmail.com>
----
- drivers/iio/magnetometer/ak8975.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On second thought I2C will be unregistered before the HID calls, since
+unless I'm totally
+incorrect device resource management unwinds backwards in the order actions are
+registered.
 
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index 2432e697150c..e08f10fe16d0 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -1022,16 +1022,17 @@ static int ak8975_remove(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ak8975_data *data = iio_priv(indio_dev);
-+	int err = 0;
- 
- 	pm_runtime_get_sync(&client->dev);
- 	pm_runtime_put_noidle(&client->dev);
- 	pm_runtime_disable(&client->dev);
- 	iio_device_unregister(indio_dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
--	ak8975_set_mode(data, POWER_DOWN);
-+	err = ak8975_set_mode(data, POWER_DOWN);
- 	ak8975_power_off(data);
- 
--	return 0;
-+	return err;
- }
- 
- static int ak8975_runtime_suspend(struct device *dev)
--- 
-2.25.1
+- Matt
 
+>
+> Noted.
+>
+> -  Matt
+>
+> >
+> > > +}
+> > > +
+> > >  static int mcp2221_probe(struct hid_device *hdev,
+> > >                                       const struct hid_device_id *id)
+> > >  {
+> > > @@ -849,7 +857,8 @@ static int mcp2221_probe(struct hid_device *hdev,
+> > >       ret = hid_hw_open(hdev);
+> > >       if (ret) {
+> > >               hid_err(hdev, "can't open device\n");
+> > > -             goto err_hstop;
+> > > +             hid_hw_stop(hdev);
+> > > +             return ret;
+> > >       }
+> > >
+> > >       mutex_init(&mcp->lock);
+> > > @@ -857,6 +866,10 @@ static int mcp2221_probe(struct hid_device *hdev,
+> > >       hid_set_drvdata(hdev, mcp);
+> > >       mcp->hdev = hdev;
+> > >
+> > > +     ret = devm_add_action_or_reset(&hdev->dev, mcp2221_hid_remove, hdev);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > >       /* Set I2C bus clock diviser */
+> > >       if (i2c_clk_freq > 400)
+> > >               i2c_clk_freq = 400;
+> > > @@ -873,19 +886,17 @@ static int mcp2221_probe(struct hid_device *hdev,
+> > >                       "MCP2221 usb-i2c bridge on hidraw%d",
+> > >                       ((struct hidraw *)hdev->hidraw)->minor);
+> > >
+> > > -     ret = i2c_add_adapter(&mcp->adapter);
+> > > +     ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
+> > >       if (ret) {
+> > >               hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+> > > -             goto err_i2c;
+> > > +             return ret;
+> > >       }
+> > >       i2c_set_adapdata(&mcp->adapter, mcp);
+> > >
+> > >       /* Setup GPIO chip */
+> > >       mcp->gc = devm_kzalloc(&hdev->dev, sizeof(*mcp->gc), GFP_KERNEL);
+> > > -     if (!mcp->gc) {
+> > > -             ret = -ENOMEM;
+> > > -             goto err_gc;
+> > > -     }
+> > > +     if (!mcp->gc)
+> > > +             return -ENOMEM;
+> > >
+> > >       mcp->gc->label = "mcp2221_gpio";
+> > >       mcp->gc->direction_input = mcp_gpio_direction_input;
+> > > @@ -900,26 +911,9 @@ static int mcp2221_probe(struct hid_device *hdev,
+> > >
+> > >       ret = devm_gpiochip_add_data(&hdev->dev, mcp->gc, mcp);
+> > >       if (ret)
+> > > -             goto err_gc;
+> > > +             return ret;
+> > >
+> > >       return 0;
+> > > -
+> > > -err_gc:
+> > > -     i2c_del_adapter(&mcp->adapter);
+> > > -err_i2c:
+> > > -     hid_hw_close(mcp->hdev);
+> > > -err_hstop:
+> > > -     hid_hw_stop(mcp->hdev);
+> > > -     return ret;
+> > > -}
+> > > -
+> > > -static void mcp2221_remove(struct hid_device *hdev)
+> > > -{
+> > > -     struct mcp2221 *mcp = hid_get_drvdata(hdev);
+> > > -
+> > > -     i2c_del_adapter(&mcp->adapter);
+> > > -     hid_hw_close(mcp->hdev);
+> > > -     hid_hw_stop(mcp->hdev);
+> > >  }
+> > >
+> > >  static const struct hid_device_id mcp2221_devices[] = {
+> > > @@ -932,7 +926,6 @@ static struct hid_driver mcp2221_driver = {
+> > >       .name           = "mcp2221",
+> > >       .id_table       = mcp2221_devices,
+> > >       .probe          = mcp2221_probe,
+> > > -     .remove         = mcp2221_remove,
+> > >       .raw_event      = mcp2221_raw_event,
+> > >  };
+> > >
+> > > --
+> > > 2.37.2
+> > >
+> >
+> > Cheers,
+> > Benjamin
+> >

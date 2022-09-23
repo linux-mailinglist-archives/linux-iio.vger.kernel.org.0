@@ -2,133 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 636D55E74CE
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 09:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6475E76D4
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 11:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbiIWHZV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 03:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37094 "EHLO
+        id S231669AbiIWJYS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Sep 2022 05:24:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbiIWHZU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 03:25:20 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC63A033D;
-        Fri, 23 Sep 2022 00:25:19 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id m3so16757471eda.12;
-        Fri, 23 Sep 2022 00:25:19 -0700 (PDT)
+        with ESMTP id S231624AbiIWJYQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 05:24:16 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98730E10BD
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 02:24:14 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id x29so13983011ljq.2
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 02:24:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=cO5rS1dpYfCGe3y3g2taPmcXnwSxGvvBdzhaTW2FSK8=;
-        b=BKsgmxIELX+6q9foTzuzvmTBZPBXnOfyw7LrzBJx7JaQ0vq4gMQmg4gjXiX7vOxER8
-         f8CkcZ1hY91ciyDXwPrdCgK2SEPNdOh+ueME2O1tprlON5Q1A7Qiica4Ut63CfIHMYR/
-         lLrY53pDwmruhnhPfpBJP/EIk2do7XRhrwcnJ8Pc2+1iKkodKB/ZIcRYVhOgheaXOdAw
-         sShkrCaEqqrP9s73g07HyM2wf2kTXYG6sOt74oAp6ts04o5fZmaxlw3+bGibLA9AzVkW
-         58KsOymczEIpt5Q7Ef2PH9PxetTG6EZl2X84baILzopjXg4XvxpFab7OnYvLz1CqYB6J
-         W7rw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=8sl1ujRTUl11fto0Ranm/tI+97TTYIAhGCwPSMFjBPA=;
+        b=ZmEoXITQANAMGtqR91k1N7e/qM09bOZ9VUmbOJlmxoe+wA90YrN7DHPuk9pKGvpSLz
+         xVyVY8rDgCNF4lOF70B+xypS4s7g5dhX+x54O5gy4n+rSN/V2QhRsGhHl/g/VNcnYRY6
+         hqfp/v0KjYxaRphFyh8LBs0DbdbMzF982rBw1L5Yd6AWdwn12ub7APMiLwna9FPPqT5T
+         F58b/se2mImF2x5vYBQSz5BrkaaFXH20uMIge/H5VwKCMwuGvcvz9Uz9ZzFxBYK8v5aZ
+         UO4tOOdqKsIX9MEkra1vW9KosdEXSgKIbulthiqEK1fP3CuvU/jsvhwgOwvgHhhQUZ1N
+         TznQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=cO5rS1dpYfCGe3y3g2taPmcXnwSxGvvBdzhaTW2FSK8=;
-        b=bG6lrGlqKARtMh0X1iF8S4aS0drvslwKUtL0cmy4e7wFbo9VLlx/s++zR+yq4kar7J
-         0yVnpCXirzWicDpto4UhSUFchcgVHLZKChiMB/+ToxHTkoHJNxdtBDspBqaKrgzvQsHD
-         LJyZMciDAwqY6d/j1esBe8q2wEz6zcA7xTQolfUua1LcCTvFXvRQdc13nRxWFdqBskk+
-         4og/vblrXSHUTwjlxVmgffmOKSExaocuNyxINFB7fS1q/qYhDQKVnY4JB90MD48DDpRf
-         JHtP0djQmbuQSgJbQzIlUbgy1ohN6CPratsCrmFEvRIqhma7HbaXOK0tIjz32x8Vao/B
-         Rqug==
-X-Gm-Message-State: ACrzQf1yVLTTATkLmIdXWedsWWSgQhSXmM0oecTdhDa1mR3klrnqGbtv
-        +EzyMIgfh4j58DHgHGk6nSlicYiA850gjFfusflczagCBeg=
-X-Google-Smtp-Source: AMsMyM4vEP5MovWF2mKNzuevIZJumt+QjD3AID/N6sAyMInVo15N8KuLE/ZF+qrHAuNIoJCcbKltOJW4ZKwRptD7y3s=
-X-Received: by 2002:a50:ea89:0:b0:453:8b7d:12e8 with SMTP id
- d9-20020a50ea89000000b004538b7d12e8mr7063352edo.148.1663917917718; Fri, 23
- Sep 2022 00:25:17 -0700 (PDT)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=8sl1ujRTUl11fto0Ranm/tI+97TTYIAhGCwPSMFjBPA=;
+        b=mRnZFS+/LwENF4EMWyGxrqaIX9VGwwsMY+4sENZ4O35sPUU8jarE8836JZTcJjikPS
+         BZp0JMm7cn48bi41vRWLcJBLJb17gzBcydfAQfXPsVUuMraIkKFYcmXgnDM4Se378vnH
+         Kv0pXs8ph3FRIHeUOowSeaJMPMxOWme1FOAaxR8XfWPzIHnC26RaaVym97pwMYqgNz+W
+         pS/6RfJ0vz5zzU8y5qYtB2gLTPfZV1IMynkGF2ICz+hRmFhHDhHUTgL56yxddhyyjkem
+         C9vocdBVo6Z3V/4bd6VtOs3NfRaxVTJMWgPu4OepjRm1f/IXkm6ZQXjHEk3mVV59tNQA
+         sn0w==
+X-Gm-Message-State: ACrzQf2q6Fw2+bTbl9ON5Iz5HX1cVw3HGNHUgn1xWhytdqxqiM6hEBeC
+        Msoeu4u9AxNoEoO7muAYdVTamw==
+X-Google-Smtp-Source: AMsMyM65tpnYo0kY2Z5LJkbV/ckJdFgr1A0vjEOnLqPHceegmPhm+LwV4t9iV3qr8H8ZzzsIrZDrFQ==
+X-Received: by 2002:a05:651c:1789:b0:26c:7480:f6f8 with SMTP id bn9-20020a05651c178900b0026c7480f6f8mr1866963ljb.374.1663925052895;
+        Fri, 23 Sep 2022 02:24:12 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id d2-20020a056512368200b00494a603953dsm1362860lfs.89.2022.09.23.02.24.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 02:24:12 -0700 (PDT)
+Message-ID: <2de38167-976b-6996-7929-a41a842991a2@linaro.org>
+Date:   Fri, 23 Sep 2022 11:24:11 +0200
 MIME-Version: 1.0
-References: <20220907132205.28021-1-andrea.merello@iit.it> <20220907132205.28021-9-andrea.merello@iit.it>
- <20220918182731.26de1a02@jic23-huawei>
-In-Reply-To: <20220918182731.26de1a02@jic23-huawei>
-Reply-To: andrea.merello@gmail.com
-From:   Andrea Merello <andrea.merello@gmail.com>
-Date:   Fri, 23 Sep 2022 09:25:06 +0200
-Message-ID: <CAN8YU5O2z+dxmtLRkKsiXjZjne8rLLdMG57xQRE3SXFMx8YUcQ@mail.gmail.com>
-Subject: Re: [v7 08/14] iio: imu: add Bosch Sensortec BNO055 core driver
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     andrea.merello@iit.it, mchehab+huawei@kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        andy.shevchenko@gmail.com, matt.ranostay@konsulko.com,
-        ardeleanalex@gmail.com, jacopo@jmondi.org, bagasdotme@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v7] iio: adc: mcp3911: add support to set PGA
+Content-Language: en-US
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20220922194639.1118971-1-marcus.folkesson@gmail.com>
+ <a34d9ee8-8bf8-3158-7fe6-cbde513aa1a7@linaro.org>
+ <CAHp75VcEGb3kS03QG0ebOJYH1X_D5EbBjL6iNWUxQ5j=aCu29A@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CAHp75VcEGb3kS03QG0ebOJYH1X_D5EbBjL6iNWUxQ5j=aCu29A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il giorno dom 18 set 2022 alle ore 19:27 Jonathan Cameron
-<jic23@kernel.org> ha scritto:
-
-[...]
->
-> Hi Andrea,
->
-> I think this is looking to be in a good state now.
-> There is some devm handling for clks now available that should avoid
-> the need to open code that here.
->
-> I've made that change whilst applying. Please take a look to make sure
-> I didn't mess it up!
-
-Hi, thank you for directly fixing, so that I can avoid a further
-series version :)
-
-I've looked at this change, and it looks good to me; also, I've run
-some tests and nothing failed.
-
-Andrea
-
-> Jonathan
->
-> > +
-> > +static void bno055_clk_disable(void *arg)
-> > +{
-> > +     clk_disable_unprepare(arg);
-> > +}
-> > +
-> > +int bno055_probe(struct device *dev, struct regmap *regmap,
-> > +              int xfer_burst_break_thr, bool sw_reset)
-> > +{
->
+On 22/09/2022 23:07, Andy Shevchenko wrote:
+> On Thu, Sep 22, 2022 at 11:00 PM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>> On 22/09/2022 21:46, Marcus Folkesson wrote:
+> 
 > ...
->
-> > +     priv->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-> > +     if (IS_ERR(priv->reset_gpio))
-> > +             return dev_err_probe(dev, PTR_ERR(priv->reset_gpio), "Failed to get reset GPIO\n");
-> > +
-> > +     priv->clk = devm_clk_get_optional(dev, "clk");
-> > +     if (IS_ERR(priv->clk))
-> > +             return dev_err_probe(dev, PTR_ERR(priv->clk), "Failed to get CLK\n");
-> > +
-> > +     ret = clk_prepare_enable(priv->clk);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret = devm_add_action_or_reset(dev, bno055_clk_disable, priv->clk);
-> > +     if (ret)
-> > +             return ret;#
->
-> devm_clk_get_optional_enabled() is now available and should work here I think?
->
-> > +
-> > +     if (priv->reset_gpio) {
-> > +             usleep_range(5000, 10000);
-> > +             gpiod_set_value_cansleep(priv->reset_gpio, 1);
-> > +             usleep_range(650000, 750000);
-> > +     } else if (!sw_reset) {
-> > +             dev_warn(dev, "No usable reset method; IMU may be unreliable\n");
-> > +     }
+> 
+>> No need to cc-us. Use scripts/get_maintainers.pl.
+> 
+> While I understand your point it's much easier to Cc all related
+> people for all patches in the series, given the fact that many (code)
+> maintainers ask for that (Cc'ing them all patches). So I prefer to be
+> on the contributor side for the sake of ease of contribution.
+
+Then please explain me how I am related to this patchset (it's one
+patch, BTW, not a patchset)...
+
+Best regards,
+Krzysztof
+

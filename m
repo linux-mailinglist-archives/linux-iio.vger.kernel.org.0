@@ -2,255 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C70C5E79D1
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 13:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C63E45E7A82
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 14:22:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231447AbiIWLk6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 07:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51370 "EHLO
+        id S231340AbiIWMWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Sep 2022 08:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbiIWLks (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 07:40:48 -0400
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8E3F1166CD
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 04:40:46 -0700 (PDT)
+        with ESMTP id S231458AbiIWMV6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 08:21:58 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC02131F51
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 05:17:25 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id l8so89835wmi.2
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 05:17:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1663933247;
-  x=1695469247;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eofhBD4VGexIyCUDV/ELFzwh84q5GCFx3B+ZUTrhgho=;
-  b=YfvmasPTsqYvCG/IDPOQDOvUpEQ5ou189Yucm/5B/8u+JXb3fZG0A+bX
-   uJkkue2RHApDqblqYMXU4DU/wBPk1IL+kd+oDvZzuHlQUZQ5wW9gZAfdm
-   Y4wRcOpFVPwXYPO9ONBtSwxrlZHwwSQ9I384rCOb6myi8feVZGk1aTAl4
-   nVQvrY7acQe+HVQzYwkFCm2Ef6wb3ngwcGtogWO6A2N0lzdN6XQrWTjId
-   B6HnQRzcHpf6+uajvNe8J5GyZW7lcSdVQiwNeE4k/eYNKetx59DGFAy0P
-   GDILR9lZvgzqDyfbWyrkR0OuI3kSCango3YdTzV8VaAD2IjM6kAKPl0Mf
-   w==;
-From:   =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-CC:     Paul Cercueil <paul@crapouillou.net>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>,
-        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>
-Subject: [PATCH v2 2/2] iio: light: vcnl4000: Add ps_it attributes for vcnl4040
-Date:   Fri, 23 Sep 2022 13:40:31 +0200
-Message-ID: <20220923114031.757011-3-marten.lindahl@axis.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220923114031.757011-1-marten.lindahl@axis.com>
-References: <20220923114031.757011-1-marten.lindahl@axis.com>
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=hGxzyi/pjk7DCJr7hlF/KM96te9l/emnx/wpgO+X2jw=;
+        b=IDAYXBBR0FyIiL1wcKctRmtp+moysNxUFBEZ2KtSb3ILYDVgLyX5xreW9ErweMIfYR
+         raf/WVBTh5z0NaoQ2MZ9AUrAYHCWjys0pxWPOlUIPqMhTvif9Xkp70eCyprc60dfUl68
+         lMkxvIlufX4ljKtHU7J2hIRY+XoZcWKzWkyzXKQvhnnrIk3LYTZnroR8bpPE7mhZHcTC
+         NkcULvdjfwHAwqhYG53IdhKcWuTpCjqReywcddKVmo16be7KMRITCBA6t2ZgWbky7s+x
+         ylB0dkhjnH2spNTkkEjsPEVRKiQRb4WC5Z8uF7xU8LqgCZvZjfT4GihcEn6TI5FodGwc
+         auFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=hGxzyi/pjk7DCJr7hlF/KM96te9l/emnx/wpgO+X2jw=;
+        b=HZrFEb35fjKwY7zH/384s01UxzU3P7aytjP+6NtAI/XQtzqZ3NmOaJAo0ntztL6buk
+         kdeQE6S5oj09cSjmKgq9vPTmJWIqtJmFQSY4vSRbYSuKedIqTaFZRTZ8i84cUpwDXrRg
+         7F+70lUb2OS//Lp/YEtrggCIRDj4koBBpo3Xhj99ULgqE6QA07trFnMUG6FGpwAIxTpB
+         7vQKYCcaeSNSpghd2sCrR7t95zyJ/NvxbO7JXPKC06p9RXNMqt9nRTwPImXzfR3SnbSy
+         7GSiae1i4U2ZY+BCaQaNsRS05r8vNh88OB1KjQMkQOphAhjeNIFBTuqGObFM5lNOcWpV
+         ZG/g==
+X-Gm-Message-State: ACrzQf0EnXscYWgNGkTqQhbUHIa2nXS1mB6ROxs6Xpt4BFqHlWSjU2K7
+        HAGKcz3aQ5WKEZppyH850rhTNg==
+X-Google-Smtp-Source: AMsMyM5+jGrSmbeMPKPG8Qhe8WfIplR3L2wXhoBQCJIy77/zBBOob8+TZDSp1FEFMgBohqTkacRFWw==
+X-Received: by 2002:a05:600c:211a:b0:3b4:75ee:c63e with SMTP id u26-20020a05600c211a00b003b475eec63emr13100912wml.44.1663935444457;
+        Fri, 23 Sep 2022 05:17:24 -0700 (PDT)
+Received: from [192.168.1.70] (32.31.102.84.rev.sfr.net. [84.102.31.32])
+        by smtp.gmail.com with ESMTPSA id x13-20020a5d60cd000000b0022af6c93340sm7250886wrt.17.2022.09.23.05.17.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Sep 2022 05:17:23 -0700 (PDT)
+Message-ID: <923f5876-d692-7e0e-f351-f0e05869ccd8@baylibre.com>
+Date:   Fri, 23 Sep 2022 14:17:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v8 3/4] counter: ti-ecap-capture: capture driver support
+ for ECAP
+Content-Language: en-US
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mranostay@ti.com
+References: <20220922170402.403683-1-jpanis@baylibre.com>
+ <20220922170402.403683-4-jpanis@baylibre.com> <Yy0G9a5S3OzwyEwW@fedora>
+ <2f3e5036-caab-f892-a4ad-b852f72db331@baylibre.com> <Yy2aAMv5PRjsJ4s2@fedora>
+From:   Julien Panis <jpanis@baylibre.com>
+In-Reply-To: <Yy2aAMv5PRjsJ4s2@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add read/write attribute for proximity integration time, and read
-attribute for available proximity integration times for the vcnl4040
-chip.
 
-Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
----
- drivers/iio/light/vcnl4000.c | 129 ++++++++++++++++++++++++++++++++++-
- 1 file changed, 126 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-index b2ecf8af1aa5..056079b592c6 100644
---- a/drivers/iio/light/vcnl4000.c
-+++ b/drivers/iio/light/vcnl4000.c
-@@ -17,6 +17,7 @@
-  *   interrupts (VCNL4040, VCNL4200)
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
- #include <linux/err.h>
-@@ -76,6 +77,7 @@
- 
- #define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light sensor */
- #define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
-+#define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration time */
- 
- /* Bit masks for interrupt registers. */
- #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source */
-@@ -104,6 +106,17 @@ static const int vcnl4010_prox_sampling_frequency[][2] = {
- 	{250, 0},
- };
- 
-+static const int vcnl4040_ps_it_times[][2] = {
-+	{0, 100},
-+	{0, 150},
-+	{0, 200},
-+	{0, 250},
-+	{0, 300},
-+	{0, 350},
-+	{0, 400},
-+	{0, 800},
-+};
-+
- #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspend */
- 
- enum vcnl4000_device_ids {
-@@ -470,6 +483,55 @@ static int vcnl4000_set_pm_runtime_state(struct vcnl4000_data *data, bool on)
- 	return ret;
- }
- 
-+static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val, int *val2)
-+{
-+	int ret;
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = FIELD_GET(VCNL4040_PS_CONF2_PS_IT, ret);
-+
-+	if (ret >= ARRAY_SIZE(vcnl4040_ps_it_times))
-+		return -EINVAL;
-+
-+	*val = vcnl4040_ps_it_times[ret][0];
-+	*val2 = vcnl4040_ps_it_times[ret][1];
-+
-+	return 0;
-+}
-+
-+static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int val)
-+{
-+	unsigned int i;
-+	int ret, index = -1;
-+
-+	for (i = 0; i < ARRAY_SIZE(vcnl4040_ps_it_times); i++) {
-+		if (val == vcnl4040_ps_it_times[i][1]) {
-+			index = i;
-+			break;
-+		}
-+	}
-+
-+	if (index < 0)
-+		return -EINVAL;
-+
-+	mutex_lock(&data->vcnl4000_lock);
-+
-+	ret = i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = (ret & ~VCNL4040_PS_CONF2_PS_IT) |
-+	    FIELD_PREP(VCNL4040_PS_CONF2_PS_IT, index);
-+	ret = i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, ret);
-+
-+out:
-+	mutex_unlock(&data->vcnl4000_lock);
-+	return ret;
-+}
-+
- static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan,
- 				int *val, int *val2, long mask)
-@@ -506,6 +568,47 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
- 		*val = 0;
- 		*val2 = data->al_scale;
- 		return IIO_VAL_INT_PLUS_MICRO;
-+	case IIO_CHAN_INFO_INT_TIME:
-+		if (chan->type != IIO_PROXIMITY)
-+			return -EINVAL;
-+		ret = vcnl4040_read_ps_it(data, val, val2);
-+		if (ret < 0)
-+			return ret;
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int vcnl4040_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val, int val2, long mask)
-+{
-+	struct vcnl4000_data *data = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		if (val != 0)
-+			return -EINVAL;
-+		if (chan->type != IIO_PROXIMITY)
-+			return -EINVAL;
-+		return vcnl4040_write_ps_it(data, val2);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int vcnl4040_read_avail(struct iio_dev *indio_dev,
-+			       struct iio_chan_spec const *chan,
-+			       const int **vals, int *type, int *length,
-+			       long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_INT_TIME:
-+		*vals = (int *)vcnl4040_ps_it_times;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*length = 2 * ARRAY_SIZE(vcnl4040_ps_it_times);
-+		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -844,6 +947,20 @@ static const struct iio_chan_spec vcnl4010_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(1),
- };
- 
-+static const struct iio_chan_spec vcnl4040_channels[] = {
-+	{
-+		.type = IIO_LIGHT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_SCALE),
-+	}, {
-+		.type = IIO_PROXIMITY,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+			BIT(IIO_CHAN_INFO_INT_TIME),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_INT_TIME),
-+		.ext_info = vcnl4000_ext_info,
-+	}
-+};
-+
- static const struct iio_info vcnl4000_info = {
- 	.read_raw = vcnl4000_read_raw,
- };
-@@ -858,6 +975,12 @@ static const struct iio_info vcnl4010_info = {
- 	.write_event_config = vcnl4010_write_event_config,
- };
- 
-+static const struct iio_info vcnl4040_info = {
-+	.read_raw = vcnl4000_read_raw,
-+	.write_raw = vcnl4040_write_raw,
-+	.read_avail = vcnl4040_read_avail,
-+};
-+
- static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
- 	[VCNL4000] = {
- 		.prod = "VCNL4000",
-@@ -887,9 +1010,9 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
- 		.measure_light = vcnl4200_measure_light,
- 		.measure_proximity = vcnl4200_measure_proximity,
- 		.set_power_state = vcnl4200_set_power_state,
--		.channels = vcnl4000_channels,
--		.num_channels = ARRAY_SIZE(vcnl4000_channels),
--		.info = &vcnl4000_info,
-+		.channels = vcnl4040_channels,
-+		.num_channels = ARRAY_SIZE(vcnl4040_channels),
-+		.info = &vcnl4040_info,
- 		.irq_support = false,
- 	},
- 	[VCNL4200] = {
--- 
-2.30.2
+On 23/09/2022 13:35, William Breathitt Gray wrote:
+> On Fri, Sep 23, 2022 at 09:23:26AM +0200, Julien Panis wrote:
+>>
+>> On 23/09/2022 03:08, William Breathitt Gray wrote:
+>>> On Thu, Sep 22, 2022 at 07:04:01PM +0200, Julien Panis wrote:
+>>>> ECAP hardware on TI AM62x SoC supports capture feature. It can be used
+>>>> to timestamp events (falling/rising edges) detected on input signal.
+>>>>
+>>>> This commit adds capture driver support for ECAP hardware on AM62x SoC.
+>>>>
+>>>> In the ECAP hardware, capture pin can also be configured to be in
+>>>> PWM mode. Current implementation only supports capture operating mode.
+>>>> Hardware also supports timebase sync between multiple instances, but
+>>>> this driver supports simple independent capture functionality.
+>>>>
+>>>> Signed-off-by: Julien Panis <jpanis@baylibre.com>
+>>> Hello Julien,
+>>>
+>>> Comments follow inline below.
+>>>
+>>>> +/**
+>>>> + * struct ecap_cnt_dev - device private data structure
+>>>> + * @enabled: device state
+>>>> + * @clk:     device clock
+>>>> + * @regmap:  device register map
+>>>> + * @nb_ovf:  number of overflows since capture start
+>>>> + * @pm_ctx:  device context for PM operations
+>>>> + */
+>>>> +struct ecap_cnt_dev {
+>>>> +	bool enabled;
+>>>> +	struct clk *clk;
+>>>> +	struct regmap *regmap;
+>>>> +	atomic_t nb_ovf;
+>>>> +	struct {
+>>>> +		u8 ev_mode;
+>>>> +		u32 time_cntr;
+>>>> +	} pm_ctx;
+>>>> +};
+>>> Provide documentation for the ev_mode and time_cntr members. You
+>>> probably need a lock as well to protect access to this structure or
+>>> you'll end up with race problems.
+>> Hi William,
+>>
+>> How can I end up with race problems ? pm_ctx members are only accessed at
+>> suspend (after capture/IRQ are disabled) and resume (before capture/IRQ are
+>> re-enabled).
+>> Is there any risk I did not identify ?
+>>
+>> Julien
+> I was thinking of the ecap_cnt_dev enabled member. The Counter callbacks
+> may execute in concurrent threads, so races can appear when you access
+> members of the ecap_cnt_dev structure in these callbacks.
+>
+> Take for example this section of ecap_cnt_enable_write():
+>
+>          if (enable == ecap_dev->enabled)
+>                  return 0;
+>          if (enable)
+>                  ecap_cnt_capture_enable(counter);
+>          else
+>                  ecap_cnt_capture_disable(counter);
+>          ecap_dev->enabled = enable
+>
+> Suppose two threads try to enable the count capture. A race condition is
+> present where the two threads could see ecap_dev->enabled as false and
+> both proceed to call ecap_cnt_capture_enable(). This results in
+> pm_runtime_get_sync() bumping the usage count twice and we're left with
+> a mismatch the next time ecap_cnt_capture_disable() is called.
+>
+> William Breathitt Gray
 
+OK, If I understand well there's the same problem with IO access with 
+regmap ?
+Julien

@@ -2,76 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7455E7AD3
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 14:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5F85E7C9E
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 16:12:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbiIWMc5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 08:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38068 "EHLO
+        id S232079AbiIWOMh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Sep 2022 10:12:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231841AbiIWMck (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 08:32:40 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4304791D94
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 05:32:30 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id y5so20277880wrh.3
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 05:32:30 -0700 (PDT)
+        with ESMTP id S232357AbiIWOMd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 10:12:33 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF0CF1905
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 07:12:31 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id c11so55424qtw.8
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 07:12:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=A1LMoIfsTe6u029K1CPYtu/kaJlbv/4M38rW9dvy7HY=;
-        b=NHbiC/QqL7pTKM1IF3LOs4Z+fbWIgHLyuBeQPgKYqB3bQcp3/q+IMjkSXBKbsozqdY
-         Z1VVzcJmeZI50GAA6nBWhJAeWN3AUOJ3OSJRXzlEg9y1ns19t8CEnDtOEwfOfIh+FVij
-         y5oM/8RCBoA4Hc8QBxhmiaYdFmC4H8YwS2+k8Y9XHr10wGKPKcErWowZQewsqtmK4IBY
-         DY4Pm59H7a+eLTGmmgz7wLqg908E5AVhHjonsJaaFBa5UDqNZdhHNEKBfK+ewZoxf5pF
-         iaX+uFjMtQzzqdxGPhcrIL0vreo1uGL2xxjzkT+BkywU5mrZxZGyyVHx6d74Cd81Yh2H
-         6sRQ==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=jigkqPPzf/H5aNdoNosNYAVSQSu3V0CC1JsZZy4DU3Q=;
+        b=rqOOk7/NYyaOxJYVOmirDCJJ2ngotTr9LJOwiaXHsTfFxq/BHhllKaSbpdIrvTX3jO
+         qmGXkmnrN15o0E98V5pFOvSJfDzRioO7VukNYR674xN96GXL2S+lFYS5Oqvng97lbiDf
+         HIwDnDjNwPUXW0ybaVeTJ5PLEK55YWLz0kN6+htpzV4xQwSHX9k8yXuhlP/EKUvVMica
+         jp8tRRGnMf3Fd7wiwxdF6y7nddifPJ6tvi++t/oXo+XVLH68nhWHeF0FlOdAD4Q7O5OI
+         VZjtJkOnyE7Kros/FY+ntfCc/u14QAO0Wby7FUlvACboNV5WbvZ1Q8bNpn/GKTyrQISJ
+         Y+pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=A1LMoIfsTe6u029K1CPYtu/kaJlbv/4M38rW9dvy7HY=;
-        b=lLnbzRe4u+tNG02C9KfBddbBi3UhC9eoI1EvKLEXzJe3rozjDdwPqK9vqmaKwOHPAM
-         keoDwqkVCjH/YUQyPIaAkSs5HcovTlfYZj7dHI1rgFD0sZIqoOrmiI/0FxPoibUgfc0X
-         FJO/NVdUaJN2A1fnDuMeUkgBxd4UK3fmZXA+CIr1Bn5DojUDtzZaiYJkDM5SOalbzwPu
-         jsHrcJxK8qdS6IA7yf0gdI6dtWA2slTR8rkbO3/Yg+3n+KEZB2JOZ/3ip41OHwahb2D2
-         2dGkLB68PuB39etwUJhvTyxB5gN17stC/iA0gz6W3ztj1NuuHp2ZYvx2ilo408OyTIGs
-         fyOw==
-X-Gm-Message-State: ACrzQf1zxOhLkXFBamlG/ZVBVfwLr/OqzXSuHj+/sHcIy8/MHnY7aJP+
-        xeoUqEaKVY2d81cRuB/WoS2Gqg==
-X-Google-Smtp-Source: AMsMyM6E8vC9t2uADbYYSK/mHlDsXZdsxKkElFLeNjosFG11bZI0H0Nq92OMKhLygh41xfh1Y4GJgw==
-X-Received: by 2002:a05:6000:1acf:b0:22b:ed0:71b1 with SMTP id i15-20020a0560001acf00b0022b0ed071b1mr5410058wry.51.1663936348653;
-        Fri, 23 Sep 2022 05:32:28 -0700 (PDT)
-Received: from [192.168.1.70] (32.31.102.84.rev.sfr.net. [84.102.31.32])
-        by smtp.gmail.com with ESMTPSA id h6-20020a05600c350600b003b491f99a25sm2673286wmq.22.2022.09.23.05.32.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Sep 2022 05:32:28 -0700 (PDT)
-Message-ID: <8a60b6a0-9289-0d89-c543-02386a721bca@baylibre.com>
-Date:   Fri, 23 Sep 2022 14:32:26 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH v8 3/4] counter: ti-ecap-capture: capture driver support
- for ECAP
-Content-Language: en-US
-From:   Julien Panis <jpanis@baylibre.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=jigkqPPzf/H5aNdoNosNYAVSQSu3V0CC1JsZZy4DU3Q=;
+        b=741WL8eGNQ8xNaC6HVjzmSkKNDqkrphgWwZbTqZCXg9lRL20ku5B/cLMlpoTvVVt7B
+         +Wc76Cd6Ninv+yGLfFkkk212Y+IpXXupFVKyuBJX0y+0vN6U1u3trBDemwgNKbxOEcGP
+         6EAS4ZOPkEGqdGG6DFVcdr9bsee3VguzGnB4S/kCeHsecniopQYI9XFgmJSe5i/rfhS/
+         ZS3A/BpJNozWnPFzGXde2sIdfEIppls+hS917po2NsufD9nUztZRLgqrAZ5K0Pm297Fn
+         7iBEOmxJcy1M6IExtuSWmIECOWKIKSnW/vJbWM2DC8PeWNHcUCmBUTBmXxyj6yOir1kd
+         nKtg==
+X-Gm-Message-State: ACrzQf3mrE0mv1xzhXmooKiXPCwEnz9XEgoZ0Nfz9aJKxmLG33eCCWfD
+        qb63Xx9v31UKeJ6RPATD+LEhgg==
+X-Google-Smtp-Source: AMsMyM6ctE2sNUK/Rfz59Gn1Z1oDRk5BgvPFfJ7ZBmmNAhFDB2c3IMpLL33qTe1hRdO4/nVvIAby4A==
+X-Received: by 2002:ac8:5c8c:0:b0:35d:4c5:7e2a with SMTP id r12-20020ac85c8c000000b0035d04c57e2amr7327175qta.293.1663942350518;
+        Fri, 23 Sep 2022 07:12:30 -0700 (PDT)
+Received: from fedora ([204.156.113.250])
+        by smtp.gmail.com with ESMTPSA id v6-20020a05620a0f0600b006bc0980db76sm6152790qkl.126.2022.09.23.07.12.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Sep 2022 07:12:30 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 09:09:32 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v8 3/4] counter: ti-ecap-capture: capture driver support
+ for ECAP
+Message-ID: <Yy2wDPITCZ/J01Xr@fedora>
 References: <20220922170402.403683-1-jpanis@baylibre.com>
- <20220922170402.403683-4-jpanis@baylibre.com> <Yy0G9a5S3OzwyEwW@fedora>
- <2f3e5036-caab-f892-a4ad-b852f72db331@baylibre.com> <Yy2aAMv5PRjsJ4s2@fedora>
+ <20220922170402.403683-4-jpanis@baylibre.com>
+ <Yy0G9a5S3OzwyEwW@fedora>
+ <2f3e5036-caab-f892-a4ad-b852f72db331@baylibre.com>
+ <Yy2aAMv5PRjsJ4s2@fedora>
  <923f5876-d692-7e0e-f351-f0e05869ccd8@baylibre.com>
-In-Reply-To: <923f5876-d692-7e0e-f351-f0e05869ccd8@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+ <8a60b6a0-9289-0d89-c543-02386a721bca@baylibre.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="XPKB3zJM2TKbw2gr"
+Content-Disposition: inline
+In-Reply-To: <8a60b6a0-9289-0d89-c543-02386a721bca@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -79,89 +79,125 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--XPKB3zJM2TKbw2gr
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 23/09/2022 14:17, Julien Panis wrote:
->
->
-> On 23/09/2022 13:35, William Breathitt Gray wrote:
->> On Fri, Sep 23, 2022 at 09:23:26AM +0200, Julien Panis wrote:
->>>
->>> On 23/09/2022 03:08, William Breathitt Gray wrote:
->>>> On Thu, Sep 22, 2022 at 07:04:01PM +0200, Julien Panis wrote:
->>>>> ECAP hardware on TI AM62x SoC supports capture feature. It can be 
->>>>> used
->>>>> to timestamp events (falling/rising edges) detected on input signal.
->>>>>
->>>>> This commit adds capture driver support for ECAP hardware on AM62x 
->>>>> SoC.
->>>>>
->>>>> In the ECAP hardware, capture pin can also be configured to be in
->>>>> PWM mode. Current implementation only supports capture operating 
->>>>> mode.
->>>>> Hardware also supports timebase sync between multiple instances, but
->>>>> this driver supports simple independent capture functionality.
->>>>>
->>>>> Signed-off-by: Julien Panis <jpanis@baylibre.com>
->>>> Hello Julien,
->>>>
->>>> Comments follow inline below.
->>>>
->>>>> +/**
->>>>> + * struct ecap_cnt_dev - device private data structure
->>>>> + * @enabled: device state
->>>>> + * @clk:     device clock
->>>>> + * @regmap:  device register map
->>>>> + * @nb_ovf:  number of overflows since capture start
->>>>> + * @pm_ctx:  device context for PM operations
->>>>> + */
->>>>> +struct ecap_cnt_dev {
->>>>> +    bool enabled;
->>>>> +    struct clk *clk;
->>>>> +    struct regmap *regmap;
->>>>> +    atomic_t nb_ovf;
->>>>> +    struct {
->>>>> +        u8 ev_mode;
->>>>> +        u32 time_cntr;
->>>>> +    } pm_ctx;
->>>>> +};
->>>> Provide documentation for the ev_mode and time_cntr members. You
->>>> probably need a lock as well to protect access to this structure or
->>>> you'll end up with race problems.
->>> Hi William,
->>>
->>> How can I end up with race problems ? pm_ctx members are only 
->>> accessed at
->>> suspend (after capture/IRQ are disabled) and resume (before 
->>> capture/IRQ are
->>> re-enabled).
->>> Is there any risk I did not identify ?
->>>
->>> Julien
->> I was thinking of the ecap_cnt_dev enabled member. The Counter callbacks
->> may execute in concurrent threads, so races can appear when you access
->> members of the ecap_cnt_dev structure in these callbacks.
->>
->> Take for example this section of ecap_cnt_enable_write():
->>
->>          if (enable == ecap_dev->enabled)
->>                  return 0;
->>          if (enable)
->>                  ecap_cnt_capture_enable(counter);
->>          else
->>                  ecap_cnt_capture_disable(counter);
->>          ecap_dev->enabled = enable
->>
->> Suppose two threads try to enable the count capture. A race condition is
->> present where the two threads could see ecap_dev->enabled as false and
->> both proceed to call ecap_cnt_capture_enable(). This results in
->> pm_runtime_get_sync() bumping the usage count twice and we're left with
->> a mismatch the next time ecap_cnt_capture_disable() is called.
->>
->> William Breathitt Gray
->
-> OK, If I understand well there's the same problem with IO access with 
-> regmap ?
-> Julien
+On Fri, Sep 23, 2022 at 02:32:26PM +0200, Julien Panis wrote:
+>=20
+>=20
+> On 23/09/2022 14:17, Julien Panis wrote:
+> >=20
+> >=20
+> > On 23/09/2022 13:35, William Breathitt Gray wrote:
+> > > On Fri, Sep 23, 2022 at 09:23:26AM +0200, Julien Panis wrote:
+> > > >=20
+> > > > On 23/09/2022 03:08, William Breathitt Gray wrote:
+> > > > > On Thu, Sep 22, 2022 at 07:04:01PM +0200, Julien Panis wrote:
+> > > > > > ECAP hardware on TI AM62x SoC supports capture feature.
+> > > > > > It can be used
+> > > > > > to timestamp events (falling/rising edges) detected on input si=
+gnal.
+> > > > > >=20
+> > > > > > This commit adds capture driver support for ECAP
+> > > > > > hardware on AM62x SoC.
+> > > > > >=20
+> > > > > > In the ECAP hardware, capture pin can also be configured to be =
+in
+> > > > > > PWM mode. Current implementation only supports capture
+> > > > > > operating mode.
+> > > > > > Hardware also supports timebase sync between multiple instances=
+, but
+> > > > > > this driver supports simple independent capture functionality.
+> > > > > >=20
+> > > > > > Signed-off-by: Julien Panis <jpanis@baylibre.com>
+> > > > > Hello Julien,
+> > > > >=20
+> > > > > Comments follow inline below.
+> > > > >=20
+> > > > > > +/**
+> > > > > > + * struct ecap_cnt_dev - device private data structure
+> > > > > > + * @enabled: device state
+> > > > > > + * @clk:=A0=A0=A0=A0 device clock
+> > > > > > + * @regmap:=A0 device register map
+> > > > > > + * @nb_ovf:=A0 number of overflows since capture start
+> > > > > > + * @pm_ctx:=A0 device context for PM operations
+> > > > > > + */
+> > > > > > +struct ecap_cnt_dev {
+> > > > > > +=A0=A0=A0 bool enabled;
+> > > > > > +=A0=A0=A0 struct clk *clk;
+> > > > > > +=A0=A0=A0 struct regmap *regmap;
+> > > > > > +=A0=A0=A0 atomic_t nb_ovf;
+> > > > > > +=A0=A0=A0 struct {
+> > > > > > +=A0=A0=A0=A0=A0=A0=A0 u8 ev_mode;
+> > > > > > +=A0=A0=A0=A0=A0=A0=A0 u32 time_cntr;
+> > > > > > +=A0=A0=A0 } pm_ctx;
+> > > > > > +};
+> > > > > Provide documentation for the ev_mode and time_cntr members. You
+> > > > > probably need a lock as well to protect access to this structure =
+or
+> > > > > you'll end up with race problems.
+> > > > Hi William,
+> > > >=20
+> > > > How can I end up with race problems ? pm_ctx members are only
+> > > > accessed at
+> > > > suspend (after capture/IRQ are disabled) and resume (before
+> > > > capture/IRQ are
+> > > > re-enabled).
+> > > > Is there any risk I did not identify ?
+> > > >=20
+> > > > Julien
+> > > I was thinking of the ecap_cnt_dev enabled member. The Counter callba=
+cks
+> > > may execute in concurrent threads, so races can appear when you access
+> > > members of the ecap_cnt_dev structure in these callbacks.
+> > >=20
+> > > Take for example this section of ecap_cnt_enable_write():
+> > >=20
+> > > =A0=A0=A0=A0=A0=A0=A0=A0 if (enable =3D=3D ecap_dev->enabled)
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 return 0;
+> > > =A0=A0=A0=A0=A0=A0=A0=A0 if (enable)
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ecap_cnt_capture_ena=
+ble(counter);
+> > > =A0=A0=A0=A0=A0=A0=A0=A0 else
+> > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ecap_cnt_capture_dis=
+able(counter);
+> > > =A0=A0=A0=A0=A0=A0=A0=A0 ecap_dev->enabled =3D enable
+> > >=20
+> > > Suppose two threads try to enable the count capture. A race condition=
+ is
+> > > present where the two threads could see ecap_dev->enabled as false and
+> > > both proceed to call ecap_cnt_capture_enable(). This results in
+> > > pm_runtime_get_sync() bumping the usage count twice and we're left wi=
+th
+> > > a mismatch the next time ecap_cnt_capture_disable() is called.
+> > >=20
+> > > William Breathitt Gray
+> >=20
+> > OK, If I understand well there's the same problem with IO access with
+> > regmap ?
+> > Julien
+>=20
+> [ERRATUM] It seems that some spinlock is already used by regmap API.
+> So, only the 'enabled' member needs a lock.
 
-[ERRATUM] It seems that some spinlock is already used by regmap API.
-So, only the 'enabled' member needs a lock.
+Keep in mind that although individual regmap API calls can be considered
+atomic, the order of the calls made could be a point of race if there
+are concurrent threads. However, in your particular driver it looks
+you're fine as long as access to 'enabled' is protected.
+
+William Breathitt Gray
+
+--XPKB3zJM2TKbw2gr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYy2wDAAKCRC1SFbKvhIj
+KyNpAQCvH/rPZZz1R4Vh3ZDkM0LwoAjB6xLQsH7OrXS24uapFgD+L+lRKRh0hTw2
+DUe0T8mhULo6o9b3NMlQEXOY3diuQQU=
+=RAH6
+-----END PGP SIGNATURE-----
+
+--XPKB3zJM2TKbw2gr--

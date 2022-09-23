@@ -2,101 +2,132 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A454B5E7CDC
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 16:24:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66AA15E7F39
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 18:00:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbiIWOYu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 10:24:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60478 "EHLO
+        id S230110AbiIWQAt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Sep 2022 12:00:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232561AbiIWOYr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 10:24:47 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8812B1BB
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 07:24:44 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id r133-20020a1c448b000000b003b494ffc00bso3452692wma.0
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 07:24:44 -0700 (PDT)
+        with ESMTP id S230472AbiIWQAe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 12:00:34 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F9C10D66F
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 09:00:32 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id o7so351304qkj.10
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 09:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=+gg8BqSr/XzLdS7L9X25eMkIxvQJQPxB4iU34G/4vAc=;
-        b=0o5HIGq6dar3v4a3HY80WpxudV3MLVv9VYOMg/P9uNfQmm3yLUc0AhyOSBPJMmhEhM
-         2pHPFQQTN5N662SIjzzucJaswE9h5Q34kfKGwHwt8VVCTG0NYzGnFvjot21Vk6McZRKw
-         vzs/gSWml2QOH3t+49f5hmMWetF9kc0ZfJNqdfq8y3sWR4+mcEOqWDhh4pxff4BK+EL7
-         wu7l3vzEaBKiuFNwXHrcN/OCNQQYlTFNpsZND/Om8a7KWNq0Z45pbn5C5DSyy1fc4+0T
-         Blq5XGU9UrSTxZ27ad8DbTEp7qxW8Qjc5knrqZlOprF6O8KXUZzlJvQlEV5dJnMqTCFb
-         PGOg==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=X88HL68aCJfUdncHY2qCCi0nVDkqRyJbXT1bnLIzN/g=;
+        b=VUpkFa4te7+t8eoE80PTwHihbzULcEDPH782yyzbWnAH8w5kGE4rPY+uKn2oNFebBr
+         xNYOkeyNA+UQwMBvd1BtkUKIsQHIhLpgtkmbWT0J/JkYRM28U8Dt9R+2fOI/jsM/vsuw
+         wMrgA96CpiaRhX6fESL5ksDfIk6ONv35FU0JNtbKegRkViNDky/OjLgDjp9rIEDl+Fry
+         TIqZcM6HHx9aFV6DcWUWeFbd5i1oSNy80vdrqBZm5DxWGQUv2XjSy5Y1guDRNpOF79Z8
+         LO8MF+saot5atdu13Ig8RfUUX5EZzEWjWC1Kkq9mO18HlVXmRCLM+Fwj+vusXQj9TiZP
+         9Beg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=+gg8BqSr/XzLdS7L9X25eMkIxvQJQPxB4iU34G/4vAc=;
-        b=Yuq+JcMvsUosR68Eo7QrP1eGzDgLo2734PkUvhxLu8gzBpYPZ9g18fTF5x3j5c6QJV
-         o7aa6StRl6ecbvGHv6thu0EHaZIQOKv+hi0rnFI3bf6NG53g3EG8lub5zsmadbXM44Ch
-         QG5VizHMyY+7oYRgwHtSbtSBDibSgfEUGXYOW3fvew7hZrtOzwF5uknBEgJuoh1hml/a
-         N4CSIRe/MqYJB4WSorfrmlKjnIoGeGEB06Xmzblil/mj38jhFgcBMi7sUCg4A1deKLLY
-         6LboQD6lpORceyW3IrSQPwtMmqdVNtGQd7BPCprnEhDN5AfTMBNG/9QMPxpLiZmXLa3/
-         UoRA==
-X-Gm-Message-State: ACrzQf36+3JnSwQegXu+sd5fhiXqALulM8PF7qhyw919yi8GAlT2JOF4
-        1mNtxyunvbnYOBHqx3L6qKRcdA==
-X-Google-Smtp-Source: AMsMyM6fAayT1ZsV+SMonrVdKJ53U4/hjl7+ExfMxROz0nMYBnnFSyl3/Mqnz4L8GUMlT0dr0Kl0UA==
-X-Received: by 2002:a05:600c:3c8e:b0:3b4:d224:addf with SMTP id bg14-20020a05600c3c8e00b003b4d224addfmr13261549wmb.132.1663943083373;
-        Fri, 23 Sep 2022 07:24:43 -0700 (PDT)
-Received: from baylibre-ThinkPad-T14s-Gen-2i.. (32.31.102.84.rev.sfr.net. [84.102.31.32])
-        by smtp.gmail.com with ESMTPSA id m18-20020a5d56d2000000b0022878c0cc5esm7444627wrw.69.2022.09.23.07.24.42
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=X88HL68aCJfUdncHY2qCCi0nVDkqRyJbXT1bnLIzN/g=;
+        b=KCu+QWux9bCczBCU1lGftzjgwNadsqqhicqoDqsShm0APeHHCNu7LZwA6DzoJ/+eY7
+         U//DJJH9yNur6Ju04Wp+da9TGQBz+9S9OqJqZpdf4zl9h/nLHXY1ueBo0LDuWdK9IG9M
+         VIAd+Q9BCjdQyUysgQOwRvATX3jb/WncggTRmvKuzbbAc4CwkRh37gOWT6i9qFkbC5Rl
+         gdh5HakS3/7em/Z8t5WWBxIJ5jW2q8It/SrGnGF/AeSstyrfuB+Mo1mZANslG7lzSUz9
+         w1fAFb1B+Uyh+puU348CBfqljvKkk9gBn4w3N+pK+I1u/Qz911YZYkC7ywTTuZ1MpQw7
+         O54Q==
+X-Gm-Message-State: ACrzQf1en/2o95xMKX4CpM9eHniHSdtceLmmOtdUecxsS7J+GJgaoYPC
+        oZthMHqMifrIH7JxNv98N7nfpg==
+X-Google-Smtp-Source: AMsMyM7IAev448Zrmf+Niu2uyhsLlID8pvs9GcXbVVcKhh+AbrsvOR/difIN2QuQyu5B0IygdBrt1Q==
+X-Received: by 2002:a05:620a:2442:b0:6ce:d766:ca81 with SMTP id h2-20020a05620a244200b006ced766ca81mr5956031qkn.687.1663948831972;
+        Fri, 23 Sep 2022 09:00:31 -0700 (PDT)
+Received: from fedora ([204.156.113.250])
+        by smtp.gmail.com with ESMTPSA id do11-20020a05620a2b0b00b006ce441816e0sm6245068qkb.15.2022.09.23.09.00.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Sep 2022 07:24:43 -0700 (PDT)
-From:   Julien Panis <jpanis@baylibre.com>
-To:     william.gray@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Fri, 23 Sep 2022 09:00:31 -0700 (PDT)
+Date:   Fri, 23 Sep 2022 10:55:46 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, mranostay@ti.com
-Subject: [PATCH v9 4/4] MAINTAINERS: add TI ECAP driver info
-Date:   Fri, 23 Sep 2022 16:24:37 +0200
-Message-Id: <20220923142437.271328-5-jpanis@baylibre.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20220923142437.271328-1-jpanis@baylibre.com>
+Subject: Re: [PATCH v9 0/4] ECAP support on TI AM62x SoC
+Message-ID: <Yy3I8vKSfYdaZunw@fedora>
 References: <20220923142437.271328-1-jpanis@baylibre.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="6qnNNKSKTZQ4BW8h"
+Content-Disposition: inline
+In-Reply-To: <20220923142437.271328-1-jpanis@baylibre.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This commit adds driver info for TI ECAP used in capture operating mode.
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+--6qnNNKSKTZQ4BW8h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d4999f68bda8..c189117f58eb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20322,6 +20322,15 @@ T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_devices.git
- F:	drivers/media/platform/ti/davinci/
- F:	include/media/davinci/
- 
-+TI ENHANCED CAPTURE (eCAP) DRIVER
-+M:	Vignesh Raghavendra <vigneshr@ti.com>
-+R:	Julien Panis <jpanis@baylibre.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-omap@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/counter/ti,am62-ecap-capture.yaml
-+F:	drivers/counter/ti-ecap-capture.c
-+
- TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
- R:	David Lechner <david@lechnology.com>
- L:	linux-iio@vger.kernel.org
--- 
-2.37.3
+On Fri, Sep 23, 2022 at 04:24:33PM +0200, Julien Panis wrote:
+> The Enhanced Capture (ECAP) module can be used to timestamp events
+> detected on signal input pin. It can be used for time measurements
+> of pulse train signals.
+>=20
+> ECAP module includes 4 timestamp capture registers. For all 4 sequenced
+> timestamp capture events (0->1->2->3->0->...), edge polarity (falling/ris=
+ing
+> edge) can be selected.
+>=20
+> This driver leverages counter subsystem to :
+> - select edge polarity for all 4 capture events (event mode)
+> - log timestamps for each capture event
+> Event polarity, and CAP0/1/2/3 timestamps give all the information
+> about the input pulse train. Further information can easily be computed :
+> period and/or duty cycle if frequency is constant, elapsed time between
+> pulses, etc...
+>=20
+> This patchset must be applied on top of the following counter subsystem p=
+atchset :
+> https://lore.kernel.org/all/cover.1663693757.git.william.gray@linaro.org/
 
+Hello Julien,
+
+Tentatively, this version looks good to me. Due to the amount of changes
+we've made in the past week I'm going to let it sit on the list for a
+while to give any lingering issues we missed a chance to be found. If
+nothing pops up during that time, I expect to queue this next week and
+hopefully include it with the other Counter changes in time for the 6.1
+merge window.
+
+By the way, in the future you can use the '--base' git format-patch
+argument to specify the base commit (and any prereq patches) that your
+series is based on: https://git-scm.com/docs/git-format-patch#_base_tree_in=
+formation
+
+That makes it clear to reviewers and maintainers where they should apply
+your patchset, and should also prevent the kernel test robot from
+testing against the wrong base.
+
+William Breathitt Gray
+
+--6qnNNKSKTZQ4BW8h
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYy3I8gAKCRC1SFbKvhIj
+K4VyAP0TS6xWP5CFMk76z6N5ksg9cJ2R+S8ZmLw3qAg8JHdBVgEAno4zuIl4Uf9n
+dXIjZ9ayvffGfaYRnYTBD2XUXT8G8gs=
+=tET1
+-----END PGP SIGNATURE-----
+
+--6qnNNKSKTZQ4BW8h--

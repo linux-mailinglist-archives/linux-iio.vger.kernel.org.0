@@ -2,65 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66AA15E7F39
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 18:00:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631025E84CB
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 23:22:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbiIWQAt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 12:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
+        id S230415AbiIWVWe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Sep 2022 17:22:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbiIWQAe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 12:00:34 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F9C10D66F
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 09:00:32 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id o7so351304qkj.10
-        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 09:00:32 -0700 (PDT)
+        with ESMTP id S230421AbiIWVWd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 17:22:33 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 886C712261A
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 14:22:31 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id d15so907314qka.9
+        for <linux-iio@vger.kernel.org>; Fri, 23 Sep 2022 14:22:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=X88HL68aCJfUdncHY2qCCi0nVDkqRyJbXT1bnLIzN/g=;
-        b=VUpkFa4te7+t8eoE80PTwHihbzULcEDPH782yyzbWnAH8w5kGE4rPY+uKn2oNFebBr
-         xNYOkeyNA+UQwMBvd1BtkUKIsQHIhLpgtkmbWT0J/JkYRM28U8Dt9R+2fOI/jsM/vsuw
-         wMrgA96CpiaRhX6fESL5ksDfIk6ONv35FU0JNtbKegRkViNDky/OjLgDjp9rIEDl+Fry
-         TIqZcM6HHx9aFV6DcWUWeFbd5i1oSNy80vdrqBZm5DxWGQUv2XjSy5Y1guDRNpOF79Z8
-         LO8MF+saot5atdu13Ig8RfUUX5EZzEWjWC1Kkq9mO18HlVXmRCLM+Fwj+vusXQj9TiZP
-         9Beg==
+        d=konsulko.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=VpnQg1rEnQar635HXZ15MaEVyMiJZ00IZjOuCsQVIRY=;
+        b=tLP/NCRt9yE2npvnDM82VwJnX7HtCL8AYCn267ODXt9qtLQowR6rbxk6G79QX/eZQ3
+         EIq5Zk0atBYuR1B1fHoVbZLtLEKZWxsKbHqmDL+G8/EqxZxOkfhdBESV8fIse2zaoj/i
+         91YIicKpUGq++SGSt2xF1hT6LQET5NSCZGjiE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=X88HL68aCJfUdncHY2qCCi0nVDkqRyJbXT1bnLIzN/g=;
-        b=KCu+QWux9bCczBCU1lGftzjgwNadsqqhicqoDqsShm0APeHHCNu7LZwA6DzoJ/+eY7
-         U//DJJH9yNur6Ju04Wp+da9TGQBz+9S9OqJqZpdf4zl9h/nLHXY1ueBo0LDuWdK9IG9M
-         VIAd+Q9BCjdQyUysgQOwRvATX3jb/WncggTRmvKuzbbAc4CwkRh37gOWT6i9qFkbC5Rl
-         gdh5HakS3/7em/Z8t5WWBxIJ5jW2q8It/SrGnGF/AeSstyrfuB+Mo1mZANslG7lzSUz9
-         w1fAFb1B+Uyh+puU348CBfqljvKkk9gBn4w3N+pK+I1u/Qz911YZYkC7ywTTuZ1MpQw7
-         O54Q==
-X-Gm-Message-State: ACrzQf1en/2o95xMKX4CpM9eHniHSdtceLmmOtdUecxsS7J+GJgaoYPC
-        oZthMHqMifrIH7JxNv98N7nfpg==
-X-Google-Smtp-Source: AMsMyM7IAev448Zrmf+Niu2uyhsLlID8pvs9GcXbVVcKhh+AbrsvOR/difIN2QuQyu5B0IygdBrt1Q==
-X-Received: by 2002:a05:620a:2442:b0:6ce:d766:ca81 with SMTP id h2-20020a05620a244200b006ced766ca81mr5956031qkn.687.1663948831972;
-        Fri, 23 Sep 2022 09:00:31 -0700 (PDT)
-Received: from fedora ([204.156.113.250])
-        by smtp.gmail.com with ESMTPSA id do11-20020a05620a2b0b00b006ce441816e0sm6245068qkb.15.2022.09.23.09.00.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Sep 2022 09:00:31 -0700 (PDT)
-Date:   Fri, 23 Sep 2022 10:55:46 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Julien Panis <jpanis@baylibre.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, mranostay@ti.com
-Subject: Re: [PATCH v9 0/4] ECAP support on TI AM62x SoC
-Message-ID: <Yy3I8vKSfYdaZunw@fedora>
-References: <20220923142437.271328-1-jpanis@baylibre.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=VpnQg1rEnQar635HXZ15MaEVyMiJZ00IZjOuCsQVIRY=;
+        b=4N+HNIRhnm+msFCte8Th6E8hz+kKBcRLZ0fo7c3fo7XL+xE1lonkEkpY0935jvh6z4
+         i3Uhl9RTbAnPwQN4bGQwl65q94T7tOYE2rPnjzl5x50EjlziY5dj+28JjcSPoVZVaKc3
+         fc6KXFQ31m2b5g6EZyiQ+7QVmOyMD9EB7v5S/dies8vC8GKUUj73230piXlawulbOJ6x
+         fr5AsTeVhH56Es573RcmQtB0JqVtBWE3YQYCiuRF93u8kPRWlAcZut61Ka3TbgYizH79
+         Z29W2biajCphHHqkWoY+lsOYoI3IhC8OZ0xaCQLEJvoYQjRNvGEKYdNbqc2FUAdadbvD
+         TFuA==
+X-Gm-Message-State: ACrzQf3sI9lRIuH5E1DRLeKk/dFflfMc6FAe/BvQgGp84whoP2ZELdd3
+        58yAtVweUjPmohmft/LCY6GXgJ6IqCDbKqrX3cK5ug==
+X-Google-Smtp-Source: AMsMyM7nfvry5depoC3V+zXd5yIxGRnpYRnUuTrxtnTMa909iAIZFFf2e3JgOK1x+g4KupF2FicCwlLOVxSSTPYHgxU=
+X-Received: by 2002:a05:620a:c41:b0:6b6:bc8:2051 with SMTP id
+ u1-20020a05620a0c4100b006b60bc82051mr7120453qki.410.1663968150696; Fri, 23
+ Sep 2022 14:22:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6qnNNKSKTZQ4BW8h"
-Content-Disposition: inline
-In-Reply-To: <20220923142437.271328-1-jpanis@baylibre.com>
+References: <20220921063026.89619-1-matt.ranostay@konsulko.com>
+ <20220921063026.89619-5-matt.ranostay@konsulko.com> <20220921080458.3uue5ooc3svcbmxp@mail.corp.redhat.com>
+ <CAJCx=gn0bZp3fToF+LZE+evR2m4nWMueusjysxcrvimH0wRhaA@mail.gmail.com>
+ <CAJCx=gmAyae-_VmYpVw=q4+34zraxQ4d2E3DTjjRX4OWqaWwHg@mail.gmail.com> <CAO-hwJJrgb+ncG9mSiE4zZ32oRc_vD0OcrsTa+uXBCTBGRL+nw@mail.gmail.com>
+In-Reply-To: <CAO-hwJJrgb+ncG9mSiE4zZ32oRc_vD0OcrsTa+uXBCTBGRL+nw@mail.gmail.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Fri, 23 Sep 2022 14:22:18 -0700
+Message-ID: <CAJCx=g=bcZe5RUWZTqmz_2=Q1sDmbwGB8Rd8F47eVkz7e2Zz2A@mail.gmail.com>
+Subject: Re: [PATCH v4 4/5] HID: mcp2221: switch i2c registration to devm functions
+To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     Rishi Gupta <gupt21@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Linux I2C <linux-i2c@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+        Jiri Kosina <jikos@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -71,63 +69,115 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, Sep 23, 2022 at 12:03 AM Benjamin Tissoires
+<benjamin.tissoires@redhat.com> wrote:
+>
+> On Fri, Sep 23, 2022 at 1:45 AM Matt Ranostay
+> <matt.ranostay@konsulko.com> wrote:
+> >
+> > On Wed, Sep 21, 2022 at 10:57 AM Matt Ranostay
+> > <matt.ranostay@konsulko.com> wrote:
+> > >
+> > > On Wed, Sep 21, 2022 at 1:05 AM Benjamin Tissoires
+> > > <benjamin.tissoires@redhat.com> wrote:
+> > > >
+> > > > [foreword: please keep Jiri and myself (the HID maintainers) CC-ed to
+> > > > the series, as you will need ack from us and we don't necessarily monitor
+> > > > every single message on linux-input]
+> > > >
+> > > > On Sep 20 2022, Matt Ranostay wrote:
+> > > > > Switch from i2c_add_adapter() to resource managed devm_i2c_add_adapter()
+> > > > > for matching rest of driver initialization, and more concise code.
+> > > > >
+> > > > > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> > > > > ---
+> > > > >  drivers/hid/hid-mcp2221.c | 45 +++++++++++++++++----------------------
+> > > > >  1 file changed, 19 insertions(+), 26 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+> > > > > index de52e9f7bb8c..7ba63bcd66de 100644
+> > > > > --- a/drivers/hid/hid-mcp2221.c
+> > > > > +++ b/drivers/hid/hid-mcp2221.c
+> > > > > @@ -824,6 +824,14 @@ static int mcp2221_raw_event(struct hid_device *hdev,
+> > > > >       return 1;
+> > > > >  }
+> > > > >
+> > > > > +static void mcp2221_hid_remove(void *ptr)
+> > > > > +{
+> > > > > +     struct hid_device *hdev = ptr;
+> > > > > +
+> > > > > +     hid_hw_close(hdev);
+> > > > > +     hid_hw_stop(hdev);
+> > > >
+> > > > By default, if you remove the .remove() callback, hid_hw_stop() will get
+> > > > automatically called by hid-core.c. So we are now calling it twice,
+> > > > which, in a way is not a big deal but it might be an issue in the long
+> > > > run.
+> > > >
+> > > > Generally speaking, in the HID subsystem, that situation doesn't happen
+> > > > a lot because hid_hw_start() is usually the last command of probe, and
+> > > > we don't need to open the device in the driver itself.
+> > > >
+> > > > Here, I guess as soon as you add the i2c adapter, you might want to have
+> > > > the communication channels ready, and thus you need to have it open
+> > > > *before* i2c_add_adapter.
+> > > >
+> > > > I would suggest the following if you want to keep the devm release of
+> > > > stop and close: please put a big fat warning before mcp2221_hid_remove()
+> > > > explaining that this is called in devm management, *and* add a function
+> > > > that would just return 0 as the .remove() callback with another big fat
+> > > > warning explaining that we don't want hid-core.c to call hid_hw_stop()
+> > > > because we are doing it ourself through devres.
+> > > >
+> > >
+> > > Yeah maybe best to keep the non-devres if it isn't going to affect how the last
+> > > change in this series is trying to implement with iio.
+> > >
+> > > I'll wait for Jonathan to chime in on this thread.
+> > >
+> > > > Last, in the HID subsystem, we often interleave non devres with devres
+> > > > for resource allocation, given that .remove() will be called before any
+> > > > devres release. But that is assuming this ordering is OK, which doesn't
+> > > > seem to be the case here. We first need to unregister the i2c adapter
+> > > > and then close/stop the HID device.
+> >
+> > On second thought I2C will be unregistered before the HID calls, since
+> > unless I'm totally
+> > incorrect device resource management unwinds backwards in the order actions are
+> > registered.
+>
+> Yeah, sorry if it was not clear:
+> - .remove() is called *before* any devres action takes place
+> - devres action are LIFO, so unwinded backwards as you say
+>
+> In the general case, a driver does:
+> int probe() {
+>   void *pointer  = devm_alloc(...)
+>   some_more_devm_action(...)
+>   hid_hw_start()
+>   return 0;
+> }
+>
+> and so the HID start action is the last one, meaning that .remove will
+> first call stop and then devres unwind will get called.
+>
+> But here, in your case, you need hid_hw_start to be called *before*
+> devm_i2c_add_adapter(), meaning that the implicit .remove() will mess
+> up with the device, so you  are forced to do something about it.
+>
+> You can either keep a non devm variant, or you can override the
+> .remove() of HID to not do anything and do the stop/close in a
+> specific devm task, which you did here. You are just missing the
+> "let's override .remove() to ensure we keep the device open and
+> started while we need it".
 
---6qnNNKSKTZQ4BW8h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ok, now I understand!
 
-On Fri, Sep 23, 2022 at 04:24:33PM +0200, Julien Panis wrote:
-> The Enhanced Capture (ECAP) module can be used to timestamp events
-> detected on signal input pin. It can be used for time measurements
-> of pulse train signals.
->=20
-> ECAP module includes 4 timestamp capture registers. For all 4 sequenced
-> timestamp capture events (0->1->2->3->0->...), edge polarity (falling/ris=
-ing
-> edge) can be selected.
->=20
-> This driver leverages counter subsystem to :
-> - select edge polarity for all 4 capture events (event mode)
-> - log timestamps for each capture event
-> Event polarity, and CAP0/1/2/3 timestamps give all the information
-> about the input pulse train. Further information can easily be computed :
-> period and/or duty cycle if frequency is constant, elapsed time between
-> pulses, etc...
->=20
-> This patchset must be applied on top of the following counter subsystem p=
-atchset :
-> https://lore.kernel.org/all/cover.1663693757.git.william.gray@linaro.org/
+Thanks,
 
-Hello Julien,
+Matt
 
-Tentatively, this version looks good to me. Due to the amount of changes
-we've made in the past week I'm going to let it sit on the list for a
-while to give any lingering issues we missed a chance to be found. If
-nothing pops up during that time, I expect to queue this next week and
-hopefully include it with the other Counter changes in time for the 6.1
-merge window.
-
-By the way, in the future you can use the '--base' git format-patch
-argument to specify the base commit (and any prereq patches) that your
-series is based on: https://git-scm.com/docs/git-format-patch#_base_tree_in=
-formation
-
-That makes it clear to reviewers and maintainers where they should apply
-your patchset, and should also prevent the kernel test robot from
-testing against the wrong base.
-
-William Breathitt Gray
-
---6qnNNKSKTZQ4BW8h
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYy3I8gAKCRC1SFbKvhIj
-K4VyAP0TS6xWP5CFMk76z6N5ksg9cJ2R+S8ZmLw3qAg8JHdBVgEAno4zuIl4Uf9n
-dXIjZ9ayvffGfaYRnYTBD2XUXT8G8gs=
-=tET1
------END PGP SIGNATURE-----
-
---6qnNNKSKTZQ4BW8h--
+>
+> Cheers,
+> Benjamin
+>

@@ -2,63 +2,33 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FFC05E84FC
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 23:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 369065E859F
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 00:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232230AbiIWVeW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Sep 2022 17:34:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
+        id S232578AbiIWWLU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Fri, 23 Sep 2022 18:11:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbiIWVeV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 17:34:21 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F88274CC1;
-        Fri, 23 Sep 2022 14:34:20 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id y8so1830539edc.10;
-        Fri, 23 Sep 2022 14:34:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=2tSqnggIyDo6YUr0zNltSFoKVKbExYQv0L5PsQaqx/s=;
-        b=mC5OTEroAwnh1aV0/k1oPe+NXV0TA7Ze+A1xSqjAYtWFHQmQllTO2D5NFTgRNAaYmT
-         9ftX5WSLtzU2ypfDMT3O8sHcHAnbhOQyP3iw/qBmEo1MS7KrHK9T7qMSNgKzSJ+gKYID
-         /abixiX9djqlc0Y/J/wim5USaRy8aF+H2vHddS2/BtkRSL/9hE50+MF2PbOdi3Sk2Gl6
-         VosQoBRGmWXFe5bsDbIbt+mPWxWzs9fsS3VkuvMuKTsQce3IGe9Tc+oS/HXH/f+GD3ev
-         uHxxaisRU0SVBPc0aV+ppRW6J8ERcyNX4rsfpw6JIQ1m3AX4/2lvWnFKGIrpL0hEOzl5
-         cXlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=2tSqnggIyDo6YUr0zNltSFoKVKbExYQv0L5PsQaqx/s=;
-        b=dyMjkE7b/TvmkmZl4axMAolpsFsoiL3ibg5RNQzAARoTsZhPA6rX96M+GJtt+mYSgr
-         DGcuPNeaMApNymSNCXnB3AlXVz3f5u2zniamtO+NhxJwjdPK1sFj4TaE6FCvHAru5jiZ
-         +DE/vtUyCW9LDV1i8bUqn/sCK3d0W8cGLQ0btzsf5jUOSpHPE01n8ooRT8d/CDpX/Uro
-         P09eoV5ulAoNT+5SHngJzuOTdYuL2Y3ne22JboNk8m/YwEVVnGTzS2l2i7zTkdrlsr/z
-         /XcSGVO4hRPa6nmr29WdqptfgCVcYDtjJ/Eo2KdVUgrL8Thy5Eg7k7CFZGubhh89JTRz
-         rCLA==
-X-Gm-Message-State: ACrzQf3iabMzNgr3frTTu6vgCeoH6qEtYwHqqz/UCTrxkHr6Sp+m3I2k
-        dTFVpHipqawoSsYyndYwo67lmXKTPIRFH53uJOk=
-X-Google-Smtp-Source: AMsMyM5IZsfJ8dcFfC0J6aK5kWjLl/L84uf2axz39u9HVDC/sm5vNCQLHxNNHmrmfV4MxviVVR/a5HiZQAJ2yKDCUpw=
-X-Received: by 2002:a05:6402:1e8c:b0:44f:f70:e75e with SMTP id
- f12-20020a0564021e8c00b0044f0f70e75emr10298957edf.405.1663968858816; Fri, 23
- Sep 2022 14:34:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220830034042.9354-2-peterwu.pub@gmail.com> <20220830034042.9354-10-peterwu.pub@gmail.com>
- <CAPOBaE7rz2F-sij-LbYau6TRxFoOfmoUc=R__Z7iUrFWmZPgrg@mail.gmail.com>
- <CABtFH5+PuK4vptVNmpn4h2FCxNFp3wWvhUrOxgqArx4YxCY99w@mail.gmail.com> <CAHp75VeRgRdv54yO51nBwKx8O2pNLvOD2mrqn31zvx4ffSpCHw@mail.gmail.com>
-In-Reply-To: <CAHp75VeRgRdv54yO51nBwKx8O2pNLvOD2mrqn31zvx4ffSpCHw@mail.gmail.com>
-From:   Han Jingoo <jingoohan1@gmail.com>
-Date:   Fri, 23 Sep 2022 14:34:07 -0700
-Message-ID: <CAPOBaE7mcNqgQvsPpqewmq=Na9MC9RH5AW8CHn5ZJFAUsq6_eg@mail.gmail.com>
+        with ESMTP id S232310AbiIWWLS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Sep 2022 18:11:18 -0400
+X-Greylist: delayed 510 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 23 Sep 2022 15:11:14 PDT
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757FC1176F6;
+        Fri, 23 Sep 2022 15:11:13 -0700 (PDT)
+Received: from omf04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+        by unirelay04.hostedemail.com (Postfix) with ESMTP id 6B5201A0739;
+        Fri, 23 Sep 2022 22:02:40 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf04.hostedemail.com (Postfix) with ESMTPA id B26E420028;
+        Fri, 23 Sep 2022 22:02:19 +0000 (UTC)
+Message-ID: <ac809b03c78355b52c4ce936cc5a4ed3dd303441.camel@perches.com>
 Subject: Re: [PATCH v9 09/10] leds: flash: mt6370: Add MediaTek MT6370
  flashlight support
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+From:   Joe Perches <joe@perches.com>
+To:     Han Jingoo <jingoohan1@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         torvalds@linux-foundation.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Joe Perches <joe@perches.com>, Julia.Lawall@inria.fr,
-        krzysztof.kozlowski@linaro.org
+        Julia.Lawall@inria.fr, krzysztof.kozlowski@linaro.org
 Cc:     ChiaEn Wu <peterwu.pub@gmail.com>, lee@kernel.org,
         Daniel Thompson <daniel.thompson@linaro.org>,
         Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
@@ -83,89 +53,64 @@ Cc:     ChiaEn Wu <peterwu.pub@gmail.com>, lee@kernel.org,
         linux-iio <linux-iio@vger.kernel.org>,
         "open list:FRAMEBUFFER LAYER" <linux-fbdev@vger.kernel.org>,
         szuni chen <szunichen@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Fri, 23 Sep 2022 15:02:28 -0700
+In-Reply-To: <CAPOBaE7mcNqgQvsPpqewmq=Na9MC9RH5AW8CHn5ZJFAUsq6_eg@mail.gmail.com>
+References: <20220830034042.9354-2-peterwu.pub@gmail.com>
+         <20220830034042.9354-10-peterwu.pub@gmail.com>
+         <CAPOBaE7rz2F-sij-LbYau6TRxFoOfmoUc=R__Z7iUrFWmZPgrg@mail.gmail.com>
+         <CABtFH5+PuK4vptVNmpn4h2FCxNFp3wWvhUrOxgqArx4YxCY99w@mail.gmail.com>
+         <CAHp75VeRgRdv54yO51nBwKx8O2pNLvOD2mrqn31zvx4ffSpCHw@mail.gmail.com>
+         <CAPOBaE7mcNqgQvsPpqewmq=Na9MC9RH5AW8CHn5ZJFAUsq6_eg@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.44.4 (3.44.4-1.fc36) 
+MIME-Version: 1.0
+X-Stat-Signature: icdqc5u914mweh6876zxemizkb1yinja
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: B26E420028
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_NONE,UNPARSEABLE_RELAY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX180tjz2i84oRN7SAvJ/UKULO1Sz9+vBSi8=
+X-HE-Tag: 1663970539-507553
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Sep 21, 2022 Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> On Wed, Sep 21, 2022 at 4:48 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
-> > On Sun, Sep 18, 2022 at 3:22 AM Han Jingoo <jingoohan1@gmail.com> wrote:
-> > > On Mon, Aug 29, 2022 ChiaEn Wu <peterwu.pub@gmail.com> wrote:
->
-> > > > +#define MT6370_ITORCH_MIN_uA           25000
-> > > > +#define MT6370_ITORCH_STEP_uA          12500
-> > > > +#define MT6370_ITORCH_MAX_uA           400000
-> > > > +#define MT6370_ITORCH_DOUBLE_MAX_uA    800000
-> > > > +#define MT6370_ISTRB_MIN_uA            50000
-> > > > +#define MT6370_ISTRB_STEP_uA           12500
-> > > > +#define MT6370_ISTRB_MAX_uA            1500000
-> > > > +#define MT6370_ISTRB_DOUBLE_MAX_uA     3000000
-> > >
-> > > Use upper letters as below:
->
-> For microseconds (and other -seconds) the common practice (I assume
-> historically) is to use upper letters, indeed. But for current it's
-> more natural to use small letters for unit multiplier as it's easier
-> to read and understand.
+On Fri, 2022-09-23 at 14:34 -0700, Han Jingoo wrote:
+> On Wed, Sep 21, 2022 Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > 
+> > On Wed, Sep 21, 2022 at 4:48 AM ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> > > On Sun, Sep 18, 2022 at 3:22 AM Han Jingoo <jingoohan1@gmail.com> wrote:
+> > > > On Mon, Aug 29, 2022 ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> > 
+> > > > > +#define MT6370_ITORCH_MIN_uA           25000
+> > > > > +#define MT6370_ITORCH_STEP_uA          12500
+> > > > > +#define MT6370_ITORCH_MAX_uA           400000
+> > > > > +#define MT6370_ITORCH_DOUBLE_MAX_uA    800000
+> > > > > +#define MT6370_ISTRB_MIN_uA            50000
+> > > > > +#define MT6370_ISTRB_STEP_uA           12500
+> > > > > +#define MT6370_ISTRB_MAX_uA            1500000
+> > > > > +#define MT6370_ISTRB_DOUBLE_MAX_uA     3000000
+> > > > 
+> > > > Use upper letters as below:
+> > 
+> > For microseconds (and other -seconds) the common practice (I assume
+> > historically) is to use upper letters, indeed. But for current it's
+> > more natural to use small letters for unit multiplier as it's easier
+> > to read and understand.
 
-(CC'ed Linus Torvalds, Andrew Morton, Joe Perches, Julia Lawall,
-Krzysztof Kozlowski,)
+I think it's fine. see:
 
-Yep, it is common practice. Long time ago, I met the same problem on
-how to present micro-ampere:
-visibility vs coding practice. At that time, I followed the coding
-practice. So, was there anyone who
-rejected this decision to mix upper and lower letters when you gave
-your comment last July?
-If there is no objection, or most of maintainers and long-term
-contributors agree with that,
-I am ok with that.
+commit 22735ce857a2d9f4e6eec37c36be3fcf9d21d154
+Author: Joe Perches <joe@perches.com>
+Date:   Wed Jul 3 15:05:33 2013 -0700
 
-To Tovalds, Andrew, Joe, Julia, Krzysztof,
+    checkpatch: ignore SI unit CamelCase variants like "_uV"
+    
+    Many existing variable names use SI like variants that should be otherwise
+    obvious and acceptable.
 
-I just need your feedback on coding styles. Are you ok with mixing
-upper and lower letters for visibility
-to present micro-seconds or micro-ampere? Andy (one of very-active
-contributors) gives his opinion that
-mixing upper and lower letters can be acceptable. I remain neutral on
-this coding style issue.
-
-e.g., #define MT6370_ITORCH_DOUBLE_MAX_uA    800000
-
-Thank you.
-
-Best regards,
-Jingoo Han
-
->
-> > > #define MT6370_ITORCH_MIN_UA           25000
-> > > #define MT6370_ITORCH_STEP_UA          12500
-> > > #define MT6370_ITORCH_MAX_UA           400000
-> > > #define MT6370_ITORCH_DOUBLE_MAX_UA    800000
-> > > #define MT6370_ISTRB_MIN_UA            50000
-> > > #define MT6370_ISTRB_STEP_UA           12500
-> > > #define MT6370_ISTRB_MAX_UA            1500000
-> > > #define MT6370_ISTRB_DOUBLE_MAX_UA     3000000
-> > >
-> > > > +#define MT6370_STRBTO_MIN_US           64000
-> > > > +#define MT6370_STRBTO_STEP_US          32000
-> > > > +#define MT6370_STRBTO_MAX_US           2432000
-> >
-> > Hi Jingoo,
-> >
-> > This coding style is in accordance with Andy's opinion in this mail:
-> > https://lore.kernel.org/linux-arm-kernel/CAHp75Vciq4M4kVrabNV9vTLLcd1vR=bMe8JLEdAF9MkRTpcB5g@mail.gmail.com/
->
-> True.
->
-> --
-> With Best Regards,
-> Andy Shevchenko

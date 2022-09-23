@@ -2,56 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E96B5E7057
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 01:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 683395E7144
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Sep 2022 03:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbiIVXvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 22 Sep 2022 19:51:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53504 "EHLO
+        id S231754AbiIWBNs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Sep 2022 21:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiIVXu7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 19:50:59 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85477107596
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 16:50:58 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id o7so7302756qkj.10
-        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 16:50:58 -0700 (PDT)
+        with ESMTP id S232303AbiIWBNp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Sep 2022 21:13:45 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA82E1166DC
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 18:13:33 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1225219ee46so16389484fac.2
+        for <linux-iio@vger.kernel.org>; Thu, 22 Sep 2022 18:13:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=Kb05J3BT/GlBgSDEkFzLEBt6C1xktin5vKGv6080wGs=;
-        b=XIcDCtsgskXHpXPOpvN2AhiijHgPlBZitXP4GZAqOw5nh7Lz/1gz1PHjRU+9UgyBWW
-         Bf+/FjyN+ESyd56vp1Z5Zbjy8Cv7We8xy5iEkx9O1pqCWbC9GLdR1KtLDWf4eRvceZUg
-         9yyh3i8jcPgwRrYv1m3DeA/jdsrWnGNHqnDos=
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=2BBAQBVpQ8fXKmes7SQw9/PDpetGobnws+Vor3/B+A0=;
+        b=V1yvgkxoyU/dThLL9TTrsz8DBaGhI/bZIBapBaw5bStsYTbBrSlbORj/zYoEKopoz8
+         cvRGXpv9D3hFZzdHPeKXQX+wUNOtINR1v7flrGgfyWcjXUkAi9vguzc6dybjHcXxASH2
+         qPi/DVTY2Sdp9+cnzaXsYASKeDi/vtfO5dSCCDPXlqjeedSXuCw0Q3ult302E/KOmZ4r
+         rQB8SPV8YM3NkRSM3R3YkUnnH88FrX5DhnHYxrzkNOIv/pjEKIBVlf1arCOTiyVETyN3
+         mu9CdaK13/N1cyb3D+GYjxGPj5s9/0M4sfkbfAT+tXiNxywf9Xc8UsuAB5fucbAbHQxL
+         PxgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Kb05J3BT/GlBgSDEkFzLEBt6C1xktin5vKGv6080wGs=;
-        b=UAfNLo0blqdzE99pZjJ+F6TNsdlFMKCgrWNd5gDRATsdLC4k8YCKqn0uZ3+3+BZ8lE
-         +u3NqmRC2WeVwqBriFHEchVqlOpaFq7A0GCEj4L+uto7hWCtMVTK0IukoeNphcOb9Zc5
-         c9PqGkPvIZpKjOx53dRa5YKMJdP6ScURV8kep1Mr69SW49YQ3gfwxh+qxFAIH3aRkoTf
-         GXYAkdRdumUjBfspRDTBaluiZUQSshQclM/JSm9+QU7QIOM9rO/aSOOHycWbYgvLoGRT
-         IlFUvdiswcX8XQ0Rk8YsW4BDoiXu791GDicAXjToGibJlkgaEAOpMX9c84eMpelqPgwX
-         AvMg==
-X-Gm-Message-State: ACrzQf0VKFKtAt607aYbmmQl9px8l+b0BWLBKE0LJc+TRzzqIkzY3sln
-        Rl/IsqTlzRIWSS6l1re+yQG0wBnFCTf+XHqxuoihz/y7xZEvQA==
-X-Google-Smtp-Source: AMsMyM5W5H2oYVzUjvkPAy1iIsPH1PZQAyUbGvqf9vUXI/2Jsoh3XK30Co0KSixkCgYdlSh7O5B43G8CePhVkcGukCA=
-X-Received: by 2002:a37:a17:0:b0:6cd:dbef:1e83 with SMTP id
- 23-20020a370a17000000b006cddbef1e83mr3993458qkk.624.1663890657742; Thu, 22
- Sep 2022 16:50:57 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=2BBAQBVpQ8fXKmes7SQw9/PDpetGobnws+Vor3/B+A0=;
+        b=bd2JU9ywCdm3iUoLeAU2gSFIVseMsUa6Zv3sNtRZu3SFw4PmMZ0qeencHKmS+CAaT5
+         KajPjMFSPPcgRAgaMLqPcDY/yVEaqWXHzyM5VFmCY1rTRLp3fSHwyFtYgbu8LcRYLuq9
+         uGYLCIq/H0YKmipKtvk6A8ElODTaeKVOtW5xIT3NO46yXhlIwdCaTj9k57uJs00alIMl
+         PAFjGbLdsN5WhUTXtAL+IhRDIs3kchPDobe7eQMdw78S86SmnKn8J/rKsWL2P2x3xvS2
+         Ucfs4ek7NdJtCy+eKlxpRAc6dnwNaqOx6nynjLqbbcFGE4H9lqX7XdHth5Sj5vH760aK
+         ZPxQ==
+X-Gm-Message-State: ACrzQf3klWQj0g3OF92iirsrRJmeJZ9gffdaWQrl4tNwTR51rcsVI+wH
+        nYbnvt0GpaWUgQFwZUfETpi/Ng==
+X-Google-Smtp-Source: AMsMyM4y72P7l45Eoh9rVYWaDDqTIPviU+AVVtECUCPHTW7UrA53sCd5HY2mhu2iysRQXSICYV7aOQ==
+X-Received: by 2002:a05:6870:639e:b0:127:bbc2:223e with SMTP id t30-20020a056870639e00b00127bbc2223emr3665823oap.167.1663895612843;
+        Thu, 22 Sep 2022 18:13:32 -0700 (PDT)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id i21-20020a056820013500b00432ac97ad09sm2780618ood.26.2022.09.22.18.13.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Sep 2022 18:13:32 -0700 (PDT)
+Date:   Thu, 22 Sep 2022 21:08:05 -0400
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Julien Panis <jpanis@baylibre.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, mranostay@ti.com
+Subject: Re: [PATCH v8 3/4] counter: ti-ecap-capture: capture driver support
+ for ECAP
+Message-ID: <Yy0G9a5S3OzwyEwW@fedora>
+References: <20220922170402.403683-1-jpanis@baylibre.com>
+ <20220922170402.403683-4-jpanis@baylibre.com>
 MIME-Version: 1.0
-References: <20220922225012.1709173-1-floridsleeves@gmail.com>
-In-Reply-To: <20220922225012.1709173-1-floridsleeves@gmail.com>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Thu, 22 Sep 2022 16:50:47 -0700
-Message-ID: <CAJCx=gkhj9ZmVOe37rGyyjF+3b9Tgb2-bjDQc5kgO3Tt4NmD9A@mail.gmail.com>
-Subject: Re: [PATCH v1] drivers/magnetometer/ak8975: check the return value of ak8975_set_mode
-To:     Li Zhong <floridsleeves@gmail.com>
-Cc:     linux-iio@vger.kernel.org, zheyuma97@gmail.com, nathan@kernel.org,
-        paul@crapouillou.net, lars@metafoo.de, jic23@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="8oIR1Oj1QlTXqeTr"
+Content-Disposition: inline
+In-Reply-To: <20220922170402.403683-4-jpanis@baylibre.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,57 +72,181 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Sep 22, 2022 at 3:50 PM Li Zhong <floridsleeves@gmail.com> wrote:
->
-> Check the return value of ak8975_set_mode(). When it fails to write the
-> register, the error should at least be propagated to the caller.
-> Currently function ak8975_remove() returns the success value 0
-> no matter the execution fails or not, which will silently leave the
-> error unhandled.
->
-> Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-> ---
->  drivers/iio/magnetometer/ak8975.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-> index 2432e697150c..e08f10fe16d0 100644
-> --- a/drivers/iio/magnetometer/ak8975.c
-> +++ b/drivers/iio/magnetometer/ak8975.c
-> @@ -1022,16 +1022,17 @@ static int ak8975_remove(struct i2c_client *client)
->  {
->         struct iio_dev *indio_dev = i2c_get_clientdata(client);
->         struct ak8975_data *data = iio_priv(indio_dev);
-> +       int err = 0;
 
-Not needed to initialize to zero since it will get set below.
+--8oIR1Oj1QlTXqeTr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->         pm_runtime_get_sync(&client->dev);
->         pm_runtime_put_noidle(&client->dev);
->         pm_runtime_disable(&client->dev);
->         iio_device_unregister(indio_dev);
->         iio_triggered_buffer_cleanup(indio_dev);
-> -       ak8975_set_mode(data, POWER_DOWN);
-> +       err = ak8975_set_mode(data, POWER_DOWN);
+On Thu, Sep 22, 2022 at 07:04:01PM +0200, Julien Panis wrote:
+> ECAP hardware on TI AM62x SoC supports capture feature. It can be used
+> to timestamp events (falling/rising edges) detected on input signal.
+>=20
+> This commit adds capture driver support for ECAP hardware on AM62x SoC.
+>=20
+> In the ECAP hardware, capture pin can also be configured to be in
+> PWM mode. Current implementation only supports capture operating mode.
+> Hardware also supports timebase sync between multiple instances, but
+> this driver supports simple independent capture functionality.
+>=20
+> Signed-off-by: Julien Panis <jpanis@baylibre.com>
 
-I am not convinced there is a real reason to report this failure from
-.remove() since
-device is still unregistered and at the worst case it isn't in low-power mode.
+Hello Julien,
 
-Could you explain if this is an issue that actually happens? If it is,
-this should be a warning
-that is displayed and not a failure to remove the driver.
+Comments follow inline below.
 
-- Matt
+> +/**
+> + * struct ecap_cnt_dev - device private data structure
+> + * @enabled: device state
+> + * @clk:     device clock
+> + * @regmap:  device register map
+> + * @nb_ovf:  number of overflows since capture start
+> + * @pm_ctx:  device context for PM operations
+> + */
+> +struct ecap_cnt_dev {
+> +	bool enabled;
+> +	struct clk *clk;
+> +	struct regmap *regmap;
+> +	atomic_t nb_ovf;
+> +	struct {
+> +		u8 ev_mode;
+> +		u32 time_cntr;
+> +	} pm_ctx;
+> +};
 
->         ak8975_power_off(data);
->
-> -       return 0;
-> +       return err;
->  }
->
->  static int ak8975_runtime_suspend(struct device *dev)
-> --
-> 2.25.1
->
+Provide documentation for the ev_mode and time_cntr members. You
+probably need a lock as well to protect access to this structure or
+you'll end up with race problems.
+
+
+> +static void ecap_cnt_capture_enable(struct counter_device *counter)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	pm_runtime_get_sync(counter->parent);
+> +
+> +	/* Enable interrupts on events */
+> +	regmap_update_bits(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG,
+> +			   ECAP_EVT_EN_MASK, ECAP_EVT_EN_MASK);
+> +
+> +	/* Run counter */
+> +	regmap_update_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_ECCTL_CFG_MAS=
+K,
+> +			   ECAP_SYNCO_DIS_MASK | ECAP_STOPVALUE_MASK | ECAP_ECCTL_EN_MASK);
+> +}
+> +
+> +static void ecap_cnt_capture_disable(struct counter_device *counter)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	/* Disable interrupts on events */
+> +	regmap_update_bits(ecap_dev->regmap, ECAP_ECINT_EN_FLG_REG, ECAP_EVT_EN=
+_MASK, 0);
+> +
+> +	/* Stop counter */
+> +	regmap_update_bits(ecap_dev->regmap, ECAP_ECCTL_REG, ECAP_ECCTL_EN_MASK=
+, 0);
+
+Shouldn't the counter be stopped before stopping the interrupts?
+
+> +static int ecap_cnt_count_get_val(struct counter_device *counter, unsign=
+ed int reg, u32 *val)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +	unsigned int regval;
+> +
+> +	pm_runtime_get_sync(counter->parent);
+> +	regmap_read(ecap_dev->regmap, reg, &regval);
+> +	pm_runtime_put_sync(counter->parent);
+> +
+> +	*val =3D regval;
+> +
+> +	return 0;
+> +}
+> +
+> +static int ecap_cnt_count_set_val(struct counter_device *counter, unsign=
+ed int reg, u32 val)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	pm_runtime_get_sync(counter->parent);
+> +	regmap_write(ecap_dev->regmap, reg, val);
+> +	pm_runtime_put_sync(counter->parent);
+> +
+> +	return 0;
+> +}
+
+The ecap_cnt_count_get_val() and ecap_cnt_count_set_val() functions only
+ever return 0. Redefine them as void functions and eliminate the
+unnecessary returns.
+
+> +static int ecap_cnt_count_write(struct counter_device *counter,
+> +				struct counter_count *count, u64 val)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	if (ecap_dev->enabled)
+> +		return -EBUSY;
+
+You should return -EBUSY when the requested operation cannot be
+completed because the device currently performing a task -- i.e. the
+requested operation would stall or otherwise fail if forced. In this
+case, the count value actually can be set while the device is enabled,
+if I'm not mistaken; the count just continues increasing from the new
+written value (i.e. no stall/failure). Therefore, there's not need to
+return -EBUSY here and this check can be eliminated.
+
+> +static int ecap_cnt_pol_write(struct counter_device *counter,
+> +			      struct counter_signal *signal,
+> +			      size_t idx, enum counter_signal_polarity pol)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	if (ecap_dev->enabled)
+> +		return -EBUSY;
+
+I suspect this check can go away for the same reason as above.
+
+> +static int ecap_cnt_cap_write(struct counter_device *counter,
+> +			      struct counter_count *count,
+> +			      size_t idx, u64 cap)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	if (ecap_dev->enabled)
+> +		return -EBUSY;
+
+Same comment as above.
+
+> +static int ecap_cnt_nb_ovf_write(struct counter_device *counter,
+> +				 struct counter_count *count, u64 val)
+> +{
+> +	struct ecap_cnt_dev *ecap_dev =3D counter_priv(counter);
+> +
+> +	if (ecap_dev->enabled)
+> +		return -EBUSY;
+
+Same comment as above.
+
+> +static struct counter_count ecap_cnt_counts[] =3D {
+> +	{
+> +		.id =3D 0,
+
+The id member is for differentiating between multiple Counts. You only
+have one Count in this driver so you don't need to set it because you
+never use it.
+
+William Breathitt Gray
+
+--8oIR1Oj1QlTXqeTr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYy0G9QAKCRC1SFbKvhIj
+KxouAQCf2abb4CAphtgGkhQHIiAbAAbJAjCL1/3/eLHnBeBuwgEAl3EJhEc2Xmrp
+jmOjd5jNtDVQnvB+NsoZnflvSxpU+gQ=
+=XTZc
+-----END PGP SIGNATURE-----
+
+--8oIR1Oj1QlTXqeTr--

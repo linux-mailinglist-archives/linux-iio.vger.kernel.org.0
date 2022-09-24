@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E10495E8DD1
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 17:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C665E8DD3
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 17:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229957AbiIXP0Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 11:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43228 "EHLO
+        id S232987AbiIXP1L (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 11:27:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229662AbiIXP0Y (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 11:26:24 -0400
+        with ESMTP id S230469AbiIXP1J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 11:27:09 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C6A2656C
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 08:26:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB508B2CF
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 08:27:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 09ABCB801B9
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 15:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDAEC433C1;
-        Sat, 24 Sep 2022 15:26:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 64A38B80D87
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 15:27:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18007C433C1;
+        Sat, 24 Sep 2022 15:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664033180;
-        bh=mrFI7ONNqcKCXJbtWHFoq/iPiCayS08Oha0UjYfBXn8=;
+        s=k20201202; t=1664033225;
+        bh=K56eGXLGJNUqDJ6yNU+SPkp3jUptZSzn9pC/ayv3KBc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nhXw/ztGaPsFHfTINnvveraB0d5izw0b3jRAtltkB/jF9NH3mGx9ikNjJ2h3V8ui6
-         /vSj8M/ook2IWaFlnQl1WKflShWdQQfxoHeKWi+u1PUK12R0KWDglIvr+5tUW/CHeh
-         Lj5N5vJBBwHFodWbqnNxdO4g0Tp7JYwOkQeBaXILYkWVhzD6ve7YAF4KqJqHCEo5hT
-         K4bfjlAznBTQgakohXEJFPFzeL0RT0qNF/iSf9kUwrZbiHE9XvTxUQM0HAsHcOuIdV
-         LrPil8H/0MeTFxhysnfeKhJU20y3+nthHQMKD1WemB5X+j4nv8ZxpGW6hDwjcpa8JR
-         YU0TCvhzFg/7g==
-Date:   Sat, 24 Sep 2022 16:26:22 +0100
+        b=d2zpm7xIppaORIFkSCk1Pm5PQOrv4LjYmobjcCpjwcoYxMfHNyBRrbCTFsZ28JQim
+         zdkBrIbQLZQpNOm1JuY0QQNLAiA5alIJnJBaQA/JfUjU41ajbawQTvnJZGtRsnN7ml
+         RlhOo5HPRYUmXhk1zlR/hINDeolxuAXepjmnXlnejbcL6xoftcLn7DoZOHl2vFnO1k
+         RK+iDdgIY/Zc1wfDVvUcJnww6GQrc94VBfbFeEX/We3uWT4Lv0abm8EEXeYXlDqNsG
+         oJ27KUtF4/jpjntVqYI1KUuyIhdNusvBM8dMmbCj95wPXzad3XoIdQkCLZS35H8+Gu
+         +CIP/Qm5UMWgQ==
+Date:   Sat, 24 Sep 2022 16:27:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
 Cc:     <linux-arm-kernel@lists.infradead.org>,
@@ -62,12 +62,12 @@ Cc:     <linux-arm-kernel@lists.infradead.org>,
         Baolin Wang <baolin.wang@linux.alibaba.com>,
         Jyoti Bhayana <jbhayana@google.com>,
         Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Subject: Re: [PATCH 04/15] iio: adc: imx7d_adc: do not use internal iio_dev
- lock
-Message-ID: <20220924162622.66802d96@jic23-huawei>
-In-Reply-To: <20220920112821.975359-5-nuno.sa@analog.com>
+Subject: Re: [PATCH 05/15] iio: adc: lpc32xx_adc: do not use internal
+ iio_dev lock
+Message-ID: <20220924162706.2a731356@jic23-huawei>
+In-Reply-To: <20220920112821.975359-6-nuno.sa@analog.com>
 References: <20220920112821.975359-1-nuno.sa@analog.com>
-        <20220920112821.975359-5-nuno.sa@analog.com>
+        <20220920112821.975359-6-nuno.sa@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -81,82 +81,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 20 Sep 2022 13:28:10 +0200
+On Tue, 20 Sep 2022 13:28:11 +0200
 Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 
 > The iio_device lock is only meant for internal use. Hence define a
 > device local lock to protect against concurrent accesses.
 
-Mention the mutex.h include.  Technically it's an unrelated (good) change.
-Definitely not worth a separate patch however so just mention it in the
-description.
+As with previous patch, mention the additional include cleanup.
 
 >=20
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 > ---
->  drivers/iio/adc/imx7d_adc.c | 13 ++++++++-----
->  1 file changed, 8 insertions(+), 5 deletions(-)
+>  drivers/iio/adc/lpc32xx_adc.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/imx7d_adc.c b/drivers/iio/adc/imx7d_adc.c
-> index 86caff1d006b..fa19f5e09079 100644
-> --- a/drivers/iio/adc/imx7d_adc.c
-> +++ b/drivers/iio/adc/imx7d_adc.c
-> @@ -13,6 +13,7 @@
->  #include <linux/kernel.h>
->  #include <linux/mod_devicetable.h>
+> diff --git a/drivers/iio/adc/lpc32xx_adc.c b/drivers/iio/adc/lpc32xx_adc.c
+> index b56ce15255cf..4136cf536d58 100644
+> --- a/drivers/iio/adc/lpc32xx_adc.c
+> +++ b/drivers/iio/adc/lpc32xx_adc.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/io.h>
 >  #include <linux/module.h>
+>  #include <linux/mod_devicetable.h>
 > +#include <linux/mutex.h>
 >  #include <linux/platform_device.h>
 >  #include <linux/regulator/consumer.h>
 > =20
-> @@ -108,7 +109,8 @@ struct imx7d_adc {
->  	struct device *dev;
->  	void __iomem *regs;
+> @@ -49,6 +50,8 @@ struct lpc32xx_adc_state {
 >  	struct clk *clk;
-> -
+>  	struct completion completion;
+>  	struct regulator *vref;
 > +	/* lock to protect against multiple access to the device */
 > +	struct mutex lock;
->  	u32 vref_uv;
+> =20
 >  	u32 value;
->  	u32 channel;
-> @@ -293,7 +295,7 @@ static int imx7d_adc_read_raw(struct iio_dev *indio_d=
-ev,
+>  };
+> @@ -64,10 +67,10 @@ static int lpc32xx_read_raw(struct iio_dev *indio_dev,
 > =20
 >  	switch (mask) {
 >  	case IIO_CHAN_INFO_RAW:
 > -		mutex_lock(&indio_dev->mlock);
-> +		mutex_lock(&info->lock);
->  		reinit_completion(&info->completion);
-> =20
->  		channel =3D chan->channel & 0x03;
-> @@ -303,16 +305,16 @@ static int imx7d_adc_read_raw(struct iio_dev *indio=
-_dev,
->  		ret =3D wait_for_completion_interruptible_timeout
->  				(&info->completion, IMX7D_ADC_TIMEOUT);
->  		if (ret =3D=3D 0) {
+> +		mutex_lock(&st->lock);
+>  		ret =3D clk_prepare_enable(st->clk);
+>  		if (ret) {
 > -			mutex_unlock(&indio_dev->mlock);
-> +			mutex_unlock(&info->lock);
->  			return -ETIMEDOUT;
->  		}
->  		if (ret < 0) {
-> -			mutex_unlock(&indio_dev->mlock);
-> +			mutex_unlock(&info->lock);
+> +			mutex_unlock(&st->lock);
 >  			return ret;
 >  		}
-> =20
->  		*val =3D info->value;
+>  		/* Measurement setup */
+> @@ -80,7 +83,7 @@ static int lpc32xx_read_raw(struct iio_dev *indio_dev,
+>  		wait_for_completion(&st->completion); /* set by ISR */
+>  		clk_disable_unprepare(st->clk);
+>  		*val =3D st->value;
 > -		mutex_unlock(&indio_dev->mlock);
-> +		mutex_unlock(&info->lock);
+> +		mutex_unlock(&st->lock);
+> =20
 >  		return IIO_VAL_INT;
 > =20
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -487,6 +489,7 @@ static int imx7d_adc_probe(struct platform_device *pd=
-ev)
+> @@ -158,6 +161,7 @@ static int lpc32xx_adc_probe(struct platform_device *=
+pdev)
+>  		return -ENOMEM;
 > =20
->  	info =3D iio_priv(indio_dev);
->  	info->dev =3D dev;
-> +	mutex_init(&info->lock);
+>  	st =3D iio_priv(iodev);
+> +	mutex_init(&st->lock);
 > =20
->  	info->regs =3D devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(info->regs))
+>  	st->adc_base =3D devm_ioremap(&pdev->dev, res->start,
+>  				    resource_size(res));
 

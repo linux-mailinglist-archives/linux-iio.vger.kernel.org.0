@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC065E8E88
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 580AD5E8E94
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233627AbiIXQkn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 12:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44480 "EHLO
+        id S233744AbiIXQqC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 12:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233608AbiIXQkk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:40:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4508731EE3
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 09:40:39 -0700 (PDT)
+        with ESMTP id S233703AbiIXQqB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:46:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB49D3BC43;
+        Sat, 24 Sep 2022 09:46:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 02AA9B80D8C
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 16:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447C8C433C1;
-        Sat, 24 Sep 2022 16:40:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 898FA6148D;
+        Sat, 24 Sep 2022 16:46:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE102C433D6;
+        Sat, 24 Sep 2022 16:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664037636;
-        bh=AQ4np5g5Y55qdbJqr3htHt3mfXcUG+Hmd5T+lTWrWNo=;
+        s=k20201202; t=1664037959;
+        bh=CDCusbtzZCdsfrWo/f/JHWe00c2E9k9abFe0a7tVAps=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=dEReH1PRb66uvU3ZL5acrmyFdjcPN76516+5mDUS0PUmx/El+w3WrQJPJXkEQu15M
-         1amsgd5xR1dWbcqtJCfHtUMv2UX/XMFbCpOlXA58ek7prvLpEWDyJOlDB57fsFtcWp
-         75o9VvTOxndu5NR4+4i+wmRhh64tPWzRu/yTCsjYvCos3XWzE2gelJ2u4mcCIiGwh9
-         x1vVKC9bUDP87AwzPVW7Qos8krLGyocU1zCbwC+AjJrWl1IUhZtMzyz/mqaednDVVg
-         cX48n72dfYYwRbLAZD8pk1TuTh2L1O1fvQerC9bgEZ1VgWrJZwMmHe/y65XCOMwa/e
-         MqPoaAHgyhadA==
-Date:   Sat, 24 Sep 2022 17:40:44 +0100
+        b=bKf6paN/mrZxYsYKl5ouPkyqLF1b3X6Rompx1/eSx+9US7OvSLlxKzMQlpB27F0+u
+         ZP9HWslRqqoZWbfPuYLoSQW4oDsbzux2b4HbtbOPA9eE0iPZHIMj+3UTXcZi5JqoX7
+         5MaieVjfi8ODOxzVVsF+kFR3yPhLlouiL/qU8D1CCnfvdv7KpM/TPPpuMv7PKDVRBf
+         s55m+jvA8CF8hl5Oy2/K1NWDQz+OwCN+T/xNqP7P8gDRyecwgCQyq0WZbKi6H7ydd/
+         Y9J6HRPwHhsWPfVO39BGyhH/QH5arQmW2VNeqMeBRqU+8RC2VWWhPqYKkHn/F+KNaY
+         uJkxv/fTrZBxQ==
+Date:   Sat, 24 Sep 2022 17:46:07 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     =?UTF-8?B?TcOlcnRlbg==?= Lindahl <marten.lindahl@axis.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
-        <kernel@axis.com>
-Subject: Re: [PATCH v2 2/2] iio: light: vcnl4000: Add ps_it attributes for
- vcnl4040
-Message-ID: <20220924174044.44ecb02f@jic23-huawei>
-In-Reply-To: <20220923114031.757011-3-marten.lindahl@axis.com>
-References: <20220923114031.757011-1-marten.lindahl@axis.com>
-        <20220923114031.757011-3-marten.lindahl@axis.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7] iio: adc: mcp3911: add support to set PGA
+Message-ID: <20220924174607.5cf8019f@jic23-huawei>
+In-Reply-To: <20220922194639.1118971-1-marcus.folkesson@gmail.com>
+References: <20220922194639.1118971-1-marcus.folkesson@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,128 +58,213 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Sep 2022 13:40:31 +0200
-M=C3=A5rten Lindahl <marten.lindahl@axis.com> wrote:
+On Thu, 22 Sep 2022 21:46:39 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-> Add read/write attribute for proximity integration time, and read
-> attribute for available proximity integration times for the vcnl4040
-> chip.
->=20
-> Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
-Hi M=C3=A5rten,
+> Add support for setting the Programmable Gain Amplifiers by adjust the
+> scale value.
+> 
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 
-One minor comment inline given I've asked for changes that mean you'll
-probably be doing a v3 anyway.
+Applied to the togreg branch of iio.git and pushed out as testing.
+
+I considered slipping this into my 2nd IIO pull request for this cycle
+at the last minute, but wasn't happy skipping normal time being beaten on
+by 0-day and time in next, so I didn't.  Hence this probably won't make
+6.1, but Linus did hint he might do an rc8 in which case I may see
+if GregKH will take a 3rd pull late next week.
+
+If not, it'll be 6.2 material.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/light/vcnl4000.c | 129 ++++++++++++++++++++++++++++++++++-
->  1 file changed, 126 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index b2ecf8af1aa5..056079b592c6 100644
-> --- a/drivers/iio/light/vcnl4000.c
-> +++ b/drivers/iio/light/vcnl4000.c
-> @@ -17,6 +17,7 @@
->   *   interrupts (VCNL4040, VCNL4200)
->   */
-> =20
-> +#include <linux/bitfield.h>
->  #include <linux/module.h>
->  #include <linux/i2c.h>
->  #include <linux/err.h>
-> @@ -76,6 +77,7 @@
-> =20
->  #define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light sensor */
->  #define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
-> +#define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration t=
-ime */
-> =20
->  /* Bit masks for interrupt registers. */
->  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source=
- */
-> @@ -104,6 +106,17 @@ static const int vcnl4010_prox_sampling_frequency[][=
-2] =3D {
->  	{250, 0},
->  };
-> =20
-> +static const int vcnl4040_ps_it_times[][2] =3D {
-> +	{0, 100},
-> +	{0, 150},
-> +	{0, 200},
-> +	{0, 250},
-> +	{0, 300},
-> +	{0, 350},
-> +	{0, 400},
-> +	{0, 800},
-> +};
+> 
+> Notes:
+>     Based on
+>     Link: https://lore.kernel.org/all/20220815061625.35568-1-marcus.folkesson@gmail.com/
+>     
+>     But with tmp0, tmp1 and tmp2 removed as those are not needed.
+>     Link: https://lore.kernel.org/all/202209220648.Wb6EtPat-lkp@intel.com/
+> 
+>  drivers/iio/adc/mcp3911.c | 104 +++++++++++++++++++++++++++++---------
+>  1 file changed, 80 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> index 0151258b456c..0d768006eabb 100644
+> --- a/drivers/iio/adc/mcp3911.c
+> +++ b/drivers/iio/adc/mcp3911.c
+> @@ -29,6 +29,8 @@
+>  #define MCP3911_REG_MOD			0x06
+>  #define MCP3911_REG_PHASE		0x07
+>  #define MCP3911_REG_GAIN		0x09
+> +#define MCP3911_GAIN_MASK(ch)		(GENMASK(2, 0) << 3 * ch)
+> +#define MCP3911_GAIN_VAL(ch, val)      ((val << 3 * ch) & MCP3911_GAIN_MASK(ch))
+>  
+>  #define MCP3911_REG_STATUSCOM		0x0a
+>  #define MCP3911_STATUSCOM_DRHIZ         BIT(12)
+> @@ -59,8 +61,10 @@
+>  #define MCP3911_REG_WRITE(reg, id)	((((reg) << 1) | ((id) << 5) | (0 << 0)) & 0xff)
+>  
+>  #define MCP3911_NUM_CHANNELS		2
+> +#define MCP3911_NUM_SCALES		6
+>  
+>  static const int mcp3911_osr_table[] = { 32, 64, 128, 256, 512, 1024, 2048, 4096 };
+> +static u32 mcp3911_scale_table[MCP3911_NUM_SCALES][2];
+>  
+>  struct mcp3911 {
+>  	struct spi_device *spi;
+> @@ -69,6 +73,7 @@ struct mcp3911 {
+>  	struct clk *clki;
+>  	u32 dev_addr;
+>  	struct iio_trigger *trig;
+> +	u32 gain[MCP3911_NUM_CHANNELS];
+>  	struct {
+>  		u32 channels[MCP3911_NUM_CHANNELS];
+>  		s64 ts __aligned(8);
+> @@ -145,6 +150,11 @@ static int mcp3911_read_avail(struct iio_dev *indio_dev,
+>  		*vals = mcp3911_osr_table;
+>  		*length = ARRAY_SIZE(mcp3911_osr_table);
+>  		return IIO_AVAIL_LIST;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*type = IIO_VAL_INT_PLUS_NANO;
+> +		*vals = (int *)mcp3911_scale_table;
+> +		*length = ARRAY_SIZE(mcp3911_scale_table) * 2;
+> +		return IIO_AVAIL_LIST;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -189,29 +199,9 @@ static int mcp3911_read_raw(struct iio_dev *indio_dev,
+>  		break;
+>  
+>  	case IIO_CHAN_INFO_SCALE:
+> -		if (adc->vref) {
+> -			ret = regulator_get_voltage(adc->vref);
+> -			if (ret < 0) {
+> -				dev_err(indio_dev->dev.parent,
+> -					"failed to get vref voltage: %d\n",
+> -				       ret);
+> -				goto out;
+> -			}
+> -
+> -			*val = ret / 1000;
+> -		} else {
+> -			*val = MCP3911_INT_VREF_MV;
+> -		}
+> -
+> -		/*
+> -		 * For 24bit Conversion
+> -		 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
+> -		 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
+> -		 */
+> -
+> -		/* val2 = (2^23 * 1.5) */
+> -		*val2 = 12582912;
+> -		ret = IIO_VAL_FRACTIONAL;
+> +		*val = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][0];
+> +		*val2 = mcp3911_scale_table[ilog2(adc->gain[channel->channel])][1];
+> +		ret = IIO_VAL_INT_PLUS_NANO;
+>  		break;
+>  	}
+>  
+> @@ -229,6 +219,18 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+>  
+>  	mutex_lock(&adc->lock);
+>  	switch (mask) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
+> +			if (val == mcp3911_scale_table[i][0] &&
+> +				val2 == mcp3911_scale_table[i][1]) {
 > +
->  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspe=
-nd */
-> =20
->  enum vcnl4000_device_ids {
-> @@ -470,6 +483,55 @@ static int vcnl4000_set_pm_runtime_state(struct vcnl=
-4000_data *data, bool on)
+> +				adc->gain[channel->channel] = BIT(i);
+> +				ret = mcp3911_update(adc, MCP3911_REG_GAIN,
+> +						MCP3911_GAIN_MASK(channel->channel),
+> +						MCP3911_GAIN_VAL(channel->channel, i), 1);
+> +			}
+> +		}
+> +		break;
+>  	case IIO_CHAN_INFO_OFFSET:
+>  		if (val2 != 0) {
+>  			ret = -EINVAL;
+> @@ -264,6 +266,44 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
 >  	return ret;
 >  }
-> =20
-> +static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val, int=
- *val2)
+>  
+> +static int mcp3911_calc_scale_table(struct mcp3911 *adc)
 > +{
+> +	u32 ref = MCP3911_INT_VREF_MV;
+> +	u32 div;
 > +	int ret;
+> +	u64 tmp;
 > +
-> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-> +	if (ret < 0)
-> +		return ret;
+> +	if (adc->vref) {
+> +		ret = regulator_get_voltage(adc->vref);
+> +		if (ret < 0) {
+> +			dev_err(&adc->spi->dev,
+> +				"failed to get vref voltage: %d\n",
+> +			       ret);
+> +			return ret;
+> +		}
 > +
-> +	ret =3D FIELD_GET(VCNL4040_PS_CONF2_PS_IT, ret);
+> +		ref = ret / 1000;
+> +	}
 > +
-> +	if (ret >=3D ARRAY_SIZE(vcnl4040_ps_it_times))
-> +		return -EINVAL;
+> +	/*
+> +	 * For 24-bit Conversion
+> +	 * Raw = ((Voltage)/(Vref) * 2^23 * Gain * 1.5
+> +	 * Voltage = Raw * (Vref)/(2^23 * Gain * 1.5)
+> +	 *
+> +	 * ref = Reference voltage
+> +	 * div = (2^23 * 1.5 * gain) = 12582912 * gain
+> +	 */
+> +	for (int i = 0; i < MCP3911_NUM_SCALES; i++) {
+> +		div = 12582912 * BIT(i);
+> +		tmp = div_s64((s64)ref * 1000000000LL, div);
 > +
-> +	*val =3D vcnl4040_ps_it_times[ret][0];
-> +	*val2 =3D vcnl4040_ps_it_times[ret][1];
+> +		mcp3911_scale_table[i][0] = 0;
+> +		mcp3911_scale_table[i][1] = tmp;
+> +	}
 > +
 > +	return 0;
 > +}
 > +
-> +static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int val)
-> +{
-> +	unsigned int i;
-> +	int ret, index =3D -1;
+>  #define MCP3911_CHAN(idx) {					\
+>  		.type = IIO_VOLTAGE,				\
+>  		.indexed = 1,					\
+> @@ -273,8 +313,10 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	\
+>  			BIT(IIO_CHAN_INFO_OFFSET) |		\
+>  			BIT(IIO_CHAN_INFO_SCALE),		\
+> -		.info_mask_shared_by_type_available =		\
+> +		.info_mask_shared_by_type_available =           \
+>  			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+> +		.info_mask_separate_available =			\
+> +			BIT(IIO_CHAN_INFO_SCALE),		\
+>  		.scan_type = {					\
+>  			.sign = 's',				\
+>  			.realbits = 24,				\
+> @@ -483,6 +525,20 @@ static int mcp3911_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+>  
+> +	ret = mcp3911_calc_scale_table(adc);
+> +	if (ret)
+> +		return ret;
 > +
-> +	for (i =3D 0; i < ARRAY_SIZE(vcnl4040_ps_it_times); i++) {
-> +		if (val =3D=3D vcnl4040_ps_it_times[i][1]) {
-> +			index =3D i;
-> +			break;
-> +		}
+> +       /* Set gain to 1 for all channels */
+> +	for (int i = 0; i < MCP3911_NUM_CHANNELS; i++) {
+> +		adc->gain[i] = 1;
+> +		ret = mcp3911_update(adc, MCP3911_REG_GAIN,
+> +				MCP3911_GAIN_MASK(i),
+> +				MCP3911_GAIN_VAL(i, 0), 1);
+> +		if (ret)
+> +			return ret;
 > +	}
 > +
-> +	if (index < 0)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&data->vcnl4000_lock);
-> +
-> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
-> +	if (ret < 0)
-> +		goto out;
-> +
-> +	ret =3D (ret & ~VCNL4040_PS_CONF2_PS_IT) |
-> +	    FIELD_PREP(VCNL4040_PS_CONF2_PS_IT, index);
+>  	indio_dev->name = spi_get_device_id(spi)->name;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->info = &mcp3911_info;
 
-It can be confusing to read ret both as a temporary to build value ad for t=
-he
-return code. I would introduce a
-u16 val
-and build the value in that.
-
-> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, ret);
-> +
-> +out:
-> +	mutex_unlock(&data->vcnl4000_lock);
-> +	return ret;
-> +}
-> +

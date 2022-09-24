@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2AC5E8E83
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC065E8E88
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbiIXQhT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 12:37:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41772 "EHLO
+        id S233627AbiIXQkn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 12:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbiIXQhS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:37:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E0137CA9E
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 09:37:17 -0700 (PDT)
+        with ESMTP id S233608AbiIXQkk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:40:40 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4508731EE3
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 09:40:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3785861480
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 16:37:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D933C433D6;
-        Sat, 24 Sep 2022 16:37:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 02AA9B80D8C
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 16:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447C8C433C1;
+        Sat, 24 Sep 2022 16:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664037436;
-        bh=cjynVjVmJ+nzLV+qxnUA1K6wGgEfnigced/SZFmyJWE=;
+        s=k20201202; t=1664037636;
+        bh=AQ4np5g5Y55qdbJqr3htHt3mfXcUG+Hmd5T+lTWrWNo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D6bMaN2p74KCZaNZCEFsehqDTwLXHi+o+4O8FSkjeMV3F5ukM8cTerFZFHnOyPa/1
-         2YY1ZDVCav9A1o7a7YK4hYHePXrK69VUOAhVxrxx8Jmhj9U6pLcAUQAqwep57Yks/I
-         DmHg33cBw7URKOJQYuf7+hEZVkiwHtJofdf5b5WY2pjvZB4xNXFPpP1bMKRvhplnsT
-         y6Yp7eMqh3bdszJ9ag2TzaUCIwsQ+/lCbYs/NbHz2euGDtyiAONfW4tVqojEx3O6Ak
-         OokMikZdnHzFofDJAeEn9X5STp8aZO0uqjL5U2d4xZefhj5/wqVo1LDtHdLCCRm2i7
-         5+DPw9epxpUdw==
-Date:   Sat, 24 Sep 2022 17:37:24 +0100
+        b=dEReH1PRb66uvU3ZL5acrmyFdjcPN76516+5mDUS0PUmx/El+w3WrQJPJXkEQu15M
+         1amsgd5xR1dWbcqtJCfHtUMv2UX/XMFbCpOlXA58ek7prvLpEWDyJOlDB57fsFtcWp
+         75o9VvTOxndu5NR4+4i+wmRhh64tPWzRu/yTCsjYvCos3XWzE2gelJ2u4mcCIiGwh9
+         x1vVKC9bUDP87AwzPVW7Qos8krLGyocU1zCbwC+AjJrWl1IUhZtMzyz/mqaednDVVg
+         cX48n72dfYYwRbLAZD8pk1TuTh2L1O1fvQerC9bgEZ1VgWrJZwMmHe/y65XCOMwa/e
+         MqPoaAHgyhadA==
+Date:   Sat, 24 Sep 2022 17:40:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     =?UTF-8?B?TcOlcnRlbg==?= Lindahl <marten.lindahl@axis.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
@@ -39,12 +39,12 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
         <kernel@axis.com>
-Subject: Re: [PATCH v2 1/2] iio: light: vcnl4000: Preserve conf bits when
- toggle power
-Message-ID: <20220924173724.374305c9@jic23-huawei>
-In-Reply-To: <20220923114031.757011-2-marten.lindahl@axis.com>
+Subject: Re: [PATCH v2 2/2] iio: light: vcnl4000: Add ps_it attributes for
+ vcnl4040
+Message-ID: <20220924174044.44ecb02f@jic23-huawei>
+In-Reply-To: <20220923114031.757011-3-marten.lindahl@axis.com>
 References: <20220923114031.757011-1-marten.lindahl@axis.com>
-        <20220923114031.757011-2-marten.lindahl@axis.com>
+        <20220923114031.757011-3-marten.lindahl@axis.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,81 +58,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Sep 2022 13:40:30 +0200
+On Fri, 23 Sep 2022 13:40:31 +0200
 M=C3=A5rten Lindahl <marten.lindahl@axis.com> wrote:
 
-> As the vcnl4040 and vcnl4200 chip uses runtime power management for
-> turning the ambient light and proximity sensors on/off, it overwrites
-> the entire register each time. In ALS_CONF register bit fields ALS_IT,
-> ALS_PERS, ALS_INT_EN are overwritten. In PS_CONF1 register bit fields
-> PS_DUTY, PS_PERS, PS_IT, PS_HD, and PS_INT are overwritten.
->=20
-> Add functions for preserving the affected bit fields when changing power
-> state.
+> Add read/write attribute for proximity integration time, and read
+> attribute for available proximity integration times for the vcnl4040
+> chip.
 >=20
 > Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
-See inline.
-Otherwise looks good to me.
+Hi M=C3=A5rten,
+
+One minor comment inline given I've asked for changes that mean you'll
+probably be doing a v3 anyway.
+
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/light/vcnl4000.c | 54 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 51 insertions(+), 3 deletions(-)
+>  drivers/iio/light/vcnl4000.c | 129 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 126 insertions(+), 3 deletions(-)
 >=20
 > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index 3db4e26731bb..b2ecf8af1aa5 100644
+> index b2ecf8af1aa5..056079b592c6 100644
 > --- a/drivers/iio/light/vcnl4000.c
 > +++ b/drivers/iio/light/vcnl4000.c
-> @@ -74,6 +74,9 @@
->  #define VCNL4000_PROX_EN	BIT(1) /* start proximity measurement */
->  #define VCNL4000_SELF_TIMED_EN	BIT(0) /* start self-timed measurement */
+> @@ -17,6 +17,7 @@
+>   *   interrupts (VCNL4040, VCNL4200)
+>   */
 > =20
-> +#define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light sensor */
-
-Comment seems inverted. Bit being set is 'shut down'  I would expand the
-name to
-VCNL4040_ALS_CONF_ALS_SHUTDOWN=20
-then drop the comment as the name is self explanatory
-
-> +#define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
-> +
+> +#include <linux/bitfield.h>
+>  #include <linux/module.h>
+>  #include <linux/i2c.h>
+>  #include <linux/err.h>
+> @@ -76,6 +77,7 @@
+> =20
+>  #define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light sensor */
+>  #define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
+> +#define VCNL4040_PS_CONF2_PS_IT	GENMASK(3, 1) /* Proximity integration t=
+ime */
+> =20
 >  /* Bit masks for interrupt registers. */
 >  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source=
  */
->  #define VCNL4010_INT_THR_EN	BIT(1) /* Threshold interrupt type */
-> @@ -188,16 +191,61 @@ static int vcnl4000_init(struct vcnl4000_data *data)
->  	return data->chip_spec->set_power_state(data, true);
+> @@ -104,6 +106,17 @@ static const int vcnl4010_prox_sampling_frequency[][=
+2] =3D {
+>  	{250, 0},
 >  };
 > =20
-> +static ssize_t vcnl4000_write_als_enable(struct vcnl4000_data *data, boo=
-l en)
+> +static const int vcnl4040_ps_it_times[][2] =3D {
+> +	{0, 100},
+> +	{0, 150},
+> +	{0, 200},
+> +	{0, 250},
+> +	{0, 300},
+> +	{0, 350},
+> +	{0, 400},
+> +	{0, 800},
+> +};
+> +
+>  #define VCNL4000_SLEEP_DELAY_MS	2000 /* before we enter pm_runtime_suspe=
+nd */
+> =20
+>  enum vcnl4000_device_ids {
+> @@ -470,6 +483,55 @@ static int vcnl4000_set_pm_runtime_state(struct vcnl=
+4000_data *data, bool on)
+>  	return ret;
+>  }
+> =20
+> +static int vcnl4040_read_ps_it(struct vcnl4000_data *data, int *val, int=
+ *val2)
 > +{
 > +	int ret;
 > +
-> +	mutex_lock(&data->vcnl4000_lock);
-> +
-> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_AL_CONF);
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
 > +	if (ret < 0)
-> +		goto out;
+> +		return ret;
 > +
-> +	if (en)
-> +		ret &=3D ~VCNL4040_ALS_CONF_ALS_SD;
-> +	else
-> +		ret |=3D VCNL4040_ALS_CONF_ALS_SD;
+> +	ret =3D FIELD_GET(VCNL4040_PS_CONF2_PS_IT, ret);
 > +
-> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, ret);
+> +	if (ret >=3D ARRAY_SIZE(vcnl4040_ps_it_times))
+> +		return -EINVAL;
 > +
-> +out:
-> +	mutex_unlock(&data->vcnl4000_lock);
+> +	*val =3D vcnl4040_ps_it_times[ret][0];
+> +	*val2 =3D vcnl4040_ps_it_times[ret][1];
 > +
-> +	return ret;
+> +	return 0;
 > +}
 > +
-> +static ssize_t vcnl4000_write_ps_enable(struct vcnl4000_data *data, bool=
- en)
+> +static ssize_t vcnl4040_write_ps_it(struct vcnl4000_data *data, int val)
 > +{
-> +	int ret;
+> +	unsigned int i;
+> +	int ret, index =3D -1;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(vcnl4040_ps_it_times); i++) {
+> +		if (val =3D=3D vcnl4040_ps_it_times[i][1]) {
+> +			index =3D i;
+> +			break;
+> +		}
+> +	}
+> +
+> +	if (index < 0)
+> +		return -EINVAL;
 > +
 > +	mutex_lock(&data->vcnl4000_lock);
 > +
@@ -140,32 +167,19 @@ l en)
 > +	if (ret < 0)
 > +		goto out;
 > +
-> +	if (en)
-> +		ret &=3D ~VCNL4040_PS_CONF1_PS_SD;
-> +	else
-> +		ret |=3D VCNL4040_PS_CONF1_PS_SD;
-> +
+> +	ret =3D (ret & ~VCNL4040_PS_CONF2_PS_IT) |
+> +	    FIELD_PREP(VCNL4040_PS_CONF2_PS_IT, index);
+
+It can be confusing to read ret both as a temporary to build value ad for t=
+he
+return code. I would introduce a
+u16 val
+and build the value in that.
+
 > +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, ret);
 > +
 > +out:
 > +	mutex_unlock(&data->vcnl4000_lock);
-> +
 > +	return ret;
 > +}
 > +
->  static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
->  {
-> -	u16 val =3D on ? 0 /* power on */ : 1 /* shut down */;
->  	int ret;
-> =20
-> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
-> +	ret =3D vcnl4000_write_als_enable(data, on);
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
-> +	ret =3D vcnl4000_write_ps_enable(data, on);
->  	if (ret < 0)
->  		return ret;
-> =20
-

@@ -2,64 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8845E8D2F
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 15:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 022675E8D35
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 15:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiIXNts (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 09:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33182 "EHLO
+        id S229515AbiIXN6Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 09:58:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbiIXNtr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 09:49:47 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5AB16594;
-        Sat, 24 Sep 2022 06:49:43 -0700 (PDT)
+        with ESMTP id S229897AbiIXN6Y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 09:58:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A82AE62E2
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 06:58:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 93A28B80EBB;
-        Sat, 24 Sep 2022 13:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AC4C433D6;
-        Sat, 24 Sep 2022 13:49:37 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E4C27B80FF2
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 13:58:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B56BC433C1;
+        Sat, 24 Sep 2022 13:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664027381;
-        bh=AAo5aqe326z/YB6gvHnMHNlo4z6WvHUhh7acQkPsV4k=;
+        s=k20201202; t=1664027900;
+        bh=n2MdIn3PhP9OJdCGv5nKPXsYM4lWm6MylI4xk22bjZk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nK8kWTIA6YoGnyTqOoXhYe7JGj+oheo47lb+26ulJajkR0lHcvkBwLC4o4b5RIAER
-         HTlJUOnEq6ZSe3vUx4ON+Y8lNFjhhS5kv3eZjn9G9wqxN8Ny1dOMgg8BiL5v72rCJ/
-         LHIaOedYeXLUvBXIDttFePiVVTjaEwDOJvXCXc1HOTI0SF4g0onMjsRIRnIKVxsy2n
-         UVNBs6MIsdOYFwktVIosLjsMWInF5a3R/S5CnBLMrlp+QiQrNUvMtvBcdMBw4J7lXL
-         TEOGGiDIQET7fN8apuTVvNQcVDj9s62zj5uIRL7Sly1ejk/u0hZ4fgxUzk1LI/i/iz
-         78Hy5P2QmLKaA==
-Date:   Sat, 24 Sep 2022 14:49:46 +0100
+        b=oxZL3U+QFGsiN1NVtLSS3zn1MOk6JOD6aYsQapsF7+V2JDlz+MelgIK3cI3PMIUb2
+         ihSyhug0wYdw2kBBPVy4JseV5K6jBdGZK32TFvecmJVOiIE95oPlGrvXrIMQeSKKHF
+         +VZpJiSyEG0RkvrvpJUQfhH/pvChtkZucAmyDs0JQlQs8ztJzTZT8H2Jk9n2b43JaS
+         5/YR6UjLksTei2iYWgnZzG0gHKkIttWkghqgGS4fV7EUKJ13A/h7+ebA0X0myzxSCp
+         n6D+78xhWOAKO5DeczEcPfc/BEE+zjiFl4V5fYXZ8luEGuNkdssunxl2L8HKOaA39z
+         ix67C9ftXajuQ==
+Date:   Sat, 24 Sep 2022 14:58:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-Cc:     Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "nuno.sa@analog.com" <nuno.sa@analog.com>,
-        "dragos.bogdan@analog.com" <dragos.bogdan@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Alexandru Ardelean <ardeleanalex@gmail.com>
-Subject: Re: [RFT] potential bug with IIO_CONST_ATTR usage with triggered
- buffers
-Message-ID: <20220924144946.31898762@jic23-huawei>
-In-Reply-To: <ae28aca3-6834-653c-9d66-1c98b67c7d4d@fi.rohmeurope.com>
-References: <20210215104043.91251-1-alexandru.ardelean@analog.com>
-        <20210215104043.91251-15-alexandru.ardelean@analog.com>
-        <aecd6a19-79a8-d9a6-2dc4-73dcd756c92d@fi.rohmeurope.com>
-        <87fbfc8e-fb17-444d-22a2-3738ade77cb5@fi.rohmeurope.com>
-        <20220919163214.5b757903@jic23-huawei>
-        <20220919181854.01214355@jic23-huawei>
-        <ae28aca3-6834-653c-9d66-1c98b67c7d4d@fi.rohmeurope.com>
+To:     "Tilki, Ibrahim" <Ibrahim.Tilki@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "Bolucu, Nurettin" <Nurettin.Bolucu@analog.com>
+Subject: Re: [PATCH v4 2/3] dt-bindings: iio: adc: add adi,max11410.yaml
+Message-ID: <20220924145828.27659029@jic23-huawei>
+In-Reply-To: <DM8PR03MB62477EAB8BCF6862032B30C5964C9@DM8PR03MB6247.namprd03.prod.outlook.com>
+References: <20220908144924.205547-1-Ibrahim.Tilki@analog.com>
+        <20220908144924.205547-3-Ibrahim.Tilki@analog.com>
+        <20220918162211.7a5ebdac@jic23-huawei>
+        <DM8PR03MB62477EAB8BCF6862032B30C5964C9@DM8PR03MB6247.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -73,145 +57,156 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Sep 2022 18:06:37 +0000
-"Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
+On Tue, 20 Sep 2022 15:27:23 +0000
+"Tilki, Ibrahim" <Ibrahim.Tilki@analog.com> wrote:
 
-> On 9/19/22 20:18, Jonathan Cameron wrote:
-> > On Mon, 19 Sep 2022 16:32:14 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Thu, 8 Sep 2022 17:49:23 +0300
+> > Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
 > >   
-> >> On Mon, 19 Sep 2022 08:52:38 +0000
-> >> "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com> wrote:
-> >>  
-> >>> On 9/9/22 11:12, Vaittinen, Matti wrote:  
-> >>>> Hi dee Ho peeps!
-> >>>>
-> >>>> Disclaimer - I have no HW to test this using real in-tree drivers. If
-> >>>> someone has a device with a variant of bmc150 or adxl372 or  - it'd be
-> >>>> nice to see if reading hwfifo_watermark_max or hwfifo_watermark_min
-> >>>> works with the v6.0-rc4. Maybe I am misreading code and have my own
-> >>>> issues - in which case I apologize already now and go to the corner
-> >>>> while being deeply ashamed :)  
-> >>>
-> >>> I would like to add at least the at91-sama5d2_adc (conditonally
-> >>> registers the IIO_CONST_ATTR for triggered-buffer) to the list of
-> >>> devices that could be potentially tested. I hope some of these devices
-> >>> had a user who could either make us worried and verify my assumption -
-> >>> or make me ashamed but rest of us relieved :) Eg - I second my request
-> >>> for testing this - and add potential owners of at91-sama5d2_adc to the list.
-> >>>      
-> >>>> On 2/15/21 12:40, Alexandru Ardelean wrote:  
-> >>>>> This change wraps all buffer attributes into iio_dev_attr objects, and
-> >>>>> assigns a reference to the IIO buffer they belong to.
-> >>>>>
-> >>>>> With the addition of multiple IIO buffers per one IIO device, we need a way
-> >>>>> to know which IIO buffer is being enabled/disabled/controlled.
-> >>>>>
-> >>>>> We know that all buffer attributes are device_attributes.  
-> >>>>
-> >>>> I think this assumption is slightly unsafe. I see few drivers adding
-> >>>> IIO_CONST_ATTRs in attribute groups. For example the bmc150 and adxl372
-> >>>> add the hwfifo_watermark_min and hwfifo_watermark_max.
-> >>>>       
-> >>>
-> >>> and at91-sama5d2_adc
-> >>>
-> >>> //snip
-> >>>      
-> >>>> I noticed that using
-> >>>> IIO_CONST_ATTRs for triggered buffers seem to cause access to somewhere
-> >>>> it shouldn't... Oops.
-> >>>>
-> >>>> Reading the code allows me to assume the problem is wrapping the
-> >>>> attributes to IIO_DEV_ATTRs.
-> >>>>
-> >>>> static struct attribute *iio_buffer_wrap_attr(struct iio_buffer *buffer,
-> >>>> +					      struct attribute *attr)
-> >>>> +{
-> >>>> +	struct device_attribute *dattr = to_dev_attr(attr);
-> >>>> +	struct iio_dev_attr *iio_attr;
-> >>>> +
-> >>>> +	iio_attr = kzalloc(sizeof(*iio_attr), GFP_KERNEL);
-> >>>> +	if (!iio_attr)
-> >>>> +		return NULL;
-> >>>> +
-> >>>> +	iio_attr->buffer = buffer;
-> >>>> +	memcpy(&iio_attr->dev_attr, dattr, sizeof(iio_attr->dev_attr));
-> >>>>
-> >>>> This copy does assume all attributes are device_attrs, and does not take
-> >>>> into account that IIO_CONST_ATTRS have the string stored in a struct
-> >>>> iio_const_attr which is containing the dev_attr. Eg, copying in the
-> >>>> iio_buffer_wrap_attr() does not copy the string - and later invoking the
-> >>>> 'show' callback goes reading something else than the mentioned string
-> >>>> because the pointer is not copied.  
-> >>>
-> >>> Yours,
-> >>> 	-- Matti  
-> >> Hi Matti,
-> >>
-> >> +CC Alexandru on a current email address.
-> >>
-> >> I saw this whilst travelling and completely forgot about when
-> >> I was back to normal - so great you sent a follow up!  
-> 
-> I was also participating at ELCE last week so didn't do much of emails/code.
-> 
-> >>
-> >> Anyhow, your reasoning seems correct and it would be easy enough
-> >> to add such a case to iio/dummy/iio_simple_dummy_buffer.c and
-> >> provide a clear test for the problem.
-> >>
-> >> As to solutions. The quickest is probably to switch these const attrs
-> >> over to a non const form and add a comment to the header to say they are
-> >> unsuitable for use with buffers.  
-> > 
-> > Thinking a little more on this - all / (most?) of the users pass a null terminated
-> > array of struct device_attribute * to *iio_triggered_buffer_setup_ext()
-> > 
-> > That's then assigned to buffer->attrs.
-> > We could add an additional pointer to the struct iio_buffer to take
-> > a null terminated array of struct iio_dev_attr *
-> > and change the signature of that function to take one of those, thus
-> > preventing us using iio_const_attr structures for this.  
-> 
-> Yes. I would also rather see pointer to array of struct iio_dev_attr * 
-> if we continue keeping the assumption that attrs are of type iio_dev_attr.
-> 
-> > 
-> > Then we can wrap those just fine in the code you highlighted and assign the
-> > result into buffer->attrs.
-> > 
-> > We'd need to precede that change with fixes that just switch the
-> > iio_const_attr uses over to iio_dev_attr but changing this would ensure no
-> > accidental reintroductions of the problem in future drivers (typically
-> > as a result of someone forward porting a driver that is out of tree).  
-> 
-> Again I do agree. Besides change of const_attrs is necessary in any case 
-> if we don't change the wrapping.
-> 
-> >>
-> >> Would you like to send patches given you identified the problem?  
-> 
-> I am in any case about to send couple of patches to IIO. The devm-helper 
-> usage (v2 - I sent v1 from my other email address (mazziesaccount) - but 
-> I am the same person :] ) and a new accelerometer driver. So, I can look 
-> also at this change while I am at it if you're busy).
-> 
-> >> If not I'm happy to fix these up. My grepping identified the same 3 cases
-> >> you found.  
-> 
-> Feel free to patch this if you wish. Just please let me know if you take 
-> care of this so we don't do double the work :)
+> > > Adding devicetree binding documentation for max11410 adc.
+> > > 
+> > > Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+> > > ---
+> > >  .../bindings/iio/adc/adi,max11410.yaml        | 174 ++++++++++++++++++
+> > >  1 file changed, 174 insertions(+)
+> > >  create mode 100644 
+> > > Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+> > > 
+> > > diff --git 
+> > > a/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml 
+> > > b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+...
 
-I'm never one to turn down a volunteer, so I'll leave these for you :)
+> > > +
+> > > +  interrupt-names:
+> > > +    description: Name of the gpio pin of max11410 used for IRQ
+> > > +    maxItems: 1
+> > > +    items:
+> > > +      enum:
+> > > +        - gpio0
+> > > +        - gpio1
+> > > +
+> > > +  '#address-cells':
+> > > +    const: 1
+> > > +
+> > > +  '#size-cells':
+> > > +    const: 0
+> > > +
+> > > +  avdd-supply:
+> > > +    description: Necessarry avdd supply. Used as reference when no explicit reference supplied.
+> > > +
+> > > +  vref0p-supply:
+> > > +    description: vref0p supply can be used as reference for conversion.
+> > > +
+> > > +  vref1p-supply:
+> > > +    description: vref1p supply can be used as reference for conversion.
+> > > +
+> > > +  vref2p-supply:
+> > > +    description: vref2p supply can be used as reference for conversion.
+> > > +
+> > > +  vref0n-supply:
+> > > +    description: vref0n supply can be used as reference for conversion.
+> > > +
+> > > +  vref1n-supply:
+> > > +    description: vref1n supply can be used as reference for conversion.
+> > > +
+> > > +  vref2n-supply:
+> > > +    description: vref2n supply can be used as reference for conversion.
+> > > +
+> > > +  spi-max-frequency:
+> > > +    maximum: 8000000
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > > +  - avdd-supply  
+> > hmm.
+> > 
+> > If explicit references are supplied and used, then will we query the voltage of the avdd supply?  If not, it doesn't need to be supplied. Power is needed but it might be coming from a fixed regulator no one bothered to put in the device tree.  Perhaps we just don't care about that corner case?
+> >   
+> 
+> That is correct. If all of the channels use external vref, then avdd-supply
+> is no longer required. It is fine by me if we ignore this corner case.
+> 
+> Current driver checks for avdd-supply unconditionally. Maybe we can change the
+> driver so that it results in error only if one of the channels use avdd as reference
+> in the absence of avdd-supply?
 
-Plenty of other things on the todo list that I can be getting on with.
-
-Jonathan
+Does it query the voltage in this corner case?  I don't think it does.
+If that's the case, you are fine getting it and if not supplied (and various
+other conditions are met) the regulator core will provide a stub regulator
+that will work fine here.  All we might want to do is remove the required
+line from the binding.
 
 > 
-> Yours
-> 	-- Matti
 > 
+> > > +
+> > > +patternProperties:
+> > > +  "^channel(@[0-9a-f]+)?$":  
+> > 
+> > name isn't that flexible as we only allow reg 0-9
+> >   
 > 
+> I changed it to "^channel(@[0-9])?$" in v5 but will this allow us to define
+> more than 10 channels? Sharing analog inputs accross multiple channels is
+> supported by driver. But I don't know how to correctly specify it here.
+> For example following configuration is valid:
+
+Ah. I'd not understood this correctly.
+The adc.yaml binding requires the @X number to match with reg.
+It doesn't provide a way to not have an @reg.
+
+Interesting corner case if you have overlap of single ended and differential
+channels.  I guess we could specify reg as have no meaning for differential
+channels other than as an index.  Not sure what the DT maintainers would think
+of that though.  It isn't obvious what we should set reg to for differential
+channels.
+
+Ah. That meant I just checked if this had gone to the right people.
+For all dt-bindings you need to +CC the list and maintainers listed
+in MAINTAINERS.  They aren't going to see the binding otherwise and
+I won't take a new binding without their review.
+
+> 
+>   channel@0 {
+>     reg = <0>;
+>   };
+>   channel@1 {
+>     reg = <1>;
+>   };
+>   channel@2 {
+>     reg = <2>;
+>   };
+>   channel@3 {
+>     reg = <3>;
+>   };
+>   channel@4 {
+>     reg = <4>;
+>   };
+>   channel@5 {
+>     reg = <5>;
+>   };
+>   channel@6 {
+>     reg = <6>;
+>   };
+>   channel@7 {
+>     reg = <7>;
+>   };
+>   channel@8 {
+>     reg = <8>;
+>   };
+>   channel@9 {
+>     reg = <9>;
+>   };
+>   channel@a {
+>     diff-channels = <1 2>;
+>   };
+>   channel@b {
+>     diff-channels = <7 9>;
+>   };
+> 
+
+Thanks,
+
+Joanthan
 

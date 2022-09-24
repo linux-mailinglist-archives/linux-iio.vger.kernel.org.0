@@ -2,173 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E1E5E8E20
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 17:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A40355E8E2B
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 17:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233535AbiIXPqG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 11:46:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43950 "EHLO
+        id S229683AbiIXPur (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 11:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233410AbiIXPqG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 11:46:06 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62DB72866
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 08:46:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1534CB80E52
-        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 15:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C2BC433D6;
-        Sat, 24 Sep 2022 15:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664034358;
-        bh=31VmF6s9m67JEi4R+AisNT1iAfhlAHfnXHUBZfAaouo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Z8VheRpWRUmUmHSsAN/lhJ2agbF32eXhheWEvuv8n39bfqWnZ2AvLxnmazawQgmkU
-         9Bt8rDJkeMXQ9zonxPuESDQmtRDuFdRvg1LQAQghuwqRezLhLbeWUA14Jf45qPV5Jx
-         v8D6l1BW8Iw7a2/Kn5Q8RlRtrBHpUtIhC4lJyFMyeeIYbE6gtJfwbrGicZoOaP2eXU
-         gvfE6Pgho8QOWXUeDM6J0VZ6YxrB6wmuavilvxaHdg/5FwOBgvfqmc5i3d+Hw/7fOd
-         kbDd0XYDOeD9NxzHXHfQlKgYOr9BgYDwmkt3/73ObW2ZYFrXZqa5aReyby8yGvJezy
-         Nwgse25Gpv5ug==
-Date:   Sat, 24 Sep 2022 16:46:00 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
-Cc:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-rockchip@lists.infradead.org>,
-        <linux-amlogic@lists.infradead.org>, <linux-imx@nxp.com>,
-        <linux-iio@vger.kernel.org>, Chunyan Zhang <zhang.lyra@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Cixi Geng <cixi.geng1@unisoc.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        "Fabio Estevam" <festevam@gmail.com>,
-        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        "Shawn Guo" <shawnguo@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        "Heiko Stuebner" <heiko@sntech.de>,
-        Florian Boor <florian.boor@kernelconcepts.de>,
-        Ciprian Regus <ciprian.regus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        "Baolin Wang" <baolin.wang@linux.alibaba.com>,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Subject: Re: [PATCH 12/15] iio: fyro: itg3200_core: do not use internal
- iio_dev lock
-Message-ID: <20220924164600.56abd07b@jic23-huawei>
-In-Reply-To: <20220920112821.975359-13-nuno.sa@analog.com>
-References: <20220920112821.975359-1-nuno.sa@analog.com>
-        <20220920112821.975359-13-nuno.sa@analog.com>
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S229800AbiIXPuq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 11:50:46 -0400
+Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5134610560
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 08:50:45 -0700 (PDT)
+Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-3487d84e477so28046287b3.6
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 08:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=lNiS9+tMIO2r2VrK2eWKfjtuikvQUySmJSXeNuyVxdu5ATekJnC4RpvegKgRGsY8aw
+         NptWzwvaTYJJpw3nxWfYTm3tHFQXeXJeIkAPQGgOov4VKpNDry24jG94QetaL0HBFWKg
+         6NlCwz0gLnlOfcmANjGqSXiUyaak2b4NB6A7D8Xp7dDQ8YmJYpK2cjRr/RIs1cmBZw0x
+         5EGIJUvlLtrC0R65H+E65AaiYRyzPz2vNtFpnRS3b6cU0WpvoFYJBGf7H00GvJ2w6KQk
+         ZwC4HPK2YOhg5as1NCu9KtWBlFIhMzs5O0Vv8GOukykNhgXP04NIOFduO+jrB1lKJNP4
+         uVRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        b=s/5oQEh6rHPUeR9nOZBIo9mIURdIgeLT04xQWt71o6NxQilkOs1yMGjcBPIsh7ta6P
+         fPtSfPnGVYVyG23vRphD4qDeAgFnS++D0KkIVLjc5N09T1xJtW0AWPE2onAMnwPShLsI
+         oqdONZDGjNc+VbdwfdMTVG53GA42YZCy2QzUv8XAsX6JU+f+GE1qt2YezpMTuwJFcpB8
+         ipZjqNw9MAk0M268yPOK8e4QG4pZNp3uifY/OLF4CoGmyeIOKa5BLnn7pB7FiumIXP0e
+         a7wGLvXsuUrMtrNBco888YHIfqbV6wbRCfjcnlVa5wgKBiL39AyJJkZO/Ouf7NBuGrZJ
+         HFqw==
+X-Gm-Message-State: ACrzQf0iJLZAv4epwgnYohwGXxmKnDM6JzDkMagif1aBJlE2RgV9aZDe
+        enmYkb4tOfA8op6QgnfkKqy1CCVoNlB/Zmjo2bM=
+X-Google-Smtp-Source: AMsMyM7llakQxTMCshGmWoQqX1M8LD4CW4JWw/hsONkiCKwdKe1KnijUwBGC2CAf4Xy/I4yJ9f3zvkUENIwKQz4n1o4=
+X-Received: by 2002:a81:6bd4:0:b0:345:753c:a8e5 with SMTP id
+ g203-20020a816bd4000000b00345753ca8e5mr13368990ywc.349.1664034644318; Sat, 24
+ Sep 2022 08:50:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Sender: paulbryan24921@gmail.com
+Received: by 2002:a05:7010:4e8e:b0:305:f589:3ad7 with HTTP; Sat, 24 Sep 2022
+ 08:50:44 -0700 (PDT)
+From:   Ahil Lia <mrsliaahil070@gmail.com>
+Date:   Sat, 24 Sep 2022 15:50:44 +0000
+X-Google-Sender-Auth: feVeXZrOG5caVbieO4nQSo5pqRw
+Message-ID: <CACVhYX7C5gGtL8F-mhbtFntw8PdLUUU5k+fXKqk89q48j4G6eQ@mail.gmail.com>
+Subject: Hello, I need your assistance in this very matter
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 20 Sep 2022 13:28:18 +0200
-Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-
-> The iio_device lock is only meant for internal use. Hence define a
-> device local lock to protect against concurrent accesses.
-As with earlier, add a note about mutex.h include.
-
-Otherwise, looks fine.  My gut feeling is that we should
-have a claim_direct_mode() in that write_raw() as well as
-changing frequency whilst doing buffered capture is rarely a good
-idea, but meh, we don't need to change the ABI so let us not do so.
-
-Jonathan
-
->=20
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> ---
->  drivers/iio/gyro/itg3200_core.c  | 9 ++++++---
->  include/linux/iio/gyro/itg3200.h | 2 ++
->  2 files changed, 8 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/iio/gyro/itg3200_core.c b/drivers/iio/gyro/itg3200_c=
-ore.c
-> index 0491c64e1b32..358aa8ac0c6b 100644
-> --- a/drivers/iio/gyro/itg3200_core.c
-> +++ b/drivers/iio/gyro/itg3200_core.c
-> @@ -18,6 +18,7 @@
->  #include <linux/slab.h>
->  #include <linux/stat.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/delay.h>
-> =20
->  #include <linux/iio/iio.h>
-> @@ -131,6 +132,7 @@ static int itg3200_write_raw(struct iio_dev *indio_de=
-v,
->  			     int val2,
->  			     long mask)
->  {
-> +	struct itg3200 *st =3D iio_priv(indio_dev);
->  	int ret;
->  	u8 t;
-> =20
-> @@ -139,11 +141,11 @@ static int itg3200_write_raw(struct iio_dev *indio_=
-dev,
->  		if (val =3D=3D 0 || val2 !=3D 0)
->  			return -EINVAL;
-> =20
-> -		mutex_lock(&indio_dev->mlock);
-> +		mutex_lock(&st->lock);
-> =20
->  		ret =3D itg3200_read_reg_8(indio_dev, ITG3200_REG_DLPF, &t);
->  		if (ret) {
-> -			mutex_unlock(&indio_dev->mlock);
-> +			mutex_unlock(&st->lock);
->  			return ret;
->  		}
->  		t =3D ((t & ITG3200_DLPF_CFG_MASK) ? 1000u : 8000u) / val - 1;
-> @@ -152,7 +154,7 @@ static int itg3200_write_raw(struct iio_dev *indio_de=
-v,
->  					  ITG3200_REG_SAMPLE_RATE_DIV,
->  					  t);
-> =20
-> -		mutex_unlock(&indio_dev->mlock);
-> +		mutex_unlock(&st->lock);
->  		return ret;
-> =20
->  	default:
-> @@ -307,6 +309,7 @@ static int itg3200_probe(struct i2c_client *client,
->  		return -ENOMEM;
-> =20
->  	st =3D iio_priv(indio_dev);
-> +	mutex_init(&st->lock);
-> =20
->  	ret =3D iio_read_mount_matrix(&client->dev, &st->orientation);
->  	if (ret)
-> diff --git a/include/linux/iio/gyro/itg3200.h b/include/linux/iio/gyro/it=
-g3200.h
-> index a602fe7b84fa..74b6d1cadc86 100644
-> --- a/include/linux/iio/gyro/itg3200.h
-> +++ b/include/linux/iio/gyro/itg3200.h
-> @@ -102,6 +102,8 @@ struct itg3200 {
->  	struct i2c_client	*i2c;
->  	struct iio_trigger	*trig;
->  	struct iio_mount_matrix orientation;
-> +	/* lock to protect against multiple access to the device */
-> +	struct mutex		lock;
->  };
-> =20
->  enum ITG3200_SCAN_INDEX {
 

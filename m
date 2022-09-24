@@ -2,48 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 371AE5E8E7B
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:32:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2AC5E8E83
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Sep 2022 18:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbiIXQcU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 24 Sep 2022 12:32:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
+        id S230455AbiIXQhT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 24 Sep 2022 12:37:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiIXQcT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:32:19 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7B625F1;
-        Sat, 24 Sep 2022 09:32:18 -0700 (PDT)
+        with ESMTP id S229669AbiIXQhS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 24 Sep 2022 12:37:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E0137CA9E
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 09:37:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id A95D6CE0988;
-        Sat, 24 Sep 2022 16:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F35C433D6;
-        Sat, 24 Sep 2022 16:32:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3785861480
+        for <linux-iio@vger.kernel.org>; Sat, 24 Sep 2022 16:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D933C433D6;
+        Sat, 24 Sep 2022 16:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664037134;
-        bh=PahxIU04ESTvZiacu5ZryDA08VTAB+qNsD1TEfobxFo=;
+        s=k20201202; t=1664037436;
+        bh=cjynVjVmJ+nzLV+qxnUA1K6wGgEfnigced/SZFmyJWE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VrjKKYBwxOWf78kLDaosBH9cNw3y9yGFkYgYR17EVIMBPiVK2dnujkEmI+7fqyfWw
-         hwzVlYqR51f8FuarsYqBZ35kcXHeA5jglk2bbdP4rbdJrNG+40JlHK+CUYDhzxxsKv
-         rblGLi0X66Y0w0MEXVIwyCX+8kBXOvi/Mq9p/pXABabAekjP5zxGffAJ9ADtdBYnuD
-         0gNLq+EFs3kNw5rOFw6TTAUfJ2U1iacPKnN+XAcL7ijJXHpOwU98jcAQ3rxzc5lIFc
-         LIyhrNmMbAFuzGJRk68oY+iD2AmEjLrclU7Wgmn6g2hC7y3Ctxl0BD50+3JdXqV6ib
-         51nvtDlUwYO3w==
-Date:   Sat, 24 Sep 2022 17:32:21 +0100
+        b=D6bMaN2p74KCZaNZCEFsehqDTwLXHi+o+4O8FSkjeMV3F5ukM8cTerFZFHnOyPa/1
+         2YY1ZDVCav9A1o7a7YK4hYHePXrK69VUOAhVxrxx8Jmhj9U6pLcAUQAqwep57Yks/I
+         DmHg33cBw7URKOJQYuf7+hEZVkiwHtJofdf5b5WY2pjvZB4xNXFPpP1bMKRvhplnsT
+         y6Yp7eMqh3bdszJ9ag2TzaUCIwsQ+/lCbYs/NbHz2euGDtyiAONfW4tVqojEx3O6Ak
+         OokMikZdnHzFofDJAeEn9X5STp8aZO0uqjL5U2d4xZefhj5/wqVo1LDtHdLCCRm2i7
+         5+DPw9epxpUdw==
+Date:   Sat, 24 Sep 2022 17:37:24 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     cmo@melexis.com
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v6 0/3] iio: temperature: mlx90632: Add powermanagement
-Message-ID: <20220924173221.1174608b@jic23-huawei>
-In-Reply-To: <cover.1663834141.git.cmo@melexis.com>
-References: <cover.1663834141.git.cmo@melexis.com>
+To:     =?UTF-8?B?TcOlcnRlbg==?= Lindahl <marten.lindahl@axis.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
+        <kernel@axis.com>
+Subject: Re: [PATCH v2 1/2] iio: light: vcnl4000: Preserve conf bits when
+ toggle power
+Message-ID: <20220924173724.374305c9@jic23-huawei>
+In-Reply-To: <20220923114031.757011-2-marten.lindahl@axis.com>
+References: <20220923114031.757011-1-marten.lindahl@axis.com>
+        <20220923114031.757011-2-marten.lindahl@axis.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,73 +58,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 22 Sep 2022 10:13:21 +0200
-cmo@melexis.com wrote:
+On Fri, 23 Sep 2022 13:40:30 +0200
+M=C3=A5rten Lindahl <marten.lindahl@axis.com> wrote:
 
-> From: Crt Mori <cmo@melexis.com>
-> 
-> As discussed previously on the group under the
-> "Controlling device power management from terminal" thread the mlx90632
-> sensor provides measurement capabilities under sleep_step mode. This
-> series runtime suspends the unused chip to sleep step mode to save power
-> but in case of continuous sequential reading it switches to continuous
-> mode for faster readouts. This value is hardcoded to
-> MLX90632_MEAS_MAX_TIME (with some buffer) and not user configurable.
-> 
-> The sensor runtime suspension is set to MLX90632_SLEEP_DELAY_MS which is
-> hardcoded to 3 times as much as MEAS_MAX_TIME.
-> 
-Hi Crt,
-
-Applied. However, we are cutting it very tight for the coming merge window
-so I'm not sure I'll get a 3rd pull request out (this just missed the 2nd
-one as I only queued up material that was in a final state last weekend)
-So for now pushed out as testing and we'll see if Linus hints at an rc8
-when he releases rc7 tomorrow.  If not this will be 6.2 material now.
-
-Thanks,
+> As the vcnl4040 and vcnl4200 chip uses runtime power management for
+> turning the ambient light and proximity sensors on/off, it overwrites
+> the entire register each time. In ALS_CONF register bit fields ALS_IT,
+> ALS_PERS, ALS_INT_EN are overwritten. In PS_CONF1 register bit fields
+> PS_DUTY, PS_PERS, PS_IT, PS_HD, and PS_INT are overwritten.
+>=20
+> Add functions for preserving the affected bit fields when changing power
+> state.
+>=20
+> Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
+See inline.
+Otherwise looks good to me.
 
 Jonathan
 
+> ---
+>  drivers/iio/light/vcnl4000.c | 54 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 51 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+> index 3db4e26731bb..b2ecf8af1aa5 100644
+> --- a/drivers/iio/light/vcnl4000.c
+> +++ b/drivers/iio/light/vcnl4000.c
+> @@ -74,6 +74,9 @@
+>  #define VCNL4000_PROX_EN	BIT(1) /* start proximity measurement */
+>  #define VCNL4000_SELF_TIMED_EN	BIT(0) /* start self-timed measurement */
+> =20
+> +#define VCNL4040_ALS_CONF_ALS_SD	BIT(0) /* Enable ambient light sensor */
 
-> Changes in v6:
-> 
->  - Revert changes to the suspend to prevent power mode regression
-> 
-> Changes in v5 (per review comments from Jonathan Cameron):
-> 
->  - Migrate to devm also for driver removal, along with putting it to low
->    power mode
-> 
-> Changes in v4 (per review comments from Jonathan Cameron):
-> 
->  - Migrate back to devm_pm_runtime_enable and remove the pm_disable function
->  - Remove pm stuff from remove and also sleep, since when iio device is
->    not registered also sleep makes no sense.
->  - Replace use EOPNOTSUPP as per checkpatch suggestion although some drivers
->    still use ENOTSUPP.
->  - Change the style of read frequency
-> 
-> Changes in v3 (per review comments from Jonathan Cameron):
-> 
->  - Change the "available" attribute presentation to more recent way
->    suggested
->  - Replace devm_pm_runtime_enable with enable and devm_add_action_or_reset
->  - When suspending device also put it to lower power mode in case there is
->    dummy regulator
->  - Use more switch cases instead of if/else
-> 
-> Changes in v2:
-> 
->  - apply review comments from Andy Shevchenko
-> 
-> Crt Mori (3):
->   iio: temperature: mlx90632 Add runtime powermanagement modes
->   iio: temperature: mlx90632 Read sampling frequency
->   iio: temperature: mlx90632 Change return value of sensor measurement
->     channel
-> 
->  drivers/iio/temperature/mlx90632.c | 440 ++++++++++++++++++++++++-----
->  1 file changed, 369 insertions(+), 71 deletions(-)
-> 
+Comment seems inverted. Bit being set is 'shut down'  I would expand the
+name to
+VCNL4040_ALS_CONF_ALS_SHUTDOWN=20
+then drop the comment as the name is self explanatory
+
+> +#define VCNL4040_PS_CONF1_PS_SD	BIT(0) /* Enable proximity sensor */
+> +
+>  /* Bit masks for interrupt registers. */
+>  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source=
+ */
+>  #define VCNL4010_INT_THR_EN	BIT(1) /* Threshold interrupt type */
+> @@ -188,16 +191,61 @@ static int vcnl4000_init(struct vcnl4000_data *data)
+>  	return data->chip_spec->set_power_state(data, true);
+>  };
+> =20
+> +static ssize_t vcnl4000_write_als_enable(struct vcnl4000_data *data, boo=
+l en)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_AL_CONF);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	if (en)
+> +		ret &=3D ~VCNL4040_ALS_CONF_ALS_SD;
+> +	else
+> +		ret |=3D VCNL4040_ALS_CONF_ALS_SD;
+> +
+> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, ret);
+> +
+> +out:
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static ssize_t vcnl4000_write_ps_enable(struct vcnl4000_data *data, bool=
+ en)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	if (en)
+> +		ret &=3D ~VCNL4040_PS_CONF1_PS_SD;
+> +	else
+> +		ret |=3D VCNL4040_PS_CONF1_PS_SD;
+> +
+> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, ret);
+> +
+> +out:
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +
+> +	return ret;
+> +}
+> +
+>  static int vcnl4200_set_power_state(struct vcnl4000_data *data, bool on)
+>  {
+> -	u16 val =3D on ? 0 /* power on */ : 1 /* shut down */;
+>  	int ret;
+> =20
+> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_AL_CONF, val);
+> +	ret =3D vcnl4000_write_als_enable(data, on);
+>  	if (ret < 0)
+>  		return ret;
+> =20
+> -	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
+> +	ret =3D vcnl4000_write_ps_enable(data, on);
+>  	if (ret < 0)
+>  		return ret;
+> =20
 

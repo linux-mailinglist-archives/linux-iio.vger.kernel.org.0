@@ -2,151 +2,213 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E69E5EA7EA
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Sep 2022 16:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 259335EA8F3
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Sep 2022 16:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234535AbiIZOGg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Sep 2022 10:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42252 "EHLO
+        id S233362AbiIZOtN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Sep 2022 10:49:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234297AbiIZOGL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 10:06:11 -0400
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B45EE5F113;
-        Mon, 26 Sep 2022 05:17:30 -0700 (PDT)
-Received: by mail-qv1-f49.google.com with SMTP id m9so4161473qvv.7;
-        Mon, 26 Sep 2022 05:17:30 -0700 (PDT)
+        with ESMTP id S235293AbiIZOsK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 10:48:10 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07A523868F
+        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 06:14:51 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id n15so10183064wrq.5
+        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 06:14:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=zmOMLIf0qNCKKLpY8/rkDv2C4P471zhSLenSkDiqEtM=;
+        b=fYDKQ3atGXLHr/X0hT1fw4O2qHpVZZ67+xMvqMbyXJYkgtVARlzLocoOfHAyelD/1t
+         ojTVXJ5A82LFud4h4y1C9vnNGeBglT3wZFxevLgHeC5A/+6nY/Dwn4W++9XZp/I9Gnlf
+         gKQgd4GsZQ3I9Pem0Yztyz1tIvq67KayXfuTPnQJPOOXkgQO41tCZbovtxM9dLyOiC4p
+         ucuwcYhPwq3GdlECggIgkUcaLOToiJHn8XBLLqizYsIzo2mXzGvNLo2sOdcFBVn6rT6K
+         CrB1mpw55JYnLawfatmxv/0Lk6+YetvJkvNhQP+JMmAqW4IV00wRuMoI421DyujgsEV2
+         okKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=OpKZ6pIwSXsK0LhSYa9JjdvV0u7g6RN0sjGEudnzcJE=;
-        b=cB6B+353ih20lmVMlwfJ+cylqv9Wm1669oPxLlBQlDPZxuLHHdLloqKKiM6rnGncYu
-         FBkdGoD21TmA/BZ4oJA+a0G2yo1z8cg+5iaKe7i+gw6pfkyfbLMANXPGzDLLwL3kg6RL
-         8+V9cf32UIH29A1MlVXlJGtvBOWHS+uj2Url3vUNZD9dT29zfhS41KBojs3rlEmrfZ/r
-         mb7Uk5eNy4GFOJs3dmOgnMqIKydczd4e2AcqTMu6apc5az07/Ql/kH/Ima82KnKNWnif
-         37c3Ix+FizEst5yNfWHTqVCE9s0DegHRvY0EUyzPaRXuOcMd87br915rumAcOUH4ORh0
-         2ryA==
-X-Gm-Message-State: ACrzQf0Xq3b+WqzsnIxqLB8G2md2b6b9B2RQFgTT38YuF60DRiUISsUk
-        6noeUfU06qX1fJu9FAvkEFPO+MtQxPo5Zw==
-X-Google-Smtp-Source: AMsMyM4ab9IRtWcoDI+LZVpBDSe19rqgcNMq7XNVLvM1hp30RHiZGN2VZtnqrdwYQK1c342yYQZjYw==
-X-Received: by 2002:a0c:f5c4:0:b0:4a7:f6cb:9e39 with SMTP id q4-20020a0cf5c4000000b004a7f6cb9e39mr16559324qvm.9.1664194630011;
-        Mon, 26 Sep 2022 05:17:10 -0700 (PDT)
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
-        by smtp.gmail.com with ESMTPSA id u11-20020a05620a454b00b006ce2c3c48ebsm11726333qkp.77.2022.09.26.05.17.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Sep 2022 05:17:09 -0700 (PDT)
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-345528ceb87so66292787b3.11;
-        Mon, 26 Sep 2022 05:17:09 -0700 (PDT)
-X-Received: by 2002:a81:1691:0:b0:345:17df:4fc6 with SMTP id
- 139-20020a811691000000b0034517df4fc6mr19578550yww.502.1664194629104; Mon, 26
- Sep 2022 05:17:09 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=zmOMLIf0qNCKKLpY8/rkDv2C4P471zhSLenSkDiqEtM=;
+        b=D7RSgBE1QGmWTyiqRiaaoBwuxC8wPN5FtIwzEkhYS4WKUccRUIGcDlIHWXjmYT+ZHY
+         FjGOAHgBBMvUBTcnXuNo4DYCgDJLtUhy/OgHJS1GRcmKCTcNzRXOQPNpM43EXdZ5EnTk
+         /cZ9852uPdUmG2ui1O5mShz5lFdsg7xdWF+4tGQgz5rVC6RxNx+JJqdmeaUxzMgojbp9
+         o5gB2kqPb8vXZLC+0jkcYw80oN15IiACAUxFbUViQHrb6ODkMCQ0ftBag/ULlWdwy5jM
+         dZoCKzPPwny5mHGFTawDEi/YADttUtWeQgLBs2f62ht50pyfrgyxhhzLg2amYYL9LJXj
+         1I4w==
+X-Gm-Message-State: ACrzQf0tx68Ve1YbC7x5xvrWTF2EvrGLC7wJGIlpQAuy9Ta7Jn+j1y3i
+        RDEi3tRmtCB45AsVP0YYxCOZoQ==
+X-Google-Smtp-Source: AMsMyM5Q53D78AC+gd83km9UrUJfNr7A+4TPr9Of2Die3OZ8VL4eGG+Em24hbhJSb99xelsutjGepQ==
+X-Received: by 2002:adf:fac9:0:b0:228:652b:a33e with SMTP id a9-20020adffac9000000b00228652ba33emr13323868wrs.61.1664198089457;
+        Mon, 26 Sep 2022 06:14:49 -0700 (PDT)
+Received: from arch-thunder (a109-49-33-111.cpe.netcabo.pt. [109.49.33.111])
+        by smtp.gmail.com with ESMTPSA id u9-20020a056000038900b002252884cc91sm14330030wrf.43.2022.09.26.06.14.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Sep 2022 06:14:49 -0700 (PDT)
+Date:   Mon, 26 Sep 2022 14:14:46 +0100
+From:   Rui Miguel Silva <rui.silva@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 3/5] iio: gyro: fxas210002c: Move exports to
+ IIO_FXAS210002C namespace.
+Message-ID: <20220926131446.wcvaabsks533jw7z@arch-thunder>
+References: <20220925155719.3316280-1-jic23@kernel.org>
+ <20220925155719.3316280-4-jic23@kernel.org>
 MIME-Version: 1.0
-References: <20220919075727.rmph7jmopaqvyyri@pengutronix.de>
- <OS0PR01MB5922B87D4A05973F88B427A7864C9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20220920155306.dvcz4324zvg72udm@pengutronix.de> <OS0PR01MB5922A9B3314F2F2B32F6B0DE864C9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <OS0PR01MB5922289B89061F6B3DF4819F864F9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20220921133542.3glfgeddnlhrebkz@pengutronix.de> <OS0PR01MB592258F2341BEDA1A5A7301C864F9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <20220922053605.qivxzwon52orbdgz@pengutronix.de> <OS0PR01MB59220ECD0B2D42DF5012B6C7864E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <TYCPR01MB59336AAF4DD1D304FA53451286509@TYCPR01MB5933.jpnprd01.prod.outlook.com>
- <20220924134233.m7uyvwyulbmo3mrv@pengutronix.de> <OS0PR01MB5922B479EE78E840DA9B8F0E86509@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <CAMuHMdU_-Y_MV=6t+ri_MicEMK+Z5JhxHHp3AsDU+4KgdMsXSQ@mail.gmail.com> <TYCPR01MB593348A5202E0E6619617AAF86529@TYCPR01MB5933.jpnprd01.prod.outlook.com>
-In-Reply-To: <TYCPR01MB593348A5202E0E6619617AAF86529@TYCPR01MB5933.jpnprd01.prod.outlook.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 26 Sep 2022 14:16:57 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXgtVk-f2XmdXVf19ZALfycjAZdDZVHxh-WNDGMn-OGBQ@mail.gmail.com>
-Message-ID: <CAMuHMdXgtVk-f2XmdXVf19ZALfycjAZdDZVHxh-WNDGMn-OGBQ@mail.gmail.com>
-Subject: Re: [PATCH v6 2/2] pwm: Add support for RZ/G2L GPT
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220925155719.3316280-4-jic23@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Biju,
+Hey Jonathan,
+On Sun, Sep 25, 2022 at 04:57:17PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Includes using EXPORT_NS_GPL_DEV_PM_OPS() and the simplifications that
+> brings by allowing the compiler to remove unused struct dev_pm_ops
+> and callbacks without needing explicit __maybe_unused markings.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Rui Miguel Silva <rui.silva@linaro.org>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-On Mon, Sep 26, 2022 at 10:00 AM Biju Das <biju.das.jz@bp.renesas.com> wrote:
-> > Subject: Re: [PATCH v6 2/2] pwm: Add support for RZ/G2L GPT
-> > On Sat, Sep 24, 2022 at 6:10 PM Biju Das <biju.das.jz@bp.renesas.com>
-> > wrote:
-> > > Note:
-> > > I have a plan to develop another PWM driver using MTU IP on the same
-> > SoC.
-> > > The work is not started yet.
-> >
-> > That is the MTU3, which seems to be a further evolution of the MTU2 in
-> > e.g. RZ/A1, which is already supported as a timer through the
-> > sh_mtu2 driver?
->
-> sh_mtu2 is just supports clock events. MTU2 is much powerful and we are
-> not supporting more advanced features like phase counting(counter framework),
-> PWM(frame wok) etc...
+Again, many thanks for making this changes.
+LGTM.
 
-OK.
+Acked-by: Rui Miguel Silva <rui.silva@linaro.org>
 
-> > > For this IP, I planned to use MFD framework for the MTU driver and
-> > > Will add counter driver, timer driver(clock source, clock event) and
-> > > pwm driver as child devices.
-> > >
-> > > Currently the MFD driver and 16-Bit Phase Counting using counter
-> > > framework is almost done.
-> >
-> > Do you really need an MFD? (MFDs trigger a red flag for me ;-) E.g.
->
-> Similar concept is already available in mainline[1].
-> See STM32 timers where there is an MFD driver supports timer, counter
-> And pwm as child devices.
->
-> [1] https://elixir.bootlin.com/linux/v6.0-rc5/C/ident/TIM_ARR
->
-> > there are two sets of bindings for renesas,tpu: when #pwm-cells is
-> > present, it is used for PWM, otherwise it is used as a timer.
->
-> [2]
-> Yes, we could encapsulate all in PWM. But then we need to call
-> Other susbsytem from pwm (eg:- counter and timer).
->
-> I am not sure, PWM subsystem people allows to call counter and
-> Timer subsystem calls from pwm driver?? If yes, then that will simplifies a lot.
->
-> [3]
-> I almost have an RFC ready for MFD + 16-bit phase counting mode
-> Using counter device with MTU3 which is tested on MTU{1,2} channels.
->
-> So basically, we need to decide whether to go with approach [2]
-> Or [3]??
->
-> Please share your views, I can post RFC patch to get a clear picture
-> if needed. Please let me know.
+Cheers,
+  Rui
 
-I see you've done your homework ;-) OK, fine for me!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> 
+> --
+> v2: Switch to Paul's more flexible approach to EXPORT_NS_GPL_DEV_PM_OPS()
+> Dropped Rui's tag on basis this is rather different from v1 due to
+> the different macro implementation.
+> ---
+>  drivers/iio/gyro/fxas21002c_core.c | 21 ++++++++++-----------
+>  drivers/iio/gyro/fxas21002c_i2c.c  |  3 ++-
+>  drivers/iio/gyro/fxas21002c_spi.c  |  3 ++-
+>  3 files changed, 14 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/gyro/fxas21002c_core.c b/drivers/iio/gyro/fxas21002c_core.c
+> index a36d71d9e3ea..3ea1d4613080 100644
+> --- a/drivers/iio/gyro/fxas21002c_core.c
+> +++ b/drivers/iio/gyro/fxas21002c_core.c
+> @@ -998,7 +998,7 @@ int fxas21002c_core_probe(struct device *dev, struct regmap *regmap, int irq,
+>  
+>  	return ret;
+>  }
+> -EXPORT_SYMBOL_GPL(fxas21002c_core_probe);
+> +EXPORT_SYMBOL_NS_GPL(fxas21002c_core_probe, IIO_FXAS21002C);
+>  
+>  void fxas21002c_core_remove(struct device *dev)
+>  {
+> @@ -1009,9 +1009,9 @@ void fxas21002c_core_remove(struct device *dev)
+>  	pm_runtime_disable(dev);
+>  	pm_runtime_set_suspended(dev);
+>  }
+> -EXPORT_SYMBOL_GPL(fxas21002c_core_remove);
+> +EXPORT_SYMBOL_NS_GPL(fxas21002c_core_remove, IIO_FXAS21002C);
+>  
+> -static int __maybe_unused fxas21002c_suspend(struct device *dev)
+> +static int fxas21002c_suspend(struct device *dev)
+>  {
+>  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
+>  
+> @@ -1021,7 +1021,7 @@ static int __maybe_unused fxas21002c_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int __maybe_unused fxas21002c_resume(struct device *dev)
+> +static int fxas21002c_resume(struct device *dev)
+>  {
+>  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
+>  	int ret;
+> @@ -1033,26 +1033,25 @@ static int __maybe_unused fxas21002c_resume(struct device *dev)
+>  	return fxas21002c_mode_set(data, data->prev_mode);
+>  }
+>  
+> -static int __maybe_unused fxas21002c_runtime_suspend(struct device *dev)
+> +static int fxas21002c_runtime_suspend(struct device *dev)
+>  {
+>  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
+>  
+>  	return fxas21002c_mode_set(data, FXAS21002C_MODE_READY);
+>  }
+>  
+> -static int __maybe_unused fxas21002c_runtime_resume(struct device *dev)
+> +static int fxas21002c_runtime_resume(struct device *dev)
+>  {
+>  	struct fxas21002c_data *data = iio_priv(dev_get_drvdata(dev));
+>  
+>  	return fxas21002c_mode_set(data, FXAS21002C_MODE_ACTIVE);
+>  }
+>  
+> -const struct dev_pm_ops fxas21002c_pm_ops = {
+> -	SET_SYSTEM_SLEEP_PM_OPS(fxas21002c_suspend, fxas21002c_resume)
+> -	SET_RUNTIME_PM_OPS(fxas21002c_runtime_suspend,
+> -			   fxas21002c_runtime_resume, NULL)
+> +EXPORT_NS_GPL_DEV_PM_OPS(fxas21002c_pm_ops, IIO_FXAS21002C) = {
+> +	SYSTEM_SLEEP_PM_OPS(fxas21002c_suspend, fxas21002c_resume)
+> +	RUNTIME_PM_OPS(fxas21002c_runtime_suspend, fxas21002c_runtime_resume,
+> +		       NULL)
+>  };
+> -EXPORT_SYMBOL_GPL(fxas21002c_pm_ops);
+>  
+>  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
+>  MODULE_LICENSE("GPL v2");
+> diff --git a/drivers/iio/gyro/fxas21002c_i2c.c b/drivers/iio/gyro/fxas21002c_i2c.c
+> index a7807fd97483..241401a9dfea 100644
+> --- a/drivers/iio/gyro/fxas21002c_i2c.c
+> +++ b/drivers/iio/gyro/fxas21002c_i2c.c
+> @@ -55,7 +55,7 @@ MODULE_DEVICE_TABLE(of, fxas21002c_i2c_of_match);
+>  static struct i2c_driver fxas21002c_i2c_driver = {
+>  	.driver = {
+>  		.name = "fxas21002c_i2c",
+> -		.pm = &fxas21002c_pm_ops,
+> +		.pm = pm_ptr(&fxas21002c_pm_ops),
+>  		.of_match_table = fxas21002c_i2c_of_match,
+>  	},
+>  	.probe_new	= fxas21002c_i2c_probe,
+> @@ -67,3 +67,4 @@ module_i2c_driver(fxas21002c_i2c_driver);
+>  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("FXAS21002C I2C Gyro driver");
+> +MODULE_IMPORT_NS(IIO_FXAS21002C);
+> diff --git a/drivers/iio/gyro/fxas21002c_spi.c b/drivers/iio/gyro/fxas21002c_spi.c
+> index c3ac169facf9..4f633826547c 100644
+> --- a/drivers/iio/gyro/fxas21002c_spi.c
+> +++ b/drivers/iio/gyro/fxas21002c_spi.c
+> @@ -54,7 +54,7 @@ MODULE_DEVICE_TABLE(of, fxas21002c_spi_of_match);
+>  static struct spi_driver fxas21002c_spi_driver = {
+>  	.driver = {
+>  		.name = "fxas21002c_spi",
+> -		.pm = &fxas21002c_pm_ops,
+> +		.pm = pm_ptr(&fxas21002c_pm_ops),
+>  		.of_match_table = fxas21002c_spi_of_match,
+>  	},
+>  	.probe		= fxas21002c_spi_probe,
+> @@ -66,3 +66,4 @@ module_spi_driver(fxas21002c_spi_driver);
+>  MODULE_AUTHOR("Rui Miguel Silva <rui.silva@linaro.org>");
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_DESCRIPTION("FXAS21002C SPI Gyro driver");
+> +MODULE_IMPORT_NS(IIO_FXAS21002C);
+> -- 
+> 2.37.2
+> 

@@ -2,476 +2,155 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 586C75E9E9B
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Sep 2022 12:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 078425EA2A7
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Sep 2022 13:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235055AbiIZKG6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Sep 2022 06:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
+        id S237571AbiIZLMC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Sep 2022 07:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235011AbiIZKGa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 06:06:30 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C39E3BC77
-        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 03:06:18 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id n12so9373348wrx.9
-        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 03:06:17 -0700 (PDT)
+        with ESMTP id S237487AbiIZLLQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 07:11:16 -0400
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F264333E;
+        Mon, 26 Sep 2022 03:35:24 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id a14so6879740ljj.8;
+        Mon, 26 Sep 2022 03:35:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date;
-        bh=rIn62u31fBZFSqc2ohPoc3QY3U/0LUa67uN6kvBQuh8=;
-        b=OHnOUzF/gnX1lZsRY/QdvwvIeFhmuUsI9eGWIC46ABAikwEq8dchPla6i42E3kmvuO
-         /3j3cs5W0eUaLnGdgq6GxwQScGVonrgPGM3H631lb73WI4q3GEx8L+C1M+16nYsuTGrF
-         WYdAgAQRQxS2mjVnpwyo8ZgRR6E434F5cXl5PLUAb3TNmdHfkuO7xtRiBmqjDTbBrmKE
-         qDmSJA6XjXdgHEZuSfO0WWZu3fkE39M9MPwaEk/6frcRcU+X31vaVcB1O11Grq0nyOe1
-         yvaaPGPimytMYU8WpHHSwRbFqltpv/m9BpK0EJ5H27vb6P9AaKA0U8Tfc4EvVxtrRWS6
-         zkeQ==
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date;
+        bh=CUyy93fVWZiZBeHDU8yZwsYToR2inVd+vCWQtJE+jak=;
+        b=Ojr9bKEyXSZ73KrB5cZzFDeH/ffP8PKSqHhrgt/se5yA3QCCeURStYLcNLSRiap7Yb
+         96tFUYk28OgmUOR6qLy9UqlhpaSbiIreANSMfGPehSVRN0n7lew4eLBKpDV7McG8WpR2
+         bBzHCd1+/0MEvjoLtwpWji2VArs+RbJijFUthbA0CR7JXMIJTcjWGu5O9/Q746/YpXak
+         0g9goUG0yms1D7JTu75k1HAKLSM+gUW8awnOXJHXhHNlQzv6hSE5D4my5Yllwx+QhFZy
+         Nph7JXrHdur+tpaj39lTV18CqOfgj6NfMx7pKG6zqzBPcEySvaXNfbydTLV42EclHQ3D
+         Ac3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=rIn62u31fBZFSqc2ohPoc3QY3U/0LUa67uN6kvBQuh8=;
-        b=n09CANsImTAw/Ogg2ioW5P074nggaH4rkYCP3WRH9FWKuuXe+n8J4vSfjCrVTZZcIu
-         ZNov/htqCWjqd/ZA8Wcmky40E04uwJ8EmjrrJGspct/3vHlh1nuQO4EXoqG/2d2+0Y5/
-         eo9qVrlv1WiVqYon2xFGP06Gy2z6Ef9weoCVEg8O68FMR/OY7v99U2Dxm80wW6wHdoGg
-         OTvS4Sq8GeT98j/iPHZExBp5bKmHDkHXI4fnrnlYaLUQHZSJaaBgouMx2laMrkqvcBjG
-         LvyDNWTYFQLt3i7lgnl2Doc8A52w3yLzT85dqeDpawdAAydJpFtvgEcwN0fCJI1/M+VV
-         Av9g==
-X-Gm-Message-State: ACrzQf3zUeLj/Zi5BpenMGHjBSIqmZJg/BjywzxAiHjRUjJYHja6qUgt
-        +mgMLWpp3u9Xw7s+lRGxDLA=
-X-Google-Smtp-Source: AMsMyM4p7G0+WM1bWEDReP2y7op1e07dPVoBgVCyv4X18p+WvrrW2gMclGuaTN9b+BI4tHsXNRNpfA==
-X-Received: by 2002:a5d:508c:0:b0:228:de49:b808 with SMTP id a12-20020a5d508c000000b00228de49b808mr12529483wrt.23.1664186776357;
-        Mon, 26 Sep 2022 03:06:16 -0700 (PDT)
-Received: from ?IPv6:2001:a61:2b2f:601:e80a:12c:dd2e:47c1? ([2001:a61:2b2f:601:e80a:12c:dd2e:47c1])
-        by smtp.gmail.com with ESMTPSA id w9-20020adfd4c9000000b00228d67db06esm14124906wrk.21.2022.09.26.03.06.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Sep 2022 03:06:15 -0700 (PDT)
-Message-ID: <92a9947072e57194fea22ba3551f7ab097b961da.camel@gmail.com>
-Subject: Re: [PATCH 13/15] iio: health: max30100: do not use internal
- iio_dev lock
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org" 
-        <linux-rockchip@lists.infradead.org>,
-        "linux-amlogic@lists.infradead.org" 
-        <linux-amlogic@lists.infradead.org>,
-        "linux-imx@nxp.com" <linux-imx@nxp.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Cixi Geng <cixi.geng1@unisoc.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Florian Boor <florian.boor@kernelconcepts.de>,
-        "Regus, Ciprian" <Ciprian.Regus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Date:   Mon, 26 Sep 2022 12:06:13 +0200
-In-Reply-To: <20220924165318.0cf4403e@jic23-huawei>
-References: <20220920112821.975359-1-nuno.sa@analog.com>
-         <20220920112821.975359-14-nuno.sa@analog.com>
-         <20220920142319.61557023@xps-13>
-         <SJ0PR03MB6778FC7FD469F7C2BC7FB9DB994C9@SJ0PR03MB6778.namprd03.prod.outlook.com>
-         <20220920145534.0bdd4e69@xps-13>
-         <SJ0PR03MB6778761640C55A5022F40822994C9@SJ0PR03MB6778.namprd03.prod.outlook.com>
-         <20220920155305.395dad08@xps-13>
-         <1684ca38960d035a0fedd077ed149f524c58f7ff.camel@gmail.com>
-         <20220920171033.2f9d6d1f@xps-13> <20220924165318.0cf4403e@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date;
+        bh=CUyy93fVWZiZBeHDU8yZwsYToR2inVd+vCWQtJE+jak=;
+        b=wc07T5KmD9l+qxiUNgFA9EBT5Sp7z5obl3pE4QJ3jrPCA1ee4my/orkJy+Mc5QXu2z
+         veQSW1Ey9euuVGgURQamPQHl/R88IeZjYo48NAvq4de1BLpirXd7AdUcDG3cCvrXj0m5
+         23r+HC2iR//4WKkspqj3JIIKWVw4hpRC1+sdwmyC/jvOPl6gl/6rT+JZtprykBgbkH31
+         Qq12GWOSyu8Lx0mDUoLgQsAfQQlYLRr6yJ2JUS9sc3PnoglVwQ6EvpMq+Jze/6FW3s6v
+         MnkvV3MUUj7rESUHFX+RVDFPOXG73Htuxj2fD1QvbzsaXTOQxRlx/APaSoCiAQf9I4XW
+         DQCQ==
+X-Gm-Message-State: ACrzQf21FdXBo2lzO5P8ZsnhHtX11/Mvik1A+yf6U2qNEiiikvbNOuH6
+        MyT7gBEv+c+OQFL4oxtri1k=
+X-Google-Smtp-Source: AMsMyM6twWJMns9Nj6O92abQQVYJrbXEAItYa+Af6NmgyGjiQ+iLyM5o8aiyb3vhInxeCAQCjbpIlw==
+X-Received: by 2002:a2e:1458:0:b0:26c:3b83:e039 with SMTP id 24-20020a2e1458000000b0026c3b83e039mr7832436lju.484.1664188123948;
+        Mon, 26 Sep 2022 03:28:43 -0700 (PDT)
+Received: from [172.16.196.5] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id z13-20020a05651c11cd00b0026a92616cd2sm2343887ljo.35.2022.09.26.03.28.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Sep 2022 03:28:43 -0700 (PDT)
+Message-ID: <c2aeab83-7bd8-a1b2-5dfa-4e99f2250aeb@gmail.com>
+Date:   Mon, 26 Sep 2022 13:28:41 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Content-Language: en-US
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: bmc150-accel-core: potential timestamp calculation issue.
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2022-09-24 at 16:53 +0100, Jonathan Cameron wrote:
-> On Tue, 20 Sep 2022 17:10:33 +0200
-> Miquel Raynal <miquel.raynal@bootlin.com> wrote:
-> 
-> > Hi Nuno,
-> > 
-> > noname.nuno@gmail.com wrote on Tue, 20 Sep 2022 16:56:01 +0200:
-> > 
-> > > On Tue, 2022-09-20 at 15:53 +0200, Miquel Raynal wrote:  
-> > > > Hi Nuno,
-> > > > 
-> > > > Nuno.Sa@analog.com wrote on Tue, 20 Sep 2022 13:15:32 +0000:
-> > > >     
-> > > > > > -----Original Message-----
-> > > > > > From: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > > > > Sent: Tuesday, September 20, 2022 2:56 PM
-> > > > > > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > > > > > Cc: linux-arm-kernel@lists.infradead.org;
-> > > > > > linux-rockchip@lists.infradead.org;
-> > > > > > linux-amlogic@lists.infradead.org; linux-imx@nxp.com;
-> > > > > > linux-
-> > > > > > iio@vger.kernel.org; Chunyan Zhang <zhang.lyra@gmail.com>;
-> > > > > > Hennerich,
-> > > > > > Michael <Michael.Hennerich@analog.com>; Martin Blumenstingl
-> > > > > > <martin.blumenstingl@googlemail.com>; Sascha Hauer
-> > > > > > <s.hauer@pengutronix.de>; Cixi Geng
-> > > > > > <cixi.geng1@unisoc.com>;
-> > > > > > Kevin
-> > > > > > Hilman <khilman@baylibre.com>; Vladimir Zapolskiy
-> > > > > > <vz@mleia.com>;
-> > > > > > Pengutronix Kernel Team <kernel@pengutronix.de>; Alexandru
-> > > > > > Ardelean
-> > > > > > <aardelean@deviqon.com>; Fabio Estevam
-> > > > > > <festevam@gmail.com>;
-> > > > > > Andriy
-> > > > > > Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>; Haibo
-> > > > > > Chen
-> > > > > > <haibo.chen@nxp.com>; Shawn Guo <shawnguo@kernel.org>; Hans
-> > > > > > de
-> > > > > > Goede <hdegoede@redhat.com>; Jerome Brunet
-> > > > > > <jbrunet@baylibre.com>;
-> > > > > > Heiko Stuebner <heiko@sntech.de>; Florian Boor
-> > > > > > <florian.boor@kernelconcepts.de>; Regus, Ciprian
-> > > > > > <Ciprian.Regus@analog.com>; Lars-Peter Clausen
-> > > > > > <lars@metafoo.de>;
-> > > > > > Andy
-> > > > > > Shevchenko <andy.shevchenko@gmail.com>; Jonathan Cameron
-> > > > > > <jic23@kernel.org>; Neil Armstrong
-> > > > > > <narmstrong@baylibre.com>;
-> > > > > > Baolin
-> > > > > > Wang <baolin.wang@linux.alibaba.com>; Jyoti Bhayana
-> > > > > > <jbhayana@google.com>; Chen-Yu Tsai <wens@csie.org>; Orson
-> > > > > > Zhai
-> > > > > > <orsonzhai@gmail.com>
-> > > > > > Subject: Re: [PATCH 13/15] iio: health: max30100: do not
-> > > > > > use
-> > > > > > internal iio_dev
-> > > > > > lock
-> > > > > > 
-> > > > > > [External]
-> > > > > > 
-> > > > > > Hi Nuno,
-> > > > > > 
-> > > > > > Nuno.Sa@analog.com wrote on Tue, 20 Sep 2022 12:44:08
-> > > > > > +0000:
-> > > > > >       
-> > > > > > > > -----Original Message-----
-> > > > > > > > From: Miquel Raynal <miquel.raynal@bootlin.com>
-> > > > > > > > Sent: Tuesday, September 20, 2022 2:23 PM
-> > > > > > > > To: Sa, Nuno <Nuno.Sa@analog.com>
-> > > > > > > > Cc: linux-arm-kernel@lists.infradead.org; linux-      
-> > > > > > rockchip@lists.infradead.org;      
-> > > > > > > > linux-amlogic@lists.infradead.org; linux-imx@nxp.com;
-> > > > > > > > linux-
-> > > > > > > > iio@vger.kernel.org; Chunyan Zhang
-> > > > > > > > <zhang.lyra@gmail.com>;      
-> > > > > > Hennerich,      
-> > > > > > > > Michael <Michael.Hennerich@analog.com>; Martin
-> > > > > > > > Blumenstingl
-> > > > > > > > <martin.blumenstingl@googlemail.com>; Sascha Hauer
-> > > > > > > > <s.hauer@pengutronix.de>; Cixi Geng
-> > > > > > > > <cixi.geng1@unisoc.com>;
-> > > > > > > > Kevin
-> > > > > > > > Hilman <khilman@baylibre.com>; Vladimir Zapolskiy
-> > > > > > > > <vz@mleia.com>;
-> > > > > > > > Pengutronix Kernel Team <kernel@pengutronix.de>;
-> > > > > > > > Alexandru      
-> > > > > > Ardelean      
-> > > > > > > > <aardelean@deviqon.com>; Fabio Estevam
-> > > > > > > > <festevam@gmail.com>;     
-> > > > > > Andriy      
-> > > > > > > > Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>;
-> > > > > > > > Haibo
-> > > > > > > > Chen
-> > > > > > > > <haibo.chen@nxp.com>; Shawn Guo <shawnguo@kernel.org>;
-> > > > > > > > Hans
-> > > > > > > > de
-> > > > > > > > Goede <hdegoede@redhat.com>; Jerome Brunet      
-> > > > > > <jbrunet@baylibre.com>;      
-> > > > > > > > Heiko Stuebner <heiko@sntech.de>; Florian Boor
-> > > > > > > > <florian.boor@kernelconcepts.de>; Regus, Ciprian
-> > > > > > > > <Ciprian.Regus@analog.com>; Lars-Peter Clausen
-> > > > > > > > <lars@metafoo.de>;      
-> > > > > > Andy      
-> > > > > > > > Shevchenko <andy.shevchenko@gmail.com>; Jonathan
-> > > > > > > > Cameron
-> > > > > > > > <jic23@kernel.org>; Neil Armstrong
-> > > > > > > > <narmstrong@baylibre.com>;
-> > > > > > > > Baolin
-> > > > > > > > Wang <baolin.wang@linux.alibaba.com>; Jyoti Bhayana
-> > > > > > > > <jbhayana@google.com>; Chen-Yu Tsai <wens@csie.org>;
-> > > > > > > > Orson
-> > > > > > > > Zhai
-> > > > > > > > <orsonzhai@gmail.com>
-> > > > > > > > Subject: Re: [PATCH 13/15] iio: health: max30100: do
-> > > > > > > > not use
-> > > > > > > > internal      
-> > > > > > iio_dev      
-> > > > > > > > lock
-> > > > > > > > 
-> > > > > > > > [External]
-> > > > > > > > 
-> > > > > > > > Hi Nuno,
-> > > > > > > >      
-> > > > > > > 
-> > > > > > > Hi Miquel,
-> > > > > > > 
-> > > > > > > Thanks for reviewing...
-> > > > > > >      
-> > > > > > > > nuno.sa@analog.com wrote on Tue, 20 Sep 2022 13:28:19
-> > > > > > > > +0200:
-> > > > > > > >      
-> > > > > > > > > The pattern used in this device does not quite fit in
-> > > > > > > > > the
-> > > > > > > > > iio_device_claim_direct_mode() typical usage. In this
-> > > > > > > > > case,
-> > > > > > > > > iio_buffer_enabled() was being used not to prevent
-> > > > > > > > > the raw
-> > > > > > > > > access but      
-> > > > > > to      
-> > > > > > > > > allow it. Hence to get rid of the 'mlock' we need to:
-> > > > > > > > > 
-> > > > > > > > > 1. Use iio_device_claim_direct_mode() to check if
-> > > > > > > > > direct
-> > > > > > > > > mode can be
-> > > > > > > > > claimed and if we can return -EINVAL (as the original
-> > > > > > > > > code);
-> > > > > > > > > 
-> > > > > > > > > 2. Make sure that buffering is not disabled while
-> > > > > > > > > doing a
-> > > > > > > > > raw read. For
-> > > > > > > > > that, we can make use of the local lock that already
-> > > > > > > > > exists.
-> > > > > > > > > 
-> > > > > > > > > While at it, fixed a minor coding style complain...
-> > > > > > > > > 
-> > > > > > > > > Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> > > > > > > > > ---
-> > > > > > > > >  drivers/iio/health/max30100.c | 24
-> > > > > > > > > +++++++++++++++++------
-> > > > > > > > > -
-> > > > > > > > >  1 file changed, 17 insertions(+), 7 deletions(-)
-> > > > > > > > > 
-> > > > > > > > > diff --git a/drivers/iio/health/max30100.c      
-> > > > > > b/drivers/iio/health/max30100.c      
-> > > > > > > > > index ad5717965223..aa494cad5df0 100644
-> > > > > > > > > --- a/drivers/iio/health/max30100.c
-> > > > > > > > > +++ b/drivers/iio/health/max30100.c
-> > > > > > > > > @@ -185,8 +185,19 @@ static int
-> > > > > > > > > max30100_buffer_postenable(struct      
-> > > > > > > > iio_dev *indio_dev)      
-> > > > > > > > >  static int max30100_buffer_predisable(struct iio_dev
-> > > > > > > > > *indio_dev)
-> > > > > > > > >  {
-> > > > > > > > >         struct max30100_data *data =
-> > > > > > > > > iio_priv(indio_dev);
-> > > > > > > > > +       int ret;
-> > > > > > > > > +
-> > > > > > > > > +       /*
-> > > > > > > > > +        * As stated in the comment in the read_raw()
-> > > > > > > > > function, temperature
-> > > > > > > > > +        * can only be acquired if the engine is
-> > > > > > > > > running.
-> > > > > > > > > As such the mutex
-> > > > > > > > > +        * is used to make sure we do not power down
-> > > > > > > > > while
-> > > > > > > > > doing a      
-> > > > > > > > temperature      
-> > > > > > > > > +        * reading.
-> > > > > > > > > +        */
-> > > > > > > > > +       mutex_lock(&data->lock);
-> > > > > > > > > +       ret = max30100_set_powermode(data, false);
-> > > > > > > > > +       mutex_unlock(&data->lock);
-> > > > > > > > > 
-> > > > > > > > > -       return max30100_set_powermode(data, false);
-> > > > > > > > > +       return ret;
-> > > > > > > > >  }
-> > > > > > > > > 
-> > > > > > > > >  static const struct iio_buffer_setup_ops
-> > > > > > > > > max30100_buffer_setup_ops      
-> > > > > > = {      
-> > > > > > > > > @@ -387,18 +398,17 @@ static int
-> > > > > > > > > max30100_read_raw(struct
-> > > > > > > > > iio_dev      
-> > > > > > > > *indio_dev,      
-> > > > > > > > >                  * Temperature reading can only be
-> > > > > > > > > acquired
-> > > > > > > > > while engine
-> > > > > > > > >                  * is running
-> > > > > > > > >                  */
-> > > > > > > > > -               mutex_lock(&indio_dev->mlock);
-> > > > > > > > > -
-> > > > > > > > > -               if (!iio_buffer_enabled(indio_dev))
-> > > > > > > > > +               if
-> > > > > > > > > (!iio_device_claim_direct_mode(indio_dev)) {      
-> > > > > > > > 
-> > > > > > > > I wonder if this line change here is really needed. I
-> > > > > > > > agree
-> > > > > > > > the whole
-> > > > > > > > construction looks like what
-> > > > > > > > iio_device_claim_direct_mode()
-> > > > > > > > does but in
-> > > > > > > > practice I don't see the point of acquiring any lock
-> > > > > > > > here if
-> > > > > > > > we just
-> > > > > > > > release it no matter what happens right after.
-> > > > > > > >      
-> > > > > > > 
-> > > > > > > I can see that this is odd (at the very least) but AFAIK,
-> > > > > > > this
-> > > > > > > is the only way
-> > > > > > > to safely infer if buffering is enabled or not.
-> > > > > > > iio_buffer_enabled() has no
-> > > > > > > protection against someone concurrently
-> > > > > > > enabling/disabling the
-> > > > > > > buffer.      
-> > > > > > 
-> > > > > > Yes, but this is only relevant if you want to infer that
-> > > > > > the
-> > > > > > "buffers
-> > > > > > are enabled" and be sure that it cannot be otherwise during
-> > > > > > the
-> > > > > > next
-> > > > > > lines until you release the lock. Acquiring a lock, doing
-> > > > > > the if
-> > > > > > and
-> > > > > > then unconditionally releasing the lock, IMHO, does not
-> > > > > > make any
-> > > > > > sense
-> > > > > > (but I'm not a locking guru) because when you enter the
-> > > > > > else
-> > > > > > clause,
-> > > > > > you are not protected anyway, so in both cases all this is
-> > > > > > completely
-> > > > > > racy.
-> > > > > >       
-> > > > > 
-> > > > > Ahh crap, yes you are right... It is still racy since we can
-> > > > > still
-> > > > > try to read
-> > > > > the temperature with the device powered off. I'm not really
-> > > > > sure
-> > > > > how to
-> > > > > address this. One way could be to just use an internal
-> > > > > control
-> > > > > variable
-> > > > > to reflect the device power state (set/clear on the buffer
-> > > > > callbacks) and
-> > > > > only use the local lock (completely ditching the call to
-> > > > > iio_device_claim_direct_mode())...    
-> > > > 
-> > > > I tend to prefer this option than the one below.
-> > > > 
-> > > > I guess your implementation already prevents
-> > > > buffer_predisable() to
-> > > > run
-> > > > thanks to the local lock being held during the operation. Maybe
-> > > > we
-> > > > should just verify that buffers are enabled from within the
-> > > > local
-> > > > lock
-> > > > being held instead of just acquiring it for the get_temp()
-> > > > measure.
-> > > > It
-> > > > would probably solve the situation here.    
-> > > > >     
-> > > Not sure if I understood... You mean something like:
-> > > 
-> > > mutex_lock(&data->lock);
-> > > if (!iio_buffer_enabled(indio_dev)) {
-> > >         ret = -EINVAL;
-> > > } else {
-> > >         ret = max30100_get_temp(data, val);
-> > >         if (!ret)
-> > >                 ret = IIO_VAL_INT;
-> > > 
-> > > }
-> > > mutex_unlock(&data->lock);
-> > > 
-> > > If so, I think this is still racy since we release the lock after
-> > > the
-> > > predisable which means we could still detect the buffers as
-> > > enabled (in
-> > > the above block) and try to get_temp on a powered down device.  
-> > 
-> > True.
-> > 
-> > > 
-> > > Since we pretty much only care about the power state of the
-> > > device (and
-> > > we are using the buffering state to infer that AFAIU), I was
-> > > thinking
-> > > in something like:
-> > > 
-> > > 
-> > > mutex_lock(&data->lock);
-> > > if (!data->powered) {
-> > >         ret = -EINVAL;
-> > > } else {
-> > >         ret = max30100_get_temp(data, val);
-> > >         if (!ret)
-> > >                 ret = IIO_VAL_INT;
-> > > 
-> > > }
-> > > mutex_unlock(&data->lock);  
-> > 
-> > LGTM.
-> 
-> A reference counted power up flag would probably work as we'd want to
-> disable
-> power only when the reference count goes to 0.  Note all checks of
-> that flag
-> would need to be done under the lock as well.
-> 
+Hi dee Ho peeps!
 
-Is there any way to enable a buffer more than once? Otherwise I'm not
-sure we really need a refcount... Any ways, your below approach looks
-good to me and surely easier.
+I selected you as a recipient purely based on get_maintainer.pl. Please 
+drop me a note if the bmc150-accel-core.c does not feel like your 
+playground and I'll drop you from the CC if I send further mails for 
+this topic. Sorry in advance.
 
-> As an alternative...
->  
-> Whilst it is a serious oddity, how about flipping the logic and
-> having
-> an iio_device_claim_buffered_mode() that takes mlock and holds it
-> only
-> if we are in buffered mode - then holds it until matching release?
-> 
+I was ruthlessly copying timestamp logic from the bmc150-accel-core.c 
+for my accelerometer driver. I noticed there may be a problem if FIFO is 
+not read empty:
 
-This goes along with one of my suggestions:
+The code computes time between two samples by
 
-"A version  iio_device_claim_direct_mode() that does not release the 
-lock in case buffering is enabled."
+...
+          *
+          * To avoid this issue we compute the actual sample period 
+ourselves
+          * based on the timestamp delta between the last two flush 
+operations.
+          */
+         sample_period = (data->timestamp - data->old_timestamp);
+         do_div(sample_period, count);
+         tstamp = data->timestamp - (count - 1) * sample_period;
 
-You just gave it a name (and one that I would not ever remember)...
+Here the "count" is amount of samples bmc-150 reports there is in fifo.
 
-> Now, I've only done a superficial audit of the buffer removal paths
-> to check they hold the lock before we call predisable() but it looks
+As far as I understand, this works only if the old_timestamp match the 
+time when first sample in FIFO has been captured. This is true if the 
+previous 'flush' (where the old_timestamp is stored) has emptied the 
+FIFO - but as far as I understand the IIO does not guarantee the flush 
+reading all samples there are in the FIFO.
 
-Otherwise I guess we would have to fix it :)
+If the flush leaves - say 10 samples in FIFO, then at the next flush 
+there old_timestamp will be time when FIFO was previously flushed, but 
+this time does not match the first sample in FIFO, but the 6.th. Let's 
+say the sensor has collected 10 new samples between the flushes. This 
+would mean there is now 10 new and 5 old samples in FIFO, totaling 15 
+samples. Yet, the time difference computed by
 
+sample_period = (data->timestamp - data->old_timestamp);
 
-- Nuno Sá
+will reflect time between flushes - which means time of 10 samples. The 
+division which should compute time between two samples:
+
+do_div(sample_period, count);
+
+will now use incorrect amount of samples (10 + 6) and the sample period 
+will be too small. (Or is there something I don't quite understand).
+
+I added following piece of code in the driver I am developing:
+
+        if (samples && count > samples) {
+                 /*
+                  * Here we leave some old samples to the buffer. We need to
+                  * adjust the timestamp to match the first sample in 
+the buffer
+                  * or we will miscalculate the sample_period at next round.
+                  */
+                 data->timestamp -= (count - samples) * sample_period;
+                 count = samples;
+         }
+
+I can send this as a patch also to the bmc150-accel-core.c - but I'd 
+prefer someone who is familiar with this IC to verify my finding and 
+suggested fix :)
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~

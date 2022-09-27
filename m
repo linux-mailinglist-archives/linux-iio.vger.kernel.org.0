@@ -2,103 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 366625EB22F
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Sep 2022 22:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E78D5EB7EA
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Sep 2022 04:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbiIZUg6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Sep 2022 16:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34802 "EHLO
+        id S229755AbiI0C5c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Sep 2022 22:57:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbiIZUg4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 16:36:56 -0400
-Received: from mail-yw1-x1142.google.com (mail-yw1-x1142.google.com [IPv6:2607:f8b0:4864:20::1142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5E484E68
-        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 13:36:55 -0700 (PDT)
-Received: by mail-yw1-x1142.google.com with SMTP id 00721157ae682-3454b0b1b6dso81224197b3.4
-        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 13:36:55 -0700 (PDT)
+        with ESMTP id S230385AbiI0Cz5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Sep 2022 22:55:57 -0400
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBC15A2F0
+        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 19:51:17 -0700 (PDT)
+Received: by mail-qt1-x82f.google.com with SMTP id g23so5317577qtu.2
+        for <linux-iio@vger.kernel.org>; Mon, 26 Sep 2022 19:51:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=jvyeoRUNnnznxOtsERsSsNArG/hVWTuiyo6yAYsariI=;
-        b=WsIpycyOpTqZNC0KXjOEqRpAon5DvI/6tYEa0DZfjjLdIa8KaRfj+lH7pqJRBF2e+N
-         KOGZgC6CWQ8BuWPNC0QEZZSKOzS/A+z5Yiv+r3uHHxbvqzDVUIc9ymTGniGH2EhDviSj
-         DlSZI4wdJIjJtMm8F7MHwH2Pffk21MxziH2GWygrmdKMLsYYvxF62VNVCoUQ+XU/8qBH
-         BDag8fFsMu2VU13dJjtHlEbwbZX5o7y2xdTzgdeiNqhUJ9tlFOHLkzS0oxzPheFNNgGC
-         o4kl/SvV6y3/5Pu2A05zWU59RxuFNOxxL2r8epZr4HbepG++nNakJdQzyVyAqMIiANjy
-         bvYw==
+        d=konsulko.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date;
+        bh=MU+wKQYrdKFuLFKlM955jc4CyzX+lP8pj1xvxzTau7U=;
+        b=t2ByL0yttHKMUd6x2ww6R0pUM1xUPMi6Dk4L0zyaQ2bXT4rNibOmzdZ69lMpAK7BUY
+         yVTqQ/Xpgj1d6kGOlQC5zBqt15R/qGy+lCaJjEX+cFaU2/1KXnhCtU2nXddxaZqNt0M1
+         ktg+0h2zzeoCYLSzz35krSyY1uJmTIM/czQqE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=jvyeoRUNnnznxOtsERsSsNArG/hVWTuiyo6yAYsariI=;
-        b=SaoRaitYCXQS8y86SgWx+x4eDvQHCVcgSU/PSAr+FIZn/8Nmt00zS5AvnvNva4FuG2
-         A10krkO6cpBASdwjIrQkGfHbpJqpp9G178qDoOty7W8BJLk5y2hDR19eQazUf60Eo4Nw
-         KUAjvXDPbPwR/kVF5IVN1so6/lwdkK+4Q/2wuKEzIuhumFOEbA0Oh1oW4fdpHdsDQGBm
-         sGorqLLu+BVkHYaOJ7tUZ8ttwJ8lgIKfjurLeT5h6anYKTrtxnYIriYw9bTmKSs4SduX
-         5w7sgFKtgiicSRnFEwaMofksClxlLpPbNOPN4KU633ZsZmPbdDjpM0wrMWt1CePsY5fn
-         8YfQ==
-X-Gm-Message-State: ACrzQf3AYFl2LN3BX/KCMaveBscl07Gzo+vb7uyrG/wlM43RtEPa681h
-        8484fM8mqwYLRTCrUoFnudL2uPSCs5SifGo56KI=
-X-Google-Smtp-Source: AMsMyM7arOUKMESubC2UF7TtFs5+t0vWyf+voiwGC6cB5EnyQcF+YMWk2/0mrMtnVPJN+p3ylzfEvIqJVqXmo9C4P2I=
-X-Received: by 2002:a0d:cdc2:0:b0:34d:101b:53c with SMTP id
- p185-20020a0dcdc2000000b0034d101b053cmr22837511ywd.444.1664224614378; Mon, 26
- Sep 2022 13:36:54 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=MU+wKQYrdKFuLFKlM955jc4CyzX+lP8pj1xvxzTau7U=;
+        b=H8sdCFiSN0NKlijqsyFVD2eaoAyROmx68hNJHWKfWHLtdXTNWt1eae4XdrV6DquI/K
+         1RHbY3dzFBDCjEr7ThkzVVkyXuA5QeMfvRptMZxU+KuXKkeVy4TKYxx8QnVqHygie88e
+         S8TTMcSC6ysf3Vrwt0zYTt6KRn5IQ/xknR6MvsJTKIW+0EmVxO78SN2EBOmgMGhfXi8A
+         xT+eJStYneNthJLo5eJEUC48EaxbXilvw+sefhNkn+r5m4HQeGF5dBxQC81/f3xU2Ft2
+         1X8G8uv4YeVI8sQohN5TVsFJ/kO/4jZf1FBKVC8WS5x4MxknpVMES2ukx6R5cvOWnkxk
+         U2ag==
+X-Gm-Message-State: ACrzQf2k86B6h/zzzrosltRHhFhHDFb+Y8dhmd5BESbwfzAAztp2TT/F
+        +gI68ncKsjKM+4jhKXMHoMISpw==
+X-Google-Smtp-Source: AMsMyM6STBSuhM0MntUL0l5oruWmmHAmKZZRcSneWAfpz6g+wbyWT/aioofYBGfV8Z6CR0pDatAYJg==
+X-Received: by 2002:ac8:5716:0:b0:35c:bd68:d34 with SMTP id 22-20020ac85716000000b0035cbd680d34mr20293945qtw.50.1664247076314;
+        Mon, 26 Sep 2022 19:51:16 -0700 (PDT)
+Received: from roguebox.lan ([164.92.70.235])
+        by smtp.gmail.com with ESMTPSA id y5-20020a37f605000000b006bb0f9b89cfsm199620qkj.87.2022.09.26.19.51.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Sep 2022 19:51:15 -0700 (PDT)
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+To:     jic23@kernel.org, gupt21@gmail.com, benjamin.tissoires@redhat.com,
+        jikos@kernel.org
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Subject: [PATCH v5 0/5] HID: mcp2221: iio support and device resource management
+Date:   Mon, 26 Sep 2022 19:50:45 -0700
+Message-Id: <20220927025050.13316-1-matt.ranostay@konsulko.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Received: by 2002:a05:7010:a610:b0:306:28de:2ed2 with HTTP; Mon, 26 Sep 2022
- 13:36:54 -0700 (PDT)
-Reply-To: info.firstheritageloans@gmail.com
-From:   Mario Buffon <jamesacarey988764@gmail.com>
-Date:   Mon, 26 Sep 2022 22:36:54 +0200
-Message-ID: <CAA8t2MJR_9peC4ZoZXQwV2hOORG+Z1MQMb_L6i+S8XZp5+K9-A@mail.gmail.com>
-Subject: =?UTF-8?Q?Oferujemy_po=C5=BCyczki_z_oprocentowaniem_2=25?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FUZZY_CREDIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1142 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [jamesacarey988764[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [jamesacarey988764[at]gmail.com]
-        *  1.7 FUZZY_CREDIT BODY: Attempt to obfuscate words in spam
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Oferujemy po=C5=BCyczki z oprocentowaniem 2%.
-Potrzebujesz po=C5=BCyczki na cele biznesowe lub prywatne?
-Skontaktuj si=C4=99 z nami ju=C5=BC dzi=C5=9B, aby zapozna=C4=87 si=C4=99 z=
- naszym procesem
-kredytowym dla firm.
-info.firstheritageloans@gmail. com
-WhatsApp: +1 (205) 852-6811
+This patchset is primarily to enable iio support for the MCP2221 HID driver,
+but requires several Kconfig changes and device resource management.
 
-Jimmy Faltersack
+First attempt of this patchset is referenced here:
+
+Link: https://lore.kernel.org/all/20220729154723.99947-1-matt.ranostay@xxxxxxxxxxxx/
+
+Changes from v1:
+* Fixing various Kconfig recursive dependencies that appear with 'imply IIO'
+* Switch hid-mcp2221 driver to device managed resources for i2c support
+* Reworking patchset per advice on lore.kernel.org link above
+
+Changes from v2:
+* add linux-iio list to CC
+
+Changes from v3:
+* replace .remove() tasks with devm_add_action_or_reset() in .probe()
+* reschedule SRAM configuration read on failures
+* add IIO_CHAN_INFO_SCALE values for ADC + DAC based on reference voltage
+
+Changes from v4:
+* add .remove function with no operation to avoid hid_hw_stop() being called
+  twice due to new devm functions
+* add retries limit to five for reading SRAM configuration data
+* update 'io: adc: stx104: fix future recursive dependencies' to new Kconfig
+  location for STX104 driver on linux-next pending-fixes branch
+
+Matt Ranostay (5):
+  i2c: muxes: ltc4306: fix future recursive dependencies
+  iio: adc: stx104: fix future recursive dependencies
+  iio: dac: fix future recursive dependencies
+  HID: mcp2221: switch i2c registration to devm functions
+  HID: mcp2221: add ADC/DAC support via iio subsystem
+
+ drivers/hid/Kconfig       |   1 +
+ drivers/hid/hid-mcp2221.c | 309 ++++++++++++++++++++++++++++++++++----
+ drivers/i2c/muxes/Kconfig |   2 +-
+ drivers/iio/adc/Kconfig   |   3 +-
+ drivers/iio/dac/Kconfig   |   6 +-
+ 5 files changed, 288 insertions(+), 33 deletions(-)
+
+-- 
+2.37.2
+

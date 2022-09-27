@@ -2,104 +2,91 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F4A5EC878
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Sep 2022 17:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B155EC8AF
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Sep 2022 17:54:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbiI0Ps6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Sep 2022 11:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54840 "EHLO
+        id S232103AbiI0Pyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Sep 2022 11:54:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232925AbiI0Psh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Sep 2022 11:48:37 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFCAB602E;
-        Tue, 27 Sep 2022 08:46:18 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id x1-20020a17090ab00100b001fda21bbc90so15933913pjq.3;
-        Tue, 27 Sep 2022 08:46:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=wMvcXz6njxFqTkf6vcxe/vNIZjFAgSwlMQsOVeR0+8M=;
-        b=jPawEHHILhsPfvMKuPsObAHlThgGKv81yzVkz5Ryj7HP6E5dMzCqSjNgKfEDss828w
-         GS8xx6/3CeNMdUe9Uppr1P4axJwRPDV5sHljxwyE6gzTdRQ+1qPqMG/UcAJ3l9jZdW/5
-         RdYmGHtywCQR69IbIMSBNliNGwaBucPonNNEKl34ARl6MeI5FJMzqFEL6E7guhVEk7jv
-         NY1pDTm4pILsLtwJPYbIJlFyeOVI0bk6ZwHlFDW83qE0+lCST8uwHTfpeRN87PEXbRui
-         ETWoy95MnLW3p3T3OzYEbML+cbOFTzCVToSGid4ZihQRx/xLGb4TOlm83OS0Cb5R6Ux4
-         weIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=wMvcXz6njxFqTkf6vcxe/vNIZjFAgSwlMQsOVeR0+8M=;
-        b=P5dnKLyBBIEGZImI1/nKWY2AEHhTMega38k/EBI6wa35udIzK96pKpHxRNUWp/WIeF
-         b7Q9pJIRfk9FvH7JUSvDGJIDRWNZlMd6CoYNQhNZplzUy7bJv+XUmPSucht0Wuh6xCo3
-         2x7JOV+yF/FGXgUehz/RZ04ZkGtRxzrEhHiJNYfntvR51XdZstCKBZjSM11J3RYVu/vj
-         21kimhG5z0yJxWZmgJcgc0fkRyt1DKuaPhvRApk6Fzf8ZyJteyxHvtVZll57hg9e9jBW
-         Mvct0nHOyI+r9e/UJ7EMgPlfSCvooPqbjWJV4HkaBBqyd2t7mQPHRsJIGfjbRHiY0dh9
-         +iyA==
-X-Gm-Message-State: ACrzQf3ndOW70aycMKlVvS0zkhhKEAPZcvNio5uVIpnnTCe1tLcBCMxs
-        RSww/jF0EjnG1xWAblfNgaw=
-X-Google-Smtp-Source: AMsMyM5r8WFjVQ3qChKKd71TapR7vlIDeaT1mxjSbZ4MzQYLdoiie7jcWk6g7JKGEdRlLyucKRDchw==
-X-Received: by 2002:a17:90a:64c8:b0:202:6d4a:90f8 with SMTP id i8-20020a17090a64c800b002026d4a90f8mr5377585pjm.11.1664293578171;
-        Tue, 27 Sep 2022 08:46:18 -0700 (PDT)
-Received: from dtor-ws.mtv.corp.google.com ([2620:15c:9d:2:9739:ab49:3830:2cbb])
-        by smtp.gmail.com with ESMTPSA id cp7-20020a170902e78700b0017839e5abfasm1681204plb.263.2022.09.27.08.46.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Sep 2022 08:46:17 -0700 (PDT)
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
+        with ESMTP id S232364AbiI0PyK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Sep 2022 11:54:10 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F128FFA43;
+        Tue, 27 Sep 2022 08:54:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664294050; x=1695830050;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=u8hRBebfGhAcD/eNs0QVOSD5vi4YYTrgF5ECepiux3I=;
+  b=SL8hUFxNOigX7N9hBLENIETYBEHplj2hDhnnhdBOOOVDSnu3aGufEbeB
+   ySJp/U+RsjXGh5uHa0m+0R49y8BIGSVQ33h1ezKl5JfPmbmdUiiySgiKh
+   n/1pdnAzPDkwSRS5NcjO8F20vaX1hOpCMA7gT0m4zQ2MhpQ5wrifHdNxz
+   Lk38gIfrx+eOT+LVqDrS+SLZgXNM1XtmYEsC7tQQBa0A9Ixss2ZEt/wuo
+   wJp8EexVjTrO1NxLGiDAaGfiWvHoPm7GpB48zY7bR+EMSfew3adAdikTY
+   i+5djJntmy9mSgKcDxOMMnsh7B4OZwIRbJsG216rRcWzcL2ZoNCgJpYxF
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="301330170"
+X-IronPort-AV: E=Sophos;i="5.93,349,1654585200"; 
+   d="scan'208";a="301330170"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2022 08:54:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10483"; a="654773487"
+X-IronPort-AV: E=Sophos;i="5.93,349,1654585200"; 
+   d="scan'208";a="654773487"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga001.jf.intel.com with ESMTP; 27 Sep 2022 08:54:05 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1odCuJ-008WBJ-1K;
+        Tue, 27 Sep 2022 18:54:03 +0300
+Date:   Tue, 27 Sep 2022 18:54:03 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
         Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Tony Lindgren <tony@atomide.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] iio: adc: twl4030-madc: add missing of.h include
-Date:   Tue, 27 Sep 2022 08:46:11 -0700
-Message-Id: <20220927154611.3330871-3-dmitry.torokhov@gmail.com>
-X-Mailer: git-send-email 2.38.0.rc1.362.ged0d419d3c-goog
-In-Reply-To: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
-References: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
+        Guenter Roeck <linux@roeck-us.net>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] iio: adc: twl4030-madc: add missing of.h include
+Message-ID: <YzMcmxYzzCwJ1DTL@smile.fi.intel.com>
+References: <20220927052217.2784593-1-dmitry.torokhov@gmail.com>
+ <20220927052217.2784593-4-dmitry.torokhov@gmail.com>
+ <YzLreedzM3/+2gBh@smile.fi.intel.com>
+ <YzMYdoQmDt6YAvdr@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YzMYdoQmDt6YAvdr@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The driver is using of_device_id/of_match_ptr() and therefore needs
-to include of.h header. We used to get this definition indirectly via
-inclusion of matrix_keypad.h from twl.h, but we are cleaning up
-matrix_keypad.h from unnecessary includes.
+On Tue, Sep 27, 2022 at 08:36:22AM -0700, Dmitry Torokhov wrote:
+> On Tue, Sep 27, 2022 at 03:24:25PM +0300, Andy Shevchenko wrote:
+> > On Mon, Sep 26, 2022 at 10:22:16PM -0700, Dmitry Torokhov wrote:
+> > > The driver is using of_device_id and therefore needs to include
+> > > of.h header.
+> > 
+> > As per patch 2 comment, mod_devicetable.h is needed for that.
+> 
+> It also uses of_match_ptr(), so of.h is the one that is needed. I'll
+> adjust the patch description.
 
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
----
+Thank you! In such case feel free to add my tag.
 
-v2: adjusted patch description
-
- drivers/iio/adc/twl4030-madc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
-index f8f8aea15612..c279c4f2c9b7 100644
---- a/drivers/iio/adc/twl4030-madc.c
-+++ b/drivers/iio/adc/twl4030-madc.c
-@@ -30,6 +30,7 @@
- #include <linux/types.h>
- #include <linux/gfp.h>
- #include <linux/err.h>
-+#include <linux/of.h>
- #include <linux/regulator/consumer.h>
- 
- #include <linux/iio/iio.h>
 -- 
-2.38.0.rc1.362.ged0d419d3c-goog
+With Best Regards,
+Andy Shevchenko
+
 

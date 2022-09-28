@@ -2,104 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD0E5ED07E
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 00:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E695ED281
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 03:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231726AbiI0WyW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Sep 2022 18:54:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40836 "EHLO
+        id S231143AbiI1BMC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Sep 2022 21:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbiI0WyR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Sep 2022 18:54:17 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8593DB514A
-        for <linux-iio@vger.kernel.org>; Tue, 27 Sep 2022 15:54:16 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1280590722dso15237723fac.1
-        for <linux-iio@vger.kernel.org>; Tue, 27 Sep 2022 15:54:16 -0700 (PDT)
+        with ESMTP id S230185AbiI1BMB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Sep 2022 21:12:01 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293D3F962B;
+        Tue, 27 Sep 2022 18:11:57 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id e68so11200842pfe.1;
+        Tue, 27 Sep 2022 18:11:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=TSmzC4k5RDlY3jB66Q9l4SG5pWj9tmKJxCdO7HIT4mA=;
-        b=TUGRr/9vIRDAvWK9o5G7Hf8VSrXugLilSiMbDYHPjejjZCRWfIu4Z/qp1MyvEA36uV
-         uuLCH2g2oB4XmEp228HJ6QWJ71Gw3Pw6veajbUTlYB7UCoLdFgiv1FkDecaCwA/pZCAJ
-         7aOgz025kQXHwRZ7b/ttiy9wdkwgksQDTN1DJavXWJUn4Yorp7ZLs6taZLLwSSUlmfdA
-         C+SkBws9IIWLAgQ5iqUcJ98phqRXsgG8L8oED7z1+l6GZc0SIjJu8huMFq3eNGB4Irqm
-         KVnJl2Bf+7pQg57yzr+OKe+AaVgG1Xjkr9tVvIEkDr53ovgarwjHoYeJIWe5PLZs16pH
-         3GDg==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date;
+        bh=p3eUKwIdS0Bq28zizpdjqkvTnJ0lK5EFcAaTI8E5ocE=;
+        b=EQqnCP+Byb39ss9k7jjdAyjDPPsaSV1L+SpiiY6KhvAKU+xXLo33A3MjrlPgNMjEqS
+         IEzNngKBGC+WYzB/ufJsm06VTYnqT48n4FB1WnSY6gUCftyE79vVT9IdXXg+TKTj91gn
+         a6ZjSQHdAdhjSt9NQ0Zvl7kWUyEqC0J1WTFoB6pzngdERjlr2UV037uKthZJSZHBEjaG
+         IIbtxQVUtDFBTwsd6+wZOU3qifVbtzncHSgDakGZ0lDejJ/GEjA9RNOC5+8XyhQYMtVT
+         XIxg+JcuEB7pKd0cCk5HaKbT0xdyO4Fg8HlAsuVDxGHfzzc8oUsqc1O1hKXttM/tJ7Si
+         aCLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=TSmzC4k5RDlY3jB66Q9l4SG5pWj9tmKJxCdO7HIT4mA=;
-        b=pQcgD3OiKMHx8XVxOSWO1k2z5QHWvU8MSwrUPq/0KkDz4Tcg7eOh0eEdwxRGLqeJTE
-         PnvT4upfSIOCESjx7h+CgfR18udE77EFEz4goZW1RYBuLp7Oqu35uZQc1bHUVlo0xo4M
-         IQj49iafgMKyzWGHyI3tHVGm3FXjzsxjW09L92RXmROsnlllVeFwdtPjrHkNA2k47hIk
-         uFMcFJh0Nmk4yXwVixxm2EifvR23ke21bQGfeMP1m1myP8AspjBnin5XE+F9SQSI1wey
-         FvSIBRfkdYrPwUWzDWD6t6c0aaB+hovyX1Rwuy8nnl5951vQas1H9eJ4g8C4b4cpo/Km
-         cYeA==
-X-Gm-Message-State: ACrzQf20h+wS7X04KkzS/5/AHDFcB3TQQRYMa7tKT6wesdVUxhX3tmjp
-        IJv68QnQ9xThwIbk+7ECxm/a1n9rycA/kjom
-X-Google-Smtp-Source: AMsMyM6XTRy1t/WFI+/Rmc0deOf4NfdItQVd8UHg/gjchlBdUi/LE7GHeO3KT88Y89EzzUSeLB+EyA==
-X-Received: by 2002:a05:6870:639e:b0:127:bbc2:223e with SMTP id t30-20020a056870639e00b00127bbc2223emr3591065oap.167.1664319256262;
-        Tue, 27 Sep 2022 15:54:16 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id v186-20020aca61c3000000b00350c5d946casm1188965oib.4.2022.09.27.15.54.15
+        bh=p3eUKwIdS0Bq28zizpdjqkvTnJ0lK5EFcAaTI8E5ocE=;
+        b=ngsnn7+TPSyJcZL+gt9QOjZDf6+SJG7axljdIIHi04jYXgayEua9YcI/rbm0LYowUh
+         9b7BnKxbWYOd85bGEl8lyBgeVyUG/bn+l/XGDvGKauv57KPTxHDRAL3l/WaD32kq5dLs
+         Nx0+TXcK0WFNCYY3Sj38kt7seOVkTtKluPrisWgCkHVYXaRzWjKQrxXzoc2ibrO/HfsD
+         WEG4n3P3iVu5mjWfLeIbHR0NnvofkQdw94k5tro7w+kTxHIAhE9FFI8jzpm4eIAnMK2l
+         9NwKZO9SzMUk0dUvb1N/aWc1B4vIX2WuzGPal+9xxGANfoLf0TVMJL8jChNzY00z2Tnr
+         y5Fw==
+X-Gm-Message-State: ACrzQf1zMSIVk56byWEV+eQbBUEOElxSjH3bYdnkHI9fao6EIbbram7U
+        8GSMn7dkWte75izP8Qc9o/4=
+X-Google-Smtp-Source: AMsMyM5gwSSomcUAwgGXmL16kkiohAuqLVNsNyKMW1iSehHnUdSJ7WhAmpVqejH4e1Zf+tpimhq30Q==
+X-Received: by 2002:a05:6a00:cd4:b0:541:3fff:35a4 with SMTP id b20-20020a056a000cd400b005413fff35a4mr31756202pfv.56.1664327516514;
+        Tue, 27 Sep 2022 18:11:56 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id hg9-20020a17090b300900b002008d0df002sm143062pjb.50.2022.09.27.18.11.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Sep 2022 15:54:16 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     gregkh@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, Julien Panis <jpanis@baylibre.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH 12/12] MAINTAINERS: add TI ECAP driver info
-Date:   Tue, 27 Sep 2022 18:53:46 -0400
-Message-Id: <bb980cb69381c570b72701398991100ac91079ec.1664318353.git.william.gray@linaro.org>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <cover.1664318353.git.william.gray@linaro.org>
-References: <cover.1664318353.git.william.gray@linaro.org>
+        Tue, 27 Sep 2022 18:11:55 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 27 Sep 2022 18:11:54 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Tony Lindgren <tony@atomide.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-iio@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] watchdog: twl4030_wdt: add missing
+ mod_devicetable.h include
+Message-ID: <20220928011154.GA1700137@roeck-us.net>
+References: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Julien Panis <jpanis@baylibre.com>
+On Tue, Sep 27, 2022 at 08:46:09AM -0700, Dmitry Torokhov wrote:
+> The driver is using of_device_id and therefore needs to include
+> mod_devicetable.h header. We used to get this definition indirectly via
+> inclusion of matrix_keypad.h from twl.h, but we are cleaning up
+> matrix_keypad.h from unnecessary includes.
+> 
+> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-This commit adds driver info for TI ECAP used in capture operating mode.
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Link: https://lore.kernel.org/r/20220923142437.271328-5-jpanis@baylibre.com/
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d4999f68bda8..c189117f58eb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20322,6 +20322,15 @@ T:	git git://linuxtv.org/mhadli/v4l-dvb-davinci_devices.git
- F:	drivers/media/platform/ti/davinci/
- F:	include/media/davinci/
- 
-+TI ENHANCED CAPTURE (eCAP) DRIVER
-+M:	Vignesh Raghavendra <vigneshr@ti.com>
-+R:	Julien Panis <jpanis@baylibre.com>
-+L:	linux-iio@vger.kernel.org
-+L:	linux-omap@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/counter/ti,am62-ecap-capture.yaml
-+F:	drivers/counter/ti-ecap-capture.c
-+
- TI ENHANCED QUADRATURE ENCODER PULSE (eQEP) DRIVER
- R:	David Lechner <david@lechnology.com>
- L:	linux-iio@vger.kernel.org
--- 
-2.37.3
-
+> ---
+> 
+> v2: changed from of.h to mod_devicetable.h per Andy Shevchenko
+> 
+>  drivers/watchdog/twl4030_wdt.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/watchdog/twl4030_wdt.c b/drivers/watchdog/twl4030_wdt.c
+> index 355e428c0b99..36b4a660928d 100644
+> --- a/drivers/watchdog/twl4030_wdt.c
+> +++ b/drivers/watchdog/twl4030_wdt.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/types.h>
+>  #include <linux/slab.h>
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/watchdog.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/mfd/twl.h>
+> -- 
+> 2.38.0.rc1.362.ged0d419d3c-goog
+> 

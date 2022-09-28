@@ -2,108 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 868C55ED6DC
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 09:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D965ED8E3
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 11:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233524AbiI1HyM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Sep 2022 03:54:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47726 "EHLO
+        id S233911AbiI1JYj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Sep 2022 05:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233642AbiI1Hxr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Sep 2022 03:53:47 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CEE5F54;
-        Wed, 28 Sep 2022 00:53:16 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id z4so1337273lft.2;
-        Wed, 28 Sep 2022 00:53:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=ou1RRtL4ikO+kz8JCQFnSDz9O1nEB+TVYO09/IQr4n4=;
-        b=W1feMDsUUM8heBYa4vtXawt72yC6wQyMdspOlzS9HApmaYel+dw/cCTks64aiZ0/FB
-         +6HaMDEdCvL7XPWJo9d/WAG97ds1/sNVKE0WlyTUN8iNppFrsOalOmFqNr3RZ0mCN72B
-         D/K7xf5y2C2jjskfDtiTRDV9y/KkuKLStrwUlF5OHGCoC8LvlDfcmN2Jf0H/YngQxNSY
-         OhbqHzxhexu6QkbepGW1gwdf7aAdoSOleG8TI+xIg9AMFpj06gBofrfaT60VvqRhtNL3
-         BvHkPmGWcUh1OXa45Y2seJQKA4mq3NMAZiXa3oWA2J9ADJUjrMSGFD8+ldovA/19mv/e
-         tMsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=ou1RRtL4ikO+kz8JCQFnSDz9O1nEB+TVYO09/IQr4n4=;
-        b=U7didk73MATUnkJFhGSyn3AyerhPp+PQNYac9DpdbcR0DnsYwXHBCVFZNx6iCdkQWR
-         XyUS5Aozr0XCAXYhXlvTqzyztvN/FQtQXFY10z8VP/GDBkKmb/KVKLg/tjLE52YsQmu+
-         ZORAHM2Yx1e3Jlh8ElA74vT6kSw1lCSSbdh0nSOZWt5SKC6dKT+zons5OaDBoEvIVCUF
-         LqWhw30SnfOcvaWu3H60lGviDt7MH2SF57I/QxSh+b1q9eMxVR0LPxwdOwHps02IVGBC
-         N5a+7370+IG607wk5I7KbF9oSsgUW8pzu6P0VwH66Ky166wolcG54giiDmUDdYI1pESv
-         bl2w==
-X-Gm-Message-State: ACrzQf1cH49mCm+9O+kmRff5ss148zE8k8Xwoj+1lSI4IbxdNPAYcUiS
-        VuuqTret+1BcxYYsOsIuft3kLxJcWa6NdQ==
-X-Google-Smtp-Source: AMsMyM6SlgLcDWDW36KcWjnBSwnvB9diErjfL5vDaJZ0xj0SmsduFAf+ILDa+2jAC2TVk4RlKzUHSA==
-X-Received: by 2002:a05:6512:3d09:b0:497:ab35:fd12 with SMTP id d9-20020a0565123d0900b00497ab35fd12mr13234719lfv.539.1664351594690;
-        Wed, 28 Sep 2022 00:53:14 -0700 (PDT)
-Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id b28-20020a05651c033c00b00261ccf566e3sm357770ljp.65.2022.09.28.00.53.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Sep 2022 00:53:13 -0700 (PDT)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Marcus Folkesson <marcus.folkesson@gmail.com>
-Subject: [PATCH] HID: hid-sensor-custom: set fixed size for custom attributes
-Date:   Wed, 28 Sep 2022 09:59:13 +0200
-Message-Id: <20220928075913.64125-1-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.37.1
+        with ESMTP id S233916AbiI1JYZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Sep 2022 05:24:25 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E53ED74DF;
+        Wed, 28 Sep 2022 02:23:55 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id B01DACE1DF1;
+        Wed, 28 Sep 2022 09:23:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82805C433C1;
+        Wed, 28 Sep 2022 09:23:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664357030;
+        bh=9Y7blUAL5zN9+EQU3Z3W3p8hWMps5aDqv5Tab1GFLWw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=bKKOYjthvdVJdkp/WgUPyyIY6j5diqFOr36p4LlYd98uxj1Y9e/lUHtbTqi98vgyQ
+         KbRS16fpU145hd3vMZQdmELdiDLMGpX8oUnpC6Y7HhKrvI+DAXOp1Tm9DK0N44XL80
+         mdFstae3oCw2JsYi4Sw3KJbhe3HwkElht+CJ4kpn9MhojQ2oiyppWZXSjQeRYlrQSX
+         BKyF327yD4FFDPGj+fuNVpeUQ4KPGVY5bXC1MfKLj2L6YNGIBOhJkk3hHOjFVVmLNb
+         qweGNfgGyDXDw0TL9Gsif0eqTs8PORFJji2tzGF6cr8+tGLT3NT8J+3GJZe5BvY+uS
+         EHNa/rwudrMgw==
+Date:   Wed, 28 Sep 2022 10:23:42 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Rob Herring <robh+dt@kernel.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        ChiaEn Wu <peterwu.pub@gmail.com>, pavel@ucw.cz,
+        krzysztof.kozlowski+dt@linaro.org, matthias.bgg@gmail.com,
+        lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+        chiaen_wu@richtek.com, alice_chen@richtek.com,
+        cy_huang@richtek.com, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, szunichen@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v12 3/5] iio: adc: mt6370: Add MediaTek MT6370 support
+Message-ID: <YzQSnuwPjzJIgsYq@google.com>
+References: <cover.1663926551.git.chiaen_wu@richtek.com>
+ <9bf36f09bc5f002f2b09b7cc26edccf109516465.1663926551.git.chiaen_wu@richtek.com>
+ <20220924155525.5663bed8@jic23-huawei>
+ <YzFY5FI0PrZqdAiZ@google.com>
+ <CAL_JsqKKJGtacbzGqCupFniSGha610L1cay2V+AK8vehTA=F=g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAL_JsqKKJGtacbzGqCupFniSGha610L1cay2V+AK8vehTA=F=g@mail.gmail.com>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This is no bugfix (so no Fixes: tag is necessary) as it is
-taken care of in hid_sensor_custom_add_attributes().
+On Mon, 26 Sep 2022, Rob Herring wrote:
 
-The motivation for this patch is that:
-hid_sensor_custom_field.attr_name and
-hid_sensor_custom_field.attrs
-has the size of HID_CUSTOM_TOTAL_ATTRS and used in same context.
+> On Mon, Sep 26, 2022 at 2:46 AM Lee Jones <lee@kernel.org> wrote:
+> >
+> > On Sat, 24 Sep 2022, Jonathan Cameron wrote:
+> >
+> > > On Fri, 23 Sep 2022 10:51:24 +0800
+> > > ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> > >
+> > > > From: ChiaEn Wu <chiaen_wu@richtek.com>
+> > > >
+> > > > MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> > > > with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> > > > driver, display bias voltage supply, one general purpose LDO, and the
+> > > > USB Type-C & PD controller complies with the latest USB Type-C and PD
+> > > > standards.
+> > > >
+> > > > Add support for the MT6370 ADC driver for system monitoring, including
+> > > > charger current, voltage, and temperature.
+> > > >
+> > > > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
+> > >
+> > > This will have to either wait for next cycle, or go through mfd because
+> > > of the dt-bindings include which is in the mfd tree.
+> > >
+> > > Please make those dependencies clear in new versions.
+> >
+> > If the bindings come together in -next, then subsequently in Mainline,
+> > it shouldn't really matter.
+> 
+> Except that the bindings haven't come together and at this point may
+> not for 6.1. linux-next has been warning for weeks because the child
+> device schemas haven't been applied. I've said it before, all the
+> schemas for MFD devices need to be applied together. Or at least the
+> MFD schema needs to get applied last.
+> 
+> Furthermore, subsequent versions of this don't get tested and we end
+> up with more warnings[1].
+> 
+> It's only your IIO tree that the DT
+> > tooling with complain about, right?
+> 
+> And the MFD tree...
+> 
+> Please apply the LED bindings (patches 1 and 2) so we can get the
+> existing warnings fixed and address any new warnings.
 
-We compare against HID_CUSTOM_TOTAL_ATTRS when
-looping through hid_custom_attrs.
+Who usually applies LED bindings?  Looks as though they're good to go.
 
-We will silent the smatch error:
-hid_sensor_custom_add_attributes() error: buffer overflow
-'hid_custom_attrs' 8 <= 10
-
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
----
- drivers/hid/hid-sensor-custom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-index 32c2306e240d..602465ad2745 100644
---- a/drivers/hid/hid-sensor-custom.c
-+++ b/drivers/hid/hid-sensor-custom.c
-@@ -62,7 +62,7 @@ struct hid_sensor_sample {
- 	u32 raw_len;
- } __packed;
- 
--static struct attribute hid_custom_attrs[] = {
-+static struct attribute hid_custom_attrs[HID_CUSTOM_TOTAL_ATTRS] = {
- 	{.name = "name", .mode = S_IRUGO},
- 	{.name = "units", .mode = S_IRUGO},
- 	{.name = "unit-expo", .mode = S_IRUGO},
 -- 
-2.37.1
-
+Lee Jones [李琼斯]

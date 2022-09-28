@@ -2,97 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD165EDFED
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 17:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D59CD5EE1C4
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Sep 2022 18:23:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233117AbiI1PQJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Sep 2022 11:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
+        id S234065AbiI1QXv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Sep 2022 12:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbiI1PQI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Sep 2022 11:16:08 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0563648EA2
-        for <linux-iio@vger.kernel.org>; Wed, 28 Sep 2022 08:16:04 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-3539c6f39d7so16000817b3.12
-        for <linux-iio@vger.kernel.org>; Wed, 28 Sep 2022 08:16:03 -0700 (PDT)
+        with ESMTP id S234554AbiI1QXS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Sep 2022 12:23:18 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D8BA56B85;
+        Wed, 28 Sep 2022 09:23:10 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id d42so21249634lfv.0;
+        Wed, 28 Sep 2022 09:23:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=K9aCivmd3pOhXO+7wSe24RMSLcWBP61HE/hhO1yg1yw=;
-        b=jQDRdbrOzvtuDZp8qb7JAXZre+A6bwoDBFWrmE3ggrcRhbpYUYGIBaVIaiwSSXReqv
-         NSqmEfYF+qoN2fvrTr0/Kdirbrpg4+UYSv65VbWz4ow0+IxHc/H7ImJT7gEjY46SBxZP
-         7Il+Y8xwtxZg5pP00iGG/49S7gXAVB7KUDPIEoF0X/qO0b9fbkC4VnomI48ETNTZG1hM
-         ceyhVPq0CZ6FaLIojWQKcd86FNA9HXS8YFKU1ntXLpDM8om4eDpcwOoL2sNujwTT7t5c
-         Y4jrN5q14BF20MbATCfK8ZeItCNebtAvYE0mwaRddKDOOyTit5O/0TzPc+zeaMy/DTUw
-         jTiA==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=ENny02jrZKVbgPfzbkbRE4ZovlzNI+xmygHZLGPqIBs=;
+        b=ZtknbgmU/wmbcYwSVkoJB+W1EHC/7KVOArUns8X67T/KOCkbeed1buC3ysC9Phfwfi
+         ifQ9jpg5aQLgZQEQvWcamMuhilITQTXz4qnEAuPQoouDK+5gcyTD0NinNArywTuVVGki
+         bnoCGDAX32g12eoedEj2Q5wE4jQ0Wzl+ZICavftNxBx0GTr6VAGnXkIQQnEqgPlN9h5F
+         PL1x61LC9+KI06GHyaPnwnfoPUlD/dkp6kSg/4uPADRgMrZfDv1Nt93sFjswxM8h6E+p
+         0LF0GiJ6bcvKD8phn8SNduNvjHAK5McCCqZmZbtc1WY+Dx3rJgQZNcGtCoCMhaysAb59
+         gLyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date;
-        bh=K9aCivmd3pOhXO+7wSe24RMSLcWBP61HE/hhO1yg1yw=;
-        b=FapzNglBoK89jVFle55xonKnHfUTnkkFwxbxoWz6ydRTDlkHkOjkFdhSJ4m0EmaTIr
-         sJbFuObio7zXIBMRwneYSh4T+YPVuxw5eWcGQY/IfrglYTNjKcUdu6xqUp3/1dGmucLh
-         4/5XFo5QtS3it0alY/UD6M8pweO1itw+UJiAMNsQY6uTYV1XNpnxkc2mJE2F8bCe4UmZ
-         K0PwCmUv/41ivnUXz+GjPAT7mg7EUk7sbPzbmz7JUeUzSXNM6yMjVFHlRYH+4LoDTeXk
-         nvBjXRvAG4ISKnLS27CffOO3YXkyZBQZ1wu862NXfPkdaX0U5oVgKqKEtyj+asZ476MZ
-         JmQg==
-X-Gm-Message-State: ACrzQf0LRAjWLtkeSVS00S5oNYF6RuWjtMiN1uJeS1x+WypeEX8+r8m9
-        YI15RakreoJsfComMps/UT/GaD3z8txdPbYBIh4=
-X-Google-Smtp-Source: AMsMyM7HSO0jCM6RgMdFO9ayMXe5OewG2dGbzmnUvBuF/uH00UHhOBxamsZdaE5YX5EYJO+HovNw82I+L57Un5YJHb8=
-X-Received: by 2002:a81:74d5:0:b0:345:27e3:bc6e with SMTP id
- p204-20020a8174d5000000b0034527e3bc6emr30678192ywc.394.1664378163024; Wed, 28
- Sep 2022 08:16:03 -0700 (PDT)
+        bh=ENny02jrZKVbgPfzbkbRE4ZovlzNI+xmygHZLGPqIBs=;
+        b=QpMQUlu+Sjhh/W357+iACLr+yq9Rq02OAIpVprcaNtjJGoasA44NISGIzq7rgSnrSv
+         G+0muW/VGrIYsTuNdWpSDJiYJ8t6MTPpxUHrIRwNlQ4cGU9gmIXSvhRQ77KIuz2OwSa7
+         8QpdEm7jD/a0/7EkfrGOXV+vgL1D/7r32R4y7eZnAxBb6QbDn7QVIbagGMdbbxzCTdBd
+         9JaWgfW0mTqC33jhqMatTSNVW5N620Z3TcafsEcnXSEBdlLiDQ1Iw2WTh9DLJbkbB8V5
+         W2jt7Tcb9ZkEt2xp2s71zofFNMdFPiooWXWFF/WLUeq2UW688TiZfYAHzwZoMIaulKk6
+         vS9g==
+X-Gm-Message-State: ACrzQf1UQ5sdkU1Elp/Q8wNXRZgp4vouWYbWNFNcRlnjiIMxAoCDBk1R
+        NF1eCYceGpkr0AVwMMHi03A=
+X-Google-Smtp-Source: AMsMyM5gtxklHbrdm1xdQqDlFiUiLhPp7YuJAm3I62QCBKtAMamqNsiIC8L5zDr5KDF8j5icQVK0sA==
+X-Received: by 2002:a05:6512:104f:b0:4a1:b0e9:dd25 with SMTP id c15-20020a056512104f00b004a1b0e9dd25mr9371959lfb.454.1664382188690;
+        Wed, 28 Sep 2022 09:23:08 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id u20-20020a197914000000b0049ade93ad24sm511834lfc.156.2022.09.28.09.23.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Sep 2022 09:23:07 -0700 (PDT)
+Message-ID: <e3abc0a9-ad5b-f6ef-8cba-0b4c6c8325c0@gmail.com>
+Date:   Wed, 28 Sep 2022 19:23:06 +0300
 MIME-Version: 1.0
-Received: by 2002:a05:7010:248c:b0:305:91e8:4ae7 with HTTP; Wed, 28 Sep 2022
- 08:16:02 -0700 (PDT)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <davidkekeli442@gmail.com>
-Date:   Wed, 28 Sep 2022 15:16:02 +0000
-Message-ID: <CABGDXtqMoKAA0=GZYYzGTDE4A4awYvWrZnLwX4yD1A7BRnnOQg@mail.gmail.com>
-Subject: Hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1131 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4989]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [davidkekeli442[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [davidkekeli442[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.12.0
+Subject: Re: [RFC PATCH 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>,
+        "Haikola, Heikki" <Heikki.Haikola@fi.rohmeurope.com>
+References: <cover.1663760018.git.mazziesaccount@gmail.com>
+ <fe1088cebb0de70bcb99af517004c1816b696825.1663760018.git.mazziesaccount@gmail.com>
+ <20220922180339.30138141@jic23-huawei>
+ <3eea7954-3faf-3fc9-7507-c318488c5524@gmail.com>
+ <YzRU9aRNReonSqbg@smile.fi.intel.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <YzRU9aRNReonSqbg@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Best Regard,Mr.Abraham,
+Hi Andy,
+
+On 9/28/22 17:06, Andy Shevchenko wrote:
+> On Wed, Sep 28, 2022 at 02:14:14PM +0300, Matti Vaittinen wrote:
+>> On 9/22/22 20:03, Jonathan Cameron wrote:
+>>> On Wed, 21 Sep 2022 14:45:35 +0300
+> 
+> ...
+> 
+>>>> +		dev_err(dev, "no regmap\n");
+>>>
+>>> Use dev_err_probe() for all dev_err() stuff in probe paths.
+>>> It ends up cleaner and we don't care about the tiny overhead
+>>> of checking for deferred.
+>>
+>> This one bothers me a bit. It just does not feel correct to pass -EINVAL for
+>> the dev_err_probe() so the dev_err_probe() can check if -EINVAL !=
+>> -EPROBE_DEFER. I do understand perfectly well the consistent use of
+>> dev_err_probe() for all cases where we get an error-code from a function and
+>> return it - but using dev_err_probe() when we hard-code the return value in
+>> code calling the dev_err_probe() does not feel like "the right thing to do"
+>> (tm).
+>>
+>> Eg, I agree that
+>> return dev_err_probe(dev, ret, "bar");
+>> is nice even if we know the function that gave us the "ret" never requests
+>> defer (as that can change some day).
+>>
+>> However, I don't like issuing:
+>> return dev_err_probe(dev, -EINVAL, "bar");
+> 
+> This case specifically was added into documentation by 7065f92255bb ("driver
+> core: Clarify that dev_err_probe() is OK even w/out -EPROBE_DEFER").
+
+Yes. And this is exactly what I meant with:
+ >> Eg, I agree that
+ >> return dev_err_probe(dev, ret, "bar");
+ >> is nice even if we know the function that gave us the "ret" never 
+requests
+ >> defer
+
+There is still (in my opinion) a significant difference if we call:
+ >> return dev_err_probe(dev, -EINVAL, "bar");
+
+- where we really hard-code the -EINVAL as a parameter to the 
+dev_err_probe()
+
+>> Well, please let me know if you think the dev_err_probe() should be used
+>> even in cases where we hard code the return to something...
+> 
+> And this should be, of course, maintainer's decision.
+
+Ultimately, yes.
+
+Best Regards
+	--Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~

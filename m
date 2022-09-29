@@ -2,517 +2,174 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 190E35EF22C
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Sep 2022 11:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30DAE5EF6E5
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Sep 2022 15:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235066AbiI2JgQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 29 Sep 2022 05:36:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32792 "EHLO
+        id S235224AbiI2Nst (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 29 Sep 2022 09:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235181AbiI2Jfk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Sep 2022 05:35:40 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C5F71F2D4
-        for <linux-iio@vger.kernel.org>; Thu, 29 Sep 2022 02:35:13 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id a8so1350502lff.13
-        for <linux-iio@vger.kernel.org>; Thu, 29 Sep 2022 02:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=fJuqrfz5mzYVxaOc20le9ccOGtIx9cxJ+e/xrVrnghk=;
-        b=QU3oXXNHLp67EZMCaBVntLfM6KG5CasC9xD1KWN0t3jL905bHXLgvYofKAUZAPo4uS
-         blG37GfqqzVr1cjU2e2zkC+8DUzqOZMWB7ddkEIPoXCCvVRVIJjw93xpDYr6kh91UYIZ
-         UUSnZN7fOrF40MbIgo7G4yk1UdcDrT87OlsnqjVskWr22KavY28PSbHQAZP6zKqNbIa7
-         y4HyZ0zqWTZR2ECwsWLzZc5Ju0sqNoncoMZMl2JvlPEmxgD0LxsLt8J/eT/w5eVmEnbl
-         cPzE7JEvhk04TkBKrx0VtlFLBS+OQVt3ZWDyABuUJDupe7AeqvFXUGqNUjeBYVNEcpxC
-         GjfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=fJuqrfz5mzYVxaOc20le9ccOGtIx9cxJ+e/xrVrnghk=;
-        b=QnIJZiebkPHoMO4+WAVSGf3/u4LPNViayCUU1hi/Gy68FWXos+2LOPWZc0k34r1Nx/
-         0inWVf/DFQYEL7CVuW0iOuay1yKRE6nWNUyMXquj/GtAw3rsd17HOTUFIGsSo9iBNN0t
-         Yv+9HUyq9Qnu8XtN6JsMUofOYqvWoXpj6Cc/rBS4ALfbC2t3wcsU/JIrj0OeHX6z2qCw
-         2QdD1hHf8kcSYHTcAvlVHv6k40NHsee/5WXvkE/6SQCpbiTU0BopX9l+rg3bn09rTKUV
-         2G+urMJOEfUYSLI+MT2eM9vx+HgT24RuNdkkFVn659xrLgBClPAwv433U5RVhFizy4lu
-         9RxQ==
-X-Gm-Message-State: ACrzQf1DSIz+WfiUhSx6sHrQvXwBQAIUNfpBnOagTrdXEnU62UimUvl8
-        dvsZauMvcgeWWPW2ch+qWVIknQ==
-X-Google-Smtp-Source: AMsMyM6pPAF9V4nE4eca/ttFss9kdzr7QWOdhhPUec0uMOITfWPGrkyzSyOnwaV+RzjsBGhzcSRaeA==
-X-Received: by 2002:a05:6512:a8c:b0:49e:359f:5563 with SMTP id m12-20020a0565120a8c00b0049e359f5563mr930836lfu.563.1664444111446;
-        Thu, 29 Sep 2022 02:35:11 -0700 (PDT)
-Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id e11-20020a19690b000000b0048b0099f40fsm728045lfc.216.2022.09.29.02.35.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Sep 2022 02:35:10 -0700 (PDT)
-Message-ID: <a382fdee-3672-50b8-cd58-85563b9d9079@linaro.org>
-Date:   Thu, 29 Sep 2022 11:35:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH v6 2/3] dt-bindings: iio: adc: add adi,max11410.yaml
+        with ESMTP id S234634AbiI2Nst (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 29 Sep 2022 09:48:49 -0400
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-eopbgr140127.outbound.protection.outlook.com [40.107.14.127])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E47414C9D6;
+        Thu, 29 Sep 2022 06:48:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X5J+deLFyaQkRbr23QkI0XAEJlGvGluz4junlAcmjiYXkYqd9tWBdY+bYSBYgzbkOlr+BdUe9iNRL9Un7VVOW8086jVOB3JG0xlIHkNud9UfScEmjgQnpIttqsih1jNmXObkPHByfEzARJanxjlcld9V/dvnVwoyTiQjZeaIpcaONWYRMcVJvqIh5DuVxazSNEwmdWEUdnHNnDY1968iMTccqmR5aLjYw1WMyyiFkMIAxW5Ew1av4PjLTdxZu2fFzfM/yy8vlultXMdHrzNeqzVmT/Or6OuA8DyzWGZiiyEKeQFQdIpp81DUwT3db6KVJR4d0+MzvQqmVrC77OWG/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cRGhGElFG67KmEogwmOAHJ4F2pgvg+f678Rt/WcT0vI=;
+ b=YZZV2T0f9ogy+WchT3+9YKmVIuB1yamqCsvtsDHCHePzE0KaXpa5cfmyHBXpPV7Za4k4hdjMEcyRw7NoLO+f9XtIvT/YrDshk1WUrykIahS/GAY40FvNL5jn+MGRzk1hscBRxN22WZZ01KK8/ZL2SLNn87vOVgtn3CCQNda0Mup25khhu5tFETWInRrqssrt7hlHcjLyHt9An9fOszvn6D8np9C0q9yIyVZoPGt90vcpeRdFXz/zHrywJnQJMYtmSyLVRI089A/Ke/RqsXeKFt1p4CtJtktvHlDDK1Inj+somgj32hqXVC+4bQfDF5EMYdiV4M/lorUAqTqkeAwR+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cRGhGElFG67KmEogwmOAHJ4F2pgvg+f678Rt/WcT0vI=;
+ b=FPldxbX0tJqFIDCYnsMEH31HlvCJOFVaZHPN5js4uI++1cFGYa8oIYdoSibueH3++dmGpULm9yNu26HBMuCbDfXvxvDnPvkxVdKR54bSLZzCfo27sURTsieNZpc5JXT9S+U278zBmsuBrgKDMoF94EgEuFr8E6EBHs08gAjPCKM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axentia.se;
+Received: from AM0PR02MB4436.eurprd02.prod.outlook.com (2603:10a6:208:ed::15)
+ by AS2PR02MB9214.eurprd02.prod.outlook.com (2603:10a6:20b:5fb::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.17; Thu, 29 Sep
+ 2022 13:48:44 +0000
+Received: from AM0PR02MB4436.eurprd02.prod.outlook.com
+ ([fe80::6384:43c5:f773:70de]) by AM0PR02MB4436.eurprd02.prod.outlook.com
+ ([fe80::6384:43c5:f773:70de%5]) with mapi id 15.20.5676.017; Thu, 29 Sep 2022
+ 13:48:44 +0000
+Message-ID: <ed5480d5-f92b-3cb1-6e61-84d3c08fae32@axentia.se>
+Date:   Thu, 29 Sep 2022 15:48:42 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH v5 1/5] i2c: muxes: ltc4306: fix future recursive
+ dependencies
 Content-Language: en-US
-To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, Nuno.Sa@analog.com,
-        Nurettin.Bolucu@analog.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220927141851.279-1-Ibrahim.Tilki@analog.com>
- <20220927141851.279-3-Ibrahim.Tilki@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220927141851.279-3-Ibrahim.Tilki@analog.com>
+To:     Matt Ranostay <matt.ranostay@konsulko.com>, jic23@kernel.org,
+        gupt21@gmail.com, benjamin.tissoires@redhat.com, jikos@kernel.org
+Cc:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-i2c@vger.kernel.org
+References: <20220927025050.13316-1-matt.ranostay@konsulko.com>
+ <20220927025050.13316-2-matt.ranostay@konsulko.com>
+From:   Peter Rosin <peda@axentia.se>
+In-Reply-To: <20220927025050.13316-2-matt.ranostay@konsulko.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV3P280CA0095.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:8::6)
+ To AM0PR02MB4436.eurprd02.prod.outlook.com (2603:10a6:208:ed::15)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR02MB4436:EE_|AS2PR02MB9214:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76cfaa40-4806-4776-bc19-08daa2215380
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: V7vcz4RBDZDZcIvWGqwP42LACrNQiahBYiQJ6MgSXozwj7ffUhYbqWYVBD5XbfMSupCT+ocRJi+BSxa8jYOrdp+01pcoGwnrxsv+YCTKMwRPN/lGKF7AZLsruUAP4BO3ob8ZXR+GrRVwqj84l9hCsBx35P1p5LynOvm06WQj0pZ+dGPvFkHDK2O2Ht3fZOXlUQodjn4qq+b79Uv0TEVg3cIN0ER9JXJd+XPwnQ0s0s+AQvTRiZxEv5V/AGd28m9/D74Iiq+7sgYqj32jMXHYLJhy7p3DlVyYI5/VKVRnLHS6dx0wXYBwtV56t+WFJklx5yo/667oP6lexLbzuxAJknRDef/QSAsgN4+kP9yNnuibrnw08fAJCBY1K1FL2ls2EYyoGM3yMOq6w7jBkNNUzCVzG6dnOV1ZD+GMx1aT2Rz7rCEImtgJb3uDIHLjklJMS66g3qfazaEUTH68rSGDnpth8+SPNrxFdhgmotXox4F1+n6cL8GN9Sy7AILtv+eLWdGmOXOJxg0Ch8Qa3BnpctqHPynumOCEMotX2vkBaJknTMeNDqeAUEspgoEBtsAwLwWBEFZadbdXqNxfzlr2SLqB+jVlSsOLWQ9j6q9mshfdLHBIUPlWB5fRdzmwKQ+M/nHJquL/uyPUPZNkrog1ptG3PRFAjzfT6nJtYWqNXNIUudjR752Tt1MK62dggWxG/hvJw9XGuuRZQkk7mNEJn5eE66ekWZW+UPjgXzDAJdlViQuYMX9Qvok2+MSrySdOstYD1rDQZ1MmdqgG+UMHM/vPdmdvaz6QJKor7dusE7A=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR02MB4436.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(346002)(366004)(396003)(136003)(39840400004)(376002)(451199015)(38100700002)(31696002)(86362001)(36756003)(41300700001)(6506007)(66476007)(4326008)(8676002)(66556008)(26005)(5660300002)(6512007)(8936002)(478600001)(66946007)(6486002)(316002)(83380400001)(2616005)(2906002)(186003)(66574015)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SkFKeXhBLzFMK0FnSUU0Y0pKY01QSXk4YTVoSC9OQ3dqTEZUMzUzUkFwUE1X?=
+ =?utf-8?B?dUJhdXlRdzRTLzhkZU82emdOWElPMXlUbUc1Z1oxakdmbFhpQnU1T0F1cXMz?=
+ =?utf-8?B?TENtVmorUU5RdVUxeUFBYVloMnBRY3hPOFFJTFgyaTFuQlVlYWtDSGp1WDk0?=
+ =?utf-8?B?b2d5L29JaFhmRFgrbXZqK0xZcEh6ZHU2SG1HYXl2K3R6MXFTYTVKekZ5cnhi?=
+ =?utf-8?B?MGtCMnlyb05yV0tmZjI4U05HUGo4SHJSQ2tkM1hnZ2c2UktlSEJtZjhFZ1dv?=
+ =?utf-8?B?ZkRTclhOUVVUb1oxK3NRN210SkhZemNYcmdDdlN3RG1hanZlRE9DTjZKYjR1?=
+ =?utf-8?B?VktmVzNCMDU0QlRSOGNLNVF6NUg4VHYweUhaSFZjenVJOHZKNURnTFlvOWc2?=
+ =?utf-8?B?aFd4WEk4WVdGNFo1NXMvU3ZtcDBqd3pwNTF2TE5kMzBQSTkxOGJYdUhkWTh3?=
+ =?utf-8?B?RGRXOVM5cExVTFNmZTAzdGJoeHdpZlpxNlF6M1p1WkFGdFZyYzI0b2VTZFE0?=
+ =?utf-8?B?aXVIUHk5Y2ZNbFBNeVZ6RzNQN2JoRHozbGt6MGdGUkRwNnhnQWtkKy8ycE56?=
+ =?utf-8?B?R2R3RUV5UFdCMlFZWWQzSlJ2cFJ5MkU5WTZJc2Y5dTVoZVpSbEo2UXRURXpV?=
+ =?utf-8?B?NVg2bjVkRmNIZU9jSzdyMmQwV20zZUN5Y2pLd3FqbGJXcjNhTk5tdGdtdXYx?=
+ =?utf-8?B?R2FTd05RYXlKYWQrTFhKbVY1ZHZZanVoTWs4WHNJV3p5NXFvR1ByUkhXVUdm?=
+ =?utf-8?B?SDhkS1hKc0g1d0diSyt0dDdSam5JY3lUeXhzTEg0cmZXdlozQmtLc0tDVkha?=
+ =?utf-8?B?b21TcVJCNnNDZXlZNWIrSkhOQTRicnZhUTNzWkRnUURBS2dnVG5US05YWG9z?=
+ =?utf-8?B?clZtWjJaaVZKQVhud0tSTmVwRUIxQ2lFb2p6S2xZMmhJUnJOdXYrN1lBdlBa?=
+ =?utf-8?B?OTNsMEZzdzBhZnZwNVJMYWZWOTU0Q3k3TE52QjRZUXViYXYzUWRhWVhCRmFj?=
+ =?utf-8?B?ZDhuSUIyNzBuMTFqdThnL2VMU1B0TTRPbjE4dUpSTWZuVXU1OGY1R1RLMHlJ?=
+ =?utf-8?B?a1lQa25udFI1Ym4vaTF0ZUtmQjNrbG5sc01OZVBYakRRbzl4Vnp4ZnFtZVdu?=
+ =?utf-8?B?ZUNXa0UrVW9MSHZ3a3ZRaURoYTFvWkhFRkRxVys3M2QvTmhaSmNiNGlVc2tn?=
+ =?utf-8?B?VkNYUzNOb1NKbWJpMWFnTDVhWkc4d0laVmpXc2QvdklqWldWbHN3UWJTVWpU?=
+ =?utf-8?B?d0dpVjYySFBEbVJvWjZKWncxOXQvWnIzVERjL2ZDRXhJZWFCNndaazRwaFM0?=
+ =?utf-8?B?TGJhelE5S2ZQdk5kUVptNkljY3RKKys3WWlSYlhhQkhVYllROFV2OFZlYzkz?=
+ =?utf-8?B?VXJtQTlua2FsWEFKWmJUVTQ1aUtxbktoM3EwR205NUo2M1c3Rk5yZWFhYnZi?=
+ =?utf-8?B?L2dLVzNFazNGU29lc1lPQll2dEl4engrNE5kMXo5akZZWXZtMTJXb04xTUxV?=
+ =?utf-8?B?QzJEaEFNZGYxamdKM0dXaVpHamVaWWNCMFVLK2wrNGtRTEJOQjE5cXFBY3h0?=
+ =?utf-8?B?VVpVZ3JoR0VRMDdOcEZ6ckdzbVdWN3FaKzNpN3doeEZkZDZWbVJIcG5oN056?=
+ =?utf-8?B?M1FNREoreVB6dlJLS2pMc0RoZ2UvMmwvc20xeGEyUkxLTjI4WHIxWmQydW9p?=
+ =?utf-8?B?ZVJDVGNKMUVBQk5VRHpLUVNlMTJMWklIcyt5M3JXVkxKZ2tpYVJtYkkxOFJr?=
+ =?utf-8?B?cGxYU2pzcUttc0l0ZkxmQjZEZkY2ZW9vb1JjanJBeUl1eGRHWU1MTmpET0cr?=
+ =?utf-8?B?U2h4SXZORXN1YmZFOGY2M05OeDgvdmtmejR4c1MwOE9oTDg5alpYaEpoYUgz?=
+ =?utf-8?B?alhtZ1NtR25qSjhySENLbjgvcGV3ZFN5R2hCK3RtZXdUQWwreTIzUWlkb1E3?=
+ =?utf-8?B?NDYzUnR3RUoydHhJU0xVNGl4NHM0VkpmaTAwWWhQbFhNOHlSS1RvRS9kVTBr?=
+ =?utf-8?B?NTZJbkhLcjB1ZlFOaFVYaDk5TXMvb2dSZ0xrelg5WHRMa3E2SUdkUGdKNldN?=
+ =?utf-8?B?S3o1bEFxN05kZU51MUYyanZ6TjRoSmd5Z2J1Qmt5OXBuMm5Nd3RaaW45WnRV?=
+ =?utf-8?Q?TdpSBFH6roIqyd8eheDSrZPVv?=
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76cfaa40-4806-4776-bc19-08daa2215380
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR02MB4436.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2022 13:48:44.6475
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ohtyciiO3m9vMcX4TaUIb9aRDBlNEddvzXZRvas5y91o9RU1sobOV+GCRLbiImZU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR02MB9214
 X-Spam-Status: No, score=-6.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 27/09/2022 16:18, Ibrahim Tilki wrote:
-> Adding devicetree binding documentation for max11410 adc.
+Hi!
+
+2022-09-27 at 04:50, Matt Ranostay wrote:
+> When using 'imply IIO' for other configurations which have 'select GPIOLIB'
+> the following recursive dependency is detected for I2C_MUX_LTC4306
 > 
-> Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+> Switch from 'select GPIOLIB' to 'depends on GPIOLIB' to avoid this per
+> recommendation in kconfig-language.rst
+
+I find that it is a bit sad and unfriendly that drivers are hidden from
+the user unless the user has previously selected GPIOLIB. Configuring the
+kernel is bad as it is. Since GPIOLIB is not really a strong dependency
+for this driver (at least I think the device may function well enough
+without GPIO support) couldn't the mcp2221 driver "imply GPIOLIB" as well?
+
+Then it's only one driver that is affected and not a set of random drivers
+like this.
+
+Cheers,
+Peter
+
+> drivers/gpio/Kconfig:14:error: recursive dependency detected!
+> drivers/gpio/Kconfig:14:        symbol GPIOLIB is selected by I2C_MUX_LTC4306
+> drivers/i2c/muxes/Kconfig:47:   symbol I2C_MUX_LTC4306 depends on I2C_MUX
+> drivers/i2c/Kconfig:62: symbol I2C_MUX is selected by MPU3050_I2C
+> drivers/iio/gyro/Kconfig:127:   symbol MPU3050_I2C depends on IIO
+> drivers/iio/Kconfig:6:  symbol IIO is implied by HID_MCP2221
+> drivers/hid/Kconfig:1227:       symbol HID_MCP2221 depends on GPIOLIB
+> 
+> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
 > ---
->  .../bindings/iio/adc/adi,max11410.yaml        | 176 ++++++++++++++++
->  .../devicetree/bindings/rtc/adi,max313xx.yaml | 195 ++++++++++++++++++
->  2 files changed, 371 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
->  create mode 100644 Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
+>  drivers/i2c/muxes/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-
-So it is a v6 and it is the first version you send to proper maintainers
-using get_maintainers.pl... sigh...
-
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
-> new file mode 100644
-> index 0000000000..46a37303da
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
-> @@ -0,0 +1,176 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2022 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,max11410.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices MAX11410 ADC device driver
-> +
-> +maintainers:
-> +  - Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-> +
-> +description: |
-> +  Bindings for the Analog Devices MAX11410 ADC device. Datasheet can be
-> +  found here:
-> +    https://datasheets.maximintegrated.com/en/ds/MAX11410.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,max11410
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    description: Name of the gpio pin of max11410 used for IRQ
-> +    items:
-> +      - enum:
-> +          - gpio0
-> +          - gpio1
-
-This is wrong. You said in interrupts you can have two items, but here
-you list only one. I don't know what do you want to achieve here.
-
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  avdd-supply:
-> +    description: Optional avdd supply. Used as reference when no explicit reference supplied.
-> +
-> +  vref0p-supply:
-> +    description: vref0p supply can be used as reference for conversion.
-> +
-> +  vref1p-supply:
-> +    description: vref1p supply can be used as reference for conversion.
-> +
-> +  vref2p-supply:
-> +    description: vref2p supply can be used as reference for conversion.
-> +
-> +  vref0n-supply:
-> +    description: vref0n supply can be used as reference for conversion.
-> +
-> +  vref1n-supply:
-> +    description: vref1n supply can be used as reference for conversion.
-> +
-> +  vref2n-supply:
-> +    description: vref2n supply can be used as reference for conversion.
-> +
-> +  spi-max-frequency:
-> +    maximum: 8000000
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +patternProperties:
-
-This goes before required block
-
-> +  "^channel(@[0-9])?$":
-> +    $ref: "adc.yaml"
-> +    type: object
-> +    description: Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number in single-ended mode.
-> +        minimum: 0
-> +        maximum: 9
-> +
-> +      adi,reference:
-> +        description: |
-> +          Select the reference source to use when converting on
-> +          the specific channel. Valid values are:
-> +          0: VREF0P/VREF0N
-> +          1: VREF1P/VREF1N
-> +          2: VREF2P/VREF2N
-> +          3: AVDD/AGND
-> +          4: VREF0P/AGND
-> +          5: VREF1P/AGND
-> +          6: VREF2P/AGND
-> +          If this field is left empty, AVDD/AGND is selected.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2, 3, 4, 5, 6]
-> +        default: 3
-> +
-> +      adi,input-mode:
-> +        description: |
-> +          Select signal path of input channels. Valid values are:
-> +          0: Buffered, low-power, unity-gain path (default)
-> +          1: Bypass path
-> +          2: PGA path
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        enum: [0, 1, 2]
-> +        default: 0
-> +
-> +      diff-channels: true
-> +
-> +      bipolar: true
-> +
-> +      settling-time-us: true
-> +
-> +      adi,buffered-vrefp:
-> +        description: Enable buffered mode for positive reference.
-> +        type: boolean
-> +
-> +      adi,buffered-vrefn:
-> +        description: Enable buffered mode for negative reference.
-> +        type: boolean
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@0 {
-> +            reg = <0>;
-> +            compatible = "adi,max11410";
-> +            spi-max-frequency = <8000000>;
-> +
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <25 2>;
-> +            interrupt-names = "gpio1";
-> +
-> +            avdd-supply = <&adc_avdd>;
-> +
-> +            vref1p-supply = <&adc_vref1p>;
-> +            vref1n-supply = <&adc_vref1n>;
-> +
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            channel@0 {
-> +                reg = <0>;
-> +            };
-> +
-> +            channel@1 {
-> +                reg = <1>;
-> +                diff-channels = <2 3>;
-> +                adi,reference = <1>;
-> +                bipolar;
-> +                settling-time-us = <100000>;
-> +            };
-> +
-> +            channel@2 {
-> +                reg = <2>;
-> +                diff-channels = <7 9>;
-> +                adi,reference = <5>;
-> +                adi,input-mode = <2>;
-> +                settling-time-us = <50000>;
-> +            };
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml b/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
-> new file mode 100644
-> index 0000000000..43576ec066
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/rtc/adi,max313xx.yaml
-> @@ -0,0 +1,195 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +# Copyright 2022 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/rtc/adi,max313xx.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices MAX313XX series I2C RTC driver
-> +
-> +maintainers:
-> +  - Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-> +  - Zeynep Arslanbenzer <Zeynep.Arslanbenzer@analog.com>
-> +
-> +description: Bindings for the Analog Devices MAX313XX series RTCs.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-
-No need for oneOf
-
-> +      - enum:
-> +          - adi,max31328
-> +          - adi,max31329
-> +          - adi,max31331
-> +          - adi,max31334
-> +          - adi,max31341
-> +          - adi,max31342
-> +          - adi,max31343
-> +
-> +  reg:
-> +    description: I2C address of the RTC
-> +    items:
-> +      enum: [0x68, 0x69]
-
-One item, so:
-items:
-  - enum: ......
-
-> +
-> +  interrupts:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  interrupt-names:
-> +    description: |
-> +      Name of the interrupt pin of the RTC used for IRQ. Not required for
-> +      RTCs that only have single interrupt pin available. Some of the RTCs
-> +      share interrupt pins with clock input/output pins.
-> +    minItems: 1
-> +    items:
-> +      - enum:
-> +          - INTA
-> +          - INTB
-> +      - enum:
-> +          - INTA
-> +          - INTB
-
-Why this is so flexible? Any device allows any interrupt to be present
-or not?
-
-> +
-> +  "#clock-cells":
-> +    description: |
-> +      RTC can be used as a clock source through its clock output pin when
-> +      supplied.
-> +    const: 0
-> +
-> +  clocks:
-> +    description: |
-> +      RTC uses this clock for clock input when supplied. Clock has to provide
-> +      one of these four frequencies: 1Hz, 50Hz, 60Hz or 32.768kHz.
-> +    maxItems: 1
-> +
-> +  trickle-diode-disable: true
-> +
-> +  trickle-resistor-ohms:
-> +    description: Enables trickle charger with specified resistor value.
-> +    items:
-> +      enum: [3000, 6000, 11000]
-
-This is not a list. Just enums, no items.
-
-> +
-> +  wakeup-source: true
-> +
-> +additionalProperties: false
-> +
-> +allOf:
-> +  - $ref: "rtc.yaml#"
-
-Skip quotes
-
-
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,max31328
-> +              - adi,max31342
-> +
-> +    then:
-> +      properties:
-> +        trickle-diode-disable: false
-> +        trickle-resistor-ohms: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,max31328
-> +              - adi,max31331
-> +              - adi,max31334
-> +              - adi,max31343
-> +
-> +    then:
-> +      properties:
-> +        clocks: false
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,max31341
-> +              - adi,max31342
-> +
-> +    then:
-> +      properties:
-> +        reg:
-> +          items:
-> +            - const: 0x69
-> +
-> +    else:
-> +      properties:
-> +        reg:
-> +          items:
-> +            - const: 0x68
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +
-
-One blank line
-
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        rtc@68 {
-> +            reg = <0x68>;
-> +            compatible = "adi,max31328";
-
-Skip the example, it's part of all others.
-
-> +        };
-> +    };
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        rtc@68 {
-> +            reg = <0x68>;
-> +            compatible = "adi,max31329";
-> +            clocks = <&clkin>;
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <26 2>;
-
-Aren't you using interrupt flags? If so, use defines.
-
-> +            interrupt-names = "INTB";
-> +        };
-> +    };
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        rtc@68 {
-> +            reg = <0x68>;
-> +            compatible = "adi,max31331";
-> +            #clock-cells = <0>;
-> +            interrupt-parent = <&gpio>;
-> +            interrupts = <25 2>, <26 2>;
-> +            interrupt-names = "INTA", "INTB";
-> +        };
-> +    };
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        rtc@69 {
-> +            reg = <0x69>;
-> +            compatible = "adi,max31341";
-> +            #clock-cells = <0>;
-> +            clocks = <&clkin>;
-> +        };
-> +    };
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-
-Skip this example, it's the same.
-
-> +
-> +        max31341: rtc@69 {
-> +            reg = <0x69>;
-> +            compatible = "adi,max31341";
-> +            #clock-cells = <0>;
-> +        };
-> +
-> +        rtc@68 {
-> +            reg = <0x68>;
-> +            compatible = "adi,max31329";
-> +            clocks = <&max31341>;
-> +        };
-> +    };
-
-Best regards,
-Krzysztof
-
+> diff --git a/drivers/i2c/muxes/Kconfig b/drivers/i2c/muxes/Kconfig
+> index 1708b1a82da2..8642ea8e0a3d 100644
+> --- a/drivers/i2c/muxes/Kconfig
+> +++ b/drivers/i2c/muxes/Kconfig
+> @@ -46,7 +46,7 @@ config I2C_MUX_GPMUX
+>  
+>  config I2C_MUX_LTC4306
+>  	tristate "LTC LTC4306/5 I2C multiplexer"
+> -	select GPIOLIB
+> +	depends on GPIOLIB
+>  	select REGMAP_I2C
+>  	help
+>  	  If you say yes here you get support for the Analog Devices

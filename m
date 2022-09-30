@@ -2,96 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA7B5F0833
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Sep 2022 12:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C595F09B1
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Sep 2022 13:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbiI3KDf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Sep 2022 06:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
+        id S231355AbiI3LO4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Sep 2022 07:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231300AbiI3KD2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Sep 2022 06:03:28 -0400
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E5DE2CD3
-        for <linux-iio@vger.kernel.org>; Fri, 30 Sep 2022 03:03:24 -0700 (PDT)
-Received: by mail-qv1-xf34.google.com with SMTP id z18so2294587qvn.6
-        for <linux-iio@vger.kernel.org>; Fri, 30 Sep 2022 03:03:24 -0700 (PDT)
+        with ESMTP id S231358AbiI3LO3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Sep 2022 07:14:29 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D33DBF1D8;
+        Fri, 30 Sep 2022 03:54:27 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id g1so6284096lfu.12;
+        Fri, 30 Sep 2022 03:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date;
-        bh=iQqXgr+4YepRHf5MCkYU6O/jwsUQ9T5ainHxb7iM9i8=;
-        b=UPkltYBuAXyB4MSvRfTaRXkSGTXUCp8YorMZlcDDO0ubsdnJRKFwB3PpUAxSFtm/M2
-         6ZDek0f7m8QUuh89t2RYXodCFISGTT+IYHl/7EYderLges97lwhvTpAQC3GkmCKXL/K+
-         PjAlcUnrPIcoOhEyZbetlMgX7lDx65Vdvg60zR1AiteeuCMz9TOjjeDHn29z5DdhIzvQ
-         DQ7RlfWTsLYmdaRdrVQ+yRmCiJ5CEIOxn+U/vc0mFLJMA0j9UUy6Z1zsVwL4fdLU/lCw
-         P5lhLewWXYLpMc1DK9BnzpUEV98rOxOubqIo/OhbsS+UGVHpi0RuzafuFnO+CezwC/M0
-         AK6A==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date;
+        bh=vt4anCeshQmpiBAIkV+85GsPhIKG979bY2xHCX0TUWI=;
+        b=Wa+S+q8QyCffEYBzox4w4HqnuUEYeyAkthi5BEHLLCnyCWTL4PHBMGJW4BLsWMW8Xx
+         gcysaVyAizRveM48sYPDkQXlxV5fZXbPEbwdIWPtb/ukp2ICABCeRHWcTK2idn8rhVUQ
+         cAyBK20q5Hn7qmzgZ8YLq+zf1khAr4dV0ZQ59GqOshhVYPi5qCYa0hT63BOGsJPfCuDO
+         XB1PAcA/mubqnYvDqC5Hc0X+b/eOySLFWSMxYdaEQB/bzpWbH/RjeBSgfEz8ICp80HaJ
+         +Is23YZsiEB+Mm+pWlgTA+uaPIEl06FxWJ/HzTCW7xlaomssg3xbQqJ8kbLsUSk+lR19
+         KECA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=iQqXgr+4YepRHf5MCkYU6O/jwsUQ9T5ainHxb7iM9i8=;
-        b=cdi6dmP8O+JfC5DYM25Ztr7beCmwc+ZHWhXvWbkQq5iXAfNqgychuRdNW/+2TLv/q4
-         VjoKtYIBVx85+kQKDGIpVh5e/CASev7fGy4e7iIGOfFCqnQklEZO+uQqd9hwIAPZiNaT
-         zCWKqxi7xY0uCbHSJJvT/kDid0OdgF4VWu+Qew6muWxLoptM9YwnPxTwYKdSVg/rJ6qz
-         CpRtxq0rP++L3YSjZsmRN6AdcnQgCaC9QPShooKnxykD/GTzRZhqPHeBmWG4a2pyLeHI
-         6RXjjkHID9yd3WXLCD7vMO7XYXMnuiK5FPv0JXXbeu5WgePQSehg4bfvApSZ5x85AISh
-         eyqQ==
-X-Gm-Message-State: ACrzQf0H5WX03FKOm/dTn5he9VnWoBhqHyYW+BLrNU6LZr69WD6KGs4T
-        ucgT5nmaeGHLRdzQmVAIedw=
-X-Google-Smtp-Source: AMsMyM7gteQgf8eFvijooshAhE+MKquJs8M2jlrI42yG3DNEqfFJesHyQ7u4AQI8DGi9Oe8FfVAzWA==
-X-Received: by 2002:a05:6214:224b:b0:4af:b412:2269 with SMTP id c11-20020a056214224b00b004afb4122269mr3997334qvc.54.1664532203236;
-        Fri, 30 Sep 2022 03:03:23 -0700 (PDT)
-Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id b8-20020ac844c8000000b0035d57445127sm1484058qto.47.2022.09.30.03.03.18
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=vt4anCeshQmpiBAIkV+85GsPhIKG979bY2xHCX0TUWI=;
+        b=i4io4aW+eKxLT80T+LDrmyoao/1nvi96gl0Sd7xsAqAjIqObZdgQDxVclSMdQtH71z
+         I++sZZLQc1YKdup1Ng3S8VZdB58qB1EsDTHvNg7N0OCCtYw1EmPSygHt+PRUSEi2VZF9
+         cSL8YLSgxZDzfSvKy2VuAsGCtCSzdCva5OxMNu1PHsqUdisq+YzRDQMyFY9KI4Vbacog
+         8G7uSQ+DKyoyxYZ3TQxL8+1J8eRr1+kLQNdsrYhJSlq3klEpJq3qNGjJ8ALXUvk2ZWZ5
+         K7kmohWVzSY72+qf2e+A3gqsdSr7AUCMEn50YpxfBqEhdzDuj51gr7UBGA+Jan4fuQDW
+         Jj5A==
+X-Gm-Message-State: ACrzQf0JeMaJgdsyfbRwXO3ci/F4hqOyeYEEqK6r/JnPgr08nPJh1q41
+        wdwdJ5muyNX+a1HWK0cHQfA=
+X-Google-Smtp-Source: AMsMyM50tO3mQSdFG6Os81ZjoAEmNUS6e26q/o86wVvr0FXiZYyQ52RLD1uEmRsDyyrRPR686qpTWA==
+X-Received: by 2002:ac2:4945:0:b0:498:eb8d:e283 with SMTP id o5-20020ac24945000000b00498eb8de283mr3210641lfi.192.1664535265313;
+        Fri, 30 Sep 2022 03:54:25 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id u1-20020a056512128100b0049b8c0571e5sm258565lfs.113.2022.09.30.03.54.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Sep 2022 03:03:22 -0700 (PDT)
-Message-ID: <d41b131df565e7c7d6083ebbd7de0346c46b9e23.camel@gmail.com>
-Subject: Re: [PATCH 14/15] iio: health: max30102: do not use internal
- iio_dev lock
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
-        linux-iio@vger.kernel.org, Chunyan Zhang <zhang.lyra@gmail.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Cixi Geng <cixi.geng1@unisoc.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Alexandru Ardelean <aardelean@deviqon.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Florian Boor <florian.boor@kernelconcepts.de>,
-        Ciprian Regus <ciprian.regus@analog.com>,
+        Fri, 30 Sep 2022 03:54:24 -0700 (PDT)
+Date:   Fri, 30 Sep 2022 13:54:08 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Chen-Yu Tsai <wens@csie.org>, Orson Zhai <orsonzhai@gmail.com>
-Date:   Fri, 30 Sep 2022 12:04:39 +0200
-In-Reply-To: <20220924165417.46a1fc44@jic23-huawei>
-References: <20220920112821.975359-1-nuno.sa@analog.com>
-         <20220920112821.975359-15-nuno.sa@analog.com>
-         <20220924165417.46a1fc44@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 1/2] iio: Add IIO_STATIC_CONST_DEVICE_ATTR
+Message-ID: <57fa292756e187d104249f39a655ae736cbcaa76.1664534676.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="2YvFr+H0AS5yMMpx"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -102,70 +85,80 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 2022-09-24 at 16:54 +0100, Jonathan Cameron wrote:
-> On Tue, 20 Sep 2022 13:28:20 +0200
-> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->=20
-> > The pattern used in this device does not quite fit in the
-> > iio_device_claim_direct_mode() typical usage. In this case,
-> > iio_buffer_enabled() was being used not to prevent the raw access
-> > but to decide whether or not the device needs to be powered on
-> > before.
-> > If buffering, then the device is already on. To guarantee the same
-> > behavior, a combination of locks is being used:
-> >=20
-> > 1. Use iio_device_claim_direct_mode() to check if direct mode can
-> > be
-> > claimed and if we can, then we keep it until the reading is done
-> > (which
-> > also means the device will be powered on and off);
-> > 2. If already buffering, we need to make sure that buffering is not
-> > disabled (and hence, powering off the device) while doing a raw
-> > read. For
-> > that, we can make use of the local lock that already exists.
-> >=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Obviously same dance in here as the related previous patch. So same
-> solution
-> needs adopting.=C2=A0 I just thought I'd reply to make sure we didn't
-> forget to
-> cover them both :)
->=20
->=20
-Hi Jonathan,
 
-So I was working on v2 in the morning and went with your
-iio_device_claim_buffer_mode() approach... And bah, well it works like
-a charm in the previous patch, it fails in this one:
+--2YvFr+H0AS5yMMpx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--               mutex_lock(&indio_dev->mlock);
--               if (!iio_buffer_enabled(indio_dev))
-+               if (iio_device_claim_buffer_mode(indio_dev)) {
-                        ret =3D max30102_get_temp(data, val, true);
--               else
-+               } else {
-                        ret =3D max30102_get_temp(data, val, false);
--               mutex_unlock(&indio_dev->mlock);
--               if (ret)
-+                       iio_device_release_buffer_mode(indio_dev);
-+               }
-+               if(ret)
-                        return ret;
+Add IIO_STATIC_CONST_DEVICE_ATTR macro for creating an read-only
+iio_dev_attr which returns constant value. This macro is intended to be
+used when replacing the IIO_CONST_ATTR - attributes for triggered
+buffers because the triggered buffer attributes must be of type
+iio_dev_attr.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+I am not thrilled about how keyword 'static' is handled here but in my
+calendar this day seems to be called the day of the developer without
+working ideas. Feel free to suggest something if you guys have more
+luck with ideas. :) And I still think this macro is better than adding
+the summy 'show' callback in each individual driver :/
+
+ include/linux/iio/sysfs.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/include/linux/iio/sysfs.h b/include/linux/iio/sysfs.h
+index e51fba66de4b..de5bb125815c 100644
+--- a/include/linux/iio/sysfs.h
++++ b/include/linux/iio/sysfs.h
+@@ -97,6 +97,17 @@ struct iio_const_attr {
+ 	=3D { .string =3D _string,						\
+ 	    .dev_attr =3D __ATTR(_name, S_IRUGO, iio_read_const_attr, NULL)}
+=20
++#define IIO_STATIC_CONST_DEVICE_ATTR(_name, _string)				\
++	static ssize_t iio_const_dev_attr_show_##_name(			\
++					struct device *dev,		\
++					struct device_attribute *attr,	\
++					char *buf)			\
++	{								\
++		return sysfs_emit(buf, "%s\n", _string);		\
++	}								\
++	static IIO_DEVICE_ATTR(_name, 0444,				\
++			       iio_const_dev_attr_show_##_name, NULL, 0)
++
+ /* Generic attributes of onetype or another */
+=20
+ /**
+--=20
+2.37.3
 
 
-Note that if we are not in buffered mode we won't get mlock and call
-max30102_get_temp(data, val, true) without any lock. While it's very
-unlikely for someone, in the meantime, to enable the buffer and then
-disable it, it's still racy and possible (at least in theory).
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
-So, I'm thinking again on the flag approach... Just check my comment
-(in the previous patch) about it being refcounted. I mean, I might be
-missing something, but if we need a refcount, I would say things would
-be already (potentially) broken, right?
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
 
-With this step back, I'm planning on a v2 in the beginning of the week
-after we have this sorted out (and I guess we need to settle things
-also in the ad799x patch)
+--2YvFr+H0AS5yMMpx
+Content-Type: application/pgp-signature; name="signature.asc"
 
-- Nuno S=C3=A1
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmM2yr4ACgkQeFA3/03a
+ocV+IQf+KnlB/0pYgeZf3Rc8bquy7j39FdT601xZPf43MK3TyyP6SaiPW1eRDLzo
+D4NP8eDYp4RO8ceMgzodKKNoKsDc7HTH/KGUmnc3Eo3SF7m7knL6peIXgB8mWbFx
+C44Nj4OINEnB+DshtqzBZjNCzICa2bUq7ZQ8Xb3Qi4OUuUrXZbrgQuYiU4kmoa9j
+UZ7VN+fiYurFa7/Fq8NYXNk4uNt/EtbA0J7wzzDfg5aplM0b4Qz2d8d4By26mXUm
+H1ik3qMvxMNfI3yMbRy1tVQry3CrHGdTEjZoCSxXp8yzlR+lsu2hH9HUhYuKvcUL
+joLoK0nBy7/Fm3k7yh606lQERdepMA==
+=sil0
+-----END PGP SIGNATURE-----
+
+--2YvFr+H0AS5yMMpx--

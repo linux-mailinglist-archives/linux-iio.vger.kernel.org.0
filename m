@@ -2,123 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 650C85F10DD
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Sep 2022 19:30:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD185F1660
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Oct 2022 00:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbiI3Rav (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Sep 2022 13:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41098 "EHLO
+        id S231204AbiI3W5p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Sep 2022 18:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232343AbiI3RaV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Sep 2022 13:30:21 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80ECC77DD;
-        Fri, 30 Sep 2022 10:30:17 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id p5so5482701ljc.13;
-        Fri, 30 Sep 2022 10:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date;
-        bh=y3ldtOTPE4r5odoH0+tTaflEwixWUb/0F7j9EagJulU=;
-        b=R9XqN/5CgHjv85wlJMJb1mshI6f6474mxDwiMmNEUo2an4lbvQ0zUTEHchwfVW3O38
-         SfUGECAfFzMeiPePod6xKEF1u8NzrbCSUZI0uA816Vsr+264sfbGxmuacxe7KGLVPgmH
-         mYoiO0mzWFna5SVOOiQHFBu/8tN4Byos61jg9D0eiITmecZ9SZhGzQ/oeihf6UpDhIR6
-         ooeN/RgP2s6AjN73Qs891g28DFyRgo5Zm1qhVJmt3WYW679SNReFtEGqdVeUE9UVFLQW
-         pvAMtJTt2yXYAezLeHPuU0N1PxWRE7gKJ2hldntTRBoj1RS6zlajfHwK+cU1y84Ye7BF
-         tISQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=y3ldtOTPE4r5odoH0+tTaflEwixWUb/0F7j9EagJulU=;
-        b=XJQIcMWmizk4tbRhPm/lN7riiT6R4FaC9DRAFHOyG2d+MDaRcgMkeCnHgUAkQJWN8c
-         3DOmedGH+Grv0uVusq6krz21htyjuw/gb7gcfu8Nn8FqFlYGCP6zDTIZzy3LNl6rId+B
-         sw/qJrKCooXIx6ofScBjhhSJq/g9H8qx5OnXBcUWwZAy5nebEv5PwihWcuGE55VthHyH
-         DaFCWUMdrWzqpLd0AGKSjzXCV3Uha9bpiuOBF3TcIg+ZhHpOt2mtdDr090kES35vqxkP
-         dKZTHPVESRNlVzy/wPX7aAUwMREGp5qcDEwNrDes/U7AhVrtUjQFPYwHQ0TeHh7cgz3M
-         n1Cw==
-X-Gm-Message-State: ACrzQf17dmmGrpPbvaRXDFnoPwve4HcsKebqNBY8FGDSiMXn9Lk1fBBb
-        RrQsGr48AK0sPwSeRSLsiN9kUrzi134=
-X-Google-Smtp-Source: AMsMyM77+DIeooxXytl4jtyCbXyZIpZrVPy8CSkX0rd5YOYHquHrAwTFR7RRc44FEuPP2DabYn3kPw==
-X-Received: by 2002:a2e:7e0a:0:b0:26c:5aec:f849 with SMTP id z10-20020a2e7e0a000000b0026c5aecf849mr3429140ljc.296.1664559013131;
-        Fri, 30 Sep 2022 10:30:13 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id w8-20020a05651204c800b004a03fd4476esm347761lfq.287.2022.09.30.10.30.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Sep 2022 10:30:12 -0700 (PDT)
-Message-ID: <7921d7e8-09c8-dd68-8c0d-aef33e4ecbd1@gmail.com>
-Date:   Fri, 30 Sep 2022 20:30:03 +0300
+        with ESMTP id S230283AbiI3W5o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Sep 2022 18:57:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCBC13C840;
+        Fri, 30 Sep 2022 15:57:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 28AD4B82AA2;
+        Fri, 30 Sep 2022 22:57:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAA6C433D6;
+        Fri, 30 Sep 2022 22:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1664578660;
+        bh=lmKL7buOIcBCLg9QEZp/Zv0D0aOHO0tS1dI9NAZLDKA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qEdnmL6pt+ncwenmBMM11NkZs6RnX5tnZJ6ZU574DjGrVdAd7xlQuXXOcweEgs/03
+         Ycp3D1UBLca4WnW0Gc7nh5A3CRI088KX/rcfsM+AnEl+AoSQKk+XrFPMyD0qzUi+83
+         JxXtCfZkWwJkjUIFxACIJb0ymWdOGXBjW1D3N1QYZUmcoYsWKz9gDAr1j2+AWgklNS
+         6B2pI9AgeZYzdUoy0UB1MutjkyiR7DAvJbgVCYuNZP7REFI+0kb5Dw+OBqggwXbVk9
+         EgdGDOc59B7w8OU3BZe1kwkbPjykctZhxl+o3LP1AqLWhhuQ9YSyLqnfhPRRLiAWHv
+         wD5i6SBN7myFw==
+Date:   Fri, 30 Sep 2022 18:57:36 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lee Jones <lee@kernel.org>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter driver
+Message-ID: <Yzd0YAWG/W9RNLQA@ishi>
+References: <20220926132114.60396-1-biju.das.jz@bp.renesas.com>
+ <YzNztKSYQPQrnV7k@fedora>
+ <OS0PR01MB59228FA93ED4D6DB8D9B799D86549@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-To:     kernel test robot <lkp@intel.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     kbuild-all@lists.01.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <876c338d0ae33a474a3ff95d4350d45bd4779066.1664534676.git.mazziesaccount@gmail.com>
- <202209302235.hHrSjkSb-lkp@intel.com>
-Content-Language: en-US
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH 2/2] iio: Fix unsafe buffer attributes
-In-Reply-To: <202209302235.hHrSjkSb-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="MpzE21/J3ughFNeW"
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB59228FA93ED4D6DB8D9B799D86549@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi dee Ho peeps,
 
-On 9/30/22 17:17, kernel test robot wrote:
-> Hi Matti,
-> 
-> I love your patch! Yet something to improve:
+--MpzE21/J3ughFNeW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Ouch.
+On Wed, Sep 28, 2022 at 06:14:57AM +0000, Biju Das wrote:
+> Hi William Breathitt Gray,
+>=20
+> Thanks for the feedback.
+>=20
+> > Subject: Re: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter driver
+> >=20
+> > On Mon, Sep 26, 2022 at 02:21:06PM +0100, Biju Das wrote:
+> > > The RZ/G2L multi-function timer pulse unit 3 (MTU3a) is embedded in
+> > > the Renesas RZ/G2L family SoC's. It consists of eight 16-bit timer
+> > > channels and one 32-bit timer channel. It supports the following
+> > > functions
+> > >  - Counter
+> > >  - Timer
+> > >  - PWM
+> > >
+> > > This patch series aim to add MFD and counter driver for MTU3a.
+> > > Subsequent patch seies will add TImer and PWM driver support also
+> > > enhancements to counter driver.
+> >=20
+> > Hello Biju,
+> >=20
+> > I see this device consists of several channels, but only one Count is
+> > defined in the counter patch ("Channel 1 Count"). Do all channels
+> > support counting, or is it limited to just one channel?
+>=20
+> It is like this
+> MTU1 channel :- 1 16-bit phase counter
+> MTU2-Channel :- 1 16-bit phase counter
+> MTU1 + MTU2 channel combined:- 1 32-bit phase counter
+> Other channels are not supporting phase counting.
+>=20
+> Each counter device will have 1 channel. Currently it supports
+> 16-bit phase counting.
+>=20
+> Please see my test program. Am I missing something here?
+>=20
+> My test program:-
+>=20
+> echo 1 > /sys/bus/counter/devices/counter0/count0/enable
+> echo 50 > /sys/bus/counter/devices/counter0/count0/ceiling
+> devmem2 0x10001391 b 0x00 # Enable phase clock selection A for MTU2.
+> echo 1 > /sys/bus/counter/devices/counter1/count0/enable
+> echo 50 > /sys/bus/counter/devices/counter1/count0/ceiling
+>=20
+> for i in {1..5};
+> do cat /sys/bus/counter/devices/counter0/count0/count ;
+> cat /sys/bus/counter/devices/counter0/count0/direction;
+> cat /sys/bus/counter/devices/counter1/count0/count;
+> cat /sys/bus/counter/devices/counter1/count0/direction;
+> done
+>=20
+> Cheers,
+> Biju
 
-I overlooked the fact that the buffer was also used by iio-dmaengine 
-(which I had not configured to be compiled). Also the 
-cros_ec_sensors_core.c evaded my grep.
+I'm not familiar with this hardware, but it looks like MTU1 and MTU2 are
+on the same device. I think a more natural way to expose this
+functionality in the Counter subsystem would be to define a Count for
+each count value you can support; so something like this (all under
+/sys/bus/counter/devices/counter0):
 
-Changing these to use iio_dev_attrs as well seems trivial - but I am 
-afraid there may be other culprits if the pointers to those buffer 
-attributes are memcpy()-ed somewhere else as well... (The attribute wrap 
-function did this).
+* count0 :- MTU1
+* count1 :- MTU2
+* count3 :- MTU1 + MTU2
 
-I will include cros_ec_sensors_core.c and industrialio-dmaengine.c 
-changes and re-spin the series - but I guess I need to add [RFT] here...
+You can then control the phase selection using a top-level Counter
+device extension (e.g. /sys/bus/counter/devices/counter0/phase) that
+configures whether you're in 16-bit phase or 32-phase counting mode.
 
-Best regards
-	-- Matti
+William Breathitt Gray
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+--MpzE21/J3ughFNeW
+Content-Type: application/pgp-signature; name="signature.asc"
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+-----BEGIN PGP SIGNATURE-----
 
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCYzd0YAAKCRC1SFbKvhIj
+K1NmAP0T9ebAjj5jOdsLtJEGgcdaNQkv7lQ/geskbeNovsFycAD/d6QOE0LVfQU3
+bRDGLHemU/QsmfDjnd6eHuRDpAA2ZwQ=
+=61Rh
+-----END PGP SIGNATURE-----
+
+--MpzE21/J3ughFNeW--

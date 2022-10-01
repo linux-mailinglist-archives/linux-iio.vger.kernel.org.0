@@ -2,52 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAC195F1E1D
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Oct 2022 19:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3EE5F1E41
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Oct 2022 19:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbiJARGy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Oct 2022 13:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60288 "EHLO
+        id S229604AbiJARLV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Oct 2022 13:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229516AbiJARGx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Oct 2022 13:06:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A8C52FF0;
-        Sat,  1 Oct 2022 10:06:52 -0700 (PDT)
+        with ESMTP id S229566AbiJARLL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Oct 2022 13:11:11 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCE65A882;
+        Sat,  1 Oct 2022 10:11:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34BD760C4A;
-        Sat,  1 Oct 2022 17:06:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA88C433D6;
-        Sat,  1 Oct 2022 17:06:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 520BDB8076E;
+        Sat,  1 Oct 2022 17:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392F2C433D6;
+        Sat,  1 Oct 2022 17:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664644011;
-        bh=MTFgoasZOI2r6PWIfdfJRvXu8XSX6/GwRTvzGgTtMko=;
+        s=k20201202; t=1664644266;
+        bh=8/44+tCSDFyhjA92zaYauwO92/g0g3Xh1rsDr7QVWcU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rEPNkihZDnMSdkZ5yqin0vDPB9pYAujJMTk3YPx6sHpnI9B1hYif1SnSuN22pxKi/
-         pAGGgMw64DhnLqIqRjYwOcwHH8f+iEJZ3i4DMVzvWarfPfj83Hff/WzR1SNp+f1AYF
-         SYCKLtqIqul4aKRUHtykPfw58amriVgz+rtQ3kd6zH6vQaRkQB6nM7hq4rBXQQ9d9N
-         hyU7Rz6wGMjB/tvrYjvKty291JCguZvMd+1W/YV9qsX7p39GSECSNaX1rvjshFgiQQ
-         /QDovvtKAvfESxDUGrWbezQ+2h5vSxYOsTKk4asNp211k5N1xdKzmksD9139qFtDOW
-         ig5hX5I7gobrA==
-Date:   Sat, 1 Oct 2022 18:07:05 +0100
+        b=qmheUtIfr5JybckX7f7bA9Sd3Py8wBG14xJCadq/+nk6NPIk5qQI/rioK0VZT9Ou3
+         qLzTCn/nLQAlNGDG6JpXFxnVCavpzpB2/OvcNreWI6yqLH9LIKn8rjUs/6cTHgI++k
+         9D58XicM9lDLXIcDIywsUITbNqDeKwLeGntsiHqKNaAp+doEnWZaEhD637mab7dlux
+         OwMPtsOK9QULS9GD6Tlcy+qKFSkh+Ojg4eoi6EDB3ymwYDjsXT/2Bpaed0JnB5LB4F
+         mov9I9irgRKH0x6IfWtrvmD/hFKht/ZbdV7jcHjeQITd2EMzJTxQRQEQ+059ise5pA
+         P5Ks5UgL1YkRg==
+Date:   Sat, 1 Oct 2022 18:11:17 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Lee Jones <lee@kernel.org>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] iio: adc: twl4030-madc: add missing of.h include
-Message-ID: <20221001180705.7002796a@jic23-huawei>
-In-Reply-To: <YzMisM73yj/APB86@smile.fi.intel.com>
-References: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
-        <20220927154611.3330871-3-dmitry.torokhov@gmail.com>
-        <YzMisM73yj/APB86@smile.fi.intel.com>
+To:     Lee Jones <lee@kernel.org>
+Cc:     Rob Herring <robh@kernel.org>, ChiaEn Wu <peterwu.pub@gmail.com>,
+        pavel@ucw.cz, krzysztof.kozlowski+dt@linaro.org,
+        matthias.bgg@gmail.com, lars@metafoo.de,
+        andriy.shevchenko@linux.intel.com, chiaen_wu@richtek.com,
+        alice_chen@richtek.com, cy_huang@richtek.com,
+        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, szunichen@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v12 3/5] iio: adc: mt6370: Add MediaTek MT6370 support
+Message-ID: <20221001181117.7b3f3297@jic23-huawei>
+In-Reply-To: <YzXbJM31s0P0nLD5@google.com>
+References: <cover.1663926551.git.chiaen_wu@richtek.com>
+        <9bf36f09bc5f002f2b09b7cc26edccf109516465.1663926551.git.chiaen_wu@richtek.com>
+        <20220924155525.5663bed8@jic23-huawei>
+        <YzFY5FI0PrZqdAiZ@google.com>
+        <CAL_JsqKKJGtacbzGqCupFniSGha610L1cay2V+AK8vehTA=F=g@mail.gmail.com>
+        <YzQSnuwPjzJIgsYq@google.com>
+        <20220929163418.GA2270491-robh@kernel.org>
+        <YzXbJM31s0P0nLD5@google.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,51 +71,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Sep 2022 19:20:00 +0300
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 29 Sep 2022 18:51:32 +0100
+Lee Jones <lee@kernel.org> wrote:
 
-> On Tue, Sep 27, 2022 at 08:46:11AM -0700, Dmitry Torokhov wrote:
-> > The driver is using of_device_id/of_match_ptr() and therefore needs
-> > to include of.h header. We used to get this definition indirectly via
-> > inclusion of matrix_keypad.h from twl.h, but we are cleaning up
-> > matrix_keypad.h from unnecessary includes.  
+> On Thu, 29 Sep 2022, Rob Herring wrote:
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to take a look.
+> > On Wed, Sep 28, 2022 at 10:23:42AM +0100, Lee Jones wrote:  
+> > > On Mon, 26 Sep 2022, Rob Herring wrote:
+> > >   
+> > > > On Mon, Sep 26, 2022 at 2:46 AM Lee Jones <lee@kernel.org> wrote:  
+> > > > >
+> > > > > On Sat, 24 Sep 2022, Jonathan Cameron wrote:
+> > > > >  
+> > > > > > On Fri, 23 Sep 2022 10:51:24 +0800
+> > > > > > ChiaEn Wu <peterwu.pub@gmail.com> wrote:
+> > > > > >  
+> > > > > > > From: ChiaEn Wu <chiaen_wu@richtek.com>
+> > > > > > >
+> > > > > > > MediaTek MT6370 is a SubPMIC consisting of a single cell battery charger
+> > > > > > > with ADC monitoring, RGB LEDs, dual channel flashlight, WLED backlight
+> > > > > > > driver, display bias voltage supply, one general purpose LDO, and the
+> > > > > > > USB Type-C & PD controller complies with the latest USB Type-C and PD
+> > > > > > > standards.
+> > > > > > >
+> > > > > > > Add support for the MT6370 ADC driver for system monitoring, including
+> > > > > > > charger current, voltage, and temperature.
+> > > > > > >
+> > > > > > > Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> > > > > > > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > > > > > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > > > > Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>  
+> > > > > >
+> > > > > > This will have to either wait for next cycle, or go through mfd because
+> > > > > > of the dt-bindings include which is in the mfd tree.
+> > > > > >
+> > > > > > Please make those dependencies clear in new versions.  
+> > > > >
+> > > > > If the bindings come together in -next, then subsequently in Mainline,
+> > > > > it shouldn't really matter.  
+> > > > 
+> > > > Except that the bindings haven't come together and at this point may
+> > > > not for 6.1. linux-next has been warning for weeks because the child
+> > > > device schemas haven't been applied. I've said it before, all the
+> > > > schemas for MFD devices need to be applied together. Or at least the
+> > > > MFD schema needs to get applied last.
+> > > > 
+> > > > Furthermore, subsequent versions of this don't get tested and we end
+> > > > up with more warnings[1].
+> > > > 
+> > > > It's only your IIO tree that the DT  
+> > > > > tooling with complain about, right?  
+> > > > 
+> > > > And the MFD tree...
+> > > > 
+> > > > Please apply the LED bindings (patches 1 and 2) so we can get the
+> > > > existing warnings fixed and address any new warnings.  
+> > > 
+> > > Who usually applies LED bindings?  Looks as though they're good to go.  
+> > 
+> > Pavel. The issue would be I don't know if the driver side is ready and 
+> > those usually go together. Other than my complaining here, how's he 
+> > supposed to know that the bindings at least need to be applied?
+> > 
+> > Again, the process here is not working. I've said before, all the 
+> > bindings for an MFD need to go via 1 tree. You obviously don't agree, so 
+> > propose something. The current process of no coordination doesn't work.  
+> 
+> The solution would be for someone to create succinct immutable branches, like
+> I do for real code.  If someone would be happy to do that, I'd be more than
+> happy to pull from them.
+> 
+> I go to the effort of creating them to prevent actual build breakages,
+> however doing so to keep a documentation helper script happy is a step
+> too far for me personally, sorry.
+> 
 
-Note that this is 6.2 material now - if that's an issue for the matrix_keypad.h
-cleanup then feel free to take it via the input tree with
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-but shout in reply to this so I know to drop it from the iio tree.
-
-Thanks,
+In this case the bindings include is included from the driver - not just the
+binding.  Obviously there are dances to get around that by using the values
+and replacing in following cycle, but that's not the case here!
 
 Jonathan
-
-> 
-> > Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > ---
-> > 
-> > v2: adjusted patch description
-> > 
-> >  drivers/iio/adc/twl4030-madc.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
-> > index f8f8aea15612..c279c4f2c9b7 100644
-> > --- a/drivers/iio/adc/twl4030-madc.c
-> > +++ b/drivers/iio/adc/twl4030-madc.c
-> > @@ -30,6 +30,7 @@
-> >  #include <linux/types.h>
-> >  #include <linux/gfp.h>
-> >  #include <linux/err.h>
-> > +#include <linux/of.h>
-> >  #include <linux/regulator/consumer.h>
-> >  
-> >  #include <linux/iio/iio.h>
-> > -- 
-> > 2.38.0.rc1.362.ged0d419d3c-goog
-> >   
-> 
 

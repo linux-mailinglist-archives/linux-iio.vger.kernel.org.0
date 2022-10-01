@@ -2,550 +2,243 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC1935F1AA8
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Oct 2022 09:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2345F1DD5
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Oct 2022 18:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229453AbiJAHoi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 1 Oct 2022 03:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52562 "EHLO
+        id S229771AbiJAQqt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 1 Oct 2022 12:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbiJAHog (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Oct 2022 03:44:36 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C97BE02;
-        Sat,  1 Oct 2022 00:44:32 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id bu25so9997109lfb.3;
-        Sat, 01 Oct 2022 00:44:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=Zrk8mMOYRvMXykPL6+lWBLlUqqbKyepPjX2K1o0c+68=;
-        b=XAirTmxE0Nl0p/bhjlJ/6/H54QUXWo3RNAJ+Di38WmOWAm6U2aPEp7V5ZVhwqDt6Tx
-         t5X5OBseQSfRrzR7x96+u2NLXpL9wTd+RPmgDzsyex8ANcmcyx4M8cAE8XKH4CqjFqPJ
-         ERU1B/KPawyzth1xFXKkpCvxNAhD8qY+KmP30ngWppoHnR+4ODUsnnXw05zlKH3F/Iat
-         xgMqpARqHsrmLfzz0p4+DYxW7nVnzSpnRci0As/PUdXFHeelzOSWqjTruYdXql/f5FX4
-         /60HNvsPcUteKLz5IvYW6pTLTFF4NK86+0Nr6HEjdgeCWDUGt3gTpXPT462YpHa9596J
-         1Vdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=Zrk8mMOYRvMXykPL6+lWBLlUqqbKyepPjX2K1o0c+68=;
-        b=YA+Ng202w1bt5yE49iunzfMtO5zW7cl22bH5CSRHFCMOvPbUI25GeF4XPXfWDPdJMs
-         4EUW94yM+MuSj4QCEGHGiqRDaFgFpVCMKAXgrRSiXL5Ym0/D2ywkE4FDyv+wsBB6MBUi
-         s2SluWPALVK07nMDhVQDJ4Y5VnvxgMCq9jAgkT7Uw8/Lo0vJhJmOAXXrQ0/VLov9sBpv
-         3SQ/+658cvXR5bv4Es6WdhaUlAgHEzXP6nxQFaf/d0xlpvxAxZt0Yp0SXGdvm8QvI+i4
-         KAIhOntMRLmQBZ83SOCJiSWpw0j/pPe6ic/GBhiZsQT+MLleGqpcLOttSz0+kor1vbMP
-         3GLA==
-X-Gm-Message-State: ACrzQf2o2ez3QT5qPi1uUnVIMtIM8FSwBiBE2GbMu2jJIelqFFWQRZr4
-        gV8aEezvk8rQfI5U3tCnK1I=
-X-Google-Smtp-Source: AMsMyM5H4dcrsYnOJ5jK8XPktSdRIVQiTRa3N7ssRVHGPVSMapRIa2WCLECIho8rBf5CcSMaoQwp7w==
-X-Received: by 2002:a05:6512:3da1:b0:49f:1b3d:88b9 with SMTP id k33-20020a0565123da100b0049f1b3d88b9mr4235294lfv.67.1664610270436;
-        Sat, 01 Oct 2022 00:44:30 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id bi8-20020a0565120e8800b00497ac35ae1esm667328lfb.85.2022.10.01.00.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Oct 2022 00:44:29 -0700 (PDT)
-Date:   Sat, 1 Oct 2022 10:44:23 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        with ESMTP id S229834AbiJAQqY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 1 Oct 2022 12:46:24 -0400
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2130.outbound.protection.outlook.com [40.107.114.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64FA92F002;
+        Sat,  1 Oct 2022 09:45:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kfzElTcYZKmib7o/c8pWmb5yTpuic8trKat/IiciUWH2NlFcHYhravnJy0AUWbEw/nZkTqGFDKGKHql7da9+peDsC8BoCn4rWNErYu8S8KwIWygCcu5VL90MxItZsduoYLLvNrwe882LigzNmnH2828/nP2v0MkICz4CnOKd2rcz8p4wGcHz4CIXDYtF1l9SoslgxHGj1ZZnTa/QlM1GApmLEp92kaYOY6Vt5ljeCb7oBWo+kD6PafIprSPsQFNqqyhtoyWIUXtQLVSwkb3v+4iMHUAdfPJAOkdL1jUoX/SAh6ElD5/0a2/uxlltysC1Ryd+13tOpPB5hotLoibTZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N7UtZ00YMyZvWnrEMicowNLLp+emcUIjhsZ/wRMJOHI=;
+ b=iohQHzRzYX6u0w/cZeDc93RUou5LZFfqObXzDlOViE5MxSjI0hDgHwJT1Ukqv82T8QM4zICrhzaOSNKw/EL+lkt/B4vslMfSUWuMcGYgiPb8eBZ/GNKGR/9XW6vaTCThPsCh62ewliGpnJuhw23Yf8C/shnZLSGti8DgifU6DftInR2IvcV+ivDkfIEWlgA5hW0/jfpAAOcp+/kJM1cBj/gsJudBT1Db63z5MvteKbzV4/4dcd8k5ENBMC0kLEPVduasjHBpz+j5UyOTPhGQPSgemllhDwV8d4QkzFMhY/q7BRMZMTofaDws6065h3c1+2vY+6dXzNbSi6DZqhD08Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=N7UtZ00YMyZvWnrEMicowNLLp+emcUIjhsZ/wRMJOHI=;
+ b=noY3usekDzszIXrXwV9FOoPD1tiF4AY7MWU7pcuQO4EysXDJM3Cz6Orr16azsXmKQ8C7IykyJynSDs/9fjnodfHYkFOQ1kiwwzptUMS1JLNXw/4SCBeuLKQGguGbCZ5u5SokNw4c6VTfh7l8hcR+hpxQlvmkB4bDJJ80QAI2BxI=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by TY1PR01MB10642.jpnprd01.prod.outlook.com (2603:1096:400:325::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5676.24; Sat, 1 Oct
+ 2022 16:45:55 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::73a6:588d:1198:7262]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::73a6:588d:1198:7262%7]) with mapi id 15.20.5676.026; Sat, 1 Oct 2022
+ 16:45:55 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <wbg@kernel.org>
+CC:     William Breathitt Gray <william.gray@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lee Jones <lee@kernel.org>,
+        =?iso-8859-1?Q?Uwe_Kleine-K=F6nig?= 
         <u.kleine-koenig@pengutronix.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev
-Subject: [RFT PATCH v2 2/2] iio: Fix unsafe buffer attributes
-Message-ID: <614bb5336c2922578da60a43570f42018623557a.1664610071.git.mazziesaccount@gmail.com>
-References: <cover.1664610071.git.mazziesaccount@gmail.com>
+        "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter driver
+Thread-Topic: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter driver
+Thread-Index: AQHY0arfC6iQwXKfcEeqoNkH1bZYIq3z1zkAgACGWoCABD8nAIABKKwQ
+Date:   Sat, 1 Oct 2022 16:45:55 +0000
+Message-ID: <OS0PR01MB59225B1CA8935C958BBA8AA186599@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20220926132114.60396-1-biju.das.jz@bp.renesas.com>
+ <YzNztKSYQPQrnV7k@fedora>
+ <OS0PR01MB59228FA93ED4D6DB8D9B799D86549@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <Yzd0YAWG/W9RNLQA@ishi>
+In-Reply-To: <Yzd0YAWG/W9RNLQA@ishi>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TY1PR01MB10642:EE_
+x-ms-office365-filtering-correlation-id: 88ceaf2a-f2d1-4a15-2772-08daa3cc68fa
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: AdpzImMkol1jqJdgBW2aOPcsOn1lXQK8Lomjdrrvb4/A1JtyIe/g6h0C+j/ehtgB3OqUX95aEPPvtUVlw4tLjWLD1TBNemQ46RjxNlGBcM+JrOnvdmEkISEq3aQr3j106CVWG3uuIVA6RZDS1DdOSsq3j69ssZMEBJeAox3xWy31UZNQJAe3IrRWmg3D/ItqytTa8XrwksBg9+ZpdmSDjtCeRv6v0EZ/DpiCxo7XiTw+OQtF9tzWFfkP9MJ9XMSl+dHkfOMFVTEU1xqXeomRcV9+3ghUapc1wuW2zbnbz/SwNicdp2m4uRLt9lHTXLKJPueyRDPj63/j/DFcfYCaza5qjgvwLAxrulGeLMemwOOYtwVH0w5dp0CzwNWHRQKf3cJNDmI2fnSKXGqkgx9fkbO/ChjCxADvV4vKTlOL7s57WjuCohgyB5fNGtoez2FFyQsN2lavKX0Fs5oBxdfBJBoQ0X3u7IZFEAfqQ4n31pe+bw1xhF0SEjXZEaAH1N2mtVuAQD7nPHMLVx898rnTdQCGs3GtCtqiGhkGOZ+jKXQXrNfp1og7vUy9pxPT6svCSE+AeCLfaOkCxHnpAH8pAsVsebn4XUWMCnGS7QqSlYEZZLYC8v8bxslH/NJOX0Wl8+JKo97bfJ+HvZfFeUan1JqyGzdaDbYFCg8lXpehvBTw+h8twF3JjpMK8F5nmqqdujGbqb3trXjoB4wGATlCSYyUnsRFkYFFrxfsmN1AnmntdvWbd8mMpPf/Y3mgCI4olmIYCnXSC3dq9eZlVtFhI1fNPR576f1ZS1akG3vist8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(376002)(396003)(366004)(136003)(39860400002)(451199015)(7416002)(26005)(8936002)(55016003)(5660300002)(6506007)(52536014)(7696005)(9686003)(186003)(2906002)(122000001)(83380400001)(316002)(54906003)(6916009)(71200400001)(41300700001)(66556008)(38070700005)(478600001)(86362001)(66446008)(66476007)(64756008)(8676002)(4326008)(33656002)(66946007)(76116006)(38100700002)(32563001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?rfw6ptAUpIIGuuzlE3uk7zTt1MrIKQu3hk/JzoYLCeQ6zVm/n0Ryrw2JNW?=
+ =?iso-8859-1?Q?I06fnHPKc++Eoe44WCFDGf9oUGhqHbSwX7w2Os8Gofwo3D7wsjvIoMtt1j?=
+ =?iso-8859-1?Q?qfkpuCKT/7shGewds5F37s/fq34Rl7Yy4HsFRZSxUyQpHmJLCxnHh0pPMs?=
+ =?iso-8859-1?Q?Rd7bTNK4lrQ+ZeIM0Tq882lk4nO5YY629XG9puy4XirYuR/ce1EtR4f/v2?=
+ =?iso-8859-1?Q?7LhCetyN623YAMFGlZx2PUf62LFRO+nqRO8IlWN/q8wmBQ/yBQgIDzLQuJ?=
+ =?iso-8859-1?Q?Pdo9mZrdc/c1y3JLc7gdOgSZKo6SEoWT0iewQIfaQuVeR3exZyGtsKHAQ1?=
+ =?iso-8859-1?Q?2EyP2/hl1FsqqOIOeY1AYV1VI407/CZVw/WIVAsJAg+bcS6/3NyzKhDrio?=
+ =?iso-8859-1?Q?LuD9cSYuUpR9mbXULWgGRO+ibHsnJwycm0bZMZbWghO7ML5XLHvXW69b/N?=
+ =?iso-8859-1?Q?MsAkqEYnAqRyzfCFuXUA6J+UafjStFVCzk4XJwIHI0MLTn5jWt3WvAaFMZ?=
+ =?iso-8859-1?Q?O7gxQtLzoqmkhYGmMEsAdICIIJXuGXm+sSCc5XGxfb2rw0KBe1alFlmx77?=
+ =?iso-8859-1?Q?0DDX8QAJgxDXwevJxrCHUSiF9mEBLoGgWPI9tH5ahtE8kOJL021dk0GbKm?=
+ =?iso-8859-1?Q?1lQV94Jlyx5fBP0rOZorYh8BWP1OnoZKT3oWp33JwHEipcicRYoCfs0ruA?=
+ =?iso-8859-1?Q?3igs5k5AUona4P42E196dACe8+F0KbS1yHuw+Dmt4to1Odoh+5WyvYxQH3?=
+ =?iso-8859-1?Q?CWLwqItofW+inkdxTwO65/n839KgfeiUjQI4Cnd/KG6y+g3f1LxqSv0lfX?=
+ =?iso-8859-1?Q?gFjFtZ+ehP06ZByZZhDFYB1KcYs4TEE7HfAgUukyo2yjk/6kmfV5k5oE0U?=
+ =?iso-8859-1?Q?PfA1fWN25PQ8EwbF+Y8wSrgreO7Y/8nhSaUbtdi9DQDwOC+b033f7VFwmm?=
+ =?iso-8859-1?Q?3dYGEAT8mQh7Z+cVOvjbst5WuRjvOzZV3uMkmnlK+ijc6MdkMlEvXWhP7S?=
+ =?iso-8859-1?Q?AUum2fMPdwYy8RV13WuP2qX3KIT4TKy3zq3KariNs11oWN3qqD19MulnP2?=
+ =?iso-8859-1?Q?jzSd9aR1mypDxt2DwQCah2NXkjPn8fmFoXwu48G4MwAWc5kq5bripN3ky6?=
+ =?iso-8859-1?Q?HMKm1jHTNJu+0iEVeE4DtL1SqWL5Pa7tn3LYWERICWQN2XGa0xr+ef5loY?=
+ =?iso-8859-1?Q?T/GRUVRMi4Nczar7L0CInX5skvCECVhZDsNMsWY+A9mdp75H2L4Q/IDgmg?=
+ =?iso-8859-1?Q?Eybp4pTaObewpwZzpWvCS6Hfpjf++rQ9Zvwq0r3qdeRkDRgSKjGTdvVQkd?=
+ =?iso-8859-1?Q?QMiXEI98ch97GQ3fmCRsrT4K5vp0o4TZ1XA0FibziN+RgIoPTw1F7+8/ex?=
+ =?iso-8859-1?Q?mx0VsakdD1OGiPJpr35ySr/jYQaDBbudSF24meLr/7A2BhmbhWo+G+3ZWD?=
+ =?iso-8859-1?Q?8EPxC0mqqPq3uA3rirjhIFmTCsd1RXiuhUQ5SusZwUkTdWVJ8X4tVBHDcl?=
+ =?iso-8859-1?Q?9z08/dYKaZlhDJUoVe+XmSvmXJIJ4m+ElOn5C1JcMC+h9X1tbZE+ERCdju?=
+ =?iso-8859-1?Q?mXoMf1IHolk1OTnRTAwvhAii/3+QqV5oXBv+dKTxTbyiLo/kAzP4q8ZbqH?=
+ =?iso-8859-1?Q?BzoyEsg0RaqxvWwEX+NiZnEY4bVIsbILmF?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="2SAsLLwBOL+UwhiY"
-Content-Disposition: inline
-In-Reply-To: <cover.1664610071.git.mazziesaccount@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 88ceaf2a-f2d1-4a15-2772-08daa3cc68fa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2022 16:45:55.6070
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: JAAU0zuPzoHLIbzQ2h5YIyKAIwZW+66AdYrOKrAfkMvrErgYxLFwtWuV3VfTaezfzhQTXt1Vy0l1VJDfjhWsljlUZNcfTirIAIUvK9KngSk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1PR01MB10642
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hi William Breathitt Gray,
 
---2SAsLLwBOL+UwhiY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for the feedback.
 
-The iio_triggered_buffer_setup_ext() was changed by
-commit 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_=
-attr")
-to silently expect that all attributes given in buffer_attrs array are
-device-attributes. This expectation was not forced by the API - and some
-drivers did register attributes created by IIO_CONST_ATTR().
+> Subject: Re: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter driver
+>=20
+> On Wed, Sep 28, 2022 at 06:14:57AM +0000, Biju Das wrote:
+> > Hi William Breathitt Gray,
+> >
+> > Thanks for the feedback.
+> >
+> > > Subject: Re: [PATCH RFC 0/8] Add RZ/G2L MTU3a MFD and Counter
+> driver
+> > >
+> > > On Mon, Sep 26, 2022 at 02:21:06PM +0100, Biju Das wrote:
+> > > > The RZ/G2L multi-function timer pulse unit 3 (MTU3a) is embedded
+> > > > in the Renesas RZ/G2L family SoC's. It consists of eight 16-bit
+> > > > timer channels and one 32-bit timer channel. It supports the
+> > > > following functions
+> > > >  - Counter
+> > > >  - Timer
+> > > >  - PWM
+> > > >
+> > > > This patch series aim to add MFD and counter driver for MTU3a.
+> > > > Subsequent patch seies will add TImer and PWM driver support
+> also
+> > > > enhancements to counter driver.
+> > >
+> > > Hello Biju,
+> > >
+> > > I see this device consists of several channels, but only one Count
+> > > is defined in the counter patch ("Channel 1 Count"). Do all
+> channels
+> > > support counting, or is it limited to just one channel?
+> >
+> > It is like this
+> > MTU1 channel :- 1 16-bit phase counter MTU2-Channel :- 1 16-bit
+> phase
+> > counter
+> > MTU1 + MTU2 channel combined:- 1 32-bit phase counter Other channels
+> > are not supporting phase counting.
+> >
+> > Each counter device will have 1 channel. Currently it supports 16-
+> bit
+> > phase counting.
+> >
+> > Please see my test program. Am I missing something here?
+> >
+> > My test program:-
+> >
+> > echo 1 > /sys/bus/counter/devices/counter0/count0/enable
+> > echo 50 > /sys/bus/counter/devices/counter0/count0/ceiling
+> > devmem2 0x10001391 b 0x00 # Enable phase clock selection A for MTU2.
+> > echo 1 > /sys/bus/counter/devices/counter1/count0/enable
+> > echo 50 > /sys/bus/counter/devices/counter1/count0/ceiling
+> >
+> > for i in {1..5};
+> > do cat /sys/bus/counter/devices/counter0/count0/count ; cat
+> > /sys/bus/counter/devices/counter0/count0/direction;
+> > cat /sys/bus/counter/devices/counter1/count0/count;
+> > cat /sys/bus/counter/devices/counter1/count0/direction;
+> > done
+> >
+> > Cheers,
+> > Biju
+>=20
+> I'm not familiar with this hardware, but it looks like MTU1 and MTU2
+> are on the same device. I think a more natural way to expose this
+> functionality in the Counter subsystem would be to define a Count for
+> each count value you can support; so something like this (all under
+> /sys/bus/counter/devices/counter0):
+>=20
+> * count0 :- MTU1
+> * count1 :- MTU2
+> * count3 :- MTU1 + MTU2
 
-The added attribute "wrapping" does not copy the pointer to stored
-string constant and when the sysfs file is read the kernel will access
-to invalid location.
+OK, sounds good. so count3 :- 32 bit phase counting
+count 0 or count1 or both then 16 bit phase counting
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_=
-attr")
+>=20
+> You can then control the phase selection using a top-level Counter
+> device extension (e.g. /sys/bus/counter/devices/counter0/phase) that
+> configures whether you're in 16-bit phase or 32-phase counting mode.
 
----
+So I need to introduce a new sysfs called phase. Use that one for
+Selecting the external clock pin for phase counting mode.
+Please correct me if I am wrong??
 
-v1 =3D> v2:
-fix also industrialio-buffer-dmaengine.c and cros_ec_sensors_core.c
+Hardware supports 4 pins for phase counting mode,
 
-The fix is only superficially tested by a ROHM/kionix KX022A driver.
-Proper testing with real in-tree IIO stuff is _highly_ appreciated.
----
- drivers/iio/accel/adxl367.c                    | 16 ++++++++--------
- drivers/iio/accel/adxl372.c                    | 16 ++++++++--------
- drivers/iio/accel/bmc150-accel-core.c          | 18 +++++++++---------
- drivers/iio/adc/at91-sama5d2_adc.c             | 16 ++++++++--------
- .../iio/buffer/industrialio-buffer-dmaengine.c |  4 ++--
- .../iio/buffer/industrialio-triggered-buffer.c |  4 ++--
- drivers/iio/buffer/kfifo_buf.c                 |  2 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c     |  6 +++---
- .../common/hid-sensors/hid-sensor-trigger.c    |  8 ++++----
- drivers/iio/industrialio-buffer.c              | 11 +++++++----
- include/linux/iio/buffer_impl.h                |  2 +-
- include/linux/iio/kfifo_buf.h                  |  3 ++-
- include/linux/iio/triggered_buffer.h           |  6 +++---
- 13 files changed, 58 insertions(+), 54 deletions(-)
+MTCLKA Input External clock A input pin (MTU1/MTU2 phase counting mode A ph=
+ase input)
+MTCLKB Input External clock B input pin (MTU1/MTU2 phase counting mode B ph=
+ase input)
+MTCLKC Input External clock C input pin (MTU2 phase counting mode A phase i=
+nput)
+MTCLKD Input External clock D input pin (MTU2 phase counting mode B phase i=
+nput)
 
-diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-index 47feb375b70b..0922ac0fad9e 100644
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -1185,19 +1185,19 @@ static ssize_t adxl367_get_fifo_watermark(struct de=
-vice *dev,
- 	return sysfs_emit(buf, "%d\n", fifo_watermark);
- }
-=20
--static IIO_CONST_ATTR(hwfifo_watermark_min, "1");
--static IIO_CONST_ATTR(hwfifo_watermark_max,
--		      __stringify(ADXL367_FIFO_MAX_WATERMARK));
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_min, "1");
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_max,
-+			     __stringify(ADXL367_FIFO_MAX_WATERMARK));
- static IIO_DEVICE_ATTR(hwfifo_watermark, 0444,
- 		       adxl367_get_fifo_watermark, NULL, 0);
- static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
- 		       adxl367_get_fifo_enabled, NULL, 0);
-=20
--static const struct attribute *adxl367_fifo_attributes[] =3D {
--	&iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
--	&iio_const_attr_hwfifo_watermark_max.dev_attr.attr,
--	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
--	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-+static const struct iio_dev_attr *adxl367_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_watermark_min,
-+	&iio_dev_attr_hwfifo_watermark_max,
-+	&iio_dev_attr_hwfifo_watermark,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
-=20
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index e3ecbaee61f7..c4193286eb05 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -998,19 +998,19 @@ static ssize_t adxl372_get_fifo_watermark(struct devi=
-ce *dev,
- 	return sprintf(buf, "%d\n", st->watermark);
- }
-=20
--static IIO_CONST_ATTR(hwfifo_watermark_min, "1");
--static IIO_CONST_ATTR(hwfifo_watermark_max,
--		      __stringify(ADXL372_FIFO_SIZE));
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_min, "1");
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_max,
-+			     __stringify(ADXL372_FIFO_SIZE));
- static IIO_DEVICE_ATTR(hwfifo_watermark, 0444,
- 		       adxl372_get_fifo_watermark, NULL, 0);
- static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
- 		       adxl372_get_fifo_enabled, NULL, 0);
-=20
--static const struct attribute *adxl372_fifo_attributes[] =3D {
--	&iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
--	&iio_const_attr_hwfifo_watermark_max.dev_attr.attr,
--	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
--	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-+static const struct iio_dev_attr *adxl372_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_watermark_min,
-+	&iio_dev_attr_hwfifo_watermark_max,
-+	&iio_dev_attr_hwfifo_watermark,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
-=20
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc1=
-50-accel-core.c
-index 57e8a8350cd1..110591804b4c 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -925,19 +925,19 @@ static const struct iio_chan_spec_ext_info bmc150_acc=
-el_ext_info[] =3D {
- 	{ }
- };
-=20
--static IIO_CONST_ATTR(hwfifo_watermark_min, "1");
--static IIO_CONST_ATTR(hwfifo_watermark_max,
--		      __stringify(BMC150_ACCEL_FIFO_LENGTH));
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_min, "1");
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_max,
-+			     __stringify(BMC150_ACCEL_FIFO_LENGTH));
- static IIO_DEVICE_ATTR(hwfifo_enabled, S_IRUGO,
- 		       bmc150_accel_get_fifo_state, NULL, 0);
- static IIO_DEVICE_ATTR(hwfifo_watermark, S_IRUGO,
- 		       bmc150_accel_get_fifo_watermark, NULL, 0);
-=20
--static const struct attribute *bmc150_accel_fifo_attributes[] =3D {
--	&iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
--	&iio_const_attr_hwfifo_watermark_max.dev_attr.attr,
--	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
--	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-+static const struct iio_dev_attr *bmc150_accel_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_watermark_min,
-+	&iio_dev_attr_hwfifo_watermark_max,
-+	&iio_dev_attr_hwfifo_watermark,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
-=20
-@@ -1665,7 +1665,7 @@ int bmc150_accel_core_probe(struct device *dev, struc=
-t regmap *regmap, int irq,
- 			    enum bmc150_type type, const char *name,
- 			    bool block_supported)
- {
--	const struct attribute **fifo_attrs;
-+	const struct iio_dev_attr **fifo_attrs;
- 	struct bmc150_accel_data *data;
- 	struct iio_dev *indio_dev;
- 	int ret;
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama=
-5d2_adc.c
-index 279430c1d88c..f994366b0778 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -1846,8 +1846,8 @@ static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
- static IIO_DEVICE_ATTR(hwfifo_watermark, 0444,
- 		       at91_adc_get_watermark, NULL, 0);
-=20
--static IIO_CONST_ATTR(hwfifo_watermark_min, "2");
--static IIO_CONST_ATTR(hwfifo_watermark_max, AT91_HWFIFO_MAX_SIZE_STR);
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_min, "2");
-+IIO_STATIC_CONST_DEVICE_ATTR(hwfifo_watermark_max, AT91_HWFIFO_MAX_SIZE_ST=
-R);
-=20
- static IIO_CONST_ATTR(oversampling_ratio_available,
- 		      __stringify(AT91_OSR_1SAMPLES) " "
-@@ -1863,11 +1863,11 @@ static const struct attribute_group at91_adc_attrib=
-ute_group =3D {
- 	.attrs =3D at91_adc_attributes,
- };
-=20
--static const struct attribute *at91_adc_fifo_attributes[] =3D {
--	&iio_const_attr_hwfifo_watermark_min.dev_attr.attr,
--	&iio_const_attr_hwfifo_watermark_max.dev_attr.attr,
--	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
--	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-+static const struct iio_dev_attr *at91_adc_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_watermark_min,
-+	&iio_dev_attr_hwfifo_watermark_max,
-+	&iio_dev_attr_hwfifo_watermark,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
-=20
-@@ -1884,7 +1884,7 @@ static int at91_adc_buffer_and_trigger_init(struct de=
-vice *dev,
- 					    struct iio_dev *indio)
- {
- 	struct at91_adc_state *st =3D iio_priv(indio);
--	const struct attribute **fifo_attrs;
-+	const struct iio_dev_attr **fifo_attrs;
- 	int ret;
-=20
- 	if (st->selected_trig->hw_trig)
-diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/i=
-io/buffer/industrialio-buffer-dmaengine.c
-index f744b62a636a..5f85ba38e6f6 100644
---- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-+++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -142,8 +142,8 @@ static ssize_t iio_dmaengine_buffer_get_length_align(st=
-ruct device *dev,
- static IIO_DEVICE_ATTR(length_align_bytes, 0444,
- 		       iio_dmaengine_buffer_get_length_align, NULL, 0);
-=20
--static const struct attribute *iio_dmaengine_buffer_attrs[] =3D {
--	&iio_dev_attr_length_align_bytes.dev_attr.attr,
-+static const struct iio_dev_attr *iio_dmaengine_buffer_attrs[] =3D {
-+	&iio_dev_attr_length_align_bytes,
- 	NULL,
- };
-=20
-diff --git a/drivers/iio/buffer/industrialio-triggered-buffer.c b/drivers/i=
-io/buffer/industrialio-triggered-buffer.c
-index 8d4fc97d1005..c7671b1f5ead 100644
---- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-+++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-@@ -41,7 +41,7 @@ int iio_triggered_buffer_setup_ext(struct iio_dev *indio_=
-dev,
- 	irqreturn_t (*thread)(int irq, void *p),
- 	enum iio_buffer_direction direction,
- 	const struct iio_buffer_setup_ops *setup_ops,
--	const struct attribute **buffer_attrs)
-+	const struct iio_dev_attr **buffer_attrs)
- {
- 	struct iio_buffer *buffer;
- 	int ret;
-@@ -110,7 +110,7 @@ int devm_iio_triggered_buffer_setup_ext(struct device *=
-dev,
- 					irqreturn_t (*thread)(int irq, void *p),
- 					enum iio_buffer_direction direction,
- 					const struct iio_buffer_setup_ops *ops,
--					const struct attribute **buffer_attrs)
-+					const struct iio_dev_attr **buffer_attrs)
- {
- 	int ret;
-=20
-diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
-index 35d8b4077376..05b285f0eb22 100644
---- a/drivers/iio/buffer/kfifo_buf.c
-+++ b/drivers/iio/buffer/kfifo_buf.c
-@@ -270,7 +270,7 @@ static struct iio_buffer *devm_iio_kfifo_allocate(struc=
-t device *dev)
- int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
- 				    struct iio_dev *indio_dev,
- 				    const struct iio_buffer_setup_ops *setup_ops,
--				    const struct attribute **buffer_attrs)
-+				    const struct iio_dev_attr **buffer_attrs)
- {
- 	struct iio_buffer *buffer;
-=20
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/dr=
-ivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 05a28d353e34..943e9e14d1e9 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -172,9 +172,9 @@ static ssize_t hwfifo_watermark_max_show(struct device =
-*dev,
-=20
- static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
-=20
--static const struct attribute *cros_ec_sensor_fifo_attributes[] =3D {
--	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
--	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-+static const struct iio_dev_attr *cros_ec_sensor_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_timeout,
-+	&iio_dev_attr_hwfifo_watermark_max,
- 	NULL,
- };
-=20
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c b/drivers/=
-iio/common/hid-sensors/hid-sensor-trigger.c
-index 1151434038d4..ad8910e6ad59 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-trigger.c
-@@ -75,9 +75,9 @@ static IIO_DEVICE_ATTR(hwfifo_timeout, 0644,
- static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
- 		       _hid_sensor_get_fifo_state, NULL, 0);
-=20
--static const struct attribute *hid_sensor_fifo_attributes[] =3D {
--	&iio_dev_attr_hwfifo_timeout.dev_attr.attr,
--	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-+static const struct iio_dev_attr *hid_sensor_fifo_attributes[] =3D {
-+	&iio_dev_attr_hwfifo_timeout,
-+	&iio_dev_attr_hwfifo_enabled,
- 	NULL,
- };
-=20
-@@ -231,7 +231,7 @@ static const struct iio_trigger_ops hid_sensor_trigger_=
-ops =3D {
- int hid_sensor_setup_trigger(struct iio_dev *indio_dev, const char *name,
- 				struct hid_sensor_common *attrb)
- {
--	const struct attribute **fifo_attrs;
-+	const struct iio_dev_attr **fifo_attrs;
- 	int ret;
- 	struct iio_trigger *trig;
-=20
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-b=
-uffer.c
-index acc2b6c05d57..cc7ebafae571 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1599,6 +1599,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct i=
-io_buffer *buffer,
- {
- 	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(indio_dev);
- 	struct iio_dev_attr *p;
-+	const struct iio_dev_attr *id_attr;
- 	struct attribute **attr;
- 	int ret, i, attrn, scan_el_attrcount, buffer_attrcount;
- 	const struct iio_chan_spec *channels;
-@@ -1608,6 +1609,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct i=
-io_buffer *buffer,
- 		while (buffer->attrs[buffer_attrcount] !=3D NULL)
- 			buffer_attrcount++;
- 	}
-+	buffer_attrcount +=3D ARRAY_SIZE(iio_buffer_attrs);
-=20
- 	scan_el_attrcount =3D 0;
- 	INIT_LIST_HEAD(&buffer->buffer_attr_list);
-@@ -1650,7 +1652,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct i=
-io_buffer *buffer,
- 		}
- 	}
-=20
--	attrn =3D buffer_attrcount + scan_el_attrcount + ARRAY_SIZE(iio_buffer_at=
-trs);
-+	attrn =3D buffer_attrcount + scan_el_attrcount;
- 	attr =3D kcalloc(attrn + 1, sizeof(*attr), GFP_KERNEL);
- 	if (!attr) {
- 		ret =3D -ENOMEM;
-@@ -1665,10 +1667,11 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct=
- iio_buffer *buffer,
- 		attr[2] =3D &dev_attr_watermark_ro.attr;
-=20
- 	if (buffer->attrs)
--		memcpy(&attr[ARRAY_SIZE(iio_buffer_attrs)], buffer->attrs,
--		       sizeof(struct attribute *) * buffer_attrcount);
-+		for (i =3D 0, id_attr =3D buffer->attrs[i];
-+		     (id_attr =3D buffer->attrs[i]); i++)
-+			attr[ARRAY_SIZE(iio_buffer_attrs) + i] =3D
-+				(struct attribute *)&id_attr->dev_attr.attr;
-=20
--	buffer_attrcount +=3D ARRAY_SIZE(iio_buffer_attrs);
- 	buffer->buffer_group.attrs =3D attr;
-=20
- 	for (i =3D 0; i < buffer_attrcount; i++) {
-diff --git a/include/linux/iio/buffer_impl.h b/include/linux/iio/buffer_imp=
-l.h
-index e2ca8ea23e19..89c3fd7c29ca 100644
---- a/include/linux/iio/buffer_impl.h
-+++ b/include/linux/iio/buffer_impl.h
-@@ -123,7 +123,7 @@ struct iio_buffer {
- 	struct attribute_group buffer_group;
-=20
- 	/* @attrs: Standard attributes of the buffer. */
--	const struct attribute **attrs;
-+	const struct iio_dev_attr **attrs;
-=20
- 	/* @demux_bounce: Buffer for doing gather from incoming scan. */
- 	void *demux_bounce;
-diff --git a/include/linux/iio/kfifo_buf.h b/include/linux/iio/kfifo_buf.h
-index 8a83fb58232d..22874da0c8be 100644
---- a/include/linux/iio/kfifo_buf.h
-+++ b/include/linux/iio/kfifo_buf.h
-@@ -5,6 +5,7 @@
- struct iio_buffer;
- struct iio_buffer_setup_ops;
- struct iio_dev;
-+struct iio_dev_attr;
- struct device;
-=20
- struct iio_buffer *iio_kfifo_allocate(void);
-@@ -13,7 +14,7 @@ void iio_kfifo_free(struct iio_buffer *r);
- int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
- 				    struct iio_dev *indio_dev,
- 				    const struct iio_buffer_setup_ops *setup_ops,
--				    const struct attribute **buffer_attrs);
-+				    const struct iio_dev_attr **buffer_attrs);
-=20
- #define devm_iio_kfifo_buffer_setup(dev, indio_dev, setup_ops)	\
- 	devm_iio_kfifo_buffer_setup_ext((dev), (indio_dev), (setup_ops), NULL)
-diff --git a/include/linux/iio/triggered_buffer.h b/include/linux/iio/trigg=
-ered_buffer.h
-index 7490b05fc5b2..29e1fe146879 100644
---- a/include/linux/iio/triggered_buffer.h
-+++ b/include/linux/iio/triggered_buffer.h
-@@ -5,8 +5,8 @@
- #include <linux/iio/buffer.h>
- #include <linux/interrupt.h>
-=20
--struct attribute;
- struct iio_dev;
-+struct iio_dev_attr;
- struct iio_buffer_setup_ops;
-=20
- int iio_triggered_buffer_setup_ext(struct iio_dev *indio_dev,
-@@ -14,7 +14,7 @@ int iio_triggered_buffer_setup_ext(struct iio_dev *indio_=
-dev,
- 	irqreturn_t (*thread)(int irq, void *p),
- 	enum iio_buffer_direction direction,
- 	const struct iio_buffer_setup_ops *setup_ops,
--	const struct attribute **buffer_attrs);
-+	const struct iio_dev_attr **buffer_attrs);
- void iio_triggered_buffer_cleanup(struct iio_dev *indio_dev);
-=20
- #define iio_triggered_buffer_setup(indio_dev, h, thread, setup_ops)		\
-@@ -28,7 +28,7 @@ int devm_iio_triggered_buffer_setup_ext(struct device *de=
-v,
- 					irqreturn_t (*thread)(int irq, void *p),
- 					enum iio_buffer_direction direction,
- 					const struct iio_buffer_setup_ops *ops,
--					const struct attribute **buffer_attrs);
-+					const struct iio_dev_attr **buffer_attrs);
-=20
- #define devm_iio_triggered_buffer_setup(dev, indio_dev, h, thread, setup_o=
-ps)	\
- 	devm_iio_triggered_buffer_setup_ext((dev), (indio_dev), (h), (thread),	\
---=20
-2.37.3
+For MTU1, it is fixed MTCLKA and MTCLKB.
+But for MTU2, it can be either 0-{ MTCLKA, MTCLKB} or 1 - { MTCLKC , MTCLKD=
+}
+On reset it is set to { MTCLKC , MTCLKD}.
 
+Cheers,
+Biju
 
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---2SAsLLwBOL+UwhiY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmM379cACgkQeFA3/03a
-ocU/YAf9E+xmD5+qRvjEsmOUMLyARFB4REr9574wP9aOUzdYIC2ma794t+klBUWE
-4wT3Mq/DtBhquPOV0Sd0MevTkM057FKRcQ9tpKb3J7ROlXtMoL+EL03Lb3sudMm5
-orN7CfP6UBda/8zrED2JmCqpdQQp469Pbvgsto6x/IgbC1AS6uHMeOz6aOwGrhtc
-s4x96o+J/o/hNrRaG9pNhnk9/yYIGFdtznVDIu0Apfniviq4nZnkyZlRUQx2sAoq
-REw6cahpmbAsh4EX904nuOEJf+OitBnGh0FUDjgLQOvXpURirC6BPRIUQHivLhcT
-NxTab75Tax9NmpTAYjmc8mIYel8T+g==
-=hyxq
------END PGP SIGNATURE-----
-
---2SAsLLwBOL+UwhiY--

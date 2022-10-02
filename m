@@ -2,57 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEC05F22DF
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 13:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680EC5F22E3
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 13:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229872AbiJBLSz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 07:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
+        id S229846AbiJBLZY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Oct 2022 07:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229877AbiJBLSq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 07:18:46 -0400
+        with ESMTP id S229864AbiJBLZX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 07:25:23 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D71727FC6;
-        Sun,  2 Oct 2022 04:18:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCB2220CC;
+        Sun,  2 Oct 2022 04:25:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CB95BB80C02;
-        Sun,  2 Oct 2022 11:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50665C433C1;
-        Sun,  2 Oct 2022 11:18:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AC9C8B80D22;
+        Sun,  2 Oct 2022 11:25:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EF1C433D6;
+        Sun,  2 Oct 2022 11:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664709522;
-        bh=j+gtgh3ieY79gTmWUV5GeaJhlV4vmWO467y9a2eXUxk=;
+        s=k20201202; t=1664709918;
+        bh=yOdkbG7x/zuJIVtdlyZkg/evkalmf0sviGxVjdRR6fc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lpwVc2fSrNh9T+rPk+KIlM42gF69IsvyphLQig1BrhnQR7qPUZQdxVxbQqQ+KF0Yn
-         mupFQ9dLCGQDcNvkPmeadqZzgtrGZOQYTxm3IhLQGTGf6hUR73bPzZ88Fpgag+Ctsq
-         aI6u1LaH40etUs9JSXU+w5L8WxhGq0fmMRrfzF7fElnGWTOGbShHc4ycez62EWWkbJ
-         cPhrW35l1TrpQwuWeW2UB3ctuZR2I52dO7x6a0hIb92Koc90BKMGDc/pFTyAgeglhU
-         3DTYiGKXiStguQw5F+j+918ujZcH4QOX3j18j6Ygg0l/U7nKNRU7BLO35mUzRf9n5i
-         E6sRxGI1RufLw==
-Date:   Sun, 2 Oct 2022 12:18:57 +0100
+        b=gnlKmRD6098S93iBOOkSh6f6WpQwuzqhTmE55Fkt0Xq+FFBLBCFn+ISlhfXTR/a1y
+         WnVm9yjTSVfqEtsMwq7PBMHp8/W7RMacV+ECEWMEart9i/NE89FSqvO9vugY0y3j+M
+         LP1vAg6mCuQ0RHaqhy4/DSS9shPL1yVzXZcjjuWoETp9PsV5sBlFUAMtgGI46t+p7F
+         8BJjg4jPQJ42Unzte1c2TjRMMBUpPGkn2DYqUAsFf/LgTMW0PqImke/mM/145C/bjV
+         gm9gsElw1NwBHbmS99VKFET4cKOdswE0lMdcQSz2leJuEaGVY5nMfU1tRHubtplzT/
+         pe/LEsGz3HC7g==
+Date:   Sun, 2 Oct 2022 12:25:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>,
-        "Haikola, Heikki" <Heikki.Haikola@fi.rohmeurope.com>
-Subject: Re: [RFC PATCH 4/5] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-Message-ID: <20221002121857.3f7d9423@jic23-huawei>
-In-Reply-To: <3eea7954-3faf-3fc9-7507-c318488c5524@gmail.com>
-References: <cover.1663760018.git.mazziesaccount@gmail.com>
-        <fe1088cebb0de70bcb99af517004c1816b696825.1663760018.git.mazziesaccount@gmail.com>
-        <20220922180339.30138141@jic23-huawei>
-        <3eea7954-3faf-3fc9-7507-c318488c5524@gmail.com>
+To:     Crt Mori <cmo@melexis.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v6 0/3] iio: temperature: mlx90632: Add powermanagement
+Message-ID: <20221002122535.07d66ab3@jic23-huawei>
+In-Reply-To: <CAKv63utk0r+PJXkkY3PpAmKp3WT6H5GxnBLdtJm28W1kz01E+g@mail.gmail.com>
+References: <cover.1663834141.git.cmo@melexis.com>
+        <20220924173221.1174608b@jic23-huawei>
+        <CAKv63utk0r+PJXkkY3PpAmKp3WT6H5GxnBLdtJm28W1kz01E+g@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -66,84 +55,51 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Sep 2022 14:14:14 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Mon, 26 Sep 2022 15:20:16 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-> Hi Jonathan,
-> 
-> On 9/22/22 20:03, Jonathan Cameron wrote:
-> > On Wed, 21 Sep 2022 14:45:35 +0300
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:  
-> >> +
-> >> +/*
-> >> + * The sensor HW can support ODR up to 1600 Hz - which is beyond what most of
-> >> + * Linux CPUs can handle w/o dropping samples. Also, the low power mode is not
-> >> + * available for higher sample rates. Thus the driver only supports 200 Hz and
-> >> + * slower ODRs. Slowest being 0.78 Hz
-> >> + */
-> >> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("0.78 1.563 3.125 6.25 12.5 25 50 100 200");
-> >> +static IIO_CONST_ATTR(scale_available,
-> >> +		      "598.550415 1197.10083 2394.20166 4788.40332");
-> >> +
-> >> +static struct attribute *kx022a_attributes[] = {
-> >> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
-> >> +	&iio_const_attr_scale_available.dev_attr.attr,  
-> > 
-> > Use the read_avail() callback instead of doing these as attributes.
-> > That makes the values available to consumer drivers...  
-> 
-> Am I correct that populating the read_avail() does not add sysfs entries 
-> for available scale/frequency? Eg, if I wish to expose the supported 
-> values via sysfs I still need these attributes? Implementing the 
-> read_avail() as well is not a problem though.
+> On Sat, 24 Sept 2022 at 18:32, Jonathan Cameron <jic23@kernel.org> wrote:
+> >  
+> > > The sensor runtime suspension is set to MLX90632_SLEEP_DELAY_MS which is
+> > > hardcoded to 3 times as much as MEAS_MAX_TIME.
+> > >  
+> > Hi Crt,
+> >
+> > Applied. However, we are cutting it very tight for the coming merge window
+> > so I'm not sure I'll get a 3rd pull request out (this just missed the 2nd
+> > one as I only queued up material that was in a final state last weekend)
+> > So for now pushed out as testing and we'll see if Linus hints at an rc8
+> > when he releases rc7 tomorrow.  If not this will be 6.2 material now.
+> >  
+> I sure hope you mean 6.1 material... It would be great to get into 6.0
+> as i think that is a most likely candidate also for Android kernel
+> baseline (which is what I am also targeting).
 
-Need to also set the relevant bit in 
-info_mask_shared_by_xxx_avail in the channels for the sysfs files to be created
-by calling the read_avail() callback.
+Sorry, I do mean 6.2.
 
-When I introduced those I thought about making it mandatory to introduce them
-for all the info_mask_shared_by_xxx entries and not having the extra bitmap
-but that meant figuring out the relevant entries for a mass of stuff whenever
-a driver was converted from the old approach like you've used here.
+The merge window for 6.0 was months ago and we have to line 6.1 material
+up a week or so before the 6.1 merge window (which probably starts today).
+That allows us to get build bots and similar results before the merge window
+and with time to fix any issues.
 
-> 
-> >> +static int kx022a_turn_on_unlock(struct kx022a_data *data)
-> >> +{
-> >> +	int ret;
-> >> +  
-> > This is not used enough that I can see a strong reason for the
-> > wrapper.  Just put the two calls inline and rename the unlocked case.  
-> 
-> In my opinion the kx022a_turn_on_unlock() and  kx022a_turn_off_lock() do 
-> simplify functions. Especially after I started using the 
-> iio_device_claim_direct_mode() :) Thus I will leave these for the v2 - 
-> please ping me again if you still want to see them removed (but I think 
-> the usage of iio_device_claim_direct_mode() changed this to favour the 
-> kx022a_turn_on_unlock() and kx022a_turn_off_lock()).
-Let's see how it looks in v2.
+So unfortunately this will only be in a released kernel in about 6 months time:
+3 months for the 6.1 cycle that this just missed and then it'll go into Linus'
+mainline tree, but the release will still be 3 months after that.
 
-> 
-> >> +static int kx022a_chip_init(struct kx022a_data *data)
-> >> +{
-> >> +	int ret, dummy;
-> >> +
-> >> +	/*
-> >> +	 * Disable IRQs because if the IRQs are left on (for example by
-> >> +	 * a shutdown which did not deactivate the accelerometer) we do
-> >> +	 * most probably end up flooding the system with unhandled IRQs
-> >> +	 * and get the line disabled from SOC side.
-> >> +	 */
-> >> +	ret = regmap_write(data->regmap, KX022A_REG_INC4, 0);  
-> > 
-> > Unusual to do this rather than a reset.  Quick look suggests there is
-> > a suitable software reset (CNTL2)  
-> 
-> I switched to the software reset as you suggested. I am not really 
-> convinced it is a better way. It seems the software reset requires us to 
-> re-init the regmap cache. 
+In the meantime it'll be in linux-next from just after 6.1-rc1, and in
+Linus' tree for 6.2-rc1.
 
-Yup, though if you've provided the reset defaults that should be quick.
+Kernel cycles are short for a bit project, but they still have about
+3 to 6 month delay for new code reaching a release.  This just happened
+to hit the maximum.
 
 Jonathan
 
+
+> 
+> > Thanks,
+> >
+> > Jonathan
+> >
+> >  
 

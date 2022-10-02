@@ -2,46 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 385145F236F
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 15:50:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106105F2374
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 15:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiJBNul (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 09:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
+        id S229897AbiJBN5B (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Oct 2022 09:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiJBNuk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 09:50:40 -0400
+        with ESMTP id S229886AbiJBN47 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 09:56:59 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BFB2A702;
-        Sun,  2 Oct 2022 06:50:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC7532B91;
+        Sun,  2 Oct 2022 06:56:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BA5D2B80025;
-        Sun,  2 Oct 2022 13:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA8DC433C1;
-        Sun,  2 Oct 2022 13:50:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 63255B80D31;
+        Sun,  2 Oct 2022 13:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897D1C433C1;
+        Sun,  2 Oct 2022 13:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664718636;
-        bh=C774BntxTk3Prk2DsQ9puZQrHyY1eCDeBabGqq2Q9gU=;
+        s=k20201202; t=1664719016;
+        bh=YF4OVbnB9hzRJnIWJLAOYnGD8RwPg/JYl59+Nox2ao8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=HQZToQ41+kdTmLKhf3ph3tdL6QWlnAsMfVOSuwjJ3ZRgMbtK1ZiX9kkxo5WvWZ9Co
-         uaxjP3IPbO9lPG+VTjrTnvRg2iRB0DiL9s1sAhldwaiDLgbrtW8VDMuRiLGDkYe6CZ
-         m/kpdE/YQWgQk/++v9fY8J0Zc84P1irl6eNwYZZiSUHDzwzPnjoP8OsYeFrvDBx5vZ
-         5pnL43xbDjTZfRviUlBEzcelPzBCvrBUEFZGCyZ3MBi4m32IWepQv75VIgP5yW0qpJ
-         RASVBZLXWSzWZ6OnLi+/BqN8qOsHCAWGeGEksO8jZrS8Tcjinqqx5TJPMmNiuTBqlg
-         5dnL0SKEtEk4g==
-Date:   Sun, 2 Oct 2022 14:50:52 +0100
+        b=APKOMb73H16T4v6RELKk2SVdyPtc3sBbH8Zrei+IE9X+o7aCnOaWW/9g++kq5DBwA
+         hXE5uCMN0d/L9PoSXp/z0nQVbQlwnvGm4RDe1MeBvuGz4sYyRXS4jk2hFtLgHou8jc
+         M+plTVFqC31zxaHq0TcS5lwIY7AeKwte2jwSrkgV7NE5eQvI0i7KHQJRCwjjkPCWY9
+         tzNTg2LNZs68IkAlYLGWCsZ34sAxuMVA+bhI7wDz2KTNV/JRbf3cBLTv8ZvcSpBiD4
+         lxEFip93DkwZepsZ/5Xlit2UHNKwevdrHkSDtAovppNIvMb0LBHJqLPFKs8uPsw5hL
+         4m+05kvY4ddrA==
+Date:   Sun, 2 Oct 2022 14:57:08 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-Cc:     gupt21@gmail.com, benjamin.tissoires@redhat.com, jikos@kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] HID: mcp2221: add ADC/DAC support via iio
- subsystem
-Message-ID: <20221002145052.036003b5@jic23-huawei>
-In-Reply-To: <20221001005208.8010-4-matt.ranostay@konsulko.com>
-References: <20221001005208.8010-1-matt.ranostay@konsulko.com>
-        <20221001005208.8010-4-matt.ranostay@konsulko.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev
+Subject: Re: [RFT PATCH v2 2/2] iio: Fix unsafe buffer attributes
+Message-ID: <20221002145644.16db3aec@jic23-huawei>
+In-Reply-To: <614bb5336c2922578da60a43570f42018623557a.1664610071.git.mazziesaccount@gmail.com>
+References: <cover.1664610071.git.mazziesaccount@gmail.com>
+        <614bb5336c2922578da60a43570f42018623557a.1664610071.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,24 +76,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 30 Sep 2022 17:52:08 -0700
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
+On Sat, 1 Oct 2022 10:44:23 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Add support for 3x 10-bit ADC and 1x DAC channels registered via the iio
-> subsystem.
+> The iio_triggered_buffer_setup_ext() was changed by
+> commit 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
+> to silently expect that all attributes given in buffer_attrs array are
+> device-attributes. This expectation was not forced by the API - and some
+> drivers did register attributes created by IIO_CONST_ATTR().
 > 
-> To prevent breakage and unexpected dependencies this support only is
-> only built if CONFIG_IIO is enabled, and is only weakly referenced by
-> 'imply IIO' within the respective Kconfig.
+> The added attribute "wrapping" does not copy the pointer to stored
+> string constant and when the sysfs file is read the kernel will access
+> to invalid location.
 > 
-> Additionally the iio device only gets registered if at least one channel
-> is enabled in the power-on configuration read from SRAM.
-> 
-> Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Fixes: 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
 
-I'm never particularly keen on drivers from elsewhere in the tree gaining
-IIO support - but that's just because it can make a bit of a mess of
-changes to the IIO subsystem itself.  Having said that, this code looks fine to me.
+Hi Matti,
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This feels like we are doing too much in one go.
+I would start with fixes for each individual driver, then once those are in we
+come around again and do the refactor.
+
+So for the first patch set (one per driver) just siwtch to yor new
+dev_attr but still use a struct attribute * array.
+Second series then does the refactor so we don't introduce any new instances
+in future. More churn but the code to backport is more tightly confined.
+
+Thanks,
+
+Jonathan
+
+> 
+> ---
+> 
+> v1 => v2:
+> fix also industrialio-buffer-dmaengine.c and cros_ec_sensors_core.c
+> 
+> The fix is only superficially tested by a ROHM/kionix KX022A driver.
+> Proper testing with real in-tree IIO stuff is _highly_ appreciated.
 

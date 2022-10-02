@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C9A5F2338
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 14:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA90A5F233C
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 14:55:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbiJBMt2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 08:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39838 "EHLO
+        id S229449AbiJBMzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Oct 2022 08:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbiJBMt1 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 08:49:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7245833E24;
-        Sun,  2 Oct 2022 05:49:26 -0700 (PDT)
+        with ESMTP id S229482AbiJBMzA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 08:55:00 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38552655D;
+        Sun,  2 Oct 2022 05:54:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 23A47B80D31;
-        Sun,  2 Oct 2022 12:49:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65F1C43144;
-        Sun,  2 Oct 2022 12:49:21 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id AA7F0B80D33;
+        Sun,  2 Oct 2022 12:54:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BD7C433C1;
+        Sun,  2 Oct 2022 12:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664714963;
-        bh=Am1RtIdozVCQJlWBrLpQs0UAXpZtMu5QkaEZu9Jo8n8=;
+        s=k20201202; t=1664715296;
+        bh=mfHKMtXZfHvWDjYAzhBW3GrdyW5sJh9RiHPmj6UhT9k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ab3lfQKiSUTvrOXYqGWt6qI8YNJI2MzUqMMrjuG0kMrlKWOJdZGoIfWGahNixuHuO
-         8Id14ajYOYtN/+MhuKNM6EEtSrcI2DRjjO8OPagxLPb1LxGj6qUfHowrvZnvX/5df5
-         XaokptoPnsqMxdG70zoJfM0pJXVtVsa9PQp80eF3S33pSRrFz0K9Lr5DBOcWHOZscT
-         5tPXxBZl7Sg/aOsoeLySGps0XZOxRsMjgyKvpNzlC6AldEvxMZyYawt95Tkt2AboVF
-         S0LWvB/zeWr4IBnDjarJBQ5mkg0Ne6KyPDFyrY64jncDFKM12LUuS+98fUIbRFQ8ui
-         QVzqRPwb5cDtg==
-Date:   Sun, 2 Oct 2022 13:49:39 +0100
+        b=Cjf9dEWkuu79zI40Yj6RO3hQmyp4SXI/K9R2dEv6z+0T/C/0dFG/22373Dy7DT94q
+         rWb752S6zyySDZDyglRJBc1oegHOtVwL3KfaR6QfpJHOqapYY2QCff6a4kFW9Sk6i6
+         kvyLu+l/J8qM7LEL25SQPA2CLYJj7Zo+L37Ebfiw9gACJVa1Dc9fn/6mAsW1bjvKZK
+         34YmkhAbzlUsfD3yN83bL9NYvsww5Pv5o0cfz4jrk2ju+2VHWz/zEA1HUwOiUHXRm+
+         e8Ttx5MET+PTxyQ80Ikyi91fS+0c7GEPRoYluaYFyBr0MBpXZemyWr0vC+xWiUQIJb
+         rWtBYVPfaN5Ng==
+Date:   Sun, 2 Oct 2022 13:55:12 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     <linux-doc@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <Jonathan.Cameron@huawei.com>, <corbet@lwn.net>
-Subject: Re: [PATCH -next] Documentation: devres: add missing IIO helpers
-Message-ID: <20221002134939.76aa2181@jic23-huawei>
-In-Reply-To: <850dabb9-e62b-2273-9371-1ae1b7535e50@huawei.com>
-References: <20220927074043.942836-1-yangyingliang@huawei.com>
-        <850dabb9-e62b-2273-9371-1ae1b7535e50@huawei.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>
+Cc:     Kent Gustavsson <kent@minoris.se>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] iio: adc: mcp3911: return proper error code on failure
+ to allocate trigger
+Message-ID: <20221002135512.7cf08a9f@jic23-huawei>
+In-Reply-To: <20220927092537.94663-1-marcus.folkesson@gmail.com>
+References: <20220927092537.94663-1-marcus.folkesson@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,42 +57,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Sep 2022 16:09:02 +0800
-Yang Yingliang <yangyingliang@huawei.com> wrote:
+On Tue, 27 Sep 2022 11:25:37 +0200
+Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
 
-> Add Cc: Jonathan Corbet <corbet@lwn.net>
+> smatch warnings:
+> drivers/iio/adc/mcp3911.c:441 mcp3911_probe() warn: passing zero to 'PTR_ERR'
 > 
-> On 2022/9/27 15:40, Yang Yingliang wrote:
-> > Add missing device-managed helpers of iio to devres.rst.
-> >
-> > Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-I'm assuming this will go via the docs tree.
-Thanks for tidying this up.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Applied, with addition of fixes tag to the fixes-togreg branch of iio.git.
+Slightly messy at this point in the cycle, but I can't push this out until
+Linus takes Greg's char-misc-next pull request as otherwise linux-next will
+get the content of Greg's tree via mine an potentially make a mess.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >   Documentation/driver-api/driver-model/devres.rst | 4 ++++
-> >   1 file changed, 4 insertions(+)
-> >
-> > diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-> > index 2895f9ea00c4..5154844bc222 100644
-> > --- a/Documentation/driver-api/driver-model/devres.rst
-> > +++ b/Documentation/driver-api/driver-model/devres.rst
-> > @@ -286,12 +286,16 @@ IIO
-> >     devm_iio_device_register()
-> >     devm_iio_dmaengine_buffer_setup()
-> >     devm_iio_kfifo_buffer_setup()
-> > +  devm_iio_kfifo_buffer_setup_ext()
-> >     devm_iio_map_array_register()
-> >     devm_iio_triggered_buffer_setup()
-> > +  devm_iio_triggered_buffer_setup_ext()
-> >     devm_iio_trigger_alloc()
-> >     devm_iio_trigger_register()
-> >     devm_iio_channel_get()
-> >     devm_iio_channel_get_all()
-> > +  devm_iio_hw_consumer_alloc()
-> > +  devm_fwnode_iio_channel_get_by_name()
-> >   
-> >   INPUT
-> >     devm_input_allocate_device()  
+Should only matter for a few days though then I'll push my fixes-togreg branch
+out (which I've moved to being based on char-misc-next to allow me to apply
+a few patches for things only recently introduced).
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/mcp3911.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+> index 0d768006eabb..e55db02c534f 100644
+> --- a/drivers/iio/adc/mcp3911.c
+> +++ b/drivers/iio/adc/mcp3911.c
+> @@ -554,7 +554,7 @@ static int mcp3911_probe(struct spi_device *spi)
+>  				indio_dev->name,
+>  				iio_device_id(indio_dev));
+>  		if (!adc->trig)
+> -			return PTR_ERR(adc->trig);
+> +			return -ENOMEM;
+>  
+>  		adc->trig->ops = &mcp3911_trigger_ops;
+>  		iio_trigger_set_drvdata(adc->trig, adc);
 

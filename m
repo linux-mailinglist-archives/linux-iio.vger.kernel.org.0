@@ -2,48 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA90A5F233C
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 14:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A78125F2340
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 14:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbiJBMzB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 08:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50020 "EHLO
+        id S229763AbiJBM5c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Oct 2022 08:57:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbiJBMzA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 08:55:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38552655D;
-        Sun,  2 Oct 2022 05:54:58 -0700 (PDT)
+        with ESMTP id S229733AbiJBM5a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 08:57:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1103A171;
+        Sun,  2 Oct 2022 05:57:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AA7F0B80D33;
-        Sun,  2 Oct 2022 12:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BD7C433C1;
-        Sun,  2 Oct 2022 12:54:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F6CA60DC7;
+        Sun,  2 Oct 2022 12:57:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3ECC433D6;
+        Sun,  2 Oct 2022 12:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664715296;
-        bh=mfHKMtXZfHvWDjYAzhBW3GrdyW5sJh9RiHPmj6UhT9k=;
+        s=k20201202; t=1664715449;
+        bh=BQllilL0yrIT5aIzEu6OlhUSxbKarggUU1u0rqNEHMQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Cjf9dEWkuu79zI40Yj6RO3hQmyp4SXI/K9R2dEv6z+0T/C/0dFG/22373Dy7DT94q
-         rWb752S6zyySDZDyglRJBc1oegHOtVwL3KfaR6QfpJHOqapYY2QCff6a4kFW9Sk6i6
-         kvyLu+l/J8qM7LEL25SQPA2CLYJj7Zo+L37Ebfiw9gACJVa1Dc9fn/6mAsW1bjvKZK
-         34YmkhAbzlUsfD3yN83bL9NYvsww5Pv5o0cfz4jrk2ju+2VHWz/zEA1HUwOiUHXRm+
-         e8Ttx5MET+PTxyQ80Ikyi91fS+0c7GEPRoYluaYFyBr0MBpXZemyWr0vC+xWiUQIJb
-         rWtBYVPfaN5Ng==
-Date:   Sun, 2 Oct 2022 13:55:12 +0100
+        b=TAZsZARA94yrhtHob/xw/7LheieXyFsGn/E56RsdPrls5wW4Dx8c5/vh3m6t+seNt
+         xTVU23pkxkaHH9J7aqOxOsSYw3Ew5ce9WyaCedCdamCyW9Dgv6PwRlJr9xZLmLd+dw
+         ZZ3BzF+dA2V5uB1/wf2Pge3ulT8fyjbVMYHptG5rI+VK6GSXVySqVL0gXyFAhSInSs
+         FisRAlHBbMMH4euuw5DeYeB0S7eIE8h/4TFEKM5h4i/Ff1Rg+gO1bsOYXevf7UY/l8
+         M/UsGFIuJYJV2BPRJ4lhp2C2IOIxESuV6FgWWiujbD4YqQqQrL0xXkV9vMbKcxsW57
+         3xiJ4ToUBGLtA==
+Date:   Sun, 2 Oct 2022 13:57:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>
-Cc:     Kent Gustavsson <kent@minoris.se>,
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Lee Jones <lee@kernel.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH] iio: adc: mcp3911: return proper error code on failure
- to allocate trigger
-Message-ID: <20221002135512.7cf08a9f@jic23-huawei>
-In-Reply-To: <20220927092537.94663-1-marcus.folkesson@gmail.com>
-References: <20220927092537.94663-1-marcus.folkesson@gmail.com>
+        Tony Lindgren <tony@atomide.com>, linux-iio@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] iio: adc: twl4030-madc: add missing of.h include
+Message-ID: <20221002135744.770ae2fb@jic23-huawei>
+In-Reply-To: <Yzi7sBI+kEHrJjHz@google.com>
+References: <20220927154611.3330871-1-dmitry.torokhov@gmail.com>
+        <20220927154611.3330871-3-dmitry.torokhov@gmail.com>
+        <YzMisM73yj/APB86@smile.fi.intel.com>
+        <20221001180705.7002796a@jic23-huawei>
+        <Yzi7sBI+kEHrJjHz@google.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,41 +63,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 27 Sep 2022 11:25:37 +0200
-Marcus Folkesson <marcus.folkesson@gmail.com> wrote:
+On Sat, 1 Oct 2022 15:14:08 -0700
+Dmitry Torokhov <dmitry.torokhov@gmail.com> wrote:
 
-> smatch warnings:
-> drivers/iio/adc/mcp3911.c:441 mcp3911_probe() warn: passing zero to 'PTR_ERR'
+> On Sat, Oct 01, 2022 at 06:07:05PM +0100, Jonathan Cameron wrote:
+> > On Tue, 27 Sep 2022 19:20:00 +0300
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >   
+> > > On Tue, Sep 27, 2022 at 08:46:11AM -0700, Dmitry Torokhov wrote:  
+> > > > The driver is using of_device_id/of_match_ptr() and therefore needs
+> > > > to include of.h header. We used to get this definition indirectly via
+> > > > inclusion of matrix_keypad.h from twl.h, but we are cleaning up
+> > > > matrix_keypad.h from unnecessary includes.    
+> > > 
+> > > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>  
+> > Applied to the togreg branch of iio.git and pushed out as testing for
+> > 0-day to take a look.
+> > 
+> > Note that this is 6.2 material now - if that's an issue for the matrix_keypad.h
+> > cleanup then feel free to take it via the input tree with
+> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > but shout in reply to this so I know to drop it from the iio tree.  
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Applied, with addition of fixes tag to the fixes-togreg branch of iio.git.
-Slightly messy at this point in the cycle, but I can't push this out until
-Linus takes Greg's char-misc-next pull request as otherwise linux-next will
-get the content of Greg's tree via mine an potentially make a mess.
-
-Should only matter for a few days though then I'll push my fixes-togreg branch
-out (which I've moved to being based on char-misc-next to allow me to apply
-a few patches for things only recently introduced).
+> OK, it is not urgent, but I do not want to lose matrix keypad changes...
+> 
+> How about I'll wait to see where the rest of the patches end, and if
+> they end up in 6.1 I'll queue twl4030-madc.c through my tree together
+> with the header change?
+> 
+> Thanks.
+> 
+Ok. I'll drop it for now - let me know if I should pick it up once everything
+settles down.
 
 Jonathan
-
-> ---
->  drivers/iio/adc/mcp3911.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-> index 0d768006eabb..e55db02c534f 100644
-> --- a/drivers/iio/adc/mcp3911.c
-> +++ b/drivers/iio/adc/mcp3911.c
-> @@ -554,7 +554,7 @@ static int mcp3911_probe(struct spi_device *spi)
->  				indio_dev->name,
->  				iio_device_id(indio_dev));
->  		if (!adc->trig)
-> -			return PTR_ERR(adc->trig);
-> +			return -ENOMEM;
->  
->  		adc->trig->ops = &mcp3911_trigger_ops;
->  		iio_trigger_set_drvdata(adc->trig, adc);
 

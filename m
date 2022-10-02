@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 031695F22D5
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 13:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EEC05F22DF
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 13:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbiJBLOr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 07:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33276 "EHLO
+        id S229872AbiJBLSz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 2 Oct 2022 07:18:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbiJBLOp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 07:14:45 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92D32BC31;
-        Sun,  2 Oct 2022 04:14:43 -0700 (PDT)
+        with ESMTP id S229877AbiJBLSq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 07:18:46 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D71727FC6;
+        Sun,  2 Oct 2022 04:18:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 9F10ACE09B0;
-        Sun,  2 Oct 2022 11:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4F8C433C1;
-        Sun,  2 Oct 2022 11:14:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CB95BB80C02;
+        Sun,  2 Oct 2022 11:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50665C433C1;
+        Sun,  2 Oct 2022 11:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1664709279;
-        bh=Moiaee8arCDFyQsCc3cTgcJnzrt3XyvzVkJjg2EP4JE=;
+        s=k20201202; t=1664709522;
+        bh=j+gtgh3ieY79gTmWUV5GeaJhlV4vmWO467y9a2eXUxk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=asq1FbO9nWd6LIVD/DpGc14Ui2DLc9LQrHmlhR+ozyoNocjnYuOkqyBzt/+Gd7wli
-         dGuwCaCouZ0SanZDusNUZ3k3pLVxerpZv26LBW5AsHbujhF0WrDjuwf2ic2KGKl8VT
-         iZC6b6saRUcTlezAjD4VLL5qxAPT8slIWJCyuvLf8a5/DG4ecRP03W9quz5EMg0hUG
-         dk2N2XWchj7Jh94jKreXtD1GDGVLkwn92qpjfEhZYSrNRPudVWLFTuYdWFbnwhk7XS
-         k1JZrfJMyOC5gV1giYZh5eAvpdWPOhrmyply5GB0s8bRNdE5pHsj7UBGIHUNxLMfNQ
-         NOsvKZH5mTlBw==
-Date:   Sun, 2 Oct 2022 12:14:54 +0100
+        b=lpwVc2fSrNh9T+rPk+KIlM42gF69IsvyphLQig1BrhnQR7qPUZQdxVxbQqQ+KF0Yn
+         mupFQ9dLCGQDcNvkPmeadqZzgtrGZOQYTxm3IhLQGTGf6hUR73bPzZ88Fpgag+Ctsq
+         aI6u1LaH40etUs9JSXU+w5L8WxhGq0fmMRrfzF7fElnGWTOGbShHc4ycez62EWWkbJ
+         cPhrW35l1TrpQwuWeW2UB3ctuZR2I52dO7x6a0hIb92Koc90BKMGDc/pFTyAgeglhU
+         3DTYiGKXiStguQw5F+j+918ujZcH4QOX3j18j6Ygg0l/U7nKNRU7BLO35mUzRf9n5i
+         E6sRxGI1RufLw==
+Date:   Sun, 2 Oct 2022 12:18:57 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         Jagath Jog J <jagathjog1996@gmail.com>,
@@ -47,14 +47,12 @@ Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "Haikola, Heikki" <Heikki.Haikola@fi.rohmeurope.com>
 Subject: Re: [RFC PATCH 4/5] iio: accel: Support Kionix/ROHM KX022A
  accelerometer
-Message-ID: <20221002121454.18ff80b2@jic23-huawei>
-In-Reply-To: <e3abc0a9-ad5b-f6ef-8cba-0b4c6c8325c0@gmail.com>
+Message-ID: <20221002121857.3f7d9423@jic23-huawei>
+In-Reply-To: <3eea7954-3faf-3fc9-7507-c318488c5524@gmail.com>
 References: <cover.1663760018.git.mazziesaccount@gmail.com>
         <fe1088cebb0de70bcb99af517004c1816b696825.1663760018.git.mazziesaccount@gmail.com>
         <20220922180339.30138141@jic23-huawei>
         <3eea7954-3faf-3fc9-7507-c318488c5524@gmail.com>
-        <YzRU9aRNReonSqbg@smile.fi.intel.com>
-        <e3abc0a9-ad5b-f6ef-8cba-0b4c6c8325c0@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -68,72 +66,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Sep 2022 19:23:06 +0300
+On Wed, 28 Sep 2022 14:14:14 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Andy,
+> Hi Jonathan,
 > 
-> On 9/28/22 17:06, Andy Shevchenko wrote:
-> > On Wed, Sep 28, 2022 at 02:14:14PM +0300, Matti Vaittinen wrote:  
-> >> On 9/22/22 20:03, Jonathan Cameron wrote:  
-> >>> On Wed, 21 Sep 2022 14:45:35 +0300  
+> On 9/22/22 20:03, Jonathan Cameron wrote:
+> > On Wed, 21 Sep 2022 14:45:35 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:  
+> >> +
+> >> +/*
+> >> + * The sensor HW can support ODR up to 1600 Hz - which is beyond what most of
+> >> + * Linux CPUs can handle w/o dropping samples. Also, the low power mode is not
+> >> + * available for higher sample rates. Thus the driver only supports 200 Hz and
+> >> + * slower ODRs. Slowest being 0.78 Hz
+> >> + */
+> >> +static IIO_CONST_ATTR_SAMP_FREQ_AVAIL("0.78 1.563 3.125 6.25 12.5 25 50 100 200");
+> >> +static IIO_CONST_ATTR(scale_available,
+> >> +		      "598.550415 1197.10083 2394.20166 4788.40332");
+> >> +
+> >> +static struct attribute *kx022a_attributes[] = {
+> >> +	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+> >> +	&iio_const_attr_scale_available.dev_attr.attr,  
 > > 
-> > ...
-> >   
-> >>>> +		dev_err(dev, "no regmap\n");  
-> >>>
-> >>> Use dev_err_probe() for all dev_err() stuff in probe paths.
-> >>> It ends up cleaner and we don't care about the tiny overhead
-> >>> of checking for deferred.  
-> >>
-> >> This one bothers me a bit. It just does not feel correct to pass -EINVAL for
-> >> the dev_err_probe() so the dev_err_probe() can check if -EINVAL !=
-> >> -EPROBE_DEFER. I do understand perfectly well the consistent use of
-> >> dev_err_probe() for all cases where we get an error-code from a function and
-> >> return it - but using dev_err_probe() when we hard-code the return value in
-> >> code calling the dev_err_probe() does not feel like "the right thing to do"
-> >> (tm).
-> >>
-> >> Eg, I agree that
-> >> return dev_err_probe(dev, ret, "bar");
-> >> is nice even if we know the function that gave us the "ret" never requests
-> >> defer (as that can change some day).
-> >>
-> >> However, I don't like issuing:
-> >> return dev_err_probe(dev, -EINVAL, "bar");  
-> > 
-> > This case specifically was added into documentation by 7065f92255bb ("driver
-> > core: Clarify that dev_err_probe() is OK even w/out -EPROBE_DEFER").  
+> > Use the read_avail() callback instead of doing these as attributes.
+> > That makes the values available to consumer drivers...  
 > 
-> Yes. And this is exactly what I meant with:
->  >> Eg, I agree that
->  >> return dev_err_probe(dev, ret, "bar");
->  >> is nice even if we know the function that gave us the "ret" never   
-> requests
->  >> defer  
-> 
-> There is still (in my opinion) a significant difference if we call:
->  >> return dev_err_probe(dev, -EINVAL, "bar");  
-> 
-> - where we really hard-code the -EINVAL as a parameter to the 
-> dev_err_probe()
-> 
-> >> Well, please let me know if you think the dev_err_probe() should be used
-> >> even in cases where we hard code the return to something...  
-> > 
-> > And this should be, of course, maintainer's decision.  
-> 
-> Ultimately, yes.
+> Am I correct that populating the read_avail() does not add sysfs entries 
+> for available scale/frequency? Eg, if I wish to expose the supported 
+> values via sysfs I still need these attributes? Implementing the 
+> read_avail() as well is not a problem though.
 
-I'm not that fussed. So happy to accept code taking either view where it
-is hard coded in the call like this.
-I'd love a dev_err() that took and returned the error value though just
-for all those single lines of code saved.
+Need to also set the relevant bit in 
+info_mask_shared_by_xxx_avail in the channels for the sysfs files to be created
+by calling the read_avail() callback.
 
-J
+When I introduced those I thought about making it mandatory to introduce them
+for all the info_mask_shared_by_xxx entries and not having the extra bitmap
+but that meant figuring out the relevant entries for a mass of stuff whenever
+a driver was converted from the old approach like you've used here.
 
 > 
-> Best Regards
-> 	--Matti
+> >> +static int kx022a_turn_on_unlock(struct kx022a_data *data)
+> >> +{
+> >> +	int ret;
+> >> +  
+> > This is not used enough that I can see a strong reason for the
+> > wrapper.  Just put the two calls inline and rename the unlocked case.  
 > 
+> In my opinion the kx022a_turn_on_unlock() and  kx022a_turn_off_lock() do 
+> simplify functions. Especially after I started using the 
+> iio_device_claim_direct_mode() :) Thus I will leave these for the v2 - 
+> please ping me again if you still want to see them removed (but I think 
+> the usage of iio_device_claim_direct_mode() changed this to favour the 
+> kx022a_turn_on_unlock() and kx022a_turn_off_lock()).
+Let's see how it looks in v2.
+
+> 
+> >> +static int kx022a_chip_init(struct kx022a_data *data)
+> >> +{
+> >> +	int ret, dummy;
+> >> +
+> >> +	/*
+> >> +	 * Disable IRQs because if the IRQs are left on (for example by
+> >> +	 * a shutdown which did not deactivate the accelerometer) we do
+> >> +	 * most probably end up flooding the system with unhandled IRQs
+> >> +	 * and get the line disabled from SOC side.
+> >> +	 */
+> >> +	ret = regmap_write(data->regmap, KX022A_REG_INC4, 0);  
+> > 
+> > Unusual to do this rather than a reset.  Quick look suggests there is
+> > a suitable software reset (CNTL2)  
+> 
+> I switched to the software reset as you suggested. I am not really 
+> convinced it is a better way. It seems the software reset requires us to 
+> re-init the regmap cache. 
+
+Yup, though if you've provided the reset defaults that should be quick.
+
+Jonathan
+
 

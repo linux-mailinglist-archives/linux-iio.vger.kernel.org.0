@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8AD5F2E5A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FA85F2E5F
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbiJCJoi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Oct 2022 05:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
+        id S230137AbiJCJpz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 05:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbiJCJoL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:44:11 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684F2F57;
-        Mon,  3 Oct 2022 02:39:38 -0700 (PDT)
+        with ESMTP id S230173AbiJCJpc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:45:32 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B079911805;
+        Mon,  3 Oct 2022 02:42:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664789987; x=1696325987;
+  t=1664790133; x=1696326133;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=sXZaQocFXY9yjGwvBQtBsjXvYzr4OXfPV0g7Jm5zPAQ=;
-  b=QnUwUvQwdhJwbNtfcUNKu7sI38OLk/HXIOhCpWgxUuCio2grX6KdcI5F
-   Dx17ZFfD+jkLuMnMf5D1dcQy2cz/ctB4TJShHSjo5szLb+09aASSpnZIw
-   9+OkD8v8JVyXkpj7ZDo+x+RDxnK6ajSxMyzLtsH8ClPxeqWHCARgj9ub9
-   4ardnsR2dnD0Cv5j+pRKBIPTLNfhRosJHSE2N0S/46Fmm+8tZqaUIPDFe
-   dmgyohKmPd04UFV3tys8e0AL1B3kv+GOn0BhW+HXuw+Vuqd01gGOdzb3s
-   ueGw4sk8VSiyThU7rp0NCmCWKKLW7QSg6P7omsqmTNYODGcfnAfD6UcdI
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="289754335"
+   mime-version:in-reply-to;
+  bh=5g0KdDz+yWE3/smCFgpv/AmpQhtjfHFM8QG3/rIgCUE=;
+  b=b017ZbEyIBehpk0Pzx6uWsjY/eKUw0pDURo2m2ii6rNSLsXtF7TVB6Hd
+   uXu0HKJBqXRpqAfByhbAM09C5w2Ii3cgQnxjvx9oEvBv13DUtyX5Q9Z90
+   hCl2QSr3Z0nUDtn5K7wnOSUmkq+R9UIttymRXnOFudRqa/g42FvK0DAlK
+   WMFElclRvLc7QkMHdB/2+RGhpmK6QqbqTF09mOrgxsqy3MhFE0FzEeuXY
+   k8/JokmOFPiVGS+fW+mrzfX24FSnAt2AuGACllfjyI6D1luij3ggiCKbG
+   jl1VtAIYFXigg0t51GbvJn7eZJ568Tcz1i79J4/pVGwJvOxwOIGTRJU4U
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="366634985"
 X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
-   d="scan'208";a="289754335"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 02:39:38 -0700
+   d="scan'208";a="366634985"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 02:42:13 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="727691643"
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="574567543"
 X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
-   d="scan'208";a="727691643"
+   d="scan'208";a="574567543"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 03 Oct 2022 02:39:32 -0700
+  by orsmga003.jf.intel.com with ESMTP; 03 Oct 2022 02:42:07 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ofHv8-001Rh9-19;
-        Mon, 03 Oct 2022 12:39:30 +0300
-Date:   Mon, 3 Oct 2022 12:39:30 +0300
+        id 1ofHxd-001Rjr-12;
+        Mon, 03 Oct 2022 12:42:05 +0300
+Date:   Mon, 3 Oct 2022 12:42:05 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Matti Vaittinen <mazziesaccount@gmail.com>
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -69,65 +69,45 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         linux-arm-kernel@lists.infradead.org,
         chrome-platform@lists.linux.dev
 Subject: Re: [RFT PATCH v3 10/10] iio: Don't silently expect attribute types
-Message-ID: <Yzqt0o0yWsfCGQ6I@smile.fi.intel.com>
+Message-ID: <YzqubeAnrH5FJ0vA@smile.fi.intel.com>
 References: <cover.1664782676.git.mazziesaccount@gmail.com>
  <63f54787a684eb1232f1c5d275a09c786987fe4a.1664782676.git.mazziesaccount@gmail.com>
  <YzqgqERDTLVkJH67@smile.fi.intel.com>
  <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
- <7ae09809-4f3c-9872-5a87-0a05e73d39b4@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7ae09809-4f3c-9872-5a87-0a05e73d39b4@gmail.com>
+In-Reply-To: <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 03, 2022 at 12:02:56PM +0300, Matti Vaittinen wrote:
-> On 10/3/22 11:58, Matti Vaittinen wrote:
-> > On 10/3/22 11:43, Andy Shevchenko wrote:
-> > > On Mon, Oct 03, 2022 at 11:13:53AM +0300, Matti Vaittinen wrote:
+On Mon, Oct 03, 2022 at 11:58:35AM +0300, Matti Vaittinen wrote:
+> On 10/3/22 11:43, Andy Shevchenko wrote:
+> > On Mon, Oct 03, 2022 at 11:13:53AM +0300, Matti Vaittinen wrote:
 
 ...
 
-> > > > +            attr[ARRAY_SIZE(iio_buffer_attrs) + i] =
-> > > > +                (struct attribute *)&id_attr->dev_attr.attr;
-> > > 
-> > > ...and explicit casting here. Isn't attr is already of a struct
-> > > attribute?
+> > > +		for (i = 0, id_attr = buffer->attrs[i];
+> > > +		     (id_attr = buffer->attrs[i]); i++)
 > > 
-> > I am glad you asked :)
-> > This is one of the "things" I was not really happy about. Here we hide
-> > the fact that our array is full of pointers to _const_ data. If we don't
-> > cast the compiler points this out. Old code did the same thing but it
-> > did this by just doing a memcpy for the pointers - which I personally
-> > consider even worse as it gets really easy to miss this. The cast at
-> > least hints there is something slightly "fishy" going on.
-> > 
-> > My "gut feeling" about the correct fix is we should check if some
-> > attributes in the array (stored to the struct here) actually need to be
-> > modified later (which I doubt). If I was keen on betting I'd bet we
-> > could switch the struct definition to also contain pointers to const
-> > attributes. I am afraid this would mean quite a few more changes to the
-> > function signatures (changing struct attribute * to const struct
-> > attribute *) here and there - and possibly also require some changes to
-> > drivers. Thus I didn't even look at that option in the scope of this
-> > fix. It should probably be a separate refactoring series. But yes - this
-> > cast should catch attention as it did.
-> > 
+> > Not sure why we have additional parentheses...
 > 
-> Actually, now that you pointed it out - do you think this would warrant a
-> FIXME comment?
+> Because gcc warns about the assignment and suggests adding parenthesis if we
+> don't.
 
-Makes sense to me, but I'm not a maintainer of IIO :-)
+Ah, this is a condition, so that's why compiler wants to have a _result_ of
+the assignment and not the ambiguous thingy.
+
+Btw, have you considered to switch to in-loop iterator definitions as we do
+in many other places? Also, it might make sense to introduce for_each_...
+type of macro helper if the loop is used more than once.
 
 -- 
 With Best Regards,

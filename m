@@ -2,94 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CED5F2CCA
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 297115F2D13
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbiJCJHP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Oct 2022 05:07:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39330 "EHLO
+        id S230287AbiJCJZi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 05:25:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230432AbiJCJG6 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:06:58 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDD71A81F;
-        Mon,  3 Oct 2022 02:03:00 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 25so5349738lft.9;
-        Mon, 03 Oct 2022 02:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date;
-        bh=WFcFQjxqJEFnrJQ8qbV31qWM6RmdFnAwK/71OYcFvf4=;
-        b=mHh+n+cnmkVaK/GqIBEktKSE/ejYIxJzhEz3Hdnn70fU4MszIDQ7RrKkj3kW8jA5lx
-         KjzN7D0n/CbQ/3UzYmrkMG40js1lIRwdLjtMDeBc4YuPleQvNzHPZiKHzl5aoX9BMbqW
-         V61N3N+ldQF/xCIoliHLel5uFcJTgToJ/Hyhwj6HjFfY1QNj1ZlQodwZEuXusdwIf8xl
-         /CtpXnzEcjiiUGIjKZg5sHveuyT1lfMxaTrBAtRXb4Yt45xCgemTuSjHUwR5s+p2qDo2
-         8Xq9AJYxreSi2HqDTIEyRQGas/dF4usEIE4wTjYJUxOdcyrvS+0W2SK0inMPNDX//hN6
-         Dusw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=WFcFQjxqJEFnrJQ8qbV31qWM6RmdFnAwK/71OYcFvf4=;
-        b=29iJc4+/0f5pKlpjDFW46czmHAw4Xv+KvFg+v9SB93OOG7WO9ErVe2etTFDOdmi8mz
-         pB7tlWRV7QD4cOHr6rFH03fqZRbNYOGZC3rmtahiTl9VJcyBvOoXvSSFwBpbFNlOKF6X
-         9C/nByjhfQC5yZxp715U+h59zMu02fr8jk5+2Moah+YYl3Rnt2C8NVDc6QhwNharTswq
-         c/VQDDb2DSLuFgpTDGR3/qg8smvypSarbgcBJMJb/I93+G4Rmk0ALDz1Zq4f2jtputZd
-         yaHVDloo/d1nx7jgK6+xaTeLAerrQyeDdHBngVL9o5yQzFWu4Q8cDHdRsSAyM4Bdnudu
-         2NcA==
-X-Gm-Message-State: ACrzQf1DsoeB9e2YBHzMUozT9EYAYjiHkChRtdrEbIHb98V3zruHaB0i
-        BTMOHpCPq+WguJqq+SghZ4E=
-X-Google-Smtp-Source: AMsMyM4+xsbj6WOlcC757YkmshHzz3QVQ2wuPWpm/cGhsx1CE1yDfBL82V6qgJTEqcdswNVfolfbHg==
-X-Received: by 2002:a05:6512:3f9a:b0:4a0:2af3:4523 with SMTP id x26-20020a0565123f9a00b004a02af34523mr6773412lfa.184.1664787778721;
-        Mon, 03 Oct 2022 02:02:58 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id k22-20020ac24f16000000b00499f700430fsm1372487lfr.224.2022.10.03.02.02.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Oct 2022 02:02:58 -0700 (PDT)
-Message-ID: <7ae09809-4f3c-9872-5a87-0a05e73d39b4@gmail.com>
-Date:   Mon, 3 Oct 2022 12:02:56 +0300
+        with ESMTP id S231139AbiJCJZe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:25:34 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02A1320195;
+        Mon,  3 Oct 2022 02:25:33 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2937dEdd024570;
+        Mon, 3 Oct 2022 05:25:30 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jxjf6tf09-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 03 Oct 2022 05:25:29 -0400
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2939PSYg007856
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 3 Oct 2022 05:25:28 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Oct 2022 05:25:27 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Oct 2022 05:25:27 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 3 Oct 2022 05:25:27 -0400
+Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.10])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2939PFdX012843;
+        Mon, 3 Oct 2022 05:25:18 -0400
+From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+To:     <jic23@kernel.org>
+CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
+        <Nurettin.Bolucu@analog.com>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v7 0/3] iio: adc: add max11410 adc driver
+Date:   Mon, 3 Oct 2022 12:24:57 +0300
+Message-ID: <20221003092500.296-1-Ibrahim.Tilki@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [RFT PATCH v3 10/10] iio: Don't silently expect attribute types
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev
-References: <cover.1664782676.git.mazziesaccount@gmail.com>
- <63f54787a684eb1232f1c5d275a09c786987fe4a.1664782676.git.mazziesaccount@gmail.com>
- <YzqgqERDTLVkJH67@smile.fi.intel.com>
- <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: -eIytX7cyKwD6AR_9r-KrDNROruhamL9
+X-Proofpoint-ORIG-GUID: -eIytX7cyKwD6AR_9r-KrDNROruhamL9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-03_02,2022-09-29_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ bulkscore=0 mlxscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210030056
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,68 +73,72 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/3/22 11:58, Matti Vaittinen wrote:
-> Hi Andy,
-> 
-> Thanks for taking the time to review :) Much appreciated.
-> 
-> On 10/3/22 11:43, Andy Shevchenko wrote:
->> On Mon, Oct 03, 2022 at 11:13:53AM +0300, Matti Vaittinen wrote:
->>> The iio_triggered_buffer_setup_ext() and the
->>> devm_iio_kfifo_buffer_setup_ext() were changed by
->>> commit 15097c7a1adc ("iio: buffer: wrap all buffer attributes into 
->>> iio_dev_attr")
->>> to silently expect that all attributes given in buffer_attrs array are
->>> device-attributes. This expectation was not forced by the API - and some
->>> drivers did register attributes created by IIO_CONST_ATTR().
->>>
->>> When using IIO_CONST_ATTRs the added attribute "wrapping" does not copy
->>> the pointer to stored string constant and when the sysfs file is read 
->>> the
->>> kernel will access to invalid location.
->>>
->>> Change the function signatures to expect an array of iio_dev_attrs to
->>> avoid similar errors in the future.
->>
->> ...
->> 
->>> +            attr[ARRAY_SIZE(iio_buffer_attrs) + i] =
->>> +                (struct attribute *)&id_attr->dev_attr.attr;
->>
->> ...and explicit casting here. Isn't attr is already of a struct 
->> attribute?
-> 
-> I am glad you asked :)
-> This is one of the "things" I was not really happy about. Here we hide 
-> the fact that our array is full of pointers to _const_ data. If we don't 
-> cast the compiler points this out. Old code did the same thing but it 
-> did this by just doing a memcpy for the pointers - which I personally 
-> consider even worse as it gets really easy to miss this. The cast at 
-> least hints there is something slightly "fishy" going on.
-> 
-> My "gut feeling" about the correct fix is we should check if some 
-> attributes in the array (stored to the struct here) actually need to be 
-> modified later (which I doubt). If I was keen on betting I'd bet we 
-> could switch the struct definition to also contain pointers to const 
-> attributes. I am afraid this would mean quite a few more changes to the 
-> function signatures (changing struct attribute * to const struct 
-> attribute *) here and there - and possibly also require some changes to 
-> drivers. Thus I didn't even look at that option in the scope of this 
-> fix. It should probably be a separate refactoring series. But yes - this 
-> cast should catch attention as it did.
-> 
 
-Actually, now that you pointed it out - do you think this would warrant 
-a FIXME comment?
+Note: No sign-off tag for David as he was unreachable when the initial patch was sent.
 
-> Yours,
->      -- Matti Vaittinen
-> 
+Changelog:
+since v7:
+  - add asm-generic/unaligned.h header (reported by kernel test robot)
+  - dtbinding: specify 2 items for interrupt-names
+  - dtbinding: reorder required block
+
+since v6:
+  - don't require avdd supply if not needed
+
+since v5:
+  - allow user to specify both interrupt pins
+  - keep irq info in max11410_state struct and use irq by name
+  - get irqs by fwnode_get_irq_byname
+  - don't allocate trigger when no irq supplied
+  - fix deadlock condition in write_raw
+  - minor style fixes
+  - fix devicetree binding errors reported by dt_binding_check
+  - convert module license to GPL as suggested by checkpatch
+
+since v4:
+  - add in_voltage_filter2_notch_{center,en} attrs for sinc4 filter
+  - add ABI documentation for filter sysfs
+  - check interrupt-names property for configuring gpio of max11410
+  - remove hardwaregain property
+  - add scale_available property for channes using PGA
+  - separate vref regulator error -ENODEV from other errors
+  - don't register trigger if no irq specified
+  - style fixes
+
+since v3:
+  - prefix defines with MAX11410_
+  - group vref regulators
+  - use builtin iio_validate_scan_mask_onehot
+  - validate iio trigger
+  - move scan data into state struct
+  - require vrefn regulator in DT if used by any channel
+  - don't require irq for triggered buffer
+  - remove filter sysfs attr and ABI documentation
+  - add in_voltage_filter[0-1]_notch_{center,en} attrs
+
+since v2:
+  - remove bit position shifting, use field_prep instead
+  - reduce the amount of reg writes in max11410_configure_channel
+  - add error checking in max11410_parse_channels
+  - remove some unneeded blank lines and minor style fixes
+  - remove scan data assignment in max11410_trigger_handler
+
+
+Ibrahim Tilki (3):
+  iio: adc: add max11410 adc driver
+  dt-bindings: iio: adc: add adi,max11410.yaml
+  Documentation: ABI: testing: add max11410 doc
+
+ .../ABI/testing/sysfs-bus-iio-adc-max11410    |   13 +
+ .../bindings/iio/adc/adi,max11410.yaml        |  176 +++
+ drivers/iio/adc/Kconfig                       |   13 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/max11410.c                    | 1050 +++++++++++++++++
+ 5 files changed, 1253 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,max11410.yaml
+ create mode 100644 drivers/iio/adc/max11410.c
 
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.25.1
 

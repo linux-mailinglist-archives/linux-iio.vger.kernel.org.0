@@ -2,106 +2,135 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 774355F2D1A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8AD5F2E5A
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:44:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231253AbiJCJZ4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Oct 2022 05:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
+        id S229633AbiJCJoi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 05:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231265AbiJCJZt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:25:49 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C902F02B;
-        Mon,  3 Oct 2022 02:25:44 -0700 (PDT)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2939OT2M005490;
-        Mon, 3 Oct 2022 05:25:42 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jxfd6u3mm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 03 Oct 2022 05:25:42 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2939Pf11007868
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 3 Oct 2022 05:25:41 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 3 Oct 2022 05:25:40 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 3 Oct 2022 05:25:40 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 3 Oct 2022 05:25:40 -0400
-Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.10])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2939PFda012843;
-        Mon, 3 Oct 2022 05:25:30 -0400
-From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-To:     <jic23@kernel.org>
-CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
-        <Nurettin.Bolucu@analog.com>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v7 3/3] Documentation: ABI: testing: add max11410 doc
-Date:   Mon, 3 Oct 2022 12:25:00 +0300
-Message-ID: <20221003092500.296-4-Ibrahim.Tilki@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221003092500.296-1-Ibrahim.Tilki@analog.com>
-References: <20221003092500.296-1-Ibrahim.Tilki@analog.com>
+        with ESMTP id S230055AbiJCJoL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:44:11 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684F2F57;
+        Mon,  3 Oct 2022 02:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664789987; x=1696325987;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=sXZaQocFXY9yjGwvBQtBsjXvYzr4OXfPV0g7Jm5zPAQ=;
+  b=QnUwUvQwdhJwbNtfcUNKu7sI38OLk/HXIOhCpWgxUuCio2grX6KdcI5F
+   Dx17ZFfD+jkLuMnMf5D1dcQy2cz/ctB4TJShHSjo5szLb+09aASSpnZIw
+   9+OkD8v8JVyXkpj7ZDo+x+RDxnK6ajSxMyzLtsH8ClPxeqWHCARgj9ub9
+   4ardnsR2dnD0Cv5j+pRKBIPTLNfhRosJHSE2N0S/46Fmm+8tZqaUIPDFe
+   dmgyohKmPd04UFV3tys8e0AL1B3kv+GOn0BhW+HXuw+Vuqd01gGOdzb3s
+   ueGw4sk8VSiyThU7rp0NCmCWKKLW7QSg6P7omsqmTNYODGcfnAfD6UcdI
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="289754335"
+X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
+   d="scan'208";a="289754335"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 02:39:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="727691643"
+X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
+   d="scan'208";a="727691643"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 03 Oct 2022 02:39:32 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1ofHv8-001Rh9-19;
+        Mon, 03 Oct 2022 12:39:30 +0300
+Date:   Mon, 3 Oct 2022 12:39:30 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev
+Subject: Re: [RFT PATCH v3 10/10] iio: Don't silently expect attribute types
+Message-ID: <Yzqt0o0yWsfCGQ6I@smile.fi.intel.com>
+References: <cover.1664782676.git.mazziesaccount@gmail.com>
+ <63f54787a684eb1232f1c5d275a09c786987fe4a.1664782676.git.mazziesaccount@gmail.com>
+ <YzqgqERDTLVkJH67@smile.fi.intel.com>
+ <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
+ <7ae09809-4f3c-9872-5a87-0a05e73d39b4@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: Y037ZT5sAXAZJ5uhN2aw-lb-w5ZoCz-k
-X-Proofpoint-ORIG-GUID: Y037ZT5sAXAZJ5uhN2aw-lb-w5ZoCz-k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-10-03_02,2022-09-29_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=850 clxscore=1015 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2209130000 definitions=main-2210030056
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7ae09809-4f3c-9872-5a87-0a05e73d39b4@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Adding documentation for Analog Devices max11410 adc userspace sysfs.
+On Mon, Oct 03, 2022 at 12:02:56PM +0300, Matti Vaittinen wrote:
+> On 10/3/22 11:58, Matti Vaittinen wrote:
+> > On 10/3/22 11:43, Andy Shevchenko wrote:
+> > > On Mon, Oct 03, 2022 at 11:13:53AM +0300, Matti Vaittinen wrote:
 
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
----
- .../ABI/testing/sysfs-bus-iio-adc-max11410          | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
+...
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410 b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-new file mode 100644
-index 0000000000..2a53c6b373
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-max11410
-@@ -0,0 +1,13 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_en
-+Date:		September 2022
-+KernelVersion:  6.0
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Enable or disable a notch filter.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/in_voltage_filterY_notch_center
-+Date:		September 2022
-+KernelVersion:  6.0
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Center frequency of the notch filter in Hz.
+> > > > +            attr[ARRAY_SIZE(iio_buffer_attrs) + i] =
+> > > > +                (struct attribute *)&id_attr->dev_attr.attr;
+> > > 
+> > > ...and explicit casting here. Isn't attr is already of a struct
+> > > attribute?
+> > 
+> > I am glad you asked :)
+> > This is one of the "things" I was not really happy about. Here we hide
+> > the fact that our array is full of pointers to _const_ data. If we don't
+> > cast the compiler points this out. Old code did the same thing but it
+> > did this by just doing a memcpy for the pointers - which I personally
+> > consider even worse as it gets really easy to miss this. The cast at
+> > least hints there is something slightly "fishy" going on.
+> > 
+> > My "gut feeling" about the correct fix is we should check if some
+> > attributes in the array (stored to the struct here) actually need to be
+> > modified later (which I doubt). If I was keen on betting I'd bet we
+> > could switch the struct definition to also contain pointers to const
+> > attributes. I am afraid this would mean quite a few more changes to the
+> > function signatures (changing struct attribute * to const struct
+> > attribute *) here and there - and possibly also require some changes to
+> > drivers. Thus I didn't even look at that option in the scope of this
+> > fix. It should probably be a separate refactoring series. But yes - this
+> > cast should catch attention as it did.
+> > 
+> 
+> Actually, now that you pointed it out - do you think this would warrant a
+> FIXME comment?
+
+Makes sense to me, but I'm not a maintainer of IIO :-)
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 

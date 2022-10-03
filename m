@@ -2,94 +2,206 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 625955F2B71
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 10:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AD015F2BF3
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 10:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbiJCILs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Oct 2022 04:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53172 "EHLO
+        id S231660AbiJCIhQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 04:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbiJCILZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 04:11:25 -0400
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8094072ECD;
-        Mon,  3 Oct 2022 00:46:53 -0700 (PDT)
-Received: by mail-qt1-f181.google.com with SMTP id f26so5909055qto.11;
-        Mon, 03 Oct 2022 00:46:53 -0700 (PDT)
+        with ESMTP id S229908AbiJCIgv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 04:36:51 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B77AEE13;
+        Mon,  3 Oct 2022 01:10:06 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id j16so15467357lfg.1;
+        Mon, 03 Oct 2022 01:10:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=1yjpMK1krEeeplmSYTL0u1hWiSdjZeop0evvtlI1i1w=;
-        b=gKphT3q8aKZ1CBoas430JaQonZxkPt1UOXVtN8ECftFOjn7sIDhP7pp1//boL3LNHI
-         FHBuUDISphV4WOaBBOpuoDNrVt2Z5YN8V4PZEBFTZmuotQXFm+pu1AdtqISY39YgkMwb
-         u+ifaJcDC8wFRoKOkf/dkEwhJLJw0dRiL5KnrtaBXK6lGxZgEISWhCQrMZnFWIxO5DzQ
-         906T57oWreM6ex9aF+J/kul9BD4v9E1rLNUp/Pr+9kS4DS+QMtctHicVm5Vrf3MYSIKD
-         PufmkPWZADzYdSlcoRrjZDchX0A1M7YUkGBHIAdDR5hGHzutkF2jGDUGaLPeuqEgQNsx
-         MKjg==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date;
+        bh=c0YyeUojy1jbeCZ2/7r3YgN/g1XESLH2vjvNlGUsJKw=;
+        b=LdFHIt0zUAjh3H7rheITvmy7LWOUL0dCkwyGSmp/8iPWlwthEVrWAiaPryTwyiqzuw
+         a3lokmpUSA4dhqav4vFyeLd/g7nqpBVD4O1yM+nrWq5r7cF5yr134JmBIFBEBsz30xWe
+         vj55VTL/xGLLmEYBwqjnkMHCmA13LdF2kRkoPB9NqlSF7vspZu/bA4TOo/XyZx7VJTWB
+         q4j4Xcxq0kOXVik+kViRKpX1OHJbpla01W0CBmlL40xAxTFY6Bei5Ju8G22WAv8GUubA
+         tW5lmtBuSphFTse3r72m7QQ01RiizP9x1IzEPWE4V/fmFyW2XKybYNhTqdk+SgCx3ZfR
+         G12w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=1yjpMK1krEeeplmSYTL0u1hWiSdjZeop0evvtlI1i1w=;
-        b=uiXgTzEFNKROzuEk7uUIEzzgZQcTU0CWuK8km5UdkM9ASi2jfJttvbdI2X+pFke57v
-         lEfJuk3wKbZNIey8as1qE/gaFrocZS84M7l865PaB+NiP1tK6w4cXjZyAJHHn5NvUrxe
-         U+HjMPqSZmC0RwjxTqWe3G6Tv3icY2AQxWBygBRdLp6XWKeAt3hn5n8FZKzgIQrNpvaT
-         Kg9AHaFIDQlKECuDBLEWBob7VOCkfheMtrKZGMTB+TotqQmKBQSnzeAvrg/dkl01RGXT
-         +UT1zdxYYWRtPdzmy5G/bM+IZRmxYNZc602HAvglkuZdh+/qTboCxZVn3VdPiCKD8zZL
-         wdMg==
-X-Gm-Message-State: ACrzQf0BcLF50UGxMNV0yGzL6YG42FCfAX565lqft0mbNXO+uk3nObbV
-        29WFzEt8O4oKi1IoCnx2qJJWmL1WykFyLjn8fx4=
-X-Google-Smtp-Source: AMsMyM6LlK6ZB7rljg0Mj5bp/ehF6MfiYRFKZ2FmW8R5HOnHagjs+fpqrJi6VpkJvKuLO/RaY082lgiQAqbFVcJsipc=
-X-Received: by 2002:ac8:5b95:0:b0:35c:e579:1feb with SMTP id
- a21-20020ac85b95000000b0035ce5791febmr15103919qta.481.1664783034172; Mon, 03
- Oct 2022 00:43:54 -0700 (PDT)
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=c0YyeUojy1jbeCZ2/7r3YgN/g1XESLH2vjvNlGUsJKw=;
+        b=S6Hm+Inuxrxc6vfJjzcTKuiFRg7y7zGzUKmrQg9IOzn/RqPdn3ze3ZE8EnGHGLMYBJ
+         tt0UxeK68d+jiWXmCaU4dQAZ9zG1XDv5hsyjqH6Y19z1DY7HzF5GQJ/IG/FdtKQk/nam
+         8uU1D+/18YutXGujEEpC5ImkdnDmxM/4qfP0E9QkBv92h2V6hcurhidE7HxMPK6gEU9L
+         7nKbn/7dRLpBKDdu5QOEDCaSSFdEyl9JnoCMTXWHqo/87FD8z3eU5i3LmmvPYAq3PEm8
+         G76vusMXkapb+midlMBbk+Ib5QxXs1ZQUuRyoVQm30b5EiybXOzUPP2Vx5EPLCmE/aQJ
+         7WaA==
+X-Gm-Message-State: ACrzQf08L1FJk4dfG7yNrsAoPh39jDnYJa4Lg4F8TRAaK9q1tDroksCA
+        g2I5dg1Jyh3an3imGrkRJPs=
+X-Google-Smtp-Source: AMsMyM4w/Ky5VFLFmELVHCsaLO1XIDKk2TKBlWRSHy002zjVdSF8UTaBCYQvdkrze6qxyd9FfuRQfA==
+X-Received: by 2002:a05:6512:66:b0:4a2:3c36:8c3d with SMTP id i6-20020a056512006600b004a23c368c3dmr1399015lfo.687.1664784605012;
+        Mon, 03 Oct 2022 01:10:05 -0700 (PDT)
+Received: from dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id f5-20020a056512228500b0049c86ca95bfsm1358912lfu.52.2022.10.03.01.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Oct 2022 01:10:04 -0700 (PDT)
+Date:   Mon, 3 Oct 2022 11:09:51 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Benson Leung <bleung@chromium.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Alexandru Ardelean <alexandru.ardelean@analog.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Mihail Chindris <mihail.chindris@analog.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev
+Subject: [PATCH v3 00/10] iio: Fix unsafe buffer attributes
+Message-ID: <cover.1664782676.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
-References: <cover.1663834141.git.cmo@melexis.com> <be405068f081f2d518843897b13cd0289c280b5d.1663834141.git.cmo@melexis.com>
- <a11b83a9-9e25-bbb5-2556-f5244119e3dc@wanadoo.fr> <e039d9bd-d2e7-a215-4ec2-7f760e1f83b1@wanadoo.fr>
-In-Reply-To: <e039d9bd-d2e7-a215-4ec2-7f760e1f83b1@wanadoo.fr>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 3 Oct 2022 10:43:18 +0300
-Message-ID: <CAHp75VcbsE2Smwvpih--7OiMbw3DJeNYAma-prmDLwxqVodwrw@mail.gmail.com>
-Subject: Re: [PATCH v6 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     cmo@melexis.com, jic23@kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="t/4fi5Jmm2ZTy01t"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 2, 2022 at 7:11 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
-> Le 02/10/2022 =C3=A0 18:09, Christophe JAILLET a =C3=A9crit :
 
-...
+--t/4fi5Jmm2ZTy01t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> >>   static int mlx90632_read_raw(struct iio_dev *indio_dev,
-> >>                    struct iio_chan_spec const *channel, int *val,
-> >>                    int *val2, long mask)
-> >>   {
-> >>       struct mlx90632_data *data =3D iio_priv(indio_dev);
-> >>       int ret;
-> >> +    int cr;
-> >
-> > This 'cr' seems to be unused.
->
-> Ok, used in patch 2/3.
-> Sorry for the noise.
+IIO The iio_triggered_buffer_setup_ext() has been changed to expect that
+all attributes given in buffer_attrs array are device-attributes. This
+expectation has not been forced by the API and not all existing users
+were checked. Some drivers do register attributes created by
+IIO_CONST_ATTR().
 
-But it should be used in this patch if it was introduced by it.
+The added attribute "wrapping" does not copy the pointer to stored
+string constant and when the sysfs file is read the kernel will access
+to invalid address.
+
+First 4 patches in the series aim to address both the drivers using
+IIO_CONST_ATTR(). These patches should be backportable. Please note that
+these patches have not been tested in the HW so testing/reviewing is
+highly appreciated.
+
+Following 4 (patches 5 ... 9) contain a minor simplification adding a
+macro for omitting open-coding of dummy attribute show functions.
+
+I am not super happy about the new macro IIO_STATIC_CONST_DEVICE_ATTR()
+which unconditionally creates a static function and a static struct
+iio_dev_attr. OTOH, I do believe static function + static struct
+iio_dev_attr should be the right thing to do for majority of use cases.
+
+The last patch in the series (patch 10) aims to change the function
+signatures so that similar issues would be avoided in the future.
+
+Here we also change the struct iio_buffer to have array of pointers to
+iio_dev_attr in order to avoid yet another copying in side the
+iio_triggered_buffer_setup_ext(). This change appeared to be somewhat
+intrusive - and as I lack the hardware to do thorough testing I added
+the request for testing tag here. Especially testing of adi-axi-adc
+would be highly appreciated as it is using the
+industrialio-buffer-dmaengine.
+
+Changelog v3:
+  - Split the series to allow easier backport and review. This also
+    allows merging the smaller fixes with less of a risk for crashing
+    and burning everything :)
+
+Changelog v2:
+  - fix also the cros_ec_sensors_core.c
+  - fix also the industrialio-buffer-dmaengine.c
+  - add RFT + this cover-letter.
+
+--
+
+
+Matti Vaittinen (10):
+  iio: adxl367: Fix unsafe buffer attributes
+  iio: adxl372: Fix unsafe buffer attributes
+  iio: bmc150-accel-core: Fix unsafe buffer attributes
+  iio: at91-sama5d2_adc: Fix unsafe buffer attributes
+  iio: Add IIO_STATIC_CONST_DEVICE_ATTR
+  iio: adxl367: Use IIO_STATIC_CONST_DEVICE_ATTR()
+  iio: adxl372: Use IIO_STATIC_CONST_DEVICE_ATTR()
+  iio: bmc150-accel-core: Use IIO_STATIC_CONST_DEVICE_ATTR()
+  iio: at91-sama5d2_adc: Use IIO_STATIC_CONST_DEVICE_ATTR()
+  iio: Don't silently expect attribute types
+
+ drivers/iio/accel/adxl367.c                    | 16 ++++++++--------
+ drivers/iio/accel/adxl372.c                    | 16 ++++++++--------
+ drivers/iio/accel/bmc150-accel-core.c          | 18 +++++++++---------
+ drivers/iio/adc/at91-sama5d2_adc.c             | 16 ++++++++--------
+ .../iio/buffer/industrialio-buffer-dmaengine.c |  4 ++--
+ .../iio/buffer/industrialio-triggered-buffer.c |  4 ++--
+ drivers/iio/buffer/kfifo_buf.c                 |  2 +-
+ .../cros_ec_sensors/cros_ec_sensors_core.c     |  6 +++---
+ .../common/hid-sensors/hid-sensor-trigger.c    |  8 ++++----
+ drivers/iio/industrialio-buffer.c              | 11 +++++++----
+ include/linux/iio/buffer_impl.h                |  2 +-
+ include/linux/iio/kfifo_buf.h                  |  3 ++-
+ include/linux/iio/sysfs.h                      | 11 +++++++++++
+ include/linux/iio/triggered_buffer.h           |  6 +++---
+ 14 files changed, 69 insertions(+), 54 deletions(-)
+
+
+base-commit: f76349cf41451c5c42a99f18a9163377e4b364ff
+--=20
+2.37.3
+
 
 --=20
-With Best Regards,
-Andy Shevchenko
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--t/4fi5Jmm2ZTy01t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmM6mMIACgkQeFA3/03a
+ocWpdAgAyy6b0J6xt2mjtw7DX1VuVjI6cvnBict6lYVhU9CAqbWuSqEhgKMHwS3d
+u3Jt/eKGOozOBJMqhVkvV1cq4RtDqWyRzp2iuOFXw8Ud2oJCViiSuNTCdplodQvq
+K8XrCSM0xdkSGaeA3HXmjZ/JpSYglA+jXABexWmwc/PdFmhH7V+y6DXQaC/bAoFa
+tRcaS99EOnS0OpDkMqp/WjwR6Te2GimUfb0wDz29oWQZd3KENrtBxCyuxFu5TOJB
+MzsR4J9b+IyJ7VTnfU0mLWjTYKx5bhl1SvONulJQnJfVHPVVPWuVwx9/yNlQ8KKS
+VhLUslqRJwAxvqz47n9s2NRQMGB/IQ==
+=ypCI
+-----END PGP SIGNATURE-----
+
+--t/4fi5Jmm2ZTy01t--

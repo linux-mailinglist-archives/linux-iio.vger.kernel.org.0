@@ -2,115 +2,178 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FA85F2E5F
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:45:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB8515F2E81
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 11:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbiJCJpz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 3 Oct 2022 05:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49056 "EHLO
+        id S230175AbiJCJvf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 05:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbiJCJpc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:45:32 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B079911805;
-        Mon,  3 Oct 2022 02:42:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664790133; x=1696326133;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5g0KdDz+yWE3/smCFgpv/AmpQhtjfHFM8QG3/rIgCUE=;
-  b=b017ZbEyIBehpk0Pzx6uWsjY/eKUw0pDURo2m2ii6rNSLsXtF7TVB6Hd
-   uXu0HKJBqXRpqAfByhbAM09C5w2Ii3cgQnxjvx9oEvBv13DUtyX5Q9Z90
-   hCl2QSr3Z0nUDtn5K7wnOSUmkq+R9UIttymRXnOFudRqa/g42FvK0DAlK
-   WMFElclRvLc7QkMHdB/2+RGhpmK6QqbqTF09mOrgxsqy3MhFE0FzEeuXY
-   k8/JokmOFPiVGS+fW+mrzfX24FSnAt2AuGACllfjyI6D1luij3ggiCKbG
-   jl1VtAIYFXigg0t51GbvJn7eZJ568Tcz1i79J4/pVGwJvOxwOIGTRJU4U
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="366634985"
-X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
-   d="scan'208";a="366634985"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2022 02:42:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="574567543"
-X-IronPort-AV: E=Sophos;i="5.93,365,1654585200"; 
-   d="scan'208";a="574567543"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 03 Oct 2022 02:42:07 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ofHxd-001Rjr-12;
-        Mon, 03 Oct 2022 12:42:05 +0300
-Date:   Mon, 3 Oct 2022 12:42:05 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Benson Leung <bleung@chromium.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
+        with ESMTP id S230432AbiJCJvM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 05:51:12 -0400
+X-Greylist: delayed 371 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 03 Oct 2022 02:50:28 PDT
+Received: from first.geanix.com (first.geanix.com [116.203.34.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F1E9FF9
+        for <linux-iio@vger.kernel.org>; Mon,  3 Oct 2022 02:50:28 -0700 (PDT)
+Received: from Seans-MBP.hadsten (_gateway [172.25.0.1])
+        by first.geanix.com (Postfix) with ESMTPSA id EDEF764118E;
+        Mon,  3 Oct 2022 09:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1664790254; bh=EG9RqZ0GL+qbaW5KZAjqGQQsDq+PqAhKsPtpohP9eCI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=ICnPjVQIc2V1pv/Dl1rJAIbGpH7wtxCNFfS233ACB+gT1wj6JdFKf+zNDL29bNR6P
+         9VB+6MFkr2BE5OglOkQ2La6UdJQU+OF+io60zpg2E0jGldvB/919vxUeXdulMTwgrl
+         BOCb/+urRtKg8qVB1qnMUn53vbTWwNR6KK+UrPVKvQoPU3hluEtuWfqdIlk9L/nUK2
+         S7muqjxeSdl/QCew7Pq4t9iLa4rABZFp2x/L92+igV/2hjH7j5Bc0MfdYHW7/rjgFi
+         PQ1TFOGekgGYfJD9k+xtbVUXpKgU+VzMfjWLNGvC114HSHufZpXkvPpIu8OmtHlI2C
+         YKaAnDQZ6Tuog==
+Date:   Mon, 3 Oct 2022 11:44:13 +0200
+From:   Sean Nyekjaer <sean@geanix.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Paul Cercueil <paul@crapouillou.net>,
-        Mihail Chindris <mihail.chindris@analog.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        chrome-platform@lists.linux.dev
-Subject: Re: [RFT PATCH v3 10/10] iio: Don't silently expect attribute types
-Message-ID: <YzqubeAnrH5FJ0vA@smile.fi.intel.com>
-References: <cover.1664782676.git.mazziesaccount@gmail.com>
- <63f54787a684eb1232f1c5d275a09c786987fe4a.1664782676.git.mazziesaccount@gmail.com>
- <YzqgqERDTLVkJH67@smile.fi.intel.com>
- <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rui Miguel Silva <rui.silva@linaro.org>,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 2/5] iio: accel: fxls8962af: Use new
+ EXPORT_NS_GPL_DEV_PM_OPS()
+Message-ID: <20221003094413.ficelvch64vln5bw@Seans-MBP.hadsten>
+References: <20220925155719.3316280-1-jic23@kernel.org>
+ <20220925155719.3316280-3-jic23@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b36ee317-abfe-9f55-70b5-bbf3138f50c0@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220925155719.3316280-3-jic23@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 03, 2022 at 11:58:35AM +0300, Matti Vaittinen wrote:
-> On 10/3/22 11:43, Andy Shevchenko wrote:
-> > On Mon, Oct 03, 2022 at 11:13:53AM +0300, Matti Vaittinen wrote:
-
-...
-
-> > > +		for (i = 0, id_attr = buffer->attrs[i];
-> > > +		     (id_attr = buffer->attrs[i]); i++)
-> > 
-> > Not sure why we have additional parentheses...
+On Sun, Sep 25, 2022 at 04:57:16PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Because gcc warns about the assignment and suggests adding parenthesis if we
-> don't.
+> Using this macro allows the compiler to remove unused
+> structures and callbacks if we are not building with
+> CONFIG_PM* without needing __maybe_unused markings.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Sean Nyekjaer <sean@geanix.com>
+> 
 
-Ah, this is a condition, so that's why compiler wants to have a _result_ of
-the assignment and not the ambiguous thingy.
+Acked-by: Sean Nyekjaer <sean@geanix.com>
 
-Btw, have you considered to switch to in-loop iterator definitions as we do
-in many other places? Also, it might make sense to introduce for_each_...
-type of macro helper if the loop is used more than once.
+> --
+> Switched to Paul Cercueil's more flexible implementation fo the macro.
+> Dropped Sean's Ack given new form of macro being used.
+
+Re-added my Ack :)
+
+> ---
+>  drivers/iio/accel/fxls8962af-core.c | 16 +++++++---------
+>  drivers/iio/accel/fxls8962af-i2c.c  |  2 +-
+>  drivers/iio/accel/fxls8962af-spi.c  |  2 +-
+>  3 files changed, 9 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+> index 8874d6d61725..bf259db281f5 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -1241,7 +1241,7 @@ int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(fxls8962af_core_probe, IIO_FXLS8962AF);
+>  
+> -static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
+> +static int fxls8962af_runtime_suspend(struct device *dev)
+>  {
+>  	struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
+>  	int ret;
+> @@ -1255,14 +1255,14 @@ static int __maybe_unused fxls8962af_runtime_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int __maybe_unused fxls8962af_runtime_resume(struct device *dev)
+> +static int fxls8962af_runtime_resume(struct device *dev)
+>  {
+>  	struct fxls8962af_data *data = iio_priv(dev_get_drvdata(dev));
+>  
+>  	return fxls8962af_active(data);
+>  }
+>  
+> -static int __maybe_unused fxls8962af_suspend(struct device *dev)
+> +static int fxls8962af_suspend(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct fxls8962af_data *data = iio_priv(indio_dev);
+> @@ -1283,7 +1283,7 @@ static int __maybe_unused fxls8962af_suspend(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -static int __maybe_unused fxls8962af_resume(struct device *dev)
+> +static int fxls8962af_resume(struct device *dev)
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct fxls8962af_data *data = iio_priv(indio_dev);
+> @@ -1300,12 +1300,10 @@ static int __maybe_unused fxls8962af_resume(struct device *dev)
+>  	return 0;
+>  }
+>  
+> -const struct dev_pm_ops fxls8962af_pm_ops = {
+> -	SET_SYSTEM_SLEEP_PM_OPS(fxls8962af_suspend, fxls8962af_resume)
+> -	SET_RUNTIME_PM_OPS(fxls8962af_runtime_suspend,
+> -			   fxls8962af_runtime_resume, NULL)
+> +EXPORT_NS_GPL_DEV_PM_OPS(fxls8962af_pm_ops, IIO_FXLS8962AF) = {
+> +	SYSTEM_SLEEP_PM_OPS(fxls8962af_suspend, fxls8962af_resume)
+> +	RUNTIME_PM_OPS(fxls8962af_runtime_suspend, fxls8962af_runtime_resume, NULL)
+>  };
+> -EXPORT_SYMBOL_NS_GPL(fxls8962af_pm_ops, IIO_FXLS8962AF);
+>  
+>  MODULE_AUTHOR("Sean Nyekjaer <sean@geanix.com>");
+>  MODULE_DESCRIPTION("NXP FXLS8962AF/FXLS8964AF accelerometer driver");
+> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
+> index 8fbadfea1620..22640eaebac7 100644
+> --- a/drivers/iio/accel/fxls8962af-i2c.c
+> +++ b/drivers/iio/accel/fxls8962af-i2c.c
+> @@ -45,7 +45,7 @@ static struct i2c_driver fxls8962af_driver = {
+>  	.driver = {
+>  		   .name = "fxls8962af_i2c",
+>  		   .of_match_table = fxls8962af_of_match,
+> -		   .pm = &fxls8962af_pm_ops,
+> +		   .pm = pm_ptr(&fxls8962af_pm_ops),
+>  		   },
+>  	.probe_new = fxls8962af_probe,
+>  	.id_table = fxls8962af_id,
+> diff --git a/drivers/iio/accel/fxls8962af-spi.c b/drivers/iio/accel/fxls8962af-spi.c
+> index 885b3ab7fcb5..a0d192211839 100644
+> --- a/drivers/iio/accel/fxls8962af-spi.c
+> +++ b/drivers/iio/accel/fxls8962af-spi.c
+> @@ -44,7 +44,7 @@ MODULE_DEVICE_TABLE(spi, fxls8962af_spi_id_table);
+>  static struct spi_driver fxls8962af_driver = {
+>  	.driver = {
+>  		   .name = "fxls8962af_spi",
+> -		   .pm = &fxls8962af_pm_ops,
+> +		   .pm = pm_ptr(&fxls8962af_pm_ops),
+>  		   .of_match_table = fxls8962af_spi_of_match,
+>  		   },
+>  	.probe = fxls8962af_probe,
+> -- 
+> 2.37.2
+> 
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Best regards
+Sean Nyekjær
+Embedded Linux Consultant
 
++45 42427326
+sean@geanix.com
 
+Geanix ApS
+https://geanix.com
+DK39600706

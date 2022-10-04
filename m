@@ -2,527 +2,250 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 380425F2544
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Oct 2022 22:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4465F2831
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Oct 2022 07:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbiJBUfD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 2 Oct 2022 16:35:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        id S229617AbiJCFib (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 3 Oct 2022 01:38:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229479AbiJBUfC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 2 Oct 2022 16:35:02 -0400
-Received: from mail-vk1-xa30.google.com (mail-vk1-xa30.google.com [IPv6:2607:f8b0:4864:20::a30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A8CD15725
-        for <linux-iio@vger.kernel.org>; Sun,  2 Oct 2022 13:34:59 -0700 (PDT)
-Received: by mail-vk1-xa30.google.com with SMTP id r193so4592959vke.13
-        for <linux-iio@vger.kernel.org>; Sun, 02 Oct 2022 13:34:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=zgqs60F301pgabU/+9oujrfpsy56fQmCMYz4uw7ijK0=;
-        b=gYpFOfwRB3UgwMpjOuohbh5v90GVGAfjZkTFenpFcBTAewUO2JiPdl8t8LLWVBP3VE
-         igABUffwm5O0dQQn0UUUe4nPWEuc7zDu5lLqvTe2rwiMBCNpiE9Qc7OxUQAxmuPxK3Q7
-         Zo1TXDkjRy6njm+iwxs1BOQEuNmEUUPJhZbuMn2dpMTwL97zmbFlwYfz50jmVlhDFlXH
-         2ZjeYLNUQAA9e4S3KaBqqZBq4hVZizAjnBnnA6ILX5aKPRfS1ELUCWunU/kGBzeGvnUn
-         0cSddZjpmKco3p902crUcpxEZUfmPbF7IE87FlOC9dNsqo93KVkSdITewtNqOJSIfFtU
-         uMpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=zgqs60F301pgabU/+9oujrfpsy56fQmCMYz4uw7ijK0=;
-        b=jqwClnxK8rVmdl/bIPr2Fz9KxqVKxczn9n/N7rxd95IwV8V+1R6xg5wP2afR5Lv4gf
-         0/Tzf8Rl7N+wV6kyC66lgmqssZZ+ogDZ9j0uzzlltTgI2xCgmD2rsfbrpW0x9h/Wa+53
-         TDrJwui+EZsPhObyE1j8NhyliJNFWQX6rO52i9QkiYU1ENctJhGv7AkNbh4MNaua1PeW
-         NThdEP4Auzt9HY9F1U5yb03Ns0QREKd8GkX4yd1BdoovNQKfB9mBw0nmmbT4TsH7awzo
-         szBG2dVwbaDY/lBqJP3I4Y3gbrAfQFMtjRhed/j0VmoNUny/cOwEKXw/aS+ZGtUrlYJF
-         K2Rw==
-X-Gm-Message-State: ACrzQf0trxDXcM5Rct0EDBtEqpa5eUQdhBZw3iQjzspP7ybccZ6L4ata
-        dBWQ5sPOYhoVleEM+tbJx2nb1jqJAwVHM6d+Rbd9jQ==
-X-Google-Smtp-Source: AMsMyM6TeNEmB5dQqU5JZPDif8yzuEKuuZt26iM0fOZTi76OJhuOYYLjNte6Yuu6nk9mt9F7daAInoD9Bi5neonEtDA=
-X-Received: by 2002:a05:6122:812:b0:3a9:9cf9:8f91 with SMTP id
- 18-20020a056122081200b003a99cf98f91mr3561429vkj.23.1664742898590; Sun, 02 Oct
- 2022 13:34:58 -0700 (PDT)
+        with ESMTP id S229479AbiJCFia (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 3 Oct 2022 01:38:30 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C42326E6;
+        Sun,  2 Oct 2022 22:38:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1664775509; x=1696311509;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BDnxmWv6n7bJ2KCeyvNjhHyOZxAS/6rcF6Ooa+BhmyM=;
+  b=IHH2n3MGExYbnITLBiiU3WBrjRJ2jJKcoEohb5QMoMnMT2jCxoY34UfY
+   A2PX7VpGu+2pehR8sNLSXL+QKd2ELYz9298c9gzbRdnTOZG5X5v+RHMFa
+   hnC41Po1AtfI2NBeIWmKx9q4smxJNdW3U+wchFOZkPoO4KWir8zKGxaa7
+   xxp9JWWfo4WNtF8uKB/m5S4eD8Ox/Dxq7RMomvBoIjJUwnVQt/JVb52eD
+   ozrsaJp4rOAB5l3oiHGwuu3dP5XFKN1cQq1LNz4lDyCSIfF0b835H8G6N
+   otDugNn2lA0//FFYREgjbfifDmXHsjsUKaKgE1v60Knh/3OB7zbYnCu4c
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="282263707"
+X-IronPort-AV: E=Sophos;i="5.93,364,1654585200"; 
+   d="scan'208";a="282263707"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2022 22:38:29 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10488"; a="625639096"
+X-IronPort-AV: E=Sophos;i="5.93,364,1654585200"; 
+   d="scan'208";a="625639096"
+Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.55])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2022 22:38:27 -0700
+From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rajat.khandelwal@intel.com,
+        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+Subject: [PATCH v4] iio: pressure: mpl115: Implementing low power mode by shutdown gpio
+Date:   Tue,  4 Oct 2022 11:08:01 +0530
+Message-Id: <20221004053801.2774719-1-rajat.khandelwal@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20221001221225.668378-1-angelo.dureghello@timesys.com> <20221002125625.661b118d@jic23-huawei>
-In-Reply-To: <20221002125625.661b118d@jic23-huawei>
-From:   Angelo Dureghello <angelo.dureghello@timesys.com>
-Date:   Sun, 2 Oct 2022 22:32:59 +0200
-Message-ID: <CALJHbkBPg=+N_6q+cVpFbmwM0mJbUhuH3wwWKma7GzaR1r1owQ@mail.gmail.com>
-Subject: Re: [PATCH resend] iio: dac: add support for max5522
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     william.gray@linaro.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+MPL115 supports shutdown gpio which can be used to set the state
+to low power mode. Power from all internal circuits and
+registers is removed. This is done by pulling the SHDN pin to low.
+This patch enables runtime PM on MPL115 to increase power savings.
 
-thanks a lot for all the feedbacks,
+According to spec., a wakeup time period of ~5 ms exists between
+waking up and actually communicating with the device. This is
+implemented using sleep delay.
 
-On Sun, Oct 2, 2022 at 1:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sun,  2 Oct 2022 00:12:25 +0200
-> Angelo Dureghello <angelo.dureghello@timesys.com> wrote:
->
-> > Add initial support for dac max5522.
->
-> DAC preferred for comments.
->
-ok, fixed
+Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+---
 
-> >
-> > Tested writing DAC A and B with some values,
-> > from 0 to 1023, measured output voltages, driver works properly.
-> >
-> > Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
->
-> Hi Angelo
->
-> A quick review inline.
->
-> Thanks,
->
-> Jonathan
->
-> > ---
-> >  drivers/iio/dac/Kconfig   |  13 ++
-> >  drivers/iio/dac/Makefile  |   1 +
-> >  drivers/iio/dac/max5522.c | 246 ++++++++++++++++++++++++++++++++++++++
-> >  3 files changed, 260 insertions(+)
-> >  create mode 100644 drivers/iio/dac/max5522.c
-> >
-> > diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-> > index 80521bd28d0f..262688b5e39f 100644
-> > --- a/drivers/iio/dac/Kconfig
-> > +++ b/drivers/iio/dac/Kconfig
-> > @@ -357,6 +357,19 @@ config MAX517
-> >         This driver can also be built as a module.  If so, the module
-> >         will be called max517.
-> >
-> > +config MAX5522
-> > +     tristate "Maxim MAX5522 DAC driver"
-> > +     depends on SPI
-> Hmm. We only have one instance of the pattern and that's more complex because
-> it's a driver that supports both SPI and I2C. Simpler to have (unless I'm missing
-> something!)
->
->         depends on SPI_MASTER
->         select REGMAP_SPI
->
-Not sure i am understanding this point, device is SPI only.
-Anyway, ok, i changed as you are suggesting.
+v4:
+1. Using runtime PM for low power mode and not forcing shutdown pin
+2. Changing patch comment
+3. Increasing autosuspend timeout to 2 sec to make the driver more
+responsive to user
 
->
-> > +     select REGMAP_SPI if SPI_MASTER
-> > +     help
-> > +       Say Y here if you want to build a driver for the Maxinm MAX5522.
->
-> Maxim
-ack, fixed
+ drivers/iio/pressure/mpl115.c     | 61 ++++++++++++++++++++++++++++++-
+ drivers/iio/pressure/mpl115.h     |  5 +++
+ drivers/iio/pressure/mpl115_i2c.c |  1 +
+ drivers/iio/pressure/mpl115_spi.c |  1 +
+ 4 files changed, 67 insertions(+), 1 deletion(-)
 
->
-> > +
-> > +       MAX5522 is a dual, ultra-low-power, 10-Bit, voltage-output
-> > +       digital to analog converter (DAC) offering rail-to-rail buffered
-> > +       voltage outputs.
-> > +
-> > +       If compiled as a module, it will be called max5522.
-> > +
-> >  config MAX5821
-> >       tristate "Maxim MAX5821 DAC driver"
-> >       depends on I2C
-> > diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-> > index ec3e42713f00..6c74fea21736 100644
-> > --- a/drivers/iio/dac/Makefile
-> > +++ b/drivers/iio/dac/Makefile
-> > @@ -38,6 +38,7 @@ obj-$(CONFIG_LTC2632) += ltc2632.o
-> >  obj-$(CONFIG_LTC2688) += ltc2688.o
-> >  obj-$(CONFIG_M62332) += m62332.o
-> >  obj-$(CONFIG_MAX517) += max517.o
-> > +obj-$(CONFIG_MAX5522) += max5522.o
-> >  obj-$(CONFIG_MAX5821) += max5821.o
-> >  obj-$(CONFIG_MCP4725) += mcp4725.o
-> >  obj-$(CONFIG_MCP4922) += mcp4922.o
-> > diff --git a/drivers/iio/dac/max5522.c b/drivers/iio/dac/max5522.c
-> > new file mode 100644
-> > index 000000000000..aa4098a1d68c
-> > --- /dev/null
-> > +++ b/drivers/iio/dac/max5522.c
-> > @@ -0,0 +1,246 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * Maxim MAX5522
-> > + * Dual, Ultra-Low-Power 10-Bit, Voltage-Output DACs
-> > + *
-> > + * Copyright 2022 Timesys Corp.
-> > + */
-> > +
-> > +#include <linux/device.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/module.h>
-> > +#include <linux/spi/spi.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/sysfs.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/regulator/consumer.h>
-> Alphabetical order for this block is slightly wrong.
-ack, fixed
+diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
+index 5bf5b9abe6f1..ec7527161844 100644
+--- a/drivers/iio/pressure/mpl115.c
++++ b/drivers/iio/pressure/mpl115.c
+@@ -4,12 +4,13 @@
+  *
+  * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
+  *
+- * TODO: shutdown pin
++ * TODO: synchronization with system suspend
+  */
+ 
+ #include <linux/module.h>
+ #include <linux/iio/iio.h>
+ #include <linux/delay.h>
++#include <linux/gpio/consumer.h>
+ 
+ #include "mpl115.h"
+ 
+@@ -27,6 +28,7 @@ struct mpl115_data {
+ 	s16 a0;
+ 	s16 b1, b2;
+ 	s16 c12;
++	struct gpio_desc *shutdown;
+ 	const struct mpl115_ops *ops;
+ };
+ 
+@@ -102,16 +104,24 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
++		pm_runtime_get_sync(data->dev);
+ 		ret = mpl115_comp_pressure(data, val, val2);
+ 		if (ret < 0)
+ 			return ret;
++		pm_runtime_mark_last_busy(data->dev);
++		pm_runtime_put_autosuspend(data->dev);
++
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_RAW:
++		pm_runtime_get_sync(data->dev);
+ 		/* temperature -5.35 C / LSB, 472 LSB is 25 C */
+ 		ret = mpl115_read_temp(data);
+ 		if (ret < 0)
+ 			return ret;
++		pm_runtime_mark_last_busy(data->dev);
++		pm_runtime_put_autosuspend(data->dev);
+ 		*val = ret >> 6;
++
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		*val = -605;
+@@ -168,6 +178,8 @@ int mpl115_probe(struct device *dev, const char *name,
+ 	if (ret)
+ 		return ret;
+ 
++	dev_set_drvdata(dev, indio_dev);
++
+ 	ret = data->ops->read(data->dev, MPL115_A0);
+ 	if (ret < 0)
+ 		return ret;
+@@ -185,10 +193,58 @@ int mpl115_probe(struct device *dev, const char *name,
+ 		return ret;
+ 	data->c12 = ret;
+ 
++	data->shutdown = devm_gpiod_get_optional(dev, "shutdown",
++						 GPIOD_OUT_LOW);
++	if (IS_ERR(data->shutdown))
++		return dev_err_probe(dev, PTR_ERR(data->shutdown),
++				     "cannot get shutdown gpio\n");
++
++	if (data->shutdown) {
++		/* Enable runtime PM */
++		pm_runtime_get_noresume(dev);
++		pm_runtime_set_active(dev);
++		pm_runtime_enable(dev);
++
++		/*
++		 * As the device takes 3 ms to come up with a fresh
++		 * reading after power-on and 5 ms to actually power-on,
++		 * do not shut it down unnecessarily. Set autosuspend to
++		 * 2000 ms.
++		 */
++		pm_runtime_set_autosuspend_delay(dev, 2000);
++		pm_runtime_use_autosuspend(dev);
++		pm_runtime_put(dev);
++
++		dev_dbg(dev, "low-power mode enabled");
++	} else
++		dev_dbg(dev, "low-power mode disabled");
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(mpl115_probe, IIO_MPL115);
+ 
++static int mpl115_runtime_suspend(struct device *dev)
++{
++	struct mpl115_data *data = iio_priv(dev_get_drvdata(dev));
++
++	gpiod_set_value(data->shutdown, 1);
++
++	return 0;
++}
++
++static int mpl115_runtime_resume(struct device *dev)
++{
++	struct mpl115_data *data = iio_priv(dev_get_drvdata(dev));
++
++	gpiod_set_value(data->shutdown, 0);
++	usleep_range(5000, 6000);
++
++	return 0;
++}
++
++DEFINE_RUNTIME_DEV_PM_OPS(mpl115_dev_pm_ops, mpl115_runtime_suspend,
++			  mpl115_runtime_resume, NULL);
++
+ MODULE_AUTHOR("Peter Meerwald <pmeerw@pmeerw.net>");
+ MODULE_DESCRIPTION("Freescale MPL115 pressure/temperature driver");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/iio/pressure/mpl115.h b/drivers/iio/pressure/mpl115.h
+index 57d55eb8e661..78a0068a17bb 100644
+--- a/drivers/iio/pressure/mpl115.h
++++ b/drivers/iio/pressure/mpl115.h
+@@ -6,6 +6,8 @@
+  * Copyright (c) 2016 Akinobu Mita <akinobu.mita@gmail.com>
+  */
+ 
++#include <linux/pm_runtime.h>
++
+ #ifndef _MPL115_H_
+ #define _MPL115_H_
+ 
+@@ -18,4 +20,7 @@ struct mpl115_ops {
+ int mpl115_probe(struct device *dev, const char *name,
+ 			const struct mpl115_ops *ops);
+ 
++/*PM ops */
++extern const struct dev_pm_ops mpl115_dev_pm_ops;
++
+ #endif
+diff --git a/drivers/iio/pressure/mpl115_i2c.c b/drivers/iio/pressure/mpl115_i2c.c
+index 099ab1c6832c..555bda1146fb 100644
+--- a/drivers/iio/pressure/mpl115_i2c.c
++++ b/drivers/iio/pressure/mpl115_i2c.c
+@@ -53,6 +53,7 @@ MODULE_DEVICE_TABLE(i2c, mpl115_i2c_id);
+ static struct i2c_driver mpl115_i2c_driver = {
+ 	.driver = {
+ 		.name	= "mpl115",
++		.pm = pm_ptr(&mpl115_dev_pm_ops),
+ 	},
+ 	.probe = mpl115_i2c_probe,
+ 	.id_table = mpl115_i2c_id,
+diff --git a/drivers/iio/pressure/mpl115_spi.c b/drivers/iio/pressure/mpl115_spi.c
+index 7feec87e2704..58d218fd90dc 100644
+--- a/drivers/iio/pressure/mpl115_spi.c
++++ b/drivers/iio/pressure/mpl115_spi.c
+@@ -92,6 +92,7 @@ MODULE_DEVICE_TABLE(spi, mpl115_spi_ids);
+ static struct spi_driver mpl115_spi_driver = {
+ 	.driver = {
+ 		.name   = "mpl115",
++		.pm = pm_ptr(&mpl115_dev_pm_ops),
+ 	},
+ 	.probe = mpl115_spi_probe,
+ 	.id_table = mpl115_spi_ids,
+-- 
+2.34.1
 
->
-> > +
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/sysfs.h>
->
-> You aren't using any custom attributes so shouldn't need iio/sysfs.h
-ack, fixed
-
-> > +
-> > +#define MAX5522_MAX_ADDR     15
-> > +#define MAX5522_CTRL_NONE    0
-> > +#define MAX5522_CTRL_LOAD_IN_A       9
-> > +#define MAX5522_CTRL_LOAD_IN_B       10
-> > +
-> > +#define MAX5522_REG_DATA(x)  (x + MAX5522_CTRL_LOAD_IN_A)
->
-> ((x) + MAX5522_CTRL_LOAD_IN_A)
-> to protect against cases where the macro parameter is non trivial.
-> It's easier to do this here than make a reader go check!
->
-ack, fixed
-
-> > +
-> > +struct max5522_chip_info {
-> > +     const struct iio_chan_spec *channels;
-> > +     unsigned int num_channels;
-> > +};
-> > +
-> > +struct max5522_state {
-> > +     struct regmap *regmap;
-> > +     const struct max5522_chip_info *chip_info;
-> > +     unsigned short dac_cache[2];
-> > +     unsigned int vrefin_mv;
->
-> In theory voltages can change and sensible userspace software will only read them
-> in a slow path anyway, so I'd just move the voltage readback into the
-> read_raw() callback and drop this cache of the value.
->
-Sorry, not clear. This device does not provide read operations.
-There is only write operation and DIN spi pin.
-
-> > +     struct regulator *vrefin_reg;
-> > +};
-> > +
-> > +#define MAX5522_CHANNEL(chan) {      \
-> > +     .type = IIO_VOLTAGE, \
-> > +     .indexed = 1, \
-> > +     .output = 1, \
-> > +     .channel = chan, \
-> > +     .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-> > +                           BIT(IIO_CHAN_INFO_SCALE), \
-> > +     .scan_type = { \
-> As this driver doesn't yet support buffered mode, most of this info
-> isn't used.  So just specify the bits you actually use (shift I think).
-> > +             .sign = 'u', \
-> > +             .realbits = 10, \
-> > +             .storagebits = 16, \
-> > +             .shift = 2, \
-> > +     } \
-> > +}
-> > +
-> > +const struct iio_chan_spec max5522_channels[] = {
-> > +     MAX5522_CHANNEL(0),
-> > +     MAX5522_CHANNEL(1),
-> > +};
-> > +
-> > +enum max5522_type {
-> > +     ID_MAX5522,
-> > +};
-> > +
-> > +static const struct max5522_chip_info max5522_chip_info_tbl[] = {
->
-> Unless you are going to follow this patch very soon with support for more devices,
-> I'd prefer seeing this indirection only when it becomes necessary.
-> For now, it just leads to less readable and longer code.
->
-idea is to follow up with MAX5523/5524/5525,
-not sure when right now, since i cannot test them, but code was ready
-for addition
-
-> > +     [ID_MAX5522] = {
-> > +             .channels = max5522_channels,
-> > +             .num_channels = 2,
-> > +     },
-> > +};
-> > +
-> > +static inline int max5522_info_to_reg(struct iio_chan_spec const *chan)
-> > +{
-> > +     return MAX5522_REG_DATA(chan->channel);
-> > +}
-> > +
-> > +static int max5522_read_raw(struct iio_dev *indio_dev,
-> > +     struct iio_chan_spec const *chan, int *val, int *val2, long info)
-> > +{
-> > +     struct max5522_state *state = iio_priv(indio_dev);
-> > +
-> > +     switch (info) {
-> > +     case IIO_CHAN_INFO_RAW:
-> > +             *val = state->dac_cache[chan->channel];
-> > +             return IIO_VAL_INT;
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             *val = state->vrefin_mv;
-> > +             *val2 = 10;
-> > +             return IIO_VAL_FRACTIONAL_LOG2;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     return -EINVAL;
-> > +}
-> > +
-> > +static int max5522_write_raw(struct iio_dev *indio_dev,
-> > +     struct iio_chan_spec const *chan, int val, int val2, long info)
-> > +{
-> > +     struct max5522_state *state = iio_priv(indio_dev);
-> > +     int rval;
-> > +
-> > +     if (val > 1023 || val < 0)
-> > +             return -EINVAL;
-> > +
-> > +     rval = regmap_write(state->regmap, max5522_info_to_reg(chan),
-> > +                             val << chan->scan_type.shift);
-> > +     if (rval < 0)
-> > +             return rval;
-> > +
-> > +     state->dac_cache[chan->channel] = val;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static const struct iio_info max5522_info = {
-> > +     .read_raw = max5522_read_raw,
-> > +     .write_raw = max5522_write_raw,
-> > +};
-> > +
-> > +static void max5522_remove(struct device *dev)
-> > +{
-> > +     struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > +
-> > +     iio_device_unregister(indio_dev);
->
-> Look at this and consider if there are appropriate devm_ forms
-> for the two things you are doing in here.  If you use
-> devm_iio_device_register() below and
-> devm_kzalloc() or similar for the channels then the managed cleanup
-> will allow you to drop remove entirely.
->
-> > +     kfree(indio_dev->channels);
->
-> You seem to be freeing static const data...
->
-ops. Ok, used devm_iio_device_register and dropped remove entirely.
-
-> > +}
-> > +
-> > +static const struct regmap_config max5522_regmap_config = {
-> > +     .reg_bits = 4,
-> > +     .val_bits = 12,
-> > +     .max_register = MAX5522_MAX_ADDR,
-> > +};
-> > +
-> > +static int max5522_spi_probe(struct spi_device *spi)
-> > +{
-> > +     const struct spi_device_id *id = spi_get_device_id(spi);
-> > +     struct iio_dev *indio_dev;
-> > +     struct max5522_state *state;
-> > +     int ret;
-> > +
-> > +     indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
-> > +     if (indio_dev == NULL) {
-> > +             dev_err(&spi->dev, "failed to allocate iio device\n");
-> > +             return  -ENOMEM;
-> > +     }
-> > +
-> > +     state = iio_priv(indio_dev);
-> > +     state->chip_info = &max5522_chip_info_tbl[id->driver_data];
->
-> Whilst driver only supports one device hard code this - or just hard
-> code the values it contains.
->
-As above, idea was to add 5523/5524/5525, but i cannot test them rtight now.
-
-> > +
-> > +     state->vrefin_reg = devm_regulator_get(&spi->dev, "vrefin");
-> > +     if (IS_ERR(state->vrefin_reg))
-> > +             return dev_err_probe(&spi->dev, PTR_ERR(state->vrefin_reg),
-> > +                                  "Vrefin regulator not specified\n");
->
-> Turn the regulator on.  Not that you'll then want to add
-> a devm_add_action_or_reset() call to call a callback to turn it fof again
-> in the remove path.  We can't us the devm_regulator_get_enabled() path
-> here because we need the pointer to get the voltage.
->
-Thanks, added regulator_enable()
-
-> > +
-> > +     ret = regulator_get_voltage(state->vrefin_reg);
-> > +     if (ret < 0) {
-> > +             dev_err(&spi->dev, "Failed to read vrefin regulator: %d\n",
-> > +                             ret);
-> > +             goto error_disable_vrefin_reg;
-> > +     }
-> > +     state->vrefin_mv = ret / 1000;
-> > +
-> > +     spi_set_drvdata(spi, indio_dev);
->
-> Once you've moved everything over to devm, you won't need this.
->
-Thanks, removed
-
-> > +
-> > +     state->regmap = devm_regmap_init_spi(spi, &max5522_regmap_config);
-> No blank line between a call and it's error handler.  Keeps the blocks
-> slightly easier to read.
-> > +
-> > +     if (IS_ERR(state->regmap))
-> > +             return PTR_ERR(state->regmap);
-> > +
-> > +     dev_info(&spi->dev, "iio dac ready");
->
-> Don't add this noise to the boot log.  If it worked, you'll have lots
-> of easy ways to find out!
->
-Ok, removed, was just for initial debug
-
-> > +
-> > +     indio_dev->info = &max5522_info;
-> > +     indio_dev->modes = INDIO_DIRECT_MODE;
-> > +     indio_dev->channels = max5522_channels;
-> > +     indio_dev->num_channels = ARRAY_SIZE(max5522_channels);
-> > +     indio_dev->name = id->name;
->
-> Hard code the name preferred as it makes it easier to be sure it's exactly what
-> we expect when reading the code and does rely on the fallback compatible matching
-> in the spi core for dt described devices.
->
-Ok, if possible i would keep the id table for next additions.
-
-> > +
-> > +     return iio_device_register(indio_dev);
-> > +
-> > +error_disable_vrefin_reg:
-> > +     regulator_disable(state->vrefin_reg);
->
-> Disabing a regulator you haven't enabled.  Use devm_add_action_or_reset()
-> to register managed cleanup of this.
->
-ops, fixed
-
-> > +
-> > +     return ret;
-> > +}
-> > +
-> > +static void max5522_spi_remove(struct spi_device *spi)
-> > +{
-> > +     max5522_remove(&spi->dev);
-> > +}
-> > +
-> > +static const struct spi_device_id max5522_ids[] = {
-> > +     { "max5522", ID_MAX5522 },
->
-> As below, don't introduce the data part until you need it.
->
-Same as above, let me know if keeping it for next additions is ok.
-
-> > +     {}
-> > +};
-> > +MODULE_DEVICE_TABLE(spi, ad5360_ids);
-> > +
-> > +
-> > +static const struct of_device_id max5522_of_match[] = {
-> > +     { .compatible = "maxim,max5522", },
->
-> Be consistent on whether you are going to put commas after
-> the end of structure intialisers.  For this I don't have
-> a particular preference, just make them all the same!
->
-ok
-
-> Definitely prefer to have data set here and then
-> use device_get_match_data() first then if that fails, fall back to
-> using the spi_device_id path. However, only introduce that complexity
-> when the driver supports multiple parts.  For now there is no point
-> in introducing the data at all.
->
-> > +     {},
->
-> No comma after null terminators.
->
-ok, done
-
-> > +};
-> > +
-> > +MODULE_DEVICE_TABLE(of, max5522_of_match);
-> > +
-> > +static struct spi_driver max5522_spi_driver = {
-> > +     .driver = {
-> > +                .name = "max5522",
-> > +                .of_match_table = max5522_of_match,
-> > +     },
-> > +     .probe = max5522_spi_probe,
-> > +     .remove = max5522_spi_remove,
-> > +     .id_table = max5522_ids,
-> > +};
-> > +
-> > +static inline int max5522_spi_register_driver(void)
-> > +{
-> > +     return spi_register_driver(&max5522_spi_driver);
-> > +}
-> > +
-> > +static inline void max5522_spi_unregister_driver(void)
-> > +{
-> > +     spi_unregister_driver(&max5522_spi_driver);
-> > +}
-> > +
-> > +static int __init max5522_spi_init(void)
-> > +{
-> > +     int ret;
-> > +
-> > +     ret = max5522_spi_register_driver();
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return 0;
-> > +}
-> > +module_init(max5522_spi_init);
-> > +
-> > +static void __exit max5522_spi_exit(void)
-> > +{
-> > +     max5522_spi_unregister_driver();
-> > +}
-> > +module_exit(max5522_spi_exit);
->
-> Why not use
-> module_spi_driver() to get rid of all this boilerplate?
->
-ok, much more simplier, removed all and used module_spi_driver()
-> > +
-> > +MODULE_AUTHOR("Angelo Dureghello <angelo.dureghello@timesys.com");
-> > +MODULE_DESCRIPTION("MAX5522 DAC driver");
-> > +MODULE_LICENSE("GPL");
->
-
-Waiting for further comments before v2.
-
-Thanks a lot,
---
-Angelo Dureghello
-Timesys
-e. angelo.dureghello@timesys.com

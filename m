@@ -2,449 +2,189 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED0A5F4482
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 15:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45EBA5F44B5
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 15:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbiJDNnF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 09:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38364 "EHLO
+        id S229705AbiJDNtm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 4 Oct 2022 09:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbiJDNnF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 09:43:05 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94072F39
-        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 06:43:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ofiCG-0002HX-Nq; Tue, 04 Oct 2022 15:42:56 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ofiCH-004ZkB-Gx; Tue, 04 Oct 2022 15:42:56 +0200
-Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ofiCE-00DCcH-St; Tue, 04 Oct 2022 15:42:54 +0200
-From:   =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229749AbiJDNtj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 09:49:39 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899F32B250
+        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 06:49:32 -0700 (PDT)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 294Dbamp005506;
+        Tue, 4 Oct 2022 09:48:29 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jxfd73nf6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 04 Oct 2022 09:48:28 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 294DmRSc001528
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 4 Oct 2022 09:48:27 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 4 Oct 2022
+ 09:48:26 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 4 Oct 2022 09:48:26 -0400
+Received: from nsa.ad.analog.com ([10.44.3.52])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 294DlkVX032663;
+        Tue, 4 Oct 2022 09:47:49 -0400
+From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
+To:     <linux-amlogic@lists.infradead.org>, <linux-imx@nxp.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>
+CC:     Heiko Stuebner <heiko@sntech.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        kernel@pengutronix.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH v1 2/2] iio: adc: add ADC driver for the TI LMP92064 controller
-Date:   Tue,  4 Oct 2022 15:42:38 +0200
-Message-Id: <20221004134238.3144326-2-l.goehrs@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221004134238.3144326-1-l.goehrs@pengutronix.de>
-References: <20221004134238.3144326-1-l.goehrs@pengutronix.de>
+        Jyoti Bhayana <jbhayana@google.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Cixi Geng <cixi.geng1@unisoc.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Florian Boor <florian.boor@kernelconcepts.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Orson Zhai <orsonzhai@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: [PATCH v2 00/16] Make 'mlock' really private
+Date:   Tue, 4 Oct 2022 15:48:53 +0200
+Message-ID: <20221004134909.1692021-1-nuno.sa@analog.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: lgo@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: PTY91YZxN3rY6kTbfI0Li0-AOheAoNfO
+X-Proofpoint-ORIG-GUID: PTY91YZxN3rY6kTbfI0Li0-AOheAoNfO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-04_06,2022-09-29_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=495 clxscore=1011 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2209130000 definitions=main-2210040089
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The TI LMP92064 is a dual 12 Bit ADC connected via SPI.
-The two channels are intended for simultaneous measurements of the voltage
-across- and current through a load to allow accurate instantaneous power
-measurements.
-The driver does not yet take advantage of this feature, as buffering is not yet
-implemented.
+This patchset cleans all the drivers directly using the iio_device 'mlock'.
+This lock is private and should not be used outside the core (or by using
+proper helpers).
 
-Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
----
- MAINTAINERS                   |   8 +
- drivers/iio/adc/Kconfig       |  10 ++
- drivers/iio/adc/Makefile      |   1 +
- drivers/iio/adc/ti-lmp92064.c | 317 ++++++++++++++++++++++++++++++++++
- 4 files changed, 336 insertions(+)
- create mode 100644 drivers/iio/adc/ti-lmp92064.c
+Most of the conversions where straight, but there are some that really need
+extra looking. Mainly patches [13/15] and [14/15] were a bit hacky since
+iio_device_claim_direct_mode() does not fit 100%. The reason is that we
+want to check if the device is buffering and do something if it is (in
+which case the API return -EBUSY and released the lock. I just used a
+combinations of locks to get around this (hopefully I did not messed up).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 72b9654f764c8..75e3b6ae03d63 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20390,6 +20390,14 @@ S:	Maintained
- F:	sound/soc/codecs/isabelle*
- F:	sound/soc/codecs/lm49453*
- 
-+TI LMP92064 ADC DRIVER
-+M:	Leonard Göhrs <l.goehrs@pengutronix.de>
-+R:	kernel@pengutronix.de
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,lmp92064.yaml
-+F:	drivers/iio/adc/ti-lmp92064.c
-+
- TI PCM3060 ASoC CODEC DRIVER
- M:	Kirill Marinushkin <kmarinushkin@birdec.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 7fe5930891e0a..6c3d471304467 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1219,6 +1219,16 @@ config TI_AM335X_ADC
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called ti_am335x_adc.
- 
-+config TI_LMP92064
-+	tristate "Texas Instruments LMP92064 ADC driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for the LMP92064 Precision Current and Voltage
-+	  sensor.
-+
-+	  This driver can also be built as a module. If so, the module will be called
-+	  ti-lmp92064.
-+
- config TI_TLC4541
- 	tristate "Texas Instruments TLC4541 ADC driver"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 1772a549a3c80..10a9c1d470336 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -109,6 +109,7 @@ obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
- obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
- obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
- obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
-+obj-$(CONFIG_TI_LMP92064) += ti-lmp92064.o
- obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
- obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
- obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
-diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
-new file mode 100644
-index 0000000000000..b70193fc2c841
---- /dev/null
-+++ b/drivers/iio/adc/ti-lmp92064.c
-@@ -0,0 +1,317 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Texas Instruments LMP92064 SPI ADC driver
-+ *
-+ * Copyright (c) 2022 Leonard Göhrs <kernel@pengutronix.de>, Pengutronix
-+ *
-+ * Based on linux/drivers/iio/adc/ti-tsc2046.c
-+ * Copyright (c) 2021 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/spi/spi.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/driver.h>
-+
-+#define TI_LMP92064_NAME "lmp92064"
-+
-+#define TI_LMP92064_CMD_READ BIT(15)
-+#define TI_LMP92064_CMD_WRITE 0
-+
-+#define TI_LMP92064_REG_CONFIG_A 0x0000
-+#define TI_LMP92064_REG_CONFIG_B 0x0001
-+#define TI_LMP92064_REG_STATUS 0x0103
-+
-+#define TI_LMP92064_REG_DATA_VOUT_LSB 0x0200
-+#define TI_LMP92064_REG_DATA_VOUT_MSB 0x0201
-+#define TI_LMP92064_REG_DATA_COUT_LSB 0x0202
-+#define TI_LMP92064_REG_DATA_COUT_MSB 0x0203
-+
-+#define TI_LMP92064_VAL_CONFIG_A 0x99
-+#define TI_LMP92064_VAL_CONFIG_B 0x00
-+#define TI_LMP92064_VAL_STATUS_OK 0x01
-+
-+#define TI_LMP92064_CHAN_INC 0
-+#define TI_LMP92064_CHAN_INV 1
-+
-+struct lmp92064_adc_priv {
-+	struct spi_device *spi;
-+	int shunt_resistor;
-+};
-+
-+static const struct iio_chan_spec lmp92064_adc_channels[] = {
-+	{
-+		.type = IIO_CURRENT,
-+		.address = TI_LMP92064_CHAN_INC,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.datasheet_name = "INC",
-+	},
-+	{
-+		.type = IIO_VOLTAGE,
-+		.address = TI_LMP92064_CHAN_INV,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.datasheet_name = "INV",
-+	},
-+};
-+
-+static int lmp92064_write_reg(struct lmp92064_adc_priv *priv, u16 reg, u8 val)
-+{
-+	u16 cmd = TI_LMP92064_CMD_WRITE | reg;
-+	int ret;
-+	u8 __aligned(IIO_DMA_MINALIGN) tx_buf[3];
-+	struct spi_transfer xfer = {
-+		.tx_buf = tx_buf,
-+		.rx_buf = NULL,
-+		.len = 3,
-+	};
-+
-+	tx_buf[0] = cmd >> 8;
-+	tx_buf[1] = cmd & 0xff;
-+	tx_buf[2] = val;
-+
-+	ret = spi_sync_transfer(priv->spi, &xfer, 1);
-+	if (ret < 0) {
-+		dev_err(&priv->spi->dev, "spi_sync_transfer failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int lmp92064_read_reg(struct lmp92064_adc_priv *priv, u16 reg, u8 *val)
-+{
-+	u16 cmd = TI_LMP92064_CMD_READ | reg;
-+	int ret;
-+	u8 __aligned(IIO_DMA_MINALIGN) tx_buf[3] = { 0 };
-+	u8 __aligned(IIO_DMA_MINALIGN) rx_buf[3] = { 0 };
-+	struct spi_transfer xfer = {
-+		.tx_buf = tx_buf,
-+		.rx_buf = rx_buf,
-+		.len = 3,
-+	};
-+
-+	tx_buf[0] = cmd >> 8;
-+	tx_buf[1] = cmd & 0xff;
-+
-+	ret = spi_sync_transfer(priv->spi, &xfer, 1);
-+	if (ret < 0) {
-+		dev_err(&priv->spi->dev, "spi_sync_transfer failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	*val = rx_buf[2];
-+
-+	return 0;
-+}
-+
-+static int lmp92064_read_meas(struct lmp92064_adc_priv *priv, int *cout,
-+			      int *vout)
-+{
-+	/*
-+         * The ADC only latches in new samples if all DATA registers are read
-+         * in descending sequential order.
-+         * The ADC auto-decrements the register index with each clocked byte.
-+         * Read both channels in single SPI transfer by selecting the highest
-+         * register using the command below and clocking out all four data
-+         * bytes.
-+         */
-+	u16 cmd = TI_LMP92064_CMD_READ | TI_LMP92064_REG_DATA_COUT_MSB;
-+	u8 __aligned(IIO_DMA_MINALIGN) tx_buf[6] = { 0 };
-+	u8 __aligned(IIO_DMA_MINALIGN) rx_buf[6] = { 0 };
-+	struct spi_transfer xfer = {
-+		.tx_buf = tx_buf,
-+		.rx_buf = rx_buf,
-+		.len = sizeof(tx_buf),
-+	};
-+	int ret;
-+
-+	tx_buf[0] = cmd >> 8;
-+	tx_buf[1] = cmd & 0xff;
-+
-+	ret = spi_sync_transfer(priv->spi, &xfer, 1);
-+	if (ret < 0) {
-+		dev_err(&priv->spi->dev, "spi_sync_transfer failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	if (cout)
-+		*cout = (rx_buf[2] << 8) | (rx_buf[3]);
-+
-+	if (vout)
-+		*vout = (rx_buf[4] << 8) | (rx_buf[5]);
-+
-+	return 0;
-+}
-+
-+static int lmp92064_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int *val,
-+			     int *val2, long mask)
-+{
-+	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		mutex_lock(&indio_dev->mlock);
-+		if (chan->address == TI_LMP92064_CHAN_INC)
-+			ret = lmp92064_read_meas(priv, val, NULL);
-+		else
-+			ret = lmp92064_read_meas(priv, NULL, val);
-+		mutex_unlock(&indio_dev->mlock);
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (chan->address == TI_LMP92064_CHAN_INC) {
-+			/*
-+                         * processed (mA) = raw * current_lsb (mA)
-+                         * current_lsb (mA) = shunt_voltage_lsb (nV) / shunt_resistor (uOhm)
-+                         * shunt_voltage_lsb (nV) = 81920000 / 4096 = 20000
-+                         */
-+			*val = 20000;
-+			*val2 = priv->shunt_resistor;
-+		} else {
-+			/*
-+                         * processed (mV) = raw * voltage_lsb (mV)
-+                         * voltage_lsb (mV) = 2048 / 4096
-+                         */
-+			*val = 2048;
-+			*val2 = 4096;
-+		}
-+		return IIO_VAL_FRACTIONAL;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int lmp92064_reset(struct lmp92064_adc_priv *priv,
-+			  struct gpio_desc *gpio_reset)
-+{
-+	u8 status;
-+	int ret, i;
-+
-+	/* Perform a hard reset if possible */
-+	if (gpio_reset) {
-+		gpiod_set_value_cansleep(gpio_reset, 1);
-+		usleep_range(1, 10);
-+		gpiod_set_value_cansleep(gpio_reset, 0);
-+		usleep_range(500, 750);
-+	}
-+
-+	/* Perform a soft-reset and write default values to config registers
-+         * that are not affected by soft reset */
-+	ret = lmp92064_write_reg(priv, TI_LMP92064_REG_CONFIG_A,
-+				 TI_LMP92064_VAL_CONFIG_A);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = lmp92064_write_reg(priv, TI_LMP92064_REG_CONFIG_B,
-+				 TI_LMP92064_VAL_CONFIG_B);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Wait for the device to signal readiness */
-+	for (i = 0; i < 10; i++) {
-+		ret = lmp92064_read_reg(priv, TI_LMP92064_REG_STATUS, &status);
-+
-+		if (ret < 0)
-+			return ret;
-+
-+		if (status == TI_LMP92064_VAL_STATUS_OK)
-+			return 0;
-+
-+		usleep_range(1000, 2000);
-+	}
-+
-+	return -EBUSY;
-+}
-+
-+static const struct iio_info lmp92064_adc_info = {
-+	.read_raw = lmp92064_read_raw,
-+};
-+
-+static int lmp92064_adc_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct lmp92064_adc_priv *priv;
-+	struct iio_dev *indio_dev;
-+	struct gpio_desc *gpio_reset;
-+	int ret;
-+	u32 shunt_resistor;
-+
-+	spi->bits_per_word = 8;
-+	spi->mode &= ~SPI_MODE_X_MASK;
-+	spi->mode |= SPI_MODE_0;
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Error in SPI setup\n");
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+
-+	priv->spi = spi;
-+
-+	ret = of_property_read_u32(dev->of_node, "shunt-resistor",
-+				   &shunt_resistor);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+				     "Failed to get shunt-resistor value\n");
-+
-+	/* The shunt resistance is passed to userspace as the denominator of an iio
-+	 * fraction. Make sure it is in range for that. */
-+	if (shunt_resistor <= 0 || shunt_resistor > INT_MAX) {
-+		dev_err(dev, "Shunt resistance is out of range\n");
-+		return -EINVAL;
-+	}
-+
-+	priv->shunt_resistor = shunt_resistor;
-+
-+	gpio_reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpio_reset))
-+		return dev_err_probe(dev, PTR_ERR(gpio_reset),
-+				     "Failed to get GPIO reset pin\n");
-+
-+	ret = lmp92064_reset(priv, gpio_reset);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to reset device\n");
-+
-+	indio_dev->name = TI_LMP92064_NAME;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = lmp92064_adc_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(lmp92064_adc_channels);
-+	indio_dev->info = &lmp92064_adc_info;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct of_device_id lmp92064_of_table[] = {
-+	{ .compatible = "ti,lmp92064" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, lmp92064_of_table);
-+
-+static struct spi_driver lmp92064_adc_driver = {
-+	.driver = {
-+		.name = "lmp92064",
-+		.of_match_table = lmp92064_of_table,
-+	},
-+	.probe = lmp92064_adc_probe,
-+};
-+module_spi_driver(lmp92064_adc_driver);
-+
-+MODULE_AUTHOR("Leonard Göhrs <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("TI LMP92064 ADC");
-+MODULE_LICENSE("GPL v2");
+Note that this series was only compiled tested using allyesconfig for
+ARM. I ran 'git grep' to make sure there were no more users of 'mlock'.
+Hopefully I covered them all...
+
+v2:
+
+[PATCH 1-8, 10-12/16]
+ * Mention the inclusion of mutex.h in the commit message.
+
+[PATCH 1-8, 10, 12/16]
+ * Initialize mutex as late as possible.
+Note that [PATCH 11/16] was not included since the code to do so was not
+direct enough. Would need to get a pointer to the private struture
+outside of scmi_alloc_iiodev() to do it. While not hard, the added changes
+in the code is not really worth it (IMO of course).
+
+[PATCH 1/16]
+ * Refactored the commit message a bit. I guess this one will still needs
+more discussion...
+
+[PATCH 9/16]
+ * New patch to add an helper function to read the samples.
+
+[PATCH 13/16]
+ * New patch to introduce iio_device_{claim|release}_buffer_mode() APIs.
+
+[PATCH 14/16]
+ * Make use of the new iio_device_{claim|release}_buffer_mode() helpers
+
+[PATCH 15/16]
+ * Make use of the new iio_device_{claim|release}_buffer_mode() helpers
+in combination with claim_direct_mode(). This is needed so that we make sure
+we always get one of the modes (and hence the iio_dev lock) to safely call
+max30102_get_temp(). Note that I'm not particular "happy" with the code but
+OTOH, it does not look as bad as I thought :). Anyways, if there are no
+complains with it, I'm ok to leave it as-is. Otherwise, I think we can think
+on the flag approach (briefly discussed in the first series).
+
+Nuno Sá (16):
+  iio: adc: ad799x: do not use internal iio_dev lock
+  iio: adc: axp288_adc: do not use internal iio_dev lock
+  iio: adc: imx7d_adc: do not use internal iio_dev lock
+  iio: adc: lpc32xx_adc: do not use internal iio_dev lock
+  iio: adc: ltc2947-core: do not use internal iio_dev lock
+  iio: adc: meson_saradc: do not use internal iio_dev lock
+  iio: adc: rockchip_saradc: do not use internal iio_dev lock
+  iio: adc: sc27xx_adc: do not use internal iio_dev lock
+  iio: adc: vf610_adc: add helper function to read samples
+  iio: adc: vf610_adc: vf610_adc: do not use internal iio_dev lock
+  iio: common: scmi_iio: do not use internal iio_dev lock
+  iio: gyro: itg3200_core: do not use internal iio_dev lock
+  iio: core: introduce iio_device_{claim|release}_buffer_mode() APIs
+  iio: health: max30100: do not use internal iio_dev lock
+  iio: health: max30102: do not use internal iio_dev lock
+  iio: core: move 'mlock' to 'struct iio_dev_opaque'
+
+ drivers/iio/TODO                           |   3 -
+ drivers/iio/adc/ad799x.c                   |  20 ++--
+ drivers/iio/adc/axp288_adc.c               |  10 +-
+ drivers/iio/adc/imx7d_adc.c                |  14 ++-
+ drivers/iio/adc/lpc32xx_adc.c              |  11 ++-
+ drivers/iio/adc/ltc2497-core.c             |   7 +-
+ drivers/iio/adc/ltc2497.h                  |   2 +
+ drivers/iio/adc/meson_saradc.c             |  11 ++-
+ drivers/iio/adc/rockchip_saradc.c          |  15 ++-
+ drivers/iio/adc/sc27xx_adc.c               |  14 ++-
+ drivers/iio/adc/vf610_adc.c                | 104 ++++++++++++---------
+ drivers/iio/common/scmi_sensors/scmi_iio.c |   9 +-
+ drivers/iio/gyro/itg3200_core.c            |  10 +-
+ drivers/iio/health/max30100.c              |   9 +-
+ drivers/iio/health/max30102.c              |  19 +++-
+ drivers/iio/industrialio-buffer.c          |  29 +++---
+ drivers/iio/industrialio-core.c            |  58 ++++++++++--
+ drivers/iio/industrialio-event.c           |   4 +-
+ drivers/iio/industrialio-trigger.c         |  12 +--
+ include/linux/iio/gyro/itg3200.h           |   2 +
+ include/linux/iio/iio-opaque.h             |   2 +
+ include/linux/iio/iio.h                    |   5 +-
+ 22 files changed, 249 insertions(+), 121 deletions(-)
+
 -- 
-2.30.2
+2.37.3
 

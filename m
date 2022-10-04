@@ -2,241 +2,260 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D68915F3ECE
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 10:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D38C5F41F2
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 13:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230343AbiJDIvE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 04:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49010 "EHLO
+        id S229658AbiJDL0N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Oct 2022 07:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230324AbiJDIvA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 04:51:00 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 128172D1DB;
-        Tue,  4 Oct 2022 01:50:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1664873458; x=1696409458;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=F3RsIyre2ozS8zNUV5H6X65Ushen9x2OSekUTs4+WvU=;
-  b=DRhfUF6vFTu/9lGSDSsCtjr5ddk6bTgbs6XS3/F+Fu4oxcUvJy5Nrzzl
-   qqeofT/8TNtkd/AQIHoZRIsqxvtTLdxFEiPMlW+qC21WyNwLMXOgR3Cp8
-   eOQQu/P96rxZFDpdOdGUWMNe3hd+ExsuEkMnWVU2f4cXM9UWcX4ZKtEsM
-   hAY3XRep95cgODx0u3kKidpRDubYrXz7eOqrToCNyY/AjkRLGC3xND9UW
-   gzKpERxPhKx+wk8dgGCWjs5rWOlinhBNooy1/BjfBNeJkQSaqrZoK4P4+
-   86pSMmHnp0uwQzggbk2AWcYsy0WH/1dTqPmTSR3wXsh5ZA7zjsep/j6QA
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="290080145"
-X-IronPort-AV: E=Sophos;i="5.93,367,1654585200"; 
-   d="scan'208";a="290080145"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2022 01:50:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10489"; a="574957572"
-X-IronPort-AV: E=Sophos;i="5.93,367,1654585200"; 
-   d="scan'208";a="574957572"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga003.jf.intel.com with ESMTP; 04 Oct 2022 01:50:55 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ofdde-001yhH-0g;
-        Tue, 04 Oct 2022 11:50:54 +0300
-Date:   Tue, 4 Oct 2022 11:50:53 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Ciprian Regus <ciprian.regus@analog.com>
-Cc:     jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] drivers: iio: dac: Add AD5754 DAC driver
-Message-ID: <Yzvz7ecXcMVp7quF@smile.fi.intel.com>
-References: <20221004071825.791307-1-ciprian.regus@analog.com>
- <20221004071825.791307-3-ciprian.regus@analog.com>
+        with ESMTP id S229588AbiJDL0M (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 07:26:12 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCAC2BE2E
+        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 04:26:10 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 10so20696257lfy.5
+        for <linux-iio@vger.kernel.org>; Tue, 04 Oct 2022 04:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date;
+        bh=ZhVRfFH23C/LznboYMt5fc2Gvx4ICYtzPKZJgRBBWU4=;
+        b=hdkm7nnklp1Weq95FaKDQ1EOypYeYugXsi5FnFPtBSlXcYcoubiu5wL/Yw2iy7LKtF
+         2QOADXm5WbHZubvde7pgknsXhYqN3FYVBW2sC5qdILceU8Z9FLJCIzG/BY6TBJfhTMZ+
+         uaY/L0v+LAGXUesPGiF/nqRxWN5Kh8rHAO3mMRCxRv2KJGn6i6sOKCPyh7KK5tiy9XOy
+         cjzhj2rWwUKudXPdQIEfO37+DJ+4jRiDKWFD3AfnwDwGqXVOCFIek5ZCWwImboWxO7rc
+         Vn4IC2Au+EH3cn+UljlfYMXo/DmG3mjEhi/dHgRFH1AOfY7qZVK2NjN6HCD1FVmgCeG4
+         X5/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=ZhVRfFH23C/LznboYMt5fc2Gvx4ICYtzPKZJgRBBWU4=;
+        b=DJdoRdV+7EeXGUFLp9YACW4Oz8lQjlZ4SCBNGTPwdRAk9s5NO2PsOwVVFF2pW9zlWC
+         weVH58nMX4alaUmtoVEmJLL1xSm8XsSW08SgE/E1MXZsEXV4ERuwu4mMJ6v+WPU8s161
+         LtqAxcPwBIatCLNsaRFgwNp1QkxHhV6697eNs0mXZl0aj64D6Zhf1BJAIhwNzPnMoLXA
+         RAAu149PdnO+e1+NBowr2HBn0pWC62O3wZED0rdin2sS8Ej6zG0qmEWAUXNYSZnEtWn1
+         1f9rQiNn45Bed/xkUwVd9EsHxUUBZgftodgFN6QthsWBeP/Uq+npWN6xwOPjBEt1Ygyk
+         /CpA==
+X-Gm-Message-State: ACrzQf1+5gKDk8i7RIpCgYWWjIU6bIfpVmknRAp52623n0crJFMTrDgC
+        Kt1oykI28j/09RUIrQdFkvpbDQ==
+X-Google-Smtp-Source: AMsMyM4AA8ZOGrO+IpoA/fBl5QjSIMGIfFm7HOVqse6dq5W1Yi1kXxt2GE4itfzCP9xvgK8Ice2FFg==
+X-Received: by 2002:a05:6512:34c9:b0:4a2:2b33:5358 with SMTP id w9-20020a05651234c900b004a22b335358mr4177958lfr.106.1664882768587;
+        Tue, 04 Oct 2022 04:26:08 -0700 (PDT)
+Received: from [192.168.0.21] (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
+        by smtp.gmail.com with ESMTPSA id y1-20020ac24461000000b0048fdb3efa20sm1868609lfl.185.2022.10.04.04.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Oct 2022 04:26:08 -0700 (PDT)
+Message-ID: <de5197c7-5b68-8bb6-cb3f-0278e1112d86@linaro.org>
+Date:   Tue, 4 Oct 2022 13:26:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221004071825.791307-3-ciprian.regus@analog.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: add adi,ad5754.yaml
+Content-Language: en-US
+To:     Ciprian Regus <ciprian.regus@analog.com>, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
+        andriy.shevchenko@linux.intel.com, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20221004071825.791307-1-ciprian.regus@analog.com>
+ <20221004071825.791307-2-ciprian.regus@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221004071825.791307-2-ciprian.regus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Oct 04, 2022 at 10:18:25AM +0300, Ciprian Regus wrote:
-> The AD5724/AD5734/AD5754 are quad, 12-/14-/16-bit, serial
-> input, voltage output DACs. The devices operate from single-
-> supply voltages from +4.5 V up to +16.5 V or dual-supply
-> voltages from ±4.5 V up to ±16.5 V. The input coding is
-> user-selectable twos complement or offset binary for a bipolar
-> output (depending on the state of Pin BIN/2sComp), and straight
-> binary for a unipolar output.
+On 04/10/2022 09:18, Ciprian Regus wrote:
+> Add devicetree bindings documentation for the AD5754 DAC driver.
+> 
+> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+> ---
+>  .../bindings/iio/dac/adi,ad5754.yaml          | 173 ++++++++++++++++++
+>  1 file changed, 173 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
+> new file mode 100644
+> index 000000000000..e96112bc15d0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
+> @@ -0,0 +1,173 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/dac/adi,ad5754.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD5754 DAC device driver
 
-...
-
-> +#define AD5754_INT_VREF			2500
-
-Units? (Like _mV or _uV or what? Note, small u is OK to have in such cases)
-
-...
-
-> +#define AD5754_CLEAR_FUNC		BIT(2)
-> +#define AD5754_LOAD_FUNC		(BIT(2) | BIT(0))
-> +#define AD5754_NOOP_FUNC		GENMASK(4, 3)
-
-Seems like abuse of BIT and GENMASK, use plain numbers as it's probably is.
-Otherwise _each_ bit should have it's own descriptive meaning.
-
-...
-
-> +#define AD5754_DAC_REG			0
-> +#define AD5754_RANGE_REG		BIT(0)
-> +#define AD5754_PWR_REG			BIT(1)
-
-...
-
-> +#define AD5754_CTRL_REG			GENMASK(1, 0)
-
-Why _REG uses GENMASK()?
-
-...
-
-> +struct ad5754_span_tbl {
-> +	int min;
-> +	int max;
-> +};
-
-I'm wondering if linear_range.h can anyhow help with this code.
-
-...
-
-> +struct ad5754_state {
-> +	struct regmap *regmap;
-> +	struct spi_device *spi;
-> +	struct device *dev;
-
-You always can derive dev from regmap, is this one different?
+Drop "device driver" unless "driver" and "device" are description of
+hardware of some sort. Then please tell me what is this hardware? A
+motor driver?
 
 > +
-> +	const struct ad5754_chip_info *chip_info;
+> +maintainers:
+> +  - Ciprian Regus <ciprian.regus@analog.com>
 > +
-> +	u32 range_idx[AD5754_MAX_CHANNELS];
-> +	int offset[AD5754_MAX_CHANNELS];
-> +	u32 dac_max_code;
-> +	u32 data_mask;
-> +	u32 sub_lsb;
-> +	u32 vref;
+> +description: |
+> +  Bindings for the AD5754 and other chip variants digital-to-analog
+> +  converters.
 > +
-> +	/*
-> +	 * DMA (thus cache coherency maintenance) may require the
-> +	 * transfer buffers to live in their own cache lines.
-> +	 */
-> +	u8 buff[AD5754_FRAME_SIZE] __aligned(IIO_DMA_MINALIGN);
-> +};
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5724_5734_5754.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad5722_5732_5752.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad5724r_5734r_5754r.pdf
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5722R_5732R_5752R.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad5722
+> +      - adi,ad5732
+> +      - adi,ad5752
+> +      - adi,ad5724
+> +      - adi,ad5734
+> +      - adi,ad5754
+> +      - adi,ad5722r
+> +      - adi,ad5732r
+> +      - adi,ad5752r
+> +      - adi,ad5724r
+> +      - adi,ad5734r
+> +      - adi,ad5754r
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 30000000
+> +
+> +  spi-cpol: true
+> +
+> +  vref-supply:
+> +    description:
+> +      The regulator to use as an external reference. If this is not provided,
+> +      the internal reference will be used for chips that have this feature.
+> +      The external reference must be 2.5V.
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^channel@([0-3])$":
+> +    type: object
+> +    description: Configurations for the DAC channels
+> +
+> +    properties:
+> +      reg:
+> +        description: Channel number
+> +        maxItems: 1
+> +
+> +      output-range-microvolt:
 
-...
+Other such properties have vendor prefix. Did you receive feedback to
+make it generic (without vendor prefix)?
 
-> +static const struct regmap_config ad5754_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 16,
-> +	.reg_write = ad5754_reg_write,
-> +	.reg_read = ad5754_reg_read,
+> +        description: |
+> +          Voltage range of a channel as <minimum, maximum>.
+> +        oneOf:
+> +          - items:
+> +              - const: 0
+> +              - enum: [5000000, 10000000, 10800000]
+> +          - items:
+> +              - const: -5000000
+> +              - const: 5000000
+> +          - items:
+> +              - const: -10000000
+> +              - const: 10000000
+> +          - items:
+> +              - const: -10800000
+> +              - const: 10800000
+> +
+> +    required:
+> +      - reg
+> +      - output-range-microvolt
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,ad5722
+> +              - adi,ad5732
+> +              - adi,ad5752
+> +              - adi,ad5722r
+> +              - adi,ad5732r
+> +              - adi,ad5752r
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-3])$":
+> +          type: object
+> +          properties:
+> +            reg:
+> +              description: Channel number
+> +              enum: [0, 1]
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - adi,ad5724
+> +              - adi,ad5734
+> +              - adi,ad5754
+> +              - adi,ad5724r
+> +              - adi,ad5734r
+> +              - adi,ad5754r
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-3])$":
+> +          type: object
+> +          properties:
+> +            reg:
+> +              description: Channel number
+> +              enum: [0, 1, 2, 3]
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - spi-max-frequency
+> +  - spi-cpol
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    spi {
+> +          status = "okay";
+> +
+> +          #address-cells = <1>;
+> +          #size-cells = <0>;
+> +
+> +          dac@0 {
 
-No max register address?
+Messed up indentation. Use 4 spaces for entire example DTS.
 
-> +};
+> +              compatible = "adi,ad5754r";
+> +              reg = <0>;
+> +              spi-max-frequency = <1000000>;
+> +              spi-cpol;
+> +
 
-...
 
-> +	struct fwnode_handle *channel_node = NULL;
-
-Redundant assignment.
-
-...
-
-> +	fwnode_for_each_available_child_node(dev_fwnode(st->dev), channel_node) {
-
-Why not device_for_each_child_node() ?
-
-(Yes, it uses available ones)
-
-> +	}
-
-...
-
-> +		range = &ad5754_range[st->range_idx[chan->channel]];
-> +		gain = (range->max - range->min) / 2500;
-> +		*val = st->vref * gain / 1000;
-> +		*val2 = st->chip_info->resolution;
-
-Yeah, looks familiar to the linear_range APIs.
-
-...
-
-> +static int ad5754_probe(struct spi_device *spi)
-> +{
-> +	struct regulator *vref_reg;
-> +	struct iio_dev *indio_dev;
-> +	struct ad5754_state *st;
-> +	struct device *dev;
-> +	int ret;
-
-> +	dev = &spi->dev;
-
-Can be done in the definition block (inline).
-
-...
-
-> +	st->chip_info = device_get_match_data(dev);
-> +	if (!st->chip_info)
-> +		st->chip_info =
-> +			(const struct ad5754_chip_info *)spi_get_device_id(spi)->driver_data;
-
-This can look better with a temporary variable. But doesn't matter since we
-would like to have these lines to be packed in a new SPI API helper in the
-future.
-
-...
-
-> +		st->vref = ret / 1000;
-
-Do we have uV_PER_mV or so?
-
-...
-
-> +static const struct spi_device_id ad5754_id[] = {
-
-> +	{},
-
-No comma for the terminator line.
-
-> +};
-
-...
-
-> +static const struct of_device_id ad5754_dt_id[] = {
-
-> +	{},
-
-Ditto.
-
-> +};
-
-...
-
-> +module_driver(ad5754_driver,
-> +	      ad5754_register_driver,
-> +	      ad5754_unregister_driver);
-
-Why not module_spi_driver()?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Best regards,
+Krzysztof
 

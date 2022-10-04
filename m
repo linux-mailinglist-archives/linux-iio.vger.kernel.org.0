@@ -2,43 +2,43 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F52C5F44B7
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 15:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 537005F44B4
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 15:49:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbiJDNtn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 09:49:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47716 "EHLO
+        id S229446AbiJDNtl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Oct 2022 09:49:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229794AbiJDNtj (ORCPT
+        with ESMTP id S229766AbiJDNtj (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 09:49:39 -0400
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898E32B245
-        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 06:49:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C36B8B05
+        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 06:49:36 -0700 (PDT)
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 294BAQJn026746;
-        Tue, 4 Oct 2022 09:48:45 -0400
+        by mx0a-00128a01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 294C9OxI025012;
+        Tue, 4 Oct 2022 09:48:53 -0400
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jxjf733ja-1
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3jxjf733jq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 04 Oct 2022 09:48:45 -0400
+        Tue, 04 Oct 2022 09:48:52 -0400
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 294Dmi1E001547
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 294Dmo4m001556
         (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 4 Oct 2022 09:48:44 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+        Tue, 4 Oct 2022 09:48:51 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
  ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 4 Oct 2022 09:48:43 -0400
+ 15.2.986.14; Tue, 4 Oct 2022 09:48:50 -0400
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 4 Oct 2022 09:48:43 -0400
+ 15.2.986.14; Tue, 4 Oct 2022 09:48:49 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 4 Oct 2022 09:48:43 -0400
+ Transport; Tue, 4 Oct 2022 09:48:49 -0400
 Received: from nsa.ad.analog.com ([10.44.3.52])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 294DlkVb032663;
-        Tue, 4 Oct 2022 09:48:33 -0400
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 294DlkVc032663;
+        Tue, 4 Oct 2022 09:48:38 -0400
 From:   =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>
 To:     <linux-amlogic@lists.infradead.org>, <linux-imx@nxp.com>,
         <linux-iio@vger.kernel.org>,
@@ -72,9 +72,9 @@ CC:     Heiko Stuebner <heiko@sntech.de>,
         Haibo Chen <haibo.chen@nxp.com>,
         Kevin Hilman <khilman@baylibre.com>,
         Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v2 04/16] iio: adc: lpc32xx_adc: do not use internal iio_dev lock
-Date:   Tue, 4 Oct 2022 15:48:57 +0200
-Message-ID: <20221004134909.1692021-5-nuno.sa@analog.com>
+Subject: [PATCH v2 05/16] iio: adc: ltc2947-core: do not use internal iio_dev lock
+Date:   Tue, 4 Oct 2022 15:48:58 +0200
+Message-ID: <20221004134909.1692021-6-nuno.sa@analog.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221004134909.1692021-1-nuno.sa@analog.com>
 References: <20221004134909.1692021-1-nuno.sa@analog.com>
@@ -82,15 +82,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 2G51YxgPxhcjB1DZvD9_EBtc1KqEh7bL
-X-Proofpoint-ORIG-GUID: 2G51YxgPxhcjB1DZvD9_EBtc1KqEh7bL
+X-Proofpoint-GUID: h1i7uS13TU4xze-n0huACFZmMzuzQrnl
+X-Proofpoint-ORIG-GUID: h1i7uS13TU4xze-n0huACFZmMzuzQrnl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
  definitions=2022-10-04_06,2022-09-29_03,2022-06-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
  bulkscore=0 mlxscore=0 priorityscore=1501 spamscore=0 adultscore=0
  impostorscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
- mlxlogscore=698 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=996 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2209130000 definitions=main-2210040089
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -108,61 +108,56 @@ While at it, properly include "mutex.h" for mutex related APIs.
 
 Signed-off-by: Nuno Sá <nuno.sa@analog.com>
 ---
- drivers/iio/adc/lpc32xx_adc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ltc2497-core.c | 7 +++++--
+ drivers/iio/adc/ltc2497.h      | 2 ++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/lpc32xx_adc.c b/drivers/iio/adc/lpc32xx_adc.c
-index b56ce15255cf..732c924a976d 100644
---- a/drivers/iio/adc/lpc32xx_adc.c
-+++ b/drivers/iio/adc/lpc32xx_adc.c
-@@ -15,6 +15,7 @@
- #include <linux/io.h>
+diff --git a/drivers/iio/adc/ltc2497-core.c b/drivers/iio/adc/ltc2497-core.c
+index f52d37af4d1f..996f6cbbed3c 100644
+--- a/drivers/iio/adc/ltc2497-core.c
++++ b/drivers/iio/adc/ltc2497-core.c
+@@ -10,6 +10,7 @@
+ #include <linux/iio/iio.h>
+ #include <linux/iio/driver.h>
  #include <linux/module.h>
- #include <linux/mod_devicetable.h>
 +#include <linux/mutex.h>
- #include <linux/platform_device.h>
  #include <linux/regulator/consumer.h>
  
-@@ -49,6 +50,8 @@ struct lpc32xx_adc_state {
- 	struct clk *clk;
- 	struct completion completion;
- 	struct regulator *vref;
-+	/* lock to protect against multiple access to the device */
-+	struct mutex lock;
- 
- 	u32 value;
- };
-@@ -64,10 +67,10 @@ static int lpc32xx_read_raw(struct iio_dev *indio_dev,
+ #include "ltc2497.h"
+@@ -81,9 +82,9 @@ static int ltc2497core_read_raw(struct iio_dev *indio_dev,
  
  	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
 -		mutex_lock(&indio_dev->mlock);
-+		mutex_lock(&st->lock);
- 		ret = clk_prepare_enable(st->clk);
- 		if (ret) {
--			mutex_unlock(&indio_dev->mlock);
-+			mutex_unlock(&st->lock);
- 			return ret;
- 		}
- 		/* Measurement setup */
-@@ -80,7 +83,7 @@ static int lpc32xx_read_raw(struct iio_dev *indio_dev,
- 		wait_for_completion(&st->completion); /* set by ISR */
- 		clk_disable_unprepare(st->clk);
- 		*val = st->value;
++		mutex_lock(&ddata->lock);
+ 		ret = ltc2497core_read(ddata, chan->address, val);
 -		mutex_unlock(&indio_dev->mlock);
-+		mutex_unlock(&st->lock);
++		mutex_unlock(&ddata->lock);
+ 		if (ret < 0)
+ 			return ret;
  
- 		return IIO_VAL_INT;
+@@ -214,6 +215,8 @@ int ltc2497core_probe(struct device *dev, struct iio_dev *indio_dev)
+ 	ddata->addr_prev = LTC2497_CONFIG_DEFAULT;
+ 	ddata->time_prev = ktime_get();
  
-@@ -201,6 +204,8 @@ static int lpc32xx_adc_probe(struct platform_device *pdev)
- 	iodev->modes = INDIO_DIRECT_MODE;
- 	iodev->num_channels = ARRAY_SIZE(lpc32xx_adc_iio_channels);
- 
-+	mutex_init(&st->lock);
++	mutex_init(&ddata->lock);
 +
- 	retval = devm_iio_device_register(&pdev->dev, iodev);
- 	if (retval)
- 		return retval;
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret < 0)
+ 		goto err_array_unregister;
+diff --git a/drivers/iio/adc/ltc2497.h b/drivers/iio/adc/ltc2497.h
+index e023de0d88c4..781519b52475 100644
+--- a/drivers/iio/adc/ltc2497.h
++++ b/drivers/iio/adc/ltc2497.h
+@@ -12,6 +12,8 @@ struct ltc2497_chip_info {
+ struct ltc2497core_driverdata {
+ 	struct regulator *ref;
+ 	ktime_t	time_prev;
++	/* lock to protect against multiple access to the device */
++	struct mutex lock;
+ 	const struct ltc2497_chip_info	*chip_info;
+ 	u8 addr_prev;
+ 	int (*result_and_measure)(struct ltc2497core_driverdata *ddata,
 -- 
 2.37.3
 

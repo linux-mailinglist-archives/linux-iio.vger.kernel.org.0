@@ -2,52 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89B945F4281
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 13:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4655F4285
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 13:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229760AbiJDL5A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 07:57:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47390 "EHLO
+        id S230009AbiJDL5C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Oct 2022 07:57:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiJDL44 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 07:56:56 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0601F27145
-        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 04:56:54 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id q16so911591ljh.4
-        for <linux-iio@vger.kernel.org>; Tue, 04 Oct 2022 04:56:53 -0700 (PDT)
+        with ESMTP id S229914AbiJDL45 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 07:56:57 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F74C32D92
+        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 04:56:55 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id o17so1782882ljj.2
+        for <linux-iio@vger.kernel.org>; Tue, 04 Oct 2022 04:56:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
-        bh=FdyEVIPJeiAfJdqp4U03o0jzRRrkJ/p0h+cO275MuNs=;
-        b=IV1A51iwnwkACHlwdVnEHgmak5oRPhrYXOKjD29XRWl1mnOWHx/8MMswIE7lU7EwfA
-         JmvWXZBTUQ/SpZCihwvpAxnrDnJvLFe1IZyThu3Remop4VoyutrAmZiZ3lbOJuyy1661
-         Ne1Yw6B/bjAKY4JdJDao5JsURYjkjcXZ+UzthB5uhsURjE+Hiqm0sCBh7qlf9K7WnmPp
-         3ZQ6hcemC7vCRnc20RPeGhcrM8K50+MJjrxqv02Tf0HjHH7AuXeC9D43VyUDKJWS+jNS
-         Szu2u1SG38NMuZdsDoZv3Xtm58qUKBfGCSd8SzywCX2zY1DS7ymVgXQuDlGcpsUfXXuc
-         al+g==
+        bh=sAksLRSTBpIX5Idm9PSytUBYqco/yvgpYmCooGsVRBk=;
+        b=CLxvrhc4qOsB4L8p7ekMsM+MubH5VYK9f9SDJRH5QF5gLdGWNLjj+sADlcwhbfAAPL
+         s0ZcMoyT4zWzD+s4ef+1RcIAshRCJo9CYob4E222PAu+pDNWm+MFcDSTjLIIWWIoxxbs
+         HwYFkPMa0FGJtuhDz8ch1X4juuuTkqoxGj59VVuX9r6JStu/W65Billb6p2n9EuvbHaU
+         SiRlXlELB5m4HdkZU29WS9R0EXwQLpXr8/eKdYovMwXD+eD6kadgWnPnCN8gOFNAAB0G
+         HyV1Rnztd2DA30TbTtIjP3k4gFl0w+yePnu9yZy65ZUAaz2Ixs8yM15xnDomzdOE9QkT
+         NADg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=FdyEVIPJeiAfJdqp4U03o0jzRRrkJ/p0h+cO275MuNs=;
-        b=oZRaoCPaYij/FyAryUs/DRkfABhWcw+nSsV38OFxeXODPkZFxJVlkXmpdLHo50Cs7d
-         lxW7+bGbF5mWwr+SE9A59sHQ8PJiQzdD0QKZj+vU8T60MrtrgRA08+0sBlCkBEmTtswr
-         /rgxsgohFVHnSUORDakEICV/nmg2P5LpRQKtiRPplACDcOyubBU7CX+Ip65ZrM0akyrS
-         8EeLlofY9Tn+QQY/pDycDLuc/x/JnkM2H/SAyBqCpPD4Y5/FM6jwHdt10nVe5J724NED
-         4nuEBEDyZhtA5fTetwcmKgf18FxtJbpfQGMaAUTzIsv9JaWonq/IUI7g6dIlx1yWisWR
-         c9lw==
-X-Gm-Message-State: ACrzQf3yc/Z36GCtspXrlTrgpA8U8c+aiYE5kwvYaxdthgsi1TsF1IqM
-        Vydtw/0JCoGck76JT9+GeK5B/g==
-X-Google-Smtp-Source: AMsMyM7zqGLppwXRatoi+n/B8NSWlFwlBda9n4lQBF9CxHCY1/Bew+a4xSek+KaDXhro4APt1Dxg5Q==
-X-Received: by 2002:a05:651c:903:b0:26d:d930:e3cf with SMTP id e3-20020a05651c090300b0026dd930e3cfmr3734839ljq.232.1664884612416;
-        Tue, 04 Oct 2022 04:56:52 -0700 (PDT)
+        bh=sAksLRSTBpIX5Idm9PSytUBYqco/yvgpYmCooGsVRBk=;
+        b=foSQcBPr64+Mo56VPoCikknKp+sC8cu+cizzEHMzxFLurkRKN7erOLQGNUkgs8B39J
+         8AhZ0PLVGWmlY3WKIpolrGza8pwwcAHH6TLwYo+i2Wnga+IKb2cYfU/XHvZTCLxU4gSA
+         j0Ney+oY+hCX/PSRhvxrFq9lr6fo6F4DUjbPrO4Zijq/Ynu7E3+KLiBk0THCFlXNDYoM
+         sq6VDwLfaEfBoPsMDZ1BejAvaicCNzn2BWE+MKGXh9ufXfXTEY4Fnf5BI/hch3luU5ID
+         0cN3s/jq3ZtTVof3c1f59kL+vvjU6vYaFhuOqbqPHVR22XDRzY3MWjdOOMrqTslvsrRz
+         KTnQ==
+X-Gm-Message-State: ACrzQf2HtJbUbZXWevPrmjm0Mrrp2RCt2oC269VZ2aUoXPYT0GfBXCzD
+        tV3T2+3V7FjlchBMBagQoe+0OQ==
+X-Google-Smtp-Source: AMsMyM4BT9AZ/MQjlPeoZdVC4GyxjWlEVvasTULnuQzJpO/CY5vTc1I6fl7KtOvzdN7rbJBTA8Zsbw==
+X-Received: by 2002:a2e:a791:0:b0:26c:4fad:957 with SMTP id c17-20020a2ea791000000b0026c4fad0957mr7772516ljf.263.1664884613519;
+        Tue, 04 Oct 2022 04:56:53 -0700 (PDT)
 Received: from krzk-bin.. (78-11-189-27.static.ip.netia.com.pl. [78.11.189.27])
-        by smtp.gmail.com with ESMTPSA id w8-20020a05651204c800b004a03fd4476esm1878971lfq.287.2022.10.04.04.56.51
+        by smtp.gmail.com with ESMTPSA id w8-20020a05651204c800b004a03fd4476esm1878971lfq.287.2022.10.04.04.56.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Oct 2022 04:56:51 -0700 (PDT)
+        Tue, 04 Oct 2022 04:56:53 -0700 (PDT)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -66,9 +66,9 @@ To:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 7/8] dt-bindings: iio: proximity: ams,as3935: use spi-peripheral-props.yaml
-Date:   Tue,  4 Oct 2022 13:56:41 +0200
-Message-Id: <20221004115642.63749-7-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 8/8] dt-bindings: iio: resolver: adi,ad2s90: use spi-peripheral-props.yaml
+Date:   Tue,  4 Oct 2022 13:56:42 +0200
+Message-Id: <20221004115642.63749-8-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221004115642.63749-1-krzysztof.kozlowski@linaro.org>
 References: <20221004115642.63749-1-krzysztof.kozlowski@linaro.org>
@@ -89,27 +89,39 @@ For devices connectable by SPI bus (e.g. already using
 schema to allow using all SPI device properties, even these which device
 bindings author did not tried yet.
 
+While changing additionalProperties->unevaluatedProperties, put it in
+typical place, just before example DTS.
+
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../devicetree/bindings/iio/proximity/ams,as3935.yaml        | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/iio/resolver/adi,ad2s90.yaml       | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
-index 7fcba5d6d508..710d3b9a86d9 100644
---- a/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
-+++ b/Documentation/devicetree/bindings/iio/proximity/ams,as3935.yaml
-@@ -49,7 +49,10 @@ required:
-   - spi-cpha
-   - interrupts
+diff --git a/Documentation/devicetree/bindings/iio/resolver/adi,ad2s90.yaml b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s90.yaml
+index 81e4bdfc17c4..b24e5a202a48 100644
+--- a/Documentation/devicetree/bindings/iio/resolver/adi,ad2s90.yaml
++++ b/Documentation/devicetree/bindings/iio/resolver/adi,ad2s90.yaml
+@@ -33,8 +33,6 @@ properties:
+ 
+   spi-cpha: true
  
 -additionalProperties: false
+-
+ required:
+   - compatible
+   - reg
+@@ -43,6 +41,11 @@ dependencies:
+   spi-cpol: [ spi-cpha ]
+   spi-cpha: [ spi-cpol ]
+ 
 +allOf:
 +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
 +
 +unevaluatedProperties: false
- 
++
  examples:
    - |
+     spi {
 -- 
 2.34.1
 

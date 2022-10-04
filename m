@@ -2,56 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 329455F4539
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 16:14:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A1C5F453E
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 16:16:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiJDOOS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 10:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55500 "EHLO
+        id S229445AbiJDOQV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 4 Oct 2022 10:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiJDOOR (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 10:14:17 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AB460689
-        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 07:14:16 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id s18so8179152qtx.6
-        for <linux-iio@vger.kernel.org>; Tue, 04 Oct 2022 07:14:16 -0700 (PDT)
+        with ESMTP id S229653AbiJDOQU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 10:16:20 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C36D40E15
+        for <linux-iio@vger.kernel.org>; Tue,  4 Oct 2022 07:16:20 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id g23so8188275qtu.2
+        for <linux-iio@vger.kernel.org>; Tue, 04 Oct 2022 07:16:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=maEXSmVmGtXhghuZ9eV9Qu8wIQRINbQBXVMbVoUqxeI=;
-        b=eztDnV24HCyqXE2eEiT4owbCvj5y3otJL5kilBQZ6HUxUBVvJ3a9uUUYz7Xe6sOf9Z
-         alyHbm4EcyW5T9v6RXsfuUCd2UYwtfnUZshZVbEymIO8vjsriucZjMz6U/5UXwtIqcYo
-         jd0eTps+8Z1iHbd2P6hk8Yu1yfUgUZtQkVA2p8zSPp0i99dRrxdPJsXhcuk1JLFGWfnT
-         QClXVa66weXSvktQVxwRm0jvlz4sPUrdOkaxh0/kxByZscGYeGn1HdW9/AZJ4/aug1la
-         /tSfJwCvzOmyS/+chWg+/Xt/Kixp8OK38UCDPf40STboKG13bkQebXRQ9GPDnDk/Kc1a
-         lhzA==
+        bh=0rcb/XYS0+1jVNuI0ke6JUw1K8jrLDic/BJeGiPZcZU=;
+        b=Nb7AI8mIaXlDNuelDXhYbWsYeJW32CZ+i/wiXTNn2c5oOjNpGs9iCsAaV2oeWHwLIT
+         SDI6UXxNq5F9hvPVXZIqCPA9azMPNmoer5JQ5BhBw4lENgT56h+sZEIZNqjh6V1h4G9P
+         Ft+ermQqHufrq0bVKGiDCOYL2ihepTdkQS6JX3I65oJce1DBr8c8tEMELpx20tRGxDBJ
+         ldHNm+6KFzizt7EXMaYITIzrfazRilx9TqCnd0eY4Oh+JcbS6OWWef15tjWub3CYFipn
+         gHq+13ZNjH9JZWLaR18FnOdwPz3LzXnxEM/ljM4t7s7CEoVf1H5zT3bHpcrTtJZHCd+Z
+         b4eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date;
-        bh=maEXSmVmGtXhghuZ9eV9Qu8wIQRINbQBXVMbVoUqxeI=;
-        b=Rla976fGOOK6q/Hwb36TQRI3fRguWdxx7WmaBr43Dr5tM0oEHMC4zKRc9roQfEvbpK
-         jOBnzdMv93v5kvcYyXKKo/+F2mlgTMRgfe6DF3QyjW9ECfAt8nh6Y1b9WZzhbKTygxl6
-         ZUBMLm2vWQy3E34mLqG9pmy9zzmBuiLIHRZDYOEg73A7jvfkQazAfCvcTOUpHmhqO4Ls
-         SucArM4ZnVGWS8h6uYkgnlarD+9fnWqOa0XtOsqWKSJSv3bpycKC012crNZpq9NcYl0k
-         pR/BSwS+ABL61RkrxRoui8mNH3OrxYL8YL8lV1AIAnpbyEfJPKJgwtYmTn8qDZF/wxmC
-         e8Gg==
-X-Gm-Message-State: ACrzQf0kqk7pDzyIKsEGlEHHdJx5EYZ3gAflfvewPD8wBsgfNKmDbOgN
-        IyJ7PwkA46YBeEaADCDat1qA+Np6JwZtkrpFib8=
-X-Google-Smtp-Source: AMsMyM4s6DEU5yVCc9twcWThWHGbqWxPTnr1GnFXsCftksCb6kacyWf2VpRgZjkgVAqm2Gje7DT3g5MKoRofGpnyDQQ=
-X-Received: by 2002:ac8:7c43:0:b0:35c:cd8f:3da5 with SMTP id
- o3-20020ac87c43000000b0035ccd8f3da5mr19837471qtv.61.1664892855872; Tue, 04
- Oct 2022 07:14:15 -0700 (PDT)
+        bh=0rcb/XYS0+1jVNuI0ke6JUw1K8jrLDic/BJeGiPZcZU=;
+        b=4ylV5ABmcx63pknGXUN3iUpRNTzmhmZEx+Ukw8yAmDdssFRtr7f/PP6nXH6iSgRuF3
+         3ZYlpyUrEOoaWRQpX97EbABnFMZpfsDZto3N5mANlurOuEZvRlN2XRU1nXl6NdPkiatb
+         4DvMIlxUg9xOfSf4GOVKGr4x+qP2EVf3solD9jnZyEdP971IK0RCOGB68VysGJ6lFjar
+         scJQvKlmjYSd6wJCPYvwUVfit0kE7CCqhncvOEE2yzGt0NCxymwesuFio3ywADEYfsYn
+         c0JvyfdFZPNR8+HnkmuUCtL7rGesZ5yof8Wx184XZVE8DfIIMN0T+Wygzi81dzaIWRSw
+         x+2g==
+X-Gm-Message-State: ACrzQf2htDdRc1Rzr025cuUnxr+oocTx81e0gE7WaJBxc6M9BgSioWLo
+        OlAnJWUwgSHIxN0OpIxd8jUWIvyRm7eo2P0Vsng=
+X-Google-Smtp-Source: AMsMyM7UckMfyKNGnzy+FEk+jo3I5YUg5GAscnC6pYd5O5nRkl4Y+yNDu4Z3ZKmu9xtWbxFSZ31qA6hiyWKGgNZp+s8=
+X-Received: by 2002:ac8:5e07:0:b0:35c:e7fd:1e94 with SMTP id
+ h7-20020ac85e07000000b0035ce7fd1e94mr20055258qtx.384.1664892979300; Tue, 04
+ Oct 2022 07:16:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221004134909.1692021-1-nuno.sa@analog.com> <20221004134909.1692021-15-nuno.sa@analog.com>
-In-Reply-To: <20221004134909.1692021-15-nuno.sa@analog.com>
+References: <20221004134909.1692021-1-nuno.sa@analog.com> <20221004134909.1692021-16-nuno.sa@analog.com>
+In-Reply-To: <20221004134909.1692021-16-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 4 Oct 2022 17:13:40 +0300
-Message-ID: <CAHp75Vfv4BntoDPOo_MXZ33dVEKYj1KW_Ocd5QL_Ez06HJ33iw@mail.gmail.com>
-Subject: Re: [PATCH v2 14/16] iio: health: max30100: do not use internal
+Date:   Tue, 4 Oct 2022 17:15:43 +0300
+Message-ID: <CAHp75VdiAzOUNMB3wD5og-uZi1W_7UWkqV6+s7jCxpaBs1VWRQ@mail.gmail.com>
+Subject: Re: [PATCH v2 15/16] iio: health: max30102: do not use internal
  iio_dev lock
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
@@ -97,24 +97,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On Tue, Oct 4, 2022 at 4:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
 > The pattern used in this device does not quite fit in the
-> iio_device_claim_direct_mode() typical usage. In this case,
-> iio_buffer_enabled() was being used not to prevent the raw access but to
-> allow it. Hence, let's make use of the new
-> iio_device_claim_buffer_mode() API to make sure we stay in buffered mode
-> during the complete read.
+> iio_device_claim_direct_mode() typical usage. In this case, we want to
+> know if we are in buffered mode or not to know if the device is powered
+> (buffer mode) or not. And depending on that max30102_get_temp() will
+> power on the device if needed. Hence, in order to keep the same
+> functionality, we try to:
+>
+> 1. Claim Buffered mode;
+> 2: If 1) succeeds call max30102_get_temp() without powering on the
+>    device;
+> 3: Release Buffered mode;
+> 4: If 1) fails, Claim Direct mode;
+> 5: If 4) succeeds call max30102_get_temp() with powering on the device;
+> 6: Release Direct mode;
+> 7: If 4) fails, goto to 1) and try again.
+>
+> This dance between buffered and direct mode is not particularly pretty
+> (as well as the loop introduced by the goto statement) but it does allow
+> us to get rid of the mlock usage while keeping the same behavior.
 
 ...
 
 > +               if (iio_device_claim_buffer_mode(indio_dev)) {
->                         ret =3D -EAGAIN;
 
-Why is the error code shadowed? Isn't it better to return exactly the
-one you resend to the upper caller(s)? Each unclear error code
-shadowing should be at least explained.
+Why is ret not used here?
+
+> +                       /*
+> +                        * This one is a *bit* hacky. If we cannot claim =
+buffer
+> +                        * mode, then try direct mode so that we make sur=
+e
+> +                        * things cannot concurrently change. And we just=
+ keep
+> +                        * trying until we get one of the modes...
+> +                        */
+> +                       if (iio_device_claim_direct_mode(indio_dev))
+
+...and here?
+
+> +                               goto any_mode_retry;
 
 > +               } else {
 
->                 }
+> +               }
+
+I.o.w. what error code will be visible to the caller and why.
 
 --=20
 With Best Regards,

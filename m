@@ -2,67 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A4CC5F460A
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Oct 2022 16:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C3DD5F509D
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Oct 2022 10:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229625AbiJDO5T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 4 Oct 2022 10:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
+        id S229450AbiJEIIQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Oct 2022 04:08:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiJDO5S (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 4 Oct 2022 10:57:18 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89F7275CA;
-        Tue,  4 Oct 2022 07:57:14 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id o17so2359836ljj.2;
-        Tue, 04 Oct 2022 07:57:14 -0700 (PDT)
+        with ESMTP id S229727AbiJEIIO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Oct 2022 04:08:14 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA58F70E62
+        for <linux-iio@vger.kernel.org>; Wed,  5 Oct 2022 01:08:13 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id j10so9531318qtv.4
+        for <linux-iio@vger.kernel.org>; Wed, 05 Oct 2022 01:08:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date;
-        bh=7JQ+kbmcSP5RNYOOPozaAGUuDB8WoxkQS0RnWZ/8sdc=;
-        b=A5MxBR14HPfmLNB7E9WbzrgnMny3yTnUHwuZbi2Rr0dDF3ndcPi+BGhfoS9oO3PrVK
-         dvguRHsFiO7F+cVkfxz2j5Sz4HyiDgg4FVqcJWyV916GQQcKZTLRMc2BZSrp6CE/I0gx
-         FGosglv9fRh2KyoSateTnNmtbfCcFz7f/kBg2HqNbE5OHpwee2bvO7Fkq7yYk35c9aax
-         dG+53fo6XK+ofWsIbqVsemjU0l+L6cZL5EhwUyn9T0RbgDlCO1Usj/V6mTVSasib300p
-         s3WVObf2vn0lj32kg5o8ir4WIa8bG7AGEW+oqVrXFDr37thI1joBh1BAPdvI1J30p1FC
-         DlmA==
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date;
+        bh=IO0LVild74/mfqPHFPHXSTTABQ/rsCldzeWn8+3PjVQ=;
+        b=FDZS9qui2faSwsVV3cjLcPNwh5vsiqPsdCwLDXNl0yxJIyVDli1zLYa+oNLoXPPHI/
+         Dd/VQBOyE8zbVD2Geveu+3RKwrkpzTm5a59cYGdaQFEwVAtfIFGPDYeML4r7dwsTBBjf
+         MnP+Dv0jWIeJAEeh9gvEQ19l4M9AkVncsF/hh9FicRwkveEyc++kxasALszHJa2heKRL
+         YVCG3BtLN8TfKLc3hWPZlKfF9myql3b0me1uh6QBcNA3lwTMPhyXcK3Sm6AAGGOZAF/P
+         bLZTxwE+bnXD84w7uIgYU+FIdRHp9mj0JRdQIkf1B69Ro8+uLKYH4f+FOZUvcYLuqGRX
+         ZcEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
-        bh=7JQ+kbmcSP5RNYOOPozaAGUuDB8WoxkQS0RnWZ/8sdc=;
-        b=RbWLEOF4ArS72zgN5QTqMWW4DK5mmMvDoIGW6MBDY0fQS/s8i8FUFv1QO3C3bEPoPI
-         Pru4t5W0/aUJhZVWmJhJD+CHPWrlZlEjJVI4LU4yNvdhcU6DZVWawfHAD2F6MWDaTJD3
-         gvLY7+aQOwOPiqqD5/gTfr0WhmL25G8wSekFC4d2Q+1I+BlT332UDc4frVUFpqZanIQj
-         QHqwtmHY89s1IpuM95MHS/F8wxHWFY09pyhJpAKQyTT2SIjC9S31NBdb7f6qSd2N68/k
-         p5w+Uc1kzl90CxbXwWFud6s3tgdEhKjyW4lcPse81oE7WcqyfdPk7MJG5DNIYlmbABjr
-         cSJg==
-X-Gm-Message-State: ACrzQf1U8ak71u6TeTaBnD4543ot1VCXs3c8WmE8MfIwijq8xSEspwRZ
-        oMM6kDDqUGOlQxY7ONDJy22h30v8Gvys7A==
-X-Google-Smtp-Source: AMsMyM4QcpJpVAA7h6dQC4uEUxe0xip0WVaIvSWXsD9Y3mQfofpuU5QkNgDlZeEjFw7f686oodj7rw==
-X-Received: by 2002:a05:651c:546:b0:26c:698f:a4a2 with SMTP id q6-20020a05651c054600b0026c698fa4a2mr8906460ljp.161.1664895433142;
-        Tue, 04 Oct 2022 07:57:13 -0700 (PDT)
-Received: from gmail.com (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id q3-20020a0565123a8300b00494a11c5f52sm1945147lfu.256.2022.10.04.07.57.09
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=IO0LVild74/mfqPHFPHXSTTABQ/rsCldzeWn8+3PjVQ=;
+        b=FksuaCxW+GRlDDXYOzonXDsduj346IxRtM2hmherHpgbFhWWNne4aMXHiXN1Mz/+Hx
+         VtN0v6bnqOJxhNwlQrLumB/BAha624JBy9RPqPeAtsW6+l+J9yGp8TfUn2iWImZqmnsa
+         FEQGf1Cc5mkKPEuPf/ehb0wukqgvU/38+lUjlmDnS9j2eSQtUVIO0t13hMZxkM/Zs/Vc
+         Wj6FyQE+JAo13dIrzVZap9JEIMLA3HiFz7QayEpTVkzjkCSrBzprb2F0mu2anj+1TJ/z
+         RZ1JSPOSmeh8Ill6KUVipQIW9m2l8YI6LP55yiSLOlxaKioUM0Hon0e5JwlF23JHP1iB
+         qTbQ==
+X-Gm-Message-State: ACrzQf2k1BHwkHDJa8dkAYOL1GQFUKh09/y7VsOvVvXdUYAJyiENSYPt
+        oMEa4BmpHvLwsPekIuLw2zw00JblON0iKaf9
+X-Google-Smtp-Source: AMsMyM7KKu8RFTXOAcGz3XKD+YAlWeFFXKBbyfKnT8ZDlqUqQ5OtmZQODuuWcH2Ct9njCTWQP0/z4Q==
+X-Received: by 2002:ac8:5887:0:b0:35b:b700:8990 with SMTP id t7-20020ac85887000000b0035bb7008990mr22423332qta.450.1664957292793;
+        Wed, 05 Oct 2022 01:08:12 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id dm42-20020a05620a1d6a00b006e2f0ebad01sm872757qkb.113.2022.10.05.01.08.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Oct 2022 07:57:11 -0700 (PDT)
-Date:   Tue, 4 Oct 2022 16:57:08 +0200
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, kernel@pengutronix.de,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] iio: adc: add ADC driver for the TI LMP92064
- controller
-Message-ID: <YzxJxCSHP9tGHge6@gmail.com>
-References: <20221004134238.3144326-1-l.goehrs@pengutronix.de>
- <20221004134238.3144326-2-l.goehrs@pengutronix.de>
+        Wed, 05 Oct 2022 01:08:11 -0700 (PDT)
+Message-ID: <0bad9d1ef45d0a85b7d25a4ee50914ea93936bb2.camel@gmail.com>
+Subject: Re: [PATCH v2 14/16] iio: health: max30100: do not use internal
+ iio_dev lock
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Cixi Geng <cixi.geng1@unisoc.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Florian Boor <florian.boor@kernelconcepts.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Orson Zhai <orsonzhai@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Date:   Wed, 05 Oct 2022 10:09:29 +0200
+In-Reply-To: <CAHp75Vfv4BntoDPOo_MXZ33dVEKYj1KW_Ocd5QL_Ez06HJ33iw@mail.gmail.com>
+References: <20221004134909.1692021-1-nuno.sa@analog.com>
+         <20221004134909.1692021-15-nuno.sa@analog.com>
+         <CAHp75Vfv4BntoDPOo_MXZ33dVEKYj1KW_Ocd5QL_Ez06HJ33iw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="krXJhXCH+I9hQ/Op"
-Content-Disposition: inline
-In-Reply-To: <20221004134238.3144326-2-l.goehrs@pengutronix.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -73,108 +102,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---krXJhXCH+I9hQ/Op
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-Overall, a lot of comments does not have the right formatting.
-Please run scripts/checkpatch.pl.
-
-On Tue, Oct 04, 2022 at 03:42:38PM +0200, Leonard G=F6hrs wrote:
-> The TI LMP92064 is a dual 12 Bit ADC connected via SPI.
-> The two channels are intended for simultaneous measurements of the voltage
-> across- and current through a load to allow accurate instantaneous power
-> measurements.
-> The driver does not yet take advantage of this feature, as buffering is n=
-ot yet
-> implemented.
+On Tue, 2022-10-04 at 17:13 +0300, Andy Shevchenko wrote:
+> On Tue, Oct 4, 2022 at 4:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> >=20
+> > The pattern used in this device does not quite fit in the
+> > iio_device_claim_direct_mode() typical usage. In this case,
+> > iio_buffer_enabled() was being used not to prevent the raw access
+> > but to
+> > allow it. Hence, let's make use of the new
+> > iio_device_claim_buffer_mode() API to make sure we stay in buffered
+> > mode
+> > during the complete read.
 >=20
-> Signed-off-by: Leonard G=F6hrs <l.goehrs@pengutronix.de>
-> ---
-> +static const struct iio_chan_spec lmp92064_adc_channels[] =3D {
-> +	{
-> +		.type =3D IIO_CURRENT,
-> +		.address =3D TI_LMP92064_CHAN_INC,
-> +		.info_mask_separate =3D
-> +			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-> +		.datasheet_name =3D "INC",
-> +	},
-> +	{
-> +		.type =3D IIO_VOLTAGE,
-> +		.address =3D TI_LMP92064_CHAN_INV,
-> +		.info_mask_separate =3D
-> +			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-> +		.datasheet_name =3D "INV",
-> +	},
-> +};
-> +
+> ...
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (iio_device_claim_buffer_mode(indio_dev)) {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =
+=3D -EAGAIN;
+>=20
+> Why is the error code shadowed? Isn't it better to return exactly the
+> one you resend to the upper caller(s)? Each unclear error code
+> shadowing should be at least explained.
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
 
-[...]
-
-> +static int lmp92064_write_reg(struct lmp92064_adc_priv *priv, u16 reg, u=
-8 val)
-> +static int lmp92064_read_reg(struct lmp92064_adc_priv *priv, u16 reg, u8=
- *val)
-
-Does not regmap work for this?
-
-[...]
-
-> +static int lmp92064_adc_probe(struct spi_device *spi)
-> +{
-> +	struct device *dev =3D &spi->dev;
-> +	struct lmp92064_adc_priv *priv;
-> +	struct iio_dev *indio_dev;
-> +	struct gpio_desc *gpio_reset;
-> +	int ret;
-> +	u32 shunt_resistor;
-> +
-> +	spi->bits_per_word =3D 8;
-> +	spi->mode &=3D ~SPI_MODE_X_MASK;
-> +	spi->mode |=3D SPI_MODE_0;
-> +	ret =3D spi_setup(spi);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Error in SPI setup\n");
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*priv));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	priv =3D iio_priv(indio_dev);
-> +
-> +	priv->spi =3D spi;
-> +
-> +	ret =3D of_property_read_u32(dev->of_node, "shunt-resistor",
-> +				   &shunt_resistor);
-
-device_property_read_u32() ?
+I'm keeping the same error that was returned before. Changing the error
+code returned to userspace can break some apps relying on it. But if
+everyone is ok with assuming the risk and changing it, fine by me.
 
 
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret,
-
---krXJhXCH+I9hQ/Op
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEBVGi6LZstU1kwSxliIBOb1ldUjIFAmM8Sb8ACgkQiIBOb1ld
-UjJJMRAArlMzqVmgkLxZUed6pPK2BrT90bF6UApdw6YxWeEcmNt74WjGuNA8fF7s
-8yazOsXsGuUh0A4CplLlQD4AQFDPr5gk1cL2Iwl1wpD05Gk+5sAKC6ZPIpm58yp8
-pZYlr/GkbFXmnnhoDEWvcxOGBi7hIzWyXSivc3LoEGoiETkz6Y4O6su0ojCBPurW
-Z8X7W5fVKo7hA60QpnXsNzCRSYiNS7bbYiscqIR1OEAtMOYELKh/GGvaxDPjAMf8
-eqlpiBhQIk+TffUpmViFapyscpa0vMox8tFQO8U+RextUOJtUD1JyHgTzAqGWDQ1
-aJZaLCs56JSTMeJPa0w+M7DhLZnAM5C7Mgi7oRrviHTYKTsniGb81Jmfew4ST4eM
-I0Z1qa7WUQhYyn9uA7yy1Sb0JNN/uYbutuHbs8xz+gZ4fiQuBVtKpsqwo10NmVFo
-pPM479LskPWIK6OeZvOA6alI7KvjOtFQPonaiaRY4Qn8TJ9roRYaPG1czuLA+lM5
-xAloZ+VsWnjQM7JMgoUk3psy16Zl3ftLF4YHIbMSpihgIXa97CjjlhHszKij9zvq
-RvHElz+j1TKNTtqCRiP7lnBBEVVXK9DtsvY/VWqKxz1Mf0C3bq8wkvLnZJeWz5c6
-d5flT28E6KbBf3zWl/16KHmkutTtRu9Pvt3UHLRP7mGDnQ6/UME=
-=PAtT
------END PGP SIGNATURE-----
-
---krXJhXCH+I9hQ/Op--
+- Nuno S=C3=A1

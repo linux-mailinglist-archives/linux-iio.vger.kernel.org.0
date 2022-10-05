@@ -2,79 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C69765F556A
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Oct 2022 15:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DAC25F5592
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Oct 2022 15:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbiJENbO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 5 Oct 2022 09:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
+        id S229974AbiJENg7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 5 Oct 2022 09:36:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbiJENbN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Oct 2022 09:31:13 -0400
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FAD04C618;
-        Wed,  5 Oct 2022 06:31:13 -0700 (PDT)
-Received: by mail-oi1-f171.google.com with SMTP id t79so4149474oie.0;
-        Wed, 05 Oct 2022 06:31:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JTIPhig5Ie9VOFbWKLP3zaUvCPlldSA2E1ZwzIC2iDs=;
-        b=dow3Q3rKh9KgQCencfU9t3Qom22vq5iC7WpfCx7n1M+YLbBndnHvqpF7NG9CtEwP7D
-         2zvgWSMhxCmBKITsOPKsOa/q+is3aR/Ixb/oLuDi1Koob7Aochag4X+u2SVKlcB8XWZB
-         7BVW2nUcfImR8A6za45tigRDSfZcZMj32l0e7D8POA+jd75AsyxulOCb2kt4Y47fWR8y
-         FKFVbnx2ay5/Uko0aOxtK1zf9sUBj+vQmASaeudFmM+XDI51yzI2vpNnFSNvDLGbRFW6
-         X1zcZFe096RNa5glVa584AJKZE4xGVhH0lDfCBWxF6ucL3d39hpKItEPIXSryVucp50S
-         AqSg==
-X-Gm-Message-State: ACrzQf1xsQ3pcEe2BpGIDnGnyl0iaExxNYkv3KI9Bm87zRqhAsop/ToH
-        3+aWUVa/q3/EwPDASQKImg==
-X-Google-Smtp-Source: AMsMyM6pDwVIeNVC63QqA3QzzkzNt2WqrugHJWzzqR20g/mEypP09v77am14UdFCsnLL5btLL+Bf/Q==
-X-Received: by 2002:a05:6808:1446:b0:350:9b8b:2398 with SMTP id x6-20020a056808144600b003509b8b2398mr2202320oiv.15.1664976672555;
-        Wed, 05 Oct 2022 06:31:12 -0700 (PDT)
-Received: from robh_at_kernel.org ([2607:fb90:5fee:ea3a:4239:ad4:650a:6e66])
-        by smtp.gmail.com with ESMTPSA id c36-20020a05683034a400b00660db0c0cc8sm816017otu.75.2022.10.05.06.31.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Oct 2022 06:31:12 -0700 (PDT)
-Received: (nullmailer pid 3276086 invoked by uid 1000);
-        Wed, 05 Oct 2022 13:31:11 -0000
-Date:   Wed, 5 Oct 2022 08:31:11 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S229823AbiJENg6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 5 Oct 2022 09:36:58 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E817AC29;
+        Wed,  5 Oct 2022 06:36:57 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 295C19SN004643;
+        Wed, 5 Oct 2022 15:36:11 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=UK8cv3Z7Vi2PsEmR/JMgWfQIL22uuQ2m+zMQDgVwZL8=;
+ b=q++rgE560qAIcX3tKxmQL9thp4H9LEuQw15JlTa1QNfrYINjcyFqnSiIwV7lEECvMy4C
+ ImKi7GmbxnFDy13PvHL7I4r2I6xwioQywnGjCXUpDBPXhqtdFzemarrhXE5mu/FDHXQ8
+ Yy8yrrYBkWdhARmZp5JoIGvHpuasUSsK5sK/mJ0merrQgczcCvXCM/X34DBwJH8/TLpY
+ LPx8NcdVpb3/psFytYp9qSaLZ5ESLeZ2R5DYoz7+uTTPwifSJQXqDy5qmcXVHr79nc7a
+ xe6q12yFdZkulv9N+8EbrjNNx6RuvXhKxzjm90tWsjBdFr5onLHepFgOwuneG6HVgwCb lg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3jxaym7tkq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Oct 2022 15:36:11 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 12B0710002A;
+        Wed,  5 Oct 2022 15:36:03 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id EC186229A9D;
+        Wed,  5 Oct 2022 15:36:03 +0200 (CEST)
+Received: from localhost (10.75.127.118) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.31; Wed, 5 Oct
+ 2022 15:36:03 +0200
+From:   Olivier Moysan <olivier.moysan@foss.st.com>
+To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: frequency: change admv4420
- maintainer
-Message-ID: <166497666336.3275912.15393357731871877356.robh@kernel.org>
-References: <20221005085044.204701-1-nuno.sa@analog.com>
- <20221005085044.204701-2-nuno.sa@analog.com>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        <nuno.sa@analog.com>, Olivier Moysan <olivier.moysan@foss.st.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Wan Jiabing <wanjiabing@vivo.com>,
+        Yannick Brosseau <yannick.brosseau@gmail.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH v2 0/8] iio: stm32-adc: add support of adc for stm32mp13
+Date:   Wed, 5 Oct 2022 15:31:12 +0200
+Message-ID: <20221005133120.50483-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221005085044.204701-2-nuno.sa@analog.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.75.127.118]
+X-ClientProxiedBy: GPXDAG2NODE4.st.com (10.75.127.68) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
+ definitions=2022-10-05_03,2022-10-05_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 05 Oct 2022 10:50:44 +0200, Nuno Sá wrote:
-> As the maintainer email no longer exists, change it to myself.
-> 
-> Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-> ---
->  .../devicetree/bindings/iio/frequency/adi,admv4420.yaml         | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+On STM32MP13 SoCs, each ADC peripheral has a single ADC block.
+These ADC peripherals, ADC1 and ADC2, are fully independent.
+The STM32MP131 SoC provides only ADC2, while other STM32MP13x
+SoCs provide both ADC1 and ADC2.
 
-Acked-by: Rob Herring <robh@kernel.org>
+The STM32MP13 ADC features and characteristics are slightly
+different from STM32MP15 ADC ones, requiring a specific support
+in the driver.
+
+This patchset enables the ADC peripheral on STM32MP135F-DK board.
+
+On STM32MP135F-DK board the ADC is connected to VDDA voltage
+provided by the PMIC LOD1 supply, which has to be enabled through
+SCMI regulator framework.
+This serie introduces a fixed regulator to allow ADC probing,
+while SCMI regulators support is not available. This does
+not ensure ADC regulator enabling however.
+
+Changes in v2:
+- Rework commit message length
+- Add missing spaces
+- Remove useless defines
+
+Olivier Moysan (8):
+  iio: adc: stm32-adc: fix channel sampling time init
+  dt-bindings: iio: adc: stm32-adc: add stm32mp13 compatibles
+  iio: adc: stm32-adc: add stm32mp13 support
+  iio: adc: stm32: manage min sampling time on all internal channels
+  ARM: dts: stm32: add adc support to stm32mp13
+  ARM: dts: stm32: add adc pins muxing on stm32mp135f-dk
+  ARM: dts: stm32: add dummy vdd_adc regulator on stm32mp135f-dk
+  ARM: dts: stm32: add adc support on stm32mp135f-dk
+
+ .../bindings/iio/adc/st,stm32-adc.yaml        |  68 ++++-
+ arch/arm/boot/dts/stm32mp13-pinctrl.dtsi      |   7 +
+ arch/arm/boot/dts/stm32mp131.dtsi             |  43 +++
+ arch/arm/boot/dts/stm32mp133.dtsi             |  31 +++
+ arch/arm/boot/dts/stm32mp135f-dk.dts          |  34 +++
+ drivers/iio/adc/stm32-adc-core.c              |  29 +-
+ drivers/iio/adc/stm32-adc-core.h              |  30 +++
+ drivers/iio/adc/stm32-adc.c                   | 249 +++++++++++++++---
+ 8 files changed, 444 insertions(+), 47 deletions(-)
+
+-- 
+2.25.1
+

@@ -2,50 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7E7C5F8C55
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 18:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A4A75F8C5A
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 18:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbiJIQck (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Oct 2022 12:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41248 "EHLO
+        id S230060AbiJIQft (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Oct 2022 12:35:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbiJIQck (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 12:32:40 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9272125E
-        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 09:32:39 -0700 (PDT)
+        with ESMTP id S230105AbiJIQfs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 12:35:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E111E248EA;
+        Sun,  9 Oct 2022 09:35:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CFC46B80D42
-        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 16:32:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9780BC433C1;
-        Sun,  9 Oct 2022 16:32:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7445BB80D75;
+        Sun,  9 Oct 2022 16:35:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBE4C433C1;
+        Sun,  9 Oct 2022 16:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665333156;
-        bh=VbK5Ybc2PncdoYw16H/phMBXBTcX2Cf7toQwHyHAl2s=;
+        s=k20201202; t=1665333344;
+        bh=c+Le9ocXWIoHOMEoqO5QlnIiTWoWlBDgr3VKXdt1bVw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=XYh58ji8kiTYW9yYgVbp9gjYNM2+V+hUdYMTOobmDTSHBwyGnggv4/cY4QXb/Slvd
-         sgGB4IFcGcuxLrAk8Tgiqe/wnVsUSQhvChof7LldGz44xrubXQ6FZCM3t0jEbL6GzU
-         GQfYDRN0GswwmiYWWNqcSAmfZNLRh7wJqE+9X823jzLanJcQokGX0ytxtYV2sVl9Hd
-         c8W2mAlXEhkIRQfl4p3nPN/pGrCRZV8j7tA5hOgxj9f3q4djfwF02+nJrMXZlAetdd
-         3US5p80F0kPNWc5bLNSlpIbwhFQEZzTRE/jZ9/7P2giSFRaT3Ww+cJtUb4uBHZTt2w
-         3qKqjAmys/bcw==
-Date:   Sun, 9 Oct 2022 17:32:59 +0100
+        b=lSeOz0Bcj3GDbcVaTrnxJKUad4yDiVGJe2FCGY5/kHJBkCjbRWDnIH4Kd/9L2Y1KL
+         aecIkc13GQjYtrUaHwepVEhMUbSMPNVBJtdAh6KW5wVRl/e//med9TVEUITcVmet7V
+         Xc72BQcnLZ3u3Auqr3VARmcfBXJL68ClsYTSpcKA+NXXBxCoRdNUQmAkxlC3m90hCy
+         EY7P20tIMlJX+v8c+0tzRxmYGaLG1zUlmimzH/B1Ncv2ITwJ5M+x3DdLEkmaW0IiHg
+         9RBEufwh0jmta5iiMEcwIaKv0O4LnDfMXEquxdNNKPCKacSzaZ7tbx3LgFz4IhsG2u
+         jUl1CW3gWQaCg==
+Date:   Sun, 9 Oct 2022 17:36:06 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Angelo Dureghello <angelo.dureghello@timesys.com>
-Cc:     william.gray@linaro.org, linux-iio@vger.kernel.org,
-        Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH resend] iio: dac: add support for max5522
-Message-ID: <20221009173259.44df9f45@jic23-huawei>
-In-Reply-To: <CALJHbkBPg=+N_6q+cVpFbmwM0mJbUhuH3wwWKma7GzaR1r1owQ@mail.gmail.com>
-References: <20221001221225.668378-1-angelo.dureghello@timesys.com>
-        <20221002125625.661b118d@jic23-huawei>
-        <CALJHbkBPg=+N_6q+cVpFbmwM0mJbUhuH3wwWKma7GzaR1r1owQ@mail.gmail.com>
+To:     Crt Mori <cmo@melexis.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] iio: temperature: mlx90632 Add runtime
+ powermanagement modes
+Message-ID: <20221009173606.5b8e5661@jic23-huawei>
+In-Reply-To: <CAKv63ut4DJCLQP8ckOsC+K4DGy+v2Y5ghfoTjQoyg4CvditW6Q@mail.gmail.com>
+References: <cover.1663834141.git.cmo@melexis.com>
+        <be405068f081f2d518843897b13cd0289c280b5d.1663834141.git.cmo@melexis.com>
+        <a11b83a9-9e25-bbb5-2556-f5244119e3dc@wanadoo.fr>
+        <CAKv63ut4DJCLQP8ckOsC+K4DGy+v2Y5ghfoTjQoyg4CvditW6Q@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,142 +58,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2 Oct 2022 22:32:59 +0200
-Angelo Dureghello <angelo.dureghello@timesys.com> wrote:
+On Mon, 3 Oct 2022 10:20:18 +0200
+Crt Mori <cmo@melexis.com> wrote:
 
-> Hi Jonathan,
-> 
-> thanks a lot for all the feedbacks,
-> 
-> On Sun, Oct 2, 2022 at 1:56 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> On Sun, 2 Oct 2022 at 18:09, Christophe JAILLET
+> <christophe.jaillet@wanadoo.fr> wrote:
 > >
-> > On Sun,  2 Oct 2022 00:12:25 +0200
-> > Angelo Dureghello <angelo.dureghello@timesys.com> wrote:
-> >  
-> > > Add initial support for dac max5522.  
+> > Le 22/09/2022 =C3=A0 10:13, cmo-fc6wVz46lShBDgjK7y7TUQ@public.gmane.org=
+ a =C3=A9crit : =20
+> > > From: Crt Mori <cmo-fc6wVz46lShBDgjK7y7TUQ@public.gmane.org>
+> > > measurements in lower power mode (SLEEP_STEP), with the lowest refresh
+> > > rate (2 seconds). =20
 > >
-> > DAC preferred for comments.
-> >  
-> ok, fixed
-Hi Angelo,
-
-To cut down a little on reading time, it's helpful to crop out anything
-where you agree.  That way we can focus in on remaining questions with
-less scrolling!
-
-...
-
-> > > +config MAX5522
-> > > +     tristate "Maxim MAX5522 DAC driver"
-> > > +     depends on SPI  
-> > Hmm. We only have one instance of the pattern and that's more complex because
-> > it's a driver that supports both SPI and I2C. Simpler to have (unless I'm missing
-> > something!)
+> > Hi,
 > >
-> >         depends on SPI_MASTER
-> >         select REGMAP_SPI
-> >  
-> Not sure i am understanding this point, device is SPI only.
-> Anyway, ok, i changed as you are suggesting.
+> > should there be a v7, a few nitpick below.
+> > =20
+> It was already applied, but I can spin a new patch for the suggested
+> changes (the s32 is mostly there because before this patch it was
+> returning value for further bit manipulation).
 
-Ah I was less clear than I could have been.
-You have the depends refering to SPI, and the select
-based on the more specific SPI_MASTER.
+Follow on patch welcome!
 
-There is some SPI code that will be built with SPI that is not sufficient here,
-so we should depend on SPI_MASTER.
-
-The driver only supports SPI, thus we can unconditionally select REGMAP_SPI if
-we are building it at all.
-
-I was trying to figure out where you found this pattern on assumption it was
-copied from existing code and only similar example supported multiple buses
-and hence needed more complex logic that wasn't relevant here.
-
-> 
-> >  
-> > > +     select REGMAP_SPI if SPI_MASTER
-> > > +     help
-> > > +       Say Y here if you want to build a driver for the Maxinm MAX5522.  
-
-
-...
-> > > +struct max5522_state {
-> > > +     struct regmap *regmap;
-> > > +     const struct max5522_chip_info *chip_info;
-> > > +     unsigned short dac_cache[2];
-> > > +     unsigned int vrefin_mv;  
-> >
-> > In theory voltages can change and sensible userspace software will only read them
-> > in a slow path anyway, so I'd just move the voltage readback into the
-> > read_raw() callback and drop this cache of the value.
-> >  
-> Sorry, not clear. This device does not provide read operations.
-> There is only write operation and DIN spi pin.
-
-The regulator supplying the reference voltage is queried for the reference.
-That is currently done at probe() then cached.  You could do it later when
-calling read_raw() to get the scale - that would avoid need to cache it
-within the driver and handle later reference voltage changes.
-
-Reading scale should never be a latency sensitive path, so no need to
-cache the value when we can read it directly when we need it.
-
-
-> > > +
-> > > +enum max5522_type {
-> > > +     ID_MAX5522,
-> > > +};
-> > > +
-> > > +static const struct max5522_chip_info max5522_chip_info_tbl[] = {  
-> >
-> > Unless you are going to follow this patch very soon with support for more devices,
-> > I'd prefer seeing this indirection only when it becomes necessary.
-> > For now, it just leads to less readable and longer code.
-> >  
-> idea is to follow up with MAX5523/5524/5525,
-> not sure when right now, since i cannot test them, but code was ready
-> for addition
-
-Great if you do or if anyone else can test those parts and hence
-help you get these upstream. (Nuno:  Not sure how combine things are between
-different parts of ADI family, but are these parts you have access to?)
-
-If they are very similar then I'd be fine taking support tested against some
-unit tests or emulation.  For some of these families we only ever manage
-to test a subset when developing.
-
-Add a note to the patch description to say that these are on their way
-as reasoning behind the flexibility.
-
-> 
-> > > +     [ID_MAX5522] = {
-> > > +             .channels = max5522_channels,
-> > > +             .num_channels = 2,
-> > > +     },
-> > > +};
-
-> > > +     indio_dev->info = &max5522_info;
-> > > +     indio_dev->modes = INDIO_DIRECT_MODE;
-> > > +     indio_dev->channels = max5522_channels;
-> > > +     indio_dev->num_channels = ARRAY_SIZE(max5522_channels);
-> > > +     indio_dev->name = id->name;  
-> >
-> > Hard code the name preferred as it makes it easier to be sure it's exactly what
-> > we expect when reading the code and does rely on the fallback compatible matching
-> > in the spi core for dt described devices.
-> >  
-> Ok, if possible i would keep the id table for next additions.
-
-Keep the id table. Just don't get the name from it. In fact we have to keep the
-ID table because it's used for module alias generation needed to autoload
-modules.
-
-
-Instead get the name from the chip_info_tbl[] so that you definitely get what
-you expect independent of the probe mechanism.
+Thanks,
 
 Jonathan
 
-
+>=20
+> > >
+> > > +     ret =3D regmap_read_poll_timeout(data->regmap, MLX90632_REG_STA=
+TUS,
+> > > +                                    reg_status,
+> > > +                                    (reg_status & MLX90632_STAT_BUSY=
+) =3D=3D 0,
+> > > +                                    10000, 100 * 10000);
+> > > +     if (ret < 0) {
+> > > +             dev_err(&data->client->dev, "data not ready");
+> > > +             return -ETIMEDOUT; =20
+> >
+> > Why not "return ret;"?
+> > =20
+> If you came to this point there were already several i2c reads, so I
+> think it is more important to convert those to timeout.
+>=20
+> > >       mutex_lock(&data->lock);
+> > > -     measurement =3D mlx90632_perform_measurement(data);
+> > > -     if (measurement < 0) {
+> > > -             ret =3D measurement;
+> > > +     ret =3D mlx90632_set_meas_type(data, MLX90632_MTYP_MEDICAL);
+> > > +     if (ret < 0)
+> > > +             goto read_unlock;
+> > > +
+> > > +     switch (data->powerstatus) {
+> > > +     case MLX90632_PWR_STATUS_CONTINUOUS:
+> > > +             measurement =3D mlx90632_perform_measurement(data); =20
+> >
+> >    ret =3D mlx90632_perform_measurement(data);
+> > and
+> >    measurement =3D ret;
+> > on success would be less verbose (no need for {}, and save 1 LoC) and
+> > more in line with mlx90632_calculate_dataset_ready_time() above.
+> > =20
+> I wanted to change as few lines as possible to avoid clogging the
+> patch with unrelated changes. Also in most cases, we will be
+> in-success here, so limiting the number of variable copies in the
+> success path should be the priority.
 

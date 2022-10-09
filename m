@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8875F8AF2
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 13:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5905F8AF8
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 13:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbiJILo1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Oct 2022 07:44:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56398 "EHLO
+        id S229980AbiJILsC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Oct 2022 07:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229602AbiJILo0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 07:44:26 -0400
+        with ESMTP id S229940AbiJILsB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 07:48:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9742AC66
-        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 04:44:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82B82D742
+        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 04:48:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EAA5F60BA9
-        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 11:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44B5C433D6;
-        Sun,  9 Oct 2022 11:44:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 443AB60BA7
+        for <linux-iio@vger.kernel.org>; Sun,  9 Oct 2022 11:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E19DC433C1;
+        Sun,  9 Oct 2022 11:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665315864;
-        bh=XoBn8JDusgMDII6knjqYs6PwnqkxgJicWV318ZzCTcM=;
+        s=k20201202; t=1665316079;
+        bh=uLUT0ZlPLaW7vPy5rpn1T/wM8DNzywIgKzRvliwSObs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QKVAJXkVUMgWtJTkovQsQQK4QfJVZqYwc63drlULdhLnU9EQL3CFA7aNdtn4yPhWq
-         /o4d5V+M545Qh2LwK1PrWwCMqnTKQ/GCtwyQt+afjyRiFFJ8tU+1ZGa6lXnES9vj4x
-         P3X2DYn+cWcaKXYmQq0GggcBgdsRS4wTZtn5ZlO72kDpD+XYo3zocAArQtQuz6FtF0
-         jIVLd0Ucv8Z2aSTGwS+Pm/J8FnGs+pajzEoxa9/l1Mh07IXaJ5rIEkOVOI2k5S/wqQ
-         cSobF8c5beTVLxIaZPUFu1AUp05Jejx1F/c0UpHgWcB+Zf9XG+NpqfrM5gESbP1RbS
-         SF9kU43X0ad+A==
-Date:   Sun, 9 Oct 2022 12:44:40 +0100
+        b=uSHU58/wL/H2hi+pxvpQh58nBsB4DtqePkrRlaUJruDvQEjhp4p1GLUWVTsqRQ+gY
+         VrdcySZgRFyaxgRKML/KSVKS9xRIQqqcC9O6I4sc2YcWzwChGn/6mcCw0hAi/+HguH
+         O5BJUGpUYwOreVA6JIyumu9actpMognRXPBiD/sNp+F4avVd3WOBTxZhjKodHS2hR+
+         sJOCQhqZt28lvztXE7sUrMgfksWXOW+gICINq+AkzPtgb59EpU+4KT8Mi3Quh3xSCx
+         JchuPduXpoJF10ZZDbNhtiqJaVdkIYy/0+jDqhtftKrALN6aU5iQvs2aU0Hq6nRdj4
+         AcO686FjQBCqg==
+Date:   Sun, 9 Oct 2022 12:48:15 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
 Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
@@ -63,14 +63,14 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jerome Brunet <jbrunet@baylibre.com>,
         Haibo Chen <haibo.chen@nxp.com>,
         Kevin Hilman <khilman@baylibre.com>
-Subject: Re: [PATCH v2 15/16] iio: health: max30102: do not use internal
- iio_dev lock
-Message-ID: <20221009124440.71adf505@jic23-huawei>
-In-Reply-To: <428661431e54744064946ced681cc0351d51d698.camel@gmail.com>
+Subject: Re: [PATCH v2 16/16] iio: core: move 'mlock' to 'struct
+ iio_dev_opaque'
+Message-ID: <20221009124815.3d34daff@jic23-huawei>
+In-Reply-To: <f25507c2bfce7933684a2f1bfd00eb14609cd8b2.camel@gmail.com>
 References: <20221004134909.1692021-1-nuno.sa@analog.com>
-        <20221004134909.1692021-16-nuno.sa@analog.com>
-        <CAHp75VdiAzOUNMB3wD5og-uZi1W_7UWkqV6+s7jCxpaBs1VWRQ@mail.gmail.com>
-        <428661431e54744064946ced681cc0351d51d698.camel@gmail.com>
+        <20221004134909.1692021-17-nuno.sa@analog.com>
+        <CAHp75VfpcrTpH83XqAC9xFrwYApORwoDcqmnhLLTkEWbj6zYVg@mail.gmail.com>
+        <f25507c2bfce7933684a2f1bfd00eb14609cd8b2.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -84,104 +84,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 05 Oct 2022 10:17:00 +0200
+On Wed, 05 Oct 2022 10:40:03 +0200
 Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Tue, 2022-10-04 at 17:15 +0300, Andy Shevchenko wrote:
+> On Tue, 2022-10-04 at 17:21 +0300, Andy Shevchenko wrote:
 > > On Tue, Oct 4, 2022 at 4:49 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:=
  =20
 > > >=20
-> > > The pattern used in this device does not quite fit in the
-> > > iio_device_claim_direct_mode() typical usage. In this case, we want
-> > > to
-> > > know if we are in buffered mode or not to know if the device is
-> > > powered
-> > > (buffer mode) or not. And depending on that max30102_get_temp()
-> > > will
-> > > power on the device if needed. Hence, in order to keep the same
-> > > functionality, we try to:
-> > >=20
-> > > 1. Claim Buffered mode;
-> > > 2: If 1) succeeds call max30102_get_temp() without powering on the
-> > > =C2=A0=C2=A0 device;
-> > > 3: Release Buffered mode;
-> > > 4: If 1) fails, Claim Direct mode;
-> > > 5: If 4) succeeds call max30102_get_temp() with powering on the
-> > > device;
-> > > 6: Release Direct mode;
-> > > 7: If 4) fails, goto to 1) and try again.
-> > >=20
-> > > This dance between buffered and direct mode is not particularly
-> > > pretty
-> > > (as well as the loop introduced by the goto statement) but it does
-> > > allow
-> > > us to get rid of the mlock usage while keeping the same behavior. =20
+> > > Now that there are no more users accessing 'mlock' directly, we can
+> > > move
+> > > it to the iio_dev private structure. Hence, it's now explicit that
+> > > new
+> > > driver's should not directly this lock. =20
 > >=20
-> > ...
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 if (iio_device_claim_buffer_mode(indio_dev)) { =20
+> > use this
 > >=20
-> > Why is ret not used here?
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-This one is a *bit* hacky. If we cannot
-> > > claim buffer
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-mode, then try direct mode so that we
-> > > make sure
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-things cannot concurrently change. And
-> > > we just keep
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-trying until we get one of the modes...
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if
-> > > (iio_device_claim_direct_mode(indio_dev)) =20
 > >=20
-> > ...and here?
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto any_mode_retry; =20
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 } else { =20
-> >  =20
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 } =20
+> > I like the end result!
+> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 > >=20
-> > I.o.w. what error code will be visible to the caller and why.
+> > P.S. Shouldn't we annotate the respective APIs with might_sleep() and
+> > Co (if it's not done yet)?
+> >=20
 > >  =20
 >=20
-> Note that we do not really care about the error code returned by both
-> iio_device_claim_buffer_mode() and iio_device_claim_direct_mode(). We
-> just loop until we get one of the modes (thus ret =3D 0) so that we can
-> safely call one of the max30102_get_temp() variants. And that will be
-> the visible error code (if any). That said, you can look at the first
-> version of the series about this (and the previous patch) and why this
-> is being done like this (note that I'm also not 100% convinced about
-> this ping pong between getting one of the IIO modes but it's also not
-> that bad and if there's no major complains, I'm fine with it).
+> Hmm, I would say this is the same story as with sparse annotations... I
+> guess, at least, might_sleep() would make sense but I think we should
+> probably do it for the complete IIO subsystem where it makes sense
+> instead of having it in just this new API.
 
-This is a vanishingly rare corner case and not in a remotely high performan=
-ce
-path so I'm not keen on introducing a more complex API just to handle
-this corner. If we added a means to get the lock independent of mode
-we'd have an interface that is far to likely to get missused.
-What you have here does the job and looks nasty enough to put people off
-copying it unless they really need it!
+We definitely could add such annotations.
+
+=46rom a documentation point of view that might be useful.=20
+=46rom a protection / bug catching point of view the calls to mutex_lock()
+should fire off much the same error reports, just one level down.
 
 Jonathan
 
 >=20
-> - Nuno S=C3=A1
+> - Nuno S=C3=A1=20
+>=20
 

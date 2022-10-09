@@ -2,53 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A4A75F8C5A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 18:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEA195F8C63
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 18:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230060AbiJIQft (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Oct 2022 12:35:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47146 "EHLO
+        id S230118AbiJIQlf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Oct 2022 12:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbiJIQfs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 12:35:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E111E248EA;
-        Sun,  9 Oct 2022 09:35:46 -0700 (PDT)
+        with ESMTP id S230058AbiJIQle (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 12:41:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26935BC98;
+        Sun,  9 Oct 2022 09:41:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7445BB80D75;
-        Sun,  9 Oct 2022 16:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBE4C433C1;
-        Sun,  9 Oct 2022 16:35:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CB3F60C41;
+        Sun,  9 Oct 2022 16:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D117BC433C1;
+        Sun,  9 Oct 2022 16:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665333344;
-        bh=c+Le9ocXWIoHOMEoqO5QlnIiTWoWlBDgr3VKXdt1bVw=;
+        s=k20201202; t=1665333692;
+        bh=zVR71JU/UpAI0sS5K+0vpB9MY/SnZLjg19Qy4gojgDw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lSeOz0Bcj3GDbcVaTrnxJKUad4yDiVGJe2FCGY5/kHJBkCjbRWDnIH4Kd/9L2Y1KL
-         aecIkc13GQjYtrUaHwepVEhMUbSMPNVBJtdAh6KW5wVRl/e//med9TVEUITcVmet7V
-         Xc72BQcnLZ3u3Auqr3VARmcfBXJL68ClsYTSpcKA+NXXBxCoRdNUQmAkxlC3m90hCy
-         EY7P20tIMlJX+v8c+0tzRxmYGaLG1zUlmimzH/B1Ncv2ITwJ5M+x3DdLEkmaW0IiHg
-         9RBEufwh0jmta5iiMEcwIaKv0O4LnDfMXEquxdNNKPCKacSzaZ7tbx3LgFz4IhsG2u
-         jUl1CW3gWQaCg==
-Date:   Sun, 9 Oct 2022 17:36:06 +0100
+        b=t1dOg6WeadbkxoyduvoN1TE/xZfxSZabyGLxzS2zpiLHeHzXvDFF7CHVDHGhgQvxu
+         5N4pbD/IbE9I+NiPU0jzD7mLpbh4PURZjS31cYVrIqzxCeOTkyW3mUZdLm78BchDlk
+         dazV0KS1xcCpHo4bEJUXjFWg++BAV70kga4tfCPPdDqzd+sM6+naXhZk1LsALrBsS9
+         ep+3v4qHvjG39IhqqMj27UwbV0UHD14Hlx0Bkb4MRzPUgXrQdOjHB+1rlNhw1pZMq6
+         EAH01FuyL3GoaNhgdTquqE4jWaVRIAnqdwD6O7wA03hIX3uGhBfny6dcienvtuJrVg
+         oa8Bt2+5yLQXw==
+Date:   Sun, 9 Oct 2022 17:41:54 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        andy.shevchenko@gmail.com, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/3] iio: temperature: mlx90632 Add runtime
- powermanagement modes
-Message-ID: <20221009173606.5b8e5661@jic23-huawei>
-In-Reply-To: <CAKv63ut4DJCLQP8ckOsC+K4DGy+v2Y5ghfoTjQoyg4CvditW6Q@mail.gmail.com>
-References: <cover.1663834141.git.cmo@melexis.com>
-        <be405068f081f2d518843897b13cd0289c280b5d.1663834141.git.cmo@melexis.com>
-        <a11b83a9-9e25-bbb5-2556-f5244119e3dc@wanadoo.fr>
-        <CAKv63ut4DJCLQP8ckOsC+K4DGy+v2Y5ghfoTjQoyg4CvditW6Q@mail.gmail.com>
+To:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <Nuno.Sa@analog.com>,
+        <Nurettin.Bolucu@analog.com>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v8 1/3] iio: adc: add max11410 adc driver
+Message-ID: <20221009174154.41569d52@jic23-huawei>
+In-Reply-To: <20221003105903.229-2-Ibrahim.Tilki@analog.com>
+References: <20221003105903.229-1-Ibrahim.Tilki@analog.com>
+        <20221003105903.229-2-Ibrahim.Tilki@analog.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,69 +56,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 3 Oct 2022 10:20:18 +0200
-Crt Mori <cmo@melexis.com> wrote:
+On Mon, 3 Oct 2022 13:59:01 +0300
+Ibrahim Tilki <Ibrahim.Tilki@analog.com> wrote:
 
-> On Sun, 2 Oct 2022 at 18:09, Christophe JAILLET
-> <christophe.jaillet@wanadoo.fr> wrote:
-> >
-> > Le 22/09/2022 =C3=A0 10:13, cmo-fc6wVz46lShBDgjK7y7TUQ@public.gmane.org=
- a =C3=A9crit : =20
-> > > From: Crt Mori <cmo-fc6wVz46lShBDgjK7y7TUQ@public.gmane.org>
-> > > measurements in lower power mode (SLEEP_STEP), with the lowest refresh
-> > > rate (2 seconds). =20
-> >
-> > Hi,
-> >
-> > should there be a v7, a few nitpick below.
-> > =20
-> It was already applied, but I can spin a new patch for the suggested
-> changes (the s32 is mostly there because before this patch it was
-> returning value for further bit manipulation).
+> Adding support for max11410 24-bit, 1.9ksps delta-sigma adc which
+> has 3 differential reference and 10 differential channel inputs.
+> Inputs and references can be buffered internally. Inputs can also
+> be amplified with internal PGA.
+> 
+> Device has four digital filter modes: FIR50/60, FIR50, FIR60 and SINC4.
+> FIR 50Hz and 60Hz rejections can be enabled/disabled separately.
+> Digital filter selection affects sampling frequency range so driver
+> has to consider the configured filter when configuring sampling frequency.
+> 
+> Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
+One small thing inline that I tidied up whilst applying.
 
-Follow on patch welcome!
 
-Thanks,
+> +static int max11410_configure_channel(struct max11410_state *st,
+> +				      struct iio_chan_spec const *chan)
+> +{
+> +	struct max11410_channel_config cfg = st->channels[chan->address];
+> +	unsigned int regval;
+> +	int ret;
+> +
+> +	if (chan->differential)
+> +		ret = max11410_set_input_mux(st, chan->channel, chan->channel2);
+> +	else
+> +		ret = max11410_set_input_mux(st, chan->channel,
+> +					     MAX11410_AINN_GND);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	regval = FIELD_PREP(MAX11410_CTRL_VREFP_BUF_BIT, cfg.buffered_vrefp) |
+> +		 FIELD_PREP(MAX11410_CTRL_VREFN_BUF_BIT, cfg.buffered_vrefn) |
+> +		 FIELD_PREP(MAX11410_CTRL_REFSEL_MASK, cfg.refsel) |
+> +		 FIELD_PREP(MAX11410_CTRL_UNIPOLAR_BIT, !cfg.bipolar);
+drivers/iio/adc/max11410.c:370:18: warning: dubious: x & !y 
 
-Jonathan
+I've fixed it with
+... cfg.bipolar ? 0 : 1);
 
->=20
-> > >
-> > > +     ret =3D regmap_read_poll_timeout(data->regmap, MLX90632_REG_STA=
-TUS,
-> > > +                                    reg_status,
-> > > +                                    (reg_status & MLX90632_STAT_BUSY=
-) =3D=3D 0,
-> > > +                                    10000, 100 * 10000);
-> > > +     if (ret < 0) {
-> > > +             dev_err(&data->client->dev, "data not ready");
-> > > +             return -ETIMEDOUT; =20
-> >
-> > Why not "return ret;"?
-> > =20
-> If you came to this point there were already several i2c reads, so I
-> think it is more important to convert those to timeout.
->=20
-> > >       mutex_lock(&data->lock);
-> > > -     measurement =3D mlx90632_perform_measurement(data);
-> > > -     if (measurement < 0) {
-> > > -             ret =3D measurement;
-> > > +     ret =3D mlx90632_set_meas_type(data, MLX90632_MTYP_MEDICAL);
-> > > +     if (ret < 0)
-> > > +             goto read_unlock;
-> > > +
-> > > +     switch (data->powerstatus) {
-> > > +     case MLX90632_PWR_STATUS_CONTINUOUS:
-> > > +             measurement =3D mlx90632_perform_measurement(data); =20
-> >
-> >    ret =3D mlx90632_perform_measurement(data);
-> > and
-> >    measurement =3D ret;
-> > on success would be less verbose (no need for {}, and save 1 LoC) and
-> > more in line with mlx90632_calculate_dataset_ready_time() above.
-> > =20
-> I wanted to change as few lines as possible to avoid clogging the
-> patch with unrelated changes. Also in most cases, we will be
-> in-success here, so limiting the number of variable copies in the
-> success path should be the priority.
+Shout if that's an issue (I've gotten these backwards in the past ;)
 

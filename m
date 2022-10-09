@@ -2,56 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A2BF5F8B30
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 14:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED385F8B35
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 14:34:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229923AbiJIM0x (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Oct 2022 08:26:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34330 "EHLO
+        id S230053AbiJIMde (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 9 Oct 2022 08:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiJIM0w (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 08:26:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C597A2B24E;
-        Sun,  9 Oct 2022 05:26:51 -0700 (PDT)
+        with ESMTP id S229728AbiJIMde (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 08:33:34 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F2E22B07;
+        Sun,  9 Oct 2022 05:33:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6203F603F3;
-        Sun,  9 Oct 2022 12:26:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B15C433C1;
-        Sun,  9 Oct 2022 12:26:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E23B8B80D19;
+        Sun,  9 Oct 2022 12:33:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE19DC433D6;
+        Sun,  9 Oct 2022 12:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665318410;
-        bh=tvAq+25whh50Iv33Ti7+LWbk6IcWHxOAd8TzRCQzNEk=;
+        s=k20201202; t=1665318810;
+        bh=9WyCokWSQ+YPo9bet+5rKNeJq50AKYj52DF+Ejp3zSY=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=awWA6hiJMQOarJ25aOMu20UQHHWfwn92afrfirRbdH+FEZvmY18ZE8Ks9NbMwRGNI
-         LojMQBK9HU5pDJpzpZjz0fjFqlejMhhH8jK6AuIda1uRBQfMoX7t8KapNEnrn9Rgq7
-         YtPKCpZTKFa7oAS3VBIrJRxrW+/q9SMqxrGcke+//13i5HExIefo/ROA8LZ7YCComx
-         ZxQXobNiUcRLRBrwOEa+8UkK10egEYCuzKH+s5IdmiupqTvknxNOkxNZ9H4X80YOfY
-         KcS/T83vqdXWeUZ0oMvU8g1Ibo9H+28tKBmeJLEOckWxhXXjFk7b/ioE8NKKi2ID7b
-         QVLF4tyeqreEA==
-Date:   Sun, 9 Oct 2022 13:27:11 +0100
+        b=VhIE7ZX6bvCAMvLCfiTxs2711lzx+ADlYUD7YVVTTFrZdjCxgqc8GTEHic/JE+W7d
+         yj7Wtfcm3anovQseN1Kif2qsLA78Or+kWC2wg6zQNnfsXnmWZ3K6HguSlX6PK2mw7D
+         RTdYJmUYTTEW7FqtwIqYCw1ceA31QBG9YckYxvURkeukotwI4yQWXiHJfQ+37UsCGy
+         8V4kMsOuv96o9t9+PC9NRXWwVxEiJsPnFY4f+Z3ZNxQ95MpzBJEXdeId5GnQhh3GI5
+         vE3It7kegVzCe2EAyPGUPpF9QPYjMtbfFlDwuEZiTscf1a7drJS+a4kAaZaMkPP0z8
+         gq9djqm7WPoAQ==
+Date:   Sun, 9 Oct 2022 13:33:51 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jagath Jog J <jagathjog1996@gmail.com>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/5] dt-bindings: iio: Add KX022A accelerometer
-Message-ID: <20221009132711.16055354@jic23-huawei>
-In-Reply-To: <7bbc0c04-04a8-f2c6-0436-3be0fc1013c7@gmail.com>
+Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Message-ID: <20221009133351.6ff4894b@jic23-huawei>
+In-Reply-To: <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
 References: <cover.1665066397.git.mazziesaccount@gmail.com>
-        <80fa42040f385eb47f4f3c71b9b02f643a643e38.1665066397.git.mazziesaccount@gmail.com>
-        <fc7c064f-074a-e66a-07b3-541f2ad56804@linaro.org>
-        <7bbc0c04-04a8-f2c6-0436-3be0fc1013c7@gmail.com>
+        <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
+        <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,65 +64,54 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 6 Oct 2022 18:32:22 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Thu, 6 Oct 2022 21:32:11 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Hi dee Ho Krzysztof,
-> 
-> On 10/6/22 18:23, Krzysztof Kozlowski wrote:
-> > On 06/10/2022 16:37, Matti Vaittinen wrote:  
-> >> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The sensor features
-> >> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
-> >> tap/motion detection, wake-up & back-to-sleep events, four acceleration
-> >> ranges (2, 4, 8 and 16g) and probably some other cool features.
-> >>  
+> On Thu, Oct 06, 2022 at 05:38:14PM +0300, Matti Vaittinen wrote:
+> > KX022A is a 3-axis accelerometer from ROHM/Kionix. The senosr features
+> > include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+> > tap/motion detection, wake-up & back-to-sleep events, four acceleration
+> > ranges (2, 4, 8 and 16g) and probably some other cool features.
 > > 
-> > Thank you for your patch. There is something to discuss/improve.
-> >   
-> >> +
-> >> +properties:
-> >> +  compatible:
-> >> +    const: kionix,kx022a
-> >> +
-> >> +  reg:
-> >> +    maxItems: 1
-> >> +
-> >> +  interrupts:
-> >> +    minItems: 1
-> >> +    maxItems: 2
-> >> +
-> >> +  interrupt-names:
-> >> +    minItems: 1
-> >> +    maxItems: 2
-> >> +    items:
-> >> +      enum:
-> >> +        - INT1
-> >> +        - INT2  
+> > Add support for the basic accelerometer features such as getting the
+> > acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+> > using the WMI IRQ).
 > > 
-> > This allows any order, which I assume was your intention.  
+> > Important things to be added include the double-tap, motion
+> > detection and wake-up as well as the runtime power management.
+> > 
+> > NOTE: Filling-up the hardware FIFO should be avoided. During my testing
+> > I noticed that filling up the hardware FIFO might mess-up the sample
+> > count. My sensor ended up in a state where the amount of data in FIFO was
+> > reported to be 0xff bytes, which equals to 42,5 samples. Specification
+> > says the FIFO can hold a maximum of 41 samples in HiRes mode. Also, at
+> > least once the FIFO was stuck in a state where reading data from
+> > hardware FIFO did not decrease the amount of data reported to be in the
+> > FIFO - eg. FIFO was "stuck". The code has now an error count and 10
+> > reads with invalid FIFO data count will cause the fifo contents to be
+> > dropped.  
 > 
-> Yes. I don't see real need to restrict ordering - besides, with my 
-> yaml/schema skills it'd took eternity to find corrct example(s) ;)
-> 
-> My intention is that the user can give either one of these - or both. 
-> Order needs naturally to match the order of IRQs - but this we can't know.
-> 
-> > However maybe
-> > at least fix it a bit like:
-> > minItems: 1
-> > items:
-> >    - enum: [ int1, int2]
-> >    - const: int2  
-> 
-> If you say so XD
-> I can fix this for v3 :)
-If my limited understanding is correct, one advantage of this restriction
-is that we can't have
 
-"INT1", "INT1"
-though that may be prevented elsewhere...
+> ...
+...
 
-There is no loss of useful flexibility in how Krzysztof suggested doing it
-so looks like a good suggestion to me.
+
+
+> ...
+> 
+> > +module_param(g_kx022a_use_buffer, bool, 0);
+> > +MODULE_PARM_DESC(g_kx022a_use_buffer,
+> > +		 "Buffer samples. Use at own risk. Fifo must not overflow");  
+> 
+> Why?! We usually do not allow module parameters in the new code.
+> 
+
+Badly broken hardware - was my suggestion.  Alternatives if there are usecases
+that need to use the fifo, but it can wedge hard in a fashion that is impossible
+to prevent from the driver?  My gut feeling is still drop the support entirely
+with a strong comment in the code that the hardware is broken in a fashion we don't
+know how to work around.
 
 Jonathan
+
+

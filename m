@@ -1,52 +1,52 @@
 Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 584D35F981E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 08:13:31 +0200 (CEST)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id 8EB135F982E
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 08:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbiJJGM4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 02:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38004 "EHLO
+        id S231317AbiJJGPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 02:15:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231218AbiJJGMz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 02:12:55 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4504598D;
-        Sun,  9 Oct 2022 23:12:54 -0700 (PDT)
+        with ESMTP id S231303AbiJJGPc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 02:15:32 -0400
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7DF46216;
+        Sun,  9 Oct 2022 23:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665382374; x=1696918374;
+  t=1665382531; x=1696918531;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=H643CzjwglCD2im/BP3mUFP7xikWejGDiUrJCN9KSGM=;
-  b=UICwrgI9KMC7XsFLPs4rv4XatylgUPvcfJsIHpiEOYNaVdo+2V9BUodl
-   yVDVPPJiAPXKUPwdb8S0csl4bc5Er+prujU1jBSN9D04VUVeAjBiMncrs
-   JeacW6olu+40/yTZyr4a/YZAR0b0f5ruFt4a1fraLHqQLc8Zas73qAvQa
-   H6cfQ34DhqPPBA5ifGIdadsHzUa3OOJurboeMjVgJA3Q4UebJhVZfAZ6N
-   r2jOqR7orWzG01orb4TjF+Rhr5bEI7CSU6tYKHfRWUXWnyQ+yb/F2QW56
-   6z0uY/A5I07dknwzm8s7UzS0K80BBst/mobxVMmdd2s3JLhDxAQF8CMrH
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="301760176"
+  bh=hdadVB/NuyPjliUxW9jJSkSFml/0KgUKfluek+C+iNI=;
+  b=T9Jf6iBKRHmN80Z8a4vfNVCU1j2aVuO7rKY/HggX3dC0Ja4qXHzgWquo
+   gnB1NOtKTk+JUBnW8WkYqgUwmfRKTSNFSQAmpDMnO2qGhhSIehCe0W1xp
+   zYKPZlI6791W9i4mCWEnYf5iC7no36ck6RwmsifQwWsI8J8M8yv4h8rWN
+   7ckP57e+FtaH64vtZO1fHta3+CsCPMmv9HELQoaaKY2gM1zcVXt6oN6OZ
+   Yd0ix1vyHavAqzNEaGvk0yirY//eIGjk+XaE7wOU2Jm2tiqqKOO6UXi2K
+   wFXiA7IUuGkfcRJ/LdPuOAuqH8bhn6hLYCYvnfacytkgsC5faO+9OYMRa
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="366115181"
 X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="301760176"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2022 23:12:54 -0700
+   d="scan'208";a="366115181"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2022 23:15:31 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="800971680"
+X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="694513968"
 X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="800971680"
+   d="scan'208";a="694513968"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga005.jf.intel.com with ESMTP; 09 Oct 2022 23:12:51 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 09 Oct 2022 23:15:28 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ohm1x-004kBY-1y;
-        Mon, 10 Oct 2022 09:12:49 +0300
-Date:   Mon, 10 Oct 2022 09:12:49 +0300
+        id 1ohm4U-004kEG-2G;
+        Mon, 10 Oct 2022 09:15:26 +0300
+Date:   Mon, 10 Oct 2022 09:15:26 +0300
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -55,19 +55,20 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/5] regulator: Add devm helpers for get and enable
-Message-ID: <Y0O34dRPc0ri74b3@smile.fi.intel.com>
+Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Message-ID: <Y0O4fiQQX0M317h/@smile.fi.intel.com>
 References: <cover.1665066397.git.mazziesaccount@gmail.com>
- <fa667d6870976a2cf2d60f06e262982872349d74.1665066397.git.mazziesaccount@gmail.com>
- <Yz7/o1q7p8NmGKMe@smile.fi.intel.com>
- <c25ce92b-ea93-1bd8-11ba-4812b040724d@gmail.com>
+ <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
+ <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
+ <20221009133351.6ff4894b@jic23-huawei>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c25ce92b-ea93-1bd8-11ba-4812b040724d@gmail.com>
+In-Reply-To: <20221009133351.6ff4894b@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,38 +76,28 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 10, 2022 at 07:13:23AM +0300, Matti Vaittinen wrote:
-> On 10/6/22 19:17, Andy Shevchenko wrote:
-> > On Thu, Oct 06, 2022 at 05:36:52PM +0300, Matti Vaittinen wrote:
-> > > A few regulator consumer drivers seem to be just getting a regulator,
-> > > enabling it and registering a devm-action to disable the regulator at
-> > > the driver detach and then forget about it.
-> > > 
-> > > We can simplify this a bit by adding a devm-helper for this pattern.
-> > > Add devm_regulator_get_enable() and devm_regulator_get_enable_optional()
+On Sun, Oct 09, 2022 at 01:33:51PM +0100, Jonathan Cameron wrote:
+> On Thu, 6 Oct 2022 21:32:11 +0300
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> > On Thu, Oct 06, 2022 at 05:38:14PM +0300, Matti Vaittinen wrote:
 
 ...
 
-> > > (cherry picked from commit b6058e052b842a19c8bb639798d8692cd0e7589f)
+> > > +module_param(g_kx022a_use_buffer, bool, 0);
+> > > +MODULE_PARM_DESC(g_kx022a_use_buffer,
+> > > +		 "Buffer samples. Use at own risk. Fifo must not overflow");  
 > > 
-> > Not sure:
-> >   - why this is in the commit message
-> >   - what it points to, since
-> > $ git show b6058e052b842a19c8bb639798d8692cd0e7589f
-> >   fatal: bad object b6058e052b842a19c8bb639798d8692cd0e7589f
-> > 
-> > > Already in Mark's regulator tree. Not to be merged. Included just for
-> > > the sake of the completeness. Will be dropped when series is rebased on
-> > > top of the 6.1-rc1
-> > 
-> > Ah, I see, but does it mean the commit has been rebased or you used wrong SHA?
+> > Why?! We usually do not allow module parameters in the new code.
 > 
-> I did probably cherry-pick this from my local development branch and not
-> from Mark's tree. Sorry for the confusion. I thought people would ignore
-> these first two patches when reviewing as was requested in cover-letter.
+> Badly broken hardware - was my suggestion.  Alternatives if there are usecases
+> that need to use the fifo, but it can wedge hard in a fashion that is impossible
+> to prevent from the driver?  My gut feeling is still drop the support entirely
+> with a strong comment in the code that the hardware is broken in a fashion we don't
+> know how to work around.
 
-The solution as pointed out by LKP and which will removes the need of the noise
-in email and a lot of confusions is to use --base parameter to the patch(es).
+I also would drop this from upstream and if anybody curious, provide some kind
+of GitHub gist for that. Also it needs some communication with a vendor to
+clarify the things.
 
 -- 
 With Best Regards,

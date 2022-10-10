@@ -2,105 +2,162 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EB135F982E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 08:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA8A5F98E7
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 09:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbiJJGPd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 02:15:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46192 "EHLO
+        id S230285AbiJJHCb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 03:02:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231303AbiJJGPc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 02:15:32 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7DF46216;
-        Sun,  9 Oct 2022 23:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665382531; x=1696918531;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hdadVB/NuyPjliUxW9jJSkSFml/0KgUKfluek+C+iNI=;
-  b=T9Jf6iBKRHmN80Z8a4vfNVCU1j2aVuO7rKY/HggX3dC0Ja4qXHzgWquo
-   gnB1NOtKTk+JUBnW8WkYqgUwmfRKTSNFSQAmpDMnO2qGhhSIehCe0W1xp
-   zYKPZlI6791W9i4mCWEnYf5iC7no36ck6RwmsifQwWsI8J8M8yv4h8rWN
-   7ckP57e+FtaH64vtZO1fHta3+CsCPMmv9HELQoaaKY2gM1zcVXt6oN6OZ
-   Yd0ix1vyHavAqzNEaGvk0yirY//eIGjk+XaE7wOU2Jm2tiqqKOO6UXi2K
-   wFXiA7IUuGkfcRJ/LdPuOAuqH8bhn6hLYCYvnfacytkgsC5faO+9OYMRa
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="366115181"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="366115181"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2022 23:15:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="694513968"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="694513968"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga004.fm.intel.com with ESMTP; 09 Oct 2022 23:15:28 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ohm4U-004kEG-2G;
-        Mon, 10 Oct 2022 09:15:26 +0300
-Date:   Mon, 10 Oct 2022 09:15:26 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        with ESMTP id S229925AbiJJHC3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 03:02:29 -0400
+Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4266C3B713
+        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:02:28 -0700 (PDT)
+Received: by mail-qk1-x72b.google.com with SMTP id v17so6196026qkv.5
+        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3yT0ctdZydc+N40TPk8vYFwq0X5hY6hPQZEk2eDVw70=;
+        b=hPG3MIllA4/bctpkcrIFqmmy2fPX7ndGoe/454jMNR3Jkb9XF5kEprHDarMWao/enM
+         OPtKMe8HpjiYqarFWAmEP/Zwcff2Y1ekewl8XmC/dvF+faQ7JqA5dAx2TmlH9XDVyoO4
+         1ug4utdGLrgVMfOcRKxDJfnJ0G7oDe2U/YIqiRLOTG+c9quEHL8ym29ACJfoEaHJDVJV
+         E91NW7r5AKWoj1eUOPaiqdJV25W6LiiDpNGGA9/AO+Lm557bxs/OTXEH28992KxMYh4f
+         cQAYihaqIuuwsjZBNjqPHKk9Jo2LiCZ9U/xSmtKzT/r4WW4+o5rEJHn7iQkng8y78J0q
+         r2Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3yT0ctdZydc+N40TPk8vYFwq0X5hY6hPQZEk2eDVw70=;
+        b=unvvJEBrwV8PqPRdWC+j0m+phCA+daqj2G5og3fRPebNF6cPhG5/dRKuxVfa9KrlRr
+         wQm78yoQzjrotxQ0nm9YvuesuLpGqzdxvCsih7f7IYzBUQSK/E0zfxN957cTV7kR8p1l
+         OinU2yq668wc+XN2vYg7LflFBIUwLp9gm/zYfuLOqFPRxLj8RG+T/qNeBnXtqS9nYhdv
+         /r6V9KHfmwawffom5CaVGkAV69HDg3MTmLZVR9pEggJDOC+8auLrKzkUvbp8zaYgfW3X
+         9Kjw/h3UlW+9ocYMwZEik6/i9BGHVUd6ppbAALynmtYKwn+IrhNHRaYDfRRi5+Jxa3SN
+         GVCw==
+X-Gm-Message-State: ACrzQf0ilUGKQxkRxgYuhT+A+PJuWByvvTPU0XXbuIqMkLTsJh/NBzGx
+        vS51dB/5UPqmt5+60gt+eik=
+X-Google-Smtp-Source: AMsMyM7KfTRmJnXydAYbJgREbLJNimSTnmeCiAGcC+LyfonBwqydRnZBDe0+CQJF9ZRflMHJzX0Vuw==
+X-Received: by 2002:a05:620a:318a:b0:6ce:732a:f92 with SMTP id bi10-20020a05620a318a00b006ce732a0f92mr11728995qkb.347.1665385347394;
+        Mon, 10 Oct 2022 00:02:27 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id i13-20020a05620a248d00b006b5e296452csm9649652qkn.54.2022.10.10.00.02.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Oct 2022 00:02:26 -0700 (PDT)
+Message-ID: <73e43d55f76216d3cb720d687d1510e626997f0f.camel@gmail.com>
+Subject: Re: [PATCH v2 13/16] iio: core: introduce
+ iio_device_{claim|release}_buffer_mode() APIs
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
+        linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Heiko Stuebner <heiko@sntech.de>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-Message-ID: <Y0O4fiQQX0M317h/@smile.fi.intel.com>
-References: <cover.1665066397.git.mazziesaccount@gmail.com>
- <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
- <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
- <20221009133351.6ff4894b@jic23-huawei>
+        Jyoti Bhayana <jbhayana@google.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Cixi Geng <cixi.geng1@unisoc.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Florian Boor <florian.boor@kernelconcepts.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Orson Zhai <orsonzhai@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Kevin Hilman <khilman@baylibre.com>
+Date:   Mon, 10 Oct 2022 09:03:44 +0200
+In-Reply-To: <20221009124120.39a43103@jic23-huawei>
+References: <20221004134909.1692021-1-nuno.sa@analog.com>
+         <20221004134909.1692021-14-nuno.sa@analog.com>
+         <CAHp75VfmMWonUV1jahbAmBZJixfdxA=ZAm-NNt7XiO+RDbupyg@mail.gmail.com>
+         <609d7e50d76a2a2aa2bbaddfed8a846c91854065.camel@gmail.com>
+         <20221009124120.39a43103@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221009133351.6ff4894b@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 09, 2022 at 01:33:51PM +0100, Jonathan Cameron wrote:
-> On Thu, 6 Oct 2022 21:32:11 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > On Thu, Oct 06, 2022 at 05:38:14PM +0300, Matti Vaittinen wrote:
+On Sun, 2022-10-09 at 12:41 +0100, Jonathan Cameron wrote:
+> On Wed, 05 Oct 2022 10:37:39 +0200
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Tue, 2022-10-04 at 17:08 +0300, Andy Shevchenko wrote:
+> > > On Tue, Oct 4, 2022 at 4:49 PM Nuno S=C3=A1 <nuno.sa@analog.com>
+> > > wrote:=C2=A0=20
+> > > >=20
+> > > > These APIs are analogous to iio_device_claim_direct_mode() and
+> > > > iio_device_release_direct_mode() but, as the name suggests,
+> > > > with
+> > > > the
+> > > > logic flipped. While this looks odd enough, it will have at
+> > > > least
+> > > > two
+> > > > users (in following changes) and it will be important to move
+> > > > the
+> > > > iio
+> > > > mlock to the private struct.=C2=A0=20
+> > >=20
+> > > ...
+> > > =C2=A0=20
+> > > > +int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
+> > > > +{
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mutex_lock(&indio_dev->mlock)=
+;
+> > > > +
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (iio_buffer_enabled(indio_=
+dev))=C2=A0=20
+> > >=20
+> > > Do you need to annotate these two APIs to make sparse happy about
+> > > locking balance?
+> > >=20
+> > > (Try to run `make W=3D1 C=3D1 ...` with your patches and look if any
+> > > new
+> > > warnings appear.)=C2=A0=20
+> >=20
+> > make W=3D1 C=3D1 drivers/iio/industrialio-core.o
+> > #=C2=A0 UPD=C2=A0=C2=A0=C2=A0=C2=A0 include/config/kernel.release
+>=20
+> ...
+>=20
+> > drivers/iio/industrialio-core.c:2100: warning: expecting prototype
+> > for
+> > iio_device_claim_buffered_mode(). Prototype was for
+> > iio_device_claim_buffer_mode() instead
+>=20
+> That one wants fixing as this patch introduces it.
+>=20
 
-...
+Bah, That's why another pair of eyes is useful... I looked for that
+warning without seeing what it was complaining about. Now, I could
+finally see it :)
 
-> > > +module_param(g_kx022a_use_buffer, bool, 0);
-> > > +MODULE_PARM_DESC(g_kx022a_use_buffer,
-> > > +		 "Buffer samples. Use at own risk. Fifo must not overflow");  
-> > 
-> > Why?! We usually do not allow module parameters in the new code.
-> 
-> Badly broken hardware - was my suggestion.  Alternatives if there are usecases
-> that need to use the fifo, but it can wedge hard in a fashion that is impossible
-> to prevent from the driver?  My gut feeling is still drop the support entirely
-> with a strong comment in the code that the hardware is broken in a fashion we don't
-> know how to work around.
-
-I also would drop this from upstream and if anybody curious, provide some kind
-of GitHub gist for that. Also it needs some communication with a vendor to
-clarify the things.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+- Nuno S=C3=A1
+>=20
 

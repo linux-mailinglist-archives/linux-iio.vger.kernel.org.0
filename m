@@ -2,251 +2,123 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEFBD5F8C8A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Oct 2022 19:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD0D5F9756
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 06:13:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbiJIRhk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 9 Oct 2022 13:37:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42102 "EHLO
+        id S230435AbiJJEN3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 00:13:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbiJIRhi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 9 Oct 2022 13:37:38 -0400
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE03A29C90;
-        Sun,  9 Oct 2022 10:37:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665337056; x=1696873056;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=/bS9EuXzTvdWITntg7bxDrCvG53j3Owo6te+hpo9OzE=;
-  b=dEs+l2KgdO2/44/JKWXWi+0LrEBfd4FFVcn4OmgPTV797AmjCfWfvxWK
-   ONOF0cWxZ6ia5O7mrllN4Kgb7eak/W7UL5/3deYnMKAA9m3uzvQ9vVkSO
-   FnJBI89oXhog5TITNqAEbJfeO6EMYbXR/3w3RVdMe3F3XN5yLG9xBZLl8
-   8r1lcRPRN0zkSlcbS3zhGmKVaYIBtg7VrwLJhZEmEsupmxxvsFTl2cC6N
-   ycTct4AlX20IA0N966TRfXjSAtbMpMMsCqglTH54+dnQ1Z0FshUCGU/rF
-   kf2MDHH0jUpItHBLLjgZfOF0ZyD0balq6NeBadTTPvL/YlB0VD1spbAHM
-   g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="304067496"
-X-IronPort-AV: E=Sophos;i="5.95,172,1661842800"; 
-   d="scan'208";a="304067496"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2022 10:37:36 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10495"; a="628040116"
-X-IronPort-AV: E=Sophos;i="5.95,172,1661842800"; 
-   d="scan'208";a="628040116"
-Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.55])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2022 10:37:34 -0700
-From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rajat.khandelwal@intel.com,
-        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-Subject: [PATCH v5] iio: pressure: mpl115: Implementing low power mode by shutdown gpio
-Date:   Mon, 10 Oct 2022 23:07:20 +0530
-Message-Id: <20221010173720.568916-1-rajat.khandelwal@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230040AbiJJEN1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 00:13:27 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A041350055;
+        Sun,  9 Oct 2022 21:13:26 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id m14so11901625ljg.2;
+        Sun, 09 Oct 2022 21:13:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vfmnCF2JkZ212xJuEQBcv/tw0uOJJMilOQ3nQbPwxvU=;
+        b=kdClPiJ/QFimo9CaXWkUw/AJJsojYvRQqSokGBMuvPNppDfZnoHV0cu78Aa48JG1mI
+         9LKqf0UF6T5d+9WiGhVBXGB/6Um8ZKdM/kYE3zXfvdf3Shpvg6fJOLPJUDCkHxWgM4D4
+         jR4RrqNDKzTqc9ckgaLNW1aHzg8xuJSjPrkW8xjvyXAWKsVcZa0xYlJb//6IQAADp1pg
+         8tYI83PH9SXy1lgktSCEZ23cmWux7AgjTBEUTYNJ+GS6FI38bIOZcjKaqeJKq2rtEtjK
+         jygzzGrjLH1yKAdyldNlB0P4iD3z2HOySVkR1y/X5RYBoVxn5hS2oh2zEf4aPZpNXxse
+         79Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vfmnCF2JkZ212xJuEQBcv/tw0uOJJMilOQ3nQbPwxvU=;
+        b=fKjmPDTwIcYTYcDHPLMuUqVdad7avcuEBacY9AfHX8pNG+4jhCIkevDJWI21nv/ggg
+         Xj7EWBsjg5rX9HggN30kPxl/4p3JLZnfsET+b85FrX9gJmsziHP26PuH0rk1svfUQwTl
+         JdU2Ne8nRJC4OLA1hPtL2qPXczEwFZjjs3wxpK1n4RX7fwHKEHjaXDHzUhCBMsARYFUj
+         ng8EhpQq/3pbU7CUjdrclyc6RAMwlwafPw2jKFyR+PVXzBrA04bBRyX3e2acswqIDxxO
+         2z/sa5a37pQrCPjGX1a02nwgyvMDKeVJ1BME9TxQGbVZyGLHPexqc+LbaJqkHuXK3nf3
+         YR9g==
+X-Gm-Message-State: ACrzQf3MhaOeO6tNY/i6+0Tbdoq5lS3EqdKlbLFbY4IQuqO6VJI8zGyW
+        e2ch9mIGFeGiQaQqKAA7kXgFj0Mc1uI=
+X-Google-Smtp-Source: AMsMyM7ZmXHBUd2X3Kq7Q1+PaPvekcA0qVHbEr4eDwDTWuWCAZLWoIgP2aB5UUzLuHJ8C8ia4m8Tqg==
+X-Received: by 2002:a2e:9b81:0:b0:26e:190:378c with SMTP id z1-20020a2e9b81000000b0026e0190378cmr5812957lji.66.1665375204525;
+        Sun, 09 Oct 2022 21:13:24 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
+        by smtp.gmail.com with ESMTPSA id s5-20020a2e1505000000b0026548b59479sm1435233ljd.64.2022.10.09.21.13.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Oct 2022 21:13:24 -0700 (PDT)
+Message-ID: <c25ce92b-ea93-1bd8-11ba-4812b040724d@gmail.com>
+Date:   Mon, 10 Oct 2022 07:13:23 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [RFC PATCH v2 1/5] regulator: Add devm helpers for get and enable
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1665066397.git.mazziesaccount@gmail.com>
+ <fa667d6870976a2cf2d60f06e262982872349d74.1665066397.git.mazziesaccount@gmail.com>
+ <Yz7/o1q7p8NmGKMe@smile.fi.intel.com>
+Content-Language: en-US
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <Yz7/o1q7p8NmGKMe@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-MPL115 supports shutdown gpio which can be used to set the state
-to low power mode. Power from all internal circuits and
-registers is removed. This is done by pulling the SHDN pin to low.
-This patch enables runtime PM on MPL115 to increase power savings.
+Hi Andy,
 
-According to spec., a wakeup time period of ~5 ms exists between
-waking up and actually communicating with the device. This is
-implemented using sleep delay.
+On 10/6/22 19:17, Andy Shevchenko wrote:
+> On Thu, Oct 06, 2022 at 05:36:52PM +0300, Matti Vaittinen wrote:
+>> A few regulator consumer drivers seem to be just getting a regulator,
+>> enabling it and registering a devm-action to disable the regulator at
+>> the driver detach and then forget about it.
+>>
+>> We can simplify this a bit by adding a devm-helper for this pattern.
+>> Add devm_regulator_get_enable() and devm_regulator_get_enable_optional()
+> 
+> ...
+> 
+>> (cherry picked from commit b6058e052b842a19c8bb639798d8692cd0e7589f)
+> 
+> Not sure:
+>   - why this is in the commit message
+>   - what it points to, since
+> $ git show b6058e052b842a19c8bb639798d8692cd0e7589f
+>   fatal: bad object b6058e052b842a19c8bb639798d8692cd0e7589f
+> 
+>> Already in Mark's regulator tree. Not to be merged. Included just for
+>> the sake of the completeness. Will be dropped when series is rebased on
+>> top of the 6.1-rc1
+> 
+> Ah, I see, but does it mean the commit has been rebased or you used wrong SHA?
 
-Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
----
+I did probably cherry-pick this from my local development branch and not 
+from Mark's tree. Sorry for the confusion. I thought people would ignore 
+these first two patches when reviewing as was requested in cover-letter.
 
-v5:
-1. Removing build error by exporting EXPORT_NS_RUNTIME_DEV_PM_OPS
-2. Using runtime PM for low power mode and not forcing shutdown pin
-3. Changing patch comment
-4. Increasing autosuspend timeout to 2 sec to make the driver more
-responsive to user
-
- drivers/iio/pressure/mpl115.c     | 61 ++++++++++++++++++++++++++++++-
- drivers/iio/pressure/mpl115.h     |  5 +++
- drivers/iio/pressure/mpl115_i2c.c |  1 +
- drivers/iio/pressure/mpl115_spi.c |  1 +
- 4 files changed, 67 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/pressure/mpl115.c b/drivers/iio/pressure/mpl115.c
-index 5bf5b9abe6f1..ec7527161844 100644
---- a/drivers/iio/pressure/mpl115.c
-+++ b/drivers/iio/pressure/mpl115.c
-@@ -4,12 +4,13 @@
-  *
-  * Copyright (c) 2014 Peter Meerwald <pmeerw@pmeerw.net>
-  *
-- * TODO: shutdown pin
-+ * TODO: synchronization with system suspend
-  */
- 
- #include <linux/module.h>
- #include <linux/iio/iio.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- 
- #include "mpl115.h"
- 
-@@ -27,6 +28,7 @@ struct mpl115_data {
- 	s16 a0;
- 	s16 b1, b2;
- 	s16 c12;
-+	struct gpio_desc *shutdown;
- 	const struct mpl115_ops *ops;
- };
- 
-@@ -102,16 +104,24 @@ static int mpl115_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_PROCESSED:
-+		pm_runtime_get_sync(data->dev);
- 		ret = mpl115_comp_pressure(data, val, val2);
- 		if (ret < 0)
- 			return ret;
-+		pm_runtime_mark_last_busy(data->dev);
-+		pm_runtime_put_autosuspend(data->dev);
-+
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_RAW:
-+		pm_runtime_get_sync(data->dev);
- 		/* temperature -5.35 C / LSB, 472 LSB is 25 C */
- 		ret = mpl115_read_temp(data);
- 		if (ret < 0)
- 			return ret;
-+		pm_runtime_mark_last_busy(data->dev);
-+		pm_runtime_put_autosuspend(data->dev);
- 		*val = ret >> 6;
-+
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
- 		*val = -605;
-@@ -168,6 +178,8 @@ int mpl115_probe(struct device *dev, const char *name,
- 	if (ret)
- 		return ret;
- 
-+	dev_set_drvdata(dev, indio_dev);
-+
- 	ret = data->ops->read(data->dev, MPL115_A0);
- 	if (ret < 0)
- 		return ret;
-@@ -185,10 +193,58 @@ int mpl115_probe(struct device *dev, const char *name,
- 		return ret;
- 	data->c12 = ret;
- 
-+	data->shutdown = devm_gpiod_get_optional(dev, "shutdown",
-+						 GPIOD_OUT_LOW);
-+	if (IS_ERR(data->shutdown))
-+		return dev_err_probe(dev, PTR_ERR(data->shutdown),
-+				     "cannot get shutdown gpio\n");
-+
-+	if (data->shutdown) {
-+		/* Enable runtime PM */
-+		pm_runtime_get_noresume(dev);
-+		pm_runtime_set_active(dev);
-+		pm_runtime_enable(dev);
-+
-+		/*
-+		 * As the device takes 3 ms to come up with a fresh
-+		 * reading after power-on and 5 ms to actually power-on,
-+		 * do not shut it down unnecessarily. Set autosuspend to
-+		 * 2000 ms.
-+		 */
-+		pm_runtime_set_autosuspend_delay(dev, 2000);
-+		pm_runtime_use_autosuspend(dev);
-+		pm_runtime_put(dev);
-+
-+		dev_dbg(dev, "low-power mode enabled");
-+	} else
-+		dev_dbg(dev, "low-power mode disabled");
-+
- 	return devm_iio_device_register(dev, indio_dev);
- }
- EXPORT_SYMBOL_NS_GPL(mpl115_probe, IIO_MPL115);
- 
-+static int mpl115_runtime_suspend(struct device *dev)
-+{
-+	struct mpl115_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	gpiod_set_value(data->shutdown, 1);
-+
-+	return 0;
-+}
-+
-+static int mpl115_runtime_resume(struct device *dev)
-+{
-+	struct mpl115_data *data = iio_priv(dev_get_drvdata(dev));
-+
-+	gpiod_set_value(data->shutdown, 0);
-+	usleep_range(5000, 6000);
-+
-+	return 0;
-+}
-+
-+EXPORT_NS_RUNTIME_DEV_PM_OPS(mpl115_dev_pm_ops, mpl115_runtime_suspend,
-+			  mpl115_runtime_resume, NULL, IIO_MPL115);
-+
- MODULE_AUTHOR("Peter Meerwald <pmeerw@pmeerw.net>");
- MODULE_DESCRIPTION("Freescale MPL115 pressure/temperature driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/iio/pressure/mpl115.h b/drivers/iio/pressure/mpl115.h
-index 57d55eb8e661..78a0068a17bb 100644
---- a/drivers/iio/pressure/mpl115.h
-+++ b/drivers/iio/pressure/mpl115.h
-@@ -6,6 +6,8 @@
-  * Copyright (c) 2016 Akinobu Mita <akinobu.mita@gmail.com>
-  */
- 
-+#include <linux/pm_runtime.h>
-+
- #ifndef _MPL115_H_
- #define _MPL115_H_
- 
-@@ -18,4 +20,7 @@ struct mpl115_ops {
- int mpl115_probe(struct device *dev, const char *name,
- 			const struct mpl115_ops *ops);
- 
-+/*PM ops */
-+extern const struct dev_pm_ops mpl115_dev_pm_ops;
-+
- #endif
-diff --git a/drivers/iio/pressure/mpl115_i2c.c b/drivers/iio/pressure/mpl115_i2c.c
-index 099ab1c6832c..555bda1146fb 100644
---- a/drivers/iio/pressure/mpl115_i2c.c
-+++ b/drivers/iio/pressure/mpl115_i2c.c
-@@ -53,6 +53,7 @@ MODULE_DEVICE_TABLE(i2c, mpl115_i2c_id);
- static struct i2c_driver mpl115_i2c_driver = {
- 	.driver = {
- 		.name	= "mpl115",
-+		.pm = pm_ptr(&mpl115_dev_pm_ops),
- 	},
- 	.probe = mpl115_i2c_probe,
- 	.id_table = mpl115_i2c_id,
-diff --git a/drivers/iio/pressure/mpl115_spi.c b/drivers/iio/pressure/mpl115_spi.c
-index 7feec87e2704..58d218fd90dc 100644
---- a/drivers/iio/pressure/mpl115_spi.c
-+++ b/drivers/iio/pressure/mpl115_spi.c
-@@ -92,6 +92,7 @@ MODULE_DEVICE_TABLE(spi, mpl115_spi_ids);
- static struct spi_driver mpl115_spi_driver = {
- 	.driver = {
- 		.name   = "mpl115",
-+		.pm = pm_ptr(&mpl115_dev_pm_ops),
- 	},
- 	.probe = mpl115_spi_probe,
- 	.id_table = mpl115_spi_ids,
 -- 
-2.34.1
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

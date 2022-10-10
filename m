@@ -2,76 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5B765F9BCF
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 11:25:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B05C5F9BD7
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 11:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230082AbiJJJZI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 05:25:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45694 "EHLO
+        id S231697AbiJJJ2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 05:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231630AbiJJJZB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 05:25:01 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1170233;
-        Mon, 10 Oct 2022 02:24:57 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id m19so14353695lfq.9;
-        Mon, 10 Oct 2022 02:24:57 -0700 (PDT)
+        with ESMTP id S231461AbiJJJ2b (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 05:28:31 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBEB5D0C0;
+        Mon, 10 Oct 2022 02:28:29 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id b2so15728591lfp.6;
+        Mon, 10 Oct 2022 02:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l/DdtKBK8Ea5+VN0mXaZrTh/hBVD5+pyM/7jGTjhoig=;
-        b=HujBLzhj+VC8EoLwH8A8tX091NOHhdMVcNKd8PQ3FEfNST49QXU6o816l3ZbldRsF/
-         4DUtXnpznZMN4Ay4Xv3c2NL0czEl/SGVF8LzCMAAw9FCkb6zVcdsZST+baFCQ/lq3QTb
-         02JTQcxNYYglc5BDEs/WK8TgBreC0d6PSq3A2gXSYmAkgmrsNx9JJl7iiXvpJz/X540C
-         frvaxkZkjwkwAV1M8cYSir4+hkeY53apjgd919ctUnLWdh/wqpsqiakMz7tP7h/KSfUb
-         AdQAkLKVbNITv2tgyw5mT/252EXiyS2n5ETCjX0TXyORFG3ZUrHlzu18ivWoCAOGJndE
-         OBpA==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kVIICcvhmRp4KVa6Ys8ayGQsI80PJHFAYPVcNOMoYo8=;
+        b=czWmSnFPcPAt6+MrMBGjWrmSmUx0lkCN8xCMr/11Wm0o1dz1bUIAvtEPgUBrPaUBy9
+         YIh21O5Y7kvpil9+ii3paGnlvUY/bkrv+DAja+TvZixNvo/q8Zo0NBVJIfmTZMrAJFzY
+         4MFxhxQnsP74Bnra2xZHyGSv18wViAtANP6G/ZfiignfDFTEASSjLt3QraphVGEJH65b
+         V6EmSCJhkUaZvpHxxDpgUaz9O02nNHpCkhUb3jvR75zrArFSsU/IBAhXlRTuPKiW6Sx/
+         KH1O4hcQYd2HbajX3K87W8hWfwU6T5XBNCdr823yepAXH/tggMZXYkWhbHt5xbvMMXJB
+         EV0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l/DdtKBK8Ea5+VN0mXaZrTh/hBVD5+pyM/7jGTjhoig=;
-        b=60+EEloKznVsFsVj+WgI0JuAAYb4WMh2PvUZbsj8LsOZo01VPZlHo+Z+Vozis7a9Q4
-         Xj0JELHr2VLrFvSDNrKFC6sjJLXrjv2n+6mKmgN1fa4/ZyFXVJOKr3PktXI9TmlvbNlv
-         M9LefFTp8l8pnwgRmoTZABm3UaJNVkoyr/JyyYPNCtBfBixQR0s/Q2ms54sxKL1GJpRi
-         zgOiKhwglGPUQAPaAaKft6QP5lE0DTJLthCI9sRR829QOj/j8BsvF85Ptrv5iPhROlX0
-         QVMScwRG/jeP/GgjvdVKlHHE8fEj7o3W5V1u3S4N8M1C/f6hQ2hm8viUrea2sEoWg5HX
-         1nHA==
-X-Gm-Message-State: ACrzQf1P5vC80RMHXAo28UhOIY388OIp80qRLzwZ27BE7kR2QroljFMO
-        nR/MECiXR+JjRI1kr01MvhM=
-X-Google-Smtp-Source: AMsMyM7hXXEfiGXMx7nTRbZCTQ2ahfruVzYCndEffrYqy0DrZ2s0U3iE4kjBY3GMh+MaFmbKgIFXoA==
-X-Received: by 2002:a05:6512:557:b0:4a2:7765:3324 with SMTP id h23-20020a056512055700b004a277653324mr6895777lfl.156.1665393896022;
-        Mon, 10 Oct 2022 02:24:56 -0700 (PDT)
+        bh=kVIICcvhmRp4KVa6Ys8ayGQsI80PJHFAYPVcNOMoYo8=;
+        b=Omy1GQ48jXjKim9b9giI92buyL6a+7QEAdwmCHhHPoObDxj1vYySj74MIL9SDpV+Gc
+         7y1KzKT6XzJmlT2OfI+tjdWLqC4cv+LvNxKkyfvHEoZzi0eZAlEyHpZX0lzG90BIJ7b9
+         CRwR9skWg7Xr6dd2SjSOnyspzJUBPLzYgKN/v2Nv3KcNXONF/jXXZgM/UbSgZULk5TCi
+         ZXBX0kkmb8cu7NcWzD2grkjDjxQNml6A9xGZYf6xPyekOCQUCnDVY2D0rJJaI+zO9QL/
+         aNjVEX6mFEJt057HqfQP9JztZNmmgXGH4BZWO1OZ0sV6mVaZU3rI+4ssarbxOQzLItIl
+         Idmw==
+X-Gm-Message-State: ACrzQf3v6LqAg6Wd5DGMKfKbeLoh9kWC/XAOlh54y4e132sI9mz/bDb+
+        sfD1i8M+yeB2QgSZWH+STMs=
+X-Google-Smtp-Source: AMsMyM76lZ/+hIs4e3jUZi3yZS/cm0JZPOXs+XhtvpVh0vrQdjRfsq+RuxXn9ClrPuHwlPYuN2pPoQ==
+X-Received: by 2002:a05:6512:238e:b0:4a2:48d4:c13a with SMTP id c14-20020a056512238e00b004a248d4c13amr6943760lfv.391.1665394107288;
+        Mon, 10 Oct 2022 02:28:27 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id 13-20020a05651c128d00b0026dfdcbccdasm1601331ljc.14.2022.10.10.02.24.54
+        by smtp.gmail.com with ESMTPSA id o3-20020a056512050300b0049d0a98f73csm1348895lfb.154.2022.10.10.02.28.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Oct 2022 02:24:55 -0700 (PDT)
-Message-ID: <fc3c70d7-1787-5f7c-7394-2f93b42d56b0@gmail.com>
-Date:   Mon, 10 Oct 2022 12:24:51 +0300
+        Mon, 10 Oct 2022 02:28:26 -0700 (PDT)
+Message-ID: <a913e81e-3904-2e35-eaa7-89ae11652407@gmail.com>
+Date:   Mon, 10 Oct 2022 12:28:25 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
+Subject: Re: [RFC PATCH v2 3/5] dt-bindings: iio: Add KX022A accelerometer
 Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jagath Jog J <jagathjog1996@gmail.com>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <cover.1665066397.git.mazziesaccount@gmail.com>
- <fa667d6870976a2cf2d60f06e262982872349d74.1665066397.git.mazziesaccount@gmail.com>
- <Yz7/o1q7p8NmGKMe@smile.fi.intel.com> <20221009132421.6e472385@jic23-huawei>
+ <80fa42040f385eb47f4f3c71b9b02f643a643e38.1665066397.git.mazziesaccount@gmail.com>
+ <fc7c064f-074a-e66a-07b3-541f2ad56804@linaro.org>
+ <7bbc0c04-04a8-f2c6-0436-3be0fc1013c7@gmail.com>
+ <20221009132711.16055354@jic23-huawei>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [RFC PATCH v2 1/5] regulator: Add devm helpers for get and enable
-In-Reply-To: <20221009132421.6e472385@jic23-huawei>
+In-Reply-To: <20221009132711.16055354@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,50 +87,69 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
-
-On 10/9/22 15:24, Jonathan Cameron wrote:
-> On Thu, 6 Oct 2022 19:17:39 +0300
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 10/9/22 15:27, Jonathan Cameron wrote:
+> On Thu, 6 Oct 2022 18:32:22 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> On Thu, Oct 06, 2022 at 05:36:52PM +0300, Matti Vaittinen wrote:
->>> A few regulator consumer drivers seem to be just getting a regulator,
->>> enabling it and registering a devm-action to disable the regulator at
->>> the driver detach and then forget about it.
+>> Hi dee Ho Krzysztof,
+>>
+>> On 10/6/22 18:23, Krzysztof Kozlowski wrote:
+>>> On 06/10/2022 16:37, Matti Vaittinen wrote:
+>>>> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The sensor features
+>>>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+>>>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+>>>> ranges (2, 4, 8 and 16g) and probably some other cool features.
+>>>>   
 >>>
->>> We can simplify this a bit by adding a devm-helper for this pattern.
->>> Add devm_regulator_get_enable() and devm_regulator_get_enable_optional()
+>>> Thank you for your patch. There is something to discuss/improve.
+>>>    
+>>>> +
+>>>> +properties:
+>>>> +  compatible:
+>>>> +    const: kionix,kx022a
+>>>> +
+>>>> +  reg:
+>>>> +    maxItems: 1
+>>>> +
+>>>> +  interrupts:
+>>>> +    minItems: 1
+>>>> +    maxItems: 2
+>>>> +
+>>>> +  interrupt-names:
+>>>> +    minItems: 1
+>>>> +    maxItems: 2
+>>>> +    items:
+>>>> +      enum:
+>>>> +        - INT1
+>>>> +        - INT2
+>>>
+>>> This allows any order, which I assume was your intention.
 >>
->> ...
+>> Yes. I don't see real need to restrict ordering - besides, with my
+>> yaml/schema skills it'd took eternity to find corrct example(s) ;)
 >>
->>> (cherry picked from commit b6058e052b842a19c8bb639798d8692cd0e7589f)
+>> My intention is that the user can give either one of these - or both.
+>> Order needs naturally to match the order of IRQs - but this we can't know.
 >>
->> Not sure:
->>   - why this is in the commit message
->>   - what it points to, since
->> $ git show b6058e052b842a19c8bb639798d8692cd0e7589f
->>   fatal: bad object b6058e052b842a19c8bb639798d8692cd0e7589f
+>>> However maybe
+>>> at least fix it a bit like:
+>>> minItems: 1
+>>> items:
+>>>     - enum: [ int1, int2]
+>>>     - const: int2
+>>
+>> If you say so XD
+>> I can fix this for v3 :)
+> If my limited understanding is correct, one advantage of this restriction
+> is that we can't have
 > 
-> These are now upstream in Linus' tree and in my testing branch.
-> I'd not normally advocate working on top of that (because I rebase it), but
-> if it is useful for this series go ahead.
-
-Thanks for the explanation :)
-
-This series will conflict with my fixup series for triggered-buffer 
-attributes. Hence I though I might combine these two series into one if 
-I need to respin the fixup series. I thought of using the v6.1-rc1 when 
-it is out. (I think the 6.1-rc1 should not be that far away)
-
-OTOH, I just read your another mail which told that there will be one 
-more driver which will conflict with the fixup coming in during this 
-cycle. If that driver lands in your tree before the fix - then I guess I 
-need to rebase the fixup series (and maybe this too) on top of your tree 
-+ add conversion of this new driver. I don't think that would be the 
-testing branch though(?)
-
-Yours
-	-- Matti	
+> "INT1", "INT1"
+> though that may be prevented elsewhere...
+> 
+> There is no loss of useful flexibility in how Krzysztof suggested doing it
+> so looks like a good suggestion to me.
+Thanks Krzysztof and Jonathan :) I'll use Krzysztof's suggestion for the 
+v3.
 
 -- 
 Matti Vaittinen

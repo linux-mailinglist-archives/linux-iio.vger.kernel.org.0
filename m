@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 478C55F998D
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 09:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8425F9A5D
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 09:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbiJJHOI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 03:14:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39060 "EHLO
+        id S231818AbiJJHrz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 03:47:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231824AbiJJHNM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 03:13:12 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302D95F101
-        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:08:35 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id i12so378544qkm.10
-        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:08:35 -0700 (PDT)
+        with ESMTP id S231543AbiJJHrf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 03:47:35 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A8DF13CDA
+        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:44:45 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id a5so1196415qkl.6
+        for <linux-iio@vger.kernel.org>; Mon, 10 Oct 2022 00:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=WHWPo1qKRevOhOtumpbJ7lklIPnMqp7zCvbF4M9yd6s=;
-        b=n407lvjwbRtsnfe/+PUAPd141O/GCABQm04b53IBiweXewZw0jzDJYPtuqD1e/D6pb
-         ZZhMAMMw79QQu/gGU7sj6DOztaVj7Io2DgGYrrdF/zxWDxr00MoV7qJVN2qEH7l1v30h
-         51T1PoMTKVxiKFoX0xSp7Hrss8bc53/S/CRDzawk5XoPvB7/+VNc9O4OmSCYizLQQYsL
-         Qms/ByOQ2lPJA4EJ6r6IGGhoU/X5avh76tbUdECznyg9CHLa06d/BcFtg4viTGQQisw7
-         zPJ2j0I4L4xOd8PQ/gxs1JYpPbT/4NlzxWfwIQGNN1voXXh63LHfbTQw+2BObObRQ5aQ
-         s5Cg==
+        bh=cqantoaZonPlYgGQGR7qFyyvdL6723k4g+GFmT1ALoA=;
+        b=G+AzIixjDRv0qpyufIdJomHx+yTVLb0uWiOdobLG3w2zBge4b3/FgA1V78XQaxZ2xK
+         4wemvPNfQ5Evyzc02kj8I7bb7xBoB2NYY8tsaky8XqUK1DfCP63g2YSTJiYMyslZu0gx
+         V2bffGhyNjaMCHdmAxMe775Z15ytSo1djaxqKqUTx+fsI/jj0ree/SD7NJULKVhB2Nqa
+         AQup1ciMXzHg/FPrJuwi78O8UXCalkEetRr92vr/JiWC5VOPTzf3uU22lZcU5GXgR2YC
+         0zgAutmFe7evozMlZHDYvsSbseq4i1KZWafdfy27QFNn1KI72QywNz0J4GI5/jmZwws2
+         2Wgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WHWPo1qKRevOhOtumpbJ7lklIPnMqp7zCvbF4M9yd6s=;
-        b=m8tUY2bESlQ9qooAGbRx1ctQnTKF+25UgBkxqWHfR9AsRRDA2Yr/sBzepyPfBJ7XGO
-         FiPCo25eg6GRrGpblyyLhe3hbXEEwbuGshCrHvTI2rITYqagjZ6jAV+KRMnvxP/n7fy6
-         o2XnglADoXZ1ieOO7ZP5BfiMVryu+uZ1Rh+yrw5FIBHA2k+DbnEq1rxEpkxP9vqYWXPz
-         BuiE8gu9o+VBN/OSfZg45Xvswv99Dsl5wXpbj68zhhqijMUEjZlovocG+jjggTlLRMKO
-         Z5SI1YiNzZMZMUSLIysVsg3lJWaxaXVbAm2D4nv/V6motGkAU3IJ/amUkF8g+XIFutuR
-         yXuQ==
-X-Gm-Message-State: ACrzQf1KPaX0oceRtznq9HHOCKBUGFWJmGB4pTv2641B/ozgBrwrWWhd
-        3by25xAPTlNnq5Mv11t8mZg=
-X-Google-Smtp-Source: AMsMyM6igdgHC4JEuEbFPrpMU7w9LFR2EtdXbU4uFf/Pw/LFnyimrAeQQYF4jLHVc7EWphGp71/pSg==
-X-Received: by 2002:a05:620a:298a:b0:6ce:7aa7:f01f with SMTP id r10-20020a05620a298a00b006ce7aa7f01fmr11456414qkp.611.1665385653377;
-        Mon, 10 Oct 2022 00:07:33 -0700 (PDT)
+        bh=cqantoaZonPlYgGQGR7qFyyvdL6723k4g+GFmT1ALoA=;
+        b=sz1J/7NfB7FGBjC/zsf7DwTusZvz0U9I6zrvGqUbz1nFZX5ZRPDHW11dGOz4r6jEdn
+         Dk2zeXKP8x6SgZczE7M+FAfFq48i4k6K40VyTvEyH1oHKsk704UPt/0YGeXhv6BftdYi
+         Uw0N9brwDR13xlP9khJxRMXiAYDu+dfQbB85I0PdVGfPjGT4toIMBBcH3/Nijq0RBWA8
+         WeTBH7jQ9tRmHXNUo/Nch2oHAVcDkIxqWJpEiJeWl46eWHfAmdfyEopdC8NUauafL9kR
+         n2v83xCvZndWChNG9pFiC40W3yqSYgR7eoLN3rIMUW0iw2IsvmjA2XDNMI/i7r2OX0Sw
+         bsvQ==
+X-Gm-Message-State: ACrzQf1o2gziDS85Ef7X73DsdrUln289sr2itt08NPIWDfpZczrpguqf
+        Ymh7af2A9UeMRY7zYchxUVe9GcBhvCTvphSP0sU=
+X-Google-Smtp-Source: AMsMyM6c5WXfjncBULc9UHk40SqYvDt4Kb9Si4N5vVusfF5PksVcJ9qxCRe6Sa/luSlMl9vyH2DM4A==
+X-Received: by 2002:a05:622a:1191:b0:394:a7a2:7a3e with SMTP id m17-20020a05622a119100b00394a7a27a3emr13738039qtk.344.1665385814014;
+        Mon, 10 Oct 2022 00:10:14 -0700 (PDT)
 Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id w16-20020a05620a445000b006dfa0891397sm9891789qkp.32.2022.10.10.00.07.28
+        by smtp.gmail.com with ESMTPSA id i16-20020ac87650000000b0035d5e5660cbsm7864005qtr.59.2022.10.10.00.10.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Oct 2022 00:07:32 -0700 (PDT)
-Message-ID: <1191286a7ca86488363c99be1503b2bbef905f48.camel@gmail.com>
-Subject: Re: [PATCH v2 15/16] iio: health: max30102: do not use internal
- iio_dev lock
+        Mon, 10 Oct 2022 00:10:13 -0700 (PDT)
+Message-ID: <4059bf5b8a6d6bc2b5edab7eb447503e6a6b639b.camel@gmail.com>
+Subject: Re: [PATCH v2 16/16] iio: core: move 'mlock' to 'struct
+ iio_dev_opaque'
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-amlogic@lists.infradead.org, linux-imx@nxp.com,
         linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-rockchip@lists.infradead.org,
         Heiko Stuebner <heiko@sntech.de>,
@@ -80,16 +79,15 @@ Cc:     Andy Shevchenko <andy.shevchenko@gmail.com>,
         Orson Zhai <orsonzhai@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Jerome Brunet <jbrunet@baylibre.com>,
         Haibo Chen <haibo.chen@nxp.com>,
         Kevin Hilman <khilman@baylibre.com>
-Date:   Mon, 10 Oct 2022 09:08:51 +0200
-In-Reply-To: <20221009124440.71adf505@jic23-huawei>
+Date:   Mon, 10 Oct 2022 09:11:32 +0200
+In-Reply-To: <20221009131923.2cc18d37@jic23-huawei>
 References: <20221004134909.1692021-1-nuno.sa@analog.com>
-         <20221004134909.1692021-16-nuno.sa@analog.com>
-         <CAHp75VdiAzOUNMB3wD5og-uZi1W_7UWkqV6+s7jCxpaBs1VWRQ@mail.gmail.com>
-         <428661431e54744064946ced681cc0351d51d698.camel@gmail.com>
-         <20221009124440.71adf505@jic23-huawei>
+         <20221004134909.1692021-17-nuno.sa@analog.com>
+         <20221009131923.2cc18d37@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 
@@ -104,121 +102,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2022-10-09 at 12:44 +0100, Jonathan Cameron wrote:
-> On Wed, 05 Oct 2022 10:17:00 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Sun, 2022-10-09 at 13:19 +0100, Jonathan Cameron wrote:
+> On Tue, 4 Oct 2022 15:49:09 +0200
+> Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >=20
-> > On Tue, 2022-10-04 at 17:15 +0300, Andy Shevchenko wrote:
-> > > On Tue, Oct 4, 2022 at 4:49 PM Nuno S=C3=A1 <nuno.sa@analog.com>
-> > > wrote:=C2=A0=20
-> > > >=20
-> > > > The pattern used in this device does not quite fit in the
-> > > > iio_device_claim_direct_mode() typical usage. In this case, we
-> > > > want
-> > > > to
-> > > > know if we are in buffered mode or not to know if the device is
-> > > > powered
-> > > > (buffer mode) or not. And depending on that max30102_get_temp()
-> > > > will
-> > > > power on the device if needed. Hence, in order to keep the same
-> > > > functionality, we try to:
-> > > >=20
-> > > > 1. Claim Buffered mode;
-> > > > 2: If 1) succeeds call max30102_get_temp() without powering on
-> > > > the
-> > > > =C2=A0=C2=A0 device;
-> > > > 3: Release Buffered mode;
-> > > > 4: If 1) fails, Claim Direct mode;
-> > > > 5: If 4) succeeds call max30102_get_temp() with powering on the
-> > > > device;
-> > > > 6: Release Direct mode;
-> > > > 7: If 4) fails, goto to 1) and try again.
-> > > >=20
-> > > > This dance between buffered and direct mode is not particularly
-> > > > pretty
-> > > > (as well as the loop introduced by the goto statement) but it
-> > > > does
-> > > > allow
-> > > > us to get rid of the mlock usage while keeping the same
-> > > > behavior.=C2=A0=20
-> > >=20
-> > > ...
-> > > =C2=A0=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 if (iio_device_claim_buffer_mode(indio_dev)) {=C2=A0
-> > >=20
-> > > Why is ret not used here?
-> > > =C2=A0=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /*
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-This one is a *bit* hacky. If we
-> > > > cannot
-> > > > claim buffer
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-mode, then try direct mode so that
-> > > > we
-> > > > make sure
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-things cannot concurrently change.
-> > > > And
-> > > > we just keep
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * =
-trying until we get one of the
-> > > > modes...
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if
-> > > > (iio_device_claim_direct_mode(indio_dev))=C2=A0=20
-> > >=20
-> > > ...and here?
-> > > =C2=A0=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto any_mode_retry;=C2=A0=20
-> > > =C2=A0=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 } else {=C2=A0=20
-> > > =C2=A0=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 }=C2=A0=20
-> > >=20
-> > > I.o.w. what error code will be visible to the caller and why.
-> > > =C2=A0=20
+> > Now that there are no more users accessing 'mlock' directly, we can
+> > move
+> > it to the iio_dev private structure. Hence, it's now explicit that
+> > new
+> > driver's should not directly this lock.
 > >=20
-> > Note that we do not really care about the error code returned by
-> > both
-> > iio_device_claim_buffer_mode() and iio_device_claim_direct_mode().
-> > We
-> > just loop until we get one of the modes (thus ret =3D 0) so that we
-> > can
-> > safely call one of the max30102_get_temp() variants. And that will
-> > be
-> > the visible error code (if any). That said, you can look at the
-> > first
-> > version of the series about this (and the previous patch) and why
-> > this
-> > is being done like this (note that I'm also not 100% convinced
-> > about
-> > this ping pong between getting one of the IIO modes but it's also
-> > not
-> > that bad and if there's no major complains, I'm fine with it).
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> This looks good to me.=20
+> So series wise, I think I've picked up 1-12.=20
+> To resolve is remaining discussion plus the missmatch in function
+> name vs
+> comment in 13.
 >=20
-> This is a vanishingly rare corner case and not in a remotely high
-> performance
-> path so I'm not keen on introducing a more complex API just to handle
-> this corner. If we added a means to get the lock independent of mode
-> we'd have an interface that is far to likely to get missused.
 
-Totally agree. It crossed my mind to have an helper for getting the
-lock but that would defeat the purpose of this patchset! Well, I'm also
-fine with the code as it stands so I'll leave it for v3 and if no one
-complains I guess we're good to go...=20
+So, I think we are missing an improvement on the commit message for
+patch 14 (about shadowing the error code) and fixing the function
+name..
+> Thanks for getting this tidied up!=C2=A0 It's the end of a very long
+> process.
+> I almost feel like we need a party - there would be a quite a crowd
+> given
+> how many people have been involved in this effort over the years. :)
+>=20
 
+Sure, happy to help! This one felt like something that we really need
+to take care :)
 
 - Nuno S=C3=A1
+

@@ -2,63 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B05C5F9BD7
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 11:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBFB75F9BE8
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 11:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231697AbiJJJ2h (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 05:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53990 "EHLO
+        id S231694AbiJJJbX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 05:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231461AbiJJJ2b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 05:28:31 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBEB5D0C0;
-        Mon, 10 Oct 2022 02:28:29 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id b2so15728591lfp.6;
-        Mon, 10 Oct 2022 02:28:29 -0700 (PDT)
+        with ESMTP id S231787AbiJJJbL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 05:31:11 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BCB753A6D;
+        Mon, 10 Oct 2022 02:31:09 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id q7so10093642ljp.3;
+        Mon, 10 Oct 2022 02:31:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kVIICcvhmRp4KVa6Ys8ayGQsI80PJHFAYPVcNOMoYo8=;
-        b=czWmSnFPcPAt6+MrMBGjWrmSmUx0lkCN8xCMr/11Wm0o1dz1bUIAvtEPgUBrPaUBy9
-         YIh21O5Y7kvpil9+ii3paGnlvUY/bkrv+DAja+TvZixNvo/q8Zo0NBVJIfmTZMrAJFzY
-         4MFxhxQnsP74Bnra2xZHyGSv18wViAtANP6G/ZfiignfDFTEASSjLt3QraphVGEJH65b
-         V6EmSCJhkUaZvpHxxDpgUaz9O02nNHpCkhUb3jvR75zrArFSsU/IBAhXlRTuPKiW6Sx/
-         KH1O4hcQYd2HbajX3K87W8hWfwU6T5XBNCdr823yepAXH/tggMZXYkWhbHt5xbvMMXJB
-         EV0Q==
+        bh=9Fxn9QGVaJXGqKZtoP2lqUpTx+oEOE+k+RPuApWc6uU=;
+        b=JCmAAVoS44/DnHekgmFzrD1tPDH1TA98QCvrSnmXQmFyvvUJqb6xpiKTeSIKqZklB9
+         OGgSEXHeMTuJvXnHMWwAup8jGz4ZHTA16fAcZz0s80U0FaixTcxOq9wb8SgKYmW8W2yu
+         Tl/XRSpFPA0kUVw4Z7ZWb7vwmI5UxGrZtPSczQu3AvzfDVCsiy5EcGHuzM5PHu746XIi
+         UIdvbx4KmSHImfJn73ngUIBDvWpK3Mp8OG7N8zPm9/bWd/HO0kVKP/JUB9GNS0Ll4Isc
+         7F8pibssDmri/SGCAjTcoWcpIJIRL36Tm26H03MYMTErNJeVzLd0dH9ql7JQp6uV0uSG
+         7KZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kVIICcvhmRp4KVa6Ys8ayGQsI80PJHFAYPVcNOMoYo8=;
-        b=Omy1GQ48jXjKim9b9giI92buyL6a+7QEAdwmCHhHPoObDxj1vYySj74MIL9SDpV+Gc
-         7y1KzKT6XzJmlT2OfI+tjdWLqC4cv+LvNxKkyfvHEoZzi0eZAlEyHpZX0lzG90BIJ7b9
-         CRwR9skWg7Xr6dd2SjSOnyspzJUBPLzYgKN/v2Nv3KcNXONF/jXXZgM/UbSgZULk5TCi
-         ZXBX0kkmb8cu7NcWzD2grkjDjxQNml6A9xGZYf6xPyekOCQUCnDVY2D0rJJaI+zO9QL/
-         aNjVEX6mFEJt057HqfQP9JztZNmmgXGH4BZWO1OZ0sV6mVaZU3rI+4ssarbxOQzLItIl
-         Idmw==
-X-Gm-Message-State: ACrzQf3v6LqAg6Wd5DGMKfKbeLoh9kWC/XAOlh54y4e132sI9mz/bDb+
-        sfD1i8M+yeB2QgSZWH+STMs=
-X-Google-Smtp-Source: AMsMyM76lZ/+hIs4e3jUZi3yZS/cm0JZPOXs+XhtvpVh0vrQdjRfsq+RuxXn9ClrPuHwlPYuN2pPoQ==
-X-Received: by 2002:a05:6512:238e:b0:4a2:48d4:c13a with SMTP id c14-20020a056512238e00b004a248d4c13amr6943760lfv.391.1665394107288;
-        Mon, 10 Oct 2022 02:28:27 -0700 (PDT)
+        bh=9Fxn9QGVaJXGqKZtoP2lqUpTx+oEOE+k+RPuApWc6uU=;
+        b=N2IBsQMAqiBStBGZa3qyS5zfh4MStikqGnBTfMgWHJVt0lhPwcVdMJ24cxIqI5FkJ9
+         cjF8EYuUPnbBg7BAaTz9mIJJqQDguAGBqtjkJyW1qEXr2TIcYXGROY0VXiOEKuItzZAE
+         LP3U/AbKcdqAbprASg7/2i/VpmEs7fIxbOcpRzk5vDhwDxSXcfjR/G+CvONlBiyYRHaB
+         bGwqD4DrXUgJiEkW++MmmrYXzaTRqSf9Rqw32QPreYtRj/PK9Vq6PFg8lr1afkicH4fW
+         p2X22qFPvcvE0wXr5l6Ugu4ta0HV6SPW7RbM9gJcyQiuyRzcBAYO8rOZkW6pt144r1BW
+         00Rw==
+X-Gm-Message-State: ACrzQf24edJUEKLJplGn0U8Jg/X+i99Y61q2wi0e3Hrg8yrVkJoKurrE
+        jyDphG34CD3tRfEUQohUmVs=
+X-Google-Smtp-Source: AMsMyM5uk+BxY3P5FJSIs1jXqHpku1u/F3VyA+hps4sTFTLfZ+dRecc9NsDiWUsQ1AePKbwW2UMQTg==
+X-Received: by 2002:a2e:9d88:0:b0:26a:95c1:218f with SMTP id c8-20020a2e9d88000000b0026a95c1218fmr6351200ljj.223.1665394267448;
+        Mon, 10 Oct 2022 02:31:07 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::1? (dc75zzyyyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::1])
-        by smtp.gmail.com with ESMTPSA id o3-20020a056512050300b0049d0a98f73csm1348895lfb.154.2022.10.10.02.28.26
+        by smtp.gmail.com with ESMTPSA id p4-20020a2ea4c4000000b002682754293fsm1612237ljm.1.2022.10.10.02.31.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Oct 2022 02:28:26 -0700 (PDT)
-Message-ID: <a913e81e-3904-2e35-eaa7-89ae11652407@gmail.com>
-Date:   Mon, 10 Oct 2022 12:28:25 +0300
+        Mon, 10 Oct 2022 02:31:06 -0700 (PDT)
+Message-ID: <87ac9a5e-b5ba-82f3-c00c-75d5e6f01597@gmail.com>
+Date:   Mon, 10 Oct 2022 12:31:00 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
-Subject: Re: [RFC PATCH v2 3/5] dt-bindings: iio: Add KX022A accelerometer
+Subject: Re: [RFC PATCH v2 5/5] MAINTAINERS: Add KX022A maintainer entry
 Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -69,12 +68,10 @@ Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <cover.1665066397.git.mazziesaccount@gmail.com>
- <80fa42040f385eb47f4f3c71b9b02f643a643e38.1665066397.git.mazziesaccount@gmail.com>
- <fc7c064f-074a-e66a-07b3-541f2ad56804@linaro.org>
- <7bbc0c04-04a8-f2c6-0436-3be0fc1013c7@gmail.com>
- <20221009132711.16055354@jic23-huawei>
+ <08ccdc318b448eb69c82efc82adcd044536df4af.1665066397.git.mazziesaccount@gmail.com>
+ <20221009133836.4266fbeb@jic23-huawei>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20221009132711.16055354@jic23-huawei>
+In-Reply-To: <20221009133836.4266fbeb@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -87,69 +84,43 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/9/22 15:27, Jonathan Cameron wrote:
-> On Thu, 6 Oct 2022 18:32:22 +0300
+On 10/9/22 15:38, Jonathan Cameron wrote:
+> On Thu, 6 Oct 2022 17:38:34 +0300
 > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> Hi dee Ho Krzysztof,
+>> Add maintainer entry for ROHM/Kionix KX022A accelerometer senor driver.
 >>
->> On 10/6/22 18:23, Krzysztof Kozlowski wrote:
->>> On 06/10/2022 16:37, Matti Vaittinen wrote:
->>>> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The sensor features
->>>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
->>>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
->>>> ranges (2, 4, 8 and 16g) and probably some other cool features.
->>>>   
->>>
->>> Thank you for your patch. There is something to discuss/improve.
->>>    
->>>> +
->>>> +properties:
->>>> +  compatible:
->>>> +    const: kionix,kx022a
->>>> +
->>>> +  reg:
->>>> +    maxItems: 1
->>>> +
->>>> +  interrupts:
->>>> +    minItems: 1
->>>> +    maxItems: 2
->>>> +
->>>> +  interrupt-names:
->>>> +    minItems: 1
->>>> +    maxItems: 2
->>>> +    items:
->>>> +      enum:
->>>> +        - INT1
->>>> +        - INT2
->>>
->>> This allows any order, which I assume was your intention.
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 >>
->> Yes. I don't see real need to restrict ordering - besides, with my
->> yaml/schema skills it'd took eternity to find corrct example(s) ;)
+>> ---
+>> I can also add myself as a maintainer instead of a reviewer if it better
+>> suits iio maintainer. I however don't plan setting up my own public
+>> repository and hope the further patches will be merged via IIO tree.
 >>
->> My intention is that the user can give either one of these - or both.
->> Order needs naturally to match the order of IRQs - but this we can't know.
->>
->>> However maybe
->>> at least fix it a bit like:
->>> minItems: 1
->>> items:
->>>     - enum: [ int1, int2]
->>>     - const: int2
->>
->> If you say so XD
->> I can fix this for v3 :)
-> If my limited understanding is correct, one advantage of this restriction
-> is that we can't have
+>> So, as Geert once explained to me - In that case the difference between
+>> me as a maintainer vs. a reviewer would be only really relevant to the
+>> subsystem (in this case IIO) maintainer. The subsystem maintainer who
+>> merges patches is allowed to take in changes acked by downstream
+>> maintainer w/o obligation to do thorough review. (Downstream maintainer is
+>> to be blamed if things explode :]). If ack is given by a reviewer, then
+>> the subsystem maintainer has the full responsibility and should always
+>> do the review. Or - this is how I remember our discussion went - feel
+>> free to correct me if I am wrong :] In any case - please let me know if
+>> you'd rather see M: not R: in front of my name for the kx022a.
 > 
-> "INT1", "INT1"
-> though that may be prevented elsewhere...
 > 
-> There is no loss of useful flexibility in how Krzysztof suggested doing it
-> so looks like a good suggestion to me.
-Thanks Krzysztof and Jonathan :) I'll use Krzysztof's suggestion for the 
-v3.
+> Entirely up to you.  I tend to take a look at all IIO patches but will
+> take a less detailed look if there is a tag from someone I've built
+> up trust with - doesn't matter if they are a maintainer of a particular
+> driver or not. I only ever look at MAINTAINERS when sending out patches,
+> never when reviewing except to perhaps moan that someone wasn't cc'd
+> who should have been!
+
+In that case I'll keep the R as I have done with the other corners I've 
+touched.
+
+Yours
+	-- Matti
 
 -- 
 Matti Vaittinen

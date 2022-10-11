@@ -2,87 +2,85 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA375FA354
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 20:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42D325FA8EA
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Oct 2022 02:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbiJJSYn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 14:24:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36684 "EHLO
+        id S229721AbiJKAI2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 20:08:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbiJJSYk (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 14:24:40 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230911165;
-        Mon, 10 Oct 2022 11:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1665426279; x=1696962279;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lV/sOxd9UMgNF8rqRvEeaHHOWcvWfkCR7DG0x3ALpa4=;
-  b=euqbn5BzqcxrH7uaA0OULUoiQEDEoVhdVa3kv+BZEwFBLdYQUiolynhf
-   XauWSgFaXc7ee/O5Z5HRJKaGGgTkWfumTjA117AJxkLBStTioct4iESNj
-   mhIuuohJw4+N3R1xvYTFy5/tchPQfcv4nY2AspxLPn+YNcrLmv3jvVb/V
-   ysQQYWirt4MXrMtBCMe7omuLapgjHPGDUr0RaLQCRZnIfRt7nHX6TQnUN
-   GIPiXAaWcp9S1Q9gLqNEgf9kn7pn48dNX00/q+td4GYJ+rICpM2Xwx0Zu
-   pBgUVf56c2FLRIr7UOiU5fPPC3YFityh+Bq44n4Dlibj68rj0l4HJwEVB
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="291592274"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="291592274"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 11:24:37 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="751448870"
-X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
-   d="scan'208";a="751448870"
-Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.55])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 11:24:34 -0700
-From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, ihkose@gmail.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajat.khandelwal@intel.com,
-        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-Subject: [PATCH] Change the I2C slave address for ds4422/4424 to its correct value
-Date:   Tue, 11 Oct 2022 23:54:37 +0530
-Message-Id: <20221011182437.662719-1-rajat.khandelwal@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229747AbiJKAI1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 20:08:27 -0400
+Received: from mail.sconnect.com.au (mail.sconnect.com.au [103.101.168.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53877B2A8;
+        Mon, 10 Oct 2022 17:08:24 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.sconnect.com.au (Postfix) with ESMTP id 40D82296C7B5;
+        Tue, 11 Oct 2022 11:08:20 +1100 (AEDT)
+Received: from mail.sconnect.com.au ([127.0.0.1])
+        by localhost (mail.sconnect.com.au [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id R8KK9TetWJ-0; Tue, 11 Oct 2022 11:08:19 +1100 (AEDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.sconnect.com.au (Postfix) with ESMTP id C6897296C7C8;
+        Tue, 11 Oct 2022 11:08:19 +1100 (AEDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.sconnect.com.au C6897296C7C8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mail.sconnect.com.au; s=39ABBFB6-EEE4-11E8-B0D6-3EF6B7190DB6;
+        t=1665446899; bh=W/GvARc04ZPnD4B8eWYWtrSTF+TiaPBWKYHrLaGTP34=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Fpj9bUUOwNcchTT1wvQm+gWESLFqyMJ5T8o+ffG3LQv1GgJ7o8YHcJHnxslPvqruK
+         UL3DSnguIIW2LTZhKn7YKhWhPV0MYdjtod+NyP+Csu78xRiCS0olUjWCPburiztRTO
+         ohshLsEqRxYgk3k75BzG2NDDkzpXmDDCMAeqPpPMhS3qL/7eIHpbHSsvZupo4U+zSP
+         h6YU9CwOaFQwm6U9PnHTjcLbCjDYDPMYwa1XK4P0uC4VJ/vpyqd9ZHM/BONMYk2nfS
+         UAEJFzKrBGwPY5/FgsoOCmZ0ezIV2YBAEE0DF9MkoiqLTXNdm+3WLlFjG3ssCMSxAh
+         oYi5s8TXKwmxA==
+X-Virus-Scanned: amavisd-new at mail.sconnect.com.au
+Received: from mail.sconnect.com.au ([127.0.0.1])
+        by localhost (mail.sconnect.com.au [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pxexT1mFWYVQ; Tue, 11 Oct 2022 11:08:19 +1100 (AEDT)
+Received: from [46.148.40.183] (unknown [46.148.40.183])
+        by mail.sconnect.com.au (Postfix) with ESMTPA id 8EADD296C7B5;
+        Tue, 11 Oct 2022 11:08:13 +1100 (AEDT)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: PFC Loan
+To:     Recipients <Panola@mail.sconnect.com.au>
+From:   Panola@mail.sconnect.com.au, Finance@mail.sconnect.com.au,
+        dean@mail.sconnect.com.au
+Date:   Mon, 10 Oct 2022 17:08:07 -0700
+Reply-To: mail@panolafinancecompany.com
+Message-Id: <20221011000813.8EADD296C7B5@mail.sconnect.com.au>
+X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NIXSPAM_IXHASH,SPF_HELO_PASS,SPF_PASS,
+        T_PDS_TO_EQ_FROM_NAME autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The datasheet states that the slave address for the device is 0x20
-when the pins A0 and A1 are ground. The DT binding has been using
-0x10 as the value and I think it should be 0x20 as per datasheet.
+We offer flexible loans and funding for various projects bypassing the usua=
+l rigorous procedures without any upfront fee. This Funding program allows =
+a client to enjoy low interest payback for as low as 2% per annum for a per=
+iod of 1-30 years and a six months grace period.
+ =
 
-Let me know if I am wrong about this.
+We Offer: -
+* Project Financing
+* Business Loan
+* Personal Loan
+ =
 
-Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
----
- Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Should you be interested in any of our financial options, please do not hes=
+itate to contact us for more information. Loan processing and financing tak=
+es about 8 working days from the day you submit your loan application. Repl=
+y for more information: mail@panolafinancecompany.com
+ =
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-index 264fa7c5fe3a..1955b1a97cd6 100644
---- a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-@@ -38,7 +38,7 @@ examples:
- 
-         dac@10 {
-             compatible = "maxim,ds4424";
--            reg = <0x10>; /* When A0, A1 pins are ground */
-+            reg = <0x20>; /* When A0, A1 pins are ground */
-             vcc-supply = <&vcc_3v3>;
-         };
-     };
--- 
-2.34.1
-
+With kind regards,
+Your Sales Team
+Contact Info:
+E-mail: mbk@panolateam.com

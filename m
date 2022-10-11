@@ -2,254 +2,306 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1CC75FB678
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Oct 2022 17:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71CB65FB761
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Oct 2022 17:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbiJKPFX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Oct 2022 11:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44658 "EHLO
+        id S229955AbiJKPeK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Oct 2022 11:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231789AbiJKPEJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Oct 2022 11:04:09 -0400
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BCCA571D
-        for <linux-iio@vger.kernel.org>; Tue, 11 Oct 2022 07:59:27 -0700 (PDT)
-Received: by mail-oo1-f43.google.com with SMTP id c13-20020a4ac30d000000b0047663e3e16bso10189719ooq.6
-        for <linux-iio@vger.kernel.org>; Tue, 11 Oct 2022 07:59:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1R2XHYhG7tLGMT55z9AHFkRYDYEPZkrqjvqR781+rik=;
-        b=OtNlsJQCwUO0pK3lonPFFBIxSq/C/dIxlKSqoxwz0erw6PnQWbbN1hAdDBrCgqZHj7
-         n12q7lirRIgIup45NkTApxHWetRL88yHJnGocM3ZUajr1kux40dEn8wcOZbUG19hixjk
-         TkCOit/h/isvmZzOAsBIHCYZ3ju+qazTHuxrmQHclZP3FgPFW9dLARHIOlNWkcaWg0W3
-         1n/jZzMSioNwdYTk1/ivnUyVoSSAzF+4dc2mqwhTa1esZOVs76ciA8NXb/8XoyfVYgrY
-         JDtYBgYFnyJ8+IbXAtyHyN4sswVPsD8GwpMgx8FRafRQUpRbfwhD0s6LQ/MACyY2UkNq
-         WcRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1R2XHYhG7tLGMT55z9AHFkRYDYEPZkrqjvqR781+rik=;
-        b=GMfU5R7edy7CAChy/0yhxqcffYtv/mz/ONaSa84uRd1hCWLlnhEAwLUowEZOKEgkAR
-         yQyt4ZZf+/ZDHa1LfWtv+wWaCg6ph2lnT5C7NyfOt6F1+El0wewyjwODjzyTxDkFogx+
-         KPSUpH7wXh8/SjIwOCtjeQ8oRattA5w946JEHv+Wuir1Y3bTG0JL7OJ0bedQL9oczieJ
-         lvLsXpXnyibrlKsRgas9Z962O6+h5U1CDUAs9UWfK2dNb6ys4Dit+EGUV56QUkimXZGl
-         W0npeO3UcutjCiHP8r/fRYr+obx86PH7dcCgyRUFVrxD6KREwRr2SLZNj7Vo/I7krY2u
-         Uxfg==
-X-Gm-Message-State: ACrzQf1CmOgcsvtUdQk8/Sa0sDmsivo+UoxHEz+3Ex5yUwiwillLqAFg
-        agpYFQrhLEKXYADoYn/wriEQig==
-X-Google-Smtp-Source: AMsMyM7+RHeDbnNXmnCIiVEVspKqSax/L7qWP2DIt63VnePEUfBbYOEJAnsYj5N+3cp5ETgSUSi1gA==
-X-Received: by 2002:a9d:4d07:0:b0:655:eab5:3c01 with SMTP id n7-20020a9d4d07000000b00655eab53c01mr10617844otf.253.1665499979446;
-        Tue, 11 Oct 2022 07:52:59 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id t20-20020a056870f21400b0013191b00f72sm6485882oao.17.2022.10.11.07.52.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 07:52:59 -0700 (PDT)
-Date:   Tue, 11 Oct 2022 09:15:05 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
-        Rob Herring <robh+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das@bp.renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] counter: Add RZ/G2L MTU3 counter driver
-Message-ID: <Y0VsWdrpoAhM2jK3@fedora>
-References: <20221006135717.1748560-1-biju.das.jz@bp.renesas.com>
- <20221006135717.1748560-5-biju.das.jz@bp.renesas.com>
- <Y0DUQTMd2TpFTnZS@fedora>
- <OS0PR01MB5922B6980F38873D494B3937865E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+        with ESMTP id S231765AbiJKPdd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Oct 2022 11:33:33 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 667ADBEAEA;
+        Tue, 11 Oct 2022 08:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665501766; x=1697037766;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7wSP4TYlAxkaflihOJTFEcb8ISzoiRnXg100vqVWAvo=;
+  b=PNvSpCBJkyXze3AmBGCSmbh2wZ9iH8BgEFCuPzGbbJQqzlzxgsAPXCEh
+   U+yEooz+LB94otNjTSVtYvlMAwtHE9SK/SlHCjZHzRguMJh/wCzDwwFwW
+   +gmtW4OoqqKHUEiLCbAN3ZqauJuaGosF2nWOanPWcYh2saa0gUjQKjaAU
+   3YzPjWgm+Uq/ThUJShNcMBsois0yC75nX/IYq9FShrtfD+uihZq1FrNyH
+   94m2e8WMApjI3Dn0fBpuUZSuhqbQD8QPtBbhTdB4C1fGZEQtmU7zp9Fn2
+   BiFcDcxWJTCshNVzhKRFq53fiTcxlcxTraa6R0Fnh6pJFCPfUNFUNVqmt
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="284912449"
+X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
+   d="scan'208";a="284912449"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2022 08:18:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10497"; a="695098463"
+X-IronPort-AV: E=Sophos;i="5.95,176,1661842800"; 
+   d="scan'208";a="695098463"
+Received: from lkp-server01.sh.intel.com (HELO 2af0a69ca4e0) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 11 Oct 2022 08:18:21 -0700
+Received: from kbuild by 2af0a69ca4e0 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1oiH1R-0002wR-00;
+        Tue, 11 Oct 2022 15:18:21 +0000
+Date:   Tue, 11 Oct 2022 23:17:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     ntfs3@lists.linux.dev, loongarch@lists.linux.dev,
+        linux-perf-users@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-mm@kvack.org, linux-iio@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        apparmor@lists.ubuntu.com, amd-gfx@lists.freedesktop.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ b9f85101cad3397ef1e509909602a90e257ab9d8
+Message-ID: <6345891e.N8YlqGQ6WJeXXn2f%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="e/hJ8wYBKKWjMEVp"
-Content-Disposition: inline
-In-Reply-To: <OS0PR01MB5922B6980F38873D494B3937865E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: b9f85101cad3397ef1e509909602a90e257ab9d8  Add linux-next specific files for 20221011
 
---e/hJ8wYBKKWjMEVp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Error/Warning reports:
 
-On Sat, Oct 08, 2022 at 09:01:21AM +0000, Biju Das wrote:
-> Hi William Breathitt Gray,
->=20
-> Thanks for the feedback.
+https://lore.kernel.org/linux-doc/202209201326.sY9kHOLm-lkp@intel.com
+https://lore.kernel.org/linux-doc/202210070057.NpbaMyxB-lkp@intel.com
+https://lore.kernel.org/linux-mm/202210090954.pTR6m6rj-lkp@intel.com
+https://lore.kernel.org/linux-mm/202210110857.9s0tXVNn-lkp@intel.com
+https://lore.kernel.org/linux-mm/202210111318.mbUfyhps-lkp@intel.com
+https://lore.kernel.org/llvm/202210111438.WT5u8Im6-lkp@intel.com
 
-Hello Biju,
+Error/Warning: (recently discovered and may have been fixed)
 
-I see that you have already released a v4, so some of my comments may no
-longer apply, but I want to respond here to continue our discussions;
-I'll reiterate any relevant suggestions when I review v4 in the coming
-days.
+ERROR: modpost: "dcn20_acquire_dsc" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+ERROR: modpost: "dcn20_build_mapped_resource" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+ERROR: modpost: "devm_ioremap_resource" [drivers/dma/fsl-edma.ko] undefined!
+ERROR: modpost: "devm_ioremap_resource" [drivers/dma/idma64.ko] undefined!
+ERROR: modpost: "devm_ioremap_resource" [drivers/dma/qcom/hdma.ko] undefined!
+ERROR: modpost: "devm_memremap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_memunmap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_platform_ioremap_resource" [drivers/char/xillybus/xillybus_of.ko] undefined!
+ERROR: modpost: "ioremap" [drivers/net/ethernet/8390/pcnet_cs.ko] undefined!
+ERROR: modpost: "ioremap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/net/ethernet/8390/pcnet_cs.ko] undefined!
+ERROR: modpost: "iounmap" [drivers/tty/ipwireless/ipwireless.ko] undefined!
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/clock/microchip,mpfs.yaml
+Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/mtd/amlogic,meson-nand.txt
+arch/arm64/kernel/alternative.c:199:6: warning: no previous prototype for 'apply_alternatives_vdso' [-Wmissing-prototypes]
+arch/arm64/kernel/alternative.c:295:14: warning: no previous prototype for 'alt_cb_patch_nops' [-Wmissing-prototypes]
+arch/loongarch/mm/init.c:166:24: warning: variable 'new' set but not used [-Wunused-but-set-variable]
+dc_resource.c:(.text.dc_resource_acquire_secondary_pipe_for_mpc_odm+0x21c): undefined reference to `dcn20_acquire_dsc'
+drivers/iio/adc/mcp3911.c:252 mcp3911_write_raw() error: buffer overflow 'mcp3911_osr_table' 8 <= 31
+drivers/iio/adc/mcp3911.c:499 mcp3911_probe() warn: passing zero to 'PTR_ERR'
+drivers/nvme/target/loop.c:578 nvme_loop_create_ctrl() warn: 'opts->queue_size - 1' 18446744073709551615 can't fit into 65535 'ctrl->ctrl.sqsize'
+drivers/nvme/target/loop.c:578 nvme_loop_create_ctrl() warn: 'opts->queue_size - 1' 4294967295 can't fit into 65535 'ctrl->ctrl.sqsize'
+fs/ext4/super.c:1744:19: warning: 'deprecated_msg' defined but not used [-Wunused-const-variable=]
+fs/ntfs3/namei.c:487 ntfs_d_compare() error: uninitialized symbol 'uni1'.
+include/linux/compiler_types.h:357:45: error: call to '__compiletime_assert_422' declared with attribute error: FIELD_GET: mask is not constant
+mips-linux-ld: dc_resource.c:(.text.dc_resource_acquire_secondary_pipe_for_mpc_odm+0x304): undefined reference to `dcn20_build_mapped_resource'
+mm/mmap.c:802 __vma_adjust() error: uninitialized symbol 'next_next'.
+security/apparmor/policy_unpack.c:1089 unpack_profile() warn: passing zero to 'ERR_PTR'
+security/apparmor/policy_unpack.c:548 unpack_trans_table() error: uninitialized symbol 'table'.
 
-By the way, if you agree with a review comment there is no need to reply
-with "OK"; just delete the parts you agree with from your response and
-I'll know those are okay. Doing this will reduce the amount of text we
-have to scroll through and thus allow us to focus on just the questions
-we have remaining. ;-)
+Error/Warning ids grouped by kconfigs:
 
-> > > +/**
-> > > + * struct rz_mtu3_cnt - MTU3 counter private data
-> > > + *
-> > > + * @clk: MTU3 module clock
-> > > + * @lock: Lock to prevent concurrent access for ceiling and count
-> > > + * @rz_mtu3_channel: HW channels for the counters  */ struct
-> > > +rz_mtu3_cnt {
-> > > +	struct clk *clk;
-> > > +	struct mutex lock;
-> > > +	struct rz_mtu3_channel *ch[RZ_MTU3_MAX_HW_CNTR_CHANNELS];
-> >=20
-> > Does this need to be a pointer to an array of struct rz_mtu3_channel?
->=20
-> Yes, HW has MTU{0..8} channels and MTU{1,2} supports counters
-> At probe time this array is filled with *ch[0]=3D MTU1 and *ch[1]=3D MTU2
+gcc_recent_errors
+|-- arm64-allyesconfig
+|   |-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-alt_cb_patch_nops
+|   `-- arch-arm64-kernel-alternative.c:warning:no-previous-prototype-for-apply_alternatives_vdso
+|-- csky-randconfig-m041-20221010
+|   `-- mm-mmap.c-__vma_adjust()-error:uninitialized-symbol-next_next-.
+|-- i386-allyesconfig
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-defconfig
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a003
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a005
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a011-20221010
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a012-20221010
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a014-20221010
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-a016-20221010
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-c001-20221010
+|   `-- include-linux-compiler_types.h:error:call-to-__compiletime_assert_NNN-declared-with-attribute-error:FIELD_GET:mask-is-not-constant
+|-- i386-randconfig-c021-20221010
+|   `-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|-- i386-randconfig-m021-20221010
+|   |-- arch-x86-kernel-apic-apic.c-generic_processor_info()-warn:always-true-condition-(num_processors-()-)-(-u32max-)
+|   |-- drivers-iio-adc-mcp3911.c-mcp3911_probe()-warn:passing-zero-to-PTR_ERR
+|   |-- drivers-iio-adc-mcp3911.c-mcp3911_write_raw()-error:buffer-overflow-mcp3911_osr_table
+|   |-- drivers-nvme-target-loop.c-nvme_loop_create_ctrl()-warn:opts-queue_size-can-t-fit-into-ctrl-ctrl.sqsize
+|   |-- fs-ext4-super.c:warning:deprecated_msg-defined-but-not-used
+|   `-- mm-mmap.c-__vma_adjust()-error:uninitialized-symbol-next_next-.
+|-- i386-randconfig-s052-20221010
+|   |-- fs-ntfs3-index.c:sparse:sparse:restricted-__le32-degrades-to-integer
+|   |-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s1-got-unsigned-short
+|   `-- fs-ntfs3-namei.c:sparse:sparse:incorrect-type-in-argument-(different-base-types)-expected-restricted-__le16-const-usertype-s2-got-unsigned-short
+|-- loongarch-randconfig-r012-20221010
+|   `-- arch-loongarch-mm-init.c:warning:variable-new-set-but-not-used
+|-- loongarch-randconfig-s032-20221010
+|   |-- arch-loongarch-kernel-perf_event.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-ptr-got-int-noderef-__percpu
+|   `-- arch-loongarch-kernel-perf_event.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-void-ptr-got-unsigned-int-noderef-__percpu
+|-- mips-allyesconfig
+|   |-- dc_resource.c:(.text.dc_resource_acquire_secondary_pipe_for_mpc_odm):undefined-reference-to-dcn20_acquire_dsc
+|   `-- mips-linux-ld:dc_resource.c:(.text.dc_resource_acquire_secondary_pipe_for_mpc_odm):undefined-reference-to-dcn20_build_mapped_resource
+|-- powerpc-allmodconfig
+|   |-- ERROR:dcn20_acquire_dsc-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   `-- ERROR:dcn20_build_mapped_resource-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|-- s390-allmodconfig
+|   |-- ERROR:devm_ioremap_resource-drivers-dma-fsl-edma.ko-undefined
+|   |-- ERROR:devm_ioremap_resource-drivers-dma-idma64.ko-undefined
+clang_recent_errors
+|-- arm-ep93xx_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- arm-imx_v4_v5_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- arm-ixp4xx_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- arm-randconfig-r026-20221010
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|-- hexagon-randconfig-r041-20221010
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   |-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmnewmap
+|   |-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-__vmsetvec
+|   `-- ld.lld:error:vmlinux.a(arch-hexagon-kernel-head.o):(.init.text):relocation-R_HEX_B22_PCREL-out-of-range:is-not-in-references-memset
+|-- i386-buildonly-randconfig-r006-20221010
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-dml-dcn32-dcn32_fpu.c:warning:no-previous-prototype-for-function-dcn32_split_stream_for_mpc_or_odm
+|-- i386-randconfig-a002
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|-- i386-randconfig-a004
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|-- mips-cu1000-neo_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- powerpc-fsp2_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- riscv-randconfig-r042-20221011
+|   `-- ld.lld:error:undefined-symbol:riscv_cbom_block_size
+|-- riscv-rv32_defconfig
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|-- x86_64-randconfig-a001-20221010
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|-- x86_64-randconfig-a003-20221010
+|   |-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+|   `-- fs-ntfs3-namei.c:warning:variable-uni1-is-used-uninitialized-whenever-if-condition-is-true
+|-- x86_64-randconfig-a004-20221010
+|   `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
+`-- x86_64-rhel-8.3-rust
+    `-- fs-ext4-super.c:warning:unused-variable-deprecated_msg
 
-In the rz_mtu3_cnt_probe() function I see the rz_mtu3_cnt.ch elements
-manually set to the address of each rz_mtu3.channels element:
+elapsed time: 725m
 
-    for (i =3D 0; i < RZ_MTU3_MAX_HW_CNTR_CHANNELS; i++) {
-        priv->ch[i] =3D &ddata->channels[RZ_MTU1 + i];
-	priv->ch[i]->dev =3D dev;
-    ...
+configs tested: 85
+configs skipped: 3
 
-The rz_mut3.channels member is a contiguous array of struct
-rz_mtu3_channel. If you change the rz_mtu3_channel to a pointer to
-struct rz_mtu3_channel, you can set it to the RZ_MTU1 offset address
-outside of the for loop and thus avoid the double dereference because
-these address are contiguous:
+gcc tested configs:
+x86_64                              defconfig
+arc                                 defconfig
+alpha                               defconfig
+i386                                defconfig
+x86_64                               rhel-8.3
+i386                 randconfig-a011-20221010
+um                             i386_defconfig
+arc                  randconfig-r043-20221010
+s390                             allmodconfig
+x86_64               randconfig-a011-20221010
+um                           x86_64_defconfig
+arm                                 defconfig
+i386                          randconfig-a001
+i386                 randconfig-a013-20221010
+s390                             allyesconfig
+x86_64                          rhel-8.3-func
+i386                 randconfig-a015-20221010
+x86_64               randconfig-a016-20221010
+riscv                randconfig-r042-20221010
+s390                                defconfig
+i386                          randconfig-a003
+x86_64                           allyesconfig
+x86_64                    rhel-8.3-kselftests
+i386                 randconfig-a014-20221010
+x86_64               randconfig-a014-20221010
+i386                          randconfig-a005
+powerpc                           allnoconfig
+s390                 randconfig-r044-20221010
+i386                 randconfig-a016-20221010
+x86_64               randconfig-a015-20221010
+powerpc                     redwood_defconfig
+i386                 randconfig-a012-20221010
+powerpc                          allmodconfig
+xtensa                  cadence_csp_defconfig
+x86_64               randconfig-a012-20221010
+mips                             allyesconfig
+i386                             allyesconfig
+sh                          sdk7780_defconfig
+x86_64               randconfig-a013-20221010
+arm                              allyesconfig
+arc                               allnoconfig
+x86_64                           rhel-8.3-syz
+arm64                            allyesconfig
+sh                               allmodconfig
+alpha                             allnoconfig
+um                                  defconfig
+x86_64                         rhel-8.3-kunit
+xtensa                  audio_kc705_defconfig
+m68k                             allmodconfig
+riscv                             allnoconfig
+x86_64                           rhel-8.3-kvm
+csky                              allnoconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+m68k                        stmark2_defconfig
+arc                 nsimosci_hs_smp_defconfig
+ia64                          tiger_defconfig
+powerpc                     asp8347_defconfig
+m68k                             allyesconfig
+ia64                             allmodconfig
+arm                            pleb_defconfig
+arc                      axs103_smp_defconfig
+m68k                             alldefconfig
+powerpc                  iss476-smp_defconfig
+arm                       omap2plus_defconfig
+i386                 randconfig-c001-20221010
 
-    priv->ch =3D &ddata->channels[RZ_MTU1];
-    for (i =3D 0; i < RZ_MTU3_MAX_HW_CNTR_CHANNELS; i++) {
-	priv->ch[i].dev =3D dev;
-    ...
+clang tested configs:
+hexagon              randconfig-r045-20221010
+hexagon              randconfig-r041-20221010
+riscv                             allnoconfig
+i386                          randconfig-a002
+x86_64               randconfig-a002-20221010
+x86_64               randconfig-a001-20221010
+x86_64               randconfig-a003-20221010
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64               randconfig-a006-20221010
+x86_64               randconfig-a004-20221010
+x86_64               randconfig-a005-20221010
+arm                          ep93xx_defconfig
+mips                          ath25_defconfig
+arm                       imx_v4_v5_defconfig
+arm                          ixp4xx_defconfig
+mips                     cu1000-neo_defconfig
+x86_64                          rhel-8.3-rust
+powerpc                        fsp2_defconfig
+riscv                          rv32_defconfig
 
-> > > +	mutex_lock(&priv->lock);
-> > > +	if (ceiling =3D=3D 0) {
-> > > +		rz_mtu3_8bit_ch_write(priv->ch[id], RZ_MTU3_TCR,
-> > > +				      RZ_MTU3_TCR_CCLR_NONE);
-> >=20
-> > Looks like something different is done when ceiling is set to 0. Would
-> > you explain what's happening in this case and why it's different that
-> > then else case below; in other words, what's the difference between
-> > RZ_MTU3_TCR_CCLR_NONE and RZ_MTU3_TCR_CCLR_TGRA?
->=20
-> RZ_MTU3_TCR_CCLR_TGRA --> for triggering counter count using Z-Phase sign=
-al.
-> RZ_MTU3_TCR_CCLR_NONE --> No clearing.
-
-Does the Z-Phase signal trigger a reset of the counter count back to the
-ceiling value? Does the count loop back to 0 when it passes the ceiling
-value, or does it remain at the ceiling until the direction changes?
-By "no clearing" do you mean that the ceiling is disabled in this case
-and the Counter count increases without limit?
-
-In the Counter subsystem, the "ceiling" Count extension puts an upper
-limit on the Count value. This means that setting "ceiling" to 0 would
-put the upper limit at 0, effectively restricting the Count value to 0
-until the value of "ceiling" is raised.
-
-If the device is unable to support a ceiling value of 0, you should
-return -ERANGE rather than disable the ceiling.
-
-> > > +static void rz_mtu3_16bit_cnt_setting(struct counter_device
-> > *counter,
-> > > +int id) {
-> > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
-> > > +
-> > > +	priv->ch[id]->function =3D RZ_MTU3_16BIT_PHASE_COUNTING;
-> >=20
-> > If 16-bit phase counting is selected for one 16-bit counter, does the
-> > other 16-bit counter need to be configured as well?
->=20
-> Not required I guess, as it is run time decision.
->=20
-> After this, if user tries to enable 16-bit on other channel,
-> we will configure that channel. otherwise, we will return error,
-> if user tries to enable 32-bit channel.
->=20
-> Are you ok with this?=20
-
-Because the phase mode affects how the device interprets multiple
-channels rather than a specific one, maybe it's better to save this
-state as an enum rz_mtu3_function member of struct rz_mtu3_cnt. Or if
-this is affecting the entire device, move it to your struct rz_mut3 and
-share a pointer to that for your Counter and PWM drivers.
-
-It makes me wonder if the rz_mut3_cnt structure is necessary for this
-Counter driver at all when you could pass a pointer your existing
-rz_mut3 structure instead in order to access the channels.
-
-> > > +	int ret =3D 0;
-> > > +
-> > > +	if (enable) {
-> > > +		pm_runtime_get_sync(ch->dev);
-> > > +		ret =3D rz_mtu3_initialize_counter(counter, count->id);
-> >=20
-> > Are you using the Count's "enable" extension to switch between 16-bit
-> > and 32-bit phase modes?
->=20
-> No. But will use that for switching on the next version.
-
-Sorry, I wasn't clear with my question. Please do not implement the
-"enable" Count extensions as a way to toggle between the 16-bit and
-32-bit phase modes. The purpose of "enable" is to provide a pause/resume
-mechanism for a Count: the existing count value should be preserved when
-a Count is disabled, and should continue where it left off when the
-Count is enabled.
-
-To support the phase mode selection, implement a Counter device
-extension for that specific purpose. You can use DEFINE_COUNTER_ENUM()
-and COUNTER_COMP_DEVICE_ENUM() to create a device extension that will
-allow users to toggle between "16-bit" and "32-bit" phase modes. If you
-need help with these macros, just let me know.
-
-> > > +		.name =3D "Channel3 Count(32-bit)",
-> >=20
-> > We probably don't need the "(32-bit)" in the name when it's obvious
-> > already from the channel id and ceiling value.
->=20
-> OK will remove it.
-> >=20
-> > I wonder how this counter is described in the RZ/G2L user
-> > documentation; is it named "Channel 3" or "Channel 1 and 2"?
->=20
-> It is mentioned as MTU1 and MTU2 channels.
->=20
-> These channels can be used for phase counting and PWM operations.
-
-We should avoid calling it "Channel 3" in that case to avoid confusion.
-Perhaps "Channel 1 and 2 (combined) Count" would be better; that's just
-something I came up with off the top of my head, but if you can think of
-a better way to phrase it then please do.
-
-William Breathitt Gray
-
---e/hJ8wYBKKWjMEVp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY0VsWQAKCRC1SFbKvhIj
-K3EpAQDdKFP5efpN2b1Pne7SW7Do5WOfP9CYPhS9SCeUqxWCmQD8C4b1baU3qrUa
-1eMvvhb5i34i/3XiA2bMcxBBHlpbbAc=
-=Bpq1
------END PGP SIGNATURE-----
-
---e/hJ8wYBKKWjMEVp--
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

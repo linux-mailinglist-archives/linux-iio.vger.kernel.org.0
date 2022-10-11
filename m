@@ -2,104 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED3B5FA451
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 21:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DA375FA354
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Oct 2022 20:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiJJTrE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 10 Oct 2022 15:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53096 "EHLO
+        id S229456AbiJJSYn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 10 Oct 2022 14:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbiJJTrC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 15:47:02 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A27C5245F;
-        Mon, 10 Oct 2022 12:47:00 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id f9so14381144ljk.12;
-        Mon, 10 Oct 2022 12:47:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rAk45lvdMHJqkvDklkuRT7/4DO0ZDJi7M0Bz6hxlLqo=;
-        b=PGnRVNt2Qlo/0D8HazGQTpRYD4WY+6Vu8rT8pxLldsfanDXUuPpz4iwGSB9mg9G8WS
-         wORr6RAWEoDE0iUvjPIYrK+IzP4o0TfrErmVlgsPdUHZZhv3SjPmJB3HfJXO8KNhra0A
-         uzPX6jIbBtPEBU+KtxAQ0UPWQuzecH6i0lJ0rzhQKFhIW1FsIqmPc6+OtrQIEF9CBJSc
-         BValavp+JJV9Dc8+tn5kTSbVapo8dKW/mk7/ItruRTiQQipRJFFEbfpcfVKSeOXePCom
-         IhA5fsxEJ1WVqdJmCf4GJ8ZCeoFXS7+5MirP43VB21slbwX0hqWB0TGudQnX7w7UL5Hm
-         egOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rAk45lvdMHJqkvDklkuRT7/4DO0ZDJi7M0Bz6hxlLqo=;
-        b=VTYjiMWpjz0VO69pL3L7+X9XLeFq0xZxwB2rYiQ9t1pDrhORXlkd1D4D3nkIHMDl+W
-         8yGJyk93iC7NJukD4r+Udpv6DnnWfLK5G3G3U+zQnXAitgKRH5pkpS72HWWZPTEurKdH
-         hFqQl/4WjrfIAqovd2y1g9x+YUEYmQvbJ6UHXLn3Q18s5JFJMvs5ll2HnDQ9iQtEYoiO
-         7yIg/cmkH1ysF3pWprqF/EvBnJqqXAwE0eJskOfrNk/hfZrj2ecyD/ltdvRzXYR2rv4P
-         AuS1Ic6qwMj+5TW9Bh7PKQC1rdbE7bN4mbk5Fqe/kojikXMH/dJ0cJpIuTV4IenfRqbv
-         D1qQ==
-X-Gm-Message-State: ACrzQf14/0XGR/uXh4V4iwCNyHa60BuNtOOxlwY7ZPnAnF5od/8PGbOv
-        W5rCs2DnU60lajZDNhDI4GA=
-X-Google-Smtp-Source: AMsMyM4qxSQM+MdqG9uy9SuTj6+lBSRBInXcCXGqVKWqQw0Q40m4PpNUN1t3XJ+NjDn3jHUKOvebbw==
-X-Received: by 2002:a2e:a884:0:b0:25d:d8a2:d18c with SMTP id m4-20020a2ea884000000b0025dd8a2d18cmr6911644ljq.305.1665431218817;
-        Mon, 10 Oct 2022 12:46:58 -0700 (PDT)
-Received: from localhost.localdomain (82-209-154-112.cust.bredband2.com. [82.209.154.112])
-        by smtp.gmail.com with ESMTPSA id v19-20020a05651203b300b0048af397c827sm1525780lfp.218.2022.10.10.12.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Oct 2022 12:46:58 -0700 (PDT)
-From:   Marcus Folkesson <marcus.folkesson@gmail.com>
-To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Kent Gustavsson <kent@minoris.se>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: mcp3911: mask out device ID in debug prints
-Date:   Mon, 10 Oct 2022 21:46:54 +0200
-Message-Id: <20221010194654.676525-1-marcus.folkesson@gmail.com>
-X-Mailer: git-send-email 2.37.1
+        with ESMTP id S229607AbiJJSYk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 10 Oct 2022 14:24:40 -0400
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 230911165;
+        Mon, 10 Oct 2022 11:24:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1665426279; x=1696962279;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lV/sOxd9UMgNF8rqRvEeaHHOWcvWfkCR7DG0x3ALpa4=;
+  b=euqbn5BzqcxrH7uaA0OULUoiQEDEoVhdVa3kv+BZEwFBLdYQUiolynhf
+   XauWSgFaXc7ee/O5Z5HRJKaGGgTkWfumTjA117AJxkLBStTioct4iESNj
+   mhIuuohJw4+N3R1xvYTFy5/tchPQfcv4nY2AspxLPn+YNcrLmv3jvVb/V
+   ysQQYWirt4MXrMtBCMe7omuLapgjHPGDUr0RaLQCRZnIfRt7nHX6TQnUN
+   GIPiXAaWcp9S1Q9gLqNEgf9kn7pn48dNX00/q+td4GYJ+rICpM2Xwx0Zu
+   pBgUVf56c2FLRIr7UOiU5fPPC3YFityh+Bq44n4Dlibj68rj0l4HJwEVB
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="291592274"
+X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
+   d="scan'208";a="291592274"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 11:24:37 -0700
+X-IronPort-AV: E=McAfee;i="6500,9779,10496"; a="751448870"
+X-IronPort-AV: E=Sophos;i="5.95,173,1661842800"; 
+   d="scan'208";a="751448870"
+Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.55])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2022 11:24:34 -0700
+From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, ihkose@gmail.com
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rajat.khandelwal@intel.com,
+        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+Subject: [PATCH] Change the I2C slave address for ds4422/4424 to its correct value
+Date:   Tue, 11 Oct 2022 23:54:37 +0530
+Message-Id: <20221011182437.662719-1-rajat.khandelwal@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The Device ID should not be included when printing register.
+The datasheet states that the slave address for the device is 0x20
+when the pins A0 and A1 are ground. The DT binding has been using
+0x10 as the value and I think it should be 0x20 as per datasheet.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Let me know if I am wrong about this.
+
+Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
 ---
- drivers/iio/adc/mcp3911.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
-index 2c1af11a621f..a71df9f3ab29 100644
---- a/drivers/iio/adc/mcp3911.c
-+++ b/drivers/iio/adc/mcp3911.c
-@@ -59,6 +59,7 @@
+diff --git a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
+index 264fa7c5fe3a..1955b1a97cd6 100644
+--- a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
+@@ -38,7 +38,7 @@ examples:
  
- #define MCP3911_REG_READ(reg, id)	((((reg) << 1) | ((id) << 6) | (1 << 0)) & 0xff)
- #define MCP3911_REG_WRITE(reg, id)	((((reg) << 1) | ((id) << 6) | (0 << 0)) & 0xff)
-+#define MCP3911_REG_MASK		GENMASK(4, 1)
- 
- #define MCP3911_NUM_CHANNELS		2
- #define MCP3911_NUM_SCALES		6
-@@ -94,8 +95,8 @@ static int mcp3911_read(struct mcp3911 *adc, u8 reg, u32 *val, u8 len)
- 
- 	be32_to_cpus(val);
- 	*val >>= ((4 - len) * 8);
--	dev_dbg(&adc->spi->dev, "reading 0x%x from register 0x%x\n", *val,
--		reg >> 1);
-+	dev_dbg(&adc->spi->dev, "reading 0x%x from register 0x%lx\n", *val,
-+		FIELD_GET(MCP3911_REG_MASK, reg));
- 	return ret;
- }
- 
+         dac@10 {
+             compatible = "maxim,ds4424";
+-            reg = <0x10>; /* When A0, A1 pins are ground */
++            reg = <0x20>; /* When A0, A1 pins are ground */
+             vcc-supply = <&vcc_3v3>;
+         };
+     };
 -- 
-2.37.1
+2.34.1
 

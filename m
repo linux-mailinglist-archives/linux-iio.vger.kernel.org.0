@@ -2,774 +2,342 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 201EC5FAB8E
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Oct 2022 06:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FC555FAD19
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Oct 2022 08:56:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229662AbiJKEHM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 11 Oct 2022 00:07:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38588 "EHLO
+        id S229475AbiJKG4n (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 11 Oct 2022 02:56:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229644AbiJKEHH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Oct 2022 00:07:07 -0400
-Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB4C083053;
-        Mon, 10 Oct 2022 21:06:54 -0700 (PDT)
-Received: by mail-pg1-x52f.google.com with SMTP id 129so11840998pgc.5;
-        Mon, 10 Oct 2022 21:06:54 -0700 (PDT)
+        with ESMTP id S229446AbiJKG4m (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 11 Oct 2022 02:56:42 -0400
+Received: from DEU01-BE0-obe.outbound.protection.outlook.com (mail-be0deu01on2126.outbound.protection.outlook.com [40.107.127.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DAB4814D3;
+        Mon, 10 Oct 2022 23:56:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TXw3KeSry+5Q+ysU1KRtEuimlTBPTkPQS9Br6hJjz+hTPCL2DB1MAGTdGKXuw+vKBzy2ZLtvavoK8QhiInJW0fvSBQbI+YD3giuW1KFidbH7gPQBB6DnfaoC56f8JhkHVRAWYq3Y6GbiJrZlnCRwUldrdaCzvz4n5YuEGwTwl7PxFd7qkmylgS1QLYXSVVCIWyDbUw1zSErjHIZJWO7f/Avi+hEktTZ+MODtAI3kYotQKBg0Suue447rDRVjucTWpVl6oSOEFKDGrFL9aD/LWLAN/C7FIXmsfs+t2lFUf5cGYli7NW2Ivq83mWwdo8npVj9WtijLJ7R8mrTw1KOFeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dx+nFzYjIaIiXLNi+c6BLw+l9HlODkSgQYMTG3z+bOg=;
+ b=NXE8oXNn3fYdNE1zjkQPmbOS3oA4nikbiU8CeZFxxI91XGs4t/ru4jRqhQjnISDaC4viG4TR/07LpbYPj1fxqrKzj4FfNkG5L5/B7jT33DKdNg7Y2Mo2oCo/9T4MdBM6Tj6xcGqQFxyEBNV3M7anJwyU7cfh9KAz3LcNXCNCh2SwWBKa4KcN/IgtYA+o7a++J0PJuz9kHh8EF6gncKjM0bfW0Gyhv7kHIUArj6r+I0dIXEGs15CJNxsNWrXlsD5baAouAim7TkBRe56uONwAUOYLp+v+aBoPEy1gXA/WaIaNDWtxvYm1jK+aJ6cApF1BoM9TVmkQlh/eAwb+uNEajA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
+ header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gLaAYL/mjW7UgVemWsTT8SDVDlMhRGR19MuPNuFlVWE=;
-        b=kM8ZrVBIJXunrIE7TeYmQ3yf3pS9O3UAm0BHPoPb9+UmW/Cn2p7S7ueNa4Mzim5XuN
-         s0kmw3VFpCtVHka1mTlSu3x4erFi0J37pISjNQ93zmwkAkMhvbEUBKdn4JPagj/h3Wqo
-         F3MS/IE8R+qsusxpJ/Ww1Qw/gqjb9pUlYYREEZIz2vcQliHvvKdL4MipQjVHMeLf/sXb
-         QJgbhBk0iXwqOzTVtoLZ/d2RQ/ekn0IwEEXNzKvbq+51utwIDA8ZwnpONWvjARWUpMur
-         S67Krl6247n1x9CmpAELaJafEvyQn3G5e1rYnJFEr+12ciAVJEr1ImjC2edfjR+HCQDC
-         KHjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gLaAYL/mjW7UgVemWsTT8SDVDlMhRGR19MuPNuFlVWE=;
-        b=lzAu0GTydavK/g43xUSrVehYEws0rtjlRdS6WeR6XRgJnTP9q6JzVXXFMmG/RIt0zE
-         IAVDW6tFxRYTM9Slq7dO5jAeBNPIvCMFyBHbNBziZ+RpfdvJgIpwqG+Jx0HJdSATTSYn
-         C48Dext3wocliQ64Hf34ab5BhM6gd00LGuWm3vK/SKQ6ipJ0kC4q4C5QRWfaXO3pa5Os
-         IeSnZDbeR4Q+CQvFEwexNfJTWCWipmKcD0uIrtWBwzYGYXqKgkGoMLcyWRFaMSmoEHUd
-         cdwUTelaF8daMlpuluH3e5Tawa9DDyVOl0psHMwEh8v3x9b9xv0yDOLEdpTEg9aYnZss
-         P+dQ==
-X-Gm-Message-State: ACrzQf35PEUQa3A7nwAXM8WkrgXGWnwHr9qWZE+Oen/KXBQ3BNTy9Dhk
-        x8tSB9dHOJG7/0RurLz2w5A=
-X-Google-Smtp-Source: AMsMyM5cjKbCKovmmTk/ojpKYwLbpJrNR8rYRubmr87n4gok6LLA/I9D7C+VECQ++maTTBoMNFY8bg==
-X-Received: by 2002:a05:6a00:330a:b0:563:176d:af81 with SMTP id cq10-20020a056a00330a00b00563176daf81mr13611041pfb.13.1665461213927;
-        Mon, 10 Oct 2022 21:06:53 -0700 (PDT)
-Received: from RD-3580-24288.rt.l (114-137-131-130.emome-ip.hinet.net. [114.137.131.130])
-        by smtp.gmail.com with ESMTPSA id b8-20020a17090a7ac800b00205d70ccfeesm9755968pjl.33.2022.10.10.21.06.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Oct 2022 21:06:53 -0700 (PDT)
-From:   ChiaEn Wu <peterwu.pub@gmail.com>
-To:     pavel@ucw.cz, matthias.bgg@gmail.com, jic23@kernel.org,
-        lars@metafoo.de, andriy.shevchenko@linux.intel.com
-Cc:     chiaen_wu@richtek.com, alice_chen@richtek.com,
-        cy_huang@richtek.com, linux-leds@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, szunichen@gmail.com
-Subject: [PATCH v14 3/3] leds: flash: mt6370: Add MediaTek MT6370 flashlight support
-Date:   Tue, 11 Oct 2022 12:05:48 +0800
-Message-Id: <657f73ae257925ebc68dc825998384ad79d31e1f.1665488982.git.chiaen_wu@richtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1665488982.git.chiaen_wu@richtek.com>
-References: <cover.1665488982.git.chiaen_wu@richtek.com>
+ d=rohmsemiconductor.onmicrosoft.com;
+ s=selector2-rohmsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dx+nFzYjIaIiXLNi+c6BLw+l9HlODkSgQYMTG3z+bOg=;
+ b=HyBbgSeumKssayhXPJpyHz9bisydptzMBQDBZfSDhrqVJ1Le940+0Lkem5SJyztmBb5cATHde0LRq7gXnrEmqw2vMv53Cri7hjw+9mHlxEPp6mtxAuixAYc4WvzM35od5E+vFnJjIx1LoLN8oiEjHiqVfnH82m7uarnrYrAYh9w=
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
+ by FR2P281MB1784.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:90::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5709.15; Tue, 11 Oct
+ 2022 06:56:35 +0000
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::3a53:b9b9:b851:76e4]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::3a53:b9b9:b851:76e4%5]) with mapi id 15.20.5709.019; Tue, 11 Oct 2022
+ 06:56:18 +0000
+From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Thread-Topic: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Thread-Index: AQHY2ZFPkSIdWucYsEm9xmjmqpi3z64BsMKAgAWs+ACAAC4/gIAAFv4AgAANr4CAARlWgA==
+Date:   Tue, 11 Oct 2022 06:56:17 +0000
+Message-ID: <10c4663b-dd65-a545-786d-10aed6e6e5e9@fi.rohmeurope.com>
+References: <cover.1665066397.git.mazziesaccount@gmail.com>
+ <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
+ <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
+ <98b59ad5-8c29-be41-4da1-a961db67827c@gmail.com>
+ <Y0QIzf2cAH9ehSeO@smile.fi.intel.com>
+ <19a6db0f-40a8-dacf-4583-cdb9d74e1243@fi.rohmeurope.com>
+ <Y0QnkQklBpDdqjpi@smile.fi.intel.com>
+In-Reply-To: <Y0QnkQklBpDdqjpi@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BEZP281MB2454:EE_|FR2P281MB1784:EE_
+x-ms-office365-filtering-correlation-id: d2c110f9-4813-4242-36a7-08daab55b26e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: GgD5+DZWNpza0IxC3RDUDdb7AL03wYVLSvrTXsN22QsiYxGAbVdMtgtGePPjzKlAP/bF1TBA70D11g13zoFAdIQRbyg8rLDcpO4SGb3yKD+AGxZ/ZeDDrneWMxbbqsiopCuYzJnH2q7Mj3jXoW/8PV1/0B1UH/4GlrPDG/8WNuv3zz3S9Tw5BzHRbQZIHpTZJwNnnMqdk/mXQmoUS2/V9bqR5bccY7c2AGTmrvUpvVGnt4jUoVaPVrQo0gM2+S2f1Hb5AtO9tGe2zCwmzS2eiizt3oO+tN3iOtdT/KmMsgdqrNfdnrH5rW+uYUinkXf1wYREoHGh5dYOGuxcrojSOSjRxBvARV4dqf/eurlIexO0M4McCr6moC853s9iG+G4wqtYRT19FeZc2kKCrZvAwPcfrDIKn+4EDi0LZgY8Ch8Pqcee2StQTiuoh/zYmmfNDkD08jQ7zfOyUj1OmL/trCzwDzlRTOCLhBrJiiGbEKjtac5/7hnq6bF4fgl4WzM0s/y4b++u84MDQWfR3Ekc207oG3F9PDi8Q4xCmGW87SRSAxYR2XOieQJ3vRC8bPb6CBNw+cmR0CyF9S5TjbxUuIIxjfihTEH76SEw7buBJ5rr8J85Mvml6GkhoHJYRxLom4sdFWf0Kf5NLj8TBlu03ExD2FLZ3zbzDjuY7sg1KIFKnRI1pvaegAkKYuyrzxbk9GWbE5wYgRpfFdNAeoEYxuDey5VJiowUnFQ4AADVVPZH8/ZK9Y9UtxnEZ+O60kS9Z1vP4X7EnIEl439gVpOgfrzcdusRnUAE2YV/REZfJ/qEmdckvXf3S0dfdTfbsUx8YSh45rQ+BJZYxIU0LLy3yQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(346002)(376002)(39840400004)(396003)(366004)(451199015)(66556008)(38070700005)(4326008)(2906002)(91956017)(76116006)(41300700001)(66476007)(64756008)(8676002)(66946007)(66446008)(2616005)(6512007)(86362001)(186003)(83380400001)(8936002)(31696002)(7416002)(30864003)(5660300002)(6506007)(6486002)(53546011)(38100700002)(478600001)(71200400001)(122000001)(316002)(6916009)(54906003)(31686004)(66899015)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VzhlUGxFY3JpMytlazNPNThPTmFPWDdUdGl3WUdjMWIxbGFjZ1RwaVFZazBF?=
+ =?utf-8?B?SHZuS21XbytMUDY2RHUzUWl3VDYzUTUvdEttVnJHQlhhanROQTQ2K0ZIVWsv?=
+ =?utf-8?B?OGhmZ0NJMEhwaFp2em9ZRzZLeHdmdTRBbXBvY3hOU3RIVkRqMHowc2oxVC9y?=
+ =?utf-8?B?dnlhTzRjY1pTd3RGQW5hdGgrNlFTc0Y4bGZLaWRJREl2WERQUWo3ZGlNZkFX?=
+ =?utf-8?B?UzlrclhCS2ZvQWh2eUdTMS9HS0hXNjRzajVzbUI5NDJhWlQvUktEZUdQMHlZ?=
+ =?utf-8?B?L21ScjMyZEJMNkd6ZmIrSDJOaElRMHNDcUF6TzZ6TEFFUkhaa2wxRUUxMnpL?=
+ =?utf-8?B?T2tYTHFsVEg0akhZOVltTXN0Vkh0enB4RXdNbDVETG5rTlhLRktyMzZUQVdW?=
+ =?utf-8?B?bi91V3N6blYwTDArTFZiR2hiYnZZd1NzVmNsZFJ2WXZzdnFLK2c2SWp4Q3Js?=
+ =?utf-8?B?OGlrSlg2U0xVMHMwcXNMRGZjSWp1Q3c5MkwxakVCQ2FnTkhPSmx3clFQUTEv?=
+ =?utf-8?B?RkI5UW5xSkYyNjMyWlB4cGYvVGNIMzNyTTVqUmxMUFlYT0xleEI4eWRCVXAz?=
+ =?utf-8?B?RjNWY3FFR0Rxc3VvWjVDYWhkSWxLM21RaEd4ZkZnVXZYRFF2a0NNMHZmMldO?=
+ =?utf-8?B?ZXVXckJRbmVUTmtlOXhYTDg2MmlPYzgyS0R3TmNmYVVnL1pVMlhROFA0alVH?=
+ =?utf-8?B?cGVPODJwZ1lnRDUrVnJsdWhSY2ozOUlpUFQxODB1Y3NRb0FoL3ZOQkRieWpx?=
+ =?utf-8?B?UE45UjBZZFAvWW9XSTJPWEpxQTY0YjZpZU4xeWE3ZHNCQ2dqZDR5MHl1Tk1t?=
+ =?utf-8?B?Q3UrbnEwT2k5L3RVWmVNSEcxUnB3Z0d5TEFnbEZqa0haNXpFSzdkSGZsSjhL?=
+ =?utf-8?B?NnNneHdOem1KMk54aHAzenI2RzBNUnZaMGluTUxrSFRBR1RCeE9ZdTZLb2Iw?=
+ =?utf-8?B?VjlmM3h5dWhNcUhSOGRxZjNhU0ZRRDhYVHJDM3cvWG5jbEdyZjgvTFkrQkhX?=
+ =?utf-8?B?ZHBSZmlYTy9QZlBaNWFNVGMwQjhNTGtmeUc5aGVYQlJYd2dQOHk5cjhFWXBa?=
+ =?utf-8?B?UzRqcldBQ2NjZU5Qbk1yZkdoSDFWbnVvWDRXSzlUc3JCUWpxeThOSmxUdnlB?=
+ =?utf-8?B?TmJ6Z3dLZEM1dm02QlhVR0RPNWFrdnY2b2JDQ0R6cnA2UnlPVUFhQ2VKKy9r?=
+ =?utf-8?B?ekE2TjdxZEJMV3ZZYlRIcWQvTGJTazNtSzQ5Wkw1OFlsZFF1KzFzclA0cncy?=
+ =?utf-8?B?TWQ5YW5sZFljQ3ZXeTFXbUtoeDFXS2xoYXJjRUhvZWt2cW0xc1JkQTFCVkdi?=
+ =?utf-8?B?TkZRaklHYmdZK0JRcG1wamY3SmRQOGNYNmpmZWZmZkNCVGRmd1pxRFA4RVFy?=
+ =?utf-8?B?ajRGdXh1ZzZheGsweUYzTFByMDBEWG8vR0ZGSTZmVGduUFNKNUVxVnpXc0ZJ?=
+ =?utf-8?B?WEtxaTFjcTlHNzNvcHpYOTczZTIrYTZCVkZlbk4vR2VZQ0dlZjhmTHVySyty?=
+ =?utf-8?B?NHZPbklNcW9yVnkvWXNTUGJuRzBMV0JZZEU2cDF0NHNoWGZVUXBROEY4Szli?=
+ =?utf-8?B?NTBPZlg5bXppV3lkSThDV0toZWxEWEt2dExrQ0FkcVBMWVlmNkErUW0yNlJW?=
+ =?utf-8?B?bmUwMS9qN3JTS2xTRUFpakJPMld3cGFuNWtldnVuZjhqT01kU2ZWYTZ4cU9p?=
+ =?utf-8?B?aHd2Mmw1TnBPOXRMNmUrT1pJNW5QWFk0MWpuS25NM212bXcxLzNRdzFDMXR0?=
+ =?utf-8?B?a0NFbGlMb29xWjg0NUhmcmtmaUY0MmdzQ1hhbjJYVnRRY0RValJMNzNyU0Er?=
+ =?utf-8?B?VUNJQ0VtRmhGcTJQczBXYVF3VjMvRnMwNk5xM2ticThtcUd2SjBldDJwV1Bq?=
+ =?utf-8?B?clNnSW5MMS9zeExvMmhVc0JoSUZscXJNZWdPbGo1OFljcTBMRVZLZ0Fad2Nj?=
+ =?utf-8?B?ZzNPZDVYWGtmaUU2R1pZQzQ5VTY5Sk1obXA1c2lZWTUrcWtzQkZnQnh2UlRU?=
+ =?utf-8?B?WVJuR3hJejQrc2wyY2E5YXFNemtsckM2cWRPY2kzRktWUHdvU21adjFtRkdo?=
+ =?utf-8?B?VUV4aGpGb0dJY0cwZkxDQWpvN3AxUFdCNExzNGtUZnBrRVVqZG11YUxkeElB?=
+ =?utf-8?B?ZytueWpuazEwN2VpMlMzZENJOXRQcWsyNFkxSHI3d0ZWL1BwZlpjUm5QdFlJ?=
+ =?utf-8?Q?Jx3RFcUtV7kPqz3we75HvpY=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D73003002EAB0041BB1333AE5D9B71D9@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: fi.rohmeurope.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2c110f9-4813-4242-36a7-08daab55b26e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Oct 2022 06:56:17.9858
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: XFCCNttiBFsR7QFDi7Jv1oXyqUMgCta5VrydA5K8Uzs2DIA16wN8onpU7KaR+h0HVPJnJpwqaduqdAogWYAhJr9AVXcLhU9wp21HFNGpjKpSVU3kbrE7aJJin9qYe0oj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR2P281MB1784
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Alice Chen <alice_chen@richtek.com>
-
-The MediaTek MT6370 is a highly-integrated smart power management IC,
-which includes a single cell Li-Ion/Li-Polymer switching battery
-charger, a USB Type-C & Power Delivery (PD) controller, dual Flash
-LED current sources, a RGB LED driver, a backlight WLED driver,
-a display bias driver and a general LDO for portable devices.
-
-Add support for the MT6370 Flash LED driver. Flash LED in MT6370
-has 2 channels and support torch/strobe mode.
-
-Signed-off-by: Alice Chen <alice_chen@richtek.com>
-Signed-off-by: ChiaEn Wu <chiaen_wu@richtek.com>
----
-
-v14
-- Remove unused 'depend on OF' in Kconfig
----
- drivers/leds/flash/Kconfig             |  14 +
- drivers/leds/flash/Makefile            |   1 +
- drivers/leds/flash/leds-mt6370-flash.c | 631 +++++++++++++++++++++++++++++++++
- 3 files changed, 646 insertions(+)
- create mode 100644 drivers/leds/flash/leds-mt6370-flash.c
-
-diff --git a/drivers/leds/flash/Kconfig b/drivers/leds/flash/Kconfig
-index d3eb689..0dd955c 100644
---- a/drivers/leds/flash/Kconfig
-+++ b/drivers/leds/flash/Kconfig
-@@ -61,6 +61,20 @@ config LEDS_MT6360
- 	  Independent current sources supply for each flash LED support torch
- 	  and strobe mode.
- 
-+config LEDS_MT6370_FLASH
-+	tristate "Flash LED Support for MediaTek MT6370 PMIC"
-+	depends on LEDS_CLASS
-+	depends on LEDS_CLASS_FLASH || !LEDS_CLASS_FLASH
-+	depends on V4L2_FLASH_LED_CLASS || !V4L2_FLASH_LED_CLASS
-+	depends on MFD_MT6370
-+	help
-+	  Support 2 channels and torch/strobe mode.
-+	  Say Y here to enable support for
-+	  MT6370_FLASH_LED device.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called "leds-mt6370-flash".
-+
- config LEDS_RT4505
- 	tristate "LED support for RT4505 flashlight controller"
- 	depends on I2C && OF
-diff --git a/drivers/leds/flash/Makefile b/drivers/leds/flash/Makefile
-index 0acbddc..0c1f3c5 100644
---- a/drivers/leds/flash/Makefile
-+++ b/drivers/leds/flash/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_LEDS_MAX77693)	+= leds-max77693.o
- obj-$(CONFIG_LEDS_RT4505)	+= leds-rt4505.o
- obj-$(CONFIG_LEDS_RT8515)	+= leds-rt8515.o
- obj-$(CONFIG_LEDS_SGM3140)	+= leds-sgm3140.o
-+obj-$(CONFIG_LEDS_MT6370_FLASH)	+= leds-mt6370-flash.o
-diff --git a/drivers/leds/flash/leds-mt6370-flash.c b/drivers/leds/flash/leds-mt6370-flash.c
-new file mode 100644
-index 0000000..bd4bfb9
---- /dev/null
-+++ b/drivers/leds/flash/leds-mt6370-flash.c
-@@ -0,0 +1,631 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2022 Richtek Technology Corp.
-+ *
-+ * Author: Alice Chen <alice_chen@richtek.com>
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/kernel.h>
-+#include <linux/led-class-flash.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+
-+#include <media/v4l2-flash-led-class.h>
-+
-+enum {
-+	MT6370_LED_FLASH1,
-+	MT6370_LED_FLASH2,
-+	MT6370_MAX_LEDS
-+};
-+
-+/* Virtual definition for multicolor */
-+
-+#define MT6370_REG_FLEDEN		0x17E
-+#define MT6370_REG_STRBTO		0x173
-+#define MT6370_REG_CHGSTAT2		0x1D1
-+#define MT6370_REG_FLEDSTAT1		0x1D9
-+#define MT6370_REG_FLEDISTRB(_id)	(0x174 + 4 * (_id))
-+#define MT6370_REG_FLEDITOR(_id)	(0x175 + 4 * (_id))
-+#define MT6370_ITORCH_MASK		GENMASK(4, 0)
-+#define MT6370_ISTROBE_MASK		GENMASK(6, 0)
-+#define MT6370_STRBTO_MASK		GENMASK(6, 0)
-+#define MT6370_TORCHEN_MASK		BIT(3)
-+#define MT6370_STROBEN_MASK		BIT(2)
-+#define MT6370_FLCSEN_MASK(_id)		BIT(MT6370_LED_FLASH2 - (_id))
-+#define MT6370_FLCSEN_MASK_ALL		GENMASK(1, 0)
-+#define MT6370_FLEDCHGVINOVP_MASK	BIT(3)
-+#define MT6370_FLED1STRBTO_MASK		BIT(11)
-+#define MT6370_FLED2STRBTO_MASK		BIT(10)
-+#define MT6370_FLED1STRB_MASK		BIT(9)
-+#define MT6370_FLED2STRB_MASK		BIT(8)
-+#define MT6370_FLED1SHORT_MASK		BIT(7)
-+#define MT6370_FLED2SHORT_MASK		BIT(6)
-+#define MT6370_FLEDLVF_MASK		BIT(3)
-+
-+#define MT6370_LED_JOINT		2
-+#define MT6370_RANGE_FLED_REG		4
-+#define MT6370_ITORCH_MIN_uA		25000
-+#define MT6370_ITORCH_STEP_uA		12500
-+#define MT6370_ITORCH_MAX_uA		400000
-+#define MT6370_ITORCH_DOUBLE_MAX_uA	800000
-+#define MT6370_ISTRB_MIN_uA		50000
-+#define MT6370_ISTRB_STEP_uA		12500
-+#define MT6370_ISTRB_MAX_uA		1500000
-+#define MT6370_ISTRB_DOUBLE_MAX_uA	3000000
-+#define MT6370_STRBTO_MIN_US		64000
-+#define MT6370_STRBTO_STEP_US		32000
-+#define MT6370_STRBTO_MAX_US		2432000
-+
-+#define STATE_OFF			0
-+#define STATE_KEEP			1
-+#define STATE_ON			2
-+
-+#define to_mt6370_led(ptr, member) container_of(ptr, struct mt6370_led, member)
-+
-+struct mt6370_led {
-+	struct led_classdev_flash flash;
-+	struct v4l2_flash *v4l2_flash;
-+	struct mt6370_priv *priv;
-+	enum led_default_state default_state;
-+	u8 led_no;
-+};
-+
-+struct mt6370_priv {
-+	struct device *dev;
-+	struct regmap *regmap;
-+	struct mutex lock;
-+	unsigned int fled_strobe_used;
-+	unsigned int fled_torch_used;
-+	unsigned int leds_active;
-+	unsigned int leds_count;
-+	struct mt6370_led leds[];
-+};
-+
-+static int mt6370_torch_brightness_set(struct led_classdev *lcdev,
-+				       enum led_brightness level)
-+{
-+	struct mt6370_led *led = to_mt6370_led(lcdev, flash.led_cdev);
-+	struct mt6370_priv *priv = led->priv;
-+	u32 led_enable_mask = (led->led_no == MT6370_LED_JOINT) ?
-+			      MT6370_FLCSEN_MASK_ALL :
-+			      MT6370_FLCSEN_MASK(led->led_no);
-+	u32 enable_mask = MT6370_TORCHEN_MASK | led_enable_mask;
-+	u32 val = level ? led_enable_mask : 0;
-+	u32 curr;
-+	int ret, i;
-+
-+	mutex_lock(&priv->lock);
-+
-+	/*
-+	 * There is only one set of flash control logic, and this
-+	 * flag is used to check if 'strobe' is currently being used.
-+	 */
-+	if (priv->fled_strobe_used) {
-+		dev_warn(lcdev->dev, "Please disable strobe first [%d]\n",
-+			 priv->fled_strobe_used);
-+		ret = -EBUSY;
-+		goto unlock;
-+	}
-+
-+	if (level)
-+		curr = priv->fled_torch_used | BIT(led->led_no);
-+	else
-+		curr = priv->fled_torch_used & ~BIT(led->led_no);
-+
-+	if (curr)
-+		val |= MT6370_TORCHEN_MASK;
-+
-+	if (level) {
-+		level -= 1;
-+		if (led->led_no == MT6370_LED_JOINT) {
-+			u32 flevel[MT6370_MAX_LEDS];
-+
-+			flevel[0] = level / 2;
-+			flevel[1] = level - flevel[0];
-+			for (i = 0; i < MT6370_MAX_LEDS; i++) {
-+				ret = regmap_update_bits(priv->regmap,
-+						MT6370_REG_FLEDITOR(i),
-+						MT6370_ITORCH_MASK, flevel[i]);
-+				if (ret)
-+					goto unlock;
-+			}
-+		} else {
-+			ret = regmap_update_bits(priv->regmap,
-+					MT6370_REG_FLEDITOR(led->led_no),
-+					MT6370_ITORCH_MASK, level);
-+			if (ret)
-+				goto unlock;
-+		}
-+	}
-+
-+	ret = regmap_update_bits(priv->regmap, MT6370_REG_FLEDEN,
-+				 enable_mask, val);
-+	if (ret)
-+		goto unlock;
-+
-+	priv->fled_torch_used = curr;
-+
-+unlock:
-+	mutex_unlock(&priv->lock);
-+	return ret;
-+}
-+
-+static int mt6370_flash_brightness_set(struct led_classdev_flash *fl_cdev,
-+				       u32 brightness)
-+{
-+	/*
-+	 * Because of the current spikes when turning on the flash,
-+	 * the brightness should be kept by the LED framework. This
-+	 * empty function is used to prevent checking failure when
-+	 * led_classdev_flash registers ops.
-+	 */
-+	return 0;
-+}
-+
-+static int _mt6370_flash_brightness_set(struct led_classdev_flash *fl_cdev,
-+					u32 brightness)
-+{
-+	struct mt6370_led *led = to_mt6370_led(fl_cdev, flash);
-+	struct mt6370_priv *priv = led->priv;
-+	struct led_flash_setting *setting = &fl_cdev->brightness;
-+	u32 val = (brightness - setting->min) / setting->step;
-+	int ret, i;
-+
-+	if (led->led_no == MT6370_LED_JOINT) {
-+		u32 flevel[MT6370_MAX_LEDS];
-+
-+		flevel[0] = val / 2;
-+		flevel[1] = val - flevel[0];
-+		for (i = 0; i < MT6370_MAX_LEDS; i++) {
-+			ret = regmap_update_bits(priv->regmap,
-+						 MT6370_REG_FLEDISTRB(i),
-+						 MT6370_ISTROBE_MASK, flevel[i]);
-+			if (ret)
-+				break;
-+		}
-+
-+		return ret;
-+	} else {
-+		return regmap_update_bits(priv->regmap,
-+					  MT6370_REG_FLEDISTRB(led->led_no),
-+					  MT6370_ISTROBE_MASK, val);
-+	}
-+}
-+
-+static int mt6370_strobe_set(struct led_classdev_flash *fl_cdev, bool state)
-+{
-+	struct mt6370_led *led = to_mt6370_led(fl_cdev, flash);
-+	struct mt6370_priv *priv = led->priv;
-+	struct led_classdev *lcdev = &fl_cdev->led_cdev;
-+	struct led_flash_setting *setting = &fl_cdev->brightness;
-+	u32 led_enable_mask = (led->led_no == MT6370_LED_JOINT) ?
-+			      MT6370_FLCSEN_MASK_ALL :
-+			      MT6370_FLCSEN_MASK(led->led_no);
-+	u32 enable_mask = MT6370_STROBEN_MASK | led_enable_mask;
-+	u32 val = state ? led_enable_mask : 0;
-+	u32 curr;
-+	int ret;
-+
-+	mutex_lock(&priv->lock);
-+
-+	/*
-+	 * There is only one set of flash control logic, and this
-+	 * flag is used to check if 'torch' is currently being used.
-+	 */
-+	if (priv->fled_torch_used) {
-+		dev_warn(lcdev->dev, "Please disable torch first [0x%x]\n",
-+				      priv->fled_torch_used);
-+		ret = -EBUSY;
-+		goto unlock;
-+	}
-+
-+	if (state)
-+		curr = priv->fled_strobe_used | BIT(led->led_no);
-+	else
-+		curr = priv->fled_strobe_used & ~BIT(led->led_no);
-+
-+	if (curr)
-+		val |= MT6370_STROBEN_MASK;
-+
-+	ret = regmap_update_bits(priv->regmap, MT6370_REG_FLEDEN, enable_mask,
-+				 val);
-+	if (ret) {
-+		dev_err(lcdev->dev, "[%d] control current source %d fail\n",
-+				     led->led_no, state);
-+		goto unlock;
-+	}
-+
-+	/*
-+	 * If the flash needs to turn on, configure the flash current to
-+	 * ramp up to the setting value. Otherwise, always revert to the
-+	 * minimum one.
-+	 */
-+	ret = _mt6370_flash_brightness_set(fl_cdev, state ? setting->val : setting->min);
-+	if (ret) {
-+		dev_err(lcdev->dev, "[%d] Failed to set brightness\n", led->led_no);
-+		goto out_revert_state;
-+	}
-+
-+	/*
-+	 * For the flash to turn on/off, we must wait for HW ramping
-+	 * up/down time 5ms/500us to prevent the unexpected problem.
-+	 */
-+	if (!priv->fled_strobe_used && curr)
-+		usleep_range(5000, 6000);
-+	else if (priv->fled_strobe_used && !curr)
-+		usleep_range(500, 600);
-+
-+	priv->fled_strobe_used = curr;
-+
-+out_revert_state:
-+	if (state)
-+		curr = priv->fled_strobe_used & ~BIT(led->led_no);
-+	else
-+		curr = priv->fled_strobe_used | BIT(led->led_no);
-+
-+	if (curr)
-+		val |= MT6370_STROBEN_MASK;
-+
-+	ret = regmap_update_bits(priv->regmap, MT6370_REG_FLEDEN, enable_mask,
-+				 val);
-+	if (ret)
-+		dev_err(lcdev->dev, "[%d] revert current source fail\n", led->led_no);
-+unlock:
-+	mutex_unlock(&priv->lock);
-+	return ret;
-+}
-+
-+static int mt6370_strobe_get(struct led_classdev_flash *fl_cdev, bool *state)
-+{
-+	struct mt6370_led *led = to_mt6370_led(fl_cdev, flash);
-+	struct mt6370_priv *priv = led->priv;
-+
-+	mutex_lock(&priv->lock);
-+	*state = !!(priv->fled_strobe_used & BIT(led->led_no));
-+	mutex_unlock(&priv->lock);
-+
-+	return 0;
-+}
-+
-+static int mt6370_timeout_set(struct led_classdev_flash *fl_cdev, u32 timeout)
-+{
-+	struct mt6370_led *led = to_mt6370_led(fl_cdev, flash);
-+	struct mt6370_priv *priv = led->priv;
-+	struct led_flash_setting *setting = &fl_cdev->timeout;
-+	u32 val = (timeout - setting->min) / setting->step;
-+	int ret;
-+
-+	mutex_lock(&priv->lock);
-+	ret = regmap_update_bits(priv->regmap, MT6370_REG_STRBTO,
-+				 MT6370_STRBTO_MASK, val);
-+	mutex_unlock(&priv->lock);
-+
-+	return ret;
-+}
-+
-+static int mt6370_fault_get(struct led_classdev_flash *fl_cdev, u32 *fault)
-+{
-+	struct mt6370_led *led = to_mt6370_led(fl_cdev, flash);
-+	struct mt6370_priv *priv = led->priv;
-+	u16 fled_stat;
-+	unsigned int chg_stat, strobe_timeout_mask, fled_short_mask;
-+	u32 rfault = 0;
-+	int ret;
-+
-+	mutex_lock(&priv->lock);
-+	ret = regmap_read(priv->regmap, MT6370_REG_CHGSTAT2, &chg_stat);
-+	if (ret)
-+		goto unlock;
-+
-+	ret = regmap_raw_read(priv->regmap, MT6370_REG_FLEDSTAT1, &fled_stat,
-+			      sizeof(fled_stat));
-+	if (ret)
-+		goto unlock;
-+
-+	switch (led->led_no) {
-+	case MT6370_LED_FLASH1:
-+		strobe_timeout_mask = MT6370_FLED1STRBTO_MASK;
-+		fled_short_mask = MT6370_FLED1SHORT_MASK;
-+		break;
-+
-+	case MT6370_LED_FLASH2:
-+		strobe_timeout_mask = MT6370_FLED2STRBTO_MASK;
-+		fled_short_mask = MT6370_FLED2SHORT_MASK;
-+		break;
-+
-+	case MT6370_LED_JOINT:
-+		strobe_timeout_mask = MT6370_FLED1STRBTO_MASK |
-+				      MT6370_FLED2STRBTO_MASK;
-+		fled_short_mask = MT6370_FLED1SHORT_MASK |
-+				  MT6370_FLED2SHORT_MASK;
-+	}
-+
-+	if (chg_stat & MT6370_FLEDCHGVINOVP_MASK)
-+		rfault |= LED_FAULT_INPUT_VOLTAGE;
-+
-+	if (fled_stat & strobe_timeout_mask)
-+		rfault |= LED_FAULT_TIMEOUT;
-+
-+	if (fled_stat & fled_short_mask)
-+		rfault |= LED_FAULT_SHORT_CIRCUIT;
-+
-+	if (fled_stat & MT6370_FLEDLVF_MASK)
-+		rfault |= LED_FAULT_UNDER_VOLTAGE;
-+
-+	*fault = rfault;
-+unlock:
-+	mutex_unlock(&priv->lock);
-+	return ret;
-+}
-+
-+static const struct led_flash_ops mt6370_flash_ops = {
-+	.flash_brightness_set = mt6370_flash_brightness_set,
-+	.strobe_set = mt6370_strobe_set,
-+	.strobe_get = mt6370_strobe_get,
-+	.timeout_set = mt6370_timeout_set,
-+	.fault_get = mt6370_fault_get,
-+};
-+
-+#if IS_ENABLED(CONFIG_V4L2_FLASH_LED_CLASS)
-+static int mt6370_flash_external_strobe_set(struct v4l2_flash *v4l2_flash,
-+					    bool enable)
-+{
-+	struct led_classdev_flash *flash = v4l2_flash->fled_cdev;
-+	struct mt6370_led *led = to_mt6370_led(flash, flash);
-+	struct mt6370_priv *priv = led->priv;
-+	u32 mask = (led->led_no == MT6370_LED_JOINT) ? MT6370_FLCSEN_MASK_ALL :
-+		   MT6370_FLCSEN_MASK(led->led_no);
-+	u32 val = enable ? mask : 0;
-+	int ret;
-+
-+	mutex_lock(&priv->lock);
-+	ret = regmap_update_bits(priv->regmap, MT6370_REG_FLEDEN, mask, val);
-+	if (ret)
-+		goto unlock;
-+
-+	if (enable)
-+		priv->fled_strobe_used |= BIT(led->led_no);
-+	else
-+		priv->fled_strobe_used &= ~BIT(led->led_no);
-+
-+unlock:
-+	mutex_unlock(&priv->lock);
-+	return ret;
-+}
-+
-+static const struct v4l2_flash_ops v4l2_flash_ops = {
-+	.external_strobe_set = mt6370_flash_external_strobe_set,
-+};
-+
-+static void mt6370_init_v4l2_flash_config(struct mt6370_led *led,
-+					  struct v4l2_flash_config *config)
-+{
-+	struct led_classdev *lcdev;
-+	struct led_flash_setting *setting = &config->intensity;
-+
-+	lcdev = &led->flash.led_cdev;
-+
-+	setting->min = MT6370_ITORCH_MIN_uA;
-+	setting->step = MT6370_ITORCH_STEP_uA;
-+	setting->max = setting->min + (lcdev->max_brightness - 1) * setting->step;
-+	setting->val = setting->max;
-+
-+	config->has_external_strobe = 1;
-+	strscpy(config->dev_name, lcdev->dev->kobj.name,
-+		sizeof(config->dev_name));
-+
-+	config->flash_faults = LED_FAULT_SHORT_CIRCUIT | LED_FAULT_TIMEOUT |
-+			       LED_FAULT_INPUT_VOLTAGE |
-+			       LED_FAULT_UNDER_VOLTAGE;
-+}
-+#else
-+static const struct v4l2_flash_ops v4l2_flash_ops;
-+static void mt6370_init_v4l2_flash_config(struct mt6370_led *led,
-+					  struct v4l2_flash_config *config)
-+{
-+}
-+#endif
-+
-+static void mt6370_v4l2_flash_release(void *v4l2_flash)
-+{
-+	v4l2_flash_release(v4l2_flash);
-+}
-+
-+static int mt6370_led_register(struct device *parent, struct mt6370_led *led,
-+				struct led_init_data *init_data)
-+{
-+	struct v4l2_flash_config v4l2_config = {};
-+	int ret;
-+
-+	ret = devm_led_classdev_flash_register_ext(parent, &led->flash,
-+						   init_data);
-+	if (ret)
-+		return dev_err_probe(parent, ret,
-+				     "Couldn't register flash %d\n", led->led_no);
-+
-+	mt6370_init_v4l2_flash_config(led, &v4l2_config);
-+	led->v4l2_flash = v4l2_flash_init(parent, init_data->fwnode,
-+					  &led->flash, &v4l2_flash_ops,
-+					  &v4l2_config);
-+	if (IS_ERR(led->v4l2_flash))
-+		return dev_err_probe(parent, PTR_ERR(led->v4l2_flash),
-+				     "Failed to register %d v4l2 sd\n", led->led_no);
-+
-+	return devm_add_action_or_reset(parent, mt6370_v4l2_flash_release,
-+					led->v4l2_flash);
-+}
-+
-+static u32 mt6370_clamp(u32 val, u32 min, u32 max, u32 step)
-+{
-+	u32 retval;
-+
-+	retval = clamp_val(val, min, max);
-+	if (step > 1)
-+		retval = rounddown(retval - min, step) + min;
-+
-+	return retval;
-+}
-+
-+static int mt6370_init_flash_properties(struct mt6370_led *led,
-+					struct led_init_data *init_data)
-+{
-+	struct led_classdev_flash *flash = &led->flash;
-+	struct led_classdev *lcdev = &flash->led_cdev;
-+	struct mt6370_priv *priv = led->priv;
-+	struct led_flash_setting *setting;
-+	u32 sources[MT6370_MAX_LEDS];
-+	u32 max_ua, val;
-+	int i, ret, num;
-+
-+	num = fwnode_property_count_u32(init_data->fwnode, "led-sources");
-+	if (num < 1 || num > MT6370_MAX_LEDS)
-+		return dev_err_probe(priv->dev, -EINVAL,
-+				     "Not specified or wrong number of led-sources\n");
-+
-+	ret = fwnode_property_read_u32_array(init_data->fwnode, "led-sources", sources, num);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < num; i++) {
-+		if (sources[i] >= MT6370_MAX_LEDS)
-+			return -EINVAL;
-+		if (priv->leds_active & BIT(sources[i]))
-+			return -EINVAL;
-+		priv->leds_active |= BIT(sources[i]);
-+
-+	}
-+	led->led_no = (num == MT6370_MAX_LEDS) ? MT6370_LED_JOINT :
-+		       sources[0];
-+
-+	max_ua = (num == 2) ? MT6370_ITORCH_DOUBLE_MAX_uA : MT6370_ITORCH_MAX_uA;
-+	ret = fwnode_property_read_u32(init_data->fwnode, "led-max-microamp", &val);
-+	if (ret) {
-+		dev_info(priv->dev,
-+			 "Not specified led-max-microamp, config to the minimum\n");
-+		val = MT6370_ITORCH_MIN_uA;
-+	} else {
-+		val = mt6370_clamp(val, MT6370_ITORCH_MIN_uA, max_ua,
-+				  MT6370_ITORCH_STEP_uA);
-+	}
-+
-+	lcdev->max_brightness = (val - MT6370_ITORCH_MIN_uA) /
-+				MT6370_ITORCH_STEP_uA + 1;
-+	lcdev->brightness_set_blocking = mt6370_torch_brightness_set;
-+	lcdev->flags |= LED_DEV_CAP_FLASH;
-+
-+	max_ua = (num == 2) ? MT6370_ISTRB_DOUBLE_MAX_uA : MT6370_ISTRB_MAX_uA;
-+	ret = fwnode_property_read_u32(init_data->fwnode, "flash-max-microamp", &val);
-+	if (ret) {
-+		dev_info(priv->dev,
-+		   "Not specified flash-max-microamp, config to the minimum\n");
-+		val = MT6370_ISTRB_MIN_uA;
-+	} else {
-+		val = mt6370_clamp(val, MT6370_ISTRB_MIN_uA, max_ua,
-+				  MT6370_ISTRB_STEP_uA);
-+	}
-+
-+	setting = &flash->brightness;
-+	setting->min = MT6370_ISTRB_MIN_uA;
-+	setting->step = MT6370_ISTRB_STEP_uA;
-+	setting->val = setting->max = val;
-+
-+	/*
-+	 * Always configure to the minimum level when
-+	 * off to prevent flash current spikes.
-+	 */
-+	ret = _mt6370_flash_brightness_set(flash, setting->min);
-+	if (ret)
-+		return ret;
-+
-+	ret = fwnode_property_read_u32(init_data->fwnode,
-+				       "flash-max-timeout-us", &val);
-+	if (ret) {
-+		dev_info(priv->dev,
-+			 "Not specified flash-max-timeout-us, config to the minimum\n");
-+		val = MT6370_STRBTO_MIN_US;
-+	} else {
-+		val = mt6370_clamp(val, MT6370_STRBTO_MIN_US,
-+				   MT6370_STRBTO_MAX_US, MT6370_STRBTO_STEP_US);
-+	}
-+
-+	setting = &flash->timeout;
-+	setting->min = MT6370_STRBTO_MIN_US;
-+	setting->step = MT6370_STRBTO_STEP_US;
-+	setting->val = setting->max = val;
-+
-+	flash->ops = &mt6370_flash_ops;
-+
-+	return 0;
-+}
-+
-+static int mt6370_led_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct mt6370_priv *priv;
-+	struct fwnode_handle *child;
-+	size_t count;
-+	int i = 0, ret;
-+
-+	count = device_get_child_node_count(dev);
-+	if (!count || count > MT6370_MAX_LEDS)
-+		return dev_err_probe(dev, -EINVAL,
-+		       "No child node or node count over max led number %zu\n", count);
-+
-+	priv = devm_kzalloc(dev, struct_size(priv, leds, count), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->leds_count = count;
-+	priv->dev = dev;
-+	mutex_init(&priv->lock);
-+
-+	priv->regmap = dev_get_regmap(dev->parent, NULL);
-+	if (!priv->regmap)
-+		return dev_err_probe(dev, -ENODEV, "Failed to get parent regmap\n");
-+
-+	device_for_each_child_node(dev, child) {
-+		struct mt6370_led *led = priv->leds + i;
-+		struct led_init_data init_data = { .fwnode = child, };
-+
-+		led->priv = priv;
-+		led->default_state = led_init_default_state_get(init_data.fwnode);
-+
-+		ret = mt6370_init_flash_properties(led, &init_data);
-+		if (ret)
-+			return ret;
-+
-+		ret = mt6370_led_register(dev, led, &init_data);
-+		if (ret)
-+			return ret;
-+
-+		i++;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id mt6370_led_of_id[] = {
-+	{ .compatible = "mediatek,mt6370-flashlight" },
-+	{ /* sentinel */ },
-+};
-+MODULE_DEVICE_TABLE(of, mt6370_led_of_id);
-+
-+static struct platform_driver mt6370_led_driver = {
-+	.driver = {
-+		.name = "mt6370-flashlight",
-+		.of_match_table = mt6370_led_of_id,
-+	},
-+	.probe = mt6370_led_probe,
-+};
-+module_platform_driver(mt6370_led_driver);
-+
-+MODULE_AUTHOR("Alice Chen <alice_chen@richtek.com>");
-+MODULE_DESCRIPTION("MT6370 FLASH LED Driver");
-+MODULE_LICENSE("GPL v2");
--- 
-2.7.4
-
+T24gMTAvMTAvMjIgMTc6MDksIEFuZHkgU2hldmNoZW5rbyB3cm90ZToNCj4gT24gTW9uLCBPY3Qg
+MTAsIDIwMjIgYXQgMDE6MjA6MjNQTSArMDAwMCwgVmFpdHRpbmVuLCBNYXR0aSB3cm90ZToNCj4+
+IE9uIDEwLzEwLzIyIDE0OjU4LCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+Pj4gT24gTW9uLCBP
+Y3QgMTAsIDIwMjIgYXQgMTI6MTI6MzRQTSArMDMwMCwgTWF0dGkgVmFpdHRpbmVuIHdyb3RlOg0K
+Pj4+PiBPbiAxMC82LzIyIDIxOjMyLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6DQo+Pj4+PiBPbiBU
+aHUsIE9jdCAwNiwgMjAyMiBhdCAwNTozODoxNFBNICswMzAwLCBNYXR0aSBWYWl0dGluZW4gd3Jv
+dGU6DQo+IA0KPiAoTm90ZSwgZXZlcnl0aGluZyBJIGhhdmUgZHJvcHBlZCB3aXRob3V0IGNvbW1l
+bnQgY2FuIGJlIHRyZWF0ZWQNCj4gICBhcyAieWVzLCBJIGFncmVlIG9uIHlvdXIgcG9pbnRzIi4g
+U2FtZSBhcHBsaWVzIHRvIHRoZSBlYXJseSBvcg0KPiAgIHRoZSBmdXR1cmUgcmVwbGllcy4pDQo+
+IA0KPiAuLi4NCj4gDQo+Pj4+PiBBbHNvIHdoYXQgd2lsbCBiZSB0aGUgbW9kdWxlIG5hbWUgKHNl
+ZSBvdGhlciBLY29uZmlnIGZvciB0aGUgcGF0dGVybik/DQo+Pj4+DQo+Pj4+IEhlcmUgdGhlIHBh
+dHRlcm4gaXMgSU1ITyBpbXByb3ZlZCBieSBjdXR0aW5nIHRoZSB1c2VsZXNzIHRleHQuIEV2ZW4g
+dGhlDQo+Pj4+IGNyb3NzLXJlZmVyZW5jZSBmcm9tIFNQSSB0byBJMkMgYW5kIEkyQyB0byBTUEkg
+ZHJpdmVyIHdoaWNoIHdhcyBpbiB2MSBpcw0KPj4+PiBtb3JlIHVzZWZ1bC4gTW9kdWxlIGF1dG9s
+b2FkaW5nIGZvciBTUEkgc2hvdWxkIGp1c3Qgd29yay4gQWRkaW5nIHRoZSBtb2R1bGUNCj4+Pj4g
+bmFtZSBoZXJlIHNlZW1zIGp1c3QgYSBzaWxseSBoYWJpdCAtIHdoaWNoIEkgc2VlIG1hbnkgcGVv
+cGxlIGFyZSBicmVha2luZy4NCj4+Pj4gSWYgbW9kdWxlIG5hbWUgaXMgdG8gYmUgbmVlZGVkLCB0
+aGVuIGl0IHNob3VsZCBiZSBjaGVja2VkIGZyb20gdGhlIE1ha2VmaWxlDQo+Pj4+IGFuZCBub3Qg
+dHJ1c3RlZCB0aGF0IEtjb25maWcgdGV4dCBzdGF5cyB1cC10by1kYXRlLi4uDQo+Pj4NCj4+PiBJ
+IHRoaW5rIHRoZSBtb2R1bGUgbmFtZSBpcyBhIGdvb2QgdGhpbmcgdG8gaGF2ZSBmb3IgYSB1c2Vy
+IHdobyBtaWdodCBiZQ0KPj4+IG5vdCBrbm93aW5nIGFib3V0IE1ha2VmaWxlOnMgYW5kIGhvdyB0
+byBkZXJpdmUgdGhlIG1vZHVsZSBuYW1lIGZyb20gdGhhdA0KPj4+IChzb21ldGltZXMgaXQncyBu
+b3Qgc28gb2J2aW91cykuDQo+Pg0KPj4gTXkgcG9pbnQgaXMgdGhhdCBhdmVyYWdlIHVzZXJzIGRv
+IG5vdCByZWFsbHkgZXZlbiBuZWVkIHRvIGtub3cgdGhlDQo+PiBtb2R1bGUgbmFtZXMuIEZvciBt
+b3N0IHNpbXBsZSBkcml2ZXJzIHRoZSBtb2R1bGUgbmFtZSBpcyBqdXN0IHRoZSBiYXNlDQo+PiBv
+ZiB0aGUgZmlsZW5hbWUuIEkgcmVhbGx5IGRvdWJ0IHRoZXJlIGFyZSB0aGF0IG1hbnkgcGVvcGxl
+IHdobw0KPj4NCj4+IGEpIGRvIG5lZWQgdG8ga25vdyBtb2R1bGUgbmFtZQ0KPiANCj4gRXZlcnlv
+bmU/IFdoZW4gSSBuZWVkIHRvIGRlYnVnIHRoZSBpc3N1ZSAoYXNzaXN0ZWQgZGVidWcgb3IgZG9p
+bmcgbXlzZWxmKSBpdCBpcw0KPiBvZnRlbiBnb29kIHRvIGtub3c6DQo+IA0KPiAgIDEpIGlzIHRo
+ZSBkcml2ZXIgYnVpbHQgYXMgYSBtb2R1bGU7DQo+ICAgMikgaXMgdGhhdCBtb2R1bGUgZXZlciBs
+b2FkZWQ7DQo+ICAgMykgaG93IHRvIGZpbmQgaW5pdGlhbCBtb2R1bGUgcGFyYW1ldGVycyBpZiBh
+bnkNCj4gICAgICAoc2VlIC9zeXMvbW9kdWxlLyROQU1FL3BhcmFtZXRlcnMpLg0KPiANCg0KRmFp
+ciBlbm91Z2guIE5leHQgcXVlc3Rpb24gaXMgdGhhdCBob3cgb2Z0ZW4gZG8geW91IGxhdW5jaCBr
+ZXJuZWwgDQpjb25maWd1cmF0aW9uIHRvb2wgYW5kIHRyeSBmaW5kaW5nIHRoZSBjb3JyZWN0IGNv
+bmZpZyBvcHRpb24gd2hlbiB5b3UgDQpuZWVkIHRvIGtub3cgdGhlIG1vZHVsZSBuYW1lPyBNeSBn
+dXQgZmVlbGluZyBpcyB0aGF0IGF2ZXJhZ2UgdXNlcnMgZG8gDQpub3Qgc2VlayB0aGlzIGluZm9y
+bWF0aW9uIHVzaW5nIGNvbmZpZyB0b29scy4gKEluIG15IG9waW5pb24pIGNvbmZpZyBpcyANCmp1
+c3QgYSB3cm9uZyBwbGFjZSBmb3IgdGhpcyBpbmZvcm1hdGlvbi4gV2hlbiB5b3UgbmVlZCB0byBk
+ZWJ1ZyBhIG1vZHVsZSANCnlvdSBzaG91bGQgbm90IGJlIHVzaW5nIHRoZSBrZXJuZWwgY29uZmln
+IHRvb2wgdG8gZmluZCBkZWJ1Z2dpbmcgDQpndWlkYW5jZS4gSXQgaXMganVzdCBhIHdyb25nIHBs
+YWNlLiBUaGUgY29uZmlnIHRvb2wgaXMgZm9yIGtlcm5lbCANCmNvbmZpZ3VyYXRpb24gLSBhbmQg
+YXQgdGhhdCBwaGFzZSB0aGUgbW9kdWxlIG5hbWUgZG9lcyBub3QgbWF0dGVyLiBBdCANCnRoYXQg
+cGhhc2UgeW91IHdhbnQgdG8ga25vdyB3aGF0IHN1cHBvcnQgdGhlIG9wdGlvbiBnaXZlcyB0byB5
+b3UgYW5kIGlmIA0KeW91IHNob3VsZCB1c2UgaXQgb24geW91ciBzeXN0ZW0uIE5hbWUgb2YgYSBt
+b2R1bGUgaXMgY29tcGxldGVseSBpcnJlbGV2YW50Lg0KDQo+PiBiKSByZWFkIGNvbmZpZyBtZW51
+IGVudHJpZXMgYnV0IGRvbid0IGtub3cgaG93IHRvIGZpbmQgYSBtb2R1bGUgbmFtZQ0KPj4gZnJv
+bSBNYWtlZmlsZQ0KPiANCj4gSXNuJ3QgaXQgb3J0aG9nb25hbD8gQXZlcmFnZSB1c2VyIG1heSBl
+YXNpbHkgY2hvb3NlIGV2ZXJ5dGhpbmcgaW4gdGhlIGtlcm5lbA0KPiBjb25maWd1cmF0aW9uIHZp
+YSBgbWFrZSBtZW51Y29uZmlnYCBiZWNhdXNlIGl0IF9pc18gdXNlciBpbnRlcmZhY2UgLyB0b29s
+Lg0KPiBNYWtlZmlsZSBzaW1wbHkgaXMgbm90IGZvciB0aGUgdXNlcnMuDQoNCkF2ZXJhZ2UgdXNl
+cnMgdXNlIGRpc3RyaWJ1dGlvbiBrZXJuZWxzLiBTb21lIHVzZXJzIG1heSBjb21waWxlIG93biAN
+Cmtlcm5lbCAtIGJ1dCB1c2UgY29uZmlnIGZyb20gcHJldmlvdXMga2VybmVsLiBTb21lIHVzZXJz
+IHVzZSAibW9yZSANCmV4b3RpYyIgYm9hcmRzIC0gYW5kIHVzZSBkZWZjb25maWdzIGZvciB0aG9z
+ZS4gSXQgaXMgcmVhbGx5IGp1c3QgYSANCmhhbmRmdWwgb2YgcGVvcGxlIHdobyBkbyByZWFkL2No
+YW5nZSBhIGNvbmZpZyBvcHRpb24gZm9yIGFuIA0KYWNjZWxlcm9tZXRlciwgUE1JQywgUlRDLCBH
+UElPLWNvbnRyb2xsZXIgb3IgYW55IG90aGVyIHN1Y2ggc2luZ2xlIEhXIA0KY29tcG9uZW50LiBB
+bmQgSSBhbSBwcmV0dHkgc3VyZSB0aGF0IHRob3NlIHdobyBkbywgZG8gYWxzbyB1bmRlcnN0YW5k
+IA0KdGhlIHN5bnRheCBvZiBhIE1ha2VmaWxlLg0KDQpBbmQgc3RpbGwsIHRoZSBtb21lbnQgb2Yg
+ZG9pbmcga2VybmVsIGNvbmZpZ3VyYXRpb24gaXMgbm90IHRoZSBtb21lbnQgDQp3aGVuIHlvdSBu
+ZWVkIHRoZSBtb2R1bGUgbmFtZS4NCg0KPj4gYykgd2FudCB0byBrbm93IG1vZHVsZSBuYW1lIGFu
+ZCBjYW4ndCBwYWlyIHRoZSBuYW1lIGZyb20gbHNtb2QgdG8gbW9kdWxlDQo+IA0KPiBJdCdzIHJl
+dmVyc2VkIG1hcHBpbmcgd2UgbmVlZC4NCj4gDQo+PiBkKSByYXRoZXIgbG9vayB1cCB0aGUgY29u
+ZmlnIGVudHJ5IHRoYW4gYnJvd3NlIHRoZSBjb250ZW50cyBvZg0KPj4gbGliL21vZHVsZXMvLi4u
+DQo+IA0KPiBTbywgSSBoYXZlIGEgbW9kdWxlIGNhbGxlZCAnZm9vLWJhci5rbycgYW5kIGxzbW9k
+IHNob3dzIG1lICdiYXotaGVsbCcuDQo+IEhvdyBzaG91bGQgSSBrbm93IHRoYXQgbWFwcGluZyB0
+byBiZWdpbiB3aXRoPw0KPiANCj4+IEl0J2QgYmUgbmljZSB0byBrbm93IGlmIGFueW9uZSByZWFk
+aW5nIHRoaXMgbWFpbCBoYXMgYWN0dWFsbHkgZXZlciB1c2VkDQo+PiB0aGUgbW9kdWxlIG5hbWUg
+aW5mb3JtYXRpb24gcGxhY2VkIGluIEtjb25maWcgZW50cnkgZm9yIF9hbnl0aGluZyBlbHNlXw0K
+Pj4gZXhjZXB0IGZvciBtYWtpbmcgdGhlIEtjb25maWcgZW50cnkgdG8gbG9vayBhIGJpdCBtb3Jl
+IGZhdHR5Li4uDQo+IA0KPiBUaGF0IHNhaWQsIEkgaGF2ZW4ndCBmb3VuZCBhbnkgZ29vZCBqdXN0
+aWZpY2F0aW9uIGZyb20geW91ciBzaWRlIHRvIGF2b2lkDQo+IGluY2x1ZGluZyB0aGUgbW9kdWxl
+IG5hbWUsIHdoaWxlIEkgc2VlIHRoZSBhZHZhbnRhZ2VzIG9mIG90aGVyd2lzZS4NCg0KVGhlIGRp
+c2FkdmFudGFnZSBpcyBzeXN0ZW1hdGljYWxseSBwb2xsdXRpbmcgdGhlIGNvbmZpZyBlbnRyaWVz
+IHdpdGggDQppcnJlbGV2YW50ICh0byBjb25maWd1cmF0aW9uKSBpbmZvcm1hdGlvbi4gV2Ugc2hv
+dWxkIGZvY3VzIG1vcmUgb24gdGhlIA0KcXVlc3Rpb24gaWYgdGhlIGNvbmZpZyBlbnRyeSBleHBs
+YWlucyB1c2VyIHdoZXRoZXIgaGUgc2hvdWxkIG9yIHNob3VsZCANCm5vdCBlbmFibGUgdGhlIHBp
+ZWNlIG9mIGNvbmZpZyBvbiBoaXMgc3lzdGVtLiBJTU5BSEVPIChJbiBNeSBOb3QgQWx3YXlzIA0K
+SHVtYmxlIEVub3VnaCBPcGluaW9uKSBhbGwgdGhlIHJlc3QgYmVsb25ncyB0byBzb21lIG90aGVy
+IGRvY3VtZW50YXRpb24uDQoNCj4gLi4uDQo+IA0KPj4+Pj4+ICtzdHJ1Y3Qga3gwMjJhX2RhdGEg
+ew0KPj4+Pj4+ICsJaW50IGlycTsNCj4+Pj4+PiArCWludCBpbmNfcmVnOw0KPj4+Pj4+ICsJaW50
+IGllbl9yZWc7DQo+Pj4+Pg0KPj4+Pj4+ICsJc3RydWN0IHJlZ21hcCAqcmVnbWFwOw0KPj4+Pj4N
+Cj4+Pj4+IFB1dHRpbmcgdGhpcyBhcyBhIGZpcnN0IG1lbWJlciBtaWdodCBpbXByb3ZlIGNvZGUg
+YnkgbWFraW5nIHBvaW50ZXIgYXJpdGhtZXRpY3MNCj4+Pj4+IGJldHRlci4gSGF2ZSB5b3UgY2hl
+Y2tlZCBwb3NzaWJpbGl0aWVzIHdpdGggYmxvYXQtby1tZXRlcj8NCj4+Pj4NCj4+Pj4gTm8uIEFt
+b3VudCBvZiBjb21iaW5hdGlvbnMgaXMganVzdCB0b28gaHVnZSBmb3IgbWUgdG8gdHJ5IHJhbmRv
+bWx5DQo+Pj4+IHJlb3JkZXJpbmcgc3RydWN0cyBhbmQgcnVubmluZyBibG9hdC1vLW1ldGVyLiBD
+YW4geW91IHBsZWFzZSBleHBsYWluIG1lIHdoeQ0KPj4+PiB5b3UgdGhpbmsgcmVvcmRlcmluZyB0
+aGlzIHdvdWxkIGhhdmUgdmlzaWJsZSBpbXBhY3QgYW5kIGlmIHRoaXMgaXMgc29tZXRoaW5nDQo+
+Pj4+IHRoYXQgaXMgdW5pdmVyc2FsbHkgdHJ1ZSBvciBpZiBzdWNoIGFuIG9wdGltaXphdGlvbiBp
+cyBhcmNoaXRlY3R1cmUNCj4+Pj4gZGVwZW5kZW50Pw0KPj4+DQo+Pj4gVXN1YWxseSByZWdtYXAg
+cG9pbnRlciBpcyB1c2VkIG1vcmUgb2Z0ZW4gdGhhbiwgZm9yIGluc3RhbmNlLCB0aGUgJ2lycScg
+bWVtYmVyLA0KPj4+IGFuZCBJIGJlbGlldmUgdGhhdCBtb3ZpbmcgJ2lycScgbWVtYmVyIGRlZXBl
+ciB3aWxsIGJlIGhhcm1sZXNzLCB3aGlsZSBtb3ZpbmcNCj4+PiByZWdtYXAgbWlnaHQgYmUgd2lu
+bmluZy4NCj4+DQo+PiBTbyB5b3Ugc3VnZ2VzdCB1cyB0byB0cnkgb3B0aW1pemluZyB0aGUgY29k
+ZSBieSBwbGFjaW5nIGEgcG9pbnRlciB0bw0KPj4gbW9yZSBmcmVxdWVudGx5IHVzZWQgbWVtYmVy
+KHMpIGF0IHRoZSB0b3Agb2YgdGhlIHN0cnVjdD8gSSBkaWRuJ3Qga25vdw0KPj4gaXQgd291bGQg
+aGF2ZSBhbnkgaW1wYWN0LiBJIHVuZGVyc3RhbmQgYXJyYW5naW5nIHRoZSBtZW1iZXJzIG9mDQo+
+PiBmcmVxdWVudGx5IGNvcGllZCBzdHJ1Y3RzIGJhc2VkIG9uIHNpemVzIHNvIHRoYXQgd2UgY2Fu
+IGF2b2lkIGVhdGluZw0KPj4gc3BhY2UgYnkgcGFkZGluZyAtIGJ1dCBJIGhhZCBuZXZlciBoZWFy
+ZCBvZiB0aGluZ3MgYmVpbmcgaW1wcm92ZWQgYnkNCj4+IG9yZGVyaW5nIGJhc2VkIG9uIGZyZXF1
+ZW5jeSBvZiB1c2UuIEl0J2QgYmUgZ3JlYXQgdG8gdW5kZXJzdGFuZCB0aGUNCj4+IG1lY2hhbmlz
+bSB0aGlzIG9wdGltaXphdGlvbiBpcyBiYXNlZCBvbj8NCj4gDQo+IEl0J3MgYmFzZWQgb24gdGhl
+IHBvaW50ZXIgYXJpdGhtZXRpY3MuIEluIHNvbWUgY2FzZXMgaXQgbWlnaHQgYmUgYSB3aW4sIGlu
+IHNvbWUNCj4gYWN0dWFsbHkgbm8gYWR2YW50YWdlLCB0aGF0J3Mgd2h5IGl0J3MgaGFyZCB0byBz
+YXkganVzdCBieSBsb29raW5nIGF0IHRoZSBjb2RlLg0KPiANCj4gTW9zdCBhZmZlY3RlZCBjYXNl
+cyBhcmUgZm9yIHRoZSBlbWJlZGRlZCBkYXRhIHN0cnVjdHVyZXMsIHdoZXJlIGNvbnRhaW5lcl9v
+ZigpDQo+IGlzIHVzZWQgb24gdG9wLA0KDQpPaC4gRG8geW91IG1lYW4gdGhhdCBpbiBzb21lIGNh
+c2VzIHdoZW4gQ1BVIG5lZWRzIHNvbWUgaW5mb3JtYXRpb24gDQpmcmVxdWVudGx5LCBpdCBzaG91
+bGQgYmUgYXQgdGhlIHRvcCBvZiBhIHN0cnVjdCBzbyB0aGF0IG5vIG9mZnNldCBuZWVkcyANCnRv
+IGJlIGFkZGVkIHdoZW4gaW5mb3JtYXRpb24gaXMgb2J0YWluZWQgdXNpbmcgYSBwb2ludGVyIHRv
+IHRoZSBzdHJ1Y3Q/IA0KRWcuIEFkZGluZyBvZmZzZXQgdG8gdGhlIHBvaW50ZXIgKHBvaW50ZXIg
+YXJpdGhtZXRpY3MpIGlzIG5vdCBkb25lIHdoZW4gDQpmaXJzdCBtZW1iZXIgb2YgYSBzdHJ1Y3Qg
+aXMgb2J0YWluZWQgLSByZXN1bHRpbmcgbWF5YmUgb25lIGluc3RydWN0aW9uIA0KbGVzcy4gU28g
+aGF2aW5nIHRoZSBtb3N0IGZyZXF1ZW50bHkgdXNlZCBkYXRhIGFzIGZpcnN0IG1lbWJlciBvZiBh
+IA0Kc3RydWN0IGNhbiBiZSBiZW5lZmljaWFsPyBJIGFzc3VtZSB0aGF0IGlmIG9mZnNldCBuZWVk
+cyB0byBiZSBhZGRlZCwgDQp0aGVuIGl0IGRvZXMgbm90IHJlYWxseSBtYXR0ZXIgaG93IGJpZyB0
+aGUgb2Zmc2V0IGlzIC0gYWx0aG91Z2ggDQpuYXR1cmFsbHkgdGhlIHNpemUgb2YgdGhlIChvZmZz
+ZXQpIHN0cnVjdCBtYXR0ZXJzIHdoZW4gd2UgY29uc2lkZXIgaG93IA0KZGF0YSBmaXRzIGluIGNh
+Y2hlLg0KDQpPa2F5LCBjb29sIHRoaW5nIHRvIGtlZXAgaW4gbWluZCB3aGVuIG9wdGltaXppbmcg
+c29tZSByZWFsbHkgcGVyZm9ybWFuY2UgDQpjcml0aWNhbCBjb2RlIGluIGEgZml4ZWQgZW52aXJv
+bm1lbnQgLSBvciB3aGVuIGRlYWxpbmcgd2l0aCBhIHNldCBvZiANCmluc3RydWN0aW9ucyBjb3Bp
+ZWQgdG8gbWFueSBwbGFjZXMuIEkgYW0gYWZyYWlkIHRoYXQgZm9yIGEgZHJpdmVyIA0KaW50ZW5k
+ZWQgdG8gYmUgdXNlZCBpbiBkaWZmZXJlbnQgc3lzdGVtcyB0aGUgbWFudWFsIG9wdGltaXphdGlv
+biByZXN1bHRzIA0KYXJlIG5vdCByZWFsbHkgdGhhdCBnb29kLiBBbHNvLCBibG9hdC1vLW1ldGVy
+IHJlc3VsdHMgb24ga2VybmVsIGNvbXBpbGVkIA0Kd2l0aCBteSBzcGVjaWZpYyBvcHRpbWl6YXRp
+b24gc2V0dGluZ3MgYW5kIGNvbXBpbGVyIHdvdWxkIHByb2JhYmx5IG5vdCANCmJlIHVuaXZlcnNh
+bGx5IHRydWUuIChBdCB0aGUgbW9tZW50IEkgZG8gZGV2ZWxvcCB0aGUgZHJpdmVyIHVzaW5nIHBy
+ZXR0eSANCmFuY2llbnQgdmVyc2lvbiBvZiBhIDMyLWJpdCBhcm0gY29tcGlsZXIpLiAoSSBkb24n
+dCByZWFsbHkga25vdyB0aGUgDQpibG9hdC1vLW1ldGVyIGJ1dCBteSB1bmRlcnN0YW5kaW5nIGlz
+IHRoYXQgaXQgY29tcGFyZXMgdGhlIGNvbXBpbGVkIA0KYmluYXJpZXMgdG8gZmluZCBvdXQgdGhl
+IGRpZmZlcmVuY2llcykNCg0KPiBlc3AuIGlmIG1vc3QgdXNlZCBtZW1iZXIgb2YgdGhvc2Ugc3Ry
+dWN0dXJlcyBhcmUgYWxzbyBhcHBlYXJlZA0KPiBmaXJzdC4gT2Z0ZW4gZXhhbXBsZSBpczoNCj4g
+DQo+IHN0cnVjdCBmb28gew0KPiAJc3RydWN0IGxpc3RfaGVhZCBub2RlOw0KPiAJLi4uDQo+IH07
+DQo+IA0KPiB2cy4NCj4gDQo+IHN0cnVjdCBmb28gew0KPiAJLi4uDQo+IAlzdHJ1Y3QgbGlzdF9o
+ZWFkIG5vZGU7DQo+IH07DQo+IA0KPiB3aGVyZSB5b3UgbWF5IGV2ZW4gc2VlIGJ5IHJlYWRpbmcg
+dGhlIGNvZGUgdGhhdCBsaXN0X2Zvcl9lYWNoX2VudHJ5KCkNCj4gd2lsbCBiZSBzaG9ydGVyLg0K
+PiANCj4gV2l0aCBwb2ludGVycyBpdCdzIGxlc3MgdmlzaWJsZSwgYnV0IHN0aWxsIG1pZ2h0IGhh
+dmUgYSBkaWZmZXJlbmNlLg0KPiANCj4gLi4uDQo+IA0KPj4+Pj4+ICsNCj4+Pj4+PiArCQl3aGls
+ZSAobi0tID4gMCkNCj4+Pj4+DQo+Pj4+PiB3aGlsZSAobi0tKSA/IE9yIHdoeSB0aGUgMCBpcyBp
+Z25vcmVkPw0KPiANCj4gU28sIGl0IGFwcGVhcnMgdGhhdCB5b3VycyBhbmQgbWluZSBhcmUgZXF1
+aXZhbGVudHMsIGJ1dCBtaW5lIGlzIHNob3J0ZXIgOi0pDQoNClllcy4gQmVzaWRlcywgSSBhY3R1
+YWxseSBsaWtlIGxvb2tzIG9mIHdoaWxlIChuLS0pIG1vcmUgdGhhbiB3aGlsZSAobi0tIA0KID4g
+MCkuIEkgdGhpbmsgd2hpbGUgKG4tLSA+IDApIGhhcyBvcmlnaW5hdGVkIGZyb20gdGhlIGNvZGUg
+d2hlcmUgSSANCnN0b2xlIHRoZSBsb2dpYyA6KQ0KDQo+IA0KPj4+Pj4+ICsJaWYgKGVuKQ0KPj4+
+Pj4+ICsJCXJldHVybiByZWdtYXBfc2V0X2JpdHMoZGF0YS0+cmVnbWFwLCBLWDAyMkFfUkVHX0NO
+VEwsDQo+Pj4+Pj4gKwkJCQkgICAgICAgS1gwMjJBX01BU0tfRFJEWSk7DQo+Pj4+Pg0KPj4+Pj4g
+SSB3b3VsZCBwdXQgcmVkdW5kYW50ICdlbHNlJyBoZXJlIHRvIGhhdmUgdGhlbSBvbiB0aGUgc2Ft
+ZSBjb2x1bW4sIGJ1dA0KPj4+Pj4gaXQncyBwaXR5IHdlIGRvbid0IGhhdmUgcmVnbWFwX2Fzc2ln
+bl9iaXRzKCkgQVBJIChvciB3aGF0ZXZlciBuYW1lIHlvdQ0KPj4+Pj4gY2FuIGNvbWUgdXAgd2l0
+aCkgdG8gaGlkZSB0aGlzIGtpbmQgb2YgY29kZS4NCj4+Pj4NCj4+Pj4gRWgsIHlvdSBtZWFuIHlv
+dSB3b3VsZCBwdXQgZWxzZSBoZXJlIGV2ZW4gdGhvdWdoIHdlIHJldHVybiBmcm9tIHRoZSBpZj8g
+QW5kDQo+Pj4+IHRoZW4gcHV0IGFub3RoZXIgcmV0dXJuIGluIGVsc2UsIGFuZCBubyByZXR1cm4g
+b3V0c2lkZSB0aGUgaWYvZWxzZT8NCj4+Pj4NCj4+Pj4gSSBkZWZpbml0ZWx5IGRvbid0IGxpa2Ug
+dGhlIGlkZWEuDQo+Pj4+DQo+Pj4+IFdlIGNvdWxkIHByb2JhYmx5IHVzZSByZWdtYXBfdXBkYXRl
+X2JpdHMgYW5kIHRlcm5hcnkgYnV0IGluIG15IG9waW5pb24gdGhhdA0KPj4+PiB3b3VsZCBiZSBq
+dXN0IG11Y2ggbGVzcyBvYnZpb3VzLiBJIGRvIGxpa2UgdGhlIHVzZSBvZiBzZXQvY2xlYXIgYml0
+cyB3aGljaA0KPj4+PiBhbHNvIG1ha2VzIHRoZSBtZWFuaW5nIC8gInBvbGFyaXR5IiBvZiBiaXRz
+IHJlYWxseSBjbGVhci4NCj4+Pg0KPj4+IFRoZSBpZGVhIGJlaGluZCBpcyBzaW1wbGUgKGFuZCBu
+b3RlIHRoYXQgSSdtIHVzdWFsbHkgb24gdGhlIHNpZGUgb2YgX3JlbW92aW5nXw0KPj4+IHJlZHVu
+ZGFuY3kpDQo+Pj4NCj4+PiAJaWYgKGVuKQ0KPj4+IAkJcmV0dXJuIHJlZ21hcF9zZXRfYml0cyhk
+YXRhLT5yZWdtYXAsIEtYMDIyQV9SRUdfQ05UTCwNCj4+PiAJCQkJICAgICAgIEtYMDIyQV9NQVNL
+X0RSRFkpOw0KPj4+IAllbHNlDQo+Pj4gCQlyZXR1cm4gcmVnbWFwX2NsZWFyX2JpdHMoZGF0YS0+
+cmVnbWFwLCBLWDAyMkFfUkVHX0NOVEwsDQo+Pj4gCQkJCQkgLi4uDQo+Pj4NCj4+PiBCZWNhdXNl
+IHRoZSBicmFuY2hlcyBhcmUgc2VtYW50aWNhbGx5IHRpZ2h0ZW4gdG8gZWFjaCBvdGhlci4gQnV0
+IGl0J3Mgbm90DQo+Pj4gYSBiaWcgZGVhbCB0byBtZS4NCj4+DQo+PiBXaGF0IEkgZG8gbm90IHJl
+YWxseSBsaWtlIGluIGFib3ZlIGV4YW1wbGUgaXMgdGhhdCB3ZSBuZXZlciByZWFjaCB0aGUNCj4+
+IGVuZCBvZiBmdW5jdGlvbiBib2R5Lg0KPiANCj4gV2hhdCBkbyB5b3UgbWVhbiBieSB0aGF0PyBD
+b21waWxlciBkb2VzIHdhcm4gb3Igd2hhdD8NCg0KSSBkb24ndCBrbm93IGlmIGNvbXBpbGVyIHdh
+cm5zIGFib3V0IGl0IGFzIEkgZGlkbid0IHRlc3QgaXQuIE5vdyB0aGF0IA0KeW91IG1lbnRpb25l
+ZCBpdCwgSSB0aGluayBJIGhhdmUgc2VlbiBzdWNoIHdhcm5pbmdzIGZyb20gYSBjb21waWxlciBv
+ciANCnNvbWUgc3RhdGljIGFuYWx5emVyIChrbG9jd29yaz8pIGluIHRoZSBwYXN0IHRob3VnaC4g
+V2hhdCBJIG1lYW4gaXMgdGhhdDoNCg0KaW50IGZvbygpDQp7DQoJaWYgKCkgew0KCQkuLi4NCgkJ
+cmV0dXJuIDE7DQoJfSBlbHNlIHsNCgkJLi4uDQoJCXJldHVybiAyOw0KCX0NCn0NCg0KY29uc3Ry
+dWN0IG1ha2VzIG1pc3Rha2VzIGxpa2U6DQoNCmludCBmb28oKQ0Kew0KCWlmICgpIHsNCgkJLi4u
+DQoJCXJldHVybiAxOw0KCX0gZWxzZSB7DQoJCS4uLg0KCQlyZXR1cm4gMjsNCgl9DQoNCgkuLi4N
+Cg0KCXJldHVybiAwOw0KfQ0KDQplYXN5IHRvIG1ha2UuIFdoZW4gb25lIHVzZXM6DQoNCmludCBm
+b28oKQ0Kew0KCWlmICgpIHsNCgkJLi4uDQoJCXJldHVybiAxOw0KCX0NCg0KCS4uLg0KCXJldHVy
+biAyOw0KfQ0KDQp0byBiZWdpbiB3aXRoIHRoZXJlIGlzIHplcm8gcm9vbSBmb3Igc3VjaCBjb25m
+dXNpb24uDQoNCj4gDQo+PiBJdCBpcyBhZ2FpbnN0IHRoZSBleHBlY3RhdGlvbiAtIGFuZCBhZGRp
+bmcgdGhlDQo+PiBlbHNlIGhhcyBubyByZWFsIG1lYW5pbmcgd2hlbiBpZiByZXR1cm5zLiBJIGFj
+dHVhbGx5IHRoaW5rIHRoYXQNCj4+IGNoZWNrcGF0Y2ggY291bGQgZXZlbiB3YXJuIGFib3V0IHRo
+YXQgY29uc3RydWN0Lg0KPiANCj4gTm8gd2F5IHdlIGV2ZXIgYWNjZXB0IHN1Y2ggYSB0aGluZyBm
+b3IgY2hlY2twYXRjaCBiZWNhdXNlIGl0J3Mgc3ViamVjdGl2ZQ0KDQpFaC4gQXJlIHlvdSB0ZWxs
+aW5nIG1lIHRoYXQgdGhlcmUgaXMgbm8gc3ViamVjdGl2ZSBzdHVmZiBpbiBjaGVja3BhdGNoPyA7
+KQ0KDQo+ICh2ZXJ5IGRlcGVuZGFudCBvbiB0aGUgY29kZSBwaWVjZSkuIE9UT0ggdGhlIHByb3Bv
+c2VkIHBhdHRlcm4gaXMgdXNlZCBpbg0KPiBtYW55IHBsYWNlcyBhbmQgbGVmdCBsaWtlIHRoYXQg
+aW4gcGxhY2VzIHdoZXJlIEkgY2xlYW5lZCB1cCB0aGUgJ2Vsc2UnLA0KPiB0byBsZWF2ZSB0aGUg
+c2VtYW50aWMgdGlnaHRzIHdpdGggdGhlIGFib3ZlIGxpbmVzKS4NCj4gDQo+Pj4+Pj4gKwlyZXR1
+cm4gcmVnbWFwX2NsZWFyX2JpdHMoZGF0YS0+cmVnbWFwLCBLWDAyMkFfUkVHX0NOVEwsDQo+Pj4+
+Pj4gKwkJCQkgS1gwMjJBX01BU0tfRFJEWSk7DQo+IA0KPiBJIHNlZSB0aGF0IHdlIGhhdmUgYSBz
+dHJvbmcgZGlzYWdyZWVtZW50IGhlcmUuIEkgbGVhdmUgaXQgdG8gbWFpbnRhaW5lcnMuDQoNCg0K
+T2theSwgbGV0J3MgaGVhciB3aGF0IG90aGVycyBoYXZlIHRvIHNheSBoZXJlLg0KDQpUaGFua3Mg
+Zm9yIGFsbCB0aGUgaW5wdXQgdGhpcyBmYXIuDQoNCkJlc3QgUmVnYXJkcw0KCS0tIE1hdHRpDQoN
+Ci0tIA0KTWF0dGkgVmFpdHRpbmVuDQpMaW51eCBrZXJuZWwgZGV2ZWxvcGVyIGF0IFJPSE0gU2Vt
+aWNvbmR1Y3RvcnMNCk91bHUgRmlubGFuZA0KDQp+fiBXaGVuIHRoaW5ncyBnbyB1dHRlcmx5IHdy
+b25nIHZpbSB1c2VycyBjYW4gYWx3YXlzIHR5cGUgOmhlbHAhIH5+DQoNCg==

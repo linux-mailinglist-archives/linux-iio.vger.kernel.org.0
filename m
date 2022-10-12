@@ -2,68 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF4155FCA0E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 19:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 608845FCAE1
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 20:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbiJLRty (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 13:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49162 "EHLO
+        id S229921AbiJLSqN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 14:46:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbiJLRtw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 13:49:52 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCCC13D09
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:49:50 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id i9so11392239qvo.0
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:49:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xfLxdqnnh0d/6BCOLRProKERjFayNi0GJ0Rv9EWEt34=;
-        b=WAb4g/kwIEEwbhbnWqgwC5/H9Xgf6P8cZD/8VgwmHtkgPj1jWPsHjBcQpuzdFJMP+1
-         v6h73qupXsKbcMzx9p8CpGuBM2/wCnyRdJ2b1EXJIri8751zhaA414FY1aXmaejbDLGf
-         syOdMp9xUfkO9Rnnofo0wjr3BAa+VHjwNZ+WCTbd7r21d9ecbbJLgaEuCGr24/m1b8or
-         geikeIop6WLnPp3Ethyhk619TFr27VfcMVj2djZ0gik1ncN/ZTSNHgWjHt/xD32N6UPn
-         POFTPnkFxWemyJdoVUvllbMS38yQyx1I3fm2zMgj78WoQeU4FY+EmFyPIqZfN+CF6IMF
-         OcCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xfLxdqnnh0d/6BCOLRProKERjFayNi0GJ0Rv9EWEt34=;
-        b=bYoswR0f7H+G+Uu/OJuDur7qI0ed/2YaN6S6JorE5gWxebynJ+vq8BGjrFnpiTUen6
-         Lbk1zgDpxsEuuT7QIz3mkwtaiDWX/VRnf1s8y+y+LJVs8COxgv/jV6sqjfc5xRk3F1Pa
-         SDGdFymT348N77Hp+elYZCf2IL/+fbbBWFHpU+4MmWMdjdYczVQCZcRU65tAPl228Iet
-         U2l1lQCf7SK+92jTUKom/VEIsH0r9ElP6h6xMByntUuMcF6isd1XLPy+4APy5b8zpb+s
-         UtljpJ5340fBd4V1331+NDpvfIonnA9ZSPDielcud4i9EfCWbQVFk7xEBnpONjpw05Mu
-         9xTw==
-X-Gm-Message-State: ACrzQf0rb5FNMXNCOZpk1tzanGfhwnlgaIitZnKbPHd4dRNrpXL4z2Qp
-        QABh5clA2aMyObY4WaA/PXDiEWMe/DQ34XOojN8=
-X-Google-Smtp-Source: AMsMyM4ZhWmQqY8/dfke1Qoar92HAbwtO9L1ek/Awy2la1XHak6/Y0uDCrEofraFCtkZ++U6JFUMRLP7wWAibHkOjCI=
-X-Received: by 2002:a05:6214:300c:b0:4b3:cefd:fae0 with SMTP id
- ke12-20020a056214300c00b004b3cefdfae0mr20928091qvb.48.1665596989653; Wed, 12
- Oct 2022 10:49:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20221012151620.1725215-1-nuno.sa@analog.com>
-In-Reply-To: <20221012151620.1725215-1-nuno.sa@analog.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 12 Oct 2022 20:49:13 +0300
-Message-ID: <CAHp75VcUaSaAQ5Gs32bmpUyROqRLjMuDykdKp34p+2DYsovSPw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Make 'mlock' really private
-To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-imx@nxp.com,
+        with ESMTP id S229925AbiJLSqK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 14:46:10 -0400
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBC5C4D87
+        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 11:46:06 -0700 (PDT)
+Received: (Authenticated sender: miquel.raynal@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id C548760002;
+        Wed, 12 Oct 2022 18:45:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1665600364;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vjroV19fBqrVrQU0CLeJKAqB9gBI/nfXkE660Q+OVoQ=;
+        b=WYVkIYufTXY2i59Zs82duyRa6C4cpFF6jK4xzAXLthP2FSn8vweqjlValnPomLu6Em910/
+        Fmay9vqO6+I9A+k4XDrbNhb15ys3bnk8Z5OfWXDAeZc8586HaDN9s3Vg/5KkBxRml/p8ov
+        n9dzXpZHVsqWii4Mpo7192R8aN/A5fGB+gpkNQucFwNgXdUY0m1pBsaHT8AeNmaQiKWBRh
+        dpUbGK9LfhI/3O9BM31a6G2QvLAh5HjuqPE1geV++DHDJr2QEJJb7FaRZgYFEqBOH8i55X
+        2+pzbz5cwCJJqoGxfqUcD4h9cz7W6Jxw2eemwiGcasXMndNgevfwf4a/24ZQsA==
+Date:   Wed, 12 Oct 2022 20:45:56 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>
+Cc:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+        <linux-rockchip@lists.infradead.org>, <linux-imx@nxp.com>,
         Chen-Yu Tsai <wens@csie.org>,
         Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
         Ciprian Regus <ciprian.regus@analog.com>,
         Vladimir Zapolskiy <vz@mleia.com>,
         Cixi Geng <cixi.geng1@unisoc.com>,
         Neil Armstrong <narmstrong@baylibre.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Heiko Stuebner <heiko@sntech.de>,
         Fabio Estevam <festevam@gmail.com>,
@@ -78,119 +55,106 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Jyoti Bhayana <jbhayana@google.com>,
         Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Boor <florian.boor@kernelconcepts.de>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
         Orson Zhai <orsonzhai@gmail.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Kevin Hilman <khilman@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v3 3/4] iio: health: max30102: do not use internal
+ iio_dev lock
+Message-ID: <20221012204556.7648df2e@xps-13>
+In-Reply-To: <20221012151620.1725215-4-nuno.sa@analog.com>
+References: <20221012151620.1725215-1-nuno.sa@analog.com>
+        <20221012151620.1725215-4-nuno.sa@analog.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Oct 12, 2022 at 6:15 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
->
-> This patchset cleans all the drivers directly using the iio_device 'mlock=
-'.
-> This lock is private and should not be used outside the core (or by using
-> proper helpers).
->
-> Most of the conversions where straight, but there are some that really ne=
-ed
-> extra looking. Mainly patches [13/15] and [14/15] were a bit hacky since
-> iio_device_claim_direct_mode() does not fit 100%. The reason is that we
-> want to check if the device is buffering and do something if it is (in
-> which case the API return -EBUSY and released the lock. I just used a
-> combinations of locks to get around this (hopefully I did not messed up).
->
-> Note that this series was only compiled tested using allyesconfig for
-> ARM. I ran 'git grep' to make sure there were no more users of 'mlock'.
-> Hopefully I covered them all...
+Hi Nuno,
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+nuno.sa@analog.com wrote on Wed, 12 Oct 2022 17:16:19 +0200:
 
-I haven't seen any serious issues, some small ones regarding spelling,
-indentation and comment are per individual patches.
+> The pattern used in this device does not quite fit in the
+> iio_device_claim_direct_mode() typical usage. In this case, we want to
+> know if we are in buffered mode or not to know if the device is powered
+> (buffer mode) or not. And depending on that max30102_get_temp() will
+> power on the device if needed. Hence, in order to keep the same
+> functionality, we try to:
+>=20
+> 1. Claim Buffered mode;
+> 2: If 1) succeeds call max30102_get_temp() without powering on the
+>    device;
+> 3: Release Buffered mode;
+> 4: If 1) fails, Claim Direct mode;
+> 5: If 4) succeeds call max30102_get_temp() with powering on the device;
+> 6: Release Direct mode;
+> 7: If 4) fails, goto to 1) and try again.
+>=20
+> This dance between buffered and direct mode is not particularly pretty
+> (as well as the loop introduced by the goto statement) but it does allow
+> us to get rid of the mlock usage while keeping the same behavior.
 
-> v2:
->
-> [PATCH 1-8, 10-12/16]
->  * Mention the inclusion of mutex.h in the commit message.
->
-> [PATCH 1-8, 10, 12/16]
->  * Initialize mutex as late as possible.
-> Note that [PATCH 11/16] was not included since the code to do so was not
-> direct enough. Would need to get a pointer to the private struture
-> outside of scmi_alloc_iiodev() to do it. While not hard, the added change=
-s
-> in the code is not really worth it (IMO of course).
->
-> [PATCH 1/16]
->  * Refactored the commit message a bit. I guess this one will still needs
-> more discussion...
->
-> [PATCH 9/16]
->  * New patch to add an helper function to read the samples.
->
-> [PATCH 13/16]
->  * New patch to introduce iio_device_{claim|release}_buffer_mode() APIs.
->
-> [PATCH 14/16]
->  * Make use of the new iio_device_{claim|release}_buffer_mode() helpers
->
-> [PATCH 15/16]
->  * Make use of the new iio_device_{claim|release}_buffer_mode() helpers
-> in combination with claim_direct_mode(). This is needed so that we make s=
-ure
-> we always get one of the modes (and hence the iio_dev lock) to safely cal=
-l
-> max30102_get_temp(). Note that I'm not particular "happy" with the code b=
-ut
-> OTOH, it does not look as bad as I thought :). Anyways, if there are no
-> complains with it, I'm ok to leave it as-is. Otherwise, I think we can th=
-ink
-> on the flag approach (briefly discussed in the first series).
->
-> v3:
->
-> [PATCH 1/4]
->  * fix 'make W=3D1' warning about prototypes mismatch.
->
-> [PATCH 2/4]
->  * improved commit message to explain why we are shadowing error codes.
->
-> [PATCH 4/4]
->  * minor English fix on the commit message (as suggested by Andy).
->
-> Nuno S=C3=A1 (4):
->   iio: core: introduce iio_device_{claim|release}_buffer_mode() APIs
->   iio: health: max30100: do not use internal iio_dev lock
->   iio: health: max30102: do not use internal iio_dev lock
->   iio: core: move 'mlock' to 'struct iio_dev_opaque'
->
->  drivers/iio/TODO                   |  3 --
->  drivers/iio/health/max30100.c      |  9 ++---
->  drivers/iio/health/max30102.c      | 19 +++++++---
->  drivers/iio/industrialio-buffer.c  | 29 ++++++++-------
->  drivers/iio/industrialio-core.c    | 58 +++++++++++++++++++++++++-----
->  drivers/iio/industrialio-event.c   |  4 +--
->  drivers/iio/industrialio-trigger.c | 12 +++----
->  include/linux/iio/iio-opaque.h     |  2 ++
->  include/linux/iio/iio.h            |  5 ++-
->  9 files changed, 97 insertions(+), 44 deletions(-)
->
-> --
-> 2.38.0
->
+What about adding a TODO comment saying something like: "this comes
+from static analysis and helped dropping mlock access, but someone with
+the device needs to figure out if we can simplify this dance"? Because
+the reason behind all this is that we don't want to risk breaking the
+driver, but perhaps a simpler approach would work, right?
+
+>=20
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> ---
+>  drivers/iio/health/max30102.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/health/max30102.c
+> b/drivers/iio/health/max30102.c index 437298a29f2d..66df4aaa31a7
+> 100644 --- a/drivers/iio/health/max30102.c
+> +++ b/drivers/iio/health/max30102.c
+> @@ -477,12 +477,23 @@ static int max30102_read_raw(struct iio_dev
+> *indio_dev,
+>  		 * Temperature reading can only be acquired when not
+> in
+>  		 * shutdown; leave shutdown briefly when buffer not
+> running */
+> -		mutex_lock(&indio_dev->mlock);
+> -		if (!iio_buffer_enabled(indio_dev))
+> +any_mode_retry:
+> +		if (iio_device_claim_buffer_mode(indio_dev)) {
+> +			/*
+> +			 * This one is a *bit* hacky. If we cannot
+> claim buffer
+> +			 * mode, then try direct mode so that we
+> make sure
+> +			 * things cannot concurrently change. And we
+> just keep
+> +			 * trying until we get one of the modes...
+> +			 */
+> +			if (iio_device_claim_direct_mode(indio_dev))
+> +				goto any_mode_retry;
+> +
+>  			ret =3D max30102_get_temp(data, val, true);
+> -		else
+> +			iio_device_release_direct_mode(indio_dev);
+> +		} else {
+>  			ret =3D max30102_get_temp(data, val, false);
+> -		mutex_unlock(&indio_dev->mlock);
+> +			iio_device_release_buffer_mode(indio_dev);
+> +		}
+>  		if (ret)
+>  			return ret;
+> =20
 
 
---=20
-With Best Regards,
-Andy Shevchenko
+Thanks,
+Miqu=C3=A8l

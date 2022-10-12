@@ -2,85 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9824F5FC157
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 09:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3739F5FC6AD
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 15:42:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbiJLHkr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 03:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44892 "EHLO
+        id S229722AbiJLNmu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 09:42:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiJLHkq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 03:40:46 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D6595AFD;
-        Wed, 12 Oct 2022 00:40:41 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id r22so18342788ljn.10;
-        Wed, 12 Oct 2022 00:40:41 -0700 (PDT)
+        with ESMTP id S229712AbiJLNmt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 09:42:49 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BABFCF840;
+        Wed, 12 Oct 2022 06:42:48 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id r8-20020a1c4408000000b003c47d5fd475so1228316wma.3;
+        Wed, 12 Oct 2022 06:42:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a+IYmi8tEOzQZXwBg2WQPAuUHlGeEUS5FrkTkjk+8r4=;
-        b=FOPJ9nrj9y5QZ8FojeBTK5zlj/pB+V9L1nBdMphMqh/X69LUfrnDyKffKpTkvzRrya
-         WzDqax1bXpZ2azImvJwrIYIvQYnBcWOIsYWkTsRjbun2XkRQuJkqKgJRUew5W5EPh2W6
-         d3U4QXHAZQBoL9JQhWBgCHu+MSeBqd4UPq8MBUN+/zdxEVD8yv4nhjJmoALtj75UaI3t
-         S5kN5E2o5yj8bdKj2HyKPnIMigQuYenZFsCdd3D65xq4s6LtPn2Lcp+OwoaL6FIR9FAR
-         Frs6oVs3IVlxKQR6VRPXwHvnzHfP3vtfqA9LFpFloSSnw9mC/Sd3Tic5EYrTEXxnBttE
-         uetQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cjMwxO2ttET/k2mjc9FVTHy1myqG3lEVWgLpdfrfxrw=;
+        b=QYRWwt2fBEopyPIg16PTiZkfIjXfhIfuNpYq+Hq3C3uTPRNV4Hf/iFmnuVn5kuUmrT
+         8bQmV53q2pKi5lNnsKqTIUmxHHyxseKFALyvRgWrXM3YNP39FRaN+A2xyhBcJB/YPq4L
+         Z0k1YbQ3RfkR3kWHTUNUkz4/H58OSB4hXnkHHJunLYEC1mBYJPOj8CCirkZyJNEn9cJz
+         dohpMkuetNIRysqsO4ih/VFP0lStRArbEY4Rg6bA/qb1lunRzhGm47efZ7TVWAb+gTOw
+         EzSRGBZX6OOdyImRFPLwVkG0uVq8y5ZzjJKA2K7rDIIdePKyLPQbDmlG/iwFDwgqBvwm
+         Qk7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=a+IYmi8tEOzQZXwBg2WQPAuUHlGeEUS5FrkTkjk+8r4=;
-        b=wpVnqnKr41o7y9lVFeh0zt4xdI3JO+9aF1pPkpPnPGFQzkguvNCC4uJRQr1sBbALIu
-         D5K/pTeUImfcsQM78nBfCxXKhOr0dzwu0J5wrd0bi52H2JxxbB7voAcCotBu1/lvS2zM
-         Oey48ViV9hfxsZiHOubZnhtR9MROrGXA1OZDhZuCehaPmpuVUDgzEWUmLMPXkPwMHiJL
-         FBDBIGFrqv1slib3q5EAsLBqP5F6wzSRbW/tdz2favQrhHPJ3OKah3GGHzuUxbHfu4+2
-         1dCKYvjRns1J8B2Qh+5msTZmh7HA1Vz0ljKieD/9pX+0qtQPHiebQp0OZRKTh1NukZfR
-         Y1Hg==
-X-Gm-Message-State: ACrzQf35r6d8GcMVBJSSDH7FO2BeAw3aCI/oap3oQR2Rlzn3JNLdWMxE
-        +Ah/nNnMtvgKv2gR7wssKLg=
-X-Google-Smtp-Source: AMsMyM7Bx7O5hrdirsTUZ5eU0BSzcJT7QqqMLDiJPPkhbIOX9ZLjuOyM2YM/6mObCPUwrE759uFqXw==
-X-Received: by 2002:a2e:a54d:0:b0:26c:64ae:236a with SMTP id e13-20020a2ea54d000000b0026c64ae236amr10808580ljn.207.1665560440059;
-        Wed, 12 Oct 2022 00:40:40 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id dt11-20020a0565122a8b00b00497c3fdf995sm2183545lfb.152.2022.10.12.00.40.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Oct 2022 00:40:39 -0700 (PDT)
-Message-ID: <b1700ea7-4a7a-263c-595c-0f7a56763c10@gmail.com>
-Date:   Wed, 12 Oct 2022 10:40:38 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cjMwxO2ttET/k2mjc9FVTHy1myqG3lEVWgLpdfrfxrw=;
+        b=PRTS2hqoJ8ugSYu9AJT+9rEayMQlfJkpoYe+qGl2icgF/aBM4YENckzaicJJZJMko4
+         UA3Vhlb/+0XQiN3nsdZGCrHfUloi1qbaVJK2I8MQ6hjPTajaZFr1EP6uEruYszwwjvzz
+         aAZlrredXlxwfbCL2/voOs3S1fVEVUg/FKsf3PIiKEWD/fthIRthoy50JUgy8xQywQMl
+         0TRzAqh5DbwRgjm6wsKY8is/9SX3AmToeguqPCe9q92p6HIHi7VDWw9qZxW2fKZCkVKH
+         8TCFpi5EuzAo8Wd96vtJ2T5+D6Kl2Dlfl/HLegQbegZCnkgzJ3xNuXcsCuJy26aVaVju
+         Rocw==
+X-Gm-Message-State: ACrzQf0zRni2UB02CYv2txy+XQ2zVJC+ywg3/uaEimY30pyYZ2qe9vYt
+        M1Xe0eZaOaZEWiJxemXJqT2y/anatCY/xTAr
+X-Google-Smtp-Source: AMsMyM4Xsv+D5FOPwtZLeNd44KTSrQIiig6fL9DAADtD1DAivKJfz2c9aoGaFtSkyTgYLR1oFO23mA==
+X-Received: by 2002:a05:600c:35c8:b0:3b4:bf50:f844 with SMTP id r8-20020a05600c35c800b003b4bf50f844mr2979332wmq.192.1665582166710;
+        Wed, 12 Oct 2022 06:42:46 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id ay38-20020a05600c1e2600b003c6b70a4d69sm1738310wmb.42.2022.10.12.06.42.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Oct 2022 06:42:46 -0700 (PDT)
+From:   Colin Ian King <colin.i.king@gmail.com>
+To:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Kent Gustavsson <kent@minoris.se>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <cover.1665066397.git.mazziesaccount@gmail.com>
- <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
- <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
- <98b59ad5-8c29-be41-4da1-a961db67827c@gmail.com>
- <Y0QIzf2cAH9ehSeO@smile.fi.intel.com>
- <19a6db0f-40a8-dacf-4583-cdb9d74e1243@fi.rohmeurope.com>
-Content-Language: en-US
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-In-Reply-To: <19a6db0f-40a8-dacf-4583-cdb9d74e1243@fi.rohmeurope.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: mcp3911: Fix out of bounds access of array mcp3911_osr_table
+Date:   Wed, 12 Oct 2022 14:42:45 +0100
+Message-Id: <20221012134245.5345-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.37.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -89,76 +73,30 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/10/22 16:20, Vaittinen, Matti wrote:
-> On 10/10/22 14:58, Andy Shevchenko wrote:
->> On Mon, Oct 10, 2022 at 12:12:34PM +0300, Matti Vaittinen wrote:
->> ...
->>
->>>>> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
->>>>> +			       sizeof(s16));
->>
->>>> No endianess awareness (sizeof __le16 / __be16)
->>
->>>>> +	if (ret)
->>>>> +		return ret;
->>>>> +
->>>>> +	*val = data->buffer[0];
->>>>
->>>> Ditto (get_unaligned_be16/le16 / le16/be16_to_cpup()).
->>>
->>> I have probably misunderstood something but I don't see why we should use
->>> 'endianess awareness' in drivers? I thought the IIO framework code takes
->>> care of the endianes conversions based on scan_type so each individual
->>> driver does not need to do that. That however has been just my assumption. I
->>> will need to check this. Thanks for pointing it out.
->>
->> The IIO core uses endianness field only once in iio_show_fixed_type() AFAICS.
+Currently the for-loop is using the size of the array mcp3911_osr_table
+as the upper bounds which is 0..31 which is causing an out of bounds
+access to the array at indexes 8..31. Fix this using the ARRAY_SIZE
+macro to get the size of the array in elements rather than bytes.
 
-Following is some hand waving and speculation after my quick code read. 
-So, I may be utterly wrong in which case please do correct me...
+Fixes: 6d965885f4ea ("iio: adc: mcp3911: add support for oversampling ratio")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/adc/mcp3911.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anyways, it seems to me that you're correct. The endianness field is 
-only used by the IIO to build the channel information for user-space so 
-that applications reading data can parse it. As far as I understand, the 
-driver does not need to do the conversions for user-space, but the 
-user-space tools should inspect the type information and do the 
-conversion. I think it makes sense as user-space applications may be 
-better equipped to do some maths. It also may be some applications do 
-not want to spend cycles doing the conversion but the conversions can be 
-done later "offline" for the captured raw data. So omitting conversion 
-in the IIO driver kind of makes sense to me.
-
-I haven't thoroughly looked (and I have never used) the in-kernel IIO 
-APIs for getting the data. A quick look at the 
-include/linux/iio/consumer.h allows me to assume the iio_chan_spec can 
-be obtained by the consumer drivers. This should make the endianess 
-information available for the consumer drivers as well. So, again, 
-consumer drivers can parse the raw-format data themself.
-
-I have this far only used the sysfs and iio_generic_buffer on a 
-little-endian machine so I have had no issues with the little-endian 
-data and I have only observed the code. Hence I can not really say if my 
-reasoning is correct - or if it is how IIO has been designed to operate. 
-But based on my quick study I don't see a need for the IIO driver to do 
-endianess conversion to any other format but what is indicated by 
-scan_type. Specifically for KX022A, the data is already 16B LE when read 
-from the sensor. This is also advertised by scan_type so no conversion 
-should be needed (unless, of course, I am mistaken :]).
-
->> And it does nothing with it. Maybe Jonathan can shed a light what is it for
->> (I mean the field)?
->>
-
-I agree. It'd be great to listen to someone who actually knows what he 
-is talking about and is not just guessing as I am ^_^;
-
-Yours,
-	-- Matti
-
+diff --git a/drivers/iio/adc/mcp3911.c b/drivers/iio/adc/mcp3911.c
+index b35fd2c9c3c0..015a9ffdb26a 100644
+--- a/drivers/iio/adc/mcp3911.c
++++ b/drivers/iio/adc/mcp3911.c
+@@ -248,7 +248,7 @@ static int mcp3911_write_raw(struct iio_dev *indio_dev,
+ 		break;
+ 
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-		for (int i = 0; i < sizeof(mcp3911_osr_table); i++) {
++		for (int i = 0; i < ARRAY_SIZE(mcp3911_osr_table); i++) {
+ 			if (val == mcp3911_osr_table[i]) {
+ 				val = FIELD_PREP(MCP3911_CONFIG_OSR, i);
+ 				ret = mcp3911_update(adc, MCP3911_REG_CONFIG, MCP3911_CONFIG_OSR,
 -- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+2.37.3
 

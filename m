@@ -2,65 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A32A5FC93A
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 18:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E745FC9FB
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 19:42:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbiJLQ1U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 12:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
+        id S229492AbiJLRmH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 13:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbiJLQ1O (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 12:27:14 -0400
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202C0F87FC;
-        Wed, 12 Oct 2022 09:27:08 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR5Ap081558;
-        Wed, 12 Oct 2022 11:27:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1665592025;
-        bh=eEflHbY1KhW3sZo2AHyNqzl4B6Y/mZETpmBCk/G9yGY=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=MLMfbwnQfXO7O0lfz9NY58tmwUQtsZnhkQuVASZBmQvQadbbP5+7vZ7/mvoGWNhzG
-         yO1DmMfEqlyVppx3RQ0vcJ2bzjL0hxKRGgF8El0cJ67i4qRQkj4COP+gvMRfHXbdPg
-         IFgCAbF5NgeGS31xLBT1yCkr/zXfniFgZ5OHeRIY=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29CGR5Df015385
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 12 Oct 2022 11:27:05 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 12
- Oct 2022 11:27:04 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Wed, 12 Oct 2022 11:27:05 -0500
-Received: from [10.250.234.181] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR06C079753;
-        Wed, 12 Oct 2022 11:27:01 -0500
-Message-ID: <a559e9fa-b560-06fb-8555-5af22f47539e@ti.com>
-Date:   Wed, 12 Oct 2022 21:57:00 +0530
+        with ESMTP id S229459AbiJLRmG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 13:42:06 -0400
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7CAF87DC
+        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:42:05 -0700 (PDT)
+Received: by mail-qk1-x72a.google.com with SMTP id o2so3731963qkk.10
+        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:42:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pGr4YOrtKswOjzzP3xN+2PhnwfyEQn8bkB6qIni8vh8=;
+        b=WeL0cgYMLpxhzch3oF052ucy8+I3ta4eedAGSXAMFvGX1e1us6QlVlxUJHYshI6y1N
+         fkGTWG+mK8ZKfF2WftgyQIjbpouK/JFskUgWt1kgOZMTCVi0mw2NxKYrIUYCMP8fhbw3
+         F4/H5pm8YCtb5OsSI258LyF+OR31KOXlAz7FqeLtXSrZLF8+FH08H4VbgSuA5uu9eDF5
+         DKk8KBUNe6c9YMB0vkgd/e41yJr8tQiHeivii4irw2fsdqd8QKvnD9CXUEwl/ScJxFR5
+         Up8JgrLpD8aj2wlcoi3bCuaYREwAK5r0nJgQan6GdUi/2LHowjk3boQduD5qiTppvoNq
+         7H/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pGr4YOrtKswOjzzP3xN+2PhnwfyEQn8bkB6qIni8vh8=;
+        b=TBNYn2RD0CTjagFi9JpUfSdp8z/GwDMWtHrwE80T10aMEef/D5K+0JbrPZPQeqh7w3
+         aqM4OsIzDckLmXG2UCbvKpj2VWQbrWFVeX0W+WbiKSTj0BE8PVYgqzZ4Niqq1kcPf0aO
+         0SRnhGFYIwc9kYwsXSy64gReG8rBqEn792l3tcbtQSNbIQgQLTsOpQx7SleCz183tjhj
+         XAEYgBK0NzoOUm1zsdTGSEgu7Z1nF640I+1IyWitwGsxJ653iKrHcxaJmoeT6OU4yS/U
+         DpXY88JM1miD4eR6zQjNjGsq903YOl8r+xefisgPMKaazGQuK9AbZqnRI45Zvnb8AFIP
+         3dvA==
+X-Gm-Message-State: ACrzQf0WwiSxFi/JSerK7ZbPNhR+eFEoazX/rH8fhaefcg9LxFF1FxoM
+        IgjIwU2dhmEmSz1Tr7TCMRs0hnDOVG6mlz3Hgmo=
+X-Google-Smtp-Source: AMsMyM4Qx0QscVzFMWDT7b+vIsDRKAbiDa7oEGHZc95k537KgzhJXH0oJ//h9mJ0miOA/eNEHszDNx3V+6gTz5bOCpQ=
+X-Received: by 2002:ae9:e315:0:b0:6ee:761d:4b8b with SMTP id
+ v21-20020ae9e315000000b006ee761d4b8bmr8314124qkf.748.1665596524259; Wed, 12
+ Oct 2022 10:42:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH] counter: ti-ecap-capture: fix IS_ERR() vs NULL check
-Content-Language: en-US
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Julien Panis <jpanis@baylibre.com>
-CC:     William Breathitt Gray <william.gray@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-iio@vger.kernel.org>, <linux-omap@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <Y0bUbZvfDJHBG9C6@kili>
-From:   Vignesh Raghavendra <vigneshr@ti.com>
-In-Reply-To: <Y0bUbZvfDJHBG9C6@kili>
+References: <20221012151620.1725215-1-nuno.sa@analog.com> <20221012151620.1725215-2-nuno.sa@analog.com>
+In-Reply-To: <20221012151620.1725215-2-nuno.sa@analog.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 12 Oct 2022 20:41:28 +0300
+Message-ID: <CAHp75Vc2zz94axxrOb13A71MLTRRt8eLATqJy3CAG-nF253f7w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] iio: core: introduce iio_device_{claim|release}_buffer_mode()
+ APIs
+To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-imx@nxp.com,
+        Chen-Yu Tsai <wens@csie.org>,
+        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Cixi Geng <cixi.geng1@unisoc.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Florian Boor <florian.boor@kernelconcepts.de>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,35 +96,103 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
+On Wed, Oct 12, 2022 at 6:15 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+>
+> These APIs are analogous to iio_device_claim_direct_mode() and
+> iio_device_release_direct_mode() but, as the name suggests, with the
+> logic flipped. While this looks odd enough, it will have at least two
+> users (in following changes) and it will be important to move the iio
+> mlock to the private struct.
 
-On 12/10/22 8:21 pm, Dan Carpenter wrote:
-> The devm_counter_alloc() function returns NULL on error.  It doesn't
-> return error pointers.
-> 
-> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+IIO
 
-Acked-by: Vignesh Raghavendra <vigneshr@ti.com>
-
-Thanks for the fix!
-
+> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 > ---
->  drivers/counter/ti-ecap-capture.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-> index af10de30aba5..8104d02bb5a4 100644
-> --- a/drivers/counter/ti-ecap-capture.c
-> +++ b/drivers/counter/ti-ecap-capture.c
-> @@ -479,8 +479,8 @@ static int ecap_cnt_probe(struct platform_device *pdev)
->  	int ret;
->  
->  	counter_dev = devm_counter_alloc(dev, sizeof(*ecap_dev));
-> -	if (IS_ERR(counter_dev))
-> -		return PTR_ERR(counter_dev);
-> +	if (!counter_dev)
-> +		return -ENOMEM;
->  
->  	counter_dev->name = ECAP_DRV_NAME;
->  	counter_dev->parent = dev;
+>  drivers/iio/industrialio-core.c | 38 +++++++++++++++++++++++++++++++++
+>  include/linux/iio/iio.h         |  2 ++
+>  2 files changed, 40 insertions(+)
+>
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+ore.c
+> index 151ff3993354..cf80f81e4665 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -2083,6 +2083,44 @@ void iio_device_release_direct_mode(struct iio_dev=
+ *indio_dev)
+>  }
+>  EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+>
+> +/**
+> + * iio_device_claim_buffer_mode - Keep device in buffer mode
+> + * @indio_dev: the iio_dev associated with the device
+> + *
+> + * If the device is in buffer mode it is guaranteed to stay
+> + * that way until iio_device_release_buffer_mode() is called.
+> + *
+> + * Use with iio_device_release_buffer_mode()
+
+Missed trailing period.
+
+> + *
+> + * Returns: 0 on success, -EBUSY on failure
+
+Ditto.
+
+> + */
+> +int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
+> +{
+> +       mutex_lock(&indio_dev->mlock);
+> +
+> +       if (iio_buffer_enabled(indio_dev))
+> +               return 0;
+> +
+> +       mutex_unlock(&indio_dev->mlock);
+> +       return -EBUSY;
+> +}
+> +EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
+> +
+> +/**
+> + * iio_device_release_buffer_mode - releases claim on buffer mode
+> + * @indio_dev: the iio_dev associated with the device
+> + *
+> + * Release the claim. Device is no longer guaranteed to stay
+> + * in buffer mode.
+> + *
+> + * Use with iio_device_claim_buffer_mode()
+
+Ditto.
+
+> + */
+> +void iio_device_release_buffer_mode(struct iio_dev *indio_dev)
+> +{
+> +       mutex_unlock(&indio_dev->mlock);
+> +}
+> +EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
+> +
+>  /**
+>   * iio_device_get_current_mode() - helper function providing read-only a=
+ccess to
+>   *                                the opaque @currentmode variable
+> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> index f0ec8a5e5a7a..9d3bd6379eb8 100644
+> --- a/include/linux/iio/iio.h
+> +++ b/include/linux/iio/iio.h
+> @@ -629,6 +629,8 @@ int __devm_iio_device_register(struct device *dev, st=
+ruct iio_dev *indio_dev,
+>  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp=
+);
+>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+> +int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
+> +void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+>
+>  extern struct bus_type iio_bus_type;
+>
+> --
+> 2.38.0
+>
+
+
+--=20
+With Best Regards,
+Andy Shevchenko

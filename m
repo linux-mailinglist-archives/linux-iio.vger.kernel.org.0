@@ -2,58 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E745FC9FB
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 19:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E715FCA0B
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 19:47:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbiJLRmH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 13:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36094 "EHLO
+        id S229655AbiJLRq7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 13:46:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbiJLRmG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 13:42:06 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7CAF87DC
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:42:05 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id o2so3731963qkk.10
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:42:05 -0700 (PDT)
+        with ESMTP id S229506AbiJLRq6 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 13:46:58 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3093FC1D0
+        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:46:57 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id r19so2446128qtx.6
+        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 10:46:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pGr4YOrtKswOjzzP3xN+2PhnwfyEQn8bkB6qIni8vh8=;
-        b=WeL0cgYMLpxhzch3oF052ucy8+I3ta4eedAGSXAMFvGX1e1us6QlVlxUJHYshI6y1N
-         fkGTWG+mK8ZKfF2WftgyQIjbpouK/JFskUgWt1kgOZMTCVi0mw2NxKYrIUYCMP8fhbw3
-         F4/H5pm8YCtb5OsSI258LyF+OR31KOXlAz7FqeLtXSrZLF8+FH08H4VbgSuA5uu9eDF5
-         DKk8KBUNe6c9YMB0vkgd/e41yJr8tQiHeivii4irw2fsdqd8QKvnD9CXUEwl/ScJxFR5
-         Up8JgrLpD8aj2wlcoi3bCuaYREwAK5r0nJgQan6GdUi/2LHowjk3boQduD5qiTppvoNq
-         7H/w==
+        bh=Eyz/lIUSG70FWic8i45ydzTxNMdUqxKfc9SELXNeLo8=;
+        b=okyR7A3m1nTyA6CSsQ4lc8rj24bE8WIzKqRZtHPn4l6nhJwOW5R3AYOgli/stk8Qzi
+         806ndj6B/P32W6+qT0bXGHV/eDSr2JiDMMvQ1L/aj1cmm21YUjBdI3P9WmRzaCZC5CKS
+         VbxguSdNXoi41m7p//Qhjc1n2XDCTwmqnZ5z8i4RH2am/aus4ZfnRA/gOqoEkpn1uUNl
+         29tEi20rg249R9AprQUH7l+DtkSKjfn+tnfmEoAwUp9vYiM2fCMrbe/qksgR8Q61CCh6
+         nv1c9UG4tt63FdGt/iW4S4bg0q6X8G2uXLUmXdcTNaL39OmyWe+Mo5Ir8mWIheJquBk1
+         TvuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pGr4YOrtKswOjzzP3xN+2PhnwfyEQn8bkB6qIni8vh8=;
-        b=TBNYn2RD0CTjagFi9JpUfSdp8z/GwDMWtHrwE80T10aMEef/D5K+0JbrPZPQeqh7w3
-         aqM4OsIzDckLmXG2UCbvKpj2VWQbrWFVeX0W+WbiKSTj0BE8PVYgqzZ4Niqq1kcPf0aO
-         0SRnhGFYIwc9kYwsXSy64gReG8rBqEn792l3tcbtQSNbIQgQLTsOpQx7SleCz183tjhj
-         XAEYgBK0NzoOUm1zsdTGSEgu7Z1nF640I+1IyWitwGsxJ653iKrHcxaJmoeT6OU4yS/U
-         DpXY88JM1miD4eR6zQjNjGsq903YOl8r+xefisgPMKaazGQuK9AbZqnRI45Zvnb8AFIP
-         3dvA==
-X-Gm-Message-State: ACrzQf0WwiSxFi/JSerK7ZbPNhR+eFEoazX/rH8fhaefcg9LxFF1FxoM
-        IgjIwU2dhmEmSz1Tr7TCMRs0hnDOVG6mlz3Hgmo=
-X-Google-Smtp-Source: AMsMyM4Qx0QscVzFMWDT7b+vIsDRKAbiDa7oEGHZc95k537KgzhJXH0oJ//h9mJ0miOA/eNEHszDNx3V+6gTz5bOCpQ=
-X-Received: by 2002:ae9:e315:0:b0:6ee:761d:4b8b with SMTP id
- v21-20020ae9e315000000b006ee761d4b8bmr8314124qkf.748.1665596524259; Wed, 12
- Oct 2022 10:42:04 -0700 (PDT)
+        bh=Eyz/lIUSG70FWic8i45ydzTxNMdUqxKfc9SELXNeLo8=;
+        b=VMdKcHVEyiCg0WiaJPXw0hdJN5JWbtQAkd2oArBOSxP2rwua0Jk7bTiQm+gK0GCarN
+         CMjbM7Fx59ohUOlTYFdK34sfT/2I2DXRLL6bnD5o1QHx/IeXqZhpGiy5xaKaOAu4FCdj
+         vM3OqJXe4hBOxS4T7Y4GTLhg2QRgFW4VJJ68lV0O2v0uLuYvECxdfLeJzW436hJZjobz
+         3+boXB+5VJuxqunrixzLhJ7qsc4seu2Ho703YPX+Z0VO7fNcamUwI5uTwoo/6tf3vBA5
+         bwZ5/3gIxP9HyFPgaEi/zeBT+gh77MUsI8lxg80QWGS1o8cefDkwwO6dXc7xuOuX/AX3
+         B4/Q==
+X-Gm-Message-State: ACrzQf0nLR8UiMJwo/NMSwkjRP69g2JpI2AVxtw5ucW4kINXVN57ZFVl
+        7R5fge/hebDL25PDeH6nXDuQgr+4ExbhRms7iqc=
+X-Google-Smtp-Source: AMsMyM4wC6G8QVC5EYiV+vg/uFFB8OcNl8jga6fXEr0n5Fw/3K59SrYxwXpmfqdkrFciV1jsYE9tYSxdm5hOx4EfY9g=
+X-Received: by 2002:a05:622a:4204:b0:394:111d:d86f with SMTP id
+ cp4-20020a05622a420400b00394111dd86fmr24950258qtb.384.1665596816780; Wed, 12
+ Oct 2022 10:46:56 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221012151620.1725215-1-nuno.sa@analog.com> <20221012151620.1725215-2-nuno.sa@analog.com>
-In-Reply-To: <20221012151620.1725215-2-nuno.sa@analog.com>
+References: <20221012151620.1725215-1-nuno.sa@analog.com> <20221012151620.1725215-3-nuno.sa@analog.com>
+In-Reply-To: <20221012151620.1725215-3-nuno.sa@analog.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 12 Oct 2022 20:41:28 +0300
-Message-ID: <CAHp75Vc2zz94axxrOb13A71MLTRRt8eLATqJy3CAG-nF253f7w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] iio: core: introduce iio_device_{claim|release}_buffer_mode()
- APIs
+Date:   Wed, 12 Oct 2022 20:46:20 +0300
+Message-ID: <CAHp75Vc=TMsFBR8PUb7tifgM_b8foRhiAwy3VEDsX4hTOjKP=Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] iio: health: max30100: do not use internal iio_dev lock
 To:     =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>
 Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
@@ -98,100 +97,68 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Oct 12, 2022 at 6:15 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
 >
-> These APIs are analogous to iio_device_claim_direct_mode() and
-> iio_device_release_direct_mode() but, as the name suggests, with the
-> logic flipped. While this looks odd enough, it will have at least two
-> users (in following changes) and it will be important to move the iio
-> mlock to the private struct.
+> The pattern used in this device does not quite fit in the
+> iio_device_claim_direct_mode() typical usage. In this case,
+> iio_buffer_enabled() was being used not to prevent the raw access but to
+> allow it. Hence, let's make use of the new
+> iio_device_claim_buffer_mode() API to make sure we stay in buffered mode
+> during the complete read.
+>
+> Note that we are shadowing the error code returned by
+> iio_device_claim_buffer_mode() so that we keep the original one
+> (-EAGAIN). The reason is that some userspace stack might already be
+> relying on this particular code so that we are not taking chances and
+> leave it alone.
 
-IIO
+The above line widths seem a bit arbitrary to me. But I think it's due
+to function names in them.
+Perhaps you can make them less deviated by shuffling a bit, like
+moving "but to" to the next line.
 
 > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 > ---
->  drivers/iio/industrialio-core.c | 38 +++++++++++++++++++++++++++++++++
->  include/linux/iio/iio.h         |  2 ++
->  2 files changed, 40 insertions(+)
+>  drivers/iio/health/max30100.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
-ore.c
-> index 151ff3993354..cf80f81e4665 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -2083,6 +2083,44 @@ void iio_device_release_direct_mode(struct iio_dev=
- *indio_dev)
->  }
->  EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
+> diff --git a/drivers/iio/health/max30100.c b/drivers/iio/health/max30100.=
+c
+> index 2cca5e0519f8..6ac49901c9da 100644
+> --- a/drivers/iio/health/max30100.c
+> +++ b/drivers/iio/health/max30100.c
+> @@ -387,18 +387,15 @@ static int max30100_read_raw(struct iio_dev *indio_=
+dev,
+>                  * Temperature reading can only be acquired while engine
+>                  * is running
+>                  */
+> -               mutex_lock(&indio_dev->mlock);
+> -
+> -               if (!iio_buffer_enabled(indio_dev))
+
+> +               if (iio_device_claim_buffer_mode(indio_dev)) {
+
+I think a summary of replacing error code is good to have here, like
+
+/*
+ * Replacing -EBUSY or other error code
+ * returned by iio_device_claim_buffer_mode()
+ * because user space may rely on the current
+ * one.
+ */
+
+>                         ret =3D -EAGAIN;
+> -               else {
+> +               } else {
+>                         ret =3D max30100_get_temp(data, val);
+>                         if (!ret)
+>                                 ret =3D IIO_VAL_INT;
 >
-> +/**
-> + * iio_device_claim_buffer_mode - Keep device in buffer mode
-> + * @indio_dev: the iio_dev associated with the device
-> + *
-> + * If the device is in buffer mode it is guaranteed to stay
-> + * that way until iio_device_release_buffer_mode() is called.
-> + *
-> + * Use with iio_device_release_buffer_mode()
-
-Missed trailing period.
-
-> + *
-> + * Returns: 0 on success, -EBUSY on failure
-
-Ditto.
-
-> + */
-> +int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
-> +{
-> +       mutex_lock(&indio_dev->mlock);
-> +
-> +       if (iio_buffer_enabled(indio_dev))
-> +               return 0;
-> +
-> +       mutex_unlock(&indio_dev->mlock);
-> +       return -EBUSY;
-> +}
-> +EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
-> +
-> +/**
-> + * iio_device_release_buffer_mode - releases claim on buffer mode
-> + * @indio_dev: the iio_dev associated with the device
-> + *
-> + * Release the claim. Device is no longer guaranteed to stay
-> + * in buffer mode.
-> + *
-> + * Use with iio_device_claim_buffer_mode()
-
-Ditto.
-
-> + */
-> +void iio_device_release_buffer_mode(struct iio_dev *indio_dev)
-> +{
-> +       mutex_unlock(&indio_dev->mlock);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
-> +
->  /**
->   * iio_device_get_current_mode() - helper function providing read-only a=
-ccess to
->   *                                the opaque @currentmode variable
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index f0ec8a5e5a7a..9d3bd6379eb8 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -629,6 +629,8 @@ int __devm_iio_device_register(struct device *dev, st=
-ruct iio_dev *indio_dev,
->  int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp=
-);
->  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
->  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
-> +int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
-> +void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
->
->  extern struct bus_type iio_bus_type;
->
-> --
-> 2.38.0
->
-
+> +                       iio_device_release_buffer_mode(indio_dev);
+>                 }
+> -
+> -               mutex_unlock(&indio_dev->mlock);
+>                 break;
+>         case IIO_CHAN_INFO_SCALE:
+>                 *val =3D 1;  /* 0.0625 */
 
 --=20
 With Best Regards,

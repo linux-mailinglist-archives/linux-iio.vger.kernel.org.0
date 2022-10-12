@@ -2,125 +2,142 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C335FC74E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 16:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90FFC5FC78C
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 16:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229909AbiJLOZF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 10:25:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53914 "EHLO
+        id S229704AbiJLOih (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 10:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229989AbiJLOYo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 10:24:44 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B809D73E4;
-        Wed, 12 Oct 2022 07:24:33 -0700 (PDT)
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29CAd1I5013940;
-        Wed, 12 Oct 2022 16:24:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=selector1;
- bh=isiHWGkB7Zp0J3xZU0OT68bWWrLfWPTeUDUFSGCGSYU=;
- b=zrq/1NEgoGc0ZzWh9haQmgGiDLmDA1is/Kd+eGlrA35MXE58xP1K20femMpdj9h0DVb6
- uwkkaoVoaWEvjLntubkf6omtwjxZbe3Tx0vQI+oFloseVN0YGT+gJEWYROIEHBah1PFN
- J5cY2mNQNfHv3MlpZSqlFynhUbpnegdkr2AHe86n6PwPguPtd/CVb5YpkilY7JnZMsDd
- ueQaNuDyfmIxhQdr/ggBeau+91Wzm1eh0oA7vhHcNCNS3g63D3H9wpJrPZcaQa4qAQGY
- wZbppJbx9rKG7gPNfNXRdLq9H+qGMMiqmEGR5Wndm1TYoIF5MR/4jroiI/cMGGLIdqN/ QQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3k31gq3kjm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 12 Oct 2022 16:24:15 +0200
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 8C05010002A;
-        Wed, 12 Oct 2022 16:24:10 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8750522FA28;
-        Wed, 12 Oct 2022 16:24:10 +0200 (CEST)
-Received: from localhost (10.75.127.119) by SHFDAG1NODE1.st.com (10.75.129.69)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.31; Wed, 12 Oct
- 2022 16:24:10 +0200
-From:   Olivier Moysan <olivier.moysan@foss.st.com>
-To:     Rob Herring <robh+dt@kernel.org>,
+        with ESMTP id S229648AbiJLOif (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 10:38:35 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBFDE03B;
+        Wed, 12 Oct 2022 07:38:34 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id x13so8017476qkg.11;
+        Wed, 12 Oct 2022 07:38:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rKPVsd3W7uhNdx8AxGe9ZGmFEXcX2gtbcARjTMPwtE0=;
+        b=jGgCcVxw9aYw+7+X6FUgRTvWP9wT47kEmtOZr477HoPkmQAsPEA5JGobOI6Qze1oP6
+         HPXB6t9x0H25ecRAwTY0BEXhlzAMg/o6RTruu8USuaYPuJvTdljw3u9oSPXN4yGstANA
+         aLxFp546AW+Ay1L/fgx7sRfkKlIGSymtayWFQ4DwNZ0T9qB9Trv5DUmuBtdlKrU41ESi
+         cgyR3kfuwNlBTsq3NS01dpqfazFNVgF1b6Wr8aOSTkmeMAqBxjpEU6+Tq60kBrey2PpH
+         x8y0MTNGT2fsR1ECqiiwD2wXi6jMN9JWReiWyiVOUMbL075hz+qaAOCf93KVgCINHefo
+         b7cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rKPVsd3W7uhNdx8AxGe9ZGmFEXcX2gtbcARjTMPwtE0=;
+        b=JAug/8IoJHJJn6bghM1xUQKV5YAvspMCnZcVzxAJIPMDjFB+IJM/vZUWYkvKAN3C7U
+         gwSR4zgmBJEeY9SIncRHIw9YZvgXcQ+J2un8EQdUZuJFA81S+8PfRb38RwE9KU5yK+lx
+         zOEmdmumrnIlbjelwz+nV2qlknY+viJk1E0opGo4omfoSZ4m5NaqxIfwbD4/hCD6vHQB
+         mvHqvD4IdVIQ3Z8r6fNViPRpGyvWKc4wNbmk2YlpJ+1Aus87k8kzVKDl9ZXX/UlJ+HGM
+         ZCPYItpYl1r4RBEoxAdFyndNv6JhyLtV891t/kddmMpcxNGAEe/w+6KdoGZG+NYuW/p7
+         8G3g==
+X-Gm-Message-State: ACrzQf3SmyVMIv2CfsX+vslzee9Fae7pvcVOLRGxa3zBERqsqbYGIgnX
+        k8b8y9ZcOsRN47eXc6jImMYmZD9H3WSRP5zIoGA=
+X-Google-Smtp-Source: AMsMyM7b7eFUYW469t9gBAUzXjB/1SiBsX+TjGi2DrbbBdSxt9U56YHR1FbMXNHgZ43uuhcXFE2IKeNMDRcE++1W0/Y=
+X-Received: by 2002:a05:620a:2552:b0:6ca:bf8f:4d27 with SMTP id
+ s18-20020a05620a255200b006cabf8f4d27mr20286297qko.383.1665585512923; Wed, 12
+ Oct 2022 07:38:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20221012142205.13041-1-olivier.moysan@foss.st.com>
+In-Reply-To: <20221012142205.13041-1-olivier.moysan@foss.st.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 12 Oct 2022 17:37:56 +0300
+Message-ID: <CAHp75VeUXwqeb+kZE7HshMwjRRrd0=85=qxEGmLDkiyoEEuKrA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] iio: stm32-adc: add support of adc for stm32mp13
+To:     Olivier Moysan <olivier.moysan@foss.st.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH v4 8/8] ARM: dts: stm32: add adc support on stm32mp135f-dk
-Date:   Wed, 12 Oct 2022 16:22:05 +0200
-Message-ID: <20221012142205.13041-9-olivier.moysan@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221012142205.13041-1-olivier.moysan@foss.st.com>
-References: <20221012142205.13041-1-olivier.moysan@foss.st.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.75.127.119]
-X-ClientProxiedBy: GPXDAG2NODE6.st.com (10.75.127.70) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-10-12_07,2022-10-12_01,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Configure ADC support on stm32mp135f-dk. ADC can be used for
-USB Type-C CC1 & CC2 pins wired to in6 & in12.
+On Wed, Oct 12, 2022 at 5:23 PM Olivier Moysan
+<olivier.moysan@foss.st.com> wrote:
+>
+> On STM32MP13 SoCs, each ADC peripheral has a single ADC block.
+> These ADC peripherals, ADC1 and ADC2, are fully independent.
+> The STM32MP131 SoC provides only ADC2, while other STM32MP13x
+> SoCs provide both ADC1 and ADC2.
+>
+> The STM32MP13 ADC features and characteristics are slightly
+> different from STM32MP15 ADC ones, requiring a specific support
+> in the driver.
+>
+> This patchset enables the ADC peripheral on STM32MP135F-DK board.
+>
+> On STM32MP135F-DK board the ADC is connected to VDDA voltage
+> provided by the PMIC LOD1 supply, which has to be enabled through
+> SCMI regulator framework.
+> This serie introduces a fixed regulator to allow ADC probing,
+> while SCMI regulators support is not available. This does
+> not ensure ADC regulator enabling however.
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
----
- arch/arm/boot/dts/stm32mp135f-dk.dts | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+FWIW,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+for patches 1,3, and 4.
 
-diff --git a/arch/arm/boot/dts/stm32mp135f-dk.dts b/arch/arm/boot/dts/stm32mp135f-dk.dts
-index 348adeec7fdc..967df1944822 100644
---- a/arch/arm/boot/dts/stm32mp135f-dk.dts
-+++ b/arch/arm/boot/dts/stm32mp135f-dk.dts
-@@ -76,6 +76,31 @@ vdd_adc: vdd-adc {
- 	};
- };
- 
-+&adc_1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&adc1_usb_cc_pins_a>;
-+	vdda-supply = <&vdd_adc>;
-+	vref-supply = <&vdd_adc>;
-+	status = "okay";
-+	adc1: adc@0 {
-+		status = "okay";
-+		/*
-+		 * Type-C USB_PWR_CC1 & USB_PWR_CC2 on in6 & in12.
-+		 * Use at least 5 * RC time, e.g. 5 * (Rp + Rd) * C:
-+		 * 5 * (5.1 + 47kOhms) * 5pF => 1.3us.
-+		 * Use arbitrary margin here (e.g. 5us).
-+		 */
-+		channel@6 {
-+			reg = <6>;
-+			st,min-sample-time-ns = <5000>;
-+		};
-+		channel@12 {
-+			reg = <12>;
-+			st,min-sample-time-ns = <5000>;
-+		};
-+	};
-+};
-+
- &i2c1 {
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&i2c1_pins_a>;
+> Changes in v4:
+> - reformat patch 1 commit message
+> - reorder adc1 node
+>
+> v3:
+> - Remove blank line in tag block
+> - Use HZ_PER_MHZ unit for max frequency definition
+> - Coding style updates
+>
+> v2:
+> - Rework commit message length
+> - Add missing spaces
+> - Remove useless defines
+>
+> Olivier Moysan (8):
+>   iio: adc: stm32-adc: fix channel sampling time init
+>   dt-bindings: iio: adc: stm32-adc: add stm32mp13 compatibles
+>   iio: adc: stm32-adc: add stm32mp13 support
+>   iio: adc: stm32: manage min sampling time on all internal channels
+>   ARM: dts: stm32: add adc support to stm32mp13
+>   ARM: dts: stm32: add adc pins muxing on stm32mp135f-dk
+>   ARM: dts: stm32: add dummy vdd_adc regulator on stm32mp135f-dk
+>   ARM: dts: stm32: add adc support on stm32mp135f-dk
+>
+>  .../bindings/iio/adc/st,stm32-adc.yaml        |  68 ++++-
+>  arch/arm/boot/dts/stm32mp13-pinctrl.dtsi      |   7 +
+>  arch/arm/boot/dts/stm32mp131.dtsi             |  43 +++
+>  arch/arm/boot/dts/stm32mp133.dtsi             |  31 +++
+>  arch/arm/boot/dts/stm32mp135f-dk.dts          |  33 +++
+>  drivers/iio/adc/stm32-adc-core.c              |  30 ++-
+>  drivers/iio/adc/stm32-adc-core.h              |  30 +++
+>  drivers/iio/adc/stm32-adc.c                   | 247 +++++++++++++++---
+>  8 files changed, 443 insertions(+), 46 deletions(-)
+>
+> --
+> 2.25.1
+>
+
+
 -- 
-2.25.1
-
+With Best Regards,
+Andy Shevchenko

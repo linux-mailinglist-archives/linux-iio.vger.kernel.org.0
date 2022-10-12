@@ -2,70 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720995FC92C
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 18:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A32A5FC93A
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Oct 2022 18:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbiJLQZZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 12:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S230028AbiJLQ1U (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 12 Oct 2022 12:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229646AbiJLQZY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 12:25:24 -0400
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 234925FAD2;
-        Wed, 12 Oct 2022 09:25:21 -0700 (PDT)
-Received: by mail-oo1-f48.google.com with SMTP id g15-20020a4a894f000000b0047f8e899623so12481359ooi.5;
-        Wed, 12 Oct 2022 09:25:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XbGkRBfc7blEHX2oiLr1yUH1nf0Co3xQFCa79h+BBRk=;
-        b=o3Bk6hLFr1DNT8JRxe5OAUis+w4HBwv2oe5DErzvQPVxWeou0OgYqvQVz3LWRN+/Oe
-         jno6N1B2q/kIQsp0VFQLbU0vP9c/5bIqF4LlAIDX6eUY4zrRT/nykH99211JDwyQs59Y
-         0bdT1hwmBPxfYxBY13Qo1sqZ1N2S+XKyu0Fc9ESOinJOXyV7VF5kPR5njtqYE7m3Nm2w
-         XAButS+a3iY6H2fiEkKtNGM/hiDpOhC8/941KUnvzJ8LVAdwOSIZdZih3tv1hEDfa2ye
-         UCGtRSkQoY/sgGc46zMnEeziW6sL2XI5j0aYsNNtf16ZKa/n3/QSWmsYVzFyjdtyknTQ
-         RmeQ==
-X-Gm-Message-State: ACrzQf1njzWTtR0Hm/QUjQdBNV3pPvOS99i6lrk5QTmg71kljY6I7WGv
-        xMRMVZ0wTX9pcAie9muA4Q==
-X-Google-Smtp-Source: AMsMyM5WZKYN3WOatUVAQahyGG5zpQ2QpJ9rGf1419QBSTH+VPlsKqDKNZYOHp9EcGV1Saa4zwhNsA==
-X-Received: by 2002:a05:6830:34a5:b0:661:a0a5:b0f with SMTP id c37-20020a05683034a500b00661a0a50b0fmr6481648otu.165.1665591920378;
-        Wed, 12 Oct 2022 09:25:20 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id b6-20020a9d4786000000b00661b019accbsm1876633otf.3.2022.10.12.09.25.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 09:25:19 -0700 (PDT)
-Received: (nullmailer pid 2286501 invoked by uid 1000);
-        Wed, 12 Oct 2022 16:25:21 -0000
-Date:   Wed, 12 Oct 2022 11:25:20 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v4 2/8] dt-bindings: iio: adc: stm32-adc: add stm32mp13
- compatibles
-Message-ID: <166559192047.2286466.15301667518001122082.robh@kernel.org>
-References: <20221012142205.13041-1-olivier.moysan@foss.st.com>
- <20221012142205.13041-3-olivier.moysan@foss.st.com>
+        with ESMTP id S229544AbiJLQ1O (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 12:27:14 -0400
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202C0F87FC;
+        Wed, 12 Oct 2022 09:27:08 -0700 (PDT)
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR5Ap081558;
+        Wed, 12 Oct 2022 11:27:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1665592025;
+        bh=eEflHbY1KhW3sZo2AHyNqzl4B6Y/mZETpmBCk/G9yGY=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=MLMfbwnQfXO7O0lfz9NY58tmwUQtsZnhkQuVASZBmQvQadbbP5+7vZ7/mvoGWNhzG
+         yO1DmMfEqlyVppx3RQ0vcJ2bzjL0hxKRGgF8El0cJ67i4qRQkj4COP+gvMRfHXbdPg
+         IFgCAbF5NgeGS31xLBT1yCkr/zXfniFgZ5OHeRIY=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 29CGR5Df015385
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 12 Oct 2022 11:27:05 -0500
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Wed, 12
+ Oct 2022 11:27:04 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
+ Frontend Transport; Wed, 12 Oct 2022 11:27:05 -0500
+Received: from [10.250.234.181] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 29CGR06C079753;
+        Wed, 12 Oct 2022 11:27:01 -0500
+Message-ID: <a559e9fa-b560-06fb-8555-5af22f47539e@ti.com>
+Date:   Wed, 12 Oct 2022 21:57:00 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221012142205.13041-3-olivier.moysan@foss.st.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH] counter: ti-ecap-capture: fix IS_ERR() vs NULL check
+Content-Language: en-US
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Julien Panis <jpanis@baylibre.com>
+CC:     William Breathitt Gray <william.gray@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-iio@vger.kernel.org>, <linux-omap@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <Y0bUbZvfDJHBG9C6@kili>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <Y0bUbZvfDJHBG9C6@kili>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,26 +68,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 12 Oct 2022 16:21:59 +0200, Olivier Moysan wrote:
-> Add st,stm32mp13-adc-core and st,stm32mp13-adc compatibles
-> to support STM32MPU13 SoC.
-> 
-> On STM32MP13x, each ADC peripheral has a single ADC block.
-> These ADC peripherals, ADC1 and ADC2, are fully independent.
-> 
-> Main characteristics of STM32MP13x ADC:
-> - One interrupt line per ADC
-> - 6 to 12 bits resolution
-> - 19 channels
-> 
-> ADC2 instance supports two extra internal channels VDDCPU and VDDQ_DDR.
-> Add "vddcpu" and "vddq_ddr" internal channels names to the reserved
-> labels list.
-> 
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> ---
->  .../bindings/iio/adc/st,stm32-adc.yaml        | 68 ++++++++++++++++++-
->  1 file changed, 65 insertions(+), 3 deletions(-)
-> 
+Hi,
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+On 12/10/22 8:21 pm, Dan Carpenter wrote:
+> The devm_counter_alloc() function returns NULL on error.  It doesn't
+> return error pointers.
+> 
+> Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Acked-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+Thanks for the fix!
+
+> ---
+>  drivers/counter/ti-ecap-capture.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+> index af10de30aba5..8104d02bb5a4 100644
+> --- a/drivers/counter/ti-ecap-capture.c
+> +++ b/drivers/counter/ti-ecap-capture.c
+> @@ -479,8 +479,8 @@ static int ecap_cnt_probe(struct platform_device *pdev)
+>  	int ret;
+>  
+>  	counter_dev = devm_counter_alloc(dev, sizeof(*ecap_dev));
+> -	if (IS_ERR(counter_dev))
+> -		return PTR_ERR(counter_dev);
+> +	if (!counter_dev)
+> +		return -ENOMEM;
+>  
+>  	counter_dev->name = ECAP_DRV_NAME;
+>  	counter_dev->parent = dev;

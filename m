@@ -2,56 +2,45 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB5485FD1AB
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Oct 2022 02:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67B235FD44A
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Oct 2022 07:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232156AbiJMAm3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 12 Oct 2022 20:42:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S229559AbiJMFrg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 13 Oct 2022 01:47:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232159AbiJMAmO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 12 Oct 2022 20:42:14 -0400
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24AA6107CFF
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 17:33:20 -0700 (PDT)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1321a1e94b3so654097fac.1
-        for <linux-iio@vger.kernel.org>; Wed, 12 Oct 2022 17:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qKk00GZ788naBGTxoT5GM72rM2lKT+rrPq0Zst2EeZk=;
-        b=R0vTmFqSXzH7GlHiD/WdG8Fg/fzkiLCENmLCoeZIFYsFDCg9qNK6UZyeufN9Enm5tK
-         VtJ+DY0v0kKovOyZ1Y9u4o8RAkHjijLbeLmP+o3NHj8x6krSZ9Bv5RfK016Hz9XWK2ol
-         0hipL9pepUV7SO7rzMd41iECRnTZLJfT8sohvCy/Irt+8bTFCVFWYaxidnr0xQwEoFbT
-         NY7QZvdGGs7a6J3csxQEd71LZuCzvGIy9vtIiTUQG/CkK1N1aq+UG9vicUr9BV6HIYZX
-         ZFMI0hV+U+b1iymFxpleXGNpyD7MmiBUJONQao5MR9JhUpq4iMM8HY9kkUFAhIwre6kV
-         fJKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qKk00GZ788naBGTxoT5GM72rM2lKT+rrPq0Zst2EeZk=;
-        b=ZOYPEXSqTVmKb9G1sVOhqlB1RPc2UqX3+oeRbY9iBDmKdh9fJkVVZRvMjChWmodgt8
-         LrT0qyZIyVePmpgydwWvyUmR8O6MvVFrukfJFjGYDjdOlMiuGq+tOzduMD7dbPeYvD8R
-         Iawv/tghP5afIurYgIJ4I9THNUgbnVQGxow/uAI12NbmR9tXq3K8eThhaBLMqStrbP83
-         YFxJDghC5AGD9HJUdH/tM64SB3dOs1qVLLJWxQrvsv1ZYfU95JVLxsstqBv267R6Mg+X
-         kEKlMKFOZatsy7cwWVwJkF+Q0FKi/tnKzpyykZ7q1szBLdx7OYOuVwTmgfg6/5u8S708
-         YAwA==
-X-Gm-Message-State: ACrzQf0YN4xp2E5h2fead9Wdb1eTZX/FKY3bgCKAY3igSaoT5CcRQueQ
-        C9GAyqQeyiZ90VAGMMA3trltSPoXH4ZgkQ==
-X-Google-Smtp-Source: AMsMyM6r0jgBppwpsnKdoP6avayVNk2JuobRx5dg9qTljduaWYK6GJTGUF6rtzxoZoRHc39ZOFdNKQ==
-X-Received: by 2002:a05:6808:ec4:b0:354:475a:c101 with SMTP id q4-20020a0568080ec400b00354475ac101mr3425156oiv.56.1665620643659;
-        Wed, 12 Oct 2022 17:24:03 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id r4-20020a05683001c400b00661946468c6sm4975880ota.31.2022.10.12.17.24.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Oct 2022 17:24:03 -0700 (PDT)
-Date:   Wed, 12 Oct 2022 20:24:00 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        with ESMTP id S229507AbiJMFrf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 13 Oct 2022 01:47:35 -0400
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2130.outbound.protection.outlook.com [40.107.114.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF36111BD9E;
+        Wed, 12 Oct 2022 22:47:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dZtzyWRJ+nguM+elJgd6bdlp48MSh9o01ND1iRc3wTlHz7lMU/15SHyukhnXvUJf1ODcvwNE1lFMvS47xmfCLjUrvjETfk3stYBA4Rsmnc1YFEHtFL3Ofl/fKr8HA4UaqgWOqxDTds6qf+NRrz5KCif3Y8XpKG7XlCWooF4aI024L9yjp5M0+CHUXgkxw2jUOmUrwypax5xmi8D7NqFjqMrFuwYYSmAxSSJZhSg+a/09FJFDmMH4UF36ucGlpiw7rQbSscn0P/RiaS4Cv4p5HgZSRiIBOV0ryp0e9EnVvmJ6B6iQDKN/uVU/7z6EBo9JWi4wbZHRXchqVL/z4hbaNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TmGj5OwEMhbxqiXo5Rbcr3fvqd/QFTGfCasf81ySKYI=;
+ b=cbXEPQZa1cF565BaCyubKkBs2JGDc/kxsTHM98Z14CN7dpnYnfpWy95wiV1eRK3BwQNqnKTYCi0E+c/iLfkgXe1vmWsiN9bwkWoc2AVpXYvVHJEFLd+A1+WEjCxrmeE3d4/YkgG2yTWee3H89hKxaA3Xi0DHINz4q9OKpGc52E7wWQBrvqRNXTAfYTOItoV8K3ms5R86E7zpDrL+qOlxOQxpJD5YBLVjt6lUcJvSZL2byG89E0kx9tnJlOrT4wc0k+g6LYxwWiFMT0+q8qHGL+W0MaPuJNNSD7kMfmScg3Px32iTwuiyWroiObvjkdtddVw/LVL5lWQ81NFJOhCtPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TmGj5OwEMhbxqiXo5Rbcr3fvqd/QFTGfCasf81ySKYI=;
+ b=RfuARD7X3SIgPVSMUQOHRAYShesvKShkczxkMM6L3U2b9o+CLuc55ZdBLMYqqSGZj0U8Df/oi4CUIUoJWF/jUEaK9FkufAGHG7viO8oemYgMVjpU48U9GtCpYgzdn2BLBx3yzB6VsqZsW87kRaUCq7ApsrOBPkMnPV5icMZ3o1c=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by TYCPR01MB10310.jpnprd01.prod.outlook.com (2603:1096:400:1e8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5723.26; Thu, 13 Oct
+ 2022 05:47:31 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::73a6:588d:1198:7262]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::73a6:588d:1198:7262%8]) with mapi id 15.20.5723.022; Thu, 13 Oct 2022
+ 05:47:30 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+CC:     Philipp Zabel <p.zabel@pengutronix.de>,
         Rob Herring <robh+dt@kernel.org>, Lee Jones <lee@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
@@ -60,23 +49,78 @@ Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
         "linux-renesas-soc@vger.kernel.org" 
         <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] counter: Add RZ/G2L MTU3 counter driver
-Message-ID: <Y0daoGTQJM7mo1/U@fedora>
+Subject: RE: [PATCH v3 4/4] counter: Add RZ/G2L MTU3 counter driver
+Thread-Topic: [PATCH v3 4/4] counter: Add RZ/G2L MTU3 counter driver
+Thread-Index: AQHY2YuZOjF5ExCDW0e8KGUbGYk53a4DudqAgABULJCABSXXgIAAHhvwgAIt2gCAAFr/cA==
+Date:   Thu, 13 Oct 2022 05:47:30 +0000
+Message-ID: <OS0PR01MB592248805261081DCE3F4C6186259@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 References: <20221006135717.1748560-1-biju.das.jz@bp.renesas.com>
  <20221006135717.1748560-5-biju.das.jz@bp.renesas.com>
  <Y0DUQTMd2TpFTnZS@fedora>
  <OS0PR01MB5922B6980F38873D494B3937865E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
  <Y0VsWdrpoAhM2jK3@fedora>
  <OS0PR01MB592280D15AF243C0A5FA93CD86239@OS0PR01MB5922.jpnprd01.prod.outlook.com>
- <OS0PR01MB5922DDC46213E925988C2C9686239@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <Y0dZkOAGlVGKup1v@fedora>
+In-Reply-To: <Y0dZkOAGlVGKup1v@fedora>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYCPR01MB10310:EE_
+x-ms-office365-filtering-correlation-id: 7d8f0b1a-d0f3-48f5-9ab3-08daacde6b3e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: n162CRg1J1ue/TcRWwd/lRa/3fPX2n5/ShkGFEgYLMDflP6pLcg5en652MYslVYJHfz/cWPCUyiHWz4DbfuzIAQ/iKXZTxYhq0fH3NvosJ9/rYWq+1tt3DmdwilennrF3dBFTLVU+jSoTLFKCTLHzKOscN25+JWqyxHfq2Whq3Bn/G0/IswdEsPNCt7H9QaKCz3wQS87j/pqA4HuzoZYfkiuSFQaz3XXty2z2UpvtQDqFp2ehsM5/NT2Q0xaUH1tV7CAM97IFPGXBWNUvLFOR1qDZRlpiA8+ZE664XIYAz2tUmNrS9ksfOZnKs7tMD5d1O9eNhtYS8rxR2ZxdAY8W2DW7o0RygDkbNNuMEb2sx5EnzR1NfCsEuNuEVTfilKU2NiS28owxfjBsSONP6TZm+uYUmVY2bPV0b8O5jWhZ4rKow32vWCxcWn4j5pGXPpxkQZ8CD80JKJGR3upWVXBgMHSqti2NQ/T/z1HcmDFrO4xu77S3c3gFMQ5CpUMyAZmFF6wfI8kuDD1zNdtTDXoFK8YUdpUs8HBOSMkawb1TwFqTW2tkwY44iY065SaqxKKYPuHGf/5e1aFVfKbEKQcalHE2Jlb5iJ0FN8TfRK+ZKL3Fnqfe4BPTBfXOYibtm+zuo4AQqMXtvsa81TUeNiXY1Sn+V4ghf3l0ZLHxzAVkjlfSs5I77b92HtWrZ9UusGyO1oOwaWt03h5YsZ0ccR5nQlTs0tHrrYpUWryuFk1PYAcsVvepXyTAT+s7ujLCvP8ebytOcGZwSMWd6GaObhIJQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(39860400002)(376002)(136003)(396003)(366004)(451199015)(66446008)(66946007)(76116006)(66476007)(66556008)(38100700002)(64756008)(4326008)(8676002)(122000001)(186003)(2906002)(86362001)(7696005)(26005)(41300700001)(55016003)(6506007)(5660300002)(52536014)(9686003)(33656002)(8936002)(38070700005)(71200400001)(6916009)(54906003)(316002)(478600001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?libm4Q3MVY+uWUvazMyzE7lyYhf7XdbiUs9jN0GOCNz0k8073duNhaRDmts8?=
+ =?us-ascii?Q?3FrtAdnvaNCCsvxG7TYsP1OiEKAEw8yMEB/Bzxo8+lR4RqvKM1EF84VjQhL0?=
+ =?us-ascii?Q?vXLenyUAbGM4RaGjQyHN51kfLpkn9trmA8Ds8MckzxYYEceLJZiDu1/VOnWq?=
+ =?us-ascii?Q?Dd3/J5lzFwqSNBvdGZPro1w6GX1IlRKb99Bw8ljdtVNCFeXrqWPry0YgplMa?=
+ =?us-ascii?Q?vAkAS0FlH+/0sb06MiFN5eAfabh6vmKPr7V0SPQKJg0T4t51+Y+TGSj+4taM?=
+ =?us-ascii?Q?zsdBTqDDoeaiLfr3lw0iCIjcheVK3j3qQir7IP/DTt8QNgWWAaaxUXiQ2Zo/?=
+ =?us-ascii?Q?KvJQAigZYjQkV8f9/iGJMbwNy2PfDMYXFI+FAq1iFEAUQTsixPdCsiZmZQ1s?=
+ =?us-ascii?Q?Yr/FezPQLMcCXSwqIZ2aKTg7QKYkz4M7boEIcaOLoNC7/iSQPCrscz1r5wV6?=
+ =?us-ascii?Q?l6WcETD2omlT4wTsK9KRUxeWUas/rpt13C3H5pm1yphUolTBSpfUZhm1NjVK?=
+ =?us-ascii?Q?RXoDgXrDmbZoV6I5nzFXHOCcCKW1dVS4PLL11QbJPhWQlmJZJIbOGRNKLJZQ?=
+ =?us-ascii?Q?b1WMP2/+OdETzKZSHb5TVIsk+cxlqs7WWDdq0EVByLhm4x04M7Q8M+bEQxEd?=
+ =?us-ascii?Q?jVV6hzrA2DdqC4k03q5VeMPUM6pahMhnWwwXivB4f43Fvol06HitLaaBwE8M?=
+ =?us-ascii?Q?DwybJnNESpOszLv/nMqxwTDyVw37x9rMnmIbtsyWIO4twFwcZZLgcQI55uMp?=
+ =?us-ascii?Q?UoCtXYXydF8Q2bG1dBDvtPTicvaRbRlw51G6BLSo1JLNjvt9P3HQQvWWzIjv?=
+ =?us-ascii?Q?AHAOvQ/nTVAmXkBt+BfdsFz0LJiQCH1ZFwA/OlAgHOUje7KotzEYEuuA2RmW?=
+ =?us-ascii?Q?QcE95RH5d89vjhfXLEzYoS0pNsa4zlvHm5YzP471nehI3sDbfDsm4FkPCmnF?=
+ =?us-ascii?Q?/4j2Dq8fOWuIKuN8lPdZPOEI/3zgjS0k6WOTa3rGrFCfhrCNYTTaDirzFt2M?=
+ =?us-ascii?Q?o7VVDTqwt9SHH3SMXyIGPACDTo0ZoLrNRvMVMamSUSO6QaCN808r51hA8cj/?=
+ =?us-ascii?Q?8/y9qFarB3k/Athr4soUHXy6QowFpneea0n6Qu15reRlusP7xu7PAjrbvONS?=
+ =?us-ascii?Q?HMW6sz9N/oC2j7LrHgLwCHbjWOppUAazhizjhHJ5SDLiGE15MxbxWcuevmAx?=
+ =?us-ascii?Q?X8J6xKcXNxxMeBNwz82PnzZxqRJfVgVTGhV7ospfXXutpcFtYJdFSK8Umvjo?=
+ =?us-ascii?Q?j19fhy4U7C8AnkXsbUYxw3LlUUd8oTyJu8C7OrxFdQe8PpD516qZH+YzhiK/?=
+ =?us-ascii?Q?SzMvZhqjD6iSlBDQ+JZRiLuhvfzb5/4vC0ppcmBuljNB4sOLQ1e1SED83/4W?=
+ =?us-ascii?Q?XvV8mCHeQH/WRSDziqEyMYXBipX4ZuXWrFrnmJGowpViVeExeRawF/Dpqkgg?=
+ =?us-ascii?Q?x1gWKaX1EyvSPbKDJ1Y2O8UiGkxUdpmdwbKsw633aEtJNgXnOKsDslEFARbF?=
+ =?us-ascii?Q?xK20rp2BxuXGfH4EpXEfbAmD9nem/bqwkBvg0hGCH1XJVrtWspjXPpsS2HFo?=
+ =?us-ascii?Q?AbhiaYVesaVjeZLzex51nMoswP/ihjynfBv2JYmp?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="SqBc1oHt8iHqXeCa"
-Content-Disposition: inline
-In-Reply-To: <OS0PR01MB5922DDC46213E925988C2C9686239@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d8f0b1a-d0f3-48f5-9ab3-08daacde6b3e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2022 05:47:30.7703
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: SSoN7pnMAf13dZXQKsSoTEBDp2Oqr/kvxQ6TwulhAKG7prJY+wtgGLNGvtd3zWTqjnRFy2SyPHCuKz3yp39S3u15okII5M35HHvR3CKtum4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10310
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -84,45 +128,65 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---SqBc1oHt8iHqXeCa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi William Breathitt Gray,
 
-On Tue, Oct 11, 2022 at 05:55:50PM +0000, Biju Das wrote:
-> > > > > Looks like something different is done when ceiling is set to 0.
-> > > > > Would you explain what's happening in this case and why it's
-> > > > > different that then else case below; in other words, what's the
-> > > > > difference between RZ_MTU3_TCR_CCLR_NONE and
-> > > RZ_MTU3_TCR_CCLR_TGRA?
-> > > >
-> > > > RZ_MTU3_TCR_CCLR_TGRA --> for triggering counter count using Z-
-> > Phase
-> > > signal.
-> > > > RZ_MTU3_TCR_CCLR_NONE --> No clearing.
-> > >
-> > > Does the Z-Phase signal trigger a reset of the counter count back to
-> > > the ceiling value?
-> >=20
-> > No, It resets to 0.
+Thanks for the feedback.
+
+> Subject: Re: [PATCH v3 4/4] counter: Add RZ/G2L MTU3 counter driver
 >=20
-> It reset to 0 for forward counting
-> and resets to U16_MAX or U32_MAX for backword counting
+> On Tue, Oct 11, 2022 at 03:50:38PM +0000, Biju Das wrote:
+> > > To support the phase mode selection, implement a Counter device
+> > > extension for that specific purpose. You can use
+> > > DEFINE_COUNTER_ENUM() and COUNTER_COMP_DEVICE_ENUM() to create a
+> > > device extension that will allow users to toggle between "16-bit"
+> > > and "32-bit" phase modes. If you need help with these macros, just
+> let me know.
+> >
+> > Yes please, that will be helpful.
+> >
+> > Cheers,
+> > Biju
+>=20
+> It'll look something like this::
+>=20
+>     static const char *const rz_mtu3_phase_counting_modes[] =3D {
+>             "16-bit",
+>             "32-bit",
+>     };
+>=20
+>     static int rz_mtu3_phase_counting_mode_get(struct counter_device
+> *counter,
+>                                                u32
+> *phase_counting_mode);
+>     static int rz_mtu3_phase_counting_mode_set(struct counter_device
+> *counter,
+>                                                u32
+> phase_counting_mode);
+>=20
+>     static DEFINE_COUNTER_ENUM(rz_mtu3_phase_counting_mode_enum,
+>                                rz_mtu3_phase_counting_modes);
+>=20
+>     static struct counter_comp rz_mtu3_device_ext[] =3D {
+>             COUNTER_COMP_DEVICE_ENUM("phase_counting_mode",
+>                                      rz_mtu3_phase_counting_mode_get,
+>                                      rz_mtu3_phase_counting_mode_set,
+>=20
+> rz_mtu3_phase_counting_mode_enum),
+>     };
+>=20
+> Using the get/set callbacks, you can get/set the index for the
+> respective mode of your rz_mtu3_phase_counting_modes array.
+>=20
+> In rz_mtu3_cnt_probe() you could set the counter_device ext member to
+> rz_mtu3_device_ext. This will make the extensions appear in the sysfs
+> tree for your Counter device. You should also add a new entry in
+> Documentation/ABI/testing/sysfs-bus-counter to document this new sysfs
+> file.
 
-So when counting backwards, will the value reset to the ceiling value
-when it passes 0?
+cool, Will do it in the next version v5.
 
-William Breathitt Gray
+Cheers,
+Biju
 
---SqBc1oHt8iHqXeCa
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY0daoAAKCRC1SFbKvhIj
-Kw+6AQD8Olun4md/v+SivFJKnHrGwUlm2lGVYLpvgzcUSvjLBgD9FEOJYC9CnFSg
-92ucwlWAtepEnfFNv8/uFnwBPDPvGgU=
-=VZzI
------END PGP SIGNATURE-----
-
---SqBc1oHt8iHqXeCa--

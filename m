@@ -2,65 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 504655FE94B
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 09:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C9F5FE94A
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 09:15:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbiJNHPp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Oct 2022 03:15:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
+        id S229555AbiJNHPk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Oct 2022 03:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229701AbiJNHPn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 03:15:43 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AEDC510C;
-        Fri, 14 Oct 2022 00:15:40 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id a25so5039732ljk.0;
-        Fri, 14 Oct 2022 00:15:40 -0700 (PDT)
+        with ESMTP id S229739AbiJNHPj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 03:15:39 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E5B43329
+        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:15:38 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id z18so2737162qvn.6
+        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NGyxzte2IKH3Md6Ogu2BfJvxcJ1+fvLq/yJsfWOfr70=;
-        b=pqwCFkn2YfX8+dy9tEFmmFX254tPZhy8XC/gXHWLPWFBChGhNjq3ISmacP2zxKbyFc
-         DZrD/71buQpS8mz6Jk3J4P/Gseqg8DQ9OsFKn0GeflaZzq2mBbQ4pgOyFFjN3Uya/t7r
-         wqlx4VXoWYSp0c9QUis7psazVfZgJOXVie6kCk/CRbSxI/8BDkw6crllLe8SfciZzw1r
-         GHmhItW9sYvjzYsve0MyIVF783NG11UHp+pkLiT7lVgQ93jA/qX5qgpE86BEnvd5UChX
-         3cDMo7Z3R6/qEwZSRJv9y4z5qgk1OWNPDgbzkLvoHHddloHqKpAqwzYXrV7tFLf4SbF3
-         41Jw==
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MYtbU9ms8NkjJbi68Okb7u6sI1m59iHxzpbVIBkT+wo=;
+        b=VM5Br9btJnO5Or80K2Tnd0MiryHbsv2mn7Azi5cT9xLhOsn0KObCj5sSjgl71zmpc4
+         WBeRjqt+HSDxDmgZ+NwG/MYAS0iXUQZH9B9ktyxZVWnkHbcY/sWJjLHKVC/iOPDvfEdp
+         fhy6jWRldRuT/VxDt06WJeRhJUMmsA+4pysgq1GU6bxwQHMwqnDdB9pEoi8Ix+zJW0D/
+         AQZzDJDGPYoFaP0WtWo8BIk5fTAbeE/Nw9wTlwZT7cvhM02g7+2e1eS+32zP6qlQZxXz
+         OWBKdWtSzE5aKfEIPniPwmCaIqJv8XgEzdk10bQnDXPwHkh0vZuGt8iSq3RTzQZCBo6U
+         I61A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NGyxzte2IKH3Md6Ogu2BfJvxcJ1+fvLq/yJsfWOfr70=;
-        b=pyRbCnYn2gckFVJDfl2Fabu3e7nN9riBsbYFrviMdnp4epl6u1hQQyPt23pSlgOpz2
-         7fnOnNNHq5weyc+f1bApBpZfi/EHqdil7XyNYkazAsfbvYO1hdiN3FSlua9Scre68L+4
-         e4IoiqzjaS1nE3814HNZj11c6o1fS9FlJwmIbmrptH1JsG150Ie7p6cxHmXsXzvyOWQ5
-         5tCMUvNEUKuVLliThZKVHuFV2Zo8+iYXXCKvG1ef4NPjABNrFgstRxzO14z9Seq7PzHz
-         OhEAXOp2S984i6Yk88wmbIN2rRtUYxrhOL3613ioORevmsgHNW7GZXZsB7KKADyo/Nxm
-         RmxQ==
-X-Gm-Message-State: ACrzQf1V7RqMRrVF+nKKvIuqQMZLLf+B+1TCuVDGvfp+4hJ0vjRpHRSI
-        3JsdXiZRgSw8/d7KXyMOCI71qqF288k=
-X-Google-Smtp-Source: AMsMyM6nxpTjYdLb97LQzpum5UqrHvPtyw9mv3uPfpi7o1Md6mpYRYfd3QXz4o77WMOfwYnUASYfNg==
-X-Received: by 2002:a05:651c:b23:b0:26f:db39:9544 with SMTP id b35-20020a05651c0b2300b0026fdb399544mr443383ljr.116.1665731738793;
-        Fri, 14 Oct 2022 00:15:38 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id bi19-20020a05651c231300b00261b4df9ec4sm240535ljb.138.2022.10.14.00.15.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MYtbU9ms8NkjJbi68Okb7u6sI1m59iHxzpbVIBkT+wo=;
+        b=44Gcdsz3QeD3X36/ryEz+5ES8bXj+5voTmETtT2KMHDA0PyBn/+7OCo+JeDmgkYlbF
+         eAuwvUAU8CtIb3h/2rJT5+hUjntoeiKFlx5oR24fxe71Nx3CSXe2LsaYMmIqiNxGTwgD
+         U5idGr5rNPH0MVglJExioubBlEHHJT9skqhO6BKCfNrLc5GCLVvI2ZA8oOqSop/cQHSh
+         Xfh4CZu8vCm9MUirE9fyzXeGc9DhVsBkzeLE2Oojspe2+6j9QWxikbz8JIy/Y4sHgSWK
+         z5XOxdcCr+g2ZdOj9UH3axiUdoQUktRAR+/Dp2vRgw7iuMovgnuSK006e9nAqBzTYG1q
+         ESXQ==
+X-Gm-Message-State: ACrzQf1MY3q3P56tSBrH7UvUYr5iL2P7HMuYuUURjDH2RzbVfKF0iU9q
+        1lvxzr/69RQH4kPHN0cI12w=
+X-Google-Smtp-Source: AMsMyM7+27HWk7xlt9ESBGEEwHheCABdyw3FB5apKO4+/9SYLUarNP9cXY2bycf/BdWqNXDePDDpHw==
+X-Received: by 2002:a05:6214:c45:b0:4b4:442d:f91c with SMTP id r5-20020a0562140c4500b004b4442df91cmr2886943qvj.24.1665731737192;
         Fri, 14 Oct 2022 00:15:37 -0700 (PDT)
-Date:   Fri, 14 Oct 2022 10:15:19 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id o16-20020a05620a2a1000b006e6a7c2a269sm1901693qkp.22.2022.10.14.00.15.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Oct 2022 00:15:36 -0700 (PDT)
+Message-ID: <7ab31b13e625773976f4eb4b639d3287ee0f9efa.camel@gmail.com>
+Subject: Re: [PATCH v3 2/4] iio: health: max30100: do not use internal
+ iio_dev lock
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, linux-imx@nxp.com,
+        Chen-Yu Tsai <wens@csie.org>,
+        Andriy Tryshnivskyy <andriy.tryshnivskyy@opensynergy.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Cixi Geng <cixi.geng1@unisoc.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Alexandru Ardelean <aardelean@deviqon.com>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Haibo Chen <haibo.chen@nxp.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] =?iso-8859-1?Q?=A7tools?= =?iso-8859-1?Q?=3A?= iio:
- iio_generic_buffer: Fix read size
-Message-ID: <Y0kMh0t5qUXJw3nQ@dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi>
+        Jyoti Bhayana <jbhayana@google.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Florian Boor <florian.boor@kernelconcepts.de>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Orson Zhai <orsonzhai@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Kevin Hilman <khilman@baylibre.com>
+Date:   Fri, 14 Oct 2022 09:16:55 +0200
+In-Reply-To: <CAHp75Vc=TMsFBR8PUb7tifgM_b8foRhiAwy3VEDsX4hTOjKP=Q@mail.gmail.com>
+References: <20221012151620.1725215-1-nuno.sa@analog.com>
+         <20221012151620.1725215-3-nuno.sa@analog.com>
+         <CAHp75Vc=TMsFBR8PUb7tifgM_b8foRhiAwy3VEDsX4hTOjKP=Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="mOhZbFKr2wlI1FAt"
-Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,105 +103,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 2022-10-12 at 20:46 +0300, Andy Shevchenko wrote:
+> On Wed, Oct 12, 2022 at 6:15 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
+> >=20
+> > The pattern used in this device does not quite fit in the
+> > iio_device_claim_direct_mode() typical usage. In this case,
+> > iio_buffer_enabled() was being used not to prevent the raw access
+> > but to
+> > allow it. Hence, let's make use of the new
+> > iio_device_claim_buffer_mode() API to make sure we stay in buffered
+> > mode
+> > during the complete read.
+> >=20
+> > Note that we are shadowing the error code returned by
+> > iio_device_claim_buffer_mode() so that we keep the original one
+> > (-EAGAIN). The reason is that some userspace stack might already be
+> > relying on this particular code so that we are not taking chances
+> > and
+> > leave it alone.
+>=20
+> The above line widths seem a bit arbitrary to me. But I think it's
+> due
+> to function names in them.
+> Perhaps you can make them less deviated by shuffling a bit, like
+> moving "but to" to the next line.
+>=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/health/max30100.c | 9 +++------
+> > =C2=A01 file changed, 3 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/health/max30100.c
+> > b/drivers/iio/health/max30100.c
+> > index 2cca5e0519f8..6ac49901c9da 100644
+> > --- a/drivers/iio/health/max30100.c
+> > +++ b/drivers/iio/health/max30100.c
+> > @@ -387,18 +387,15 @@ static int max30100_read_raw(struct iio_dev
+> > *indio_dev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Temperature reading can only be acquired whil=
+e
+> > engine
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 * is running
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 mutex_lock(&indio_dev->mlock);
+> > -
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (!iio_buffer_enabled(indio_dev))
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 if (iio_device_claim_buffer_mode(indio_dev)) {
+>=20
+> I think a summary of replacing error code is good to have here, like
+>=20
+> /*
+> =C2=A0* Replacing -EBUSY or other error code
+> =C2=A0* returned by iio_device_claim_buffer_mode()
+> =C2=A0* because user space may rely on the current
+> =C2=A0* one.
+> =C2=A0*/
+>=20
 
---mOhZbFKr2wlI1FAt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This might make sense... I'll wait for Jonathan's review to see how
+strong he feels about this. Maybe he can also add it when applying.
 
-When noevents is true and small buffer is used the allocated memory for
-holding the data may be smaller than the hard-coded 64 bytes. This can
-cause the iio_generic_buffer to crash.
+- Nuno S=C3=A1
+>=20
 
-Following was recorded on beagle bone black with v6.0 kernel and the
-digit fix patch:
-https://lore.kernel.org/all/Y0f+tKCz+ZAIoroQ@dc75zzyyyyyyyyyyyyycy-3.rev.dn=
-ainternet.fi/
-using valgrind;
-
-=3D=3D339=3D=3D Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyrig=
-ht info
-=3D=3D339=3D=3D Command: /iio_generic_buffer -n kx022-accel -T0 -e -l 10 -a=
- -w 2000000
-=3D=3D339=3D=3D Parent PID: 307
-=3D=3D339=3D=3D
-=3D=3D339=3D=3D Syscall param read(buf) points to unaddressable byte(s)
-=3D=3D339=3D=3D    at 0x496BFA4: read (read.c:26)
-=3D=3D339=3D=3D    by 0x11699: main (iio_generic_buffer.c:724)
-=3D=3D339=3D=3D  Address 0x4ab3518 is 0 bytes after a block of size 160 all=
-oc'd
-=3D=3D339=3D=3D    at 0x4864B70: malloc (vg_replace_malloc.c:381)
-=3D=3D339=3D=3D    by 0x115BB: main (iio_generic_buffer.c:677)
-
-Fix this by always using the same size for reading as was used for
-data storage allocation.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
----
-
-This patch has been only tested with my kx022a sensor driver. Driver may
-have some culprits(s) and my understanding regarding IIO and these tools
-is limited so perhaps the hard-coded size of 64 bytes has perfectly
-legitimate reason - in which case I would appreciate to hear the
-reasoning so I could seek the problem from my driver. Also, I didn't add
-the fixes-tag as I don't really know which commit has caused the problem
-- as I am not 100% sure what the problem actually is and if I am just
-fixing a symptom here.
----
- tools/iio/iio_generic_buffer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 2491c54a5e4f..f8deae4e26a1 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -715,12 +715,12 @@ int main(int argc, char **argv)
- 				continue;
- 			}
-=20
--			toread =3D buf_len;
- 		} else {
- 			usleep(timedelay);
--			toread =3D 64;
- 		}
-=20
-+		toread =3D buf_len;
-+
- 		read_size =3D read(buf_fd, data, toread * scan_size);
- 		if (read_size < 0) {
- 			if (errno =3D=3D EAGAIN) {
-
-base-commit: 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
---=20
-2.37.3
-
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---mOhZbFKr2wlI1FAt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNJDIIACgkQeFA3/03a
-ocVehQf/XIQ0ICkmrTi+n5aEjFmdKGhSs62dWbL4jsnhmp5k9znUWu5FbggGrIS1
-Zjhh2srQ9oec+88NUdEcIkupXIuHBW3rsoQTtlA3/Egi5D1sQeLjmikAvq5ps6AS
-pVSohBswNh8QgKElzubyoKDN8bUKibbD3xj0oFeONKrN7q0wGlEHRb+e6qAY/HCq
-5pVunzYHjzTvymqh6OFu7BYzF5P9+lUb5x/2WyKPR3RiCSdS71MYFV8+YjDCzpLA
-K3Mv1/r5NNQh5mBw+6ydBDsO75Kl/uJBjS8sseGSxK8lBqp6YKA638Cy4IXLl6pg
-pTOLgxnpUN3vlIw3OCJIEsm3i5OOpw==
-=IFzV
------END PGP SIGNATURE-----
-
---mOhZbFKr2wlI1FAt--

@@ -2,58 +2,58 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21C9F5FE94A
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 09:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5FF5FE979
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 09:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbiJNHPk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Oct 2022 03:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
+        id S229783AbiJNHYr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Oct 2022 03:24:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbiJNHPj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 03:15:39 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E5B43329
-        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:15:38 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id z18so2737162qvn.6
-        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:15:38 -0700 (PDT)
+        with ESMTP id S229957AbiJNHYn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 03:24:43 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1958D63A7
+        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:24:41 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id jr1so3197191qtb.0
+        for <linux-iio@vger.kernel.org>; Fri, 14 Oct 2022 00:24:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=MYtbU9ms8NkjJbi68Okb7u6sI1m59iHxzpbVIBkT+wo=;
-        b=VM5Br9btJnO5Or80K2Tnd0MiryHbsv2mn7Azi5cT9xLhOsn0KObCj5sSjgl71zmpc4
-         WBeRjqt+HSDxDmgZ+NwG/MYAS0iXUQZH9B9ktyxZVWnkHbcY/sWJjLHKVC/iOPDvfEdp
-         fhy6jWRldRuT/VxDt06WJeRhJUMmsA+4pysgq1GU6bxwQHMwqnDdB9pEoi8Ix+zJW0D/
-         AQZzDJDGPYoFaP0WtWo8BIk5fTAbeE/Nw9wTlwZT7cvhM02g7+2e1eS+32zP6qlQZxXz
-         OWBKdWtSzE5aKfEIPniPwmCaIqJv8XgEzdk10bQnDXPwHkh0vZuGt8iSq3RTzQZCBo6U
-         I61A==
+        bh=guXsNvunppVc9WWPiCDXMbZ55lmfscZRL3+k5ViV9No=;
+        b=oUsQIAOiDc9y41fuV+L7s+WM/p3Q61/2Dnxn688nE2CqTH0uCcstpSKfByFHA78F+d
+         l0Jd7Ibdy+zlNJ9yeUlf4hH/SWERQ8sQgro+Og9GEKOHGUQngTHQ2WK1apmXfj7luXjT
+         +kDSCGhGu+zDLhPTLA9zgsCRFVk2Jed+lW1baX+/+Td8OV+U/F63Cbdca8Ppv0QdLpuB
+         n5suh65nbDD7VRWarfniOC/sOA0qSy/BV5iFa2tYc7Y56cWhnzmR41oa3Qb97AhZknUD
+         wwmf8rEcni44ROfAJYeoJEOLJi6og1jxgMl2806+/aVLr5UpujCp42rxsno34UPDECIT
+         TWIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=MYtbU9ms8NkjJbi68Okb7u6sI1m59iHxzpbVIBkT+wo=;
-        b=44Gcdsz3QeD3X36/ryEz+5ES8bXj+5voTmETtT2KMHDA0PyBn/+7OCo+JeDmgkYlbF
-         eAuwvUAU8CtIb3h/2rJT5+hUjntoeiKFlx5oR24fxe71Nx3CSXe2LsaYMmIqiNxGTwgD
-         U5idGr5rNPH0MVglJExioubBlEHHJT9skqhO6BKCfNrLc5GCLVvI2ZA8oOqSop/cQHSh
-         Xfh4CZu8vCm9MUirE9fyzXeGc9DhVsBkzeLE2Oojspe2+6j9QWxikbz8JIy/Y4sHgSWK
-         z5XOxdcCr+g2ZdOj9UH3axiUdoQUktRAR+/Dp2vRgw7iuMovgnuSK006e9nAqBzTYG1q
-         ESXQ==
-X-Gm-Message-State: ACrzQf1MY3q3P56tSBrH7UvUYr5iL2P7HMuYuUURjDH2RzbVfKF0iU9q
-        1lvxzr/69RQH4kPHN0cI12w=
-X-Google-Smtp-Source: AMsMyM7+27HWk7xlt9ESBGEEwHheCABdyw3FB5apKO4+/9SYLUarNP9cXY2bycf/BdWqNXDePDDpHw==
-X-Received: by 2002:a05:6214:c45:b0:4b4:442d:f91c with SMTP id r5-20020a0562140c4500b004b4442df91cmr2886943qvj.24.1665731737192;
-        Fri, 14 Oct 2022 00:15:37 -0700 (PDT)
+        bh=guXsNvunppVc9WWPiCDXMbZ55lmfscZRL3+k5ViV9No=;
+        b=YidGXiKpiCJBxAW9hhxEz7WZ7oHeEv0XCHobMp9KHANxD2PM3qyW6pYB9qsr/+tKEw
+         5G+qzHFv3LWpnN8kSrLUfucuTZ+uDK8GyFK9inNSUEY3IIx9vj0BqnLjggEhnym2NGL5
+         bg+WFjzYxZlWuqgUzWx+b6gz9dwL9ZGoDHP+CKUMBAEwkHINEYjbR+qgFh5wKpMqzWFA
+         QCmU+o10SeVZ1Qq5gsQA16frk1fnjZBqC/yTpLf9WHc2nYroYQLJP1AMbDL+ZLiQjbsX
+         DQ6ply7J5oAz2uULqaAdURoFNIxNi1jBaPSyQEMU0LjhGUZkHksTd5TRGB69QbE2urBi
+         vyGw==
+X-Gm-Message-State: ACrzQf1+cCiyScFwbLvTvIJqegkvzgtE80LxV4g7SkPd/ON44x8db5uO
+        gmqXZHa1a8syadp4r8MVlt4=
+X-Google-Smtp-Source: AMsMyM7gMIH996fPil0I2eH6kEfzrcR7fJOfL5qMY+5BrnG0S7Swr4k4YGgxRpFyQLhQYDs/Z/bWVw==
+X-Received: by 2002:ac8:5cc3:0:b0:35c:e1b3:78c5 with SMTP id s3-20020ac85cc3000000b0035ce1b378c5mr3078874qta.228.1665732280128;
+        Fri, 14 Oct 2022 00:24:40 -0700 (PDT)
 Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id o16-20020a05620a2a1000b006e6a7c2a269sm1901693qkp.22.2022.10.14.00.15.32
+        by smtp.gmail.com with ESMTPSA id bs10-20020a05620a470a00b006b615cd8c13sm1711743qkb.106.2022.10.14.00.24.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Oct 2022 00:15:36 -0700 (PDT)
-Message-ID: <7ab31b13e625773976f4eb4b639d3287ee0f9efa.camel@gmail.com>
-Subject: Re: [PATCH v3 2/4] iio: health: max30100: do not use internal
+        Fri, 14 Oct 2022 00:24:39 -0700 (PDT)
+Message-ID: <fccf3f41b32e881eb79ee78852fa40a62b134c00.camel@gmail.com>
+Subject: Re: [PATCH v3 3/4] iio: health: max30102: do not use internal
  iio_dev lock
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
 Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         linux-amlogic@lists.infradead.org,
@@ -64,7 +64,6 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         Vladimir Zapolskiy <vz@mleia.com>,
         Cixi Geng <cixi.geng1@unisoc.com>,
         Neil Armstrong <narmstrong@baylibre.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Heiko Stuebner <heiko@sntech.de>,
         Fabio Estevam <festevam@gmail.com>,
@@ -79,16 +78,17 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
         Jyoti Bhayana <jbhayana@google.com>,
         Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Florian Boor <florian.boor@kernelconcepts.de>,
         Chunyan Zhang <zhang.lyra@gmail.com>,
         Orson Zhai <orsonzhai@gmail.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Kevin Hilman <khilman@baylibre.com>
-Date:   Fri, 14 Oct 2022 09:16:55 +0200
-In-Reply-To: <CAHp75Vc=TMsFBR8PUb7tifgM_b8foRhiAwy3VEDsX4hTOjKP=Q@mail.gmail.com>
+Date:   Fri, 14 Oct 2022 09:25:59 +0200
+In-Reply-To: <20221012204556.7648df2e@xps-13>
 References: <20221012151620.1725215-1-nuno.sa@analog.com>
-         <20221012151620.1725215-3-nuno.sa@analog.com>
-         <CAHp75Vc=TMsFBR8PUb7tifgM_b8foRhiAwy3VEDsX4hTOjKP=Q@mail.gmail.com>
+         <20221012151620.1725215-4-nuno.sa@analog.com>
+         <20221012204556.7648df2e@xps-13>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 
@@ -103,73 +103,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 2022-10-12 at 20:46 +0300, Andy Shevchenko wrote:
-> On Wed, Oct 12, 2022 at 6:15 PM Nuno S=C3=A1 <nuno.sa@analog.com> wrote:
-> >=20
+On Wed, 2022-10-12 at 20:45 +0200, Miquel Raynal wrote:
+> Hi Nuno,
+>=20
+> nuno.sa@analog.com=C2=A0wrote on Wed, 12 Oct 2022 17:16:19 +0200:
+>=20
 > > The pattern used in this device does not quite fit in the
-> > iio_device_claim_direct_mode() typical usage. In this case,
-> > iio_buffer_enabled() was being used not to prevent the raw access
-> > but to
-> > allow it. Hence, let's make use of the new
-> > iio_device_claim_buffer_mode() API to make sure we stay in buffered
-> > mode
-> > during the complete read.
+> > iio_device_claim_direct_mode() typical usage. In this case, we want
+> > to
+> > know if we are in buffered mode or not to know if the device is
+> > powered
+> > (buffer mode) or not. And depending on that max30102_get_temp()
+> > will
+> > power on the device if needed. Hence, in order to keep the same
+> > functionality, we try to:
 > >=20
-> > Note that we are shadowing the error code returned by
-> > iio_device_claim_buffer_mode() so that we keep the original one
-> > (-EAGAIN). The reason is that some userspace stack might already be
-> > relying on this particular code so that we are not taking chances
-> > and
-> > leave it alone.
->=20
-> The above line widths seem a bit arbitrary to me. But I think it's
-> due
-> to function names in them.
-> Perhaps you can make them less deviated by shuffling a bit, like
-> moving "but to" to the next line.
->=20
-> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/health/max30100.c | 9 +++------
-> > =C2=A01 file changed, 3 insertions(+), 6 deletions(-)
+> > 1. Claim Buffered mode;
+> > 2: If 1) succeeds call max30102_get_temp() without powering on the
+> > =C2=A0=C2=A0 device;
+> > 3: Release Buffered mode;
+> > 4: If 1) fails, Claim Direct mode;
+> > 5: If 4) succeeds call max30102_get_temp() with powering on the
+> > device;
+> > 6: Release Direct mode;
+> > 7: If 4) fails, goto to 1) and try again.
 > >=20
-> > diff --git a/drivers/iio/health/max30100.c
-> > b/drivers/iio/health/max30100.c
-> > index 2cca5e0519f8..6ac49901c9da 100644
-> > --- a/drivers/iio/health/max30100.c
-> > +++ b/drivers/iio/health/max30100.c
-> > @@ -387,18 +387,15 @@ static int max30100_read_raw(struct iio_dev
-> > *indio_dev,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Temperature reading can only be acquired whil=
-e
-> > engine
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 * is running
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 mutex_lock(&indio_dev->mlock);
-> > -
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 if (!iio_buffer_enabled(indio_dev))
+> > This dance between buffered and direct mode is not particularly
+> > pretty
+> > (as well as the loop introduced by the goto statement) but it does
+> > allow
+> > us to get rid of the mlock usage while keeping the same behavior.
 >=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 if (iio_device_claim_buffer_mode(indio_dev)) {
->=20
-> I think a summary of replacing error code is good to have here, like
->=20
-> /*
-> =C2=A0* Replacing -EBUSY or other error code
-> =C2=A0* returned by iio_device_claim_buffer_mode()
-> =C2=A0* because user space may rely on the current
-> =C2=A0* one.
-> =C2=A0*/
+> What about adding a TODO comment saying something like: "this comes
+> from static analysis and helped dropping mlock access, but someone
+> with
+> the device needs to figure out if we can simplify this dance"?
+> Because
+> the reason behind all this is that we don't want to risk breaking the
+> driver, but perhaps a simpler approach would work, right?
 >=20
 
-This might make sense... I'll wait for Jonathan's review to see how
-strong he feels about this. Maybe he can also add it when applying.
+Hi Miquel,
 
+AFAIU, either the device is powered (when buffer mode enabled) and we
+can do the reading or it's not and we need to power it on/off
+"manually" while making sure we don't race against enable/disabling
+buffers. This "dance" is needed mainly to make sure that we grab
+'mlock' one way or another... The other way would be to use some
+specific device lock together with a flag (as discussed) but as
+discussed with Jonathan we decided to go down this road... So,
+honestly, I don't really see the necessity of "marking" this code with
+a TODO but of course if someone comes in with something simpler, great
+:).
+
+Anyways, as I said, I'm not really keen in spinning a new version to
+add this comment so I will defer the decision to Jonathan :) =20
+
+Thanks for the help!
 - Nuno S=C3=A1
->=20
 

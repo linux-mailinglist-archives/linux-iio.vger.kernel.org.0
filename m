@@ -2,38 +2,38 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 282135FEEB6
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 15:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5C515FEED3
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 15:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229696AbiJNNeg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Oct 2022 09:34:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34162 "EHLO
+        id S229735AbiJNNmx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Oct 2022 09:42:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbiJNNee (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 09:34:34 -0400
+        with ESMTP id S229751AbiJNNmv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 09:42:51 -0400
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C09C019C217;
-        Fri, 14 Oct 2022 06:34:27 -0700 (PDT)
-Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MpnPr2WxPz6H73n;
-        Fri, 14 Oct 2022 21:32:48 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D12701C7133;
+        Fri, 14 Oct 2022 06:42:50 -0700 (PDT)
+Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MpnZ05Fp7z67bhc;
+        Fri, 14 Oct 2022 21:39:52 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 14 Oct 2022 15:34:25 +0200
+ 15.1.2375.31; Fri, 14 Oct 2022 15:42:49 +0200
 Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 14 Oct
- 2022 14:34:24 +0100
-Date:   Fri, 14 Oct 2022 14:34:23 +0100
+ 2022 14:42:48 +0100
+Date:   Fri, 14 Oct 2022 14:42:47 +0100
 From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
-CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Jagath Jog J <jagathjog1996@gmail.com>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
@@ -42,16 +42,15 @@ CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
  accelerometer
-Message-ID: <20221014143423.00000379@huawei.com>
-In-Reply-To: <10c4663b-dd65-a545-786d-10aed6e6e5e9@fi.rohmeurope.com>
+Message-ID: <20221014144247.00001eb1@huawei.com>
+In-Reply-To: <b1700ea7-4a7a-263c-595c-0f7a56763c10@gmail.com>
 References: <cover.1665066397.git.mazziesaccount@gmail.com>
         <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
         <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
         <98b59ad5-8c29-be41-4da1-a961db67827c@gmail.com>
         <Y0QIzf2cAH9ehSeO@smile.fi.intel.com>
         <19a6db0f-40a8-dacf-4583-cdb9d74e1243@fi.rohmeurope.com>
-        <Y0QnkQklBpDdqjpi@smile.fi.intel.com>
-        <10c4663b-dd65-a545-786d-10aed6e6e5e9@fi.rohmeurope.com>
+        <b1700ea7-4a7a-263c-595c-0f7a56763c10@gmail.com>
 X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="US-ASCII"
@@ -69,134 +68,99 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Wed, 12 Oct 2022 10:40:38 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-...
-
-> >   
-> >>>>>> +	if (en)
-> >>>>>> +		return regmap_set_bits(data->regmap, KX022A_REG_CNTL,
-> >>>>>> +				       KX022A_MASK_DRDY);  
-> >>>>>
-> >>>>> I would put redundant 'else' here to have them on the same column, but
-> >>>>> it's pity we don't have regmap_assign_bits() API (or whatever name you
-> >>>>> can come up with) to hide this kind of code.  
+> On 10/10/22 16:20, Vaittinen, Matti wrote:
+> > On 10/10/22 14:58, Andy Shevchenko wrote:  
+> >> On Mon, Oct 10, 2022 at 12:12:34PM +0300, Matti Vaittinen wrote:
+> >> ...
+> >>  
+> >>>>> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
+> >>>>> +			       sizeof(s16));  
+> >>  
+> >>>> No endianess awareness (sizeof __le16 / __be16)  
+> >>  
+> >>>>> +	if (ret)
+> >>>>> +		return ret;
+> >>>>> +
+> >>>>> +	*val = data->buffer[0];  
 > >>>>
-> >>>> Eh, you mean you would put else here even though we return from the if? And
-> >>>> then put another return in else, and no return outside the if/else?
-> >>>>
-> >>>> I definitely don't like the idea.
-> >>>>
-> >>>> We could probably use regmap_update_bits and ternary but in my opinion that
-> >>>> would be just much less obvious. I do like the use of set/clear bits which
-> >>>> also makes the meaning / "polarity" of bits really clear.  
+> >>>> Ditto (get_unaligned_be16/le16 / le16/be16_to_cpup()).  
 > >>>
-> >>> The idea behind is simple (and note that I'm usually on the side of _removing_
-> >>> redundancy)
-> >>>
-> >>> 	if (en)
-> >>> 		return regmap_set_bits(data->regmap, KX022A_REG_CNTL,
-> >>> 				       KX022A_MASK_DRDY);
-> >>> 	else
-> >>> 		return regmap_clear_bits(data->regmap, KX022A_REG_CNTL,
-> >>> 					 ...
-> >>>
-> >>> Because the branches are semantically tighten to each other. But it's not
-> >>> a big deal to me.  
+> >>> I have probably misunderstood something but I don't see why we should use
+> >>> 'endianess awareness' in drivers? I thought the IIO framework code takes
+> >>> care of the endianes conversions based on scan_type so each individual
+> >>> driver does not need to do that. That however has been just my assumption. I
+> >>> will need to check this. Thanks for pointing it out.  
 > >>
-> >> What I do not really like in above example is that we never reach the
-> >> end of function body.  
-> > 
-> > What do you mean by that? Compiler does warn or what?  
+> >> The IIO core uses endianness field only once in iio_show_fixed_type() AFAICS.  
 > 
-> I don't know if compiler warns about it as I didn't test it. Now that 
-> you mentioned it, I think I have seen such warnings from a compiler or 
-> some static analyzer (klocwork?) in the past though. What I mean is that:
+> Following is some hand waving and speculation after my quick code read. 
+> So, I may be utterly wrong in which case please do correct me...
 > 
-> int foo()
-> {
-> 	if () {
-> 		...
-> 		return 1;
-> 	} else {
-> 		...
-> 		return 2;
-> 	}
-> }
-> 
+> Anyways, it seems to me that you're correct. The endianness field is 
+> only used by the IIO to build the channel information for user-space so 
+> that applications reading data can parse it. As far as I understand, the 
+> driver does not need to do the conversions for user-space, but the 
+> user-space tools should inspect the type information and do the 
+> conversion. I think it makes sense as user-space applications may be 
+> better equipped to do some maths. It also may be some applications do 
+> not want to spend cycles doing the conversion but the conversions can be 
+> done later "offline" for the captured raw data. So omitting conversion 
+> in the IIO driver kind of makes sense to me.
 
-For reference, this is the one I'd write if both options are good
-(or both are bad) and we don't need to worry about reducing indent
-for readability.
+That was indeed the original reasonining for buffered data path
+(note the endian marker is for scans only which only apply in buffered
+ / chardev case).
 
-However, I long since decided this was trivial enough not to
-comment on it in the code of others!
-
-> construct makes mistakes like:
-> 
-> int foo()
-> {
-> 	if () {
-> 		...
-> 		return 1;
-> 	} else {
-> 		...
-> 		return 2;
-> 	}
-> 
-> 	...
-> 
-> 	return 0;
-> }
-
-That should given unreachable code warning unless you've really managed
-to confuse the compiler  / static analysis tooling.
+It's less obvious for the sysfs path as that's inherently slow.
+We could have made this a problem for the IIO core, but we didn't :)
 
 > 
-> easy to make. When one uses:
-> 
-> int foo()
-> {
-> 	if () {
-> 		...
-> 		return 1;
-> 	}
-> 
-> 	...
-> 	return 2;
-> }
-> 
-> to begin with there is zero room for such confusion.
-> 
-> >   
-> >> It is against the expectation - and adding the
-> >> else has no real meaning when if returns. I actually think that
-> >> checkpatch could even warn about that construct.  
-> > 
-> > No way we ever accept such a thing for checkpatch because it's subjective  
-> 
-> Eh. Are you telling me that there is no subjective stuff in checkpatch? ;)
-> 
-> > (very dependant on the code piece). OTOH the proposed pattern is used in
-> > many places and left like that in places where I cleaned up the 'else',
-> > to leave the semantic tights with the above lines).
-> >   
-> >>>>>> +	return regmap_clear_bits(data->regmap, KX022A_REG_CNTL,
-> >>>>>> +				 KX022A_MASK_DRDY);  
-> > 
-> > I see that we have a strong disagreement here. I leave it to maintainers.  
-> 
-> 
-> Okay, let's hear what others have to say here.
+> I haven't thoroughly looked (and I have never used) the in-kernel IIO 
+> APIs for getting the data. A quick look at the 
+> include/linux/iio/consumer.h allows me to assume the iio_chan_spec can 
+> be obtained by the consumer drivers. This should make the endianess 
+> information available for the consumer drivers as well. So, again, 
+> consumer drivers can parse the raw-format data themself.
 
-Non answer above ;)
-
-Time for the old "Don't let perfect be the enemy of good!"
-
+yes consumers should be be endian aware if they are using the
+callback buffer route to get the data.  Now you mention it, we
+may well have cases where that isn't handled correctly.
+There are few enough users of that interface that it might well work
+by coincidence rather than design. oops.
 
 > 
-> Thanks for all the input this far.
+> I have this far only used the sysfs and iio_generic_buffer on a 
+> little-endian machine so I have had no issues with the little-endian 
+> data and I have only observed the code. Hence I can not really say if my 
+> reasoning is correct - or if it is how IIO has been designed to operate. 
+> But based on my quick study I don't see a need for the IIO driver to do 
+> endianess conversion to any other format but what is indicated by 
+> scan_type. Specifically for KX022A, the data is already 16B LE when read 
+> from the sensor. This is also advertised by scan_type so no conversion 
+> should be needed (unless, of course, I am mistaken :]).
+
+Ah. I'd missed that. Data storage should reflect the read back endianness
+and for the read_raw path you need to perform the conversion in driver
+(but not the high perf push to buffers path).
+
+Sure we could probably have handled read_raw in tree as well but we didn't
+and probably too late to sensibly fix that now.  One of many things we'd
+probably do differently if we were starting again.
+
+J
+
 > 
-> Best Regards
+> >> And it does nothing with it. Maybe Jonathan can shed a light what is it for
+> >> (I mean the field)?
+> >>  
+> 
+> I agree. It'd be great to listen to someone who actually knows what he 
+> is talking about and is not just guessing as I am ^_^;
+> 
+> Yours,
 > 	-- Matti
 > 
 

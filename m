@@ -2,128 +2,210 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A6105FEE11
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 14:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C6BF5FEE2C
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Oct 2022 14:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbiJNMma (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 14 Oct 2022 08:42:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
+        id S229541AbiJNMww (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 14 Oct 2022 08:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbiJNMm3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 08:42:29 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE354E09AA;
-        Fri, 14 Oct 2022 05:42:26 -0700 (PDT)
-Received: from fraeml745-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MpmGj1Zj9z6HJRq;
-        Fri, 14 Oct 2022 20:41:33 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml745-chm.china.huawei.com (10.206.15.226) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 14 Oct 2022 14:42:23 +0200
-Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 14 Oct
- 2022 13:42:22 +0100
-Date:   Fri, 14 Oct 2022 13:42:21 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 1/5] regulator: Add devm helpers for get and
- enable
-Message-ID: <20221014134221.000055de@huawei.com>
-In-Reply-To: <fc3c70d7-1787-5f7c-7394-2f93b42d56b0@gmail.com>
-References: <cover.1665066397.git.mazziesaccount@gmail.com>
-        <fa667d6870976a2cf2d60f06e262982872349d74.1665066397.git.mazziesaccount@gmail.com>
-        <Yz7/o1q7p8NmGKMe@smile.fi.intel.com>
-        <20221009132421.6e472385@jic23-huawei>
-        <fc3c70d7-1787-5f7c-7394-2f93b42d56b0@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S229676AbiJNMwv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 14 Oct 2022 08:52:51 -0400
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62BC01946F7;
+        Fri, 14 Oct 2022 05:52:50 -0700 (PDT)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 29EAjHe7030887;
+        Fri, 14 Oct 2022 14:52:26 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=NuQM2Oppw+sba1gBy0I3Xc3PftWe/5yODVvMIxxmy40=;
+ b=vxEvUtRQ8IxFEx0Ik05ZYv7T8Zx4NhcGvOj6CYyZim4FR66fpa0g9Ssk7OE2tvSWs8SZ
+ 1rgDKC83glFmiLeJLjJ+FAu+yjOnZjxsW7byrAm6TAu8fPKk7UZlUXNp2XKfMaLYJewC
+ ckX9lqM8VN6p6LKxAh0W20Sq3SYPaD5kp3gg46cFVInThPVnZO9n8wQBb+7jrBPfeCM2
+ BVZm1WhqP0LVzgZ16RLx2IIrDAG4g08mejpSIpxRcyRZniQcFGkKPy2RL9Luo9sRh4Mc
+ b8UJlLip7h0yG99ZAtfBV6c6qD5FWFK9FiRt7eaXnxYLZp4zzYhok56gqNVuDp+CA3AS 8A== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3k769qrs1q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 14 Oct 2022 14:52:26 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BB0D7100034;
+        Fri, 14 Oct 2022 14:52:21 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B3C35229A9A;
+        Fri, 14 Oct 2022 14:52:21 +0200 (CEST)
+Received: from [10.252.6.249] (10.75.127.49) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2375.31; Fri, 14 Oct
+ 2022 14:52:19 +0200
+Message-ID: <7e53cfe8-1c85-1ad4-04be-b555cfb26a9e@foss.st.com>
+Date:   Fri, 14 Oct 2022 14:52:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v4 5/8] ARM: dts: stm32: add adc support to stm32mp13
+To:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <devicetree@vger.kernel.org>
+References: <20221012142205.13041-1-olivier.moysan@foss.st.com>
+ <20221012142205.13041-6-olivier.moysan@foss.st.com>
+Content-Language: en-US
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20221012142205.13041-6-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.75.127.49]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-14_07,2022-10-14_01,2022-06-22_01
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 10 Oct 2022 12:24:51 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-
-> Hi Jonathan,
+On 10/12/22 16:22, Olivier Moysan wrote:
+> Add ADC1 and ADC2 support to STM32MP13 SoC family.
 > 
-> On 10/9/22 15:24, Jonathan Cameron wrote:
-> > On Thu, 6 Oct 2022 19:17:39 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> >   
-> >> On Thu, Oct 06, 2022 at 05:36:52PM +0300, Matti Vaittinen wrote:  
-> >>> A few regulator consumer drivers seem to be just getting a regulator,
-> >>> enabling it and registering a devm-action to disable the regulator at
-> >>> the driver detach and then forget about it.
-> >>>
-> >>> We can simplify this a bit by adding a devm-helper for this pattern.
-> >>> Add devm_regulator_get_enable() and devm_regulator_get_enable_optional()  
-> >>
-> >> ...
-> >>  
-> >>> (cherry picked from commit b6058e052b842a19c8bb639798d8692cd0e7589f)  
-> >>
-> >> Not sure:
-> >>   - why this is in the commit message
-> >>   - what it points to, since
-> >> $ git show b6058e052b842a19c8bb639798d8692cd0e7589f
-> >>   fatal: bad object b6058e052b842a19c8bb639798d8692cd0e7589f  
-> > 
-> > These are now upstream in Linus' tree and in my testing branch.
-> > I'd not normally advocate working on top of that (because I rebase it), but
-> > if it is useful for this series go ahead.  
+> The STM32MP131 provides only ADC2, while other STM32MP13 SoCs provide
+> both ADC1 and ADC2.
 > 
-> Thanks for the explanation :)
+> Internal channels support limitations:
+> - VREFINT internal channel requires calibration data from OTP memory.
+>   The nvmem properties used to access OTP are not defined for time being,
+>   as OTP support is not yet enabled.
 > 
-> This series will conflict with my fixup series for triggered-buffer 
-> attributes. Hence I though I might combine these two series into one if 
-> I need to respin the fixup series. I thought of using the v6.1-rc1 when 
-> it is out. (I think the 6.1-rc1 should not be that far away)
+> - VBAT internal channel is not defined by default in SoC DT, and
+>   has be defined in board DT when needed, instead. This avoids unwanted
+>   current consumption on battery, when ADC conversions are performed
+>   on any other channels.
 > 
-> OTOH, I just read your another mail which told that there will be one 
-> more driver which will conflict with the fixup coming in during this 
-> cycle. If that driver lands in your tree before the fix - then I guess I 
-> need to rebase the fixup series (and maybe this too) on top of your tree 
-> + add conversion of this new driver. I don't think that would be the 
-> testing branch though(?)
-I'll be messy, but the majority of that fix series will need to go
-in during rcX..
-
-The last patch (refactoring one) will need to wait until those are
-upstream and have worked there way around to be in my togreg branch
-(I usually rebase that tree only after pull requests, but given this
- is going on I may do an earlier pull request than normal.)
-
-That refactoring patch will probably need to cover the new driver.
-I can do that as a fixup whilst applying it though once we get that far.
-
-Jonathan
-
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> ---
+>  arch/arm/boot/dts/stm32mp131.dtsi | 43 +++++++++++++++++++++++++++++++
+>  arch/arm/boot/dts/stm32mp133.dtsi | 31 ++++++++++++++++++++++
+>  2 files changed, 74 insertions(+)
 > 
-> Yours
-> 	-- Matti	
-> 
+> diff --git a/arch/arm/boot/dts/stm32mp131.dtsi b/arch/arm/boot/dts/stm32mp131.dtsi
+> index dd35a607073d..0b85e7744db5 100644
+> --- a/arch/arm/boot/dts/stm32mp131.dtsi
+> +++ b/arch/arm/boot/dts/stm32mp131.dtsi
+> @@ -313,6 +313,49 @@ i2c5: i2c@4c006000 {
+>  			status = "disabled";
+>  		};
+>  
+> +		adc_2: adc@48004000 {
 
+Hi Olivier,
+
+Nodes should be sorted by address here. Maybe Alexandre will take care
+when applying ?
+
+With that fixed, you can add my:
+
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+
+Thanks,
+Fabrice
+
+> +			compatible = "st,stm32mp13-adc-core";
+> +			reg = <0x48004000 0x400>;
+> +			interrupts = <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&rcc ADC2>, <&rcc ADC2_K>;
+> +			clock-names = "bus", "adc";
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			status = "disabled";
+> +
+> +			adc2: adc@0 {
+> +				compatible = "st,stm32mp13-adc";
+> +				#io-channel-cells = <1>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <0x0>;
+> +				interrupt-parent = <&adc_2>;
+> +				interrupts = <0>;
+> +				dmas = <&dmamux1 10 0x400 0x80000001>;
+> +				dma-names = "rx";
+> +				status = "disabled";
+> +
+> +				channel@13 {
+> +					reg = <13>;
+> +					label = "vrefint";
+> +				};
+> +				channel@14 {
+> +					reg = <14>;
+> +					label = "vddcore";
+> +				};
+> +				channel@16 {
+> +					reg = <16>;
+> +					label = "vddcpu";
+> +				};
+> +				channel@17 {
+> +					reg = <17>;
+> +					label = "vddq_ddr";
+> +				};
+> +			};
+> +		};
+> +
+>  		rcc: rcc@50000000 {
+>  			compatible = "st,stm32mp13-rcc", "syscon";
+>  			reg = <0x50000000 0x1000>;
+> diff --git a/arch/arm/boot/dts/stm32mp133.dtsi b/arch/arm/boot/dts/stm32mp133.dtsi
+> index 531c263c9f46..df451c3c2a26 100644
+> --- a/arch/arm/boot/dts/stm32mp133.dtsi
+> +++ b/arch/arm/boot/dts/stm32mp133.dtsi
+> @@ -33,5 +33,36 @@ m_can2: can@4400f000 {
+>  			bosch,mram-cfg = <0x1400 0 0 32 0 0 2 2>;
+>  			status = "disabled";
+>  		};
+> +
+> +		adc_1: adc@48003000 {
+> +			compatible = "st,stm32mp13-adc-core";
+> +			reg = <0x48003000 0x400>;
+> +			interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&rcc ADC1>, <&rcc ADC1_K>;
+> +			clock-names = "bus", "adc";
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			status = "disabled";
+> +
+> +			adc1: adc@0 {
+> +				compatible = "st,stm32mp13-adc";
+> +				#io-channel-cells = <1>;
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +				reg = <0x0>;
+> +				interrupt-parent = <&adc_1>;
+> +				interrupts = <0>;
+> +				dmas = <&dmamux1 9 0x400 0x80000001>;
+> +				dma-names = "rx";
+> +				status = "disabled";
+> +
+> +				channel@18 {
+> +					reg = <18>;
+> +					label = "vrefint";
+> +				};
+> +			};
+> +		};
+>  	};
+>  };

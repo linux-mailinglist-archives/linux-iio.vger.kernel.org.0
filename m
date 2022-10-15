@@ -2,63 +2,98 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 458F65FFA5E
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Oct 2022 15:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C7C25FFAE8
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Oct 2022 17:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbiJONwf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 15 Oct 2022 09:52:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
+        id S229809AbiJOPTX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 15 Oct 2022 11:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229655AbiJONwd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Oct 2022 09:52:33 -0400
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5842552E7F
-        for <linux-iio@vger.kernel.org>; Sat, 15 Oct 2022 06:52:32 -0700 (PDT)
-Received: by mail-qv1-xf29.google.com with SMTP id h10so4947164qvq.7
-        for <linux-iio@vger.kernel.org>; Sat, 15 Oct 2022 06:52:32 -0700 (PDT)
+        with ESMTP id S229595AbiJOPTW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 15 Oct 2022 11:19:22 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BBB65FEA
+        for <linux-iio@vger.kernel.org>; Sat, 15 Oct 2022 08:19:20 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id h24so5089618qta.7
+        for <linux-iio@vger.kernel.org>; Sat, 15 Oct 2022 08:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=IhZYzWVwR6ANl8TItLFCTVvc5l7VLrZkeg3Uh0Vbwyk=;
-        b=gsjfNn+p6OnKCF8XLHUC8jZQIRjKKFC+ezopPuukFVENvDNMRrxNaqyL87rpJtxuiA
-         wQlRQ/1FivQJHBZuF45/PUxNnkLU5a3WR6eTF24bPjiroRN7naT0mq+V8y2hwSC9TOI6
-         Xd3m5b6uIiVgmVXCy/stFocisGqd9d1s/x10fK5KtVhJ73s9cbt1hH2+FeDl6eU/ngd0
-         iSE9WUwtXrOLvYiw5nYSMt4fJ1hg+oZdI4ldQ6VqQ0ita1Ql8KOwMScHt1kzoWnQ6/1l
-         EFXYczKrEpDNGkoGf2Ul4Rex4AXF0ys2Be/sHZLFatIVN9b9/kkMSv6p2KjNlZGrW6Pu
-         c91w==
+        bh=5lnInENwLybwBq+BGW9XxaGeEpI0F9YvSORSJTCPbgo=;
+        b=tH2d2Fg2+rkIGI3g30tLYVACKy0d5S84UFuNYvLPX2jB7j1OU1s7hRZuvtaYaThLl+
+         DVRX+YUAGvtLKD3k1P+nvbXARq1pZqxR+3jcthoC732WsTyygYmvBpNy0ogD83ytNN0o
+         mct2GWnXik+WHSCVd8mXSryojXZ4tKde5eRzbSxYGRCMd7WGBsjihW5p/VfdA6h+QYSo
+         4mvukBY/TajIL/LhoFP9fMi6Dxy7BP/AxIYoRIhBV1JvAf8GJMMLT3OPKk7DEsj8dD5r
+         SgnimZMd+cNj6EcFymL/976s/bkyjFlv7uaNDY8zdHzGGO+rwOvEKXUZSXKZRSP79Gu/
+         Do2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IhZYzWVwR6ANl8TItLFCTVvc5l7VLrZkeg3Uh0Vbwyk=;
-        b=vsv0bhNcvXdGIl/rGvGZe+3Di3a0FisPXFmdbWAtqYiA7TFdsNI6DaN4QtdTK0S3gu
-         sfqruo/eY4A6uJZJFAKh6mhcVsNl8zOG1Y43iPIt9OjDR/YSv38VXJKwwog5VBSF7j6U
-         Cx4R+Yo9G0QHTTwMQg3Lak3cxDQgtOwDCW7KwGIqHPK1T7SSH7d1QD5mbZKc7/1yuyii
-         DCOhuY2R4mL4hkoR83RWn+F4qxuzt4CSaJla6GoU3V3jmf7zfKh5n1QIr/ZI2iXQbuPQ
-         ZX6V+71Gqrl4WcwcZxfO1kzChcMciNqubvj5tIxwZo7Y18CcNq/0N9A9VSCfQbhSzGN4
-         oIJw==
-X-Gm-Message-State: ACrzQf0ImMk9Odi1e0Hbn8F5zg+F3ggqX7zKtD/CrVJAGBytND0iG3dD
-        +Y4Pr5BBvc9VcQa6BGkICa7uBy3uVumQrA==
-X-Google-Smtp-Source: AMsMyM6hxxmI7Q4/FtTi2vQ9QmdL87HBnnKD4IAULJIaLwwAHWL55GATer7qvk5v0YyLJ5LTiRdF+w==
-X-Received: by 2002:a05:6214:ac4:b0:4af:b60f:5c7a with SMTP id g4-20020a0562140ac400b004afb60f5c7amr1950407qvi.60.1665841951523;
-        Sat, 15 Oct 2022 06:52:31 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id v6-20020ac87286000000b0038b684a1642sm4002250qto.32.2022.10.15.06.52.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Oct 2022 06:52:30 -0700 (PDT)
-Date:   Sat, 15 Oct 2022 09:52:27 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     kamel.bouhara@bootlin.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Subject: Handling Signal1 in microchip-tcb-capture
-Message-ID: <Y0q7Gzh95nFdqdYK@fedora>
+        bh=5lnInENwLybwBq+BGW9XxaGeEpI0F9YvSORSJTCPbgo=;
+        b=aRI0yTv/BY14z8rwPticPCae5CQeWxwJHZaBNYm/N1MvpWPmPq8MFnFHQQL8iTYplk
+         0zCGVsN/NGOotaOnTKYcD+4XxaYkc9744iISRpZXx7WMhcdHMScKC7qAClpR0Bgqj7wI
+         FxTMe41MMjcv9JJmfAXXvidDSwVhkiWkz7s/bIhFdth8GpWKIPpTUZcvm+lNJaVbJT+9
+         92J5KSuje+6lvVsebHiT0n2Y/gUztVKK5CqKrejYokQvNowibX+Py3Q6Q9ebkvBvsiX3
+         Anw/ZcUAkbSJKUrRSpZuEEoI5Tno7rGuJBl83rEGjxfXyCXUQFzL45QmA+Oen0rR04Kt
+         Z00A==
+X-Gm-Message-State: ACrzQf2U7V1ozZdUUlYUVuJaLj5ekeAl7cYCNesuozbA8kgl0hehTj7q
+        uADexIzppo5Zsfr+0B+903Awpg==
+X-Google-Smtp-Source: AMsMyM7SK8HhtjT3RcbC18eK6Wx6yTJR3yAlueJ7R3Fy7tkuEa2py8ydKmqXp8AC0za/7RsOMMmaNw==
+X-Received: by 2002:a05:622a:13ce:b0:39c:c82a:4584 with SMTP id p14-20020a05622a13ce00b0039cc82a4584mr2279261qtk.150.1665847159474;
+        Sat, 15 Oct 2022 08:19:19 -0700 (PDT)
+Received: from ?IPV6:2601:42:0:3450:9477:c2f0:ddea:ea08? ([2601:42:0:3450:9477:c2f0:ddea:ea08])
+        by smtp.gmail.com with ESMTPSA id fz25-20020a05622a5a9900b00399ad646794sm4165768qtb.41.2022.10.15.08.19.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Oct 2022 08:19:18 -0700 (PDT)
+Message-ID: <608e194f-3137-ceb7-f9e9-155010ce1afa@linaro.org>
+Date:   Sat, 15 Oct 2022 11:19:14 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xdpWHHg+Grftu4HJ"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.2
+Subject: Re: [PATCH] dt-bindings: Remove "status" from schema examples, again
+Content-Language: en-US
+To:     Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Nandhini Srikandan <nandhini.srikandan@intel.com>,
+        Rashmi A <rashmi.a@intel.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Vinod Koul <vkoul@kernel.org>, Sumit Gupta <sumitg@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>
+Cc:     devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-iio@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org
+References: <20221014205104.2822159-1-robh@kernel.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221014205104.2822159-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,37 +101,20 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 14/10/2022 16:51, Rob Herring wrote:
+> There's no reason to have "status" properties in examples. "okay" is the
+> default, and "disabled" turns off some schema checks ('required'
+> specifically).
+> 
+> A meta-schema check for this is pending, so hopefully the last time to
+> fix these.
+> 
+> Fix the indentation in intel,phy-thunderbay-emmc while we're here.
+> 
 
---xdpWHHg+Grftu4HJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Hello Kamel,
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I was looking over the microchip-tcb-capture driver recently and noticed
-that the code doesn't seem to account for Signal1. In particular, it
-appears that mchp_tc_count_signal_read() and mchp_tc_count_action_read()
-don't check the Signal id at all and just assume they are handling
-Signal0. This creates a situation where the information returned for the
-Signal1 sysfs attributes are just duplicated reports of Signal0.
+Best regards,
+Krzysztof
 
-What exactly is the relationship of Signal0 ("Channel A") and Signal1
-("Channel B"); is SignalB only relevant when the counter device is
-configured for quadrature mode?
-
-Sincerely,
-
-William Breathitt Gray
-
---xdpWHHg+Grftu4HJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY0q7GwAKCRC1SFbKvhIj
-K5XSAP91pKrMRiRL0thwmoh+oTH7pTvGzSAMJwnNfp4R1z64ngD/f0L02GHAQ8Py
-KCXvfa2xmxmNEZpahfOaZwm82LdozQU=
-=EAuO
------END PGP SIGNATURE-----
-
---xdpWHHg+Grftu4HJ--

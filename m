@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E85A600167
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5C2D600168
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229594AbiJPQez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
+        id S229808AbiJPQe4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbiJPQex (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:53 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C281274B
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:50 -0700 (PDT)
+        with ESMTP id S229815AbiJPQez (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8AE14D05
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 117E2B80D05
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0F7C433C1;
-        Sun, 16 Oct 2022 16:34:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78CBE60C09
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B40EC433D7;
+        Sun, 16 Oct 2022 16:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938087;
-        bh=6u4UeBus1dP9+ri3dNYrl6tcaPO4hwKRpQOFXvhKZLo=;
+        s=k20201202; t=1665938091;
+        bh=HUDrCW7jIhXFbVqZxlXHpRiMWGS9+NR8nrbePvEgxC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vDwHglpz3BmW69k043roAuymZPLF0oYOciYwMLSWSGNqaEZQ1X4PEe+0xtMekGpag
-         sauYresRR3tdob9aKbLafblvw4c/KoCJAUbbBK+0A4usbcPG2q7zRYJGIv34pJgZOh
-         JMMaXPBIDyIPpQtFeoWr1zGyfLNFaNEV7bO90xLt4t+s6K4PUB61T2DLyOVzeGvAvR
-         gCx9RTRkx40mwSMkTSUKNxE0lTW5U0LhegdtSWMaVBiTsELKtA2kkgpwSdADF4NnKs
-         moynC1bbOfQUD+Nl8z7kzHwADAgb1ne2ZarBoCr2DakiQn/1pK4X1VTtLL93AKehCp
-         cux9EjC0I5faw==
+        b=O40LomfMN4rxRRtu60aeOVNTlHK9yK+aLL8efggYuGXqgiQ55tUP60CPec7uUfWWj
+         mmCUUMGRGdi2MZBL4+eQyN2xJtBy3biEFZKpr1Se5jRZepB3eeiONikRVhH+Qv3X8r
+         UNV+su98avZKRRvqfMyPRVyw4gxNQnqJLLZfXTSpn9ghFaXauqdigc06STfKbQkQy0
+         3oEyRCIdYdJS8hAliiuaxhGAveyrS+mNNbIWkJP3F1ObaktZ2G1i5Cq575pzN+5pCs
+         iPalUgX+BC3cxLfx268FYEBfu6PVhVgZSbuy40KFSYvor8jKQWyGhANHg+O2jehcwy
+         22UpCZgwTJQfw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,9 +48,9 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 13/14] iio: pressure: ms5611: Use devm_regulator_get_enable()
-Date:   Sun, 16 Oct 2022 17:34:08 +0100
-Message-Id: <20221016163409.320197-14-jic23@kernel.org>
+Subject: [PATCH 14/14] iio: pressure: ms5611: Switch to fully devm_ managed registration.
+Date:   Sun, 16 Oct 2022 17:34:09 +0100
+Message-Id: <20221016163409.320197-15-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
 References: <20221016163409.320197-1-jic23@kernel.org>
@@ -67,113 +67,119 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This driver only turns the power on at probe and off via a custom
-devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
-replaces this boilerplate code. Some additional refactoring to drop
-now unnecessary unwinding after this change.
+All the remaining calls in probe() have devm_ equivalents so
+switching to those allows the remove() callbacks to be deleted.
+No functional change.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Tomasz Duszynski <tduszyns@gmail.com>
 ---
- drivers/iio/pressure/ms5611.h      |  3 ---
- drivers/iio/pressure/ms5611_core.c | 32 +++++-------------------------
- 2 files changed, 5 insertions(+), 30 deletions(-)
+ drivers/iio/pressure/ms5611.h      |  1 -
+ drivers/iio/pressure/ms5611_core.c | 17 +++--------------
+ drivers/iio/pressure/ms5611_i2c.c  |  6 ------
+ drivers/iio/pressure/ms5611_spi.c  |  6 ------
+ 4 files changed, 3 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/iio/pressure/ms5611.h b/drivers/iio/pressure/ms5611.h
-index cbc9349c342a..816e83befd23 100644
+index 816e83befd23..f7066315fde3 100644
 --- a/drivers/iio/pressure/ms5611.h
 +++ b/drivers/iio/pressure/ms5611.h
-@@ -13,8 +13,6 @@
- #include <linux/iio/iio.h>
- #include <linux/mutex.h>
- 
--struct regulator;
--
- #define MS5611_RESET			0x1e
- #define MS5611_READ_ADC			0x00
- #define MS5611_READ_PROM_WORD		0xA0
-@@ -56,7 +54,6 @@ struct ms5611_state {
- 					  s32 *temp, s32 *pressure);
- 
- 	struct ms5611_chip_info *chip_info;
--	struct regulator *vdd;
- };
+@@ -58,6 +58,5 @@ struct ms5611_state {
  
  int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+ 		 const char *name, int type);
+-void ms5611_remove(struct iio_dev *indio_dev);
+ 
+ #endif /* _MS5611_H */
 diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
-index 717521de66c4..b95ee6034548 100644
+index b95ee6034548..75a98470dcea 100644
 --- a/drivers/iio/pressure/ms5611_core.c
 +++ b/drivers/iio/pressure/ms5611_core.c
-@@ -390,40 +390,21 @@ static const struct iio_info ms5611_info = {
- static int ms5611_init(struct iio_dev *indio_dev)
- {
- 	int ret;
--	struct ms5611_state *st = iio_priv(indio_dev);
- 
- 	/* Enable attached regulator if any. */
--	st->vdd = devm_regulator_get(indio_dev->dev.parent, "vdd");
--	if (IS_ERR(st->vdd))
--		return PTR_ERR(st->vdd);
--
--	ret = regulator_enable(st->vdd);
--	if (ret) {
--		dev_err(indio_dev->dev.parent,
--			"failed to enable Vdd supply: %d\n", ret);
-+	ret = devm_regulator_get_enable(indio_dev->dev.parent, "vdd");
-+	if (ret)
+@@ -431,34 +431,23 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+ 	if (ret < 0)
  		return ret;
--	}
  
- 	ret = ms5611_reset(indio_dev);
- 	if (ret < 0)
--		goto err_regulator_disable;
-+		return ret;
- 
- 	ret = ms5611_read_prom(indio_dev);
- 	if (ret < 0)
--		goto err_regulator_disable;
-+		return ret;
- 
- 	return 0;
--
--err_regulator_disable:
--	regulator_disable(st->vdd);
--	return ret;
--}
--
--static void ms5611_fini(const struct iio_dev *indio_dev)
--{
--	const struct ms5611_state *st = iio_priv(indio_dev);
--
--	regulator_disable(st->vdd);
- }
- 
- int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
-@@ -454,7 +435,7 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+-	ret = iio_triggered_buffer_setup(indio_dev, NULL,
++	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
  					 ms5611_trigger_handler, NULL);
  	if (ret < 0) {
  		dev_err(dev, "iio triggered buffer setup failed\n");
--		goto err_fini;
+ 		return ret;
+ 	}
+ 
+-	ret = iio_device_register(indio_dev);
++	ret = devm_iio_device_register(dev, indio_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "unable to register iio device\n");
+-		goto err_buffer_cleanup;
 +		return ret;
  	}
  
- 	ret = iio_device_register(indio_dev);
-@@ -467,8 +448,6 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
- 
- err_buffer_cleanup:
- 	iio_triggered_buffer_cleanup(indio_dev);
--err_fini:
--	ms5611_fini(indio_dev);
- 	return ret;
+ 	return 0;
+-
+-err_buffer_cleanup:
+-	iio_triggered_buffer_cleanup(indio_dev);
+-	return ret;
  }
  EXPORT_SYMBOL_NS(ms5611_probe, IIO_MS5611);
-@@ -477,7 +456,6 @@ void ms5611_remove(struct iio_dev *indio_dev)
- {
- 	iio_device_unregister(indio_dev);
- 	iio_triggered_buffer_cleanup(indio_dev);
--	ms5611_fini(indio_dev);
+ 
+-void ms5611_remove(struct iio_dev *indio_dev)
+-{
+-	iio_device_unregister(indio_dev);
+-	iio_triggered_buffer_cleanup(indio_dev);
+-}
+-EXPORT_SYMBOL_NS(ms5611_remove, IIO_MS5611);
+-
+ MODULE_AUTHOR("Tomasz Duszynski <tduszyns@gmail.com>");
+ MODULE_DESCRIPTION("MS5611 core driver");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/pressure/ms5611_i2c.c b/drivers/iio/pressure/ms5611_i2c.c
+index b681a4183909..2bab509a8c1d 100644
+--- a/drivers/iio/pressure/ms5611_i2c.c
++++ b/drivers/iio/pressure/ms5611_i2c.c
+@@ -105,11 +105,6 @@ static int ms5611_i2c_probe(struct i2c_client *client,
+ 	return ms5611_probe(indio_dev, &client->dev, id->name, id->driver_data);
  }
- EXPORT_SYMBOL_NS(ms5611_remove, IIO_MS5611);
+ 
+-static void ms5611_i2c_remove(struct i2c_client *client)
+-{
+-	ms5611_remove(i2c_get_clientdata(client));
+-}
+-
+ static const struct of_device_id ms5611_i2c_matches[] = {
+ 	{ .compatible = "meas,ms5611" },
+ 	{ .compatible = "meas,ms5607" },
+@@ -131,7 +126,6 @@ static struct i2c_driver ms5611_driver = {
+ 	},
+ 	.id_table = ms5611_id,
+ 	.probe = ms5611_i2c_probe,
+-	.remove = ms5611_i2c_remove,
+ };
+ module_i2c_driver(ms5611_driver);
+ 
+diff --git a/drivers/iio/pressure/ms5611_spi.c b/drivers/iio/pressure/ms5611_spi.c
+index 432e912096f4..f0f5b46d8f9c 100644
+--- a/drivers/iio/pressure/ms5611_spi.c
++++ b/drivers/iio/pressure/ms5611_spi.c
+@@ -107,11 +107,6 @@ static int ms5611_spi_probe(struct spi_device *spi)
+ 			    spi_get_device_id(spi)->driver_data);
+ }
+ 
+-static void ms5611_spi_remove(struct spi_device *spi)
+-{
+-	ms5611_remove(spi_get_drvdata(spi));
+-}
+-
+ static const struct of_device_id ms5611_spi_matches[] = {
+ 	{ .compatible = "meas,ms5611" },
+ 	{ .compatible = "meas,ms5607" },
+@@ -133,7 +128,6 @@ static struct spi_driver ms5611_driver = {
+ 	},
+ 	.id_table = ms5611_id,
+ 	.probe = ms5611_spi_probe,
+-	.remove = ms5611_spi_remove,
+ };
+ module_spi_driver(ms5611_driver);
  
 -- 
 2.37.2

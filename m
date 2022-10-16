@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8446600158
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BBCA600159
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:33:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229789AbiJPQdz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55476 "EHLO
+        id S229572AbiJPQd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbiJPQdy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:33:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47E1E32051
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:33:53 -0700 (PDT)
+        with ESMTP id S229796AbiJPQd5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:33:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5D825C78
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:33:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 013E4B80CD9
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:33:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41A7C433C1;
-        Sun, 16 Oct 2022 16:33:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D5EC60BFB
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2233CC433B5;
+        Sun, 16 Oct 2022 16:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938030;
-        bh=isFHu2/ita8FShRHPIZPZBmsA1N1GUXjD3akqiSbFOg=;
-        h=From:To:Cc:Subject:Date:From;
-        b=KyI3x+6+FAHpW26/9pe7ds6rM79R2z0RB/G1Pu0z1tlZoDYmfb++m8XlXXIXAoQ15
-         NfapUGlx+jhSx2t7q9b+XXnhqGCsXayrsXLdeAkhjIYiZoIjduzx/HOOflU5vUUDy/
-         9987aTDJxiBqpJrP0zbLTQOHqN4Xzc10qBfE5G25SfayrKkUwZwgUsolWx7yi/EYpL
-         c8mT4/QWhWWmwzVIAkPSmMXqdNdrjX5cib1EDM0PUoEDPG0fe3tJGKcaYSduDvnl6w
-         o2QGCfKYhCKScdyIVAc1YauUgfWonS1PbrFzEMukMN4Hx+ngIMbgfUuD9dmye+kivt
-         0LsXaF5eb8EwA==
+        s=k20201202; t=1665938035;
+        bh=62CansvX/luuvsQ66Vhij0k0OkU2QnNkhSrQ9XJrpG0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kaiDBqXpn5yK764lbTcmZTCJGSYEq9OKgnapUUi/nD6OgYAycngSYjAK8hm3T4786
+         aFtudiwQfK6mSNO1mlqmzJu/dMoUq+Qz0P8wwZrbARXJTcy9xJLrqW5CWSBG9/ednl
+         D2VGmbDmYovD1jupV8UFPFK9GYINqVhRTEEWugeBsAnoOR/TGoUtaMB24zUr5ahqPx
+         xpz8a+IKiQ5stlPhb0QjWixqOx7vrzbip6aF2hNVjQHxkOx0UT7Uro1WeNh+ZIIuc6
+         ug+37MmZmJ9SaG7130wDbFydbzgsEJxkJ64QPpVPeDZv7cpEJh4fYiAanxCieJt20j
+         Z3Y+XmkExqzEw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,10 +48,12 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 00/14] IIO: More devm_regulator[_bulk]_get_enable() users
-Date:   Sun, 16 Oct 2022 17:33:55 +0100
-Message-Id: <20221016163409.320197-1-jic23@kernel.org>
+Subject: [PATCH 01/14] iio: accel: adxl367: Use devm_regulator_bulk_get_enable()
+Date:   Sun, 16 Oct 2022 17:33:56 +0100
+Message-Id: <20221016163409.320197-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
+References: <20221016163409.320197-1-jic23@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -65,54 +67,76 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Also one general devm conversion that was too easy to ignore after
-dealing with the regulators.
+This driver only turns the power on at probe and off via a custom
+devm_add_action_or_reset() callback. The new
+devm_regulator_bulk_get_enable() replaces this boilerplate code.
 
-These new macros allow dropping of some boilerplate.  They are not
-useful in many cases in IIO because they do not expose the
-struct regulator, however for simple drivers that just turn the power
-on at probe() they ensure that it is turned off again at remove.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
+---
+ drivers/iio/accel/adxl367.c | 28 ++++------------------------
+ 1 file changed, 4 insertions(+), 24 deletions(-)
 
-Jonathan Cameron (14):
-  iio: accel: adxl367: Use devm_regulator_bulk_get_enable()
-  iio: accel: bma400: Use devm_regulator_bulk_get_enable()
-  iio: accel: fxls8962af: Use devm_regulator_get_enable()
-  iio: accel: kxcjk-1013: Use devm_regulator_bulk_get_enable()
-  iio: accel: msa311: Use devm_regulator_get_enable()
-  iio: cdc: ad7150: Use devm_regulator_get_enable()
-  iio: st_sensors: core and lsm9ds0 switch to
-    devm_regulator_bulk_get_enable()
-  iio: frequency: ad9523: Use devm_regulator_get_enable()
-  iio: humidity: hts211: Use devm_regulator_get_enable()
-  iio: light: ltr501: Use devm_regulator_bulk_get_enable()
-  iio: light: noa1305: Use devm_regulator_get_enable()
-  iio: proximity: sx_common: Use devm_regulator_bulk_get_enable()
-  iio: pressure: ms5611: Use devm_regulator_get_enable()
-  iio: pressure: ms5611: Switch to fully devm_ managed registration.
-
- drivers/iio/accel/adxl367.c                   | 28 ++------
- drivers/iio/accel/bma400.h                    |  4 --
- drivers/iio/accel/bma400_core.c               | 29 ++-------
- drivers/iio/accel/fxls8962af-core.c           | 24 +------
- drivers/iio/accel/kxcjk-1013.c                | 25 ++-----
- drivers/iio/accel/msa311.c                    | 21 +-----
- drivers/iio/cdc/ad7150.c                      | 18 +----
- .../iio/common/st_sensors/st_sensors_core.c   | 39 ++---------
- drivers/iio/frequency/ad9523.c                | 22 +------
- drivers/iio/humidity/hts221.h                 |  2 -
- drivers/iio/humidity/hts221_core.c            | 27 ++------
- drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_core.c  | 65 ++-----------------
- drivers/iio/light/ltr501.c                    | 27 ++------
- drivers/iio/light/noa1305.c                   | 26 +-------
- drivers/iio/pressure/ms5611.h                 |  4 --
- drivers/iio/pressure/ms5611_core.c            | 49 +++-----------
- drivers/iio/pressure/ms5611_i2c.c             |  6 --
- drivers/iio/pressure/ms5611_spi.c             |  6 --
- drivers/iio/proximity/sx_common.c             | 23 +------
- drivers/iio/proximity/sx_common.h             |  2 -
- include/linux/iio/common/st_sensors.h         |  4 --
- 21 files changed, 57 insertions(+), 394 deletions(-)
-
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index 47feb375b70b..d0a47ab9d82f 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -160,8 +160,6 @@ struct adxl367_state {
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+ 
+-	struct regulator_bulk_data	regulators[2];
+-
+ 	/*
+ 	 * Synchronize access to members of driver state, and ensure atomicity
+ 	 * of consecutive regmap operations.
+@@ -1474,16 +1472,10 @@ static int adxl367_setup(struct adxl367_state *st)
+ 	return adxl367_set_measure_en(st, true);
+ }
+ 
+-static void adxl367_disable_regulators(void *data)
+-{
+-	struct adxl367_state *st = data;
+-
+-	regulator_bulk_disable(ARRAY_SIZE(st->regulators), st->regulators);
+-}
+-
+ int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
+ 		  void *context, struct regmap *regmap, int irq)
+ {
++	static const char * const regulator_names[] = { "vdd", "vddio" };
+ 	struct iio_dev *indio_dev;
+ 	struct adxl367_state *st;
+ 	int ret;
+@@ -1507,25 +1499,13 @@ int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
+ 	indio_dev->info = &adxl367_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+-	st->regulators[0].supply = "vdd";
+-	st->regulators[1].supply = "vddio";
+-
+-	ret = devm_regulator_bulk_get(st->dev, ARRAY_SIZE(st->regulators),
+-				      st->regulators);
++	ret = devm_regulator_bulk_get_enable(st->dev,
++					     ARRAY_SIZE(regulator_names),
++					     regulator_names);
+ 	if (ret)
+ 		return dev_err_probe(st->dev, ret,
+ 				     "Failed to get regulators\n");
+ 
+-	ret = regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
+-	if (ret)
+-		return dev_err_probe(st->dev, ret,
+-				     "Failed to enable regulators\n");
+-
+-	ret = devm_add_action_or_reset(st->dev, adxl367_disable_regulators, st);
+-	if (ret)
+-		return dev_err_probe(st->dev, ret,
+-				     "Failed to add regulators disable action\n");
+-
+ 	ret = regmap_write(st->regmap, ADXL367_REG_RESET, ADXL367_RESET_CODE);
+ 	if (ret)
+ 		return ret;
 -- 
 2.37.2
 

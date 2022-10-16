@@ -2,66 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E76E5FFF08
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 14:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6409A6000FE
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 17:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbiJPMFq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 08:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
+        id S229817AbiJPP7T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 11:59:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbiJPMFq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 08:05:46 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BE252F39E
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 05:05:44 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id j21so5192418qkk.9
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 05:05:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UmI04icaYYevz8erTj5VumVzXOApiqD62eBBl7puraY=;
-        b=qtT0dLgoP8gq5FOWhmRjCFCwDD61Tr+gqDYRdhXsTrxyF5nLMFs7IKgjiOMKH5F4l5
-         I5CC/lowN/7J/INdR5JiQGFq9Ao8Q/l3LjpSMAyuFBa+MXQuHNgzwfs7YNblXrBwsWXM
-         3VG0q3bZTJrP1RIeTbobQQcBZ9/onb+dz8y0rKuALIc16BZ0o4pdtn4+JzogIOz8tHXo
-         jgUM/AY1SpsEQ1uQmmTooVqm1cQ6HmsxLwgb/Mt4QhbyUSLDj/Pr8lqY/5tp+8IC0CBa
-         PAKCRY8ozzixXu02pJ5azNoQw5CPV5aXjU9mYIw8pbduoe+Xwrk9Lw8xTf6xH3wXNiFX
-         Fd2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UmI04icaYYevz8erTj5VumVzXOApiqD62eBBl7puraY=;
-        b=6ntURLSInyoCng+H+GkH1RV0jzmAFhkx9E+7VAPHhmcvnKgNbbnuTK9Qw+MYiOh2Z5
-         FGlH07kL8Dqa2vhxnJP6bJtGza2eX20ZPQGcBbGYsfJX4R4EbGufrnXgD7z5tCRQ2F7R
-         vYJrGqBhHQzAw49RHSPwMK/9nhZ5V0tfyw8akzbYCf7JQ3oZC22hexyQH2z4SPTNLN1W
-         JQqVoxQ31hkiYwaN5ygkX8HO9TTtLKU03j/f+DaW4/jrpwtT0vxpW0pcink7kOjxkGqH
-         X50QozSKIiUjgpvXY/vVzuNo162omJTH1CpOmWPVxTnN1IsnBR9v+K1NYUaDwpo8UJ4h
-         lICA==
-X-Gm-Message-State: ACrzQf1f/kbVR6g3YmhO1+sMXdBfgtUx4olFaHqV73USGq80+3+WVfDT
-        58cMoOHhKmiM+Fg8ueFhyid5fg==
-X-Google-Smtp-Source: AMsMyM7L06TcpOGp8BEqPcSmNwY3HduQhD2Ygu7LrmAfwqVeAp05tdZ+NzI25BMTnWyukqtxML2mhw==
-X-Received: by 2002:a37:4553:0:b0:6cf:4dbd:b5f6 with SMTP id s80-20020a374553000000b006cf4dbdb5f6mr4382912qka.339.1665921943627;
-        Sun, 16 Oct 2022 05:05:43 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id q4-20020a05620a2a4400b006ec09d7d357sm7187342qkp.47.2022.10.16.05.05.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Oct 2022 05:05:42 -0700 (PDT)
-Date:   Sun, 16 Oct 2022 08:05:40 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     jic23@kernel.org, lars@metafoo.de, benjamin.gaignard@st.com,
-        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
-Cc:     fabrice.gasnier@foss.st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Removing the last of IIO_COUNT (stm32-timer-trigger)
-Message-ID: <Y0vzlOmFrVCQVXMq@fedora>
+        with ESMTP id S229562AbiJPP7S (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 11:59:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70BFD2EF47;
+        Sun, 16 Oct 2022 08:59:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD6B060B82;
+        Sun, 16 Oct 2022 15:59:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE73C433C1;
+        Sun, 16 Oct 2022 15:59:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1665935954;
+        bh=FWGVnL8JUfeZAW/bYV21gjLyuQl9zuKBduitEbI6BCs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=kh9L4nstHqwy+c7OVzQSn5Znex9117jL4cmsO2WD6wxAhx26wo82yTLfnFsPdVNJF
+         G83nzAe7Js+e02ZiX2s/sgv+TvLXKQmyOJejyGX89wYowEQYabXAFXXNHYIkHqHB48
+         bpZLWBBSW61g1J8YhQb9fMGR04EVIlxLKXpRtK+pGuOXRdCqHCWFUxOO669mjs/VR5
+         2eNcFUfDv+R0ma5X5STtLESVLGuHCTdZT8F+DLCpPmvvFjSvGurs2cZMyuOjC6DmNV
+         2FdvNCP+eo/b7HQIssx59ZSFY7ivwYC5FeIxWSa9M1z5Dy5G7CT9XfGd+ZELE1d6hQ
+         wi8fiF5oYAZqw==
+Date:   Sun, 16 Oct 2022 16:59:40 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 06/14] iio: ad7192: Simplify using
+ devm_regulator_get_enable()
+Message-ID: <20221016165940.792e15a2@jic23-huawei>
+In-Reply-To: <9719c445c095d3d308e2fc9f4f93294f5806c41c.1660934107.git.mazziesaccount@gmail.com>
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
+        <9719c445c095d3d308e2fc9f4f93294f5806c41c.1660934107.git.mazziesaccount@gmail.com>
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="HRMrcOk/7EdR9IuO"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,47 +58,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Fri, 19 Aug 2022 22:19:01 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
---HRMrcOk/7EdR9IuO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Use devm_regulator_get_enable() instead of open coded get, enable,
+> add-action-to-disable-at-detach - pattern. Also drop the seemingly unused
+> struct member 'dvdd'.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Now the required dependencies are upstream...
 
-Hi all,
-
-The drivers/iio/trigger/stm32-timer-trigger.c file remains the last
-consumer if the IIO_COUNT type. The IIO_COUNT type was deprecated some
-time ago with the introduction of the Counter subsystem. Most of the
-previous IIO_COUNT consumers were migrated successfully to the Counter
-subsystem, but the stm32-timer-trigger driver remains as the sole module
-preventing the final removal of IIO_COUNT.
-
-At the time we deprecated IIO_COUNT, the Counter subsystem was nascent
-and lacked some of the functionality we have nowadays such as a
-character device interface, timestamping, hardware buffer support, etc.
-If I recall correctly, the decision to delay the migration of
-stm32-timer-trigger to the Counter subsystem was a lack of some
-functionality the Counter subsystem could not provide at the time.
-
-I hoping someone can evaluate stm32-timer-trigger to see if we are able
-transition now to the Counter subsystem, or if that necessary
-functionality is still missing today. Even if it turns out that we are
-unable to migrate, it'll be useful to know what's left to implement in
-the Counter subsystem to support stm32-timer-trigger or similar devices
-in the future.
+Applied to the togreg branch of iio.git.
 
 Thanks,
 
-William Breathitt Gray
+Jonathan
 
---HRMrcOk/7EdR9IuO
-Content-Type: application/pgp-signature; name="signature.asc"
+> 
+> ---
+> v2 => v3
+> Split to own patch.
+> ---
+>  drivers/iio/adc/ad7192.c | 15 ++-------------
+>  1 file changed, 2 insertions(+), 13 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index d71977be7d22..8a52c0dec3f9 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -177,7 +177,6 @@ struct ad7192_chip_info {
+>  struct ad7192_state {
+>  	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+> -	struct regulator		*dvdd;
+>  	struct clk			*mclk;
+>  	u16				int_vref_mv;
+>  	u32				fclk;
+> @@ -1015,19 +1014,9 @@ static int ad7192_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return ret;
+>  
+> -	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
+> -	if (IS_ERR(st->dvdd))
+> -		return PTR_ERR(st->dvdd);
+> -
+> -	ret = regulator_enable(st->dvdd);
+> -	if (ret) {
+> -		dev_err(&spi->dev, "Failed to enable specified DVdd supply\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->dvdd);
+> +	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
+>  	if (ret)
+> -		return ret;
+> +		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
+>  
+>  	ret = regulator_get_voltage(st->avdd);
+>  	if (ret < 0) {
 
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY0vzlAAKCRC1SFbKvhIj
-KzBaAP0TAsZHUhqetvOPlAMcDxL+BLNrmOVVk2noaEurAxJBBAEAg3wWG3/TM4jB
-pZMQoTnLR84Z69Y4AoEgwfVbXnhPNwA=
-=j1dt
------END PGP SIGNATURE-----
-
---HRMrcOk/7EdR9IuO--

@@ -2,41 +2,41 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08C47600211
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 19:10:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFFFC60020D
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 19:10:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbiJPRKk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 13:10:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50310 "EHLO
+        id S229749AbiJPRKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 13:10:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230196AbiJPRK3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 13:10:29 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F16637433
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 10:10:14 -0700 (PDT)
+        with ESMTP id S230084AbiJPRKD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 13:10:03 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00E86248F1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 10:09:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A1423B80D3F
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 17:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487BAC433C1;
-        Sun, 16 Oct 2022 17:09:29 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 13DF4B80D41
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 17:09:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E422BC433D6;
+        Sun, 16 Oct 2022 17:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665940171;
-        bh=yMEU6m7C5v4zXwvzejTlF0IMyMCyY93HoJZmR5I5d18=;
+        s=k20201202; t=1665940172;
+        bh=oYhj+l2sg4gIFpJawaeeru5wkinVX/YuP3hnhwyO2tw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pP6+wfAP/brj7h3y7DGpCgbIl6uoCoa5mO47wVNe6cyfFtB9TYaCDg9wrENm65w7i
-         WErT7F3VRNMxg/rO5F9U2xCiEmmQ4gL+0KCJEGwai6lQG7PSt/pMXhu7JJzWxMFh7+
-         udSVBv3APnhUkRpp4DXju3zr4uGC2YedRoLDzly/kKkfJB/xDh6p9KmZTrNSl3gDFq
-         oGSHZ9hTHOdal9/7dLcRzckBdXJE36ghvo248HGptYFNTFwpz5oPD1PW/UCw7yYh9k
-         RM1jotOy+by9ThXxvVEPlHUT/GRnAmCnhkCFdLkzwBMa/RW6HBA2JUxpxh7rPMSq/t
-         UhbwevJYyoAcw==
+        b=nTiHkApKX+XkdK86Wjp4rR/a9nhSF+3FHaSbtv7YqNNwdzg+qY3ZOG0D9zHrK6sSm
+         WyjSUBML9jZ+rEoiQBSlWRFfGi1e8zWfx1r0rx3MIGJJq8VhksfaFLsvQUybqz32r+
+         enJ1jOe9dgzZcZoL+nIuq4FHSuU8Zis9ZemfIBT267LphK7JF3K4iHOHGRQbMSsImI
+         MMfuyZjguA2yo2IMTCdLju8ndos38d9Cuo5gTybALV0J9r0/7kLoTxdN1Ddm3qS1CN
+         XtSjRbv47T13cMzQxDZuTLN63irSj4kpzim8MIQ2s4B9RCyrKGEDikBm1SVHBVIlB2
+         LmPm2jJ1q5VmA==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 2/5] iio: adc: cc10001: Add devm_add_action_or_reset() to disable regulator.
-Date:   Sun, 16 Oct 2022 18:09:47 +0100
-Message-Id: <20221016170950.387751-3-jic23@kernel.org>
+Subject: [PATCH 3/5] iio: adc: cc10001: Use devm_clk_get_enabled() to avoid boilerplate.
+Date:   Sun, 16 Oct 2022 18:09:48 +0100
+Message-Id: <20221016170950.387751-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016170950.387751-1-jic23@kernel.org>
 References: <20221016170950.387751-1-jic23@kernel.org>
@@ -53,80 +53,76 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-As the voltage of this regulator is queried, we cannot use the
-devm_regulator_get_enable() call and have to role our own disable.
+As this driver just enables clock in probe() and disables in remove()
+we can use this new function to replace boilerplate and simplify
+error paths.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/cc10001_adc.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/iio/adc/cc10001_adc.c | 18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/iio/adc/cc10001_adc.c b/drivers/iio/adc/cc10001_adc.c
-index eeaea1362ed1..4f42ceb40ded 100644
+index 4f42ceb40ded..332f0e06369f 100644
 --- a/drivers/iio/adc/cc10001_adc.c
 +++ b/drivers/iio/adc/cc10001_adc.c
-@@ -305,6 +305,11 @@ static int cc10001_adc_channel_init(struct iio_dev *indio_dev,
- 	return 0;
- }
+@@ -352,23 +352,16 @@ static int cc10001_adc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(adc_dev->reg_base))
+ 		return PTR_ERR(adc_dev->reg_base);
  
-+static void cc10001_reg_disable(void *priv)
-+{
-+	regulator_disable(priv);
-+}
-+
- static int cc10001_adc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -335,27 +340,28 @@ static int cc10001_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	ret = devm_add_action_or_reset(dev, cc10001_reg_disable, adc_dev->reg);
-+	if (ret)
-+		return ret;
-+
- 	indio_dev->name = dev_name(dev);
- 	indio_dev->info = &cc10001_adc_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	adc_dev->reg_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(adc_dev->reg_base)) {
--		ret = PTR_ERR(adc_dev->reg_base);
--		goto err_disable_reg;
--	}
-+	if (IS_ERR(adc_dev->reg_base))
-+		return PTR_ERR(adc_dev->reg_base);
- 
- 	adc_dev->adc_clk = devm_clk_get(dev, "adc");
+-	adc_dev->adc_clk = devm_clk_get(dev, "adc");
++	adc_dev->adc_clk = devm_clk_get_enabled(dev, "adc");
  	if (IS_ERR(adc_dev->adc_clk)) {
  		dev_err(dev, "failed to get the clock\n");
--		ret = PTR_ERR(adc_dev->adc_clk);
--		goto err_disable_reg;
-+		return PTR_ERR(adc_dev->adc_clk);
+ 		return PTR_ERR(adc_dev->adc_clk);
  	}
  
- 	ret = clk_prepare_enable(adc_dev->adc_clk);
- 	if (ret) {
- 		dev_err(dev, "failed to enable the clock\n");
--		goto err_disable_reg;
-+		return ret;
- 	}
- 
+-	ret = clk_prepare_enable(adc_dev->adc_clk);
+-	if (ret) {
+-		dev_err(dev, "failed to enable the clock\n");
+-		return ret;
+-	}
+-
  	adc_clk_rate = clk_get_rate(adc_dev->adc_clk);
-@@ -400,8 +406,6 @@ static int cc10001_adc_probe(struct platform_device *pdev)
+ 	if (!adc_clk_rate) {
+-		ret = -EINVAL;
+ 		dev_err(dev, "null clock rate!\n");
+-		goto err_disable_clk;
++		return -EINVAL;
+ 	}
+ 
+ 	adc_dev->eoc_delay_ns = NSEC_PER_SEC / adc_clk_rate;
+@@ -385,14 +378,14 @@ static int cc10001_adc_probe(struct platform_device *pdev)
+ 	/* Setup the ADC channels available on the device */
+ 	ret = cc10001_adc_channel_init(indio_dev, channel_map);
+ 	if (ret < 0)
+-		goto err_disable_clk;
++		return ret;
+ 
+ 	mutex_init(&adc_dev->lock);
+ 
+ 	ret = iio_triggered_buffer_setup(indio_dev, NULL,
+ 					 &cc10001_adc_trigger_h, NULL);
+ 	if (ret < 0)
+-		goto err_disable_clk;
++		return ret;
+ 
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret < 0)
+@@ -404,8 +397,6 @@ static int cc10001_adc_probe(struct platform_device *pdev)
+ 
+ err_cleanup_buffer:
  	iio_triggered_buffer_cleanup(indio_dev);
- err_disable_clk:
- 	clk_disable_unprepare(adc_dev->adc_clk);
--err_disable_reg:
--	regulator_disable(adc_dev->reg);
+-err_disable_clk:
+-	clk_disable_unprepare(adc_dev->adc_clk);
  	return ret;
  }
  
-@@ -414,7 +418,6 @@ static int cc10001_adc_remove(struct platform_device *pdev)
+@@ -417,7 +408,6 @@ static int cc10001_adc_remove(struct platform_device *pdev)
+ 	cc10001_adc_power_down(adc_dev);
  	iio_device_unregister(indio_dev);
  	iio_triggered_buffer_cleanup(indio_dev);
- 	clk_disable_unprepare(adc_dev->adc_clk);
--	regulator_disable(adc_dev->reg);
+-	clk_disable_unprepare(adc_dev->adc_clk);
  
  	return 0;
  }

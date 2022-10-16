@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BBCA600159
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA8560015A
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbiJPQd6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55508 "EHLO
+        id S229747AbiJPQeE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbiJPQd5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:33:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5D825C78
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:33:56 -0700 (PDT)
+        with ESMTP id S229796AbiJPQeE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9360D25C78
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D5EC60BFB
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2233CC433B5;
-        Sun, 16 Oct 2022 16:33:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3F8F5B80CD9
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58718C433D6;
+        Sun, 16 Oct 2022 16:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938035;
-        bh=62CansvX/luuvsQ66Vhij0k0OkU2QnNkhSrQ9XJrpG0=;
+        s=k20201202; t=1665938040;
+        bh=RLIM8psKLKStspoXH0jhv6lZgJyzIjKIJtvJ4/0yURc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kaiDBqXpn5yK764lbTcmZTCJGSYEq9OKgnapUUi/nD6OgYAycngSYjAK8hm3T4786
-         aFtudiwQfK6mSNO1mlqmzJu/dMoUq+Qz0P8wwZrbARXJTcy9xJLrqW5CWSBG9/ednl
-         D2VGmbDmYovD1jupV8UFPFK9GYINqVhRTEEWugeBsAnoOR/TGoUtaMB24zUr5ahqPx
-         xpz8a+IKiQ5stlPhb0QjWixqOx7vrzbip6aF2hNVjQHxkOx0UT7Uro1WeNh+ZIIuc6
-         ug+37MmZmJ9SaG7130wDbFydbzgsEJxkJ64QPpVPeDZv7cpEJh4fYiAanxCieJt20j
-         Z3Y+XmkExqzEw==
+        b=fHWN+v3TwbkLOr7xoPNdcyqxjBmreUXErB5opZ+Ef8qUmyz6rSomYCiSqig2fgrgz
+         itWjTWdR7+7Nehs1cgtZFaGYlk7wIRbgdzhYTcvc9CDb9QKBCkqM6nbR0akIW9N5RW
+         AIZ7lJcKYyLPRcDl73xzca/ZrpXmAtGTXpP/gJ2Xkr3sRBJU8CMA5KS/lpYps6DL2G
+         TuijV1x8JiApC8RlONkgJpZ/pgiBWzHwScXsEWL9kf/NoMG25NfObBJVYmDnkQl97n
+         LiNG89DRHJjsD5FIu1xT3SgFHJn6QfXtM/TDqB/Lrp3aO+mtDW6ysEcahYQZW2N8nD
+         ODgRJY9TnYSfQ==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,9 +48,9 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 01/14] iio: accel: adxl367: Use devm_regulator_bulk_get_enable()
-Date:   Sun, 16 Oct 2022 17:33:56 +0100
-Message-Id: <20221016163409.320197-2-jic23@kernel.org>
+Subject: [PATCH 02/14] iio: accel: bma400: Use devm_regulator_bulk_get_enable()
+Date:   Sun, 16 Oct 2022 17:33:57 +0100
+Message-Id: <20221016163409.320197-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
 References: <20221016163409.320197-1-jic23@kernel.org>
@@ -72,71 +72,92 @@ devm_add_action_or_reset() callback. The new
 devm_regulator_bulk_get_enable() replaces this boilerplate code.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Cc: Jagath Jog J <jagathjog1996@gmail.com>
 ---
- drivers/iio/accel/adxl367.c | 28 ++++------------------------
- 1 file changed, 4 insertions(+), 24 deletions(-)
+ drivers/iio/accel/bma400.h      |  4 ----
+ drivers/iio/accel/bma400_core.c | 29 ++++-------------------------
+ 2 files changed, 4 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-index 47feb375b70b..d0a47ab9d82f 100644
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -160,8 +160,6 @@ struct adxl367_state {
- 	struct device			*dev;
- 	struct regmap			*regmap;
+diff --git a/drivers/iio/accel/bma400.h b/drivers/iio/accel/bma400.h
+index 36edbaff4f7f..932358b45f17 100644
+--- a/drivers/iio/accel/bma400.h
++++ b/drivers/iio/accel/bma400.h
+@@ -141,10 +141,6 @@
+ #define BMA400_SCALE_MIN            9577
+ #define BMA400_SCALE_MAX            76617
  
--	struct regulator_bulk_data	regulators[2];
+-#define BMA400_NUM_REGULATORS       2
+-#define BMA400_VDD_REGULATOR        0
+-#define BMA400_VDDIO_REGULATOR      1
 -
- 	/*
- 	 * Synchronize access to members of driver state, and ensure atomicity
- 	 * of consecutive regmap operations.
-@@ -1474,16 +1472,10 @@ static int adxl367_setup(struct adxl367_state *st)
- 	return adxl367_set_measure_en(st, true);
+ extern const struct regmap_config bma400_regmap_config;
+ 
+ int bma400_probe(struct device *dev, struct regmap *regmap, int irq,
+diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+index e8de88e6cfb9..3ac464c1007c 100644
+--- a/drivers/iio/accel/bma400_core.c
++++ b/drivers/iio/accel/bma400_core.c
+@@ -98,7 +98,6 @@ enum bma400_activity {
+ struct bma400_data {
+ 	struct device *dev;
+ 	struct regmap *regmap;
+-	struct regulator_bulk_data regulators[BMA400_NUM_REGULATORS];
+ 	struct mutex mutex; /* data register lock */
+ 	struct iio_mount_matrix orientation;
+ 	enum bma400_power_mode power_mode;
+@@ -830,13 +829,6 @@ static void bma400_init_tables(void)
+ 	}
  }
  
--static void adxl367_disable_regulators(void *data)
+-static void bma400_regulators_disable(void *data_ptr)
 -{
--	struct adxl367_state *st = data;
+-	struct bma400_data *data = data_ptr;
 -
--	regulator_bulk_disable(ARRAY_SIZE(st->regulators), st->regulators);
+-	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
 -}
 -
- int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
- 		  void *context, struct regmap *regmap, int irq)
+ static void bma400_power_disable(void *data_ptr)
+ {
+ 	struct bma400_data *data = data_ptr;
+@@ -866,6 +858,7 @@ static enum iio_modifier bma400_act_to_mod(enum bma400_activity activity)
+ 
+ static int bma400_init(struct bma400_data *data)
  {
 +	static const char * const regulator_names[] = { "vdd", "vddio" };
- 	struct iio_dev *indio_dev;
- 	struct adxl367_state *st;
+ 	unsigned int val;
  	int ret;
-@@ -1507,25 +1499,13 @@ int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
- 	indio_dev->info = &adxl367_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
  
--	st->regulators[0].supply = "vdd";
--	st->regulators[1].supply = "vddio";
--
--	ret = devm_regulator_bulk_get(st->dev, ARRAY_SIZE(st->regulators),
--				      st->regulators);
-+	ret = devm_regulator_bulk_get_enable(st->dev,
+@@ -881,27 +874,13 @@ static int bma400_init(struct bma400_data *data)
+ 		return -ENODEV;
+ 	}
+ 
+-	data->regulators[BMA400_VDD_REGULATOR].supply = "vdd";
+-	data->regulators[BMA400_VDDIO_REGULATOR].supply = "vddio";
+-	ret = devm_regulator_bulk_get(data->dev,
+-				      ARRAY_SIZE(data->regulators),
+-				      data->regulators);
++	ret = devm_regulator_bulk_get_enable(data->dev,
 +					     ARRAY_SIZE(regulator_names),
 +					     regulator_names);
  	if (ret)
- 		return dev_err_probe(st->dev, ret,
- 				     "Failed to get regulators\n");
+ 		return dev_err_probe(data->dev, ret, "Failed to get regulators: %d\n",
+ 				     ret);
  
--	ret = regulator_bulk_enable(ARRAY_SIZE(st->regulators), st->regulators);
--	if (ret)
--		return dev_err_probe(st->dev, ret,
--				     "Failed to enable regulators\n");
+-	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
+-				    data->regulators);
+-	if (ret) {
+-		dev_err(data->dev, "Failed to enable regulators: %d\n",
+-			ret);
+-		return ret;
+-	}
 -
--	ret = devm_add_action_or_reset(st->dev, adxl367_disable_regulators, st);
+-	ret = devm_add_action_or_reset(data->dev, bma400_regulators_disable, data);
 -	if (ret)
--		return dev_err_probe(st->dev, ret,
--				     "Failed to add regulators disable action\n");
+-		return ret;
 -
- 	ret = regmap_write(st->regmap, ADXL367_REG_RESET, ADXL367_RESET_CODE);
- 	if (ret)
- 		return ret;
+ 	ret = bma400_get_power_mode(data);
+ 	if (ret) {
+ 		dev_err(data->dev, "Failed to get the initial power-mode\n");
 -- 
 2.37.2
 

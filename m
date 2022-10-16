@@ -2,56 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD60A60011B
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2600160012A
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbiJPQPI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42444 "EHLO
+        id S229892AbiJPQQ6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:16:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbiJPQPF (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:15:05 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B13B15A33;
-        Sun, 16 Oct 2022 09:15:04 -0700 (PDT)
+        with ESMTP id S229874AbiJPQQv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:16:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7FB37F8D;
+        Sun, 16 Oct 2022 09:16:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 8C0C4CE0B75;
-        Sun, 16 Oct 2022 16:15:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF06C433C1;
-        Sun, 16 Oct 2022 16:14:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67E7460C22;
+        Sun, 16 Oct 2022 16:16:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893DBC43146;
+        Sun, 16 Oct 2022 16:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665936900;
-        bh=x3CwrcunJNuG98FQOYXz8XlmpGAm0KMCZ85BHWC6tE8=;
+        s=k20201202; t=1665937007;
+        bh=AoFZOOk73OQEEgbSxMRwKb8dB7E4pU4x1ZZzcpz/iA0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nEJaXWhhd2AbXxqTB/M3bbJkH+pMZqcec9yhNtf8IaI6Zn1gGTE/tK20yBFZWBHqb
-         GOITFK2LHrHlOwmtkhIzIioUzZNViQvXaOK88LFvZLU2SqGZElO2e6GwNKwLJCvbJS
-         pqT+gyW+R3UqcYSutZand2saPmIBsWe3yNAnjm3ND1dvAE1osvSAqNiwxX2aPahYU2
-         LuxRP4hR7GkHEalI62xPxkzqmECdRy/HLgPI93Ld3WcKoq7bG0QC/c9i1KTRn78AHA
-         DqMik2H4GbUi6MPDi/Ql0Pj47+KILZjKfarosKN8PuP2vGnIogauCpMZNZz57/wAGG
-         n0rWeBRoALFRQ==
-Date:   Sun, 16 Oct 2022 17:15:29 +0100
+        b=mHAv9A1jLI+YcaPDhCzBURaFJWTh0slqyEZINdoK+kHPbT86bnlwXu4XzzI7G5NmI
+         OzTczyJm0+zzNv0B/VbE9YujvqWgLVFkvoBG2xkGobY4T7ChFr6CBLGTkwe1KfuNTs
+         5BEl5G7QPpPfjjnroCBEyvPHlOSNJRbsWM/UzEaqpGJ62zcX+XsH/ibX6DXMN4gydU
+         Q63DnfUfJKf8NERSl6JOWBMClmXhMHc9WeWJjS0nUmot/N5txNuvl7P2aq5IHUnGrT
+         qeYpsVED2qmQDrRbuNGI05vMeMveDZQyX0AsST3p2ID4yJZZu/HU7/Lb9bZwvSZtbB
+         QiQh7AiHgDkDw==
+Date:   Sun, 16 Oct 2022 17:17:16 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
+To:     Alexandru Lazar <alazar@startmail.com>
+Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 11/14] iio: ad7606: simplify using
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 12/14] iio: max1241: simplify using
  devm_regulator_get_enable()
-Message-ID: <20221016171520.07506844@jic23-huawei>
-In-Reply-To: <0aaeb018-94ba-eaaa-4000-7ad082a09850@gmail.com>
+Message-ID: <20221016171716.2817fad3@jic23-huawei>
+In-Reply-To: <f8eaa7ce-8f33-b561-a9e1-a007f704af14@startmail.com>
 References: <cover.1660934107.git.mazziesaccount@gmail.com>
-        <521c52f5a9bdc2db04d5775b36df4b233ae338da.1660934107.git.mazziesaccount@gmail.com>
-        <SN4PR03MB6784BE44D4A6DCECA0859C5F99799@SN4PR03MB6784.namprd03.prod.outlook.com>
-        <0aaeb018-94ba-eaaa-4000-7ad082a09850@gmail.com>
+        <7c759bf6c06e72ae70bffeebc1939d9903427278.1660934107.git.mazziesaccount@gmail.com>
+        <f8eaa7ce-8f33-b561-a9e1-a007f704af14@startmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -61,53 +57,102 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 30 Aug 2022 15:54:07 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Fri, 19 Aug 2022 22:58:45 +0300
+Alexandru Lazar <alazar@startmail.com> wrote:
 
-> Thanks for the review(s) Nuno!
->=20
-> On 8/30/22 14:46, Sa, Nuno wrote:
-> >> From: Matti Vaittinen <mazziesaccount@gmail.com>
-> >> Sent: Friday, August 19, 2022 9:20 PM
-> >> To: Matti Vaittinen <mazziesaccount@gmail.com>; Matti Vaittinen
-> >> <matti.vaittinen@fi.rohmeurope.com>
-> >> Cc: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
-> >> <Michael.Hennerich@analog.com>; Jonathan Cameron
-> >> <jic23@kernel.org>; linux-iio@vger.kernel.org; linux-
-> >> kernel@vger.kernel.org
-> >> Subject: [PATCH v3 11/14] iio: ad7606: simplify using
-> >> devm_regulator_get_enable()
-> >>
-> >> [External]
-> >>
-> >> Drop open-coded pattern: 'devm_regulator_get(), regulator_enable(),
-> >> add_action_or_reset(regulator_disable)' and use the
-> >> devm_regulator_get_enable() and drop the pointer to the regulator.
-> >> This simplifies code and makes it less tempting to add manual control
-> >> for the regulator which is also controlled by devm.
-> >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >>
-> >> --- =20
-> >=20
-> > The commit message could state that while doing the change, dev_err_pro=
-be()
-> > was also introduced. Bah, anyways:
-> >=20
-> > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
->=20
-> Good point. I have few other changes to the series pending - and I=20
-> probably need to rebase/respin when -rc1 is out (and dependency patches=20
-> are merged from Mark's tree) =3D> I may as well alter the commit message.
->=20
-I tweaked it and applied.
+> Heya,
+> 
+> I don't have the hardware at hand (long story, lots of smoke), so all I 
+> can do for this patch at the moment is:
+> 
+> Acked-by: Alexandru Lazar <alazar@startmail.com>
+> 
+> That being said, IIRC the MAX1241 has no special requirements in this 
+> regard, so if other SPI devices work, this one ought to work as well. If 
+> anyone's concerned, I can test it, but probably not sooner than a week 
+> or so :-(.
+> 
+> FWIW I really like this, the straightforward regulator boilerplate 
+> always felt a tad wrong.
+> 
+> All the best,
+> Alex
 
-Not I'm grabbing these early because I forgot you'd sent them and
-found myself writing the same patches.  Memory of a goldfish :)
+Now the dependencies are upstream... Applied to the togreg branch of
+iio.git and pushed out as testing so that 0-day can play with it and
+because I plan to rebase that tree on rc1 sometime shortly.
 
 Jonathan
 
-> Yours,
-> 	-- Matti
->=20
+> 
+> On 8/19/2022 10:20 PM, Matti Vaittinen wrote:
+> > Drop open-coded pattern: 'devm_regulator_get(), regulator_enable(),
+> > add_action_or_reset(regulator_disable)' and use the
+> > devm_regulator_get_enable() and drop the pointer to the regulator.
+> > This simplifies code and makes it less tempting to add manual control
+> > for the regulator which is also controlled by devm.
+> > 
+> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > 
+> > ---
+> > v2 => v3:
+> > New patch
+> > ---
+> >   drivers/iio/adc/max1241.c | 28 +++-------------------------
+> >   1 file changed, 3 insertions(+), 25 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/max1241.c b/drivers/iio/adc/max1241.c
+> > index a815ad1f6913..500bb09ab19b 100644
+> > --- a/drivers/iio/adc/max1241.c
+> > +++ b/drivers/iio/adc/max1241.c
+> > @@ -22,7 +22,6 @@ enum max1241_id {
+> >   struct max1241 {
+> >   	struct spi_device *spi;
+> >   	struct mutex lock;
+> > -	struct regulator *vdd;
+> >   	struct regulator *vref;
+> >   	struct gpio_desc *shutdown;
+> >   
+> > @@ -110,17 +109,6 @@ static const struct iio_info max1241_info = {
+> >   	.read_raw = max1241_read_raw,
+> >   };
+> >   
+> > -static void max1241_disable_vdd_action(void *data)
+> > -{
+> > -	struct max1241 *adc = data;
+> > -	struct device *dev = &adc->spi->dev;
+> > -	int err;
+> > -
+> > -	err = regulator_disable(adc->vdd);
+> > -	if (err)
+> > -		dev_err(dev, "could not disable vdd regulator.\n");
+> > -}
+> > -
+> >   static void max1241_disable_vref_action(void *data)
+> >   {
+> >   	struct max1241 *adc = data;
+> > @@ -147,20 +135,10 @@ static int max1241_probe(struct spi_device *spi)
+> >   	adc->spi = spi;
+> >   	mutex_init(&adc->lock);
+> >   
+> > -	adc->vdd = devm_regulator_get(dev, "vdd");
+> > -	if (IS_ERR(adc->vdd))
+> > -		return dev_err_probe(dev, PTR_ERR(adc->vdd),
+> > -				     "failed to get vdd regulator\n");
+> > -
+> > -	ret = regulator_enable(adc->vdd);
+> > +	ret = devm_regulator_get_enable(dev, "vdd");
+> >   	if (ret)
+> > -		return ret;
+> > -
+> > -	ret = devm_add_action_or_reset(dev, max1241_disable_vdd_action, adc);
+> > -	if (ret) {
+> > -		dev_err(dev, "could not set up vdd regulator cleanup action\n");
+> > -		return ret;
+> > -	}
+> > +		return dev_err_probe(dev, ret,
+> > +				     "failed to get/enable vdd regulator\n");
+> >   
+> >   	adc->vref = devm_regulator_get(dev, "vref");
+> >   	if (IS_ERR(adc->vref))  
 

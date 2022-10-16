@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70233600166
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E85A600167
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbiJPQer (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
+        id S229594AbiJPQez (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbiJPQep (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2CF100D
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:44 -0700 (PDT)
+        with ESMTP id S229819AbiJPQex (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C281274B
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 172F660C34
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A656FC43470;
-        Sun, 16 Oct 2022 16:34:39 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 117E2B80D05
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0F7C433C1;
+        Sun, 16 Oct 2022 16:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938083;
-        bh=Kx2hGXRmJmPuSCS5bHuWUcBa+Yhq68S9b6O9/Rwvt+k=;
+        s=k20201202; t=1665938087;
+        bh=6u4UeBus1dP9+ri3dNYrl6tcaPO4hwKRpQOFXvhKZLo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A5dAv6TsS9lUW1uR0X3xap4M9gwjrmNUH6ek61cZhr0ljrP1KluLDuWmZNRQkVHQA
-         8CdZKnUxO3UDvylKwcDYzvWZq0YbnUFsIiRahp8WQPRL1c+/7Ch3GIOsCtwwI62LQp
-         46JnkTNkO2iEylikG7GQIF1idHt1zBE70h3hP8l2xvkm7teGWxZWvFP4N0iBh5uRbC
-         MMSkYMyk3ouf4lr0CNql3cmZCUK6ChXS+Yi/z+lXqavBN1lPLamlUZRRR19Ed4OIZp
-         qFZEiQA/LuBF/Sf3llIlf3GDz6xc+ewF8me/JYfQxOR84BfVsD+h9N9IV6l+umtRMd
-         qinUWDaNxTX0A==
+        b=vDwHglpz3BmW69k043roAuymZPLF0oYOciYwMLSWSGNqaEZQ1X4PEe+0xtMekGpag
+         sauYresRR3tdob9aKbLafblvw4c/KoCJAUbbBK+0A4usbcPG2q7zRYJGIv34pJgZOh
+         JMMaXPBIDyIPpQtFeoWr1zGyfLNFaNEV7bO90xLt4t+s6K4PUB61T2DLyOVzeGvAvR
+         gCx9RTRkx40mwSMkTSUKNxE0lTW5U0LhegdtSWMaVBiTsELKtA2kkgpwSdADF4NnKs
+         moynC1bbOfQUD+Nl8z7kzHwADAgb1ne2ZarBoCr2DakiQn/1pK4X1VTtLL93AKehCp
+         cux9EjC0I5faw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,9 +48,9 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 12/14] iio: proximity: sx_common: Use devm_regulator_bulk_get_enable()
-Date:   Sun, 16 Oct 2022 17:34:07 +0100
-Message-Id: <20221016163409.320197-13-jic23@kernel.org>
+Subject: [PATCH 13/14] iio: pressure: ms5611: Use devm_regulator_get_enable()
+Date:   Sun, 16 Oct 2022 17:34:08 +0100
+Message-Id: <20221016163409.320197-14-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
 References: <20221016163409.320197-1-jic23@kernel.org>
@@ -67,98 +67,113 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This driver only turns the power for some regulators on at probe and off
-via a custom devm_add_action_or_reset() callback. The new
-devm_regulator_bulk_get_enable() replaces all this boilerplate code.
+This driver only turns the power on at probe and off via a custom
+devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
+replaces this boilerplate code. Some additional refactoring to drop
+now unnecessary unwinding after this change.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Gwendal Grignou <gwendal@chromium.org>
-Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: Tomasz Duszynski <tduszyns@gmail.com>
 ---
- drivers/iio/proximity/sx_common.c | 23 +++--------------------
- drivers/iio/proximity/sx_common.h |  2 --
- 2 files changed, 3 insertions(+), 22 deletions(-)
+ drivers/iio/pressure/ms5611.h      |  3 ---
+ drivers/iio/pressure/ms5611_core.c | 32 +++++-------------------------
+ 2 files changed, 5 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-index d70a6b4f0bf8..eba9256730ec 100644
---- a/drivers/iio/proximity/sx_common.c
-+++ b/drivers/iio/proximity/sx_common.c
-@@ -424,13 +424,6 @@ static const struct iio_buffer_setup_ops sx_common_buffer_setup_ops = {
- 	.postdisable = sx_common_buffer_postdisable,
+diff --git a/drivers/iio/pressure/ms5611.h b/drivers/iio/pressure/ms5611.h
+index cbc9349c342a..816e83befd23 100644
+--- a/drivers/iio/pressure/ms5611.h
++++ b/drivers/iio/pressure/ms5611.h
+@@ -13,8 +13,6 @@
+ #include <linux/iio/iio.h>
+ #include <linux/mutex.h>
+ 
+-struct regulator;
+-
+ #define MS5611_RESET			0x1e
+ #define MS5611_READ_ADC			0x00
+ #define MS5611_READ_PROM_WORD		0xA0
+@@ -56,7 +54,6 @@ struct ms5611_state {
+ 					  s32 *temp, s32 *pressure);
+ 
+ 	struct ms5611_chip_info *chip_info;
+-	struct regulator *vdd;
  };
  
--static void sx_common_regulator_disable(void *_data)
--{
--	struct sx_common_data *data = _data;
+ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
+index 717521de66c4..b95ee6034548 100644
+--- a/drivers/iio/pressure/ms5611_core.c
++++ b/drivers/iio/pressure/ms5611_core.c
+@@ -390,40 +390,21 @@ static const struct iio_info ms5611_info = {
+ static int ms5611_init(struct iio_dev *indio_dev)
+ {
+ 	int ret;
+-	struct ms5611_state *st = iio_priv(indio_dev);
+ 
+ 	/* Enable attached regulator if any. */
+-	st->vdd = devm_regulator_get(indio_dev->dev.parent, "vdd");
+-	if (IS_ERR(st->vdd))
+-		return PTR_ERR(st->vdd);
 -
--	regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
+-	ret = regulator_enable(st->vdd);
+-	if (ret) {
+-		dev_err(indio_dev->dev.parent,
+-			"failed to enable Vdd supply: %d\n", ret);
++	ret = devm_regulator_get_enable(indio_dev->dev.parent, "vdd");
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	ret = ms5611_reset(indio_dev);
+ 	if (ret < 0)
+-		goto err_regulator_disable;
++		return ret;
+ 
+ 	ret = ms5611_read_prom(indio_dev);
+ 	if (ret < 0)
+-		goto err_regulator_disable;
++		return ret;
+ 
+ 	return 0;
+-
+-err_regulator_disable:
+-	regulator_disable(st->vdd);
+-	return ret;
 -}
 -
- #define SX_COMMON_SOFT_RESET				0xde
+-static void ms5611_fini(const struct iio_dev *indio_dev)
+-{
+-	const struct ms5611_state *st = iio_priv(indio_dev);
+-
+-	regulator_disable(st->vdd);
+ }
  
- static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
-@@ -474,6 +467,7 @@ int sx_common_probe(struct i2c_client *client,
- 		    const struct sx_common_chip_info *chip_info,
- 		    const struct regmap_config *regmap_config)
+ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+@@ -454,7 +435,7 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+ 					 ms5611_trigger_handler, NULL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "iio triggered buffer setup failed\n");
+-		goto err_fini;
++		return ret;
+ 	}
+ 
+ 	ret = iio_device_register(indio_dev);
+@@ -467,8 +448,6 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+ 
+ err_buffer_cleanup:
+ 	iio_triggered_buffer_cleanup(indio_dev);
+-err_fini:
+-	ms5611_fini(indio_dev);
+ 	return ret;
+ }
+ EXPORT_SYMBOL_NS(ms5611_probe, IIO_MS5611);
+@@ -477,7 +456,6 @@ void ms5611_remove(struct iio_dev *indio_dev)
  {
-+	static const char * const regulator_names[] = { "vdd", "svdd" };
- 	struct device *dev = &client->dev;
- 	struct iio_dev *indio_dev;
- 	struct sx_common_data *data;
-@@ -487,8 +481,6 @@ int sx_common_probe(struct i2c_client *client,
- 
- 	data->chip_info = chip_info;
- 	data->client = client;
--	data->supplies[0].supply = "vdd";
--	data->supplies[1].supply = "svdd";
- 	mutex_init(&data->mutex);
- 	init_completion(&data->completion);
- 
-@@ -497,23 +489,14 @@ int sx_common_probe(struct i2c_client *client,
- 		return dev_err_probe(dev, PTR_ERR(data->regmap),
- 				     "Could init register map\n");
- 
--	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(data->supplies),
--				      data->supplies);
-+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulator_names),
-+					     regulator_names);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Unable to get regulators\n");
- 
--	ret = regulator_bulk_enable(ARRAY_SIZE(data->supplies), data->supplies);
--	if (ret)
--		return dev_err_probe(dev, ret, "Unable to enable regulators\n");
--
- 	/* Must wait for Tpor time after initial power up */
- 	usleep_range(1000, 1100);
- 
--	ret = devm_add_action_or_reset(dev, sx_common_regulator_disable, data);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "Unable to register regulators deleter\n");
--
- 	ret = data->chip_info->ops.check_whoami(dev, indio_dev);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "error reading WHOAMI\n");
-diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
-index 5d3edeb75f4e..49d4517103b0 100644
---- a/drivers/iio/proximity/sx_common.h
-+++ b/drivers/iio/proximity/sx_common.h
-@@ -102,7 +102,6 @@ struct sx_common_chip_info {
-  * @trig:		IIO trigger object.
-  * @regmap:		Register map.
-  * @num_default_regs:	Number of default registers to set at init.
-- * @supplies:		Power supplies object.
-  * @chan_prox_stat:	Last reading of the proximity status for each channel.
-  *			We only send an event to user space when this changes.
-  * @trigger_enabled:	True when the device trigger is enabled.
-@@ -120,7 +119,6 @@ struct sx_common_data {
- 	struct iio_trigger *trig;
- 	struct regmap *regmap;
- 
--	struct regulator_bulk_data supplies[2];
- 	unsigned long chan_prox_stat;
- 	bool trigger_enabled;
+ 	iio_device_unregister(indio_dev);
+ 	iio_triggered_buffer_cleanup(indio_dev);
+-	ms5611_fini(indio_dev);
+ }
+ EXPORT_SYMBOL_NS(ms5611_remove, IIO_MS5611);
  
 -- 
 2.37.2

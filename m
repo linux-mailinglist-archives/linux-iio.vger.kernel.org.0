@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012CB60015C
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7E360015D
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229806AbiJPQeN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55578 "EHLO
+        id S229811AbiJPQeR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbiJPQeM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4995032051
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:11 -0700 (PDT)
+        with ESMTP id S229757AbiJPQeQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:16 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E4A4326C1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F21DEB80D08
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB29FC433C1;
-        Sun, 16 Oct 2022 16:34:04 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E814CB80D08
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D3AC433B5;
+        Sun, 16 Oct 2022 16:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938048;
-        bh=arxZhQJ7U+QAgYN2rLi/aduvff2rpMRCnpW6s51ODRU=;
+        s=k20201202; t=1665938052;
+        bh=a7yOum5JKAu+Fe4m4Cd7L9Oye/qmDO0+fBk8bKBco68=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pHrL192Gp+yTruiTh8MSPPeLlzUvUDlnLn5FSymVF8caFIpwiuN2OHAXmf6NZU2gB
-         Bq9LN+tSrvKBrbkqpZ1fAxRqp+sSpl7pnDjsy2yyAk+dFTxuG2ptz0uUVRArkajmwj
-         4v2QTJwdcuyJMpeDE20TyYLMTeoG1Gp7Z941vZ5Ws6vb/AFA/ZjgLbiYYuK9glUucc
-         b+8bI8hdmm0ZzKvs0Tnbn30Fn+A0GMut1NuhlnW0cQpF+4nh3S4GAoPtzhkj9GNvFw
-         2j5M4sky5vDISWivTPImafq6XXPtOeOD7ZkyNats6Or6MPQnmAUJcqPCqZK7GZyowN
-         3FfewYVeKJptg==
+        b=O42POj5xSgHaoe82UQb08aDms52gHGvGp+QgEiNSQ+qBfN5QUU2ROgBVmEkz+1F9v
+         3uEcwNkbu4UlDNbt/wjk+5WEwzITnnQiC2q0jDwwKDapzIP1A/GcjLscoC71k2o43q
+         9OB5bd5GY/34uTaSlU5atTyYHXOmGaiAPV2C4ZGvP6pvo3xmJB2jJmVIAuFDovjKkW
+         8mvnvHE0IpRmAvyhIZWXad5si6UPNPX4y43SAq4DZGPBl3S6OVnViwQcEk+C4lYAFs
+         /SAOG0+vQa9ltNEOhV4ofmXYWU6E2CjJGQ5D7nqvgs1dPjqMkhgL3+xzBAKEro+KWK
+         UBm0y6hRb5lWw==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,9 +48,9 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 04/14] iio: accel: kxcjk-1013: Use devm_regulator_bulk_get_enable()
-Date:   Sun, 16 Oct 2022 17:33:59 +0100
-Message-Id: <20221016163409.320197-5-jic23@kernel.org>
+Subject: [PATCH 05/14] iio: accel: msa311: Use devm_regulator_get_enable()
+Date:   Sun, 16 Oct 2022 17:34:00 +0100
+Message-Id: <20221016163409.320197-6-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
 References: <20221016163409.320197-1-jic23@kernel.org>
@@ -68,70 +68,69 @@ X-Mailing-List: linux-iio@vger.kernel.org
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 This driver only turns the power on at probe and off via a custom
-devm_add_action_or_reset() callback. The new
-devm_regulator_bulk_get_enable() replaces this boilerplate code.
+devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
+replaces this boilerplate code.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Dmitry Rokosov <DDRokosov@sberdevices.ru>
 ---
- drivers/iio/accel/kxcjk-1013.c | 25 ++++---------------------
- 1 file changed, 4 insertions(+), 21 deletions(-)
+ drivers/iio/accel/msa311.c | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
-index adc66b3615c0..e626b6fa8a36 100644
---- a/drivers/iio/accel/kxcjk-1013.c
-+++ b/drivers/iio/accel/kxcjk-1013.c
-@@ -241,7 +241,6 @@ enum kxcjk1013_axis {
+diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+index 2fded3759171..af94d3adf6d8 100644
+--- a/drivers/iio/accel/msa311.c
++++ b/drivers/iio/accel/msa311.c
+@@ -351,7 +351,6 @@ static const struct regmap_config msa311_regmap_config = {
+  * @chip_name: Chip name in the format "msa311-%02x" % partid
+  * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
+  *                 to notify external consumers a new sample is ready
+- * @vdd: Optional external voltage regulator for the device power supply
+  */
+ struct msa311_priv {
+ 	struct regmap *regs;
+@@ -362,7 +361,6 @@ struct msa311_priv {
+ 	char *chip_name;
+ 
+ 	struct iio_trigger *new_data_trig;
+-	struct regulator *vdd;
  };
  
- struct kxcjk1013_data {
--	struct regulator_bulk_data regulators[2];
- 	struct i2c_client *client;
- 	struct iio_trigger *dready_trig;
- 	struct iio_trigger *motion_trig;
-@@ -1425,16 +1424,10 @@ static const char *kxcjk1013_match_acpi_device(struct device *dev,
- 	return dev_name(dev);
+ enum msa311_si {
+@@ -1146,11 +1144,6 @@ static void msa311_powerdown(void *msa311)
+ 	msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_SUSPEND);
  }
  
--static void kxcjk1013_disable_regulators(void *d)
+-static void msa311_vdd_disable(void *vdd)
 -{
--	struct kxcjk1013_data *data = d;
--
--	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+-	regulator_disable(vdd);
 -}
 -
- static int kxcjk1013_probe(struct i2c_client *client,
- 			   const struct i2c_device_id *id)
+ static int msa311_probe(struct i2c_client *i2c)
  {
-+	static const char * const regulator_names[] = { "vdd", "vddio" };
- 	struct kxcjk1013_data *data;
- 	struct iio_dev *indio_dev;
- 	struct kxcjk_1013_platform_data *pdata;
-@@ -1461,22 +1454,12 @@ static int kxcjk1013_probe(struct i2c_client *client,
- 			return ret;
- 	}
+ 	struct device *dev = &i2c->dev;
+@@ -1173,19 +1166,9 @@ static int msa311_probe(struct i2c_client *i2c)
  
--	data->regulators[0].supply = "vdd";
--	data->regulators[1].supply = "vddio";
--	ret = devm_regulator_bulk_get(&client->dev, ARRAY_SIZE(data->regulators),
--				      data->regulators);
-+	ret = devm_regulator_bulk_get_enable(&client->dev,
-+					     ARRAY_SIZE(regulator_names),
-+					     regulator_names);
- 	if (ret)
- 		return dev_err_probe(&client->dev, ret, "Failed to get regulators\n");
+ 	mutex_init(&msa311->lock);
  
--	ret = regulator_bulk_enable(ARRAY_SIZE(data->regulators),
--				    data->regulators);
--	if (ret)
--		return ret;
+-	msa311->vdd = devm_regulator_get(dev, "vdd");
+-	if (IS_ERR(msa311->vdd))
+-		return dev_err_probe(dev, PTR_ERR(msa311->vdd),
+-				     "can't get vdd supply\n");
 -
--	ret = devm_add_action_or_reset(&client->dev, kxcjk1013_disable_regulators, data);
--	if (ret)
--		return ret;
+-	err = regulator_enable(msa311->vdd);
++	err = devm_regulator_get_enable(dev, "vdd");
+ 	if (err)
+-		return dev_err_probe(dev, err, "can't enable vdd supply\n");
 -
- 	/*
- 	 * A typical delay of 10ms is required for powering up
- 	 * according to the data sheets of supported chips.
+-	err = devm_add_action_or_reset(dev, msa311_vdd_disable, msa311->vdd);
+-	if (err)
+-		return dev_err_probe(dev, err,
+-				     "can't add vdd disable action\n");
++		return dev_err_probe(dev, err, "can't get vdd supply\n");
+ 
+ 	err = msa311_check_partid(msa311);
+ 	if (err)
 -- 
 2.37.2
 

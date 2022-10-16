@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63B42600161
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E3A600163
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Oct 2022 18:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229691AbiJPQeb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 12:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56268 "EHLO
+        id S229562AbiJPQef (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 16 Oct 2022 12:34:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbiJPQe2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:28 -0400
+        with ESMTP id S229815AbiJPQee (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 12:34:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6626468
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF6A6564
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 09:34:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB17960C33
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FAAC433D7;
-        Sun, 16 Oct 2022 16:34:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3906560BEE
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 16:34:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5E5C433D6;
+        Sun, 16 Oct 2022 16:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1665938066;
-        bh=4uJ0YL/V46uW99W4AL5v3p40draQWFwFelHqlCMRDLY=;
+        s=k20201202; t=1665938070;
+        bh=GhVHV6K+q3LcxWI69qYLDgj1UGrM58lQD/K0aFYcpiI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E5NK58Pkcn499ZuD51hsy8JQ62TOh8JDGq8BkDT0f/tefb/WqfF8CEyEBjSwLWqPd
-         4jct5fWhzolO7SPyOIIaYYlRAOYRWovHl2mLRPH/YgQkhEbzgcN3WtlYZNx0SR+Xvp
-         SssK9Jiw783SJDEefvgcQtxmlScAIrkZmGaaUeLDhmF3bOMtl4OudvL05h13HiiX0i
-         W8fJMLCgNjDEJoMSqVq9PhfYDsm2hARBDh+Yzd+wU2ViMrt+DcMlojY5iYrZ93MOuP
-         Pe5rCQbP7z4gnHvbK6/+w7/YLycdPce3wkoAvEWoz9KRoLjv8QFOV0DW7FjoY8JC0I
-         UXRsdHwLRyjjA==
+        b=QoJsUXSAWUJNuuT6ohDHpk/Ob5IKpt0z2kQkFJ/6whGMkOZYR9+baessYqUY5aMmq
+         jfLTPiLXg+BXHnz5yDMnSsK6Iqi6mb2XcuRgOcRhAi9iDsTRlf6S5eXkc7LnzvORCC
+         DVzuCO1qy4HINly8u4RkyZxhYFkDLHdi1QMUgqeBoKkdN53gywQTrWtxLU7JNYGjBx
+         PJzsny9a9PEqEHFTIWx91wGkKpERmtFrQ/7GSzlRgz7aUW5CDhFo5vLKkk/c62jPBg
+         N5C/ljgo39UpmHwBjwhNkjEqBrp9rcEMWjJIQckNG0/PaOLozRWuRZ/QqGEaDz6gKf
+         OLCHuWCp4SV7g==
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
@@ -48,9 +48,9 @@ Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Stephen Boyd <swboyd@chromium.org>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 08/14] iio: frequency: ad9523: Use devm_regulator_get_enable()
-Date:   Sun, 16 Oct 2022 17:34:03 +0100
-Message-Id: <20221016163409.320197-9-jic23@kernel.org>
+Subject: [PATCH 09/14] iio: humidity: hts211: Use devm_regulator_get_enable()
+Date:   Sun, 16 Oct 2022 17:34:04 +0100
+Message-Id: <20221016163409.320197-10-jic23@kernel.org>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20221016163409.320197-1-jic23@kernel.org>
 References: <20221016163409.320197-1-jic23@kernel.org>
@@ -71,65 +71,93 @@ This driver only turns the power on at probe and off via a custom
 devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
 replaces this boilerplate code.
 
-Note that in event of an error on the devm_regulator_get() the driver
-would have continued without enabling the regulator which is probably
-not a good idea.  So here we handle any error as a reason to fail the
-probe(). In theory this may expose breakage on a platform that was
-previously papered over but it seems low risk.
-
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 ---
- drivers/iio/frequency/ad9523.c | 22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ drivers/iio/humidity/hts221.h      |  2 --
+ drivers/iio/humidity/hts221_core.c | 27 ++++-----------------------
+ 2 files changed, 4 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/iio/frequency/ad9523.c b/drivers/iio/frequency/ad9523.c
-index 97662ca1ca96..b391c6e27ab0 100644
---- a/drivers/iio/frequency/ad9523.c
-+++ b/drivers/iio/frequency/ad9523.c
-@@ -265,7 +265,6 @@ enum {
+diff --git a/drivers/iio/humidity/hts221.h b/drivers/iio/humidity/hts221.h
+index cf3d8d2dccd6..721359e226cb 100644
+--- a/drivers/iio/humidity/hts221.h
++++ b/drivers/iio/humidity/hts221.h
+@@ -13,7 +13,6 @@
+ #define HTS221_DEV_NAME		"hts221"
  
- struct ad9523_state {
- 	struct spi_device		*spi;
--	struct regulator		*reg;
- 	struct ad9523_platform_data	*pdata;
- 	struct iio_chan_spec		ad9523_channels[AD9523_NUM_CHAN];
- 	struct gpio_desc		*pwrdown_gpio;
-@@ -969,13 +968,6 @@ static int ad9523_setup(struct iio_dev *indio_dev)
+ #include <linux/iio/iio.h>
+-#include <linux/regulator/consumer.h>
+ 
+ enum hts221_sensor_type {
+ 	HTS221_SENSOR_H,
+@@ -30,7 +29,6 @@ struct hts221_hw {
+ 	const char *name;
+ 	struct device *dev;
+ 	struct regmap *regmap;
+-	struct regulator *vdd;
+ 
+ 	struct iio_trigger *trig;
+ 	int irq;
+diff --git a/drivers/iio/humidity/hts221_core.c b/drivers/iio/humidity/hts221_core.c
+index 517158307d8c..2a413da87b76 100644
+--- a/drivers/iio/humidity/hts221_core.c
++++ b/drivers/iio/humidity/hts221_core.c
+@@ -14,6 +14,7 @@
+ #include <linux/delay.h>
+ #include <linux/pm.h>
+ #include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
+ #include <linux/bitfield.h>
+ 
+ #include "hts221.h"
+@@ -549,33 +550,17 @@ static const unsigned long hts221_scan_masks[] = {0x3, 0x0};
+ 
+ static int hts221_init_regulators(struct device *dev)
+ {
+-	struct iio_dev *iio_dev = dev_get_drvdata(dev);
+-	struct hts221_hw *hw = iio_priv(iio_dev);
+ 	int err;
+ 
+-	hw->vdd = devm_regulator_get(dev, "vdd");
+-	if (IS_ERR(hw->vdd))
+-		return dev_err_probe(dev, PTR_ERR(hw->vdd),
+-				     "failed to get vdd regulator\n");
+-
+-	err = regulator_enable(hw->vdd);
+-	if (err) {
+-		dev_err(dev, "failed to enable vdd regulator: %d\n", err);
+-		return err;
+-	}
++	err = devm_regulator_get_enable(dev, "vdd");
++	if (err)
++		return dev_err_probe(dev, err, "failed to get vdd regulator\n");
+ 
+ 	msleep(50);
+ 
  	return 0;
  }
  
--static void ad9523_reg_disable(void *data)
+-static void hts221_chip_uninit(void *data)
 -{
--	struct regulator *reg = data;
+-	struct hts221_hw *hw = data;
 -
--	regulator_disable(reg);
+-	regulator_disable(hw->vdd);
 -}
 -
- static int ad9523_probe(struct spi_device *spi)
+ int hts221_probe(struct device *dev, int irq, const char *name,
+ 		 struct regmap *regmap)
  {
- 	struct ad9523_platform_data *pdata = spi->dev.platform_data;
-@@ -996,17 +988,9 @@ static int ad9523_probe(struct spi_device *spi)
+@@ -600,10 +585,6 @@ int hts221_probe(struct device *dev, int irq, const char *name,
+ 	if (err)
+ 		return err;
  
- 	mutex_init(&st->lock);
- 
--	st->reg = devm_regulator_get(&spi->dev, "vcc");
--	if (!IS_ERR(st->reg)) {
--		ret = regulator_enable(st->reg);
--		if (ret)
--			return ret;
+-	err = devm_add_action_or_reset(dev, hts221_chip_uninit, hw);
+-	if (err)
+-		return err;
 -
--		ret = devm_add_action_or_reset(&spi->dev, ad9523_reg_disable,
--					       st->reg);
--		if (ret)
--			return ret;
--	}
-+	ret = devm_regulator_get_enable(&spi->dev, "vcc");
-+	if (ret)
-+		return ret;
- 
- 	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
- 		GPIOD_OUT_HIGH);
+ 	err = hts221_check_whoami(hw);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.37.2
 

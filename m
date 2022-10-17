@@ -2,248 +2,108 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B31600500
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 04:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38F08600602
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 06:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbiJQCAB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 16 Oct 2022 22:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55862 "EHLO
+        id S229803AbiJQE2K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 00:28:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229945AbiJQB77 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 16 Oct 2022 21:59:59 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE4EF18
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 18:59:57 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id a5so5860964qkl.6
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 18:59:57 -0700 (PDT)
+        with ESMTP id S229792AbiJQE2I (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 00:28:08 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C62E34CA28;
+        Sun, 16 Oct 2022 21:28:07 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id f37so15666746lfv.8;
+        Sun, 16 Oct 2022 21:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=omRydYZA9aJNALXkr3g45BBv4ROOFDq6mM01S3sORaE=;
-        b=j89ntIV0ou3/qPjBndxvbln2uPiu2Cv12m8jCYS80jg90E6W4AiaasHGcePIKfUsBt
-         NQkzezZTMEHoG7DZcTIZybHjNLEbqzc5ggsvep0wEOAo/NOJdqcTqcD2XEJYESya9Tqq
-         ziZcrFvqiJ9JnlSxHjlxMa8NbvdJb6VCi5tAXZRcE63mb3fVewZo6l7JuaxlpCeEcs4i
-         j0+bqzRAejmj1D8OxGs0LVPPEhhtcNlvTD77QAtXqPmFkLolooKbqbbMZ/kN0N3AF93T
-         0wllsHdZt1JSH/BTzWRrlJDeeSg18VwQB1xFEX00V4dymLLhv6+Aj8+lmP6wU5Xld53g
-         jscg==
+        bh=4Fwt36RikcbsAb9G5IUBOEhKHyL8xS32oZmvLgDP+5Q=;
+        b=OoDtW9p7CDbcvByI/t/f81CxHGvwqSCXCl1kz/AV3+DswiIs0hDBCS4sNSIKvscShp
+         h+dn+fk2eKzVz3B2U9bT3hLW4KqvHeTETfwRqyp8JBqcocjyWnEvQZ+DzrKatQs2vQzS
+         nEcQAzTGTy0GOX1mFleJ9+84cu5ekuqvSb52U4/lYYeflNmIMbbuQ8m8XDW0gtmcjyF1
+         ycC1IVg+v2WVSc8JkGG0C4z2o06VkZG9hb3eXnM8slG03z2cLE4Ag1cUisLXBJ0YgGpp
+         0aNvzpThB9mOq0PXKcG/lIYrcrEsXDNuhS22CD9X6XdJI3XKvE6e8eyRuFXLFbTt2I7M
+         6fbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=omRydYZA9aJNALXkr3g45BBv4ROOFDq6mM01S3sORaE=;
-        b=hblko+EowNLla6j1HXB6Plnc9MyPSWxgjS1oXeU8UUv4S0pQhvcW9hVN1Y6YxqE72m
-         3xXbjCQfceTMLFI2Fr8FMQBEJRyPfrLodh5z96Z38QXgv45rS8XgVam47UiRooSb5m2V
-         Do/NNC7xePJytCpMPkcKbMJn13AiCMTYBELkBpcQ3nTtH3xYFia0nV0+CqewiliP2bXu
-         ncVs/ELdYwHJVuyiOsh0PwUTNEwwUjdRUzxBQ5lyQkdv1FU0dOKT0Zm5rWYgU97GbCqc
-         /CQJPdxkfM8cvzToeW/tB6RUCw74XH6vYFODzlR7/zRsj1TKsQ5p50i0mTLFMbDecCDG
-         Xq9Q==
-X-Gm-Message-State: ACrzQf3hKDZPUE7In9ELRSpAvbllNUIWyD3YR+MGDxdq44ujE0CKszMl
-        9RoFzRndWpa6l9rDS0dxFJZhWg==
-X-Google-Smtp-Source: AMsMyM4mFIwVjf145GAdLdaPciG2d3l1afIwrB/FL2lo5wEUIoKHfmgbJNYxMh4R27pib6tWS94HNg==
-X-Received: by 2002:ae9:f50a:0:b0:6e3:3b4f:2ab1 with SMTP id o10-20020ae9f50a000000b006e33b4f2ab1mr6114581qkg.314.1665971996577;
-        Sun, 16 Oct 2022 18:59:56 -0700 (PDT)
-Received: from ?IPV6:2601:42:0:3450:bb7d:1aa4:bef8:ec27? ([2601:42:0:3450:bb7d:1aa4:bef8:ec27])
-        by smtp.gmail.com with ESMTPSA id f4-20020a05620a280400b006ec59941acasm8313384qkp.11.2022.10.16.18.59.55
+        bh=4Fwt36RikcbsAb9G5IUBOEhKHyL8xS32oZmvLgDP+5Q=;
+        b=DBqWiNG3N99HtYwipD7BPNCnNYN9GzBd7dGtPMasVhve0edHLtiDiBsq2DY+ym3s1F
+         miW8gPvE0quQ7mnSZeNK4N6qOodqy6sXG+ijQiV5ropAFThreaEzgRtvmNJeUuqoMsqb
+         gx6lHsrG2iw2E1O17XKYoswvodeJTYR/dRK/+Z8n9uup8OeoqUBofL2BtZi3OMjZu/xL
+         a+OIEgFTbQkgEfYQMUBkyYucAO2CrbQfewc7IVv5KS+9Z0BaySCRG7gLZBLfA4C4r4Of
+         5TF/Bv5w1MCYdzBp4pobH0eDGEQmjMEFR9hejvPWWI9C/OK+GWmfyKWW8++vWOqz016w
+         7ZEw==
+X-Gm-Message-State: ACrzQf35cMBuvodsk5rrxN4WPyjMIleWhSyO9GmZ96PhkLahg7L6JLmj
+        dmMajFpGqmUto/iM0iyBrK5Myoch/Uo=
+X-Google-Smtp-Source: AMsMyM7xr+rrDsOYkmtxi/QypYGQ2Q4kGzi68Sz4W7Gj6spZiAMaQ0HCKpwR3q1qFirP5Icvki1aYA==
+X-Received: by 2002:a05:6512:1193:b0:4a2:70b6:3191 with SMTP id g19-20020a056512119300b004a270b63191mr3077827lfr.563.1665980885805;
+        Sun, 16 Oct 2022 21:28:05 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
+        by smtp.gmail.com with ESMTPSA id y10-20020a056512044a00b004946c3cf53fsm1272530lfk.59.2022.10.16.21.28.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Oct 2022 18:59:55 -0700 (PDT)
-Message-ID: <28c88be7-a416-3612-3e13-5346a6e92565@linaro.org>
-Date:   Sun, 16 Oct 2022 21:59:54 -0400
+        Sun, 16 Oct 2022 21:28:04 -0700 (PDT)
+Message-ID: <7f532450-2818-e0fc-7686-9daeb29777a4@gmail.com>
+Date:   Mon, 17 Oct 2022 07:28:03 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH 2/3] dt-bindings: iio: temperature: ltc2983: support more
- parts
-Content-Language: en-US
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v3 08/14] iio: bmg160_core: Simplify using
+ devm_regulator_*get_enable()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-References: <20221014123724.1401011-1-demonsingur@gmail.com>
- <20221014123724.1401011-3-demonsingur@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221014123724.1401011-3-demonsingur@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Miaoqian Lin <linmq006@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Xiang wangx <wangxiang@cdjrlc.com>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1660934107.git.mazziesaccount@gmail.com>
+ <3fd11489356b1c73a3d7b4bd9dec7e12c9fe8788.1660934107.git.mazziesaccount@gmail.com>
+ <20221016170808.341aa08b@jic23-huawei>
+Content-Language: en-US
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20221016170808.341aa08b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/10/2022 08:37, Cosmin Tanislav wrote:
-> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+On 10/16/22 19:08, Jonathan Cameron wrote:
+> On Fri, 19 Aug 2022 22:19:31 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> Add support for the following parts:
->  * LTC2984
->  * LTC2986
->  * LTM2985
+>> Use devm_regulator_bulk_get_enable() instead of open coded bulk-get,
+>> bulk-enable, add-action-to-disable-at-detach - pattern.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-> The LTC2984 is a variant of the LTC2983 with EEPROM.
-> The LTC2986 is a variant of the LTC2983 with only 10 channels,
-> EEPROM and support for active analog temperature sensors.
-> The LTM2985 is software-compatible with the LTC2986.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 63 +++++++++++++++++--
->  1 file changed, 59 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> index 722781aa4697..c33ab524fb64 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> @@ -4,19 +4,27 @@
->  $id: http://devicetree.org/schemas/iio/temperature/adi,ltc2983.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
->  
-> -title: Analog Devices LTC2983 Multi-sensor Temperature system
-> +title: Analog Devices LTC2983, LTC2986, LTM2985 Multi-sensor Temperature system
->  
->  maintainers:
->    - Nuno Sá <nuno.sa@analog.com>
->  
->  description: |
-> -  Analog Devices LTC2983 Multi-Sensor Digital Temperature Measurement System
-> +  Analog Devices LTC2983, LTC2984, LTC2986, LTM2985 Multi-Sensor Digital
-> +  Temperature Measurement Systems
-> +
->    https://www.analog.com/media/en/technical-documentation/data-sheets/2983fc.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/2984fb.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/29861fa.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltm2985.pdf
->  
->  properties:
->    compatible:
->      enum:
->        - adi,ltc2983
-> +      - adi,ltc2984
-> +      - adi,ltc2986
-> +      - adi,ltm2985
->  
->    reg:
->      maxItems: 1
-> @@ -26,7 +34,7 @@ properties:
->  
->    adi,mux-delay-config-us:
->      description:
-> -      The LTC2983 performs 2 or 3 internal conversion cycles per temperature
-> +      The device performs 2 or 3 internal conversion cycles per temperature
->        result. Each conversion cycle is performed with different excitation and
->        input multiplexer configurations. Prior to each conversion, these
->        excitation circuits and input switch configurations are changed and an
-> @@ -145,7 +153,7 @@ patternProperties:
->        adi,three-conversion-cycles:
->          description:
->            Boolean property which set's three conversion cycles removing
-> -          parasitic resistance effects between the LTC2983 and the diode.
-> +          parasitic resistance effects between the device and the diode.
->          type: boolean
->  
->        adi,average-on:
-> @@ -353,6 +361,41 @@ patternProperties:
->          description: Boolean property which set's the adc as single-ended.
->          type: boolean
->  
-> +  "^temp@":
+> Applied with tweaks:
+> - patch title includes gyro:
+> - ordering as Andy suggested
+> - spaces after { and before }
 
-There is already a property for thermocouple. Isn't a thermocouple a
-temperature sensor? IOW, why new property is needed?
+Thanks Jonathan for saving me from respin the series :) Much apprecited!
 
-> +    type: object
-> +    description:
-> +      Represents a channel which is being used as an active analog temperature
-> +      sensor.
-> +
-> +    properties:
-> +      adi,sensor-type:
-> +        description:
-> +          Identifies the sensor as an active analog temperature sensor.
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        const: 31
-> +
-> +      adi,single-ended:
-> +        description: Boolean property which sets the sensor as single-ended.
+Yours
+	-- Matti
 
-Drop "Boolean property which sets" - it's obvious from the type.
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-
-
-> +        type: boolean
-> +
-> +      adi,custom-temp:
-> +        description:
-> +          This is a table, where each entry should be a pair of
-
-"This is a table" - obvious from the type.
-
-> +          voltage(mv)-temperature(K). The entries must be given in nv and uK
-
-mv-K or nv-uK? Confusing...
-
-> +          so that, the original values must be multiplied by 1000000. For
-> +          more details look at table 71 and 72.
-
-There is no table 71 in the bindings... It seems you pasted it from
-somewhere.
-
-> +          Note should be signed, but dtc doesn't currently maintain the
-> +          sign.
-
-What do you mean? "Maintain" as allow or keep when building FDT?  What's
-the problem of using negative numbers here and why it should be part of
-bindings?
-
-> +        $ref: /schemas/types.yaml#/definitions/uint64-matrix
-> +        minItems: 3
-> +        maxItems: 64
-> +        items:
-> +          minItems: 2
-> +          maxItems: 2
-
-Instead describe the items with "description" (and maybe constraints)
-like here:
-
-https://elixir.bootlin.com/linux/v5.19/source/Documentation/devicetree/bindings/iio/adc/st,stm32-adc.yaml#L278
-
-> +
-> +    required:
-> +      - adi,custom-temp
-> +
->    "^rsense@":
->      type: object
->      description:
-> @@ -382,6 +425,18 @@ required:
->    - reg
->    - interrupts
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,ltc2983
-> +              - adi,ltc2984
-> +    then:
-> +      patternProperties:
-> +        "^temp@": false
-> +
->  additionalProperties: false
->  
->  examples:
-
-Best regards,
-Krzysztof
+~~ When things go utterly wrong vim users can always type :help! ~~
 

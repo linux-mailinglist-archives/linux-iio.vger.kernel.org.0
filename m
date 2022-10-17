@@ -2,59 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1EAF60066B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C865600674
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiJQFsK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 01:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48396 "EHLO
+        id S230094AbiJQFyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 01:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229968AbiJQFsJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:48:09 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317D654C96
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:48:08 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id r14so15887860lfm.2
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:48:08 -0700 (PDT)
+        with ESMTP id S230090AbiJQFyC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:54:02 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BAB558C4
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:54:01 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id g1so15861048lfu.12
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6Plo5s4qeimizZiBn1uDtEdO36IqFrP0uWNOzobOMbw=;
-        b=oFVL+5bit/sQvvBuC8RBLfoeRmmQnWG5tPJNiGI5P65+y/6Cooa4bO1fSwZ1iRfeWc
-         9H91WaL0NW9R4yBGUy1ZEbrwWoyne5VHhTREOfrKi7sD4d5zQNJ042Bk8Cz6P91dxudT
-         LI/SlxcRfftzaVFJTS+x9nAajjT6NTYjvfXQMD4nCr8fC3FiQYTZ7ylL2CFHds6WBjft
-         o2ZEYQX6Za1qbzYa1Akihcnnd6egpU82mnKnhk53fznRPfH154Tirl0QeCcxE+vz0mCz
-         N54Q7WjR+AjQzco0UH6OsXhtcM1ZohGu+wJljLikuu2vvbME+cBFeRK97p6qWqkNCoSc
-         nKnQ==
+        bh=jZOverPqCDAqeZ+Y5Xs211oGhj2qDphnVZOVuA2EkWE=;
+        b=SOM8HVNCKNt5anZsqW8LnHEerTYgca8En0NtIZRbPlAnMEeeOZhI5V4tvXgDvlNxyO
+         Ll+edF4X8ZjzMJB+3iiIkYjdQ7EalUfZ0Rped/CCOZaPs8bM5oiyYUbqirFlHHolzIiC
+         fSsHcVkRF9GkUF/98OupDDHHCr1IC09zGJbn2xEjYSAEk+pU+HD8QlXgIw2gXmWh4jgV
+         dUysRkBtNUU7pr2v3SA+Dx4wNpA0KFqhjiQ3VC9AX6nKLYooKiQQkEbiN9LReTYRTpcc
+         87vaTQQJ/oK8+ej1Mb/fwkEABAcGKP6oHaH7wGF8XaFu+pPq85L2xlDy3XpZ6ncZ7tOx
+         o8hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Plo5s4qeimizZiBn1uDtEdO36IqFrP0uWNOzobOMbw=;
-        b=v7ARN9W1ZG/l3TVWUM+/2ygXT/SiHwFQLyoz9CIK/QFluNWoYE5Co88yqnZTJNcVCX
-         8gK1p6oUsyiXta+9muWLGZcC2iKuIpFbFI2pb+5qL2WQHqqvlzesAwSp1a4hHe+SKNcR
-         FGJ0/bOBDAkHz+GlOQEivxIFbyq4Kcgi6sA1mFSVjQ90iYHxTv2357Hr0DXAu5qozSQN
-         AfcJZnqhJK6bWKyQITiLXAuTze2rL9qdnSAO6uz8eqfciKtTJNwANRfuau2tFRNGAlru
-         q8POnMq9SixuLrDSMuoVYLWCYf6l/CRLF05iMBRGyfvd7Bzh6Z1Y92E558P5vxbUz7s1
-         FcJg==
-X-Gm-Message-State: ACrzQf3Zvz4RGhXoTpDdqEfFmHIU/uztfFs8ZnN1seCS+rUIEUDb08TZ
-        Ydb0u2sARtVEin3BUy0zFDA=
-X-Google-Smtp-Source: AMsMyM6sru5xsZULNhWJUgPnXg7L2kHIoWb/VjCkV4gG1JA7KAr4UKo0xpxb7h0iYtsMnIWUOpX7Gg==
-X-Received: by 2002:ac2:4adc:0:b0:4a2:6db4:9fa8 with SMTP id m28-20020ac24adc000000b004a26db49fa8mr3432405lfp.6.1665985686481;
-        Sun, 16 Oct 2022 22:48:06 -0700 (PDT)
+        bh=jZOverPqCDAqeZ+Y5Xs211oGhj2qDphnVZOVuA2EkWE=;
+        b=tMgV63+Gsaua80Y81g9Boul815xgbmyhe7TssG8bxJ25eO4ZFarxmaUuzLsRmp2HZe
+         V5MJihrfMRnRuFZDqSs1PYLeIUon6va3J+GO8W6i+B8v2JIaOKzUeIqDPJABEGgzW3uV
+         FZtQQJC3EbsQb6eqmbbZwmAloMOhm9VgArbYh2npK71Fx644cZF5wQxCvBOKLRK+tGx0
+         OFMzxcAPqTO4uyqDIJkBbJndu6JWpCuqEXqIXtkXY5whlHX96p0/xaasMjWWb7AA3Qgq
+         UxbjSwSuUzo539vLdREaMHe5YlM7eaLSqxxvKGWt3rw/fELHp/ERqXXqLkIK4Cu9FdqW
+         WmHQ==
+X-Gm-Message-State: ACrzQf1RsC2pyLZez96W5Tf7bN3heNEpoR3F+lNV5yxRnFrA5YUg6b4J
+        m9Qoua81gJxsSm3uhNwCSE4=
+X-Google-Smtp-Source: AMsMyM6grbRBheKH9Sz8sjWRLB8p3NuyKz0lm/efFiBhFd/gzTgxrlReJ8TT78+YJVE/ClxEU2cwow==
+X-Received: by 2002:a05:6512:2618:b0:4a2:1d98:f41a with SMTP id bt24-20020a056512261800b004a21d98f41amr3723442lfb.78.1665986039880;
+        Sun, 16 Oct 2022 22:53:59 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id q22-20020ac246f6000000b00492dba3c85asm1279194lfo.220.2022.10.16.22.48.05
+        by smtp.gmail.com with ESMTPSA id q24-20020a194318000000b004a46f92ef06sm791529lfa.46.2022.10.16.22.53.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Oct 2022 22:48:06 -0700 (PDT)
-Message-ID: <955186d2-4c40-c5cf-d916-089e46952f6d@gmail.com>
-Date:   Mon, 17 Oct 2022 08:48:05 +0300
+        Sun, 16 Oct 2022 22:53:59 -0700 (PDT)
+Message-ID: <dbde96d5-4e82-6aed-17eb-7f309b8d1dcd@gmail.com>
+Date:   Mon, 17 Oct 2022 08:53:58 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
-Subject: Re: [PATCH 08/14] iio: frequency: ad9523: Use
+Subject: Re: [PATCH 09/14] iio: humidity: hts211: Use
  devm_regulator_get_enable()
 Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
@@ -73,9 +73,9 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20221016163409.320197-1-jic23@kernel.org>
- <20221016163409.320197-9-jic23@kernel.org>
+ <20221016163409.320197-10-jic23@kernel.org>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20221016163409.320197-9-jic23@kernel.org>
+In-Reply-To: <20221016163409.320197-10-jic23@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -95,21 +95,16 @@ On 10/16/22 19:34, Jonathan Cameron wrote:
 > devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
 > replaces this boilerplate code.
 > 
-> Note that in event of an error on the devm_regulator_get() the driver
-> would have continued without enabling the regulator which is probably
-> not a good idea.  So here we handle any error as a reason to fail the
-> probe(). In theory this may expose breakage on a platform that was
-> previously papered over but it seems low risk.
-> 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Michael Hennerich <michael.hennerich@analog.com>
+> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 
 Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 > ---
->   drivers/iio/frequency/ad9523.c | 22 +++-------------------
->   1 file changed, 3 insertions(+), 19 deletions(-)
-
+>   drivers/iio/humidity/hts221.h      |  2 --
+>   drivers/iio/humidity/hts221_core.c | 27 ++++-----------------------
+>   2 files changed, 4 insertions(+), 25 deletions(-)
+> 
 -- 
 Matti Vaittinen
 Linux kernel developer at ROHM Semiconductors

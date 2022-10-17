@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C865600674
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 280F860067B
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbiJQFyD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 01:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57982 "EHLO
+        id S229766AbiJQF4W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 01:56:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbiJQFyC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:54:02 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BAB558C4
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:54:01 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id g1so15861048lfu.12
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:54:01 -0700 (PDT)
+        with ESMTP id S229763AbiJQF4V (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:56:21 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C80E558E4
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:56:21 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id be13so261747lfb.4
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:56:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jZOverPqCDAqeZ+Y5Xs211oGhj2qDphnVZOVuA2EkWE=;
-        b=SOM8HVNCKNt5anZsqW8LnHEerTYgca8En0NtIZRbPlAnMEeeOZhI5V4tvXgDvlNxyO
-         Ll+edF4X8ZjzMJB+3iiIkYjdQ7EalUfZ0Rped/CCOZaPs8bM5oiyYUbqirFlHHolzIiC
-         fSsHcVkRF9GkUF/98OupDDHHCr1IC09zGJbn2xEjYSAEk+pU+HD8QlXgIw2gXmWh4jgV
-         dUysRkBtNUU7pr2v3SA+Dx4wNpA0KFqhjiQ3VC9AX6nKLYooKiQQkEbiN9LReTYRTpcc
-         87vaTQQJ/oK8+ej1Mb/fwkEABAcGKP6oHaH7wGF8XaFu+pPq85L2xlDy3XpZ6ncZ7tOx
-         o8hw==
+        bh=W1HCS8JDhB0vIx+R9wPJXqBcVpvkbCvdPjWczZNWvHg=;
+        b=QIKP0fh6ikRXizVHrV5d6JG0SYSGjJI4YQpijxCzVgtpI9m8fhPmc43DN4mahw2+Gn
+         X/jeltNjW2oTBeoZpuc2a7EyhaWtE8rTXBsX7rKFlI6WZA5KaN/Sr5ZJmBefJBmK36aB
+         1DtbSmG7LkUXsew/cUP3cjcvz7WusZrUhVbLD/Pirav7p9RR8dcufUty3jCY1ZF98WI9
+         On5NwhW3kIdxZwORNPgXDEMZAqgJm/hEaFwqPZ8OzpB0FruoQEtve5Km4rFpaJwMgnTs
+         XnWApSEZ61q+ILJ2oANaOK4AYiVgZgzqPpyK17RMbdf3E0SmqTtzuZ5rq+v77Jx4Ujx/
+         ze9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jZOverPqCDAqeZ+Y5Xs211oGhj2qDphnVZOVuA2EkWE=;
-        b=tMgV63+Gsaua80Y81g9Boul815xgbmyhe7TssG8bxJ25eO4ZFarxmaUuzLsRmp2HZe
-         V5MJihrfMRnRuFZDqSs1PYLeIUon6va3J+GO8W6i+B8v2JIaOKzUeIqDPJABEGgzW3uV
-         FZtQQJC3EbsQb6eqmbbZwmAloMOhm9VgArbYh2npK71Fx644cZF5wQxCvBOKLRK+tGx0
-         OFMzxcAPqTO4uyqDIJkBbJndu6JWpCuqEXqIXtkXY5whlHX96p0/xaasMjWWb7AA3Qgq
-         UxbjSwSuUzo539vLdREaMHe5YlM7eaLSqxxvKGWt3rw/fELHp/ERqXXqLkIK4Cu9FdqW
-         WmHQ==
-X-Gm-Message-State: ACrzQf1RsC2pyLZez96W5Tf7bN3heNEpoR3F+lNV5yxRnFrA5YUg6b4J
-        m9Qoua81gJxsSm3uhNwCSE4=
-X-Google-Smtp-Source: AMsMyM6grbRBheKH9Sz8sjWRLB8p3NuyKz0lm/efFiBhFd/gzTgxrlReJ8TT78+YJVE/ClxEU2cwow==
-X-Received: by 2002:a05:6512:2618:b0:4a2:1d98:f41a with SMTP id bt24-20020a056512261800b004a21d98f41amr3723442lfb.78.1665986039880;
-        Sun, 16 Oct 2022 22:53:59 -0700 (PDT)
+        bh=W1HCS8JDhB0vIx+R9wPJXqBcVpvkbCvdPjWczZNWvHg=;
+        b=K3Wn/lk/uGnbVN0lxAYsw1mPxfQblcWrJkBEC+wThXkVjPdT0+RhIENcwY17VbKQgN
+         p7lPxhJJsUq+saWYEHBS7A5phPVZlJULMlb22rym8fW1i1TZg+6lyMXibje3dXKM1Er+
+         mnuu2tx+UepWCYWaahxvNvh4vJY3NLb5XfB0Suz5sOPI/qVHhHfrt9bye6Er5qm7moyG
+         YLuKHpvlptwT4ZrWNg3Z1h2Yt/AwYp6jezH8APlk/VLCufwUu3W39KBlKVBO4yBigml6
+         pfjHeBr0UH5sLnyNTV9fIMP7xRYY7Q1wGSabfvIJ7ciptpqmnfnT7dYeJaL6Tw40u+kW
+         CIRA==
+X-Gm-Message-State: ACrzQf0XUMH+PFL4BcN3Dl34oyZWBQnK207TTmmKV4BP8JySfIVQRczi
+        1vHIq9oTmuv0foCv1q6dKA4=
+X-Google-Smtp-Source: AMsMyM7CeQeXQ9VDUOutB0wW+qf1U07q078jMtFH7vQ2DuWiNCJJE8YTEqE/0h+DPlGMU7xrKUScKw==
+X-Received: by 2002:a05:6512:6ce:b0:4a2:530a:33d0 with SMTP id u14-20020a05651206ce00b004a2530a33d0mr3546793lff.270.1665986179263;
+        Sun, 16 Oct 2022 22:56:19 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id q24-20020a194318000000b004a46f92ef06sm791529lfa.46.2022.10.16.22.53.58
+        by smtp.gmail.com with ESMTPSA id z3-20020a2e7e03000000b0026fc79fd67dsm1351551ljc.74.2022.10.16.22.56.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Oct 2022 22:53:59 -0700 (PDT)
-Message-ID: <dbde96d5-4e82-6aed-17eb-7f309b8d1dcd@gmail.com>
-Date:   Mon, 17 Oct 2022 08:53:58 +0300
+        Sun, 16 Oct 2022 22:56:18 -0700 (PDT)
+Message-ID: <3c1a2155-716b-ca43-776c-77e3387d77f3@gmail.com>
+Date:   Mon, 17 Oct 2022 08:56:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
-Subject: Re: [PATCH 09/14] iio: humidity: hts211: Use
- devm_regulator_get_enable()
+Subject: Re: [PATCH 10/14] iio: light: ltr501: Use
+ devm_regulator_bulk_get_enable()
 Content-Language: en-US
 To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
@@ -73,9 +73,9 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20221016163409.320197-1-jic23@kernel.org>
- <20221016163409.320197-10-jic23@kernel.org>
+ <20221016163409.320197-11-jic23@kernel.org>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20221016163409.320197-10-jic23@kernel.org>
+In-Reply-To: <20221016163409.320197-11-jic23@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -91,20 +91,18 @@ X-Mailing-List: linux-iio@vger.kernel.org
 On 10/16/22 19:34, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> This driver only turns the power on at probe and off via a custom
-> devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
-> replaces this boilerplate code.
+> This driver only turns the power for some regulators on at probe and off
+> via a custom devm_add_action_or_reset() callback. The new
+> devm_regulator_bulk_get_enable() replaces all this boilerplate code.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Lorenzo Bianconi <lorenzo@kernel.org>
 
 Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 > ---
->   drivers/iio/humidity/hts221.h      |  2 --
->   drivers/iio/humidity/hts221_core.c | 27 ++++-----------------------
->   2 files changed, 4 insertions(+), 25 deletions(-)
-> 
+>   drivers/iio/light/ltr501.c | 27 ++++-----------------------
+>   1 file changed, 4 insertions(+), 23 deletions(-)
+
 -- 
 Matti Vaittinen
 Linux kernel developer at ROHM Semiconductors

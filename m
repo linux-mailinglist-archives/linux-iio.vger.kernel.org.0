@@ -2,70 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0252F601B97
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 23:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14669601D81
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 01:20:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbiJQV6P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 17:58:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41142 "EHLO
+        id S229514AbiJQXUc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 19:20:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbiJQV6M (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 17:58:12 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 952165F23D
-        for <linux-iio@vger.kernel.org>; Mon, 17 Oct 2022 14:58:03 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id m6so7583790qkm.4
-        for <linux-iio@vger.kernel.org>; Mon, 17 Oct 2022 14:58:03 -0700 (PDT)
+        with ESMTP id S230112AbiJQXUa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 19:20:30 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B4A5FDFD;
+        Mon, 17 Oct 2022 16:20:27 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id g1so19931505lfu.12;
+        Mon, 17 Oct 2022 16:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oucTwVbi21mAnoJqkJdLFNIMbEnQmUYAya9mkLnN1g4=;
-        b=UTFV9ab/N1F9aNa1FU1GQSBPajJd3WzTjlGh4OTMLPg5IS9g57/dPsknzYEEewvH5Z
-         lZfzhDyLRPvyvfD/svmjd5EspRfdj6zOD8Q67uc22+2TBH7gSvLHm4exhN5SDHGLN+Mi
-         28ZjAMT3/4hubaPOMcz9ueJYeI4dGCZSTQ4Axz9P4qAoIAhRzuAZyDJaTSS/aS9JnNz8
-         fmf2lWjMocgj5suRPD61xaEek8NLygn0bvajrfoGAOlCjc1XPsgvCVPgufJgf6FIzcy4
-         +XIOkz8f3GFqu+ShBO3cgLzafYh57nhRG+SLiOhsTHrjujtEkAviT4TjgAKz3DwHuboN
-         hiVA==
+        d=gmail.com; s=20210112;
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :references:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPjgbmyufVQcQ6EQc4g+TbLptg1Ow4K6/gfkQdTeaBk=;
+        b=B6/s8a/izQ/nkmMWEUBSlIGceBkIBbBxCyoJTZIZiQ0RsBeQpu80tBqNYIL6+R0eo4
+         kO7PHZUKpbPz32g5uarTU10cBEqaYSR7oy8OCNyYfyMzL0RDWirFs7ZGZPtjwXDezgNK
+         yF+Aamf5c4G7Tuf2Gs1fq+lbqkuZz9i7b7dC8WvOLXV0B1uqiL5DKnRphq34xw31RkKe
+         VzGu/Vn4LF7mOtoQ/8q+TYY8C5KoGgWLMNwXOQK6dT4clhITPAgRnuVOdKGJCP/7ji+n
+         ma5WEj2lBjg3tlq+dkpen1j0SSl/TVaoW38fSOgE3GfkV1x1DF65kOtMNR2poiBYNUn4
+         2jYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oucTwVbi21mAnoJqkJdLFNIMbEnQmUYAya9mkLnN1g4=;
-        b=vTomhEkLs70eGfinI26JirdjTRiiyMN+CYiTfZ65amzXamnxzGaap2ED3S3TBJaQYP
-         TaRvURF17szLbupE8HzLQ9x+nXfLZQq8ZtVPyLNmIYHiKxadiDXlvBTzUU1Z3mLglv9O
-         aY7CPIQ76NiIlnnrL/g51F3ZtoLB+a4eeXVeIJxpEifnClk8VKlwzWkFbtgH7zthzXWY
-         W2O27giMo1l3jk9I71uXp1s+NEirNxlWZfoqVaubgw4WC79JtLAHIDUic1YMiadYftPn
-         fccqrTkrmmeXB3PnpXXxCVZyjqZOz0CPQ7BhpsaIn4krTSg/QmlZruClqx1M9Amc+Wz2
-         DUqQ==
-X-Gm-Message-State: ACrzQf1+X8eAucvdmkUZTvZIRSt7AN/o90EQOfOqdNBj7/EfxZhBF6mN
-        k3JixKFzM9h/XY4LGyv8eV1mwo8vTLYlpw==
-X-Google-Smtp-Source: AMsMyM5i6ITyDUrtCyl1qlhi+NcOdt9XwsjgoF69IDEVuxCs4Piwag9JN87BEt8M+oq3IObkqq8TQQ==
-X-Received: by 2002:a37:30c:0:b0:6ee:a5d0:e91f with SMTP id 12-20020a37030c000000b006eea5d0e91fmr9232397qkd.309.1666043882694;
-        Mon, 17 Oct 2022 14:58:02 -0700 (PDT)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id bp17-20020a05620a459100b006ce3f1af120sm815171qkb.44.2022.10.17.14.58.00
+        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
+         :references:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hPjgbmyufVQcQ6EQc4g+TbLptg1Ow4K6/gfkQdTeaBk=;
+        b=bt3hsB9PX4uquSPRIkTswhzSpvcR69Gw1cno6DmWLeFOS2gjodH1EyyYm6mNeE1/Iy
+         LnPQh7JTPrHweKnlYhfhKkb/ANSAuxWEmZDcj829zRFVBoTMz+f4L0iGoJbYGjx2S9EB
+         T76AV3SuM2dt5Jf5V0r43V5I5FsemJ/Nus5WY7zKATrCJB7h3KNJErmYh6iY4Zu61qwQ
+         oBhlYDlhewObOrYFvUYk8b2I7Jh40lCRnapprXYjDPKTGveXf0ibIMjjCUf93yoLzZAr
+         LNjmoPKpL6XbNsEyeCqQUw1rMPQaqEP91hOur4/nLECf9YUrm1pzm+YejyN/L3/jrS3A
+         4kcg==
+X-Gm-Message-State: ACrzQf0Fj4XOnucFxZkCYDJNwVm1QoLP/0D4m/mQ8lWEecNjP9ux7se0
+        LbC1PMsMNn+xwcT87KxRdZTTkBobCTtyZA==
+X-Google-Smtp-Source: AMsMyM4pCX+WNfC/CXNNsawWuYBaaZwuLJ/RgrcmgBhzoQzrC1lLwHLEE9fH6Fy3w2jJM3+OHQ32FQ==
+X-Received: by 2002:a05:6000:184e:b0:22e:4612:496d with SMTP id c14-20020a056000184e00b0022e4612496dmr56928wri.91.1666047969456;
+        Mon, 17 Oct 2022 16:06:09 -0700 (PDT)
+Received: from localhost (94.197.37.182.threembb.co.uk. [94.197.37.182])
+        by smtp.gmail.com with ESMTPSA id v2-20020a5d4b02000000b0022ed6ff3a96sm9371634wrq.39.2022.10.17.16.06.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Oct 2022 14:58:01 -0700 (PDT)
-Date:   Mon, 17 Oct 2022 17:57:59 -0400
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Subject: Re: Handling Signal1 in microchip-tcb-capture
-Message-ID: <Y03P55QWFkDhtqt7@fedora>
-References: <Y0q7Gzh95nFdqdYK@fedora>
- <Y00nidri3TRYARiu@kb-xps>
- <Y01QPkE0E+HR7dat@fedora>
- <Y02Lkpu+NCaPo/ZF@kb-xps>
+        Mon, 17 Oct 2022 16:06:08 -0700 (PDT)
+References: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
+ <20221017184419.62d365c1@jic23-huawei>
+From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        wens@csie.org, lee.jones@linaro.org, sre@kernel.org,
+        lgirdwood@gmail.com, broonie@kernel.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+        michael@walle.cc, samuel@sholland.org, linux-iio@vger.kernel.org,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 00/13] Add support for AXP192 PMIC
+Date:   Mon, 17 Oct 2022 23:21:32 +0100
+In-reply-to: <20221017184419.62d365c1@jic23-huawei>
+Message-ID: <LYfRwE3pxZfgZBDC6gwvsSrHWqcSQXHK@localhost>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="zQZc1ZurNEhiI1YA"
-Content-Disposition: inline
-In-Reply-To: <Y02Lkpu+NCaPo/ZF@kb-xps>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -73,153 +76,78 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---zQZc1ZurNEhiI1YA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Jonathan Cameron <jic23@kernel.org> writes:
 
-On Mon, Oct 17, 2022 at 07:06:26PM +0200, Kamel Bouhara wrote:
-> On Mon, Oct 17, 2022 at 08:53:18AM -0400, William Breathitt Gray wrote:
-> > On Mon, Oct 17, 2022 at 11:59:37AM +0200, Kamel Bouhara wrote:
-> > > On Sat, Oct 15, 2022 at 09:52:27AM -0400, William Breathitt Gray wrot=
-e:
-> > > > I was looking over the microchip-tcb-capture driver recently and no=
-ticed
-> > > > that the code doesn't seem to account for Signal1. In particular, it
-> > > > appears that mchp_tc_count_signal_read() and mchp_tc_count_action_r=
-ead()
-> > > > don't check the Signal id at all and just assume they are handling
-> > > > Signal0. This creates a situation where the information returned fo=
-r the
-> > > > Signal1 sysfs attributes are just duplicated reports of Signal0.
-> > > >
-> > > > What exactly is the relationship of Signal0 ("Channel A") and Signa=
-l1
-> > > > ("Channel B"); is SignalB only relevant when the counter device is
-> > > > configured for quadrature mode?
-> > >
-> > > Indeed both signals are required when in quadrature mode, where the
-> > > signal0 is representing the speed and signal1 the revolution or number
-> > > of rotation.
-> > >
-> > > We have described all availables modes in details in the following bl=
-og post: https://bootlin.com/blog/timer-counters-linux-microchip/
-> > >
-> > > Regards,
-> > > Kamel
-> >
-> > Thank you for the link, the block diagram helps illustrate how the
-> > signals correlate to the TCB channels.
-> >
-> > Let me check if I understand correctly. In microchip-tcb-capture.c,
-> > mchp_tc_count_signals[0] is TIOA0 while mchp_tc_count_signals[1] is
-> > TIOB0? In quadrature mode, are TIOA and TIOB the two phases of a
-> > quadrature encoder? You mentioned one signal is speed while the other is
-> > the number of rotations; does this mean one signal serves as the
-> > position incrementation from a rotary wheel while the other signal is
-> > the index (z-phase) indicate for each full rotation?
-> >
->=20
-> IIRC this is indeed both signal edges (phase A and B) are accumulated on
-> channel 0 and channel 1 stores the revolution or number of rotation of
-> the qdec encoder.
+> On Mon, 17 Oct 2022 00:43:22 +0100
+> Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
+>
+>> This series adds support for the AXP192 PMIC to the AXP20x MFD driver
+>> framework, including support for regulators, ADCs, and AC/USB/battery
+>> power supplies.
+>>
+>> v6 is a resend of v5 from July -- the patches haven't changed at all
+>> but I've rebased them on the latest git master branch.
+>
+> Hi Aidan,
+>
+> Lee has recently expressed that he keen to take as much of these sorts
+> of series as possible via the various subsystem trees.
+>
+> As such, it is useful to call out in the cover letter of such a series
+> if this can be done.  For example, patch 9 (last IIO one) can't be
+> applied without defines in patch 6 (I think).  Thus I'm assuming Lee
+> will do an immutable branch with at least those patches on it.
+>
+> Perhaps worth expressing if that is also the case for the power
+> and regulator subsystem patches?
+>
+> Thanks,
+>
+> Jonathan
 
-Ah, I think I understand now: Signal0 and Signal1 are TIOA and TIOB
-respectively; channel 0 and channel 1 are data registers; channel 0
-holds the Count0 count value; channel 1 holds the revolution value (but
-the microchip-tcb-capture driver does not expose it).
+Yep, the IIO, regulator, and power subsystem patches all depend on
+the MFD patch. Specifically, patches 6, 9, and 10 depend on patch 5.
+I can't get rid of this dependency because the variant ID (AXP192_ID)
+has to be defined centrally in the MFD patch.
 
-It might be nice to expose the channel 1 revolution value as Count1 at
-some point in the future. However, channel 1 seems unrelated to the
-current issue we're dicussing so we can avoid it for now.
+The axp20x_battery patches (last three of the whole series) don't
+depend on the variant ID or other defines, so they could be taken
+independently through the power subsystem.
 
-> > In particular, I'm having trouble understanding
-> > mchp_tc_count_signal_read(). I suspect it is unintentionally always
-> > returning the signal status for TIOA::
-> >
-> >     regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
-> >
-> >     if (priv->trig_inverted)
-> >             sigstatus =3D (sr & ATMEL_TC_MTIOB);
-> >     else
-> >             sigstatus =3D (sr & ATMEL_TC_MTIOA);
-> >
-> >     *lvl =3D sigstatus ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEV=
-EL_LOW;
-> >
-> > Here we read the status register for channel 0, select between TIOA and
-> > TIOB based on priv->trig_inverted, and then return the signal level.
-> >
-> > I don't see priv->trig_inverted referenced anywhere else so it appears
-> > that priv->trig_inverted will always be 0, thus resulting in
-> > mchp_tc_count_signal_read() always returning the TIOA status. I think
-> > the intended behavior is to return the status of the selected signal::
->=20
-> IIRC the trig_inverted shall be used when signals are inverted which
-> means we read position on TIOB and revolution on TIOA.
+Even though the IIO cleanups (7 and 8) don't depend on anything else
+I imagine it'd cause problems to take those via IIO because patch 9
+depends on them.
 
-Sure, that seems like a reasonable option to expose, but it does not
-appear that trig_inverted is being set or otherwise configured in the
-current code, unless I'm missing something. It might be best to remove
-trig_inverted if the functionality is not supported yet by this driver.
+IOW: Lee probably needs to take patches 5-10.
 
-> >
-> >     if (signal->id =3D=3D 1)
-> >             sigstatus =3D (sr & ATMEL_TC_MTIOB);
-> >     else
-> >             sigstatus =3D (sr & ATMEL_TC_MTIOA);
-> >
-> > As for mchp_tc_count_action_read(), we have a similar problem: no
-> > distinction is made for the Synapse requested. The channel mode register
-> > for channel 0 is read and then masked against ATMEL_TC_ETRGEDG to
-> > determine the action mode. It appears that this code is always assuming
-> > the Synapse for TIOA is requested, but the Synapse for TIOB could be
-> > passed. You can determine which corresponding Signal you have by
-> > checking synapse->signal->id before deciding what action mode to return.
-> >
->=20
-> That is indeed a good point as both signals are eligible to trigger the
-> TC for both modes (capture/qdec).
->=20
-> > To clarify, in COUNTER_FUNCTION_INCREASE mode, does the Count value
-> > increment based on the edge of TIOA and not TIOB? In
->=20
-> Yes, currently the driver only support TIOA.
->=20
-> > COUNTER_FUNCTION_QUADRATURE_X4 mode, does the Count value increment
-> > based on both edges of TIOA and TIOB serving as quadrature encoding
-> > phase A and B signals?
->=20
-> Yes as explained above.
+- Aidan
 
-Okay this should be simple to resolve then: return -EINVAL if Synapse is
-for TIOB in mchp_tc_count_action_write(), and pass back
-COUNTER_SYNAPSE_ACTION_NONE for TIOB during non-quadrature mode in
-mchp_tc_counter_action_read().
-
-I'll submit a patch fixing these changes and the signal_read() callback
-mentioned previously.
-
-By the way, I suspect there are race conditions present in
-mcho_tc_count_function_write() that could be resolved by adding a lock
-to the mchp_tc_data structure and acquiring it before accessing the
-device state and registers. It's unrelated to the Signal1 issues so I
-haven't looked any further into it, but it's something you might want to
-investigate to make sure you don't get weird behavior from the driver.
-
-Thanks,
-
-William Breathitt Gray
-
---zQZc1ZurNEhiI1YA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY03P5wAKCRC1SFbKvhIj
-K3aXAQDGzD5h2fu3+Qlac5IYPLNcVpcAbQIRqxTZ48DvEkirMAD6A0DQyiSd/S2x
-sMb2JiZGjvy7lKZ7XDAknTU9EAHodgk=
-=+PTo
------END PGP SIGNATURE-----
-
---zQZc1ZurNEhiI1YA--
+>>
+>> Aidan MacDonald (13):
+>>   dt-bindings: mfd: add bindings for AXP192 MFD device
+>>   dt-bindings: iio: adc: axp209: Add AXP192 compatible
+>>   dt-bindings: power: supply: axp20x: Add AXP192 compatible
+>>   dt-bindings: power: axp20x-battery: Add AXP192 compatible
+>>   mfd: axp20x: Add support for AXP192
+>>   regulator: axp20x: Add support for AXP192
+>>   iio: adc: axp20x_adc: Minor code cleanups
+>>   iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
+>>   iio: adc: axp20x_adc: Add support for AXP192
+>>   power: supply: axp20x_usb_power: Add support for AXP192
+>>   power: axp20x_battery: Add constant charge current table
+>>   power: axp20x_battery: Support battery status without fuel gauge
+>>   power: axp20x_battery: Add support for AXP192
+>>
+>>  .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+>>  .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+>>  .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+>>  .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+>>  drivers/iio/adc/axp20x_adc.c                  | 356 ++++++++++++++++--
+>>  drivers/mfd/axp20x-i2c.c                      |   2 +
+>>  drivers/mfd/axp20x.c                          | 141 +++++++
+>>  drivers/power/supply/axp20x_battery.c         | 142 ++++++-
+>>  drivers/power/supply/axp20x_usb_power.c       |  84 ++++-
+>>  drivers/regulator/axp20x-regulator.c          | 100 ++++-
+>>  include/linux/mfd/axp20x.h                    |  84 +++++
+>>  11 files changed, 856 insertions(+), 74 deletions(-)
+>>

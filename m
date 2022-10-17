@@ -2,120 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062E36006B8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 08:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB5160079E
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 09:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbiJQGaU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 02:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43190 "EHLO
+        id S229908AbiJQHXg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 03:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229837AbiJQGaT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 02:30:19 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDAB3134E
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 23:30:15 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id b2so15988228lfp.6
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 23:30:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b09P+MxFZecGyxS3ZeNm5VKWma2gzdq3aWfTA35sKf4=;
-        b=Upw3iMknJuuqgRJX2Taz1CWUYYh47ZMf87RKclrbkTAfm3zFwcwmpMaj1PO2SvCeRU
-         hbHK1T+L47f3gIsuJOh3uClXStyceIbpxudAG54v2bq8SHdzGARs+BXRrq4i5fDu2x5m
-         VnC+6pNV9PKNiw723Kwgu8MxNsH0z8lfYYt2hv2gKNedhpJtVrMstthBkqV3E7x4T9P7
-         EVLiTGlTzQYvY5rvzP1cP1WqkwzuEQKUdYsQtQ3CY+BVsi0YYo/3Uqg1eHuQBcQL6AeT
-         8452PLTmHp2x5r4zxoDGXQyIM3cI7p0U+lt9beP171Tkrfc4g1E6v2jTIuJYyPhdgVwJ
-         Pw7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b09P+MxFZecGyxS3ZeNm5VKWma2gzdq3aWfTA35sKf4=;
-        b=JUOute0IvY7o8YNZlsDzNZPakuQwOSfadsOKGuy5G4fGiif43LO1FlqlwEXO22FDv4
-         JmNLJVcvXlFFY7luq4r6wMuGB7JTBSFmyd49QBoZrS2eHQUrzaI3I05/2k+Q4GmY7us5
-         kN23zTyrjVy98EeEBMaFUtJ0Bk0owaLLlrULqkTnqiiT4FHGChPVfPXpEQFFTsWZbiCF
-         sQRp9p5/JEWgGRUIkhqcvkccpSJNFAQYXcLmWUIkFt/LbzuBZki2rfR0362M0mibWWWx
-         adn1nQX1norqQaZLzM4G5kHP1AFtnKxlajq6Qxcc5Mipqm7no6W0kOCogEhcyTiXmMOC
-         3UsQ==
-X-Gm-Message-State: ACrzQf0WfhiLr9+YwBcLYPhqo3NLl2oujARHFTAOWufn46Jyhr+xRuI8
-        WFaXcaYIMehr/Si0Ann3GX4=
-X-Google-Smtp-Source: AMsMyM7yP3MRYessBmblfOzL/R4wN9yer9VLwjwW//N2c7GnYWJi7S/2aL9zEhdZv+Zp7KrkmHJmgg==
-X-Received: by 2002:a05:6512:318d:b0:4a2:515c:6195 with SMTP id i13-20020a056512318d00b004a2515c6195mr3148369lfe.249.1665988213842;
-        Sun, 16 Oct 2022 23:30:13 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id s12-20020a056512214c00b0048b3926351bsm1308631lfr.56.2022.10.16.23.30.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Oct 2022 23:30:13 -0700 (PDT)
-Message-ID: <b6427817-6b44-c3c6-1e6d-4472e3eb066a@gmail.com>
-Date:   Mon, 17 Oct 2022 09:30:01 +0300
+        with ESMTP id S230103AbiJQHXf (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 03:23:35 -0400
+X-Greylist: delayed 1259 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 17 Oct 2022 00:23:30 PDT
+Received: from msg-1.mailo.com (msg-1.mailo.com [213.182.54.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2570A59734;
+        Mon, 17 Oct 2022 00:23:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
+        t=1665990123; bh=v1WmIdGEdjb/NRA9IbpdRDnvrh6PU598P+2FFcf0eoI=;
+        h=X-EA-Auth:Date:From:To:Cc:Subject:Message-ID:MIME-Version:
+         Content-Type;
+        b=GXEOablkpD9tab0iyR+Nqti3uRljRoWtutJWpTPoK5n3UP8pzswBj/GHpOns/gmy9
+         y7rJFEl2rGNl0q7iOKJbZJyVzy/XuVyX+23ajS0sOzqVDtUFzX4QbFCEqG1bENXcWn
+         KrsQvARRQrnFoXikbJl3nlSqaEroCpePbIzaVibY=
+Received: by b-5.in.mailobj.net [192.168.90.15] with ESMTP
+        via [213.182.55.206]
+        Mon, 17 Oct 2022 09:02:03 +0200 (CEST)
+X-EA-Auth: PgaBZF2EQagjeQgatbitFuEP2vpDjYeqY00rZfLXzUDuULgmxrv3GX32xIOsdaW/FUVjM2UB0rTenzLna3v6qSx8wD8sNT2m
+Date:   Mon, 17 Oct 2022 12:02:30 +0530
+From:   Deepak R Varma <drv@mailo.com>
+To:     outreachy@lists.linux.dev, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc:     kumarpraveen@linux.microsoft.com, saurabh.truth@gmail.com
+Subject: [PATCH] staging: iio: frequency: ad9834: merge unnecessary split
+ lines
+Message-ID: <Y0z2/qFe3kW96MTs@debian-BULLSEYE-live-builder-AMD64>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Subject: Re: [PATCH 14/14] iio: pressure: ms5611: Switch to fully devm_
- managed registration.
-Content-Language: en-US
-To:     Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Martyn Welch <martyn.welch@collabora.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20221016163409.320197-1-jic23@kernel.org>
- <20221016163409.320197-15-jic23@kernel.org>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20221016163409.320197-15-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/16/22 19:34, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> All the remaining calls in probe() have devm_ equivalents so
-> switching to those allows the remove() callbacks to be deleted.
-> No functional change.
+Improve code readability by merging unnecessary split lines that are
+well within the code-style guidelines post merge.
 
-Right :) So please ignore my last comment in the patch 13/14 :) The one 
-concerning the commit message is still valid though :)
+Signed-off-by: Deepak R Varma <drv@mailo.com>
+---
+ drivers/staging/iio/frequency/ad9834.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Tomasz Duszynski <tduszyns@gmail.com>
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index 2b4267a87e65..285df0e489a6 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -331,11 +331,9 @@ static IIO_DEV_ATTR_PHASE(0, 1, 0200, NULL, ad9834_write, AD9834_REG_PHASE1);
+ static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL, ad9834_write, AD9834_PSEL);
+ static IIO_CONST_ATTR_PHASE_SCALE(0, "0.0015339808"); /* 2PI/2^12 rad*/
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+-static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
+-	ad9834_write, AD9834_PIN_SW);
++static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL, ad9834_write, AD9834_PIN_SW);
+ static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL, ad9834_write, AD9834_RESET);
+-static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL,
+-	ad9834_write, AD9834_OPBITEN);
++static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL, ad9834_write, AD9834_OPBITEN);
+ static IIO_DEV_ATTR_OUT_WAVETYPE(0, 0, ad9834_store_wavetype, 0);
+ static IIO_DEV_ATTR_OUT_WAVETYPE(0, 1, ad9834_store_wavetype, 1);
 
-> ---
->   drivers/iio/pressure/ms5611.h      |  1 -
->   drivers/iio/pressure/ms5611_core.c | 17 +++--------------
->   drivers/iio/pressure/ms5611_i2c.c  |  6 ------
->   drivers/iio/pressure/ms5611_spi.c  |  6 ------
->   4 files changed, 3 insertions(+), 27 deletions(-)
-> 
+--
+2.30.2
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
 
-~~ When things go utterly wrong vim users can always type :help! ~~
 

@@ -2,152 +2,184 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14669601D81
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 01:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D16601CA8
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 00:54:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbiJQXUc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 19:20:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46984 "EHLO
+        id S230362AbiJQWyc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 18:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbiJQXUa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 19:20:30 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B4A5FDFD;
-        Mon, 17 Oct 2022 16:20:27 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id g1so19931505lfu.12;
-        Mon, 17 Oct 2022 16:20:27 -0700 (PDT)
+        with ESMTP id S229989AbiJQWyb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 18:54:31 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BB813E1A
+        for <linux-iio@vger.kernel.org>; Mon, 17 Oct 2022 15:54:29 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id x13so7646742qkg.11
+        for <linux-iio@vger.kernel.org>; Mon, 17 Oct 2022 15:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :references:from:to:cc:subject:date:message-id:reply-to;
-        bh=hPjgbmyufVQcQ6EQc4g+TbLptg1Ow4K6/gfkQdTeaBk=;
-        b=B6/s8a/izQ/nkmMWEUBSlIGceBkIBbBxCyoJTZIZiQ0RsBeQpu80tBqNYIL6+R0eo4
-         kO7PHZUKpbPz32g5uarTU10cBEqaYSR7oy8OCNyYfyMzL0RDWirFs7ZGZPtjwXDezgNK
-         yF+Aamf5c4G7Tuf2Gs1fq+lbqkuZz9i7b7dC8WvOLXV0B1uqiL5DKnRphq34xw31RkKe
-         VzGu/Vn4LF7mOtoQ/8q+TYY8C5KoGgWLMNwXOQK6dT4clhITPAgRnuVOdKGJCP/7ji+n
-         ma5WEj2lBjg3tlq+dkpen1j0SSl/TVaoW38fSOgE3GfkV1x1DF65kOtMNR2poiBYNUn4
-         2jYw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1Mexi3DbJyE5x8I4sskOGI0Kl0weNbMfBZ28HFha2I=;
+        b=G+VVV/nIqdIuzoizvBtuqpU6jTPkoDxoOhBUBWkyNMOzp5olRCaTXnLJUNSlWR537c
+         2I/usnZFVwwfouojQyDH+/oIgDZOWsxLYYtS2S+Hj6IZvy4P15FHwcCI1W1pKHhlG84B
+         dle0W1Bu3IhXVK8OKNuqRfZwRnouM8gywQ701XDxRO/uKkFI/cPBHvH1/CPQ5M+g4Sn9
+         XxuHI1KSYD7NjEg/73Uu38CZjzESsBapRNXIHBh/UIpuEVWMvMHzMbTvj15J6mruKVsR
+         /mvPvVnr2y4Kj/6PhInorv3R2Nc7fp4XCBM/wvkYHiPJxEEsbMRWsL+37XcGC/zcwh2l
+         QPrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :references:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hPjgbmyufVQcQ6EQc4g+TbLptg1Ow4K6/gfkQdTeaBk=;
-        b=bt3hsB9PX4uquSPRIkTswhzSpvcR69Gw1cno6DmWLeFOS2gjodH1EyyYm6mNeE1/Iy
-         LnPQh7JTPrHweKnlYhfhKkb/ANSAuxWEmZDcj829zRFVBoTMz+f4L0iGoJbYGjx2S9EB
-         T76AV3SuM2dt5Jf5V0r43V5I5FsemJ/Nus5WY7zKATrCJB7h3KNJErmYh6iY4Zu61qwQ
-         oBhlYDlhewObOrYFvUYk8b2I7Jh40lCRnapprXYjDPKTGveXf0ibIMjjCUf93yoLzZAr
-         LNjmoPKpL6XbNsEyeCqQUw1rMPQaqEP91hOur4/nLECf9YUrm1pzm+YejyN/L3/jrS3A
-         4kcg==
-X-Gm-Message-State: ACrzQf0Fj4XOnucFxZkCYDJNwVm1QoLP/0D4m/mQ8lWEecNjP9ux7se0
-        LbC1PMsMNn+xwcT87KxRdZTTkBobCTtyZA==
-X-Google-Smtp-Source: AMsMyM4pCX+WNfC/CXNNsawWuYBaaZwuLJ/RgrcmgBhzoQzrC1lLwHLEE9fH6Fy3w2jJM3+OHQ32FQ==
-X-Received: by 2002:a05:6000:184e:b0:22e:4612:496d with SMTP id c14-20020a056000184e00b0022e4612496dmr56928wri.91.1666047969456;
-        Mon, 17 Oct 2022 16:06:09 -0700 (PDT)
-Received: from localhost (94.197.37.182.threembb.co.uk. [94.197.37.182])
-        by smtp.gmail.com with ESMTPSA id v2-20020a5d4b02000000b0022ed6ff3a96sm9371634wrq.39.2022.10.17.16.06.08
+        bh=l1Mexi3DbJyE5x8I4sskOGI0Kl0weNbMfBZ28HFha2I=;
+        b=7S+YAzuVDo9KBEdO/0jkFfWrbcC6TQS9r6r/z0dwIngurKGuPUAXrEEFHftktyfSOu
+         rCJ1wCz+OhCjLHF5dd9cf+6V/33LTGzzTQIswL1m6N9ZIT8ifxSf6zUEj+cLHn5Ds3Yf
+         /hjATUpImjygbgRft05AWdZkeZUXi6ckZr11na5X60gZFRSJN7bUs2yr2iuq9kXDI5gW
+         pj3FRzzwjxvoyXRdEGUUS6lfdl2c7YiQUxTyA3Dr9QM8+k+Vl9cuu0zfdrMEPXmd7Oy/
+         /YbUkPwsfDbaqvv9H2PcndSvujcQ6ujcxrDfLLq8oE4C8YSx9h+CPAk7ChkMa8bgp7EF
+         fUdg==
+X-Gm-Message-State: ACrzQf0mCx/PZd/R6GhnZGq+GUuT3xbV2mkrsGbPtpQpagH6zXaCcyXK
+        2G7lGDKJ3tVYkrOo6rqqFXO8rTq+5TB/Ag==
+X-Google-Smtp-Source: AMsMyM4b+4PFpIn3M0+u/YSe6yeAsBDlE0Ai0sYBJFsY8y10pR6/dGF0fH1Ue8Hb5gDPLSxWv9ijqw==
+X-Received: by 2002:a05:620a:a9c:b0:6ec:f03:9e5b with SMTP id v28-20020a05620a0a9c00b006ec0f039e5bmr9314606qkg.628.1666047267901;
+        Mon, 17 Oct 2022 15:54:27 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id bv8-20020a05622a0a0800b0038b684a1642sm755675qtb.32.2022.10.17.15.54.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Oct 2022 16:06:08 -0700 (PDT)
-References: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
- <20221017184419.62d365c1@jic23-huawei>
-From:   Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        wens@csie.org, lee.jones@linaro.org, sre@kernel.org,
-        lgirdwood@gmail.com, broonie@kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
-        michael@walle.cc, samuel@sholland.org, linux-iio@vger.kernel.org,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 00/13] Add support for AXP192 PMIC
-Date:   Mon, 17 Oct 2022 23:21:32 +0100
-In-reply-to: <20221017184419.62d365c1@jic23-huawei>
-Message-ID: <LYfRwE3pxZfgZBDC6gwvsSrHWqcSQXHK@localhost>
+        Mon, 17 Oct 2022 15:54:27 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        stable@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>,
+        stable@kernel.org, Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: [PATCH] counter: microchip-tcb-capture: Handle Signal1 read and Synapse
+Date:   Mon, 17 Oct 2022 18:54:04 -0400
+Message-Id: <20221017225404.67127-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+The signal_read(), action_read(), and action_write() callbacks have been
+assuming Signal0 is requested without checking. This results in requests
+for Signal1 returning data for Signal0. This patch fixes these
+oversights by properly checking for the Signal's id in the respective
+callbacks and handling accordingly based on the particular Signal
+requested. The trig_inverted member of the mchp_tc_data is removed as
+superfluous.
 
-Jonathan Cameron <jic23@kernel.org> writes:
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Cc: stable@kernel.org
+Cc: Kamel Bouhara <kamel.bouhara@bootlin.com>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/counter/microchip-tcb-capture.c | 57 ++++++++++++++++---------
+ 1 file changed, 38 insertions(+), 19 deletions(-)
 
-> On Mon, 17 Oct 2022 00:43:22 +0100
-> Aidan MacDonald <aidanmacdonald.0x0@gmail.com> wrote:
->
->> This series adds support for the AXP192 PMIC to the AXP20x MFD driver
->> framework, including support for regulators, ADCs, and AC/USB/battery
->> power supplies.
->>
->> v6 is a resend of v5 from July -- the patches haven't changed at all
->> but I've rebased them on the latest git master branch.
->
-> Hi Aidan,
->
-> Lee has recently expressed that he keen to take as much of these sorts
-> of series as possible via the various subsystem trees.
->
-> As such, it is useful to call out in the cover letter of such a series
-> if this can be done.  For example, patch 9 (last IIO one) can't be
-> applied without defines in patch 6 (I think).  Thus I'm assuming Lee
-> will do an immutable branch with at least those patches on it.
->
-> Perhaps worth expressing if that is also the case for the power
-> and regulator subsystem patches?
->
-> Thanks,
->
-> Jonathan
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index f9dee15d9777..438f82b07a03 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -28,7 +28,6 @@ struct mchp_tc_data {
+ 	int qdec_mode;
+ 	int num_channels;
+ 	int channel[2];
+-	bool trig_inverted;
+ };
+ 
+ static const enum counter_function mchp_tc_count_functions[] = {
+@@ -153,7 +152,7 @@ static int mchp_tc_count_signal_read(struct counter_device *counter,
+ 
+ 	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
+ 
+-	if (priv->trig_inverted)
++	if (signal->id == 1)
+ 		sigstatus = (sr & ATMEL_TC_MTIOB);
+ 	else
+ 		sigstatus = (sr & ATMEL_TC_MTIOA);
+@@ -169,26 +168,46 @@ static int mchp_tc_count_action_read(struct counter_device *counter,
+ 				     enum counter_synapse_action *action)
+ {
+ 	struct mchp_tc_data *const priv = counter_priv(counter);
++	const unsigned int cmr_reg = ATMEL_TC_REG(priv->channel[0], CMR);
++	enum counter_function function;
++	int err;
+ 	u32 cmr;
+ 
+-	regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], CMR), &cmr);
++	err = mchp_tc_count_function_read(counter, count, &function);
++	if (err)
++		return err;
+ 
+-	switch (cmr & ATMEL_TC_ETRGEDG) {
+-	default:
+-		*action = COUNTER_SYNAPSE_ACTION_NONE;
+-		break;
+-	case ATMEL_TC_ETRGEDG_RISING:
+-		*action = COUNTER_SYNAPSE_ACTION_RISING_EDGE;
+-		break;
+-	case ATMEL_TC_ETRGEDG_FALLING:
+-		*action = COUNTER_SYNAPSE_ACTION_FALLING_EDGE;
+-		break;
+-	case ATMEL_TC_ETRGEDG_BOTH:
++	/* Default action mode */
++	*action = COUNTER_SYNAPSE_ACTION_NONE;
++
++	switch (function) {
++	case COUNTER_FUNCTION_INCREASE:
++		/* TIOB signal is ignored */
++		if (synapse->signal->id == 1)
++			return 0;
++
++		regmap_read(priv->regmap, cmr_reg, &cmr);
++
++		switch (cmr & ATMEL_TC_ETRGEDG) {
++		case ATMEL_TC_ETRGEDG_RISING:
++			*action = COUNTER_SYNAPSE_ACTION_RISING_EDGE;
++			return 0;
++		case ATMEL_TC_ETRGEDG_FALLING:
++			*action = COUNTER_SYNAPSE_ACTION_FALLING_EDGE;
++			return 0;
++		case ATMEL_TC_ETRGEDG_BOTH:
++			*action = COUNTER_SYNAPSE_ACTION_BOTH_EDGES;
++			return 0;
++		default:
++			return 0;
++		}
++	case COUNTER_FUNCTION_QUADRATURE_X4:
+ 		*action = COUNTER_SYNAPSE_ACTION_BOTH_EDGES;
+-		break;
++		return 0;
++	default:
++		/* should never reach this path */
++		return -EINVAL;
+ 	}
+-
+-	return 0;
+ }
+ 
+ static int mchp_tc_count_action_write(struct counter_device *counter,
+@@ -199,8 +218,8 @@ static int mchp_tc_count_action_write(struct counter_device *counter,
+ 	struct mchp_tc_data *const priv = counter_priv(counter);
+ 	u32 edge = ATMEL_TC_ETRGEDG_NONE;
+ 
+-	/* QDEC mode is rising edge only */
+-	if (priv->qdec_mode)
++	/* QDEC mode is rising edge only; only TIOA handled in non-QDEC mode */
++	if (priv->qdec_mode || synapse->signal->id != 0)
+ 		return -EINVAL;
+ 
+ 	switch (action) {
+-- 
+2.37.3
 
-Yep, the IIO, regulator, and power subsystem patches all depend on
-the MFD patch. Specifically, patches 6, 9, and 10 depend on patch 5.
-I can't get rid of this dependency because the variant ID (AXP192_ID)
-has to be defined centrally in the MFD patch.
-
-The axp20x_battery patches (last three of the whole series) don't
-depend on the variant ID or other defines, so they could be taken
-independently through the power subsystem.
-
-Even though the IIO cleanups (7 and 8) don't depend on anything else
-I imagine it'd cause problems to take those via IIO because patch 9
-depends on them.
-
-IOW: Lee probably needs to take patches 5-10.
-
-- Aidan
-
->>
->> Aidan MacDonald (13):
->>   dt-bindings: mfd: add bindings for AXP192 MFD device
->>   dt-bindings: iio: adc: axp209: Add AXP192 compatible
->>   dt-bindings: power: supply: axp20x: Add AXP192 compatible
->>   dt-bindings: power: axp20x-battery: Add AXP192 compatible
->>   mfd: axp20x: Add support for AXP192
->>   regulator: axp20x: Add support for AXP192
->>   iio: adc: axp20x_adc: Minor code cleanups
->>   iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
->>   iio: adc: axp20x_adc: Add support for AXP192
->>   power: supply: axp20x_usb_power: Add support for AXP192
->>   power: axp20x_battery: Add constant charge current table
->>   power: axp20x_battery: Support battery status without fuel gauge
->>   power: axp20x_battery: Add support for AXP192
->>
->>  .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
->>  .../bindings/mfd/x-powers,axp152.yaml         |   1 +
->>  .../x-powers,axp20x-battery-power-supply.yaml |   1 +
->>  .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
->>  drivers/iio/adc/axp20x_adc.c                  | 356 ++++++++++++++++--
->>  drivers/mfd/axp20x-i2c.c                      |   2 +
->>  drivers/mfd/axp20x.c                          | 141 +++++++
->>  drivers/power/supply/axp20x_battery.c         | 142 ++++++-
->>  drivers/power/supply/axp20x_usb_power.c       |  84 ++++-
->>  drivers/regulator/axp20x-regulator.c          | 100 ++++-
->>  include/linux/mfd/axp20x.h                    |  84 +++++
->>  11 files changed, 856 insertions(+), 74 deletions(-)
->>

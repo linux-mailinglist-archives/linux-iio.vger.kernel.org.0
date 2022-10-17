@@ -2,19 +2,19 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A6E76006AE
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 08:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3DE26006AD
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 08:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229903AbiJQG0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        id S229828AbiJQG0Y (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
         Mon, 17 Oct 2022 02:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34722 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbiJQG0U (ORCPT
+        with ESMTP id S229903AbiJQG0U (ORCPT
         <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 02:26:20 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80D952DD7
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C27552DC7
         for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 23:26:19 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id o12so7498219lfq.9
+Received: by mail-lj1-x235.google.com with SMTP id b18so12714287ljr.13
         for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 23:26:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
@@ -22,34 +22,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
          :content-language:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
         bh=cLlSjPOha0bRMNkyaEpt0McUjrdBOn8HnBMEtPT32xU=;
-        b=oSGLmEeIfL4I+ADVX6x38lsxM77Ey4SCm+gU7Gea3s0AdfJViCfKsVuUJWI/6uax+c
-         5vvktZ0CyybhY7gq5B6anvNyVSW40+6F8HewFtAWW4AIImlhFFfU0P7IMtcP3ceUgin2
-         K+kAbI/kZO7Yxrb8JqY9l9A2sfKKcBfn71qS6HXWmWTv2wtlYUIw7DLYpp5nr3rUt9pt
-         mcazkfJLnCm3Nhjk06zEW4oe4Uh4b34InSJX9omczgGYPTzWq/Zv6PxcDkzYZmcx9+RO
-         Eh3IvO+ZHY3drxBJn/CnqVQqwcYvd8MoxWw/mSmjeM4W2ZG34E5tBuP6zfThbpvGRA3w
-         9ohg==
+        b=kIFCV9zFDsYWOmacOTS34dzN8o434LcUFmfM4qtWGkdaHvncPObVBgXcK1Y2HlYjkF
+         eRsOEUFdVEU7fjfxY+k5RBBmrOaaKVjY/9jiRa/ahQVeHGwcWHR+/C6fl+1nt6J07V3D
+         vushIKytQIkXiR0oLX40fIxrQ0xiEojXZXoZX8jek0KX/YCC79NPxxPcjF8TpKRlYI1E
+         kz115tl13S0kkHAKtbSiuuQuDVvl0OfOZB3nR8cqnozhYBIif7Olrs8QI4idpC12NSVn
+         FnpHg7aaISpRrJG/XxtNsNA0gBpPj7Ig6wn3sThZkjKcrSN6wAEcTTRj5+E18o7pYgog
+         6bVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
          :content-language:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
         bh=cLlSjPOha0bRMNkyaEpt0McUjrdBOn8HnBMEtPT32xU=;
-        b=e7dyGn8w8Q1G1xNaQXVExI3L7odXdtBA6L0qLIHUDIm6TxWnyPXif6ofYix3IY1Sci
-         l34GPuPzZPqm6nq7EZTwG6ukIkS6klbuu7KfLDE13YL2UiizYUTT2dD7do65ehrVwZOb
-         sr2n1ScaFFKFCvoeMgZiP2CZeQxY1I9zgTwcMFEzYwVpt1rrUv8CM/zGSiuu9tZLgOxz
-         ncimaujA0f3QZBB88s/PgqxZjbCo6QjkltrdjNk7kDrDRZbXTYK6RQ690bqaBQyG/VUb
-         hWl1ppXdoHsez+9bst9Fgu1TNRGhYaxuBvOo7cBb7GWRkB3dltntPWEysZb8V9zbYlg7
-         4pcA==
-X-Gm-Message-State: ACrzQf3PFdaXkjh17r9wul2lD02scrBLdKQqQn6TurS+L/HyIW1A/cNA
-        XaDmbVW6BPeMmSP0tl9uxX4=
-X-Google-Smtp-Source: AMsMyM6p0SMaenddt8fZenUOdJW8e45Ekhvl7QAV3AaQg1cP9ixHpcsoS35hjz6Z0RnSbBiF7ZeZMQ==
-X-Received: by 2002:a05:6512:1287:b0:4a2:a897:aa5f with SMTP id u7-20020a056512128700b004a2a897aa5fmr3714554lfs.612.1665987978168;
-        Sun, 16 Oct 2022 23:26:18 -0700 (PDT)
+        b=rj5eeHOAOcaj1wXJAnVuBx+9nN4MPGBegzB1FjBhabZbGkq/phVaxkbnNNvXE6Isw4
+         GCuvXe2VvR3pTVvA2z5T7COMvc93fmb96Iv9T7HW/1UInBS9JeNABih3mY/050yLoK+s
+         Ll+bdt6f6asmPWqzRH3L6crIwXuGyfyTXSjsfWAyMbdNpI3vuc7n4cjxBinDtqJLzKpT
+         BsB4MPPEZ/NlnMcQbuBoW0Upzyjn2wDW7ZcIveqojefNYpJjJ0OnZPEEVW850ko0oc+f
+         f6+6BgWR+seizGBKI2O0ufkJSUzLfQjvmfQlwCuCv5QzUhYLnie8IY2VohcCmkHmLUHb
+         SOdg==
+X-Gm-Message-State: ACrzQf3I3vIb08FWpBWph7kdS3uiPQkkUFRdgXPN+dJA4htDTa5x3Blk
+        AjRKk8jkwN3pR3ASZos0/vU=
+X-Google-Smtp-Source: AMsMyM5OaGJB0hrAoux1N3cqBUQPpYjNbyoTwN1q1cum46C3GhujS3388UwOFWeqZpwhUqAO9bWV/w==
+X-Received: by 2002:a05:651c:1501:b0:26f:ae50:56f8 with SMTP id e1-20020a05651c150100b0026fae5056f8mr3609194ljf.274.1665987977826;
+        Sun, 16 Oct 2022 23:26:17 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id t14-20020a056512208e00b004971a83f839sm1313507lfr.39.2022.10.16.23.26.16
+        by smtp.gmail.com with ESMTPSA id p8-20020a2eb7c8000000b0026d920a8114sm1317891ljo.100.2022.10.16.23.26.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
         Sun, 16 Oct 2022 23:26:17 -0700 (PDT)
-Message-ID: <e4dbfb4d-cd92-f72f-caf0-4eece7678de7@gmail.com>
+Message-ID: <95ebffcf-f118-d8a9-be8a-b265ddd53bb4@gmail.com>
 Date:   Mon, 17 Oct 2022 09:26:15 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
@@ -80,7 +80,7 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net

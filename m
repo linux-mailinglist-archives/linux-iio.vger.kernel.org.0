@@ -2,55 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22BB1600640
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B72A600641
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Oct 2022 07:27:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbiJQF1m (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 17 Oct 2022 01:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40656 "EHLO
+        id S229810AbiJQF1v (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 17 Oct 2022 01:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229608AbiJQF1l (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:27:41 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E021537D2
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:27:32 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id g7so10984383lfv.5
-        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:27:32 -0700 (PDT)
+        with ESMTP id S229608AbiJQF1u (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 17 Oct 2022 01:27:50 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA27537D2
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:27:49 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id m23so12643060lji.2
+        for <linux-iio@vger.kernel.org>; Sun, 16 Oct 2022 22:27:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=in-reply-to:subject:from:references:cc:to:content-language
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=e1FQfL+kSWvNGqyIYGU9AAJXpPIHF/rLVL+xjRE0fmY=;
-        b=EPCiZH/GejX2954waRVgOClvpDruFiC4zvCgwyZt+Dt9CtN9qUJIYbYD0gc5I+MGbu
-         xX9kvpcnqDku3f9unPshx5ADT72YF4PS7YIcovVAzNVFPIIkW1WpqREryDiV0TRqe/xn
-         DB6Uq72Jk3iDjxOomBgpNvVbdroTIlnKX1dKBLnBjtVPBJa099ZNTDtZG9WtV25YjLxM
-         UGcqEfq/sXGyIuY/SE5iqysqsFiOgxDUK4iGidAJJHPVsXbO4Hb1e/FYqQx85yawaay2
-         Oey6oEoya8kW/MHD9avuokWC63m6KqvfEnhjXcnW9NvLFmd2cd/43MHadFQAvWFYPQAX
-         vQJQ==
+        bh=o5OhIs15J+MEkfGGY+TDVmB0WqWOZLg8bfVcorl9x9g=;
+        b=R3QaAbqDMfND5Z8Xm+3n5uJ1JM1FoXMdVf4stakEHDUOTWV0JKdJBDhDxjesBD6w+g
+         6ZxkfWAoiuBEkVVcuHrG/TDV1hy3OIRqPUhkHgWxgCBInUTDwEi+Mf2lvCDUiUQPj9/4
+         4Rgyrfu/FB9QJAgQ9B6ZazlL89sXOOgOCEBMNj+sGGr4iaVG5Et8CpwSb3/3kcG9aYoC
+         Z9gD++FANd+VoVE6gSsXLI+HI0rAQKSUfBY4ZkCK93hqrok2bXE4z5mjBq0S3anl7A1A
+         BwPl+9Tmc9aQy+RBszIDWlwZUp3JiEX3HtjlYy4vQK2Nstt/E1zXM3myOR6AOQZQZ6Zg
+         ZvYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:subject:from:references:cc:to:content-language
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=e1FQfL+kSWvNGqyIYGU9AAJXpPIHF/rLVL+xjRE0fmY=;
-        b=kmRJWDRn/upQTvlhj38Bs49DSrBbf9taFSdajcI3KBh81dBV9oW68xj3jPQOYqaK7w
-         /46NO0FshTRC4lcGit53RPFwZDSe0DVMlomiuAy9Zq7kMHOIGwCFQrPJIcQzLgrmOfDi
-         yadhG8VwrMeTSioExXE4jaunoAEtkc/UfPzAOPnWGGFk0IXHT8WRBfBpF0WrUFie65tg
-         NzWj3zQJNTpV4eYyRs6Nhl++eeIT4VNrIZ/BnGAnC+Afk7VXijrtmt1POVKsDfvWEp0T
-         9bWcYbFc4cXN9Y+WwV7ADYYApCPz4OFvNTZ1Hd6x7fWZjdIOp9/RJrI+BbBybecGAxRN
-         NFSQ==
-X-Gm-Message-State: ACrzQf0DwjknN1mDDkAkPvNflxNzy28DLENdMG1DIxVOglZB+4M4Fi4Q
-        SnP2kHZGfX2ZOQuYvets1b4=
-X-Google-Smtp-Source: AMsMyM71qzWhGJdNBrS4BfBcyxUIIeUjozDzpxfaUYeseuJcGxKTIJ0UQwmAxSlJmRjgJeM/3cLX8g==
-X-Received: by 2002:ac2:4f02:0:b0:496:d15:ea89 with SMTP id k2-20020ac24f02000000b004960d15ea89mr3178230lfr.69.1665984450887;
-        Sun, 16 Oct 2022 22:27:30 -0700 (PDT)
+        bh=o5OhIs15J+MEkfGGY+TDVmB0WqWOZLg8bfVcorl9x9g=;
+        b=gdn15IOQtTfHk2QdKlRxrSvxY6wiDT+CfgEiz5dIQagEM8ReFrTs49WIhCHAI/cNR7
+         vbLIm1jH4IOVm/Rm0v6sfg4CtgASKy9JZbo9RRUySf3BpThGRNqgYGmLpExGEO2sCU5A
+         lbxFrneEqC36RKUjAK4HNtRJipRAwN2MpGR3sEf4Ss40hxFSODhxZ1kdWOZVBe80N8PJ
+         rzHpFu36MlqUIRG4i5yX9pNoT6cJNou0hA2Prr/i/JuSwn46lj29SLMC8MiU8Y/ahehs
+         gjkGZ+mYqc0TZ5fD/senPBfzcolsKtjNP9y0KKzy3Ofzthhe5Nr7J1KxezUaAR9WVOCD
+         gexA==
+X-Gm-Message-State: ACrzQf0OimZDD3NbHEKaeRDlmnUCPuRV5srNVEtB+9nKNQH666cPC1/L
+        nG2eY6zc30Gkwgj1D1u5G6c=
+X-Google-Smtp-Source: AMsMyM6OtjKlKGte7V7AkpyHT1UfLF3s/AwFMlCh/orgzvL3WV8LzVubizibVvfmCZdOz6ZjbThanA==
+X-Received: by 2002:a2e:9d8e:0:b0:26f:dca6:6a68 with SMTP id c14-20020a2e9d8e000000b0026fdca66a68mr3323483ljj.273.1665984468013;
+        Sun, 16 Oct 2022 22:27:48 -0700 (PDT)
 Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id v20-20020a2e9f54000000b0026bca725cd0sm1347205ljk.39.2022.10.16.22.27.29
+        by smtp.gmail.com with ESMTPSA id x5-20020a056512078500b0049c29389b98sm1280732lfr.151.2022.10.16.22.27.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Oct 2022 22:27:30 -0700 (PDT)
-Message-ID: <2dcc9735-ea2d-a796-5ab4-d1928a346908@gmail.com>
-Date:   Mon, 17 Oct 2022 08:27:29 +0300
+        Sun, 16 Oct 2022 22:27:47 -0700 (PDT)
+Message-ID: <434359a3-5149-2503-6a33-878d399bd67b@gmail.com>
+Date:   Mon, 17 Oct 2022 08:27:46 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.0
@@ -71,14 +71,14 @@ Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Tomasz Duszynski <tduszyns@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20221016163409.320197-1-jic23@kernel.org>
- <20221016163409.320197-3-jic23@kernel.org>
+ <20221016163409.320197-4-jic23@kernel.org>
 From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH 02/14] iio: accel: bma400: Use
- devm_regulator_bulk_get_enable()
-In-Reply-To: <20221016163409.320197-3-jic23@kernel.org>
+Subject: Re: [PATCH 03/14] iio: accel: fxls8962af: Use
+ devm_regulator_get_enable()
+In-Reply-To: <20221016163409.320197-4-jic23@kernel.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------gQUraBEhyD0TAyk6hss7bWi4"
+ boundary="------------RxvsMAXHtB5ZSf4DS1b74f1k"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -90,8 +90,8 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------gQUraBEhyD0TAyk6hss7bWi4
-Content-Type: multipart/mixed; boundary="------------aeL7AayE6ztWOoRcvsC7bgtB";
+--------------RxvsMAXHtB5ZSf4DS1b74f1k
+Content-Type: multipart/mixed; boundary="------------Ztf1krOwjhPPCXU5AXPR6Spg";
  protected-headers="v1"
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
@@ -107,17 +107,17 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Gwendal Grignou <gwendal@chromium.org>, Stephen Boyd <swboyd@chromium.org>,
  Tomasz Duszynski <tduszyns@gmail.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-ID: <2dcc9735-ea2d-a796-5ab4-d1928a346908@gmail.com>
-Subject: Re: [PATCH 02/14] iio: accel: bma400: Use
- devm_regulator_bulk_get_enable()
+Message-ID: <434359a3-5149-2503-6a33-878d399bd67b@gmail.com>
+Subject: Re: [PATCH 03/14] iio: accel: fxls8962af: Use
+ devm_regulator_get_enable()
 References: <20221016163409.320197-1-jic23@kernel.org>
- <20221016163409.320197-3-jic23@kernel.org>
-In-Reply-To: <20221016163409.320197-3-jic23@kernel.org>
+ <20221016163409.320197-4-jic23@kernel.org>
+In-Reply-To: <20221016163409.320197-4-jic23@kernel.org>
 
---------------aeL7AayE6ztWOoRcvsC7bgtB
-Content-Type: multipart/mixed; boundary="------------05bfGA8ZEnkQaF8sBD9uYVJW"
+--------------Ztf1krOwjhPPCXU5AXPR6Spg
+Content-Type: multipart/mixed; boundary="------------flQQldBNT5UflJ7kL0SXfj77"
 
---------------05bfGA8ZEnkQaF8sBD9uYVJW
+--------------flQQldBNT5UflJ7kL0SXfj77
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: base64
 
@@ -125,15 +125,15 @@ T24gMTAvMTYvMjIgMTk6MzMsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+IEZyb206IEpv
 bmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gDQo+IFRo
 aXMgZHJpdmVyIG9ubHkgdHVybnMgdGhlIHBvd2VyIG9uIGF0IHByb2JlIGFuZCBvZmYgdmlh
 IGEgY3VzdG9tDQo+IGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldCgpIGNhbGxiYWNrLiBUaGUg
-bmV3DQo+IGRldm1fcmVndWxhdG9yX2J1bGtfZ2V0X2VuYWJsZSgpIHJlcGxhY2VzIHRoaXMg
-Ym9pbGVycGxhdGUgY29kZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEpvbmF0aGFuIENhbWVy
-b24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gQ2M6IEphZ2F0aCBKb2cgSiA8
-amFnYXRoam9nMTk5NkBnbWFpbC5jb20+DQoNClJldmlld2VkLWJ5OiBNYXR0aSBWYWl0dGlu
-ZW4gPG1henppZXNhY2NvdW50QGdtYWlsLmNvbT4NCg0KLS0gDQpNYXR0aSBWYWl0dGluZW4N
-CkxpbnV4IGtlcm5lbCBkZXZlbG9wZXIgYXQgUk9ITSBTZW1pY29uZHVjdG9ycw0KT3VsdSBG
-aW5sYW5kDQoNCn5+IFdoZW4gdGhpbmdzIGdvIHV0dGVybHkgd3JvbmcgdmltIHVzZXJzIGNh
-biBhbHdheXMgdHlwZSA6aGVscCEgfn4NCg0K
---------------05bfGA8ZEnkQaF8sBD9uYVJW
+bmV3IGRldm1fcmVndWxhdG9yX2dldF9lbmFibGUoKQ0KPiByZXBsYWNlcyB0aGlzIGJvaWxl
+cnBsYXRlIGNvZGUuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBKb25hdGhhbiBDYW1lcm9uIDxK
+b25hdGhhbi5DYW1lcm9uQGh1YXdlaS5jb20+DQo+IENjOiBTZWFuIE55ZWtqYWVyIDxzZWFu
+QGdlYW5peC5jb20+DQoNClJldmlld2VkLWJ5OiBNYXR0aSBWYWl0dGluZW4gPG1henppZXNh
+Y2NvdW50QGdtYWlsLmNvbT4NCg0KLS0gDQpNYXR0aSBWYWl0dGluZW4NCkxpbnV4IGtlcm5l
+bCBkZXZlbG9wZXIgYXQgUk9ITSBTZW1pY29uZHVjdG9ycw0KT3VsdSBGaW5sYW5kDQoNCn5+
+IFdoZW4gdGhpbmdzIGdvIHV0dGVybHkgd3JvbmcgdmltIHVzZXJzIGNhbiBhbHdheXMgdHlw
+ZSA6aGVscCEgfn4NCg0K
+--------------flQQldBNT5UflJ7kL0SXfj77
 Content-Type: application/pgp-keys; name="OpenPGP_0x40497F0C4693EF47.asc"
 Content-Disposition: attachment; filename="OpenPGP_0x40497F0C4693EF47.asc"
 Content-Description: OpenPGP public key
@@ -224,24 +224,24 @@ bJdDT4nPrGpMQWvFLTScS7sTfKC8lx6/+/w=3D
 =3DfJFG
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------05bfGA8ZEnkQaF8sBD9uYVJW--
+--------------flQQldBNT5UflJ7kL0SXfj77--
 
---------------aeL7AayE6ztWOoRcvsC7bgtB--
+--------------Ztf1krOwjhPPCXU5AXPR6Spg--
 
---------------gQUraBEhyD0TAyk6hss7bWi4
+--------------RxvsMAXHtB5ZSf4DS1b74f1k
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsB5BAABCAAjFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNM58EFAwAAAAAACgkQeFA3/03aocWi
-bggAroWvUg6tqwCXGqJBzO9tjrQO2hvDaB3OiOpXEHS0B1vP14S/gw1PAto3QYe9JheZOy5YE8uw
-jf1NQYpn2TpvmRgoezPbevVT6XabUblHZ5dvJPvdUIusSGqkJj3dUxzvNz/WaHM5KASA5tfif6Hn
-J2V7vUGkEwvDiVJUVbQBrPkyixmsG901xJKmCEanVujbkUBAzN3RG4YQ7RmT9g0Pea5I4uhxgn0g
-Vd01I4+YGVCMOKudWND+hBBOIiuzPfIwvwH7Qh/lj++IYVI9DZpf3t9dbsEMU4W//LNAJZADD5i3
-E5aIWWRWC19t+ppugskMdig+UlhOcApzDEonu395oQ==
-=aOes
+wsB5BAABCAAjFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNM59IFAwAAAAAACgkQeFA3/03aocVd
+NggAjUILQ9A43NMu+P2Ifon1w7t+NRr4fmbksCzWjbvILkx25RwMX+zg/d5Lspluoa76Bg1otl/m
+oP0q4wNLioUsSTyov2PKBBMP4MpTgGbwqWvtUzmCL8ds3f5WNZQmVsPcew9MpUbm+rvZgNMyJWaV
+QJX4vGSnjaWE/cUg+1D4WqlDLw9qBP2KJnZH5sLcTa7iLa7PSFnnTLeGO5fAbNaALc49wHINbpNP
+PzlZoDObCB9BEO/zMIjCxNkd4Xq2Aup7pFtR15mEr7DzDEBP9PRho66m2Vzrk1oxSx8v3lZcnxXu
+xR9ZN48EHuCWc6YQCMCtenVPPXkf3dCFYwgjtoWa0w==
+=rgPL
 -----END PGP SIGNATURE-----
 
---------------gQUraBEhyD0TAyk6hss7bWi4--
+--------------RxvsMAXHtB5ZSf4DS1b74f1k--

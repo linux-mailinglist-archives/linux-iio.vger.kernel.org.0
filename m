@@ -2,81 +2,164 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 574E9602C45
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 15:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37CBF602F4E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 17:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230327AbiJRNAi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Oct 2022 09:00:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42350 "EHLO
+        id S230246AbiJRPO3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Oct 2022 11:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbiJRNAg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Oct 2022 09:00:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CC8895CC;
-        Tue, 18 Oct 2022 06:00:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 986556153F;
-        Tue, 18 Oct 2022 13:00:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8312C433C1;
-        Tue, 18 Oct 2022 13:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666098035;
-        bh=hJkmyb0el7q4g4MjHB/cF/uww5w6exRobS/z6T4Jn8Q=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=AZT+UP1XWTvk0ZuZsKot3x2PUBpE1KwBfxVJqUl5QtYtQhX6LhcIPNx+OwrwaEuYX
-         PeELTwcj3uMPlX2KRYazDOf09yCJs2lBxE7Ed6h5EBFC+CDnoDainRKLUKCaYrrdVA
-         1/hLBV6o+dodkym8uMWNHTAlwTPDwGkTUoZXhg8Iy7bvzcZfeDRLUO9qCoDY5hoTRF
-         659D3aw9ifbe7WLgorwva1xKMjuSdr29tjJXgxgVW9l884XEjg4sjiDdgjPCFu2byS
-         VCUXcHo3CIEUM+7EI6M84b7jr4Nmj9XrHftepojH5N8B+qeCrvse+JgKZOy7d/2uuP
-         FtclvoFo5EAVw==
-Date:   Tue, 18 Oct 2022 15:00:31 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
+        with ESMTP id S230108AbiJRPO2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Oct 2022 11:14:28 -0400
+Received: from mx.sberdevices.ru (mx.sberdevices.ru [45.89.227.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C65114B
+        for <linux-iio@vger.kernel.org>; Tue, 18 Oct 2022 08:14:20 -0700 (PDT)
+Received: from s-lin-edge02.sberdevices.ru (localhost [127.0.0.1])
+        by mx.sberdevices.ru (Postfix) with ESMTP id E54525FD82;
+        Tue, 18 Oct 2022 18:14:16 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sberdevices.ru;
+        s=mail; t=1666106056;
+        bh=Td70hJqj7+2U7gqPllKJqANiMX54JKWn7J/nb68P4L4=;
+        h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version;
+        b=pVEN9zVN2L5PLxG937Jp/y6sjTegtlww870ZRYaAbUe5PyMYB98BTR5ozZaiGUlUx
+         ZAOrMI0M9ditD8grC6C++IjpIhpUXV0QpDGWLaiTCAD2X90BIW4CBK97WupFf9M3fw
+         xdM2wXjTK+g6O2FNqcppLbWAeunzUObwD4eKkEq2klMKPBtI7pSQOu3879Gev0RSeG
+         gMMLnH/i8Tg7oMVUhNQcpxDBrGwVKPpVrx+z3p0Ewv4JBjzyXLmdj4HbJ3Q5+lKAh6
+         qoPhsEIYlj5MIGdNp4WesJt8hPWTiRH5RlJ/guc9R0F9WWMyHFsif3YknYZUIDT9sj
+         z6PlGk4vC3r2g==
+Received: from S-MS-EXCH02.sberdevices.ru (S-MS-EXCH02.sberdevices.ru [172.16.1.5])
+        by mx.sberdevices.ru (Postfix) with ESMTP;
+        Tue, 18 Oct 2022 18:14:11 +0300 (MSK)
+From:   Dmitry Rokosov <DDRokosov@sberdevices.ru>
 To:     Jonathan Cameron <jic23@kernel.org>
-cc:     Matt Ranostay <matt.ranostay@konsulko.com>, gupt21@gmail.com,
-        benjamin.tissoires@redhat.com, linux-iio@vger.kernel.org,
-        linux-input@vger.kernel.org
-Subject: Re: [PATCH v6 3/3] HID: mcp2221: add ADC/DAC support via iio
- subsystem
-In-Reply-To: <20221002145052.036003b5@jic23-huawei>
-Message-ID: <nycvar.YFH.7.76.2210181500130.29912@cbobk.fhfr.pm>
-References: <20221001005208.8010-1-matt.ranostay@konsulko.com> <20221001005208.8010-4-matt.ranostay@konsulko.com> <20221002145052.036003b5@jic23-huawei>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        "Sean Nyekjaer" <sean@geanix.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        "Martyn Welch" <martyn.welch@collabora.com>,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 05/14] iio: accel: msa311: Use devm_regulator_get_enable()
+Thread-Topic: [PATCH 05/14] iio: accel: msa311: Use
+ devm_regulator_get_enable()
+Thread-Index: AQHY4X0HmZZBrZxISkq4bSdU5Cukz64UE0GA
+Date:   Tue, 18 Oct 2022 15:14:05 +0000
+Message-ID: <20221018151405.e2nv4wiohskyhdvd@CAB-WSD-L081021>
+References: <20221016163409.320197-1-jic23@kernel.org>
+ <20221016163409.320197-6-jic23@kernel.org>
+In-Reply-To: <20221016163409.320197-6-jic23@kernel.org>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.16.1.12]
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <F6FFEB458A7C194990C32D77B6B306B8@sberdevices.ru>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-KSMG-Rule-ID: 4
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiPhishing: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2022/10/18 11:59:00 #20479535
+X-KSMG-AntiVirus-Status: Clean, skipped
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2 Oct 2022, Jonathan Cameron wrote:
+Hello Jonathan,
 
-> > Add support for 3x 10-bit ADC and 1x DAC channels registered via the 
-> > iio subsystem.
-> > 
-> > To prevent breakage and unexpected dependencies this support only is
-> > only built if CONFIG_IIO is enabled, and is only weakly referenced by
-> > 'imply IIO' within the respective Kconfig.
-> > 
-> > Additionally the iio device only gets registered if at least one channel
-> > is enabled in the power-on configuration read from SRAM.
-> > 
-> > Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
-> 
-> I'm never particularly keen on drivers from elsewhere in the tree gaining
-> IIO support - but that's just because it can make a bit of a mess of
-> changes to the IIO subsystem itself.  Having said that, this code looks fine to me.
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Thank you for the patch! The current devm_regulator_get_enable() looks
+much easier to read!
 
-Thanks. Applied for 6.2.
+On Sun, Oct 16, 2022 at 05:34:00PM +0100, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> This driver only turns the power on at probe and off via a custom
+> devm_add_action_or_reset() callback. The new devm_regulator_get_enable()
+> replaces this boilerplate code.
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Dmitry Rokosov <DDRokosov@sberdevices.ru>
+> ---
+>  drivers/iio/accel/msa311.c | 21 ++-------------------
+>  1 file changed, 2 insertions(+), 19 deletions(-)
+>=20
+> diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+> index 2fded3759171..af94d3adf6d8 100644
+> --- a/drivers/iio/accel/msa311.c
+> +++ b/drivers/iio/accel/msa311.c
+> @@ -351,7 +351,6 @@ static const struct regmap_config msa311_regmap_confi=
+g =3D {
+>   * @chip_name: Chip name in the format "msa311-%02x" % partid
+>   * @new_data_trig: Optional NEW_DATA interrupt driven trigger used
+>   *                 to notify external consumers a new sample is ready
+> - * @vdd: Optional external voltage regulator for the device power supply
+>   */
+>  struct msa311_priv {
+>  	struct regmap *regs;
+> @@ -362,7 +361,6 @@ struct msa311_priv {
+>  	char *chip_name;
+> =20
+>  	struct iio_trigger *new_data_trig;
+> -	struct regulator *vdd;
+>  };
+> =20
+>  enum msa311_si {
+> @@ -1146,11 +1144,6 @@ static void msa311_powerdown(void *msa311)
+>  	msa311_set_pwr_mode(msa311, MSA311_PWR_MODE_SUSPEND);
+>  }
+> =20
+> -static void msa311_vdd_disable(void *vdd)
+> -{
+> -	regulator_disable(vdd);
+> -}
+> -
+>  static int msa311_probe(struct i2c_client *i2c)
+>  {
+>  	struct device *dev =3D &i2c->dev;
+> @@ -1173,19 +1166,9 @@ static int msa311_probe(struct i2c_client *i2c)
+> =20
+>  	mutex_init(&msa311->lock);
+> =20
+> -	msa311->vdd =3D devm_regulator_get(dev, "vdd");
+> -	if (IS_ERR(msa311->vdd))
+> -		return dev_err_probe(dev, PTR_ERR(msa311->vdd),
+> -				     "can't get vdd supply\n");
+> -
+> -	err =3D regulator_enable(msa311->vdd);
+> +	err =3D devm_regulator_get_enable(dev, "vdd");
+>  	if (err)
+> -		return dev_err_probe(dev, err, "can't enable vdd supply\n");
+> -
+> -	err =3D devm_add_action_or_reset(dev, msa311_vdd_disable, msa311->vdd);
+> -	if (err)
+> -		return dev_err_probe(dev, err,
+> -				     "can't add vdd disable action\n");
+> +		return dev_err_probe(dev, err, "can't get vdd supply\n");
+> =20
+>  	err =3D msa311_check_partid(msa311);
+>  	if (err)
+> --=20
+> 2.37.2
+>=20
 
--- 
-Jiri Kosina
-SUSE Labs
+Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
 
+--=20
+Thank you,
+Dmitry=

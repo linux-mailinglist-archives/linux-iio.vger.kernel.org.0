@@ -2,82 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D07602415
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 08:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60DA8602654
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Oct 2022 10:02:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229988AbiJRGCH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 18 Oct 2022 02:02:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53530 "EHLO
+        id S230394AbiJRICI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 18 Oct 2022 04:02:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbiJRGCD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Oct 2022 02:02:03 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A53892F69;
-        Mon, 17 Oct 2022 23:02:01 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id q19so18957684edd.10;
-        Mon, 17 Oct 2022 23:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HBz9XpNnk7C63vsH23J7JUztzuCUu1YkF+D3+RSiOA4=;
-        b=AoovJkk3VKnbsFwNtjwsT2mAvNuKW6b13fZroyD5KTps0icjHPiNM7N3VkzJ137LtJ
-         ppAmhHA1n/JjYx7+eh9H0nO5l/iBbWMYfL3c7myNGP9oJbrjYIguWujus90XzUEJo9o/
-         o/pKPgfvYfcuuQgNjuxjhbdcYBuzefrn9OsWzdRSigacJ2vLKPvUZK6r0KZXO9EKtoW1
-         2kEodbPrPuyacb0uC8kAhJ64rE/7oitpTpbjSRGSPryp/HNXRnUWgV4NlQUjPoX8/UrR
-         bYL4UEhm9QZTs4MTph3lFkdKQMwziivWB2atygZgcPj2soee08E8GKpVF4WUDILmoULw
-         4xzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HBz9XpNnk7C63vsH23J7JUztzuCUu1YkF+D3+RSiOA4=;
-        b=SNuMOZKRIZPARLhZnCUpeGXVy+JKdXviOP0SWRvpdpG/F9Hgde4UmYARmBG+L0X2hH
-         Fo9sDHxleKidVyIsGyE5COFLaSgfd1b3OQ1dRYA0aEw4u248p6RIbfN0Q2h048U5Mwau
-         4RGb8+Xd99USAtHCqArffzt7XHtJxTd8/o/gcm9wjYE7/WwRD8h46rBc8by5sft9HQWu
-         CKFo+UBMvlgOC8lUl3rOc6kRDHWdABLIoul6iFKZXUXRBYUrIbSccHAVZkEcZ5N9r3GH
-         +/qgXr9lv0GN+nckthZtEE5hO8C/wt/YWcJ5scUBatYcIfMzOLIZjpR3RRhjfVL1XCOb
-         qjgQ==
-X-Gm-Message-State: ACrzQf0oEeLbfmHRl96tIAr5oqva556PoWve0h5thHgPgEllFstJggtY
-        jAmoF0RdmepRSSSTxmXv1ic=
-X-Google-Smtp-Source: AMsMyM6p9mc9oxWHggnNr/wzCdWjR8cyTndxlDysy7ONDnkdqi41siT9rCVvt/JYqXBlbH7FRWm+qw==
-X-Received: by 2002:a05:6402:33c4:b0:448:e63e:4f40 with SMTP id a4-20020a05640233c400b00448e63e4f40mr1104615edc.203.1666072919886;
-        Mon, 17 Oct 2022 23:01:59 -0700 (PDT)
-Received: from ?IPv6:2001:a61:2b07:7001:b004:9b9f:6a7a:db0f? ([2001:a61:2b07:7001:b004:9b9f:6a7a:db0f])
-        by smtp.gmail.com with ESMTPSA id l17-20020a1709060cd100b00783c545544fsm6970754ejh.215.2022.10.17.23.01.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Oct 2022 23:01:59 -0700 (PDT)
-Message-ID: <746850ef315a8d17f34a72e83b74f9c726d56d48.camel@gmail.com>
-Subject: Re: [PATCH 2/3] dt-bindings: iio: temperature: ltc2983: support
- more parts
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Date:   Tue, 18 Oct 2022 08:01:58 +0200
-In-Reply-To: <7cea27d8-c3c6-4bc2-0072-1168c9c6a2f0@linaro.org>
-References: <20221014123724.1401011-1-demonsingur@gmail.com>
-         <20221014123724.1401011-3-demonsingur@gmail.com>
-         <28c88be7-a416-3612-3e13-5346a6e92565@linaro.org>
-         <f003f3ffa86fbeae6898c23638a4b0e1228a8657.camel@gmail.com>
-         <7cea27d8-c3c6-4bc2-0072-1168c9c6a2f0@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        with ESMTP id S230395AbiJRICE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 18 Oct 2022 04:02:04 -0400
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72C5844D6
+        for <linux-iio@vger.kernel.org>; Tue, 18 Oct 2022 01:01:57 -0700 (PDT)
+Received: (Authenticated sender: kamel.bouhara@bootlin.com)
+        by mail.gandi.net (Postfix) with ESMTPSA id 6144EFF80F;
+        Tue, 18 Oct 2022 08:01:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1666080116;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=welOLbT3ZpaoT8B3l5jN6gPn4wncpOQpCLvjvE83gnc=;
+        b=XYt/uf7xr+1WOKUPPtZSIY4+cHfJxSClpg1gGSRHopquD4fDKKYFNtXcLyC0swQd2DuQKY
+        E16E/2csLtxPp585CZuIbmIzLruTkwb4vCW8/G7UsvADezZwrG/xvP3o1Db8YRalzETEh/
+        /CcH+F377z41Wc6xk1qmZXaESGvlH4BVfwCasQoR/8c6QxDAU9n3jyIr2wJg5NOXAUbWKY
+        oan7tt+sEA8Ueu9CRvTIcrPFUKFtybcKny6krcH8oij6qkJDs3rVLlyd5MhTx7+PnSasBN
+        UqXmpoDnTwM7bhrAh9oTz5lRsP7pzCkcUdFJA82Ydj6rGJ4DHj9oxZn9SRVOuw==
+Date:   Tue, 18 Oct 2022 10:01:49 +0200
+From:   Kamel Bouhara <kamel.bouhara@bootlin.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
+Subject: Re: Handling Signal1 in microchip-tcb-capture
+Message-ID: <Y05dbRPh9jNj61y+@kb-xps>
+References: <Y0q7Gzh95nFdqdYK@fedora>
+ <Y00nidri3TRYARiu@kb-xps>
+ <Y01QPkE0E+HR7dat@fedora>
+ <Y02Lkpu+NCaPo/ZF@kb-xps>
+ <Y03P55QWFkDhtqt7@fedora>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y03P55QWFkDhtqt7@fedora>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,164 +53,148 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-10-17 at 19:32 -0400, Krzysztof Kozlowski wrote:
-> On 17/10/2022 05:38, Nuno S=C3=A1 wrote:
-> > Hi Krzysztof,
-> >=20
->=20
-> (...)
->=20
-> > > > @@ -353,6 +361,41 @@ patternProperties:
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description: Boole=
-an property which set's the adc as
-> > > > single-ended.
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type: boolean
-> > > > =C2=A0
-> > > > +=C2=A0 "^temp@":
-> > >=20
-> > > There is already a property for thermocouple. Isn't a
-> > > thermocouple a
-> > > temperature sensor? IOW, why new property is needed?
-> > >=20
-> >=20
-> > Well, most of the patternProps in this bindings are temperature
-> > sensors... It's just that the device(s) support different types of
-> > them. 'adi,sensor-type' is used to identify each sensor (as this
-> > translates in different configurations being written in the device
-> > channels).
->=20
-> Sure.
->=20
-> >=20
-> > > > +=C2=A0=C2=A0=C2=A0 type: object
-> > > > +=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Represents a channel which is being=
- used as an active
-> > > > analog
-> > > > temperature
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sensor.
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0 properties:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adi,sensor-type:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Identifies =
-the sensor as an active analog
-> > > > temperature
-> > > > sensor.
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.ya=
-ml#/definitions/uint32
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const: 31
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adi,single-ended:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description: Boolean pr=
-operty which sets the sensor as
-> > > > single-ended.
-> > >=20
-> > > Drop "Boolean property which sets" - it's obvious from the type.
-> > >=20
-> > >=20
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type: boolean
-> > > > +
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adi,custom-temp:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is a t=
-able, where each entry should be a pair
-> > > > of
-> > >=20
-> > > "This is a table" - obvious from the type.
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 voltage(mv)=
--temperature(K). The entries must be
-> > > > given in
-> > > > nv and uK
-> > >=20
-> > > mv-K or nv-uK? Confusing...
-> >=20
-> > Yeah, a bit. In Cosmin defense, I think he's just keeping the same
-> > "style" as the rest of the properties...
->=20
-> That's not the best approach for two reasons:
-> 1. The unit used by hardware matters less here, because bindings are
-> used to write DTS. In many, many other cases there will be some
-> translation (just take random voltage regulator bindings).
->=20
-> 2. What the driver is doing matters even less.
->=20
-> So just describe here what is expected in DTS.
->=20
+On Mon, Oct 17, 2022 at 05:57:59PM -0400, William Breathitt Gray wrote:
+> On Mon, Oct 17, 2022 at 07:06:26PM +0200, Kamel Bouhara wrote:
+> > On Mon, Oct 17, 2022 at 08:53:18AM -0400, William Breathitt Gray wrote:
+> > > On Mon, Oct 17, 2022 at 11:59:37AM +0200, Kamel Bouhara wrote:
+> > > > On Sat, Oct 15, 2022 at 09:52:27AM -0400, William Breathitt Gray wrote:
+> > > > > I was looking over the microchip-tcb-capture driver recently and noticed
+> > > > > that the code doesn't seem to account for Signal1. In particular, it
+> > > > > appears that mchp_tc_count_signal_read() and mchp_tc_count_action_read()
+> > > > > don't check the Signal id at all and just assume they are handling
+> > > > > Signal0. This creates a situation where the information returned for the
+> > > > > Signal1 sysfs attributes are just duplicated reports of Signal0.
+> > > > >
+> > > > > What exactly is the relationship of Signal0 ("Channel A") and Signal1
+> > > > > ("Channel B"); is SignalB only relevant when the counter device is
+> > > > > configured for quadrature mode?
+> > > >
+> > > > Indeed both signals are required when in quadrature mode, where the
+> > > > signal0 is representing the speed and signal1 the revolution or number
+> > > > of rotation.
+> > > >
+> > > > We have described all availables modes in details in the following blog post: https://bootlin.com/blog/timer-counters-linux-microchip/
+> > > >
+> > > > Regards,
+> > > > Kamel
+> > >
+> > > Thank you for the link, the block diagram helps illustrate how the
+> > > signals correlate to the TCB channels.
+> > >
+> > > Let me check if I understand correctly. In microchip-tcb-capture.c,
+> > > mchp_tc_count_signals[0] is TIOA0 while mchp_tc_count_signals[1] is
+> > > TIOB0? In quadrature mode, are TIOA and TIOB the two phases of a
+> > > quadrature encoder? You mentioned one signal is speed while the other is
+> > > the number of rotations; does this mean one signal serves as the
+> > > position incrementation from a rotary wheel while the other signal is
+> > > the index (z-phase) indicate for each full rotation?
+> > >
+> >
+> > IIRC this is indeed both signal edges (phase A and B) are accumulated on
+> > channel 0 and channel 1 stores the revolution or number of rotation of
+> > the qdec encoder.
+>
+> Ah, I think I understand now: Signal0 and Signal1 are TIOA and TIOB
+> respectively; channel 0 and channel 1 are data registers; channel 0
+> holds the Count0 count value; channel 1 holds the revolution value (but
+> the microchip-tcb-capture driver does not expose it).
 
-Alright, I see. So we just refer to nv-uK as that is what I wanted for
-dts to expect (reason being to have more resolution).
+Exact, I assumed that in qdec mode only the position value is relevant.
 
-> >=20
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 so that, th=
-e original values must be multiplied by
-> > > > 1000000. For
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 more detail=
-s look at table 71 and 72.
-> > >=20
-> > > There is no table 71 in the bindings... It seems you pasted it
-> > > from
-> > > somewhere.
-> >=20
-> > I'm fairly sure this refers to the datasheet. I see now that this
-> > can
-> > be confusing (again this kind of references are being (ab)used in
-> > the
-> > rest of the file).
->=20
-> Yep, but there are now multiple datasheets, aren't there?
->=20
+>
+> It might be nice to expose the channel 1 revolution value as Count1 at
+> some point in the future. However, channel 1 seems unrelated to the
+> current issue we're dicussing so we can avoid it for now.
 
-Hmm yeah that's true. By the time I wrote this binding I was not even
-thinking on the possibility of new parts being added to it... I guess
-the lesson in here is to avoid this kind os specific descriptions.
+OK do you suggest to read both count values in the same mchp_tc_count_read() ?
 
-> >=20
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Note should=
- be signed, but dtc doesn't currently
-> > > > maintain the
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sign.
-> > >=20
-> > > What do you mean? "Maintain" as allow or keep when building FDT?=C2=
-=A0
-> > > What's
-> > > the problem of using negative numbers here and why it should be
-> > > part
-> > > of
-> > > bindings?
-> > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $ref: /schemas/types.ya=
-ml#/definitions/uint64-matrix
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 minItems: 3
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 64
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 items:
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 minItems: 2
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 2
-> > >=20
-> > > Instead describe the items with "description" (and maybe
-> > > constraints)
-> > > like here:
-> > >=20
-> > > https://elixir.bootlin.com/linux/v5.19/source/Documentation/devicetre=
-e/bindings/iio/adc/st,stm32-adc.yaml#L278
-> > >=20
-> >=20
-> > Neat... My only comment (which probably applies to my previous
-> > ones) is
-> > that the rest of the properties are already in this "style". So
-> > maybe,
-> > follow up patches with small clean-ups would be more appropriate?
->=20
-> Of course. It would be great if the file was improved before or after
-> this one.
->=20
+>
+> > > In particular, I'm having trouble understanding
+> > > mchp_tc_count_signal_read(). I suspect it is unintentionally always
+> > > returning the signal status for TIOA::
+> > >
+> > >     regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], SR), &sr);
+> > >
+> > >     if (priv->trig_inverted)
+> > >             sigstatus = (sr & ATMEL_TC_MTIOB);
+> > >     else
+> > >             sigstatus = (sr & ATMEL_TC_MTIOA);
+> > >
+> > >     *lvl = sigstatus ? COUNTER_SIGNAL_LEVEL_HIGH : COUNTER_SIGNAL_LEVEL_LOW;
+> > >
+> > > Here we read the status register for channel 0, select between TIOA and
+> > > TIOB based on priv->trig_inverted, and then return the signal level.
+> > >
+> > > I don't see priv->trig_inverted referenced anywhere else so it appears
+> > > that priv->trig_inverted will always be 0, thus resulting in
+> > > mchp_tc_count_signal_read() always returning the TIOA status. I think
+> > > the intended behavior is to return the status of the selected signal::
+> >
+> > IIRC the trig_inverted shall be used when signals are inverted which
+> > means we read position on TIOB and revolution on TIOA.
+>
+> Sure, that seems like a reasonable option to expose, but it does not
+> appear that trig_inverted is being set or otherwise configured in the
+> current code, unless I'm missing something. It might be best to remove
+> trig_inverted if the functionality is not supported yet by this driver.
+>
 
-Ok, IMO it would make sense to have it in this series but if Cosmin
-does not feel like fixing my mess :), I'll send a separate patch with
-your inputs...
+OK.
 
-- Nuno S=C3=A1
+> > >
+> > >     if (signal->id == 1)
+> > >             sigstatus = (sr & ATMEL_TC_MTIOB);
+> > >     else
+> > >             sigstatus = (sr & ATMEL_TC_MTIOA);
+> > >
+> > > As for mchp_tc_count_action_read(), we have a similar problem: no
+> > > distinction is made for the Synapse requested. The channel mode register
+> > > for channel 0 is read and then masked against ATMEL_TC_ETRGEDG to
+> > > determine the action mode. It appears that this code is always assuming
+> > > the Synapse for TIOA is requested, but the Synapse for TIOB could be
+> > > passed. You can determine which corresponding Signal you have by
+> > > checking synapse->signal->id before deciding what action mode to return.
+> > >
+> >
+> > That is indeed a good point as both signals are eligible to trigger the
+> > TC for both modes (capture/qdec).
+> >
+> > > To clarify, in COUNTER_FUNCTION_INCREASE mode, does the Count value
+> > > increment based on the edge of TIOA and not TIOB? In
+> >
+> > Yes, currently the driver only support TIOA.
+> >
+> > > COUNTER_FUNCTION_QUADRATURE_X4 mode, does the Count value increment
+> > > based on both edges of TIOA and TIOB serving as quadrature encoding
+> > > phase A and B signals?
+> >
+> > Yes as explained above.
+>
+> Okay this should be simple to resolve then: return -EINVAL if Synapse is
+> for TIOB in mchp_tc_count_action_write(), and pass back
+> COUNTER_SYNAPSE_ACTION_NONE for TIOB during non-quadrature mode in
+> mchp_tc_counter_action_read().
+>
+> I'll submit a patch fixing these changes and the signal_read() callback
+> mentioned previously.
+>
+
+That's clear, thanks.
+
+> By the way, I suspect there are race conditions present in
+> mcho_tc_count_function_write() that could be resolved by adding a lock
+> to the mchp_tc_data structure and acquiring it before accessing the
+> device state and registers. It's unrelated to the Signal1 issues so I
+> haven't looked any further into it, but it's something you might want to
+> investigate to make sure you don't get weird behavior from the driver.
+>
+
+You mean between function_write() and action_write() ?
+
+> Thanks,
+>
+> William Breathitt Gray
+--
+Kamel Bouhara, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com

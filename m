@@ -2,57 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E720560474D
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Oct 2022 15:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B669604767
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Oct 2022 15:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231712AbiJSNhA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Oct 2022 09:37:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
+        id S232422AbiJSNiM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Oct 2022 09:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231696AbiJSNgS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Oct 2022 09:36:18 -0400
+        with ESMTP id S230198AbiJSNhD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Oct 2022 09:37:03 -0400
 Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C119D111B87;
-        Wed, 19 Oct 2022 06:25:01 -0700 (PDT)
-Received: by mail-qv1-xf36.google.com with SMTP id h10so11322677qvq.7;
-        Wed, 19 Oct 2022 06:25:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CFB1C73DF;
+        Wed, 19 Oct 2022 06:25:35 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id de14so11331484qvb.5;
+        Wed, 19 Oct 2022 06:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mFfOKrSEeL0UXwzGyKKR42maVOfwYSJrO2jpz4ISm5g=;
-        b=oEb/9UFJVJ1DUie0yjY5fT10G5iGBi0uUTPP70ketsbo4umyLVGdnx3d/aZGpfvxcF
-         Ib2oM8O1Q2imo4lcvh1OkFbrYSJtb3p3bpigOqIsfAw6vN0VZG3z+0jSOA9S2R3yVPPZ
-         9PqT88//f3CB3MFe/9oQW0cbCmiOxhX4ihi5MLoZ1ZAxcmY3GSNVeuJ91b237Q9xYZbD
-         BjkZ9Rz7N9zJ/kqcoEUTpZ/PjTWOsv9LznK3wTGVnS0Rz0/2Jbc9h7pzuOiKIefLyd7m
-         sFQWyH/l6G9cNVyjudR0OQk75nMRAOmyl9yolOsSegJs7/Bziy1M2U6WdNtV/dChGFZm
-         JAtQ==
+        bh=o7iighK5Vy8gk68F3waxRSbAxA6Pg0MUIOL+FTDyriE=;
+        b=lbc9f9Wr+MxLszujk7YIHVD2gIxmji8gDF55GhCbPXbTOpfzYHEsnDjvr1XFtAAzxV
+         Y230q/KlHHmUXvK3oExUPFGpbAg9HHpMkx6OH9mPYsMXi13fzWhYiOFM+IMR4B8yEP1D
+         9JJY6OahJHSBXLuTKl/GUtPET1uHHnkJDZq10D/aoA36LYCUq+fZNoyhTB9tqdn+VAhN
+         v+iHvX6jec4+IbEEz5fCtwuBYlErlW3ND0SAcqBCBzZiY92ScZhMcmvBzKSPw8JUjg+t
+         McRoVrIA8cfeZjo4gzebr/jfJ4eYJjz1YtGoIJY0Eq+y+sgbcy4tMfWClGQIgk7QAZtS
+         dvQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mFfOKrSEeL0UXwzGyKKR42maVOfwYSJrO2jpz4ISm5g=;
-        b=QLj3he3ie8pR6yjDTg/mwPDcKoU9gVOw+QhQ+b5P+NTyDuPS+V2rQaEm6v+Km4fhaq
-         NbV9wENS6LGMOHJOY8mOHveZqzCBmU5BizzaPVTeOWLli4OylNZLa+PFBcCGAAWffU1H
-         bOWo+oR18sAFyS6v9+/v1YkhTyuX+KONgsjeWbrjq2ps8M9/MRza1HWQU37+r+WHdwZ/
-         Psh1YSDAMFM0y5XPa7/4xYw895yWVALnfzzgJvZZw0RtQV03iyTS2D6Z/mNSDbraSpnq
-         F/vqwor0OGuibUQuF4RxgNlzVWfSBwbYJHRhpovbDo+TfjtTIgTsQVZruKUkQpONUsdJ
-         6YIw==
-X-Gm-Message-State: ACrzQf1uzez4MvKBBS9Zz45jcsbVRSHa82iVIzLXSY2N3MVmPOH4Z007
-        7pwbq2qLLb7VvQNNM+Uu4uZ5baRDjt0XHshHEic=
-X-Google-Smtp-Source: AMsMyM7UQ1cRInwO7QzwiBVaRqvuznwLkROtbTi4bEX3MStqpQ7bM3v6mjbOepnYFYET36f9YLNkXOR8KwzQnvCkV78=
-X-Received: by 2002:a05:6214:29ee:b0:4b1:c1d2:6635 with SMTP id
- jv14-20020a05621429ee00b004b1c1d26635mr6490797qvb.82.1666185821613; Wed, 19
- Oct 2022 06:23:41 -0700 (PDT)
+        bh=o7iighK5Vy8gk68F3waxRSbAxA6Pg0MUIOL+FTDyriE=;
+        b=e2mgUax02FZKM1Ta2e9juNyssL73wbo52PZt2OxVXnWHcXN1VVE9yZ7hWTVg3typo2
+         C5hygdefyFo+/92gQdlMtCnVXeex+IWrAomiIimffh8xByes0SJ1mLcFW4Xre4Iqm2p3
+         rHzQwnCjl4r2Gh9MK7dytMuLnUUwHpvqNR3iDGNpm7egiAXpeDLkvIOoNLlIkKVgQCFs
+         PFQl6Bl3YFt4Wl1zDe70wYetuVh1rX3s0U2LcRadl3KWu/ljQxpdHP4XeFpReCPtba/n
+         q81kvrnw67pwsL0AjDhgu06p0oLViQkL/sRVd3i29ElZ7+xNf4XneWVGh+o5H2Xd2J6Y
+         PMjA==
+X-Gm-Message-State: ACrzQf0VF3nBxKVRlJRb5qGt+Gog4RunxT464J0QUk2ODxRV2QpTMpzS
+        AsZDs8Tq2Fs/iIEWo8Zkq3s7bhNPa8pJv5n3qHLgnuu3kro=
+X-Google-Smtp-Source: AMsMyM5FowDKe50QjwKrcEleklOnkrieNhZVyIYLQkfP/nWqKKKYRKt4DD88fda3BWm31Sggvpw7FDP/DgFU3SFuKGs=
+X-Received: by 2002:a05:6214:300c:b0:4b3:cefd:fae0 with SMTP id
+ ke12-20020a056214300c00b004b3cefdfae0mr6498909qvb.48.1666185897084; Wed, 19
+ Oct 2022 06:24:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221019125254.952588-1-mitja@lxnav.com> <20221019125254.952588-3-mitja@lxnav.com>
-In-Reply-To: <20221019125254.952588-3-mitja@lxnav.com>
+References: <20221019125254.952588-1-mitja@lxnav.com>
+In-Reply-To: <20221019125254.952588-1-mitja@lxnav.com>
 From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 19 Oct 2022 16:23:05 +0300
-Message-ID: <CAHp75VcCORhVefBoQgnbe+aRJfJHfJ7PTk=Xr1eQaEYFsdJvLQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] doc: iio: pressure: ms5611: added max SPI frequency
- setting to the example
+Date:   Wed, 19 Oct 2022 16:24:21 +0300
+Message-ID: <CAHp75Vd5p5tT52JA9HXaJ5opspXJJS2JECQUAUs9bqQVzc_+2Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] iio: pressure: ms5611: fixed value compensation bug
 To:     Mitja Spes <mitja@lxnav.com>
 Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
@@ -72,11 +71,16 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Oct 19, 2022 at 3:55 PM Mitja Spes <mitja@lxnav.com> wrote:
 >
-> Added max SPI frequency setting to the example. It is now honored by the
-> driver.
+> When using multiple instances of this driver the compensation PROM was
+> overwritten by the last initialized sensor. Now each sensor has own PROM
 
-Is it possible to add a constraint here? So the schema validator will
-issue the warning / error if the speed is too high.
+its own
+
+> storage.
+
+This change is just a good example why the chip_info should always be
+static const, so the volatile data should come through the different
+sources.
 
 -- 
 With Best Regards,

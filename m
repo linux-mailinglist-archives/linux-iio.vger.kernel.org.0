@@ -2,65 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CE7B60394B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Oct 2022 07:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E720560474D
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Oct 2022 15:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbiJSFij (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 19 Oct 2022 01:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
+        id S231712AbiJSNhA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 19 Oct 2022 09:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229834AbiJSFii (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Oct 2022 01:38:38 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1874A537F1;
-        Tue, 18 Oct 2022 22:38:36 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id 204so16204878pfx.10;
-        Tue, 18 Oct 2022 22:38:36 -0700 (PDT)
+        with ESMTP id S231696AbiJSNgS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 19 Oct 2022 09:36:18 -0400
+Received: from mail-qv1-xf36.google.com (mail-qv1-xf36.google.com [IPv6:2607:f8b0:4864:20::f36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C119D111B87;
+        Wed, 19 Oct 2022 06:25:01 -0700 (PDT)
+Received: by mail-qv1-xf36.google.com with SMTP id h10so11322677qvq.7;
+        Wed, 19 Oct 2022 06:25:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uagMMX7nbZs02+TkfE1zX/mQYp7hdyYKV8jbBteal5M=;
-        b=FBBot3uHkHUr81e//MIjYaPs9o/zoRMyNY41LtbuQO++opJg/bW+OgGKJncVEAoBXf
-         RAB0TJGBZaIVtLa60y9T3Sv8pX3rYtIhrDt/q7UxgZ5l4FH9CvfFoI2NdLIzc8oZ22wI
-         YEuiYYh3VF/2hLC8Kzi5S+uJRGpe738FIX/hxXvm+jCNs07r14SZS/DDV5HNLCyIeAzd
-         42uG716oTFJpwdXNoYDRAPjKTIPTZ22ONoSA4DNeYZWskqZoCMXVypoXAonLntaPOJXP
-         R9JB12yKqpO8tzzb3Pg4Z1LKBcRcIAaOV65tKTDqq2ihpA9T3MRJEREcSm2yZ/Qec/IY
-         ARVQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mFfOKrSEeL0UXwzGyKKR42maVOfwYSJrO2jpz4ISm5g=;
+        b=oEb/9UFJVJ1DUie0yjY5fT10G5iGBi0uUTPP70ketsbo4umyLVGdnx3d/aZGpfvxcF
+         Ib2oM8O1Q2imo4lcvh1OkFbrYSJtb3p3bpigOqIsfAw6vN0VZG3z+0jSOA9S2R3yVPPZ
+         9PqT88//f3CB3MFe/9oQW0cbCmiOxhX4ihi5MLoZ1ZAxcmY3GSNVeuJ91b237Q9xYZbD
+         BjkZ9Rz7N9zJ/kqcoEUTpZ/PjTWOsv9LznK3wTGVnS0Rz0/2Jbc9h7pzuOiKIefLyd7m
+         sFQWyH/l6G9cNVyjudR0OQk75nMRAOmyl9yolOsSegJs7/Bziy1M2U6WdNtV/dChGFZm
+         JAtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uagMMX7nbZs02+TkfE1zX/mQYp7hdyYKV8jbBteal5M=;
-        b=ay1ubjl6KkK5gNX2ptMW1Tw5S2mLrWWhWQGL9sVLeoqg+AyDNnr80NWU6QhG7kl8et
-         dLZDxVh3WHWXMUDAkT3xx0PlWP2K/75pHYXVJZXxcYF+rFfbSCjLnA5mazCFo1rJAzZq
-         lFJG9qbKpTjK1s+VKZJZYnLu9d2ZNWiHpBZ23oG078KIU6ElqReJLaIaQhYo9qETycFx
-         hwWf235bsOnTCbDxYV6NH1i+l/qQY+YGOHACzr7ecF3wrzph0A4Srm2ITrQDMWPejPPW
-         w++s83yfd6ttgY3sQNGQo4SfdjIALZv6ew43N44tI3w3SLay9QSCK2H1d680hoTnE6Vm
-         g2Sw==
-X-Gm-Message-State: ACrzQf0BlNFzdi2eVvvWohwhubjZrVkbciGhycHCPfJga+PDCpqppWCj
-        mSph1c/S2ksZCnkNmbY53tw=
-X-Google-Smtp-Source: AMsMyM74hRC/jWVpoP4VZb0Apq40KLd16kllQvM5+RasaEl3DXdwNTLu63s8wz4/wYZ3V3cL6eygxQ==
-X-Received: by 2002:a05:6a00:847:b0:563:b593:b685 with SMTP id q7-20020a056a00084700b00563b593b685mr6832243pfk.75.1666157915367;
-        Tue, 18 Oct 2022 22:38:35 -0700 (PDT)
-Received: from uftrace.. ([14.5.161.231])
-        by smtp.gmail.com with ESMTPSA id n15-20020a170902e54f00b0017b5e1f486asm9860818plf.211.2022.10.18.22.38.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Oct 2022 22:38:34 -0700 (PDT)
-From:   Kang Minchul <tegongkang@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, Kang Minchul <tegongkang@gmail.com>
-Subject: [PATCH] staging: iio: Use div64_ul instead of do_div
-Date:   Wed, 19 Oct 2022 14:38:29 +0900
-Message-Id: <20221019053829.821918-1-tegongkang@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=mFfOKrSEeL0UXwzGyKKR42maVOfwYSJrO2jpz4ISm5g=;
+        b=QLj3he3ie8pR6yjDTg/mwPDcKoU9gVOw+QhQ+b5P+NTyDuPS+V2rQaEm6v+Km4fhaq
+         NbV9wENS6LGMOHJOY8mOHveZqzCBmU5BizzaPVTeOWLli4OylNZLa+PFBcCGAAWffU1H
+         bOWo+oR18sAFyS6v9+/v1YkhTyuX+KONgsjeWbrjq2ps8M9/MRza1HWQU37+r+WHdwZ/
+         Psh1YSDAMFM0y5XPa7/4xYw895yWVALnfzzgJvZZw0RtQV03iyTS2D6Z/mNSDbraSpnq
+         F/vqwor0OGuibUQuF4RxgNlzVWfSBwbYJHRhpovbDo+TfjtTIgTsQVZruKUkQpONUsdJ
+         6YIw==
+X-Gm-Message-State: ACrzQf1uzez4MvKBBS9Zz45jcsbVRSHa82iVIzLXSY2N3MVmPOH4Z007
+        7pwbq2qLLb7VvQNNM+Uu4uZ5baRDjt0XHshHEic=
+X-Google-Smtp-Source: AMsMyM7UQ1cRInwO7QzwiBVaRqvuznwLkROtbTi4bEX3MStqpQ7bM3v6mjbOepnYFYET36f9YLNkXOR8KwzQnvCkV78=
+X-Received: by 2002:a05:6214:29ee:b0:4b1:c1d2:6635 with SMTP id
+ jv14-20020a05621429ee00b004b1c1d26635mr6490797qvb.82.1666185821613; Wed, 19
+ Oct 2022 06:23:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20221019125254.952588-1-mitja@lxnav.com> <20221019125254.952588-3-mitja@lxnav.com>
+In-Reply-To: <20221019125254.952588-3-mitja@lxnav.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Wed, 19 Oct 2022 16:23:05 +0300
+Message-ID: <CAHp75VcCORhVefBoQgnbe+aRJfJHfJ7PTk=Xr1eQaEYFsdJvLQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] doc: iio: pressure: ms5611: added max SPI frequency
+ setting to the example
+To:     Mitja Spes <mitja@lxnav.com>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -71,58 +70,14 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Using div64_ul instead of do_div (64-by-32 division) is more
-recommended by coccicheck because this can avoid potential truncation.
+On Wed, Oct 19, 2022 at 3:55 PM Mitja Spes <mitja@lxnav.com> wrote:
+>
+> Added max SPI frequency setting to the example. It is now honored by the
+> driver.
 
-So this commit changes do_div to div64_ul and
-remove coccicheck warnings.
+Is it possible to add a constraint here? So the schema validator will
+issue the warning / error if the speed is too high.
 
-Signed-off-by: Kang Minchul <tegongkang@gmail.com>
----
- drivers/staging/iio/frequency/ad9832.c          | 2 +-
- drivers/staging/iio/frequency/ad9834.c          | 2 +-
- drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 6f9eebd6c7ee..cd038480f63c 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -122,7 +122,7 @@ static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
- {
- 	unsigned long long freqreg = (u64)fout *
- 				     (u64)((u64)1L << AD9832_FREQ_BITS);
--	do_div(freqreg, mclk);
-+	freqreg = div64_ul(freqreg, mclk);
- 	return freqreg;
- }
- 
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index 2b4267a87e65..cfe933ef40d0 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -102,7 +102,7 @@ static unsigned int ad9834_calc_freqreg(unsigned long mclk, unsigned long fout)
- {
- 	unsigned long long freqreg = (u64)fout * (u64)BIT(AD9834_FREQ_BITS);
- 
--	do_div(freqreg, mclk);
-+	freqreg = div64_ul(freqreg, mclk);
- 	return freqreg;
- }
- 
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index f177b20f0f2d..730bb31a20d8 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -196,7 +196,7 @@ static int ad5933_set_freq(struct ad5933_state *st,
- 	} dat;
- 
- 	freqreg = (u64)freq * (u64)(1 << 27);
--	do_div(freqreg, st->mclk_hz / 4);
-+	freqreg = div64_ul(freqreg, st->mclk_hz / 4);
- 
- 	switch (reg) {
- 	case AD5933_REG_FREQ_START:
 -- 
-2.34.1
-
+With Best Regards,
+Andy Shevchenko

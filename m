@@ -2,66 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C46660628B
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 16:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B11766062DA
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 16:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229849AbiJTOLn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 10:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35126 "EHLO
+        id S229619AbiJTOVO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 10:21:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229783AbiJTOLm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 10:11:42 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 774671C25E4
-        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 07:11:37 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id u7so1682277qvn.13
-        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 07:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bdrdivp0kUlb9/g88sUFsnQ6F39lATr3/MrtKIKyGXw=;
-        b=nm8QuSFJX4RCs7KNIS/xmx1ZXGCrI6/hVWx4sLOBhOOBGk89rUETnVz4ZmwxtzPwCG
-         ecEowzSYPc8yH/hEDrxLA/twLep2a2uvOfm9HkYwNvhXeM+KO0X/kripnX7KUZGvmj2O
-         JxvJuL7LX66u4aLmOQI629VblBLlKWQSy6//n52qopf4iCpulHlBdwLSRnvf/rj2rVvp
-         cJ7r++rWorx9oB0trXZJmJsDCS5l/qheaSipSGT4PUtoic6Ij+8oEKmJvEndUytQAKIL
-         Ri1LKmRoSgdbr22/HPmrkExK2BdXXrTOZFvZPZQrQ3ZINL/BoaHQx6nNXp/llr+E+bAm
-         wC5g==
+        with ESMTP id S230003AbiJTOVM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 10:21:12 -0400
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BBD17653F;
+        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
+Received: by mail-ot1-f43.google.com with SMTP id a16-20020a056830101000b006619dba7fd4so11478766otp.12;
+        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Bdrdivp0kUlb9/g88sUFsnQ6F39lATr3/MrtKIKyGXw=;
-        b=mXSq/BLNF/1ohJQLHAeW1BuhaItXTzQ7TN/JS+Y1yfUfE/Fq5cri0/N4FiQCLqorf0
-         RurfURZfy5A09xW+zHAwkFfm8jzuLzLOshELOb8D5Oqt5eVtqi37gIhXUI84WZ63GJOm
-         lYE1FtJaw9Ohtv6YEaBdya7dmvgeIB3sz3V0cM0vHVukhfUFYPcHhnqR7M5spwyMNGOS
-         cLBAGshygaldSH+v/GSRUbJ4WuZC/8t2UCcFgdiw8cD1BaO3NpOD9afdjda7GN8Eb0If
-         v6RqrxQhAwcYXO1+kfgh0cQ3aK2cCxX7LXwy3qNUMLpsAOX4QxNHp8xcW+BLocCKDo/s
-         PoWQ==
-X-Gm-Message-State: ACrzQf2G8v6T1AC+pdpr4obHxi2PU/Ylent5u7+FeYS6aihP2+U9Cpae
-        EtqX6ULJZZs0L2J5IFcIwL+R8UTxvNptLA==
-X-Google-Smtp-Source: AMsMyM6BntJH6TKnEXiH0Sz9ePJukbyKwspoR2oupxlImKYI6I/8q4NZ2BX8ifbVq0TybA2MQt5abw==
-X-Received: by 2002:a05:6214:ca8:b0:4b1:87f8:c4ef with SMTP id s8-20020a0562140ca800b004b187f8c4efmr11181151qvs.50.1666275096213;
-        Thu, 20 Oct 2022 07:11:36 -0700 (PDT)
-Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id v21-20020a05620a441500b006cbe3be300esm7585109qkp.12.2022.10.20.07.11.29
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DRmvj/Qw7m4kPQR3vXMSaW6JmzIt/vfRx5j71ATZMPo=;
+        b=LN/a7FVubtK7CtFQMBjbUYQPFN3ZABLJOszym3ac6/f3rs4Y3GgxFTuCm4OCT2bK3q
+         7tHlq0rsT4yk8TWw+g9FQP2FGWVkWNIrV1VsDGV84eoIvXtTzqx35GtOUYYV7ERa+dUJ
+         cEIGjXh2pXnbjpYkRkKaDkTgW3PEBlTLo8YH+33CfnXFUsKaI+IsytV8lDT3v1e0+Wpz
+         rs/9PnyJ+K+l4fnhaB+v2dK6NCIAP4arDYGfkVyFY1h/9P+97h6LoCasXtFCFBoidL/7
+         KdgfpSqHS8K1/8oGFYpQPoEGMzcgd5/xTLay56Fjc2a9T8uWcJQcVQB+TTDB0PTiiJaU
+         pR1A==
+X-Gm-Message-State: ACrzQf20X7sNn26UZ3G2z4XKn5r1sRcIHMtbz1Wo92Q89PLAXOeFXc02
+        SLwL4fu/0gvV4/lwXijf2Q==
+X-Google-Smtp-Source: AMsMyM6kgMpF5YggwgwsLirXF7Rn0lq5eGb6xz4yME8rs2ScP7Fq/R5S22HP4elC/sSX+ifGN97D+g==
+X-Received: by 2002:a05:6830:2a0d:b0:656:bd3f:253f with SMTP id y13-20020a0568302a0d00b00656bd3f253fmr7105548otu.25.1666275671070;
+        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id z15-20020a4ade4f000000b004767c273d3csm7559774oot.5.2022.10.20.07.21.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 07:11:33 -0700 (PDT)
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     linux-iio@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        William Breathitt Gray <william.gray@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH] counter: 104-quad-8: Fix race getting function mode and direction
-Date:   Thu, 20 Oct 2022 10:11:21 -0400
-Message-Id: <20221020141121.15434-1-william.gray@linaro.org>
-X-Mailer: git-send-email 2.37.3
+        Thu, 20 Oct 2022 07:21:10 -0700 (PDT)
+Received: (nullmailer pid 1261301 invoked by uid 1000);
+        Thu, 20 Oct 2022 14:21:10 -0000
+Date:   Thu, 20 Oct 2022 09:21:10 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Rob Herring <robh@kernel.org>
+Cc:     devicetree@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
+        linux-arm-kernel@lists.infradead.org,
+        David Airlie <airlied@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Nandhini Srikandan <nandhini.srikandan@intel.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Sumit Gupta <sumitg@nvidia.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+        netdev@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rashmi A <rashmi.a@intel.com>,
+        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-phy@lists.infradead.org,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-iio@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+Subject: Re: [PATCH] dt-bindings: Remove "status" from schema examples, again
+Message-ID: <166627566746.1261189.15059225154291335125.robh@kernel.org>
+References: <20221014205104.2822159-1-robh@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221014205104.2822159-1-robh@kernel.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,135 +91,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The quad8_action_read() function checks the Count function mode and
-Count direction without first acquiring a lock. This is a race condition
-because the function mode could change by the time the direction is
-checked.
+On Fri, 14 Oct 2022 15:51:04 -0500, Rob Herring wrote:
+> There's no reason to have "status" properties in examples. "okay" is the
+> default, and "disabled" turns off some schema checks ('required'
+> specifically).
+> 
+> A meta-schema check for this is pending, so hopefully the last time to
+> fix these.
+> 
+> Fix the indentation in intel,phy-thunderbay-emmc while we're here.
+> 
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
+>  .../arm/tegra/nvidia,tegra-ccplex-cluster.yaml    |  1 -
+>  .../display/tegra/nvidia,tegra124-dpaux.yaml      |  1 -
+>  .../display/tegra/nvidia,tegra186-display.yaml    |  2 --
+>  .../bindings/iio/addac/adi,ad74413r.yaml          |  1 -
+>  .../devicetree/bindings/net/cdns,macb.yaml        |  1 -
+>  .../devicetree/bindings/net/nxp,dwmac-imx.yaml    |  1 -
+>  .../bindings/phy/intel,phy-thunderbay-emmc.yaml   | 15 +++++++--------
+>  7 files changed, 7 insertions(+), 15 deletions(-)
+> 
 
-Because the quad8_function_read() already acquires a lock internally,
-the quad8_function_read() is refactored to spin out the no-lock code to
-a new quad8_function_get() function.
-
-To resolve the race condition in quad8_action_read(), a lock is acquired
-before calling quad8_function_get() and quad8_direction_read() in order
-to get both function mode and direction atomically.
-
-Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface support")
-Cc: stable@vger.kernel.org
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
----
- drivers/counter/104-quad-8.c | 64 +++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 77a863b7eefe..deed4afadb29 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -232,34 +232,45 @@ static const enum counter_function quad8_count_functions_list[] = {
- 	COUNTER_FUNCTION_QUADRATURE_X4,
- };
- 
-+static int quad8_function_get(const struct quad8 *const priv, const size_t id,
-+			      enum counter_function *const function)
-+{
-+	if (!priv->quadrature_mode[id]) {
-+		*function = COUNTER_FUNCTION_PULSE_DIRECTION;
-+		return 0;
-+	}
-+
-+	switch (priv->quadrature_scale[id]) {
-+	case 0:
-+		*function = COUNTER_FUNCTION_QUADRATURE_X1_A;
-+		return 0;
-+	case 1:
-+		*function = COUNTER_FUNCTION_QUADRATURE_X2_A;
-+		return 0;
-+	case 2:
-+		*function = COUNTER_FUNCTION_QUADRATURE_X4;
-+		return 0;
-+	default:
-+		/* should never reach this path */
-+		return -EINVAL;
-+	}
-+}
-+
- static int quad8_function_read(struct counter_device *counter,
- 			       struct counter_count *count,
- 			       enum counter_function *function)
- {
- 	struct quad8 *const priv = counter_priv(counter);
--	const int id = count->id;
- 	unsigned long irqflags;
-+	int retval;
- 
- 	spin_lock_irqsave(&priv->lock, irqflags);
- 
--	if (priv->quadrature_mode[id])
--		switch (priv->quadrature_scale[id]) {
--		case 0:
--			*function = COUNTER_FUNCTION_QUADRATURE_X1_A;
--			break;
--		case 1:
--			*function = COUNTER_FUNCTION_QUADRATURE_X2_A;
--			break;
--		case 2:
--			*function = COUNTER_FUNCTION_QUADRATURE_X4;
--			break;
--		}
--	else
--		*function = COUNTER_FUNCTION_PULSE_DIRECTION;
-+	retval = quad8_function_get(priv, count->id, function);
- 
- 	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
--	return 0;
-+	return retval;
- }
- 
- static int quad8_function_write(struct counter_device *counter,
-@@ -359,6 +370,7 @@ static int quad8_action_read(struct counter_device *counter,
- 			     enum counter_synapse_action *action)
- {
- 	struct quad8 *const priv = counter_priv(counter);
-+	unsigned long irqflags;
- 	int err;
- 	enum counter_function function;
- 	const size_t signal_a_id = count->synapses[0].signal->id;
-@@ -374,9 +386,21 @@ static int quad8_action_read(struct counter_device *counter,
- 		return 0;
- 	}
- 
--	err = quad8_function_read(counter, count, &function);
--	if (err)
-+	spin_lock_irqsave(&priv->lock, irqflags);
-+
-+	/* Get Count function and direction atomically */
-+	err = quad8_function_get(priv, count->id, &function);
-+	if (err) {
-+		spin_unlock_irqrestore(&priv->lock, irqflags);
-+		return err;
-+	}
-+	err = quad8_direction_read(counter, count, &direction);
-+	if (err) {
-+		spin_unlock_irqrestore(&priv->lock, irqflags);
- 		return err;
-+	}
-+
-+	spin_unlock_irqrestore(&priv->lock, irqflags);
- 
- 	/* Default action mode */
- 	*action = COUNTER_SYNAPSE_ACTION_NONE;
-@@ -389,10 +413,6 @@ static int quad8_action_read(struct counter_device *counter,
- 		return 0;
- 	case COUNTER_FUNCTION_QUADRATURE_X1_A:
- 		if (synapse->signal->id == signal_a_id) {
--			err = quad8_direction_read(counter, count, &direction);
--			if (err)
--				return err;
--
- 			if (direction == COUNTER_COUNT_DIRECTION_FORWARD)
- 				*action = COUNTER_SYNAPSE_ACTION_RISING_EDGE;
- 			else
--- 
-2.37.3
-
+Applied, thanks!

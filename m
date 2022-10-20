@@ -2,20 +2,20 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E4060604E
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 14:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97BBC60604D
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 14:36:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbiJTMgW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 08:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54976 "EHLO
+        id S229958AbiJTMgT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 08:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbiJTMgV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 08:36:21 -0400
+        with ESMTP id S229767AbiJTMgS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 08:36:18 -0400
 Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9AB417EF02
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6D217EF01
         for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 05:35:49 -0700 (PDT)
 Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MtRln2P0czmVDK;
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MtRln2dVVzmVF7;
         Thu, 20 Oct 2022 20:31:01 +0800 (CST)
 Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
  dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
@@ -29,10 +29,12 @@ From:   Zhang Qilong <zhangqilong3@huawei.com>
 To:     <jic23@kernel.org>, <lars@metafoo.de>, <wens@csie.org>,
         <jernej.skrabec@gmail.com>, <samuel@sholland.org>
 CC:     <linux-iio@vger.kernel.org>, <linux-sunxi@lists.linux.dev>
-Subject: [PATCH v2 0/2] iio: adc: sun4i-gpadc-iio: Fix error handle in sun4i_gpadc_probe()
-Date:   Thu, 20 Oct 2022 20:40:43 +0800
-Message-ID: <20221020124045.77678-1-zhangqilong3@huawei.com>
+Subject: [PATCH v2 1/2] iio: adc: sun4i-gpadc-iio: Fix PM disable depth imbalance in sun4i_gpadc_probe()
+Date:   Thu, 20 Oct 2022 20:40:44 +0800
+Message-ID: <20221020124045.77678-2-zhangqilong3@huawei.com>
 X-Mailer: git-send-email 2.26.0.106.g9fadedd
+In-Reply-To: <20221020124045.77678-1-zhangqilong3@huawei.com>
+References: <20221020124045.77678-1-zhangqilong3@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -48,24 +50,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-This patch set fix three bugfixs include:
+The pm_runtime_enable will increase power disable depth.
+Thus a pairing decrement is needed on the error handling
+path to keep it balanced according to context. In addtion,
+the iio_map_array path has potentially been called.
 
-1) If thermal_zone_of_sensor_register() failed, PM disable
-   depth will be imbalanced and iio_map_array may have been
-   called. The first patch fixed them.
+We fix it by gotoing err_map when thermal_zone register
+failed.
 
-2) If devm_iio_device_register() failed, we don't revert
-   thermal_zone registration. The second patch fix it.
+Fixes: b0a242894f11 ("iio: adc: sun4i-gpadc-iio: register in the thermal after registering in pm")
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+---
+v2:
+- revert iio_map_array if it's necessary when thermal_zone
+  register failed.
+---
+ drivers/iio/adc/sun4i-gpadc-iio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Zhang Qilong (2):
-  iio: adc: sun4i-gpadc-iio: Fix PM disable depth imbalance in
-    sun4i_gpadc_probe()
-  iio: adc: sun4i-gpadc-iio: Fix error handle when
-    devm_iio_device_register() failed in sun4i_gpadc_probe()
-
- drivers/iio/adc/sun4i-gpadc-iio.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+index a6ade70dedf8..d2535dd28af8 100644
+--- a/drivers/iio/adc/sun4i-gpadc-iio.c
++++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+@@ -648,7 +648,8 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
+ 			dev_err(&pdev->dev,
+ 				"could not register thermal sensor: %ld\n",
+ 				PTR_ERR(info->tzd));
+-			return PTR_ERR(info->tzd);
++			ret = PTR_ERR(info->tzd);
++			goto err_map;
+ 		}
+ 	}
+ 
 -- 
 2.25.1
 

@@ -2,104 +2,202 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E2B60620D
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 15:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C46660628B
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 16:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbiJTNpF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 09:45:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53624 "EHLO
+        id S229849AbiJTOLn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 10:11:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbiJTNpC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 09:45:02 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8306550BBE
-        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 06:44:56 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id g11so13695795qts.1
-        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 06:44:56 -0700 (PDT)
+        with ESMTP id S229783AbiJTOLm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 10:11:42 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 774671C25E4
+        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 07:11:37 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id u7so1682277qvn.13
+        for <linux-iio@vger.kernel.org>; Thu, 20 Oct 2022 07:11:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KhTsVyCoCN9J7vHV3+LHFRl6DSDyjLgInh88Ha3AdYw=;
-        b=OkCy9t+DuyOUp1kiX5G08YdPsnAID9mOcGUnLsZZvP9ZRA05L15c+Bzopd4KOm6Sij
-         y0ZMRB8Y/VyqckwpCV3PuSuFtEDFPEIHqWTli+mmJvlDD7eECDLcAfyvScT+DBiPmiOn
-         SnZMm2Dl1WK8q88NJ1BKdLC5kdQC2147wMFzd/G70bOrPOCnjyNkOdQ0i8WDjLZM4lPO
-         JKeRnFnGQaj64DuO8FI77AF9NWyPmvcpuQrmsS1k1x6JyHo/8IJWoQlnEP9cfGgRW9UK
-         Jt3eOCR2/gULg173vgz8nHy0MESqEqmkZ8ylz4jH87o/cNiS1yhZQj4qZnREco+ORivR
-         Qq2g==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bdrdivp0kUlb9/g88sUFsnQ6F39lATr3/MrtKIKyGXw=;
+        b=nm8QuSFJX4RCs7KNIS/xmx1ZXGCrI6/hVWx4sLOBhOOBGk89rUETnVz4ZmwxtzPwCG
+         ecEowzSYPc8yH/hEDrxLA/twLep2a2uvOfm9HkYwNvhXeM+KO0X/kripnX7KUZGvmj2O
+         JxvJuL7LX66u4aLmOQI629VblBLlKWQSy6//n52qopf4iCpulHlBdwLSRnvf/rj2rVvp
+         cJ7r++rWorx9oB0trXZJmJsDCS5l/qheaSipSGT4PUtoic6Ij+8oEKmJvEndUytQAKIL
+         Ri1LKmRoSgdbr22/HPmrkExK2BdXXrTOZFvZPZQrQ3ZINL/BoaHQx6nNXp/llr+E+bAm
+         wC5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KhTsVyCoCN9J7vHV3+LHFRl6DSDyjLgInh88Ha3AdYw=;
-        b=L+kJB8+PcYU/32P3D3nxo5T5R5hnxEkalRZUIHtmL5/jCCLBHDCUAOhClJMpMiNZZQ
-         VWIafW2AfBst9VyAEJxLCKzMy8Ki5dHUf7wsZz4omkZVLf0oCod24XBlaM/DmWTROjqg
-         SSx0vaOxmL1Wa+wnRv6xAIWVX51wYvBXpYgejNo0dIESbKonkaIjtw7A6YyxcplxOjXd
-         zbWMSZMRQ8qnqYTA9b/4z7LkoiWDUXJ1FGI0xSqL/UmuN4FFIPn5eA/znvHxwasRNFn0
-         zec1UDlrrTQjW8XZSl375tjifz/llxyK79CqwyyzMckVI7TYzI10kjqbZ9W/eVg38Ij1
-         nt7Q==
-X-Gm-Message-State: ACrzQf2cnLBLy1KRMhx5LPrWcDe5bcgZkdwstB51oLI3gFaPoIgjTi2T
-        xdWhUWHRImapREGyvV6/lzINsQ==
-X-Google-Smtp-Source: AMsMyM6CrCDIzx17WZZfhiU5puqnAFNmO9pYHBMUjZkl4+2nl+iNtz8Fg0sMmgmCN95ATx8iULHI8Q==
-X-Received: by 2002:ac8:5c41:0:b0:39c:d768:128c with SMTP id j1-20020ac85c41000000b0039cd768128cmr11031602qtj.269.1666273495413;
-        Thu, 20 Oct 2022 06:44:55 -0700 (PDT)
-Received: from [192.168.10.124] (pool-72-83-177-149.washdc.east.verizon.net. [72.83.177.149])
-        by smtp.gmail.com with ESMTPSA id az13-20020a05620a170d00b006eea461177csm7521184qkb.29.2022.10.20.06.44.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Oct 2022 06:44:54 -0700 (PDT)
-Message-ID: <6f5465d7-a16a-6f07-98c3-526d3e16bc27@linaro.org>
-Date:   Thu, 20 Oct 2022 09:44:53 -0400
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bdrdivp0kUlb9/g88sUFsnQ6F39lATr3/MrtKIKyGXw=;
+        b=mXSq/BLNF/1ohJQLHAeW1BuhaItXTzQ7TN/JS+Y1yfUfE/Fq5cri0/N4FiQCLqorf0
+         RurfURZfy5A09xW+zHAwkFfm8jzuLzLOshELOb8D5Oqt5eVtqi37gIhXUI84WZ63GJOm
+         lYE1FtJaw9Ohtv6YEaBdya7dmvgeIB3sz3V0cM0vHVukhfUFYPcHhnqR7M5spwyMNGOS
+         cLBAGshygaldSH+v/GSRUbJ4WuZC/8t2UCcFgdiw8cD1BaO3NpOD9afdjda7GN8Eb0If
+         v6RqrxQhAwcYXO1+kfgh0cQ3aK2cCxX7LXwy3qNUMLpsAOX4QxNHp8xcW+BLocCKDo/s
+         PoWQ==
+X-Gm-Message-State: ACrzQf2G8v6T1AC+pdpr4obHxi2PU/Ylent5u7+FeYS6aihP2+U9Cpae
+        EtqX6ULJZZs0L2J5IFcIwL+R8UTxvNptLA==
+X-Google-Smtp-Source: AMsMyM6BntJH6TKnEXiH0Sz9ePJukbyKwspoR2oupxlImKYI6I/8q4NZ2BX8ifbVq0TybA2MQt5abw==
+X-Received: by 2002:a05:6214:ca8:b0:4b1:87f8:c4ef with SMTP id s8-20020a0562140ca800b004b187f8c4efmr11181151qvs.50.1666275096213;
+        Thu, 20 Oct 2022 07:11:36 -0700 (PDT)
+Received: from fedora.attlocal.net (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id v21-20020a05620a441500b006cbe3be300esm7585109qkp.12.2022.10.20.07.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Oct 2022 07:11:33 -0700 (PDT)
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     linux-iio@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        William Breathitt Gray <william.gray@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] counter: 104-quad-8: Fix race getting function mode and direction
+Date:   Thu, 20 Oct 2022 10:11:21 -0400
+Message-Id: <20221020141121.15434-1-william.gray@linaro.org>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: Add KX022A accelerometer
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1666263249.git.mazziesaccount@gmail.com>
- <aaf22c800b90f4eed1986782c8549bec5c9c72f5.1666263249.git.mazziesaccount@gmail.com>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <aaf22c800b90f4eed1986782c8549bec5c9c72f5.1666263249.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 20/10/2022 07:36, Matti Vaittinen wrote:
-> KX022A is a 3-axis Accelerometer from ROHM/Kionix. The sensor features
-> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
-> tap/motion detection, wake-up & back-to-sleep events, four acceleration
-> ranges (2, 4, 8 and 16g) and probably some other cool features.
-> 
-> Add the basic device tree description for the accelerometer. Only basic
-> accelerometer features are considered as of now - new properties may or
-> may not be needed in the future when rest of the features are supported.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+The quad8_action_read() function checks the Count function mode and
+Count direction without first acquiring a lock. This is a race condition
+because the function mode could change by the time the direction is
+checked.
 
+Because the quad8_function_read() already acquires a lock internally,
+the quad8_function_read() is refactored to spin out the no-lock code to
+a new quad8_function_get() function.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To resolve the race condition in quad8_action_read(), a lock is acquired
+before calling quad8_function_get() and quad8_direction_read() in order
+to get both function mode and direction atomically.
 
-Best regards,
-Krzysztof
+Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface support")
+Cc: stable@vger.kernel.org
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+---
+ drivers/counter/104-quad-8.c | 64 +++++++++++++++++++++++-------------
+ 1 file changed, 42 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
+index 77a863b7eefe..deed4afadb29 100644
+--- a/drivers/counter/104-quad-8.c
++++ b/drivers/counter/104-quad-8.c
+@@ -232,34 +232,45 @@ static const enum counter_function quad8_count_functions_list[] = {
+ 	COUNTER_FUNCTION_QUADRATURE_X4,
+ };
+ 
++static int quad8_function_get(const struct quad8 *const priv, const size_t id,
++			      enum counter_function *const function)
++{
++	if (!priv->quadrature_mode[id]) {
++		*function = COUNTER_FUNCTION_PULSE_DIRECTION;
++		return 0;
++	}
++
++	switch (priv->quadrature_scale[id]) {
++	case 0:
++		*function = COUNTER_FUNCTION_QUADRATURE_X1_A;
++		return 0;
++	case 1:
++		*function = COUNTER_FUNCTION_QUADRATURE_X2_A;
++		return 0;
++	case 2:
++		*function = COUNTER_FUNCTION_QUADRATURE_X4;
++		return 0;
++	default:
++		/* should never reach this path */
++		return -EINVAL;
++	}
++}
++
+ static int quad8_function_read(struct counter_device *counter,
+ 			       struct counter_count *count,
+ 			       enum counter_function *function)
+ {
+ 	struct quad8 *const priv = counter_priv(counter);
+-	const int id = count->id;
+ 	unsigned long irqflags;
++	int retval;
+ 
+ 	spin_lock_irqsave(&priv->lock, irqflags);
+ 
+-	if (priv->quadrature_mode[id])
+-		switch (priv->quadrature_scale[id]) {
+-		case 0:
+-			*function = COUNTER_FUNCTION_QUADRATURE_X1_A;
+-			break;
+-		case 1:
+-			*function = COUNTER_FUNCTION_QUADRATURE_X2_A;
+-			break;
+-		case 2:
+-			*function = COUNTER_FUNCTION_QUADRATURE_X4;
+-			break;
+-		}
+-	else
+-		*function = COUNTER_FUNCTION_PULSE_DIRECTION;
++	retval = quad8_function_get(priv, count->id, function);
+ 
+ 	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+-	return 0;
++	return retval;
+ }
+ 
+ static int quad8_function_write(struct counter_device *counter,
+@@ -359,6 +370,7 @@ static int quad8_action_read(struct counter_device *counter,
+ 			     enum counter_synapse_action *action)
+ {
+ 	struct quad8 *const priv = counter_priv(counter);
++	unsigned long irqflags;
+ 	int err;
+ 	enum counter_function function;
+ 	const size_t signal_a_id = count->synapses[0].signal->id;
+@@ -374,9 +386,21 @@ static int quad8_action_read(struct counter_device *counter,
+ 		return 0;
+ 	}
+ 
+-	err = quad8_function_read(counter, count, &function);
+-	if (err)
++	spin_lock_irqsave(&priv->lock, irqflags);
++
++	/* Get Count function and direction atomically */
++	err = quad8_function_get(priv, count->id, &function);
++	if (err) {
++		spin_unlock_irqrestore(&priv->lock, irqflags);
++		return err;
++	}
++	err = quad8_direction_read(counter, count, &direction);
++	if (err) {
++		spin_unlock_irqrestore(&priv->lock, irqflags);
+ 		return err;
++	}
++
++	spin_unlock_irqrestore(&priv->lock, irqflags);
+ 
+ 	/* Default action mode */
+ 	*action = COUNTER_SYNAPSE_ACTION_NONE;
+@@ -389,10 +413,6 @@ static int quad8_action_read(struct counter_device *counter,
+ 		return 0;
+ 	case COUNTER_FUNCTION_QUADRATURE_X1_A:
+ 		if (synapse->signal->id == signal_a_id) {
+-			err = quad8_direction_read(counter, count, &direction);
+-			if (err)
+-				return err;
+-
+ 			if (direction == COUNTER_COUNT_DIRECTION_FORWARD)
+ 				*action = COUNTER_SYNAPSE_ACTION_RISING_EDGE;
+ 			else
+-- 
+2.37.3
 

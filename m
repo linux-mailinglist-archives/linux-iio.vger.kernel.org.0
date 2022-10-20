@@ -2,115 +2,429 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B11766062DA
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 16:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631DF606331
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 16:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbiJTOVO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 10:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36110 "EHLO
+        id S229583AbiJTOe6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 10:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230003AbiJTOVM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 10:21:12 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0BBD17653F;
-        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
-Received: by mail-ot1-f43.google.com with SMTP id a16-20020a056830101000b006619dba7fd4so11478766otp.12;
-        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DRmvj/Qw7m4kPQR3vXMSaW6JmzIt/vfRx5j71ATZMPo=;
-        b=LN/a7FVubtK7CtFQMBjbUYQPFN3ZABLJOszym3ac6/f3rs4Y3GgxFTuCm4OCT2bK3q
-         7tHlq0rsT4yk8TWw+g9FQP2FGWVkWNIrV1VsDGV84eoIvXtTzqx35GtOUYYV7ERa+dUJ
-         cEIGjXh2pXnbjpYkRkKaDkTgW3PEBlTLo8YH+33CfnXFUsKaI+IsytV8lDT3v1e0+Wpz
-         rs/9PnyJ+K+l4fnhaB+v2dK6NCIAP4arDYGfkVyFY1h/9P+97h6LoCasXtFCFBoidL/7
-         KdgfpSqHS8K1/8oGFYpQPoEGMzcgd5/xTLay56Fjc2a9T8uWcJQcVQB+TTDB0PTiiJaU
-         pR1A==
-X-Gm-Message-State: ACrzQf20X7sNn26UZ3G2z4XKn5r1sRcIHMtbz1Wo92Q89PLAXOeFXc02
-        SLwL4fu/0gvV4/lwXijf2Q==
-X-Google-Smtp-Source: AMsMyM6kgMpF5YggwgwsLirXF7Rn0lq5eGb6xz4yME8rs2ScP7Fq/R5S22HP4elC/sSX+ifGN97D+g==
-X-Received: by 2002:a05:6830:2a0d:b0:656:bd3f:253f with SMTP id y13-20020a0568302a0d00b00656bd3f253fmr7105548otu.25.1666275671070;
-        Thu, 20 Oct 2022 07:21:11 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id z15-20020a4ade4f000000b004767c273d3csm7559774oot.5.2022.10.20.07.21.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 07:21:10 -0700 (PDT)
-Received: (nullmailer pid 1261301 invoked by uid 1000);
-        Thu, 20 Oct 2022 14:21:10 -0000
-Date:   Thu, 20 Oct 2022 09:21:10 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     devicetree@vger.kernel.org, Daniel Vetter <daniel@ffwll.ch>,
-        linux-arm-kernel@lists.infradead.org,
-        David Airlie <airlied@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Nandhini Srikandan <nandhini.srikandan@intel.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Sumit Gupta <sumitg@nvidia.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-        netdev@vger.kernel.org, linux-tegra@vger.kernel.org,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rashmi A <rashmi.a@intel.com>,
-        Joakim Zhang <qiangqing.zhang@nxp.com>,
+        with ESMTP id S230052AbiJTOe4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 10:34:56 -0400
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2CD5A2F9;
+        Thu, 20 Oct 2022 07:34:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666276492; x=1697812492;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zFTFNiV92NX50PnQOqzwKZWlpo7k25DwAW2u5qQ5P9Y=;
+  b=OY5D08iaPL1qmz7dsIf/21IYAYL9vBeH1gaSSGFcfFcGgzLad0eh3a4m
+   LP+y2RIbem9WCWbeU6hBr8KE6vXNGQJfrCQjO49w3K2mzK9d2qvMYZYtV
+   VPp+ymfZ0wFjXh5LUQnZdQ9rIG5v0j2QEQtWpOsB/4ICCPxUX0VHa9TpL
+   fJmRF4Q2Ce+6fC+0BPHw1xPYm7LbcBuRFgV8pz6RPOi+Au+Rl21eJhxKC
+   BvCsCaEBYAKpcUmNfxwsXzf+vMBlRzw1TBarNWI9HWFut8Z8s8tGBMntw
+   q2mB+LBaW6deINpo/RGEz5V+7U5YkLdxZjFZhwqpOZgEeap1FuSTa98pA
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="370935723"
+X-IronPort-AV: E=Sophos;i="5.95,198,1661842800"; 
+   d="scan'208";a="370935723"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2022 07:34:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10506"; a="580938420"
+X-IronPort-AV: E=Sophos;i="5.95,198,1661842800"; 
+   d="scan'208";a="580938420"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga003.jf.intel.com with ESMTP; 20 Oct 2022 07:34:40 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1olWd4-00AadZ-2V;
+        Thu, 20 Oct 2022 17:34:38 +0300
+Date:   Thu, 20 Oct 2022 17:34:38 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        linux-phy@lists.infradead.org,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-iio@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Subject: Re: [PATCH] dt-bindings: Remove "status" from schema examples, again
-Message-ID: <166627566746.1261189.15059225154291335125.robh@kernel.org>
-References: <20221014205104.2822159-1-robh@kernel.org>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Message-ID: <Y1FcftQKimmvcOej@smile.fi.intel.com>
+References: <cover.1666263249.git.mazziesaccount@gmail.com>
+ <5000bd61650554658d13619c8244f02cedbc182a.1666263249.git.mazziesaccount@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221014205104.2822159-1-robh@kernel.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <5000bd61650554658d13619c8244f02cedbc182a.1666263249.git.mazziesaccount@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 14 Oct 2022 15:51:04 -0500, Rob Herring wrote:
-> There's no reason to have "status" properties in examples. "okay" is the
-> default, and "disabled" turns off some schema checks ('required'
-> specifically).
+On Thu, Oct 20, 2022 at 02:37:15PM +0300, Matti Vaittinen wrote:
+> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
+> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+> ranges (2, 4, 8 and 16g) and probably some other cool features.
 > 
-> A meta-schema check for this is pending, so hopefully the last time to
-> fix these.
+> Add support for the basic accelerometer features such as getting the
+> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+> using the WMI IRQ).
 > 
-> Fix the indentation in intel,phy-thunderbay-emmc while we're here.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-> ---
->  .../arm/tegra/nvidia,tegra-ccplex-cluster.yaml    |  1 -
->  .../display/tegra/nvidia,tegra124-dpaux.yaml      |  1 -
->  .../display/tegra/nvidia,tegra186-display.yaml    |  2 --
->  .../bindings/iio/addac/adi,ad74413r.yaml          |  1 -
->  .../devicetree/bindings/net/cdns,macb.yaml        |  1 -
->  .../devicetree/bindings/net/nxp,dwmac-imx.yaml    |  1 -
->  .../bindings/phy/intel,phy-thunderbay-emmc.yaml   | 15 +++++++--------
->  7 files changed, 7 insertions(+), 15 deletions(-)
-> 
+> Important things to be added include the double-tap, motion
+> detection and wake-up as well as the runtime power management.
 
-Applied, thanks!
+...
+
+> +	if (!i2c->irq) {
+> +		dev_err(dev, "No IRQ configured\n");
+> +		return -EINVAL;
+
+At least
+
+	return dev_err_probe(...);
+
+for know error codes (or when we know that there won't be EPROBE_DEFER), takes
+less LoCs in the source file.
+
+> +	}
+
+...
+
+> +	regmap = devm_regmap_init_i2c(i2c, &kx022a_regmap);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(dev, "Failed to initialize Regmap\n");
+> +		return PTR_ERR(regmap);
+
+Ditto here and anywhere else for the similar cases.
+
+> +	}
+
+...
+
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*vals = (const int *)kx022a_accel_samp_freq_table;
+> +		*length = ARRAY_SIZE(kx022a_accel_samp_freq_table) * 2;
+> +		*type = IIO_VAL_INT_PLUS_MICRO;
+> +		return IIO_AVAIL_LIST;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*vals = (const int *)kx022a_scale_table;
+> +		*length = ARRAY_SIZE(kx022a_scale_table) * 2;
+> +		*type = IIO_VAL_INT_PLUS_MICRO;
+> +		return IIO_AVAIL_LIST;
+
+These  ' * 2' can be replaced with respective ARRAY_SIZE() of nested element
+for robustness, but I don't think it worth it. What we need is to provide
+IIO specific type for these tables and use it.
+
+...
+
+> +static int kx022a_turn_on_off_unlocked(struct kx022a_data *data, bool on)
+> +{
+> +	int ret;
+> +
+> +	if (on)
+> +		ret = regmap_set_bits(data->regmap, KX022A_REG_CNTL,
+> +				      KX022A_MASK_PC1);
+> +	else
+> +		ret = regmap_clear_bits(data->regmap, KX022A_REG_CNTL,
+> +					KX022A_MASK_PC1);
+> +
+> +	if (ret)
+> +		dev_err(data->dev, "Turn %s fail %d\n", (on) ? "ON" : "OFF",
+> +			ret);
+
+str_on_off() ?
+
+> +	return ret;
+> +
+> +}
+
+...
+
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		n = ARRAY_SIZE(kx022a_accel_samp_freq_table);
+> +
+> +		while (n--)
+> +			if (val == kx022a_accel_samp_freq_table[n][0] &&
+> +			    kx022a_accel_samp_freq_table[n][1] == val2)
+
+Why not to use the same kind of l and r arguments in == lines?
+In current form it's a bit harder to see what the catch here.
+
+> +				break;
+> +		if (n < 0) {
+> +			ret = -EINVAL;
+> +			goto unlock_out;
+> +		}
+> +		ret = kx022a_turn_off_lock(data);
+> +		if (ret)
+> +			break;
+> +
+> +		ret = regmap_update_bits(data->regmap,
+> +					 KX022A_REG_ODCNTL,
+> +					 KX022A_MASK_ODR, n);
+> +		data->odr_ns = kx022a_odrs[n];
+> +		kx022a_turn_on_unlock(data);
+> +		break;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		n = ARRAY_SIZE(kx022a_scale_table);
+> +
+> +		while (n-- > 0)
+> +			if (val == kx022a_scale_table[n][0] &&
+> +			    kx022a_scale_table[n][1] == val2)
+
+Ditto.
+
+> +				break;
+> +		if (n < 0) {
+> +			ret = -EINVAL;
+> +			goto unlock_out;
+> +		}
+> +
+> +		ret = kx022a_turn_off_lock(data);
+> +		if (ret)
+> +			break;
+> +
+> +		ret = regmap_update_bits(data->regmap, KX022A_REG_CNTL,
+> +					 KX022A_MASK_GSEL,
+> +					 n << KX022A_GSEL_SHIFT);
+> +		kx022a_turn_on_unlock(data);
+> +		break;
+> +	default:
+> +		ret = -EINVAL;
+> +		break;
+> +	}
+
+...
+
+> +static int kx022a_get_axis(struct kx022a_data *data,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
+> +			       sizeof(__le16));
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = le16_to_cpu(data->buffer[0]);
+
+'p'-variant of the above would look better
+
+	*val = le16_to_cpup(data->buffer);
+
+since it will be the same as above address without any additional arithmetics.
+
+> +	return IIO_VAL_INT;
+> +}
+
+
+...
+
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		ret = regmap_read(data->regmap, KX022A_REG_ODCNTL, &regval);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if ((regval & KX022A_MASK_ODR) >
+> +		    ARRAY_SIZE(kx022a_accel_samp_freq_table)) {
+> +			dev_err(data->dev, "Invalid ODR\n");
+> +			return -EINVAL;
+> +		}
+> +
+> +		kx022a_reg2freq(regval, val, val2);
+
+> +		ret = IIO_VAL_INT_PLUS_MICRO;
+> +
+> +		break;
+
+return IIO_VAL_INT_PLUS_MICRO;
+
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = regmap_read(data->regmap, KX022A_REG_CNTL, &regval);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		kx022a_reg2scale(regval, val, val2);
+> +
+> +		ret = IIO_VAL_INT_PLUS_MICRO;
+> +		break;
+
+Ditto.
+
+...
+
+> +	return regmap_write(data->regmap, KX022A_REG_BUF_CLEAR, 0x0);
+
+Would simple '0' suffice?
+
+...
+
+> +	for (i = 0; i < count; i++) {
+> +		int bit;
+> +		u16 *samples = &buffer[i * 3];
+
+I would put it as
+
+		u16 *samples = &buffer[i * 3];
+		int bit;
+
+> +		for_each_set_bit(bit, idev->active_scan_mask, AXIS_MAX)
+> +			memcpy(&data->scan.channels[bit], &samples[bit],
+> +			       sizeof(data->scan.channels[0]));
+
+Why not use bit instead of 0 for the sake of consistency?
+
+Also might be good to have a temporary for channels:
+
+		... *chs = data->scan.channels;
+
+
+		for_each_set_bit(bit, idev->active_scan_mask, AXIS_MAX)
+			memcpy(&chs[bit], &samples[bit], sizeof(chs[bit]));
+
+> +		iio_push_to_buffers_with_timestamp(idev, &data->scan, tstamp);
+> +
+> +		tstamp += sample_period;
+> +	}
+
+...
+
+> +	ret = regmap_clear_bits(data->regmap, data->ien_reg,
+> +				KX022A_MASK_WMI);
+
+I don't see why it's not on a single line. Even if you are a conservative
+adept of 80.
+
+Maybe other lines also need to be revised?
+
+> +	if (ret)
+> +		goto unlock_out;
+
+...
+
+> +	int ret = IRQ_NONE;
+> +
+> +	mutex_lock(&data->mutex);
+> +
+> +	if (data->trigger_enabled) {
+> +		iio_trigger_poll_chained(data->trig);
+> +		ret = IRQ_HANDLED;
+> +	}
+> +
+> +	if (data->state & KX022A_STATE_FIFO) {
+
+> +		ret = __kx022a_fifo_flush(idev, KX022A_FIFO_LENGTH, true);
+> +		if (ret > 0)
+> +			ret = IRQ_HANDLED;
+
+I don't like it. Perhaps
+
+	bool handled = false;
+	int ret;
+
+	...
+		ret = ...
+		if (ret > 0)
+			handled = true;
+	...
+
+	return IRQ_RETVAL(handled);
+
+> +	}
+> +
+> +	mutex_unlock(&data->mutex);
+> +
+> +	return ret;
+
+...
+
+> +	if (!dev)
+> +		return -ENODEV;
+
+Do you really need this check?
+
+...
+
+> +	fw = dev_fwnode(dev);
+> +	if (!fw)
+> +		return -ENODEV;
+
+You may combine these two in one.
+
+	struct fwnode_handle *fwnode;
+
+
+	fwnode = dev ? dev_fwnode(dev) : NULL;
+	if (!fwnode)
+		return -ENODEV;
+
+And please, call it fwnode.
+
+...
+
+> +	irq = fwnode_irq_get_byname(fw, "INT1");
+> +	if (irq > 0) {
+> +		data->inc_reg = KX022A_REG_INC1;
+> +		data->ien_reg = KX022A_REG_INC4;
+> +
+> +		if (fwnode_irq_get_byname(dev_fwnode(dev), "INT2") > 0)
+
+Why not use fwnode again
+
+> +			dev_warn(dev, "Only one IRQ supported\n");
+> +	} else {
+> +		irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT2");
+
+Ditto.
+
+> +		if (irq <= 0)
+> +			return dev_err_probe(dev, irq, "No suitable IRQ\n");
+> +
+> +		data->inc_reg = KX022A_REG_INC5;
+> +		data->ien_reg = KX022A_REG_INC6;
+> +	}
+
+...
+
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret,
+> +				     "iio_triggered_buffer_setup_ext FAIL %d\n",
+> +				     ret);
+
+Drop dup ret at the end, dev_err_probe() has been adding it to each message.
+
+...
+
+> +	/*
+> +	 * No need to check for NULL. request_threadedI_irq() defaults to
+> +	 * dev_name() should the alloc fail.
+> +	 */
+> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-kx022a",
+> +			      dev_name(data->dev));
+
+It's not clear why do you need a suffix here.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

@@ -2,61 +2,65 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7A8605F0D
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 13:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE46605F6F
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 13:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231350AbiJTLiA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 07:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41524 "EHLO
+        id S229543AbiJTLy1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 07:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbiJTLh7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 07:37:59 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869281DDC39;
-        Thu, 20 Oct 2022 04:37:49 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id f37so33022702lfv.8;
-        Thu, 20 Oct 2022 04:37:49 -0700 (PDT)
+        with ESMTP id S229506AbiJTLy0 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 07:54:26 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949C912A356;
+        Thu, 20 Oct 2022 04:54:18 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id b18so25977786ljr.13;
+        Thu, 20 Oct 2022 04:54:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hn98k7vNWcq3VCu1bqRg2ETJHqfdiif9uty4Q/EeH2M=;
-        b=bBLr9b4uRLq1754EXqAP06uWW+WC0BNQ9AItNnH8E6B4xefA4mFX2Dfjql80wG54Ju
-         4rJ3JrZmsrNUupfuuU2y8G0FCzqwuX5uu1/nBuPAkzSxvlUvaYl4+bMP0GnMUIqZ3Sz9
-         ZY9Vcl1cmKU1NlakvaC5kwVsY39S6oW/nZ9AyW5XKfXjeZxxXl6X7PU8e/nRLbHDui/8
-         Al3ky53Vk9vj6cUln937xZUoTTlE67NsSAuIww9UdLDHw63G1wslIT2XKwEmnGihnqBT
-         0+AverwFRkWlPqpDWEvBVakwy1dZof1jNt5lR5fQmSXyt52N9HoFf8YSadDDdYF6JVlD
-         PL4g==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5JGPiF/4jkoD0aBNRCvwydXVeVeGYneVf/IKbljyENQ=;
+        b=ZjbQByTE2QtMBGesKwYrvQvu1WW0ijiW+cjdm4n7kNdoF6VW1nF78m74dVBe8KSFt8
+         /5tTjakEQ9fBWBNyvn2s6xMonLcHkYnRF8ATZDb+SXrqWHYBY60wMf8XGTpQ/rm9UDRY
+         lgmR531GjfPPkjMQvlUS3aaIM5Yt3sdk0fd5rVwKj8tlekuM71eON4t/oF1Xzh6pYNJ6
+         0lEV14Y/+OOAV8w24BIll7j9VW0jqKXQA6tj2XErZJ88ncLewrsvmeKHqPOdW4WTxBFg
+         /R7K4lOWdNVXJRF4NDFFKQhbiqLZGdaw7EbEsqU+fprMkqFsnR6QYGoA5jdVJi4zn3zN
+         CWPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hn98k7vNWcq3VCu1bqRg2ETJHqfdiif9uty4Q/EeH2M=;
-        b=QG4ZIVEoCDh4AmYTgSaenNqgRcLJEOm0OzcUgUvx1qqigANboQ4ZqCJt9HjyGnVbcj
-         OCHAX0InWDt5GVRWdVFeNrbLo2K5zq6CV5GLIUno2H836s1j/Lh0GH+F1EAHCyjCJzaP
-         p+aaF71spOoVDmzeP9cLR+7wdsJRotJMlPneCHQ756tgMxBdR3stkdplID/G1jlmgoPX
-         dI4bEhZheT9FeTwl5y7cHAydamjVLao880lYjLDx/iqWwjwdWY0YCuX2+Yx5Vr1MH5Fx
-         8/cYxi2xySxiC9C3GHULjH8TUE3EOumfQBwPEQ9mqfx+jq2s6RYj17bX8moRb7g0Tckv
-         7egw==
-X-Gm-Message-State: ACrzQf1iyM5h8FJv2YCYRDhJKkKTWlr9W7W5GJUxr9ROOX7aZJAp3zd8
-        qyeYMhAtHOL24eIzoAheahM=
-X-Google-Smtp-Source: AMsMyM6Reg5o5NKj08jCSLS2wEU4f4/RMYFMznad22/EoB02Rzr2Nju7sv/fTVublSh8DZ1lZxWY2Q==
-X-Received: by 2002:a19:915a:0:b0:4a2:458b:ffed with SMTP id y26-20020a19915a000000b004a2458bffedmr4349007lfj.181.1666265866716;
-        Thu, 20 Oct 2022 04:37:46 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
-        by smtp.gmail.com with ESMTPSA id z20-20020a056512371400b004a2386b8d15sm1396213lfr.212.2022.10.20.04.37.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Oct 2022 04:37:45 -0700 (PDT)
-Date:   Thu, 20 Oct 2022 14:37:41 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5JGPiF/4jkoD0aBNRCvwydXVeVeGYneVf/IKbljyENQ=;
+        b=n6FZGuuZgebXLJ5UL8Wfan7uyYXQ68r1OOF3WE1PQTLv6Eq814TpL6TVzuzTaM+/Qy
+         zrkHHF27VkhR43tvCN5DbpYg7kQzaXCvTBUvAy8qmSLHI2Bp8moeVfWxw9y98ogyOsvP
+         LV0fwbCya2T2E/vziRfspyknRJBmi5pGVV5h4XelDU+ZqbIPFv5aYm8GgW3wep0w9Erb
+         8TpE+Gjs8mBuF4pjdLQojzeFArIS2Ir6YkIvp/hvdEpLe0O3YMkhelV5bk/2rdmDDC7d
+         NWWpHH3kS+tIwzuWUNxd/jrQMQIHTjdED6MRFJsDdRCc7S5expA+M3WVObrVJDtuQkBQ
+         iAxg==
+X-Gm-Message-State: ACrzQf111sbOz9ff+0VJSuac1UtDANdb6U8Q6Fk9BhCA7Rm7e0DQUq6j
+        auqHr3tE7fGUUKE1dHN3RCk=
+X-Google-Smtp-Source: AMsMyM46UPSKHOo0se4flSNdEG/fBMvboDvcvuT+IK9c0Sh4oIh3mWrr92RC8p63+wNLiC6JYFEUUw==
+X-Received: by 2002:a2e:2418:0:b0:26d:d930:e3cf with SMTP id k24-20020a2e2418000000b0026dd930e3cfmr5172130ljk.232.1666266856924;
+        Thu, 20 Oct 2022 04:54:16 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::4? (dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::4])
+        by smtp.gmail.com with ESMTPSA id f5-20020a2e9e85000000b0026dfdcbccdasm2878012ljk.14.2022.10.20.04.54.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Oct 2022 04:54:16 -0700 (PDT)
+Message-ID: <7d8660c4-2f4c-b91e-4e1e-b2dee5cc058f@gmail.com>
+Date:   Thu, 20 Oct 2022 14:54:15 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v3 0/3] iio: Support ROHM/Kionix kx022a
+Content-Language: en-US
+To:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Dmitry Rokosov <DDRokosov@sberdevices.ru>,
@@ -64,16 +68,13 @@ Cc:     Jonathan Cameron <jic23@kernel.org>,
         Cosmin Tanislav <demonsingur@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] MAINTAINERS: Add KX022A maintainer entry
-Message-ID: <f25a756370f4e0ae2d0b2d6f3575bccde3ce8b95.1666263249.git.mazziesaccount@gmail.com>
 References: <cover.1666263249.git.mazziesaccount@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="ympY6Av878wwT2rO"
-Content-Disposition: inline
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
 In-Reply-To: <cover.1666263249.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,65 +83,42 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 10/20/22 14:35, Matti Vaittinen wrote:
+> Add initial support for ROHM/Kionix kx022a accelerometer
+> 
+> About the HW:
+> KX022A accelerometer is a sensor which:
+> 	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+> 	- can be connected to I2C or SPI
+> 	- has internal HW FIFO buffer
+> 	- supports various ODRs (output data rates)
+> 	- support detecting special events like double tap or motion
+> 	- can be configured to wake-up system when events are detected.
+> 
+> About the series:
+> 
+> This series adds support for only getting the accelerometer data and
+> configuring the G-range / ODR via IIO. Motion detection or double-tap
+> detection are not supported by the series. The other quite important but
+> still missing piece is the runtime PM. Nevertheless, the driver should be
+> usable and brings the basic support for getting accelerometer data.
+> 
+// snip
 
---ympY6Av878wwT2rO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> base-commit: 568035b01cfb107af8d2e4bd2fb9aea22cf5b868
+> prerequisite-patch-id: f692b7ef9ce0a0b016fb5ac1c5733e562baa4ae2
+> prerequisite-patch-id: cc2e849e2b3fe553fe955f21a4b995681e04383f
+> prerequisite-patch-id: f136637f7a8fe92dc4f60b908e2e7aa24aac3f43
 
-Add maintainer entry for ROHM/Kionix KX022A accelerometer sensor driver.
+// Snip.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Sorry folks! I don't know what happened with my format-patch :( I 
+Should've noted this before sending. My apologies.
 
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cf0f18502372..3ab9c5f97dfe 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11435,6 +11435,11 @@ F:	drivers/mfd/khadas-mcu.c
- F:	include/linux/mfd/khadas-mcu.h
- F:	drivers/thermal/khadas_mcu_fan.c
-=20
-+KIONIX/ROHM KX022A ACCELEROMETER
-+R:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/accel/kionix-kx022a*
-+
- KMEMLEAK
- M:	Catalin Marinas <catalin.marinas@arm.com>
- S:	Maintained
---=20
-2.37.3
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---ympY6Av878wwT2rO
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNRMwQACgkQeFA3/03a
-ocWz1gf/exRJdC0po1OuvmPXf1qbDafjazzcH8MzcXWv6QttmKKVcXOpg2NNfiga
-B/ZbfX9DuX+EnBvAT4vBCdyQm7LBRUTwx8AHymNPBcZhtILR/eKU5wuLiyNQtnls
-CeIx4Q2O91ZeXSdmwrLXLj7lp/dloASGRyfreTHU7PwzLOf3yP2sft5XksRX+18L
-Y3M8N4oJmmziOmPQcu3iP2oBM4zLJFFD9pZ6kCRhDPU7FEZ0A1XDWuJXhrJLk3Y4
-D/0c2qq23XzbAvJtr5V2R+7rPwyF4X6SAPZzvQD/82zO1UJQS38mySNUMn18Hq+0
-e5k3GUUBNhkYDteU7suuMryXUJlBoA==
-=StLs
------END PGP SIGNATURE-----
-
---ympY6Av878wwT2rO--

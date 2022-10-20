@@ -2,108 +2,110 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03D056059B7
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 10:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7773605A76
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 11:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbiJTI2O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 04:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51040 "EHLO
+        id S230058AbiJTJDL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 05:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229660AbiJTI2J (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 04:28:09 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1FD18982F;
-        Thu, 20 Oct 2022 01:28:07 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 55D9D66023A3;
-        Thu, 20 Oct 2022 09:28:05 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1666254485;
-        bh=Dm2sSpcy/WPT5qaMKRDCmxl/L7RXt0Zoucvbb30uh6g=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Q0pak6ywHzVJvhN8eGTE2FfIQO1kLkFxLeg3dP2mvNeHMiNAhPJiH6dHxHpl12qTS
-         J+8nY/2EVFTQgzz9+8s8R+lpiGRdx3sFVnpvKHLr+zDlEJi97gP7pcMbkRVYoah7tZ
-         Fpo912yLr/OKsUnex8YjcPEk9IH6tz597jXROLsb/CbNTkoMlg+thZ57HGmyBoSKtA
-         0dJPuRZZDHr5UUx54YNNFpEc/7e8LJ48W8fIK0g79/hRW+OUfi7gEidO6uzzg2biCO
-         BbE2ThRTNpQ/cQD87churaTOiy/4WhJHjnKdWi/iYUwyNJlokS/mxqQSAfs5RfiLr6
-         NaLDOuU07xU7w==
-Message-ID: <b33b9d2a-f6d5-b2a7-bcb8-1ed2303c04b4@collabora.com>
-Date:   Thu, 20 Oct 2022 10:28:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.3
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: mediatek,mt2701-auxadc: new
- 32k clock
-Content-Language: en-US
-To:     Daniel Golle <daniel@makrotopia.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229799AbiJTJDL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 05:03:11 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E331B1960B8;
+        Thu, 20 Oct 2022 02:03:09 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id q19so28903475edd.10;
+        Thu, 20 Oct 2022 02:03:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xaQSKWVE6qiruRKoc8l3Jo2/FxtS7lXQP1OjBQL4RMM=;
+        b=kUmjEk4ZQUk4+YGNsUmKOxDXcS40zP3tI1LKysIXI+VhsQMt49TnX5mflLP/gaw06t
+         dcgJ6ZyDFAgEvPOdvAhssoTMZIBAXVVQPDA9KnobElvmtyu8No0ws/YE2IWBgkWShprD
+         m1+xt3o2zp9bg6zMO5pxfgNnOhAORA+J3GGIroc7x5/FOs5LGUgOWDJ4ijxdw9lS/EGB
+         47TWrex2A8kRFo0AKxBAi9mfYotXvCNnPUW44ahaCNJCFnhgBgb3RVG9cpK1BeFuWAaS
+         V/CU4bKYj2G9w0d7FeAK02bBVexbPFaMqp2TgpGPA3Ho6IjIzFQAcVIEo5Kz3muxjbBB
+         j1xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xaQSKWVE6qiruRKoc8l3Jo2/FxtS7lXQP1OjBQL4RMM=;
+        b=Ka/xo/Nig30U9OP6cdS/TAqsL2QuTKbFFZK9O3bujVnNujiFSWgZz/SbMGUBEiSOsf
+         zrEEvEUcv8CE15v2WZ4BdMAPdMy8oKQOHxIehSSpeJs8QhH1SNbKdXYo5wnaV1fEXy3x
+         uG7WJ8kq31YkgquUNVBT8ARCnG8qc/dRaqC4HXCVq7/wk+GEXWZ3Ks7RxZxQvjL8nMIC
+         +QA28rBO98TOMVRJ+vUwfhl6noKCes7xn9nuwNO/efxS1emIhdWDOnY2yLXskOqCGpKp
+         ERMriEaivgkRFQ1rN6s+EqOG5/tX10nxJXMM0ccGRKAJZ+JVx3j/z/jI5of3/deDDdsV
+         6Flw==
+X-Gm-Message-State: ACrzQf1GfT3+iWhRprd6ctlIh+6CgFZgFQ73U1iNeazj6APy6YrPMNMN
+        O8ba82xRNMSaVjhk9EN09Tw=
+X-Google-Smtp-Source: AMsMyM42dIMLClo5njgoA0SGJ31JL5Bd2FWq7LsxARdzkoKd95Hy8B/f8z7uTey7yJlfWUWGsj09+A==
+X-Received: by 2002:a05:6402:524a:b0:45c:e2c6:6ef7 with SMTP id t10-20020a056402524a00b0045ce2c66ef7mr11624214edd.421.1666256588053;
+        Thu, 20 Oct 2022 02:03:08 -0700 (PDT)
+Received: from localhost.localdomain ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id c2-20020a17090618a200b007933047f923sm1668381ejf.118.2022.10.20.02.03.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Oct 2022 02:03:07 -0700 (PDT)
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-iio@vger.kernel.org
-Cc:     Gwendal Grignou <gwendal@chromium.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <f98ed7f3fc15a0614443a57427d46ce17ec2e0cc.1666190235.git.daniel@makrotopia.org>
- <dbe88fd2f7ea5b2f419dce6ecb48c20e96e2e634.1666190235.git.daniel@makrotopia.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <dbe88fd2f7ea5b2f419dce6ecb48c20e96e2e634.1666190235.git.daniel@makrotopia.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <demonsingur@gmail.com>
+Subject: [PATCH v2 0/5] Support more parts in LTC2983
+Date:   Thu, 20 Oct 2022 12:02:52 +0300
+Message-Id: <20221020090257.1717053-1-demonsingur@gmail.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 19/10/22 16:38, Daniel Golle ha scritto:
-> Newer MediaTek SoCs need an additional clock to be brought up for
-> AUXADC to work. Add this new optional clock to
-> mediatek,mt2701-auxadc.yaml.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-> ---
->   .../bindings/iio/adc/mediatek,mt2701-auxadc.yaml          | 8 ++++++--
->   1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> index 7f79a06e76f596..c2a1813dd54152 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
-> @@ -44,10 +44,14 @@ properties:
->       maxItems: 1
->   
->     clocks:
-> -    maxItems: 1
-> +    maxItems: 2
-> +    minItems: 1
->   
->     clock-names:
-> -    const: main
-> +    items:
-> +      - const: main
-> +      - const: 32k
+Add support for the following parts:
+ * LTC2984
+ * LTC2986
+ * LTM2985
 
-You're adding this for MT7986, and I don't see any 32KHz ADC clock on that SoC.
-I suppose that your '32k' clock is CLK_INFRA_ADC_FRC_CK, currently parented to
-'csw_f26m_sel', so that's 26MHz, not 32KHz.
+The LTC2984 is a variant of the LTC2983 with EEPROM.
+The LTC2986 is a variant of the LTC2983 with only 10 channels,
+EEPROM and support for active analog temperature sensors.
+The LTM2985 is software-compatible with the LTC2986.
 
-Since you'll need the same changes for thermal as well, I would consider setting
-"infra_adc_frc" as a parent of "infra_adc_26m", like so:
+Also, remove excessive allocations on resume.
 
-	GATE_INFRA1(CLK_INFRA_ADC_26M_CK, "infra_adc_26m", "infra_adc_frc", 20),
-	GATE_INFRA1(CLK_INFRA_ADC_FRC_CK, "infra_adc_frc", "csw_f26m_sel", 21),
+V1 -> V2:
+ * add Fixes tag
+ * add patch that fixes the regmap_bulk_write() call with stack allocated
+   buffer
+ * add patch that refines the binding in preperation for adding new
+   parts support to it
+ * do not use stack allocated buffer for writing the EEPROM key
 
-...just because there's apparently no reason to have one of them enabled but not
-the other or, at least, it looks like we *always* need ADC_26M_CK enabled when
-ADC_FRC_CK is enabled.
+Cosmin Tanislav (5):
+  iio: temperature: ltc2983: allocate iio channels once
+  iio: temperature: ltc2983: make bulk write buffer DMA-safe
+  dt-bindings: iio: temperature: ltc2983: refine
+  dt-bindings: iio: temperature: ltc2983: support more parts
+  iio: temperature: ltc2983: support more parts
 
-Regards,
-Angelo
+ .../bindings/iio/temperature/adi,ltc2983.yaml | 378 ++++++++++++------
+ drivers/iio/temperature/ltc2983.c             | 206 +++++++++-
+ 2 files changed, 434 insertions(+), 150 deletions(-)
+
+-- 
+2.38.1
+

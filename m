@@ -2,60 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F21D2605C3E
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 12:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4449E605C6E
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Oct 2022 12:35:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiJTK00 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 20 Oct 2022 06:26:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48162 "EHLO
+        id S230119AbiJTKf4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 20 Oct 2022 06:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230015AbiJTK0B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 06:26:01 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97E16FBCE5;
-        Thu, 20 Oct 2022 03:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1666261504; x=1697797504;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5CJvQyXYSyeyrHUYB55JAtZ2HIfmh1x13LmNIgYZbtw=;
-  b=IqqWI2sdPXe+7bDpyXR/QhF3teLG5ump0wWhqTIHuS1A2nh236+Hl4GE
-   E7RlO8tV/SW5opxbAkCtt0vAHN93R6ZEz4RGbkaWEqSi2mt0P4GhX1+BN
-   JXd34QW7ma81RY9Yu41gZXYmUlonicMJt3jh9Hd0pc5DjYeIx2EFIJu64
-   Mpu4z5S6Zv7UvZQfnZsaGu0c72F8fUgkmlcQThas4xe/YlH2UwRHjwjd1
-   sqVa8ccALFNRnrhwEelgyfTv+do/OyxQxLWqaEiTtjA0/fNsF91gfiZI4
-   dJVrLotCta7XXZFCZdg76Q6YW0QmYr9BuLvPWqTgiVe7FNQ5YnzccJdma
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.95,198,1661842800"; 
-   d="scan'208";a="196279431"
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 20 Oct 2022 03:24:53 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+        with ESMTP id S230158AbiJTKfz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 20 Oct 2022 06:35:55 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938FE11F48B;
+        Thu, 20 Oct 2022 03:35:53 -0700 (PDT)
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MtP9b6J9Sz6HJVl;
+        Thu, 20 Oct 2022 18:34:43 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.12; Thu, 20 Oct 2022 03:24:53 -0700
-Received: from localhost.localdomain (10.10.115.15) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.12 via Frontend Transport; Thu, 20 Oct 2022 03:24:50 -0700
-From:   Claudiu Beznea <claudiu.beznea@microchip.com>
-To:     <eugen.hristev@microchip.com>, <jic23@kernel.org>,
-        <lars@metafoo.de>, <nicolas.ferre@microchip.com>,
-        <alexandre.belloni@bootlin.com>
-CC:     <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Claudiu Beznea <claudiu.beznea@microchip.com>
-Subject: [PATCH] iio: adc: at91-sama5d2_adc: get rid of 5 degrees Celsius adjustment
-Date:   Thu, 20 Oct 2022 13:27:05 +0300
-Message-ID: <20221020102705.3639204-1-claudiu.beznea@microchip.com>
-X-Mailer: git-send-email 2.33.0
+ 15.1.2375.31; Thu, 20 Oct 2022 12:35:42 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 20 Oct
+ 2022 11:35:42 +0100
+Date:   Thu, 20 Oct 2022 11:35:41 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Wolfram Sang <wsa-dev@sang-engineering.com>
+CC:     Jason Gerecke <killertofu@gmail.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-i2c <linux-i2c@vger.kernel.org>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Lars-Peter Clausen" <lars@metafoo.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ping Cheng <pinglinux@gmail.com>,
+        "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
+        Jason Gerecke <jason.gerecke@wacom.com>,
+        Ping Cheng <ping.cheng@wacom.com>
+Subject: Re: [PATCH v2] i2c: Use u8 type in i2c transfer calls
+Message-ID: <20221020113541.0000490e@huawei.com>
+In-Reply-To: <Y1BuLyxEKLIAgF+5@shikoro>
+References: <20220718153448.173652-1-jason.gerecke@wacom.com>
+        <20220803145937.698603-1-jason.gerecke@wacom.com>
+        <CAHp75Vd6yEctJoNT6TpJ1+h4ZQckyLsaUSeSCV4MHqg+LUDkcg@mail.gmail.com>
+        <CANRwn3TutF6skHQHk08dFUa8gLMVGxui_QN7YK6nDacSpRHtLg@mail.gmail.com>
+        <Y1BZ8CjSnrKi+Yos@shikoro>
+        <CANRwn3SmrGX2-cqMK=dDTJR=OaxoVM9C+fsaa8jz96ADtH02DA@mail.gmail.com>
+        <Y1BuLyxEKLIAgF+5@shikoro>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,33 +66,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On SAMA7G5 final chip version there is no need for 5 degrees Celsius
-adjustment when computing junction temperature, thus, remove it.
+On Wed, 19 Oct 2022 23:37:51 +0200
+Wolfram Sang <wsa-dev@sang-engineering.com> wrote:
 
-Fixes: 5ab38b81895c ("iio: adc: at91-sama5d2_adc: add support for temperature sensor")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+> > I spent a little time trying to put together a Coccinelle script to
+> > take care of everything but I eventually realized the size of the task
+> > was larger than I was comfortable with. In particular, even though I
+> > might be able to put together a script, I worry I don't have a good
+> > way to test the resulting treewide changes to avoid regression.  
+> 
+> The coccinelle scripts are one thing. I am quite familiar with it, so I
+> regard this as "work but doable". My main headache is that I am not sure
+> about the best way to upstream the result. I'd like to avoid a flag-day
+> where all drivers across all subsystems need to be converted, but I
+> don't really see a way around it. Preparing such a branch and make sure
+> it does not regress is quite some work on a moving target.
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 33e251552214..870f4cb60923 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -2307,11 +2307,9 @@ static int at91_adc_temp_sensor_init(struct at91_adc_state *st,
- 	clb->p6 = buf[AT91_ADC_TS_CLB_IDX_P6];
- 
- 	/*
--	 * We prepare here the conversion to milli and also add constant
--	 * factor (5 degrees Celsius) to p1 here to avoid doing it on
--	 * hotpath.
-+	 * We prepare here the conversion to milli to avoid doing it on hotpath.
- 	 */
--	clb->p1 = clb->p1 * 1000 + 5000;
-+	clb->p1 = clb->p1 * 1000;
- 
- free_buf:
- 	kfree(buf);
--- 
-2.34.1
+Horrendous though it is, you 'could' take it via a void * intermediate
+step.   That way all the warnings will disappear (I think).
+You then move all the callers to providing u8 * then switch the function
+to that.  Could happen over several cycles with coccicheck moaning about
+any new entries in the meantime.
+
+Jonathan
+
+
+> 
+> 
 

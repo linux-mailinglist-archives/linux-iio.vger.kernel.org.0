@@ -2,84 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2B0607593
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Oct 2022 13:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9E8607601
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Oct 2022 13:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbiJULCN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Oct 2022 07:02:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54394 "EHLO
+        id S229565AbiJULVc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Oct 2022 07:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiJULCM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Oct 2022 07:02:12 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63EC725CD9D;
-        Fri, 21 Oct 2022 04:02:11 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id bu25so4503019lfb.3;
-        Fri, 21 Oct 2022 04:02:11 -0700 (PDT)
+        with ESMTP id S229478AbiJULVb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Oct 2022 07:21:31 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756102630B1;
+        Fri, 21 Oct 2022 04:21:29 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id j4so4657325lfk.0;
+        Fri, 21 Oct 2022 04:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SFdV7NP8C6yU75td1dUeGU+HXX+EEy+aRc6V3zFsqbQ=;
-        b=TbrKe9Qg0GPwKzMi3kwTM4dL5RNZV1TQ5V11/AQn2rXbqCq4oBbY0SSCJPub7j+C73
-         jWdO5tOoH6ji0OOtj4jwOpsmZbhta54THzLL00sHw6F1SP55asX4yHfgsO4gWslOISiA
-         U6b2Ome03rzJjYqNZot8UjOHnClqQXxa4O6Vx9dO/e/0l6JrCA8TOyp/GrJEF1XeX+hK
-         ChYX9++MUSiyCmk+BaC4YitsXyooNPNaq5BH+ymjseOBUs8MFG91V/hC5S2UB6WbbKUB
-         dP4vD7szodW+LiEN4HsiYeEWEIlHVe4mNQUj014q262hTaV53KDdwzbpDCCuh6Ch4mb2
-         GrcA==
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=um8uKpr6IMLYPZN84RDHzz0+lzO39s//WE53p3bIvdI=;
+        b=FF3xfEbj33nS1LmKp+sObedASgnVs/dtncTlQbMRTYrCoik48VCyqJoKYqOUlf9H3M
+         1hPl3WHcMNtrznzy33c0R+THNqCuYClkPAdOTVNr7aCatn5aATN3uiIj6ByM5vQ7e7Cz
+         4P/ecjWBzgNOM45hgbSDjPC49f4gEknVj6qhIBBC784JPxf6rUqKGS02SSdzUccYHgDo
+         BuPYTWDGkIyc3bEIDDtHYprCR8u+va91mEV1Zr4zzUKNGNRK89wxi5Ryt+mCPvRJr7XL
+         Jw+py3+8LRk1JIEezGBTve6WfH/pBt2GfFC/fvX4n1zJJAb4n4onxAmcggwPoGjOaCNl
+         fyyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SFdV7NP8C6yU75td1dUeGU+HXX+EEy+aRc6V3zFsqbQ=;
-        b=tylJ2ImkStjRM/TjULMQh7zwCftG+mY7kIz5T84trhr2N9PJumilSUk2hBZp/ueo24
-         UNtbz5bhxQyp5Ye+J3vk2/MacANh3xMeBACbPt9mQMYYOzBt2Yl8CSy5Qy+4mobFRGz1
-         tO7bkpkG2KT29+FgcJ9SZ56zeWwHJdXDZ4ymSg0vmId2s2GQYVm0hg4cYnynAIAFZUqT
-         G4i/M+9DhUjBaJel+8oXOPOHIqPtwiCMBwELlqjy8cGk5UfezzW/FVaIW5d52I5ZbOi2
-         2pOmZ7DFoyDUN7kI4Qvb0gNvt+BeEgE0SmBCwd5uy8RmUNzJEMnXuVbzWqL0BzuElM/5
-         26tw==
-X-Gm-Message-State: ACrzQf2t0x9Gt9tUd/tGhAXGJXtZ0c0XZepdd7EMl56raFnsF5K9BsHP
-        BbVovuEPd6fZJq88hNWTAFw=
-X-Google-Smtp-Source: AMsMyM6raGi5Vpme27/W16RYIuLjDxlRW179PQnGARfzxkMCjNe7hSQg5MdweULaZGPyLHtmHjBZ6A==
-X-Received: by 2002:a19:8c5e:0:b0:4a2:2d7b:eef with SMTP id i30-20020a198c5e000000b004a22d7b0eefmr6294463lfj.206.1666350129577;
-        Fri, 21 Oct 2022 04:02:09 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::2? (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
-        by smtp.gmail.com with ESMTPSA id q2-20020a2eb4a2000000b00275aeff36dbsm379738ljm.110.2022.10.21.04.02.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Oct 2022 04:02:08 -0700 (PDT)
-Message-ID: <eb6ce47a-ab87-8a98-7ffe-b8cc50f8a549@gmail.com>
-Date:   Fri, 21 Oct 2022 14:02:08 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+        bh=um8uKpr6IMLYPZN84RDHzz0+lzO39s//WE53p3bIvdI=;
+        b=cOq/RRyqMHin+s8aImF7aMyvJlZzGXBHp+UV3grAdxDvIXKiXc0bcx+KepBHmHELZa
+         zcksvu3OxtxuBex3Adi5WJS1SHPpLMe7JeoZOQ4UDBbKtEymxMqtji95cvtC6qrQJrQ8
+         Pc+CmMMyoqiq9iQjOAC77DZKIYlaCpFt045UdmUw9tHSpXcY/p2GkcRTzU16VzH2r348
+         n460sWUSXM295PWRkovH1979JPDNbrhXGmQnHUeGAq34hKvxiL4yM4ckMoPTVO2619BH
+         nD+T8CUGkmXQZ0qD6jcsrjPuk606Zq/rjd5tFUPRujI6SArooSIiUdqc3D1ua49KK3xz
+         nMeQ==
+X-Gm-Message-State: ACrzQf0r4nXAKWXiXMpt4nmjZeSwzJjixaMxHrAHxligJFETe/F56tJf
+        RSpGrzs3E3UPcIQDhW+JpZE=
+X-Google-Smtp-Source: AMsMyM6IUT5u5RwT/QXL9jAwwuXs9j9sSS2GwNx7vRxhO/Rys0XBI9stWkiRmB7h0HQsc0oSxcUgKQ==
+X-Received: by 2002:a05:6512:66:b0:4a2:3c36:8c3d with SMTP id i6-20020a056512006600b004a23c368c3dmr5958346lfo.687.1666351287194;
+        Fri, 21 Oct 2022 04:21:27 -0700 (PDT)
+Received: from dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
+        by smtp.gmail.com with ESMTPSA id y1-20020a2e95c1000000b0026dd24dc4ecsm3360262ljh.82.2022.10.21.04.21.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Oct 2022 04:21:26 -0700 (PDT)
+Date:   Fri, 21 Oct 2022 14:21:13 +0300
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>,
+        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
         Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <cover.1666263249.git.mazziesaccount@gmail.com>
- <5000bd61650554658d13619c8244f02cedbc182a.1666263249.git.mazziesaccount@gmail.com>
- <Y1FcftQKimmvcOej@smile.fi.intel.com>
- <2cad533d-32d1-5ca1-74e6-e2debcbdad81@gmail.com>
- <Y1J5KiH6IJLmrWH4@smile.fi.intel.com>
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-In-Reply-To: <Y1J5KiH6IJLmrWH4@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v4 0/3] iio: Support ROHM/Kionix kx022a
+Message-ID: <cover.1666350457.git.mazziesaccount@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="cDR5lV6bIY1LLPNT"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -88,108 +79,110 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 10/21/22 13:49, Andy Shevchenko wrote:
-> On Fri, Oct 21, 2022 at 10:10:08AM +0300, Matti Vaittinen wrote:
->> On 10/20/22 17:34, Andy Shevchenko wrote:
->>> On Thu, Oct 20, 2022 at 02:37:15PM +0300, Matti Vaittinen wrote:
-> 
-> ...
-> 
->>>> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
->>>> +			       sizeof(__le16));
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	*val = le16_to_cpu(data->buffer[0]);
->>>
->>> 'p'-variant of the above would look better
->>>
->>> 	*val = le16_to_cpup(data->buffer);
->>>
->>> since it will be the same as above address without any additional arithmetics.
->>>
->>
->> I guess there is no significant performance difference? To my eye the
->> le16_to_cpu(data->buffer[0]) is much more clear. I see right from the call
->> that we have an array here and use the first member. If there is no obvious
->> technical merit for using le16_to_cpup(data->buffer) over
->> le16_to_cpu(data->buffer[0]), then I do really prefer the latter for
->> clarity.
-> 
-> Then you probably wanted to have &data->buffer[0] as a parameter to
-> regmap_bulk_read()?
 
-Yes! Thanks.
+--cDR5lV6bIY1LLPNT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> ...
-> 
->>>> +	if (data->trigger_enabled) {
->>>> +		iio_trigger_poll_chained(data->trig);
->>>> +		ret = IRQ_HANDLED;
->>>> +	}
->>>> +
->>>> +	if (data->state & KX022A_STATE_FIFO) {
->>>
->>>> +		ret = __kx022a_fifo_flush(idev, KX022A_FIFO_LENGTH, true);
->>>> +		if (ret > 0)
->>>> +			ret = IRQ_HANDLED;
->>>
->>> I don't like it. Perhaps
->>>
->>> 	bool handled = false;
->>> 	int ret;
->>>
->>> 	...
->>> 		ret = ...
->>> 		if (ret > 0)
->>> 			handled = true;
->>> 	...
->>>
->>> 	return IRQ_RETVAL(handled);
->>
->> I don't see the benefit of adding another variable 'handled'.
->> If I understand correctly, it just introduces one extra 'if' in IRQ thread
->> handling while hiding the return value in IRQ_RETVAL() - macro.
->>
->> I do like seeing the IRQ_NONE being returned by default and IRQ_HANDLED only
->> when "handlers" are successfully executed. Adding extra variable just
->> obfuscates this (from my eyes) while adding also the additional 'if'.
-> 
-> You assigning semantically different values to the same variable inside the
-> function.
+Add initial support for ROHM/Kionix kx022a accelerometer
 
-Ah, yes! This was really a bug making it way in. I guess you may just 
-have saved me from some not-that-funny debugging session... Well spotted!
+About the HW:
+KX022A accelerometer is a sensor which:
+	- supports G-ranges of (+/-) 2, 4, 8, and 16G
+	- can be connected to I2C or SPI
+	- has internal HW FIFO buffer
+	- supports various ODRs (output data rates)
+	- support detecting special events like double tap or motion
+	- can be configured to wake-up system when events are detected.
 
-I still don't like hiding the IRQ_HANDLED / IRQ_NONE. I'll just go for
+About the series:
 
-         if (data->state & KX022A_STATE_FIFO) { 
+This series adds support for only getting the accelerometer data and
+configuring the G-range / ODR via IIO. Motion detection or double-tap
+detection are not supported by the series. The other quite important but
+still missing piece is the runtime PM. Nevertheless, the driver should be
+usable and brings the basic support for getting accelerometer data.
 
-                 int ok; 
+Changelog v4: (More detailed log in individual patches)
+	- KX022A: mostly styling/print fixes.
+	- KX022A: fix return value from IRQ thread handler.
 
- 
+Changelog v3: (More detailed log in individual patches)
+	- dt-bindings: fixed as suggested by Krzysztof
+	- KX022A: multiple fixes as suggested by Andy
+		- Fair to mention that couple of suggested changes are
+		  not done (Some styling, boilerplate text in KConfig)
+		  as there has been no consensus whether the suggested
+		  changes improve situation. Ultimately the decision
+		  whether these changes are mandatory lay on the
+		  shoulders of the maintainers... Sorry for that.
+	- Enable the FIFO without module param now that the "FIFO stuck"
+	  issue can be prevented.
+	- Fix potential race with time-stamp calculation when user-space
+	  invokes the fifo flush.
+	- Drop the already merged regulator patches.
 
-                 ok = __kx022a_fifo_flush(idev, KX022A_FIFO_LENGTH, 
-true);
-                 if (ok > 0) 
+Changelog v2: (More detailed log in individual patches)
+	- dt-bindings: fixed as suggested by Krzysztof
+	- dt-bindings: support both INT1 and INT2
+	- KX022A: multiple fixes as suggested by Jonathan
+	- fixed SPI driver after some testing
 
-                         ret = IRQ_HANDLED; 
+---
 
-         }
+Matti Vaittinen (3):
+  dt-bindings: iio: Add KX022A accelerometer
+  iio: accel: Support Kionix/ROHM KX022A accelerometer
+  MAINTAINERS: Add KX022A maintainer entry
 
-for v4. (Which I try to send still today before my memory is flushed by 
-the weekend :])
+ .../bindings/iio/accel/kionix,kx022a.yaml     |   65 +
+ MAINTAINERS                                   |    5 +
+ drivers/iio/accel/Kconfig                     |   21 +
+ drivers/iio/accel/Makefile                    |    3 +
+ drivers/iio/accel/kionix-kx022a-i2c.c         |   51 +
+ drivers/iio/accel/kionix-kx022a-spi.c         |   58 +
+ drivers/iio/accel/kionix-kx022a.c             | 1145 +++++++++++++++++
+ drivers/iio/accel/kionix-kx022a.h             |   82 ++
+ 8 files changed, 1430 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/kionix,kx02=
+2a.yaml
+ create mode 100644 drivers/iio/accel/kionix-kx022a-i2c.c
+ create mode 100644 drivers/iio/accel/kionix-kx022a-spi.c
+ create mode 100644 drivers/iio/accel/kionix-kx022a.c
+ create mode 100644 drivers/iio/accel/kionix-kx022a.h
 
-Thanks a lot!
 
-Yours
-	-- Matti
+base-commit: 9abf2313adc1ca1b6180c508c25f22f9395cc780
+--=20
+2.37.3
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
 
-~~ When things go utterly wrong vim users can always type :help! ~~
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
 
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--cDR5lV6bIY1LLPNT
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNSgKEACgkQeFA3/03a
+ocWPsAf8DXinC03KfZ56jd1tp0TqDZK4zaACrK8GdOnGGB90HOZ0UETHWNLTNgca
+rX1ZkHH5X+uZq1SiN07qbbUgwYVJwG/bWvfI3Mw2T6UnzQ/TTtBLDi4OLtCdA5bc
+iRqVzNZwyb3BUT6i9Bv2KZ7byL1Ul2gFDMWqB+ug36jtOdow9h7nS2kLbjrwA4T/
+q+4v1Uall/LtwVdyimMzjJfu3LWBbIPR3qFa/88YIFnt6jaFx4MfmEiwSSNnGS1v
+JpfewWxsywFQvLG9ZSwscfl5xKzVrcxT3CqIeFr5rNUmKNEeyYhLJwTYT5fEKmRj
++DuR9Dw3K0XBhzX09f1j7S86wQioJg==
+=KHaD
+-----END PGP SIGNATURE-----
+
+--cDR5lV6bIY1LLPNT--

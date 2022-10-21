@@ -2,451 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBBC76070B5
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Oct 2022 09:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E8DD6071CD
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Oct 2022 10:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229868AbiJUHKP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 21 Oct 2022 03:10:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
+        id S229744AbiJUIK4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 21 Oct 2022 04:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbiJUHKO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Oct 2022 03:10:14 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6AEBF6824;
-        Fri, 21 Oct 2022 00:10:11 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id j14so2451701ljh.12;
-        Fri, 21 Oct 2022 00:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P+DyRnzX2NJL/tNy1TqvA1u8dEYMW2T23e/Syk4DuRA=;
-        b=U4Ol12POOgdO5lIAPaSKDT6b5WeLLMHMRhTck8cmXOyUJdEMLC+5ItAPZowF4M9rWO
-         BS7AV5mp+92ZFULfsI+LP8EXM5/mGdHZCs2SjRnzwgbz+gFrlm1ZZiMmMhQM7zWDaDha
-         24ist3kMujvdltRs5ps95P0cC7MyYdmi2Zf1X+fwEK8zgADnxRQpd/8REuV6O7sQc6vI
-         sHEB2pu0lMJtlGB+G5XEPAXBpbT9Xn6F1HmGg+dZWrjPybkGZGvTsCKAu2SBgByPKwjU
-         2fDP25UuOkQ9siuh4oa4SAg7g86Ku9OwgE0QiznFE5YrsWX90IdP9ipeOCV949smgX7w
-         zwOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:from:content-language
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+DyRnzX2NJL/tNy1TqvA1u8dEYMW2T23e/Syk4DuRA=;
-        b=2lxPVxrdzhwV/UjtDOeZoHip422VacTAVau7VxOvLPDSI0FCeW+BS5QOlf/dsBRv93
-         mFeyHsJYySizvCEJNQwqWlruKBg2NP7NeE2KT/9CuDFy48FMcjiMLvp1qRYwhNl/FOae
-         pv5GF5Vt9uCpHVN2hi0gvERaO4uuzvRkqVwklqZxc2bc3FaehMDDDF8+MgoWVSzhcQ1F
-         +6XvB6oXJF+OJomuxB4IkGOnnfkbDuby6da4pgDD+9dZ4MZEcM+5huL22tOszXdaFF5k
-         VyBKEG2eIg7ufcUaz/jweHMoZiV+V6eX0Cs2weyKbhRS8YtcPLJan9gfoMlJeIa+d3CF
-         jPCg==
-X-Gm-Message-State: ACrzQf2Pcxce5YJ+v89jqfhtEvFBQjY3YbfG/d2XIGwmrvqwQywq8fhm
-        dwswIlpyLhhxDYRXxyKwg14=
-X-Google-Smtp-Source: AMsMyM5fecE/7tVBOtJL0ll7ohXyQOHQk2BhGfAqhPz0IZTQYSNLhhSv0+wV9q4v01GtZMfSi7wwgQ==
-X-Received: by 2002:a2e:8781:0:b0:26d:e758:ce84 with SMTP id n1-20020a2e8781000000b0026de758ce84mr6069368lji.178.1666336209831;
-        Fri, 21 Oct 2022 00:10:09 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:16f3:4a00::2? (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
-        by smtp.gmail.com with ESMTPSA id t16-20020a056512209000b0048b26d4bb64sm3051993lfr.40.2022.10.21.00.10.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Oct 2022 00:10:09 -0700 (PDT)
-Message-ID: <2cad533d-32d1-5ca1-74e6-e2debcbdad81@gmail.com>
-Date:   Fri, 21 Oct 2022 10:10:08 +0300
+        with ESMTP id S229732AbiJUIKx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 21 Oct 2022 04:10:53 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9607B19B646;
+        Fri, 21 Oct 2022 01:10:44 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 571A5660252D;
+        Fri, 21 Oct 2022 09:10:42 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1666339842;
+        bh=DiUVKkAeTzt0hWy3SdEYnMX5hoYMr8kBkjbSbi5NeMk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=HW24aQ/wmWqGWEVweMxpZMkA1vOidAYC+UJVnKvuf5wfABHR4d7Zl5y4nxRkRYN6n
+         wDQk20Bs3A7lAF1Z1atsJXKr8WK1mgBxKKRTWjZxyh+Ul69TOgmfmbKjv8Tz1/hQEq
+         TRsVxNXuOKJXawwhYx62y9a+VV4k2U70y0UA0g/IfSLOMbHF7A3fz1Ia2JSm6wW/ZN
+         3B3tbAGfWhLPRyQ0EWqUYHMpXJ9BqLR2kyL1+hYz+NiQ2u6TPWq8GK7vZbGdsH0nGe
+         iZAOkk2BRusDsZUrgSx/xZQbNdF/47M6TUMLlUkfwrBdBlZdBSdUQl9bPDAbQ8LHWV
+         VWvA/XEZ8NATg==
+Message-ID: <50be72b3-cf72-132d-269a-efe89ae0cb17@collabora.com>
+Date:   Fri, 21 Oct 2022 10:10:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.0
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <cover.1666263249.git.mazziesaccount@gmail.com>
- <5000bd61650554658d13619c8244f02cedbc182a.1666263249.git.mazziesaccount@gmail.com>
- <Y1FcftQKimmvcOej@smile.fi.intel.com>
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: mediatek,mt2701-auxadc: new
+ 32k clock
 Content-Language: en-US
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v3 2/3] iio: accel: Support Kionix/ROHM KX022A
- accelerometer
-In-Reply-To: <Y1FcftQKimmvcOej@smile.fi.intel.com>
+To:     Daniel Golle <daniel@makrotopia.org>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <f98ed7f3fc15a0614443a57427d46ce17ec2e0cc.1666190235.git.daniel@makrotopia.org>
+ <dbe88fd2f7ea5b2f419dce6ecb48c20e96e2e634.1666190235.git.daniel@makrotopia.org>
+ <b33b9d2a-f6d5-b2a7-bcb8-1ed2303c04b4@collabora.com>
+ <Y1Gh3TQOznz3dmSJ@makrotopia.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <Y1Gh3TQOznz3dmSJ@makrotopia.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Andy & All,
-
-Thanks again for the review.
-
-On 10/20/22 17:34, Andy Shevchenko wrote:
-> On Thu, Oct 20, 2022 at 02:37:15PM +0300, Matti Vaittinen wrote:
->> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
->> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
->> tap/motion detection, wake-up & back-to-sleep events, four acceleration
->> ranges (2, 4, 8 and 16g) and probably some other cool features.
+Il 20/10/22 21:30, Daniel Golle ha scritto:
+> On Thu, Oct 20, 2022 at 10:28:02AM +0200, AngeloGioacchino Del Regno wrote:
+>> Il 19/10/22 16:38, Daniel Golle ha scritto:
+>>> Newer MediaTek SoCs need an additional clock to be brought up for
+>>> AUXADC to work. Add this new optional clock to
+>>> mediatek,mt2701-auxadc.yaml.
+>>>
+>>> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+>>> ---
+>>>    .../bindings/iio/adc/mediatek,mt2701-auxadc.yaml          | 8 ++++++--
+>>>    1 file changed, 6 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+>>> index 7f79a06e76f596..c2a1813dd54152 100644
+>>> --- a/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+>>> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt2701-auxadc.yaml
+>>> @@ -44,10 +44,14 @@ properties:
+>>>        maxItems: 1
+>>>      clocks:
+>>> -    maxItems: 1
+>>> +    maxItems: 2
+>>> +    minItems: 1
+>>>      clock-names:
+>>> -    const: main
+>>> +    items:
+>>> +      - const: main
+>>> +      - const: 32k
 >>
->> Add support for the basic accelerometer features such as getting the
->> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
->> using the WMI IRQ).
+>> You're adding this for MT7986, and I don't see any 32KHz ADC clock on that SoC.
+>> I suppose that your '32k' clock is CLK_INFRA_ADC_FRC_CK, currently parented to
+>> 'csw_f26m_sel', so that's 26MHz, not 32KHz.
 >>
->> Important things to be added include the double-tap, motion
->> detection and wake-up as well as the runtime power management.
+>> Since you'll need the same changes for thermal as well, I would consider setting
+>> "infra_adc_frc" as a parent of "infra_adc_26m", like so:
+>>
+>> 	GATE_INFRA1(CLK_INFRA_ADC_26M_CK, "infra_adc_26m", "infra_adc_frc", 20),
+>> 	GATE_INFRA1(CLK_INFRA_ADC_FRC_CK, "infra_adc_frc", "csw_f26m_sel", 21),
+>>
+>> ...just because there's apparently no reason to have one of them enabled but not
+>> the other or, at least, it looks like we *always* need ADC_26M_CK enabled when
+>> ADC_FRC_CK is enabled.
+>>
 > 
-> ...
+> Yes, this change is for MT7986 and MT7981, immitating the behavior
+> found in MediaTek's SDK sources. Embedding the dependency into the
+> clock driver as you have suggested should also be possible as it is
+> true that you always need them both and a similar change for the
+> thermal driver would be needed as well.
 > 
->> +	if (!i2c->irq) {
->> +		dev_err(dev, "No IRQ configured\n");
->> +		return -EINVAL;
+> Unless you were planning to do so already I will send a patch with your
+> suggested change to drivers/clk/mediatek/clk-mt7986-infracfg.c.
+> In any case, this series can be dropped then.
 > 
-> At least
+> Thank you for the review!
 > 
-> 	return dev_err_probe(...);
-> 
-> for know error codes (or when we know that there won't be EPROBE_DEFER), takes
-> less LoCs in the source file.
-
-I think we discussed this already (and disagreed). To me it looks plain 
-ugly to have hard-coded return value in dev_err_probe(). That's why I 
-prefer the
-
- >> +		dev_err(dev, "No IRQ configured\n");
- >> +		return -EINVAL;
-
-when -EINVAL is hard-coded. On the other hand, your comment below is 
-very valid...
-
-> 
->> +	}
-> 
-> ...
-> 
->> +	regmap = devm_regmap_init_i2c(i2c, &kx022a_regmap);
->> +	if (IS_ERR(regmap)) {
->> +		dev_err(dev, "Failed to initialize Regmap\n");
->> +		return PTR_ERR(regmap);
->  > Ditto here and anywhere else for the similar cases.
-
-...Yes. This is different from the case above, and I agree the 
-dev_err_probe() should be used here. Thanks for pointing it out. I'll 
-change this and the one in SPI driver as well.
-
-> 
->> +	}
-> 
-> ...
-> 
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		*vals = (const int *)kx022a_accel_samp_freq_table;
->> +		*length = ARRAY_SIZE(kx022a_accel_samp_freq_table) * 2;
->> +		*type = IIO_VAL_INT_PLUS_MICRO;
->> +		return IIO_AVAIL_LIST;
->> +	case IIO_CHAN_INFO_SCALE:
->> +		*vals = (const int *)kx022a_scale_table;
->> +		*length = ARRAY_SIZE(kx022a_scale_table) * 2;
->> +		*type = IIO_VAL_INT_PLUS_MICRO;
->> +		return IIO_AVAIL_LIST;
-> 
-> These  ' * 2' can be replaced with respective ARRAY_SIZE() of nested element
-
-To me this sounds good. I'll see how it would look like.
-
-> 
-> ...
-> 
->> +static int kx022a_turn_on_off_unlocked(struct kx022a_data *data, bool on)
->> +{
->> +	int ret;
->> +
->> +	if (on)
->> +		ret = regmap_set_bits(data->regmap, KX022A_REG_CNTL,
->> +				      KX022A_MASK_PC1);
->> +	else
->> +		ret = regmap_clear_bits(data->regmap, KX022A_REG_CNTL,
->> +					KX022A_MASK_PC1);
->> +
->> +	if (ret)
->> +		dev_err(data->dev, "Turn %s fail %d\n", (on) ? "ON" : "OFF",
->> +			ret);
-> 
-> str_on_off() ?
-
-Never heard of that before. Seems we have all kinds of gadgets in kernel 
-:) I deeply dislike how ternary looks like so I will gladly hide it in 
-str_on_off() - thanks!
-
->> +	switch (mask) {
->> +	case IIO_CHAN_INFO_SAMP_FREQ:
->> +		n = ARRAY_SIZE(kx022a_accel_samp_freq_table);
->> +
->> +		while (n--)
->> +			if (val == kx022a_accel_samp_freq_table[n][0] &&
->> +			    kx022a_accel_samp_freq_table[n][1] == val2)
-> 
-> Why not to use the same kind of l and r arguments in == lines?
-> In current form it's a bit harder to see what the catch here.
-
-As to why I didn't - because for me the order does not matter regarding 
-how hard it is to catch the meaning here. However, there is no problem 
-changing this because the order does not matter for me :)
-> 
-> ...
-> 
->> +static int kx022a_get_axis(struct kx022a_data *data,
->> +			   struct iio_chan_spec const *chan,
->> +			   int *val)
->> +{
->> +	int ret;
->> +
->> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
->> +			       sizeof(__le16));
->> +	if (ret)
->> +		return ret;
->> +
->> +	*val = le16_to_cpu(data->buffer[0]);
-> 
-> 'p'-variant of the above would look better
-> 
-> 	*val = le16_to_cpup(data->buffer);
-> 
-> since it will be the same as above address without any additional arithmetics.
 > 
 
-I guess there is no significant performance difference? To my eye the 
-le16_to_cpu(data->buffer[0]) is much more clear. I see right from the 
-call that we have an array here and use the first member. If there is no 
-obvious technical merit for using le16_to_cpup(data->buffer) over 
-le16_to_cpu(data->buffer[0]), then I do really prefer the latter for 
-clarity.
+You're welcome. Nice job sending the clock commit.
 
->> +	return IIO_VAL_INT;
->> +}
-> 
-> 
-> ...
-> 
->> +	return regmap_write(data->regmap, KX022A_REG_BUF_CLEAR, 0x0);
-> 
-> Would simple '0' suffice? 
+For the maintainers:
+This series can be abandoned, as that clock dependency was fixed elsewhere.
 
-Technically, yes. I however prefer having the register values in hex - 
-unless they directly map to some meaningful physical world entity that 
-is easier to understand when in decimal. (For example, a register which 
-content would directly represent millivolts or divider or any such 
-meaningful physical entity).
+Regards,
+Angelo
 
-> ...
-> 
->> +	for (i = 0; i < count; i++) {
->> +		int bit;
->> +		u16 *samples = &buffer[i * 3];
-> 
-> I would put it as
-> 
-> 		u16 *samples = &buffer[i * 3];
-> 		int bit;
-
-Well, you know my opinion but Ok ;)
-
-Now I also noticed that the name of the block scoped variable 'samples' 
-collides with the function scoped variable of same name. I'll rename the 
-block scoped 'samples' just to avoid confusion.
-
-> 
->> +		for_each_set_bit(bit, idev->active_scan_mask, AXIS_MAX)
->> +			memcpy(&data->scan.channels[bit], &samples[bit],
->> +			       sizeof(data->scan.channels[0]));
-> 
-> Why not use bit instead of 0 for the sake of consistency?
-
-Because, again, using 0 is clearer to me. It leaves zero room for 
-wondering :)
-
-> 
-> Also might be good to have a temporary for channels:
-> 
-> 		... *chs = data->scan.channels;
-
-I think we have discussed this too previously somewhere. I do dislike 
-hiding things in temporary variables. I like seeing that we are really 
-using the driver private data and not some stack variable and only use 
-temporary variables when they significantly reduce the line count.
-
-However, in this particular case I can scope the temporary variable in 
-this smallish block of code - which makes it pretty easy to spot we are 
-using the data->scan.channel underneath (as the chs is assigned just a 
-row above). And it helps us avoid line split so ... Ok.
-
-> 
-> 
-> 		for_each_set_bit(bit, idev->active_scan_mask, AXIS_MAX)
-> 			memcpy(&chs[bit], &samples[bit], sizeof(chs[bit]));
-> 
->> +		iio_push_to_buffers_with_timestamp(idev, &data->scan, tstamp);
->> +
->> +		tstamp += sample_period;
->> +	}
-> 
-> ...
-> 
->> +	ret = regmap_clear_bits(data->regmap, data->ien_reg,
->> +				KX022A_MASK_WMI);
-> 
-> I don't see why it's not on a single line. Even if you are a conservative
-> adept of 80.
-
-Good catch. Thanks.
-
-> ...
-> 
->> +	int ret = IRQ_NONE;
->> +
->> +	mutex_lock(&data->mutex);
->> +
->> +	if (data->trigger_enabled) {
->> +		iio_trigger_poll_chained(data->trig);
->> +		ret = IRQ_HANDLED;
->> +	}
->> +
->> +	if (data->state & KX022A_STATE_FIFO) {
-> 
->> +		ret = __kx022a_fifo_flush(idev, KX022A_FIFO_LENGTH, true);
->> +		if (ret > 0)
->> +			ret = IRQ_HANDLED;
-> 
-> I don't like it. Perhaps
-> 
-> 	bool handled = false;
-> 	int ret;
-> 
-> 	...
-> 		ret = ...
-> 		if (ret > 0)
-> 			handled = true;
-> 	...
-> 
-> 	return IRQ_RETVAL(handled);
-
-I don't see the benefit of adding another variable 'handled'.
-If I understand correctly, it just introduces one extra 'if' in IRQ 
-thread handling while hiding the return value in IRQ_RETVAL() - macro.
-
-I do like seeing the IRQ_NONE being returned by default and IRQ_HANDLED 
-only when "handlers" are successfully executed. Adding extra variable 
-just obfuscates this (from my eyes) while adding also the additional 'if'.
-
-> 
->> +	}
->> +
->> +	mutex_unlock(&data->mutex);
->> +
->> +	return ret;
-> 
-> ...
-> 
->> +	if (!dev)
->> +		return -ENODEV;
-> 
-> Do you really need this check?
-
-Good question. In principle I do like checking the parameters of 
-exported calls. OTOH, this export is now done using the driver namespace 
-so yes, I think we can drop the check.
-
-> 
-> ...
-> 
->> +	fw = dev_fwnode(dev);
->> +	if (!fw)
->> +		return -ENODEV;
-> 
-> You may combine these two in one.
-> 
-> 	struct fwnode_handle *fwnode;
-> 
-> 
-> 	fwnode = dev ? dev_fwnode(dev) : NULL;
-> 	if (!fwnode)
-> 		return -ENODEV;
-
-I just drop the check for !dev. But even if I didn't, I wouldn't use 
-ternary here - to me it is _much_ harder to read compared to two 
-separate ifs while giving no obvious benefits.
-
-> And please, call it fwnode.
-
-Ok. I personally like fw more - probably because I'm used to that - but 
-I guess the 'fwnode' is used in number of other places. Thanks.
-
-> ...
-> 
->> +	irq = fwnode_irq_get_byname(fw, "INT1");
->> +	if (irq > 0) {
->> +		data->inc_reg = KX022A_REG_INC1;
->> +		data->ien_reg = KX022A_REG_INC4;
->> +
->> +		if (fwnode_irq_get_byname(dev_fwnode(dev), "INT2") > 0)
-> 
-> Why not use fwnode again
-
-I think I've beeen distracted while writing this part :) I guess I have 
-added the temporary variable 'fw' just for the purpose of being able to 
-call the dev_fwnode() just once. So, Thanks!
-
-> 
-> ...
-> 
->> +	if (ret)
->> +		return dev_err_probe(data->dev, ret,
->> +				     "iio_triggered_buffer_setup_ext FAIL %d\n",
->> +				     ret);
-> 
-> Drop dup ret at the end, dev_err_probe() has been adding it to each message.
-
-Thanks!
-
-> 
-> ...
-> 
->> +	/*
->> +	 * No need to check for NULL. request_threadedI_irq() defaults to
->> +	 * dev_name() should the alloc fail.
->> +	 */
->> +	name = devm_kasprintf(data->dev, GFP_KERNEL, "%s-kx022a",
->> +			      dev_name(data->dev));
-> 
-> It's not clear why do you need a suffix here.
-> 
-
-Because for example just "spi0,0" is much less informative compared to 
-"spi0.0-kx022a". As an user I like seeing the device generating the IRQ. 
-I don't wan't to dig out details like which bus/chipselect my device is 
-connected to - especially if I have only one accelerometer connected. 
-The dev_name() is used just to make this unique for cases where we could 
-have multiple similar devices connected to the system (as you suggested 
-in previous review).
-
-
-Once again, thanks for the review! I appreciate your help/suggestions.
-
-Yours
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
 

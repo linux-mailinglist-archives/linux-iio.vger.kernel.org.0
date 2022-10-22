@@ -2,96 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7E4608DE0
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Oct 2022 17:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30783608E06
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Oct 2022 17:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbiJVPMD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 22 Oct 2022 11:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55526 "EHLO
+        id S229667AbiJVPTH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 22 Oct 2022 11:19:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbiJVPMD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Oct 2022 11:12:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B16AE70;
-        Sat, 22 Oct 2022 08:12:01 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72974600A0;
-        Sat, 22 Oct 2022 15:12:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0AFC433D6;
-        Sat, 22 Oct 2022 15:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666451520;
-        bh=In+jdEa6PaDm6UxK4aTuN5Z+tRddb8x9/v/8UOAx4CM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=avjcX0lGs5FKvcorr1rpwJrsynEOYAg7eZCBvamwCXmQjykE5sZcFKeG7ynty2vnB
-         lPCC+DgCSCcY6//vEXcP/TZwPQb251pZyc2mbOpCtgSdW21X3+P9nN3sKHxeUZ5V1N
-         uWW7Xdw/ycciT0Y2+qf9W8E7qHS7mdVvpMf8dTY2w1g4xteLcAr6ObnbE/B9bRAzcj
-         fAy7W8DoHvqfW25UGZz5N6pPFsUDbHhl9FQYcbSbf0xuW5kp6lgHJp5JPY8IlRLTCK
-         8UhYL7bV0qHhDJ6hGvahLp0JUMMuDdjHm5v1oOXmNvAL4KAnaJdPJIM88jE1Zz7N+L
-         /1l0X67CqJ5MA==
-Date:   Sat, 22 Oct 2022 11:11:57 -0400
-From:   William Breathitt Gray <wbg@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] counter: 104-quad-8: Fix race getting function mode and
- direction
-Message-ID: <Y1QIPTIxjo9rDF/I@ishi>
-References: <20221020141121.15434-1-william.gray@linaro.org>
+        with ESMTP id S229738AbiJVPTA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 22 Oct 2022 11:19:00 -0400
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EE4E5B717
+        for <linux-iio@vger.kernel.org>; Sat, 22 Oct 2022 08:18:55 -0700 (PDT)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-12c8312131fso7096411fac.4
+        for <linux-iio@vger.kernel.org>; Sat, 22 Oct 2022 08:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gz0LxUsOUlJDcIAW5bPu+WDjpQGro2FyWxGKpu7r8bo=;
+        b=gWrs34NeTJPV2fQ1MVoQY+zpFojHR3D/A6fVxaEOoPyaG1lz86TK/RINtSik3ihs6m
+         epr6PhFlnoD33CCeTfWoNQCRee99kzlwRupaR937A3VU5HU4OTIvs/zluF82SMnywl6D
+         HdEJ7m7PbwxapFaNOFa9ppWW4y91iGtKkwoLpnocgDPBTYKE8ItremNKc8YrHhceRIZp
+         h3VMtehI1AqTwZwEWQcTgFOjDVRQQngjmAnbv2gz4Ef/Bbck+zcB6GCOTs8PKUKrqPeL
+         49sPdfcCEYUyqTEphtRdJczJc984b2NmTshEFvs/XiFALWDOPilFuaMHYm7NR6Fhz+qX
+         X9nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gz0LxUsOUlJDcIAW5bPu+WDjpQGro2FyWxGKpu7r8bo=;
+        b=2av20x7KeJ/8ZEePSQPGJ/xs2rNyzGRDChu/gNlVSC9DxIgBDD+HjGIE/PEdj3LaiD
+         q+dOS9lj9p9GfQpwHlW3sOeOMiWcBAL0D03zdFjJxqsqECPvXpfsfFN4f8j4Wmds1dFA
+         EdFh5UBIdppkolKNEOiRxXVCdhNki8ZcPhDEMFrdjfiF2UAzJNLJy18E7r+tA+BjuPEO
+         QZyKhoWZHtkQMiymxrqSukxikKfqpC0Q+SSVnxbQxu5K5pD1jruZsxLUwytQw5P6klZ4
+         25odg1OY7aw4CxnWiQ1hKHIehJ7XkqMgkeLCX/ifxWUMISp+OvPj8tm+LEkU/fmMMv1V
+         JiEw==
+X-Gm-Message-State: ACrzQf1oMt6baRQGmETygp4alEYvbj7dythXtBb2l14wDMMLvQhsaWVP
+        35e0MVWbx0TEn1Kan1y7fVxSZQ==
+X-Google-Smtp-Source: AMsMyM4Ums0et6AQMZox+xdB7Wz2plUu78klbaMd0EOzV1OnnwGbhhl8/BymyNDqbBFL+Y+cBT/t0g==
+X-Received: by 2002:a05:6870:f288:b0:131:de71:3eb6 with SMTP id u8-20020a056870f28800b00131de713eb6mr31239483oap.63.1666451935002;
+        Sat, 22 Oct 2022 08:18:55 -0700 (PDT)
+Received: from [10.203.8.70] ([205.153.95.177])
+        by smtp.gmail.com with ESMTPSA id v5-20020a056870310500b00136c20b1c59sm11538284oaa.43.2022.10.22.08.18.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Oct 2022 08:18:54 -0700 (PDT)
+Message-ID: <e7ace68a-98e5-63c8-7dd7-a35d0eba1c6e@linaro.org>
+Date:   Sat, 22 Oct 2022 11:18:49 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dzif1vsoZY6O8z+P"
-Content-Disposition: inline
-In-Reply-To: <20221020141121.15434-1-william.gray@linaro.org>
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH 00/21] ARM: s3c: clean out obsolete platforms
+To:     Arnd Bergmann <arnd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
+        Simtec Linux Team <linux@simtec.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        patches@opensource.cirrus.com,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-watchdog@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-pwm@vger.kernel.org
+References: <20221021202254.4142411-1-arnd@kernel.org>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221021202254.4142411-1-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 21/10/2022 16:22, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The s3c24xx platform was marked as deprecated a while ago,
+> and for the s3c64xx platform, we marked all except one legacy
+> board file as unused.
+> 
+> This series removes all of those, leaving only s3c64xx support
+> for DT based boots as well as the cragg6410 board file.
+> 
+> About half of the s3c specific drivers were only used on
+> the now removed machines, so these drivers can be retired
+> as well. I can either merge the driver removal patches through
+> the soc tree along with the board file patches, or subsystem
+> maintainers can pick them up into their own trees, whichever
+> they prefer.
 
---dzif1vsoZY6O8z+P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Just to be sure - do you expect me to ack the series, or rather as usual
+pick them up?
 
-On Thu, Oct 20, 2022 at 10:11:21AM -0400, William Breathitt Gray wrote:
-> The quad8_action_read() function checks the Count function mode and
-> Count direction without first acquiring a lock. This is a race condition
-> because the function mode could change by the time the direction is
-> checked.
->=20
-> Because the quad8_function_read() already acquires a lock internally,
-> the quad8_function_read() is refactored to spin out the no-lock code to
-> a new quad8_function_get() function.
->=20
-> To resolve the race condition in quad8_action_read(), a lock is acquired
-> before calling quad8_function_get() and quad8_direction_read() in order
-> to get both function mode and direction atomically.
->=20
-> Fixes: f1d8a071d45b ("counter: 104-quad-8: Add Generic Counter interface =
-support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 
-Queued for counter-fixes.
+Best regards,
+Krzysztof
 
-William Breathitt Gray
-
---dzif1vsoZY6O8z+P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY1QIPQAKCRC1SFbKvhIj
-K6z5AQCj3RPjeKPKXVs69W7SAqiVcTUbu46rIwXSIikUGSybxwD+JfO7SUyOLwXt
-qnYk5EPvhrdJJJbHQUFmFGRg35rouQQ=
-=B0rH
------END PGP SIGNATURE-----
-
---dzif1vsoZY6O8z+P--

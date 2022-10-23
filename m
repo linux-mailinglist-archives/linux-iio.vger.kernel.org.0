@@ -2,47 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0886092A9
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E1F76092AC
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:36:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229756AbiJWMbF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 08:31:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
+        id S229956AbiJWMg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 08:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230060AbiJWMbD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:31:03 -0400
+        with ESMTP id S229497AbiJWMgz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:36:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00146B67B
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 05:30:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46385FF56;
+        Sun, 23 Oct 2022 05:36:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B47960C4A
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 12:30:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C9BC433C1;
-        Sun, 23 Oct 2022 12:30:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8115E60D29;
+        Sun, 23 Oct 2022 12:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAF4C433D6;
+        Sun, 23 Oct 2022 12:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666528258;
-        bh=txv/VZ48QlWYPj1rI5kTtpkFJ8N9XQyDv6UNywfYTkA=;
+        s=k20201202; t=1666528613;
+        bh=TlatSqRfmWj6SvyrETxoNuLar38YhNpt1XsCCEbNmmM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NprI60awG2EyXK9yiOlKxlIocNuiy1sN0IMh2pIh4awEKdmo38tkVY5v1AEIspB4U
-         CvzUsiseIGOqiGG+G1H5RNTySX9J2KewjAcutAyO7WCBd3sYXgtSHBn7H0pAfnO+/8
-         3cKScTyaKryi9dDe4hdZ86dBjnI1J+11cXCxjOPzbs02gIHq3uQXJasaBNDXNTk1Oa
-         UcncOcWrCXz964muXizy9RaV0dN7uZCWoaHpvNqkuTQ7wXl2QJG0vSQjX+a2skG4Fj
-         VT89pmHMJBMaxdrxsHyycM2cnUxgIjHZWL1Vio6d0/o33X5svcnH4VTHafKQEk46tu
-         dFAQKvga5HIVg==
-Date:   Sun, 23 Oct 2022 13:31:34 +0100
+        b=WYMRIe0ZhfIrWP4jxLDfTCDQeoYqxFXboaTMSYB6SVsj801iZvaiBqk4XfLGokVAE
+         KaKNTfZJW3sxHyfroiLF7UZiBmnWXrou7OX1+ICq/WOaRmZqp3027Hhye2Q5YxoULa
+         78LnHUWyaG65OtXTl5MDtwECGsK18s1Tvd+c1m3yBMloZ3gIDSV9weT21qjLuIidVY
+         0ujqsMKlOORp7fDyfyqyDEr8oepomsu3WUgxGyaN0dzzVRTyshu5g9LNzpT2SCyMi/
+         cN4CRkfp3n2FeRXcHE8Grbfjp8aa9MvSQUNvpKdOW/E5lvOGCEx6DIURp9q5QzABDF
+         nqzoAsXRgGx1w==
+Date:   Sun, 23 Oct 2022 13:37:28 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Zhang Qilong <zhangqilong3@huawei.com>
-Cc:     <lars@metafoo.de>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
-        <samuel@sholland.org>, <linux-iio@vger.kernel.org>,
-        <linux-sunxi@lists.linux.dev>
-Subject: Re: [PATCH v2 1/2] iio: adc: sun4i-gpadc-iio: Fix PM disable depth
- imbalance in sun4i_gpadc_probe()
-Message-ID: <20221023133134.3af0415c@jic23-huawei>
-In-Reply-To: <20221020124045.77678-2-zhangqilong3@huawei.com>
-References: <20221020124045.77678-1-zhangqilong3@huawei.com>
-        <20221020124045.77678-2-zhangqilong3@huawei.com>
+To:     Julia Lawall <julia.lawall@inria.fr>
+Cc:     Deepak R Varma <drv@mailo.com>, outreachy@lists.linux.dev,
+        lars@metafoo.de, Michael.Hennerich@analog.com,
+        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+        kumarpraveen@linux.microsoft.com, saurabh.truth@gmail.com
+Subject: Re: [PATCH] staging: iio: frequency: ad9834: merge unnecessary
+ split lines
+Message-ID: <20221023133728.35b6ef26@jic23-huawei>
+In-Reply-To: <alpine.DEB.2.22.394.2210170909430.2965@hadrien>
+References: <Y0z2/qFe3kW96MTs@debian-BULLSEYE-live-builder-AMD64>
+        <alpine.DEB.2.22.394.2210170909430.2965@hadrien>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,47 +58,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 20 Oct 2022 20:40:44 +0800
-Zhang Qilong <zhangqilong3@huawei.com> wrote:
+On Mon, 17 Oct 2022 09:10:15 +0200 (CEST)
+Julia Lawall <julia.lawall@inria.fr> wrote:
 
-> The pm_runtime_enable will increase power disable depth.
-> Thus a pairing decrement is needed on the error handling
-> path to keep it balanced according to context. In addtion,
-> the iio_map_array path has potentially been called.
+> On Mon, 17 Oct 2022, Deepak R Varma wrote:
 > 
-> We fix it by gotoing err_map when thermal_zone register
-> failed.
+> > Improve code readability by merging unnecessary split lines that are
+> > well within the code-style guidelines post merge.
+> >
+> > Signed-off-by: Deepak R Varma <drv@mailo.com>  
 > 
-> Fixes: b0a242894f11 ("iio: adc: sun4i-gpadc-iio: register in the thermal after registering in pm")
-> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
-As mentioned in review of patch 2 there are other problems in here that
-will probably be better cleaned up by taking the whole lot over
-to devm
+> Acked-by: Julia Lawall <julia.lawall@inria.fr>
+
+Not a huge benefit to readability, but as this is in staging, fair enough!
+
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see if we missed anything.
 
 Thanks,
 
 Jonathan
 
-> ---
-> v2:
-> - revert iio_map_array if it's necessary when thermal_zone
->   register failed.
-> ---
->  drivers/iio/adc/sun4i-gpadc-iio.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
-> index a6ade70dedf8..d2535dd28af8 100644
-> --- a/drivers/iio/adc/sun4i-gpadc-iio.c
-> +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
-> @@ -648,7 +648,8 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
->  			dev_err(&pdev->dev,
->  				"could not register thermal sensor: %ld\n",
->  				PTR_ERR(info->tzd));
-> -			return PTR_ERR(info->tzd);
-> +			ret = PTR_ERR(info->tzd);
-> +			goto err_map;
->  		}
->  	}
->  
+> > ---
+> >  drivers/staging/iio/frequency/ad9834.c | 6 ++----
+> >  1 file changed, 2 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+> > index 2b4267a87e65..285df0e489a6 100644
+> > --- a/drivers/staging/iio/frequency/ad9834.c
+> > +++ b/drivers/staging/iio/frequency/ad9834.c
+> > @@ -331,11 +331,9 @@ static IIO_DEV_ATTR_PHASE(0, 1, 0200, NULL, ad9834_write, AD9834_REG_PHASE1);
+> >  static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL, ad9834_write, AD9834_PSEL);
+> >  static IIO_CONST_ATTR_PHASE_SCALE(0, "0.0015339808"); /* 2PI/2^12 rad*/
+> >
+> > -static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
+> > -	ad9834_write, AD9834_PIN_SW);
+> > +static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL, ad9834_write, AD9834_PIN_SW);
+> >  static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL, ad9834_write, AD9834_RESET);
+> > -static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL,
+> > -	ad9834_write, AD9834_OPBITEN);
+> > +static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL, ad9834_write, AD9834_OPBITEN);
+> >  static IIO_DEV_ATTR_OUT_WAVETYPE(0, 0, ad9834_store_wavetype, 0);
+> >  static IIO_DEV_ATTR_OUT_WAVETYPE(0, 1, ad9834_store_wavetype, 1);
+> >
+> > --
+> > 2.30.2
+> >
+> >
+> >
+> >
+> >  
 

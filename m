@@ -2,48 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC9ED60929C
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B9A6092A8
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:29:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbiJWMVY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 08:21:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34262 "EHLO
+        id S230007AbiJWM3b (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 08:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229568AbiJWMVX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:21:23 -0400
+        with ESMTP id S229956AbiJWM3a (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:29:30 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9728A68CC9;
-        Sun, 23 Oct 2022 05:21:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84FBE273D
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 05:29:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 77E6BB80D19;
-        Sun, 23 Oct 2022 12:21:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6DDC433D6;
-        Sun, 23 Oct 2022 12:21:15 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3D6C6B8085C
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 12:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEF7C433D6;
+        Sun, 23 Oct 2022 12:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666527678;
-        bh=+5uXa3urVH8Y3LmmLBi1OXbL0u8nSudPdsZY/o5A++M=;
+        s=k20201202; t=1666528165;
+        bh=TDDs1cHXMpnDmygzYMXJyp3IV5gQC3ZsdkYk2W9bUE0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=qECakmbBgIDaoN4se6GIBoWsMCU1cIiEqJW6V+wQdQ/OIbtxNcVWJcnwth5ka1ueo
-         ZMZ/6y/JYIiwdF34L3ozHOTJxWhB/u+0e2M8cGSJgy85zAuzkxVe4pcoaKAk48Gr5o
-         uAhHt/OrvRsNSoMamBlCCo9Z3eXdoI28fgFPNsE/V0RX17wUkdCL/KM+FMvgmfSSjD
-         UBQhs5kzO0aZdlEcJmG1O2/FAB6GJUydFr08+xRCpkG4irAflNnJDJ4AxlKewDQQUF
-         MoYXu8UnhI6j2jftrHTJXHSQeLCP0leoimcQ7Q6gbpbUD09DMiyD8/rOnMJ/cYgC4l
-         V8Bp2MKwSyr0Q==
-Date:   Sun, 23 Oct 2022 13:21:52 +0100
+        b=X6DpuHVU7xC61dRlDEyVtorggXKJIGzL3p2LEkatLXdypI9zDVx38NBynmoL2ibIf
+         YAl0tpZ81huNx4yjIe/gXeVLabOfARXpl1Zp5S9w6mrCd/vipCPv2UV+YNmREn4h7K
+         LHKqzYJ+vmEa4eRH970JzfcwBQ2q2sSVbdCDdNQ+reHy1sYn8tcRQ7deWLcpCkqZvA
+         V0gXKAFl4IB2FomuPpgKGTIbpQvIUK50cZFGbaALRitVlLcVHnh8VdjLC8itLYLq9W
+         Vw1vHZ6BtGAlTilyZJF/i9QBpv6ihmqPpUFMVHgBBqalsq7lRmv8emXWzmm45CY1SH
+         LhR+lBhjQD4jA==
+Date:   Sun, 23 Oct 2022 13:29:59 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Claudiu Beznea <claudiu.beznea@microchip.com>
-Cc:     <eugen.hristev@microchip.com>, <lars@metafoo.de>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: adc: at91-sama5d2_adc: get rid of 5 degrees
- Celsius adjustment
-Message-ID: <20221023132152.3d1dcedf@jic23-huawei>
-In-Reply-To: <20221020102705.3639204-1-claudiu.beznea@microchip.com>
-References: <20221020102705.3639204-1-claudiu.beznea@microchip.com>
+To:     Zhang Qilong <zhangqilong3@huawei.com>
+Cc:     <lars@metafoo.de>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
+        <samuel@sholland.org>, <linux-iio@vger.kernel.org>,
+        <linux-sunxi@lists.linux.dev>
+Subject: Re: [PATCH v2 2/2] iio: adc: sun4i-gpadc-iio: Fix error handle when
+ devm_iio_device_register() failed in sun4i_gpadc_probe()
+Message-ID: <20221023132959.662c5c4d@jic23-huawei>
+In-Reply-To: <20221020124045.77678-3-zhangqilong3@huawei.com>
+References: <20221020124045.77678-1-zhangqilong3@huawei.com>
+        <20221020124045.77678-3-zhangqilong3@huawei.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,40 +56,62 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 20 Oct 2022 13:27:05 +0300
-Claudiu Beznea <claudiu.beznea@microchip.com> wrote:
+On Thu, 20 Oct 2022 20:40:45 +0800
+Zhang Qilong <zhangqilong3@huawei.com> wrote:
 
-> On SAMA7G5 final chip version there is no need for 5 degrees Celsius
-> adjustment when computing junction temperature, thus, remove it.
-> 
-> Fixes: 5ab38b81895c ("iio: adc: at91-sama5d2_adc: add support for temperature sensor")
-> Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Applied to the fixes-togreg branch of iio.git
+> If devm_iio_device_register() failed, the thermal_zone may have been
+> registered. So we need call thermal_zone_of_sensor_unregister() when
+> CONFIG_THERMAL_OF is enabled. We fix it by adding a err_register and
+> gotoing it when devm_iio_device_register() failed.
+
+This doesn't look right.  Any devm_ registered calls should be cleaned
+up automatically if we fail the probe.
+
+However, there is an issue in what you've hightlighed here in that
+on the remove path we will have ripped out the iio_map_register() before
+we remove the thermal zone that is dependent on it.
+
+Easiest fix for that is probably to use devm_iio_array_map_register()
+to allow the managed handling to clean that up at the correct point.
+
+Follow on that path you may also be able to use devm_pm_runtime_enable()
+here to deal with the tear down of runtime pm (which is currently wrong
+anyway as no autosuspend disable.)
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+
+
 > 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index 33e251552214..870f4cb60923 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -2307,11 +2307,9 @@ static int at91_adc_temp_sensor_init(struct at91_adc_state *st,
->  	clb->p6 = buf[AT91_ADC_TS_CLB_IDX_P6];
+> Fixes: d1caa9905538 ("iio: adc: add support for Allwinner SoCs ADC")
+> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+> ---
+>  drivers/iio/adc/sun4i-gpadc-iio.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/sun4i-gpadc-iio.c b/drivers/iio/adc/sun4i-gpadc-iio.c
+> index d2535dd28af8..04717571cb2e 100644
+> --- a/drivers/iio/adc/sun4i-gpadc-iio.c
+> +++ b/drivers/iio/adc/sun4i-gpadc-iio.c
+> @@ -656,11 +656,17 @@ static int sun4i_gpadc_probe(struct platform_device *pdev)
+>  	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "could not register the device\n");
+> -		goto err_map;
+> +		goto err_register;
+>  	}
 >  
->  	/*
-> -	 * We prepare here the conversion to milli and also add constant
-> -	 * factor (5 degrees Celsius) to p1 here to avoid doing it on
-> -	 * hotpath.
-> +	 * We prepare here the conversion to milli to avoid doing it on hotpath.
->  	 */
-> -	clb->p1 = clb->p1 * 1000 + 5000;
-> +	clb->p1 = clb->p1 * 1000;
+>  	return 0;
 >  
->  free_buf:
->  	kfree(buf);
+> +err_register:
+> +	if (IS_ENABLED(CONFIG_THERMAL_OF)) {
+> +		devm_thermal_of_zone_unregister(info->sensor_device,
+> +						info->tzd);
+> +		info->tzd = NULL;
+> +	}
+>  err_map:
+>  	if (!info->no_irq && IS_ENABLED(CONFIG_THERMAL_OF))
+>  		iio_map_array_unregister(indio_dev);
 

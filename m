@@ -2,71 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 298D660938D
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 15:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FB98609398
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 15:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbiJWNXc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 09:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51934 "EHLO
+        id S230492AbiJWNXj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 09:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230415AbiJWNXa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 09:23:30 -0400
+        with ESMTP id S230472AbiJWNXc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 09:23:32 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4976F240
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 06:23:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428367173E
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 06:23:31 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1omawf-0006qF-CB; Sun, 23 Oct 2022 15:23:17 +0200
+        id 1omawX-0006qG-Vn; Sun, 23 Oct 2022 15:23:10 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1omawV-000yg9-Pa; Sun, 23 Oct 2022 15:23:07 +0200
+        id 1omawV-000ygD-Tg; Sun, 23 Oct 2022 15:23:07 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1omawU-00A3Qb-Qj; Sun, 23 Oct 2022 15:23:06 +0200
+        id 1omawU-00A3Qe-WB; Sun, 23 Oct 2022 15:23:07 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
 To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Dan Robertson <dan@dlrobertson.com>
+        Jonathan Cameron <jic23@kernel.org>
 Cc:     Wolfram Sang <wsa@kernel.org>, linux-iio@vger.kernel.org,
-        kernel@pengutronix.de,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Peter Senna Tschudin <peter.senna@gmail.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Paul Lemmermann <thepaulodoom@thepaulodoom.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Yang Yingliang <yangyingliang@huawei.com>,
-        wangjianli <wangjianli@cdjrlc.com>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jean Delvare <jdelvare@suse.de>, Ajay Gupta <ajayg@nvidia.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Haibo Chen <haibo.chen@nxp.com>, Peter Rosin <peda@axentia.se>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH 00/23] iio: accel: Convert to i2c's .probe_new
-Date:   Sun, 23 Oct 2022 15:22:39 +0200
-Message-Id: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+        kernel@pengutronix.de
+Subject: [PATCH 01/23] iio: accel: adxl367: Convert to i2c's .probe_new()
+Date:   Sun, 23 Oct 2022 15:22:40 +0200
+Message-Id: <20221023132302.911644-2-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2941; i=uwe@kleine-koenig.org; h=from:subject; bh=vtBh38mDHSt70+h0Nd41/Bgb2a0DOA9dpKmAioQ2rvc=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjVUAdOy5FiIAVwkGVZ3oKXKp02eFCiZesqwtItYAS I4hBukyJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY1VAHQAKCRDB/BR4rcrsCTZ+B/ 4iruosL8SrqxY8poWIhuT6QV6U+ftqvDLdBt9TkyF10NkMPWsonSyo26k/09IYSNzHCXIn6efoZJaT gib8DU7dg2grHpfbk0FoEBXuo2WH0eH9nzH1jCbNwOBpB344cdLSD+QnJOEr+oF5Cjpzd3dTEBUUyK 2gPrlJGr/2ghdlZku2YigaK+vY5R1n8p2s/yyaVJUIP2x4rY21dHsQJOXqkLJNIYCJXabXtjhV7kJ4 LcY8fBmwlasA4JxRbCV3KtLRc3Go2LKZTCq5YChksoQGiolgVb9zpHdoX7opET7yCZ8h5I5JnTrwsY meeg1ZCCaP47ZDFQBFyG1LRfEU/x6B
-X-Developer-Key: i=uwe@kleine-koenig.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1071; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=nWmLzYKzE7R8Q3GvuNL7ihDfXgv5MnRVXj6oD/1j3f8=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBjVT9BOYnJF+OtrhIWZjiOMeBOvs3AQOy9HZA44BJX mYeCrrqJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCY1U/QQAKCRDB/BR4rcrsCSEdB/ 0RhunkJZLseqfB4UPhFaFYApg2QamMXcNXR5DyBq1LDRNSfVYpkO4wBHXxkvZzi/B6O5OBJebgbpUy MA9HrOr/5PpYiJhleICFfijdYCJHoiw4HMJcPwxuyZ7HXUDHQRBECgRoUGHEVMM5PS2feAN76X09Kn D6vkj7Fwi+YxaFxVtFgpPicprSnPkie/itCtOtdXWyfQWcFJPbM/+f09eTCvLXBLpCYix52/FftorG 6tXMQBEFwTdqy8pw90tcRSF+tyHDcHWsmsMCS+zv9bzYQkPzXVdj1JJxql/Zn91Yvju3mbxOSl+zIh fZRwdkI0ep1ky2o0UhbcU60EkvJJyY
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: ukl@pengutronix.de
@@ -80,68 +57,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hello,
+The probe function doesn't make use of the i2c_device_id * parameter so it
+can be trivially converted.
 
-this series converts all drivers below iio/accel to use the (not very new)
-.probe_new() probe routine. The motivation is to get rid of the implicit
-i2c_match_id call for each .probe invokation that isn't used by a big part of
-the drivers anyhow.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/iio/accel/adxl367_i2c.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Best regards
-Uwe
-
-Uwe Kleine-König (23):
-  iio: accel: adxl367: Convert to i2c's .probe_new()
-  iio: accel: adxl372: Convert to i2c's .probe_new
-  iio: accel: bma400: Convert to i2c's .probe_new
-  iio: accel: bmc150: Convert to i2c's .probe_new
-  iio: accel: da280: Convert to i2c's .probe_new
-  iio: accel: da311: Convert to i2c's .probe_new()
-  iio: accel: dmard06: Convert to i2c's .probe_new()
-  iio: accel: dmard09: Convert to i2c's .probe_new()
-  iio: accel: dmard10: Convert to i2c's .probe_new()
-  iio: accel: kxcjk-1013: Convert to i2c's .probe_new
-  iio: accel: kxsd9: Convert to i2c's .probe_new()
-  iio: accel: mc3230: Convert to i2c's .probe_new()
-  iio: accel: mma7455: Convert to i2c's .probe_new
-  iio: accel: mma7660: Convert to i2c's .probe_new()
-  iio: accel: mma8452: Convert to i2c's .probe_new
-  iio: accel: mma9551: Convert to i2c's .probe_new
-  iio: accel: mma9553: Convert to i2c's .probe_new
-  iio: accel: mxc4005: Convert to i2c's .probe_new()
-  iio: accel: mxc6255: Convert to i2c's .probe_new()
-  iio: accel: stk8312: Convert to i2c's .probe_new()
-  iio: accel: stk8ba50: Convert to i2c's .probe_new()
-  iio: accel: st_magn: Convert to i2c's .probe_new()
-  iio: accel: vl6180: Convert to i2c's .probe_new()
-
- drivers/iio/accel/adxl367_i2c.c        |  5 ++--
- drivers/iio/accel/adxl372_i2c.c        | 18 ++++++-------
- drivers/iio/accel/bma400_i2c.c         | 18 ++++++-------
- drivers/iio/accel/bmc150-accel-i2c.c   | 37 +++++++++++++-------------
- drivers/iio/accel/da280.c              | 22 ++++++++-------
- drivers/iio/accel/da311.c              |  5 ++--
- drivers/iio/accel/dmard06.c            |  5 ++--
- drivers/iio/accel/dmard09.c            |  5 ++--
- drivers/iio/accel/dmard10.c            |  5 ++--
- drivers/iio/accel/kxcjk-1013.c         | 29 ++++++++++----------
- drivers/iio/accel/kxsd9-i2c.c          |  5 ++--
- drivers/iio/accel/mc3230.c             |  5 ++--
- drivers/iio/accel/mma7455_i2c.c        | 20 +++++++-------
- drivers/iio/accel/mma7660.c            |  5 ++--
- drivers/iio/accel/mma8452.c            | 28 +++++++++----------
- drivers/iio/accel/mma9551.c            | 19 +++++++------
- drivers/iio/accel/mma9553.c            | 21 +++++++--------
- drivers/iio/accel/mxc4005.c            |  5 ++--
- drivers/iio/accel/mxc6255.c            |  5 ++--
- drivers/iio/accel/stk8312.c            |  5 ++--
- drivers/iio/accel/stk8ba50.c           |  5 ++--
- drivers/iio/light/vl6180.c             |  5 ++--
- drivers/iio/magnetometer/st_magn_i2c.c |  5 ++--
- 23 files changed, 133 insertions(+), 149 deletions(-)
-
-
-base-commit: 9abf2313adc1ca1b6180c508c25f22f9395cc780
+diff --git a/drivers/iio/accel/adxl367_i2c.c b/drivers/iio/accel/adxl367_i2c.c
+index 3606efa25835..070aad724abd 100644
+--- a/drivers/iio/accel/adxl367_i2c.c
++++ b/drivers/iio/accel/adxl367_i2c.c
+@@ -41,8 +41,7 @@ static const struct adxl367_ops adxl367_i2c_ops = {
+ 	.read_fifo = adxl367_i2c_read_fifo,
+ };
+ 
+-static int adxl367_i2c_probe(struct i2c_client *client,
+-			     const struct i2c_device_id *id)
++static int adxl367_i2c_probe(struct i2c_client *client)
+ {
+ 	struct adxl367_i2c_state *st;
+ 	struct regmap *regmap;
+@@ -78,7 +77,7 @@ static struct i2c_driver adxl367_i2c_driver = {
+ 		.name = "adxl367_i2c",
+ 		.of_match_table = adxl367_of_match,
+ 	},
+-	.probe = adxl367_i2c_probe,
++	.probe_new = adxl367_i2c_probe,
+ 	.id_table = adxl367_i2c_id,
+ };
+ 
 -- 
 2.37.2
 

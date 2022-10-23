@@ -2,49 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E1F76092AC
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D376092B1
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229956AbiJWMg5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 08:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38594 "EHLO
+        id S230127AbiJWMkV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 08:40:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbiJWMgz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:36:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46385FF56;
-        Sun, 23 Oct 2022 05:36:54 -0700 (PDT)
+        with ESMTP id S229728AbiJWMkU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:40:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDAC4558E3;
+        Sun, 23 Oct 2022 05:40:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8115E60D29;
-        Sun, 23 Oct 2022 12:36:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAF4C433D6;
-        Sun, 23 Oct 2022 12:36:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1809FB80D94;
+        Sun, 23 Oct 2022 12:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B35C433D6;
+        Sun, 23 Oct 2022 12:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666528613;
-        bh=TlatSqRfmWj6SvyrETxoNuLar38YhNpt1XsCCEbNmmM=;
+        s=k20201202; t=1666528814;
+        bh=ZEiIzMSDpIkZt7/SPHRln4v4bjyPf/a+k7QaV+LPBFM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WYMRIe0ZhfIrWP4jxLDfTCDQeoYqxFXboaTMSYB6SVsj801iZvaiBqk4XfLGokVAE
-         KaKNTfZJW3sxHyfroiLF7UZiBmnWXrou7OX1+ICq/WOaRmZqp3027Hhye2Q5YxoULa
-         78LnHUWyaG65OtXTl5MDtwECGsK18s1Tvd+c1m3yBMloZ3gIDSV9weT21qjLuIidVY
-         0ujqsMKlOORp7fDyfyqyDEr8oepomsu3WUgxGyaN0dzzVRTyshu5g9LNzpT2SCyMi/
-         cN4CRkfp3n2FeRXcHE8Grbfjp8aa9MvSQUNvpKdOW/E5lvOGCEx6DIURp9q5QzABDF
-         nqzoAsXRgGx1w==
-Date:   Sun, 23 Oct 2022 13:37:28 +0100
+        b=Nynx9eZWNn/hKOx1JDTdE41rYub+ZHZRKQ2AOro5ymdPlhfmRVMI3In521M9ndeIE
+         y18Fs+5jzHiSV9JbzVl91u5oFC/oWwG8B7XIG1RYbAK7WULnj7cm1y98/qFnGfgkoo
+         iE93ISEbaiBkEZWNkcelYX8MJ+S1oiHqQBlsWp/mwk7UxNH6CxcFE/PgTcDS0RrBF6
+         1GBqca+PWiwX6xZrughhmUoexEjNLlVTmK2CR8ITDjMdvUI+VhtLADY5/iBQzE8r0P
+         C3Bfcsh3jBMtPkmDiPxQqBoqjWADI2kDj8X9VzbPulXVOGZCoCc3h/faPz2FQfsYj5
+         6is9x+78D3WYw==
+Date:   Sun, 23 Oct 2022 13:40:48 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Julia Lawall <julia.lawall@inria.fr>
-Cc:     Deepak R Varma <drv@mailo.com>, outreachy@lists.linux.dev,
-        lars@metafoo.de, Michael.Hennerich@analog.com,
-        gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kumarpraveen@linux.microsoft.com, saurabh.truth@gmail.com
-Subject: Re: [PATCH] staging: iio: frequency: ad9834: merge unnecessary
- split lines
-Message-ID: <20221023133728.35b6ef26@jic23-huawei>
-In-Reply-To: <alpine.DEB.2.22.394.2210170909430.2965@hadrien>
-References: <Y0z2/qFe3kW96MTs@debian-BULLSEYE-live-builder-AMD64>
-        <alpine.DEB.2.22.394.2210170909430.2965@hadrien>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [PATCH v2 1/5] iio: temperature: ltc2983: allocate iio channels
+ once
+Message-ID: <20221023134048.5a1dd6d9@jic23-huawei>
+In-Reply-To: <20221020090257.1717053-2-demonsingur@gmail.com>
+References: <20221020090257.1717053-1-demonsingur@gmail.com>
+        <20221020090257.1717053-2-demonsingur@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,55 +61,58 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Oct 2022 09:10:15 +0200 (CEST)
-Julia Lawall <julia.lawall@inria.fr> wrote:
+On Thu, 20 Oct 2022 12:02:53 +0300
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> On Mon, 17 Oct 2022, Deepak R Varma wrote:
+> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
 > 
-> > Improve code readability by merging unnecessary split lines that are
-> > well within the code-style guidelines post merge.
-> >
-> > Signed-off-by: Deepak R Varma <drv@mailo.com>  
+> Currently, every time the device wakes up from sleep, the
+> iio_chan array is reallocated, leaking the previous one
+> until the device is removed (basically never).
 > 
-> Acked-by: Julia Lawall <julia.lawall@inria.fr>
-
-Not a huge benefit to readability, but as this is in staging, fair enough!
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to see if we missed anything.
-
-Thanks,
+> Move the allocation to the probe function to avoid this.
+> 
+> Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Note I already have this queued as a fix and I've sent the pull request to Greg this
+morning.  For future versions of this series, maybe just put a note in the cover
+letter to cover the dependency.
 
 Jonathan
 
+> ---
+>  drivers/iio/temperature/ltc2983.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
 > 
-> > ---
-> >  drivers/staging/iio/frequency/ad9834.c | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-> > index 2b4267a87e65..285df0e489a6 100644
-> > --- a/drivers/staging/iio/frequency/ad9834.c
-> > +++ b/drivers/staging/iio/frequency/ad9834.c
-> > @@ -331,11 +331,9 @@ static IIO_DEV_ATTR_PHASE(0, 1, 0200, NULL, ad9834_write, AD9834_REG_PHASE1);
-> >  static IIO_DEV_ATTR_PHASESYMBOL(0, 0200, NULL, ad9834_write, AD9834_PSEL);
-> >  static IIO_CONST_ATTR_PHASE_SCALE(0, "0.0015339808"); /* 2PI/2^12 rad*/
-> >
-> > -static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL,
-> > -	ad9834_write, AD9834_PIN_SW);
-> > +static IIO_DEV_ATTR_PINCONTROL_EN(0, 0200, NULL, ad9834_write, AD9834_PIN_SW);
-> >  static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL, ad9834_write, AD9834_RESET);
-> > -static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL,
-> > -	ad9834_write, AD9834_OPBITEN);
-> > +static IIO_DEV_ATTR_OUTY_ENABLE(0, 1, 0200, NULL, ad9834_write, AD9834_OPBITEN);
-> >  static IIO_DEV_ATTR_OUT_WAVETYPE(0, 0, ad9834_store_wavetype, 0);
-> >  static IIO_DEV_ATTR_OUT_WAVETYPE(0, 1, ad9834_store_wavetype, 1);
-> >
-> > --
-> > 2.30.2
-> >
-> >
-> >
-> >
-> >  
+> diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+> index b652d2b39bcf..a60ccf183687 100644
+> --- a/drivers/iio/temperature/ltc2983.c
+> +++ b/drivers/iio/temperature/ltc2983.c
+> @@ -1385,13 +1385,6 @@ static int ltc2983_setup(struct ltc2983_data *st, bool assign_iio)
+>  		return ret;
+>  	}
+>  
+> -	st->iio_chan = devm_kzalloc(&st->spi->dev,
+> -				    st->iio_channels * sizeof(*st->iio_chan),
+> -				    GFP_KERNEL);
+> -
+> -	if (!st->iio_chan)
+> -		return -ENOMEM;
+> -
+>  	ret = regmap_update_bits(st->regmap, LTC2983_GLOBAL_CONFIG_REG,
+>  				 LTC2983_NOTCH_FREQ_MASK,
+>  				 LTC2983_NOTCH_FREQ(st->filter_notch_freq));
+> @@ -1514,6 +1507,12 @@ static int ltc2983_probe(struct spi_device *spi)
+>  		gpiod_set_value_cansleep(gpio, 0);
+>  	}
+>  
+> +	st->iio_chan = devm_kzalloc(&spi->dev,
+> +				    st->iio_channels * sizeof(*st->iio_chan),
+> +				    GFP_KERNEL);
+> +	if (!st->iio_chan)
+> +		return -ENOMEM;
+> +
+>  	ret = ltc2983_setup(st, true);
+>  	if (ret)
+>  		return ret;
 

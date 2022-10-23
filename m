@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 744816092FF
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39DA5609304
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 14:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230306AbiJWMuz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 08:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
+        id S230322AbiJWMyF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 08:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230297AbiJWMuy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:50:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BC96113B;
-        Sun, 23 Oct 2022 05:50:52 -0700 (PDT)
+        with ESMTP id S230258AbiJWMyB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 08:54:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CC161B03;
+        Sun, 23 Oct 2022 05:54:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 04F09B80D90;
-        Sun, 23 Oct 2022 12:50:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EA8C433D6;
-        Sun, 23 Oct 2022 12:50:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E88FD60A4B;
+        Sun, 23 Oct 2022 12:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B1FC433C1;
+        Sun, 23 Oct 2022 12:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666529449;
-        bh=0V4LYT13xnR1I06Gp/9Rn+rpUpGXEOBQ8/KSUy7AvXA=;
+        s=k20201202; t=1666529640;
+        bh=aX1WrsOsTPAXPfHbM7Ad/YlFXeHjpIr6vYxaHrD0BQ0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rTCHEHXEDRX2V2EmkUnUxCl+y7Z7f1uxCLxuriRiJMJBRnsHs6bl7NY9nDGPn1ZUp
-         pmQIuvWZhX3Q/X1Wkm3Kn5dHwJQXfks0s/r3NPuxIZaVYeXKQPQBdCOtK+hiafIING
-         SHsd9zBTwJg0vWCkJUbgmoegoifCWDia9DzHZblABigqYo6GY99x5+pL/+Nmnb8xpg
-         mGXox15Z9+aT3fZH2mJKO3VlevcvSiLgwg6WsrlFILKZWLxhNIeJi75587ZrqFucSW
-         6kb+jb0/ddHT2id2tt8bHzCd0dqwI9H5sXr+IafeI2Xzfo88aGahBoSDY0aOdycfdP
-         Ju5vm9vYzoY7w==
-Date:   Sun, 23 Oct 2022 13:51:24 +0100
+        b=g+slejHiPFNXtpc1Ard5wW503+UVWhvAOUh2+KadPcJ0a6QQ6XrBNdUmD8MnmPC7h
+         WT6iYp88RAwG+0IqmIlfWBvHOD0LlUPt+lL/h9GL5iFvLnjVTfMs1/ZifbKPM+g3jr
+         JsWa99AtESjLwCWQJR4h/OP+2jJTdvt+Z1xam/bs1o1S1WlhXW13qx4jfosWH7vegY
+         bFjE/zQVWB44Vcqtj+ZpgLVXelYGbYKpsK/im4ccFgMsopDxf13VY3FnD0VIVJRNBq
+         StiFJSjKjZhqB8VzU3Y4bOGzEtZWeP731Md2dngsLwIH3QuVJUjGmdT3Mn1NeVx/dZ
+         /892EqE3ChUGA==
+Date:   Sun, 23 Oct 2022 13:54:35 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Cosmin Tanislav <demonsingur@gmail.com>
 Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
@@ -42,11 +42,11 @@ Cc:     Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v2 3/5] dt-bindings: iio: temperature: ltc2983: refine
-Message-ID: <20221023135124.1fdeab5e@jic23-huawei>
-In-Reply-To: <20221020090257.1717053-4-demonsingur@gmail.com>
+Subject: Re: [PATCH v2 5/5] iio: temperature: ltc2983: support more parts
+Message-ID: <20221023135435.17cf55e3@jic23-huawei>
+In-Reply-To: <20221020090257.1717053-6-demonsingur@gmail.com>
 References: <20221020090257.1717053-1-demonsingur@gmail.com>
-        <20221020090257.1717053-4-demonsingur@gmail.com>
+        <20221020090257.1717053-6-demonsingur@gmail.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,67 +60,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 20 Oct 2022 12:02:55 +0300
+On Thu, 20 Oct 2022 12:02:57 +0300
 Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
 > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
 > 
->  * make sure addresses are represented as hex
->  * add note about wrong unit value for adi,mux-delay-config-us
->  * simplify descriptions
->  * add descriptions for the items of custom sensor tables
->  * add default property values where applicable
->  * use conditionals to extend minimum reg value
->    for single ended sensors
->  * remove " around phandle schema $ref
->  * remove label from example and use generic temperature
->    sensor name
+> Add support for the following parts:
+>  * LTC2984
+>  * LTC2986
+>  * LTM2985
+> 
+> The LTC2984 is a variant of the LTC2983 with EEPROM.
+> The LTC2986 is a variant of the LTC2983 with only 10 channels,
+> EEPROM and support for active analog temperature sensors.
+> The LTM2985 is software-compatible with the LTC2986.
 > 
 > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+LGTM. I'll pick this up once the DT binding part is resolved.
 
-Hi Cosmin,
-
-Just one question inline from me (other than the build bot report that I'll
-assume you'll fix for v3).
-
-Otherwise looks like a nice cleanup to me.
-
-I wonder a bit on whether it is worth splitting up, but that would be
-rather messy to actually do so will leave that to the dt experts to comment
-on.
+Thanks,
 
 Jonathan
-
-
-> ---
->  .../bindings/iio/temperature/adi,ltc2983.yaml | 309 +++++++++++-------
->  1 file changed, 182 insertions(+), 127 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> index 722781aa4697..3e97ec841fd6 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> @@ -26,25 +26,25 @@ properties:
->  
->    adi,mux-delay-config-us:
->      description:
-> -      The LTC2983 performs 2 or 3 internal conversion cycles per temperature
-> -      result. Each conversion cycle is performed with different excitation and
-> -      input multiplexer configurations. Prior to each conversion, these
-> -      excitation circuits and input switch configurations are changed and an
-> -      internal 1ms delay ensures settling prior to the conversion cycle in most
-> -      cases. An extra delay can be configured using this property. The value is
-> -      rounded to nearest 100us.
-> +      Extra delay prior to each conversion, in addition to the internal 1ms
-> +      delay, for the multiplexer to switch input configurations and
-> +      excitation values.
-> +
-> +      This property is supposed to be in microseconds, but to maintain
-> +      compatibility, this value will be multiplied by 100 before usage.
-
-This new text has me a little confused.  Previously we talked rounding, now it
-is saying the value is multiplied (which would make it definitely not in micro
-secs!)..  So are we papering over a driver bug here?
-
-
-

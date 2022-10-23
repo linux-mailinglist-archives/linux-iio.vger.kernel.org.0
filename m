@@ -2,44 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E56EE609266
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 13:02:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F229B609269
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 13:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbiJWLCI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 07:02:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34394 "EHLO
+        id S230274AbiJWLGF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 07:06:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbiJWLCH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 07:02:07 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A3E7393A
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 04:01:56 -0700 (PDT)
+        with ESMTP id S229618AbiJWLGE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 07:06:04 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6177D60EBD;
+        Sun, 23 Oct 2022 04:06:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 0652FCE0EA4
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 11:01:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4616EC433D6;
-        Sun, 23 Oct 2022 11:01:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 00D11B80D1A;
+        Sun, 23 Oct 2022 11:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0544C433D6;
+        Sun, 23 Oct 2022 11:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1666522912;
-        bh=beVeHGjEJmtA1OXiwRYC+ZXd1Mr8HXvWQdUe9eG3U7Y=;
+        s=k20201202; t=1666523160;
+        bh=8rOlNiffgPzLVub62XDxQM2DQLZXmwSEQjbUkRpZbA8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=SERVo2TPPae246E2YQmoXEO01361J38aovUUAfqJwbTIT9rheV64jjaxu3xL7dxIN
-         SWLWgGwaRCUVTF8equiId1i6OIiUxLxDsJ6B5Mx4uF9HtpvraPg+60E0maRtooV/GH
-         kmrbO1VDA5gNLDFSzmR3DIUV78LV4IUZ2Aw3jJQc2MeQn3epq4mdh+s2JKXuOA3UnR
-         2N4GCD7Eyopcsv6fLbAUDsRa8DrsUpvSEG6wxYDejZATUXTTuma7JRlSlu2ToxG3Kp
-         zr3XM/JfXmfYZhCAcEoyFL9SPbyPRg2y18zRecQGuQJWPmVoQdn7DqJrcFikda0+xq
-         JOeqUSNLSRZkA==
-Date:   Sun, 23 Oct 2022 12:02:28 +0100
+        b=hKHwWy12Da7ZqAGPfm/DRBTKABGmHkjr0caS2HvWJPfYirvuDMut2SLFWfCbWeYs+
+         eFykS0mjJYEI4KuDy/g9qqoxXu72emwfiHvCeVxRdiSL7r9BxqkgMkXHYAP/Eytx4L
+         29vpk3BqVoQHbfWWQJDhFPQzYeEqHnPR3itH2GWTANRODsVLouQA6ifFI9FYHRkBig
+         txXpv5gKioZdeFj44B0V7fy2hXnl26b5dYrKBJDqmyblv8sAqvihbLZdbZOpnuX8JJ
+         CmxguN+lT3pKTNXVJ6v9JAUId/KSFRaBT+aPPLFt6JOfPXhZjx7r2TCoBVvvSxF0cp
+         4edcEcFE0wCFA==
+Date:   Sun, 23 Oct 2022 12:06:34 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Yang Yingliang <yangyingliang@huawei.com>
-Cc:     <linux-iio@vger.kernel.org>, <jonathan.cameron@huawei.com>
-Subject: Re: [PATCH] iio: trigger: sysfs: fix possible memory leak in
- iio_sysfs_trig_init()
-Message-ID: <20221023120228.6719e888@jic23-huawei>
-In-Reply-To: <20221022074212.1386424-1-yangyingliang@huawei.com>
-References: <20221022074212.1386424-1-yangyingliang@huawei.com>
+To:     Mitja Spes <mitja@lxnav.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        =?UTF-8?B?SsOpcsO0bWU=?= Pouiller <jerome.pouiller@silabs.com>,
+        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Tomasz Duszynski <tduszyns@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] iio: pressure: ms5611: fixed value compensation
+ bug
+Message-ID: <20221023120634.0dda4b5f@jic23-huawei>
+In-Reply-To: <20221021135827.1444793-2-mitja@lxnav.com>
+References: <20221021135827.1444793-1-mitja@lxnav.com>
+        <20221021135827.1444793-2-mitja@lxnav.com>
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,57 +64,167 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 22 Oct 2022 15:42:12 +0800
-Yang Yingliang <yangyingliang@huawei.com> wrote:
+On Fri, 21 Oct 2022 15:58:20 +0200
+Mitja Spes <mitja@lxnav.com> wrote:
 
-> dev_set_name() allocates memory for name, it need be freed
-> when device_add() fails, call put_device() to give up the
-> reference that hold in device_initialize(), so that it can
-> be freed in kobject_cleanup() when the refcount hit to 0.
+> When using multiple instances of this driver the compensation PROM was
+> overwritten by the last initialized sensor. Now each sensor has own PROM
+> storage.
 > 
-> Fault injection test can trigger this:
-> 
-> unreferenced object 0xffff8e8340a7b4c0 (size 32):
->   comm "modprobe", pid 243, jiffies 4294678145 (age 48.845s)
->   hex dump (first 32 bytes):
->     69 69 6f 5f 73 79 73 66 73 5f 74 72 69 67 67 65  iio_sysfs_trigge
->     72 00 a7 40 83 8e ff ff 00 86 13 c4 f6 ee ff ff  r..@............
->   backtrace:
->     [<0000000074999de8>] __kmem_cache_alloc_node+0x1e9/0x360
->     [<00000000497fd30b>] __kmalloc_node_track_caller+0x44/0x1a0
->     [<000000003636c520>] kstrdup+0x2d/0x60
->     [<0000000032f84da2>] kobject_set_name_vargs+0x1e/0x90
->     [<0000000092efe493>] dev_set_name+0x4e/0x70
-> 
-> Fixes: 1f785681a870 ("staging:iio:trigger sysfs userspace trigger rework.")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> Signed-off-by: Mitja Spes <mitja@lxnav.com>
+Fixes tag?
 
-Thanks,
-
-Jonathan
+I think this is one we will want to backport. 
 
 > ---
->  drivers/iio/trigger/iio-trig-sysfs.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/iio/pressure/ms5611.h      | 12 +++----
+>  drivers/iio/pressure/ms5611_core.c | 51 ++++++++++++++++--------------
+>  2 files changed, 31 insertions(+), 32 deletions(-)
 > 
-> diff --git a/drivers/iio/trigger/iio-trig-sysfs.c b/drivers/iio/trigger/iio-trig-sysfs.c
-> index d6c5e9644738..6b05eed41612 100644
-> --- a/drivers/iio/trigger/iio-trig-sysfs.c
-> +++ b/drivers/iio/trigger/iio-trig-sysfs.c
-> @@ -203,9 +203,13 @@ static int iio_sysfs_trigger_remove(int id)
+> diff --git a/drivers/iio/pressure/ms5611.h b/drivers/iio/pressure/ms5611.h
+> index cbc9349c342a..550b75b7186f 100644
+> --- a/drivers/iio/pressure/ms5611.h
+> +++ b/drivers/iio/pressure/ms5611.h
+> @@ -25,13 +25,6 @@ enum {
+>  	MS5607,
+>  };
 >  
->  static int __init iio_sysfs_trig_init(void)
->  {
-> +	int ret;
->  	device_initialize(&iio_sysfs_trig_dev);
->  	dev_set_name(&iio_sysfs_trig_dev, "iio_sysfs_trigger");
-> -	return device_add(&iio_sysfs_trig_dev);
-> +	ret = device_add(&iio_sysfs_trig_dev);
-> +	if (ret)
-> +		put_device(&iio_sysfs_trig_dev);
-> +	return ret;
+> -struct ms5611_chip_info {
+> -	u16 prom[MS5611_PROM_WORDS_NB];
+> -
+> -	int (*temp_and_pressure_compensate)(struct ms5611_chip_info *chip_info,
+> -					    s32 *temp, s32 *pressure);
+> -};
+> -
+>  /*
+>   * OverSampling Rate descriptor.
+>   * Warning: cmd MUST be kept aligned on a word boundary (see
+> @@ -50,12 +43,15 @@ struct ms5611_state {
+>  	const struct ms5611_osr *pressure_osr;
+>  	const struct ms5611_osr *temp_osr;
+>  
+> +	u16 prom[MS5611_PROM_WORDS_NB];
+> +
+>  	int (*reset)(struct ms5611_state *st);
+>  	int (*read_prom_word)(struct ms5611_state *st, int index, u16 *word);
+>  	int (*read_adc_temp_and_pressure)(struct ms5611_state *st,
+>  					  s32 *temp, s32 *pressure);
+>  
+> -	struct ms5611_chip_info *chip_info;
+> +	int (*compensate_temp_and_pressure)(struct ms5611_state *st, s32 *temp,
+> +					  s32 *pressure);
+>  	struct regulator *vdd;
+>  };
+>  
+> diff --git a/drivers/iio/pressure/ms5611_core.c b/drivers/iio/pressure/ms5611_core.c
+> index 717521de66c4..c564a1d6cafe 100644
+> --- a/drivers/iio/pressure/ms5611_core.c
+> +++ b/drivers/iio/pressure/ms5611_core.c
+> @@ -85,7 +85,7 @@ static int ms5611_read_prom(struct iio_dev *indio_dev)
+>  	struct ms5611_state *st = iio_priv(indio_dev);
+>  
+>  	for (i = 0; i < MS5611_PROM_WORDS_NB; i++) {
+> -		ret = st->read_prom_word(st, i, &st->chip_info->prom[i]);
+> +		ret = st->read_prom_word(st, i, &st->prom[i]);
+>  		if (ret < 0) {
+>  			dev_err(&indio_dev->dev,
+>  				"failed to read prom at %d\n", i);
+> @@ -93,7 +93,7 @@ static int ms5611_read_prom(struct iio_dev *indio_dev)
+>  		}
+>  	}
+>  
+> -	if (!ms5611_prom_is_valid(st->chip_info->prom, MS5611_PROM_WORDS_NB)) {
+> +	if (!ms5611_prom_is_valid(st->prom, MS5611_PROM_WORDS_NB)) {
+>  		dev_err(&indio_dev->dev, "PROM integrity check failed\n");
+>  		return -ENODEV;
+>  	}
+> @@ -114,21 +114,20 @@ static int ms5611_read_temp_and_pressure(struct iio_dev *indio_dev,
+>  		return ret;
+>  	}
+>  
+> -	return st->chip_info->temp_and_pressure_compensate(st->chip_info,
+> -							   temp, pressure);
+> +	return st->compensate_temp_and_pressure(st, temp, pressure);
 >  }
->  module_init(iio_sysfs_trig_init);
 >  
+> -static int ms5611_temp_and_pressure_compensate(struct ms5611_chip_info *chip_info,
+> +static int ms5611_temp_and_pressure_compensate(struct ms5611_state *st,
+>  					       s32 *temp, s32 *pressure)
+>  {
+>  	s32 t = *temp, p = *pressure;
+>  	s64 off, sens, dt;
+>  
+> -	dt = t - (chip_info->prom[5] << 8);
+> -	off = ((s64)chip_info->prom[2] << 16) + ((chip_info->prom[4] * dt) >> 7);
+> -	sens = ((s64)chip_info->prom[1] << 15) + ((chip_info->prom[3] * dt) >> 8);
+> +	dt = t - (st->prom[5] << 8);
+> +	off = ((s64)st->prom[2] << 16) + ((st->prom[4] * dt) >> 7);
+> +	sens = ((s64)st->prom[1] << 15) + ((st->prom[3] * dt) >> 8);
+>  
+> -	t = 2000 + ((chip_info->prom[6] * dt) >> 23);
+> +	t = 2000 + ((st->prom[6] * dt) >> 23);
+>  	if (t < 2000) {
+>  		s64 off2, sens2, t2;
+>  
+> @@ -154,17 +153,17 @@ static int ms5611_temp_and_pressure_compensate(struct ms5611_chip_info *chip_inf
+>  	return 0;
+>  }
+>  
+> -static int ms5607_temp_and_pressure_compensate(struct ms5611_chip_info *chip_info,
+> +static int ms5607_temp_and_pressure_compensate(struct ms5611_state *st,
+>  					       s32 *temp, s32 *pressure)
+>  {
+>  	s32 t = *temp, p = *pressure;
+>  	s64 off, sens, dt;
+>  
+> -	dt = t - (chip_info->prom[5] << 8);
+> -	off = ((s64)chip_info->prom[2] << 17) + ((chip_info->prom[4] * dt) >> 6);
+> -	sens = ((s64)chip_info->prom[1] << 16) + ((chip_info->prom[3] * dt) >> 7);
+> +	dt = t - (st->prom[5] << 8);
+> +	off = ((s64)st->prom[2] << 17) + ((st->prom[4] * dt) >> 6);
+> +	sens = ((s64)st->prom[1] << 16) + ((st->prom[3] * dt) >> 7);
+>  
+> -	t = 2000 + ((chip_info->prom[6] * dt) >> 23);
+> +	t = 2000 + ((st->prom[6] * dt) >> 23);
+>  	if (t < 2000) {
+>  		s64 off2, sens2, t2, tmp;
+>  
+> @@ -342,15 +341,6 @@ static int ms5611_write_raw(struct iio_dev *indio_dev,
+>  
+>  static const unsigned long ms5611_scan_masks[] = {0x3, 0};
+>  
+> -static struct ms5611_chip_info chip_info_tbl[] = {
+> -	[MS5611] = {
+> -		.temp_and_pressure_compensate = ms5611_temp_and_pressure_compensate,
+> -	},
+> -	[MS5607] = {
+> -		.temp_and_pressure_compensate = ms5607_temp_and_pressure_compensate,
+> -	}
+> -};
+> -
+>  static const struct iio_chan_spec ms5611_channels[] = {
+>  	{
+>  		.type = IIO_PRESSURE,
+> @@ -433,7 +423,20 @@ int ms5611_probe(struct iio_dev *indio_dev, struct device *dev,
+>  	struct ms5611_state *st = iio_priv(indio_dev);
+>  
+>  	mutex_init(&st->lock);
+> -	st->chip_info = &chip_info_tbl[type];
+> +
+> +	switch (type) {
+> +	case MS5611:
+> +		st->compensate_temp_and_pressure =
+> +			ms5611_temp_and_pressure_compensate;
+> +		break;
+> +	case MS5607:
+> +		st->compensate_temp_and_pressure =
+> +			ms5607_temp_and_pressure_compensate;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+>  	st->temp_osr =
+>  		&ms5611_avail_temp_osr[ARRAY_SIZE(ms5611_avail_temp_osr) - 1];
+>  	st->pressure_osr =
 

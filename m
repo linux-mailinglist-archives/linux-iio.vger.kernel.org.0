@@ -2,92 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99AF3609540
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 19:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2963360955A
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Oct 2022 20:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbiJWRuE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 23 Oct 2022 13:50:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        id S230428AbiJWSJF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 23 Oct 2022 14:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230331AbiJWRuC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 13:50:02 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D5C326DA;
-        Sun, 23 Oct 2022 10:50:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1666547401; x=1698083401;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mG1GlUqs4r9Epxshg2wIumi9qx2R46z0xR8xpQ4Cc9Q=;
-  b=S6jBkfiD+hYozeP71/MAF1XMyZkQdBz2j2CBqRti5n+ccRlu+8ZZ1Oja
-   FiYobh1GNYEqP6taWldDRMyUqgwHTrV04e2S2jsKMCJ3tUwglEDZshvAG
-   k+7U09WFSgFLtVBqw7LmNGqcLZ+NCPmkiqg5IDNgrzAhbaJR8vQF/by2M
-   lqHLOPWRxlOYxDx2mcXTOH4HfX338MyN4hjuHBembnpyre5FwtxX2m/AF
-   fXoSygsXHomdSqFaIPZ77BoposLwZ5w+Za7GW2qhiJpBilEyWf2i0nADC
-   EzmNQxxjcHJupn2lHrEGA1W4bhbG3aKIECxW1vltxlspe3XvUaUCqB2S8
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="306018039"
-X-IronPort-AV: E=Sophos;i="5.95,207,1661842800"; 
-   d="scan'208";a="306018039"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2022 10:50:01 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10509"; a="773599326"
-X-IronPort-AV: E=Sophos;i="5.95,207,1661842800"; 
-   d="scan'208";a="773599326"
-Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.88])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2022 10:49:58 -0700
-From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-To:     jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, ihkose@gmail.com
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajat.khandelwal@intel.com,
-        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-Subject: [PATCH v3] dt-bindings: iio: dac: Change the I2C slave address for ds4422/4424 to its correct value
-Date:   Mon, 24 Oct 2022 23:20:08 +0530
-Message-Id: <20221024175008.196714-1-rajat.khandelwal@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230391AbiJWSJC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 23 Oct 2022 14:09:02 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE196E8AB
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 11:09:00 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id v130-20020a1cac88000000b003bcde03bd44so8550643wme.5
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 11:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SqFi2wmLGXsQfu/MZ0ShWytXRLk9pwr7X9yOqzu3XMM=;
+        b=xr1jMXVmN57HPedWjHBHw1rrR1I978R/fF6s6AJxl5r6la7lQvhSNZVE8+g2y0CLiO
+         sDalDXJWkgYjhjEW/tk2thpgvWl6aN/4cUoHucR/vgyQGfBHk/P8fVym9OLTYL9CaDNc
+         gW1/wghLPtZzxuOCGhEE5dyrYtYTJsZ7jphSDYrKqG+oJwnjxwiZMzhfPhUVrkSGT+zu
+         5VweFASmBJDlLQN+flFQth9QRLtbPOQNBbETZ75/uwAkj0tW+hrOnW5GnQhWc/dIW6xR
+         vnkUaLQLdc5GSXiDVFlRPo8TgQp1RGMp1/59R56exH01qg/nbJrdKRA5l0wPE4Qmy1c+
+         JkKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SqFi2wmLGXsQfu/MZ0ShWytXRLk9pwr7X9yOqzu3XMM=;
+        b=IgD+Bg5QnN3dcrKmDYp5+fI0II6ptyrs9pyMNOQosaxlglW6osfRrvC7NeTljA+XPs
+         s/SEPDFwBMB5bbLQLevSArDhlxtu1n8hUUGoEyhOUeIR1Qx+7xRa6wHoyEUh/f/Gc5iY
+         UqtVsXnHCLRAH9l7TlJRea8td+REa8oCHLKSB+FooKpkiFSZA2jVmzakW0zv9HbpnIvz
+         GC0ExQ7G6ey3Nn0ObNsDmmsvqXdwgKbVLWK/NoVjX+6XPOB1bgecTc3RhDJP8fLWrE4n
+         BH3MlKBrNL3hzpNdpDjQ6zopZfg25kecYTalCkaVOElfmEH5dgqI6d/u85Oxyo55iAy8
+         TsZA==
+X-Gm-Message-State: ACrzQf2g0Ozuq9FupXEwxMk0ctZ6jTsJ5ejxDlvde/fGAVca2aiGQMt1
+        r1G+9EX5NSjOWVAlbLf0S+zP+A==
+X-Google-Smtp-Source: AMsMyM72SUpT+H3YAHck0Mm/xenvuseMLAPPp2oOExNAh4/7iab4VjcAEYTBVCFws4DOL079RWUZ7Q==
+X-Received: by 2002:a05:600c:5104:b0:3c6:d8e0:bc2e with SMTP id o4-20020a05600c510400b003c6d8e0bc2emr19762303wms.156.1666548538775;
+        Sun, 23 Oct 2022 11:08:58 -0700 (PDT)
+Received: from ?IPV6:2a05:6e02:1041:c10:14a0:fbb0:c618:c972? ([2a05:6e02:1041:c10:14a0:fbb0:c618:c972])
+        by smtp.googlemail.com with ESMTPSA id g10-20020a5d554a000000b002364c77bcacsm8318216wrw.38.2022.10.23.11.08.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 23 Oct 2022 11:08:58 -0700 (PDT)
+Message-ID: <b085d1ee-2924-47f5-a952-27040ae3eb1c@linaro.org>
+Date:   Sun, 23 Oct 2022 20:08:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 02/21] ARM: s3c: remove s3c24xx specific hacks
+Content-Language: en-US
+To:     Arnd Bergmann <arnd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
+        Simtec Linux Team <linux@simtec.co.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tomasz Figa <tomasz.figa@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org
+References: <20221021202254.4142411-1-arnd@kernel.org>
+ <20221021203329.4143397-2-arnd@kernel.org>
+From:   Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <20221021203329.4143397-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_24_48,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The datasheet states that the slave address for the device is 0x20
-when the pins A0 and A1 are ground. The DT binding has been using
-0x10 as the value and I think it should be 0x20 as per datasheet.
+On 21/10/2022 22:27, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> A number of device drivers reference CONFIG_ARM_S3C24XX_CPUFREQ or
+> similar symbols that are no longer available with the platform gone,
+> though the drivers themselves are still used on newer platforms,
+> so remove these hacks.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
----
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-v3:
-1. Subject prefix added
-2. Improvised 'examples:'
 
- Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-index 264fa7c5fe3a..e7c7c103d1dd 100644
---- a/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/maxim,ds4424.yaml
-@@ -36,9 +36,9 @@ examples:
-         #address-cells = <1>;
-         #size-cells = <0>;
- 
--        dac@10 {
-+        dac@20 {
-             compatible = "maxim,ds4424";
--            reg = <0x10>; /* When A0, A1 pins are ground */
-+            reg = <0x20>; /* When A0, A1 pins are ground */
-             vcc-supply = <&vcc_3v3>;
-         };
-     };
 -- 
-2.34.1
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog

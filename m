@@ -2,104 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B827B60B1B3
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 18:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D370B60B47C
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 19:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233627AbiJXQd2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 12:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47538 "EHLO
+        id S232697AbiJXRr3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 13:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230375AbiJXQcy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 12:32:54 -0400
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D0BF5B2;
-        Mon, 24 Oct 2022 08:19:45 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id r14so17307803lfm.2;
-        Mon, 24 Oct 2022 08:19:45 -0700 (PDT)
+        with ESMTP id S229886AbiJXRrE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 13:47:04 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D1C14DF2B;
+        Mon, 24 Oct 2022 09:23:09 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id kt23so700696ejc.7;
+        Mon, 24 Oct 2022 09:23:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=BOauOQqA15pGA1yiVR8SjVcAabhIPWsiPuETAcU24cE=;
-        b=Us0r4OLNUf4DmjVrBsQjdQ00h8GEaGPZm+gSxV5+mY4PVewEcqKTIyPG6Mq9pjVoP6
-         DBsMXCTmYXODrbCPGU9+Uv6//2DvEb9oIBTrqwJ8sEv86Yivj3krJ6SAujZy+OAh8jhR
-         WTsRoJd4oDDzwpfi8URCQNX7OQbH3wPhGfSrgpoqv+G0eItV+2GnXM5FffTMlu7xabFg
-         ZA7CzsO8XA0jotBNAMaXY8ghPaH9MoCaV2yO+gXO5ehiCBQo4QARwFq7yDJBQic3MI1G
-         v50hjzR8JglDVMz+HeWqSfSqqplfLjhEwImHe3bRuVMBH5LbJieJwxo8Haa+QRnmyhYV
-         yVCQ==
+        bh=hP8b5SS/NsW2nMLW/xSwPyyreIz/0UJMi8FgJ7xYbiY=;
+        b=dNM2IXi+yYy6NnfdJ0TWhvuVgBAl+4pS8y/Xs7eHyDthyelxiOrwCJ2MEm484pEee7
+         FsCzK0hK4j9dQJQdUC/VItm1G6DklEZV6krCcMu9ShYPfsnZ8IfGLVvUH57PgzTVG1Rk
+         2h9QjlQwGsn4TEIRl7DUjsnnxEUa3zzEFPq072nA8G233sfQb8AaFSk/VSIFJjnMH0DV
+         HKi4BtKavXvMJ0YqKZwwhMTETchk9k8FeINrfelCyow4ZD/KQJvhor1AeHMOvYuEiCSg
+         6yr6i+0zGKEAc8z7igya8o7OuyAJjzoW/q0GkyJmU8nJ72KzKK0gl1N/5t+4wxbTNY2b
+         WgPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BOauOQqA15pGA1yiVR8SjVcAabhIPWsiPuETAcU24cE=;
-        b=gPiaU3/K6NFBaYGrL3qNniizdO5qvRGE9iI3LEq0F36T0XoxjMcKhjC3TPnmfog6t7
-         e277JuTU69j27PtZL5bpPuQ2G5pEZsenEEAQ931kLic8OwljlCL0VoxS+n+uF0HlMAvj
-         aHG4XSABidA13zxK2KbQGzHZ1vEpjJieFqFQ05rGpf0AMNyLEwt5gw7M1BpzDUno7XuQ
-         rneT+QxEDQei4++crB1ausZxqQxvdw4uk6QHArYg6RY4OkPhwf3xyDeiFzyPbHt1wtES
-         bj+MaAjlr7yWkJIK/BLSt1tz5CZT5I0e9JsM4PNAXk/d1s+o28JKy4/T3k0sxK+JZqMm
-         UYGw==
-X-Gm-Message-State: ACrzQf38MgKmiFnA24DWPKFYNrzXJZsQ/pgz4pl/SNgM9AtrMDFreqRe
-        D99Kdt4gJ/F+Bj5lNJX7pmtMmQ+isEc=
-X-Google-Smtp-Source: AMsMyM7zQgTjup/5+mQsX00g0CBboY8PB8EHRLws1fEkVApc4axNwo6+tHUEJ7ZF/uJRbrBY6ha3Yw==
-X-Received: by 2002:a05:6402:2947:b0:451:32a:2222 with SMTP id ed7-20020a056402294700b00451032a2222mr30533851edb.376.1666620142601;
-        Mon, 24 Oct 2022 07:02:22 -0700 (PDT)
-Received: from [192.168.0.104] (p5dcfeede.dip0.t-ipconnect.de. [93.207.238.222])
-        by smtp.gmail.com with ESMTPSA id c22-20020a170906155600b007081282cbd8sm15562000ejd.76.2022.10.24.07.02.21
+        bh=hP8b5SS/NsW2nMLW/xSwPyyreIz/0UJMi8FgJ7xYbiY=;
+        b=RT8w61t2q03P51m/PigJPdBxZNfN/t6IMWUjy6ifyk06qqQs70zQ1vyekO5KNJLjaj
+         Oy5XyxGDMisbx7PEZJF1OnvJNv3KkHNJjzYk/SS4L1NrKi/sCyu3AkAnh8JqhZV8q4Y7
+         CLfb42QO04yJSfc37XLyybPnH46gguOz3S4y74SO/wTSw8UhktflVvAa5Dtlq4kXpbNQ
+         SkkeledsAMbSWfWmQQoyzkLoz9zHan/wA4NsFrt7cHL19bYXeLY89CRXMYghb5UKhUaP
+         aIunXrpLKoylXKCMrJ0SYd4u6Bnvzpmk4srW+U2+iDEMtzXxNImZV2A+PxWF9Ut5IBu5
+         yEzg==
+X-Gm-Message-State: ACrzQf0r8d0ZtDzde59nskMfLss/8wH5h1JVhruCXxmQBpl5I1g+WJsb
+        9k7AZuXwr2+K3Ml9ASBvcvVsmUD8Y1o=
+X-Google-Smtp-Source: AMsMyM7Cg1lEvF1ex7ag4vTHjVpCu9JynpVIzJ3mjmVZwbfOJxh18CRJCEfRbJb7+Z8sToY2Hx7afg==
+X-Received: by 2002:a2e:a7c5:0:b0:26f:c304:a16f with SMTP id x5-20020a2ea7c5000000b0026fc304a16fmr12556208ljp.47.1666620974864;
+        Mon, 24 Oct 2022 07:16:14 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::2? (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
+        by smtp.gmail.com with ESMTPSA id 11-20020ac24d4b000000b00492dc29be7bsm4544141lfp.227.2022.10.24.07.16.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Oct 2022 07:02:22 -0700 (PDT)
-Message-ID: <049e0cf3-49b9-ed25-c595-06de22117f1a@gmail.com>
-Date:   Mon, 24 Oct 2022 16:02:21 +0200
+        Mon, 24 Oct 2022 07:16:14 -0700 (PDT)
+Message-ID: <4e6d331b-0cc3-de9b-9fa2-96981f594c83@gmail.com>
+Date:   Mon, 24 Oct 2022 17:16:12 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v4 6/8] power: supply: fix failed to get iio channel by
- device name
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v4 2/3] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
 Content-Language: en-US
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20221024132757.3345400-1-sravanhome@gmail.com>
- <20221024132757.3345400-7-sravanhome@gmail.com>
- <CAHp75VcvZ9drkFfbpVJFz0UWQvOMgAu3+JmV4HvOG3dPKDoN5w@mail.gmail.com>
-From:   saravanan sekar <sravanhome@gmail.com>
-In-Reply-To: <CAHp75VcvZ9drkFfbpVJFz0UWQvOMgAu3+JmV4HvOG3dPKDoN5w@mail.gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     DDRokosov@sberdevices.ru, andriy.shevchenko@linux.intel.com,
+        demonsingur@gmail.com, devicetree@vger.kernel.org,
+        jagathjog1996@gmail.com, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        matti.vaittinen@fi.rohmeurope.com, nikita.yoush@cogentembedded.com,
+        robh+dt@kernel.org
+References: <cover.1666350457.git.mazziesaccount@gmail.com>
+ <7baf3dd482ab1db0d8a3676d6d5d3e4ab7f3cf9d.1666350457.git.mazziesaccount@gmail.com>
+ <3ad8b485-9007-f7e9-f52a-d5644a688bcf@wanadoo.fr>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <3ad8b485-9007-f7e9-f52a-d5644a688bcf@wanadoo.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 24/10/22 15:49, Andy Shevchenko wrote:
-> On Mon, Oct 24, 2022 at 4:28 PM Saravanan Sekar <sravanhome@gmail.com> wrote:
+Thanks for the review Christophe,
+
+On 10/24/22 16:34, Christophe JAILLET wrote:
+> Le 21/10/2022 à 13:22, Matti Vaittinen a écrit :
+>> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
+>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+>> ranges (2, 4, 8 and 16g), and probably some other cool features.
 >>
->> The mfd cell devices name populated on sysfs entry is dynamically derived
->> from an auto instance which introduced a regression. As a result
->> mpc2629_charger driver failed to get adc channel because of iio consumer
->> name mismatch with the sysfs.
+>> Add support for the basic accelerometer features such as getting the
+>> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+>> using the WMI IRQ).
 >>
->> /sys/class/i2c-adapter/i2c-1/mp2629_adc.0.auto/
->> /sys/class/i2c-adapter/i2c-1/mp2629_charger.1.auto/
+>> Important things to be added include the double-tap, motion
+>> detection and wake-up as well as the runtime power management.
 >>
->> Fixes: 466a62d7642f(mfd: core: Make a best effort attempt to match devices)
+>> Signed-off-by: Matti Vaittinen 
+>> <mazziesaccount-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>
+>> ---
 > 
-> Wrong Fixes tag format, moreover the fixes should be grouped at the
-> beginning of the series, so it will be visible and splittable based on
-> this property.
+> Hi, should there be a v5:
 
-Thanks for quick review Andy, I will correct fixes tag format and group 
-all the fixes beginning of series in v5.
+I did already send out the v5 shortly before your review. If I need to 
+send v6 I'll apply your suggestions.
 
-Thanks,
-Saravanan
 
+Yours
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

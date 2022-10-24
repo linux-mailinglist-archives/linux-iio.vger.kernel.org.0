@@ -2,275 +2,244 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E384B609EE1
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 12:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBCB609EDA
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 12:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbiJXKWj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 06:22:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
+        id S229576AbiJXKVA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 06:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbiJXKWi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 06:22:38 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B65057DC4
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:22:37 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id a15so7443125ljb.7
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:22:37 -0700 (PDT)
+        with ESMTP id S229604AbiJXKU7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 06:20:59 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F10C34D4CF
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:20:57 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id ml12so5188376qvb.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HA6qy786JkRhakLWTf9Vd5z8poyqlUHoYYUsjIZqQ6o=;
-        b=Q5B3x7xVG4WfCbUDdBJVsjzxZnXLpnlCY6oXKK6rQph3Z1w/iJArZM4KUGJNzuckRA
-         Jp23/aNvgQJvT7FaFaT6dO1z43XZXGPR+ulqVHGNtnz+/OzRmH+PLEEOY0e5+vroRC2V
-         QD4g9XpYvBr8+xAWZrHikpIBs0daiYspZh0UGLK17E+1eycg2gYeGoBWaYZED5ZdQ9x5
-         VM4fzfyIbCJcwniJkk/byWZLT4N8bnjRlsp2XsEAIi6M/7GpRMItXSKiqKBTApPoyK0D
-         8fy3SsepM+jNJ+34XeKvp/VeqHF8H8LqeW3VTCyWzdQcSrgJQWXkn4InSlFnZeOnQJNc
-         lNjA==
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VyQm2Xa+x5OgM+9q3Kg7O5cBQOGlnGN1sPswQe1BnRk=;
+        b=qdIkaXnIPJ62WYqpgSIg/KmMGlDGnBdrRYh9GX+XVd5xvfx4mO4LtsjVFaNF37uzR8
+         DTpOSzg/9nSiosN+Ip/GR9pf96NDYeRJ7iTpcy5/cRndDy76Dbvbr3Gvy++5TKc80Cep
+         6DhZwB7V7+6IDJMSvqXmU6nKxJIugCvD24l0D7nqEHIy59oCSNOBfdQCvvbWomLzmGsV
+         gNskcLVVReVFUFw3Mj+Rca4a3A/WUbfCO1l8RJlrf3n/4PPrbgM+7LTrXhMKHaNNtRcg
+         gGh8WMUE1ktnsiDdoiyMVq9dZ/1oumBf2P771BtmargEfC6yBQqqz5Ge64vs21yFu4/8
+         D94A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HA6qy786JkRhakLWTf9Vd5z8poyqlUHoYYUsjIZqQ6o=;
-        b=cJbomXB+DdwciPO/xRSJTRuYi5HslQtU7OFm7ApJoOLy9WenwwrWPjyEJ8+nSC/FuQ
-         WfnBoa1fhAyZ7k1GlbZTR9e6c9a3in9TYNHp7g9z6gfhu+LAHImr86RYSN1jsusCfGnK
-         kuD7SE6hBtq00pepJKMrbAmVwogl10tWYhN31Zdx9XSyy6pYnQ8KUH1aEu9ox6Lzdfca
-         qxhhFZSTAB4q6msvgxcS4jPbxKcvwmr+PY+xdSjlJTatW0H0FvyIz5LOReDAbUR8ZrZG
-         dhpCpbOH7DyQew5W5vpqZWPNmUpHCMsqbBooVGdA9FUR2l+7655QnzL7v6qV7PQYNG+p
-         kK9g==
-X-Gm-Message-State: ACrzQf1As9iPUf3OCpAxx0Vo0uzjNNrIPbl28XOWTwDo2eBlVVHOOgxw
-        3SVgX3ECHqkZHrczEYv7ZCFqxjN7ziJ8BNKr
-X-Google-Smtp-Source: AMsMyM4d3vuFf5OWtsoSGTIfWThj6gZsYQRMGIlmm8kp00Zvx4WJBH4lkN+auWB+7ZjbbT3gGJZZhw==
-X-Received: by 2002:a17:906:c08c:b0:78d:b8ce:c28f with SMTP id f12-20020a170906c08c00b0078db8cec28fmr26295343ejz.437.1666606944871;
-        Mon, 24 Oct 2022 03:22:24 -0700 (PDT)
-Received: from localhost.localdomain (ptr-4xh0y3w0d7spjutrgwc.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:d731:196c:34e4:734c])
-        by smtp.gmail.com with ESMTPSA id 18-20020a170906211200b0078ddb518a90sm15207695ejt.223.2022.10.24.03.22.21
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VyQm2Xa+x5OgM+9q3Kg7O5cBQOGlnGN1sPswQe1BnRk=;
+        b=wg64sqepFDFQ6GnmojOdQmGtNmFiUY1yqF6MwJ9pHiAJHQhnY2UcbKicaM3kU78oot
+         nxoCZcT9fge+76yzMov96AMYmFk9UBuTgzID6U2X1324wctdyujqgdH2Gf0SC7BsPauq
+         6LujqQm6T7ec2lpVUGcpUcCeO41fHjV8jK+hH0mn7EGB2ZISJAkveQYemO8MACoUcZzA
+         0vNFxlJT/WdMctuqPVUyqiuJXP++hoHcc07yJ0NiPz3JTx6io/9mABce2xWnNvcajiI3
+         eRcZ9YQoe+3ZQOsNZRUb/YuKHn1iWJ722c7XH6payzpLIGk+nYsvfK0XWkqLw/nQQXKy
+         ZIxw==
+X-Gm-Message-State: ACrzQf3rrMLpUEa14KvuV7a10BmkgISfO/uE10r9iJRBboPCuEXCcYop
+        hlAt9Q+cwo5ZEUJfHo7RUBU=
+X-Google-Smtp-Source: AMsMyM7/884wFXZ32ySTuyeD4mj774Q2A1y5/kb39RJivh6sDFP4gel68scLVr7xzDP4Mm0jbyYTtw==
+X-Received: by 2002:a05:6214:4013:b0:4bb:6162:8589 with SMTP id kd19-20020a056214401300b004bb61628589mr7847447qvb.96.1666606856876;
+        Mon, 24 Oct 2022 03:20:56 -0700 (PDT)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id h3-20020a05620a13e300b006ea7f9d8644sm14347368qkl.96.2022.10.24.03.20.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 03:22:24 -0700 (PDT)
-From:   Crt Mori <cmo@melexis.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Crt Mori <cmo@melexis.com>
-Subject: [PATCH v3] iio: temperature: mlx90632 Style alignment for the driver
-Date:   Mon, 24 Oct 2022 12:22:05 +0200
-Message-Id: <d59aad00891c1a64e044a0f5bc7d40e42d47e9c7.1666606912.git.cmo@melexis.com>
-X-Mailer: git-send-email 2.34.1
+        Mon, 24 Oct 2022 03:20:56 -0700 (PDT)
+Message-ID: <39f4b8f21f19361e2b87b581f11a348222ea3dd2.camel@gmail.com>
+Subject: Re: [PATCH 10/23] iio: accel: kxcjk-1013: Convert to i2c's
+ .probe_new
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     Miaoqian Lin <linmq006@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Vladimir Oltean <olteanv@gmail.com>, kernel@pengutronix.de,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        wangjianli <wangjianli@cdjrlc.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Jonathan Cameron <jic23@kernel.org>
+Date:   Mon, 24 Oct 2022 12:22:19 +0200
+In-Reply-To: <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
+References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+         <20221023132302.911644-11-u.kleine-koenig@pengutronix.de>
+         <Y1WQoyek5KBwDqCd@smile.fi.intel.com>
+         <20221024070518.dnrhsijfphbhs2la@pengutronix.de>
+         <Y1ZPVw1qBx1MkZgY@smile.fi.intel.com>
+         <20221024091456.vuw3mqcokfrbrozh@pengutronix.de>
+         <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Changing and aligning the overall style of the driver with the recent
-reviews. There is no functional change, only type generalization and
-moving to the reverse Christmas tree for variable declarations.
+On Mon, 2022-10-24 at 12:46 +0300, Andy Shevchenko wrote:
+> On Mon, Oct 24, 2022 at 11:14:56AM +0200, Uwe Kleine-K=C3=B6nig wrote:
+> > On Mon, Oct 24, 2022 at 11:39:51AM +0300, Andy Shevchenko wrote:
+> > > On Mon, Oct 24, 2022 at 09:05:18AM +0200, Uwe Kleine-K=C3=B6nig wrote=
+:
+> > > > On Sun, Oct 23, 2022 at 10:06:11PM +0300, Andy Shevchenko
+> > > > wrote:
+> > > > > On Sun, Oct 23, 2022 at 03:22:49PM +0200, Uwe Kleine-K=C3=B6nig
+> > > > > wrote:
+>=20
+> ...
+>=20
+> > > > > > +static const struct i2c_device_id kxcjk1013_id[] =3D {
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"kxcjk1013", KXCJK1=
+013},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"kxcj91008", KXCJ91=
+008},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"kxtj21009", KXTJ21=
+009},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"kxtf9",=C2=A0=C2=
+=A0=C2=A0=C2=A0 KXTF9},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"kx023-1025", KX023=
+1025},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{"SMO8500",=C2=A0=C2=
+=A0 KXCJ91008},
+> > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{}
+> > > > > > +};
+> > > > > > +MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
+> > > > >=20
+> > > > > I don't like this part. Can we, please, find a way how to
+> > > > > dereference this
+> > > > > table via struct i2c_client, please?
+> > > >=20
+> > > > It would be possible to do (on top of my patch here as PoC):
+> > > >=20
+> > > > diff --git a/drivers/iio/accel/kxcjk-1013.c
+> > > > b/drivers/iio/accel/kxcjk-1013.c
+> > > > index e043dd698747..00269b25af99 100644
+> > > > --- a/drivers/iio/accel/kxcjk-1013.c
+> > > > +++ b/drivers/iio/accel/kxcjk-1013.c
+> > > > @@ -1445,7 +1445,7 @@ MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
+> > > > =C2=A0
+> > > > =C2=A0static int kxcjk1013_probe(struct i2c_client *client)
+> > > > =C2=A0{
+> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct i2c_device_=
+id *id =3D
+> > > > i2c_match_id(kxcjk1013_id, client);
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct i2c_device_=
+id *id =3D
+> > > > i2c_match_id(to_i2c_driver(client->dev.driver)->id_table,
+> > > > client);
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct kxcjk1013_da=
+ta *data;
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_dev *ind=
+io_dev;
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct kxcjk_1013_p=
+latform_data *pdata;
+> > > >=20
+> > > > (only compile tested), you could even create a function or
+> > > > macro to make
+> > > > this a bit prettier on the source level. For the compiler
+> > > > loading the
+> > > > address from a local symbol instead of from two pointer
+> > > > dereferences is
+> > > > (I guess) a bit more effective and IMHO more natural.
+> > > >=20
+> > > > *shrug*, I don't care much, but I don't like to have to rework
+> > > > this
+> > > > series just because you don't like this part. You even didn't
+> > > > give a
+> > > > rationale, I can imagine several different ones:
+> > >=20
+> > > And I don't want to have ping-ponging the pieces of code (ID
+> > > tables) because
+> > > some API has to be fixes or so.
+> >=20
+> > In this series it's only ping without pong.
+>=20
+> Exactly. And it means let's put my problem to someone's else
+> shoulders.
+>=20
+> > To benefit from the local
+> > table instead of fishing the table out of client, the table must be
+> > declared already when it's used.
+>=20
+> I don't see benefit of dereferencing tables by name. The table has to
+> be
+> available via struct driver, otherwise, how the heck we even got into
+> the
+> ->probe() there.
+>=20
+> > > > =C2=A0[ ] it makes the patch bigger
+> > > > =C2=A0[ ] it results in an unnatural order of symbols in the driver
+> > > > =C2=A0[ ] it's some kind of duplication
+> > > > =C2=A0[ ] something else
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 please elaborate: ________________________=
+________
+> > >=20
+> > > It adds a burden to the future work with no good justification
+> > > along with
+> >=20
+> > This burden exists in the drivers that already today have the table
+> > above the probe function? (Ok, there are none in this series, but
+> > it
+> > happens, see for example
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
+> > https://lore.kernel.org/linux-rtc/20221021130706.178687-4-u.kleine-koen=
+ig@pengutronix.de
+> >=20
+> > and a few more in the rtc series.) I don't see a burden here, we're
+> > talking about the id table being defined before the probe function,
+> > right?
+> > How is that a burden? What am I missing?
+>=20
+> Yeah, people haven't had no idea about accessing tables via struct
+> driver,
+> reviewers of that code neither. Should it be excuse for us to follow
+> that
+> example?
+>=20
+> > > a churn in _this_ series.
+> >=20
+> > The alternatives are: Split the patch into reorder + convert to
+> > .probe_new, or add a declaration for the id table. Among these I
+> > like
+> > the current approach besto.
+>=20
+> Alternative is to avoid reordering to begin with, no?
+>=20
+> > > While I like the rest of the series, these things I would rather
+> > > postpone
+> > > or rework.
+> >=20
+> > There is no win in postponing, is there?[1] What would be your
+> > preferred
+> > way to rework?
+>=20
+> My understand of the probe_new is that an attempt to unify i2c with
+> how spi
+> does. So, why not teach i2c_match_id() to handle this nicely for the
+> caller?
+>=20
+> This will allow to leave tables where they are (or move closer to
+> struct
+> driver), reduce churn with the using of current i2c_match_id() as you
+> showed the long line to get that table. This might need a new API to
+> avoid
+> changing many drivers at once. But it's business as usual.
+>=20
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Crt Mori <cmo@melexis.com>
----
- drivers/iio/temperature/mlx90632.c | 65 +++++++++++++++++-------------
- 1 file changed, 36 insertions(+), 29 deletions(-)
+I guess something like spi_get_device_id()
 
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
-index 224db7513baa..a17fe5f4967a 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -219,11 +219,11 @@ static const struct regmap_config mlx90632_regmap = {
- 	.cache_type = REGCACHE_RBTREE,
- };
- 
--static s32 mlx90632_pwr_set_sleep_step(struct regmap *regmap)
-+static int mlx90632_pwr_set_sleep_step(struct regmap *regmap)
- {
- 	struct mlx90632_data *data =
- 		iio_priv(dev_get_drvdata(regmap_get_device(regmap)));
--	s32 ret;
-+	int ret;
- 
- 	if (data->powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP)
- 		return 0;
-@@ -234,14 +234,14 @@ static s32 mlx90632_pwr_set_sleep_step(struct regmap *regmap)
- 		return ret;
- 
- 	data->powerstatus = MLX90632_PWR_STATUS_SLEEP_STEP;
--	return ret;
-+	return 0;
- }
- 
--static s32 mlx90632_pwr_continuous(struct regmap *regmap)
-+static int mlx90632_pwr_continuous(struct regmap *regmap)
- {
- 	struct mlx90632_data *data =
- 		iio_priv(dev_get_drvdata(regmap_get_device(regmap)));
--	s32 ret;
-+	int ret;
- 
- 	if (data->powerstatus == MLX90632_PWR_STATUS_CONTINUOUS)
- 		return 0;
-@@ -252,7 +252,7 @@ static s32 mlx90632_pwr_continuous(struct regmap *regmap)
- 		return ret;
- 
- 	data->powerstatus = MLX90632_PWR_STATUS_CONTINUOUS;
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -444,8 +444,8 @@ static int mlx90632_channel_new_select(int perform_ret, uint8_t *channel_new,
- static int mlx90632_read_ambient_raw(struct regmap *regmap,
- 				     s16 *ambient_new_raw, s16 *ambient_old_raw)
- {
--	int ret;
- 	unsigned int read_tmp;
-+	int ret;
- 
- 	ret = regmap_read(regmap, MLX90632_RAM_3(1), &read_tmp);
- 	if (ret < 0)
-@@ -464,11 +464,11 @@ static int mlx90632_read_object_raw(struct regmap *regmap,
- 				    int perform_measurement_ret,
- 				    s16 *object_new_raw, s16 *object_old_raw)
- {
--	int ret;
- 	unsigned int read_tmp;
--	s16 read;
--	u8 channel = 0;
- 	u8 channel_old = 0;
-+	u8 channel = 0;
-+	s16 read;
-+	int ret;
- 
- 	ret = mlx90632_channel_new_select(perform_measurement_ret, &channel,
- 					  &channel_old);
-@@ -503,7 +503,8 @@ static int mlx90632_read_all_channel(struct mlx90632_data *data,
- 				     s16 *ambient_new_raw, s16 *ambient_old_raw,
- 				     s16 *object_new_raw, s16 *object_old_raw)
- {
--	s32 ret, measurement;
-+	s32 measurement;
-+	int ret;
- 
- 	mutex_lock(&data->lock);
- 	ret = mlx90632_set_meas_type(data, MLX90632_MTYP_MEDICAL);
-@@ -512,24 +513,24 @@ static int mlx90632_read_all_channel(struct mlx90632_data *data,
- 
- 	switch (data->powerstatus) {
- 	case MLX90632_PWR_STATUS_CONTINUOUS:
--		measurement = mlx90632_perform_measurement(data);
--		if (measurement < 0) {
--			ret = measurement;
-+		ret = mlx90632_perform_measurement(data);
-+		if (ret < 0)
- 			goto read_unlock;
--		}
-+
- 		break;
- 	case MLX90632_PWR_STATUS_SLEEP_STEP:
--		measurement = mlx90632_perform_measurement_burst(data);
--		if (measurement < 0) {
--			ret = measurement;
-+		ret = mlx90632_perform_measurement_burst(data);
-+		if (ret < 0)
- 			goto read_unlock;
--		}
-+
- 		break;
- 	default:
- 		ret = -EOPNOTSUPP;
- 		goto read_unlock;
- 	}
- 
-+	measurement = ret; /* If we came here ret holds the measurement position */
-+
- 	ret = mlx90632_read_ambient_raw(data->regmap, ambient_new_raw,
- 					ambient_old_raw);
- 	if (ret < 0)
-@@ -615,15 +616,21 @@ static int mlx90632_read_all_channel_extended(struct mlx90632_data *data, s16 *o
- 	if (ret < 0)
- 		goto read_unlock;
- 
--	if (data->powerstatus == MLX90632_PWR_STATUS_CONTINUOUS) {
-+	switch (data->powerstatus) {
-+	case MLX90632_PWR_STATUS_CONTINUOUS:
- 		ret = read_poll_timeout(mlx90632_perform_measurement, meas, meas == 19,
- 					50000, 800000, false, data);
- 		if (ret)
- 			goto read_unlock;
--	} else if (data->powerstatus == MLX90632_PWR_STATUS_SLEEP_STEP) {
-+		break;
-+	case MLX90632_PWR_STATUS_SLEEP_STEP:
- 		ret = mlx90632_perform_measurement_burst(data);
- 		if (ret < 0)
- 			goto read_unlock;
-+		break;
-+	default:
-+		ret = -EOPNOTSUPP;
-+		goto read_unlock;
- 	}
- 
- 	ret = mlx90632_read_object_raw_extended(data->regmap, object_new_raw);
-@@ -640,9 +647,9 @@ static int mlx90632_read_all_channel_extended(struct mlx90632_data *data, s16 *o
- static int mlx90632_read_ee_register(struct regmap *regmap, u16 reg_lsb,
- 				     s32 *reg_value)
- {
--	s32 ret;
- 	unsigned int read;
- 	u32 value;
-+	int ret;
- 
- 	ret = regmap_read(regmap, reg_lsb, &read);
- 	if (ret < 0)
-@@ -806,12 +813,12 @@ static s32 mlx90632_calc_temp_object_extended(s64 object, s64 ambient, s64 refle
- 
- static int mlx90632_calc_object_dsp105(struct mlx90632_data *data, int *val)
- {
--	s32 ret;
-+	s16 ambient_new_raw, ambient_old_raw, object_new_raw, object_old_raw;
- 	s32 Ea, Eb, Fa, Fb, Ga;
- 	unsigned int read_tmp;
--	s16 Ha, Hb, Gb, Ka;
--	s16 ambient_new_raw, ambient_old_raw, object_new_raw, object_old_raw;
- 	s64 object, ambient;
-+	s16 Ha, Hb, Gb, Ka;
-+	int ret;
- 
- 	ret = mlx90632_read_ee_register(data->regmap, MLX90632_EE_Ea, &Ea);
- 	if (ret < 0)
-@@ -885,11 +892,11 @@ static int mlx90632_calc_object_dsp105(struct mlx90632_data *data, int *val)
- 
- static int mlx90632_calc_ambient_dsp105(struct mlx90632_data *data, int *val)
- {
--	s32 ret;
-+	s16 ambient_new_raw, ambient_old_raw;
- 	unsigned int read_tmp;
- 	s32 PT, PR, PG, PO;
-+	int ret;
- 	s16 Gb;
--	s16 ambient_new_raw, ambient_old_raw;
- 
- 	ret = mlx90632_read_ee_register(data->regmap, MLX90632_EE_P_R, &PR);
- 	if (ret < 0)
-@@ -1164,11 +1171,11 @@ static int mlx90632_enable_regulator(struct mlx90632_data *data)
- static int mlx90632_probe(struct i2c_client *client,
- 			  const struct i2c_device_id *id)
- {
--	struct iio_dev *indio_dev;
- 	struct mlx90632_data *mlx90632;
-+	struct iio_dev *indio_dev;
- 	struct regmap *regmap;
--	int ret;
- 	unsigned int read;
-+	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*mlx90632));
- 	if (!indio_dev) {
--- 
-2.34.1
+- Nuno S=C3=A1
 

@@ -2,69 +2,82 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF0660B6BD
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 21:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D76D560B608
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 20:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233027AbiJXTJx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 15:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57552 "EHLO
+        id S232676AbiJXSqo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 14:46:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231901AbiJXTJW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 15:09:22 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B9B580B0;
-        Mon, 24 Oct 2022 10:48:37 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id r14so32876739edc.7;
-        Mon, 24 Oct 2022 10:48:36 -0700 (PDT)
+        with ESMTP id S232245AbiJXSqI (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 14:46:08 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC608958E;
+        Mon, 24 Oct 2022 10:27:41 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id t25so1121601ejb.8;
+        Mon, 24 Oct 2022 10:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lLLFhdOjQdZVRi4+dO3LV4A0SKwug3EMMGQt1+QKLJM=;
-        b=ARxc6MtH2mx0X8Zz04iqbFY7gSCEE8pZ1qcWgY+bfnOASKVlGMS45z2/V8Sax4EHId
-         K3k6exT3goUntttLvMxaBlZ8eJDnahocz0V+Shq16ED7zrIL3/taap1SKM23rgkoSSUc
-         qA3w0Ko77XIG3QAnrU/tagZrSydiNnESWOSMmNcgGjPqWKWQ4x3NZ/QU8kQsvG7rCs8z
-         PGC8Rhs7uVaHm4F60B1HPzxc3Ijvy+2+gBztS42FcjL9P6AArJryR3RAL0N5uPqIi23p
-         Pw/I9mbF2nPXh+ry9PTsQzK3FqFBLb2h6oNc45Ip/yK3116ofyqtzRe/ct4XYXjDklLI
-         ia7Q==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/eVCAg3MBYd00s2yyl7DgTtrrb0tSrJ4c68oN1h9w7E=;
+        b=dWa6dI5uCP4zJ4fO87i7erufj+h74Eryr600BTY2QUywiHyhBUFgAnaAcWtyOm9zAW
+         y6PqOrHwesRzvwsMPXefrRMm2amR0AvkQSmElforbPJeEckFngzq3AAy5p7cSCichffm
+         vHbSp1iAL1kt2edI6mn3RGydtnohDUjMQfHExBmT2Tf9bDS7TXo4F3wsgp0kcH/+dSvM
+         hzhM1JvKHM0971moHtZcbshbeY4NrEFOQLsL2iIAylTU7fKsSv1XU65P/0wjTf1GUvTp
+         MskaQ/RgkrOBjzdQANRQ3H05sH+Kr/Xy3kbeZQNlqI0+lA1mQN6F75jNpTzsiQDt2gjZ
+         MRbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lLLFhdOjQdZVRi4+dO3LV4A0SKwug3EMMGQt1+QKLJM=;
-        b=FmMmrdQX9uulR/yhhfeHI8nh+kNistG/Zjx4XTN6Jcqkaa+rTVEDZBKgTzRVH2AzHq
-         2BALA3Lux8kyRN4Li57A5ERkgsLBplMXJnDoHAJHfgZSzFUQ3sSO0lrSaI7yGT7+7vYM
-         FZGRf0bxCgr8EIKqsaUO7t1ppZ9TB5cFikJOexp/rUT5B82LvLsHE0TkUap7Jk8GmXhY
-         6BE8Uxwa944O+bNJyLpTZzplCAaVH5gnKHHjg2LsFIZVBun7x5sfVBRlrgA8VMFtOr3E
-         O1Vq9nvuzljowZt6mlzfIG2IKR3u8kWsUgmhozgjItk4zlY4+uM7DFVt4NaXQZEJTZIb
-         2+2Q==
-X-Gm-Message-State: ACrzQf037Tss8HRHfkGNy/Znj9Vz+GMUvFLpHGaYr2XUOxLgQ4HvXojh
-        D/AZBLqnTxXaeuWWVzAxQTOIetgy4s0=
-X-Google-Smtp-Source: AMsMyM5OZgGw0Zl5UJYWJ3Xrn6tNdg5QKfk1JM9oi8g1+WlLZjjnT0KJx1sRGwhdHIavjPlodQ/gQQ==
-X-Received: by 2002:a17:907:9717:b0:78d:9fb4:16dd with SMTP id jg23-20020a170907971700b0078d9fb416ddmr28304599ejc.720.1666618088834;
-        Mon, 24 Oct 2022 06:28:08 -0700 (PDT)
-Received: from discovery.. (p5dcfeede.dip0.t-ipconnect.de. [93.207.238.222])
-        by smtp.gmail.com with ESMTPSA id l20-20020a056402231400b00457c5637578sm18243818eda.63.2022.10.24.06.28.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 06:28:08 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com
-Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v4 8/8] power: supply: fix wrong interpretation of register value
-Date:   Mon, 24 Oct 2022 15:27:57 +0200
-Message-Id: <20221024132757.3345400-9-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20221024132757.3345400-1-sravanhome@gmail.com>
-References: <20221024132757.3345400-1-sravanhome@gmail.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/eVCAg3MBYd00s2yyl7DgTtrrb0tSrJ4c68oN1h9w7E=;
+        b=MfM62COJRaF4l7A47boRqVF/DcuSekz6sMCv+YzmW0ERKOV0gz7k8GdNeq3iQY2tLO
+         2tvh5QhqcxkqG/OFxftL/1RDBRT4p5+T7JiaDdm24m8fSwTLq6eCYCekeTFnjqJbqLpd
+         nP9XGVdOa1zQz/mPaqywJN09v3E/ahv9NLT5GIlSZykHbzMDr4ad7TYaFNH1sFKaMCIe
+         3VMEaEovd9ebqx6LSJtkrcr449Nz6itzIxiU69+avoVb+gnk76CTHuFeLfZHVxwxoKyr
+         mqhIzpC/MwJ6nPnt8XHRLGjTww98nmTCxPp++ku8/Z+3zMiJLtHTM5b79fbheF6Hqh/p
+         hJaA==
+X-Gm-Message-State: ACrzQf1ej57HvbGCG0d5OZeD5vOcPKWQ81tGnHqytHX1eHpM+vb8otjV
+        Q6OcU3pbNBSmzakKyL/I2yTdNfjOg48=
+X-Google-Smtp-Source: AMsMyM5JiYdxj+YMynL4r8t87wNUbi9fWl1FfbAZ25oL1/gb1nPrxwU6zMHJW+gm9NEbgav7YUseiA==
+X-Received: by 2002:a05:6512:150a:b0:4ab:11d7:4bc1 with SMTP id bq10-20020a056512150a00b004ab11d74bc1mr2216206lfb.447.1666620865418;
+        Mon, 24 Oct 2022 07:14:25 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:16f3:4a00::2? (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
+        by smtp.gmail.com with ESMTPSA id g25-20020a19ee19000000b004ac393ecc34sm343442lfb.302.2022.10.24.07.14.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Oct 2022 07:14:24 -0700 (PDT)
+Message-ID: <4e93d298-922a-2647-299b-5592a571ea53@gmail.com>
+Date:   Mon, 24 Oct 2022 17:14:23 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Subject: Re: [PATCH v5 2/3] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <cover.1666614295.git.mazziesaccount@gmail.com>
+ <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
+ <Y1aLIPkefcCZberw@smile.fi.intel.com>
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <Y1aLIPkefcCZberw@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -73,39 +86,36 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-fix wrong interpretation of bitwise as hex
+On 10/24/22 15:54, Andy Shevchenko wrote:
+> On Mon, Oct 24, 2022 at 03:40:29PM +0300, Matti Vaittinen wrote:
+>> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
+>> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+>> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+>> ranges (2, 4, 8 and 16g), and probably some other cool features.
+>>
+>> Add support for the basic accelerometer features such as getting the
+>> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+>> using the WMI IRQ).
+>>
+>> Important things to be added include the double-tap, motion
+>> detection and wake-up as well as the runtime power management.
+> 
+> I think I gave you my tag, no?
+> 
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
----
- drivers/power/supply/mp2629_charger.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sorry Andy. Yes you did. I forgot to add it - completely my bad.
+If I need to respin I'll add it - if I don't need to respin, Jonathan, 
+can you please add RBT from Andy if you merge this version?
 
-diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply/mp2629_charger.c
-index 9e4111aace4b..2ff3729afc48 100644
---- a/drivers/power/supply/mp2629_charger.c
-+++ b/drivers/power/supply/mp2629_charger.c
-@@ -328,10 +328,10 @@ static int mp2629_charger_battery_get_prop(struct power_supply *psy,
- 			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
- 			break;
- 		case 0x01:
--		case 0x10:
-+		case 0x02:
- 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
- 			break;
--		case 0x11:
-+		case 0x03:
- 			val->intval = POWER_SUPPLY_STATUS_FULL;
- 		}
- 		break;
-@@ -349,7 +349,7 @@ static int mp2629_charger_battery_get_prop(struct power_supply *psy,
- 		case 0x01:
- 			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
- 			break;
--		case 0x10:
-+		case 0x02:
- 			val->intval = POWER_SUPPLY_CHARGE_TYPE_STANDARD;
- 			break;
- 		default:
+Sorry for the hassle!
+
+Yours,
+	-- Matti
+
 -- 
-2.32.0
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 

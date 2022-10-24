@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2AE609ED8
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 12:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E384B609EE1
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 12:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbiJXKUG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 06:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
+        id S229742AbiJXKWj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 06:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbiJXKUD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 06:20:03 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ADDF1E3D1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:20:01 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id e18so29354038edj.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:20:01 -0700 (PDT)
+        with ESMTP id S229629AbiJXKWi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 06:22:38 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B65057DC4
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:22:37 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id a15so7443125ljb.7
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 03:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=melexis.com; s=google;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VKIX86tukfZX7SehEOWRcAaz+poDAk3t4N2adIt2U9o=;
-        b=GyxpjLnMlbNnY+WAvPlScVqbCM/junzQM76Y2NM5YzuqfXv3/uuue4vxh8d2LEkdyE
-         wknULuc4g6tEE06yfeqkBeIIayCr90bIZJfxXhmChlVH+HYvqw2v70f7BhvRqp55/QLz
-         mocKmv0zEbbd+a8gHwJEHI5xx2gcA6J4iTynHyeKqmogdMFseg8VzFqIbDFpVSdKpIgb
-         2GX0v3162NXxXWi8iPe3woSOSmSxMBeQl3TzQobuqigaA8wcbcZe+Zz+JDePbMJNxTXF
-         axBfqZ7UASbJFsZEtb/k+Lq+SrH+Codl1L2aUmgE1G9P4P/EOYQr2qVrJQ/KVSMRealZ
-         itxw==
+        bh=HA6qy786JkRhakLWTf9Vd5z8poyqlUHoYYUsjIZqQ6o=;
+        b=Q5B3x7xVG4WfCbUDdBJVsjzxZnXLpnlCY6oXKK6rQph3Z1w/iJArZM4KUGJNzuckRA
+         Jp23/aNvgQJvT7FaFaT6dO1z43XZXGPR+ulqVHGNtnz+/OzRmH+PLEEOY0e5+vroRC2V
+         QD4g9XpYvBr8+xAWZrHikpIBs0daiYspZh0UGLK17E+1eycg2gYeGoBWaYZED5ZdQ9x5
+         VM4fzfyIbCJcwniJkk/byWZLT4N8bnjRlsp2XsEAIi6M/7GpRMItXSKiqKBTApPoyK0D
+         8fy3SsepM+jNJ+34XeKvp/VeqHF8H8LqeW3VTCyWzdQcSrgJQWXkn4InSlFnZeOnQJNc
+         lNjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VKIX86tukfZX7SehEOWRcAaz+poDAk3t4N2adIt2U9o=;
-        b=H33tiC/2tWTtsnwOvuvKR5eEoa6CkASWPV2/8dCo2CtcNbDhhE932S5gHgLugupM+2
-         KRbF24DUzV5TYtYmih7iwX9GayPSbdutotcAHccVKwGQq3d/0j+k+V12Eyw0O2JEl0OA
-         Nrmt3ExBlBU1KClRnoDJHhBUM+Y8kqzWNLTJajkRDnLZBfJOk5Nv/pZRg361zB+yCfs9
-         6jrxTHp8GJyQcLL58lr6sgx4uq2TAaWXVC9HZ0CuYVyPFU1OS7hEw9BAW+B/al2exCIl
-         eCfpXBz43gwwfIkFGM04XhwKH5PjVpL/qRJiN0xYJ2jdvhfz+wmueSU+kw8z2e9YZXGn
-         i7+g==
-X-Gm-Message-State: ACrzQf1VO5EPv9kLTDztw5DmLjaYL17G1cY2eYuD5AFbs80aA7K/2P72
-        ZlkVWTnkfFi5I8LGjgWX2a0D3Q==
-X-Google-Smtp-Source: AMsMyM48vazLw2yZDGpPMj8Gjglh0ol6UthGiKHc8wTIUuvI4lFxyS4CIf5ZBL1EK9PagRvTzHL6+A==
-X-Received: by 2002:aa7:c792:0:b0:453:98b7:213c with SMTP id n18-20020aa7c792000000b0045398b7213cmr29569790eds.159.1666606799609;
-        Mon, 24 Oct 2022 03:19:59 -0700 (PDT)
+        bh=HA6qy786JkRhakLWTf9Vd5z8poyqlUHoYYUsjIZqQ6o=;
+        b=cJbomXB+DdwciPO/xRSJTRuYi5HslQtU7OFm7ApJoOLy9WenwwrWPjyEJ8+nSC/FuQ
+         WfnBoa1fhAyZ7k1GlbZTR9e6c9a3in9TYNHp7g9z6gfhu+LAHImr86RYSN1jsusCfGnK
+         kuD7SE6hBtq00pepJKMrbAmVwogl10tWYhN31Zdx9XSyy6pYnQ8KUH1aEu9ox6Lzdfca
+         qxhhFZSTAB4q6msvgxcS4jPbxKcvwmr+PY+xdSjlJTatW0H0FvyIz5LOReDAbUR8ZrZG
+         dhpCpbOH7DyQew5W5vpqZWPNmUpHCMsqbBooVGdA9FUR2l+7655QnzL7v6qV7PQYNG+p
+         kK9g==
+X-Gm-Message-State: ACrzQf1As9iPUf3OCpAxx0Vo0uzjNNrIPbl28XOWTwDo2eBlVVHOOgxw
+        3SVgX3ECHqkZHrczEYv7ZCFqxjN7ziJ8BNKr
+X-Google-Smtp-Source: AMsMyM4d3vuFf5OWtsoSGTIfWThj6gZsYQRMGIlmm8kp00Zvx4WJBH4lkN+auWB+7ZjbbT3gGJZZhw==
+X-Received: by 2002:a17:906:c08c:b0:78d:b8ce:c28f with SMTP id f12-20020a170906c08c00b0078db8cec28fmr26295343ejz.437.1666606944871;
+        Mon, 24 Oct 2022 03:22:24 -0700 (PDT)
 Received: from localhost.localdomain (ptr-4xh0y3w0d7spjutrgwc.18120a2.ip6.access.telenet.be. [2a02:1810:a44c:8f00:d731:196c:34e4:734c])
-        by smtp.gmail.com with ESMTPSA id da3-20020a056402176300b004615bea1d5bsm4929085edb.35.2022.10.24.03.19.58
+        by smtp.gmail.com with ESMTPSA id 18-20020a170906211200b0078ddb518a90sm15207695ejt.223.2022.10.24.03.22.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 03:19:58 -0700 (PDT)
+        Mon, 24 Oct 2022 03:22:24 -0700 (PDT)
 From:   Crt Mori <cmo@melexis.com>
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     linux-iio@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Crt Mori <cmo@melexis.com>
-Subject: [PATCH v2] iio: temperature: mlx90632 Style alignment for the driver
-Date:   Mon, 24 Oct 2022 12:19:44 +0200
-Message-Id: <7a9cfcb76d74e2f293c4bb25cb07de7cc6b391d8.1666606700.git.cmo@melexis.com>
+Subject: [PATCH v3] iio: temperature: mlx90632 Style alignment for the driver
+Date:   Mon, 24 Oct 2022 12:22:05 +0200
+Message-Id: <d59aad00891c1a64e044a0f5bc7d40e42d47e9c7.1666606912.git.cmo@melexis.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -73,6 +73,7 @@ Changing and aligning the overall style of the driver with the recent
 reviews. There is no functional change, only type generalization and
 moving to the reverse Christmas tree for variable declarations.
 
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Crt Mori <cmo@melexis.com>
 ---
  drivers/iio/temperature/mlx90632.c | 65 +++++++++++++++++-------------

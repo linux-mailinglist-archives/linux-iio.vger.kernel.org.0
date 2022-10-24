@@ -2,70 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0014E60BB90
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 23:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66C6160B99E
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 22:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233546AbiJXVDf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 17:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37782 "EHLO
+        id S234083AbiJXUPl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 16:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232812AbiJXVDT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 17:03:19 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846B72C5684;
-        Mon, 24 Oct 2022 12:08:59 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id b2so18267074lfp.6;
-        Mon, 24 Oct 2022 12:08:59 -0700 (PDT)
+        with ESMTP id S234249AbiJXUOT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 16:14:19 -0400
+Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9C0A3458;
+        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
+Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-12c8312131fso12850314fac.4;
+        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PwL8/qx1/0F0Hrq3IMB5cdMrfq8hnyHJ0+oU5aJtiFo=;
-        b=hJu80Hr9tWx4yHsXduGAuqtUGB6IrvpVnsc1taAXKITwr6UOest6JMpQe+OrjHD3ad
-         aFOG3QKptelq11AzR0C5ldh2kjMtVx6U7CiknAIDKoPWfyETrjo+Nj+nXkqCj0XnQ+9h
-         vq7wuHNQowYgbH4lSqPsACZvbP2xweM+UB9NAZL7o9LTXCtANE7RPF+ipOshTuHpG6EZ
-         eIky0yzzS1yCvDzwsR3k8KBqcsFPG8/SPdsiBB2a9OO+K4jb4dorwxmVgajFEg5dSzWL
-         cDYCTDP6v4pg8BvhemFU5crB5+dn/n+KAge4M8kn50ywJBmFnhMtEHx4U61d1GZ07MRo
-         dTZA==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
+        b=BV/EmlmhOfkGh96zgpr5heGMJHF9iIPFwBo3y5qUGgPUcFUPlpNyjL3LLhMOaBsos1
+         bl5959lTbyvNix2tbCWCSovXLVh820Alq2uWTazz64wOdvTFRMJhpoozaOKZ0YitKI7j
+         lYz8O3JfL4Z2o9uondujoJ45ddY3QWMpj5ibNl8XRB1neP+MII4/U6fOB0GGRsIuWOUT
+         DoW6b/oalr6I51oONiP6/e6yjYQQ1DsqCcuB5xGmFxNCrTO+VMEYDE0JcHJwejDRMKyL
+         edS/Vw6kvdAv5EdFYUyTeNtK2lAB08CNboy0L/VRM8b2mTC2ht/xlugyAGzW3+0YDnLW
+         zXeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PwL8/qx1/0F0Hrq3IMB5cdMrfq8hnyHJ0+oU5aJtiFo=;
-        b=Rd13/FD7+O0dYHPqSn9Z3TZ4B6m+0vq/bzD0oNlZq/GlPwGTrwuhjdrU15lXm74BP+
-         XisNNlXIAN6BBw0u2BCNtG0tSgW1ZET9e/foF1gEo/YTeGCY2160r+iuMyTadLGl+llT
-         320KxvsH0azztunRWssuNNyKoUjfQoNr6TckiVbrZ7llHsycVngsgyV9emHJyiovJs6+
-         s+m06Xm6yqSuY0lMs8zCoQRVUC9If4Yrdi2mv/2Hx1jI+yPuIK995DH/nEHVZ/lu5f+Y
-         cbfjnoudC0md4/wHvMoYDahrYjaAv5C6FoPYmoUSa3gH2shIpdlYxwnhS9hWK7g2VpRb
-         xUpQ==
-X-Gm-Message-State: ACrzQf3AcqaLE6wwyPvM5z6mub/fp7jFGrdzga7SQezSoj+uliXWTtEJ
-        9QT0pMGFJmxfF4NkWrfSIzIsU9HD8Uk=
-X-Google-Smtp-Source: AMsMyM4QQorvU7/sJtwzla1liZs/dJanTTjXhWgjZ6BdF4BKG+u2hgWU1L3QBk8NZOE7g3hFix2TsA==
-X-Received: by 2002:a17:907:5c2:b0:77e:def7:65d8 with SMTP id wg2-20020a17090705c200b0077edef765d8mr28009125ejb.487.1666618087998;
-        Mon, 24 Oct 2022 06:28:07 -0700 (PDT)
-Received: from discovery.. (p5dcfeede.dip0.t-ipconnect.de. [93.207.238.222])
-        by smtp.gmail.com with ESMTPSA id l20-20020a056402231400b00457c5637578sm18243818eda.63.2022.10.24.06.28.07
+        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
+        b=0hSusIEscwYF96yoHNfcTek6lfL/bx9uNwmRR4N/Sy6TmnMlggUekXAK39KU980KJr
+         EG7JbtzimPJopyL5gQBI1HkivfUwl9B3ob0oBsA2Z0G17DHLhdw3AZ+jCo1p5tYrqLUj
+         EsqjvahsjGajKL9rdfiH5bbOPLpK9MMjWVbfDMmfZzS61YxKGJ9qJKNYvQTjfdQ1vSbT
+         /23Orp7A1PyALO+39Br+EOfsZ4AGC9ltW7YnOyiHeZTOituyekDbSRZEkbsJz+PecXh+
+         rqS+LJrSHLxC70BzpZrvaLIaNM6+4npc4wOqyBw7IHqwXo9h/dKIro7PBMD6HHgoma3z
+         NGXg==
+X-Gm-Message-State: ACrzQf3xfUJ9oLNFYVDjcNRhUCvqHQzs9sIs80DncO/oa5TbJtLj0M+y
+        9DqnP1fb+GfVc1KN+FqvY4E=
+X-Google-Smtp-Source: AMsMyM4phKWoFOpnP3ROaCGKVpMoWsQCIfEncptYfxkNNKjzjEJGGH39043aBXmgttZIQymNrwcBMg==
+X-Received: by 2002:a05:6870:ec90:b0:13b:b20a:ae81 with SMTP id eo16-20020a056870ec9000b0013bb20aae81mr3500501oab.77.1666636310880;
+        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z17-20020a05683008d100b006618b23df05sm88188otg.21.2022.10.24.11.31.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 06:28:07 -0700 (PDT)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, andy.shevchenko@gmail.com
-Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v4 7/8] iio: adc: mp2629: fix potential array out of bound access
-Date:   Mon, 24 Oct 2022 15:27:56 +0200
-Message-Id: <20221024132757.3345400-8-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20221024132757.3345400-1-sravanhome@gmail.com>
-References: <20221024132757.3345400-1-sravanhome@gmail.com>
+        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Mon, 24 Oct 2022 11:31:48 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     "Khandelwal, Rajat" <rajat.khandelwal@intel.com>
+Cc:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+Subject: Re: [PATCH v5] iio: temperature: Add driver support for Maxim
+ MAX30208
+Message-ID: <20221024183148.GA3170088@roeck-us.net>
+References: <20221024165658.181340-1-rajat.khandelwal@linux.intel.com>
+ <20221024112829.GA2807876@roeck-us.net>
+ <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,29 +81,123 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add sentinel at end of maps to avoid potential array out of
-bound access in iio core.
+On Mon, Oct 24, 2022 at 05:11:17PM +0000, Khandelwal, Rajat wrote:
+> Hi Guenter,
+> Thanks for the acknowledgement.
+> 
+> >Agreed; the sensor doesn't seem to be very useful for traditional hardware
+> >monitoring. The driver better resides in IIO.
+> Cool! I didn't know the categorical reasoning behind this but since this is 
+> accepted in IIO, I don't have to do anything more. 
 
-Fixes: 7abd9fb6468 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
----
- drivers/iio/adc/mp2629_adc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Huh. There is no "categorical" reasoning. Call it a gut feeling.
+I can not imagine anyone using this chip for hardware monitoring,
+and presumably you have an IIO use case or you would not have
+implemented an IIO driver.
 
-diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
-index 0f297072b8aa..18290e176e1e 100644
---- a/drivers/iio/adc/mp2629_adc.c
-+++ b/drivers/iio/adc/mp2629_adc.c
-@@ -57,7 +57,8 @@ static struct iio_map mp2629_adc_maps[] = {
- 	MP2629_MAP(SYSTEM_VOLT, "system-volt"),
- 	MP2629_MAP(INPUT_VOLT, "input-volt"),
- 	MP2629_MAP(BATT_CURRENT, "batt-current"),
--	MP2629_MAP(INPUT_CURRENT, "input-current")
-+	MP2629_MAP(INPUT_CURRENT, "input-current"),
-+	{ }
- };
- 
- static int mp2629_read_raw(struct iio_dev *indio_dev,
--- 
-2.32.0
+> 
+> >I don't understand why readings are discarded. Why trigger multiple
+> >readings just to discard all but the last one ? I thought iio would
+> >be expected to return all values.
+> Ok. The plan is to trigger temperature conversion on the GPIO input also.
+> The user can trigger as many times the temperature conversion he wants (I accept unnecessary),
+> which will keep the FIFO increasing (without reading converted values) but the driver should be
+> resilient to all the erroneous zones. Also, when the user does really make a syscall to read the
+> temperature, it definitely should be the last converted reading. 
 
+That is your use case. I don't know how IIO drivers are normally
+implemented, but I would expect a generic driver. In this case,
+I would expect userspace to decide what it wants to with the data
+and not let the kernel driver discard most of it.
+
+> 
+> >This is really pointless. The register has only one bit to set.
+> >Just write that bit; reading the register before that is pointless.
+> I think the register also has some bits which are reserved. Hence, rather than to make a number
+> for specifically the value keeping those bits the same, I read whatever is there and only store the
+> required one. 
+> 
+I personally would not accept that kind of code, but that is just
+me.
+
+> >Also, the code assumes that one of the gpio input registers would be used
+> >to trigger temperature readings. Why trigger another one if this is indeed
+> >the case ? Triggering a temperature reading should only be necessary if
+> >there is no data in the fifo.
+> GPIO input triggering is yet not implemented as I would have to work on ACPI interrupts and I have
+> written the driver for now to get it included in Linux. 
+> There are 2 ways - via GPIO and making a syscall. I agree that temperature reading should be
+> necessary only when there is no data in FIFO but since we intend to keep GPIO as a trigger point,
+> user can keep triggering conversions and not reading them out. (As pointed above, driver should be
+> resilient to all erroneous zones).
+
+What does that have to do with interrupts ? Anything connected to the
+gpio pin would trigger a reading.
+
+> 
+> >The datasheet says that it can take up to 50 ms to report a result.
+> >10 retries with 50ms wait each time seems overkill.
+> That's correct. But, the response time can be up to 500 ms. Also, while debugging I had put timestamps
+> which when analyzed, indicated that time may go beyond 50 ms. 
+> 
+
+It seems to me that this would warrant an explanation in the driver.
+500ms seems hard to believe.
+
+> >And why use usleep_range() here
+> >but msleep() above ?
+> I am sorry about that. I have converted usleep_range into msleep (2 places). 
+> 
+> >This is wrong. It uses the overflow counter as data counter if it
+> >is != 0. The overflow counter counts the number of overflows, not
+> >the number of entries in the fifo.
+> So there is no such thing as 'overflow counter'. The point is if the overflow counter has
+
+Interesting statement. MAX30208_FIFO_OVF_CNTR very much
+sounds like overflow counter to me, and the datasheet
+suggests the same.
+
+> even one word, I use the data count equal to the overflow counter value. However, if it
+> has zero, then use the number of words in actual FIFO. 
+> This logic is just used to count how many values to pop to get the most recent reading.
+> 
+
+The code is
+
++       ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
++       if (ret < 0) {
++               dev_err(&data->client->dev, "Error reading reg FIFO overflow counter\n");
++               goto unlock;
++       } else if (!ret) {
++               ret = i2c_smbus_read_byte_data(data->client,
++                                              MAX30208_FIFO_DATA_CNTR);
++               if (ret < 0) {
++                       dev_err(&data->client->dev, "Error reading reg FIFO data counter\n");
++                       goto unlock;
++               }
++       }
++
++       data_count = ret;
+
+If reading MAX30208_FIFO_OVF_CNTR returns a value > 0, it is used as
+data_count. That does not seem correct. The data sheet says if
+MAX30208_FIFO_OVF_CNTR is != 0, data_count is 32. Maybe the datasheet
+is wrong all over the place, but at least in this case that seems
+very unlikely.
+
+> > data_count is declared as u8 and will never be < 0.
+> Data count can never be <0 as only first few bits of the 8 bits are used in the register. 
+> 
+	u8 data_count;
+...
+	data_count = i2c_smbus_read_byte_data(data->client,
+                                              MAX30208_FIFO_DATA_CNTR);
+        if (data_count < 0) {
+
+Really ? Static analyzers will have a field day with this code.
+
+Anyway, I don't really care much about this code, so I'll let
+Jonathan take it from here. I just wanted to share my observations.
+
+Thanks,
+Guenter

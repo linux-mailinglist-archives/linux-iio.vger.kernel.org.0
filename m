@@ -2,78 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C6160B99E
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 22:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A10560BEE1
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Oct 2022 01:46:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234083AbiJXUPl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 16:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39044 "EHLO
+        id S229696AbiJXXqb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 19:46:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234249AbiJXUOT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 16:14:19 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B9C0A3458;
-        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-12c8312131fso12850314fac.4;
-        Mon, 24 Oct 2022 11:32:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
-        b=BV/EmlmhOfkGh96zgpr5heGMJHF9iIPFwBo3y5qUGgPUcFUPlpNyjL3LLhMOaBsos1
-         bl5959lTbyvNix2tbCWCSovXLVh820Alq2uWTazz64wOdvTFRMJhpoozaOKZ0YitKI7j
-         lYz8O3JfL4Z2o9uondujoJ45ddY3QWMpj5ibNl8XRB1neP+MII4/U6fOB0GGRsIuWOUT
-         DoW6b/oalr6I51oONiP6/e6yjYQQ1DsqCcuB5xGmFxNCrTO+VMEYDE0JcHJwejDRMKyL
-         edS/Vw6kvdAv5EdFYUyTeNtK2lAB08CNboy0L/VRM8b2mTC2ht/xlugyAGzW3+0YDnLW
-         zXeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fvFflD4k0dWfCuYnPUW0ROCVRGYaVIG1roLKu8FKCdY=;
-        b=0hSusIEscwYF96yoHNfcTek6lfL/bx9uNwmRR4N/Sy6TmnMlggUekXAK39KU980KJr
-         EG7JbtzimPJopyL5gQBI1HkivfUwl9B3ob0oBsA2Z0G17DHLhdw3AZ+jCo1p5tYrqLUj
-         EsqjvahsjGajKL9rdfiH5bbOPLpK9MMjWVbfDMmfZzS61YxKGJ9qJKNYvQTjfdQ1vSbT
-         /23Orp7A1PyALO+39Br+EOfsZ4AGC9ltW7YnOyiHeZTOituyekDbSRZEkbsJz+PecXh+
-         rqS+LJrSHLxC70BzpZrvaLIaNM6+4npc4wOqyBw7IHqwXo9h/dKIro7PBMD6HHgoma3z
-         NGXg==
-X-Gm-Message-State: ACrzQf3xfUJ9oLNFYVDjcNRhUCvqHQzs9sIs80DncO/oa5TbJtLj0M+y
-        9DqnP1fb+GfVc1KN+FqvY4E=
-X-Google-Smtp-Source: AMsMyM4phKWoFOpnP3ROaCGKVpMoWsQCIfEncptYfxkNNKjzjEJGGH39043aBXmgttZIQymNrwcBMg==
-X-Received: by 2002:a05:6870:ec90:b0:13b:b20a:ae81 with SMTP id eo16-20020a056870ec9000b0013bb20aae81mr3500501oab.77.1666636310880;
-        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z17-20020a05683008d100b006618b23df05sm88188otg.21.2022.10.24.11.31.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 11:31:50 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 24 Oct 2022 11:31:48 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     "Khandelwal, Rajat" <rajat.khandelwal@intel.com>
-Cc:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        with ESMTP id S230038AbiJXXqJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 19:46:09 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1F02FBDC0;
+        Mon, 24 Oct 2022 15:04:10 -0700 (PDT)
+Received: from fraeml734-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Mx1390JN2z6H6jV;
+        Tue, 25 Oct 2022 00:38:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml734-chm.china.huawei.com (10.206.15.215) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 24 Oct 2022 18:41:41 +0200
+Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 24 Oct
+ 2022 17:41:40 +0100
+Date:   Mon, 24 Oct 2022 17:41:39 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jdelvare@suse.com" <jdelvare@suse.com>,
-        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
-Subject: Re: [PATCH v5] iio: temperature: Add driver support for Maxim
- MAX30208
-Message-ID: <20221024183148.GA3170088@roeck-us.net>
-References: <20221024165658.181340-1-rajat.khandelwal@linux.intel.com>
- <20221024112829.GA2807876@roeck-us.net>
- <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 4/5] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Message-ID: <20221024174139.000070c8@huawei.com>
+In-Reply-To: <e34d8586-a471-81d6-d09c-f2e0d9884628@gmail.com>
+References: <cover.1665066397.git.mazziesaccount@gmail.com>
+        <88e24b01da9f44ebf5fcd8344ded0b75ff742fbf.1665066397.git.mazziesaccount@gmail.com>
+        <Yz8fK7j8pxlU76xt@smile.fi.intel.com>
+        <98b59ad5-8c29-be41-4da1-a961db67827c@gmail.com>
+        <Y0QIzf2cAH9ehSeO@smile.fi.intel.com>
+        <19a6db0f-40a8-dacf-4583-cdb9d74e1243@fi.rohmeurope.com>
+        <b1700ea7-4a7a-263c-595c-0f7a56763c10@gmail.com>
+        <20221014144247.00001eb1@huawei.com>
+        <e34d8586-a471-81d6-d09c-f2e0d9884628@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.42]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,123 +70,127 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Oct 24, 2022 at 05:11:17PM +0000, Khandelwal, Rajat wrote:
-> Hi Guenter,
-> Thanks for the acknowledgement.
+On Tue, 18 Oct 2022 14:10:59 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+> On 10/14/22 16:42, Jonathan Cameron wrote:
+> > On Wed, 12 Oct 2022 10:40:38 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> On 10/10/22 16:20, Vaittinen, Matti wrote:  
+> >>> On 10/10/22 14:58, Andy Shevchenko wrote:  
+> >>>> On Mon, Oct 10, 2022 at 12:12:34PM +0300, Matti Vaittinen wrote:
+> >>>> ...
+> >>>>     
+> >>>>>>> +	ret = regmap_bulk_read(data->regmap, chan->address, &data->buffer,
+> >>>>>>> +			       sizeof(s16));  
+> >>>>     
+> >>>>>> No endianess awareness (sizeof __le16 / __be16)  
+> >>>>     
+> >>>>>>> +	if (ret)
+> >>>>>>> +		return ret;
+> >>>>>>> +
+> >>>>>>> +	*val = data->buffer[0];  
+> >>>>>>
+> >>>>>> Ditto (get_unaligned_be16/le16 / le16/be16_to_cpup()).  
+> >>>>>
+> >>>>> I have probably misunderstood something but I don't see why we should use
+> >>>>> 'endianess awareness' in drivers? I thought the IIO framework code takes
+> >>>>> care of the endianes conversions based on scan_type so each individual
+> >>>>> driver does not need to do that. That however has been just my assumption. I
+> >>>>> will need to check this. Thanks for pointing it out.  
+> >>>>
+> >>>> The IIO core uses endianness field only once in iio_show_fixed_type() AFAICS.  
+> >>
+> >> Following is some hand waving and speculation after my quick code read.
+> >> So, I may be utterly wrong in which case please do correct me...
+> >>
+> >> Anyways, it seems to me that you're correct. The endianness field is
+> >> only used by the IIO to build the channel information for user-space so
+> >> that applications reading data can parse it. As far as I understand, the
+> >> driver does not need to do the conversions for user-space, but the
+> >> user-space tools should inspect the type information and do the
+> >> conversion. I think it makes sense as user-space applications may be
+> >> better equipped to do some maths. It also may be some applications do
+> >> not want to spend cycles doing the conversion but the conversions can be
+> >> done later "offline" for the captured raw data. So omitting conversion
+> >> in the IIO driver kind of makes sense to me.  
+> > 
+> > That was indeed the original reasonining for buffered data path
+> > (note the endian marker is for scans only which only apply in buffered
+> >   / chardev case).  
 > 
-> >Agreed; the sensor doesn't seem to be very useful for traditional hardware
-> >monitoring. The driver better resides in IIO.
-> Cool! I didn't know the categorical reasoning behind this but since this is 
-> accepted in IIO, I don't have to do anything more. 
+> So, in a case where we "push_to_buffers" the data, we can leave the data 
+> to use the endianess we advertise via endianess info field?
 
-Huh. There is no "categorical" reasoning. Call it a gut feeling.
-I can not imagine anyone using this chip for hardware monitoring,
-and presumably you have an IIO use case or you would not have
-implemented an IIO driver.
+Exactly.
 
 > 
-> >I don't understand why readings are discarded. Why trigger multiple
-> >readings just to discard all but the last one ? I thought iio would
-> >be expected to return all values.
-> Ok. The plan is to trigger temperature conversion on the GPIO input also.
-> The user can trigger as many times the temperature conversion he wants (I accept unnecessary),
-> which will keep the FIFO increasing (without reading converted values) but the driver should be
-> resilient to all the erroneous zones. Also, when the user does really make a syscall to read the
-> temperature, it definitely should be the last converted reading. 
+> > It's less obvious for the sysfs path as that's inherently slow.
+> > We could have made this a problem for the IIO core, but we didn't :)  
+> 
+> But again, as far as I understood, the user-space is still expected to 
+> read the sysfs field for "scan_elements/in_accel_<channel>_type"? I 
+> guess it would be confusing to say "le:s16/16>>0" there while returning 
+> CPU native endianess values from sysfs files?
 
-That is your use case. I don't know how IIO drivers are normally
-implemented, but I would expect a generic driver. In this case,
-I would expect userspace to decide what it wants to with the data
-and not let the kernel driver discard most of it.
+Agreed that it is probably less than ideal but that's what the interface
+is.  scan_elements refers to the "scan elements"  channels read via sysfs
+files are not scan elements - scan's are only relevant to buffered readback.
 
 > 
-> >This is really pointless. The register has only one bit to set.
-> >Just write that bit; reading the register before that is pointless.
-> I think the register also has some bits which are reserved. Hence, rather than to make a number
-> for specifically the value keeping those bits the same, I read whatever is there and only store the
-> required one. 
+> >> I haven't thoroughly looked (and I have never used) the in-kernel IIO
+> >> APIs for getting the data. A quick look at the
+> >> include/linux/iio/consumer.h allows me to assume the iio_chan_spec can
+> >> be obtained by the consumer drivers. This should make the endianess
+> >> information available for the consumer drivers as well. So, again,
+> >> consumer drivers can parse the raw-format data themself.  
+> > 
+> > yes consumers should be be endian aware if they are using the
+> > callback buffer route to get the data.  Now you mention it, we
+> > may well have cases where that isn't handled correctly.
+> > There are few enough users of that interface that it might well work
+> > by coincidence rather than design. oops.
+> >   
+> >>
+> >> I have this far only used the sysfs and iio_generic_buffer on a
+> >> little-endian machine so I have had no issues with the little-endian
+> >> data and I have only observed the code. Hence I can not really say if my
+> >> reasoning is correct - or if it is how IIO has been designed to operate.
+> >> But based on my quick study I don't see a need for the IIO driver to do
+> >> endianess conversion to any other format but what is indicated by
+> >> scan_type. Specifically for KX022A, the data is already 16B LE when read
+> >> from the sensor. This is also advertised by scan_type so no conversion
+> >> should be needed (unless, of course, I am mistaken :]).  
+> > 
+> > Ah. I'd missed that. Data storage should reflect the read back endianness
+> > and for the read_raw path you need to perform the conversion in driver
+> > (but not the high perf push to buffers path).  
 > 
-I personally would not accept that kind of code, but that is just
-me.
+> Oh, really? I think it might be confusing to say "le:s16/16>>0" in 
+> "scan_elements/in_accel_<channel>_type" but return something else from 
+> the in_accel_<channel>_raw. Especially the "raw" word at the end of the 
+> file signals the data is in non converted raw format.
+> 
+> I take your word for that if you say this is what the user-space 
+> expects, it just is not what I did expect. Well, I do very little work 
+> on the user-space these days ;) Still just to be on safe side - do you 
+> mean I should convert the data returned from read_raw to the CPU endianess?
 
-> >Also, the code assumes that one of the gpio input registers would be used
-> >to trigger temperature readings. Why trigger another one if this is indeed
-> >the case ? Triggering a temperature reading should only be necessary if
-> >there is no data in the fifo.
-> GPIO input triggering is yet not implemented as I would have to work on ACPI interrupts and I have
-> written the driver for now to get it included in Linux. 
-> There are 2 ways - via GPIO and making a syscall. I agree that temperature reading should be
-> necessary only when there is no data in FIFO but since we intend to keep GPIO as a trigger point,
-> user can keep triggering conversions and not reading them out. (As pointed above, driver should be
-> resilient to all erroneous zones).
-
-What does that have to do with interrupts ? Anything connected to the
-gpio pin would trigger a reading.
+yes.
 
 > 
-> >The datasheet says that it can take up to 50 ms to report a result.
-> >10 retries with 50ms wait each time seems overkill.
-> That's correct. But, the response time can be up to 500 ms. Also, while debugging I had put timestamps
-> which when analyzed, indicated that time may go beyond 50 ms. 
+> > Sure we could probably have handled read_raw in tree as well but we didn't
+> > and probably too late to sensibly fix that now.  One of many things we'd
+> > probably do differently if we were starting again.  
+> 
+> Well, this is pretty usual story :) Predicting the future is hard. My 
+> crystal ball ran out of batteries a long ago ;)
+
+:)
+
+> 
+> Best Regards
+> 	-- Matti
 > 
 
-It seems to me that this would warrant an explanation in the driver.
-500ms seems hard to believe.
-
-> >And why use usleep_range() here
-> >but msleep() above ?
-> I am sorry about that. I have converted usleep_range into msleep (2 places). 
-> 
-> >This is wrong. It uses the overflow counter as data counter if it
-> >is != 0. The overflow counter counts the number of overflows, not
-> >the number of entries in the fifo.
-> So there is no such thing as 'overflow counter'. The point is if the overflow counter has
-
-Interesting statement. MAX30208_FIFO_OVF_CNTR very much
-sounds like overflow counter to me, and the datasheet
-suggests the same.
-
-> even one word, I use the data count equal to the overflow counter value. However, if it
-> has zero, then use the number of words in actual FIFO. 
-> This logic is just used to count how many values to pop to get the most recent reading.
-> 
-
-The code is
-
-+       ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
-+       if (ret < 0) {
-+               dev_err(&data->client->dev, "Error reading reg FIFO overflow counter\n");
-+               goto unlock;
-+       } else if (!ret) {
-+               ret = i2c_smbus_read_byte_data(data->client,
-+                                              MAX30208_FIFO_DATA_CNTR);
-+               if (ret < 0) {
-+                       dev_err(&data->client->dev, "Error reading reg FIFO data counter\n");
-+                       goto unlock;
-+               }
-+       }
-+
-+       data_count = ret;
-
-If reading MAX30208_FIFO_OVF_CNTR returns a value > 0, it is used as
-data_count. That does not seem correct. The data sheet says if
-MAX30208_FIFO_OVF_CNTR is != 0, data_count is 32. Maybe the datasheet
-is wrong all over the place, but at least in this case that seems
-very unlikely.
-
-> > data_count is declared as u8 and will never be < 0.
-> Data count can never be <0 as only first few bits of the 8 bits are used in the register. 
-> 
-	u8 data_count;
-...
-	data_count = i2c_smbus_read_byte_data(data->client,
-                                              MAX30208_FIFO_DATA_CNTR);
-        if (data_count < 0) {
-
-Really ? Static analyzers will have a field day with this code.
-
-Anyway, I don't really care much about this code, so I'll let
-Jonathan take it from here. I just wanted to share my observations.
-
-Thanks,
-Guenter

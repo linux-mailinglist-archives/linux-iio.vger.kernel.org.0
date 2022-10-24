@@ -2,184 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4879A60B4DF
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 20:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 644BB60B597
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 20:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbiJXSGQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 24 Oct 2022 14:06:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40518 "EHLO
+        id S229661AbiJXScs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 14:32:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231473AbiJXSFj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 14:05:39 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342261C8D5D;
-        Mon, 24 Oct 2022 09:46:14 -0700 (PDT)
-Received: from fraeml704-chm.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Mx18P3FFdz67xWY;
-        Tue, 25 Oct 2022 00:42:45 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml704-chm.china.huawei.com (10.206.15.53) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.31; Mon, 24 Oct 2022 18:44:37 +0200
-Received: from localhost (10.202.226.42) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 24 Oct
- 2022 17:44:36 +0100
-Date:   Mon, 24 Oct 2022 17:44:35 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>
-Subject: Re: [PATCH v2 3/5] dt-bindings: iio: temperature: ltc2983: refine
-Message-ID: <20221024174435.00003489@huawei.com>
-In-Reply-To: <5cfc6dbb2a324746ece4f6cc0e633ccedfce2c54.camel@gmail.com>
-References: <20221020090257.1717053-1-demonsingur@gmail.com>
-        <20221020090257.1717053-4-demonsingur@gmail.com>
-        <20221023135124.1fdeab5e@jic23-huawei>
-        <5cfc6dbb2a324746ece4f6cc0e633ccedfce2c54.camel@gmail.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; i686-w64-mingw32)
+        with ESMTP id S231442AbiJXScV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 14:32:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 580B7A50C0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 10:14:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B9DE614AD
+        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 16:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A08C433D7;
+        Mon, 24 Oct 2022 16:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1666629967;
+        bh=lw6Fpe5ExD5wRY1/YBkzqRo6eeRnolQNl01M3sm36VY=;
+        h=Date:From:To:Subject:From;
+        b=ThdI+7V56i7URktz35CfsQMihZl3PR/JGzXcyn0PG+XLom3jSnDvrINEkIHOPrSkz
+         igShBjhWmy1YvRRU1BRtnne1de6Nlz7DPd1ptfN3tK4Zrg86JeHA++gmHtP82DwkFK
+         5a2Z/ylzSmBI/ELHmZbj7nAJ93QGQFvJKXTFCwEHABpdYId/ZMzdfBfkF5YMmLVoIM
+         J56KUcnuK9FZw/Bb2VQhPIvDBjFfadzHzLe46F97f65NNXDmscWzLquGUfUDHq4WgO
+         lMZ38OxNVSexivQjiUsT9c8RCBjiocLzWZ/AVJyMI2pH6/T2CoUvzjLBZxlQ9DABEh
+         lpiPD/XaidGiQ==
+Date:   Mon, 24 Oct 2022 12:46:05 -0400
+From:   William Breathitt Gray <wbg@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] First set of Counter fixes for 6.1 cycle
+Message-ID: <Y1bBTQTBCrR/hUqQ@ishi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.226.42]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="9KayIbow4MSJMja1"
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 Oct 2022 15:46:13 +0200
-Nuno Sá <noname.nuno@gmail.com> wrote:
 
-> On Sun, 2022-10-23 at 13:51 +0100, Jonathan Cameron wrote:
-> > On Thu, 20 Oct 2022 12:02:55 +0300
-> > Cosmin Tanislav <demonsingur@gmail.com> wrote:
-> >   
-> > > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> > > 
-> > >  * make sure addresses are represented as hex
-> > >  * add note about wrong unit value for adi,mux-delay-config-us
-> > >  * simplify descriptions
-> > >  * add descriptions for the items of custom sensor tables
-> > >  * add default property values where applicable
-> > >  * use conditionals to extend minimum reg value
-> > >    for single ended sensors
-> > >  * remove " around phandle schema $ref
-> > >  * remove label from example and use generic temperature
-> > >    sensor name
-> > > 
-> > > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>  
-> > 
-> > Hi Cosmin,
-> > 
-> > Just one question inline from me (other than the build bot report
-> > that I'll
-> > assume you'll fix for v3).
-> > 
-> > Otherwise looks like a nice cleanup to me.
-> > 
-> > I wonder a bit on whether it is worth splitting up, but that would be
-> > rather messy to actually do so will leave that to the dt experts to
-> > comment
-> > on.
-> > 
-> > Jonathan
-> > 
-> >   
-> > > ---
-> > >  .../bindings/iio/temperature/adi,ltc2983.yaml | 309 +++++++++++---
-> > > ----
-> > >  1 file changed, 182 insertions(+), 127 deletions(-)
-> > > 
-> > > diff --git
-> > > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
-> > > l
-> > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
-> > > l
-> > > index 722781aa4697..3e97ec841fd6 100644
-> > > ---
-> > > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
-> > > l
-> > > +++
-> > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
-> > > l
-> > > @@ -26,25 +26,25 @@ properties:
-> > >  
-> > >    adi,mux-delay-config-us:
-> > >      description:
-> > > -      The LTC2983 performs 2 or 3 internal conversion cycles per
-> > > temperature
-> > > -      result. Each conversion cycle is performed with different
-> > > excitation and
-> > > -      input multiplexer configurations. Prior to each conversion,
-> > > these
-> > > -      excitation circuits and input switch configurations are
-> > > changed and an
-> > > -      internal 1ms delay ensures settling prior to the conversion
-> > > cycle in most
-> > > -      cases. An extra delay can be configured using this property.
-> > > The value is
-> > > -      rounded to nearest 100us.
-> > > +      Extra delay prior to each conversion, in addition to the
-> > > internal 1ms
-> > > +      delay, for the multiplexer to switch input configurations
-> > > and
-> > > +      excitation values.
-> > > +
-> > > +      This property is supposed to be in microseconds, but to
-> > > maintain
-> > > +      compatibility, this value will be multiplied by 100 before
-> > > usage.  
-> > 
-> > This new text has me a little confused.  Previously we talked
-> > rounding, now it
-> > is saying the value is multiplied (which would make it definitely not
-> > in micro
-> > secs!)..  So are we papering over a driver bug here?
-> > 
-> >   
-> 
-> Hi Jonathan,
-> 
-> Let me try to make this one clear as it was my mess...
-> 
-> The multiplication is done internally by the device. I messed up in
-> this one as this value is clearly not in us but it is the raw value.
-> So, tecnically, there's nothing wrong in the driver as it just reads
-> this property and directly writes it. But of course this is misleading
-> and wrong from the bindings point of view.
-> 
-> That said, me and Cosmin did spoke about just having this property
-> 'deprecated' and add a new one (the driver would need to be changed
-> accordingly) - no idea also about a new name for it :)
-> 
-> But for this round, Cosmin decided to have this stated on the
-> description and see what you and dt maintainers had to say about it and
-> if making it 'deprecated' is the way to go (or something else).
+--9KayIbow4MSJMja1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Deprecating and replacing with something right definitely seems like
-correct option to me.  Naming always fun though when we already used the
-most obvious name ;)
+The following changes since commit 9abf2313adc1ca1b6180c508c25f22f9395cc780:
 
-Thanks for the explanation.
+  Linux 6.1-rc1 (2022-10-16 15:36:24 -0700)
 
-Jonathan
+are available in the Git repository at:
 
-> 
-> - Nuno Sá
-> 
+  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-fixes-for-6.1a
 
+for you to fetch changes up to d501d37841d3b7f18402d71a9ef057eb9dde127e:
+
+  counter: 104-quad-8: Fix race getting function mode and direction (2022-10-23 20:39:26 -0400)
+
+----------------------------------------------------------------
+First set of Counter fixes for 6.1 cycle
+
+Typical driver fixes for races and bugs. This also includes a sparse
+warning fix for the recently introduced counter_array API: the macro
+DEFINE_COUNTER_ARRAY_POLARITY() is reduced to a simple structure
+definition rather than multiple data structure definitions.
+
+- 104-quad-8
+  * Fix race getting function mode and direction
+- microchip-tcb-capture
+  * Handle Signal1 read and Synapse
+- ti-ecap-capture
+  * fix IS_ERR() vs NULL check
+- counter
+  * Reduce DEFINE_COUNTER_ARRAY_POLARITY() to defining counter_array
+
+----------------------------------------------------------------
+Dan Carpenter (1):
+      counter: ti-ecap-capture: fix IS_ERR() vs NULL check
+
+William Breathitt Gray (3):
+      counter: Reduce DEFINE_COUNTER_ARRAY_POLARITY() to defining counter_array
+      counter: microchip-tcb-capture: Handle Signal1 read and Synapse
+      counter: 104-quad-8: Fix race getting function mode and direction
+
+ drivers/counter/104-quad-8.c            | 64 +++++++++++++++++++++------------
+ drivers/counter/microchip-tcb-capture.c | 18 +++++++---
+ drivers/counter/ti-ecap-capture.c       |  7 ++--
+ include/linux/counter.h                 |  5 ++-
+ 4 files changed, 62 insertions(+), 32 deletions(-)
+
+--9KayIbow4MSJMja1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY1bBTQAKCRC1SFbKvhIj
+K0yeAQCeECGG9jXMr64j+YXJbqSZo3WUERgSLfTM6IQQf79vfwEAp32d9beQii16
+c31vF3643UsIalCS6hnOVuN6JY7+CAA=
+=N14Q
+-----END PGP SIGNATURE-----
+
+--9KayIbow4MSJMja1--

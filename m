@@ -2,1237 +2,727 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9BEE60B5DD
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 20:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2796E60B57F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 20:30:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232306AbiJXSnD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 14:43:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56804 "EHLO
+        id S229665AbiJXSaU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 14:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232299AbiJXSmq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 14:42:46 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CC08683B
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 10:24:53 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id n7so9038522plp.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Oct 2022 10:24:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MPbkrry9wZuk2Z4zBRUws+dZG/gGUXYhR2jn+a6N0gs=;
-        b=oBWmWvfOOXPUy73y/jgkw9pMkJJBbDiMBXSxcrGiAz3xwdOuAgMlflAhMnm6VQIa6W
-         hvjJ/BdiLkiU1RP94AGF9FO/AoXAU4o8WEr/o6QrX0j1HKFxQiUbhg/cV2XdhQx8gbys
-         qVJImdnQSi4ZfS6hVhl6KXfE+eY4cQ64OlBs/Xc/YKIjD6PVXkf1vIlNaOYO0/73IfHA
-         +GO4j0Q4ys1Kp5NmGJuVYiDP/nRkfCCSa34fpP1y2AErAsCwUMjT2nCIVQsNcGj6PU7P
-         lDimp5/FOnseBQUbZu9JOV+zzqACG+WVLXlB1KFv8/ZZNOqyWZoSVvHnBNrVzkAptPqk
-         fcww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MPbkrry9wZuk2Z4zBRUws+dZG/gGUXYhR2jn+a6N0gs=;
-        b=ryl0D94O1l/9Sc4SzpNc8GVzSZxYd47j0Rbo965Brzs+oPTQPwzVqqsB9j10D/PLOd
-         REQSka3kyeVAcVDx/2dtyWs8GqHorAaW/Zb2l4oNKXaCG7KbpP6Z2l8NMzDPrFd4QftE
-         7IMcEvvtXEX9HaDF/Z0Vl5/M88aDOD2QXjPyjlkKjmn2+8vx2gQehO7X7jq+76V4oVQ+
-         x7mNhJ2i9w6AWZJAEjSmQLk39pLS1ze+LKSFZI2BIN+PigjnBCDRfWmgL5TE/VLacMBy
-         KZVLBuzMNSNvSguECRBYi+qlLxGcyeFlWtusKeguYxfjy90wKx6A6OxivfZYJp0o3H6A
-         uF0A==
-X-Gm-Message-State: ACrzQf2P1DwIR/oZXnMTGGFBOfbEFTI5AaBJFTR38WXkILDuRo0oYvRf
-        C8z/Hx1m89bLQ6cB9acqp3EAy8sZUgfZvSzmAl0xBCYYtV4=
-X-Google-Smtp-Source: AMsMyM6Lz8p05eSaiRzOyggaj9hdbqVcOfNzjupOq1m/j0Ie6nS9n13xQ4TMPWkZCb2VGcpkmLSrxdeXcim/NOvo73c=
-X-Received: by 2002:a05:6a00:24c2:b0:52e:7181:a8a0 with SMTP id
- d2-20020a056a0024c200b0052e7181a8a0mr34617105pfv.57.1666630421333; Mon, 24
- Oct 2022 09:53:41 -0700 (PDT)
+        with ESMTP id S230481AbiJXS3n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 14:29:43 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEEDFFFB5;
+        Mon, 24 Oct 2022 10:11:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1666631497; x=1698167497;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=bXsCbhjTZZYLk0y1k/filSDU9Wy5dHE0VAMdtNjvbqg=;
+  b=C6fLhrpvct4wCFVH9iasuGsWE/VsylaOAtk1nedqs/Z82aebwhMSADvr
+   JDqJJa4ODrq5TNMTING/1LIOr2BquFxiiGyEdT1c9i8mvdlsEEhP8xNHZ
+   lgU2V7+J5CIhDED4VAV9fKINcE7Ik/2OQWDmTBAZpwiYRGsRwUsBW1aUD
+   3Y/EYi4tgxZ74ojpXsu4t1I4r9Nzzjm6/Gc7BwJqX8nsQZJasJ+00XyOL
+   BcXFbOgqNfmkRGa5fO1HDIVKlkWRnQ3jZBO+ZL40rDopbHhoFlULxbWUy
+   POFeQ0t3wL7eGGoSIDL/bSsv9ypUf73LFM6BYIS+1KoHeJUgKY04XQ17O
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="393792765"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="scan'208";a="393792765"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2022 10:11:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10510"; a="664615436"
+X-IronPort-AV: E=Sophos;i="5.95,209,1661842800"; 
+   d="scan'208";a="664615436"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga001.jf.intel.com with ESMTP; 24 Oct 2022 10:11:21 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 24 Oct 2022 10:11:20 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 24 Oct 2022 10:11:20 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31 via Frontend Transport; Mon, 24 Oct 2022 10:11:20 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2375.31; Mon, 24 Oct 2022 10:11:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PDFH6aUPerQdaqoU97AXRJN7f+OaDrAzWeo9fvwxvJnIez1W3TPOZbmWbP7Q3w1sGuYOx3mUUJtoPleuYJTl5sCyB+DuJb7xEbMHNnKNjZ4wWJcwXtcicMV7Kn/G+01g44tncjgTgjcLOZN7T+DMutsqFhWm6ZN1oiMJswYJbM/KpsNF99XUO16tkdzCk3w6n9+UivO7HNxQHc8mUZ8ySYbKCcZiOrLKCuIQ2Qma1l74FswV0jD9VOzQV4rFPFfeTlPrMsNdC2Nx1tLz0Xpa+iZX8LDQ7Ych+ABfwk/ZcPuaGYlOc9C+BGteUkd3gAjCMV3fPWULHWS7XAPvGopRYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1HD2vuvJLHX5JpelKfm9OZvkaJlA7V/u/HB/TlPSTJo=;
+ b=T9c664vadWptmNj+24fcaxapbj4quyzMxANIMbIIiFGE4+VgPVa71z6lPpUsrvS4zLt3pnow65gblyuPVUeilxoX2op7CkIuAVAyEq2d3pwMcImdMt65BuXXjnQGhCJl3xabs6kFBq/OWtfRX/MplDm4nVc/9jvy9QBQ3uViHoG23AeNysLHlyAQxrSPyAvl6PY08iWovwfkyORB53SqfxU6XXYh8xU+uIc5fiT8r6B0Hp1yeglL/I/ak7N2KgICQ8mW8UfSCFG/erHTx1H0W9rsD5R/DgPrnXIdAoPCnKrcqXoF2TW3Odor24Cw80ZhRU7kXnKDjsf4N0Ni1cdw/Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com (2603:10b6:303:9e::22)
+ by BL1PR11MB5221.namprd11.prod.outlook.com (2603:10b6:208:310::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5746.21; Mon, 24 Oct
+ 2022 17:11:17 +0000
+Received: from CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::ce74:6470:a65c:5d7a]) by CO1PR11MB4835.namprd11.prod.outlook.com
+ ([fe80::ce74:6470:a65c:5d7a%5]) with mapi id 15.20.5723.035; Mon, 24 Oct 2022
+ 17:11:17 +0000
+From:   "Khandelwal, Rajat" <rajat.khandelwal@intel.com>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+CC:     "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jdelvare@suse.com" <jdelvare@suse.com>,
+        "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>
+Subject: RE: [PATCH v5] iio: temperature: Add driver support for Maxim
+ MAX30208
+Thread-Topic: [PATCH v5] iio: temperature: Add driver support for Maxim
+ MAX30208
+Thread-Index: AQHY5wB5eeSLMfTGpUiIiT3lfgy+Ua4daXmAgABabxA=
+Date:   Mon, 24 Oct 2022 17:11:17 +0000
+Message-ID: <CO1PR11MB483509CDD93AFA3176C42080962E9@CO1PR11MB4835.namprd11.prod.outlook.com>
+References: <20221024165658.181340-1-rajat.khandelwal@linux.intel.com>
+ <20221024112829.GA2807876@roeck-us.net>
+In-Reply-To: <20221024112829.GA2807876@roeck-us.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.6.500.17
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CO1PR11MB4835:EE_|BL1PR11MB5221:EE_
+x-ms-office365-filtering-correlation-id: 05d76308-ca25-4666-31e1-08dab5e2c38a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: YM0ASi5TA07yQbi8IYEP5mmT2fK27F8ZQgYhSDbY74ogc6rT5xTkPBFJdoX5PvPeT5lUPY17q3NAOzXFfccm5+0V+5c1CyM3mP7fXUwUbmkF0yu1TEM+BA4tC4lxN/d8DBfn2By1xOKiX1FJSDCYmuqMIj/4QfTEoP7kpm3QqxRvQZRfZYS6UNalBBPi6CnCbDf7dFyQjfHqdccqA8B+sTwfTQkUb8ttGaUKpsYsnhB+wgNDUBluAdU7LNo5zq8XhTlSjUIxtEGKqzb8HE/eRIExCd8nlPtAmLfYXopDxHRVqVdIFWr/WlUdwnbXx608GLmCia4usyPl/F5u7rXrPIPpP7eLJ3ReW1Wgd5BZb6yGo4jq3Cl0CcJgGtIuw9zZJaAiISS2LmgudeUy4+PFvJ2ys+LNaJbo04wZGcs2NuStBAS++tGad1QsxnaUBt1H9ZEzOd0o58yl1J03ZkXikhEKBsi7GDv6bGF5wwH5HXRMCrwPnFkROKOS6fsdZQoY+0bqpVr1BRx3xcfLQUxEKdSgfQZUAHWIkynmPfkzxvo/ugoDQKf1p9xJWE8BAYgfPbaUK0FSHN0g5vTPDexZgcO2VxW/EzdqlRfTS8txCtkGX7kZWlhcFh+NfDMrC4SATi1h9ZdeqIC3TntJayr+UNzccEsxg/ane7ScsQ4umYwCiQKHAgGLmIKZSfTe0iuysiPl1oqHysNhjgprD2rS/2fXQXfKV0hx6+g5idCj123Qd3nK3PLGZgtsys1XDtinb62ycEIXQUKF2Goc/aaZa6mrJNrC12C3WTxzjiKBNT8=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4835.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(136003)(366004)(39860400002)(346002)(396003)(376002)(451199015)(66899015)(478600001)(966005)(83380400001)(82960400001)(86362001)(7696005)(110136005)(55016003)(64756008)(66446008)(66476007)(122000001)(5660300002)(54906003)(53546011)(66556008)(76116006)(30864003)(8676002)(316002)(38070700005)(2906002)(186003)(71200400001)(9686003)(6506007)(26005)(33656002)(52536014)(4326008)(66946007)(8936002)(38100700002)(41300700001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?fkYhht1bmvMiXqTxKVH8HILhgTbGTOh8Df8VInhyWpa00e9FXrBeF29Q5u?=
+ =?iso-8859-1?Q?Gc7tUrja+vchmvaNU2WV4ak6rihrvsX3MEytGsqG79zpAWUOUXgcTU4XvF?=
+ =?iso-8859-1?Q?7vKAykxswrjE1uTSDJKmQmn5aThChZk3hhsErPBPjk4symdHyBxvRgTysc?=
+ =?iso-8859-1?Q?VnRuUiVmChzDAeXel0pwfznzBRWp+1IewnG0aADb1etqkf2LQWlDe7Qosc?=
+ =?iso-8859-1?Q?GgOrXCoa/e+7rMV+X69A3afo+QzA5daU5IqfYiimjmzgArHS1Sg0+IoWHv?=
+ =?iso-8859-1?Q?C5gNb7NQvk5OAqh02tNm2WdnrDzaLt9n9aZBfT3n4UTt5Ai7Uxg5qU50ge?=
+ =?iso-8859-1?Q?7FWDgpDHCYfBRZU81635f1vXJzvUVadNU4Ccjv/fpHcEAki7zpO0p0QR0B?=
+ =?iso-8859-1?Q?aLvf46RyfizbN62No/fGYa62enMLCFOPMJd+TBSPgeWeAPvquqF/qc4Mak?=
+ =?iso-8859-1?Q?c6Zhf7FSTrj1zj3bd5Z3hs/GZY7xOxaR/5KG2HvA7yihfLfixARAM8MZNM?=
+ =?iso-8859-1?Q?fgo0FgoffrCCc7d9mXKfAdG7clUpbTjKKushG9V8nQ8qiNkJndC8EUrO+q?=
+ =?iso-8859-1?Q?hD8iEYYF0VB4UP34unzRZIICPmOBlLeSzjLKK1GWDjL/rzB7rk2L8DIZYO?=
+ =?iso-8859-1?Q?BlUwv4vr0Qrn7pKNFbSZ9TVFAY6V46LJA8+smBNZI7r7cTci1Oz+bB2TcX?=
+ =?iso-8859-1?Q?S+crrSiew6OkfriLkI/RNic1pG0kfY+wkmAtHKozFD5lJfnjdZDJr80+s8?=
+ =?iso-8859-1?Q?HznjIirv1Eu6ZJzgRCkAUpz8UAxFK6iRtPpb45fftvRuHNDW+pkJ7pwelq?=
+ =?iso-8859-1?Q?/j0fcddIht5kMk65MU5oVSgu2ghqZeZ0AsVV2flggeCdpGb80pZLb1QgQ+?=
+ =?iso-8859-1?Q?scSu/ed1o9REw02hd4yqj6MRAYYqUZ7aiOeUL7ss0idyi+p43TrS7l3OR+?=
+ =?iso-8859-1?Q?UmJ2bEKSxBdhAcCvAnxxXreTk9jh4ihQDC+HvM4wJI3z0SqqcB5X65Ta7A?=
+ =?iso-8859-1?Q?gGrBYvURe48Fw+Wv1VLxU+Qxq5A3kqIizVwEGmT8PdiH9+kLTNjhkRSDrE?=
+ =?iso-8859-1?Q?NPdZhunGhokQVO2PtbljAekYhSNDQ5oaJ9gi4IYNnEtFH/OydcnDjLnFtv?=
+ =?iso-8859-1?Q?Sve88QAfFXTIVVJuwHULJmd288fX9AAnqge7XGKEXN+t1hs3S6yB2abg6I?=
+ =?iso-8859-1?Q?XmQF8oWyzGHBI4MST2Pw2aP78cSHRJi6aaNsQCJxnAHAd1yduf92wpfRT0?=
+ =?iso-8859-1?Q?Hm0vpr+HC68nrlT1l4YYQS8Ufe0xdA/b/4arfuIDv1sX6DP1LXtth+4Hi5?=
+ =?iso-8859-1?Q?ytxsmTccJm3+GYO/kD+++Tz/DxhlJe3BzZjsk353BfJQ/1Dgn0dKfG3P0S?=
+ =?iso-8859-1?Q?r8BrXPh5fyGGth4nyxBTY5uI+6v7RFl9n4qClLuK4Ks1Tmx/+rDw6DOPzO?=
+ =?iso-8859-1?Q?oHA2rX/PzOZEFS1SU6EBcara0QYWnzDOFT8cASgn8clk9vhnaJd8+Ep/cm?=
+ =?iso-8859-1?Q?1D9GWAbjZw7O8UV4ZXfS7nEpUWL38LEuNz/f6GhnZEIo77UoIbKNJ8RV4j?=
+ =?iso-8859-1?Q?j7JQlhMv4IavyLaj4EZYrFV6B612mbmA2IfdalbR0sF3Gpbxb5nB+2SqAQ?=
+ =?iso-8859-1?Q?bhPMZsa+XaNtBCKee4AhYWOMcDNhFoJr37yVq6AtS7afVGcwo1gmexhg?=
+ =?iso-8859-1?Q?=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-References: <20221021202254.4142411-1-arnd@kernel.org> <20221021203329.4143397-2-arnd@kernel.org>
-In-Reply-To: <20221021203329.4143397-2-arnd@kernel.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 24 Oct 2022 18:53:03 +0200
-Message-ID: <CAPDyKFoaaFkT+8OKRKVPRwkCoQZh12=B2_2CPOZCuMbzj+G5eQ@mail.gmail.com>
-Subject: Re: [PATCH 02/21] ARM: s3c: remove s3c24xx specific hacks
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Sylwester Nawrocki <sylvester.nawrocki@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-samsung-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4835.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 05d76308-ca25-4666-31e1-08dab5e2c38a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Oct 2022 17:11:17.4040
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: y882wqeFntHiSKqHcNEiPFEOoYOpVS5oTp40v4BDGh1AffFh6JwR/SUCIzc2A3HjhOK2vugA1uC0BnWMWqt4JHCcAq/jE3M5WIb1QsWZrTE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5221
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 21 Oct 2022 at 22:37, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> A number of device drivers reference CONFIG_ARM_S3C24XX_CPUFREQ or
-> similar symbols that are no longer available with the platform gone,
-> though the drivers themselves are still used on newer platforms,
-> so remove these hacks.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Hi Guenter,
+Thanks for the acknowledgement.
 
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org> # For MMC
+>Agreed; the sensor doesn't seem to be very useful for traditional hardware
+>monitoring. The driver better resides in IIO.
+Cool! I didn't know the categorical reasoning behind this but since this is=
+=20
+accepted in IIO, I don't have to do anything more.=20
 
-Kind regards
-Uffe
+>I don't understand why readings are discarded. Why trigger multiple
+>readings just to discard all but the last one ? I thought iio would
+>be expected to return all values.
+Ok. The plan is to trigger temperature conversion on the GPIO input also.
+The user can trigger as many times the temperature conversion he wants (I a=
+ccept unnecessary),
+which will keep the FIFO increasing (without reading converted values) but =
+the driver should be
+resilient to all the erroneous zones. Also, when the user does really make =
+a syscall to read the
+temperature, it definitely should be the last converted reading.=20
 
+>This is really pointless. The register has only one bit to set.
+>Just write that bit; reading the register before that is pointless.
+I think the register also has some bits which are reserved. Hence, rather t=
+han to make a number
+for specifically the value keeping those bits the same, I read whatever is =
+there and only store the
+required one.=20
+
+>Also, the code assumes that one of the gpio input registers would be used
+>to trigger temperature readings. Why trigger another one if this is indeed
+>the case ? Triggering a temperature reading should only be necessary if
+>there is no data in the fifo.
+GPIO input triggering is yet not implemented as I would have to work on ACP=
+I interrupts and I have
+written the driver for now to get it included in Linux.=20
+There are 2 ways - via GPIO and making a syscall. I agree that temperature =
+reading should be
+necessary only when there is no data in FIFO but since we intend to keep GP=
+IO as a trigger point,
+user can keep triggering conversions and not reading them out. (As pointed =
+above, driver should be
+resilient to all erroneous zones).
+
+>The datasheet says that it can take up to 50 ms to report a result.
+>10 retries with 50ms wait each time seems overkill.
+That's correct. But, the response time can be up to 500 ms. Also, while deb=
+ugging I had put timestamps
+which when analyzed, indicated that time may go beyond 50 ms.=20
+
+>And why use usleep_range() here
+>but msleep() above ?
+I am sorry about that. I have converted usleep_range into msleep (2 places)=
+.=20
+
+>This is wrong. It uses the overflow counter as data counter if it
+>is !=3D 0. The overflow counter counts the number of overflows, not
+>the number of entries in the fifo.
+So there is no such thing as 'overflow counter'. The point is if the overfl=
+ow counter has
+even one word, I use the data count equal to the overflow counter value. Ho=
+wever, if it
+has zero, then use the number of words in actual FIFO.=20
+This logic is just used to count how many values to pop to get the most rec=
+ent reading.
+
+> data_count is declared as u8 and will never be < 0.
+Data count can never be <0 as only first few bits of the 8 bits are used in=
+ the register.=20
+
+I have further pushed v6 for your perusal.
+
+Thanks
+Rajat
+
+-----Original Message-----
+From: Guenter Roeck <groeck7@gmail.com> On Behalf Of Guenter Roeck
+Sent: Monday, October 24, 2022 4:58 PM
+To: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+Cc: jic23@kernel.org; lars@metafoo.de; linux-kernel@vger.kernel.org; linux-=
+iio@vger.kernel.org; jdelvare@suse.com; linux-hwmon@vger.kernel.org; Khande=
+lwal, Rajat <rajat.khandelwal@intel.com>
+Subject: Re: [PATCH v5] iio: temperature: Add driver support for Maxim MAX3=
+0208
+
+On Mon, Oct 24, 2022 at 10:26:58PM +0530, Rajat Khandelwal wrote:
+> Maxim MAX30208 is a digital temperature sensor with 0.1=B0C accuracy.
+>=20
+> Add support for max30208 driver in iio subsystem.
+> Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
+>=20
+> Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+
+Question was:
+
+> with the open question on whether they consider it acceptable for this dr=
+iver
+> to be in IIO. Main argument in favour is it's an expensive clinical grade=
+ sensor
+> so fairly unlikely to be used in classic hardware monitoring circumstance=
+s.
+
+Agreed; the sensor doesn't seem to be very useful for traditional hardware
+monitoring. The driver better resides in IIO.
+
+I don't understand why readings are discarded. Why trigger multiple
+readings just to discard all but the last one ? I thought iio would
+be expected to return all values.
+
+Additional comment inline.
 
 > ---
->  arch/arm/include/debug/s3c24xx.S              |  10 -
->  arch/arm/mach-s3c/Makefile                    |   2 -
->  arch/arm/mach-s3c/devs.c                      |   1 -
->  arch/arm/mach-s3c/dma.h                       |   7 -
->  arch/arm/mach-s3c/gpio-samsung.h              |   7 -
->  arch/arm/mach-s3c/irqs.h                      |   7 -
->  arch/arm/mach-s3c/map.h                       |   7 -
->  arch/arm/mach-s3c/pm-core.h                   |   7 -
->  arch/arm/mach-s3c/regs-clock.h                |   7 -
->  arch/arm/mach-s3c/regs-gpio.h                 |   7 -
->  arch/arm/mach-s3c/regs-irq.h                  |   7 -
->  drivers/clocksource/Kconfig                   |   2 +-
->  drivers/i2c/busses/Kconfig                    |   3 +-
->  drivers/i2c/busses/i2c-s3c2410.c              |  72 -------
->  drivers/iio/adc/Kconfig                       |   6 +-
->  .../media/platform/samsung/s3c-camif/Kconfig  |   8 +-
->  drivers/mmc/host/Kconfig                      |   5 +-
->  drivers/mtd/nand/raw/Kconfig                  |   2 +-
->  drivers/mtd/nand/raw/s3c2410.c                |  60 ------
->  drivers/pinctrl/samsung/pinctrl-samsung.c     |  10 -
->  drivers/rtc/Kconfig                           |   8 +-
->  drivers/tty/serial/Kconfig                    |   8 +-
->  drivers/tty/serial/samsung_tty.c              | 199 ------------------
->  drivers/usb/host/Kconfig                      |   8 +-
->  drivers/watchdog/Kconfig                      |   9 +-
->  drivers/watchdog/s3c2410_wdt.c                |  84 +-------
->  include/linux/clk/samsung.h                   |  32 ---
->  include/linux/soc/samsung/s3c-pm.h            |  58 -----
->  28 files changed, 29 insertions(+), 614 deletions(-)
->
-> diff --git a/arch/arm/include/debug/s3c24xx.S b/arch/arm/include/debug/s3c24xx.S
-> index af873b526677..7ab5e577cd42 100644
-> --- a/arch/arm/include/debug/s3c24xx.S
-> +++ b/arch/arm/include/debug/s3c24xx.S
-> @@ -28,16 +28,6 @@
->                 and     \rd, \rd, #S3C2410_UFSTAT_TXMASK
->         .endm
->
-> -/* Select the correct implementation depending on the configuration. The
-> - * S3C2440 will get selected by default, as these are the most widely
-> - * used variants of these
-> -*/
-> -
-> -#if defined(CONFIG_DEBUG_S3C2410_UART)
-> -#define fifo_full  fifo_full_s3c2410
-> -#define fifo_level fifo_level_s3c2410
-> -#endif
-> -
->  /* include the reset of the code which will do the work */
->
->  #include <debug/samsung.S>
-> diff --git a/arch/arm/mach-s3c/Makefile b/arch/arm/mach-s3c/Makefile
-> index e7f18039b149..a5135137e648 100644
-> --- a/arch/arm/mach-s3c/Makefile
-> +++ b/arch/arm/mach-s3c/Makefile
-> @@ -2,9 +2,7 @@
->  #
->  # Copyright 2009 Simtec Electronics
->
-> -ifdef CONFIG_ARCH_S3C64XX
->  include $(src)/Makefile.s3c64xx
-> -endif
->
->  # Objects we always build independent of SoC choice
->
-> diff --git a/arch/arm/mach-s3c/devs.c b/arch/arm/mach-s3c/devs.c
-> index 9ac07c023adf..a31d1c3038e8 100644
-> --- a/arch/arm/mach-s3c/devs.c
-> +++ b/arch/arm/mach-s3c/devs.c
-> @@ -29,7 +29,6 @@
->  #include <linux/sizes.h>
->  #include <linux/platform_data/s3c-hsudc.h>
->  #include <linux/platform_data/s3c-hsotg.h>
-> -#include <linux/platform_data/dma-s3c24xx.h>
->
->  #include <linux/platform_data/media/s5p_hdmi.h>
->
-> diff --git a/arch/arm/mach-s3c/dma.h b/arch/arm/mach-s3c/dma.h
-> index 59a4578c5f00..48057cb90070 100644
-> --- a/arch/arm/mach-s3c/dma.h
-> +++ b/arch/arm/mach-s3c/dma.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "dma-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "dma-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/gpio-samsung.h b/arch/arm/mach-s3c/gpio-samsung.h
-> index 02f6f4a96862..4233515eddaa 100644
-> --- a/arch/arm/mach-s3c/gpio-samsung.h
-> +++ b/arch/arm/mach-s3c/gpio-samsung.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "gpio-samsung-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "gpio-samsung-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/irqs.h b/arch/arm/mach-s3c/irqs.h
-> index 0bff1c1c8eb0..3ff0e0963080 100644
-> --- a/arch/arm/mach-s3c/irqs.h
-> +++ b/arch/arm/mach-s3c/irqs.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "irqs-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "irqs-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/map.h b/arch/arm/mach-s3c/map.h
-> index 7cfb517d4886..778d6f81cb2b 100644
-> --- a/arch/arm/mach-s3c/map.h
-> +++ b/arch/arm/mach-s3c/map.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "map-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "map-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/pm-core.h b/arch/arm/mach-s3c/pm-core.h
-> index b0e1d277f599..3e0c2df79120 100644
-> --- a/arch/arm/mach-s3c/pm-core.h
-> +++ b/arch/arm/mach-s3c/pm-core.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "pm-core-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "pm-core-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-clock.h b/arch/arm/mach-s3c/regs-clock.h
-> index 7df31f203d28..fc7e3886b07c 100644
-> --- a/arch/arm/mach-s3c/regs-clock.h
-> +++ b/arch/arm/mach-s3c/regs-clock.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-clock-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-clock-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-gpio.h b/arch/arm/mach-s3c/regs-gpio.h
-> index 0d41cb76d440..4e08e8609663 100644
-> --- a/arch/arm/mach-s3c/regs-gpio.h
-> +++ b/arch/arm/mach-s3c/regs-gpio.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-gpio-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-gpio-s3c64xx.h"
-> -#endif
-> diff --git a/arch/arm/mach-s3c/regs-irq.h b/arch/arm/mach-s3c/regs-irq.h
-> index 57f0dda8dbf5..4243daa54bd1 100644
-> --- a/arch/arm/mach-s3c/regs-irq.h
-> +++ b/arch/arm/mach-s3c/regs-irq.h
-> @@ -1,9 +1,2 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
-> -
-> -#ifdef CONFIG_ARCH_S3C24XX
-> -#include "regs-irq-s3c24xx.h"
-> -#endif
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
->  #include "regs-irq-s3c64xx.h"
-> -#endif
-> diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
-> index 4469e7f555e9..fc10ecc3602d 100644
-> --- a/drivers/clocksource/Kconfig
-> +++ b/drivers/clocksource/Kconfig
-> @@ -441,7 +441,7 @@ config CLKSRC_EXYNOS_MCT
->  config CLKSRC_SAMSUNG_PWM
->         bool "PWM timer driver for Samsung S3C, S5P" if COMPILE_TEST
->         depends on HAS_IOMEM
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
->         help
->           This is a new clocksource driver for the PWM timer found in
->           Samsung S3C, S5P and Exynos SoCs, replacing an earlier driver
-> diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-> index f427c8ea5c7b..84d21e0a7cdf 100644
-> --- a/drivers/i2c/busses/Kconfig
-> +++ b/drivers/i2c/busses/Kconfig
-> @@ -1009,8 +1009,7 @@ config I2C_RZV2M
->
->  config I2C_S3C2410
->         tristate "S3C/Exynos I2C Driver"
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || \
-> -                  ARCH_S5PV210 || COMPILE_TEST
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || COMPILE_TEST
->         help
->           Say Y here to include support for I2C controller in the
->           Samsung SoCs (S3C, S5Pv210, Exynos).
-> diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
-> index 36dab9cd208c..45e9df81345a 100644
-> --- a/drivers/i2c/busses/i2c-s3c2410.c
-> +++ b/drivers/i2c/busses/i2c-s3c2410.c
-> @@ -116,9 +116,6 @@ struct s3c24xx_i2c {
->         struct s3c2410_platform_i2c     *pdata;
->         struct gpio_desc        *gpios[2];
->         struct pinctrl          *pctrl;
-> -#if defined(CONFIG_ARM_S3C24XX_CPUFREQ)
-> -       struct notifier_block   freq_transition;
-> -#endif
->         struct regmap           *sysreg;
->         unsigned int            sys_i2c_cfg;
->  };
-> @@ -885,65 +882,6 @@ static int s3c24xx_i2c_clockrate(struct s3c24xx_i2c *i2c, unsigned int *got)
->         return 0;
->  }
->
-> -#if defined(CONFIG_ARM_S3C24XX_CPUFREQ)
-> -
-> -#define freq_to_i2c(_n) container_of(_n, struct s3c24xx_i2c, freq_transition)
-> -
-> -static int s3c24xx_i2c_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       struct s3c24xx_i2c *i2c = freq_to_i2c(nb);
-> -       unsigned int got;
-> -       int delta_f;
-> -       int ret;
-> -
-> -       delta_f = clk_get_rate(i2c->clk) - i2c->clkrate;
-> -
-> -       /* if we're post-change and the input clock has slowed down
-> -        * or at pre-change and the clock is about to speed up, then
-> -        * adjust our clock rate. <0 is slow, >0 speedup.
-> -        */
-> -
-> -       if ((val == CPUFREQ_POSTCHANGE && delta_f < 0) ||
-> -           (val == CPUFREQ_PRECHANGE && delta_f > 0)) {
-> -               i2c_lock_bus(&i2c->adap, I2C_LOCK_ROOT_ADAPTER);
-> -               ret = s3c24xx_i2c_clockrate(i2c, &got);
-> -               i2c_unlock_bus(&i2c->adap, I2C_LOCK_ROOT_ADAPTER);
-> -
-> -               if (ret < 0)
-> -                       dev_err(i2c->dev, "cannot find frequency (%d)\n", ret);
-> -               else
-> -                       dev_info(i2c->dev, "setting freq %d\n", got);
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static inline int s3c24xx_i2c_register_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       i2c->freq_transition.notifier_call = s3c24xx_i2c_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&i2c->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void s3c24xx_i2c_deregister_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       cpufreq_unregister_notifier(&i2c->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int s3c24xx_i2c_register_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void s3c24xx_i2c_deregister_cpufreq(struct s3c24xx_i2c *i2c)
-> -{
-> -}
-> -#endif
-> -
->  #ifdef CONFIG_OF
->  static int s3c24xx_i2c_parse_dt_gpio(struct s3c24xx_i2c *i2c)
->  {
-> @@ -1152,13 +1090,6 @@ static int s3c24xx_i2c_probe(struct platform_device *pdev)
->                 }
->         }
->
-> -       ret = s3c24xx_i2c_register_cpufreq(i2c);
-> -       if (ret < 0) {
-> -               dev_err(&pdev->dev, "failed to register cpufreq notifier\n");
-> -               clk_unprepare(i2c->clk);
-> -               return ret;
-> -       }
-> -
->         /*
->          * Note, previous versions of the driver used i2c_add_adapter()
->          * to add the bus at any number. We now pass the bus number via
-> @@ -1175,7 +1106,6 @@ static int s3c24xx_i2c_probe(struct platform_device *pdev)
->         ret = i2c_add_numbered_adapter(&i2c->adap);
->         if (ret < 0) {
->                 pm_runtime_disable(&pdev->dev);
-> -               s3c24xx_i2c_deregister_cpufreq(i2c);
->                 clk_unprepare(i2c->clk);
->                 return ret;
->         }
-> @@ -1192,8 +1122,6 @@ static int s3c24xx_i2c_remove(struct platform_device *pdev)
->
->         pm_runtime_disable(&pdev->dev);
->
-> -       s3c24xx_i2c_deregister_cpufreq(i2c);
-> -
->         i2c_del_adapter(&i2c->adap);
->
->         return 0;
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 791612ca6012..9de7f05d40e2 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -437,11 +437,11 @@ config EP93XX_ADC
->
->  config EXYNOS_ADC
->         tristate "Exynos ADC driver support"
-> -       depends on ARCH_EXYNOS || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || (OF && COMPILE_TEST)
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || (OF && COMPILE_TEST)
->         depends on HAS_IOMEM
->         help
-> -         Driver for the ADC block found in the Samsung S3C (S3C2410, S3C2416,
-> -         S3C2440, S3C2443, S3C6410), S5Pv210 and Exynos SoCs.
-> +         Driver for the ADC block found in the Samsung S3C6410, S5Pv210 and
-> +         Exynos SoCs.
->           Choose Y here only if you build for such Samsung SoC.
->
->           To compile this driver as a module, choose M here: the module will be
-> diff --git a/drivers/media/platform/samsung/s3c-camif/Kconfig b/drivers/media/platform/samsung/s3c-camif/Kconfig
-> index 8cb8d1ac3edc..f359f6382fff 100644
-> --- a/drivers/media/platform/samsung/s3c-camif/Kconfig
-> +++ b/drivers/media/platform/samsung/s3c-camif/Kconfig
-> @@ -1,15 +1,15 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  config VIDEO_S3C_CAMIF
-> -       tristate "Samsung S3C24XX/S3C64XX SoC Camera Interface driver"
-> +       tristate "Samsung 3C64XX SoC Camera Interface driver"
->         depends on V4L_PLATFORM_DRIVERS
->         depends on VIDEO_DEV && I2C && PM
-> -       depends on ARCH_S3C64XX || PLAT_S3C24XX || COMPILE_TEST
-> +       depends on ARCH_S3C64XX || COMPILE_TEST
->         select MEDIA_CONTROLLER
->         select VIDEO_V4L2_SUBDEV_API
->         select VIDEOBUF2_DMA_CONTIG
->         help
-> -         This is a v4l2 driver for s3c24xx and s3c64xx SoC series camera
-> -         host interface (CAMIF).
-> +         This is a v4l2 driver for s3c64xx SoC series camera host interface
-> +         (CAMIF).
->
->           To compile this driver as a module, choose M here: the module
->           will be called s3c-camif.
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 84dd37ff2735..79d8ddf1f616 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -312,9 +312,8 @@ config MMC_SDHCI_S3C
->         depends on PLAT_SAMSUNG || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
->         help
->           This selects the Secure Digital Host Controller Interface (SDHCI)
-> -         often referrered to as the HSMMC block in some of the Samsung S3C
-> -         (S3C2416, S3C2443, S3C6410), S5Pv210 and Exynos (Exynso4210,
-> -         Exynos4412) SoCs.
-> +         often referrered to as the HSMMC block in some of the Samsung
-> +         S3C6410, S5Pv210 and Exynos (Exynso4210, Exynos4412) SoCs.
->
->           If you have a controller with this interface (thereforeyou build for
->           such Samsung SoC), say Y or M here.
-> diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
-> index 280a55139387..a347833b8f29 100644
-> --- a/drivers/mtd/nand/raw/Kconfig
-> +++ b/drivers/mtd/nand/raw/Kconfig
-> @@ -79,7 +79,7 @@ config MTD_NAND_NDFC
->
->  config MTD_NAND_S3C2410
->         tristate "Samsung S3C NAND controller"
-> -       depends on ARCH_S3C24XX || ARCH_S3C64XX
-> +       depends on ARCH_S3C64XX
->         help
->           This enables the NAND flash controller on the S3C24xx and S3C64xx
->           SoCs
-> diff --git a/drivers/mtd/nand/raw/s3c2410.c b/drivers/mtd/nand/raw/s3c2410.c
-> index f0a4535c812a..80d96f94d6cb 100644
-> --- a/drivers/mtd/nand/raw/s3c2410.c
-> +++ b/drivers/mtd/nand/raw/s3c2410.c
-> @@ -166,10 +166,6 @@ struct s3c2410_nand_info {
->         enum s3c_nand_clk_state         clk_state;
->
->         enum s3c_cpu_type               cpu_type;
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -       struct notifier_block   freq_transition;
-> -#endif
->  };
->
->  struct s3c24XX_nand_devtype_data {
-> @@ -711,54 +707,6 @@ static void s3c2440_nand_write_buf(struct nand_chip *this, const u_char *buf,
->         }
->  }
->
-> -/* cpufreq driver support */
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c2410_nand_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       struct s3c2410_nand_info *info;
-> -       unsigned long newclk;
-> -
-> -       info = container_of(nb, struct s3c2410_nand_info, freq_transition);
-> -       newclk = clk_get_rate(info->clk);
-> -
-> -       if ((val == CPUFREQ_POSTCHANGE && newclk < info->clk_rate) ||
-> -           (val == CPUFREQ_PRECHANGE && newclk > info->clk_rate)) {
-> -               s3c2410_nand_setrate(info);
-> -       }
-> -
-> -       return 0;
-> -}
-> -
-> -static inline int s3c2410_nand_cpufreq_register(struct s3c2410_nand_info *info)
-> -{
-> -       info->freq_transition.notifier_call = s3c2410_nand_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&info->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void
-> -s3c2410_nand_cpufreq_deregister(struct s3c2410_nand_info *info)
-> -{
-> -       cpufreq_unregister_notifier(&info->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int s3c2410_nand_cpufreq_register(struct s3c2410_nand_info *info)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void
-> -s3c2410_nand_cpufreq_deregister(struct s3c2410_nand_info *info)
-> -{
-> -}
-> -#endif
-> -
->  /* device management functions */
->
->  static int s3c24xx_nand_remove(struct platform_device *pdev)
-> @@ -768,8 +716,6 @@ static int s3c24xx_nand_remove(struct platform_device *pdev)
->         if (info == NULL)
->                 return 0;
->
-> -       s3c2410_nand_cpufreq_deregister(info);
-> -
->         /* Release all our mtds  and their partitions, then go through
->          * freeing the resources used
->          */
-> @@ -1184,12 +1130,6 @@ static int s3c24xx_nand_probe(struct platform_device *pdev)
->         if (err != 0)
->                 goto exit_error;
->
-> -       err = s3c2410_nand_cpufreq_register(info);
-> -       if (err < 0) {
-> -               dev_err(&pdev->dev, "failed to init cpufreq support\n");
-> -               goto exit_error;
-> -       }
-> -
->         if (allow_clk_suspend(info)) {
->                 dev_info(&pdev->dev, "clock idle support enabled\n");
->                 s3c2410_nand_clk_set_state(info, CLOCK_SUSPEND);
-> diff --git a/drivers/pinctrl/samsung/pinctrl-samsung.c b/drivers/pinctrl/samsung/pinctrl-samsung.c
-> index bd13b5ef246d..1a478854293f 100644
-> --- a/drivers/pinctrl/samsung/pinctrl-samsung.c
-> +++ b/drivers/pinctrl/samsung/pinctrl-samsung.c
-> @@ -1322,16 +1322,6 @@ static const struct of_device_id samsung_pinctrl_dt_match[] = {
->  #ifdef CONFIG_PINCTRL_S3C64XX
->         { .compatible = "samsung,s3c64xx-pinctrl",
->                 .data = &s3c64xx_of_data },
-> -#endif
-> -#ifdef CONFIG_PINCTRL_S3C24XX
-> -       { .compatible = "samsung,s3c2412-pinctrl",
-> -               .data = &s3c2412_of_data },
-> -       { .compatible = "samsung,s3c2416-pinctrl",
-> -               .data = &s3c2416_of_data },
-> -       { .compatible = "samsung,s3c2440-pinctrl",
-> -               .data = &s3c2440_of_data },
-> -       { .compatible = "samsung,s3c2450-pinctrl",
-> -               .data = &s3c2450_of_data },
->  #endif
->         {},
->  };
-> diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-> index 312dccfa3f18..d13ca620ea5d 100644
-> --- a/drivers/rtc/Kconfig
-> +++ b/drivers/rtc/Kconfig
-> @@ -1406,18 +1406,14 @@ config RTC_DRV_OMAP
->
->  config RTC_DRV_S3C
->         tristate "Samsung S3C series SoC RTC"
-> -       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S3C24XX || ARCH_S5PV210 || \
-> +       depends on ARCH_EXYNOS || ARCH_S3C64XX || ARCH_S5PV210 || \
->                    COMPILE_TEST
->         help
->           RTC (Realtime Clock) driver for the clock inbuilt into the
-> -         Samsung S3C24XX series of SoCs. This can provide periodic
-> +         Samsung S3C64XX series of SoCs. This can provide periodic
->           interrupt rates from 1Hz to 64Hz for user programs, and
->           wakeup from Alarm.
->
-> -         The driver currently supports the common features on all the
-> -         S3C24XX range, such as the S3C2410, S3C2412, S3C2413, S3C2440
-> -         and S3C2442.
-> -
->           This driver can also be build as a module. If so, the module
->           will be called rtc-s3c.
->
-> diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
-> index 434f83168546..3ba8a39655a3 100644
-> --- a/drivers/tty/serial/Kconfig
-> +++ b/drivers/tty/serial/Kconfig
-> @@ -242,23 +242,23 @@ config SERIAL_SAMSUNG
->         select SERIAL_CORE
->         help
->           Support for the on-chip UARTs on the Samsung
-> -         S3C24xx/S3C64xx/S5Pv210/Exynos and Apple M1 SoCs, providing
-> +         S3C64xx/S5Pv210/Exynos and Apple M1 SoCs, providing
->           /dev/ttySAC0, 1 and 2 (note, some machines may not provide all of
->           these ports, depending on how the serial port pins are configured.
+>=20
+> v5:
+> 1. Fixed comment position in max30208_request
+> 2. Use of local u8 variable to build register values
+> 3. Using u8 instead of s8 in data_count
+> 4. Removed global MAX30208_RES_MILLICELCIUS
+> 5. Removed 'comma' on NULL terminators
+>=20
+> v4: Version comments go below line separator of signed-off-by
+>=20
+> v3: Release the mutex lock after error gets returned
+>=20
+> v2:
+> 1. Removed TODO
+> 2. Removed unnecessary blank spaces
+> 3. Corrected MC->MILLICELCIUS
+> 4. Comments added wherever required
+> 5. dev_err on i2c fails
+> 6. Rearranged some flows
+> 7. Removed PROCESSED
+> 8. int error return on gpio setup
+> 9. device_register at the end of probe
+> 10. Return on unsuccessful reset
+> 11. acpi_match_table and of_match_table added
+> 12. Minor quirks
+>=20
+>  MAINTAINERS                        |   6 +
+>  drivers/iio/temperature/Kconfig    |  10 +
+>  drivers/iio/temperature/Makefile   |   1 +
+>  drivers/iio/temperature/max30208.c | 323 +++++++++++++++++++++++++++++
+>  4 files changed, 340 insertions(+)
+>  create mode 100644 drivers/iio/temperature/max30208.c
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f1390b8270b2..7f1fd2e31b94 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12373,6 +12373,12 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/regulator/maxim,max20086.yaml
+>  F:	drivers/regulator/max20086-regulator.c
+> =20
+> +MAXIM MAX30208 TEMPERATURE SENSOR DRIVER
+> +M:	Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/iio/temperature/max30208.c
 > +
->           Choose Y/M here only if you build for such SoC.
->
->  config SERIAL_SAMSUNG_UARTS_4
->         bool
->         depends on SERIAL_SAMSUNG
-> -       default y if !(CPU_S3C2410 || CPU_S3C2412 || CPU_S3C2440 || CPU_S3C2442)
-> +       default y
->         help
->           Internal node for the common case of 4 Samsung compatible UARTs
->
->  config SERIAL_SAMSUNG_UARTS
->         int
->         depends on SERIAL_SAMSUNG
-> -       default 4 if SERIAL_SAMSUNG_UARTS_4 || CPU_S3C2416
-> -       default 3
-> +       default 4
->         help
->           Select the number of available UART ports for the Samsung S3C
->           serial driver
-> diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
-> index 77d1363029f5..5adf3963b2f6 100644
-> --- a/drivers/tty/serial/samsung_tty.c
-> +++ b/drivers/tty/serial/samsung_tty.c
-> @@ -152,10 +152,6 @@ struct s3c24xx_uart_port {
->         const struct s3c2410_uartcfg    *cfg;
->
->         struct s3c24xx_uart_dma         *dma;
-> -
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -       struct notifier_block           freq_transition;
-> -#endif
->  };
->
->  static void s3c24xx_serial_tx_chars(struct s3c24xx_uart_port *ourport);
-> @@ -1859,93 +1855,6 @@ static void s3c24xx_serial_resetport(struct uart_port *port,
->         udelay(1);
->  }
->
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c24xx_serial_cpufreq_transition(struct notifier_block *nb,
-> -                                            unsigned long val, void *data)
-> -{
-> -       struct s3c24xx_uart_port *port;
-> -       struct uart_port *uport;
-> -
-> -       port = container_of(nb, struct s3c24xx_uart_port, freq_transition);
-> -       uport = &port->port;
-> -
-> -       /* check to see if port is enabled */
-> -
-> -       if (port->pm_level != 0)
-> -               return 0;
-> -
-> -       /* try and work out if the baudrate is changing, we can detect
-> -        * a change in rate, but we do not have support for detecting
-> -        * a disturbance in the clock-rate over the change.
-> -        */
-> -
-> -       if (IS_ERR(port->baudclk))
-> -               goto exit;
-> -
-> -       if (port->baudclk_rate == clk_get_rate(port->baudclk))
-> -               goto exit;
-> -
-> -       if (val == CPUFREQ_PRECHANGE) {
-> -               /* we should really shut the port down whilst the
-> -                * frequency change is in progress.
-> -                */
-> -
-> -       } else if (val == CPUFREQ_POSTCHANGE) {
-> -               struct ktermios *termios;
-> -               struct tty_struct *tty;
-> -
-> -               if (uport->state == NULL)
-> -                       goto exit;
-> -
-> -               tty = uport->state->port.tty;
-> -
-> -               if (tty == NULL)
-> -                       goto exit;
-> -
-> -               termios = &tty->termios;
-> -
-> -               if (termios == NULL) {
-> -                       dev_warn(uport->dev, "%s: no termios?\n", __func__);
-> -                       goto exit;
-> -               }
-> -
-> -               s3c24xx_serial_set_termios(uport, termios, NULL);
-> -       }
-> -
-> -exit:
-> -       return 0;
-> -}
-> -
-> -static inline int
-> -s3c24xx_serial_cpufreq_register(struct s3c24xx_uart_port *port)
-> -{
-> -       port->freq_transition.notifier_call = s3c24xx_serial_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&port->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void
-> -s3c24xx_serial_cpufreq_deregister(struct s3c24xx_uart_port *port)
-> -{
-> -       cpufreq_unregister_notifier(&port->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -static inline int
-> -s3c24xx_serial_cpufreq_register(struct s3c24xx_uart_port *port)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void
-> -s3c24xx_serial_cpufreq_deregister(struct s3c24xx_uart_port *port)
-> -{
-> -}
-> -#endif
-> -
->  static int s3c24xx_serial_enable_baudclk(struct s3c24xx_uart_port *ourport)
->  {
->         struct device *dev = ourport->port.dev;
-> @@ -2237,10 +2146,6 @@ static int s3c24xx_serial_probe(struct platform_device *pdev)
->         if (!IS_ERR(ourport->baudclk))
->                 clk_disable_unprepare(ourport->baudclk);
->
-> -       ret = s3c24xx_serial_cpufreq_register(ourport);
-> -       if (ret < 0)
-> -               dev_err(&pdev->dev, "failed to add cpufreq notifier\n");
-> -
->         probe_index++;
->
->         return 0;
-> @@ -2251,7 +2156,6 @@ static int s3c24xx_serial_remove(struct platform_device *dev)
->         struct uart_port *port = s3c24xx_dev_to_port(&dev->dev);
->
->         if (port) {
-> -               s3c24xx_serial_cpufreq_deregister(to_ourport(port));
->                 uart_remove_one_port(&s3c24xx_uart_drv, port);
->         }
->
-> @@ -2589,94 +2493,6 @@ static struct console s3c24xx_serial_console = {
->  };
->  #endif /* CONFIG_SERIAL_SAMSUNG_CONSOLE */
->
-> -#ifdef CONFIG_CPU_S3C2410
-> -static const struct s3c24xx_serial_drv_data s3c2410_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2410 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2410,
-> -               .fifosize       = 16,
-> -               .rx_fifomask    = S3C2410_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2410_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2410_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2410_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2410_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2410_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL0,
-> -               .num_clks       = 2,
-> -               .clksel_mask    = S3C2410_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2410_UCON_CLKSHIFT,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2410_SERIAL_DRV_DATA (&s3c2410_serial_drv_data)
-> -#else
-> -#define S3C2410_SERIAL_DRV_DATA NULL
-> -#endif
-> -
-> -#ifdef CONFIG_CPU_S3C2412
-> -static const struct s3c24xx_serial_drv_data s3c2412_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2412 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2412,
-> -               .fifosize       = 64,
-> -               .has_divslot    = 1,
-> -               .rx_fifomask    = S3C2440_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2440_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2440_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2440_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2440_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2440_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL2,
-> -               .num_clks       = 4,
-> -               .clksel_mask    = S3C2412_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2412_UCON_CLKSHIFT,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2412_SERIAL_DRV_DATA (&s3c2412_serial_drv_data)
-> -#else
-> -#define S3C2412_SERIAL_DRV_DATA NULL
-> -#endif
-> -
-> -#if defined(CONFIG_CPU_S3C2440) || defined(CONFIG_CPU_S3C2416) || \
-> -       defined(CONFIG_CPU_S3C2443) || defined(CONFIG_CPU_S3C2442)
-> -static const struct s3c24xx_serial_drv_data s3c2440_serial_drv_data = {
-> -       .info = {
-> -               .name           = "Samsung S3C2440 UART",
-> -               .type           = TYPE_S3C24XX,
-> -               .port_type      = PORT_S3C2440,
-> -               .fifosize       = 64,
-> -               .has_divslot    = 1,
-> -               .rx_fifomask    = S3C2440_UFSTAT_RXMASK,
-> -               .rx_fifoshift   = S3C2440_UFSTAT_RXSHIFT,
-> -               .rx_fifofull    = S3C2440_UFSTAT_RXFULL,
-> -               .tx_fifofull    = S3C2440_UFSTAT_TXFULL,
-> -               .tx_fifomask    = S3C2440_UFSTAT_TXMASK,
-> -               .tx_fifoshift   = S3C2440_UFSTAT_TXSHIFT,
-> -               .def_clk_sel    = S3C2410_UCON_CLKSEL2,
-> -               .num_clks       = 4,
-> -               .clksel_mask    = S3C2412_UCON_CLKMASK,
-> -               .clksel_shift   = S3C2412_UCON_CLKSHIFT,
-> -               .ucon_mask      = S3C2440_UCON0_DIVMASK,
-> -       },
-> -       .def_cfg = {
-> -               .ucon           = S3C2410_UCON_DEFAULT,
-> -               .ufcon          = S3C2410_UFCON_DEFAULT,
-> -       },
-> -};
-> -#define S3C2440_SERIAL_DRV_DATA (&s3c2440_serial_drv_data)
-> -#else
-> -#define S3C2440_SERIAL_DRV_DATA NULL
-> -#endif
-> -
->  #if defined(CONFIG_CPU_S3C6400) || defined(CONFIG_CPU_S3C6410)
->  static const struct s3c24xx_serial_drv_data s3c6400_serial_drv_data = {
->         .info = {
-> @@ -2845,15 +2661,6 @@ static const struct s3c24xx_serial_drv_data artpec8_serial_drv_data = {
->
->  static const struct platform_device_id s3c24xx_serial_driver_ids[] = {
->         {
-> -               .name           = "s3c2410-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2410_SERIAL_DRV_DATA,
-> -       }, {
-> -               .name           = "s3c2412-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2412_SERIAL_DRV_DATA,
-> -       }, {
-> -               .name           = "s3c2440-uart",
-> -               .driver_data    = (kernel_ulong_t)S3C2440_SERIAL_DRV_DATA,
-> -       }, {
->                 .name           = "s3c6400-uart",
->                 .driver_data    = (kernel_ulong_t)S3C6400_SERIAL_DRV_DATA,
->         }, {
-> @@ -2881,12 +2688,6 @@ MODULE_DEVICE_TABLE(platform, s3c24xx_serial_driver_ids);
->
->  #ifdef CONFIG_OF
->  static const struct of_device_id s3c24xx_uart_dt_match[] = {
-> -       { .compatible = "samsung,s3c2410-uart",
-> -               .data = S3C2410_SERIAL_DRV_DATA },
-> -       { .compatible = "samsung,s3c2412-uart",
-> -               .data = S3C2412_SERIAL_DRV_DATA },
-> -       { .compatible = "samsung,s3c2440-uart",
-> -               .data = S3C2440_SERIAL_DRV_DATA },
->         { .compatible = "samsung,s3c6400-uart",
->                 .data = S3C6400_SERIAL_DRV_DATA },
->         { .compatible = "samsung,s5pv210-uart",
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index fb7b603dddf8..8ba4fe9364b1 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -443,12 +443,12 @@ config USB_OHCI_HCD_STI
->           STMicroelectronics consumer electronics SoC's.
->
->  config USB_OHCI_HCD_S3C2410
-> -       tristate "OHCI support for Samsung S3C24xx/S3C64xx SoC series"
-> -       depends on USB_OHCI_HCD && (ARCH_S3C24XX || ARCH_S3C64XX || COMPILE_TEST)
-> -       default y if (ARCH_S3C24XX || ARCH_S3C64XX)
-> +       tristate "OHCI support for Samsung S3C64xx SoC series"
-> +       depends on USB_OHCI_HCD && (ARCH_S3C64XX || COMPILE_TEST)
-> +       default ARCH_S3C64XX
->         help
->           Enables support for the on-chip OHCI controller on
-> -         S3C24xx/S3C64xx chips.
-> +         S3C64xx chips.
->
->  config USB_OHCI_HCD_LPC32XX
->         tristate "Support for LPC on-chip OHCI USB controller"
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index b64bc49c7f30..eee7df45347a 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -491,14 +491,13 @@ config IXP4XX_WATCHDOG
->           Say N if you are unsure.
->
->  config S3C2410_WATCHDOG
-> -       tristate "S3C2410 Watchdog"
-> -       depends on ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || \
-> -                  COMPILE_TEST
-> +       tristate "S3C6410/S5Pv210/Exynos Watchdog"
-> +       depends on ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || COMPILE_TEST
->         select WATCHDOG_CORE
->         select MFD_SYSCON if ARCH_EXYNOS
->         help
-> -         Watchdog timer block in the Samsung S3C24xx, S3C64xx, S5Pv210 and
-> -         Exynos SoCs. This will reboot the system when the timer expires with
-> +         Watchdog timer block in the Samsung S3C64xx, S5Pv210 and Exynos
-> +         SoCs. This will reboot the system when the timer expires with
->           the watchdog enabled.
->
->           The driver is limited by the speed of the system's PCLK
-> diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
-> index d3fc8ed886ff..200ba236a72e 100644
-> --- a/drivers/watchdog/s3c2410_wdt.c
-> +++ b/drivers/watchdog/s3c2410_wdt.c
-> @@ -562,73 +562,6 @@ static irqreturn_t s3c2410wdt_irq(int irqno, void *param)
->         return IRQ_HANDLED;
->  }
->
-> -#ifdef CONFIG_ARM_S3C24XX_CPUFREQ
-> -
-> -static int s3c2410wdt_cpufreq_transition(struct notifier_block *nb,
-> -                                         unsigned long val, void *data)
-> -{
-> -       int ret;
-> -       struct s3c2410_wdt *wdt = freq_to_wdt(nb);
-> -
-> -       if (!s3c2410wdt_is_running(wdt))
-> -               goto done;
-> -
-> -       if (val == CPUFREQ_PRECHANGE) {
-> -               /* To ensure that over the change we don't cause the
-> -                * watchdog to trigger, we perform an keep-alive if
-> -                * the watchdog is running.
-> -                */
-> -
-> -               s3c2410wdt_keepalive(&wdt->wdt_device);
-> -       } else if (val == CPUFREQ_POSTCHANGE) {
-> -               s3c2410wdt_stop(&wdt->wdt_device);
-> -
-> -               ret = s3c2410wdt_set_heartbeat(&wdt->wdt_device,
-> -                                               wdt->wdt_device.timeout);
-> -
-> -               if (ret >= 0)
-> -                       s3c2410wdt_start(&wdt->wdt_device);
-> -               else
-> -                       goto err;
-> -       }
-> -
-> -done:
-> -       return 0;
-> -
-> - err:
-> -       dev_err(wdt->dev, "cannot set new value for timeout %d\n",
-> -                               wdt->wdt_device.timeout);
-> -       return ret;
-> -}
-> -
-> -static inline int s3c2410wdt_cpufreq_register(struct s3c2410_wdt *wdt)
-> -{
-> -       wdt->freq_transition.notifier_call = s3c2410wdt_cpufreq_transition;
-> -
-> -       return cpufreq_register_notifier(&wdt->freq_transition,
-> -                                        CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -static inline void s3c2410wdt_cpufreq_deregister(struct s3c2410_wdt *wdt)
-> -{
-> -       wdt->freq_transition.notifier_call = s3c2410wdt_cpufreq_transition;
-> -
-> -       cpufreq_unregister_notifier(&wdt->freq_transition,
-> -                                   CPUFREQ_TRANSITION_NOTIFIER);
-> -}
-> -
-> -#else
-> -
-> -static inline int s3c2410wdt_cpufreq_register(struct s3c2410_wdt *wdt)
-> -{
-> -       return 0;
-> -}
-> -
-> -static inline void s3c2410wdt_cpufreq_deregister(struct s3c2410_wdt *wdt)
-> -{
-> -}
-> -#endif
-> -
->  static inline unsigned int s3c2410wdt_get_bootstatus(struct s3c2410_wdt *wdt)
->  {
->         unsigned int rst_stat;
-> @@ -761,12 +694,6 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->         wdt->wdt_device.min_timeout = 1;
->         wdt->wdt_device.max_timeout = s3c2410wdt_max_timeout(wdt);
->
-> -       ret = s3c2410wdt_cpufreq_register(wdt);
-> -       if (ret < 0) {
-> -               dev_err(dev, "failed to register cpufreq\n");
-> -               goto err_src_clk;
-> -       }
-> -
->         watchdog_set_drvdata(&wdt->wdt_device, wdt);
->
->         /* see if we can actually set the requested timer margin, and if
-> @@ -783,7 +710,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->                                  S3C2410_WATCHDOG_DEFAULT_TIME);
->                 } else {
->                         dev_err(dev, "failed to use default timeout\n");
-> -                       goto err_cpufreq;
-> +                       goto err_src_clk;
->                 }
->         }
->
-> @@ -791,7 +718,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->                                pdev->name, pdev);
->         if (ret != 0) {
->                 dev_err(dev, "failed to install irq (%d)\n", ret);
-> -               goto err_cpufreq;
-> +               goto err_src_clk;
->         }
->
->         watchdog_set_nowayout(&wdt->wdt_device, nowayout);
-> @@ -817,7 +744,7 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->
->         ret = watchdog_register_device(&wdt->wdt_device);
->         if (ret)
-> -               goto err_cpufreq;
-> +               goto err_src_clk;
->
->         ret = s3c2410wdt_enable(wdt, true);
->         if (ret < 0)
-> @@ -839,9 +766,6 @@ static int s3c2410wdt_probe(struct platform_device *pdev)
->   err_unregister:
->         watchdog_unregister_device(&wdt->wdt_device);
->
-> - err_cpufreq:
-> -       s3c2410wdt_cpufreq_deregister(wdt);
-> -
->   err_src_clk:
->         clk_disable_unprepare(wdt->src_clk);
->
-> @@ -862,8 +786,6 @@ static int s3c2410wdt_remove(struct platform_device *dev)
->
->         watchdog_unregister_device(&wdt->wdt_device);
->
-> -       s3c2410wdt_cpufreq_deregister(wdt);
-> -
->         clk_disable_unprepare(wdt->src_clk);
->         clk_disable_unprepare(wdt->bus_clk);
->
-> diff --git a/include/linux/clk/samsung.h b/include/linux/clk/samsung.h
-> index 38b774001712..0cf7aac83439 100644
-> --- a/include/linux/clk/samsung.h
-> +++ b/include/linux/clk/samsung.h
-> @@ -21,36 +21,4 @@ static inline void s3c64xx_clk_init(struct device_node *np,
->                                     bool s3c6400, void __iomem *base) { }
->  #endif /* CONFIG_S3C64XX_COMMON_CLK */
->
-> -#ifdef CONFIG_S3C2410_COMMON_CLK
-> -void s3c2410_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            int current_soc,
-> -                            void __iomem *reg_base);
-> -#else
-> -static inline void s3c2410_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          int current_soc,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2410_COMMON_CLK */
-> -
-> -#ifdef CONFIG_S3C2412_COMMON_CLK
-> -void s3c2412_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            unsigned long ext_f, void __iomem *reg_base);
-> -#else
-> -static inline void s3c2412_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          unsigned long ext_f,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2412_COMMON_CLK */
-> -
-> -#ifdef CONFIG_S3C2443_COMMON_CLK
-> -void s3c2443_common_clk_init(struct device_node *np, unsigned long xti_f,
-> -                            int current_soc,
-> -                            void __iomem *reg_base);
-> -#else
-> -static inline void s3c2443_common_clk_init(struct device_node *np,
-> -                                          unsigned long xti_f,
-> -                                          int current_soc,
-> -                                          void __iomem *reg_base) { }
-> -#endif /* CONFIG_S3C2443_COMMON_CLK */
-> -
->  #endif /* __LINUX_CLK_SAMSUNG_H_ */
-> diff --git a/include/linux/soc/samsung/s3c-pm.h b/include/linux/soc/samsung/s3c-pm.h
-> index f9164559c99f..5b23d85d20ab 100644
-> --- a/include/linux/soc/samsung/s3c-pm.h
-> +++ b/include/linux/soc/samsung/s3c-pm.h
-> @@ -14,58 +14,10 @@
->
->  /* PM debug functions */
->
-> -/**
-> - * struct pm_uart_save - save block for core UART
-> - * @ulcon: Save value for S3C2410_ULCON
-> - * @ucon: Save value for S3C2410_UCON
-> - * @ufcon: Save value for S3C2410_UFCON
-> - * @umcon: Save value for S3C2410_UMCON
-> - * @ubrdiv: Save value for S3C2410_UBRDIV
-> - *
-> - * Save block for UART registers to be held over sleep and restored if they
-> - * are needed (say by debug).
-> -*/
-> -struct pm_uart_save {
-> -       u32     ulcon;
-> -       u32     ucon;
-> -       u32     ufcon;
-> -       u32     umcon;
-> -       u32     ubrdiv;
-> -       u32     udivslot;
-> -};
-> -
-> -#ifdef CONFIG_SAMSUNG_PM_DEBUG
-> -/**
-> - * s3c_pm_dbg() - low level debug function for use in suspend/resume.
-> - * @msg: The message to print.
-> - *
-> - * This function is used mainly to debug the resume process before the system
-> - * can rely on printk/console output. It uses the low-level debugging output
-> - * routine printascii() to do its work.
-> - */
-> -extern void s3c_pm_dbg(const char *msg, ...);
-> -
-> -#define S3C_PMDBG(fmt...) s3c_pm_dbg(fmt)
-> -
-> -extern void s3c_pm_save_uarts(bool is_s3c24xx);
-> -extern void s3c_pm_restore_uarts(bool is_s3c24xx);
-> -
-> -#ifdef CONFIG_ARCH_S3C64XX
-> -extern void s3c_pm_arch_update_uart(void __iomem *regs,
-> -                                   struct pm_uart_save *save);
-> -#else
-> -static inline void
-> -s3c_pm_arch_update_uart(void __iomem *regs, struct pm_uart_save *save)
-> -{
-> -}
-> -#endif
-> -
-> -#else
->  #define S3C_PMDBG(fmt...) pr_debug(fmt)
->
->  static inline void s3c_pm_save_uarts(bool is_s3c24xx) { }
->  static inline void s3c_pm_restore_uarts(bool is_s3c24xx) { }
-> -#endif
->
->  /* suspend memory checking */
->
-> @@ -81,14 +33,4 @@ extern void s3c_pm_check_store(void);
->  #define s3c_pm_check_store()   do { } while (0)
->  #endif
->
-> -/* system device subsystems */
-> -
-> -extern struct bus_type s3c2410_subsys;
-> -extern struct bus_type s3c2410a_subsys;
-> -extern struct bus_type s3c2412_subsys;
-> -extern struct bus_type s3c2416_subsys;
-> -extern struct bus_type s3c2440_subsys;
-> -extern struct bus_type s3c2442_subsys;
-> -extern struct bus_type s3c2443_subsys;
-> -
->  #endif
-> --
-> 2.29.2
->
+>  MAXIM MAX77650 PMIC MFD DRIVER
+>  M:	Bartosz Golaszewski <brgl@bgdev.pl>
+>  L:	linux-kernel@vger.kernel.org
+> diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kc=
+onfig
+> index e8ed849e3b76..ed384f33e0c7 100644
+> --- a/drivers/iio/temperature/Kconfig
+> +++ b/drivers/iio/temperature/Kconfig
+> @@ -128,6 +128,16 @@ config TSYS02D
+>  	  This driver can also be built as a module. If so, the module will
+>  	  be called tsys02d.
+> =20
+> +config MAX30208
+> +	tristate "Maxim MAX30208 digital temperature sensor"
+> +	depends on I2C
+> +	help
+> +	  If you say yes here you get support for Maxim MAX30208
+> +	  digital temperature sensor connected via I2C.
+> +
+> +	  This driver can also be built as a module. If so, the module
+> +	  will be called max30208.
+> +
+>  config MAX31856
+>  	tristate "MAX31856 thermocouple sensor"
+>  	depends on SPI
+> diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/M=
+akefile
+> index dd08e562ffe0..dfec8c6d3019 100644
+> --- a/drivers/iio/temperature/Makefile
+> +++ b/drivers/iio/temperature/Makefile
+> @@ -7,6 +7,7 @@ obj-$(CONFIG_IQS620AT_TEMP) +=3D iqs620at-temp.o
+>  obj-$(CONFIG_LTC2983) +=3D ltc2983.o
+>  obj-$(CONFIG_HID_SENSOR_TEMP) +=3D hid-sensor-temperature.o
+>  obj-$(CONFIG_MAXIM_THERMOCOUPLE) +=3D maxim_thermocouple.o
+> +obj-$(CONFIG_MAX30208) +=3D max30208.o
+>  obj-$(CONFIG_MAX31856) +=3D max31856.o
+>  obj-$(CONFIG_MAX31865) +=3D max31865.o
+>  obj-$(CONFIG_MLX90614) +=3D mlx90614.o
+> diff --git a/drivers/iio/temperature/max30208.c b/drivers/iio/temperature=
+/max30208.c
+> new file mode 100644
+> index 000000000000..4f78337c78fe
+> --- /dev/null
+> +++ b/drivers/iio/temperature/max30208.c
+> @@ -0,0 +1,323 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +/*
+> + * Copyright (c) Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+> + *
+> + * Maxim MAX30208 digital temperature sensor with 0.1=B0C accuracy
+> + * (7-bit I2C slave address (0x50 - 0x53))
+> + *
+> + * Note: This driver sets GPIO1 to behave as input for temperature
+> + * conversion and GPIO0 to act as interrupt for temperature conversion.
+> + */
+> +
+> +#include <linux/bitops.h>
+> +#include <linux/delay.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/i2c.h>
+> +#include <linux/module.h>
+> +#include <linux/types.h>
+> +
+> +#define MAX30208_DRV_NAME		"max30208"
+> +
+> +#define MAX30208_STATUS			0x00
+> +#define MAX30208_STATUS_TEMP_RDY	BIT(0)
+> +#define MAX30208_INT_ENABLE		0x01
+> +#define MAX30208_INT_ENABLE_TEMP_RDY	BIT(0)
+> +
+> +#define MAX30208_FIFO_OVF_CNTR		0x06
+> +#define MAX30208_FIFO_DATA_CNTR		0x07
+> +#define MAX30208_FIFO_DATA		0x08
+> +
+> +#define MAX30208_SYSTEM_CTRL		0x0c
+> +#define MAX30208_SYSTEM_CTRL_RESET	0x01
+> +
+> +#define MAX30208_TEMP_SENSOR_SETUP	0x14
+> +#define MAX30208_TEMP_SENSOR_SETUP_CONV	BIT(0)
+> +
+> +#define MAX30208_GPIO_SETUP		0x20
+> +#define MAX30208_GPIO1_SETUP		GENMASK(7, 6)
+> +#define MAX30208_GPIO0_SETUP		GENMASK(1, 0)
+> +#define MAX30208_GPIO_CTRL		0x21
+> +#define MAX30208_GPIO1_CTRL		BIT(3)
+> +#define MAX30208_GPIO0_CTRL		BIT(0)
+> +
+> +struct max30208_data {
+> +	struct i2c_client *client;
+> +	struct iio_dev *indio_dev;
+> +	struct mutex lock; /* Lock to prevent concurrent reads */
+> +};
+> +
+> +static const struct iio_chan_spec max30208_channels[] =3D {
+> +	{
+> +		.type =3D IIO_TEMP,
+> +		.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCA=
+LE),
+> +	},
+> +};
+> +
+> +/**
+> + * max30208_request() - Request a reading
+> + * @data: Struct comprising member elements of the device
+> + *
+> + * Requests a reading from the device and waits until the conversion is =
+ready.
+> + */
+> +static int max30208_request(struct max30208_data *data)
+> +{
+> +	/*
+> +	 * Sensor can take up to 500 ms to respond so execute a total of
+> +	 * 10 retries to give the device sufficient time.
+> +	 */
+> +	int retries =3D 10;
+> +	u8 regval;
+> +	int ret;
+> +
+> +	ret =3D i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SET=
+UP);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error reading reg temperature setup\n");
+> +		return ret;
+> +	}
+> +
+> +	regval =3D ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
+> +
+
+This is really pointless. The register has only one bit to set.
+Just write that bit; reading the register before that is pointless.=20
+
+Also, the code assumes that one of the gpio input registers would be used
+to trigger temperature readings. Why trigger another one if this is indeed
+the case ? Triggering a temperature reading should only be necessary if
+there is no data in the fifo.
+
+> +	ret =3D i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SE=
+TUP, regval);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error writing reg temperature setup\n");
+
+Not my call to make, but this driver is really noisy.
+
+> +		return ret;
+> +	}
+> +
+> +	while (retries--) {
+> +		ret =3D i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
+> +		if (ret < 0) {
+> +			dev_err(&data->client->dev, "Error reading reg status\n");
+> +			goto sleep;
+> +		}
+> +
+> +		if (ret & MAX30208_STATUS_TEMP_RDY)
+> +			return 0;
+> +
+> +		msleep(50);
+> +	}
+
+The datasheet says that it can take up to 50 ms to report a result.
+10 retries with 50ms wait each time seems overkill.
+
+> +	dev_warn(&data->client->dev, "Temperature conversion failed\n");
+> +
+> +	return 0;
+> +
+> +sleep:
+> +	usleep_range(50000, 60000);
+> +	return 0;
+
+Odd error handling. And why use usleep_range() here
+but msleep() above ?
+
+> +}
+> +
+> +static int max30208_update_temp(struct max30208_data *data)
+> +{
+> +	u8 data_count;
+> +	int ret;
+> +
+> +	mutex_lock(&data->lock);
+> +
+> +	ret =3D max30208_request(data);
+> +	if (ret < 0)
+> +		goto unlock;
+> +
+> +	ret =3D i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error reading reg FIFO overflow counter\n=
+");
+> +		goto unlock;
+> +	} else if (!ret) {
+> +		ret =3D i2c_smbus_read_byte_data(data->client,
+> +					       MAX30208_FIFO_DATA_CNTR);
+> +		if (ret < 0) {
+> +			dev_err(&data->client->dev, "Error reading reg FIFO data counter\n");
+> +			goto unlock;
+> +		}
+> +	}
+> +
+> +	data_count =3D ret;
+
+This is wrong. It uses the overflow counter as data counter if it
+is !=3D 0. The overflow counter counts the number of overflows, not
+the number of entries in the fifo.
+
+> +
+> +	/*
+> +	 * Ideally, counter should decrease by 1 each time a word is read from =
+FIFO.
+> +	 * However, practically, the device behaves erroneously and counter som=
+etimes
+> +	 * decreases by more than 1. Hence, do not loop the counter until it be=
+comes 0
+> +	 * rather, use the exact counter value after each FIFO word is read.
+> +	 * Return the last reading from FIFO as the most recently triggered one=
+.
+> +	 */
+> +	while (data_count) {
+> +		ret =3D i2c_smbus_read_word_swapped(data->client,
+> +						  MAX30208_FIFO_DATA);
+> +		if (ret < 0) {
+> +			dev_err(&data->client->dev, "Error reading reg FIFO data\n");
+> +			goto unlock;
+> +		}
+> +
+> +		data_count =3D i2c_smbus_read_byte_data(data->client,
+> +						      MAX30208_FIFO_DATA_CNTR);
+> +		if (data_count < 0) {
+> +			dev_err(&data->client->dev, "Error reading reg FIFO data counter\n");
+> +			ret =3D data_count;
+> +			goto unlock;
+> +		}
+
+data_count is declared as u8 and will never be < 0.
+
+> +	}
+> +
+> +unlock:
+> +	mutex_unlock(&data->lock);
+> +	return ret;
+> +}
+> +
+> +static int max30208_read(struct iio_dev *indio_dev,
+> +			 struct iio_chan_spec const *chan,
+> +			 int *val, int *val2, long mask)
+> +{
+> +	struct max30208_data *data =3D iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret =3D max30208_update_temp(data);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		*val =3D sign_extend32(ret, 15);
+> +		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val =3D 5;
+> +		return IIO_VAL_INT;
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+> +static int max30208_gpio_setup(struct max30208_data *data)
+> +{
+> +	u8 regval;
+> +	int ret;
+> +
+> +	ret =3D i2c_smbus_read_byte_data(data->client,
+> +				       MAX30208_GPIO_SETUP);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error reading reg GPIO setup\n");
+> +		return ret;
+> +	}
+> +
+> +	/*
+> +	 * Setting GPIO1 to trigger temperature conversion
+> +	 * when driven low.
+> +	 * Setting GPIO0 to trigger interrupt when temperature
+> +	 * conversion gets completed.
+> +	 */
+> +	regval =3D ret | MAX30208_GPIO1_SETUP | MAX30208_GPIO0_SETUP;
+> +	ret =3D i2c_smbus_write_byte_data(data->client,
+> +					MAX30208_GPIO_SETUP, regval);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error writing reg GPIO setup\n");
+> +		return ret;
+> +	}
+> +
+> +	ret =3D i2c_smbus_read_byte_data(data->client,
+> +				       MAX30208_INT_ENABLE);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error reading reg interrupt enable\n");
+> +		return ret;
+> +	}
+> +
+> +	/* Enabling GPIO0 interrupt */
+> +	regval =3D ret | MAX30208_INT_ENABLE_TEMP_RDY;
+> +	ret =3D i2c_smbus_write_byte_data(data->client,
+> +					MAX30208_INT_ENABLE, regval);
+> +	if (ret < 0) {
+> +		dev_err(&data->client->dev, "Error writing reg interrupt enable\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct iio_info max30208_info =3D {
+> +	.read_raw =3D max30208_read,
+> +};
+> +
+> +static int max30208_probe(struct i2c_client *i2c)
+> +{
+> +	struct device *dev =3D &i2c->dev;
+> +	struct max30208_data *data;
+> +	struct iio_dev *indio_dev;
+> +	int ret;
+> +
+> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data =3D iio_priv(indio_dev);
+> +	data->client =3D i2c;
+> +	mutex_init(&data->lock);
+> +
+> +	indio_dev->name =3D MAX30208_DRV_NAME;
+> +	indio_dev->channels =3D max30208_channels;
+> +	indio_dev->num_channels =3D ARRAY_SIZE(max30208_channels);
+> +	indio_dev->info =3D &max30208_info;
+> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> +
+> +	/* Reset the device initially */
+> +	ret =3D i2c_smbus_write_byte_data(data->client, MAX30208_SYSTEM_CTRL,
+> +					MAX30208_SYSTEM_CTRL_RESET);
+> +	if (ret) {
+> +		dev_err(dev, "Failure in performing reset\n");
+> +		return ret;
+> +	}
+> +
+> +	usleep_range(50000, 60000);
+> +
+> +	ret =3D max30208_gpio_setup(data);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D devm_iio_device_register(dev, indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "Failed to register IIO device\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct i2c_device_id max30208_id_table[] =3D {
+> +	{ "max30208" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, max30208_id_table);
+> +
+> +static const struct acpi_device_id max30208_acpi_match[] =3D {
+> +	{ "MAX30208" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(acpi, max30208_acpi_match);
+> +
+> +static const struct of_device_id max30208_of_match[] =3D {
+> +	{ .compatible =3D "maxim,max30208" },
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, max30208_of_match);
+> +
+> +static struct i2c_driver max30208_driver =3D {
+> +	.driver =3D {
+> +		.name =3D MAX30208_DRV_NAME,
+> +		.of_match_table =3D max30208_of_match,
+> +		.acpi_match_table =3D ACPI_PTR(max30208_acpi_match),
+> +	},
+> +	.probe_new =3D max30208_probe,
+> +	.id_table =3D max30208_id_table,
+> +};
+> +
+> +static int __init max30208_init(void)
+> +{
+> +	return i2c_add_driver(&max30208_driver);
+> +}
+> +module_init(max30208_init);
+> +
+> +static void __exit max30208_exit(void)
+> +{
+> +	i2c_del_driver(&max30208_driver);
+> +}
+> +module_exit(max30208_exit);
+> +
+> +MODULE_AUTHOR("Rajat Khandelwal <rajat.khandelwal@linux.intel.com>");
+> +MODULE_DESCRIPTION("Maxim MAX30208 digital temperature sensor");
+> +MODULE_LICENSE("GPL");

@@ -2,123 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33EFA60ADA6
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 16:30:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6338C60AE3D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 16:53:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235486AbiJXOaf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 10:30:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56216 "EHLO
+        id S235430AbiJXOxr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 10:53:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234904AbiJXO2v (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 10:28:51 -0400
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED92D73C2;
-        Mon, 24 Oct 2022 06:02:17 -0700 (PDT)
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-13b23e29e36so10999254fac.8;
-        Mon, 24 Oct 2022 06:02:16 -0700 (PDT)
+        with ESMTP id S231956AbiJXOxU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 10:53:20 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 894B8D38C6;
+        Mon, 24 Oct 2022 06:31:07 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id a67so31218851edf.12;
+        Mon, 24 Oct 2022 06:31:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xkjjo7UhHr68UQkDQLmeDc/rzOhg5k2ugSo/6Bh7PsU=;
+        b=T3b3FyGncjk4zPd1OhDQJliCp91vS+wwBy7+VfIBdISFNkro26NByxQAozweGKNYzg
+         hUb0D9/qt7ikl+Aqa/j3O74PUV4KwOHirptzpd0KBAz5BsOXCWAReH8oE8cbiI8LVwrU
+         1f+OKPi3Lz+9Zm8UoTu7TwGhVECgERGMkq8dOGCyj9a/xV/4+zRC2eU6JLgw0iKP+pzV
+         fBezP3yBvCfIF7ZKYJVZNK4r5DgCC7zEIhHKY2WMZ7g39ckpwRfb4pqSRv3fuZiFtIKB
+         n16CIjE6DhzSkFz6PWc9xfAnwtn2sTSiBSG0avMOgquRYUuIXQ+R4unWYncm+3jIkovr
+         sfZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p+x9joGdXdBFLPPxN1p6d7/jrm+b1E7zu0ZikUl9XbM=;
-        b=kN4xIs/QEGJ+oT9qrn2OjPi/N6FcvGH6BvACP76blbVF103TXYi+7qEU5tINWQ+OJz
-         dApYzrcvxoO2ZIXOFTxb7h3JgOvX67e53Ux9I2wwMvKPIJrbpeDZZobSiNgXQhwqMaF/
-         R3ztR06WTPRqxKei/NzyOWyK9tZuNZ0Cm15uInIPmFb7tUxRSre+3lm52uo1EfezpHK9
-         o9VNCRaweqKifLKL/48NiILy3trNo3072uYGiXhEVisoQwGcZ30ghYt4hAv1vlMBiN/X
-         ltLvQXpHTYGfKkWtuOvorD19U4Zbzkwzp6qZaLG5THbYH133b9fRVRaPubb8xH2WHVbL
-         oPdg==
-X-Gm-Message-State: ACrzQf3i7XkzH7UpZj1xKGIMrADeoCGwSUDmJj0hXhqGuTa4oC2Svjr2
-        vms3XoPp+qtUCiVrBxssV68CXNLJaw==
-X-Google-Smtp-Source: AMsMyM4RB1x55W7tWXLqKMCfn9+yNGKoyP28eeDXqoWuK46CSg7FurAIxSSG6961lNUtLuCZU2W88g==
-X-Received: by 2002:a05:6870:e9a8:b0:133:223f:49a1 with SMTP id r40-20020a056870e9a800b00133223f49a1mr38235091oao.114.1666616434841;
-        Mon, 24 Oct 2022 06:00:34 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id g20-20020a056870c15400b0012796e8033dsm2716705oad.57.2022.10.24.06.00.33
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xkjjo7UhHr68UQkDQLmeDc/rzOhg5k2ugSo/6Bh7PsU=;
+        b=tIhFEgNlwqourBdmvO1xlVadn32Ow37ttk8GIhEeoMG+oG2uhcIwJdRGF+7vCS29lX
+         GQRY0cbwHD0wTPs1sCkHQmELLuAotxZi/kUNoKj+7Hr/QK+YhBkJIHQ1hk6hIg3f+jOp
+         YWw6X8eq7uTVgHem39QbIwpLwakjFJR17YdhR80eeEI2w8RVaBgVC0yaHhP33Ozl8vAv
+         UUHdjmwAk6s/i+S2p2z2Wr3XYrNWyo18F1zaddAwBFtvgIfaB08s7JnisA0pichR2dR7
+         5e8N51F+hZz3wYEd5K5Aac8dlvApcfOViSmimvlDBLx1cpQQAgZamsROPv/I+KDKJ12b
+         N2kg==
+X-Gm-Message-State: ACrzQf2IBbrDR9vA5BMcLco5aMnZpRG8GSZBYGPwDMTMlqrGdab8iu90
+        ZcqqVJwFDwAkBBywfMh7DgfVheJfx34=
+X-Google-Smtp-Source: AMsMyM6BW9Qwf1YKt0QJuHSrKBkpjQA+LWdiivjudPUUEZLBin7mbS4/9M7FDPOwmuf1TpopggBi6g==
+X-Received: by 2002:a05:6402:294a:b0:461:b661:d903 with SMTP id ed10-20020a056402294a00b00461b661d903mr6155562edb.407.1666618083184;
+        Mon, 24 Oct 2022 06:28:03 -0700 (PDT)
+Received: from discovery.. (p5dcfeede.dip0.t-ipconnect.de. [93.207.238.222])
+        by smtp.gmail.com with ESMTPSA id l20-20020a056402231400b00457c5637578sm18243818eda.63.2022.10.24.06.28.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 06:00:34 -0700 (PDT)
-Received: (nullmailer pid 1652638 invoked by uid 1000);
-        Mon, 24 Oct 2022 13:00:35 -0000
-Date:   Mon, 24 Oct 2022 08:00:35 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-kernel@vger.kernel.org, Ben Dooks <ben-linux@fluff.org>,
-        Simtec Linux Team <linux@simtec.co.uk>,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
-        patches@opensource.cirrus.com,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-ide@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-pm@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-watchdog@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH 00/21] ARM: s3c: clean out obsolete platforms
-Message-ID: <20221024130035.GA1645003-robh@kernel.org>
-References: <20221021202254.4142411-1-arnd@kernel.org>
+        Mon, 24 Oct 2022 06:28:02 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com
+Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v4 1/8] iio: adc: mp2629: fix wrong comparison of channel
+Date:   Mon, 24 Oct 2022 15:27:50 +0200
+Message-Id: <20221024132757.3345400-2-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20221024132757.3345400-1-sravanhome@gmail.com>
+References: <20221024132757.3345400-1-sravanhome@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221021202254.4142411-1-arnd@kernel.org>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Oct 21, 2022 at 10:22:28PM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The s3c24xx platform was marked as deprecated a while ago,
-> and for the s3c64xx platform, we marked all except one legacy
-> board file as unused.
-> 
-> This series removes all of those, leaving only s3c64xx support
-> for DT based boots as well as the cragg6410 board file.
-> 
-> About half of the s3c specific drivers were only used on
-> the now removed machines, so these drivers can be retired
-> as well. I can either merge the driver removal patches through
-> the soc tree along with the board file patches, or subsystem
-> maintainers can pick them up into their own trees, whichever
-> they prefer.
+Input voltage channel enum is compared against iio address instead
+of the channel.
 
-[...]
+Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
+Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+---
+ drivers/iio/adc/mp2629_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->  Documentation/arm/index.rst                   |    1 -
->  Documentation/arm/samsung-s3c24xx/cpufreq.rst |   77 -
->  .../arm/samsung-s3c24xx/eb2410itx.rst         |   59 -
->  Documentation/arm/samsung-s3c24xx/gpio.rst    |  172 --
->  Documentation/arm/samsung-s3c24xx/h1940.rst   |   41 -
->  Documentation/arm/samsung-s3c24xx/index.rst   |   20 -
->  Documentation/arm/samsung-s3c24xx/nand.rst    |   30 -
->  .../arm/samsung-s3c24xx/overview.rst          |  311 ---
->  Documentation/arm/samsung-s3c24xx/s3c2412.rst |  121 -
->  Documentation/arm/samsung-s3c24xx/s3c2413.rst |   22 -
->  .../arm/samsung-s3c24xx/smdk2440.rst          |   57 -
->  Documentation/arm/samsung-s3c24xx/suspend.rst |  137 --
->  .../arm/samsung-s3c24xx/usb-host.rst          |   91 -
->  Documentation/arm/samsung/overview.rst        |   13 -
+diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+index 30a31f185d08..f7af9af1665d 100644
+--- a/drivers/iio/adc/mp2629_adc.c
++++ b/drivers/iio/adc/mp2629_adc.c
+@@ -74,7 +74,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+ 		if (ret)
+ 			return ret;
+ 
+-		if (chan->address == MP2629_INPUT_VOLT)
++		if (chan->channel == MP2629_INPUT_VOLT)
+ 			rval &= GENMASK(6, 0);
+ 		*val = rval;
+ 		return IIO_VAL_INT;
+-- 
+2.32.0
 
-What about?:
-
-Documentation/devicetree/bindings/clock/samsung,s3c2410-clock.txt
-Documentation/devicetree/bindings/interrupt-controller/samsung,s3c24xx-irq.txt
-Documentation/devicetree/bindings/mmc/samsung,s3cmci.txt
-Documentation/devicetree/bindings/mtd/samsung-s3c2410.txt
-Documentation/devicetree/bindings/usb/s3c2410-usb.txt
-
-Rob

@@ -2,61 +2,63 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B862D609AA9
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 08:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17AEE609AB7
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 08:47:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230322AbiJXGi2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 02:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44358 "EHLO
+        id S230177AbiJXGrQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 02:47:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbiJXGiZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 02:38:25 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4D7458091
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 23:38:17 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id j21so5560305qkk.9
-        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 23:38:17 -0700 (PDT)
+        with ESMTP id S229971AbiJXGrO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 02:47:14 -0400
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FB255E305
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 23:46:55 -0700 (PDT)
+Received: by mail-qv1-xf2e.google.com with SMTP id x13so4505470qvn.6
+        for <linux-iio@vger.kernel.org>; Sun, 23 Oct 2022 23:46:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=lxnav.com; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fsOiC+x4jbQg2AI82o1c6FVgGRvae5LgQbo//KCgMPA=;
-        b=uGVMATcxl8aJCmPrvkTHCO+PicBfylpepuzLv/A+igtmUM1uWPkck9WS0qESv7wmRS
-         aEAsLNQWybz0J83BiTnJZIz8pIZO+ygaWPLdZBMzgetXXsg+Idp6ZLzFH2z38My+eGz4
-         wp1rT6DvRqVC5G3K+ZRtVrJ6DeBemIiiOv0oQ=
+        bh=DKf+A6HhtX9mc2hAkoHaxtvJcmxghygi4kxKwGPcH54=;
+        b=iwHnzLCm7oFOSTBLS3J2/nP0hfKORtPMV5RPaK1XwwLcMM+/ag2fq0iOotOa4f6I6j
+         SwE1PIETbxH83QXsJqYrNMqPSzAppnKgEii6EeWcV19D/hk/dEHFcwaPRqcPMsHUKZbN
+         GXxBlBuQN/vjxvqG91b60BO2rgfh+7x4M7emg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fsOiC+x4jbQg2AI82o1c6FVgGRvae5LgQbo//KCgMPA=;
-        b=fqlBfC8xUPsavBrskb4D98e5iyMgexwHUu5Zu5qalwf2OJa28bOyto9YoF8rTbZLvr
-         53ylzUs0m3xjGyB1mIZLeaagqPaxuPi2zoyYFs4jzDDUViDRaduLYrUB3AZctsVcn5Sf
-         xUJd5/imNnrfm2EHFx/yiSaXpNvMzNGYdywqvR/EHZpCwqIJSShHitOfssFRBdYK+xya
-         PREpXnxtMZy4j/WfGG6PBWjNrPKphfzUFH3kllqcU932W/v+xZ+AUJFGvNylOg5nw4/n
-         c6XIa5nyXMF87ZOJDGByOyv2rmE9VUd8gtW3kDDraHyQLKP1g4ZFkId0hbu+4zjZtyMz
-         5zKA==
-X-Gm-Message-State: ACrzQf1dJshCxXtdgBtiAYzLeAwug/2NWtiH33BLs/74I3I5lGsZrcKE
-        yDWzUuKkRHsoWuT0eScMEpWSyY7agFTrt6ZX7AV9XsUeFMYUSA==
-X-Google-Smtp-Source: AMsMyM5tSVrVszLR+lwo8P+ienZPZ7fnw3WFxIUDrOYZvDhfuAt4jx21oRq7AoW9iVOPfVEw/pXeVAl4MffKsZoQFMo=
-X-Received: by 2002:a37:de03:0:b0:6ee:88a2:eb9a with SMTP id
- h3-20020a37de03000000b006ee88a2eb9amr21831942qkj.241.1666593496783; Sun, 23
- Oct 2022 23:38:16 -0700 (PDT)
+        bh=DKf+A6HhtX9mc2hAkoHaxtvJcmxghygi4kxKwGPcH54=;
+        b=ScnJZEzz85LM9TPSPjYWQ6giBl1I9cJFEF2fmngEU59UmVix+Ok/rDDkyVMhsmcsy1
+         3PILfxBE0/pK80EopRMC678I6FsSmoBC0qE9O8DpDgakENdMDPTMNRjWwBB8R1CB0l6s
+         SZ+qL+NTOiX2U13/ffT9LHrsar/guXky4uru6xZ8cg5TDq4f80wHDUDmgHn8i+TU9Gu/
+         XY+aoS24/qp8/0jYGLik5AZM0IG+0DYS0HF41RDv7m4+y6D0wxfQaFhqOtgwBfsb8Rm3
+         +Gb/K7CU9Frj7VtbRPGpzp5Xbd83D63KQEc9AJMfkZATTtCNIspZ1KMazu7jjkRaIHTd
+         pKtQ==
+X-Gm-Message-State: ACrzQf1cA6NIcRx486u/8cunZTTSRe48VNbroCR89M3f2exan350si4p
+        Qnjd9tBBYDPpS/aZ3a3kNRwNlx/a3t4NHWMBo1A8jg==
+X-Google-Smtp-Source: AMsMyM6FjMmilmr/1MGP2WwAanNef8DNvM6W2Bl6M6zASp15U5hmP3GXP7D3gEMuTBUdFJtU75sPsmKzeFZtkXvK6MM=
+X-Received: by 2002:a05:6214:e4f:b0:4bb:769f:19a9 with SMTP id
+ o15-20020a0562140e4f00b004bb769f19a9mr1781205qvc.2.1666594014701; Sun, 23 Oct
+ 2022 23:46:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221021135827.1444793-1-mitja@lxnav.com> <20221021135827.1444793-2-mitja@lxnav.com>
- <20221023120634.0dda4b5f@jic23-huawei>
-In-Reply-To: <20221023120634.0dda4b5f@jic23-huawei>
+References: <20221021135827.1444793-1-mitja@lxnav.com> <20221021135827.1444793-3-mitja@lxnav.com>
+ <Y1K7hWKl0siEtaAl@gmail.com> <20221023121002.742bc48f@jic23-huawei>
+In-Reply-To: <20221023121002.742bc48f@jic23-huawei>
 From:   =?UTF-8?Q?Mitja_=C5=A0pes?= <mitja@lxnav.com>
-Date:   Mon, 24 Oct 2022 08:37:49 +0200
-Message-ID: <CACbQKWeA7QDn3tDdP4oNQ9cHyubNCDvCphOLndDDf-gBXpkcDA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] iio: pressure: ms5611: fixed value compensation bug
+Date:   Mon, 24 Oct 2022 08:46:27 +0200
+Message-ID: <CACbQKWf2zfbQ5DvMZs50VVfQbmcGp63b9yg6aZ29NbiQ01QmFg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: ms5611: changed hardcoded SPI speed
+ to value limited
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+Cc:     Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Shevchenko <andy.shevchenko@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>,
+        Mark Brown <broonie@kernel.org>,
         =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Tomasz Duszynski <tduszyns@gmail.com>,
@@ -65,20 +67,19 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Oct 23, 2022 at 1:06 PM Jonathan Cameron <jic23@kernel.org> wrote:
-> Fixes tag?
+On Sun, Oct 23, 2022 at 1:09 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> Please give a fixes tag for this one as well.
+> The driver should never have been doing this.
 
-I believe this should be:
-Fixes: 9690d81a02dc ("iio: pressure: ms5611: add support for MS5607
-temperature and pressure sensor")
+Fixes: c0644160a8b5 ("iio: pressure: add support for MS5611 pressure
+and temperature sensor")
 
 Kind regards,
 Mitja

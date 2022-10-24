@@ -2,148 +2,138 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 909F160B3B3
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 19:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5282260B31F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Oct 2022 18:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232276AbiJXRO2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 24 Oct 2022 13:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47706 "EHLO
+        id S231441AbiJXQ4N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 24 Oct 2022 12:56:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235401AbiJXRN7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 13:13:59 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8CBB19C23;
-        Mon, 24 Oct 2022 08:49:42 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id s24so2819036ljs.11;
-        Mon, 24 Oct 2022 08:49:42 -0700 (PDT)
+        with ESMTP id S236098AbiJXQzi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 24 Oct 2022 12:55:38 -0400
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDDFF20BD3;
+        Mon, 24 Oct 2022 08:36:29 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id o12so17349407lfq.9;
+        Mon, 24 Oct 2022 08:36:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oHc3Mek8Tu+f1IsJvs/N59LV3VIyfdy/eRQyFei/ucU=;
-        b=DZ08L6jiqLwm3ECqQFI5lUNSI6chJWwaEnq1VWXYBuJ5HFIdUjkK8bnjl1Avfx/u8o
-         t/m35wfqf315I0SBhrfMZ55ChOaOtUpNgoH4UfocOm8urw/MCvzhF3yl32dGZwVpXIzr
-         PjH5zC3o/H80pgMVqDwIQex3EpfUYiwVCsvhl00idNOgYN54AirFjL3zbN1iWv91fHjO
-         hI+JyOYjiaEU/KjnZnsj8Qrgmc83H8EUs+g2gLdQ43SfNeIQ1RLFzUhJ8lillHGiKmtE
-         v9xUnnU+C9IUwvBvZDLYZ2+94pDvydaX9XxymJ0zFf4jl8SQGQ5d/tI00hAXFpZOjVZN
-         aPEg==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+dEUdYH2IOK4Sv9uUCxei2ji2lQPqttekINckKjP4e8=;
+        b=pKdY04PVa7KzU5j5KpYTQgyufQJqQQAqX0xxLZmGJ861xYsrflmL/WopHbWTcz4UAn
+         N2vuNASVoKq7pnoedCv98RrECU5fmV3h5WQ0azO8g1K+4RX+GvROPZZ4AMVgM9C9ZW6R
+         x2G14hZlamiKeezO2/C87M3lo6F0GZcVVn4V1e4nzxaMcCY38zBR7Gvc5BuyX7JQvkjt
+         d+bJ1iubDj/lyUd+fsYoxSbYtVHGAMSV4KOvmJFIawcogmEljymppTCVekP3lo0Q8hVx
+         1ZDGWIvuqQd7NNt12+7MzCQ3snGFz7akKAJVS7rybKhRc+Xe7lpix735ZLRWKyeI5xY6
+         V33A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oHc3Mek8Tu+f1IsJvs/N59LV3VIyfdy/eRQyFei/ucU=;
-        b=wopFb8J2sX8AdhPRvhcCJrNyS1Ad8XAliIFTp7A3NTifMtjnnEY4lP74TtigliUFOq
-         IFvpJx6bB1Tpme0nq52TVZd8HN2qiWNX8cE9KnHCSC1c2ZP+DN+aSAZwx4LYyb6sb6sQ
-         dNNeN8O3/iDbNZB2gyC3XrZvYxY61Cx6d1RVUErlEyXQKG8kTsvl0SMsjGvu2Yygis/C
-         /FIjAiAhh8HWkuOO2rpX3Er27Kgx5EpHawbpGr071hpAsbOys1RU6ILOOJH6Xgd2ZgGe
-         URUDqQvMpqml8IJwsF2wRqD76m7GnRzogpQBp/xtvPYQF6t3kX7q+0LtGFUB+WSrrgaR
-         40Yg==
-X-Gm-Message-State: ACrzQf1yPTxqs7/JRClM9Jlf4u2yZMusohwaSleKy7i5GfI/j8rzIWls
-        3HUDAFqHdh3ZCDPFhY540pMysqYzbEY=
-X-Google-Smtp-Source: AMsMyM6w+uq+AVqn8/uRiNt5yKt+pdjIYgBADK1oTI2uO8TZu92bvwyi50CPaB/jE1Z33rKNwmR9IQ==
-X-Received: by 2002:a2e:83c6:0:b0:26d:e24c:ec01 with SMTP id s6-20020a2e83c6000000b0026de24cec01mr11402033ljh.340.1666615266446;
-        Mon, 24 Oct 2022 05:41:06 -0700 (PDT)
-Received: from dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi (dc75zzyyyyyyyyyyyyyby-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::2])
-        by smtp.gmail.com with ESMTPSA id k2-20020a05651c10a200b0027710117ebdsm218801ljn.121.2022.10.24.05.41.04
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+dEUdYH2IOK4Sv9uUCxei2ji2lQPqttekINckKjP4e8=;
+        b=IZE/Ua4M/t5ptwOVPv9x3AhV9kA7WDD+76B8+KJ2VVs228pejzbeByzsDYF9QS+aFT
+         dFMq26rxydee6ZeLNu8BOAvqhY4Zbjmm6EKl4VLVuoIq9WmZ0MVGlukBh1CTr8wOoiZ4
+         ykn7JVDkLLnpBrmQJRJM0098HXlBacG+If00qmzcwn/TjzpXRYc5gMapJLNe3tO4Vahh
+         blemC3+hZZ+GHZBMrd7xP4kUfN9R9D3FFwXeJEiD7ojGsBYiw3a0c4JzLHAJMv3StGjZ
+         Jn/afhkdFEs2Qd4NDJN70pHt6fX/Yw6ruZtT2rvb3pQV0Oh8cr3r/ZWZUb9sT1L/1Z73
+         XRDw==
+X-Gm-Message-State: ACrzQf1TBB/3eycQUKGHZhvnArQE7IlsHb+PVSbJXtzhWYK0h25WSc7d
+        q/Xbpk0pZMULegPx6Dd99+FID/625f0=
+X-Google-Smtp-Source: AMsMyM7M/0vyYZ6EerjqtAwEA7qKq+RAd7hMP2WFYVk+1+1oDCXgyAFn2yvL7zrF3OumgreOBLPoLw==
+X-Received: by 2002:a17:907:7e9e:b0:78d:f3b0:fc78 with SMTP id qb30-20020a1709077e9e00b0078df3b0fc78mr28125405ejc.478.1666618084008;
+        Mon, 24 Oct 2022 06:28:04 -0700 (PDT)
+Received: from discovery.. (p5dcfeede.dip0.t-ipconnect.de. [93.207.238.222])
+        by smtp.gmail.com with ESMTPSA id l20-20020a056402231400b00457c5637578sm18243818eda.63.2022.10.24.06.28.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Oct 2022 05:41:05 -0700 (PDT)
-Date:   Mon, 24 Oct 2022 15:40:58 +0300
-From:   Matti Vaittinen <mazziesaccount@gmail.com>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Cosmin Tanislav <demonsingur@gmail.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v5 3/3] MAINTAINERS: Add KX022A maintainer entry
-Message-ID: <7895435f7fd31a3b576fc6a59b01eb3202c85d36.1666614295.git.mazziesaccount@gmail.com>
-References: <cover.1666614295.git.mazziesaccount@gmail.com>
+        Mon, 24 Oct 2022 06:28:03 -0700 (PDT)
+From:   Saravanan Sekar <sravanhome@gmail.com>
+To:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
+        lars@metafoo.de, andy.shevchenko@gmail.com
+Cc:     linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, Saravanan Sekar <sravanhome@gmail.com>
+Subject: [PATCH v4 2/8] mfd: mp2629: Add support for mps mp2733 battery charger
+Date:   Mon, 24 Oct 2022 15:27:51 +0200
+Message-Id: <20221024132757.3345400-3-sravanhome@gmail.com>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20221024132757.3345400-1-sravanhome@gmail.com>
+References: <20221024132757.3345400-1-sravanhome@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="QIOM4X2h3JXGo+zZ"
-Content-Disposition: inline
-In-Reply-To: <cover.1666614295.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+mp2733 is updated version of mp2629 battery charge management
+device for single-cell Li-ion or Li-polymer battery. Additionally
+supports USB fast-charge and higher range of input voltage.
 
---QIOM4X2h3JXGo+zZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Add maintainer entry for ROHM/Kionix KX022A accelerometer sensor driver.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
+Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
-v4 =3D> v5: After discussion with Joe Perches
-- change myself to a maintainer
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mfd/mp2629.c       | 5 ++++-
+ include/linux/mfd/mp2629.h | 6 ++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cf0f18502372..63cae24a74a5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11435,6 +11435,11 @@ F:	drivers/mfd/khadas-mcu.c
- F:	include/linux/mfd/khadas-mcu.h
- F:	drivers/thermal/khadas_mcu_fan.c
-=20
-+KIONIX/ROHM KX022A ACCELEROMETER
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/accel/kionix-kx022a*
+diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
+index 16840ec5fd1c..f59c97e70f83 100644
+--- a/drivers/mfd/mp2629.c
++++ b/drivers/mfd/mp2629.c
+@@ -13,6 +13,7 @@
+ #include <linux/mfd/mp2629.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ 
+@@ -43,6 +44,7 @@ static int mp2629_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 
+ 	ddata->dev = &client->dev;
++	ddata->chip_id = (uintptr_t)device_get_match_data(&client->dev);
+ 	i2c_set_clientdata(client, ddata);
+ 
+ 	ddata->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
+@@ -60,7 +62,8 @@ static int mp2629_probe(struct i2c_client *client)
+ }
+ 
+ static const struct of_device_id mp2629_of_match[] = {
+-	{ .compatible = "mps,mp2629"},
++	{ .compatible = "mps,mp2629", .data = (void *)CHIP_ID_MP2629 },
++	{ .compatible = "mps,mp2733", .data = (void *)CHIP_ID_MP2733 },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, mp2629_of_match);
+diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
+index 89b706900b57..ee0e65720c75 100644
+--- a/include/linux/mfd/mp2629.h
++++ b/include/linux/mfd/mp2629.h
+@@ -9,9 +9,15 @@
+ #include <linux/device.h>
+ #include <linux/regmap.h>
+ 
++enum mp2xx_chip_id {
++	CHIP_ID_MP2629,
++	CHIP_ID_MP2733,
++};
 +
- KMEMLEAK
- M:	Catalin Marinas <catalin.marinas@arm.com>
- S:	Maintained
---=20
-2.37.3
+ struct mp2629_data {
+ 	struct device *dev;
+ 	struct regmap *regmap;
++	enum mp2xx_chip_id chip_id;
+ };
+ 
+ enum mp2629_adc_chan {
+-- 
+2.32.0
 
-
---=20
-Matti Vaittinen, Linux device drivers
-ROHM Semiconductors, Finland SWDC
-Kiviharjunlenkki 1E
-90220 OULU
-FINLAND
-
-~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
-Simon says - in Latin please.
-~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
-Thanks to Simon Glass for the translation =3D]=20
-
---QIOM4X2h3JXGo+zZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmNWh9oACgkQeFA3/03a
-ocX12AgAvPI6uS08LVi3a6cRqziBzIBZQpsTAJhky+2H6aczBkdaEhyo3GVLZ3nV
-3QMfAl6t/ONfXexldYKfx6QC4s6WU1EYFJRf5xUGWcOfX3G9qlLodj8VDLfbUS93
-yzct0B1GXWFCPGS8XHQA1Dwgh1Pur0UDiPhrLuHMeIXMnalFRkEXYBt3Dyz2MnF4
-5/8hVoArN1T8fOHilG05Z6OmStRbJskz/3KjQ6Wmpzn2nm8KSvdjlN4OPsySryuW
-5jKtNsYStLcmeMIyM6gwZxA5Dkkr5bbLiUPj/WB1k2Mq0fMFlqPhjB9yvJoPy3mS
-or0JF+vac4WTA2dlh0feJnY38MSSrg==
-=eJGN
------END PGP SIGNATURE-----
-
---QIOM4X2h3JXGo+zZ--

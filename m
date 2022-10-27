@@ -2,39 +2,40 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FA9E610468
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Oct 2022 23:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2345B6104AD
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Oct 2022 23:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235686AbiJ0V3d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Oct 2022 17:29:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54846 "EHLO
+        id S235277AbiJ0VsQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Oct 2022 17:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236551AbiJ0V3c (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Oct 2022 17:29:32 -0400
+        with ESMTP id S234947AbiJ0VsP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Oct 2022 17:48:15 -0400
 Received: from msg-1.mailo.com (msg-1.mailo.com [213.182.54.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F1B76352;
-        Thu, 27 Oct 2022 14:29:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B5985A83;
+        Thu, 27 Oct 2022 14:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
-        t=1666906136; bh=OOdVohmxjyqwES6BVgivansb/UtVz9aFP/lWyrNnjg8=;
+        t=1666907271; bh=yLm+PiUX5XIUPovFzVHx3LyxXFzrfVux7pO61g17TzE=;
         h=X-EA-Auth:Date:From:To:Subject:Message-ID:MIME-Version:
          Content-Type;
-        b=pKtWuCzhbBIk1PM0LhtiIxTshU6xE/iTaortghI75CbomsIrhKFsHXQw8TQumY9L5
-         k2qAe37H/A9uZuvnnIM1JRkFeMIpLbCz8vO5wju6oIi2Kmp++bZOsRqacSYC80WEIw
-         UZdceXgXv6uxSJC/GqSsOwPvuKGDe6+CaF9SGvF4=
+        b=TAAmoNC8wYFXIWG1qnxNHYFkiOszIFduU5pT6OmHq/Pzqe/4iS4Md4YRya70mS5eB
+         F4rnvCUKKlTun2fy19uYhU03gAqQBbCroERP7aVGRCI3ixMuNK5+hon5YwYpG1JB0u
+         xzIL1/WG4x8f42Gtrwb+42UqaZRHRmZ0er0SWzoU=
 Received: by b-2.in.mailobj.net [192.168.90.12] with ESMTP
         via [213.182.55.206]
-        Thu, 27 Oct 2022 23:28:56 +0200 (CEST)
-X-EA-Auth: 12GbF3MYEzhNl3lHw/2UILN1hYg3324yD/EbSHxll6FcVpG2POaqfvUrBwf5K3X6yPxM/38dmvXLCKbUsrRha4lx6gNTmkx5
-Date:   Fri, 28 Oct 2022 02:58:49 +0530
+        Thu, 27 Oct 2022 23:47:51 +0200 (CEST)
+X-EA-Auth: d9SByaZo8cw/fNOd4EIt6ycZB57O4VIIr8QshUjrUPxNGcHHY9c5Pv3ntXVyyyLj670DF+WmranW321ioaRf6dZ3gKl3ronA
+Date:   Fri, 28 Oct 2022 03:17:44 +0530
 From:   Deepak R Varma <drv@mailo.com>
-To:     outreachy@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
+To:     Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: iio: ad5933: Use div64_ul instead of do_div
-Message-ID: <Y1r4EaDvEipzhaaf@ubunlion>
+Subject: [PATCH] staging: iio: frequency: ad9834: Use div64_ul instead of
+ do_div
+Message-ID: <Y1r8gMR8VBG/4A4P@ubunlion>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -49,27 +50,28 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 do_div() does a 64-by-32 division. Here the divisor is an unsigned long
 which on some platforms is 64 bit wide. So use div64_ul instead of do_div
-to avoid a possible truncation. Issue was identified using the
+to avoid a possible truncation. Issue identified using the
 coccicheck tool.
 
 Signed-off-by: Deepak R Varma <drv@mailo.com>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/iio/frequency/ad9834.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index f177b20f0f2d..730bb31a20d8 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -196,7 +196,7 @@ static int ad5933_set_freq(struct ad5933_state *st,
- 	} dat;
+diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
+index 285df0e489a6..3917a76e7976 100644
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -102,8 +102,7 @@ static unsigned int ad9834_calc_freqreg(unsigned long mclk, unsigned long fout)
+ {
+ 	unsigned long long freqreg = (u64)fout * (u64)BIT(AD9834_FREQ_BITS);
 
- 	freqreg = (u64)freq * (u64)(1 << 27);
--	do_div(freqreg, st->mclk_hz / 4);
-+	freqreg = div64_ul(freqreg, st->mclk_hz / 4);
+-	do_div(freqreg, mclk);
+-	return freqreg;
++	return div64_ul(freqreg, mclk);
+ }
 
- 	switch (reg) {
- 	case AD5933_REG_FREQ_START:
+ static int ad9834_write_frequency(struct ad9834_state *st,
 --
 2.34.1
 

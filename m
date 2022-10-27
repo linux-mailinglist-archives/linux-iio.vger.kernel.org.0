@@ -2,199 +2,87 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9986660FA77
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Oct 2022 16:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CF3160FACC
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Oct 2022 16:49:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235056AbiJ0Oeg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 27 Oct 2022 10:34:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
+        id S235771AbiJ0OtR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 27 Oct 2022 10:49:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234509AbiJ0Oee (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Oct 2022 10:34:34 -0400
-Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00DE86559
-        for <linux-iio@vger.kernel.org>; Thu, 27 Oct 2022 07:34:32 -0700 (PDT)
-Received: by mail-qv1-xf2e.google.com with SMTP id x13so1436300qvn.6
-        for <linux-iio@vger.kernel.org>; Thu, 27 Oct 2022 07:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gZo8y3T1IwmVEyZfktrXan3as4gJ0RmGr8oerP5joyY=;
-        b=Gx0nB6zxtpGH17ebvf0fGyH9Kf66KGlOwRBi4OOc/uRL0/ehmchmTLkQbLC9dK1Hkg
-         GiC0MiVeFpZSky3YOe8a2VhE/SrsZCs/iM/z0VaCNpvFIDpbJUfI/F8mKmT33Wn7abGa
-         chpRWlcQc3RVMq1RCj1XzvCe8of+vCQ1W/rsMr9634oYMoZkBvRl1Ns43IvHggq4A/P3
-         goYLPlaI/EfEOZeTsFTmdUJ1mff/ESOu+onM8L5x9D44ZwxqnHI2wcnBKVz7ZAZSWVIu
-         +WlmzwzJJNZVqbtGbpQHYVoffaCKbdHFNW9EjOcpf/lt7EmT70UcBVoBRTJlj/g23I7e
-         fstw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gZo8y3T1IwmVEyZfktrXan3as4gJ0RmGr8oerP5joyY=;
-        b=toYSY91E20qXWkBKNvPJ+HWmfcp6UPnjybcMgkXuCfWNPC/6UQjjrzBDSUSSqzh1oJ
-         qAWXx7HnN4AYkX/niqYuN/uLwRt8beIEXxzu7ImELKH/u1ryTzUmIq+e+lfscYSOe4zi
-         P07QyP8TtQZHz2p4VK5CShxyHsFvtcY3tovAxnY47xc1Zth/BX9T2eQISFhskIj6cSbj
-         X14IwmJwY2offSdcPmQKzBa1O5T6ZKjL+lDodDh25irDxzX8jJ72Qpj8YC7fJUijjyX1
-         PFUz6g+CJeL2JAbnf0s5KcQxTx8czkPtp13/FEXHn1DwBWKM3xupZkBUxf8PZvgGjYks
-         z3wA==
-X-Gm-Message-State: ACrzQf3O7vr3ZW8hA6e8ytY+sdssIfTZy+DoIEioDnLSflwwdMDGqSpd
-        spFH6Ni1t70n9xgfhNSXXdeIDw==
-X-Google-Smtp-Source: AMsMyM6w5pR1N+8+jwkfd3fB44RJoWs/BEJIBH6MzBKIAZFYWzpKrfgIgc/Io3BAA/QEfdpGzdUcig==
-X-Received: by 2002:a05:6214:20e6:b0:4b1:996d:c1f2 with SMTP id 6-20020a05621420e600b004b1996dc1f2mr40924700qvk.11.1666881271116;
-        Thu, 27 Oct 2022 07:34:31 -0700 (PDT)
-Received: from krzk-bin.. ([64.57.193.93])
-        by smtp.gmail.com with ESMTPSA id w10-20020a05620a444a00b006f9e103260dsm1076749qkp.91.2022.10.27.07.34.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Oct 2022 07:34:30 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 2/2] dt-bindings: iio: adc: qcom,spmi-vadc: extend example
-Date:   Thu, 27 Oct 2022 10:34:11 -0400
-Message-Id: <20221027143411.277980-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221027143411.277980-1-krzysztof.kozlowski@linaro.org>
-References: <20221027143411.277980-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S235862AbiJ0OtC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 27 Oct 2022 10:49:02 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8FDC7B87A8;
+        Thu, 27 Oct 2022 07:49:01 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="5.95,217,1661785200"; 
+   d="scan'208";a="140606123"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 27 Oct 2022 23:49:01 +0900
+Received: from localhost.localdomain (unknown [10.226.93.45])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 1B8E5430E052;
+        Thu, 27 Oct 2022 23:48:58 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v5 3/5] Documentation: ABI: sysfs-bus-counter: add external_input_phase_clock_select & long_word_access_ctrl_mode items
+Date:   Thu, 27 Oct 2022 15:48:42 +0100
+Message-Id: <20221027144844.85149-4-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221027144844.85149-1-biju.das.jz@bp.renesas.com>
+References: <20221027144844.85149-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Cleanup existing example (generic node name for spmi, use 4-space
-indentation) and add example for ADCv7 copied from
-Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml.
+This commit adds external_input_phase_clock_select and long_word_
+access_ctrl_mode items to counter ABI file.
+(e.g. for Renesas MTU3 hardware used for phase counting).
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 94 ++++++++++++-------
- 1 file changed, 62 insertions(+), 32 deletions(-)
+v5:
+ * New patch
+---
+ Documentation/ABI/testing/sysfs-bus-counter | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-index a848df37db06..f1522196042d 100644
---- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-@@ -236,42 +236,72 @@ additionalProperties: false
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index ff83320b4255..2880f3b346e2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -215,6 +215,22 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		This attribute indicates the number of overflows of count Y.
  
- examples:
-   - |
--    spmi_bus {
--      #address-cells = <1>;
--      #size-cells = <0>;
--      /* VADC node */
--      pmic_vadc: adc@3100 {
--        compatible = "qcom,spmi-vadc";
--        reg = <0x3100>;
--        interrupts = <0x0 0x31 0x0 0x1>;
-+    spmi {
-         #address-cells = <1>;
-         #size-cells = <0>;
--        #io-channel-cells = <1>;
--
--        /* Channel node */
--        adc-chan@39 {
--          reg = <0x39>;
--          qcom,decimation = <512>;
--          qcom,ratiometric;
--          qcom,hw-settle-time = <200>;
--          qcom,avg-samples = <1>;
--          qcom,pre-scaling = <1 3>;
--        };
--
--        adc-chan@9 {
--          reg = <0x9>;
--        };
--
--        adc-chan@a {
--          reg = <0xa>;
-+        /* VADC node */
-+        pmic_vadc: adc@3100 {
-+            compatible = "qcom,spmi-vadc";
-+            reg = <0x3100>;
-+            interrupts = <0x0 0x31 0x0 0x1>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            #io-channel-cells = <1>;
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++KernelVersion:	6.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		This attribute selects the external clock pin for phase
++		counting mode of counter X.
 +
-+            /* Channel node */
-+            adc-chan@39 {
-+                reg = <0x39>;
-+                qcom,decimation = <512>;
-+                qcom,ratiometric;
-+                qcom,hw-settle-time = <200>;
-+                qcom,avg-samples = <1>;
-+                qcom,pre-scaling = <1 3>;
-+            };
++What:		/sys/bus/counter/devices/counterX/long_word_access_ctrl_mode
++KernelVersion:	6.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		This attribute indicates the 16-bit or 32 bit-access of
++		counter X.
 +
-+            adc-chan@9 {
-+                reg = <0x9>;
-+            };
-+
-+            adc-chan@a {
-+                reg = <0xa>;
-+            };
-+
-+            adc-chan@e {
-+                reg = <0xe>;
-+            };
-+
-+            adc-chan@f {
-+                reg = <0xf>;
-+            };
-         };
-+    };
- 
--        adc-chan@e {
--          reg = <0xe>;
--        };
-+  - |
-+    #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
-+    #include <dt-bindings/iio/qcom,spmi-adc7-pm8350.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
- 
--        adc-chan@f {
--          reg = <0xf>;
-+    spmi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        adc@3100 {
-+            reg = <0x3100>;
-+            compatible = "qcom,spmi-adc7";
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            #io-channel-cells = <1>;
-+
-+            /* Other properties are omitted */
-+            xo-therm@44 {
-+                reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
-+                qcom,ratiometric;
-+                qcom,hw-settle-time = <200>;
-+            };
-+
-+            conn-therm@47 {
-+                reg = <PM8350_ADC7_AMUX_THM4_100K_PU>;
-+                qcom,ratiometric;
-+                qcom,hw-settle-time = <200>;
-+            };
-         };
--      };
-     };
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++What:		/sys/bus/counter/devices/counterX/long_word_access_ctrl_mode
+ What:		/sys/bus/counter/devices/counterX/countY/capture_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
 -- 
-2.34.1
+2.25.1
 

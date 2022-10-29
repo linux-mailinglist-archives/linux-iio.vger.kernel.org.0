@@ -2,49 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F12C76122CA
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 14:13:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACF76122D2
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 14:16:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbiJ2MNS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Oct 2022 08:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
+        id S229647AbiJ2MQl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Oct 2022 08:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiJ2MNS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 08:13:18 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7735367064;
-        Sat, 29 Oct 2022 05:13:17 -0700 (PDT)
+        with ESMTP id S229597AbiJ2MQk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 08:16:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B3A7A777;
+        Sat, 29 Oct 2022 05:16:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 24929B80B56;
-        Sat, 29 Oct 2022 12:13:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0071EC433D6;
-        Sat, 29 Oct 2022 12:13:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BC646068A;
+        Sat, 29 Oct 2022 12:16:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E641C433D6;
+        Sat, 29 Oct 2022 12:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667045594;
-        bh=F3qWBTI+yvIFheV5lenosl5Dyx+Cl97Zk158NxZTZ/g=;
+        s=k20201202; t=1667045798;
+        bh=vxktdn6+9b/lU5nRlb5QHg++ghmjLEika/pHpgj1pDs=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UclWApWNPCxfDoKVkcoa4XflI/vUYnKxTT1fbLdnmjB2ehJPZOv0lf2w91DylPDfU
-         MFORaH47F4cc6Te0mq+bXt5sz2AOKKKhDK9BW7cvlwm2SKzrDdudBpcetdgjtNjyVD
-         +5dYsCLcdK1+7Q1TKE/Wpa8HJV25TniMmtXkRbyaV3Wucb/Ow/A5lvyKf+6GXacSd6
-         NataCr77AHA5g7ZvVISstolsCCJAiC/js0Ttms5fdurqv1+TrdobOwe/vLyVIrUiti
-         e69RZhcUOkzzAvngcV4lGl0pJLnA/TP/CkKn9gjfVaNki8S/kd+2n9wHeoiE+/0DK4
-         471wAKUoK1T/A==
-Date:   Sat, 29 Oct 2022 13:25:08 +0100
+        b=nRRO6N82uUGpjoTvQ3CK/WcTYwVnMU8Dcor3ld9oupa22g2Kss/Jw2q8uepYZ49Yw
+         JdEdO8NT70VY8UZUc1vUrzw5nRYGuz629/8HISTyZo8tCgmJyBQYvAdKr1RInCFb98
+         pwGfdIFAR5XdNG7lirTlhewq+zxUqk+Z52LLIlDjltIU0HhcxAW1nImdp78lQYVoZC
+         Cot9Vr2sMstcyC7w9jVlXwS7kePp0CMS9+lr/4R/z1ozhSAJIf2tDG59OBCcf6ePFN
+         L5eAv3SvAYJi+JS2X9YfS36eoFeAMe4DMQ7cJd6hwKVnm7a2Om5SBQWjH33Uwfkh4n
+         xw4RMDUeaTBRw==
+Date:   Sat, 29 Oct 2022 13:28:33 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, ihkose@gmail.com,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rajat.khandelwal@intel.com
-Subject: Re: [PATCH v3] dt-bindings: iio: dac: Change the I2C slave address
- for ds4422/4424 to its correct value
-Message-ID: <20221029132508.515ad955@jic23-huawei>
-In-Reply-To: <3197497f-26ce-372f-6fb9-33e576cc786e@linaro.org>
-References: <20221024175008.196714-1-rajat.khandelwal@linux.intel.com>
-        <3197497f-26ce-372f-6fb9-33e576cc786e@linaro.org>
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
+        andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 1/8] iio: adc: mp2629: fix wrong comparison of
+ channel
+Message-ID: <20221029132833.03afb95e@jic23-huawei>
+In-Reply-To: <20221029093000.45451-2-sravanhome@gmail.com>
+References: <20221029093000.45451-1-sravanhome@gmail.com>
+        <20221029093000.45451-2-sravanhome@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,38 +57,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 Oct 2022 19:23:09 -0400
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Sat, 29 Oct 2022 11:29:53 +0200
+Saravanan Sekar <sravanhome@gmail.com> wrote:
 
-> On 24/10/2022 13:50, Rajat Khandelwal wrote:
-> > The datasheet states that the slave address for the device is 0x20
-> > when the pins A0 and A1 are ground. The DT binding has been using
-> > 0x10 as the value and I think it should be 0x20 as per datasheet.
-> > 
-> > Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-> > ---  
+> Input voltage channel enum is compared against iio address instead
+> of the channel.
 > 
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
+> Fixes: 7abd9fb64682 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
+> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-hmm. This is curious. So the datasheet indeed provides a table saying
-grounding both pins sets the address to 0x20, however take a look at
-Figure 2 which says the address is
-A1 | A0 | 1 | 0 | 0 | 0 | 0
-
-or 0x10 as per the example.  My guess is someone forgot that i2c addresses
-are 7 bits and the lowest bit of the first byte is used for R/W control.
-
-So unless we have this verified on hardware (implying that the address table
-is correct in this sense) I'm not keen to take this.
-I doubt that is the case given it has 8 bit addresses (0xe0) and i2c addresses
-are 7 bits.
-
+Thanks,
 Jonathan
 
-
-> Best regards,
-> Krzysztof
+> ---
+>  drivers/iio/adc/mp2629_adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
+> index 30a31f185d08..f7af9af1665d 100644
+> --- a/drivers/iio/adc/mp2629_adc.c
+> +++ b/drivers/iio/adc/mp2629_adc.c
+> @@ -74,7 +74,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			return ret;
+>  
+> -		if (chan->address == MP2629_INPUT_VOLT)
+> +		if (chan->channel == MP2629_INPUT_VOLT)
+>  			rval &= GENMASK(6, 0);
+>  		*val = rval;
+>  		return IIO_VAL_INT;
 

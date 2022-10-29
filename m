@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FB96122D7
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 14:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B056122DD
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 14:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbiJ2MSh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Oct 2022 08:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50404 "EHLO
+        id S229531AbiJ2MXM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Oct 2022 08:23:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbiJ2MSg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 08:18:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18CBD7B1CF;
-        Sat, 29 Oct 2022 05:18:36 -0700 (PDT)
+        with ESMTP id S229476AbiJ2MXM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 08:23:12 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5583B13FA5;
+        Sat, 29 Oct 2022 05:23:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4B7A6069C;
-        Sat, 29 Oct 2022 12:18:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F544C433C1;
-        Sat, 29 Oct 2022 12:18:32 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id F0BD7CE0691;
+        Sat, 29 Oct 2022 12:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951CDC433D6;
+        Sat, 29 Oct 2022 12:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667045915;
-        bh=De41F2BFGdJ0NGn/5FDHPBJAObUgVSu1luiFi/IMYGc=;
+        s=k20201202; t=1667046187;
+        bh=v06jAg9hAvsKxAOUy65CZ38r94S4ygiEbDbpNXiL1GE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lK+qmrirlAH+Yg8AJvcZdaZRnxdPPnX8So3UGCGSk+QUxICfKdkJMhN9v+PAF0weH
-         76g8r8WYWU955JEpDv1T9/TjKjG+pcyETDaZfyQLJqbg9d67kGQmaSDHO30R4rrQm3
-         RC8mLoQoLW7DC6Jq1dOwid2OqLJLCEkuM2fROqgn6Kmg3DktUlaGGehtEX0phWNPBW
-         ksSXkl+ZnjcqLt9g4U9RFoIQy6WXbxgihk1nI+vgQEcHfwCrp0mZNi9KogwHO4wiwj
-         cSLqQ7tCNd0BoFabZzdQZyMO76nVFdiFYrfsZsuBVxtehLdQSfqLIOZg0d87LYxEWe
-         +HGbhJSRP483A==
-Date:   Sat, 29 Oct 2022 13:30:29 +0100
+        b=L2QzKAw4H3p29banHYiELab6iffzHBMfhjCC5APi4Z/jUtK73EtdVvKHHjuRqBQrE
+         Owx3fN1/g9tJvESSugOsUVpCl7o9JNoxnFszDoX57sNZorU0M/a7AybzH0yrANa40y
+         rBHnGQkKHaqSO8fC+zjccuWtXd61aUwGFEq/DqmL/RZZRZ5QQHHkLtvy1PXzH2MVGL
+         dvXv3rtVdBFgX4iIp6Vy3A9naCAeIm4gOTRaj+yOjmGK0FliQJgSHr1bbdkGWEZMs7
+         OQu8kbqBaYO43nLi1ySGS48in95NcZxOxNGHoff/8xJ8ltNKeoPKTa242PX2ZRnhCB
+         qtDi8IRBKThJw==
+Date:   Sat, 29 Oct 2022 13:35:03 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Saravanan Sekar <sravanhome@gmail.com>
 Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de,
         andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 3/8] iio: adc: mp2629: fix potential array out of
- bound access
-Message-ID: <20221029133029.7e22973c@jic23-huawei>
-In-Reply-To: <20221029093000.45451-4-sravanhome@gmail.com>
+Subject: Re: [PATCH v5 6/8] iio: adc: mp2629: restrict input voltage mask
+ for mp2629
+Message-ID: <20221029133503.207cfd48@jic23-huawei>
+In-Reply-To: <20221029093000.45451-7-sravanhome@gmail.com>
 References: <20221029093000.45451-1-sravanhome@gmail.com>
-        <20221029093000.45451-4-sravanhome@gmail.com>
+        <20221029093000.45451-7-sravanhome@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,36 +57,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 29 Oct 2022 11:29:55 +0200
+On Sat, 29 Oct 2022 11:29:58 +0200
 Saravanan Sekar <sravanhome@gmail.com> wrote:
 
-> Add sentinel at end of maps to avoid potential array out of
-> bound access in iio core.
+> Add support for mp2733 which is updated version of mp2629
+> with a higher range of input voltage.
 > 
-> Fixes: 7abd9fb6468 ("iio: adc: mp2629: Add support for mp2629 ADC driver")
 > Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Hmm. this is going to slow things down wrt to this series going in.
+We want the associated fix to go in during this cycle, and this
+is dependant on a change going via MFD.  Ah well.
 
-Thanks,
+Generally I prefer to avoid using chip IDs for this sort of check
+because they don't generalize as well as an actual flag for this
+'feature' stored in a chip_info type structure.
 
-Jonathan
+However, we can tidy that up if it becomes relevant as more parts
+are added to the driver.
+
+On basis this might end up going via MFD,
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  drivers/iio/adc/mp2629_adc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/mp2629_adc.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/adc/mp2629_adc.c b/drivers/iio/adc/mp2629_adc.c
-> index f7af9af1665d..88e947f300cf 100644
+> index 88e947f300cf..18290e176e1e 100644
 > --- a/drivers/iio/adc/mp2629_adc.c
 > +++ b/drivers/iio/adc/mp2629_adc.c
-> @@ -57,7 +57,8 @@ static struct iio_map mp2629_adc_maps[] = {
->  	MP2629_MAP(SYSTEM_VOLT, "system-volt"),
->  	MP2629_MAP(INPUT_VOLT, "input-volt"),
->  	MP2629_MAP(BATT_CURRENT, "batt-current"),
-> -	MP2629_MAP(INPUT_CURRENT, "input-current")
-> +	MP2629_MAP(INPUT_CURRENT, "input-current"),
-> +	{ }
->  };
+> @@ -66,6 +66,7 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+>  			int *val, int *val2, long mask)
+>  {
+>  	struct mp2629_adc *info = iio_priv(indio_dev);
+> +	struct mp2629_data *ddata = dev_get_drvdata(info->dev);
+>  	unsigned int rval;
+>  	int ret;
 >  
->  static int mp2629_read_raw(struct iio_dev *indio_dev,
+> @@ -75,8 +76,10 @@ static int mp2629_read_raw(struct iio_dev *indio_dev,
+>  		if (ret)
+>  			return ret;
+>  
+> -		if (chan->channel == MP2629_INPUT_VOLT)
+> +		if (chan->channel == MP2629_INPUT_VOLT &&
+> +		    ddata->chip_id == CHIP_ID_MP2629)
+>  			rval &= GENMASK(6, 0);
+> +
+>  		*val = rval;
+>  		return IIO_VAL_INT;
+>  
 

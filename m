@@ -2,58 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79E5661224F
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 13:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5268612243
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 13:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbiJ2LXL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sat, 29 Oct 2022 07:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57834 "EHLO
+        id S229528AbiJ2LNs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Oct 2022 07:13:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbiJ2LXL (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 07:23:11 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008F0FD03
-        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 04:23:09 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mtapsc-2-oskDvvDuMcG4CvHtLEYEfA-1; Sat, 29 Oct 2022 12:23:07 +0100
-X-MC-Unique: oskDvvDuMcG4CvHtLEYEfA-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Sat, 29 Oct
- 2022 12:23:06 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.042; Sat, 29 Oct 2022 12:23:06 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'Sa, Nuno'" <Nuno.Sa@analog.com>, Deepak R Varma <drv@mailo.com>,
-        "outreachy@lists.linux.dev" <outreachy@lists.linux.dev>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] staging: iio: ad5933: Use div64_ul instead of do_div
-Thread-Topic: [PATCH] staging: iio: ad5933: Use div64_ul instead of do_div
-Thread-Index: AQHY6ks4nrCWT2KFn0+DLX/dNrKI2K4jloMggAGkz5A=
-Date:   Sat, 29 Oct 2022 11:23:06 +0000
-Message-ID: <5740bcb3490d4c17bd9bc731e79b174b@AcuMS.aculab.com>
-References: <Y1r4EaDvEipzhaaf@ubunlion>
- <SJ0PR03MB6778EAAB4132374270E96FFB99329@SJ0PR03MB6778.namprd03.prod.outlook.com>
-In-Reply-To: <SJ0PR03MB6778EAAB4132374270E96FFB99329@SJ0PR03MB6778.namprd03.prod.outlook.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229491AbiJ2LNr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 07:13:47 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC3AB9D
+        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 04:13:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5A9ACB80B4D
+        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 11:13:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BF4C433D6;
+        Sat, 29 Oct 2022 11:13:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667042024;
+        bh=pkwSQHB+iCK+pE4qR4St8p/ohputNflVEFRl6sfN7Xw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KzcW0bzBsV2nph7G2dpwJnHBvDQNQvD/psX/+GP3DGoFjLjvzlD27QcpM/+YinuIY
+         rfxQsb+o6DeoODNcY6NxBg+bw5MaF95+usa6TDqUhsYIZnzT+jHVH5EtryvOoqo3xL
+         HDqO14ujBzzIjTAvrzKsLPq/HJd/IvlZMX8NM3T8CbSa1OciqmqSWexxcpgjf1iokm
+         Ts16CkhrkJ9+02snNuf7IfzSxPtMl0CT/T83dpmwsIqgS5ze0lQu9B48eiw3E1rXjz
+         3v2LOYD2eHaUbzkbb+JiJqih2chsbgme5qpfzntdiEafau7Z/maKhTGLVQ9qu69u2q
+         QwGTKd8M5zpPA==
+Date:   Sat, 29 Oct 2022 12:25:40 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Dan Robertson <dan@dlrobertson.com>
+Cc:     linux-iio@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH] iio: accel: bma400: Ensure VDDIO is enable defore
+ reading the chip ID.
+Message-ID: <20221029122540.5c31d6c3@jic23-huawei>
+In-Reply-To: <Y1vUI9ppqVkoEuuv@dlrobertson.com>
+References: <20221002144133.3771029-1-jic23@kernel.org>
+        <Y1vUI9ppqVkoEuuv@dlrobertson.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,41 +55,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-> > -----Original Message-----
-> > From: Deepak R Varma <drv@mailo.com>
-> >
-> > [External]
-> >
-> > do_div() does a 64-by-32 division. Here the divisor is an unsigned long
-> > which on some platforms is 64 bit wide. So use div64_ul instead of do_div
-> > to avoid a possible truncation. Issue was identified using the
-> > coccicheck tool.
+On Fri, 28 Oct 2022 13:07:47 +0000
+Dan Robertson <dan@dlrobertson.com> wrote:
 
-These changes should all get nacked unless the domain of the values
-can be shown to be out of range.
-
-The entire point of do_div() is that because division is expensive
-using a limited range division is significantly faster.
-
-Even on Intel 64 bit cpu the 64 by 32 divide is significantly
-faster then a full 64 bit divide for the same input values.
-
-One might also question why the divisor is actually 'unsigned long'
-at all. The code is almost certainly expected to compile for 32bit
-so the domain of the value should fit in 32 bits.
-So either the type could be unsigned int, or it really doesn't matter
-that the value is truncated to 32bit because it can never be larger.
-
-	David
-
-
-> >
-> > Signed-off-by: Deepak R Varma <drv@mailo.com>
-> > ---
+> On Sun, Oct 02, 2022 at 03:41:33PM +0100, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > The regulator enables were after the check on the chip variant, which was
+> > very unlikely to return a correct value when not powered.
+> > Presumably all the device anyone is testing on have a regulator that
+> > is already powered up when this code runs for reasons beyond the scope
+> > of this driver. Move the read call down a few lines.
+> > 
+> > Fixes: 3cf7ded15e40 ("iio: accel: bma400: basic regulator support")
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
 > 
-> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+> Reviewed-by: Dan Robertson <dan@dlrobertson.com>
+> 
+> Thanks for catching this!
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
+> 
+> Cheers,
+> 
+>  - Dan
 

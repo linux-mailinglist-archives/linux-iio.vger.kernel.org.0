@@ -2,51 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D71746122FA
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 14:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD90612374
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 16:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbiJ2MjK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Oct 2022 08:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48726 "EHLO
+        id S229544AbiJ2OG5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Oct 2022 10:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiJ2MjJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 08:39:09 -0400
+        with ESMTP id S229528AbiJ2OGz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 10:06:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CB4F5BC;
-        Sat, 29 Oct 2022 05:39:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706411C414;
+        Sat, 29 Oct 2022 07:06:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71CAC60921;
-        Sat, 29 Oct 2022 12:39:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCC9C433C1;
-        Sat, 29 Oct 2022 12:39:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08F7460AB2;
+        Sat, 29 Oct 2022 14:06:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47383C433D6;
+        Sat, 29 Oct 2022 14:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667047147;
-        bh=s6DwFZr4p5Nv9auYKCqUUdyR1/gRNx0yp6nQ1POqRos=;
+        s=k20201202; t=1667052413;
+        bh=mw/F8OFLAgejD/aXIyUkv73wixGgwK/udqyK3fMoweA=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OVjseauTUkV2BjIQy3hWO1e+MajwDmaGHPM4rwIB05d9EGS+perUmOjkA6YyWC3cg
-         J0jQ2ggaIG2byBR4tBMUv5o8C9HyEAAisdo4S/rxtednpRByjSuCmmb+f6dPgQg8P+
-         tjz4s3Na5y76MTMvzEXUTKgoQhpIwT5+W/SmPGxkzR16XsFOK3uBgt71x5H+mPzDnS
-         x8gO4Wlpkp6Y4YfmRK9c/FRnsvV+yt0jSII0dRsG6SeX/A4A13apSwXBGokvzxF4tC
-         LmGCWfzWFNC84lTKMABBI8dPD/0xhVcyQJqI/3gMdQ+3hif9PGKcfZ95Kv0SaqJsyC
-         HpiNsw5Ag0Qew==
-Date:   Sat, 29 Oct 2022 13:51:02 +0100
+        b=B7ywb3mKxrpo+OglEUmVNX0+otzqYbJCqpFdFOKF+O4Sci/9u9ZjHWRCCYZCvL+Tw
+         KVWPYlCrFAOIgrrQtu23Wi0HfSi34d9Hffv4T7sdPTW2c/d4Oh6Kk9BoUltLBMDrgn
+         pqPdnp+whCnNKg8m0bWkZ5CwnZh7qq2U+YADzJ6+IymlMEIfIzQQmJn0BMy6FVHFdT
+         5xbYVzlJLhQbOubE8QfF4V4gi4vC/ULQ9h4Em1eevMfyyLmck8rR6gIG3rtasju3bL
+         ZQzKrL9lrFOAsMJwJMcw0QVZdIrmfEhekW4Ma28L0Qa8P/Xd09HqY4ZNuN5LkXOcLh
+         kUlwxCPqTDWsQ==
+Date:   Sat, 29 Oct 2022 15:18:46 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Marek Vasut <marek.vasut@gmail.com>,
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rcar-gyroadc:
- Miscellaneous improvements
-Message-ID: <20221029135102.5bb9d786@jic23-huawei>
-In-Reply-To: <3c0895a3-2da6-3bd1-c786-01cf5eaa2452@linaro.org>
-References: <7b7a13680fa24282c3407e12b5943a66a2ed9068.1666611184.git.geert+renesas@glider.be>
-        <3c0895a3-2da6-3bd1-c786-01cf5eaa2452@linaro.org>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] iio: accel: Support Kionix/ROHM KX022A
+ accelerometer
+Message-ID: <20221029151846.399547a7@jic23-huawei>
+In-Reply-To: <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
+References: <cover.1666614295.git.mazziesaccount@gmail.com>
+        <758b00d6aea0a6431a5a3a78d557d449c113b21e.1666614295.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,31 +64,57 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 24 Oct 2022 08:23:43 -0400
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, 24 Oct 2022 15:40:29 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 24/10/2022 07:34, Geert Uytterhoeven wrote:
-> > Set limits on the number of power-domains and resets, and make them
-> > required.
-> > 
-> > Simplify the example, and update it to match reality:
-> >   - Convert from obsolete MSTP to CPG/MSSR bindings,
-> >   - Examples should use #{address,size}-cells = <1>,
-> >   - Add missing resets property,
-> >   - Drop soc container and pinctrl properties, which are not needed in
-> >     examples.
-> > 
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>  
+> KX022A is a 3-axis accelerometer from ROHM/Kionix. The sensor features
+> include variable ODRs, I2C and SPI control, FIFO/LIFO with watermark IRQ,
+> tap/motion detection, wake-up & back-to-sleep events, four acceleration
+> ranges (2, 4, 8 and 16g), and probably some other cool features.
 > 
+> Add support for the basic accelerometer features such as getting the
+> acceleration data via IIO. (raw reads, triggered buffer [data-ready] or
+> using the WMI IRQ).
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied,
-Thanks
+> Important things to be added include the double-tap, motion
+> detection and wake-up as well as the runtime power management.
+> 
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> 
+...
+> ---
+>  drivers/iio/accel/Kconfig             |   21 +
+>  drivers/iio/accel/Makefile            |    3 +
+>  drivers/iio/accel/kionix-kx022a-i2c.c |   51 ++
+>  drivers/iio/accel/kionix-kx022a-spi.c |   58 ++
+>  drivers/iio/accel/kionix-kx022a.c     | 1142 +++++++++++++++++++++++++
+>  drivers/iio/accel/kionix-kx022a.h     |   82 ++
+>  6 files changed, 1357 insertions(+)
+>  create mode 100644 drivers/iio/accel/kionix-kx022a-i2c.c
+>  create mode 100644 drivers/iio/accel/kionix-kx022a-spi.c
+>  create mode 100644 drivers/iio/accel/kionix-kx022a.c
+>  create mode 100644 drivers/iio/accel/kionix-kx022a.h
+> 
+> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
+> index ffac66db7ac9..b7fd054819d2 100644
+> --- a/drivers/iio/accel/Kconfig
+> +++ b/drivers/iio/accel/Kconfig
+> @@ -409,6 +409,27 @@ config IIO_ST_ACCEL_SPI_3AXIS
+>  	  To compile this driver as a module, choose M here. The module
+>  	  will be called st_accel_spi.
+>  
+> +config IIO_KX022A
+> +	tristate
+> +
+> +config IIO_KX022A_SPI
+> +	tristate "Kionix KX022A tri-axis digital accelerometer"
 
-Jonathan
+Entry should mention SPI / I2C or we have two menu options that are
+identical. I'll fix that if nothing else comes up.
 
-> 
-> Best regards,
-> Krzysztof
-> 
-
+> +	depends on SPI
+> +	select IIO_KX022A
+> +	select REGMAP_SPI
+> +	help
+> +	  Enable support for the Kionix KX022A digital tri-axis
+> +	  accelerometer connected to I2C interface.

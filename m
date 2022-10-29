@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF084612279
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 13:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91C6C61227A
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Oct 2022 13:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbiJ2LjW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Oct 2022 07:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54534 "EHLO
+        id S229674AbiJ2Lji (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 29 Oct 2022 07:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbiJ2LjV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 07:39:21 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53069631E4
-        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 04:39:19 -0700 (PDT)
+        with ESMTP id S229588AbiJ2Lji (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 07:39:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFE9B7D2
+        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 04:39:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 90E3ACE0924
-        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 11:39:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDCAC433C1;
-        Sat, 29 Oct 2022 11:39:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 86D2960E96
+        for <linux-iio@vger.kernel.org>; Sat, 29 Oct 2022 11:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F287C433D6;
+        Sat, 29 Oct 2022 11:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667043555;
-        bh=wb59Ia4Kg0kbSkF9rTODZACMsLFWuji3p79dC/yME8M=;
+        s=k20201202; t=1667043574;
+        bh=8dL3j2+OZpHcWLLqrU0xNvfckTQio6zXLjpDiCYGPOQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rZQF8FxGfmJWtsY70xH4E4OA9XxFdrgkQ4p/SF+86KJQfWijWNrS/hBosstBg4a7n
-         NiUs4kz5lv9+4hZv/yMyFjBHbwYROOW6Nk/8gqo3kmsaGJ0ulRUNeFpMxjk4EzPV4L
-         glhzriFn3sajCH79pun2aH/g75hQiD2MAbwUNjNinCUkQglQp5lExWJMoOGAITX01f
-         NwDqEpox5eQW9WQNld6v+xy5NuvvS7DutKnZu1608D5aIpZe1nl0P0GXTdI1u+jAig
-         2NxG9V1ZuJ3iy+VD+SanXBNYlhfpw3AzPIaER3gd5NpZnK1VdmhW9Kq0sX8z90nTs6
-         2SVj6Vn1TULFA==
-Date:   Sat, 29 Oct 2022 12:51:07 +0100
+        b=azxRkZy/saIL6xh7ATGTtrySHtO+drGL3WafHwUmlNfvjsatg7qm7m4az4MJyPjl8
+         gDOzwW7QV5Y1N+r4T/wd0IebGsmHnfEf5UKOE/mGf9V2nSIgCmPnN9klrKklY9XWCy
+         3O2khq219crGOobI5hyOl6f3WHB+HPnqjGiG1brLVm3u8Zb6g+A89OQgnaK5MzcIjj
+         GRJirC2JuxqpYKt6aCKvOb8yMBA0UNP/kCGij5U6i4I1taYrokBPCdYv+ZdB6NRF6i
+         2LlaMFRm+vTUEBlwncMAxjl6Fhiuj1sFXwcgkE45c8fNkQT2bCH2353npngxNSV2rs
+         JKZgE0t8BcoIg==
+Date:   Sat, 29 Oct 2022 12:51:31 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
         <u.kleine-koenig@pengutronix.de>
@@ -39,12 +39,11 @@ Cc:     Wolfram Sang <wsa@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Paul Cercueil <paul@crapouillou.net>,
         linux-iio@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 07/23] iio: accel: dmard06: Convert to i2c's
- .probe_new()
-Message-ID: <20221029125107.7ff26f2e@jic23-huawei>
-In-Reply-To: <20221023132302.911644-8-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 06/23] iio: accel: da311: Convert to i2c's .probe_new()
+Message-ID: <20221029125131.7d5ba661@jic23-huawei>
+In-Reply-To: <20221023132302.911644-7-u.kleine-koenig@pengutronix.de>
 References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
-        <20221023132302.911644-8-u.kleine-koenig@pengutronix.de>
+        <20221023132302.911644-7-u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,7 +57,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 23 Oct 2022 15:22:46 +0200
+On Sun, 23 Oct 2022 15:22:45 +0200
 Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
 > The probe function doesn't make use of the i2c_device_id * parameter so it
@@ -66,33 +65,31 @@ Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 >=20
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 Applied
-
 > ---
->  drivers/iio/accel/dmard06.c | 5 ++---
+>  drivers/iio/accel/da311.c | 5 ++---
 >  1 file changed, 2 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/drivers/iio/accel/dmard06.c b/drivers/iio/accel/dmard06.c
-> index 4b69c8530f5e..7390509aaac0 100644
-> --- a/drivers/iio/accel/dmard06.c
-> +++ b/drivers/iio/accel/dmard06.c
-> @@ -125,8 +125,7 @@ static const struct iio_info dmard06_info =3D {
->  	.read_raw	=3D dmard06_read_raw,
->  };
+> diff --git a/drivers/iio/accel/da311.c b/drivers/iio/accel/da311.c
+> index ec4e29d260f7..080335fa2ad6 100644
+> --- a/drivers/iio/accel/da311.c
+> +++ b/drivers/iio/accel/da311.c
+> @@ -217,8 +217,7 @@ static void da311_disable(void *client)
+>  	da311_enable(client, false);
+>  }
 > =20
-> -static int dmard06_probe(struct i2c_client *client,
+> -static int da311_probe(struct i2c_client *client,
 > -			const struct i2c_device_id *id)
-> +static int dmard06_probe(struct i2c_client *client)
+> +static int da311_probe(struct i2c_client *client)
 >  {
 >  	int ret;
 >  	struct iio_dev *indio_dev;
-> @@ -218,7 +217,7 @@ static const struct of_device_id dmard06_of_match[] =
-=3D {
->  MODULE_DEVICE_TABLE(of, dmard06_of_match);
+> @@ -279,7 +278,7 @@ static struct i2c_driver da311_driver =3D {
+>  		.name =3D "da311",
+>  		.pm =3D pm_sleep_ptr(&da311_pm_ops),
+>  	},
+> -	.probe		=3D da311_probe,
+> +	.probe_new	=3D da311_probe,
+>  	.id_table	=3D da311_i2c_id,
+>  };
 > =20
->  static struct i2c_driver dmard06_driver =3D {
-> -	.probe =3D dmard06_probe,
-> +	.probe_new =3D dmard06_probe,
->  	.id_table =3D dmard06_id,
->  	.driver =3D {
->  		.name =3D DMARD06_DRV_NAME,
 

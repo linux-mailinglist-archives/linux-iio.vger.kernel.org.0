@@ -2,63 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0354861264A
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Oct 2022 00:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3D38612C04
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Oct 2022 18:52:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbiJ2Wwm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 29 Oct 2022 18:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42750 "EHLO
+        id S229549AbiJ3RwO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 30 Oct 2022 13:52:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbiJ2Wwm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 29 Oct 2022 18:52:42 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96385186DF;
-        Sat, 29 Oct 2022 15:52:41 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id i10so5501583qkl.12;
-        Sat, 29 Oct 2022 15:52:41 -0700 (PDT)
+        with ESMTP id S229531AbiJ3RwO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Oct 2022 13:52:14 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E483C14;
+        Sun, 30 Oct 2022 10:52:12 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id h9so13132971wrt.0;
+        Sun, 30 Oct 2022 10:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FlfzuOHM1YFrNvQdKzw6XTpnPpUSBLciH+9rkU1qqZ0=;
-        b=JWtcNlw9n1MHCubXk8qkLBh410FkH7pnB9AXpKIuh66LELEIGAUJKC3qATxOBev82K
-         iWZj2OyZQZKQ1ODJpHq6AmsrK/gENL5ViOAs2G5YZjIp8MRxVqm82zYdYIrTIAp2tMgA
-         KTIOaeJf6idfkIDLZ0m9T95RvREW4h7zxiXh3bn8d4W4WXt6wZj7fIFOLzn947DxRg0J
-         a1XZiP1aIY0ycPSEc7dwlJ+rfW8X2mTYWFpXVG8uRfVkvfv5KRsSN0LwEpajpZ7hEGRl
-         5CLoCR9V1/L+MQ/WiPOoPX5ho3OlfYOCfvaErNcKHZ2Jck8K4vU4vHanTzhvYjF1+/9D
-         TDrg==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iRGQwiJyyZtZTz3TByj9KEqkFvLoG13HbwyG6xbLJsA=;
+        b=FAckUJwd6EZu55q7Mb7vIO0E3XAFW3dHy41sLo7QgJxjCpa26PyWWGGAMN/XFJpbQd
+         59Np4n5e/+Loxc9ipdU4d2YPhh1U78AhhqNjeG7W8p43DsGTnVtFhwW0Hl3CVfmkkWaU
+         lApgSmjrooGqN/MavVzATDssXOtnoiiu2/7OalPsQzgJ9QV+RVUrqBJ0xAKYg3EldGPF
+         lmfA4TnGFSlbcgwfGqHw4SL2+wJllxXz90zxMhbRQzJkm/UW5pZK3InndwZF2C0TJHsg
+         CwCXwlMV/LEOJn0RtXBzlzevVxU0Etq06wr5ihtsbFlzeGyza6Nht3WE/6OxSE85cJEX
+         XkHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=FlfzuOHM1YFrNvQdKzw6XTpnPpUSBLciH+9rkU1qqZ0=;
-        b=UjiaIr7J0mwVrWpK6ezSETGwb/LbaZoPbN1sAHV1VLO7gaHXwwdLjnctw74uQMd2o9
-         RqwgZ2hz30EXd9ejXcstRf5MuGIyMZZ62Zh3ArxBQYP2ry9s81Iaw72mUXnO2ayGzYDy
-         dvTxmObcGSn2o7Gpv11TMezsMNzd4ZMXjvgkKBKvoZdmfbPV5zkQctf4TzHhHft0N15t
-         hQnM7z+SnmQ9440BDnzB0l1s5jTBj9JUnjBfXOV/qoNtRvMhu463x8RAHJNlBc4EJOMo
-         6Q+aLo1KrO5ceVebEkfPUz3e160O+TMYHvHxh+Bp4OSHQDuJqoPwv6/u6iZ9r+0lCNVJ
-         Q4Hg==
-X-Gm-Message-State: ACrzQf38P0FrjcFQgy/x6g0E+XmSp+40GK7s+rSoIXBa/5K2Vy6jjMfT
-        X1dPVXqUTdVP+5+wxtAKBe3HrkkZiBp7SOmNnsY=
-X-Google-Smtp-Source: AMsMyM4dQ3TeoEE+jqU/nddI292tqpWhXocEXIvqnCT94aO+/0h9o5OBH8kne71u+ImDm0OzdBqkip99BIi6o6LDBjU=
-X-Received: by 2002:a05:620a:288a:b0:6b8:fcfe:db02 with SMTP id
- j10-20020a05620a288a00b006b8fcfedb02mr4523899qkp.504.1667083960733; Sat, 29
- Oct 2022 15:52:40 -0700 (PDT)
+        bh=iRGQwiJyyZtZTz3TByj9KEqkFvLoG13HbwyG6xbLJsA=;
+        b=VnROlqCvwH4lcCTwnyS28dvAano9ThlIwk4+u/tUVskX7LNwkJY/RQsA1SfQYMwFYp
+         y8R+mhB92a/vrtrMHxHywVCSgfvnDxFs6AO15NaBoGU8go/mJ5pGT/bTVYFwl8GvPwJs
+         PvY0iNpfm/8ETOUN+6GF7p9p3iSsp5eSbpV6QT0nf0+AZ5mc9DIXg8PnjqSU9IIQogwN
+         Y3oZswqs+gEZ9hc0yTvJvmMrMXJ8IrRY6vt7pVAX2AXB2ZfAKTAXUINOvdU2nAyQCF/B
+         pQpKF7o17eoKNfGFY1odepTVMVaPSqLyVDUhFQrntRmqfGQJ9GArWoieTGNnqUDrXAB+
+         Bnuw==
+X-Gm-Message-State: ACrzQf0S3+q6A6uqUjz0kLw7Ocx/V7THrYnll7sx273gEZxwR6BBUStN
+        hNDXic++VBk3hn1z9OPEMZTlAlcg0r4=
+X-Google-Smtp-Source: AMsMyM73of4rrJBvNGNFrBktk0USXeaiq8Tc6F3xRszlQKFvkJ49nlq3Ihmp7Qf5Nr6JjGaCivjPvQ==
+X-Received: by 2002:a05:6000:10ce:b0:236:54c8:e040 with SMTP id b14-20020a05600010ce00b0023654c8e040mr5660243wrx.290.1667152330891;
+        Sun, 30 Oct 2022 10:52:10 -0700 (PDT)
+Received: from localhost.localdomain (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
+        by smtp.gmail.com with ESMTPSA id q1-20020a05600c040100b003c4ecff4e25sm5419229wmb.9.2022.10.30.10.52.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Oct 2022 10:52:10 -0700 (PDT)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/2] i2c: core: Introduce i2c_client_get_device_id helper
+Date:   Sun, 30 Oct 2022 18:51:06 +0100
+Message-Id: <cover.1667151588.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <20221029093000.45451-1-sravanhome@gmail.com> <20221029093000.45451-5-sravanhome@gmail.com>
-In-Reply-To: <20221029093000.45451-5-sravanhome@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 30 Oct 2022 00:52:03 +0200
-Message-ID: <CAHp75Vcej8uhmdZmMQAH0-0To0oaFsYsvtorZiwuSTKUFKj3hA@mail.gmail.com>
-Subject: Re: [PATCH v5 4/8] power: supply: fix wrong interpretation of
- register value
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     sre@kernel.org, lee.jones@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jic23@kernel.org,
-        lars@metafoo.de, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -69,14 +75,33 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 29, 2022 at 11:30 AM Saravanan Sekar <sravanhome@gmail.com> wrote:
->
-> fix the switch cases to match the register value.
+Hello,
 
-Something is still wrong with the English grammar (i.e. capitalization
-at the beginning of the sentence).
+I don't want to step anyone's work here, so I'm sending this RFC to the
+devs involved in the original discussion. I read on Uwe Kleine-König's
+patchset submission thread the necessity for an i2c helper to aid with the
+migration to the new i2c_driver .probe_new callback. Following the
+suggestions made there, I wrote this small patchset implementing the
+suggested helper function and ported the bmp280 IIO i2c probe to the new
+probe using that helper.
+
+Thanks for your time!
+Angel
+
+Original discussion thread for additional context:
+https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koenig@pengutronix.de/
+
+Angel Iglesias (2):
+  i2c: core: Introduce i2c_client_get_device_id helper function
+  iio: pressure: bmp280: convert to i2c's .probe_new()
+
+ drivers/i2c/i2c-core-base.c       | 15 +++++++++++++++
+ drivers/iio/pressure/bmp280-i2c.c |  8 ++++----
+ include/linux/i2c.h               |  1 +
+ 3 files changed, 20 insertions(+), 4 deletions(-)
 
 
+base-commit: c32793afc6976e170f6ab11ca3750fe94fb3454d
 -- 
-With Best Regards,
-Andy Shevchenko
+2.38.1
+

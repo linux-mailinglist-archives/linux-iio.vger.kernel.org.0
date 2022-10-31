@@ -2,342 +2,154 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 578AB612DFB
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 00:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F80612FC8
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 06:40:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbiJ3XJp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 30 Oct 2022 19:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60652 "EHLO
+        id S229647AbiJaFku (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Oct 2022 01:40:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiJ3XJo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 30 Oct 2022 19:09:44 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F962DF7
-        for <linux-iio@vger.kernel.org>; Sun, 30 Oct 2022 16:09:43 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id t25so25523437ejb.8
-        for <linux-iio@vger.kernel.org>; Sun, 30 Oct 2022 16:09:43 -0700 (PDT)
+        with ESMTP id S229553AbiJaFkt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 01:40:49 -0400
+Received: from DEU01-FR2-obe.outbound.protection.outlook.com (mail-fr2deu01on2099.outbound.protection.outlook.com [40.107.135.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E859767B;
+        Sun, 30 Oct 2022 22:40:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GyKR+Y4K9m9MIdk3m70UvKHl/tjDAaDy4K5d+p7KDTL3h/3jqXuUVIErZdA2MR/WQx+poBxBf51Q44VCE+dbu6QazlQ5dtL2EIaRedRgn7U96CiDNcEdBN0QT/zh3e9A9G8JcdLS+63qxehO2DIBNBxsoROohx7Y8jO6YitmZQCt81WKgyj6Sry9TiBHqMrKMEY2xUUCmkeO3XGQh0x72lrZzyDet1+h0opW5Z6EvQU67iOodVPrkbx4he2VyfBeKA+ZWi4BIEEuWaHG/oip0n9Nqs/S+RK4R7WXfyWemf+3b+q565Df/wisSOpfSXJEXxn8w1SjM10gYckTmbd/5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VofVYgUmYNtf5X2P+po/F2vKQ8iK/uxHHAVzMaVNwFc=;
+ b=dJZTZJBXpGgUpXfDfXc5Te+Nc9vAwElh6vNrS3EFLiiWF/KO+1by7sHjVkI4n24B1gFwYSZlNK9e+64+zNKRBLdJktQ24Bfytip+40E/hojDWO0EqW+0FKRgf1eb1W+a0e0SWIgwYdn9Ti4TvswJUzCop9DafeLzx/0bAY/vZhqb1E+OeDDL0++wfuswd4Sy380+wOdPwUii1e2E2e3s/BPeHGXr6m3G4Tjw6U9TaxEXY/bbGiqAkqc1dQGIvWDA2iCzKJoBO5bVp6tYA7BG1LaWRlr62URywez4D+EWvBi9DClZH9TmGR/4bkLexutZYoxkWShsrhJpgQzWMsZuQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fi.rohmeurope.com; dmarc=pass action=none
+ header.from=fi.rohmeurope.com; dkim=pass header.d=fi.rohmeurope.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=timesys-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4fVJDdaJs+pMyCBTfQ4LllzvxRPlIZqaCasQi2qPwf4=;
-        b=Tb1TnA0Ctn7Gi7fDQa70ZRRhMkE99H4mG0IGhezGRxkrvsCAuPpq3m1JGFBQmNGiqZ
-         OniSt5k+vmQ3LN7euS9qbDjE8LMhlKWW4XtEXcbwDx5nV9gDIgaUuRCYmc9t+F5KOQJj
-         iXdWI+4lgJ5XE4RAm+u+8AgEitNB5gYu2QnoH7cLSIq/wKghRNamUdFwrcXhvx7g4Ol8
-         Bt5+YTbzOy/174fZSxfizoFObT6EmTYbzdSeqCAFrq8HHxP5rZToV3S6UCKgT4igCCSz
-         X11fhN3MCDsIjHq4fxf0oiF7x98AsmTNje7cg/UCGq4W5wWYbqNt3L8oN/vxogkbG1iJ
-         sseQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4fVJDdaJs+pMyCBTfQ4LllzvxRPlIZqaCasQi2qPwf4=;
-        b=2/KO8e8lpyGUjvtk7jimoAUNn7v13lwVzjEeVJ2uebvEw7Mg47RQlsTV5A4Ob2yTw6
-         5s4wcxWdeBgm5LFTHmg2+pZqkKflP36jjOAWzeXW7W/ev0fqkSzZKuIF6A01htHZTzFD
-         SxykqhzmA0FEFWSAttK3ncbt6UG9B5PruQuxnDmOS0zuH0G6zmZNIAs+HOt5NWNJY/FV
-         23BSje4zhFUgE6vTOZvTEQpG40je223Vs44E0oNwlanzvZqj3curDfpkz/0XWX5bq+dA
-         abcbKEPblnzLKTmIt+iGXRm5Uutl/IpaXdqXUBLTc5MbFwYyrV/N1tn2SlgvYZhBBtUx
-         c4qg==
-X-Gm-Message-State: ACrzQf2in4j5ecHhSqOG/lbuijtjAd/aVQiHWIuOXKJqTm9NT6usqHns
-        yFBkQJn86XxGjxT9j1ka1pPtkKx0UJShnRxW
-X-Google-Smtp-Source: AMsMyM6cIoBt7gMO4igkTrg/oYYheatUUCm7bcgHCKAAoBG0o/9/s66Zfd72SSisHUZTpdcaTRFnmQ==
-X-Received: by 2002:a17:906:8475:b0:7ad:c04:d3cf with SMTP id hx21-20020a170906847500b007ad0c04d3cfmr9699793ejc.463.1667171381680;
-        Sun, 30 Oct 2022 16:09:41 -0700 (PDT)
-Received: from localhost.localdomain (host-87-0-236-69.retail.telecomitalia.it. [87.0.236.69])
-        by smtp.gmail.com with ESMTPSA id ay18-20020a056402203200b00459cf672a65sm2563962edb.71.2022.10.30.16.09.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Oct 2022 16:09:41 -0700 (PDT)
-From:   Angelo Dureghello <angelo.dureghello@timesys.com>
-To:     jic23@kernel.org, william.gray@linaro.org
-Cc:     linux-iio@vger.kernel.org,
-        Angelo Dureghello <angelo.dureghello@timesys.com>
-Subject: [PATCH v2] iio: dac: add support for max5522
-Date:   Mon, 31 Oct 2022 00:08:13 +0100
-Message-Id: <20221030230813.460021-1-angelo.dureghello@timesys.com>
-X-Mailer: git-send-email 2.38.1
+ d=rohmsemiconductor.onmicrosoft.com;
+ s=selector2-rohmsemiconductor-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VofVYgUmYNtf5X2P+po/F2vKQ8iK/uxHHAVzMaVNwFc=;
+ b=mPOh6dF76U9qjwK+cmkrAoItuZp2NZ0Ty9LPXZyv9em2lo/FKlWojf+ITDpQGIYu/7ZivIlSfTObJf6dVbpugAXOHjt2whFxdA94G2104awEwYu4KOklxqfNf1eStBw9iAVSJV7a0KnS+r00u5ehqhHh/wFaZbkttkqYjJbmfQ0=
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:59::10)
+ by FR3P281MB1549.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:6c::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5791.9; Mon, 31 Oct
+ 2022 05:40:45 +0000
+Received: from BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::bec6:d44:3d5f:317e]) by BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::bec6:d44:3d5f:317e%7]) with mapi id 15.20.5769.019; Mon, 31 Oct 2022
+ 05:40:44 +0000
+From:   "Vaittinen, Matti" <Matti.Vaittinen@fi.rohmeurope.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Matti Vaittinen <mazziesaccount@gmail.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Cosmin Tanislav <demonsingur@gmail.com>,
+        Jagath Jog J <jagathjog1996@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 3/3] MAINTAINERS: Add KX022A maintainer entry
+Thread-Topic: [PATCH v5 3/3] MAINTAINERS: Add KX022A maintainer entry
+Thread-Index: AQHY56XoXKHaCmTWf0SSjO7OSw5Fe64lc8SAgAKTkwA=
+Date:   Mon, 31 Oct 2022 05:40:44 +0000
+Message-ID: <349ac787-80e4-4aef-d14c-ed95834350ad@fi.rohmeurope.com>
+References: <cover.1666614295.git.mazziesaccount@gmail.com>
+ <7895435f7fd31a3b576fc6a59b01eb3202c85d36.1666614295.git.mazziesaccount@gmail.com>
+ <20221029152001.5ba70261@jic23-huawei>
+In-Reply-To: <20221029152001.5ba70261@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fi.rohmeurope.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BEZP281MB2454:EE_|FR3P281MB1549:EE_
+x-ms-office365-filtering-correlation-id: 1933bd49-e9de-4cc2-b3e8-08dabb0274c3
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LB5bSlHYs/JASCNWzTyhn8PTEi9PfLGTcKpbvLDtGV/rcz4SpczzfsclNEZ59xF2c3LSzirW9XR3mBOc6LobKJ5XWjm20vJfeRL3jnHYacHRPVbKy0qfdM30bF/hMeewW4G+bKH1jnzzuBX320/dcc7+5LECoTNOhfYUytoe41neYUtPv5Wy1ViMV9wCuKXh5ETI3KS95MdZnzsDwKH1TPyDRPRlLs/gHvBrTwWJUn01isJlNMa0dEUhe9kFB5lYrivAVacDqUzeWTXrvQWpd8hK77iMtvIelK3k07k5m7kA3gya9/X7MhvmvHq+o+i5nCcC986ByKdC7Rx6K5Oa1eppv4oi2eHFqfPAUT2xy0bNRKPTbq1F9rII8TRz1z3bF5WgyAsX6nPQHKNPoZxeqSqSxqdRUoWHTlbtUXP6Ws5V0BhvkY2iy8Tocc42+avb+cWhMHruIVdMc3cuwD+xyL5pfdhOoHLRuc6FDFnkitTTBB4f0c5RXrBZIyS57E9L8s/NRbl594HQ65hGpvHBqnKBf3GPFXi/S85E/8QrZrG95Q42hVfwTAZtr5kVwool76phYzGozWh+Em5M4VdxJAdwR3MA4aIf/wroW5IEs/IQFP8Np+7d68nY59B7wKBG7fF1bxIbVCaYi5SwKI4Z+bqDBp5GLnXuNp9wBzjhKK+VH+fPFQglMMX7CM5g6p6xaej3yQLwLPWQ0rkD7vjw4Ct8idR1+ftBe3gyB3lueOyG/RcESevaw+Y0vSyzID8gWHGs8CeOCA/ag7HE7N52KWJtFRMbuA5UlpXSQ/fz1GuX1cppespLd7Z9YgeT5A9fA0/j2D3pbXIgqoJUOYAesA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(366004)(346002)(136003)(39830400003)(451199015)(38100700002)(6486002)(4744005)(5660300002)(122000001)(478600001)(71200400001)(54906003)(91956017)(7416002)(76116006)(41300700001)(66946007)(31696002)(66556008)(86362001)(66476007)(8676002)(66446008)(4326008)(8936002)(110136005)(38070700005)(31686004)(316002)(64756008)(2616005)(53546011)(186003)(2906002)(6512007)(6506007)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YXphR1NnODVqQmh3TXgxSEhVdmRtRGYvWEtUTE5oVjhIWktzZ2hkMkdPNTVv?=
+ =?utf-8?B?K1JxVlJBbGk0TTBjd2RkZWtWamxmd2hQajlER2xWS2REQ2pTdVd4ZlFLMFA4?=
+ =?utf-8?B?UGIyY0NMMXE1eUtFM2s1NnZlOENkYk5yOHY2a2wwaTR1VGpQYVhDMkhPT1Zx?=
+ =?utf-8?B?cWxubjU4MG5TOHlwQW9QaGsycGx1L2YrLzlNNEdtNDIzMHdTOEFXOTBRZGlo?=
+ =?utf-8?B?TTVsbVhpWUNId3hoRUE5QnhpRkV2R1JRT1JpU1FqeEg1TUNmMWxuS3FVWHhP?=
+ =?utf-8?B?b0lBMjFEQTFndjdpSmNNQVFOT0U1V0IrRGlsNTMrZkJGMFhuV1VmcUgwb3Bx?=
+ =?utf-8?B?bS9HRHRLaXdkWWVqOTBPblF0WElnZ1ZhZEZ3Q0ZTOURJbzU1SDUyeFZIVlc0?=
+ =?utf-8?B?TGkrbUkyMU4raGhpY0J4SFozQisvbk56MC9Ya3l1Qk5hcTUybDNmQ0gxa0hM?=
+ =?utf-8?B?cEhJSlNTK3pwWDVrT092NDFWQjRFNkZEd3Q0b0x3SEVEL1VxcmlOMmpwaGxZ?=
+ =?utf-8?B?RUNnVWRXMkJBQjhCRTN1ZVJWTXhDd3J1Vmx0YXYxZlF2M0I2dmJ3UE1WS0Ix?=
+ =?utf-8?B?a3Qyb1o1NkpobEdQSkYweVhoUlg0N0RlbDBUWjRoLy9nbXlyVmJGMmJMUm5K?=
+ =?utf-8?B?ODhwVGE2WkdsOG5UcDRmR05YcjhWWFNVTHh3cUdveG5KSTNGR0JpV0Y1NDds?=
+ =?utf-8?B?Ti9FcGxVZjdRRk9ka1VvWGJ3aUw2U3U1aXozdlZMRmhsSlh3T29oTWswUHZP?=
+ =?utf-8?B?a0QwdDZ1Rk9ZRG4wVGJ0YmdHZnppc1RwblJIR0c5V3RNT3JSNUMzZWNYTlM0?=
+ =?utf-8?B?ckVWYm1OV3BWTzl6OXlVRnIwRXBqcTd2STFJaEQ2dmpNVDhaRzJ3T0gwaFRj?=
+ =?utf-8?B?YzFUQUZib1Njd1BlQTJXcU1iWk9BcndCeEhZc3I5SmZGa3l3bTJBcjRmdTZm?=
+ =?utf-8?B?ZW9ZbERHWGpMZm5OcW5HTHBlbGVyMXhLd285TVZ3NHNNUEhOci9yaEx4MGhL?=
+ =?utf-8?B?aWUzSHdLcGlOWitWRTRqK2RZRHdzQUFGdUJVSnF1VnFlWmswZHVzUDdUN1B2?=
+ =?utf-8?B?UnorODByWTZSZk5LRDk3R1NZaTZqSlU3bno4eUZ5UDJVd1pMRldQaUNKaVJx?=
+ =?utf-8?B?TE5xanI1T0tuWC9tdHJXcnlSRFAvcXdvWEIwVE1LbUd5ZFRyeXhuczVONUN3?=
+ =?utf-8?B?aTIwcmt2dWVLdFJhZkNFcU4ybVNFSE8vTkVQSW14WFBIdHBlZHJZZk94M2VZ?=
+ =?utf-8?B?enBtZndqMlQ3Ums3L3BPTEtOSkplZHNiWVlCKzdDaGJjbEQ3SE5RT2RtK21j?=
+ =?utf-8?B?R09na2FFdTNIWFFmWXUzcVpsOFVIY2RUZldKK3crYXdEdkJPbEQ3dHVhblNh?=
+ =?utf-8?B?dGV3NGFNbitBQlM3dmI2d2pHaWp3cGxIS1lRRUpoSlJBYnFIK2FzOVIwOUhs?=
+ =?utf-8?B?ZzJ6QUhxVW82L3VobEJ6THZsUVYzdjVSMlNCcFNtOU5YOEgzLzRBNE1YQ3hP?=
+ =?utf-8?B?b0VEOTFEQmxmVnhLK0RlNWN0SkVlN3NwU0VLenNGVVNpU2VqZ2dUalJqdVFN?=
+ =?utf-8?B?Q0VMek8weXlRYnF0VTlVdFg1bnVaV1dNQXc0TGkwc200cDJuays0VnY4V2t3?=
+ =?utf-8?B?c2k5dmdSSDBvanA2NlhUeGYzd1FqcE1namp5b0tIdjVzVFdtQmVlWk1acDB1?=
+ =?utf-8?B?WjcyK0dEN1cvRG5EYzJJNlIzdmhydVZYMVM4akpmbTQyeW14ZFZDYVFudnQx?=
+ =?utf-8?B?UUhkU1NuMUFjV3lOeWxnRHZmSVZGSE9QR0w4Z3JucFMxVTg5RWFyUGpzTFVK?=
+ =?utf-8?B?aENtVUNQMmNncjZ4SWxiLzhQRkpSQkxjY3R5N1FQRURyakRQRlN2cUVWaGZh?=
+ =?utf-8?B?bEpLOHdUb2hEK3BzU0xCTEdwazUwM05RazVzenZmZjdycHF2RVRXOXFPUU1M?=
+ =?utf-8?B?QXpyaEJkbTUxcFpONldia2VwMU9qcnJVNGkzays2cS92OVcwUHNWS0hDY0Rz?=
+ =?utf-8?B?Zk5jVjdqUXJMRFpXR0hmMmN3OG9WR1BZak1HS1ppZjNYKzQ2SDFUTlhYcW01?=
+ =?utf-8?B?YzAwNHNhdWs4OHJLVjBpNVlQVnROTWRzekg3ZWpFaFlwbjh6Q0dqWGliQy9S?=
+ =?utf-8?B?a2R1VUhxTk45dm1CNGlSOXNMamZXNTJ3R2RZN3NrYmNCTmFhRTYxTmFjMS91?=
+ =?utf-8?Q?ESexRZQyg574R7VpS/AJfe8=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A0A4D7985AD22D4281772DE601ED1398@DEUP281.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: fi.rohmeurope.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BEZP281MB2454.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1933bd49-e9de-4cc2-b3e8-08dabb0274c3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2022 05:40:44.9189
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b24d4f96-5b40-44b1-ac2e-2ed7fdbde1c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OJRn+oZ78t0pFVca5UzEFSiCTxAWGIb9DZa+NQaTnLyZ4VmrKYFIJrRHa0p5ZN5LaAermxVe5Oc7qnZQea9PbhZkVCEKttdyP7CkMu+jFzQtGXR1QvkIbhTx02W9y2VW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3P281MB1549
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add initial support for DAC max5522.
-
-Tested writing DAC A and B with some values,
-from 0 to 1023, measured output voltages, driver works properly.
-
-Additions for max5523/24/25 will follow.
-
----
-Changes for v.2
-- fix commit message
-- Kconfig, fix depends and select
-- Kconfig, fix typo
-- fix include alphabetical order
-- remove sysfs includes
-- fix MAX5522_REG_DATA macro
-- use devm_ as much as possible
-- add regulator_enable
-- remove useless code
-- remove commas after structure initializers and null terminators
-- change to use simplier module_spi_driver
-- get id->name from device info structure
-- regulator voltage read always from read_raw (no cache)
-
-Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
----
- drivers/iio/dac/Kconfig   |  13 +++
- drivers/iio/dac/Makefile  |   1 +
- drivers/iio/dac/max5522.c | 198 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 212 insertions(+)
- create mode 100644 drivers/iio/dac/max5522.c
-
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 80521bd28d0f..6c49523fe357 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -357,6 +357,19 @@ config MAX517
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called max517.
- 
-+config MAX5522
-+	tristate "Maxim MAX5522 DAC driver"
-+	depends on SPI_MASTER
-+	select REGMAP_SPI
-+	help
-+	  Say Y here if you want to build a driver for the Maxim MAX5522.
-+
-+	  MAX5522 is a dual, ultra-low-power, 10-Bit, voltage-output
-+	  digital to analog converter (DAC) offering rail-to-rail buffered
-+	  voltage outputs.
-+
-+	  If compiled as a module, it will be called max5522.
-+
- config MAX5821
- 	tristate "Maxim MAX5821 DAC driver"
- 	depends on I2C
-diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-index ec3e42713f00..6c74fea21736 100644
---- a/drivers/iio/dac/Makefile
-+++ b/drivers/iio/dac/Makefile
-@@ -38,6 +38,7 @@ obj-$(CONFIG_LTC2632) += ltc2632.o
- obj-$(CONFIG_LTC2688) += ltc2688.o
- obj-$(CONFIG_M62332) += m62332.o
- obj-$(CONFIG_MAX517) += max517.o
-+obj-$(CONFIG_MAX5522) += max5522.o
- obj-$(CONFIG_MAX5821) += max5821.o
- obj-$(CONFIG_MCP4725) += mcp4725.o
- obj-$(CONFIG_MCP4922) += mcp4922.o
-diff --git a/drivers/iio/dac/max5522.c b/drivers/iio/dac/max5522.c
-new file mode 100644
-index 000000000000..dda822843542
---- /dev/null
-+++ b/drivers/iio/dac/max5522.c
-@@ -0,0 +1,198 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Maxim MAX5522
-+ * Dual, Ultra-Low-Power 10-Bit, Voltage-Output DACs
-+ *
-+ * Copyright 2022 Timesys Corp.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/iio/iio.h>
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/spi/spi.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+
-+#define MAX5522_MAX_ADDR	15
-+#define MAX5522_CTRL_NONE	0
-+#define MAX5522_CTRL_LOAD_IN_A	9
-+#define MAX5522_CTRL_LOAD_IN_B	10
-+
-+#define MAX5522_REG_DATA(x)	((x) + MAX5522_CTRL_LOAD_IN_A)
-+
-+struct max5522_chip_info {
-+	const char *name;
-+	const struct iio_chan_spec *channels;
-+	unsigned int num_channels;
-+};
-+
-+struct max5522_state {
-+	struct regmap *regmap;
-+	const struct max5522_chip_info *chip_info;
-+	unsigned short dac_cache[2];
-+	unsigned int vrefin_mv;
-+	struct regulator *vrefin_reg;
-+};
-+
-+#define MAX5522_CHANNEL(chan) {	\
-+	.type = IIO_VOLTAGE, \
-+	.indexed = 1, \
-+	.output = 1, \
-+	.channel = chan, \
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			      BIT(IIO_CHAN_INFO_SCALE), \
-+	.scan_type = { \
-+		.sign = 'u', \
-+		.realbits = 10, \
-+		.storagebits = 16, \
-+		.shift = 2, \
-+	} \
-+}
-+
-+const struct iio_chan_spec max5522_channels[] = {
-+	MAX5522_CHANNEL(0),
-+	MAX5522_CHANNEL(1),
-+};
-+
-+enum max5522_type {
-+	ID_MAX5522,
-+};
-+
-+static const struct max5522_chip_info max5522_chip_info_tbl[] = {
-+	[ID_MAX5522] = {
-+		.name = "max5522",
-+		.channels = max5522_channels,
-+		.num_channels = 2,
-+	},
-+};
-+
-+static inline int max5522_info_to_reg(struct iio_chan_spec const *chan)
-+{
-+	return MAX5522_REG_DATA(chan->channel);
-+}
-+
-+static int max5522_read_raw(struct iio_dev *indio_dev,
-+	struct iio_chan_spec const *chan, int *val, int *val2, long info)
-+{
-+	struct max5522_state *state = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_RAW:
-+		*val = state->dac_cache[chan->channel];
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		ret = regulator_get_voltage(state->vrefin_reg);
-+		if (ret < 0)
-+			return -EINVAL;
-+		state->vrefin_mv = ret / 1000;
-+		*val = state->vrefin_mv;
-+		*val2 = 10;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int max5522_write_raw(struct iio_dev *indio_dev,
-+	struct iio_chan_spec const *chan, int val, int val2, long info)
-+{
-+	struct max5522_state *state = iio_priv(indio_dev);
-+	int rval;
-+
-+	if (val > 1023 || val < 0)
-+		return -EINVAL;
-+
-+	rval = regmap_write(state->regmap, max5522_info_to_reg(chan),
-+				val << chan->scan_type.shift);
-+	if (rval < 0)
-+		return rval;
-+
-+	state->dac_cache[chan->channel] = val;
-+
-+	return 0;
-+}
-+
-+static const struct iio_info max5522_info = {
-+	.read_raw = max5522_read_raw,
-+	.write_raw = max5522_write_raw,
-+};
-+
-+static const struct regmap_config max5522_regmap_config = {
-+	.reg_bits = 4,
-+	.val_bits = 12,
-+	.max_register = MAX5522_MAX_ADDR,
-+};
-+
-+static int max5522_spi_probe(struct spi_device *spi)
-+{
-+	const struct spi_device_id *id = spi_get_device_id(spi);
-+	struct iio_dev *indio_dev;
-+	struct max5522_state *state;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
-+	if (indio_dev == NULL) {
-+		dev_err(&spi->dev, "failed to allocate iio device\n");
-+		return  -ENOMEM;
-+	}
-+
-+	state = iio_priv(indio_dev);
-+	state->chip_info = &max5522_chip_info_tbl[id->driver_data];
-+
-+	state->vrefin_reg = devm_regulator_get(&spi->dev, "vrefin");
-+	if (IS_ERR(state->vrefin_reg))
-+		return dev_err_probe(&spi->dev, PTR_ERR(state->vrefin_reg),
-+				     "Vrefin regulator not specified\n");
-+
-+	ret = regulator_enable(state->vrefin_reg);
-+	if (ret) {
-+		return dev_err_probe(&spi->dev, ret,
-+				      "Failed to enable vref regulators\n");
-+	}
-+
-+	state->regmap = devm_regmap_init_spi(spi, &max5522_regmap_config);
-+
-+	if (IS_ERR(state->regmap))
-+		return PTR_ERR(state->regmap);
-+
-+	indio_dev->info = &max5522_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = max5522_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(max5522_channels);
-+	indio_dev->name = max5522_chip_info_tbl[ID_MAX5522].name;
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct spi_device_id max5522_ids[] = {
-+	{ "max5522", ID_MAX5522 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, max5522_ids);
-+
-+
-+static const struct of_device_id max5522_of_match[] = {
-+	{ .compatible = "maxim,max5522" },
-+	{}
-+};
-+
-+MODULE_DEVICE_TABLE(of, max5522_of_match);
-+
-+static struct spi_driver max5522_spi_driver = {
-+	.driver = {
-+		   .name = "max5522",
-+		   .of_match_table = max5522_of_match,
-+	},
-+	.probe = max5522_spi_probe,
-+	.id_table = max5522_ids,
-+};
-+module_spi_driver(max5522_spi_driver);
-+
-+MODULE_AUTHOR("Angelo Dureghello <angelo.dureghello@timesys.com");
-+MODULE_DESCRIPTION("MAX5522 DAC driver");
-+MODULE_LICENSE("GPL");
--- 
-2.38.1
-
+T24gMTAvMjkvMjIgMTc6MjAsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+IE9uIE1vbiwgMjQg
+T2N0IDIwMjIgMTU6NDA6NTggKzAzMDANCj4gTWF0dGkgVmFpdHRpbmVuIDxtYXp6aWVzYWNjb3Vu
+dEBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4+IEFkZCBtYWludGFpbmVyIGVudHJ5IGZvciBST0hN
+L0tpb25peCBLWDAyMkEgYWNjZWxlcm9tZXRlciBzZW5zb3IgZHJpdmVyLg0KPj4NCj4+IFNpZ25l
+ZC1vZmYtYnk6IE1hdHRpIFZhaXR0aW5lbiA8bWF6emllc2FjY291bnRAZ21haWwuY29tPg0KPiBX
+aGlsc3Qgc2NyaXB0cyB3aWxsIHBpY2sgdXAgdGhlIHN1YnN5c3RlbSBlbnRyeSwgSSB0aGluayBp
+dCBpcw0KPiBhbHNvIGdvb2QgdG8gaGF2ZSBhbiBMOiBlbnRyeSBmb3IgbGludXgtaWlvQHZnZXIu
+a2VybmVsLm9yZw0KPiBmb3IgYW55b25lIHJlYWRpbmcgTUFJTlRBSU5FUlMgZGlyZWN0bHkgdG8g
+ZmlndXJlIG91dCB3aG8gdG8gZW1haWwuDQo+IA0KPiBBcyBzdWNoIEkndmUgYWRkZWQgb25lIHdo
+aWxzdCBhcHBseWluZy4NCg0KVGhhdCBtYWtlcyBzZW5zZS4gVGhhbmtzIQ0KDQpZb3VycywNCgkt
+LSBNYXR0aQ0KDQotLSANCk1hdHRpIFZhaXR0aW5lbg0KTGludXgga2VybmVsIGRldmVsb3BlciBh
+dCBST0hNIFNlbWljb25kdWN0b3JzDQpPdWx1IEZpbmxhbmQNCg0Kfn4gV2hlbiB0aGluZ3MgZ28g
+dXR0ZXJseSB3cm9uZyB2aW0gdXNlcnMgY2FuIGFsd2F5cyB0eXBlIDpoZWxwISB+fg0KDQo=

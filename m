@@ -2,391 +2,374 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88621613C67
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 18:44:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E690F6141E7
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Nov 2022 00:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbiJaRoX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Oct 2022 13:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46392 "EHLO
+        id S229469AbiJaXjG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Oct 2022 19:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbiJaRoV (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 13:44:21 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A64E66;
-        Mon, 31 Oct 2022 10:44:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667238260; x=1698774260;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=khMvm5RjucHwanJwri5XEEG7FV+UqF9E9pV3oopkCmQ=;
-  b=njpX7JJXRumK1g4W/Avo6xJC+MDY3yxU7s6MIbCxY0qpApGRSv+HWyd+
-   BIbliUyetAYrQ86uu6I4eqkwZ7m6ixitkMJG4UmfUgDm7Eb4Oq4hI4Vnc
-   ZhXukrp4TNcuIO7IhMtYCe0JPyyQSLYXAqWYXBnathYSRD0+KXhN3fhV9
-   t4nExhEZhVuA5qrV5/VMkMkVL6lij3vg6gKHcS/cSvtwu6MT2ljY9jucH
-   7cn+zsV5V1EEBg08eLEEbrXqhPexYCkJrXjwNBZyJiHObokrokhsSd7nY
-   U9uXQ5a4baqkzYcFWsGR7jGeLhxdosUKNF7b5CETVgwU30tSM0I3lF9tr
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="289351831"
-X-IronPort-AV: E=Sophos;i="5.95,228,1661842800"; 
-   d="scan'208";a="289351831"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2022 10:44:08 -0700
-X-IronPort-AV: E=McAfee;i="6500,9779,10517"; a="722890182"
-X-IronPort-AV: E=Sophos;i="5.95,228,1661842800"; 
-   d="scan'208";a="722890182"
-Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.88])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2022 10:44:04 -0700
-From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
-        rajat.khandelwal@intel.com,
-        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-Subject: [PATCH v7] iio: temperature: Add driver support for Maxim MAX30208
-Date:   Tue,  1 Nov 2022 23:14:09 +0530
-Message-Id: <20221101174409.316447-1-rajat.khandelwal@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229556AbiJaXjG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 19:39:06 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69EAD272C
+        for <linux-iio@vger.kernel.org>; Mon, 31 Oct 2022 16:39:04 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opeMo-00088U-Gz; Tue, 01 Nov 2022 00:38:54 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opeMi-001ZDo-0g; Tue, 01 Nov 2022 00:38:47 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opeMg-00DWhD-97; Tue, 01 Nov 2022 00:38:46 +0100
+Date:   Tue, 1 Nov 2022 00:38:43 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Miaoqian Lin <linmq006@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        Wolfram Sang <wsa@kernel.org>, kernel@pengutronix.de,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        wangjianli <wangjianli@cdjrlc.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 10/23] iio: accel: kxcjk-1013: Convert to i2c's .probe_new
+Message-ID: <20221031233843.4rbcfs3hstlkv7il@pengutronix.de>
+References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+ <20221023132302.911644-11-u.kleine-koenig@pengutronix.de>
+ <Y1WQoyek5KBwDqCd@smile.fi.intel.com>
+ <20221024070518.dnrhsijfphbhs2la@pengutronix.de>
+ <Y1ZPVw1qBx1MkZgY@smile.fi.intel.com>
+ <20221024091456.vuw3mqcokfrbrozh@pengutronix.de>
+ <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="o5axfgflv2lujcg2"
+Content-Disposition: inline
+In-Reply-To: <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
 
-Add support for max30208 driver in iio subsystem.
-Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
+--o5axfgflv2lujcg2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
----
+Hello Andy,
 
-v7:
-1. Dropped GPIOs use for now
-2. Driver name string directly used
-3. Mutex lock description added
-4. Removed noisy errors and only kept errors on larger code blocks
-5. dev_warn -> dev_err for temperature conversion failure
-6. Improvised the logic of popping out values
-7. Fixed line breaks
-8. module_i2c_driver
+On Mon, Oct 24, 2022 at 12:46:02PM +0300, Andy Shevchenko wrote:
+> On Mon, Oct 24, 2022 at 11:14:56AM +0200, Uwe Kleine-K=F6nig wrote:
+> > On Mon, Oct 24, 2022 at 11:39:51AM +0300, Andy Shevchenko wrote:
+> > > On Mon, Oct 24, 2022 at 09:05:18AM +0200, Uwe Kleine-K=F6nig wrote:
+> > > > On Sun, Oct 23, 2022 at 10:06:11PM +0300, Andy Shevchenko wrote:
+> > > > > On Sun, Oct 23, 2022 at 03:22:49PM +0200, Uwe Kleine-K=F6nig wrot=
+e:
+>=20
+> ...
+>=20
+> > > > > > +static const struct i2c_device_id kxcjk1013_id[] =3D {
+> > > > > > +	{"kxcjk1013", KXCJK1013},
+> > > > > > +	{"kxcj91008", KXCJ91008},
+> > > > > > +	{"kxtj21009", KXTJ21009},
+> > > > > > +	{"kxtf9",     KXTF9},
+> > > > > > +	{"kx023-1025", KX0231025},
+> > > > > > +	{"SMO8500",   KXCJ91008},
+> > > > > > +	{}
+> > > > > > +};
+> > > > > > +MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
+> > > > >=20
+> > > > > I don't like this part. Can we, please, find a way how to derefer=
+ence this
+> > > > > table via struct i2c_client, please?
+> > > >=20
+> > > > It would be possible to do (on top of my patch here as PoC):
+> > > >=20
+> > > > diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxc=
+jk-1013.c
+> > > > index e043dd698747..00269b25af99 100644
+> > > > --- a/drivers/iio/accel/kxcjk-1013.c
+> > > > +++ b/drivers/iio/accel/kxcjk-1013.c
+> > > > @@ -1445,7 +1445,7 @@ MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
+> > > > =20
+> > > >  static int kxcjk1013_probe(struct i2c_client *client)
+> > > >  {
+> > > > -	const struct i2c_device_id *id =3D i2c_match_id(kxcjk1013_id, cli=
+ent);
+> > > > +	const struct i2c_device_id *id =3D i2c_match_id(to_i2c_driver(cli=
+ent->dev.driver)->id_table, client);
+> > > >  	struct kxcjk1013_data *data;
+> > > >  	struct iio_dev *indio_dev;
+> > > >  	struct kxcjk_1013_platform_data *pdata;
+> > > >=20
+> > > > (only compile tested), you could even create a function or macro to=
+ make
+> > > > this a bit prettier on the source level. For the compiler loading t=
+he
+> > > > address from a local symbol instead of from two pointer dereference=
+s is
+> > > > (I guess) a bit more effective and IMHO more natural.
+> > > >=20
+> > > > *shrug*, I don't care much, but I don't like to have to rework this
+> > > > series just because you don't like this part. You even didn't give a
+> > > > rationale, I can imagine several different ones:
+> > >=20
+> > > And I don't want to have ping-ponging the pieces of code (ID tables) =
+because
+> > > some API has to be fixes or so.
+> >=20
+> > In this series it's only ping without pong.
+>=20
+> Exactly. And it means let's put my problem to someone's else shoulders.
 
-v6: Converted usleep_range to msleep as delay is quite large
+You have a problem that I fail to see. Why is defining the id table
+before the probe function bad?
 
-v5:
-1. Fixed comment position in max30208_request
-2. Use of local u8 variable to build register values
-3. Using u8 instead of s8 in data_count
-4. Removed global MAX30208_RES_MILLICELCIUS
-5. Removed 'comma' on NULL terminators
+Unless I misunderstand you, you seem to assume that in the nearer future
+someone will have the urge to put the id table below the probe function
+again. What would you think is their motivation?
 
-v4: Version comments go below line separator of signed-off-by
+> > To benefit from the local
+> > table instead of fishing the table out of client, the table must be
+> > declared already when it's used.
+>=20
+> I don't see benefit of dereferencing tables by name. The table has to be
+> available via struct driver, otherwise, how the heck we even got into the
+> ->probe() there.
 
-v3: Release the mutex lock after error gets returned
+It is possible, it's just cheaper (in cpu cycles) to calculate the
+address of the table directly (i.e. via PC + $offset) instead of via
+dereferencing two pointers.
 
-v2:
-1. Removed TODO
-2. Removed unnecessary blank spaces
-3. Corrected MC->MILLICELCIUS
-4. Comments added wherever required
-5. dev_err on i2c fails
-6. Rearranged some flows
-7. Removed PROCESSED
-8. int error return on gpio setup
-9. device_register at the end of probe
-10. Return on unsuccessful reset
-11. acpi_match_table and of_match_table added
-12. Minor quirks
+> > > >  [ ] it makes the patch bigger
+> > > >  [ ] it results in an unnatural order of symbols in the driver
+> > > >  [ ] it's some kind of duplication
+> > > >  [ ] something else
+> > > >      please elaborate: ________________________________
+> > >=20
+> > > It adds a burden to the future work with no good justification along =
+with
+> >=20
+> > This burden exists in the drivers that already today have the table
+> > above the probe function? (Ok, there are none in this series, but it
+> > happens, see for example
+> >=20
+> > 	https://lore.kernel.org/linux-rtc/20221021130706.178687-4-u.kleine-koe=
+nig@pengutronix.de
+> >=20
+> > and a few more in the rtc series.) I don't see a burden here, we're
+> > talking about the id table being defined before the probe function, rig=
+ht?
+> > How is that a burden? What am I missing?
+>=20
+> Yeah, people haven't had no idea about accessing tables via struct driver,
+> reviewers of that code neither. Should it be excuse for us to follow that
+> example?
 
- MAINTAINERS                        |   6 +
- drivers/iio/temperature/Kconfig    |  10 ++
- drivers/iio/temperature/Makefile   |   1 +
- drivers/iio/temperature/max30208.c | 220 +++++++++++++++++++++++++++++
- 4 files changed, 237 insertions(+)
- create mode 100644 drivers/iio/temperature/max30208.c
+I fail to follow you again. I talked about drivers/rtc/rtc-isl1208.c as
+it is in v6.1-rc1. There the probe function doesn't access the table at
+all. Neither via the driver link nor by name. That driver just defines
+the id table before the probe function.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f1390b8270b2..7f1fd2e31b94 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12373,6 +12373,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/regulator/maxim,max20086.yaml
- F:	drivers/regulator/max20086-regulator.c
- 
-+MAXIM MAX30208 TEMPERATURE SENSOR DRIVER
-+M:	Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	drivers/iio/temperature/max30208.c
+> > > a churn in _this_ series.
+> >=20
+> > The alternatives are: Split the patch into reorder + convert to
+> > .probe_new, or add a declaration for the id table. Among these I like
+> > the current approach besto.
+>=20
+> Alternative is to avoid reordering to begin with, no?
+
+Yeah, that could be done. But I don't see the advantage and you fail to
+explain it in a way for me to understand.
+
+So if i2c_match_id() was changed as follows:
+
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -101,9 +101,17 @@ EXPORT_SYMBOL_GPL(i2c_freq_mode_string);
+ const struct i2c_device_id *i2c_match_id(const struct i2c_device_id *id,
+ 						const struct i2c_client *client)
+ {
+-	if (!(id && client))
++	if (!client)
+ 		return NULL;
+=20
++	if (!id) {
++		struct i2c_driver *driver =3D to_i2c_driver(client->dev.driver);
 +
- MAXIM MAX77650 PMIC MFD DRIVER
- M:	Bartosz Golaszewski <brgl@bgdev.pl>
- L:	linux-kernel@vger.kernel.org
-diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
-index e8ed849e3b76..ed384f33e0c7 100644
---- a/drivers/iio/temperature/Kconfig
-+++ b/drivers/iio/temperature/Kconfig
-@@ -128,6 +128,16 @@ config TSYS02D
- 	  This driver can also be built as a module. If so, the module will
- 	  be called tsys02d.
- 
-+config MAX30208
-+	tristate "Maxim MAX30208 digital temperature sensor"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for Maxim MAX30208
-+	  digital temperature sensor connected via I2C.
-+
-+	  This driver can also be built as a module. If so, the module
-+	  will be called max30208.
-+
- config MAX31856
- 	tristate "MAX31856 thermocouple sensor"
- 	depends on SPI
-diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
-index dd08e562ffe0..dfec8c6d3019 100644
---- a/drivers/iio/temperature/Makefile
-+++ b/drivers/iio/temperature/Makefile
-@@ -7,6 +7,7 @@ obj-$(CONFIG_IQS620AT_TEMP) += iqs620at-temp.o
- obj-$(CONFIG_LTC2983) += ltc2983.o
- obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
- obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
-+obj-$(CONFIG_MAX30208) += max30208.o
- obj-$(CONFIG_MAX31856) += max31856.o
- obj-$(CONFIG_MAX31865) += max31865.o
- obj-$(CONFIG_MLX90614) += mlx90614.o
-diff --git a/drivers/iio/temperature/max30208.c b/drivers/iio/temperature/max30208.c
-new file mode 100644
-index 000000000000..27586bcad22b
---- /dev/null
-+++ b/drivers/iio/temperature/max30208.c
-@@ -0,0 +1,220 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/*
-+ * Copyright (c) Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-+ *
-+ * Maxim MAX30208 digital temperature sensor with 0.1°C accuracy
-+ * (7-bit I2C slave address (0x50 - 0x53))
-+ */
-+
-+#include <linux/bitops.h>
-+#include <linux/delay.h>
-+#include <linux/iio/iio.h>
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
-+
-+#define MAX30208_STATUS			0x00
-+#define MAX30208_STATUS_TEMP_RDY	BIT(0)
-+#define MAX30208_INT_ENABLE		0x01
-+#define MAX30208_INT_ENABLE_TEMP_RDY	BIT(0)
-+
-+#define MAX30208_FIFO_OVF_CNTR		0x06
-+#define MAX30208_FIFO_DATA_CNTR		0x07
-+#define MAX30208_FIFO_DATA		0x08
-+
-+#define MAX30208_SYSTEM_CTRL		0x0c
-+#define MAX30208_SYSTEM_CTRL_RESET	0x01
-+
-+#define MAX30208_TEMP_SENSOR_SETUP	0x14
-+#define MAX30208_TEMP_SENSOR_SETUP_CONV	BIT(0)
-+
-+struct max30208_data {
-+	struct i2c_client *client;
-+	struct iio_dev *indio_dev;
-+	struct mutex lock; /* Lock to prevent concurrent reads of temperature readings */
-+};
-+
-+static const struct iio_chan_spec max30208_channels[] = {
-+	{
-+		.type = IIO_TEMP,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+	},
-+};
-+
-+/**
-+ * max30208_request() - Request a reading
-+ * @data: Struct comprising member elements of the device
-+ *
-+ * Requests a reading from the device and waits until the conversion is ready.
-+ */
-+static int max30208_request(struct max30208_data *data)
-+{
-+	/*
-+	 * Sensor can take up to 500 ms to respond so execute a total of
-+	 * 10 retries to give the device sufficient time.
-+	 */
-+	int retries = 10;
-+	u8 regval;
-+	int ret;
-+
-+	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
-+	if (ret < 0)
-+		return ret;
-+
-+	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
-+	if (ret)
-+		return ret;
-+
-+	while (retries--) {
-+		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (ret & MAX30208_STATUS_TEMP_RDY)
-+			return 0;
-+
-+		msleep(50);
-+	}
-+	dev_err(&data->client->dev, "Temperature conversion failed, reporting the last known reading...\n");
-+
-+	return 0;
-+}
-+
-+static int max30208_update_temp(struct max30208_data *data)
-+{
-+	u8 data_count;
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+
-+	ret = max30208_request(data);
-+	if (ret)
-+		goto unlock;
-+
-+	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
-+	if (ret < 0)
-+		goto unlock;
-+	else if (!ret) {
-+		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
-+		if (ret < 0)
-+			goto unlock;
++		id =3D driver->id_table;
++		if (!id)
++			return NULL;
 +	}
 +
-+	data_count = ret;
-+
-+	while (data_count) {
-+		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
-+		if (ret < 0)
-+			goto unlock;
-+
-+		data_count--;
-+	}
-+
-+unlock:
-+	mutex_unlock(&data->lock);
-+	return ret;
-+}
-+
-+static int max30208_read(struct iio_dev *indio_dev,
-+			 struct iio_chan_spec const *chan,
-+			 int *val, int *val2, long mask)
-+{
-+	struct max30208_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = max30208_update_temp(data);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = sign_extend32(ret, 15);
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		*val = 5;
-+		return IIO_VAL_INT;
-+
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_info max30208_info = {
-+	.read_raw = max30208_read,
-+};
-+
-+static int max30208_probe(struct i2c_client *i2c)
-+{
-+	struct device *dev = &i2c->dev;
-+	struct max30208_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	data->client = i2c;
-+	mutex_init(&data->lock);
-+
-+	indio_dev->name = "max30208";
-+	indio_dev->channels = max30208_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(max30208_channels);
-+	indio_dev->info = &max30208_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, MAX30208_SYSTEM_CTRL,
-+					MAX30208_SYSTEM_CTRL_RESET);
-+	if (ret) {
-+		dev_err(dev, "Failure in performing reset\n");
-+		return ret;
-+	}
-+
-+	msleep(50);
-+
-+	ret = devm_iio_device_register(dev, indio_dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to register IIO device\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct i2c_device_id max30208_id_table[] = {
-+	{ "max30208" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, max30208_id_table);
-+
-+static const struct acpi_device_id max30208_acpi_match[] = {
-+	{ "MAX30208" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, max30208_acpi_match);
-+
-+static const struct of_device_id max30208_of_match[] = {
-+	{ .compatible = "maxim,max30208" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, max30208_of_match);
-+
-+static struct i2c_driver max30208_driver = {
-+	.driver = {
-+		.name = "max30208",
-+		.of_match_table = max30208_of_match,
-+		.acpi_match_table = ACPI_PTR(max30208_acpi_match),
-+	},
-+	.probe_new = max30208_probe,
-+	.id_table = max30208_id_table,
-+};
-+module_i2c_driver(max30208_driver);
-+
-+MODULE_AUTHOR("Rajat Khandelwal <rajat.khandelwal@linux.intel.com>");
-+MODULE_DESCRIPTION("Maxim MAX30208 digital temperature sensor");
-+MODULE_LICENSE("GPL");
--- 
-2.34.1
+ 	while (id->name[0]) {
+ 		if (strcmp(client->name, id->name) =3D=3D 0)
+ 			return id;
 
+
+the patch under discussion could be reduced to:
+
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index adc66b3615c0..b1d11c96597d 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1432,9 +1432,9 @@ static void kxcjk1013_disable_regulators(void *d)
+ 	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+ }
+=20
+-static int kxcjk1013_probe(struct i2c_client *client,
+-			   const struct i2c_device_id *id)
++static int kxcjk1013_probe(struct i2c_client *client)
+ {
++	const struct i2c_device_id *id =3D i2c_match_id(NULL, client);
+ 	struct kxcjk1013_data *data;
+ 	struct iio_dev *indio_dev;
+ 	struct kxcjk_1013_platform_data *pdata;
+@@ -1749,7 +1749,7 @@ static struct i2c_driver kxcjk1013_driver =3D {
+ 		.of_match_table =3D kxcjk1013_of_match,
+ 		.pm	=3D &kxcjk1013_pm_ops,
+ 	},
+-	.probe		=3D kxcjk1013_probe,
++	.probe_new	=3D kxcjk1013_probe,
+ 	.remove		=3D kxcjk1013_remove,
+ 	.id_table	=3D kxcjk1013_id,
+ };
+
+I assume you agree up to here.
+
+After that change there is some incentive to do
+
+diff --git a/drivers/iio/accel/kxcjk-1013.c b/drivers/iio/accel/kxcjk-1013.c
+index b1d11c96597d..e043dd698747 100644
+--- a/drivers/iio/accel/kxcjk-1013.c
++++ b/drivers/iio/accel/kxcjk-1013.c
+@@ -1432,9 +1432,20 @@ static void kxcjk1013_disable_regulators(void *d)
+ 	regulator_bulk_disable(ARRAY_SIZE(data->regulators), data->regulators);
+ }
+=20
++static const struct i2c_device_id kxcjk1013_id[] =3D {
++	{"kxcjk1013", KXCJK1013},
++	{"kxcj91008", KXCJ91008},
++	{"kxtj21009", KXTJ21009},
++	{"kxtf9",     KXTF9},
++	{"kx023-1025", KX0231025},
++	{"SMO8500",   KXCJ91008},
++	{}
++};
++MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
++
+ static int kxcjk1013_probe(struct i2c_client *client)
+ {
+-	const struct i2c_device_id *id =3D i2c_match_id(NULL, client);
++	const struct i2c_device_id *id =3D i2c_match_id(kxcjk1013_id, client);
+ 	struct kxcjk1013_data *data;
+ 	struct iio_dev *indio_dev;
+ 	struct kxcjk_1013_platform_data *pdata;
+@@ -1720,18 +1731,6 @@ static const struct acpi_device_id kx_acpi_match[] =
+=3D {
+ };
+ MODULE_DEVICE_TABLE(acpi, kx_acpi_match);
+=20
+-static const struct i2c_device_id kxcjk1013_id[] =3D {
+-	{"kxcjk1013", KXCJK1013},
+-	{"kxcj91008", KXCJ91008},
+-	{"kxtj21009", KXTJ21009},
+-	{"kxtf9",     KXTF9},
+-	{"kx023-1025", KX0231025},
+-	{"SMO8500",   KXCJ91008},
+-	{}
+-};
+-
+-MODULE_DEVICE_TABLE(i2c, kxcjk1013_id);
+-
+ static const struct of_device_id kxcjk1013_of_match[] =3D {
+ 	{ .compatible =3D "kionix,kxcjk1013", },
+ 	{ .compatible =3D "kionix,kxcj91008", },
+
+on top to safe two pointer dereferences. The sum of the two driver
+patches is exactly the effect of my patch just without the i2c core
+change. (And the two pointer dereferences that are saved by the 2nd
+patch are introduced by the first, so it's fine to not split that
+change into two parts.)
+
+> > > While I like the rest of the series, these things I would rather post=
+pone
+> > > or rework.
+> >=20
+> > There is no win in postponing, is there?[1] What would be your preferred
+> > way to rework?
+>=20
+> My understand of the probe_new is that an attempt to unify i2c with how s=
+pi
+> does.
+
+My understanding is a bit different, but this detail doesn't matter.
+
+> So, why not teach i2c_match_id() to handle this nicely for the caller?
+
+The metric for "nice" is obviously subjective. For me it's nice to pass
+a local symbol to an API function to make the function's job a tad
+easier and more effective to solve. And that even if I have to reorder
+the caller a bit.
+
+> This will allow to leave tables where they are (or move closer to struct
+> driver),
+
+As written above, reordering the driver is (IMHO) cheap enough given the
+benefit.
+
+> reduce churn with the using of current i2c_match_id() as you
+> showed the long line to get that table.
+
+Do you still remember the original patch? That one doesn't have the long
+i2c_match_id() line.
+
+(Do you see your statement is an argument for my approach? The long line
+is an indication that it's complicated to determine the address of the
+table via ->driver. You can hide that by pushing the needed effort into
+i2c_match_id() or a macro, but in the end the complexity remains for the
+CPU.)
+
+> This might need a new API to avoid
+> changing many drivers at once. But it's business as usual.
+
+My approach doesn't need a new API. That's nice, isn't it?
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--o5axfgflv2lujcg2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmNgXH4ACgkQwfwUeK3K
+7AlPSgf/XEvMxSf79HCxcgCA5d5FoCV76zG7CZ0IGIgV2f1A5i8rIwfrxwuNXTzE
+EX3XyvqgkjeeJ27p9Dm3crAT+mNYMWJq4pw/CDSfjhZ/3NYt1tSq9rQvc62N+Kaq
+FaweVTFxJClKPvR9YcR1qp0uGmkiX3EG6KwpN+yItTcdooBaIt5ZjDkcUpdWPbMj
+/UL/RbdZdlrMO0maYxeZEHsSECS//e/iM2blWkM2PQdXb4bRnVKHKyc+SI445KQP
+XpGQ+jqq4AIMfnSTrk6rBsolGSPLEy0YpBih3T3vyqmMWhRNnwt3w+PpoW5Y+XTx
+FCYnJk9h/0g5sEJH0ny2acKLGBmczg==
+=pQaA
+-----END PGP SIGNATURE-----
+
+--o5axfgflv2lujcg2--

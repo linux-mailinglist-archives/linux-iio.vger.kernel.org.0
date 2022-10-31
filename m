@@ -2,376 +2,227 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D31BC6133FC
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 11:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3CEF61345D
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 12:17:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbiJaKwl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Oct 2022 06:52:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43684 "EHLO
+        id S229510AbiJaLR0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Oct 2022 07:17:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230124AbiJaKwh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 06:52:37 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BA6E007;
-        Mon, 31 Oct 2022 03:52:36 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 29V7wATZ013358;
-        Mon, 31 Oct 2022 06:52:27 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kj6ghhtak-1
+        with ESMTP id S229482AbiJaLRZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 07:17:25 -0400
+Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D9BDF17
+        for <linux-iio@vger.kernel.org>; Mon, 31 Oct 2022 04:17:24 -0700 (PDT)
+Received: from pps.filterd (m0167090.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 29V8cK6Z004202;
+        Mon, 31 Oct 2022 07:17:14 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3kj6bc9k90-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 31 Oct 2022 06:52:27 -0400
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 29VAqQDe050445
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 31 Oct 2022 06:52:26 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 31 Oct
- 2022 06:52:25 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 31 Oct 2022 06:52:25 -0400
-Received: from rbolboac.ad.analog.com ([10.48.65.139])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 29VAq8wX021417;
-        Mon, 31 Oct 2022 06:52:17 -0400
-From:   Ramona Bolboaca <ramona.bolboaca@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Ramona Bolboaca <ramona.bolboaca@analog.com>
-Subject: [PATCH v2 3/3] drivers: iio: accel: Add support for ADXL359 device
-Date:   Mon, 31 Oct 2022 12:51:29 +0200
-Message-ID: <20221031105129.47740-4-ramona.bolboaca@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221031105129.47740-1-ramona.bolboaca@analog.com>
-References: <20221031105129.47740-1-ramona.bolboaca@analog.com>
+        Mon, 31 Oct 2022 07:17:14 -0400
+Received: from m0167090.ppops.net (m0167090.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 29VBGgAA008026;
+        Mon, 31 Oct 2022 07:17:14 -0400
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+        by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3kj6bc9k8w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 31 Oct 2022 07:17:14 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MQLwKI5KzEjiwTL6eNQ5tFUznPch0xN8Bt8pB7AjmOoHAzhQ7Ls+0dbp8TUUZ9x5lumDRQFErQZHf+wvyFfhg9NqpFSeIBY2EkZrKe0CNhS7O5HlzQP6pjiENH1fJ8/CCER69OkMDDkwDsDsem8ll9uJbi17ZgCBp4aqb3RB85FehvH2JQIJdUqQJlLGrB9N28pZvChGTzAsAvl9Uv2Tpnvpg8NU/G3d8tMVYn/sopHnsl7nQnuAKwgW3o/HillF6HcoEwP1xOOkCrMFaT7I2Bf92si17j6YHmvfpfq5F6OpzYnDPcWAu1TMy/CivRsxo+zflQVXbkPKvPjOJUB6/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+A8UuCH2qagcZjk60H9AypixOkuSQKsGfFavV2PsLzg=;
+ b=CnIf4qLoSSBk8jJhV+aKRmhHy7wuNL3d45vSFldv//6nwRwwvYTSI6n+T/a/TehO0n2o74ro49sbBI/0cH5lOZWkHagff+6KnRtuWltHxPKWS3ZAQqB7FrUfZVA2gDAB0HzRu3iUKaUFAlVwxrrASICtqQXfYpQlpLDo3BDMIN+LkfJV5zuZHNJJaQNM+m0yZQXqzR0W7ti5C6lo7VOtZ4V9e82PanYnj0M1998EPq9Gh86GmFu49em7TUdTE44ErcDe6IDKT3i5MvBBRYfoyJqPzbfZDJezNX48O+N9AOjfAhs5QvS03b1nFe9u0uQt4BOESbXSBTbHjKwrUuNKeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+A8UuCH2qagcZjk60H9AypixOkuSQKsGfFavV2PsLzg=;
+ b=pq4+i0R5ITqn1iIcA21Yg1ziuQXPMruEvqaNNLNgAWZ7MPwqB9ZbHTVDAWW+jum4sg5H8YDsMj/wO7coSxYC7mY4wYseeuirN4nciwJrYdTs7rolcafuwBcyGWd6AHPqTgkDyOSiEIlsglonnkfm6gTUZ5IdUFsvJRcayZDSqH8=
+Received: from SJ0PR03MB6778.namprd03.prod.outlook.com (2603:10b6:a03:40d::22)
+ by MW4PR03MB6635.namprd03.prod.outlook.com (2603:10b6:303:12a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5769.19; Mon, 31 Oct
+ 2022 11:17:12 +0000
+Received: from SJ0PR03MB6778.namprd03.prod.outlook.com
+ ([fe80::bdbe:d510:d09e:8abd]) by SJ0PR03MB6778.namprd03.prod.outlook.com
+ ([fe80::bdbe:d510:d09e:8abd%6]) with mapi id 15.20.5769.019; Mon, 31 Oct 2022
+ 11:17:11 +0000
+From:   "Sa, Nuno" <Nuno.Sa@analog.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: RE: [PATCH 5/5] iio: adc: cc10001: Switch remaining IIO calls in
+ probe to devm_ forms.
+Thread-Topic: [PATCH 5/5] iio: adc: cc10001: Switch remaining IIO calls in
+ probe to devm_ forms.
+Thread-Index: AQHY4YIysqW5l1L3TEijn+P5jws2bq4ob+3A
+Date:   Mon, 31 Oct 2022 11:17:11 +0000
+Message-ID: <SJ0PR03MB6778101A495B0F3C6069E2CD99379@SJ0PR03MB6778.namprd03.prod.outlook.com>
+References: <20221016170950.387751-1-jic23@kernel.org>
+ <20221016170950.387751-6-jic23@kernel.org>
+In-Reply-To: <20221016170950.387751-6-jic23@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
+ =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctOGVhNTA0NDMtNTkwZC0xMWVkLWI2YjktYmNmMT?=
+ =?iso-8859-1?Q?cxYzQ1ODgyXGFtZS10ZXN0XDhlYTUwNDQ0LTU5MGQtMTFlZC1iNmI5LWJj?=
+ =?iso-8859-1?Q?ZjE3MWM0NTg4MmJvZHkudHh0IiBzej0iMTkyMCIgdD0iMTMzMTE2ODg2Mj?=
+ =?iso-8859-1?Q?k0NDIwMDkxIiBoPSJwUFRZNWozNkF1cUFrS1RURU0rTlVIREw5WFk9IiBp?=
+ =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
+ =?iso-8859-1?Q?FFb0NBQUI3V2k5Ukd1M1lBYzE2eGt2T01xUFh6WHJHUzg0eW85Y0RBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVg1bDJLd0FBQUFBQUFBQUFBQUFBQUo0?=
+ =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
+ =?iso-8859-1?Q?JsQUdNQWRBQnpBRjhBWmdCaEFHd0Fjd0JsQUY4QVpnQnZBSE1BYVFCMEFH?=
+ =?iso-8859-1?Q?a0FkZ0JsQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFFQUFBQUFBQUFBQWdBQUFBQUFuZ0FBQUdFQV?=
+ =?iso-8859-1?Q?pBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0Iw?=
+ =?iso-8859-1?Q?QUhNQVh3QjBBR2tBWlFCeUFERUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBUUFBQUFBQUFBQUNBQUFBQUFDZUFBQUFZUUJrQUdrQVh3?=
+ =?iso-8859-1?Q?QnpBR1VBWXdCMUFISUFaUUJmQUhBQWNnQnZBR29BWlFCakFIUUFjd0JmQU?=
+ =?iso-8859-1?Q?hRQWFRQmxBSElBTWdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-1?Q?QUFBQkFBQUFBQUFBQUFJQUFBQUFBQT09Ii8+PC9tZXRhPg=3D=3D?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR03MB6778:EE_|MW4PR03MB6635:EE_
+x-ms-office365-filtering-correlation-id: 9a6bd59a-eb34-4ea7-9233-08dabb31751a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: zcbcHN/ep3KZKUGcKXvykdkpHKykmjS31YfrBMdKUfD7fWrUSbBP6TAX5KQbCz5j6qNhsNFy2jvZT7udYxiKdhuuTF1uZrwLjzEzAO8xyExjiq6nR19Kx4OWIu8Qp260DP1/TSYloIttFsahtZxEvCEKCEeWKOqGPveov84vbPO2f2H7VGay/0MRO1q0FRaskh/cvQskueBu2f5xtfdbXT4mWmQgtFKohpFQEkkOoasrex5/sXDYdhCmqRggFZ16lozkgXV8hsATTErFm7qNUg/uY6If1e/MSsgS66Tm9av80ozJTZbdPiEhg12dC0gH5hQ619RQxrSsDjSKnpA5UtjlwxwRZlfmS/b8p61zA7Y5Bd3PV+X7p+uiWjcwX89juQmBRasNKbMFaw0mrNyxBYjJd5slDmdfgVJ9NpscoXSnq6NL8XRaJzGFd60PrcxVoby9ML4lWcMbnrm9xxMTU+ofzUcWosG4vr5fptwltBfiDr0FQcIUEvwp7R8Xk6y1+hTtxdetn/PxTWe15KJ6FazJXxjbyJJUsraLzcYjKOqZJDfQkO9zncG03Ek50bs1DBEMV4gybTzb21kXLxp6evMbCC8uZlNReF2HbhzHMXOnYiOzLHmRducTwcOWleeU5DD6Ro6flzViiO5iStYun/3zHJ5duv6cqzv02a2HDovj1IxVpvXFTn1223Goc0bR+f3D7aWjqQIpgNvP7TUU1IA+MI0Irv6zBvOmctSe3yonIvlxgMiuVP2IoR/471eyq0coD4RsZwB47RVatMxtiw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6778.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(136003)(346002)(376002)(366004)(396003)(451199015)(38070700005)(55016003)(33656002)(86362001)(38100700002)(122000001)(110136005)(8676002)(316002)(53546011)(478600001)(7696005)(6506007)(71200400001)(9686003)(26005)(76116006)(41300700001)(8936002)(5660300002)(52536014)(64756008)(66476007)(83380400001)(66946007)(186003)(66446008)(66556008)(2906002)(4326008);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Rhamsuwm/svjL31lkKe8ZJSmb1LhXvJgCIQAPmvnKJZFT2IeuXfTmRhLdk?=
+ =?iso-8859-1?Q?v+u2tpsrUHZHcbCV++wzsIPZa0SGjTOdrThecpKgJAxJVGaTkZ3bJSP3X4?=
+ =?iso-8859-1?Q?CohMfnDMeVrlTxzAcZ86LXHF4OdOJp+Z9YcaNZtM/7qmPUj9MmC8Kce3EO?=
+ =?iso-8859-1?Q?58YZdP5HQCFvu/4Bka6dTHH8vTwfD2+H9aRouy/Xrb/De8sVJKmK8K8WiK?=
+ =?iso-8859-1?Q?2+JHkxN2mI5aR+w7kYIW1HHx/zpflRIgCA4l+TwT5E/DVQ5aJq6ki9or+G?=
+ =?iso-8859-1?Q?feC1F8tOQTBhgFxy7EnvQTlMvcH+XI5NRuZsl75tbK8ECEjeU78wwT/cDq?=
+ =?iso-8859-1?Q?u3fOfccwDdo55o3sYyBMpQ3mvN2RVVKffNTj400ygK4Bbq4dAKSe/mY+aF?=
+ =?iso-8859-1?Q?tGEs0KYOxHyYL9LOVNl59d3vkSUiX3omXz+/Xos7V6OmgawNw8a3T0otbM?=
+ =?iso-8859-1?Q?vaPO527w0w8Be+WKL+J44/21hwE1jyI5N/BpR7EAgrmFreGWMUG3P2m6MJ?=
+ =?iso-8859-1?Q?YsyZplBph/1qyjHJGzqF+U8lw8YdhJl/9DBr6h/EDxfIXACgpADPaCRef/?=
+ =?iso-8859-1?Q?v1/iHYyh+pQfeWpDOL56PlKoFMZWk6au6I0pZBGCMkQxjIRqauziZnU/oW?=
+ =?iso-8859-1?Q?1ElZyF68A7yq1KBfuV9DabCu6IMD8AguK8zCJjvcLZSqu7Z2jJSYQNLuEE?=
+ =?iso-8859-1?Q?DgEXwbbkoXL4JZ613Txr5pAL46VGLi+0dkE0/wyTbWSMlRw0vVvLtP0FZQ?=
+ =?iso-8859-1?Q?Wm9xGCXlrw+U/ran8lhM9r64M8Fojcv/Pa0foV9Yg1i711yDhRtkhbbzRD?=
+ =?iso-8859-1?Q?h1NYWrDf86k7a93stGlVukQQBIMdmul+uhsPjsR2Vac2EMwXP6S5MM7f1W?=
+ =?iso-8859-1?Q?G69qoKYh5ulTpyIp2uRuVeElVfB/b/mmXHrIw3obwsNS0wsUy35TBaRJsO?=
+ =?iso-8859-1?Q?vWGouPcnKuk8wnA/YQ0HE0yM+vSjLbIn8a/VDcuCeGpHJ5xN88IMcVydZ4?=
+ =?iso-8859-1?Q?S3rsZCBqlJyHFsUi1tlL5fZSbah+j461UP63Duq0skOuNk/o4H9YLUDFq3?=
+ =?iso-8859-1?Q?7wyW2rHnV4h8INYF+1QniTIcsc8hLGJECyQl6LqdvpYK38QU11XU3w2DmT?=
+ =?iso-8859-1?Q?sVZ21IzfZpWY1iSRsPjhRmY6y2yKoa6kKFNwX1JoSDTsxzh7v6YVlf5tOF?=
+ =?iso-8859-1?Q?4DVOdjlu2VzgRWTRsIghWBtHpU6rnTfmuq/DFlu2gDBAvGdiVzcCiMFFCZ?=
+ =?iso-8859-1?Q?sVt/FSz0qbnZd6vwPJPw78f+s3wc999fyhQ3l93vmV9YmAadBXG4qnnboB?=
+ =?iso-8859-1?Q?Xrt1C+iZrJwYcgy2hTS/WMNM3e+aEbyZkUlbR2zG/rCe8pbgYS18ZbJH1K?=
+ =?iso-8859-1?Q?711g3UO5fAKqb04LsruDYpSG24ppqbsp0gvcnlJGuED5qBFpVG2M0rA5Jo?=
+ =?iso-8859-1?Q?Ggtb06I2IqGapPMYdhq2JI0J0X/sHLQhTbfUOq3CYYC/vQcuMxKGC63p5R?=
+ =?iso-8859-1?Q?Yoyyi60jwJHElNjf0hKxK7rA16Qg0meDTT+8ch8+SPVaGoiQx2vWH8DUPg?=
+ =?iso-8859-1?Q?D7YVNtlgv6mcR5nE5FuHJAzRf+bJYgH63u8vDXZY+dK6BWK7RVSWvtxSpc?=
+ =?iso-8859-1?Q?pvjwmT33fLnAdybCJY/IS6NPcAr6OK5D/G?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: jSuF_PVMaP3pZXsyFzo4r-BZTrAyZ3GC
-X-Proofpoint-ORIG-GUID: jSuF_PVMaP3pZXsyFzo4r-BZTrAyZ3GC
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6778.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9a6bd59a-eb34-4ea7-9233-08dabb31751a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2022 11:17:11.8501
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iBaSV0JMqueEl5FfY+Lz1y+Zv93y77fyT3LZIJQHfRXQbQsfbbWAdgZKEmbyXAy5L9YN7z+Q70BhTgMwssc1dg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR03MB6635
+X-Proofpoint-ORIG-GUID: YfF1aM4qeoSLNPcMQzedlETr0zcgPj_J
+X-Proofpoint-GUID: 9pbHIuThyB7eM2aFUKINjGD651uTrynY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-10-31_06,2022-10-31_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0
- mlxlogscore=999 suspectscore=0 priorityscore=1501 spamscore=0
- clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2210310068
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2210310071
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add support for ADXL359 device in already existing ADXL355 driver.
 
-Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adxl359.pdf
-Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
----
-changes in v2:
- - Added missing spaces in subject
- - Added Datasheet tag in commit message
- - Removed type field from adxl355_chip_info
- - Added fields for acceleration scale and temperature offset in 
-   adxl355_chip_info structure
- - Added constant data for acceleration scale and temperature offset specific
-   to each device in adxl35x_chip_info
- - Moved scale and offset documentation to adxl35x_chip_info definition
- - Moved device_get_match_data inside if (!chip_data) {} block
- drivers/iio/accel/adxl355.h      | 21 +++++++-
- drivers/iio/accel/adxl355_core.c | 85 +++++++++++++++++++++++++-------
- drivers/iio/accel/adxl355_i2c.c  | 22 +++++++--
- drivers/iio/accel/adxl355_spi.c  | 19 +++++--
- 4 files changed, 120 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl355.h b/drivers/iio/accel/adxl355.h
-index 6dd49b13e4fd..3a08a1808e86 100644
---- a/drivers/iio/accel/adxl355.h
-+++ b/drivers/iio/accel/adxl355.h
-@@ -10,12 +10,31 @@
- 
- #include <linux/regmap.h>
- 
-+enum adxl355_device_type {
-+	ADXL355,
-+	ADXL359,
-+};
-+
-+struct adxl355_fractional_type {
-+	int integer;
-+	int decimal;
-+};
-+
- struct device;
- 
-+struct adxl355_chip_info {
-+	const char			*name;
-+	u8				part_id;
-+	struct adxl355_fractional_type	accel_scale;
-+	struct adxl355_fractional_type	temp_offset;
-+
-+};
-+
- extern const struct regmap_access_table adxl355_readable_regs_tbl;
- extern const struct regmap_access_table adxl355_writeable_regs_tbl;
-+extern const struct adxl355_chip_info adxl35x_chip_info[];
- 
- int adxl355_core_probe(struct device *dev, struct regmap *regmap,
--		       const char *name);
-+		       const struct adxl355_chip_info *chip_info);
- 
- #endif /* _ADXL355_H_ */
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index dd08253d66d0..c501ad9af631 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -60,6 +60,7 @@
- #define ADXL355_DEVID_AD_VAL		0xAD
- #define ADXL355_DEVID_MST_VAL		0x1D
- #define ADXL355_PARTID_VAL		0xED
-+#define ADXL359_PARTID_VAL		0xE9
- #define ADXL355_RESET_CODE		0x52
- 
- static const struct regmap_range adxl355_read_reg_range[] = {
-@@ -83,6 +84,60 @@ const struct regmap_access_table adxl355_writeable_regs_tbl = {
- };
- EXPORT_SYMBOL_NS_GPL(adxl355_writeable_regs_tbl, IIO_ADXL355);
- 
-+const struct adxl355_chip_info adxl35x_chip_info[] = {
-+	[ADXL355] = {
-+		.name = "adxl355",
-+		.part_id = ADXL355_PARTID_VAL,
-+		/*
-+		 * At +/- 2g with 20-bit resolution, scale is given in datasheet
-+		 * as 3.9ug/LSB = 0.0000039 * 9.80665 = 0.00003824593 m/s^2.
-+		 */
-+		.accel_scale = {
-+			.integer = 0,
-+			.decimal = 38245,
-+		},
-+		/*
-+		 * The datasheet defines an intercept of 1885 LSB at 25 degC
-+		 * and a slope of -9.05 LSB/C. The following formula can be used
-+		 * to find the temperature:
-+		 * Temp = ((RAW - 1885)/(-9.05)) + 25 but this doesn't follow
-+		 * the format of the IIO which is Temp = (RAW + OFFSET) * SCALE.
-+		 * Hence using some rearranging we get the scale as -110.497238
-+		 * and offset as -2111.25.
-+		 */
-+		.temp_offset = {
-+			.integer =  -2111,
-+			.decimal = 250000,
-+		},
-+	},
-+	[ADXL359] = {
-+		.name = "adxl359",
-+		.part_id = ADXL359_PARTID_VAL,
-+		/*
-+		 * At +/- 10g with 20-bit resolution, scale is given in datasheet
-+		 * as 19.5ug/LSB = 0.0000195 * 9.80665 = 0.0.00019122967 m/s^2.
-+		 */
-+		.accel_scale = {
-+			.integer = 0,
-+			.decimal = 191229,
-+		},
-+		/*
-+		 * The datasheet defines an intercept of 1852 LSB at 25 degC
-+		 * and a slope of -9.05 LSB/C. The following formula can be used
-+		 * to find the temperature:
-+		 * Temp = ((RAW - 1852)/(-9.05)) + 25 but this doesn't follow
-+		 * the format of the IIO which is Temp = (RAW + OFFSET) * SCALE.
-+		 * Hence using some rearranging we get the scale as -110.497238
-+		 * and offset as -2079.25.
-+		 */
-+		.temp_offset = {
-+			.integer = -2079,
-+			.decimal = 250000,
-+		},
-+	},
-+};
-+EXPORT_SYMBOL_NS_GPL(adxl35x_chip_info, IIO_ADXL355);
-+
- enum adxl355_op_mode {
- 	ADXL355_MEASUREMENT,
- 	ADXL355_STANDBY,
-@@ -162,6 +217,7 @@ static const struct adxl355_chan_info adxl355_chans[] = {
- };
- 
- struct adxl355_data {
-+	const struct adxl355_chip_info *chip_info;
- 	struct regmap *regmap;
- 	struct device *dev;
- 	struct mutex lock; /* lock to protect op_mode */
-@@ -456,33 +512,23 @@ static int adxl355_read_raw(struct iio_dev *indio_dev,
- 
- 	case IIO_CHAN_INFO_SCALE:
- 		switch (chan->type) {
--		/*
--		 * The datasheet defines an intercept of 1885 LSB at 25 degC
--		 * and a slope of -9.05 LSB/C. The following formula can be used
--		 * to find the temperature:
--		 * Temp = ((RAW - 1885)/(-9.05)) + 25 but this doesn't follow
--		 * the format of the IIO which is Temp = (RAW + OFFSET) * SCALE.
--		 * Hence using some rearranging we get the scale as -110.497238
--		 * and offset as -2111.25.
--		 */
- 		case IIO_TEMP:
-+			/* Temperature scale is -110.497238.
-+			 * See the detailed explanation in adxl35x_chip_info definition above.
-+			 */
- 			*val = -110;
- 			*val2 = 497238;
- 			return IIO_VAL_INT_PLUS_MICRO;
--		/*
--		 * At +/- 2g with 20-bit resolution, scale is given in datasheet
--		 * as 3.9ug/LSB = 0.0000039 * 9.80665 = 0.00003824593 m/s^2.
--		 */
- 		case IIO_ACCEL:
--			*val = 0;
--			*val2 = 38245;
-+			*val = data->chip_info->accel_scale.integer;
-+			*val2 = data->chip_info->accel_scale.decimal;
- 			return IIO_VAL_INT_PLUS_NANO;
- 		default:
- 			return -EINVAL;
- 		}
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = -2111;
--		*val2 = 250000;
-+		*val = data->chip_info->temp_offset.integer;
-+		*val2 = data->chip_info->temp_offset.decimal;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_CALIBBIAS:
- 		*val = sign_extend32(data->calibbias[chan->address], 15);
-@@ -705,7 +751,7 @@ static int adxl355_probe_trigger(struct iio_dev *indio_dev, int irq)
- }
- 
- int adxl355_core_probe(struct device *dev, struct regmap *regmap,
--		       const char *name)
-+		       const struct adxl355_chip_info *chip_info)
- {
- 	struct adxl355_data *data;
- 	struct iio_dev *indio_dev;
-@@ -720,9 +766,10 @@ int adxl355_core_probe(struct device *dev, struct regmap *regmap,
- 	data->regmap = regmap;
- 	data->dev = dev;
- 	data->op_mode = ADXL355_STANDBY;
-+	data->chip_info = chip_info;
- 	mutex_init(&data->lock);
- 
--	indio_dev->name = name;
-+	indio_dev->name = chip_info->name;
- 	indio_dev->info = &adxl355_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = adxl355_channels;
-diff --git a/drivers/iio/accel/adxl355_i2c.c b/drivers/iio/accel/adxl355_i2c.c
-index f67d57921c81..6cde5ccac06b 100644
---- a/drivers/iio/accel/adxl355_i2c.c
-+++ b/drivers/iio/accel/adxl355_i2c.c
-@@ -23,6 +23,20 @@ static const struct regmap_config adxl355_i2c_regmap_config = {
- static int adxl355_i2c_probe(struct i2c_client *client)
- {
- 	struct regmap *regmap;
-+	const struct adxl355_chip_info *chip_data;
-+	const struct i2c_device_id *adxl355;
-+
-+	chip_data = device_get_match_data(&client->dev);
-+	if (!chip_data) {
-+		adxl355 = to_i2c_driver(client->dev.driver)->id_table;
-+		if (!adxl355)
-+			return -EINVAL;
-+
-+		chip_data = (void *)i2c_match_id(adxl355, client)->driver_data;
-+
-+		if (!chip_data)
-+			return -EINVAL;
-+	}
- 
- 	regmap = devm_regmap_init_i2c(client, &adxl355_i2c_regmap_config);
- 	if (IS_ERR(regmap)) {
-@@ -32,17 +46,19 @@ static int adxl355_i2c_probe(struct i2c_client *client)
- 		return PTR_ERR(regmap);
- 	}
- 
--	return adxl355_core_probe(&client->dev, regmap, client->name);
-+	return adxl355_core_probe(&client->dev, regmap, chip_data);
- }
- 
- static const struct i2c_device_id adxl355_i2c_id[] = {
--	{ "adxl355", 0 },
-+	{ "adxl355", (kernel_ulong_t)&adxl35x_chip_info[ADXL355] },
-+	{ "adxl359", (kernel_ulong_t)&adxl35x_chip_info[ADXL359] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, adxl355_i2c_id);
- 
- static const struct of_device_id adxl355_of_match[] = {
--	{ .compatible = "adi,adxl355" },
-+	{ .compatible = "adi,adxl355", .data = &adxl35x_chip_info[ADXL355] },
-+	{ .compatible = "adi,adxl359", .data = &adxl35x_chip_info[ADXL359] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, adxl355_of_match);
-diff --git a/drivers/iio/accel/adxl355_spi.c b/drivers/iio/accel/adxl355_spi.c
-index 5fe986ae03f6..fc99534d91ff 100644
---- a/drivers/iio/accel/adxl355_spi.c
-+++ b/drivers/iio/accel/adxl355_spi.c
-@@ -9,6 +9,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/regmap.h>
- #include <linux/spi/spi.h>
-+#include <linux/property.h>
- 
- #include "adxl355.h"
- 
-@@ -24,9 +25,17 @@ static const struct regmap_config adxl355_spi_regmap_config = {
- 
- static int adxl355_spi_probe(struct spi_device *spi)
- {
--	const struct spi_device_id *id = spi_get_device_id(spi);
-+	const struct adxl355_chip_info *chip_data;
- 	struct regmap *regmap;
- 
-+	chip_data = device_get_match_data(&spi->dev);
-+	if (!chip_data) {
-+		chip_data = (void *)spi_get_device_id(spi)->driver_data;
-+
-+		if (!chip_data)
-+			return -EINVAL;
-+	}
-+
- 	regmap = devm_regmap_init_spi(spi, &adxl355_spi_regmap_config);
- 	if (IS_ERR(regmap)) {
- 		dev_err(&spi->dev, "Error initializing spi regmap: %ld\n",
-@@ -35,17 +44,19 @@ static int adxl355_spi_probe(struct spi_device *spi)
- 		return PTR_ERR(regmap);
- 	}
- 
--	return adxl355_core_probe(&spi->dev, regmap, id->name);
-+	return adxl355_core_probe(&spi->dev, regmap, chip_data);
- }
- 
- static const struct spi_device_id adxl355_spi_id[] = {
--	{ "adxl355", 0 },
-+	{ "adxl355", (kernel_ulong_t)&adxl35x_chip_info[ADXL355] },
-+	{ "adxl359", (kernel_ulong_t)&adxl35x_chip_info[ADXL359] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, adxl355_spi_id);
- 
- static const struct of_device_id adxl355_of_match[] = {
--	{ .compatible = "adi,adxl355" },
-+	{ .compatible = "adi,adxl355", .data = &adxl35x_chip_info[ADXL355] },
-+	{ .compatible = "adi,adxl359", .data = &adxl35x_chip_info[ADXL359] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, adxl355_of_match);
--- 
-2.25.1
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Sunday, October 16, 2022 7:10 PM
+> To: linux-iio@vger.kernel.org
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Subject: [PATCH 5/5] iio: adc: cc10001: Switch remaining IIO calls in pro=
+be to
+> devm_ forms.
+>=20
+> [External]
+>=20
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>=20
+> As everything else is now handled by devm managed releases the
+> triggered buffer setup and IIO device registration can also be
+> moved over to their devm forms allowing dropping of remove().
+>=20
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/adc/cc10001_adc.c | 28 +++-------------------------
+>  1 file changed, 3 insertions(+), 25 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/cc10001_adc.c b/drivers/iio/adc/cc10001_adc.=
+c
+> index b0daaec7ff16..ab71004ea8f1 100644
+> --- a/drivers/iio/adc/cc10001_adc.c
+> +++ b/drivers/iio/adc/cc10001_adc.c
+> @@ -390,33 +390,12 @@ static int cc10001_adc_probe(struct
+> platform_device *pdev)
+>=20
+>  	mutex_init(&adc_dev->lock);
+>=20
+> -	ret =3D iio_triggered_buffer_setup(indio_dev, NULL,
+> -					 &cc10001_adc_trigger_h, NULL);
+> +	ret =3D devm_iio_triggered_buffer_setup(dev, indio_dev, NULL,
+> +					      &cc10001_adc_trigger_h, NULL);
+>  	if (ret < 0)
+>  		return ret;
+>=20
+> -	ret =3D iio_device_register(indio_dev);
+> -	if (ret < 0)
+> -		goto err_cleanup_buffer;
+> -
+> -	platform_set_drvdata(pdev, indio_dev);
+> -
 
+I wonder if it's obvious to everyone that removing this call as a consequen=
+ce
+of not needing  .remove() is clear enough that it does not deserve a mentio=
+n
+in the commit message?
+
+Note that I don't find it particular important so I will still ack it and l=
+eave it
+up to you :)
+
+
+- Nuno S=E1

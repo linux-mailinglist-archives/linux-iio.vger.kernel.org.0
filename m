@@ -2,102 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90B1261333A
-	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 11:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 432E66133F7
+	for <lists+linux-iio@lfdr.de>; Mon, 31 Oct 2022 11:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230167AbiJaKHC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 31 Oct 2022 06:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33148 "EHLO
+        id S230043AbiJaKwf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 31 Oct 2022 06:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230158AbiJaKHB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 06:07:01 -0400
-Received: from msg-4.mailo.com (msg-4.mailo.com [213.182.54.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAF9DF76;
-        Mon, 31 Oct 2022 03:06:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
-        t=1667210786; bh=HVFcKalrqVMRbmdZAkMzLwZC0a2WrrG0XS7qk33EsGE=;
-        h=X-EA-Auth:Date:From:To:Cc:Subject:Message-ID:References:
-         MIME-Version:Content-Type:In-Reply-To;
-        b=QCIc4XbmZ8KV7vNQ87djZ7QmPWllpqkFXsk8YI+xrr/sfBTIrJ202ch51OMWvTBxL
-         hI37h1K+9uJ7nLPz1whq4WgZksQzyLCv5amOiiOMp1IeSYMPDZZJnN5Qa1QuQ4XSbm
-         Tfqa9fzci/AcUmU55Vetwjp1SCjXdQB4+Cc68RFA=
-Received: by b-4.in.mailobj.net [192.168.90.14] with ESMTP
-        via [213.182.55.206]
-        Mon, 31 Oct 2022 11:06:26 +0100 (CET)
-X-EA-Auth: 1a5viqWGMQ4L4O2TH9RfFTgPhO6OEceNDEDbuwFwr9bd6cvaPQrORviVhAVhWL9/eY4g/AIWOHuGtdXjKlYl6p/gFcutTA1d
-Date:   Mon, 31 Oct 2022 15:36:21 +0530
-From:   Deepak R Varma <drv@mailo.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     outreachy@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: ad5933: Use div64_ul instead of do_div
-Message-ID: <Y1+eHU9gcKcW2Zsf@ubunlion>
-References: <Y1r4EaDvEipzhaaf@ubunlion>
- <Y1zbyJPF+YUY6xIh@kroah.com>
+        with ESMTP id S229707AbiJaKwd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 31 Oct 2022 06:52:33 -0400
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD022AD0;
+        Mon, 31 Oct 2022 03:52:32 -0700 (PDT)
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 29V7eQQ0013391;
+        Mon, 31 Oct 2022 06:52:23 -0400
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kj6ghhtaa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 31 Oct 2022 06:52:23 -0400
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 29VAqMnY050436
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 31 Oct 2022 06:52:22 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 31 Oct
+ 2022 06:52:21 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 31 Oct 2022 06:52:21 -0400
+Received: from rbolboac.ad.analog.com ([10.48.65.139])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 29VAq8wU021417;
+        Mon, 31 Oct 2022 06:52:11 -0400
+From:   Ramona Bolboaca <ramona.bolboaca@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Ramona Bolboaca <ramona.bolboaca@analog.com>
+Subject: [PATCH v2 0/3] Add ADXL359 support
+Date:   Mon, 31 Oct 2022 12:51:26 +0200
+Message-ID: <20221031105129.47740-1-ramona.bolboaca@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y1zbyJPF+YUY6xIh@kroah.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: CQhmixAvpqOYPlI6OXi-NrKm49wTObUQ
+X-Proofpoint-ORIG-GUID: CQhmixAvpqOYPlI6OXi-NrKm49wTObUQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-10-31_06,2022-10-31_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 suspectscore=0 priorityscore=1501 spamscore=0
+ clxscore=1015 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2210310068
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Oct 29, 2022 at 09:52:40AM +0200, Greg Kroah-Hartman wrote:
-> On Fri, Oct 28, 2022 at 02:58:49AM +0530, Deepak R Varma wrote:
-> > do_div() does a 64-by-32 division. Here the divisor is an unsigned long
-> > which on some platforms is 64 bit wide. So use div64_ul instead of do_div
-> > to avoid a possible truncation. Issue was identified using the
-> > coccicheck tool.
-> >
-> > Signed-off-by: Deepak R Varma <drv@mailo.com>
-> > ---
-> >  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > index f177b20f0f2d..730bb31a20d8 100644
-> > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > @@ -196,7 +196,7 @@ static int ad5933_set_freq(struct ad5933_state *st,
-> >  	} dat;
-> >
-> >  	freqreg = (u64)freq * (u64)(1 << 27);
-> > -	do_div(freqreg, st->mclk_hz / 4);
-> > +	freqreg = div64_ul(freqreg, st->mclk_hz / 4);
-> >
-> >  	switch (reg) {
-> >  	case AD5933_REG_FREQ_START:
-> > --
-> > 2.34.1
->
-> No, this isn't ok, please read the mailing list archives for why these
-> changes are not going to be accepted:
-> 	https://lore.kernel.org/r/e2ec77060cc84a33b49d5fd11d7867f6@AcuMS.aculab.com
->
-> Please always at least look at the archives of the past few weeks as to
-> if changes like this are able to be accepted or not.
+Add support for ADXL359 device in existing ADXL355 driver. 
 
-Hello Greg,
-My apologies for not looking at the lore mailing archive. I only looked at the
-past git commits and found a few similar changes accepted in the past. My bad. I
-will always look at the mailing archive as well going forward.
+The digital output ADXL359 is a low noise density, low 0 g offset drift,
+low power, 3-axis microelectromechanical system (MEMS) accelerometer with
+selectable measurement ranges. The ADXL359 supports the ±10 g, ±20 g, 
+and ±40 g ranges.
 
-There are other review comments from the experts on similar patches. I
-appreciate everyone's time and comment. I will look at those and revert
-accordingly.
+Ramona Bolboaca (3):
+  drivers: iio: accel: Use warning if invalid device id is detected
+  dt-bindings: iio: accel: Add docs for ADXL359
+  drivers: iio: accel: Add support for ADXL359 device
 
-Thank you,
-./drv
->
-> thanks,
->
-> greg k-h
+ .../bindings/iio/accel/adi,adxl355.yaml       |  8 +-
+ drivers/iio/accel/adxl355.h                   | 21 ++++-
+ drivers/iio/accel/adxl355_core.c              | 91 ++++++++++++++-----
+ drivers/iio/accel/adxl355_i2c.c               | 22 ++++-
+ drivers/iio/accel/adxl355_spi.c               | 19 +++-
+ 5 files changed, 127 insertions(+), 34 deletions(-)
 
+-- 
+2.25.1
 

@@ -2,64 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 339AE614B5C
-	for <lists+linux-iio@lfdr.de>; Tue,  1 Nov 2022 14:09:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA4A5614D25
+	for <lists+linux-iio@lfdr.de>; Tue,  1 Nov 2022 15:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbiKANJk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Nov 2022 09:09:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45120 "EHLO
+        id S230264AbiKAOys (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 1 Nov 2022 10:54:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiKANJj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Nov 2022 09:09:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9665F19C02;
-        Tue,  1 Nov 2022 06:09:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 46FF4B81BD2;
-        Tue,  1 Nov 2022 13:09:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C83FC433D6;
-        Tue,  1 Nov 2022 13:09:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667308176;
-        bh=WSufmy9yVEDlZ5qbeQU4D1okCj9Nr92AV/WW56C6udc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PASCSiEJHM++/+xAG66nSY5pokQStirVMO2ZuO6x2LH0sLyVpuLorIfb0wx29mPFy
-         w2hbTiPoWnqaMB5AHdMO4WSXa/d8x0sy7hhcmwZxjlkCcABr/kSw+4Y+r20HvtMBOL
-         grEAWqq2V7GpgaGSO0IAo1VFQxI6qICRJj6dGq48VpQX+Kr+kIVZ9xbkome0SSN5bx
-         tHTJzG5k2hn00w//Wpmn18nd1E0OOaFx+L0fkptbEEghQ9Ruc3BhoUWjheVpCy9c0E
-         jIMfdzZf8PNu7kUqzES1fPQFDqhQYmOGyQZi1u1r/BdfdBNQqroQA7t/YzTuS/VHX/
-         BGxlWGmSOW2BQ==
-Date:   Tue, 1 Nov 2022 14:09:32 +0100
-From:   Wolfram Sang <wsa@kernel.org>
+        with ESMTP id S230189AbiKAOyj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Nov 2022 10:54:39 -0400
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E636321
+        for <linux-iio@vger.kernel.org>; Tue,  1 Nov 2022 07:54:37 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opsel-0008IO-H5; Tue, 01 Nov 2022 15:54:23 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opsel-001hAV-Lf; Tue, 01 Nov 2022 15:54:22 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1opsej-00DhGO-P9; Tue, 01 Nov 2022 15:54:21 +0100
+Date:   Tue, 1 Nov 2022 15:54:21 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>
 Cc:     linux-iio@vger.kernel.org,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [RFC PATCH 1/2] i2c: core: Introduce i2c_client_get_device_id
  helper function
-Message-ID: <Y2EajA8DU4WXLSfE@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>, linux-iio@vger.kernel.org,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Message-ID: <20221101145421.jwytax2srno4hhrl@pengutronix.de>
 References: <cover.1667151588.git.ang.iglesiasg@gmail.com>
  <aeac9f372ffe0013757e261229e6e23f76f2d8f9.1667151588.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M69caHwk2wYuVsmJ"
+        protocol="application/pgp-signature"; boundary="sotept4hn6coqzfv"
 Content-Disposition: inline
 In-Reply-To: <aeac9f372ffe0013757e261229e6e23f76f2d8f9.1667151588.git.ang.iglesiasg@gmail.com>
-X-Spam-Status: No, score=-8.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,8 +58,8 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---M69caHwk2wYuVsmJ
-Content-Type: text/plain; charset=utf-8
+--sotept4hn6coqzfv
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
@@ -83,32 +73,62 @@ On Sun, Oct 30, 2022 at 06:52:18PM +0100, Angel Iglesias wrote:
 >=20
 > Link: https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koeni=
 g@pengutronix.de/
-> Suggested-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
+> Suggested-by: Nuno S=E1 <noname.nuno@gmail.com>
 > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > Suggested-by: Jonathan Cameron <jic23@kernel.org>
 > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> ---
+>  drivers/i2c/i2c-core-base.c | 15 +++++++++++++++
+>  include/linux/i2c.h         |  1 +
+>  2 files changed, 16 insertions(+)
+>=20
+> diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+> index b4edf10e8fd0..e6623226e393 100644
+> --- a/drivers/i2c/i2c-core-base.c
+> +++ b/drivers/i2c/i2c-core-base.c
+> @@ -2236,6 +2236,21 @@ int i2c_get_device_id(const struct i2c_client *cli=
+ent,
+>  }
+>  EXPORT_SYMBOL_GPL(i2c_get_device_id);
+> =20
+> +/**
+> + * i2c_client_get_device_id - get the driver match table entry of a devi=
+ce
+> + * @client: the device to query
+> + *
+> + * Returns a pointer to the matching entry if found, NULL otherwise.
+> + */
+> +const struct i2c_device_id *i2c_client_get_device_id(const struct i2c_cl=
+ient *client)
+> +{
+> +	const struct i2c_driver *drv =3D to_i2c_driver(client->dev.driver);
+> +
+> +	return i2c_match_id(drv->id_table, client);
+> +
 
-Looks good to me!
+I'd drop the empty line after the return. Is it worth to note in a
+comment that it only works for bound clients? (Oopses otherwise)
 
+Best regards
+Uwe
 
---M69caHwk2wYuVsmJ
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--sotept4hn6coqzfv
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNhGogACgkQFA3kzBSg
-KbY3tg//fGMtP+NadBILucb+yhhywXppgoDc6rkziK8K0CL9gvUom+sHDNa0x7eQ
-E7Ep7evCaFpr7oxtcG3nZEbCIS5OKff5x01SjNUANOOU/hoeSG1b9nXvsMhR/OEc
-6xEDCUedXd5DOlqt+OLa1s1q/yaE49KNKkPLq65n3iD8v3JQECnwc90m5D40Gbss
-O/8ZKoaWzSgP/WGcb8Xuf+0rp3lhXJgFPUXvzv/iWhXTuMsjeuyD+u3oIx1k6nkV
-tYqt40Y/s/0ooswMZqz0fcb6DeTyWMfcPXZ6aE55Mn31wit32+0H9E899vT+Kdkx
-BVJ1n30palDw1uKPX66p2NhBua56GGrqR67RaRpA4S+uxXZkZl5G7rF1uobWIcgs
-khvcpiLpL1bGBLI4BA33CtdWtU2/sRtP6vjebwOi0YTeX9E09YLaY8xtEX9PERZJ
-8qKil7+nwSe2lQ6bOfRfOwcOf0PAH4fIY7I0mhQwuJxn/z7emH9RaqzAFL4TRh5j
-VfT/m5WQl5cjLi62cvKqK8jnEoEPsuJ3JoKtRi/im8AWsLif8Jo8XmrhwnT7v9uR
-iH343EKEeeOG1OP6Vk6kNAPz09HAz2UMQ6Dd9I5cme6/sEV9Ls/gyhKlJ5a9g4og
-vVljeG2+ifhlHQl7o5sLNz9nr/IvhBphBFrn9xY1sfxIbuzncvw=
-=DRDF
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmNhMxoACgkQwfwUeK3K
+7AnawQgAiVCPA8MToHXg86Pja8R0Ak0Mbzo6HxZefCCg8XC6NrPPwNzxzbly/KHu
+UKf1oJhSMOOpwW+xHmfahfYpteqWPrrq7KqjBXRP/ejg92dLHiG8FmCoGGKtIk8e
+jus2pyIV3xpcO025BBb7eRbPi6oJcNJ7/D+SbiEml1kFZLAnCdKRjpJT/qc8AiP0
+yf/mMzJi5aNNqiCUCLCCPsKD3jMuXu9CvYIgsXSkYat16QwhI7UmtCQBpY8tQLK0
+LMC2qoiXuYpNHPEgpgvXw/Cnltsf9m8mvHKo0saIZ8MGS9oAu4DUr5B5H8ntejTe
+29qKcOd231RP+mWsreyu8v+WTjed3g==
+=cS2k
 -----END PGP SIGNATURE-----
 
---M69caHwk2wYuVsmJ--
+--sotept4hn6coqzfv--

@@ -2,50 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E1A61702A
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 23:02:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E29DA6172A1
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Nov 2022 00:29:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230292AbiKBWCs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Nov 2022 18:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50266 "EHLO
+        id S231515AbiKBX35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Nov 2022 19:29:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbiKBWCr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 18:02:47 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90EFB9FED
-        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 15:02:46 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id b11so17513365pjp.2
-        for <linux-iio@vger.kernel.org>; Wed, 02 Nov 2022 15:02:46 -0700 (PDT)
+        with ESMTP id S231528AbiKBX3n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 19:29:43 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0FA19C14
+        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 16:22:59 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id b21so290637plc.9
+        for <linux-iio@vger.kernel.org>; Wed, 02 Nov 2022 16:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tDdQ76HTuetM+x0U50OZVmoiEGjK/pNJ2DGCTRImjr8=;
-        b=KQiJkZtePhI2flEsUJPvJWcVFKJ+OroKKLIqrw7gi+MX+q2049MD3JdT/HnYDFu9WR
-         zLFsSCKGQMStyQIn1lzgksLz8eM0HdHrRUXnS3XiBPbgf+cvVwhSqUXkg1CPQQjS8peH
-         VqixHIIJaqwe+pLijCFPO7sKai856yU/ibvqI=
+        bh=AdoFh8YVkv5zUPXXAnzyzyEOTwd2Q0UanZEkn/ydxvw=;
+        b=j+g0ow4na4Oo4d9VS2DhHEabxP+3YX8dGdUXf69heIBe5MasAqMyAVtyc/55oXxFsl
+         keJ8Naw/uZFcKMhItnWoCg1ZRoBANiS+ulRBy6DvzVCKoLcXp7Qbc1I/IMqHMUy48GgK
+         29kf/jymVZAiWD/8o1z6wCWdxrcwJpVf9TgUM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tDdQ76HTuetM+x0U50OZVmoiEGjK/pNJ2DGCTRImjr8=;
-        b=3ujl85yREERkJFE+XPubXHjs6Bt13NoVJzyrRyUHmz8V3NM2geNRxhy+Y4BqjagGXd
-         M54sOBkgga73CVj88YQx8jFsnhzlPyGEX9oaA1MF550832mqCyRjCciaBCU+TP/GOcm5
-         pgpIQe4Eaa/TdsFHrv8qTpyIkyfejph0JJnslCLcLrnMk/Ey21X97KBi+qs2aZ7s1pi9
-         WrQ6RAJrJ7+LmP8j2K6i3cfxZIHQvPuJrqsupfXNMvSN2CA3UlYulT+RaoszhlOKQJvY
-         DAB6bbmYovLwc3WIMPQUhnqrvEKjaW439p4n8UUIguM6aXf8qgzHpOC4o1t2MCWBR5Uk
-         LmWw==
-X-Gm-Message-State: ACrzQf0wxz2a42Eet2PuOoLYD3XjiBgDXAoMw33RDWKH7MkJgxNSCQ6c
-        sKX1YMJSteGSe4I5mKY5f3qitw==
-X-Google-Smtp-Source: AMsMyM4WkfzMykXnG15VA0dkbaFs2pJjZSHDWxSbgybvMUsbX2OvhgJaXXTBVFr7hoOw8Zjy6TVn2g==
-X-Received: by 2002:a17:90b:1095:b0:213:ee6a:f268 with SMTP id gj21-20020a17090b109500b00213ee6af268mr16266724pjb.213.1667426566071;
-        Wed, 02 Nov 2022 15:02:46 -0700 (PDT)
+        bh=AdoFh8YVkv5zUPXXAnzyzyEOTwd2Q0UanZEkn/ydxvw=;
+        b=DvyklQ+8jhxMzhSqyHKOzq0lhMNpkrKrNzW9QphS+HASN/YdUk8cGxnW/YIViPwryP
+         q/VcDxwBKOOdcKjrr4yAbpnBxK5DGQ9T5GGdQ4k58amvLLHuknLalRdCbKoDzcZLFdaF
+         4QqFPhcr4VNnhw5eKrADYIKkE/AkbjJcA0NSj5ii/Furmk8wnKOhPqoS7H3CnJg6WYSH
+         zxmZJVMxUDKByMf6l6+ot2WF6AFRecLLeSauWVUzUdVS71hCkhUiqYk818vT+adSDh0F
+         MqgFNk2xL6IoW3N6e1SdgMhwZcHRdNZ8TOy2QVkXGIDJ0nhblGM7y6GtBq7ZKPlMrNMx
+         qEVA==
+X-Gm-Message-State: ACrzQf2t+leKMmKZGfXjGu1YN5TT6opxx3Be9m7hYkcFdiy7m0aYuKZ3
+        Ufj2mRLTHKTg77KGI6szJZGVXgPpLGaQ8w==
+X-Google-Smtp-Source: AMsMyM4JtgQhibbMD7ppeuCJgVgRX+k/QVskw2MC6WOXTO1ktCkcW6tWpFxpS30oJibYAYYYsnDRqA==
+X-Received: by 2002:a17:90b:1982:b0:212:fe7f:4a49 with SMTP id mv2-20020a17090b198200b00212fe7f4a49mr45691324pjb.156.1667431353734;
+        Wed, 02 Nov 2022 16:22:33 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id a20-20020a621a14000000b0056c6e59fb69sm8926019pfa.83.2022.11.02.15.02.45
+        by smtp.gmail.com with ESMTPSA id p10-20020a17090a348a00b0020d9df9610bsm1994104pjb.19.2022.11.02.16.22.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 15:02:45 -0700 (PDT)
-Date:   Wed, 2 Nov 2022 15:02:44 -0700
+        Wed, 02 Nov 2022 16:22:33 -0700 (PDT)
+Date:   Wed, 2 Nov 2022 16:22:32 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Nathan Chancellor <nathan@kernel.org>
 Cc:     William Breathitt Gray <william.gray@linaro.org>,
@@ -67,7 +67,7 @@ Cc:     William Breathitt Gray <william.gray@linaro.org>,
         linux-omap@vger.kernel.org
 Subject: Re: [PATCH 1/4] counter: Adjust final parameter type in function and
  signal callbacks
-Message-ID: <202211021501.88D8147@keescook>
+Message-ID: <202211021621.34241DC39@keescook>
 References: <20221102172217.2860740-1-nathan@kernel.org>
  <202211021216.FF49E84C69@keescook>
  <Y2LR13xrrauVmeXP@dev-arch.thelio-3990X>
@@ -86,6 +86,26 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On Wed, Nov 02, 2022 at 01:23:51PM -0700, Nathan Chancellor wrote:
+> On Wed, Nov 02, 2022 at 12:21:23PM -0700, Kees Cook wrote:
+> > On Wed, Nov 02, 2022 at 10:22:14AM -0700, Nathan Chancellor wrote:
+> > > The ->signal_u32_read(), ->count_u32_read(), and ->count_u32_write()
+> > > callbacks in 'struct counter_comp' expect the final parameter to have a
+> > > type of 'u32' or 'u32 *' but the ops functions that are being assigned
+> > > to those callbacks have an enumerated type as the final parameter. While
+> > > these are compatible from an ABI perspective, they will fail the
+> > > aforementioned CFI checks.
+> > > 
+> > > Adjust the type of the final parameter in the ->signal_read(),
+> > > ->function_read(), and ->function_write() callbacks in 'struct
+> > > counter_ops' and their implementations to match the prototypes in
+> > > 'struct counter_comp' to clear up these warnings and CFI failures.
+> > 
+> > I don't understand these changes. Where do 'struct counter_comp'
+> > and 'struct counter_ops' get confused? I can only find matching
+> > ops/assignments/calls, so I must be missing something. This looks like
+> > a loss of CFI granularity instead of having wrappers added if there is
+> > an enum/u32 conversion needed somewhere.
+> 
 > Right, I am not the biggest fan of this change myself and it is entirely
 > possible that I am misreading the warnings from the commit message but I
 > do not see how
@@ -110,8 +130,113 @@ On Wed, Nov 02, 2022 at 01:23:51PM -0700, Nathan Chancellor wrote:
 > match the final parameter type of the prototypes in 'struct
 > counter_comp'. I would expect the indirect calls in counter_get_data()
 > and counter_comp_u32_show() to fail currently.
+> 
+> I briefly looked at making the 'struct counter_comp' callbacks match the
+> 'struct counter_ops' ones but the COUNTER_COMP macros in
+> include/linux/counter.h made it seem like these callbacks might be used
+> by implementations that might use different enumerated types as the
+> final parameter. I can look a little closer to see if we can make
+> everything match.
+> 
+> I am not sure how wrappers would work here, I can take a look into how
+> feasible that is.
 
-Ah! Thank you -- those were the places I couldn't find.
+How about this? (I only did signal_read -- similar changes are needed
+for function_read and function_write:
+
+diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
+index 80acdf62794a..cb391b2498a6 100644
+--- a/drivers/counter/counter-chrdev.c
++++ b/drivers/counter/counter-chrdev.c
+@@ -38,6 +38,7 @@ struct counter_comp_node {
+ 	a.device_u32_read == b.device_u32_read || \
+ 	a.count_u32_read == b.count_u32_read || \
+ 	a.signal_u32_read == b.signal_u32_read || \
++	a.signal_read == b.signal_read || \
+ 	a.device_u64_read == b.device_u64_read || \
+ 	a.count_u64_read == b.count_u64_read || \
+ 	a.signal_u64_read == b.signal_u64_read || \
+@@ -54,6 +55,7 @@ struct counter_comp_node {
+ 	comp.device_u32_read || \
+ 	comp.count_u32_read || \
+ 	comp.signal_u32_read || \
++	comp.signal_read || \
+ 	comp.device_u64_read || \
+ 	comp.count_u64_read || \
+ 	comp.signal_u64_read || \
+@@ -320,7 +322,7 @@ static int counter_add_watch(struct counter_device *const counter,
+ 			return -EINVAL;
+ 
+ 		comp_node.comp.type = COUNTER_COMP_SIGNAL_LEVEL;
+-		comp_node.comp.signal_u32_read = counter->ops->signal_read;
++		comp_node.comp.signal_read = counter->ops->signal_read;
+ 		break;
+ 	case COUNTER_COMPONENT_COUNT:
+ 		if (watch.component.scope != COUNTER_SCOPE_COUNT)
+@@ -530,6 +532,7 @@ static int counter_get_data(struct counter_device *const counter,
+ 	const size_t id = comp_node->component.id;
+ 	struct counter_signal *const signal = comp_node->parent;
+ 	struct counter_count *const count = comp_node->parent;
++	enum counter_signal_level level = 0;
+ 	u8 value_u8 = 0;
+ 	u32 value_u32 = 0;
+ 	const struct counter_comp *ext;
+@@ -569,8 +572,8 @@ static int counter_get_data(struct counter_device *const counter,
+ 			ret = comp->device_u32_read(counter, &value_u32);
+ 			break;
+ 		case COUNTER_SCOPE_SIGNAL:
+-			ret = comp->signal_u32_read(counter, signal,
+-						    &value_u32);
++			ret = comp->signal_read(counter, signal, &level);
++			value_u32 = level;
+ 			break;
+ 		case COUNTER_SCOPE_COUNT:
+ 			ret = comp->count_u32_read(counter, count, &value_u32);
+diff --git a/drivers/counter/counter-sysfs.c b/drivers/counter/counter-sysfs.c
+index b9efe66f9f8d..07ce2543b70d 100644
+--- a/drivers/counter/counter-sysfs.c
++++ b/drivers/counter/counter-sysfs.c
+@@ -170,6 +170,7 @@ static ssize_t counter_comp_u32_show(struct device *dev,
+ 	const struct counter_attribute *const a = to_counter_attribute(attr);
+ 	struct counter_device *const counter = counter_from_dev(dev);
+ 	const struct counter_available *const avail = a->comp.priv;
++	enum counter_signal_level level = 0;
+ 	int err;
+ 	u32 data = 0;
+ 
+@@ -178,7 +179,8 @@ static ssize_t counter_comp_u32_show(struct device *dev,
+ 		err = a->comp.device_u32_read(counter, &data);
+ 		break;
+ 	case COUNTER_SCOPE_SIGNAL:
+-		err = a->comp.signal_u32_read(counter, a->parent, &data);
++		err = a->comp.signal_read(counter, a->parent, &level);
++		data = level;
+ 		break;
+ 	case COUNTER_SCOPE_COUNT:
+ 		if (a->comp.type == COUNTER_COMP_SYNAPSE_ACTION)
+@@ -842,7 +844,7 @@ static int counter_signal_attrs_create(struct counter_device *const counter,
+ 
+ 	/* Create main Signal attribute */
+ 	comp = counter_signal_comp;
+-	comp.signal_u32_read = counter->ops->signal_read;
++	comp.signal_read = counter->ops->signal_read;
+ 	err = counter_attr_create(dev, cattr_group, &comp, scope, signal);
+ 	if (err < 0)
+ 		return err;
+diff --git a/include/linux/counter.h b/include/linux/counter.h
+index c41fa602ed28..3f1516076f20 100644
+--- a/include/linux/counter.h
++++ b/include/linux/counter.h
+@@ -169,6 +169,9 @@ struct counter_comp {
+ 				      struct counter_count *count, u32 *val);
+ 		int (*signal_u32_read)(struct counter_device *counter,
+ 				       struct counter_signal *signal, u32 *val);
++		int (*signal_read)(struct counter_device *counter,
++				   struct counter_signal *signal,
++				   enum counter_signal_level *level);
+ 		int (*device_u64_read)(struct counter_device *counter,
+ 				       u64 *val);
+ 		int (*count_u64_read)(struct counter_device *counter,
 
 -- 
 Kees Cook

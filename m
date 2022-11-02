@@ -2,154 +2,237 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23809615679
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 01:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B510616428
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 14:57:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiKBAQu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 1 Nov 2022 20:16:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46186 "EHLO
+        id S230086AbiKBN5d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Nov 2022 09:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbiKBAQt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 1 Nov 2022 20:16:49 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50FF10B9;
-        Tue,  1 Nov 2022 17:16:47 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id m29-20020a05600c3b1d00b003c6bf423c71so339376wms.0;
-        Tue, 01 Nov 2022 17:16:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6EgJHcNc9I4Hg68B4v54gsqbN5dL6gMdd+mtOwKKfWQ=;
-        b=eXIDVLm2x52AdgKdH1WyIVfjTCZX4+dnaPvNdX8OkfPZnW0AquTc3oqES44BmI7f3o
-         83RHeP9/PUEJbtHkpgCmAPAfD3s9ncp3Jos6q+nQmoAYuuVXxtLF0wEZwEdI+5blRciT
-         sYx3Mc1P1Cu/scsLYGwrx33fCwfLjYDeosPm2NRES57lKCVvQPT2vGyqsQvGthQDA9qY
-         OwzsU88NpdaeYkoOkZ7FRdMbDBHuSheVb5Fcf3aZy6bnTvmZrz6eJYQXMvm1J+ZFuXsR
-         UK0ifiZJWiBfyrxkWHHmwLPUGSPfJVguNq22BxuTQkLpWAlbyzWWde5RGtOtx1dHvZDI
-         YGfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6EgJHcNc9I4Hg68B4v54gsqbN5dL6gMdd+mtOwKKfWQ=;
-        b=xjqGqlJRYr8g2yAPQ8LVuIGWrjBrWcH5+7K1+ydhpGQcj6ded0UxDX3hWV29Qvzuwm
-         VTqnE36HTBbPPsgUodNyd2KD1HVWwFWdzvou/P56GRLbyF+lzTeTILWXHwxYzV5MlEF5
-         tE9gAdO9opGL1dgnFNsO0GX2ocHnI+kDf+IrNF5YMQXKHnNbI8Dgds3A1pC+3SUf2p1k
-         Z522lCoC431UUcMGyWLx8HVfCc7RhqLA92CCIC0Ttt6hP7Ed9LsI5be4CbydeFRFwhBl
-         ARrclZyCGJjey1ejvgWymI2D6dK/eYE/xiFOwP1c6DaH9G62Ov6frK91FkpXDL3Lg78W
-         FizA==
-X-Gm-Message-State: ACrzQf0e4MPuFE1tRg5Dux08jbuLVBhVInXxhL55D/TIo1zV4uZtBQmR
-        T2TQe85hjDd3gMD76SJj/2Gj7dah+iM=
-X-Google-Smtp-Source: AMsMyM4bqf2Q2DAJavIvv67fkz1F+mis5E51X6JVvDcGHELGOnt56JeXjFBEQ0/iqEwRHWznhtTZ2A==
-X-Received: by 2002:a05:600c:6885:b0:3c2:9da1:5034 with SMTP id fn5-20020a05600c688500b003c29da15034mr13720974wmb.38.1667348206213;
-        Tue, 01 Nov 2022 17:16:46 -0700 (PDT)
-Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id j10-20020a5d464a000000b002365cd93d05sm10965055wrs.102.2022.11.01.17.16.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Nov 2022 17:16:45 -0700 (PDT)
-Message-ID: <ae43aa9c3a9f29d0ecef69756a539ebf00a84ab1.camel@gmail.com>
-Subject: Re: [RFC PATCH 2/2] iio: pressure: bmp280: convert to i2c's
- .probe_new()
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        with ESMTP id S229493AbiKBN5c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 09:57:32 -0400
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4612C1006D
+        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 06:57:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1667397451; x=1698933451;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=8L/RKcNHU6Kwo5etFQltNFCRDCpwOUP1vTrbmOP6A9w=;
+  b=nSItBEAeyZwlKgBKFKFWdiuRPsEDMxtOxp4wLDonDlD08qdJGKvgfmOU
+   1fSnp6bxG+cLRYZd//atY1nZxBIoBFDif5TgoJvtby0ki57YJEoVQ+agk
+   GLLrJmfCJeoECqJJ1WTmginRC9XZ+aEETisIS+HhYwVDjgrvMbeqsJRki
+   mjwm9leDdhqCuVejvqTd1I+bIMx6Nc2m6o8uxuC+Bnt/tObb0A7MNU9Yh
+   fgwAPuvG481DsP+XUH1uyLSCK/inA9MkQoMRqReLXHnKX7u3zq1W1b9Gw
+   9RU6Cha3C1rQYFodp4fszJHnGnbS5vNvBF6hJf55ufZcjcvMxsH10SZhx
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="336090812"
+X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
+   d="scan'208";a="336090812"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2022 06:57:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10519"; a="739760147"
+X-IronPort-AV: E=Sophos;i="5.95,234,1661842800"; 
+   d="scan'208";a="739760147"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP; 02 Nov 2022 06:57:27 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oqEFB-006Clp-19;
+        Wed, 02 Nov 2022 15:57:25 +0200
+Date:   Wed, 2 Nov 2022 15:57:24 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
         <u.kleine-koenig@pengutronix.de>
-Cc:     linux-iio@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
+Cc:     Miaoqian Lin <linmq006@gmail.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org
-Date:   Wed, 02 Nov 2022 01:16:44 +0100
-In-Reply-To: <20221101215236.ihoqkx2xckilom67@pengutronix.de>
-References: <cover.1667151588.git.ang.iglesiasg@gmail.com>
-         <af8ed10a85d48531c50823163e6c55b2a72371ef.1667151588.git.ang.iglesiasg@gmail.com>
-         <20221101215236.ihoqkx2xckilom67@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1 (by Flathub.org) 
+        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Vladimir Oltean <olteanv@gmail.com>, kernel@pengutronix.de,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        wangjianli <wangjianli@cdjrlc.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 10/23] iio: accel: kxcjk-1013: Convert to i2c's .probe_new
+Message-ID: <Y2J3RMu6qNgozZ81@smile.fi.intel.com>
+References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+ <20221023132302.911644-11-u.kleine-koenig@pengutronix.de>
+ <Y1WQoyek5KBwDqCd@smile.fi.intel.com>
+ <20221024070518.dnrhsijfphbhs2la@pengutronix.de>
+ <Y1ZPVw1qBx1MkZgY@smile.fi.intel.com>
+ <20221024091456.vuw3mqcokfrbrozh@pengutronix.de>
+ <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
+ <20221031233843.4rbcfs3hstlkv7il@pengutronix.de>
+ <Y2EzPJvntyGbSKW8@smile.fi.intel.com>
+ <20221101214939.seiuaj7un4cbcbpn@pengutronix.de>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221101214939.seiuaj7un4cbcbpn@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-8.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 2022-11-01 at 22:52 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> Hello,
->=20
-> On Sun, Oct 30, 2022 at 06:53:11PM +0100, Angel Iglesias wrote:
-> > Use i2c_client_get_device_id() to get the i2c_device_id* parameter in t=
-he
-> > .new_probe() callback.
-> >=20
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > ---
-> > =C2=A0drivers/iio/pressure/bmp280-i2c.c | 8 ++++----
-> > =C2=A01 file changed, 4 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/pressure/bmp280-i2c.c
-> > b/drivers/iio/pressure/bmp280-i2c.c
-> > index 0c27211f3ea0..20073b09b3e3 100644
-> > --- a/drivers/iio/pressure/bmp280-i2c.c
-> > +++ b/drivers/iio/pressure/bmp280-i2c.c
-> > @@ -5,11 +5,11 @@
-> > =C2=A0
-> > =C2=A0#include "bmp280.h"
-> > =C2=A0
-> > -static int bmp280_i2c_probe(struct i2c_client *client,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 const struct i2c_device_id *id)
-> > +static int bmp280_i2c_probe(struct i2c_client *client)
-> > =C2=A0{
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *regmap;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct i2c_device_id *=
-id =3D i2c_client_get_device_id(client);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct regmap_con=
-fig *regmap_config;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct regmap *regmap;
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0switch (id->driver_data=
-) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case BMP180_CHIP_ID:
->=20
-> What is the motivation for moving regmap? I thought reverse christmas
-> tree is only a thing in network code? I would have left the regmap
-> declaration where it is.
+On Tue, Nov 01, 2022 at 10:49:39PM +0100, Uwe Kleine-König wrote:
+> On Tue, Nov 01, 2022 at 04:54:52PM +0200, Andy Shevchenko wrote:
+> > On Tue, Nov 01, 2022 at 12:38:43AM +0100, Uwe Kleine-König wrote:
+> > > On Mon, Oct 24, 2022 at 12:46:02PM +0300, Andy Shevchenko wrote:
+> > > > On Mon, Oct 24, 2022 at 11:14:56AM +0200, Uwe Kleine-König wrote:
 
-Long story short, I worked previously on a small refactor of this driver to=
- add
-support for a new family of sensors. During the different iterations of the
-patchset, one thing that was agreed was unifying the driver coding style to
-reverse xmas tree. For some extra context, here's the thread:
-https://lore.kernel.org/all/20220814145249.701f1261@jic23-huawei/
+I really do appreciate your work on this, but it's pity that my point
+is still unclear to you. As a beginning point I assume that the idea
+of ->probe_new() is to mimic what SPI core does. That's why I consider
+moving the tables is smelling like a half-baked work. Besides that
+I tried to explain again on the concerns I have below.
 
-> > @@ -65,7 +65,7 @@ static struct i2c_driver bmp280_i2c_driver =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0.of_match_table =3D bmp280_of_i2c_match,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0.pm =3D pm_ptr(&bmp280_dev_pm_ops),
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D bmp280_i2c_probe,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe_new=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=3D bmp280_i2c_probe,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.id_table=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D bmp280_i2c_id,
-> > =C2=A0};
-> > =C2=A0module_i2c_driver(bmp280_i2c_driver);
->=20
-> Best regards
-> Uwe
->=20
-Kind regards
-Angel
+...
+
+> > > > Exactly. And it means let's put my problem to someone's else shoulders.
+> > > 
+> > > You have a problem that I fail to see. Why is defining the id table
+> > > before the probe function bad?
+> > > 
+> > > Unless I misunderstand you, you seem to assume that in the nearer future
+> > > someone will have the urge to put the id table below the probe function
+> > > again. What would you think is their motivation?
+> > 
+> > The problem with moving the table is the sparse locations in the code for
+> > semantically relative things, like all ID tables to be near to each other.
+> 
+> I don't understand that reasoning. Is that important for the compiler or
+> the human reader? What is "semantically relative"?
+
+If we have let's say 2+ ID tables, without your patches
+
+...module code...
+
+...TABLE 1...
+...TABLE 2...
+
+static struct foo_driver *drv = {
+	...references to the tables...
+};
+
+With your patches (that move the ID table):
+
+
+...module header...
+...module code...
+
+...TABLE 1...
+
+...more module code...
+
+...TABLE 2...
+
+static struct foo_driver *drv = {
+	...references to the tables...
+};
+
+which I consider as unneeded sparse for like you said micro-optimization
+of the direct access to the table.
+
+There are two ways to solve this:
+- move all tables together
+- provide an API as done by SPI core
+
+I prefer the latter over the former.
+
+> > With
+> > your approach you can easily break that and go for let's put one ID table on
+> > top, because some code fails to indirectly access it, and leave another
+> > somewhere else. I do not like this.
+> > 
+> > Besides, your change making unneeded churn of "I like to move it, move it" for
+> > no real gain.
+> 
+> That's not true. It's not that I like to move it. Moving is necessary to
+> make use of the local symbol in .probe() without a forward declaration.
+> (If you claimed that adding a forward declaration was churn, I'd agree.)
+
+On forward declaration we agree.
+
+But using local symbol directly as a shortcut to access some field of the
+instance of some object is against OOP paradigm.
+
+I.o.w. some shortcuts maybe nice, but this kind of approach leads to
+layering violation and similar problems to begin with.
+
+...
+
+> > There is another approach in the discussion and Wolfram acknowledged it already
+> > (with a new API to retrieve the necessary data).
+> 
+> Yeah, saw it. And as expected the follow up patch converting
+> drivers/iio/pressure/bmp280-i2c.c "suffers" from the double pointer
+> dereference. But it looks nice because the effort to determine the table
+> via driver is well hidden.
+
+Yes, that is the downside of OOP, I agree.
+
+...
+
+> > > > reduce churn with the using of current i2c_match_id() as you
+> > > > showed the long line to get that table.
+> > > 
+> > > Do you still remember the original patch? That one doesn't have the long
+> > > i2c_match_id() line.
+> > > 
+> > > (Do you see your statement is an argument for my approach? The long line
+> > > is an indication that it's complicated to determine the address of the
+> > > table via ->driver. You can hide that by pushing the needed effort into
+> > > i2c_match_id() or a macro, but in the end the complexity remains for the
+> > > CPU.)
+> > 
+> > Does it matter?
+> 
+> What is "it"? The long line? (Then no, it doesn't matter because it
+> doesn't appear in neither your nor my approach.) The effort to pull the
+> table's address out of ->driver? (We seem to disagree. I think it's easy
+> enough not to do it to justify the optimisation.) Or to hide the effort?
+> (I think hiding effort and so making it easy to pick a more expensive
+> approach is at least questionable.)
+
+IT == The length of dereferencing chain to get the pointer to the data
+structure in question.
+
+So, it is OOP model versus micro-optimization on a slow path.
+That's how I can class the basis of our disagreement.
+
+> > OTOH that will be aligned with SPI framework and idea behind ->probe_new()
+> > as I understood it.
+
+...
+
+> What I consider "churn" though is this discussion.
+
+I agree on that as well. Nut it's partially my issue and I'm sorry for that.
+
+> I will stop my participation here. That's a bit sad because in my eyes all
+> patches in this series have a positive value
+
+Your patches (that don't move the tables) are nice job!
+
+> and the discussion about (from
+> my POV) incomprehensible minor details destroyed my motivation to work on
+> the quest to convert all drivers to .probe_new() :-\
+
+It's pity to hear, but you may also imagine how many times I was in
+the similar situation and for some cases I lost my motivation, indeed.
+I feel your pain.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

@@ -2,53 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 802EC616A8D
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 18:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E320616C3D
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 19:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231356AbiKBRWr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Nov 2022 13:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47852 "EHLO
+        id S231183AbiKBSdn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Nov 2022 14:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbiKBRWq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 13:22:46 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2BB275C3;
-        Wed,  2 Nov 2022 10:22:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D8CF9B8240C;
-        Wed,  2 Nov 2022 17:22:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E11C43141;
-        Wed,  2 Nov 2022 17:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667409761;
-        bh=1AhYkLtqf9YhGF/slwawF+EBbzYmnHtSSL7hU6uKaKg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WeO7UeLx7Qw1vFaOTrt5JaOwVYdj6m6yF0wYVIo+f0s8UahkKYjp5cEIKGTAMm61o
-         LObgdW5VvdGnqSlA50DTbhjQEbfNfDAsgAh0qHlxlXomAlviuZhARJ9/bxURTj/h3E
-         ho0EXfpQTepI9a1ucGNqnuTb5twOW6DkcQlFyPNsVGyadD3p0HdNNpxsoAwf/YZvge
-         8kXrkC06pAjt5+SphEildZnv3Y2/ADJQ7c3rKyzBPHImxBGDJbHVNPtj0jJMz31yEA
-         OogcqUQHsTGQcg5zr+QN5QAV6SNZrnRQtL/egIlTdnnd+oYVbdtgF1HnwvS5Pv1xPQ
-         EODiek7mXCD2g==
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     William Breathitt Gray <william.gray@linaro.org>
-Cc:     linux-iio@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Kees Cook <keescook@chromium.org>,
-        Sami Tolvanen <samitolvanen@google.com>, llvm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4/4] counter: 104-quad-8: Adjust final parameter type of certain callback functions
-Date:   Wed,  2 Nov 2022 10:22:17 -0700
-Message-Id: <20221102172217.2860740-4-nathan@kernel.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221102172217.2860740-1-nathan@kernel.org>
-References: <20221102172217.2860740-1-nathan@kernel.org>
+        with ESMTP id S230498AbiKBSdl (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 14:33:41 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358372A43C
+        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 11:33:41 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id z1so6484236qkl.9
+        for <linux-iio@vger.kernel.org>; Wed, 02 Nov 2022 11:33:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q92riiS7ubzxoWF6UuL2jfQgGcw0qGoG//c8sRPlZ6Q=;
+        b=kGcLjV7SmNNbbGA/s5728760o5U/Yl+OT//qiK+lbm1ZFISPUnYEn8Gi1sB78euRC8
+         vszdivvxXScOtJ1ZFruWtROVGOoHJ0As/vBBHiwRZrQyUCENP770io+HaedrF9VMiZvP
+         uq0YYkkB1g/zE4DSaz1E9mNmI/Fwubaj7oVYqEZl7yr1Mlxqv+DGVt6lv9auwZEKlWZ0
+         BshgmtK3Ko3qg950J6/jr+hJWnQWCCpfZfB5xf8R1w36/bh7O/Xa979/DozoS7RwRcxT
+         /XgllTzxF0MZNp2G5hkr+JhWfDvtdGmmV2WUgtYtYfyx6WDXOrYQeqnWs7Cg9SKMUO/V
+         Zp9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q92riiS7ubzxoWF6UuL2jfQgGcw0qGoG//c8sRPlZ6Q=;
+        b=z8UWj3pnfqYZ0vtSAUYyKbwsQTL64vRz9gq3PHaScCDIs/JMqtoosEQDeHHV4m/AB/
+         /lgQwyAfBpA0HAHUOwlEjCt935KWuCSeMW3O3UWko0SDwQhPlciFYSYdOeW6cbZjNwcU
+         duhzwthyLNV1cntTjSmCnu5o6OJVHD9/aaujkfOLVklRWPa+CzArNjIrvV3r6FlEjScj
+         qXGj1ZtWsyLob/n0PiFwx6vrROvx4jfCdptFwLQGk8m5Q9sktAW3dWW5/x6nnwuYIG3E
+         ViaT4xD4s4bV1RgbbQwqb0N26oQBC8tEAi/o2hdFbGXs1krXO1zUgDCgOSVZZTyfjuoZ
+         ugQw==
+X-Gm-Message-State: ACrzQf1jcjgz9LrxGyZxiY/r3gPECr3jbAzITrZsNv+iEkIENKC5d6Fb
+        pVb27N55cD7MlfOqPjIOM5vSzg==
+X-Google-Smtp-Source: AMsMyM6n+O//qDHsWRWUhV8NoPCYi8OjtMbiw8u1VyQm+AKGMgDct3y60PhFqUC4AGL9jpSTDfaFcQ==
+X-Received: by 2002:a05:620a:ecd:b0:6fa:2bb0:7d86 with SMTP id x13-20020a05620a0ecd00b006fa2bb07d86mr12957581qkm.296.1667414020390;
+        Wed, 02 Nov 2022 11:33:40 -0700 (PDT)
+Received: from ?IPV6:2601:586:5000:570:28d9:4790:bc16:cc93? ([2601:586:5000:570:28d9:4790:bc16:cc93])
+        by smtp.gmail.com with ESMTPSA id cm8-20020a05622a250800b003a530a32f67sm3506976qtb.65.2022.11.02.11.33.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Nov 2022 11:33:39 -0700 (PDT)
+Message-ID: <9619c472-4fad-c71c-591c-12f5ef7e0a79@linaro.org>
+Date:   Wed, 2 Nov 2022 14:33:38 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double
+ compatibles
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221031182456.952648-1-luca@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221031182456.952648-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,113 +79,17 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
-indirect call targets are validated against the expected function
-pointer prototype to make sure the call target is valid to help mitigate
-ROP attacks. If they are not identical, there is a failure at run time,
-which manifests as either a kernel panic or thread getting killed. A
-proposed warning in clang aims to catch these at compile time, which
-reveals:
+On 31/10/2022 14:24, Luca Weiss wrote:
+> As in other bindings, let's use specific compatibles together with the
+> fallback compatible. Adjust the bindings for it.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes in v2:
+> * New patch
 
-  drivers/counter/104-quad-8.c:1041:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_signal *, u32 *)' (aka 'int (*)(struct counter_device *, struct counter_signal *, unsigned int *)') with an expression of type
-  'int (struct counter_device *, struct counter_signal *, enum counter_signal_polarity *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_POLARITY(quad8_polarity_read, quad8_polarity_write,
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:609:21: note: expanded from macro 'COUNTER_COMP_POLARITY'
-          .signal_u32_read = (_read), \
-                            ^~~~~~~
-  drivers/counter/104-quad-8.c:1041:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_signal *, u32)' (aka 'int (*)(struct counter_device *, struct counter_signal *, unsigned int)') with an expression of type 'int
-  (struct counter_device *, struct counter_signal *, enum counter_signal_polarity)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_POLARITY(quad8_polarity_read, quad8_polarity_write,
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:610:22: note: expanded from macro 'COUNTER_COMP_POLARITY'
-          .signal_u32_write = (_write), \
-                              ^~~~~~~~
-  drivers/counter/104-quad-8.c:1129:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_count *, u32 *)' (aka 'int (*)(struct counter_device *, struct counter_count *, unsigned int *)') with an expression of type 'i
-  nt (struct counter_device *, struct counter_count *, enum counter_count_mode *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_COUNT_MODE(quad8_count_mode_read, quad8_count_mode_write,
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:587:20: note: expanded from macro 'COUNTER_COMP_COUNT_MODE'
-          .count_u32_read = (_read), \
-                            ^~~~~~~
-  drivers/counter/104-quad-8.c:1129:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_count *, u32)' (aka 'int (*)(struct counter_device *, struct counter_count *, unsigned int)') with an expression of type 'int (
-  struct counter_device *, struct counter_count *, enum counter_count_mode)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_COUNT_MODE(quad8_count_mode_read, quad8_count_mode_write,
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:588:21: note: expanded from macro 'COUNTER_COMP_COUNT_MODE'
-          .count_u32_write = (_write), \
-                            ^~~~~~~~
-  drivers/counter/104-quad-8.c:1131:2: error: incompatible function pointer types initializing 'int (*)(struct counter_device *, struct counter_count *, u32 *)' (aka 'int (*)(struct counter_device *, struct counter_count *, unsigned int *)') with an expression of type 'i
-  nt (struct counter_device *, struct counter_count *, enum counter_count_direction *)' [-Werror,-Wincompatible-function-pointer-types-strict]
-          COUNTER_COMP_DIRECTION(quad8_direction_read),
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  ./include/linux/counter.h:596:20: note: expanded from macro 'COUNTER_COMP_DIRECTION'
-          .count_u32_read = (_read), \
-                            ^~~~~~~
-  5 errors generated.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-->count_u32_{read,write}() and ->count_u32_{read,write}() in 'struct
-counter_comp' expect a final parameter type of either 'u32' or 'u32 *',
-not the enumerated types used in the implementations. Adjust the final
-parameter type in the implementations to match the prototype's to
-resolve the warning and CFI failures.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1750
-Reported-by: Sami Tolvanen <samitolvanen@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- drivers/counter/104-quad-8.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/counter/104-quad-8.c b/drivers/counter/104-quad-8.c
-index 30b40f805f88..720a88ad59db 100644
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -337,7 +337,7 @@ static int quad8_function_write(struct counter_device *counter,
- 
- static int quad8_direction_read(struct counter_device *counter,
- 				struct counter_count *count,
--				enum counter_count_direction *direction)
-+				u32 *direction)
- {
- 	const struct quad8 *const priv = counter_priv(counter);
- 	unsigned int ud_flag;
-@@ -572,7 +572,7 @@ static int quad8_index_polarity_set(struct counter_device *counter,
- 
- static int quad8_polarity_read(struct counter_device *counter,
- 			       struct counter_signal *signal,
--			       enum counter_signal_polarity *polarity)
-+			       u32 *polarity)
- {
- 	int err;
- 	u32 index_polarity;
-@@ -589,7 +589,7 @@ static int quad8_polarity_read(struct counter_device *counter,
- 
- static int quad8_polarity_write(struct counter_device *counter,
- 				struct counter_signal *signal,
--				enum counter_signal_polarity polarity)
-+				u32 polarity)
- {
- 	const u32 pol = (polarity == COUNTER_SIGNAL_POLARITY_POSITIVE) ? 1 : 0;
- 
-@@ -654,7 +654,7 @@ static int quad8_count_floor_read(struct counter_device *counter,
- 
- static int quad8_count_mode_read(struct counter_device *counter,
- 				 struct counter_count *count,
--				 enum counter_count_mode *cnt_mode)
-+				 u32 *cnt_mode)
- {
- 	const struct quad8 *const priv = counter_priv(counter);
- 
-@@ -679,7 +679,7 @@ static int quad8_count_mode_read(struct counter_device *counter,
- 
- static int quad8_count_mode_write(struct counter_device *counter,
- 				  struct counter_count *count,
--				  enum counter_count_mode cnt_mode)
-+				  u32 cnt_mode)
- {
- 	struct quad8 *const priv = counter_priv(counter);
- 	unsigned int count_mode;
--- 
-2.38.1
+Best regards,
+Krzysztof
 

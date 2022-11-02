@@ -2,64 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F030D616E87
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 21:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C89616F0F
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 21:46:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbiKBUX5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Nov 2022 16:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52608 "EHLO
+        id S231372AbiKBUqR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Nov 2022 16:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbiKBUXz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 16:23:55 -0400
+        with ESMTP id S231375AbiKBUqP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 16:46:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F645195;
-        Wed,  2 Nov 2022 13:23:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3F77675
+        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 13:46:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C988F61BB6;
-        Wed,  2 Nov 2022 20:23:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31530C433C1;
-        Wed,  2 Nov 2022 20:23:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9138861C01
+        for <linux-iio@vger.kernel.org>; Wed,  2 Nov 2022 20:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51B1C433D7;
+        Wed,  2 Nov 2022 20:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667420634;
-        bh=SoPxowNL2wQMY8yb7AJeEyGxnbtrkZim847pUvBQbwE=;
+        s=k20201202; t=1667421968;
+        bh=CwVmQAaE2WZ6ogKXeNLvxkY94Kv8audFV2Zivl872Xw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LfjPqEtYXiCdkBLiD6Mb9K3XA51IVPUzGRUTvms6p8otl6PuFvxWJt1eNfolnsfMh
-         8dOIiVYrNAvWUbc0eNesbhfxuTxND9PyOfr87g31Ntyy1O1D+CTiL0Ie98zFKhuL6L
-         pQ6P5NPg9O9EYdY94YsL2yXqg36H/b9HAt0cdMS0OgSSvy64YmI0vtfYhObAcu3zvz
-         dNfsvy2LS2sTnLtx58wwVQmNFpMeTJG42JD4GtztqHso9Ufxk1sH8tTONFs9g9eRjR
-         Xm+yRgTchmBGh4Sk8fbw4WKFDXV+G1cCqTlkngWQBtrxjrVSY5vsGgYa9I9w0HKA3v
-         fRU/uLjxEBNqQ==
-Date:   Wed, 2 Nov 2022 13:23:51 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Sami Tolvanen <samitolvanen@google.com>, llvm@lists.linux.dev,
-        linux-kernel@vger.kernel.org, patches@lists.linux.dev,
-        Patrick Havelange <patrick.havelange@essensium.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Oleksij Rempel <linux@rempel-privat.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Julien Panis <jpanis@baylibre.com>,
-        David Lechner <david@lechnology.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-omap@vger.kernel.org
-Subject: Re: [PATCH 1/4] counter: Adjust final parameter type in function and
- signal callbacks
-Message-ID: <Y2LR13xrrauVmeXP@dev-arch.thelio-3990X>
-References: <20221102172217.2860740-1-nathan@kernel.org>
- <202211021216.FF49E84C69@keescook>
+        b=A5BLwTcLJZn1ZJ+HZykMaxJDb91lv/P+MkRwiV/nlFcA05emUwbpIWxaRuB4OswX4
+         OSox6IOi/4+YXIIXcqQkLTNrs1QvkSW0a3hFCyKLKhkqCYn0UtrD/77/bo8OAc9RoA
+         tzwZOJSzwr9VkKeGomH9Um7pIj+Ii9PhzPZKgPy22yswAk0dN0zNuTZjIwKnjWQNMg
+         3dC1BMAX38xXSHkWS08rVhyTql+VOQUeARrTwQAo1JReM+70Kr3AZAS869gS/4jgwj
+         wYetVjexyWEh2duMPo+dSwIOdhmEdxD3EyycfVXew/HFWUzKP4luxsLirzDP4JRPa9
+         0jSQNrEV4qU9Q==
+Date:   Wed, 2 Nov 2022 21:46:05 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>,
+        Vladimir Oltean <olteanv@gmail.com>, kernel@pengutronix.de,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        wangjianli <wangjianli@cdjrlc.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH 10/23] iio: accel: kxcjk-1013: Convert to i2c's .probe_new
+Message-ID: <Y2LXDS04ojezKtz/@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Miaoqian Lin <linmq006@gmail.com>,
+        Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+        Gwendal Grignou <gwendal@chromium.org>,
+        Vladimir Oltean <olteanv@gmail.com>, kernel@pengutronix.de,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        wangjianli <wangjianli@cdjrlc.com>,
+        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
+        Jonathan Cameron <jic23@kernel.org>
+References: <20221023132302.911644-1-u.kleine-koenig@pengutronix.de>
+ <20221023132302.911644-11-u.kleine-koenig@pengutronix.de>
+ <Y1WQoyek5KBwDqCd@smile.fi.intel.com>
+ <20221024070518.dnrhsijfphbhs2la@pengutronix.de>
+ <Y1ZPVw1qBx1MkZgY@smile.fi.intel.com>
+ <20221024091456.vuw3mqcokfrbrozh@pengutronix.de>
+ <Y1Ze2gw3hNgp6FT5@smile.fi.intel.com>
+ <20221031233843.4rbcfs3hstlkv7il@pengutronix.de>
+ <Y2EzPJvntyGbSKW8@smile.fi.intel.com>
+ <20221101214939.seiuaj7un4cbcbpn@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="FhkCvZjqV7l/JE1W"
 Content-Disposition: inline
-In-Reply-To: <202211021216.FF49E84C69@keescook>
+In-Reply-To: <20221101214939.seiuaj7un4cbcbpn@pengutronix.de>
 X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -69,60 +80,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 02, 2022 at 12:21:23PM -0700, Kees Cook wrote:
-> On Wed, Nov 02, 2022 at 10:22:14AM -0700, Nathan Chancellor wrote:
-> > The ->signal_u32_read(), ->count_u32_read(), and ->count_u32_write()
-> > callbacks in 'struct counter_comp' expect the final parameter to have a
-> > type of 'u32' or 'u32 *' but the ops functions that are being assigned
-> > to those callbacks have an enumerated type as the final parameter. While
-> > these are compatible from an ABI perspective, they will fail the
-> > aforementioned CFI checks.
-> > 
-> > Adjust the type of the final parameter in the ->signal_read(),
-> > ->function_read(), and ->function_write() callbacks in 'struct
-> > counter_ops' and their implementations to match the prototypes in
-> > 'struct counter_comp' to clear up these warnings and CFI failures.
-> 
-> I don't understand these changes. Where do 'struct counter_comp'
-> and 'struct counter_ops' get confused? I can only find matching
-> ops/assignments/calls, so I must be missing something. This looks like
-> a loss of CFI granularity instead of having wrappers added if there is
-> an enum/u32 conversion needed somewhere.
 
-Right, I am not the biggest fan of this change myself and it is entirely
-possible that I am misreading the warnings from the commit message but I
-do not see how
+--FhkCvZjqV7l/JE1W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-        comp_node.comp.signal_u32_read = counter->ops->signal_read;
+Hi Uwe,
 
-and
+> What I consider "churn" though is this discussion. I will stop my
+> participation here. That's a bit sad because in my eyes all patches in
+> this series have a positive value and the discussion about (from my POV)
+> incomprehensible minor details destroyed my motivation to work on the
+> quest to convert all drivers to .probe_new() :-\
 
-        comp_node.comp.count_u32_read = counter->ops->function_read;
+To get less pain of such a conversion, team up with Stephen Kitt who
+also works on converting the drivers to probe_new[1].
 
-in counter_add_watch(),
+Happy hacking,
 
-        comp.signal_u32_read = counter->ops->signal_read;
+   Wolfram
 
-in counter_signal_attrs_create(), and
+[1] http://patchwork.ozlabs.org/project/linux-i2c/list/?submitter=Kitt&series=&q=&archive=&delegate=&state=*
+(but it might be that he did more and just not CC the i2c list anymore)
 
-        comp.count_u32_read = counter->ops->function_read;
-        comp.count_u32_write = counter->ops->function_write;
+--FhkCvZjqV7l/JE1W
+Content-Type: application/pgp-signature; name="signature.asc"
 
-in counter_count_attrs_create() are currently safe under kCFI, since the
-final parameter type of the prototypes in 'struct counter_ops' does not
-match the final parameter type of the prototypes in 'struct
-counter_comp'. I would expect the indirect calls in counter_get_data()
-and counter_comp_u32_show() to fail currently.
+-----BEGIN PGP SIGNATURE-----
 
-I briefly looked at making the 'struct counter_comp' callbacks match the
-'struct counter_ops' ones but the COUNTER_COMP macros in
-include/linux/counter.h made it seem like these callbacks might be used
-by implementations that might use different enumerated types as the
-final parameter. I can look a little closer to see if we can make
-everything match.
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNi1w0ACgkQFA3kzBSg
+KbauTQ//eC3wDm2cpHP5XG8VmUtEJ4X2hgVnDbv+M9HAcQufmJkWnjrErGGuNjiv
+pI71aHbcS3wkvV4xhcgzFsMmuzvwnib59qmoiDW+9pOSi4M5+CGDEiXAZM0IVQky
+Am+zB+gg+bHYC3EszRV9WvvnRzraOGixpdndUDFEY9sCY9Vc4s2H5ifeKyJ9/2aT
+/MxHuuHnLmCg+GxJduqjakwQdIZxdhIPLfNEMLJEWyVIoGV3nPNxGrr/kvN96m0y
+rFd1hJpIUK6ZcBavvyIIE/A1aQx8e96QPoIdEPIehXWk/+CyKQXSkomkMLDoNGTi
+u6spsXKZgX8tn/uDnabxzdWdU990vukKiCFriTeS+wqcyzWUc2I37/SOaBlWbMkJ
+kIBMCmb9iWxV0kuDAXEacMr3neHawmTDfh4W8EyMbjFqfrnS7MkRt4xHYXnGGzdD
+sBktF2gWSc33jYl4RA9ylVxqWzOARRgsQlYd/fsLHFq3dtdgqpzRflNrXD5yJy6B
+2d95K3laXKtgeUBezQzhFMxK+Ke1y8Capm1Jqz5npqqjoPaPqGXh2/4sTGsMTeeA
+C6p2YhGEBhPvhQ9yHBzrO9EAU3qDZhUuE6Mzjb4HHY5rs75RNEvIn25cDRGzHTKT
+2qUan2Y+9EYHEVvvWlaixyeoiZCU9khcHPg0O1ZO5iFExwh8mEQ=
+=AGF3
+-----END PGP SIGNATURE-----
 
-I am not sure how wrappers would work here, I can take a look into how
-feasible that is.
-
-Cheers,
-Nathan
+--FhkCvZjqV7l/JE1W--

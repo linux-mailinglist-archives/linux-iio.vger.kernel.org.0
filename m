@@ -2,57 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF9706166B8
-	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 16:59:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81E21616711
+	for <lists+linux-iio@lfdr.de>; Wed,  2 Nov 2022 17:07:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231136AbiKBP7K (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 2 Nov 2022 11:59:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37928 "EHLO
+        id S230045AbiKBQHK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 2 Nov 2022 12:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231171AbiKBP7C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 11:59:02 -0400
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D872C10D;
-        Wed,  2 Nov 2022 08:58:53 -0700 (PDT)
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-13be3ef361dso20733800fac.12;
-        Wed, 02 Nov 2022 08:58:53 -0700 (PDT)
+        with ESMTP id S229548AbiKBQHJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 2 Nov 2022 12:07:09 -0400
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C755D25EB4;
+        Wed,  2 Nov 2022 09:07:08 -0700 (PDT)
+Received: by mail-ot1-f49.google.com with SMTP id l42-20020a9d1b2d000000b0066c6366fbc3so3944012otl.3;
+        Wed, 02 Nov 2022 09:07:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ez/PUmxuGl+IVYCmGsAHMErXKfYZDRw77P5pQjGih6E=;
-        b=Op7RsqIXO3Lms8ir+A8H+fkH+3q46Tl975rMwj6Thk9cNIObifNb6V9l5cVMwQ3nsz
-         5qm6/ucx18pNRq4NC7t2TBXFpgY1NktUnQ//RUkKQRTMfxP6rSifYmNA4Pna/usYX3jJ
-         4kHrX1v4+aHBoA0CtqKJpxxE9VTs6bMOZ+52TcLkrD93bDdbkvtuUZsA0WslZgQZCprn
-         zxgFK8eI4KWURtZJ9FNB+KwoYFoLmwj5VqMhuzYtZvVyJRX6Wlg3KcHt5y7vYx+oTZBG
-         X8KnWuBJHkocLWNf01NZzzAiRVwvAAbzDpO9hrgJjfP1oMY19vp5Byx3Tn9dlJCB6Ky1
-         SFpA==
-X-Gm-Message-State: ACrzQf18BaEy7I3L5clv6pc+N+pgMbuu8o8G2qfYr0E/tUkZzHxW2wOU
-        5uhrWOVP+5lWG9TrNgPmyA==
-X-Google-Smtp-Source: AMsMyM7Cat8+KWNK0HaiBdycxJtsHwnuu9t7VFB0U/JjOYUIOzmhQBXhCzRIJt93pNXJsfBEB2T3MQ==
-X-Received: by 2002:a05:6870:f61a:b0:132:49:bd11 with SMTP id ek26-20020a056870f61a00b001320049bd11mr23712739oab.228.1667404732368;
-        Wed, 02 Nov 2022 08:58:52 -0700 (PDT)
+        bh=Th6/ZO+U3Z/edcN2KgziGNJueIvFPLRfv4u6mt7jrck=;
+        b=hF2sSnXEKF8hYLa+CdJJ2ibf1lzzfR8iWB1szCDsucs6i5WcCYPAT/FjuMBK7VqOue
+         MhO1j6o9LPFRn6AFid31rQ4++XcT8of0wcBL2dusTUkZ/1qI/5RqW7bd+MTAQzQx1HwA
+         FR5R9nW1bVoynQojMmI2cMqVf3VPk2qP+2NhWrnbSUtI9h9jJ/TLFUdwjsGpwJKHylZ1
+         It3SEd/hWOkmqAdQFijmIg14pPfJ9m1WW003W4Hqw2Fho2PV/52Dn4dVCRGBaTh2tRNM
+         rlrU/Jvva5enJx7syA5oUannLsW8NTngJEcfHqGtJy9okUcRyWm97wS6e2X847fjob6I
+         9kaw==
+X-Gm-Message-State: ACrzQf22/7GwoNPYmIe9/bqSpH6QPYevtJIZX3fQGTkqGo5n+YK33KWe
+        kBMMNNKb7vN3I5lu2Hq3Is5fVAuHUQ==
+X-Google-Smtp-Source: AMsMyM6xwEveyhcFQBvttzseNwCLpoSlmkHUq7T6+pg7ZTNvsWy4AVnWNkyGh5Hr2jjsAMZHehEz9g==
+X-Received: by 2002:a9d:63d4:0:b0:66c:572d:e067 with SMTP id e20-20020a9d63d4000000b0066c572de067mr7949792otl.86.1667405228068;
+        Wed, 02 Nov 2022 09:07:08 -0700 (PDT)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id h15-20020a9d6f8f000000b00665919f7823sm5132944otq.8.2022.11.02.08.58.51
+        by smtp.gmail.com with ESMTPSA id s37-20020a05687024a500b00127d2005ea1sm6215390oaq.18.2022.11.02.09.07.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 08:58:51 -0700 (PDT)
-Received: (nullmailer pid 3970254 invoked by uid 1000);
-        Wed, 02 Nov 2022 15:58:53 -0000
-Date:   Wed, 2 Nov 2022 10:58:53 -0500
+        Wed, 02 Nov 2022 09:07:07 -0700 (PDT)
+Received: (nullmailer pid 3979089 invoked by uid 1000);
+        Wed, 02 Nov 2022 16:07:09 -0000
+Date:   Wed, 2 Nov 2022 11:07:09 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Ramona Bolboaca <ramona.bolboaca@analog.com>
-Cc:     linux-kernel@vger.kernel.org, jic23@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+To:     Billy Tsai <billy_tsai@aspeedtech.com>
+Cc:     joel@jms.id.au, devicetree@vger.kernel.org,
+        linux-aspeed@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, colin.king@canonical.com,
+        robh+dt@kernel.org, andrew@aj.id.au, linux-kernel@vger.kernel.org,
+        BMC-SW@aspeedtech.com, jic23@kernel.org, lars@metafoo.de,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] dt-bindings: iio: accel: Add docs for ADXL359
-Message-ID: <166740473228.3970163.15922622826176609739.robh@kernel.org>
-References: <20221031105129.47740-1-ramona.bolboaca@analog.com>
- <20221031105129.47740-3-ramona.bolboaca@analog.com>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: Remove the property
+ "aspeed,trim-data-valid"
+Message-ID: <166740522806.3978983.397017282901820216.robh@kernel.org>
+References: <20221031113208.19194-1-billy_tsai@aspeedtech.com>
+ <20221031113208.19194-2-billy_tsai@aspeedtech.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221031105129.47740-3-ramona.bolboaca@analog.com>
+In-Reply-To: <20221031113208.19194-2-billy_tsai@aspeedtech.com>
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
@@ -65,18 +69,14 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On Mon, 31 Oct 2022 12:51:28 +0200, Ramona Bolboaca wrote:
-> Update ADXL355 existing documentation with documentation
-> for ADXL359 device.
+On Mon, 31 Oct 2022 19:32:08 +0800, Billy Tsai wrote:
+> The valid of the trimming data will use the otp default value as a
+> criterion.
 > 
-> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
+> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
 > ---
-> changes in v2:
->  - Added missing spaces in subject
->  - Changed Accelerometer to Accelerometers
->  - Fixed dedvice typo in commit message
->  .../devicetree/bindings/iio/accel/adi,adxl355.yaml        | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  .../devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml    | 7 -------
+>  1 file changed, 7 deletions(-)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>

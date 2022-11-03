@@ -2,134 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8129F61896F
-	for <lists+linux-iio@lfdr.de>; Thu,  3 Nov 2022 21:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11DCD618A09
+	for <lists+linux-iio@lfdr.de>; Thu,  3 Nov 2022 21:58:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231255AbiKCUMQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 3 Nov 2022 16:12:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34238 "EHLO
+        id S229850AbiKCU6S (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 3 Nov 2022 16:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbiKCUMO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Nov 2022 16:12:14 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FE5205DE
-        for <linux-iio@vger.kernel.org>; Thu,  3 Nov 2022 13:12:13 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id g13so1685532ile.0
-        for <linux-iio@vger.kernel.org>; Thu, 03 Nov 2022 13:12:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eRqJLEoj2IQ/JF9LEX6H2ITW4FZJ568BdKfdiP8mFxQ=;
-        b=Znngut9DM/YUKlXHKZjUQxeWAiORCTaIIgdaxTtfrwgbpv1QcRsIg1AaaTnSvJ4StG
-         Ny7uj0RxHMIH8+qoC67u91gqq5e1zFX6mnpkpczFyH1oLo6+yqY+LHrFAYEImrdheGrx
-         fnjINSF/p1LHLtTS5eqEQ2LF+Y5FtcV4SPuRxnZhLhsugY7Kv0sIz5C2ZWdVEvDh1Tdv
-         UOaNtmt3uP44eJWci84fK9lMAMt0eCN+lkfbtd+D4opL0No3Ct6hrsxjrcup04orMpxV
-         3/8KCymR5AljjklMjormg17D5zhQQHAZqiwuL6BmHURH2FVX07siNtu/k5HRAfJIXrvL
-         mXDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eRqJLEoj2IQ/JF9LEX6H2ITW4FZJ568BdKfdiP8mFxQ=;
-        b=P+ZhI/l2/wlTP/6xpvSq0YTKoHzSyFfsHLW8s9crAWrPl9Kb5dGysy92vy8qw/Ihdb
-         M12L+/FfGI44qXqTVEbAZ09IT3DbFWORt8nn2hn+Y9da+vF5l9HFGccsPDdXHGwRvcsK
-         usKjD+zxa+0hB0cjLWLKGQKH03VW5QQTHuf2ih7yCB5PHyC7pN2w5vjMh1wtwAe9NgLM
-         Qd1RbkXlp2qeSnP4IRoZPHL+206VozkgPhj0a36UzaYFz4rYjMoJp/wTdiCDYUXw7yiw
-         uNbbBi+46fz+yolpak0RtHZeWLqVBjSKx/vfny38V+l1jPKwz3mturgQEc3/GdaYPlpA
-         6FmA==
-X-Gm-Message-State: ACrzQf1LfqJpcpgJv4E+2vJ8nzDts9oAlhtGCoZ4ZTDn/e9I2QSLibWS
-        MQFTjUqy5Na2TETKmLnT+cM+SHXq/iZd6i4N+IY=
-X-Google-Smtp-Source: AMsMyM7z/0Yopq6nEVnLdTleFNxewkKlxCXty1BY53A9faef+OYLA5fAmRd2k59TCB9k/7Xstc8Gvgu31Jg1lZgExXU=
-X-Received: by 2002:a92:c886:0:b0:300:cb13:7cce with SMTP id
- w6-20020a92c886000000b00300cb137ccemr6515000ilo.41.1667506332350; Thu, 03 Nov
- 2022 13:12:12 -0700 (PDT)
+        with ESMTP id S229547AbiKCU6R (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 3 Nov 2022 16:58:17 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0F01A05B
+        for <linux-iio@vger.kernel.org>; Thu,  3 Nov 2022 13:58:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6905FB829FD
+        for <linux-iio@vger.kernel.org>; Thu,  3 Nov 2022 20:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63866C433D6;
+        Thu,  3 Nov 2022 20:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667509093;
+        bh=+vynZu7mMO1qRFdS5r1K9X6+cqCbOQfLbPfU3GIQQZc=;
+        h=Date:From:To:Subject:From;
+        b=Swdqz1Zp8pActOOPBmbrDVk10Mq5bUqPjGzSO8IvJEd6rfd3h3/8TMPkPV0fAhLmD
+         uaZ3cajSHT3a7VbCbpRRUp1b415g7lT52s6ziUwVj2fFxFhCZKrLMcVPOj4k+nZiQJ
+         N6vOP9nwSh0/l8+67y5d97cRYnk2u5c5thf7YMYaskzmrxUGc4QfUPc8hT37XNbl0g
+         VI92VOzWz/PMJDukgNSxm+sKQazYWttkO2CnApGqUMTbMmAu+YmQAO0/PnHPijYy4D
+         zfubJrr8beXVkMhfE2NeLAmz0ZMY73nRn48eeQqpNx845AKhApJE7uOJh099Vt2HRt
+         59J5D49rnk6zg==
+Date:   Thu, 3 Nov 2022 21:10:16 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] 2nd set of IIO fixes for 6.1
+Message-ID: <20221103211016.1ddd0e9b@jic23-huawei>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Sender: robertwood0337@gmail.com
-Received: by 2002:a92:c243:0:0:0:0:0 with HTTP; Thu, 3 Nov 2022 13:12:10 -0700 (PDT)
-From:   MRS HANNAH VANDRAD <h.vandrad@gmail.com>
-Date:   Thu, 3 Nov 2022 08:12:10 -1200
-X-Google-Sender-Auth: qlXr6Sb90zHlC58p4-MGM-TOdcM
-Message-ID: <CAChgFCOJgYHJ8=ATMmxYuxy-vhb4asYhs3HOCeBm3itrU_LrFQ@mail.gmail.com>
-Subject: Greetings dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:142 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5515]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [robertwood0337[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [robertwood0337[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  3.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Greetings dear
+The following changes since commit d76308f03ee1574b0deffde45604252a51c77f6d:
 
+  Revert "coresight: cti: Fix hang in cti_disable_hw()" (2022-10-24 08:33:45 +0200)
 
-   This letter might be a surprise to you, But I believe that you will
-be honest to fulfill my final wish. I bring peace and love to you. It
-is by the grace of god, I had no choice than to do what is lawful and
-right in the sight of God for eternal life and in the sight of man for
-witness of god=E2=80=99s mercy and glory upon my life. My dear, I sent this
-mail praying it will find you in a good condition, since I myself am
-in a very critical health condition in which I sleep every night
-without knowing if I may be alive to see the next day. I am Mrs.Hannah
-Vandrad, a widow suffering from a long time illness. I have some funds
-I inherited from my late husband, the sum of ($11,000,000.00, Eleven
-Million Dollars) my Doctor told me recently that I have serious
-sickness which is a cancer problem. What disturbs me most is my stroke
-sickness. Having known my condition, I decided to donate this fund to
-a good person that will utilize it the way I am going to instruct
-herein. I need a very honest and God fearing person who can claim this
-money and use it for Charity works, for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of god
-and the effort that the house of god is maintained.
+are available in the Git repository at:
 
- I do not want a situation where this money will be used in an ungodly
-manner. That's why I'm taking this decision. I'm not afraid of death,
-so I know where I'm going. I accept this decision because I do not
-have any child who will inherit this money after I die. Please I want
-your sincere and urgent answer to know if you will be able to execute
-this project, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of god be with you and all those that you
-love and  care for.
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.1b
 
-I am waiting for your reply.
+for you to fetch changes up to 7c919b619bcc68158921b1bd968f0e704549bbb6:
 
-May God Bless you.
+  tools: iio: iio_generic_buffer: Fix read size (2022-11-01 08:48:13 +0000)
 
-Mrs. Hannah Vandrad,
+----------------------------------------------------------------
+2nd set of IIO fixes for 6.1
+
+Another mixed bag of driver fixes.
+
+* atmel,at91-sama5d2
+  - Drop a 5 degree offset as not needed for production devices.
+  - Missing iio_trigger_free() in error path.
+* bosch,bma400
+  - Turn power on before trying to read chip ID.
+* bosch,bno055
+  - Avoid uninitialized variable warning (no actual impact)
+* meas,ms5611
+  - Fix multiple instances of driver sharing single prom array.
+  - Stop forcing SPI speed to max devices supports
+* mps,mp2629
+  - Wrong structure field used to match channel.
+  - Missing NULL terminator.
+* sysfs-trigger
+  - Fix memory leak in error path.
+* tools
+  - Fix wrong read size when calling with noevents.
+
+----------------------------------------------------------------
+Claudiu Beznea (1):
+      iio: adc: at91-sama5d2_adc: get rid of 5 degrees Celsius adjustment
+
+Dan Carpenter (1):
+      iio: imu: bno055: uninitialized variable bug in bno055_trigger_handler()
+
+Jonathan Cameron (1):
+      iio: accel: bma400: Ensure VDDIO is enable defore reading the chip ID.
+
+Matti Vaittinen (1):
+      tools: iio: iio_generic_buffer: Fix read size
+
+Mitja Spes (2):
+      iio: pressure: ms5611: fixed value compensation bug
+      iio: pressure: ms5611: changed hardcoded SPI speed to value limited
+
+Saravanan Sekar (2):
+      iio: adc: mp2629: fix wrong comparison of channel
+      iio: adc: mp2629: fix potential array out of bound access
+
+Yang Yingliang (2):
+      iio: trigger: sysfs: fix possible memory leak in iio_sysfs_trig_init()
+      iio: adc: at91_adc: fix possible memory leak in at91_adc_allocate_trigger()
+
+ drivers/iio/accel/bma400_core.c      | 24 ++++++++---------
+ drivers/iio/adc/at91-sama5d2_adc.c   |  6 ++---
+ drivers/iio/adc/at91_adc.c           |  4 ++-
+ drivers/iio/adc/mp2629_adc.c         |  5 ++--
+ drivers/iio/imu/bno055/bno055.c      |  2 +-
+ drivers/iio/pressure/ms5611.h        | 12 +++------
+ drivers/iio/pressure/ms5611_core.c   | 51 +++++++++++++++++++-----------------
+ drivers/iio/pressure/ms5611_spi.c    |  2 +-
+ drivers/iio/trigger/iio-trig-sysfs.c |  6 ++++-
+ tools/iio/iio_generic_buffer.c       |  4 +--
+ 10 files changed, 60 insertions(+), 56 deletions(-)

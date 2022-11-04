@@ -2,183 +2,80 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ACC66193CE
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 10:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B97E6193E8
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 10:55:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbiKDJq5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 05:46:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58758 "EHLO
+        id S230340AbiKDJzF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 05:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231130AbiKDJqx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 05:46:53 -0400
-Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B50F65D8
-        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 02:46:50 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.100.34])
-        by smtp.orange.fr with ESMTPA
-        id qtHkoE990iBgAqtHkogqeF; Fri, 04 Nov 2022 10:46:49 +0100
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 04 Nov 2022 10:46:49 +0100
-X-ME-IP: 86.243.100.34
-Message-ID: <1325d0d4-1bff-af36-08c2-b4a9f01a4cd0@wanadoo.fr>
-Date:   Fri, 4 Nov 2022 10:46:47 +0100
+        with ESMTP id S229572AbiKDJzD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 05:55:03 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F5151E729
+        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 02:55:01 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id w4so2765987qts.0
+        for <linux-iio@vger.kernel.org>; Fri, 04 Nov 2022 02:55:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WcbdPf5mcbTE9USdyuDwmcu6+Eyj2e27aF2m5iQXwS4=;
+        b=HPEjogco/A+G5ALWXhf7wrqQfNx94fV8/Rw84rOtWhV3yAn7qSalH4iDpDjiIt3Qn7
+         v6+EilyoFnQn5Dqw4OGvvJ0gRlgtYvncBKjG61LYFCTIIv0edfealsCv90OIVXk1Yq0i
+         BdfDsSf4BI14xDZLrT1cAkZSuPcJpIVMXqI7dGrqY0xbuAg0nDKpxkQD98jNpfwynjC8
+         jMdhaFrqIggGQLyjLFCArd/UNa8+G3CMqo1vKtEnHaSOjJ2MWgEeHz6oKF+nCSlEdlWn
+         fLj3ds4eBYUKdIXt6g+PAg2fj4DaT/ip8vYO8awP+gbyOVhpCcgketf8fARpTZCudoeQ
+         Q0yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WcbdPf5mcbTE9USdyuDwmcu6+Eyj2e27aF2m5iQXwS4=;
+        b=ebLf69nBtEWjSxRuGNq7UO9JV/I0urTATvGhL2LURpv3s14zYKv/a03l8+mv/gjdDc
+         SZSm4MWiRx+GnP+ZKhiO4G+hIaU98XQPTU6DEYHm/bDA9+3lwJLgQNo5VC5eaH/bepIh
+         JnNN+9vDKoiJEeWpworSEVaIE9Dsy2px1yyQi9fysxgxf97Fpwnp6kv/AB2d/Im6xszo
+         rRN9JL35ZV4ZLa3ApmB4GiNJ/LXt9tgko7RNMScJegP4Zs1OCrvDW6yffjrp7v56hOiI
+         w3HocYOCY5AGnGjhWA1pL+pLZLoF8ekCjRpAWIxDY7ikAoCtZ2WWzp/4BxP31fysX0c4
+         WOdw==
+X-Gm-Message-State: ACrzQf3ZBMFWlnc+pDReScgVOOyswNq47g2TcyA1T49QcQNORJ74gPMY
+        BveOnWHwCVzTjmRR1hxVmBCfF0uqRyre4oAC6qY=
+X-Google-Smtp-Source: AMsMyM5F2gNByJNQqzBWsNm8Gg8yVIQWHzj3Y98Dg/C35vUHRb3r30smlCAhEihjwtd5Nvh9Vf0D2QW6jjkIBDTd0Ww=
+X-Received: by 2002:ac8:59c3:0:b0:3a5:43b0:6a5b with SMTP id
+ f3-20020ac859c3000000b003a543b06a5bmr12188991qtf.61.1667555700716; Fri, 04
+ Nov 2022 02:55:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 2/4] iio: frequency: adf4377: add support for ADF4377
-Content-Language: fr
-To:     antoniu.miclaus@analog.com
-References: <20221104092802.90725-1-antoniu.miclaus@analog.com>
- <20221104092802.90725-3-antoniu.miclaus@analog.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, robh+dt@kernel.org
-In-Reply-To: <20221104092802.90725-3-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20221104090307.17734-1-wupeng58@huawei.com>
+In-Reply-To: <20221104090307.17734-1-wupeng58@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 4 Nov 2022 11:54:24 +0200
+Message-ID: <CAHp75Vd_h3Avyafefg0fj-2BMCqvAH4U3Fd3biTptMMZdo_c2g@mail.gmail.com>
+Subject: Re: [PATCH -next] iio: core: fix missing mutex_unlock() in iio_device_claim_buffer_mode()
+To:     Peng Wu <wupeng58@huawei.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+        linux-iio@vger.kernel.org, liwei391@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Le 04/11/2022 à 10:28, Antoniu Miclaus a écrit :
-> The ADF4377 is a high performance, ultralow jitter, dual output integer-N
-> phased locked loop (PLL) with integrated voltage controlled oscillator
-> (VCO) ideally suited for data converter and mixed signal front end (MxFE)
-> clock applications.
-> 
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adf4377.pdf
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
-> ---
+On Fri, Nov 4, 2022 at 11:05 AM Peng Wu <wupeng58@huawei.com> wrote:
+>
+> In the success path of iio_device_claim_buffer_mode(), mutex_unlock()
+> should be called before return.
 
-[]
+Please, understand how the code works.
+NAK.
 
-> +static int adf4377_properties_parse(struct adf4377_state *st)
-> +{
-> +	struct spi_device *spi = st->spi;
-> +
-> +	st->clkin = devm_clk_get(&spi->dev, "ref_in");
+Nuno, perhaps we need to put a comment inside the function to explain this?
 
-Hi,
-
-this could be devm_clk_get_enabled() in order to...
-
-> +	if (IS_ERR(st->clkin))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
-> +				     "failed to get the reference input clock\n");
-> +
-> +	st->gpio_ce = devm_gpiod_get_optional(&st->spi->dev, "ce-en",
-> +					      GPIOD_OUT_HIGH);
-> +	if (IS_ERR(st->gpio_ce))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_ce),
-> +				     "failed to get the CE GPIO\n");
-> +
-> +	st->gpio_enclk1 = devm_gpiod_get_optional(&st->spi->dev, "enclk1",
-> +						  GPIOD_OUT_HIGH);
-> +	if (IS_ERR(st->gpio_enclk1))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
-> +				     "failed to get the CE GPIO\n");
-> +
-> +	if (st->type == ADF4377) {
-> +		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "enclk2",
-> +							  GPIOD_OUT_HIGH);
-> +		if (IS_ERR(st->gpio_enclk2))
-> +			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
-> +					     "failed to get the CE GPIO\n");
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int adf4377_freq_change(struct notifier_block *nb, unsigned long action, void *data)
-> +{
-> +	struct adf4377_state *st = container_of(nb, struct adf4377_state, nb);
-> +	int ret;
-> +
-> +	if (action == POST_RATE_CHANGE) {
-> +		mutex_lock(&st->lock);
-> +		ret = notifier_from_errno(adf4377_init(st));
-> +		mutex_unlock(&st->lock);
-> +		return ret;
-> +	}
-> +
-> +	return NOTIFY_OK;
-> +}
-> +
-> +static void adf4377_clk_disable(void *data)
-> +{
-> +	clk_disable_unprepare(data);
-> +}
-
-... remove this...
-
-> +
-> +static int adf4377_probe(struct spi_device *spi)
-> +{
-> +	struct iio_dev *indio_dev;
-> +	struct regmap *regmap;
-> +	struct adf4377_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	regmap = devm_regmap_init_spi(spi, &adf4377_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return PTR_ERR(regmap);
-> +
-> +	st = iio_priv(indio_dev);
-> +
-> +	indio_dev->info = &adf4377_info;
-> +	indio_dev->name = "adf4377";
-> +	indio_dev->channels = adf4377_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
-> +
-> +	st->regmap = regmap;
-> +	st->spi = spi;
-> +	st->type = spi_get_device_id(spi)->driver_data;
-> +	mutex_init(&st->lock);
-> +
-> +	ret = adf4377_properties_parse(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = clk_prepare_enable(st->clkin);
-> +	if (ret)
-> +		return ret;
-
-... and this...
-
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, adf4377_clk_disable, st->clkin);
-> +	if (ret)
-> +		return ret;
-
-... and this.
-
-CJ
-
-> +
-> +	st->nb.notifier_call = adf4377_freq_change;
-> +	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = adf4377_init(st);
-> +	if (ret) {
-> +		dev_err(&spi->dev, "adf4377 init failed\n");
-> +		return ret;
-> +	}
-> +
-> +	return devm_iio_device_register(&spi->dev, indio_dev);
-> +}
-
-[]
-
+-- 
+With Best Regards,
+Andy Shevchenko

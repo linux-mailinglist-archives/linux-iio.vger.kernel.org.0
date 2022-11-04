@@ -2,146 +2,115 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F82B619C32
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 16:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20874619E64
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 18:22:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbiKDPy4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 11:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
+        id S230187AbiKDRWA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 13:22:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbiKDPyz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 11:54:55 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A792C2F037
-        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 08:54:54 -0700 (PDT)
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 2A4Fs1mw021956;
-        Fri, 4 Nov 2022 10:54:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1667577241;
-        bh=0e5rbAy5K6kiagwWXZQl/am0wFzyeNhfF9nH14uyePc=;
-        h=Date:Subject:To:CC:References:From:In-Reply-To;
-        b=jmGnDQs1lp7YIziIIqmr4SLV0J4XOxpC2c9CxrIErVvFjh0wZidUzo2iSMgPAIM4O
-         dfMnwC19eBhNj5i4JJfm8/iv6hSS1Txeld5Fo+CvSj5VJZGpUGb0OglOQ6aOL77CMl
-         ckMaGMQEPdKOWFZe0PjnV8THwnqGiNOgbEPXHZYo=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 2A4Fs1VQ094632
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 4 Nov 2022 10:54:01 -0500
-Received: from DLEE103.ent.ti.com (157.170.170.33) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6; Fri, 4 Nov
- 2022 10:54:00 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.6 via
- Frontend Transport; Fri, 4 Nov 2022 10:54:00 -0500
-Received: from [10.250.38.44] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 2A4Fs0jD003996;
-        Fri, 4 Nov 2022 10:54:00 -0500
-Message-ID: <b2bf65e1-439b-3a4f-7e01-b2f211680270@ti.com>
-Date:   Fri, 4 Nov 2022 10:53:59 -0500
+        with ESMTP id S230035AbiKDRV7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 13:21:59 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA1CFAE5A;
+        Fri,  4 Nov 2022 10:21:58 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0C36B6602989;
+        Fri,  4 Nov 2022 17:21:55 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1667582516;
+        bh=R/MBlJBNY8EYBt6oZqjxP8TEcbb7lnlRlY2DZ7434zU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ku0bwUVtf5oKlMLP0ahGkM/AFF1NVvTK4xSv08D6bDpoArwk7fNUVX4up8i7p+YS6
+         WYrOAkqaccZpd+oaLAiY6Ar/q++RvqReKQX4DoxIjAmVuVNG4GjKc1P9nsptV/qTry
+         fO/9xoBfP6Fe2KUuOnbg0KciaFngjlPyxceVz0aygW5fdg0kTOe207ImIimWwaj+8I
+         c/JLmjU7DXdI1qr+B8jWvJ7lVkPiq+U3fNvcRPvcf3wQ03oottMi2qAEsC+bClQ0EW
+         inX+4W/B9XPKzo6kWvJgQBTRMCKkOHDjQ557fzpi6e/7KlREFMyxoq6MVsZM7R5LBv
+         wiLqQNjOVMKAg==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lee@kernel.org, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
+        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 0/9] MSM8956/76 and Sony Xperia X / X Compact support
+Date:   Fri,  4 Nov 2022 18:21:13 +0100
+Message-Id: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH] iio: health: afe4403: Fix oob read in afe4403_read_raw
-Content-Language: en-US
-To:     Wei Yongjun <weiyongjun@huaweicloud.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        =?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-iio@vger.kernel.org>
-References: <20221104112808.346719-1-weiyongjun@huaweicloud.com>
-From:   Andrew Davis <afd@ti.com>
-In-Reply-To: <20221104112808.346719-1-weiyongjun@huaweicloud.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 11/4/22 6:28 AM, Wei Yongjun wrote:
-> From: Wei Yongjun <weiyongjun1@huawei.com>
-> 
-> KASAN report out-of-bounds read as follows:
-> 
-> BUG: KASAN: global-out-of-bounds in afe4403_read_raw+0x42e/0x4c0 [afe4403]
-> Read of size 4 at addr ffffffffc02ac638 by task cat/279
-> 
-> CPU: 2 PID: 279 Comm: cat Tainted: G                 N
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> Call Trace:
->   <TASK>
->   afe4403_read_raw+0x42e/0x4c0 [afe4403 141d77410f5466ef049ee2376f5136b77a168de0]
->   iio_read_channel_info+0x249/0x2e0 [industrialio d0627df60a92bbb9630e68c3e2f98d20dac889ef]
->   dev_attr_show+0x4b/0xa0 drivers/base/core.c:2195
->   sysfs_kf_seq_show+0x1ec/0x390 fs/sysfs/file.c:59
->   seq_read_iter+0x48d/0x10b0 fs/seq_file.c:230
->   kernfs_fop_read_iter+0x4e6/0x710 fs/kernfs/file.c:275
->   call_read_iter include/linux/fs.h:2153 [inline]
->   new_sync_read fs/read_write.c:389 [inline]
->   vfs_read+0x5f2/0x890 fs/read_write.c:470
->   ksys_read+0x106/0x220 fs/read_write.c:613
->   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->   do_syscall_64+0x38/0xa0 arch/x86/entry/common.c:80
->   entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> RIP: 0033:0x7fd8611cf992
->   </TASK>
-> 
-> The buggy address belongs to the variable:
->   afe4403_channel_leds+0x18/0xffffffffffffe9e0 [afe4403]
-> 
-> This issue can be reproduced by singe command:
-> 
->   $ cat /sys/bus/spi/devices/spi0.0/iio\:device0/in_intensity6_raw
-> 
-> The array size of afe4403_channel_leds is less than channels, so access
-> with chan->address cause OOB read in afe4403_read_raw. Fix it by moving
-> access before use it.
-> 
-> Fixes: b36e8257641a ("iio: health/afe440x: Use regmap fields")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->   drivers/iio/health/afe4403.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/health/afe4403.c b/drivers/iio/health/afe4403.c
-> index 3bb4028c5d74..14213a48e349 100644
-> --- a/drivers/iio/health/afe4403.c
-> +++ b/drivers/iio/health/afe4403.c
-> @@ -246,7 +246,7 @@ static int afe4403_read_raw(struct iio_dev *indio_dev,
->   {
->   	struct afe4403_data *afe = iio_priv(indio_dev);
->   	unsigned int reg = afe4403_channel_values[chan->address];
+This series adds basic support for MSM8976 and its lower spec variant
+MSM8956, along with two devices: the Sony Xperia X and X Compact.
 
-Good find and the fix does look valid, but can we also move this
-access for 'reg' to right before we use it also? Just for consistency.
+For now, even though I do have a tree in which these two devices are
+fully booting, only a basic console boot is provided as the rest is
+awaiting cleanup and some more dependencies.
+Especially every device requiring IOMMU support, like MDSS, MDP and
+Adreno GPU cannot work with the current qcom_iommu driver, as it
+needs some code to get the ASIDs right for MSM8956/76.
 
-Same for the 'afe4403_channel_leds' access below in afe4403_write_raw(),
-and same for value_reg in your patch for afe4404. Then both patches can have:
+This series depends on [1].
 
-Acked-by: Andrew Davis <afd@ti.com>
+Tested on both Xperia X and X Compact.
 
-> -	unsigned int field = afe4403_channel_leds[chan->address];
-> +	unsigned int field;
->   	int ret;
->   
->   	switch (chan->type) {
-> @@ -262,6 +262,7 @@ static int afe4403_read_raw(struct iio_dev *indio_dev,
->   	case IIO_CURRENT:
->   		switch (mask) {
->   		case IIO_CHAN_INFO_RAW:
-> +			field = afe4403_channel_leds[chan->address];
->   			ret = regmap_field_read(afe->fields[field], val);
->   			if (ret)
->   				return ret;
+[1]: https://patchwork.kernel.org/project/linux-arm-msm/list/?series=690889
+
+AngeloGioacchino Del Regno (7):
+  dt-bindings: iio: qcom-spmi-vadc: Add definitions for USB DP/DM VADCs
+  dt-bindings: soc: qcom: qcom,smd-rpm: Use qcom,smd-channels on MSM8976
+  dt-bindings: mmc: sdhci-msm: Document compatible for MSM8976
+  dt-bindings: mfd: qcom,tcsr: Add compatible for MSM8976
+  arm64: dts: qcom: Add configuration for PM8950 peripheral
+  arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs
+  arm64: dts: qcom: Add support for SONY Xperia X/X Compact
+
+Marijn Suijten (2):
+  dt-bindings: nvmem: Add compatible for MSM8976
+  dt-bindings: arm: qcom: Document msm8956 and msm8976 SoC and devices
+
+ .../devicetree/bindings/arm/qcom.yaml         |   10 +
+ .../devicetree/bindings/mfd/qcom,tcsr.yaml    |    1 +
+ .../devicetree/bindings/mmc/sdhci-msm.yaml    |    1 +
+ .../bindings/nvmem/qcom,qfprom.yaml           |    1 +
+ .../bindings/soc/qcom/qcom,smd-rpm.yaml       |    1 +
+ arch/arm64/boot/dts/qcom/Makefile             |    2 +
+ .../qcom/msm8956-sony-xperia-loire-kugo.dts   |   36 +
+ .../qcom/msm8956-sony-xperia-loire-suzu.dts   |   17 +
+ .../dts/qcom/msm8956-sony-xperia-loire.dtsi   |  269 ++++
+ arch/arm64/boot/dts/qcom/msm8956.dtsi         |   18 +
+ arch/arm64/boot/dts/qcom/msm8976.dtsi         | 1208 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          |  165 +++
+ include/dt-bindings/iio/qcom,spmi-vadc.h      |    3 +
+ 13 files changed, 1732 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-suzu.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/pm8950.dtsi
+
+-- 
+2.37.2
+

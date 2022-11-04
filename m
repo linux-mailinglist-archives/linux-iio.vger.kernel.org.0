@@ -2,83 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47AFC61A095
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 20:11:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E5461A117
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 20:35:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbiKDTLn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 15:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49092 "EHLO
+        id S229587AbiKDTf0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 15:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229729AbiKDTL3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 15:11:29 -0400
-Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424A569DD6
-        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 12:11:28 -0700 (PDT)
-Received: by mail-qt1-x830.google.com with SMTP id hh9so3576400qtb.13
-        for <linux-iio@vger.kernel.org>; Fri, 04 Nov 2022 12:11:28 -0700 (PDT)
+        with ESMTP id S229499AbiKDTfZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 15:35:25 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3496145092
+        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 12:35:24 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id g129so5195141pgc.7
+        for <linux-iio@vger.kernel.org>; Fri, 04 Nov 2022 12:35:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=chromium.org; s=google;
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=arMRCILA/fIuamA+i5ucpM6bm3qs5bxen8Q+JsaLECQ=;
-        b=HAWF5B1mgqAHFNBENQJzhZlROomhbvU4tcjNQEpNh3x05uC4GIgjtmAv+7SV473nC+
-         eSWz9nfktwRwrShoZPdi7qmuQODgWb9xb+HIXiJF1siaQuw6P8mzPU6SoVh9/O25K/M/
-         KcjqjFXsHNB+Oi9Y2Y1SlStUxja86eZ0PDx4kDwTZBK+gLwI8VrEuKEeOcHoCaiMcA/Q
-         S4G7sktS9By1/YDQXB00/Nv+GpmLTV1kHaKwzTxT7Icbyndp71UVCQPYHnbwkXZe5ixX
-         0bk2GmPvOGYFxgWId4EdyiE7xUGOVITxlsWZKHIdPTVQfRk1aX1rrg6Ae8Ja/l0MSD0l
-         HqyQ==
+        bh=Fi3uLXH+szzqTxRSWVS63wUkqoaeAU4TkZNAaOvVK+s=;
+        b=aWx+oPO+Srbo1w+pEL6tCCG2kMxu7Owtr3UvsxPEkOsAPbsNEoWsMP/nloh4Xfxmjt
+         yAPc0edxVQcVDqNuzsSO7GcAU0weBGcazqHv85VCQxprA0/+UVoKiaaE+p7ftEd7g2sC
+         TGxq/1cx5xFlVcjBZr75s1UfKRd0G0E9umQIQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-disposition:mime-version:message-id:subject:cc:to:date:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=arMRCILA/fIuamA+i5ucpM6bm3qs5bxen8Q+JsaLECQ=;
-        b=qVXjXZM7M1B5G5aqH1IedgkZXq8geT/C4QtTZ6hEpLcXID03ae32U0i50B5P7GPYXJ
-         xld7OTXnWr9CxRdl6N7JuK+TqloeCQODQ7sbFYrjYDUfAJznI1rJT+UatNSFcdeHPVCY
-         FmxY7ESAk0vZZ92oBmrf1nnDJcQSYhgWVAX1OVUce38Qgqw5rHjIAFG+EU+piP/WA/AV
-         4vHzKeMR7unTQQxYI80wNFk2IH4PUCAsgoQVsxNz3pO60iuyBi7T0lruhSeMkgGH8I3l
-         kEzcm+d5+brE8TQd0bkScXlhiHwQ/rdFDUwo2S13TJVGDR3KgtKsCbRSNge9vIfYsXMb
-         869w==
-X-Gm-Message-State: ACrzQf09i2P7MEZZCMylorMxfgy7kPNHV2MZVPcHbdv/L+B5S91JvdfJ
-        GmOLSBUWdEpg5zOReqWXDulXHg==
-X-Google-Smtp-Source: AMsMyM7e+8kdsKkMsUNNtmBQLn4cmi/4NDnvE0DsL6/EpJktIGjc79JqMFqE6+odDdpBixA+iA57eQ==
-X-Received: by 2002:a05:622a:1110:b0:39c:d568:8b26 with SMTP id e16-20020a05622a111000b0039cd5688b26mr29320361qty.280.1667589087326;
-        Fri, 04 Nov 2022 12:11:27 -0700 (PDT)
-Received: from ?IPV6:2601:586:5000:570:aad6:acd8:4ed9:299b? ([2601:586:5000:570:aad6:acd8:4ed9:299b])
-        by smtp.gmail.com with ESMTPSA id cm5-20020a05622a250500b003a4f22c6507sm66130qtb.48.2022.11.04.12.11.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Nov 2022 12:11:26 -0700 (PDT)
-Message-ID: <488b7796-e596-e15e-fe5f-18211516c0de@linaro.org>
-Date:   Fri, 4 Nov 2022 15:11:25 -0400
+        bh=Fi3uLXH+szzqTxRSWVS63wUkqoaeAU4TkZNAaOvVK+s=;
+        b=Dr4zkottzVan2XBw5f8b2QUSufcLkIzDvsTxZsad2S3FVzZB7LbDsS48G3V95ye+WY
+         +O4M1/R5YdjeMi6sTnrvm9pus6B2tDVq2pVpd8sL22WJWqfXkKDeqvNv4y4EKxWrtYyk
+         u9shXUq91OpYDnqybdBJMIabPLpRS/zgYqhtTzK2FIL2R0dEs1sSvFpn7yxhlNSIwHQ4
+         1RDw3ds3fUHLMWcXJtcuKEGHfSU69lpKoLxQcigatsI8ZYbyuKCl3fY2TQOHlzzdHsno
+         o9Tky6GbP1+bxg2aMN8uSWtvYTxm8Xms9kXwKwjvR3tB5GFD1C4F6nedgxxubCAbPmoM
+         SEMA==
+X-Gm-Message-State: ACrzQf2/ra67aG8nacW49VC8NTv6u8tM7Um63gLg8yFYDA7uRpegOSGD
+        KZI6QEQjjH1vW7ZWagUNnOQ2MA==
+X-Google-Smtp-Source: AMsMyM7t+PovjIzz0bK0Dmex/GB5uaGqzigeaTOQYl4Zm0s+THtQgtXB0FMtorvOI4GBtIiH/aigqg==
+X-Received: by 2002:a05:6a00:4508:b0:56d:8afe:b7c1 with SMTP id cw8-20020a056a00450800b0056d8afeb7c1mr25958465pfb.29.1667590523697;
+        Fri, 04 Nov 2022 12:35:23 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id i16-20020a632210000000b0043a18cef977sm109241pgi.13.2022.11.04.12.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Nov 2022 12:35:23 -0700 (PDT)
+From:   coverity-bot <keescook@chromium.org>
+X-Google-Original-From: coverity-bot <keescook+coverity-bot@chromium.org>
+Date:   Fri, 4 Nov 2022 12:35:22 -0700
+To:     Crt Mori <cmo@melexis.com>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        linux-next@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Coverity: mlx90632_probe(): Error handling issues
+Message-ID: <202211041235.FB1AF7F6F@keescook>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 9/9] arm64: dts: qcom: Add support for SONY Xperia X/X
- Compact
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@somainline.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee@kernel.org, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
-        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
- <20221104172122.252761-10-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221104172122.252761-10-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -87,147 +68,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/11/2022 13:21, AngeloGioacchino Del Regno wrote:
-> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> 
-> This adds support for the Sony Xperia Loire/SmartLoire platform
+Hello!
 
-Thank you for your patch. There is something to discuss/improve.
+This is an experimental semi-automated report about issues detected by
+Coverity from a scan of next-20221104 as part of the linux-next scan project:
+https://scan.coverity.com/projects/linux-next-weekly-scan
 
-> +
-> +&rpm_requests {
-> +	pm8950_regulators: regulators {
-> +		compatible = "qcom,rpm-pm8950-regulators";
-> +
-> +		vdd_s1-supply = <&vph_pwr>;
-> +		vdd_s2-supply = <&vph_pwr>;
-> +		vdd_s3-supply = <&vph_pwr>;
-> +		vdd_s4-supply = <&vph_pwr>;
-> +		vdd_s6-supply = <&vph_pwr>;
-> +		vdd_l1_l19-supply = <&pm8950_s3>;
-> +		vdd_l2_l23-supply = <&pm8950_s3>;
-> +		vdd_l3-supply = <&pm8950_s3>;
-> +		vdd_l5_l6_l7_l16-supply = <&pm8950_s4>;
-> +		vdd_l8_l11_l12_l17_l22-supply = <&vph_pwr>;
-> +
-> +		pm8950_s1: s1 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1162500>;
-> +		};
-> +
-> +		pm8950_s3: s3 {
-> +			regulator-min-microvolt = <1325000>;
-> +			regulator-max-microvolt = <1325000>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		pm8950_s4: s4 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-always-on;
-> +		};
-> +
-> +		pm8950_l1: l1 {
-> +			regulator-min-microvolt = <900000>;
-> +			regulator-max-microvolt = <1100000>;
-> +		};
-> +
-> +		pm8950_l2: l2 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +
-> +		pm8950_l3: l3 {
-> +			regulator-min-microvolt = <1000000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +
-> +		pm8950_l5: l5 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8950_l6: l6 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8950_l7: l7 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8950_l8: l8 {
-> +			regulator-min-microvolt = <2900000>;
-> +			regulator-max-microvolt = <2900000>;
-> +		};
-> +
-> +		pm8950_l9: l9 {
-> +			regulator-min-microvolt = <2000000>;
-> +			regulator-max-microvolt = <2400000>;
-> +		};
-> +
-> +		pm8950_l10: l10 {
-> +			regulator-min-microvolt = <2500000>;
-> +			regulator-max-microvolt = <2900000>;
-> +		};
-> +
-> +		pm8950_l11: l11 {
-> +			regulator-min-microvolt = <2950000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-> +		pm8950_l12: l12 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-> +		pm8950_l13: l13 {
-> +			regulator-min-microvolt = <3075000>;
-> +			regulator-max-microvolt = <3075000>;
-> +		};
-> +
-> +		pm8950_l14: l14 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <3300000>;
-> +		};
-> +
-> +		pm8950_l15: l15 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <3300000>;
-> +		};
-> +
-> +		pm8950_l16: l16 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8950_l17: l17 {
-> +			regulator-min-microvolt = <2500000>;
-> +			regulator-max-microvolt = <2900000>;
-> +		};
-> +
-> +		pm8950_l22: l22 {
-> +			regulator-min-microvolt = <3000000>;
-> +			regulator-max-microvolt = <3000000>;
-> +		};
-> +
-> +		pm8950_l23: l23 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +	};
-> +};
-> +
-> +&sdhc_1 {
-> +	status = "okay";
+You're getting this email because you were associated with the identified
+lines of code (noted below) that were touched by commits:
 
-Status as last (everywhere)
+  Thu Nov 3 21:42:26 2022 +0000
+    c83d3e5ca97f ("iio: temperature: mlx90632 Add runtime powermanagement modes")
 
-https://lore.kernel.org/all/5158fe83-88b1-1081-df7f-4118ce6f5ec0@somainline.org/
+Coverity reported the following:
 
-Rest LGTM.
+*** CID 1527134:  Error handling issues  (CHECKED_RETURN)
+drivers/iio/temperature/mlx90632.c:1270 in mlx90632_probe()
+1264     	mlx90632->object_ambient_temperature = 25000; /* 25 degrees milliCelsius */
+1265     	mlx90632->interaction_ts = jiffies; /* Set initial value */
+1266
+1267     	pm_runtime_get_noresume(&client->dev);
+1268     	pm_runtime_set_active(&client->dev);
+1269
+vvv     CID 1527134:  Error handling issues  (CHECKED_RETURN)
+vvv     Calling "devm_pm_runtime_enable" without checking return value (as is done elsewhere 21 out of 24 times).
+1270     	devm_pm_runtime_enable(&client->dev);
+1271     	pm_runtime_set_autosuspend_delay(&client->dev, MLX90632_SLEEP_DELAY_MS);
+1272     	pm_runtime_use_autosuspend(&client->dev);
+1273     	pm_runtime_put_autosuspend(&client->dev);
+1274
+1275     	return devm_iio_device_register(&client->dev, indio_dev);
 
-Best regards,
-Krzysztof
+If this is a false positive, please let us know so we can mark it as
+such, or teach the Coverity rules to be smarter. If not, please make
+sure fixes get into linux-next. :) For patches fixing this, please
+include these lines (but double-check the "Fixes" first):
 
+Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+Addresses-Coverity-ID: 1527134 ("Error handling issues")
+Fixes: c83d3e5ca97f ("iio: temperature: mlx90632 Add runtime powermanagement modes")
+
+Thanks for your attention!
+
+-- 
+Coverity-bot

@@ -2,97 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27894619FF4
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 19:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 168E361A03C
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 19:48:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232101AbiKDScB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 14:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51438 "EHLO
+        id S229469AbiKDSsV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 14:48:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232129AbiKDSbz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 14:31:55 -0400
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0179440914
-        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 11:31:52 -0700 (PDT)
-Received: by mail-qv1-xf35.google.com with SMTP id h10so3756035qvq.7
-        for <linux-iio@vger.kernel.org>; Fri, 04 Nov 2022 11:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jv/VBBSPGfDMm3BuvCUb6KeKn+DQzFUitFYwYAfTSbw=;
-        b=Gf4Igk3vYjYVzOdyjeQvBR+wn0fv9jCoK2u94IZ9RY/2cw8nU9sVSyVIb458qMAPtB
-         HzbKuLwRjp58mdYEnl4x7a15rlRVbqpxVdbzzaPcJ+jzYgrrIoaEoCTV4xoGgJBxflSZ
-         7rZwl1NRDJVbJ4lTHJfPFdiu2AQCzPsSzJ4uqwQBxHbcLR35xgeCU2WO/yzxOSo59JoK
-         QYUSGpYd2BvBoRleK2z/rA5pI+DS5s3rrKXLwV3Ii1zd5AXWDJjHuO8gsHqRg0xTgmYt
-         X5yDUgA7ctHYiZimR/DjS+frJl9XuI40oCizh+kuxhOmvVA4qWBXLeOmsFLWSUd3P+wo
-         EJlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jv/VBBSPGfDMm3BuvCUb6KeKn+DQzFUitFYwYAfTSbw=;
-        b=r388ycs2xp6JlqMPmnEUQE+90Hj7wIrB7Hlfy2z10sLQjVy7YYdrER43V5Dfs7HiTE
-         SwfjqkL6JndemglMx+3kZLDExrY8oEi+yuSf0ChkW2SYqGxMepTdhDwi7Q3474QRF7do
-         yT5gbYKC5c3gFv518hlwlopSW3z0G3xjfTxKEYdaDx2jYSr+PcFELdaT89lt7MD9X7zx
-         oFulPgGjN0e1xxv0tOWy0ZeFYwY4Ml5c22yMfnh4bsRtzaDgL1li2gKIjTjOBBLLvCQo
-         P5FeVuZyhYGEEwIhrAETH4dUrxe8zhZTQOD0CsqDI7OxIH0gONSvIVdm4h7AOJLgIzva
-         sTdA==
-X-Gm-Message-State: ACrzQf2MUDgwhg6swFeZJcQtzUlS8n/3v0JwwXgBhpUGgsI/40JUwxQv
-        mjncWoZnbUc7DksNFt5SFsxT5w==
-X-Google-Smtp-Source: AMsMyM6gLeFy71nSxk2gT25tUnCpxV9lEYdESGw3HGK02z1+OuPJ6eKzIpdPlsMCVsuRvg7YFgwQiQ==
-X-Received: by 2002:a05:6214:625:b0:4bb:ff88:a937 with SMTP id a5-20020a056214062500b004bbff88a937mr25108338qvx.111.1667586711697;
-        Fri, 04 Nov 2022 11:31:51 -0700 (PDT)
-Received: from ?IPV6:2601:586:5000:570:aad6:acd8:4ed9:299b? ([2601:586:5000:570:aad6:acd8:4ed9:299b])
-        by smtp.gmail.com with ESMTPSA id i19-20020ac860d3000000b003a5612c3f28sm2333417qtm.56.2022.11.04.11.31.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Nov 2022 11:31:50 -0700 (PDT)
-Message-ID: <5eeb52b6-2ac6-0cf0-917b-149ba442285f@linaro.org>
-Date:   Fri, 4 Nov 2022 14:31:49 -0400
+        with ESMTP id S229499AbiKDSsU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 14:48:20 -0400
+Received: from msg-2.mailo.com (msg-2.mailo.com [213.182.54.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1B759864;
+        Fri,  4 Nov 2022 11:48:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
+        t=1667587667; bh=qE5ym1opJyH1PNJ1hV7aXZmTv5qh7+ufkF7+tQ0SLhk=;
+        h=X-EA-Auth:Date:From:To:Cc:Subject:Message-ID:References:
+         MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To;
+        b=G6Tjjeri/M4V+ersaBajryieEc2mRd3uMTpRrqFQaLAOOGJdLbJ8ecm8rPEAOJQ8P
+         4wCEj8oZp9Tgth6bwS3I34f5Bd0BJxPfvmx97xqjCkGoAtN+oy6fTcKir89BCSUZhW
+         eKcatSn1vCWf+aV9Q5sAqVxikI+wSwueFjPXucKo=
+Received: by b-2.in.mailobj.net [192.168.90.12] with ESMTP
+        via ip-206.mailobj.net [213.182.55.206]
+        Fri,  4 Nov 2022 19:47:47 +0100 (CET)
+X-EA-Auth: pMehuuPrIcJnoivIYphP0EkQOW37Pfr1TslTm/dWkmny4O42PS+BcrVQ/qfnAAaTtT0GQf2c5ZwF5h7AAUC9g2wFcFQvL+zl
+Date:   Sat, 5 Nov 2022 00:17:39 +0530
+From:   Deepak R Varma <drv@mailo.com>
+To:     David Laight <David.Laight@aculab.com>
+Cc:     "'Sa, Nuno'" <Nuno.Sa@analog.com>,
+        "outreachy@lists.linux.dev" <outreachy@lists.linux.dev>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-staging@lists.linux.dev" <linux-staging@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] staging: iio: ad5933: Use div64_ul instead of do_div
+Message-ID: <Y2VeS8NgPhrr8pYR@qemulion>
+References: <Y1r4EaDvEipzhaaf@ubunlion>
+ <SJ0PR03MB6778EAAB4132374270E96FFB99329@SJ0PR03MB6778.namprd03.prod.outlook.com>
+ <5740bcb3490d4c17bd9bc731e79b174b@AcuMS.aculab.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 6/9] dt-bindings: mfd: qcom,tcsr: Add compatible for
- MSM8976
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@somainline.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee@kernel.org, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
-        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com
-References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
- <20221104172122.252761-7-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221104172122.252761-7-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5740bcb3490d4c17bd9bc731e79b174b@AcuMS.aculab.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 04/11/2022 13:21, AngeloGioacchino Del Regno wrote:
-> Document the qcom,msm8976-tcsr compatible.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
+On Sat, Oct 29, 2022 at 11:23:06AM +0000, David Laight wrote:
+> > > -----Original Message-----
+> > > From: Deepak R Varma <drv@mailo.com>
+> > >
+> > > [External]
+> > >
+> > > do_div() does a 64-by-32 division. Here the divisor is an unsigned long
+> > > which on some platforms is 64 bit wide. So use div64_ul instead of do_div
+> > > to avoid a possible truncation. Issue was identified using the
+> > > coccicheck tool.
+>
+> These changes should all get nacked unless the domain of the values
+> can be shown to be out of range.
+
+Hello David,
+I looked through the data sheets for these hardware [ad983*] and believe the
+divisor max can attain 75MHz which fits well in a 32 bit size. Hence the
+proposed changes for these drivers to switch to div64_ul may actually slowdown
+the division. Please correct if I said something incorrect.
+
+Requesting to kindly ignore my proposed changes.
+
+>
+> The entire point of do_div() is that because division is expensive
+> using a limited range division is significantly faster.
+>
+> Even on Intel 64 bit cpu the 64 by 32 divide is significantly
+> faster then a full 64 bit divide for the same input values.
+>
+> One might also question why the divisor is actually 'unsigned long'
+> at all. The code is almost certainly expected to compile for 32bit
+> so the domain of the value should fit in 32 bits.
+> So either the type could be unsigned int, or it really doesn't matter
+> that the value is truncated to 32bit because it can never be larger.
+
+Thank you for the detailed explanation. This is very helpful.
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Best regards,
-Krzysztof
+Thank you for the detailed explanation. This is very helpful.
+
+./drv
+
+>
+> 	David
+>
+>
+> > >
+> > > Signed-off-by: Deepak R Varma <drv@mailo.com>
+> > > ---
+> >
+> > Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+>
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+> Registration No: 1397386 (Wales)
+>
+
 

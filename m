@@ -2,65 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7874F619530
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 12:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB797619532
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 12:13:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230164AbiKDLLm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 07:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43862 "EHLO
+        id S229875AbiKDLNK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 07:13:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbiKDLLl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 07:11:41 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2C11BE87
-        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 04:11:41 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id x15so2789732qtv.9
-        for <linux-iio@vger.kernel.org>; Fri, 04 Nov 2022 04:11:41 -0700 (PDT)
+        with ESMTP id S229493AbiKDLNJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 07:13:09 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE471BE87;
+        Fri,  4 Nov 2022 04:13:08 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id v8so2794558qkg.12;
+        Fri, 04 Nov 2022 04:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aCfF76cWVdUMn779XzXWl2TjPsxcGswT1hZBK98HZeg=;
-        b=ICGvrrNmipnz5hvg4dMm6HPZr0+ep30JNGb6OnMhXNHu6yJyfzVRnaq8/qXCN5mH7s
-         I/3L8x5T4/fsi6a0Cztont/eWihmfbLB78Q4FIh22ieFf4oEjFEKBhHkm5i4evODpvPj
-         CtZq4TG+ZUCGYzfx3/Io9yRw2tkTXSNzVYbKO5blS3a/NyzrKEYo6HNXQIws5d/Ow++F
-         tkXsslIDX46B3KXJqKlW5aItW/K9CjaWRKyC1tzlDHl6XSGOtV7qMThjedR/cYI4y4b2
-         4i0s6L+5UfXAjJ5lSirbM7oZQ23Z9eobvHAKlhD+HFJtAVlOqAz7luqoE8/NLeFavnb5
-         d73Q==
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CaR1JfU6kCmmHBaKD5CB8dCLANATLZOut14SwAR1j0k=;
+        b=HHccgit7GqUtAU1s9Bi+Tj+ml3XERrYI6e9VcIECWWYeRmEeuiV8lapVAetrdjCRfN
+         Cq5G1Zs2tDs7DZYtAvSXtyeGcAw4D+e0CdKnTpMRtV8eUhbxt8Wom1X/MRvqAWIowcsA
+         kBqEa3Idf6hAhsRRYs5COdkFWbRSEtnoTIcJFM8k2STNf0cnxMFIMlds/zO4wtNsfLAE
+         4iFXONJCUV47BiRO65aiC4KgSiCaZNwEKwdUUyzo+oE9TPhOETpOYqur8HOPNcdIQqUR
+         vkBCDJVtiyqwr9BRNFjqOmD2ZVMs46wVBo2fopkwd5oFKhvpk3+wktKmyYibJZI6T5pM
+         G2hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aCfF76cWVdUMn779XzXWl2TjPsxcGswT1hZBK98HZeg=;
-        b=eGHTYKUc4oBtNzRC+94Um64mDXgwn6SmSrr1D4rXx4Y4e7FASr3xCmy0Qar5RN8Z++
-         ubJ7WkrFFmwxwQLxXDN+WBhdSO1EdqF+PWZbaEA7w0dveF5PZ2KIxXUSTbOKZ+Pm3LEr
-         fs5x5TSyjxycDRQvFoHM/gsz/CCTJ7GhTdzoRC3RDNQE4Q7+b4HYXRQ4lrNXTeepW0SW
-         DULIa7ARuiqIacsA7XWKV+mfJTG1G6QRwDXHwxrdaLzi+GqUs43PwMCBrfycAXFd/8Ri
-         cH4VE+QZlBVygg1qH2M3W/4i9Enme79OejQ/YFvPo1dGsHVsG9XvCqSFXIffRoW3zrG6
-         QVKw==
-X-Gm-Message-State: ACrzQf19i12f1D4YCJB8lrweJsfqLKFnWkxSoBO+EHHEJTJUuzf/aKme
-        S0qwdEJse8fjlE744ry6fRw=
-X-Google-Smtp-Source: AMsMyM5i/kMUA8THk1R+8ib/MpuBVZirfBbs1jHgEYPIIOvjL00zqIf3+CBdiDBdZ7YUVrCv0TJQVw==
-X-Received: by 2002:a05:622a:424e:b0:3a5:6af6:133f with SMTP id cq14-20020a05622a424e00b003a56af6133fmr902652qtb.161.1667560300292;
-        Fri, 04 Nov 2022 04:11:40 -0700 (PDT)
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=CaR1JfU6kCmmHBaKD5CB8dCLANATLZOut14SwAR1j0k=;
+        b=z3i73EhkKrnhnSNBPIR0gTKFcG7h4lexoGziMbLkd6pZ6Bi4VfQ1YbjozJQcNHAGeP
+         Iy9aIiJX8kK/RM5Ppl7mcumnxWlkR7F/KxF6UkLTqyahKzS9tJ3nC3M5y7Qwsfjgzr0p
+         OlFXpLXFOLUenNYIzvWfZJglJ9jvdtS4zgqqg841RSpdnv9AEep1IVMCB0yBmY89U0jv
+         NCxeKU5Mksq+3kIK+ey2PP1TvP9OOzCxHqAs5iNmpfKDG08qbIyKlrYo1LlWr58nz1QM
+         6lUfPYI0Kfs+3AU9G/hg2btQd/E0jxtdwoGMcMqh05/RzU1zS5NYqzHnVvm6SCObGhp/
+         o+yg==
+X-Gm-Message-State: ACrzQf1E1p58hqFS7Lk2EJv4anXHavjR5DOdcMZGX6+Z/r+8Q0z/iO7i
+        5lhf9gCtCyw8fRIKJSIyPm8=
+X-Google-Smtp-Source: AMsMyM6QMHETvsyBDigXiPc8Ko0cOx86MG1Bq9LMe6VCjGVjqYj18GNwZIug9JPLOQw2J5hmYXxI1w==
+X-Received: by 2002:a05:620a:2844:b0:6ef:757:2be7 with SMTP id h4-20020a05620a284400b006ef07572be7mr24826610qkp.253.1667560387960;
+        Fri, 04 Nov 2022 04:13:07 -0700 (PDT)
 Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
-        by smtp.gmail.com with ESMTPSA id u23-20020ac87517000000b0039a372fbaa5sm2226162qtq.69.2022.11.04.04.11.38
+        by smtp.gmail.com with ESMTPSA id s7-20020ae9de07000000b006ce76811a07sm2682728qkf.75.2022.11.04.04.13.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 04:11:39 -0700 (PDT)
-Message-ID: <d46af04a6bd6373286a18a6f71aebd2c6aafd93a.camel@gmail.com>
-Subject: Re: [PATCH -next] iio: core: fix missing mutex_unlock() in
- iio_device_claim_buffer_mode()
+        Fri, 04 Nov 2022 04:13:07 -0700 (PDT)
+Message-ID: <ec7046ebd4798b6b1116bbbd46430bf5363f6c38.camel@gmail.com>
+Subject: Re: [PATCH 4/4] MAINTAINERS: add maintainer for ADF4377 driver
 From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Peng Wu <wupeng58@huawei.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-        linux-iio@vger.kernel.org, liwei391@huawei.com
-Date:   Fri, 04 Nov 2022 12:13:06 +0100
-In-Reply-To: <CAHp75Vd_h3Avyafefg0fj-2BMCqvAH4U3Fd3biTptMMZdo_c2g@mail.gmail.com>
-References: <20221104090307.17734-1-wupeng58@huawei.com>
-         <CAHp75Vd_h3Avyafefg0fj-2BMCqvAH4U3Fd3biTptMMZdo_c2g@mail.gmail.com>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Fri, 04 Nov 2022 12:14:34 +0100
+In-Reply-To: <20221104092802.90725-5-antoniu.miclaus@analog.com>
+References: <20221104092802.90725-1-antoniu.miclaus@analog.com>
+         <20221104092802.90725-5-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4 
@@ -75,25 +74,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-11-04 at 11:54 +0200, Andy Shevchenko wrote:
-> On Fri, Nov 4, 2022 at 11:05 AM Peng Wu <wupeng58@huawei.com> wrote:
-> >=20
-> > In the success path of iio_device_claim_buffer_mode(),
-> > mutex_unlock()
-> > should be called before return.
+On Fri, 2022-11-04 at 11:28 +0200, Antoniu Miclaus wrote:
+> Add myself as maintainer for the ADF4377 driver.
 >=20
-> Please, understand how the code works.
-> NAK.
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> =C2=A0MAINTAINERS | 8 ++++++++
+> =C2=A01 file changed, 8 insertions(+)
 >=20
-> Nuno, perhaps we need to put a comment inside the function to explain
-> this?
->=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e1bc31a6624b..19a2f689e43e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1189,6 +1189,14 @@
+> W:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0https://ez.analog.com/linux-s=
+oftware-drivers
+> =C2=A0F:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Documentation/devicetree/bindings/i=
+io/amplifiers/adi,ada4250.
+> yaml
+> =C2=A0F:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0drivers/iio/amplifiers/ada4250.c
+> =C2=A0
+> +ANALOG DEVICES INC ADF4377 DRIVER
+> +M:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Antoniu Miclaus <antoniu.miclaus@analog.=
+com>
+> +L:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0linux-iio@vger.kernel.org
+> +S:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Supported
+> +W:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0https://ez.analog.com/linux-software-dri=
+vers
+> +F:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Documentation/devicetree/bindings/iio/fr=
+equency/adi,adf4377.y
+> aml
+> +F:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0drivers/iio/frequency/adf4377.c
+> +
+> =C2=A0ANALOG DEVICES INC ADGS1408 DRIVER
+> =C2=A0M:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Mircea Caprioru <mircea.caprioru@an=
+alog.com>
+> =C2=A0S:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Supported
 
-Hmm... I guess we can do that but, honestly, the docs in the function
-should be pretty straight. Maybe saying that it's supposed to work as
-iio_device_claim_direct_mode() would help (as that one is familiar)...
+I think this file should be already added on patch 1 where the only
+file would obviously be adi,adf4377.yaml.
 
-Alternatively, having sparse annotations could also make it more easy
-to understand the intent.
+I believe checkpatch should complain about this?
 
 - Nuno S=C3=A1

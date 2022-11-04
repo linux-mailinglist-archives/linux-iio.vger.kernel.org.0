@@ -2,95 +2,183 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBAC461938D
-	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 10:31:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ACC66193CE
+	for <lists+linux-iio@lfdr.de>; Fri,  4 Nov 2022 10:46:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbiKDJbx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 4 Nov 2022 05:31:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49760 "EHLO
+        id S230047AbiKDJq5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 4 Nov 2022 05:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbiKDJbw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 05:31:52 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69E726AD7;
-        Fri,  4 Nov 2022 02:31:50 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id w14so6209253wru.8;
-        Fri, 04 Nov 2022 02:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/fQB8IWbk7Zpl1UHmIGadV3eZG5ePRYU+GVM8Es32sA=;
-        b=ftcCzy4fM3tZjnDEYhaJCVDpM/iESIxsd/rY6lUJ8PN8t5LRaHRl6TUqEGrl0FHci2
-         4hbHLqjDa6yIijEB93ZGzTu+ehlSKYGNsc1ozZGXF3BgyQoRMZqpEsiIvPIPOjqg0SYE
-         3+lsoelIiVbYAwlGtuyVascnWEEcWhB+7PyKLZh4HWrlQzCtok8uiyzs/5q9dHt9sql3
-         dFVIuJI8leukf7z3vaiY+XAZip/hU74Su2Z4ZK5SCKkK6zmlWi3MkXsdEYgXvkoiRuPL
-         0vRJ6xpX8xcC07jSI22tzoVCpSCQ6gj+XieKvjaPt4bHPw9fNKzV6acOWqN1tppPTvhf
-         sAiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/fQB8IWbk7Zpl1UHmIGadV3eZG5ePRYU+GVM8Es32sA=;
-        b=fcTNjL/WnatT8GMDmQAOufJ8tmyd0uzGChbmvxBJTOLgIZ5OHXIU/6njASp4dp5e2c
-         WvW5obLTzHN7ABmYbgYZ/9UBurB63GHfpZDNCEaejxDmGGEkGjBXidZZkHWLPiGjxXgN
-         hyygnWJ0eSoH0bU2L5vFs2elnwLb6N0NYosrkb0AR+D49sSuC49lJRa8r+nvAvlhYCgl
-         y3XVZRfCMZXXoQgM3pQNdkXfwUT5UdXGQTqEDV2NvKSmKdyzwjb+iQ/Hy5maNTOIH2NG
-         bbVLWrFyVN0+aztJKROgLaYNHmclLvcV/KFkZgQpEr+Q/VYifHEj37H1Lo9a+W9jJQTH
-         yeFA==
-X-Gm-Message-State: ACrzQf0a1bOLhZMpYhCwaBgbk3w9KEiD6cMMoilo1Y4q1lKQav6c3a2m
-        z9J6Tj14BzreP3wUQZDLJ54=
-X-Google-Smtp-Source: AMsMyM4kiDlP+Q/7u/Qj4FQMBakY1QAx2Ub4arviqJD402JdlSCoRJU73pEnW7T1wUE5DI9KR1YoFg==
-X-Received: by 2002:adf:b646:0:b0:221:76eb:b3ba with SMTP id i6-20020adfb646000000b0022176ebb3bamr21283958wre.237.1667554309206;
-        Fri, 04 Nov 2022 02:31:49 -0700 (PDT)
-Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
-        by smtp.gmail.com with ESMTPSA id z3-20020a1cf403000000b003b50428cf66sm2250031wma.33.2022.11.04.02.31.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Nov 2022 02:31:48 -0700 (PDT)
-From:   Colin Ian King <colin.i.king@gmail.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: adc: ad4130: Fix spelling mistake "diffreential" -> "differential"
-Date:   Fri,  4 Nov 2022 09:31:48 +0000
-Message-Id: <20221104093148.167765-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S231130AbiKDJqx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 4 Nov 2022 05:46:53 -0400
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B50F65D8
+        for <linux-iio@vger.kernel.org>; Fri,  4 Nov 2022 02:46:50 -0700 (PDT)
+Received: from [192.168.1.18] ([86.243.100.34])
+        by smtp.orange.fr with ESMTPA
+        id qtHkoE990iBgAqtHkogqeF; Fri, 04 Nov 2022 10:46:49 +0100
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 04 Nov 2022 10:46:49 +0100
+X-ME-IP: 86.243.100.34
+Message-ID: <1325d0d4-1bff-af36-08c2-b4a9f01a4cd0@wanadoo.fr>
+Date:   Fri, 4 Nov 2022 10:46:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 2/4] iio: frequency: adf4377: add support for ADF4377
+Content-Language: fr
+To:     antoniu.miclaus@analog.com
+References: <20221104092802.90725-1-antoniu.miclaus@analog.com>
+ <20221104092802.90725-3-antoniu.miclaus@analog.com>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     devicetree@vger.kernel.org, jic23@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, robh+dt@kernel.org
+In-Reply-To: <20221104092802.90725-3-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is a spelling mistake in an error message. Fix it.
+Le 04/11/2022 à 10:28, Antoniu Miclaus a écrit :
+> The ADF4377 is a high performance, ultralow jitter, dual output integer-N
+> phased locked loop (PLL) with integrated voltage controlled oscillator
+> (VCO) ideally suited for data converter and mixed signal front end (MxFE)
+> clock applications.
+> 
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adf4377.pdf
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+> ---
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/iio/adc/ad4130.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[]
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index 9a4d0043d797..ae1a4dd5c40a 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -1480,7 +1480,7 @@ static int ad4130_validate_diff_channel(struct ad4130_state *st, u32 pin)
- 
- 	if (pin >= AD4130_MAX_DIFF_INPUTS)
- 		return dev_err_probe(dev, -EINVAL,
--				     "Invalid diffreential channel %u\n", pin);
-+				     "Invalid differential channel %u\n", pin);
- 
- 	if (pin >= AD4130_MAX_ANALOG_PINS)
- 		return 0;
--- 
-2.38.1
+> +static int adf4377_properties_parse(struct adf4377_state *st)
+> +{
+> +	struct spi_device *spi = st->spi;
+> +
+> +	st->clkin = devm_clk_get(&spi->dev, "ref_in");
+
+Hi,
+
+this could be devm_clk_get_enabled() in order to...
+
+> +	if (IS_ERR(st->clkin))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->clkin),
+> +				     "failed to get the reference input clock\n");
+> +
+> +	st->gpio_ce = devm_gpiod_get_optional(&st->spi->dev, "ce-en",
+> +					      GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->gpio_ce))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_ce),
+> +				     "failed to get the CE GPIO\n");
+> +
+> +	st->gpio_enclk1 = devm_gpiod_get_optional(&st->spi->dev, "enclk1",
+> +						  GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->gpio_enclk1))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk1),
+> +				     "failed to get the CE GPIO\n");
+> +
+> +	if (st->type == ADF4377) {
+> +		st->gpio_enclk2 = devm_gpiod_get_optional(&st->spi->dev, "enclk2",
+> +							  GPIOD_OUT_HIGH);
+> +		if (IS_ERR(st->gpio_enclk2))
+> +			return dev_err_probe(&spi->dev, PTR_ERR(st->gpio_enclk2),
+> +					     "failed to get the CE GPIO\n");
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int adf4377_freq_change(struct notifier_block *nb, unsigned long action, void *data)
+> +{
+> +	struct adf4377_state *st = container_of(nb, struct adf4377_state, nb);
+> +	int ret;
+> +
+> +	if (action == POST_RATE_CHANGE) {
+> +		mutex_lock(&st->lock);
+> +		ret = notifier_from_errno(adf4377_init(st));
+> +		mutex_unlock(&st->lock);
+> +		return ret;
+> +	}
+> +
+> +	return NOTIFY_OK;
+> +}
+> +
+> +static void adf4377_clk_disable(void *data)
+> +{
+> +	clk_disable_unprepare(data);
+> +}
+
+... remove this...
+
+> +
+> +static int adf4377_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct regmap *regmap;
+> +	struct adf4377_state *st;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	regmap = devm_regmap_init_spi(spi, &adf4377_regmap_config);
+> +	if (IS_ERR(regmap))
+> +		return PTR_ERR(regmap);
+> +
+> +	st = iio_priv(indio_dev);
+> +
+> +	indio_dev->info = &adf4377_info;
+> +	indio_dev->name = "adf4377";
+> +	indio_dev->channels = adf4377_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
+> +
+> +	st->regmap = regmap;
+> +	st->spi = spi;
+> +	st->type = spi_get_device_id(spi)->driver_data;
+> +	mutex_init(&st->lock);
+> +
+> +	ret = adf4377_properties_parse(st);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = clk_prepare_enable(st->clkin);
+> +	if (ret)
+> +		return ret;
+
+... and this...
+
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, adf4377_clk_disable, st->clkin);
+> +	if (ret)
+> +		return ret;
+
+... and this.
+
+CJ
+
+> +
+> +	st->nb.notifier_call = adf4377_freq_change;
+> +	ret = devm_clk_notifier_register(&spi->dev, st->clkin, &st->nb);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = adf4377_init(st);
+> +	if (ret) {
+> +		dev_err(&spi->dev, "adf4377 init failed\n");
+> +		return ret;
+> +	}
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+
+[]
 

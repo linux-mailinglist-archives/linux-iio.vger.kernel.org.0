@@ -2,103 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFCF561DE9E
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 22:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A46B161DF12
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 23:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229969AbiKEV3q (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Nov 2022 17:29:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35338 "EHLO
+        id S229607AbiKEWe4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Nov 2022 18:34:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbiKEV3p (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 17:29:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A269FF6;
-        Sat,  5 Nov 2022 14:29:44 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 8D2EFB808CA;
-        Sat,  5 Nov 2022 21:29:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D3EC433C1;
-        Sat,  5 Nov 2022 21:29:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667683782;
-        bh=J1hfoJGSNQOKc8XT5RvXdhWeLYuaIyqPSyoUZco0sLU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E4yqdx2w2JR6SuR7Hcd4DuUj5kZ04uKWZiOq/CGOTkNVyC7ZsxORzQ7fZIZSw4TTp
-         XCN5mEa2SnCHkqxGHO0SJ6mdrgS4IHl72hikNbA1B1ENTB2edGTV5ozd8kjclT9QAL
-         j3/wBOgRTc1rmR+esSBxapNZQHRIpFbTdkRxDtuHzeTeulzryWSe8OTw/VEP9FMyUQ
-         Kjh9qGoa0RFYDvkf6fMleXWGGIx8ez3h/s3186FD0Xk4HVH2CcYabofdvFdMbs4zlK
-         JHwjAymM1KJFcOI2wZ4yEgOGlPPDrqWj2370KWc99jCjeqMFcAZzwH2426G09CsS9C
-         vvUihGpxnPr0g==
-Date:   Sat, 5 Nov 2022 22:29:29 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] i2c: core: Introduce i2c_client_get_device_id
- helper
-Message-ID: <Y2bVuYMVew8/h9HE@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        with ESMTP id S229888AbiKEWe4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 18:34:56 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ED9B11154;
+        Sat,  5 Nov 2022 15:34:54 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id h12so11098835ljg.9;
+        Sat, 05 Nov 2022 15:34:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6CtIVQWP+Kxh/6X4LVIIdMYVxRHCgpX/NmfsfTqOY7k=;
+        b=UIPJcAD9s4TdNFm9zVg2P/mZ0ZQlI3XcjxuMV21bO0DdBw8M8wwStfipvihaD7rtzP
+         wPxH4DYR2D+cPmO8gtC7VZWSws0s4qrsYx+bX7Ae0OGPG/FsKehC2JrCAxN18j6W7ruK
+         We3u1M3asut7zASyfQQCdHGSXNFekALPKrkk4xcxxJU55Tazs+Do521YzUXAUyejbTCZ
+         6AGybtRgYLe4i/iftNdP6mWQZweqeuDvOy9nYjHLsGg2vBBqhAyaXRlN+R1TxEDGcVGN
+         lYTukvEUbEfVVwrzJyk7Mr8kPoazydoMbe0/zf19ZWVlZH5YleOzwwZ8SusyMZCh2dNV
+         tMUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6CtIVQWP+Kxh/6X4LVIIdMYVxRHCgpX/NmfsfTqOY7k=;
+        b=B59rtbnHfX/BhoRjMhBqWt3pK4q5/6nx0jEtAsap8hrCuRE6kbBpAcBP5nLpAUPU1H
+         1kHYQ3xzOlHuzMtv2OWWeJ1wbIYsIWrBd64xrS2l7Ku7F/qpgWUdEeDE2Zh6BV26PLdb
+         Xb4ctxf0NPvvvNt5xwPF98e1GjPtgejlS38a+FpHFYGWJVLx/14jfBaqs+SNCBbjQ6T1
+         Jzqief3SRJURQYk/IJsKAd+NZD3scfNGNuoamJo23nizIv5170Apo+ydeDHAFNRXvNfV
+         3iUefPQ8Go9EvOvwLzF+/XZ0ME+rEXMrgUZX0xxacBiVrHR6vRb9jtghScwrr/IgSi89
+         kAjw==
+X-Gm-Message-State: ACrzQf0XVMBE1MTooZXnJK9dGvIAp3/vcuNlHcpbIhdM488kCyAjVSNp
+        2VnVwJuMdxDlQpjALsoUg9cWqwJ4xyg=
+X-Google-Smtp-Source: AMsMyM6BXFpVv8PLWvJZIV2gTYX18Gxsz76ZzOnmTC4d4zkF5p/PE4dhpWDIvZ9P4Zm3JHlPuMbMag==
+X-Received: by 2002:a2e:94cf:0:b0:26c:5d14:6ec7 with SMTP id r15-20020a2e94cf000000b0026c5d146ec7mr16455809ljh.237.1667687692019;
+        Sat, 05 Nov 2022 15:34:52 -0700 (PDT)
+Received: from localhost.localdomain (cl-78-158-27-188.fastlink.lt. [78.158.27.188])
+        by smtp.gmail.com with ESMTPSA id a5-20020ac25e65000000b0049a5a59aa68sm447889lfr.10.2022.11.05.15.34.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Nov 2022 15:34:50 -0700 (PDT)
+Received: from jek by localhost.localdomain with local (Exim 4.96)
+        (envelope-from <jekhor@gmail.com>)
+        id 1orRkX-001kZF-2v;
+        Sun, 06 Nov 2022 00:34:49 +0200
+From:   Yauhen Kharuzhy <jekhor@gmail.com>
+To:     linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>, linux-iio@vger.kernel.org,
-        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1667151588.git.ang.iglesiasg@gmail.com>
- <Y2E0BWyvHjPko2TB@smile.fi.intel.com>
- <20221105145658.45b0e9da@jic23-huawei>
+        Jiri Kosina <jikos@kernel.org>,
+        Yauhen Kharuzhy <jekhor@gmail.com>
+Subject: [PATCH] HID: hid-sensor-custom: Allow more than one hinge angle sensor
+Date:   Sun,  6 Nov 2022 00:34:22 +0200
+Message-Id: <20221105223422.417316-1-jekhor@gmail.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="GbTEe8/An/6w9DAp"
-Content-Disposition: inline
-In-Reply-To: <20221105145658.45b0e9da@jic23-huawei>
-X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Some devices has two sets of accelerometers and the sensor hub exports
+two hinge angle 'sensors' based on accelerometer values. To allow more
+than one sensor of the same type, use PLATFORM_DEVID_AUTO instead of
+PLATFORM_DEVID_NONE when registering platform device for it.
 
---GbTEe8/An/6w9DAp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Checked on the Lenovo Yoga Book YB1-X91L tablet.
 
+Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+---
+ drivers/hid/hid-sensor-custom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I can do an immutable branch with just the new function call in it if
-> that is useful given I assume this is applicable across a bunch of subsystems?
+diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+index 32c2306e240d6..a6fc89ee1287c 100644
+--- a/drivers/hid/hid-sensor-custom.c
++++ b/drivers/hid/hid-sensor-custom.c
+@@ -862,7 +862,7 @@ hid_sensor_register_platform_device(struct platform_device *pdev,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	custom_pdev = platform_device_register_data(pdev->dev.parent, dev_name,
+-						    PLATFORM_DEVID_NONE, hsdev,
++						    PLATFORM_DEVID_AUTO, hsdev,
+ 						    sizeof(*hsdev));
+ 	kfree(dev_name);
+ 	return custom_pdev;
+-- 
+2.38.1
 
-I'd think I should provide the immutable branch with the new I2C API
-call. Feels a bit more logical. Will that work for you as well?
-
-
---GbTEe8/An/6w9DAp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNm1bUACgkQFA3kzBSg
-KbZaAQ//WBgJbkMLdsM9t9QQJkZ0WHjkEGByBDkyUlNNtR5L4oqJVFV2RMhRaBVm
-lPMliU4Fva3qwFgipgD+guKdfkDZfqKqdf/P5GWXMjroBbrfnE3IKnXnq59d8+l+
-ZBquSlguuzWKE02dxNK5s9qGJMd9xub6gbyhaI4nNTfelBwNDtkQZGSfA+kdLRT4
-6Xk3nh3qBWruHSzppuIw8E9j0zjS4Xd1hwF0gcl/7WOUYMcdvoaNj4y5E//mUNFj
-HEtEP+pWrSE2UKDmweJ3FL2xpsokObQ+4INEF/lars5zSQw3j+ytYf6MOWB8/cyU
-JqCQQvZ3L2uK5M9JH9XWpuw/KO12bIcBeL711eyJOm69ZkbvYg192l8Zr0EdzZQe
-7ozX3Vtm+XhsPTZ8FhI9KFEWJ8P/AOlLGHOV2ZOYu30rHOsNEykyeBOhoVf9JZ0t
-ZRV4bE4fyWN6VSoVqixhvm9egx2wD0UagqaO6LJup3yR0apVBAnsQhTjhs6/z+7I
-kNf2k9Isw0zE835P3Kh9kJYGzSRZ5JRUK3BC33BFAORx87enLsh4AC8TeMLgYc40
-9XKYVZYdfSrlDwjfPRHMyjQpBEqaoXxNh7uH9ZmFK4IWzIq1vIA8rGOglPcDIIL+
-s7tLVkl7iJGnMbR9MfBXzCCU+kAB1rMgJrKLxxf26JG3Sk35iCU=
-=Q8Ii
------END PGP SIGNATURE-----
-
---GbTEe8/An/6w9DAp--

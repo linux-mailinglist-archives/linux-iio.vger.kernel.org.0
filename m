@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED2A61DAFC
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 15:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AAF261DB13
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 15:45:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbiKEOdf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Nov 2022 10:33:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        id S229479AbiKEOpd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Nov 2022 10:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229486AbiKEOde (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 10:33:34 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE5DFF3;
-        Sat,  5 Nov 2022 07:33:33 -0700 (PDT)
+        with ESMTP id S229789AbiKEOpc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 10:45:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745CFF02B;
+        Sat,  5 Nov 2022 07:45:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F916B80159;
-        Sat,  5 Nov 2022 14:33:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E192C433D6;
-        Sat,  5 Nov 2022 14:33:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0BEAE60B4D;
+        Sat,  5 Nov 2022 14:45:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3EEC433C1;
+        Sat,  5 Nov 2022 14:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667658810;
-        bh=1TDRmbhSSHThH7G6bhltqeMsDuHL0/99z97pCjW6ghw=;
+        s=k20201202; t=1667659530;
+        bh=zAlUT2GD+IAN3kTMRHI/1fujPF44ZCbrcVuH6AXFD/0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UlCOzLrU/xIunyk4HIiSbuVamAW4vq2m+18yFlFzh2C9fUUtKsyD2fxm+JOL82jPd
-         mwINIT9GZgDqHku8VRq+RnrFsvRzl5QRM8h3yXbVK5MgsV8O6HFtPEHKbkxCkA7DYz
-         QAF12bZUKjqbNVlkT8KR4+DSrOgjA6IsAYhkNdDiCEF1Do2X5nQf/emblGWXP/M8K/
-         Q3Qmw4ub1IHxfkR6SZPLkpbNn1C6iu3HKKFZEVwiali6t8586szPalrm9D8K4KNXtk
-         pZXaDMhZUVdf+9zw5Ibn+Gt4c4XkiR9uHJYM83hDLoVbpNnN5iihgokquHufzZT3Jx
-         QkhfELS3WSFXg==
-Date:   Sat, 5 Nov 2022 14:33:17 +0000
+        b=dhI3VfiFN/dAdthxO4xV51tqwHD2MsUDxZPxw4p+dSFzYzeHC/6gQwVM4pmgV5td6
+         HCUcJ62ucvHaemxmyZ1LaajbPIsRO7YFLngMx/aSRvo+9Otw/uOymssV7VltoHUjvr
+         JNIsQlhHAO4D4OHitLhrt7y10PkwR/vdoW35rnBI6hI7fmARngtUQP3BEWXhhqNTbr
+         kyob0eauZduHXfAHOf9Us9PcO9nu+WqMoXTYEZqO2lSqrmEnFQzNW2QXZ/jLzyKh9s
+         fdqHAEqOT9xZBTyuclM7ZhILD67R2E3VZBc0Aqh0fb1cSVP5aD3RnURHPIU3jJEWfb
+         F1u9GPRqUXCyw==
+Date:   Sat, 5 Nov 2022 14:45:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@somainline.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee@kernel.org, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, lars@metafoo.de,
-        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: Re: [PATCH 1/9] dt-bindings: iio: qcom-spmi-vadc: Add definitions
- for USB DP/DM VADCs
-Message-ID: <20221105143317.13cf93a9@jic23-huawei>
-In-Reply-To: <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
-References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
-        <20221104172122.252761-2-angelogioacchino.delregno@collabora.com>
-        <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
+To:     Matti Vaittinen <mazziesaccount@gmail.com>
+Cc:     Claudiu.Beznea@microchip.com, matti.vaittinen@fi.rohmeurope.com,
+        lars@metafoo.de, Michael.Hennerich@analog.com,
+        cosmin.tanislav@analog.com, Eugen.Hristev@microchip.com,
+        Nicolas.Ferre@microchip.com, alexandre.belloni@bootlin.com,
+        bleung@chromium.org, groeck@chromium.org,
+        alexandru.ardelean@analog.com, nathan@kernel.org,
+        miquel.raynal@bootlin.com, linmq006@gmail.com,
+        u.kleine-koenig@pengutronix.de, paul@crapouillou.net,
+        mihail.chindris@analog.com, gwendal@chromium.org,
+        andriy.shevchenko@linux.intel.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        chrome-platform@lists.linux.dev,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Subject: Re: [RFT PATCH v3 10/10] iio: Don't silently expect attribute types
+Message-ID: <20221105144518.7fa63084@jic23-huawei>
+In-Reply-To: <41abe9f6-d633-664a-db93-0580b23e44e1@gmail.com>
+References: <cover.1664782676.git.mazziesaccount@gmail.com>
+        <63f54787a684eb1232f1c5d275a09c786987fe4a.1664782676.git.mazziesaccount@gmail.com>
+        <c163203c-d87b-7e71-f582-964a99e37efb@microchip.com>
+        <8ef99012-4959-a674-13c1-186b9c1c2cd4@gmail.com>
+        <20221009183854.690e2780@jic23-huawei>
+        <41abe9f6-d633-664a-db93-0580b23e44e1@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -68,22 +69,79 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Nov 2022 14:25:15 -0400
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, 10 Oct 2022 12:36:54 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On 04/11/2022 13:21, AngeloGioacchino Del Regno wrote:
-> > From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-> > 
-> > Some SoCs do have a USB DP/DM ADC at 0x43, 0x44.
+> On 10/9/22 20:38, Jonathan Cameron wrote:
+> > On Thu, 6 Oct 2022 15:53:52 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   
+> >> Hi Claudiu,
+> >>
+> >> On 10/6/22 11:35, Claudiu.Beznea@microchip.com wrote:  
+> >>> On 03.10.2022 11:13, Matti Vaittinen wrote:  
+> >>>> The iio_triggered_buffer_setup_ext() and the
+> >>>> devm_iio_kfifo_buffer_setup_ext() were changed by
+> >>>> commit 15097c7a1adc ("iio: buffer: wrap all buffer attributes into iio_dev_attr")
+> >>>> to silently expect that all attributes given in buffer_attrs array are
+> >>>> device-attributes. This expectation was not forced by the API - and some
+> >>>> drivers did register attributes created by IIO_CONST_ATTR().
+> >>>>
+> >>>> When using IIO_CONST_ATTRs the added attribute "wrapping" does not copy
+> >>>> the pointer to stored string constant and when the sysfs file is read the
+> >>>> kernel will access to invalid location.
+> >>>>
+> >>>> Change the function signatures to expect an array of iio_dev_attrs to
+> >>>> avoid similar errors in the future.
+> >>>>
+> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> >>>
+> >>> Tested-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+> >>>
+> >>> on SAMA5D2
+> >>>      
+> >>
+> >> Thanks a ton for the testing! I do _really_ appreciate it :) I am now
+> >> slightly more confident regarding the fix here - and a lot more
+> >> confident that we do have an actual bug (as you explained in the reply
+> >> to the first RFT) :)  
+> > 
+> > You analysis was sound, so I've long been convinced ;)
+> > 
+> > Anyhow, one more coming through...
+> > AD4130 v9 patch had same issue and so will also need updating with this
+> > patch if it lands before yours.
+> > 
+> > Other than that static macro being ugly (which I can't improve on!)
+> > all looks good to me, but I'll let it sit a while longer. If nothing
+> > else I want to rebase the fixes-togreg tree on rc1 before putting the first
+> > part of this series on top of it then letting them soak in next for
+> > a few days,  
 > 
+> Thanks Jonathan.
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Can you please ping me if you want me to rebase/rework the series? (I 
+> may combine this with the kx022a-series then, but naturally not all 
+> patches in the series need to be applied at once. Eg, fixes can be taken 
+> in faster, kx022a part can be iterated, iterated, iterated... ;] ).
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Applied the remainder of this series. As expected need to make the changes
+in patch 10 to your kx022a driver and the ad4130 ADC that also crossed with
+this series.
+
++CC Cosmin for the ad4130.  Please check the result in the
+testing branch of iio.git.
+
+Applied to the togreg branch of iio.git and pushed out initially as testing.
+
+This is a nice hardening of the code against future mistakes.
+
+Thanks,
+
+Jonathan
 
 > 
-> Best regards,
-> Krzysztof
+> Yours
+> 	-- Matti
 > 
 

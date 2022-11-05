@@ -2,48 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B140361DAF7
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 15:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DED2A61DAFC
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 15:33:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229792AbiKEObX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Nov 2022 10:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41490 "EHLO
+        id S229813AbiKEOdf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Nov 2022 10:33:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229718AbiKEObX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 10:31:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73093DEAF;
-        Sat,  5 Nov 2022 07:31:22 -0700 (PDT)
+        with ESMTP id S229486AbiKEOde (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 10:33:34 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE5DFF3;
+        Sat,  5 Nov 2022 07:33:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F34060ADB;
-        Sat,  5 Nov 2022 14:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F6CC433D6;
-        Sat,  5 Nov 2022 14:31:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5F916B80159;
+        Sat,  5 Nov 2022 14:33:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E192C433D6;
+        Sat,  5 Nov 2022 14:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667658681;
-        bh=VKza6h5mQJMpE6zmM8QdT4b9Ggv3/0ZoL+CRi6cZoWY=;
+        s=k20201202; t=1667658810;
+        bh=1TDRmbhSSHThH7G6bhltqeMsDuHL0/99z97pCjW6ghw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LqNEApwFwdAq/7RachRRV2MGYbN+3Zy8LfQKAVWGt7eoJfbE1xwBJKr49p1ewfA1o
-         0a6nWQEPbxoR2Zsrm2688wl648LzbXcvFYqv6clp4glsrKYb1uZ9I1YFhN9o9D/T5C
-         /A45D+1AxWl1hd/gpNi+JK/b1vpSnxnxPUCVGq5ejn1WrwuDvwZ/0QXbf41s93gCXk
-         1zX5ByG3xo5ra7AOtMT4CJhAiuS5J3Ppsc7RbVqrWqNzparmuaa9aP2wphclnpE23x
-         jgGCfS/IPgdRctDdKQzVuytctY2gUT89BnC41zwwHFE93CCY/LkSDTmoAKUtmNFUtH
-         QeHTykXXTfj6Q==
-Date:   Sat, 5 Nov 2022 14:31:12 +0000
+        b=UlCOzLrU/xIunyk4HIiSbuVamAW4vq2m+18yFlFzh2C9fUUtKsyD2fxm+JOL82jPd
+         mwINIT9GZgDqHku8VRq+RnrFsvRzl5QRM8h3yXbVK5MgsV8O6HFtPEHKbkxCkA7DYz
+         QAF12bZUKjqbNVlkT8KR4+DSrOgjA6IsAYhkNdDiCEF1Do2X5nQf/emblGWXP/M8K/
+         Q3Qmw4ub1IHxfkR6SZPLkpbNn1C6iu3HKKFZEVwiali6t8586szPalrm9D8K4KNXtk
+         pZXaDMhZUVdf+9zw5Ibn+Gt4c4XkiR9uHJYM83hDLoVbpNnN5iihgokquHufzZT3Jx
+         QkhfELS3WSFXg==
+Date:   Sat, 5 Nov 2022 14:33:17 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Colin Ian King <colin.i.king@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] iio: adc: ad4130: Fix spelling mistake
- "diffreential" -> "differential"
-Message-ID: <20221105143112.02af0e37@jic23-huawei>
-In-Reply-To: <20221104093148.167765-1-colin.i.king@gmail.com>
-References: <20221104093148.167765-1-colin.i.king@gmail.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org,
+        andersson@kernel.org, konrad.dybcio@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lee@kernel.org, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
+        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH 1/9] dt-bindings: iio: qcom-spmi-vadc: Add definitions
+ for USB DP/DM VADCs
+Message-ID: <20221105143317.13cf93a9@jic23-huawei>
+In-Reply-To: <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
+References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+        <20221104172122.252761-2-angelogioacchino.delregno@collabora.com>
+        <5bafce51-5f03-499c-65d4-3040cfc03ed9@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,28 +68,22 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  4 Nov 2022 09:31:48 +0000
-Colin Ian King <colin.i.king@gmail.com> wrote:
+On Fri, 4 Nov 2022 14:25:15 -0400
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> There is a spelling mistake in an error message. Fix it.
+> On 04/11/2022 13:21, AngeloGioacchino Del Regno wrote:
+> > From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> > 
+> > Some SoCs do have a USB DP/DM ADC at 0x43, 0x44.
+> >   
 > 
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Applied
-> ---
->  drivers/iio/adc/ad4130.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-> index 9a4d0043d797..ae1a4dd5c40a 100644
-> --- a/drivers/iio/adc/ad4130.c
-> +++ b/drivers/iio/adc/ad4130.c
-> @@ -1480,7 +1480,7 @@ static int ad4130_validate_diff_channel(struct ad4130_state *st, u32 pin)
->  
->  	if (pin >= AD4130_MAX_DIFF_INPUTS)
->  		return dev_err_probe(dev, -EINVAL,
-> -				     "Invalid diffreential channel %u\n", pin);
-> +				     "Invalid differential channel %u\n", pin);
->  
->  	if (pin >= AD4130_MAX_ANALOG_PINS)
->  		return 0;
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> 
+> Best regards,
+> Krzysztof
+> 
 

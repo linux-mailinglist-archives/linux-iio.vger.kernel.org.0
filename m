@@ -2,51 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A79FA61DB42
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 15:57:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC0DC61DB8C
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 16:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbiKEO5N (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Nov 2022 10:57:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48840 "EHLO
+        id S229479AbiKEPHR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Nov 2022 11:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbiKEO5K (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 10:57:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DFEFFAF8;
-        Sat,  5 Nov 2022 07:57:10 -0700 (PDT)
+        with ESMTP id S229953AbiKEPHB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 11:07:01 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72ED71C5;
+        Sat,  5 Nov 2022 08:06:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4DD760B4A;
-        Sat,  5 Nov 2022 14:57:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57961C433D6;
-        Sat,  5 Nov 2022 14:57:07 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 39714B800C1;
+        Sat,  5 Nov 2022 15:06:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17CDC433D6;
+        Sat,  5 Nov 2022 15:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667660229;
-        bh=Fbuihe+e9s4DvLxPwjOmLdWdcE0d20qRMfa+YEg4J1w=;
+        s=k20201202; t=1667660815;
+        bh=243tUlsrMWQnQ6yTrRx2ppdGwtQviho+Rgrz5cpgBmg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Mf9KKQho6QEq9+KQnMW63E5FYIKOG3gj2aKeTKTh50NaF6xOGFbWKK8XQ1Sj93XLj
-         P4eo9ERimzmePpe3zDnIqE2UdNt35AojlmwHYNkYC+nTz1QFUgkkR+QZrJIRIGWSp8
-         1UBXkqKhnULTtpQcPnix5QihQSASTglkB/yhOeiumwbPKqYSUUTyVgTBiWDlaA5k3x
-         CUaH1T/O7mq7COV4sHU5FRCLyRhBHWQCTNPWHPl72ZdJOrXyX7SUapKO7BPmjpa02y
-         x6YM0ngOxWL0DEkEl3FJ2pxam72DJPY3CquUtwdKWrwen9i241enDLvp8C0urS3JLm
-         ZTXh7UMUNmVYA==
-Date:   Sat, 5 Nov 2022 14:56:58 +0000
+        b=nbx0r7jOhuykxmNuvrvypApgjsTpMxzr2WXgNy5Nc03IwP1TLo7st57uB0DAAkJbi
+         fIdVcz2HgeyByMGywwqU6HPj1A9aM9vm7Q33oCpxwyPQvt3vOnFhpMoWRAVv1P7MSN
+         9h4WGMFU8fatBfBefBchjvICsEOwAhNooDaVIDDBB8m+50r/wBQ/bljk/yyeeh3HsW
+         d45XZs39+kV+h6RBEnBYMWmzNbrU098Z78Yy0jPLUDZ9jdxozV0lN5/NGW53RpYsvH
+         xdM3nBvjgELz8TwXnV28WMlWMzfW1RicNWBvaBrEYt3aZdLXYoU9ba2FgnZ5QLhaPj
+         3TiHortKivllw==
+Date:   Sat, 5 Nov 2022 15:06:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] i2c: core: Introduce i2c_client_get_device_id
- helper
-Message-ID: <20221105145658.45b0e9da@jic23-huawei>
-In-Reply-To: <Y2E0BWyvHjPko2TB@smile.fi.intel.com>
-References: <cover.1667151588.git.ang.iglesiasg@gmail.com>
-        <Y2E0BWyvHjPko2TB@smile.fi.intel.com>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/8] Remove adis_initial_startup usage
+Message-ID: <20221105150647.2c9cbff7@jic23-huawei>
+In-Reply-To: <SJ0PR03MB677857576EF31B737F6D3DF599389@SJ0PR03MB6778.namprd03.prod.outlook.com>
+References: <20221103080847.162509-1-ramona.bolboaca@analog.com>
+        <SJ0PR03MB677857576EF31B737F6D3DF599389@SJ0PR03MB6778.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,55 +55,70 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 1 Nov 2022 16:58:13 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Thu, 3 Nov 2022 12:35:31 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-> On Sun, Oct 30, 2022 at 06:51:06PM +0100, Angel Iglesias wrote:
-> > Hello,
+> > From: Ramona Bolboaca <ramona.bolboaca@analog.com>
+> > Sent: Thursday, November 3, 2022 9:09 AM
+> > To: jic23@kernel.org; linux-iio@vger.kernel.org; linux-
+> > kernel@vger.kernel.org
+> > Cc: Bolboaca, Ramona <Ramona.Bolboaca@analog.com>
+> > Subject: [PATCH v2 0/8] Remove adis_initial_startup usage
 > >=20
-> > I don't want to step anyone's work here, so I'm sending this RFC to the
-> > devs involved in the original discussion. I read on Uwe Kleine-K=C3=B6n=
-ig's
-> > patchset submission thread the necessity for an i2c helper to aid with =
-the
-> > migration to the new i2c_driver .probe_new callback. Following the
-> > suggestions made there, I wrote this small patchset implementing the
-> > suggested helper function and ported the bmp280 IIO i2c probe to the new
-> > probe using that helper. =20
+> >=20
+> > Remove 'adis_initial_startup()' usage due to the fact that it leads to a
+> > deadlock.
+> > The same mutex is acquired twice, without releasing it, once inside
+> > 'adis_initial_startup()' and once inside 'adis_enable_irq()'.
+> > Instead of 'adis_initial_startup()', use '__adis_initial_startup()'.
+> >=20
+> > Ramona Bolboaca (8):
+> >   iio: accel: adis16201: Fix deadlock in probe
+> >   iio: accel: adis16209: Fix deadlock in probe
+> >   iio: gyro: adis16136: Fix deadlock in probe
+> >   iio: gyro: adis16260: Fix deadlock in probe
+> >   iio: imu: adis16400: Fix deadlock in probe
+> >   staging: iio: accel: adis16203: Fix deadlock in probe
+> >   staging: iio: accel: adis16240: Fix deadlock in probe
+> >   iio: imu: adis: Remove adis_initial_startup function
+> >=20
+> >  drivers/iio/accel/adis16201.c         |  2 +-
+> >  drivers/iio/accel/adis16209.c         |  2 +-
+> >  drivers/iio/gyro/adis16136.c          |  2 +-
+> >  drivers/iio/gyro/adis16260.c          |  2 +-
+> >  drivers/iio/imu/adis16400.c           |  2 +-
+> >  drivers/staging/iio/accel/adis16203.c |  2 +-
+> >  drivers/staging/iio/accel/adis16240.c |  2 +-
+> >  include/linux/iio/imu/adis.h          | 12 ------------
+> >  8 files changed, 7 insertions(+), 19 deletions(-)
+> >  =20
 >=20
-> For the entire series (please drop RFC in the next version)
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> You could have placed your v2 changelog in the cover letter.
+> Moreover it's the same for all patches... Anyways:=20
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-I'm happy to pick up the next version but a question on 'route' in to the k=
-ernel.
+This feels a little backwards.  Normally we'd expect the
+outer function to take the lock and the inner call to not
+do so.  Now it's fine to not take the lock here at all because
+the outer function call is in probe anyway, before we reach
+the point where there should be an concurrency.
 
-I can do an immutable branch with just the new function call in it if
-that is useful given I assume this is applicable across a bunch of subsyste=
-ms?
+I wonder if we should instead do this by having
+an unlocked __adis_enable_irq() that is always called
+by __adis_initial_startup().  That would be the fix that
+then needs backporting.
+
+Switching the calls from adis_initial_startup() to
+__adis_initial_startup() would then just be a trivial
+optimization to not take locks before they should ever matter.
+
+This all hinges on my assumption that the lock isn't useful.
+Am I right on that?
 
 Jonathan
 
+
 >=20
-> > Thanks for your time!
-> > Angel
-> >=20
-> > Original discussion thread for additional context:
-> > https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koenig@pe=
-ngutronix.de/
-> >=20
-> > Angel Iglesias (2):
-> >   i2c: core: Introduce i2c_client_get_device_id helper function
-> >   iio: pressure: bmp280: convert to i2c's .probe_new()
-> >=20
-> >  drivers/i2c/i2c-core-base.c       | 15 +++++++++++++++
-> >  drivers/iio/pressure/bmp280-i2c.c |  8 ++++----
-> >  include/linux/i2c.h               |  1 +
-> >  3 files changed, 20 insertions(+), 4 deletions(-)
-> >=20
-> >=20
-> > base-commit: c32793afc6976e170f6ab11ca3750fe94fb3454d
-> > --=20
-> > 2.38.1
-> >  =20
->=20
+> - Nuno S=C3=A1
 

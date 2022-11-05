@@ -2,73 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C377161DA42
-	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 13:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AAF461DA77
+	for <lists+linux-iio@lfdr.de>; Sat,  5 Nov 2022 13:51:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbiKEMkA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 5 Nov 2022 08:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40374 "EHLO
+        id S229540AbiKEMvY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 5 Nov 2022 08:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229829AbiKEMjt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 08:39:49 -0400
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7BF175B4
-        for <linux-iio@vger.kernel.org>; Sat,  5 Nov 2022 05:39:48 -0700 (PDT)
-Received: by mail-pj1-x1030.google.com with SMTP id d13-20020a17090a3b0d00b00213519dfe4aso6684227pjc.2
-        for <linux-iio@vger.kernel.org>; Sat, 05 Nov 2022 05:39:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=mu8m7znM9duu/MEuox3wxE9uI+enJzfHDrHCiCJ0dxXEnbtqlugP30RV4pUA4LaD8D
-         DTqzL6R3iJdygnN0tebcl2jKMC1xnk2qmH9yHj5ZpYJsig0zgAkFbQEJMtQOsyMS9E9+
-         9mZsd+BXbCYizoNZILloIeJgVKBYQDDlfcxWmhtehgP0gShVz6QbysTuA73O0zNW89oN
-         M95vp9qd39mlLDduLYXTQkqHXtcuCB6sr4c0ysKpoCTw5s/vT8zmw06SHC/DLusZ9o66
-         sNkDbmLIhAcJBtA+VmbRSjB+l+4rXBDt3pKOG75zF9L+vjSBjo5n2zZjo+rRsufLH5jZ
-         6xmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c8XA1N0uaxkLO/wKHErNWHaSuu64k5Pjb5u9dmcZrOc=;
-        b=4FPF+e+4BhtMzLbqEjTwylGnPSmVqO7OFGsh2O6iBlZcWOovsrk7YFQns9tJM6YEwH
-         Q5fiK6DXObbeyiPIqezV6rxC/V54jODuhw/MFmEU9FZbLRRGIPrwX54sFl0RSN3Zgibu
-         twOV7lMrBQ0ZPbBcvLdZENOeo3BikY0ZdEvO9vi+/km7uiaNXi2VaxDosKH1+PIaZBe7
-         nzRtUTJrwUXYxZEzCekIlZg7dPp2PvVypLoNQrIH3ywA8803XRdOnAOqJ0vm6KY6FT2e
-         1Xas6tbYDLtWoI88WrNXbXBQ2OOjSUZzbUB7TEK71Vbghsky24dkGzNVBrlvIsfC1f3l
-         gNig==
-X-Gm-Message-State: ACrzQf31s3Nt7U0par/UnOo4TIo4MEqGpFBffnnFphm4VtPLEq1ILBMb
-        xtFO2HSM57+1UFlgMeBWvyaERWHCQV3BH85mm2o=
-X-Google-Smtp-Source: AMsMyM5GFe2gsiMaHXHXvp99K7JeNN2UuK6dELDyLpsoJjIUkQcn4q3aD74FbKEapmwctM2YF8x1D4LMLHeg4fM3LVk=
-X-Received: by 2002:a17:90b:4ac3:b0:213:3918:f276 with SMTP id
- mh3-20020a17090b4ac300b002133918f276mr57022678pjb.19.1667651987563; Sat, 05
- Nov 2022 05:39:47 -0700 (PDT)
+        with ESMTP id S229493AbiKEMvX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 5 Nov 2022 08:51:23 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E46E26130
+        for <linux-iio@vger.kernel.org>; Sat,  5 Nov 2022 05:51:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 331D7B80B64
+        for <linux-iio@vger.kernel.org>; Sat,  5 Nov 2022 12:51:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25058C433D6;
+        Sat,  5 Nov 2022 12:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667652679;
+        bh=Ed1uVF0foRnsII5hW95mdFur0KrIkcTLvmc8JFsOwvE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TvgJnpxoTccEiVIJmLZuySjPUp0RFyQH6OMy5j9Zc+5cIO57Q2ePAJHll+ur6R3du
+         412wQa41q7MwJr2RF1Ph629qIgSTOW3iDSIQm1sDOCoQagYNN7+FmaOMOQAK5GGair
+         NzYpyyylrcZKCOze2M9XrQJgZLT5rf3y3cWiyRSEAgiUgflT6uhpzhUIIKMWMJwDHq
+         3UAcvcEotSCo9RcC8E3ZENaRz/JxRrjS/tY+rR+2VGTOwhl5Yq1cruJkIndxio8O79
+         xmhL9hGSra48NQ4qxEf9wd4ZBz0CIxYnuBRoZJx3ZONfd4VwozWI1g31i+ZVvjNL9s
+         uT5pUdWv05F0w==
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     linux-iio@vger.kernel.org, Crt Mori <cmo@melexis.com>
+Cc:     coverity-bot <keescook@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 0/2] iio: mlx90632: Minor fixes
+Date:   Sat,  5 Nov 2022 12:51:06 +0000
+Message-Id: <20221105125108.383193-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Received: by 2002:a05:7301:2e91:b0:83:922d:c616 with HTTP; Sat, 5 Nov 2022
- 05:39:47 -0700 (PDT)
-Reply-To: stefanopessia755@hotmail.com
-From:   Stefano Pessina <wamathaibenard@gmail.com>
-Date:   Sat, 5 Nov 2022 15:39:47 +0300
-Message-ID: <CAN7bvZKO8GxFn7CG_EtS_Of+AZ+KsuqTkq40Mq-yJDNrEHyakg@mail.gmail.com>
-Subject: Geldspende
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Die Summe von 500.000,00 =E2=82=AC wurde Ihnen von STEFANO PESSINA gespende=
-t.
-Bitte kontaktieren Sie uns f=C3=BCr weitere Informationen =C3=BCber
-stefanopessia755@hotmail.com
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+A couple of minor fixes.  The devm_ error handling was a coverity report.
+Static was a warning I'd missed originally but saw in build whilst testing
+the above.
+
+Crt, could you give these a quick look (+tag ideally) then I'll get them
+on the tree so the issue is fixed in Linux next before I send Greg a pull
+request.
+
+Jonathan Cameron (2):
+  iio: temperature: mlx90632: Add error handling for
+    devm_pm_runtime_enable()
+  iio: temperature: mlx90632: Add missing static marking on devm_pm_ops
+
+ drivers/iio/temperature/mlx90632.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+-- 
+2.38.1
+

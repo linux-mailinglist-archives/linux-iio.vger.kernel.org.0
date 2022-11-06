@@ -2,36 +2,36 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB7E61E31A
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 16:46:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0FD661E36A
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 17:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230138AbiKFPqr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 10:46:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45000 "EHLO
+        id S229937AbiKFQ1d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 11:27:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230139AbiKFPqq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 10:46:46 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADF6D2EE;
-        Sun,  6 Nov 2022 07:46:45 -0800 (PST)
+        with ESMTP id S229894AbiKFQ1c (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 11:27:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E5B647B;
+        Sun,  6 Nov 2022 08:27:31 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80BC260BFF;
-        Sun,  6 Nov 2022 15:46:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3C0C433C1;
-        Sun,  6 Nov 2022 15:46:42 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 03EC4B80BEC;
+        Sun,  6 Nov 2022 16:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A11C433D6;
+        Sun,  6 Nov 2022 16:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667749604;
-        bh=uD5uha/gAGU0ejpz7W/EQnX5lrbypbUC7aV5rXsGakk=;
+        s=k20201202; t=1667752048;
+        bh=hCJrs5Uf/yW96C3G7hDaSyXTbhTNHl+tArJdoN23ZGM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BHUoGGLXtsS59WT1qYEdWFIJ/U6vupy6vaxYYOruTa0Yq8SC75JoWpeHih077sdBh
-         LGGXY+J9Rvuc2SoLW7S/PM0nNWoxj6u9dRpr56sTbCX9Y7VjUZ0uTlQ7vpT8GyN9Ch
-         adGRSBUWI6d3uRg2hUKwqGQ2eCty0wMr7PDW+5MqVS/uGM5S6l2i7O5g+OgaBTiyRT
-         /NE8Y18TuHNcz0eNOIzqxVCfx0PYCrgB1xtw43EXQEWuk8ANfAdIxg4g2UdFqJmXOD
-         FaoMpLjXYl1JDIwu4vkxw70+VE9a5PMVaGvF87fHZI92mxBhrQ31Jm9cxnwJSJ8S8t
-         1VgZFEoRMsdLw==
-Date:   Sun, 6 Nov 2022 15:46:34 +0000
+        b=p4mpAzzOeo7Bkl4uHUotf8oDMEQCVPKJErS4WY/aO2CRkr07l9etbuDQ4pdHWd0Nb
+         Hv/JRxk1LPtnSUBfzU1rbU4CJSElxEbbXiiTTvPuiytH0cz+4IhxSvm07JTEVChOGb
+         4hSNn0lDJ8mOFFsEXLgPcgLyDh1car5Su63hWWYayjvKjuB1+ii0zIRexvnyfl0905
+         31KakgRvoIpKWIFQ65R1fDcx9NRpwghV5HcLLYIjMjkPRQfnT8SYvD5kO227FzovMA
+         CPwo9eLtu95x8ax2sN4/HVBuGAvGSF04I68fG0QOWpxNop1kXY4EJZAn71vKhlASkr
+         tyVeaNup8wVwA==
+Date:   Sun, 6 Nov 2022 16:27:18 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Cosmin Tanislav <demonsingur@gmail.com>
 Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
@@ -43,11 +43,11 @@ Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         William Breathitt Gray <william.gray@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
-Message-ID: <20221106154634.2286faf3@jic23-huawei>
-In-Reply-To: <20221103094436.2136698-2-demonsingur@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: addac: add AD74115 driver
+Message-ID: <20221106162718.05fcfd79@jic23-huawei>
+In-Reply-To: <20221103094436.2136698-3-demonsingur@gmail.com>
 References: <20221103094436.2136698-1-demonsingur@gmail.com>
-        <20221103094436.2136698-2-demonsingur@gmail.com>
+        <20221103094436.2136698-3-demonsingur@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,7 +61,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  3 Nov 2022 11:44:35 +0200
+On Thu,  3 Nov 2022 11:44:36 +0200
 Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
 > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
@@ -89,146 +89,393 @@ Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
 Hi Cosmin,
 
-A few questions inline.  Complex device so I'll doubt we'll ever get this
-binding to be as tidy as for simpler devices.  Hence most of the below are
-suggestions rather than requirements from me.
+Inevitably there are a few things I noticed this time that I missed before.
+
+I'll be looking for Linus W input on GPIO chip code.  Probably best to cc linux-gpio
+on next posting so it ends up in correct filtered email locations and in
+patchwork etc (not sure if gpio uses patchwork).
+
+Biggest thing in here is around IRQ bindings and how they are handled if
+the driver later supports more than one (I think the hardware has several
+lines where you might do this).  We have walled ourselves into a corner
+in the past by not thinking about the binding based on the fact the driver
+doesn't yet support it.  Best to add to the binding now and then just not
+read it in the driver.  In short, just use a named IRQ and get it by name
+rather than spi->irq.
 
 Jonathan
 
-> ---
->  .../bindings/iio/addac/adi,ad74115.yaml       | 370 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 377 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+
+
+> diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
 > new file mode 100644
-> index 000000000000..621f11d5c1f3
+> index 000000000000..648fa8e2496b
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> @@ -0,0 +1,370 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/addac/adi,ad74115.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/iio/addac/ad74115.c
+> @@ -0,0 +1,1901 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2022 Analog Devices, Inc.
+> + * Author: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> + */
 > +
-> +title: Analog Devices AD74115H device
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+> +#include <linux/crc8.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/spi/spi.h>
+> +#include <linux/units.h>
 > +
-> +maintainers:
-> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+> +#include <asm/unaligned.h>
 > +
-> +description: |
-> +  The AD74115H is a single-channel software configurable input/output
-> +  device for industrial control applications. It contains functionality for
-> +  analog output, analog input, digital output, digital input, resistance
-> +  temperature detector, and thermocouple measurements integrated into a single
-> +  chip solution with an SPI interface. The device features a 16-bit ADC and a
-> +  14-bit DAC.
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
 > +
-> +    https://www.analog.com/en/products/ad74115h.html
+> +/* 5.10 compatibility */
+> +static int iio_device_id(struct iio_dev *indio_dev)
+> +{
+> +	return indio_dev->id;
+> +}
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad74115h
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
+> +#include <linux/slab.h>
+> +#define IIO_DMA_MINALIGN ARCH_KMALLOC_MINALIGN
 
-I'm not seeing any child nodes, so why do we need these two?
+This should not be in the upstream driver, though indeed will be needed for
+back porting.
 
-> +
-> +  avdd-supply: true
-> +  avcc-supply: true
-> +  dvcc-supply: true
-> +  aldo1v8-supply: true
-
-aldo1v8 is an output pin. "1.8 V Analog LDO Output. Do not use ALDO1V8 externally."
-The associated input is avcc.  Given we shouldn't connect anything to the pin,
-we don't want it in the binding docs
-
-> +  dovdd-supply: true
-> +  refin-supply: true
+> +/* end 5.10 compatibility */
 > +
 
 ...
 
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Conversion range for ADC conversion 2.
-> +      0 - 0V to 12V
-> +      1 - -12V to +12V
-> +      2 - -2.5V to +2.5V
-> +      3 - -2.5V to 0V
-> +      4 - 0V to 2.5V
-> +      5 - 0V to 0.625V
-> +      6 - -104mV to +104mV
-> +      7 - 0V to 12V
-
-For a lot of similar cases we handle these numerically to give
-a human readable dts.  Is there a strong reason not to do so here (in mv)
 
 
-> +    minimum: 0
-> +    maximum: 7
-> +    default: 0
-> +
-> +  adi,sense-agnd-buffer-lp:
-lp is a little ambiguous, given we have a habit of using it for low pass
-in filters etc. Perhaps worth spelling these out?
-     adi,sens-agnd-buffer-low-power etc?
-
-> +    type: boolean
-> +    description: |
-> +      Whether to enable low-power buffered mode for the AGND sense pin.
-> +
-> +  adi,lf-buffer-lp:
-> +    type: boolean
-> +    description: |
-> +      Whether to enable low-power buffered mode for the low-side filtered
-> +      sense pin.
-> +
-> +  adi,hf-buffer-lp:
-> +    type: boolean
-> +    description: |
-> +      Whether to enable low-power buffered mode for the high-side filtered
-> +      sense pin.
-> +
-> +  adi,ext2-buffer-lp:
-> +    type: boolean
-> +    description: Whether to enable low-power buffered mode for the EXT2 pin.
-> +
-> +  adi,ext1-buffer-lp:
-> +    type: boolean
-> +    description: Whether to enable low-power buffered mode for the EXT1 pin.
 
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-cpol
-> +  - avdd-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +  - if:
-> +      properties:
-> +        adi,digital-input-sink-range-high: true
-> +    then:
-> +      properties:
-> +        adi,digital-input-sink-microamp:
-> +          maximum: 7400
-> +
-> +additionalProperties: false
+> +static const int ad74115_dac_rate_tbl[] = {
 
-Does this need to be unevalutatedProperties to allow
-for the extra ones in spi-periphera-props.yaml?
+For these, it might be nice to have a few comments on units if relevant...
+
+> +	0,
+> +	4 * 8,
+> +	4 * 15,
+> +	4 * 61,
+> +	4 * 222,
+> +	64 * 8,
+> +	64 * 15,
+> +	64 * 61,
+> +	64 * 222,
+> +	150 * 8,
+> +	150 * 15,
+> +	150 * 61,
+> +	150 * 222,
+> +	240 * 8,
+> +	240 * 15,
+> +	240 * 61,
+> +	240 * 222,
+> +};
+> +
+
+...
+
+
+...
+
+
 
 > +
+> +static int _ad74115_get_adc_code(struct ad74115_state *st,
+> +				 enum ad74115_adc_ch channel, int *val)
+> +{
+> +	unsigned int uval;
+> +	int ret;
+> +
+> +	reinit_completion(&st->adc_data_completion);
+> +
+> +	ret = ad74115_set_adc_ch_en(st, channel, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad74115_set_adc_conv_seq(st, AD74115_ADC_CONV_SEQ_SINGLE);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (st->spi->irq) {
+
+As below. I would not rely on that being the 'right irq'.
+It will make a mess of the case where someone attaches just the alert one
+and not the adc ready one.  The old rule - if someone can wire up an annoying
+combination of pins, they will...
+
+> +		ret = wait_for_completion_timeout(&st->adc_data_completion,
+> +						  msecs_to_jiffies(1000));
+> +		if (!ret)
+> +			return -ETIMEDOUT;
+> +	} else {
+> +		unsigned int regval, wait_time;
+> +		int rate;
+> +
+> +		ret = ad74115_get_adc_rate(st, channel, &rate);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		wait_time = DIV_ROUND_CLOSEST(AD74115_CONV_TIME_US, rate);
+> +
+> +		ret = regmap_read_poll_timeout(st->regmap, AD74115_LIVE_STATUS_REG,
+> +					       regval, regval & AD74115_ADC_DATA_RDY_MASK,
+> +					       wait_time, 5 * wait_time);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/*
+> +		 * The ADC_DATA_RDY bit is W1C.
+> +		 * See datasheet page 98, Table 62. Bit Descriptions for
+> +		 * LIVE_STATUS.
+> +		 * Although the datasheet mentions that the bit will auto-clear
+> +		 * when writing to the ADC_CONV_CTRL register, this does not
+> +		 * seem to happen.
+> +		 */
+> +		ret = regmap_write_bits(st->regmap, AD74115_LIVE_STATUS_REG,
+> +					AD74115_ADC_DATA_RDY_MASK,
+> +					FIELD_PREP(AD74115_ADC_DATA_RDY_MASK, 1));
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	ret = regmap_read(st->regmap, ad74115_adc_ch_data_regs[channel], &uval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad74115_set_adc_conv_seq(st, AD74115_ADC_CONV_SEQ_STANDBY);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = ad74115_set_adc_ch_en(st, channel, false);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*val = uval;
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+
+
+> +
+> +static int ad74115_set_dac_code(struct ad74115_state *st,
+> +				enum ad74115_dac_ch channel, int val)
+> +{
+> +	if (val < 0)
+> +		return -EINVAL;
+> +
+> +	if (channel == AD74115_DAC_CH_COMPARATOR) {
+> +		if (val > AD74115_COMP_THRESH_MAX)
+> +			return -EINVAL;
+> +
+> +		return regmap_update_bits(st->regmap, AD74115_DIN_CONFIG2_REG,
+> +					  AD74115_COMP_THRESH_MASK,
+> +					  FIELD_PREP(AD74115_COMP_THRESH_MASK, val));
+> +	}
+> +
+> +	if (val > AD74115_DAC_CODE_MAX)
+> +		return -EINVAL;
+> +
+> +	return regmap_write(st->regmap, AD74115_DAC_CODE_REG, val);
+
+See below. This is another one I think would be nicer as an if /else
+> +}
+> +
+
+
+> +
+> +static int ad74115_get_adc_offset(struct ad74115_state *st,
+> +				  struct iio_chan_spec const *chan,
+> +				  int *val, int *val2)
+> +{
+> +	unsigned int range;
+> +	int ret;
+> +
+> +	ret = ad74115_get_adc_range(st, chan->channel, &range);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (chan->type == IIO_RESISTANCE) {
+> +		unsigned int d = 10 * AD74115_REF_RESISTOR_OHMS
+> +				 * AD74115_adc_gain[range][1];
+> +
+> +		*val = 5;
+> +
+> +		if (ad74115_adc_bipolar[range])
+> +			*val -= AD74115_ADC_CODE_HALF;
+> +
+> +		*val *= d;
+> +
+> +		if (!st->rtd_mode_4_wire) {
+> +			/* Add 0.2 Ohm to the final result for 3-wire RTD. */
+> +			unsigned int v = 2 * AD74115_adc_gain[range][0];
+> +
+> +			if (ad74115_adc_bipolar[range])
+> +				v *= AD74115_ADC_CODE_HALF;
+> +			else
+> +				v *= AD74115_ADC_CODE_MAX;
+> +
+> +			*val += v;
+> +		}
+> +
+> +		*val2 = d;
+> +
+> +		return IIO_VAL_FRACTIONAL;
+> +	}
+
+Really minor but...
+
+Given the indent below here isn't too high, I would prefer an else
+	} else {
+to make it clear that we have two equivalent branches of the code just handling
+different channel types.
+
+In other similar cases, there indent is huge, so ignore this nice to have and
+indeed do it like you have done here (if block that returns then everything else
+without an else statement).
+
+> +
+> +	if (ad74115_adc_bipolar[range])
+> +		*val = -AD74115_ADC_CODE_HALF;
+> +	else if (range == AD74115_ADC_RANGE_2_5V_NEG)
+> +		*val = -AD74115_ADC_CODE_MAX;
+> +	else
+> +		*val = 0;
+> +
+> +	return IIO_VAL_INT;
+> +}
+> +
+
+
+> +
+> +static const struct iio_info ad74115_info = {
+> +	.read_raw = ad74115_read_raw,
+> +	.write_raw = ad74115_write_raw,
+> +	.read_avail = ad74115_read_avail,
+> +	.update_scan_mode = ad74115_update_scan_mode,
+> +	.debugfs_reg_access = ad74115_reg_access,
+> +};
+
+> +
+> +static int ad74115_setup_iio_channels(struct iio_dev *indio_dev)
+> +{
+> +	struct ad74115_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->spi->dev;
+> +	struct iio_chan_spec *channels, *chans;
+> +	unsigned int num_chans;
+> +
+> +	channels = devm_kcalloc(dev, sizeof(*channels),
+> +				indio_dev->num_channels, GFP_KERNEL);
+> +	if (!channels)
+> +		return -ENOMEM;
+> +
+> +	indio_dev->channels = channels;
+> +
+> +	chans = ad74115_channels_map[st->ch_func].channels;
+
+I'd find this a little more readable if you just put this parameter directly
+into the memcpy call.  Having channels and chans is less clear than it could perhaps
+be.
+
+> +	num_chans = ad74115_channels_map[st->ch_func].num_channels;
+
+Likewise with this. 
+
+	memcpy(channels, ad74115_channels_map[st->ch_func].channels,
+	       ad74115_channels_map[st->ch_func].num_channels);
+
+isn't too bad.
+> +
+> +	memcpy(channels, chans, sizeof(*channels) * num_chans);
+> +
+> +	if (channels[0].output && channels[0].channel == AD74115_DAC_CH_MAIN &&
+> +	    channels[0].type == IIO_VOLTAGE && !st->dac_hart_slew) {
+> +		channels[0].info_mask_separate |= BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> +		channels[0].info_mask_separate_available |= BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> +	}
+> +
+> +	return 0;
+> +}
+
+
+
+> +
+> +static int ad74115_setup_trigger(struct iio_dev *indio_dev)
+> +{
+> +	struct ad74115_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->spi->dev;
+> +	int ret;
+> +
+> +	if (!st->spi->irq)
+
+Unusual for a chip this complex to only have one thing that would be treated
+as an IRQ.  I checked the datahsheet and there are at least two (ADC_RDY, ALERT)
+Hence use a fwnode_irq_get_by_name() and require the names in the binding.
+
+It's possible people will wire either one individually, or both together and
+we need to handle that in the binding.  In the driver we can just ignore any
+we don't support.
+
+> +		return 0;
+> +
+> +	ret = devm_request_irq(dev, st->spi->irq, ad74115_adc_data_interrupt,
+> +			       0, AD74115_NAME, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", AD74115_NAME,
+> +					  iio_device_id(indio_dev));
+> +	if (!st->trig)
+> +		return -ENOMEM;
+> +
+> +	st->trig->ops = &ad74115_trigger_ops;
+> +	iio_trigger_set_drvdata(st->trig, st);
+> +
+> +	ret = devm_iio_trigger_register(dev, st->trig);
+> +	if (ret)
+> +		return ret;
+> +
+> +	indio_dev->trig = iio_trigger_get(st->trig);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad74115_probe(struct spi_device *spi)
+> +{
+
+...
+
+
+> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> +					      iio_pollfunc_store_time,
+
+You store the time but then I don't immediately spot it being used.
+
+> +					      ad74115_trigger_handler,
+> +					      &ad74115_buffer_ops);
+
+
+> +
+> +module_driver(ad74115_driver,
+> +	      ad74115_register_driver,
+> +	      ad74115_unregister_driver);
+
+Trivial but could wrap this less as:
+module_driver(ad74115_driver,
+	      ad74115_register_driver, ad74115_unregister_driver);
+
+(or the other obvious combination if you prefer.
+
+

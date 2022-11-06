@@ -2,69 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6EE61E380
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 17:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D8461E384
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 17:43:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbiKFQnD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 11:43:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S230123AbiKFQns (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 11:43:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230109AbiKFQmx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 11:42:53 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDA8B1C8;
-        Sun,  6 Nov 2022 08:42:52 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id t25-20020a1c7719000000b003cfa34ea516so1111294wmi.1;
-        Sun, 06 Nov 2022 08:42:51 -0800 (PST)
+        with ESMTP id S230079AbiKFQnr (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 11:43:47 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA72BF49;
+        Sun,  6 Nov 2022 08:43:47 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id bk15so13092276wrb.13;
+        Sun, 06 Nov 2022 08:43:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mBBnZk9CGHds25bK4AquHJJWU5YRQFIcofoONm9EE0Y=;
-        b=oB2xaw02K/qsKo4gQmAc2N2vBGa8XdYAEaZH12L7S7024adpZByZGxjyinfmWAVnDI
-         1JOhtyhB3pBST1p2+VYs2bywldGyYoLXZZGKbcFQ/ZCXy1H2yDPchMxsrfjiLLXnzp+5
-         V8Vy0DGQ/B1Gd87KOez+DPwZ3E7vPXR7Jo5GamCrX/8YnKmzQFZ6uzJhE1Bcivv4LuD7
-         DCKkbIUt5zceJcZNODWaWiofOpSS4ELUOTtCw0vwxl7Dg+p2BDNgoilFbULLbxTps3W3
-         2AAVfzEML051Bh2ohMpGz5269PdXgFiXr5+IFpz/cqSfW8k3gH2NUp0jPycFb9YtCFa2
-         DZGw==
+        bh=7xqBoBKeva5bjtm8UXNXj3BmzMsfCRHx0ULq83teTWw=;
+        b=arJZPzh9qxDhjIZmxHdlzONczqql/UqSQEux30BjoIHONRVzB7q3v0hmKAhAIDQU+b
+         f1d4ba8O47jQxGa1iEtWmRERr1ZaQtveyzP3CT7e4N3LoL47NUaUadGyfibNP4/3MU3y
+         zAt0tx63siVf15t5m0h9GjOrFbbYaxRUViNn/P4LctFvIsb7+2xZPS83SnC5FOvyiFCt
+         /MzmZ04nHNepPdWMZW4/lizJudiKqrw2zLs85Y+hnXbCXvnR39IERj+l04wVA8Upifep
+         +D4QHZkDlA7RpTHL2FGTDmj8Z9HBuZdcnli8uD/PVYtNouvq3t10V9fYocyRmy5hfSjC
+         BWKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mBBnZk9CGHds25bK4AquHJJWU5YRQFIcofoONm9EE0Y=;
-        b=v8PaxPP+rpNeaLo6FI6ABYzn38BGb490S0/Ohh7tj68IrzPt+jEt6XB4T+UGhGhbvl
-         2Nee0VfBkkhW8/EVPWx05D05Lc92LtLEnnSp/YmUSbSytSIunIcX7QD3VGc6aLM6XNgg
-         IDZD4eZGJAZEoAC9zHp0SjfKZf9mCN4Ya+Y9WYrVmXsHyzB1Vv/R5t5wBDwOjnen88Xz
-         1uOStwl8Fwdt16yAiUr5jeSzLHYYdgHP8nr5DgnKHGY608MimH7egYQG451ERGHahpaJ
-         uznPjItZFXP3srHL/gZdJSfNRYv4CyrEEONnx2bgGuU9f2+EOGXnKkoKcDz9f5Zqng5u
-         jizg==
-X-Gm-Message-State: ACrzQf0Av5XuiS8qfs7dH7BDZSP2lP4j/ZFxHX+J4qHercI159h+mBmU
-        iRMI1pTtg0/RgCGft4O6Msm0YZTwJ+U=
-X-Google-Smtp-Source: AMsMyM7vAXI0FILuF40ugZH/Y7fO2Z5Zp4f9W1SWmz1CKQWreZ+VpCFP4SOa9gVALB+TzsvojGvU4w==
-X-Received: by 2002:a7b:c4c2:0:b0:3b4:fdc4:6df9 with SMTP id g2-20020a7bc4c2000000b003b4fdc46df9mr29783642wmk.123.1667752970427;
-        Sun, 06 Nov 2022 08:42:50 -0800 (PST)
+        bh=7xqBoBKeva5bjtm8UXNXj3BmzMsfCRHx0ULq83teTWw=;
+        b=xdnpfDTxUqfcQxK/nX/DQ6x2F4jbnLPyFSsNQPoVGF6huHywrdF3Nks26ZcjmCikhR
+         uTiHoc98cL8jCL0FrthoAMzWEiBhD9BSQ07DtD5PSjAZjcnSki6rtSbJVtSbjLTsAy08
+         D2rmTHxDbDFgxTltK6n5xNq/ZQJKQOD+G/AGLq3JF6WfjkTUpCkemtKMOCDZsGyvth8O
+         oj5WArzlQY9gK/yXK/Arw7aO+OOED6imdS9+a9c5XlMMGyn1kap5nNV+Coc36nSOMEu4
+         vUp8xK3c6aEVzi/MI4t42aqTH1iqOTkZlSDZjv+UDCJ+Z9wYsaGG6TQ6bW8QRq0d+REG
+         mMsw==
+X-Gm-Message-State: ACrzQf1eR4CRQ2Ge4a0hSgD8KnEnBcHRiHGn9+wokVLy9ljL2FetnFPW
+        yoCiLzlyBkSl5lA3aOcZxGjZ0gsETmE=
+X-Google-Smtp-Source: AMsMyM7gs76QvhF2kVLXHRr32xuL8tj4gKS95mzVVcQZHc3fBi9q+xA9XNDmav2IizrR7j0pWPF66A==
+X-Received: by 2002:adf:e3cc:0:b0:235:95b1:2124 with SMTP id k12-20020adfe3cc000000b0023595b12124mr29321787wrm.693.1667753025525;
+        Sun, 06 Nov 2022 08:43:45 -0800 (PST)
 Received: from localhost.localdomain (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id fc15-20020a05600c524f00b003cf57329221sm9930077wmb.14.2022.11.06.08.42.49
+        by smtp.gmail.com with ESMTPSA id c2-20020a5d4f02000000b002366553eca7sm4949908wru.83.2022.11.06.08.43.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Nov 2022 08:42:50 -0800 (PST)
+        Sun, 06 Nov 2022 08:43:45 -0800 (PST)
 From:   Angel Iglesias <ang.iglesiasg@gmail.com>
 To:     linux-iio@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org,
         Angel Iglesias <ang.iglesiasg@gmail.com>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org
-Subject: [PATCH v2 1/2] i2c: core: Introduce i2c_client_get_device_id helper function
-Date:   Sun,  6 Nov 2022 17:42:24 +0100
-Message-Id: <bb8d7f33c6b9e960d542c3951101587b4ddfaef6.1667750698.git.ang.iglesiasg@gmail.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v2 2/2] iio: pressure: bmp280: convert to i2c's .probe_new()
+Date:   Sun,  6 Nov 2022 17:43:16 +0100
+Message-Id: <237d16807630c6f2a9d2864521228b9d837984b6.1667750698.git.ang.iglesiasg@gmail.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <cover.1667750698.git.ang.iglesiasg@gmail.com>
 References: <cover.1667750698.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -76,58 +77,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduces new helper function to aid in .probe_new() refactors. In order
-to use existing i2c_get_device_id() on the probe callback, the device
-match table needs to be accessible in that function, which would require
-bigger refactors in some drivers using the deprecated .probe callback.
+Use i2c_client_get_device_id() to get the i2c_device_id* parameter in the
+.new_probe() callback.
 
-This issue was discussed in more detail in the IIO mailing list.
-
-Link: https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koenig@pengutronix.de/
-Suggested-by: Nuno Sá <noname.nuno@gmail.com>
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
-index b4edf10e8fd0..920676e62c22 100644
---- a/drivers/i2c/i2c-core-base.c
-+++ b/drivers/i2c/i2c-core-base.c
-@@ -2236,6 +2236,21 @@ int i2c_get_device_id(const struct i2c_client *client,
- }
- EXPORT_SYMBOL_GPL(i2c_get_device_id);
+diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
+index 0c27211f3ea0..14eab086d24a 100644
+--- a/drivers/iio/pressure/bmp280-i2c.c
++++ b/drivers/iio/pressure/bmp280-i2c.c
+@@ -5,11 +5,11 @@
  
-+/**
-+ * i2c_client_get_device_id - get the driver match table entry of a device
-+ * @client: the device to query. The device must be bound to a driver or
-+ *	    the function oopses.
-+ *
-+ * Returns a pointer to the matching entry if found, NULL otherwise.
-+ */
-+const struct i2c_device_id *i2c_client_get_device_id(const struct i2c_client *client)
-+{
-+	const struct i2c_driver *drv = to_i2c_driver(client->dev.driver);
-+
-+	return i2c_match_id(drv->id_table, client);
-+}
-+EXPORT_SYMBOL_GPL(i2c_client_get_device_id);
-+
- /* ----------------------------------------------------
-  * the i2c address scanning function
-  * Will not work for 10-bit addresses!
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index f7c49bbdb8a1..d84e0e99f084 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -189,6 +189,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
- 					      u8 *values);
- int i2c_get_device_id(const struct i2c_client *client,
- 		      struct i2c_device_identity *id);
-+const struct i2c_device_id *i2c_client_get_device_id(const struct i2c_client *client);
- #endif /* I2C */
+ #include "bmp280.h"
  
- /**
+-static int bmp280_i2c_probe(struct i2c_client *client,
+-			    const struct i2c_device_id *id)
++static int bmp280_i2c_probe(struct i2c_client *client)
+ {
+ 	struct regmap *regmap;
+ 	const struct regmap_config *regmap_config;
++	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 
+ 	switch (id->driver_data) {
+ 	case BMP180_CHIP_ID:
+@@ -65,7 +65,7 @@ static struct i2c_driver bmp280_i2c_driver = {
+ 		.of_match_table = bmp280_of_i2c_match,
+ 		.pm = pm_ptr(&bmp280_dev_pm_ops),
+ 	},
+-	.probe		= bmp280_i2c_probe,
++	.probe_new	= bmp280_i2c_probe,
+ 	.id_table	= bmp280_i2c_id,
+ };
+ module_i2c_driver(bmp280_i2c_driver);
 -- 
 2.38.1
 

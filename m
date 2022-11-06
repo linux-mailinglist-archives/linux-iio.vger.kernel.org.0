@@ -2,165 +2,358 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0323861E4D6
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 18:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D2461E4D9
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 18:23:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231321AbiKFRWo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Sun, 6 Nov 2022 12:22:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36602 "EHLO
+        id S230522AbiKFRXO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 12:23:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231368AbiKFRWX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 12:22:23 -0500
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E06F02D;
-        Sun,  6 Nov 2022 09:16:22 -0800 (PST)
-Received: by mail-qv1-f41.google.com with SMTP id o8so6717590qvw.5;
-        Sun, 06 Nov 2022 09:16:22 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0yRFsAjwUQIfQ4Fg55dNvKkTZgYP5zwoGBPW0w7s+iI=;
-        b=mT9CUr4dLw6pxvrXZ5BVZnabbZMTg6DsgrbiexmQNrJZ6A5ECR2T+O3BcxTHvAwUsd
-         AwVddFhvv9a9asNiBD7KsCHSWxb+PTvXUdvQUIXRkdLtfFihWP5KsrXhBQ6RpEfivXgB
-         KT2K6L+4jVy7mCEAMlMHrbsJek1HNjYVilz5IZMeOvrY4W5qEQFKg7f4Shzt432w1+jA
-         yy+aIu/RBefBtymzmQm4bpFrZbbAUO2aajVNCu+ZKOgxVwqiNRjQ0G3uRW8gC7xPs/5G
-         PrBrygvN2GL63JfEfr34ygwxT6YNPAC39dvD+EkJ20wzCqkS67ZtpBsvHsd6y2G0gn5h
-         tUvg==
-X-Gm-Message-State: ACrzQf3CAYf8F0rR7tntbkwafomMGqK/I+lJfhwrcq6MiJei0pDMNdQ/
-        zkyRY1YcMp+oChm0BwCCS7fR6Si+uhDixrT0BTh6QD0H
-X-Google-Smtp-Source: AMsMyM5EXmTz+xFzPWNejXFA5RJVG7EMMmfcmgs74EQWjoljDgwwOE9KqNZ64dVDhpCCCFbBnybblZqOF65V3hWzj/o=
-X-Received: by 2002:a0c:c684:0:b0:4bb:fc53:5ad9 with SMTP id
- d4-20020a0cc684000000b004bbfc535ad9mr32688902qvj.3.1667754982089; Sun, 06 Nov
- 2022 09:16:22 -0800 (PST)
+        with ESMTP id S231139AbiKFRWv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 12:22:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663D3FD16
+        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 09:19:59 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E97CB60BFF
+        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 17:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C65BC433D6;
+        Sun,  6 Nov 2022 17:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667755198;
+        bh=0AMesVL8rW/BipJW7WXLw6Am2AieW+ZfxJ3QNhR2Kzo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=HneSi0ddKam24Vl0y7ITz/kfitgiCMBHaNc+ONH+gq2zYd2DIGSDs/kk+PyEi5O8z
+         uZDkJ3F8x1198euWEsFOMkkjscJUQolEQSs4NhfQET2T6mTJpyKtFjV4/qilkjuhkI
+         J4KbcG2/vvH+YlDzoP1HVkZs4aJsY3aoOxw1znH9JqnlSsVdYg7Xc0lBaW43LspfyE
+         AS7Fi6c6oIVJY41sLSMkCzmL5C2GJmJ9giEvl+T4/MHWRSg2Qbwt2DgPgp8ODtkhuj
+         vv1WZBjnL+FuXWkCD3tLGZyeVqKk7XStSLyBTdKOZTw1OPNj3b2shmVs6D11ieriY3
+         /p1oC/oyGNLGg==
+Date:   Sun, 6 Nov 2022 17:19:49 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Angelo Dureghello <angelo.dureghello@timesys.com>
+Cc:     william.gray@linaro.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3] iio: dac: add support for max5522
+Message-ID: <20221106171949.571a6755@jic23-huawei>
+In-Reply-To: <20221106165928.223318-1-angelo.dureghello@timesys.com>
+References: <20221106165928.223318-1-angelo.dureghello@timesys.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220929144618.1086985-1-marten.lindahl@axis.com>
- <20220929144618.1086985-2-marten.lindahl@axis.com> <CAJZ5v0jhk8tGw9iak+BKr=3AUG5iPdn+0_KnmToDLji1ttV7hA@mail.gmail.com>
- <Y1/8Z/Ibqc3B21Tg@axis.com> <20221106153315.64952dd3@jic23-huawei>
-In-Reply-To: <20221106153315.64952dd3@jic23-huawei>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Sun, 6 Nov 2022 18:16:10 +0100
-Message-ID: <CAJZ5v0hdAkk_GNA5xhaTA0UGb8keJQK9i3UaVgfnc7233nbm8g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] PM: runtime: Synchronize PM runtime enable state with parent
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Marten Lindahl <martenli@axis.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?Q?M=C3=A5rten_Lindahl?= <Marten.Lindahl@axis.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 6, 2022 at 4:33 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Mon, 31 Oct 2022 17:48:39 +0100
-> Marten Lindahl <martenli@axis.com> wrote:
->
-> > On Tue, Oct 25, 2022 at 06:20:10PM +0200, Rafael J. Wysocki wrote:
-> > > On Thu, Sep 29, 2022 at 4:46 PM Mårten Lindahl <marten.lindahl@axis.com> wrote:
-> >
-> > Hi! Thanks for your feedback!
-> >
-> > > >
-> > > > A device that creates a child character device with cdev_device_add by
-> > > > default create a PM sysfs group with power attributes for userspace
-> > > > control. This means that the power attributes monitors the child device
-> > > > only and thus does not reflect the parent device PM runtime behavior.
-> > >
-> > > It looks like device_set_pm_not_required() should be used on the child then.
-> > >
-> > > > But as the PM runtime framework (rpm_suspend/rpm_resume) operates not
-> > > > only on a single device that has been enabled for runtime PM, but also
-> > > > on its parent, it should be possible to synchronize the child and the
-> > > > parent so that the power attribute monitoring reflects the child and the
-> > > > parent as one.
-> > > >
-> > > > As an example, if an i2c_client device registers an iio_device, the
-> > > > iio_device will create sysfs power/attribute nodes for userspace
-> > > > control. But if the dev_pm_ops with resume/suspend callbacks is attached
-> > > > to the struct i2c_driver.driver.pm, the PM runtime needs to be enabled
-> > > > for the i2c_client device and not for the child iio_device.
-> > > >
-> > > > In this case PM runtime can be enabled for the i2c_client device and
-> > > > suspend/resume callbacks will be triggered, but the child sysfs power
-> > > > attributes will be visible but marked as 'unsupported' and can not be
-> > > > used for control or monitoring. This can be confusing as the sysfs
-> > > > device node presents the i2c_client and the iio_device as one device.
-> > >
-> > > I don't quite understand the last sentence.
-> > >
-> > > They are separate struct device objects and so they each have a
-> > > directory in sysfs, right?
-> > >
-> >
-> > Yes, they do have separate directories and if using device_set_pm_not_required
-> > on the child it will make it clearer which device is PM runtime regulated, so
-> > I guess that is what should be done.
-> >
-> > I think it all depends on where in sysfs the user accesses the device from. My
-> > point with these patches is that the iio_device may be perceived to be an
-> > iio device that should be possible to manually power control, as the power
-> > directory is visble. If looking at it from here:
-> >
-> > ~# ls /sys/bus/iio/devices/iio:device0/
-> > in_illuminance_raw      in_proximity_raw        power
-> > in_illuminance_scale    name                    subsystem
-> > in_proximity_nearlevel  of_node                 uevent
-> >
-> > my idea is to let this power directory inherity the parent power control. But
-> > as you say, it is probably better to not create it at all, as the actual manual
-> > power control can be done here:
-> >
-> > ~# ls /sys/devices/platform/soc/.../i2c-2/2-0060/
-> > driver       modalias     of_node      subsystem
-> > iio:device1  name         power        uevent
-> >
-> > where it is more clear which device (the i2c parent) that can be power
-> > controlled.
-> >
-> > > > Add a function to synchronize the runtime PM enable state of a device
-> > > > with its parent. As there already exists a link from the child to its
-> > > > parent and both are enabled, all sysfs control/monitoring can reflect
-> > > > both devices, which from a userspace perspective makes more sense.
-> > >
-> > > Except that user space will be able to change "control" to "on" for
-> > > the parent alone AFAICS which still will be confusing.
-> >
-> > Yes, that is true.
-> > >
-> > > For devices that are pure software constructs it only makes sense to
-> > > expose the PM-runtime interface for them if the plan is to indirectly
-> > > control the parent's runtime PM through them.
-> >
-> > I will abandon this patchset and send a single patch for the iio device.
->
-> I entirely agree with the statement that these are pointless and should not
-> be exposed.  However I don't want to see a per device tweak.  If we get
-> rid of these, we get rid of them for all of the iio:device0/
-> devices (and the various other types of device IIO uses).
->
-> The risk here is that, although pointless, some userspace is relying on the
-> ABI in sysfs.  Do people thing it's worth the gamble of getting rid
-> of this non functioning interface for the whole of IIO?
+On Sun,  6 Nov 2022 17:59:28 +0100
+Angelo Dureghello <angelo.dureghello@timesys.com> wrote:
 
-I think so.
+> Add initial support for DAC max5522.
+> 
+> Tested writing DAC A and B with some values,
+> from 0 to 1023, measured output voltages, driver works properly.
+> 
+> Additions for max5523/24/25 will follow.
+> 
+> Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
 
-It is better to avoid exposing garbage to user space even if the scope
-of it is limited IMV.
+I've been dozy up to now.  This needs a (fairly simple)
+device tree binding doc in Documentation/devicetree/bindings/iio/dac/
 
-> So far I think this is only been done for a few similar cases
-> and for new subsystems.
+Make sure to include the device tree binding maintainers on that
+and to follow the instructions to test the binding.
+Feel free to send as a separate patch but refer back to this one.
+
+I'll hold off applying this just in case it needs any changes
+resulting form the binding review.
+
+
+> 
+> ---
+> Changes for v.2
+> - fix commit message
+> - Kconfig, fix depends and select
+> - Kconfig, fix typo
+> - fix include alphabetical order
+> - remove sysfs includes
+> - fix MAX5522_REG_DATA macro
+> - use devm_ as much as possible
+> - add regulator_enable
+> - remove useless code
+> - remove commas after structure initializers and null terminators
+> - change to use simplier module_spi_driver
+> - get id->name from device info structure
+> - regulator voltage read always from read_raw (no cache)
+> 
+> Changes for v.3
+> - move signed-off to be before the changelog
+> - re-fix include alphabetical order
+> - remove vrefin_mv references
+> - align function params with opening bracket
+> - try to get chip_info from firmware
+> - name always read from max5522_chip_info_tbl
+> - remove line break before MODULE_DEVICE_TABLE
+> ---
+>  drivers/iio/dac/Kconfig   |  13 +++
+>  drivers/iio/dac/Makefile  |   1 +
+>  drivers/iio/dac/max5522.c | 207 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 221 insertions(+)
+>  create mode 100644 drivers/iio/dac/max5522.c
+> 
+> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+> index 80521bd28d0f..6c49523fe357 100644
+> --- a/drivers/iio/dac/Kconfig
+> +++ b/drivers/iio/dac/Kconfig
+> @@ -357,6 +357,19 @@ config MAX517
+>  	  This driver can also be built as a module.  If so, the module
+>  	  will be called max517.
+>  
+> +config MAX5522
+> +	tristate "Maxim MAX5522 DAC driver"
+> +	depends on SPI_MASTER
+> +	select REGMAP_SPI
+> +	help
+> +	  Say Y here if you want to build a driver for the Maxim MAX5522.
+> +
+> +	  MAX5522 is a dual, ultra-low-power, 10-Bit, voltage-output
+> +	  digital to analog converter (DAC) offering rail-to-rail buffered
+> +	  voltage outputs.
+> +
+> +	  If compiled as a module, it will be called max5522.
+> +
+>  config MAX5821
+>  	tristate "Maxim MAX5821 DAC driver"
+>  	depends on I2C
+> diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
+> index ec3e42713f00..6c74fea21736 100644
+> --- a/drivers/iio/dac/Makefile
+> +++ b/drivers/iio/dac/Makefile
+> @@ -38,6 +38,7 @@ obj-$(CONFIG_LTC2632) += ltc2632.o
+>  obj-$(CONFIG_LTC2688) += ltc2688.o
+>  obj-$(CONFIG_M62332) += m62332.o
+>  obj-$(CONFIG_MAX517) += max517.o
+> +obj-$(CONFIG_MAX5522) += max5522.o
+>  obj-$(CONFIG_MAX5821) += max5821.o
+>  obj-$(CONFIG_MCP4725) += mcp4725.o
+>  obj-$(CONFIG_MCP4922) += mcp4922.o
+> diff --git a/drivers/iio/dac/max5522.c b/drivers/iio/dac/max5522.c
+> new file mode 100644
+> index 000000000000..00ba4e98fb9c
+> --- /dev/null
+> +++ b/drivers/iio/dac/max5522.c
+> @@ -0,0 +1,207 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Maxim MAX5522
+> + * Dual, Ultra-Low-Power 10-Bit, Voltage-Output DACs
+> + *
+> + * Copyright 2022 Timesys Corp.
+> + */
+> +
+> +#include <linux/device.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/slab.h>
+> +#include <linux/spi/spi.h>
+> +
+> +#include <linux/iio/iio.h>
+> +
+> +#define MAX5522_MAX_ADDR	15
+> +#define MAX5522_CTRL_NONE	0
+> +#define MAX5522_CTRL_LOAD_IN_A	9
+> +#define MAX5522_CTRL_LOAD_IN_B	10
+> +
+> +#define MAX5522_REG_DATA(x)	((x) + MAX5522_CTRL_LOAD_IN_A)
+> +
+> +struct max5522_chip_info {
+> +	const char *name;
+> +	const struct iio_chan_spec *channels;
+> +	unsigned int num_channels;
+> +};
+> +
+> +struct max5522_state {
+> +	struct regmap *regmap;
+> +	const struct max5522_chip_info *chip_info;
+> +	unsigned short dac_cache[2];
+> +	struct regulator *vrefin_reg;
+> +};
+> +
+> +#define MAX5522_CHANNEL(chan) {	\
+> +	.type = IIO_VOLTAGE, \
+> +	.indexed = 1, \
+> +	.output = 1, \
+> +	.channel = chan, \
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
+> +			      BIT(IIO_CHAN_INFO_SCALE), \
+> +	.scan_type = { \
+> +		.sign = 'u', \
+> +		.realbits = 10, \
+> +		.storagebits = 16, \
+> +		.shift = 2, \
+> +	} \
+> +}
+> +
+> +const struct iio_chan_spec max5522_channels[] = {
+> +	MAX5522_CHANNEL(0),
+> +	MAX5522_CHANNEL(1),
+> +};
+> +
+> +enum max5522_type {
+> +	ID_MAX5522,
+> +};
+> +
+> +static const struct max5522_chip_info max5522_chip_info_tbl[] = {
+> +	[ID_MAX5522] = {
+> +		.name = "max5522",
+> +		.channels = max5522_channels,
+> +		.num_channels = 2,
+> +	},
+> +};
+> +
+> +static inline int max5522_info_to_reg(struct iio_chan_spec const *chan)
+> +{
+> +	return MAX5522_REG_DATA(chan->channel);
+> +}
+> +
+> +static int max5522_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long info)
+> +{
+> +	struct max5522_state *state = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		*val = state->dac_cache[chan->channel];
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		ret = regulator_get_voltage(state->vrefin_reg);
+> +		if (ret < 0)
+> +			return -EINVAL;
+> +		*val = ret / 1000;
+> +		*val2 = 10;
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int max5522_write_raw(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     int val, int val2, long info)
+> +{
+> +	struct max5522_state *state = iio_priv(indio_dev);
+> +	int rval;
+> +
+> +	if (val > 1023 || val < 0)
+> +		return -EINVAL;
+> +
+> +	rval = regmap_write(state->regmap, max5522_info_to_reg(chan),
+> +			    val << chan->scan_type.shift);
+> +	if (rval < 0)
+> +		return rval;
+> +
+> +	state->dac_cache[chan->channel] = val;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct iio_info max5522_info = {
+> +	.read_raw = max5522_read_raw,
+> +	.write_raw = max5522_write_raw,
+> +};
+> +
+> +static const struct regmap_config max5522_regmap_config = {
+> +	.reg_bits = 4,
+> +	.val_bits = 12,
+> +	.max_register = MAX5522_MAX_ADDR,
+> +};
+> +
+> +static int max5522_spi_probe(struct spi_device *spi)
+> +{
+> +	const struct spi_device_id *id = spi_get_device_id(spi);
+> +	struct iio_dev *indio_dev;
+> +	struct max5522_state *state;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*state));
+> +	if (indio_dev == NULL) {
+> +		dev_err(&spi->dev, "failed to allocate iio device\n");
+> +		return  -ENOMEM;
+> +	}
+> +
+> +	state = iio_priv(indio_dev);
+> +	state->chip_info = device_get_match_data(&spi->dev);
+> +	if (!state->chip_info) {
+> +		state->chip_info =
+> +			(struct max5522_chip_info *)(id->driver_data);
+> +		if (!state->chip_info)
+> +			return -EINVAL;
+> +	}
+> +
+> +	state->vrefin_reg = devm_regulator_get(&spi->dev, "vrefin");
+> +	if (IS_ERR(state->vrefin_reg))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(state->vrefin_reg),
+> +				     "Vrefin regulator not specified\n");
+> +
+> +	ret = regulator_enable(state->vrefin_reg);
+> +	if (ret) {
+> +		return dev_err_probe(&spi->dev, ret,
+> +				     "Failed to enable vref regulators\n");
+> +	}
+> +
+> +	state->regmap = devm_regmap_init_spi(spi, &max5522_regmap_config);
+> +
+> +	if (IS_ERR(state->regmap))
+> +		return PTR_ERR(state->regmap);
+> +
+> +	indio_dev->info = &max5522_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = max5522_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(max5522_channels);
+> +	indio_dev->name = max5522_chip_info_tbl[ID_MAX5522].name;
+> +
+> +	return devm_iio_device_register(&spi->dev, indio_dev);
+> +}
+> +
+> +static const struct spi_device_id max5522_ids[] = {
+> +	{ "max5522", (kernel_ulong_t)&max5522_chip_info_tbl[ID_MAX5522] },
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(spi, max5522_ids);
+> +
+> +static const struct of_device_id max5522_of_match[] = {
+> +	{
+> +		.compatible = "maxim,max5522",
+> +		.data = &max5522_chip_info_tbl[ID_MAX5522],
+> +	},
+> +	{}
+> +};
+> +MODULE_DEVICE_TABLE(of, max5522_of_match);
+> +
+> +static struct spi_driver max5522_spi_driver = {
+> +	.driver = {
+> +		.name = "max5522",
+> +		.of_match_table = max5522_of_match,
+> +	},
+> +	.probe = max5522_spi_probe,
+> +	.id_table = max5522_ids,
+> +};
+> +module_spi_driver(max5522_spi_driver);
+> +
+> +MODULE_AUTHOR("Angelo Dureghello <angelo.dureghello@timesys.com");
+> +MODULE_DESCRIPTION("MAX5522 DAC driver");
+> +MODULE_LICENSE("GPL");
+

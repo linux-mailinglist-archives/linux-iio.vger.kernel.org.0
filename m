@@ -2,46 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DFF761E1F5
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 13:01:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E5FF61E200
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 13:10:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbiKFMBT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 07:01:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
+        id S229804AbiKFMKC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 07:10:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbiKFMBT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 07:01:19 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6229FB7D8
-        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 04:01:18 -0800 (PST)
+        with ESMTP id S229741AbiKFMKC (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 07:10:02 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A69DE98;
+        Sun,  6 Nov 2022 04:10:01 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id BA553CE0B7F
-        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 12:01:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E62FC433C1;
-        Sun,  6 Nov 2022 12:01:13 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2B31DB80B70;
+        Sun,  6 Nov 2022 12:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FA3C433D6;
+        Sun,  6 Nov 2022 12:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667736074;
-        bh=ZPBjd5PzZSfhA//VcdXs9XQN9Lv6kj+b9OvK5ReiQtg=;
+        s=k20201202; t=1667736598;
+        bh=j1zqZmSkkH6XHp97/IAU6nUPanP1KOTVaUs91Fq0Ams=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Nl/JvgiEltbRtCmQ/T5rCUpGuvOkZi9HOJvXumwLOitFGinNbaj1DQT0hs5sOvpms
-         wUwpufegJ+EiOyzQpk78aaVBt+Q15ZtaaRZMeJapG0BVztJFn+xYhOjzABVv7Mgivz
-         amfey2P4B5YkBXzLrelWShvjtOz1dkAK3ItiGLxlzeJ0E5CxdPQ9kP9nU+O+NqgN+L
-         cpcpo1XP8+qJKayKmtCdsrCGvnVT4m1CnC0dY8WdNK4zyz4mv72VEcUgt4ffd5G4Lr
-         C8Xy4d1gVIhjpwOETLXTMJZa04G+NflRMPuBpRG367DPB3jDMOPJhSgOoLio6cwzSq
-         /W2Zx8kG3oIjA==
-Date:   Sun, 6 Nov 2022 12:01:07 +0000
+        b=gln8fpFZP2UgvjePf5FZMQgsTAxBrSaCOmu8YvTiPaE1eBXGWL0OnqOns3w7eYm+E
+         e9bcIVD7j+v7sfUOqeI5koSRpYylc/LYbClhPnweRw/Dy4oHh4dUDocnLUYO+XSdEL
+         JSYs9w8zh1z1zyfUPV9zUlonYnJR2+hrF/kjS1SML/1V/e4DwcVGrDIq8+5JpunRlI
+         jpnWuuV4U+wNNk/CEkT63v8tkItrgPapH8hK+z/IKvExmpWatBHQO45dobtciB3xBs
+         /m5AIEKqdxVSSEflrwI/LneZrHdYHZ2S1bGZICXA8mOFWfN79Dx2iIzVutqDzhoAxP
+         gEDu0CsYFvTDQ==
+Date:   Sun, 6 Nov 2022 12:09:48 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Lorenzo Bianconi <lorenzo@kernel.org>
-Cc:     lorenzo.bianconi@redhat.com, linux-iio@vger.kernel.org,
-        mario.tesi@st.com
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: introduce sw trigger support
-Message-ID: <20221106120107.00a73102@jic23-huawei>
-In-Reply-To: <Y11wZ9yGCmOMAf/x@lore-desk>
-References: <93ae6ff1150b531a9d7a4d3d1b1adb8383613717.1666955685.git.lorenzo@kernel.org>
-        <20221029162029.31f8291a@jic23-huawei>
-        <Y11wZ9yGCmOMAf/x@lore-desk>
+To:     Wolfram Sang <wsa@kernel.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        linux-iio@vger.kernel.org,
+        Uwe =?UTF-8?B?S2xl?= =?UTF-8?B?aW5lLUvDtm5pZw==?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] i2c: core: Introduce i2c_client_get_device_id
+ helper
+Message-ID: <20221106120948.0dd617b8@jic23-huawei>
+In-Reply-To: <Y2bVuYMVew8/h9HE@shikoro>
+References: <cover.1667151588.git.ang.iglesiasg@gmail.com>
+        <Y2E0BWyvHjPko2TB@smile.fi.intel.com>
+        <20221105145658.45b0e9da@jic23-huawei>
+        <Y2bVuYMVew8/h9HE@shikoro>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,45 +62,16 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-...
+On Sat, 5 Nov 2022 22:29:29 +0100
+Wolfram Sang <wsa@kernel.org> wrote:
 
-> > > +static irqreturn_t st_lsm6dsx_sw_trigger_handler_thread(int irq,
-> > > +							void *private)
-> > > +{
-> > > +	struct iio_poll_func *pf = private;
-> > > +	struct iio_dev *iio_dev = pf->indio_dev;
-> > > +	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
-> > > +	struct st_lsm6dsx_hw *hw = sensor->hw;
-> > > +
-> > > +	if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
-> > > +	    sensor->id == ST_LSM6DSX_ID_EXT1 ||
-> > > +	    sensor->id == ST_LSM6DSX_ID_EXT2)
-> > > +		st_lsm6dsx_shub_read_output(hw,
-> > > +					    (u8 *)hw->scan[sensor->id].channels,
-> > > +					    sizeof(hw->scan[sensor->id].channels));  
-> > 
-> > Are we guaranteed this particular size of readback?  I'm guessing a bit
-> > as it's been a long time since I looked at this driver in detail, but could
-> > we have sensors with either a different number of axes or different number
-> > of registers per axis?
-> > 
-> > It might be neater to have two handlers, one for the EXTN cases and one
-> > for the main sensors.  That would push this conditional down to the
-> > point of registration.  I'm not sure it's worth it however so up to you...  
+> > I can do an immutable branch with just the new function call in it if
+> > that is useful given I assume this is applicable across a bunch of subsystems?  
 > 
-> Hi Jonathan,
+> I'd think I should provide the immutable branch with the new I2C API
+> call. Feels a bit more logical. Will that work for you as well?
 > 
-> so far we support just magnetometers on sensor-hub (LIS2MDL and LIS3MDL).
-> Both LIS2MDL and LIS3MDL have 3 axis, each of them is le16, so it is fine as it
-> is for the moment. Do you prefer to be more generic and take into account new
-> possible sensors? I am not sure when they will arrive :)
 
-Fine as it stands.  You've thought about it and decided to postpone such a
-change until it is necessary and that's fine by me.
-
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-to poke at the tree and see if we missed anything.
-
-Thanks,
+Absolutely. That's even better - I didn't want to assign you work to do :)
 
 Jonathan

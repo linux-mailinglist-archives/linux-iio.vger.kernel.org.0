@@ -2,53 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C309F61E2B3
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 15:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CD561E2C6
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 15:52:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229997AbiKFOuE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 09:50:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60088 "EHLO
+        id S229909AbiKFOwq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 09:52:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbiKFOuE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 09:50:04 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00DC9E99;
-        Sun,  6 Nov 2022 06:50:02 -0800 (PST)
+        with ESMTP id S229901AbiKFOwp (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 09:52:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3F1FD1;
+        Sun,  6 Nov 2022 06:52:44 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A02D7B80B87;
-        Sun,  6 Nov 2022 14:50:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C498C433C1;
-        Sun,  6 Nov 2022 14:49:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A60460BFF;
+        Sun,  6 Nov 2022 14:52:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8082BC433D6;
+        Sun,  6 Nov 2022 14:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667746200;
-        bh=2/Oq4fxqMnhCc+bd62Y6vkjiu/snPGpLW2GdYhAJ9HU=;
+        s=k20201202; t=1667746363;
+        bh=ctGlNXG8kVhw+/J36Fon32UEibGiUeUhtO/8nmntp44=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fpWE9GoPqgrBzQAb4xjS4heDU/dsZ/tb4Y/CLLkxeGtErwgiuNOxgN9V+oXU3pXCC
-         T8k6EaBqF/0CDMbv9o41CJARmcb0/crudR0amV23awx5EgcMJIIfzos1UerGsssueC
-         vXvcl7qYQiBMs25bSzytt7B42BGIxJ+Pkzf2zjnG1NywY37oKYh065nq0httUG3kzR
-         pJMfyLr6S7KGe2N0m6goNmdAbPlhodCnNX6HaGKVwjaSvqTRtJvQGasOyUVnHWzDJ/
-         9LM5bejQ31Mnvc85KiO3j7bLget74NesW47z4YjApltZhYxnCe86fd55/uuQr5lpQ8
-         jRtMSaCTWCyyw==
-Date:   Sun, 6 Nov 2022 14:49:49 +0000
+        b=T7X3bVKBmL13J7/Vk5hLZzqEjQwu1lM6CSQ3MVuRSABC/Y/LfXLVXGoupiAp0aFnm
+         XuKTN9lXcqpWjnhvMQ0s6oBqdPZXJu2ALI9q4DXs5yyCzp5z0iPbV80iP4fngVzDAw
+         5vIFiXBfCypoRhO9+2o0Lss4KU7BzOOiuMMvXGrfX16nyuBitNdyEDHEnOgMpCSwxk
+         uiS9TZiDq2PBelYR5ysb3BanZjF2BwVnpKFuPgn9Q9DFsvHzV+abzVi/yEVyRz0w8r
+         KhBDaN2Xs6xVvcrp0+kGLKsz6WIdgOX124wo5S+woiFdCflqcg3pPVe0pPVcftVuvt
+         wSYiczoYL3NpQ==
+Date:   Sun, 6 Nov 2022 14:52:34 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Billy Tsai <billy_tsai@aspeedtech.com>
-Cc:     <lars@metafoo.de>, <robh+dt@kernel.org>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <colin.king@canonical.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <BMC-SW@aspeedtech.com>
-Subject: Re: [PATCH 1/2] iio: adc: aspeed: Remove the trim valid dts
- property.
-Message-ID: <20221106144949.61731d8e@jic23-huawei>
-In-Reply-To: <20221031113208.19194-1-billy_tsai@aspeedtech.com>
-References: <20221031113208.19194-1-billy_tsai@aspeedtech.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Leonard =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>,
+        kernel@pengutronix.de, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add TI LMP92064
+ controller
+Message-ID: <20221106145153.5d46f7a1@jic23-huawei>
+In-Reply-To: <20221101122824.GA944982-robh@kernel.org>
+References: <20221101064804.720050-1-l.goehrs@pengutronix.de>
+        <20221101122824.GA944982-robh@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,68 +58,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 31 Oct 2022 19:32:07 +0800
-Billy Tsai <billy_tsai@aspeedtech.com> wrote:
+On Tue, 1 Nov 2022 07:28:24 -0500
+Rob Herring <robh@kernel.org> wrote:
 
-> The dts property "aspeed,trim-data-valid" is used to determin whether to
-> read the OTP register. If the image with the aspeed,trim-data-vali
-> install to the chip without valid trimming data the adc controller will
-> become confused. This patch use the default otp value 0 as a criterion
-> for determining whether trimming data is valid instead of the dts
-> property. The chip with actually trimming value is 0 should be filter out.
+> On Tue, Nov 01, 2022 at 07:48:03AM +0100, Leonard G=C3=B6hrs wrote:
+> > Add binding documentation for the TI LMP92064 dual channel SPI ADC.
+> >=20
+> > Changes from v1 -> v2:
+> >=20
+> >  - Rename the "shunt-resistor" devicetree property to
+> >    "shunt-resistor-micro-ohms".
+> >  - Add supply regulator support for the two voltage domains of the chip
+> >    (vdd and vdig).
+> >  - Add reference to spi-peripheral-props.yaml
 
-Hi Billy,
+Change log should be below the ---
+We don't want to directly capture in the git tree - though I will apply
+a link tag so people can find the thread on lore.kernel.org if they want
+this information.
 
-I'm not sure I correctly follow the patch description.  Would the following
-be an accurate description?
+I'm aware that for some parts of the kernel the policy is different but in =
+IIO
+we assume the link tag is sufficient.
 
-The dts property "aspeed,trim-data-valid" is currently used to determine
-whether to read trimming data from the OTP register. If this is set on
-a device without valid trimming data in the OTP the ADC will not function
-correctly. This patch drops he use of this property and instead uses the
-default (unprogrammed) OTP value of 0 to detect when a fallback value of
-0x8 should be used rather then the value read from the OTP.
-
-Also, is this a bug fix we need to backport?  If so please provide a fixes
-tag.
-
-Thanks,
-
-Jonathan
-
-> 
-> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-> ---
->  drivers/iio/adc/aspeed_adc.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/aspeed_adc.c b/drivers/iio/adc/aspeed_adc.c
-> index ffae64f39221..0f065f0bb8e7 100644
-> --- a/drivers/iio/adc/aspeed_adc.c
-> +++ b/drivers/iio/adc/aspeed_adc.c
-> @@ -201,6 +201,8 @@ static int aspeed_adc_set_trim_data(struct iio_dev *indio_dev)
->  				((scu_otp) &
->  				 (data->model_data->trim_locate->field)) >>
->  				__ffs(data->model_data->trim_locate->field);
-> +			if (!trimming_val)
-> +				trimming_val = 0x8;
->  		}
->  		dev_dbg(data->dev,
->  			"trimming val = %d, offset = %08x, fields = %08x\n",
-> @@ -562,12 +564,9 @@ static int aspeed_adc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	if (of_find_property(data->dev->of_node, "aspeed,trim-data-valid",
-> -			     NULL)) {
-> -		ret = aspeed_adc_set_trim_data(indio_dev);
-> -		if (ret)
-> -			return ret;
-> -	}
-> +	ret = aspeed_adc_set_trim_data(indio_dev);
-> +	if (ret)
-> +		return ret;
->  
->  	if (of_find_property(data->dev->of_node, "aspeed,battery-sensing",
->  			     NULL)) {
-
+> >=20
+> > Signed-off-by: Leonard G=C3=B6hrs <l.goehrs@pengutronix.de>
+> > ---
+> >  .../bindings/iio/adc/ti,lmp92064.yaml         | 70 +++++++++++++++++++
+> >  1 file changed, 70 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,lmp920=
+64.yaml
+> >=20

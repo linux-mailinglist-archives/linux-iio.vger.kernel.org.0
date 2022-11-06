@@ -2,58 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C97861E306
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 16:33:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DB7E61E31A
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 16:46:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229962AbiKFPd3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 10:33:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
+        id S230138AbiKFPqr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 10:46:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229832AbiKFPd2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 10:33:28 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4CAFB488;
-        Sun,  6 Nov 2022 07:33:27 -0800 (PST)
+        with ESMTP id S230139AbiKFPqq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 10:46:46 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DADF6D2EE;
+        Sun,  6 Nov 2022 07:46:45 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4460260C88;
-        Sun,  6 Nov 2022 15:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D92C433D6;
-        Sun,  6 Nov 2022 15:33:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80BC260BFF;
+        Sun,  6 Nov 2022 15:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3C0C433C1;
+        Sun,  6 Nov 2022 15:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667748806;
-        bh=MOUNZ7MSJCLgarrDnxsi/wLIgGRkRKI4ihR/PwhKsDs=;
+        s=k20201202; t=1667749604;
+        bh=uD5uha/gAGU0ejpz7W/EQnX5lrbypbUC7aV5rXsGakk=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N1KvGuWpY08CTGT6Hb2nqKKfqkcsqidTL9VR72YYl7Ctd/y6VDprucNbeQTRb0OHr
-         HPsubybCAvcqoJpF0yRYB1ozgbtVrgtcZZ67Ent8G0Km2Jh5Gh9BK6sL6L7HikXTVR
-         rLrS1ri/rKmhPI9kecvAnyWg9LMp5IGZvnJAKn1lhCY1f1ackJS4n1lp18Y7FjVYmy
-         F5GHQ8LDL9g4Gkdpfq/z9VzdWpBb+1aKebKiQLF/vVc+bsV3AprlM+hrr0gqjzKSZj
-         WEiTdQIMmlh6WWvYJDCoze5oPFSq9gI20eSOwYEMbf5nYWnpKonsWh2QHFV+0NjqRS
-         DaSnmiRf2TEHQ==
-Date:   Sun, 6 Nov 2022 15:33:15 +0000
+        b=BHUoGGLXtsS59WT1qYEdWFIJ/U6vupy6vaxYYOruTa0Yq8SC75JoWpeHih077sdBh
+         LGGXY+J9Rvuc2SoLW7S/PM0nNWoxj6u9dRpr56sTbCX9Y7VjUZ0uTlQ7vpT8GyN9Ch
+         adGRSBUWI6d3uRg2hUKwqGQ2eCty0wMr7PDW+5MqVS/uGM5S6l2i7O5g+OgaBTiyRT
+         /NE8Y18TuHNcz0eNOIzqxVCfx0PYCrgB1xtw43EXQEWuk8ANfAdIxg4g2UdFqJmXOD
+         FaoMpLjXYl1JDIwu4vkxw70+VE9a5PMVaGvF87fHZI92mxBhrQ31Jm9cxnwJSJ8S8t
+         1VgZFEoRMsdLw==
+Date:   Sun, 6 Nov 2022 15:46:34 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marten Lindahl <martenli@axis.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        =?UTF-8?B?TcOlcnRlbg==?= Lindahl <Marten.Lindahl@axis.com>,
-        Pavel Machek <pavel@ucw.cz>,
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Subject: Re: [PATCH 1/2] PM: runtime: Synchronize PM runtime enable state
- with parent
-Message-ID: <20221106153315.64952dd3@jic23-huawei>
-In-Reply-To: <Y1/8Z/Ibqc3B21Tg@axis.com>
-References: <20220929144618.1086985-1-marten.lindahl@axis.com>
-        <20220929144618.1086985-2-marten.lindahl@axis.com>
-        <CAJZ5v0jhk8tGw9iak+BKr=3AUG5iPdn+0_KnmToDLji1ttV7hA@mail.gmail.com>
-        <Y1/8Z/Ibqc3B21Tg@axis.com>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
+Message-ID: <20221106154634.2286faf3@jic23-huawei>
+In-Reply-To: <20221103094436.2136698-2-demonsingur@gmail.com>
+References: <20221103094436.2136698-1-demonsingur@gmail.com>
+        <20221103094436.2136698-2-demonsingur@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -63,109 +61,174 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 31 Oct 2022 17:48:39 +0100
-Marten Lindahl <martenli@axis.com> wrote:
+On Thu,  3 Nov 2022 11:44:35 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> On Tue, Oct 25, 2022 at 06:20:10PM +0200, Rafael J. Wysocki wrote:
-> > On Thu, Sep 29, 2022 at 4:46 PM M=C3=A5rten Lindahl <marten.lindahl@axi=
-s.com> wrote: =20
->=20
-> Hi! Thanks for your feedback!
->=20
-> > >
-> > > A device that creates a child character device with cdev_device_add by
-> > > default create a PM sysfs group with power attributes for userspace
-> > > control. This means that the power attributes monitors the child devi=
-ce
-> > > only and thus does not reflect the parent device PM runtime behavior.=
- =20
-> >=20
-> > It looks like device_set_pm_not_required() should be used on the child =
-then.
-> >  =20
-> > > But as the PM runtime framework (rpm_suspend/rpm_resume) operates not
-> > > only on a single device that has been enabled for runtime PM, but also
-> > > on its parent, it should be possible to synchronize the child and the
-> > > parent so that the power attribute monitoring reflects the child and =
-the
-> > > parent as one.
-> > >
-> > > As an example, if an i2c_client device registers an iio_device, the
-> > > iio_device will create sysfs power/attribute nodes for userspace
-> > > control. But if the dev_pm_ops with resume/suspend callbacks is attac=
-hed
-> > > to the struct i2c_driver.driver.pm, the PM runtime needs to be enabled
-> > > for the i2c_client device and not for the child iio_device.
-> > >
-> > > In this case PM runtime can be enabled for the i2c_client device and
-> > > suspend/resume callbacks will be triggered, but the child sysfs power
-> > > attributes will be visible but marked as 'unsupported' and can not be
-> > > used for control or monitoring. This can be confusing as the sysfs
-> > > device node presents the i2c_client and the iio_device as one device.=
- =20
-> >=20
-> > I don't quite understand the last sentence.
-> >=20
-> > They are separate struct device objects and so they each have a
-> > directory in sysfs, right?
-> >  =20
->=20
-> Yes, they do have separate directories and if using device_set_pm_not_req=
-uired
-> on the child it will make it clearer which device is PM runtime regulated=
-, so
-> I guess that is what should be done.
->=20
-> I think it all depends on where in sysfs the user accesses the device fro=
-m. My
-> point with these patches is that the iio_device may be perceived to be an
-> iio device that should be possible to manually power control, as the power
-> directory is visble. If looking at it from here:
->=20
-> ~# ls /sys/bus/iio/devices/iio:device0/
-> in_illuminance_raw      in_proximity_raw        power
-> in_illuminance_scale    name                    subsystem
-> in_proximity_nearlevel  of_node                 uevent
->=20
-> my idea is to let this power directory inherity the parent power control.=
- But
-> as you say, it is probably better to not create it at all, as the actual =
-manual
-> power control can be done here:
->=20
-> ~# ls /sys/devices/platform/soc/.../i2c-2/2-0060/
-> driver       modalias     of_node      subsystem
-> iio:device1  name         power        uevent
->=20
-> where it is more clear which device (the i2c parent) that can be power
-> controlled.
->=20
-> > > Add a function to synchronize the runtime PM enable state of a device
-> > > with its parent. As there already exists a link from the child to its
-> > > parent and both are enabled, all sysfs control/monitoring can reflect
-> > > both devices, which from a userspace perspective makes more sense. =20
-> >=20
-> > Except that user space will be able to change "control" to "on" for
-> > the parent alone AFAICS which still will be confusing. =20
->=20
-> Yes, that is true.
-> >=20
-> > For devices that are pure software constructs it only makes sense to
-> > expose the PM-runtime interface for them if the plan is to indirectly
-> > control the parent's runtime PM through them. =20
->=20
-> I will abandon this patchset and send a single patch for the iio device.
+> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> 
+> The AD74115H is a single-channel, software-configurable, input and
+> output device for industrial control applications. The AD74115H
+> provides a wide range of use cases, integrated on a single chip.
+> 
+> These use cases include analog output, analog input, digital output,
+> digital input, resistance temperature detector (RTD), and thermocouple
+> measurement capability. The AD74115H also has an integrated HART modem.
+> 
+> A serial peripheral interface (SPI) is used to handle all communications
+> to the device, including communications with the HART modem. The digital
+> input and digital outputs can be accessed via the SPI or the
+> general-purpose input and output (GPIO) pins to support higher
+> speed data rates.
+> 
+> The device features a 16-bit, sigma-delta analog-to-digital converter
+> (ADC) and a 14-bit digital-to-analog converter (DAC).
+> The AD74115H contains a high accuracy 2.5 V on-chip reference that can
+> be used as the DAC and ADC reference.
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 
-I entirely agree with the statement that these are pointless and should not
-be exposed.  However I don't want to see a per device tweak.  If we get
-rid of these, we get rid of them for all of the iio:device0/=20
-devices (and the various other types of device IIO uses).
+Hi Cosmin,
 
-The risk here is that, although pointless, some userspace is relying on the
-ABI in sysfs.  Do people thing it's worth the gamble of getting rid
-of this non functioning interface for the whole of IIO?
-
-So far I think this is only been done for a few similar cases
-and for new subsystems.
+A few questions inline.  Complex device so I'll doubt we'll ever get this
+binding to be as tidy as for simpler devices.  Hence most of the below are
+suggestions rather than requirements from me.
 
 Jonathan
+
+> ---
+>  .../bindings/iio/addac/adi,ad74115.yaml       | 370 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 377 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> new file mode 100644
+> index 000000000000..621f11d5c1f3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> @@ -0,0 +1,370 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/addac/adi,ad74115.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD74115H device
+> +
+> +maintainers:
+> +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
+> +
+> +description: |
+> +  The AD74115H is a single-channel software configurable input/output
+> +  device for industrial control applications. It contains functionality for
+> +  analog output, analog input, digital output, digital input, resistance
+> +  temperature detector, and thermocouple measurements integrated into a single
+> +  chip solution with an SPI interface. The device features a 16-bit ADC and a
+> +  14-bit DAC.
+> +
+> +    https://www.analog.com/en/products/ad74115h.html
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad74115h
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+
+I'm not seeing any child nodes, so why do we need these two?
+
+> +
+> +  avdd-supply: true
+> +  avcc-supply: true
+> +  dvcc-supply: true
+> +  aldo1v8-supply: true
+
+aldo1v8 is an output pin. "1.8 V Analog LDO Output. Do not use ALDO1V8 externally."
+The associated input is avcc.  Given we shouldn't connect anything to the pin,
+we don't want it in the binding docs
+
+> +  dovdd-supply: true
+> +  refin-supply: true
+> +
+
+...
+
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Conversion range for ADC conversion 2.
+> +      0 - 0V to 12V
+> +      1 - -12V to +12V
+> +      2 - -2.5V to +2.5V
+> +      3 - -2.5V to 0V
+> +      4 - 0V to 2.5V
+> +      5 - 0V to 0.625V
+> +      6 - -104mV to +104mV
+> +      7 - 0V to 12V
+
+For a lot of similar cases we handle these numerically to give
+a human readable dts.  Is there a strong reason not to do so here (in mv)
+
+
+> +    minimum: 0
+> +    maximum: 7
+> +    default: 0
+> +
+> +  adi,sense-agnd-buffer-lp:
+lp is a little ambiguous, given we have a habit of using it for low pass
+in filters etc. Perhaps worth spelling these out?
+     adi,sens-agnd-buffer-low-power etc?
+
+> +    type: boolean
+> +    description: |
+> +      Whether to enable low-power buffered mode for the AGND sense pin.
+> +
+> +  adi,lf-buffer-lp:
+> +    type: boolean
+> +    description: |
+> +      Whether to enable low-power buffered mode for the low-side filtered
+> +      sense pin.
+> +
+> +  adi,hf-buffer-lp:
+> +    type: boolean
+> +    description: |
+> +      Whether to enable low-power buffered mode for the high-side filtered
+> +      sense pin.
+> +
+> +  adi,ext2-buffer-lp:
+> +    type: boolean
+> +    description: Whether to enable low-power buffered mode for the EXT2 pin.
+> +
+> +  adi,ext1-buffer-lp:
+> +    type: boolean
+> +    description: Whether to enable low-power buffered mode for the EXT1 pin.
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - spi-cpol
+> +  - avdd-supply
+> +
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  - if:
+> +      properties:
+> +        adi,digital-input-sink-range-high: true
+> +    then:
+> +      properties:
+> +        adi,digital-input-sink-microamp:
+> +          maximum: 7400
+> +
+> +additionalProperties: false
+
+Does this need to be unevalutatedProperties to allow
+for the extra ones in spi-periphera-props.yaml?
+
+> +

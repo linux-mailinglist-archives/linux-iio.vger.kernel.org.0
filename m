@@ -2,132 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 433EE61E066
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 06:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA0661E1EB
+	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 12:49:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbiKFFmj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 01:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60082 "EHLO
+        id S229862AbiKFLtI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 06:49:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229624AbiKFFmi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 01:42:38 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C556350
-        for <linux-iio@vger.kernel.org>; Sat,  5 Nov 2022 22:42:36 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id l2so5402976qtq.11
-        for <linux-iio@vger.kernel.org>; Sat, 05 Nov 2022 22:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9XKiNifNWG+wErvX2uuDV6twa3mPicFGi8Hs3Qkm944=;
-        b=jl8xJR7hTery/iIZb7aeFZPgCibbkYYkWLiFUxImoFKetBbuvxAU/Zg8MFWn6tEVle
-         39Fx9aPhCVJiKmidsCBS3YI0kg3C0SKsikW72hhuwxRSDQGvRQZpSi+YnlwRcsFhmZ94
-         fxqw7boDjCvJImFBQeXuiHgJ1RFXpNBKu4Mm0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9XKiNifNWG+wErvX2uuDV6twa3mPicFGi8Hs3Qkm944=;
-        b=MJuo3UJv5NETxDdstV2nlMXpEQt800ih8zAU7/jnHjW3AueUe5X7n00sE47VXjNO4a
-         sXKLsXX3YQrSyuSoWV0kOL5tTC7Wa8J9KzLsbCrvEYaM2QD5AxuoL7y4JakUvBFE03Dz
-         r7t1uatHepjarhCtpO9IQ+piITYYX9AvtQEqvmJF+aSQhtYjEr6yG7VmdKe3LA0PHH0r
-         GpepDeNj1Krr4+Ek2dJmHqaO7+b8jeZJHHO5wkgQ2XKShciVMBbe/tnJPW0fKmU7P5PS
-         Pb4P9wVtdQ/MpwlbEl98Dv66Cuk1LI08zSTPJZZDOHX0lx62FjRRWF+i2OHK1UhowfMi
-         kiiw==
-X-Gm-Message-State: ACrzQf18CUQCTGD/2xvJxJcT8RYoI7c4CVH5au5KD4bDgdPP1/X6ONpM
-        W24Pq52oqZMsImrp4zN0F5SkLCeEZ4z2oishLPqy6A==
-X-Google-Smtp-Source: AMsMyM60GVcIbrSWQGw8G+ArN5BBJAOrUNhBjgP/HNETYLXvJKb3hOKdcmoKrIJg495KYVkJDPwVyouFaqpaJCZibGs=
-X-Received: by 2002:a05:622a:553:b0:3a5:613e:263f with SMTP id
- m19-20020a05622a055300b003a5613e263fmr10443626qtx.453.1667713355762; Sat, 05
- Nov 2022 22:42:35 -0700 (PDT)
+        with ESMTP id S229853AbiKFLtH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 06:49:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249D9B7C9
+        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 03:49:06 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id CEB28B80925
+        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 11:49:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B92AC433C1;
+        Sun,  6 Nov 2022 11:49:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667735343;
+        bh=qsE+BSLYkLmE9QP91m0NdVkRvcbJAZMS7+PbKOI6R4Y=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=nr9/HPWjLNBsdt+VV4OQGwT7HWOETTakBHTj/2uxNlgWLwpA1QPaaDdV39pkjE7OT
+         CNVKoY/FiHALJ4CZT9b5mM3wN31Jy+SLdpH4Uu8+NyiuZpMN10IpUfZUUkhpZQG0Nf
+         tI5xtMX+EW8AtTuS6nQuG5p/tL4hRrY6I6v0/o+p43h+Rbk9jfpBLhfCce/YF7QcP8
+         QE8R/AaW0P8dshyFR7+3vreKCsrdbBvMkh8OrIHRgDCLpNWXF2cRNa4rG80b+ldk68
+         2j/pZxiZO+YSFlBQ3gT3xjIZ+7kdfKq1XOpfPp71Hhhwq7Hgkqt1SRqtDdE7gOP01t
+         EgTfhYmRKHdCw==
+Date:   Sun, 6 Nov 2022 11:48:53 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Phani Movva <Phani.Movva@imgtec.com>,
+        Naidu Tellapati <naidu.tellapati@imgtec.com>
+Subject: Re: [PATCH 0/5] iio: adc: cc10001: Devm conversion
+Message-ID: <20221106114853.08a2ceac@jic23-huawei>
+In-Reply-To: <SJ0PR03MB67785AB3EBAF51E84687F31499379@SJ0PR03MB6778.namprd03.prod.outlook.com>
+References: <20221016170950.387751-1-jic23@kernel.org>
+        <20221029134331.52adcda1@jic23-huawei>
+        <SJ0PR03MB67785AB3EBAF51E84687F31499379@SJ0PR03MB6778.namprd03.prod.outlook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <EaT-NKC-H4DNX5z4Lg9B6IWPD5TrTrYBr5DYB784wfDKQkTmzPXkoYqyUOrOgJH-xvTsEkFLcVkeAPZRUODEFI5dGziaWXwjpfBNLeNGfNc=@acoro.eu>
-In-Reply-To: <EaT-NKC-H4DNX5z4Lg9B6IWPD5TrTrYBr5DYB784wfDKQkTmzPXkoYqyUOrOgJH-xvTsEkFLcVkeAPZRUODEFI5dGziaWXwjpfBNLeNGfNc=@acoro.eu>
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-Date:   Sun, 6 Nov 2022 13:42:24 +0800
-Message-ID: <CAJCx=gk0j-PT56yea_dEAT3=uBAfMebgvHf8D4yT9f7_4YAQhQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: light: apds9960: fix wrong register for gesture gain
-To:     =?UTF-8?Q?Alejandro_Concepci=C3=B3n_Rodr=C3=ADguez?= 
-        <asconcepcion@acoro.eu>
-Cc:     "jic23@kernel.org" <jic23@kernel.org>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Nov 6, 2022 at 9:56 AM Alejandro Concepci=C3=B3n Rodr=C3=ADguez
-<asconcepcion@acoro.eu> wrote:
->
-> Gesture Gain Control is in REG_GCONF_2 (0xa3), not in REG_CONFIG_2 (0x90)=
-.
->
-> Fixes: aff268cd532e ("iio: light: add APDS9960 ALS + promixity driver")
->
+On Mon, 31 Oct 2022 11:19:19 +0000
+"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
 
-Good find. Odd that nobody ran into that issue before :/
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Saturday, October 29, 2022 2:44 PM
+> > To: linux-iio@vger.kernel.org
+> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Phani Movva
+> > <Phani.Movva@imgtec.com>; Naidu Tellapati <naidu.tellapati@imgtec.com>
+> > Subject: Re: [PATCH 0/5] iio: adc: cc10001: Devm conversion
+> >=20
+> > [External]
+> >=20
+> > On Sun, 16 Oct 2022 18:09:45 +0100
+> > Jonathan Cameron <jic23@kernel.org> wrote:
+> >  =20
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > A very simple example of how using devm_ managed calls for everything
+> > > can reduce complexity error handling and removal ordering in a driver.
+> > >
+> > > Note I don't have one of these to test so if anyone has a chance to do
+> > > so or give these a quick look at that would be much appreciated.
+> > > Note this is a fairly old driver, so relative unlikely original autho=
+rs
+> > > still have access.
+> > >
+> > > Cc: Phani Movva <Phani.Movva@imgtec.com>
+> > > Cc: Naidu Tellapati <naidu.tellapati@imgtec.com> =20
+> >=20
+> > If anyone has time for a quick glance at this it would be much apprecia=
+ted!
+> >=20
+> > Old maintainer issue of who is the fall back reviewer for the maintaine=
+rs
+> > own patches to old drivers, where the authors etc have probably long si=
+nce
+> > moved on.
+> >=20
+> > Jonathan =20
+> > >
+> > > Jonathan Cameron (5):
+> > >   iio: adc: cc10001: Add local struct device *dev variable to avoid
+> > >     repitition
+> > >   iio: adc: cc10001: Add devm_add_action_or_reset() to disable
+> > >     regulator.
+> > >   iio: adc: cc10001: Use devm_clk_get_enabled() to avoid boilerplate.
+> > >   iio: adc: cc10001: Use devm_ to call device power down.
+> > >   iio: adc: cc10001: Switch remaining IIO calls in probe to devm_ for=
+ms.
+> > >
+> > >  drivers/iio/adc/cc10001_adc.c | 89 +++++++++++++--------------------=
+--
+> > >  1 file changed, 34 insertions(+), 55 deletions(-)
+> > > =20
+>=20
+> Only minor comments, so feel free to add:
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-NOTE: Sorry for the double emails to some.. seems gmail dropped my
-Plain Text default setting and set it to HTML *sigh*
+Tweaked as suggested whilst applying.  Thanks!
 
-Acked-by: Matt Ranostay <matt.ranostay@konsulko.com>
+Applied to the togreg branch of iio.git and pushed out as testing for all t=
+he
+normal reasons.
 
-> Signed-off-by: Alejandro Concepcion-Rodriguez <asconcepcion@acoro.eu>
-> ---
->  drivers/iio/light/apds9960.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
-> index b62c139baf41..38d4c7644bef 100644
-> --- a/drivers/iio/light/apds9960.c
-> +++ b/drivers/iio/light/apds9960.c
-> @@ -54,9 +54,6 @@
->  #define APDS9960_REG_CONTROL_PGAIN_MASK_SHIFT  2
->
->  #define APDS9960_REG_CONFIG_2  0x90
-> -#define APDS9960_REG_CONFIG_2_GGAIN_MASK       0x60
-> -#define APDS9960_REG_CONFIG_2_GGAIN_MASK_SHIFT 5
-> -
->  #define APDS9960_REG_ID                0x92
->
->  #define APDS9960_REG_STATUS    0x93
-> @@ -77,6 +74,9 @@
->  #define APDS9960_REG_GCONF_1_GFIFO_THRES_MASK_SHIFT    6
->
->  #define APDS9960_REG_GCONF_2   0xa3
-> +#define APDS9960_REG_GCONF_2_GGAIN_MASK                        0x60
-> +#define APDS9960_REG_GCONF_2_GGAIN_MASK_SHIFT          5
-> +
->  #define APDS9960_REG_GOFFSET_U 0xa4
->  #define APDS9960_REG_GOFFSET_D 0xa5
->  #define APDS9960_REG_GPULSE    0xa6
-> @@ -396,9 +396,9 @@ static int apds9960_set_pxs_gain(struct apds9960_data=
- *data, int val)
->                         }
->
->                         ret =3D regmap_update_bits(data->regmap,
-> -                               APDS9960_REG_CONFIG_2,
-> -                               APDS9960_REG_CONFIG_2_GGAIN_MASK,
-> -                               idx << APDS9960_REG_CONFIG_2_GGAIN_MASK_S=
-HIFT);
-> +                               APDS9960_REG_GCONF_2,
-> +                               APDS9960_REG_GCONF_2_GGAIN_MASK,
-> +                               idx << APDS9960_REG_GCONF_2_GGAIN_MASK_SH=
-IFT);
->                         if (!ret)
->                                 data->pxs_gain =3D idx;
->                         mutex_unlock(&data->lock);
-> --
-> 2.34.1
+Thanks,
+
+Jonathan

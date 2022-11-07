@@ -2,66 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E5861F2D0
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 13:21:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5DC861F3FF
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 14:08:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232116AbiKGMVU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 07:21:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
+        id S231373AbiKGNIi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 08:08:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232112AbiKGMVT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 07:21:19 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43971090;
-        Mon,  7 Nov 2022 04:21:18 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2A7A9or0019781;
-        Mon, 7 Nov 2022 07:21:09 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kpmgu4d2v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 07 Nov 2022 07:21:09 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2A7CL8Hd046758
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 7 Nov 2022 07:21:08 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 7 Nov 2022
- 07:21:07 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 7 Nov 2022 07:21:07 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.106])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2A7CKrRL022057;
-        Mon, 7 Nov 2022 07:21:00 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v2 3/3] Documentation: ABI: testing: adf4377: add ABI docs
-Date:   Mon, 7 Nov 2022 14:02:43 +0200
-Message-ID: <20221107120243.57344-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221107120243.57344-1-antoniu.miclaus@analog.com>
-References: <20221107120243.57344-1-antoniu.miclaus@analog.com>
+        with ESMTP id S231374AbiKGNIh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 08:08:37 -0500
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC8219286;
+        Mon,  7 Nov 2022 05:08:36 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id a11-20020a05600c2d4b00b003cf6f5fd9f1so7116713wmg.2;
+        Mon, 07 Nov 2022 05:08:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OjQ3EIftToSDAs8kIxnNN64z6dj2+/KZibkFT+hIH+I=;
+        b=L+hnZtSjLy47alR2cv82vQMSOeIO5hmyynkrCswoFbg6CZe+MECKFqdR+16N+FwdRV
+         mTfeI/nKmiCpm7kXfdpfr2o6wVMlc77JTgoDiJoY2GfASOCYamlmMnaKRBtOCzdw4ciT
+         tP6ez2pQmAgww836XsX1PtCqwsGCx9/QvbWx97gYyqKd+XV4/oZANewMfhCa9gpaAtxq
+         G8phyU/pynmFQBuB8oQbtjGidYGlYpHSnzubftS0CApdvaO+oyWT8x5xPexUzGuovy1V
+         EkR9q8lSk5G9NVpuc5lO4AMHgRr7qRnMgs2iUZJ0S5hjgXz0m6n2IbwqkPiOT05AiriD
+         bR6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OjQ3EIftToSDAs8kIxnNN64z6dj2+/KZibkFT+hIH+I=;
+        b=xBQqTV0reyQLAQEtBqH5mt5nGQooMZHzWERUSuY8zZVOxLfcMDHFLH9/9/fTItgGjm
+         W5Dw6cc1RJRhHTcVfTNramMSjnpNzSb69/wLViiyNLles9qShz+9elDvclfUtLa5iPQF
+         CkWv0uHEIawIoa8GmaSiCHOMsEUgCW/rTKWVICFS0f79pXBagdshFu+9A6XgjhrEXdR0
+         eV7zkiyA6a4coYrPGMCIVskfPhRPljntKaIjUxoxlY60oFFFBwhOum6qU+hg1uM7vuel
+         CRqJkcV5cbv8Z9CvzDljhHw578/gTvvLHFJ95P1WsVyKdAkOtA4GdDlrR9bd2KnWeGQP
+         8Dlw==
+X-Gm-Message-State: ACrzQf13Nm8gED7LFpCTeHAdfNiliqbhSNsCzA8YmNMAqFKuCQ7P58pX
+        uYPHWMqxAUjXMRokteV7qO4=
+X-Google-Smtp-Source: AMsMyM5XlevBa2XTwPGVMGYwItpf9GANoVu6vIuqwg96EaKpvguJYcU66RI593ZqRNf1hMY8VrkxUw==
+X-Received: by 2002:a7b:cc8c:0:b0:3cf:7b8c:d18a with SMTP id p12-20020a7bcc8c000000b003cf7b8cd18amr25194367wma.0.1667826514866;
+        Mon, 07 Nov 2022 05:08:34 -0800 (PST)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id bg20-20020a05600c3c9400b003c6bd12ac27sm8667304wmb.37.2022.11.07.05.08.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Nov 2022 05:08:34 -0800 (PST)
+Date:   Mon, 7 Nov 2022 16:08:31 +0300
+From:   Dan Carpenter <error27@gmail.com>
+To:     Deepak R Varma <drv@mailo.com>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: meter: use min() for comparison and
+ assignment
+Message-ID: <Y2kDTxE38epBN368@kadam>
+References: <Y2iFGA3A1w+XMlYU@qemulion>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: jNfrmbqFreL_Hd80QSYpZ2v5Dfs_vgBw
-X-Proofpoint-ORIG-GUID: jNfrmbqFreL_Hd80QSYpZ2v5Dfs_vgBw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-07_04,2022-11-07_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=831 clxscore=1015
- malwarescore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211070100
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y2iFGA3A1w+XMlYU@qemulion>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,28 +75,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add documentation for the use of the output frequency and muxout select.
+On Mon, Nov 07, 2022 at 09:40:00AM +0530, Deepak R Varma wrote:
+> Simplify code by using recommended min helper macro for logical
+> evaluation and value assignment. This issue is identified by
+> coccicheck using the minmax.cocci file.
+> 
+> Signed-off-by: Deepak R Varma <drv@mailo.com>
+> ---
+>  drivers/staging/iio/meter/ade7854-i2c.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/iio/meter/ade7854-i2c.c b/drivers/staging/iio/meter/ade7854-i2c.c
+> index a9a06e8dda51..a6ce7b24cc8f 100644
+> --- a/drivers/staging/iio/meter/ade7854-i2c.c
+> +++ b/drivers/staging/iio/meter/ade7854-i2c.c
+> @@ -61,7 +61,7 @@ static int ade7854_i2c_write_reg(struct device *dev,
+>  unlock:
+>  	mutex_unlock(&st->buf_lock);
+> 
+> -	return ret < 0 ? ret : 0;
+> +	return min(ret, 0);
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v2:
- - remove muxout selectdocumentation, since it is done in the devicetree now
- Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4377 | 6 ++++++
- 1 file changed, 6 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4377
+The original code is better.
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4377 b/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4377
-new file mode 100644
-index 000000000000..8888be49754c
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-frequency-adf4377
-@@ -0,0 +1,6 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/out_altvoltageY_frequency
-+KernelVersion:
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Stores the PLL frequency in Hz for output channels.
-+		Reading returns the frequency in Hz.
--- 
-2.38.1
+If it's a failure return the error code.  If it's not return zero.
 
+You can only compare apples to apples.  min() makes sense if you're
+talking about two lengths.  But here if ret is negative that's an error
+code.  If it's positive that's the number of bytes.  If the error
+code is less than the number of bytes then return that?  What???  It
+makes no sense.
+
+In terms of run time, this patch is fine but in terms of reading the
+code using min() makes it less readable.
+
+regards,
+dan carpenter

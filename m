@@ -2,173 +2,165 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E572B61E861
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 02:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED3B61E89D
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 03:35:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230273AbiKGBnB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 20:43:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42936 "EHLO
+        id S230266AbiKGCfB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 21:35:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229955AbiKGBnA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 20:43:00 -0500
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E533D10F
-        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 17:42:59 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.30.67.169])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4N5DWd3QS7z4f3vbw
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 09:42:53 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.102.38])
-        by APP1 (Coremail) with SMTP id cCh0CgDHcK+fYmhjQitmAA--.1344S4;
-        Mon, 07 Nov 2022 09:42:56 +0800 (CST)
-From:   Wei Yongjun <weiyongjun@huaweicloud.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        =?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-        "Andrew F. Davis" <afd@ti.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>, linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: health: afe4404: Fix oob read in afe4404_[read|write]_raw
-Date:   Mon,  7 Nov 2022 02:04:25 +0000
-Message-Id: <20221107020425.72577-1-weiyongjun@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229995AbiKGCfA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 21:35:00 -0500
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2113.outbound.protection.outlook.com [40.107.117.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 529A32BFB;
+        Sun,  6 Nov 2022 18:34:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=azz+aK+IP1x2DSpgAhOudBL5B1kk1W+hwDagl61IPGZ17YZDIRmDZYOw1r4r1gKo6u6yPDY7WqG0jIU/9v7lqhotRVVpfLwVnPfvTXj4n10goNdxyZxc5eOdE2miZesyvR/OUoKELlLyap7ySoghOixBZ43nFUXJ20Wn3hUE/fUreQC8nM5FseAYOjO/szZcT+YPaeB7RjDHba4X1BeFy5o6nV52dwM3UYVYkzNX/6xHqjUFLEBXZfjUHl2TdUu261VxZm1Tyr++eW3l1lAh20S5NtPD7t3I1b1Bt4WGyt2nc1TV6xZNVM/MfNrO7OKoNtk0ANmJbZAPQGH4nbgK1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2ORcJm3nbhxyz6BTforkaRChcMvdzXnNMxzToH+THEg=;
+ b=e9w93hxtfMJVyQC/VgH/VbMH4vMLjfi8+o7zNSCg8NDcG8Zg0eZumgauC9recfsP9bWAqRdt/O1nPYS02tDz5WB1RnNlNPCXTj7yjBVnmxukjLO38bZYKaDZY3z41yuOtSW1yzZ0MnuwrhhxmJ0D+sd31QT9SuQmeO+j5CohtyJ0yD3FkU2MF+/wT2hxwwLuZNWdrzQAwq25OxQxdLb8egxCUPR1p4qTQFjPDGIQiIB89AHg3fxKEG7vf7PPSRCzSlc0pS6kQ+f8iJaZ9WzrMv4ovQhZ0+bKwV655OiqopNUmFoE02AmK8sKBT9uUJCbVgwvQiNAnRvopgSCfBiADw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2ORcJm3nbhxyz6BTforkaRChcMvdzXnNMxzToH+THEg=;
+ b=qEhT2w8P4mNJAu08x3jy7+uVS2Xa/+lQ72xEDHwiPkhtpe+rDqxJZziM3bhq59TfdZ7Ria+ylYVKh+KVWbr42XugMXaTrkRywELpwln17e/NTnmMbPAR+rnTKSwoobNlscdTqgSX1lDNI/TqifSzh50F3/WmPFW/oioJhWfu9tR81GTS3kYDqFa3+y3+w7jec+gKygUgou1CVhCCgupe/lqVI/c3Tem002GzZGRXfcR0l44Dx2IK3m1a1n7SpPnK5qm3xisWjaKimiz2/DUte4Gq+rhjLe22bcJidUyV77TPX9A5YrjX5DNvIy6mIvhuu7UfBYfenYkUwqof7bX2iQ==
+Received: from SG2PR06MB3365.apcprd06.prod.outlook.com (2603:1096:4:69::12) by
+ TYZPR06MB3967.apcprd06.prod.outlook.com (2603:1096:400:29::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5791.26; Mon, 7 Nov 2022 02:34:51 +0000
+Received: from SG2PR06MB3365.apcprd06.prod.outlook.com
+ ([fe80::dd5d:e720:e00f:831]) by SG2PR06MB3365.apcprd06.prod.outlook.com
+ ([fe80::dd5d:e720:e00f:831%6]) with mapi id 15.20.5769.019; Mon, 7 Nov 2022
+ 02:34:51 +0000
+From:   Billy Tsai <billy_tsai@aspeedtech.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     "lars@metafoo.de" <lars@metafoo.de>,
+        "robh+dt@kernel.org" <robh+dt@kernel.org>,
+        "joel@jms.id.au" <joel@jms.id.au>,
+        "andrew@aj.id.au" <andrew@aj.id.au>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-aspeed@lists.ozlabs.org" <linux-aspeed@lists.ozlabs.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        BMC-SW <BMC-SW@aspeedtech.com>
+Subject: Re: [PATCH 1/2] iio: adc: aspeed: Remove the trim valid dts property.
+Thread-Topic: [PATCH 1/2] iio: adc: aspeed: Remove the trim valid dts
+ property.
+Thread-Index: AQHY7Rw1NbmjJHkKbkGa7Ii+yaZMSq4yA9GAgAFLFwA=
+Date:   Mon, 7 Nov 2022 02:34:51 +0000
+Message-ID: <16211538-3501-4A32-96B5-1AD1BF933CA5@aspeedtech.com>
+References: <20221031113208.19194-1-billy_tsai@aspeedtech.com>
+ <20221106144949.61731d8e@jic23-huawei>
+In-Reply-To: <20221106144949.61731d8e@jic23-huawei>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Microsoft-MacOutlook/16.66.22101101
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SG2PR06MB3365:EE_|TYZPR06MB3967:EE_
+x-ms-office365-filtering-correlation-id: c2378aa3-b638-42e6-ee28-08dac068a5d4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: Js2q9uL9tDuJFceg2leGnsAM55tQUOlLDV5BEUHuKQSWMl5A3YNRVlB9CwfC4vvOi92zHbdIN9AwRpZ9klmjCTfHXODNKCia7gOh4F/m5WPV3wlzA9eDwjEbhcPBL0BtQHlKyQY6FE9nay7vx37GGmfp/VhTCH426B16rlEiZtxGn2RPVKzlys7YPTyOz7mXVNqVoIdbbnkOulkKYjsgSlG3JIIVFHNK5/EH7Fa/LyxiQHru56oLhrf5I/m+8S7eqAGWIzOhp3qGLvKm2U0XjBJsj0YuhfPmuTypZMNGik0MCdVsYiqrsF5VwVcEy1/fPrfVlGcPGU7xIRPZUJIxiTjMLp/h3I1Xa1PBRAOblkTRzrqMEbUOVapCouSITRJgSGIjo4gZlg0Zw7UttqpkSdeo7St6ZKZmlvyudIrv1KrZ7lrDhzfmvCyRA4duGWSXkLde3yaJrs9pCil8Xz1N2Y/XqP0aBKsx8E+ZOqQr5puqxfoUgzhUxtAtheWA5b1OsrZmroeKeNZn3yi+zidkXhyn0x96XDe+r0UHf8i8O60S1j/DzAd9TKJFd41AR8X+lfhbSXYQX8bJFSc3jTSqfRjYiu0tziV3/t2OoxGES7pKBrhNqv7copw0WZKwLRlxpDX9DbTsn7X2aRyzt6N0s75lpJbg2VFId2XslkEUrCdPsYfzxkwfBu+UQNxNsACdCjBFP5YwmWs8Kvg4VxjcghVPjQIcVLEjCHQVbgQlFsUHWrjwcgrHovaUMgUDX+xPFxQgwypHP+2nrDiPudKksCYkfN4PuJHl4/5NT9qja8g=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SG2PR06MB3365.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(346002)(396003)(39830400003)(136003)(366004)(376002)(451199015)(6512007)(26005)(5660300002)(6506007)(53546011)(7416002)(478600001)(54906003)(316002)(6916009)(2906002)(122000001)(71200400001)(86362001)(6486002)(8936002)(38100700002)(33656002)(41300700001)(36756003)(107886003)(83380400001)(91956017)(4326008)(76116006)(8676002)(38070700005)(186003)(64756008)(2616005)(66446008)(66946007)(66556008)(66476007)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WWxKMjdRdjJzOGRsYnlpay9TZUkwK20yZjZtZWV2QzdPT1Qzd0F4ZFlNZWk5?=
+ =?utf-8?B?UzFjVVRlMWFVOFA3SEsySmJ0TE1nZ2dOTWI4amcwWDdsKzJMQmM5TUVaT1lD?=
+ =?utf-8?B?aFAwQXpISTNnbTAzSmlUcVhZR0w3bWwwSEc5WDg3Ly80eGQwRmhxU3VsVUF2?=
+ =?utf-8?B?MjdTZG53VEN1UFJYT1dpT05MekhEei9RTWdQQ1VMWGNUUXJQVGwxQjE3aXlm?=
+ =?utf-8?B?blEzZCtUMzMwZVNseisxOTVCc3U5MU0xYy9wQUhtWW5OdUxoa01EeE9nWTF1?=
+ =?utf-8?B?UzBCejhMakJKR2JkQUFlYzF0eUw3SVJuZGVSUnlIVzhsNzhNRElvY0FLQ0tp?=
+ =?utf-8?B?WHd2YkpwUzlpOXUxSGdzVENrampuc0lNQno4Y2cvb0NKM3hJaGRIYURzdVNM?=
+ =?utf-8?B?YzRvNkpreThoakhlNi9NbURYV2diQlBvRHBNdUJ5NVBBMlVyVlB0UC9wclJl?=
+ =?utf-8?B?UUlwSnVhRFdKZjBwU2JZMjZWaTlmblNoTThWMXlveGl2SkU3Y2FqcGttUnNV?=
+ =?utf-8?B?eFJJTEhwSmFHMUE4dHM5QU5UV2o4dm5wQWVMbkFVR1dibWc5SGRkSnpSd3lI?=
+ =?utf-8?B?aCtXWUQ2ZTlWd1lsREU3V09pMjJCdVVYT01xUVcrWDJYdms1QWthL2FFd3Y0?=
+ =?utf-8?B?QkNjT0M2cTRTbSt5c0xSR1ZrTk4wblhEclBlYURqaTkwaW1SOUhxYjQrbU80?=
+ =?utf-8?B?clRWN3duTytqK3U1bGZJUkExRFpXbmtqbmFGM0hJWHBxZE5rNkJQRW5MaVl5?=
+ =?utf-8?B?SGFOL2NVVHZjUFc3NEp6OUtLdTRJQXFmMGhDeERpdU1vV3hvOFhYRy94bVZQ?=
+ =?utf-8?B?eXN2Slo0Y2Z0NTlvSXhjb2ZGMkw1czY3OG52bklMdjhqTUpJMndLd3ZlZG14?=
+ =?utf-8?B?eXBSRW9rbVVLU2llWk8yam1FWlRyVTdnMGgwUGQ5N1puWjF0VXhUVkVUdlpn?=
+ =?utf-8?B?RlN5dW9LaFFpTDFTWThhekRvR2pBWE1iV2ZhOTVya0V2aDlOQlh6WnJmQjRj?=
+ =?utf-8?B?cXBPVFhBQ1psWm9RR3F5QUxNNGVQNGlWR3FWekxaNlBJN1dGM1FCMFlUOWpr?=
+ =?utf-8?B?L3d1Tnpvb1JsbVJmSUtGbTVZOE1IbDhVdXpsYk5IZjM5eEltbkFmL1JpdkNv?=
+ =?utf-8?B?cTRBNjdhYmpuVDZTY3VrYkZXQXZXU2p0Z2pGcURHaVFlcUFnRzhDWU5Xb3Ra?=
+ =?utf-8?B?L0swSlJCUGFqNnNmeE1lVC9YUXRvYld3U0R2M09zdWR4Um1YWDRQaVdHQk52?=
+ =?utf-8?B?bG5BSUtoczFzZmp0aXRZbmV6NHVFUmVUc3dNWVhPclJicTFyQ0ticzhEa1Vw?=
+ =?utf-8?B?RTJCQ3JaNWFpcFpyNXJuWWxVMld1ZG5hQVZRT3ZxM0NCQVI4c3c2eitVOS83?=
+ =?utf-8?B?OXZCcDN5YTc3dndraVhRM2xZcmlZazh5SlMrOHVQRkYwUEJ4aklkSjJWTENP?=
+ =?utf-8?B?NFlwMVdpNlkzVDRlODcrNWxwajQ0T0JOSDdZQXU5R0hXZW5uZ0R5UW1UakFX?=
+ =?utf-8?B?QTd5MUE5RldpRFYyZFlpUmpGNUoxcktqMXdZYTVuMGRsSmc3bzJweUE2NmtR?=
+ =?utf-8?B?K2lEcm5HZEtmSXJPVDZGSXBSb3VDamgxeEEyWjd6OVJXSythTzVxNFQ3Rkhp?=
+ =?utf-8?B?c2NCWHlrRTNQcm5tRmlqZjBKdUJ0dDVwaExhejVVYXBGMkZtM25hZEdzNVly?=
+ =?utf-8?B?U3A0Z1l0TitDMVdDeldmVTErQWc3S0FkaUJLNmFYQmNDMHhnKzlnN0FSTzg1?=
+ =?utf-8?B?SHJVL1V0VmlCaVc5S2UvYXh3NElFWnhYMkNHbGJwcEdBYmE1WUxUbGF0eTBK?=
+ =?utf-8?B?aHE0MGp1U3hIYm1XR2RjQjd3SFhYMEJocHozaVdLbGdWdjF3azBnU3BZNE05?=
+ =?utf-8?B?dGFGamZqcGdsOHpLemZiNlZwc0VQd0M3b2hWdUFNT3JEWENOL3dxTWJ1U2tj?=
+ =?utf-8?B?WnEvNkN2UjIxbHJLOVkrcHc1cGQrditoN293ZUhodlZtR0psRndmWWJvaTIw?=
+ =?utf-8?B?eVgxOXRoQmVMZnE3aldSeVZCUnMyL25KTVZZQ2VBZFdWZlQwMTJnNzlyRnRW?=
+ =?utf-8?B?NHVkdUNTVTlXYUEzOEtLT1dFSWc4ODk1WjNqSjh0MHlhckFOb09UZ0IzalRZ?=
+ =?utf-8?B?cnJCTFJXN1ZicGFRUUMrNUFVcjBuSWxLZDIvMDFNZks1aThmdTkxRTV6UXRj?=
+ =?utf-8?B?TEE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6954643D34254F4C90F3EB7E28DFD8AA@apcprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: cCh0CgDHcK+fYmhjQitmAA--.1344S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxAr1kZFWrXF18Xr1DKF17ZFb_yoWrWryDpr
-        y3AFW5WF47tFyDCrsrZr4DuFyFv3sIq3WxXr9Ika429w1UZFnIkr4xKa4jqrn5Cr1qywnr
-        XFn3XrZ5Zr15Ww7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUgCb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-        0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
-        c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
-        CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
-        MIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Gr0_Zr
-        1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsG
-        vfC2KfnxnUUI43ZEXa7IUbPEf5UUUUU==
-X-CM-SenderInfo: 5zhl50pqjm3046kxt4xhlfz01xgou0bp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3365.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c2378aa3-b638-42e6-ee28-08dac068a5d4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Nov 2022 02:34:51.7361
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5wiuUvQv+oJyqRd8hhLqP66l9Pr6Q9sBKQDjJflOqHLmLK+P94BL2N3czybDn1m4D8+8wcOrCS7F/WVr5hoHFhYbUgLM8z1HLxAONuIymCw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB3967
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-
-KASAN report out-of-bounds read as follows:
-
-BUG: KASAN: global-out-of-bounds in afe4404_read_raw+0x2ce/0x380 [afe4404]
-Read of size 4 at addr ffffffffc00e4658 by task cat/278
-
-CPU: 1 PID: 278 Comm: cat Tainted: G
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- afe4404_read_raw+0x2ce/0x380 [afe4404]
- iio_read_channel_info+0x249/0x2e0 [industrialio]
- dev_attr_show+0x4b/0xa0 drivers/base/core.c:2195
- sysfs_kf_seq_show+0x1ec/0x390 fs/sysfs/file.c:59
- seq_read_iter+0x48d/0x10b0 fs/seq_file.c:230
- kernfs_fop_read_iter+0x4e6/0x710 fs/kernfs/file.c:275
- call_read_iter include/linux/fs.h:2153 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x5f2/0x890 fs/read_write.c:470
- ksys_read+0x106/0x220 fs/read_write.c:613
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xa0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x7fe9c5ef6992
- </TASK>
-
-The buggy address belongs to the variable:
- afe4404_channel_leds+0x18/0xffffffffffffe9c0 [afe4404]
-
-This issue can be reproduce by singe command:
-
- $ cat /sys/bus/i2c/devices/0-0058/iio\:device0/in_intensity6_raw
-
-The array size of afe4404_channel_leds and afe4404_channel_offdacs
-are less than channels, so access with chan->address cause OOB read
-in afe4404_[read|write]_raw. Fix it by moving access before use them.
-
-Fixes: b36e8257641a ("iio: health/afe440x: Use regmap fields")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Acked-by: Andrew Davis <afd@ti.com>
----
-v1 -> v2: also moved 'reg' to right before we use it
-          added Acked-by
----
- drivers/iio/health/afe4404.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/health/afe4404.c b/drivers/iio/health/afe4404.c
-index 8fca787b2524..836da31b7e30 100644
---- a/drivers/iio/health/afe4404.c
-+++ b/drivers/iio/health/afe4404.c
-@@ -250,20 +250,20 @@ static int afe4404_read_raw(struct iio_dev *indio_dev,
- 			    int *val, int *val2, long mask)
- {
- 	struct afe4404_data *afe = iio_priv(indio_dev);
--	unsigned int value_reg = afe4404_channel_values[chan->address];
--	unsigned int led_field = afe4404_channel_leds[chan->address];
--	unsigned int offdac_field = afe4404_channel_offdacs[chan->address];
-+	unsigned int value_reg, led_field, offdac_field;
- 	int ret;
- 
- 	switch (chan->type) {
- 	case IIO_INTENSITY:
- 		switch (mask) {
- 		case IIO_CHAN_INFO_RAW:
-+			value_reg = afe4404_channel_values[chan->address];
- 			ret = regmap_read(afe->regmap, value_reg, val);
- 			if (ret)
- 				return ret;
- 			return IIO_VAL_INT;
- 		case IIO_CHAN_INFO_OFFSET:
-+			offdac_field = afe4404_channel_offdacs[chan->address];
- 			ret = regmap_field_read(afe->fields[offdac_field], val);
- 			if (ret)
- 				return ret;
-@@ -273,6 +273,7 @@ static int afe4404_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CURRENT:
- 		switch (mask) {
- 		case IIO_CHAN_INFO_RAW:
-+			led_field = afe4404_channel_leds[chan->address];
- 			ret = regmap_field_read(afe->fields[led_field], val);
- 			if (ret)
- 				return ret;
-@@ -295,19 +296,20 @@ static int afe4404_write_raw(struct iio_dev *indio_dev,
- 			     int val, int val2, long mask)
- {
- 	struct afe4404_data *afe = iio_priv(indio_dev);
--	unsigned int led_field = afe4404_channel_leds[chan->address];
--	unsigned int offdac_field = afe4404_channel_offdacs[chan->address];
-+	unsigned int led_field, offdac_field;
- 
- 	switch (chan->type) {
- 	case IIO_INTENSITY:
- 		switch (mask) {
- 		case IIO_CHAN_INFO_OFFSET:
-+			offdac_field = afe4404_channel_offdacs[chan->address];
- 			return regmap_field_write(afe->fields[offdac_field], val);
- 		}
- 		break;
- 	case IIO_CURRENT:
- 		switch (mask) {
- 		case IIO_CHAN_INFO_RAW:
-+			led_field = afe4404_channel_leds[chan->address];
- 			return regmap_field_write(afe->fields[led_field], val);
- 		}
- 		break;
--- 
-2.34.1
-
+T24gMjAyMi8xMS82LCAxMDo1MCBQTSwgIkpvbmF0aGFuIENhbWVyb24iIDxqaWMyM0BrZXJuZWwu
+b3JnPiB3cm90ZToNCg0KICAgIE9uIE1vbiwgMzEgT2N0IDIwMjIgMTk6MzI6MDcgKzA4MDANCiAg
+ICBCaWxseSBUc2FpIDxiaWxseV90c2FpQGFzcGVlZHRlY2guY29tPiB3cm90ZToNCg0KICAgID4g
+PiBUaGUgZHRzIHByb3BlcnR5ICJhc3BlZWQsdHJpbS1kYXRhLXZhbGlkIiBpcyB1c2VkIHRvIGRl
+dGVybWluIHdoZXRoZXIgdG8NCiAgICA+ID4gcmVhZCB0aGUgT1RQIHJlZ2lzdGVyLiBJZiB0aGUg
+aW1hZ2Ugd2l0aCB0aGUgYXNwZWVkLHRyaW0tZGF0YS12YWxpDQogICAgPiA+IGluc3RhbGwgdG8g
+dGhlIGNoaXAgd2l0aG91dCB2YWxpZCB0cmltbWluZyBkYXRhIHRoZSBhZGMgY29udHJvbGxlciB3
+aWxsDQogICAgPiA+IGJlY29tZSBjb25mdXNlZC4gVGhpcyBwYXRjaCB1c2UgdGhlIGRlZmF1bHQg
+b3RwIHZhbHVlIDAgYXMgYSBjcml0ZXJpb24NCiAgICA+ID4gZm9yIGRldGVybWluaW5nIHdoZXRo
+ZXIgdHJpbW1pbmcgZGF0YSBpcyB2YWxpZCBpbnN0ZWFkIG9mIHRoZSBkdHMNCiAgICA+ID4gcHJv
+cGVydHkuIFRoZSBjaGlwIHdpdGggYWN0dWFsbHkgdHJpbW1pbmcgdmFsdWUgaXMgMCBzaG91bGQg
+YmUgZmlsdGVyIG91dC4NCg0KICAgID4gSGkgQmlsbHksDQoNCiAgICA+IEknbSBub3Qgc3VyZSBJ
+IGNvcnJlY3RseSBmb2xsb3cgdGhlIHBhdGNoIGRlc2NyaXB0aW9uLiAgV291bGQgdGhlIGZvbGxv
+d2luZw0KICAgID4gYmUgYW4gYWNjdXJhdGUgZGVzY3JpcHRpb24/DQoNCiAgICA+IFRoZSBkdHMg
+cHJvcGVydHkgImFzcGVlZCx0cmltLWRhdGEtdmFsaWQiIGlzIGN1cnJlbnRseSB1c2VkIHRvIGRl
+dGVybWluZQ0KICAgID4gd2hldGhlciB0byByZWFkIHRyaW1taW5nIGRhdGEgZnJvbSB0aGUgT1RQ
+IHJlZ2lzdGVyLiBJZiB0aGlzIGlzIHNldCBvbg0KICAgID4gYSBkZXZpY2Ugd2l0aG91dCB2YWxp
+ZCB0cmltbWluZyBkYXRhIGluIHRoZSBPVFAgdGhlIEFEQyB3aWxsIG5vdCBmdW5jdGlvbg0KICAg
+ID4gY29ycmVjdGx5LiBUaGlzIHBhdGNoIGRyb3BzIGhlIHVzZSBvZiB0aGlzIHByb3BlcnR5IGFu
+ZCBpbnN0ZWFkIHVzZXMgdGhlDQogICAgPiBkZWZhdWx0ICh1bnByb2dyYW1tZWQpIE9UUCB2YWx1
+ZSBvZiAwIHRvIGRldGVjdCB3aGVuIGEgZmFsbGJhY2sgdmFsdWUgb2YNCiAgICA+IDB4OCBzaG91
+bGQgYmUgdXNlZCByYXRoZXIgdGhlbiB0aGUgdmFsdWUgcmVhZCBmcm9tIHRoZSBPVFAuDQpIaSBK
+b25hdGhhbiwNCg0KWWVzLCBpdCdzIGNvcnJlY3QuDQoNCiAgICA+IEFsc28sIGlzIHRoaXMgYSBi
+dWcgZml4IHdlIG5lZWQgdG8gYmFja3BvcnQ/ICBJZiBzbyBwbGVhc2UgcHJvdmlkZSBhIGZpeGVz
+DQogICAgPiB0YWcuDQoNCkkgd2lsbCBwcm92aWRlIHRoZSBmaXhlcyB0YWcgaW4gbmV4dCB2ZXJz
+aW9uIG9mIHBhdGNoLg0KDQpUaGFua3MNCg0KQmVzdCBSZWdhcmRzLA0KQmlsbHkgVHNhaQ0KDQo=

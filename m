@@ -2,190 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 161D461E5E0
-	for <lists+linux-iio@lfdr.de>; Sun,  6 Nov 2022 21:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF71F61E83D
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 02:25:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbiKFUYv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 6 Nov 2022 15:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54266 "EHLO
+        id S230118AbiKGBZe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 6 Nov 2022 20:25:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230028AbiKFUYu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 15:24:50 -0500
-X-Greylist: delayed 3252 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Nov 2022 12:24:48 PST
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D6011457
-        for <linux-iio@vger.kernel.org>; Sun,  6 Nov 2022 12:24:48 -0800 (PST)
-Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4F8DF1F5AD;
-        Sun,  6 Nov 2022 21:24:46 +0100 (CET)
-Date:   Sun, 6 Nov 2022 21:24:45 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [RFC PATCH] iio: adc: qcom-spmi-vadc: Propagate fw node
- name/label to extend_name
-Message-ID: <20221106202445.fkobsyc3mohmzqod@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20221106193018.270106-1-marijn.suijten@somainline.org>
+        with ESMTP id S230249AbiKGBZd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 6 Nov 2022 20:25:33 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B21F45FD8;
+        Sun,  6 Nov 2022 17:25:31 -0800 (PST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N5D7M6x6HzmVj4;
+        Mon,  7 Nov 2022 09:25:19 +0800 (CST)
+Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 7 Nov 2022 09:25:29 +0800
+Received: from [10.174.178.174] (10.174.178.174) by
+ dggpemm500007.china.huawei.com (7.185.36.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 7 Nov 2022 09:25:29 +0800
+Subject: Re: [PATCH RESEND] Documentation: devres: add missing IIO helpers
+To:     Jonathan Cameron <jic23@kernel.org>
+CC:     <linux-doc@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <Jonathan.Cameron@huawei.com>, <corbet@lwn.net>,
+        <yangyingliang@huawei.com>
+References: <20221103023402.1024437-1-yangyingliang@huawei.com>
+ <20221105150812.66d81f40@jic23-huawei>
+From:   Yang Yingliang <yangyingliang@huawei.com>
+Message-ID: <7e984b00-8845-8938-1495-334c8d4db878@huawei.com>
+Date:   Mon, 7 Nov 2022 09:25:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221106193018.270106-1-marijn.suijten@somainline.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20221105150812.66d81f40@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Originating-IP: [10.174.178.174]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500007.china.huawei.com (7.185.36.183)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Adding Krzysztof to CC for the DT bindings discussion.
+Hi,
 
-On 2022-11-06 20:30:18, Marijn Suijten wrote:
-> Much like the ADC5 driver iio_chan_spec::extend_name has to be set for
-> friendly/useful names to show up in sysfs, allowing users to correlate
-> readout values with the corresponding probe.  This name is read from
-> firmware, taking both the node name and - if set - node label into
-> account.  This is particularly useful for custom thermistors being
-> attached to otherwise-generically-named GPIOs.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> 
-> ---
-> 
-> This RFC may seem a bit controversial as there are multiple patches
-> going around in DT-land changing how nodes are labeled [1] (or
-> introducing new ones: [2]), seemingly to appease binding conventions
-> without considering how the driver propagates them to IIO (and in turn
-> what userspace sees in sysfs).  I hope we can put together the right
-> conventions with this RFC.
-> 
-> Before getting started, note that ADC5 provides this DT/FW node
-> name/label in *both* extend_name *and* datasheet_name;
-> adc5_channels::datasheet_name provided by the macros remains *unread*
-> (except for a non-null check).
-> Since the names hardcoded in the driver seem to be somewhat
-> "datasheet"-y, and the names in DT typically take the form of a more
-> friendly "<device>-therm" indicating where the thermistor (or voltage
-> probe) is located on the board or attached to, I have opted to persist
-> the original use of vadc_channels::datasheet_name in
-> iio_chan_spec::datasheet_name, and only propagate the data from DT/FW
-> into extend_name.
-> (We should likely rename vadc_channel_prop::datasheet_name to
-> extend_name to this end.)
-> 
-> Back when I submitted patches for pm6125 [3] (utilizing ADC5)
-> 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
-> didn't yet land, and these patches use the node name to convey a
-> useful/friendly name (again, the string literals in ADC5 are unused).
-> fwnode_get_name() however includes the `@xx` reg suffix, making for an
-> unpleasant reading experience in sysfs.
-> 
-> With all that context in mind, I feel like we should answer the
-> following questions:
-> 
-> 1. Should we propagate names from DT/FW at all?
-> 2. If so, how should a node be represented in DT?  Should it use generic
->    node names (which we might not want to use anyway considering the
->    `@xx` suffix highlighted above) or labels exclusively?
-> 3. If only labels are going to be used in conjunction with generic node
->    names, should ADC5 be changed to ignore the node name?
-> 4. If a label (or node name) is not set, do we fall back to
->    datasheet_name hardcoded in the driver?
-> 5. What do we use for datasheet_name vs extend_name?
-> 6. Any other vadc drivers that need the same treatment, when we come to
->    a resolution?
-> 
-> [1]: https://lore.kernel.org/linux-arm-msm/20221031181022.947412-1-luca@z3ntu.xyz/T/#u
-> [2]: https://lore.kernel.org/linux-arm-msm/20221101161801.1058969-2-luca@z3ntu.xyz/
-> [3]: https://lore.kernel.org/linux-arm-msm/20220926190148.283805-1-marijn.suijten@somainline.org/T/#u
-> 
-> Thanks for considering this!
-> - Marijn
-> 
->  drivers/iio/adc/qcom-spmi-vadc.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-spmi-vadc.c b/drivers/iio/adc/qcom-spmi-vadc.c
-> index bcff0f62b70e..8c6c7fa13cfe 100644
-> --- a/drivers/iio/adc/qcom-spmi-vadc.c
-> +++ b/drivers/iio/adc/qcom-spmi-vadc.c
-> @@ -84,6 +84,7 @@
->   *	that is an average of multiple measurements.
->   * @scale_fn_type: Represents the scaling function to convert voltage
->   *	physical units desired by the client for the channel.
-> + * @datasheet_name: Channel name used in device tree.
->   */
->  struct vadc_channel_prop {
->  	unsigned int channel;
-> @@ -93,6 +94,7 @@ struct vadc_channel_prop {
->  	unsigned int hw_settle_time;
->  	unsigned int avg_samples;
->  	enum vadc_scale_fn_type scale_fn_type;
-> +	const char *datasheet_name;
->  };
-> 
->  /**
-> @@ -652,7 +654,7 @@ static int vadc_get_fw_channel_data(struct device *dev,
->  				    struct vadc_channel_prop *prop,
->  				    struct fwnode_handle *fwnode)
->  {
-> -	const char *name = fwnode_get_name(fwnode);
-> +	const char *name = fwnode_get_name(fwnode), *channel_name;
->  	u32 chan, value, varr[2];
->  	int ret;
-> 
-> @@ -670,6 +672,12 @@ static int vadc_get_fw_channel_data(struct device *dev,
->  	/* the channel has DT description */
->  	prop->channel = chan;
-> 
-> +	ret = fwnode_property_read_string(fwnode, "label", &channel_name);
-> +	if (ret)
-> +		channel_name = name;
-> +
-> +	prop->datasheet_name = channel_name;
-> +
->  	ret = fwnode_property_read_u32(fwnode, "qcom,decimation", &value);
->  	if (!ret) {
->  		ret = qcom_vadc_decimation_from_dt(value);
-> @@ -771,6 +779,7 @@ static int vadc_get_fw_data(struct vadc_priv *vadc)
-> 
->  		iio_chan->channel = prop.channel;
->  		iio_chan->datasheet_name = vadc_chan->datasheet_name;
-> +		iio_chan->extend_name = prop.datasheet_name;
->  		iio_chan->info_mask_separate = vadc_chan->info_mask;
->  		iio_chan->type = vadc_chan->type;
->  		iio_chan->indexed = 1;
-> --
-> 2.38.1
-> 
+On 2022/11/5 23:08, Jonathan Cameron wrote:
+> On Thu, 3 Nov 2022 10:34:02 +0800
+> Yang Yingliang <yangyingliang@huawei.com> wrote:
+>
+>> Add some missing device-managed helpers of iio to devres.rst.
+>>
+>> devm_iio_kfifo_buffer_setup_ext() is introduced by commit 0a21526bc1d4 ("iio:
+>> kfifo: add devm_iio_triggered_buffer_setup_ext variant").
+>>
+>> devm_iio_triggered_buffer_setup_ext() is introduced by commit 5164c7889857 ("iio:
+>> triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants").
+>>
+>> devm_iio_hw_consumer_alloc() is introduced by b688c18d3006 ("IIO: hw_consumer:
+>> add devm_iio_hw_consumer_alloc").
+>>
+>> devm_fwnode_iio_channel_get_by_name() is introduced by commit 1e64b9c5f9a0 ("iio:
+>> inkern: move to fwnode properties").
+>>
+>> Fixes: 0a21526bc1d4 ("iio: kfifo: add devm_iio_triggered_buffer_setup_ext variant")
+>> Fixes: 5164c7889857 ("iio: triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants")
+>> Fixes: b688c18d3006 ("IIO: hw_consumer: add devm_iio_hw_consumer_alloc")
+>> Fixes: 1e64b9c5f9a0 ("iio: inkern: move to fwnode properties")
+>> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> You didn't pick up my
+>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> or mention that my assumption is that this will go via the docs tree.
+I changed the commit message, it's not same as the earlier patch, so I 
+didn't add your ACK tag.
+It's nice that you acked this patch.
+
+Thanks,
+Yang
+>
+> Thanks,
+>
+> Jonathan
+>
+>> ---
+>> The previous patch link:
+>> https://patchwork.kernel.org/project/linux-iio/patch/20220927074043.942836-1-yangyingliang@huawei.com/
+>> ---
+>>   Documentation/driver-api/driver-model/devres.rst | 4 ++++
+>>   1 file changed, 4 insertions(+)
+>>
+>> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+>> index e0cb7df0f782..4249eb4239e0 100644
+>> --- a/Documentation/driver-api/driver-model/devres.rst
+>> +++ b/Documentation/driver-api/driver-model/devres.rst
+>> @@ -287,12 +287,16 @@ IIO
+>>     devm_iio_device_register()
+>>     devm_iio_dmaengine_buffer_setup()
+>>     devm_iio_kfifo_buffer_setup()
+>> +  devm_iio_kfifo_buffer_setup_ext()
+>>     devm_iio_map_array_register()
+>>     devm_iio_triggered_buffer_setup()
+>> +  devm_iio_triggered_buffer_setup_ext()
+>>     devm_iio_trigger_alloc()
+>>     devm_iio_trigger_register()
+>>     devm_iio_channel_get()
+>>     devm_iio_channel_get_all()
+>> +  devm_iio_hw_consumer_alloc()
+>> +  devm_fwnode_iio_channel_get_by_name()
+>>   
+>>   INPUT
+>>     devm_input_allocate_device()
+> .

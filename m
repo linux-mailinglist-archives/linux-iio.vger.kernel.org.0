@@ -2,112 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5DC861F3FF
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 14:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA0E61F466
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 14:33:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231373AbiKGNIi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 08:08:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
+        id S231758AbiKGNdc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 08:33:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231374AbiKGNIh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 08:08:37 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC8219286;
-        Mon,  7 Nov 2022 05:08:36 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id a11-20020a05600c2d4b00b003cf6f5fd9f1so7116713wmg.2;
-        Mon, 07 Nov 2022 05:08:36 -0800 (PST)
+        with ESMTP id S231361AbiKGNda (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 08:33:30 -0500
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25221617E
+        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 05:33:29 -0800 (PST)
+Received: by mail-lj1-x22b.google.com with SMTP id x21so16242633ljg.10
+        for <linux-iio@vger.kernel.org>; Mon, 07 Nov 2022 05:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OjQ3EIftToSDAs8kIxnNN64z6dj2+/KZibkFT+hIH+I=;
-        b=L+hnZtSjLy47alR2cv82vQMSOeIO5hmyynkrCswoFbg6CZe+MECKFqdR+16N+FwdRV
-         mTfeI/nKmiCpm7kXfdpfr2o6wVMlc77JTgoDiJoY2GfASOCYamlmMnaKRBtOCzdw4ciT
-         tP6ez2pQmAgww836XsX1PtCqwsGCx9/QvbWx97gYyqKd+XV4/oZANewMfhCa9gpaAtxq
-         G8phyU/pynmFQBuB8oQbtjGidYGlYpHSnzubftS0CApdvaO+oyWT8x5xPexUzGuovy1V
-         EkR9q8lSk5G9NVpuc5lO4AMHgRr7qRnMgs2iUZJ0S5hjgXz0m6n2IbwqkPiOT05AiriD
-         bR6w==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i57enyEe7YJLxfdkLS1d/5SoH8XBZS2h/SEFBvV1a/s=;
+        b=LBOP4/YsGY2gsOLqZXMuCIid3YNS3ERQw1+TNRPToYNeLarezhiNLZxTGPa8CtBCzE
+         7qxI1nN31qzHX0kBBF36DyNXoPZjXd9KcLSiT/O2U2/rJL70xIHPNeJBnywYvms31yWM
+         cYlNM8b9AaEEywcgyo27FAKPu6ot9CUIrxrEmYRe/XY2UKK+Wg5106iCjUvVFxTdNiNL
+         7XkefH4LRDWycRowZhRIzv0EWDm4aZvI9yoxtHbmhfMb4I4MVTZ8LRQ/7uEACsJNYNPE
+         fuldMWRAe28gmfArUFZpifWHxxFGdesszPTl9NPpramSJgenmmUfMfMMXBcZR1/XOsst
+         VM5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OjQ3EIftToSDAs8kIxnNN64z6dj2+/KZibkFT+hIH+I=;
-        b=xBQqTV0reyQLAQEtBqH5mt5nGQooMZHzWERUSuY8zZVOxLfcMDHFLH9/9/fTItgGjm
-         W5Dw6cc1RJRhHTcVfTNramMSjnpNzSb69/wLViiyNLles9qShz+9elDvclfUtLa5iPQF
-         CkWv0uHEIawIoa8GmaSiCHOMsEUgCW/rTKWVICFS0f79pXBagdshFu+9A6XgjhrEXdR0
-         eV7zkiyA6a4coYrPGMCIVskfPhRPljntKaIjUxoxlY60oFFFBwhOum6qU+hg1uM7vuel
-         CRqJkcV5cbv8Z9CvzDljhHw578/gTvvLHFJ95P1WsVyKdAkOtA4GdDlrR9bd2KnWeGQP
-         8Dlw==
-X-Gm-Message-State: ACrzQf13Nm8gED7LFpCTeHAdfNiliqbhSNsCzA8YmNMAqFKuCQ7P58pX
-        uYPHWMqxAUjXMRokteV7qO4=
-X-Google-Smtp-Source: AMsMyM5XlevBa2XTwPGVMGYwItpf9GANoVu6vIuqwg96EaKpvguJYcU66RI593ZqRNf1hMY8VrkxUw==
-X-Received: by 2002:a7b:cc8c:0:b0:3cf:7b8c:d18a with SMTP id p12-20020a7bcc8c000000b003cf7b8cd18amr25194367wma.0.1667826514866;
-        Mon, 07 Nov 2022 05:08:34 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id bg20-20020a05600c3c9400b003c6bd12ac27sm8667304wmb.37.2022.11.07.05.08.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 05:08:34 -0800 (PST)
-Date:   Mon, 7 Nov 2022 16:08:31 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Deepak R Varma <drv@mailo.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: meter: use min() for comparison and
- assignment
-Message-ID: <Y2kDTxE38epBN368@kadam>
-References: <Y2iFGA3A1w+XMlYU@qemulion>
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i57enyEe7YJLxfdkLS1d/5SoH8XBZS2h/SEFBvV1a/s=;
+        b=QnCif2wPv5oTqyez1Mg8lovx4GYzWwn5QZ3k/tbH0sWdNJjGeI9At/6QnvekYSP+oH
+         Mjt7OO9TCViRrjEzxQ8DywFLyEYuc12f9KzQXtyrp8fXID+0N2qIhu6nGUHjWEWKqPB6
+         CkSmwuP3v+RCa5opl1EfrSsPrKhcw/pTLqEidhRR+lTvy7hZ8BWJoZrB/SIVb/+rfE3p
+         lYWsB2dlk7pfoauDmJ3TBRKJ+Zi9SkWtznZnplf/4U4AdqRsn+naENx7PRy07RI0cTDE
+         8tEbktVYxQJe8x/t60j0uVIDeNvMUmpA85t+geh3KQTuCSY1l7BhyizBkX1Uk8VzXHxP
+         rfeQ==
+X-Gm-Message-State: ACrzQf3kcPr0nKUyN+xNmtnpe9JAyhfirAM6008jfR8MRDEI55KF4xg6
+        eNrNXL3XrnGg/hkuk10dvKea7A==
+X-Google-Smtp-Source: AMsMyM6ys2bfMq4DAdu6ozFPUfKC15Y60kr8o3Xu60fH9zr1JaGfkZH+Ia3+9cQ6i/DinUAtQBgA3g==
+X-Received: by 2002:a2e:9c97:0:b0:26f:be44:5349 with SMTP id x23-20020a2e9c97000000b0026fbe445349mr5283381lji.348.1667828007386;
+        Mon, 07 Nov 2022 05:33:27 -0800 (PST)
+Received: from [192.168.0.20] (088156142199.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.199])
+        by smtp.gmail.com with ESMTPSA id 8-20020ac24d48000000b004998d9ccb62sm1250717lfp.99.2022.11.07.05.33.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Nov 2022 05:33:26 -0800 (PST)
+Message-ID: <541d9d1a-5030-c68f-2fe3-6ea62b5e9eb2@linaro.org>
+Date:   Mon, 7 Nov 2022 14:33:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2iFGA3A1w+XMlYU@qemulion>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: frequency: add adf4377 doc
+Content-Language: en-US
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221107120243.57344-1-antoniu.miclaus@analog.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221107120243.57344-1-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 09:40:00AM +0530, Deepak R Varma wrote:
-> Simplify code by using recommended min helper macro for logical
-> evaluation and value assignment. This issue is identified by
-> coccicheck using the minmax.cocci file.
+On 07/11/2022 13:02, Antoniu Miclaus wrote:
+> Add device tree bindings for the ADF4377 driver.
 > 
-> Signed-off-by: Deepak R Varma <drv@mailo.com>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
->  drivers/staging/iio/meter/ade7854-i2c.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/meter/ade7854-i2c.c b/drivers/staging/iio/meter/ade7854-i2c.c
-> index a9a06e8dda51..a6ce7b24cc8f 100644
-> --- a/drivers/staging/iio/meter/ade7854-i2c.c
-> +++ b/drivers/staging/iio/meter/ade7854-i2c.c
-> @@ -61,7 +61,7 @@ static int ade7854_i2c_write_reg(struct device *dev,
->  unlock:
->  	mutex_unlock(&st->buf_lock);
-> 
-> -	return ret < 0 ? ret : 0;
-> +	return min(ret, 0);
+> changes in v2:
 
-The original code is better.
 
-If it's a failure return the error code.  If it's not return zero.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-You can only compare apples to apples.  min() makes sense if you're
-talking about two lengths.  But here if ret is negative that's an error
-code.  If it's positive that's the number of bytes.  If the error
-code is less than the number of bytes then return that?  What???  It
-makes no sense.
+Best regards,
+Krzysztof
 
-In terms of run time, this patch is fine but in terms of reading the
-code using min() makes it less readable.
-
-regards,
-dan carpenter

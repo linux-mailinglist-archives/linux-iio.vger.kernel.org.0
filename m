@@ -2,82 +2,62 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31ED761EE73
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 10:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C7761EF9C
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 10:52:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231704AbiKGJNb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 04:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41492 "EHLO
+        id S231497AbiKGJwZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 04:52:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231697AbiKGJNT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 04:13:19 -0500
-Received: from twspam01.aspeedtech.com (twspam01.aspeedtech.com [211.20.114.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22CA617059
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 01:13:18 -0800 (PST)
-Received: from mail.aspeedtech.com ([192.168.0.24])
-        by twspam01.aspeedtech.com with ESMTP id 2A78nXVJ095133;
-        Mon, 7 Nov 2022 16:49:33 +0800 (GMT-8)
-        (envelope-from billy_tsai@aspeedtech.com)
-Received: from BillyTsai-pc.aspeed.com (192.168.2.149) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 7 Nov
- 2022 17:13:03 +0800
-From:   Billy Tsai <billy_tsai@aspeedtech.com>
-To:     <jic23@kernel.org>, <lars@metafoo.de>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <joel@jms.id.au>,
-        <andrew@aj.id.au>, <billy_tsai@aspeedtech.com>,
-        <linmq006@gmail.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-Subject: [v2 2/2] dt-bindings: iio: adc: Remove the property "aspeed,trim-data-valid"
-Date:   Mon, 7 Nov 2022 17:15:06 +0800
-Message-ID: <20221107091506.28630-2-billy_tsai@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221107091506.28630-1-billy_tsai@aspeedtech.com>
-References: <20221107091506.28630-1-billy_tsai@aspeedtech.com>
+        with ESMTP id S231859AbiKGJwY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 04:52:24 -0500
+X-Greylist: delayed 1800 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 07 Nov 2022 01:52:24 PST
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF8E6578
+        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 01:52:24 -0800 (PST)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 4069982A0F; Mon,  7 Nov 2022 09:15:41 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1667812545; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=H7eTdEeHz+e7+Viv1tR33Fb1cqRPQrDSTGDPeSxaSHnqb8O69aHFQjKLtPBEmS3fL
+         CVnNXCYdunWV9/qsgz4nLyLFnQsJovkmnWS4K3cYxXe6xFKSf7pcrjaF6khaJvmTYN
+         jvXA/Q6uNFXOHwvFJTr3JeLfGqdjFDV9jdi/Quy/3FQM/OcaMAIAEvnK7pQaOGPgno
+         DXbXYsQMa1kAhndiUApvPTke7Db5YWhI3eKQjlRQzQkDzlmVV/QaE8aKe/ptzO0QxB
+         /xvrF6Xsp6O/PQAHvNX9PVjwMd8zEg4uLGDkncCTndI6wDZQwfmnoyd7s1a0dh0gbl
+         z1Nh776+RLUZw==
+Received: by mail.lokoho.com for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 09:15:37 GMT
+Message-ID: <20221107074500-0.1.23.5lza.0.fm8pchlsd3@lokoho.com>
+Date:   Mon,  7 Nov 2022 09:15:37 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.2.149]
-X-ClientProxiedBy: TWMBX02.aspeed.com (192.168.0.24) To TWMBX02.aspeed.com
- (192.168.0.24)
-X-DNSRBL: 
-X-MAIL: twspam01.aspeedtech.com 2A78nXVJ095133
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The valid of the trimming data will use the otp default value as a
-criterion.
+Dzie=C5=84 dobry,
 
-Fixes: 2bdb2f00a895 ("dt-bindings: iio: adc: Add ast2600-adc bindings")
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
----
- .../devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml    | 7 -------
- 1 file changed, 7 deletions(-)
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-index b283c8ca2bbf..5c08d8b6e995 100644
---- a/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/aspeed,ast2600-adc.yaml
-@@ -62,13 +62,6 @@ properties:
-     description:
-       Inform the driver that last channel will be used to sensor battery.
- 
--  aspeed,trim-data-valid:
--    type: boolean
--    description: |
--      The ADC reference voltage can be calibrated to obtain the trimming
--      data which will be stored in otp. This property informs the driver that
--      the data store in the otp is valid.
--
- required:
-   - compatible
-   - reg
--- 
-2.25.1
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam
+Adam Charachuta

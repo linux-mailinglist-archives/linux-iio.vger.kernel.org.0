@@ -2,87 +2,121 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF91661F9BE
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 17:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8972261FA39
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 17:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231519AbiKGQaJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 11:30:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51558 "EHLO
+        id S232220AbiKGQol convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Nov 2022 11:44:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbiKGQ3g (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 11:29:36 -0500
-Received: from msg-2.mailo.com (msg-2.mailo.com [213.182.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFA4233B5;
-        Mon,  7 Nov 2022 08:27:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailo.com; s=mailo;
-        t=1667838451; bh=Mg3Id1/fkypwOfC8wSYIW3Daq138C5v1hZ6ElXptx3w=;
-        h=X-EA-Auth:Date:From:To:Cc:Subject:Message-ID:References:
-         MIME-Version:Content-Type:In-Reply-To;
-        b=Ad6bDeeRL6UDBnT2widUFcAT8BUumtDjzMOfhEfKqCGnyRWfm4VStTPzWW3SMObHg
-         Ur2sqDex2qZLMoGADvy0GyJxqhiWzio1YrPuHqTzHgTcjTqv5384orlZLPhvSgiZPa
-         HFMoRX3xrdx0HEyA71+gsplF6ix/57i2ayDi4R6U=
-Received: by b-2.in.mailobj.net [192.168.90.12] with ESMTP
-        via ip-206.mailobj.net [213.182.55.206]
-        Mon,  7 Nov 2022 17:27:26 +0100 (CET)
-X-EA-Auth: iW97wWXq7wu86/I281m0xgHIxJjEWPKb6RpDVe9GmtL39NqzPnDHdijSL/LFBCfxpHq/8ZVf676fiuiEBW1lz9iA0X4yNR8N
-Date:   Mon, 7 Nov 2022 21:57:21 +0530
-From:   Deepak R Varma <drv@mailo.com>
-To:     Dan Carpenter <error27@gmail.com>
-Cc:     Joe Perches <joe@perches.com>,
+        with ESMTP id S232324AbiKGQoh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 11:44:37 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0081F2F6
+        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 08:44:35 -0800 (PST)
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N5cTT1vzvz67y8F;
+        Tue,  8 Nov 2022 00:42:21 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 7 Nov 2022 17:44:33 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 7 Nov
+ 2022 16:44:32 +0000
+Date:   Mon, 7 Nov 2022 16:44:31 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Marten Lindahl <martenli@axis.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: iio: meter: use min() for comparison and
- assignment
-Message-ID: <Y2kx6d9T9/1pzKk/@qemulion>
-References: <Y2iFGA3A1w+XMlYU@qemulion>
- <Y2kDTxE38epBN368@kadam>
- <41a43f3865f3c86c6c2d1fbf3d82c42b685c7041.camel@perches.com>
- <Y2kme/FDg/4K2VW5@kadam>
+        Paul Cercueil <paul@crapouillou.net>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        kernel <kernel@axis.com>,
+        =?ISO-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>
+Subject: Re: [PATCH v3 0/2] Add ps_it attributes for vcnl4040
+Message-ID: <20221107164431.00005c22@Huawei.com>
+In-Reply-To: <Y2i4KmJ0Bd+WdWay@axis.com>
+References: <20220926091900.1724105-1-marten.lindahl@axis.com>
+        <Y2i4KmJ0Bd+WdWay@axis.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y2kme/FDg/4K2VW5@kadam>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 06:38:35PM +0300, Dan Carpenter wrote:
-> On Mon, Nov 07, 2022 at 07:22:24AM -0800, Joe Perches wrote:
-> > > In terms of run time, this patch is fine but in terms of reading the
-> > > code using min() makes it less readable.
-> >
-> > It's not a runtime question, either should compile to the same object
-> > code.  It's definitely a readabiity and standardization issue.
-> >
-> > In this case, IMO it'd be better to use the much more common
-> >
-> > 	if (ret < 0)
-> > 		return ret;
-> >
-> > 	return 0;
->
-> I also prefer this format.
->
-> But at the same time, I can't advise Deepak to go around changing
-> existing code where the author like ternaries.
+On Mon, 7 Nov 2022 08:47:54 +0100
+Marten Lindahl <martenli@axis.com> wrote:
 
-Thank you Joe, Dan. Just to conclude, I will leave the line untouched as it is
-no big advantage and the current format is more readable.
+> On Mon, Sep 26, 2022 at 11:18:58AM +0200, Mårten Lindahl wrote:
+> > Currently there is no way for userspace to make any configuration of
+> > the VCNL4040 sensors, but only the sensor readings are exported in
+> > sysfs. To support configuration for proximity integration time value,
+> > sysfs attributes for this needs to be exported.
+> > 
+> > To begin with the runtime power management turns both sensors (ALS, and
+> > PS) on before reading the sensor register values and then switches
+> > them off again. But when doing so it writes the whole register instead
+> > of just switching the power on/off bit. This needs to be fixed in order
+> > to make other persistent configurations.
+> > 
+> > Kind regards
+> > Mårten Lindahl  
+> 
+> Hi!
+> 
+> I suspect this mail may have slipped through unnoticed since there has
+> not been any comments on it. v2 had some minor comments which I hope I
+> fixed.
+> 
+> Jonathan?
 
-./drv
+It's queued up. Not sure why I failed to send an email though - I'll probably
+find it's in my outbox on the other laptop or something equally silly.
 
->
-> regards,
-> dan carpenter
->
+https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/drivers/iio/light/vcnl4000.c?h=testing&id=1a09d52bf0cab10580ab52f04f8b182f279be455
 
+Jonathan
+
+> 
+> Kind regards
+> Mårten
+> 
+> > 
+> > Changes in v3:
+> >  - Rename defines for ALS/PS shutdown bits
+> >  - Add local variable for building register value
+> > 
+> > Changes in v2:
+> >  - Removed unnecessary switch for chip id
+> >  - Guard read/write sequence against potential race
+> >  - Remove confusing boolean operation
+> >  - Use bitmask macros instead of local field shifting
+> >  - Use .read_avail callback instead of using IIO_CONST_ATTR
+> >  - Skip [PATCH 2/3] iio: light: vcnl4000: Add enable attributes for vcnl4040
+> > 
+> > Mårten Lindahl (2):
+> >   iio: light: vcnl4000: Preserve conf bits when toggle power
+> >   iio: light: vcnl4000: Add ps_it attributes for vcnl4040
+> > 
+> >  drivers/iio/light/vcnl4000.c | 185 +++++++++++++++++++++++++++++++++--
+> >  1 file changed, 179 insertions(+), 6 deletions(-)
+> > 
+> > -- 
+> > 2.30.2
+> >   
 

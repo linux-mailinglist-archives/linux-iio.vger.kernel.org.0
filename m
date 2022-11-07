@@ -2,107 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47F7861EE8F
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 10:16:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDC461EF91
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 10:50:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231710AbiKGJQt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 04:16:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
+        id S230449AbiKGJuv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 04:50:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231723AbiKGJQf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 04:16:35 -0500
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A81912D1B
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 01:16:34 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id f37so15865494lfv.8
-        for <linux-iio@vger.kernel.org>; Mon, 07 Nov 2022 01:16:34 -0800 (PST)
+        with ESMTP id S231736AbiKGJuu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 04:50:50 -0500
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AAFF6578
+        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 01:50:49 -0800 (PST)
+Received: by mail-io1-xd2e.google.com with SMTP id r81so8382464iod.2
+        for <linux-iio@vger.kernel.org>; Mon, 07 Nov 2022 01:50:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ee9rRE2EZYR3AFslDfAa5vqk35kYdBztnuAgp9P1svM=;
-        b=rLgN8Ab0FHYbqyHfhx61S13OglQV0IxcL7oh3Q2DBIZpIffz/Sd22ckP2kXKhUWdoD
-         XvrViZQmsTqi88VTF76St/XTn4YOdfkVFy5KKxKwnLTMQOjcTmoq8VR0FA+Xs2zANdP3
-         uLffjmEj/GWzqAs9SLlrGU/opeVKi69yxnPhm545g7nJbioLzKGdmfMC0bdtU3cNLSCk
-         a4T+Bk+uJUJKNk037idWb8jzsGZRaIlvfDF09tEqF/KG7mUN3b7m0jw4jEI6SaghYjBb
-         ZvmvKp53XDqFo6SK4VuyIQsHh3B0qvWgJvurbkZ5lrnMxKVpRrLvHPb6hY/Vn7F1SBVe
-         kbKQ==
+        d=melexis.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ncLpQO0jtkFJO9tU8yV3uX5OrU0I8qwWFBw/f+h3WkM=;
+        b=BF8aP4ZoD5U5lJ15GAnYo6qcW6ZY0Qz7W3ig5OdKEz7DMN1OBLDX8y64gFQbMiXfbN
+         vxsr0lAiRnuG5btbLSB96ztBk1SxCmW/OmsCazP0v7RQQTci/gBnmEQg5h3ji8bcry3E
+         fOM3Weyrgz4f6MSUSvHNBT+yvDa9DlDZjgYBlkI7nmfjQx6KFaLQLGHmuJ7gXGHO7Gxk
+         0bwFuqNfBgjrWEehQSufgTmfa/P5C6hfnPsfEhaiMXGmhZYioSiE8CIGqIcTKmR7OQz3
+         BGbzik/H0DSUM1XhH86AfBlQ9bXwjgg2+Wdg17sj40Sz0jNptDHyAVR2rMpgJtt/X4NM
+         /TlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ee9rRE2EZYR3AFslDfAa5vqk35kYdBztnuAgp9P1svM=;
-        b=upCPovcN90PzDPatTsYyv/3SUD4nxfWbNktSh6AwKAr0Hc05Lr5Us5nVCnGIQLudof
-         pgcWgYnovN9SSgYOT/NKrsaB3gA7dAU4p+qYE0N0HdUb6vkeZHR74d/K+fozuSNb8saw
-         4oMHlcHds7tD59N+D08O34WHffQt9c/5q3xY8idTgoM3/s6I1yRxk/NzQk2XAJ0ui2hf
-         KZd0h/MLKJVJNAjFe++yD3j2NTQGtOJeMVBwku1Q0z11ahaM42XblcFIDFO1ZzwoR9gN
-         LZv1mJaPZg/Ge3RpqSomvOBoRATwqoO9MK3crnZzIZtG9Q8RYmHEprjofSCPPU/CkeG7
-         FKTg==
-X-Gm-Message-State: ACrzQf0EzdZUzzP/r6Ai6KZnQigDMEvvjt1UO/7RinLRiqc4hhJfyyiE
-        VOFbJ/1enN1Pya/zDEwT5rXVdA==
-X-Google-Smtp-Source: AMsMyM640xZfzovEVbRzAzA3JwN3fsqXmGXCqtuz5rmj/QtkLofAuR/i6wzcJkcTdHZb+Jm513To6A==
-X-Received: by 2002:a05:6512:b21:b0:4ae:391c:e655 with SMTP id w33-20020a0565120b2100b004ae391ce655mr16423127lfu.45.1667812592555;
-        Mon, 07 Nov 2022 01:16:32 -0800 (PST)
-Received: from [192.168.0.20] (088156142199.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.199])
-        by smtp.gmail.com with ESMTPSA id t20-20020a2e8e74000000b0027755f52a94sm1129600ljk.80.2022.11.07.01.16.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Nov 2022 01:16:32 -0800 (PST)
-Message-ID: <9ddc0bc9-c5cf-6c94-d15e-77a7a7e2b7f1@linaro.org>
-Date:   Mon, 7 Nov 2022 10:16:31 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ncLpQO0jtkFJO9tU8yV3uX5OrU0I8qwWFBw/f+h3WkM=;
+        b=yYwILQp6mex178YNT3GbIL2nPdc0ZOQRP+92Qms+Qsr7Z2PCTyH5NAQhWr3A030Erq
+         UBpailBkfydomD8UNQoMXlgY1P2RAGHOjiLg9GbV1R1osEH3zFeU5tcardQNR1iguHHK
+         O1eZfpcoO04iVgzYZ4ZEZSI07CxR/6wWdTF7eh1px7z19g7eL4gJ1+Z32Y4uWkR+GqUt
+         Yk50tH1TsBnHwe9uwlyHQUF0f5t+dbtxbASLxoaSSM7OcIhZr9pF6ss0xxmeWPzUt7fJ
+         iiLIb6qEjX3HClqTpuOySwMRfCJZoVlBTCn59AltPzCPaNRcH6NK+DYNBJnJ4Wb83IkI
+         ebVQ==
+X-Gm-Message-State: ACrzQf3zNKzGVhnKF7PM4QN+qvRWtRohIUzVuc2a6zhAtR3PG4n8LVOj
+        KU95IH1rJZmlX0ERNtvMCJD08raIc2tjj4/hUO68bg==
+X-Google-Smtp-Source: AA0mqf5wnM887T4W7d8zNW3jwKUdHCPI9xeXs94V4a3wTB5FRGjycl2rJANoxmUgTierg7EmPutJ2KO0tB44hFuoxGc=
+X-Received: by 2002:a02:330c:0:b0:375:b652:7863 with SMTP id
+ c12-20020a02330c000000b00375b6527863mr5950237jae.32.1667814648681; Mon, 07
+ Nov 2022 01:50:48 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [v2 2/2] dt-bindings: iio: adc: Remove the property
- "aspeed,trim-data-valid"
-Content-Language: en-US
-To:     Billy Tsai <billy_tsai@aspeedtech.com>, jic23@kernel.org,
-        lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, joel@jms.id.au, andrew@aj.id.au,
-        linmq006@gmail.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20221107091506.28630-1-billy_tsai@aspeedtech.com>
- <20221107091506.28630-2-billy_tsai@aspeedtech.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221107091506.28630-2-billy_tsai@aspeedtech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20221105125108.383193-1-jic23@kernel.org> <20221105125108.383193-2-jic23@kernel.org>
+In-Reply-To: <20221105125108.383193-2-jic23@kernel.org>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Mon, 7 Nov 2022 10:50:12 +0100
+Message-ID: <CAKv63uttO539kP4D-MBF4AjyEeB2LD8Ny4Caq_W5HiwgcO+efg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: temperature: mlx90632: Add error handling for devm_pm_runtime_enable()
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org, coverity-bot <keescook@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        coverity-bot <keescook+coverity-bot@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 07/11/2022 10:15, Billy Tsai wrote:
-> The valid of the trimming data will use the otp default value as a
-> criterion.
-> 
-> Fixes: 2bdb2f00a895 ("dt-bindings: iio: adc: Add ast2600-adc bindings")
+Acked-off-by: Crt Mori <cmo@melexis.com>
 
-If this is a fix, you need to describe the bug.
-
-> Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions. However, there's no need to repost patches *only* to add the
-tags. The upstream maintainer will do that for acks received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
-
-If a tag was not added on purpose, please state why and what changed.
-
-
-Best regards,
-Krzysztof
-
+On Sat, 5 Nov 2022 at 13:51, Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> This call can fail so handling is necessary even if it is very unlikely.
+>
+> Reported-by: coverity-bot <keescook+coverity-bot@chromium.org>
+> Addresses-Coverity-ID: 1527134 ("Error handling issues")
+> Fixes: c83d3e5ca97f ("iio: temperature: mlx90632 Add runtime powermanagement modes")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+>  drivers/iio/temperature/mlx90632.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/mlx90632.c
+> index a17fe5f4967a..7572ae3f8432 100644
+> --- a/drivers/iio/temperature/mlx90632.c
+> +++ b/drivers/iio/temperature/mlx90632.c
+> @@ -1267,7 +1267,10 @@ static int mlx90632_probe(struct i2c_client *client,
+>         pm_runtime_get_noresume(&client->dev);
+>         pm_runtime_set_active(&client->dev);
+>
+> -       devm_pm_runtime_enable(&client->dev);
+> +       ret = devm_pm_runtime_enable(&client->dev);
+> +       if (ret)
+> +               return ret;
+> +
+>         pm_runtime_set_autosuspend_delay(&client->dev, MLX90632_SLEEP_DELAY_MS);
+>         pm_runtime_use_autosuspend(&client->dev);
+>         pm_runtime_put_autosuspend(&client->dev);
+> --
+> 2.38.1
+>

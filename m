@@ -2,120 +2,207 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0D4761F1DB
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 12:30:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D3161F2CE
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 13:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231349AbiKGLaR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 06:30:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46342 "EHLO
+        id S232100AbiKGMVS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 07:21:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbiKGLaQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 06:30:16 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F0CF3D
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 03:30:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667820615; x=1699356615;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8k90hqxErRPdrA35hsk71QOt24S3cVmfO2dYDAaN6vY=;
-  b=gig8GTGPmWjV4wxLOnlQWJ0QAz/EUHRSP2tzx61xAEcFnxJlU3P1SJmK
-   UWqQyio6RFoMWYOb4jN7SZbP1I3y1nnzvJCWVVPz7jcDEbjsIkAO/nl1X
-   2+RCEars2uqpsl859fyBhX6c0gFl2lM0vruutuGD4f3NMucBDnwzFxheU
-   B3Zm47N7+c3EoV+7bsgNB+7uCbVHnFjXeJKRZTimAvbeBumrXOv0Ux4KF
-   Hz5yTbmgj6Q4Y3oPqID86fvNiuLmrWqDNo2q70namrDNmN8RVkWmKBL89
-   i1j+IA4q+mIrescowBf3DqDQeBLM40ZsQUAXO3aEo+0OOCK2PV6dVwPm0
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="290111575"
-X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
-   d="scan'208";a="290111575"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 03:30:15 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10523"; a="667140303"
-X-IronPort-AV: E=Sophos;i="5.96,143,1665471600"; 
-   d="scan'208";a="667140303"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga008.jf.intel.com with ESMTP; 07 Nov 2022 03:30:12 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1os0KQ-008bnw-2G;
-        Mon, 07 Nov 2022 13:30:10 +0200
-Date:   Mon, 7 Nov 2022 13:30:10 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Wei Yongjun <weiyongjun@huaweicloud.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Krzysztof =?utf-8?Q?Ha=C5=82asa?= <khalasa@piap.pl>,
-        "Andrew F. Davis" <afd@ti.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2] iio: health: afe4404: Fix oob read in
- afe4404_[read|write]_raw
-Message-ID: <Y2jsQiD05EofwOWI@smile.fi.intel.com>
-References: <20221107020425.72577-1-weiyongjun@huaweicloud.com>
+        with ESMTP id S232055AbiKGMVR (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 07:21:17 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3201090;
+        Mon,  7 Nov 2022 04:21:16 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2A79b1DM019772;
+        Mon, 7 Nov 2022 07:21:07 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kpmgu4d2m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 07 Nov 2022 07:21:07 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 2A7CL63Q056583
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 7 Nov 2022 07:21:06 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 7 Nov 2022 07:21:05 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 7 Nov 2022 07:21:04 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 7 Nov 2022 07:21:04 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.106])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2A7CKrRJ022057;
+        Mon, 7 Nov 2022 07:20:55 -0500
+From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
+To:     <jic23@kernel.org>, <robh+dt@kernel.org>,
+        <krzysztof.kozlowski+dt@linaro.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v2 1/3] dt-bindings: iio: frequency: add adf4377 doc
+Date:   Mon, 7 Nov 2022 14:02:41 +0200
+Message-ID: <20221107120243.57344-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221107020425.72577-1-weiyongjun@huaweicloud.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: -ynHf3Z_6kwt6FBQIiIbEkpEtpKMsBxG
+X-Proofpoint-ORIG-GUID: -ynHf3Z_6kwt6FBQIiIbEkpEtpKMsBxG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-07_04,2022-11-07_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1015
+ malwarescore=0 impostorscore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211070100
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 02:04:25AM +0000, Wei Yongjun wrote:
-> From: Wei Yongjun <weiyongjun1@huawei.com>
-> 
-> KASAN report out-of-bounds read as follows:
-> 
-> BUG: KASAN: global-out-of-bounds in afe4404_read_raw+0x2ce/0x380 [afe4404]
-> Read of size 4 at addr ffffffffc00e4658 by task cat/278
-> 
-> CPU: 1 PID: 278 Comm: cat Tainted: G
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> Call Trace:
->  <TASK>
->  afe4404_read_raw+0x2ce/0x380 [afe4404]
->  iio_read_channel_info+0x249/0x2e0 [industrialio]
->  dev_attr_show+0x4b/0xa0 drivers/base/core.c:2195
->  sysfs_kf_seq_show+0x1ec/0x390 fs/sysfs/file.c:59
->  seq_read_iter+0x48d/0x10b0 fs/seq_file.c:230
->  kernfs_fop_read_iter+0x4e6/0x710 fs/kernfs/file.c:275
->  call_read_iter include/linux/fs.h:2153 [inline]
->  new_sync_read fs/read_write.c:389 [inline]
->  vfs_read+0x5f2/0x890 fs/read_write.c:470
->  ksys_read+0x106/0x220 fs/read_write.c:613
->  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->  do_syscall_64+0x38/0xa0 arch/x86/entry/common.c:80
->  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> RIP: 0033:0x7fe9c5ef6992
->  </TASK>
+Add device tree bindings for the ADF4377 driver.
 
-Read this
-https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages
-and update your commit message accordingly.
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v2:
+ - use GPIO with uppercase in the property description
+ - add `adi,muxout-select` property
+ - add maintainer in this patch
+ - add allOf with reference to spi-peripheral-props.yaml
+ - use unevaluatedProperties
+ .../bindings/iio/frequency/adi,adf4377.yaml   | 92 +++++++++++++++++++
+ MAINTAINERS                                   |  8 ++
+ 2 files changed, 100 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4377.yaml
 
-> The buggy address belongs to the variable:
->  afe4404_channel_leds+0x18/0xffffffffffffe9c0 [afe4404]
-> 
-> This issue can be reproduce by singe command:
-> 
->  $ cat /sys/bus/i2c/devices/0-0058/iio\:device0/in_intensity6_raw
-> 
-> The array size of afe4404_channel_leds and afe4404_channel_offdacs
-> are less than channels, so access with chan->address cause OOB read
-> in afe4404_[read|write]_raw. Fix it by moving access before use them.
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4377.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4377.yaml
+new file mode 100644
+index 000000000000..aa6a3193b4e0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4377.yaml
+@@ -0,0 +1,92 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/adi,adf4377.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ADF4377 Microwave Wideband Synthesizer with Integrated VCO
++
++maintainers:
++  - Antoniu Miclaus <antoniu.miclaus@analog.com>
++  - Dragos Bogdan <dragos.bogdan@analog.com>
++
++description: |
++   The ADF4377 is a high performance, ultralow jitter, dual output integer-N
++   phased locked loop (PLL) with integrated voltage controlled oscillator (VCO)
++   ideally suited for data converter and mixed signal front end (MxFE) clock
++   applications.
++
++   https://www.analog.com/en/products/adf4377.html
++
++properties:
++  compatible:
++    enum:
++      - adi,adf4377
++      - adi,adf4378
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 10000000
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    description:
++      External clock that provides reference input frequency.
++    items:
++      - const: ref_in
++
++  chip-enable-gpios:
++    description:
++      GPIO that controls the Chip Enable Pin.
++    maxItems: 1
++
++  clk1-enable-gpios:
++    description:
++      GPIO that controls the Enable Clock 1 Output Buffer Pin.
++    maxItems: 1
++
++  clk2-enable-gpios:
++    description:
++      GPIO that controls the Enable Clock 2 Output Buffer Pin.
++    maxItems: 1
++
++  adi,muxout-select:
++    description:
++      On chip multiplexer output selection.
++      high_z - MUXOUT Pin set to high-Z.
++      lock_detect - MUXOUT Pin set to lock detector output.
++      muxout_low - MUXOUT Pin set to low.
++      f_div_rclk_2 - MUXOUT Pin set to fDIV_RCLK/2.
++      f_div_nclk_2 - MUXOUT Pin set to fDIV_NCLK/2.
++      muxout_high - MUXOUT Pin set to high.
++    enum: [high_z, lock_detect, muxout_low, f_div_rclk_2, f_div_nclk_2, muxout_high]
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        frequency@0 {
++            compatible = "adi,adf4377";
++            reg = <0>;
++            spi-max-frequency = <10000000>;
++            clocks = <&adf4377_ref_in>;
++            clock-names = "ref_in";
++        };
++    };
++...
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e1bc31a6624b..19a2f689e43e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1189,6 +1189,14 @@ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/amplifiers/adi,ada4250.yaml
+ F:	drivers/iio/amplifiers/ada4250.c
+ 
++ANALOG DEVICES INC ADF4377 DRIVER
++M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/frequency/adi,adf4377.yaml
++F:	drivers/iio/frequency/adf4377.c
++
+ ANALOG DEVICES INC ADGS1408 DRIVER
+ M:	Mircea Caprioru <mircea.caprioru@analog.com>
+ S:	Supported
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.38.1
 

@@ -2,45 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7621261FAC1
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 18:04:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A15B061FAD8
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 18:09:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbiKGRE1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 12:04:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
+        id S231506AbiKGRJF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 7 Nov 2022 12:09:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231494AbiKGREZ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 12:04:25 -0500
+        with ESMTP id S231519AbiKGRJB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 12:09:01 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B02911817
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 09:04:20 -0800 (PST)
-Received: from frapeml500004.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N5csx5JCbz67QRR;
-        Tue,  8 Nov 2022 01:00:05 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9026414D1A
+        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 09:09:00 -0800 (PST)
+Received: from fraeml743-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N5d1f3nmYz67NY6;
+        Tue,  8 Nov 2022 01:06:46 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- frapeml500004.china.huawei.com (7.182.85.22) with Microsoft SMTP Server
+ fraeml743-chm.china.huawei.com (10.206.15.224) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 7 Nov 2022 18:04:17 +0100
+ 15.1.2375.31; Mon, 7 Nov 2022 18:08:58 +0100
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 7 Nov
- 2022 17:04:17 +0000
-Date:   Mon, 7 Nov 2022 17:04:16 +0000
+ 2022 17:08:58 +0000
+Date:   Mon, 7 Nov 2022 17:08:57 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Gwendal Grignou <gwendal@chromium.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        "Jordi Torres" <majosamaso@gmail.com>
-Subject: Re: [PATCH] iio: proximity: sx9360: Add a new ACPI hardware ID
-Message-ID: <20221107170416.00004b94@Huawei.com>
-In-Reply-To: <CAPUE2ut0z6QrMh778hPFpLYrw_nft_ky-ye3ZrwNXTBVgxPZYQ@mail.gmail.com>
-References: <20221105225157.10081-1-gwendal@chromium.org>
-        <20221106163200.7f889ade@jic23-huawei>
-        <CAPUE2ut0z6QrMh778hPFpLYrw_nft_ky-ye3ZrwNXTBVgxPZYQ@mail.gmail.com>
+To:     Sudeep Holla <sudeep.holla@arm.com>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        =?ISO-8859-1?Q?M=E5rten?= Lindahl <marten.lindahl@axis.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        <linux-iio@vger.kernel.org>, <kernel@axis.com>
+Subject: Re: [PATCH] iio: light: vcnl4000: Don't create sysfs PM nodes for
+ child
+Message-ID: <20221107170857.00002464@Huawei.com>
+In-Reply-To: <20221107103636.bua6xd5tghuisddb@bogus>
+References: <20221101122151.221029-1-marten.lindahl@axis.com>
+        <20221106152307.4bfb4e49@jic23-huawei>
+        <20221107103636.bua6xd5tghuisddb@bogus>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
 X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -54,85 +57,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 6 Nov 2022 20:28:22 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Mon, 7 Nov 2022 10:36:36 +0000
+Sudeep Holla <sudeep.holla@arm.com> wrote:
 
-> On Sun, Nov 6, 2022 at 8:32 AM Jonathan Cameron <jic23@kernel.org> wrote:
-> >
-> > On Sat,  5 Nov 2022 15:51:57 -0700
-> > Gwendal Grignou <gwendal@chromium.org> wrote:
+> On Sun, Nov 06, 2022 at 03:23:07PM +0000, Jonathan Cameron wrote:
+> > On Tue, 1 Nov 2022 13:21:51 +0100
+> > Mårten Lindahl <marten.lindahl@axis.com> wrote:
+> >   
+> > > PM runtime is enabled for the parent i2c device, but it is disabled for
+> > > the iio child device and remains so in this driver. But as the child
+> > > sysfs PM directory is created by default by iio_device_register =>
+> > > cdev_device_add => dpm_sysfs_add it doesn't bring any value exposing it
+> > > since it won't give any usable data for the user.
+> > > 
+> > > Tell dpm_sysfs to not create the PM directory for the iio device.
+> > > 
+> > > Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>  
+> > 
+> > Ah this one..  +CC Sudeep who I am sure has considered such changes in other
+> > similar cases (he did the original ones that mean this infastructure exists).
 > >  
-> > > From
-> > > https://treexy.com/products/driver-fusion/database/sensors/semtech/sx9360-proximity/
-> > >
-> > > sx9360 SAR sensor can be presented with ACPI ID SAMM0208.
-> > >
-> > > Reported-by: Jordi Torres <majosamaso@gmail.com>
-> > > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-> > > ---
-> > >  drivers/iio/proximity/sx9360.c | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > >
-> > > diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-> > > index d9a12e6be6ca6..4ebc5784aa6d9 100644
-> > > --- a/drivers/iio/proximity/sx9360.c
-> > > +++ b/drivers/iio/proximity/sx9360.c
-> > > @@ -865,6 +865,7 @@ static SIMPLE_DEV_PM_OPS(sx9360_pm_ops, sx9360_suspend, sx9360_resume);
-> > >
-> > >  static const struct acpi_device_id sx9360_acpi_match[] = {
-> > >       { "STH9360", SX9360_WHOAMI_VALUE },
-> > > +     { "SAMM0208", SX9360_WHOAMI_VALUE },  
-> >
-> > SAMM doesn't immediately seem to be a valid ACPI vendor ID.
-> > Anyone have a path to poke people to do this right or confirm whose ID that one is?
-> >
-> > Reality is we'll have to live with it, but I like to complain first in vague hope that
-> > people will one day play by the rules!  
-> Sorry for not having checked UEFI DB first. You are not the only one
-> to complain: https://andy-shev.dreamwidth.org/151340.html
-> >  Given semtech has a PNP ID (STH is valid)
-> > I'm not sure why someone would use an ACPI ID that doesn't seem to be (unless it
-> > is very recent and no one has updated the DB on uefi.org yet).  
-> uefi.org says the last update is 2/14/2020, but that's not correct,
-> some entries have been added in 2021:
-> https://uefi.org/ACPI_ID_List?search=SECC
-
-Time to use the fact I have a members account...
-There are some more approved ones that aren't on that list yet but not SAMM as
-far as I can find by looking through relevant approval threads.
-
 > 
-> From http://www.alsa-project.org/db/?f=6196fa05fcd368166cdeee8b0509be7ca64166ee,
-> the sensor is present on device NT950QED from Samsung
+> Yes it was added for cache devices which are child devices of CPU devices via
+> Commit 85945c28b5a8 ("PM / core: Add support to skip power management in device/driver model")
 > 
-> From https://www.samsung.com/sec/galaxybook/galaxy-book2-pro-360-nt950qed-kc71g/NT950QED-KC71G/,
-> that device is a Samsung Galaxy Book 2 360.
+> Since CPU and its children are power managed quite differently(via cpuidle
+> or cpu hotplug), the new API(device_set_pm_not_required) fits the usecase
+> there well. I am not sure about this IIO usecase.
 > 
-> Surprisingly, Samsung does not have an ACPI ID defined, but does have
-> a PNP ID (SAM). It may have been an uncontrolled spelling mistake.
 
-Given you can always (almost?) use a PNP ID where you can use an ACPI one,
-lots of companies don't bother with both.  
+These are effectively pseudo devices for purposes of the driver model, with parents
+as the actual physical devices. As such all the PM infrastructure is associate
+with the appropriate bus specific device rather than the struct iio_dev->dev.
 
-You are probably right on typo (or maybe extended by someone who didn't
-realize you shouldn't do that).   I've had my moan, so I'll pick this up
-when I'm on the right computer.
+So I'm fairly sure we should just not expose the sysfs attributes.
+This is similar to CXL for which they are only exposed for the PCI devices, not
+the bunch of subdevices created.
 
 Jonathan
-
-
-> 
-> From https://treexy.com/products/driver-fusion/database/sensors/semtech/,
-> Semtech sensors do appear under names different from STH.
-> 
-> Gwendal.
-> 
-> >
-> > Jonathan
-> >
-> >  
-> > >       { }
-> > >  };
-> > >  MODULE_DEVICE_TABLE(acpi, sx9360_acpi_match);  
-> >  
-

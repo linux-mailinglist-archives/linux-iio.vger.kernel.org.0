@@ -2,68 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CA9961FA44
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 17:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 473C261FA4A
+	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 17:46:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbiKGQp4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 11:45:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40136 "EHLO
+        id S232540AbiKGQqb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 11:46:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232286AbiKGQpt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 11:45:49 -0500
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5661EC7E;
-        Mon,  7 Nov 2022 08:45:49 -0800 (PST)
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-13ae8117023so13285690fac.9;
-        Mon, 07 Nov 2022 08:45:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4LL6EKjyc/nV8owhc1hnShWucPSvisAZzkVS4VmjNis=;
-        b=GJ6JgPBPTgmB/kUws9TIB2UdO7EEjK0qEh5snCBSj+J/xLDpgHi+tVKF8vt3Xdv6fJ
-         IltY/ef29JJ2e7oWnK/YbOJdcMAfsH+B2KlDpNtXMNw6lBMlNCmWxFSJA3qbAxSiE8ja
-         9W+WRi93XsvSO8WXvA1BFiuhCUxPqkmJQvu/ar7dH5+lBuhHYgk4hDVYpdl34E/K6Y3o
-         XAT0OVJnCXqnOo3e7vAkPRycL00L6AYCGuflTnEYQkb5QHFHweDSfiLniPJfQsta+8xX
-         s+0zaqgheCGb8n38N11+DIgN4uUcy0ojFMYN7rNtvqYLuN2E9yzMzmZkoaKlopG5R+Kz
-         zZ0Q==
-X-Gm-Message-State: ACrzQf079CxIuLuXADtjCY1/ebJMMbCcb0Usa/njct0ioOrMFJajzHxt
-        PJZGPeGzACXlGXxOzVsGDg==
-X-Google-Smtp-Source: AMsMyM7IXk1gyeleD7WKF7UQKxaVX8zNXKv0RqTqPZ16p2nvlqJt7Ccs+rJb9N0k696e2BoEhkKEWg==
-X-Received: by 2002:a05:6870:9123:b0:13b:85a2:6995 with SMTP id o35-20020a056870912300b0013b85a26995mr31787068oae.122.1667839548487;
-        Mon, 07 Nov 2022 08:45:48 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id en7-20020a056870078700b0013191fdeb9bsm3283619oab.38.2022.11.07.08.45.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 08:45:47 -0800 (PST)
-Received: (nullmailer pid 1222990 invoked by uid 1000);
-        Mon, 07 Nov 2022 16:45:49 -0000
-Date:   Mon, 7 Nov 2022 10:45:49 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 02/13] dt-bindings: iio: temperature: ltc2983: add
- default values
-Message-ID: <166783954944.1222932.12703505071568474375.robh@kernel.org>
-References: <20221103130041.2153295-1-demonsingur@gmail.com>
- <20221103130041.2153295-3-demonsingur@gmail.com>
+        with ESMTP id S232469AbiKGQqa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 11:46:30 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D8A60C4;
+        Mon,  7 Nov 2022 08:46:29 -0800 (PST)
+Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N5cWx0RY4z67QFM;
+        Tue,  8 Nov 2022 00:44:29 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.31; Mon, 7 Nov 2022 17:46:27 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 7 Nov
+ 2022 16:46:27 +0000
+Date:   Mon, 7 Nov 2022 16:46:26 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Yang Yingliang <yangyingliang@huawei.com>
+CC:     Jonathan Cameron <jic23@kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <corbet@lwn.net>
+Subject: Re: [PATCH RESEND] Documentation: devres: add missing IIO helpers
+Message-ID: <20221107164626.0000223b@Huawei.com>
+In-Reply-To: <7e984b00-8845-8938-1495-334c8d4db878@huawei.com>
+References: <20221103023402.1024437-1-yangyingliang@huawei.com>
+        <20221105150812.66d81f40@jic23-huawei>
+        <7e984b00-8845-8938-1495-334c8d4db878@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221103130041.2153295-3-demonsingur@gmail.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,17 +54,84 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On Mon, 7 Nov 2022 09:25:28 +0800
+Yang Yingliang <yangyingliang@huawei.com> wrote:
 
-On Thu, 03 Nov 2022 15:00:30 +0200, Cosmin Tanislav wrote:
-> From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> Hi,
 > 
-> Binding properties should have default values to let the reader
-> know if they should change it. Add them based on driver logic.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> ---
->  .../devicetree/bindings/iio/temperature/adi,ltc2983.yaml | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> On 2022/11/5 23:08, Jonathan Cameron wrote:
+> > On Thu, 3 Nov 2022 10:34:02 +0800
+> > Yang Yingliang <yangyingliang@huawei.com> wrote:
+> >  
+> >> Add some missing device-managed helpers of iio to devres.rst.
+> >>
+> >> devm_iio_kfifo_buffer_setup_ext() is introduced by commit 0a21526bc1d4 ("iio:
+> >> kfifo: add devm_iio_triggered_buffer_setup_ext variant").
+> >>
+> >> devm_iio_triggered_buffer_setup_ext() is introduced by commit 5164c7889857 ("iio:
+> >> triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants").
+> >>
+> >> devm_iio_hw_consumer_alloc() is introduced by b688c18d3006 ("IIO: hw_consumer:
+> >> add devm_iio_hw_consumer_alloc").
+> >>
+> >> devm_fwnode_iio_channel_get_by_name() is introduced by commit 1e64b9c5f9a0 ("iio:
+> >> inkern: move to fwnode properties").
+> >>
+> >> Fixes: 0a21526bc1d4 ("iio: kfifo: add devm_iio_triggered_buffer_setup_ext variant")
+> >> Fixes: 5164c7889857 ("iio: triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants")
+> >> Fixes: b688c18d3006 ("IIO: hw_consumer: add devm_iio_hw_consumer_alloc")
+> >> Fixes: 1e64b9c5f9a0 ("iio: inkern: move to fwnode properties")
+> >> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>  
+> > You didn't pick up my
+> >
+> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >
+> > or mention that my assumption is that this will go via the docs tree.  
+> I changed the commit message, it's not same as the earlier patch, so I 
+> didn't add your ACK tag.
+> It's nice that you acked this patch.
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Ah understood.  For something as small as that, just keep tags.
+
+Thanks,
+
+Jonathan
+
+> Thanks,
+> Yang
+> >
+> > Thanks,
+> >
+> > Jonathan
+> >  
+> >> ---
+> >> The previous patch link:
+> >> https://patchwork.kernel.org/project/linux-iio/patch/20220927074043.942836-1-yangyingliang@huawei.com/
+> >> ---
+> >>   Documentation/driver-api/driver-model/devres.rst | 4 ++++
+> >>   1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
+> >> index e0cb7df0f782..4249eb4239e0 100644
+> >> --- a/Documentation/driver-api/driver-model/devres.rst
+> >> +++ b/Documentation/driver-api/driver-model/devres.rst
+> >> @@ -287,12 +287,16 @@ IIO
+> >>     devm_iio_device_register()
+> >>     devm_iio_dmaengine_buffer_setup()
+> >>     devm_iio_kfifo_buffer_setup()
+> >> +  devm_iio_kfifo_buffer_setup_ext()
+> >>     devm_iio_map_array_register()
+> >>     devm_iio_triggered_buffer_setup()
+> >> +  devm_iio_triggered_buffer_setup_ext()
+> >>     devm_iio_trigger_alloc()
+> >>     devm_iio_trigger_register()
+> >>     devm_iio_channel_get()
+> >>     devm_iio_channel_get_all()
+> >> +  devm_iio_hw_consumer_alloc()
+> >> +  devm_fwnode_iio_channel_get_by_name()
+> >>   
+> >>   INPUT
+> >>     devm_input_allocate_device()  
+> > .  
+

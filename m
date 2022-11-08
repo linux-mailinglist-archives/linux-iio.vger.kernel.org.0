@@ -2,124 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D0166202A0
-	for <lists+linux-iio@lfdr.de>; Mon,  7 Nov 2022 23:53:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28BB76205E0
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 02:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230186AbiKGWxc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 17:53:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35572 "EHLO
+        id S233322AbiKHB2I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 20:28:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232159AbiKGWx3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 17:53:29 -0500
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409E21150
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 14:53:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1667861607;
-  x=1699397607;
-  h=date:to:cc:subject:message-id:references:mime-version:
-   content-transfer-encoding:in-reply-to:from;
-  bh=EtxZgYyP1Z/zGdxNBmbpgL0hxPJumC9KIJJcbfjRwOU=;
-  b=dwBq6Y1I8s80W6i9np2T/oF8kcw+iaEeNwlI5ycDkGw6J4G4wYniB3Yb
-   S7TzXTBK8M5qiLNTo23GhgDqptGIsz0vQZBzx34H1GpZ9M9qWKW0TPxeJ
-   cOkQ0tDk/7cPcggt5TU4xqEBIglV75OD537r32UWEB6rJR3VDEpj6EmIy
-   HiMlSnwuKTDlcU6w/EwKaZ3oocj9ayOC1uaS8CbSPTBEVL0Ngg+SdE/Nk
-   m+mqV6X9mSh0lEuK+nq1yXEpQz9BqVlAaedJBu/khAntjCzn1ONz8kZWU
-   kFa8WgPYSgYHeSi32tATRz0Y+v669/f72/39Kg1u4xawXZMbOnSoR3W5Z
-   w==;
-Date:   Mon, 7 Nov 2022 23:53:22 +0100
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC:     =?iso-8859-1?Q?M=E5rten?= Lindahl <Marten.Lindahl@axis.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        kernel <kernel@axis.com>
-Subject: Re: [PATCH v3 0/2] Add ps_it attributes for vcnl4040
-Message-ID: <Y2mMYqm8KzHQFYIb@axis.com>
-References: <20220926091900.1724105-1-marten.lindahl@axis.com>
- <Y2i4KmJ0Bd+WdWay@axis.com>
- <20221107164431.00005c22@Huawei.com>
+        with ESMTP id S233298AbiKHB2B (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 20:28:01 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E742AE12;
+        Mon,  7 Nov 2022 17:28:00 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 308BBB81711;
+        Tue,  8 Nov 2022 01:27:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D5AC4347C;
+        Tue,  8 Nov 2022 01:27:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667870877;
+        bh=IS8r4265qntSOAdEhp1YIe8QGcNP2ABXBfe8fRSQtmY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=kv5Bn8g+Sv4EUVJg/LEJr1dHEqzm88nZZpFJlTfP8TvNNsi4aoghxhR8TxQWsHaPz
+         0M5hadlOzxWeApyzY1q6DF/mN3Ygk0w20pLPhnHF6zstvG4F9KANe6ToN1fgXnCsqc
+         r4183khyX2ykFFpUbCTIMXdTUg13wv/z5JlS3AdB9vJ3CtLvVaiWciBCd7p9EAtOR0
+         MW/ARYnatE27aVBMDDkOh+kjbBe026cwaCHyCGLhYFbMq16XFx40cGlJJJEUhDLHkU
+         co1G0+r/dHF3FSy7bxfxSwZ/IEnedKwYRFNeqEC8uuXrPjJQ00GnppqfZlkftPKqSE
+         hBCWbmwC++dLA==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
+Cc:     lars@metafoo.de, devicetree@vger.kernel.org, robh+dt@kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        krzysztof.kozlowski+dt@linaro.org, afd@ti.com,
+        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, jic23@kernel.org
+Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
+Date:   Mon,  7 Nov 2022 19:27:29 -0600
+Message-Id: <166787084684.599230.11552570406621990817.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20221031182456.952648-1-luca@z3ntu.xyz>
+References: <20221031182456.952648-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221107164431.00005c22@Huawei.com>
-From:   Marten Lindahl <martenli@axis.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, Nov 07, 2022 at 05:44:31PM +0100, Jonathan Cameron wrote:
-> On Mon, 7 Nov 2022 08:47:54 +0100
-> Marten Lindahl <martenli@axis.com> wrote:
+On Mon, 31 Oct 2022 19:24:54 +0100, Luca Weiss wrote:
+> As in other bindings, let's use specific compatibles together with the
+> fallback compatible. Adjust the bindings for it.
 > 
-> > On Mon, Sep 26, 2022 at 11:18:58AM +0200, Mårten Lindahl wrote:
-> > > Currently there is no way for userspace to make any configuration of
-> > > the VCNL4040 sensors, but only the sensor readings are exported in
-> > > sysfs. To support configuration for proximity integration time value,
-> > > sysfs attributes for this needs to be exported.
-> > > 
-> > > To begin with the runtime power management turns both sensors (ALS, and
-> > > PS) on before reading the sensor register values and then switches
-> > > them off again. But when doing so it writes the whole register instead
-> > > of just switching the power on/off bit. This needs to be fixed in order
-> > > to make other persistent configurations.
-> > > 
-> > > Kind regards
-> > > Mårten Lindahl  
-> > 
-> > Hi!
-> > 
-> > I suspect this mail may have slipped through unnoticed since there has
-> > not been any comments on it. v2 had some minor comments which I hope I
-> > fixed.
-> > 
-> > Jonathan?
 > 
-> It's queued up. Not sure why I failed to send an email though - I'll probably
-> find it's in my outbox on the other laptop or something equally silly.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/drivers/iio/light/vcnl4000.c?h=testing&id=1a09d52bf0cab10580ab52f04f8b182f279be455
-> 
-> Jonathan
 
-Ok, then I know. Thanks!
-Kind regards
-Mårten
-> 
-> > 
-> > Kind regards
-> > Mårten
-> > 
-> > > 
-> > > Changes in v3:
-> > >  - Rename defines for ALS/PS shutdown bits
-> > >  - Add local variable for building register value
-> > > 
-> > > Changes in v2:
-> > >  - Removed unnecessary switch for chip id
-> > >  - Guard read/write sequence against potential race
-> > >  - Remove confusing boolean operation
-> > >  - Use bitmask macros instead of local field shifting
-> > >  - Use .read_avail callback instead of using IIO_CONST_ATTR
-> > >  - Skip [PATCH 2/3] iio: light: vcnl4000: Add enable attributes for vcnl4040
-> > > 
-> > > Mårten Lindahl (2):
-> > >   iio: light: vcnl4000: Preserve conf bits when toggle power
-> > >   iio: light: vcnl4000: Add ps_it attributes for vcnl4040
-> > > 
-> > >  drivers/iio/light/vcnl4000.c | 185 +++++++++++++++++++++++++++++++++--
-> > >  1 file changed, 179 insertions(+), 6 deletions(-)
-> > > 
-> > > -- 
-> > > 2.30.2
-> > >   
-> 
+Applied, thanks!
+
+[2/2] ARM: dts: qcom: pm8941: fix iadc node
+      commit: f659cd2770767c5ceabadace1b334df9de468eae
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>

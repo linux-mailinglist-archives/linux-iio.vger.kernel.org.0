@@ -2,83 +2,131 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493CE6208B5
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 06:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC835620B50
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 09:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233215AbiKHFCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Nov 2022 00:02:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
+        id S233367AbiKHIh2 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Nov 2022 03:37:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233299AbiKHFB5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 00:01:57 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E16BB6;
-        Mon,  7 Nov 2022 21:01:55 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1F3D7B818B3;
-        Tue,  8 Nov 2022 05:01:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEA8C433D6;
-        Tue,  8 Nov 2022 05:01:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667883712;
-        bh=uY2J6/i7ChrGZanEOQgMgV6TUMGexsT52cLvRz/45UQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gC5Y0e2umNjAhS6ck9kN60FveHqnT5Xf6gYjQd9awLkOD5WD0Aa0C8HUBp337qF3m
-         RDCImOipjQmodOaxkv+a4qOe/Owmb0k1pa0pGZv0bi7XnV9orraUKvq+oxldNASEOq
-         BNStE9XXJ6Btw7diToZ4NkK1J+mf7t4WMoc7JeE8N+ogqBmrppvJlLyJVZLHW7ohlm
-         dEBRUBJl2XinvAy//MLpVY3eHxyDXaWpJR4/Xeqi90DKA5Oazl3iBg1Kie1ip9Cvsw
-         1PY7ZfA8xMUtfh8u7/FcdtzLuLQgKeyJE11qBrS3BGK0tf06JxuiawGU7ZOhxBhhJx
-         AJm5YEXapuL5w==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     agross@kernel.org, angelogioacchino.delregno@collabora.com
-Cc:     Tony Luck <tony.luck@intel.com>, keescook@chromium.org,
-        marijn.suijten@somainline.org, a39.skl@gmail.com, lee@kernel.org,
-        robh+dt@kernel.org, kernel@collabora.com, ulf.hansson@linaro.org,
+        with ESMTP id S229931AbiKHIh2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 03:37:28 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFA65F89;
+        Tue,  8 Nov 2022 00:37:27 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id v17so21348660edc.8;
+        Tue, 08 Nov 2022 00:37:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rBcpmwuR/ODR32oPZ7gdO9KQiR1ADfHBqKZSH0UVkho=;
+        b=e4j1eCR1UhFtQybAXCXqziDfdLRUycEpk/7naGJdMUOu4pI6U8USOSWrdlRg1ua+IP
+         tdDQIACKuwIaWYopM6cZNwvb378Q51l1yGftXacFsJWHJl2yJH8HqYiPENH29e/Zj7DB
+         HxRA7azZ/7nXFkwC4DagnuOc82yl468l2fWKpJhluCtCpsC1TKbaL3T20lwM0ifFxqpU
+         5jDRZRVAUhft1F4qoCW5byKCPthBsfo+/M7fgcig74nWZiI2B6ZiXG5Ur5A0HbsojhSK
+         2lXaWU4y6slfgD3MyPf/xp65XNaCtXA7FISVcF+BDqPpXubeYeYqItufm1yu/RMEJyCP
+         u2yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rBcpmwuR/ODR32oPZ7gdO9KQiR1ADfHBqKZSH0UVkho=;
+        b=B+GJZKYzvZaRiuCVh0ocmCiRWI+54CGwls+kzl3pxKjhiCMBqURybJ4FxXyepKYwCf
+         s15L6teVsdcctJy4Xk6HQZ4r0948ISuceNSTDSwmcmzk1HNmGefH5sT7ztdi/6m71LA6
+         SJmdl0yi4/REpB37REtpSjR0ifeUt7kQoDAxv+guwSYhbRilhR+gB8GF4dshLUB2yUfA
+         bgCX+uluXC4die9lfIVG2YGtBt+ZnCoWUJGk84x9psd+S0FJ8fLYaKHp2AQLhb5e2H26
+         dZbn1aMVE7HFNemYxs9qvuAYMtwVDjw1e27GpXTwAPcPuG3O0SJYdoRbQxVa1cWtNAJZ
+         DvTQ==
+X-Gm-Message-State: ACrzQf2NaWkhL2SOTTWJZl+5ur0Cj34t7kS6VhT5LBTzagnLUdeSgPEW
+        BEqdMKVlhTVJOUeQ65W0KLk=
+X-Google-Smtp-Source: AMsMyM4EPEB/0Jafx+7+CGq+VrkQ04VdIij6KXFGXzOJRr7vzS9gA0A6MtNcCXd6mZfRmkj20o3Q7Q==
+X-Received: by 2002:aa7:c9cf:0:b0:462:f136:d143 with SMTP id i15-20020aa7c9cf000000b00462f136d143mr899540edt.418.1667896645648;
+        Tue, 08 Nov 2022 00:37:25 -0800 (PST)
+Received: from [10.76.84.153] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id ca12-20020a170906a3cc00b0079800b81709sm4399358ejb.219.2022.11.08.00.37.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Nov 2022 00:37:25 -0800 (PST)
+Message-ID: <ba6b64f733aaee22ff85feba467ff01ccb220913.camel@gmail.com>
+Subject: Re: [PATCH v4 11/13] dt-bindings: iio: temperature: ltc2983: use
+ generic node name in example
+From:   Cosmin Tanislav <demonsingur@gmail.com>
+To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Nuno =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-        bhupesh.sharma@linaro.org, gpiccoli@igalia.com,
-        krzysztof.kozlowski+dt@linaro.org, linux-mmc@vger.kernel.org,
-        jic23@kernel.org, srinivas.kandagatla@linaro.org, lars@metafoo.de,
-        luca@z3ntu.xyz, konrad.dybcio@somainline.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/9] MSM8956/76 and Sony Xperia X / X Compact support
-Date:   Mon,  7 Nov 2022 23:01:49 -0600
-Message-Id: <166788370693.629864.14863450709842430879.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
-References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+        linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>
+Date:   Tue, 08 Nov 2022 10:37:23 +0200
+In-Reply-To: <20221107181328.GA1354289-robh@kernel.org>
+References: <20221103130041.2153295-1-demonsingur@gmail.com>
+         <20221103130041.2153295-12-demonsingur@gmail.com>
+         <20221107181328.GA1354289-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 4 Nov 2022 18:21:13 +0100, AngeloGioacchino Del Regno wrote:
-> This series adds basic support for MSM8976 and its lower spec variant
-> MSM8956, along with two devices: the Sony Xperia X and X Compact.
-> 
-> For now, even though I do have a tree in which these two devices are
-> fully booting, only a basic console boot is provided as the rest is
-> awaiting cleanup and some more dependencies.
-> Especially every device requiring IOMMU support, like MDSS, MDP and
-> Adreno GPU cannot work with the current qcom_iommu driver, as it
-> needs some code to get the ASIDs right for MSM8956/76.
-> 
-> [...]
+On Mon, 2022-11-07 at 12:13 -0600, Rob Herring wrote:
+> On Thu, Nov 03, 2022 at 03:00:39PM +0200, Cosmin Tanislav wrote:
+> > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> >=20
+> > Examples should use the generic IIO node name. Fix it.
+> >=20
+> > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> > ---
+> > =C2=A0.../devicetree/bindings/iio/temperature/adi,ltc2983.yaml=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
+> > 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
+> > l
+> > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
+> > l
+> > index 467e165e9b0b..bd357ff28e65 100644
+> > ---
+> > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
+> > l
+> > +++
+> > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam
+> > l
+> > @@ -420,7 +420,7 @@ examples:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #address-cells =3D <1>=
+;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 #size-cells =3D <0>;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sensor_ltc2983: ltc2983@0 {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 temp@0 {
+>=20
+> The DT spec defines 'temperature-sensor'.
 
-Applied, thanks!
+Jonathan, could you maybe fix this (replace 'temp' with
+'temperature-sensor') while picking it up? Thanks.
 
-[4/9] dt-bindings: soc: qcom: qcom,smd-rpm: Use qcom,smd-channels on MSM8976
-      commit: fe7e7def2ffc2962644de7abccf2ce85b5f07509
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 compatible =3D "adi,ltc2983";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 reg =3D <0>;
+> > =C2=A0
+> > --=20
+> > 2.38.1
+> >=20
+> >=20
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>

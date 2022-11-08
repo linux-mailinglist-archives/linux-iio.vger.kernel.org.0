@@ -2,100 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF48C621676
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 15:27:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6655662178D
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 15:58:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234266AbiKHO1d (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Nov 2022 09:27:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59112 "EHLO
+        id S234160AbiKHO6O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Nov 2022 09:58:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234519AbiKHO0z (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 09:26:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB6654B21;
-        Tue,  8 Nov 2022 06:25:47 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C2B5BB81ADB;
-        Tue,  8 Nov 2022 14:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DED6C433C1;
-        Tue,  8 Nov 2022 14:25:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667917544;
-        bh=h+OS/eZgJV0ZrEr+BmOb2Klmpo3eKv9LYWIpJROuFGc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RHcUzAeQY1Qwi5CovXPIcX3MfxTd7xPUidAtjdD8jYyOrgusaZ6+EhH76mxf6wpKD
-         pGhXPpk6Tm9nU10yR5gv27xqD5LdnRkoH7U1xGpoUeCIwLId1QcrIF45sZoi1xc5oc
-         1WTvKZ2hZv0kpMdA+zxwNTUpPafgf8N8Vpyahct42uow1fsYuIgbOVdk7j/gTkB8lG
-         qOMRX+k2a/JhQtPKLqFkFrmFk8g1IiV0fixJ/irlifzkjdzwsV3C3vVMwnHwNZ09c+
-         bEZzqSbPWgAozKi5IfDWnti98NozxlQPr0JRlcachFjnbXx4PznTfHXYFONl2NbmsJ
-         eQQE1dhsAltcw==
-Date:   Tue, 8 Nov 2022 15:25:40 +0100
-From:   Lorenzo Bianconi <lorenzo@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     jic23@kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, lorenzo.bianconi@redhat.com,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: imu: st_lsm6dsx: add lsm6dsv16x
- device bindings
-Message-ID: <Y2pm5HpHu+O1cl4n@localhost.localdomain>
-References: <cover.1667745215.git.lorenzo@kernel.org>
- <8d10a63ec6abd22863ab25addd8c2f578dbc9cd9.1667745215.git.lorenzo@kernel.org>
- <a464ae19-3b18-3a34-9706-151b1512057b@linaro.org>
+        with ESMTP id S233300AbiKHO6N (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 09:58:13 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA6A2BB2B
+        for <linux-iio@vger.kernel.org>; Tue,  8 Nov 2022 06:58:13 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id ft34so2960367ejc.12
+        for <linux-iio@vger.kernel.org>; Tue, 08 Nov 2022 06:58:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=BqeZVk2okD70BbGW7OFgrxfcEv0tyUQYcfE1KmPlYlTIDxSjT+9gmnyKw4bdI0uJ9Z
+         tVi8Gy7LyxaaT620lQm6YGTEGWLnoI46/Ris8Jxa4qDjAeKHgl8jM9tE9B2gGluFhmUN
+         HGLM2aki4rSG+VnS8VOESkW+fxgw3g0t5Vcy/tmemgJcozwOqBpgRzWdfcHeOSxtvpNP
+         Jhae7DwQrxOkzeRYHu2KVBGYUkd+ADNF61eH+hzJpxG4xiqkryfMrK8fJW4DmddLXuGQ
+         nY7zXKmt/g4yk8iBtnJNETzxXHNZn2Pf00GNvoLlsEovYsvjUX2N/1dIM8JV9MZS0U1u
+         iM3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=CaKYX1iys1WXDXWMIgQwrjdsWcvx1Uj3chTmeafT4gFp5ulA2mA3zzZLdRMpHEylQy
+         LSMWSiEcDgCB73i/od+iOwXblygyPlyC/Ey7r9PtQ43jgh3nhlEyQz0kiWwLRMstJyl4
+         mO82fYvDH2QYq2Lc2xjyOEFNrsczK6rYO/LiLSq1KjG96FBu7fMl34g6bEk/rvzTmo34
+         oVlr3YjuITjNlJ8NanTa4FLh9AJ4LCQoUC9JnGMZYPsmF2LuTtFeF8VSXQZFS7cQX+hQ
+         tBQOtWt8LuiOSssMYC8w4OglaiXn/nYB4VgZhOvWhMwl0YYzIsImL1LoRYwgZeP8mU82
+         0jHw==
+X-Gm-Message-State: ACrzQf2z3MMOumD4Wv8SuwaqLKWqgKZdr7fgNrsdT0/35CX1T283w8gX
+        nJFZQ4oxqDNYt0qERVaqZwB23FJFjnFGPUZT4fw=
+X-Google-Smtp-Source: AMsMyM7mh/B0eJ7TIpP0zpf1Jw6tnUaCUVpgpOzGW2KM+0ZWr0ZucpkBAIetJk8w/mem4/olO838WX8w7mepXSYXysg=
+X-Received: by 2002:a17:906:9bc8:b0:7ad:7e6a:50ac with SMTP id
+ de8-20020a1709069bc800b007ad7e6a50acmr54893410ejc.66.1667919491551; Tue, 08
+ Nov 2022 06:58:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wTnk1G2BRa0HT9Ms"
-Content-Disposition: inline
-In-Reply-To: <a464ae19-3b18-3a34-9706-151b1512057b@linaro.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a55:d68d:0:b0:1be:d0eb:76e2 with HTTP; Tue, 8 Nov 2022
+ 06:58:10 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <joykekeli3@gmail.com>
+Date:   Tue, 8 Nov 2022 14:58:10 +0000
+Message-ID: <CAKaeHTcSTvWSiwGfS5d0smriod=8VAL2Zrhm0z5=qpmC6Ui+MA@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:636 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4851]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [joykekeli3[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [joykekeli3[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
---wTnk1G2BRa0HT9Ms
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> On 06/11/2022 15:36, Lorenzo Bianconi wrote:
-> > Add device bindings for lsm6dsv16x IMU sensor.
->=20
-> Drop redundant, second "device bindings" in subject.  So the subject
-> should be (also with different prefix):
-
-ack
-
->=20
-> dt-bindings: iio: imu:: st,lsm6dsx.yaml: add lsm6dsv16x
->=20
-> With subject fixes:
->=20
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> Best regards,
-> Krzysztof
->=20
-
-@Jonathan: do you want me send v2 or are you going to take care of it?
-
-Regards,
-Lorenzo
-
---wTnk1G2BRa0HT9Ms
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCY2pm4QAKCRA6cBh0uS2t
-rE2vAP9BE6X9wPoL+D+iHzKiPQ1cakg+w07uzTgSIT+3k/eriAD6AsdaLY8NEAsf
-ZlSKLVLQPO6rI87pdP8w0DLe6vzLLwo=
-=Uv2j
------END PGP SIGNATURE-----
-
---wTnk1G2BRa0HT9Ms--
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham

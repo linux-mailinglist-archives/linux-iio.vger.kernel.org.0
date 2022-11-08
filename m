@@ -2,288 +2,188 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC207620B81
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 09:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5672F620BB9
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 10:07:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233644AbiKHIvX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Nov 2022 03:51:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53692 "EHLO
+        id S233259AbiKHJG7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Nov 2022 04:06:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233643AbiKHIvX (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 03:51:23 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F602DA86;
-        Tue,  8 Nov 2022 00:51:21 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id s12so11774167edd.5;
-        Tue, 08 Nov 2022 00:51:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kRzenHJKW7SUmdyxPbW7TBO+s2zFUo40TmdxQBfees4=;
-        b=FpfU2s1kOdyaiPi83ZwN2JP4LuVvpVlBJjB62ZrBm0ngLIjpE74ghzde6YHiQ/dcSK
-         WBt0mX+FC7yVlqZkImpQvsHfRmzyBC2iU8HwhkexueNeqjA1OGIvc29R8h+PqikZXLns
-         cKGDxNw9+g3frz7hQTkdsnqjqbZT0zQgl5QK+vNcIAHg6DudOswXsVZ+Pw9ZOtCcrqjn
-         qZJHYX6egfh1W4GeofnmsDzGPM1OFaRW8EtVLT/dWRJAO3ZvscxABWvrYC2eLJS5b1D1
-         z0AAMwvod1jOqU+8/H8bm0pppXg3uNwEVlnlXKIUSUiKEekAVw5WKLj+gGxl9+6cQOjn
-         ZaoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kRzenHJKW7SUmdyxPbW7TBO+s2zFUo40TmdxQBfees4=;
-        b=u+Bw+eWOCC70sSiROMRmgRibjpWqLmDGdanOYQ3i+agKiKp5VUP8iKGqSonyii2CUd
-         /7b3vnIqQmBxlwZWiK+13JYcAcZ3vEnJw4/2lxYKP2Jk+F29vX526yGsLbq9KXTy7vqo
-         mG+fYda30wO43dHCnEvutPy1fosoDlwB1TTrX9aREUCMs+NuJdRc0lnNiyzSAgoxeM34
-         bO8QpzfsCgTVG2zjNRFRk90IkcJkoC+UvavB57pu/TMpmf1u0ZfLbqsybkjGGuTKVxii
-         9nAM6tKMgJxePDIYafFl6OPwogPKBEou5EGYxFMUMNc4JrjzpqiiszIrG3pqpAsNpApm
-         Ss4w==
-X-Gm-Message-State: ACrzQf0nc80LBf7rNYKQOc/82XD8lqbR+RxJnCmrsONd3Gaf1+BZM2AJ
-        9OEQdbI2dXkA4y7KhcY6JJA=
-X-Google-Smtp-Source: AMsMyM65xiO+iPV1WqAee4U6PJ1Ob7mwksc2UNM7XMP8gkVUz+Me/KxMGngv5ETGeo3Vw21D2bkFzQ==
-X-Received: by 2002:a05:6402:538f:b0:444:c17b:1665 with SMTP id ew15-20020a056402538f00b00444c17b1665mr55539158edb.98.1667897480354;
-        Tue, 08 Nov 2022 00:51:20 -0800 (PST)
-Received: from [10.76.84.153] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id ky8-20020a170907778800b00782539a02absm4351636ejc.194.2022.11.08.00.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Nov 2022 00:51:20 -0800 (PST)
-Message-ID: <c01b0e56563b2b6f8ef48ad90977646706a2c933.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
-From:   Cosmin Tanislav <demonsingur@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Tue, 08 Nov 2022 10:51:18 +0200
-In-Reply-To: <20221106154634.2286faf3@jic23-huawei>
-References: <20221103094436.2136698-1-demonsingur@gmail.com>
-         <20221103094436.2136698-2-demonsingur@gmail.com>
-         <20221106154634.2286faf3@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1 
+        with ESMTP id S233654AbiKHJGv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 04:06:51 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423281D665;
+        Tue,  8 Nov 2022 01:06:50 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 5A4366602339;
+        Tue,  8 Nov 2022 09:06:47 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1667898408;
+        bh=ueI+2JlJ8usQR2qw2C5uUQ8cXmpDFvzCuDuDhHJLK6k=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Cdl0yXa75sc5uC9OZZNK8dJnq9kBEwkNsoj/Xag2CA0BWHRCUKt4WkSQMHUQ845GQ
+         saCu/BmwHKUDjX7dn4NleewUVVhHWtTsR8WSm5WXIfxx2xOUoxwp70wTprD5nYUmo5
+         5BJ0TWZqFPHIn4b3mG5h7SGb4ECS+0OMpVq+TJ1cLXqEdgshDQgaYE2P5ALSeD4xP5
+         zTaVLgDl2apypZen3F4dFpFNCUUGqR8WlZeAO95Iv3UDSAUsP0xnf/SuKzkYV6SACG
+         sHlvSzh5tLzdSkKXc6tSR6WEabp5Rkoh+6NZf6Qa82pTabMR+oE+Zz59tLNSjjBH4N
+         8aZJaOk6t1UcA==
+Message-ID: <b99a3071-0982-a1bd-f3b9-14e2a8fdd904@collabora.com>
+Date:   Tue, 8 Nov 2022 10:06:45 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH 8/9] arm64: dts: qcom: Add DTS for MSM8976 and MSM8956
+ SoCs
+Content-Language: en-US
+To:     Bjorn Andersson <andersson@kernel.org>
+Cc:     agross@kernel.org, konrad.dybcio@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lee@kernel.org, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
+        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+ <20221104172122.252761-9-angelogioacchino.delregno@collabora.com>
+ <20221108045508.hnnwt22m6ceg5u4y@builder.lan>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20221108045508.hnnwt22m6ceg5u4y@builder.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 2022-11-06 at 15:46 +0000, Jonathan Cameron wrote:
-> On Thu,  3 Nov 2022 11:44:35 +0200
-> Cosmin Tanislav <demonsingur@gmail.com> wrote:
->=20
-> > From: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> >=20
-> > The AD74115H is a single-channel, software-configurable, input and
-> > output device for industrial control applications. The AD74115H
-> > provides a wide range of use cases, integrated on a single chip.
-> >=20
-> > These use cases include analog output, analog input, digital output,
-> > digital input, resistance temperature detector (RTD), and thermocouple
-> > measurement capability. The AD74115H also has an integrated HART modem.
-> >=20
-> > A serial peripheral interface (SPI) is used to handle all communication=
-s
-> > to the device, including communications with the HART modem. The digita=
-l
-> > input and digital outputs can be accessed via the SPI or the
-> > general-purpose input and output (GPIO) pins to support higher
-> > speed data rates.
-> >=20
-> > The device features a 16-bit, sigma-delta analog-to-digital converter
-> > (ADC) and a 14-bit digital-to-analog converter (DAC).
-> > The AD74115H contains a high accuracy 2.5 V on-chip reference that can
-> > be used as the DAC and ADC reference.
-> >=20
-> > Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
->=20
-> Hi Cosmin,
->=20
-> A few questions inline.  Complex device so I'll doubt we'll ever get this
-> binding to be as tidy as for simpler devices.  Hence most of the below ar=
-e
-> suggestions rather than requirements from me.
->=20
-> Jonathan
->=20
-> > ---
-> >  .../bindings/iio/addac/adi,ad74115.yaml       | 370 ++++++++++++++++++
-> >  MAINTAINERS                                   |   7 +
-> >  2 files changed, 377 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/addac/adi,ad7=
-4115.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/addac/adi,ad74115.ya=
-ml b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> > new file mode 100644
-> > index 000000000000..621f11d5c1f3
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> > @@ -0,0 +1,370 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/addac/adi,ad74115.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices AD74115H device
-> > +
-> > +maintainers:
-> > +  - Cosmin Tanislav <cosmin.tanislav@analog.com>
-> > +
-> > +description: |
-> > +  The AD74115H is a single-channel software configurable input/output
-> > +  device for industrial control applications. It contains functionalit=
-y for
-> > +  analog output, analog input, digital output, digital input, resistan=
-ce
-> > +  temperature detector, and thermocouple measurements integrated into =
-a single
-> > +  chip solution with an SPI interface. The device features a 16-bit AD=
-C and a
-> > +  14-bit DAC.
-> > +
-> > +    https://www.analog.com/en/products/ad74115h.html
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - adi,ad74115h
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
->=20
-> I'm not seeing any child nodes, so why do we need these two?
->=20
+Il 08/11/22 05:55, Bjorn Andersson ha scritto:
+> On Fri, Nov 04, 2022 at 06:21:21PM +0100, AngeloGioacchino Del Regno wrote:
+>> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>>
+>> This commit adds device trees for MSM8956 and MSM8976 SoCs.
+>> They are *almost* identical, with minor differences, such as
+>> MSM8956 having two A72 cores less.
+>>
+>> However, there is a bug in Sony Loire bootloader that requires presence
+>> of all 8 cores in the cpu{} node, so these will not be deleted.
+>>
+>> Co-developed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+>> Co-developed-by: Marijn Suijten <marijn.suijten@somainline.org>
+>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Will fix.
+Hello,
 
-> > +
-> > +  avdd-supply: true
-> > +  avcc-supply: true
-> > +  dvcc-supply: true
-> > +  aldo1v8-supply: true
->=20
-> aldo1v8 is an output pin. "1.8 V Analog LDO Output. Do not use ALDO1V8 ex=
-ternally."
-> The associated input is avcc.  Given we shouldn't connect anything to the=
- pin,
-> we don't want it in the binding docs
->=20
+Thanks to everyone for the feedback!
+I'll send a new version this Friday, according to the received reviews.
 
-Will fix.
+In the meanwhile, a few answers will follow, check below.
 
-> > +  dovdd-supply: true
-> > +  refin-supply: true
-> > +
->=20
-> ...
->=20
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description: |
-> > +      Conversion range for ADC conversion 2.
-> > +      0 - 0V to 12V
-> > +      1 - -12V to +12V
-> > +      2 - -2.5V to +2.5V
-> > +      3 - -2.5V to 0V
-> > +      4 - 0V to 2.5V
-> > +      5 - 0V to 0.625V
-> > +      6 - -104mV to +104mV
-> > +      7 - 0V to 12V
->=20
-> For a lot of similar cases we handle these numerically to give
-> a human readable dts.  Is there a strong reason not to do so here (in mv)
->=20
+>> ---
+>>   arch/arm64/boot/dts/qcom/msm8956.dtsi |   18 +
+>>   arch/arm64/boot/dts/qcom/msm8976.dtsi | 1208 +++++++++++++++++++++++++
+>>   2 files changed, 1226 insertions(+)
+>>   create mode 100644 arch/arm64/boot/dts/qcom/msm8956.dtsi
+>>   create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
+>>
 
-I used this approach mostly because it maps dirrectly to register values
-and because it's easier to parse. dts isn't exactly nice at handling
-negative values. I can switch it to mv array if you insist.
+..snip..
 
->=20
-> > +    minimum: 0
-> > +    maximum: 7
-> > +    default: 0
-> > +
-> > +  adi,sense-agnd-buffer-lp:
-> lp is a little ambiguous, given we have a habit of using it for low pass
-> in filters etc. Perhaps worth spelling these out?
->      adi,sens-agnd-buffer-low-power etc?
+>> +		cpu-map {
+>> +			cluster0 {
+>> +				core0 {
+>> +					cpu = <&CPU0>;
+>> +				};
+>> +
+>> +				core1 {
+>> +					cpu = <&CPU1>;
+>> +				};
+>> +
+>> +				core2 {
+>> +					cpu = <&CPU2>;
+>> +				};
+>> +
+>> +				core3 {
+>> +					cpu = <&CPU3>;
+>> +				};
+>> +			};
+>> +
+>> +			cluster1 {
+> 
+> Are you sure that the two clusters should be expressed separately in the
+> cpu-map?
+> 
 
-Will fix.
+This SoC has two clusters with split L2 cache, can shutdown one cluster CPU, or
+the L2 cache for one cluster, or one entire cluster, hence can also manage idle
+states on a per-cluster basis.
 
->=20
-> > +    type: boolean
-> > +    description: |
-> > +      Whether to enable low-power buffered mode for the AGND sense pin=
-.
-> > +
-> > +  adi,lf-buffer-lp:
-> > +    type: boolean
-> > +    description: |
-> > +      Whether to enable low-power buffered mode for the low-side filte=
-red
-> > +      sense pin.
-> > +
-> > +  adi,hf-buffer-lp:
-> > +    type: boolean
-> > +    description: |
-> > +      Whether to enable low-power buffered mode for the high-side filt=
-ered
-> > +      sense pin.
-> > +
-> > +  adi,ext2-buffer-lp:
-> > +    type: boolean
-> > +    description: Whether to enable low-power buffered mode for the EXT=
-2 pin.
-> > +
-> > +  adi,ext1-buffer-lp:
-> > +    type: boolean
-> > +    description: Whether to enable low-power buffered mode for the EXT=
-1 pin.
->=20
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - spi-cpol
-> > +  - avdd-supply
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +  - if:
-> > +      properties:
-> > +        adi,digital-input-sink-range-high: true
-> > +    then:
-> > +      properties:
-> > +        adi,digital-input-sink-microamp:
-> > +          maximum: 7400
-> > +
-> > +additionalProperties: false
->=20
-> Does this need to be unevalutatedProperties to allow
-> for the extra ones in spi-periphera-props.yaml?
->=20
+Also, as per bindings/cpu/cpu-topology.txt - I am here describing the hierarchy
+of CPUs in MSM8976, containing one "little" cluster, composed of four slower CPU
+cores and its own L2 cache slice, and one "big" cluster, composed of four (8976)
+or two (8956) faster CPU cores and its own L2 cache slice.
 
-Will fix.
+That said, I am sure that the two clusters shall be expressed separately.
 
-> > +
+Am I underestimating and/or ignoring anything?
 
+>> +				core0 {
+>> +					cpu = <&CPU4>;
+>> +				};
+>> +
+
+..snip..
+
+>> +
+>> +	reserved-memory {
+>> +		#address-cells = <2>;
+>> +		#size-cells = <2>;
+>> +		ranges;
+>> +
+>> +		cont_splash_mem: memory@83000000 {
+> 
+> memory is "reserved", please use specific node names for these regions.
+> 
+
+Agreed.
+
+>> +			reg = <0x0 0x83000000 0x0 0x2800000>;
+>> +		};
+> [..]
+>> +		apcs: syscon@b011000 {
+>> +			compatible = "syscon";
+> 
+> Why not use qcom,msm8976-apcs-kpss-global here?
+> 
+
+There's no reason not to use the suggested compatible. I'm sorry for the miss.
+
+>> +			reg = <0x0b011000 0x1000>;
+>> +		};
+> [..]
+>> +
+>> +		imem: imem@8600000 {
+>> +			compatible = "simple-mfd";
+> 
+> sram/qcom,imem.yaml please.
+> 
+
+Will do on v2.
+
+Regards,
+Angelo

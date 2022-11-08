@@ -2,102 +2,390 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1BA620822
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 05:15:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5B162089D
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 05:59:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbiKHEPT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 23:15:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S233368AbiKHE7T (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 23:59:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233389AbiKHEOo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 23:14:44 -0500
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA6831EDD
-        for <linux-iio@vger.kernel.org>; Mon,  7 Nov 2022 20:14:43 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id c15-20020a17090a1d0f00b0021365864446so12277355pjd.4
-        for <linux-iio@vger.kernel.org>; Mon, 07 Nov 2022 20:14:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=edgeble-ai.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DeXjuqYbv+Cb2PzWLDv8ZdQcHNUBRbHrV9FuI04HiFk=;
-        b=xrvPoM2tveDNMWjBFoOnZxZ9+swsBuT1Qj7K9yL1aecAL25mUzlcdaRunjKd9PsgvH
-         PK6UGjKuUkb6ZbHelumE+CriPl9dIVBYX+BMpHEzIHQDA21UdTN5nAflmQaMn2zBvlwK
-         4AOsYgqHTyVa1MOu3exEkIbqI82w89Ays+JQUXFZfXSzUk5I1SNfjFg0qFfe6WAobrJ9
-         WUHyVaOZ4WJv1UU/RwqO4W3NSYT8R3PcwrO7eUiRySJKzfd0nTozZ4CkmwuzcK3ovt7K
-         75TR3SWzehXXNtHYAAK7rkEVkyiL+ALXWBMSjZbalJOeXvB7rN8jkHKyHSl2YTxPrsGN
-         c6DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DeXjuqYbv+Cb2PzWLDv8ZdQcHNUBRbHrV9FuI04HiFk=;
-        b=NVAU7N2J4hCdZ8ucQUT7rWnD+q8TujUT8xB1KvrWOFMuLCZglxbm33m9vWzBEoE4YX
-         WrOJ8dgmtEkezG3GrUL+g8y26FaiEVmYP4gBi6v1j2bG2K8spfxRxvvE5t5fMpYFv0UF
-         1hLW8eafE5UgL+27SquP/O8msUGrH+50tEmKQe0rJrz9cKWLuOc5SU882O1USphjr+aG
-         E/wepvx6s9b/iLfGjMirsqDn90aOMr6D5pokrP2B5gmkijYB7YYMQ2UM9ApqU5LPLFyJ
-         smQ0lctONoGrS3qBGpqkIw09HplLMLUhaNWtrnGw4T4y/zk/Qhuldgwcqco9ux/loTBu
-         Lfmg==
-X-Gm-Message-State: ACrzQf3jROnQ+D3JniURApmujOL+vtJU6ZX0mRsOCzNXmy6gQ7CIW+W1
-        n/f851Y1LaS+Kni3s9jO4W0x4A==
-X-Google-Smtp-Source: AMsMyM49Cy0rzn7lDtrz7hhhWGHfpSa9jMSze1nNUDTy+W0egtDAsPT0pLjV0pdA5Le49S279Alv2Q==
-X-Received: by 2002:a17:90a:3c8a:b0:213:8043:4b7f with SMTP id g10-20020a17090a3c8a00b0021380434b7fmr63212085pjc.99.1667880883405;
-        Mon, 07 Nov 2022 20:14:43 -0800 (PST)
-Received: from localhost.localdomain ([2405:201:c00a:a809:63d1:2564:ea55:4e97])
-        by smtp.gmail.com with ESMTPSA id e5-20020a170902b78500b00186ac812ab0sm5799783pls.83.2022.11.07.20.14.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Nov 2022 20:14:43 -0800 (PST)
-From:   Jagan Teki <jagan@edgeble.ai>
-To:     Heiko Stuebner <heiko@sntech.de>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        Johan Jonker <jbx6244@gmail.com>,
-        Jagan Teki <jagan@edgeble.ai>, linux-iio@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: [PATCH v7 03/10] dt-bindings: iio: adc: rockchip-saradc: Add saradc for rv1126
-Date:   Tue,  8 Nov 2022 09:43:53 +0530
-Message-Id: <20221108041400.157052-4-jagan@edgeble.ai>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221108041400.157052-1-jagan@edgeble.ai>
-References: <20221108041400.157052-1-jagan@edgeble.ai>
+        with ESMTP id S233382AbiKHE6y (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 23:58:54 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8569E40448;
+        Mon,  7 Nov 2022 20:55:15 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 23556B818F8;
+        Tue,  8 Nov 2022 04:55:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3F2C433D6;
+        Tue,  8 Nov 2022 04:55:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1667883312;
+        bh=xkR30a+entgy1vXyIX0srbFHhSZZjvV2+o31MTjdbMM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QNAC1UX1ZD1iQhthMdjWT5RYSzCnzWVQ4pyMyHLWaLhx4mesgWRR600qBYaX7BAvY
+         +v8KKzPPSsej6S8h9Wwnwx5l6gGlFUIg/YgJlpxZ1lSsvQLIneoOHsV3p6XmrGMo9H
+         kUYOSYvpnK1pYnZHTZw0sWRopWb5qUCQrNL++1Qe34gTpmd8t4alBis8QzyWZOhMS/
+         fR7I2U2bmNjvhRyLmikUi5tk2MfqEIlZAdcN97h8Ilb6gW/2rMe/U7OtkrrMaX9zVk
+         dMf25nqpJifkAyUFi2TxHvZPl+DK+YxYK+tdGRJCBMq0tnJG2my7lkOI9wG9zsK5AQ
+         yoSASNzJJcC2w==
+Date:   Mon, 7 Nov 2022 22:55:08 -0600
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     agross@kernel.org, konrad.dybcio@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lee@kernel.org, ulf.hansson@linaro.org,
+        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
+        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>
+Subject: Re: [PATCH 8/9] arm64: dts: qcom: Add DTS for MSM8976 and MSM8956
+ SoCs
+Message-ID: <20221108045508.hnnwt22m6ceg5u4y@builder.lan>
+References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
+ <20221104172122.252761-9-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221104172122.252761-9-angelogioacchino.delregno@collabora.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add saradc compatible string for rockchip rv1126.
+On Fri, Nov 04, 2022 at 06:21:21PM +0100, AngeloGioacchino Del Regno wrote:
+> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> 
+> This commit adds device trees for MSM8956 and MSM8976 SoCs.
+> They are *almost* identical, with minor differences, such as
+> MSM8956 having two A72 cores less.
+> 
+> However, there is a bug in Sony Loire bootloader that requires presence
+> of all 8 cores in the cpu{} node, so these will not be deleted.
+> 
+> Co-developed-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> Co-developed-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8956.dtsi |   18 +
+>  arch/arm64/boot/dts/qcom/msm8976.dtsi | 1208 +++++++++++++++++++++++++
+>  2 files changed, 1226 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/qcom/msm8956.dtsi
+>  create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8956.dtsi b/arch/arm64/boot/dts/qcom/msm8956.dtsi
+> new file mode 100644
+> index 000000000000..eb2c1345172c
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/msm8956.dtsi
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (c) 2016-2022, AngeloGioacchino Del Regno
+> + *                          <angelogioacchino.delregno@somainline.org>
+> + * Copyright (c) 2022, Konrad Dybcio <konrad.dybcio@somainline.org>
+> + * Copyright (c) 2022, Marijn Suijten <marijn.suijten@somainline.org>
+> + */
+> +
+> +#include "msm8976.dtsi"
+> +
+> +&pmu {
+> +	interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
+> +};
+> +
+> +/*
+> + * You might be wondering.. why is it so empty out there?
+> + * Well, the SoCs are almost identical.
+> + */
+> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> new file mode 100644
+> index 000000000000..e084a3a78f18
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> @@ -0,0 +1,1208 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (c) 2016-2022, AngeloGioacchino Del Regno
+> + *                          <angelogioacchino.delregno@somainline.org>
+> + * Copyright (c) 2022, Konrad Dybcio <konrad.dybcio@somainline.org>
+> + * Copyright (c) 2022, Marijn Suijten <marijn.suijten@somainline.org>
+> + */
+> +
+> +#include <dt-bindings/clock/qcom,gcc-msm8976.h>
+> +#include <dt-bindings/clock/qcom,rpmcc.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/power/qcom-rpmpd.h>
+> +
+> +/ {
+> +	interrupt-parent = <&intc>;
+> +	#address-cells = <2>;
+> +	#size-cells = <2>;
+> +
+> +	chosen { };
+> +
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		CPU0: cpu@0 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x0>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&little_cpu_sleep_0>;
+> +			capacity-dmips-mhz = <573>;
+> +			next-level-cache = <&l2_0>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU1: cpu@1 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x1>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&little_cpu_sleep_0>;
+> +			capacity-dmips-mhz = <573>;
+> +			next-level-cache = <&l2_0>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU2: cpu@2 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x2>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&little_cpu_sleep_0>;
+> +			capacity-dmips-mhz = <573>;
+> +			next-level-cache = <&l2_0>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU3: cpu@3 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a53";
+> +			reg = <0x3>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&little_cpu_sleep_0>;
+> +			capacity-dmips-mhz = <573>;
+> +			next-level-cache = <&l2_0>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU4: cpu@100 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x100>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&l2_1>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU5: cpu@101 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x101>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&l2_1>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU6: cpu@102 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x102>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&l2_1>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		CPU7: cpu@103 {
+> +			device_type = "cpu";
+> +			compatible = "arm,cortex-a72";
+> +			reg = <0x103>;
+> +			enable-method = "psci";
+> +			cpu-idle-states = <&big_cpu_sleep_0 &big_cpu_sleep_1>;
+> +			capacity-dmips-mhz = <1024>;
+> +			next-level-cache = <&l2_1>;
+> +			#cooling-cells = <2>;
+> +		};
+> +
+> +		cpu-map {
+> +			cluster0 {
+> +				core0 {
+> +					cpu = <&CPU0>;
+> +				};
+> +
+> +				core1 {
+> +					cpu = <&CPU1>;
+> +				};
+> +
+> +				core2 {
+> +					cpu = <&CPU2>;
+> +				};
+> +
+> +				core3 {
+> +					cpu = <&CPU3>;
+> +				};
+> +			};
+> +
+> +			cluster1 {
 
-Cc: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Jagan Teki <jagan@edgeble.ai>
----
-Changes for v7:
-- new patch
+Are you sure that the two clusters should be expressed separately in the
+cpu-map?
 
- Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml | 1 +
- 1 file changed, 1 insertion(+)
+> +				core0 {
+> +					cpu = <&CPU4>;
+> +				};
+> +
+> +				core1 {
+> +					cpu = <&CPU5>;
+> +				};
+> +
+> +				core2 {
+> +					cpu = <&CPU6>;
+> +				};
+> +
+> +				core3 {
+> +					cpu = <&CPU7>;
+> +				};
+> +			};
+> +		};
+> +
+> +		idle-states {
+> +			entry-method = "psci";
+> +
+> +			little_cpu_sleep_0: cpu-sleep-0-0 {
+> +				compatible = "arm,idle-state";
+> +				idle-state-name = "little-power-collapse";
+> +				arm,psci-suspend-param = <0x40000003>;
+> +				entry-latency-us = <181>;
+> +				exit-latency-us = <149>;
+> +				min-residency-us = <703>;
+> +				local-timer-stop;
+> +			};
+> +
+> +			big_cpu_sleep_0: cpu-sleep-1-0 {
+> +				compatible = "arm,idle-state";
+> +				idle-state-name = "big-retention";
+> +				arm,psci-suspend-param = <0x00000002>;
+> +				entry-latency-us = <142>;
+> +				exit-latency-us = <99>;
+> +				min-residency-us = <242>;
+> +			};
+> +
+> +			big_cpu_sleep_1: cpu-sleep-1-1 {
+> +				compatible = "arm,idle-state";
+> +				idle-state-name = "big-power-collapse";
+> +				arm,psci-suspend-param = <0x40000003>;
+> +				entry-latency-us = <158>;
+> +				exit-latency-us = <144>;
+> +				min-residency-us = <863>;
+> +				local-timer-stop;
+> +			};
+> +		};
+> +
+> +		l2_0: l2-cache0 {
+> +			compatible = "cache";
+> +			cache-level = <2>;
+> +		};
+> +
+> +		l2_1: l2-cache1 {
+> +			compatible = "cache";
+> +			cache-level = <2>;
+> +		};
+> +	};
+> +
+> +	firmware {
+> +		scm: scm {
+> +			compatible = "qcom,scm-msm8976", "qcom,scm";
+> +			clocks = <&gcc GCC_CRYPTO_CLK>,
+> +				 <&gcc GCC_CRYPTO_AXI_CLK>,
+> +				 <&gcc GCC_CRYPTO_AHB_CLK>;
+> +			clock-names = "core", "bus", "iface";
+> +			#reset-cells = <1>;
+> +
+> +			qcom,dload-mode = <&tcsr 0x6100>;
+> +		};
+> +	};
+> +
+> +	memory@80000000 {
+> +		device_type = "memory";
+> +		/* We expect the bootloader to fill in the size */
+> +		reg = <0x0 0x80000000 0x0 0x0>;
+> +	};
+> +
+> +	pmu: pmu {
+> +		compatible = "arm,armv8-pmuv3";
+> +		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
+> +	};
+> +
+> +	psci {
+> +		compatible = "arm,psci-1.0";
+> +		method = "smc";
+> +	};
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		cont_splash_mem: memory@83000000 {
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
-index e512a14e41b4..da50b529c157 100644
---- a/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/rockchip-saradc.yaml
-@@ -22,6 +22,7 @@ properties:
-               - rockchip,rk3328-saradc
-               - rockchip,rk3568-saradc
-               - rockchip,rv1108-saradc
-+              - rockchip,rv1126-saradc
-           - const: rockchip,rk3399-saradc
- 
-   reg:
--- 
-2.25.1
+memory is "reserved", please use specific node names for these regions.
 
+> +			reg = <0x0 0x83000000 0x0 0x2800000>;
+> +		};
+[..]
+> +		apcs: syscon@b011000 {
+> +			compatible = "syscon";
+
+Why not use qcom,msm8976-apcs-kpss-global here?
+
+> +			reg = <0x0b011000 0x1000>;
+> +		};
+[..]
+> +
+> +		imem: imem@8600000 {
+> +			compatible = "simple-mfd";
+
+sram/qcom,imem.yaml please.
+
+> +			reg = <0x08600000 0x1000>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			ranges = <0 0x08600000 0x1000>;
+> +
+> +			pil-reloc@94c {
+> +				compatible = "qcom,pil-reloc-info";
+> +				reg = <0x94c 0xc8>;
+> +			};
+> +		};
+> +	};
+> +
+
+Regards,
+Bjorn

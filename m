@@ -2,60 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC4A6208A3
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 06:00:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 493CE6208B5
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 06:02:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbiKHFAJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 8 Nov 2022 00:00:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
+        id S233215AbiKHFCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 8 Nov 2022 00:02:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233247AbiKHE7n (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 23:59:43 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81785186FF;
-        Mon,  7 Nov 2022 20:58:32 -0800 (PST)
+        with ESMTP id S233299AbiKHFB5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 8 Nov 2022 00:01:57 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E16BB6;
+        Mon,  7 Nov 2022 21:01:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A78E61477;
-        Tue,  8 Nov 2022 04:58:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD9CC433C1;
-        Tue,  8 Nov 2022 04:58:30 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1F3D7B818B3;
+        Tue,  8 Nov 2022 05:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEA8C433D6;
+        Tue,  8 Nov 2022 05:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667883511;
-        bh=T4tDRWuZasu03wuxxewbLmmVZ6MOIYipTxzVqzujbXM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AmfeWUwRvFgJh5VXDeQMnFZRcTIXVV3ffxBkUKO4l/rq64c7rCSVYCDIvi0BFptlu
-         vWhELfhba/fleaQ4YARNEEaCo+WiECp7a6TJMT6FreZgBNbbz/3ryMdZII+z7AcES4
-         07rEHS3NjKNVkQeZ8h7Fqxt/KbhKX8U2psmZqB4MrKYwEvjdkrjikmQJfem2blKRJz
-         ZATAAKo7UdVMfH1MHTrw+Et57rECE1wzrhk7fGQGGF2IMzEsai2jdX21N0mj1iiTqh
-         qVzsm6GUJBqvA7NWtrRN4l5AIPeEzUmCp6Yk7FBQlsJbhOYb+vlU7drNgy0qJIS6YT
-         8BbLArK7UZztg==
-Date:   Mon, 7 Nov 2022 22:58:28 -0600
+        s=k20201202; t=1667883712;
+        bh=uY2J6/i7ChrGZanEOQgMgV6TUMGexsT52cLvRz/45UQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=gC5Y0e2umNjAhS6ck9kN60FveHqnT5Xf6gYjQd9awLkOD5WD0Aa0C8HUBp337qF3m
+         RDCImOipjQmodOaxkv+a4qOe/Owmb0k1pa0pGZv0bi7XnV9orraUKvq+oxldNASEOq
+         BNStE9XXJ6Btw7diToZ4NkK1J+mf7t4WMoc7JeE8N+ogqBmrppvJlLyJVZLHW7ohlm
+         dEBRUBJl2XinvAy//MLpVY3eHxyDXaWpJR4/Xeqi90DKA5Oazl3iBg1Kie1ip9Cvsw
+         1PY7ZfA8xMUtfh8u7/FcdtzLuLQgKeyJE11qBrS3BGK0tf06JxuiawGU7ZOhxBhhJx
+         AJm5YEXapuL5w==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     agross@kernel.org, konrad.dybcio@somainline.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        lee@kernel.org, ulf.hansson@linaro.org,
-        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
-        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        bhupesh.sharma@linaro.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        kernel@collabora.com, luca@z3ntu.xyz, a39.skl@gmail.com,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>
-Subject: Re: [PATCH 9/9] arm64: dts: qcom: Add support for SONY Xperia X/X
- Compact
-Message-ID: <20221108045828.4cwq4lyskfxc5fdk@builder.lan>
+To:     agross@kernel.org, angelogioacchino.delregno@collabora.com
+Cc:     Tony Luck <tony.luck@intel.com>, keescook@chromium.org,
+        marijn.suijten@somainline.org, a39.skl@gmail.com, lee@kernel.org,
+        robh+dt@kernel.org, kernel@collabora.com, ulf.hansson@linaro.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bhupesh.sharma@linaro.org, gpiccoli@igalia.com,
+        krzysztof.kozlowski+dt@linaro.org, linux-mmc@vger.kernel.org,
+        jic23@kernel.org, srinivas.kandagatla@linaro.org, lars@metafoo.de,
+        luca@z3ntu.xyz, konrad.dybcio@somainline.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/9] MSM8956/76 and Sony Xperia X / X Compact support
+Date:   Mon,  7 Nov 2022 23:01:49 -0600
+Message-Id: <166788370693.629864.14863450709842430879.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
 References: <20221104172122.252761-1-angelogioacchino.delregno@collabora.com>
- <20221104172122.252761-10-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221104172122.252761-10-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,45 +61,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Nov 04, 2022 at 06:21:22PM +0100, AngeloGioacchino Del Regno wrote:
-[..]
-> +&rpm_requests {
-> +	pm8950_regulators: regulators {
-[..]
-> +		pm8950_l8: l8 {
-> +			regulator-min-microvolt = <2900000>;
-> +			regulator-max-microvolt = <2900000>;
+On Fri, 4 Nov 2022 18:21:13 +0100, AngeloGioacchino Del Regno wrote:
+> This series adds basic support for MSM8976 and its lower spec variant
+> MSM8956, along with two devices: the Sony Xperia X and X Compact.
+> 
+> For now, even though I do have a tree in which these two devices are
+> fully booting, only a basic console boot is provided as the rest is
+> awaiting cleanup and some more dependencies.
+> Especially every device requiring IOMMU support, like MDSS, MDP and
+> Adreno GPU cannot work with the current qcom_iommu driver, as it
+> needs some code to get the ASIDs right for MSM8956/76.
+> 
+> [...]
 
-Are you sure you don't need regulator-allow-set-load and a
-regulator-system-load to force vmmc-supply of your sdhc up to HPM?
+Applied, thanks!
 
-We've had this issue a few too many times...
+[4/9] dt-bindings: soc: qcom: qcom,smd-rpm: Use qcom,smd-channels on MSM8976
+      commit: fe7e7def2ffc2962644de7abccf2ce85b5f07509
 
-> +		};
-> +
-> +		pm8950_l9: l9 {
-> +			regulator-min-microvolt = <2000000>;
-> +			regulator-max-microvolt = <2400000>;
-> +		};
-> +
-> +		pm8950_l10: l10 {
-> +			regulator-min-microvolt = <2500000>;
-> +			regulator-max-microvolt = <2900000>;
-> +		};
-> +
-> +		pm8950_l11: l11 {
-> +			regulator-min-microvolt = <2950000>;
-> +			regulator-max-microvolt = <2950000>;
-
-As above.
-
-> +		};
-> +
-> +		pm8950_l12: l12 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-
-Regards,
-Bjorn
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>

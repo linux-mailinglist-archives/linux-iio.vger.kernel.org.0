@@ -2,53 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28BB76205E0
-	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 02:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F13E0620765
+	for <lists+linux-iio@lfdr.de>; Tue,  8 Nov 2022 04:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233322AbiKHB2I (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 7 Nov 2022 20:28:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
+        id S232125AbiKHDbU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 7 Nov 2022 22:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233298AbiKHB2B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 20:28:01 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E742AE12;
-        Mon,  7 Nov 2022 17:28:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 308BBB81711;
-        Tue,  8 Nov 2022 01:27:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D5AC4347C;
-        Tue,  8 Nov 2022 01:27:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1667870877;
-        bh=IS8r4265qntSOAdEhp1YIe8QGcNP2ABXBfe8fRSQtmY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kv5Bn8g+Sv4EUVJg/LEJr1dHEqzm88nZZpFJlTfP8TvNNsi4aoghxhR8TxQWsHaPz
-         0M5hadlOzxWeApyzY1q6DF/mN3Ygk0w20pLPhnHF6zstvG4F9KANe6ToN1fgXnCsqc
-         r4183khyX2ykFFpUbCTIMXdTUg13wv/z5JlS3AdB9vJ3CtLvVaiWciBCd7p9EAtOR0
-         MW/ARYnatE27aVBMDDkOh+kjbBe026cwaCHyCGLhYFbMq16XFx40cGlJJJEUhDLHkU
-         co1G0+r/dHF3FSy7bxfxSwZ/IEnedKwYRFNeqEC8uuXrPjJQ00GnppqfZlkftPKqSE
-         hBCWbmwC++dLA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
-Cc:     lars@metafoo.de, devicetree@vger.kernel.org, robh+dt@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        krzysztof.kozlowski+dt@linaro.org, afd@ti.com,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, jic23@kernel.org
-Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
-Date:   Mon,  7 Nov 2022 19:27:29 -0600
-Message-Id: <166787084684.599230.11552570406621990817.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221031182456.952648-1-luca@z3ntu.xyz>
-References: <20221031182456.952648-1-luca@z3ntu.xyz>
+        with ESMTP id S231659AbiKHDbT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 7 Nov 2022 22:31:19 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC7C2F397;
+        Mon,  7 Nov 2022 19:31:18 -0800 (PST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N5tt20sn1z15MTB;
+        Tue,  8 Nov 2022 11:31:06 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 8 Nov 2022 11:31:16 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 8 Nov 2022 11:31:16 +0800
+From:   Chen Zhongjin <chenzhongjin@huawei.com>
+To:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>, <daniel.baluta@intel.com>,
+        <chenzhongjin@huawei.com>
+Subject: [PATCH] iio: core: Fix entry not deleted when iio_register_sw_trigger_type() fails
+Date:   Tue, 8 Nov 2022 11:28:02 +0800
+Message-ID: <20221108032802.168623-1-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,17 +47,48 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 31 Oct 2022 19:24:54 +0100, Luca Weiss wrote:
-> As in other bindings, let's use specific compatibles together with the
-> fallback compatible. Adjust the bindings for it.
-> 
-> 
+In iio_register_sw_trigger_type(), configfs_register_default_group() is
+possible to fail, but the entry add to iio_trigger_types_list is not
+deleted.
 
-Applied, thanks!
+This leaves wild in iio_trigger_types_list, which can cause page fault
+when module is loading again. So fix this by list_del(&t->list) in error
+path.
 
-[2/2] ARM: dts: qcom: pm8941: fix iadc node
-      commit: f659cd2770767c5ceabadace1b334df9de468eae
+BUG: unable to handle page fault for address: fffffbfff81d7400
+RIP: 0010:__iio_find_sw_trigger_type.isra.3+0x62/0xb0 [industrialio_sw_trigger]
+Call Trace:
+<TASK>
+ iio_register_sw_trigger_type+0x65/0x1f0 [industrialio_sw_trigger]
+ do_one_initcall+0xd0/0x4e0
+ do_init_module+0x1cf/0x6b0
+ load_module+0x65c2/0x7820
+ ...
 
-Best regards,
+Fixes: b662f809d410 ("iio: core: Introduce IIO software triggers")
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+---
+ drivers/iio/industrialio-sw-trigger.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/industrialio-sw-trigger.c b/drivers/iio/industrialio-sw-trigger.c
+index 994f03a71520..d86a3305d9e8 100644
+--- a/drivers/iio/industrialio-sw-trigger.c
++++ b/drivers/iio/industrialio-sw-trigger.c
+@@ -58,8 +58,12 @@ int iio_register_sw_trigger_type(struct iio_sw_trigger_type *t)
+ 
+ 	t->group = configfs_register_default_group(iio_triggers_group, t->name,
+ 						&iio_trigger_type_group_type);
+-	if (IS_ERR(t->group))
++	if (IS_ERR(t->group)) {
++		mutex_lock(&iio_trigger_types_lock);
++		list_del(&t->list);
++		mutex_unlock(&iio_trigger_types_lock);
+ 		ret = PTR_ERR(t->group);
++	}
+ 
+ 	return ret;
+ }
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.17.1
+

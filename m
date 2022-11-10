@@ -2,42 +2,59 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1874262432F
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Nov 2022 14:28:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF26862433D
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Nov 2022 14:29:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbiKJN2P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Nov 2022 08:28:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46940 "EHLO
+        id S230494AbiKJN3s (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Nov 2022 08:29:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231152AbiKJN2C (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Nov 2022 08:28:02 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5023477228
-        for <linux-iio@vger.kernel.org>; Thu, 10 Nov 2022 05:27:57 -0800 (PST)
-Received: from kwepemi500024.china.huawei.com (unknown [172.30.72.53])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N7N1T5H9Hz15MMp;
-        Thu, 10 Nov 2022 21:27:41 +0800 (CST)
-Received: from huawei.com (10.175.103.91) by kwepemi500024.china.huawei.com
- (7.221.188.100) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 10 Nov
- 2022 21:27:54 +0800
-From:   Zeng Heng <zengheng4@huawei.com>
-To:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>
-CC:     <linux-iio@vger.kernel.org>, <liwei391@huawei.com>,
-        <zengheng4@huawei.com>
-Subject: [PATCH] iio: fix kobject_put warning in iio_device_register
-Date:   Thu, 10 Nov 2022 21:26:15 +0800
-Message-ID: <20221110132615.331454-1-zengheng4@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230526AbiKJN3o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Nov 2022 08:29:44 -0500
+Received: from mail-qv1-xf2e.google.com (mail-qv1-xf2e.google.com [IPv6:2607:f8b0:4864:20::f2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB992B1A2
+        for <linux-iio@vger.kernel.org>; Thu, 10 Nov 2022 05:29:37 -0800 (PST)
+Received: by mail-qv1-xf2e.google.com with SMTP id x13so1344309qvn.6
+        for <linux-iio@vger.kernel.org>; Thu, 10 Nov 2022 05:29:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EdhP8BcDkdu4NYZf2t0eCebWK07n0XJPuIalbtX9Hyg=;
+        b=lnANyr3Ti2FkxxiAeDVj0aN7J3CiHmuEuPMhfaSOHlFRXrPLPk4ZGnMpOfXl0hQuIL
+         j54348+RAEgPviVpy9lOq9Vp+ppBrl1+fotarDQwdEPPAYfqPwTm6WRv2xrZiAt0q3gn
+         thR6zDxFIcFnv+XEvceEu1EW+wopZ7vmY5P6A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EdhP8BcDkdu4NYZf2t0eCebWK07n0XJPuIalbtX9Hyg=;
+        b=rpXyhTxhNRQChRe4DBj+nhGi8Ea0GAVQVbDIKMt0Cy3zO1Is+/6dPq8DdL3SFudciN
+         PaIFceGJ6xz65zg7aOYqZzB/cBGEBghEqC9FtsqKc9qIlijpsCmopW6lialgJ/1DzaYj
+         3C59Lpn29aam29ZMdBqzJ79LnANYjQAVv/j3E9zfOirl3/gTD8atIUIIF9AA33TzGGtz
+         3EQdhPrc/vQtIUS8GG97N7t225usprJ9L0+U3p4ZHN51VLHRb7ngm3r7QrPO+Kx3MfsH
+         UjpOp+7UEhzWeU7Tv42kerAlYrNzf45GIXo5NOz0YqL2uJLlagb3HsATTCOFBPn7bNvK
+         hWOA==
+X-Gm-Message-State: ACrzQf3/a6eC0l1Ft8m5WI7C2QWN3Ffn8fjcylxhXPdJpXWx/aEusk94
+        /94gvxQPAgkS7h+E6W2M2/Y6oiJz9kB0NbWEWS/+sw==
+X-Google-Smtp-Source: AMsMyM6yikR7uCCO8X2hhqL4WAmquMxf1rpejO6f7BuzsIoecYsi8cW2uJnj5ZMmzeZ7mdS98P6K8ez1qbKLbsb/zjA=
+X-Received: by 2002:a05:6214:62e:b0:4bb:7f43:1fd5 with SMTP id
+ a14-20020a056214062e00b004bb7f431fd5mr58602950qvx.112.1668086976813; Thu, 10
+ Nov 2022 05:29:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemi500024.china.huawei.com (7.221.188.100)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+References: <20221110101241.10576-1-subhajit.ghosh@vixtechnology.com>
+In-Reply-To: <20221110101241.10576-1-subhajit.ghosh@vixtechnology.com>
+From:   Matt Ranostay <matt.ranostay@konsulko.com>
+Date:   Thu, 10 Nov 2022 21:29:25 +0800
+Message-ID: <CAJCx=g=qRd+WaCLOHwnEjg1Myg4Ng=PK0sxcGgEG9VT+VpondA@mail.gmail.com>
+Subject: Re: [PATCH] iio: light: apds9960: Fix iio_event_spec structures
+To:     Subhajit Ghosh <subhajit.ghosh@vixtechnology.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,59 +62,82 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-There is warning reported by kobject lib in kobject_put():
+On Thu, Nov 10, 2022 at 6:13 PM Subhajit Ghosh
+<subhajit.ghosh@vixtechnology.com> wrote:
+>
+> There is only one interrupt enable option for both ALS low and high
+> thresholds, and one for both Proximity low and high thresholds.
+>
+> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@vixtechnology.com>
+> ---
+>  drivers/iio/light/apds9960.c | 20 ++++++++++++--------
+>  1 file changed, 12 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+> index 4141c0fa7bc4..df9ccbcf0ffe 100644
+> --- a/drivers/iio/light/apds9960.c
+> +++ b/drivers/iio/light/apds9960.c
+> @@ -223,14 +223,16 @@ static const struct iio_event_spec apds9960_pxs_event_spec[] = {
+>         {
+>                 .type = IIO_EV_TYPE_THRESH,
+>                 .dir = IIO_EV_DIR_RISING,
+> -               .mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> -                       BIT(IIO_EV_INFO_ENABLE),
+> +               .mask_separate = BIT(IIO_EV_INFO_VALUE),
 
-kobject: '(null)' (00000000be81a546): is not initialized, yet kobject_put() is being called.
-WARNING: CPU: 0 PID: 535 at lib/kobject.c:718 kobject_put+0x12c/0x180
-Call Trace:
- cdev_device_add
- __iio_device_register
- __devm_iio_device_register
- tmp117_probe
+Probably more concise to use the following, and you won't need to add
+an additional item to the structs.
 
-If don't need to register chardev for most of IIO devices,
-we just register them with device_add() only, and use device_del()
-to unregister them.
+   .mask_separate = BIT(IIO_EV_INFO_VALUE),
+   .mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
 
-Otherwise, when device_add() fails in internal and calls kobject_put()
-in error handling path, it would report warning because the device
-never be registered as chardev and there is no release function for it.
+>         },
+>         {
+>                 .type = IIO_EV_TYPE_THRESH,
+>                 .dir = IIO_EV_DIR_FALLING,
+> -               .mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> -                       BIT(IIO_EV_INFO_ENABLE),
+> +               .mask_separate = BIT(IIO_EV_INFO_VALUE),
+> +       },
+> +       {
+> +               .type = IIO_EV_TYPE_THRESH,
+> +               .mask_separate = BIT(IIO_EV_INFO_ENABLE),
 
-Fixes: 8ebaa3ff1e71 ("iio: core: register chardev only if needed")
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
----
- drivers/iio/industrialio-core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Same here.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 151ff3993354..f4f48bda07f7 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1982,7 +1982,11 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
- 	/* assign device groups now; they should be all registered now */
- 	indio_dev->dev.groups = iio_dev_opaque->groups;
- 
--	ret = cdev_device_add(&iio_dev_opaque->chrdev, &indio_dev->dev);
-+	if (iio_dev_opaque->attached_buffers_cnt || iio_dev_opaque->event_interface)
-+		ret = cdev_device_add(&iio_dev_opaque->chrdev, &indio_dev->dev);
-+	else
-+		ret = device_add(&indio_dev->dev);
-+
- 	if (ret < 0)
- 		goto error_unreg_eventset;
- 
-@@ -2008,7 +2012,10 @@ void iio_device_unregister(struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 
--	cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
-+	if (iio_dev_opaque->chrdev.kobj.state_initialized)
-+		cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
-+	else
-+		device_del(&indio_dev->dev);
- 
- 	mutex_lock(&iio_dev_opaque->info_exist_lock);
- 
--- 
-2.25.1
+- Matt
 
+>         },
+>  };
+>
+> @@ -238,14 +240,16 @@ static const struct iio_event_spec apds9960_als_event_spec[] = {
+>         {
+>                 .type = IIO_EV_TYPE_THRESH,
+>                 .dir = IIO_EV_DIR_RISING,
+> -               .mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> -                       BIT(IIO_EV_INFO_ENABLE),
+> +               .mask_separate = BIT(IIO_EV_INFO_VALUE),
+>         },
+>         {
+>                 .type = IIO_EV_TYPE_THRESH,
+>                 .dir = IIO_EV_DIR_FALLING,
+> -               .mask_separate = BIT(IIO_EV_INFO_VALUE) |
+> -                       BIT(IIO_EV_INFO_ENABLE),
+> +               .mask_separate = BIT(IIO_EV_INFO_VALUE),
+> +       },
+> +       {
+> +               .type = IIO_EV_TYPE_THRESH,
+> +               .mask_separate = BIT(IIO_EV_INFO_ENABLE),
+>         },
+>  };
+>
+> --
+> 2.34.1
+>
+>
+> --
+> This email is confidential. If you have received this email in error please
+> notify us immediately by return email and delete this email and any
+> attachments. Vix accepts no liability for any damage caused by this email
+> or any attachments due to viruses, interference, interception, corruption
+> or unauthorised access.

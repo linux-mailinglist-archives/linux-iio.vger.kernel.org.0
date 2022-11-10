@@ -2,115 +2,93 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8DBC624635
-	for <lists+linux-iio@lfdr.de>; Thu, 10 Nov 2022 16:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61239624AA8
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Nov 2022 20:30:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231637AbiKJPms (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 10 Nov 2022 10:42:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S230196AbiKJTaO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 10 Nov 2022 14:30:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231618AbiKJPmr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Nov 2022 10:42:47 -0500
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A8B2F00B;
-        Thu, 10 Nov 2022 07:42:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668094966; x=1699630966;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LC2L/hmMUfJwbVtlPTFkYwSMZRvvYUassvI7OZCmWqc=;
-  b=KspzCzQiDsgxq5mkegArXVd3MG6vnkurIz7X3MR1RlNjTYlMutCUN7/u
-   81WzGnF4NnQFL1UnLVp414x2uE/9NtsiGW0Rq6slDNEJAMsdF3af1cBtJ
-   DNOeWYItvsx1BZ6nfCuSmOPohmM8id7Ai2sCebDVui/fjOBhAZiY1PE+c
-   oSRaw19KuqYT75lfuoBaJxER/VjhMB0Cy7g7b91AunUwA1RvNH2AASMpq
-   O59XqSzKTUJFBDTkHcYMIny7U8z2z2l5Dr7unN38U8pRYdTZjJnTWeuj1
-   +r0jxiIEW2FMFlz+FvvW4e9AHLd/jKGp3J2XIFsSh2B7hNTLBX8JUDUB5
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="291059792"
-X-IronPort-AV: E=Sophos;i="5.96,154,1665471600"; 
-   d="scan'208";a="291059792"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 07:42:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="882397801"
-X-IronPort-AV: E=Sophos;i="5.96,154,1665471600"; 
-   d="scan'208";a="882397801"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP; 10 Nov 2022 07:42:43 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ot9hR-00ADQ5-1U;
-        Thu, 10 Nov 2022 17:42:41 +0200
-Date:   Thu, 10 Nov 2022 17:42:41 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Paul Gazzillo <paul@pgazz.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S229790AbiKJTaE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 10 Nov 2022 14:30:04 -0500
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E322445090;
+        Thu, 10 Nov 2022 11:30:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1668108602; x=1699644602;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=F8j7rbJQIIQX52u1GJETYu+bMfIQlP+FAxS1u/DeGzM=;
+  b=ssWb5ieUmLxoNXp+/jD1zV9qyXNaT+CLcSKX/dg9cx9atSP94s+nZpAP
+   UWi81MMW9FnaGfy3VvBtzqvtyleiueTzdkHcGO6mmm4d3YkQiwgLvuDG+
+   QRJabdFosPw28kUhFtv5f0ylrGrwbe9JQNWzxxqzM0KceEJUO/SyvFeEl
+   I=;
+X-IronPort-AV: E=Sophos;i="5.96,154,1665446400"; 
+   d="scan'208";a="278904848"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-6e7a78d7.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2022 19:30:00 +0000
+Received: from EX13MTAUWB002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1e-m6i4x-6e7a78d7.us-east-1.amazon.com (Postfix) with ESMTPS id DEDC6820B0;
+        Thu, 10 Nov 2022 19:29:56 +0000 (UTC)
+Received: from EX19D035UWB004.ant.amazon.com (10.13.138.104) by
+ EX13MTAUWB002.ant.amazon.com (10.43.161.202) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.42; Thu, 10 Nov 2022 19:29:54 +0000
+Received: from dev-dsk-grecojay-2b-e6934ae5.us-west-2.amazon.com
+ (10.43.161.14) by EX19D035UWB004.ant.amazon.com (10.13.138.104) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1118.20; Thu, 10 Nov 2022
+ 19:29:54 +0000
+From:   Jay Greco <grecojay@amazon.com>
+To:     <linux-iio@vger.kernel.org>
+CC:     <jorcrous@amazon.com>, Jay Greco <grecojay@amazon.com>,
+        "Jean-Baptiste Maneyrol" <jmaneyrol@invensense.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/1]: iio: light: rpr0521: add missing Kconfig
- dependencies
-Message-ID: <Y20b8Ty71+qk8aDZ@smile.fi.intel.com>
-References: <20221110144448.wexu6neb67krqhla@device>
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/2] iio: imu: inv_icm42600: Add support for icm42631
+Date:   Thu, 10 Nov 2022 19:29:31 +0000
+Message-ID: <20221110192933.13616-1-grecojay@amazon.com>
+X-Mailer: git-send-email 2.37.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221110144448.wexu6neb67krqhla@device>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.43.161.14]
+X-ClientProxiedBy: EX13D17UWB004.ant.amazon.com (10.43.161.132) To
+ EX19D035UWB004.ant.amazon.com (10.13.138.104)
+X-Spam-Status: No, score=-14.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 10, 2022 at 09:44:48AM -0500, Paul Gazzillo wrote:
-> Steps to reproduce (v6.1-rc2, x86_64):
-> 
-> 1. make defconfig menuconfig
-> 2. Enable the driver:
->     -> Device Drivers
->       -> Industrial I/O support (IIO [=y])
->         -> Light sensors
->           -> ROHM RPR0521 ALS and proximity sensor driver
-> 3. make drivers/iio/light/rpr0521.o
-> 
-> Causes "implicit declaration of function" errors, e.g.,
+This patch adds support for the invensense icm42631 as part of the
+inv_icm42600 family driver within the IIO subsystem. The patch series
+also includes the requisite changes to the dt-bindings documentation.
 
->     CC      drivers/iio/light/rpr0521.o
->   drivers/iio/light/rpr0521.c: In function 'rpr0521_drdy_irq_thread':
+Changes in v2:
+- Fix documentation subject prefix per Krzysztof Kozlowski
 
-These two lines can be removed.
+Changes in v1:
+- initial patch submission
 
->   drivers/iio/light/rpr0521.c:434:3: error: implicit declaration of function
->            'iio_trigger_poll_chained' [-Werror=implicit-function-declaration]
->     434 |   iio_trigger_poll_chained(data->drdy_trigger0);
->         |   ^~~~~~~~~~~~~~~~~~~~~~~~
+Jay Greco (2):
+  iio: imu: inv_icm42600: Add support for icm42631
+  dt-bindings: iio: imu: Add inv_icm42600 documentation
 
-> (This bug was found with the help of a tool, krepair, that generates
-> configuration files for commits: https://github.com/paulgazz/kmax)
-
-I'm not sure we need this in the commit message. Do we have a tag for
-the static analyzers?
-
-> The following patch ensures that the code controlled by IIO_BUFFER and
-> IIO_TRIGGERED_BUFFER is available:
-
-> Reported-by: Paul Gazzillo <paul@pgazz.com>
-
-Without SoB this may not be anyhow proceeded. Please, read Submitting Patches
-documentation and try again.
-
-(Btw, Reported-by above contradicts the commit message that refers to the tool,
- and not human)
+ .../devicetree/bindings/iio/imu/invensense,icm42600.yaml     | 1 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h                  | 2 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c             | 5 +++++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c              | 3 +++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c              | 3 +++
+ 5 files changed, 14 insertions(+)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.37.1
 

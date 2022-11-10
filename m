@@ -2,82 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8060B623553
-	for <lists+linux-iio@lfdr.de>; Wed,  9 Nov 2022 22:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E54746238A1
+	for <lists+linux-iio@lfdr.de>; Thu, 10 Nov 2022 02:08:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbiKIVBx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 9 Nov 2022 16:01:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56452 "EHLO
+        id S231449AbiKJBIB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 9 Nov 2022 20:08:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231685AbiKIVBh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Nov 2022 16:01:37 -0500
-Received: from ms.lwn.net (ms.lwn.net [IPv6:2600:3c01:e000:3a1::42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C2831222;
-        Wed,  9 Nov 2022 13:01:13 -0800 (PST)
-Received: from localhost (unknown [IPv6:2601:281:8300:73::5f6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 2A2AC37E;
-        Wed,  9 Nov 2022 21:01:13 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 2A2AC37E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1668027673; bh=ITr2R0mtUe/KCYtEsEvbQ007phtJBhesDNR74eyDa8s=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=UgGFyRZ8JGvPW88XDRVKc/i1yXpdH2cQnF6KWzxrRNQHisnv0R+pYDcLI6QSGJCBo
-         eS7Jw7mciZZQwyhwOlLfDEgu+lqghC9K47ebS4riP3utK2ancGqtCvsk9/jJJj2McA
-         xK4HtRzv9Wznl7tHx7dnPMVWX/UwdMcBx/jkWfxdw7F8sJm1sHaF26grwVOhc+Gjd7
-         ywu3zivVh+UxsZVbcE1q1c7s+xBDD9WEE/ueoaGgc08B/kezCiFIKhqLdai8HSsmzj
-         nEJhtzOogJmDpRqJnIhjMj5pzvfBe7Gl/4tZHlx1+dA3d8jZPGabJnl4dFnW2H+Jk7
-         Nt8SRuAGma5oQ==
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-doc@vger.kernel.org, linux-iio@vger.kernel.org
-Cc:     jic23@kernel.org, Jonathan.Cameron@huawei.com,
-        yangyingliang@huawei.com
-Subject: Re: [PATCH RESEND] Documentation: devres: add missing IIO helpers
-In-Reply-To: <20221103023402.1024437-1-yangyingliang@huawei.com>
-References: <20221103023402.1024437-1-yangyingliang@huawei.com>
-Date:   Wed, 09 Nov 2022 14:01:12 -0700
-Message-ID: <87tu37j10n.fsf@meer.lwn.net>
+        with ESMTP id S232167AbiKJBHs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 9 Nov 2022 20:07:48 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469BF22503;
+        Wed,  9 Nov 2022 17:07:44 -0800 (PST)
+Received: from kwepemi500026.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N73bM4f3kzmVnS;
+        Thu, 10 Nov 2022 09:07:27 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.82) by
+ kwepemi500026.china.huawei.com (7.221.188.247) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 10 Nov 2022 09:07:40 +0800
+From:   Dong Chenchen <dongchenchen2@huawei.com>
+To:     <dan@dlrobertson.com>, <jic23@kernel.org>, <lars@metafoo.de>
+CC:     <jagathjog1996@gmail.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <yuehaibing@huawei.com>,
+        Dong Chenchen <dongchenchen2@huawei.com>
+Subject: [Patch] iio: accel: bma400: Fix memory leak in bma400_get_steps_reg()
+Date:   Thu, 10 Nov 2022 09:07:26 +0800
+Message-ID: <20221110010726.235601-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.104.82]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500026.china.huawei.com (7.221.188.247)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Yang Yingliang <yangyingliang@huawei.com> writes:
+When regmap_bulk_read() fails, it does not free steps_raw,
+which will cause a memory leak issue, this patch fixes it.
 
-> Add some missing device-managed helpers of iio to devres.rst.
->
-> devm_iio_kfifo_buffer_setup_ext() is introduced by commit 0a21526bc1d4 ("iio:
-> kfifo: add devm_iio_triggered_buffer_setup_ext variant").
->
-> devm_iio_triggered_buffer_setup_ext() is introduced by commit 5164c7889857 ("iio:
-> triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants").
->
-> devm_iio_hw_consumer_alloc() is introduced by b688c18d3006 ("IIO: hw_consumer:
-> add devm_iio_hw_consumer_alloc").
->
-> devm_fwnode_iio_channel_get_by_name() is introduced by commit 1e64b9c5f9a0 ("iio:
-> inkern: move to fwnode properties").
->
-> Fixes: 0a21526bc1d4 ("iio: kfifo: add devm_iio_triggered_buffer_setup_ext variant")
-> Fixes: 5164c7889857 ("iio: triggered-buffer: add {devm_}iio_triggered_buffer_setup_ext variants")
-> Fixes: b688c18d3006 ("IIO: hw_consumer: add devm_iio_hw_consumer_alloc")
-> Fixes: 1e64b9c5f9a0 ("iio: inkern: move to fwnode properties")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
-> The previous patch link:
-> https://patchwork.kernel.org/project/linux-iio/patch/20220927074043.942836-1-yangyingliang@huawei.com/
-> ---
->  Documentation/driver-api/driver-model/devres.rst | 4 ++++
->  1 file changed, 4 insertions(+)
+Fixes: d221de60eee3 ("iio: accel: bma400: Add separate channel for step counter")
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+---
+ drivers/iio/accel/bma400_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Applied, thanks.
+diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+index ad8fce3e08cd..43976cf5a91b 100644
+--- a/drivers/iio/accel/bma400_core.c
++++ b/drivers/iio/accel/bma400_core.c
+@@ -805,8 +805,10 @@ static int bma400_get_steps_reg(struct bma400_data *data, int *val)
+ 
+ 	ret = regmap_bulk_read(data->regmap, BMA400_STEP_CNT0_REG,
+ 			       steps_raw, BMA400_STEP_RAW_LEN);
+-	if (ret)
++	if (ret) {
++		kfree(steps_raw);
+ 		return ret;
++	}
+ 	*val = get_unaligned_le24(steps_raw);
+ 	kfree(steps_raw);
+ 	return IIO_VAL_INT;
+-- 
+2.25.1
 
-jon

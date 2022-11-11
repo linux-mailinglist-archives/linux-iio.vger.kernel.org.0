@@ -2,170 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA06662591F
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 12:11:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A661562594B
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 12:25:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233114AbiKKLK6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Nov 2022 06:10:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34098 "EHLO
+        id S232749AbiKKLZx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Nov 2022 06:25:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbiKKLK5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 06:10:57 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BFE3657FF;
-        Fri, 11 Nov 2022 03:10:56 -0800 (PST)
-Received: from fraeml738-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N7wtX3ws6z688hK;
-        Fri, 11 Nov 2022 19:08:36 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml738-chm.china.huawei.com (10.206.15.219) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 11 Nov 2022 12:10:53 +0100
-Received: from localhost (10.45.151.252) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 11 Nov
- 2022 11:10:53 +0000
-Date:   Fri, 11 Nov 2022 11:10:49 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Matt Ranostay <matt.ranostay@konsulko.com>
-CC:     Subhajit Ghosh <subhajit.ghosh@vixtechnology.com>,
-        <jic23@kernel.org>, <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: light: apds9960: Fix iio_event_spec structures
-Message-ID: <20221111111049.0000467f@Huawei.com>
-In-Reply-To: <CAJCx=g=WaGiBFYJTTjNgzrnW3We0qpuMvyy9iFAVDC8Mkbscsg@mail.gmail.com>
-References: <20221110101241.10576-1-subhajit.ghosh@vixtechnology.com>
-        <CAJCx=g=qRd+WaCLOHwnEjg1Myg4Ng=PK0sxcGgEG9VT+VpondA@mail.gmail.com>
-        <b6ac2692-3152-dfc4-5388-7986042970f0@vixtechnology.com>
-        <CAJCx=g=WaGiBFYJTTjNgzrnW3We0qpuMvyy9iFAVDC8Mkbscsg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S231681AbiKKLZw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 06:25:52 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD7FC60EBB;
+        Fri, 11 Nov 2022 03:25:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668165951; x=1699701951;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=073BabzyP7Q387pgTQPUA7z0Dqu1AHe4kpWDDx08pSg=;
+  b=TyYpgW7Nx1KwFob2aDTHTNF4H45q6CGsDqqDXcD26uOgWnAgRj9cIlL1
+   8gV8SqEkfrLp6EwA58mz5FQqf+Q3mhBindFvusnorC7/mPEu2V9rALgmx
+   QSk9UI4Z/2bRBz8PejGxSgwwCtPiAquvZqYb+4S+CTsfRgsExXsZ2bwM/
+   nIR8I61MlfR5jp/LAKxgNvWl+xDgQw1xszpQ93Y2llr67E2oNg5YfWpZz
+   qDRfbcqdbls2VW0pAe1EGJzzlhCgfmvbX/8z+egQb3Jf7XuSBPbsSnV+F
+   PHD9yblvfPcEAPZi5CMkoA84Qjf0SqnW2Qn77N2cBJzJ0Pah30mflS8Or
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="311583484"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="311583484"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Nov 2022 03:25:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10527"; a="812415062"
+X-IronPort-AV: E=Sophos;i="5.96,156,1665471600"; 
+   d="scan'208";a="812415062"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga005.jf.intel.com with ESMTP; 11 Nov 2022 03:25:49 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1otSAN-00Afa1-0W;
+        Fri, 11 Nov 2022 13:25:47 +0200
+Date:   Fri, 11 Nov 2022 13:25:46 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Paul Gazzillo <paul@pgazz.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Shreeya Patel <shreeya.patel@collabora.com>,
+        Zhigang Shi <Zhigang.Shi@liteon.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1]: iio: light: rpr0521: add missing Kconfig
+ dependencies
+Message-ID: <Y24xOvNVsuLsbBXX@smile.fi.intel.com>
+References: <20221110144448.wexu6neb67krqhla@device>
+ <20221110214729.ls5ixav5kxpeftk7@device>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.45.151.252]
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221110214729.ls5ixav5kxpeftk7@device>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Nov 2022 10:50:35 +0800
-Matt Ranostay <matt.ranostay@konsulko.com> wrote:
-
-> On Thu, Nov 10, 2022 at 10:45 PM Subhajit Ghosh
-> <subhajit.ghosh@vixtechnology.com> wrote:
-> >
-> >  
-> > >>                 .type = IIO_EV_TYPE_THRESH,
-> > >>                 .dir = IIO_EV_DIR_RISING,
-> > >> -               .mask_separate = BIT(IIO_EV_INFO_VALUE) |
-> > >> -                       BIT(IIO_EV_INFO_ENABLE),
-> > >> +               .mask_separate = BIT(IIO_EV_INFO_VALUE),  
-> > >
-> > > Probably more concise to use the following, and you won't need to add
-> > > an additional item to the structs.
-> > >
-> > >    .mask_separate = BIT(IIO_EV_INFO_VALUE),
-> > >    .mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-> > >  
-> >
-> > Above is the first thing I tried.
-> >
-> > Current implementation:
-> >
-> > root@stm32mp1:~# ls -1 /sys/bus/iio/devices/iio:device0/events/
-> > in_intensity_clear_thresh_falling_en
-> > in_intensity_clear_thresh_falling_value
-> > in_intensity_clear_thresh_rising_en
-> > in_intensity_clear_thresh_rising_value
-> >
-> > in_proximity_thresh_falling_en
-> > in_proximity_thresh_falling_value
-> > in_proximity_thresh_rising_en
-> > in_proximity_thresh_rising_value
-> >
-> >
-> > First method (Which you are suggesting):
-> > .mask_separate = BIT(IIO_EV_INFO_VALUE),
-> > .mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-> >
-> > root@stm32mp1:~# ls -1 /sys/bus/iio/devices/iio:device0/events/
-> > in_intensity_clear_thresh_falling_value
-> > in_intensity_clear_thresh_rising_value
-> > in_intensity_thresh_falling_en
-> > in_intensity_thresh_rising_en
-> >
-> > The above says all channels with with the type IIO_INTENSITY has
-> > the same enable but we require this particular channel (in_intensity_clear)
-> > regardless of direction to have the same enable.
-> > Using mask_shared_by_dir and mask_shared_by_all does not provide the logical
-> > attribute name.
-> >
-> >
-> > This patch provides the below:
-> >
-> > root@stm32mp1:~# ls -1 /sys/bus/iio/devices/iio:device0/events/
-> > in_intensity_clear_thresh_either_en
-> > in_intensity_clear_thresh_falling_value
-> > in_intensity_clear_thresh_rising_value
-> >
-> > in_proximity_thresh_either_en
-> > in_proximity_thresh_falling_value
-> > in_proximity_thresh_rising_value
-> >
-> > Verified using iio_event_monitor:
-> >
-> > root@stm32mp1:~# ./iio_event_monitor /dev/iio:device0
-> > Event: time: 1647143384807582753, type: proximity, channel: 0, evtype: thresh, direction: either
-> >  
+On Thu, Nov 10, 2022 at 04:47:29PM -0500, Paul Gazzillo wrote:
+> Fix an implicit declaration of function error for rpr0521 under some configs
 > 
-> Hmm maybe Jonathan will have some feedback on this (and if it is okay
-> to break the ABI interface). Been awhile since I've touched
-> this driver and a little rusty on iio events.  But I am guessing your
-> method makes sense since the event(s) has direction and a type, and
-> can't just have one of the .mask_shared_by_dir and mask_shared_by_type.
+> When CONFIG_RPR0521 is enabled without CONFIG_IIO_TRIGGERED_BUFFER,
+> the build results in "implicit declaration of function" errors, e.g.,
+>   drivers/iio/light/rpr0521.c:434:3: error: implicit declaration of function
+>            'iio_trigger_poll_chained' [-Werror=implicit-function-declaration]
+>     434 |   iio_trigger_poll_chained(data->drdy_trigger0);
+>         |   ^~~~~~~~~~~~~~~~~~~~~~~~
 > 
-> In any case:
+> This fix adds select dependencies to RPR0521's configuration declaration.
 > 
-> Reviewed-by: Matt Ranostay <matt.ranostay@konsulko.com>
+> Signed-off-by: Paul Gazzillo <paul@pgazz.com>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216678
 
-Hmm.  Given that event enables often cover a couple of different things
-(as done here) it isn't unknown for those to not be as easily covered
-as you have done.  As such, we have drivers were the ABI allows for
-enabling one event to end up enabling several others (even though they
-have separate enable attributes).  It's always been permitted for one
-IIO attribute write to have an effect on other attributes simply because
-we can't represent all dependencies.
+No need to create a bugzilla report on such tiny issues that do actually not
+affect the working configurations.
 
-Now the bigger complexity / surprise here is the return of the either
-direction in response to enabling either rising or falling. 
-That is going to rather surprise your average writer of userspace code.
+FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-So patch covers what we should definitely have had in the first place.
-Hence it's a question of risk of someone running code that will be affected
-by the ABI change.  One of those fingers crossed moments...
-
-Jonathan
-
+> ---
+> V1 -> V2: Cleaned up commit message per reviewer comments and added link
+>           to bug report.
 > 
+>  drivers/iio/light/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> - Matt
-> 
-> >
-> > Regards
-> > Subhajit Ghosh
-> >
-> > --
-> > This email is confidential. If you have received this email in error please
-> > notify us immediately by return email and delete this email and any
-> > attachments. Vix accepts no liability for any damage caused by this email
-> > or any attachments due to viruses, interference, interception, corruption
-> > or unauthorised access.  
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 7cf6e8490123..0d4447df7200 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -293,6 +293,8 @@ config RPR0521
+>  	tristate "ROHM RPR0521 ALS and proximity sensor driver"
+>  	depends on I2C
+>  	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+>  	help
+>  	  Say Y here if you want to build support for ROHM's RPR0521
+>  	  ambient light and proximity sensor device.
+> -- 
+> 2.25.1
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

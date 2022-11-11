@@ -2,149 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65EA4625A72
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 13:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED501625B5D
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 14:45:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233015AbiKKM1W (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Nov 2022 07:27:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48340 "EHLO
+        id S232943AbiKKNo6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Nov 2022 08:44:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbiKKM1V (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 07:27:21 -0500
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB77E1FFAB
-        for <linux-iio@vger.kernel.org>; Fri, 11 Nov 2022 04:27:19 -0800 (PST)
-Received: from kwepemi500024.china.huawei.com (unknown [172.30.72.55])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4N7yd21fRrzmVpH;
-        Fri, 11 Nov 2022 20:27:02 +0800 (CST)
-Received: from [10.174.179.163] (10.174.179.163) by
- kwepemi500024.china.huawei.com (7.221.188.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 11 Nov 2022 20:27:17 +0800
-Message-ID: <8c484562-e1ae-346e-efd3-72dc2d450d41@huawei.com>
-Date:   Fri, 11 Nov 2022 20:27:16 +0800
+        with ESMTP id S229675AbiKKNo5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 08:44:57 -0500
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5279B5F85B
+        for <linux-iio@vger.kernel.org>; Fri, 11 Nov 2022 05:44:56 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id 4so4331779pli.0
+        for <linux-iio@vger.kernel.org>; Fri, 11 Nov 2022 05:44:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=vixtechnology.com; s=google;
+        h=content-transfer-encoding:content-language:in-reply-to:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9f0eJ3gwtCls0GONPaz0H+Xp2yebKRpiGI7r4n7KzpY=;
+        b=tPIgGAgEoKv0Rq8ecSzBJGz1cGb9ii4/Fkdf+R4cMNSrSkpA11yzSn5jEflC+L5kcn
+         6bzQM/ooiLPYr0ZyyBC6+pFPXenJf2WMqy2pJ4cMnwHVfrJRgSNjQWOXIFm/sfpYiTmm
+         1whbFmNPk8E4jsw17aqKLDr7lI2v1piiAyAXs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:content-language:in-reply-to:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9f0eJ3gwtCls0GONPaz0H+Xp2yebKRpiGI7r4n7KzpY=;
+        b=MQZQK2ZAGFgB0luQkKZq64LzZFSx/zcc91bgdug0HvptQ6ZjpQX6nCfbEH+KRAT/gJ
+         QkPkjN0hoiy1sHZGKX+MMZDc5+91Px7Fx/Uwh4H5wIypUyB/RLsN9xopDyaR/zPIw2aN
+         xJ2NZTaoapB/vMMvFDWvhUws5kbgEPhz0KWlK9oqGUndz3KsaKGgmNcfILB84ZZ1xKwF
+         slcp8/Y3TTBmGzleAvJ5bB0lguTEmBxUVxDTOlilfTzsBKWobc837ZiwTwrJFS+titeN
+         g/Xu7TY922F/VvX8ydQ8CcX/PvXkK4oi9aaarlwm/WiIfceQtbJ/6nhbwXsu1lNVCqIa
+         eNoQ==
+X-Gm-Message-State: ANoB5pnh4kKIG+ibSBFi21n/YSB+h8wvYoxMa19C/zW7ydvbrBkbWntr
+        9mOlvaflUXNSEFEg4C8LUhPGaPRJzBwPC3JylauhXZ+d05mE22jqyqRBJUG+8adZVExGMEOVJpN
+        gXk8KeQwpSCsqrQdsrKLy1ww=
+X-Google-Smtp-Source: AA0mqf73qGoRRZZc00nwDkqW5m80LFJehT/4U0FSDFe5P+atBiJUzifEoEGUU5uo7gEso6c3gVPzSA==
+X-Received: by 2002:a17:902:7249:b0:17d:95af:fb59 with SMTP id c9-20020a170902724900b0017d95affb59mr2476324pll.154.1668174295296;
+        Fri, 11 Nov 2022 05:44:55 -0800 (PST)
+Received: from [192.168.1.110] (106-68-237-135.tpgi.com.au. [106.68.237.135])
+        by smtp.gmail.com with ESMTPSA id q12-20020a170903204c00b00186a8beec78sm1711544pla.52.2022.11.11.05.44.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Nov 2022 05:44:54 -0800 (PST)
+Message-ID: <380ae3c3-14c2-db1a-954c-caf8180746f0@vixtechnology.com>
+Date:   Fri, 11 Nov 2022 21:44:48 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH] iio: fix kobject_put warning in iio_device_register
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH] iio: light: apds9960: Fix iio_event_spec structures
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        Matt Ranostay <matt.ranostay@konsulko.com>
+Cc:     jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org
+References: <20221110101241.10576-1-subhajit.ghosh@vixtechnology.com>
+ <CAJCx=g=qRd+WaCLOHwnEjg1Myg4Ng=PK0sxcGgEG9VT+VpondA@mail.gmail.com>
+ <b6ac2692-3152-dfc4-5388-7986042970f0@vixtechnology.com>
+ <CAJCx=g=WaGiBFYJTTjNgzrnW3We0qpuMvyy9iFAVDC8Mkbscsg@mail.gmail.com>
+ <20221111111049.0000467f@Huawei.com>
+From:   Subhajit Ghosh <subhajit.ghosh@vixtechnology.com>
+In-Reply-To: <20221111111049.0000467f@Huawei.com>
 Content-Language: en-US
-From:   Zeng Heng <zengheng4@huawei.com>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <liwei391@huawei.com>
-References: <20221110132615.331454-1-zengheng4@huawei.com>
- <20221111113141.00000917@Huawei.com>
- <af061980-6409-1439-fe5c-d3ebcc8067cc@huawei.com>
-In-Reply-To: <af061980-6409-1439-fe5c-d3ebcc8067cc@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.163]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemi500024.china.huawei.com (7.221.188.100)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+> Hmm.  Given that event enables often cover a couple of different things
+> (as done here) it isn't unknown for those to not be as easily covered
+> as you have done.  As such, we have drivers were the ABI allows for
+> enabling one event to end up enabling several others (even though they
+> have separate enable attributes).  It's always been permitted for one
+> IIO attribute write to have an effect on other attributes simply because
+> we can't represent all dependencies.
+>=20
+> Now the bigger complexity / surprise here is the return of the either
+> direction in response to enabling either rising or falling.=20
+> That is going to rather surprise your average writer of userspace cod Thi=
+s is where the inconsistency was found. When an ALS threshold rising=20
+value was given and as soon as it was enabled, interrupts started firing
+in low light conditions as there was some value present in the ALS falling=
+=20
+threshold(reset value is not defined in the datasheet for this register),=
+=20
+but falling threshold value was neither fed nor enabled!
 
-On 2022/11/11 20:05, Zeng Heng wrote:
->
-> On 2022/11/11 19:31, Jonathan Cameron wrote:
->> On Thu, 10 Nov 2022 21:26:15 +0800
->> Zeng Heng <zengheng4@huawei.com> wrote:
->>
->>> There is warning reported by kobject lib in kobject_put():
->>>
->>> kobject: '(null)' (00000000be81a546): is not initialized, yet 
->>> kobject_put() is being called.
->>> WARNING: CPU: 0 PID: 535 at lib/kobject.c:718 kobject_put+0x12c/0x180
->>> Call Trace:
->>>   cdev_device_add
->>>   __iio_device_register
->>>   __devm_iio_device_register
->>>   tmp117_probe
->>>
->>> If don't need to register chardev for most of IIO devices,
->>> we just register them with device_add() only, and use device_del()
->>> to unregister them.
->>
->>
->>> Otherwise, when device_add() fails in internal and calls kobject_put()
->>> in error handling path, it would report warning because the device
->>> never be registered as chardev and there is no release function for it.
->>>
->>> Fixes: 8ebaa3ff1e71 ("iio: core: register chardev only if needed")
->>> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
->> Interesting corner case. The cdev_device_add() call is fine with
->> !dev->devt which is what this code was taking advantage of. The 
->> exception
->> as you have highlighted is the error path of device_add().
->>
->> So I think it should also cope with unwinding if device_add() fails
->> and not be calling cdev_del()  Note that cdev_device_del() has the
->> appropriate guards to be safe whether or not (dev->devt) is true.
->>
->> Perhaps change cdev_device_add() to have
->>
->>     rc = device_add(dev);
->>     if (rc && dev->devt)
->>         cdev_del(cdev);
->>
->>     return rc;
->
-yes, I agree with your opinion about cdev_device_add(), which would be 
-more flexible
+> So patch covers what we should definitely have had in the first place.
+> Hence it's a question of risk of someone running code that will be affect=
+ed
+> by the ABI change.  One of those fingers crossed moments...
+I understand that breaking existing userspace applications is not the best
+thing to do.
 
-for callers.
+>=20
+> Jonathan
 
-And I *just find* there is existing patch trying to fix this out.
+Thank you for your time and comments.
 
-https://lore.kernel.org/lkml/Y1fmgCS7fuf%2FLQBc@kroah.com/
+Regards,
+Subhajit Ghosh
 
-So just pass the patch.
-
-
-Best Regards,
-
-Zeng Heng
-
->>> ---
->>>   drivers/iio/industrialio-core.c | 11 +++++++++--
->>>   1 file changed, 9 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/iio/industrialio-core.c 
->>> b/drivers/iio/industrialio-core.c
->>> index 151ff3993354..f4f48bda07f7 100644
->>> --- a/drivers/iio/industrialio-core.c
->>> +++ b/drivers/iio/industrialio-core.c
->>> @@ -1982,7 +1982,11 @@ int __iio_device_register(struct iio_dev 
->>> *indio_dev, struct module *this_mod)
->>>       /* assign device groups now; they should be all registered now */
->>>       indio_dev->dev.groups = iio_dev_opaque->groups;
->>>   -    ret = cdev_device_add(&iio_dev_opaque->chrdev, &indio_dev->dev);
->>> +    if (iio_dev_opaque->attached_buffers_cnt || 
->>> iio_dev_opaque->event_interface)
->>> +        ret = cdev_device_add(&iio_dev_opaque->chrdev, 
->>> &indio_dev->dev);
->>> +    else
->>> +        ret = device_add(&indio_dev->dev);
->>> +
->>>       if (ret < 0)
->>>           goto error_unreg_eventset;
->>>   @@ -2008,7 +2012,10 @@ void iio_device_unregister(struct iio_dev 
->>> *indio_dev)
->>>   {
->>>       struct iio_dev_opaque *iio_dev_opaque = 
->>> to_iio_dev_opaque(indio_dev);
->>>   -    cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
->>> +    if (iio_dev_opaque->chrdev.kobj.state_initialized)
->>> +        cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
->>> +    else
->>> +        device_del(&indio_dev->dev);
->>>         mutex_lock(&iio_dev_opaque->info_exist_lock);
+--=20
+This email is confidential. If you have received this email in error please=
+=20
+notify=C2=A0us immediately by return email and delete this email and any=20
+attachments.=C2=A0Vix accepts no liability for any damage caused by this em=
+ail=20
+or any attachments due=C2=A0to viruses, interference, interception, corrupt=
+ion=20
+or unauthorised access.

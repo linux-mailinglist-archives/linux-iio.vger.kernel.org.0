@@ -2,133 +2,127 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CE82625965
-	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 12:31:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22D006259FE
+	for <lists+linux-iio@lfdr.de>; Fri, 11 Nov 2022 13:02:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbiKKLb4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 11 Nov 2022 06:31:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S233559AbiKKMCI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 11 Nov 2022 07:02:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233502AbiKKLbx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 06:31:53 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EBD77B20F
-        for <linux-iio@vger.kernel.org>; Fri, 11 Nov 2022 03:31:49 -0800 (PST)
-Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4N7xJB2wvfz67NNP;
-        Fri, 11 Nov 2022 19:27:22 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Fri, 11 Nov 2022 12:31:45 +0100
-Received: from localhost (10.45.151.252) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Fri, 11 Nov
- 2022 11:31:45 +0000
-Date:   Fri, 11 Nov 2022 11:31:41 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Zeng Heng <zengheng4@huawei.com>
-CC:     <jic23@kernel.org>, <alexandru.ardelean@analog.com>,
-        <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
-        <liwei391@huawei.com>
-Subject: Re: [PATCH] iio: fix kobject_put warning in iio_device_register
-Message-ID: <20221111113141.00000917@Huawei.com>
-In-Reply-To: <20221110132615.331454-1-zengheng4@huawei.com>
-References: <20221110132615.331454-1-zengheng4@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S233653AbiKKMCG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 11 Nov 2022 07:02:06 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6547C8F7;
+        Fri, 11 Nov 2022 04:02:04 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id B36476602A58;
+        Fri, 11 Nov 2022 12:02:00 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1668168122;
+        bh=6sm7RpVkIvUIpbMZQhVAr1igZdcFWx2OWANx/W4c5y8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n7HigNHbgCVZCADC6QcYiymCcuHH8bFZLUOXYYb+QLVpYJj/HbLKMTAEs3tNdGuV6
+         FLxeFZhQLh2U4+MPwz/+j5BNDCUUlfs+d/Tqpy8/1uUAwJylk8xKiHe9ZnHGafuLcl
+         h3lHy9NSlOCWPyhBhS7iI1iuRU45/KF/eAC4Ju34nRXWJaaT5id5Q+vEKyA3JnYcE6
+         2rIXWwrh1kGgOFzghfCwXoZhj4DkUaYyjWdeTpvIgjE1Dd5WGYK3TH8VOupbwEFObJ
+         Pdog4zszM6x7FUxqde/Ya2QwdwoKR/YLh9IqdHsFO4/H6FJxnWKn4E+HoQpdPWGRpf
+         HNjZr/PEZpfgA==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
+        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        evgreen@chromium.org, gregkh@linuxfoundation.org,
+        a39.skl@gmail.com, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-hardening@vger.kernel.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 00/11] MSM8956/76 and Sony Xperia X / X Compact support
+Date:   Fri, 11 Nov 2022 13:01:45 +0100
+Message-Id: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.45.151.252]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 10 Nov 2022 21:26:15 +0800
-Zeng Heng <zengheng4@huawei.com> wrote:
+This series adds basic support for MSM8976 and its lower spec variant
+MSM8956, along with two devices: the Sony Xperia X and X Compact.
 
-> There is warning reported by kobject lib in kobject_put():
-> 
-> kobject: '(null)' (00000000be81a546): is not initialized, yet kobject_put() is being called.
-> WARNING: CPU: 0 PID: 535 at lib/kobject.c:718 kobject_put+0x12c/0x180
-> Call Trace:
->  cdev_device_add
->  __iio_device_register
->  __devm_iio_device_register
->  tmp117_probe
-> 
-> If don't need to register chardev for most of IIO devices,
-> we just register them with device_add() only, and use device_del()
-> to unregister them.
+For now, even though I do have a tree in which these two devices are
+fully booting, only a basic console boot is provided as the rest is
+awaiting cleanup and some more dependencies.
+Especially every device requiring IOMMU support, like MDSS, MDP and
+Adreno GPU cannot work with the current qcom_iommu driver, as it
+needs some code to get the ASIDs right for MSM8956/76.
 
+This series depends on [1].
+
+Tested on both Xperia X and X Compact.
+
+[1]: https://patchwork.kernel.org/project/linux-arm-msm/list/?series=690889
 
 
-> 
-> Otherwise, when device_add() fails in internal and calls kobject_put()
-> in error handling path, it would report warning because the device
-> never be registered as chardev and there is no release function for it.
-> 
-> Fixes: 8ebaa3ff1e71 ("iio: core: register chardev only if needed")
-> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Changes in v2:
+ - Removed commits from v1 that were picked already
+ - Added MSM8976 to socinfo and qcom,ids
+ - Added a commit to fix ordering in qfprom yaml
+ - Fix KPSS mailbox documentation to allow syscon on 8976
+ - Various fixes from series v1 feedback (thanks!)
 
-Interesting corner case. The cdev_device_add() call is fine with
-!dev->devt which is what this code was taking advantage of. The exception
-as you have highlighted is the error path of device_add().
+AngeloGioacchino Del Regno (9):
+  dt-bindings: iio: qcom-spmi-vadc: Add definitions for USB DP/DM VADCs
+  dt-bindings: nvmem: Fix qcom,qfprom compatibles enum ordering
+  dt-bindings: sram: qcom,imem: Document MSM8976
+  dt-bindings: mailbox: qcom: Allow syscon on
+    qcom,msm8976-apcs-kpss-global
+  dt-bindings: arm: qcom,ids: Add SoC IDs for MSM8956 and MSM8976
+  soc: qcom: socinfo: Add MSM8956/76 SoC IDs to the soc_id table
+  arm64: dts: qcom: Add configuration for PM8950 peripheral
+  arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs
+  arm64: dts: qcom: Add support for SONY Xperia X/X Compact
 
-So I think it should also cope with unwinding if device_add() fails
-and not be calling cdev_del()  Note that cdev_device_del() has the
-appropriate guards to be safe whether or not (dev->devt) is true.
+Marijn Suijten (2):
+  dt-bindings: nvmem: Add compatible for MSM8976
+  dt-bindings: arm: qcom: Document msm8956 and msm8976 SoC and devices
 
-Perhaps change cdev_device_add() to have
+ .../devicetree/bindings/arm/qcom.yaml         |   10 +
+ .../mailbox/qcom,apcs-kpss-global.yaml        |    2 +-
+ .../bindings/nvmem/qcom,qfprom.yaml           |    3 +-
+ .../devicetree/bindings/sram/qcom,imem.yaml   |    1 +
+ arch/arm64/boot/dts/qcom/Makefile             |    2 +
+ .../qcom/msm8956-sony-xperia-loire-kugo.dts   |   35 +
+ .../qcom/msm8956-sony-xperia-loire-suzu.dts   |   17 +
+ .../dts/qcom/msm8956-sony-xperia-loire.dtsi   |  282 ++++
+ arch/arm64/boot/dts/qcom/msm8956.dtsi         |   18 +
+ arch/arm64/boot/dts/qcom/msm8976.dtsi         | 1198 +++++++++++++++++
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          |  165 +++
+ drivers/soc/qcom/socinfo.c                    |    2 +
+ include/dt-bindings/arm/qcom,ids.h            |    2 +
+ include/dt-bindings/iio/qcom,spmi-vadc.h      |    3 +
+ 14 files changed, 1738 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-suzu.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8956.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8976.dtsi
+ create mode 100644 arch/arm64/boot/dts/qcom/pm8950.dtsi
 
-	rc = device_add(dev);
-	if (rc && dev->devt)
-		cdev_del(cdev);
-
-	return rc;
-
-Jonathan
-
-> ---
->  drivers/iio/industrialio-core.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 151ff3993354..f4f48bda07f7 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -1982,7 +1982,11 @@ int __iio_device_register(struct iio_dev *indio_dev, struct module *this_mod)
->  	/* assign device groups now; they should be all registered now */
->  	indio_dev->dev.groups = iio_dev_opaque->groups;
->  
-> -	ret = cdev_device_add(&iio_dev_opaque->chrdev, &indio_dev->dev);
-> +	if (iio_dev_opaque->attached_buffers_cnt || iio_dev_opaque->event_interface)
-> +		ret = cdev_device_add(&iio_dev_opaque->chrdev, &indio_dev->dev);
-> +	else
-> +		ret = device_add(&indio_dev->dev);
-> +
->  	if (ret < 0)
->  		goto error_unreg_eventset;
->  
-> @@ -2008,7 +2012,10 @@ void iio_device_unregister(struct iio_dev *indio_dev)
->  {
->  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
->  
-> -	cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
-> +	if (iio_dev_opaque->chrdev.kobj.state_initialized)
-> +		cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
-> +	else
-> +		device_del(&indio_dev->dev);
->  
->  	mutex_lock(&iio_dev_opaque->info_exist_lock);
->  
+-- 
+2.38.1
 

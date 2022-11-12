@@ -2,50 +2,44 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70C2A626A3D
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 16:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D28626A40
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 16:34:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234825AbiKLPcc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Nov 2022 10:32:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33956 "EHLO
+        id S235044AbiKLPev (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Nov 2022 10:34:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231404AbiKLPcb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 10:32:31 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E8CB17403;
-        Sat, 12 Nov 2022 07:32:30 -0800 (PST)
+        with ESMTP id S231404AbiKLPeu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 10:34:50 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9B417594
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 07:34:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0D5E1B8047E;
-        Sat, 12 Nov 2022 15:32:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E036C433D6;
-        Sat, 12 Nov 2022 15:32:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC6BC60C38
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 15:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF64C433C1;
+        Sat, 12 Nov 2022 15:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668267147;
-        bh=8BM9F9sYUvzjeXMcVPaFfGV9i7+iE5d5xYABOJQRZ0E=;
+        s=k20201202; t=1668267289;
+        bh=WxbMz4/fUf7Fe2xOa5+LMV9hyt2Qx8O/KbyoyCjkLII=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VI5BJil+F+JDuD4pcSpDpsVn0hF5xZEDG5MkuBcB9Y0PrFoNRsmk2Vk8/19oYQhCQ
-         /1Ef59u4Y28FjOHA3vJdAIVy4iRAPS/Xia4Q/ZCkV5sZJy9KXZTdjiEFA/enjbwgLX
-         srhru1bgFj/PuriI9GpRFVzKC/oWoK7rZzkAYP8KWu/IKXtDyKpF9oJqk0tmrv52yc
-         9n3RJGXUb//ssNB/ccPpwGR3Z+4xlArxaNYxa8XFmSFkx9xghYgE2V/K9IbQxfXWjt
-         eZu+5RSOEA0/4BV0/bur11rfOeL9E9h0WipIYMCDWfA3g6r3XVZZnxsEQJpubTTW6+
-         Gx0ty6SOekS0w==
-Date:   Sat, 12 Nov 2022 15:44:40 +0000
+        b=MHXMn/UFPUXzbbgv7ozGPBf8Ft4s9gVJ4ZpSTviP0hmRL4rzwzWfEjsrVqwKMNqAp
+         sZnNySGe5Nhc0YDe1MqZYHyf1KZhThjH8tF2D8c7WNteIPjqOD3D5HF7WHEns2kQpx
+         2aov0iOVPRHT/vF0oROizSJlxwp5LMgi/wXba07HpcN2v8u2Uogs/QXtBxqqBDmy1C
+         nwhOjUQE10lSdh6+6HajFJfDn38F5pPMGwfd8kXdnOvJM/Z5IfAj2j8CjA6Tz/TjzB
+         n0ZMiwtWJrqKdQaF4qzWuTB8gduMVC7Dl4wHEGqvj4NCvrVrYbmeTJuo96UIyqTB9a
+         oNVsPT7GN7QCw==
+Date:   Sat, 12 Nov 2022 15:47:03 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 00/13] Support more parts in LTC2983
-Message-ID: <20221112154440.5fd1ef6e@jic23-huawei>
-In-Reply-To: <20221106171458.0715a602@jic23-huawei>
-References: <20221103130041.2153295-1-demonsingur@gmail.com>
-        <20221106171458.0715a602@jic23-huawei>
+To:     linux-iio@vger.kernel.org, Crt Mori <cmo@melexis.com>
+Cc:     coverity-bot <keescook@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 0/2] iio: mlx90632: Minor fixes
+Message-ID: <20221112154703.6bf2200c@jic23-huawei>
+In-Reply-To: <20221105125108.383193-1-jic23@kernel.org>
+References: <20221105125108.383193-1-jic23@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -59,100 +53,32 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 6 Nov 2022 17:14:58 +0000
+On Sat,  5 Nov 2022 12:51:06 +0000
 Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Thu,  3 Nov 2022 15:00:28 +0200
-> Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> > Add support for the following parts:
-> >  * LTC2984
-> >  * LTC2986
-> >  * LTM2985
-> > 
-> > The LTC2984 is a variant of the LTC2983 with EEPROM.
-> > The LTC2986 is a variant of the LTC2983 with only 10 channels,
-> > EEPROM and support for active analog temperature sensors.
-> > The LTM2985 is software-compatible with the LTC2986.
-> > 
-> > Also, make bulk write buffer DMA-safe.
-> > Besides that, refine the binding.  
-> Replying at least partly so I can see I already looked at this...
+> A couple of minor fixes.  The devm_ error handling was a coverity report.
+> Static was a warning I'd missed originally but saw in build whilst testing
+> the above.
 > 
-> Looks good to me.  Will pick up once DT bindings maintainers are
-> happy.
+> Crt, could you give these a quick look (+tag ideally) then I'll get them
+> on the tree so the issue is fixed in Linux next before I send Greg a pull
+> request.
 
-Series applied to the togreg branch of iio.git and initially pushed out
-as testing.  I tweaked patch 11 as requested whilst applying.
+Series applied.
 
 Thanks,
 
 Jonathan
+
 > 
-> Thanks,
+> Jonathan Cameron (2):
+>   iio: temperature: mlx90632: Add error handling for
+>     devm_pm_runtime_enable()
+>   iio: temperature: mlx90632: Add missing static marking on devm_pm_ops
 > 
-> Jonathan
-> 
-> > 
-> > V1 -> V2:
-> >  * add Fixes tag
-> >  * add patch that fixes the regmap_bulk_write() call with stack allocated
-> >    buffer
-> >  * add patch that refines the binding in preperation for adding new
-> >    parts support to it
-> >  * do not use stack allocated buffer for writing the EEPROM key
-> > 
-> > V2 -> V3:
-> >  * drop minItems if equal to maxItems
-> >  * drop adi,single-ended conditions because of recent dtschema
-> >    restrictions (even though they're valid in jsonschema and the last
-> >    dtschema tag)
-> >  * drop "allocate iio channels once" patch since it's been picked as a fix
-> > 
-> > V3 -> V4:
-> >   * add pipe for 'adi,mux-delay-config-us' description
-> >   * add pipe for 'adi,rtd-curve' description
-> >   * keep newlines after descriptions
-> >   * move 'adi,current-rotate' to conditional
-> >   * put 'adi,custom-steinhart' in the original place
-> >   * keep 'minItems' for 'adi,custom-steinhart'
-> >   * override 'enum' to forbid auto-range in 'adi,excitation-current-nanoamp'
-> >     when using custom thermistors
-> >   * split refine patch into multiple patches
-> >     - use generic node name in example
-> >     - describe broken mux delay property
-> >     - refine descriptions
-> >     - change default excitation for custom thermistors
-> >     - require 4 wire rtd for current rotate
-> >     - require custom sensor tables
-> >     - describe matrix items
-> >     - remove qutations from phandle ref
-> >     - use hex for sensor address
-> >     - add default values
-> > 
-> > Cosmin Tanislav (13):
-> >   iio: temperature: ltc2983: make bulk write buffer DMA-safe
-> >   dt-bindings: iio: temperature: ltc2983: add default values
-> >   dt-bindings: iio: temperature: ltc2983: use hex for sensor address
-> >   dt-bindings: iio: temperature: ltc2983: remove qutations from phandle
-> >     ref
-> >   dt-bindings: iio: temperature: ltc2983: describe matrix items
-> >   dt-bindings: iio: temperature: ltc2983: require custom sensor tables
-> >   dt-bindings: iio: temperature: ltc2983: require 4 wire rtd for current
-> >     rotate
-> >   dt-bindings: iio: temperature: ltc2983: change default excitation for
-> >     custom thermistors
-> >   dt-bindings: iio: temperature: ltc2983: refine descriptions
-> >   dt-bindings: iio: temperature: ltc2983: describe broken mux delay
-> >     property
-> >   dt-bindings: iio: temperature: ltc2983: use generic node name in
-> >     example
-> >   dt-bindings: iio: temperature: ltc2983: support more parts
-> >   iio: temperature: ltc2983: support more parts
-> > 
-> >  .../bindings/iio/temperature/adi,ltc2983.yaml | 335 +++++++++++-------
-> >  drivers/iio/temperature/ltc2983.c             | 193 +++++++++-
-> >  2 files changed, 389 insertions(+), 139 deletions(-)
-> >   
+>  drivers/iio/temperature/mlx90632.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
 

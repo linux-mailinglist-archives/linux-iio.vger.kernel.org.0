@@ -2,48 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58493626A98
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 17:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 460B5626AA1
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 17:38:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234964AbiKLQcH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Nov 2022 11:32:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48422 "EHLO
+        id S231768AbiKLQik (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Nov 2022 11:38:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232663AbiKLQcH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 11:32:07 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24AEC11C1C;
-        Sat, 12 Nov 2022 08:32:06 -0800 (PST)
+        with ESMTP id S234974AbiKLQii (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 11:38:38 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E649E13FBD;
+        Sat, 12 Nov 2022 08:38:36 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A835A60C96;
-        Sat, 12 Nov 2022 16:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9F7C433D6;
-        Sat, 12 Nov 2022 16:32:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82D8860C02;
+        Sat, 12 Nov 2022 16:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758F2C433C1;
+        Sat, 12 Nov 2022 16:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668270725;
-        bh=+q9hFe8SsT/LG2vRDXuPIe1DAbLuVAEj0I00+4cCu9I=;
+        s=k20201202; t=1668271115;
+        bh=KEiKqzioFQGruCHYGHrlQ43igNpeASPP8FviAOa/NZM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ljmGTYIe6pY/STBG/QNEZBs6zXsiJsNyJnB5D1ocAbUJbiOCjE4k/SpRY4Tp1DDlL
-         J85X60lUg9geqGmJyb3wbptGbZL7KZ7bKnsdAndnvZmFfvtWKFq0kZfYnXv2NOvRwz
-         kykHpdK1A/vCPNFTsviO5rStl05xCT70b2MRCq7tyglLzsRudFvYc8B4sqI1KAnrUK
-         spO+34cemtu4m3kEg+9kdEXyO6wJRgNfhrArW2S3mnt1GJOufDkJ0XyUPdQw6WJo0y
-         DoLon6vgrNBF9PwE5M8rlHLWjtkqloysj5Ijb+0JmRNfa/720nxdzwlMQws1ynGCtI
-         Q9LeKSVTbs3qA==
-Date:   Sat, 12 Nov 2022 16:44:18 +0000
+        b=Rr8x0S3uFDthtVzGeycWVrrgBqYy+QwCgAUyOeZb9hJisjSEHuqIcDE69dk9Tj8ku
+         Qk/fGQbT37XgGL1E5XUTpGstaTF85HGQzWn7BLe7Kfioq7H4f6YOOfcxpVbJ3yGNuS
+         NWvvR12jEB0tETWqFH+4VM9Y0/9eDr+SarieuNJqzyXMpi/oXwqnN8ebgAoagV/qPJ
+         8YPDx7wUS21Yv8sMg8ZgX7iYioZbDxVy9dpO6vtDCqatacu+VQvARvRlgk3SGkr/yC
+         6l2xr3RluoVFTR6oB7H2UOQThfkqunUgJJSJkrcvTaYLrG2JZDFwq5KIGWIZ8VBDJI
+         vQDayv/ZL1zvw==
+Date:   Sat, 12 Nov 2022 16:50:49 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: dac: adi,ad5758: Drop 'contains' from
- 'adi,dc-dc-mode'
-Message-ID: <20221112164418.13a446c1@jic23-huawei>
-In-Reply-To: <20221111212846.4104059-1-robh@kernel.org>
-References: <20221111212846.4104059-1-robh@kernel.org>
+        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: addac: ad74413r: add spi_device_id table
+Message-ID: <20221112165049.51a5f391@jic23-huawei>
+In-Reply-To: <20221111143921.742194-2-linux@rasmusvillemoes.dk>
+References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
+        <20221111143921.742194-2-linux@rasmusvillemoes.dk>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,36 +57,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Nov 2022 15:28:46 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Fri, 11 Nov 2022 15:39:17 +0100
+Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-> 'contains' applies to arrays, but 'adi,dc-dc-mode' is a scalar. So drop
-> 'contains' from the 'if' schema.
+> Silence the run-time warning
 > 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-Applied to the togreg branch of iio.git and pushed out as testing for
-the autobuilders to poke at it.
-
-Thanks,
-
-Jonathan
-
+>   SPI driver ad74413r has no spi_device_id for adi,ad74412r
+> 
+> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 > ---
->  Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/iio/addac/ad74413r.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
-> index e49e7556175d..4e508bfcc9d8 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5758.yaml
-> @@ -102,8 +102,7 @@ allOf:
->    - if:
->        properties:
->          adi,dc-dc-mode:
-> -          contains:
-> -            enum: [1, 3]
-> +          enum: [1, 3]
->      then:
->        properties:
->          adi,range-microvolt: false
+> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+> index 899bcd83f40b..37485be88a63 100644
+> --- a/drivers/iio/addac/ad74413r.c
+> +++ b/drivers/iio/addac/ad74413r.c
+> @@ -1457,12 +1457,20 @@ static const struct of_device_id ad74413r_dt_id[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, ad74413r_dt_id);
+>  
+> +static const struct spi_device_id ad74413r_spi_id[] = {
+> +	{ .name = "ad74412r", .driver_data = (kernel_ulong_t)&ad74412r_chip_info_data },
+> +	{ .name = "ad74413r", .driver_data = (kernel_ulong_t)&ad74413r_chip_info_data },
+> +	{},
+Trivial, but prefer not to have a comma after a "NULL" terminator like this.
+It would never make sense to add anything after it in the array.
+Now you are matching existing driver style, but I'd still rather not see more
+instances of this added.
+
+Also, driver_data is not currently used. It should be because adding this
+spi_id table means the driver can be probed via various routes where
+device_get_match_data() == NULL. 
+
+Hence, alongside this change you need to have a fallback to cover that case.
+Something along the lines of...
+
+	st->chip_info = device_get_match_data(..);
+	if (!st->chip_info) {
+		struct spi_device_id *id = spi_get_device_id();
+		if (!id)
+			return -EINVAL;
+
+		st->chip_info = (void *)id->driver_data;
+		//or better yet cast to the correct type I'm just too lazy to look it up ;)
+		if (!st->chip_info)
+			return -EINVAL;
+
+	}
+> +};
+> +MODULE_DEVICE_TABLE(spi, ad74413r_spi_id);
+> +
+>  static struct spi_driver ad74413r_driver = {
+>  	.driver = {
+>  		   .name = "ad74413r",
+>  		   .of_match_table = ad74413r_dt_id,
+>  	},
+>  	.probe = ad74413r_probe,
+> +	.id_table = ad74413r_spi_id,
+>  };
+>  
+>  module_driver(ad74413r_driver,
 

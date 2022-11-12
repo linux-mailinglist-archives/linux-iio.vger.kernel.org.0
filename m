@@ -2,54 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE0A626B62
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 21:07:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D252626BAC
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 21:52:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233315AbiKLUHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Nov 2022 15:07:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
+        id S233780AbiKLUwG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Nov 2022 15:52:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232004AbiKLUG7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 15:06:59 -0500
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8FA11A2E
-        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:06:59 -0800 (PST)
-Received: by mail-qk1-x72c.google.com with SMTP id z1so5254158qkl.9
-        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:06:59 -0800 (PST)
+        with ESMTP id S230170AbiKLUwE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 15:52:04 -0500
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C159DFAE0
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:52:01 -0800 (PST)
+Received: by mail-qv1-xf33.google.com with SMTP id o8so5642205qvw.5
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:52:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=lxnav.com; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9HBIAmskrTkK4wA3yc2Bp7pBw9JWehL7gbQ7R3yUDh8=;
-        b=mzG0Abnc9ZhhurnBvVXlKshOw19qdlr60WqHn/jphI06wJe1zNbDSk1N1fOv54/gCc
-         ipyaJUJtLV/n0RvOXjUVCVTfwT18uoMaY0BNeGMAp1bV3ivZUxrtgXtL/thFW6HQ/piv
-         1OHiTteXEC2DRRuCndr9bGj9W5ASPeqpDzJKQ=
+        bh=dSyudzyX5CRHk6TCL/q8fJ2Jvwv53i/ZsN+8T0uzezc=;
+        b=L+aPJqi/0V/aftlhxP1IvuZk7dTZwW+wt4KpxHiaVG2+2ZK6h0sA9sbv4TJDFD97Em
+         OXwt1MVMUzPLbft+iaVTk2zDGboahGa1ZuidNFByYTlyY95iIsI00oSYe2QFG7uGaldh
+         QJm3Q7leabNpZ7mZJuAwwPt7XP2ImoXMXqqKE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9HBIAmskrTkK4wA3yc2Bp7pBw9JWehL7gbQ7R3yUDh8=;
-        b=3lytVqdk4ZPV2TZk5x/C7J4MjxwfhqE/9OjlxnUpO7N+y0fWT96Zz7sP7d5spr4pBm
-         pc459qRXZJXl8u9dsNYt1fwoqTFWSMcTx3RD+5VHRB9OYNL9YIa+TITaZbL62lvgzqDc
-         jKbPbV3djnGBjOoSee7clXGxK/qZ3QE741o87HRRWFCqWOmOOZ3T8o8mhwGaqXUb5EG/
-         769xxBJ7NKCZYxA0pso60x42VXi7stQCr6GqSHatFKsefADF7JBZ0tLnpYAEe9ckk50v
-         4S+qhcTCUVIrkDw7ML2Mjxd7Bvs3ZE9sPRAq44WN4dyFtVUD8Vwj6lawqAz3bDrGPxiC
-         TkvQ==
-X-Gm-Message-State: ANoB5pmXPdirrQPKbrG5JkL0lGYsw/ZikxlTR7rRr69T9p+7bgC+xuuG
-        jsTMMsclvwUmlr1svRrfjh52L1v5vclXTYMpoe1Z8Uv5lYo=
-X-Google-Smtp-Source: AA0mqf6u1/W3va0198p+Y9uDqCmq125acgaPiSohXeD8Ww+Klt6aY8ELzU0l+7OOzGZMj1ribf6bfq5bMs5gdXZrLbQ=
-X-Received: by 2002:a05:620a:1003:b0:6fa:23d4:aecc with SMTP id
- z3-20020a05620a100300b006fa23d4aeccmr5851708qkj.678.1668283618156; Sat, 12
- Nov 2022 12:06:58 -0800 (PST)
+        bh=dSyudzyX5CRHk6TCL/q8fJ2Jvwv53i/ZsN+8T0uzezc=;
+        b=ZW7yns49+OIFXmSBHrvT9CHABxCwgqLy46xDdsSXv6WbHFiSX8QVVwk5Izgr8Pu5Ji
+         g+6OH5jOjl9yVjZCGWLu+saeXwFWafvSpokxgphNw6Divc5gc2nxjfe3w9utjhuEx6bh
+         KzjODLT8UpqK/ptbo9/SzbYACnKrd0mMbjOxfAITTnFTSaswDy4OjWSyH+8SEjxl9AWC
+         kVOaluXvczYa45HPgkialzjxJVflWSMeD6Eu7KTifFezke+0ta20gA6Jipq58setD9dz
+         3iHUfTRpYcXpgIjR/eVRuR0/IOb9+xfrmQUV6SsnC4c4flnybDH8JQNY0BVbOIQ9JwFZ
+         KYJg==
+X-Gm-Message-State: ANoB5pmRoTXgtOGt8ruPBvcXEZJTqSQwYLpJRIet4k9Cdop7vrbui3n8
+        4G9T0MjWOX6AeCx7EHnxTI/Fze18pw6q384bvu4t9w==
+X-Google-Smtp-Source: AA0mqf6YVTNhoVRSbFPX8nrG94EE27+1SyNGVJwwXetBExINJ+wpvzwy7b7gT1/97rZ3cw7G6hBWDSJXfvVaH0TR9ss=
+X-Received: by 2002:a05:6214:1552:b0:4bb:8e59:fc4b with SMTP id
+ t18-20020a056214155200b004bb8e59fc4bmr7123483qvw.89.1668286320868; Sat, 12
+ Nov 2022 12:52:00 -0800 (PST)
 MIME-Version: 1.0
-References: <20221111112657.1521307-1-mitja@lxnav.com> <20221111112657.1521307-2-mitja@lxnav.com>
- <20221112171010.7a511746@jic23-huawei>
-In-Reply-To: <20221112171010.7a511746@jic23-huawei>
+References: <20221111112657.1521307-1-mitja@lxnav.com> <20221111112657.1521307-3-mitja@lxnav.com>
+ <20221112172806.6db090eb@jic23-huawei>
+In-Reply-To: <20221112172806.6db090eb@jic23-huawei>
 From:   =?UTF-8?Q?Mitja_=C5=A0pes?= <mitja@lxnav.com>
-Date:   Sat, 12 Nov 2022 21:06:34 +0100
-Message-ID: <CACbQKWeiEax+u3SiUgP9k4ZD169FBkgoFwt8GG0DtQthqsqepw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] iio: adc: mcp3422: fix scale read bug
+Date:   Sat, 12 Nov 2022 21:51:36 +0100
+Message-ID: <CACbQKWfEa64Fv4CmW8BDp2rXw504YyL_s2TWiA_SwH-zCKKvCA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: adc: mcp3422: allow setting gain and sampling
+ per channel
 To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Angelo Compagnucci <angelo.compagnucci@gmail.com>,
@@ -66,13 +67,121 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 Hi Jonathan,
 
-On Sat, Nov 12, 2022 at 5:57 PM Jonathan Cameron <jic23@kernel.org> wrote:
+On Sat, Nov 12, 2022 at 6:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> Was it possible for these scales to differ before this change?
+Yes. The difference is that before this change you could only see and set
+available scales that were available for specified sampling rate. Now you're
+able to set gain and sampling rate via scale. So before the change you got
+these (@240sps):
 
-> One trivial comment inline. I might tidy that up whilst applying if others are
-> otherwise happy with this patch.  If you do a v2 for some other reason please
-> get rid of that unrelated change.
+0.001000000 0.000500000 0.000250000 0.000125000
 
-Ok, I will move it to a styling patch and fix it in v2.
+Now you get the complete set:
+/*                 gain x1     gain x2     gain x4     gain x8  */
+/* 240 sps    */ 0.001000000 0.000500000 0.000250000 0.000125000
+/*  60 sps    */ 0.000250000 0.000125000 0.000062500 0.000031250
+/*  15 sps    */ 0.000062500 0.000031250 0.000015625 0.000007812
+/*   3.75 sps */ 0.000015625 0.000007812 0.000003906 0.000001953
+
+> If not, then why was the previous patch a fix rather than simply a precursor
+> to this change (where it now matters).
+I wanted to separate a bug fix from improvements, if these were rejected for
+for some reason.
+
+> There are a number of changes in here which are more stylistic cleanup
+> than anything to do with the functional change. Please pull those out
+> to a precursor patch where we can quickly check they make not functional changes
+> rather than having them mixed in here.
+Will do.
+
+> I have no particular problem with taking these from hex
+> to decimal, though I'm not really seeing the necessity.
+>
+> However, it is really a style question and should not be in this
+> patch where it mostly adds noise making it slightly harder
+> to spot the functional changes.
+My styling preference. I think indexes should be decimal so they are not
+confused with flags.
+
+> >               .info_mask_separate = BIT(IIO_CHAN_INFO_RAW) \
+> > -                             | BIT(IIO_CHAN_INFO_SCALE), \
+> > -             .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+> > +                             | BIT(IIO_CHAN_INFO_SCALE) \
+> > +                             | BIT(IIO_CHAN_INFO_SAMP_FREQ), \
+>
+> Hmm. This is an ABI change.  Hopefully no one will notice however.
+Indeed. I've noted this in the cover letter.
+
+
+> > -static const int mcp3422_read_times[4] = {
+> > +static const int mcp3422_read_times[MCP3422_SRATE_COUNT] = {
+> Reasonable to make this change, but I think it belongs in a precursor patch.
+Will fix.
+
+> > +     for (i = 0; i < MCP3422_SRATE_COUNT; i++) {
+> > +             count += sprintf(buf + count, "0.%09u 0.%09u 0.%09u 0.%09u%s",
+> > +                     mcp3422_scales[i][0],
+> > +                     mcp3422_scales[i][1],
+> > +                     mcp3422_scales[i][2],
+> > +                     mcp3422_scales[i][3],
+> > +                     (i < MCP3422_SRATE_COUNT - 1 ? " " : "\n"));
+>
+> What does the output of this now look like?
+0.001000000 0.000500000 0.000250000 0.000125000
+0.000250000 0.000125000 0.000062500 0.000031250
+0.000062500 0.000031250 0.000015625 0.000007812
+0.000015625 0.000007812 0.000003906 0.000001953
+All in one line.
+
+> For available attributes we tend to only show the values available assuming
+> just the one thing is changing.  Hence hold sampling frequency static, then
+> show what scales are available
+> It can get complex if there are nasty interactions so we might have a
+> situation where one attribute allows to all the possible values.
+> So maybe we have all scales available and on a write try to find
+> the nearest frequency to the current at which we can deliver the
+> required scale.
+That's what's being done here:
++ for (j = 0; j < MCP3422_SRATE_COUNT; j++) {
++ for (i = 0; i < MCP3422_PGA_COUNT; i++) {
++ if (val2 == mcp3422_scales[j][i]) {
++ config &= ~MCP3422_PGA_MASK;
++ config |= MCP3422_PGA_VALUE(i);
++ config &= ~MCP3422_SRATE_MASK;
++ config |= MCP3422_SAMPLE_RATE_VALUE(j);
++ adc->ch_config[req_channel] = config;
++ return 0;
++ }
+  }
+  }
+
+Before it looked at only one sampling frequency and all gains, now it looks at
+all combinations.
+Looking at this I agree that it would be better to find nearest instead of
+looking for an exact match.
+
+> My gut feeling for this device is make the sampling frequency the dominant
+> attribute.  So just list the available sampling frequencies not taking
+> scale into account.  For current sampling frequency just list the available
+> scales and only accept those to be written to the scale attr.
+That way the order in which you set attributes matters. Is that really better?
+This device has a settable sampling rate and gain and they are independent.
+But we could only set gain via scale which values were sampling rate dependent.
+
+> >       /* meaningful default configuration */
+> > +     for (i = 0; i < 4; i++) {
+> > +             adc->ch_config[i] = (MCP3422_CONT_SAMPLING
+> > +             | MCP3422_CHANNEL_VALUE(i)
+> > +             | MCP3422_PGA_VALUE(MCP3422_PGA_1)
+> > +             | MCP3422_SAMPLE_RATE_VALUE(MCP3422_SRATE_240));
+> > +     }
+> > +
+> >       config = (MCP3422_CONT_SAMPLING
+> >               | MCP3422_CHANNEL_VALUE(0)
+> >               | MCP3422_PGA_VALUE(MCP3422_PGA_1)
+>
+> Perhaps use the first channel configuration for this?
+Will fix.
 
 Kind regards,
 Mitja

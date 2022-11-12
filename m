@@ -2,51 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62517626AEA
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 18:41:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FE0A626B62
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 21:07:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234747AbiKLRlh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Nov 2022 12:41:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
+        id S233315AbiKLUHA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Nov 2022 15:07:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230170AbiKLRlg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 12:41:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6FA11A3A;
-        Sat, 12 Nov 2022 09:41:36 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id C85F1B80989;
-        Sat, 12 Nov 2022 17:41:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52863C433C1;
-        Sat, 12 Nov 2022 17:41:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668274893;
-        bh=MD3R54de6IVkcG0PdDLdRKVnF5hrYqwTKUYedHjwVoM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=nbAFArz+g+Rcau3mLt/ICc77vjKQPnP07KtWiuootfYSY+kD88dIFnm42w5WLf7+B
-         mulFGX+Cr0QYyOHevC7psw7gl3vaaKuQ/0UkrFYNP/sEVX5iFoT+3GAHctFELquh4f
-         NTOjB+u3ZV6jrSmetPF8qCR3cBd+iNV01BkdCzF7I5PqM4cKIvttVlT1j9s5jhqoAD
-         LAtZ+VPKJ7dphpwqG7pb2G6YPlhMGwg6EARFexNWspb4mps+CZ6XkE2j4re3sykRPa
-         zuYS9DTKVl4cQId/ntbmQRYAdkdJu+tZBVea8T3fdlTIIZbFV1kiFfqRpCNZyHDaUx
-         DUyzohQ+bFL9A==
-Date:   Sat, 12 Nov 2022 17:53:43 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Chen Zhongjin <chenzhongjin@huawei.com>
-Cc:     <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <lars@metafoo.de>, <daniel.baluta@intel.com>
-Subject: Re: [PATCH] iio: core: Fix entry not deleted when
- iio_register_sw_trigger_type() fails
-Message-ID: <20221112175343.759300f5@jic23-huawei>
-In-Reply-To: <20221108032802.168623-1-chenzhongjin@huawei.com>
-References: <20221108032802.168623-1-chenzhongjin@huawei.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S232004AbiKLUG7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 15:06:59 -0500
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8FA11A2E
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:06:59 -0800 (PST)
+Received: by mail-qk1-x72c.google.com with SMTP id z1so5254158qkl.9
+        for <linux-iio@vger.kernel.org>; Sat, 12 Nov 2022 12:06:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lxnav.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9HBIAmskrTkK4wA3yc2Bp7pBw9JWehL7gbQ7R3yUDh8=;
+        b=mzG0Abnc9ZhhurnBvVXlKshOw19qdlr60WqHn/jphI06wJe1zNbDSk1N1fOv54/gCc
+         ipyaJUJtLV/n0RvOXjUVCVTfwT18uoMaY0BNeGMAp1bV3ivZUxrtgXtL/thFW6HQ/piv
+         1OHiTteXEC2DRRuCndr9bGj9W5ASPeqpDzJKQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9HBIAmskrTkK4wA3yc2Bp7pBw9JWehL7gbQ7R3yUDh8=;
+        b=3lytVqdk4ZPV2TZk5x/C7J4MjxwfhqE/9OjlxnUpO7N+y0fWT96Zz7sP7d5spr4pBm
+         pc459qRXZJXl8u9dsNYt1fwoqTFWSMcTx3RD+5VHRB9OYNL9YIa+TITaZbL62lvgzqDc
+         jKbPbV3djnGBjOoSee7clXGxK/qZ3QE741o87HRRWFCqWOmOOZ3T8o8mhwGaqXUb5EG/
+         769xxBJ7NKCZYxA0pso60x42VXi7stQCr6GqSHatFKsefADF7JBZ0tLnpYAEe9ckk50v
+         4S+qhcTCUVIrkDw7ML2Mjxd7Bvs3ZE9sPRAq44WN4dyFtVUD8Vwj6lawqAz3bDrGPxiC
+         TkvQ==
+X-Gm-Message-State: ANoB5pmXPdirrQPKbrG5JkL0lGYsw/ZikxlTR7rRr69T9p+7bgC+xuuG
+        jsTMMsclvwUmlr1svRrfjh52L1v5vclXTYMpoe1Z8Uv5lYo=
+X-Google-Smtp-Source: AA0mqf6u1/W3va0198p+Y9uDqCmq125acgaPiSohXeD8Ww+Klt6aY8ELzU0l+7OOzGZMj1ribf6bfq5bMs5gdXZrLbQ=
+X-Received: by 2002:a05:620a:1003:b0:6fa:23d4:aecc with SMTP id
+ z3-20020a05620a100300b006fa23d4aeccmr5851708qkj.678.1668283618156; Sat, 12
+ Nov 2022 12:06:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+References: <20221111112657.1521307-1-mitja@lxnav.com> <20221111112657.1521307-2-mitja@lxnav.com>
+ <20221112171010.7a511746@jic23-huawei>
+In-Reply-To: <20221112171010.7a511746@jic23-huawei>
+From:   =?UTF-8?Q?Mitja_=C5=A0pes?= <mitja@lxnav.com>
+Date:   Sat, 12 Nov 2022 21:06:34 +0100
+Message-ID: <CACbQKWeiEax+u3SiUgP9k4ZD169FBkgoFwt8GG0DtQthqsqepw@mail.gmail.com>
+Subject: Re: [PATCH 1/4] iio: adc: mcp3422: fix scale read bug
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,57 +64,15 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 8 Nov 2022 11:28:02 +0800
-Chen Zhongjin <chenzhongjin@huawei.com> wrote:
+Hi Jonathan,
 
-> In iio_register_sw_trigger_type(), configfs_register_default_group() is
-> possible to fail, but the entry add to iio_trigger_types_list is not
-> deleted.
-> 
-> This leaves wild in iio_trigger_types_list, which can cause page fault
-> when module is loading again. So fix this by list_del(&t->list) in error
-> path.
-> 
-> BUG: unable to handle page fault for address: fffffbfff81d7400
-> RIP: 0010:__iio_find_sw_trigger_type.isra.3+0x62/0xb0 [industrialio_sw_trigger]
-> Call Trace:
-> <TASK>
->  iio_register_sw_trigger_type+0x65/0x1f0 [industrialio_sw_trigger]
->  do_one_initcall+0xd0/0x4e0
->  do_init_module+0x1cf/0x6b0
->  load_module+0x65c2/0x7820
+On Sat, Nov 12, 2022 at 5:57 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-I dropped some of the unnecessary noise in the call trace and applied this
-to the fixes-togreg branch of iio.git and marked it for stable.
+> One trivial comment inline. I might tidy that up whilst applying if others are
+> otherwise happy with this patch.  If you do a v2 for some other reason please
+> get rid of that unrelated change.
 
-Thanks,
+Ok, I will move it to a styling patch and fix it in v2.
 
-Jonathan
-
->  ...
-> 
-> Fixes: b662f809d410 ("iio: core: Introduce IIO software triggers")
-> Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
-> ---
->  drivers/iio/industrialio-sw-trigger.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-sw-trigger.c b/drivers/iio/industrialio-sw-trigger.c
-> index 994f03a71520..d86a3305d9e8 100644
-> --- a/drivers/iio/industrialio-sw-trigger.c
-> +++ b/drivers/iio/industrialio-sw-trigger.c
-> @@ -58,8 +58,12 @@ int iio_register_sw_trigger_type(struct iio_sw_trigger_type *t)
->  
->  	t->group = configfs_register_default_group(iio_triggers_group, t->name,
->  						&iio_trigger_type_group_type);
-> -	if (IS_ERR(t->group))
-> +	if (IS_ERR(t->group)) {
-> +		mutex_lock(&iio_trigger_types_lock);
-> +		list_del(&t->list);
-> +		mutex_unlock(&iio_trigger_types_lock);
->  		ret = PTR_ERR(t->group);
-> +	}
->  
->  	return ret;
->  }
-
+Kind regards,
+Mitja

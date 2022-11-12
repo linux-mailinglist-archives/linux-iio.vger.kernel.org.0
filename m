@@ -2,52 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CFF5626AC8
-	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 18:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD184626ADF
+	for <lists+linux-iio@lfdr.de>; Sat, 12 Nov 2022 18:28:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232347AbiKLRZh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 12 Nov 2022 12:25:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
+        id S235051AbiKLR2w (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 12 Nov 2022 12:28:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230257AbiKLRZg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 12:25:36 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 856D317068;
-        Sat, 12 Nov 2022 09:25:35 -0800 (PST)
+        with ESMTP id S234983AbiKLR2v (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 12 Nov 2022 12:28:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263E1BC8C;
+        Sat, 12 Nov 2022 09:28:51 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3F2BCB80989;
-        Sat, 12 Nov 2022 17:25:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B320C433D6;
-        Sat, 12 Nov 2022 17:25:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 79F59B80AEF;
+        Sat, 12 Nov 2022 17:28:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF05C433C1;
+        Sat, 12 Nov 2022 17:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668273932;
-        bh=cMgWmOTskVM9FmMjEvsr2shVsPl9TYAtnkLphTZ0BC8=;
+        s=k20201202; t=1668274128;
+        bh=F485qhHTIh9CmK7hy1NhMzh6HMGWQY7IhAau/1prH8E=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uarGshHNITIlWc0h5kgjvtJBeWPGMPIRR2cKAgbkxkFPAx9we1ntKEwDTJ4/qxivX
-         fsl2JCSgZxqmRcwaGKa0WUB8ujkkoQx/sfZmbkOs8icOyvYmQi/xncrMhfxT0Zir1A
-         vBsDefOQ6Zwc1OyyNe6qWl/ZN7wrFa/ILYCeZpJ4ioqcynwi+wzmULjgIvu0K99Qzo
-         DZhV4o7EnNAEZFVLgMwssLtHYNuqLxeBtg8DNYd015CWOkccAyikDFtbIma9sTaVYz
-         B2LqDfd2GSMLYEO6J7QIKPU93w4fA98Tqxv5vqmwUZh+MlQbBXNnLakJk0b4fNuHOv
-         kLnL7jLezlyHA==
-Date:   Sat, 12 Nov 2022 17:37:48 +0000
+        b=snsSgQwL63w7qszuQIr8NuGMAbHR8B3SAESy8OQ6Fj+YNfe+LxAZba4WGJlfeau5U
+         eqCFeQhZy53CYLfIprYsIpKglZoPi33jVN5ilueykMqgUnTCWPBJLQoPss6crGjsGl
+         wshmQF8EvZo9P7p2X6dTuDgOYP113xZKdq94A7EFYbkhincVkZPsKUq2fyKih7qzmi
+         8iPmpzsy0PjoT9SXPBjgQK1rRXwYgSPyBB1X7S85OLWRmTk7CWMtyuOQjeqw2VGfUB
+         AFS8UMcSgrxk68MjeIxkfQfJ7oi1p5Dyk/f+TMTkvxRgqzCXCbFwxXVAW6DZGiB7vm
+         iioKmf/7pTtEg==
+Date:   Sat, 12 Nov 2022 17:41:01 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Paul Gazzillo <paul@pgazz.com>
-Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Shreeya Patel <shreeya.patel@collabora.com>,
-        Zhigang Shi <Zhigang.Shi@liteon.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1]: iio: light: rpr0521: add missing Kconfig
- dependencies
-Message-ID: <20221112173748.70534b77@jic23-huawei>
-In-Reply-To: <20221111152539.srpn3ng3erutka4u@device>
-References: <20221110144448.wexu6neb67krqhla@device>
-        <20221110214729.ls5ixav5kxpeftk7@device>
-        <Y24xOvNVsuLsbBXX@smile.fi.intel.com>
-        <20221111152539.srpn3ng3erutka4u@device>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Jagan Teki <jagan@edgeble.ai>, Heiko Stuebner <heiko@sntech.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        Johan Jonker <jbx6244@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v7 03/10] dt-bindings: iio: adc: rockchip-saradc: Add
+ saradc for rv1126
+Message-ID: <20221112174101.472abb56@jic23-huawei>
+In-Reply-To: <58ee258e-8708-abcc-077b-c6b4a1a4185a@linaro.org>
+References: <20221108041400.157052-1-jagan@edgeble.ai>
+        <20221108041400.157052-4-jagan@edgeble.ai>
+        <58ee258e-8708-abcc-077b-c6b4a1a4185a@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,75 +60,26 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Nov 2022 10:25:39 -0500
-Paul Gazzillo <paul@pgazz.com> wrote:
+On Tue, 8 Nov 2022 19:09:45 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On 11/11/2022, Andy Shevchenko wrote:
-> > On Thu, Nov 10, 2022 at 04:47:29PM -0500, Paul Gazzillo wrote:  
-> > > Fix an implicit declaration of function error for rpr0521 under some configs
-> > > 
-> > > When CONFIG_RPR0521 is enabled without CONFIG_IIO_TRIGGERED_BUFFER,
-> > > the build results in "implicit declaration of function" errors, e.g.,
-> > >   drivers/iio/light/rpr0521.c:434:3: error: implicit declaration of function
-> > >            'iio_trigger_poll_chained' [-Werror=implicit-function-declaration]
-> > >     434 |   iio_trigger_poll_chained(data->drdy_trigger0);
-> > >         |   ^~~~~~~~~~~~~~~~~~~~~~~~
-> > > 
-> > > This fix adds select dependencies to RPR0521's configuration declaration.
-> > > 
-> > > Signed-off-by: Paul Gazzillo <paul@pgazz.com>
-> > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=216678  
+> On 08/11/2022 05:13, Jagan Teki wrote:
+> > Add saradc compatible string for rockchip rv1126.
 > > 
-> > No need to create a bugzilla report on such tiny issues that do actually not
-> > affect the working configurations.  
+> > Cc: linux-iio@vger.kernel.org  
 > 
-> Understood.  Thanks for your help!
-
-I wonder why it has taken so long for this build issue to get reported?
-
-Ah well. This is missing a fixes tag. I added
-Fixes: e12ffd241c00 ("iio: light: rpr0521 triggered buffer")
-
-Applied to the fixes-togreg branch of iio.git.
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Applied this patch to the togreg branch of iio.git and pushed
+out as testing for 0-day to poke at all the patches I've queued
+up today.
 
 Thanks,
 
 Jonathan
 
-
-
 > 
-> > 
-> > FWIW,
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >   
-> > > ---
-> > > V1 -> V2: Cleaned up commit message per reviewer comments and added link
-> > >           to bug report.
-> > > 
-> > >  drivers/iio/light/Kconfig | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> > > index 7cf6e8490123..0d4447df7200 100644
-> > > --- a/drivers/iio/light/Kconfig
-> > > +++ b/drivers/iio/light/Kconfig
-> > > @@ -293,6 +293,8 @@ config RPR0521
-> > >  	tristate "ROHM RPR0521 ALS and proximity sensor driver"
-> > >  	depends on I2C
-> > >  	select REGMAP_I2C
-> > > +	select IIO_BUFFER
-> > > +	select IIO_TRIGGERED_BUFFER
-> > >  	help
-> > >  	  Say Y here if you want to build support for ROHM's RPR0521
-> > >  	  ambient light and proximity sensor device.
-> > > -- 
-> > > 2.25.1  
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko  
+> Best regards,
+> Krzysztof
 > 
-> Best,
-> Paul
 

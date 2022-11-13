@@ -2,222 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE8E626FEB
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Nov 2022 14:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11575627135
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Nov 2022 18:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235368AbiKMNvs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Nov 2022 08:51:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55808 "EHLO
+        id S235373AbiKMRQF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Nov 2022 12:16:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235240AbiKMNvr (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Nov 2022 08:51:47 -0500
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 176ED10FED
-        for <linux-iio@vger.kernel.org>; Sun, 13 Nov 2022 05:51:46 -0800 (PST)
-Received: by mail-qv1-xf2f.google.com with SMTP id j6so6375147qvn.12
-        for <linux-iio@vger.kernel.org>; Sun, 13 Nov 2022 05:51:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lxnav.com; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WRhNcr9+layh98hn4bBSSTjB1kA3mJMo/7oEATsDq6k=;
-        b=CKiSMHSkwUcyuWbN1zsZ5QVyeAPZh1Y7GrNlb5vGk1GFPWbX5MsWLQT87p2QsHuEXZ
-         Vuofg+i0BsnjSNYr+4oeyYOGJZQLjNjRzFtJ46gax02A06BYvbIOieWqwZDoZZN0q11g
-         6yF6QFSVqPysoJnkL8Kj3R2wKhLOroKBXTUyQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WRhNcr9+layh98hn4bBSSTjB1kA3mJMo/7oEATsDq6k=;
-        b=DSq5dptkub31pqfsxkIvZy7lmoIY7W3B1PohfDxuFnXZQfA8xNMDG4vCXbgbhjAacr
-         v5cCnH1IOVWZcHN7Hlc9vvwNkcDnOvGMBfb/4LNgIYkW2ytGF0P8TSQaRzOyyTZcoe5i
-         acxriYewrwlJ1tXEd+7m4V3Y7u9CAp9i8eiiUTce3/nkHaL26/DGuM4e6CyPEtKg0ANF
-         4/cStUlBwXSkLW/Md0jrVL65c9IqtFf9b0n4AlUVCXkVg5JNSfimbKIhvOMKkiekVWop
-         TQuUyjFIktExRHudrjXeNLXSOx+jrigGqGBgT125Ubsn5ncyUHyDcEv85L0hJb9634wO
-         CJFw==
-X-Gm-Message-State: ANoB5pn/8BOfUyD+zSIRsFW7KElnnThOYk8hFVyIDQrgC/d3nrLBLNFp
-        l2W9n7PcgCfPLpHtQYMIb0gNHbr/TJuuL30q9zmEpw==
-X-Google-Smtp-Source: AA0mqf4bQ9Y1C8qzFnuIQww5ymJnSJgZYXhi9VKX1j5Wn7ixrB39xdJ3ooPBv24sQNhXPfPa+uUraK7Uq9BDqoV2KWQ=
-X-Received: by 2002:ad4:4432:0:b0:4b1:9054:b54a with SMTP id
- e18-20020ad44432000000b004b19054b54amr8886663qvt.122.1668347505140; Sun, 13
- Nov 2022 05:51:45 -0800 (PST)
+        with ESMTP id S235317AbiKMRQE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Nov 2022 12:16:04 -0500
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9136EEE1F;
+        Sun, 13 Nov 2022 09:16:03 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.96,161,1665414000"; 
+   d="scan'208";a="142464774"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 14 Nov 2022 02:16:03 +0900
+Received: from localhost.localdomain (unknown [10.226.92.50])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id C92D94032A20;
+        Mon, 14 Nov 2022 02:16:00 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v6 3/5] Documentation: ABI: sysfs-bus-counter: add external_input_phase_clock_select & long_word_access_ctrl_mode items
+Date:   Sun, 13 Nov 2022 17:15:43 +0000
+Message-Id: <20221113171545.282457-4-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
+References: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
-References: <20221111112657.1521307-1-mitja@lxnav.com> <20221111112657.1521307-4-mitja@lxnav.com>
- <20221112173222.0ca56017@jic23-huawei> <CACbQKWe5xGT80_ZcQmTYrGThtFyw6xKD_OmGLi8XGi0pvR1RBA@mail.gmail.com>
- <20221113123338.5b3848df@jic23-huawei>
-In-Reply-To: <20221113123338.5b3848df@jic23-huawei>
-From:   =?UTF-8?Q?Mitja_=C5=A0pes?= <mitja@lxnav.com>
-Date:   Sun, 13 Nov 2022 14:51:21 +0100
-Message-ID: <CACbQKWciZHmF_hmNSkV7FXAiYfYg9=dVA-_7j1vLMF4_0BbtUQ@mail.gmail.com>
-Subject: Re: [PATCH 3/4] iio: adc: mcp3422: add hardware gain attribute
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Thank you for the explanations.
+This commit adds external_input_phase_clock_select and long_word_
+access_ctrl_mode items to counter ABI file.
+(e.g. for Renesas MTU3 hardware used for phase counting).
 
-Kind regards,
-Mitja
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+v5->v6:
+ * No change
+v5:
+ * New patch
+---
+ Documentation/ABI/testing/sysfs-bus-counter | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-On Sun, Nov 13, 2022 at 1:21 PM Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Sat, 12 Nov 2022 22:19:07 +0100
-> Mitja =C5=A0pes <mitja@lxnav.com> wrote:
->
-> > Hi Jonathan,
-> >
-> > On Sat, Nov 12, 2022 at 6:20 PM Jonathan Cameron <jic23@kernel.org> wro=
-te:
-> > > How are the separate?  We normally only use hardwaregain if
-> > > changing it has no input on the scale that we need to apply in usersp=
-ace
-> > > to raw channels.  This normally happens for two reasons
-> > > 1) There is a micro controller on the sensor that is doing a bunch of
-> > >    maths so whilst changing the PGA value changes the range measurabl=
-e it
-> > >    doesn't affect the representation when we read from the device.
-> > > 2) The hardware gain is controlling say the sensitivity of a light se=
-nsor
-> > >    in a time of flight device - it affects if we can get a measuremen=
-t, but
-> > >    not the measurement itself.
-> > >
-> > > Any of that true here?
-> > No. I see I misunderstood the hardwaregain attribute. For me this is a =
-user
-> > friendly way of setting the gain and subsequently scale.
-> >
-> > What I don't understand is why set scale at all?
->
-> Key issue here is the ABI is not designed against one part. It is designe=
-d against
-> many. Also it is inherently biased in favour of the parts that were aroun=
-d when
-> we originally created it - I'll note that at that time the trade off of r=
-esolution
-> against sampling period (oversampling or cutting off the measurement) was=
- not common.
->
-> That means userspace code has been written that assumes a certain set of =
-attributes.
-> The cost of starting to use new attributes is high because no userspace c=
-ode knows
-> about them.  Hence we put a lot of effort into avoiding doing so.  I agre=
-e that your
-> argument makes sense for your particular device - it doesn't for many oth=
-er ADCs.
->
-> Many ADCs (I'd go as far as to say most though I could be wrong on that) =
-do not
-> couple scale and sampling frequency at all.
->
-> > It's a result of sampling
-> > rate and gain settings. Using it as a setting, for which input value ra=
-nge also
-> > changes depending on another attribute is quite cumbersome.
-> > To use a sensor the program has to do this:
-> > 1. set the sampling rate
-> > 2. read available scales for this sampling rate
-> > 3. set the scale according to desired gain
-> > or know the scales for each sampling rate in advance...which makes avai=
-lable
-> > scales attribute quite useless.
->
-> For this last point, I think trying to match against previous scale makes=
- a lot of
-> sense as there is considerable overlap available here between the differe=
-nt rates.
-> I think that would be an improvement.  Another improvement would be to at=
- least
-> expose the current resolution - that can be done by providing and _availa=
-ble
-> for the raw reading.  Not an idea way to undestand what is going on but i=
-t would
-> make more data available to userspace.  (_raw_available(max) * scale woul=
-d give
-> the range of the device and allow an adjustment of the scale to achieve w=
-hat the
-> user wants).
->
-> ABI design is hard.  We don't always get it right and often there is no r=
-ight answer.
-> Reality is that sometimes userspace code needs to search the space if it =
-is trying
-> to get as close as possible to a particular set of constraints.  However =
-lets assume
-> in most cases the code has limits of:
->
-> 1) A minimum data rate with which it is happy (controls
-> the sampling frequency - higher is normally fine, but wastes power etc).
-> To get best possible power usage (and in case of this device resolution) =
-it will pick
-> the lowest sampling frequency to meet this constraint.
->
-> 2) A range of values it is interested in (here related to the PGA setting=
-s but not
->    the sampling frequency).  Adding _raw_avail would help it to have visi=
-bility of
->    what the range is.
->
-> 3) A resolution it cares about getting data at (scale)
->
-> We have to present 'scale' because that's necessary to allow userspace to=
- calculate the
-> actual voltage.  That adds a constraint to the ABI design.  We also don't=
- want to provide
-> more overlapping controls than absolutely necessary as that makes it hard=
- for userspace
-> to know which one to use.
->
-> So upshot is that userspace has to search to find a value that works for =
-it.
->
-> In this particular case the set of ranges at all sampling frequencies are=
- the same.
-> So if we assume a constraint on how often data is wanted is more importan=
-t than the
-> resolution (have to pick one or the other to be more important) then we s=
-et that
-> first to the minimum value to meet the requirement.  Then scale is tweake=
-d to set
-> the PGA to match the range desired.  Sure, not super clean but consistent=
- with the
-> ABI as it stands (and we can't change that other than very very carefully=
-).
->
-> As a fun side note, if the device (or driver) had justified the lower res=
-olutions the other way
-> (so the zeros ended up in least significant bits) a common solution would=
- have been
-> to just present that to userspace as is, thus the scale would have been d=
-ecoupled from
-> the sampling frequency.  Not this is what oversampling devices normally d=
-o...
-> We obviously could fake that now, but the issue would then be that it was=
- a major
-> driver ABI change. So we can't.
->
-> Jonathan
->
->
->
->
->
->
-> >
-> > Kind regards,
-> > Mitja
->
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index ff83320b4255..2880f3b346e2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -215,6 +215,22 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		This attribute indicates the number of overflows of count Y.
+ 
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++KernelVersion:	6.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		This attribute selects the external clock pin for phase
++		counting mode of counter X.
++
++What:		/sys/bus/counter/devices/counterX/long_word_access_ctrl_mode
++KernelVersion:	6.2
++Contact:	linux-iio@vger.kernel.org
++Description:
++		This attribute indicates the 16-bit or 32 bit-access of
++		counter X.
++
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++What:		/sys/bus/counter/devices/counterX/long_word_access_ctrl_mode
+ What:		/sys/bus/counter/devices/counterX/countY/capture_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
+-- 
+2.25.1
+

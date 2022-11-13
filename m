@@ -2,105 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71834626F91
-	for <lists+linux-iio@lfdr.de>; Sun, 13 Nov 2022 13:51:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5B08626FC8
+	for <lists+linux-iio@lfdr.de>; Sun, 13 Nov 2022 14:39:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234213AbiKMMu5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 13 Nov 2022 07:50:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39174 "EHLO
+        id S235305AbiKMNjb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 13 Nov 2022 08:39:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233797AbiKMMu5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Nov 2022 07:50:57 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A16B112ACF;
-        Sun, 13 Nov 2022 04:50:53 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 4FDFEB80B86;
-        Sun, 13 Nov 2022 12:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DA6C433D6;
-        Sun, 13 Nov 2022 12:50:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668343850;
-        bh=ZLs7zKpVQjz7HMM6k+kFXTlpaYFs0LUhExq4XQcd1s4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bRL9hllLDlw9+RuOxEp/BTtZqu0sxnMGpsShotQYUQBomE5dvFVoD1N24YGwz6V+E
-         bls9ihBMe9GMjEry7sBd0YrrC6rli2crxqF6LGgLrP2JxooH2LV3J8Bw3VYvsrfs+W
-         w05hHQ6W8XSvWUY5qtl9FMmxNWvaVq0KPH1abZ6krHZoEF/uWowqkzHh7neWwe1S5m
-         34TbGm40XsmFHKDxe+ppF8fgJ9eywuHPOBe8NTVUnLHre3t+AgUrS3t3tphhayQUul
-         rZZZhKLrlX52Dr3j+Ch0cOJiZFcA6fekyRn6LnDIK9fHTqyyLtxou9VntemQz768m9
-         y85c6lNFSvivw==
-Date:   Sun, 13 Nov 2022 13:03:06 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Deepak R Varma <drv@mailo.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] staging: iio: meter: replace ternary operator by if
- condition
-Message-ID: <20221113130306.517e7aa3@jic23-huawei>
-In-Reply-To: <Y3CAdCa17WdWDYUa@qemulion>
-References: <Y3CAdCa17WdWDYUa@qemulion>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S235281AbiKMNj3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 13 Nov 2022 08:39:29 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3213610570
+        for <linux-iio@vger.kernel.org>; Sun, 13 Nov 2022 05:39:28 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id v8so5959735qkg.12
+        for <linux-iio@vger.kernel.org>; Sun, 13 Nov 2022 05:39:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lxnav.com; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0z24Boz3eOlxJFo/pymZw/hsLoIwXXjZAKYQO15hylw=;
+        b=2roEsWPdPZzq9JYQG6GUjIziF4lsiMjqKAlQRyI83eZWUeYXS1+BaNzO68Qd5op54U
+         aGIJW8euapK+H3mlSX3cIowAdDJMpBiC/6B6agP0O10QJOB8to6UeeQ0A8BzsdhhzblH
+         oL0Gony70MRKt9CLbhWGzec8BgxSc9Yk1ZkeE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0z24Boz3eOlxJFo/pymZw/hsLoIwXXjZAKYQO15hylw=;
+        b=t81EqTO7ncVpVn6qzyjHF49/QreaSz9ycyN4D7GiMLY/RkriTUaC90axAxDYFh+CoZ
+         HXyOxGDMVKFZqTL4vlZJV3kT7BmE3f+DJFGTOjjLX9GXNe8WFPEjP6hKljf3V983yhu5
+         fRMfXdnjEerWBsRURYw3q0uC+EhR88iSuHVayA+E4YSaVcPbCrzj8oHZTrSK3uXfD/Pn
+         VZ8/Hz7nuLUFp9QCAZKglW/G41mYZceNNBm8WbF3hg2oGZT6Y9zq1xzeImQrWW5ecadx
+         nz5Awhcxh4MyGQpYnPd12exVM1t3CcukvkgxJpc7UbKox5+jpxvSXCRNx9dzBC9rzTFw
+         OuBg==
+X-Gm-Message-State: ANoB5pnHriZx3Q5veA/eAf/Xj630lNxWN2SdnHIGIQGeSS8g4snnYP9l
+        2wX8RYPwt96IU08eM3ZYxYiv5Ns8cI0zbxotidTrug==
+X-Google-Smtp-Source: AA0mqf5erDExfMVXOaz5Bb4mDDGflC3k7wVmZPb/lz8hY+35SJIrxdyX5WmyomZwuZDEKsfPEjavD3RiXbaqQSD40yY=
+X-Received: by 2002:a05:620a:1319:b0:6fa:9a5e:7ca8 with SMTP id
+ o25-20020a05620a131900b006fa9a5e7ca8mr8018883qkj.70.1668346767288; Sun, 13
+ Nov 2022 05:39:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221111112657.1521307-1-mitja@lxnav.com> <20221111112657.1521307-3-mitja@lxnav.com>
+ <20221112172806.6db090eb@jic23-huawei> <CACbQKWfEa64Fv4CmW8BDp2rXw504YyL_s2TWiA_SwH-zCKKvCA@mail.gmail.com>
+ <20221113120610.6568f9e6@jic23-huawei>
+In-Reply-To: <20221113120610.6568f9e6@jic23-huawei>
+From:   =?UTF-8?Q?Mitja_=C5=A0pes?= <mitja@lxnav.com>
+Date:   Sun, 13 Nov 2022 14:39:03 +0100
+Message-ID: <CACbQKWfzbxS2SKzd3v=h8-3oQw3hRhZJr_fJMaiTKaFwLn-jJg@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: adc: mcp3422: allow setting gain and sampling
+ per channel
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Lars-Peter Clausen <lars@metafoo.de>,
+        Angelo Compagnucci <angelo.compagnucci@gmail.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, 13 Nov 2022 10:58:20 +0530
-Deepak R Varma <drv@mailo.com> wrote:
+On Sun, Nov 13, 2022 at 12:53 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > On Sat, Nov 12, 2022 at 6:15 PM Jonathan Cameron <jic23@kernel.org> wrote:
+> > > Was it possible for these scales to differ before this change?
+> > Yes. The difference is that before this change you could only see and set
+> > available scales that were available for specified sampling rate. Now you're
+> > able to set gain and sampling rate via scale. So before the change you got
+> > these (@240sps):
+> >
+> > 0.001000000 0.000500000 0.000250000 0.000125000
+> >
+> > Now you get the complete set:
+> > /*                 gain x1     gain x2     gain x4     gain x8  */
+> > /* 240 sps    */ 0.001000000 0.000500000 0.000250000 0.000125000
+> > /*  60 sps    */ 0.000250000 0.000125000 0.000062500 0.000031250
+> > /*  15 sps    */ 0.000062500 0.000031250 0.000015625 0.000007812
+> > /*   3.75 sps */ 0.000015625 0.000007812 0.000003906 0.000001953
+>
+> Ok. That doesn't work as a standard interface because userspace code wants to pick say
+> 0.00062500 which appears twice.
+I don't know how I missed that. It's clear to me now that this patch is wrong.
 
-> Replace ternary operator by simple if based evaluation of the return
-> value. Issue identified using coccicheck.
-> 
-> Signed-off-by: Deepak R Varma <drv@mailo.com>
 
-Applied to the togreg branch of iio.git and pushed out as testing to
-see if 0-day can find anything we missed.
+> > > If not, then why was the previous patch a fix rather than simply a precursor
+> > > to this change (where it now matters).
+> > I wanted to separate a bug fix from improvements, if these were rejected for
+> > for some reason.
+>
+> Is it a bug fix?  The way I read it is that, before this patch there is only
+> one scale that is applied to all channels.  As such, the current value == the
+> value set and the code works as expected.
+> So the previous patch is only necessary once this one is applied.  Hence no
+> bug, just a rework that is useful to enabling this feature.
+I'll post the previous snippet here and write the comments inline:
+----
+@@ -164,8 +164,9 @@ static int mcp3422_read_raw(struct iio_dev *iio,
+  struct mcp3422 *adc = iio_priv(iio);
+  int err;
 
-Thanks,
++ u8 req_channel = channel->channel;
+  u8 sample_rate = MCP3422_SAMPLE_RATE(adc->config);
+- u8 pga = MCP3422_PGA(adc->config);  /* <- this uses the "current" config
+      which changes depending on the last read channel */
++ u8 pga = adc->pga[req_channel];          /* this now returns the PGA for the
+      selected channel */
 
-Jonathan
+  switch (mask) {
+  case IIO_CHAN_INFO_RAW:
+----
+I hope this clarifies the bugfix.
 
-> ---
-> 
-> Changes in v2:
->    1. Use if based evaluation instead of using min macro
->       suggested by Joe Perches.
-> 
-> 
->  drivers/staging/iio/meter/ade7854-i2c.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/meter/ade7854-i2c.c b/drivers/staging/iio/meter/ade7854-i2c.c
-> index a9a06e8dda51..71b67dd3c8e9 100644
-> --- a/drivers/staging/iio/meter/ade7854-i2c.c
-> +++ b/drivers/staging/iio/meter/ade7854-i2c.c
-> @@ -61,7 +61,10 @@ static int ade7854_i2c_write_reg(struct device *dev,
->  unlock:
->  	mutex_unlock(&st->buf_lock);
-> 
-> -	return ret < 0 ? ret : 0;
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
->  }
-> 
->  static int ade7854_i2c_read_reg(struct device *dev,
-> --
-> 2.34.1
-> 
-> 
-> 
 
+Thanks for in depth look at this and sorry for wasting your time with this
+flawed patch.
+
+Kind regards,
+Mitja

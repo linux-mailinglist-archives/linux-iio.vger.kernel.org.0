@@ -2,52 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D28E628966
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC13D62896B
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:33:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235825AbiKNTcf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 14:32:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39042 "EHLO
+        id S235813AbiKNTdz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 14:33:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235592AbiKNTce (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:32:34 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD0BB7C8;
-        Mon, 14 Nov 2022 11:32:33 -0800 (PST)
+        with ESMTP id S235592AbiKNTdy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:33:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38B110EC;
+        Mon, 14 Nov 2022 11:33:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07D68613C5;
-        Mon, 14 Nov 2022 19:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3141C433D6;
-        Mon, 14 Nov 2022 19:32:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50673613E9;
+        Mon, 14 Nov 2022 19:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78593C433D6;
+        Mon, 14 Nov 2022 19:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668454352;
-        bh=vtfXSCrWSmffdrETGDZzpWD6bAb8L/+SOPCiGYo9hpg=;
+        s=k20201202; t=1668454432;
+        bh=FW8Jj9JH9Jd467uFU0bxIUZ1OoAUS5aRIHrE+8N9T50=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=YtNO+Jd3w4ma5MnXsyRkPm2NwS3c92Hi7LHtL37aQ64fHaewupfLsQHkhiqItslZL
-         pqLIH09BmHD3aqf9Q28LFPlaImnO854vVCUG0ax6WvRQybjHpqRdYiCjw7P8cAoXp9
-         zByT58gBJ/z6SDn+wke6rznlJB6pYyWqGr1VCKNVN3NWv/EEF5VncyPvBOcsbZy6E4
-         /cbHQAbwiQ1kdReKVkBzsWInNy4bc8MWIi/DmUrWc6cMgTzlYZvgprKIdgDp300TMF
-         sEmkOpXWU8f15itT9iiA2O2Ulo+vloB70UqmIKRpRqcOsnqLckgcU4yqMsatLqj5g5
-         tL8lA+PEiEUGw==
-Date:   Mon, 14 Nov 2022 19:44:47 +0000
+        b=pguEXQcf+qSPwxpR1US2OXLx3DCrK5sMp3JIOng6RJ/Yfn18sOJr0982uaWfrbtpv
+         aL7x9+Y+fmp4Mm1ryVPkK/LOdm7hzW7ZSAvg3sfz3GevoYis7mGLpunmryCAupr6q8
+         7wz6XOWErcI/QnZhzeHpGHNvJJ41NNzvekeryODOG06SOCPDe1rZRq5SSBEcYeusXi
+         2ZUfa9lNPBB85g/jRi9xQ6aPkykpScPCG+rkTR0iX7qWDYMBqPdaU+AEd/eQmXsv6s
+         v+bvqi+Nw4Mng9jH8dB4vjc+sUrnRGZYZHVP5KAd+wTQIt88FoUYSEOJGpQcLDhkle
+         EcA3r2nU7g43Q==
+Date:   Mon, 14 Nov 2022 19:46:08 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-Message-ID: <20221114194447.2528f699@jic23-huawei>
-In-Reply-To: <095a454b55cf497392a621649f24e067@analog.com>
-References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
-        <20221111143921.742194-6-linux@rasmusvillemoes.dk>
-        <20221112170705.7efe1673@jic23-huawei>
-        <095a454b55cf497392a621649f24e067@analog.com>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: adc: ad4130: depend on GPIOLIB
+Message-ID: <20221114194608.3127e7ba@jic23-huawei>
+In-Reply-To: <20221114133649.1737027-1-cosmin.tanislav@analog.com>
+References: <20221114133649.1737027-1-cosmin.tanislav@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,109 +55,35 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Nov 2022 13:52:26 +0000
-"Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
+On Mon, 14 Nov 2022 15:36:49 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> > -----Original Message-----
-> > From: Jonathan Cameron <jic23@kernel.org>
-> > Sent: Saturday, November 12, 2022 7:07 PM
-> > To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > Cc: Tanislav, Cosmin <Cosmin.Tanislav@analog.com>; Lars-Peter Clausen
-> > <lars@metafoo.de>; Hennerich, Michael <Michael.Hennerich@analog.com>;
-> > devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>; linux-
-> > iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-> > 
-> > [External]
-> > 
-> > On Fri, 11 Nov 2022 15:39:21 +0100
-> > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> >   
-> > > We have a board where the reset pin of the ad74412 is connected to a
-> > > gpio, but also pulled low by default. Hence to get the chip out of
-> > > reset, the driver needs to know about that gpio and set it high before
-> > > attempting to communicate with it.  
-> > 
-> > I'm a little confused on polarity here.  The pin is a !reset so
-> > we need to drive it low briefly to trigger a reset.
-> > I'm guessing for your board the pin is set to active low? (an example
-> > in the dt would have made that clearer) Hence the pulse
-> > in here to 1 is actually briefly driving it low before restoring to high?
-> > 
-> > For a pin documented as !reset that seems backwards though you have
-> > called it reset so that is fine, but this description doesn't make that
-> > celar.  
+> Fixes undefined references to 'gpiochip_get_data' and
+> 'devm_gpiochip_add_data_with_key'.
 > 
-> My opinion is that the driver shouldn't exactly know the polarity of the reset,
-> and just assume that setting the reset GPIO to 1 means putting it in reset,
-> and setting it to 0 means bringing out of reset.
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Fixes: 5bdef39c5c6e ("iio: adc: ad4130: add AD4130 driver")
+Applied.
 
-Agreed. I'd just like a comment + example in the dt-binding to make the point
-that the pin is !reset.
-
-Preferably with an example in the dt binding of the common case of it being wired
-up to an active low pin.
-
-The main oddity here is the need to pulse it rather than request it directly as
-in the reset state and then just set that to off.
+Thanks for handling this so quickly.
 
 Jonathan
-> 
-> > 
-> > Perhaps just add some more description here to make it clear the GPIO
-> > is active low, and then refer to setting it to true and false to avoid
-> > the confusing high / low terminology which are inverted...
 
-
-> >   
-> > >
-> > > When a reset-gpio is given in device tree, use that instead of the
-> > > software reset. According to the data sheet, the two methods are
-> > > functionally equivalent.
-> > >
-> > > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > > ---
-> > >  drivers/iio/addac/ad74413r.c | 12 ++++++++++++
-> > >  1 file changed, 12 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> > > index 9f77d2f514de..af09d43f921c 100644
-> > > --- a/drivers/iio/addac/ad74413r.c
-> > > +++ b/drivers/iio/addac/ad74413r.c
-> > > @@ -71,6 +71,7 @@ struct ad74413r_state {
-> > >  	struct regmap			*regmap;
-> > >  	struct device			*dev;
-> > >  	struct iio_trigger		*trig;
-> > > +	struct gpio_desc		*reset_gpio;
-> > >
-> > >  	size_t			adc_active_channels;
-> > >  	struct spi_message	adc_samples_msg;
-> > > @@ -393,6 +394,13 @@ static int ad74413r_reset(struct ad74413r_state  
-> > *st)  
-> > >  {
-> > >  	int ret;
-> > >
-> > > +	if (st->reset_gpio) {
-> > > +		gpiod_set_value_cansleep(st->reset_gpio, 1);
-> > > +		fsleep(50);
-> > > +		gpiod_set_value_cansleep(st->reset_gpio, 0);
-> > > +		return 0;
-> > > +	}
-> > > +
-> > >  	ret = regmap_write(st->regmap, AD74413R_REG_CMD_KEY,
-> > >  			   AD74413R_CMD_KEY_RESET1);
-> > >  	if (ret)
-> > > @@ -1316,6 +1324,10 @@ static int ad74413r_probe(struct spi_device *spi)
-> > >  	if (IS_ERR(st->regmap))
-> > >  		return PTR_ERR(st->regmap);
-> > >
-> > > +	st->reset_gpio = devm_gpiod_get_optional(st->dev, "reset",  
-> > GPIOD_OUT_LOW);  
-> > > +	if (IS_ERR(st->reset_gpio))
-> > > +		return PTR_ERR(st->reset_gpio);
-> > > +
-> > >  	st->refin_reg = devm_regulator_get_optional(st->dev, "refin");
-> > >  	if (IS_ERR(st->refin_reg)) {
-> > >  		ret = PTR_ERR(st->refin_reg);  
+> ---
+>  drivers/iio/adc/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 8d719fbb6acc..63f80d747cbd 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -24,6 +24,7 @@ config AD_SIGMA_DELTA
+>  config AD4130
+>  	tristate "Analog Device AD4130 ADC Driver"
+>  	depends on SPI
+> +	depends on GPIOLIB
+>  	select IIO_BUFFER
+>  	select IIO_KFIFO_BUF
+>  	select REGMAP_SPI
 

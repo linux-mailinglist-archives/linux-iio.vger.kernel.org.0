@@ -2,51 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52E10628943
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA995628951
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:29:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237212AbiKNT1O (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 14:27:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35242 "EHLO
+        id S230520AbiKNT3o (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 14:29:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237217AbiKNT1N (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:27:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE32624BCC;
-        Mon, 14 Nov 2022 11:27:12 -0800 (PST)
+        with ESMTP id S236525AbiKNT3n (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:29:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4255D20F66;
+        Mon, 14 Nov 2022 11:29:42 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D88A6137A;
-        Mon, 14 Nov 2022 19:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBAEC433C1;
-        Mon, 14 Nov 2022 19:27:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2BF6613EA;
+        Mon, 14 Nov 2022 19:29:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FC8C43470;
+        Mon, 14 Nov 2022 19:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668454031;
-        bh=5UNR9fJzQk/JHrUBk+Oph8kZR/kxfVNPsMaCAXJcNgI=;
+        s=k20201202; t=1668454181;
+        bh=7gDJJ7UtURCtpGUPxQT2lSB4H0lh3qa/bxjfMajltOo=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=c1ifZddpYPeZPYyYL3zAf+qWX9cBPYllYUvVSu280ZnqB9C7iZrTZ0lcLqubh/nIa
-         MqT6DwWLcrn6TIF8LNY8KCHF92QnlXsFp+XpB+p5MblEhKyOoqgzIwCmuFZMXuXZhA
-         hhK6YSnks0wWMhsMXboLWdFDOxz0x4N1USg4a1g16TD52lg8rgBPT8oO0X3ZMDWh4P
-         D9ZA6VT/tqaTTDAjnmSz/aaLEK538+W9BPl1vSaaS1DvW3SwbKFR5mys5cQbqhcauS
-         WrLi88hIN7X8eFRRLxeyAJ5fzMnPBvhEN5LstdzvmALhF05M01lUGY+e93qiwRJHbB
-         d2ScT+VGOdHsQ==
-Date:   Mon, 14 Nov 2022 19:39:28 +0000
+        b=D6QdqWUzROR+yvuHACC6wdqq9feKbVHR+SQfEc/8HLszF532JSVdCCsE5EYNBiSwk
+         nmotoHZm/Qc07H2/yhTgplTNbAH+qsslxVybUxWhiRllTiuRrZpHEMBM36UY8g9pBa
+         mncQT6QDY6kuMUYTGwNXZqUFt7BiciiCBX0JH8/1Wloa/qvZYAHxP0GUWu/MNtHtfh
+         PTZfRlxd3Y5+p6s1P9WnQbWn3q/S0hfi2MH4a3iY3AE83tnblffmklHosmuHc1fe7R
+         Y+duGYbhmVusGkNThbH/vjdsrr4nIhyAnssuazfoEA2On4RA2VderhjKFoqGHzVmHl
+         jdzBVHZaHGv+g==
+Date:   Mon, 14 Nov 2022 19:41:57 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
 Cc:     Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
         devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Oleksij Rempel <linux@rempel-privat.de>
-Subject: Re: [PATCH 1/5] iio: addac: ad74413r: add spi_device_id table
-Message-ID: <20221114193928.37b25f17@jic23-huawei>
-In-Reply-To: <4e98c469-cd22-a946-784c-5e0391142570@rasmusvillemoes.dk>
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
+Message-ID: <20221114194157.1d03588a@jic23-huawei>
+In-Reply-To: <ccb148b2-c669-0317-e2b5-c59e595e4299@rasmusvillemoes.dk>
 References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
-        <20221111143921.742194-2-linux@rasmusvillemoes.dk>
-        <20221112165049.51a5f391@jic23-huawei>
-        <4e98c469-cd22-a946-784c-5e0391142570@rasmusvillemoes.dk>
+        <20221111143921.742194-6-linux@rasmusvillemoes.dk>
+        <20221112170705.7efe1673@jic23-huawei>
+        <ccb148b2-c669-0317-e2b5-c59e595e4299@rasmusvillemoes.dk>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,83 +59,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Nov 2022 09:02:44 +0100
+On Mon, 14 Nov 2022 09:37:59 +0100
 Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 
-> On 12/11/2022 17.50, Jonathan Cameron wrote:
-> > On Fri, 11 Nov 2022 15:39:17 +0100
+> On 12/11/2022 18.07, Jonathan Cameron wrote:
+> > On Fri, 11 Nov 2022 15:39:21 +0100
 > > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
 > >   
-> >> Silence the run-time warning
-> >>
-> >>   SPI driver ad74413r has no spi_device_id for adi,ad74412r
-> >>
-> >> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> >> ---
-> >>  drivers/iio/addac/ad74413r.c | 8 ++++++++
-> >>  1 file changed, 8 insertions(+)
-> >>
-> >> diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> >> index 899bcd83f40b..37485be88a63 100644
-> >> --- a/drivers/iio/addac/ad74413r.c
-> >> +++ b/drivers/iio/addac/ad74413r.c
-> >> @@ -1457,12 +1457,20 @@ static const struct of_device_id ad74413r_dt_id[] = {
-> >>  };
-> >>  MODULE_DEVICE_TABLE(of, ad74413r_dt_id);
-> >>  
-> >> +static const struct spi_device_id ad74413r_spi_id[] = {
-> >> +	{ .name = "ad74412r", .driver_data = (kernel_ulong_t)&ad74412r_chip_info_data },
-> >> +	{ .name = "ad74413r", .driver_data = (kernel_ulong_t)&ad74413r_chip_info_data },
-> >> +	{},  
-> > Trivial, but prefer not to have a comma after a "NULL" terminator like this.
-> > It would never make sense to add anything after it in the array.  
+> >> We have a board where the reset pin of the ad74412 is connected to a
+> >> gpio, but also pulled low by default. Hence to get the chip out of
+> >> reset, the driver needs to know about that gpio and set it high before
+> >> attempting to communicate with it.  
+> > 
+> > I'm a little confused on polarity here.  The pin is a !reset so
+> > we need to drive it low briefly to trigger a reset.
+> > I'm guessing for your board the pin is set to active low? (an example
+> > in the dt would have made that clearer) Hence the pulse
+> > in here to 1 is actually briefly driving it low before restoring to high?  
 > 
-> I agree and wouldn't have added it if it weren't for the existing case
-> in the other table.
+> Yes. I actually thought that was pretty standard. I do indeed have
+> something like
 > 
-> > Now you are matching existing driver style, but I'd still rather not see more
-> > instances of this added.  
+>   reset-gpios = <&gpio1 3 GPIO_ACTIVE_LOW>;
 > 
-> Sure.
+> in my .dts, so setting the gpio value to 1 (logically asserting its
+> function) will end up driving the signal low, and setting it to 0
+> (de-asserting reset) will set the signal high. I will add that line to
+> the example in the binding.
 > 
-> > Also, driver_data is not currently used. It should be because adding this
-> > spi_id table means the driver can be probed via various routes where
-> > device_get_match_data() == NULL.   
+> > For a pin documented as !reset that seems backwards   
 > 
-> That makes sense, I think I thought that that would somehow happen
-> automatically. Looking through the history of similar fixes, I see that
-> for example 3f8dd0a7dc does indeed add code as you suggest, but
-> 855fe49984 does not (and also doesn't add the corresponding .driver_data
-> initializers in the spi table). They may very well both be correct, but
-> looping in Oleksij for good measure.
+> Well, it depends on where the knowledge of the pin being active low
+> belongs. In this case, the driver itself handles the gpio so it could be
+> done both ways.
+> 
+> But if, for example, the iio framework would handle an optional
+> reset-gpio for each device, it couldn't possibly know whether to set it
+> to 1 or 0 for a given device, it could only set it logic 1 to assert
+> reset and then rely on DT gpio descriptor to include the active low/high
+> info.
+> 
+> Also, see the "The active low and open drain semantics" section in
+> Documentation/driver-api/gpio/consumer.rst.
 
-It depends a bit on whether there is any plausible chance of anyone making
-use of say greybus with the device (I think that still relies on the spi id
-though not checked recently).  If not and no board files exist, chances are
-that all is needed is the id table (to make autoprobing of modules work).
-Still I'd not leave the opening for the unexpected to happen given users
-have an annoying habit of finding the corner cases :)
+Throw in an example in the dt-binding and I'm fine with this as it
+stands.
 
 Jonathan
 
 > 
-> > Hence, alongside this change you need to have a fallback to cover that case.
-> > Something along the lines of...
-> > 
-> > 	st->chip_info = device_get_match_data(..);
-> > 	if (!st->chip_info) {
-> > 		struct spi_device_id *id = spi_get_device_id();
-> > 		if (!id)
-> > 			return -EINVAL;
-> > 
-> > 		st->chip_info = (void *)id->driver_data;
-> > 		//or better yet cast to the correct type I'm just too lazy to look it up ;)
-> > 		if (!st->chip_info)
-> > 			return -EINVAL;
-> > 
-> > 	}  
-> 
-> Thanks,
 > Rasmus
 > 
 

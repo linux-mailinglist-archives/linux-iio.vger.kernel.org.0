@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B92A6628529
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 17:28:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D92D62877D
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 18:53:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237510AbiKNQ2A (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 11:28:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34376 "EHLO
+        id S237175AbiKNRwg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 12:52:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237406AbiKNQ1u (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 11:27:50 -0500
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2118.outbound.protection.outlook.com [40.107.114.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BAF91DDE5;
-        Mon, 14 Nov 2022 08:27:49 -0800 (PST)
+        with ESMTP id S237728AbiKNRwQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 12:52:16 -0500
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2113.outbound.protection.outlook.com [40.107.113.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17BAF24BEA;
+        Mon, 14 Nov 2022 09:52:13 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SJhJRZR/5t/+cM2JNFvqMpQ2UmA2MQEm8EA6mENghPDvhS+AMqqQWrXPmdPZUafm/xn03ADv3Rxvs8Bbvy18zxDE1zUT56C0zVyXK7fOla3C/H0YTkP7p3WqbDm2ja1qcf61G02/7dPwWyCr9AMR03WTTz+HnKjcmrdzLYH2qiuD5A+vLISruXtj9yhKd2lMFLirlwkiKPy2KIs2SWE4csooaI3mqQpekeiufIpriWoGmLL5qsZclstROmZR3ghVP/Xoj9SSxG1UOzUQa6vzJcAVF7qs8zthOj3ojadUL7j1PFsEAZbT3tO3kVZV/5OfpU/nnn9QHmnWbKftIYft2g==
+ b=VjpDKhtBp63ynyuV0OnY88NULyacYtEUT0PGaf3eSoFq6aNkIluX5ff33LYyF5Q9L4TvbFnzPkivYDI3H+pGewW+AmYvLy4pigK/2VpDY1UqwIkOaUW03qUmWoUDV6tM2X9OmCEWze3jSklXrXEMFp+0u26n5WPjKKjn4+0zwUJc089PmGukfhjyZCcjwa2vKusW/bY9ZijWXG11uEaEVNy0rLSe0JBlgV+JneFHLoPKmLDRuFyBKkOoNbDmHUG0WaP/VswQMmFamx8OnSfQLEbZ9GfEkZtpf5tRKrm8glJ+auQJ91LIlf2R2f2HPnt/wEJMwi6Ard6SlIvErdJiAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HgN+WwQw3OacYgmv3kd74OLl0ClKdGUqOTqxqY6R+EQ=;
- b=OWwuOq/1EaseMCQ1YAefCcgZUeuCY/GO5s8mAlEp4pcZaElBhrwmjmpi4+MGVMaAZI7HZxltxKBIaN5iPnrxIBUexz5VWNzRM5Ez5V3aSL/HVKo3QHde4E0EN5fMYLmZT0+K6ExnfxfnKQSh7mzUgvJxZkgnaJFob/yTdOaMBaD0+tzaHZ8GCbZLAmSsXRcZOvQVJsO54h8iFJae0aWtc6UZwTbN05y1Vihr4j32rz0ElpxSAAQF1yEkyQweUviecDtrGuA8/SlXpv71Wg/ZqlWa58/+HTIaMF5C9URCEgtRBQ9zPEAl/jF8BKALsyZZ8zOxbLRVJ/6l1ImTbRuBgw==
+ bh=xAeE7KtGwkcbZfEXH38csgmJtxyG/osqrf4TEGeQEGY=;
+ b=kvPL6Eww8P+1dzIbSXDd+MI5EcPpWzlPk1Z36N9qvK2pLb7RJO02bvZO/bojqL1PiO+HZUN9Zd6PyZZBKMULNPAk7uJRfZqPEhStgsbdZPuITnNbCPeyBjIqT91UVcLOj6X4qAej+0lJvHNJ0WeFxoGkLTWzeaZ5Qnzzbu0hK0cGNDIriWTdm8fdOYvOq5clD+cXpEXIZalnjGL3c3Qi42jh03hJVxtSxRUyef6orA6Z3uFS2aesnsHZJB1hGpZj/+tlSmtNIugVasTWrhY9zYHf+9d9ZtpgdX+ZuPHD/WKUXLPx97VGujM+7FmjD/wTGPBLCUMGFbP7uA5fb5AhtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
  header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HgN+WwQw3OacYgmv3kd74OLl0ClKdGUqOTqxqY6R+EQ=;
- b=a5IzsHl3yM9rOLoIvAgYTuY4StJ6u/X+YjxiZ+hQQCN/LEe+Fh0CNyO6Y1Anf1MvxF/dZj0A15obIAhaktepOc+7beB1eoS8ZsAye+53mKQ4x5psduLARm9nL3D7LCg6g04SxjPldBHtkUeJKoJux04hvTWfqtOFpqMnQBMwCAY=
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
- by OSZPR01MB8894.jpnprd01.prod.outlook.com (2603:1096:604:15b::7) with
+ bh=xAeE7KtGwkcbZfEXH38csgmJtxyG/osqrf4TEGeQEGY=;
+ b=lI6fFALCvB3r+lBHHmqs/35Qvyvrrok6VP7Ngx6z8yz7cB5j935pWUS7G52xRhfj67Jn8SRntsLeMWVGf55ZIZuE5MxdljWmwjG09uRZdR17k2XYdTzrpIWgwJwBlGqwOBjEjcFjGUy89XQ3hoYUggCRMFBLp+AqBZw1Z4ahGGE=
+Received: from TYCPR01MB5933.jpnprd01.prod.outlook.com (2603:1096:400:47::11)
+ by OS3PR01MB5621.jpnprd01.prod.outlook.com (2603:1096:604:c1::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.17; Mon, 14 Nov
- 2022 16:27:47 +0000
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::5b24:f581:85bd:6ce2]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::5b24:f581:85bd:6ce2%3]) with mapi id 15.20.5813.017; Mon, 14 Nov 2022
- 16:27:47 +0000
+ 2022 17:52:11 +0000
+Received: from TYCPR01MB5933.jpnprd01.prod.outlook.com
+ ([fe80::dc1d:adf8:9948:6dae]) by TYCPR01MB5933.jpnprd01.prod.outlook.com
+ ([fe80::dc1d:adf8:9948:6dae%8]) with mapi id 15.20.5813.017; Mon, 14 Nov 2022
+ 17:52:11 +0000
 From:   Biju Das <biju.das.jz@bp.renesas.com>
 To:     William Breathitt Gray <william.gray@linaro.org>
 CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
@@ -48,13 +48,14 @@ CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         <linux-renesas-soc@vger.kernel.org>
 Subject: RE: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
 Thread-Topic: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
-Thread-Index: AQHY94Oe/bXNEYoN9kCntehmCzyhdK49yIiAgACpVACAACrO4A==
-Date:   Mon, 14 Nov 2022 16:27:47 +0000
-Message-ID: <OS0PR01MB5922AE9A84A1A59FD57B54C386059@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Thread-Index: AQHY94Oe/bXNEYoN9kCntehmCzyhdK49yIiAgABAWdCAAKsZ0A==
+Date:   Mon, 14 Nov 2022 17:52:11 +0000
+Message-ID: <TYCPR01MB59337BB8E20273468F38560E86059@TYCPR01MB5933.jpnprd01.prod.outlook.com>
 References: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
  <20221113171545.282457-5-biju.das.jz@bp.renesas.com>
- <Y3G6Qe0KMdo2PgaG@fedora> <Y3JITA6sMp12XJmE@fedora>
-In-Reply-To: <Y3JITA6sMp12XJmE@fedora>
+ <Y3G6Qe0KMdo2PgaG@fedora>
+ <OS0PR01MB5922B01D5E579426608BBA9386059@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+In-Reply-To: <OS0PR01MB5922B01D5E579426608BBA9386059@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 Accept-Language: en-GB, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -62,56 +63,56 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=bp.renesas.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|OSZPR01MB8894:EE_
-x-ms-office365-filtering-correlation-id: cbc54bc6-bd2d-4799-57a2-08dac65d2a57
+x-ms-traffictypediagnostic: TYCPR01MB5933:EE_|OS3PR01MB5621:EE_
+x-ms-office365-filtering-correlation-id: e56fa7a4-9d35-4fff-df4c-08dac668f515
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: VCsSx3PrA+mTNbCELRvtrya1J5NO39jRvV3An1cmqGOFIwj57M1pYUCEzBsfsy2qVGpncfeaO5KQZ+65JLdMugRSGCAr0NdDRvRNnNo3wONcUY3EUfAgVEnsYNH0i83QUrkwUU+lJH5lWfWrmdvWvE2TuOEHduWPfiw27bZGyiSHMft4qAM9CoT1fDHqLMYIj4+IZIxFtIwcVmke7RfhWRnKwFdGrRKTvrYhch4/PTNJ2wz1Fc4MTON8Z+zyxhu10PMfH6RYLC2+OGO/HUYZn0rvdcpD1gh+O+WDdqQRMotpllQXEm/X+bbjec33oxObUrbB8xiHs9KhnS1zIKx5X4zSHAKAqAuqfn9VG7teDLS+zEOm9njniNdc+VA0mSvxO7lI+MkJBYqc3B2uFEqP4Bm+5mO/AS1pd/gDCfkxmi6QcTjNmkA5IxOmPImYHZi49t4E+4E/3Fnn0U7SXEEJ3ki2cGaX+axZQL1lI1ZasjtmAPAeng52P0kLNOm7hfXIpORhSLZ4r+kf/T1EiUM9QOhSVU7MeO3flZu/fyS3zR8sxv16yl65IHtdTlrDBpdtO7gThNS4MdFTQpM1ad9ct+HL41bxJzmDj6yhQ0BxaAyZOBun49lk/ozJXHzyQyfS4VOEQkfV6bpq4uo1wpHhF5Z25cdAwJGsgXrWVmMxwVndYH/LCh3e+st+CBsJgXoCYyPvUwge/Ai52jcFHRXci32LsvCC+ehsNmT6KMP6Nk0QWda/tSiKWJda0QuRKhlu7p36vuZuQNUkz5SU163O4fAFeqo4YNosbn9VjiarZ/XvCgCUYtq/LGOfSZnEcPh3
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(39860400002)(396003)(366004)(136003)(346002)(451199015)(71200400001)(478600001)(54906003)(6916009)(5660300002)(186003)(8936002)(52536014)(6506007)(41300700001)(2906002)(7696005)(26005)(66476007)(53546011)(66446008)(316002)(66556008)(4326008)(76116006)(8676002)(64756008)(9686003)(66946007)(83380400001)(33656002)(86362001)(55016003)(38100700002)(38070700005)(122000001)(32563001)(309714004);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: GjM7pq/ggMYqirBWl6t9RHh5b+N+EvKopE71OmTWxAQYY9dF+A3gPbYyhXGSd/IF1yHejR1wImF8LmQUxxsrU8gCzCpmBubVSWHC6xVl/GWtdiq0e9J9UReGnb8oYlf027XFZ1DPCK3P5Q7NeiFWh0yVbmpw8hA8b515VnoxiYWx2VJGnXgh7jRFRzsk6bqZEWsO3NMFomtQi3JziptQ8EIvYnbyJHO/EwYe6GlZGsTfPHB7S0bKekm5wY8Jj5X9XXDH5GwrdfvTSTdSSlh3KXEb/2UWck6IQE9SPXqMM/W6NDUZcZdWCegn5vr66cj24hwPvwVj+5c5rc87eL99EE2GX7b4tdWjKZ9DHiZrX7Z/Uv9t1PuYFMCkooubwhZeeMg0BG7MHfaFR5ePcpUG99pXtI3sV9tYMzxclwPaNtVFes9bxdMXT/eWNmTKYwh2918ut7p0ApCIUTvF63R982Abiq0IUMMNbS3LXrCIQqdTFOJqUoWtDhEKcoRD+3JSb8mfWzV/2uK4fKycF/csEiyWX77LR4orKvLn1tsG0YSc0M2VQ9ovVheOJ2g+wy8Trc9BvF1MBT9a6ogMlYYqbir+0CKbt9/IpnNCbdHFncZhabKiF0Ka3pPqGVVejX3p1secbnDCT6Gbu3dKB1JDJQCrYzA4mgbikXYx1dBuwZbzQ0m4jUrBSE3wNQWcAweAdZH7rWp85htoXe1cX4+gTV3SYnl973vZFmLnwNK6LIGasYk+7C1POkPmXx8HKRPadgRPNGbV2XWKCaMt9fshF0sQ0HBYhz2T/RqAGiBqzgkbahOmyrHj31MlYD+TUizj
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB5933.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(39860400002)(366004)(396003)(376002)(451199015)(6916009)(71200400001)(33656002)(478600001)(38070700005)(966005)(54906003)(6506007)(7696005)(8936002)(26005)(9686003)(66946007)(316002)(66556008)(4326008)(66476007)(76116006)(66446008)(186003)(52536014)(8676002)(64756008)(53546011)(5660300002)(41300700001)(55016003)(83380400001)(2906002)(122000001)(38100700002)(86362001)(32563001);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?9071aIsRymRFborMTonj0EsIEGwjVGxMoCz0+AT0sYcMrzfMSwg+O240CN4b?=
- =?us-ascii?Q?6U7s4f/CKXoksuUfBFHNsH4nRXCh7LRk/tXXYpsBJzuIgz091aAkuW/5If6E?=
- =?us-ascii?Q?afTzjdKileFhD2p7KgtS6jjaC5LwSPLBMAyUikbrWog2xpPKcUupgdOZeJMv?=
- =?us-ascii?Q?mudj+VrEqWFN6FW+6Zyq1HNH0gFSAQrRky1wK4MzL0j0XxU8hTK5zaP8mRGn?=
- =?us-ascii?Q?2SbGjSWhHUerb9JOc8zeiQGnp7tutcS9eh6wbjh+mBtjGk3OFT9WpgiVgTSK?=
- =?us-ascii?Q?wLii9oYc9+yhflBeQ8eSkPOdc/99V0guj+0QxDJmYZ3sw0z5SuF+BTRAbdrP?=
- =?us-ascii?Q?Xb1mnR0WP8JjYoaC5qaKiZi5Xt4MJepoCDrUzPqLe5hnD74Uuda0F9L8rOsS?=
- =?us-ascii?Q?TL1Se6/FpGbIjcxJsTLkHLH7WVf4D8Qhky4CXrPl2LrRYA1zhNGUXj28ONab?=
- =?us-ascii?Q?uTdZSf0zbkSwCMsK0nMXQBzhZLSJ6USjyGq0tdtO9TyL6q5zClj+np5grtfz?=
- =?us-ascii?Q?NlbMFsh4u3ThO2h/2HEWO0V/J9c+Urx5O7k73+bgB4iaA0cXsJ7nKAl7iziI?=
- =?us-ascii?Q?8ONHq2wxNiC5zqfOEtyZpJ32gdfTia2ZUiQ/h2yYKVQ+A2IK7XLXGDC4LEho?=
- =?us-ascii?Q?1L+1gs8SA+NG/cpFcUmkezLijCIaf8w3CaqqkEjes3JmK/jaM1MhAjHsk+Uo?=
- =?us-ascii?Q?0kskHPTBQGXk3ro1IGYlmuTx3DAHNcqByZhOv+abPRhF/VBKVbrmsCy7cp4b?=
- =?us-ascii?Q?q0J/PExldJy9ISmOEJXLYn1nzPvlNvzZyYtCz74qefSnOOJdIHvC9pPUJhb6?=
- =?us-ascii?Q?rXMCQNRzsujZsUNQj2ZysOQu4xEPU+Yn+SfqQtvDykfErQeQ2oZNNbpAx0VT?=
- =?us-ascii?Q?0QDqrSx+Bq6RT26w5tL/PRWJm60/5aaoC5JO2CGLG8wedjrOi7K6XNttDyN3?=
- =?us-ascii?Q?QcHL5cqFbybeYzkyh0DMOUg6h9BCXDtDOJBp47NCqtR/iVfcbgoPqiIDX0tL?=
- =?us-ascii?Q?TFT5uLlBb84Qq67ghperXgSUKUoBERmg6w4w3gPI7jQIF+KN1pNl6gzbUlbh?=
- =?us-ascii?Q?5Dagn1tNSN0QH41/flJr1jb7z3csrA6uTCOyj3rGIelf1ECOaXlz4mx0e6Yz?=
- =?us-ascii?Q?xKubSk1Y7HaH4ckl9KpiMwi7oS2KI/GlDa4RsY6vFWz2XhLfzCpoF9epnxzm?=
- =?us-ascii?Q?KAPRytAbgwcSYaVhg5QmJ54Wl5UaOgcPyHxrjOUEfVT2HgtRURs6Lm2kjhtn?=
- =?us-ascii?Q?NYYk6cet3uGsZLn0eRLp4YHqvQB3Y9dH7klADari01+WnKh5gMZ7M1eV46EK?=
- =?us-ascii?Q?I5b8RUqnbxlXeRg9onLcEvkKQQ64NdGCeMhQ1vcO8D+znkgJVCG0oS06ydAb?=
- =?us-ascii?Q?N3y0xWyI5LYfVgf1fD8aXsiQu5ty2ZlKLmkj5HcDTqgVYh+3GI0htNgrJoRR?=
- =?us-ascii?Q?pCKp1JQcfceiJgVxHhmnJXt0CM1ss4RS5O14k+Uj1QD/cFjCvEQLZohatGgl?=
- =?us-ascii?Q?mDnHNLWgplF0EI9k4Nq8Z5fWbFJJvAr8nvt724Ny3nSRTfyP+DQn86IYDCGR?=
- =?us-ascii?Q?e/SjlIKo5GZGhixTAqgknjCG7WD6hTabfHI+FyF3E1Gyh+XjyQIYoGtuj1xz?=
- =?us-ascii?Q?lg=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?orQmvepEYSYSS/bPHuRUcpDpmDf9VeWeFqkxL8yvnFzGyQRcbYBQ8LvLP2UB?=
+ =?us-ascii?Q?g7z402LNCnfayR3wodOZousRtAcaheM+rRO5QV0aMsKMqWuLuFlkrnfcoiok?=
+ =?us-ascii?Q?kgg9pwgNm9rpPYW5EChzmKWycQx3+6Ra/K7bL+J5dWGte6H043FVHJBRLBSm?=
+ =?us-ascii?Q?YLRSpURP4RUC4R9eRUz5YISl7nPuV/pvNbmxltiCedt/HPjzzvB9kwr8xcOb?=
+ =?us-ascii?Q?V1JmN/MDDlUH5mPa/9C7sASrZxFkhlO5/1n5eIIl9oC1wiAhYmG8a6Xu737t?=
+ =?us-ascii?Q?c7lUS3E73/CQO2Dr2gHxfZZHcp8vQAQOOQ2xSh8RStAfYKSB1SzCFtFeC7OE?=
+ =?us-ascii?Q?8If/Ccf/qQh3YOgHqL6nOEGk0HJcjY3IVlL3DsEEvGu3jzjHYQ75KiQuRNf1?=
+ =?us-ascii?Q?YeT0Nxav/s5JQZuWED1YwJtHFUaAtn3G4ipHLNJHYbSd6ozMZHFbqnOzBbw9?=
+ =?us-ascii?Q?B8a0tXcYmKv2HTKGyLEaYSLYezcv378HgFWAcgJiu3XNfjas20WQR/sateQ1?=
+ =?us-ascii?Q?J2quMfOha0q/o7YIzno1+J+WT/Gqr42UJ4c/Ayb6MzZb5NoOSH9LyesvvBpn?=
+ =?us-ascii?Q?9nfTmABPSTyFlUkGfVvetci3xRJi23X8+PgHphxjbF96Fx/sUsdyafb+AGhl?=
+ =?us-ascii?Q?Z/WbScKmzoZEZOekvAHUSHNWWpcMBzoTBC87CfF8hXEi1RWLPO/fdhMlECsH?=
+ =?us-ascii?Q?lNLXcKrldERxRbAvrw5rKojtujGJHRU/ywTp0xLrtxRS5wnDBaMJ2IZlN59Q?=
+ =?us-ascii?Q?9q73wrbbj7V8yP8FtEmLt60gqMlkgSKwi5hrj2p6fI+J4TkPqJqL7pTbL2xw?=
+ =?us-ascii?Q?WNnxeVQhzuhA815D/R8VPuwcQ7eIMj/Z8Pim+NJED7asLkWFbH1hRGX3JglP?=
+ =?us-ascii?Q?+K/5vKLVduAuRXjSIIFqoL7962kAHScWzViHvXcbZPXT7M44dSqKI8bV/LO+?=
+ =?us-ascii?Q?ItTkkMpNsVHKPb9ZbMVk/2WhxXjpgHOzxXkCSdlCz3a2zhier51DkWtqPQ6x?=
+ =?us-ascii?Q?uCCXqD+vKUmzcDXulaecAOaZ4KjfnI2VRgcHhgV6jICQ8Fyj2gkeXlf6yx37?=
+ =?us-ascii?Q?F4xznoXwCspb3i/NBCkPno4hJci8x5prXWzaPpsRUffk4TZyGa38hKbmkEiB?=
+ =?us-ascii?Q?MioEzaKRkAkboNxbABfIGGLPthQqj9ElUgCK+TC+YJQBca/5zWqN50rb9Ycg?=
+ =?us-ascii?Q?TERKbiJsYjZbXS0I0HXC2PAITNOCM+wiCqQCjOJPjskfUTpGEB3NulqV/A5q?=
+ =?us-ascii?Q?OHCU1giKD5j1kr86YCWKJwVdLLpaYMwj0q8EU1h9N0y8+6LUnm2Xp4U2CraQ?=
+ =?us-ascii?Q?JAdcAQO4cFOS8GQ3xPwved1hXzsP6mc7kQg8qncXVEA1ErX5a8eZard+Nfbs?=
+ =?us-ascii?Q?G88hL20pZeaIF4ZBHn97OlCXAeumnGbGzM0hKVCrWQl+FFNm3WNIKjyoO3h+?=
+ =?us-ascii?Q?1aXH65clwjLt91QMmT9NKhi8gVJfh1XcP+094LMSZ+F3Z1+rfnC4lZPcugHK?=
+ =?us-ascii?Q?iUd0JXvjEuJxs3YvTdLkPPv9LVy7vfQfaVvYFrQYxBQdZqrfPXUueCnsGIi0?=
+ =?us-ascii?Q?PMRx3twC1nAIbqByg8X5xeD1fWKmWJgWq28azgZsxObX/0qCK8n+izX/X1lC?=
+ =?us-ascii?Q?eQ=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: bp.renesas.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbc54bc6-bd2d-4799-57a2-08dac65d2a57
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2022 16:27:47.0346
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB5933.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e56fa7a4-9d35-4fff-df4c-08dac668f515
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2022 17:52:11.6471
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BRIZICL52+0EpTRopqmJ8rJ/bH9onn9DlgcDYgpJOSqCTgfB4/2QTZ6dKio+sh5NcMYRJ8Rbpyzq2bEeYC7C0xFOFLtMM/M2NMPrsPXxnmM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB8894
+X-MS-Exchange-CrossTenant-userprincipalname: 0iJMFSq+Yn7mGagbkT0C+LbcwFci+ls9b2SoTtUIUEAW1f9Ot1hXeUngRydW4Nqf0tbryrs8d612pf6SKKu+dRRZuvxDJFUSl8R8TfLyxs8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB5621
 X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
         SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -121,113 +122,185 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi William Breathitt Gray,
-
-Thanks for the feedback.
-
-> -----Original Message-----
-> From: William Breathitt Gray <william.gray@linaro.org>
-> Sent: 14 November 2022 13:53
-> To: Biju Das <biju.das.jz@bp.renesas.com>
-> Cc: linux-iio@vger.kernel.org; Geert Uytterhoeven <geert+renesas@glider.b=
-e>;
-> Chris Paterson <Chris.Paterson2@renesas.com>; Prabhakar Mahadev Lad
-> <prabhakar.mahadev-lad.rj@bp.renesas.com>; linux-renesas-soc@vger.kernel.=
-org
-> Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter dri=
-ver
->=20
-> Hi Biju,
->=20
-> I have a few follow-up comments that came to my mind.
->=20
-> On Sun, Nov 13, 2022 at 10:47:13PM -0500, William Breathitt Gray wrote:
+> > -----Original Message-----
+> > From: William Breathitt Gray <william.gray@linaro.org>
+> > Sent: 14 November 2022 03:47
+> > To: Biju Das <biju.das.jz@bp.renesas.com>
+> > Cc: linux-iio@vger.kernel.org; Geert Uytterhoeven
+> > <geert+renesas@glider.be>; Chris Paterson
+> > <Chris.Paterson2@renesas.com>; Prabhakar Mahadev Lad
+> > <prabhakar.mahadev-lad.rj@bp.renesas.com>;
+> > linux-renesas-soc@vger.kernel.org
+> > Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter
+> > driver
+> >
 > > On Sun, Nov 13, 2022 at 05:15:44PM +0000, Biju Das wrote:
-> > > Add RZ/G2L MTU3a counter driver. This IP supports the following
-> > > phase counting modes on MTU1 and MTU2 channels
-> > >
-> > > 1) 16-bit phase counting modes on MTU1 and MTU2 channels.
-> > > 2) 32-bit phase counting mode by cascading MTU1 and MTU2.
-> > >
-> > > This patch adds 3 counters by creating 3 logical channels
-> > > 	counter0: 16-bit phase counter on MTU1 channel
-> > > 	counter1: 16-bit phase counter on MTU2 channel
-> > > 	counter2: 32-bit phase counter by cascading MTU1 and MTU2
-> > > 		  channels.
 > >
-> > Within the context of the Counter subsystem, the term "counter"
-> > specifically refers to the device (Counts + Synapses + Signals).
-> > Instead you should use "count" here to refer to the counter value chann=
-els
-> (i.e.
-> > count0, count1, and count2).
+> > >
+> > > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> > > ---
+> > > +#define RZ_MTU3_GET_HW_CH(id) \
+> > > +({ \
+> > > +	size_t _id =3D (id); _id =3D (_id =3D=3D RZ_MTU3_32_BIT_CH) ? 0 : _=
+id; \
+> > > +})
+> >
+> > I probably missed a discussion about this change in a previous thread;
+> > what is the purpose of using a local size_t variable here? Is this due
+> > to the "possible side-effects" mentioned in the patch changes note?
 >=20
-> Include a brief description of the Signals and their relationship to the
-> three Counts as well in this commit message. In particular, mention how
-> "MTCLKA-MTCLKB" and "MTCLKC-MTCLKD" can be toggled for MTU2, etc.
+> Check patch is complaining
+> "CHECK: Macro argument reuse 'id' - possible side-effects?"
 >=20
-> > > +static int rz_mtu3_long_word_access_ctrl_mode_set(struct counter_dev=
-ice
-> *counter,
-> > > +						  u32 lwa_ctrl_mode)
-> > > +{
+> By using local size_t variable, it fixed the check patch warning.
+>=20
+> >
+> > > +
+> > > +#define SIGNAL_A_ID	(0)
+> > > +#define SIGNAL_B_ID	(1)
+> > > +#define SIGNAL_C_ID	(2)
+> > > +#define SIGNAL_D_ID	(3)
+> > > +
+> > > +/**
+> > > + * struct rz_mtu3_cnt - MTU3 counter private data
+> > > + *
+> > > + * @clk: MTU3 module clock
+> > > + * @lock: Lock to prevent concurrent access for ceiling and count
+> > > + * @ch: HW channels for the counters
+> > > + * @mtu_16bit_max: Cache for 16-bit counters
+> > > + * @mtu_32bit_max: Cache for 32-bit counters  */ struct rz_mtu3_cnt =
+{
+> > > +	struct clk *clk;
+> > > +	struct mutex lock;
+> > > +	struct rz_mtu3_channel *ch;
+> > > +	u16 mtu_16bit_max[RZ_MTU3_MAX_HW_CNTR_CHANNELS];
+> > > +	u32 mtu_32bit_max;
+> >
+> > Does the ceiling set on the device get clobbered when you change
+> > between 16- bit and 32-bit phase modes (i.e. writing to TGRALW vs
+> > TGRA)? You have a separate cache for the 32-bit ceiling value here,
+> > but if it is getting clobbered then as a small optimization you may
+> > reimplement this cache as a union such as:
+> >
+> >     union {
+> >             u16 mtu_16bit_max[RZ_MTU3_MAX_HW_CNTR_CHANNELS];
+> >             u32 mtu_32bit_max;
+> >     }
+>=20
+> Yes, it gets clobbered when we change between 16-bit and 32-bit mode.
+>=20
+> For eg: 0xbe1352 value
+> Split up into mtu1.TGRA=3D0xbe and mtu2.TGRA=3D0x1352.
+>=20
+> OK will use the union.
+>=20
+> >
+> > > +};
+> > > +
+> >
+> > > +
+> > > +	switch (val & RZ_MTU3_TMDR1_PH_CNT_MODE_MASK) {
+> > > +	case RZ_MTU3_TMDR1_PH_CNT_MODE_1:
+> > > +		*function =3D COUNTER_FUNCTION_QUADRATURE_X4;
+> > > +		break;
+> > > +	case RZ_MTU3_TMDR1_PH_CNT_MODE_2:
+> > > +		*function =3D COUNTER_FUNCTION_PULSE_DIRECTION;
+> > > +		break;
+> > > +	case RZ_MTU3_TMDR1_PH_CNT_MODE_4:
+> > > +		*function =3D COUNTER_FUNCTION_QUADRATURE_X2_B;
+> > > +		break;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> >
+> > Sorry if I asked this before: what are counting modes 3 and 5, and are
+> > they not supported by this device? If they are not supported, please
+> > include a comment stating so in the default case block so that it is
+> > clear for future reviewers as well.
+>=20
+> Our hardware supports 5 phase counting modes. From that list, I match up =
+some
+> of the functions supported by the counter driver.
+>=20
+> counting modes 3 and 5 are supported by the Devices, but currently counte=
+r
+> driver is not supported this.
+>=20
+> Please see the attached counting modes 3 and 5.
+> https://ibb.co/3YJByG1
+>=20
+> OK, I will add a comment for the details for modes not supported by the
+> current driver in the default block.
+>=20
+> > > +
+> > > +static void rz_mtu3_32bit_cnt_setting(struct counter_device
+> > > +*counter, int id) {
 > > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
-> > > +	u16 val;
+> > > +	struct rz_mtu3_channel *ch1 =3D priv->ch;
+> > > +	struct rz_mtu3_channel *ch2 =3D ch1 + 1;
 > > > +
-> > > +	pm_runtime_get_sync(priv->ch->dev);
-> > > +	val =3D rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
-> > > +	if (lwa_ctrl_mode)
-> > > +		val |=3D RZ_MTU3_TMDR3_LWA;
-> > > +	else
-> > > +		val &=3D ~RZ_MTU3_TMDR3_LWA;
-> > > +
-> > > +	rz_mtu3_shared_reg_write(priv->ch, RZ_MTU3_TMDR3, val);
-> > > +	pm_runtime_put(priv->ch->dev);
+> > > +	/*
+> > > +	 * 32-bit phase counting need MTU1 and MTU2 to create 32-bit cascad=
+e
+> > > +	 * counter.
+> > > +	 */
+> > > +	ch1->function =3D RZ_MTU3_32BIT_PHASE_COUNTING;
+> > > +	ch2->function =3D RZ_MTU3_32BIT_PHASE_COUNTING;
 > >
-> > When you want to assign a bit to a buffer, you can use __assign_bit()
-> > to simplify your code:
+> > Can these "function" members be modified from outside this driver? If
+> > so, you could have a race condition here.
+>=20
+> OK will add channel specific locks to avoid the races.
+>=20
+> Do you prefer mutex or spin lock here? As channel selection is based on
+> runtime decision For both PWM and counter??
+>=20
 > >
-> >     unsigned long tmdr;
-> >     ...
-> >     tmdr =3D rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
-> >     __assign_bit(RZ_MTU3_TMDR3_LWA, &tmdr, !!lwa_ctrl_node);
-> >     rz_mtu3_shared_reg_write(priv->ch, RZ_MTU3_TMDR3, tmdr);
->=20
-> You should consider implementing a rz_mtu3_shared_reg_update_bits() that =
-will
-> perform this read =3D> assign bits =3D> write sequence so that you can re=
-use this
-> pattern in the rz_mtu3_ext_input_phase_clock_select_set().
-
-It is already taken care while working on cascade_enable.
-
->=20
-> > > +static int rz_mtu3_action_read(struct counter_device *counter,
-> > > +			       struct counter_count *count,
-> > > +			       struct counter_synapse *synapse,
-> > > +			       enum counter_synapse_action *action) {
-> > > +	enum counter_function function;
-> > > +	int err;
 > > > +
-> > > +	err =3D rz_mtu3_count_function_read(counter, count, &function);
-> > > +	if (err)
-> > > +		return err;
+> > > +	/* Phase counting mode 1 is used as default in initialization. */
+> > > +	rz_mtu3_8bit_ch_write(ch1, RZ_MTU3_TMDR1,
+> > > +RZ_MTU3_TMDR1_PH_CNT_MODE_1);
 > > > +
-> > > +	/* Default action mode */
-> > > +	*action =3D COUNTER_SYNAPSE_ACTION_NONE;
+> > > +	rz_mtu3_8bit_ch_write(ch1, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
+> > > +	rz_mtu3_8bit_ch_write(ch1, RZ_MTU3_TIOR, RZ_MTU3_TIOR_IC_BOTH);
+> > > +
+> > > +	rz_mtu3_enable(ch1);
+> > > +	rz_mtu3_enable(ch2);
+> > > +}
+> > > +
+> > > +static void rz_mtu3_16bit_cnt_setting(struct counter_device
+> > > +*counter, int id) {
+> > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> > > +	struct rz_mtu3_channel *ch =3D priv->ch + id;
+> > > +
+> > > +	ch->function =3D RZ_MTU3_16BIT_PHASE_COUNTING;
+> > > +
+> > > +	/* Phase counting mode 1 is used as default in initialization. */
+> > > +	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TMDR1,
+> > > +RZ_MTU3_TMDR1_PH_CNT_MODE_1);
+> > > +
+> > > +	rz_mtu3_8bit_ch_write(ch, RZ_MTU3_TCR, RZ_MTU3_TCR_CCLR_TGRA);
+> > > +	rz_mtu3_enable(ch);
+> > > +}
+> > > +
+> > > +static int rz_mtu3_initialize_counter(struct counter_device
+> > > +*counter, int id) {
+> > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> > > +	struct rz_mtu3_channel *ch1 =3D priv->ch;
+> > > +	struct rz_mtu3_channel *ch2 =3D ch1 + 1;
 > >
-> > You can exit early here depending on which ext_input_phase_clock mode
-> > is currently selected: if "MTCLKA-MTCLKB" then return early if id is
-> > signal C or D, while if "MTCLKC-MTCLKD" return early if id is signal A =
-or
-> B.
+> > No need to complicate this, just use priv->ch[0], priv->ch[1], and
+> > priv->ch[id]. Same advice applies to the other functions as well.
 >=20
-> IIUC count0 is always "MTCLKA-MTCLKB", so this exit early check won't app=
-ly
-> in that particular case; check count->id to see which Count we're handlin=
-g.
+> I get below error when I use array susbscripts. "*ch1 =3D priv->ch[0];"
 
-It is already taken care.
+> drivers/counter/rz-mtu3-cnt.c:291:32: error: incompatible types when
+> initialising type 'struct rz_mtu3_channel *' using type 'struct
+> rz_mtu3_channel'
+>   291 |  struct rz_mtu3_channel *ch1 =3D priv->ch[0];
+>=20
+
+I could use "*ch1 =3D &priv->ch[0];" please let me know is it ok?
 
 Cheers,
 Biju

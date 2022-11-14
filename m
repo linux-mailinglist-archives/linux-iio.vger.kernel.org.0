@@ -2,102 +2,73 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 756CE6281AB
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 14:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5AD66281AF
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 14:53:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235927AbiKNNwr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 14 Nov 2022 08:52:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39744 "EHLO
+        id S236262AbiKNNxW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 08:53:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235984AbiKNNwq (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 08:52:46 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409DF22BE0;
-        Mon, 14 Nov 2022 05:52:45 -0800 (PST)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AECVxM9008761;
-        Mon, 14 Nov 2022 08:52:29 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ku76yn5j1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 14 Nov 2022 08:52:29 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 2AEDqSPE025093
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Mon, 14 Nov 2022 08:52:28 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 14 Nov
- 2022 08:52:27 -0500
-Received: from ASHBMBX9.ad.analog.com ([fe80::c1f2:f121:22ef:29db]) by
- ASHBMBX9.ad.analog.com ([fe80::c1f2:f121:22ef:29db%20]) with mapi id
- 15.02.0986.014; Mon, 14 Nov 2022 08:52:27 -0500
-From:   "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-Thread-Topic: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-Thread-Index: AQHY9reALFIOJ45fGkOdEYqpsVzwNK4+cXWA
-Date:   Mon, 14 Nov 2022 13:52:26 +0000
-Message-ID: <095a454b55cf497392a621649f24e067@analog.com>
-References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
-        <20221111143921.742194-6-linux@rasmusvillemoes.dk>
- <20221112170705.7efe1673@jic23-huawei>
-In-Reply-To: <20221112170705.7efe1673@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcY3RhbmlzbGFc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy05MWM0YmM1MS02NDIzLTExZWQtYjcyNy00MTU2?=
- =?us-ascii?Q?NDUwMDAwMzBcYW1lLXRlc3RcOTFjNGJjNTMtNjQyMy0xMWVkLWI3MjctNDE1?=
- =?us-ascii?Q?NjQ1MDAwMDMwYm9keS50eHQiIHN6PSIzNjE4IiB0PSIxMzMxMjkwNzU0NjEw?=
- =?us-ascii?Q?MjE5OTYiIGg9Iit2VXNrVTRXNWo4aHF5MVVrZ1hCL3F4TWVnMD0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?QXNZU0ZVTVBqWUFjc3d6Q2l3WGltMXl6RE1LTEJlS2JVREFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBSnJqSklRQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-dg-rorf: true
-x-originating-ip: [10.32.224.42]
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        with ESMTP id S235984AbiKNNxV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 08:53:21 -0500
+Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B6925C7D
+        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 05:53:20 -0800 (PST)
+Received: by mail-qk1-x72a.google.com with SMTP id d7so4980012qkk.3
+        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 05:53:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xB/o4S4c1Eq69YwW8XCN+naLCo6m7nKQdgmAZ6JlpPw=;
+        b=WLwCl9FT2EPk6Dk6kzO6uHeZf0yxvQIYzbI2s531QWGFvH8AO70rIwTptaQnShrGbE
+         LuDT0+KrVqK3+YeMIpYPuHW7/u8uS/hml+nmBYcg3ICwkdNsvI4mJ7zr0L44dExCmAS/
+         ITAabEIDHhUzNyrad0y10mfsuQTZe9vw8IVchkap98UBiV2bRyj+jIZReEW9EKZ7eAxh
+         r32Q96NcYI0jBfdVNYFgAoYGZQgRcm2YZsjzeTOKiK9ZFP8dEaWGN9R3Q3aaMrdT43Lm
+         DwX4Uvze535ZKR5btygfbAnGlJL+l+gN6V1FcrS7Irc+QilZ5CSudnzVqub7hD0tSuPH
+         HLDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xB/o4S4c1Eq69YwW8XCN+naLCo6m7nKQdgmAZ6JlpPw=;
+        b=g2ndqjdoYIlsA3tzDc5mFb3FS1mcqJ8v/UrZr2fQjUxNoXc3R2Onc9m4+IyO85OYxe
+         XTrGPSdyzW5v+yAeiv+azw+xuSKVXDT/cSYn9u4b+9WZTCqRXnisn6sSt2LHlFNIT9Fv
+         SDtKblaBJcGqgCHeKyUQ8iwfDYKet0NcCSvOo6btTkg8nY3+Rv92jeRE3hkase4eLIIG
+         x+2ncPAInKmfnM9W+WVvMykfUuLTEbV7wGVOJrx6KhrKtaxcwxNCfEdbu0R3ik2ZZtnW
+         CyAPlavJAQFL+6/1G68Sbulk/gGmMs7gbK1rhcFeDCG3M+BEhk97HHkIw5fJJUvkwtrB
+         yqqA==
+X-Gm-Message-State: ANoB5pnKCyqPCsgrVLd3uwpcgGX3Fja+qYCOBxhi2wRTOaFHteVQV4B4
+        xiVSenWLC+xAJIfeAJfBoRQaVA==
+X-Google-Smtp-Source: AA0mqf7/tuufp/2ywDwnRwCDrrOhWF0TdfnN/OAQLpoUYtGJ5nPYvMQEbuvqwNQW5o5Lf+uq3gGlWQ==
+X-Received: by 2002:a37:8747:0:b0:6fa:faad:2008 with SMTP id j68-20020a378747000000b006fafaad2008mr11047107qkd.668.1668433999853;
+        Mon, 14 Nov 2022 05:53:19 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id y14-20020a05620a44ce00b006fb7c42e73asm1930292qkp.21.2022.11.14.05.53.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 05:53:19 -0800 (PST)
+Date:   Mon, 14 Nov 2022 08:53:16 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
+Message-ID: <Y3JITA6sMp12XJmE@fedora>
+References: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
+ <20221113171545.282457-5-biju.das.jz@bp.renesas.com>
+ <Y3G6Qe0KMdo2PgaG@fedora>
 MIME-Version: 1.0
-X-Proofpoint-GUID: qir8QAEG-MWFkEc3ZemqDaFniSX2X3dx
-X-Proofpoint-ORIG-GUID: qir8QAEG-MWFkEc3ZemqDaFniSX2X3dx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-14_12,2022-11-11_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 clxscore=1011 phishscore=0 bulkscore=0 lowpriorityscore=0
- mlxlogscore=999 suspectscore=0 mlxscore=0 spamscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211140098
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="j606Cw4Et2h+lrt2"
+Content-Disposition: inline
+In-Reply-To: <Y3G6Qe0KMdo2PgaG@fedora>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -105,93 +76,102 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
+--j606Cw4Et2h+lrt2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -----Original Message-----
-> From: Jonathan Cameron <jic23@kernel.org>
-> Sent: Saturday, November 12, 2022 7:07 PM
-> To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> Cc: Tanislav, Cosmin <Cosmin.Tanislav@analog.com>; Lars-Peter Clausen
-> <lars@metafoo.de>; Hennerich, Michael <Michael.Hennerich@analog.com>;
-> devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>; linux-
-> iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-> 
-> [External]
-> 
-> On Fri, 11 Nov 2022 15:39:21 +0100
-> Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> 
-> > We have a board where the reset pin of the ad74412 is connected to a
-> > gpio, but also pulled low by default. Hence to get the chip out of
-> > reset, the driver needs to know about that gpio and set it high before
-> > attempting to communicate with it.
-> 
-> I'm a little confused on polarity here.  The pin is a !reset so
-> we need to drive it low briefly to trigger a reset.
-> I'm guessing for your board the pin is set to active low? (an example
-> in the dt would have made that clearer) Hence the pulse
-> in here to 1 is actually briefly driving it low before restoring to high?
-> 
-> For a pin documented as !reset that seems backwards though you have
-> called it reset so that is fine, but this description doesn't make that
-> celar.
+Hi Biju,
 
-My opinion is that the driver shouldn't exactly know the polarity of the reset,
-and just assume that setting the reset GPIO to 1 means putting it in reset,
-and setting it to 0 means bringing out of reset.
+I have a few follow-up comments that came to my mind.
 
-> 
-> Perhaps just add some more description here to make it clear the GPIO
-> is active low, and then refer to setting it to true and false to avoid
-> the confusing high / low terminology which are inverted...
-> 
-> >
-> > When a reset-gpio is given in device tree, use that instead of the
-> > software reset. According to the data sheet, the two methods are
-> > functionally equivalent.
-> >
-> > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > ---
-> >  drivers/iio/addac/ad74413r.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >
-> > diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-> > index 9f77d2f514de..af09d43f921c 100644
-> > --- a/drivers/iio/addac/ad74413r.c
-> > +++ b/drivers/iio/addac/ad74413r.c
-> > @@ -71,6 +71,7 @@ struct ad74413r_state {
-> >  	struct regmap			*regmap;
-> >  	struct device			*dev;
-> >  	struct iio_trigger		*trig;
-> > +	struct gpio_desc		*reset_gpio;
-> >
-> >  	size_t			adc_active_channels;
-> >  	struct spi_message	adc_samples_msg;
-> > @@ -393,6 +394,13 @@ static int ad74413r_reset(struct ad74413r_state
-> *st)
-> >  {
-> >  	int ret;
-> >
-> > +	if (st->reset_gpio) {
-> > +		gpiod_set_value_cansleep(st->reset_gpio, 1);
-> > +		fsleep(50);
-> > +		gpiod_set_value_cansleep(st->reset_gpio, 0);
-> > +		return 0;
-> > +	}
+On Sun, Nov 13, 2022 at 10:47:13PM -0500, William Breathitt Gray wrote:
+> On Sun, Nov 13, 2022 at 05:15:44PM +0000, Biju Das wrote:
+> > Add RZ/G2L MTU3a counter driver. This IP supports the following
+> > phase counting modes on MTU1 and MTU2 channels
+> >=20
+> > 1) 16-bit phase counting modes on MTU1 and MTU2 channels.
+> > 2) 32-bit phase counting mode by cascading MTU1 and MTU2.
+> >=20
+> > This patch adds 3 counters by creating 3 logical channels
+> > 	counter0: 16-bit phase counter on MTU1 channel
+> > 	counter1: 16-bit phase counter on MTU2 channel
+> > 	counter2: 32-bit phase counter by cascading MTU1 and MTU2
+> > 		  channels.
+>=20
+> Within the context of the Counter subsystem, the term "counter"
+> specifically refers to the device (Counts + Synapses + Signals). Instead
+> you should use "count" here to refer to the counter value channels (i.e.
+> count0, count1, and count2).
+
+Include a brief description of the Signals and their relationship to the
+three Counts as well in this commit message. In particular, mention how
+"MTCLKA-MTCLKB" and "MTCLKC-MTCLKD" can be toggled for MTU2, etc.
+
+> > +static int rz_mtu3_long_word_access_ctrl_mode_set(struct counter_devic=
+e *counter,
+> > +						  u32 lwa_ctrl_mode)
+> > +{
+> > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> > +	u16 val;
 > > +
-> >  	ret = regmap_write(st->regmap, AD74413R_REG_CMD_KEY,
-> >  			   AD74413R_CMD_KEY_RESET1);
-> >  	if (ret)
-> > @@ -1316,6 +1324,10 @@ static int ad74413r_probe(struct spi_device *spi)
-> >  	if (IS_ERR(st->regmap))
-> >  		return PTR_ERR(st->regmap);
-> >
-> > +	st->reset_gpio = devm_gpiod_get_optional(st->dev, "reset",
-> GPIOD_OUT_LOW);
-> > +	if (IS_ERR(st->reset_gpio))
-> > +		return PTR_ERR(st->reset_gpio);
+> > +	pm_runtime_get_sync(priv->ch->dev);
+> > +	val =3D rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
+> > +	if (lwa_ctrl_mode)
+> > +		val |=3D RZ_MTU3_TMDR3_LWA;
+> > +	else
+> > +		val &=3D ~RZ_MTU3_TMDR3_LWA;
 > > +
-> >  	st->refin_reg = devm_regulator_get_optional(st->dev, "refin");
-> >  	if (IS_ERR(st->refin_reg)) {
-> >  		ret = PTR_ERR(st->refin_reg);
+> > +	rz_mtu3_shared_reg_write(priv->ch, RZ_MTU3_TMDR3, val);
+> > +	pm_runtime_put(priv->ch->dev);
+>=20
+> When you want to assign a bit to a buffer, you can use __assign_bit() to
+> simplify your code:
+>=20
+>     unsigned long tmdr;
+>     ...
+>     tmdr =3D rz_mtu3_shared_reg_read(priv->ch, RZ_MTU3_TMDR3);
+>     __assign_bit(RZ_MTU3_TMDR3_LWA, &tmdr, !!lwa_ctrl_node);
+>     rz_mtu3_shared_reg_write(priv->ch, RZ_MTU3_TMDR3, tmdr);
 
+You should consider implementing a rz_mtu3_shared_reg_update_bits() that
+will perform this read =3D> assign bits =3D> write sequence so that you can
+reuse this pattern in the rz_mtu3_ext_input_phase_clock_select_set().
+
+> > +static int rz_mtu3_action_read(struct counter_device *counter,
+> > +			       struct counter_count *count,
+> > +			       struct counter_synapse *synapse,
+> > +			       enum counter_synapse_action *action)
+> > +{
+> > +	enum counter_function function;
+> > +	int err;
+> > +
+> > +	err =3D rz_mtu3_count_function_read(counter, count, &function);
+> > +	if (err)
+> > +		return err;
+> > +
+> > +	/* Default action mode */
+> > +	*action =3D COUNTER_SYNAPSE_ACTION_NONE;
+>=20
+> You can exit early here depending on which ext_input_phase_clock mode is
+> currently selected: if "MTCLKA-MTCLKB" then return early if id is signal
+> C or D, while if "MTCLKC-MTCLKD" return early if id is signal A or B.
+
+IIUC count0 is always "MTCLKA-MTCLKB", so this exit early check won't
+apply in that particular case; check count->id to see which Count we're
+handling.
+
+William Breathitt Gray
+
+--j606Cw4Et2h+lrt2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3JITAAKCRC1SFbKvhIj
+K/4uAPwK03T04Ol+4xn3gGkIe2NPkdCoDB/uouz6mzPsfd6VvAEA9npO2cIkO4ic
+bBFjP6Yt6UPu2HL/LqPZ4hC8q9VL3QU=
+=MBjZ
+-----END PGP SIGNATURE-----
+
+--j606Cw4Et2h+lrt2--

@@ -2,50 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC13D62896B
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:33:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 757916289DD
+	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 20:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235813AbiKNTdz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 14:33:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40458 "EHLO
+        id S237118AbiKNTxa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 14:53:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235592AbiKNTdy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:33:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B38B110EC;
-        Mon, 14 Nov 2022 11:33:53 -0800 (PST)
+        with ESMTP id S236900AbiKNTx2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 14:53:28 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44693B49;
+        Mon, 14 Nov 2022 11:53:26 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50673613E9;
-        Mon, 14 Nov 2022 19:33:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78593C433D6;
-        Mon, 14 Nov 2022 19:33:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D6C24B8121B;
+        Mon, 14 Nov 2022 19:53:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D879AC433C1;
+        Mon, 14 Nov 2022 19:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668454432;
-        bh=FW8Jj9JH9Jd467uFU0bxIUZ1OoAUS5aRIHrE+8N9T50=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pguEXQcf+qSPwxpR1US2OXLx3DCrK5sMp3JIOng6RJ/Yfn18sOJr0982uaWfrbtpv
-         aL7x9+Y+fmp4Mm1ryVPkK/LOdm7hzW7ZSAvg3sfz3GevoYis7mGLpunmryCAupr6q8
-         7wz6XOWErcI/QnZhzeHpGHNvJJ41NNzvekeryODOG06SOCPDe1rZRq5SSBEcYeusXi
-         2ZUfa9lNPBB85g/jRi9xQ6aPkykpScPCG+rkTR0iX7qWDYMBqPdaU+AEd/eQmXsv6s
-         v+bvqi+Nw4Mng9jH8dB4vjc+sUrnRGZYZHVP5KAd+wTQIt88FoUYSEOJGpQcLDhkle
-         EcA3r2nU7g43Q==
-Date:   Mon, 14 Nov 2022 19:46:08 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org,
+        s=k20201202; t=1668455603;
+        bh=USGNMT7eLqrliFumb6hvigVcUYCVRR/D6RMI4vwCgGk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ovVbA+b16cn1+LhsXZ392oeDpR88SLThXQzjLKlhIYAyISZ4GICcJZLI5iDKmr8TM
+         7456lyOjZn4eE/RX6OAtWd9Zt7HeZyp8gvLpuDRJsacj1OAOeNq5QGQDnRe0CjAUxD
+         pLlNLa484GnXMDy39eJeD2w53KPFpdwoNle8WfQOA9uI3DaUhwVZ6vMwyIUlF1Q0GB
+         oXK0U+N/1EKk2BRNXjBjWV33E1WbjvouZzLo0JDz8n7wH9f/nR7qurhA2lj+u7kTXh
+         ojEVysFDIgbVqhTn5eDVL8kv5NDUDIHNMYcvzb9OFALlt0rSz21PCsinwHqPhN+UfP
+         mUcxihfUW2V6w==
+Date:   Mon, 14 Nov 2022 20:53:20 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org,
+        Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] i2c: core: Introduce i2c_client_get_device_id
+ helper function
+Message-ID: <Y3KcsJbE2bxWBjqF@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>, linux-iio@vger.kernel.org,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
         linux-kernel@vger.kernel.org,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] iio: adc: ad4130: depend on GPIOLIB
-Message-ID: <20221114194608.3127e7ba@jic23-huawei>
-In-Reply-To: <20221114133649.1737027-1-cosmin.tanislav@analog.com>
-References: <20221114133649.1737027-1-cosmin.tanislav@analog.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org
+References: <cover.1668361368.git.ang.iglesiasg@gmail.com>
+ <a844cc7c85898b40abbdcb1f068338619c6010eb.1668361368.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wT/OxVyU1qtsOtS5"
+Content-Disposition: inline
+In-Reply-To: <a844cc7c85898b40abbdcb1f068338619c6010eb.1668361368.git.ang.iglesiasg@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,35 +66,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Nov 2022 15:36:49 +0200
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> Fixes undefined references to 'gpiochip_get_data' and
-> 'devm_gpiochip_add_data_with_key'.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Fixes: 5bdef39c5c6e ("iio: adc: ad4130: add AD4130 driver")
-Applied.
+--wT/OxVyU1qtsOtS5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for handling this so quickly.
+On Sun, Nov 13, 2022 at 06:46:30PM +0100, Angel Iglesias wrote:
+> Introduces new helper function to aid in .probe_new() refactors. In order
+> to use existing i2c_get_device_id() on the probe callback, the device
+> match table needs to be accessible in that function, which would require
+> bigger refactors in some drivers using the deprecated .probe callback.
+>=20
+> This issue was discussed in more detail in the IIO mailing list.
+>=20
+> Link: https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koeni=
+g@pengutronix.de/
+> Suggested-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Jonathan
+Immutable branch here:
 
-> ---
->  drivers/iio/adc/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 8d719fbb6acc..63f80d747cbd 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -24,6 +24,7 @@ config AD_SIGMA_DELTA
->  config AD4130
->  	tristate "Analog Device AD4130 ADC Driver"
->  	depends on SPI
-> +	depends on GPIOLIB
->  	select IIO_BUFFER
->  	select IIO_KFIFO_BUF
->  	select REGMAP_SPI
+git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/client_devi=
+ce_id_helper-immutable
 
+I merged this branch also into i2c/for-mergewindow.
+
+Thank you, everyone!
+
+
+--wT/OxVyU1qtsOtS5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmNynLAACgkQFA3kzBSg
+KbZjbA/8C3D3AspW3MOT09t4afYUQB0G7EeVSJ2Ixv8xNLt0H0Xbp8mSBHn8E20f
+09R95tXkKzEkU6Cn6ZmDTkcTHGd0knsyPGyy08CFXbdDsQM84+Tx+oVVzB/iqW9S
+SRyRuf9PuF5esCejY4znIccqxN5LaUWWyY5rM4XnOvp2Mcu+V6bsS4EjDPj0zYGe
+o829SfDNwiHjiA7Oqbz4sjbCTCeyYa3emwpZ8xG/LevoiVBh5SRJGaeWgm5W6MjN
+C3uYOjj4MeY2J+AUHtBMMVzaujAaTN9O4fIXuWNJfIQG0mwfLAPfa3yZPsZ4hYB9
+IINBlBM8AWwb74WPX7AEnSnDCuJTyFVtu8ChVqAKXmtVVrpjIhvlucEwNiBUA3et
+pnZZRBeZ1opGrycM9pi4x0OMjYLBJqSGEXCWZcTKVLjQZ0lBM6o6qgRKNQcrpyvx
+uW91mTy9fpqHxw00WmrOnUZCjSkDpVPOb557b0IHo93Rav5gdF16mPX56zfU4jD6
+kQJRR4ktJb5uNQ6yMCM6vyD6ymSJ0tukIs8u2pSpsN/NfrzRIXfnDt8zT0jqVrEE
+1V8zwmK5OzNXSPj0eR8ErGjm25s7adoes3Qzc7/V5WJmH/MTsB/xq/VvVRs3dd/Q
+5ptOAvxgD+e11c2dSLR2iR4rFVOroLdWcaVy3a7k/Ov2AYWuHss=
+=np0W
+-----END PGP SIGNATURE-----
+
+--wT/OxVyU1qtsOtS5--

@@ -2,58 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4F9E628A6B
-	for <lists+linux-iio@lfdr.de>; Mon, 14 Nov 2022 21:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2BA629001
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 03:39:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237268AbiKNU3C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 15:29:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
+        id S231908AbiKOCj4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 21:39:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236756AbiKNU3B (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 15:29:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF50EE17;
-        Mon, 14 Nov 2022 12:29:00 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94C2061455;
-        Mon, 14 Nov 2022 20:28:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E22C433C1;
-        Mon, 14 Nov 2022 20:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668457739;
-        bh=K4HmrMQ73Wqp5/X3xK3jmCOM5qtsuad8CDbwkc4kS9o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=g5XeBLhvvs5fGdldayu7RQYrKBtrsH4r9iNAwKB449UHN1EvJlIqcB0RKFmCwwUb+
-         XAUrxEY8unkTssZNkvSa4GTlz/NcmD77U5HIMKhlwjKgb7l7mWcenCuR/aGSGD7ibD
-         MS3lNwC9+UnPukvKXIvWOeBY8VobctepoIVl5ac3lNCUPxxIeAvVwC8UKRBC3wydyp
-         z9ZVo2v8FQpLvar2dMFB4SKK9HTkX4DyqtiQAPO9WT8e6VlY4dbujgBjsXiRIHLdEW
-         WAnV2MrACSuAingJW929GlWK1i5skj36S165wki9SkiXgEkRUeF4LNT/NqFjWjS8ew
-         DqLzIIv0f1fhQ==
-Date:   Mon, 14 Nov 2022 20:41:16 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Wolfram Sang <wsa@kernel.org>
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-iio@vger.kernel.org,
-        Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= 
-        <u.kleine-koenig@pengutronix.de>, linux-kernel@vger.kernel.org,
-        Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-i2c@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] i2c: core: Introduce i2c_client_get_device_id
- helper function
-Message-ID: <20221114204116.5d9169ba@jic23-huawei>
-In-Reply-To: <Y3KcsJbE2bxWBjqF@shikoro>
-References: <cover.1668361368.git.ang.iglesiasg@gmail.com>
-        <a844cc7c85898b40abbdcb1f068338619c6010eb.1668361368.git.ang.iglesiasg@gmail.com>
-        <Y3KcsJbE2bxWBjqF@shikoro>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S231993AbiKOCjy (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 21:39:54 -0500
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0069819C23
+        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 18:39:50 -0800 (PST)
+Received: from kwepemi500024.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4NB9N621zRzHvwD;
+        Tue, 15 Nov 2022 10:38:30 +0800 (CST)
+Received: from huawei.com (10.175.103.91) by kwepemi500024.china.huawei.com
+ (7.221.188.100) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 15 Nov
+ 2022 10:38:59 +0800
+From:   Zeng Heng <zengheng4@huawei.com>
+To:     <alexandru.ardelean@analog.com>, <lars@metafoo.de>,
+        <jic23@kernel.org>
+CC:     <linux-iio@vger.kernel.org>, <liwei391@huawei.com>,
+        <zengheng4@huawei.com>
+Subject: [PATCH] iio: fix memory leak in iio_device_register_eventset()
+Date:   Tue, 15 Nov 2022 10:37:12 +0800
+Message-ID: <20221115023712.3726854-1-zengheng4@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.103.91]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemi500024.china.huawei.com (7.221.188.100)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,38 +45,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 14 Nov 2022 20:53:20 +0100
-Wolfram Sang <wsa@kernel.org> wrote:
+When iio_device_register_sysfs_group() returns failed,
+iio_device_register_eventset() needs to free attrs array.
 
-> On Sun, Nov 13, 2022 at 06:46:30PM +0100, Angel Iglesias wrote:
-> > Introduces new helper function to aid in .probe_new() refactors. In ord=
-er
-> > to use existing i2c_get_device_id() on the probe callback, the device
-> > match table needs to be accessible in that function, which would require
-> > bigger refactors in some drivers using the deprecated .probe callback.
-> >=20
-> > This issue was discussed in more detail in the IIO mailing list.
-> >=20
-> > Link: https://lore.kernel.org/all/20221023132302.911644-11-u.kleine-koe=
-nig@pengutronix.de/
-> > Suggested-by: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> > Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com> =20
->=20
-> Immutable branch here:
->=20
-> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/client_de=
-vice_id_helper-immutable
->=20
-> I merged this branch also into i2c/for-mergewindow.
->=20
-> Thank you, everyone!
->=20
+Otherwise, kmemleak would scan & report memory leak as below:
 
-Excellent.  Merged that into iio.git/togreg and applied patch 2.
+unreferenced object 0xffff88810a1cc3c0 (size 32):
+  comm "100-i2c-vcnl302", pid 728, jiffies 4295052307 (age 156.027s)
+  backtrace:
+    __kmalloc+0x46/0x1b0
+    iio_device_register_eventset at drivers/iio/industrialio-event.c:541
+    __iio_device_register at drivers/iio/industrialio-core.c:1959
+    __devm_iio_device_register at drivers/iio/industrialio-core.c:2040
 
-Thanks,
+Fixes: 32f171724e5c ("iio: core: rework iio device group creation")
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+---
+ drivers/iio/industrialio-event.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Jonathan
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 3d78da2531a9..727e2ef66aa4 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -556,7 +556,7 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+ 
+ 	ret = iio_device_register_sysfs_group(indio_dev, &ev_int->group);
+ 	if (ret)
+-		goto error_free_setup_event_lines;
++		goto error_free_group_attrs;
+ 
+ 	ev_int->ioctl_handler.ioctl = iio_event_ioctl;
+ 	iio_device_ioctl_handler_register(&iio_dev_opaque->indio_dev,
+@@ -564,6 +564,8 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+ 
+ 	return 0;
+ 
++error_free_group_attrs:
++	kfree(ev_int->group.attrs);
+ error_free_setup_event_lines:
+ 	iio_free_chan_devattr_list(&ev_int->dev_attr_list);
+ 	kfree(ev_int);
+-- 
+2.25.1
+

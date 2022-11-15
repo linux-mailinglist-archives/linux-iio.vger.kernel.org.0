@@ -2,146 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4913A629E88
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:10:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ED2E629F41
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:42:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbiKOQK5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 15 Nov 2022 11:10:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32776 "EHLO
+        id S238702AbiKOQmL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 11:42:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229873AbiKOQK4 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:10:56 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F165A1C119;
-        Tue, 15 Nov 2022 08:10:55 -0800 (PST)
-Received: from frapeml500002.china.huawei.com (unknown [172.18.147.206])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NBWLk5JNFz67T9q;
-        Wed, 16 Nov 2022 00:08:30 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- frapeml500002.china.huawei.com (7.182.85.205) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 15 Nov 2022 17:10:54 +0100
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 15 Nov
- 2022 16:10:53 +0000
-Date:   Tue, 15 Nov 2022 16:10:52 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Rasmus Villemoes" <linux@rasmusvillemoes.dk>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-Message-ID: <20221115161052.00002633@Huawei.com>
-In-Reply-To: <0d6b3e4047df9f560079a562bc167bd7a0bf2d28.camel@gmail.com>
-References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
-        <20221111143921.742194-6-linux@rasmusvillemoes.dk>
-        <20221112170705.7efe1673@jic23-huawei>
-        <095a454b55cf497392a621649f24e067@analog.com>
-        <20221114194447.2528f699@jic23-huawei>
-        <0d6b3e4047df9f560079a562bc167bd7a0bf2d28.camel@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        with ESMTP id S238700AbiKOQmK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:42:10 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9070C2D764
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:42:08 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id d20so18234390ljc.12
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:42:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9jb1svEkUmggBlpVRHrknk39IWZlG+Y0uIqQEOYSyi8=;
+        b=w3GCgTOUTD0J7IW0L/hJ91pCWBJ3IwmBduHmODYjszPNbLFxeDh5/wKwrQzbQr4Kq0
+         YtGAT6VzrwHcOMb5i+8Sj0vbU+Twb9VNxJSISKn1r2yRx6as4Y+kY3vazoKVnURObgvW
+         ntpuceelBv+C1adAUHTFEx3vXbWdgkmRMhZVJZp393VZ0LNmbyAeBdxe8eIibe1e/34v
+         y6pGrGlcOD2Hw/LMbzVXjTVk7g5e63S+gqvUMJGYM0Rw55Q+wydi6Coht0BVgBMCcsTe
+         +xbyvkZ5D9kokEOZBQRvRV5sGoCPNO86Yj25VxCW1p2S5g7GKUwKFcaLCns9AJDI1oIN
+         RVgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9jb1svEkUmggBlpVRHrknk39IWZlG+Y0uIqQEOYSyi8=;
+        b=FhmmoVBtdWIX3c6YnGtOgQ9OaQ8TZucU7ctmoYuRuMJOFCPmJaogveVzC6jKt6GwFl
+         9mAwydix8zalSHdUC1Kj9CUyGl3W7GMzpjiW/eJZU0Sh3+QOoR8PkWmiS1N3bIAqxMuJ
+         9uiK5UYZYooCP+j+wst6LMX5acoac/YEUHAp8CUCu+/nJSqNVPxvjVXoIIlv5QW4dQco
+         MdpKaNDGtnQRHcpjjobqA+pyzdaenf1gEA7nzEL8eGOuoz52tzHJJ7zLYWpu6w17+TRA
+         ovMIQdUj5Z6vxVRko70/RDZWlyCfpJmMABUfUqDfnWjY98kFfAbxINUqd2XlTF4+cLLw
+         1gvQ==
+X-Gm-Message-State: ANoB5pmy0+PhQPXJ9/DcquW/YnPhzN4zQ+px62AD1PbLVHI984mSRgE/
+        tFzSRaEfQlyyFvVrh/xfjnOoRw==
+X-Google-Smtp-Source: AA0mqf75eymhe8iemrFEPOiuBlkfykZb27qfQ/xZRMN9Wv45n2T8ywkw2TqFyFY7j1uwmWrbhHSVyg==
+X-Received: by 2002:a2e:2201:0:b0:275:a127:cace with SMTP id i1-20020a2e2201000000b00275a127cacemr6071141lji.378.1668530526951;
+        Tue, 15 Nov 2022 08:42:06 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id a12-20020a19f80c000000b004ac088fdfd2sm2269353lff.85.2022.11.15.08.42.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Nov 2022 08:42:06 -0800 (PST)
+Message-ID: <b611f647-c46f-3780-c6b4-3cfb4fe402e7@linaro.org>
+Date:   Tue, 15 Nov 2022 17:42:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2 02/11] dt-bindings: nvmem: Fix qcom,qfprom compatibles
+ enum ordering
+Content-Language: en-US
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
+        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
+        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
+        evgreen@chromium.org, gregkh@linuxfoundation.org,
+        a39.skl@gmail.com, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-hardening@vger.kernel.org,
+        marijn.suijten@somainline.org, kernel@collabora.com, luca@z3ntu.xyz
+References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
+ <20221111120156.48040-3-angelogioacchino.delregno@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221111120156.48040-3-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 15 Nov 2022 15:49:46 +0100
-Nuno Sá <noname.nuno@gmail.com> wrote:
-
-> On Mon, 2022-11-14 at 19:44 +0000, Jonathan Cameron wrote:
-> > On Mon, 14 Nov 2022 13:52:26 +0000
-> > "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
-> >   
-> > > > -----Original Message-----
-> > > > From: Jonathan Cameron <jic23@kernel.org>
-> > > > Sent: Saturday, November 12, 2022 7:07 PM
-> > > > To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > > > Cc: Tanislav, Cosmin <Cosmin.Tanislav@analog.com>; Lars-Peter
-> > > > Clausen
-> > > > <lars@metafoo.de>; Hennerich, Michael
-> > > > <Michael.Hennerich@analog.com>;
-> > > > devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
-> > > > linux-
-> > > > iio@vger.kernel.org; linux-kernel@vger.kernel.org
-> > > > Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for
-> > > > reset-gpio
-> > > > 
-> > > > [External]
-> > > > 
-> > > > On Fri, 11 Nov 2022 15:39:21 +0100
-> > > > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
-> > > >     
-> > > > > We have a board where the reset pin of the ad74412 is connected
-> > > > > to a
-> > > > > gpio, but also pulled low by default. Hence to get the chip out
-> > > > > of
-> > > > > reset, the driver needs to know about that gpio and set it high
-> > > > > before
-> > > > > attempting to communicate with it.    
-> > > > 
-> > > > I'm a little confused on polarity here.  The pin is a !reset so
-> > > > we need to drive it low briefly to trigger a reset.
-> > > > I'm guessing for your board the pin is set to active low? (an
-> > > > example
-> > > > in the dt would have made that clearer) Hence the pulse
-> > > > in here to 1 is actually briefly driving it low before restoring
-> > > > to high?
-> > > > 
-> > > > For a pin documented as !reset that seems backwards though you
-> > > > have
-> > > > called it reset so that is fine, but this description doesn't
-> > > > make that
-> > > > celar.    
-> > > 
-> > > My opinion is that the driver shouldn't exactly know the polarity
-> > > of the reset,
-> > > and just assume that setting the reset GPIO to 1 means putting it
-> > > in reset,
-> > > and setting it to 0 means bringing out of reset.  
-> > 
-> > Agreed. I'd just like a comment + example in the dt-binding to make
-> > the point
-> > that the pin is !reset.
-> > 
-> > Preferably with an example in the dt binding of the common case of it
-> > being wired
-> > up to an active low pin.
-> > 
-> > The main oddity here is the need to pulse it rather than request it
-> > directly as
-> > in the reset state and then just set that to off.
-> > 
-> >   
+On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
+> Move qcom,msm8974-qfprom after qcom,msm8916-qfprom to respect
+> alphabetical ordering.
 > 
-> Agreed... In theory we should be able to request the gpio with
-> GPIOD_OUT_HIGH and then just bring the device out of reset
+> Fixes: c8b336bb1aeb ("dt-bindings: nvmem: Add soc qfprom compatible strings")
 
-If I recall correctly the datasheet specifically calls out that a pulse
-should be used.  No idea if that's actually true, or if it was meant
-to be there just to say it needs to be set for X nsecs.
+It's a style, code readability, but not a bug. I propose to drop the tag.
 
-Jonathan
+With that:
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> 
-> - Nuno Sá
-> 
+
+Best regards,
+Krzysztof
 

@@ -2,139 +2,153 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EBE9629A98
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 14:35:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17952629C8B
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 15:48:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229490AbiKONf4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 08:35:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60848 "EHLO
+        id S230286AbiKOOsW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 09:48:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbiKONfy (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 08:35:54 -0500
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E968813A;
-        Tue, 15 Nov 2022 05:35:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668519353; x=1700055353;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=C7oMZsIFl/5+FvRA4B1+hWf/xguxUXGFdeyKjZpj6nQ=;
-  b=Q5LbzeV2I5PUJwz0rRtk7F0/RJ7Qw0ZvaeexKt2Z719KzLHBhdWJhIPm
-   fcBU4OEBrXF3ikq9jdPj05bcyxGgq6Wrzep3ajW1VGX0854vB5e/jADlU
-   jqXwFbYS+s2Ehn5tM9UclHMWZyyyVDZZRUh/u6vSQ+Ud9mdZcd61ss76f
-   /0sRsEFeNsEp9OWxZ/N0/n8P9JKB4pBAm9vVhTHdnyrk4H5aHIoDvAfxb
-   ANOxk7GDVOe/UyuWmznyoCI0s4BSPql0EywNwRtkAFTYLJT80+qIks8Hr
-   QNVu8x1C3DrsVaABKGXOvAYT/gUm0SaUm7r35gT0hu1NayGrf9PzLUNmJ
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="313400519"
-X-IronPort-AV: E=Sophos;i="5.96,166,1665471600"; 
-   d="scan'208";a="313400519"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2022 05:35:53 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10531"; a="727953161"
-X-IronPort-AV: E=Sophos;i="5.96,166,1665471600"; 
-   d="scan'208";a="727953161"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by FMSMGA003.fm.intel.com with ESMTP; 15 Nov 2022 05:35:51 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ouw6P-00CdA1-0l;
-        Tue, 15 Nov 2022 15:35:49 +0200
-Date:   Tue, 15 Nov 2022 15:35:48 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S230190AbiKOOsS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 09:48:18 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7799C1FCCF;
+        Tue, 15 Nov 2022 06:48:17 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id f18so3579381ejz.5;
+        Tue, 15 Nov 2022 06:48:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zHT6RekA1nmfh/Fa6EaQoB6yFfjcdCvyRH3c7rFODNQ=;
+        b=RlxHN93Yj9OnbkZdXw9Mn3k3B/xJmEfIPxLX2PX5msyQCVDUNH/UPmYNCeJsJGY9gW
+         JRzactMuYbgcPv5cMoFnANg1gE66GVC0XpOWxi4xbVCuhcdGAF/YL5vGsZKdVuFWjonc
+         t2DiSWyJmWjNJQwFGJiDF29YwMJ2ETY2K+GteQsENs7ajfmHmhdkh74gNAUNk1kMYyd1
+         hVkB9NbKbICtRg1IVJGIMEWuZ3EBoyH/Kr31uZ/+9cFdNFawE6x4wjhlah3qPWOBSUZg
+         QasE5Szs18zdVXE5iG96FLFuS6VeXntuYpT4kngWfhIh+d//R/6aFAYITbXshwDp5p5x
+         Iy3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zHT6RekA1nmfh/Fa6EaQoB6yFfjcdCvyRH3c7rFODNQ=;
+        b=6LCvEdEM6dGQ+qagVzvQK46ncOusWIUp5CxhTjCqrBXSN5eQRPnbI0gTZ4887vGJbL
+         AxqUqXrdWm/JIoBuvkem7qdj/LPfiv6mWuWThhuDUCCvIVOEMP80nAT3NDkxLKuoSOe7
+         v7igIvQLsQX7FOFPXY1WHiiegoOdsJujKHDX2hGY2BUJDH3eQsJ1we2WbEYbL7fiFH2H
+         WEB6stNk+Z3/OHmINadcbt4fA/tSQdK2743OtZtofu4DbRXMYEOe+whsFJ6UEmG8X40T
+         nTS5ufWAVHx1x8pXYReEpSBOAy6XjX1nuBgawwOX6qtXQivhSfHkQocVVojn/DNiQbaX
+         1Xvw==
+X-Gm-Message-State: ANoB5pm3PilE/DmqRALMx1w7tOHf6IwuvNPr7lyV8ZBjQodHWZyUK1nW
+        Yll6ReWqIMQMTJvZ+3WxUljXpUy5hw/jDx+IFZ8=
+X-Google-Smtp-Source: AA0mqf7LOaKoPqHeXJ99tFsmuSdIZrqrxDvqdwAbQeSK4h6uzJtvMmotfP+YMC8oYHtUDoWddxHpRg==
+X-Received: by 2002:a17:906:b14f:b0:7ad:90db:c241 with SMTP id bt15-20020a170906b14f00b007ad90dbc241mr14051170ejb.284.1668523695572;
+        Tue, 15 Nov 2022 06:48:15 -0800 (PST)
+Received: from p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de (p200300f6ef036f005de6a4d0d791ed01.dip0.t-ipconnect.de. [2003:f6:ef03:6f00:5de6:a4d0:d791:ed01])
+        by smtp.gmail.com with ESMTPSA id ck11-20020a0564021c0b00b00461b169c02csm6222029edb.91.2022.11.15.06.48.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Nov 2022 06:48:15 -0800 (PST)
+Message-ID: <0d6b3e4047df9f560079a562bc167bd7a0bf2d28.camel@gmail.com>
+Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
+From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Javier Arteaga <javier@emutex.com>,
-        Dan O'Donovan <dan@emutex.com>,
-        Nicola Lunghi <nicola.lunghi@emutex.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc128s052: add proper .data members in
- adc128_of_match table
-Message-ID: <Y3OVtIiJ4jwE9h6J@smile.fi.intel.com>
-References: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Date:   Tue, 15 Nov 2022 15:49:46 +0100
+In-Reply-To: <20221114194447.2528f699@jic23-huawei>
+References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
+         <20221111143921.742194-6-linux@rasmusvillemoes.dk>
+         <20221112170705.7efe1673@jic23-huawei>
+         <095a454b55cf497392a621649f24e067@analog.com>
+         <20221114194447.2528f699@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 15, 2022 at 02:23:23PM +0100, Rasmus Villemoes wrote:
-> Prior to commit bd5d54e4d49d ("iio: adc128s052: add ACPI _HID
-> AANT1280"), the driver unconditionally used spi_get_device_id() to get
-> the index into the adc128_config array.
-> 
-> However, with that commit, OF-based boards now incorrectly treat all
-> supported sensors as if they are an adc128s052, because all the .data
-> members of the adc128_of_match table are implicitly 0. Our board,
-> which has an adc122s021, thus exposes 8 channels whereas it really
-> only has two.
-> 
-> Fixes: bd5d54e4d49d ("iio: adc128s052: add ACPI _HID AANT1280")
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> ---
-> 
-> I think the driver could be simplified somewhat by having just one
-> single adc_channels[] array with the 8 entries, unconditionally use
-> that as ->channels, with ->num_channels being taken from the match
-> data instead of having this indirection through the auxiliary config
-> array.
+On Mon, 2022-11-14 at 19:44 +0000, Jonathan Cameron wrote:
+> On Mon, 14 Nov 2022 13:52:26 +0000
+> "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
+>=20
+> > > -----Original Message-----
+> > > From: Jonathan Cameron <jic23@kernel.org>
+> > > Sent: Saturday, November 12, 2022 7:07 PM
+> > > To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > > Cc: Tanislav, Cosmin <Cosmin.Tanislav@analog.com>; Lars-Peter
+> > > Clausen
+> > > <lars@metafoo.de>; Hennerich, Michael
+> > > <Michael.Hennerich@analog.com>;
+> > > devicetree@vger.kernel.org; Rob Herring <robh+dt@kernel.org>;
+> > > linux-
+> > > iio@vger.kernel.org; linux-kernel@vger.kernel.org
+> > > Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for
+> > > reset-gpio
+> > >=20
+> > > [External]
+> > >=20
+> > > On Fri, 11 Nov 2022 15:39:21 +0100
+> > > Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+> > > =C2=A0=20
+> > > > We have a board where the reset pin of the ad74412 is connected
+> > > > to a
+> > > > gpio, but also pulled low by default. Hence to get the chip out
+> > > > of
+> > > > reset, the driver needs to know about that gpio and set it high
+> > > > before
+> > > > attempting to communicate with it.=C2=A0=20
+> > >=20
+> > > I'm a little confused on polarity here.=C2=A0 The pin is a !reset so
+> > > we need to drive it low briefly to trigger a reset.
+> > > I'm guessing for your board the pin is set to active low? (an
+> > > example
+> > > in the dt would have made that clearer) Hence the pulse
+> > > in here to 1 is actually briefly driving it low before restoring
+> > > to high?
+> > >=20
+> > > For a pin documented as !reset that seems backwards though you
+> > > have
+> > > called it reset so that is fine, but this description doesn't
+> > > make that
+> > > celar.=C2=A0=20
+> >=20
+> > My opinion is that the driver shouldn't exactly know the polarity
+> > of the reset,
+> > and just assume that setting the reset GPIO to 1 means putting it
+> > in reset,
+> > and setting it to 0 means bringing out of reset.
+>=20
+> Agreed. I'd just like a comment + example in the dt-binding to make
+> the point
+> that the pin is !reset.
+>=20
+> Preferably with an example in the dt binding of the common case of it
+> being wired
+> up to an active low pin.
+>=20
+> The main oddity here is the need to pulse it rather than request it
+> directly as
+> in the reset state and then just set that to off.
+>=20
+>=20
 
-Hmm... I have a patch locally that changes this to take pointers instead of
-numbers and using spi_get_device_match_data() (but the latter is only available
-in Linux Next so far).
+Agreed... In theory we should be able to request the gpio with
+GPIOD_OUT_HIGH and then just bring the device out of reset
 
-> But this patch is properly more suited for -stable.
-
-LGTM for time being
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
->  drivers/iio/adc/ti-adc128s052.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-> index 622fd384983c..b3d5b9b7255b 100644
-> --- a/drivers/iio/adc/ti-adc128s052.c
-> +++ b/drivers/iio/adc/ti-adc128s052.c
-> @@ -181,13 +181,13 @@ static int adc128_probe(struct spi_device *spi)
->  }
->  
->  static const struct of_device_id adc128_of_match[] = {
-> -	{ .compatible = "ti,adc128s052", },
-> -	{ .compatible = "ti,adc122s021", },
-> -	{ .compatible = "ti,adc122s051", },
-> -	{ .compatible = "ti,adc122s101", },
-> -	{ .compatible = "ti,adc124s021", },
-> -	{ .compatible = "ti,adc124s051", },
-> -	{ .compatible = "ti,adc124s101", },
-> +	{ .compatible = "ti,adc128s052", .data = (void*)0L, },
-> +	{ .compatible = "ti,adc122s021", .data = (void*)1L, },
-> +	{ .compatible = "ti,adc122s051", .data = (void*)1L, },
-> +	{ .compatible = "ti,adc122s101", .data = (void*)1L, },
-> +	{ .compatible = "ti,adc124s021", .data = (void*)2L, },
-> +	{ .compatible = "ti,adc124s051", .data = (void*)2L, },
-> +	{ .compatible = "ti,adc124s101", .data = (void*)2L, },
->  	{ /* sentinel */ },
->  };
->  MODULE_DEVICE_TABLE(of, adc128_of_match);
-> -- 
-> 2.37.2
-> 
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+- Nuno S=C3=A1
 

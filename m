@@ -2,96 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3AB629121
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 05:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7E2762914C
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 05:53:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231379AbiKOENf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 14 Nov 2022 23:13:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
+        id S232135AbiKOExN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 14 Nov 2022 23:53:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbiKOENe (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 23:13:34 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170EB5F93
-        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 20:13:33 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id m22so33112615eji.10
-        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 20:13:33 -0800 (PST)
+        with ESMTP id S232118AbiKOExM (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 14 Nov 2022 23:53:12 -0500
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C608D1582E
+        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 20:53:11 -0800 (PST)
+Received: by mail-qv1-xf2d.google.com with SMTP id n18so9145935qvt.11
+        for <linux-iio@vger.kernel.org>; Mon, 14 Nov 2022 20:53:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qyAC9pGA3bM4rM543zM+YmJ53hSTj7w0+tIgvP3ytYE=;
-        b=GLj22QVZZqf1Y156NoErCBFBu7DGNVZDMclTD8PabJqnr4RTZokkf3GFRfpd/pe3xo
-         whet4nCz8sYc0r3tCpXoNw1yb0JgFaINBg/bBArRWol9+Xa+FPh4ofQnsaPPQjDWaO11
-         9PC9m5XX6gJ7A+/YiQLK/rCek2Ufx0bOkSj/zikwys7sUas63cwF7dTNZB+jkN5VkoMF
-         0bizxE0ggt6kh+Eye19C3Lum5H5kkLyufgZqt58/ZrizARkwPKWO/OuqmxfRutLslcT1
-         w9asOJlyuYU//6RYhzXOKGpiOPhTclatMIlJVdPoblo+UdRWupyacqFqMimUu3QZajVd
-         KYfQ==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dE17wy+SeYs2xM9LBeuUvdStoy3eddyUrqKb9lN6yDo=;
+        b=Fqc84XKgNKomtnYMDVsfBaOL3NX67s05OjZ/wsj6yurW/sMwc8o0fODxAlfiB9MQYi
+         YBrRd6ecgpmXOaa4CYx/wSAVUdGBuBzQrTnt2lm346ZPlY8YEkL4egF29Vh7WhlvVFET
+         qIHgMhCeh4MH0A9rYIsq1ee75icThcfJKq4zrpDKPiPY1qYWczBxi5B7iRMFEX77mMqs
+         aAgQD5pbj+UTcHJSvglAUcwPvObhQDa4RbgkZS6Ejp4mD1T3zK9Q7Ah3UK0Z82iHuUAT
+         zskLc9WNNpTu11tq4cX5tdTpJUSLJswfy2TQj5MaKuKBI2E4A60p1VZqO91Q9yZuvfW1
+         kDsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qyAC9pGA3bM4rM543zM+YmJ53hSTj7w0+tIgvP3ytYE=;
-        b=U5ZS44GU82O3vM7FUgzHQSv16AP3X3KdCJK8lDUyCAL0TQhjxAOvp3GI954oMFlH3j
-         J/fPe7fYIHEN81Nvq2Dqtu7MW+KeSoLwV8zwAwmpU6IiV71+1K1barfgEVno7iRRy3s9
-         A3Yo+qPk+A5P4Vj1Aga4N1hL/FsCmBCYWcF2kCtJIt7STqGXYkFuP8GNGwxxVOm36AH6
-         uLRmlMbk5mRnhrwrJxPaMK1WBeAi9RuS8A3j1WMivIXxHfvSqzotiGF1qJFcg5yFo9Ac
-         30Z8Z8cbEr+R3HBjUKFOkZBi/KHYI7Dy3AG8utGCcXUGdhX13Qm8BEhcsBLdan8aa9hJ
-         ZE9w==
-X-Gm-Message-State: ANoB5plkzdc6vnAVQn+wQ9pA12jwCynWGndvQditV1BVqjTtBLBBSVBX
-        Dq1XUbjV9OfCH/HXNDcD4wm8wfjTNdB3Pyo7i+gOBp3/cQk=
-X-Google-Smtp-Source: AA0mqf6uaVKsi/54W2jA8fovwcm2ziFCIXdjnccg+WQydSlmazICK5oXWIn7QpZ3QQgdJ6Wx7yHIMaXoxD4V1K8UDJk=
-X-Received: by 2002:a17:906:814:b0:78e:ebd:bf96 with SMTP id
- e20-20020a170906081400b0078e0ebdbf96mr12463164ejd.625.1668485611363; Mon, 14
- Nov 2022 20:13:31 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dE17wy+SeYs2xM9LBeuUvdStoy3eddyUrqKb9lN6yDo=;
+        b=sUG5nfkTq2CCLNglXWaonqGYMczwYzyOBOHwmzyVI28v0EGpKKIhp+CAxIyj+t+XmK
+         JWLJr94Z/6d96wm1bPDsf5UmuynvjsDCWAp0D8NsXpXOfAikRbxPVuNd/lPVheSi205L
+         mZupi5eFK4fLFvOrbsRClU3xTb7u5KLbsZDeIEXVlaeZLttnj150XvVndDH7coU0rfSQ
+         ny693cJD3snQpO9CKKF25T/TTALmpUWI0F6g5VmHXPY+b9vYS8QwjyK+/wXoG+MXMjy2
+         0gtLTms4zOgUtD1FwBnII1CIcTBE75d90jY/jxDSaelqCCaYGidkXhQpedOXQme3bEJT
+         sV7A==
+X-Gm-Message-State: ANoB5pnRJcKt/eXPI9QxTKgRIb4sBpUH89ZcAqfGbFo4auE7mMrNji8c
+        WHGgrNo91kkTIXuAurGY8yAfSHU1/f72sg==
+X-Google-Smtp-Source: AA0mqf6/e7ldRDGoaFL9dYzYgnSFOk0uxJG0oyKaxtK0cI3qj4f/mFZUw2bwjKaPjCx1il8AUUpVtg==
+X-Received: by 2002:a0c:fec3:0:b0:4bb:a904:7d51 with SMTP id z3-20020a0cfec3000000b004bba9047d51mr15271324qvs.14.1668487990928;
+        Mon, 14 Nov 2022 20:53:10 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id bs13-20020a05620a470d00b006b61b2cb1d2sm7798445qkb.46.2022.11.14.20.53.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Nov 2022 20:53:09 -0800 (PST)
+Date:   Mon, 14 Nov 2022 23:53:07 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
+Message-ID: <Y3MbM0RtaAKUIyWM@fedora>
+References: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
+ <20221113171545.282457-5-biju.das.jz@bp.renesas.com>
+ <Y3G6Qe0KMdo2PgaG@fedora>
+ <OS0PR01MB5922B01D5E579426608BBA9386059@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <TYCPR01MB59337BB8E20273468F38560E86059@TYCPR01MB5933.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-Received: by 2002:a98:9343:0:b0:18c:e34a:8f66 with HTTP; Mon, 14 Nov 2022
- 20:13:30 -0800 (PST)
-Reply-To: abrahamamesse@outlook.com
-From:   Abraham Amesse <gmaaassss20@gmail.com>
-Date:   Tue, 15 Nov 2022 04:13:30 +0000
-Message-ID: <CAM016Q-uwkPNXWcEFzqPuEL-+UD=z7=TN_DWxm20kKt8S4zjyw@mail.gmail.com>
-Subject: ///////'//////////Ugrent
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62e listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5002]
-        *  1.0 HK_RANDOM_FROM From username looks random
-        *  1.0 HK_RANDOM_ENVFROM Envelope sender username looks random
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [gmaaassss20[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [gmaaassss20[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: ******
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="o3Yo1PD6gJC8vbLW"
+Content-Disposition: inline
+In-Reply-To: <TYCPR01MB59337BB8E20273468F38560E86059@TYCPR01MB5933.jpnprd01.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-I am contacting you again further to my previous email which you never
-responded to. Please confirm to me if you are still using this email
-address. However, I apologize for any inconvenience.
+
+--o3Yo1PD6gJC8vbLW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Nov 14, 2022 at 05:52:11PM +0000, Biju Das wrote:
+> > > > +static int rz_mtu3_initialize_counter(struct counter_device
+> > > > +*counter, int id) {
+> > > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> > > > +	struct rz_mtu3_channel *ch1 =3D priv->ch;
+> > > > +	struct rz_mtu3_channel *ch2 =3D ch1 + 1;
+> > >
+> > > No need to complicate this, just use priv->ch[0], priv->ch[1], and
+> > > priv->ch[id]. Same advice applies to the other functions as well.
+> >=20
+> > I get below error when I use array susbscripts. "*ch1 =3D priv->ch[0];"
+>=20
+> > drivers/counter/rz-mtu3-cnt.c:291:32: error: incompatible types when
+> > initialising type 'struct rz_mtu3_channel *' using type 'struct
+> > rz_mtu3_channel'
+> >   291 |  struct rz_mtu3_channel *ch1 =3D priv->ch[0];
+> >=20
+>=20
+> I could use "*ch1 =3D &priv->ch[0];" please let me know is it ok?
+>=20
+> Cheers,
+> Biju
+
+Hi Biju,
+
+I meant to use the array subscripts inline (e.g. priv->ch[id].function).
+However, I can see the benefit of using the ch1 and ch2 local variables,
+so perhaps something like this would be clearer to read:
+
+    struct rz_mtu3_chanel *const ch =3D priv->ch;
+    struct rz_mtu3_chanel *const ch1 =3D &ch[0];
+    struct rz_mtu3_chanel *const ch2 =3D &ch[1];
+    ...
+    case RZ_MTU3_16_BIT_MTU1_CH:
+    case RZ_MTU3_16_BIT_MTU2_CH:
+            if (ch[id].function !=3D RZ_MTU3_NORMAL) {
+    ...
+
+William Breathitt Gray
+
+--o3Yo1PD6gJC8vbLW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3MbMwAKCRC1SFbKvhIj
+KzhIAQDQ4bmBcHzQIzO+vQBjfTenBivm9lKVWO49m20n55whsQD/ciUVMhrn+2Ng
+eU4PmjjzcWy/3PXdyK/wS83FKf/QEAw=
+=dbCG
+-----END PGP SIGNATURE-----
+
+--o3Yo1PD6gJC8vbLW--

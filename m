@@ -2,96 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B40E8629961
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 13:55:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6989F629A01
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 14:23:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232786AbiKOMzi (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 07:55:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34198 "EHLO
+        id S229953AbiKONXf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 08:23:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbiKOMzh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 07:55:37 -0500
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4FE2C7;
-        Tue, 15 Nov 2022 04:55:36 -0800 (PST)
-Received: by mail-qt1-f169.google.com with SMTP id l2so8599706qtq.11;
-        Tue, 15 Nov 2022 04:55:36 -0800 (PST)
+        with ESMTP id S229811AbiKONXe (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 08:23:34 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A119AE74
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 05:23:32 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id s8so7238319lfc.8
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 05:23:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gjy2+mpCjTP8mfHF1OGdgEun8TSro32Otc7xp3Fdvvs=;
+        b=SmwV9CavWzAy5Xmpu8rbzU1RZqIJydT/n2irp88TN3z08Rpnl2sogkyE/0tfmepVae
+         mFC8myPhZBFP/+teKFyk9lsRPqxC4AnTQZTjFzBPzFXyNwJxWoAicRGBfrYtvC9dqU9h
+         /dDDqs+LXSxzuXgegsArT7EDlYQlCdJN6y31I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4nWTUZBps9Z4pbhdUToWGjZ9Vj80wF5upKxd2gOYqwA=;
-        b=m9/fEZ+aE2x4qFzmtPl9rd7ar8LSR752TgbBIsFDVOqNv+jtUF85vrdVx2AaIoNeMz
-         bG7vn116ehVNDWhPh/HfTrEEcCmUVQUhMWLt24I0CvZ7ASM6ErnZs/s4acsjb8wcnv+H
-         +xb8WUFJXElK+blg4BmCxAvQ9/McmTUH99x/gBeK9FQOq2s211nBWGium4WxEofvQukm
-         f4xSs2OaPNxjoS1/cpa/B6kf3V6NOcCg05idrclX6WXTW1Bte/JnV+FIWewn2PkDzL1q
-         2VKDB0eXol7NmZJfuLIs1uY+nczlUs9icBxATd0mwpQ7A3WVz4z4DfU0OhwnDmrdeHMg
-         s3tQ==
-X-Gm-Message-State: ANoB5pm1NtMN+DkFPG1En6OuXCzIbVqHrUFSNelG+lZI1uRkzedOoM+A
-        d7t0IUReFme/nMp1CDTGTAUCY5WmmtnP7w==
-X-Google-Smtp-Source: AA0mqf6v+6umNkgxSkGl9iGFvbVu+vDwLgCbqBtaSI0Tz70TDq7ufQQOamEga6FOf8Vb3fI0uCjePA==
-X-Received: by 2002:ac8:444b:0:b0:3a5:7d:3657 with SMTP id m11-20020ac8444b000000b003a5007d3657mr16314259qtn.500.1668516935837;
-        Tue, 15 Nov 2022 04:55:35 -0800 (PST)
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
-        by smtp.gmail.com with ESMTPSA id e7-20020ac84b47000000b0039953dcc480sm7115805qts.88.2022.11.15.04.55.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Nov 2022 04:55:35 -0800 (PST)
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-382f0906929so44610747b3.10;
-        Tue, 15 Nov 2022 04:55:34 -0800 (PST)
-X-Received: by 2002:a81:a085:0:b0:37e:6806:a5f9 with SMTP id
- x127-20020a81a085000000b0037e6806a5f9mr12150361ywg.47.1668516934534; Tue, 15
- Nov 2022 04:55:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20221115124128.1183144-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <20221115124128.1183144-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 15 Nov 2022 13:55:22 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVexCsodZcsdb6xYULvJkGbYMLV99EfgFPSAHOp2XKFsg@mail.gmail.com>
-Message-ID: <CAMuHMdVexCsodZcsdb6xYULvJkGbYMLV99EfgFPSAHOp2XKFsg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rzg2l-adc: Document
- RZ/Five SoC
-To:     Prabhakar <prabhakar.csengg@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        bh=gjy2+mpCjTP8mfHF1OGdgEun8TSro32Otc7xp3Fdvvs=;
+        b=PfU1ARd+hO6HWTlunTXp3p+0H95zzBwxJN5zerfTiryprmmrgQwyDj40oJadMLXH48
+         EfcT6dHzv9pWxPYXd5odoG3kKRptu3msgICcD17QOQ62MyY6bqB+UaJueCIMve63veIv
+         Spnf+kcCyb+hnq6QX0ucK7f3AHMnUIIZ4YFuhnwe2resui3wMiS+98jkEgU/xE+/yr6l
+         zHUSnJL428aLFwLQL4EkH2NYmByhiFREL8fokGOukp4+dYs2XvIU/H8IKrVEvVs6SXfh
+         dVvMUhLZ8aDSMO9OxauebjaMCzZmclLDj2mMJcglxMQaOBkVG6wCNNmfN0L6TLZfaT9x
+         bpDw==
+X-Gm-Message-State: ANoB5pkD8ZY6uaz9zs4jpKF8bXqGV3o7f6dpWSO2uJOGKZSTRei8SHik
+        92vU3e6tLCxC7PnuXScVLvMkmg==
+X-Google-Smtp-Source: AA0mqf6L4zd00qolmGlqgN2jBZzZdMW8HcAHcCkOPudaYHSzC4peIVdNVXlDz6k1iKyXbEDWeKmNJg==
+X-Received: by 2002:ac2:48b4:0:b0:497:ca2:4e74 with SMTP id u20-20020ac248b4000000b004970ca24e74mr5918104lfg.488.1668518610588;
+        Tue, 15 Nov 2022 05:23:30 -0800 (PST)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id s13-20020a05651c048d00b0026fc79fd67dsm2503482ljc.74.2022.11.15.05.23.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Nov 2022 05:23:29 -0800 (PST)
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        Javier Arteaga <javier@emutex.com>,
+        "Dan O'Donovan" <dan@emutex.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nicola Lunghi <nicola.lunghi@emutex.com>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc128s052: add proper .data members in adc128_of_match table
+Date:   Tue, 15 Nov 2022 14:23:23 +0100
+Message-Id: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 15, 2022 at 1:51 PM Prabhakar <prabhakar.csengg@gmail.com> wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->
-> The ADC block on the RZ/Five SoC is identical to one found on the RZ/G2UL
-> SoC. "renesas,r9a07g043-adc" compatible string will be used on the RZ/Five
-> SoC so to make this clear, update the comment to include RZ/Five SoC.
->
-> No driver changes are required as generic compatible string
-> "renesas,rzg2l-adc" will be used as a fallback on RZ/Five SoC.
->
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Prior to commit bd5d54e4d49d ("iio: adc128s052: add ACPI _HID
+AANT1280"), the driver unconditionally used spi_get_device_id() to get
+the index into the adc128_config array.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+However, with that commit, OF-based boards now incorrectly treat all
+supported sensors as if they are an adc128s052, because all the .data
+members of the adc128_of_match table are implicitly 0. Our board,
+which has an adc122s021, thus exposes 8 channels whereas it really
+only has two.
 
-Gr{oetje,eeting}s,
+Fixes: bd5d54e4d49d ("iio: adc128s052: add ACPI _HID AANT1280")
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
 
-                        Geert
+I think the driver could be simplified somewhat by having just one
+single adc_channels[] array with the 8 entries, unconditionally use
+that as ->channels, with ->num_channels being taken from the match
+data instead of having this indirection through the auxiliary config
+array.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+But this patch is properly more suited for -stable.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+ drivers/iio/adc/ti-adc128s052.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+index 622fd384983c..b3d5b9b7255b 100644
+--- a/drivers/iio/adc/ti-adc128s052.c
++++ b/drivers/iio/adc/ti-adc128s052.c
+@@ -181,13 +181,13 @@ static int adc128_probe(struct spi_device *spi)
+ }
+ 
+ static const struct of_device_id adc128_of_match[] = {
+-	{ .compatible = "ti,adc128s052", },
+-	{ .compatible = "ti,adc122s021", },
+-	{ .compatible = "ti,adc122s051", },
+-	{ .compatible = "ti,adc122s101", },
+-	{ .compatible = "ti,adc124s021", },
+-	{ .compatible = "ti,adc124s051", },
+-	{ .compatible = "ti,adc124s101", },
++	{ .compatible = "ti,adc128s052", .data = (void*)0L, },
++	{ .compatible = "ti,adc122s021", .data = (void*)1L, },
++	{ .compatible = "ti,adc122s051", .data = (void*)1L, },
++	{ .compatible = "ti,adc122s101", .data = (void*)1L, },
++	{ .compatible = "ti,adc124s021", .data = (void*)2L, },
++	{ .compatible = "ti,adc124s051", .data = (void*)2L, },
++	{ .compatible = "ti,adc124s101", .data = (void*)2L, },
+ 	{ /* sentinel */ },
+ };
+ MODULE_DEVICE_TABLE(of, adc128_of_match);
+-- 
+2.37.2
+

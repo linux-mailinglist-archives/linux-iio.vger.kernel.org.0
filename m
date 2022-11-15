@@ -2,80 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E574629332
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 09:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E4CD6294E9
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 10:55:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232380AbiKOIVV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 03:21:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43706 "EHLO
+        id S229617AbiKOJzZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 04:55:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232569AbiKOIVU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 03:21:20 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5774220BDA
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 00:21:17 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id d20so16495526ljc.12
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 00:21:17 -0800 (PST)
+        with ESMTP id S229695AbiKOJzX (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 04:55:23 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DD365F9
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 01:55:21 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id s8so6462142lfc.8
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 01:55:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2oDeh8QPxwlUfystIUxy6bEGhHBIAnKFjrido9RSvwE=;
-        b=c1HICuTpLc/CJJlN2iLUwWJYZutv4qlcQPvKUsicIFFtc2gVyTT9zwF59wROLbDdWt
-         qldUP/isckTjSFFCLthOuDd0t9R5GV2RssusE4Vw1sKpHiJ+ZMcpUSyqwmgRnDlq6a5j
-         SOHvgoEF4FarS0ajtd66emH1irmL8vSLm+Xr2ERJE1YHliHwDokscuFUt67ZyQUsMC3t
-         oplgajD2alyXEfSpmMygPATluzDC6XYHCbg2J40ubRoKoiCPFIaHGiWnXXgrlWiOPkvy
-         JuvLqMKz3GygXYhlZ9OatWezZusIGTU34tHQLg3Cxq64dbqmLIcPY+GxLKKc4BOtzsEq
-         DhNQ==
+        d=rasmusvillemoes.dk; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6f4zxcZ/5nPMHcfGpObgAYnAA7vWPHzrHK0NitDUTLM=;
+        b=OeubwhbxdIfz0aEAv9BRbLsIfviL7qSKBjc1sG8maAgoYTDIE7ICssPLrxtswLYJUB
+         ujRxKu0QnkecST1Z4OR6oV6S70fNkY2EgOlqJV46E6FnOtKjV8IoXvOD+CpZy0zODqjv
+         4JmzFJWCphcuwg5/qBlfRxGF3B1pGSsJ2nS4w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2oDeh8QPxwlUfystIUxy6bEGhHBIAnKFjrido9RSvwE=;
-        b=1BUCFBKuo53EuhO0sybZPZxb54s5DgSLLMD9nPHPxxZzdDbKh8f0MLudtWFfjnIcTi
-         ptyhXKxIo+lA/CtRdk+dLWlaxf4lbHgYYXqnamqvaOC8C49lG0eETOWRdIzhPp61piJA
-         SuSXowUVSM9i1cEkb2JEdx7ozkOKK0bTfz2fLvmMNj6pJHncrSOltTHr2HSvnsmOdoYs
-         wUDRDH2N1jhcitdcDRs5kx6QwwCoI4eEHtcAyvnY2HmvGmLP8PKXySSKyv8qvVcWNmXN
-         qL14MyQmpUcUdshciWtus6nckOuVOC0hmHFe2BK55sEun/NJg6I9rCJygYjWfR7sclZk
-         AzEg==
-X-Gm-Message-State: ANoB5pk/KwnxALXvaZASbFNPtwj3a9j6bHEYzG1NFaNn0qVui5y/lw7O
-        hF3Ngzbbt96MWwZlPchV1/Nhbw7L8+A03rDg
-X-Google-Smtp-Source: AA0mqf5QslyE4xNjZT7wN5MLzXeAm1YVoAXp5J/x2SV75kjGSZBz4SBR9jnS8uSCGypyJ6Xe8Zzwrw==
-X-Received: by 2002:a2e:2d09:0:b0:277:72a:41a5 with SMTP id t9-20020a2e2d09000000b00277072a41a5mr5953499ljt.352.1668500475698;
-        Tue, 15 Nov 2022 00:21:15 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id r5-20020a2e8e25000000b0026e059a3455sm2392490ljk.51.2022.11.15.00.21.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Nov 2022 00:21:15 -0800 (PST)
-Message-ID: <acd7227f-102e-898b-beaa-b323285aa82d@linaro.org>
-Date:   Tue, 15 Nov 2022 09:21:13 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 1/2] dt-bindings: iio: magnetometer: add ti tmag5273
- documentation file
-To:     Gerald Loacker <gerald.loacker@wolfvision.net>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6f4zxcZ/5nPMHcfGpObgAYnAA7vWPHzrHK0NitDUTLM=;
+        b=xyU9ycojudACeJxlzgZPmfxNJf0KrsJfjlP6KXE6cxr3eMoHwqz2foFGbFZwbGmY/r
+         Fey+7fHxWt8/J8Sjz5T6+WezezzwUz9j9OSy5JiqRxX5UaOH63PaOUk1i/mx386Yv6Zb
+         JzRpGQybWqYfObmWHtkTncViCBVAOFQkWQ/3GvTtxL7/fuVfOglNi/sgoAMUaO0qrIsO
+         GD7KG9HCu+3teSCP44hxCKu4r4TV/7IQmaQjOh9ZwNmuWO3TwoVwQbgXSZKKP3CJdNz4
+         RfoU/uLdkGReU7oNaKDiVnBITV1CzK1VAi62Ianuv7Sw0DI8g9dYEBecc1CEcHjBLjll
+         MCbQ==
+X-Gm-Message-State: ANoB5plKPOyd5xVk65p7bKCtf6Fv24SK94CMiuf0DGCRFfedPB82hABG
+        h90nIWs93Ti9Ng5I4VMPOn7gdg==
+X-Google-Smtp-Source: AA0mqf4B1dGT4gH+hEp8hRtblF49bEkY0uTVTCvQ1FPRbPOe8PvqPHIW1e35lJ181gViqsxSnV45Gw==
+X-Received: by 2002:a19:645e:0:b0:4a9:e27a:1cfa with SMTP id b30-20020a19645e000000b004a9e27a1cfamr5177422lfj.147.1668506120064;
+        Tue, 15 Nov 2022 01:55:20 -0800 (PST)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id q3-20020a19f203000000b00493014c3d7csm2148598lfh.309.2022.11.15.01.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Nov 2022 01:55:19 -0800 (PST)
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To:     Rob Herring <robh+dt@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Michael Riesch <michael.riesch@wolfvision.net>
-References: <20221115073718.2377311-1-gerald.loacker@wolfvision.net>
- <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
-Content-Type: text/plain; charset=UTF-8
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     devicetree@vger.kernel.org,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Subject: [PATCH v2 0/3] iio: addac: ad74413r: add spi device id table, support reset gpio
+Date:   Tue, 15 Nov 2022 10:55:14 +0100
+Message-Id: <20221115095517.1008632-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.37.2
+In-Reply-To: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
+References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -84,103 +73,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15/11/2022 08:37, Gerald Loacker wrote:
-> Add bindings documentation file for TI TMAG5273.
+Fix a run-time warning from the SPI core by providing a spi_device_id
+table, and add binding and driver support for a reset gpio.
 
-Subject - drop "documentation file".
+v2:
+- drop the two patches related to refin-supply
+- fall back to getting device data from the spi_device_id entry
+- update the example in the binding with a reset-gpios entry
+- fix a style nit
 
-> 
-> Signed-off-by: Gerald Loacker <gerald.loacker@wolfvision.net>
-> ---
->  .../iio/magnetometer/ti,tmag5273.yaml         | 72 +++++++++++++++++++
->  MAINTAINERS                                   |  6 ++
->  2 files changed, 78 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml b/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
-> new file mode 100644
-> index 000000000000..2f5b0a4d2f40
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
-> @@ -0,0 +1,72 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/magnetometer/ti,tmag5273.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TI TMAG5273 Low-Power Linear 3D Hall-Effect Sensor
-> +
-> +maintainers:
-> +  - Gerald Loacker <gerald.loacker@wolfvision.net>
-> +
-> +description:
-> +  The TI TMAG5273 is a low-power linear 3D Hall-effect sensor. This device
-> +  integrates three independent Hall-effect sensors in the X, Y, and Z axes.
-> +  The device has an integrated temperature sensor available. The TMAG5273
-> +  can be configured through the I2C interface to enable any combination of
-> +  magnetic axes and temperature measurements. An integrated angle calculation
-> +  engine (CORDIC) provides full 360° angular position information for both
-> +  on-axis and off-axis angle measurement topologies. The angle calculation is
-> +  performed using two user-selected magnetic axes.
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: '^magnetometer@[0-9a-f]+$'
+Rasmus Villemoes (3):
+  iio: addac: ad74413r: add spi_device_id table
+  dt-bindings: iio: ad74413r: add optional reset-gpios
+  iio: addac: ad74413r: add support for reset-gpio
 
-Device schemas do not need to enforce the names.
+ .../bindings/iio/addac/adi,ad74413r.yaml      |  4 +++
+ drivers/iio/addac/ad74413r.c                  | 29 +++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-> +
-> +  compatible:
-> +    const: ti,tmag5273
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +  ti,angle-enable:
-
-ti,angle-measurement
-
-> +    description:
-> +      Enables angle measurement in the selected plane.
-> +      0 = OFF
-> +      1 = X-Y (default)
-> +      2 = Y-Z
-> +      3 = X-Z
-
-Why not strings which are easier for humans? off/x-y/y-z/x-z? How anyone
-reading DTS can remember what is "3" in this and in thousands of other
-devices?
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 3
-
-default: 1
-
-> +
-> +  vcc-supply:
-> +    description:
-> +      A regulator providing 1.7 V to 3.6 V supply voltage on the VCC pin,
-> +      typically 3.3 V.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vcc-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    i2c-0 {
-
-Just: i2c
-
-
-Best regards,
-Krzysztof
+-- 
+2.37.2
 

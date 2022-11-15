@@ -2,157 +2,163 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5664062A12D
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 19:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BD00F62A1AF
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 20:11:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230113AbiKOSQ6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 13:16:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33824 "EHLO
+        id S229557AbiKOTLB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 14:11:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbiKOSQz (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 13:16:55 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5812FC15;
-        Tue, 15 Nov 2022 10:16:54 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 1FA91B81A5F;
-        Tue, 15 Nov 2022 18:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B96C4347C;
-        Tue, 15 Nov 2022 18:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1668536211;
-        bh=nzoZVtAKQJIQTeBQutSbLNEtJkG6ZK7nNNBfDg5J8IA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=UvaUm07ab0P3VMqxkWKNgDghtJE+sdtZU1KHbWuBHxvVyOJ9sO61YjPzGaKkmKYrq
-         f7JGa153pJJU9JEud0fFO9J4y9NOGg9zeYUr/0B3Vv52YIWEWAb5HN6sAnvqin8B4o
-         iynVRwQvBe0avgQkEsCj379VZM8etj5v6EdNlAjhkazH7zDcGIFGZTkoLBwfkHkaFs
-         p/WDMqPuvPlNZ3PUhqlPZUInDfzeXcF3LDAmHDdv8BdudC0VczKdrbCYT3XAEUs3Op
-         FuHn4kCjcsNAStEAMdonN/qbzJP09QF+zn/icCLJFKyMGC7IeAT+iAJ5Sbw75ZejZs
-         K/8Z1P7Ixxc6Q==
-Received: by mail-lf1-f54.google.com with SMTP id c1so25721791lfi.7;
-        Tue, 15 Nov 2022 10:16:51 -0800 (PST)
-X-Gm-Message-State: ANoB5pno0b0n3PePQMgINym4MGj1rooed6kql1dzP4ErKwNEa7B2AZXp
-        0EHPygDxSmoUWk22ohVqG7gONwdffhvGrPLkoA==
-X-Google-Smtp-Source: AA0mqf5ylXTe8JPsQerawu90MDYFzRHw/tk4HjTbjmj7U/3adbjHDxKMSHfzzcjyFwjdnPjfg8KUmkUC1XS9l9OLAcg=
-X-Received: by 2002:ac2:5cc3:0:b0:4ab:5a19:3455 with SMTP id
- f3-20020ac25cc3000000b004ab5a193455mr5796390lfq.462.1668536209685; Tue, 15
- Nov 2022 10:16:49 -0800 (PST)
+        with ESMTP id S229960AbiKOTLA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 14:11:00 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3283B303E7
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 11:10:57 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id i10so29835937ejg.6
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 11:10:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7zUeISTpfROPOAumwGjosfHUKHNhvpIAE+hikozVXow=;
+        b=ZMjCu+EGd3BAayMpj+Qs2X8LsZTn7rQfelK9qSfJ98Twxm0/F/nAYQ5og2/Br8J+AA
+         yBSWyZFegdSg0XQPYdwZ8XU59hbNcQg7BMXIVtfd6U9sxkKsACR7NaHFQimgXCp6kN5u
+         8EmpC65NWCigc+MghndwR7IVSYUSX7wKe+uyY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7zUeISTpfROPOAumwGjosfHUKHNhvpIAE+hikozVXow=;
+        b=fsKCeNJaGpTNdBEXBMMc1Ji7TQ/b6F+cRc9pbt/lUKWvkKixUFBYc/q25cg24KCMg6
+         Z60kuH4ZL8BcyPlNMH1waXI600Qr1L+4teB/KNNijpIDHsx4DzzWA3GwisBfRv44LLkV
+         HbFsqkcMYLmCX9j+JWYAT7lSHdozjYOePO93vF40c9d18pCiM/0nNLEzQQsrm+BFMHbK
+         O3xk+hKKCwps6VnjRo3rZKaMnaIKSnAiyf2sdZKkxMMInbLegp/lVrmkkKAqgSKDk9d/
+         E0G7OkAucN90/rUb/wpEYoQyNsPa8GfkYmJ60KH4MVp0giPXfyHMh3RBFvh9aJZyfeg/
+         Nevg==
+X-Gm-Message-State: ANoB5plrG8iDiG0DESjV9RMbMN34J7voyC1txPbMBQ1KcoGK5V62Tj5H
+        T+IFOAoFE603kHSr1eDMA3nV1g==
+X-Google-Smtp-Source: AA0mqf6YJtScIOh84jMpYoP2ge7MMj9GKqUAOpVkXuvl3nP8qga5tGl4XjjNs92jDpYpAUgqrlQLyA==
+X-Received: by 2002:a17:906:c284:b0:7a1:6786:444f with SMTP id r4-20020a170906c28400b007a16786444fmr15014484ejz.409.1668539455702;
+        Tue, 15 Nov 2022 11:10:55 -0800 (PST)
+Received: from [192.168.1.149] ([80.208.71.65])
+        by smtp.gmail.com with ESMTPSA id ce11-20020a170906b24b00b007ad9c826d75sm5867616ejb.61.2022.11.15.11.10.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Nov 2022 11:10:55 -0800 (PST)
+Message-ID: <6d76cc6d-9db7-5b18-e4f1-dc220b3929a3@rasmusvillemoes.dk>
+Date:   Tue, 15 Nov 2022 20:10:53 +0100
 MIME-Version: 1.0
-References: <20221103094436.2136698-1-demonsingur@gmail.com>
- <20221103094436.2136698-2-demonsingur@gmail.com> <20221106154634.2286faf3@jic23-huawei>
- <c01b0e56563b2b6f8ef48ad90977646706a2c933.camel@gmail.com>
- <20221112154040.54dc5cf2@jic23-huawei> <c54200fb70d638c572a0596a78d956d9f61d89a4.camel@gmail.com>
- <20221115160724.00007460@Huawei.com>
-In-Reply-To: <20221115160724.00007460@Huawei.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 15 Nov 2022 12:16:41 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqLt6B73XSE8dMHMGuw1N9m1v1xwr3sOEEHonGgLAYya=A@mail.gmail.com>
-Message-ID: <CAL_JsqLt6B73XSE8dMHMGuw1N9m1v1xwr3sOEEHonGgLAYya=A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Cosmin Tanislav <demonsingur@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
+Content-Language: en-US, da
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
+ <20221111143921.742194-6-linux@rasmusvillemoes.dk>
+ <20221112170705.7efe1673@jic23-huawei>
+ <095a454b55cf497392a621649f24e067@analog.com>
+ <20221114194447.2528f699@jic23-huawei>
+ <0d6b3e4047df9f560079a562bc167bd7a0bf2d28.camel@gmail.com>
+ <20221115161052.00002633@Huawei.com>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+In-Reply-To: <20221115161052.00002633@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Nov 15, 2022 at 10:07 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Tue, 15 Nov 2022 14:43:53 +0200
-> Cosmin Tanislav <demonsingur@gmail.com> wrote:
->
-> > On Sat, 2022-11-12 at 15:40 +0000, Jonathan Cameron wrote:
-> > > > >
-> > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > > +    description: |
-> > > > > > +      Conversion range for ADC conversion 2.
-> > > > > > +      0 - 0V to 12V
-> > > > > > +      1 - -12V to +12V
-> > > > > > +      2 - -2.5V to +2.5V
-> > > > > > +      3 - -2.5V to 0V
-> > > > > > +      4 - 0V to 2.5V
-> > > > > > +      5 - 0V to 0.625V
-> > > > > > +      6 - -104mV to +104mV
-> > > > > > +      7 - 0V to 12V
-> > > > >
-> > > > > For a lot of similar cases we handle these numerically to give
-> > > > > a human readable dts.  Is there a strong reason not to do so here (in mv)
-> > > > >
-> > > >
-> > > > I used this approach mostly because it maps dirrectly to register values
-> > > > and because it's easier to parse. dts isn't exactly nice at handling
-> > > > negative values. I can switch it to mv array if you insist.
-> > >
-> > > We have quite a few existing cases of
-> > > adi,[output-]range-microvolt so it would be good to copy that style here.
-> > >
-> >
-> > With this:
-> >
-> >   adi,conv2-range-microvolt:
-> >     description: Conversion range for ADC conversion 2.
-> >     oneOf:
-> >       - items:
-> >           - enum: [-2500000, 0]
-> >           - const: 2500000
-> >       - items:
-> >           - enum: [-12000000, 0]
-> >           - const: 12000000
-> >       - items:
-> >           - const: -2500000
-> >           - const: 0
-> >       - items:
-> >           - const: -104000
-> >           - const: 104000
-> >       - items:
-> >           - const: 0
-> >           - const: 625000
-> >
-> > And this:
-> >
-> > adi,conv2-range-microvolt = <(-12000000) 12000000>;
-> >
-> > I get this:
-> >
-> > Documentation/devicetree/bindings/iio/addac/adi,ad74115.example.dtb:
-> > addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed,
-> > one must be fixed:
-> >         4282967296 is not one of [-2500000, 0]
-> >         4282967296 is not one of [-12000000, 0]
-> >         -2500000 was expected
-> >         -104000 was expected
-> >         625000 was expected
-> >         From schema: Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> >
-> > As I said, negative numbers don't play too nice...
->
-> From what I recall we just ignore those warnings :)
->
-> Rob, do I remember correctly that there was a plan to make this work longer term?
+On 15/11/2022 17.10, Jonathan Cameron wrote:
+> On Tue, 15 Nov 2022 15:49:46 +0100
+> Nuno Sá <noname.nuno@gmail.com> wrote:
+> 
+>> On Mon, 2022-11-14 at 19:44 +0000, Jonathan Cameron wrote:
+>>> On Mon, 14 Nov 2022 13:52:26 +0000
+>>> "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
+>>>   
+>>>>>
+>>>>> I'm a little confused on polarity here.  The pin is a !reset so
+>>>>> we need to drive it low briefly to trigger a reset.
+>>>>> I'm guessing for your board the pin is set to active low? (an
+>>>>> example
+>>>>> in the dt would have made that clearer) Hence the pulse
+>>>>> in here to 1 is actually briefly driving it low before restoring
+>>>>> to high?
+>>>>>
+>>>>> For a pin documented as !reset that seems backwards though you
+>>>>> have
+>>>>> called it reset so that is fine, but this description doesn't
+>>>>> make that
+>>>>> celar.    
+>>>>
+>>>> My opinion is that the driver shouldn't exactly know the polarity
+>>>> of the reset,
+>>>> and just assume that setting the reset GPIO to 1 means putting it
+>>>> in reset,
+>>>> and setting it to 0 means bringing out of reset.  
+>>>
+>>> Agreed. I'd just like a comment + example in the dt-binding to make
+>>> the point
+>>> that the pin is !reset.
+>>>
+>>> Preferably with an example in the dt binding of the common case of it
+>>> being wired
+>>> up to an active low pin.
+>>>
+>>> The main oddity here is the need to pulse it rather than request it
+>>> directly as
+>>> in the reset state and then just set that to off.
+>>>
+>>>   
+>>
+>> Agreed... In theory we should be able to request the gpio with
+>> GPIOD_OUT_HIGH and then just bring the device out of reset
+> 
+> If I recall correctly the datasheet specifically calls out that a pulse
+> should be used.  No idea if that's actually true, or if it was meant
+> to be there just to say it needs to be set for X nsecs.
 
-Yes, but handling signed types is working now (since the move to
-validating dtbs directly).
+So the data sheet says
 
-The issue here is -microvolt is defined as unsigned. IIRC, I had some
-issue changing it, but I think that was just with the YAML encoding
-which I intend to remove. I'll give it another look and update the
-type if there's no issues.
+  The hardware reset is initiated by pulsing the RESET pin low. The
+RESET pulse width must comply with the specifications in Table 11.
 
-Rob
+and table 11 says that the pulse must be min 50us, max 1ms. We don't
+really have any way whatsoever to ensure that we're not rescheduled
+right before pulling the gpio high again (deasserting the reset), so the
+pulse could effectively be much more than 1ms. But I have a hard time
+believing that that actually matters (i.e., what state would the chip be
+in if we happen to make a pulse 1234us wide?). But what might be
+relevant, and maybe where that 1ms figure really comes from, can perhaps
+be read in table 10, which lists a "device reset time" of 1ms, with the
+description
+
+  Time taken for device reset and calibration memory upload to complete
+hardware or software reset events after the device is powered up
+
+so perhaps we should ensure a 1ms delay after the reset (whether we used
+the software or gpio method). But that would be a separate fix IMO (and
+I'm not sure we actually need it).
+
+I don't mind requesting the gpio with GPIOD_OUT_HIGH, but I'd still keep
+the gpiod_set_value(, 1) in the reset function, otherwise it's a bit too
+magic for my taste.
+
+Rasmus
+

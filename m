@@ -2,58 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28BEC629E77
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A87629E83
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbiKOQHk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Tue, 15 Nov 2022 11:07:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58754 "EHLO
+        id S231258AbiKOQJn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Tue, 15 Nov 2022 11:09:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbiKOQHj (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:07:39 -0500
+        with ESMTP id S229873AbiKOQJm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:09:42 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 967232609;
-        Tue, 15 Nov 2022 08:07:37 -0800 (PST)
-Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NBWGk5v1Jz6H76x;
-        Wed, 16 Nov 2022 00:05:02 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2BF81C122;
+        Tue, 15 Nov 2022 08:09:40 -0800 (PST)
+Received: from frapeml500008.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NBWKK4rH1z67tG2;
+        Wed, 16 Nov 2022 00:07:17 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
+ frapeml500008.china.huawei.com (7.182.85.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 15 Nov 2022 17:07:26 +0100
+ 15.1.2375.31; Tue, 15 Nov 2022 17:09:39 +0100
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 15 Nov
- 2022 16:07:25 +0000
-Date:   Tue, 15 Nov 2022 16:07:24 +0000
+ 2022 16:09:38 +0000
+Date:   Tue, 15 Nov 2022 16:09:37 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
+To:     Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 CC:     Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Michael Hennerich" <Michael.Hennerich@analog.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
         <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
-Message-ID: <20221115160724.00007460@Huawei.com>
-In-Reply-To: <c54200fb70d638c572a0596a78d956d9f61d89a4.camel@gmail.com>
-References: <20221103094436.2136698-1-demonsingur@gmail.com>
-        <20221103094436.2136698-2-demonsingur@gmail.com>
-        <20221106154634.2286faf3@jic23-huawei>
-        <c01b0e56563b2b6f8ef48ad90977646706a2c933.camel@gmail.com>
-        <20221112154040.54dc5cf2@jic23-huawei>
-        <c54200fb70d638c572a0596a78d956d9f61d89a4.camel@gmail.com>
+Subject: Re: [PATCH 2/4] iio: frequency: adf4377: add support for ADF4377
+Message-ID: <20221115160937.00000313@Huawei.com>
+In-Reply-To: <2a6c721b8c27b4631f424e7c68e11a2409005261.camel@gmail.com>
+References: <20221104092802.90725-1-antoniu.miclaus@analog.com>
+        <20221104092802.90725-3-antoniu.miclaus@analog.com>
+        <3417a0fd87e6f13207690e49b797f2d2689f802a.camel@gmail.com>
+        <20221106175139.093edcd9@jic23-huawei>
+        <2a6c721b8c27b4631f424e7c68e11a2409005261.camel@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -65,86 +59,85 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 15 Nov 2022 14:43:53 +0200
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
 
-> On Sat, 2022-11-12 at 15:40 +0000, Jonathan Cameron wrote:
-> > > >     
-> > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > > +    description: |
-> > > > > +      Conversion range for ADC conversion 2.
-> > > > > +      0 - 0V to 12V
-> > > > > +      1 - -12V to +12V
-> > > > > +      2 - -2.5V to +2.5V
-> > > > > +      3 - -2.5V to 0V
-> > > > > +      4 - 0V to 2.5V
-> > > > > +      5 - 0V to 0.625V
-> > > > > +      6 - -104mV to +104mV
-> > > > > +      7 - 0V to 12V    
-> > > > 
-> > > > For a lot of similar cases we handle these numerically to give
-> > > > a human readable dts.  Is there a strong reason not to do so here (in mv)
-> > > >     
+> > > > +static int adf4377_probe(struct spi_device *spi)
+> > > > +{
+> > > > +       struct iio_dev *indio_dev;
+> > > > +       struct regmap *regmap;
+> > > > +       struct adf4377_state *st;
+> > > > +       int ret;
+> > > > +
+> > > > +       indio_dev = devm_iio_device_alloc(&spi->dev,
+> > > > sizeof(*st));
+> > > > +       if (!indio_dev)
+> > > > +               return -ENOMEM;
+> > > > +
+> > > > +       regmap = devm_regmap_init_spi(spi,
+> > > > &adf4377_regmap_config);
+> > > > +       if (IS_ERR(regmap))
+> > > > +               return PTR_ERR(regmap);
+> > > > +
+> > > > +       st = iio_priv(indio_dev);
+> > > > +
+> > > > +       indio_dev->info = &adf4377_info;
+> > > > +       indio_dev->name = "adf4377";
+> > > > +       indio_dev->channels = adf4377_channels;
+> > > > +       indio_dev->num_channels = ARRAY_SIZE(adf4377_channels);
+> > > > +
+> > > > +       st->regmap = regmap;
+> > > > +       st->spi = spi;
+> > > > +       st->type = spi_get_device_id(spi)->driver_data;    
 > > > 
-> > > I used this approach mostly because it maps dirrectly to register values
-> > > and because it's easier to parse. dts isn't exactly nice at handling
-> > > negative values. I can switch it to mv array if you insist.  
+> > > Hmm this is something that came up internally the other day. Are we
+> > > guaranteed that this will always work? For OF I think it is but I'm
+> > > not
+> > > sure about ACPI? At first glance, it seems that it might be ok but
+> > > I
+> > > did not went too deep in the ACPI code.  
 > > 
-> > We have quite a few existing cases of
-> > adi,[output-]range-microvolt so it would be good to copy that style here.
-> >   
+> > Better indeed to not assume it and indeed ACPI can't do this magic,
+> > because
+> > there isn't a match between the actual ACPI ID and the
+> > spi_device_ids.
+> > Not sure what it does with PRP0001 case (where it uses the
+> > of_device_id table).  
 > 
-> With this:
+> Some comments/questions on the pattern:
 > 
->   adi,conv2-range-microvolt:
->     description: Conversion range for ADC conversion 2.
->     oneOf:
->       - items:
->           - enum: [-2500000, 0]
->           - const: 2500000
->       - items:
->           - enum: [-12000000, 0]
->           - const: 12000000
->       - items:
->           - const: -2500000
->           - const: 0
->       - items:
->           - const: -104000
->           - const: 104000
->       - items:
->           - const: 0
->           - const: 625000
+> > 
+> > 
+> >         st->type = device_get_match_id()->driver_data;  
 > 
-> And this:
-> 
-> adi,conv2-range-microvolt = <(-12000000) 12000000>;
-> 
-> I get this:
-> 
-> Documentation/devicetree/bindings/iio/addac/adi,ad74115.example.dtb:
-> addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed,
-> one must be fixed:
->         4282967296 is not one of [-2500000, 0]
->         4282967296 is not one of [-12000000, 0]
->         -2500000 was expected
->         -104000 was expected
->         625000 was expected
->         From schema: Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
-> 
-> As I said, negative numbers don't play too nice...
+> Are we sure that device_get_match_id() (I guess you meant
+> device_get_match_data()) cannot return NULL? I'm always a bit on the
+> careful side with these dereferences...
 
-From what I recall we just ignore those warnings :)
-
-Rob, do I remember correctly that there was a plan to make this work longer term?
+Oops. Yes I got confused.  It can indeed return
+NULL and when using right function we won't dereference it.
+We'll just check st->type which will have been set NULL if that fails.
 
 Jonathan
-
+ 
 > 
-> > >   
-> > > >     
-> > > > > +    minimum: 0
-> > > > > +    maximum: 7
-> > > > > +    default: 0
-> > > > > +  
+> >         if (!st->type) {
+> >                 const struct spi_device_id *id =
+> > spi_get_device_id(spi);
+> > 
+> >                 if (!id)
+> >                         return -EINVAL;
+> > 
+> >                 st->type = spi_get_device_id(spi)->driver_data;  
+> 
+> id->driver_data :)
+> 
+> >         }  
+> 
+> - Nuno Sá
+> 
+> 
+> 
+> 
+> device_get_match_id()->driver_data;
+> 
 > 
 

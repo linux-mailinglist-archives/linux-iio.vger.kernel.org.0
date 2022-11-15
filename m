@@ -2,59 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49571629F4A
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73282629F4F
+	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 17:43:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238778AbiKOQmq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 11:42:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54360 "EHLO
+        id S231287AbiKOQn3 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 11:43:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238719AbiKOQmd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:42:33 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24A1C2ED7E
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:42:30 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id be13so25340179lfb.4
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:42:30 -0800 (PST)
+        with ESMTP id S238731AbiKOQnL (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 11:43:11 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66B92F665
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:43:06 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id a29so25312829lfj.9
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 08:43:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ez8EoWu/H3aBC/+f0SycFl5mR03TQOT0SmdEbSc3iLE=;
-        b=Yiv+8qxNnofTjNee/iGZggh3HuIlXjcbiKludGlJMfFjLX2qAJgr0Dboi1Gezma/tQ
-         hc2F/an4GK5Q098TEDZFhJI+0gm5cGgvlL2fuZZv0/YI8/CDdhl4LxC0BDduiBU17YXG
-         zw9eA7mdO+YoAWKN32sC/WdnCpBnvqNt4Kd4ll+956VG1vUMqTIXYgBKb3Ccz+C3chQN
-         Y/YyyoEc1GmaiWh8x73kHKsDh08yiilmaL1p/NJ460Pii71Rka7WziFCiaNmVgqxQsUw
-         NHHJxv0gdADQrZqn6H873iSQGRrRAJCFOnU5tiLx36xid/fu9ZJwTBvF6ZAwtj8YDxKM
-         93fA==
+        bh=7DMVuHRBp4GftrN1V1KSQlvwpB/mUouGhCJfxN5gy/c=;
+        b=jK6kVEMwqFDOzl7o4MlPKo19vnfhcEnL2VbjT8hTvUAQw4mSgZYYnmwwTTKA8HpFvn
+         SM1B8KN7Oa2eJ8C0mAgFGeQ6WTR1gAlgp2h8luDz8FGbBjjuqTWCf1/EoicijscLzY1N
+         iL3Nb0+LtTbFFN1FQ9dOzcSLVUl/IJVeY5eDZK565Zo0+hF+So0nM8KWj3s0c5XJUwm4
+         j1HA3KndtMPmiPGZdTd4EbWiB7waHIV4SlkReHrpzjyalC79ZMgEhpb4wtBS69PmegDy
+         ehAwuYEZgCz/iZ9nw65cEgXJ0D5N+R4CrPo2Fni6th3cw6BpPCDBFtOHE/EUgHcpyWIB
+         c8nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ez8EoWu/H3aBC/+f0SycFl5mR03TQOT0SmdEbSc3iLE=;
-        b=TtX+G49RBhpf2qMcdi0D7qhTt79shtBoN/5rYmQcGrgpGh0mOg0Dy7rS6uupHpVvGT
-         1irormOGaL7xbEgSgGe72NM+ccFewZ3e4ur4RVk3BuPDXDvFGgYPoZxqqvA41bOuEdqS
-         jAUNxRakDm/8rUoKrc4A8x3YKKeWeN5cfksiDy/+vg+gv79ajbSeTJSgoS/Y2//uYcqt
-         rxa0ZkW3vGJ/9prqxvJ8pufxnc5wdCLg/HzzZ3aV/QPIpst3IuS4iKl4RaxnfR+BXTuq
-         clIUg46rH6KXJhDIhIrWVvui4mKtnoFeon2U867o4D2nVbkeJsVjn/9Kn3+9AkvqdyxO
-         0gwQ==
-X-Gm-Message-State: ANoB5plboNqncPSYyX0oYtVgsNGVITYNa7MfNEhr2QNBfZeQPAfanyQ4
-        EURNmU/qsJT3aRtwgFCcFoTi+Q==
-X-Google-Smtp-Source: AA0mqf5/v7OHUzi/dX9wNFMXaB7HgjO2RCOgWbcKjzkVZo/epnQZheAcEdEkVcEWSZD4P4uWnuJiiQ==
-X-Received: by 2002:a05:6512:1087:b0:4b4:a5b5:1a04 with SMTP id j7-20020a056512108700b004b4a5b51a04mr1043710lfg.142.1668530549096;
-        Tue, 15 Nov 2022 08:42:29 -0800 (PST)
+        bh=7DMVuHRBp4GftrN1V1KSQlvwpB/mUouGhCJfxN5gy/c=;
+        b=d+N+8m2+U2sLoG01pK9YxGU+/Z4KeBEedE2gYjb46LhlHW5XExRlBjbyDVsqUKHQEZ
+         Q2XsgtIGNsIqJHuftNTVJcOZmrv60Yop/3HW+QJG9kwCfijS8ZGTI4X2OQOjv910YBhF
+         DDv/V5ydUybt3UbScZfVC4butdZ1wG93dffnlK5Q8fCBXe2Ymuf/bFkQroMWKZ0lzirT
+         yvWQwB5htrwFvD9vMeAjetxW2TIKh1hRU4OgeOXAnsHNDhTjtApWBfSF6Qz7kTLZRHkw
+         Vcc6jcfjbQ+agd1jdWKMdlv4p4iQ+A4w4tprLwsXgWlsq4nVEb706D9Qjr0bfVHUAeYC
+         5Uiw==
+X-Gm-Message-State: ANoB5pk5oAix6wnxJ7FZ2UsOV80IAiKVza3u42uFl/2dFp3Io16PNvW0
+        h9MbHmDkuy4M6ZjnGw3WHawzJw==
+X-Google-Smtp-Source: AA0mqf5a13CZKGFrmN4xsbVr2cltGfCaGtn+odnP/5EobiQd89vK+ZWQb9JqN5euCAiUAqg8/6jTNg==
+X-Received: by 2002:a05:6512:a86:b0:4a4:72b0:9a2b with SMTP id m6-20020a0565120a8600b004a472b09a2bmr5745325lfu.469.1668530585022;
+        Tue, 15 Nov 2022 08:43:05 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id a21-20020ac25e75000000b004b1a5086485sm2267355lfr.2.2022.11.15.08.42.27
+        by smtp.gmail.com with ESMTPSA id 17-20020a2eb951000000b002770fb5722fsm2559896ljs.123.2022.11.15.08.43.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Nov 2022 08:42:28 -0800 (PST)
-Message-ID: <d1aa5cdc-757b-b54f-0d1c-5f823ea5d81e@linaro.org>
-Date:   Tue, 15 Nov 2022 17:42:27 +0100
+        Tue, 15 Nov 2022 08:43:04 -0800 (PST)
+Message-ID: <0051d380-7bba-f19a-2455-4f09b94caafe@linaro.org>
+Date:   Tue, 15 Nov 2022 17:43:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH v2 04/11] dt-bindings: sram: qcom,imem: Document MSM8976
+Subject: Re: [PATCH v2 06/11] dt-bindings: arm: qcom,ids: Add SoC IDs for
+ MSM8956 and MSM8976
 Content-Language: en-US
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>, agross@kernel.org
@@ -68,9 +69,9 @@ Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
         linux-iio@vger.kernel.org, linux-hardening@vger.kernel.org,
         marijn.suijten@somainline.org, kernel@collabora.com, luca@z3ntu.xyz
 References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
- <20221111120156.48040-5-angelogioacchino.delregno@collabora.com>
+ <20221111120156.48040-7-angelogioacchino.delregno@collabora.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221111120156.48040-5-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20221111120156.48040-7-angelogioacchino.delregno@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,14 +85,15 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
-> Add compatible for MSM8976 IMEM.
+> Document the identifier of MSM8956/76.
 > 
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > ---
->  Documentation/devicetree/bindings/sram/qcom,imem.yaml | 1 +
+>  include/dt-bindings/arm/qcom,ids.h | 2 ++
+>  1 file changed, 2 insertions(+)
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

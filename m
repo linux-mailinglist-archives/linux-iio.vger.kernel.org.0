@@ -2,67 +2,66 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA76062CCD6
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 22:38:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87D8062CD65
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 23:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234458AbiKPVio (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Nov 2022 16:38:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42244 "EHLO
+        id S233476AbiKPWKW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Nov 2022 17:10:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234460AbiKPViP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 16:38:15 -0500
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33F65D6BB;
-        Wed, 16 Nov 2022 13:38:02 -0800 (PST)
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-13bd19c3b68so21692839fac.7;
-        Wed, 16 Nov 2022 13:38:02 -0800 (PST)
+        with ESMTP id S232996AbiKPWKW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 17:10:22 -0500
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C776A6B8;
+        Wed, 16 Nov 2022 14:10:20 -0800 (PST)
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-1322d768ba7so93971fac.5;
+        Wed, 16 Nov 2022 14:10:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3+ajJyywD/4DGN7+ib3OOlpxn9zCtQP+kRRJV3rgQd0=;
-        b=p0W/LGzDkzmVqVc9g/mWPEAgxlNnadVHvNwuAGnWuWS+qT4pZFFhx+bKe9KOr5mEAl
-         rYzZJzDetQvAwL3Wcy29vkN7cuLsrAtmNj1qDZ485lyQv7x7lj962j8uSYwz1hNYf/6/
-         Vv8YBF0zD/4t2smIqLT7Y432q9uOzzhUbH4mvc7w9itMyJryxHKvRBIeFIBg/GB6dP6N
-         fMa+ajEK7meYoe8CZAYk0AIvDXHXoSOhJoM0HHG5wjjr9w+sBUikqU2gtPx38kldoFaD
-         vwGcIazRjryg7k/37SgpQzh7pdOYDqssAwbz3r/Pv52UbIc+RsrVafHF7T4bacmbzmgc
-         7YZg==
-X-Gm-Message-State: ANoB5pnsbqlfROnjHP2u29S0F0SBN6jU0SOXeruSk8ZfU+fkReVQE8Pa
-        /mWYoW6Sp1F57yTRwQWO+Q==
-X-Google-Smtp-Source: AA0mqf61GFUFznefT2AM9Xs0EbuM8eP+CfmSUS4C466SPnx22nhb6x9TE9+WNDPceqqxiBupty8BHQ==
-X-Received: by 2002:a05:6870:42cd:b0:132:fd69:b244 with SMTP id z13-20020a05687042cd00b00132fd69b244mr2746255oah.275.1668634682120;
-        Wed, 16 Nov 2022 13:38:02 -0800 (PST)
+        bh=qEp4qpDc25C4Jhe16ERtOXiKxuguwyQ9WU0yv9/yqug=;
+        b=exbfnqt6UDWdCCUD1GWnjkZrltX4ZNJiBsYtAKztyFxHAV8Hv+vqeXPHZtOySUHwpm
+         AICP5XN4xfglim/wWP5UYE8hl64Mgbc2raatBCThBOvdg0ouM4HiB1AeU7j6SuiZjhkc
+         5kOu4aMjVMCVUZEYR1VY/jMA1/uCWwKttuAxcAJNiAVl8jBLPHMibclKoffubF3/oaOc
+         7IsZJs6WZtJWI1mi4Yyu6DLvdgsxdp3uSui/uxfrdiFqIBCGNcjER8jyKXBwaZDg5WfK
+         /FHNbuCNqWjzpJ00tcNjSJOn5NGsxvXpFeyVTVSuOzAAXTvqOMN1ieksttliwxX1hY17
+         vb7w==
+X-Gm-Message-State: ANoB5pmbW91Y79THMTExbXx0rTGbCez+txExmgEw2evHwUcmx92jzFl2
+        p2Se/DDarrVRvhwXlYqsOQ==
+X-Google-Smtp-Source: AA0mqf6FejGYuLDOQ3k+okboDBW6zKh68C2C4aL76tw/wYr9fhgB88im/yXe8Lf2jOF3kjHoI9Qjkg==
+X-Received: by 2002:a05:6870:ea8e:b0:13b:a31f:45fd with SMTP id s14-20020a056870ea8e00b0013ba31f45fdmr2846797oap.194.1668636620141;
+        Wed, 16 Nov 2022 14:10:20 -0800 (PST)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id d11-20020a056830044b00b0066c15490a55sm7067428otc.19.2022.11.16.13.38.01
+        by smtp.gmail.com with ESMTPSA id d5-20020a4aaa85000000b0049faebecee2sm522050oon.35.2022.11.16.14.10.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Nov 2022 13:38:01 -0800 (PST)
-Received: (nullmailer pid 1016743 invoked by uid 1000);
-        Wed, 16 Nov 2022 21:38:03 -0000
-Date:   Wed, 16 Nov 2022 15:38:03 -0600
+        Wed, 16 Nov 2022 14:10:19 -0800 (PST)
+Received: (nullmailer pid 1116479 invoked by uid 1000);
+        Wed, 16 Nov 2022 22:10:21 -0000
+Date:   Wed, 16 Nov 2022 16:10:21 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Prabhakar <prabhakar.csengg@gmail.com>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        linux-kernel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        linux-iio@vger.kernel.org, Biju Das <biju.das.jz@bp.renesas.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rzg2l-adc: Document
- RZ/Five SoC
-Message-ID: <166863468321.1016692.3662033617872440170.robh@kernel.org>
-References: <20221115124128.1183144-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        Rob Herring <robh+dt@kernel.org>
+Subject: Re: [PATCH] dt-bindings: iio: adc: ad4130: use
+ spi-peripheral-props.yaml
+Message-ID: <166863662057.1116418.9768601754353437839.robh@kernel.org>
+References: <20221115151955.394030-1-cosmin.tanislav@analog.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221115124128.1183144-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <20221115151955.394030-1-cosmin.tanislav@analog.com>
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,20 +69,14 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
-On Tue, 15 Nov 2022 12:41:28 +0000, Prabhakar wrote:
-> From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On Tue, 15 Nov 2022 17:19:55 +0200, Cosmin Tanislav wrote:
+> Reference the "spi-peripheral-props.yaml" schema to allow using
+> all SPI device properties.
 > 
-> The ADC block on the RZ/Five SoC is identical to one found on the RZ/G2UL
-> SoC. "renesas,r9a07g043-adc" compatible string will be used on the RZ/Five
-> SoC so to make this clear, update the comment to include RZ/Five SoC.
-> 
-> No driver changes are required as generic compatible string
-> "renesas,rzg2l-adc" will be used as a fallback on RZ/Five SoC.
-> 
-> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
 > ---
->  .../devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml          | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  Documentation/devicetree/bindings/iio/adc/adi,ad4130.yaml | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 > 
 
 Acked-by: Rob Herring <robh@kernel.org>

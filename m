@@ -2,121 +2,161 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 706F662B6D3
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 10:45:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CEC662B78C
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 11:17:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbiKPJo7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Nov 2022 04:44:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
+        id S231417AbiKPKR5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Nov 2022 05:17:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232732AbiKPJo7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 04:44:59 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C26FBD3
-        for <linux-iio@vger.kernel.org>; Wed, 16 Nov 2022 01:44:58 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id g12so28682493lfh.3
-        for <linux-iio@vger.kernel.org>; Wed, 16 Nov 2022 01:44:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pgS+Ovv0eXOJwFTViusXUlwcEa0Tx7ZA7lRyTAv8k4w=;
-        b=RCe4P4IceE6ZUqJglE+YVt+Dny9tnUgYpgasdp8+S6rXcaCc7k9FtCvWd5x2Bj/sBV
-         NAVASAdFtSlrI+TrToOf3ARBu7wuCOzIF7KDffariJDavuOisxcP1b+91qua69biztg0
-         uGsemHhaMQ0pBs0UcTft6qARg9oiPnZVW2nn5ja8UU27z4v/vz42rv/nV2f2ZxqLyCMp
-         77qSLcgHngG/Eoh2HjSHgQY/VWAvQWZANyGvy/SbToN+hIU8RQN/ULzpAzOZk0n5d1Vr
-         AhDCUuR7iP8in6MICx3X2fC71sp1qR/COkLRjG4njZ8KAuK8zy1cbCpLq1uvSaWGwgS4
-         emEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pgS+Ovv0eXOJwFTViusXUlwcEa0Tx7ZA7lRyTAv8k4w=;
-        b=Oe0WrgdT+e+YEf7m2mHcCQOnKrDRDdzvsIInyRrK5jwSvY+AEvCn8lko9zBaVRTE55
-         T2QV38YHjwypq/ZOjU7thrBAZri6I62SbenOpcdd4B7xL/nh2x3ojmeRVlw/LEzGsbB3
-         u8DYt8ryGdJMvs2a9A80OMcAerZxgYFslhU5XkWWsA1r7jP3h2m30N5ERQD98bblAYhh
-         z3TOgchbdAhZzxmdTNSHPaijvKK7z9mK1IOSW3aQjegUGwxn4f4JSpmxirG02HfAT3qW
-         gAblpW3LmPzk6YCR8oCTR+3+chfPAmgGfnL/6jnkHwJcbneu3bvC3w8KcfD4Ip8+JJIf
-         cD+w==
-X-Gm-Message-State: ANoB5pm8Bus6nRuMG4pBPS/hfxER8Z4avlh2RfINQDk9fJtHsq+cvMjy
-        pmVzz1PHFxxF58/OGLCAnNyumg==
-X-Google-Smtp-Source: AA0mqf6rTJFMk6b2mLxnOY8Sft920fWk28nxriGe7jyDuJtMB+LZZKA6WnYqmqoNq3pFIBP+3eFblg==
-X-Received: by 2002:a05:6512:308a:b0:4a2:39e6:4d48 with SMTP id z10-20020a056512308a00b004a239e64d48mr6999988lfd.234.1668591896428;
-        Wed, 16 Nov 2022 01:44:56 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id g5-20020a056512118500b00496693860dcsm2516397lfr.232.2022.11.16.01.44.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Nov 2022 01:44:56 -0800 (PST)
-Message-ID: <0ac1f247-be87-0f92-9ef0-c653bcdb6c1f@linaro.org>
-Date:   Wed, 16 Nov 2022 10:44:54 +0100
+        with ESMTP id S232990AbiKPKR4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 05:17:56 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC66D120B4;
+        Wed, 16 Nov 2022 02:17:54 -0800 (PST)
+Received: from frapeml100005.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NBzQK2zl8z6H6tk;
+        Wed, 16 Nov 2022 18:13:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ frapeml100005.china.huawei.com (7.182.85.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 16 Nov 2022 11:17:52 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 16 Nov
+ 2022 10:17:52 +0000
+Date:   Wed, 16 Nov 2022 10:17:51 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Rob Herring <robh+dt@kernel.org>
+CC:     Cosmin Tanislav <demonsingur@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: addac: add AD74115
+Message-ID: <20221116101751.000059ea@Huawei.com>
+In-Reply-To: <CAL_JsqLt6B73XSE8dMHMGuw1N9m1v1xwr3sOEEHonGgLAYya=A@mail.gmail.com>
+References: <20221103094436.2136698-1-demonsingur@gmail.com>
+        <20221103094436.2136698-2-demonsingur@gmail.com>
+        <20221106154634.2286faf3@jic23-huawei>
+        <c01b0e56563b2b6f8ef48ad90977646706a2c933.camel@gmail.com>
+        <20221112154040.54dc5cf2@jic23-huawei>
+        <c54200fb70d638c572a0596a78d956d9f61d89a4.camel@gmail.com>
+        <20221115160724.00007460@Huawei.com>
+        <CAL_JsqLt6B73XSE8dMHMGuw1N9m1v1xwr3sOEEHonGgLAYya=A@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2 05/11] dt-bindings: mailbox: qcom: Allow syscon on
- qcom,msm8976-apcs-kpss-global
-Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        srinivas.kandagatla@linaro.org, jic23@kernel.org, lars@metafoo.de,
-        keescook@chromium.org, tony.luck@intel.com, gpiccoli@igalia.com,
-        evgreen@chromium.org, gregkh@linuxfoundation.org,
-        a39.skl@gmail.com, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-hardening@vger.kernel.org,
-        marijn.suijten@somainline.org, kernel@collabora.com, luca@z3ntu.xyz
-References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
- <20221111120156.48040-6-angelogioacchino.delregno@collabora.com>
- <14947ae2-c8d4-de86-ce9e-29175e73cbb2@linaro.org>
- <9f3e88fa-0aaf-2edd-366e-c3f5b2269dba@collabora.com>
- <513a2dc3-d053-6e4b-a125-394cf1f6c81b@linaro.org>
- <f60ccd79-9c82-0844-2c5f-21ec29c14dcf@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <f60ccd79-9c82-0844-2c5f-21ec29c14dcf@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 16/11/2022 10:00, AngeloGioacchino Del Regno wrote:
-> Il 16/11/22 09:57, Krzysztof Kozlowski ha scritto:
->> On 16/11/2022 09:52, AngeloGioacchino Del Regno wrote:
->>> Il 15/11/22 17:44, Krzysztof Kozlowski ha scritto:
->>>> On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
->>>>> MSM8976 supports SMSM, which needs this node to also be a syscon:
->>>>> move the compatible to allow that.
->>>>>
->>>>> Fixes: bcc8d70f912d ("dt-bindings: mailbox: Add compatible for the MSM8976")
->>>>
->>>> I am not sure if this is still a bug. Maybe just a missing feature?
->>>>
->>>
->>> This changes how you use this mailbox across the entire devicetree (as other
->>> nodes will not use mboxes = xxxx, but qcom,ipc = xxxx as syscon), so I think
->>> that this is not a missing feature?
->>
->> Whether it is a bug depends on existing usage. If none of msm8976 DTSes
->> use it the other way, then it is just incomplete or missing support. Not
->> a bug. If existing DTSes use it as syscon, thus you need to add syscon
->> to compatible, then it would be a bugfix.
->>
-> 
-> It's not a bugfix then. The Fixes tag shall be dropped.
-> 
-> Same question like the other commit, should I send a v3 or can it be dropped while
-> applying?
+On Tue, 15 Nov 2022 12:16:41 -0600
+Rob Herring <robh+dt@kernel.org> wrote:
 
-Maybe better send a v3.
+> On Tue, Nov 15, 2022 at 10:07 AM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Tue, 15 Nov 2022 14:43:53 +0200
+> > Cosmin Tanislav <demonsingur@gmail.com> wrote:
+> >  
+> > > On Sat, 2022-11-12 at 15:40 +0000, Jonathan Cameron wrote:  
+> > > > > >  
+> > > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > > > +    description: |
+> > > > > > > +      Conversion range for ADC conversion 2.
+> > > > > > > +      0 - 0V to 12V
+> > > > > > > +      1 - -12V to +12V
+> > > > > > > +      2 - -2.5V to +2.5V
+> > > > > > > +      3 - -2.5V to 0V
+> > > > > > > +      4 - 0V to 2.5V
+> > > > > > > +      5 - 0V to 0.625V
+> > > > > > > +      6 - -104mV to +104mV
+> > > > > > > +      7 - 0V to 12V  
+> > > > > >
+> > > > > > For a lot of similar cases we handle these numerically to give
+> > > > > > a human readable dts.  Is there a strong reason not to do so here (in mv)
+> > > > > >  
+> > > > >
+> > > > > I used this approach mostly because it maps dirrectly to register values
+> > > > > and because it's easier to parse. dts isn't exactly nice at handling
+> > > > > negative values. I can switch it to mv array if you insist.  
+> > > >
+> > > > We have quite a few existing cases of
+> > > > adi,[output-]range-microvolt so it would be good to copy that style here.
+> > > >  
+> > >
+> > > With this:
+> > >
+> > >   adi,conv2-range-microvolt:
+> > >     description: Conversion range for ADC conversion 2.
+> > >     oneOf:
+> > >       - items:
+> > >           - enum: [-2500000, 0]
+> > >           - const: 2500000
+> > >       - items:
+> > >           - enum: [-12000000, 0]
+> > >           - const: 12000000
+> > >       - items:
+> > >           - const: -2500000
+> > >           - const: 0
+> > >       - items:
+> > >           - const: -104000
+> > >           - const: 104000
+> > >       - items:
+> > >           - const: 0
+> > >           - const: 625000
+> > >
+> > > And this:
+> > >
+> > > adi,conv2-range-microvolt = <(-12000000) 12000000>;
+> > >
+> > > I get this:
+> > >
+> > > Documentation/devicetree/bindings/iio/addac/adi,ad74115.example.dtb:
+> > > addac@0: adi,conv2-range-microvolt: 'oneOf' conditional failed,
+> > > one must be fixed:
+> > >         4282967296 is not one of [-2500000, 0]
+> > >         4282967296 is not one of [-12000000, 0]
+> > >         -2500000 was expected
+> > >         -104000 was expected
+> > >         625000 was expected
+> > >         From schema: Documentation/devicetree/bindings/iio/addac/adi,ad74115.yaml
+> > >
+> > > As I said, negative numbers don't play too nice...  
+> >
+> > From what I recall we just ignore those warnings :)
+> >
+> > Rob, do I remember correctly that there was a plan to make this work longer term?  
+> 
+> Yes, but handling signed types is working now (since the move to
+> validating dtbs directly).
+> 
+> The issue here is -microvolt is defined as unsigned. IIRC, I had some
+> issue changing it, but I think that was just with the YAML encoding
+> which I intend to remove. I'll give it another look and update the
+> type if there's no issues.
 
-Best regards,
-Krzysztof
+Thanks!
+
+Jonathan
+
+> 
+> Rob
 

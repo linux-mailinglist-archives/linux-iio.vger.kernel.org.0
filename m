@@ -2,42 +2,42 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B231162B58B
-	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 09:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB5F62B5A4
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 09:53:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233039AbiKPIup (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 16 Nov 2022 03:50:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48360 "EHLO
+        id S232628AbiKPIxC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 16 Nov 2022 03:53:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232670AbiKPIuo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 03:50:44 -0500
+        with ESMTP id S232714AbiKPIxA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 16 Nov 2022 03:53:00 -0500
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF72A1A05D;
-        Wed, 16 Nov 2022 00:50:41 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D671AF0C;
+        Wed, 16 Nov 2022 00:52:58 -0800 (PST)
 Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits))
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3AFB16602A81;
-        Wed, 16 Nov 2022 08:50:39 +0000 (GMT)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 836136602A81;
+        Wed, 16 Nov 2022 08:52:56 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1668588640;
-        bh=UGw+5yUczjb2PkEG6B9/HaNrOcAqFKLMrvc6BAUVOP8=;
+        s=mail; t=1668588777;
+        bh=R54KFgfJ4OyE41N0DG1cL5j9FFmQznXDsqIoA3UGQDY=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=ketnzDti5gZW6WM7CNR0kWaRb7Q2Vy0mwisMLM49ofYe4ouHUz6q87GclgQr4HtPx
-         MPfcf5kwp1e0tk3kWE7q7TyNe8oxbadG0VDSgJ/aCvUEbZT7D/MayaXPAsL4Af4s/H
-         +Z0vjZ0/r68nbFU8lTeWNSACjwxRfqjSZLjd3F0vZ99twJE6G5nkiYV8I3qLcha62O
-         TpBiS+5ct101WFbr+Ah34I18N31WBni9kGpHHz4VMc0Wg1fJv/yd6dmG9p/wswZw54
-         p+DYkELOcQPs6jM97vbFZ9+FHLszsmEu15NXb7yHrx99GdmKgi8DIIz28+ss4EY79Q
-         PITEQUf5lBHvA==
-Message-ID: <1fac581e-ef02-4576-0dbf-67662a29f724@collabora.com>
-Date:   Wed, 16 Nov 2022 09:50:37 +0100
+        b=c6Jn+VDJtkIr5H1tDQxeKd+KUFZByR+oF+vyiouOd36xqQmoQIZ7LoDbwbhLcxnPu
+         8h0IT31HYSMWn7EUUsQGY6PaiRVPmsuJm4qVGFlwTL/OLODlDIZTuSgA0NOUJZXjX6
+         I58WUBSs3XzrTAWN6i0j//d+s7FEkweMhXRWboLNz/CYg13LVQoVRL/mvo2/dQONfi
+         cXz3udX/DAzhDaJ2byyD160sgrzblRMUKPzYEp5LxZ52yQ2EgRah4Dgnqh7IX+p2Hf
+         J3x+NpMUT7hehLLK1q19Pw6gTW8MXUCXv4vRFkCkJgU1UnZa/5U38scPNvCv2gWRoC
+         2Fptt47jpO4vQ==
+Message-ID: <9f3e88fa-0aaf-2edd-366e-c3f5b2269dba@collabora.com>
+Date:   Wed, 16 Nov 2022 09:52:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.3.3
-Subject: Re: [PATCH v2 02/11] dt-bindings: nvmem: Fix qcom,qfprom compatibles
- enum ordering
+Subject: Re: [PATCH v2 05/11] dt-bindings: mailbox: qcom: Allow syscon on
+ qcom,msm8976-apcs-kpss-global
 Content-Language: en-US
 To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         agross@kernel.org
@@ -51,11 +51,11 @@ Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org,
         linux-iio@vger.kernel.org, linux-hardening@vger.kernel.org,
         marijn.suijten@somainline.org, kernel@collabora.com, luca@z3ntu.xyz
 References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
- <20221111120156.48040-3-angelogioacchino.delregno@collabora.com>
- <b611f647-c46f-3780-c6b4-3cfb4fe402e7@linaro.org>
+ <20221111120156.48040-6-angelogioacchino.delregno@collabora.com>
+ <14947ae2-c8d4-de86-ce9e-29175e73cbb2@linaro.org>
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <b611f647-c46f-3780-c6b4-3cfb4fe402e7@linaro.org>
+In-Reply-To: <14947ae2-c8d4-de86-ce9e-29175e73cbb2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -67,22 +67,29 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Il 15/11/22 17:42, Krzysztof Kozlowski ha scritto:
+Il 15/11/22 17:44, Krzysztof Kozlowski ha scritto:
 > On 11/11/2022 13:01, AngeloGioacchino Del Regno wrote:
->> Move qcom,msm8974-qfprom after qcom,msm8916-qfprom to respect
->> alphabetical ordering.
+>> MSM8976 supports SMSM, which needs this node to also be a syscon:
+>> move the compatible to allow that.
 >>
->> Fixes: c8b336bb1aeb ("dt-bindings: nvmem: Add soc qfprom compatible strings")
+>> Fixes: bcc8d70f912d ("dt-bindings: mailbox: Add compatible for the MSM8976")
 > 
-> It's a style, code readability, but not a bug. I propose to drop the tag.
+> I am not sure if this is still a bug. Maybe just a missing feature?
 > 
-> With that:
+
+This changes how you use this mailbox across the entire devicetree (as other
+nodes will not use mboxes = xxxx, but qcom,ipc = xxxx as syscon), so I think
+that this is not a missing feature?
+
+Cheers,
+Angelo
+
 > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+> Best regards,
+> Krzysztof
 > 
 
-Should I send a v3, or is it possible to drop the tag while applying it?
-
-Thanks,
-Angelo
 

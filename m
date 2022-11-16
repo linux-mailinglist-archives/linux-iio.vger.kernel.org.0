@@ -2,163 +2,193 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD00F62A1AF
-	for <lists+linux-iio@lfdr.de>; Tue, 15 Nov 2022 20:11:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 05A9062B124
+	for <lists+linux-iio@lfdr.de>; Wed, 16 Nov 2022 03:13:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229557AbiKOTLB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 15 Nov 2022 14:11:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55544 "EHLO
+        id S231283AbiKPCM6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 15 Nov 2022 21:12:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbiKOTLA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 14:11:00 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3283B303E7
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 11:10:57 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id i10so29835937ejg.6
-        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 11:10:57 -0800 (PST)
+        with ESMTP id S231147AbiKPCM5 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 15 Nov 2022 21:12:57 -0500
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D70E63A4
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 18:12:56 -0800 (PST)
+Received: by mail-qt1-x82e.google.com with SMTP id w4so9970484qts.0
+        for <linux-iio@vger.kernel.org>; Tue, 15 Nov 2022 18:12:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7zUeISTpfROPOAumwGjosfHUKHNhvpIAE+hikozVXow=;
-        b=ZMjCu+EGd3BAayMpj+Qs2X8LsZTn7rQfelK9qSfJ98Twxm0/F/nAYQ5og2/Br8J+AA
-         yBSWyZFegdSg0XQPYdwZ8XU59hbNcQg7BMXIVtfd6U9sxkKsACR7NaHFQimgXCp6kN5u
-         8EmpC65NWCigc+MghndwR7IVSYUSX7wKe+uyY=
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cOobYcMYk9FTA7EumIRgq+thL2M1fNH70u4jW3pzyy0=;
+        b=tyiVgeq54dtqnrnp+lMOBCeLVfhniA+8ZKS7BmaDhWzLG15ADr6DDp1YsbNvHs7cQk
+         tDFa/hmJnQE3jgWKAel5/Tr9hZjDiXJ4rBPJyihcFDRVoeBPq4kri+36aeotVAZfUzfY
+         e9NG5kVjsEr5AApj2ojQtjyl3CMUz3XE9gwQ/Y2Rbb+xKtC8kyL1eKlow7nCeT1J5kiP
+         0pULANDuhEUFXT75VxnDKnldhWAeKQ9M4fVff6XggYiT0xES49LIKoTYnds8SVeNU/dA
+         DzcHrfa0yh7iikboNaUZUW/l6P9qiBU0UCkrC+h/V/pBrh7LFZ4dPIywsr3m7i0JZcHt
+         m/bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7zUeISTpfROPOAumwGjosfHUKHNhvpIAE+hikozVXow=;
-        b=fsKCeNJaGpTNdBEXBMMc1Ji7TQ/b6F+cRc9pbt/lUKWvkKixUFBYc/q25cg24KCMg6
-         Z60kuH4ZL8BcyPlNMH1waXI600Qr1L+4teB/KNNijpIDHsx4DzzWA3GwisBfRv44LLkV
-         HbFsqkcMYLmCX9j+JWYAT7lSHdozjYOePO93vF40c9d18pCiM/0nNLEzQQsrm+BFMHbK
-         O3xk+hKKCwps6VnjRo3rZKaMnaIKSnAiyf2sdZKkxMMInbLegp/lVrmkkKAqgSKDk9d/
-         E0G7OkAucN90/rUb/wpEYoQyNsPa8GfkYmJ60KH4MVp0giPXfyHMh3RBFvh9aJZyfeg/
-         Nevg==
-X-Gm-Message-State: ANoB5plrG8iDiG0DESjV9RMbMN34J7voyC1txPbMBQ1KcoGK5V62Tj5H
-        T+IFOAoFE603kHSr1eDMA3nV1g==
-X-Google-Smtp-Source: AA0mqf6YJtScIOh84jMpYoP2ge7MMj9GKqUAOpVkXuvl3nP8qga5tGl4XjjNs92jDpYpAUgqrlQLyA==
-X-Received: by 2002:a17:906:c284:b0:7a1:6786:444f with SMTP id r4-20020a170906c28400b007a16786444fmr15014484ejz.409.1668539455702;
-        Tue, 15 Nov 2022 11:10:55 -0800 (PST)
-Received: from [192.168.1.149] ([80.208.71.65])
-        by smtp.gmail.com with ESMTPSA id ce11-20020a170906b24b00b007ad9c826d75sm5867616ejb.61.2022.11.15.11.10.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Nov 2022 11:10:55 -0800 (PST)
-Message-ID: <6d76cc6d-9db7-5b18-e4f1-dc220b3929a3@rasmusvillemoes.dk>
-Date:   Tue, 15 Nov 2022 20:10:53 +0100
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cOobYcMYk9FTA7EumIRgq+thL2M1fNH70u4jW3pzyy0=;
+        b=1l05XVwqGk2zQuIiOcYEIv4s+DXQmCPfQ4IjKHR5752sBwClT68ANLACZ2O/rEaZmJ
+         wlhmpbGVrP6MCfqoDBR40DFnr8wXIlrhSrUUzyfJCZH/EhfnspGvtnDzBTAzP7xxLZss
+         urQEIP+iMf4pX89x6u2BA3om0DkaAPunOBRiauFhkGIALA25Gu1OoZK2IliqP/HKMK1U
+         74BUcwcHiuwdfWGJqE8kjC2uQG01y5k3gaopqh0A5tegIrQiil/8PUlBKPJ/LmQER3d/
+         YnBwValn3ElNqewzB89Ia7pamp0v4OJqMSB8Kb0k2gKSaJzf42K23gS3kn7GgUSJzHWO
+         F/7g==
+X-Gm-Message-State: ANoB5pl88dzF998L88d/0khE5S+B2VWH0HLVCUUI4kAv997BPWcjMDDO
+        0zWUK7RAYlkFMxKTyotplMThQQ==
+X-Google-Smtp-Source: AA0mqf7PmhlJIY9QecfgRIt+qagF9bYA06MGBmVqf0e08ccoaSXNVmRAMH56MVIXgM6GeTiNVgAkLA==
+X-Received: by 2002:a05:622a:1e0a:b0:398:2457:e8f8 with SMTP id br10-20020a05622a1e0a00b003982457e8f8mr19254033qtb.210.1668564775086;
+        Tue, 15 Nov 2022 18:12:55 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id l20-20020ac84a94000000b003a56796a764sm7948306qtq.25.2022.11.15.18.12.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Nov 2022 18:12:54 -0800 (PST)
+Date:   Tue, 15 Nov 2022 21:12:51 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
+Message-ID: <Y3RHI/Ed1xHpzmCW@fedora>
+References: <20221113171545.282457-1-biju.das.jz@bp.renesas.com>
+ <20221113171545.282457-5-biju.das.jz@bp.renesas.com>
+ <Y3G6Qe0KMdo2PgaG@fedora>
+ <OS0PR01MB5922B01D5E579426608BBA9386059@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <TYCPR01MB59337BB8E20273468F38560E86059@TYCPR01MB5933.jpnprd01.prod.outlook.com>
+ <Y3MbM0RtaAKUIyWM@fedora>
+ <OS0PR01MB59228EEA7D3ECFCA83B0679386049@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 5/5] iio: addac: ad74413r: add support for reset-gpio
-Content-Language: en-US, da
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <noname.nuno@gmail.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221111143921.742194-1-linux@rasmusvillemoes.dk>
- <20221111143921.742194-6-linux@rasmusvillemoes.dk>
- <20221112170705.7efe1673@jic23-huawei>
- <095a454b55cf497392a621649f24e067@analog.com>
- <20221114194447.2528f699@jic23-huawei>
- <0d6b3e4047df9f560079a562bc167bd7a0bf2d28.camel@gmail.com>
- <20221115161052.00002633@Huawei.com>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-In-Reply-To: <20221115161052.00002633@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="bDXZKtppW0L952fW"
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB59228EEA7D3ECFCA83B0679386049@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15/11/2022 17.10, Jonathan Cameron wrote:
-> On Tue, 15 Nov 2022 15:49:46 +0100
-> Nuno Sá <noname.nuno@gmail.com> wrote:
-> 
->> On Mon, 2022-11-14 at 19:44 +0000, Jonathan Cameron wrote:
->>> On Mon, 14 Nov 2022 13:52:26 +0000
->>> "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com> wrote:
->>>   
->>>>>
->>>>> I'm a little confused on polarity here.  The pin is a !reset so
->>>>> we need to drive it low briefly to trigger a reset.
->>>>> I'm guessing for your board the pin is set to active low? (an
->>>>> example
->>>>> in the dt would have made that clearer) Hence the pulse
->>>>> in here to 1 is actually briefly driving it low before restoring
->>>>> to high?
->>>>>
->>>>> For a pin documented as !reset that seems backwards though you
->>>>> have
->>>>> called it reset so that is fine, but this description doesn't
->>>>> make that
->>>>> celar.    
->>>>
->>>> My opinion is that the driver shouldn't exactly know the polarity
->>>> of the reset,
->>>> and just assume that setting the reset GPIO to 1 means putting it
->>>> in reset,
->>>> and setting it to 0 means bringing out of reset.  
->>>
->>> Agreed. I'd just like a comment + example in the dt-binding to make
->>> the point
->>> that the pin is !reset.
->>>
->>> Preferably with an example in the dt binding of the common case of it
->>> being wired
->>> up to an active low pin.
->>>
->>> The main oddity here is the need to pulse it rather than request it
->>> directly as
->>> in the reset state and then just set that to off.
->>>
->>>   
->>
->> Agreed... In theory we should be able to request the gpio with
->> GPIOD_OUT_HIGH and then just bring the device out of reset
-> 
-> If I recall correctly the datasheet specifically calls out that a pulse
-> should be used.  No idea if that's actually true, or if it was meant
-> to be there just to say it needs to be set for X nsecs.
 
-So the data sheet says
+--bDXZKtppW0L952fW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  The hardware reset is initiated by pulsing the RESET pin low. The
-RESET pulse width must comply with the specifications in Table 11.
+On Tue, Nov 15, 2022 at 10:38:32AM +0000, Biju Das wrote:
+> Hi William Breathitt Gray,
+>=20
+> Thanks for the feedback.
+>=20
+> > -----Original Message-----
+> > From: William Breathitt Gray <william.gray@linaro.org>
+> > Sent: 15 November 2022 04:53
+> > To: Biju Das <biju.das.jz@bp.renesas.com>
+> > Cc: linux-iio@vger.kernel.org; Geert Uytterhoeven
+> > <geert+renesas@glider.be>; Chris Paterson
+> > <Chris.Paterson2@renesas.com>; Prabhakar Mahadev Lad
+> > <prabhakar.mahadev-lad.rj@bp.renesas.com>; linux-renesas-
+> > soc@vger.kernel.org
+> > Subject: Re: [PATCH v6 4/5] counter: Add Renesas RZ/G2L MTU3a counter
+> > driver
+> >=20
+> > On Mon, Nov 14, 2022 at 05:52:11PM +0000, Biju Das wrote:
+> > > > > > +static int rz_mtu3_initialize_counter(struct counter_device
+> > > > > > +*counter, int id) {
+> > > > > > +	struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> > > > > > +	struct rz_mtu3_channel *ch1 =3D priv->ch;
+> > > > > > +	struct rz_mtu3_channel *ch2 =3D ch1 + 1;
+> > > > >
+> > > > > No need to complicate this, just use priv->ch[0], priv->ch[1],
+> > and
+> > > > > priv->ch[id]. Same advice applies to the other functions as
+> > well.
+> > > >
+> > > > I get below error when I use array susbscripts. "*ch1 =3D priv-
+> > >ch[0];"
+> > >
+> > > > drivers/counter/rz-mtu3-cnt.c:291:32: error: incompatible types
+> > when
+> > > > initialising type 'struct rz_mtu3_channel *' using type 'struct
+> > > > rz_mtu3_channel'
+> > > >   291 |  struct rz_mtu3_channel *ch1 =3D priv->ch[0];
+> > > >
+> > >
+> > > I could use "*ch1 =3D &priv->ch[0];" please let me know is it ok?
+> > >
+> > > Cheers,
+> > > Biju
+> >=20
+> > Hi Biju,
+> >=20
+> > I meant to use the array subscripts inline (e.g. priv-
+> > >ch[id].function).
+> > However, I can see the benefit of using the ch1 and ch2 local
+> > variables, so perhaps something like this would be clearer to read:
+> >=20
+> >     struct rz_mtu3_chanel *const ch =3D priv->ch;
+> >     struct rz_mtu3_chanel *const ch1 =3D &ch[0];
+> >     struct rz_mtu3_chanel *const ch2 =3D &ch[1];
+> >     ...
+> >     case RZ_MTU3_16_BIT_MTU1_CH:
+> >     case RZ_MTU3_16_BIT_MTU2_CH:
+> >             if (ch[id].function !=3D RZ_MTU3_NORMAL) {
+> >     ...
+>=20
+>=20
+> OK, I have added below inline function which simplifies the code
+> in each function. Is it ok?
+>=20
+> For eg:
+>=20
+> +static inline struct rz_mtu3_channel *
+> +rz_mtu3_get_ch(struct counter_device *counter, int id)
+> +{
+> +       struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> +       const size_t ch_id =3D RZ_MTU3_GET_HW_CH(id);
+> +
+> +       return &priv->ch[ch_id];
+> +}
+>=20
+>=20
+> @@ -154,11 +163,10 @@ static int rz_mtu3_count_function_read(struct count=
+er_device *counter,
+>                                        struct counter_count *count,
+>                                        enum counter_function *function)
+>  {
+> -       struct rz_mtu3_cnt *const priv =3D counter_priv(counter);
+> -       const size_t ch_id =3D RZ_MTU3_GET_HW_CH(count->id);
+> +       struct rz_mtu3_channel *const ch =3D rz_mtu3_get_ch(counter, coun=
+t->id);
+>=20
+>=20
+> Cheers,
+> Biju
 
-and table 11 says that the pulse must be min 50us, max 1ms. We don't
-really have any way whatsoever to ensure that we're not rescheduled
-right before pulling the gpio high again (deasserting the reset), so the
-pulse could effectively be much more than 1ms. But I have a hard time
-believing that that actually matters (i.e., what state would the chip be
-in if we happen to make a pulse 1234us wide?). But what might be
-relevant, and maybe where that 1ms figure really comes from, can perhaps
-be read in table 10, which lists a "device reset time" of 1ms, with the
-description
+Sure, I think that function will be okay to use.
 
-  Time taken for device reset and calibration memory upload to complete
-hardware or software reset events after the device is powered up
+William Breathitt Gray
 
-so perhaps we should ensure a 1ms delay after the reset (whether we used
-the software or gpio method). But that would be a separate fix IMO (and
-I'm not sure we actually need it).
+--bDXZKtppW0L952fW
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I don't mind requesting the gpio with GPIOD_OUT_HIGH, but I'd still keep
-the gpiod_set_value(, 1) in the reset function, otherwise it's a bit too
-magic for my taste.
+-----BEGIN PGP SIGNATURE-----
 
-Rasmus
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3RHIwAKCRC1SFbKvhIj
+K0E+AQC1M7fytmAkvb+ADn8XlQfnX4TgXK0M7XGBDYv5tFgGawD/Q22AnY2IKFXS
+Sn3K189shnPVrHv9+uQZf5H1E9p5ZQw=
+=m4uN
+-----END PGP SIGNATURE-----
 
+--bDXZKtppW0L952fW--

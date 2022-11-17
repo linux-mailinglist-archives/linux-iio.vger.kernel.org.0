@@ -2,64 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 863D662E9CF
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 00:44:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D10B62E9CA
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 00:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240664AbiKQXoY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 18:44:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47238 "EHLO
+        id S234380AbiKQXny (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 18:43:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240446AbiKQXno (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 18:43:44 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9227F03D
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 15:43:42 -0800 (PST)
+        with ESMTP id S240412AbiKQXnm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 18:43:42 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD3BA446
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 15:43:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1668728607; bh=zIOolA9952zV+6SNTVjguhB5zc/PxoGHuNoxiOEklMc=;
+        t=1668728607; bh=SBPi6rC4HYka5zDnNBrOrmm3M7oLCjGw6JXOetO9axc=;
         h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=a3aFFdv0utipbYgqqPo0yyzmMKrvLplXtl641cJovMznpy/0MCYrbjfAoYoTs+kJF
-         wESEMwLsbAt0biIjW8OP/LQb9CBwIOW7EkvNnMX0z4322Foe9reaUqqtjzMf01iTo5
-         I29/G2y/2vOjkkK2hTfe09G4DeuubB55EBMmO+/vcCgUQ6SszTEPfHYDvPoNVv1mB6
-         se87DNkkXfkIgL8OciutKDICaUy10eY8E73ZADoikq39JTClXecpOlBvzwrl/r0tS7
-         pmc2nYVcQkicKAeNBgvGBhMjijSPbNZjJy4JwzCLekbQJSbzEhtoFHOzeJ2gM22IRp
-         gkEQJ5kMNTyFQ==
+        b=Avbe71iwLkN14ehSSxASzbTXKyntKhTaQPLY8WK6CC92A0TyeezMbJSNbcDwvQGu0
+         5iaSNcchaq0julE9JaMixa/kqcCNEpl1v700CCdwKSuniEwkOd7YFGuBRO6juZHXEK
+         LaKvQHcMD/ZsvWj9kMjZuO+Dhe3gM7CW6lZimAzjBYL62GyJ6zfEChjecsoSEUPdFY
+         3mS1JWe5aaZlli9+IYKpbJYGAaZ8b8vkYVklDwKaSSbm+FWZRIS/9Pw1nVBP/F88rJ
+         Ap2fM5yVAwA0tL6PDjqhfyxEYskWu2vwoRH6Neb9M5it29Dof2oDf+aDxUnC1d5CBX
+         q7WJegIYVPl7Q==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from localhost.localdomain ([95.223.45.31]) by mail.gmx.net
  (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MVvPD-1oUYG21cJx-00RmWb; Fri, 18 Nov 2022 00:43:27 +0100
+ 1M7sDg-1oqsaT2kh0-0055Ny; Fri, 18 Nov 2022 00:43:27 +0100
 From:   Philipp Jungkamp <p.jungkamp@gmx.net>
 To:     Jiri Kosina <jikos@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc:     linux-iio@vger.kernel.org, Philipp Jungkamp <p.jungkamp@gmx.net>
-Subject: [PATCH v2 3/4] IIO: hid-sensor-als: Use generic usage
-Date:   Fri, 18 Nov 2022 00:43:01 +0100
-Message-Id: <20221117234302.3875-3-p.jungkamp@gmx.net>
+Subject: [PATCH v2 4/4] IIO: hid-sensor-prox: Use generic usage
+Date:   Fri, 18 Nov 2022 00:43:02 +0100
+Message-Id: <20221117234302.3875-4-p.jungkamp@gmx.net>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221117234302.3875-1-p.jungkamp@gmx.net>
 References: <20221117150508.00002704@Huawei.com>
  <20221117234302.3875-1-p.jungkamp@gmx.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7vk9XKobwlOkKa8MBfwsRpqxwB2m8AH8laXCv1ibK88eOuivvt3
- WHCYi3PBfKAFGIkh59P0b5bj/raNqe9r4mEdTKQV7OGKcYOyKlpFRUycE1Tb1x11js0DZ0U
- hksrGoQDp1H6oRHdv3X/8Hea7HDpiSJBXYt0ue31og6rBEwXJ1CXJ8NnJ6h+h73Eg13l/OB
- 45bzdbCy+57XQ4rUIUmpA==
-UI-OutboundReport: notjunk:1;M01:P0:vi66KzIiUuA=;DG/RAFEXHxA0SSz8lmiXERslQrc
- LHz0Z1oxlJP3dIRzvXuckyMYhz2TGlz+IkmkwsBaZulYnbaFbikkAkde2CgqiZMxH4YgqdPS/
- okaO0msNb5KWtMRjOJVcyVrbySYLX63wz4RdzFMnYZgaA67Nm/Zqv5Y4z3dELCHNjl65FpOK+
- nLecJFSWTOzSNEHj2gSkTGbNnqssc1WfDd2eoyTh/rZQyH3FVlFsVRVXVe4zrlsiovPx8vzZm
- YV0sBLoPEmMcXI46y7gciGj1R6/lHQSiR7mbGqaIRXpCKk2emH8UcaXz5Pd4midQzXVdMwBem
- qCBuefGPLF/1ZPnW3yytv98eZTlQd4+hrLTQRVu3uCiuRnJP9XvGUCNn0/EXg/Dqb6GKvF43W
- p9TODPdrNe3fWjkjb3LIt4jiHvBMUd4IYscePmJwWEWjauSHeU9QUO0cVswZG2n/5jZdQM6Wb
- NPtQwkeWQgChJ6Bt/pnY8GnNQaTL3KZbWnmXlPMx/KRinGn2vvLyTtvl8IUyfrzriouOM1rgW
- 518ORme5QaMFHVWa1cp1E7F9wBq+fCVYydGR7j7UwlR7xicfXjSFw+89GPmqYnQ41S+J+4fZi
- 6ql9Qx0pWWdBJjWNp/1/407iRZevZwJQeNXVpZWSpT4lv48iJKZPepEMyt/bF4EiC1bgHx0jF
- 1wgdOp+wGEeaXcFV58ZxR76kD7DrXvxkpO577PFgOP51LKgoPZ55fv4cvCvS99V0dihi6x52s
- 5616x7/cloqmKPjZ/t7FYzUchMFrNs2Wn6An0pp/lzBFSZeKYc7S7+sreF2nwvVWSWj0q6kvf
- YXpb8jyaXnFsf/3bULOmTG739me2DJbFdPtVRJfNA5Fc3J0+W0iwx31YkSV+aLIAth8nsbC0t
- qS2zFRmb6cI/7kkK4VALxkXYa3KluHNQcYRTbn2xw3Hk4GUIeFES5uMWXTtbW3v3ZtovmIepL
- fgE1dw==
+X-Provags-ID: V03:K1:JVm1vb18Tzaza31T2V6SyxPMTsNS+ggPW3YQjv2JuPbB1oKiu2h
+ GwGr/vub19bgJO7v7NfXXZtjotuBSXndcJEBJilXX3+GI62TLqbKs3Ow6p+LZ4uKRhHqPcu
+ UmIebIargp3MHaww6lkZUU1enqRihEVD3u5LJNEyLjWldh6cBdSGiBCtKHNvZ6HcKMH4DsE
+ rAIWMolv0KauG0BpWxwzQ==
+UI-OutboundReport: notjunk:1;M01:P0:ebtB5lg9GBA=;Lym7N47TWXi0xaTg9tioz+ndGiO
+ OdMuw0JS4F+Nsmqz5d91/hyB6dQ8M3ywB4FqL0mDUeuSYqvpaLpbBeqzZvfO1uR9w+ZuxIz1S
+ XNMRoY1L074aLsFizDldItHMyKaySoDTQ1nwRYZBi9L2DfE4sb4q1e7ZUGy+QkrKz4OKsU6im
+ rEur22AnXNhaQKz8pYdFyfUCj+J6BixTA+trwRb4H7209xITu27zC/uRxynXKixSgAiXBBnf5
+ WaCFLFanqoj1c/HCVSsjWxnbkN1iyRMGSUCCDiM+lx2tJwwSQM04SHJ6RJPX4S2P5KBbInJhH
+ /+s3x8en1kZn2xvJZ38/kEkcf4jIcxgTbHk5meCd2x44uNmF8Ca4x30HPCmvOXhjyat8dovh7
+ R2QKdumqvcuZkIkkN908FayzsAo03CH9qPXtc0/Ole0GtXIfgPng2oz3h1pmAEz9VzuRfDfri
+ zPYhBoXpDPJuVEF65PgKIcgMHUY9Il6YHh8J+LOlOktKL21fF5GOtENPrNWHgxsDnrzJ7gxd7
+ pVuYSISUz3m+uNmoWtIsbJlIFGQ0nqkTAvjGYztdFDoPToQ6XsojAjmDtsixTG92yvanT0NrL
+ 9yLnVPwmIk8IPoJ4wTp0cSduxjMSvfXg0ASNI93Iia3P4t9UUUUbkwIphN7Tw+bLem9c9oEBT
+ ZPsx6Z3TnTrZ3fj0iX5Cyr5BjFIas8kYLoBu4/m2GpbDkhYZjs6QOXwN2eUFe6hX2l05Pnt6h
+ NhiBZW3paAJzdooAdUxbntvlSClDNlsZ5RCEqu+uwJLsmvhN9kOs9TuOmiToMEVQeHRWFk71B
+ tDPMy32hEWFgj+b/UPgViR4DdKEA2e/Cteud8xhQx8Z2sgX8NoWH3uEXEsLXWgOJDNEZNdiJy
+ YlzdFOXT+pTCzH1LwA3kA7O9xfsSFN0BqbAvnewEzrPJFlJ8hbk85d6pDKolo/FIQw8cxrRey
+ g9Xj69knJhlfmIiPvM0OyP6Za9A=
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -70,114 +70,131 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use a generic 'hsdev->usage' instead of the HID_USAGE_SENSOR_ALS to
-allow this driver to drive the Lenovo custom ambient light sensor,
-which is registered under a 'custom' usage and not HID_USAGE_SENSOR_ALS.
+Use a generic 'hsdev->usage' instead of the HID_USAGE_SENSOR_PROX to
+allow this driver to drive the Lenvo custom proximity sensor, which is
+registered under a 'custom' usage and not HID_USAGE_SENSOR_PROX.
 
-Add the Lenovo Intelligent Sensing Solution (LISS) ambient light sensor
+Add the Lenovo Intelligent Sensing Solution (LISS) human presence sensor
 to the platform device ids.
 
 Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
 =2D--
-Less unnecessary line breaks in function calls.
+Lines are shorter and the switch statement for raw_len is cleaner.
 
- drivers/iio/light/hid-sensor-als.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/iio/light/hid-sensor-prox.c | 37 ++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-se=
-nsor-als.c
-index 5a1a625d8d16..eb1aedad7edc 100644
-=2D-- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -86,6 +86,7 @@ static int als_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-s=
+ensor-prox.c
+index f10fa2abfe72..a47591e1bad9 100644
+=2D-- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -61,6 +61,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
  			      long mask)
  {
- 	struct als_state *als_state =3D iio_priv(indio_dev);
-+	struct hid_sensor_hub_device *hsdev =3D als_state->common_attributes.hsd=
-ev;
+ 	struct prox_state *prox_state =3D iio_priv(indio_dev);
++	struct hid_sensor_hub_device *hsdev;
  	int report_id =3D -1;
  	u32 address;
  	int ret_type;
-@@ -110,11 +111,8 @@ static int als_read_raw(struct iio_dev *indio_dev,
- 			hid_sensor_power_state(&als_state->common_attributes,
+@@ -75,6 +76,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
+ 			report_id =3D prox_state->prox_attr.report_id;
+ 			min =3D prox_state->prox_attr.logical_minimum;
+ 			address =3D HID_USAGE_SENSOR_HUMAN_PRESENCE;
++			hsdev =3D prox_state->common_attributes.hsdev;
+ 			break;
+ 		default:
+ 			report_id =3D -1;
+@@ -84,11 +86,8 @@ static int prox_read_raw(struct iio_dev *indio_dev,
+ 			hid_sensor_power_state(&prox_state->common_attributes,
  						true);
  			*val =3D sensor_hub_input_attr_get_raw_value(
--					als_state->common_attributes.hsdev,
--					HID_USAGE_SENSOR_ALS, address,
--					report_id,
--					SENSOR_HUB_SYNC,
--					min < 0);
-+					hsdev, hsdev->usage, address, report_id,
-+					SENSOR_HUB_SYNC, min < 0);
- 			hid_sensor_power_state(&als_state->common_attributes,
+-				prox_state->common_attributes.hsdev,
+-				HID_USAGE_SENSOR_PROX, address,
+-				report_id,
+-				SENSOR_HUB_SYNC,
+-				min < 0);
++				hsdev, hsdev->usage, address, report_id,
++				SENSOR_HUB_SYNC, min < 0);
+ 			hid_sensor_power_state(&prox_state->common_attributes,
  						false);
  		} else {
-@@ -259,9 +257,7 @@ static int als_parse_report(struct platform_device *pd=
-ev,
- 	dev_dbg(&pdev->dev, "als %x:%x\n", st->als_illum.index,
- 			st->als_illum.report_id);
+@@ -191,10 +190,16 @@ static int prox_capture_sample(struct hid_sensor_hub=
+_device *hsdev,
 
--	st->scale_precision =3D hid_sensor_format_scale(
--				HID_USAGE_SENSOR_ALS,
--				&st->als_illum,
-+	st->scale_precision =3D hid_sensor_format_scale(usage_id, &st->als_illum=
-,
- 				&st->scale_pre_decml, &st->scale_post_decml);
+ 	switch (usage_id) {
+ 	case HID_USAGE_SENSOR_HUMAN_PRESENCE:
+-		prox_state->human_presence =3D *(u32 *)raw_data;
+-		ret =3D 0;
+-		break;
+-	default:
++		switch (raw_len) {
++		case 1:
++			prox_state->human_presence =3D *(u8 *)raw_data;
++			return 0;
++		case 4:
++			prox_state->human_presence =3D *(u32 *)raw_data;
++			return 0;
++		default:
++			break;
++		}
+ 		break;
+ 	}
 
- 	return ret;
-@@ -285,7 +281,8 @@ static int hid_als_probe(struct platform_device *pdev)
- 	als_state->common_attributes.hsdev =3D hsdev;
- 	als_state->common_attributes.pdev =3D pdev;
+@@ -244,7 +249,7 @@ static int hid_prox_probe(struct platform_device *pdev=
+)
+ 	prox_state->common_attributes.hsdev =3D hsdev;
+ 	prox_state->common_attributes.pdev =3D pdev;
 
--	ret =3D hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_ALS,
-+	ret =3D hid_sensor_parse_common_attributes(hsdev,
-+					hsdev->usage,
- 					&als_state->common_attributes,
- 					als_sensitivity_addresses,
- 					ARRAY_SIZE(als_sensitivity_addresses));
-@@ -303,7 +300,8 @@ static int hid_als_probe(struct platform_device *pdev)
+-	ret =3D hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_PROX,
++	ret =3D hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
+ 					&prox_state->common_attributes,
+ 					prox_sensitivity_addresses,
+ 					ARRAY_SIZE(prox_sensitivity_addresses));
+@@ -262,7 +267,7 @@ static int hid_prox_probe(struct platform_device *pdev=
+)
 
- 	ret =3D als_parse_report(pdev, hsdev,
- 			       (struct iio_chan_spec *)indio_dev->channels,
--			       HID_USAGE_SENSOR_ALS, als_state);
-+			       hsdev->usage,
-+			       als_state);
+ 	ret =3D prox_parse_report(pdev, hsdev,
+ 				(struct iio_chan_spec *)indio_dev->channels,
+-				HID_USAGE_SENSOR_PROX, prox_state);
++				hsdev->usage, prox_state);
  	if (ret) {
  		dev_err(&pdev->dev, "failed to setup attributes\n");
  		return ret;
-@@ -333,8 +331,7 @@ static int hid_als_probe(struct platform_device *pdev)
- 	als_state->callbacks.send_event =3D als_proc_event;
- 	als_state->callbacks.capture_sample =3D als_capture_sample;
- 	als_state->callbacks.pdev =3D pdev;
--	ret =3D sensor_hub_register_callback(hsdev, HID_USAGE_SENSOR_ALS,
--					&als_state->callbacks);
-+	ret =3D sensor_hub_register_callback(hsdev, hsdev->usage, &als_state->ca=
-llbacks);
+@@ -291,8 +296,8 @@ static int hid_prox_probe(struct platform_device *pdev=
+)
+ 	prox_state->callbacks.send_event =3D prox_proc_event;
+ 	prox_state->callbacks.capture_sample =3D prox_capture_sample;
+ 	prox_state->callbacks.pdev =3D pdev;
+-	ret =3D sensor_hub_register_callback(hsdev, HID_USAGE_SENSOR_PROX,
+-					&prox_state->callbacks);
++	ret =3D sensor_hub_register_callback(hsdev, hsdev->usage,
++					   &prox_state->callbacks);
  	if (ret < 0) {
  		dev_err(&pdev->dev, "callback reg failed\n");
  		goto error_iio_unreg;
-@@ -356,7 +353,7 @@ static int hid_als_remove(struct platform_device *pdev=
-)
+@@ -314,7 +319,7 @@ static int hid_prox_remove(struct platform_device *pde=
+v)
  	struct iio_dev *indio_dev =3D platform_get_drvdata(pdev);
- 	struct als_state *als_state =3D iio_priv(indio_dev);
+ 	struct prox_state *prox_state =3D iio_priv(indio_dev);
 
--	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_ALS);
+-	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PROX);
 +	sensor_hub_remove_callback(hsdev, hsdev->usage);
  	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &als_state->common_attributes);
+ 	hid_sensor_remove_trigger(indio_dev, &prox_state->common_attributes);
 
-@@ -368,6 +365,10 @@ static const struct platform_device_id hid_als_ids[] =
-=3D {
+@@ -326,6 +331,10 @@ static const struct platform_device_id hid_prox_ids[]=
+ =3D {
  		/* Format: HID-SENSOR-usage_id_in_hex_lowercase */
- 		.name =3D "HID-SENSOR-200041",
+ 		.name =3D "HID-SENSOR-200011",
  	},
 +	{
-+		/* Format: HID-SENSOR-custom_sensor_tag-usage_id_in_hex_lowercase */
-+		.name =3D "HID-SENSOR-LISS-0041",
++		/* Format: HID-SENSOR-tag-usage_id_in_hex_lowercase */
++		.name =3D "HID-SENSOR-LISS-0226",
 +	},
  	{ /* sentinel */ }
  };
- MODULE_DEVICE_TABLE(platform, hid_als_ids);
+ MODULE_DEVICE_TABLE(platform, hid_prox_ids);
 =2D-
 2.38.1
 

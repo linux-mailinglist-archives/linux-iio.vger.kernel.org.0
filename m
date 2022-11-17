@@ -2,128 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB65262E189
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9226F62E191
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240428AbiKQQYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 11:24:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
+        id S240524AbiKQQZn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 11:25:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240435AbiKQQXs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:23:48 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7ED88F8D
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:21:31 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id be13so3625154lfb.4
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:21:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mHzEF+Mn5fM2J64O6GOtfsBt3TSnhCmqNZhN0P3yhUg=;
-        b=T/PUfF0QrfJAkea3rHNe2URyPEqgwSlvrynt68iLbh9Uhn9eyy1Cg1pJ39hKvrrZ5U
-         Twj7JA9YBv03dyaP2nEssEcf7k3sjlNMPJqCz+tdEIENaXFB697oD0xf4Z8ll9KBuy4H
-         i9Vd3srP7njYVBgowVVgtw3H018R20vYZlbWhhJtGHJgZWiQR8tdEBjxi88qy0/Tiwoc
-         lCAdbl8+qqyMCs7qckeCRevRNYY08cjsuJFO/oSsIrlM+VsrtJWoRdb/VT73P+PPe61Y
-         e+u3MNyQcv6BLAA3rvt+UpmarOTh5IUkZ0NCNsasP6AMnHfHlcGwH+QlnHaSlYiujijB
-         ExKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mHzEF+Mn5fM2J64O6GOtfsBt3TSnhCmqNZhN0P3yhUg=;
-        b=g0Uu7tg28qjuVmcuTyd7z4rXd1EWiVEwXL16iNqBrIXaNwHpeAX/B8DiU0Tcy7WzIB
-         N0k1KovaJWhQ2BHYpAs176r3U4or1/pDDAc17YOi+2uKTjNUpQYo4YkeFsFPEAtD/+/X
-         J6lgMP3XB1yfwTeK8Agn50w/mSP8Pm79GJn7g+k0FcC7MADux85LIicCZoZXnUMkv37G
-         TzYQZYLW5Am3NSkQ+0u5wYnIbLvcyx2R+/PL2nitFvUw/AuXDAateiSaNBTDzpgytdtp
-         eZM6JrXFnvbtvY32tG6NIhjmpD6hjneoJFV5WpJE4HrVca7tvUI7Q2BibpG1jMwgCrCV
-         zSdQ==
-X-Gm-Message-State: ANoB5ploqLl/VsOlSWv+TD/F0Eptw8PC6WCcFuA+Dc8zVvdfYOcpFDw5
-        0NcVCnSHp6S1P4fz/XSTTjU5GKx+b9+cEzLJ
-X-Google-Smtp-Source: AA0mqf7DuBe5m5CLILNgUEDlSAS5zUIsOOeoY0pvGOlwdj0jAuO/8A43sJSyT6RnPw5ESirPjxYZYQ==
-X-Received: by 2002:a05:6512:2207:b0:49f:53d5:d82f with SMTP id h7-20020a056512220700b0049f53d5d82fmr1155083lfu.635.1668702086977;
-        Thu, 17 Nov 2022 08:21:26 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id i24-20020a2ea238000000b002773a9b5898sm274550ljm.138.2022.11.17.08.21.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Nov 2022 08:21:26 -0800 (PST)
-Message-ID: <9ddf7e56-f396-5720-9960-e3ef4aa9a204@linaro.org>
-Date:   Thu, 17 Nov 2022 17:21:25 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S240506AbiKQQZ2 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:25:28 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7BB7D533;
+        Thu, 17 Nov 2022 08:22:42 -0800 (PST)
+Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NClWK0b2Wz67M1h;
+        Fri, 18 Nov 2022 00:20:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Thu, 17 Nov 2022 17:22:40 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 17 Nov
+ 2022 16:22:39 +0000
+Date:   Thu, 17 Nov 2022 16:22:38 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Cosmin Tanislav <demonsingur@gmail.com>
+CC:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
- <20221117122256.GG93179@thinkpad>
- <a3da2ab9-ad36-2283-0659-ad8ebf877e17@linaro.org>
- <20221117155658.00005d08@Huawei.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221117155658.00005d08@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
+        "William Breathitt Gray" <william.gray@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] iio: addac: add AD74115 driver
+Message-ID: <20221117162238.0000224a@Huawei.com>
+In-Reply-To: <20221117080916.411766-3-cosmin.tanislav@analog.com>
+References: <20221117080916.411766-1-cosmin.tanislav@analog.com>
+        <20221117080916.411766-3-cosmin.tanislav@analog.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 17/11/2022 16:56, Jonathan Cameron wrote:
-> On Thu, 17 Nov 2022 13:28:33 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Thu, 17 Nov 2022 10:09:16 +0200
+Cosmin Tanislav <demonsingur@gmail.com> wrote:
+
+> The AD74115H is a single-channel, software-configurable, input and
+> output device for industrial control applications. The AD74115H
+> provides a wide range of use cases, integrated on a single chip.
 > 
->> On 17/11/2022 13:22, Manivannan Sadhasivam wrote:
->>> On Thu, Nov 17, 2022 at 01:13:07PM +0100, Krzysztof Kozlowski wrote:  
->>>> The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
->>>> changed to take sid argument:
->>>>
->>>>   Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
->>>>
->>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>  
->>>
->>> Looks like I didn't rebase on top of Bjorn's for-next for my series, so didn't
->>> see this example.
->>>
->>> Thanks for fixing!
->>>
->>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
->>>   
->>
->> This should not go via Bjorn's tree without IIO ack and
->> Jonathan/Lars-Peter/IIO lists were not in CC.
->>
-> Thanks for the heads up. 
+> These use cases include analog output, analog input, digital output,
+> digital input, resistance temperature detector (RTD), and thermocouple
+> measurement capability. The AD74115H also has an integrated HART modem.
 > 
-> Not sure I'd have registered there would have been a problem here even
-> if I had seen original patch.  Anyhow, I assume Bjorn will pick this up
-> and all will be well again.
+> A serial peripheral interface (SPI) is used to handle all communications
+> to the device, including communications with the HART modem. The digital
+> input and digital outputs can be accessed via the SPI or the
+> general-purpose input and output (GPIO) pins to support higher
+> speed data rates.
 > 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> The device features a 16-bit, sigma-delta analog-to-digital converter
+> (ADC) and a 14-bit digital-to-analog converter (DAC).
+> The AD74115H contains a high accuracy 2.5 V on-chip reference that can
+> be used as the DAC and ADC reference.
+> 
+> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+LGTM
 
-I am afraid it cannot go via Bjorn's tree, because this depends on a
-change in your tree:
-https://lore.kernel.org/all/20221027143411.277980-2-krzysztof.kozlowski@linaro.org/
+Not sure if Linus W wants to take a look at the GPIO chip stuff, but
+we should leave a few days to give him the opportunity + DT review
+needed before I pick this up.
 
-Can you pick it up instead? This is the only way to fix the linux-next,
-although your tree will have a dt_binding_check error.
+Thanks,
 
-Other way is to have cross-tree merge, but the commit to bindings
-headers ended up in DTS patch, so it cannot be shared with driver tree.
+Jonathan
 
-Best regards,
-Krzysztof
 

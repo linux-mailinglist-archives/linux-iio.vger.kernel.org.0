@@ -2,82 +2,79 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0149862E281
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 18:04:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2DE62E28E
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 18:06:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239853AbiKQREH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 12:04:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36706 "EHLO
+        id S240131AbiKQRGM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 12:06:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235012AbiKQREG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 12:04:06 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B7771F0C
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 09:04:04 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id x21so3480594ljg.10
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 09:04:04 -0800 (PST)
+        with ESMTP id S240286AbiKQRGK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 12:06:10 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 162607343E
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 09:06:09 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id be13so3837415lfb.4
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 09:06:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/rcfJXOF5ifBFUjd2geW98xewo/95sxmBMcJPBTeN2Y=;
-        b=VHbJini2+mabpf93vJs6ceDoWQ9oZdhQzuBKllPncG0HrweB0yXX/Q0i7Mth7o6rg1
-         /7FYjIThxy5+ww57eEbDdaZYMxz8839DIkd5x1uOL9W93OJk3dh7WYikICXO3ATkggif
-         gFCZmVzy9UT3RtgaEYxqnzdkWKpzhvALkafGb6V2TkxI6HbnpUjYqPfDStPvczGj6Y07
-         lIcf/6OD/9MKe8wzSVwjJ6lkaGCCD4YCZ7w26HUO0CGJH8YjUZ2iWZqRg1FUQRV5b+B6
-         /RmjoIDgbo4095B/xd3ZWMLV4yyEi49wgwGnnhFD0jkvSdZNI+izUCfIcZhDICGPy536
-         BrkA==
+        bh=1CszqpJWQbSEvq+JCq8Mj+0D0LtVZVbVuSDlMI4mRPc=;
+        b=nn9HSJD0DTV7Fn1A1sx7Opmx5v5gqw6MFu8U7btX46zBPbMV987IjviMtcmihDz8Oh
+         m1F9RN9lVcoyz27CxmZpFPUot+scN6u5CiXWDCg4zDyD+QZ8NX3buMHiWUK9Zou39yAp
+         t4GKHOtyJVWbsBfBu5wdmr9QpKEftzaZPbTLR2Ixve35OTthEYAngAXlq9qOS7sqlJ0W
+         9xZqWYQ7t5Q8b2cXPx3IzT2b/4ZMmQ+RwbjBFyYHtaVc+k57csfqgQG6cwIRl5sQm3MZ
+         gxK8WulK5/khRw7oLmvuIZzTdOnLbg51qeWSNaLF9906a6Lba7k6pQs3q1lUaahbq6fa
+         fLxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/rcfJXOF5ifBFUjd2geW98xewo/95sxmBMcJPBTeN2Y=;
-        b=PBoJDglFj+weDPnw+EzCLDJ8t4pb9DrwwRou01Ku78Yxa9M62u4+kmmt67IKgHfIYt
-         JaykYoiHSwEFVeFOyX7c9Vwtv2pTNik6AfpQnlwDocFKsS91X4AqmURn1mgps60aeJOk
-         jk0XGebruiUYRh3D9Pq7P760O0UjbNwyAnZZAvnFPh1Ot/b8MdnqAzMEIhZ5KbDbl8K+
-         imOqFRzHxdIIY6slXt6ckmSFXTCSu/VCmnziacF/8E4Tb+kui+WqXCCTIGM+bBHJ0Xae
-         YnHLk/6ovXflgjaLNCMUyZ9/PgCxyP2I3F7wMlkBJIPVl7W/NEwLBay8bneoir2TxL1g
-         llCg==
-X-Gm-Message-State: ANoB5pn3/pt94IUx16XbLoDj5Tgs9bufkLg0ZznDl2tYuiyIU1S63t+Q
-        xs2WV1fK290aQFgw7SDm0UQGmQ==
-X-Google-Smtp-Source: AA0mqf6StVAYjmXqjSXaaTzm6Eh60Phtd39Vi34NBxWJGQT0G8I7ysS/869001rhSYNCsB1ABAgsyQ==
-X-Received: by 2002:a2e:a911:0:b0:277:44b2:6b9c with SMTP id j17-20020a2ea911000000b0027744b26b9cmr1291565ljq.26.1668704643204;
-        Thu, 17 Nov 2022 09:04:03 -0800 (PST)
+        bh=1CszqpJWQbSEvq+JCq8Mj+0D0LtVZVbVuSDlMI4mRPc=;
+        b=Ekl+Q+9JRHoEX7gCIsH8AdLpILKfDI4rPl5l/zGq2Gpazf8wQA8T+2xgU3wotdTe9N
+         3su6cXdm5Hi7Ertxd3xixzNiSGQcajtSySYCokybMpkU2rtt9QFG5XdCjATtgpdLtsbP
+         HSr+8XbnI1NtUba4sSFQ7OFA0pIiiM6Si62jszzYu5msG6M+HE+tbRB5Xd/ROO4Ld1x9
+         uC24TfQwQEENw5/meXQ5iLMiG674DujHJOmehKzhOwG6MiddcImytzxM/vfhdCXwICz2
+         lNLzao9QfDurh1nTGx4yU4l496T5ldxwwXg2luTY/cO2ckmaj5KiiO7kcAKyeU2YOdyW
+         FW0Q==
+X-Gm-Message-State: ANoB5plWfLoCzLIOovNLBNWZcnAXzMSgEmC+njKxZAn9aJrWgpZxBnV6
+        9ExhS8pej1SDBwC7h8BivxqjkNcLOd8n7+Y2
+X-Google-Smtp-Source: AA0mqf7Lxs2d6JeclAj9QmQYpWdE+C4PkcqDbtSLDAlIZUUZ16Wm8juGW95jFifsQh9VxFthoU5l2g==
+X-Received: by 2002:a19:e016:0:b0:4a4:6991:5d07 with SMTP id x22-20020a19e016000000b004a469915d07mr1292730lfg.358.1668704767440;
+        Thu, 17 Nov 2022 09:06:07 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id b17-20020a2ebc11000000b002775d0ae776sm292258ljf.14.2022.11.17.09.04.01
+        by smtp.gmail.com with ESMTPSA id m6-20020a194346000000b004b4a3cc621bsm231257lfj.191.2022.11.17.09.06.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Nov 2022 09:04:02 -0800 (PST)
-Message-ID: <db76b0f9-ead4-4900-648c-45b8bd7b9355@linaro.org>
-Date:   Thu, 17 Nov 2022 18:04:01 +0100
+        Thu, 17 Nov 2022 09:06:07 -0800 (PST)
+Message-ID: <0935a527-7860-5f9b-b97c-2ec1c371e4ed@linaro.org>
+Date:   Thu, 17 Nov 2022 18:06:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH 1/2] dt-bindings: iio: magnetometer: add ti tmag5273
- documentation file
+Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
 Content-Language: en-US
-To:     Michael Riesch <michael.riesch@wolfvision.net>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Jakob Hauser <jahau@rocketmail.com>
-References: <20221115073718.2377311-1-gerald.loacker@wolfvision.net>
- <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
- <20221115174355.00004a01@Huawei.com>
- <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
- <8c2da24c-ae10-40c9-bb3e-b300975a86d7@linaro.org>
- <467929c1-b405-507b-033d-bdc7abce703f@wolfvision.net>
+        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
+ <20221117122256.GG93179@thinkpad>
+ <a3da2ab9-ad36-2283-0659-ad8ebf877e17@linaro.org>
+ <20221117155658.00005d08@Huawei.com>
+ <9ddf7e56-f396-5720-9960-e3ef4aa9a204@linaro.org>
+ <20221117165806.00007f55@huawei.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <467929c1-b405-507b-033d-bdc7abce703f@wolfvision.net>
+In-Reply-To: <20221117165806.00007f55@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -87,62 +84,67 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 17/11/2022 18:01, Michael Riesch wrote:
-> Hi Krzysztof,
+On 17/11/2022 17:58, Jonathan Cameron wrote:
+> On Thu, 17 Nov 2022 17:21:25 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
-> On 11/17/22 17:17, Krzysztof Kozlowski wrote:
->> On 17/11/2022 17:12, Gerald Loacker wrote:
+>> On 17/11/2022 16:56, Jonathan Cameron wrote:
+>>> On Thu, 17 Nov 2022 13:28:33 +0100
+>>> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+>>>   
+>>>> On 17/11/2022 13:22, Manivannan Sadhasivam wrote:  
+>>>>> On Thu, Nov 17, 2022 at 01:13:07PM +0100, Krzysztof Kozlowski wrote:    
+>>>>>> The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
+>>>>>> changed to take sid argument:
+>>>>>>
+>>>>>>   Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
+>>>>>>
+>>>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>    
+>>>>>
+>>>>> Looks like I didn't rebase on top of Bjorn's for-next for my series, so didn't
+>>>>> see this example.
+>>>>>
+>>>>> Thanks for fixing!
+>>>>>
+>>>>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>>>>     
 >>>>
->>>>> +
->>>>> +  compatible:
->>>>> +    const: ti,tmag5273
->>>>> +
->>>>> +  reg:
->>>>> +    maxItems: 1
->>>>> +
->>>>> +  "#io-channel-cells":
->>>>> +    const: 1
->>>>> +
->>>>> +  ti,angle-enable:
->>>>> +    description:
->>>>> +      Enables angle measurement in the selected plane.
->>>>> +      0 = OFF
->>>>> +      1 = X-Y (default)
->>>>> +      2 = Y-Z
->>>>> +      3 = X-Z
->>>>
->>>> This feels like something we should be configuring at runtime rather that
->>>> DT, or is it driven by board design or similar?
->>>>
+>>>> This should not go via Bjorn's tree without IIO ack and
+>>>> Jonathan/Lars-Peter/IIO lists were not in CC.
+>>>>  
+>>> Thanks for the heads up. 
 >>>
->>> We use this sensor for a zoom wheel application, there is an EVM from TI
->>> for this as well. So this is for setting the mounting position of the wheel.
+>>> Not sure I'd have registered there would have been a problem here even
+>>> if I had seen original patch.  Anyhow, I assume Bjorn will pick this up
+>>> and all will be well again.
+>>>
+>>> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
 >>
->> That's ok, but does not explain why choice of angle measurement should
->> be a property of the hardware. I could imagine configuring device to
->> measure sometimes X-Y and sometimes X-Z, depending on the use case. Use
->> case can change runtime.
+>> I am afraid it cannot go via Bjorn's tree, because this depends on a
+>> change in your tree:
+>> https://lore.kernel.org/all/20221027143411.277980-2-krzysztof.kozlowski@linaro.org/
+>>
+>> Can you pick it up instead? This is the only way to fix the linux-next,
+>> although your tree will have a dt_binding_check error.
+>>
+>> Other way is to have cross-tree merge, but the commit to bindings
+>> headers ended up in DTS patch, so it cannot be shared with driver tree.
 > 
-> If I may chime in here: in our use case the angle channel is used
-> directly as an input to adc-joystick, so that the combination of the two
-> is an input device. We feel that in this scenario this angle measurement
-> setting *has* to be a hardware property because the correct function of
-> the input device depends on the correct choice of the angle property
-> (which does not change during runtime, of course).
+> Ah. I've sent Greg a pull reuqest including that patch, so this is going to get
+> worse and the linux-next intermediate builds are going to fail which is never good.
 > 
-> If we were to create a different input device in which the magnetometer
-> was tilted by 90° (for example), then the angle property could be easily
-> changed in the device tree. The user space, on the other hand, couldn't
-> possibly know the correct angle property.
+> Best bet at this point may be for Bjorn to also take the dependency 
+> you list above and the fix.
 > 
-> That said, I agree that there may be use cases in which the angle
-> property should be changed during runtime. Would it be acceptable to
-> create an IIO property that is initialized by the device tree property?
-> (Please note that the implementation of the IIO property may not be in
-> our scope, though)
+> Git will happily unwind the same patch turning up in two trees and
+> that way he'll have everything and the IIO tree  + char-misc will
+> be fine on their own as well.
+> 
+> That work for everyone?
 
-It's fine. Thanks for the explanations. For runtime-configurable setups
-this still can be changed via some other interface.
+Yes, that's also good solution. You only need this one commit:
+22f1d06f4f283e36622036726093032a07d67c0d
+https://lore.kernel.org/all/20221103095810.64606-2-manivannan.sadhasivam@linaro.org/
 
 Best regards,
 Krzysztof

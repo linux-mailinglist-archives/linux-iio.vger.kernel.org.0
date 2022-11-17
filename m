@@ -2,48 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0270F62E1F4
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:33:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86FA362E242
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:51:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240409AbiKQQdr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Thu, 17 Nov 2022 11:33:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44132 "EHLO
+        id S234724AbiKQQvo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 17 Nov 2022 11:51:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240376AbiKQQdU (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:33:20 -0500
+        with ESMTP id S234292AbiKQQvn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:51:43 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02097A37D;
-        Thu, 17 Nov 2022 08:30:43 -0800 (PST)
-Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NClhZ5H6Lz685bn;
-        Fri, 18 Nov 2022 00:28:14 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6BE331;
+        Thu, 17 Nov 2022 08:51:41 -0800 (PST)
+Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NCm683YNSz689hv;
+        Fri, 18 Nov 2022 00:46:56 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 17 Nov 2022 17:30:41 +0100
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.31; Thu, 17 Nov 2022 17:51:39 +0100
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 17 Nov
- 2022 16:30:41 +0000
-Date:   Thu, 17 Nov 2022 16:30:40 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <jdelvare@suse.com>, <linux@roeck-us.net>,
-        <linux-hwmon@vger.kernel.org>, <rajat.khandelwal@intel.com>
-Subject: Re: [PATCH v10] iio: temperature: Add driver support for Maxim
- MAX30208
-Message-ID: <20221117163040.00001f5a@Huawei.com>
-In-Reply-To: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
-References: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ 2022 16:51:39 +0000
+Date:   Thu, 17 Nov 2022 16:51:38 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To:     Gerald Loacker <gerald.loacker@wolfvision.net>
+CC:     <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Michael Riesch <michael.riesch@wolfvision.net>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: magnetometer: add ti tmag5273
+ documentation file
+Message-ID: <20221117165138.000012a0@huawei.com>
+In-Reply-To: <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
+References: <20221115073718.2377311-1-gerald.loacker@wolfvision.net>
+        <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
+        <20221115174355.00004a01@Huawei.com>
+        <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -55,118 +64,105 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Nov 2022 21:07:29 +0530
-Rajat Khandelwal <rajat.khandelwal@linux.intel.com> wrote:
+On Thu, 17 Nov 2022 17:12:33 +0100
+Gerald Loacker <gerald.loacker@wolfvision.net> wrote:
 
-> Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
+> Am 15.11.2022 um 18:43 schrieb Jonathan Cameron:
+> > On Tue, 15 Nov 2022 08:37:17 +0100
+> > Gerald Loacker <gerald.loacker@wolfvision.net> wrote:
+> >   
+> >> Add bindings documentation file for TI TMAG5273.
+> >>
+> >> Signed-off-by: Gerald Loacker <gerald.loacker@wolfvision.net>
+> >> ---
+> >>  .../iio/magnetometer/ti,tmag5273.yaml         | 72 +++++++++++++++++++
+> >>  MAINTAINERS                                   |  6 ++
+> >>  2 files changed, 78 insertions(+)
+> >>  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml b/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
+> >> new file mode 100644
+> >> index 000000000000..2f5b0a4d2f40
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/magnetometer/ti,tmag5273.yaml
+> >> @@ -0,0 +1,72 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: https://eur04.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fschemas%2Fiio%2Fmagnetometer%2Fti%2Ctmag5273.yaml%23&amp;data=05%7C01%7Cgerald.loacker%40wolfvision.net%7C9788e9788f344fcff9b808dac730f926%7Ce94ec9da9183471e83b351baa8eb804f%7C1%7C0%7C638041310400330990%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=nczO1QC74gD6eGXAkm%2B6LRrc7fyEsr62r%2B3aoW%2Bcfu4%3D&amp;reserved=0
+> >> +$schema: https://eur04.safelinks.protection.outlook.com/?url=http%3A%2F%2Fdevicetree.org%2Fmeta-schemas%2Fcore.yaml%23&amp;data=05%7C01%7Cgerald.loacker%40wolfvision.net%7C9788e9788f344fcff9b808dac730f926%7Ce94ec9da9183471e83b351baa8eb804f%7C1%7C0%7C638041310400330990%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=raKUiSntfhvdSSnqiR1Wm%2Fqr9cI3XEu5HCprqvISlLE%3D&amp;reserved=0
+> >> +
+> >> +title: TI TMAG5273 Low-Power Linear 3D Hall-Effect Sensor
+> >> +
+> >> +maintainers:
+> >> +  - Gerald Loacker <gerald.loacker@wolfvision.net>
+> >> +
+> >> +description:
+> >> +  The TI TMAG5273 is a low-power linear 3D Hall-effect sensor. This device
+> >> +  integrates three independent Hall-effect sensors in the X, Y, and Z axes.
+> >> +  The device has an integrated temperature sensor available. The TMAG5273
+> >> +  can be configured through the I2C interface to enable any combination of
+> >> +  magnetic axes and temperature measurements. An integrated angle calculation
+> >> +  engine (CORDIC) provides full 360° angular position information for both
+> >> +  on-axis and off-axis angle measurement topologies. The angle calculation is
+> >> +  performed using two user-selected magnetic axes.
+> >> +
+> >> +properties:
+> >> +  $nodename:
+> >> +    pattern: '^magnetometer@[0-9a-f]+$'  
+> > 
+> > What Krzysztof said on this ;)
+> >   
+> >> +
+> >> +  compatible:
+> >> +    const: ti,tmag5273
+> >> +
+> >> +  reg:
+> >> +    maxItems: 1
+> >> +
+> >> +  "#io-channel-cells":
+> >> +    const: 1
+> >> +
+> >> +  ti,angle-enable:
+> >> +    description:
+> >> +      Enables angle measurement in the selected plane.
+> >> +      0 = OFF
+> >> +      1 = X-Y (default)
+> >> +      2 = Y-Z
+> >> +      3 = X-Z  
+> > 
+> > This feels like something we should be configuring at runtime rather that
+> > DT, or is it driven by board design or similar?
+> >   
 > 
-> Add support for max30208 driver in iio subsystem.
+> We use this sensor for a zoom wheel application, there is an EVM from TI
+> for this as well. So this is for setting the mounting position of the wheel.
 
-Blank line here.
+Ok. Thanks for explanation. Makes sense.
 
-> Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
 > 
-Datasheet part of the tags block, so no blank line between that and the SoB.
-That makes life easy for tools parsing git messages.
+> >> +    $ref: /schemas/types.yaml#/definitions/uint32
+> >> +    minimum: 0
+> >> +    maximum: 3
+> >> +
+> >> +  vcc-supply:
+> >> +    description:
+> >> +      A regulator providing 1.7 V to 3.6 V supply voltage on the VCC pin,
+> >> +      typically 3.3 V.
+> >> +  
+> > 
+> > The dt binding should attempt to describe the hardware, not what we happen
+> > to support in the driver so far. So I'd expect to also see an interrupt.
+> > That way if someone ships a dts file today, and we enable it sometime in the
+> > future they will be ready for it.
+> >  
+> 
+> Is it fine to add just the description without example then? The
+> interrupt has many options such as low active or low pulse.
 
-> Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-
-One query inline.  Basically boils down to what we do after
-overflow occurs.  I assume you are right and the first reading is the most recent, but
-I think we still want to flush the whole fifo in that case to get back to
-a sane state for future reads.
+Yes.  Just add description. The details of type etc depend on wiring
+to some degree (inverters in the path etc). Nice to add an example later
+but for now we can assume anyone who is providing the interrupt set it
+up correctly.
 
 Jonathan
-
-> +/**
-> + * max30208_request() - Request a reading
-> + * @data: Struct comprising member elements of the device
-> + *
-> + * Requests a reading from the device and waits until the conversion is ready.
-> + */
-> +static int max30208_request(struct max30208_data *data)
-> +{
-> +	/*
-> +	 * Sensor can take up to 500 ms to respond so execute a total of
-> +	 * 10 retries to give the device sufficient time.
-> +	 */
-> +	int retries = 10;
-> +	u8 regval;
-> +	int ret;
-> +
-> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
-> +
-> +	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
-> +	if (ret)
-> +		return ret;
-> +
-> +	while (retries--) {
-> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		if (ret & MAX30208_STATUS_TEMP_RDY)
-> +			return 0;
-> +
-> +		msleep(50);
-> +	}
-> +	dev_err(&data->client->dev, "Temperature conversion failed\n");
-> +
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +static int max30208_update_temp(struct max30208_data *data)
-> +{
-> +	u8 data_count;
-> +	int ret;
-> +
-> +	mutex_lock(&data->lock);
-> +
-> +	ret = max30208_request(data);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
-> +	if (ret < 0)
-> +		goto unlock;
-> +	else if (!ret) {
-> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
-> +		if (ret < 0)
-> +			goto unlock;
-> +
-> +		data_count = ret;
-> +	} else
-> +		data_count = 1;
-> +
-> +	while (data_count) {
-> +		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
-> +		if (ret < 0)
-> +			goto unlock;
-> +
-> +		data_count--;
-> +	}
-Hmm. Given you've been poking this a lot, I guess this works and the part is
-as just odd. Just to check one last case... Does max30208_request() guarantee we can't
-get...
-
-1. Read first time, overflow set so we read latest result - leaving
-   31 ancient values in the fifo.
-2. Read again really quickly and get those ancient values.
-?
-
-Perhaps we should flush out those unwanted values from the fifo, so after
-overflow we get back to a normal state rather than immediately overflowing again.
-
-More than possible that I still don't understand how this device works though!
-
-> +
-> +unlock:
-> +	mutex_unlock(&data->lock);
-> +	return ret;
-> +}
-> +
-

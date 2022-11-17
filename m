@@ -2,108 +2,109 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0F8462D5B7
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 10:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA98A62DA6B
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 13:13:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234734AbiKQJCA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 04:02:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
+        id S240039AbiKQMNQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 07:13:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239439AbiKQJB5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 04:01:57 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6187559149;
-        Thu, 17 Nov 2022 01:01:56 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AH7n6nY003733;
-        Thu, 17 Nov 2022 04:01:51 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kwgw4rg03-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 17 Nov 2022 04:01:50 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2AH91nBH004105
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 17 Nov 2022 04:01:49 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 17 Nov 2022 04:01:48 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 17 Nov 2022 04:01:48 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 17 Nov 2022 04:01:48 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.121])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2AH91dQM020374;
-        Thu, 17 Nov 2022 04:01:41 -0500
-From:   Antoniu Miclaus <antoniu.miclaus@analog.com>
-To:     <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
-Date:   Thu, 17 Nov 2022 11:01:30 +0200
-Message-ID: <20221117090130.51702-1-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S240023AbiKQMNP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 07:13:15 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B07766F375
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 04:13:13 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id j16so2433842lfe.12
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 04:13:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QovtdL7BP1h09phxGHQZDMWqvkgGdhA6FAPrdwAQwIY=;
+        b=msBzi3o4FOprNhhufGIQzsDbSw190/zGjGEJk2af23OoiteXJOMOvsx43btiImNDz0
+         FFkO+fjtQcqthSEbuA9ORWG2S/QTGGYyuXKWSBpt1ZfyH0AyuwdYRGVCXYy7hKqMHivF
+         eSp0/k7ltt1i7aC3GSuUef0V93qTFgPACXKiiOVTC0tX7LcgU9rOYk0tD9wRAsh0+Ge9
+         FUVr1qLpjAw9B1usqq7ZYO/eVUh5F4MUTTbVahTLZcesgpoE1WmNLDQZlgKog3F/0r+C
+         GM212jEORbn34mrlVtS4xOkeo9B1ffUi7Ye3TJo0/y8K4FUne6NFlH620YyufBRmQmj/
+         5cQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QovtdL7BP1h09phxGHQZDMWqvkgGdhA6FAPrdwAQwIY=;
+        b=p5XHp1mi+iw/LmYNewCVT7AKmnRmqIZmsHTMCKMp60Fz4ZgJlPA+4c64auqvet8/1f
+         H8xcwvDkuCIJp0It9giQWVtQlXuYNCMqkvR37Ahl465P6mWTn4MxoAfm1svOWZe9l0ui
+         D5bCgWX7qN4WWXynjs8sINz+Ec+jvdxcfm37ab6K+NCuCDtaXedU5zyrTqFDfuTXdk+G
+         nJhxg0EibBtiLUYs6/n5py4OCzhJVRk7JacaONsiudyivSe0/KKVy+Q20F29khj6rjW/
+         PnA629N1dPQEivo+p1MUDcizkqQewrMLGGnsJdDV/fhb1RUC1bW7Zw19cpG0Q1d4Lpit
+         dv8g==
+X-Gm-Message-State: ANoB5pl5Mv6lWC20JBVLNq3OvunEpCMOsKHHyOWLcp6tWn2tTqRsLN+H
+        TiEKc8w3/0HntSAxiIFmsGjopQ==
+X-Google-Smtp-Source: AA0mqf4APpNqBPzjGJhG6F1VrAaSfE31C9oCEqDSSi3aH8ioYbkyL4pH1PWqvn4qQFTFyM1rxgkjYA==
+X-Received: by 2002:a05:6512:3b88:b0:4a3:9533:f4c9 with SMTP id g8-20020a0565123b8800b004a39533f4c9mr836327lfv.615.1668687192074;
+        Thu, 17 Nov 2022 04:13:12 -0800 (PST)
+Received: from krzk-bin.NAT.warszawa.vectranet.pl (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id x12-20020a19f60c000000b0048b26d4bb64sm125133lfe.40.2022.11.17.04.13.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Nov 2022 04:13:11 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
+Date:   Thu, 17 Nov 2022 13:13:07 +0100
+Message-Id: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: jZc6A2xlq7rdUNNqwykqQIO3WcUtfw65
-X-Proofpoint-ORIG-GUID: jZc6A2xlq7rdUNNqwykqQIO3WcUtfw65
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-17_04,2022-11-16_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- impostorscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
- mlxscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211170068
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Add array of explicit gpio names for the `gpiochip` structure of
-ad5592r, mainly for debug purposes.
+The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
+changed to take sid argument:
 
-Since the gpios are configurable via the dts, generic names are
-used.
+  Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- drivers/iio/dac/ad5592r-base.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 7a9b5fc1e579..076bc9ecfb49 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -124,6 +124,10 @@ static int ad5592r_gpio_request(struct gpio_chip *chip, unsigned offset)
- 	return 0;
- }
+Issue is caused by commit 22f1d06f4f28 ("dt-bindings: iio: qcom:
+adc7-pm8350: Allow specifying SID for channels") from Bjorn's tree.
+
+Unfortunately get_maintainers.pl were not used, so IIO maintaners were
+not CCed.
+---
+ Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+index f1522196042d..bd6e0d6f6e0c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+@@ -299,7 +299,7 @@ examples:
+             };
  
-+static const char * const ad5592r_gpio_names[] = {
-+	"GPIO0", "GPIO1", "GPIO2", "GPIO3", "GPIO4", "GPIO5", "GPIO6", "GPIO7",
-+};
-+
- static int ad5592r_gpio_init(struct ad5592r_state *st)
- {
- 	if (!st->gpio_map)
-@@ -140,6 +144,7 @@ static int ad5592r_gpio_init(struct ad5592r_state *st)
- 	st->gpiochip.set = ad5592r_gpio_set;
- 	st->gpiochip.request = ad5592r_gpio_request;
- 	st->gpiochip.owner = THIS_MODULE;
-+	st->gpiochip.names = ad5592r_gpio_names;
- 
- 	mutex_init(&st->gpio_lock);
- 
+             conn-therm@47 {
+-                reg = <PM8350_ADC7_AMUX_THM4_100K_PU>;
++                reg = <PM8350_ADC7_AMUX_THM4_100K_PU(1)>;
+                 qcom,ratiometric;
+                 qcom,hw-settle-time = <200>;
+             };
 -- 
-2.38.1
+2.34.1
 

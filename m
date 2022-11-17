@@ -2,52 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9226F62E191
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:25:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0270F62E1F4
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:33:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240524AbiKQQZn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 11:25:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
+        id S240409AbiKQQdr convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Thu, 17 Nov 2022 11:33:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240506AbiKQQZ2 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:25:28 -0500
+        with ESMTP id S240376AbiKQQdU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:33:20 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7BB7D533;
-        Thu, 17 Nov 2022 08:22:42 -0800 (PST)
-Received: from fraeml713-chm.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NClWK0b2Wz67M1h;
-        Fri, 18 Nov 2022 00:20:13 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02097A37D;
+        Thu, 17 Nov 2022 08:30:43 -0800 (PST)
+Received: from fraeml710-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NClhZ5H6Lz685bn;
+        Fri, 18 Nov 2022 00:28:14 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- fraeml713-chm.china.huawei.com (10.206.15.32) with Microsoft SMTP Server
+ fraeml710-chm.china.huawei.com (10.206.15.59) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Thu, 17 Nov 2022 17:22:40 +0100
+ 15.1.2375.31; Thu, 17 Nov 2022 17:30:41 +0100
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Thu, 17 Nov
- 2022 16:22:39 +0000
-Date:   Thu, 17 Nov 2022 16:22:38 +0000
+ 2022 16:30:41 +0000
+Date:   Thu, 17 Nov 2022 16:30:40 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-CC:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        "William Breathitt Gray" <william.gray@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] iio: addac: add AD74115 driver
-Message-ID: <20221117162238.0000224a@Huawei.com>
-In-Reply-To: <20221117080916.411766-3-cosmin.tanislav@analog.com>
-References: <20221117080916.411766-1-cosmin.tanislav@analog.com>
-        <20221117080916.411766-3-cosmin.tanislav@analog.com>
+To:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <jdelvare@suse.com>, <linux@roeck-us.net>,
+        <linux-hwmon@vger.kernel.org>, <rajat.khandelwal@intel.com>
+Subject: Re: [PATCH v10] iio: temperature: Add driver support for Maxim
+ MAX30208
+Message-ID: <20221117163040.00001f5a@Huawei.com>
+In-Reply-To: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
+References: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
 X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
@@ -61,37 +55,118 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 17 Nov 2022 10:09:16 +0200
-Cosmin Tanislav <demonsingur@gmail.com> wrote:
+On Fri, 18 Nov 2022 21:07:29 +0530
+Rajat Khandelwal <rajat.khandelwal@linux.intel.com> wrote:
 
-> The AD74115H is a single-channel, software-configurable, input and
-> output device for industrial control applications. The AD74115H
-> provides a wide range of use cases, integrated on a single chip.
+> Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
 > 
-> These use cases include analog output, analog input, digital output,
-> digital input, resistance temperature detector (RTD), and thermocouple
-> measurement capability. The AD74115H also has an integrated HART modem.
-> 
-> A serial peripheral interface (SPI) is used to handle all communications
-> to the device, including communications with the HART modem. The digital
-> input and digital outputs can be accessed via the SPI or the
-> general-purpose input and output (GPIO) pins to support higher
-> speed data rates.
-> 
-> The device features a 16-bit, sigma-delta analog-to-digital converter
-> (ADC) and a 14-bit digital-to-analog converter (DAC).
-> The AD74115H contains a high accuracy 2.5 V on-chip reference that can
-> be used as the DAC and ADC reference.
-> 
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-LGTM
+> Add support for max30208 driver in iio subsystem.
 
-Not sure if Linus W wants to take a look at the GPIO chip stuff, but
-we should leave a few days to give him the opportunity + DT review
-needed before I pick this up.
+Blank line here.
 
-Thanks,
+> Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
+> 
+Datasheet part of the tags block, so no blank line between that and the SoB.
+That makes life easy for tools parsing git messages.
+
+> Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+
+One query inline.  Basically boils down to what we do after
+overflow occurs.  I assume you are right and the first reading is the most recent, but
+I think we still want to flush the whole fifo in that case to get back to
+a sane state for future reads.
 
 Jonathan
 
+> +/**
+> + * max30208_request() - Request a reading
+> + * @data: Struct comprising member elements of the device
+> + *
+> + * Requests a reading from the device and waits until the conversion is ready.
+> + */
+> +static int max30208_request(struct max30208_data *data)
+> +{
+> +	/*
+> +	 * Sensor can take up to 500 ms to respond so execute a total of
+> +	 * 10 retries to give the device sufficient time.
+> +	 */
+> +	int retries = 10;
+> +	u8 regval;
+> +	int ret;
+> +
+> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
+> +
+> +	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
+> +	if (ret)
+> +		return ret;
+> +
+> +	while (retries--) {
+> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if (ret & MAX30208_STATUS_TEMP_RDY)
+> +			return 0;
+> +
+> +		msleep(50);
+> +	}
+> +	dev_err(&data->client->dev, "Temperature conversion failed\n");
+> +
+> +	return -ETIMEDOUT;
+> +}
+> +
+> +static int max30208_update_temp(struct max30208_data *data)
+> +{
+> +	u8 data_count;
+> +	int ret;
+> +
+> +	mutex_lock(&data->lock);
+> +
+> +	ret = max30208_request(data);
+> +	if (ret)
+> +		goto unlock;
+> +
+> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
+> +	if (ret < 0)
+> +		goto unlock;
+> +	else if (!ret) {
+> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
+> +		if (ret < 0)
+> +			goto unlock;
+> +
+> +		data_count = ret;
+> +	} else
+> +		data_count = 1;
+> +
+> +	while (data_count) {
+> +		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
+> +		if (ret < 0)
+> +			goto unlock;
+> +
+> +		data_count--;
+> +	}
+Hmm. Given you've been poking this a lot, I guess this works and the part is
+as just odd. Just to check one last case... Does max30208_request() guarantee we can't
+get...
+
+1. Read first time, overflow set so we read latest result - leaving
+   31 ancient values in the fifo.
+2. Read again really quickly and get those ancient values.
+?
+
+Perhaps we should flush out those unwanted values from the fifo, so after
+overflow we get back to a normal state rather than immediately overflowing again.
+
+More than possible that I still don't understand how this device works though!
+
+> +
+> +unlock:
+> +	mutex_unlock(&data->lock);
+> +	return ret;
+> +}
+> +
 

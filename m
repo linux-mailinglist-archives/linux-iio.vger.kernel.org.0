@@ -2,78 +2,75 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E940A62E156
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:17:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB65262E189
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 17:24:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbiKQQRc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 11:17:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
+        id S240428AbiKQQYD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 11:24:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234729AbiKQQRa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:17:30 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3BC874ABF
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:17:27 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id d20so3298778ljc.12
-        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:17:27 -0800 (PST)
+        with ESMTP id S240435AbiKQQXs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 11:23:48 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7ED88F8D
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:21:31 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id be13so3625154lfb.4
+        for <linux-iio@vger.kernel.org>; Thu, 17 Nov 2022 08:21:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qwSaeIACqOc/3D5hwWL05wlXkafkiqEUfntFDSCeRg8=;
-        b=n+Dco4AbKMFghmsvTI6U0ZFZUmP9wNJKLy3OvKTUHm/GIgrM5IVcMgSZsSMuS5mKdm
-         0ORgWascxvCB7sN7cP3n1aCnFB+3Xn5JS3NFMiVmoBCxB6ALP/fJtaRj3lLiCTKn19AR
-         vIkUreNffvbM5WQgzKHEKdPk1yK+mxlXStr3De1dbve5n2G/YDMyQAxI7+xuaVhbT2Jt
-         wjYjujaYYn1KISjIz9DLuJMdLh/UuBAZVPmE5DVw+XRE03FtEn+eEThzN6IaXaGGAzWV
-         t602/9G1Dev+RN5Z7Vl8vjKN06nE5+sMBpoj5PR746OYYChJFUS2gWUs/xsySpqmenUn
-         2opA==
+        bh=mHzEF+Mn5fM2J64O6GOtfsBt3TSnhCmqNZhN0P3yhUg=;
+        b=T/PUfF0QrfJAkea3rHNe2URyPEqgwSlvrynt68iLbh9Uhn9eyy1Cg1pJ39hKvrrZ5U
+         Twj7JA9YBv03dyaP2nEssEcf7k3sjlNMPJqCz+tdEIENaXFB697oD0xf4Z8ll9KBuy4H
+         i9Vd3srP7njYVBgowVVgtw3H018R20vYZlbWhhJtGHJgZWiQR8tdEBjxi88qy0/Tiwoc
+         lCAdbl8+qqyMCs7qckeCRevRNYY08cjsuJFO/oSsIrlM+VsrtJWoRdb/VT73P+PPe61Y
+         e+u3MNyQcv6BLAA3rvt+UpmarOTh5IUkZ0NCNsasP6AMnHfHlcGwH+QlnHaSlYiujijB
+         ExKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qwSaeIACqOc/3D5hwWL05wlXkafkiqEUfntFDSCeRg8=;
-        b=nFrHM7XR4dG1HL9t5IfcWA4Hxv2m/4cyifq6jxV4PUj4ssgcPZvtVKVh/wfnVwVriK
-         hW8LOGB+4k/yoHFkhxCz4epVUvaBCzKbnL8wyZyK7U0V7QMX8sut5KEWj0oXj5qGrQmA
-         u3OBrBHf28wjvBuu+EThVa6yiCqzcYNlDNsHBBPqKDHiwmZyLi3DCC0+cIYdsQ8HUvct
-         wjrTebu/XUM3T3G6UO9fXeLUF65MkO/PAouw7z2igh62Jw3ryHz70UYj0nAhcepMyIUD
-         FO9synrMTlryN2t4eii13/2XBORimMO+s1i8VMs7/Z8qYKxPjh+1y/ng+66rstHYX8Ep
-         Awfg==
-X-Gm-Message-State: ANoB5pmcz601pJhkdN2JluhsCJD18CBMR01B+w4nisnWfVZs22wT9iJF
-        Jz4a+wVxL1ulUQvhqoViWdhd6w==
-X-Google-Smtp-Source: AA0mqf5ceR7FxY9z0T/rtAmxRVTw26ugt5VrF+L1xjmgZzWCwoF4ZzO2XfXMKGrg1cwO6qWiuScxog==
-X-Received: by 2002:a2e:2c05:0:b0:277:13ef:53ad with SMTP id s5-20020a2e2c05000000b0027713ef53admr1342662ljs.327.1668701846339;
-        Thu, 17 Nov 2022 08:17:26 -0800 (PST)
+        bh=mHzEF+Mn5fM2J64O6GOtfsBt3TSnhCmqNZhN0P3yhUg=;
+        b=g0Uu7tg28qjuVmcuTyd7z4rXd1EWiVEwXL16iNqBrIXaNwHpeAX/B8DiU0Tcy7WzIB
+         N0k1KovaJWhQ2BHYpAs176r3U4or1/pDDAc17YOi+2uKTjNUpQYo4YkeFsFPEAtD/+/X
+         J6lgMP3XB1yfwTeK8Agn50w/mSP8Pm79GJn7g+k0FcC7MADux85LIicCZoZXnUMkv37G
+         TzYQZYLW5Am3NSkQ+0u5wYnIbLvcyx2R+/PL2nitFvUw/AuXDAateiSaNBTDzpgytdtp
+         eZM6JrXFnvbtvY32tG6NIhjmpD6hjneoJFV5WpJE4HrVca7tvUI7Q2BibpG1jMwgCrCV
+         zSdQ==
+X-Gm-Message-State: ANoB5ploqLl/VsOlSWv+TD/F0Eptw8PC6WCcFuA+Dc8zVvdfYOcpFDw5
+        0NcVCnSHp6S1P4fz/XSTTjU5GKx+b9+cEzLJ
+X-Google-Smtp-Source: AA0mqf7DuBe5m5CLILNgUEDlSAS5zUIsOOeoY0pvGOlwdj0jAuO/8A43sJSyT6RnPw5ESirPjxYZYQ==
+X-Received: by 2002:a05:6512:2207:b0:49f:53d5:d82f with SMTP id h7-20020a056512220700b0049f53d5d82fmr1155083lfu.635.1668702086977;
+        Thu, 17 Nov 2022 08:21:26 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id m3-20020a056512114300b004afac783b5esm211616lfg.238.2022.11.17.08.17.25
+        by smtp.gmail.com with ESMTPSA id i24-20020a2ea238000000b002773a9b5898sm274550ljm.138.2022.11.17.08.21.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Nov 2022 08:17:25 -0800 (PST)
-Message-ID: <8c2da24c-ae10-40c9-bb3e-b300975a86d7@linaro.org>
-Date:   Thu, 17 Nov 2022 17:17:24 +0100
+        Thu, 17 Nov 2022 08:21:26 -0800 (PST)
+Message-ID: <9ddf7e56-f396-5720-9960-e3ef4aa9a204@linaro.org>
+Date:   Thu, 17 Nov 2022 17:21:25 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Subject: Re: [PATCH 1/2] dt-bindings: iio: magnetometer: add ti tmag5273
- documentation file
+Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
 Content-Language: en-US
-To:     Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Michael Riesch <michael.riesch@wolfvision.net>
-References: <20221115073718.2377311-1-gerald.loacker@wolfvision.net>
- <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
- <20221115174355.00004a01@Huawei.com>
- <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
+        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
+ <20221117122256.GG93179@thinkpad>
+ <a3da2ab9-ad36-2283-0659-ad8ebf877e17@linaro.org>
+ <20221117155658.00005d08@Huawei.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
+In-Reply-To: <20221117155658.00005d08@Huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -85,38 +82,47 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 17/11/2022 17:12, Gerald Loacker wrote:
->>
->>> +
->>> +  compatible:
->>> +    const: ti,tmag5273
->>> +
->>> +  reg:
->>> +    maxItems: 1
->>> +
->>> +  "#io-channel-cells":
->>> +    const: 1
->>> +
->>> +  ti,angle-enable:
->>> +    description:
->>> +      Enables angle measurement in the selected plane.
->>> +      0 = OFF
->>> +      1 = X-Y (default)
->>> +      2 = Y-Z
->>> +      3 = X-Z
->>
->> This feels like something we should be configuring at runtime rather that
->> DT, or is it driven by board design or similar?
->>
+On 17/11/2022 16:56, Jonathan Cameron wrote:
+> On Thu, 17 Nov 2022 13:28:33 +0100
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 > 
-> We use this sensor for a zoom wheel application, there is an EVM from TI
-> for this as well. So this is for setting the mounting position of the wheel.
+>> On 17/11/2022 13:22, Manivannan Sadhasivam wrote:
+>>> On Thu, Nov 17, 2022 at 01:13:07PM +0100, Krzysztof Kozlowski wrote:  
+>>>> The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
+>>>> changed to take sid argument:
+>>>>
+>>>>   Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
+>>>>
+>>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>  
+>>>
+>>> Looks like I didn't rebase on top of Bjorn's for-next for my series, so didn't
+>>> see this example.
+>>>
+>>> Thanks for fixing!
+>>>
+>>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>>   
+>>
+>> This should not go via Bjorn's tree without IIO ack and
+>> Jonathan/Lars-Peter/IIO lists were not in CC.
+>>
+> Thanks for the heads up. 
+> 
+> Not sure I'd have registered there would have been a problem here even
+> if I had seen original patch.  Anyhow, I assume Bjorn will pick this up
+> and all will be well again.
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-That's ok, but does not explain why choice of angle measurement should
-be a property of the hardware. I could imagine configuring device to
-measure sometimes X-Y and sometimes X-Z, depending on the use case. Use
-case can change runtime.
+I am afraid it cannot go via Bjorn's tree, because this depends on a
+change in your tree:
+https://lore.kernel.org/all/20221027143411.277980-2-krzysztof.kozlowski@linaro.org/
 
+Can you pick it up instead? This is the only way to fix the linux-next,
+although your tree will have a dt_binding_check error.
+
+Other way is to have cross-tree merge, but the commit to bindings
+headers ended up in DTS patch, so it cannot be shared with driver tree.
 
 Best regards,
 Krzysztof

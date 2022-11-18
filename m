@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6DA6301AA
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 23:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A41ED6301AD
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 23:53:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234673AbiKRWxS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Nov 2022 17:53:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51440 "EHLO
+        id S234002AbiKRWxU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Nov 2022 17:53:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234002AbiKRWwt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 17:52:49 -0500
+        with ESMTP id S234269AbiKRWwx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 17:52:53 -0500
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F19BCDE5
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 14:47:40 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83421BCDF9
+        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 14:47:43 -0800 (PST)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1owA8J-0001PP-Uw; Fri, 18 Nov 2022 23:46:51 +0100
+        id 1owA8L-0001U0-CS; Fri, 18 Nov 2022 23:46:53 +0100
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1owA8G-0058MM-87; Fri, 18 Nov 2022 23:46:49 +0100
+        id 1owA8H-0058Mh-Gc; Fri, 18 Nov 2022 23:46:50 +0100
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1owA8G-00Hb6j-1y; Fri, 18 Nov 2022 23:46:48 +0100
+        id 1owA8H-00Hb73-98; Fri, 18 Nov 2022 23:46:49 +0100
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Grant Likely <grant.likely@linaro.org>,
         Wolfram Sang <wsa@kernel.org>,
-        Andreas Klinger <ak@it-klinger.de>,
-        Jonathan Cameron <jic23@kernel.org>
+        Jonathan Cameron <jic23@kernel.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Manivannan Sadhasivam <mani@kernel.org>
 Cc:     linux-i2c@vger.kernel.org, kernel@pengutronix.de,
         =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 183/606] iio: proximity: srf08: Convert to i2c's .probe_new()
-Date:   Fri, 18 Nov 2022 23:38:37 +0100
-Message-Id: <20221118224540.619276-184-uwe@kleine-koenig.org>
+Subject: [PATCH 188/606] iio: temperature: tmp007: Convert to i2c's .probe_new()
+Date:   Fri, 18 Nov 2022 23:38:42 +0100
+Message-Id: <20221118224540.619276-189-uwe@kleine-koenig.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
 References: <20221118224540.619276-1-uwe@kleine-koenig.org>
@@ -67,34 +68,34 @@ that explicitly in the probe function.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/iio/proximity/srf08.c | 6 +++---
+ drivers/iio/temperature/tmp007.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/proximity/srf08.c b/drivers/iio/proximity/srf08.c
-index 7ed11339c31e..61866d0440f7 100644
---- a/drivers/iio/proximity/srf08.c
-+++ b/drivers/iio/proximity/srf08.c
-@@ -443,9 +443,9 @@ static const struct iio_info srf02_info = {
- 	.read_raw = srf08_read_raw,
- };
+diff --git a/drivers/iio/temperature/tmp007.c b/drivers/iio/temperature/tmp007.c
+index f3420d8a0e35..8d27aa3bdd6d 100644
+--- a/drivers/iio/temperature/tmp007.c
++++ b/drivers/iio/temperature/tmp007.c
+@@ -446,9 +446,9 @@ static void tmp007_powerdown_action_cb(void *priv)
+ 	tmp007_powerdown(data);
+ }
  
--static int srf08_probe(struct i2c_client *client,
--					 const struct i2c_device_id *id)
-+static int srf08_probe(struct i2c_client *client)
+-static int tmp007_probe(struct i2c_client *client,
+-			const struct i2c_device_id *tmp007_id)
++static int tmp007_probe(struct i2c_client *client)
  {
-+	const struct i2c_device_id *id = i2c_client_get_device_id(client);
++	const struct i2c_device_id *tmp007_id = i2c_client_get_device_id(client);
+ 	struct tmp007_data *data;
  	struct iio_dev *indio_dev;
- 	struct srf08_data *data;
  	int ret;
-@@ -549,7 +549,7 @@ static struct i2c_driver srf08_driver = {
- 		.name	= "srf08",
- 		.of_match_table	= of_srf08_match,
+@@ -574,7 +574,7 @@ static struct i2c_driver tmp007_driver = {
+ 		.of_match_table = tmp007_of_match,
+ 		.pm	= pm_sleep_ptr(&tmp007_pm_ops),
  	},
--	.probe = srf08_probe,
-+	.probe_new = srf08_probe,
- 	.id_table = srf08_id,
+-	.probe		= tmp007_probe,
++	.probe_new	= tmp007_probe,
+ 	.id_table	= tmp007_id,
  };
- module_i2c_driver(srf08_driver);
+ module_i2c_driver(tmp007_driver);
 -- 
 2.38.1
 

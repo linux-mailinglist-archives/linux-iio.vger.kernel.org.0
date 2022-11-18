@@ -2,77 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FC262F23E
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 11:13:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6997C62F25F
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 11:19:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235217AbiKRKNf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Nov 2022 05:13:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        id S241539AbiKRKTY (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Nov 2022 05:19:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234711AbiKRKNd (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 05:13:33 -0500
+        with ESMTP id S241596AbiKRKTV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 05:19:21 -0500
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3578810566;
-        Fri, 18 Nov 2022 02:13:33 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76BC91501;
+        Fri, 18 Nov 2022 02:19:11 -0800 (PST)
 Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI9KFQG026589;
-        Fri, 18 Nov 2022 05:13:28 -0500
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kx0p7jb6r-1
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI9KKXT026679;
+        Fri, 18 Nov 2022 05:19:07 -0500
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2103.outbound.protection.outlook.com [104.47.55.103])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kx0p7jbw3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Nov 2022 05:13:28 -0500
+        Fri, 18 Nov 2022 05:19:07 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Dc/7fUEvkQcodXjmvBCxRLhvoaqsDDcnMijEa+D2xK8VlfkSrITt5+QC5Sat++sdGKZcdeFHK9wXqZjsDo5lMsX/fwj2pn38t9LwP1LfZTbZQhTpDoB6/FSH8YBfRDqYUxWl+V/MgKIH/1ufNBLxuEAUQwjI5EoobjQHAThw8HGWPVDW7UHLLU+rZhA04xRdKukvhVHhGQTrh/wlTVLRa/2QqTk4DE52WHhQmmk+k4QRCW9TZzVpTs/gHyakvEUrVtfA0yppBzzKW0hmOST3A/VNN0kvmHNzzE/8ZPMGvOuaJBhM1HWl9EoiKOrQHul/iFtsTKpDWFZD+YU3kNQgGw==
+ b=HGXCbwJYdb1DZrFuXiR5E96bVB3Gb0w/qNot+vH4G+aVo4npqCe0FMWegYxM+4gHiAAqxkNUxDgn20gtkg/efk7sUHwQo9o9U+pwZh79DNJkjb1uZ04fXlVOb12uzRRo4Ze7N3klQGwBSR7/m91Prq7zP9Ktn7Nt/dBAYyOzaZgCDIGF+likwZJjr+LxjTJdv58E4r4aYj9Ef2DqU2qHF1YLVNJuR+tPsP5Nt5FJB5z5KUoATuAiXYIpfZP7IhwsSqXXWxAXx+dVQ9tsBroRCpHxtUlGyVXmojnc4G8TOaVal+dg/OHJyRwkRA6QhKpMWwmXvAXXJfMoUD+txSpdWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=52ST/0eRv/iEFIh5b8bAqES4/ULUotBB7eyT3RHLgz0=;
- b=UKueZTRUGMXeVvdxp8PKfMloAksQOnCf1MWjvM/oPol6KcEm+aFcStwK4HNL33B3sa/sFrMaCYgbvviCU0M62UWPiw7PcK7Y4q5A+31TEzGO7GrSUVWimN8Ync0ege4vL6i08k9GDr1h7oCpFm4NyIEfIrxbcof8KmqoKRs23AkSNQV3zUgkbjB6V5X0ZRgeSXmpCBCdFhSVOWquj7Cjp5YWkA6YaI6Lue/wnJ9OjEIBisREdBNfOgK1+++NYHOB+MnoWzyBBbGM+cHP/+/PTmaLm9D2fQe8adoLl176rCawLU6es+nCg5TVZqe3Jvgea3KA3YIPFXaXLX+WDn4KXA==
+ bh=d93reM6YEX+MXgb2e/zd6tY5GhjpF27Z1YTQcMyvnkY=;
+ b=dwrfzaCXuIZ2W/+p7tOWIH5nckdkkRQJSeFZPg6pHvjQRCRousUGn7XQUDId5azuz6jIQphqOnRkGtIgWG5Mn6/hyxWrw0PetrqdBNb8pmH9WRparNs7YlAEE159D1K3lAl+I034s+1jwBoEvXjUl7iAgvSWsCWgEcZGBaU0c+HlH87ulyMojBKVBkumYHzorPfuULoQBNRc10pRMiBglPbhBeJmHgz/wMZLex5Rn5iRDE4jt8mkwvxddk8VEejbHFYJ3lmQPOtfcPteD2O8s8olgElUivKWdIbc1/aBZW6p0LbWcnMgKAtTTbYsIGsx6pbk0UDV2pUAKmV3pM7fDA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
  dkim=pass header.d=analog.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=52ST/0eRv/iEFIh5b8bAqES4/ULUotBB7eyT3RHLgz0=;
- b=GDwhEpSvOnTqpIWxz5yCD+LIgUjxfThgm4kaaqo6HGcToi78Xg5lohXe/f+t6KyfIY9AajcO9Hqs9/lSMT6V7Ma3cNpqSPAj40aKqeOg3i+Bkfas4ZaYrJD1opJDB4wWJIhuP0RCl6p1G5PAJ4CCizbtQbs5jFLxb7RgNYcLc7w=
+ bh=d93reM6YEX+MXgb2e/zd6tY5GhjpF27Z1YTQcMyvnkY=;
+ b=3NJxHibameNa7VkcMdj67R7LcgEyQpxBnG693YvS7VwdY+xMcSmIdOw52WKgMT4SrzmG/q2I+9ww5ReYd3Yj8To1KR21xCMzkxzgChBmmEfSgThX8sDizT49t5Ul6kJ999ZonnpsKA9zOlVOWhcJNiiOkdG01hnEwbKdAHfner0=
 Received: from SJ0PR03MB6778.namprd03.prod.outlook.com (2603:10b6:a03:40d::22)
  by SJ0PR03MB5757.namprd03.prod.outlook.com (2603:10b6:a03:2d8::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5813.20; Fri, 18 Nov
- 2022 10:13:26 +0000
+ 2022 10:19:05 +0000
 Received: from SJ0PR03MB6778.namprd03.prod.outlook.com
  ([fe80::a07b:a2c6:abe1:c35e]) by SJ0PR03MB6778.namprd03.prod.outlook.com
  ([fe80::a07b:a2c6:abe1:c35e%7]) with mapi id 15.20.5813.020; Fri, 18 Nov 2022
- 10:13:25 +0000
+ 10:19:05 +0000
 From:   "Sa, Nuno" <Nuno.Sa@analog.com>
 To:     "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>,
         "jic23@kernel.org" <jic23@kernel.org>,
         "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 CC:     "Bolboaca, Ramona" <Ramona.Bolboaca@analog.com>
-Subject: RE: [PATCH v3 01/10] iio: adis: add '__adis_enable_irq()'
- implementation
-Thread-Topic: [PATCH v3 01/10] iio: adis: add '__adis_enable_irq()'
- implementation
-Thread-Index: AQHY+ygrDzGBI4Cxq0uzp1+y71+ps65EdfJA
-Date:   Fri, 18 Nov 2022 10:13:25 +0000
-Message-ID: <SJ0PR03MB6778660019C2553E5E18F8EC99099@SJ0PR03MB6778.namprd03.prod.outlook.com>
+Subject: RE: [PATCH v3 00/10] Add '__adis_enable_irq()'
+Thread-Topic: [PATCH v3 00/10] Add '__adis_enable_irq()'
+Thread-Index: AQHY+ygqNNA15+PT+EaU6gI4mRLz265EdnzA
+Date:   Fri, 18 Nov 2022 10:19:05 +0000
+Message-ID: <SJ0PR03MB6778AF1B1558319DB50D13E899099@SJ0PR03MB6778.namprd03.prod.outlook.com>
 References: <20221118083118.9641-1-ramona.bolboaca@analog.com>
- <20221118083118.9641-2-ramona.bolboaca@analog.com>
-In-Reply-To: <20221118083118.9641-2-ramona.bolboaca@analog.com>
+In-Reply-To: <20221118083118.9641-1-ramona.bolboaca@analog.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGFwcG?=
  =?iso-8859-1?Q?RhdGFccm9hbWluZ1wwOWQ4NDliNi0zMmQzLTRhNDAtODVlZS02Yjg0YmEy?=
- =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctYTBlOTdiZTUtNjcyOS0xMWVkLWI2YmItYmNmMT?=
- =?iso-8859-1?Q?cxYzQ1ODgyXGFtZS10ZXN0XGEwZTk3YmU3LTY3MjktMTFlZC1iNmJiLWJj?=
- =?iso-8859-1?Q?ZjE3MWM0NTg4MmJvZHkudHh0IiBzej0iMTcyMiIgdD0iMTMzMTMyNDAwMD?=
- =?iso-8859-1?Q?E5NTIxNjEyIiBoPSJxN3UzQ29oNmJFVEFSS3YydGdKV3g4akQ4N0U9IiBp?=
+ =?iso-8859-1?Q?OWUzNWJcbXNnc1xtc2ctNmM2NGRhOWUtNjcyYS0xMWVkLWI2YmItYmNmMT?=
+ =?iso-8859-1?Q?cxYzQ1ODgyXGFtZS10ZXN0XDZjNjRkYTlmLTY3MmEtMTFlZC1iNmJiLWJj?=
+ =?iso-8859-1?Q?ZjE3MWM0NTg4MmJvZHkudHh0IiBzej0iMjE5MSIgdD0iMTMzMTMyNDAzND?=
+ =?iso-8859-1?Q?M2NjYzNjM1IiBoPSJPbjZId2orcjQzT2NBSjFQNXo3MUpVdmFaMDQ9IiBp?=
  =?iso-8859-1?Q?ZD0iIiBibD0iMCIgYm89IjEiIGNpPSJjQUFBQUVSSFUxUlNSVUZOQ2dVQU?=
- =?iso-8859-1?Q?FFb0NBQUJNUUVKak52dllBVmlZMXlEUExadWFXSmpYSU04dG01b0RBQUFB?=
+ =?iso-8859-1?Q?FFb0NBQUJUcys4dU4vdllBUmtubXQzQkNISEpHU2VhM2NFSWNja0RBQUFB?=
  =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBSEFBQUFEYUFRQUFBQUFBQUFBQUFBQU?=
  =?iso-8859-1?Q?FBQUFBQUFBQUFBRUFBUUFCQUFBQVg1bDJLd0FBQUFBQUFBQUFBQUFBQUo0?=
  =?iso-8859-1?Q?QUFBQmhBR1FBYVFCZkFITUFaUUJqQUhVQWNnQmxBRjhBY0FCeUFHOEFhZ0?=
@@ -93,57 +90,57 @@ x-dg-ref: =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcbnNhXGF
 x-dg-rorf: true
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: SJ0PR03MB6778:EE_|SJ0PR03MB5757:EE_
-x-ms-office365-filtering-correlation-id: 1884c3c4-34d9-4d05-d5a4-08dac94d87fa
+x-ms-office365-filtering-correlation-id: 66eb0052-936f-4b76-43f7-08dac94e5258
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9EbUTIa7fAYP1RD7OcpranZvnDuDQIDD3jitaSWa56D1emAfeMo4XOaOgw/xoqNi8thsnklymkf/FUMMCsC/U4Zi0FJhDplogD8IZSeW51GU2PNxTx4kluq7cZfZutMee+q7LEibhcRZjr1YtKObjGf/lG9OXcj8oCjJHLJ8fyHhkPjyp9exkZvTCNV2kHj8NNe3IXp2l+m0QoVG1WXnjseU0pHMnlQKOwWPe+tNQ2ahitNZ/Tf1j8XR1UrIJ7GjBn3GwOVVJJDDdpcvpNySi/sR38IlptTBcr7J8ZifeAH4OSzWzMaXFb/h9l0z2bKA0NTqh3sWH82ECFvsdn9OGjdspTMyjHjUwH9i/vLzbn6NeVfE/bjV5Iz6jGETaEi4M67a+ESTt3vRMTPVMCJzxpgZbPb2OMNqW9sJkxxIgND7OrMd8jWYKRHYTDRw/+tHBNZ72xJzmEDFpCRWPe+Lii+yQZUhxT7yHpmtpvNv2sppx+u+ry/Vs4QMoYDiEwWEfwHzvlTAUAtpRgmYwuQLaDZui+eZjxiXnfxzf6sShl81G22RtvZ4K/oKzT+3MfRLbKmTM7hyUynerZRi8ZWla/Ik1CnxboVQ2Fg9t/PyR7jHY9Bffc2ouuwg9jzmLIhbHbqMSMI/jhBL9FfRjrmN2vc42xhzgyrG/hMsaNLO+ROjrahHiB0ZJm6ZjS777LtaPD0Tn+YYln/PG4UiHrCQhg==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6778.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(396003)(136003)(366004)(346002)(39860400002)(451199015)(83380400001)(52536014)(5660300002)(8936002)(186003)(41300700001)(2906002)(38070700005)(33656002)(86362001)(55016003)(38100700002)(122000001)(53546011)(66899015)(6506007)(7696005)(71200400001)(110136005)(316002)(107886003)(9686003)(478600001)(26005)(76116006)(4326008)(66446008)(8676002)(66476007)(64756008)(66556008)(66946007);DIR:OUT;SFP:1101;
+x-microsoft-antispam-message-info: wV+R4n14cR1ZUMl6KWdxClMjYOySz1cNOs3mKDEk/IMKHWm4bXnjegg4aK19uuOz3CxLgw3WegPBFdQIWleD4Ce9vs6TwiAVVgeJ3PTliKiKV3MK59AjpxTJkRY+Xiu71Rm6B8BYbZUrnk3Hj1YFvei0dgU/Bsvi+SNcob/sqhqzbLMmC9eZLnYXdYmPX7k8b86+039WYVrN8hpK4uto0ugTy2nPvYaIif7A3+WiipgMbx85ddevp5fdQcNwM+kgaub/xFv/S7h5ykm/Dp1et8G7QHqFv1HKmwh5HN/2AjgVQJehli+q1/Ll3fERlyl+OJ+VINsSk0zhQG5IQCl+vA6zBnnn7Qo/Kx47t3PbmxVonnS19wDDMAw6UqNnIw0Hf+dKDUBzngInx5WaaWqqGvFXh/vaBtCjcl0BjN0lAxagGZ/Ei895P8y6prgZ+iQVJp3OYwrZVvul1DhNWmduzedWJl2fdii3tVu1to1FtrECd+gvk53F5OGU6YgN1lhy1Fc7yJg8NRMBXjimDEWHXCueYPSnwxWqaSmsL2ssZufGhTnTDKLzwwVPQXR1aNQUmUZIm4ylzM3aByd+ozzSAl3lkTUBAb3gD523RbFwhNgTEBvYv76rAsVGae+VE7EdG1o4dpSzQTuTf3PS8408YRvofw8WIUqbIMFTQOC8xgNvIqBjNyTgWIfTlU9n59/8q7Zf0keSNdAkcDVqiFlOjQ==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6778.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(396003)(136003)(366004)(346002)(39860400002)(451199015)(83380400001)(52536014)(5660300002)(8936002)(186003)(41300700001)(2906002)(38070700005)(33656002)(86362001)(55016003)(38100700002)(122000001)(53546011)(6506007)(7696005)(71200400001)(110136005)(316002)(107886003)(9686003)(478600001)(26005)(76116006)(4326008)(66446008)(8676002)(66476007)(64756008)(66556008)(66946007);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?bAz728hHLrwiigxoQpBW7RRWtf/GbYFkNQPpr9SMLsU95vj4f8ovf8Ld3A?=
- =?iso-8859-1?Q?CffDuXR6eGTvLXA5H6TYsWXzwT6zmBjvfteiuF00gkQYFZyoKtyCLOSloX?=
- =?iso-8859-1?Q?aZyTbQM4UKmMcKyFlj3JgWncHqWlfg5fOoeB2viYAcaDpfBTGRyuzp+jXi?=
- =?iso-8859-1?Q?dGZnoAb8Swy7c/GL3FwBgqP9D+9eave+hWQDZG3Rt/Nsx1JVa5SGySruUi?=
- =?iso-8859-1?Q?wt0oNe07N8TgdWm0S75vQp7QC7Z4gcV+Dl5oPoEAb0IoEWgR+qvF4+vXK5?=
- =?iso-8859-1?Q?Grs99R2IpPd7pRtPkvhoWCStGZhLgU8VuSUlHquGBo6gyir/j2V9Hbj/KT?=
- =?iso-8859-1?Q?NJUEKBbAIoU1vc3KPvqBL6FGFMoaLdBY0kP1Hzqo/k8UdCoYdI43ljeL7j?=
- =?iso-8859-1?Q?825FZrAbkcrdtB7+uZEqq0wUuHjwZEjhxLtNycBTx8/zV09U54uffhWT9e?=
- =?iso-8859-1?Q?NhOby75kSfVV3gKWpqDXiS/QDT1ImweRtZq9ctkrfVletY7UsfN/2vmYmL?=
- =?iso-8859-1?Q?AP8lpZuGbABDnppCDewBWkjQRS/ZR8jyG0ooy3XI8p9H8KKDYIUd9TQyXj?=
- =?iso-8859-1?Q?WeOGhR8NW6Jgx/MqUzcjcGfJeiMIa2ukDzgZjBHZCgtzlnykkIpcb6LxSa?=
- =?iso-8859-1?Q?7qqIopLqstd95d4U+2sKoVOJheu2MJykowbcghUg7pElcR/5xRdG7uWWmU?=
- =?iso-8859-1?Q?Q9GznilUGkrZvXfwrTGit/e3dhlSLeuvfTxgRQL8oEwFdvupaCVgoV8eiL?=
- =?iso-8859-1?Q?d1NcChpxpLF7GP35rPYCQief2NFdk1lk4kPd/a6gMjcTuCL9kLtmEr/9cK?=
- =?iso-8859-1?Q?mo8bYU5GsZ7SvmI9BIDmqyJGwpBVhIeY4RZnWdlm5a5UcxjvpNreNVDEY+?=
- =?iso-8859-1?Q?EY5T6lPEVn6CYMbH/oYCIRZV7rkXwOCmWnAolqJFy/Mx894orgYXXonLwz?=
- =?iso-8859-1?Q?HMaQhSh9frPCCm2Dy2bmaP+qSKU3NBqJovq5fXYVKXSIdNwhEEIZjyDPSF?=
- =?iso-8859-1?Q?LMw8KB/pjMcv49Xi9eCJ9/rbwy9h68xf1mmtt5wspLK0twxvcOuVfbszAW?=
- =?iso-8859-1?Q?rgePlgDBNJx9ubMXbkL5dIminuyqSVh3a6Uxf7/barxgmMBif7oxIO/k53?=
- =?iso-8859-1?Q?PJP059+zHeaqhTR8al2Ofi34tBKiWEUxWeO5eLqU3DBrNVRuwgmiOaUSGX?=
- =?iso-8859-1?Q?FlTJ2gleuVY9aaCPAQAGBBHDhqpwQz4SwygYd2QYYnJtVlndqAxJw0BD5N?=
- =?iso-8859-1?Q?xOxsIMBYcAexIsbddDPfB8o3Q3rP8a0CmPilILcosPXECwDukWJSnZLLEN?=
- =?iso-8859-1?Q?7Addd6qGs803M2wH5s6y7qzyEZawalercC5hxymxYSgSleAmjr10R+77En?=
- =?iso-8859-1?Q?riBWjKpGVx/j+MhB3fpITh3pjItLW57eGmkUG7wYwfPO7wPt9BttDFI51Y?=
- =?iso-8859-1?Q?vhglqO9djSBfmp8nUKrMpHhLooZC4vg/G/H4AZZWE2Azu/mGkcz8Y76d7a?=
- =?iso-8859-1?Q?qdGPtPPVI7rFaT5F22idKNPNJwUTL47CR8qaMU0RKKHi65pbTDy2BH2ln4?=
- =?iso-8859-1?Q?CWPtIqcBZTRBstMZeTQlcp0UXW0FGaUVC8K8Tg03ijEnowaYlVGcuZ2m1T?=
- =?iso-8859-1?Q?/zz5QA6AVZp78=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?cjprE9D0WI6yKpnHiCnYRmcHhTahAxHLwW26Vw/PDewna8myF5IYiucuzb?=
+ =?iso-8859-1?Q?tmulEamIVSnJ4p9kUkcVRgHSuUBenRLD1uZ/ZKec/3KIBZJPhktQkkB8Ei?=
+ =?iso-8859-1?Q?efiLPNjX0EMYCEYMeP2JbWrWZi/i9FbV/8Wlhptm8bnoSWvfiUweUzgsJk?=
+ =?iso-8859-1?Q?mOszdDnMPVZbDezRLzokjeMx0UnZzYSRbWbkh4idY0Fn6+72F2jJ3OOde2?=
+ =?iso-8859-1?Q?i0+LWcQdTR2Kfs0R2TSuh7yCxhGGkYNCh1Oznaq/91IIoBTDK8OSGnYsZM?=
+ =?iso-8859-1?Q?QKgSlmYGrm5/QgcCpB496wMxxyK2K9NFQcC/vXcJhvjLvvmfmR7KvYE5Dd?=
+ =?iso-8859-1?Q?lZT8v3hejrBhFuSYKxr58tlIg21ozTqB3NvCS1SOSiAMyJwxP77QZ5dEST?=
+ =?iso-8859-1?Q?GZ5SH2J4fu/E2bYu6LwcMI6ngEtuuqUB7Ngbv6O4TnatfjiuyPdNnkulGN?=
+ =?iso-8859-1?Q?oZjqxERVuiFNUPqsCcYiKoBnFMsg4bZduhsI+ReSFnUZjqmCIOoMXjPwu9?=
+ =?iso-8859-1?Q?sBul21x6a2G5rNIEHsHC4ifsDmwUzbixPcAxUpHvd3YAY/QU4eM/Squ0+h?=
+ =?iso-8859-1?Q?v6BUAAiRifYD75fy58cd7BxrRsQ3r25Pdk2cVrJGXSsUcM06tragFQLana?=
+ =?iso-8859-1?Q?FXPHoUxfEJCQa/JuWyRLQIFLaDiSUVNoTHqr7shQrAq2bbtdRK9KuDeT6R?=
+ =?iso-8859-1?Q?Guubp4gL9GBr2+ZCloJsw0wgN1pYpBntLiAV+Xr3pWMxQo5LqiGJsBGrZ/?=
+ =?iso-8859-1?Q?MV7+w5ZKB8qBH8zl/fAP89pv+86JCgfR/f4sG4yXGR2sfHat+4ehQsCI6i?=
+ =?iso-8859-1?Q?R9snvFt0u1vNKIQ3PqY5yRVglf6GhlnOFnYjmFC818I8bOBiFXBY6N37SC?=
+ =?iso-8859-1?Q?1BhD5wjIN5Jg+N9uaI+rLtE8dCKcFYSnUOSBCX91DH3LjD3BSFts4sxJc6?=
+ =?iso-8859-1?Q?QyTtjo9Cvfa79D07IpEH8V3Boe+GdBw4V6sxoltbN0wch2KFioZNfRhB8p?=
+ =?iso-8859-1?Q?yLqWIJwTzbJcf2vct0xhrEaJrQwUIJqWj8PfADvu+YD4XKcQXge0+F6blP?=
+ =?iso-8859-1?Q?5a3wj2UX54n5RG2OatCciEKxPcdJ65inyi8YFHaHdVqoo+yHCCFGH+N4iv?=
+ =?iso-8859-1?Q?2gAI6nQm4+HlnAd0v8cKQLCYbSvSgecsCKCSWrfiWjLjuVLpM+AvbULWqs?=
+ =?iso-8859-1?Q?enDudTjNTyW4vzJhdWLJAEzzHzZrIOCJEtQTK9CEHj13IeJIeWG5hRU6hH?=
+ =?iso-8859-1?Q?PJZxMs5s07x4XaItNh+3XN0GHiWKWbGkltgBmAUriwthxwVEVM9m5SJXYR?=
+ =?iso-8859-1?Q?CcD1Ve9NH27XuJ0uR5AUH9Bg/7APFSl7D4bCQJE2fuVSK5ZZVGvCeHiZKe?=
+ =?iso-8859-1?Q?N+z+xf9d9AwQFN0WQavIz3D5wZns9FirDAUbrBC6KpKRNAx7swtZ/B50JJ?=
+ =?iso-8859-1?Q?GXBRpG2VcYLvc8X6qeKZWZ0EZxcDwwPZsDM7EOuKfE5qjXWY1jSEKIGraF?=
+ =?iso-8859-1?Q?fdbmQj+/YzeUGXuVyccPUmklEQ8Re74JrtBsCgtmXp+UJ5DGwCb59u6BBW?=
+ =?iso-8859-1?Q?MfRxCNFDKXU8W2by+VlmuXvSkF9MrSmKCaIazmp/oz9hPHGhPT9E1pqiSE?=
+ =?iso-8859-1?Q?Xs5D89u5YjyBMRR85K9Nh4LJ70ofja8z/I?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: analog.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6778.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1884c3c4-34d9-4d05-d5a4-08dac94d87fa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2022 10:13:25.6749
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66eb0052-936f-4b76-43f7-08dac94e5258
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2022 10:19:05.2331
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wCbE93OkjCkdfRLwTa9NBrK0clj3uFJa5Ck0cofTnLNDMfZpRHZXJKLqZJVHFl7yESxGPeW4b6lQpIGXGw8pIQ==
+X-MS-Exchange-CrossTenant-userprincipalname: PUS2sYTBU1eqNwkajvcb/BbrdJ2is1/2+AzDjmUWfl3YIJVmyoEh3bHjZH7wNvn9kaBscSEEea290ME4tBPfEA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB5757
-X-Proofpoint-ORIG-GUID: XQt7qcNc1zgO3ZESwgYRUenob4vLbpNa
-X-Proofpoint-GUID: XQt7qcNc1zgO3ZESwgYRUenob4vLbpNa
+X-Proofpoint-ORIG-GUID: 2mk-FyAGz1jV7pWSyJtaVrOIQMQoLVBr
+X-Proofpoint-GUID: 2mk-FyAGz1jV7pWSyJtaVrOIQMQoLVBr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
  definitions=2022-11-17_06,2022-11-18_01,2022-06-22_01
@@ -169,43 +166,43 @@ X-Mailing-List: linux-iio@vger.kernel.org
 > To: jic23@kernel.org; Sa, Nuno <Nuno.Sa@analog.com>; linux-
 > iio@vger.kernel.org; linux-kernel@vger.kernel.org
 > Cc: Bolboaca, Ramona <Ramona.Bolboaca@analog.com>
-> Subject: [PATCH v3 01/10] iio: adis: add '__adis_enable_irq()' implementa=
-tion
+> Subject: [PATCH v3 00/10] Add '__adis_enable_irq()'
 >=20
-> Add '__adis_enable_irq()' implementation which is the unlocked
-> version of 'adis_enable_irq()'.
->=20
-> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
-> ---
+> Added implementation for '__adis_enable_irq()' and called it instead of
+> 'adis_enable_irq()' inside '__adis_initial_startup()'.
+> Replaced 'adis_initial_startup()' calls in probe, with its unlocked
+> variant.
 > changes in v3:
->  - new patch
->  drivers/iio/imu/adis.c       | 26 +++++++++-----------------
->  include/linux/iio/imu/adis.h | 12 +++++++++++-
->  2 files changed, 20 insertions(+), 18 deletions(-)
+>  new patches: 1,2
+>  changed commit message for patches 2-9
 >=20
-> diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
-> index f7fcfd04f659..cfcb4abeb5db 100644
-> --- a/drivers/iio/imu/adis.c
-> +++ b/drivers/iio/imu/adis.c
-> @@ -270,23 +270,19 @@ EXPORT_SYMBOL_NS(adis_debugfs_reg_access,
-> IIO_ADISLIB);
->  #endif
+> Ramona Bolboaca (10):
+>   iio: adis: add '__adis_enable_irq()' implementation
+>   iio: adis: Call '__adis_enable_irq()' in '__adis_initial_startup()'
+>   iio: accel: adis16201: Call '__adis_initial_startup()' in probe
+>   iio: accel: adis16209: Call '__adis_initial_startup()' in probe
+>   iio: gyro: adis16136: Call '__adis_initial_startup()' in probe
+>   iio: gyro: adis16260: Call '__adis_initial_startup()' in probe
+>   iio: imu: adis16400: Call '__adis_initial_startup()' in probe
+>   staging: iio: accel: adis16203: Call '__adis_initial_startup()'
+>   staging: iio: accel: adis16240: Call '__adis_initial_startup()'
+>   iio: imu: adis: Remove adis_initial_startup function
 >=20
->  /**
-> - * adis_enable_irq() - Enable or disable data ready IRQ
-> + * __adis_enable_irq() - Enable or disable data ready IRQ (unlocked)
->   * @adis: The adis device
->   * @enable: Whether to enable the IRQ
->   *
->   * Returns 0 on success, negative error code otherwise
->   */
-> -int adis_enable_irq(struct adis *adis, bool enable)
-> +int __adis_enable_irq(struct adis *adis, bool enable)
->  {
-> -	int ret =3D 0;
-> +	int ret;
+>  drivers/iio/accel/adis16201.c         |  2 +-
+>  drivers/iio/accel/adis16209.c         |  2 +-
+>  drivers/iio/gyro/adis16136.c          |  2 +-
+>  drivers/iio/gyro/adis16260.c          |  2 +-
+>  drivers/iio/imu/adis.c                | 28 ++++++++++-----------------
+>  drivers/iio/imu/adis16400.c           |  2 +-
+>  drivers/staging/iio/accel/adis16203.c |  2 +-
+>  drivers/staging/iio/accel/adis16240.c |  2 +-
+>  include/linux/iio/imu/adis.h          | 16 +++++++--------
+>  9 files changed, 24 insertions(+), 34 deletions(-)
+>=20
 
-This change was not really needed as long as we 'return ret'
-In the ' unmasked_drdy' case. Anyways, not a big deal for me...
+I would squash patch 1 & 2 as we need to backport them both
+and adding ''__adis_enable_irq()' is a direct consequence of fixing the
+deadlock. Other than that:
 
-- Nuno S=E1
+Reviewed-by: Nuno S=E1 <nuno.sa@analog.com>
+

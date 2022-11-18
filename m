@@ -2,195 +2,432 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3531C62E274
-	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 18:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8843162E00B
+	for <lists+linux-iio@lfdr.de>; Thu, 17 Nov 2022 16:38:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240364AbiKQRCD (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 17 Nov 2022 12:02:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
+        id S239291AbiKQPiQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 17 Nov 2022 10:38:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240483AbiKQRBg (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 12:01:36 -0500
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2053.outbound.protection.outlook.com [40.107.104.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312514877C;
-        Thu, 17 Nov 2022 09:01:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BcFg1Zg5wd/SVPSC763YKhyhOGvqIZk2qlYnJbRILKR5SeCAq65UB9j/BKZVj6+dsN6nZyPAMAGTsa326mxjz1NmYBsJHzJ24Bn1nK9BCCc9+rVK2uhViZYfpjl42TH1qzHLILHD1mVbTJ/WG4w5JiCkJRISiO13A7tjroRl87Ga1PaLJKb3X65cWnMA8J+6Qrb+ts1ZtrdsioPMLTtj+ljRtbumrRnGvT1jjFSXuu1ZsssnEQa3MBfP9IJPOt/83F9wQ/PZHtIq36YzDstvVQZuR1J8G9m5ntkYr3NGDqghBhgRv5f7QaCpp2Vp64ZRtpmmcwJcwPTZItGRLjLGaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DtZ4BF0ghpqq+VYMOMjxDZUzrTvkxQk4Giy3vs5J/jg=;
- b=LbzhcJzkjxj+GeJTz8VGLF14oA+Kan9mJ5wMtNn/MvxO4rFQpfPZqxYhpPgQgAgMayGwnK4NaE1W3wDAfuoIES5ATl+w/n1BQKFxK1Zg7ExIV7sB+AQZL13qYMec6COke2ryjGxdhq22W1VMb2jRIVLWl37nQ3SjHI9QXcLhC7Pcg66qOhZPQ7gqu5xId9IUye8yd5ID60djdox85ONQ13A8LhPvMLUBqIGBZ1fDixtGBLgrDV2WcpV4+zvTtOhNjh6mPAl4sdyqYJJHwf5G3r6Trl0qPjAoK0CejFzOPFzvNHjGan9SXI/1//nFxSZsc9P0MpVQO1bm4c+htDN3Uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DtZ4BF0ghpqq+VYMOMjxDZUzrTvkxQk4Giy3vs5J/jg=;
- b=mCgDhvsTRZIius9YhOZ/dV6vqEZyFBX47WyLvbhUjkaqxveGf9csZ/LBBVNuWGqEU6t7hAVtNpv2fbAh+9M66oFrAL1/QzxtWNBrcY9QXkSM3FtDTG+kLkjCtEYWEROJSLrDzqOhn9KaS5EbpOca0ABXAO5vF5PclfwPYbiFZVA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wolfvision.net;
-Received: from DU0PR08MB9155.eurprd08.prod.outlook.com (2603:10a6:10:416::5)
- by AS4PR08MB7479.eurprd08.prod.outlook.com (2603:10a6:20b:4e6::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5834.6; Thu, 17 Nov
- 2022 17:01:27 +0000
-Received: from DU0PR08MB9155.eurprd08.prod.outlook.com
- ([fe80::3643:6226:28c:e637]) by DU0PR08MB9155.eurprd08.prod.outlook.com
- ([fe80::3643:6226:28c:e637%2]) with mapi id 15.20.5834.007; Thu, 17 Nov 2022
- 17:01:27 +0000
-Message-ID: <467929c1-b405-507b-033d-bdc7abce703f@wolfvision.net>
-Date:   Thu, 17 Nov 2022 18:01:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 1/2] dt-bindings: iio: magnetometer: add ti tmag5273
- documentation file
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Jakob Hauser <jahau@rocketmail.com>
-References: <20221115073718.2377311-1-gerald.loacker@wolfvision.net>
- <20221115073718.2377311-2-gerald.loacker@wolfvision.net>
- <20221115174355.00004a01@Huawei.com>
- <f52dcb6d-30ec-3d49-7e28-9761462d4799@wolfvision.net>
- <8c2da24c-ae10-40c9-bb3e-b300975a86d7@linaro.org>
-From:   Michael Riesch <michael.riesch@wolfvision.net>
-Organization: WolfVision GmbH
-In-Reply-To: <8c2da24c-ae10-40c9-bb3e-b300975a86d7@linaro.org>
+        with ESMTP id S234934AbiKQPiB (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 17 Nov 2022 10:38:01 -0500
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5584E59859;
+        Thu, 17 Nov 2022 07:38:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1668699480; x=1700235480;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=U03TPz/uuXhwbVKrgsgYAMUrnhL2sOKZzWfzmrmv1LU=;
+  b=QEc2JAFIml1Tr0LwXTwdXFq9MupLO20vUa8QZslcQwtA4gY+FwxFlg+W
+   lPW8gaJ2DnaaCGoNbtXTL4k5HLg4dGDzjnllKcMv+/eLTVbR9fB0QXqBS
+   dJJ9+VrWqESs0u9yshguRbP0lRUAMecFHQFsMHlg7dJRODXM+KonlC5HS
+   S8haXlHMIKq6QEcAHN2hr15yvLNYnUFDol7VQPyrLvpcG+f94w1T1r0/x
+   Oo3VcApBofDCd1BglrvgAvNBpBCQtLtkrFe1PgXruCn5O71L28h7S2jI+
+   GeYbRv1IXDPP2RPntK7Yl6Gvtz2E2gTGDvVnLl7cZWs+fuipQu8FmnxAF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="312895845"
+X-IronPort-AV: E=Sophos;i="5.96,171,1665471600"; 
+   d="scan'208";a="312895845"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2022 07:38:00 -0800
+X-IronPort-AV: E=McAfee;i="6500,9779,10534"; a="634090448"
+X-IronPort-AV: E=Sophos;i="5.96,171,1665471600"; 
+   d="scan'208";a="634090448"
+Received: from unknown (HELO rajath-NUC10i7FNH..) ([10.223.165.88])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2022 07:37:56 -0800
+From:   Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+To:     jic23@kernel.org, lars@metafoo.de
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+        rajat.khandelwal@intel.com,
+        Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+Subject: [PATCH v10] iio: temperature: Add driver support for Maxim MAX30208
+Date:   Fri, 18 Nov 2022 21:07:29 +0530
+Message-Id: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR0701CA0040.eurprd07.prod.outlook.com
- (2603:10a6:800:90::26) To DU0PR08MB9155.eurprd08.prod.outlook.com
- (2603:10a6:10:416::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR08MB9155:EE_|AS4PR08MB7479:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14308967-667b-4422-c7d8-08dac8bd5d0b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: un3KyWpQtnAC2SwH6xuNansDbXCnAQYr5pSTJ8eR+d25co/sdL7nAJGMsZQMA0XCMrRAWyuTPE95hdcLWo0nEOHrODw266zjr5Y8fIrZmf8wbxOqJn6p225Vr/9jTmhAPLUQo3uWTCeKzNKttsmTFHgRz5hdrmEn9kLkjdW5/tAu3TCx4l9sQA8+fIco0L5wE3p/cpt+UmdOX42MuezVU1XLKdZhvCbz3nlarf78UoeRZVDsKqg3n9zLD7TjrOhyy5UQI4xZ0b++x/hGXnX23vZiBdod8AIF8fVSokmLjpIDkTqfpyxWiV8vw8B62jDVj0y0HPa6GJP7ODj4qiXY4/wBZhnnHMLo1o+b9xKyV5R8UqHtJFQXFdI1mmynrtRmD1JUjtaKbHHSvxn0RhZCjcyTe4fKyIa/0t9B44MvXWln0UlrTO+IlTxqZVr9HyChKXKunqN/kYq3QTJmI0iqcpS5FxIRhiKZC4JjBDiGLLo7SjKoQIXahCfzvK9jtWKxr4dYv5As28eqCd27q1L81eDmMBU/L9LDso05FcIyT/YPPHKwNJMyXrlaN/OPAa6yyGGvuSNc+LCrk938AIeqlhYU6WHq9HcOHX03h7y9KsRlpMHA4ay/J7S0VGWkdBgr9ZIE8t6JgaUmuJhD2E8Pys2sXjqOzNb6DGVn1Je7UiEUEvlN8WISIjxiRACC0fS2JiET9DghzPkylOdEa3ZEi+mjlc/CmCb6m19sYcpH7jXksozXVZpbsLncewqruf/A
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9155.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39850400004)(366004)(346002)(376002)(136003)(396003)(451199015)(6512007)(6666004)(52116002)(86362001)(26005)(6506007)(31696002)(36916002)(53546011)(6486002)(110136005)(316002)(478600001)(36756003)(186003)(38350700002)(38100700002)(2906002)(2616005)(8936002)(31686004)(54906003)(7416002)(44832011)(66946007)(41300700001)(66556008)(8676002)(4326008)(66476007)(5660300002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Rm54Y3RSeVA1dmFEOS91ejJwL3ErUFlVekg3Nm1DY2pmNXBTWi9aVWt0Qmds?=
- =?utf-8?B?dWhlM29wdzRVWFpnVHVmWDhWcmlwenpxYkNyVUp6Qm4rWjFjZVJYSmx4Tmtv?=
- =?utf-8?B?U1JOeVJQUG80SVREenZxMDJmRWE3eW9aS1QrT2JkSzZzMFZyTzYzRGo0WEFs?=
- =?utf-8?B?MDdveSs3d1p3NmdkaHBNVnVSdGxETEcxckV4Y2ZtaE8yK2NjSGtLVFVYN0ta?=
- =?utf-8?B?eEpIbXdxTkRrRUFRNFRtOXR5dmF6c04yOXFpYjFvMTc3a3JTcTdWRzAwMTE5?=
- =?utf-8?B?dkxoTkljVmVaVDduSVh2OFU0SzRtekQwWkl4NFJMczl6MTJ5K0R2b24vU0ZT?=
- =?utf-8?B?Y3pIQlNJbFVQMTQ2SndMbGVRVjhYU1Z0VGtnSjU1V2xEVkNwc25MQmJlcjRW?=
- =?utf-8?B?ZzcxVkpzeDdLVmlacUJkaUdTYzVvVGEzQ2VoZ01peGc0MmYwLzFOWThqemRa?=
- =?utf-8?B?aXVzNDRua2dTcmEvbHdXYkZaNFZ4bTNVRWorbDlSQ3JjZjMraDFKUDhMVzhE?=
- =?utf-8?B?Z245OUpDRUNVNDdwYjVZSXdiSm1sdDlxK2dNV2lJOGJsMnJ3clVIM3YvTmww?=
- =?utf-8?B?cm5hMmpZK2d3cWdlc0kxZkkrclE4MUMyTTdyNHdZQ0pSN253Si8wdlFpMnZS?=
- =?utf-8?B?RmpobUQyaWxZRXdUWkZEWkJabnlzSk1LMktpNkp0TGpoK0p2dU5iem0vT3pq?=
- =?utf-8?B?dHdqOUxuOTJIQlVobDdERkhkdzFtaVFmbU45VlNuSlNkR2M0bW1CWkJjQkxv?=
- =?utf-8?B?OUZka1JHYStTc1pYMy9XRkxtdGExR0tLbWRBbWFzN2RUam4rd1YyeHVoQkxZ?=
- =?utf-8?B?UVJFbW1HazhqRzhSZjN3T3hVK0dxTEZxam9BWVY5RkM5bnlCTU40OXAyMTQ5?=
- =?utf-8?B?M1RiU3pxUzIyelNXN2hGL0ljRXBIcTQvZUlEUlI1T0RPUE01WTNQWVVjYXkr?=
- =?utf-8?B?bUpaUURmQ1ZITmFHWkt6M2R6eTJ5TEtuc3F3a3BLazdnNDkrdmRmOTlDS0dM?=
- =?utf-8?B?Ymt4WnRpZ0pabFJ3d2UrV2c5Y2Nqb09nYlNNcEpQNlE2dXhQWU9zV2dzTVNu?=
- =?utf-8?B?OVBERytEUUpodkN1U3RBSVB0aWFIMmZxYlBsbU1UQVN1Rys1OWxyWEwvdDJi?=
- =?utf-8?B?Tm9id0tMZzJadlE4aEtYRmh5UzZSdFlRNGNqUEVqTklpeXgrcm1VN1lJeHZ4?=
- =?utf-8?B?blpraGpVc3UyNTdOTHJCNU94a3pYeDNyay84TTIwNVpwU0VIUndDSnJnS3Y5?=
- =?utf-8?B?WHhVeTBRYnZ3OG1tcktmKzhMdVJ1NThMWGxBNjlvMkpJRWV6cjdDbFdleGdB?=
- =?utf-8?B?bHJDcEJ5SHJKTVB4UkV6VVhyS0tETXVEeGNxaFYwSnQxeE5rcEpWcU9vb0Rj?=
- =?utf-8?B?UXlDd3JiMFVYQWZyb3VGaEFMSXpNZjhoTTJqZXpSNXZQSVkxTk44UGppTWhE?=
- =?utf-8?B?UXh0MnZSYk80T0grNFk3MmpnUTNJOUZkczE1WCtPNDJERWcraXdWM0podEJO?=
- =?utf-8?B?VjdQVkdyZzA3L1NGM3dYWm5SNXRORHdMN2JBUkF3RGZjYUg5ZmdtNjhWWXBv?=
- =?utf-8?B?ODlyVjE1RW54ZDZ5YkhpSXk2N2h6enVUQUMyc200d3VyS1FhWkRvczRSNkFP?=
- =?utf-8?B?Yk1PNzl4ajNEWTRGZ1Vmb2crcXpRbThiQUJHU3U1TEZycisyenoybng1c2t6?=
- =?utf-8?B?VU1oTitmL3E3TE81K3owdGp1M0JtRVRqdDdEUnhZZG9pZ2NZL3RtMWhjYWcz?=
- =?utf-8?B?VzQzVmNjMkRqTldFdHpRMTl6cERDNFJLdkF6WTVXV0FQelAwclorTWRRWks5?=
- =?utf-8?B?ZjBGUjJXZUJyRUc2dFlIaWhMZ0YwaENLQ1JETGdkUkpkb0JoVW9sb2liU3By?=
- =?utf-8?B?b21aVzdRR2dlRWR3b082d1N2QlZOQ0Q3anJQYUJodWxKbklwTDMwNHd2TzZF?=
- =?utf-8?B?am5RVEliR2tmYjU4OGN1NWNXS2J0Z0ZsdmhVRERNNGR4RDFvU1BmZGNEWStl?=
- =?utf-8?B?MW1POGpQeTNrTzJpZzZ1WHFjcEtZUVM1cTFsSWdVWlVYZGNPWDZoOXRhaGpT?=
- =?utf-8?B?WkZVVnZhMXVHVWtiaFZIY09qditJUXNzb2w3MjlRSVgyTnZ4TjJnMHVuVHo4?=
- =?utf-8?B?eTJQUjk4L1h2YTlCUTFGVGJ1UmJ5ZFRPT3RrNlArOFFGcHdXZ2ZFNktNaCs2?=
- =?utf-8?B?ZlE9PQ==?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14308967-667b-4422-c7d8-08dac8bd5d0b
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9155.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2022 17:01:27.7098
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mq9LQs8qlX6+rWQDeHWQhLy2cqwmwzt7z9bZMpaqvIdI6OBdieEf4Bskv5JeTICdpm3Jtmtq0y3n/8UbD0Lt9zQBSI86AEM5gRRrqHQXs1E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7479
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Krzysztof,
+Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
 
-On 11/17/22 17:17, Krzysztof Kozlowski wrote:
-> On 17/11/2022 17:12, Gerald Loacker wrote:
->>>
->>>> +
->>>> +  compatible:
->>>> +    const: ti,tmag5273
->>>> +
->>>> +  reg:
->>>> +    maxItems: 1
->>>> +
->>>> +  "#io-channel-cells":
->>>> +    const: 1
->>>> +
->>>> +  ti,angle-enable:
->>>> +    description:
->>>> +      Enables angle measurement in the selected plane.
->>>> +      0 = OFF
->>>> +      1 = X-Y (default)
->>>> +      2 = Y-Z
->>>> +      3 = X-Z
->>>
->>> This feels like something we should be configuring at runtime rather that
->>> DT, or is it driven by board design or similar?
->>>
->>
->> We use this sensor for a zoom wheel application, there is an EVM from TI
->> for this as well. So this is for setting the mounting position of the wheel.
-> 
-> That's ok, but does not explain why choice of angle measurement should
-> be a property of the hardware. I could imagine configuring device to
-> measure sometimes X-Y and sometimes X-Z, depending on the use case. Use
-> case can change runtime.
+Add support for max30208 driver in iio subsystem.
+Datasheet: https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
 
-If I may chime in here: in our use case the angle channel is used
-directly as an input to adc-joystick, so that the combination of the two
-is an input device. We feel that in this scenario this angle measurement
-setting *has* to be a hardware property because the correct function of
-the input device depends on the correct choice of the angle property
-(which does not change during runtime, of course).
+Signed-off-by: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+---
 
-If we were to create a different input device in which the magnetometer
-was tilted by 90° (for example), then the angle property could be easily
-changed in the device tree. The user space, on the other hand, couldn't
-possibly know the correct angle property.
+v10: Correcting the overflow logic
 
-That said, I agree that there may be use cases in which the angle
-property should be changed during runtime. Would it be acceptable to
-create an IIO property that is initialized by the device tree property?
-(Please note that the implementation of the IIO property may not be in
-our scope, though)
+v9: Repositioning register data
 
-Best regards,
-Michael
+v8:
+1. Returning time out if conversion fails to happen
+2. Setting rollover bit to '1' to allow FIFO overwriting
+3. Dropping ACPI_PTR
+
+v7:
+1. Dropped GPIOs use for now
+2. Driver name string directly used
+3. Mutex lock description added
+4. Removed noisy errors and only kept errors on larger code blocks
+5. dev_warn -> dev_err for temperature conversion failure
+6. Improvised the logic of popping out values
+7. Fixed line breaks
+8. module_i2c_driver
+
+v6: Converted usleep_range to msleep as delay is quite large
+
+v5:
+1. Fixed comment position in max30208_request
+2. Use of local u8 variable to build register values
+3. Using u8 instead of s8 in data_count
+4. Removed global MAX30208_RES_MILLICELCIUS
+5. Removed 'comma' on NULL terminators
+
+v4: Version comments go below line separator of signed-off-by
+
+v3: Release the mutex lock after error gets returned
+
+v2:
+1. Removed TODO
+2. Removed unnecessary blank spaces
+3. Corrected MC->MILLICELCIUS
+4. Comments added wherever required
+5. dev_err on i2c fails
+6. Rearranged some flows
+7. Removed PROCESSED
+8. int error return on gpio setup
+9. device_register at the end of probe
+10. Return on unsuccessful reset
+11. acpi_match_table and of_match_table added
+12. Minor quirks
+
+ MAINTAINERS                        |   6 +
+ drivers/iio/temperature/Kconfig    |  10 ++
+ drivers/iio/temperature/Makefile   |   1 +
+ drivers/iio/temperature/max30208.c | 252 +++++++++++++++++++++++++++++
+ 4 files changed, 269 insertions(+)
+ create mode 100644 drivers/iio/temperature/max30208.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f1390b8270b2..7f1fd2e31b94 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12373,6 +12373,12 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/regulator/maxim,max20086.yaml
+ F:	drivers/regulator/max20086-regulator.c
+ 
++MAXIM MAX30208 TEMPERATURE SENSOR DRIVER
++M:	Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
++L:	linux-iio@vger.kernel.org
++S:	Maintained
++F:	drivers/iio/temperature/max30208.c
++
+ MAXIM MAX77650 PMIC MFD DRIVER
+ M:	Bartosz Golaszewski <brgl@bgdev.pl>
+ L:	linux-kernel@vger.kernel.org
+diff --git a/drivers/iio/temperature/Kconfig b/drivers/iio/temperature/Kconfig
+index e8ed849e3b76..ed384f33e0c7 100644
+--- a/drivers/iio/temperature/Kconfig
++++ b/drivers/iio/temperature/Kconfig
+@@ -128,6 +128,16 @@ config TSYS02D
+ 	  This driver can also be built as a module. If so, the module will
+ 	  be called tsys02d.
+ 
++config MAX30208
++	tristate "Maxim MAX30208 digital temperature sensor"
++	depends on I2C
++	help
++	  If you say yes here you get support for Maxim MAX30208
++	  digital temperature sensor connected via I2C.
++
++	  This driver can also be built as a module. If so, the module
++	  will be called max30208.
++
+ config MAX31856
+ 	tristate "MAX31856 thermocouple sensor"
+ 	depends on SPI
+diff --git a/drivers/iio/temperature/Makefile b/drivers/iio/temperature/Makefile
+index dd08e562ffe0..dfec8c6d3019 100644
+--- a/drivers/iio/temperature/Makefile
++++ b/drivers/iio/temperature/Makefile
+@@ -7,6 +7,7 @@ obj-$(CONFIG_IQS620AT_TEMP) += iqs620at-temp.o
+ obj-$(CONFIG_LTC2983) += ltc2983.o
+ obj-$(CONFIG_HID_SENSOR_TEMP) += hid-sensor-temperature.o
+ obj-$(CONFIG_MAXIM_THERMOCOUPLE) += maxim_thermocouple.o
++obj-$(CONFIG_MAX30208) += max30208.o
+ obj-$(CONFIG_MAX31856) += max31856.o
+ obj-$(CONFIG_MAX31865) += max31865.o
+ obj-$(CONFIG_MLX90614) += mlx90614.o
+diff --git a/drivers/iio/temperature/max30208.c b/drivers/iio/temperature/max30208.c
+new file mode 100644
+index 000000000000..c85c21474711
+--- /dev/null
++++ b/drivers/iio/temperature/max30208.c
+@@ -0,0 +1,252 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++/*
++ * Copyright (c) Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
++ *
++ * Maxim MAX30208 digital temperature sensor with 0.1°C accuracy
++ * (7-bit I2C slave address (0x50 - 0x53))
++ */
++
++#include <linux/bitops.h>
++#include <linux/delay.h>
++#include <linux/iio/iio.h>
++#include <linux/i2c.h>
++#include <linux/module.h>
++#include <linux/types.h>
++
++#define MAX30208_STATUS			0x00
++#define MAX30208_STATUS_TEMP_RDY	BIT(0)
++#define MAX30208_INT_ENABLE		0x01
++#define MAX30208_INT_ENABLE_TEMP_RDY	BIT(0)
++
++#define MAX30208_FIFO_OVF_CNTR		0x06
++#define MAX30208_FIFO_DATA_CNTR		0x07
++#define MAX30208_FIFO_DATA		0x08
++
++#define MAX30208_FIFO_CONFIG		0x0a
++#define MAX30208_FIFO_CONFIG_RO		BIT(1)
++
++#define MAX30208_SYSTEM_CTRL		0x0c
++#define MAX30208_SYSTEM_CTRL_RESET	0x01
++
++#define MAX30208_TEMP_SENSOR_SETUP	0x14
++#define MAX30208_TEMP_SENSOR_SETUP_CONV	BIT(0)
++
++struct max30208_data {
++	struct i2c_client *client;
++	struct iio_dev *indio_dev;
++	struct mutex lock; /* Lock to prevent concurrent reads of temperature readings */
++};
++
++static const struct iio_chan_spec max30208_channels[] = {
++	{
++		.type = IIO_TEMP,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
++	},
++};
++
++/**
++ * max30208_request() - Request a reading
++ * @data: Struct comprising member elements of the device
++ *
++ * Requests a reading from the device and waits until the conversion is ready.
++ */
++static int max30208_request(struct max30208_data *data)
++{
++	/*
++	 * Sensor can take up to 500 ms to respond so execute a total of
++	 * 10 retries to give the device sufficient time.
++	 */
++	int retries = 10;
++	u8 regval;
++	int ret;
++
++	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
++	if (ret < 0)
++		return ret;
++
++	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
++
++	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
++	if (ret)
++		return ret;
++
++	while (retries--) {
++		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
++		if (ret < 0)
++			return ret;
++
++		if (ret & MAX30208_STATUS_TEMP_RDY)
++			return 0;
++
++		msleep(50);
++	}
++	dev_err(&data->client->dev, "Temperature conversion failed\n");
++
++	return -ETIMEDOUT;
++}
++
++static int max30208_update_temp(struct max30208_data *data)
++{
++	u8 data_count;
++	int ret;
++
++	mutex_lock(&data->lock);
++
++	ret = max30208_request(data);
++	if (ret)
++		goto unlock;
++
++	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
++	if (ret < 0)
++		goto unlock;
++	else if (!ret) {
++		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
++		if (ret < 0)
++			goto unlock;
++
++		data_count = ret;
++	} else
++		data_count = 1;
++
++	while (data_count) {
++		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
++		if (ret < 0)
++			goto unlock;
++
++		data_count--;
++	}
++
++unlock:
++	mutex_unlock(&data->lock);
++	return ret;
++}
++
++/**
++ * max30208_config_setup() - Set up FIFO configuration register
++ * @data: Struct comprising member elements of the device
++ *
++ * Sets the rollover bit to '1' to enable overwriting FIFO during overflow.
++ */
++static int max30208_config_setup(struct max30208_data *data)
++{
++	u8 regval;
++	int ret;
++
++	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_CONFIG);
++	if (ret < 0)
++		return ret;
++
++	regval = ret | MAX30208_FIFO_CONFIG_RO;
++
++	ret = i2c_smbus_write_byte_data(data->client, MAX30208_FIFO_CONFIG, regval);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int max30208_read(struct iio_dev *indio_dev,
++			 struct iio_chan_spec const *chan,
++			 int *val, int *val2, long mask)
++{
++	struct max30208_data *data = iio_priv(indio_dev);
++	int ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_RAW:
++		ret = max30208_update_temp(data);
++		if (ret < 0)
++			return ret;
++
++		*val = sign_extend32(ret, 15);
++		return IIO_VAL_INT;
++
++	case IIO_CHAN_INFO_SCALE:
++		*val = 5;
++		return IIO_VAL_INT;
++
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct iio_info max30208_info = {
++	.read_raw = max30208_read,
++};
++
++static int max30208_probe(struct i2c_client *i2c)
++{
++	struct device *dev = &i2c->dev;
++	struct max30208_data *data;
++	struct iio_dev *indio_dev;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	data = iio_priv(indio_dev);
++	data->client = i2c;
++	mutex_init(&data->lock);
++
++	indio_dev->name = "max30208";
++	indio_dev->channels = max30208_channels;
++	indio_dev->num_channels = ARRAY_SIZE(max30208_channels);
++	indio_dev->info = &max30208_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++
++	ret = i2c_smbus_write_byte_data(data->client, MAX30208_SYSTEM_CTRL,
++					MAX30208_SYSTEM_CTRL_RESET);
++	if (ret) {
++		dev_err(dev, "Failure in performing reset\n");
++		return ret;
++	}
++
++	msleep(50);
++
++	ret = max30208_config_setup(data);
++	if (ret)
++		return ret;
++
++	ret = devm_iio_device_register(dev, indio_dev);
++	if (ret) {
++		dev_err(dev, "Failed to register IIO device\n");
++		return ret;
++	}
++
++	return 0;
++}
++
++static const struct i2c_device_id max30208_id_table[] = {
++	{ "max30208" },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, max30208_id_table);
++
++static const struct acpi_device_id max30208_acpi_match[] = {
++	{ "MAX30208" },
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, max30208_acpi_match);
++
++static const struct of_device_id max30208_of_match[] = {
++	{ .compatible = "maxim,max30208" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, max30208_of_match);
++
++static struct i2c_driver max30208_driver = {
++	.driver = {
++		.name = "max30208",
++		.of_match_table = max30208_of_match,
++		.acpi_match_table = max30208_acpi_match,
++	},
++	.probe_new = max30208_probe,
++	.id_table = max30208_id_table,
++};
++module_i2c_driver(max30208_driver);
++
++MODULE_AUTHOR("Rajat Khandelwal <rajat.khandelwal@linux.intel.com>");
++MODULE_DESCRIPTION("Maxim MAX30208 digital temperature sensor");
++MODULE_LICENSE("GPL");
+-- 
+2.34.1
+

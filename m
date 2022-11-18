@@ -2,109 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E7F662FF58
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 22:26:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF936300A0
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 23:47:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbiKRV0k (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Nov 2022 16:26:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37292 "EHLO
+        id S232805AbiKRWrk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Nov 2022 17:47:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbiKRV0j (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 16:26:39 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63699A2885
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 13:26:35 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id e13so8878976edj.7
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 13:26:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gn19h91kD2DXtHLVTlmvX/z0+yNPKmW/7RO5Bbqf1MM=;
-        b=FuGELQ46WHyMDr8mQpKAZjqb0l82MxhqlvgSAv6Po5f7yjBMJaIL42l7phMLc8R6Na
-         SXmeZ6W6eSL7rQWunnHHmsZc/f9i/K0L5D28oi4xLPvx52ehylKA2MKq167XiG43QjjT
-         k398LCs8w+zDm6A2gm+6GsyZoOnbm80rRM7MQxjN2tdNNYLLd/eQhXQTJXT8mInHxDdo
-         zx4oPW+Ifl/+gVJD0MgQZ4YuiT3Lwzq/2z95lhiTVCHFivhzbYTn6kMen8x6aAqJu10a
-         zeGnF4dOe2IfU3F0lRQONNWBK4Vxpf1eKGBUUQJdXVJBNiQtLW6v+GNYYePo5N9FToS0
-         UtKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Gn19h91kD2DXtHLVTlmvX/z0+yNPKmW/7RO5Bbqf1MM=;
-        b=QCOdYo17p8RgZUfhBV/T/IP4aAIzBhcdQVw/0XxdzBn9bRLzfjmohiKoW6FEsRHsu4
-         tymleHQEzbSPZx7twS2W6Hzux1titImw0LCz/XbW1jzngT3PInmu6GOVYrTNDkLWKKiv
-         2M9Oniezaeuq6dLdpOqEhLH/FiF41vv0pa7hgsakS5AN58RnMM7iZ6AGqOWV51r3h3+q
-         077skkeKVwxgoNF31LwfgA2HlRMmCp2j5Ar5xeMwu3joEexBqglsoOjd06wIWE/wfDzr
-         f0GGdQrX4ddJuVNAUvl4H+XzjrcRFKG3nExP/WCGvC3M8w1BNW5IosHAbpt1ue7mJfXV
-         r5Yw==
-X-Gm-Message-State: ANoB5pnnViTDwl/icyZTJYCEBov20hq2TQSEKiky+ms1NYEzVAmFPS+A
-        B3C44Kc45A7qa/c8r4BKzsybU+V5tLRerBjufsyGPw==
-X-Google-Smtp-Source: AA0mqf7/jfSfmCMp1R3z90KPsI7aEquK2Hg1zTkkjjR73PB27eXwJMYj8xkB+a9dyVksrMBxxq9IE8bZY63uCH8TSOA=
-X-Received: by 2002:a05:6402:c0b:b0:463:a83c:e0af with SMTP id
- co11-20020a0564020c0b00b00463a83ce0afmr7463177edb.158.1668806793738; Fri, 18
- Nov 2022 13:26:33 -0800 (PST)
-MIME-Version: 1.0
-References: <20221117080916.411766-1-cosmin.tanislav@analog.com> <20221117080916.411766-3-cosmin.tanislav@analog.com>
-In-Reply-To: <20221117080916.411766-3-cosmin.tanislav@analog.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 18 Nov 2022 22:26:21 +0100
-Message-ID: <CACRpkdbRPugRA+zbad8=v0jaUDCOYA4KWdsRxyFn_iWmiyJQFw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: addac: add AD74115 driver
-To:     Cosmin Tanislav <demonsingur@gmail.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        with ESMTP id S232335AbiKRWqw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 17:46:52 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AABB7EA7
+        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 14:46:40 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA7p-0007qN-U1; Fri, 18 Nov 2022 23:46:21 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA7n-0058Bi-5h; Fri, 18 Nov 2022 23:46:20 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1owA7l-00Haxx-In; Fri, 18 Nov 2022 23:46:17 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Michael Hennerich <michael.hennerich@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Subject: [PATCH 049/606] iio: accel: adxl372_i2c: Convert to i2c's .probe_new()
+Date:   Fri, 18 Nov 2022 23:36:23 +0100
+Message-Id: <20221118224540.619276-50-uwe@kleine-koenig.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 17, 2022 at 9:09 AM Cosmin Tanislav <demonsingur@gmail.com> wrote:
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-> The AD74115H is a single-channel, software-configurable, input and
-> output device for industrial control applications. The AD74115H
-> provides a wide range of use cases, integrated on a single chip.
->
-> These use cases include analog output, analog input, digital output,
-> digital input, resistance temperature detector (RTD), and thermocouple
-> measurement capability. The AD74115H also has an integrated HART modem.
->
-> A serial peripheral interface (SPI) is used to handle all communications
-> to the device, including communications with the HART modem. The digital
-> input and digital outputs can be accessed via the SPI or the
-> general-purpose input and output (GPIO) pins to support higher
-> speed data rates.
->
-> The device features a 16-bit, sigma-delta analog-to-digital converter
-> (ADC) and a 14-bit digital-to-analog converter (DAC).
-> The AD74115H contains a high accuracy 2.5 V on-chip reference that can
-> be used as the DAC and ADC reference.
->
-> Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+.probe_new() doesn't get the i2c_device_id * parameter, so determine
+that explicitly in the probe function.
 
-(...)
-> +config AD74115
-> +       tristate "Analog Devices AD74115H driver"
-> +       depends on GPIOLIB && SPI
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/iio/accel/adxl372_i2c.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I think you can technically just select GPIOLIB making it easier
-for users, but that's up to you and definitely fine like this too.
+diff --git a/drivers/iio/accel/adxl372_i2c.c b/drivers/iio/accel/adxl372_i2c.c
+index 4efb70a5fe40..e5f310ea65ff 100644
+--- a/drivers/iio/accel/adxl372_i2c.c
++++ b/drivers/iio/accel/adxl372_i2c.c
+@@ -18,9 +18,9 @@ static const struct regmap_config adxl372_regmap_config = {
+ 	.readable_noinc_reg = adxl372_readable_noinc_reg,
+ };
+ 
+-static int adxl372_i2c_probe(struct i2c_client *client,
+-			     const struct i2c_device_id *id)
++static int adxl372_i2c_probe(struct i2c_client *client)
+ {
++	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	struct regmap *regmap;
+ 	unsigned int regval;
+ 	int ret;
+@@ -58,7 +58,7 @@ static struct i2c_driver adxl372_i2c_driver = {
+ 		.name = "adxl372_i2c",
+ 		.of_match_table = adxl372_of_match,
+ 	},
+-	.probe = adxl372_i2c_probe,
++	.probe_new = adxl372_i2c_probe,
+ 	.id_table = adxl372_i2c_id,
+ };
+ 
+-- 
+2.38.1
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Yours,
-Linus Walleij

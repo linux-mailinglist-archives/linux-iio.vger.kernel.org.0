@@ -2,98 +2,137 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D326630316
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Nov 2022 00:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1A2A6302D7
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Nov 2022 00:19:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbiKRXXG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Nov 2022 18:23:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57938 "EHLO
+        id S231244AbiKRXTW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Nov 2022 18:19:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235494AbiKRXVw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 18:21:52 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06DE6D96A
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 15:12:59 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9f-0005Dg-Vg; Fri, 18 Nov 2022 23:48:16 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9d-0058rG-0g; Fri, 18 Nov 2022 23:48:13 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owA9d-0000Tl-C9; Fri, 18 Nov 2022 23:48:13 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        with ESMTP id S233093AbiKRXTE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 18:19:04 -0500
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C2197ED8
+        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 15:04:26 -0800 (PST)
+Received: by mail-il1-x12b.google.com with SMTP id g7so3267229ile.0
+        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 15:04:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WjpJ7YUQJY6Hgwjbl7LkJRbvBhSrnKhNjJy14nrac+U=;
+        b=QXnrZJlmcrDl8ajS1QaMM5U5XhIP9Q2mC7yAVVRUjiB7zK38w1xgLa8ESg7U8Yt9iI
+         VYMRDuhem+WVOLHh8pxPOizrn/1gRSc+Mu+mRZGfopx/rwl7xkEEmlfsRlgi06/G/HTn
+         nBr1oCqipzTM3V46kR8iekHIl+/GqlU7XrEStitC9Ts4P4bImBFE0EnExTdfKUJl6rOJ
+         rKmDCN13WEyYwm/GNI87PSY0zfrRj8LAb5bR0OaMI91uRSY9z4LBSSJnEjvrjyL0Tiah
+         JaEXOnsxQepBnFlPZfXlPH5v0tv5HYG89UUMhuhw+U05mMUUaGWWtOZ7sh4KwNrrM0Ab
+         NKXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WjpJ7YUQJY6Hgwjbl7LkJRbvBhSrnKhNjJy14nrac+U=;
+        b=c0Tje3EgwpmyKniK1jKAfG4oib80u3H0OB/K8Jl/pT8pfQ2PpNTmJt20XO1wJnWgSd
+         UW53L53bU/ZSK3g6c0/HqV2ghkzRzhmaEFOfeaDr5w7fo+pj/85k9jPn+MBw9QAz0vuj
+         R50lKeRA35MCdcbFvilTJ5hUr5BOi43KCkWSH1LI4e5zPPC34o87Zu5BgSwXYUmVAF23
+         5cv/6OJQQkHvYSMnrK4RCtoG8I6Qr4bnXYOJUQfikJYBdtRy4Nod4Y19JRuAGvEHwsS0
+         ZMhf/qYVUvQCAMoCTOOPXQ7tk4X8gZbqdsTzn1qMO2vHL51qjkD0gtsizzGYukEEm7k8
+         o+wQ==
+X-Gm-Message-State: ANoB5pm8apX/QUywOqdnhTGFdwGTUzmcPjAvLFs0T2BT9NSTvV3ckunN
+        Ci7CD+3FOjBh2wBOrtYDY6YJt7Y5kWJh5urwEQkvtg==
+X-Google-Smtp-Source: AA0mqf6EPSbZL7sdYYo5fUTE7eiO759F6woaqf3tsefxpBjSBXpqMr9uED2zRYnpYuiPHIRrbFgrLXPbp7EOuYIVplc=
+X-Received: by 2002:a92:680d:0:b0:302:dc:bb47 with SMTP id d13-20020a92680d000000b0030200dcbb47mr4114938ilc.81.1668812665683;
+ Fri, 18 Nov 2022 15:04:25 -0800 (PST)
+MIME-Version: 1.0
+References: <20221118224540.619276-1-uwe@kleine-koenig.org> <20221118224540.619276-186-uwe@kleine-koenig.org>
+In-Reply-To: <20221118224540.619276-186-uwe@kleine-koenig.org>
+From:   Crt Mori <cmo@melexis.com>
+Date:   Sat, 19 Nov 2022 00:03:49 +0100
+Message-ID: <CAKv63uupCo5FjXseSQzk3Ngdce8wtppBib5xxLtCypW4izi9Dw@mail.gmail.com>
+Subject: Re: [PATCH 185/606] iio: temperature: mlx90614: Convert to i2c's .probe_new()
+To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
         Grant Likely <grant.likely@linaro.org>,
         Wolfram Sang <wsa@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [PATCH 568/606] staging: iio: ade7854: Convert to i2c's .probe_new()
-Date:   Fri, 18 Nov 2022 23:45:02 +0100
-Message-Id: <20221118224540.619276-569-uwe@kleine-koenig.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Crt Mori<cmo@melexis.com>
 
-The probe function doesn't make use of the i2c_device_id * parameter so it
-can be trivially converted.
+Crt Mori
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/staging/iio/meter/ade7854-i2c.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Melexis Technologies NV
+Transportstraat 1
+3980 Tessenderlo
 
-diff --git a/drivers/staging/iio/meter/ade7854-i2c.c b/drivers/staging/iio/meter/ade7854-i2c.c
-index 71b67dd3c8e9..572d714eb0dd 100644
---- a/drivers/staging/iio/meter/ade7854-i2c.c
-+++ b/drivers/staging/iio/meter/ade7854-i2c.c
-@@ -112,8 +112,7 @@ static int ade7854_i2c_read_reg(struct device *dev,
- 	return ret;
- }
- 
--static int ade7854_i2c_probe(struct i2c_client *client,
--			     const struct i2c_device_id *id)
-+static int ade7854_i2c_probe(struct i2c_client *client)
- {
- 	struct ade7854_state *st;
- 	struct iio_dev *indio_dev;
-@@ -144,7 +143,7 @@ static struct i2c_driver ade7854_i2c_driver = {
- 	.driver = {
- 		.name = "ade7854",
- 	},
--	.probe    = ade7854_i2c_probe,
-+	.probe_new = ade7854_i2c_probe,
- 	.id_table = ade7854_id,
- };
- module_i2c_driver(ade7854_i2c_driver);
--- 
-2.38.1
+Mobile: +32 492 46 22 15
+E-mail: cmo@melexis.com
+Website: www.melexis.com
 
+----------------------------------------------------------
+The contents of this e-mail are CONFIDENTIAL AND PROPRIETARY. Please
+read our disclaimer at http://www.melexis.com/mailpolicy
+
+
+On Fri, 18 Nov 2022 at 23:46, Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>=
+ wrote:
+>
+> From: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+>
+> .probe_new() doesn't get the i2c_device_id * parameter, so determine
+> that explicitly in the probe function.
+>
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/iio/temperature/mlx90614.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/iio/temperature/mlx90614.c b/drivers/iio/temperature=
+/mlx90614.c
+> index 8eb0f962ed25..909fadb62349 100644
+> --- a/drivers/iio/temperature/mlx90614.c
+> +++ b/drivers/iio/temperature/mlx90614.c
+> @@ -537,9 +537,9 @@ static int mlx90614_probe_num_ir_sensors(struct i2c_c=
+lient *client)
+>         return (ret & MLX90614_CONFIG_DUAL_MASK) ? 1 : 0;
+>  }
+>
+> -static int mlx90614_probe(struct i2c_client *client,
+> -                        const struct i2c_device_id *id)
+> +static int mlx90614_probe(struct i2c_client *client)
+>  {
+> +       const struct i2c_device_id *id =3D i2c_client_get_device_id(clien=
+t);
+>         struct iio_dev *indio_dev;
+>         struct mlx90614_data *data;
+>         int ret;
+> @@ -675,7 +675,7 @@ static struct i2c_driver mlx90614_driver =3D {
+>                 .of_match_table =3D mlx90614_of_match,
+>                 .pm     =3D pm_ptr(&mlx90614_pm_ops),
+>         },
+> -       .probe =3D mlx90614_probe,
+> +       .probe_new =3D mlx90614_probe,
+>         .remove =3D mlx90614_remove,
+>         .id_table =3D mlx90614_id,
+>  };
+> --
+> 2.38.1
+>

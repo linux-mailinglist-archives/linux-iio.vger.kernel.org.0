@@ -2,96 +2,97 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1EC62F603
-	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 14:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 010C962FB3E
+	for <lists+linux-iio@lfdr.de>; Fri, 18 Nov 2022 18:11:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241411AbiKRN35 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 18 Nov 2022 08:29:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50176 "EHLO
+        id S242457AbiKRRLN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 18 Nov 2022 12:11:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241762AbiKRN32 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 08:29:28 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E6A532EB
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 05:29:26 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id b3so8228378lfv.2
-        for <linux-iio@vger.kernel.org>; Fri, 18 Nov 2022 05:29:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q/TyOqr73oo6gB6yR08kHAfoWVVQLDrClTo0sJTWwhc=;
-        b=CmrWBXFllKIQAsoSTeOMuz2gdKXRU9BA6YQPz6GcNHw8gIIb2PyFCYmnzOn5Wm0OK0
-         jUN07r6dzLtojBMomFaxN6WRPZ0nhvGH0A1AN2owJjGfUN+3lRO6NYdKktYQipEkTfOb
-         DrJeCsufw8b69Yp+fQqqj8pVaHYkchrK2ibwo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q/TyOqr73oo6gB6yR08kHAfoWVVQLDrClTo0sJTWwhc=;
-        b=mRr10717SLxsvgyBWvf7M96Z99y5J6VmwZwtELl163iIfT36gjfC63bWdEZ0y1odiR
-         eR6g2/BSdPR1UTkW47x5ll23Fo1p1IXCeRxkJ5o3DEPlC2hx3Bimn9ulcLCmYR2drb5r
-         PYbDpcDvO9MtsLsMSbEpoXF3WgOsZBsJ9odOdpkHiKOSHF3py1KW3cpgTaSWh4aiFHQ9
-         4bu59yObzftoazeFVi9TL5a022uxCwX4MNKQUHxeBx0VnpgsTTR7kETWY40uX+aHcLF6
-         LAHxC5JDkoyj91Zsrye8rTGw3+NW4a4SuQrippBB/kDfY7a/HcLk9KyUKqQMS4Lcl5QM
-         jRZQ==
-X-Gm-Message-State: ANoB5pmZ6w8UX7LJuYa/9Rnpg9T/GQTJK6Gmbv8uiBhzkcd6Ka5YXksq
-        ZP8xZVvnR5cBkXLw88C9yZjpbA==
-X-Google-Smtp-Source: AA0mqf7PW78FYCP+kjvydfHU5oMH2AIMPUs7xKcByPxInuLc8lVC/femYfseh7ZMaBgKL53nRyPDPA==
-X-Received: by 2002:a05:6512:34c7:b0:4a2:2b23:f17f with SMTP id w7-20020a05651234c700b004a22b23f17fmr2285963lfr.688.1668778165188;
-        Fri, 18 Nov 2022 05:29:25 -0800 (PST)
-Received: from [172.16.11.74] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id 13-20020a2e164d000000b00277078d4504sm656431ljw.13.2022.11.18.05.29.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Nov 2022 05:29:24 -0800 (PST)
-Message-ID: <b81d2ffe-efc3-8e2d-de7b-ed2bfa2449d0@rasmusvillemoes.dk>
-Date:   Fri, 18 Nov 2022 14:29:23 +0100
+        with ESMTP id S242547AbiKRRKz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 18 Nov 2022 12:10:55 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3848CF10;
+        Fri, 18 Nov 2022 09:10:50 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 28FBBCAE34;
+        Fri, 18 Nov 2022 17:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1668791418; bh=H8LeYLsrrHDcYvO2z/fKun56/ndn3rLQwgBtKmM3hk4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=Iv5ai0HwlG35CGMM4PW5M2jRZV1kAEqDIllnhNwaMzZaJKI/p+rwhNLl9J64DWWGS
+         TmBkUj14j7NwEHt7Dud75+EW+Yl0g8Bki08N5UjlZDa5L8WBkSVS+mr1NZfZqrE/5O
+         FgTYpnHVEAGjTZ8RltkPdnYvrnnDo9CEv1pTZvjI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
+Date:   Fri, 18 Nov 2022 18:10:17 +0100
+Message-ID: <2259963.ElGaqSPkdT@g550jk>
+In-Reply-To: <20221106121310.3ad643be@jic23-huawei>
+References: <20221031182456.952648-1-luca@z3ntu.xyz> <20221102163136.GA4004075-robh@kernel.org> <20221106121310.3ad643be@jic23-huawei>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH] iio: addac: ad74413r: fix integer promotion bug in
- ad74413_get_input_current_offset()
-Content-Language: en-US, da
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20221118123209.1658420-1-linux@rasmusvillemoes.dk>
- <SJ0PR03MB6778D6C0682294002296E54C99099@SJ0PR03MB6778.namprd03.prod.outlook.com>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-In-Reply-To: <SJ0PR03MB6778D6C0682294002296E54C99099@SJ0PR03MB6778.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_SUSPICIOUS_NTLD,
+        PDS_OTHER_BAD_TLD,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 18/11/2022 14.17, Sa, Nuno wrote:
+Hi Jonathan,
 
->> Casting to int avoids that promotion and results in the correct -32767
->> output.
->>
->> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
->> ---
+On Sonntag, 6. November 2022 13:13:10 CET Jonathan Cameron wrote:
+> On Wed, 2 Nov 2022 11:31:36 -0500
 > 
-> After adding proper Fixes: tag,
+> Rob Herring <robh@kernel.org> wrote:
+> > On Mon, Oct 31, 2022 at 07:24:54PM +0100, Luca Weiss wrote:
+> > > As in other bindings, let's use specific compatibles together with the
+> > > fallback compatible. Adjust the bindings for it.
+> > 
+> > You should state users are already doing this.
 > 
-> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+> I can fix that up whilst applying.  However it raises the question:
+> Should I treat this as a fix, or a tidy up (that can wait for next merge
+> window)?
+> 
+> I'm also fine with this going with the other patch in the series (that lore
+> found for me as it didn't go to linux-iio) if that makes more sense.
+> 
 
-That would be
+Sorry for the delay in answering.
+The dts patch (2/2) has already been picked up through qcom tree, so I think 
+you can apply this one to your tree.
+It's definitely not urgent, so next merge window would be perfect.
 
-Fixes: fea251b6a5db (iio: addac: add AD74413R driver)
+Regards
+Luca
 
-Thanks,
-Rasmus
+> If that happens
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Jonathan
+> 
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > ---
+> > > Changes in v2:
+> > > * New patch
+> > > 
+> > >  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml        | 7 +++++--
+> > >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > 
+> > Acked-by: Rob Herring <robh@kernel.org>
+
+
+
 

@@ -2,58 +2,100 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F651630DF8
-	for <lists+linux-iio@lfdr.de>; Sat, 19 Nov 2022 11:03:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFFA6630E3F
+	for <lists+linux-iio@lfdr.de>; Sat, 19 Nov 2022 12:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233948AbiKSKC7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 19 Nov 2022 05:02:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
+        id S231757AbiKSLKV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 19 Nov 2022 06:10:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232923AbiKSKC5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Nov 2022 05:02:57 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE97086FC5
-        for <linux-iio@vger.kernel.org>; Sat, 19 Nov 2022 02:02:56 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owKgX-0006qO-42; Sat, 19 Nov 2022 11:02:53 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owKgU-005EHk-4x; Sat, 19 Nov 2022 11:02:51 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1owKgU-00069v-D0; Sat, 19 Nov 2022 11:02:50 +0100
-Date:   Sat, 19 Nov 2022 11:02:50 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Crt Mori <cmo@melexis.com>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        Grant Likely <grant.likely@linaro.org>,
+        with ESMTP id S229470AbiKSLKS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 19 Nov 2022 06:10:18 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32F3F6B9E9;
+        Sat, 19 Nov 2022 03:10:18 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99C4960A1F;
+        Sat, 19 Nov 2022 11:10:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763BCC433C1;
+        Sat, 19 Nov 2022 11:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1668856217;
+        bh=ene1SzTvsJEbW7r9yE4HzkF6rHfAR+aLIm+4UV/wgpo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AwWwg8hTEvU1lRotHevSh1bppQ+LWfLwM9aU/yyuaFSoeFCmSwjJ4hNXPYNKPqyxF
+         RwoQt69tGMzjEml+0YwDwVnLfETtKSINebD6ZDDIjJG2YZ26iP67zsjgz4cgG6uGnz
+         NeH6bx6FUo9hgiiy06aaBkM2k9pRw5peXY9fXGbpIdefsltNF4FVq05z66zkCjnicj
+         f/YnghTN3aq/ykMs6EmMfO5tnMvkQz4JaZBC1pmyIfU8l5HPFc7Qkk3nYySibldc2a
+         4zm4rXtEkUSkKLdGBy0DoGhHf7XI5Gph/tChnTnqwzMKjNhd3aisTxqnB1pP+2RhuX
+         Z5WZrjjMLqJaQ==
+Date:   Sat, 19 Nov 2022 12:10:11 +0100
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
         Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 186/606] iio: temperature: mlx90632: Convert to i2c's
- .probe_new()
-Message-ID: <20221119100250.iw757ovgwjbwr2ho@pengutronix.de>
+        Grant Likely <grant.likely@linaro.org>,
+        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+        linux-gpio@vger.kernel.org,
+        Broadcom internal kernel review list 
+        <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-actions@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-pm@vger.kernel.org, Purism Kernel Team <kernel@puri.sm>,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net
+Subject: Re: [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
+Message-ID: <Y3i5kz6IL7tFbVwX@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        linux-rpi-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-leds@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-media@vger.kernel.org, patches@opensource.cirrus.com,
+        linux-actions@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org, alsa-devel@alsa-project.org,
+        linux-omap@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, chrome-platform@lists.linux.dev,
+        linux-pm@vger.kernel.org, Purism Kernel Team <kernel@puri.sm>,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-fbdev@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net
 References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-187-uwe@kleine-koenig.org>
- <CAKv63uvVsLhbt9y0fWxPWp005rnWzCn6Vm0UmOnW08B87fkCzw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="hp5mb2d6k7mrzljq"
+        protocol="application/pgp-signature"; boundary="xRatB1/o2GNYTDWD"
 Content-Disposition: inline
-In-Reply-To: <CAKv63uvVsLhbt9y0fWxPWp005rnWzCn6Vm0UmOnW08B87fkCzw@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,103 +104,49 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---hp5mb2d6k7mrzljq
-Content-Type: text/plain; charset=iso-8859-1
+--xRatB1/o2GNYTDWD
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi Uwe,
 
-On Sat, Nov 19, 2022 at 12:04:41AM +0100, Crt Mori wrote:
-> On Fri, 18 Nov 2022 at 23:46, Uwe Kleine-K=F6nig <uwe@kleine-koenig.org> =
-wrote:
-> >
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >
-> > .probe_new() doesn't get the i2c_device_id * parameter, so determine
-> > that explicitly in the probe function.
-> >
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/iio/temperature/mlx90632.c | 12 ++++++++++--
-> >  1 file changed, 10 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperatu=
-re/mlx90632.c
-> > index f1f5ebc145b1..19e30cfca8a7 100644
-> > --- a/drivers/iio/temperature/mlx90632.c
-> > +++ b/drivers/iio/temperature/mlx90632.c
-> > @@ -1168,9 +1168,9 @@ static int mlx90632_enable_regulator(struct mlx90=
-632_data *data)
-> >         return ret;
-> >  }
-> >
-> > -static int mlx90632_probe(struct i2c_client *client,
-> > -                         const struct i2c_device_id *id)
-> > +static int mlx90632_probe(struct i2c_client *client)
-> >  {
-> > +       const struct i2c_device_id *id =3D i2c_client_get_device_id(cli=
-ent);
-> >         struct mlx90632_data *mlx90632;
-> >         struct iio_dev *indio_dev;
-> >         struct regmap *regmap;
-> > @@ -1337,7 +1337,15 @@ static struct i2c_driver mlx90632_driver =3D {
-> >                 .of_match_table =3D mlx90632_of_match,
-> >                 .pm     =3D pm_ptr(&mlx90632_pm_ops),
-> >         },
-> > +<<<<<<< ours
->=20
-> Maybe some of the merge artifacts left (also below)?
+> This series completes all drivers to this new callback (unless I missed
+> something). It's based on current next/master.
 
-*groan*, ok, thanks for pointing out the obvious. Fixed in my tree. Ftr,
-the fixup is:
+Thanks for this work, really, but oh my poor inbox...
 
-diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature/m=
-lx90632.c
-index 19e30cfca8a7..753b7a4ccfdd 100644
---- a/drivers/iio/temperature/mlx90632.c
-+++ b/drivers/iio/temperature/mlx90632.c
-@@ -1337,15 +1337,7 @@ static struct i2c_driver mlx90632_driver =3D {
- 		.of_match_table =3D mlx90632_of_match,
- 		.pm	=3D pm_ptr(&mlx90632_pm_ops),
- 	},
--<<<<<<< ours
--	.probe =3D mlx90632_probe,
--||||||| base
--	.probe =3D mlx90632_probe,
--	.remove =3D mlx90632_remove,
--=3D=3D=3D=3D=3D=3D=3D
- 	.probe_new =3D mlx90632_probe,
--	.remove =3D mlx90632_remove,
-->>>>>>> theirs
- 	.id_table =3D mlx90632_id,
- };
- module_i2c_driver(mlx90632_driver);
+> I don't think it's feasable to apply this series in one go, so I ask the
+> maintainers of the changed files to apply via their tree.
 
-When (and if) I'll resend the series, the fixed version will be
-included. (Unless someone picks up the broken patch with the above
-fixup of course :-)
+This seems reasonable. It would have made sense to send "patch series
+per subsystem" then. So people only see the subset they are interested
+in. I know filename-to-subsys mapping is hardly ever perfect. But in my
+experience, even imperfect, it is more convenient than such a huge patch
+series.
 
-Best regards
-Uwe
+Happy hacking,
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+   Wolfram
 
---hp5mb2d6k7mrzljq
+
+--xRatB1/o2GNYTDWD
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN4qccACgkQwfwUeK3K
-7AlCtQf8CxtG6vuDNnXN8vBGpjT/PQQsixyChegKXC+2lHfz6/xOl3dekciIonD1
-MN6LBdeVd2qHQgWW4gKxPxvxOPscWj5MF++LvxdSd8EjUgVGdvLB2nC+n6HVATuq
-GMOwkO1X64M7eqvXM+XKCehWVYAx4dKgGYceEeKSWIxLbHr39+Q1mRVvOXyuKobM
-K4c7TCcZXHhwjtMKIqnG9DIpclJ0fTxT0xkgjn2rj3u4oUpQexjaSdIWE2oRzmvA
-lzA2HzdZDEeeNk6bgBnNiCUfVeOcExMkx7LgUOPntH5sj1tPTFYaG0jUGEA42xK2
-afoznodF/Zt4fW1nbJkWJs3tWfyVIw==
-=wkQl
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmN4uY8ACgkQFA3kzBSg
+KbYEfw/+L6nVN4bUDqiN6AeU0yv+Wq/oAFkIUgM8TLT/4gzeEwPsCcTwHBaHQFEF
+sO9yZWukjVYlt2YlcEZglBVIAl7Ha17oQfv2HbWzZXl4cv8PEMfodh6PuOpcPuna
+P+RjiB40nPPxUt5hZ7EjiOpqML0Xy9G8X9Uzs5rA4Yt2OSXcGSYhCZb+U/Vygwlo
+VmLhSQhUnluCyhMZlbTn+bnmVCSHW8Bk5YBKOWygj8K7/LRYKfcNKXjMV35OsBix
+3rezawgwT9KZlZ6ABJZ6U/o5Lp91OP/XeUfhMp76fmAOBcrh25HhWcunmbfRNto7
+gsYho2Ov6yLtz3/Gq4gsDB2HULSajZW1behtfyfufpmkyGd8+C5+/uUjfltWtpqm
+qaAL4YC+kjzarFDRKtIINCqlixjh0VUUKCkf6c4IDCNoLD4HW5KGevjvMvG0kJ9S
+ftPKDwBpZ+cMZtpTcYgRQRiEb30VekQVyWM8SL+350sLO2dVhy7tjAX1jTnWZ843
+4L3c6tSTioFtNmuIREzKl4EX2xkZUq6ajI4QeAcleHXAsBKHB5kvDpfKYIfGZ49X
+mvIEEWRaUXGZAyqx2tMBXvuSA2aL+Gk9hrW3cvCHoBh6EkGfa6R4flw7yN0RkYHR
+Fzq+Jpg1jOHfQhNDoZ8yqFo2xQZQpp1oDdVAjW70IRrE5KPvV0k=
+=eSNj
 -----END PGP SIGNATURE-----
 
---hp5mb2d6k7mrzljq--
+--xRatB1/o2GNYTDWD--

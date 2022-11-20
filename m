@@ -2,166 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5975163133E
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Nov 2022 10:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BABE56313EB
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Nov 2022 13:42:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbiKTJuA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Nov 2022 04:50:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55376 "EHLO
+        id S229500AbiKTMme (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Nov 2022 07:42:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbiKTJt7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Nov 2022 04:49:59 -0500
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B7E140BA
-        for <linux-iio@vger.kernel.org>; Sun, 20 Nov 2022 01:49:57 -0800 (PST)
-Received: by mail-io1-xd30.google.com with SMTP id y6so6795011iof.9
-        for <linux-iio@vger.kernel.org>; Sun, 20 Nov 2022 01:49:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=melexis.com; s=google;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9CeH73YP6L8/tKyBqkauv8yKtr7kbd62tDdWAPZkAPI=;
-        b=CjxvDjAC682hi79CFVg17+4dp3JhMhAc40aEGnJ3NS481Pr3nGHUjwE8ClLB6CM9jH
-         b1XnhdS0mGnc1T7nmV9lzCEYinDIcD4uhthvWkbozJfF4Ak9HpdoLr4ijZnczDh9J8Y2
-         fY9BDgZmDzSAfs5akNVG3e65VheTKYLBypctBsos1CEoUgFM1tXgDv9NE5P9SRlT0X2p
-         cqP7c7KgV5mCtxNxSL/MLFXqJc9GkOW4Gbh7QKYgt152wf+s0E993T8BE4tz07jEo87P
-         bOGgc4+coqYoRgjvHk95fjDX1ycXC8nxeFC+NqzOavTOckzQu7elST8g5TSyR3OgHTZ1
-         FFzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9CeH73YP6L8/tKyBqkauv8yKtr7kbd62tDdWAPZkAPI=;
-        b=uqlo0Ra7cHtpEpxLGKd2boXnYorg3noZJMW6v05X0GJ9fCQO8xLzfWw2md/2o3oH+G
-         S8MqKL4X1zE83ef3b5qtoIBftpT8oVgzMrrDZqMlEYtnbydnP+fQSLil2A5A9Zm/mtEy
-         4Pdzn59JOu4gx70IDmeEQ00doMxYkKFd/Vdq+Mecn6quAfGbL88c42JSyvL6In9K+khv
-         bUx6WXrDBiRC4QdSrZ8Vf8SGDHenPPLDhMslC/QJOR6S/Ezdd/xtxhDqOMsoQmFOkYdn
-         MSpfq0z/jHvJahPuNEBDPfuVdY6QhxRzUZ/LarKMMNKNiPeyLesA1uPvFF4PAUuTzIV8
-         Yi9w==
-X-Gm-Message-State: ANoB5pkQFpi5DOtImf0yJe/GjJ5RTf6K0xzPzbiuxzowu+KhK7aYCA3J
-        l/AAcUxH6JhusBrGVUknXjlvvrNIp22FMGEE527YSuomnuA=
-X-Google-Smtp-Source: AA0mqf6EJwlob7+cyNsX1i1JLtvmQvzKc9pxIyX8dxiX2Sroa5FdLWco6awHIO6wNwy2ZmM1TEhEBhB0Yl/tJHSuqg8=
-X-Received: by 2002:a02:6d54:0:b0:376:24f6:d0f4 with SMTP id
- e20-20020a026d54000000b0037624f6d0f4mr6421543jaf.206.1668937796820; Sun, 20
- Nov 2022 01:49:56 -0800 (PST)
-MIME-Version: 1.0
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-187-uwe@kleine-koenig.org> <CAKv63uvVsLhbt9y0fWxPWp005rnWzCn6Vm0UmOnW08B87fkCzw@mail.gmail.com>
- <20221119100250.iw757ovgwjbwr2ho@pengutronix.de>
-In-Reply-To: <20221119100250.iw757ovgwjbwr2ho@pengutronix.de>
-From:   Crt Mori <cmo@melexis.com>
-Date:   Sun, 20 Nov 2022 10:49:20 +0100
-Message-ID: <CAKv63uti8o2i-SFsJ7iK+R0N1go1tzVKpWZHbaRD3Wta2mXuZQ@mail.gmail.com>
-Subject: Re: [PATCH 186/606] iio: temperature: mlx90632: Convert to i2c's .probe_new()
-To:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <uwe@kleine-koenig.org>,
+        with ESMTP id S229568AbiKTMme (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Nov 2022 07:42:34 -0500
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E849A10AC;
+        Sun, 20 Nov 2022 04:42:29 -0800 (PST)
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.emlix.com (Postfix) with ESMTPS id EC6895FCEB;
+        Sun, 20 Nov 2022 13:42:27 +0100 (CET)
+From:   Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Edmund Berenson <edmund.berenson@emlix.com>,
+        Lukasz Zemla <Lukasz.Zemla@woodward.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        Grant Likely <grant.likely@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] iio: adc: ad7923: Add ad7927
+Date:   Sun, 20 Nov 2022 13:42:04 +0100
+Message-Id: <20221120124205.14462-1-edmund.berenson@emlix.com>
+X-Mailer: git-send-email 2.37.4
+In-Reply-To: <20221116191056.59f901da@jic23-huawei>
+References: <20221116191056.59f901da@jic23-huawei>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Ok. Acked-by: Crt Mori <cmo@melexis.com>
-(resending since previous mail was not delivered because it was not plainte=
-xt)
+Add ID for ad7927 which is compatible with existing ad7928 driver.
 
-On Sat, 19 Nov 2022 at 11:02, Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@pengutronix.de> wrote:
->
-> Hello,
->
-> On Sat, Nov 19, 2022 at 12:04:41AM +0100, Crt Mori wrote:
-> > On Fri, 18 Nov 2022 at 23:46, Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.=
-org> wrote:
-> > >
-> > > From: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > >
-> > > .probe_new() doesn't get the i2c_device_id * parameter, so determine
-> > > that explicitly in the probe function.
-> > >
-> > > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > > ---
-> > >  drivers/iio/temperature/mlx90632.c | 12 ++++++++++--
-> > >  1 file changed, 10 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/tempera=
-ture/mlx90632.c
-> > > index f1f5ebc145b1..19e30cfca8a7 100644
-> > > --- a/drivers/iio/temperature/mlx90632.c
-> > > +++ b/drivers/iio/temperature/mlx90632.c
-> > > @@ -1168,9 +1168,9 @@ static int mlx90632_enable_regulator(struct mlx=
-90632_data *data)
-> > >         return ret;
-> > >  }
-> > >
-> > > -static int mlx90632_probe(struct i2c_client *client,
-> > > -                         const struct i2c_device_id *id)
-> > > +static int mlx90632_probe(struct i2c_client *client)
-> > >  {
-> > > +       const struct i2c_device_id *id =3D i2c_client_get_device_id(c=
-lient);
-> > >         struct mlx90632_data *mlx90632;
-> > >         struct iio_dev *indio_dev;
-> > >         struct regmap *regmap;
-> > > @@ -1337,7 +1337,15 @@ static struct i2c_driver mlx90632_driver =3D {
-> > >                 .of_match_table =3D mlx90632_of_match,
-> > >                 .pm     =3D pm_ptr(&mlx90632_pm_ops),
-> > >         },
-> > > +<<<<<<< ours
-> >
-> > Maybe some of the merge artifacts left (also below)?
->
-> *groan*, ok, thanks for pointing out the obvious. Fixed in my tree. Ftr,
-> the fixup is:
->
-> diff --git a/drivers/iio/temperature/mlx90632.c b/drivers/iio/temperature=
-/mlx90632.c
-> index 19e30cfca8a7..753b7a4ccfdd 100644
-> --- a/drivers/iio/temperature/mlx90632.c
-> +++ b/drivers/iio/temperature/mlx90632.c
-> @@ -1337,15 +1337,7 @@ static struct i2c_driver mlx90632_driver =3D {
->                 .of_match_table =3D mlx90632_of_match,
->                 .pm     =3D pm_ptr(&mlx90632_pm_ops),
->         },
-> -<<<<<<< ours
-> -       .probe =3D mlx90632_probe,
-> -||||||| base
-> -       .probe =3D mlx90632_probe,
-> -       .remove =3D mlx90632_remove,
-> -=3D=3D=3D=3D=3D=3D=3D
->         .probe_new =3D mlx90632_probe,
-> -       .remove =3D mlx90632_remove,
-> ->>>>>>> theirs
->         .id_table =3D mlx90632_id,
->  };
->  module_i2c_driver(mlx90632_driver);
->
-> When (and if) I'll resend the series, the fixed version will be
-> included. (Unless someone picks up the broken patch with the above
-> fixup of course :-)
->
-> Best regards
-> Uwe
->
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig       =
-     |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ =
-|
+Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
+---
+ drivers/iio/adc/ad7923.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
+index 9d6bf6d0927a..df72e97dc331 100644
+--- a/drivers/iio/adc/ad7923.c
++++ b/drivers/iio/adc/ad7923.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7928 SPI ADC driver
++ * AD7904/AD7914/AD7923/AD7924/AD7908/AD7918/AD7927/AD7928 SPI ADC driver
+  *
+  * Copyright 2011 Analog Devices Inc (from AD7923 Driver)
+  * Copyright 2012 CS Systemes d'Information
+@@ -367,6 +367,7 @@ static const struct spi_device_id ad7923_id[] = {
+ 	{"ad7924", AD7924},
+ 	{"ad7908", AD7908},
+ 	{"ad7918", AD7918},
++	{"ad7927", AD7928},
+ 	{"ad7928", AD7928},
+ 	{}
+ };
+@@ -379,6 +380,7 @@ static const struct of_device_id ad7923_of_match[] = {
+ 	{ .compatible = "adi,ad7924", },
+ 	{ .compatible = "adi,ad7908", },
+ 	{ .compatible = "adi,ad7918", },
++	{ .compatible = "adi,ad7927", },
+ 	{ .compatible = "adi,ad7928", },
+ 	{ },
+ };
+-- 
+2.37.4
+

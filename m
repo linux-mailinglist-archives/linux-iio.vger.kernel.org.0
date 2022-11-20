@@ -2,114 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 224D6631472
-	for <lists+linux-iio@lfdr.de>; Sun, 20 Nov 2022 14:49:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5286314C6
+	for <lists+linux-iio@lfdr.de>; Sun, 20 Nov 2022 16:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229547AbiKTNtQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 20 Nov 2022 08:49:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
+        id S229600AbiKTPJ1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 20 Nov 2022 10:09:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbiKTNtP (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Nov 2022 08:49:15 -0500
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F34C27904;
-        Sun, 20 Nov 2022 05:49:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1668952154; x=1700488154;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Di/TnBaFSAUmHsGAOFp3N0NOK4kayU8OnzvjgIwzZKU=;
-  b=G5b2XWwnohZlRnkF/7TzuHjeASxRrY1TVnT/C04xbWoya/rpnIu+gWF2
-   6KhASGYYwemP6L/ZQcpikvkd1hJsb1U7wusSProOxHTjgLQw3C98ZgO00
-   t1CGidM4CRXeHll5wTrs7tuegwmP378w8xFWUXAv+QzqWmijSJ7n/4wzN
-   Lr8G8BGqGbN+/jVZhUBh+bMbBBiXfLwcb49Ta4bysOujSHBR82MoeihIF
-   UH/nJI2bPlf7uW7ivUphAwXm54usHzIMDM9WfBYk89SMhymHy4W9ZksIt
-   IlcJ+B1Ue1WNBxLLkOIFfFHYXeA6N1BhPOBcTahKxhKMepSZ/mq9Mafki
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10536"; a="293788197"
-X-IronPort-AV: E=Sophos;i="5.96,179,1665471600"; 
-   d="scan'208";a="293788197"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2022 05:49:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10536"; a="704280719"
-X-IronPort-AV: E=Sophos;i="5.96,179,1665471600"; 
-   d="scan'208";a="704280719"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 20 Nov 2022 05:49:10 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1owkh2-00Eqjn-0U;
-        Sun, 20 Nov 2022 15:49:08 +0200
-Date:   Sun, 20 Nov 2022 15:49:07 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>,
-        Miaoqian Lin <linmq006@gmail.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wolfram Sang <wsa@kernel.org>,
-        wangjianli <wangjianli@cdjrlc.com>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>, kernel@pengutronix.de,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jean Delvare <jdelvare@suse.de>, linux-i2c@vger.kernel.org
-Subject: Re: [PATCH 054/606] iio: accel: kxcjk-1013: Convert to i2c's
- .probe_new()
-Message-ID: <Y3owU0ucK2qc6GAF@smile.fi.intel.com>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-55-uwe@kleine-koenig.org>
- <Y3jGHufAJVxZp1f0@smile.fi.intel.com>
- <20221119160818.zft3xhuwz3gm6oeg@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+        with ESMTP id S229478AbiKTPJZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 20 Nov 2022 10:09:25 -0500
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9199A2D1D4;
+        Sun, 20 Nov 2022 07:09:23 -0800 (PST)
+Received: by mail-ot1-f47.google.com with SMTP id m7-20020a9d6447000000b0066da0504b5eso5979573otl.13;
+        Sun, 20 Nov 2022 07:09:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6L3JfWVGgGaiFrPDApH8/SmW5rukZX6e4N1Fd2hikUs=;
+        b=AYfMy9yQZjLZc3HfboTp9GL0wykFBG3QQtBCBDXbcG7BWgSmqEmmTflXNojjtytmiv
+         ca98xctZODp1ZJYBfzUtkntTuFRIkfsd9K/5duYJxPYMUsACtY7W4ihL/bTU834ikoyB
+         oaRoLadPS4+iNVnrMBcbrTnHzMg6cohlvkx4V+O7bn4bXA4RKqZfcZp88gypX3zaJ0eH
+         X2+1UkqqhYVSdEKMI+G/bh21NW4tLJhyTMQ8MSUC0Iy1ljLA4nz8MNXtgzHEevr/ijl0
+         49l+Pv/nnoko/Duil2SgiwD+nz/BgZpozZTca9KZrnO88XAQfoOkvn2dxUxYLba757Ep
+         M54A==
+X-Gm-Message-State: ANoB5pno+H1I+psgbe5eUE/DeGXhJGI8lsyOxTLsqr8MWLYNlvcO18ik
+        0b0tv0RMYRbtakk9zDoyag==
+X-Google-Smtp-Source: AA0mqf5mmRH/CwUjCggrAp+GQ2tKV+qZBmu/NFMhsmTFeoD/V6J0OYp7q+B/PmKwEDSpvmtg6UrCTw==
+X-Received: by 2002:a9d:75d5:0:b0:667:7361:7db5 with SMTP id c21-20020a9d75d5000000b0066773617db5mr813831otl.22.1668956962725;
+        Sun, 20 Nov 2022 07:09:22 -0800 (PST)
+Received: from robh_at_kernel.org ([2605:ef80:80f6:1a48:29f6:113d:266f:a78e])
+        by smtp.gmail.com with ESMTPSA id v13-20020a056870310d00b0012d939eb0bfsm4795788oaa.34.2022.11.20.07.09.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Nov 2022 07:09:22 -0800 (PST)
+Received: (nullmailer pid 3068615 invoked by uid 1000);
+        Sun, 20 Nov 2022 15:09:22 -0000
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221119160818.zft3xhuwz3gm6oeg@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Lukasz Zemla <Lukasz.Zemla@woodward.com>,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+In-Reply-To: <20221120124543.18973-1-edmund.berenson@emlix.com>
+References: <20221116191208.269e67eb@jic23-huawei>
+ <20221120124543.18973-1-edmund.berenson@emlix.com>
+Message-Id: <166895687829.3066801.11111948596761204211.robh@kernel.org>
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: adc: ad7923: adjust documentation
+Date:   Sun, 20 Nov 2022 09:09:22 -0600
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, Nov 19, 2022 at 05:08:18PM +0100, Uwe Kleine-König wrote:
-> On Sat, Nov 19, 2022 at 02:03:42PM +0200, Andy Shevchenko wrote:
-> > On Fri, Nov 18, 2022 at 11:36:28PM +0100, Uwe Kleine-König wrote:
-> > > From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> > > 
-> > > .probe_new() doesn't get the i2c_device_id * parameter, so determine
-> > > that explicitly in the probe function.
-> > 
-> > Since there is no split on per subsystem basis (I mean, as a series targeting
-> > only, let's say, IIO subsystem with cover letter), I'm answering here that all
-> > IIO patches are good to me, thanks, Uwe!
-> > 
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> Thanks!
-> 
-> Does this include the three patches:
-> 
-> 	staging: iio: adt7316: Convert to i2c's .probe_new()
-> 	staging: iio: ad5933: Convert to i2c's .probe_new()
-> 	staging: iio: ade7854: Convert to i2c's .probe_new()
-> 
-> ?
 
-It includes IIO patches, for staging I didn't looked at.
+On Sun, 20 Nov 2022 13:45:43 +0100, Edmund Berenson wrote:
+> - Add the ad7927 compatibility string, with fallback compatibility
+> to ad7928.
+> - ad7923 and ad7924 are treated the same in the driver, show
+> the relationship in the documentation.
+> 
+> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7923.yaml          | 21 +++++++++++--------
+>  1 file changed, 12 insertions(+), 9 deletions(-)
+> 
 
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
--- 
-With Best Regards,
-Andy Shevchenko
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml:27:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
+./Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml:32:9: [warning] wrong indentation: expected 10 but found 8 (indentation)
 
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7923.example.dtb: adc@0: compatible: 'oneOf' conditional failed, one must be fixed:
+	['adi,ad7928'] is too short
+	'adi,ad7904' was expected
+	'adi,ad7914' was expected
+	'adi,ad7923' was expected
+	'adi,ad7908' was expected
+	'adi,ad7918' was expected
+	'adi,ad7927' was expected
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7923.example.dtb: adc@0: Unevaluated properties are not allowed ('compatible' was unexpected)
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20221120124543.18973-1-edmund.berenson@emlix.com
+
+This check can fail if there are any dependencies. The base for a patch
+series is generally the most recent rc1.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command.
 

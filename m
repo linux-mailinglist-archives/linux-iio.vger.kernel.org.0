@@ -2,253 +2,104 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD2AC632076
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 12:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED13F6321D9
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 13:27:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230163AbiKULZj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Nov 2022 06:25:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51982 "EHLO
+        id S229593AbiKUM10 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 21 Nov 2022 07:27:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230487AbiKULZG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 06:25:06 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF67BF59A
-        for <linux-iio@vger.kernel.org>; Mon, 21 Nov 2022 03:20:42 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id c1so18329528lfi.7
-        for <linux-iio@vger.kernel.org>; Mon, 21 Nov 2022 03:20:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K3vCypYaYr/TUPlMCYQCNuevnxo4BkRRu9uJ6R1YomE=;
-        b=ihzaGM+s1Uksutb4VOVRIhkp+qJkngVVC0C/YX8sX30ITMnjAu/3kxHeDPAg+yBkaJ
-         TZvetSao+F3wHQgNsXgGNdVUAYRux1OcXsbHFxKeujqL22TV3Z1KbytltmPfyAjMIsmP
-         RTL3IS5E2sXrdojuOWYBAAQGwdTq82SQ1F3EEooMK8IGCYAd+yxqwxeCcwG80nV/EgqE
-         7ilifju39YShXhTXLIpyAey2K0qx5Ylzv2T5yfG0wt0IfqFZCZzkNPrDFII2eEzuqKe3
-         wrrXXfWm8cuSBoxtgdIaC1c7roWc1cLdIwUX5crW5RPWyWHn3Uoc4hVTyJ8rL27vn1a5
-         GIng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K3vCypYaYr/TUPlMCYQCNuevnxo4BkRRu9uJ6R1YomE=;
-        b=FDM1XpYh+e9PUeIv0RlR5BjKjLLrJOBvNYOhuL5MHBe2z1bR2NjHWUhBF0DrUaEBl/
-         3NyPnPFD2luQQRZBlljINgtSjOQKF83Pi+jz+6hXb2kPDGp/wPN8XMxf5RUa/6L4FuwQ
-         VXuGevZ2ZrBsPcFEl3z5sjSfMThJnb5e0OmIetJyXt9ajzfDFZK6rxiXtvKFb0iHkVf6
-         nWEP+BKhmRtHpOlCcVurbTWvKs9BXcWHgcP5KM0QFC/nUqszTnaykQaq0yFdUuoGMKIo
-         LjJCzg9Lt7wCu1qDjVieYTEoNJe/uGVZAoQZgBRdxjwGtz0HZ8Dq8ONNeXOd5Eu5E4Ag
-         vQcQ==
-X-Gm-Message-State: ANoB5plXbNUGBdsvDDtLCTv/sUkQ8OyW5PD2u1j4xmbkaoSEPaRWd24g
-        X6QJiqauZGpvECRTZJWOxcFUDA==
-X-Google-Smtp-Source: AA0mqf56103VfC3Nsvwa7VxN2CuKqx5jWIBpZ1lo+VbE2w+udfSJyiYIfG10fc6I1FiZroPco52Q0g==
-X-Received: by 2002:ac2:4843:0:b0:4a2:1169:3934 with SMTP id 3-20020ac24843000000b004a211693934mr6044024lfy.279.1669029641176;
-        Mon, 21 Nov 2022 03:20:41 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id g6-20020a05651222c600b00494942bec60sm1981896lfu.17.2022.11.21.03.20.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Nov 2022 03:20:40 -0800 (PST)
-Message-ID: <24e8464a-923d-cd0f-c681-fc6ca3a5ad59@linaro.org>
-Date:   Mon, 21 Nov 2022 12:20:39 +0100
+        with ESMTP id S229688AbiKUM1X (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 07:27:23 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5142AA4148;
+        Mon, 21 Nov 2022 04:27:23 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ALALF1p021981;
+        Mon, 21 Nov 2022 07:27:20 -0500
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kxsvav40h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 21 Nov 2022 07:27:20 -0500
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 2ALCRJOA004952
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 21 Nov 2022 07:27:19 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 21 Nov
+ 2022 07:27:18 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 21 Nov 2022 07:27:18 -0500
+Received: from rbolboac.ad.analog.com ([10.48.65.139])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2ALCR74o020739;
+        Mon, 21 Nov 2022 07:27:12 -0500
+From:   Ramona Bolboaca <ramona.bolboaca@analog.com>
+To:     <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Ramona Bolboaca <ramona.bolboaca@analog.com>
+Subject: [PATCH v4 0/9] Add '__adis_enable_irq()'
+Date:   Mon, 21 Nov 2022 14:26:46 +0200
+Message-ID: <20221121122655.48268-1-ramona.bolboaca@analog.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: dac: add adi,ad5754.yaml
-Content-Language: en-US
-To:     Ciprian Regus <ciprian.regus@analog.com>, jic23@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221118172407.765423-1-ciprian.regus@analog.com>
- <20221118172407.765423-2-ciprian.regus@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221118172407.765423-2-ciprian.regus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 4z9BQsEgusSQe9y6Z0HNa2cyC-xpaKzX
+X-Proofpoint-ORIG-GUID: 4z9BQsEgusSQe9y6Z0HNa2cyC-xpaKzX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-21_13,2022-11-18_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 phishscore=0 bulkscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 mlxlogscore=775 suspectscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211210097
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 18/11/2022 18:24, Ciprian Regus wrote:
-> Add devicetree bindings documentation for the AD5754 DAC driver.
-> 
-> Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
-> ---
->  changes in v3:
->   - added additionalProperties: false to patternProperties
->   - dropped status in the example.
->   - added different values for adi,output-range-microvolt in the example.
->     Negative values cannot be set since that will create a dt_bindings_check error.
->  .../bindings/iio/dac/adi,ad5754.yaml          | 181 ++++++++++++++++++
->  1 file changed, 181 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
-> new file mode 100644
-> index 000000000000..de0f6fab82b8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5754.yaml
-> @@ -0,0 +1,181 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/adi,ad5754.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD5754 DAC
-> +
-> +maintainers:
-> +  - Ciprian Regus <ciprian.regus@analog.com>
-> +
-> +description: |
-> +  Bindings for the AD5754 and other chip variants digital-to-analog
-> +  converters.
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5724_5734_5754.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad5722_5732_5752.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad5724r_5734r_5754r.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD5722R_5732R_5752R.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad5722
-> +      - adi,ad5732
-> +      - adi,ad5752
-> +      - adi,ad5724
-> +      - adi,ad5734
-> +      - adi,ad5754
+Added implementation for '__adis_enable_irq()' and called it instead of
+'adis_enable_irq()' inside '__adis_initial_startup()'.
+Replaced 'adis_initial_startup()' calls in probe, with its unlocked
+variant.
 
-Keep the list sorted.
+changes in v3:
+ new patches: 1,2
+ changed commit message for patches 2-9
 
-> +      - adi,ad5722r
+changes in v4:
+ squashed patches 1 & 2 from v3
 
-I would even suggest sorted entirely, so 5722r follows 5722, but I don't
-mind some combo-sorting (logical + alphabetical).
+Ramona Bolboaca (9):
+  iio: adis: add '__adis_enable_irq()' implementation
+  iio: accel: adis16201: Call '__adis_initial_startup()' in probe
+  iio: accel: adis16209: Call '__adis_initial_startup()' in probe
+  iio: gyro: adis16136: Call '__adis_initial_startup()' in probe
+  iio: gyro: adis16260: Call '__adis_initial_startup()' in probe
+  iio: imu: adis16400: Call '__adis_initial_startup()' in probe
+  staging: iio: accel: adis16203: Call '__adis_initial_startup()'
+  staging: iio: accel: adis16240: Call '__adis_initial_startup()'
+  iio: imu: adis: Remove adis_initial_startup function
 
-> +      - adi,ad5732r
-> +      - adi,ad5752r
-> +      - adi,ad5724r
-> +      - adi,ad5734r
-> +      - adi,ad5754r
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 30000000
-> +
-> +  spi-cpol: true
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator to use as an external reference. If this is not provided,
-> +      the internal reference will be used for chips that have this feature.
-> +      The external reference must be 2.5V.
-> +
-> +  clr-gpios:
-> +    description: DAC output clear GPIO (CLR pin). If specified, it will be set
-> +      to high during probe, thus allowing the DAC output to be updated.
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@([0-3])$":
+ drivers/iio/accel/adis16201.c         |  2 +-
+ drivers/iio/accel/adis16209.c         |  2 +-
+ drivers/iio/gyro/adis16136.c          |  2 +-
+ drivers/iio/gyro/adis16260.c          |  2 +-
+ drivers/iio/imu/adis.c                | 28 ++++++++++-----------------
+ drivers/iio/imu/adis16400.c           |  2 +-
+ drivers/staging/iio/accel/adis16203.c |  2 +-
+ drivers/staging/iio/accel/adis16240.c |  2 +-
+ include/linux/iio/imu/adis.h          | 16 +++++++--------
+ 9 files changed, 24 insertions(+), 34 deletions(-)
 
-No need for ().
-
-> +    type: object
-> +    additionalProperties: false
-> +    description: Configurations for the DAC channels
-> +
-> +    properties:
-> +      reg:
-> +        description: Channel number
-> +        maxItems: 1
-> +
-> +      adi,output-range-microvolt:
-> +        description: |
-> +          Voltage range of a channel as <minimum, maximum>.
-> +        oneOf:
-> +          - items:
-> +              - const: 0
-> +              - enum: [5000000, 10000000, 10800000]
-> +          - items:
-> +              - const: -5000000
-> +              - const: 5000000
-> +          - items:
-> +              - const: -10000000
-> +              - const: 10000000
-> +          - items:
-> +              - const: -10800000
-> +              - const: 10800000
-> +
-> +    required:
-> +      - reg
-> +      - adi,output-range-microvolt
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,ad5722
-> +              - adi,ad5732
-> +              - adi,ad5752
-> +              - adi,ad5722r
-> +              - adi,ad5732r
-> +              - adi,ad5752r
-> +    then:
-> +      patternProperties:
-> +        "^channel@([0-3])$":
-
-No need for ().
-
-> +          type: object
-> +          properties:
-> +            reg:
-> +              description: Channel number
-> +              enum: [0, 1]
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,ad5724
-> +              - adi,ad5734
-> +              - adi,ad5754
-> +              - adi,ad5724r
-> +              - adi,ad5734r
-> +              - adi,ad5754r
-> +    then:
-> +      patternProperties:
-> +        "^channel@([0-3])$":
-
-No need for ().
-
-> +          type: object
-> +          properties:
-> +            reg:
-> +              description: Channel number
-> +              enum: [0, 1, 2, 3]
-> +
-
-
-Best regards,
-Krzysztof
+-- 
+2.25.1
 

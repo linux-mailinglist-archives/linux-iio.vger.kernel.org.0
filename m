@@ -2,185 +2,196 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B847B632930
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 17:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0209A6329D0
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 17:42:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbiKUQQj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 21 Nov 2022 11:16:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
+        id S229658AbiKUQmU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 21 Nov 2022 11:42:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229502AbiKUQQi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 11:16:38 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 406A8D3395
-        for <linux-iio@vger.kernel.org>; Mon, 21 Nov 2022 08:16:36 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id z24so15061365ljn.4
-        for <linux-iio@vger.kernel.org>; Mon, 21 Nov 2022 08:16:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zX0z0xZYqqRaXiVDucDuDpWLYdXC6eN0nUqR4wA29rM=;
-        b=B7QOfEkHhIDhNUT7+JHOCYwFzoEyEFks7Pi6+DrzMjOEXx0wTtHV5inu7kQABAf4Dx
-         mJrMID0YgeElt9eDrQJs4TtEsFo7EvY6zJTGf3/HMS+cfuCrubMUivg/wz9TGSUCtd26
-         ggCVD1FldQ9M+bFr67ZdorY/mhd2JbqhrDn+Eaxetc029hLLDhF9BJRSlZ8OwrXTrQCp
-         l6LSxWxzl/0MIcFvxlskVkGyXyiIE0W52yCi+PuPqBGooGXy6T1lnRRQ9rfrIh6s+hMO
-         IHhk9A4xM3XqyMxjG5eFXwzNP7W1EvMG664/MchEEJnWYDrw33wY7gfokNE6/K8QV+H0
-         tXLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zX0z0xZYqqRaXiVDucDuDpWLYdXC6eN0nUqR4wA29rM=;
-        b=iM5hfI3pDtHAVOKR+PN3i5WfF6pPpMg8VE90qfsM/2kA8ImWxqwF9IGRz+PM1TnLo+
-         3faddhvZjqs0K6v6kccSHqWoz1GvvTxAwOHMEFvfmSeVV9UYe9AlvYtpy4pFns5mIqOe
-         VFNunmG6ps18CadEdFYh2TlK6fh1PCNdjnNsUsE++Wjx+xd8xxgR2loGmiCpibHY8r9s
-         FLr4/jx4Mpp3vXUStCFoZ1nkR/djwKm9ChFShodXSP29a1FqJVZewcD/9jTDkDsD2xFy
-         l1GFVBLAuhZi1H5Z0Fhf5iYAzyJL+McjEPyeTKan949L698JZ4yPH7cOp7ki4hRdMuOo
-         P2nQ==
-X-Gm-Message-State: ANoB5pmqyZJvjboPhMprGN88J40B3cRbNr9cb/eVo5vpSIFwNntO7Rp3
-        H3+UTOUWahvht0yuPcfGXGx4jg==
-X-Google-Smtp-Source: AA0mqf6yWMZ5eLH2Exqn+97mU62dnLPIk6cw/n3MIXqJBiZ3zoUIUGowy2bfSC+eTUiMsXRgLfLI6A==
-X-Received: by 2002:a2e:a553:0:b0:277:665c:eb4c with SMTP id e19-20020a2ea553000000b00277665ceb4cmr81707ljn.287.1669047394496;
-        Mon, 21 Nov 2022 08:16:34 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id i189-20020a2e22c6000000b0026fdecfa6ebsm1522026lji.15.2022.11.21.08.16.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Nov 2022 08:16:33 -0800 (PST)
-Message-ID: <3025c187-f493-9fcf-7831-1f5719d6bcfa@linaro.org>
-Date:   Mon, 21 Nov 2022 17:16:32 +0100
+        with ESMTP id S229456AbiKUQmT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 11:42:19 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B381ADA8;
+        Mon, 21 Nov 2022 08:42:16 -0800 (PST)
+Received: from frapeml500002.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NGClr0LXGz67v9b;
+        Tue, 22 Nov 2022 00:39:36 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ frapeml500002.china.huawei.com (7.182.85.205) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Mon, 21 Nov 2022 17:42:14 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 21 Nov
+ 2022 16:42:13 +0000
+Date:   Mon, 21 Nov 2022 16:42:12 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
+CC:     <jic23@kernel.org>, <lars@metafoo.de>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <jdelvare@suse.com>, <linux@roeck-us.net>,
+        <linux-hwmon@vger.kernel.org>, <rajat.khandelwal@intel.com>
+Subject: Re: [PATCH v10] iio: temperature: Add driver support for Maxim
+ MAX30208
+Message-ID: <20221121164212.00005484@Huawei.com>
+In-Reply-To: <ed7b5e4e-cd3b-ab83-0b61-568b95656740@linux.intel.com>
+References: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
+        <20221117163040.00001f5a@Huawei.com>
+        <ed7b5e4e-cd3b-ab83-0b61-568b95656740@linux.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v3] dt-bindings: iio: adc: ad7923: adjust documentation
-Content-Language: en-US
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Edmund Berenson <edmund.berenson@emlix.com>
-Cc:     Lukasz Zemla <Lukasz.Zemla@woodward.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221120153419.GA3094349-robh@kernel.org>
- <20221120170630.29354-1-edmund.berenson@emlix.com>
- <d83e9a3d-2482-4342-03c1-818a38bd4b7b@linaro.org>
- <20221121102600.uwmgivssgy7oakxf@emlix.com>
- <3a50ba73-aab7-f6db-5e42-beb7e193c5bf@linaro.org>
- <20221121104532.dibxead6kiv3xqzw@emlix.com>
- <20221121124518.00000da4@Huawei.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221121124518.00000da4@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 21/11/2022 13:45, Jonathan Cameron wrote:
-> On Mon, 21 Nov 2022 11:45:32 +0100
-> Edmund Berenson <edmund.berenson@emlix.com> wrote:
-> 
->> On Mon, Nov 21, 2022 at 11:31:33AM +0100, Krzysztof Kozlowski wrote:
->>> On 21/11/2022 11:26, Edmund Berenson wrote:  
->>>> On Mon, Nov 21, 2022 at 10:13:57AM +0100, Krzysztof Kozlowski wrote:  
->>>>> On 20/11/2022 18:06, Edmund Berenson wrote:  
->>>>>> - Add the ad7927 compatibility string, with fallback compatibility
->>>>>> to ad7928.
->>>>>> - ad7923 and ad7924 are treated the same in the driver, show
->>>>>> the relationship in the documentation.
->>>>>>
->>>>>> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
->>>>>> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
->>>>>> ---
->>>>>>  .../bindings/iio/adc/adi,ad7923.yaml          | 26 ++++++++++++-------  
->>>>>
->>>>> Do not respond with new patch to some old thread. Each patchset starts a
->>>>> new thread.
->>>>>  
->>>> Sorry I didn't know this is the preferred way. I will send new patch
->>>> version as new thread in the future.  
->>>>>>  1 file changed, 17 insertions(+), 9 deletions(-)
->>>>>>
->>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
->>>>>> index 07f9d1c09c7d..e553853e25d5 100644
->>>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
->>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
->>>>>> @@ -11,7 +11,7 @@ maintainers:
->>>>>>  
->>>>>>  description: |
->>>>>>    Analog Devices AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and AD7908,
->>>>>> -   AD7918, AD7928 8 Channels ADCs.
->>>>>> +   AD7918, AD7927, AD7928 8 Channels ADCs.
->>>>>>  
->>>>>>    Specifications about the part can be found at:
->>>>>>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7923.pdf
->>>>>> @@ -20,14 +20,22 @@ description: |
->>>>>>  
->>>>>>  properties:
->>>>>>    compatible:
->>>>>> -    enum:
->>>>>> -      - adi,ad7904
->>>>>> -      - adi,ad7914
->>>>>> -      - adi,ad7923
->>>>>> -      - adi,ad7924
->>>>>> -      - adi,ad7908
->>>>>> -      - adi,ad7918
->>>>>> -      - adi,ad7928
->>>>>> +    oneOf:
->>>>>> +      - enum:
->>>>>> +          - adi,ad7904
->>>>>> +          - adi,ad7914
->>>>>> +          - adi,ad7908  
->>>>>
->>>>> You already started shuffling the entries, so make them ordered. What's
->>>>> the point of changing the order from one non-sorted to another non-sorted?
->>>>>  
->>>>>> +          - adi,ad7918
->>>>>> +          - adi,ad7923
->>>>>> +          - adi,ad7924  
->>>>>
->>>>> Then deprecate this as alone compatible.
->>>>>  
->>>>>> +          - adi,ad7927> +          - adi,ad7928  
->>>>>
->>>>> Ditto
->>>>>  
->>>>>> +      - items:
->>>>>> +          - const: adi,ad7923
->>>>>> +          - const: adi,ad7924  
->>>>>
->>>>> I would expect lower number as fallback.  
->>>> If I remove alone compatibility of 7924 and 7927 in the documentation,  
->>>
->>> I don't understand. 7924 and 7927 are not compatible with each other -
->>> neither in old code nor in new - so what do you want to remove?
->>>   
->>>> I will have to remove explicit compatibility match on the driver side,
->>>> correct?
->>>> Just want to make sure I don't misunderstand you.  
->>>
->>> My comment to which you responded was about order of items. Usually
->>> lower number means older device and usually older device is the fallback.  
-> 
-> Oldest in which sense?  I think it should be oldest in order of having
-> a binding defined, not in order of part releases (and ADI seem to scramble
-> part numbers fairly randomly so definitely not generally the case that
-> ordering of numbers has anything much to do with age of part).
+On Fri, 18 Nov 2022 18:27:10 +0530
+Rajat Khandelwal <rajat.khandelwal@linux.intel.com> wrote:
 
-Older in a meaning of design by ADI. Of course I have no clue whether
-this matches incremental numbers...
+> Have provided inline comments.
+> Please provide your comments for me to spin a v11 :)
+> 
+> On 11/17/2022 10:00 PM, Jonathan Cameron wrote:
+> > On Fri, 18 Nov 2022 21:07:29 +0530
+> > Rajat Khandelwal<rajat.khandelwal@linux.intel.com>  wrote:
+> >  
+> >> Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
+> >>
+> >> Add support for max30208 driver in iio subsystem.  
+> > Blank line here.
+> >  
+> >> Datasheet:https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
+> >>  
+> > Datasheet part of the tags block, so no blank line between that and the SoB.
+> > That makes life easy for tools parsing git messages.  
+> 
+> - Got it. Will do that.
+> 
+> >  
+> >> Signed-off-by: Rajat Khandelwal<rajat.khandelwal@linux.intel.com>  
+> > One query inline.  Basically boils down to what we do after
+> > overflow occurs.  I assume you are right and the first reading is the most recent, but
+> > I think we still want to flush the whole fifo in that case to get back to
+> > a sane state for future reads.
+> >
+> > Jonathan
+> >  
+> >> +/**
+> >> + * max30208_request() - Request a reading
+> >> + * @data: Struct comprising member elements of the device
+> >> + *
+> >> + * Requests a reading from the device and waits until the conversion is ready.
+> >> + */
+> >> +static int max30208_request(struct max30208_data *data)
+> >> +{
+> >> +	/*
+> >> +	 * Sensor can take up to 500 ms to respond so execute a total of
+> >> +	 * 10 retries to give the device sufficient time.
+> >> +	 */
+> >> +	int retries = 10;
+> >> +	u8 regval;
+> >> +	int ret;
+> >> +
+> >> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
+> >> +	if (ret < 0)
+> >> +		return ret;
+> >> +
+> >> +	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
+> >> +
+> >> +	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	while (retries--) {
+> >> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
+> >> +		if (ret < 0)
+> >> +			return ret;
+> >> +
+> >> +		if (ret & MAX30208_STATUS_TEMP_RDY)
+> >> +			return 0;
+> >> +
+> >> +		msleep(50);
+> >> +	}
+> >> +	dev_err(&data->client->dev, "Temperature conversion failed\n");
+> >> +
+> >> +	return -ETIMEDOUT;
+> >> +}
+> >> +
+> >> +static int max30208_update_temp(struct max30208_data *data)
+> >> +{
+> >> +	u8 data_count;
+> >> +	int ret;
+> >> +
+> >> +	mutex_lock(&data->lock);
+> >> +
+> >> +	ret = max30208_request(data);
+> >> +	if (ret)
+> >> +		goto unlock;
+> >> +
+> >> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
+> >> +	if (ret < 0)
+> >> +		goto unlock;
+> >> +	else if (!ret) {
+> >> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
+> >> +		if (ret < 0)
+> >> +			goto unlock;
+> >> +
+> >> +		data_count = ret;
+> >> +	} else
+> >> +		data_count = 1;
+> >> +
+> >> +	while (data_count) {
+> >> +		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
+> >> +		if (ret < 0)
+> >> +			goto unlock;
+> >> +
+> >> +		data_count--;
+> >> +	}  
+> > Hmm. Given you've been poking this a lot, I guess this works and the part is
+> > as just odd. Just to check one last case... Does max30208_request() guarantee we can't
+> > get...
+> >
+> > 1. Read first time, overflow set so we read latest result - leaving
+> >     31 ancient values in the fifo.
+> > 2. Read again really quickly and get those ancient values.
+> > ?
+> >
+> > Perhaps we should flush out those unwanted values from the fifo, so after
+> > overflow we get back to a normal state rather than immediately overflowing again.
+> >
+> > More than possible that I still don't understand how this device works though!  
+> 
+> - Ok, so whenever user wants a temperature reading, conversion first takes place and then
+> the reading gets returned. So, user will always get the latest converted reading despite
+> the number of ancient readings.
+> Flushing everytime we get an overflow is not required I think because even though overflow
+> could happen again, user still gets the latest updated reading. Also, I plan to incorporate
+> buffered flow in IIO. Even though, I think let FIFO remain intact because it doesn't impact
+> the recent readings.
 
-Best regards,
-Krzysztof
+Fair enough. Sounds like yes, we are guaranteed there will always be a new reading before
+we start popping entries off the fifo again. If that's the case, all is fine as is - was
+just really hard to figure that out from the code / datasheet, so I wanted to check.
+
+Jonathan
+
+> 
+> >> +
+> >> +unlock:
+> >> +	mutex_unlock(&data->lock);
+> >> +	return ret;
+> >> +}
+> >> +  
 

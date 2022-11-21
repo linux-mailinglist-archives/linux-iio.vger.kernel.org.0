@@ -2,50 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0209A6329D0
-	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 17:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D14F632A65
+	for <lists+linux-iio@lfdr.de>; Mon, 21 Nov 2022 18:08:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbiKUQmU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-iio@lfdr.de>); Mon, 21 Nov 2022 11:42:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        id S229542AbiKURIl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-iio@lfdr.de>); Mon, 21 Nov 2022 12:08:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbiKUQmT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 11:42:19 -0500
+        with ESMTP id S229601AbiKURIk (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 21 Nov 2022 12:08:40 -0500
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B381ADA8;
-        Mon, 21 Nov 2022 08:42:16 -0800 (PST)
-Received: from frapeml500002.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NGClr0LXGz67v9b;
-        Tue, 22 Nov 2022 00:39:36 +0800 (CST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 397EBC8CAE;
+        Mon, 21 Nov 2022 09:08:39 -0800 (PST)
+Received: from fraeml708-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NGDLG1V9Yz67Pmj;
+        Tue, 22 Nov 2022 01:05:58 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
- frapeml500002.china.huawei.com (7.182.85.205) with Microsoft SMTP Server
+ fraeml708-chm.china.huawei.com (10.206.15.36) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Mon, 21 Nov 2022 17:42:14 +0100
+ 15.1.2375.31; Mon, 21 Nov 2022 18:08:36 +0100
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 21 Nov
- 2022 16:42:13 +0000
-Date:   Mon, 21 Nov 2022 16:42:12 +0000
+ 2022 17:08:36 +0000
+Date:   Mon, 21 Nov 2022 17:08:35 +0000
 From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Rajat Khandelwal <rajat.khandelwal@linux.intel.com>
-CC:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <jdelvare@suse.com>, <linux@roeck-us.net>,
-        <linux-hwmon@vger.kernel.org>, <rajat.khandelwal@intel.com>
-Subject: Re: [PATCH v10] iio: temperature: Add driver support for Maxim
- MAX30208
-Message-ID: <20221121164212.00005484@Huawei.com>
-In-Reply-To: <ed7b5e4e-cd3b-ab83-0b61-568b95656740@linux.intel.com>
-References: <20221118153729.762018-1-rajat.khandelwal@linux.intel.com>
-        <20221117163040.00001f5a@Huawei.com>
-        <ed7b5e4e-cd3b-ab83-0b61-568b95656740@linux.intel.com>
+To:     Ramona Bolboaca <ramona.bolboaca@analog.com>
+CC:     <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 1/9] iio: adis: add '__adis_enable_irq()'
+ implementation
+Message-ID: <20221121170835.000038d9@Huawei.com>
+In-Reply-To: <20221121152717.403667-2-ramona.bolboaca@analog.com>
+References: <20221121152717.403667-1-ramona.bolboaca@analog.com>
+        <20221121152717.403667-2-ramona.bolboaca@analog.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 8BIT
 X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
@@ -57,141 +54,126 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Nov 2022 18:27:10 +0530
-Rajat Khandelwal <rajat.khandelwal@linux.intel.com> wrote:
+On Mon, 21 Nov 2022 17:27:09 +0200
+Ramona Bolboaca <ramona.bolboaca@analog.com> wrote:
 
-> Have provided inline comments.
-> Please provide your comments for me to spin a v11 :)
+> Add '__adis_enable_irq()' implementation which is the unlocked
+> version of 'adis_enable_irq()'.
+> Call '__adis_enable_irq()' instead of 'adis_enable_irq()' from
+> '__adis_intial_startup()' to keep the expected unlocked functionality.
 > 
-> On 11/17/2022 10:00 PM, Jonathan Cameron wrote:
-> > On Fri, 18 Nov 2022 21:07:29 +0530
-> > Rajat Khandelwal<rajat.khandelwal@linux.intel.com>  wrote:
-> >  
-> >> Maxim MAX30208 is a digital temperature sensor with 0.1°C accuracy.
-> >>
-> >> Add support for max30208 driver in iio subsystem.  
-> > Blank line here.
-> >  
-> >> Datasheet:https://datasheets.maximintegrated.com/en/ds/MAX30208.pdf
-> >>  
-> > Datasheet part of the tags block, so no blank line between that and the SoB.
-> > That makes life easy for tools parsing git messages.  
-> 
-> - Got it. Will do that.
-> 
-> >  
-> >> Signed-off-by: Rajat Khandelwal<rajat.khandelwal@linux.intel.com>  
-> > One query inline.  Basically boils down to what we do after
-> > overflow occurs.  I assume you are right and the first reading is the most recent, but
-> > I think we still want to flush the whole fifo in that case to get back to
-> > a sane state for future reads.
-> >
-> > Jonathan
-> >  
-> >> +/**
-> >> + * max30208_request() - Request a reading
-> >> + * @data: Struct comprising member elements of the device
-> >> + *
-> >> + * Requests a reading from the device and waits until the conversion is ready.
-> >> + */
-> >> +static int max30208_request(struct max30208_data *data)
-> >> +{
-> >> +	/*
-> >> +	 * Sensor can take up to 500 ms to respond so execute a total of
-> >> +	 * 10 retries to give the device sufficient time.
-> >> +	 */
-> >> +	int retries = 10;
-> >> +	u8 regval;
-> >> +	int ret;
-> >> +
-> >> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP);
-> >> +	if (ret < 0)
-> >> +		return ret;
-> >> +
-> >> +	regval = ret | MAX30208_TEMP_SENSOR_SETUP_CONV;
-> >> +
-> >> +	ret = i2c_smbus_write_byte_data(data->client, MAX30208_TEMP_SENSOR_SETUP, regval);
-> >> +	if (ret)
-> >> +		return ret;
-> >> +
-> >> +	while (retries--) {
-> >> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_STATUS);
-> >> +		if (ret < 0)
-> >> +			return ret;
-> >> +
-> >> +		if (ret & MAX30208_STATUS_TEMP_RDY)
-> >> +			return 0;
-> >> +
-> >> +		msleep(50);
-> >> +	}
-> >> +	dev_err(&data->client->dev, "Temperature conversion failed\n");
-> >> +
-> >> +	return -ETIMEDOUT;
-> >> +}
-> >> +
-> >> +static int max30208_update_temp(struct max30208_data *data)
-> >> +{
-> >> +	u8 data_count;
-> >> +	int ret;
-> >> +
-> >> +	mutex_lock(&data->lock);
-> >> +
-> >> +	ret = max30208_request(data);
-> >> +	if (ret)
-> >> +		goto unlock;
-> >> +
-> >> +	ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_OVF_CNTR);
-> >> +	if (ret < 0)
-> >> +		goto unlock;
-> >> +	else if (!ret) {
-> >> +		ret = i2c_smbus_read_byte_data(data->client, MAX30208_FIFO_DATA_CNTR);
-> >> +		if (ret < 0)
-> >> +			goto unlock;
-> >> +
-> >> +		data_count = ret;
-> >> +	} else
-> >> +		data_count = 1;
-> >> +
-> >> +	while (data_count) {
-> >> +		ret = i2c_smbus_read_word_swapped(data->client, MAX30208_FIFO_DATA);
-> >> +		if (ret < 0)
-> >> +			goto unlock;
-> >> +
-> >> +		data_count--;
-> >> +	}  
-> > Hmm. Given you've been poking this a lot, I guess this works and the part is
-> > as just odd. Just to check one last case... Does max30208_request() guarantee we can't
-> > get...
-> >
-> > 1. Read first time, overflow set so we read latest result - leaving
-> >     31 ancient values in the fifo.
-> > 2. Read again really quickly and get those ancient values.
-> > ?
-> >
-> > Perhaps we should flush out those unwanted values from the fifo, so after
-> > overflow we get back to a normal state rather than immediately overflowing again.
-> >
-> > More than possible that I still don't understand how this device works though!  
-> 
-> - Ok, so whenever user wants a temperature reading, conversion first takes place and then
-> the reading gets returned. So, user will always get the latest converted reading despite
-> the number of ancient readings.
-> Flushing everytime we get an overflow is not required I think because even though overflow
-> could happen again, user still gets the latest updated reading. Also, I plan to incorporate
-> buffered flow in IIO. Even though, I think let FIFO remain intact because it doesn't impact
-> the recent readings.
+> Fixes: b600bd7eb3335 ("iio: adis: do not disabe IRQs in 'adis_init()'")
+> Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
+> Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 
-Fair enough. Sounds like yes, we are guaranteed there will always be a new reading before
-we start popping entries off the fifo again. If that's the case, all is fine as is - was
-just really hard to figure that out from the code / datasheet, so I wanted to check.
+Can you add some explanation in here for 'why' this is a fix.
+People need that info to decide whether they want to pick it up for
+distros etc.
 
 Jonathan
 
+> ---
+>  drivers/iio/imu/adis.c       | 28 ++++++++++------------------
+>  include/linux/iio/imu/adis.h | 13 ++++++++++++-
+>  2 files changed, 22 insertions(+), 19 deletions(-)
 > 
-> >> +
-> >> +unlock:
-> >> +	mutex_unlock(&data->lock);
-> >> +	return ret;
-> >> +}
-> >> +  
+> diff --git a/drivers/iio/imu/adis.c b/drivers/iio/imu/adis.c
+> index f7fcfd04f659..bc40240b29e2 100644
+> --- a/drivers/iio/imu/adis.c
+> +++ b/drivers/iio/imu/adis.c
+> @@ -270,23 +270,19 @@ EXPORT_SYMBOL_NS(adis_debugfs_reg_access, IIO_ADISLIB);
+>  #endif
+>  
+>  /**
+> - * adis_enable_irq() - Enable or disable data ready IRQ
+> + * __adis_enable_irq() - Enable or disable data ready IRQ (unlocked)
+>   * @adis: The adis device
+>   * @enable: Whether to enable the IRQ
+>   *
+>   * Returns 0 on success, negative error code otherwise
+>   */
+> -int adis_enable_irq(struct adis *adis, bool enable)
+> +int __adis_enable_irq(struct adis *adis, bool enable)
+>  {
+> -	int ret = 0;
+> +	int ret;
+>  	u16 msc;
+>  
+> -	mutex_lock(&adis->state_lock);
+> -
+> -	if (adis->data->enable_irq) {
+> -		ret = adis->data->enable_irq(adis, enable);
+> -		goto out_unlock;
+> -	}
+> +	if (adis->data->enable_irq)
+> +		return adis->data->enable_irq(adis, enable);
+>  
+>  	if (adis->data->unmasked_drdy) {
+>  		if (enable)
+> @@ -294,12 +290,12 @@ int adis_enable_irq(struct adis *adis, bool enable)
+>  		else
+>  			disable_irq(adis->spi->irq);
+>  
+> -		goto out_unlock;
+> +		return 0;
+>  	}
+>  
+>  	ret = __adis_read_reg_16(adis, adis->data->msc_ctrl_reg, &msc);
+>  	if (ret)
+> -		goto out_unlock;
+> +		return ret;
+>  
+>  	msc |= ADIS_MSC_CTRL_DATA_RDY_POL_HIGH;
+>  	msc &= ~ADIS_MSC_CTRL_DATA_RDY_DIO2;
+> @@ -308,13 +304,9 @@ int adis_enable_irq(struct adis *adis, bool enable)
+>  	else
+>  		msc &= ~ADIS_MSC_CTRL_DATA_RDY_EN;
+>  
+> -	ret = __adis_write_reg_16(adis, adis->data->msc_ctrl_reg, msc);
+> -
+> -out_unlock:
+> -	mutex_unlock(&adis->state_lock);
+> -	return ret;
+> +	return __adis_write_reg_16(adis, adis->data->msc_ctrl_reg, msc);
+>  }
+> -EXPORT_SYMBOL_NS(adis_enable_irq, IIO_ADISLIB);
+> +EXPORT_SYMBOL_NS(__adis_enable_irq, IIO_ADISLIB);
+>  
+>  /**
+>   * __adis_check_status() - Check the device for error conditions (unlocked)
+> @@ -445,7 +437,7 @@ int __adis_initial_startup(struct adis *adis)
+>  	 * with 'IRQF_NO_AUTOEN' anyways.
+>  	 */
+>  	if (!adis->data->unmasked_drdy)
+> -		adis_enable_irq(adis, false);
+> +		__adis_enable_irq(adis, false);
+>  
+>  	if (!adis->data->prod_id_reg)
+>  		return 0;
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index 515ca09764fe..d789ecf8d0c8 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -402,9 +402,20 @@ static inline int adis_update_bits_base(struct adis *adis, unsigned int reg,
+>  	__adis_update_bits_base(adis, reg, mask, val, sizeof(val));	\
+>  })
+>  
+> -int adis_enable_irq(struct adis *adis, bool enable);
+> +static inline int adis_enable_irq(struct adis *adis, bool enable)
+> +{
+> +	int ret;
+> +
+> +	mutex_lock(&adis->state_lock);
+> +	ret = __adis_enable_irq(adis, enable);
+> +	mutex_unlock(&adis->state_lock);
+> +
+> +	return ret;
+> +}
+> +
+>  int __adis_check_status(struct adis *adis);
+>  int __adis_initial_startup(struct adis *adis);
+> +int __adis_enable_irq(struct adis *adis, bool enable);
+>  
+>  static inline int adis_check_status(struct adis *adis)
+>  {
 

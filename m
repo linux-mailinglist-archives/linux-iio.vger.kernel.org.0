@@ -2,114 +2,128 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26ED8635DC3
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 13:47:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCDCD636201
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 15:40:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237798AbiKWMqo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 07:46:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
+        id S237905AbiKWOkh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 09:40:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237808AbiKWMpu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 07:45:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BDE3286F9;
-        Wed, 23 Nov 2022 04:42:48 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDADB61C55;
-        Wed, 23 Nov 2022 12:42:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9335AC433B5;
-        Wed, 23 Nov 2022 12:42:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669207367;
-        bh=HQnziATy9GXeouqLcZTi0GRYACLnIQvqj6pEI65EoMw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=saS32qREy/Ra3DmyLdcbQxG1oa81pwa3rGqr/iHx//e2z72uQ/bE0vRAdhUD9WN/U
-         sqqVmHerj34EjANgD96yxunvDygUXnEMpnnsBb94Tsq/XQMeynmzIdrxqxaJdZ5E/N
-         oKq1XdcEN6tX2uCtmJfDcxjpb7rZ4n1mAE7Yra4b0ivIeTuy1Fw2C5vwsxrx51JMU/
-         hHhdwtMlUB1DEQQ5puzIaksoiF1teKYxjXLdYAGtOMNu6Lq+80WtQoBTBKncw3/D0m
-         XK+EYwS6PCgx3qoZu2jc/gSHMyhlqC6K2siwZuKbywBuJCMmoVTK7kPwmdSmgRdwJ1
-         RYlP8enqlD3ig==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
-        linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 05/31] tools: iio: iio_generic_buffer: Fix read size
-Date:   Wed, 23 Nov 2022 07:42:06 -0500
-Message-Id: <20221123124234.265396-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221123124234.265396-1-sashal@kernel.org>
-References: <20221123124234.265396-1-sashal@kernel.org>
+        with ESMTP id S237570AbiKWOkd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 09:40:33 -0500
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C47A42F7E
+        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 06:40:31 -0800 (PST)
+Received: by mail-qk1-x72f.google.com with SMTP id z1so12520677qkl.9
+        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 06:40:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kz0LuQHYwR1IVYCnxnd6r23v7LzIiHX/ImxeAU/8TJU=;
+        b=e4uJ8SZmd27oXyqnenMSBkCujFM8krETeCDV1SNB714vs/5368IIzrdTppiYRYYBeA
+         Dedarg1r757+xNiNE94WxWKdW1LpFsBFQGS0n664AtH1M4tFzF/rzF6MEsd7NWeGs84o
+         dSyK2JSYTq2cwlALHnwKkGYGqnM+7GVKbCko3twE9b6rdT1gKNDnnPxH4lNx3HDaAZ4Q
+         5eigcz6HADLpQ2uQS/rDbGRFxdi4NiPNfEZo1osyLl3Zu+0CN10IRDmNbPU51/J9S3os
+         LG9iKBDLnm/L17WTu+R007fedMLxZIS+lLM1juWpNhuTNY9UKTM/bEPRJHWEIbjy6ywz
+         OYKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kz0LuQHYwR1IVYCnxnd6r23v7LzIiHX/ImxeAU/8TJU=;
+        b=OGzHliLMFmL8SIkd2wtU6x676Eq/12/5R4nuZkvNKLU0MH7hdOlBig7i0URneW2DGv
+         KdOo6ajJnpq83mLmpBNO6pNgL90q4g0xQotKa54zEeKg+ByuhKGBz3a4Vzen4+E6ef+S
+         1ZXc1tdTUGgS2ZIin2WbJptOZmxw7qbgItgFZfNOO5ZVFJDygewJaYFXQ5rEqhtwb8Jz
+         zeNUyYZdOXGZfAqg1alyQznoOwHWgMKhoq686B23wlo2fp2/f5eWpklTRE4oj4x+1HZ/
+         n3saZAwUQuUNZn3xI+7MXYkl5RSdOTECSc8DKS7IQcof/AdMPG0GLXHN083BGQw3yz+B
+         5BRg==
+X-Gm-Message-State: ANoB5pldsO96tTa5vodfoxyRzMBx06wUWjs/N3fVfZ9pSvr1yozOmya+
+        Ru/ceJRc71aR+OwtJX3X61kk4g==
+X-Google-Smtp-Source: AA0mqf6f0MDPV/iuxooMGg51/bf6XxMqtUg/KS/WCIylcctIF7X6pHS1ru7KSKKhkZxwGrIuUW1xEg==
+X-Received: by 2002:a37:94c6:0:b0:6fa:2ff9:e9ca with SMTP id w189-20020a3794c6000000b006fa2ff9e9camr10506670qkd.29.1669214430309;
+        Wed, 23 Nov 2022 06:40:30 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id m125-20020a378a83000000b006cbc6e1478csm11642208qkd.57.2022.11.23.06.40.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Nov 2022 06:40:29 -0800 (PST)
+Date:   Tue, 22 Nov 2022 02:27:50 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc:     jic23@kernel.org, alexandre.torgue@foss.st.com,
+        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp
+ registers update
+Message-ID: <Y3x59hNekCDuOFXT@fedora>
+References: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="0mgwEUJf1fyfHdJ1"
+Content-Disposition: inline
+In-Reply-To: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 7c919b619bcc68158921b1bd968f0e704549bbb6 ]
+--0mgwEUJf1fyfHdJ1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When noevents is true and small buffer is used the allocated memory for
-holding the data may be smaller than the hard-coded 64 bytes. This can
-cause the iio_generic_buffer to crash.
+On Wed, Nov 23, 2022 at 02:36:09PM +0100, Fabrice Gasnier wrote:
+> The ARR (auto reload register) and CMP (compare) registers are
+> successively written. The status bits to check the update of these
+> registers are polled together with regmap_read_poll_timeout().
+> The condition to end the loop may become true, even if one of the register
+> isn't correctly updated.
+> So ensure both status bits are set before clearing them.
+>=20
+> Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> ---
+>  drivers/counter/stm32-lptimer-cnt.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-=
+lptimer-cnt.c
+> index d6b80b6dfc28..8439755559b2 100644
+> --- a/drivers/counter/stm32-lptimer-cnt.c
+> +++ b/drivers/counter/stm32-lptimer-cnt.c
+> @@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm32_lp=
+tim_cnt *priv,
+> =20
+>  	/* ensure CMP & ARR registers are properly written */
+>  	ret =3D regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+> -				       (val & STM32_LPTIM_CMPOK_ARROK),
+> +				       (val & STM32_LPTIM_CMPOK_ARROK) =3D=3D STM32_LPTIM_CMPOK_ARRO=
+K,
 
-Following was recorded on beagle bone black with v6.0 kernel and the
-digit fix patch:
-https://lore.kernel.org/all/Y0f+tKCz+ZAIoroQ@dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi/
-using valgrind;
+This is a reasonable fix, but I don't like seeing so much happening in
+an argument list -- it's easy to misunderstand what's going on which can
+lead to further bugs the future. Pull out this condition to a dedicated
+bool variable with a comment explaining why we need the equivalence
+check (i.e. to ensure both status bits are set and not just one).
 
-==339== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
-==339== Command: /iio_generic_buffer -n kx022-accel -T0 -e -l 10 -a -w 2000000
-==339== Parent PID: 307
-==339==
-==339== Syscall param read(buf) points to unaddressable byte(s)
-==339==    at 0x496BFA4: read (read.c:26)
-==339==    by 0x11699: main (iio_generic_buffer.c:724)
-==339==  Address 0x4ab3518 is 0 bytes after a block of size 160 alloc'd
-==339==    at 0x4864B70: malloc (vg_replace_malloc.c:381)
-==339==    by 0x115BB: main (iio_generic_buffer.c:677)
+William Breathitt Gray
 
-Fix this by always using the same size for reading as was used for
-data storage allocation.
+--0mgwEUJf1fyfHdJ1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Link: https://lore.kernel.org/r/Y0kMh0t5qUXJw3nQ@dc75zzyyyyyyyyyyyyycy-3.rev.dnainternet.fi
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/iio/iio_generic_buffer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 2491c54a5e4f..f8deae4e26a1 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -715,12 +715,12 @@ int main(int argc, char **argv)
- 				continue;
- 			}
- 
--			toread = buf_len;
- 		} else {
- 			usleep(timedelay);
--			toread = 64;
- 		}
- 
-+		toread = buf_len;
-+
- 		read_size = read(buf_fd, data, toread * scan_size);
- 		if (read_size < 0) {
- 			if (errno == EAGAIN) {
--- 
-2.35.1
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3x59gAKCRC1SFbKvhIj
+K6m4AQDYJtNkjZVyUJNcrrWZaOlUfodLz2Yx1BuFjg5YDeGpZAEA7CMFKO+r2JFh
+jyelDpd6Evs3sxh1gwWAWDB4cv5E1gk=
+=eIOy
+-----END PGP SIGNATURE-----
 
+--0mgwEUJf1fyfHdJ1--

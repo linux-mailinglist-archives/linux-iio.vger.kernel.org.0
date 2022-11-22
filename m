@@ -2,137 +2,102 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB62633DCC
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 14:36:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42093633E76
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 15:07:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233830AbiKVNgB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Nov 2022 08:36:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
+        id S234042AbiKVOHs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Nov 2022 09:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233806AbiKVNfu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 08:35:50 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A18E64A3B
-        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 05:35:49 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTR4-0004Q1-Ha; Tue, 22 Nov 2022 14:35:38 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTR1-005rZK-1b; Tue, 22 Nov 2022 14:35:35 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1oxTR1-000o5d-AE; Tue, 22 Nov 2022 14:35:35 +0100
-Date:   Tue, 22 Nov 2022 14:35:34 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
+        with ESMTP id S234045AbiKVOH1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 09:07:27 -0500
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4704E6A769;
+        Tue, 22 Nov 2022 06:05:49 -0800 (PST)
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+        (using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mx1.emlix.com (Postfix) with ESMTPS id 6BB3C5F890;
+        Tue, 22 Nov 2022 15:05:47 +0100 (CET)
+From:   Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Edmund Berenson <edmund.berenson@emlix.com>,
+        Lukasz Zemla <Lukasz.Zemla@woodward.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-kernel@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de,
-        Grant Likely <grant.likely@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH 567/606] staging: iio: ad5933: Convert to i2c's
- .probe_new()
-Message-ID: <20221122133534.zoosrjjszpgmgb64@pengutronix.de>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-568-uwe@kleine-koenig.org>
- <Y3y/DxNp+cYu7GTH@kroah.com>
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v4] dt-bindings: iio: adc: ad7923: adjust documentation
+Date:   Tue, 22 Nov 2022 15:05:43 +0100
+Message-Id: <20221122140543.11230-1-edmund.berenson@emlix.com>
+X-Mailer: git-send-email 2.37.4
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ulcjetf4btcckz7d"
-Content-Disposition: inline
-In-Reply-To: <Y3y/DxNp+cYu7GTH@kroah.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+- The ad7927 is fully compatible with ad7928 driver, add
+documentation for device.
+- ad7923 and ad7924 are treated the same in the driver, show
+the relationship in the documentation.
 
---ulcjetf4btcckz7d
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
+---
+ .../bindings/iio/adc/adi,ad7923.yaml          | 25 ++++++++++++-------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-Hello Greg,
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+index 07f9d1c09c7d..b6e2f1b41739 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+@@ -11,7 +11,7 @@ maintainers:
+ 
+ description: |
+   Analog Devices AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and AD7908,
+-   AD7918, AD7928 8 Channels ADCs.
++   AD7918, AD7927, AD7928 8 Channels ADCs.
+ 
+   Specifications about the part can be found at:
+     https://www.analog.com/media/en/technical-documentation/data-sheets/AD7923.pdf
+@@ -20,14 +20,21 @@ description: |
+ 
+ properties:
+   compatible:
+-    enum:
+-      - adi,ad7904
+-      - adi,ad7914
+-      - adi,ad7923
+-      - adi,ad7924
+-      - adi,ad7908
+-      - adi,ad7918
+-      - adi,ad7928
++    oneOf:
++      - const: adi,ad7904
++      - const: adi,ad7908
++      - const: adi,ad7914
++      - const: adi,ad7918
++      - const: adi,ad7923
++      - const: adi,ad7924
++        deprecated: true
++      - const: adi,ad7928
++      - items:
++          - const: adi,ad7924
++          - const: adi,ad7923
++      - items:
++          - const: adi,ad7927
++          - const: adi,ad7928
+ 
+   reg:
+     maxItems: 1
+-- 
+2.37.4
 
-On Tue, Nov 22, 2022 at 01:22:39PM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Nov 18, 2022 at 11:45:01PM +0100, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > .probe_new() doesn't get the i2c_device_id * parameter, so determine
-> > that explicitly in the probe function.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > ---
-> >  drivers/staging/iio/impedance-analyzer/ad5933.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/=
-staging/iio/impedance-analyzer/ad5933.c
-> > index f177b20f0f2d..b3152f7153fb 100644
-> > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> > @@ -674,9 +674,9 @@ static void ad5933_clk_disable(void *data)
-> >  	clk_disable_unprepare(st->mclk);
-> >  }
-> > =20
-> > -static int ad5933_probe(struct i2c_client *client,
-> > -			const struct i2c_device_id *id)
-> > +static int ad5933_probe(struct i2c_client *client)
-> >  {
-> > +	const struct i2c_device_id *id =3D i2c_client_get_device_id(client);
->=20
-> Breaks the build in my tree as this function is not in Linus's tree yet
-> :(
-
-As pointed out in the cover letter[1] you want to make sure that
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/client_d=
-evice_id_helper-immutable
-
-is part of your tree first. So either pull that into your tree, or wait
-until this hits Linus's tree.
-
-Best regards
-Uwe
-
-[1] https://lore.kernel.org/linux-kernel/20221118224540.619276-1-uwe@kleine=
--koenig.org
-    (It wasn't sent to every thread participant because that would have
-    been too many.)
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ulcjetf4btcckz7d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmN80CAACgkQwfwUeK3K
-7Al35ggAnqzvJT6O1dZcuSdZThRtBdo5YPsZq63WDB/TRDChLUiYlceIBo9rzETz
-t3nH4M6MjjxnOWepddEk/P2hqOl7Bw6h9oarQZvWf2sYdHtoqRkPoSthUjz+glrB
-UWDIIA5F4SeaXakKujDbz4YcIHsEXnnnWuut10edAIkeMWgwIvZzN/sJNXF2pvrh
-QVU7kpB5yWmp0O5ieU3itSPAHwWb4FQFWWi35AS0tJOYQpOuKoHT+HrcYBWKq/mf
-nK3ijGYIRwRVgIDlS6F9tRtoU3eAFJ4ctnztSwoNcZ0giVZbHWoCOIK0WaAlDqNS
-JSXk/So3urvJXWDkg+4T7xEuwZVfxA==
-=mV0I
------END PGP SIGNATURE-----
-
---ulcjetf4btcckz7d--

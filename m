@@ -2,108 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43EC1633714
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 09:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8008563390C
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 10:51:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbiKVI2p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Nov 2022 03:28:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33280 "EHLO
+        id S233411AbiKVJvL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Nov 2022 04:51:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232788AbiKVI2o (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 03:28:44 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1513FBB0;
-        Tue, 22 Nov 2022 00:28:43 -0800 (PST)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AM6Kt6v026886;
-        Tue, 22 Nov 2022 03:28:41 -0500
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3kxvxa17qc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Nov 2022 03:28:41 -0500
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 2AM8Sepu028651
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Nov 2022 03:28:40 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Nov 2022 03:28:39 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Nov 2022 03:28:39 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 22 Nov 2022 03:28:39 -0500
-Received: from rbolboac.ad.analog.com ([10.48.65.139])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2AM8SFcf016751;
-        Tue, 22 Nov 2022 03:28:34 -0500
-From:   Ramona Bolboaca <ramona.bolboaca@analog.com>
-To:     <jic23@kernel.org>, <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Ramona Bolboaca <ramona.bolboaca@analog.com>
-Subject: [PATCH v6 9/9] iio: imu: adis: Remove adis_initial_startup function
-Date:   Tue, 22 Nov 2022 10:27:57 +0200
-Message-ID: <20221122082757.449452-10-ramona.bolboaca@analog.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221122082757.449452-1-ramona.bolboaca@analog.com>
-References: <20221122082757.449452-1-ramona.bolboaca@analog.com>
+        with ESMTP id S233453AbiKVJvD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 04:51:03 -0500
+X-Greylist: delayed 1199 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Nov 2022 01:51:02 PST
+Received: from mail.axisfairfi.com (mail.axisfairfi.com [94.177.230.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6CB551C17
+        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 01:51:02 -0800 (PST)
+Received: by mail.axisfairfi.com (Postfix, from userid 1001)
+        id BB981825D4; Tue, 22 Nov 2022 09:15:27 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=axisfairfi.com;
+        s=mail; t=1669108528;
+        bh=0BgaW9t8GFER5QecxVkFsHrVi3gO/4V5KAZgJaiRYBs=;
+        h=Date:From:To:Subject:From;
+        b=qZLgZ69Kway+GO3aYBcCg8d06nKGyB39vAoTvqW/K+THbAPQkPYfj38AkL4a/lwT+
+         8mnuiRB4IkLiymtkAFP3Uye0Z+loaJ0ukZ38EDTlZLXLpbva4RubFRBm6rrDdSHRV8
+         tVhTpLIBS3yPP5Om9YGma8qIEURDRNANo5xj2hOANPIEcCdC5BTvHO7L5m874/xAt2
+         kSoTLwMnLNLie37E2MphA64O/XhRhSyFPhnbjwnhTeI6Y/ZZrun56W1PANIUYrf5fD
+         Wwnvww1jmJyiiGCMdUgAT+MBVWJLOkLvCcVCjEreYea52RctX5RSoDweq2mI7MQlRG
+         MuqZYJ/hUpx1g==
+Received: by mail.axisfairfi.com for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 09:15:27 GMT
+Message-ID: <20221122074500-0.1.d.o7z.0.6kt4m2f161@axisfairfi.com>
+Date:   Tue, 22 Nov 2022 09:15:27 GMT
+From:   "Zbynek Spacek" <zbynek.spacek@axisfairfi.com>
+To:     <linux-iio@vger.kernel.org>
+Subject: Silikonmischungen
+X-Mailer: mail.axisfairfi.com
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 1SPcOEHy2fIBAY01plPUJlPxZrOR-e5k
-X-Proofpoint-ORIG-GUID: 1SPcOEHy2fIBAY01plPUJlPxZrOR-e5k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-22_04,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0
- spamscore=0 adultscore=0 mlxlogscore=999 priorityscore=1501 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211220062
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM14,
+        SPF_HELO_NONE,SPF_PASS,URIBL_RED autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Remove adis_initial_startup function since it is not used
-anymore.
+Good morning,
 
-Signed-off-by: Ramona Bolboaca <ramona.bolboaca@analog.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
----
- include/linux/iio/imu/adis.h | 12 ------------
- 1 file changed, 12 deletions(-)
+do you need intermediates for processing, plastics (e.g. rubber) or silic=
+one mixtures?
 
-diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
-index d789ecf8d0c8..0ace8738552b 100644
---- a/include/linux/iio/imu/adis.h
-+++ b/include/linux/iio/imu/adis.h
-@@ -428,18 +428,6 @@ static inline int adis_check_status(struct adis *adis)
- 	return ret;
- }
- 
--/* locked version of __adis_initial_startup() */
--static inline int adis_initial_startup(struct adis *adis)
--{
--	int ret;
--
--	mutex_lock(&adis->state_lock);
--	ret = __adis_initial_startup(adis);
--	mutex_unlock(&adis->state_lock);
--
--	return ret;
--}
--
- static inline void adis_dev_lock(struct adis *adis)
- {
- 	mutex_lock(&adis->state_lock);
--- 
-2.25.1
+We provide a wide range of silicone rubbers with various properties, sili=
+cone mixtures from renowned manufacturers such as Wacker, Elastosil LR an=
+d dyes, stabilizers, primers and anti-adhesive additives.
 
+We also produce technical silicone compounds with increased resistance to=
+ oils, resistant to high temperatures and water vapor, conductive and man=
+y more.
+
+We provide fast order fulfillment, timely deliveries and cost optimizatio=
+n.
+
+Can I introduce what we can offer you?
+
+
+Zbynek Spacek

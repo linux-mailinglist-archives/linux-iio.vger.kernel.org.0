@@ -2,101 +2,90 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99750633BC1
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 12:48:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1622F633C59
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 13:22:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232429AbiKVLsI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Nov 2022 06:48:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37652 "EHLO
+        id S233678AbiKVMW4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Nov 2022 07:22:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233237AbiKVLsC (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 06:48:02 -0500
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EB6AA18E;
-        Tue, 22 Nov 2022 03:47:59 -0800 (PST)
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AMAo4Ln017071;
-        Tue, 22 Nov 2022 06:47:49 -0500
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3m0q23jgu4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 22 Nov 2022 06:47:48 -0500
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2AMBllf1062165
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 22 Nov 2022 06:47:47 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Nov 2022 06:47:47 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 22 Nov 2022 06:47:46 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 22 Nov 2022 06:47:46 -0500
-Received: from IST-LT-39247.ad.analog.com (IST-LT-39247.ad.analog.com [10.25.16.21])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2AMBlSmY000650;
-        Tue, 22 Nov 2022 06:47:31 -0500
-From:   Ibrahim Tilki <Ibrahim.Tilki@analog.com>
-To:     <jic23@kernel.org>
-CC:     Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        "Julia Lawall" <julia.lawall@lip6.fr>
-Subject: [PATCH] iio: adc: max11410: fix incomplete vref buffer mask 
-Date:   Tue, 22 Nov 2022 14:47:18 +0300
-Message-ID: <20221122114718.17557-1-Ibrahim.Tilki@analog.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S233732AbiKVMWw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 07:22:52 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C5E61003;
+        Tue, 22 Nov 2022 04:22:43 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2034616CA;
+        Tue, 22 Nov 2022 12:22:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF703C433C1;
+        Tue, 22 Nov 2022 12:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1669119762;
+        bh=1RsX6ENFcjBr8IB+4mVrBxY3lKXrZ7Oluu3EWhp/OTY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xekBgBAyNYNYAbCEwTr7Omvw1WA3yMh74q4QqUkO72G+lL3dMLrqZtdSA7TBVdBBv
+         cTRB2IDnvqSew/Gn2vNdnTSwrxhckZN/aNWq7wjZ7OnzQrHpsQU9L1TazIE0AUiXjf
+         HmXarVwyDfAO+hOIydeGMpekwLeHF3x6lvgrJeQI=
+Date:   Tue, 22 Nov 2022 13:22:39 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <uwe@kleine-koenig.org>
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Grant Likely <grant.likely@linaro.org>,
+        Wolfram Sang <wsa@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
+        kernel@pengutronix.de,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
+        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 567/606] staging: iio: ad5933: Convert to i2c's
+ .probe_new()
+Message-ID: <Y3y/DxNp+cYu7GTH@kroah.com>
+References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+ <20221118224540.619276-568-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: U-_myB9KSHJ-YZHlOXOh2ch1FJgdSaC_
-X-Proofpoint-ORIG-GUID: U-_myB9KSHJ-YZHlOXOh2ch1FJgdSaC_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-22_06,2022-11-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 mlxscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=986 adultscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211220086
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20221118224540.619276-568-uwe@kleine-koenig.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-VREFP bit was missing from channel configuration mask and VREFN bit was
-included twice instead which fails to enable positive reference buffer when
-requested by a channel. Channels that don't enable vrefp buffer were not
-affected.
+On Fri, Nov 18, 2022 at 11:45:01PM +0100, Uwe Kleine-König wrote:
+> From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> 
+> .probe_new() doesn't get the i2c_device_id * parameter, so determine
+> that explicitly in the probe function.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+>  drivers/staging/iio/impedance-analyzer/ad5933.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> index f177b20f0f2d..b3152f7153fb 100644
+> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> @@ -674,9 +674,9 @@ static void ad5933_clk_disable(void *data)
+>  	clk_disable_unprepare(st->mclk);
+>  }
+>  
+> -static int ad5933_probe(struct i2c_client *client,
+> -			const struct i2c_device_id *id)
+> +static int ad5933_probe(struct i2c_client *client)
+>  {
+> +	const struct i2c_device_id *id = i2c_client_get_device_id(client);
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@lip6.fr>
-Signed-off-by: Ibrahim Tilki <Ibrahim.Tilki@analog.com>
----
- drivers/iio/adc/max11410.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
-index 8cd5663671..fdc9f03135 100644
---- a/drivers/iio/adc/max11410.c
-+++ b/drivers/iio/adc/max11410.c
-@@ -370,7 +370,7 @@ static int max11410_configure_channel(struct max11410_state *st,
- 		 FIELD_PREP(MAX11410_CTRL_UNIPOLAR_BIT, cfg.bipolar ? 0 : 1);
- 	ret = regmap_update_bits(st->regmap, MAX11410_REG_CTRL,
- 				 MAX11410_CTRL_REFSEL_MASK |
--				 MAX11410_CTRL_VREFN_BUF_BIT |
-+				 MAX11410_CTRL_VREFP_BUF_BIT |
- 				 MAX11410_CTRL_VREFN_BUF_BIT |
- 				 MAX11410_CTRL_UNIPOLAR_BIT, regval);
- 	if (ret)
--- 
-2.25.1
+Breaks the build in my tree as this function is not in Linus's tree yet
+:(
 

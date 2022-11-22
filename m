@@ -2,69 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA831633F23
-	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 15:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62C1F63406D
+	for <lists+linux-iio@lfdr.de>; Tue, 22 Nov 2022 16:39:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232738AbiKVOl0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 22 Nov 2022 09:41:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57478 "EHLO
+        id S233556AbiKVPjl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 22 Nov 2022 10:39:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbiKVOl0 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 09:41:26 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5014387A
-        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 06:41:24 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id b8so10119745edf.11
-        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 06:41:24 -0800 (PST)
+        with ESMTP id S229481AbiKVPjj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 22 Nov 2022 10:39:39 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49362706
+        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 07:39:38 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id x21so18337176ljg.10
+        for <linux-iio@vger.kernel.org>; Tue, 22 Nov 2022 07:39:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9Kacw5FrPZZ3AdW9d8qAJ/kGPVPvKgJmlT/4YyZBVx8=;
-        b=eMW459fMFldVshj3WV+ihtUTZnN2/2Hj68P41SlaqDDiVW1hhAWBX0UC5DRobZqGCP
-         /o2moQdFpE7zKyynoZQqpKGvskmLYvyw1ySQqT7VUDyYANvGI/KnSQCX4kXiTpN1TBYs
-         914g4PnWap5OJDSgzWDCCgkuPvasp8UlkBmkk=
+        bh=Ds8Sy9Qo0VlxaGfYZfQDdKcBEoXNjqFnH02Jzco/bEA=;
+        b=lk1QsjWdooS9s/Fhmb9/UR2iEAgaGSjYskun7Wnkf/gMr57Ths5J3/laG66JVjx0s7
+         r6SPRs/z6fKrAtfGZOu+Lrg8JyO7a9VdoZF8FXMhujUwbioAGHZCjp24aokB6xo4Mim2
+         PfAIUfSGsVn+NHg1Q+R0PiWmZhS5Y8w/a7OJF5r1WSM5uhPuw511WBMoZ0wpvLDBl6FE
+         BOBW+eShfw/V+dMLlSGDW3fJWoNzZYdX8pNMnPW2Myk3OizgIgayS+cPqogQchx8AFwL
+         tCn5Ejgh7kWV8J+ZxdiyzddH9iyRR4iaWAPSPp6X5qyPrVgkfNEblOI/z1THa46PFv/G
+         Ub2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Kacw5FrPZZ3AdW9d8qAJ/kGPVPvKgJmlT/4YyZBVx8=;
-        b=2tezfkIBJ/Jwvlgy27E9AEu6PmRsEgOO/WQ8NfieZ62BxyZenNCIhaVj28Q77Vtldv
-         bpQz8diLKuVpOTq5SH4/+doAX25fTDe3pmlkkprSXIQv+3N920WkWxkJqlZAxHq8hrFY
-         nXAzsPE235di05HCs36gouOwAvAH9oJRgD4zmJHMFWH4Skk4c28YqrhhF7H+717G2m28
-         oJFfPayuKvR7WA1RsGRszkKU/sSRGwBJWHbHLCsizBvqzy0mT8F4IZEo45ECoNv4u5pu
-         JP8weMg3fd3dlyDju8OlLTQo1PiqpNbeh7uRnJv8iAS2o1mCo2NeH1DonSS7vWJzraao
-         wgvw==
-X-Gm-Message-State: ANoB5pmdrH260uQY2S0D5Ds12/Y4FrD3BxyY+zUvApAJY1xmqEcREC09
-        T9xrTqG1Cyl3PvhYfEmmywJ2Hg==
-X-Google-Smtp-Source: AA0mqf45QBsCoAXSHHBUHYZ7dwpofHSYAG7JNRqA1tuzcnNIyNfvrmjTgFwdQCNZjxFH/v19IZ+I8w==
-X-Received: by 2002:a05:6402:3203:b0:467:b8c9:a7fa with SMTP id g3-20020a056402320300b00467b8c9a7famr5581006eda.25.1669128083250;
-        Tue, 22 Nov 2022 06:41:23 -0800 (PST)
-Received: from [192.168.1.149] ([80.208.71.65])
-        by smtp.gmail.com with ESMTPSA id b10-20020a1709063caa00b0078907275a44sm6058819ejh.42.2022.11.22.06.41.21
+        bh=Ds8Sy9Qo0VlxaGfYZfQDdKcBEoXNjqFnH02Jzco/bEA=;
+        b=AjOA8f7FrIyVuLnAOxcQxQJVNcvdyxc7Hdz1hnAE4VY/60g6KbhInsuOZADeoc4SEg
+         qak9ZdNFGt9pPKZVqkihfRVYvbSm+Rt02xUTnthFr3543kIDeayufu2vMpnpPSQQwoRj
+         GhojEfskfuVi0FNfRo2oTxgkSjPFInOSD5F6x0hWLRFI9GTxXG/DGRfZg1f8+v7LjF5b
+         KUmxPmfyb3orC0T36MyPI+D6PNvfjui+KJwDAEccDz84LLKdix0RwsGv6CzUKXtElrtU
+         cC+nZbc/s6Jvdz4jpuoDTTb1VGNDYVyHy9dffPD8agjQWoKlEi3c5uJ54R+3p7dIPNJq
+         q5xg==
+X-Gm-Message-State: ANoB5pnKx/ssz4ZLyhDz/Ie01ZO40qr764+4nJZFKgn7viOiWM2tOVvy
+        on9FB+jdeJVnv9s7uHrLNa4+gw==
+X-Google-Smtp-Source: AA0mqf5pPAK3W4v8an/eR+cieEGeNBfDtiHWiAnML0e5MFDjyCE5sQTecKnWv5WEaFVv9FlPUuqd/A==
+X-Received: by 2002:a05:651c:10a1:b0:26e:a:b5c9 with SMTP id k1-20020a05651c10a100b0026e000ab5c9mr2069061ljn.481.1669131576967;
+        Tue, 22 Nov 2022 07:39:36 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id c4-20020ac25304000000b0049fff3f645esm2507227lfh.70.2022.11.22.07.39.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Nov 2022 06:41:22 -0800 (PST)
-Message-ID: <d8e3b536-06ac-2346-3fe1-90ed2fb1127d@rasmusvillemoes.dk>
-Date:   Tue, 22 Nov 2022 15:41:21 +0100
+        Tue, 22 Nov 2022 07:39:36 -0800 (PST)
+Message-ID: <17b4eb3a-97ab-905d-f8f2-eb5669e4854f@linaro.org>
+Date:   Tue, 22 Nov 2022 16:39:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH] iio: adc128s052: add proper .data members in
- adc128_of_match table
-Content-Language: en-US, da
-To:     Jonathan Cameron <jic23@kernel.org>,
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v4] dt-bindings: iio: adc: ad7923: adjust documentation
+To:     Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Lukasz Zemla <Lukasz.Zemla@woodward.com>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Javier Arteaga <javier@emutex.com>,
-        Dan O'Donovan <dan@emutex.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nicola Lunghi <nicola.lunghi@emutex.com>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-In-Reply-To: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221122140543.11230-1-edmund.berenson@emlix.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221122140543.11230-1-edmund.berenson@emlix.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -77,20 +80,55 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 15/11/2022 14.23, Rasmus Villemoes wrote:
-> Prior to commit bd5d54e4d49d ("iio: adc128s052: add ACPI _HID
-> AANT1280"), the driver unconditionally used spi_get_device_id() to get
-> the index into the adc128_config array.
+On 22/11/2022 15:05, Edmund Berenson wrote:
+> - The ad7927 is fully compatible with ad7928 driver, add
+> documentation for device.
+> - ad7923 and ad7924 are treated the same in the driver, show
+> the relationship in the documentation.
 > 
-> However, with that commit, OF-based boards now incorrectly treat all
-> supported sensors as if they are an adc128s052, because all the .data
-> members of the adc128_of_match table are implicitly 0. Our board,
-> which has an adc122s021, thus exposes 8 channels whereas it really
-> only has two.
-> 
-> Fixes: bd5d54e4d49d ("iio: adc128s052: add ACPI _HID AANT1280")
-> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
 > ---
+>  .../bindings/iio/adc/adi,ad7923.yaml          | 25 ++++++++++++-------
+>  1 file changed, 16 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> index 07f9d1c09c7d..b6e2f1b41739 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7923.yaml
+> @@ -11,7 +11,7 @@ maintainers:
+>  
+>  description: |
+>    Analog Devices AD7904, AD7914, AD7923, AD7924 4 Channel ADCs, and AD7908,
+> -   AD7918, AD7928 8 Channels ADCs.
+> +   AD7918, AD7927, AD7928 8 Channels ADCs.
+>  
+>    Specifications about the part can be found at:
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7923.pdf
+> @@ -20,14 +20,21 @@ description: |
+>  
+>  properties:
+>    compatible:
+> -    enum:
+> -      - adi,ad7904
+> -      - adi,ad7914
+> -      - adi,ad7923
+> -      - adi,ad7924
+> -      - adi,ad7908
+> -      - adi,ad7918
+> -      - adi,ad7928
+> +    oneOf:
+> +      - const: adi,ad7904
+> +      - const: adi,ad7908
+> +      - const: adi,ad7914
+> +      - const: adi,ad7918
+> +      - const: adi,ad7923
 
-Ping. Any chance this could be picked up before the merge window for 6.2
-opens?
+Keep all others as enum.
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+

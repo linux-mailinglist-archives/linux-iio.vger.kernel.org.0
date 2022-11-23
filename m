@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3647E635D3D
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 13:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26ED8635DC3
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 13:47:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236748AbiKWMl1 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 07:41:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47492 "EHLO
+        id S237798AbiKWMqo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 07:46:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236749AbiKWMlQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 07:41:16 -0500
+        with ESMTP id S237808AbiKWMpu (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 07:45:50 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1ED6711A;
-        Wed, 23 Nov 2022 04:41:14 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BDE3286F9;
+        Wed, 23 Nov 2022 04:42:48 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F021B61C50;
-        Wed, 23 Nov 2022 12:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D02C433C1;
-        Wed, 23 Nov 2022 12:41:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDADB61C55;
+        Wed, 23 Nov 2022 12:42:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9335AC433B5;
+        Wed, 23 Nov 2022 12:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669207273;
+        s=k20201202; t=1669207367;
         bh=HQnziATy9GXeouqLcZTi0GRYACLnIQvqj6pEI65EoMw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GjgoZH6OVuMFS4zn+zkKfha6S+o4mHWL1S5P6WAxIpRo8smNueMDkY1GfAsI+cpmF
-         6c0j4Ji5Fy1Lv8t6L5ixzZ02VLyH5+xB7o2syZbf6Mf5prZTT4sn+ZppGI5ciueHLq
-         O96AugMvgtnVHkl2WI376rbtvKy3LVbM7WWabUuttkeK/dq0+Qovy6uo4pYzWefdTO
-         26jfF+mMQrm54HvuGokq6l1VRUHF93SULmFkqDwlT5PzGrnfLO6ozjSZh1Nar9IBR1
-         OwSKr0VElUxj5tMGPI3iEIkbnn6Yy3YyyYG47Y2WGxDQL45IQ6jdIrbLSUo2Axydnc
-         aGOOhfd5gmzrQ==
+        b=saS32qREy/Ra3DmyLdcbQxG1oa81pwa3rGqr/iHx//e2z72uQ/bE0vRAdhUD9WN/U
+         sqqVmHerj34EjANgD96yxunvDygUXnEMpnnsBb94Tsq/XQMeynmzIdrxqxaJdZ5E/N
+         oKq1XdcEN6tX2uCtmJfDcxjpb7rZ4n1mAE7Yra4b0ivIeTuy1Fw2C5vwsxrx51JMU/
+         hHhdwtMlUB1DEQQ5puzIaksoiF1teKYxjXLdYAGtOMNu6Lq+80WtQoBTBKncw3/D0m
+         XK+EYwS6PCgx3qoZu2jc/gSHMyhlqC6K2siwZuKbywBuJCMmoVTK7kPwmdSmgRdwJ1
+         RYlP8enqlD3ig==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Matti Vaittinen <mazziesaccount@gmail.com>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.0 06/44] tools: iio: iio_generic_buffer: Fix read size
-Date:   Wed, 23 Nov 2022 07:40:15 -0500
-Message-Id: <20221123124057.264822-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 05/31] tools: iio: iio_generic_buffer: Fix read size
+Date:   Wed, 23 Nov 2022 07:42:06 -0500
+Message-Id: <20221123124234.265396-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221123124057.264822-1-sashal@kernel.org>
-References: <20221123124057.264822-1-sashal@kernel.org>
+In-Reply-To: <20221123124234.265396-1-sashal@kernel.org>
+References: <20221123124234.265396-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

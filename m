@@ -2,122 +2,111 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83AC8635AAF
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 11:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8859635B0D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 12:07:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237290AbiKWKyj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 05:54:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S237573AbiKWLGZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 06:06:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbiKWKyN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 05:54:13 -0500
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39912A1A9
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 02:42:43 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id a15so20896817ljb.7
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 02:42:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SFhD7QC44SxOlkV79GY7+KSSqImgOzRfkuug/txS8GU=;
-        b=Um3cKNCLliSNFFOp/SCkJ2A2/AP0+U7KDXN4dOTM7cZbX+WKqoazt4ocGIYEkxplHe
-         DraDsAT50Ss/8kmq6fgkt8DaqkdDB7xwSReS2azwBUos6r6i/tK3pdGs/pPJioE8qi18
-         S/NjFYyRWc4g6+3Y44CBf+VTlT7Ru91C/gUHVPMcTEx+BQFXfZJQbgwe5Q2rZ2ccaUoW
-         0jpLqea+BI/TJuwP/mCADlmMQhBFmZIk+AMCjKy2ZRqTBkUdn/Cfh8XQ9Z7MjSNXAsFg
-         hDAY16nx16c+x4zx7kMWwLjoJou3WXTUdj5c2dBS5hBDLJE9004q+rw9hLY7Efz8wPCb
-         0kvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SFhD7QC44SxOlkV79GY7+KSSqImgOzRfkuug/txS8GU=;
-        b=PEAc0Cy86QchEx2Dn+IESf7FqBGtCW5oTiJGxsIahl8Tzj4NyjY6/GlABzR0CKpubD
-         fObOaACQcTk+mAo3XEXpth/HB03x2KjNCyADc57jzwXxJXBmW6X5MORZbpFJp82DXei+
-         mOs0xuSZbEKYa+rawyc6t0kn4qRwu2cDv6nwIR+3wg6OycNnphPVpFAPvF7/hsMtHu/k
-         2LcZnuosueirLuAnmFqBx5a0ggN+D2MwJKPkBJAEnkMy92Lf9zr3dXRAa1zO+UGeP8ku
-         RDV7ppH9ZiAcz1VMKfQx34/SMa3p2Y12ja8g9ySOV2HpZvbTyG1RHI36GxMMPbrnV6ae
-         CjCg==
-X-Gm-Message-State: ANoB5pm2dwAIR0mBO5L9IWIEx5K8zu0cb9OjhhaRQzE2U1/eHHleeh4X
-        urynr2MO/9pW0ib4RIBZNWax4A==
-X-Google-Smtp-Source: AA0mqf6OwBtKnetF7rPsU+gfC7YfZB+DUwA9k6T7BmGVAqWuNL1Nrfu+r+fTHCNn2zyoKX9H0WMWfA==
-X-Received: by 2002:a2e:a544:0:b0:278:f5b8:82c8 with SMTP id e4-20020a2ea544000000b00278f5b882c8mr5227138ljn.228.1669200161613;
-        Wed, 23 Nov 2022 02:42:41 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id k2-20020a2eb742000000b002770fb5722fsm2164729ljo.123.2022.11.23.02.42.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Nov 2022 02:42:41 -0800 (PST)
-Message-ID: <c96d84e9-44d0-a389-429d-91d8a7d747b5@linaro.org>
-Date:   Wed, 23 Nov 2022 11:42:40 +0100
+        with ESMTP id S237567AbiKWLGE (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 06:06:04 -0500
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD55BBC;
+        Wed, 23 Nov 2022 03:05:09 -0800 (PST)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2ANAapRm023568;
+        Wed, 23 Nov 2022 12:04:43 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=u0sShtivsgK/20XBxCveeAhPRdkeUJsHdC8lqu1cuGU=;
+ b=Eg240EFQCP7w8o+l4HFuPIv4z4pgaDZZUT9YTRzpEYf5NNFxEr3HvWzQUb9IRNSCt8Uo
+ CyXtcytbZhL7PM/FRT8YJ1n1XIkh6PpkeRJ95DIQMHnWp2d3f3357cqMszu2PAj9DVBT
+ aKgSQmD6Z5Ij2vKyHvw87cOQcZA9SUyUyZJlF/U+jLmruAHiBEILu951zRkDUkXtiLMh
+ xxzOv9E+D6kBXxGEWQOuL1Jr4hj/DKcdEI9uhfhC7xHLVOPVDQukR0GrcJnwCMqr6hmI
+ TFd7fTNvMKtXgOPVWlq/ebzIY+57NHlKMR+nfHmT/WD61oUuB8z9QDziJV2jdg8hCTZl Lw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3m10c4e1wq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Nov 2022 12:04:43 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 13458100034;
+        Wed, 23 Nov 2022 12:04:38 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0DD0421A229;
+        Wed, 23 Nov 2022 12:04:38 +0100 (CET)
+Received: from [10.48.1.102] (10.48.1.102) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Wed, 23 Nov
+ 2022 12:04:37 +0100
+Message-ID: <f7a2a680-4879-b6cf-3546-e890b3c96e32@foss.st.com>
+Date:   Wed, 23 Nov 2022 12:04:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v5] dt-bindings: iio: adc: ad7923: adjust documentation
+ Thunderbird/102.4.2
+Subject: Re: [PATCH 0/3] iio: adc: stm32: add smart calibration
 Content-Language: en-US
-To:     Edmund Berenson <edmund.berenson@emlix.com>
-Cc:     Lukasz Zemla <Lukasz.Zemla@woodward.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+To:     Olivier Moysan <olivier.moysan@foss.st.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221122161437.18937-1-edmund.berenson@emlix.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221122161437.18937-1-edmund.berenson@emlix.com>
-Content-Type: text/plain; charset=UTF-8
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+CC:     <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20221115103124.70074-1-olivier.moysan@foss.st.com>
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20221115103124.70074-1-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.48.1.102]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-23_05,2022-11-23_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 22/11/2022 17:14, Edmund Berenson wrote:
-> - The ad7927 is fully compatible with ad7928 driver, add
-> documentation for device.
-> - ad7923 and ad7924 are treated the same in the driver, show
-> the relationship in the documentation.
+On 11/15/22 11:31, Olivier Moysan wrote:
+> Refine offset and linear calibration strategy for STM32MP15 and
+> STM32MP13 SoCs:
 > 
-> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
-> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
-> ---
->  .../bindings/iio/adc/adi,ad7923.yaml          | 26 ++++++++++++-------
->  1 file changed, 17 insertions(+), 9 deletions(-)
->
-
-1. This is a v5, what are the changes?
-
-2.
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions. However, there's no need to repost patches *only* to add the
-tags. The upstream maintainer will do that for acks received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v5.17/source/Documentation/process/submitting-patches.rst#L540
-
-If a tag was not added on purpose, please state why and what changed.
-
-
-
-> ---
->  .../bindings/iio/adc/adi,ad7923.yaml          | 26 ++++++++++++-------
->  1 file changed, 17 insertions(+), 9 deletions(-)
+> - offset calibration
+> This calibration depends on factors such as temperature and voltage.
+> As it is not time consuming, it's worth doing it on each ADC
+> start, to get the best accuracy. There is no need to save these data.
 > 
+> - linear calibration
+> This calibration is basically SoC dependent, so it can be done only once.
+> When this calibration has been performed at boot stage, the ADC kernel
+> driver can retrieve the calibration data from the ADC registers.
+> Otherwise, the linear calibration is performed once by the ADC driver.
+> The backup of these data, allows to restore them on successive ADC starts.
+> 
+> Olivier Moysan (3):
+>   iio: adc: stm32-adc: smart calibration support
+>   iio: adc: stm32-adc: improve calibration error log
+>   iio: adc: stm32-adc: add debugfs to read raw calibration result
 
+Hi Olivier,
 
-Best regards,
-Krzysztof
+For the series, you can add my:
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
+Thanks,
+Fabrice
+
+> 
+>  drivers/iio/adc/stm32-adc-core.h |   1 +
+>  drivers/iio/adc/stm32-adc.c      | 135 ++++++++++++++++++-------------
+>  2 files changed, 78 insertions(+), 58 deletions(-)
+> 

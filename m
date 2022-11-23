@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62FA36367B7
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFCD6367B9
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:54:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237705AbiKWRyp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 12:54:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46142 "EHLO
+        id S238572AbiKWRyt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 12:54:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237461AbiKWRyo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:54:44 -0500
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A465861743;
-        Wed, 23 Nov 2022 09:54:43 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id b29so17984714pfp.13;
-        Wed, 23 Nov 2022 09:54:43 -0800 (PST)
+        with ESMTP id S237461AbiKWRys (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:54:48 -0500
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F3E36AEDA;
+        Wed, 23 Nov 2022 09:54:48 -0800 (PST)
+Received: by mail-pg1-x52b.google.com with SMTP id 136so17420820pga.1;
+        Wed, 23 Nov 2022 09:54:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q7SDO8Hfv8UNbCG9VUfErLc2iywPx7lgKEb1KGhgxPQ=;
-        b=B8qFyvJ0ncXIpKh8Uz+tA+NVGOEhLdB35VewuYn15B+1aUQAzc1ojGCWU7dKUqfdG6
-         ixZeESZi4myMt3y5S4vc3gFlD78dPjPC3kmDr5HkElp4gqt5YeXrlDnBSIB3y/jnJDbu
-         fp4TK2S1nH+lMs3RSAQPfcIaunm+jYc22HhOypMsBcdNF45ONzcV9X5OOjpmP7z/aMmn
-         FppIwyOrCHDj4ht5hx6Mlv/grnF9OLNiAzlzin6t8/ioW2v3OaBxehYYUXHNxcjzmQ9K
-         EvQjUulZFrdacDouK+Xv6HJnNKb1Hlqwnri5vH1p3hCJTima3kgmox4QWYkKOxZyJlZd
-         HVDA==
+        bh=ZH0Qc9jkq5rdx+9MsswFw6fY0Pcj+rHLWBfTQ1gC3xE=;
+        b=bSzfkZ91RRT95GKDEsYr040rfLq3/tNhJGmUkALs3tqr6/PUBUelP8T2iI3eRBXXRS
+         W5CmmUzi02a6tBqR0Vl0LEq15kFsBNajis8R4U07kmaXyziOnEA0N0Eh1VGYYWgLju2Y
+         NSer/a9rNnK4zC3NWAWIfDifeMoTBKR7ahbJVmnLll7AL7j/Umr+4OBeiDPNBiDHKp7B
+         fkbMdcytezSkSYI7HHptXLYquVd5GcIDpCg3W7NKOoxRcTfZ8M8AClji2dFAUP4THzEN
+         vEbYSdgBgDWd2hTxBPclb2xuci6fhclly4gsmz3ROVDcfitJ9dZVevo3whkhp3r8uKTu
+         KBfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Q7SDO8Hfv8UNbCG9VUfErLc2iywPx7lgKEb1KGhgxPQ=;
-        b=stuUsFP05VqjIM6oaZVxmqqCEg8dRnZH8JhFVHETH36uoXnFGlRefbhkDIDd2YOeoI
-         rQrIgelpwLUfDOuzwtcPXHy6JdmIjcy0zdEafQqVulp/EJb2UFCno9Mnip39rfA6kb6w
-         WcIXmPqbs4R7aJHiPB3Xz8SKPkkW3A7U3GyEf9yRnRmW5QFrJ8TLjIYjugAGnYCtgeEV
-         3lT2ZOyIzNuHAusq2OgOf76uLIRaIaNL7TZ7Y18Ap1izC2mZ/IE8bPm4jkkVWuOXIV7L
-         M+CP+GSOsZ/r0Fxk0kXCBf4Ht9HHthtca0EpvKkyd3KnYNr1HJZ7Cuvrre3eGj5DP9q0
-         E6CA==
-X-Gm-Message-State: ANoB5pk5V5YaiVxUFRgwWJ0dJsUKsCbMWB0taypND5kNUOoEM1yGTLSp
-        7US4k/pvEimZt5sHGcz9gFBeenS75fE=
-X-Google-Smtp-Source: AA0mqf5+cnVz3hSy30L2DJBG/IkNjGN+e/YIar8DRBKJ7BNLNd/Ti0vZ7RCnhS12aQ8Op9gtkz/APA==
-X-Received: by 2002:a63:389:0:b0:477:7f68:bbbc with SMTP id 131-20020a630389000000b004777f68bbbcmr4199498pgd.279.1669226083192;
-        Wed, 23 Nov 2022 09:54:43 -0800 (PST)
+        bh=ZH0Qc9jkq5rdx+9MsswFw6fY0Pcj+rHLWBfTQ1gC3xE=;
+        b=POdA2cR1jSq1SNgaZGfTWtylgWYSH7DfJyNzZ05DE7DCK3UOrxb+PBcaX/Kk7CTemL
+         L7LZxmfZ9oiS3I/ZZuDjut3O0pe6/TRDbEDD/09DqKbQUoVZ1/QinsV4r4+QEYU0gksY
+         zq5M+wSR8oCI1hOKgO9D6NQrrkUxgzSt0aCl8EK62gYRccgmAMrWnoUhVKETS0mHKvU2
+         RfpZ86A+dPP0RWnP5VgPSRVnUxoeAoDWZ+UBiAHmGrbZGIEQIVhfUaKom9kWXnR2tZMU
+         RMXtzavHsHPbtZNFqLZfvx6pZOZVlBuEy5v7XWo4D8H81r36xTOLPFfDcPW4Jb0aNZMq
+         5ekA==
+X-Gm-Message-State: ANoB5pm+c9AF6QwZZ6P7NRF5UjnbGq5tDGHe21B6NTm42J3cYHuItZWA
+        46n5fRhTc3IJWPRDCmrB6ew=
+X-Google-Smtp-Source: AA0mqf7YdadYIfWlr1MiOMG6p2VQbPoO7jqU51ydgFvs+e5KuEdOFD1kyrlLDjl2/YzZ+KUO+baytQ==
+X-Received: by 2002:a63:c65:0:b0:476:db6f:d436 with SMTP id 37-20020a630c65000000b00476db6fd436mr27393231pgm.394.1669226087686;
+        Wed, 23 Nov 2022 09:54:47 -0800 (PST)
 Received: from discovery.. ([2401:4900:483b:e422:60e:77bf:baa2:9d8b])
-        by smtp.gmail.com with ESMTPSA id y76-20020a62644f000000b0057470a06694sm837503pfb.40.2022.11.23.09.54.38
+        by smtp.gmail.com with ESMTPSA id y76-20020a62644f000000b0057470a06694sm837503pfb.40.2022.11.23.09.54.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 09:54:42 -0800 (PST)
+        Wed, 23 Nov 2022 09:54:47 -0800 (PST)
 From:   Saravanan Sekar <sravanhome@gmail.com>
 To:     sre@kernel.org, lee@kernel.org, jic23@kernel.org, lars@metafoo.de,
         andy.shevchenko@gmail.com
 Cc:     linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
         Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v6 1/7] mfd: mp2629: fix failed to get iio channel by device name
-Date:   Wed, 23 Nov 2022 18:54:19 +0100
-Message-Id: <20221123175425.564042-2-sravanhome@gmail.com>
+Subject: [PATCH v6 2/7] power: supply: fix wrong interpretation of register value
+Date:   Wed, 23 Nov 2022 18:54:20 +0100
+Message-Id: <20221123175425.564042-3-sravanhome@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221123175425.564042-1-sravanhome@gmail.com>
 References: <20221123175425.564042-1-sravanhome@gmail.com>
@@ -72,33 +72,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The mfd cell devices name populated on sysfs entry is dynamically derived
-from an auto instance which introduced a regression. As a result
-mpc2629_charger driver failed to get adc channel because of iio consumer
-name mismatch with the sysfs.
+Fix the switch cases to match the register value.
 
-/sys/class/i2c-adapter/i2c-1/mp2629_adc.0.auto/
-/sys/class/i2c-adapter/i2c-1/mp2629_charger.1.auto/
-
-Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
 Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
 ---
- drivers/mfd/mp2629.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/mp2629_charger.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
-index 16840ec5fd1c..f4c5aa06f38c 100644
---- a/drivers/mfd/mp2629.c
-+++ b/drivers/mfd/mp2629.c
-@@ -51,7 +51,7 @@ static int mp2629_probe(struct i2c_client *client)
- 		return PTR_ERR(ddata->regmap);
- 	}
- 
--	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_AUTO, mp2629_cell,
-+	ret = devm_mfd_add_devices(ddata->dev, PLATFORM_DEVID_NONE, mp2629_cell,
- 				   ARRAY_SIZE(mp2629_cell), NULL, 0, NULL);
- 	if (ret)
- 		dev_err(ddata->dev, "Failed to register sub-devices %d\n", ret);
+diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply/mp2629_charger.c
+index bf9c27b463a8..46d620bd23b9 100644
+--- a/drivers/power/supply/mp2629_charger.c
++++ b/drivers/power/supply/mp2629_charger.c
+@@ -284,10 +284,10 @@ static int mp2629_charger_battery_get_prop(struct power_supply *psy,
+ 			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+ 			break;
+ 		case 0x01:
+-		case 0x10:
++		case 0x02:
+ 			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+ 			break;
+-		case 0x11:
++		case 0x03:
+ 			val->intval = POWER_SUPPLY_STATUS_FULL;
+ 		}
+ 		break;
+@@ -305,7 +305,7 @@ static int mp2629_charger_battery_get_prop(struct power_supply *psy,
+ 		case 0x01:
+ 			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+ 			break;
+-		case 0x10:
++		case 0x02:
+ 			val->intval = POWER_SUPPLY_CHARGE_TYPE_STANDARD;
+ 			break;
+ 		default:
 -- 
 2.34.1
 

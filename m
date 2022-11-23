@@ -2,137 +2,116 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1128F636264
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 15:52:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99612635F45
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 14:22:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237785AbiKWOwK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 09:52:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52066 "EHLO
+        id S238622AbiKWNWv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 08:22:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237521AbiKWOwH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 09:52:07 -0500
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E820B6EB62
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 06:52:04 -0800 (PST)
-Received: by mail-qk1-x72b.google.com with SMTP id p18so12542946qkg.2
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 06:52:04 -0800 (PST)
+        with ESMTP id S238638AbiKWNWY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 08:22:24 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78A93FB8B
+        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 05:01:34 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id l8so21259806ljh.13
+        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 05:01:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=knbxmQVIOU2Pd66Dq2acA052ZEHkRF2txPVugpmQJls=;
-        b=vgoCKFZRKLg5X6KRRSHGgXpYEh2IpY5j6Jj0EMht5qtQ5vVTuqIdbNTURoY0AF/5w3
-         UG4cMxe7+vdo7xqYJkf0wioum7PckU4FwTl2NM4DiiKgXdx7FnMC4v9HUQFX5HhpeP4f
-         ioRAEFIoHR95thd4TYiEIm3w41NCD3rn69jUjdDuL3QUc6WPJ+TMpVp1CfAHmLz6tkbw
-         jTKsJ8BYK53PPoLsQEtvfiR6S+b4KvrxJufS3BUv8ynKpLJd/r197eXTqmcNp2mSHqLw
-         8kZrNl4pn4Q96xALlgZmACcrrISzshdRfuyDoktiEl/wr6ZepBXVza/Dl0sywh0Ofvtx
-         178A==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Rp9LQRHK4UZG+xUfLLMwYJtuh3wPrpxN6Fnd2UjWdQg=;
+        b=YqKW4WZ12w3737HpIKaIbSfRqSmPKWir3XDrW/zdqOV9JGrfgldRSUQjiOR4mpwLZL
+         CO+CHVIHt2qkz75r4PuT1YifKI/ufwNk5CLMVXDEnjYh7zYOibvXOFRLqK+eOY4JqvRa
+         eylk3gfX+g7syMCZg6KdhAncldUPL6p8UKHWvE8a+SpBROLKURnbhyQ76keSjsPLxvFr
+         euPLS7vpgu8v9MlgyjPLinBvTgoSYUbjCGPFxWH5zBqhxO9NI3+MV1+oW06cV5+DmYTU
+         2Wxron4/P1HDYbINnL2S67EKIlSDaeuH8ldHoqSH2es4ghAFTlCTrCpmNhgR2wRM3yw0
+         WEWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=knbxmQVIOU2Pd66Dq2acA052ZEHkRF2txPVugpmQJls=;
-        b=w2oThbbeah8B93UAtebpMzHTqaKPJuYvCE06qy/K5ThKHALsYjT9YZiElT8I7tl6+T
-         pd0EIboFU5R2TiWgJyw3oA8jVXGAudGsk1Zg/YyAczrRnYz0pvEGbRBYN6eukI+DjDXg
-         a/ldSwWK//8xJ8JyU6TnBELRhYQwUKIu+7qkL3z05iTZzWwIQh5hINviIpyf1uwffuWn
-         A7b77uT9LL1o4BTm5BOXy8aY91KF7Jznvaq3gMyiO/uf+banmWxacxb7KSN4W51wD+/W
-         /BzhgPGMUEWC+2P/0uLMzkOi//MwYgey1uJXjlUSgdy+ffnUpwpIZIWx1sxBB56sEnzq
-         u1SA==
-X-Gm-Message-State: ANoB5pkMlrTXmwnpmZQMg1DJMEIASviUCP1K47UWTIXnXOqva/MWjOi2
-        8iLukCtcTcQ/T+f6lp05vJyHxqtJcBhg6g==
-X-Google-Smtp-Source: AA0mqf50nMaGK0F/5gySpgXWH3AhQK7OFs7Gu6ckRt9Fe7BUaW8hnqeaWOrFbDNOi68j5pTlArM48Q==
-X-Received: by 2002:a37:2f44:0:b0:6fa:fc92:13fd with SMTP id v65-20020a372f44000000b006fafc9213fdmr25224598qkh.183.1669215123957;
-        Wed, 23 Nov 2022 06:52:03 -0800 (PST)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id i11-20020a05620a248b00b006fb3884e10bsm12520572qkn.24.2022.11.23.06.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 06:52:03 -0800 (PST)
-Date:   Tue, 22 Nov 2022 02:33:52 -0500
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, alexandre.torgue@foss.st.com,
-        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp
- registers update
-Message-ID: <Y3x7YIBDT3xTeqtk@fedora>
-References: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
- <Y3x59hNekCDuOFXT@fedora>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rp9LQRHK4UZG+xUfLLMwYJtuh3wPrpxN6Fnd2UjWdQg=;
+        b=YRCwlraTDQQorgqohY4U7sAVmC+IJmIP5j22P8u78H4Po4tCBiYU6rVRQtthLRaTbw
+         HD+LQWcZxGtxjt67OYfT1J1J7o6VR6u+/Oel/NLFSoBcYopo54d96GGyhKsg8Pl+hKll
+         I2p9o40/kZ3OuP5nMf/hEEJR93KXhJz7W2ff4/YaZ8bKPbc48Hm+kbbuVJ6YY6vYFLmk
+         XIBHFWBPHaMcmbnWR1RgD7+BhsMUAmGo1ci6Devkz9BQTGPUwfmcuo89XoYfo2/foaEO
+         PzazTxvIr2ZmwC1W1t0tsBAwaPrUXo3RpjSRWOrfrskqaxUusCobPAKpiHnpXX/y2KyZ
+         jIyg==
+X-Gm-Message-State: ANoB5pnL/0idFMoM/uzECp7eIJoR1dy5q9gfn1vgiTh5GLhNtpLRBSwY
+        wG8xwLS1FBtQ/tzYM2lSS9qK2g==
+X-Google-Smtp-Source: AA0mqf5DGm4ZvktT4NR9WyAWpPuHSnlNUVoErSOEdsb9pP81a5SYi+qylXXNjUQBbNtecR/QIXyT/g==
+X-Received: by 2002:a2e:a90b:0:b0:277:794:ae09 with SMTP id j11-20020a2ea90b000000b002770794ae09mr8806647ljq.286.1669208492340;
+        Wed, 23 Nov 2022 05:01:32 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id p7-20020a2eb987000000b002796fb63dbdsm534480ljp.13.2022.11.23.05.01.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Nov 2022 05:01:31 -0800 (PST)
+Message-ID: <4d62d7e9-5454-4d1c-b3bb-4ba1fd7a31d6@linaro.org>
+Date:   Wed, 23 Nov 2022 14:01:30 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="pzBUpj5aqWF9hSSN"
-Content-Disposition: inline
-In-Reply-To: <Y3x59hNekCDuOFXT@fedora>
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v5] dt-bindings: iio: adc: ad7923: adjust documentation
+Content-Language: en-US
+To:     Edmund Berenson <edmund.berenson@emlix.com>
+Cc:     Lukasz Zemla <Lukasz.Zemla@woodward.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221122161437.18937-1-edmund.berenson@emlix.com>
+ <c96d84e9-44d0-a389-429d-91d8a7d747b5@linaro.org>
+ <20221123113224.5vxs2zmxf7z2bmvm@emlix.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221123113224.5vxs2zmxf7z2bmvm@emlix.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+On 23/11/2022 12:32, Edmund Berenson wrote:
+> On Wed, Nov 23, 2022 at 11:42:40AM +0100, Krzysztof Kozlowski wrote:
+>> On 22/11/2022 17:14, Edmund Berenson wrote:
+>>> - The ad7927 is fully compatible with ad7928 driver, add
+>>> documentation for device.
+>>> - ad7923 and ad7924 are treated the same in the driver, show
+>>> the relationship in the documentation.
+>>>
+>>> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
+>>> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
+>>> ---
+>>>  .../bindings/iio/adc/adi,ad7923.yaml          | 26 ++++++++++++-------
+>>>  1 file changed, 17 insertions(+), 9 deletions(-)
+>>>
+>>
+>> 1. This is a v5, what are the changes?
+>>
+> The original idea was adding the compatible string into driver itself,
+> then it was suggested that I have a fallback compatible to 7928 as the
+> hardware versions are treated the same in the driver. After that it was
+> suggested to add deprecated flag to standalone compatibility, but doing
+> so I didn't want to add compatibility on driver side just to mark it
+> deprecated in the documentation, so I dropped driver side changes.
+> Finally I had some issues getting the documentation syntax into an
+> acceptable form, mainly const vs enum listing of compatibility stings.
 
---pzBUpj5aqWF9hSSN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That's a bit too long for a changelog. Keep it short but still
+descriptive. Anyway - this must be in the changelog place, so after ---
 
-On Tue, Nov 22, 2022 at 02:27:50AM -0500, William Breathitt Gray wrote:
-> On Wed, Nov 23, 2022 at 02:36:09PM +0100, Fabrice Gasnier wrote:
-> > The ARR (auto reload register) and CMP (compare) registers are
-> > successively written. The status bits to check the update of these
-> > registers are polled together with regmap_read_poll_timeout().
-> > The condition to end the loop may become true, even if one of the regis=
-ter
-> > isn't correctly updated.
-> > So ensure both status bits are set before clearing them.
-> >=20
-> > Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-> > Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> > ---
-> >  drivers/counter/stm32-lptimer-cnt.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm3=
-2-lptimer-cnt.c
-> > index d6b80b6dfc28..8439755559b2 100644
-> > --- a/drivers/counter/stm32-lptimer-cnt.c
-> > +++ b/drivers/counter/stm32-lptimer-cnt.c
-> > @@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm32_=
-lptim_cnt *priv,
-> > =20
-> >  	/* ensure CMP & ARR registers are properly written */
-> >  	ret =3D regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
-> > -				       (val & STM32_LPTIM_CMPOK_ARROK),
-> > +				       (val & STM32_LPTIM_CMPOK_ARROK) =3D=3D STM32_LPTIM_CMPOK_AR=
-ROK,
->=20
-> This is a reasonable fix, but I don't like seeing so much happening in
-> an argument list -- it's easy to misunderstand what's going on which can
-> lead to further bugs the future. Pull out this condition to a dedicated
-> bool variable with a comment explaining why we need the equivalence
-> check (i.e. to ensure both status bits are set and not just one).
->=20
-> William Breathitt Gray
 
-Alternatively, you could pull out just (val & STM32_LPTIM_CMPOK_ARROK)
-to a separate variable and keep the equivalence condition inline if you
-think it'll be clearer that way.
+Best regards,
+Krzysztof
 
-William Breathitt Gray
-
---pzBUpj5aqWF9hSSN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3x7YAAKCRC1SFbKvhIj
-K9w1AP98ZG3DrAmGPMHuLe6esFEn0tC6ND7mWOexsyUahUYdawD/R2NVJxw+1mLI
-RQk8aAe4SpweKg5EY0hASmH+yqpo4A0=
-=2pWS
------END PGP SIGNATURE-----
-
---pzBUpj5aqWF9hSSN--

@@ -2,99 +2,140 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A0B3636052
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 14:47:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E70636066
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 14:50:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238024AbiKWNrw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 08:47:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
+        id S237619AbiKWNuK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 08:50:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238924AbiKWNrW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 08:47:22 -0500
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5301C923;
-        Wed, 23 Nov 2022 05:36:40 -0800 (PST)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AN9pLMW014413;
-        Wed, 23 Nov 2022 14:36:30 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=selector1;
- bh=W+/ow1n7icMi+44OF4VfpnDE42Lq57Oz7D0FUcSmPWk=;
- b=3hVEWeOfJX0GhOOHBWUJsYQgAfJZeo5BKHkyet7Z/pvh0rS9xv7LQNs1YM5J/8R08QBu
- QyscUeq91+KF96F2QdYcbkkFjDUT888M4v7ZeOVgT7iJfytVAz1bkliEim6hFpDP8FKm
- XyExcEfvbANGhQGUTfigaXavLK7CYkpuE9pUpJoQP7qgnRzgmt9a1kmiV2LCOiHLIpW2
- eFv1a6c3qkst52ra9qf2k7KQH+UPZ32blcIWKoVH0RxLgL5E0/SX+C8b1ARNvsJ387YN
- 0xl3SriXJKbAD1bf/iIInRepFvEcHRYoYUNT8eNSDYQUrL++HCUI1qK8JFut6JKTzfrJ BA== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3kxrax928y-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 23 Nov 2022 14:36:30 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C128310002A;
-        Wed, 23 Nov 2022 14:36:25 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A9AC9226FCB;
-        Wed, 23 Nov 2022 14:36:25 +0100 (CET)
-Received: from localhost (10.48.1.102) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Wed, 23 Nov
- 2022 14:36:22 +0100
-From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To:     <william.gray@linaro.org>, <jic23@kernel.org>
-CC:     <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>,
-        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp registers update
-Date:   Wed, 23 Nov 2022 14:36:09 +0100
-Message-ID: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S237248AbiKWNtm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 08:49:42 -0500
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861D59039D;
+        Wed, 23 Nov 2022 05:40:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1669210803; x=1700746803;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9srsKAsm31l1dTbkfAVTNzSDO2Kf610A6JWSfuub0kk=;
+  b=O8w2xloMEqmWt0Oi58sjwSLMJUVXFoFozTFcy8wRZAAYgq7tWXu1PQp0
+   3NVBC6PVGoxo+5xzXZaJmVTHFILwV0VW0wMPuyEIzZJIHl6ZJOIFfNgIz
+   /NY184QqgbHvTMmsjN6J16AVKDfB83AmcED+ZzYgQ+RTwodf4XQpUarr/
+   oN9/1ESKpC+i2iIdbcjZIxWMpD/o4iq2mRXsrF8BqiEjQRlotM9Fku5Ap
+   S3z4ha7l5L+en/hmJcBl2lx3MqcCOzKsTtKchvR4F0kKVLhyCoWmkZ/yy
+   qy2zoN1kkdOqRVhZYcMoClHGwVfbUCT87WEtg8RNiXMZuRz0d3XLrmKz6
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="312766696"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="312766696"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2022 05:40:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10540"; a="641799230"
+X-IronPort-AV: E=Sophos;i="5.96,187,1665471600"; 
+   d="scan'208";a="641799230"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga002.jf.intel.com with ESMTP; 23 Nov 2022 05:39:59 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1oxpyo-00GIsS-0d;
+        Wed, 23 Nov 2022 15:39:58 +0200
+Date:   Wed, 23 Nov 2022 15:39:57 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Gerald Loacker <gerald.loacker@wolfvision.net>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Michael Riesch <michael.riesch@wolfvision.net>
+Subject: Re: [PATCH v2 2/2] iio: magnetometer: add ti tmag5273 driver
+Message-ID: <Y34irZRlkpdqLrll@smile.fi.intel.com>
+References: <20221121123542.1322367-1-gerald.loacker@wolfvision.net>
+ <20221121123542.1322367-3-gerald.loacker@wolfvision.net>
+ <Y3uFWH5GV/x7UDcP@smile.fi.intel.com>
+ <f3fbf861-37c6-3bcf-615b-2f55261fbf90@wolfvision.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.48.1.102]
-X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-23_07,2022-11-23_01,2022-06-22_01
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f3fbf861-37c6-3bcf-615b-2f55261fbf90@wolfvision.net>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The ARR (auto reload register) and CMP (compare) registers are
-successively written. The status bits to check the update of these
-registers are polled together with regmap_read_poll_timeout().
-The condition to end the loop may become true, even if one of the register
-isn't correctly updated.
-So ensure both status bits are set before clearing them.
+On Wed, Nov 23, 2022 at 10:58:47AM +0100, Gerald Loacker wrote:
+> Am 21.11.2022 um 15:04 schrieb Andy Shevchenko:
+> > On Mon, Nov 21, 2022 at 01:35:42PM +0100, Gerald Loacker wrote:
 
-Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
- drivers/counter/stm32-lptimer-cnt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+...
 
-diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
-index d6b80b6dfc28..8439755559b2 100644
---- a/drivers/counter/stm32-lptimer-cnt.c
-+++ b/drivers/counter/stm32-lptimer-cnt.c
-@@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm32_lptim_cnt *priv,
- 
- 	/* ensure CMP & ARR registers are properly written */
- 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
--				       (val & STM32_LPTIM_CMPOK_ARROK),
-+				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
- 				       100, 1000);
- 	if (ret)
- 		return ret;
+> >> +static const struct {
+> >> +	unsigned int scale_int;
+> >> +	unsigned int scale_micro;
+> > 
+> > Can we have a separate patch to define this one eventually in the (one of) IIO
+> > generic headers? It's a bit pity that every new driver seems to reinvent the
+> > wheel.
+> > 
+> >> +} tmag5273_scale_table[4][2] = {
+> >> +	{ { 0, 0 }, { 0, 0 } },
+> >> +	{ { 0, 12200 }, { 0, 24400 } },
+> >> +	{ { 0, 40600 }, { 0, 81200 } },
+> >> +	{ { 0, 0 }, { 0, 0 } },
+> >> +};
+> > 
+> 
+> I'm thinking of defining structs for all similar types of IIO output
+> formats in iio.h like this:
+> 
+> 
+> struct iio_val_int_plus_micro {
+> 	int val_int;
+> 	int val_micro;
+> };
+> 
+> struct iio_val_int_plus_nano {
+> 	int val_int;
+> 	int val_nano;
+> };
+> 
+> struct iio_val_int_plus_micro_db {
+> 	int val_int;
+> 	int val_micro_db;
+> };
+
+...
+
+> struct iio_val_fractional {
+> 	int dividend;
+> 	int divisor;
+> };
+
+This one...
+
+> struct iio_val_fractional_log2 {
+> 	int dividend;
+> 	int divisor;
+> };
+
+...and this one repeat struct s32_fract (or u32_fract, whatever suits better).
+
+> Do you agree?
+
+Me, yes, but you need a blessing by maintainers of IIO.
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 

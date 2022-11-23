@@ -2,61 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36B676367BB
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:54:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F616367C2
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:55:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238764AbiKWRyy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 12:54:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46222 "EHLO
+        id S239286AbiKWRzI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 12:55:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238639AbiKWRyx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:54:53 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D047064A2C;
-        Wed, 23 Nov 2022 09:54:52 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id a1-20020a17090abe0100b00218a7df7789so2764013pjs.5;
-        Wed, 23 Nov 2022 09:54:52 -0800 (PST)
+        with ESMTP id S238557AbiKWRy7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:54:59 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD0E6F349;
+        Wed, 23 Nov 2022 09:54:57 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id z26so18025416pff.1;
+        Wed, 23 Nov 2022 09:54:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=POR67NNOWOg5L0ub1cqdpDYlQnLokUngs3/LSYj03K0=;
-        b=K88ASrwDTFK4OGChFmDH1LZtBUdGBGKG9j41LYJLOWnAbYk8fe1ZQSE5LLRDKmTLK4
-         2s4glEMHtObtvX13izlex/80fofnqLokFZ4+9A4IiuIsLUGCcEPTyRB8d2nrSUVaR+A0
-         7zcs8IA96gwwwlifelFXbovvYhS0CaBJwxp73+d9hthMUrCNX1cLieMxkn9rnJ4X0j1K
-         ddrQP5jK+LNMNP3IRBVkgG/ISabCdlRckD+suCjBPPDz6xO6UatSyTHzoTGryHFj0VpG
-         0h26/Yt0oAY7+wqL8SM6Djt9VXd3bwQnmT0KXwih/PpQsYv4xSiSLndCIM1IMr6oPdey
-         Sh9g==
+        bh=LqRBdYQ0hW2GoJp2mDn0xBVx5Bwku/wXXuv0oUxCzNw=;
+        b=E6ewgTv8yHrViH1SfPXTgR9/FuFvPVwgYlCxFp+KCu6kQ/U+QM5N905rlsMIya3DYy
+         CGzCZThzxWxL0LA/si+Ee4w5AdQ6hc+gJuSx67Fd6fdNYlWVgEba0ZSv946EwYnW+79/
+         1Kmm2A1JDMyqXC7WQ57YqNM/4nUDFEXe/y3Za3eOxeDErB/7AlTlVE/KaCaXh3fLzOCV
+         R3dEDnRFSkmfKYWcXPlVI4DDD++WGHmfXQk2zT8s3+Nas1XaS0KfyuX2tLuuER/F4vPh
+         CWn1PCDd6uWnvShEnIGIWqmHvTK5Ms4Bq0PJxymnd9QA65LcK5IU17/YOmBEj447Aw5T
+         I91w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=POR67NNOWOg5L0ub1cqdpDYlQnLokUngs3/LSYj03K0=;
-        b=D6+zGyl97LtohsGknjS+sy4o04AKA1L9GBq/XxlhU5+phDy2zzK0JyfCD+4d4lv/wr
-         nVssvL31GCpj6bKg+QdFT2GVvGjPVabqH24dNwBOGWZ1wDxhHajSz5q3clxFr2X1f8ps
-         Q/9WakooWGvTitaGa8KV1LDrJ2cRgIHVzuAsK+eFXHhnmkpkAdinsSDaA1QQMe8o2Gnj
-         zm990M2pjBaNqOtoB7DzYgdPDkGItsDJ6LXUEyOwGHe3uaWMeZNSIUNAb+Eidqro3+8t
-         KVvTYD4kDDMq9ycjnD+oGMdqXf65f0SsKKJmBhxsTRYJfUt2JhT6N6eSKfukFPfd27PO
-         MWJg==
-X-Gm-Message-State: ANoB5pm1wL6V7AIcaHJAbRUKmh7CzVKR6HPdXEgkNXd0wQzgUeoBakv3
-        +02if2TPPo+r1xD5d6eyPb6AfTUHml4=
-X-Google-Smtp-Source: AA0mqf6frPtH2L1iIleqUdyaFNUp/p4wFW/uiXFyonXhv6aMaL1JrFfFIAl1CqOYz8N0iuIwp5PAGQ==
-X-Received: by 2002:a17:902:ce82:b0:186:ed91:5086 with SMTP id f2-20020a170902ce8200b00186ed915086mr9795463plg.59.1669226092356;
-        Wed, 23 Nov 2022 09:54:52 -0800 (PST)
+        bh=LqRBdYQ0hW2GoJp2mDn0xBVx5Bwku/wXXuv0oUxCzNw=;
+        b=2UyIf7P3f430CcrxlCdDOAx3JZ7J279JmK6VtVxGlbfOljXmY/s5322eTgd6dpusGF
+         UDHLM5ks9MZHlHBsBx+15xBAlSgNY4IPCcTh90rwTNhCbyF//oF0VRaIBVzqR5sS5fJd
+         X8SCeHYF7hMufIiA6KQ8iqmeKXvp0nYQIgvtM9Q7sAat+YsMuyFCrHnukLGD5ep0EyjL
+         m32bu6wiuPdPQB3wEK1VZnMkODuXTWs80v0rJ22/mBGhfRM/SbsqIbkTe8adCKrYSU8R
+         LON2YOAuxHP11plwoYzyNW8CCzHKmBXO2TQgMX24Vr/xexob43CiCEuDZ64k+NF3EqvT
+         iPWw==
+X-Gm-Message-State: ANoB5pny3WbpoXnkX3bD8AYbHAJovedYmchb3Xp2MSc2vgB67cjISb2V
+        f4k3tvbVNLm4HpMvtQ6KE5BgzT8cMUY=
+X-Google-Smtp-Source: AA0mqf6tmbdKAoeAmkyVRcXlL6n6RnrqEIQ9SfY5AZ3pfcKyUbjLdmw3yjZaqH7VTAf0vUWcRPQXMQ==
+X-Received: by 2002:a63:4d0d:0:b0:477:14ea:cee6 with SMTP id a13-20020a634d0d000000b0047714eacee6mr8264902pgb.303.1669226097387;
+        Wed, 23 Nov 2022 09:54:57 -0800 (PST)
 Received: from discovery.. ([2401:4900:483b:e422:60e:77bf:baa2:9d8b])
-        by smtp.gmail.com with ESMTPSA id y76-20020a62644f000000b0057470a06694sm837503pfb.40.2022.11.23.09.54.48
+        by smtp.gmail.com with ESMTPSA id y76-20020a62644f000000b0057470a06694sm837503pfb.40.2022.11.23.09.54.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 09:54:51 -0800 (PST)
+        Wed, 23 Nov 2022 09:54:56 -0800 (PST)
 From:   Saravanan Sekar <sravanhome@gmail.com>
 To:     sre@kernel.org, lee@kernel.org, jic23@kernel.org, lars@metafoo.de,
         andy.shevchenko@gmail.com
 Cc:     linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
         Saravanan Sekar <sravanhome@gmail.com>
-Subject: [PATCH v6 3/7] mfd: mp2629: introduce chip id machanism to distinguish chip
-Date:   Wed, 23 Nov 2022 18:54:21 +0100
-Message-Id: <20221123175425.564042-4-sravanhome@gmail.com>
+Subject: [PATCH v6 4/7] mfd: mp2629: Add support for mps mp2733 battery charger
+Date:   Wed, 23 Nov 2022 18:54:22 +0100
+Message-Id: <20221123175425.564042-5-sravanhome@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221123175425.564042-1-sravanhome@gmail.com>
 References: <20221123175425.564042-1-sravanhome@gmail.com>
@@ -72,63 +72,41 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Introduce chip id machanism to distinguish chip
+mp2733 is updated version of mp2629 battery charge management
+device for single-cell Li-ion or Li-polymer battery. Additionally
+supports USB fast-charge and higher range of input voltage.
 
 Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
 Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 ---
- drivers/mfd/mp2629.c       | 4 +++-
- include/linux/mfd/mp2629.h | 5 +++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/mfd/mp2629.c       | 1 +
+ include/linux/mfd/mp2629.h | 1 +
+ 2 files changed, 2 insertions(+)
 
 diff --git a/drivers/mfd/mp2629.c b/drivers/mfd/mp2629.c
-index f4c5aa06f38c..a3fc02ad5ec1 100644
+index a3fc02ad5ec1..57db0f5009b9 100644
 --- a/drivers/mfd/mp2629.c
 +++ b/drivers/mfd/mp2629.c
-@@ -13,6 +13,7 @@
- #include <linux/mfd/mp2629.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- 
-@@ -43,6 +44,7 @@ static int mp2629_probe(struct i2c_client *client)
- 		return -ENOMEM;
- 
- 	ddata->dev = &client->dev;
-+	ddata->chip_id = (uintptr_t)device_get_match_data(&client->dev);
- 	i2c_set_clientdata(client, ddata);
- 
- 	ddata->regmap = devm_regmap_init_i2c(client, &mp2629_regmap_config);
-@@ -60,7 +62,7 @@ static int mp2629_probe(struct i2c_client *client)
- }
+@@ -63,6 +63,7 @@ static int mp2629_probe(struct i2c_client *client)
  
  static const struct of_device_id mp2629_of_match[] = {
--	{ .compatible = "mps,mp2629"},
-+	{ .compatible = "mps,mp2629", .data = (void *)CHIP_ID_MP2629 },
+ 	{ .compatible = "mps,mp2629", .data = (void *)CHIP_ID_MP2629 },
++	{ .compatible = "mps,mp2733", .data = (void *)CHIP_ID_MP2733 },
  	{ }
  };
  MODULE_DEVICE_TABLE(of, mp2629_of_match);
 diff --git a/include/linux/mfd/mp2629.h b/include/linux/mfd/mp2629.h
-index 89b706900b57..072c8181b48b 100644
+index 072c8181b48b..ee0e65720c75 100644
 --- a/include/linux/mfd/mp2629.h
 +++ b/include/linux/mfd/mp2629.h
-@@ -9,9 +9,14 @@
- #include <linux/device.h>
- #include <linux/regmap.h>
+@@ -11,6 +11,7 @@
  
-+enum mp2xx_chip_id {
-+	CHIP_ID_MP2629,
-+};
-+
- struct mp2629_data {
- 	struct device *dev;
- 	struct regmap *regmap;
-+	enum mp2xx_chip_id chip_id;
+ enum mp2xx_chip_id {
+ 	CHIP_ID_MP2629,
++	CHIP_ID_MP2733,
  };
  
- enum mp2629_adc_chan {
+ struct mp2629_data {
 -- 
 2.34.1
 

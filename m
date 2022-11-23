@@ -2,55 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D84F3636B48
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 21:36:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F527636B4D
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 21:39:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235701AbiKWUgl (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 15:36:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S235378AbiKWUjG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 15:39:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236846AbiKWUgQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 15:36:16 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92185E0DEF;
-        Wed, 23 Nov 2022 12:33:13 -0800 (PST)
+        with ESMTP id S240115AbiKWUhh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 15:37:37 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55CEDBB;
+        Wed, 23 Nov 2022 12:36:01 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 01B2961EFC;
-        Wed, 23 Nov 2022 20:33:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5C3C433D6;
-        Wed, 23 Nov 2022 20:33:10 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 5CF1EB8247F;
+        Wed, 23 Nov 2022 20:36:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E41C433C1;
+        Wed, 23 Nov 2022 20:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669235592;
-        bh=B8fMMVHm0c3Mnc+9FQNgfFP/mxzdHWei2MQUrXKNUSs=;
+        s=k20201202; t=1669235758;
+        bh=csngaTp+NrqsU6/cicHN8vYzPPuMHHibb61Uw1t3Cig=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cTI+o5R0vSFAqifl6DVt5eWM6oNiEf0ZFZTgWM4UIWpqu68XLporbVmtfNnF/uVIw
-         XN/JS7rccLfro5rXTW8lfbPYuIQbI4FdqvC6ithepcc7Hno9OLagiPMxWpwshdLBEH
-         iy9kWI08HC3DdIq4UxbSo37nUSRSo/Aw6xmQ4cnqfhrcArS0extNivizjq6/oUnFwB
-         RkUVL1lNHg/20ZPApaEGatlO80Zc4RPpvDlLy1aPMAp8T0Xc6QTHqGEYbR5PVRI9O6
-         a7LC7GmLCuAs1L3BhXbYC1C3fO9OXlp2q62KiKqwRrfjRmZ7Ls20kEMxN+8KwUwqgu
-         jQ/CTwiletQvQ==
-Date:   Wed, 23 Nov 2022 20:45:44 +0000
+        b=iYZbEEf+wDHc1MNJagehBOkLLLXnNUlk28ITL0QylEr9ibOlcUoAeLkIp9M4RE0sw
+         8tERSCXXaI7xs5wluvE8YdCN/S6TpcFHF5khwxFsRNs9A11erQI5zqoGuvZ3Wpr2ks
+         1akFitNxniY9OWbLs6yWmb0p0pxv9hd73nHxgWrJ0Aqbthr2JaSxLUoOT+zTiYvn+l
+         +Ive6iFPvRCjEju4txAfxfFttfDptJBiEe8V9riRPP/8Nf5ynEiobWJ41m+pzfqKAm
+         UExXKyVncJ9+ziS2AIQcKfU5w0m9UHAqGRkquSLC1F3A8AV+A4DfCWZrQw6yyLkxti
+         OjlHlerNQlkfA==
+Date:   Wed, 23 Nov 2022 20:48:32 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     "Sa, Nuno" <Nuno.Sa@analog.com>,
-        "Tanislav, Cosmin" <Cosmin.Tanislav@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: addac: ad74413r: fix integer promotion bug in
- ad74413_get_input_current_offset()
-Message-ID: <20221123204544.6a2b05a1@jic23-huawei>
-In-Reply-To: <b81d2ffe-efc3-8e2d-de7b-ed2bfa2449d0@rasmusvillemoes.dk>
-References: <20221118123209.1658420-1-linux@rasmusvillemoes.dk>
-        <SJ0PR03MB6778D6C0682294002296E54C99099@SJ0PR03MB6778.namprd03.prod.outlook.com>
-        <b81d2ffe-efc3-8e2d-de7b-ed2bfa2449d0@rasmusvillemoes.dk>
+To:     Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc:     <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] drivers: iio: dac: ad5592r: add gpio_chip names
+Message-ID: <20221123204832.3e514378@jic23-huawei>
+In-Reply-To: <20221117090130.51702-1-antoniu.miclaus@analog.com>
+References: <20221117090130.51702-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -60,33 +52,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Nov 2022 14:29:23 +0100
-Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+On Thu, 17 Nov 2022 11:01:30 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> On 18/11/2022 14.17, Sa, Nuno wrote:
->=20
-> >> Casting to int avoids that promotion and results in the correct -32767
-> >> output.
-> >>
-> >> Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> >> --- =20
-> >=20
-> > After adding proper Fixes: tag,
-> >=20
-> > Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com> =20
->=20
-> That would be
->=20
-> Fixes: fea251b6a5db (iio: addac: add AD74413R driver)
->=20
-Applied to the togreg branch of iio.git (as very late in cycle)
-and marked for stable.
-
-Thanks,
+> Add array of explicit gpio names for the `gpiochip` structure of
+> ad5592r, mainly for debug purposes.
+Can you give an example of when this is more useful than the offset?
+(which I'm assuming is also available when debugging?)
 
 Jonathan
 
-> Thanks,
-> Rasmus
->=20
+> 
+> Since the gpios are configurable via the dts, generic names are
+> used.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  drivers/iio/dac/ad5592r-base.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+> index 7a9b5fc1e579..076bc9ecfb49 100644
+> --- a/drivers/iio/dac/ad5592r-base.c
+> +++ b/drivers/iio/dac/ad5592r-base.c
+> @@ -124,6 +124,10 @@ static int ad5592r_gpio_request(struct gpio_chip *chip, unsigned offset)
+>  	return 0;
+>  }
+>  
+> +static const char * const ad5592r_gpio_names[] = {
+> +	"GPIO0", "GPIO1", "GPIO2", "GPIO3", "GPIO4", "GPIO5", "GPIO6", "GPIO7",
+> +};
+> +
+>  static int ad5592r_gpio_init(struct ad5592r_state *st)
+>  {
+>  	if (!st->gpio_map)
+> @@ -140,6 +144,7 @@ static int ad5592r_gpio_init(struct ad5592r_state *st)
+>  	st->gpiochip.set = ad5592r_gpio_set;
+>  	st->gpiochip.request = ad5592r_gpio_request;
+>  	st->gpiochip.owner = THIS_MODULE;
+> +	st->gpiochip.names = ad5592r_gpio_names;
+>  
+>  	mutex_init(&st->gpio_lock);
+>  
 

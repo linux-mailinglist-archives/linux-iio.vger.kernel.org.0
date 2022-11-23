@@ -2,74 +2,78 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 984BC6362E6
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 16:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E05196363EE
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 16:37:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238438AbiKWPJR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 10:09:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45032 "EHLO
+        id S238945AbiKWPhs (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 10:37:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238436AbiKWPJA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 10:09:00 -0500
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2140697D7
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 07:08:17 -0800 (PST)
-Received: by mail-qt1-x836.google.com with SMTP id w9so11353961qtv.13
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 07:08:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+S7mFwOjPwIOTHt6SuUNUfln0CNGkBMEDjngY+UgUuw=;
-        b=rzZ+y6MWMosxPSSLwzCaISThrED4G5+KW6v323GlLLMD+syvy4SFu0r6eNrMbH57sd
-         uMZXQ1S2+vrMF8Wq25KawQXHdvH68RxHeGEk484kuMYOA+QApc5NgjNr/e6EWPs6nyDX
-         kCengAM3vFGiyuzEP+bZWGM6bkmBOTL1D07J/t94+2HuS/Ic/dVLYnOyLsMp06vGPwc/
-         VXk87fMZ9jDpHO3oDrGCPbIeetmZTquIiluoxMRHf+GKyz/nRElElgM7Z0rdir/tly0U
-         kPv29RU8QOzUFa72Uxd3+3//mcjj2fG77rzINTQWO8nhD7vHUr4IOvppHgMLOdwsntSC
-         HfHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+S7mFwOjPwIOTHt6SuUNUfln0CNGkBMEDjngY+UgUuw=;
-        b=pStfayztUAfSS23nx91YLcfo843dwtuHmuUxUT56VIqRTgsB7ZAzUOSmUHaSeUqVtN
-         0eXwDo1U+3Vb+LHn5c0/mdu8CfJS+iSkLL03RDhwB+K7WimrMdqgOjvdPdpWq8+XWId5
-         WHCa7412IxXMKc+AGCGux7ZP42tDiDxSvxZZ1aslJfjcTkQp4WPm+jtL3jJdC0uCnCD4
-         q993QMbFfM3iK1maRJwhr9ej23E2SNsuNrIlLO1/K3+h3I9u5ZZAEGF4qFOhs2JJJ6SY
-         gSTiOV8aOHfzA0LLM60QEj3LQN43jw8ae0IryarWocLtKLxMHjE3Ig1GPjfJr11GZ3r+
-         UorA==
-X-Gm-Message-State: ANoB5pnnKkGx3dcnQzRDJw4sQu+pxM/TueZcb3fd1cD+E1/jfazPcXmo
-        iqcQtZrahap3pRFM+te4wZMk6Q==
-X-Google-Smtp-Source: AA0mqf6lbGcYJ1up0v8P7VKqnSrzjDshqpztg9z1N3SWYybjjY8vuJvLTB0jH62UATdfYKb42oe7/w==
-X-Received: by 2002:a05:622a:4a11:b0:3a5:1cc6:ae12 with SMTP id fv17-20020a05622a4a1100b003a51cc6ae12mr26699265qtb.103.1669216096994;
-        Wed, 23 Nov 2022 07:08:16 -0800 (PST)
-Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id h9-20020a05620a284900b006f9ddaaf01esm12455343qkp.102.2022.11.23.07.08.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 07:08:16 -0800 (PST)
-Date:   Tue, 22 Nov 2022 02:41:14 -0500
-From:   William Breathitt Gray <william.gray@linaro.org>
-To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     jic23@kernel.org, alexandre.torgue@foss.st.com,
-        olivier.moysan@foss.st.com, linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp
- registers update
-Message-ID: <Y3x9GgxsdJM7NTjY@fedora>
-References: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
- <Y3x59hNekCDuOFXT@fedora>
- <Y3x7YIBDT3xTeqtk@fedora>
- <c4792fd3-73e3-20ee-cd7a-a8d00eb877f9@foss.st.com>
+        with ESMTP id S238825AbiKWPh3 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 10:37:29 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FF0626A;
+        Wed, 23 Nov 2022 07:37:27 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8DB27B8216D;
+        Wed, 23 Nov 2022 15:37:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47180C433D6;
+        Wed, 23 Nov 2022 15:37:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669217845;
+        bh=UanCtzyfyh7s6GC+lB/BgGuUYEuJMVRrxquRNUED7QE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m6P+8V1/dZMe1Sdy38Jer2Kq0kWOQcWPpch/6FCsgX7mogbRiZx+nRYmaqo4cOT5c
+         2VBhRCgyAp1QZeQHA3EETx8HSmmQjCOuPPa172HaY1MAN9akX9CNVq37lxVTz8BMr8
+         BBLccHPaIU6D7mYb41M582jELquyQZxntjmwvKYXyotA//5tW/2MbJATyer9nFW/f0
+         ufcjB46KzIThaQo20IBXLl20DeebxUayijZK5CPRM4y+7O6LBfTdsu4RRUcLHP5KOK
+         b4r/lHFcNKfmA5EJjEfSCvbMR52QJimK5ICXr91dLn0KonGcS4j6q3bU+aNI+8DhYx
+         YzSjHFJvVHfAg==
+Date:   Wed, 23 Nov 2022 15:37:13 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+        netdev@vger.kernel.org, linux-can@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-serial@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-spi@vger.kernel.org,
+        linux-usb@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-watchdog@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Viresh Kumar <vireshk@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 4/9] dt-bindings: drop redundant part of title (end)
+Message-ID: <Y34+KaMMI5H/qBlI@sirena.org.uk>
+References: <20221121110615.97962-1-krzysztof.kozlowski@linaro.org>
+ <20221121110615.97962-5-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="MBQTBXmEy5ZnhVes"
+        protocol="application/pgp-signature"; boundary="c3/TYdFfqHAXL0OZ"
 Content-Disposition: inline
-In-Reply-To: <c4792fd3-73e3-20ee-cd7a-a8d00eb877f9@foss.st.com>
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_24_48,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20221121110615.97962-5-krzysztof.kozlowski@linaro.org>
+X-Cookie: I'm rated PG-34!!
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -77,89 +81,29 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---MBQTBXmEy5ZnhVes
+--c3/TYdFfqHAXL0OZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 23, 2022 at 03:56:31PM +0100, Fabrice Gasnier wrote:
-> On 11/22/22 08:33, William Breathitt Gray wrote:
-> > On Tue, Nov 22, 2022 at 02:27:50AM -0500, William Breathitt Gray wrote:
-> >> On Wed, Nov 23, 2022 at 02:36:09PM +0100, Fabrice Gasnier wrote:
-> >>> The ARR (auto reload register) and CMP (compare) registers are
-> >>> successively written. The status bits to check the update of these
-> >>> registers are polled together with regmap_read_poll_timeout().
-> >>> The condition to end the loop may become true, even if one of the reg=
-ister
-> >>> isn't correctly updated.
-> >>> So ensure both status bits are set before clearing them.
-> >>>
-> >>> Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-> >>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> >>> ---
-> >>>  drivers/counter/stm32-lptimer-cnt.c | 2 +-
-> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/st=
-m32-lptimer-cnt.c
-> >>> index d6b80b6dfc28..8439755559b2 100644
-> >>> --- a/drivers/counter/stm32-lptimer-cnt.c
-> >>> +++ b/drivers/counter/stm32-lptimer-cnt.c
-> >>> @@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm3=
-2_lptim_cnt *priv,
-> >>> =20
-> >>>  	/* ensure CMP & ARR registers are properly written */
-> >>>  	ret =3D regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
-> >>> -				       (val & STM32_LPTIM_CMPOK_ARROK),
-> >>> +				       (val & STM32_LPTIM_CMPOK_ARROK) =3D=3D STM32_LPTIM_CMPOK_=
-ARROK,
-> >>
-> >> This is a reasonable fix, but I don't like seeing so much happening in
-> >> an argument list -- it's easy to misunderstand what's going on which c=
-an
-> >> lead to further bugs the future. Pull out this condition to a dedicated
-> >> bool variable with a comment explaining why we need the equivalence
-> >> check (i.e. to ensure both status bits are set and not just one).
-> >>
-> >> William Breathitt Gray
-> >=20
-> > Alternatively, you could pull out just (val & STM32_LPTIM_CMPOK_ARROK)
-> > to a separate variable and keep the equivalence condition inline if you
-> > think it'll be clearer that way.
->=20
-> Hi William,
->=20
-> I'm not sure to fully understand your proposal here.
-> Could you clarify ?
->=20
-> regmap_read_poll_timeout() macro requires:
->=20
->  * @val: Unsigned integer variable to read the value into
->  * @cond: Break condition (usually involving @val)
->=20
-> So do you wish I introduce a macro that abstracts the condition check ?
-> (val & STM32_LPTIM_CMPOK_ARROK) =3D=3D STM32_LPTIM_CMPOK_ARROK
->=20
->=20
-> Best regards,
-> Fabrice
+On Mon, Nov 21, 2022 at 12:06:10PM +0100, Krzysztof Kozlowski wrote:
+> The Devicetree bindings document does not have to say in the title that
+> it is a "Devicetree binding", but instead just describe the hardware.
 
-My apologies Fabrice, I realize now that regmap_read_poll_timeout() is a
-macro. Abstracting out the conditional would probably be more confusing
-than having it inline, so the way it is right now is probably fine after
-all.
+Acked-by: Mark Brown <broonie@kernel.org>
 
-William Breathitt Gray
-
---MBQTBXmEy5ZnhVes
+--c3/TYdFfqHAXL0OZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY3x9GgAKCRC1SFbKvhIj
-Kz+lAQDMbIxU7BPDmxYGeA4ARRXDfefK7ZVmk8dutqzuUI9PMwD8CRczxb5A9kTp
-ZqBOIIef6M/iAzY6hZV01bnuvoOxhAo=
-=Crky
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmN+PikACgkQJNaLcl1U
+h9Axvwf9HW9i1/TYYTLxyy8fUtu5a3P9a9v1aqZ5Vk5GOoY4gLBJ+Nn6TQz4e3WA
+B/mLs0ELXPm3nJVTGPQfpqgCN3STLaUwDcVJIskltCSFn08YUWFcyfkQWyBkAWym
+cNTiF+sk8z6Aw5orSNcjJFWhpEZejA/1yQ+eBJbfm3d44vR/G2D5tMGJXmbE3rEA
+bRa98QZef1l34JDi6+gadC0w7LX4jj8Q41K/mjRuLqdmV6BUstQvCsKC/8YIeoua
+G3jLmit5vd8KXG2eEiqK2lY2t5FBYlNLXqLoaE2yjZFcmvABd6Vh/2JDcOOFeBpK
+sPr6SAIesrsLQzCHS/nuT/saF9E/UA==
+=p0qY
 -----END PGP SIGNATURE-----
 
---MBQTBXmEy5ZnhVes--
+--c3/TYdFfqHAXL0OZ--

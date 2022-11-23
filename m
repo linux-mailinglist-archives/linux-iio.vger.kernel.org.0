@@ -2,51 +2,53 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09BB3636B87
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 21:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1502C636B89
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 21:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237291AbiKWUs7 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 15:48:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44904 "EHLO
+        id S235714AbiKWUtn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 15:49:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240023AbiKWUsW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 15:48:22 -0500
+        with ESMTP id S239495AbiKWUtb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 15:49:31 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD07E2D1D9;
-        Wed, 23 Nov 2022 12:48:20 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 467D26C72C;
+        Wed, 23 Nov 2022 12:49:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 691FF61F09;
-        Wed, 23 Nov 2022 20:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09FEC433D7;
-        Wed, 23 Nov 2022 20:48:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC0EA61F0F;
+        Wed, 23 Nov 2022 20:49:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE71C433C1;
+        Wed, 23 Nov 2022 20:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669236499;
-        bh=RYM0ZVfQo37kojwDQYWBQz6lC3vEa60h8jFcKimdRX0=;
+        s=k20201202; t=1669236555;
+        bh=zhAO3YZEgtsjDcAYaBQkQ0qOKaBzRKJDU31uqjYHdfg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hslFglZ+XfllEFhU0oLjGluIc98RcRLJHWcwyaE61A7muWAGXE+P45ERpW+4MFjpl
-         MT8FMk2fjr2qr9as1vBZpvWvp2OJxS1SCVwjLmqw+V+17p7TxxycDk4LHJ5uwhkHNa
-         VtHCAJVMb9500UAPrBzRoOiRUJ+UhY3GZmgDG879zjwqAHRaFcp9D6BNjW6KtpF1qG
-         Hb2gBv0rsjD3aCYzog+KcDU1zKfKFyBAJqoZdV5N0qRcxNnhGOFWEx8AgGB+qLEZP+
-         eyOpXVtCn8MAA8MHC53rQgAuAx2CWTX6oMXIlDZZYr7aMBsFiZx/KKr5oXFde7CAEA
-         xUTVEBjtWFVGA==
-Date:   Wed, 23 Nov 2022 21:00:52 +0000
+        b=VTt8eJ9W5dgiW9v1VRM9XlXRxoPrs3ngI9nfJi5+STVAhATYsaoyO+DSK0fST7AvZ
+         m+45pjUZgI7ezOvJjuKahoJmSF7rjhix4UHXQMIhgE8pDcel1ddsInpeBb4nlgZa8A
+         NzOnsQ8+0BEOMzwKk4/K3X6V0blkR3+4grUnBXp2nFppHVxjE2U75Tp38bPF2DDrL6
+         wdfuv0wZEYiXklzcjUFpJefhy/cS80zTggApHtkI+PVSRQph+ZO12+Lc5seJ8juou3
+         LtPkKYnLh3wwVvgdwNZS1xvDLF6FrGuEuGqFTZ/Fez5Y4xpsawMyjjuF3qwN66g65Z
+         ohqndyx/2v+gg==
+Date:   Wed, 23 Nov 2022 21:01:47 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Javier Arteaga <javier@emutex.com>,
-        Dan O'Donovan <dan@emutex.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nicola Lunghi <nicola.lunghi@emutex.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc128s052: add proper .data members in
- adc128_of_match table
-Message-ID: <20221123210052.4c1796f9@jic23-huawei>
-In-Reply-To: <d8e3b536-06ac-2346-3fe1-90ed2fb1127d@rasmusvillemoes.dk>
-References: <20221115132324.1078169-1-linux@rasmusvillemoes.dk>
-        <d8e3b536-06ac-2346-3fe1-90ed2fb1127d@rasmusvillemoes.dk>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Prabhakar <prabhakar.csengg@gmail.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        Biju Das <biju.das.jz@bp.renesas.com>
+Subject: Re: [PATCH] dt-bindings: iio: adc: renesas,rzg2l-adc: Document
+ RZ/Five SoC
+Message-ID: <20221123210147.0bf34345@jic23-huawei>
+In-Reply-To: <166863468321.1016692.3662033617872440170.robh@kernel.org>
+References: <20221115124128.1183144-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+        <166863468321.1016692.3662033617872440170.robh@kernel.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,33 +62,25 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 22 Nov 2022 15:41:21 +0100
-Rasmus Villemoes <linux@rasmusvillemoes.dk> wrote:
+On Wed, 16 Nov 2022 15:38:03 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On 15/11/2022 14.23, Rasmus Villemoes wrote:
-> > Prior to commit bd5d54e4d49d ("iio: adc128s052: add ACPI _HID
-> > AANT1280"), the driver unconditionally used spi_get_device_id() to get
-> > the index into the adc128_config array.
+> On Tue, 15 Nov 2022 12:41:28 +0000, Prabhakar wrote:
+> > From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > > 
-> > However, with that commit, OF-based boards now incorrectly treat all
-> > supported sensors as if they are an adc128s052, because all the .data
-> > members of the adc128_of_match table are implicitly 0. Our board,
-> > which has an adc122s021, thus exposes 8 channels whereas it really
-> > only has two.
+> > The ADC block on the RZ/Five SoC is identical to one found on the RZ/G2UL
+> > SoC. "renesas,r9a07g043-adc" compatible string will be used on the RZ/Five
+> > SoC so to make this clear, update the comment to include RZ/Five SoC.
 > > 
-> > Fixes: bd5d54e4d49d ("iio: adc128s052: add ACPI _HID AANT1280")
-> > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-> > ---  
+> > No driver changes are required as generic compatible string
+> > "renesas,rzg2l-adc" will be used as a fallback on RZ/Five SoC.
+> > 
+> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > ---
+> >  .../devicetree/bindings/iio/adc/renesas,rzg2l-adc.yaml          | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >   
 > 
-> Ping. Any chance this could be picked up before the merge window for 6.2
-> opens?
+> Acked-by: Rob Herring <robh@kernel.org>
 
-Given it is a clear fix, but for an issue that is multiple versions old
-(so I'm not sneaking it in post rc6)..
-No actual rush on this, but meh I'm queuing a bunch of other stuff that
-will hopefully just make it this cycle so applied to the togreg branch of iio.git
-and marked for stable.
-
-Thanks,
-
-Jonathan
+Applied. Thanks,

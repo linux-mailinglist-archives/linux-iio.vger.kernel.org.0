@@ -2,116 +2,99 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99612635F45
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 14:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0B3636052
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 14:47:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238622AbiKWNWv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 08:22:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
+        id S238024AbiKWNrw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 08:47:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238638AbiKWNWY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 08:22:24 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78A93FB8B
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 05:01:34 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id l8so21259806ljh.13
-        for <linux-iio@vger.kernel.org>; Wed, 23 Nov 2022 05:01:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Rp9LQRHK4UZG+xUfLLMwYJtuh3wPrpxN6Fnd2UjWdQg=;
-        b=YqKW4WZ12w3737HpIKaIbSfRqSmPKWir3XDrW/zdqOV9JGrfgldRSUQjiOR4mpwLZL
-         CO+CHVIHt2qkz75r4PuT1YifKI/ufwNk5CLMVXDEnjYh7zYOibvXOFRLqK+eOY4JqvRa
-         eylk3gfX+g7syMCZg6KdhAncldUPL6p8UKHWvE8a+SpBROLKURnbhyQ76keSjsPLxvFr
-         euPLS7vpgu8v9MlgyjPLinBvTgoSYUbjCGPFxWH5zBqhxO9NI3+MV1+oW06cV5+DmYTU
-         2Wxron4/P1HDYbINnL2S67EKIlSDaeuH8ldHoqSH2es4ghAFTlCTrCpmNhgR2wRM3yw0
-         WEWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rp9LQRHK4UZG+xUfLLMwYJtuh3wPrpxN6Fnd2UjWdQg=;
-        b=YRCwlraTDQQorgqohY4U7sAVmC+IJmIP5j22P8u78H4Po4tCBiYU6rVRQtthLRaTbw
-         HD+LQWcZxGtxjt67OYfT1J1J7o6VR6u+/Oel/NLFSoBcYopo54d96GGyhKsg8Pl+hKll
-         I2p9o40/kZ3OuP5nMf/hEEJR93KXhJz7W2ff4/YaZ8bKPbc48Hm+kbbuVJ6YY6vYFLmk
-         XIBHFWBPHaMcmbnWR1RgD7+BhsMUAmGo1ci6Devkz9BQTGPUwfmcuo89XoYfo2/foaEO
-         PzazTxvIr2ZmwC1W1t0tsBAwaPrUXo3RpjSRWOrfrskqaxUusCobPAKpiHnpXX/y2KyZ
-         jIyg==
-X-Gm-Message-State: ANoB5pnL/0idFMoM/uzECp7eIJoR1dy5q9gfn1vgiTh5GLhNtpLRBSwY
-        wG8xwLS1FBtQ/tzYM2lSS9qK2g==
-X-Google-Smtp-Source: AA0mqf5DGm4ZvktT4NR9WyAWpPuHSnlNUVoErSOEdsb9pP81a5SYi+qylXXNjUQBbNtecR/QIXyT/g==
-X-Received: by 2002:a2e:a90b:0:b0:277:794:ae09 with SMTP id j11-20020a2ea90b000000b002770794ae09mr8806647ljq.286.1669208492340;
-        Wed, 23 Nov 2022 05:01:32 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id p7-20020a2eb987000000b002796fb63dbdsm534480ljp.13.2022.11.23.05.01.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Nov 2022 05:01:31 -0800 (PST)
-Message-ID: <4d62d7e9-5454-4d1c-b3bb-4ba1fd7a31d6@linaro.org>
-Date:   Wed, 23 Nov 2022 14:01:30 +0100
+        with ESMTP id S238924AbiKWNrW (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 08:47:22 -0500
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5301C923;
+        Wed, 23 Nov 2022 05:36:40 -0800 (PST)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AN9pLMW014413;
+        Wed, 23 Nov 2022 14:36:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=W+/ow1n7icMi+44OF4VfpnDE42Lq57Oz7D0FUcSmPWk=;
+ b=3hVEWeOfJX0GhOOHBWUJsYQgAfJZeo5BKHkyet7Z/pvh0rS9xv7LQNs1YM5J/8R08QBu
+ QyscUeq91+KF96F2QdYcbkkFjDUT888M4v7ZeOVgT7iJfytVAz1bkliEim6hFpDP8FKm
+ XyExcEfvbANGhQGUTfigaXavLK7CYkpuE9pUpJoQP7qgnRzgmt9a1kmiV2LCOiHLIpW2
+ eFv1a6c3qkst52ra9qf2k7KQH+UPZ32blcIWKoVH0RxLgL5E0/SX+C8b1ARNvsJ387YN
+ 0xl3SriXJKbAD1bf/iIInRepFvEcHRYoYUNT8eNSDYQUrL++HCUI1qK8JFut6JKTzfrJ BA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3kxrax928y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 23 Nov 2022 14:36:30 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C128310002A;
+        Wed, 23 Nov 2022 14:36:25 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A9AC9226FCB;
+        Wed, 23 Nov 2022 14:36:25 +0100 (CET)
+Received: from localhost (10.48.1.102) by SHFDAG1NODE2.st.com (10.75.129.70)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Wed, 23 Nov
+ 2022 14:36:22 +0100
+From:   Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To:     <william.gray@linaro.org>, <jic23@kernel.org>
+CC:     <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>,
+        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp registers update
+Date:   Wed, 23 Nov 2022 14:36:09 +0100
+Message-ID: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v5] dt-bindings: iio: adc: ad7923: adjust documentation
-Content-Language: en-US
-To:     Edmund Berenson <edmund.berenson@emlix.com>
-Cc:     Lukasz Zemla <Lukasz.Zemla@woodward.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221122161437.18937-1-edmund.berenson@emlix.com>
- <c96d84e9-44d0-a389-429d-91d8a7d747b5@linaro.org>
- <20221123113224.5vxs2zmxf7z2bmvm@emlix.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221123113224.5vxs2zmxf7z2bmvm@emlix.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.48.1.102]
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-23_07,2022-11-23_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 23/11/2022 12:32, Edmund Berenson wrote:
-> On Wed, Nov 23, 2022 at 11:42:40AM +0100, Krzysztof Kozlowski wrote:
->> On 22/11/2022 17:14, Edmund Berenson wrote:
->>> - The ad7927 is fully compatible with ad7928 driver, add
->>> documentation for device.
->>> - ad7923 and ad7924 are treated the same in the driver, show
->>> the relationship in the documentation.
->>>
->>> Suggested-by: Lukasz Zemla <Lukasz.Zemla@woodward.com>
->>> Signed-off-by: Edmund Berenson <edmund.berenson@emlix.com>
->>> ---
->>>  .../bindings/iio/adc/adi,ad7923.yaml          | 26 ++++++++++++-------
->>>  1 file changed, 17 insertions(+), 9 deletions(-)
->>>
->>
->> 1. This is a v5, what are the changes?
->>
-> The original idea was adding the compatible string into driver itself,
-> then it was suggested that I have a fallback compatible to 7928 as the
-> hardware versions are treated the same in the driver. After that it was
-> suggested to add deprecated flag to standalone compatibility, but doing
-> so I didn't want to add compatibility on driver side just to mark it
-> deprecated in the documentation, so I dropped driver side changes.
-> Finally I had some issues getting the documentation syntax into an
-> acceptable form, mainly const vs enum listing of compatibility stings.
+The ARR (auto reload register) and CMP (compare) registers are
+successively written. The status bits to check the update of these
+registers are polled together with regmap_read_poll_timeout().
+The condition to end the loop may become true, even if one of the register
+isn't correctly updated.
+So ensure both status bits are set before clearing them.
 
-That's a bit too long for a changelog. Keep it short but still
-descriptive. Anyway - this must be in the changelog place, so after ---
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+---
+ drivers/counter/stm32-lptimer-cnt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Best regards,
-Krzysztof
+diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+index d6b80b6dfc28..8439755559b2 100644
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm32_lptim_cnt *priv,
+ 
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+-				       (val & STM32_LPTIM_CMPOK_ARROK),
++				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+ 		return ret;
+-- 
+2.25.1
 

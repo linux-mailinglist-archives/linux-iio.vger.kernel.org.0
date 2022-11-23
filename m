@@ -2,70 +2,61 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A06B76367C9
-	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE4176367D6
+	for <lists+linux-iio@lfdr.de>; Wed, 23 Nov 2022 18:56:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238557AbiKWRzS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 23 Nov 2022 12:55:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46540 "EHLO
+        id S237484AbiKWR4p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 23 Nov 2022 12:56:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239176AbiKWRzO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:55:14 -0500
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3767DC6548;
-        Wed, 23 Nov 2022 09:55:13 -0800 (PST)
-Received: by mail-pf1-x42d.google.com with SMTP id w79so228175pfc.2;
-        Wed, 23 Nov 2022 09:55:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+M3x55LJlAjHZJKxmYKxIY2+MF/c7xVWLTdidtcZn4=;
-        b=b3UVpwmGo3F4HCcrN0/3YXUiCz7Qzq3EIzUyux4zu/Usmg51yIMJPmFtWtDggK5S8f
-         lI7LCMtHp6E4jtx8gmyI6gf+W+JkDqmnj1lzEpw6aljSLBTxQSWf4bwohTD8XuCTc72+
-         ZMI+8nXMEQWnigyxM8sbRT5SDl9drWpXk+7WnD1g+PWIQ+j0AAq5yAnn1nAcTTq2aD0y
-         J4beUJeALB/LOaDYXzGQkwBVW5nx1PNGE8xi39oyvqEdVzhNUn7VXdklTspp9F/j+LEZ
-         Lw75eYUc6vhLzC1COtFM8sWQamshZHMbMq2wm+/vn7wOPmPuEL0Bc1HrpNiFNWN9C7gR
-         DDhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m+M3x55LJlAjHZJKxmYKxIY2+MF/c7xVWLTdidtcZn4=;
-        b=4El3w7xoCSZM53StdczRDO8fF0OT6zzIXqaUXuHXG3sbbswjKlauejM+rbKHZATqhF
-         TDyEm+qXHqe9DTozOfNY98Vk4CvRGVQ9HlW2ECYqAcmBWJJPodWbRdbVKzWCDvcgiQo1
-         q0is8f5LeF3u6UIiVsPYwjzPQQnxNSXSpF3CkTQqWX/PovMSfAtj3600WSzBlxVHC9p2
-         UX+Bn2UwxOYGylFF8dQZNNyIyOdxiN0tPvsi8pgPZRsYXLPTQupe7FW5ooiCHNGuwhB6
-         ZXjfKxOu+6MODYAQvGwF8w8khYsEzr2sGcNNfvlNscgePKgSYu58A7NYsBa76hx4Wwgu
-         31CQ==
-X-Gm-Message-State: ANoB5pnGXIeFxnKFcA6AbIt7KhPCpnm9EcUX2Ix8La9fg078L935EC3J
-        ZGGoBBP1ssp5MYABY3/iPao=
-X-Google-Smtp-Source: AA0mqf58zOVYwaWP7qDZBa6fJLF9D8FVab+2rjJ66s8oQ+tlRPc9N//pjAKRFg6ppcYOMchpCNVlIQ==
-X-Received: by 2002:a62:2544:0:b0:565:b27d:1f61 with SMTP id l65-20020a622544000000b00565b27d1f61mr19760787pfl.85.1669226112706;
-        Wed, 23 Nov 2022 09:55:12 -0800 (PST)
-Received: from discovery.. ([2401:4900:483b:e422:60e:77bf:baa2:9d8b])
-        by smtp.gmail.com with ESMTPSA id y76-20020a62644f000000b0057470a06694sm837503pfb.40.2022.11.23.09.55.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Nov 2022 09:55:12 -0800 (PST)
-From:   Saravanan Sekar <sravanhome@gmail.com>
-To:     sre@kernel.org, lee@kernel.org, jic23@kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com
-Cc:     linux-pm@vger.kernel.org, linux-iio@vger.kernel.org,
-        Saravanan Sekar <sravanhome@gmail.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: [PATCH v6 7/7] power: supply: mp2629: Add USB fast charge settings
-Date:   Wed, 23 Nov 2022 18:54:25 +0100
-Message-Id: <20221123175425.564042-8-sravanhome@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221123175425.564042-1-sravanhome@gmail.com>
-References: <20221123175425.564042-1-sravanhome@gmail.com>
+        with ESMTP id S237228AbiKWR4o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 23 Nov 2022 12:56:44 -0500
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33806AEDA;
+        Wed, 23 Nov 2022 09:56:42 -0800 (PST)
+Received: from fraeml712-chm.china.huawei.com (unknown [172.18.147.207])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NHTMn6RqPz67QRR;
+        Thu, 24 Nov 2022 01:56:37 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (7.191.163.240) by
+ fraeml712-chm.china.huawei.com (10.206.15.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 23 Nov 2022 18:56:40 +0100
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Wed, 23 Nov
+ 2022 17:56:39 +0000
+Date:   Wed, 23 Nov 2022 17:56:39 +0000
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC:     Gerald Loacker <gerald.loacker@wolfvision.net>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Michael Riesch <michael.riesch@wolfvision.net>
+Subject: Re: [PATCH v2 2/2] iio: magnetometer: add ti tmag5273 driver
+Message-ID: <20221123175639.00000ede@Huawei.com>
+In-Reply-To: <Y34irZRlkpdqLrll@smile.fi.intel.com>
+References: <20221121123542.1322367-1-gerald.loacker@wolfvision.net>
+        <20221121123542.1322367-3-gerald.loacker@wolfvision.net>
+        <Y3uFWH5GV/x7UDcP@smile.fi.intel.com>
+        <f3fbf861-37c6-3bcf-615b-2f55261fbf90@wolfvision.net>
+        <Y34irZRlkpdqLrll@smile.fi.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,41 +64,78 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Allows the user to change the USB device fast charge setting to advertise
-host on enumeration helps to accelerate the charging cycle. Altering this
-value resets USB existing connection.
+On Wed, 23 Nov 2022 15:39:57 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
----
- .../ABI/testing/sysfs-class-power-mp2629         | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+> On Wed, Nov 23, 2022 at 10:58:47AM +0100, Gerald Loacker wrote:
+> > Am 21.11.2022 um 15:04 schrieb Andy Shevchenko:  
+> > > On Mon, Nov 21, 2022 at 01:35:42PM +0100, Gerald Loacker wrote:  
+> 
+> ...
+> 
+> > >> +static const struct {
+> > >> +	unsigned int scale_int;
+> > >> +	unsigned int scale_micro;  
+> > > 
+> > > Can we have a separate patch to define this one eventually in the (one of) IIO
+> > > generic headers? It's a bit pity that every new driver seems to reinvent the
+> > > wheel.
+> > >   
+> > >> +} tmag5273_scale_table[4][2] = {
+> > >> +	{ { 0, 0 }, { 0, 0 } },
+> > >> +	{ { 0, 12200 }, { 0, 24400 } },
+> > >> +	{ { 0, 40600 }, { 0, 81200 } },
+> > >> +	{ { 0, 0 }, { 0, 0 } },
+> > >> +};  
+> > >   
+> > 
+> > I'm thinking of defining structs for all similar types of IIO output
+> > formats in iio.h like this:
+> > 
+> > 
+> > struct iio_val_int_plus_micro {
+> > 	int val_int;
+> > 	int val_micro;
+> > };
+> > 
+> > struct iio_val_int_plus_nano {
+> > 	int val_int;
+> > 	int val_nano;
+> > };
+> > 
+> > struct iio_val_int_plus_micro_db {
+> > 	int val_int;
+> > 	int val_micro_db;
+> > };  
+> 
+> ...
+> 
+> > struct iio_val_fractional {
+> > 	int dividend;
+> > 	int divisor;
+> > };  
+> 
+> This one...
+> 
+> > struct iio_val_fractional_log2 {
+> > 	int dividend;
+> > 	int divisor;
+> > };  
+> 
+> ...and this one repeat struct s32_fract (or u32_fract, whatever suits better).
+> 
+> > Do you agree?  
+> 
+> Me, yes, but you need a blessing by maintainers of IIO.
 
-diff --git a/Documentation/ABI/testing/sysfs-class-power-mp2629 b/Documentation/ABI/testing/sysfs-class-power-mp2629
-index 914d67caac0d..40abb9a11d97 100644
---- a/Documentation/ABI/testing/sysfs-class-power-mp2629
-+++ b/Documentation/ABI/testing/sysfs-class-power-mp2629
-@@ -1,3 +1,19 @@
-+What:		/sys/class/power_supply/mp2629_battery/usb_fast_charge
-+Date:		November 2022
-+KernelVersion:	6.1
-+Description:
-+		Represents a USB device fast charge settings.Altering this
-+		value resets USB existing connection
-+		USB DP:DM[0:0] 0.6V : Hi-Z
-+		USB DP:DM[0:1] 3.3V : 0.6V
-+		USB DP:DM[1:0] 0.6V : 0.6V
-+		USB DP:DM[1:1] 0.6V : 3.3V
-+
-+                Access: Read, Write
-+
-+                Valid values: Represented in bit DP & DM setting. Valid
-+			      range is [0, 3].
-+
- What:		/sys/class/power_supply/mp2629_battery/batt_impedance_compen
- Date:		April 2020
- KernelVersion:	5.7
--- 
-2.34.1
+I'm not 100% convinced it matters, particularly as one of the two typical
+use paths has to cast them to an int * anyway (as it can take any of the
+above, or a 1D array of ints).  However, if it makes drivers a little
+easier to read then fair enough.  I'm not keen to see a brute force
+set of patches updating existing drivers that treat them as simple array
+of ints though.  Fine to convert any drivers with a local equivalent of these
+structures defined.
+
+Jonathan
+
 

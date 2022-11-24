@@ -2,134 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D200B6380B6
-	for <lists+linux-iio@lfdr.de>; Thu, 24 Nov 2022 22:45:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 191876381C9
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Nov 2022 00:39:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbiKXVpZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Nov 2022 16:45:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S229502AbiKXXjW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 24 Nov 2022 18:39:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiKXVpY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Nov 2022 16:45:24 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA2270A37;
-        Thu, 24 Nov 2022 13:45:23 -0800 (PST)
-Received: from mercury (unknown [185.209.196.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id C66DA6602B47;
-        Thu, 24 Nov 2022 21:45:21 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1669326321;
-        bh=rqgJu1oO5oPP9Saq2aP3EVhh6iBrbYAer2nSFnD1yFg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=b5ZL3gYpW2AaVUC9FX721XxDdtAa9Yi3jDn1mUPG9a6c2Pm3+xdBt69RkJZMJ/nWg
-         7xdSGxDDZpe/GJUMkyFzgmohlKDeJFci3AWoNtHo3vSC0VoU/Mkvx5I6lzlUFyVStc
-         8pmce4XqFjy/+rjylV6xJWmP/OFZVMJ+3jmY4PcBbdt+F3h2Ufgp6w3llTppYJzJyJ
-         RBdf2KeP4IjcmIt2kA7vOlFv4z12KgpjbUvZOvbrxvpvinKIkC6yLg0HgJy161BZSI
-         Rj2LP6fiaWui7+m1kATl58M3KRYPgK90RfHC6/5uGtWQbLfxfbGv21gk6tpXonn7Qc
-         H7TSdWkpwgSPQ==
-Received: by mercury (Postfix, from userid 1000)
-        id 3713C106092D; Thu, 24 Nov 2022 22:45:19 +0100 (CET)
-Date:   Thu, 24 Nov 2022 22:45:19 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     lee@kernel.org, jic23@kernel.org, lars@metafoo.de,
-        andy.shevchenko@gmail.com, linux-pm@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH v6 2/7] power: supply: fix wrong interpretation of
- register value
-Message-ID: <20221124214519.nqpeuvu62k7eh7ix@mercury.elektranox.org>
-References: <20221123175425.564042-1-sravanhome@gmail.com>
- <20221123175425.564042-3-sravanhome@gmail.com>
+        with ESMTP id S229518AbiKXXjV (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Nov 2022 18:39:21 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C80D2128
+        for <linux-iio@vger.kernel.org>; Thu, 24 Nov 2022 15:39:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1669333151; bh=tQltvtIUHjwd89cbWA8b7RUIiLWvK0uY9bKeWCwsS94=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=m/5lbq29+YV6wT24pmgTCod59gitLed6J1333BzBErmpG8tgHcI+EQKQCa2xhadmp
+         etXdczWKYSdOVCqIBExYgHLkhH/SXYX7NdBQ4IB4WIdjJ3Fcu0jGQxyc9jINpMXbcc
+         v1VmzPAjl7b3fxJwfVG3m9StUWnmxrX91upFIB9OJWnHlzuegCEkPC69LO1lzFWLWW
+         ymq8fomrC6KC+HRpJt0Ei9DNJEhQBoRtu5jxSa2qP4ihHXYF7Gp0d2zceZmTZA96Gq
+         knUOXsXZyLiGqQpwW8U7UEQoZbuRrRrkhMMufgrFI+78xwZoZp3xHgWBBERB/TEEaU
+         ekV5NIZeo6dVQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([95.223.45.67]) by mail.gmx.net
+ (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1M2O2Q-1p2DQG3Mz8-003rkv; Fri, 25 Nov 2022 00:39:10 +0100
+From:   Philipp Jungkamp <p.jungkamp@gmx.net>
+To:     Jiri Kosina <jikos@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, Philipp Jungkamp <p.jungkamp@gmx.net>
+Subject: [PATCH v4 0/4] IIO: More HID custom sensors
+Date:   Fri, 25 Nov 2022 00:38:37 +0100
+Message-Id: <20221124233841.3103-1-p.jungkamp@gmx.net>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="xp3w4xuc3bonw7au"
-Content-Disposition: inline
-In-Reply-To: <20221123175425.564042-3-sravanhome@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:VXyM2SoLmQR8z3yYFL6Ihj5vApE7fd5kKObWbPFQU+nY9+EznLt
+ yzXoejSD2NsXpLz4HKe8FtvQZoC8AfKp2Ax0OlYv3B//12et9mY58th6ObtwAlDRiAfmO4d
+ 2VyAFLd3badkIRL6SCGzfc1A2rsFpUeTyUcsEZtpGjPun9ytCrRY6d4b1tzZgYzYmvmX5lv
+ B2z+A1onEcGWweW6p1awA==
+UI-OutboundReport: notjunk:1;M01:P0:y29D0D0NGRI=;TrYjIm1M++IrrkRrqsO14W802hG
+ 5/RiJBiNwk2cknAVI8LWq7CdbYvuHsw4tORQ99+6dJP3NoEcfeZo95RW3ejrvaHCCGqH6pyOi
+ biq4Jc97XWN6bwHwumng8+wCGKffeZ2wJtzxTEjjGg3L+NXZ3Bjgn4ZsvOJBaFhjdwF0JkQdh
+ Dk3r00+6A9Ker5W4vLYxNMCO4dtuh2npEZRmyDK1MVVw/u6ATepj8uV6Wpbp0wUg7v96fIksP
+ CNPzrU86Erc8VKhMhnGo99o8vItqxtHp9U6Prn++Ov3imNXU6QTbJ17+BVptHiLuEBzOhFt12
+ gyUnwdLuZ40N1BdXiFiGfZILSVjF4J/InbvbGQX+VitqVgd+7yO6LGDnzYZhMm1RqlT79FH+h
+ 2pdFGEA4mP1ut9Qb99Pho6IHrq/SbAlTxzzAE/KJGF9g3/9+svhvc6VSKQCZLjQ1fGX3f6lCI
+ VM6A223spu8ULVlx9ntMiWS/xZJKUS0UYqToLpRxl8Q9H3rgY+VjIkvdaLTltWWJxFVf19Bb3
+ 4DMlQNxOn//djdV+Jla3Pk34tJBDIirRLolFzYuWMaTQx3TJbbvoNmLMUuVdy3NU+v/sfTnTo
+ 1v3KG/M+mNiwoMBvIT5B7qLYGADwpspWZZg1EOIEoD65tCuws4udXkc/3ZZ46TO6bvskRyTNq
+ GATlUv9G3jRkLdkM1LpbJN3eOXBbozVxPW+adYA4vOVVGUWYQMSbOonpOpRzrKhcD372xsj+y
+ iQQKMlQ/AF5WRmVZyFRJopFz5vFOiM5b6UVp4hO19fiRw0u6OkK3gg0uWoKFfVsXnljb462tA
+ ZhVrNxh5fMVL6mQs1jQXKSQ9qG30PEA2UEuPaJYcBJ1fDvDvYsDcMvDawbuiAHiiF036t6Kdl
+ I7Kss7tOd8lOEdP2niFYLc44XR2Gahp9OE2YKfKhrVYFqWg38XDlZVn+xJQ7YbBQaKnGCXb2l
+ 31WjnZflr+mQXLky5ZDGnMEKxmM=
+X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+Hello,
 
---xp3w4xuc3bonw7au
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm sorry for the confusion caused by me sending revisions as replies.
+I've now addresses the points raised. As I'm unfamiliar with mailing lists
+any recommendation on making the process more seamless is welcome.
 
-Hi,
+Thank you for your time!
 
-On Wed, Nov 23, 2022 at 06:54:20PM +0100, Saravanan Sekar wrote:
-> Fix the switch cases to match the register value.
->=20
-> Signed-off-by: Saravanan Sekar <sravanhome@gmail.com>
-> ---
+v2:
+- Patch 1/4:
+  - Remove unnecessary comments.
+  - Change return type of functions to bool. (introduced an error, fixed i=
+n v4)
+  - Swallows return value of a function. (fixed in v4)
+- Patch 2/4:
+  - Create this 'noop' patch that just adds the LISS sensors to the custom
+    sensor match table.
+- Patch 3/4:
+  - Remove some unnecessary newlines in function calls.
+- Patch 4/4:
+  - Allow for 1 byte human presence reports.
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+v3:
+- Patch 2/4
+  - Add missing 'Signed-Off-By'
 
--- Sebastian
+v4:
+- Patch 1/4:
+  - Fix return value and error codes on property query.
+  - Document and ignore return values for queries of optionally matched
+    properties.
+  - Don't modify *known in _get_known, return error when not matched.
+  - Remove comment on newly added sensors from commit message.
+- Patch 4/4:
+  - Clean up switch statement.
 
->  drivers/power/supply/mp2629_charger.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/power/supply/mp2629_charger.c b/drivers/power/supply=
-/mp2629_charger.c
-> index bf9c27b463a8..46d620bd23b9 100644
-> --- a/drivers/power/supply/mp2629_charger.c
-> +++ b/drivers/power/supply/mp2629_charger.c
-> @@ -284,10 +284,10 @@ static int mp2629_charger_battery_get_prop(struct p=
-ower_supply *psy,
->  			val->intval =3D POWER_SUPPLY_STATUS_DISCHARGING;
->  			break;
->  		case 0x01:
-> -		case 0x10:
-> +		case 0x02:
->  			val->intval =3D POWER_SUPPLY_STATUS_CHARGING;
->  			break;
-> -		case 0x11:
-> +		case 0x03:
->  			val->intval =3D POWER_SUPPLY_STATUS_FULL;
->  		}
->  		break;
-> @@ -305,7 +305,7 @@ static int mp2629_charger_battery_get_prop(struct pow=
-er_supply *psy,
->  		case 0x01:
->  			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
->  			break;
-> -		case 0x10:
-> +		case 0x02:
->  			val->intval =3D POWER_SUPPLY_CHARGE_TYPE_STANDARD;
->  			break;
->  		default:
-> --=20
-> 2.34.1
->=20
+Regards,
+Philipp Jungkamp
 
---xp3w4xuc3bonw7au
-Content-Type: application/pgp-signature; name="signature.asc"
+Philipp Jungkamp (4):
+  HID: hid-sensor-custom: Allow more custom iio sensors
+  HID: hid-sensor-custom: Add LISS custom sensors
+  IIO: hid-sensor-als: Use generic usage
+  IIO: hid-sensor-prox: Use generic usage
 
------BEGIN PGP SIGNATURE-----
+ drivers/hid/hid-sensor-custom.c     | 233 +++++++++++++++++++---------
+ drivers/iio/light/hid-sensor-als.c  |  27 ++--
+ drivers/iio/light/hid-sensor-prox.c |  37 +++--
+ include/linux/hid-sensor-ids.h      |   1 +
+ 4 files changed, 199 insertions(+), 99 deletions(-)
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmN/5eoACgkQ2O7X88g7
-+prFExAAggQla4auvPk4vg3Q5ROt9eHIzhS5N9Rqeg50InU+1TLxSLAtO3pbf1cw
-9hnpCl5WS52qCkZ5thdM9eH7dwL7+xJJoZZn9J2yEsFLR3I+n3Fws6y98ZQe8Qgj
-XxGVda9Jx/tb/7UWSSZEhoeSYItBdghG4sqFgm7Cw4vPLzAL6qQfBMKVmignLjl/
-I0qGwV9mHxAPuQQDjX2fEftIEK3qLMzab5j0N4qW8rZiNavvKhdlSM+pmvFk2MDe
-jsHtaE6WcwTVV/+JMUQb65kr8v2j68OP1t+5DbhJDJ1U2LRawEk4MI9dNZjiXQpL
-X9eRzC4ndxGDDAyqcqY4tI5hjOUVdPeAkJaVB6xk+DMR9tWd1ew0fRLYZ/3HI3Bi
-oJe88c9xSpppoEbuY5MmAsPskwmVhwpsT9laAZPZg2xxNN7NAqCsiYZ11dyltCmL
-+g+HHKO9Wds9Crkgmyjh8i26QCcCDlLqQqCvrGoVtqTriLr8q2uQTFO86hTiYKbT
-LgdAfZMbvK0O9HnyBTHgdxYriN1cmS7GmZM0IvWqwYAfYQBGmwUO4WH7QHVqC9Rn
-fVnMR7UkrX4OhAWXBx2B2WmnxZcLDbWJITvpeTNyLMepCFAQixQcoKStYrZKxJdN
-Y3mhw+NxglEhpqbh3CQdFi+Xg9kY5T4G6wq8c3/g29P6BvowpzI=
-=q1yh
------END PGP SIGNATURE-----
+=2D-
+2.38.1
 
---xp3w4xuc3bonw7au--

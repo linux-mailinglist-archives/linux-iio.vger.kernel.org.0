@@ -2,66 +2,118 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB8A6381CA
-	for <lists+linux-iio@lfdr.de>; Fri, 25 Nov 2022 00:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10723638546
+	for <lists+linux-iio@lfdr.de>; Fri, 25 Nov 2022 09:35:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229624AbiKXXjX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 24 Nov 2022 18:39:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41302 "EHLO
+        id S229495AbiKYIfr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 25 Nov 2022 03:35:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbiKXXjW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 24 Nov 2022 18:39:22 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 851592F9
-        for <linux-iio@vger.kernel.org>; Thu, 24 Nov 2022 15:39:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
-        t=1669333152; bh=jYFyA1DmUfz2aXpmxHrhCM1pqCU+obmDBNXSh3HwCME=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Stw2tDYWiN9WgYA7Bhuu7KXZ/L5Rb/gr2A7cWoxmdptrVTc3lLJWr5G7XYVl8dBko
-         WPGaGYJ2kEkC6BA/mdE/hvMpPwlyd0zetknF7N2WfvZKXAYXTWmCaTe/AXoCJ006vS
-         PBUkMlptHw2ttQDfSoRHwULCO9cUYmurizL+qA12GxBwT1LGgmltissvGe0bZBnfi0
-         xSzEvqugwIDKhO7McCLBiI+AeL2KlTn2dDh6nzLWRDI9UmlceJJjYqG2GqZ/BkrT2s
-         xCD9IL3Ro0Gf2EVApRW6+U7nMFt9yPnsrFlABfPSo3FZJSkZlCtGE8tBlgRKDWvgr6
-         bD32NNxQ/HqKQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([95.223.45.67]) by mail.gmx.net
- (mrgmx104 [212.227.17.168]) with ESMTPSA (Nemesis) id
- 1N8XU1-1ouU744Bn7-014WlK; Fri, 25 Nov 2022 00:39:12 +0100
-From:   Philipp Jungkamp <p.jungkamp@gmx.net>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, Philipp Jungkamp <p.jungkamp@gmx.net>
-Subject: [PATCH v4 4/4] IIO: hid-sensor-prox: Use generic usage
-Date:   Fri, 25 Nov 2022 00:38:41 +0100
-Message-Id: <20221124233841.3103-5-p.jungkamp@gmx.net>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221124233841.3103-1-p.jungkamp@gmx.net>
-References: <20221124233841.3103-1-p.jungkamp@gmx.net>
+        with ESMTP id S229476AbiKYIfq (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 25 Nov 2022 03:35:46 -0500
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70054.outbound.protection.outlook.com [40.107.7.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 558C52D77C;
+        Fri, 25 Nov 2022 00:35:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ieVMgcGLle5tz3KMgRN8W+CUKdYkh3Pa4t9TLKqYVbvc9tH6EMSiGEMOxbVHSDlinluFWr+B2dUj+AKaSQN/0yzJcuLXbyqso+dvZYHABIvKRtt41qOV4P3yE+HVwpNca0Ozx0DmysQpTKtft087H9a8Spl7V5M34VuUX0KXkLJN5F6bDCP92bpwwEnwFWpSOIW7h6HrSF6jrOoospckADHdBcJlFYTgXOKXabYXM5NJ0Ulk0PC9q36bWJFK0hgAsgnNRV5IUvoEpTCDoqurfAoM8ZNLAnEK0zZ2g1Dqov4zT0j9eOMW3wWe+gYbCDtowP32t2hjl142FJCjWFU/WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=enM1US8FMpahncww/4bcNY1n7RfIGiPeMREMTRqyki4=;
+ b=GxWS39FlX0voFdNxYxZtyDbMrMaz/cFuFIsw4UX6P4VlxzsPsxg8+QLAcbzWQmt3K9+dxG4cUQ/HuD4gLMdgjnuirFU2n4I1NKRaXhYECjBoVTHIhM/5/t7qb9QvYr0wUMP1aa2T1Syjjm9yIWNMPIK8mYaRD7kFLcEdS8E75UrF+hXMyt0ZSUOWeo2LK/xFw9IAwz89q/BHNDs4/L3PWyCdf0UONaWqBY0X4tln0Gm9BiqZrUf0/u3EFt+nyggvel1i9lWkdeePAZ0BuruOijlByT0flyTreVtRcGU8xxnCpkk2R8Lileyxe1ON2rq3mDjhRAkFRD7q6y0xdDFazQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wolfvision.net; dmarc=pass action=none
+ header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=enM1US8FMpahncww/4bcNY1n7RfIGiPeMREMTRqyki4=;
+ b=yfvBFqlR1P8m2x8+zRgpq1CsQK+sxZCAuJOQ28IllgIF0/3Qj2nFQ6aEq0w1N1Pcc6zkeUjbFI1WS69FfYLkbf9YgZStLRWCTNhXDMItKmFqWxI3xr6mpcpj1o9rySuIfHZARQF63txVWd0EqfpNHvnP2qvKYa3IpigTvaOGfxI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wolfvision.net;
+Received: from VI1PR08MB4544.eurprd08.prod.outlook.com (2603:10a6:803:100::13)
+ by PAXPR08MB6751.eurprd08.prod.outlook.com (2603:10a6:102:136::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.5; Fri, 25 Nov
+ 2022 08:35:42 +0000
+Received: from VI1PR08MB4544.eurprd08.prod.outlook.com
+ ([fe80::bcc7:bc51:bf44:1454]) by VI1PR08MB4544.eurprd08.prod.outlook.com
+ ([fe80::bcc7:bc51:bf44:1454%6]) with mapi id 15.20.5857.019; Fri, 25 Nov 2022
+ 08:35:41 +0000
+From:   Gerald Loacker <gerald.loacker@wolfvision.net>
+To:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Michael Riesch <michael.riesch@wolfvision.net>,
+        Gerald Loacker <gerald.loacker@wolfvision.net>
+Subject: [PATCH v2 0/3] add ti tmag5273 driver
+Date:   Fri, 25 Nov 2022 09:35:23 +0100
+Message-Id: <20221125083526.2422900-1-gerald.loacker@wolfvision.net>
+X-Mailer: git-send-email 2.37.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR0501CA0011.eurprd05.prod.outlook.com
+ (2603:10a6:800:92::21) To VI1PR08MB4544.eurprd08.prod.outlook.com
+ (2603:10a6:803:100::13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:v+Q9krQIN+bt2RJ+P5lrH8OAzRUDHYWbUfSY3ncJiY96HaIssMR
- rLLwT7yPuNs6evL6peGTfWNtLNWGU4FrHwvUMVrTOuJHnXYFo0hjSstDYgv6+Seqc+0oQXg
- e8SnwzN29g829OOYwnGgPM7rxYtN97v8RAGC5s1DRuQyOSwKp30ru6Jb0cZ5eW/D6YtT0z2
- pDMLq8JYisHkJXzQ83BXA==
-UI-OutboundReport: notjunk:1;M01:P0:lPEGU2h3B/o=;m4TPMssJtroqdwITYxg6Uec7TLJ
- bVo+1J40k262Qw+dclfdHYTV45Q5t/PVDUSGTI8hSr7yhhl7kmSDb3Ann2jqHdbX+g5tFX7+l
- raAOyGDBLcwX3NYWDLcGuSHZELoX91MoYbgk8VvKvjbkXN4VtY3k/OjYzNAuuzMufmJEAjxf7
- pb2UKoGmLk3cueV+hizRfcRmn0cfYnM8yWCtkGFnpAcba113arg6NXkg7GtLsS3OQCWoRGEPO
- 1PAWy9Jgzsal+H3R/3zTxawsCtLdrs8/+F8pOa1qSDpnN22vmXU5MBe1/zH+qYjzgTZbQcnyG
- 5Ya+UFGtyhlCeW7Mdqy8UyJ/4+uPu92ADqqF5r1ZozwwEcKMpmnLmmmEgfrM3awNs3MELLiKa
- Erfu5KVU5X3D1tuwixyC8ji8llPRFbr4u8rP6NoXoid+nuDLLU1JAqrBLjXBMmQ1eVlms5Fe6
- 8S2P7zr5rIacWF86P0+7SBXDUbcMb/w//gGG/lkTt60QgSJ1Gk1WEPRptvkA+XVtWZFbanBxo
- gNQE86+6m1/VGvHZL6+Yzoyz9tbuyeGA6KVdvDiHEx3Kg6BKwmHSWtAfd8SWKGhEngmnIH+OB
- h0mmImQjHyswYG4nrTFzsx+w5AzTUFs1VwvbktNIBEVyqRgEEIfrdd61H96mrfmStHUlt0DaJ
- kE9KK3E8YgmURe9kl3tNnwQ57m2SMs4jPs2mORLDVrqbjcjgpMACpI7WBhWO30TocRpE7Ev4U
- 7gTz0PFoE5mF0zeqs5x5CNjMZJErcjpiTxkCD9ypgewODAjW9NxzYpMkxM0/Re75Ea8EocSnj
- RcOpmLUXJUsekuo+HBJ18ujkEQDBI02+//6JFEhKS/77RwFtpw5/2Wi6ijbGgaMaJwFYIzGOE
- byygXyc8Z5E5VyiJOe297fSU4BXfe7iYRybGdCL0fu3wzjcN35H0M67IM2bj8ZgF76uCoJvXt
- gRnGjA==
-X-Spam-Status: No, score=0.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1PR08MB4544:EE_|PAXPR08MB6751:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4b2a8e9-187c-4c25-607c-08dacec0098a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: CmbcjmVc/UihwpGzJllzUcNdWcmOpMMDIohpXZdaljyFbfgdwznjVk5gvY+lguNSm4G2qQ4q1P+0kO2QinCjcXJgwjtMUG3yE25a91XUyrzMGghk09Sz5y03ZxzpQML3r92dJ2gVJ0g7hEfoJbUYxoj+0eE9VvYCfujGI0BfIkS7Ut1SjFlT+kcGOC+82cu643QYPcq5NgWiIdXKPlWVJNTNfLfYE9+dcW+dLKTCGjFsDs7EUjpaIbDg3f9mhmBx8OToOVBP6TqofCcPSwtakwRplszruv2ZJhZ7K+ERspR17+FvrS1UVvJXAPRDeEY0jsKnMprYC6HbsTxtvsGtlkNtREc26NCaQ2Ip9sOSix9lALrMmE1kwFYTxtvVSLXce73RXEvhYCvL/mCDEknFpY6e1EuCWo+0McP/RBBYUMRWYGQAznysKQiVKu3VttG1zQmb8s7zkznTNSB/7fPU35FqdIZiEqSRRac1/pu0whcyE25JH7bRJ4RaiU4+O50MRiUWl+rtt7Nl6G98pCMBq7K+RDPYN0ZTv3Z0XE0KbtPM9CS5k6HuY8RDKj0RpeILneAet8zsHrqKW7zvYevcnPd6KWDj1fFaTTvZHHqAqTVG6LTN7l4lKdr0mLOv2SKmIC47fI5AKG5c1ZUTN2W8PDrBiRKku++CqmMy1MC7s64OUUFkF4bOFBdslADcUc8s
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB4544.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(346002)(376002)(136003)(396003)(39840400004)(451199015)(478600001)(6486002)(186003)(44832011)(7416002)(41300700001)(2616005)(1076003)(316002)(54906003)(38100700002)(38350700002)(36756003)(6506007)(6666004)(107886003)(52116002)(26005)(6512007)(86362001)(4326008)(66946007)(66556008)(8676002)(66476007)(5660300002)(8936002)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TnaQrHY3j7KJl+VKeVc5kerRYvsUUlb2I/olnD5y2RlZJbqQK0WpHHHVmfzL?=
+ =?us-ascii?Q?3YXhH/nS3plMn1ftJwhAKLZ57mB845nNZ4hbb5aUUK19x1Wzmz5q5Pe1B5bi?=
+ =?us-ascii?Q?yS0/8a993dHu8LTGdlpK9T7Tn9u56hJcQT3Z/0xoAfH5Riz80Dj6oSTE78Ak?=
+ =?us-ascii?Q?/NZ4Az3rjgym8ezIzgVuhnHzuQzYsv8LPAoAk8P2EY1SbXvqdoDW9qqZ19qv?=
+ =?us-ascii?Q?YUCGUL27b4XLJdKyKRio5lAzAfBeH/ua/rOPO6kJ5ywVBDBWOuGJ1iHaH1SF?=
+ =?us-ascii?Q?hM74CT17zUQOKZ8uvOjnFG3AIjjSNn3m3PHcPHXs7MIRuDlx9Xfx14fVBSRq?=
+ =?us-ascii?Q?/GI7fY4bAopfxTYnsXmDSPgEN/f4PWTd9gSO8dWnMSUDI6jq5cLJVzyFWeog?=
+ =?us-ascii?Q?Lth2xEFyLxYMhPf9h2ABaw9jPoBUcjfJjrRh6ch8mbYOIcRBRfXCXFfuyddn?=
+ =?us-ascii?Q?sDk3R+DMr7Ex3KXCfIhR+l4r5BKHP3dq/lRzRqiE8sBBMWw5kb+/5fCVz/Xe?=
+ =?us-ascii?Q?iFHLBu/9zQAuxzmCCfB8h+DCynHk6rxKl07wsooB5TPDodfJtP8Fsg3ZAzAo?=
+ =?us-ascii?Q?UiXlxm4oMA0xmvfGJlk6+Gii9iGDK7+9YW0PLpk2tkORQ5GVZORNYPQ+Wm3S?=
+ =?us-ascii?Q?muR+685qBSHpuG4DuombssDJ2l5GHXm6AeyVFMPYufNyIpk1k/U3tqg6yt5p?=
+ =?us-ascii?Q?ZResm2tpS6esLEC02DKXHDczLb0BjTL7gaphsL6KMDFrc5bZiWCWRyUGvbdK?=
+ =?us-ascii?Q?tTd3g6UMRS8K+z5ImV+ivJg131vwLzXKTrTSjnXkKcIDtBbvNOKc2y3BJDNW?=
+ =?us-ascii?Q?kC6m0lzfwalLTgVod5th6VI1HVS1lT69b9frGjP/cS8HzXoJxHrhSU72N66t?=
+ =?us-ascii?Q?csXc+CxrQZIgz5nYOFX8K9Xy0I/K0vc75JGDnSeuLtdao169h7aJGB7dlAOQ?=
+ =?us-ascii?Q?Xk177x66BtA5dMje9EEGQgGMDAHMBXI48pvzrnU2qsp4xnk+oDApo/XPvQxy?=
+ =?us-ascii?Q?3iL8rfan7ziDGqXpoD4xYDGz214qATkzdpchkaMAAIZCy0E/9YA5R7ZRnsGS?=
+ =?us-ascii?Q?eoSDuLx/vdyu3AMnT8tcE1CVarRVKaqGdsm+AX7K7zB5sQGOOqWzwZY11bT6?=
+ =?us-ascii?Q?5XTYmY5EiESjMJSLTBSNMaRoXoSF1ugTa8p0SgMgSri+W3K774sDXCjfhO/6?=
+ =?us-ascii?Q?9l5zZGaWlvwpgTH7s/qSHWc/Uejfrc8LxwFCyeiDpPBpe3GK9bnF3Hkurm/Y?=
+ =?us-ascii?Q?5IJ7uKgMcRFKSAxUgRoAep/VPMR3l7Ez+GUpEo4b/w7dXfZry5LYoCxvehq8?=
+ =?us-ascii?Q?J24Wy3YUNoaQW1EnE80yveOH7IPx4sS2tgU0NsjhpfqwmEKHpez5EcJ2KEcj?=
+ =?us-ascii?Q?S8F5O+gbfX+UI0FpCD0ZJ3gR9I8a4QGNSmwCDwwe0aF3b4EtkI3EMjkpLqM5?=
+ =?us-ascii?Q?ERWJqXjXv/44Uo1dMwBs1K4BRozZToawsycyi/XMbgj9zgM8fc50ILjnNfBx?=
+ =?us-ascii?Q?pTzlCf/fcNAXfMCU4TA+EJP5Ctmbpm79a3YXWE30M/eOYlpMVsI4B8RcysOF?=
+ =?us-ascii?Q?YxRLu2jdIf4rME0X0klrh4RVTFH3VEm0xvG78ARcbOOGFpKjZIl5Gv81+Tae?=
+ =?us-ascii?Q?JA=3D=3D?=
+X-OriginatorOrg: wolfvision.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4b2a8e9-187c-4c25-607c-08dacec0098a
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR08MB4544.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2022 08:35:41.7015
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GCBvPSNErAYpgszn/TgIoYoNPghhuFFvUmLSqD9e86P3LJG6MMHyjYfTvcO3CJr/m3VYe4kxcM1QDoFabJJ0Ma8Z5QqhPxCg5E8JOhD84V8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR08MB6751
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,139 +121,56 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Use a generic 'hsdev->usage' instead of the HID_USAGE_SENSOR_PROX to
-allow this driver to drive the Lenvo custom proximity sensor, which is
-registered under a 'custom' usage and not HID_USAGE_SENSOR_PROX.
+Hi all,
 
-Add the Lenovo Intelligent Sensing Solution (LISS) human presence sensor
-to the platform device ids.
+This patch set adds support for the TI TMAG5273 Low-Power Linear 3D Hall-
+Effect Sensor. Additionally to temperature and magnetic X, Y and Z-axes the
+angle and magnitude are reported. The sensor is operating in continuous
+measurement mode and changes to sleep mode if not used for 5 seconds.
 
-Signed-off-by: Philipp Jungkamp <p.jungkamp@gmx.net>
-=2D--
+Tests were done on a ROCK3 Model A board using the TMAG5273 evaluation
+module.
 
-v2:
-- Remove some unnecessary newlines in function calls.
+Changes in v3:
+ - Added structs for iio types to iio.h. Using these structs for iio type
+   arrays such as IIO_AVAIL_LIST makes the code more readable than just
+   using (int *). It was suggested by Andy Shevchenko to move these structs
+   to the iio headers to avoid different approaches.
+ - dt-bindings: dropped quotes from strings
+ - Added include <linux/bitfield.h>
+   | Reported-by: kernel test robot <lkp@intel.com> 
+ - Added include <linux/bits.h>
+ - Removed <asm/unaligned.h>
+ - Added missing "static const" for tmag5273_avg_table
+ - Documented Device ID
+ - Fixed index of tmag5273_scale definition
+ - Clarify TMAG5273_MAG_CH_EN_X_Y_Z as an index
+ - Removed unnecessary print
+ - Introduced tmag5273_write_scale() and tmag5273_write_osr() helper
+   functions
+ - Use of match_string()
+ - Format
 
-v3:
-- No change.
+Changes in v2:
+ Thanks to Krzysztof, Andy and Jonathan for your detailed review and
+ explanations on the first version. This patch includes all your
+ suggestions and some additional cleanup in the probe function.
 
-v4:
-- Clean up switch statement.
+Gerald Loacker (3):
+  iio: add struct declarations for iio types
+  dt-bindings: iio: magnetometer: add ti tmag5273 documentation file
+  iio: magnetometer: add ti tmag5273 driver
 
- drivers/iio/light/hid-sensor-prox.c | 37 ++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ .../iio/magnetometer/ti,tmag5273.yaml         |  75 ++
+ MAINTAINERS                                   |   7 +
+ drivers/iio/magnetometer/Kconfig              |  12 +
+ drivers/iio/magnetometer/Makefile             |   2 +
+ drivers/iio/magnetometer/tmag5273.c           | 736 ++++++++++++++++++
+ include/linux/iio/iio.h                       |  15 +
+ 6 files changed, 847 insertions(+)
+ create mode 100644 .../bindings/iio/magnetometer/ti,tmag5273.yaml
+ create mode 100644 drivers/iio/magnetometer/tmag5273.c
 
-diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-s=
-ensor-prox.c
-index f10fa2abfe72..a47591e1bad9 100644
-=2D-- a/drivers/iio/light/hid-sensor-prox.c
-+++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -61,6 +61,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
- 			      long mask)
- {
- 	struct prox_state *prox_state =3D iio_priv(indio_dev);
-+	struct hid_sensor_hub_device *hsdev;
- 	int report_id =3D -1;
- 	u32 address;
- 	int ret_type;
-@@ -75,6 +76,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
- 			report_id =3D prox_state->prox_attr.report_id;
- 			min =3D prox_state->prox_attr.logical_minimum;
- 			address =3D HID_USAGE_SENSOR_HUMAN_PRESENCE;
-+			hsdev =3D prox_state->common_attributes.hsdev;
- 			break;
- 		default:
- 			report_id =3D -1;
-@@ -84,11 +86,8 @@ static int prox_read_raw(struct iio_dev *indio_dev,
- 			hid_sensor_power_state(&prox_state->common_attributes,
- 						true);
- 			*val =3D sensor_hub_input_attr_get_raw_value(
--				prox_state->common_attributes.hsdev,
--				HID_USAGE_SENSOR_PROX, address,
--				report_id,
--				SENSOR_HUB_SYNC,
--				min < 0);
-+				hsdev, hsdev->usage, address, report_id,
-+				SENSOR_HUB_SYNC, min < 0);
- 			hid_sensor_power_state(&prox_state->common_attributes,
- 						false);
- 		} else {
-@@ -191,10 +190,16 @@ static int prox_capture_sample(struct hid_sensor_hub=
-_device *hsdev,
-
- 	switch (usage_id) {
- 	case HID_USAGE_SENSOR_HUMAN_PRESENCE:
--		prox_state->human_presence =3D *(u32 *)raw_data;
--		ret =3D 0;
--		break;
--	default:
-+		switch (raw_len) {
-+		case 1:
-+			prox_state->human_presence =3D *(u8 *)raw_data;
-+			return 0;
-+		case 4:
-+			prox_state->human_presence =3D *(u32 *)raw_data;
-+			return 0;
-+		default:
-+			break;
-+		}
- 		break;
- 	}
-
-@@ -244,7 +249,7 @@ static int hid_prox_probe(struct platform_device *pdev=
-)
- 	prox_state->common_attributes.hsdev =3D hsdev;
- 	prox_state->common_attributes.pdev =3D pdev;
-
--	ret =3D hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_PROX,
-+	ret =3D hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
- 					&prox_state->common_attributes,
- 					prox_sensitivity_addresses,
- 					ARRAY_SIZE(prox_sensitivity_addresses));
-@@ -262,7 +267,7 @@ static int hid_prox_probe(struct platform_device *pdev=
-)
-
- 	ret =3D prox_parse_report(pdev, hsdev,
- 				(struct iio_chan_spec *)indio_dev->channels,
--				HID_USAGE_SENSOR_PROX, prox_state);
-+				hsdev->usage, prox_state);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to setup attributes\n");
- 		return ret;
-@@ -291,8 +296,8 @@ static int hid_prox_probe(struct platform_device *pdev=
-)
- 	prox_state->callbacks.send_event =3D prox_proc_event;
- 	prox_state->callbacks.capture_sample =3D prox_capture_sample;
- 	prox_state->callbacks.pdev =3D pdev;
--	ret =3D sensor_hub_register_callback(hsdev, HID_USAGE_SENSOR_PROX,
--					&prox_state->callbacks);
-+	ret =3D sensor_hub_register_callback(hsdev, hsdev->usage,
-+					   &prox_state->callbacks);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "callback reg failed\n");
- 		goto error_iio_unreg;
-@@ -314,7 +319,7 @@ static int hid_prox_remove(struct platform_device *pde=
-v)
- 	struct iio_dev *indio_dev =3D platform_get_drvdata(pdev);
- 	struct prox_state *prox_state =3D iio_priv(indio_dev);
-
--	sensor_hub_remove_callback(hsdev, HID_USAGE_SENSOR_PROX);
-+	sensor_hub_remove_callback(hsdev, hsdev->usage);
- 	iio_device_unregister(indio_dev);
- 	hid_sensor_remove_trigger(indio_dev, &prox_state->common_attributes);
-
-@@ -326,6 +331,10 @@ static const struct platform_device_id hid_prox_ids[]=
- =3D {
- 		/* Format: HID-SENSOR-usage_id_in_hex_lowercase */
- 		.name =3D "HID-SENSOR-200011",
- 	},
-+	{
-+		/* Format: HID-SENSOR-tag-usage_id_in_hex_lowercase */
-+		.name =3D "HID-SENSOR-LISS-0226",
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(platform, hid_prox_ids);
-=2D-
-2.38.1
+-- 
+2.37.2
 

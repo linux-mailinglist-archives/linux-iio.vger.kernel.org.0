@@ -2,54 +2,71 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC08639850
-	for <lists+linux-iio@lfdr.de>; Sat, 26 Nov 2022 22:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF85639911
+	for <lists+linux-iio@lfdr.de>; Sun, 27 Nov 2022 01:23:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbiKZVxt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 26 Nov 2022 16:53:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49070 "EHLO
+        id S229605AbiK0AXk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 26 Nov 2022 19:23:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229453AbiKZVxs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Nov 2022 16:53:48 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37F892C2;
-        Sat, 26 Nov 2022 13:53:46 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 587C360B7E;
-        Sat, 26 Nov 2022 21:53:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A697C433D6;
-        Sat, 26 Nov 2022 21:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669499625;
-        bh=OWkY+Q2AWHHXFpSYHf6WVJ2BPlgIehXKQ01/N2rvGaU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=W1v53UmAPr8Bf3PvMGy4A8+6b9BD+005Qgy3zdIdZmS55GXSn8lUT/WqsuR+yVoWh
-         NPfZCiKmmh+Pmr2zOMAaYsfdhNCeAT5W0ydBKcMrIyutVjIQwteCc5KRevYDfDH9gO
-         a9cIi9crJmND0aAgqH4BjwKlSE9SqeVOAqU3HYixofEsYxQ/2bHaxDvNh2SpJY6vRJ
-         0Vy4RRawgdZJK5CT8SKTXEuavb/DBwM0ahJOhLw6eDy+6sZnz7xzadI9GhrTXYp/cX
-         yn5TR+Trin/61/PPNWy7BgYWir4NukjFrkTErghEBZCKIKM1O50neo73BZxAQLKMV1
-         mjkdslwV+3n8A==
-Date:   Sat, 26 Nov 2022 16:53:42 -0500
-From:   William Breathitt Gray <wbg@kernel.org>
+        with ESMTP id S229509AbiK0AXj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 26 Nov 2022 19:23:39 -0500
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A9611C3B
+        for <linux-iio@vger.kernel.org>; Sat, 26 Nov 2022 16:23:38 -0800 (PST)
+Received: by mail-qk1-x72e.google.com with SMTP id j26so4926344qki.10
+        for <linux-iio@vger.kernel.org>; Sat, 26 Nov 2022 16:23:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KQZdCAn1wLe1ma6euNf1AeZGjQ191Yciz8w43AMTgto=;
+        b=GF8VeJpmoLIxiroVs0Cy+IsfnoPUK2b9qisZX4FRmmXiXuJI042pRRoqcRSc/vXbXl
+         iS9XY/ZIvMjRmQvbnY8Te9sK8B/eYC+OLO9MeznyE84rqlS8l1S/61Vw/J6e8Y2b3qY9
+         oib5FVc7uB1tn2QIja/57qaBHSV11gDYCuUPjBs+ezHAfbhJBdCmCO3a5waR8QleyLmi
+         n5aRHKMDzpQnjtxKq9SNPpdTHyEux4xjwZe2am3RnIuPZvccL+Rx/zdtSOvvUhlbRNL9
+         pXHTJO3LvLMRZ903F0yzcUt4kxVfAYpJxcitDU9MQyMoGD05f3OA/gG8vvI7DiC9XTcU
+         rJGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KQZdCAn1wLe1ma6euNf1AeZGjQ191Yciz8w43AMTgto=;
+        b=ZcqiMlksatjr8bkC2nDFRkizXeuc92waIkQhI19XFkhCud7o7oHQ2I4n/mbVvZ/d8T
+         rTqFL0TJtuNPuJYHmBXnQPEt0JMYayQ2Yd2P0KbXJVGrFogQ7WnjXVZ1BKoANg+nLvEU
+         0LLZMnyMB9f3VCVT1I8f0pqPDXrG8nSYFuX5VF4UpnlYnhGQtRTq7oDGu86K2H+tbAOW
+         fYK7OvH4tdQDiJ1TeBSkxeTpLgr57xOcS1YZohHcdWSgTwyUmmJMUkq3alSRs44JQf9U
+         Tbv+GM4QWS9CksODiKMNAi8sMKSB7Mt/OboXEuWJwPxuLPzdxXdJ8vBUgB8ZFx225wxK
+         HUzQ==
+X-Gm-Message-State: ANoB5pmPdffta2toxy6m6Xr8TVUWaHbYiLz17oRB/joRDZFTnGTmWCwT
+        1PgkF+0WUDlpF4Z37HLtbbp9FNAn230+mA==
+X-Google-Smtp-Source: AA0mqf6gHqi4FO//fWDEHPPmkkyz01Lh3ag0c10ukil2kaNdWtS8PwvlG9AAMPfTyiKH4bkqr5XVJA==
+X-Received: by 2002:a37:486:0:b0:6fb:c2b7:bd0f with SMTP id 128-20020a370486000000b006fbc2b7bd0fmr40277246qke.69.1669508617473;
+        Sat, 26 Nov 2022 16:23:37 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id u6-20020a37ab06000000b006eeca296c00sm5395369qke.104.2022.11.26.16.23.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Nov 2022 16:23:36 -0800 (PST)
+Date:   Sat, 26 Nov 2022 19:23:34 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
 To:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Cc:     william.gray@linaro.org, jic23@kernel.org,
-        alexandre.torgue@foss.st.com, olivier.moysan@foss.st.com,
+Cc:     jic23@kernel.org, lars@metafoo.de, benjamin.gaignard@st.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
         linux-iio@vger.kernel.org,
         linux-stm32@st-md-mailman.stormreply.com,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32-lptimer-cnt: fix the check on arr and cmp
- registers update
-Message-ID: <Y4KK5tck2aCdKWXF@ishi>
-References: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
+Subject: Re: Removing the last of IIO_COUNT (stm32-timer-trigger)
+Message-ID: <Y4KuBicVeRAsfqxq@fedora>
+References: <Y0vzlOmFrVCQVXMq@fedora>
+ <ec6b8983-1567-92c8-f1cd-baf970ca4046@foss.st.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="u770lf6WZ1x5I9rX"
+        protocol="application/pgp-signature"; boundary="pol7eQrzyh+2cjLY"
 Content-Disposition: inline
-In-Reply-To: <20221123133609.465614-1-fabrice.gasnier@foss.st.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+In-Reply-To: <ec6b8983-1567-92c8-f1cd-baf970ca4046@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,59 +75,254 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---u770lf6WZ1x5I9rX
+--pol7eQrzyh+2cjLY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 23, 2022 at 02:36:09PM +0100, Fabrice Gasnier wrote:
-> The ARR (auto reload register) and CMP (compare) registers are
-> successively written. The status bits to check the update of these
-> registers are polled together with regmap_read_poll_timeout().
-> The condition to end the loop may become true, even if one of the register
-> isn't correctly updated.
-> So ensure both status bits are set before clearing them.
+On Thu, Oct 27, 2022 at 11:41:18AM +0200, Fabrice Gasnier wrote:
+> On 10/16/22 14:05, William Breathitt Gray wrote:
+> > Hi all,
+> >=20
+> > The drivers/iio/trigger/stm32-timer-trigger.c file remains the last
+> > consumer if the IIO_COUNT type. The IIO_COUNT type was deprecated some
+> > time ago with the introduction of the Counter subsystem. Most of the
+> > previous IIO_COUNT consumers were migrated successfully to the Counter
+> > subsystem, but the stm32-timer-trigger driver remains as the sole module
+> > preventing the final removal of IIO_COUNT.
+> >=20
+> > At the time we deprecated IIO_COUNT, the Counter subsystem was nascent
+> > and lacked some of the functionality we have nowadays such as a
+> > character device interface, timestamping, hardware buffer support, etc.
+> > If I recall correctly, the decision to delay the migration of
+> > stm32-timer-trigger to the Counter subsystem was a lack of some
+> > functionality the Counter subsystem could not provide at the time.
+> >=20
 >=20
-> Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Hi William,
+>=20
+> As far as I remember, initial work on stm32-timer-counter focused only
+> on porting the quadrature interface away from stm32-timer-trigger.
+> Unfortunately, I've followed from afar all the progress you did in the
+> framework since then.
+> From the infrastructure point of view, there's probably not much to add
+> to be able to move away the IIO_COUNT channel (and the IIO device) part
+> of stm32-timer-trigger driver.
+> Let's focus only on the modes implemented here.
 
-Applied to the counter-current branch of counter.git.
+Hi Fabrice,
+
+Sorry for the delay in my response; it took me a while to think through
+all this, but I believe you have the right approach in your suggestions.
+
+>=20
+> Besides this, I may have further questions on the "hardware buffer
+> support" (could you point this as I miss it for now), and also the
+> capture interface.
+> There has been a separate discussion here ("pwm: Make capture support
+> optional"):
+> https://lore.kernel.org/linux-pwm/Yz%2F4V0gH%2FvrWSS8U@orome/T/#u
+> I'd be glad to get your opinion, on possibly moving the PWM input
+> capture feature to the counter framework too.
+
+I replied to the PWM discussion to provide some context about the
+Counter events (capture) interface. You can find out more about the
+Counter hardware buffer support in the Counter array components support
+introduction patch series:
+https://lore.kernel.org/all/cover.1664204990.git.william.gray@linaro.org/
+
+Essentially Counter arrays are a convenience tool to allow drivers to
+group and handle multiple components of the same type. Hardware buffers
+are thus supported by exposing each buffer element as an individual
+component to the user; those components are handled by the Counter
+driver via a callback with the index for the particular element passed
+in as an argument.
+
+>=20
+> > I hoping someone can evaluate stm32-timer-trigger to see if we are able
+> > transition now to the Counter subsystem, or if that necessary
+> > functionality is still missing today. Even if it turns out that we are
+> > unable to migrate, it'll be useful to know what's left to implement in
+> > the Counter subsystem to support stm32-timer-trigger or similar devices
+> > in the future.
+>=20
+> As you're asking, I just tried to narrow down specific things in this
+> driver, and assess possible impacts. Please find some details here after
+> and first as an introduction:
+>=20
+> The IIO device registered in this driver has two specific extensions, to
+> manage specific ("slave") modes: "always", "gated", "triggered".
+> E.g the *enable_mode*.
+>=20
+> The last 2 modes depends on specific hardware *triggers* being
+> associated in IIO sysfs, to select the trigger (e.g. echo the source
+> trigger name > trigger/current_trigger # the destination timer to trig).
+> The list of triggers is specific to each timer instance in STM32.
+> In other words, some timers outputs can be used as input on other
+> timers. Here comes the *trigger_mode* attribute (see after).
+>=20
+> --- enable_mode ---
+> In Documentation/ABI/testing/sysfs-bus-iio-timer-stm32, this correspond t=
+o:
+> - /sys/bus/iio/devices/iio:deviceX/in_count0_enable_mode
+> - /sys/bus/iio/devices/iio:deviceX/in_count_enable_mode_available
+> always:
+> 	Counter is always ON.
+> gated:
+> 	Counting is enabled when connected trigger signal
+> 	level is high else counting is disabled.
+> triggered:
+> 	Counting is enabled on rising edge of the connected
+> 	trigger, and remains enabled for the duration of this
+> 	selected mode.
+
+Okay, we need to support these three modes. The "always" mode seems
+straight-forward to support, but "gated" and "triggered" are what need
+special consideration for this driver.
+
+>=20
+> Basically, the "always" mode is already used by default in
+> stm32-timer-cnt driver, and matches: COUNTER_COUNT_MODE_NORMAL, By
+> referring to:
+> Documentation/ABI/testing/sysfs-bus-counter
+> 		normal:
+> 			Counting is continuous in either direction.
+>=20
+> Please find some thoughts/proposal here:
+> - This could lead to add two counter modes to the list of "range limit",
+> "non-recycle" and "modulo-n". The STM32 timer trigger inputs could be
+> described as signals (list being specific for each timer instance, see
+> valids_table[] arrays in stm32-timer-trigger).
+
+It makes sense to represent these inputs as Signals because they can
+directly affect the value change of the respective Count, so I think we
+should organize this as such. However, "count_mode" wouldn't be the
+correct place for configuration of the "gated" and "triggered" modes.
+"count_mode" is for configuring how the Count value updates once a
+Synapse action triggers, but "gated" and "triggered" are rather more so
+determining whether those Synapse actions should trigger in the first
+place.
+
+>=20
+> - OR, maybe the 2 modes could be described as a specific synapse action,
+> (trigger input also being described as a signal)? In both "gated" and
+> "triggered" modes, the timer counts on its internal clock input (but not
+> continuously). But it doesn't really match the "normal" mode.
+
+Yes, I think this is the approach to take. Synapse actions represent
+when the Count function is evaluated to update the respective Count;
+"gated" and "triggered" represent modes where a trigger input serves to
+determine when that update occurs, so those are naturally Synapse action
+modes.
+
+To add support for these, you would just need to introduce to
+include/uapi/linux/counter.h two new enum counter_synapse_action
+constants: COUNTER_SYNAPSE_ACTION_GATED and
+COUNTER_SYNAPSE_ACTION_TRIGGERED. You can then use those new enums in
+your action_read() callbacks.
+
+>=20
+> - Last, maybe a mix of a new "trigger" count mode, and synapse action
+> (gated/triggered) could be used ?
+> Note: The last one may open the door to other modes that aren't
+> implemented in current stm32-timer-trigger driver, by extending the
+> synapse actions (like reset the counter upon trigger signal... and other
+> combined modes specified in the STM32 timer spec).
+
+Instead of "count_mode", a new Count component should be introduced to
+handle this configuration. Maybe we could call it "gate_mode" (or
+perhaps your might have a better name) and it can be implemented using
+the COUNTER_COMP_COUNT_ENUM() macro to allow for selection between
+"always", "gated", and "triggered".
+
+>=20
+> --- trigger_mode ---
+> In Documentation/ABI/testing/sysfs-bus-iio-timer-stm32, this correspond t=
+o:
+> - /sys/bus/iio/devices/iio:deviceX/in_count_trigger_mode_available
+> - /sys/bus/iio/devices/iio:deviceX/in_count0_trigger_mode
+> In the STM32 timer spec this is: External Clock Mode 1 - Rising edges of
+> the selected trigger (TRGI) clock the counter.
+
+This can be implemented as a COUNTER_COMP_COUNT_ENUM() to select the
+particular trigger input.
+
+>=20
+> In this configuration, IMHO, this matches the "normal" counter mode.
+> This lead also here to define trigger inputs as a signals. Then the
+> standard increase/decrease functions suffice.
+>=20
+> --- dt-bindings ---
+> This could be a tight part. Listing/probing the triggers relies on the
+> reg property defined in the trigger node:
+> - Documentation/devicetree/bindings/mfd/st,stm32-timers.yaml
+>=20
+> timers2: timer@40000000 {
+>   timer@1 {
+>     compatible =3D "st,stm32-timer-trigger";
+>     reg =3D <1>;
+>   }
+>   counter {
+>     compatible =3D "st,stm32-timer-counter";
+>   };
+> }
+>=20
+> Ideally... adding the reg property to the counter node could have
+> helped. But we need to enforce the backward compatibility with existing
+> DT binaries. So I think that there's no choice to keep the current bindin=
+gs.
+>=20
+> This could lead to add some code to parse the trigger node for probing,
+> looking for the "reg" property either from:
+> - the MFD driver part drivers/mfd/stm32-timers.c
+> - the counter driver, although it seems non-standard way to parse aside
+> nodes.
+> I have no strong opinion and I'm open to suggestions.
+
+I don't have much of a strong opinion either, but I'd consider the MFD
+driver to be the more natural location to place this. However, I'm also
+open to suggestions if someone thinks it better somewhere else.
+
+>=20
+> ---
+> To conclude, there some open items here, but hopefully nothing blocking.
+> In case we sort all these, this will allow to remove the IIO_COUNT
+> channel (along with the IIO device) being registered.
+
+I'm certain Jonathan will want some sort of deprecation schedule first
+to make sure any existing users have time to migrate to the Counter
+interface before we remove the IIO one, but it will give me a nice
+feeling of completion to see the last of IIO_COUNT superceded by the
+Counter interface. ;-)
 
 William Breathitt Gray
 
-> ---
->  drivers/counter/stm32-lptimer-cnt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-=
-lptimer-cnt.c
-> index d6b80b6dfc28..8439755559b2 100644
-> --- a/drivers/counter/stm32-lptimer-cnt.c
-> +++ b/drivers/counter/stm32-lptimer-cnt.c
-> @@ -69,7 +69,7 @@ static int stm32_lptim_set_enable_state(struct stm32_lp=
-tim_cnt *priv,
-> =20
->  	/* ensure CMP & ARR registers are properly written */
->  	ret =3D regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
-> -				       (val & STM32_LPTIM_CMPOK_ARROK),
-> +				       (val & STM32_LPTIM_CMPOK_ARROK) =3D=3D STM32_LPTIM_CMPOK_ARRO=
-K,
->  				       100, 1000);
->  	if (ret)
->  		return ret;
-> --=20
-> 2.25.1
+> There will still remain some specific attributes in the
+> stm32-timer-trigger driver, related to the trigger device:
+> - /sys/bus/iio/devices/triggerX/master_mode
+> - /sys/bus/iio/devices/triggerX/master_mode_available
+> But this shouldn't be an issue as it isn't related to the IIO_COUNT part
+> of the driver.
 >=20
+> Please advise,
+> Best Regards,
+> Fabrice
+>=20
+> >=20
+> > Thanks,
+> >=20
+> > William Breathitt Gray
 
---u770lf6WZ1x5I9rX
+--pol7eQrzyh+2cjLY
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY4KK5gAKCRC1SFbKvhIj
-K+deAQC6ZXzAa3xdZuWBglzIaSy1YgvjYJNRFUV1M62hbScaawD8CRdlC/3xIFg2
-fNtfcSsKjpct2CfSS9TwcuYUKf32ewI=
-=xvBl
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY4KuBgAKCRC1SFbKvhIj
+K3VJAP40p/2Ow8pzpVLrWihMamfoeI6BpbnX5DrPRO/vt/XwJAD9EAfb1NZan6hQ
+adtzdvNZCrhyig+k3jwO3+AXM51TVgw=
+=j5H7
 -----END PGP SIGNATURE-----
 
---u770lf6WZ1x5I9rX--
+--pol7eQrzyh+2cjLY--

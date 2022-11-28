@@ -2,497 +2,246 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CBC563A9B1
-	for <lists+linux-iio@lfdr.de>; Mon, 28 Nov 2022 14:35:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3FF463A9FD
+	for <lists+linux-iio@lfdr.de>; Mon, 28 Nov 2022 14:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230368AbiK1Nfo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 28 Nov 2022 08:35:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33028 "EHLO
+        id S232106AbiK1NtB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 28 Nov 2022 08:49:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231690AbiK1Nfn (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Nov 2022 08:35:43 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7CC925C3
-        for <linux-iio@vger.kernel.org>; Mon, 28 Nov 2022 05:35:41 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ozeIJ-0004UO-D7; Mon, 28 Nov 2022 14:35:35 +0100
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ozeII-000pYo-0G; Mon, 28 Nov 2022 14:35:34 +0100
-Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <lgo@pengutronix.de>)
-        id 1ozeII-005gmS-0J; Mon, 28 Nov 2022 14:35:34 +0100
-From:   =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>,
+        with ESMTP id S232065AbiK1NtA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 28 Nov 2022 08:49:00 -0500
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2047.outbound.protection.outlook.com [40.107.247.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B361EC40;
+        Mon, 28 Nov 2022 05:48:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GlmiRL9Hhp06em7hhPPqfDiLVEdt39ViYHjC5diVR30/6fR7xzhD/MQkoLuM/Q67nozRJCCNX+fDsbRrzZizXjo4IjwcCb9v2B+JBh5pOSXa2xx1e3a7jUl2eCZpGfYo9CMI/a6Rd+oZdcTFgnGiOfPpBJHUAyewvDw/5RJvRMrpynLwRKSnM1HabBfl2g+3T3VWY/jU2CjNj3N3Au2lEQRHgzq8yerKmNFExUh9rm3iNiH+WNaITPTI9d94rPK0/GrFcnNQSPxwHlX2pRlHCCK63kHzz4bhKwVAQVU3NLI/UYwY1P22YQI9wndQOwpexid+NybpTVqjLiPlyCgNgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rCqkWY9Tn15NzpkhI/RhVzzqfL12frHJvPa70pOV+/4=;
+ b=NALSG0BcqnNlXQQ04I+1K1r2QLjLAnb0hQMyz64fyJPp8uY42DQNXbqoTGEUEW8dckEyFwcZU+dLBpFk9/sz9u3/3YdDl3VR68xEQ0uJpTT3nk/SEZgxXhUMeRBd37wWoWyBC3egw3RmdRtaScz6jQWxnSOrd+jfo2ubaeUtm6jaBOJmnXTC0/wE34c5srbLa+rQjRJlGdd2jDwdEGcLcX7LK+OB2rZJET59/wqei1RkHeRkf7gcaXrsLEDOlc0O57RUiHq3cwNPEthn2Av5lBIGBpL1aD6hLuiTfXjGKFPjosF4kl8MpNtmoCfoYH9HLPE/FOotVZXnJKWBvWGZ1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wolfvision.net; dmarc=pass action=none
+ header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rCqkWY9Tn15NzpkhI/RhVzzqfL12frHJvPa70pOV+/4=;
+ b=DTlvkmK1n/xJ4tPWxYBaRG/CBx884f71uSsyLUDJ/LO6Gj9WWoyxUsnd84BbMPxk03f2hizo4gLFexG4ogJlA0FFP6MdzVH6LkHZFYcExa9miItb00x4IYEjZukyVCc1JZJperN23HS27hqauftpyOIyUaJPqrX8c9P/yaYHUhI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wolfvision.net;
+Received: from DU0PR08MB9155.eurprd08.prod.outlook.com (2603:10a6:10:416::5)
+ by AS2PR08MB9426.eurprd08.prod.outlook.com (2603:10a6:20b:5ea::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.7; Mon, 28 Nov
+ 2022 13:48:53 +0000
+Received: from DU0PR08MB9155.eurprd08.prod.outlook.com
+ ([fe80::3643:6226:28c:e637]) by DU0PR08MB9155.eurprd08.prod.outlook.com
+ ([fe80::3643:6226:28c:e637%2]) with mapi id 15.20.5880.008; Mon, 28 Nov 2022
+ 13:48:53 +0000
+Message-ID: <4d1b0054-efd4-e10e-17a6-d236052afa49@wolfvision.net>
+Date:   Mon, 28 Nov 2022 14:48:48 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.0
+Subject: Re: [PATCH v3 1/3] iio: add struct declarations for iio types
+Content-Language: en-US
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gerald Loacker <gerald.loacker@wolfvision.net>
+Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-        kernel@pengutronix.de
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH v3 2/2] iio: adc: add ADC driver for the TI LMP92064 controller
-Date:   Mon, 28 Nov 2022 14:35:03 +0100
-Message-Id: <20221128133503.1355898-2-l.goehrs@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221128133503.1355898-1-l.goehrs@pengutronix.de>
-References: <20221128133503.1355898-1-l.goehrs@pengutronix.de>
-MIME-Version: 1.0
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Jakob Hauser <jahau@rocketmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+References: <20221125083526.2422900-1-gerald.loacker@wolfvision.net>
+ <20221125083526.2422900-2-gerald.loacker@wolfvision.net>
+ <Y4CcspD1xkmhmWbh@smile.fi.intel.com> <Y4CgiMd4XQMV4KFV@smile.fi.intel.com>
+ <a55e73f7-4daf-6892-34dc-61c6f6581d8e@wolfvision.net>
+ <Y4S3WnYWVnmiVFc+@smile.fi.intel.com>
+From:   Michael Riesch <michael.riesch@wolfvision.net>
+In-Reply-To: <Y4S3WnYWVnmiVFc+@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: lgo@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR0902CA0035.eurprd09.prod.outlook.com
+ (2603:10a6:802:1::24) To DU0PR08MB9155.eurprd08.prod.outlook.com
+ (2603:10a6:10:416::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR08MB9155:EE_|AS2PR08MB9426:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf4cb62e-f422-43b5-d9e2-08dad1474846
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mpMAFXIndvwQO7UKp1+yJ4uD8KZ2HREQzEVbWyR1aGH5LVJH3gHohF6C5wnXsKJj2+yuBg+Fs/uA6XdF/EZfHSIVzGPRTJiV+a/05kclAispWKu7KZl64YSFsVsDzKdq3nSUWoi+Y0QCXBR3coXlAIb/vPWZy3V9d8YQPjIDhGRClKpq8JC6oRwaRDDgAQIf2hq/5GCBNZSGcuxBLbWDLLSVdh1HnyR8w3n0wUkb+N9f73QDSAJ/g9jW+zbsMJ/qqdA+kqklJM6riKIAFlX0a1ej1DpthOWWjmNWGmEuY8EfkNwr2renk1y4wmqQk8AQHfW2P6CyYq8j6fK9ufMOTCY3lpWHB80Nd1HjXU8B8z9s2WOXCDu2TLfqKImtBY8NldYK7hOeHEb7rwz6XDgZFp4uJEMEQrM+99iprYJ0fbjcn4RZOD6ntdcKF4XpGH+u/SITZTpBzMjtuaH5x0FHrMuGMCfIl7y8HQfHnsfQq+3MbhG8dIBwvA4MkE5HthyLf6vB4qYtgnF2YQhU1ea8fdDexJLakhR1JIcmvhKRlZClhCqGtS9/f0PUf9kXP40hkctlin5or4aFRdnn7sXhEUPjh0RN3pNmdr2IE57IAq6YHieg6rHFhNxhtJDcjbqdsvnGJ4clzgMb6vYID0i9uJtvZHI1pAYdObwHAnE2dc6EbEfaedmKUhA5MaPIEWztUKxvGH+ki1QLY81VUK/U8naCotswvsLF+vOwcNtYR4M=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9155.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(396003)(346002)(39850400004)(366004)(451199015)(31686004)(2906002)(86362001)(66946007)(66476007)(7416002)(8936002)(44832011)(5660300002)(41300700001)(8676002)(4326008)(31696002)(36756003)(316002)(110136005)(6636002)(478600001)(38100700002)(66556008)(6486002)(6512007)(6506007)(2616005)(6666004)(54906003)(52116002)(53546011)(186003)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VEkySkhIREZWdkt5UDAxK01JTE9HNTZCWFE2cjVlVTE2dFRSckpoNEVPYSsx?=
+ =?utf-8?B?dStVaWZCV0ovb0tXVEZPbGdkZVk2bVgvK1I0RXdjcURnNnRsNkJWOXZ3WHdz?=
+ =?utf-8?B?eDRsc2FUMDZpYTMzK2RLbEpXbTl6Y3lsVTJYbllMakxqWEpQQVJZaGdyVGNu?=
+ =?utf-8?B?MWRrV24yRG5KV2tJUnd4RkM1QmU2RWVuZnRwaFZFcUswQmZMMU5SbzMxQjNL?=
+ =?utf-8?B?V09iNkNibmZaOS9MTFdFQ1phVHExR2NIMUtWa3FGZHZ4UlNtMUVTNUJXMzNE?=
+ =?utf-8?B?SG9UYUQ3MEFyVnJXM1VCTWVJU0MxWkZaL245MWg5UG5JRmVoRjFJQlZSY0lL?=
+ =?utf-8?B?RUg2Tk5GWlZScVJBS3k1MFRRbkFrZzQrblM5S3RGckU4MkNsdW5md2R0ZE9z?=
+ =?utf-8?B?WUo5L3FFYWJtSEZXZ3A5TmVYYzFvZ044YUw3eWxuRERBTVR2TnBlSVhtQzNW?=
+ =?utf-8?B?dUtpMDl4N1pXdGgwcm5TY2VsWG1BZEJmMXVjS0xWNUR2U2dwNHgzK0NwZEFn?=
+ =?utf-8?B?cFZaUEJLcFBXL1JPL28xdXBiYnFzbVBsMytZQVJiRHdSTEE1cHFDRlNuTGVi?=
+ =?utf-8?B?N0VMRWV5a2hteDEzWkhQOUJLcmk0SUlzRGVLSDZaZ3pkTDlBd0Vhd1J3SEZ1?=
+ =?utf-8?B?cGtLSDRndksvN1ZLQWN3REhEOG1wWTcvU0xFRSt3Z3hIeDJkQ0RlaGQ1MUNr?=
+ =?utf-8?B?ZE1oZUEvMytCZEhUUm1YMDZPUTNNV3JBS1JiR25yTmRac2ttbWxzTHJxY2p0?=
+ =?utf-8?B?ekJWbWh6T1dNb05ZaWZIZHI0WXd1T1MwdWlmM1UwSnUwdGJEWkdGYlBmK3hr?=
+ =?utf-8?B?UkhzWEphZ1JJbjltSXcwVGF6NDN4M3lNSzN0WnFTZWdZcVJPZkRkdHNlUGta?=
+ =?utf-8?B?NTVrSEE0UzZ6YkZvN3JjSTE5TTJjODM1cURhUng1YVhCNmtRMjM1b1lVYnVu?=
+ =?utf-8?B?YlZuRHFWMC9SSEwyKzhpcCs5TUsvOGNOZW5idXp2dDhUaDlOMWhSZE9PaTJT?=
+ =?utf-8?B?TlNGSDVlYTNCMmxxOFhmWmdZbkEyL1lUcC9oMENIdlRPdU1ON0JIVlpDVkJJ?=
+ =?utf-8?B?YlJ5ZXZGV0k0cjZwaGd5WStBaXZpbWVPUmpHeDJUWC9YYk5WbUtqSUpkVk03?=
+ =?utf-8?B?UHNnUGdXa0E0VnI4TkwybEtOb1k2TU5VTmZrWVVKaUk3M1o0UjFkZlZlOGZj?=
+ =?utf-8?B?dGxleGRKd250MzhTSDRzcmM4eDlWY1FGQk5DaFNkMWZ2U09BT3FmRFRtR1lZ?=
+ =?utf-8?B?ZVcyN0UvWCs5NWFWYW03ajJ0ZzhvQVFuZU9qNzQrbTZLOUxmaVdSUy81NmVl?=
+ =?utf-8?B?NnZOVkVybEJUcmxIZ1JGTU5hL1hpL256YWRjaE42OS83U0ZzZnp1bUNCOStD?=
+ =?utf-8?B?S0ZqNW5aRFpwS1lCNEs4NTc0UUhnUEtTR2xZQXRwdC9VZ3cwcW84NXBOblV3?=
+ =?utf-8?B?MDBuWk10RTBwUUhvMlJBbnBYUGoreDdTdStUZG1JdnhoOEpQL1dUYTQvaHJl?=
+ =?utf-8?B?aWhKbVVpRWt5cDF1UHhBdUhiaTM2YTNHOGV5cG56ZzVYT3gvWCtsRzBBVnpu?=
+ =?utf-8?B?cFg5NHh3VTJ6UHQ4dWZ0Tkkwdm9JcjQyT2gyQjc3YXk5KzFHeDJCOG1DbjQ5?=
+ =?utf-8?B?Y2pVQmJ2eEkrSUZ2VWQ4RHg2UENFU1NqZHlJbzNrVUtoNHlsdnE5R0dYQ1li?=
+ =?utf-8?B?Z251SkEraDNDRDZYeEdZcncxaEZPU0ZsTENSUThDNTRGdE5GZjMvMWhxYWtp?=
+ =?utf-8?B?dnZhb3JpZEJXdzlqWHVIRnVuVG9pS2tYNnBqWmtHeVpNOFREU0hwN0ZkQmdi?=
+ =?utf-8?B?WXhLcmJLUDE4clZla1Y3TDFkanRsaUpwdXlqQjQ2eEdCanBXME9CVEFqVGRJ?=
+ =?utf-8?B?QmNVS1NyU3hrRDgyaG84K3BjU3hOdE9sOGZpT1JQWnBNSmQxR0FWWnpBMER4?=
+ =?utf-8?B?OVhqTzlTeHFzL2cwdjltcFo1WkgyUzR4dHhlNGZodVpwNnhHaUtBOHlLNXN1?=
+ =?utf-8?B?bjRneVh0c0t3aDgvajk0YUJDLzZld1BDTlVhTUlIQ1NveDFvSlI3dGpVTmJN?=
+ =?utf-8?B?cngzVmtQMVhjanIxNE5SeEVzd2FFMk8vY1IybWRkU3pLYnc5cTA2MDNUMCt4?=
+ =?utf-8?B?NXNyTFNudXVDTmdZQ2E5QVQ1VDNtTFdpdkN2d3AxeXEvVEF0RjN4c0JzcVJp?=
+ =?utf-8?B?QS8xeUUzanV0OUIxWGRwSElIOFo4S0lnRG54d05qQ3kxMlB2U2x3N2YzdTRG?=
+ =?utf-8?B?aTZiczhzY0g5Z3RENlpBSWlJSFBnPT0=?=
+X-OriginatorOrg: wolfvision.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf4cb62e-f422-43b5-d9e2-08dad1474846
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9155.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2022 13:48:53.0122
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UKBeR6siQ+KIc5cCwVwPWYi7y8vHmOx/AT+EEpkSfHI5mOdpffzC1NnTuJTjY1SBbtg0B7KwSyLXrww+hKGkl6PhpkQBtCtN4gVDPRfDU+o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9426
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The TI LMP92064 is a dual 12 Bit ADC connected via SPI.
-The two channels are intended for simultaneous measurements of the voltage
-across- and current through a load to allow accurate instantaneous power
-measurements.
-The driver does not yet take advantage of this feature, as buffering is not
-yet implemented.
+Hi Gerald, Andy,
 
-Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
----
+On 11/28/22 14:27, Andy Shevchenko wrote:
+> On Mon, Nov 28, 2022 at 01:18:04PM +0100, Gerald Loacker wrote:
+>> Am 25.11.2022 um 12:01 schrieb Andy Shevchenko:
+>>> On Fri, Nov 25, 2022 at 12:45:06PM +0200, Andy Shevchenko wrote:
+>>>> On Fri, Nov 25, 2022 at 09:35:24AM +0100, Gerald Loacker wrote:
+> 
+> ...
+> 
+>>>>> +struct iio_val_int_plus_micro {
+>>>>> +	int val_int;
+>>>>> +	int val_micro;
+>>>>> +};
+>>>
+>>> Thinking more about naming, why not drop val_ completely?
+>>>
+>>> 	int integer;
+>>> 	int micro;
+>>>
+>>> ?
+>>
+>> Yes, this sounds good to me. I think of adding only
+>>
+>> 	typedef struct {
+>> 		int integer;
+>> 		int micro;
+>> 	} iio_val_int_plus_micro;
 
-Changes from v2 -> v3:
+I think we actually want
 
- - Set lmp92064_adc_driver.id_table to lmp92064_id_table
- - Add comments on what the INV/INC names taken from the datasheet
-   mean (INput Voltage and INput Current).
- - Improve comments regarding reset timing
+struct iio_val_int_plus_micro {
+	int integer;
+	int micro;
+};
 
-Changes from v1 -> v2:
+here, right?
 
- - Rebase from 6.0 to 6.1-rc2 to get access to devm_regulator_get_enable.
- - Use regmap instead of raw SPI commands.
-   This fixes multiple issues in the v1:
-   - Remove need to assemble register address using bit shifts.
-   - Remove non DMA-safe stack-allocated buffers.
-   - Regmap has internal lock handling, removing the need for locking in the
-     driver read code using mlock.
- - Use be16_to_cpu() instead of manually assembling values using bit shifts.
- - Use generic device_property_read_u32() instead of devicetree specific
-   of_property_read_u32().
- - Rename the "shunt-resistor" device property to "shunt-resistor-micro-ohms".
- - Add supply regulator support for the two voltage domains of the chip
-   (vdd and vdig).
- - Only perform soft reset if no GPIO line for hard resets is available.
- - Change the error returned if the device does not respond after a reset
-   from "EBUSY" to "ENXIO" to indicate that this is likely a persistent
-   error (like a broken connection).
- - Don't set the SPI mode manually.
- - Provide a spi_device_id table.
- - Declare local variables in reverse christmas tree order.
- - Fix formatting of multi-line comments and some whitespace issues.
+>> for now, and one can add similar structures when needed, like
+>>
+>> 	typedef struct {
+>> 		int integer;
+>> 		int nano;
+>> 	} iio_val_int_plus_nano;
 
++1 for introducing things when they are actually used.
 
- MAINTAINERS                   |   8 +
- drivers/iio/adc/Kconfig       |  10 +
- drivers/iio/adc/Makefile      |   1 +
- drivers/iio/adc/ti-lmp92064.c | 332 ++++++++++++++++++++++++++++++++++
- 4 files changed, 351 insertions(+)
- create mode 100644 drivers/iio/adc/ti-lmp92064.c
+> It's a rule to use _t for typedef:s in the kernel. That's why
+> I suggested to leave struct definition and only typedef the same structures
+> (existing) to new names (if needed).
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 69565ac0c2244..3223ef36862c5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20640,6 +20640,14 @@ S:	Maintained
- F:	sound/soc/codecs/isabelle*
- F:	sound/soc/codecs/lm49453*
- 
-+TI LMP92064 ADC DRIVER
-+M:	Leonard Göhrs <l.goehrs@pengutronix.de>
-+R:	kernel@pengutronix.de
-+L:	linux-iio@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/adc/ti,lmp92064.yaml
-+F:	drivers/iio/adc/ti-lmp92064.c
-+
- TI PCM3060 ASoC CODEC DRIVER
- M:	Kirill Marinushkin <kmarinushkin@birdec.com>
- L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 791612ca60120..6875fecc63603 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1234,6 +1234,16 @@ config TI_AM335X_ADC
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called ti_am335x_adc.
- 
-+config TI_LMP92064
-+	tristate "Texas Instruments LMP92064 ADC driver"
-+	depends on SPI
-+	help
-+	  Say yes here to build support for the LMP92064 Precision Current and Voltage
-+	  sensor.
-+
-+	  This driver can also be built as a module. If so, the module will be called
-+	  ti-lmp92064.
-+
- config TI_TLC4541
- 	tristate "Texas Instruments TLC4541 ADC driver"
- 	depends on SPI
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 46caba7a010c9..e8175c97ebeb6 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -110,6 +110,7 @@ obj-$(CONFIG_TI_ADS8688) += ti-ads8688.o
- obj-$(CONFIG_TI_ADS124S08) += ti-ads124s08.o
- obj-$(CONFIG_TI_ADS131E08) += ti-ads131e08.o
- obj-$(CONFIG_TI_AM335X_ADC) += ti_am335x_adc.o
-+obj-$(CONFIG_TI_LMP92064) += ti-lmp92064.o
- obj-$(CONFIG_TI_TLC4541) += ti-tlc4541.o
- obj-$(CONFIG_TI_TSC2046) += ti-tsc2046.o
- obj-$(CONFIG_TWL4030_MADC) += twl4030-madc.o
-diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
-new file mode 100644
-index 0000000000000..c30ed824924f3
---- /dev/null
-+++ b/drivers/iio/adc/ti-lmp92064.c
-@@ -0,0 +1,332 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Texas Instruments LMP92064 SPI ADC driver
-+ *
-+ * Copyright (c) 2022 Leonard Göhrs <kernel@pengutronix.de>, Pengutronix
-+ *
-+ * Based on linux/drivers/iio/adc/ti-tsc2046.c
-+ * Copyright (c) 2021 Oleksij Rempel <kernel@pengutronix.de>, Pengutronix
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+
-+#include <linux/iio/iio.h>
-+#include <linux/iio/driver.h>
-+
-+#define TI_LMP92064_REG_CONFIG_A 0x0000
-+#define TI_LMP92064_REG_CONFIG_B 0x0001
-+#define TI_LMP92064_REG_CHIP_REV 0x0006
-+
-+#define TI_LMP92064_REG_MFR_ID1 0x000C
-+#define TI_LMP92064_REG_MFR_ID2 0x000D
-+
-+#define TI_LMP92064_REG_REG_UPDATE 0x000F
-+#define TI_LMP92064_REG_CONFIG_REG 0x0100
-+#define TI_LMP92064_REG_STATUS 0x0103
-+
-+#define TI_LMP92064_REG_DATA_VOUT_LSB 0x0200
-+#define TI_LMP92064_REG_DATA_VOUT_MSB 0x0201
-+#define TI_LMP92064_REG_DATA_COUT_LSB 0x0202
-+#define TI_LMP92064_REG_DATA_COUT_MSB 0x0203
-+
-+#define TI_LMP92064_VAL_CONFIG_A 0x99
-+#define TI_LMP92064_VAL_CONFIG_B 0x00
-+#define TI_LMP92064_VAL_STATUS_OK 0x01
-+
-+/*
-+ * Channel number definitions for the two channels of the device
-+ * - IN Current (INC)
-+ * - IN Voltage (INV)
-+ */
-+#define TI_LMP92064_CHAN_INC 0
-+#define TI_LMP92064_CHAN_INV 1
-+
-+static const struct regmap_range lmp92064_readable_reg_ranges[] = {
-+	regmap_reg_range(TI_LMP92064_REG_CONFIG_A, TI_LMP92064_REG_CHIP_REV),
-+	regmap_reg_range(TI_LMP92064_REG_MFR_ID1, TI_LMP92064_REG_MFR_ID2),
-+	regmap_reg_range(TI_LMP92064_REG_REG_UPDATE, TI_LMP92064_REG_REG_UPDATE),
-+	regmap_reg_range(TI_LMP92064_REG_CONFIG_REG, TI_LMP92064_REG_CONFIG_REG),
-+	regmap_reg_range(TI_LMP92064_REG_STATUS, TI_LMP92064_REG_STATUS),
-+	regmap_reg_range(TI_LMP92064_REG_DATA_VOUT_LSB, TI_LMP92064_REG_DATA_COUT_MSB),
-+};
-+
-+static const struct regmap_access_table lmp92064_readable_regs = {
-+	.yes_ranges = lmp92064_readable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(lmp92064_readable_reg_ranges),
-+};
-+
-+static const struct regmap_range lmp92064_writable_reg_ranges[] = {
-+	regmap_reg_range(TI_LMP92064_REG_CONFIG_A, TI_LMP92064_REG_CONFIG_B),
-+	regmap_reg_range(TI_LMP92064_REG_REG_UPDATE, TI_LMP92064_REG_REG_UPDATE),
-+	regmap_reg_range(TI_LMP92064_REG_CONFIG_REG, TI_LMP92064_REG_CONFIG_REG),
-+};
-+
-+static const struct regmap_access_table lmp92064_writable_regs = {
-+	.yes_ranges = lmp92064_writable_reg_ranges,
-+	.n_yes_ranges = ARRAY_SIZE(lmp92064_writable_reg_ranges),
-+};
-+
-+static const struct regmap_config lmp92064_spi_regmap_config = {
-+	.reg_bits = 16,
-+	.val_bits = 8,
-+	.max_register = TI_LMP92064_REG_DATA_COUT_MSB,
-+	.rd_table = &lmp92064_readable_regs,
-+	.wr_table = &lmp92064_writable_regs,
-+};
-+
-+struct lmp92064_adc_priv {
-+	int shunt_resistor_uohm;
-+	struct spi_device *spi;
-+	struct regmap *regmap;
-+};
-+
-+static const struct iio_chan_spec lmp92064_adc_channels[] = {
-+	{
-+		.type = IIO_CURRENT,
-+		.address = TI_LMP92064_CHAN_INC,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.datasheet_name = "INC",
-+	},
-+	{
-+		.type = IIO_VOLTAGE,
-+		.address = TI_LMP92064_CHAN_INV,
-+		.info_mask_separate =
-+			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-+		.datasheet_name = "INV",
-+	},
-+};
-+
-+static int lmp92064_read_meas(struct lmp92064_adc_priv *priv, u16 *res)
-+{
-+	__be16 raw[2];
-+	int ret;
-+
-+	/*
-+	 * The ADC only latches in new samples if all DATA registers are read
-+	 * in descending sequential order.
-+	 * The ADC auto-decrements the register index with each clocked byte.
-+	 * Read both channels in single SPI transfer by selecting the highest
-+	 * register using the command below and clocking out all four data
-+	 * bytes.
-+	 */
-+
-+	ret = regmap_bulk_read(priv->regmap, TI_LMP92064_REG_DATA_COUT_MSB,
-+			 &raw, sizeof(raw));
-+
-+	if (ret) {
-+		dev_err(&priv->spi->dev, "regmap_bulk_read failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	res[0] = be16_to_cpu(raw[0]);
-+	res[1] = be16_to_cpu(raw[1]);
-+
-+	return 0;
-+}
-+
-+static int lmp92064_read_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan, int *val,
-+			     int *val2, long mask)
-+{
-+	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
-+	u16 raw[2];
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = lmp92064_read_meas(priv, raw);
-+		if (ret < 0)
-+			return ret;
-+
-+		*val = (chan->address == TI_LMP92064_CHAN_INC) ? raw[0] : raw[1];
-+
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (chan->address == TI_LMP92064_CHAN_INC) {
-+			/*
-+			 * processed (mA) = raw * current_lsb (mA)
-+			 * current_lsb (mA) = shunt_voltage_lsb (nV) / shunt_resistor (uOhm)
-+			 * shunt_voltage_lsb (nV) = 81920000 / 4096 = 20000
-+			 */
-+			*val = 20000;
-+			*val2 = priv->shunt_resistor_uohm;
-+		} else {
-+			/*
-+			 * processed (mV) = raw * voltage_lsb (mV)
-+			 * voltage_lsb (mV) = 2048 / 4096
-+			 */
-+			*val = 2048;
-+			*val2 = 4096;
-+		}
-+		return IIO_VAL_FRACTIONAL;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int lmp92064_reset(struct lmp92064_adc_priv *priv,
-+			  struct gpio_desc *gpio_reset)
-+{
-+	unsigned int status;
-+	int ret, i;
-+
-+	if (gpio_reset) {
-+		/*
-+		 * Perform a hard reset if gpio_reset is available.
-+		 * The datasheet specifies a very low 3.5ns reset pulse duration and does not
-+		 * specify how long to wait after a reset to access the device.
-+		 * Use more conservative pulse lengths to allow analog RC filtering of the
-+		 * reset line at the board level (as recommended in the datasheet).
-+		 */
-+		gpiod_set_value_cansleep(gpio_reset, 1);
-+		usleep_range(1, 10);
-+		gpiod_set_value_cansleep(gpio_reset, 0);
-+		usleep_range(500, 750);
-+	} else {
-+		/*
-+		 * Perform a soft-reset if not.
-+		 * Also write default values to the config registers that are not
-+		 * affected by soft reset.
-+		 */
-+		ret = regmap_write(priv->regmap, TI_LMP92064_REG_CONFIG_A,
-+				   TI_LMP92064_VAL_CONFIG_A);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = regmap_write(priv->regmap, TI_LMP92064_REG_CONFIG_B,
-+				   TI_LMP92064_VAL_CONFIG_B);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	/*
-+	 * Wait for the device to signal readiness to prevent reading bogus data
-+	 * and make sure device is actually connected.
-+	 * The datasheet does not specify how long this takes but usually it is
-+	 * not more than 3-4 iterations of this loop.
-+	 */
-+	for (i = 0; i < 10; i++) {
-+		ret = regmap_read(priv->regmap, TI_LMP92064_REG_STATUS, &status);
-+		if (ret < 0)
-+			return ret;
-+
-+		if (status == TI_LMP92064_VAL_STATUS_OK)
-+			return 0;
-+
-+		usleep_range(1000, 2000);
-+	}
-+
-+	/*
-+	 * No (correct) response received.
-+	 * Device is mostly likely not connected to the bus.
-+	 */
-+	return -ENXIO;
-+}
-+
-+static const struct iio_info lmp92064_adc_info = {
-+	.read_raw = lmp92064_read_raw,
-+};
-+
-+static int lmp92064_adc_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct lmp92064_adc_priv *priv;
-+	struct gpio_desc *gpio_reset;
-+	struct iio_dev *indio_dev;
-+	u32 shunt_resistor_uohm;
-+	struct regmap *regmap;
-+	int ret;
-+
-+	ret = spi_setup(spi);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Error in SPI setup\n");
-+
-+	regmap = devm_regmap_init_spi(spi, &lmp92064_spi_regmap_config);
-+	if (IS_ERR(regmap))
-+		return dev_err_probe(dev, PTR_ERR(regmap),
-+				     "Failed to set up SPI regmap\n");
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	priv = iio_priv(indio_dev);
-+
-+	priv->spi = spi;
-+	priv->regmap = regmap;
-+
-+	ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-+				       &shunt_resistor_uohm);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+				     "Failed to get shunt-resistor value\n");
-+
-+	/*
-+	 * The shunt resistance is passed to userspace as the denominator of an iio
-+	 * fraction. Make sure it is in range for that.
-+	 */
-+	if (shunt_resistor_uohm == 0 || shunt_resistor_uohm > INT_MAX) {
-+		dev_err(dev, "Shunt resistance is out of range\n");
-+		return -EINVAL;
-+	}
-+
-+	priv->shunt_resistor_uohm = shunt_resistor_uohm;
-+
-+	ret = devm_regulator_get_enable(dev, "vdd");
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regulator_get_enable(dev, "vdig");
-+	if (ret)
-+		return ret;
-+
-+	gpio_reset = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpio_reset))
-+		return dev_err_probe(dev, PTR_ERR(gpio_reset),
-+				     "Failed to get GPIO reset pin\n");
-+
-+	ret = lmp92064_reset(priv, gpio_reset);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to reset device\n");
-+
-+	indio_dev->name = "lmp92064";
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = lmp92064_adc_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(lmp92064_adc_channels);
-+	indio_dev->info = &lmp92064_adc_info;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct spi_device_id lmp92064_id_table[] = {
-+	{ "lmp92064" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, lmp92064_id_table);
-+
-+static const struct of_device_id lmp92064_of_table[] = {
-+	{ .compatible = "ti,lmp92064" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, lmp92064_of_table);
-+
-+static struct spi_driver lmp92064_adc_driver = {
-+	.driver = {
-+		.name = "lmp92064",
-+		.of_match_table = lmp92064_of_table,
-+	},
-+	.probe = lmp92064_adc_probe,
-+	.id_table = lmp92064_id_table,
-+};
-+module_spi_driver(lmp92064_adc_driver);
-+
-+MODULE_AUTHOR("Leonard Göhrs <kernel@pengutronix.de>");
-+MODULE_DESCRIPTION("TI LMP92064 ADC");
-+MODULE_LICENSE("GPL");
--- 
-2.30.2
+Andy, excuse our ignorance but we are not sure how this typedef approach
+is supposed to look like...
 
+>> or
+> 
+>> 	typedef iio_val_int_plus_micro iio_val_int_plus_micro_db;
+
+... because
+
+#include <stdio.h>
+
+struct iio_val_int_plus_micro {
+	int integer;
+	int micro;
+};
+
+typedef iio_val_int_plus_micro iio_val_int_plus_micro_db;
+
+int main()
+{
+  struct iio_val_int_plus_micro a = { .integer = 100, .micro = 10, };
+  struct iio_val_int_plus_micro_db b = { .integer = 20, .micro = 10, };
+  return 0;
+}
+
+won't compile.
+
+> This is better as explained above.
+> 
+>> If you think it's better to add them all, I can do that, of course.
+
+Anyway, seeing that only struct iio_val_int_plus_micro is used at the
+moment, I believe the best path forward is to introduce only this struct
+and move on.
+
+Best regards,
+Michael
+
+>>>>> +struct iio_val_int_plus_nano {
+>>>>> +	int val_int;
+>>>>> +	int val_nano;
+>>>>> +};
+>>>>> +
+>>>>> +struct iio_val_int_plus_micro_db {
+>>>>> +	int val_int;
+>>>>
+>>>> 	int val_int_db; ?
+>>>>
+>>>>> +	int val_micro_db;
+>>>>> +};
+>>>>
+>>>> Actually why can't we simply do
+>>>>
+>>>> typedef iio_val_int_plus_micro_db iio_val_int_plus_micro;
+>>>>
+>>>> ?
+> 

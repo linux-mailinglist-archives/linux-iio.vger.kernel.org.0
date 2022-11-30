@@ -2,128 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0920663DAB1
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Nov 2022 17:32:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9490263DB9B
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Nov 2022 18:09:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbiK3QcT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Nov 2022 11:32:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52140 "EHLO
+        id S231203AbiK3RJ4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Nov 2022 12:09:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbiK3QcT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Nov 2022 11:32:19 -0500
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2067.outbound.protection.outlook.com [40.107.22.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD99B2ED40;
-        Wed, 30 Nov 2022 08:32:16 -0800 (PST)
+        with ESMTP id S231217AbiK3RJd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Nov 2022 12:09:33 -0500
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF0B91C3C;
+        Wed, 30 Nov 2022 09:04:36 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Fupas9H2YeZkB2Xp5EdtSURzPR+LoN8kyXue7xATITlPKPX8+A9MP+N7VfFVunBWzaKY03DEtV7CcTdiQWGw2YO36FsCK/NWYlz0Vt4frfHyh2cyutOSN7eezPmIWwAUSVkuw5Hyfd4yYnI++FQ2ZTNDuSJMUYJrEUylxEZ1yBqYleo1n4jJeyxBg3122zOIuModCxfmGboMg9Zoy4NMXNqwj6IfxYjry+nd3tO13UhR9i0tNEdCGMyARcuFgzNJDpTN9ow6B5i1D9R7T4IN0ivkeALfxt6szVgyJA6n9RObfk+YpwlK32+KCgR/sfLUMNJShRQVgLJvtetKoZo5zA==
+ b=LFKoiJFPBSgQ2y+tMQXCNyjnjbf0vYK+AhkweABct47IVsGHmfwLGw4Vb4FVQBYcz/bos0tUBdXP4h+XiehQUjyOKlnH93ZvB5q4wbUuiQMzfldNj8zbG14wYzuz+Yo9XBoyMzwo09s8TJkn5pk6ix4uWwQqmw5uKyuMXhLiZ1ltRluZ3kmkUZ3INB60K+XLyOStQG56BxKZiNLhghxMBLy+vCNwZ9Vv/lZUhDDJWieRmmavItkels50+7e/PwwT6Juj+bPNoMmsGRyjPhfsCX8zbmlKKMSyJv5RoZlaN+6iabK+2AxMV+o93EeLXpr0Hdg5r/A/Nm34AAG1N3YMJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XvdSCvqmK3bF68TJVvhgriSr7mENb8psDk/4gWUi26Y=;
- b=OJe1DKui060UdREezMRpF4i0S7s8kyWQ4CEn8VshFm+fiXOnvOYg2PbbnoTnq5i9LS49WU/euI2RK9RPndtLwSuW1m5xkP3UiszCdQU3FP1/JEn2pNUwJCGRIeibdeI0VqbW5zJx8B4LKefkiCUKqK2WDn18DlDHXxtPv3CtGIksipoPL8bIxU+4PQcUGZWuawJd14HVSvrg0JBIQE95cykh1AbRp2TMXiUGQhKNVU29E/2WZcD0B0t3A1Tpn4SfbQ8i8vrxCePuwKvAhUuZVcd16M4+4Q3vYCFj4+ecr8eLkwqo50NLKwEOp523uKjSANHSHMBaQyDhiYD/juS6NQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wolfvision.net; dmarc=pass action=none
- header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
- s=selector2;
+ bh=WfKEPPrC9RCLpmJboXWBhFiiU82Q1RUlCJm5oQQT/yk=;
+ b=btzE2OieRbciItOKizNgsMKa93467DcdJ1UL0aCyNn/WVFCVw9YZBA4NSqgwnZO1a4Vx0jEJOHFPx5LEQGHyhhNTcbhdSB1bECJpGzOPFt8sbqvQelVRoG8XIq9xzZl/ghE/iCUkvvp2yewUaHBWobWcuPfUAaWV+FGfr5J8ZCmSIZ4nX6j70x2DMQ6RR5QT1b5Nolz71XG06zWwAct5qaMt3BlYg2BQ4AgMF2mON2JplPU5dc1/eCgiToTCutMFeeAvOWP8By53YCJjSySwnUvvL977aGqp97IFkNmgsx4N1B8E1ubhS4lBgWh1dXXwDyECCNKYZP8iCFIRcZY06A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XvdSCvqmK3bF68TJVvhgriSr7mENb8psDk/4gWUi26Y=;
- b=zspiO5beWUCcONIKuqcwl2WeeZLiuSf522CcPxPU/MZyQlDR0ZU861Je8RNtEYNtsrzd/LOZwk5WXV50C5//j15vx7/oQe8Twrp7h5fwdxnmDi7VlIfZppFxYOt3VEC7eWL/tbGdVey5sCv4O6XHLmevLQHgsWHvXnkqIaZT3bg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wolfvision.net;
-Received: from VI1PR08MB4544.eurprd08.prod.outlook.com (2603:10a6:803:100::13)
- by PAWPR08MB8839.eurprd08.prod.outlook.com (2603:10a6:102:338::22) with
+ bh=WfKEPPrC9RCLpmJboXWBhFiiU82Q1RUlCJm5oQQT/yk=;
+ b=gv8f7YqnwSdBTMuM+Wsg5FSIqptxzOV9JrfVd0VpsqWAgFOjP8JjGRlEag3OzjK0Ud2hk5eq4WE5sR43GxDTTDsM1dgMU//YjLD0NryPDVC+EwCZnSiUdCKhA3ktavHf0Kq9qx5HQSHimOj6hplsT/qzWszkh4b5j/OzpATZ56g=
+Received: from BN0PR02CA0023.namprd02.prod.outlook.com (2603:10b6:408:e4::28)
+ by MN2PR12MB4406.namprd12.prod.outlook.com (2603:10b6:208:268::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.8; Wed, 30 Nov
- 2022 16:32:13 +0000
-Received: from VI1PR08MB4544.eurprd08.prod.outlook.com
- ([fe80::bcc7:bc51:bf44:1454]) by VI1PR08MB4544.eurprd08.prod.outlook.com
- ([fe80::bcc7:bc51:bf44:1454%6]) with mapi id 15.20.5880.008; Wed, 30 Nov 2022
- 16:32:13 +0000
-Message-ID: <ef3ec278-d9dd-4318-5b8a-d0ed363fbaab@wolfvision.net>
-Date:   Wed, 30 Nov 2022 17:32:10 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v5 3/3] iio: magnetometer: add ti tmag5273 driver
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Michael Riesch <michael.riesch@wolfvision.net>
-References: <20221130145356.1129901-1-gerald.loacker@wolfvision.net>
- <20221130145356.1129901-4-gerald.loacker@wolfvision.net>
- <Y4d3NZkCdALLkwU7@smile.fi.intel.com>
-From:   Gerald Loacker <gerald.loacker@wolfvision.net>
-Organization: WolfVision GmbH
-In-Reply-To: <Y4d3NZkCdALLkwU7@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR02CA0076.eurprd02.prod.outlook.com
- (2603:10a6:802:14::47) To VI1PR08MB4544.eurprd08.prod.outlook.com
- (2603:10a6:803:100::13)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.23; Wed, 30 Nov
+ 2022 17:04:35 +0000
+Received: from CO1NAM11FT107.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:408:e4:cafe::32) by BN0PR02CA0023.outlook.office365.com
+ (2603:10b6:408:e4::28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.23 via Frontend
+ Transport; Wed, 30 Nov 2022 17:04:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT107.mail.protection.outlook.com (10.13.175.97) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5880.8 via Frontend Transport; Wed, 30 Nov 2022 17:04:34 +0000
+Received: from [10.254.241.50] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 30 Nov
+ 2022 11:04:29 -0600
+Message-ID: <7127c7f4-89b3-31f8-cabc-43f955eded64@amd.com>
+Date:   Wed, 30 Nov 2022 18:04:26 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] iio: adc: xilinx-ams: fix devm_krealloc() return value
+ check
+Content-Language: en-US
+To:     Marco Pagani <marpagan@redhat.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Manish Narani <manish.narani@xilinx.com>
+CC:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>
+References: <20221125113112.219290-1-marpagan@redhat.com>
+From:   Michal Simek <michal.simek@amd.com>
+In-Reply-To: <20221125113112.219290-1-marpagan@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR08MB4544:EE_|PAWPR08MB8839:EE_
-X-MS-Office365-Filtering-Correlation-Id: c86fb857-0edb-43dd-1c1c-08dad2f06f5f
+X-MS-TrafficTypeDiagnostic: CO1NAM11FT107:EE_|MN2PR12MB4406:EE_
+X-MS-Office365-Filtering-Correlation-Id: e97eecab-8258-4d42-0f03-08dad2f4f4ad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: K4oZWxWySEshaFp0cM/ar3vr3K+yDFQy9jbSR61xd49zWAonuHomx0jvaSL/3+AQ5R4tsJmWtkaRA6126jwI2Z3FDugGX2iPPcRxNImnLMntrUuXImljdMC6CL7k9luOv3slifdvI4XBcJnWFE+8aLsMs4vy5DO+cy0rfLJwPolfc80Og6Z2/hd4Z2S0hsHXYiYrfkMQiqakPbpZgg3mPoZPsgrc4TnilUXeMSnIl4701t892r4K9WuANikzpo9qTn5aXPzCZ/nwy+YIY6Nu5nA7CQwUgoBgLWWHm1792v20aIAiKbZyzCelYhqWyKFqvKk75LYFt1q7MkxhDFThOK44bRmDwaw7ssKUfho1AsEYdfhx8Vt5sytDp+bo+pjjr9j9p2TRCHG/Q4CzR4oFYvnE7ngSWFaB4+IK3jhUL9ib4XBtS+yp3zWxKxNO3LdWV1nEyCco5EU9SDSUZx0Q+MCDJLvf4fYK6JwlJyUav1XroHumMx+R52fRsSIbn2vi5C07NfhXFfc+I3LnZkqR2ZWoQJTCvdD5hzILR1nggEDAoI60H9XguioAzhF+Jbb4mK2lMF27mM6YkLQnR9P/K2gzJrU4B6vIKKTyotSuDsO/wUl74lhKIU53GfCgn8MkBRz9vrcYSGkCjT/hKqYumMkbKnkQA0J0GXM4DIrCwM3It7Bb+aI/wlLMHEySPvXImo3SXVzm3YAhywUvFiqVbOroQQzI92ebqKLwlGEh0ZZTdotafdeWNa1Fl5dVqazh
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR08MB4544.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39850400004)(366004)(396003)(346002)(376002)(136003)(451199015)(54906003)(6916009)(316002)(7416002)(2616005)(38350700002)(38100700002)(36916002)(478600001)(5660300002)(86362001)(6486002)(44832011)(31696002)(36756003)(41300700001)(4326008)(66946007)(8936002)(66556008)(186003)(66476007)(8676002)(31686004)(2906002)(83380400001)(107886003)(52116002)(6506007)(6512007)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M0Y3WUVKZmltdWZzYU1TSFRVeWRMY3p0MFZpMWlDWUwwTVdJL3d1b2wvVHBv?=
- =?utf-8?B?ZHhRNTVMcWo3Q1k2NU1Lckc5Smt4ZjQrR3g1aTliZ0ZsUlhnWUxpNWFGUHc2?=
- =?utf-8?B?ZTA5ZGJSMjBKZkpSMkhURGdYWm9pRlhBYkU5a1ROZmxJK2hvMW9vWlZaaVNS?=
- =?utf-8?B?Z3R4ajd6RlJEdU1kUmZLZWVhWElBcloxYVNHWUVtOG11NWIwYk5zMVhaK2xM?=
- =?utf-8?B?bmFhcDRNMXcvcllVdkt3SUh2RUkvQjRyaW5nMVJsU3VxaUZZSFdscUVFY0xa?=
- =?utf-8?B?dUpRbnlGaW9GbWNSZThGaCtHOGM3UWIxY2ZiYUN3ZXlJRzFTdWVCaW16WTdN?=
- =?utf-8?B?dDl3SnpjWHFRandCcUJ3aWU1Qk9JVWhvNEl6Q0tKWW1yTzBGVmlsNzU4S3pB?=
- =?utf-8?B?VUozdmp2NWZIVU1maGRVTUxiQnkxNzROS1hzbE5KU2pMM0ZIaWtNRHQvTHhD?=
- =?utf-8?B?dFFCTnhlZjlabDdKOTN2ZmdXQkhUOHg4RDh5TmVmMExJVktpRE9zaWRoc21U?=
- =?utf-8?B?YkJVQysxMWFSUkI4OHh6dVNENEJKWldrdlJtMEpxaFdxeG9wYnJsZ3NDSGpV?=
- =?utf-8?B?RzY4cUNhbnQvbUJlcjh5UkpLWkJVUGkwbWQra0ZkMnNJR3NyN0lzN2RyaXNv?=
- =?utf-8?B?ck12bk5YcEJLVVlZUGdKeDRSOHJ4dG43SFdBRnZneUt2R0xLN0F1VjhoOFE4?=
- =?utf-8?B?THRnWlE5ZG1uY0hYbXhhOUtxdmtlSjFISk5RSVNuUnNJQkhxSE5aKyt0cnRN?=
- =?utf-8?B?YW1tK2tKa21QOEpteGJyLzhZRGM5ajZuYUgyS0dLSUpwRE5Ea1dBM1BHdGtW?=
- =?utf-8?B?alJ3YVd2T2k0R0Q4RWE0cFk4dXJXYlg0Wm5JcUFLQzJGOVdETXdwbU9WTkVu?=
- =?utf-8?B?TFRZb3N5OXpXRE1xRWRKVGpGSE0wSWNrakxESnQ1Q1ZyWE5JV3VMM3l3aksz?=
- =?utf-8?B?dFAwSFFkQjExYlhlUnY2MWtXakNTZC9vVmVWOG92TGhaM09zT1h1QS9veldM?=
- =?utf-8?B?US9jbHJ6c2NSckJyNEZaTFlDYWxlckRVUW51L3RTSE0wQ1I4ZjFJMi9zUHl2?=
- =?utf-8?B?UEoxcmxIYUQ2ZmFqZzNHUjl5aytWQy90Z2lONGtjam5MU3hTTkNyQ0NSVXJ2?=
- =?utf-8?B?VWVTWGoxSmsrUHhxWmo3QlhqQktpeGprVE9WRitITml5WmFsODhHYkZibDJs?=
- =?utf-8?B?L3BENkIwQ0pjL05wellzN21IQmczQUpuZENHaDNHbGhHMWJ0Q2NsQWVtT0Fq?=
- =?utf-8?B?aWJuWWFCSGR2NmNFb2JXS0YwSi8vUW02SDFqZFd0LzAwODIxaVFmTmRzeGRW?=
- =?utf-8?B?VkdBRDhSWm1Hc1JubEFjdVA2Smc3TFAvUERyVjNMQzVEcE41QS9QT1g2Vkhu?=
- =?utf-8?B?Yys1RGp4YVdsOGdJRW1QM1RWZitxeExybmRpVWtmcEQ5NlZoc2htOUNvWDBp?=
- =?utf-8?B?VHlPSWllcFB6elVwNUhMa3RrekdWYkVrOEg1dVRUTzhNYWdPak1jbXpNYlR5?=
- =?utf-8?B?K1h6RHZNSkQ5a2srQmhWSUZUQ3hpZnVPdXg3WktWeW42VkI4RVNmc1JwMFhz?=
- =?utf-8?B?cXdYRWltNEkrandWc3hHNmExVzBUNHQ1eEt2MzdTdFRTWjUvSHh0aTlvcGZC?=
- =?utf-8?B?MHkvRlpHZnVucnhOWFk3eG5YUUJiMHNzdWRMRFZlRmNtS0NvS3BWMXNib3FO?=
- =?utf-8?B?ZFB3M2JvTW1PUlBoaEJreVZaUXg1TDJJcWZ6RjNFZDV0c2NKazc4MGNVL0FI?=
- =?utf-8?B?dGZzZmlJYlY3NHJvRmo4U3c4WFp2c24ySGo5VVY3cmNoQjdiQ1VKclFRejU2?=
- =?utf-8?B?NFFyMXA2eGFMZ2NLRG93SlNNbkFoRjVPSFdxcEJuOVcwSTVFTU1xR2x5bjda?=
- =?utf-8?B?ZWlWU1RmWTRneE53YkZHZTJaMG5IUVBYcFBUanJyeG4vdWNJS2IwWUk3ZDdv?=
- =?utf-8?B?RVM2ekxWc0lUamp2Nnk3RjJaUnU0cG9lSGhlY1ZwYXBGUlNOY1BIWGo4cndN?=
- =?utf-8?B?dkVvUE9GUWFMQjY3QnJNc3RhK25Xa2RRNHhMeFJkYW1GSmw5eHdmQjZtYlBV?=
- =?utf-8?B?VmR2ajhXVmwvOEJHZ1B0ZGRFb2w3OE1uQW95NXJXWE1hbEJSdlZCOTR5VFJQ?=
- =?utf-8?B?TTNDc1VZMUJPUWpXQnpqUlJDZG5CVW5mbi9VYUJOOGF2U1kvam5jRm9zOWY0?=
- =?utf-8?B?ZkE9PQ==?=
-X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: c86fb857-0edb-43dd-1c1c-08dad2f06f5f
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR08MB4544.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2022 16:32:13.0865
+X-Microsoft-Antispam-Message-Info: lAl2/XiZX6VE9fbtmSBgVpLe/aZ6G25uLiASXiseEPw4BXdwofe/IC7UhSHUaXQDOAdm1UZr72dm+NvcOJfjYVVnf44bXc8SRFQqiPDh4KMSFPIP1ipaw9l9sRFokoDxFHyUo2H9vz8RINoQ3Zk271Lv3Y2ABB5YVIJi+yPPsJJlPV1Tx5y22/lc1R208Lh9e0WhrzPbsBCZXYUNyY/zOVM+Zc6CWLxcqQ+qUlw9DAooFx4z5QwEE3M99VOQyXjR8Nr0L8B+fNzy75IU+qoZ7QqcYOG+J6/QcQ7zcyJdnzw4PqMBnSPzUttyilPszcPJVLBOsdVhN9Xvtp5ifG+uJQicRJ5zilq5V0oE69kOMOl93X1O5wQeGTEp/KYCgWChZk35zunJCqkVaPK5kIK/cH9++foDopQqYZZv4rVXpVBOrc5e7XMghGxV/Hr2YuMiqfsV0fXfapikoca1zNQfnRYI6vGbJTTlo7XlNoY83fahwVwVbCmFyk3b4Qe4BlKHMDvE5fTEQHo87WJFRVcyVnSbEULDaNGSnvoJaBvsfZBMadSz7UFvZd3ZI4IwOJuDDZTqzKGwRzb58N8dLaQaMVFIYoj3gu+iOatdMdcXQIWDNDEe48T4RifgxSN4z1TpY4X9unmJgbUBc+I6otqIcg90a03+2kB0iaaf+I8FQxc0TXl4DfgHnwDmXY3elMjvgZufTZXm8UYmzyGMF3SsjYwgZ3PNkHVevcRxMh3H7SmP8eoieFeX+jCFfTeIQKrurV//cwCnLMDyXIldd5NUZQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230022)(4636009)(136003)(376002)(39860400002)(396003)(346002)(451199015)(36840700001)(46966006)(40470700004)(36756003)(82310400005)(41300700001)(8936002)(70206006)(53546011)(336012)(2616005)(16526019)(6666004)(478600001)(4326008)(316002)(8676002)(26005)(40460700003)(70586007)(31696002)(356005)(81166007)(86362001)(40480700001)(31686004)(7416002)(2906002)(186003)(5660300002)(426003)(47076005)(44832011)(16576012)(36860700001)(110136005)(54906003)(83380400001)(82740400003)(36900700001)(43740500002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Nov 2022 17:04:34.3619
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pffwT8v0/DqFDCzKcN6GO2LYSM145iO/gVT87z97tEE6VTukdJGfBcHkaTD+iRYbBJx1jJTo0Lv4Kjmi7wbHJ/ULr6FZYPX4qqFlvRcmtzo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB8839
+X-MS-Exchange-CrossTenant-Network-Message-Id: e97eecab-8258-4d42-0f03-08dad2f4f4ad
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT107.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4406
 X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
@@ -136,63 +113,40 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 
 
-Am 30.11.2022 um 16:31 schrieb Andy Shevchenko:
-> On Wed, Nov 30, 2022 at 03:53:56PM +0100, Gerald Loacker wrote:
->> Add support for TI TMAG5273 Low-Power Linear 3D Hall-Effect Sensor.
->> Additionally to temperature and magnetic X, Y and Z-axes the angle and
->> magnitude are reported.
->> The sensor is operating in continuous measurement mode and changes to sleep
->> mode if not used for 5 seconds.
+On 11/25/22 12:31, Marco Pagani wrote:
+> CAUTION: This message has originated from an External Source. Please use proper judgment and caution when opening attachments, clicking links, or responding to this email.
 > 
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > 
-> But a couple of comments to address.
+> The clang-analyzer reported a warning: "Value stored to 'ret'
+> is never read".
 > 
->> +static int tmag5273_check_device_id(struct tmag5273_data *data)
->> +{
->> +	__le16 devid;
->> +	int val, ret;
->> +
->> +	ret = regmap_read(data->map, TMAG5273_DEVICE_ID, &val);
->> +	if (ret)
->> +		return dev_err_probe(data->dev, ret, "failed to power on device\n");
->> +	data->version = FIELD_PREP(TMAG5273_VERSION_MASK, val);
->> +
->> +	ret = regmap_bulk_read(data->map, TMAG5273_MANUFACTURER_ID_LSB, &devid,
->> +			       sizeof(devid));
->> +	if (ret)
->> +		return dev_err_probe(data->dev, ret, "failed to read device ID\n");
->> +	data->devid = le16_to_cpu(devid);
->> +
->> +	switch (data->devid) {
->> +	case TMAG5273_MANUFACTURER_ID:
->> +		/*
->> +		 * The device name matches the orderable part number. 'x' stands
->> +		 * for A, B, C or D devices, which have different I2C addresses.
->> +		 * Versions 1 or 2 (0 and 3 is reserved) stands for different
->> +		 * magnetic strengths.
->> +		 */
->> +		snprintf(data->name, sizeof(data->name), "tmag5273x%1u", data->version);
->> +		if (data->version < 1 || data->version > 2)
->> +			dev_warn(data->dev, "Unsupported device %s\n", data->name);
->> +		return 0;
->> +	default:
+> Fix the return value check if devm_krealloc() fails to resize
+> ams_channels.
 > 
->> +		dev_warn(data->dev, "Unknown device ID 0x%x\n", data->devid);
->> +		return 0;
+> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+> Signed-off-by: Marco Pagani <marpagan@redhat.com>
+> ---
+>   drivers/iio/adc/xilinx-ams.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> And we still continue?! Wouldn't be a problem if that ID drastically changed in
-> terms of programming model and may actually be broken by a wrong sequence?
+> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> index 5b4bdf3a26bb..a507d2e17079 100644
+> --- a/drivers/iio/adc/xilinx-ams.c
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -1329,7 +1329,7 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
+> 
+>          dev_channels = devm_krealloc(dev, ams_channels, dev_size, GFP_KERNEL);
+>          if (!dev_channels)
+> -               ret = -ENOMEM;
+> +               return -ENOMEM;
+> 
+>          indio_dev->channels = dev_channels;
+>          indio_dev->num_channels = num_channels;
+> --
+> 2.38.1
 > 
 
-It was suggested by Jonathan to just print a warning instead of
-returning with -ENODEV. Reason was "Often manufacturers spin new
-versions of chips that are compatible enough that we give them a
-fallback compatible in device tree.". For me this makes sense.
+Acked-by: Michal Simek <michal.simek@amd.com>
 
->> +	}
->> +}
->> +
-
-Regards,
-Gerald
+Thanks,
+Michal

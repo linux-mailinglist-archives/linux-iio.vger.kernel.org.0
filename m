@@ -2,115 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8DCE63DC3D
-	for <lists+linux-iio@lfdr.de>; Wed, 30 Nov 2022 18:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22FEF63DD5A
+	for <lists+linux-iio@lfdr.de>; Wed, 30 Nov 2022 19:26:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbiK3RnM (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 30 Nov 2022 12:43:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40160 "EHLO
+        id S229662AbiK3S0l (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 30 Nov 2022 13:26:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbiK3RnM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Nov 2022 12:43:12 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53A914B75A;
-        Wed, 30 Nov 2022 09:43:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669830191; x=1701366191;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B3wDv3vpOG1kZHQ2h29A6+y3D/5UJp4mktosEpyu5cc=;
-  b=nHjr/IPxrWc8SUZtgsZUP2PLGcaPYcmp9cJPIjqXm2OxfwO+LoPOCRSq
-   SFmDrEbYSMG8JaWXUNEvw1nkal/vv9e216PL7H4C2auQ6eZ8luycY08c8
-   PYiRJewy5XmpZl6nmrJRUjqHN7GPIqB0xbpG9SvE1y6V0bCs4KPQFsjHG
-   69DyL6aA9AkwJyPTkXUC3Ecqtkde4H67r23DAOCFitBRkNLZzBoz9FLKK
-   ouOm++JCw5yATeuLJUsUWY3JxiOp8alJ97eNhKaL9W5BUhWhynoMFz5TH
-   uP6bAD+/HCJI1XhWikagrbw9WGBmrZA5N9ASuyLJh4eU+huG4dfwwWEXW
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="313089050"
-X-IronPort-AV: E=Sophos;i="5.96,207,1665471600"; 
-   d="scan'208";a="313089050"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2022 09:43:11 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10547"; a="768915535"
-X-IronPort-AV: E=Sophos;i="5.96,207,1665471600"; 
-   d="scan'208";a="768915535"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga004.jf.intel.com with ESMTP; 30 Nov 2022 09:43:07 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1p0R6v-002NTX-1s;
-        Wed, 30 Nov 2022 19:43:05 +0200
-Date:   Wed, 30 Nov 2022 19:43:05 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Gerald Loacker <gerald.loacker@wolfvision.net>
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jakob Hauser <jahau@rocketmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Michael Riesch <michael.riesch@wolfvision.net>
-Subject: Re: [PATCH v5 3/3] iio: magnetometer: add ti tmag5273 driver
-Message-ID: <Y4eWKdJXOR7hJTF3@smile.fi.intel.com>
-References: <20221130145356.1129901-1-gerald.loacker@wolfvision.net>
- <20221130145356.1129901-4-gerald.loacker@wolfvision.net>
- <Y4d3NZkCdALLkwU7@smile.fi.intel.com>
- <ef3ec278-d9dd-4318-5b8a-d0ed363fbaab@wolfvision.net>
+        with ESMTP id S230020AbiK3S0j (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 30 Nov 2022 13:26:39 -0500
+Received: from mail-oa1-x2b.google.com (mail-oa1-x2b.google.com [IPv6:2001:4860:4864:20::2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0C31AF21;
+        Wed, 30 Nov 2022 10:26:38 -0800 (PST)
+Received: by mail-oa1-x2b.google.com with SMTP id 586e51a60fabf-1432a5f6468so22017549fac.12;
+        Wed, 30 Nov 2022 10:26:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SWx0R0ogEqD2NvSzMhQm7EDv0VkYaoaO8e5x2Y51N/Y=;
+        b=Q7363XeANv4JltXcUpQKqXZkb7TKRhyadCkPlMQda1dioPKCQte9UDP1vVoZx/HLcO
+         27FnjGis4UqoHE32rmo2X9JD4ZutUS6PExxuL64I7jhRXylD3Gpla/7K+kCsB+29lfCM
+         4hfInWFNduB/s0bY96Fmhzbfo8yj2ctzO3L1yfLj8YA/NN0Z9plivJk3Okmn1bfg26Zg
+         7FMaD1iCiUIoaAHmbS/Q1vss/JxtaIcs8lHa977Bx/+IhG6//UAgFd73M/nsP00ejj89
+         nI/QbpS3XA7UBMAHgPFBqoEk02iDXeeX5jqfGBW8RmZypMoG+vZrOQsDw+djSiHlxjl6
+         OqLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SWx0R0ogEqD2NvSzMhQm7EDv0VkYaoaO8e5x2Y51N/Y=;
+        b=JzSRFrZJPsK2ZcExInkMJWtFr2irwtQ7CO6+iqOqs/MH/xjXRAWMPQzLxzTm1jKm/8
+         /2CwD/OmrQJ1MX3sEo95qTb3Yi3Pgdg+MWGO5WWRts4/J34Uxcx3tysPUXeNCtPfH0xb
+         n8VOS8jcfImQebsnVxEFWvJ9c+J+4mEWIrQuiRA8bkJrC2+mTG+T5lBvFID1LmnzvscM
+         8EbLqotMHfycupaIJ7ns/wYgyenvy+K3s+kD4DeGwArscnmGbXA6PmszFh4qkjcnb10p
+         93/KKc0zBTMTRQFgdhIOjYDfzXEjXXocrVX/NAzhI+S/qlWAuRB81P6Q/fzFoCAa5T61
+         OgBQ==
+X-Gm-Message-State: ANoB5plwgqWQQzl3U3tGKgbZD5ZOMkUkQtdjhy/xJ8fMZxTbe+ib2gAE
+        6EdQ5OVsywS0n8JdYLGAU7FFK65uv/I=
+X-Google-Smtp-Source: AA0mqf6bt9cRY4yr7kZk+kFGWJ9U55vPUoCPrdVOD3GrugU2ZQlCnrAlMEBZjfLAvzMYZ4X3f7TiRw==
+X-Received: by 2002:a05:6870:c352:b0:13b:66b0:3ef3 with SMTP id e18-20020a056870c35200b0013b66b03ef3mr26501510oak.210.1669832797652;
+        Wed, 30 Nov 2022 10:26:37 -0800 (PST)
+Received: from localhost.localdomain ([2804:14c:485:4b69:e48f:7d21:8a92:6dc])
+        by smtp.gmail.com with ESMTPSA id m24-20020a0568301e7800b006690f65a830sm1209972otr.14.2022.11.30.10.26.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Nov 2022 10:26:37 -0800 (PST)
+From:   Fabio Estevam <festevam@gmail.com>
+To:     jic23@kernel.org
+Cc:     lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>
+Subject: [PATCH 1/2] dt-bindings: iio: dac: ad5686: Add an entry for AD5337
+Date:   Wed, 30 Nov 2022 15:26:31 -0300
+Message-Id: <20221130182632.3856675-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ef3ec278-d9dd-4318-5b8a-d0ed363fbaab@wolfvision.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Nov 30, 2022 at 05:32:10PM +0100, Gerald Loacker wrote:
-> Am 30.11.2022 um 16:31 schrieb Andy Shevchenko:
-> > On Wed, Nov 30, 2022 at 03:53:56PM +0100, Gerald Loacker wrote:
+AD5337 belongs to the same family as the AD5338.
 
-...
+The difference is that the AD5337 has 8-bit resolution instead of 10-bit.
 
-> >> +	switch (data->devid) {
-> >> +	case TMAG5273_MANUFACTURER_ID:
-> >> +		/*
-> >> +		 * The device name matches the orderable part number. 'x' stands
-> >> +		 * for A, B, C or D devices, which have different I2C addresses.
-> >> +		 * Versions 1 or 2 (0 and 3 is reserved) stands for different
-> >> +		 * magnetic strengths.
-> >> +		 */
-> >> +		snprintf(data->name, sizeof(data->name), "tmag5273x%1u", data->version);
-> >> +		if (data->version < 1 || data->version > 2)
-> >> +			dev_warn(data->dev, "Unsupported device %s\n", data->name);
-> >> +		return 0;
-> >> +	default:
-> > 
-> >> +		dev_warn(data->dev, "Unknown device ID 0x%x\n", data->devid);
-> >> +		return 0;
-> > 
-> > And we still continue?! Wouldn't be a problem if that ID drastically changed in
-> > terms of programming model and may actually be broken by a wrong sequence?
-> 
-> It was suggested by Jonathan to just print a warning instead of
-> returning with -ENODEV. Reason was "Often manufacturers spin new
-> versions of chips that are compatible enough that we give them a
-> fallback compatible in device tree.". For me this makes sense.
+Add a compatible entry for AD5337.
 
-Ah, I see. Maybe adding a comment summarizing above?
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-> >> +	}
-
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+index 13f214234b8e..b4400c52bec3 100644
+--- a/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5686.yaml
+@@ -33,6 +33,7 @@ properties:
+       - description: I2C devices
+         enum:
+           - adi,ad5311r
++          - adi,ad5337r
+           - adi,ad5338r
+           - adi,ad5671r
+           - adi,ad5675r
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.25.1
 

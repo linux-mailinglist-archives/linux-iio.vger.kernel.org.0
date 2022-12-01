@@ -2,199 +2,217 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6DA63F22E
-	for <lists+linux-iio@lfdr.de>; Thu,  1 Dec 2022 15:02:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 118E463F49C
+	for <lists+linux-iio@lfdr.de>; Thu,  1 Dec 2022 16:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231752AbiLAOCK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 1 Dec 2022 09:02:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43440 "EHLO
+        id S232117AbiLAP6Z (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 1 Dec 2022 10:58:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231790AbiLAOCB (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Dec 2022 09:02:01 -0500
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2084.outbound.protection.outlook.com [40.107.7.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2FCBA5193;
-        Thu,  1 Dec 2022 06:01:48 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aaGrWNj41wGuuktjFtb6cOVb31FGOF8Em48Y1ddNTHI5TzJAFw/p6KRc4FozI06r7JzVPpoGkV+zVGbyAoDFNkochrYy5NSQuqot+4XEeYXi5J7hAK44/HQDpE4/T/0uwUj7LIcqPzJ5/f5pxuW7b3TAVGH1oRPlo4G1Wx/lpwmMmM1iXHWiiU3txrIUlye3yNpnVS9JQMywYWwZiEeUyiVffm4fbSLLQjWaVT+mguYyP235CLrVnCOpL/N/kUZtSr068Ckzn6VGtq58PiB60/myH5TPDgKeQHjFdaiEamgcGlFOe4CCt9/1ae2ahu6r6BnqtDZLq8v5zahD4fESgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lz8PRJOZnElxFCZ6PmbmRdQ0lO0d7shDrWiugbwPCj0=;
- b=n88+ftNcNl+kOXcD2741fKp7ZVSqVPvmU+7aculcUKhYMTnIUoMkOGZPNmLQMxm1YJREnEkziVPVS/rWNXJKGg3gHOY8pqoPcfeWGhPkjKjEXo2K/6aLvkMvIH5MY5tXNT0ZOXRzgSaFnT1tElDnKAEaW0IUPZB5kb127NlbCUxuGhf1I0VVMpND2mh31Axobl+7DRA4Fy4Z22irCHX1RQA9xew9fHn1iZxEZKUs/ToGDjqkgdP+zyYt3X8riMWVhbMdzPtkeB/8mVX48GOYZFrPqPn2IP05DeKuEn6SI8ttgXkMP+cIoRW38TqHO8JjbZd6rH3B6T5ofmT7plqj8g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lz8PRJOZnElxFCZ6PmbmRdQ0lO0d7shDrWiugbwPCj0=;
- b=TqWqv8GOBb7WTRtH53zrziR1sTCi+GhuhmTGQdgzZsE/8Iit0lpUO4N3on2CZmAKmGqpqTgnpkD96qS2G5pukSPCDgFk02Jp3ZSJnjeMz17VNYBv6UGv6e6/UYJV0zRicfw224126oZaPMQhlfMOAjjNctPaf0jrjp3UJaieHu0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com (2603:10a6:3:24::22)
- by PA4PR04MB7792.eurprd04.prod.outlook.com (2603:10a6:102:c0::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.19; Thu, 1 Dec
- 2022 14:01:45 +0000
-Received: from HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::203a:e5da:a4a:7663]) by HE1PR0401MB2331.eurprd04.prod.outlook.com
- ([fe80::203a:e5da:a4a:7663%12]) with mapi id 15.20.5857.023; Thu, 1 Dec 2022
- 14:01:45 +0000
-From:   Frank Li <Frank.Li@nxp.com>
-To:     haibo.chen@nxp.com
-Cc:     cai.huoqing@linux.dev, festevam@gmail.com, frank.li@nxp.com,
-        imx@lists.linux.dev, jic23@kernel.org, kernel@pengutronix.de,
-        lars@metafoo.de, linux-arm-kernel@lists.infradead.org,
-        linux-iio@vger.kernel.org, linux-imx@nxp.com,
-        linux-kernel@vger.kernel.org, s.hauer@pengutronix.de,
-        shawnguo@kernel.org
-Subject: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call imx8qxp_adc_read_raw()
-Date:   Thu,  1 Dec 2022 09:01:10 -0500
-Message-Id: <20221201140110.2653501-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY3PR10CA0004.namprd10.prod.outlook.com
- (2603:10b6:a03:255::9) To HE1PR0401MB2331.eurprd04.prod.outlook.com
- (2603:10a6:3:24::22)
+        with ESMTP id S232118AbiLAP6U (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 1 Dec 2022 10:58:20 -0500
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFFBFA5558;
+        Thu,  1 Dec 2022 07:58:17 -0800 (PST)
+Received: by mail-qk1-f181.google.com with SMTP id x18so1494290qki.4;
+        Thu, 01 Dec 2022 07:58:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tqYuf4cCv+SwvDMJzDiImKFhnbPR9Lllup2w7YcJ49U=;
+        b=1XuC++JWd4/itL/nx6iPb7CJpk+1cnbfS4ptTWYD+LnXpc1TIlUguXvZ6ydpyCQiCc
+         4UftgzUG61poZVCNIP9HRILWYnvEC1b6v/eLstq6R0LqG42mfMjD9O7EYoS/LsBJTxbl
+         T0cjfZ8li+/AquCVZSGEQya/zem1vOdcZiFJgjgEfBnmoDaWvGoMm9Rn8p7FKChwWg4Q
+         +TjNIef/W/+6cMeWzXyBNtYf3fCGueImD+TAvOUH7gLCMD/zTLLU5SA5UUJWPHzyLDEW
+         RVHpGWMFxiYOER+6j6QwD6DvGdCkz86lxxUFGVeZja1f8sEiUcjYMBuR4BoMBo54mSRB
+         tkFg==
+X-Gm-Message-State: ANoB5pmwo3DZQqqhXtIUKV2iL9pbp192OednwjfBsyAqu2y82dm+H2m2
+        TyPXe4yUf0K8+sECWN8wVgvM4geHWdh6UA==
+X-Google-Smtp-Source: AA0mqf52wWU8fCWxA+FMRc90cwTFYLYCLszPR8DOX1meMMpnDVXfvtrUp0GqI4AsAf1eKm71B0SAiw==
+X-Received: by 2002:a05:620a:1599:b0:6fa:3b1b:9c82 with SMTP id d25-20020a05620a159900b006fa3b1b9c82mr61060801qkk.704.1669910296543;
+        Thu, 01 Dec 2022 07:58:16 -0800 (PST)
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com. [209.85.128.175])
+        by smtp.gmail.com with ESMTPSA id d14-20020a05622a15ce00b0035cd6a4ba3csm2794511qty.39.2022.12.01.07.58.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Dec 2022 07:58:15 -0800 (PST)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-3c21d6e2f3aso21427167b3.10;
+        Thu, 01 Dec 2022 07:58:15 -0800 (PST)
+X-Received: by 2002:a05:690c:b81:b0:37e:6806:a5f9 with SMTP id
+ ck1-20020a05690c0b8100b0037e6806a5f9mr47129496ywb.47.1669910295479; Thu, 01
+ Dec 2022 07:58:15 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0401MB2331:EE_|PA4PR04MB7792:EE_
-X-MS-Office365-Filtering-Correlation-Id: c562ef1a-c6e9-42ed-8452-08dad3a48b55
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: KSGC5uMTYU7Be9hm9IIFjtfhx0ERrFgAiT+ZpdVz5Y+UONtvLkLhHmo6OLvuKavtx2JV9COAcFb40+/YaSxTx++ZfWtB2q0uExGaEXKN6jJ6t8VuJ7ZenneYRXTRxUVQqP4PvFxTCSH6D7A/5UxECczaeNHSaHZWnwnm9o6SWHUhfumw1SbnS1gvhMOl9FWCjLK6Od4X6bncdtd/V4kTg7CTygKerlpKq//RxguMZkC4kWrAyTDVHBooMUc+LSLi8Wn3WNbJsfrSckSDvor08TG4RK6w1WBF/3LZj5BNP0Wnsk5XJm7dfe3Cg6VoPzBXmeVUHZzrhVVZURU7ltt620Q7BKGn2zgG32ov4VAqldoYsh6Q4JfR1qDazivdN9kNJSN2reXTsjXg2vYYjBXeFE7b5wMPPdpyip+ogBlyHMOQTdc1XcaM7hPvYkGlUHY8tcTXp6Sj55iEZTZENtM/G9+p1ae2UmomxLRH5yKy4cR4ePwhwKgkwRKOt4ln1jyW6rHbpK9HZtYM6fCU4nPWmRRbKz8BhhwniKgm+wePTEn7IUHQ5h6m61H3dryDh2BbvmzkzhhjSxX31uZJUA8R2b/2n0qwmYHQ/1RoEG35D3IIJ9JLB/fUN6XlNCBxCs15KJzqj45mWJgp1ujXl3DXsRAhEp+YsFe6MQBwNVcOCOyR4u92zbh1tbGurjrmTgUBcZ+o9n6dGwpVihPeI2RSbeDVgxu3DyRFbib+XSu9omg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:HE1PR0401MB2331.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(396003)(376002)(39860400002)(346002)(136003)(366004)(451199015)(1076003)(2616005)(83380400001)(186003)(6506007)(52116002)(6512007)(26005)(6666004)(36756003)(316002)(37006003)(478600001)(6636002)(6486002)(34206002)(8676002)(2906002)(4326008)(38100700002)(38350700002)(66476007)(66946007)(41300700001)(66556008)(86362001)(7416002)(8936002)(5660300002)(32563001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?C5Zb/HKmTgHAJF8SC1ZrhJ8XYrwGV3avIKdV7CcrjY8eR0Z349ww7L84//5B?=
- =?us-ascii?Q?rN9HJqszTd79BquYmerxjHcaOIo8eAxcdppQMsmh6z0LFeJuBEw4Mkb0D0JA?=
- =?us-ascii?Q?++3pijwO08DE4vGIedf2J2wE6r+advzKQAPdR5hgoWYctYr1Bc4vwIfHqJ/y?=
- =?us-ascii?Q?C9+yoqg7MwnxQJXn1srLADga9HqXT6tBuSyyH0q0LppLi2cCaVAu2UEomrDN?=
- =?us-ascii?Q?pjhOgbwI48Zic3oFOGtmZZ9eU2hii+WttbAnasMMdAaEzqzGl7LCBKKpsLYo?=
- =?us-ascii?Q?uvtseKHFrCRUL3QSI7+ZdcBzf53Z+nSfkoIKHZFIqYeaGz0WEE/10Nrp+Krt?=
- =?us-ascii?Q?yTxj8W0QeVkvd+9NihgXpfSE+8dJTD5D0JbAOHAOcBpDqBxS2b2gsjuVQNjE?=
- =?us-ascii?Q?Cd+ZgM71SwTBDEbwSPJfccudMS1f2Ld5StLn/YjBLvP1oEiqBsMVhBhetE3C?=
- =?us-ascii?Q?bvVxwKMYBmn3hZsTHqTFhk6AEk2rLZeTsh46cQZesMCViiPFbRkS1HzIlKXs?=
- =?us-ascii?Q?Yr1z+2ujM27Nm/WRsh0Qg/78nIRy4QikuRPJFDuxl1YztgZM9RmQ2DDuEUNH?=
- =?us-ascii?Q?NXqbFDtz3bC1bOaYj1n2p/W+jRcebuu0j+xrBhR1QL6mzGOE6JZe6jNXYxbc?=
- =?us-ascii?Q?89uC1mvno4fxtCUc7quyrzwSbZ7KjmmsimUb9XXFyDaD/XQZ2dxnujL3dhBh?=
- =?us-ascii?Q?VEhXaXauMF+bocnfPNntUyXnIlTuabM0f2kX1mlisyV4j+H0HLiV1zEY5fJv?=
- =?us-ascii?Q?e+7RcWKGESY6LDg1AVZrHilE+8VUkcCtW3QawGQcF8octmhfMpO7whZAFWx+?=
- =?us-ascii?Q?nC0OJ0SgDwzWUK4DvJExfEHW6w4V3u52WhY/8/biBh9e5PvrLW61u4US2n4G?=
- =?us-ascii?Q?ehs8eR7AD7T/b26eFWbyXABw/pGlxMoAXRRk+w7xKd7sTYjlI4Fq2T1eqqFL?=
- =?us-ascii?Q?InPb06ajDuEGMufaymF3j5OQYejauEimKKJ71KbEI0wR+cpCB/KuNaxfg4N2?=
- =?us-ascii?Q?0L75IDDbcieAik2OeSg5VEFIOKvVFSQCbUvUMk0ElUrCiUwZ/sCOBEFGWOlG?=
- =?us-ascii?Q?hTv33Uc3b7lAT02kWk1ZVGHuV38YkaJ8bDpxCIporZl2LyxXu2Mej3XXmGoj?=
- =?us-ascii?Q?sbktVGdzXPKQJ5Tc+g6vpy+FZNQZDoBzoDnr/pQwQw34hd2eKwNACbgMUnZi?=
- =?us-ascii?Q?Mz5pEyI6PLrUfUwHwucWF7c7VD17Mp4ARw5dpcYFd4PXNhI3S/uyYc1DpFme?=
- =?us-ascii?Q?ZuEWb4XW92nD43NmBwbnKqg3cykm3sT2aShzTNX09+edRU+ojoLACJRDdk8V?=
- =?us-ascii?Q?VpNOSgZTZuex1//rO22k3J8c1xvzfz4hcWgSc+jI1o1lYWPbCQ+s5lP4Xzed?=
- =?us-ascii?Q?KUF5ZeaFhHCoKGvNcKEVXS7Y3XEIKrzuH8+I/cv3ubkvmrWU+zztlQfe9rc7?=
- =?us-ascii?Q?9rMxML2JudrSU3pNYN9gBfwjY/LlhxXuKTy5Voh2qnGc4Idfax79eZInd0A2?=
- =?us-ascii?Q?+DIcVycy89Y7hu/ZQo4JSh71t52Sa+G//sHWRKtz9nHnQAQwezEQTfja2kV3?=
- =?us-ascii?Q?4uG+Z5aOyGZtsgLnUsM=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c562ef1a-c6e9-42ed-8452-08dad3a48b55
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0401MB2331.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2022 14:01:45.2692
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n6Bk//TSb2lKqojNKQ+EZ0uqjgV1FTzpnIEcB9pGagMaMhefZo3z6ilU4yXgsxRu41WWboUuFNMfZgnMOM1KeQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7792
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20221124170018.3150687-1-biju.das.jz@bp.renesas.com> <20221124170018.3150687-5-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20221124170018.3150687-5-biju.das.jz@bp.renesas.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 1 Dec 2022 16:58:04 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUyBBcSs5Y9tjnpYf83UGUSaUYhxU2ACHkq_2jDNeiQSA@mail.gmail.com>
+Message-ID: <CAMuHMdUyBBcSs5Y9tjnpYf83UGUSaUYhxU2ACHkq_2jDNeiQSA@mail.gmail.com>
+Subject: Re: [PATCH v7 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     William Breathitt Gray <william.gray@linaro.org>,
+        linux-iio@vger.kernel.org,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-irq flood happen when run
-    cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
+Hi Biju,
 
-imx8qxp_adc_read_raw()
-{
-	...
-	enable irq
-	/* adc start */
-	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
-	^^^^ trigger irq flood.
-	wait_for_completion_interruptible_timeout();
-	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
-	^^^^ clear irq here.
-	...
-}
+On Thu, Nov 24, 2022 at 6:00 PM Biju Das <biju.das.jz@bp.renesas.com> wrote:
+> Add RZ/G2L MTU3a counter driver. This IP supports the following
+> phase counting modes on MTU1 and MTU2 channels
+>
+> 1) 16-bit phase counting modes on MTU1 and MTU2 channels.
+> 2) 32-bit phase counting mode by cascading MTU1 and MTU2 channels.
+>
+> This patch adds 3 counter value channels.
+>         count0: 16-bit phase counter value channel on MTU1
+>         count1: 16-bit phase counter value channel on MTU2
+>         count2: 32-bit phase counter value channel by cascading
+>                 MTU1 and MTU2 channels.
+>
+> The external input phase clock pin for the counter value channels
+> are as follows:
+>         count0: "MTCLKA-MTCLKB"
+>         count1: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
+>         count2: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
+>
+> Use the sysfs variable "external_input_phase_clock_select" to select the
+> external input phase clock pin and "cascade_enable" to enable/disable
+> cascading of channels.
+>
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+> v6->v7:
+>  * Updated commit description
+>  * Added Register descriptions
+>  * Opimized size of cache variable by using union
+>  * Used test_bit() in rz_mtu3_is_counter_invalid()
+>  * Replaced val->timer_mode in rz_mtu3_count_function_{read,write}
+>  * Added TODO comment phase3 and phase5 modes.
+>  * replaced if-else with ternary expression in rz_mtu3_count_direction_read()
+>  * Used switch statement in rz_mtu3_count_ceiling_read to consistent with write
+>  * Provided default case for all switch statement.
+>  * Add mutex lock for avoiding races with other devices
+>  * Updated comments in rz_mtu3_action_read
+>  * Replaced COUNTER_COMP_DEVICE_BOOL->COUNTER_COMP_DEVICE_BOOL for
+>    cascade_enable
+>  * Replaced RZ_MTU3_GET_HW_CH->rz_mtu3_get_hw_ch
+>  * Added rz_mtu3_get_ch() to get channels
+>  * used rz_mtu3_shared_reg_update_bit for cascade_enable and
+>    selecting phase input clock.
+>  * Added rz_mtu3_is_counter_invalid() check in rz_mtu3_count_ceiling_read()
 
-There is only FIFO watermark interrupt at this ADC controller.
-IRQ line will be assert until software read data from FIFO.
-So IRQ flood happen during wait_for_completion_interruptible_timeout().
+Thanks for the update!
 
-Move FIFO read into irq handle to avoid irq flood.
+> --- /dev/null
+> +++ b/drivers/counter/rz-mtu3-cnt.c
 
-Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
-Cc: stable@vger.kernel.org
+> +static int rz_mtu3_initialize_counter(struct counter_device *counter, int id)
+> +{
+> +       struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, id);
+> +       struct rz_mtu3_channel *const ch1 = rz_mtu3_get_ch(counter, 0);
+> +       struct rz_mtu3_channel *const ch2 = rz_mtu3_get_ch(counter, 1);
+> +
+> +       switch (id) {
+> +       case RZ_MTU3_16_BIT_MTU1_CH:
+> +       case RZ_MTU3_16_BIT_MTU2_CH:
+> +               mutex_lock(&ch->lock);
+> +               if (ch->function == RZ_MTU3_NORMAL)
+> +                       ch->function = RZ_MTU3_16BIT_PHASE_COUNTING;
+> +               mutex_unlock(&ch->lock);
+> +
+> +               if (ch->function != RZ_MTU3_16BIT_PHASE_COUNTING)
+> +                       return -EBUSY;
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
-Change from v1 to v2
- - move complete() after read fifo
+I think having a request_channel() API would make this more readable,
+and avoid duplication (here and in the PWM driver).
 
+> +
+> +               rz_mtu3_16bit_cnt_setting(counter, id);
+> +
+> +               break;
+> +       case RZ_MTU3_32_BIT_CH:
+> +               /*
+> +                * 32-bit phase counting need MTU1 and MTU2 to create 32-bit
+> +                * cascade counter.
+> +                */
+> +               mutex_lock(&ch1->lock);
+> +               if (ch1->function == RZ_MTU3_NORMAL)
+> +                       ch1->function = RZ_MTU3_32BIT_PHASE_COUNTING;
+> +               mutex_unlock(&ch1->lock);
+> +
+> +               mutex_lock(&ch2->lock);
+> +               if (ch2->function == RZ_MTU3_NORMAL)
+> +                       ch2->function = RZ_MTU3_32BIT_PHASE_COUNTING;
+> +               mutex_unlock(&ch2->lock);
+> +
+> +               if (ch1->function != RZ_MTU3_32BIT_PHASE_COUNTING ||
+> +                   ch2->function != RZ_MTU3_32BIT_PHASE_COUNTING)
+> +                       return -EBUSY;
 
- drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Surely you need to release the channel you did obtain (if any)?
 
-diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c
-index 36777b827165..f5a0fc9e64c5 100644
---- a/drivers/iio/adc/imx8qxp-adc.c
-+++ b/drivers/iio/adc/imx8qxp-adc.c
-@@ -86,6 +86,8 @@
- 
- #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
- 
-+#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
-+
- struct imx8qxp_adc {
- 	struct device *dev;
- 	void __iomem *regs;
-@@ -95,6 +97,7 @@ struct imx8qxp_adc {
- 	/* Serialise ADC channel reads */
- 	struct mutex lock;
- 	struct completion completion;
-+	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
- };
- 
- #define IMX8QXP_ADC_CHAN(_idx) {				\
-@@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev *indio_dev,
- 			return ret;
- 		}
- 
--		*val = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
--				 readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
-+		*val = adc->fifo[0];
- 
- 		mutex_unlock(&adc->lock);
- 		return IIO_VAL_INT;
-@@ -265,10 +267,15 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void *dev_id)
- {
- 	struct imx8qxp_adc *adc = dev_id;
- 	u32 fifo_count;
-+	int i;
- 
- 	fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
- 			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
- 
-+	for (i = 0; i < fifo_count; i++)
-+		adc->fifo[i] = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
-+				readl_relaxed(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
-+
- 	if (fifo_count)
- 		complete(&adc->completion);
- 
--- 
-2.34.1
+> +
+> +               rz_mtu3_32bit_cnt_setting(counter, id);
+> +               break;
+> +       default:
+> +               /* should never reach this path */
+> +               return -EINVAL;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static void rz_mtu3_terminate_counter(struct counter_device *counter, int id)
+> +{
+> +       struct rz_mtu3_channel *const ch = rz_mtu3_get_ch(counter, id);
+> +       struct rz_mtu3_channel *const ch1 = rz_mtu3_get_ch(counter, 0);
+> +       struct rz_mtu3_channel *const ch2 = rz_mtu3_get_ch(counter, 1);
+> +
+> +       if (id == RZ_MTU3_32_BIT_CH) {
+> +               mutex_lock(&ch1->lock);
+> +               ch1->function = RZ_MTU3_NORMAL;
+> +               mutex_unlock(&ch1->lock);
 
+Locking around a simple integer assignment doesn't do much.
+You might as well just use WRITE_ONCE(), to avoid reordering by the
+compiler.
+
+> +
+> +               mutex_lock(&ch2->lock);
+> +               ch2->function = RZ_MTU3_NORMAL;
+> +               mutex_unlock(&ch2->lock);
+> +
+> +               rz_mtu3_disable(ch2);
+> +               rz_mtu3_disable(ch1);
+> +       } else {
+> +               mutex_lock(&ch->lock);
+> +               ch->function = RZ_MTU3_NORMAL;
+> +               mutex_unlock(&ch->lock);
+> +
+> +               rz_mtu3_disable(ch);
+> +       }
+> +}
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,112 +2,103 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CD11640894
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Dec 2022 15:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5A764096D
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Dec 2022 16:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232038AbiLBOiB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Dec 2022 09:38:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
+        id S233396AbiLBPbj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Dec 2022 10:31:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231518AbiLBOiA (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Dec 2022 09:38:00 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF252D1C0
-        for <linux-iio@vger.kernel.org>; Fri,  2 Dec 2022 06:37:59 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id z20so6671101edc.13
-        for <linux-iio@vger.kernel.org>; Fri, 02 Dec 2022 06:37:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9b45kXHDUGhUZK34Z2HQuRSOFdEcfNuj4oBnoE+44XY=;
-        b=VcbaRmTMSYGTDDeJc9iT4i5jZGnelXtcgWvm1VjPPKnj6A2FBjvE5YsSlOeREewyrm
-         cvZ/2k4tuLafuPfw5evham7pIkClHxtp67NW4OD2rbMz3RYbLrRHubjEBUljHJqOOM3a
-         rUslkQMMKa8/nA9YzYHbbM7IFMIDLOQLlLxFJle3av4Yk1nqBINpne8SljhZDemBTZwm
-         wkVkbL2LoLrOjcDYl9Pe1Y65agz1ewKykglgElTInOU46CjdNbjLWXlUAvFcC314ffFE
-         m5tqKwN9HP4lJN8KqFRYJYdTv1bFrbn/3VB1nZyqu14DMnlaKJBPNxXyywoKyhATgpT4
-         Ocyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9b45kXHDUGhUZK34Z2HQuRSOFdEcfNuj4oBnoE+44XY=;
-        b=0FSx5wkz2t1KMJ6lHupAKqre4BW5z5tG7pUaBHDCYa9TjXPPheq6anYO6G0DbrAPdz
-         In159v8axpcbWmKSmHVqWkOFnuNsxFlTSN416liUK2JXfePlgngXc9knao6M3Y6RXRg2
-         ZBbGCwhIQfdPqGRkVQbuyUnyFSYirriYY9orSfr+ECwXO/rMVIwv+htR/dNy8XvwHycf
-         Iq4CuarfvPNU+XY1FhBmQiOw2SYy63W+oVMopBys66kU9LScWrxwVcoExGQetDqh6nHb
-         7I0TuL0FrTlY9a3m20USn1H10ImsWdmFDRF7mXmsve3GURvUZsghU0RfxCBatIiyqI8j
-         ekTA==
-X-Gm-Message-State: ANoB5pnzrFRcD9rMy8qwsCfp11l7aouUB56u5GMBMUlskziO1bL9xvvu
-        vEwYVe+EyYyBBkGwwpv/f2c=
-X-Google-Smtp-Source: AA0mqf5eeOr4d78sWsAC7ZoTLktnwGDdV4fu7tbxr1dnlABHgZJg3xk6JmjEJ6SRfyGfbx34LKTxCg==
-X-Received: by 2002:a05:6402:4286:b0:458:7489:34ea with SMTP id g6-20020a056402428600b00458748934eamr12834443edc.264.1669991877978;
-        Fri, 02 Dec 2022 06:37:57 -0800 (PST)
-Received: from p200300f6ef00dd002a61a50eb1e4cc6d.dip0.t-ipconnect.de (p200300f6ef00dd002a61a50eb1e4cc6d.dip0.t-ipconnect.de. [2003:f6:ef00:dd00:2a61:a50e:b1e4:cc6d])
-        by smtp.gmail.com with ESMTPSA id h18-20020a170906829200b007c0bcfe6ebbsm1238390ejx.99.2022.12.02.06.37.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 06:37:57 -0800 (PST)
-Message-ID: <0833ed443220263ce068f5faec33fdef4435226a.camel@gmail.com>
-Subject: Re: run-time change of configuration of ad74412
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Date:   Fri, 02 Dec 2022 15:39:32 +0100
-In-Reply-To: <b9e4c447-6bd0-9450-7410-6fb0b872dd36@prevas.dk>
-References: <b9e4c447-6bd0-9450-7410-6fb0b872dd36@prevas.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1 
+        with ESMTP id S233151AbiLBPbi (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Dec 2022 10:31:38 -0500
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE58DA65B5;
+        Fri,  2 Dec 2022 07:31:37 -0800 (PST)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B2C8b7K012212;
+        Fri, 2 Dec 2022 16:30:54 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=j3QI4b6wwS5JSW/4QFxm3S7yERfUu8bKp/Jqibb8MBM=;
+ b=TCebgc5oELRM6tNKCMR0O2e6XgneqU+S6GtOQn3JGkvGmkHnI/x4qLYEhgbIJHfSjSQb
+ 1JnUwHG+UpfBj6n/QY1dk85jeoW04cYKfkSAvNWfhy/l/zTM51Cunil/sTEJaiK89Ruj
+ s4V3Oe2Ke6HVWuUvK5LxgNf/BgH1LHzqlJRwEbDSslR1Cw0EPVtU136OyQlxO2vXwewD
+ h2/UvBN9wrFVa18F6aY1XQhEWXyXgPD6lzUK1aMtrNnUGIEn+TMEjAW6e1JLptUwH7pz
+ 1ACpMPN0rcxqCRtZg5afR1JkL2i8tYOTdfQl8QUYS4exRMerNM3lEZ931UqmLYWbWlrL UA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3m6k7mu091-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 02 Dec 2022 16:30:54 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id B3586100034;
+        Fri,  2 Dec 2022 16:30:48 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AD85622D178;
+        Fri,  2 Dec 2022 16:30:48 +0100 (CET)
+Received: from localhost (10.252.0.75) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Fri, 2 Dec
+ 2022 16:30:48 +0100
+From:   Olivier Moysan <olivier.moysan@foss.st.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Arnaud Pouliquen" <arnaud.pouliquen@st.com>
+CC:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] iio: adc: stm32-dfsdm: fill module aliases
+Date:   Fri, 2 Dec 2022 16:28:48 +0100
+Message-ID: <20221202152848.45585-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.252.0.75]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-02_08,2022-12-01_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2022-12-02 at 12:16 +0100, Rasmus Villemoes wrote:
-> Hi,
->=20
-> My customer wants to be able to change the configuration of the four
-> channels of the ad74412 at run-time; their board can be used in
-> various
-> scenarios, and having to specify the functions in device tree is too
-> inflexible.
->=20
-> Is there any precedent in other iio drivers for such a configuration
-> change, and/or is it feasible to implement this in the ad74413r.c
-> driver?
->=20
-> I do not need to be able to change it continuously, just once after
-> userspace has come up and before anything actually starts making use
-> of
-> the device, but it is not possible for me to know the correct
-> configuration in the bootloader, so having U-Boot patch the dtb is
-> not
-> an option. A somewhat hacky way would be to build the driver as a
-> module, and allow module parameter(s) to overrule whatever is in
-> devicetree, but that doesn't really work if there was more than one
-> ad74412/ad74413 present, unless one invents and parses some weird
-> syntax
-> to have certain settings apply to $this-chipselect on $that-bus.
->=20
-> Rasmus
+When STM32 DFSDM driver is built as module, no modalias information
+is available. This prevents module to be loaded by udev.
+Add MODULE_DEVICE_TABLE() to fill module aliases.
 
-Hi Rasmus,
+Fixes: e2e6771c6462 ("IIO: ADC: add STM32 DFSDM sigma delta ADC support")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+---
+Changes in v2: Add Fixes tag
+---
+ drivers/iio/adc/stm32-dfsdm-adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I did not looked too deep into this but from what you described it
-sounds like a nasty hack that I'm not sure if it's feasable... Would
-devicetree overlays be an option for you? Some userspace daemon could
-decide which one to load depending on the usecase?
+diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+index 6d21ea84fa82..a428bdb567d5 100644
+--- a/drivers/iio/adc/stm32-dfsdm-adc.c
++++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+@@ -1520,6 +1520,7 @@ static const struct of_device_id stm32_dfsdm_adc_match[] = {
+ 	},
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, stm32_dfsdm_adc_match);
+ 
+ static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
+ {
+-- 
+2.25.1
 
-- Nuno S=C3=A1

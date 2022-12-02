@@ -2,107 +2,159 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4856664022B
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Dec 2022 09:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0206402F4
+	for <lists+linux-iio@lfdr.de>; Fri,  2 Dec 2022 10:11:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232879AbiLBIcc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Dec 2022 03:32:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51244 "EHLO
+        id S232696AbiLBJLV (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 2 Dec 2022 04:11:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232261AbiLBIbv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Dec 2022 03:31:51 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3105BF675
-        for <linux-iio@vger.kernel.org>; Fri,  2 Dec 2022 00:30:17 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id a19so4668671ljk.0
-        for <linux-iio@vger.kernel.org>; Fri, 02 Dec 2022 00:30:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bX3SdWvaxKued4M30HGNxvRkO4By+y4jHKuMGW8hVYU=;
-        b=ShLBkLrR0jiroVNmRw4y6EJXmK3CASY0J2JOO0Qy11kIoGN4tB7qhP9aePhDjnMV/Z
-         eG+nOn9Bl6v8G5Evn1A1Co0kf1ENPs3U2KwT8ZsV/qyTv68cNLrhVonqxaWVT6mWsuJf
-         ldHhnXb1IIrXE3/lW2q1Snwnwb57ZU+yOouCdHQf8MnMdE68ePLo94m8Z1XNnnbjnNhY
-         P7Z4t9mP6uniQN9w3PPcg3OzVU5qc+pKGo4SFaEUuynVBf31F86+ki+G/D3tzGgF+LmZ
-         klLfgggPWMquR0fR0C3Gsdj4fmLbme7nZ0VSaP8M4n6SmIoysq4WQ5VWuInH7NirtqRD
-         HLgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bX3SdWvaxKued4M30HGNxvRkO4By+y4jHKuMGW8hVYU=;
-        b=MRWQu8kEDI6n2vLdoU14uTR4k0L4U8Zq6kse3YMv96vniD0SU0BMxgOkGj2J6WrVp2
-         2QeVz3VSMtFnga1FcCQC8wg0qQLeOaoP9OOr3+vfgi24krD2F0vINRfCBHrqWnI62xmQ
-         d0/+8O9Qv55lmJYyUtR2k5Jfj0O6NRce6WCOG6dd1F7JyTcoIqIs5kK0oa/IBZ+Vm0p6
-         +jZNdZWSlytWp9Py1ztfGn3mVy4DvsDNsXnOC5r42EIA9lwDE3DYYS4bmDnHC4QRSMkN
-         I5DVUUvZGCT/5zd0gqkbWZlmw66/FYP/tsjheS0kHso0L2KVsOTHUG96MnhSLYjG9YF3
-         qoMg==
-X-Gm-Message-State: ANoB5pn66K22+RRXSShrY1yb5L5rUCQOoj0zW4hVyFkLTjyP3rHitHO/
-        A4dn7tJI11dy5UY3ogCTQp7PxQ==
-X-Google-Smtp-Source: AA0mqf5Xl9WoPz9NyKCsqmY4kN4ywr5r4WG6w1I98ycwWATN80fw73Rglz4G2wMaJ609I3Nk+di/mw==
-X-Received: by 2002:a2e:9682:0:b0:279:c862:9d89 with SMTP id q2-20020a2e9682000000b00279c8629d89mr3042836lji.28.1669969816086;
-        Fri, 02 Dec 2022 00:30:16 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id a22-20020a05651c031600b0026fc8855c20sm559098ljp.19.2022.12.02.00.30.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Dec 2022 00:30:14 -0800 (PST)
-Message-ID: <dd25f550-aee1-82af-a58d-eedb4b73a546@linaro.org>
-Date:   Fri, 2 Dec 2022 09:30:13 +0100
+        with ESMTP id S232633AbiLBJLU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Dec 2022 04:11:20 -0500
+X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 02 Dec 2022 01:11:18 PST
+Received: from out-199.mta0.migadu.com (out-199.mta0.migadu.com [IPv6:2001:41d0:1004:224b::c7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45A19B7B3
+        for <linux-iio@vger.kernel.org>; Fri,  2 Dec 2022 01:11:18 -0800 (PST)
+Date:   Fri, 2 Dec 2022 17:05:54 +0800
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Cai Huoqing <cai.huoqing@linux.dev>
+To:     Bough Chen <haibo.chen@nxp.com>
+Cc:     Frank Li <frank.li@nxp.com>,
+        "festevam@gmail.com" <festevam@gmail.com>,
+        "imx@lists.linux.dev" <imx@lists.linux.dev>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        dl-linux-imx <linux-imx@nxp.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+        "shawnguo@kernel.org" <shawnguo@kernel.org>
+Subject: Re: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call
+ imx8qxp_adc_read_raw()
+Message-ID: <20221202090554.GA10754@chq-T47>
+References: <20221201140110.2653501-1-Frank.Li@nxp.com>
+ <DB7PR04MB401084C620570D234A535EE990179@DB7PR04MB4010.eurprd04.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 2/5] dt-bindings: leds: pm8058: convert from txt to YAML
- format
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        linux-leds@vger.kernel.org
-References: <20221201202144.448694-1-dmitry.baryshkov@linaro.org>
- <20221201202144.448694-3-dmitry.baryshkov@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221201202144.448694-3-dmitry.baryshkov@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DB7PR04MB401084C620570D234A535EE990179@DB7PR04MB4010.eurprd04.prod.outlook.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 01/12/2022 21:21, Dmitry Baryshkov wrote:
-> Convert the bindings for the leds subdevice of Qualcomm PM8058 PMIC
-> from text to YAML format.
+On 02 12月 22 03:23:55, Bough Chen wrote:
+> > -----Original Message-----
+> > From: Frank Li <frank.li@nxp.com>
+> > Sent: 2022年12月1日 22:01
+> > To: Bough Chen <haibo.chen@nxp.com>
+> > Cc: cai.huoqing@linux.dev; festevam@gmail.com; Frank Li <frank.li@nxp.com>;
+> > imx@lists.linux.dev; jic23@kernel.org; kernel@pengutronix.de;
+> > lars@metafoo.de; linux-arm-kernel@lists.infradead.org;
+> > linux-iio@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>;
+> > linux-kernel@vger.kernel.org; s.hauer@pengutronix.de; shawnguo@kernel.org
+> > Subject: [PATCH v2 1/1] iio: imx8qxp-adc: fix irq flood when call
+> > imx8qxp_adc_read_raw()
+> > 
+> > irq flood happen when run
+> >     cat /sys/bus/iio/devices/iio:device0/in_voltage1_raw
+> > 
+> > imx8qxp_adc_read_raw()
+> > {
+> > 	...
+> > 	enable irq
+> > 	/* adc start */
+> > 	writel(1, adc->regs + IMX8QXP_ADR_ADC_SWTRIG);
+> > 	^^^^ trigger irq flood.
+> > 	wait_for_completion_interruptible_timeout();
+> > 	readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO);
+> > 	^^^^ clear irq here.
+> > 	...
+> > }
+> > 
+> > There is only FIFO watermark interrupt at this ADC controller.
+> > IRQ line will be assert until software read data from FIFO.
+> > So IRQ flood happen during wait_for_completion_interruptible_timeout().
+> > 
+> > Move FIFO read into irq handle to avoid irq flood.
+> > 
+> > Fixes: 1e23dcaa1a9f ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP
+> > ADC")
+> > Cc: stable@vger.kernel.org
+> > 
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->  .../devicetree/bindings/leds/leds-pm8058.txt  | 67 ---------------
->  .../devicetree/bindings/leds/leds-pm8058.yaml | 81 +++++++++++++++++++
->  2 files changed, 81 insertions(+), 67 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/leds/leds-pm8058.txt
->  create mode 100644 Documentation/devicetree/bindings/leds/leds-pm8058.yaml
+> Thanks for the quick fix. The total read count in irq handler is fifo_count which is read from register, this is reasonable.
 > 
-
-This is already done:
-
-https://lore.kernel.org/all/20221201131505.42292-1-krzysztof.kozlowski@linaro.org/
-
-Best regards,
-Krzysztof
-
+> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+The same, thanks.
+Reviewed-by: Cai Huoqing <cai.huoqing@linux.dev>
+> 
+> Best Regards
+> Haibo Chen
+> > ---
+> > Change from v1 to v2
+> >  - move complete() after read fifo
+> > 
+> > 
+> >  drivers/iio/adc/imx8qxp-adc.c | 11 +++++++++--
+> >  1 file changed, 9 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/imx8qxp-adc.c b/drivers/iio/adc/imx8qxp-adc.c index
+> > 36777b827165..f5a0fc9e64c5 100644
+> > --- a/drivers/iio/adc/imx8qxp-adc.c
+> > +++ b/drivers/iio/adc/imx8qxp-adc.c
+> > @@ -86,6 +86,8 @@
+> > 
+> >  #define IMX8QXP_ADC_TIMEOUT		msecs_to_jiffies(100)
+> > 
+> > +#define IMX8QXP_ADC_MAX_FIFO_SIZE		16
+> > +
+> >  struct imx8qxp_adc {
+> >  	struct device *dev;
+> >  	void __iomem *regs;
+> > @@ -95,6 +97,7 @@ struct imx8qxp_adc {
+> >  	/* Serialise ADC channel reads */
+> >  	struct mutex lock;
+> >  	struct completion completion;
+> > +	u32 fifo[IMX8QXP_ADC_MAX_FIFO_SIZE];
+> >  };
+> > 
+> >  #define IMX8QXP_ADC_CHAN(_idx) {				\
+> > @@ -238,8 +241,7 @@ static int imx8qxp_adc_read_raw(struct iio_dev
+> > *indio_dev,
+> >  			return ret;
+> >  		}
+> > 
+> > -		*val = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
+> > -				 readl(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
+> > +		*val = adc->fifo[0];
+> > 
+> >  		mutex_unlock(&adc->lock);
+> >  		return IIO_VAL_INT;
+> > @@ -265,10 +267,15 @@ static irqreturn_t imx8qxp_adc_isr(int irq, void
+> > *dev_id)  {
+> >  	struct imx8qxp_adc *adc = dev_id;
+> >  	u32 fifo_count;
+> > +	int i;
+> > 
+> >  	fifo_count = FIELD_GET(IMX8QXP_ADC_FCTRL_FCOUNT_MASK,
+> >  			       readl(adc->regs + IMX8QXP_ADR_ADC_FCTRL));
+> > 
+> > +	for (i = 0; i < fifo_count; i++)
+> > +		adc->fifo[i] = FIELD_GET(IMX8QXP_ADC_RESFIFO_VAL_MASK,
+> > +				readl_relaxed(adc->regs + IMX8QXP_ADR_ADC_RESFIFO));
+> > +
+> >  	if (fifo_count)
+> >  		complete(&adc->completion);
+> > 
+> > --
+> > 2.34.1
+> 

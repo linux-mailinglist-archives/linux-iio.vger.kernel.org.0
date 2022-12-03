@@ -2,52 +2,49 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30204641811
-	for <lists+linux-iio@lfdr.de>; Sat,  3 Dec 2022 18:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE3DA641819
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Dec 2022 18:28:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbiLCRXv (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 3 Dec 2022 12:23:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43078 "EHLO
+        id S229671AbiLCR2p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Dec 2022 12:28:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbiLCRXv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Dec 2022 12:23:51 -0500
+        with ESMTP id S229765AbiLCR2o (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Dec 2022 12:28:44 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246FE1E700;
-        Sat,  3 Dec 2022 09:23:49 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5BE18368;
+        Sat,  3 Dec 2022 09:28:43 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B9812B80689;
-        Sat,  3 Dec 2022 17:23:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218F0C433C1;
-        Sat,  3 Dec 2022 17:23:43 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 70819B80689;
+        Sat,  3 Dec 2022 17:28:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85765C433D6;
+        Sat,  3 Dec 2022 17:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670088226;
-        bh=iTtdW6gDpKHLLzKCX31xhKgEEH+3KoFhhXGmXIO5ZP8=;
+        s=k20201202; t=1670088521;
+        bh=Vm/dFScHRJYKtLUS2m5pS75eqxLJqj2NxY0Mif7YMhM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=u+BEgHWXH5ITAwz3jXgk74FH9/Gb25v/9qpiVZjuhkSjkKCCxC0WqKDHhfSoEehp0
-         OZR+rOagvJcew3j4vmZSM4+bXjb44hWLLYp5W9SgnLMUea/u2PVqKFbuJ1WbqjyD9v
-         8YHVekiyvg5oxz6p5rgsajsL1shvgSj9ilzlnJFuQIRbY0bIRbnN8JjkknRMP7NaoI
-         fhYr3xyvOh55rHcRYWzoDVHeRmKhy6s2bRAK+Z2Uju2lXLMYZAB63RdZ9isq36WIge
-         IVwx0U+Uwaz/b7vRn57R4wyFtsKEa42bvqhHfIPNKklNf1Hvrzyza9XEAW23Fv8JYE
-         RjDy6sNGMXfgg==
-Date:   Sat, 3 Dec 2022 17:36:30 +0000
+        b=jeaCqdsD3UXHITYuv9Pw3ohxk711VrVUvWcQzVqJViZFGC6aMldsBwIDAtDSymBR3
+         yZ4PW+cuz/ocYPcu+cA/OaiFXYpdcdcvpTuvZqKPrvOlK3okc+qxFW3mHNfGiqyae8
+         AjKm+W+plNyszdPSii4ivq0ySWisAF64/FkRKxoUGSuQYprwKu7rvCTmHR74AXL+cw
+         x+tFM5NPE6zcXQxmULbb27An5Sj6g5aaPBwa7w18+1ZlkX6SM3abGP6+tn8TkDwbX8
+         DYVglORVQSx4x4TqAT5U/7IQINIfCkfCCDcF6MsxMg8Upre26jS1GIfDjAi6Snd4Hv
+         16qkZYscayYJw==
+Date:   Sat, 3 Dec 2022 17:41:25 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Olivier Moysan <olivier.moysan@foss.st.com>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Arnaud Pouliquen" <arnaud.pouliquen@st.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: adc: stm32-dfsdm: fill module aliases
-Message-ID: <20221203173630.4b4de6c7@jic23-huawei>
-In-Reply-To: <20221202152848.45585-1-olivier.moysan@foss.st.com>
-References: <20221202152848.45585-1-olivier.moysan@foss.st.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Samuel Holland <samuel@sholland.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: ti,adc081c: Document the binding
+Message-ID: <20221203174125.28e1bfbf@jic23-huawei>
+In-Reply-To: <ef692f82-61c3-b812-b846-64bde04c8bb3@linaro.org>
+References: <20221125220903.8632-1-samuel@sholland.org>
+        <ef692f82-61c3-b812-b846-64bde04c8bb3@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,40 +58,31 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 2 Dec 2022 16:28:48 +0100
-Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+On Sun, 27 Nov 2022 22:09:52 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> When STM32 DFSDM driver is built as module, no modalias information
-> is available. This prevents module to be loaded by udev.
-> Add MODULE_DEVICE_TABLE() to fill module aliases.
+> On 25/11/2022 23:09, Samuel Holland wrote:
+> > Linux has a driver for these ADCs at drivers/iio/adc/ti-adc081c.c, but
+> > the compatible strings were undocumented. Add a binding for them. The
+> > hardware has an alert interrupt output, but existing ti,adc081c users
+> > do not provide the 'interrupts' property, so leave it as optional.
+> > 
+> > Signed-off-by: Samuel Holland <samuel@sholland.org>
+> > ---
+> >   
 > 
-> Fixes: e2e6771c6462 ("IIO: ADC: add STM32 DFSDM sigma delta ADC support")
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Applied to the fixes-togreg branch of iio.git.
+> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Note this will probably go upstream just after the merge window closes
-now.
-
-Thanks,
+Applied, but now we are so close to merge window, I'm queuing things
+for 6.3.  Obviously wouldn't really matter for this, but it is too
+late for other things in my tree to get enough time in linux-next
+etc.
 
 Jonathan
 
-> ---
-> Changes in v2: Add Fixes tag
-> ---
->  drivers/iio/adc/stm32-dfsdm-adc.c | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-> index 6d21ea84fa82..a428bdb567d5 100644
-> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
-> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-> @@ -1520,6 +1520,7 @@ static const struct of_device_id stm32_dfsdm_adc_match[] = {
->  	},
->  	{}
->  };
-> +MODULE_DEVICE_TABLE(of, stm32_dfsdm_adc_match);
->  
->  static int stm32_dfsdm_adc_probe(struct platform_device *pdev)
->  {
+> Best regards,
+> Krzysztof
+> 
 

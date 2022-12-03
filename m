@@ -2,61 +2,55 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72C76641087
-	for <lists+linux-iio@lfdr.de>; Fri,  2 Dec 2022 23:23:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DB46417AB
+	for <lists+linux-iio@lfdr.de>; Sat,  3 Dec 2022 17:07:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234342AbiLBWXa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 2 Dec 2022 17:23:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46860 "EHLO
+        id S229650AbiLCQHZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 3 Dec 2022 11:07:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234159AbiLBWX3 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 2 Dec 2022 17:23:29 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DC8DF32
-        for <linux-iio@vger.kernel.org>; Fri,  2 Dec 2022 14:23:28 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id a16so8183255edb.9
-        for <linux-iio@vger.kernel.org>; Fri, 02 Dec 2022 14:23:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8KACC2wb4YSXVmXT9nu2/vCZI4XSAmso5RQgBjgls7w=;
-        b=D+0zSnsIkMCL9J4sPx9wuQmglhGUIP4IITACCEVdKytq+js065y276zeOZStBGOSKg
-         4ILn2NwbdYLQ0hAja89nu3nylujBZwONtY4zckTi6fgHdakuWvf4Shk2wH8Rwsh82GBp
-         ved6O352gRusEEAV34nYpHLi5LKOZVIiiPB2o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8KACC2wb4YSXVmXT9nu2/vCZI4XSAmso5RQgBjgls7w=;
-        b=I/agywh5V24bMHMAVmROeh5ryBGS5+dZjleawdwdqtzXdy8yCNmI1rk7qi9/CLk6DM
-         sz5NOr2XmCiqK2fsXJdl/HKo6FTDeKyvV19bwZg7KHnobMhowve5ddIPPERi2pNeqCB1
-         kPSTKDK/+oWoI4IZDf+rGaPrmqu5UHFMUkuaH0Czrx2rj8t9UYFpOvzvGN6iSYQL/Wrf
-         C9M59D+c+3tqrbFvKBDozZN3eBMyFDbuv3ZKCM0fdq3Mnpbrgn8Cfow+RuwJY+rFIYZ1
-         8KOOeXXIQUletly0dfPse0xkJlO/UkKRhdwA/gBcXQ/e18/4b1cK710H3OT1e2Z/IFqN
-         vL8g==
-X-Gm-Message-State: ANoB5pnn0wuYphYyKjqGLQZ6RnJILIRxoBRBA8ubBDUWsaW2MRKuTpsc
-        gCaytSHSfBFwHJHOCoWDDNJ3X6cuslRHT4jDDcTaoQ==
-X-Google-Smtp-Source: AA0mqf7iIL4FAWs3J32GY6U2hxRzkQn7sF/G4BpJDrUZXSm+Eclepdm1ujIseoKj1wesyH59qXm7Kg==
-X-Received: by 2002:a05:6402:4512:b0:461:4c59:12d6 with SMTP id ez18-20020a056402451200b004614c5912d6mr66054292edb.250.1670019807226;
-        Fri, 02 Dec 2022 14:23:27 -0800 (PST)
-Received: from localhost.localdomain (b9c17ea8.host.njalla.net. [185.193.126.168])
-        by smtp.gmail.com with ESMTPSA id e23-20020a1709062c1700b007305d408b3dsm3458613ejh.78.2022.12.02.14.23.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 14:23:26 -0800 (PST)
-From:   Matt Ranostay <matt.ranostay@konsulko.com>
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     linux-iio@vger.kernel.org,
-        Matt Ranostay <matt.ranostay@konsulko.com>
-Subject: [PATCH] iio: chemical: atlas-ezo-sensor: refactor IIO_CHAN_INFO_SCALE checks
-Date:   Fri,  2 Dec 2022 14:23:05 -0800
-Message-Id: <20221202222305.8828-1-matt.ranostay@konsulko.com>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S229542AbiLCQHZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 3 Dec 2022 11:07:25 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCD91EAF4;
+        Sat,  3 Dec 2022 08:07:24 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43F0860B1A;
+        Sat,  3 Dec 2022 16:07:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2F4C433C1;
+        Sat,  3 Dec 2022 16:07:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670083643;
+        bh=Cxm5cX1/vRr6rTVftoIlwySvdfgJ/QgkmcVNP/aI/3s=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rZxwQvjDdNkLrpGiIC1dofLAzcSqRi2r+jlxMyuBRKl9bCsujpO+QhkAC5XndgNh6
+         oz2RBT5LJwCuqzg3S1tmbbMJBgM4gkTbu5plpNTfdfjQyxy5GmNWFF/BTytFREh7ya
+         X6w7Du1Y3o1u5XqVaHuKyebCjTCAm9GBkaXrkyBBhNFQEFr64LR7blH8/Z9Z2DAFFb
+         BpIfc7CNKJ4VJ3Dm/ZRONw8MaKayBodAcE7llWu6FHQsD2WZ7J0YwD0oFhtYeY8q0Q
+         5yMWH4B6CZfP5jlgfHts1bhjUq3r4otcHjraXOUDstOe0GIfmVzwxpUSEFg6rzNRg7
+         vTHyQtftG4RLA==
+Date:   Sat, 3 Dec 2022 16:20:08 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Fabrice Gasnier <fabrice.gasnier@foss.st.com>, lars@metafoo.de,
+        benjamin.gaignard@st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: Removing the last of IIO_COUNT (stm32-timer-trigger)
+Message-ID: <20221203162008.007df587@jic23-huawei>
+In-Reply-To: <Y4KuBicVeRAsfqxq@fedora>
+References: <Y0vzlOmFrVCQVXMq@fedora>
+        <ec6b8983-1567-92c8-f1cd-baf970ca4046@foss.st.com>
+        <Y4KuBicVeRAsfqxq@fedora>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,46 +58,24 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Additional modifiers in IIO_CHAN_INFO_SCALE check will mostly have a ppm
-unit and the switch statement is more confusing, and adds unneeded code.
+...
 
-Signed-off-by: Matt Ranostay <matt.ranostay@konsulko.com>
----
- drivers/iio/chemical/atlas-ezo-sensor.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+> > ---
+> > To conclude, there some open items here, but hopefully nothing blocking.
+> > In case we sort all these, this will allow to remove the IIO_COUNT
+> > channel (along with the IIO device) being registered.  
+> 
+> I'm certain Jonathan will want some sort of deprecation schedule first
+> to make sure any existing users have time to migrate to the Counter
+> interface before we remove the IIO one, but it will give me a nice
+> feeling of completion to see the last of IIO_COUNT superceded by the
+> Counter interface. ;-)
 
-diff --git a/drivers/iio/chemical/atlas-ezo-sensor.c b/drivers/iio/chemical/atlas-ezo-sensor.c
-index 307c3488f4bd..5fae1c4087ee 100644
---- a/drivers/iio/chemical/atlas-ezo-sensor.c
-+++ b/drivers/iio/chemical/atlas-ezo-sensor.c
-@@ -165,17 +165,19 @@ static int atlas_ezo_read_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		}
- 
--		/* IIO_CONCENTRATION modifiers */
--		switch (chan->channel2) {
--		case IIO_MOD_CO2:
--			*val = 0;
--			*val2 = 100; /* 0.0001 */
--			return IIO_VAL_INT_PLUS_MICRO;
--		case IIO_MOD_O2:
-+		if (chan->channel2 == IIO_NO_MOD)
-+			return -EINVAL;
-+
-+		// IIO_CONCENTRATION modifier for percent
-+		if (chan->channel2 == IIO_MOD_O2) {
- 			*val = 100;
- 			return IIO_VAL_INT;
- 		}
--		return -EINVAL;
-+
-+		// IIO_CONCENTRATION modifier for PPM - 0.0001
-+		*val = 0;
-+		*val2 = 100;
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	}
- 
- 	return 0;
--- 
-2.30.2
+If there is nothing in tree, I'm fine 'removing' it. However, note
+that we'll have to keep a placeholder for some of the defines to avoid
+renumbering other types etc.  So probably just stick a couple of underscores
+in front to make it __IIO_COUNT and add a comment to say it should not be used.
 
+Jonathan
+
+> 

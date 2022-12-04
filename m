@@ -2,46 +2,56 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49018641D96
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48388641D9B
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:24:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbiLDPOT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Dec 2022 10:14:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
+        id S230071AbiLDPY4 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Dec 2022 10:24:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229834AbiLDPOT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:14:19 -0500
+        with ESMTP id S229834AbiLDPYz (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:24:55 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4302213F43
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 07:14:18 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32BD513F7C;
+        Sun,  4 Dec 2022 07:24:53 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9A8760EA9
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 15:14:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1A5C433D6;
-        Sun,  4 Dec 2022 15:14:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC9CD60E9A;
+        Sun,  4 Dec 2022 15:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643AFC433D7;
+        Sun,  4 Dec 2022 15:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670166857;
-        bh=h9n9iGd7yNxGHih5bpKKKNHOdJSoLBnXm8faAHn8tZ0=;
+        s=k20201202; t=1670167492;
+        bh=ul2+VHkiJxaUIPa/a1hTitbj20YPceGO0/dSKYns2Dc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=RWUvdHCYIXsJGs4/iCOhD/QLFIy5oycnHijN86Tai7MU8jPew4cy1mIvX6w5jubrg
-         cgNsuedUNNUl01nP47jJDxN5zQ09t1rZF1+xc+s9ZaOQpydZtNZsicHm5kItAfzgaU
-         5kQ/sBk7YoormlCOKiV5FAZGbj28zqe+ycoR39ENwD4raYN42IZdzFwvtv+qOZgEQ7
-         Tc+a3C9VKvxTHuYo/avZgxY+RLy1QQ8WKBDo+CXuLY0qdnBDl7ERZOdxEjMPNc+Nvr
-         WdQopvgjFu1kLgjJgew0yeUiHWLoDZjtgUeWxFk4dNzL60Y0kur37n8WeSV7tKoq91
-         ch94ew5Abb9vA==
-Date:   Sun, 4 Dec 2022 15:27:03 +0000
+        b=TA+weilQscJKqqepdmnmkFIcznj5f4OTP/E+mSob4mIQYxCyNLYyMGhSMzOOBZqdO
+         kj/a1ZVPvwMU7kDZIy9QK9vY3pfCuc4x8MKG/CokKJZ4hXpYRHFNMy15Lx1ec4/7ZY
+         1Qttp08uTmlhnmxPNx8QN801GTtYh+xCOp60mr+DjtVitglCFGEbsvoFQlt6JOxgg7
+         BVSsF/maYZ1darIb0ia4Vz27dbHI80ei4rvWBajdIZnBenUAqaesyFrItMvPDkzJaS
+         0MNW3GZEIL5vqgffaPrsMDyJIz0DNZIjQZyjPCIHys0RFHD9jWmIkc5eHU09w4wcqs
+         f7C9NjWEu1MMA==
+Date:   Sun, 4 Dec 2022 15:37:36 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Carlos Song <carlos.song@nxp.com>
-Cc:     lars@metafoo.de, rjones@gateworks.com, Jonathan.Cameron@huawei.com,
-        haibo.chen@nxp.com, linux-imx@nxp.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 4/4] iio: imu: fxos8700: fix magnetometer scale getting
- error
-Message-ID: <20221204152703.4e83f951@jic23-huawei>
-In-Reply-To: <20221202103538.2218925-5-carlos.song@nxp.com>
-References: <20221202103538.2218925-1-carlos.song@nxp.com>
-        <20221202103538.2218925-5-carlos.song@nxp.com>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        linux-leds@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] dt-bindings: iio: adc: qcom,pm8018-adc: allow
+ specifying MPP channels
+Message-ID: <20221204153736.610c49ed@jic23-huawei>
+In-Reply-To: <20221204061555.1355453-4-dmitry.baryshkov@linaro.org>
+References: <20221204061555.1355453-1-dmitry.baryshkov@linaro.org>
+        <20221204061555.1355453-4-dmitry.baryshkov@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,74 +65,34 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  2 Dec 2022 18:35:38 +0800
-Carlos Song <carlos.song@nxp.com> wrote:
+On Sun,  4 Dec 2022 08:15:54 +0200
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
 
-> Incorrect iio channel type cause a magnetometer scale getting
-> error. Meanwhile magnetometer scale and available magnetometer
-> scale should be locked as 0.1uT according to the datasheet.
+> Several ADC channels are bound to the Multi Purpose Pins (MPPs). Allow
+> specifying such channels using the mppN device node (as used on apq8060
+> dragonboard).
 > 
-> Set magn sensor type "IIO_MAGN" and modify magn_scale fixed "0.1uT".
-> 
-> Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+So I understand this more, why do the node names have to have anything to
+do with the particular pin? I'm assuming the reg value provides that
+relationship.
+
 > ---
->  drivers/iio/imu/fxos8700_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  Documentation/devicetree/bindings/iio/adc/qcom,pm8018-adc.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-> index 27e3bd61d054..8d46462dca76 100644
-> --- a/drivers/iio/imu/fxos8700_core.c
-> +++ b/drivers/iio/imu/fxos8700_core.c
-> @@ -319,7 +319,7 @@ static enum fxos8700_sensor fxos8700_to_sensor(enum iio_chan_type iio_type)
->  	switch (iio_type) {
->  	case IIO_ACCEL:
->  		return FXOS8700_ACCEL;
-> -	case IIO_ANGL_VEL:
-> +	case IIO_MAGN:
-
-Ahah. This had me confused on looking at earlier patch ;)
-
-Amusingly much of the code 'worked' because it was use as a boolean return
-so -EINVAL had same affect as FXOS8700_MAGN.
-
-This fix stands on it's own as a separate fix, so I'd rather see it in a
-trivial patch of it's own before this one.
-
-
->  		return FXOS8700_MAGN;
->  	default:
->  		return -EINVAL;
-> @@ -350,7 +350,7 @@ static int fxos8700_set_scale(struct fxos8700_data *data,
->  	struct device *dev = regmap_get_device(data->regmap);
+> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,pm8018-adc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,pm8018-adc.yaml
+> index d186b713d6a7..fee30e6ddd62 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/qcom,pm8018-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,pm8018-adc.yaml
+> @@ -64,7 +64,7 @@ required:
+>    - adc-channel@f
 >  
->  	if (t == FXOS8700_MAGN) {
-> -		dev_err(dev, "Magnetometer scale is locked at 1200uT\n");
-> +		dev_err(dev, "Magnetometer scale is locked at 0.1uT\n");
->  		return -EINVAL;
->  	}
->  
-> @@ -393,7 +393,7 @@ static int fxos8700_get_scale(struct fxos8700_data *data,
->  	static const int scale_num = ARRAY_SIZE(fxos8700_accel_scale);
->  
->  	if (t == FXOS8700_MAGN) {
-> -		*uscale = 1200; /* Magnetometer is locked at 1200uT */
-> +		*uscale = 100000; /* Magnetometer scale is locked at 0.1 uT */
-See Documentation/ABI/testing/sysfs-bus-iio
-magnetometer channel units are Gauss. 
-0.1ut = 0.001g so uscale should be 1000 I think with available changed to match.
-
->  		return 0;
->  	}
->  
-> @@ -563,7 +563,7 @@ static IIO_CONST_ATTR(in_accel_sampling_frequency_available,
->  static IIO_CONST_ATTR(in_magn_sampling_frequency_available,
->  		      "1.5625 6.25 12.5 50 100 200 400 800");
->  static IIO_CONST_ATTR(in_accel_scale_available, "0.000244 0.000488 0.000976");
-> -static IIO_CONST_ATTR(in_magn_scale_available, "0.000001200");
-> +static IIO_CONST_ATTR(in_magn_scale_available, "0.100000")
->  
->  static struct attribute *fxos8700_attrs[] = {
->  	&iio_const_attr_in_accel_sampling_frequency_available.dev_attr.attr,
+>  patternProperties:
+> -  "^(adc-channel@)[0-9a-f]$":
+> +  "^(adc-channel|mpp[0-9]+)@[0-9a-f]$":
+>      type: object
+>      description: |
+>        ADC channel specific configuration.
 

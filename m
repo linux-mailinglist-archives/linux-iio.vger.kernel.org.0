@@ -2,45 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29686641D90
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:02:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49018641D96
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:14:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbiLDPCk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Dec 2022 10:02:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59344 "EHLO
+        id S230000AbiLDPOT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Dec 2022 10:14:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbiLDPCh (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:02:37 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47C210CF
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 07:02:36 -0800 (PST)
+        with ESMTP id S229834AbiLDPOT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:14:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4302213F43
+        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 07:14:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D74360AFC
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 15:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955C4C433D6;
-        Sun,  4 Dec 2022 15:02:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9A8760EA9
+        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 15:14:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1A5C433D6;
+        Sun,  4 Dec 2022 15:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670166155;
-        bh=yoUjRWf69w+QzljYXydQFrVG3Zh62+9Cr3eCCv0RxUQ=;
+        s=k20201202; t=1670166857;
+        bh=h9n9iGd7yNxGHih5bpKKKNHOdJSoLBnXm8faAHn8tZ0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kudX/fowa1iRwmuiKGkoHF+bvM9NOBNW93FW9maNWRY2I4ZQTpjkkFzjbJCH8jhew
-         taGZ/DZSJdYXI8cboP/qLsm8qknAmEARwxIGXaJlV0Z8aA07X0QUEtmGo7VQoPc492
-         +UY537LBLNTTiLwpBAjKZ5yvRoEbsBs7aH9U3HnYihptmNEmgnnikD4KWpOc1TJSHh
-         jQm2ppkwT+FTmbjkrRaiawWH214ZZXm5ECwGoPC8dCT/rlt9wGqPNBDS9DyGHzxgg7
-         rGUI8aAVB7UBXBULZ5S1z8ZVUgNbCeIR424nJZACKidYUwoQgOHDDhlgthbo4cLPbr
-         hdm/TNPp/4TsQ==
-Date:   Sun, 4 Dec 2022 15:15:21 +0000
+        b=RWUvdHCYIXsJGs4/iCOhD/QLFIy5oycnHijN86Tai7MU8jPew4cy1mIvX6w5jubrg
+         cgNsuedUNNUl01nP47jJDxN5zQ09t1rZF1+xc+s9ZaOQpydZtNZsicHm5kItAfzgaU
+         5kQ/sBk7YoormlCOKiV5FAZGbj28zqe+ycoR39ENwD4raYN42IZdzFwvtv+qOZgEQ7
+         Tc+a3C9VKvxTHuYo/avZgxY+RLy1QQ8WKBDo+CXuLY0qdnBDl7ERZOdxEjMPNc+Nvr
+         WdQopvgjFu1kLgjJgew0yeUiHWLoDZjtgUeWxFk4dNzL60Y0kur37n8WeSV7tKoq91
+         ch94ew5Abb9vA==
+Date:   Sun, 4 Dec 2022 15:27:03 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Carlos Song <carlos.song@nxp.com>
 Cc:     lars@metafoo.de, rjones@gateworks.com, Jonathan.Cameron@huawei.com,
         haibo.chen@nxp.com, linux-imx@nxp.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 3/4] iio: imu: fxos8700: fix ODR offset error
-Message-ID: <20221204151521.208e6a7d@jic23-huawei>
-In-Reply-To: <20221202103538.2218925-4-carlos.song@nxp.com>
+Subject: Re: [PATCH 4/4] iio: imu: fxos8700: fix magnetometer scale getting
+ error
+Message-ID: <20221204152703.4e83f951@jic23-huawei>
+In-Reply-To: <20221202103538.2218925-5-carlos.song@nxp.com>
 References: <20221202103538.2218925-1-carlos.song@nxp.com>
-        <20221202103538.2218925-4-carlos.song@nxp.com>
+        <20221202103538.2218925-5-carlos.song@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,68 +55,74 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri,  2 Dec 2022 18:35:37 +0800
+On Fri,  2 Dec 2022 18:35:38 +0800
 Carlos Song <carlos.song@nxp.com> wrote:
 
-> Correct offset of ODR configure is needed when configure the register
-> and read ODR data from the register.
+> Incorrect iio channel type cause a magnetometer scale getting
+> error. Meanwhile magnetometer scale and available magnetometer
+> scale should be locked as 0.1uT according to the datasheet.
 > 
-> Give the correct offset to value when configuring ODR bit and
-> reading ODR data from CTRL_REG1 register.
+> Set magn sensor type "IIO_MAGN" and modify magn_scale fixed "0.1uT".
 > 
 > Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
-> Fixes: 058f2a09e645 ("iio: imu: fxos8700: fix CTRL_REG1 register configuration error")
 > Signed-off-by: Carlos Song <carlos.song@nxp.com>
 > Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
-Minor suggestion inline.
-
-Btw, I'm not particularly keen on internal review tags.
-I know the policy varies by company, but it it isn't too much of a problem, I'd
-prefer to have seen Haibo Chen's review on list as that then gives me some
-way to build trust in Haibo's reviews over the long run!
-
-If not possible, then that's fine.
-
-Jonathan
-
 > ---
->  drivers/iio/imu/fxos8700_core.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  drivers/iio/imu/fxos8700_core.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
 > diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-> index 60c08519d8af..27e3bd61d054 100644
+> index 27e3bd61d054..8d46462dca76 100644
 > --- a/drivers/iio/imu/fxos8700_core.c
 > +++ b/drivers/iio/imu/fxos8700_core.c
-> @@ -147,6 +147,7 @@
->  #define FXOS8700_CTRL_ODR_MSK       0x38
->  #define FXOS8700_CTRL_ODR_MAX       0x00
->  #define FXOS8700_CTRL_ODR_MIN       GENMASK(4, 3)
-> +#define FXOS8700_CTRL_ODR_OFFSET    3
->  
->  /* Bit definitions for FXOS8700_M_CTRL_REG1 */
->  #define FXOS8700_HMS_MASK           GENMASK(1, 0)
-> @@ -498,8 +499,7 @@ static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
->  	if (ret)
->  		return ret;
->  
-> -	val &= FXOS8700_CTRL_ODR_MSK;
-> -
-> +	val = (val & FXOS8700_CTRL_ODR_MSK) >> FXOS8700_CTRL_ODR_OFFSET;
+> @@ -319,7 +319,7 @@ static enum fxos8700_sensor fxos8700_to_sensor(enum iio_chan_type iio_type)
+>  	switch (iio_type) {
+>  	case IIO_ACCEL:
+>  		return FXOS8700_ACCEL;
+> -	case IIO_ANGL_VEL:
+> +	case IIO_MAGN:
 
-FIELD_GET() / FIELD_PREP() preferred as it avoids need to separately define
-an offset.
+Ahah. This had me confused on looking at earlier patch ;)
 
->  	for (i = 0; i < odr_num; i++)
->  		if (val == fxos8700_odr[i].bits)
->  			break;
-> @@ -636,7 +636,8 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
+Amusingly much of the code 'worked' because it was use as a boolean return
+so -EINVAL had same affect as FXOS8700_MAGN.
+
+This fix stands on it's own as a separate fix, so I'd rather see it in a
+trivial patch of it's own before this one.
+
+
+>  		return FXOS8700_MAGN;
+>  	default:
+>  		return -EINVAL;
+> @@ -350,7 +350,7 @@ static int fxos8700_set_scale(struct fxos8700_data *data,
+>  	struct device *dev = regmap_get_device(data->regmap);
 >  
->  	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
->  	return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
-> -			   FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
-> +			   FXOS8700_CTRL_ODR_MAX << FXOS8700_CTRL_ODR_OFFSET |
-> +			   FXOS8700_ACTIVE);
->  }
+>  	if (t == FXOS8700_MAGN) {
+> -		dev_err(dev, "Magnetometer scale is locked at 1200uT\n");
+> +		dev_err(dev, "Magnetometer scale is locked at 0.1uT\n");
+>  		return -EINVAL;
+>  	}
 >  
->  static void fxos8700_chip_uninit(void *data)
+> @@ -393,7 +393,7 @@ static int fxos8700_get_scale(struct fxos8700_data *data,
+>  	static const int scale_num = ARRAY_SIZE(fxos8700_accel_scale);
+>  
+>  	if (t == FXOS8700_MAGN) {
+> -		*uscale = 1200; /* Magnetometer is locked at 1200uT */
+> +		*uscale = 100000; /* Magnetometer scale is locked at 0.1 uT */
+See Documentation/ABI/testing/sysfs-bus-iio
+magnetometer channel units are Gauss. 
+0.1ut = 0.001g so uscale should be 1000 I think with available changed to match.
+
+>  		return 0;
+>  	}
+>  
+> @@ -563,7 +563,7 @@ static IIO_CONST_ATTR(in_accel_sampling_frequency_available,
+>  static IIO_CONST_ATTR(in_magn_sampling_frequency_available,
+>  		      "1.5625 6.25 12.5 50 100 200 400 800");
+>  static IIO_CONST_ATTR(in_accel_scale_available, "0.000244 0.000488 0.000976");
+> -static IIO_CONST_ATTR(in_magn_scale_available, "0.000001200");
+> +static IIO_CONST_ATTR(in_magn_scale_available, "0.100000")
+>  
+>  static struct attribute *fxos8700_attrs[] = {
+>  	&iio_const_attr_in_accel_sampling_frequency_available.dev_attr.attr,
 

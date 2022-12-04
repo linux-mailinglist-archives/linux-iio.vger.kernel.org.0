@@ -2,110 +2,89 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BD0C641E91
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 19:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA657641F85
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 21:28:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230201AbiLDSJT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Dec 2022 13:09:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55920 "EHLO
+        id S230149AbiLDU2P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Dec 2022 15:28:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230156AbiLDSJT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 13:09:19 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863B211149
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 10:09:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CE3B60EDD
-        for <linux-iio@vger.kernel.org>; Sun,  4 Dec 2022 18:09:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C26CC433D6;
-        Sun,  4 Dec 2022 18:09:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670177357;
-        bh=/dCRszoLcj1qV28iCaeHCN5qlhpgpEV5fwBvL77bAec=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=BPrtsVEWLc0TisZfluE1JKetBhzGy36U4vEGb8lfKdFguyzLLjuMco5vNBJaD8jvE
-         /dDo65x6NjLYq+y7Ee2Ecli82q6nCPoiryX4yqQxdLY4y9x66zBoKcutn57f0hPBsp
-         Cy9ndKPgQNGmw1LlfbdhccXnSTpit+GFvthDB8lLMmzGOdPU/JFdGSkOkTvsZPKAFF
-         XmwHRzl2yXt45LIWhRYhloX17+26bRZ2sDN+iJOm2CFr0GaRtSo+86ASYBI2gKPoM3
-         UYyOukIK/fzitSigN72Nl8/ZbMRJScFYqXscrMtNEuFu7I5MvILP6f+Cx8bnmFlMMY
-         b1D8TuPZKRmbQ==
-Date:   Sun, 4 Dec 2022 18:22:01 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Matti Vaittinen <mazziesaccount@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jagath Jog J <jagathjog1996@gmail.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Dmitry Rokosov <DDRokosov@sberdevices.ru>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Michael Hennerich <michael.hennerich@analog.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Martyn Welch <martyn.welch@collabora.com>,
-        Gwendal Grignou <gwendal@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Tomasz Duszynski <tduszyns@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 14/14] iio: pressure: ms5611: Switch to fully devm_
- managed registration.
-Message-ID: <20221204182201.42dcd76a@jic23-huawei>
-In-Reply-To: <b6427817-6b44-c3c6-1e6d-4472e3eb066a@gmail.com>
-References: <20221016163409.320197-1-jic23@kernel.org>
-        <20221016163409.320197-15-jic23@kernel.org>
-        <b6427817-6b44-c3c6-1e6d-4472e3eb066a@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
+        with ESMTP id S230246AbiLDU2L (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 15:28:11 -0500
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a01:238:4321:8900:456f:ecd6:43e:202c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147039FF2;
+        Sun,  4 Dec 2022 12:28:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+        MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=TyfDaMtztYYPDEYsKXqy11jDzU7U54F8h/OzVMIpyZE=; b=7eoC48YIZb45uRCaZy7TQ5X/cJ
+        VMllGdkx3FCzCmYNQtNAQ//E9FpeArRJS1XnH9dHUWgcRMU3kdMfGBUJ/5VaygVaolS3olie8G2+v
+        95RrobXhrThMgAYcucx8bMi/Jc907r6Wv1rA82rzmRQIa/mZoMBtqjpuJnxq9+VKEs/ANX77gIhfd
+        GE4taFDPbV0Oq4tBW+y7/YKz5nQ9PTKcwwwT30Nm8DKjSEhEUH7X62by8DNAvIb2zxpbAsDJyubJX
+        YoAbxHLACQecZKmTtZvM9uq4beZE9p5HIzaOTodi/ZTTiXGXij36b7yhp3IJm6yA7Kei9ZAX/3/GS
+        yE9k7cFw==;
+Received: from p200300ccff4496001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff44:9600:1a3d:a2ff:febf:d33a] helo=aktux)
+        by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <andreas@kemnade.info>)
+        id 1p1vaa-0007YB-JF; Sun, 04 Dec 2022 21:27:52 +0100
+Date:   Sun, 4 Dec 2022 21:27:51 +0100
+From:   Andreas Kemnade <andreas@kemnade.info>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     lars@metafoo.de, jiasheng@iscas.ac.cn, paul@crapouillou.net,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH] iio:adc:twl6030: Enable measurements of VUSB, VBAT and
+ others
+Message-ID: <20221204212751.2de52084@aktux>
+In-Reply-To: <20221204154152.5f7948b9@jic23-huawei>
+References: <20221201181635.3522962-1-andreas@kemnade.info>
+        <20221204154152.5f7948b9@jic23-huawei>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Score: -1.0 (-)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 17 Oct 2022 09:30:01 +0300
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sun, 4 Dec 2022 15:41:52 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On 10/16/22 19:34, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> On Thu,  1 Dec 2022 19:16:35 +0100
+> Andreas Kemnade <andreas@kemnade.info> wrote:
+> 
+> > Some inputs need to be wired up to produce proper measurements,
+> > without this change only near zero values are reported.
 > > 
-> > All the remaining calls in probe() have devm_ equivalents so
-> > switching to those allows the remove() callbacks to be deleted.
-> > No functional change.  
+> > Signed-off-by: Andreas Kemnade <andreas@kemnade.info>  
 > 
-> Right :) So please ignore my last comment in the patch 13/14 :) The one 
-> concerning the commit message is still valid though :)
-> 
-> > 
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Cc: Tomasz Duszynski <tduszyns@gmail.com>  
-> 
-> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Sounds like a fix to me.  If so, Fixes tag?
 
-Applied to the togreg branch of iio.git - some fuzz due to crossing
-with i2c probe_new() mass conversion and the changes that affected
-the previous patch.
+seems to be there since the beginning, to it would be
+Fixes: 1696f36482e70 ("iio: twl6030-gpadc: TWL6030, TWL6032 GPADC driver")
 
-If anyone wants to sanity check the result, see the testing branch of iio.git
-in a few minutes.
-
-Thanks,
-
-Jonathan
+I think it was just not used with the charger (which is not in mainline yet),
+so it was probably ignored.
 
 > 
-> > ---
-> >   drivers/iio/pressure/ms5611.h      |  1 -
-> >   drivers/iio/pressure/ms5611_core.c | 17 +++--------------
-> >   drivers/iio/pressure/ms5611_i2c.c  |  6 ------
-> >   drivers/iio/pressure/ms5611_spi.c  |  6 ------
-> >   4 files changed, 3 insertions(+), 27 deletions(-)
-> >   
+> Anything in here we should be turning off again if the driver is removed 
+> or toggling on suspend? If not, other than the space below this looks fine to me.
 > 
+I would consider that as configuration, comparing with the nearest relative twl4030,
+there a similar bit is set in the probe() without disabling it in the remove().
 
+But I think we should set TWL6030_GPADCR in remove() as we do in suspend(),
+but that is another fix.
+
+Regards,
+Andreas

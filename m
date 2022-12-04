@@ -2,47 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3684641DA5
-	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:31:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 86243641DA7
+	for <lists+linux-iio@lfdr.de>; Sun,  4 Dec 2022 16:33:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbiLDPbb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 4 Dec 2022 10:31:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S229999AbiLDPdk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 4 Dec 2022 10:33:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbiLDPba (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:31:30 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 302B315A22;
-        Sun,  4 Dec 2022 07:31:29 -0800 (PST)
+        with ESMTP id S229986AbiLDPdj (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 4 Dec 2022 10:33:39 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E49120AD;
+        Sun,  4 Dec 2022 07:33:38 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D69B6B80184;
-        Sun,  4 Dec 2022 15:31:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C05C433D6;
-        Sun,  4 Dec 2022 15:31:24 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 461D0B80184;
+        Sun,  4 Dec 2022 15:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C36C433C1;
+        Sun,  4 Dec 2022 15:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670167886;
-        bh=HBg8TSFzV0yz0mWLK3W3gMprxAOJN/By4+fDpc0t1Es=;
+        s=k20201202; t=1670168015;
+        bh=yxKf05+cFmoyI5uei5HHUeN5U35ydw6bkv8/4NHs5O8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=OY4ShmAR1vD/rSuVE221e/Rrq4iGpgxBvheFV5WpepelePy5q8VJ45V14YnyyKPBL
-         PJ74/z2mkyfdpRH8r+CLLQiMrFonf4sBl1g8H4Y/0IBNeiTK2kplEBHSjdKLNWumXL
-         qxhBdKR4vzXy9P3Qr2PhvYLnv97dYfquDiwHNKCvPvAmoizt36cWwdy9GGU7KZ/2hO
-         Wh6YsNE4HhOj4Bv9nYxSOBmWLljm53D2Z74sQN7KdRteKsMYd8d9/hV4bqfs/BWYqA
-         OXNR1Gw36llNlpFfsoXqzeiM3cV5zX4HfKcW8zYIbLFleIX8r+2HHKsQ/DQd31c1y4
-         dXDBs3Pmpg//A==
-Date:   Sun, 4 Dec 2022 15:44:12 +0000
+        b=ELgifSQkKU4A+1JzRiGvD7bTznHKS72pg+BDZRe4cUG0R6dKmwqMCgMiXTpXHMTCn
+         bDTmrpgfrr1w07AMOJGAJhASWZ38b889pBJgAiDFlMFTsmA7ISUdkh+SAvaZ/210FU
+         CCDCGV0jaSugJdN514xNHZuP3kh9tKyy/S4sQx2CWGIEFsPH0xaSDPlEroPufnQfNz
+         I5TudLa8nQigMXTR2muAA/2w5iqPDnDt8nhSs/VMUvvma1WA9aR20mZ7a/4Id1XZCX
+         wcgngIuRezRpHbLU0g3JXzbZLtaW5L/f/itoehO1Z1a2/C6NvW8NUTluwaK3vroyB7
+         vFZD80jO4Xq9g==
+Date:   Sun, 4 Dec 2022 15:46:21 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Fabio Estevam <festevam@gmail.com>, lars@metafoo.de,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: ad5686: Add an entry for
- AD5337
-Message-ID: <20221204154412.4bae1e5c@jic23-huawei>
-In-Reply-To: <0b2f414d-57a0-a427-3421-1ba8331459d9@linaro.org>
-References: <20221130182632.3856675-1-festevam@gmail.com>
-        <0b2f414d-57a0-a427-3421-1ba8331459d9@linaro.org>
+To:     <ye.xingchen@zte.com.cn>
+Cc:     <eugen.hristev@microchip.com>, <lars@metafoo.de>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <claudiu.beznea@microchip.com>, <linux-iio@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: at91-sama5d2_adc: use sysfs_emit() to instead
+ of   scnprintf()
+Message-ID: <20221204154621.3b76d888@jic23-huawei>
+In-Reply-To: <202212011142333790361@zte.com.cn>
+References: <202212011142333790361@zte.com.cn>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,32 +57,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 1 Dec 2022 11:39:38 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Thu, 1 Dec 2022 11:42:33 +0800 (CST)
+<ye.xingchen@zte.com.cn> wrote:
 
-> On 30/11/2022 19:26, Fabio Estevam wrote:
-> > AD5337 belongs to the same family as the AD5338.
-> > 
-> > The difference is that the AD5337 has 8-bit resolution instead of 10-bit.
-> > 
-> > Add a compatible entry for AD5337.
-> > 
-> > Signed-off-by: Fabio Estevam <festevam@gmail.com>  
+> From: ye xingchen <ye.xingchen@zte.com.cn>
 > 
+> Replace the open-code with sysfs_emit() to simplify the code.
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Series applied. Note this is now 6.3 material unless we end up with an rc9 for
-some reason (which is very unlikely).
-Until I can rebase the tree on rc1 this will just be pushed out as testing
-for 0-day etc to poke at.
+> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+Applied. 
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/at91-sama5d2_adc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Best regards,
-> Krzysztof
+> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+> index ed4f8501bda8..50d02e5fc6fc 100644
+> --- a/drivers/iio/adc/at91-sama5d2_adc.c
+> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
+> @@ -2181,7 +2181,7 @@ static ssize_t at91_adc_get_fifo_state(struct device *dev,
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct at91_adc_state *st = iio_priv(indio_dev);
 > 
+> -	return scnprintf(buf, PAGE_SIZE, "%d\n", !!st->dma_st.dma_chan);
+> +	return sysfs_emit(buf, "%d\n", !!st->dma_st.dma_chan);
+>  }
+> 
+>  static ssize_t at91_adc_get_watermark(struct device *dev,
+> @@ -2190,7 +2190,7 @@ static ssize_t at91_adc_get_watermark(struct device *dev,
+>  	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+>  	struct at91_adc_state *st = iio_priv(indio_dev);
+> 
+> -	return scnprintf(buf, PAGE_SIZE, "%d\n", st->dma_st.watermark);
+> +	return sysfs_emit(buf, "%d\n", st->dma_st.watermark);
+>  }
+> 
+>  static IIO_DEVICE_ATTR(hwfifo_enabled, 0444,
 

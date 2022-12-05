@@ -2,66 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 700DC6437AB
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Dec 2022 23:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C05664386A
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Dec 2022 23:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232429AbiLEWHP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Dec 2022 17:07:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39438 "EHLO
+        id S233026AbiLEWux (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Dec 2022 17:50:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231191AbiLEWHO (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 17:07:14 -0500
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197DBE88;
-        Mon,  5 Dec 2022 14:07:12 -0800 (PST)
-Received: by mail-ot1-f42.google.com with SMTP id t19-20020a9d7753000000b0066d77a3d474so8153938otl.10;
-        Mon, 05 Dec 2022 14:07:12 -0800 (PST)
+        with ESMTP id S232135AbiLEWup (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 17:50:45 -0500
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DB960C8;
+        Mon,  5 Dec 2022 14:50:44 -0800 (PST)
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-12c8312131fso15297218fac.4;
+        Mon, 05 Dec 2022 14:50:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AzxSWx9NN6vl69+NIDxKRNbatlDFCGn78OKTeHWAgYA=;
-        b=DBvRlOcJwRGtdRtjs0ihTJqDDmnpEm1x1rDk0dQJUxxr2krZhyq9e/viwLUk22ho0P
-         6USjx/GY/i11cBhQJYmW7cjdYfQDufyVslV5UTz2LZl9mmrfuDiZV1cu+2JX3IkMhLNc
-         pMo+SI3RKVTP2qf6jIuoIYZibuIDS3VzrT+KI7zhjFpgae18ewwcZtbOOABEc4BznxvO
-         xbSt2Xwey+a/Ka/8f5BTw9DM6s2/tF6Io8rJJAdECkzGlCHTs/B8qG16oi7cLljgFd2H
-         2YAka9NA9/NvpJNY4Kp+8jovuSYQm4ic1n3nrqNC7DxlhvQKkmjPkT7dO6aLFY5TKRel
-         kb5g==
-X-Gm-Message-State: ANoB5pkLegzrkB4WM/chATqLjm3k+ryg4Z7jGfopPLFHeb4SHFBwsDwt
-        JrLvOirU2ISqbvz1oceNSA==
-X-Google-Smtp-Source: AA0mqf7fjIp7rNUXvJ0WHMseWKEOBQTSK9aHB/qZF6np4G0yQsuJTsBZ4CVyCsSs0t3dcv7pZWY+yw==
-X-Received: by 2002:a05:6830:1e65:b0:661:b632:4259 with SMTP id m5-20020a0568301e6500b00661b6324259mr33230685otr.304.1670278031257;
-        Mon, 05 Dec 2022 14:07:11 -0800 (PST)
+        bh=TxzHvxWYmZNaSPLEYbPmMtXeESk2K7kyfAJQblqVQ4Y=;
+        b=J7EJVj65xEzNemPIjtCvtsbeKGBMvJkD6qDOySW1LhpNKCwB8S4RXKRDLrWrdgEv3l
+         XCmSqJUuRidalQ2rr1weme+ZYipxdpnfxX8qILWblZWx7U1EHnqgFgRHzwilYHsvkYti
+         JJrNk+o0BFW2szZ6wzO+tv5ooMT7uRwwRPk0ewYsh1Y5tgNYhkwKnhnLJNP2jsFmU6ND
+         qp+Z6pqFQ5hCv5nVTNl8Sv0CuLPpeol6ZiDGhkoq+ani0Hz5QcA85eqKR/aE5bBxmmdd
+         JYYktI+5pIU8M5djZ3y2V8XclxrqrhrfAbSUMo6gaSHaALa8aoWA6bnyr+0g5p3fqbA/
+         X0Qw==
+X-Gm-Message-State: ANoB5pku6zBlAoXZX9M5hWcIDKQYBB16yGZJ/mIH7Gc+SugRCnCPVggt
+        1or/Iz3tMgsGtH8Uh0X24A==
+X-Google-Smtp-Source: AA0mqf7KXJ756pvRNU+pFCeaYq8k5ygB2LcP2STdNxTP3B6jBGxIhCZjdG51aLUleUczY8Cm7yTj0A==
+X-Received: by 2002:a05:6870:ad09:b0:143:bdd8:ee2f with SMTP id nt9-20020a056870ad0900b00143bdd8ee2fmr21163024oab.7.1670280644076;
+        Mon, 05 Dec 2022 14:50:44 -0800 (PST)
 Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id h13-20020a4ad74d000000b004a0ad937ccdsm3240951oot.1.2022.12.05.14.07.10
+        by smtp.gmail.com with ESMTPSA id y39-20020a05687045a700b0014435b51ef7sm6783694oao.30.2022.12.05.14.50.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Dec 2022 14:07:10 -0800 (PST)
-Received: (nullmailer pid 2726011 invoked by uid 1000);
-        Mon, 05 Dec 2022 22:07:09 -0000
-Date:   Mon, 5 Dec 2022 16:07:09 -0600
+        Mon, 05 Dec 2022 14:50:43 -0800 (PST)
+Received: (nullmailer pid 2831916 invoked by uid 1000);
+        Mon, 05 Dec 2022 22:50:42 -0000
+Date:   Mon, 5 Dec 2022 16:50:42 -0600
 From:   Rob Herring <robh@kernel.org>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
         linux-iio@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
-        linux-leds@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] dt-bindings: leds: Add 'cm3605' to
- 'linux,default-trigger'
-Message-ID: <20221205220709.GA2713165-robh@kernel.org>
-References: <20221204061555.1355453-1-dmitry.baryshkov@linaro.org>
- <20221204061555.1355453-5-dmitry.baryshkov@linaro.org>
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Subject: Re: [PATCH 0/6] Add RZ/V2M Compare-Match Timer (TIM) support
+Message-ID: <20221205225042.GA2812115-robh@kernel.org>
+References: <20221205145955.391526-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221204061555.1355453-5-dmitry.baryshkov@linaro.org>
+In-Reply-To: <20221205145955.391526-1-biju.das.jz@bp.renesas.com>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
@@ -73,27 +74,46 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sun, Dec 04, 2022 at 08:15:55AM +0200, Dmitry Baryshkov wrote:
-> Add 'cm3605' to possible values for 'linux,default-trigger'. This allows
-> one to specify Capella CM3605 proximity sensor as the LED trigger.
+On Mon, Dec 05, 2022 at 02:59:49PM +0000, Biju Das wrote:
+> This patch series aims to add support for Compare-Match Timer (TIM)
+> module found on RZ/V2M SoC.
 > 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->  Documentation/devicetree/bindings/leds/common.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> it is composed of 32 channels and channels 0-7 and 24-32 are
+> reserved for ISP usage.
 > 
-> diff --git a/Documentation/devicetree/bindings/leds/common.yaml b/Documentation/devicetree/bindings/leds/common.yaml
-> index f5c57a580078..4ffb1cdf6845 100644
-> --- a/Documentation/devicetree/bindings/leds/common.yaml
-> +++ b/Documentation/devicetree/bindings/leds/common.yaml
-> @@ -101,6 +101,7 @@ properties:
->          # LED is triggered by SD/MMC activity
->        - pattern: "^mmc[0-9]+$"
->        - pattern: "^cpu[0-9]*$"
-> +      - const: cm3605
+> Channel 22 is modelled as clock source and Channel 23 is modelled as clock
+> event driver and the rest of the channels are modelled as counter driver
+> as it provides
 
-No. This would never scale to the 1000s of devices we have.
+Why did you pick those 2 counters for those functions?
 
-Maybe 'trigger-sources' does what you need.
+Unless the h/w blocks are different, this is an abuse of compatible 
+strings. What's the h/w difference that makes you care which counter the 
+OS picks? That's what the DT should describe. If any timer will do, just 
+let the OS pick.
+
+> 
+> 1) counter for counting
+> 2) configurable counter value for generating timer interrupt
+> 3) userspace event for each interrupt.
+> 
+> logs:-
+> Counter driver:
+> Counter driver is tested by reading counts and interrupts tested by
+> counter-example in tools/counter/counter_example.c
+> 
+> Count snapshot value:
+> 3114
+> Output from counter_example when it triggers interrupts:
+> Timestamp 0: 24142152969        Count 0: 5
+> Error Message 0: Success
+> 
+> Clock source:
+> Clock source driver is tested by clock-source-switch app.
+> [ 1275.703567] clocksource: Switched to clocksource arch_sys_counter
+> [ 1275.710189] clocksource: Switched to clocksource a4000b00.timer
+
+Do you have any use case to really switch. Doing so disables the vDSO 
+access to the clocksource.
 
 Rob

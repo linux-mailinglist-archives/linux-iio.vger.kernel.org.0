@@ -2,77 +2,88 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86530642DAB
-	for <lists+linux-iio@lfdr.de>; Mon,  5 Dec 2022 17:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4D06437A1
+	for <lists+linux-iio@lfdr.de>; Mon,  5 Dec 2022 23:04:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbiLEQu0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Dec 2022 11:50:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46816 "EHLO
+        id S230084AbiLEWEh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Dec 2022 17:04:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232240AbiLEQtt (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 11:49:49 -0500
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C745321809
-        for <linux-iio@vger.kernel.org>; Mon,  5 Dec 2022 08:49:04 -0800 (PST)
-Received: by mail-wm1-x342.google.com with SMTP id i131-20020a1c3b89000000b003d1cb516ce0so2771955wma.4
-        for <linux-iio@vger.kernel.org>; Mon, 05 Dec 2022 08:49:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=Z2wBWagY9UnEZ+M5YPDdGkg6nVUsQfYS1BhjpcwGEao2GhG01+Mm/qvV+1fKOq1lbu
-         EFS78qR+UGfEwXQVt6IRXk6jTGT8mo+KAwwjj0fZxBmjE1jztugOoJP4/rka0x6XFhxu
-         W6iUCvsIDO6eHcdCHFvdIDlIVpJCsES5SD3xSnapoHClZmLcHlXbjXoeix+TX99ab7ry
-         BqOOHDFzUlmJeyU3OvUitATOsPkFA0DOczbi/Afsjm9NHI/YtApk72ny0qjFhFTXO+XP
-         yKXAtBeMHMlIwSKvmuRpEfOfWiK9b959mo8P7Fx64Ot+uHxQXUUrd10S+RG2s/yWLOX2
-         BSUg==
+        with ESMTP id S231895AbiLEWEg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 17:04:36 -0500
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C13D211470;
+        Mon,  5 Dec 2022 14:04:35 -0800 (PST)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-14449b7814bso10197411fac.3;
+        Mon, 05 Dec 2022 14:04:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O4WPtqOs6pYDke8VCfpzwsIX+8zN33o8tLS2XMy/lFU=;
-        b=lFjYMS2FFE2AIa+1+WZGI9LjmAqJhzkjCGnhBFOX+hY87YVgo3/C5/bZDwda+AVsgY
-         tF52OE/NetMDpvNrsbUxfV5+sPnugIWOZVp1qBIAzxye7sSqkSlHEgdu1c0scz/yaWw2
-         DG9ygDNzewSVYa3PRyqCXcCGevt933ewrG2MR7bBR6A8ovHVZWn9UOKZN17Ho5ZdYkg+
-         +utuWHn05aA5mhRykceS6pckE5dwUfef02ctzpu9oHnzjRipsqmgrSd47luoUi0C1j9i
-         uAkC6ZMMRkNuLrOXi9JLTtc97yHbZhnvLB6Ny54Jt071CeJAoyw5JwXvR0s6vL5FsdEG
-         aZQA==
-X-Gm-Message-State: ANoB5pkIM70ZnFZZm13kxFsoWyD7hHC7Iuf1om6Pf7Qje3vualEAJNd7
-        9EownVl21g+9GFBgTVCDEN1EIPk2c1u6PNkjwC0=
-X-Google-Smtp-Source: AA0mqf6LlThRqxALxahU+d5CDCL5XgA0Iri4oQFEx6hETTBFBZxUw9iI5CXyM5b3WvWotoaM22oBvK+CwFtVO/zgxX4=
-X-Received: by 2002:a7b:c8d0:0:b0:3cf:ca91:7094 with SMTP id
- f16-20020a7bc8d0000000b003cfca917094mr60628535wml.24.1670258943314; Mon, 05
- Dec 2022 08:49:03 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X0o74DAKGRH7Cm9VJkIU43IM86KKjNPrQtB4w12QWbA=;
+        b=sGqzU9+ZxURRohoE2SNQ/14EyCb2k0Cy+7lOJyErZfYbkAFcsDoPIpvnNQVexFgN2s
+         ediQ3fzehZrnF3pD8emD2MfLQfCmgmYomjQu/dNlmS1G+ZawUO1vVx1u2GmfRfwCfzDe
+         h4yUJH70sSA9oUesf48iCdYunkIOWjo+6TyXr2drgU5DQEyoE6htbINVA3EmZXJWgS9J
+         LIKMTf3EQXXZlYhlTZPoSWHIgcXWeZHN9fralygXCnzEmEp3+3Y4OHAO/G8I4m1R63En
+         Ph6kRJdcbOh2/kSz4vzDu73nRrbU2go8CjEQPFk5KQqwiVCvtweC4i+hmkxHXAgeQp3K
+         KC3w==
+X-Gm-Message-State: ANoB5pl9yAenJ6Igg5VkfNU+EZkZPRZyb9E0+PQiVnICx0SN6P8kk//Y
+        wFdfhsVCrmRVcuO3Gqj+yg==
+X-Google-Smtp-Source: AA0mqf5+j5X2a2K39tY4PrzDbQKhAY0J9u3F+3pE3tsRI6votXOld4GH5/oZPKPKFAfPEktnYb/4qg==
+X-Received: by 2002:a05:6870:ea81:b0:144:6881:d7e6 with SMTP id s1-20020a056870ea8100b001446881d7e6mr6088539oap.94.1670277875064;
+        Mon, 05 Dec 2022 14:04:35 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id r127-20020aca4485000000b0034d9042758fsm7461646oia.24.2022.12.05.14.04.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Dec 2022 14:04:34 -0800 (PST)
+Received: (nullmailer pid 2709108 invoked by uid 1000);
+        Mon, 05 Dec 2022 22:04:33 -0000
+Date:   Mon, 5 Dec 2022 16:04:33 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        linux-leds@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dt-bindings: input: qcom,pm8921-keypad: convert
+ to YAML format
+Message-ID: <20221205220433.GA2684995-robh@kernel.org>
+References: <20221204061555.1355453-1-dmitry.baryshkov@linaro.org>
+ <20221204061555.1355453-2-dmitry.baryshkov@linaro.org>
 MIME-Version: 1.0
-Received: by 2002:a05:6000:5c1:0:0:0:0 with HTTP; Mon, 5 Dec 2022 08:49:02
- -0800 (PST)
-Reply-To: phmanu14@hotmail.com
-From:   Philip Manul <zagbamdjala@gmail.com>
-Date:   Mon, 5 Dec 2022 08:49:02 -0800
-Message-ID: <CAPCnorG0wZz4L65xmUUzHEvxvuhrsq0nQnSPJqno3Ah89AhSwA@mail.gmail.com>
-Subject: REP:
-To:     in <in@proposal.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221204061555.1355453-2-dmitry.baryshkov@linaro.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
---=20
-Guten tag,
-Mein Name ist Philip Manul. Ich bin von Beruf Rechtsanwalt. Ich habe
-einen verstorbenen Kunden, der zuf=C3=A4llig denselben Namen mit Ihnen
-teilt. Ich habe alle Papierdokumente in meinem Besitz. Ihr Verwandter,
-mein verstorbener Kunde, hat hier in meinem Land einen nicht
-beanspruchten Fonds zur=C3=BCckgelassen. Ich warte auf Ihre Antwort zum
-Verfahren.
-Philip Manul.
+On Sun, Dec 04, 2022 at 08:15:52AM +0200, Dmitry Baryshkov wrote:
+> Convert the bindings for the keypad subdevices of Qualcomm PM8921 and
+> PM8058 PMICs from text to YAML format.
+> 
+> While doing the conversion also change linux,keypad-no-autorepeat
+> property to linux,input-no-autorepeat. The former property was never
+> used by DT and was never handled by the driver.
+
+Changing from the documented one to one some drivers use. I guess 
+that's a slight improvement. Please see this discussion[1]. 
+
+Rob
+
+[1] https://lore.kernel.org/all/YowEgvwBOSEK+kd2@google.com/

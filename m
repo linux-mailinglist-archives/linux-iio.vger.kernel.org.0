@@ -2,133 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA5E764399B
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 00:37:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70C2E643BCF
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 04:20:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbiLEXhS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 5 Dec 2022 18:37:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
+        id S233844AbiLFDUZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 5 Dec 2022 22:20:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232825AbiLEXgu (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 18:36:50 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2699A1FFA1;
-        Mon,  5 Dec 2022 15:36:29 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 471C7B815BD;
-        Mon,  5 Dec 2022 23:36:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5042C433D6;
-        Mon,  5 Dec 2022 23:36:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670283385;
-        bh=HmzCjfAOF4UyYdOVbdTC1bINOmWkHWowuczF6T9yrCo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=KAVNMilO9ElFYsCYk+f6sXJeBj3cqfDZZnWVz5y9TC8O8dp5L8y+M+vctPM6oQrkk
-         SryXr+iJKEjmF1uISoGHeOP9WgX8dBRvflov8duvWJDLyKec3hSd6MAmRDymTTMCRL
-         5RXEfls4gS1unqyR1QpBB5Ta/HrVRVFFxs0P0qDMmqAEXAKnZkaK4kH8miu56v1gGT
-         dZXCAZP8vTcDHfoNocPbp+sUafMRTd3US8iIf/7Jha6fCelImKXoboSIXsFFUHdRgc
-         VBo36gS03LeDEJOhHG+vzaKqpWp6Lr5mhd+LcfYr68SuDootsPYl5HcWJactq2okjo
-         dRui1sXuj766w==
-Received: by mail-vk1-f170.google.com with SMTP id o5so3760787vkn.7;
-        Mon, 05 Dec 2022 15:36:25 -0800 (PST)
-X-Gm-Message-State: ANoB5pm8YG4lWi20a4s+ZSvWHd1VkLuWyBz0sHEy+1wr0TWFsdqMou3i
-        BWIJpQVU3HKIcjNlcPySKHQ6kyL0mkoNRFMPbA==
-X-Google-Smtp-Source: AA0mqf45vIAxbqhtzcJrgQ9/zSu41J+UkpRu+Qvmux7lBoo2dhfhQAUIqUVwT2CGZiLqMQzjmDl3xNRIfH6P4NW2gmU=
-X-Received: by 2002:a1f:9110:0:b0:3bc:fc56:597 with SMTP id
- t16-20020a1f9110000000b003bcfc560597mr16411535vkd.14.1670283384892; Mon, 05
- Dec 2022 15:36:24 -0800 (PST)
-MIME-Version: 1.0
-References: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
- <20221117122256.GG93179@thinkpad> <a3da2ab9-ad36-2283-0659-ad8ebf877e17@linaro.org>
- <20221117155658.00005d08@Huawei.com> <9ddf7e56-f396-5720-9960-e3ef4aa9a204@linaro.org>
- <20221117165806.00007f55@huawei.com>
-In-Reply-To: <20221117165806.00007f55@huawei.com>
-From:   Rob Herring <robh+dt@kernel.org>
-Date:   Mon, 5 Dec 2022 17:36:12 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ980WdxiUzUSp+p9qTA_BA-n0e_+5qp9Kbw9==MoQpXw@mail.gmail.com>
-Message-ID: <CAL_JsqJ980WdxiUzUSp+p9qTA_BA-n0e_+5qp9Kbw9==MoQpXw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        with ESMTP id S233702AbiLFDUZ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 5 Dec 2022 22:20:25 -0500
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7531922514
+        for <linux-iio@vger.kernel.org>; Mon,  5 Dec 2022 19:20:23 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id s10so1756678ljg.1
+        for <linux-iio@vger.kernel.org>; Mon, 05 Dec 2022 19:20:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oiALkO4rnC9Gu1nW7FKSVg0MUO2Gu598TIaBBm3UFKo=;
+        b=rCBcl63/F6Niuy708YAPQul4O7KNWWu8j2jvlpkOlOMMtqO5pGi9Dd79n37g4h9qPE
+         af00f1jmXlSKao1P1zswJVUsxmBAvlVQEdE3VdKYZxD5xkZDZCE/b9RSX0V04UVXS5Qh
+         rx+6TiDDq36V212RATgVv5bRH2TEz73fITM+n9iJ64jxIM3zAkt8JMQMFFdpATm3+d3A
+         leA3+cEx9YKVEDXzhmkXJbVvJEeVHzfDP/o8N+x45cchcilZqzesv9a4MoKol1qcGwS6
+         cvMG3iTO1gCfE2AEc5Zzi68rvqGg5PFs2jHlms+mYJpRYegJ36BuvljPbuwcutHV+Q1t
+         +aYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oiALkO4rnC9Gu1nW7FKSVg0MUO2Gu598TIaBBm3UFKo=;
+        b=CJYetFhzjE2f8PJMkZ8xE6gpUyzDo19PH7cUYcaedlCn/DkXjTxPQLNyzCYMrupeM6
+         mmPd3Y+0JG+7QVRp2CJLHrTsTccqh5GXh3UKPvvNVvVNeR8Xdied4ZD+D5iAWbDNP9ts
+         8pBivL0z05iUHuuDiJ92cVk5SRCQnfe0H1v+SM1tWIh8xaW0nLv/PZppn1/oPBOzaA1/
+         zOC/2Jt+3ikOBFhcw1WJ1TXWXqUrldNYHRiZIZdm2XGXJIigtLCn10M48+D3JX2H4Hr1
+         XFM8r8h8mj5XrQlZEXJdJ9OZAcYgiv82yPoQTvvIXu2zyDanb9Y6P1h79kuIiW52wGmB
+         Bv4A==
+X-Gm-Message-State: ANoB5plIvPe2wonZ3/RQULVwYNydXy0qO61uVtXY0iRkl6c8DRtjI5Nd
+        nPspvabVpvpqr0D4nQjZGFb2xg==
+X-Google-Smtp-Source: AA0mqf42AaD6LXyoTAuOcqwduDBkwv9Bu13Ho9T18SDcaeo2qdQeywTEBcOV7564vcTH9ojn5OoI0g==
+X-Received: by 2002:a05:651c:b26:b0:277:9847:286a with SMTP id b38-20020a05651c0b2600b002779847286amr20542523ljr.309.1670296821664;
+        Mon, 05 Dec 2022 19:20:21 -0800 (PST)
+Received: from [127.0.0.1] (85-76-34-181-nat.elisa-mobile.fi. [85.76.34.181])
+        by smtp.gmail.com with ESMTPSA id z1-20020a2ebcc1000000b0027711dbd000sm1031505ljp.69.2022.12.05.19.20.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Dec 2022 19:20:21 -0800 (PST)
+Date:   Tue, 06 Dec 2022 05:20:16 +0200
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Rob Herring <robh@kernel.org>
+CC:     devicetree@vger.kernel.org, Lee Jones <lee@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        linux-iio@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        linux-input@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        linux-leds@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_1/4=5D_dt-bindings=3A_input=3A_q?= =?US-ASCII?Q?com=2Cpm8921-keypad=3A_convert_to_YAML_format?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20221205220433.GA2684995-robh@kernel.org>
+References: <20221204061555.1355453-1-dmitry.baryshkov@linaro.org> <20221204061555.1355453-2-dmitry.baryshkov@linaro.org> <20221205220433.GA2684995-robh@kernel.org>
+Message-ID: <E5C1A37F-5758-4026-9412-F13760C465D0@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, Nov 17, 2022 at 10:58 AM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+6 =D0=B4=D0=B5=D0=BA=D0=B0=D0=B1=D1=80=D1=8F 2022 =D0=B3=2E 00:04:33 GMT+02=
+:00, Rob Herring <robh@kernel=2Eorg> =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+>On Sun, Dec 04, 2022 at 08:15:52AM +0200, Dmitry Baryshkov wrote:
+>> Convert the bindings for the keypad subdevices of Qualcomm PM8921 and
+>> PM8058 PMICs from text to YAML format=2E
+>>=20
+>> While doing the conversion also change linux,keypad-no-autorepeat
+>> property to linux,input-no-autorepeat=2E The former property was never
+>> used by DT and was never handled by the driver=2E
 >
-> On Thu, 17 Nov 2022 17:21:25 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
->
-> > On 17/11/2022 16:56, Jonathan Cameron wrote:
-> > > On Thu, 17 Nov 2022 13:28:33 +0100
-> > > Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> > >
-> > >> On 17/11/2022 13:22, Manivannan Sadhasivam wrote:
-> > >>> On Thu, Nov 17, 2022 at 01:13:07PM +0100, Krzysztof Kozlowski wrote:
-> > >>>> The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
-> > >>>> changed to take sid argument:
-> > >>>>
-> > >>>>   Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
-> > >>>>
-> > >>>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > >>>
-> > >>> Looks like I didn't rebase on top of Bjorn's for-next for my series, so didn't
-> > >>> see this example.
-> > >>>
-> > >>> Thanks for fixing!
-> > >>>
-> > >>> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > >>>
-> > >>
-> > >> This should not go via Bjorn's tree without IIO ack and
-> > >> Jonathan/Lars-Peter/IIO lists were not in CC.
-> > >>
-> > > Thanks for the heads up.
-> > >
-> > > Not sure I'd have registered there would have been a problem here even
-> > > if I had seen original patch.  Anyhow, I assume Bjorn will pick this up
-> > > and all will be well again.
-> > >
-> > > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >
-> > I am afraid it cannot go via Bjorn's tree, because this depends on a
-> > change in your tree:
-> > https://lore.kernel.org/all/20221027143411.277980-2-krzysztof.kozlowski@linaro.org/
-> >
-> > Can you pick it up instead? This is the only way to fix the linux-next,
-> > although your tree will have a dt_binding_check error.
-> >
-> > Other way is to have cross-tree merge, but the commit to bindings
-> > headers ended up in DTS patch, so it cannot be shared with driver tree.
->
-> Ah. I've sent Greg a pull reuqest including that patch, so this is going to get
-> worse and the linux-next intermediate builds are going to fail which is never good.
->
-> Best bet at this point may be for Bjorn to also take the dependency
-> you list above and the fix.
->
-> Git will happily unwind the same patch turning up in two trees and
-> that way he'll have everything and the IIO tree  + char-misc will
-> be fine on their own as well.
->
-> That work for everyone?
+>Changing from the documented one to one some drivers use=2E I guess=20
+>that's a slight improvement=2E Please see this discussion[1]=2E=20
 
-linux-next is failing still. Is someone going to sort this out?
+Well, the problem is that the documentation is misleading=2E The driver do=
+esn't handle the documented property, so we should change either the driver=
+, or the docs=2E Which change is the preferred one?
 
-Rob
+>
+>Rob
+>
+>[1] https://lore=2Ekernel=2Eorg/all/YowEgvwBOSEK+kd2@google=2Ecom/
+

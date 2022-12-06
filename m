@@ -2,53 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C2E2644B13
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 19:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B62644B66
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 19:21:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbiLFSTp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Dec 2022 13:19:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33630 "EHLO
+        id S230095AbiLFSVU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Dec 2022 13:21:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbiLFSTl (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 13:19:41 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877479FF9;
-        Tue,  6 Dec 2022 10:19:40 -0800 (PST)
+        with ESMTP id S229969AbiLFSUO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 13:20:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA8F9B4AA;
+        Tue,  6 Dec 2022 10:20:10 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23944617F2;
-        Tue,  6 Dec 2022 18:19:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E799CC43470;
-        Tue,  6 Dec 2022 18:19:37 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 76E44B81B32;
+        Tue,  6 Dec 2022 18:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A08C43143;
+        Tue,  6 Dec 2022 18:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670350779;
-        bh=qy91yRHK7/rNs9k0s4jgURDTbyCEZs1LsZFvSNmtcwQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KgOT0XWcr3Bx+7v4MvRUjOixreAjzyH87RJjf4rC0PgvZpjGhJmPSHIBVXjhbYoFN
-         4KUZbeumwqy+SZsskNMYdMfWEY2T2oB42aBBQUkaDGXR7NApPVnZs4w9q97hnZU7q4
-         D0mkPZha4RVwErZwOc6PzRR7eEOX6J5aAfAZOcbMBJihNfX8qnrV6PE7lBEQMOwpiS
-         rshr1ELgb5q2Pl5pxzeEG5Nv2JzYS642NG3IXfexosC3ShhVjlzbK33CWiOCza4GLY
-         SyMHFkw+zNCycjRXS41EdapmX3sbxjOSKd3oE5LkbIRkFHFZbuxGnM7eqvv8EIXuj0
-         ww7hH23OlBVRA==
+        s=k20201202; t=1670350806;
+        bh=YTFPQTx/YrLchW/aZDupJW4/hX85sZqlpGLQlhNNLLU=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=MvEe/hknFqdvcLrCjmFXzJTUtplFCf2YZ45f+y+1rzgntxjc9M5xsSgQQYU3ki42R
+         Fueb7CvmFRSpoyrUPjJm5PIlbc9llNfzxqhlcq464VWZfor191SSLv3gtVN23cCr5M
+         ccMSocX73pg8NCDi+c0FJGaWdh9rjSA5RJm4Tcofnpfy0IC5VRGi+bx+gAzdLp0bKT
+         SZ+1iUw0x2q8R+kmUJb+S2YBbGKS4/a97W1qYdAxP3dxjrMS6SmTNAi2s8xYAFZtMH
+         IzQlk0bXP03NT0lgapvc9tovY7cGqoeCLlLrDUu3+eaCleDn6ZMuXtRt3LmYCHRUz/
+         oS23Tip7kbhmw==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     agross@kernel.org, angelogioacchino.delregno@collabora.com
-Cc:     kernel@collabora.com, keescook@chromium.org,
-        linux-iio@vger.kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        jic23@kernel.org, devicetree@vger.kernel.org, luca@z3ntu.xyz,
-        gregkh@linuxfoundation.org, a39.skl@gmail.com,
-        marijn.suijten@somainline.org, gpiccoli@igalia.com,
-        srinivas.kandagatla@linaro.org, evgreen@chromium.org,
-        konrad.dybcio@linaro.org, lars@metafoo.de,
-        Tony Luck <tony.luck@intel.com>, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 00/11] MSM8956/76 and Sony Xperia X / X Compact support
-Date:   Tue,  6 Dec 2022 12:18:45 -0600
-Message-Id: <167035076330.3155086.18379797801018993736.b4-ty@kernel.org>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: qcom,spmi-vadc: simplify compatible enum
+Date:   Tue,  6 Dec 2022 12:19:11 -0600
+Message-Id: <167035076359.3155086.2312319219959247926.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
-References: <20221111120156.48040-1-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20221027143411.277980-1-krzysztof.kozlowski@linaro.org>
+References: <20221027143411.277980-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -61,27 +56,17 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 11 Nov 2022 13:01:45 +0100, AngeloGioacchino Del Regno wrote:
-> This series adds basic support for MSM8976 and its lower spec variant
-> MSM8956, along with two devices: the Sony Xperia X and X Compact.
+On Thu, 27 Oct 2022 10:34:10 -0400, Krzysztof Kozlowski wrote:
+> The second compatible item in oneOf is just an enum, not a list.
 > 
-> For now, even though I do have a tree in which these two devices are
-> fully booting, only a basic console boot is provided as the rest is
-> awaiting cleanup and some more dependencies.
-> Especially every device requiring IOMMU support, like MDSS, MDP and
-> Adreno GPU cannot work with the current qcom_iommu driver, as it
-> needs some code to get the ASIDs right for MSM8956/76.
 > 
-> [...]
 
 Applied, thanks!
 
-[09/11] arm64: dts: qcom: Add configuration for PM8950 peripheral
-        commit: e07f41b0e1db8244867ff363f1d1eceefe8d6ad2
-[10/11] arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs
-        commit: 0484d3ce090252048daaeb6c7df982b0c7400830
-[11/11] arm64: dts: qcom: Add support for SONY Xperia X/X Compact
-        commit: ff7f6d34ca07f76f430e8c2cac80495076895a99
+[1/2] dt-bindings: iio: adc: qcom,spmi-vadc: simplify compatible enum
+      (no commit info)
+[2/2] dt-bindings: iio: adc: qcom,spmi-vadc: extend example
+      commit: 74e903461b178faa5d0873254b77ee18fca5d059
 
 Best regards,
 -- 

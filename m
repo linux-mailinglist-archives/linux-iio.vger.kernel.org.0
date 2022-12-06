@@ -2,98 +2,124 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B496264420D
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 12:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 948D4644286
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 12:53:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbiLFLYW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Dec 2022 06:24:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58238 "EHLO
+        id S234554AbiLFLxd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Dec 2022 06:53:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234776AbiLFLX7 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 06:23:59 -0500
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F374275C1
-        for <linux-iio@vger.kernel.org>; Tue,  6 Dec 2022 03:23:55 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1p2W38-0001av-0n; Tue, 06 Dec 2022 12:23:46 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1p2W36-002gTW-7h; Tue, 06 Dec 2022 12:23:45 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1p2W35-0030yd-U1; Tue, 06 Dec 2022 12:23:43 +0100
-Date:   Tue, 6 Dec 2022 12:23:43 +0100
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Grant Likely <grant.likely@linaro.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH 132/606] iio: light: max44009: Convert to i2c's
- .probe_new()
-Message-ID: <20221206112343.no64esqurdozwuqo@pengutronix.de>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
- <20221118224540.619276-133-uwe@kleine-koenig.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ygtnf37jzf6rhatj"
-Content-Disposition: inline
-In-Reply-To: <20221118224540.619276-133-uwe@kleine-koenig.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S233811AbiLFLxc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 06:53:32 -0500
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4961B21C;
+        Tue,  6 Dec 2022 03:53:31 -0800 (PST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NRJhn3r8Xz4y0vM;
+        Tue,  6 Dec 2022 19:53:29 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl2.zte.com.cn with SMTP id 2B6BrHVh085625;
+        Tue, 6 Dec 2022 19:53:17 +0800 (+08)
+        (envelope-from ye.xingchen@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Tue, 6 Dec 2022 19:53:20 +0800 (CST)
+Date:   Tue, 6 Dec 2022 19:53:20 +0800 (CST)
+X-Zmail-TransId: 2af9638f2d301b4bd45d
+X-Mailer: Zmail v1.0
+Message-ID: <202212061953201070549@zte.com.cn>
+Mime-Version: 1.0
+From:   <ye.xingchen@zte.com.cn>
+To:     <jic23@kernel.org>
+Cc:     <michael.hennerich@analog.com>, <lars@metafoo.de>,
+        <andriy.shevchenko@linux.intel.com>,
+        <u.kleine-koenig@pengutronix.de>, <jk@codeconstruct.com.au>,
+        <wsa@kernel.org>, <ddrokosov@sberdevices.ru>,
+        <hdegoede@redhat.com>, <haibo.chen@nxp.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBpaW86IGFjY2VsOiBDb252ZXJ0IHRvIHVzZSBzeXNmc19lbWl0X2F0KCkgQVBJ?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2B6BrHVh085625
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 638F2D39.002 by FangMail milter!
+X-FangMail-Envelope: 1670327609/4NRJhn3r8Xz4y0vM/638F2D39.002/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 638F2D39.002/4NRJhn3r8Xz4y0vM
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
---ygtnf37jzf6rhatj
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+should only use sysfs_emit() or sysfs_emit_at() when formatting the
+value to be returned to user space.
 
-Hello Jonathan,
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+---
+ drivers/iio/accel/adxl372.c | 3 +--
+ drivers/iio/accel/bma180.c  | 3 +--
+ drivers/iio/accel/mma8452.c | 5 ++---
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-On Fri, Nov 18, 2022 at 11:37:46PM +0100, Uwe Kleine-K=F6nig wrote:
->  drivers/iio/light/max44009.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+index c4193286eb05..15bcb0d75b8f 100644
+--- a/drivers/iio/accel/adxl372.c
++++ b/drivers/iio/accel/adxl372.c
+@@ -970,8 +970,7 @@ static ssize_t adxl372_show_filter_freq_avail(struct device *dev,
+ 	size_t len = 0;
 
-all iio patches from my series but this one are applied in next now. I
-wonder what happend to that one, my best guess is that this patch was
-dropped by accident?
+ 	for (i = 0; i <= st->odr; i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%d ", adxl372_bw_freq_tbl[i]);
++		len += sysfs_emit_at(buf, len, "%d ", adxl372_bw_freq_tbl[i]);
 
-Best regards
-Uwe
+ 	buf[len - 1] = '\n';
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
+index eb697eeb4301..9e3e5dfdded7 100644
+--- a/drivers/iio/accel/bma180.c
++++ b/drivers/iio/accel/bma180.c
+@@ -488,8 +488,7 @@ static ssize_t bma180_show_avail(char *buf, const int *vals, unsigned int n,
+ 	for (i = 0; i < n; i++) {
+ 		if (!vals[i])
+ 			continue;
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-			micros ? "0.%06d " : "%d ", vals[i]);
++		len += sysfs_emit_at(buf, len, micros ? "0.%06d " : "%d ", vals[i]);
+ 	}
+ 	buf[len - 1] = '\n';
 
---ygtnf37jzf6rhatj
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
+index f97fb68e3a71..7ba3c743e6f6 100644
+--- a/drivers/iio/accel/mma8452.c
++++ b/drivers/iio/accel/mma8452.c
+@@ -266,8 +266,7 @@ static ssize_t mma8452_show_int_plus_micros(char *buf, const int (*vals)[2],
+ 	size_t len = 0;
 
------BEGIN PGP SIGNATURE-----
+ 	while (n-- > 0)
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%06d ",
+-				 vals[n][0], vals[n][1]);
++		len += sysfs_emit_at(buf, len, "%d.%06d ", vals[n][0], vals[n][1]);
 
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmOPJjwACgkQwfwUeK3K
-7Ak9nQf/blRXvHALR/PNIrvRqIiMs9KCA81D690ImfGf+YVZ85mt9V/SnAHQNaLv
-4LpzuxS0pKNXjRzwt6sYDVVXHmX1836Ix+4LSnuY0CCDXxgk3Scrlc25QpwKJWxO
-OaQYaFp3MK3VCoaAXsk0KfIPn+vnN7mUJDj4W2r9FgHWGzMUyxQc4KxiwLEy7WJW
-XNOY6zvmiVDyCxamnfdXfiGOn8T2I5J5VfklFSkPrVfeGmundNyQNach43XKe5F1
-0dmt6h1tGPP05dw/DKxxqpEbRk2hqbrAZHG3KbG8aMjmCNWd59L/U3enHMVs59b7
-ED2/s/jNFYvfjxqqUnSEJoVxDd9SlQ==
-=ropm
------END PGP SIGNATURE-----
+ 	/* replace trailing space by newline */
+ 	buf[len - 1] = '\n';
+@@ -423,7 +422,7 @@ static ssize_t mma8452_show_os_ratio_avail(struct device *dev,
 
---ygtnf37jzf6rhatj--
+ 		val = mma8452_os_ratio[j][i];
+
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", val);
++		len += sysfs_emit_at(buf, len, "%d ", val);
+ 	}
+ 	buf[len - 1] = '\n';
+
+-- 
+2.25.1

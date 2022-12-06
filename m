@@ -2,73 +2,84 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D2D46444B7
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 14:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B4F6447C8
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 16:17:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230327AbiLFNjT (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Dec 2022 08:39:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38554 "EHLO
+        id S232321AbiLFPRQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Dec 2022 10:17:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiLFNjS (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 08:39:18 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF36C6558
-        for <linux-iio@vger.kernel.org>; Tue,  6 Dec 2022 05:39:13 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id h12so23451810wrv.10
-        for <linux-iio@vger.kernel.org>; Tue, 06 Dec 2022 05:39:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vbZUE6DWWVQx9WSKovRo796dpgXDEjE30nPkboWmubI=;
-        b=hpRQ4/4FyXegzWXsf/Mr2GM+jHFkZGFAlgI7JuR0nkhgjgfr1nQyuTBQ29Kue++0Y1
-         WFC5/b7T38+QiWB9GGgQgcGMjmGK8tn4AF/eEl+kUlhAGN/NsiBn3gBHGkgcC0Z5p2A8
-         yWM3DEqYziYVPZerd+zPnPWwKdGGoAb5MZ5tjh2oDro26SKEVGcdHdAA7jW09LvUysih
-         aJgGWi1RSydJmJdnQY4QBA2pq6Fxc9TS6I0oLNSRtyONFuIrGw5KyO6wolMSaWnUgabK
-         6rdpfcaCqm9ak3BSiLkwACH8/hDtBi3C5XQUQARkbg+4zsFK8L15VgqzBR6Zj5M8gzOC
-         dPzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vbZUE6DWWVQx9WSKovRo796dpgXDEjE30nPkboWmubI=;
-        b=5DqllslRZhMThINL9B+Oqj3kZUQc9NhERefCnpPD650QgE66X2ybZXgo6Zs+ailjF1
-         9/UZSAG1YYSaHq+iIuUWOjz+pHsMTx1IeH9EbFxOdH7I/1gthK9iAi7OHI4jhQ/fUQXi
-         mCxNHQAQzSKnldU+mev2WKlaPYobj+Z1d+QkdnyALB9dC691ZXM5fDM08ZDeqmrEscYk
-         K2NxT6uIWQfrruBMyRiO0RRQdxwAObJWYqCT4jQDLpB+jMiWjXv+v7h0jv/6kEws+ck0
-         JSX2m7MprghuNFZF6UeJ0wOZ8i0AdGkgmDYNpOYyXUIyJveOSThDDnRVotOb9kFBsYnS
-         EUXA==
-X-Gm-Message-State: ANoB5pmwvCuAjj0pgcspWyV3RpFbl2lgZZDaiH6S74ueAuxCxICGMuZs
-        n5lRYfXbKzWoHdEitN0PQickHmYlhFkMeDSijMM=
-X-Google-Smtp-Source: AA0mqf4k+j1yTD2itXk+8nWZNk7Q7VV4Px+RuGLeF/VppBkOqcoF0FdiQtyQB8TMRu9J/EkbaO3zDcaLzeUbhHz9/Sk=
-X-Received: by 2002:a5d:5a95:0:b0:241:65d4:8b41 with SMTP id
- bp21-20020a5d5a95000000b0024165d48b41mr51354635wrb.470.1670333952163; Tue, 06
- Dec 2022 05:39:12 -0800 (PST)
+        with ESMTP id S234839AbiLFPQt (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 10:16:49 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5BAE59;
+        Tue,  6 Dec 2022 07:12:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1670339556; x=1701875556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UQPpoMYHgojZ0s9I/vYi4H/g6UU0D10ansdSCf8jK0c=;
+  b=ijN4fQwf305Hp7GZB8DInTtwuofxS3O635wJ86UrZ6X36WoPvuXP0lwr
+   B7xE2OdFwYoi3ByN4Wq98ekykg3IiO0wVQjReMFHQb1NjpuFJle7szdQ6
+   ezZJMZU00ti5Cvvp9TALL7W7+IrQbUBZMGT/zPxl7toGKhSPkfWAnZHmk
+   mnAYizn98lODQ5hl/WX2jZ9zZC341lIK6Goz52xyQuIIKV/Fv7EiMxsBA
+   W3TPit80AJH6NXf19SWRi3uzmN+2hmkZSxj9Sl3m1lYbndSndGxrkUBDm
+   Yx9x3mwgbVC9KjV0RQYgUxeKG4+XlVQQgcMeouKloRRO3LprcHThVE4ri
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="378807875"
+X-IronPort-AV: E=Sophos;i="5.96,222,1665471600"; 
+   d="scan'208";a="378807875"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2022 07:12:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10553"; a="639904605"
+X-IronPort-AV: E=Sophos;i="5.96,222,1665471600"; 
+   d="scan'208";a="639904605"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orsmga007.jf.intel.com with ESMTP; 06 Dec 2022 07:12:13 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.96)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1p2ZcB-005MBU-0N;
+        Tue, 06 Dec 2022 17:12:11 +0200
+Date:   Tue, 6 Dec 2022 17:12:10 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     ye.xingchen@zte.com.cn
+Cc:     jic23@kernel.org, michael.hennerich@analog.com, lars@metafoo.de,
+        u.kleine-koenig@pengutronix.de, jk@codeconstruct.com.au,
+        wsa@kernel.org, ddrokosov@sberdevices.ru, hdegoede@redhat.com,
+        haibo.chen@nxp.com, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: accel: Convert to use sysfs_emit_at() API
+Message-ID: <Y49byhJ/Yn5/I28d@smile.fi.intel.com>
+References: <202212061953201070549@zte.com.cn>
 MIME-Version: 1.0
-Received: by 2002:a5d:47a5:0:0:0:0:0 with HTTP; Tue, 6 Dec 2022 05:39:11 -0800 (PST)
-Reply-To: felixdouglas212@gmail.com
-From:   Douglas Felix <pamelamcpeak181@gmail.com>
-Date:   Tue, 6 Dec 2022 13:39:11 +0000
-Message-ID: <CADnBHH=R-k493pvQUs+DrCSS-cEDCWV62bdT-YWRC-N5ak_PuA@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202212061953201070549@zte.com.cn>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
--- 
-A mail was sent to you sometime last week with the expectation of
-having a return mail from you but to my surprise you never bothered to reply.
-Kindly reply for further explanations.
+On Tue, Dec 06, 2022 at 07:53:20PM +0800, ye.xingchen@zte.com.cn wrote:
+> From: ye xingchen <ye.xingchen@zte.com.cn>
+> 
+> Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+> should only use sysfs_emit() or sysfs_emit_at() when formatting the
+> value to be returned to user space.
 
-Respectfully yours,
-Barrister. Douglas Felix.
+Please split on per device driver basis (3 patches here).
+
+The code looks fine to me, thanks.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+

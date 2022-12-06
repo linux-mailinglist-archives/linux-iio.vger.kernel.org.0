@@ -2,124 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 948D4644286
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 12:53:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51B9B6442E8
+	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 13:06:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234554AbiLFLxd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Dec 2022 06:53:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
+        id S234184AbiLFMGa (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Dec 2022 07:06:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233811AbiLFLxc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 06:53:32 -0500
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4961B21C;
-        Tue,  6 Dec 2022 03:53:31 -0800 (PST)
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NRJhn3r8Xz4y0vM;
-        Tue,  6 Dec 2022 19:53:29 +0800 (CST)
-Received: from xaxapp01.zte.com.cn ([10.88.40.50])
-        by mse-fl2.zte.com.cn with SMTP id 2B6BrHVh085625;
-        Tue, 6 Dec 2022 19:53:17 +0800 (+08)
-        (envelope-from ye.xingchen@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-        by mapi (Zmail) with MAPI id mid31;
-        Tue, 6 Dec 2022 19:53:20 +0800 (CST)
-Date:   Tue, 6 Dec 2022 19:53:20 +0800 (CST)
-X-Zmail-TransId: 2af9638f2d301b4bd45d
-X-Mailer: Zmail v1.0
-Message-ID: <202212061953201070549@zte.com.cn>
-Mime-Version: 1.0
-From:   <ye.xingchen@zte.com.cn>
-To:     <jic23@kernel.org>
-Cc:     <michael.hennerich@analog.com>, <lars@metafoo.de>,
-        <andriy.shevchenko@linux.intel.com>,
-        <u.kleine-koenig@pengutronix.de>, <jk@codeconstruct.com.au>,
-        <wsa@kernel.org>, <ddrokosov@sberdevices.ru>,
-        <hdegoede@redhat.com>, <haibo.chen@nxp.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBpaW86IGFjY2VsOiBDb252ZXJ0IHRvIHVzZSBzeXNmc19lbWl0X2F0KCkgQVBJ?=
-Content-Type: text/plain;
-        charset="UTF-8"
-X-MAIL: mse-fl2.zte.com.cn 2B6BrHVh085625
-X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 638F2D39.002 by FangMail milter!
-X-FangMail-Envelope: 1670327609/4NRJhn3r8Xz4y0vM/638F2D39.002/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 638F2D39.002/4NRJhn3r8Xz4y0vM
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235412AbiLFMGP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 07:06:15 -0500
+Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 895B420D
+        for <linux-iio@vger.kernel.org>; Tue,  6 Dec 2022 04:05:41 -0800 (PST)
+Received: by mail-vk1-xa2e.google.com with SMTP id v81so6675154vkv.5
+        for <linux-iio@vger.kernel.org>; Tue, 06 Dec 2022 04:05:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=Tr4elLvSIdNe+xVHrH25SZkPWwb03ikKNScikW49iZ421MNP0a4oOUkeLndoG49JOK
+         eUaVMU3HDkM/YR5EiJeOvhWhZjpnKLHFYut/nDnMlfqkEsdOjy5dMs0w4vR1ak4rpTju
+         AEDV/+u2xmRElRvbhhBBZLQORZD8MnhwxZsItsXyUl7BYEb5GB4vVK0ySy6tZhqcwgX8
+         KNnTUXSwRRkBJzro9JH/QIy80yyhuE8rd3g7A0WMLNjwTD7IxWt1i8F8Q4qZ+DfPGdlU
+         +6NcXFdrhY7EeYfe2h5OXK6X+Jn+lCFugemnYsOHfUiMJ8iJ785mjxIIjcwTC2IUN3wk
+         lvnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=bQTKGruwUkhBOoGYOemokdlYA5YfTi1xb8nbwQ12dN7qLcspa51HRdheshiA8CFALq
+         Uakwmocj8LHGK3ZSSGfbV0h4z+Uqc+KLj5YlPR10/hAXKee3qsw1megsUwInhQcJlnDk
+         ybDDvY/8EVZ/BJjh08ipGt6kJxvHzYUKDv+USrPV0MoIYuJFziGFfDATmfwJttRwgv/T
+         PTDj9vjeCq6vgYDRQNfsiwu70tHlmDSxu8IB7VK8ktUU8jjUvfs1CDF+5vb6qtjZGy24
+         0nNJOlr6gNwFCNGQM+ZqK3qL4gcZQFZKBobG/hInEkLbHg26TcNysS6VCG3Dh/ph5S6L
+         FlKA==
+X-Gm-Message-State: ANoB5pmzDmSYOKjxSBRc0b+IcEkOdwPfd3pkeEoqtmtV10hbNNtQGoKb
+        m14QcnDHOtoNrZQ/FxBWk/JddV3oOmpzFmDoyMk=
+X-Google-Smtp-Source: AA0mqf7wwq+wcpAcIPTYImRpM9gCCSM8h2742+rV2x1L8L8JrahgNoSKNcJWa1cyaeYg5XwI8+7TuT2c/fUfdyT4rPU=
+X-Received: by 2002:a1f:3484:0:b0:3bc:d233:5be2 with SMTP id
+ b126-20020a1f3484000000b003bcd2335be2mr22561702vka.8.1670328340357; Tue, 06
+ Dec 2022 04:05:40 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:ab0:544:0:b0:419:d0d:612e with HTTP; Tue, 6 Dec 2022
+ 04:05:39 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <reverendmichael00@gmail.com>
+Date:   Tue, 6 Dec 2022 12:05:39 +0000
+Message-ID: <CA+_+1VL8OyP7WFQZ=SHk4D2c0ESNXFOeKxKeLTb-T_BvjfOJTA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: ye xingchen <ye.xingchen@zte.com.cn>
-
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the
-value to be returned to user space.
-
-Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
----
- drivers/iio/accel/adxl372.c | 3 +--
- drivers/iio/accel/bma180.c  | 3 +--
- drivers/iio/accel/mma8452.c | 5 ++---
- 3 files changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
-index c4193286eb05..15bcb0d75b8f 100644
---- a/drivers/iio/accel/adxl372.c
-+++ b/drivers/iio/accel/adxl372.c
-@@ -970,8 +970,7 @@ static ssize_t adxl372_show_filter_freq_avail(struct device *dev,
- 	size_t len = 0;
-
- 	for (i = 0; i <= st->odr; i++)
--		len += scnprintf(buf + len, PAGE_SIZE - len,
--				 "%d ", adxl372_bw_freq_tbl[i]);
-+		len += sysfs_emit_at(buf, len, "%d ", adxl372_bw_freq_tbl[i]);
-
- 	buf[len - 1] = '\n';
-
-diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-index eb697eeb4301..9e3e5dfdded7 100644
---- a/drivers/iio/accel/bma180.c
-+++ b/drivers/iio/accel/bma180.c
-@@ -488,8 +488,7 @@ static ssize_t bma180_show_avail(char *buf, const int *vals, unsigned int n,
- 	for (i = 0; i < n; i++) {
- 		if (!vals[i])
- 			continue;
--		len += scnprintf(buf + len, PAGE_SIZE - len,
--			micros ? "0.%06d " : "%d ", vals[i]);
-+		len += sysfs_emit_at(buf, len, micros ? "0.%06d " : "%d ", vals[i]);
- 	}
- 	buf[len - 1] = '\n';
-
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index f97fb68e3a71..7ba3c743e6f6 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -266,8 +266,7 @@ static ssize_t mma8452_show_int_plus_micros(char *buf, const int (*vals)[2],
- 	size_t len = 0;
-
- 	while (n-- > 0)
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%06d ",
--				 vals[n][0], vals[n][1]);
-+		len += sysfs_emit_at(buf, len, "%d.%06d ", vals[n][0], vals[n][1]);
-
- 	/* replace trailing space by newline */
- 	buf[len - 1] = '\n';
-@@ -423,7 +422,7 @@ static ssize_t mma8452_show_os_ratio_avail(struct device *dev,
-
- 		val = mma8452_os_ratio[j][i];
-
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", val);
-+		len += sysfs_emit_at(buf, len, "%d ", val);
- 	}
- 	buf[len - 1] = '\n';
-
--- 
-2.25.1
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham

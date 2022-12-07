@@ -2,190 +2,120 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABC7645722
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 11:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B875B645848
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 11:54:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbiLGKHq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Dec 2022 05:07:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37736 "EHLO
+        id S229812AbiLGKyf (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Dec 2022 05:54:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229942AbiLGKHo (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 05:07:44 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9480F6478
-        for <linux-iio@vger.kernel.org>; Wed,  7 Dec 2022 02:07:42 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id l8so20283621ljh.13
-        for <linux-iio@vger.kernel.org>; Wed, 07 Dec 2022 02:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2lgyDc2BPaf6a7xLJztu7FglI3cnhZOU9b/y2TvNFgc=;
-        b=vRsLv/GaSy9EPmAQq+63dZ6M4t6p4/CzDF2JAjaJSIcxWJOx9uVeZqJVNVq3dmnpPb
-         lBbab6edWfxx7MxVCDMbL855Z5mWItwy5YdIfEfZyiS/JHuT2O+8bt92/90S+I4d4l8V
-         iFrpKD1UpAiPDqcnWIxRmPay3c38uIZ7FH1b8s6ecILw68jJqX4NunJSc1velN82iOav
-         NUhsUSK7gdRRkiBhDUH99oazExjAQxTUARi1CHM2K0dmmwiheHUfoas2SOLG3QpcGJTO
-         QqFBw3rMuSN7y7RbUu8bMOcFQHvG/oSb+scJ7gW2JFLzjvH+VqXs+Kj8KfPIvB7wpqr+
-         Fkkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2lgyDc2BPaf6a7xLJztu7FglI3cnhZOU9b/y2TvNFgc=;
-        b=flzylAz3cXh9uIvBp1mMd1hQO3gu+1bmY3jkgYQl/l6s6zmo0kaQPr9S6qHapBFP1T
-         86nBJgadvlVVkQ+Kb/ryF0Gnx8xSRAW8M9TiXFR+6LtsRpnfUo7+iijyq8mkMrMspMI9
-         P5S7kGBmORMj65yf0TMPJYd89sMQnQ1Jp3DEcUk/ikxW/H3ACwdj1DmJ6566+1UZRrmb
-         r+gJ1BrycCv5jCxs+SWZ1rHmxEjsnfFlBHfFx7sTGmWjpKyyHOvq/l7k0xLQ7bN7LvZc
-         m7CXftizsV3froqBP/xFzrpryX2EATUSmGANsGM2SXWO5nUqXlQ6q3uWx8YyvqNxpInl
-         sJrQ==
-X-Gm-Message-State: ANoB5pmPguK5J0IIxCHUpQUGrmz71/o/zlThq5AnQEx964nLrhq/qRz+
-        QHDK2P5kZNmJvboFBWw4AIp8Uw==
-X-Google-Smtp-Source: AA0mqf7rtzVO4OcdPniGSM3lTHYW3jU+eQ+5NKwi22IsC1vflmvtS1Aibm/8Ce1hrOnOkE5hsrF3pw==
-X-Received: by 2002:a2e:9e11:0:b0:26e:3292:12ad with SMTP id e17-20020a2e9e11000000b0026e329212admr24627754ljk.271.1670407660835;
-        Wed, 07 Dec 2022 02:07:40 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id v7-20020ac25927000000b004ab4ebb5d92sm2807906lfi.5.2022.12.07.02.07.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Dec 2022 02:07:40 -0800 (PST)
-Message-ID: <7deb14ee-aae1-b521-c75e-6e33cd052c44@linaro.org>
-Date:   Wed, 7 Dec 2022 11:07:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 4/5] staging: dt-bindings: regulator: adi,max77541.yaml
- Add MAX77541 Regulator bindings
-Content-Language: en-US
-To:     Okan Sahin <okan.sahin@analog.com>, outreachy@lists.linux.dev
-Cc:     Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        with ESMTP id S229896AbiLGKyQ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 05:54:16 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C4AA4B75E;
+        Wed,  7 Dec 2022 02:53:58 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1670410436;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=E++GUwZ8jMdPuuFb9HneEXTyZRdwr5VtQ85BVtWxCeE=;
+        b=oVtO0rpE3zGck2ZVl3hBFOWCJnY3f7uESZgYEE4RsQfws6jDaknEoxBwE/rwwbwBp7ZCOD
+        SltMM7HVQQBgD+hKx/BE327V+cYEw7GXTwS83251nQIgpo4Q9n5T49Rn6gTz77skxKdLXJ
+        X9DDfdohkisS7rtB2ecRKUdvSlFVFGOIKUtzZ0L5cyPu7YHbH9ma8UdtqTzcXEq5C037bP
+        OkkAutuv+kDiC6MzuJS/kkdnrFEtfsUtUHvz0ngDo4uW+HtidGqR4LmQ4SPRNs4OW3+FT2
+        FnatGqy4mlOrIr1D9vt01JYtNfm8fJE6eYhE7ircLV5N8W5Q2zu2QbJFKpVcrw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1670410436;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=E++GUwZ8jMdPuuFb9HneEXTyZRdwr5VtQ85BVtWxCeE=;
+        b=+hIcuhAFj3DgkyyHn9Ikp08rfUFFies/TTWH7AJusyzO9lmEFz1UIxE7Iy6JiZpJFjGkR7
+        3U2i/g6yJz7MpxBA==
+To:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
         William Breathitt Gray <william.gray@linaro.org>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20221207090906.5896-1-okan.sahin@analog.com>
- <20221207090906.5896-5-okan.sahin@analog.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221207090906.5896-5-okan.sahin@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        Rob Herring <robh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Subject: RE: [PATCH 0/6] Add RZ/V2M Compare-Match Timer (TIM) support
+In-Reply-To: <OS0PR01MB59228CED6187C7B19776CE22861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20221205145955.391526-1-biju.das.jz@bp.renesas.com>
+ <20221205225042.GA2812115-robh@kernel.org>
+ <OS0PR01MB592211AD4D0AE23DA7075DD5861B9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <CAMuHMdX2=AwerQZS2cqR4exq_QNtt=Fwp5KBcmPr1qmOBNOSAg@mail.gmail.com>
+ <87sfhsgb9e.ffs@tglx>
+ <OS0PR01MB59228CED6187C7B19776CE22861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Date:   Wed, 07 Dec 2022 11:53:55 +0100
+Message-ID: <878rjjfprw.ffs@tglx>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 07/12/2022 10:08, Okan Sahin wrote:
-> This patch adds document the bindings for MAX77541 and MAX77540
-> regulator drivers.
+Biju!
 
-Do not use "This commit/patch".
-https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+On Wed, Dec 07 2022 at 07:52, Biju Das wrote:
+>> On Tue, Dec 06 2022 at 09:40, Geert Uytterhoeven wrote:
+>> > When multiple clocksources are registered, the clocksource subsystems
+>> > picks the best one anyway, right?
+>> 
+>> As it does for the clock event devices. If there is an architected timer
+>> then that should be always preferred.
+>> 
+>> No idea why there is a need for the extra hardware and the drivers which
+>> are both never utilized.
+>
+> I got feedback from BSP team for the actual usage of this timer.
+>
+> Basically, this HW timer is used for measuring the processing time
+> of DRP-AI accurately compared to the CPU timer normally we use.
 
-> 
-> Signed-off-by: Okan Sahin <okan.sahin@analog.com>
-> ---
->  .../bindings/regulator/adi,max77541.yaml      | 44 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 45 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/regulator/adi,max77541.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/regulator/adi,max77541.yaml b/Documentation/devicetree/bindings/regulator/adi,max77541.yaml
-> new file mode 100644
-> index 000000000000..1f828895ab3a
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/adi,max77541.yaml
-> @@ -0,0 +1,44 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/regulator/adi,max77541.yaml#
+How is a slow to access timer with a lower clock frequency more
+accurate?
 
-Filename matching compatible, so adi,max77541-regulator.yaml
+> The example use cases,
+> Timer in FREERUN mode, Check the timer value after the restart(1usec)"
+> Timer in FREERUN mode, Check the timer value after the restart(10000000usec)"
+>
+> What is the model to be used for this kind of HW usage? Counter or Timer?
+>
+> I can think of one possible HW usage by using Counter model.
+> Not sure how timer model can be used for this kind of HW usage??
+>
+> Eg: we can set ceiling values 1usec and 10000000usec using counter framework
+>   And that will trigger interrupt events corresponding to the ceiling values
+>   to user space and user space app can accurately measure the DRP-AI processing time.
+>
+> Also counter model exposes count values to user space from the counter HW.
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Buck Converter driver for MAX77540/MAX77541
+Counter subsystem != clocksource/event subsystem.
 
-Drop "driver" and any other references to Linux drivers.
+We are debating a clocksource/clockevent driver and not a counter
+driver, right?
 
-> +
-> +maintainers:
-> +  - Okan Sahin <okan.sahin@analog.com>
-> +
-> +description: |
-> +  This is a part of device tree bindings for ADI MAX77540/MAX77541
-> +
-> +  The buck convertere is represented as a sub-node of the PMIC node on the device tree.
+Thanks,
 
-Typo, converter
-
-> +
-> +  The device has two buck regulators.
-> +  See also Documentation/devicetree/bindings/mfd/adi,max77541.yaml for
-> +  additional information and example.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,max77540-regulator
-> +      - adi,max77541-regulator
-> +
-> +patternProperties:
-> +  "^BUCK[12]$":
-
-Does not look like you tested the bindings. Please run `make
-dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-
-> +    type: object
-> +    $ref: regulator.yaml#
-> +    additionalProperties: false
-> +    description: |
-> +      Buck regulator.
-> +
-> +    properties:
-> +      regulator-name: true
-> +      regulator-always-on: true
-> +      regulator-boot-on: true
-> +      regulator-min-microvolt:
-> +        minimum: 300000
-> +      regulator-max-microvolt:
-> +        maximum: 5200000
-> +
-> +additionalProperties: false
-> \ No newline at end of file
-
-Check your patches before sending...
-
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5704ed5afce3..8e5572b28a8c 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12502,6 +12502,7 @@ M:	Okan Sahin <okan.sahin@analog.com>
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/mfd/adi,max77541.yaml
-> +F:	Documentation/devicetree/bindings/regulator/adi,max77541.yaml
->  F:	drivers/mfd/max77541.c
->  F:	drivers/regulator/max77541-regulator.c
->  F:	include/linux/mfd/max77541.h
-
-Best regards,
-Krzysztof
+        tglx
 

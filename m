@@ -2,74 +2,81 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5AE8644B75
-	for <lists+linux-iio@lfdr.de>; Tue,  6 Dec 2022 19:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E996451AA
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 03:02:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbiLFSWG (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 6 Dec 2022 13:22:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
+        id S229614AbiLGCB5 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 6 Dec 2022 21:01:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbiLFSU5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 13:20:57 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671D73FB91;
-        Tue,  6 Dec 2022 10:20:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229893AbiLGCBv (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 6 Dec 2022 21:01:51 -0500
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C74F532D5;
+        Tue,  6 Dec 2022 18:01:50 -0800 (PST)
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F17261847;
-        Tue,  6 Dec 2022 18:20:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB8CC433D6;
-        Tue,  6 Dec 2022 18:20:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670350809;
-        bh=NUnCXBA5tmAt67OQMSbJVz2MMAaif1ZMSY00dzogGhA=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=XjwxXHPBh5CS1W9BPSpSTa8NPyUxmz25A1zZRAOK/SjFT/ITk8zhLpugxNVgti1b5
-         ZbfHBNW2oOPk4yZM/xhZS/ogZrOcS05LYEHS0HOjYseYSdSB99o1osp+YI9KApigtR
-         WuvkRyIl6BAlIJaak4vrlBVVKgmeT/4v7VacbNjndjIFoSUBZ+9lMYxQQx4qc2w/ab
-         g5Gc+542X0yobLbLU53yIaiK4Tiv9/X3n6bkVKfdG9KiFzuxIB9ucdtTgOGa1qyOc0
-         ftRQlqHZ5lrT2hBgcyL9ViyyAcb//1QbC7m1Y9wUSrYfRORww6AH3yXs5u5sktbUhX
-         EqIIXH333cchA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-kernel@vger.kernel.org,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
-Date:   Tue,  6 Dec 2022 12:19:15 -0600
-Message-Id: <167035076359.3155086.292698735801299718.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
-References: <20221117121307.264550-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NRgWc3dRsz5BNRf;
+        Wed,  7 Dec 2022 10:01:48 +0800 (CST)
+Received: from xaxapp03.zte.com.cn ([10.88.40.52])
+        by mse-fl2.zte.com.cn with SMTP id 2B721eZ1033016;
+        Wed, 7 Dec 2022 10:01:40 +0800 (+08)
+        (envelope-from ye.xingchen@zte.com.cn)
+Received: from mapi (xaxapp01[null])
+        by mapi (Zmail) with MAPI id mid31;
+        Wed, 7 Dec 2022 10:01:39 +0800 (CST)
+Date:   Wed, 7 Dec 2022 10:01:39 +0800 (CST)
+X-Zmail-TransId: 2af9638ff403ffffffffc1f06b83
+X-Mailer: Zmail v1.0
+Message-ID: <202212071001393275575@zte.com.cn>
+Mime-Version: 1.0
+From:   <ye.xingchen@zte.com.cn>
+To:     <jic23@kernel.org>, <andriy.shevchenko@linux.intel.com>
+Cc:     <lars@metafoo.de>, <michael.hennerich@analog.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBpaW86IGFkeGwzNzI6IENvbnZlcnQgdG8gdXNlIHN5c2ZzX2VtaXRfYXQoKSBBUEk=?=
+Content-Type: text/plain;
+        charset="UTF-8"
+X-MAIL: mse-fl2.zte.com.cn 2B721eZ1033016
+X-Fangmail-Gw-Spam-Type: 0
+X-FangMail-Miltered: at cgslv5.04-192.168.250.138.novalocal with ID 638FF40C.000 by FangMail milter!
+X-FangMail-Envelope: 1670378508/4NRgWc3dRsz5BNRf/638FF40C.000/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 638FF40C.000/4NRgWc3dRsz5BNRf
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 17 Nov 2022 13:13:07 +0100, Krzysztof Kozlowski wrote:
-> The defines from include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h were
-> changed to take sid argument:
-> 
->   Error: Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.example.dts:99.28-29 syntax error
-> 
-> 
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-Applied, thanks!
+Follow the advice of the Documentation/filesystems/sysfs.rst and show()
+should only use sysfs_emit() or sysfs_emit_at() when formatting the
+value to be returned to user space.
 
-[1/1] dt-bindings: iio: adc: qcom,spmi-vadc: fix PM8350 define
-      commit: 51f7be212ae6c9c09e77d17468fe26485f79836d
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+---
+ drivers/iio/accel/adxl372.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Best regards,
+diff --git a/drivers/iio/accel/adxl372.c b/drivers/iio/accel/adxl372.c
+index c4193286eb05..15bcb0d75b8f 100644
+--- a/drivers/iio/accel/adxl372.c
++++ b/drivers/iio/accel/adxl372.c
+@@ -970,8 +970,7 @@ static ssize_t adxl372_show_filter_freq_avail(struct device *dev,
+ 	size_t len = 0;
+
+ 	for (i = 0; i <= st->odr; i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%d ", adxl372_bw_freq_tbl[i]);
++		len += sysfs_emit_at(buf, len, "%d ", adxl372_bw_freq_tbl[i]);
+
+ 	buf[len - 1] = '\n';
+
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.25.1

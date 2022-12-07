@@ -2,53 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DE3D6454CA
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 08:44:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF676454CE
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 08:45:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbiLGHoS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Dec 2022 02:44:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38314 "EHLO
+        id S229868AbiLGHpb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Dec 2022 02:45:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbiLGHoK (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 02:44:10 -0500
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [63.216.63.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02EB33B2;
-        Tue,  6 Dec 2022 23:44:08 -0800 (PST)
+        with ESMTP id S229842AbiLGHpa (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 02:45:30 -0500
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D81B3B3;
+        Tue,  6 Dec 2022 23:45:29 -0800 (PST)
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mxhk.zte.com.cn (FangMail) with ESMTPS id 4NRq6Z3XHxz8R03x;
-        Wed,  7 Dec 2022 15:44:06 +0800 (CST)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NRq876cwGz4y0tt;
+        Wed,  7 Dec 2022 15:45:27 +0800 (CST)
 Received: from xaxapp03.zte.com.cn ([10.88.40.52])
-        by mse-fl2.zte.com.cn with SMTP id 2B77i1YT066091;
-        Wed, 7 Dec 2022 15:44:01 +0800 (+08)
+        by mse-fl2.zte.com.cn with SMTP id 2B77jFkp068016;
+        Wed, 7 Dec 2022 15:45:15 +0800 (+08)
         (envelope-from ye.xingchen@zte.com.cn)
 Received: from mapi (xaxapp01[null])
         by mapi (Zmail) with MAPI id mid31;
-        Wed, 7 Dec 2022 15:44:03 +0800 (CST)
-Date:   Wed, 7 Dec 2022 15:44:03 +0800 (CST)
-X-Zmail-TransId: 2af963904443ffffffffaf5897d8
+        Wed, 7 Dec 2022 15:45:17 +0800 (CST)
+Date:   Wed, 7 Dec 2022 15:45:17 +0800 (CST)
+X-Zmail-TransId: 2af96390448d54e8c22e
 X-Mailer: Zmail v1.0
-Message-ID: <202212071544032182658@zte.com.cn>
+Message-ID: <202212071545177462713@zte.com.cn>
 Mime-Version: 1.0
 From:   <ye.xingchen@zte.com.cn>
 To:     <andriy.shevchenko@linux.intel.com>
 Cc:     <jic23@kernel.org>, <lars@metafoo.de>,
-        <u.kleine-koenig@pengutronix.de>, <benjamin.mugnier@foss.st.com>,
-        <peda@axentia.se>, <ye.xingchen@zte.com.cn>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBpaW86IGxpZ2h0OiBsdHI1MDE6IENvbnZlcnQgdG8gdXNlIHN5c2ZzX2VtaXRfYXQoKSBBUEk=?=
+        <u.kleine-koenig@pengutronix.de>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: =?UTF-8?B?W1BBVENIXSBpaW86IGxpZ2h0OiBsdjAxMDRjczogQ29udmVydCB0byB1c2Ugc3lzZnNfZW1pdF9hdCgpIEFQSQ==?=
 Content-Type: text/plain;
         charset="UTF-8"
-X-MAIL: mse-fl2.zte.com.cn 2B77i1YT066091
+X-MAIL: mse-fl2.zte.com.cn 2B77jFkp068016
 X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.250.137.novalocal with ID 63904446.001 by FangMail milter!
-X-FangMail-Envelope: 1670399046/4NRq6Z3XHxz8R03x/63904446.001/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 63904497.000 by FangMail milter!
+X-FangMail-Envelope: 1670399127/4NRq876cwGz4y0tt/63904497.000/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 63904446.001/4NRq6Z3XHxz8R03x
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Fangmail-MID-QID: 63904497.000/4NRq876cwGz4y0tt
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -63,36 +62,49 @@ value to be returned to user space.
 
 Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 ---
- drivers/iio/light/ltr501.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/light/lv0104cs.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index bdbd918213e4..436f060a34e2 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1116,9 +1116,9 @@ static ssize_t ltr501_show_proximity_scale_avail(struct device *dev,
- 	for (i = 0; i < info->ps_gain_tbl_size; i++) {
- 		if (info->ps_gain[i].scale == LTR501_RESERVED_GAIN)
- 			continue;
+diff --git a/drivers/iio/light/lv0104cs.c b/drivers/iio/light/lv0104cs.c
+index c041fa0faa5d..c0e82ae12920 100644
+--- a/drivers/iio/light/lv0104cs.c
++++ b/drivers/iio/light/lv0104cs.c
+@@ -397,9 +397,9 @@ static ssize_t lv0104cs_show_calibscale_avail(struct device *dev,
+ 	int i;
+
+ 	for (i = 0; i < ARRAY_SIZE(lv0104cs_calibscales); i++) {
 -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%06d ",
--				 info->ps_gain[i].scale,
--				 info->ps_gain[i].uscale);
+-				lv0104cs_calibscales[i].val,
+-				lv0104cs_calibscales[i].val2);
 +		len += sysfs_emit_at(buf, len, "%d.%06d ",
-+				     info->ps_gain[i].scale,
-+				     info->ps_gain[i].uscale);
++				     lv0104cs_calibscales[i].val,
++				     lv0104cs_calibscales[i].val2);
  	}
 
  	buf[len - 1] = '\n';
-@@ -1138,9 +1138,9 @@ static ssize_t ltr501_show_intensity_scale_avail(struct device *dev,
- 	for (i = 0; i < info->als_gain_tbl_size; i++) {
- 		if (info->als_gain[i].scale == LTR501_RESERVED_GAIN)
- 			continue;
+@@ -414,9 +414,9 @@ static ssize_t lv0104cs_show_scale_avail(struct device *dev,
+ 	int i;
+
+ 	for (i = 0; i < ARRAY_SIZE(lv0104cs_scales); i++) {
 -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%06d ",
--				 info->als_gain[i].scale,
--				 info->als_gain[i].uscale);
+-				lv0104cs_scales[i].val,
+-				lv0104cs_scales[i].val2);
 +		len += sysfs_emit_at(buf, len, "%d.%06d ",
-+				     info->als_gain[i].scale,
-+				     info->als_gain[i].uscale);
++				     lv0104cs_scales[i].val,
++				     lv0104cs_scales[i].val2);
+ 	}
+
+ 	buf[len - 1] = '\n';
+@@ -431,9 +431,9 @@ static ssize_t lv0104cs_show_int_time_avail(struct device *dev,
+ 	int i;
+
+ 	for (i = 0; i < ARRAY_SIZE(lv0104cs_int_times); i++) {
+-		len += scnprintf(buf + len, PAGE_SIZE - len, "%d.%06d ",
+-				lv0104cs_int_times[i].val,
+-				lv0104cs_int_times[i].val2);
++		len += sysfs_emit_at(buf, len, "%d.%06d ",
++				     lv0104cs_int_times[i].val,
++				     lv0104cs_int_times[i].val2);
  	}
 
  	buf[len - 1] = '\n';

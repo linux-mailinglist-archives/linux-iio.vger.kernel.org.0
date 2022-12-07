@@ -2,65 +2,83 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634986455C5
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 09:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA0AA645619
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 10:10:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbiLGIut (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Dec 2022 03:50:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
+        id S229878AbiLGJKe (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Dec 2022 04:10:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229960AbiLGIuQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 03:50:16 -0500
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4C873C6D2;
-        Wed,  7 Dec 2022 00:47:08 -0800 (PST)
-Received: by mail-qv1-xf2f.google.com with SMTP id o12so12211875qvn.3;
-        Wed, 07 Dec 2022 00:47:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=V30zag4jGb0ZpXyhwdO8YgSZcVeVVW3c/teWpK3rRf4=;
-        b=pFnwWZBxCtc1w/um5Vhzmy2cpQiPZE9TWMnsW29vdudN5IysoV5F5IMK5G98Vrb4Tb
-         vCD+6VsKKqV2gXtaGsQ8ydrb+zhLvSWpmLf9AA1HXVtds/hMBSl86hI/gRaCXot7wtLk
-         ZKqCkeIYAJ6nmrDk9vOBeIKz9styWzTnkw6WBIs2EdaWwXdi4r5J1bHrLR2TbyQvCHf/
-         QamcNRt2IWLDNHuGeUp95PS2UkTNxIGrDjSF+Ar2KiBEbvza/8N28sFoz4SQBQheFIY6
-         2n33mWta5erCxRrz2eR753YAPWo6PFBmX6QAwHPwsKvpUBFQzOIXI3kJdLwjX11Yd8oW
-         O3Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V30zag4jGb0ZpXyhwdO8YgSZcVeVVW3c/teWpK3rRf4=;
-        b=Xv/vnXAEhPzZlcppCfT+oYNKdvVf8+KaFkt5K2eKrDJBzhQyrtci1BYdxzXkIIERvM
-         toIDYaksEhzpsmdm5GpcnVXZGCTiYtQmI+/R7wd5mYvkpmvOg3p7n51oAbM3/2IlLDbK
-         sOHkowu+3Ockdgvt9QUClSXnCPST+RsUjIttNQP9QGw88QrETOIu8+geNZoKcVEUdHUT
-         kURsgJchn3Tks9aRywmabPS2ok8PRmsnIXRpLa39h6SaIReE3OdME65IEPGcVm+HDRk6
-         r/t2vAlB/m3/dfEmH1sUn5lfTZaDfoxh8SEoHha8kGgrGxKyKOEjiQK9wiBvANVQXMmA
-         uopA==
-X-Gm-Message-State: ANoB5pnWLNDhfwMFn0Vww3BqTlCWmpSIYLSnLq8YBZzmW3lUBlhBNiq5
-        HC4mOp0ishLkrreVzz80tn2bO2wThWvcv5yE3JH+b4s06Ntazg==
-X-Google-Smtp-Source: AA0mqf533yYEBWN/Kcf0G3MeIrTwMbNZyuL8AZ+Wg1/KIbkU95UJv5O9jvKKfK6Geoc2vemFieaxVM3AIPlisMlSZms=
-X-Received: by 2002:a05:6214:5cc2:b0:4c6:a622:cb4f with SMTP id
- lk2-20020a0562145cc200b004c6a622cb4fmr72362090qvb.97.1670402809707; Wed, 07
- Dec 2022 00:46:49 -0800 (PST)
+        with ESMTP id S229804AbiLGJKb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 04:10:31 -0500
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6649580;
+        Wed,  7 Dec 2022 01:10:30 -0800 (PST)
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2B77Sbq3003982;
+        Wed, 7 Dec 2022 04:09:54 -0500
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3m816bfjmn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 07 Dec 2022 04:09:54 -0500
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 2B799q5w009949
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 7 Dec 2022 04:09:52 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 7 Dec 2022 04:09:51 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 7 Dec 2022 04:09:51 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 7 Dec 2022 04:09:51 -0500
+Received: from okan.localdomain ([10.158.19.61])
+        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 2B799G9U029801;
+        Wed, 7 Dec 2022 04:09:19 -0500
+From:   Okan Sahin <okan.sahin@analog.com>
+To:     <outreachy@lists.linux.dev>
+CC:     Okan Sahin <okan.sahin@analog.com>, Lee Jones <lee@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Ramona Bolboaca <ramona.bolboaca@analog.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Manish Narani <manish.narani@xilinx.com>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>
+Subject: [PATCH 0/5] staging: drivers: mfd: Add MAX77541 MFD and related device drivers
+Date:   Wed, 7 Dec 2022 12:08:39 +0300
+Message-ID: <20221207090906.5896-1-okan.sahin@analog.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <202212071549349412843@zte.com.cn>
-In-Reply-To: <202212071549349412843@zte.com.cn>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Wed, 7 Dec 2022 10:46:14 +0200
-Message-ID: <CAHp75VfJx84-J2GdOWQAPAtMhPVS3X-dEuHYQqyP4a0WjDsgdQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: magnetometer: bmc150_magn: Convert to use
- sysfs_emit_at() API
-To:     ye.xingchen@zte.com.cn
-Cc:     jic23@kernel.org, lars@metafoo.de, linmq006@gmail.com,
-        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: iLWjwKtHCyEyKOhgXzJyPOcECl-mTrR1
+X-Proofpoint-ORIG-GUID: iLWjwKtHCyEyKOhgXzJyPOcECl-mTrR1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-07_04,2022-12-06_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1011 mlxscore=0
+ mlxlogscore=731 priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2212070076
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,40 +86,38 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, Dec 7, 2022 at 9:49 AM <ye.xingchen@zte.com.cn> wrote:
->
-> From: ye xingchen <ye.xingchen@zte.com.cn>
->
-> Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-> should only use sysfs_emit() or sysfs_emit_at() when formatting the
-> value to be returned to user space.
+This patchset adds mfd, regulator and adc driver and related bindings.The patches 
+are required to be applied in sequence.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmai.com>
+Okan Sahin (5):
+  staging: drivers: mfd: Add MAX77541/MAX77540 PMIC Support
+  staging: dt-bindings: mfd: adi,max77541.yaml Add MAX77541 bindings
+  staging: drivers: regulator: Add MAX77541 Regulator Support
+  staging: dt-bindings: regulator: adi,max77541.yaml Add MAX77541
+    Regulator bindings
+  staging: drivers: iio: adc: Adc MAX77541 ADC Support
 
-> Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
-> ---
->  drivers/iio/magnetometer/bmc150_magn.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-> index 06d5a1ef1fbd..1398684a7f30 100644
-> --- a/drivers/iio/magnetometer/bmc150_magn.c
-> +++ b/drivers/iio/magnetometer/bmc150_magn.c
-> @@ -598,8 +598,7 @@ static ssize_t bmc150_magn_show_samp_freq_avail(struct device *dev,
->         for (i = 0; i < ARRAY_SIZE(bmc150_magn_samp_freq_table); i++) {
->                 if (bmc150_magn_samp_freq_table[i].freq > data->max_odr)
->                         break;
-> -               len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
-> -                                bmc150_magn_samp_freq_table[i].freq);
-> +               len += sysfs_emit_at(buf, len, "%d ", bmc150_magn_samp_freq_table[i].freq);
->         }
->         /* replace last space with a newline */
->         buf[len - 1] = '\n';
-> --
-> 2.25.1
-
-
+ .../devicetree/bindings/mfd/adi,max77541.yaml | 134 ++++++++++
+ .../bindings/regulator/adi,max77541.yaml      |  44 ++++
+ MAINTAINERS                                   |  11 +
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/max77541-adc.c                | 224 +++++++++++++++++
+ drivers/mfd/Kconfig                           |  13 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/mfd/max77541.c                        | 236 ++++++++++++++++++
+ drivers/regulator/Kconfig                     |   9 +
+ drivers/regulator/Makefile                    |   1 +
+ drivers/regulator/max77541-regulator.c        | 181 ++++++++++++++
+ include/linux/mfd/max77541.h                  | 150 +++++++++++
+ 13 files changed, 1016 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/adi,max77541.yaml
+ create mode 100644 Documentation/devicetree/bindings/regulator/adi,max77541.yaml
+ create mode 100644 drivers/iio/adc/max77541-adc.c
+ create mode 100644 drivers/mfd/max77541.c
+ create mode 100644 drivers/regulator/max77541-regulator.c
+ create mode 100644 include/linux/mfd/max77541.h
 
 -- 
-With Best Regards,
-Andy Shevchenko
+2.30.2
+

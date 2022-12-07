@@ -2,99 +2,122 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BAB645ED0
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 17:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10EF0645F3A
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 17:49:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230061AbiLGQZ0 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Dec 2022 11:25:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48710 "EHLO
+        id S229602AbiLGQtQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Dec 2022 11:49:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230071AbiLGQZJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 11:25:09 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7942067211
-        for <linux-iio@vger.kernel.org>; Wed,  7 Dec 2022 08:25:00 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id p36so25151549lfa.12
-        for <linux-iio@vger.kernel.org>; Wed, 07 Dec 2022 08:25:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Nql757lIkNKMgh29KlchftDEO+8iEm6DjXp2cFlQuyc=;
-        b=KX8r+idV8gUeTMX17Xo5wbujH3AatPmG1Mhjdaku7WRxMemhWzx2DwJjl+ykqYaaHy
-         8MAQz/eFYWXafLnHduBmPLHfg3FmCNGEKUK7UZgSFlU+DvehtH63g7080VJhoCr3RG+U
-         o8a22z7au3zktSz9GG+hpeIui0IVm0SXVEhBvakjUwt0Vvl9p1aaDTegVu6r/T3OEQq2
-         dlok0Z/OqqAPz0Kkp9cXbYc9zniEkE/Blri9EDjM2mkxAx6JkIdhTmG/0OOlg4n33g8J
-         i1tasp1sXJBNaKkBIQlAHbsd1uCxa7XDwI5Y6IsKbpyGL0c+AFlBnUwi9PTQ7rpNg8uc
-         V8uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nql757lIkNKMgh29KlchftDEO+8iEm6DjXp2cFlQuyc=;
-        b=3yq4t7oZuTS67z7ZCta94YIo7PsOng7iVxRVBbVEjzXfHUwg77UADOEJf4WYajAMbh
-         QPQLG/f2LCwbJ5AzV7TvEwNuFLDKkEAEULPd7IMNqkOxcC0DXITpH3RdINFljIjaNAaD
-         x2Enady+d/w+ezX4+9W1e9MEvrkPYmc2GHARlr4swGomBrVoDw8/QnAFUlpgZrMNBcaj
-         jbVpYhFlbHevnc1KmT2RexSs+JpZlW6bFaQlzXA/Uc7Qzipdx4zrbAHShBL8fbhFLgh/
-         ojKXQ1RnYBsmE+hPhJFai+hgbVwPYGYM1J/VSvUMYdd0U53E8eTOeCz7cVPyoW43jjW1
-         C+Rg==
-X-Gm-Message-State: ANoB5pl5EMAm0D4C6553gxNKEShDsEWCbU+XuCMRAJxTjqOz4TjU49FJ
-        GXmYu9Gcy0nStDjFcDyoJ1lYiQ==
-X-Google-Smtp-Source: AA0mqf7zSxUgQldDjSaRbMenVAc7EZI4EGwgLXUNQixxMvoLyqaKo2PvuNPV54yH7409kWDbEOvPmg==
-X-Received: by 2002:ac2:4153:0:b0:4b0:f505:919b with SMTP id c19-20020ac24153000000b004b0f505919bmr29155780lfi.306.1670430298851;
-        Wed, 07 Dec 2022 08:24:58 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id j22-20020a056512399600b004b49025f96dsm2918652lfu.187.2022.12.07.08.24.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Dec 2022 08:24:58 -0800 (PST)
-Message-ID: <af2e02d6-6700-6cd9-7ed2-efa23715e2bf@linaro.org>
-Date:   Wed, 7 Dec 2022 17:24:57 +0100
+        with ESMTP id S229834AbiLGQtO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 11:49:14 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B52AA5446D;
+        Wed,  7 Dec 2022 08:49:12 -0800 (PST)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1670431750;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=7uqFvxvkYpcyFM86fQv9yXZ51d2JEFzcw8TpGHczOpc=;
+        b=12yUhL53fLv0GE7ZAaNXcOe1ZHzbc1wGUzqI9k5c/bGgLjdmMIl9wtEcOvuaEiIA7hlK3C
+        9waipIMlHN/s4cJrqQfof6eZXV0ScUUbJbjMNJ6xu8CoxDLwW6oyxydNvkDnYHOPeJuDsB
+        HgkEa+2fm1sTdbkoYdx42LgEne5/dk5N0pG+jQatoerPFYZ/OIP1HqWX+r4KSKVRpt+hjW
+        VCN1MnCVTFJhpHeUj5UfH80C3D8j0FebBCZCrsSqIxFJ0fhW9Qy1YjdxvxvfVMtmuW20c4
+        u4iJSAD980pDlay0t41cD8/4flOINnLm7SzlnHqDtaVc4HS8cyUPefjsQalbvA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1670431750;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=7uqFvxvkYpcyFM86fQv9yXZ51d2JEFzcw8TpGHczOpc=;
+        b=GoVe2d6hG2SwJWydJujJPKvmuwmH7o9CzDpT2eJCdMYZV39SbEMc6QKuljbDYcMxmGadQ9
+        ML7WYhn2Id81AMAg==
+To:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Subject: RE: [PATCH 0/6] Add RZ/V2M Compare-Match Timer (TIM) support
+In-Reply-To: <OS0PR01MB5922B590AB9791B9741E2A1D861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20221205145955.391526-1-biju.das.jz@bp.renesas.com>
+ <20221205225042.GA2812115-robh@kernel.org>
+ <OS0PR01MB592211AD4D0AE23DA7075DD5861B9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <CAMuHMdX2=AwerQZS2cqR4exq_QNtt=Fwp5KBcmPr1qmOBNOSAg@mail.gmail.com>
+ <87sfhsgb9e.ffs@tglx>
+ <OS0PR01MB59228CED6187C7B19776CE22861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <878rjjfprw.ffs@tglx>
+ <OS0PR01MB5922B590AB9791B9741E2A1D861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+Date:   Wed, 07 Dec 2022 17:49:09 +0100
+Message-ID: <87sfhrdure.ffs@tglx>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 2/2] dt-bindings: iio: accel: fxls8962af: add new
- compatible string
-Content-Language: en-US
-To:     Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        imx@lists.linux.dev
-References: <20221207162045.669958-1-han.xu@nxp.com>
- <20221207162045.669958-2-han.xu@nxp.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221207162045.669958-2-han.xu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 07/12/2022 17:20, Han Xu wrote:
-> add new compatible string for the NXP FXLS8967AF accelerometer sensor.
-> 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-> ---
->  Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+Biju!
 
+On Wed, Dec 07 2022 at 11:35, Biju Das wrote:
+>> Subject: RE: [PATCH 0/6] Add RZ/V2M Compare-Match Timer (TIM) support
+>> On Wed, Dec 07 2022 at 07:52, Biju Das wrote:
+>> > Basically, this HW timer is used for measuring the processing time of
+>> > DRP-AI accurately compared to the CPU timer normally we use.
+>> 
+>> How is a slow to access timer with a lower clock frequency more accurate?
+>
+> But our tick frequency for arm64 defconfig is CONFIG_HZ_250=y. So we
+> get timer interrupt at every 4 msec.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CONFIG_HIGH_RES_TIMERS=y
 
-Best regards,
-Krzysztof
+> How do we get timer event interrupt, eg: for 1 microsec?
 
+clock_nanosleep(...);
+
+Though 1usec is wishful thinking with either variant of timer hardware.
+
+>> 
+>> We are debating a clocksource/clockevent driver and not a counter driver,
+>> right?
+>
+> Yes, Rob pointed out we should not misuse the compatibles as I have both
+> Timer and counter bindings for a given HW timer.
+>
+> Timer, It can be used as broadcast and highres timer for RT.
+
+I buy the broadcast part if you really have a ARM architected timer
+which stops in deep idle states. Highres for RT, no! The arm architected
+timer works perfectly fine for that.
+
+> Counter, It can be used as measuring the processing time of DRP-AI.
+
+Sigh. You can do that with the architected timer too, especially when
+you are going to do the measurement in user space.
+
+clock_gettime(), which uses the VDSO with the architected timer is fast
+to access and accurate.
+
+Thanks,
+
+        tglx

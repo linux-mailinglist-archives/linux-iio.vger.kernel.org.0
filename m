@@ -2,50 +2,52 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 411EB6454EE
-	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 08:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 372C66454F5
+	for <lists+linux-iio@lfdr.de>; Wed,  7 Dec 2022 08:55:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229741AbiLGHyK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 7 Dec 2022 02:54:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44118 "EHLO
+        id S229452AbiLGHzh (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 7 Dec 2022 02:55:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229592AbiLGHyJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 02:54:09 -0500
+        with ESMTP id S229449AbiLGHzg (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 7 Dec 2022 02:55:36 -0500
 Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA792EF79;
-        Tue,  6 Dec 2022 23:54:08 -0800 (PST)
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0CCF25EAC;
+        Tue,  6 Dec 2022 23:55:35 -0800 (PST)
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NRqL56ytjz4y0v3;
-        Wed,  7 Dec 2022 15:54:05 +0800 (CST)
-Received: from xaxapp03.zte.com.cn ([10.88.40.52])
-        by mse-fl2.zte.com.cn with SMTP id 2B77rrUm078208;
-        Wed, 7 Dec 2022 15:53:53 +0800 (+08)
+        by mxct.zte.com.cn (FangMail) with ESMTPS id 4NRqMp0yZcz4y0v1;
+        Wed,  7 Dec 2022 15:55:34 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.40.50])
+        by mse-fl1.zte.com.cn with SMTP id 2B77tJJv078722;
+        Wed, 7 Dec 2022 15:55:19 +0800 (+08)
         (envelope-from ye.xingchen@zte.com.cn)
 Received: from mapi (xaxapp01[null])
         by mapi (Zmail) with MAPI id mid31;
-        Wed, 7 Dec 2022 15:53:55 +0800 (CST)
-Date:   Wed, 7 Dec 2022 15:53:55 +0800 (CST)
-X-Zmail-TransId: 2af96390469377a9d449
+        Wed, 7 Dec 2022 15:55:22 +0800 (CST)
+Date:   Wed, 7 Dec 2022 15:55:22 +0800 (CST)
+X-Zmail-TransId: 2af9639046eaffffffffb86a0852
 X-Mailer: Zmail v1.0
-Message-ID: <202212071553556022992@zte.com.cn>
+Message-ID: <202212071555220843038@zte.com.cn>
 Mime-Version: 1.0
 From:   <ye.xingchen@zte.com.cn>
-To:     <jic23@kernel.org>
-Cc:     <lars@metafoo.de>, <andriy.shevchenko@linux.intel.com>,
-        <miquel.raynal@bootlin.com>, <nuno.sa@analog.com>,
-        <wsa+renesas@sang-engineering.com>, <linux-iio@vger.kernel.org>,
+To:     <andriy.shevchenko@linux.intel.com>
+Cc:     <jic23@kernel.org>, <lars@metafoo.de>, <mcoquelin.stm32@gmail.com>,
+        <alexandre.torgue@foss.st.com>, <fabrice.gasnier@foss.st.com>,
+        <paul@crapouillou.net>, <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
         <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIXSBpaW86IHN0X3NlbnNvcnM6IENvbnZlcnQgdG8gdXNlIHN5c2ZzX2VtaXRfYXQoKSBBUEk=?=
+Subject: =?UTF-8?B?W1BBVENIXSBpaW86IHRyaWdnZXI6IHN0bTMyLXRpbWVyOiBDb252ZXJ0IHRvIHVzZSBzeXNmc19lbWl0X2F0KCkgQVBJ?=
 Content-Type: text/plain;
         charset="UTF-8"
-X-MAIL: mse-fl2.zte.com.cn 2B77rrUm078208
+X-MAIL: mse-fl1.zte.com.cn 2B77tJJv078722
 X-Fangmail-Gw-Spam-Type: 0
-X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 6390469D.001 by FangMail milter!
-X-FangMail-Envelope: 1670399645/4NRqL56ytjz4y0v3/6390469D.001/10.5.228.133/[10.5.228.133]/mse-fl2.zte.com.cn/<ye.xingchen@zte.com.cn>
+X-FangMail-Miltered: at cgslv5.04-192.168.251.13.novalocal with ID 639046F6.000 by FangMail milter!
+X-FangMail-Envelope: 1670399734/4NRqMp0yZcz4y0v1/639046F6.000/10.5.228.132/[10.5.228.132]/mse-fl1.zte.com.cn/<ye.xingchen@zte.com.cn>
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6390469D.001/4NRqL56ytjz4y0v3
+X-Fangmail-MID-QID: 639046F6.000/4NRqMp0yZcz4y0v1
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_PASS,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
         version=3.4.6
@@ -63,31 +65,22 @@ value to be returned to user space.
 
 Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 ---
- drivers/iio/common/st_sensors/st_sensors_core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/trigger/stm32-timer-trigger.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-index c77d7bdcc121..44e374f84197 100644
---- a/drivers/iio/common/st_sensors/st_sensors_core.c
-+++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-@@ -628,8 +628,7 @@ ssize_t st_sensors_sysfs_sampling_frequency_avail(struct device *dev,
- 		if (sdata->sensor_settings->odr.odr_avl[i].hz == 0)
- 			break;
+diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+index 3643c4afae67..eadfb255f7b7 100644
+--- a/drivers/iio/trigger/stm32-timer-trigger.c
++++ b/drivers/iio/trigger/stm32-timer-trigger.c
+@@ -352,8 +352,7 @@ static ssize_t stm32_tt_show_master_mode_avail(struct device *dev,
+ 		master_mode_max = MASTER_MODE_MAX;
 
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
--				sdata->sensor_settings->odr.odr_avl[i].hz);
-+		len += sysfs_emit_at(buf, len, "%d ", sdata->sensor_settings->odr.odr_avl[i].hz);
- 	}
+ 	for (i = 0; i <= master_mode_max; i++)
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-			"%s ", master_mode_table[i]);
++		len += sysfs_emit_at(buf, len, "%s ", master_mode_table[i]);
+
+ 	/* replace trailing space by newline */
  	buf[len - 1] = '\n';
-
-@@ -651,7 +650,7 @@ ssize_t st_sensors_sysfs_scale_avail(struct device *dev,
- 		q = sdata->sensor_settings->fs.fs_avl[i].gain / 1000000;
- 		r = sdata->sensor_settings->fs.fs_avl[i].gain % 1000000;
-
--		len += scnprintf(buf + len, PAGE_SIZE - len, "%u.%06u ", q, r);
-+		len += sysfs_emit_at(buf, len, "%u.%06u ", q, r);
- 	}
- 	buf[len - 1] = '\n';
-
 -- 
 2.25.1

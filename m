@@ -2,166 +2,150 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 708EB6469A0
-	for <lists+linux-iio@lfdr.de>; Thu,  8 Dec 2022 08:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EACEB646A13
+	for <lists+linux-iio@lfdr.de>; Thu,  8 Dec 2022 09:04:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbiLHHTN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 8 Dec 2022 02:19:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59260 "EHLO
+        id S229790AbiLHIEy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 8 Dec 2022 03:04:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiLHHTM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Dec 2022 02:19:12 -0500
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2075.outbound.protection.outlook.com [40.107.22.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00919442E8
-        for <linux-iio@vger.kernel.org>; Wed,  7 Dec 2022 23:19:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=blgsnEQR82nhBbhauw+hHImp7YjkXvqQzSxcM9fxtybymsZlXSxHW2f+dZlJJqlFzEye/JE5Zow5nbWO52J0DxFA3SSw16TulE4IxiqlNkTHP2jfl6iA8pSxldQrsHzXWWiZ429nvUAK5haMbd5jNzW7dDt4Do5veaIJ9GDHwG5euP0PM9anQ8/ILfUdMRheq12LcuSUZ5fHSHmWpdvnXOr8Tha7li53zT3fnMo4Yyz6ayjggTTDKtBLLKV8xSPy1WPbcB/+vF3uvXRpzXdhipIdEhd1jP105p71+UFxtMWP1/yWE+OoEIuLM4GFua1LqXd8EH5wPn5EPkJRi0s/Mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QeuU2kwCYmZtX/gsyU+CxZ4ylB4DVCx5o2A5GUTeRwk=;
- b=LHPIRgbNCVTfDaEe03hDC5CRWnKKfnRgYsoAi9d6lwZ0ISw7nTjoil4ye0A/rx6i03WoEmz1GVK8kPN1PKvLVEgpdOoKD2JL9UmkEHljAlXI8N/DoeQMZfkvozhRJ602HajIw7tWF99f70Mf9HZuFKMT586ecJFWxAiaJeYCw8f62SdPT3fvlmRvks5u9LWyF1sdt8EtDW2Ch88iXh6dJNnZYhWa0vjPwwuRQOs89dVbxdR+TtqYExe/UC4NbK7U1N+aMXPRGlq+nysXNADLPuibJn/5dWWxXoGxcmVJWY2qTdMPC00IJMwCV8vCtvg3neQSNPYoxnGLS4/dP0VkxA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QeuU2kwCYmZtX/gsyU+CxZ4ylB4DVCx5o2A5GUTeRwk=;
- b=SlvChyIlkQ2Kgr/UEVpIPfSZqO6ApQydQ8jmmvjAD3TNj2AOHRIzpSGgsSSfwj2aNvCV08ZW8ao73WzikciInLpr6NXZ7dbWCkyMgubxEv/YhidlvnQ1AJF2uh0G2trDvWOfenOO7GS7k8ALnEz3osPKXnb4gfTW6siFz8Ge0G4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from VI1PR04MB5005.eurprd04.prod.outlook.com (2603:10a6:803:57::30)
- by DB9PR04MB9701.eurprd04.prod.outlook.com (2603:10a6:10:300::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.11; Thu, 8 Dec
- 2022 07:19:09 +0000
-Received: from VI1PR04MB5005.eurprd04.prod.outlook.com
- ([fe80::e2d1:cb8b:dc57:8749]) by VI1PR04MB5005.eurprd04.prod.outlook.com
- ([fe80::e2d1:cb8b:dc57:8749%3]) with mapi id 15.20.5880.014; Thu, 8 Dec 2022
- 07:19:09 +0000
-From:   carlos.song@nxp.com
-To:     jic23@kernel.org, lars@metafoo.de
-Cc:     rjones@gateworks.com, Jonathan.Cameron@huawei.com,
-        haibo.chen@nxp.com, carlos.song@nxp.com, linux-imx@nxp.com,
-        linux-iio@vger.kernel.org
-Subject: [PATCH v2 7/7] iio: imu: fxos8700: fix MAGN sensor scale and unit
-Date:   Thu,  8 Dec 2022 15:19:11 +0800
-Message-Id: <20221208071911.2405922-8-carlos.song@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221208071911.2405922-1-carlos.song@nxp.com>
-References: <20221208071911.2405922-1-carlos.song@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0019.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::10) To VI1PR04MB5005.eurprd04.prod.outlook.com
- (2603:10a6:803:57::30)
+        with ESMTP id S229753AbiLHIEx (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 8 Dec 2022 03:04:53 -0500
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97EF9554E2;
+        Thu,  8 Dec 2022 00:04:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+        s=default2211; h=MIME-Version:Content-Type:In-Reply-To:Subject:Cc:To:From:
+        Message-ID:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:References;
+        bh=B4lX7Is3GLlD2F8OGLEZmROa9XN25sI+U9vajJTw5+0=; b=VLatFCjjlI0I4rWZpYXQJHzTMa
+        yfwXzvchJkQzVpwc4dxXDvk1PHOjORO/CeVufUAMY3UONKz4s2g3II2W+4VycUagDw7MmakNItM/a
+        f9pJTo0Kr3yDATqqVF77w1jWsHa7b7Ng78YEXlkNaotnfUFYZwqu8aZ1C/5taGAchtlineLNEdRvY
+        M+9wMl3cvmyn2mlni/+LC3P02KTw33Mvrh6vg4QOeq70MpxuckljFXPs7NMAIOGF2fe3DZppu6aby
+        fZz3Ku3nCIbqkHfDCGbvn1Tn1qgd4BNqvyG1A21e0yP5EBcxn3BEEUrtVYdIkEfvJ5ygcwZXVFD0A
+        JRUzCluQ==;
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <sean@geanix.com>)
+        id 1p3BXQ-000MIs-UY; Thu, 08 Dec 2022 08:41:48 +0100
+Received: from [192.168.0.30] (helo=webmail.your-server.de)
+        by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
+        (Exim 4.92)
+        (envelope-from <sean@geanix.com>)
+        id 1p3BXQ-000IoF-Ht; Thu, 08 Dec 2022 08:41:48 +0100
+Received: from 2a06.4004.10DF.0001.15d4.557d.AD03.f652.static6.kviknet.net
+ (2a06.4004.10DF.0001.15d4.557d.AD03.f652.static6.kviknet.net
+ [2a06:4004:10df:1:15d4:557d:ad03:f652]) by webmail.your-server.de (Horde
+ Framework) with HTTPS; Thu, 08 Dec 2022 08:41:48 +0100
+Date:   Thu, 08 Dec 2022 08:41:48 +0100
+Message-ID: <20221208084148.Horde.VelCJlguEqv9w4LL58tGw8C@webmail.your-server.de>
+From:   sean@geanix.com
+To:     Han Xu <han.xu@nxp.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Haibo Chen <haibo.chen@nxp.com>,
+        Clark Wang <xiaoning.wang@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        imx@lists.linux.dev
+Subject: Re: [PATCH 1/2] iio: accel: add the new entry in driver for
+ FXLS8967AF
+In-Reply-To: <20221207162045.669958-1-han.xu@nxp.com>
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5005:EE_|DB9PR04MB9701:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3fee9034-7e35-4404-66b9-08dad8ec7fce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DZmg+zJYSbZpG35V/3wGsR2HFLcPz2U/oWE6RQQQgU5BJFvQdHD+koDuktHooi8ChqimveyrowFIPuW5UgPa1k6HmKNlWHp/0Z5RBE+O+hfzHDntr3qSPuqUiHs81PU80AEo1HHzRMYvskpv+sKOxTmelHb2EybrE69+Gh9QZ1D1E8W9nCGqk5edauVzA9vN6mcw4H2diD0IUPPkcNxrCYGXK4gss2lwY9D+oWZXXZHf1HK6tuUFYoJp4yRfhFvIJak08lyKMJUjRqiv6xJ2aVDqGUrlyt4F+5JNVE2p2vxYJ0Y+C5qkLOWzPWno0G26TZxid5cGcS9HI4D2D3Z4KqOrxn/EhpbUAxgIz/h1shchxrG8MGw99fCgv+PyQY1nRCHIJpNiQ3zx1xbWBmtUxhvI9Uk3KxradArSx8jgyF851v6lysLno2EsbriEg4EUqO4kD4XJC1Sok5PBsdgBYoeb663D6VxDyUA5/8VWhmP+mgSbTR/M9XwWZ3yJPj00TmmXunwC/gTHpfYSudqI0+MtavEYY5xyU67w7TyizlCI9eU/Yqy6/SrGBngw44gNQ+rbDc3g8eHojbkp8xMZM+u6xLrKGSPNgYEmXFJgwpp+Lo1vgJMxlGS3WZs3hGb0GCycn89XYJkOIs0AUFZEGJMRDzlnDq8uvJvsdhW0g3TTvuO1wCFMzTA80KILCuJj8NTEIOukkZE0xvIjYmb3Vg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5005.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(376002)(366004)(396003)(39860400002)(451199015)(36756003)(6506007)(9686003)(316002)(26005)(83380400001)(2906002)(186003)(6486002)(6512007)(1076003)(6666004)(52116002)(86362001)(66476007)(8676002)(38100700002)(4326008)(66946007)(38350700002)(66556008)(478600001)(2616005)(41300700001)(8936002)(5660300002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fl5GY00cZdnrTFAbGWqACAGry/zVuuPrSy1rHkir/O5xIwtZ4CdglPusW20E?=
- =?us-ascii?Q?oKmULzFFTYJg4rfJ/wBIP+AMWFZcZ4EmAb1Z8ckFbeDW6KePDgW+PECzgyMP?=
- =?us-ascii?Q?fL+VaB6NArhT3sRnJOmHbFrsyhcv+Y85Xb1iQAKyK1PReOZQZh/Ew8u4gxB2?=
- =?us-ascii?Q?aFoJy5GUeGHjYpBoPPJXiA4whRFaEm+LxyM/6YgjZKg2kxmMwerx3WdOTgkh?=
- =?us-ascii?Q?I0f0+oIOHJydAlrf4EcUoxmk+4EGH6MU+mOSUUP1ARGjY/21vaujai7KVVp9?=
- =?us-ascii?Q?Hlz6q0GIlY3fhR1dS5DtAaDnIYGuoV1wzV28gblFEDjbyAldAZStoHs8rwlp?=
- =?us-ascii?Q?4Zgt+mtNMbY1wHOacdl5GX2DCIECW+6w6+tABvOLYAkcElXG37qifCxL/N6w?=
- =?us-ascii?Q?fP7fRJby5S8h4/pLhrAJ7Ez5CyUGPSMRXGRyU3ThIIzB3goHWNfFRwxFmqUY?=
- =?us-ascii?Q?tHGEOh3cL9wZA617iun5PmkH7SUXzDFsJiMVZBPKPTEUy7lLhGSl6j0b0BVW?=
- =?us-ascii?Q?I56LeSERWNxfnIjFA1Fgy0xHJtiItr3vOh59vijyrDGVg11zuc3ybDGQnam6?=
- =?us-ascii?Q?1SQjBwcr2HAza8XYElbzBZOvrjBL/trYFgRFIya5n+jvCRv1vCxvUao0AEeO?=
- =?us-ascii?Q?/8drHraCeu3941qOleoaWubr46ftonMufPYyG3MzyDibUrRhSHgg74qjedZT?=
- =?us-ascii?Q?yDUpew65pm3FisfC8Zs5DOL21bbzat4ZMJQmqEB7FMEwV7Iunz8m6q7kZy3T?=
- =?us-ascii?Q?uZlipfV1yNwiEDCafejBgBPpuMxsvoiEXLWHVWO2+iFKyqYMwytSgi/ApPiI?=
- =?us-ascii?Q?qWLOaYzI9kl4LwZScHQg6NZgivc/PC7s/nM9403AR24bNmu1MyysvrzRWVj6?=
- =?us-ascii?Q?JQBPW/Pgvqo5i1tYYF6+vLdRt4d7LPVAyXGqno7qF9zrHY8U3ERRvFM8l26I?=
- =?us-ascii?Q?837uOhU3NIkDqr19w2h0UVZvGNWDwr7tzj4+yloD2JUhRg8RZkKVZUvv3uc2?=
- =?us-ascii?Q?fArvIN9BMcovlXchm5TzEoE2nP7v3qKQryHMm4m1Ije+Z4sv0PmHkNlj02+5?=
- =?us-ascii?Q?rp47FHj2wRETuAAyWCcvtzWU6iwlYoQs/co3Q6ds4jD2hN0hBt7J+poTe+iy?=
- =?us-ascii?Q?XY6e34bVoHbbc83OLMs7jEkO3jaG/qlhFXeZweVrVBfYZMSPl7hMYHfOU81I?=
- =?us-ascii?Q?b2hE1kh7ge9WKfgx9scEk4dWo53/A69v1ChdikBftRSZ46lD1xA1s8MV7gG5?=
- =?us-ascii?Q?WDd/PsWaw/rm1R4R24TmbCrFb7t9sHM9W8vJEmA0P4L583dTIzZOgMVVRrwH?=
- =?us-ascii?Q?VByu3dTCfLqwOJKmlssRFCytN0KRgMF8x//YQvpJq2K/zQdWIPS4Mm4BwMt1?=
- =?us-ascii?Q?cBAqepkRRcoE+hE+h3WwvSBTQisUTthwJKOFMKov37wP1IULxC+eRMfjgh40?=
- =?us-ascii?Q?0xZJOr94jbvvq+NMa7Q/oBLPpeloVF3OSy9RKMYEXxGZ4ITyiucc1M2Q5ju6?=
- =?us-ascii?Q?8llDH25yPLwLX1BQumzM46XaXMQ8JvEEjqOHTYO+3pXx+DOwAH5A+LWvI2x6?=
- =?us-ascii?Q?Hbpe+KTpSYH4sIa9eCqLjF9dCfmSYmBjaQYcamUE?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3fee9034-7e35-4404-66b9-08dad8ec7fce
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5005.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Dec 2022 07:19:09.6179
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 77e3S/HHLXYHZHijAbB3xBRhPWxAXhVLmU+mV+yJTIEqXtp1mPWEUcWls1g79gIN47sV8s0yQoNi24xIRC8oPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9701
+Content-Disposition: inline
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.7/26743/Wed Dec  7 09:17:04 2022)
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-From: Carlos Song <carlos.song@nxp.com>
 
-+/-1200uT is a MAGN sensor full measurement range. Magnetometer scale
-is the magnetic sensitivity parameter. It is referenced as 0.1uT
-according to datasheet and magnetometer channel unit is Gauss in
-sysfs-bus-iio documentation. Gauss and uTesla unit conversion
-relationship as follows: 0.1uT = 0.001g.
+Quoting Han Xu <han.xu@nxp.com>:
 
-Set magnetometer scale and available magnetometer scale as fixed 0.001g.
+> Add this new device entry in the driver id table.
+>
+> Signed-off-by: Han Xu <han.xu@nxp.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com>
+> ---
+>  drivers/iio/accel/fxls8962af-core.c | 7 +++++++
+>  drivers/iio/accel/fxls8962af-i2c.c  | 2 ++
+>  drivers/iio/accel/fxls8962af.h      | 1 +
+>  3 files changed, 10 insertions(+)
+>
+> diff --git a/drivers/iio/accel/fxls8962af-core.c  
+> b/drivers/iio/accel/fxls8962af-core.c
+> index 17a6f4f4e06c..ddeb1b153499 100644
+> --- a/drivers/iio/accel/fxls8962af-core.c
+> +++ b/drivers/iio/accel/fxls8962af-core.c
+> @@ -127,6 +127,7 @@
+>  #define FXLS8962AF_DEVICE_ID			0x62
+>  #define FXLS8964AF_DEVICE_ID			0x84
+>  #define FXLS8974CF_DEVICE_ID			0x86
+> +#define FXLS8967AF_DEVICE_ID			0x87
+>
+>  /* Raw temp channel offset */
+>  #define FXLS8962AF_TEMP_CENTER_VAL		25
+> @@ -772,6 +773,12 @@ static const struct fxls8962af_chip_info  
+> fxls_chip_info_table[] = {
+>  		.channels = fxls8962af_channels,
+>  		.num_channels = ARRAY_SIZE(fxls8962af_channels),
+>  	},
+> +	[fxls8967af] = {
+> +		.chip_id = FXLS8967AF_DEVICE_ID,
+> +		.name = "fxls8967af",
+> +		.channels = fxls8962af_channels,
+> +		.num_channels = ARRAY_SIZE(fxls8962af_channels),
+> +	},
+>  };
+>
+>  static const struct iio_info fxls8962af_info = {
+> diff --git a/drivers/iio/accel/fxls8962af-i2c.c  
+> b/drivers/iio/accel/fxls8962af-i2c.c
+> index 4a755a39d702..fd21f524e04f 100644
+> --- a/drivers/iio/accel/fxls8962af-i2c.c
+> +++ b/drivers/iio/accel/fxls8962af-i2c.c
+> @@ -31,6 +31,7 @@ static const struct i2c_device_id fxls8962af_id[] = {
+>  	{ "fxls8962af", fxls8962af },
+>  	{ "fxls8964af", fxls8964af },
+>  	{ "fxls8974cf", fxls8974cf },
+> +	{ "fxls8967af", fxls8967af },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
+> @@ -39,6 +40,7 @@ static const struct of_device_id fxls8962af_of_match[] = {
+>  	{ .compatible = "nxp,fxls8962af" },
+>  	{ .compatible = "nxp,fxls8964af" },
+>  	{ .compatible = "nxp,fxls8974cf" },
+> +	{ .compatible = "nxp,fxls8967af" },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
+> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
+> index 45c7e57412e0..7de924d15694 100644
+> --- a/drivers/iio/accel/fxls8962af.h
+> +++ b/drivers/iio/accel/fxls8962af.h
+> @@ -12,6 +12,7 @@ enum {
+>  	fxls8962af,
+>  	fxls8964af,
+>  	fxls8974cf,
+> +	fxls8967af,
+>  };
+>
+>  int fxls8962af_core_probe(struct device *dev, struct regmap  
+> *regmap, int irq);
+> --
+> 2.25.1
 
-Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
----
-Changes for V2:
-- Modify the magnetometer sensitivity unit to be consistent with the
-  documentation as 0.001g
-- Rework commit log
 
-diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-index b4baef82f6d5..1780ed99d2f9 100644
---- a/drivers/iio/imu/fxos8700_core.c
-+++ b/drivers/iio/imu/fxos8700_core.c
-@@ -352,7 +352,7 @@ static int fxos8700_set_scale(struct fxos8700_data *data,
- 	struct device *dev = regmap_get_device(data->regmap);
- 
- 	if (t == FXOS8700_MAGN) {
--		dev_err(dev, "Magnetometer scale is locked at 1200uT\n");
-+		dev_err(dev, "Magnetometer scale is locked at 0.001g\n");
- 		return -EINVAL;
- 	}
- 
-@@ -397,7 +397,7 @@ static int fxos8700_get_scale(struct fxos8700_data *data,
- 	static const int scale_num = ARRAY_SIZE(fxos8700_accel_scale);
- 
- 	if (t == FXOS8700_MAGN) {
--		*uscale = 1200; /* Magnetometer is locked at 1200uT */
-+		*uscale = 1000; /* Magnetometer is locked at 0.001g */
- 		return 0;
- 	}
- 
-@@ -591,7 +591,7 @@ static IIO_CONST_ATTR(in_accel_sampling_frequency_available,
- static IIO_CONST_ATTR(in_magn_sampling_frequency_available,
- 		      "1.5625 6.25 12.5 50 100 200 400 800");
- static IIO_CONST_ATTR(in_accel_scale_available, "0.000244 0.000488 0.000976");
--static IIO_CONST_ATTR(in_magn_scale_available, "0.000001200");
-+static IIO_CONST_ATTR(in_magn_scale_available, "0.001000");
- 
- static struct attribute *fxos8700_attrs[] = {
- 	&iio_const_attr_in_accel_sampling_frequency_available.dev_attr.attr,
--- 
-2.34.1
 

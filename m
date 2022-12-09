@@ -2,172 +2,226 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 775C7648211
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Dec 2022 13:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B23C6485A3
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Dec 2022 16:32:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbiLIMAw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Dec 2022 07:00:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37370 "EHLO
+        id S230014AbiLIPca (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Dec 2022 10:32:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229940AbiLIMAs (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Dec 2022 07:00:48 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A802C31353
-        for <linux-iio@vger.kernel.org>; Fri,  9 Dec 2022 04:00:38 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id n21so10950825ejb.9
-        for <linux-iio@vger.kernel.org>; Fri, 09 Dec 2022 04:00:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
-        b=blV6eki9f/dE3yt8k9vQjmYbdmKqtjXhWL8aRDi0+PTy9DZ7PoASn6Hb4YDawt6/Pq
-         TOTWkNyJ1bQ0LXeAOKmZsgrohPEAxg4I9Vxq8Iql4MCfOpzd9bk59Kg8A1l2aCabzc1i
-         Pwb8zUD5pTagBDWz9wlqw8be8RXHOe4ntLhBEh7HXgPppKgizTPX68btz3fJ69iSfJef
-         zAFAyKFjvCY4s0mBfuw+77i/sj6ivMcyXsKkk5Q+7miuQY1uqqYMcxvazgbad3gQhSeN
-         osKwSC1CYREx2mikz7Rsbjiro/V/gVq1uBZVJYbtUMGcexuFEHFb/xJK0jJPCO1YVyoF
-         GpZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CCwzWMPdgO9Dcc0FuYTNg8nT6gaYsC62geOPdirkTlQ=;
-        b=FhvPJUXokCh2Mequcm80bk1WMjrSXigFDwfTiOgBZ9lIVblGY7zK8O+pfr3A+UlI73
-         8ImqQ6UhjZtbMcNdNWUCZd16+ZB9psEcSPTAlu67C5TjqWLPHFIEt+Adh3wvhVcz8zd0
-         6kbHMDDEIl155d2qONOVBDBQDCLzLmGyNlyyby8Jqv3Uo7qocyHTG5fbobht+csAZngR
-         SeLW7kQNgOjpzdbjwgf8Az9YF5RuwlyfYmhbfwyBfOYFyE4TjiW+Z8Of8d2B6CUGGO1a
-         aUG1360FvTpZB6sF/Lz07C4k0GMFAKt45ZumeI/+Lxj5rUOvFybB7/sqqdd+EVNiJWaY
-         /rLg==
-X-Gm-Message-State: ANoB5plFTrt/ioIB8jBSULvHg7LuGwPDDcXuIbwpX3ALA3MS5TUC7Rse
-        9FMpUr6UeHCREqKMCJyM7AF5Yg==
-X-Google-Smtp-Source: AA0mqf7P1uuFrcKToZQL1Qs7OSMRUELHntqUphTx86r+y9eGx8OMntNtg5Twtz4wxSVo6DNFFYUZgg==
-X-Received: by 2002:a17:906:4907:b0:7c0:d4fa:3151 with SMTP id b7-20020a170906490700b007c0d4fa3151mr4765674ejq.17.1670587236522;
-        Fri, 09 Dec 2022 04:00:36 -0800 (PST)
-Received: from prec5560.. (freifunk-gw.bsa1-cpe1.syseleven.net. [176.74.57.43])
-        by smtp.gmail.com with ESMTPSA id o23-20020a170906861700b007c0a7286c0asm489597ejx.58.2022.12.09.04.00.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Dec 2022 04:00:35 -0800 (PST)
-From:   Robert Foss <robert.foss@linaro.org>
-To:     =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>,
-        Wolfram Sang <wsa@kernel.org>,
-        Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Grant Likely <grant.likely@linaro.org>,
-        Lee Jones <lee.jones@linaro.org>
-Cc:     Robert Foss <robert.foss@linaro.org>,
-        Broadcom internal kernel review list 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        linux-gpio@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-media@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-serial@vger.kernel.org, linux-usb@vger.kernel.org,
-        linux-spi@vger.kernel.org, kernel@pengutronix.de,
-        Purism Kernel Team <kernel@puri.sm>,
-        linux-rpi-kernel@lists.infradead.org, linux-leds@vger.kernel.org,
-        linux-actions@lists.infradead.org, netdev@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
-        linux-staging@lists.linux.dev, chrome-platform@lists.linux.dev,
-        linux-crypto@vger.kernel.org, linux-watchdog@vger.kernel.org,
-        linux-amlogic@lists.infradead.org, linux-fbdev@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com,
-        linux-omap@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-pm@vger.kernel.org,
-        platform-driver-x86@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: (subset) [PATCH 000/606] i2c: Complete conversion to i2c_probe_new
-Date:   Fri,  9 Dec 2022 13:00:14 +0100
-Message-Id: <167058708567.1651663.18170722235132459286.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20221118224540.619276-1-uwe@kleine-koenig.org>
-References: <20221118224540.619276-1-uwe@kleine-koenig.org>
+        with ESMTP id S230161AbiLIPc1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Dec 2022 10:32:27 -0500
+Received: from JPN01-OS0-obe.outbound.protection.outlook.com (mail-os0jpn01on2110.outbound.protection.outlook.com [40.107.113.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E27C6300;
+        Fri,  9 Dec 2022 07:32:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZNNFeB4mWCClpGCaxjovcoKpcz5Lo475BGB3qSq17ED9boYIISnmy2QKVvgzN/I4yyyprfcIZVcz9lefolGeI4YuAjVaI0OGpB7wJbswp76fNn491NyQ2PY4bs9qG98LIqRqWvUYG1m4DLttcgwOxbUdm0EJODVIlh+zkGaLQ38vGf+4xI6xZKpGuzfpsO3xk1EHNIyo5gMVEx72gNzXjr4hk63t+/hWC/MO0XFcbQeJBslFuhAjxyQfi7i2tnFPKVflPZIds/OdDeVVYScD+wLXg66n8w29zMWrnaWYEFn+moUemE2T1iLfjqEw00+XuokcC6Mpb8CBtrCEuH+7tw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c1jQpVwCyMiJesj9xkTPTiwhB4+cLhVd9h8tDkGyHAI=;
+ b=a62MfL3Ek+Hw3JTaI35u5FaDpTlwgxr8RW3HUaxnttCxiFdk+d39faCtDht1hFRFqChMn8JgedeHoxzQ3l3dBworLqTJMwOcAKiLf0/Fzwr9IKp4s48liuinQXP4n3kGC/kn8vJa4lWvare6TlvBbx0GKb5ScjE38biolyxQAL3QGXoIQ00l3ybcQiM8O59V6KsFVAkDVXcxwfqHCVARv1ofF0qymecnq/TfQV3li+n0LDDxiH2zhsidaAQ8AP2Qy/0mrX6O7H9eNsvfzlOmXj2+jFioMYuUHgu4hj6UZTg8CeWN49l1FoEXQlAx+QcQoXlOIvfN6At/JYxspaIGXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c1jQpVwCyMiJesj9xkTPTiwhB4+cLhVd9h8tDkGyHAI=;
+ b=OM+qffAjDqNo8a9Zm8IerajfjC5eV2lNDh5Tzht++PxHRKdOhD5N5ANDEpLG9BhqPvJWTPk54MSjb5HNjHhCWS4+NjHg5abbsIPSsPUpR03uCva9GWPA5+Jm1FUk9VeDOgNOfRtPR82c8MsESqmQ+DHRAXuUUrswldTaxSpmlJM=
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
+ by TYCPR01MB10591.jpnprd01.prod.outlook.com (2603:1096:400:303::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.16; Fri, 9 Dec
+ 2022 15:32:22 +0000
+Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::2cfb:38d2:d52e:c8a3]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
+ ([fe80::2cfb:38d2:d52e:c8a3%5]) with mapi id 15.20.5880.019; Fri, 9 Dec 2022
+ 15:32:22 +0000
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: RE: [PATCH v7 3/5] Documentation: ABI: sysfs-bus-counter: add
+ cascade_enable and external_input_phase_clock_select
+Thread-Topic: [PATCH v7 3/5] Documentation: ABI: sysfs-bus-counter: add
+ cascade_enable and external_input_phase_clock_select
+Thread-Index: AQHZACZFvJ67Pp/xj02hEgsJkmdmz65K+JMAgBrMQmA=
+Date:   Fri, 9 Dec 2022 15:32:22 +0000
+Message-ID: <OS0PR01MB59221885A6BBC65A4C60E5EE861C9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+References: <20221124170018.3150687-1-biju.das.jz@bp.renesas.com>
+ <20221124170018.3150687-4-biju.das.jz@bp.renesas.com>
+ <Y3zYxtelBVrdbQ9g@fedora>
+In-Reply-To: <Y3zYxtelBVrdbQ9g@fedora>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYCPR01MB10591:EE_
+x-ms-office365-filtering-correlation-id: ec7ecb11-db4e-477c-49f8-08dad9fa912d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lkoq2Q+tHwoJ5olK0V/UUu/dcF7K3skfp1++zmnKjG3pwvnJtRxhp5bbSII/wgiC9tlts3g4OoJkWZ6X+o6OubQLsp2bv3m7YNoYuhAl2/LQHxQTdio0rSpva6eFCyVkvDRViFajEfPJTJqIQolpHdo/HRhK2zrbM3wb5JQz901aXFLFbxnB5cWMhy3jIbOzkbmzMxsB1b2SGyh4Xv7fDGnRPfwWyn9+UO4IRX73qjwX/oyvCGI9YUwvy71HwNZ3OWG3pq+sZ98AIsEg9CRrRVYrYHjlVUjLC1tl2y1pQgQekwkpkd+tZBY+lgB0QjiEv1E7mUkEma022rklVHQ27l3XaTdmenuEDPpalHORwGRGl92JxDNMWR+4jXkSwyuM+WHGSR+fIjA71YTXpOkletumvcPB8xnoEHRGNZJFecnH64kX+Z5/Om51xTxtYDL6ErV9/Y+wSXZDrmEh2LGfMkh0aSZQAXFOgh8s+luQ8Ojnekv5HANGZNXiZwmgUGQGPSejq0ltTQZSgMAsR8ueHsrucw4Ve2Na/0ceI8Nti5WAmfiO3K+mFf2TgeqeQkKPqDXrkpg4M6AWVFzWrdsPgGC/MYXiDQoRqpigpd1uX/rW9AqsyzFQncr50SyK2c8FAwMrK6OPBuEA0bHL40J5l8bz44USmavjTWMfl3SFIEo0A5bucmWiKi07ti1QwVa4Vt+dasnfFfrRlAwORuSmpg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(136003)(366004)(39860400002)(376002)(396003)(451199015)(478600001)(71200400001)(6506007)(7696005)(66946007)(9686003)(122000001)(186003)(26005)(38100700002)(41300700001)(66556008)(83380400001)(6916009)(54906003)(66476007)(8676002)(66446008)(4326008)(64756008)(33656002)(316002)(76116006)(55016003)(38070700005)(5660300002)(2906002)(52536014)(86362001)(8936002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?B3IK0QuN+3k4+q9csGIVP4zb4u9/ZPqjH49gHgCLZcDcpUvBH6gFpU4zeEqY?=
+ =?us-ascii?Q?no2o5/XLCIPPY9lKCqHXW15DIoxCFIDRNN8GeAeGLGeSIkDUdL5WEOtoiLX4?=
+ =?us-ascii?Q?wmMwzQ8vBIoYcxNb5cmztgiMDBD6hHpUPPzrvY48smlBJhkGcZYA8xkfAwEY?=
+ =?us-ascii?Q?+HiV80idICdsu6zNCc2gI8QX3VJ2s1HQ4CtRX/bSoEU4Mnr1j1r/8jMhyAXI?=
+ =?us-ascii?Q?NWNyOLTEBSzRbp+7WfzXoSjmLhbMIcmi5vyqi41VwHz7HG9KBJ11ei/xzeWD?=
+ =?us-ascii?Q?IA2plhrexUMDjGKFmFDpFLN8ra4bim+Mw8+7yTzstOn9h6/veovJ2P8NbhB7?=
+ =?us-ascii?Q?NKY0zcc1d3/anycQivwmDyV7OLUo09cr6Bds0m8l1jzgjW84nLUqgEk7+Bt5?=
+ =?us-ascii?Q?Tghnczs+LpfWe8Ogta+AX4S0VhF7Hg9lXRYukT5gTIQEI5tqqXNrGLw3/kXw?=
+ =?us-ascii?Q?n+OBPKvT3PlpIdHvUvwd0Dm1PfKDdb5lWXU4wZg635OTyeVLv02lS6nw1QWT?=
+ =?us-ascii?Q?3f2n1CZUnru/w1f3Xm166eqWpAkhvIAScHHQcPIJ7X1SUiN+EyHe1/H1QWJb?=
+ =?us-ascii?Q?MBkSL5bylct5UVoipUvDNeKWPXFf1fDYTcnYi1omLu0/YbFaRpDYRDMqL99e?=
+ =?us-ascii?Q?NLVoqGI+J+OHm5LzsvT1u2RaxSTT9L8fu8ITM4OzLJwLBbmMoGqfry/GZDjf?=
+ =?us-ascii?Q?8/TMQeQF7ugJGQ0+ES17yr/t6nZkhfViD20c/Zk5GzrGj0aEFKYM1zeSGd+z?=
+ =?us-ascii?Q?Lk9iLuNGIGaiFLW0tpV7faII4sBsgqldIrx7VvyWdZ9cn/aJktfHwU/LXjr0?=
+ =?us-ascii?Q?vZ/8fJuBiFX/20MTyqDp5eTrUI5wPdoilBr7DY+RNUIQAW/LaErsIkrz5jF+?=
+ =?us-ascii?Q?zF57d/GfDPsx1f3W/bcA9hAb96KRJDavQHmGnZKtYzixn73rgV1qBlX0evMm?=
+ =?us-ascii?Q?Yzwdxh2zKEr9trst1vVfzBVKrOrsHSu78OuJS22DX/aeiJlLSZ4aVgfuVqL3?=
+ =?us-ascii?Q?N6PxIoqjsSaz/7OI0c/qz5COS+pHGbVTFGvb4N9MKzuYklzLQUY/9OiqIPM+?=
+ =?us-ascii?Q?iMXGL+B6Xhad60dkakwUnHD8rF6RzjaN06rKHvog5FwTsEFqBupNTjdTzlC6?=
+ =?us-ascii?Q?AoQZ5JtYN7ZqlYj+sQ6xAuYk9xw7V+cLeg+GhiE4/DAOFs6LRV68OZlnmkkZ?=
+ =?us-ascii?Q?GDRYEKLMX4ytNGJCwzr0YNm+8bx1F56fvRaam3ZzQljafqSmKaAQnp0rUkPh?=
+ =?us-ascii?Q?24jq8UowvPrW4Iegqt3y614uBGk895H3iHzjyir0Fp0YUkjdk/7aciuuxXNb?=
+ =?us-ascii?Q?yjT+CRGOuMn1lhiEeqyr7qY+1glvT5ur6xUCr0AG9WV/gl64odTGyjUX7Gf5?=
+ =?us-ascii?Q?HmXFCJKNFMb1WINX4shyhhC83lrIG78lH8bUFCWf4XG4wG43zEgunU6Soz7Q?=
+ =?us-ascii?Q?DI+GTbnjDLrYajMoYv6UYxrEh505gBpYeAKadGXE4IpgJvAW9ankRKMujMs1?=
+ =?us-ascii?Q?slM9myoB5Svuq3FA1PgNRzcOQa7J+r9g6tfxuyjFqZv+D2EwaGVo3s4q5gir?=
+ =?us-ascii?Q?KjdAs7+F4f7rxiRAXsJ9+dYIEPZstDWV/QtjDYyCJZwNQWLDtOhx05eO4zC9?=
+ =?us-ascii?Q?jA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec7ecb11-db4e-477c-49f8-08dad9fa912d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2022 15:32:22.6906
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BV3SS1+WFovFJGR1o+VA8AGBp+mUWtuOdnDEs2yU/h/TJAsOG+V/IgF2dFXVoDjeRwCW7jWJb/RI8Qqbf/j97canaoAZhS5gL+w81aAA0hg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB10591
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 18 Nov 2022 23:35:34 +0100, Uwe Kleine-König wrote:
-> since commit b8a1a4cd5a98 ("i2c: Provide a temporary .probe_new()
-> call-back type") from 2016 there is a "temporary" alternative probe
-> callback for i2c drivers.
-> 
-> This series completes all drivers to this new callback (unless I missed
-> something). It's based on current next/master.
-> A part of the patches depend on commit 662233731d66 ("i2c: core:
-> Introduce i2c_client_get_device_id helper function"), there is a branch that
-> you can pull into your tree to get it:
-> 
-> [...]
+Hi William Breathitt Gray,
 
-Applied all patches that build.
+Thanks for the feedback.
 
-Patches excluded:
- - ps8622
- - ti-sn65dsi83
- - adv7511
+> Subject: Re: [PATCH v7 3/5] Documentation: ABI: sysfs-bus-counter: add
+> cascade_enable and external_input_phase_clock_select
+>=20
+> On Thu, Nov 24, 2022 at 05:00:16PM +0000, Biju Das wrote:
+> > This commit adds cascade_enable and external_input_phase_clock_ select
+> > items to counter ABI file.
+> > (e.g. for Renesas MTU3 hardware used for phase counting).
+> >
+> > Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+>=20
+> I have a few comments below left for this patch. Assuming these are
+> resolved, then I expect to ack this patch in the next submission.
 
-Repo: https://cgit.freedesktop.org/drm/drm-misc/
+OK.
 
+>=20
+> > ---
+> > v6->v7:
+> >  * Replaced long_word_access_ctrl_mode->cascade_enable
+> >  * Updated Kernel version
+> > v5->v6:
+> >  * No change
+> > v5:
+> >  * New patch
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-counter | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-counter
+> > b/Documentation/ABI/testing/sysfs-bus-counter
+> > index ff83320b4255..abc691b13b0f 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-counter
+> > +++ b/Documentation/ABI/testing/sysfs-bus-counter
+> > @@ -215,6 +215,22 @@ Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> >  		This attribute indicates the number of overflows of count Y.
+> >
+> > +What:		/sys/bus/counter/devices/counterX/cascade_enable
+>=20
+> It's possible that in the future we might cascading other things as well,
+> so let's make this name more specific: "cascade_counts_enable".
 
-[014/606] drm/bridge: adv7511: Convert to i2c's .probe_new()
-          (no commit info)
-[015/606] drm/bridge/analogix/anx6345: Convert to i2c's .probe_new()
-          (no commit info)
-[016/606] drm/bridge/analogix/anx78xx: Convert to i2c's .probe_new()
-          (no commit info)
-[017/606] drm/bridge: anx7625: Convert to i2c's .probe_new()
-          (no commit info)
-[018/606] drm/bridge: icn6211: Convert to i2c's .probe_new()
-          (no commit info)
-[019/606] drm/bridge: chrontel-ch7033: Convert to i2c's .probe_new()
-          commit: 8dc6de280f01c0f7b8d40435736f3c975368ad70
-[020/606] drm/bridge: it6505: Convert to i2c's .probe_new()
-          (no commit info)
-[021/606] drm/bridge: it66121: Convert to i2c's .probe_new()
-          (no commit info)
-[022/606] drm/bridge: lt8912b: Convert to i2c's .probe_new()
-          (no commit info)
-[023/606] drm/bridge: lt9211: Convert to i2c's .probe_new()
-          (no commit info)
-[024/606] drm/bridge: lt9611: Convert to i2c's .probe_new()
-          (no commit info)
-[025/606] drm/bridge: lt9611uxc: Convert to i2c's .probe_new()
-          (no commit info)
-[026/606] drm/bridge: megachips: Convert to i2c's .probe_new()
-          (no commit info)
-[027/606] drm/bridge: nxp-ptn3460: Convert to i2c's .probe_new()
-          (no commit info)
-[028/606] drm/bridge: parade-ps8622: Convert to i2c's .probe_new()
-          (no commit info)
-[029/606] drm/bridge: sii902x: Convert to i2c's .probe_new()
-          (no commit info)
-[030/606] drm/bridge: sii9234: Convert to i2c's .probe_new()
-          (no commit info)
-[031/606] drm/bridge: sii8620: Convert to i2c's .probe_new()
-          (no commit info)
-[032/606] drm/bridge: tc358767: Convert to i2c's .probe_new()
-          (no commit info)
-[033/606] drm/bridge: tc358768: Convert to i2c's .probe_new()
-          (no commit info)
-[034/606] drm/bridge/tc358775: Convert to i2c's .probe_new()
-          (no commit info)
-[035/606] drm/bridge: ti-sn65dsi83: Convert to i2c's .probe_new()
-          (no commit info)
-[037/606] drm/bridge: tfp410: Convert to i2c's .probe_new()
-          (no commit info)
+Agreed.
 
+>=20
+> > +KernelVersion:	6.3
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		This attribute indicates the cascading of counts on
+> > +		counter X.
+>=20
+> Add a line stating this is a boolean attribute: "Valid attribute values
+> are boolean."
 
+Agreed, will add this to a new line.
++		Valid attribute values are boolean.
 
-rob
+>=20
+> > +
+> > +What:
+> 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select
+> > +KernelVersion:	6.3
+> > +Contact:	linux-iio@vger.kernel.org
+> > +Description:
+> > +		This attribute selects the external clock pin for phase
+> > +		counting mode of counter X.
+>=20
+> This is a driver-specific enum attribute so it needs a corresponding
+> *_available entry. Take a look at the count_mode_available entry in this
+> file and use that as a template to create a new entry block for
+> external_input_phase_clock_select_available.
 
+Thanks. Will create new entry block for external_input_phase_clock_select_a=
+vailable
+>=20
+> > +
+> > +What:		/sys/bus/counter/devices/counterX/cascade_enable
+> > +What:
+> 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select
+>=20
+> These two lines are missing the '_id' suffix: "cascade_enable_id" and
+> "external_input_phase_clock_select_id".
+
+OK, will add _id suffix for both these entries.
+
+Cheers,
+Biju
+
+>=20
+> >  What:
+> 	/sys/bus/counter/devices/counterX/countY/capture_component_id
+> >  What:
+> 	/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+> >  What:
+> 	/sys/bus/counter/devices/counterX/countY/floor_component_id
+> > --
+> > 2.25.1
+> >

@@ -2,182 +2,152 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B1D76489AC
-	for <lists+linux-iio@lfdr.de>; Fri,  9 Dec 2022 21:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23362648ABA
+	for <lists+linux-iio@lfdr.de>; Fri,  9 Dec 2022 23:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbiLIUts (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 9 Dec 2022 15:49:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40022 "EHLO
+        id S229808AbiLIWYK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 9 Dec 2022 17:24:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbiLIUts (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Dec 2022 15:49:48 -0500
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8CA82FB8
-        for <linux-iio@vger.kernel.org>; Fri,  9 Dec 2022 12:49:46 -0800 (PST)
-Received: by mail-lj1-x231.google.com with SMTP id bn5so6181039ljb.2
-        for <linux-iio@vger.kernel.org>; Fri, 09 Dec 2022 12:49:46 -0800 (PST)
+        with ESMTP id S229779AbiLIWYJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 9 Dec 2022 17:24:09 -0500
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C8813F60
+        for <linux-iio@vger.kernel.org>; Fri,  9 Dec 2022 14:24:07 -0800 (PST)
+Received: by mail-oo1-xc35.google.com with SMTP id f184-20020a4a58c1000000b004a3c01646a0so269777oob.12
+        for <linux-iio@vger.kernel.org>; Fri, 09 Dec 2022 14:24:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=024DX+2bxKKNOhXWy51UpKLqrEurROJWrWITzj6/Ing=;
-        b=AMAxWkH6dXDY+BhjNBCBF4667j6FO92fMaunLeET5MPj9wbXcjSMrjJGHVPjdTs2eF
-         upHzHqsMDFefDtJCdCUHJhaqm5xOHP6r4YhvoLinidv8o2Wh13jzHUSmuXs1yeZMba+l
-         Z5yKL74L0PDgDW5Ct+724Yf00qYbGI5J19p38=
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0niFOJtseZKpNqdp7Vx1SkJWAbHvAgltgpslEU1rios=;
+        b=ZthfjG8mjewWB9eae366IW4b62xtMBDXTGmfIMRwYZeVDo9XwCKj3gbixD0w95mX7d
+         mHgExb1PF8V8wqmwB5OwisI4eDrmRc5fu0ptzV/55nCqzQNi1SCtxvLWW3MmC7NSJrMe
+         cXnW4IwbeKdBWO6R0lqa6uD77PsBY+ifPZxykrPR5yDyq6KeMPKR2ojHSUaeINq1AzKT
+         KidqCJkTyn1ANnE7cgACv665rsc6ktCRCBxlO8mEUBjlOs3oxSbfhXd/CxEoazW1H6M3
+         v8y1U8nE4ZJcsGx3Dtf/mm1kk7Dea6nO1LF6bXf12OdhSrVV397bXq4IuwbDWkKwPm5n
+         aoAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=024DX+2bxKKNOhXWy51UpKLqrEurROJWrWITzj6/Ing=;
-        b=fW9+7sMaP+x2gpEYWlm15ncOI0Z9PgVZCaOG+HswZ7eCZRQjkIr77N114cngis0Ir6
-         b+mFqwdJRP1iAYHFud7qVHzKLbSeAY8AvZQCbHSd8Xdpwd6zVjTdIjmmOYI8LQPkv78R
-         yJV+jGWxEZDbPEbD/ViAnM4+ko+1ZN5XYsfrP5zkGK9eRl+9V7Kutnep5PsQhjlhAob3
-         GUGPC9grOrAlqBfkkChkT+x4eGy7LuHXdN5eAT8dEgMMbcwC0MVgyijX61m55cOkLjCx
-         5ZGL3qMjKWGuuoh56SpmfFCOtrjblu1oU3pxAcl3X98X0sT3KWttscmg17yT/Gva9L0p
-         USOg==
-X-Gm-Message-State: ANoB5pnNFAZIhuQIBX0Z1tk0UUDX+9nAsHblWOHU2jCcyLSFpWbAIlcL
-        aadBnKwzoRQrLv3UhlHVpC+bNFxzzC9wP8ZSTFuwZ1Z9ygy8vA==
-X-Google-Smtp-Source: AA0mqf7ltxEwobxFR98pJKZS8nAr7455KY1zjDo8J7iSeEXXOD7neZk0zuHO2OH+5fGkLTDey6Wsb/Cj1kgi39u+0p0=
-X-Received: by 2002:a2e:a367:0:b0:27a:2a6d:73a with SMTP id
- i7-20020a2ea367000000b0027a2a6d073amr707214ljn.27.1670618984699; Fri, 09 Dec
- 2022 12:49:44 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 9 Dec 2022 15:49:44 -0500
+        bh=0niFOJtseZKpNqdp7Vx1SkJWAbHvAgltgpslEU1rios=;
+        b=gr3J8xyC+7TTZtS/6ly5HX/KDKD+2n/b+QVSHn/xXYB0bIudgn2oZQq/aRPh3ldJ1m
+         NPltxc+M5O0I/VuJe8RPyitQLfzEYB9iQdlAvhtwP5eoottP63VNKid4yB6MAWSrUElE
+         IYtHhYt06+OXzttIyjnhGu2E45ATgJ+weRJQZixQiojBW/fJfnTRRf80lHaLypJsmRvF
+         M7X2YVekCsOY2ceG8UrKmEEDxSsSasym5HngNmI2/iEjJMIY/oz9ZKsrkBl7Lc9+sCTX
+         3AnzHYzuE0GP0zz5A7yefvkMoA1/eaCkpurbSMBBvc8imdDZRZD6/P8JyHmMJzKdoT+G
+         O4LQ==
+X-Gm-Message-State: ANoB5plIQjou8bripLVtlxQunDPqoKCEDTddaDPsik3DmCvk08oyjU9g
+        Bp0+C4kyLjiCLXIx+gidX0w7mw==
+X-Google-Smtp-Source: AA0mqf6YezcedWqO5/DfQ5Hh5KjmW+9LYC+dlAS/gPvAELaB4jrAICD5YQomLLQmCgeSgLlXx2Ehtg==
+X-Received: by 2002:a4a:dc8c:0:b0:4a0:c270:2f3f with SMTP id g12-20020a4adc8c000000b004a0c2702f3fmr4138546oou.3.1670624647102;
+        Fri, 09 Dec 2022 14:24:07 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id c127-20020a4a4f85000000b004a0ad937ccdsm882932oob.1.2022.12.09.14.24.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Dec 2022 14:24:06 -0800 (PST)
+Date:   Fri, 9 Dec 2022 17:24:03 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>,
+        "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Subject: Re: [PATCH 0/6] Add RZ/V2M Compare-Match Timer (TIM) support
+Message-ID: <Y5O1g8/69tCfmdW6@fedora>
+References: <20221205145955.391526-1-biju.das.jz@bp.renesas.com>
+ <20221205225042.GA2812115-robh@kernel.org>
+ <OS0PR01MB592211AD4D0AE23DA7075DD5861B9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <CAMuHMdX2=AwerQZS2cqR4exq_QNtt=Fwp5KBcmPr1qmOBNOSAg@mail.gmail.com>
+ <87sfhsgb9e.ffs@tglx>
+ <OS0PR01MB59228CED6187C7B19776CE22861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <878rjjfprw.ffs@tglx>
+ <OS0PR01MB5922B590AB9791B9741E2A1D861A9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <87sfhrdure.ffs@tglx>
 MIME-Version: 1.0
-In-Reply-To: <20221208184812.53754-1-gwendal@chromium.org>
-References: <20221208184812.53754-1-gwendal@chromium.org>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Fri, 9 Dec 2022 15:49:44 -0500
-Message-ID: <CAE-0n53QRknko+ipDFW1DptpJsth0HLpn6SuOMDJC1BBvv3VLg@mail.gmail.com>
-Subject: Re: [PATCH] iio: proximity: sx_common: Add old register mapping
-To:     Gwendal Grignou <gwendal@chromium.org>, jic23@kernel.org
-Cc:     linux-iio@vger.kernel.org, victording@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="YkhtusH7Lbb0s/D9"
+Content-Disposition: inline
+In-Reply-To: <87sfhrdure.ffs@tglx>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Quoting Gwendal Grignou (2022-12-08 10:48:12)
-> diff --git a/drivers/iio/proximity/sx9310.c b/drivers/iio/proximity/sx9310.c
-> index 0e4747ccd3cf7..e8f8c727d2467 100644
-> --- a/drivers/iio/proximity/sx9310.c
-> +++ b/drivers/iio/proximity/sx9310.c
-> @@ -871,6 +873,8 @@ static int sx9324_init_compensation(struct iio_dev *indio_dev)
->                                         20000, 2000000);
->  }
->
-> +extern const struct acpi_device_id sx9324_acpi_match[];
-> +
 
-Put this extern in common.h?
+--YkhtusH7Lbb0s/D9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> @@ -888,7 +892,10 @@ sx9324_get_default_reg(struct device *dev, int idx,
->         int ret, count, ph, pin;
->         const char *res;
->
-> +
+On Wed, Dec 07, 2022 at 05:49:09PM +0100, Thomas Gleixner wrote:
+> On Wed, Dec 07 2022 at 11:35, Biju Das wrote:
+> > Counter, It can be used as measuring the processing time of DRP-AI.
+>=20
+> Sigh. You can do that with the architected timer too, especially when
+> you are going to do the measurement in user space.
+>=20
+> clock_gettime(), which uses the VDSO with the architected timer is fast
+> to access and accurate.
+>=20
+> Thanks,
+>=20
+>         tglx
 
-Remove?
+Hi Biju,
 
->         memcpy(reg_def, &sx9324_default_regs[idx], sizeof(*reg_def));
-> +       sx_common_get_raw_register_config(dev, sx9324_acpi_match, reg_def);
-> +
->         switch (reg_def->reg) {
->         case SX9324_REG_AFE_PH0:
->         case SX9324_REG_AFE_PH1:
-> @@ -1116,7 +1123,7 @@ static int sx9324_resume(struct device *dev)
->
->  static DEFINE_SIMPLE_DEV_PM_OPS(sx9324_pm_ops, sx9324_suspend, sx9324_resume);
->
-> -static const struct acpi_device_id sx9324_acpi_match[] = {
-> +const struct acpi_device_id sx9324_acpi_match[] = {
->         { "STH9324", SX9324_WHOAMI_VALUE },
->         { }
->  };
-> diff --git a/drivers/iio/proximity/sx9360.c b/drivers/iio/proximity/sx9360.c
-> index 7fa2213d23baf..95c2df36729e2 100644
-> --- a/drivers/iio/proximity/sx9360.c
-> +++ b/drivers/iio/proximity/sx9360.c
-> @@ -715,6 +715,8 @@ static int sx9360_init_compensation(struct iio_dev *indio_dev)
->                                        20000, 2000000);
->  }
->
-> +extern const struct acpi_device_id sx9360_acpi_match[];
-> +
+It's true that you could implement a Counter driver to achieve what you
+want here, but I don't think that's the most apt interface for this
+device. Your device is used to measure the processing time of DRP-AI, so
+modeling this as a clocksource seems like the right approach to take.
 
-Put this extern in common.h?
+Of course, if there is something missing from clocksource/clockevent
+that you need, then it should be added to the subsystem. So let's try to
+narrow down exactly what functionality you need.
 
-> diff --git a/drivers/iio/proximity/sx_common.c b/drivers/iio/proximity/sx_common.c
-> index d70a6b4f0bf86..ce8f99b6fc3d9 100644
-> --- a/drivers/iio/proximity/sx_common.c
-> +++ b/drivers/iio/proximity/sx_common.c
-> @@ -424,6 +424,7 @@ static const struct iio_buffer_setup_ops sx_common_buffer_setup_ops = {
->         .postdisable = sx_common_buffer_postdisable,
->  };
->
-> +
->  static void sx_common_regulator_disable(void *_data)
->  {
->         struct sx_common_data *data = _data;
+You gave a Counter use-case example earlier where you can configure the
+ceiling value of the timer (e.g. to 1usec or 10000000usec) and push
+Counter events on the interrupts that trigger off that that
+configuration; the Counter subsystem can logs the current system time
+everytime a Counter event is pushed.
 
-Remove this hunk?
+Could the same thing be achieved using clockevents framework instead?
+With this approach you would register an event to fire in the future
+(e.g. 1usec or 10000000usec) and then call clock_gettime() to get the
+current system when you're notified of the event. Would this approach
+work for your use-case, or is something else missing here?
 
-> @@ -431,6 +432,31 @@ static void sx_common_regulator_disable(void *_data)
->         regulator_bulk_disable(ARRAY_SIZE(data->supplies), data->supplies);
->  }
->
-> +void sx_common_get_raw_register_config(struct device *dev,
-> +               const struct acpi_device_id *acpi_ids,
-> +               struct sx_common_reg_default *reg_def)
-> +{
-> +       const struct acpi_device_id *id;
-> +       u32 raw = 0, ret;
-> +       char prop[80];
-> +
-> +       if (!reg_def->property)
-> +               return;
-> +
-> +       for (id = acpi_ids; id->id[0]; id++) {
-> +               scnprintf(prop, ARRAY_SIZE(prop), "%s,reg_%s",
-> +                               id->id, reg_def->property);
-> +               ret = device_property_read_u32(dev, prop, &raw);
-> +               if (ret)
-> +                       continue;
-> +
-> +               reg_def->def = raw;
-> +               break;
-> +       }
-> +}
-> +EXPORT_SYMBOL_NS_GPL(sx_common_get_raw_register_config, SEMTECH_PROX);
-> +
-> +
+William Breathitt Gray
 
-Remove one newline here?
+--YkhtusH7Lbb0s/D9
+Content-Type: application/pgp-signature; name="signature.asc"
 
->  #define SX_COMMON_SOFT_RESET                           0xde
->
->  static int sx_common_init_device(struct device *dev, struct iio_dev *indio_dev)
-> diff --git a/drivers/iio/proximity/sx_common.h b/drivers/iio/proximity/sx_common.h
-> index 5d3edeb75f4e0..ba6472eb9988d 100644
-> --- a/drivers/iio/proximity/sx_common.h
-> +++ b/drivers/iio/proximity/sx_common.h
-> @@ -24,6 +24,7 @@ struct sx_common_data;
->  static_assert(SX_COMMON_MAX_NUM_CHANNELS < BITS_PER_LONG);
->
->  struct sx_common_reg_default {
-> +       const char *property;
+-----BEGIN PGP SIGNATURE-----
 
-Can you add it at the end of the struct so we don't have to update all
-the lines that don't really change? Or is this to save on alignment?
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY5O1gwAKCRC1SFbKvhIj
+K8zuAP4uMkkxnrQ9VzRVJNsRxxSLOWknl898zSxxh2gIpvALaQD8DStd05P+6buF
+P9QDJciknANFclFf6QmJ5Pg8Sh6nCgs=
+=/qcp
+-----END PGP SIGNATURE-----
 
->         u8 reg;
->         u8 def;
->  };
+--YkhtusH7Lbb0s/D9--

@@ -2,170 +2,179 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C7D764952D
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 18:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A66A649609
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 20:36:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230310AbiLKROH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 12:14:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
+        id S229918AbiLKTgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 14:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbiLKROG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 12:14:06 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA87BF7D;
-        Sun, 11 Dec 2022 09:14:04 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id d20so9876588edn.0;
-        Sun, 11 Dec 2022 09:14:04 -0800 (PST)
+        with ESMTP id S229471AbiLKTgc (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 14:36:32 -0500
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89777D2FF
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 11:36:30 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id g7so7486664qts.1
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 11:36:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f1hAhaRqZ2A3mdQAphxr+r1hffWEvyAJ7i4Dprgirms=;
-        b=cF4gRBIrcDI6x3GCalOcMnTir8IVc6eu22RZw263lkp6yh9jrIKucN50g0mApnGpU1
-         ZYs/E+ZZyOKmxwFg+hMVZq0InBW9hKyWniKJwS+84gh3Om+/PhBHhiMyu7hdFu73B/73
-         YBEI6QnzaKqQ7n5wxTBM6hfGI656HnhyRXxBKgJMvFBfQtHtn/FqvCM8qiXQGmhtvGUC
-         QHgh9DDQ+sF6n3I2HUxhoqrIrfeEMNL26grnrhBYf5jk9pwmlxEwVVqngyN0lXz/yKyF
-         14ZcffDkGZt6UeT4MdQQa3SoJTwqWrjG6e/mmJm1qNsDILrkPH3QwjdTXvU6wSiZVEdU
-         G/Rw==
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7QwDlLGe8yKrtK8dq5kh7aoZ4Y3fpeibEJxA9aTBJkc=;
+        b=pg0flFXl3DYTkREc/zOE74UKK0Z5KC2Ml7AYCxadAmqunWYienRupLVEUB9+ApMhEK
+         sfapvZvObpplk9oXN2+VPKCmNyy+atSgY58q5gGfgU2dlBYoZrvypJiwKADiIN61U/lk
+         EkNJoiFmKbljMOebUJ6uzVqFM677orclXteqVeuNgin79qD0PAXLAZgx2O/WbX68FgFM
+         MJm0OSaPfK8V+Pzom9WRE3xWPwTW7IZL28XbUb1uMNnz6LIH4X32PNR+kbf80zf50phh
+         e0QN4y3ZwaQrAGGKLvhhR1kNb6NBIPE4vdZFDFyeGxEeJqpD8NS4QLSjaf1Bzqp42kIP
+         aJeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1hAhaRqZ2A3mdQAphxr+r1hffWEvyAJ7i4Dprgirms=;
-        b=pPsGGLzq/4zDkMOHRfbHnTWiOXnhBhqENhNpEz6B3KCvfSbAhAw8sW8LdosqaKRgmq
-         uQPRGe5K/gJoPgsf726n3QzOSZ+H6G1eehNyaC54X6ZcYJynoYEldlXyuQ+6U/gLIO7p
-         vdj9VV4PajMUCuc2tlpWaybo2Opiy6GxIB2fZPNVnNZz7gz938jbvf3K4oNGaOU8GTxd
-         Xk8GlZoGgQSpPRJvBfVSAhEPbT+gZ84hdY1dzZTqqeuOySAZatLiieEHdzQ1VnjCbHWr
-         aOkZMl9qV+pjc8zj8bNAQAT55f68Df5JngaMfgf0XAs6lF5Iy+KhbDxRaSuhTDa4lxHD
-         z22Q==
-X-Gm-Message-State: ANoB5plSqJTgRjWHWrHLO4zsu5FRER9fibxNAFPCIpeRq+dlrLxLZTVZ
-        AXozUTpTsCVcp5o219sPHe4=
-X-Google-Smtp-Source: AA0mqf5n+VsOoy508pKJBhkTnscGJU8hiKT1QNIbSuNg3nFxezQfnode1+fp8v5X4vTWLDfnyoXcIA==
-X-Received: by 2002:a05:6402:548c:b0:461:6f87:20be with SMTP id fg12-20020a056402548c00b004616f8720bemr10051470edb.41.1670778843163;
-        Sun, 11 Dec 2022 09:14:03 -0800 (PST)
-Received: from ?IPV6:2a02:a466:68ed:1:4e59:3503:a88a:129d? (2a02-a466-68ed-1-4e59-3503-a88a-129d.fixed6.kpn.net. [2a02:a466:68ed:1:4e59:3503:a88a:129d])
-        by smtp.gmail.com with ESMTPSA id p9-20020a17090653c900b007ae693cd265sm2271355ejo.150.2022.12.11.09.14.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Dec 2022 09:14:02 -0800 (PST)
-Message-ID: <c48cc4ff-9021-0e32-6e68-89fa549847cc@gmail.com>
-Date:   Sun, 11 Dec 2022 18:14:01 +0100
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7QwDlLGe8yKrtK8dq5kh7aoZ4Y3fpeibEJxA9aTBJkc=;
+        b=oMryW8fdYPb3Xkzuy3UU+oxINVmUCLNor+/S4Xj73H0ccrZqSNiRg0KXVnHdKSxdxD
+         MA9M2588+DNNVfuWnUETh/Vpg8zeucrgGWNZ9FpM9aNyVMSUsFZw3S11SLXBy/NW9CKy
+         H4rfnfIbjLKHBRf2nyZVdauw6jztuWZRYwKDI8yJMZjLYifhBqgf3CdMnw0CMsVD+CPd
+         wNPAWgK5Bmmw5k/s+6h9VnDChshDyJX2sYlzKavfYl0W3fCnBTxsG4r5Zln6/a/w7GTE
+         CI8806FBHEfQBNIJesNWGUyr7gwXl11Fhnja75Nv8f3Tq1seO7WiYH5h8g+gRvO1DBUl
+         CiIQ==
+X-Gm-Message-State: ANoB5pndj5v1MCfxw6kQnLlvUb0JdLEl7At9L4+i+bUw/EHaorZ5zOxI
+        RWUsfEKc1kRK8rWbVVHwoURB7s+op9Oa2ymx
+X-Google-Smtp-Source: AA0mqf4Lg8XEaWi5AigUiAV6ghHkcajb0T2ygPm4nhPzVIafEhdacQu+ravFQRuMmKqRxkTZgCEMLg==
+X-Received: by 2002:a05:622a:4ccd:b0:3a5:ad81:8aff with SMTP id fa13-20020a05622a4ccd00b003a5ad818affmr20256078qtb.55.1670787389634;
+        Sun, 11 Dec 2022 11:36:29 -0800 (PST)
+Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
+        by smtp.gmail.com with ESMTPSA id c3-20020a05620a268300b006fa9d101775sm4517640qkp.33.2022.12.11.11.36.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Dec 2022 11:36:28 -0800 (PST)
+Date:   Sun, 11 Dec 2022 10:46:04 -0500
+From:   William Breathitt Gray <william.gray@linaro.org>
+To:     Biju Das <biju.das.jz@bp.renesas.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "linux-renesas-soc@vger.kernel.org" 
+        <linux-renesas-soc@vger.kernel.org>
+Subject: Re: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
+ cascade_counts_enable and external_input_phase_clock_select
+Message-ID: <Y5X7PMSuXBcQOIhR@fedora>
+References: <20221210102110.443043-1-biju.das.jz@bp.renesas.com>
+ <20221210102110.443043-4-biju.das.jz@bp.renesas.com>
+ <Y5X4e+GVLhaTB97N@fedora>
+ <OS0PR01MB5922FFBE0E3FEE50AEF1A5B6861E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v1 01/11] iio: light: tsl2563: Do not hardcode interrupt
- trigger type
-To:     Jonathan Cameron <jic23@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Ferry Toth <ftoth@exalondelft.nl>
-References: <20221207190348.9347-1-andriy.shevchenko@linux.intel.com>
- <20221211132611.0ab2f29e@jic23-huawei>
-Content-Language: en-US
-From:   Ferry Toth <fntoth@gmail.com>
-In-Reply-To: <20221211132611.0ab2f29e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="W3m6LQdzAdvdmkuw"
+Content-Disposition: inline
+In-Reply-To: <OS0PR01MB5922FFBE0E3FEE50AEF1A5B6861E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi,
 
-Op 11-12-2022 om 14:26 schreef Jonathan Cameron:
-> On Wed,  7 Dec 2022 21:03:38 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
->> From: Ferry Toth <ftoth@exalondelft.nl>
->>
->> Instead of hardcoding IRQ trigger type to IRQF_TRIGGER_RAISING,
->> let's respect the settings specified in the firmware description.
->> To be compatible with the older firmware descriptions, if trigger
->> type is not set up there, we'll set it to default (raising edge).
->>
->> Fixes: 388be4883952 ("staging:iio: tsl2563 abi fixes and interrupt handling")
->> Fixes: bdab1001738f ("staging:iio:light:tsl2563 remove old style event registration.")
->> Signed-off-by: Ferry Toth <ftoth@exalondelft.nl>
->> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> Andy, would have preferred a cover letter, so I had an obvious place
-> to reply to the whole series...
-> 
-> Mostly I'm amazed anyone still has one of these devices (I have one but
-> it's on a break out board for the stargate2/imote2 pxa27x platform that we
-> dropped support for last year - I hadn't booted it for a few years)
-> - I can probably bodge it onto something else but I can't say it was
-> high on my todo list ;)  So nice to know that someone still cares about
-> this.
-> 
-> So I'm curious Ferry, what device has one of these?
+--W3m6LQdzAdvdmkuw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It's a breakout board too. I think it's something like GY-2561.
+On Sun, Dec 11, 2022 at 04:12:51PM +0000, Biju Das wrote:
+> Hi William Breathitt Gray,
+>=20
+> Thanks for the feedback.
+>=20
+> > Subject: Re: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
+> > cascade_counts_enable and external_input_phase_clock_select
+> >=20
+> > On Sat, Dec 10, 2022 at 10:21:08AM +0000, Biju Das wrote:
+> > > +What:
+> > 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select
+> > > +KernelVersion:	6.3
+> > > +Contact:	linux-iio@vger.kernel.org
+> > > +Description:
+> > > +		This attribute selects the external clock pin for phase
+> > > +		counting mode of counter X.
+> >=20
+> > Hi Biju,
+> >=20
+> > Remove the "This attribute" from the description, and capitalize the wo=
+rd
+> > "counter": "Selects the external clock pin for phase counting mode of
+> > Counter X."
+> >=20
+> > > +What:
+> > 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select_
+> > available
+> >=20
+> > At some point in the future I should combine the *_available blocks, but
+> > right now they're separated between Count and Signal configurations.
+> > This external_input_phase_clock_select_available is a device-level
+> > configuration so it'll need its own block as well, such as the followin=
+g.
+>=20
+> Since it is device-level configuration, I will move the below 3 blocks
+> to the top of file. I hope it is ok to you.
 
-I wanted to write up an example how to get connect iio sensors to work 
-with linux. So I asked my colleague who is a great fan of aliexpress if 
-he had any sensor on a breakout board with I2C. In the past I had it 
-working with MRAA and UPM but that seems to be a dead end now.
+That's okay with me, so go ahead. I think at one point I was trying to
+keep the attributes listed in alphabetical order, but I haven't really
+minded lately as long as the information in this file is clear.
 
-We have ACPI working on Intel Edison-Arduino with quite a few examples 
-from Andy. And the "Arduino" header makes it very easy to wire up these 
-kind of breakout boards, fantastic platform this type of developments.
+William Breathitt Gray
 
-Just wiring up the I2C and get it to work was easy enough. And then the 
-interrupt pin makes an interesting example (even though likely useless 
-for most applications of the light sensor).
+>=20
+> +What:          /sys/bus/counter/devices/counterX/cascade_counts_enable
+> +KernelVersion: 6.3
+> +Contact:       linux-iio@vger.kernel.org
+> +Description:
+> +               Indicates the cascading of Counts on Counter X.
+> +
+> +               Valid attribute values are boolean.
+> +
+> +What:          /sys/bus/counter/devices/counterX/external_input_phase_cl=
+ock_select
+> +KernelVersion: 6.3
+> +Contact:       linux-iio@vger.kernel.org
+> +Description:
+> +               Selects the external clock pin for phase counting mode of
+> +               Counter X.
+> +
+> +               MTCLKA-MTCLKB:
+> +                       MTCLKA and MTCLKB pins are selected for the exter=
+nal
+> +                       phase clock.
+> +
+> +               MTCLKC-MTCLKD:
+> +                       MTCLKC and MTCLKD pins are selected for the exter=
+nal
+> +                       phase clock.
+> +
+> +What:          /sys/bus/counter/devices/counterX/external_input_phase_cl=
+ock_select_available
+> +KernelVersion:  6.3
+> +Contact:        linux-iio@vger.kernel.org
+> +Description:
+> +                Discrete set of available values for the respective devi=
+ce
+> +                configuration are listed in this file.
+>=20
+> Cheers,
+> Biju
 
-Write-up here if you are interested:
-https://htot.github.io/meta-intel-edison/4.6-libiio.html
+--W3m6LQdzAdvdmkuw
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> Whole series applied to the togreg branch of iio.git though note I'll only
-> push this out as testing for now because I'll want to rebase that tree
-> after rc1 is available.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> ---
->>   drivers/iio/light/tsl2563.c | 8 +++++++-
->>   1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
->> index d0e42b73203a..71302ae864d9 100644
->> --- a/drivers/iio/light/tsl2563.c
->> +++ b/drivers/iio/light/tsl2563.c
->> @@ -704,6 +704,7 @@ static int tsl2563_probe(struct i2c_client *client)
->>   	struct iio_dev *indio_dev;
->>   	struct tsl2563_chip *chip;
->>   	struct tsl2563_platform_data *pdata = client->dev.platform_data;
->> +	unsigned long irq_flags;
->>   	int err = 0;
->>   	u8 id = 0;
->>   
->> @@ -759,10 +760,15 @@ static int tsl2563_probe(struct i2c_client *client)
->>   		indio_dev->info = &tsl2563_info_no_irq;
->>   
->>   	if (client->irq) {
->> +		irq_flags = irq_get_trigger_type(client->irq);
->> +		if (irq_flags == IRQF_TRIGGER_NONE)
->> +			irq_flags = IRQF_TRIGGER_RISING;
->> +		irq_flags |= IRQF_ONESHOT;
->> +
->>   		err = devm_request_threaded_irq(&client->dev, client->irq,
->>   					   NULL,
->>   					   &tsl2563_event_handler,
->> -					   IRQF_TRIGGER_RISING | IRQF_ONESHOT,
->> +					   irq_flags,
->>   					   "tsl2563_event",
->>   					   indio_dev);
->>   		if (err) {
-> 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY5X7PAAKCRC1SFbKvhIj
+K4urAP0RW9JiO8Gm3RgCrCv3SFp7BOm9Qw5iCmCzUNY2turI9AD/Zs1ONvGwfY3x
+bIvCh1WlOeR5aT5vj57ymPQdWmlpGgU=
+=PX+K
+-----END PGP SIGNATURE-----
+
+--W3m6LQdzAdvdmkuw--

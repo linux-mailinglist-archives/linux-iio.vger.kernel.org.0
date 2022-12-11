@@ -2,52 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68FC649440
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 13:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4672264944E
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 14:04:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbiLKM4c (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 07:56:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
+        id S230323AbiLKNEp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 08:04:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229777AbiLKM4b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 07:56:31 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D2811156;
-        Sun, 11 Dec 2022 04:56:29 -0800 (PST)
+        with ESMTP id S230298AbiLKNEm (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 08:04:42 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08112E0EE;
+        Sun, 11 Dec 2022 05:04:35 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3C79EB80A6C;
-        Sun, 11 Dec 2022 12:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2372C433F2;
-        Sun, 11 Dec 2022 12:56:24 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 2392CCE0B3C;
+        Sun, 11 Dec 2022 13:04:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 583E3C433EF;
+        Sun, 11 Dec 2022 13:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670763387;
-        bh=doFg1fDXmbZbizKOhBWBV3HDplFBJsinGc2gZYNLYS4=;
+        s=k20201202; t=1670763872;
+        bh=rjulAWcB0oewyoruaQq0t/DRG1FGCBitINMFcj8ZIA8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=eu5xzWxDP7mDenloTq8xfjIb2v7Ke380A2AEtMZ7BgWv/y71Te6ssrQ06m3A8YAsU
-         M31lHlJRaygBV4jB3goom0yM/t1OnsqjAbQGS4zaHvMRzvigBof15EVxzKIBFREehG
-         UXdbEzIAQIsurIRXJfXSdTEG/V9XyFTlMYf3tYQtkyRMxC9lBdurKqNR0k4NvWaF2T
-         gg8l0IuqerlthzIKSZhhCg+U7AjPLnG9q9Sx0jCJ/TyZKMvdFqO4maWV5sQtUk5oYc
-         k9OGGYCcDTxpy06rwR1Re44C8JzX+Cdt6Wt/ft22uLTYnYYOXYzQ141294iDOMvpgz
-         imV/X23LgpMcg==
-Date:   Sun, 11 Dec 2022 13:09:20 +0000
+        b=g5o50Y7macok3FyLB64HZwwbZ0nNmAIsrM5vxMTe5Kh3j2lTKPWfyT/DPi/bwfTa2
+         E1B7wjTTzHyFG0NdgjW3l0yNwdUqijl559AwMVooJtLCp8XzzImzKFm9BLpOq/z6IC
+         ng7YsjJJNvpwyW9YyXxrg49wxHpOCwoEiqQ/XLkRpLSwuB0sFMxD7d5+3nQlSzEpox
+         9p2y2BnTS/LHqWLJVPxLqGEXhF/M4dJCS+oHOKhp9oTVBxu9S5ZBr83n6O5pn30313
+         ytR584F7STiCQg753JUaVLa21MqZ09EgS5YJU/HasLGNw70Lh4zyyGJmj6A5iJNu/I
+         1r7hPyUfHhr3Q==
+Date:   Sun, 11 Dec 2022 13:17:27 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Han Xu <han.xu@nxp.com>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Sean Nyekjaer <sean@geanix.com>,
-        Clark Wang <xiaoning.wang@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        imx@lists.linux.dev
-Subject: Re: [PATCH 1/2] iio: accel: add the new entry in driver for
- FXLS8967AF
-Message-ID: <20221211130920.47f1c684@jic23-huawei>
-In-Reply-To: <20221207162045.669958-1-han.xu@nxp.com>
-References: <20221207162045.669958-1-han.xu@nxp.com>
+        Ferry Toth <ftoth@exalondelft.nl>
+Subject: Re: [PATCH v1 03/11] iio: light: tsl2563: Configure INT in one
+ place
+Message-ID: <20221211131727.24ac49d2@jic23-huawei>
+In-Reply-To: <20221207190348.9347-3-andriy.shevchenko@linux.intel.com>
+References: <20221207190348.9347-1-andriy.shevchenko@linux.intel.com>
+        <20221207190348.9347-3-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -61,88 +56,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed,  7 Dec 2022 10:20:44 -0600
-Han Xu <han.xu@nxp.com> wrote:
+On Wed,  7 Dec 2022 21:03:40 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Add this new device entry in the driver id table.
+> Introduce tsl2563_configure_irq() to configure INT in one place.
 > 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
-Hi Han,
+> While at it, make use of TSL2563_INT_LEVEL and newly introduced
+> TSL2563_INT_MASK.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Tested-by: Ferry Toth <ftoth@exalondelft.nl>
+Trivial note on a further improvement inline.
 
-I went to apply this and discovered the FXLs8974CF_DEVICE_ID etc
-isn't yet present in the upstream driver.  Have a I missed a patch
-set somewhere?
-
-One comment inline.
-
-
+LGTM
 > ---
->  drivers/iio/accel/fxls8962af-core.c | 7 +++++++
->  drivers/iio/accel/fxls8962af-i2c.c  | 2 ++
->  drivers/iio/accel/fxls8962af.h      | 1 +
->  3 files changed, 10 insertions(+)
+>  drivers/iio/light/tsl2563.c | 42 ++++++++++++++++++++++---------------
+>  1 file changed, 25 insertions(+), 17 deletions(-)
 > 
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> index 17a6f4f4e06c..ddeb1b153499 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -127,6 +127,7 @@
->  #define FXLS8962AF_DEVICE_ID			0x62
->  #define FXLS8964AF_DEVICE_ID			0x84
->  #define FXLS8974CF_DEVICE_ID			0x86
-> +#define FXLS8967AF_DEVICE_ID			0x87
-Fine with these being in numeric value order...
+> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+> index d836c15ba777..d071805239ef 100644
+> --- a/drivers/iio/light/tsl2563.c
+> +++ b/drivers/iio/light/tsl2563.c
+> @@ -69,6 +69,7 @@
 >  
->  /* Raw temp channel offset */
->  #define FXLS8962AF_TEMP_CENTER_VAL		25
-> @@ -772,6 +773,12 @@ static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
->  		.channels = fxls8962af_channels,
->  		.num_channels = ARRAY_SIZE(fxls8962af_channels),
->  	},
-> +	[fxls8967af] = {
+>  #define TSL2563_INT_DISABLED	0x00
+>  #define TSL2563_INT_LEVEL	0x10
+> +#define TSL2563_INT_MASK	0x30
 
-I'd rather everything else was in 'alphabetical order as anyone looking down
-the lists will expect that ordering rather than one based on IDs that they
-probably won't have reason to know.
+Better to use GENMASK etc, but given age of driver I'm not surprised no one
+has made the conversion to that and FIELD_GET/ FIELD_PREP.
 
-> +		.chip_id = FXLS8967AF_DEVICE_ID,
-> +		.name = "fxls8967af",
-> +		.channels = fxls8962af_channels,
-> +		.num_channels = ARRAY_SIZE(fxls8962af_channels),
-> +	},
->  };
+Nice follow up if anyone is bored enough ;)
+
+
+>  #define TSL2563_INT_PERSIST(n)	((n) & 0x0F)
 >  
->  static const struct iio_info fxls8962af_info = {
-> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> index 4a755a39d702..fd21f524e04f 100644
-> --- a/drivers/iio/accel/fxls8962af-i2c.c
-> +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> @@ -31,6 +31,7 @@ static const struct i2c_device_id fxls8962af_id[] = {
->  	{ "fxls8962af", fxls8962af },
->  	{ "fxls8964af", fxls8964af },
->  	{ "fxls8974cf", fxls8974cf },
-> +	{ "fxls8967af", fxls8967af },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
-> @@ -39,6 +40,7 @@ static const struct of_device_id fxls8962af_of_match[] = {
->  	{ .compatible = "nxp,fxls8962af" },
->  	{ .compatible = "nxp,fxls8964af" },
->  	{ .compatible = "nxp,fxls8974cf" },
-> +	{ .compatible = "nxp,fxls8967af" },
->  	{}
->  };
->  MODULE_DEVICE_TABLE(of, fxls8962af_of_match);
-> diff --git a/drivers/iio/accel/fxls8962af.h b/drivers/iio/accel/fxls8962af.h
-> index 45c7e57412e0..7de924d15694 100644
-> --- a/drivers/iio/accel/fxls8962af.h
-> +++ b/drivers/iio/accel/fxls8962af.h
-> @@ -12,6 +12,7 @@ enum {
->  	fxls8962af,
->  	fxls8964af,
->  	fxls8974cf,
-> +	fxls8967af,
->  };
->  
->  int fxls8962af_core_probe(struct device *dev, struct regmap *regmap, int irq);
 

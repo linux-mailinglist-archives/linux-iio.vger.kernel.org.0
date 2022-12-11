@@ -2,73 +2,69 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A66A649609
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 20:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF29649647
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 21:36:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbiLKTgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 14:36:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55016 "EHLO
+        id S229471AbiLKUgd (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 15:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbiLKTgc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 14:36:32 -0500
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89777D2FF
-        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 11:36:30 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id g7so7486664qts.1
-        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 11:36:30 -0800 (PST)
+        with ESMTP id S230031AbiLKUgb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 15:36:31 -0500
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18ED9FC4
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 12:36:29 -0800 (PST)
+Received: by mail-qv1-xf29.google.com with SMTP id o12so7008176qvn.3
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 12:36:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7QwDlLGe8yKrtK8dq5kh7aoZ4Y3fpeibEJxA9aTBJkc=;
-        b=pg0flFXl3DYTkREc/zOE74UKK0Z5KC2Ml7AYCxadAmqunWYienRupLVEUB9+ApMhEK
-         sfapvZvObpplk9oXN2+VPKCmNyy+atSgY58q5gGfgU2dlBYoZrvypJiwKADiIN61U/lk
-         EkNJoiFmKbljMOebUJ6uzVqFM677orclXteqVeuNgin79qD0PAXLAZgx2O/WbX68FgFM
-         MJm0OSaPfK8V+Pzom9WRE3xWPwTW7IZL28XbUb1uMNnz6LIH4X32PNR+kbf80zf50phh
-         e0QN4y3ZwaQrAGGKLvhhR1kNb6NBIPE4vdZFDFyeGxEeJqpD8NS4QLSjaf1Bzqp42kIP
-         aJeA==
+        bh=9vG+5rr9tS7KMp34Zo+sRtclbrynw/kq0IjiPJ9285U=;
+        b=Eet1IO2GXAb9+/ZLZ4/qqchJjru43+Luj++NAsNW6cjo+jBz8YwRp0AaOQEnND/Tbw
+         7t16Is2s+p/2aRcFwEI7C9iCXiW18YtQcVVyni+FysSqpih9C3aGhECwV/pS8MawbXbq
+         QHrYWdK9UsO0EyIXxLrUk/1t9FgDtCesXAsO43bnNA/gaKqFWs3l7mwpKBXES4xCM2L1
+         7GhuELgszR2zpHJejbaO7+Q1AjIIXo//wTmyszWeSVtZ0tgX28eF9yXEyr/XFiXqJA26
+         qHgoVimQahUdOm4NyFbkRuqt4VoFhImi3RlPG0lmKoTnXmdydFlm3mukCrX/4eZ1cauQ
+         9W7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7QwDlLGe8yKrtK8dq5kh7aoZ4Y3fpeibEJxA9aTBJkc=;
-        b=oMryW8fdYPb3Xkzuy3UU+oxINVmUCLNor+/S4Xj73H0ccrZqSNiRg0KXVnHdKSxdxD
-         MA9M2588+DNNVfuWnUETh/Vpg8zeucrgGWNZ9FpM9aNyVMSUsFZw3S11SLXBy/NW9CKy
-         H4rfnfIbjLKHBRf2nyZVdauw6jztuWZRYwKDI8yJMZjLYifhBqgf3CdMnw0CMsVD+CPd
-         wNPAWgK5Bmmw5k/s+6h9VnDChshDyJX2sYlzKavfYl0W3fCnBTxsG4r5Zln6/a/w7GTE
-         CI8806FBHEfQBNIJesNWGUyr7gwXl11Fhnja75Nv8f3Tq1seO7WiYH5h8g+gRvO1DBUl
-         CiIQ==
-X-Gm-Message-State: ANoB5pndj5v1MCfxw6kQnLlvUb0JdLEl7At9L4+i+bUw/EHaorZ5zOxI
-        RWUsfEKc1kRK8rWbVVHwoURB7s+op9Oa2ymx
-X-Google-Smtp-Source: AA0mqf4Lg8XEaWi5AigUiAV6ghHkcajb0T2ygPm4nhPzVIafEhdacQu+ravFQRuMmKqRxkTZgCEMLg==
-X-Received: by 2002:a05:622a:4ccd:b0:3a5:ad81:8aff with SMTP id fa13-20020a05622a4ccd00b003a5ad818affmr20256078qtb.55.1670787389634;
-        Sun, 11 Dec 2022 11:36:29 -0800 (PST)
+        bh=9vG+5rr9tS7KMp34Zo+sRtclbrynw/kq0IjiPJ9285U=;
+        b=y20ZxAglGHJojACj6UmAPHj9qCohVsdc7MWby34Ugoec7X/mQkO1NV9w7rELAv3lC4
+         i5EHW2qrx2QVx5ozRSRQzwgWIGJydeHk2QHvKzS73QBsTrP5BXIzR2rMq6f62BJp8WvD
+         ZACrNJttiiRFOAcZ0qYYm/Zeasf8mD0jUVKc7PRUyg5kcqsE7OU9HOZ8nKSpy59vPJeo
+         tCoIolY9X7NZvn9QH9vAv8PMl77+m+MLK0kQQNWyVAYmvFEt6A7k3VgxmPQENEOhv9OG
+         /fsAnciV6bhdnGFCGDw70foStTvx9EcoRhKOw56TCND4B87p7t0m8KfD0dXtduXuo5uZ
+         jVVQ==
+X-Gm-Message-State: ANoB5pmCquRxbNVXy0lyOWf4op4XrlJVzJypW0fOyXBqPThNvI1DyA1D
+        nh7WzUGuhVRr9kq6LJFtHxuY9HBXsi3ltR3m
+X-Google-Smtp-Source: AA0mqf5aGG11Z3W6tnoD/LRxhe/5ligFDMRFx7UARA4dyT3VRPU6u/sJmOLcTg8Rs58MZDSsEB7AOg==
+X-Received: by 2002:a0c:aa09:0:b0:4c6:b65d:599a with SMTP id d9-20020a0caa09000000b004c6b65d599amr17016547qvb.35.1670790988996;
+        Sun, 11 Dec 2022 12:36:28 -0800 (PST)
 Received: from fedora (69-109-179-158.lightspeed.dybhfl.sbcglobal.net. [69.109.179.158])
-        by smtp.gmail.com with ESMTPSA id c3-20020a05620a268300b006fa9d101775sm4517640qkp.33.2022.12.11.11.36.28
+        by smtp.gmail.com with ESMTPSA id w4-20020a05620a424400b006a6ebde4799sm4515064qko.90.2022.12.11.12.36.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Dec 2022 11:36:28 -0800 (PST)
-Date:   Sun, 11 Dec 2022 10:46:04 -0500
+        Sun, 11 Dec 2022 12:36:28 -0800 (PST)
+Date:   Sun, 11 Dec 2022 11:38:12 -0500
 From:   William Breathitt Gray <william.gray@linaro.org>
 To:     Biju Das <biju.das.jz@bp.renesas.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+Cc:     linux-iio@vger.kernel.org,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Chris Paterson <chris.paterson2@renesas.com>,
         Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: Re: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
- cascade_counts_enable and external_input_phase_clock_select
-Message-ID: <Y5X7PMSuXBcQOIhR@fedora>
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v8 4/5] counter: Add Renesas RZ/G2L MTU3a counter driver
+Message-ID: <Y5YHdKvn6AY0o9Gc@fedora>
 References: <20221210102110.443043-1-biju.das.jz@bp.renesas.com>
- <20221210102110.443043-4-biju.das.jz@bp.renesas.com>
- <Y5X4e+GVLhaTB97N@fedora>
- <OS0PR01MB5922FFBE0E3FEE50AEF1A5B6861E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <20221210102110.443043-5-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="W3m6LQdzAdvdmkuw"
+        protocol="application/pgp-signature"; boundary="tcAAV/t5wr+DAqmn"
 Content-Disposition: inline
-In-Reply-To: <OS0PR01MB5922FFBE0E3FEE50AEF1A5B6861E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+In-Reply-To: <20221210102110.443043-5-biju.das.jz@bp.renesas.com>
 X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
@@ -79,102 +75,120 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 
---W3m6LQdzAdvdmkuw
+--tcAAV/t5wr+DAqmn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 11, 2022 at 04:12:51PM +0000, Biju Das wrote:
-> Hi William Breathitt Gray,
+On Sat, Dec 10, 2022 at 10:21:09AM +0000, Biju Das wrote:
+> Add RZ/G2L MTU3a counter driver. This IP supports the following
+> phase counting modes on MTU1 and MTU2 channels
 >=20
-> Thanks for the feedback.
+> 1) 16-bit phase counting modes on MTU1 and MTU2 channels.
+> 2) 32-bit phase counting mode by cascading MTU1 and MTU2 channels.
 >=20
-> > Subject: Re: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
-> > cascade_counts_enable and external_input_phase_clock_select
-> >=20
-> > On Sat, Dec 10, 2022 at 10:21:08AM +0000, Biju Das wrote:
-> > > +What:
-> > 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select
-> > > +KernelVersion:	6.3
-> > > +Contact:	linux-iio@vger.kernel.org
-> > > +Description:
-> > > +		This attribute selects the external clock pin for phase
-> > > +		counting mode of counter X.
-> >=20
-> > Hi Biju,
-> >=20
-> > Remove the "This attribute" from the description, and capitalize the wo=
-rd
-> > "counter": "Selects the external clock pin for phase counting mode of
-> > Counter X."
-> >=20
-> > > +What:
-> > 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select_
-> > available
-> >=20
-> > At some point in the future I should combine the *_available blocks, but
-> > right now they're separated between Count and Signal configurations.
-> > This external_input_phase_clock_select_available is a device-level
-> > configuration so it'll need its own block as well, such as the followin=
-g.
+> This patch adds 3 counter value channels.
+> 	count0: 16-bit phase counter value channel on MTU1
+> 	count1: 16-bit phase counter value channel on MTU2
+> 	count2: 32-bit phase counter value channel by cascading
+>                 MTU1 and MTU2 channels.
 >=20
-> Since it is device-level configuration, I will move the below 3 blocks
-> to the top of file. I hope it is ok to you.
+> The external input phase clock pin for the counter value channels
+> are as follows:
+> 	count0: "MTCLKA-MTCLKB"
+> 	count1: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
+> 	count2: "MTCLKA-MTCLKB" or "MTCLKC-MTCLKD"
+>=20
+> Use the sysfs variable "external_input_phase_clock_select" to select the
+> external input phase clock pin and "cascade_counts_enable" to enable/
+> disable cascading of channels.
+>=20
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 
-That's okay with me, so go ahead. I think at one point I was trying to
-keep the attributes listed in alphabetical order, but I haven't really
-minded lately as long as the information in this file is clear.
+Hi Biju,
+
+I see you use rz_mtu3_request_channel()/rz_mtu3_release_channel() to
+share access to the channels between the drivers. The Counter sysfs
+attributes can still be accessed when a channel is released, so should
+ch->is_busy be checked before every Counter callback to ensure we do not
+try to access a busy channel?
+
+> +static inline struct rz_mtu3_channel *
+> +rz_mtu3_get_ch(struct counter_device *counter, int id)
+
+I'm not sure why this is split between two lines but you can put it all
+on one.
+
+> +static void rz_mtu3_32bit_cnt_setting(struct counter_device *counter, in=
+t id)
+
+It doesn't look like you're using the 'id' parameter in this function so
+you might as well remove it.
+
+> +	switch (id) {
+> +	case RZ_MTU3_16_BIT_MTU1_CH:
+> +	case RZ_MTU3_16_BIT_MTU2_CH:
+> +		if (!rz_mtu3_request_channel(ch))
+> +			return -EBUSY;
+> +
+> +		rz_mtu3_16bit_cnt_setting(counter, id);
+> +
+> +		break;
+> +	case RZ_MTU3_32_BIT_CH:
+> +		/*
+> +		 * 32-bit phase counting need MTU1 and MTU2 to create 32-bit
+> +		 * cascade counter.
+> +		 */
+> +		if (!rz_mtu3_request_channel(ch1))
+> +			return -EBUSY;
+> +
+> +		if (!rz_mtu3_request_channel(ch2)) {
+> +			rz_mtu3_release_channel(ch1);
+> +			return -EBUSY;
+> +		}
+> +
+> +		rz_mtu3_32bit_cnt_setting(counter, id);
+> +		break;
+> +	default:
+> +		/* should never reach this path */
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+
+Instead of the two 'break' statements in the switch block above, replace
+them both with 'return 0' and then you can get rid of this 'return 0'
+at the end.
+
+> +		if ((mtclkc_mtclkd && (synapse->signal->id =3D=3D SIGNAL_A_ID ||
+> +				       synapse->signal->id =3D=3D SIGNAL_B_ID)) ||
+> +		    (!mtclkc_mtclkd && (synapse->signal->id =3D=3D SIGNAL_C_ID ||
+> +					synapse->signal->id =3D=3D SIGNAL_D_ID))) {
+
+That's a lot of expressions to evaluate, so it's easy for someone to get
+lost in what's happening here. It'll be good to refactor by spinning off
+the signal check to a bool variable. For example:
+
+    const bool is_signal_ab =3D (synapse->signal->id =3D=3D SIGNAL_A_ID) ||
+                              (synapse->signal->id =3D=3D SIGNAL_B_ID);
+    ...
+    if ((mtclkc_mtclkd && is_signal_ab) ||
+        (!mtclkc_mtclkd && !is_signal_ab)) {
+            mutex_unlock(&priv->lock
+	    return 0;
+    }
 
 William Breathitt Gray
 
->=20
-> +What:          /sys/bus/counter/devices/counterX/cascade_counts_enable
-> +KernelVersion: 6.3
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               Indicates the cascading of Counts on Counter X.
-> +
-> +               Valid attribute values are boolean.
-> +
-> +What:          /sys/bus/counter/devices/counterX/external_input_phase_cl=
-ock_select
-> +KernelVersion: 6.3
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               Selects the external clock pin for phase counting mode of
-> +               Counter X.
-> +
-> +               MTCLKA-MTCLKB:
-> +                       MTCLKA and MTCLKB pins are selected for the exter=
-nal
-> +                       phase clock.
-> +
-> +               MTCLKC-MTCLKD:
-> +                       MTCLKC and MTCLKD pins are selected for the exter=
-nal
-> +                       phase clock.
-> +
-> +What:          /sys/bus/counter/devices/counterX/external_input_phase_cl=
-ock_select_available
-> +KernelVersion:  6.3
-> +Contact:        linux-iio@vger.kernel.org
-> +Description:
-> +                Discrete set of available values for the respective devi=
-ce
-> +                configuration are listed in this file.
->=20
-> Cheers,
-> Biju
-
---W3m6LQdzAdvdmkuw
+--tcAAV/t5wr+DAqmn
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY5X7PAAKCRC1SFbKvhIj
-K4urAP0RW9JiO8Gm3RgCrCv3SFp7BOm9Qw5iCmCzUNY2turI9AD/Zs1ONvGwfY3x
-bIvCh1WlOeR5aT5vj57ymPQdWmlpGgU=
-=PX+K
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCY5YHdAAKCRC1SFbKvhIj
+K978AP4rlJF+CMEqeNhH0JEnBp+Uwnu8f52O3yHyerzIyFQc4wEA2FMTJn5KkCUa
+owLllJviCULXVTtnDRUaAqI3u7fwaQk=
+=P9x0
 -----END PGP SIGNATURE-----
 
---W3m6LQdzAdvdmkuw--
+--tcAAV/t5wr+DAqmn--

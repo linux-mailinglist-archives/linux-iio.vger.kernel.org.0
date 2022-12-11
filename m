@@ -2,194 +2,170 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B7264950D
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 17:12:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7D764952D
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 18:14:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230205AbiLKQM6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 11:12:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54452 "EHLO
+        id S230310AbiLKROH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 12:14:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiLKQM5 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 11:12:57 -0500
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2136.outbound.protection.outlook.com [40.107.114.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F28AB5FF6;
-        Sun, 11 Dec 2022 08:12:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kIuzqS2wqwmcf14Se7yG/j4blOHw1DPdlAyVNUoZQarV978gyxoLPBgX6mNUGwX2rkfpzW/M67C3ZJHoEj4yD8ZnAjIETGjS2+Wp8MaglGK5VeC0OnmYqjFSJs4onErLoEN/rmZ1ScGTVgQ2Uz5nZjqVmD3ROc3UOeTFAljxY9+YX9Qdcu92AjiuE7GnBkJyxRYDlWmcF9xfPt/QgOD9Aif2IgcFw7tW8e+vgaUxzulv4HmI3H3F/UoTFeDIezqdrJaVPo2f/IIzQx8a8Fj1Dd6RqETDW471tQxQF9w8Z1xqcCpWTO99wMJR8BQ8IGj1lW5GjjmwWa++WoXytEMfTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H6BL7cpMOjJ319vjyq+HVHvqOoKjQMgpCWRbApkPZSA=;
- b=CjRvwGp1LCgkJZepADueBbhHcwlCmWYlgAS77jEcF5fQyKM6Fgjy950fL1l7d66rCVrUXlAmipJnMNCCBR1FO16RMHtU2L74ABZTs7xZ4ic0TFP3zlTxr95J2l30xtzKXZcAY43ZoUqrXXhIFpWGmu6jm18wCaBakWEaVZaxHyX/UV1ofE3BpLKuVqH5sCUjykIven4GvK4j9Q2za9/40ZBuFjYJhv8PGt4sEdIATVp/KbCwZ8w8wLEyjji6/zAKu/EFdo1x46jZmPY/yvrjeokak+gIFtoxbpgv06CtSjYGmPAUtMZ+HKrlWfDxdIYBLnNPnSurQ6KcH3qMF6gNtw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
- header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H6BL7cpMOjJ319vjyq+HVHvqOoKjQMgpCWRbApkPZSA=;
- b=aew6N/O6F03eY5ScsbfJBU2IgA7Ssu5iyC8S+hBDlahmqAemWhWFIXBqPoimWiClIods9KhIeZODVDsWx7Wnq/B5nMk/k6ofDxRAzvK59r6GtaSFj1y5XpUbB7dBuvgydUQOMfD1Ph6Y011OTptApnYoPh6Im2Iacmb0wJU6umk=
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com (2603:1096:604:bb::5)
- by TYCPR01MB9863.jpnprd01.prod.outlook.com (2603:1096:400:20e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.19; Sun, 11 Dec
- 2022 16:12:52 +0000
-Received: from OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::2cfb:38d2:d52e:c8a3]) by OS0PR01MB5922.jpnprd01.prod.outlook.com
- ([fe80::2cfb:38d2:d52e:c8a3%5]) with mapi id 15.20.5880.019; Sun, 11 Dec 2022
- 16:12:51 +0000
-From:   Biju Das <biju.das.jz@bp.renesas.com>
-To:     William Breathitt Gray <william.gray@linaro.org>
-CC:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>
-Subject: RE: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
- cascade_counts_enable and external_input_phase_clock_select
-Thread-Topic: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
- cascade_counts_enable and external_input_phase_clock_select
-Thread-Index: AQHZDIErlROXd2Q8a0CnEBQxi+Kh865o0w+AgAAKFgA=
-Date:   Sun, 11 Dec 2022 16:12:51 +0000
-Message-ID: <OS0PR01MB5922FFBE0E3FEE50AEF1A5B6861E9@OS0PR01MB5922.jpnprd01.prod.outlook.com>
-References: <20221210102110.443043-1-biju.das.jz@bp.renesas.com>
- <20221210102110.443043-4-biju.das.jz@bp.renesas.com>
- <Y5X4e+GVLhaTB97N@fedora>
-In-Reply-To: <Y5X4e+GVLhaTB97N@fedora>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bp.renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS0PR01MB5922:EE_|TYCPR01MB9863:EE_
-x-ms-office365-filtering-correlation-id: 18672f12-1742-4b23-6c4d-08dadb928d84
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 6gok48et/VwBJ6x9PoLVVjxrZySaXbh0/Na44SzidWwBSB/qf0VWe0tydU2S5bewfIVT2GaDp9I1clY9/8vxhluSFmwP+9bC3YyUak+/gCY/v31VVvFZv3XyEVF9eRrZ2p6Lp+R+jdW7GvqUCjmHMvHxertZfetHcIFzc+tQkfcFVLOgo8CJpTYITrmRnJgR3lCoAyTslPsNlvZ+mlXJI5cLPw/CyVIe36OcbQ3sFT7cTJajkh5SSZlEPcouL01PCCusq15Lh78knBc/EJPMEqxeFfrlT7Kr8/mbi6tmvoCsBztxFxuh5KCpUbkHaiUyCId1N7Qjj9D++QZ4vusq2GxwTzQ49CqUACxzIb4IHrvbd7DxeSBcr3Dzc38/jEMpj6eI606rVWnWU6DqSk+TIaBsppsCE0MaoLHifkrIp2jhMN0iELktEnXDlxyXoy9shahU5rDT6hsCNQOopVKbEzpHsye+BBKEitxpkc9CBz55yah50QBDIKMnIa2yk4fVEgMsR3TsICFjOWJ6PecIlCUvOacfb2IvfVWp7eXj+cB6PoJFbvGPTnS3/KGdgEE+rlF3+1BUQnhewKm+3pZag7OZEtKcQPPyd9oCYgEYnSXmAvJNLcDh96LZcuYYvEsbQXD+0vYHpZgSY9nkoLeGwaciHR11Rvmk+VlFe9GH1KHKyNYRSdIgDqk6e5h/3loAlQjBCQKhv2g9RwOUBvVIEA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS0PR01MB5922.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(39860400002)(396003)(376002)(366004)(136003)(451199015)(38100700002)(122000001)(5660300002)(86362001)(2906002)(38070700005)(55016003)(71200400001)(41300700001)(478600001)(66476007)(6916009)(8676002)(4326008)(76116006)(66946007)(64756008)(66446008)(54906003)(316002)(66556008)(52536014)(186003)(26005)(83380400001)(7696005)(9686003)(6506007)(8936002)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?mbzSpmvxLFoSm7KOXWKau3FkukaUXUY01v868gUxy2wE8dPHhFRYQnpWEgV6?=
- =?us-ascii?Q?3Sqzgok5rVgxoPL7kW/6Rq7XV4DY0FQHrF6b49gIRdnUO0D+qSVKhEMyz+eQ?=
- =?us-ascii?Q?dYVa2YLMKobwU10L3n5sc8GIH6VtUVogAlbl0XiWJ3QSFrwMHJQ85Isksrt+?=
- =?us-ascii?Q?LZns+8hE50asB7ikd03oW6i9O+FBMMh/kuU1OAjPS4Byn26Dx9xFc7bVwnEl?=
- =?us-ascii?Q?uCELMKFNRKPzNvt68dgNih+/dopEv19XaBjRNSIof5vWOEjS98ijbDJuRzwV?=
- =?us-ascii?Q?hLJjx3hLfFLysw4TTdfof4OKA6+pzvZ2eI9iXUAGx2+/fs5+/1TukUKF0pq0?=
- =?us-ascii?Q?c2e8I5UAyCFPnmuFrMIALSwk0Eg1I+I9lZvEoSNTHynxaNZvzjyNSM30Ylbe?=
- =?us-ascii?Q?IB6niKK2LO7fdTy67vvUAWk9eZ4s1fDbFXgnKbxKIFHYlWgErz+pI4nnvtUj?=
- =?us-ascii?Q?4BZMx3xwft0As/Y2Hzn8WqkrXxn4dmxVMyZ+YDgI2fXR5jt6ph1BMSIBlpTN?=
- =?us-ascii?Q?uxDrPHvEBrdUG4/Pc+neCHNIvPKjPI5klXyzOS2qOalAMhQIzZwl7nmfZ5V0?=
- =?us-ascii?Q?38lC5OT+9/OMFCR4Y9MtuTBnAGhR4zpP7njOakEXOqvU/Ij/bKM+GjquT6Wl?=
- =?us-ascii?Q?ca0oca761AfxaPJVAf+HKjw16+zmRuKbmxJzgQLz7mr4dHW1KiQDuB+uTPge?=
- =?us-ascii?Q?WzVkHgICkGCkPwE1jyaGkqn6bCTtlfT8JNWQ87Dtu9tX9a9024gmYL72DOj1?=
- =?us-ascii?Q?BrOJe+25u+HZsZ6zuwmFfgzFjZldpp0Lt8o5Ib2qqrywjGDYUoWshZ3/9Twd?=
- =?us-ascii?Q?s5nrzTZlwoBSCtSaQDWHUiLlDT/QQyycr8emugJbI71ziCqIpeM8zNotDIKY?=
- =?us-ascii?Q?ylrATgTU0QuabjV1mqwMAet4rQvyQX2hO7xKh5fLhKUQvLrxeOOtaLlWKNT8?=
- =?us-ascii?Q?FBupV6DElSkkICvWmCsUKq5QuUL4AqOOs9DzDIBPjCMKlq25cvTxGUh1CJpE?=
- =?us-ascii?Q?Qjz3TD2RIM5vdCNd4h4hK6geWsunL5/2rS0daEeHugwxpLZXIFgLMQlCNbIN?=
- =?us-ascii?Q?HaDCHrTorpC89ZKGz9TaWhNvA9yVRAF14mUXAdqFkK6St7n9vrXHDYT5fQSL?=
- =?us-ascii?Q?N+tEna51yeg8rQJQCGfYziW7lWoBNmvbbcG2PaCvsJSi3eBjtlsPUAVCTPlm?=
- =?us-ascii?Q?J7Pw6Edu/+qfJf3pFUueH7DwWvVjQD/PvUtSVq2tHMGwCCdfzr5sf8dqZ21d?=
- =?us-ascii?Q?P/xVKeZltNHGxXObkraAAI49nS9oYIfb+4p1duJor0/3xrrq5Gw0JO1d/FrI?=
- =?us-ascii?Q?0M4pEVcJQ6ym411bSvgpZsNHlBOJWekQXm4BaoHhF/pcSZher3TxrrrRG+zL?=
- =?us-ascii?Q?VMOViNbfCUtTPW+UcALgFbpH1TUcHmzUJz9F52YZyyDIoLXLJZnNuLp+fr1+?=
- =?us-ascii?Q?MXWhq3Z6NGh+2uvBQiZLrnZngOgzYEo+B04ltf/8CQxq4ZBGzkP//IfXNI5G?=
- =?us-ascii?Q?e0md4PGgVRTUfPvYQoLmQrwdKQGuSYelZ5x/RSZMjzcy+9ahZF/PNohsjJNh?=
- =?us-ascii?Q?5TsNERLp8q88TOL3Wr+yWVXUAYxjSZjztaJ7JPXllD2J3wlOVrsUAWY6TNyd?=
- =?us-ascii?Q?5w=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229947AbiLKROG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 12:14:06 -0500
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA87BF7D;
+        Sun, 11 Dec 2022 09:14:04 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id d20so9876588edn.0;
+        Sun, 11 Dec 2022 09:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f1hAhaRqZ2A3mdQAphxr+r1hffWEvyAJ7i4Dprgirms=;
+        b=cF4gRBIrcDI6x3GCalOcMnTir8IVc6eu22RZw263lkp6yh9jrIKucN50g0mApnGpU1
+         ZYs/E+ZZyOKmxwFg+hMVZq0InBW9hKyWniKJwS+84gh3Om+/PhBHhiMyu7hdFu73B/73
+         YBEI6QnzaKqQ7n5wxTBM6hfGI656HnhyRXxBKgJMvFBfQtHtn/FqvCM8qiXQGmhtvGUC
+         QHgh9DDQ+sF6n3I2HUxhoqrIrfeEMNL26grnrhBYf5jk9pwmlxEwVVqngyN0lXz/yKyF
+         14ZcffDkGZt6UeT4MdQQa3SoJTwqWrjG6e/mmJm1qNsDILrkPH3QwjdTXvU6wSiZVEdU
+         G/Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f1hAhaRqZ2A3mdQAphxr+r1hffWEvyAJ7i4Dprgirms=;
+        b=pPsGGLzq/4zDkMOHRfbHnTWiOXnhBhqENhNpEz6B3KCvfSbAhAw8sW8LdosqaKRgmq
+         uQPRGe5K/gJoPgsf726n3QzOSZ+H6G1eehNyaC54X6ZcYJynoYEldlXyuQ+6U/gLIO7p
+         vdj9VV4PajMUCuc2tlpWaybo2Opiy6GxIB2fZPNVnNZz7gz938jbvf3K4oNGaOU8GTxd
+         Xk8GlZoGgQSpPRJvBfVSAhEPbT+gZ84hdY1dzZTqqeuOySAZatLiieEHdzQ1VnjCbHWr
+         aOkZMl9qV+pjc8zj8bNAQAT55f68Df5JngaMfgf0XAs6lF5Iy+KhbDxRaSuhTDa4lxHD
+         z22Q==
+X-Gm-Message-State: ANoB5plSqJTgRjWHWrHLO4zsu5FRER9fibxNAFPCIpeRq+dlrLxLZTVZ
+        AXozUTpTsCVcp5o219sPHe4=
+X-Google-Smtp-Source: AA0mqf5n+VsOoy508pKJBhkTnscGJU8hiKT1QNIbSuNg3nFxezQfnode1+fp8v5X4vTWLDfnyoXcIA==
+X-Received: by 2002:a05:6402:548c:b0:461:6f87:20be with SMTP id fg12-20020a056402548c00b004616f8720bemr10051470edb.41.1670778843163;
+        Sun, 11 Dec 2022 09:14:03 -0800 (PST)
+Received: from ?IPV6:2a02:a466:68ed:1:4e59:3503:a88a:129d? (2a02-a466-68ed-1-4e59-3503-a88a-129d.fixed6.kpn.net. [2a02:a466:68ed:1:4e59:3503:a88a:129d])
+        by smtp.gmail.com with ESMTPSA id p9-20020a17090653c900b007ae693cd265sm2271355ejo.150.2022.12.11.09.14.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Dec 2022 09:14:02 -0800 (PST)
+Message-ID: <c48cc4ff-9021-0e32-6e68-89fa549847cc@gmail.com>
+Date:   Sun, 11 Dec 2022 18:14:01 +0100
 MIME-Version: 1.0
-X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS0PR01MB5922.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18672f12-1742-4b23-6c4d-08dadb928d84
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Dec 2022 16:12:51.1682
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: qt9UCa7linj0ZE4OSEqVezrHNY/PaVglxkZ7Ngl9+ZADb/IpZsITTgdh3OmJMlk83tkO8sh3z6HqglXtfj/i8ETIxuMVM14j1oEaDHYt6i8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB9863
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v1 01/11] iio: light: tsl2563: Do not hardcode interrupt
+ trigger type
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Ferry Toth <ftoth@exalondelft.nl>
+References: <20221207190348.9347-1-andriy.shevchenko@linux.intel.com>
+ <20221211132611.0ab2f29e@jic23-huawei>
+Content-Language: en-US
+From:   Ferry Toth <fntoth@gmail.com>
+In-Reply-To: <20221211132611.0ab2f29e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi William Breathitt Gray,
+Hi,
 
-Thanks for the feedback.
+Op 11-12-2022 om 14:26 schreef Jonathan Cameron:
+> On Wed,  7 Dec 2022 21:03:38 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> 
+>> From: Ferry Toth <ftoth@exalondelft.nl>
+>>
+>> Instead of hardcoding IRQ trigger type to IRQF_TRIGGER_RAISING,
+>> let's respect the settings specified in the firmware description.
+>> To be compatible with the older firmware descriptions, if trigger
+>> type is not set up there, we'll set it to default (raising edge).
+>>
+>> Fixes: 388be4883952 ("staging:iio: tsl2563 abi fixes and interrupt handling")
+>> Fixes: bdab1001738f ("staging:iio:light:tsl2563 remove old style event registration.")
+>> Signed-off-by: Ferry Toth <ftoth@exalondelft.nl>
+>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> Andy, would have preferred a cover letter, so I had an obvious place
+> to reply to the whole series...
+> 
+> Mostly I'm amazed anyone still has one of these devices (I have one but
+> it's on a break out board for the stargate2/imote2 pxa27x platform that we
+> dropped support for last year - I hadn't booted it for a few years)
+> - I can probably bodge it onto something else but I can't say it was
+> high on my todo list ;)  So nice to know that someone still cares about
+> this.
+> 
+> So I'm curious Ferry, what device has one of these?
 
-> Subject: Re: [PATCH v8 3/5] Documentation: ABI: sysfs-bus-counter: add
-> cascade_counts_enable and external_input_phase_clock_select
->=20
-> On Sat, Dec 10, 2022 at 10:21:08AM +0000, Biju Das wrote:
-> > +What:
-> 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select
-> > +KernelVersion:	6.3
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		This attribute selects the external clock pin for phase
-> > +		counting mode of counter X.
->=20
-> Hi Biju,
->=20
-> Remove the "This attribute" from the description, and capitalize the word
-> "counter": "Selects the external clock pin for phase counting mode of
-> Counter X."
->=20
-> > +What:
-> 	/sys/bus/counter/devices/counterX/external_input_phase_clock_select_
-> available
->=20
-> At some point in the future I should combine the *_available blocks, but
-> right now they're separated between Count and Signal configurations.
-> This external_input_phase_clock_select_available is a device-level
-> configuration so it'll need its own block as well, such as the following.
+It's a breakout board too. I think it's something like GY-2561.
 
-Since it is device-level configuration, I will move the below 3 blocks
-to the top of file. I hope it is ok to you.
+I wanted to write up an example how to get connect iio sensors to work 
+with linux. So I asked my colleague who is a great fan of aliexpress if 
+he had any sensor on a breakout board with I2C. In the past I had it 
+working with MRAA and UPM but that seems to be a dead end now.
 
-+What:          /sys/bus/counter/devices/counterX/cascade_counts_enable
-+KernelVersion: 6.3
-+Contact:       linux-iio@vger.kernel.org
-+Description:
-+               Indicates the cascading of Counts on Counter X.
-+
-+               Valid attribute values are boolean.
-+
-+What:          /sys/bus/counter/devices/counterX/external_input_phase_cloc=
-k_select
-+KernelVersion: 6.3
-+Contact:       linux-iio@vger.kernel.org
-+Description:
-+               Selects the external clock pin for phase counting mode of
-+               Counter X.
-+
-+               MTCLKA-MTCLKB:
-+                       MTCLKA and MTCLKB pins are selected for the externa=
-l
-+                       phase clock.
-+
-+               MTCLKC-MTCLKD:
-+                       MTCLKC and MTCLKD pins are selected for the externa=
-l
-+                       phase clock.
-+
-+What:          /sys/bus/counter/devices/counterX/external_input_phase_cloc=
-k_select_available
-+KernelVersion:  6.3
-+Contact:        linux-iio@vger.kernel.org
-+Description:
-+                Discrete set of available values for the respective device
-+                configuration are listed in this file.
+We have ACPI working on Intel Edison-Arduino with quite a few examples 
+from Andy. And the "Arduino" header makes it very easy to wire up these 
+kind of breakout boards, fantastic platform this type of developments.
 
-Cheers,
-Biju
+Just wiring up the I2C and get it to work was easy enough. And then the 
+interrupt pin makes an interesting example (even though likely useless 
+for most applications of the light sensor).
+
+Write-up here if you are interested:
+https://htot.github.io/meta-intel-edison/4.6-libiio.html
+
+> Whole series applied to the togreg branch of iio.git though note I'll only
+> push this out as testing for now because I'll want to rebase that tree
+> after rc1 is available.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>   drivers/iio/light/tsl2563.c | 8 +++++++-
+>>   1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/light/tsl2563.c b/drivers/iio/light/tsl2563.c
+>> index d0e42b73203a..71302ae864d9 100644
+>> --- a/drivers/iio/light/tsl2563.c
+>> +++ b/drivers/iio/light/tsl2563.c
+>> @@ -704,6 +704,7 @@ static int tsl2563_probe(struct i2c_client *client)
+>>   	struct iio_dev *indio_dev;
+>>   	struct tsl2563_chip *chip;
+>>   	struct tsl2563_platform_data *pdata = client->dev.platform_data;
+>> +	unsigned long irq_flags;
+>>   	int err = 0;
+>>   	u8 id = 0;
+>>   
+>> @@ -759,10 +760,15 @@ static int tsl2563_probe(struct i2c_client *client)
+>>   		indio_dev->info = &tsl2563_info_no_irq;
+>>   
+>>   	if (client->irq) {
+>> +		irq_flags = irq_get_trigger_type(client->irq);
+>> +		if (irq_flags == IRQF_TRIGGER_NONE)
+>> +			irq_flags = IRQF_TRIGGER_RISING;
+>> +		irq_flags |= IRQF_ONESHOT;
+>> +
+>>   		err = devm_request_threaded_irq(&client->dev, client->irq,
+>>   					   NULL,
+>>   					   &tsl2563_event_handler,
+>> -					   IRQF_TRIGGER_RISING | IRQF_ONESHOT,
+>> +					   irq_flags,
+>>   					   "tsl2563_event",
+>>   					   indio_dev);
+>>   		if (err) {
+> 
+

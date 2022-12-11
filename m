@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B13164940B
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 12:59:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BBFE64940F
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 13:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbiLKL7p (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 06:59:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37410 "EHLO
+        id S229879AbiLKMCS (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 07:02:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230246AbiLKL7b (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 06:59:31 -0500
+        with ESMTP id S230009AbiLKMCP (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 07:02:15 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506D711473;
-        Sun, 11 Dec 2022 03:59:25 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89092F036;
+        Sun, 11 Dec 2022 04:02:14 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 096BDB80AB3;
-        Sun, 11 Dec 2022 11:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E813DC433F0;
-        Sun, 11 Dec 2022 11:59:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 3FF8FB80AB3;
+        Sun, 11 Dec 2022 12:02:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF8CC433D2;
+        Sun, 11 Dec 2022 12:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670759962;
-        bh=BzJnh42n6fWjgs4W7n57fEcjIGF+ndH9j7hFI/k3Jsk=;
+        s=k20201202; t=1670760132;
+        bh=lwrP2pMvzdIwx28QuEg3xbeSocm7aAljFfuV3vqedLM=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=pbn4s2K1fvHQlsK0HusUFv5gCz/kRXHc5Dlr01BvUjMqAdQLceM7j4XPaQJyzSiXG
-         Pod3kQJPjFb2STAuDLMDKwangCbkS2GwqoDvxst85WM4w8IrXjM3fsVUur5itq5VS6
-         XJ03x3LxeqxuwwGGP5v5A1VQyDExVI3Uu2+NDIfdCOetgTG0eiRsai6uAxtdNCTTF2
-         Yns0cf1Thvh/nzjN+W/K86wtNYHOIqkBCaikiG/qbFhRr16m9LwEoCeumVK16R2frL
-         HLJvKgR8PVi+Dmx2iA+qKgS/JDC7QXcNfJpSxHVfThiKsJBApuntDKewEoNoeOW/gf
-         FlEBcxOcvvJBw==
-Date:   Sun, 11 Dec 2022 12:12:16 +0000
+        b=GyeXbdLF1BKCvVRqSiS42ttcN/aM1cjADHLaFTN2Ozzi4UNkUkTUo5Z2ThxHGdUTb
+         5Cgo9yf4NH7WRfptStXb8ISLi45HyYFEFXfbrZO6OMaREVuxzeKJphp/nWxbnbFSep
+         gqcvFafNvGnAwGhdRt5BwPcCKXpX6MDMmPsRHBCesGckaSToFyLF/SAbOtdT5LuX3a
+         pNMmS7Ly95QVm/DUHyNFsEDJGoGKArb89q0eaSzGCp3jXXGWohtBQHFlDgyBpKrCR8
+         0DET7pJ8glLLfCQ7o/WtPdmtsu1fZj5/EW7Q5ZFQM2tzsPINFMdZkIWpF62UIByO3f
+         nTZ5erJFE9riw==
+Date:   Sun, 11 Dec 2022 12:15:06 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Cc:     <ye.xingchen@zte.com.cn>, <andriy.shevchenko@linux.intel.com>,
-        <lars@metafoo.de>, <u.kleine-koenig@pengutronix.de>,
-        <petrm@nvidia.com>, <olteanv@gmail.com>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: bma180: Convert to use sysfs_emit_at() API
-Message-ID: <20221211121216.33006598@jic23-huawei>
-In-Reply-To: <20221207095614.z4gv3q76hfx47qs2@CAB-WSD-L081021>
-References: <202212071003192805636@zte.com.cn>
-        <20221207095614.z4gv3q76hfx47qs2@CAB-WSD-L081021>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     ye.xingchen@zte.com.cn, lars@metafoo.de, linmq006@gmail.com,
+        u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: magnetometer: bmc150_magn: Convert to use
+ sysfs_emit_at() API
+Message-ID: <20221211121506.4d694c74@jic23-huawei>
+In-Reply-To: <CAHp75VfJx84-J2GdOWQAPAtMhPVS3X-dEuHYQqyP4a0WjDsgdQ@mail.gmail.com>
+References: <202212071549349412843@zte.com.cn>
+        <CAHp75VfJx84-J2GdOWQAPAtMhPVS3X-dEuHYQqyP4a0WjDsgdQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,70 +56,50 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 7 Dec 2022 12:56:14 +0300
-Dmitry Rokosov <ddrokosov@sberdevices.ru> wrote:
+On Wed, 7 Dec 2022 10:46:14 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Wed, Dec 07, 2022 at 10:03:19AM +0800, ye.xingchen@zte.com.cn wrote:
+> On Wed, Dec 7, 2022 at 9:49 AM <ye.xingchen@zte.com.cn> wrote:
+> >
 > > From: ye xingchen <ye.xingchen@zte.com.cn>
-> > 
+> >
 > > Follow the advice of the Documentation/filesystems/sysfs.rst and show()
 > > should only use sysfs_emit() or sysfs_emit_at() when formatting the
-> > value to be returned to user space.
-> > 
-> > Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>  
+> > value to be returned to user space.  
 > 
-> I think it would be better, if you provide one cover letter as 0/3 patch
-> and three nested real patches to each iio/accel driver which you want to
-> rework: adxl372, bma180, mma8452. Or fix all iio drivers (no only accel)
-> and send all of these changes as nested patches for one cover letter.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmai.com>
 > 
-> Please refer to https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-> 
-> and use the following commands to generate such patches hierarchy:
-> 
-> $ git format-patch --cover-letter -o patches ...
-> $ git send-email \     
->       --annotate \               
->       --to="john.doe@kernel.org" \               
->       --cc="linux-iio@vger.kernel.org" \
->       --cc="linux-kernel@vger.kernel.org" \
->       --smtp-debug 1 \                  
->       patches/*
+> > Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
+> > ---
+> >  drivers/iio/magnetometer/bmc150_magn.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
+> > index 06d5a1ef1fbd..1398684a7f30 100644
+> > --- a/drivers/iio/magnetometer/bmc150_magn.c
+> > +++ b/drivers/iio/magnetometer/bmc150_magn.c
+> > @@ -598,8 +598,7 @@ static ssize_t bmc150_magn_show_samp_freq_avail(struct device *dev,
+> >         for (i = 0; i < ARRAY_SIZE(bmc150_magn_samp_freq_table); i++) {
+> >                 if (bmc150_magn_samp_freq_table[i].freq > data->max_odr)
+> >                         break;
+> > -               len += scnprintf(buf + len, PAGE_SIZE - len, "%d ",
+> > -                                bmc150_magn_samp_freq_table[i].freq);
+> > +               len += sysfs_emit_at(buf, len, "%d ", bmc150_magn_samp_freq_table[i].freq);
+> >         }
 
-Second this comment - also mark it at least v3 as some of these
-patches will be on their 3rd version.
+I'd prefer we keep the line break before the last parameter.
 
-One major advantage of such a series is that a reply to the cover letter
-can be used to indicate that someone is giving a tag for all the patches
-underneath it.  Right now they'd have to reply to every single email.
-
-So please send a v3 with all the similar IIO patches under a single cover
-letter.  Make sure to gather tags from earlier versions.
-
-Thanks,
+Generally in IIO at least, preference is for < 80 chars except where readability is
+significantly enhanced by a longer line.  That's not true in this case.
 
 Jonathan
 
-> 
-> > ---
-> >  drivers/iio/accel/bma180.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/accel/bma180.c b/drivers/iio/accel/bma180.c
-> > index eb697eeb4301..9e3e5dfdded7 100644
-> > --- a/drivers/iio/accel/bma180.c
-> > +++ b/drivers/iio/accel/bma180.c
-> > @@ -488,8 +488,7 @@ static ssize_t bma180_show_avail(char *buf, const int *vals, unsigned int n,
-> >  	for (i = 0; i < n; i++) {
-> >  		if (!vals[i])
-> >  			continue;
-> > -		len += scnprintf(buf + len, PAGE_SIZE - len,
-> > -			micros ? "0.%06d " : "%d ", vals[i]);
-> > +		len += sysfs_emit_at(buf, len, micros ? "0.%06d " : "%d ", vals[i]);
-> >  	}
-> >  	buf[len - 1] = '\n';
-> > 
-> > -- 
+
+> >         /* replace last space with a newline */
+> >         buf[len - 1] = '\n';
+> > --
 > > 2.25.1  
+> 
+> 
 > 
 

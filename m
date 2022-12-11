@@ -2,46 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A6C649475
-	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 14:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D4264947B
+	for <lists+linux-iio@lfdr.de>; Sun, 11 Dec 2022 14:36:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230051AbiLKNdE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 11 Dec 2022 08:33:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60442 "EHLO
+        id S229696AbiLKNgL (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 11 Dec 2022 08:36:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229845AbiLKNdD (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 08:33:03 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADE5FFE
-        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 05:33:01 -0800 (PST)
+        with ESMTP id S229845AbiLKNgK (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 11 Dec 2022 08:36:10 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 750A2DE97
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 05:36:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 91583B80884
-        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 13:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DEC433EF;
-        Sun, 11 Dec 2022 13:32:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 142ED60C99
+        for <linux-iio@vger.kernel.org>; Sun, 11 Dec 2022 13:36:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAEAC433F0;
+        Sun, 11 Dec 2022 13:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670765579;
-        bh=M0HdFPp060+cDMdsmkRxRK4XFnUezItobODgaktC33o=;
+        s=k20201202; t=1670765768;
+        bh=sQBIOn5+nmAhYjHmY4rs5fOii/cDMDFjSjVe4RrtmGQ=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kthCWsqd/48ykmRDofgBdLshLHXDxclnC82EceYV3sGILIysr2XdQt73IcyGvM/gk
-         olBHBE4j2Wvwv7nyl5ZOrN8zNKj63ngSb0RljR6A1Zdae4uohrOYZWMofmHMqjibn4
-         jYfBo4/3K2IuVXMiN7Bry6VURvDDMmWrp6QCHrgLSVGxLb1AR4veIjEoDa+LwFqvVW
-         xb5B2b+8YhKUYnQWxZLOqhwNaK9BbWI1aRxnNNOqsWkCE8LzCgnxEvE4pWPXp2rexf
-         r23+8h0JtypI113L1HT7LUrk0sOBpcX8grt5+0qQkiVtuMVvNkruT9izU//F3bmB4n
-         P3mxtBbPJzmRA==
-Date:   Sun, 11 Dec 2022 13:45:53 +0000
+        b=mzhx2G/EEGRQ/ZV0IgvgHV3/RZC+plr9xiFO16MbxbWURSxBelfVms/qo8ksyFpb0
+         cLlZvt1l/eMguNFFIw5h4lM6mqC86GVI/9eLQCEMsHL6pP+iXrp1+YcVZbHvvadDtp
+         h9s/osOBJW2FagpsArbHLC/0zjQivQtStlT2aLNlq5EgKVu7omS86ObslbbL7FI57V
+         8sPgAas2brnG1zc6FnGBcMPh3sU8ws571aLQv+wlIQKNiOJKjqY76yNO2LEUovwlJh
+         x5wXa0+TGR1UbC7SxsgR6DO2QMu9axK0Q1ZP18ok5e1dqz1TcOYBShdL8iuIVAcAlj
+         W+eXmAXFvS9zw==
+Date:   Sun, 11 Dec 2022 13:49:02 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     carlos.song@nxp.com
 Cc:     lars@metafoo.de, rjones@gateworks.com, Jonathan.Cameron@huawei.com,
         haibo.chen@nxp.com, linux-imx@nxp.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 3/7] iio: imu: fxos8700: fix incompete ACCEL and MAGN
- channels readback
-Message-ID: <20221211134553.3616ffad@jic23-huawei>
-In-Reply-To: <20221208071911.2405922-4-carlos.song@nxp.com>
+Subject: Re: [PATCH v2 4/7] iio: imu: fxos8700: fix IMU data bits returned
+ to user space
+Message-ID: <20221211134902.0ada6e44@jic23-huawei>
+In-Reply-To: <20221208071911.2405922-5-carlos.song@nxp.com>
 References: <20221208071911.2405922-1-carlos.song@nxp.com>
-        <20221208071911.2405922-4-carlos.song@nxp.com>
+        <20221208071911.2405922-5-carlos.song@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -55,48 +55,86 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu,  8 Dec 2022 15:19:07 +0800
+On Thu,  8 Dec 2022 15:19:08 +0800
 carlos.song@nxp.com wrote:
 
 > From: Carlos Song <carlos.song@nxp.com>
 > 
-> The length of ACCEL and MAGN 3-aix channels output data is 6 byte
-> individually. However block only read 3 bytes data into buffer from
-> ACCEL or MAGN output data registers every time. It causes an incompete
-> ACCEL and MAGN channels readback.
+> ACCEL output data registers contain the X-axis, Y-axis, and Z-axis
+> 14-bit left-justified sample data and MAGN output data registers
+> contain the X-axis, Y-axis, and Z-axis 16-bit sample data. The ACCEL
+> raw register output data should be divided by 4 before sent to
+> userspace.
 > 
-> Set correct value count for regmap_bulk_read to get 6 bytes ACCEL and
-> MAGN channels readback.
+> Apply a 2 bits signed right shift to the raw data from ACCEL output
+> data register but keep that from MAGN sensor as the origin.
 > 
 > Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
 > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Please spell check patch descriptions.  Anyhow, tidied that up whilst
-applying.
+I made one tweak (see below). 
 
-Applied to the fixes-togreg branch of iio.git and marked for stable
-inclusion.
-
-Thanks,
-
-Jonathan
+Applied to the fixes-togreg branch of iio.git and marked for stable inclusion.
 
 > ---
 > Changes for V2:
-> - Reserve the global DMA safe buffer
-> - Use sizeof(data->buf) instead of hardcoded FXOS8700_DATA_BUF_SIZE
-> - Rework commit log
+> - Store the shift in the switch and apply a shift by 2 for ACCEL
+>   and shift by 0 for MAGN
+> - Confirm the scaling is still correct for the acceleration channels
+>   given we are effectively dividing by 4 compared to the previous code
+> - Rework the comment
 > 
 > diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-> index 977eb7dc7dbd..b62bc92bbacc 100644
+> index b62bc92bbacc..d2e784628820 100644
 > --- a/drivers/iio/imu/fxos8700_core.c
 > +++ b/drivers/iio/imu/fxos8700_core.c
-> @@ -414,7 +414,7 @@ static int fxos8700_get_data(struct fxos8700_data *data, int chan_type,
+> @@ -394,6 +394,7 @@ static int fxos8700_get_data(struct fxos8700_data *data, int chan_type,
+>  			     int axis, int *val)
+>  {
+>  	u8 base, reg;
+> +	s16 tmp;
+>  	int ret;
 >  
->  	/* Block read 6 bytes of device output registers to avoid data loss */
->  	ret = regmap_bulk_read(data->regmap, base, data->buf,
-> -			       FXOS8700_DATA_BUF_SIZE);
-> +			       sizeof(data->buf));
->  	if (ret)
->  		return ret;
+>  	/*
+> @@ -421,8 +422,33 @@ static int fxos8700_get_data(struct fxos8700_data *data, int chan_type,
+>  	/* Convert axis to buffer index */
+>  	reg = axis - IIO_MOD_X;
 >  
+> +	/*
+> +	 * Convert to native endianness. The accel data and magn data
+> +	 * are signed, so a forced type conversion is needed.
+> +	 */
+> +	tmp = be16_to_cpu(data->buf[reg]);
+> +
+> +	/*
+> +	 * ACCEL output data registers contain the X-axis, Y-axis, and Z-axis
+> +	 * 14-bit left-justified sample data and MAGN output data registers
+> +	 * contain the X-axis, Y-axis, and Z-axis 16-bit sample data. Apply
+> +	 * a signed 2 bits right shift to the readback raw data from ACCEL
+> +	 * output data register and keep that from MAGN sensor as the origin.
+> +	 * Value should be extended to 32 bit.
+> +	 */
+> +	switch (chan_type) {
+> +	case IIO_ACCEL:
+> +		tmp = tmp >> 2;
+> +		break;
+> +	case IIO_MAGN:
+> +		tmp = tmp >> 0;
+I replaced this no operation line with a comment
+/* Nothing to do */ 
+
+otherwise it's the sort of thing some static checker might moan about :)
+
+Jonathan
+
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+>  	/* Convert to native endianness */
+> -	*val = sign_extend32(be16_to_cpu(data->buf[reg]), 15);
+> +	*val = sign_extend32(tmp, 15);
+>  
+>  	return 0;
+>  }
 

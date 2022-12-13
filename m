@@ -2,60 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9247264BC6A
-	for <lists+linux-iio@lfdr.de>; Tue, 13 Dec 2022 19:53:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFE8864BC6E
+	for <lists+linux-iio@lfdr.de>; Tue, 13 Dec 2022 19:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236531AbiLMSxj (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 13 Dec 2022 13:53:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45748 "EHLO
+        id S236564AbiLMSya (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 13 Dec 2022 13:54:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236546AbiLMSxf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Dec 2022 13:53:35 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D443288
-        for <linux-iio@vger.kernel.org>; Tue, 13 Dec 2022 10:53:33 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id 1so6486531lfz.4
-        for <linux-iio@vger.kernel.org>; Tue, 13 Dec 2022 10:53:33 -0800 (PST)
+        with ESMTP id S236540AbiLMSy1 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 13 Dec 2022 13:54:27 -0500
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D65C1DA77
+        for <linux-iio@vger.kernel.org>; Tue, 13 Dec 2022 10:54:25 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id x11so4297663ljh.7
+        for <linux-iio@vger.kernel.org>; Tue, 13 Dec 2022 10:54:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SFQ4wL0tGnYvmO2ggaFZ54cPeloHof3apdLmzY/G0jI=;
-        b=X+m/Sl7kZrlH4rRMufL5mj57CogNDsaguzy9nqaxOqKz6FaVd2gcu/kpv/Iuik0ndj
-         THNCm8C5FqENHoUjGQJwrCU2dYG3Iyyobcc/2zz4+qrlux0V+SeGJhTRfN54pbFu+X8Z
-         8dz2gtyqpz8PCMk5zO5bKSCfcMx03NCZKYRg265KiiRg1GfBY6MJqWjgK1lH5Viey4VI
-         VV74XmygSGuiCduoxGKg+kXJyzc5Koy721SC/d5rwkSw/qBjSkvY0j9hQbc08bkUAilT
-         Ss1PTig8SnEfv2IfDUXFOIZ5JauVtxIjOHUJ5KH2gYvgtDMuGUQO75r5q6xW+kPyVmGL
-         90PQ==
+        bh=HIPMQhD3+psITxKXESoElrmEMixNnFBn4GX76EyPXww=;
+        b=thPT9NHQRmNNvE6uZeB9lnXFyKpwPIjWuyeDZ6fQ6lVHeVkpgPAsu4ejh7ASpjwJgw
+         puxo4E3U3wH+SK1e+0U4xxm1ArJnyAs7Wj2ZkqMgtblj0Vifu2W14qjvgnI93r/jWS9b
+         qXzQpQN1QJHA5nMSXECiQVpGVN/jvBDsPrFCl5jHrLvm08PF1BKU8ZvjTC4MwklHq7tR
+         eqy0u9Yi2GL4HLVly8xClK2LoNPGf1hu3DC7/i5YOoHtTp/drS1cEfjo+e4KkCIgjxVO
+         W8tIoTEoTvOOnV0+of4njCLTBKyZ/hkenluqL1ZViXHMmLQ0wSj4PHNPno14BHPn4FmH
+         kzoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SFQ4wL0tGnYvmO2ggaFZ54cPeloHof3apdLmzY/G0jI=;
-        b=AWQyC2JLpwLkRwM2d6F569cp8fPmn9VjcsnWR/f2rYDCXZQwNzIU8AcMWxi7KRS1Cq
-         1hJ/GovCNslP3TNqDor0SClk2Hv2+0mTsh6rBGGxf+jWhbx4PxmXGoFBWEhwmtGtx1B5
-         I1t+q08kott6owiy4ZF3RRYjS0Ab+QvawdxTVgI276b1Rgo5S4I1r8hIVPEBxabca6pv
-         +gyGTe3CDCCLEntHmZo4zNMEo58ysC/TsTRzrzpdcsofRuG93+0TAuGD1xQhHtIshz1D
-         aUoMixaBLca6URMzBzpk+6tyiTx8Y6pvCorgBUaRdW1nq7nHHIe+hcdqh7M7ey78ATuz
-         Yiag==
-X-Gm-Message-State: ANoB5pnBwbeRSBRqdPu7CdC4HOHUr7L73+IBcHi2czcbufmrWpZwvjMQ
-        w+Df4L+imFPJRmDna+BB3hpLdw==
-X-Google-Smtp-Source: AA0mqf4/ArFa4MgXEQhOhTXUL1xzqhsnAt9gZdvHwgyR3yfeaaG1i2yZo3v+Pz7s/X4IrvVr3DCedw==
-X-Received: by 2002:a05:6512:b10:b0:4a6:c596:6ff7 with SMTP id w16-20020a0565120b1000b004a6c5966ff7mr6966373lfu.2.1670957611705;
-        Tue, 13 Dec 2022 10:53:31 -0800 (PST)
+        bh=HIPMQhD3+psITxKXESoElrmEMixNnFBn4GX76EyPXww=;
+        b=BiapbcffMTTKV0KNW6h2DT8Yj8EojXkjULUVwdtONDxY4KthF0QQ2DtjrQgJh4sU4f
+         kUGBVxuvAuEmBxgQ+Pg16bLg5JOY2crOYw74/jKoKBgg28Pw6EvRBsyhODlzCuOQciPe
+         Cu8hGJJqcd5Ip4RFAQk7ShigUqA5J8oqheBixipL8q4WoRYUcxZfROVx5zxAUC5DpuhL
+         rgHZLcsRbuVyHdi29NTpnhU6KZ4L1KZ+o2wopbTAXo91zGzI758mazfMHepPONCvhSNX
+         89mZTyCJ5Ltl57J7QQMjnEwDLCGKX7QYEnYzOTHeqYvwK95+5XT3nhz5VLLs/CTJui76
+         sjCw==
+X-Gm-Message-State: ANoB5plCIVIEAuR0xDF/gGK6jyA1rGQpk6kzh4vL+PZPZnSA7VjUJBef
+        e9Onxo7ncGyRdEGfTo2H4LGw6g==
+X-Google-Smtp-Source: AA0mqf6qBN7nANaIrqMA455WhZcMcAiYFohX6+DXjFTkG/RaYdkRR9JGA3xhKnG9w2ocYukjJ5KNug==
+X-Received: by 2002:a2e:be1f:0:b0:26f:db35:7e42 with SMTP id z31-20020a2ebe1f000000b0026fdb357e42mr6893538ljq.17.1670957663947;
+        Tue, 13 Dec 2022 10:54:23 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id f13-20020a19dc4d000000b004b5a4cf69dfsm468674lfj.261.2022.12.13.10.53.30
+        by smtp.gmail.com with ESMTPSA id p13-20020a2eb98d000000b0027a02d2d4ecsm368642ljp.24.2022.12.13.10.54.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Dec 2022 10:53:31 -0800 (PST)
-Message-ID: <84bd582c-1dde-822c-48b7-025887fd0203@linaro.org>
-Date:   Tue, 13 Dec 2022 19:53:30 +0100
+        Tue, 13 Dec 2022 10:54:23 -0800 (PST)
+Message-ID: <f47c1135-9c72-d21e-327e-511f7bf71a23@linaro.org>
+Date:   Tue, 13 Dec 2022 19:54:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH v3 2/4] iio: accel: add the new entry in driver for
- fxls8967af
+Subject: Re: [PATCH v3 3/4] dt-bindings: iio: accel: fxls8962af: add new
+ compatible string
 Content-Language: en-US
 To:     Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -69,15 +69,14 @@ Cc:     Lars-Peter Clausen <lars@metafoo.de>,
         Clark Wang <xiaoning.wang@nxp.com>, linux-iio@vger.kernel.org,
         devicetree@vger.kernel.org, imx@lists.linux.dev
 References: <20221213171536.1880089-1-han.xu@nxp.com>
- <20221213171536.1880089-3-han.xu@nxp.com>
+ <20221213171536.1880089-5-han.xu@nxp.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221213171536.1880089-3-han.xu@nxp.com>
+In-Reply-To: <20221213171536.1880089-5-han.xu@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -85,65 +84,42 @@ List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
 On 13/12/2022 18:15, Han Xu wrote:
-> Add this new device entry in the driver id table.
+> Add new compatible string for the NXP FXLS8967AF accelerometer sensor.
 > 
 > Signed-off-by: Han Xu <han.xu@nxp.com>
 > 
 > ---
-> changes in v2
-> - change chip info orders
+> changes in v3
+> - Start commit message in capital
+> - Describe all these chips are compatible
 > ---
->  drivers/iio/accel/fxls8962af-core.c | 7 +++++++
->  drivers/iio/accel/fxls8962af-i2c.c  | 2 ++
->  drivers/iio/accel/fxls8962af.h      | 1 +
->  3 files changed, 10 insertions(+)
+>  .../devicetree/bindings/iio/accel/nxp,fxls8962af.yaml         | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
-> index 98811e4e16bb..c3589c3084ee 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -127,6 +127,7 @@
->  #define FXLS8962AF_DEVICE_ID			0x62
->  #define FXLS8964AF_DEVICE_ID			0x84
->  #define FXLS8974CF_DEVICE_ID			0x86
-> +#define FXLS8967AF_DEVICE_ID			0x87
+> diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> index 65ce8ea14b52..8f07ade21abb 100644
+> --- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> +++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
+> @@ -14,12 +14,16 @@ description: |
+>    SPI and I2C interface.
+>      https://www.nxp.com/docs/en/data-sheet/FXLS8962AF.pdf
+>      https://www.nxp.com/docs/en/data-sheet/FXLS8964AF.pdf
+> +    https://www.nxp.com/docs/en/data-sheet/FXLS8967AF.pdf
 >  
->  /* Raw temp channel offset */
->  #define FXLS8962AF_TEMP_CENTER_VAL		25
-> @@ -765,6 +766,12 @@ static const struct fxls8962af_chip_info fxls_chip_info_table[] = {
->  		.channels = fxls8962af_channels,
->  		.num_channels = ARRAY_SIZE(fxls8962af_channels),
->  	},
-> +	[fxls8967af] = {
-> +		.chip_id = FXLS8967AF_DEVICE_ID,
-> +		.name = "fxls8967af",
-> +		.channels = fxls8962af_channels,
-> +		.num_channels = ARRAY_SIZE(fxls8962af_channels),
-> +	},
->  	[fxls8974cf] = {
->  		.chip_id = FXLS8974CF_DEVICE_ID,
->  		.name = "fxls8974cf",
-> diff --git a/drivers/iio/accel/fxls8962af-i2c.c b/drivers/iio/accel/fxls8962af-i2c.c
-> index 17dd56756ff9..a8944b255a28 100644
-> --- a/drivers/iio/accel/fxls8962af-i2c.c
-> +++ b/drivers/iio/accel/fxls8962af-i2c.c
-> @@ -30,6 +30,7 @@ static int fxls8962af_probe(struct i2c_client *client)
->  static const struct i2c_device_id fxls8962af_id[] = {
->  	{ "fxls8962af", fxls8962af },
->  	{ "fxls8964af", fxls8964af },
-> +	{ "fxls8967af", fxls8967af },
->  	{ "fxls8974cf", fxls8974cf },
->  	{}
->  };
-> @@ -38,6 +39,7 @@ MODULE_DEVICE_TABLE(i2c, fxls8962af_id);
->  static const struct of_device_id fxls8962af_of_match[] = {
->  	{ .compatible = "nxp,fxls8962af" },
->  	{ .compatible = "nxp,fxls8964af" },
-> +	{ .compatible = "nxp,fxls8967af" },
->  	{ .compatible = "nxp,fxls8974cf" },
+>  properties:
+>    compatible:
+> +    description:
+> +      These chips are compatible with each other, just have different IDs.
 
-This is confusing. The I2C ID table has driver data, but OF ID table
-hasn't. So are they compatible or not?
+That's not what I meant.
+
+Compatibility is expressed (check DT spec) by following specific
+compatible with a more generic one (fallback), so in DTS:
+
+	compatible = "nxp,fxls8967af", "nxp,fxls8964af";
+
+Your driver changes partially suggested that (and driver changes should
+be probably skipped in such case), but now I wonder how it is in reality....
 
 Best regards,
 Krzysztof

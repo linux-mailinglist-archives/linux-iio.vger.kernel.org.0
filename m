@@ -2,59 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240EE64C861
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 12:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F84864C89F
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 13:02:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238010AbiLNLtX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Dec 2022 06:49:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56334 "EHLO
+        id S238307AbiLNMCm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Dec 2022 07:02:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238006AbiLNLtW (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 06:49:22 -0500
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9D63AF;
-        Wed, 14 Dec 2022 03:49:21 -0800 (PST)
+        with ESMTP id S238283AbiLNMCU (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 07:02:20 -0500
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF6E26AA0;
+        Wed, 14 Dec 2022 04:01:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671018561; x=1702554561;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=r188qz47hPmbr6r5XbBcOdNISw/RCExFeHfQbTTAWVA=;
-  b=bmpIVk2hvGOz9ftiG/2sp3uVh3GtvtHNR1aQv7JB1Dtub5ukUtvuDkKo
-   X8/oHGH14orY9Y8cdCvLn1MfpPdgXBsmFJJ4vsNbeuqqr+WFA7CMaaxkg
-   urHHtPyWDEPf7u3pgnl2drSXrUW/mVLyfbKSJPE5A+nbPAKIVnHrF+J7b
-   apTquz1juGExfOMIIO5LnF0aOqg58wwacFqmUATnMOKuvNudjOR5ViKtO
-   JisVr9CwJutOHXUA/JYwo4q+1QkZg73ISTBco+Uv1zAvk/jOExJ34J4VW
-   XPdQaYTm61Uxy0MkyMHGDhpJQn54/tg5u+3jLZe1pEGKJbAG/c7ajRg8R
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="316017144"
+  t=1671019307; x=1702555307;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T2h0MiLbTfn4i9o+IaErqzz+faLKb8LWwG9yfT/PdDY=;
+  b=iyOhikuo/y7q24VuLtnsZk7tnJ4DLkYOY+CIhZzncgCCXMBDGpG/3W3E
+   0RN54eQxHU/UCV5lSPfWZ3io5KtQwnFZF3rWbPxQ5W1+56oDdyBJMar0q
+   BL7+uHn9W1BPDdatTsTudFmBgSmeXSR5wd0Pb7nk/KBAwnz7v9WaYfOl3
+   fAdGpfBXrE292igf1HQ3JS4mtsAFFpTxEgRyqi9wPDfoMJSfPAS3Z29fh
+   qFa5eomOf4dBvNUvqb+K6n5c1jsoLDdvidSA35cPqT3VHwMVoiUosHwpj
+   ZEUEPewYkS/mJvCXqAPevqEy2dZnmY4+Kpe7NH+n9C2wR6pU0QuIXyZRy
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="320243476"
 X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="316017144"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 03:49:20 -0800
+   d="scan'208";a="320243476"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 04:01:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="977805631"
+X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="648999292"
 X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="977805631"
+   d="scan'208";a="648999292"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga005.fm.intel.com with ESMTP; 14 Dec 2022 03:49:19 -0800
+  by orsmga002.jf.intel.com with ESMTP; 14 Dec 2022 04:01:33 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 5189BF4; Wed, 14 Dec 2022 13:49:48 +0200 (EET)
+        id 2A684F7; Wed, 14 Dec 2022 14:02:03 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 2/2] iio: adc: ti-adc128s052: Drop anti-pattern of ACPI_PTR() use
-Date:   Wed, 14 Dec 2022 13:49:44 +0200
-Message-Id: <20221214114944.83790-2-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/2] iio: adc: ti-adc128s052: Use get_unaligned_beXX()
+Date:   Wed, 14 Dec 2022 14:02:01 +0200
+Message-Id: <20221214120202.4658-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221214114944.83790-1-andriy.shevchenko@linux.intel.com>
-References: <20221214114944.83790-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,50 +60,53 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-ACPI_PTR() is more harmful than helpful. For example, in this case
-if CONFIG_ACPI=n, the ID table left unused and code is obfuscated
-by ifdeffery.
-
-Drop anti-pattern of ACPI_PTR() use.
+This makes the driver code slightly easier to read.
+While at it, use GENMASK() as well.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/iio/adc/ti-adc128s052.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/adc/ti-adc128s052.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-index 9dfc625100b6..fc09ee6bb174 100644
+index fc09ee6bb174..7c4e8025861c 100644
 --- a/drivers/iio/adc/ti-adc128s052.c
 +++ b/drivers/iio/adc/ti-adc128s052.c
-@@ -9,7 +9,6 @@
+@@ -9,6 +9,7 @@
   * https://www.ti.com/lit/ds/symlink/adc124s021.pdf
   */
  
--#include <linux/acpi.h>
++#include <linux/bits.h>
  #include <linux/err.h>
  #include <linux/spi/spi.h>
  #include <linux/module.h>
-@@ -201,19 +200,17 @@ static const struct spi_device_id adc128_id[] = {
- };
- MODULE_DEVICE_TABLE(spi, adc128_id);
+@@ -17,6 +18,8 @@
+ #include <linux/property.h>
+ #include <linux/regulator/consumer.h>
  
--#ifdef CONFIG_ACPI
- static const struct acpi_device_id adc128_acpi_match[] = {
- 	{ "AANT1280", (kernel_ulong_t)&adc128_config[2] },
- 	{ }
- };
- MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);
--#endif
++#include <asm/unaligned.h>
++
+ struct adc128_configuration {
+ 	const struct iio_chan_spec	*channels;
+ 	u8				num_channels;
+@@ -33,6 +36,7 @@ struct adc128 {
  
- static struct spi_driver adc128_driver = {
- 	.driver = {
- 		.name = "adc128s052",
- 		.of_match_table = adc128_of_match,
--		.acpi_match_table = ACPI_PTR(adc128_acpi_match),
-+		.acpi_match_table = adc128_acpi_match,
- 	},
- 	.probe = adc128_probe,
- 	.id_table = adc128_id,
+ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
+ {
++	u16 value;
+ 	int ret;
+ 
+ 	mutex_lock(&adc->lock);
+@@ -53,7 +57,8 @@ static int adc128_adc_conversion(struct adc128 *adc, u8 channel)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ((adc->buffer[0] << 8 | adc->buffer[1]) & 0xFFF);
++	value = get_unaligned_be16(&adc->buffer);
++	return value & GENMASK(11, 0);
+ }
+ 
+ static int adc128_read_raw(struct iio_dev *indio_dev,
 -- 
 2.35.1
 

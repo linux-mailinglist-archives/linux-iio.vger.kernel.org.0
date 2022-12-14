@@ -2,61 +2,60 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FB2464CCC0
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 15:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F24664CCCB
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 16:01:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238033AbiLNO47 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Dec 2022 09:56:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60488 "EHLO
+        id S238214AbiLNPBE (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Dec 2022 10:01:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238743AbiLNO45 (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 09:56:57 -0500
-Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71042497F;
-        Wed, 14 Dec 2022 06:56:55 -0800 (PST)
-Received: by mail-oi1-f176.google.com with SMTP id v82so2794547oib.4;
-        Wed, 14 Dec 2022 06:56:55 -0800 (PST)
+        with ESMTP id S237778AbiLNPBD (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 10:01:03 -0500
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E357A448;
+        Wed, 14 Dec 2022 07:01:02 -0800 (PST)
+Received: by mail-oi1-f172.google.com with SMTP id r11so2763415oie.13;
+        Wed, 14 Dec 2022 07:01:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UQp+Pv+VnNqt0GnEv4In+p3V3Ugon2ooJmx0qU33ZRk=;
-        b=fJwMrR5HJt2RmB1YJH/t7JCAME6UqjF/uiHimK1dbCx4bM6bW1Sh9Fzv56S2K5/bF3
-         Hs/cb0BO+/wMxCoxGDAgfwZV7PjImfLX0SwkCeMkTrRe4KgmGJB31I3zZ+N2UKYy3IIw
-         WznqqRY/EswdbnvtDxlaIzQQVuDGtSjy/MOUtbZCsGa6SYLuHj5HjObDnsmnPjTdL3BI
-         h7XKzSojTZUMgThemJBml2KOa91YHDZMudWAqbMqCKhF/8ExCRD+KMSbXTjC+NthOAwx
-         TxTY2WfewpJKNRtcWE3kcPgEo2tnC4Thv/fs587vgH2b+8a+QgvRcwUDGoVLN/XMRU0V
-         6/vg==
-X-Gm-Message-State: ANoB5pmMh9IaLiFyl6Na0eNbwvCGDhGfj7yfuzjxxeILqOEJffB4z7jG
-        4cR/W/9ISU2Yzmlv+IFKYaUX0nEm4Q==
-X-Google-Smtp-Source: AA0mqf7z8hKcvrlqNaLrxkNuSJUWSssJhZEijZM/veXnP0ZqiDrSolZQlVcEdXmEGO9b1Bj/+HjaBA==
-X-Received: by 2002:a05:6808:b02:b0:35a:4c73:7ad1 with SMTP id s2-20020a0568080b0200b0035a4c737ad1mr10835722oij.5.1671029814930;
-        Wed, 14 Dec 2022 06:56:54 -0800 (PST)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zoL6i5vxN2VIXQtBU1jlFS6aLxm/by40lLf1WEubCJM=;
+        b=YAn2vt0QCMuGgtdhz8VIWebgpRvAAEsaexZgw6JAZTmwBkFd1aa++vrPjEvVNNamDR
+         HPfaF390V3LwLCP+TeFKIG9E7JUj4pQUHclwWDFWZ7wTty2tnOYt7ipVd3+wveWqFmZr
+         LWJkFK1Fvd4XNaPyRZvCaoda/ycPTRinf1UDDgCnIXCye/tbg0oSEKs+QLP3SUK67M7u
+         mQ7uKR6WDH9L01pb0my6lDjM7AVpSaUVgeGfb627YEUGEIfkvGCnoeoNgAL41jVCG0bP
+         lyfGL5Sk/OuP0DC1VjA3NrBPzE181NrVbxHgJE0stiwL3PfvJqjt30QN2GtIdA72NeQj
+         ZStg==
+X-Gm-Message-State: ANoB5pnHDYnM9RfxPDvUQapEtIQUCp+wqxE3FFD0S0D3ZI7CiTlpRirr
+        zqW9eMibUzJ/iJP6vg9Ffg==
+X-Google-Smtp-Source: AA0mqf4Zq4Y3dyfuRV9T0xjJ2mBVMDxAkFSCmf2WHI3fZ9GiRxZuMNNXsgjrwZwDyjE+hBDymPLfoA==
+X-Received: by 2002:a54:4516:0:b0:355:1de9:392a with SMTP id l22-20020a544516000000b003551de9392amr11491624oil.48.1671030061718;
+        Wed, 14 Dec 2022 07:01:01 -0800 (PST)
 Received: from robh_at_kernel.org (rrcs-98-6-157-194.sw.biz.rr.com. [98.6.157.194])
-        by smtp.gmail.com with ESMTPSA id e19-20020a4a91d3000000b004a09c4aceb6sm657913ooh.46.2022.12.14.06.56.53
+        by smtp.gmail.com with ESMTPSA id r141-20020acaa893000000b003539686cb7bsm5681085oie.53.2022.12.14.07.01.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Dec 2022 06:56:54 -0800 (PST)
-Received: (nullmailer pid 1045155 invoked by uid 1000);
-        Wed, 14 Dec 2022 14:56:53 -0000
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-MIME-Version: 1.0
+        Wed, 14 Dec 2022 07:01:00 -0800 (PST)
+Received: (nullmailer pid 1050655 invoked by uid 1000);
+        Wed, 14 Dec 2022 15:00:59 -0000
+Date:   Wed, 14 Dec 2022 09:00:59 -0600
 From:   Rob Herring <robh@kernel.org>
 To:     haibo.chen@nxp.com
-Cc:     lars@metafoo.de, krzysztof.kozlowski+dt@linaro.org,
-        kernel@pengutronix.de, festevam@gmail.com,
-        linux-iio@vger.kernel.org, s.hauer@pengutronix.de,
-        devicetree@vger.kernel.org, linux-imx@nxp.com,
-        linux-arm-kernel@lists.infradead.org, shawnguo@kernel.org,
-        jic23@kernel.org, robh+dt@kernel.org
-In-Reply-To: <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
-References: <1671024939-29322-1-git-send-email-haibo.chen@nxp.com>
- <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
-Message-Id: <167102966432.1040986.12796829521940941811.robh@kernel.org>
+Cc:     jic23@kernel.org, lars@metafoo.de,
+        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: Add binding documentation
  for NXP IMX93 ADC
-Date:   Wed, 14 Dec 2022 08:56:53 -0600
+Message-ID: <20221214150059.GA1048042-robh@kernel.org>
+References: <1671024939-29322-1-git-send-email-haibo.chen@nxp.com>
+ <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
 X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
         HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
@@ -67,8 +66,7 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-
-On Wed, 14 Dec 2022 21:35:38 +0800, haibo.chen@nxp.com wrote:
+On Wed, Dec 14, 2022 at 09:35:38PM +0800, haibo.chen@nxp.com wrote:
 > From: Haibo Chen <haibo.chen@nxp.com>
 > 
 > The IMX93 SoC has a new ADC IP, so add binding documentation
@@ -80,32 +78,101 @@ On Wed, 14 Dec 2022 21:35:38 +0800, haibo.chen@nxp.com wrote:
 >  1 file changed, 79 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> new file mode 100644
+> index 000000000000..229bb79e255c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> @@ -0,0 +1,79 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/nxp,imx93-adc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP iMX93 ADC bindings
+> +
+> +maintainers:
+> +  - Haibo Chen <haibo.chen@nxp.com>
+> +
+> +description:
+> +  The ADC on iMX93 is a 8-channel 12-bit 1MS/s ADC with 4 channels
+> +  connected to pins. it support normal and inject mode, include
+> +  One-Shot and Scan (continuous) conversions. Programmable DMA
+> +  enables for each channel  Also this ADC contain alternate analog
+> +  watchdog thresholds, select threshold through input ports. And
+> +  also has Self-test logic and Software-initiated calibration.
+> +
+> +properties:
+> +  compatible:
+> +    const: nxp,imx93-adc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description:
+> +      line 0 for WDGnL (watchdog threshold) interrupt requests.
+> +      line 1 for WDGnH (watchdog threshold) interrupt requests.
+> +      line 2 for normal conversion, include EOC (End of Conversion)
+> +      interrupt request, ECH (End of Chain) interrupt request,
+> +      JEOC (End of Injected Conversion mode) interrupt request
+> +      and JECH (End of injected Chain) interrupt request.
+> +      line 3 for Self-testing Interrupts.
+> +    maxItems: 4
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Split the descriptions:
 
-yamllint warnings/errors:
+items:
+  - description: WDGnL ...
+  - description: ...
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.example.dtb: adc@44530000: '#io-channel-cells' is a required property
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.example.dtb: adc@44530000: 'clock-names' does not match any of the regexes: 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+And then drop maxItems
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/1671024939-29322-2-git-send-email-haibo.chen@nxp.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  vref-supply:
+> +    description:
+> +      The reference voltage which used to establish channel scaling.
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - vref-supply
+> +  - "#io-channel-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/clock/imx93-clock.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    soc {
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +        adc@44530000 {
+> +            compatible = "nxp,imx93-adc";
+> +            reg = <0x44530000 0x10000>;
+> +            interrupts = <GIC_SPI 217 IRQ_TYPE_LEVEL_HIGH>,
+> +                         <GIC_SPI 218 IRQ_TYPE_LEVEL_HIGH>,
+> +                         <GIC_SPI 219 IRQ_TYPE_LEVEL_HIGH>,
+> +                         <GIC_SPI 268 IRQ_TYPE_LEVEL_HIGH>;
+> +            clocks = <&clk IMX93_CLK_ADC1_GATE>;
+> +            clock-names = "ipg";
+> +            vref-supply = <&reg_vref_1v8>;
+> +        };
+> +    };
+> +...
+> -- 
+> 2.34.1
+> 
+> 

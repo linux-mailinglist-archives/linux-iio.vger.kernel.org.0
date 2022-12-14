@@ -2,95 +2,126 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7DF64C663
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 10:54:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C118C64C726
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 11:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238006AbiLNJyq (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Dec 2022 04:54:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57816 "EHLO
+        id S237943AbiLNKcW (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Dec 2022 05:32:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237995AbiLNJyp (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 04:54:45 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748A91C4
-        for <linux-iio@vger.kernel.org>; Wed, 14 Dec 2022 01:54:44 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id bp15so9486575lfb.13
-        for <linux-iio@vger.kernel.org>; Wed, 14 Dec 2022 01:54:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DJHzz7Cr6mZdLR560syNh/uSUGyL1AkyOrCtyL2Bvwc=;
-        b=BZ8KWJbhZI9j9mmLKk5E0+GIQCI5UAqUlqbIyZY21NQCbE8ZAWeM/JQrKgwesdRT3P
-         3akYY+u69yNw6ES0KS9n0rRG0nKkyV1fTai1qJYAQAG+wwOwBSlpz2xXYuj6P9O6s1uX
-         MyE8snUQvLBh2d+v2QVBORATzoRtvTQJN0s9BMr3yWdXH5ymDN5TWzNHFQU6UOkVgH3D
-         lxk+HxEEFrZgdnalGqbO4u5xjtWKiJMM0muohPvg0PxDxv3ZZuJIEit+Yt0i330mnH9X
-         77mb0rCgxwcR0OvixPmnt79xXE5faLsBohdBmoX/+WG34TPVUovrlz2DoBYSGImvs6Ub
-         fWlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DJHzz7Cr6mZdLR560syNh/uSUGyL1AkyOrCtyL2Bvwc=;
-        b=4iDo6Nh/YzCFO+h9yq5MEV5j6uVgIIpmnI21txz00XdPIcZPq21IK9bgL4aCOl3kmI
-         PHj+m5ohD/rTuAGRnm3Bjcm+lpk8BwO/cXHdZ4qRZIN7iG/Sed9CgE5eKOWy2xQEF8FD
-         gTi2klyOpaym5X7/VGLa+QsSX7iVS5fLym+f0xVHXkqp7bo/PfOf9yDuYGwj4M5mitTu
-         2w9+AYrtWpj60Lw5Ng51tlCuw+4z1LpKDefgJa1QjC/NLvAS9toWTF4pb2Ed8/L6Biyo
-         eHiG8jpaNr9YlpGeWYUykmgWnM1VgpzvUmz3+H2bb1byN4cuVYN18pC1fyyXolT/6Lpo
-         CGYg==
-X-Gm-Message-State: ANoB5pmbpDhQafS8/YrVGqHXzfSjPuGpS8slzI5nGXM+KxXRgFZhDV/I
-        /AunG1N1KQbrtF3UbZas6P0X7g==
-X-Google-Smtp-Source: AA0mqf5+dPoClAGr/fcvhHv5/BoMUrcqY4rn7Vn3amkoNIZ0rTphTBFbZ5NlYEfynFQHbtVFlqIfOw==
-X-Received: by 2002:a05:6512:2110:b0:4b5:649a:9105 with SMTP id q16-20020a056512211000b004b5649a9105mr5804481lfr.65.1671011682872;
-        Wed, 14 Dec 2022 01:54:42 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id c36-20020a05651223a400b004b55da14ba8sm734743lfv.291.2022.12.14.01.54.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Dec 2022 01:54:42 -0800 (PST)
-Message-ID: <2e9e84ce-97c6-77de-6fb2-40c91fa81e51@linaro.org>
-Date:   Wed, 14 Dec 2022 10:54:41 +0100
+        with ESMTP id S237981AbiLNKcH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 05:32:07 -0500
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E7CB720BE8;
+        Wed, 14 Dec 2022 02:31:54 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.96,244,1665414000"; 
+   d="scan'208";a="146164652"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie6.idc.renesas.com with ESMTP; 14 Dec 2022 19:31:53 +0900
+Received: from localhost.localdomain (unknown [10.226.93.99])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 73023400004C;
+        Wed, 14 Dec 2022 19:31:51 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v9 3/5] Documentation: ABI: sysfs-bus-counter: add cascade_counts_enable and external_input_phase_clock_select
+Date:   Wed, 14 Dec 2022 10:31:34 +0000
+Message-Id: <20221214103136.2493474-4-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221214103136.2493474-1-biju.das.jz@bp.renesas.com>
+References: <20221214103136.2493474-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH v3 4/4] dt-bindings: iio: accel: fxls8974cf: add new
- compatible string
-Content-Language: en-US
-To:     Han Xu <han.xu@nxp.com>, Jonathan Cameron <jic23@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Lars-Peter Clausen <lars@metafoo.de>,
-        Sean Nyekjaer <sean@geanix.com>,
-        =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Clark Wang <xiaoning.wang@nxp.com>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, imx@lists.linux.dev
-References: <20221213171536.1880089-1-han.xu@nxp.com>
- <20221213171536.1880089-6-han.xu@nxp.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221213171536.1880089-6-han.xu@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 13/12/2022 18:15, Han Xu wrote:
-> Add new compatible string for the NXP FXLS8974CF accelerometer sensor.
-> 
-> Signed-off-by: Han Xu <han.xu@nxp.com>
+This commit adds cascade_counts_enable and external_input_phase_
+clock_select items to counter ABI file.
+(e.g. for Renesas MTU3 hardware used for phase counting).
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+---
+v8->v9:
+ * Added available blocks for external_input_phase_clock_select_available
+ * Removed the "This attribute" from the external_input_phase_clock_select
+   description, and capitalize the word "counter" from description.
+ * Removed the "This attribute" from the cascade_counts_enable description,
+   and capitalize "counts" and "counter"
+ * Moved these device-level configuration blocks to top of the file.
+v7->v8:
+ * Replaced cascade_enable->cascade_counts_enable
+ * Updated commit header and description
+ * Added external_input_phase_clock_select_available entry for driver-
+   specific enum attribute and created a new entry block for it.
+ * Add a line stating cascade_counts_enable is a boolean attribute.
+ * Added missing 'component_id' suffix.
+v6->v7:
+ * Replaced long_word_access_ctrl_mode->cascade_enable
+ * Updated Kernel version
+v5->v6:
+ * No change
+v5:
+ * New patch
+---
+ Documentation/ABI/testing/sysfs-bus-counter | 32 +++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index ff83320b4255..97c1bd7a5df2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -1,3 +1,33 @@
++What:		/sys/bus/counter/devices/counterX/cascade_counts_enable
++KernelVersion:	6.3
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Indicates the cascading of Counts on Counter X.
++
++		Valid attribute values are boolean.
++
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++KernelVersion:	6.3
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Selects the external clock pin for phase counting mode of
++		Counter X.
++
++		MTCLKA-MTCLKB:
++			MTCLKA and MTCLKB pins are selected for the external
++			phase clock.
++
++		MTCLKC-MTCLKD:
++			MTCLKC and MTCLKD pins are selected for the external
++			phase clock.
++
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select_available
++KernelVersion:  6.3
++Contact:        linux-iio@vger.kernel.org
++Description:
++                Discrete set of available values for the respective device
++                configuration are listed in this file.
++
+ What:		/sys/bus/counter/devices/counterX/countY/count
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+@@ -215,6 +245,8 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		This attribute indicates the number of overflows of count Y.
+ 
++What:		/sys/bus/counter/devices/counterX/cascade_counts_enable_component_id
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/capture_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
+-- 
+2.25.1
 

@@ -2,94 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C79164C8A2
-	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 13:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D1B64C9C2
+	for <lists+linux-iio@lfdr.de>; Wed, 14 Dec 2022 14:09:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237595AbiLNMCw (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 14 Dec 2022 07:02:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34792 "EHLO
+        id S238537AbiLNNJH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 14 Dec 2022 08:09:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237495AbiLNMCb (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 07:02:31 -0500
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3061F26ABB;
-        Wed, 14 Dec 2022 04:01:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1671019310; x=1702555310;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=2nnC8hqhsbGCXjQ/5cko/ZVY7VIV0k35M+A/Vnl8B3w=;
-  b=fhNyrVPbEFKrRMp2RoCJvRp3F/E8tWRkg0iZFFd0g0DkkYtJyteaDhr7
-   cJN4HGsG8uqaZMybH2rmV7cRCdzadSoDHknmhC+ZegB5V3cTkttlMy6IL
-   w8ptZy2pNovCmhk5nza/B0V5Nz5Eb4c6F01NGzoNAPCEC401VXh2ZO6vy
-   s69QoHlTUuEqOSDYfGoyLZbidTzQc1ZhJTs1QvY/efJqXQOxQlzpIICc3
-   PVCmcPqJV/6v/+zSF6qrnPsmgpT1Nr21YRCGXYFvK8KiXnRM0JiLR+1fV
-   e/2Eqn6iujPPgiv3ODX6oEXhPeE8CRvZi4yAcWQ0rOqqVU3naMByJfRlU
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="320243481"
-X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="320243481"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2022 04:01:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10560"; a="626708582"
-X-IronPort-AV: E=Sophos;i="5.96,244,1665471600"; 
-   d="scan'208";a="626708582"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga006.jf.intel.com with ESMTP; 14 Dec 2022 04:01:34 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 35AC4F4; Wed, 14 Dec 2022 14:02:03 +0200 (EET)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 2/2] iio: adc: ti-adc128s052: Sort headers
-Date:   Wed, 14 Dec 2022 14:02:02 +0200
-Message-Id: <20221214120202.4658-2-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221214120202.4658-1-andriy.shevchenko@linux.intel.com>
-References: <20221214120202.4658-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S238552AbiLNNJA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 14 Dec 2022 08:09:00 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1635DE93
+        for <linux-iio@vger.kernel.org>; Wed, 14 Dec 2022 05:08:57 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id 1so10365782lfz.4
+        for <linux-iio@vger.kernel.org>; Wed, 14 Dec 2022 05:08:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PedTboiFtvABud73ZD3U4hUNQIS0oeFWRBzeT0lU6t8=;
+        b=KxNdjgQBBMefpFtO1FEOgrggLT8o+qZDfroZw26F0Wv0Nxpn0xu9xNsdKWRy3Tw8bn
+         3uBMa/7AEqqjC/PMfuoqKWvVC5DOyip+tZtU9MJs5nl4fxwWT0YGm7OMC2MTSporlAgR
+         uNGX8CUL49SHU8ddhDx3ElaxyXbolwzGfnMMmldXQp7emry9hbmp/KuPRA9F0MjIiQ2Z
+         dSkIzopkbTiIVz4K7tlH0kGmyqbalMk02wZGbh3IlqwfrbR9rDnnd2pXSwUjeh/EtUjQ
+         +M9S8N5KIWGbu1MopCKi+Y+KYZHT6cDTVnC+/G9IM5GpspwyQ30hFg/66iuFDlheHyUP
+         TBPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PedTboiFtvABud73ZD3U4hUNQIS0oeFWRBzeT0lU6t8=;
+        b=xM0/qVrrx2aqGSbnrWTOUbQ9L9mzYsTlE7aq5G0fL3cNzu3VC/+7id+luQjooDWnol
+         4hMLqeCUFwG2Myrbi4ythzssKC+JspM4EpjJW1FDDPV/gx7jPJcJperpjxlOJVbKt0mV
+         EhbknFX7Lbl11QC7GgRlmU4Mb4KEuM6dt1lAtDZiJlk9tdZhACwofiHtruIphkjdd89y
+         69gTDsn6Zd6TG6K+ndAmtL5RlTyOL3B9FigxX9cPsetCeIcIQxpE/wLNYeDBT4Cy2lVM
+         5GDTBRecpt+l0FWmZsGYcBTx5daoYA/e53DSY2P22d6qICVflBoTw/UuFdErcpAgODCA
+         +JrA==
+X-Gm-Message-State: ANoB5pksRJOcpGBsdzN15uHUv3CtXhsO9+Wz/RUuROABgYKBTmelHp9s
+        ntgHHoyLbIQfNq9zJs3dFXWCGSfpBwWWwE2wPjQ=
+X-Google-Smtp-Source: AA0mqf7aqfGeGqDDOw+H/ntC+nwy73TSEmbwetV0rbXvZf5FsiA5pNXvyDL3eCkdfjVsC5t7TR7v31XEbh/l8BEoqhU=
+X-Received: by 2002:ac2:4563:0:b0:4b5:afc6:1f74 with SMTP id
+ k3-20020ac24563000000b004b5afc61f74mr1466029lfm.577.1671023336032; Wed, 14
+ Dec 2022 05:08:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:651c:1597:0:0:0:0 with HTTP; Wed, 14 Dec 2022 05:08:55
+ -0800 (PST)
+Reply-To: a2udu@yahoo.com
+From:   "." <urri8344@gmail.com>
+Date:   Wed, 14 Dec 2022 14:08:55 +0100
+Message-ID: <CAKzm1Z4NTZFpkD10SG0cQ6+WLXF0_7ELoUXkkr9FewwDX5Z7SA@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Sort the headers in alphabetic order in order to ease
-the maintenance for this part.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/adc/ti-adc128s052.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
-index 7c4e8025861c..a003264ca835 100644
---- a/drivers/iio/adc/ti-adc128s052.c
-+++ b/drivers/iio/adc/ti-adc128s052.c
-@@ -11,12 +11,12 @@
- 
- #include <linux/bits.h>
- #include <linux/err.h>
--#include <linux/spi/spi.h>
--#include <linux/module.h>
--#include <linux/mod_devicetable.h>
- #include <linux/iio/iio.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
- 
- #include <asm/unaligned.h>
- 
 -- 
-2.35.1
+Hello
 
+The money is ready to be transferred, kindly acknowledge your interest.

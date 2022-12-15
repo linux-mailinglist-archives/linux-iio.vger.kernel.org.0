@@ -2,73 +2,70 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8952A64D7EF
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Dec 2022 09:42:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8F2D64D94A
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Dec 2022 11:11:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229684AbiLOImr (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Dec 2022 03:42:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38960 "EHLO
+        id S230212AbiLOKLo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Dec 2022 05:11:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229629AbiLOImi (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Dec 2022 03:42:38 -0500
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF9243B9D6
-        for <linux-iio@vger.kernel.org>; Thu, 15 Dec 2022 00:42:36 -0800 (PST)
-Received: by mail-lf1-x132.google.com with SMTP id q6so14522591lfm.10
-        for <linux-iio@vger.kernel.org>; Thu, 15 Dec 2022 00:42:36 -0800 (PST)
+        with ESMTP id S229797AbiLOKLn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Dec 2022 05:11:43 -0500
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C8112E
+        for <linux-iio@vger.kernel.org>; Thu, 15 Dec 2022 02:11:41 -0800 (PST)
+Received: by mail-lf1-x12f.google.com with SMTP id p8so14855586lfu.11
+        for <linux-iio@vger.kernel.org>; Thu, 15 Dec 2022 02:11:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ghZrTLqof/7uXaABRC9VXiX8vno10E0SDlDFHThQ0JQ=;
-        b=IvbGhfYRcE9Ej4dgWstBSKGExQ0XadtXWMI/RukqZQSVvCNvQTzZB9WsYKHbgr6rmf
-         W5wfv5GxT5Z/KczEmWarounmcphhsdE0qSZs15jchtAHKFeqsMnia64ej1m42NH2Cjwd
-         ZU+qIS4F+YUrYdpDPhk0kLvSwp3ofkm32rnfEGxE7I+q7ULnNCPv/d3fWpfam/vVowg4
-         EMwEYC9fAz+NZLFlvoICOn9QMOG5dYnLsw0zyCCUEKTsGwatsG9X13jCM8ZdnJGtTv7C
-         GWUoq3UUqF6P6TE1VldZCZs4Fw6r+bhfsUB7G04qIWM2Fi3Oll5AhYBKfT+rnQPVkZnr
-         1rfg==
+        bh=soCAHOaIsFy+d6hQmUNMl70DZLfVjiL+F7Thug8JERc=;
+        b=WLlx94ZIFqE7ErOp6ArpMlmvX9WlLRuT8CuhA8kI1wGvJMLK1t/7+nQl5wCHBhResK
+         KYLiljRyPTP0OG819MCnBnVNHzQBUkVuuPWeJnNw/nciYAILFiW0ZeIYeVCf+Zu1JMW2
+         oThUf4I66GpOkbJn7ReS+fsOWKLF4tkCZlldCa5PIF7VcxEnV02IF76uHogBnSf8uGVt
+         qcSkENtzcgzmAO1sGTrK9MESRX/MnJjSCNTEs8AfM/zlfJvitYFYRaWV1hAbGUE29M3W
+         hyDOIrHEsLXYvvQo8mYbBjB6ci5yV9aztsz6LoLL+QK6KMg9EH6V+vpKpQV8vAjgnEQz
+         JypQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ghZrTLqof/7uXaABRC9VXiX8vno10E0SDlDFHThQ0JQ=;
-        b=SOmfPAmdap3CFlQVnjwE/o2p+4EkECDZxYvUfQjYiHPyE9lrLdUTfYIQ+SlcmrNRGa
-         0ML6QCVvBEksd5mmEpTLdELoQ/QIXmh5Fv5tr7GIAwo039Cde06xfrWyQSz7aeMLtDFV
-         myDWIKj6tA2vjrA4oZcp06lhPT0YjNgcXihTiOnMgKyLIQe4G9irNSOJqGxIgHdBUyhr
-         ob+WnU4Vx/EbOFzUtke2zw/raGlelwGlAsq6OqI1TNf4tn1vRbxk6aX+NnOcCTerXnM7
-         GW11xTbMoqwAo6wlnkZMZ2AADOYYE+gKYYQszBgHs3ARQFLfei/DXFU+QKFyMnuIYhLa
-         kGsA==
-X-Gm-Message-State: ANoB5pmUfrn2pbc8tmNaPtyWxhg/ojs65I0HcwFcroUmrklnkTAnobJT
-        wJg1vnx7dvAUdunYsTVVBKPMow==
-X-Google-Smtp-Source: AA0mqf6XangecSmY0mz5fiU3fBRv5zdhvdBpprxnLqLecZduE7R5QbWLtR7/ZzJ6CDB+ScTNFb4vkA==
-X-Received: by 2002:a05:6512:6d1:b0:4a4:7cab:3bad with SMTP id u17-20020a05651206d100b004a47cab3badmr9144434lff.28.1671093755306;
-        Thu, 15 Dec 2022 00:42:35 -0800 (PST)
+        bh=soCAHOaIsFy+d6hQmUNMl70DZLfVjiL+F7Thug8JERc=;
+        b=CzJjr4pUxn0d3xTSNxjnsxkMtny5kGp2yGNle/iF2mkc7/3xVqDYg3WHS7mw33bGZt
+         T5+N1Y6fgOBKoL9QIp9C6AuW/yXNddkM2erDAru36QayvDeM+td2bcVOhX+isn4oQqz0
+         /rz8b9XsiTrjj3pC9OfRCQ0dolcBL2IV/DWrePvno6r3w7hc1YMMR0CtSEWkWZYmgRUt
+         BcHYAY90WIEIRyY3TpekFH5p83k2EZPFnQnMG2Tr4qurxsqRD11/OYf448K41Zd1/Rgj
+         rrMnbXXae9FOZIUvnIO3713n11JsvGOrNP/YWB92I6AExNyFBxv47YKjfjshDFIY2IH8
+         g4CA==
+X-Gm-Message-State: ANoB5pmVZ7iHi4oPB/7Xf1ozpu0q6jfkNq1WAqjXB6V3jjxZxLN8Qc89
+        modLt0Ok139vfvMdLgE03i6oIzPfD4HdFPnT
+X-Google-Smtp-Source: AA0mqf7GQAtfRyU1SdpttGv7QxRUHm95kCZgGqdLa5Y6dlcxpEnrG9ccqnnutlyyKlfe4U1/iQNJtw==
+X-Received: by 2002:a19:e007:0:b0:4b5:b937:7896 with SMTP id x7-20020a19e007000000b004b5b9377896mr5767717lfg.46.1671099100109;
+        Thu, 15 Dec 2022 02:11:40 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id j1-20020a056512344100b004b48cc444ccsm1114148lfr.100.2022.12.15.00.42.34
+        by smtp.gmail.com with ESMTPSA id z15-20020a195e4f000000b004b57162edfasm1120536lfi.117.2022.12.15.02.11.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Dec 2022 00:42:34 -0800 (PST)
-Message-ID: <8bb988fc-54d2-2528-e34f-0097c0654b7d@linaro.org>
-Date:   Thu, 15 Dec 2022 09:42:33 +0100
+        Thu, 15 Dec 2022 02:11:39 -0800 (PST)
+Message-ID: <559fe1ef-cd12-851c-0cfd-282c4cec10ac@linaro.org>
+Date:   Thu, 15 Dec 2022 11:11:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ep93xx: Add cirrus,ep9301-adc
- description
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: adc: Add binding documentation
+ for NXP IMX93 ADC
 Content-Language: en-US
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        linux-iio@vger.kernel.org
-Cc:     Hartley Sweeten <hsweeten@visionengravers.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221214222024.951984-1-alexander.sverdlin@gmail.com>
+To:     haibo.chen@nxp.com, jic23@kernel.org, lars@metafoo.de,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de
+Cc:     festevam@gmail.com, linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+References: <1671024939-29322-1-git-send-email-haibo.chen@nxp.com>
+ <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221214222024.951984-1-alexander.sverdlin@gmail.com>
+In-Reply-To: <1671024939-29322-2-git-send-email-haibo.chen@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -80,77 +77,89 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 14/12/2022 23:20, Alexander Sverdlin wrote:
-> Add device tree bindings for Cirrus Logic EP9301/EP9302 internal SoCs' ADC
-> block.
+On 14/12/2022 14:35, haibo.chen@nxp.com wrote:
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> The IMX93 SoC has a new ADC IP, so add binding documentation
+> for NXP IMX93 ADC.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 > ---
->  .../bindings/iio/adc/cirrus,ep9301-adc.yaml   | 58 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +
->  2 files changed, 60 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
+>  .../bindings/iio/adc/nxp,imx93-adc.yaml       | 79 +++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
 > new file mode 100644
-> index 000000000000..d0fd24d1be04
+> index 000000000000..229bb79e255c
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
-> @@ -0,0 +1,58 @@
+> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+
+This was already sent, so I am surprised to see this in worse or the
+same state. Don't force us to repeat review, it's a waste of time.
+
+> @@ -0,0 +1,79 @@
 > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/adc/cirrus,ep9301-adc.yaml#
+> +$id: http://devicetree.org/schemas/iio/adc/nxp,imx93-adc.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Cirrus Logic EP930x internal ADC
-> +
-> +description: |
-> +  Cirrus Logic EP9301/EP9302 SoCs' internal ADC block.
-> +
-> +  User's manual:
-> +  https://cdn.embeddedts.com/resource-attachments/ts-7000_ep9301-ug.pdf
+> +title: NXP iMX93 ADC bindings
+
+Drop bindings. How did it appear here? It wasn't in v1.
+
 > +
 > +maintainers:
-> +  - Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> +  - Haibo Chen <haibo.chen@nxp.com>
+> +
+> +description:
+> +  The ADC on iMX93 is a 8-channel 12-bit 1MS/s ADC with 4 channels
+> +  connected to pins. it support normal and inject mode, include
+> +  One-Shot and Scan (continuous) conversions. Programmable DMA
+> +  enables for each channel  Also this ADC contain alternate analog
+> +  watchdog thresholds, select threshold through input ports. And
+> +  also has Self-test logic and Software-initiated calibration.
 > +
 > +properties:
 > +  compatible:
-> +    const: cirrus,ep9301-adc
+> +    const: nxp,imx93-adc
 > +
 > +  reg:
 > +    maxItems: 1
 > +
+> +  interrupts:
+> +    description:
+> +      line 0 for WDGnL (watchdog threshold) interrupt requests.
+> +      line 1 for WDGnH (watchdog threshold) interrupt requests.
+> +      line 2 for normal conversion, include EOC (End of Conversion)
+> +      interrupt request, ECH (End of Chain) interrupt request,
+> +      JEOC (End of Injected Conversion mode) interrupt request
+> +      and JECH (End of injected Chain) interrupt request.
+> +      line 3 for Self-testing Interrupts.
+> +    maxItems: 4
+> +
 > +  clocks:
 > +    maxItems: 1
 > +
-> +  clock-names:
-> +    const: ep93xx-adc
-
-One entry with same name as device is not really useful, so maybe just
-drop it?
-
+> +  vref-supply:
+> +    description:
+> +      The reference voltage which used to establish channel scaling.
 > +
-> +  interrupts:
-> +    maxItems: 1
+> +  "#io-channel-cells":
+> +    const: 1
 > +
 > +required:
 > +  - compatible
 > +  - reg
+> +  - interrupts
 > +  - clocks
 > +  - clock-names
+> +  - vref-supply
+> +  - "#io-channel-cells"
 > +
 > +additionalProperties: false
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
-> +    soc {
-> +        #address-cells = <1>;
-> +        #size-cells = <1>;
-
-I think you do not need the soc node as examples are built with
-address/size-cells=1
 
 Best regards,
 Krzysztof

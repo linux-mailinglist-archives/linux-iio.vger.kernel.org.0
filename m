@@ -2,50 +2,76 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C4AF64DE86
-	for <lists+linux-iio@lfdr.de>; Thu, 15 Dec 2022 17:23:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D82C764DE93
+	for <lists+linux-iio@lfdr.de>; Thu, 15 Dec 2022 17:27:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbiLOQXb (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Thu, 15 Dec 2022 11:23:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49536 "EHLO
+        id S229543AbiLOQ1R (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 15 Dec 2022 11:27:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbiLOQWc (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Dec 2022 11:22:32 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBEE37FBD
-        for <linux-iio@vger.kernel.org>; Thu, 15 Dec 2022 08:21:56 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NXy7z13c6z67KPR;
-        Fri, 16 Dec 2022 00:18:07 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Thu, 15 Dec
- 2022 16:21:53 +0000
-Date:   Thu, 15 Dec 2022 16:21:52 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Jiri Kosina <jikos@kernel.org>
-CC:     Philipp Jungkamp <p.jungkamp@gmx.net>,
-        srinivas pandruvada <srinivas.pandruvada@linux.intel.com>,
+        with ESMTP id S230103AbiLOQ0Z (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 15 Dec 2022 11:26:25 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70C0218A4;
+        Thu, 15 Dec 2022 08:25:07 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id c66so27765411edf.5;
+        Thu, 15 Dec 2022 08:25:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Py/vysFzJts4D379yYBV14GJq8PM0BBmsGxpLWSgnm4=;
+        b=qqe3qUvy408KMlLwG9mEIR4A1pE/oxDioVE8Ttf6XiVsYLEoIpZ+aYEQTgwLgeWn4l
+         XdsdHgGnBatNcu65+L5eDCGv2yNHsfbhdsvdFVb5y2aK+m6wT0rroNV3SOKE1UXP5Jxp
+         gHh2Hs6OWa0RHPIvt/9sVN5AG/Ibsov/NBwRD7De892as8ztpB9h8gh1qCK4DJ6/aVEs
+         4qgSok7j2dMwylblpeuhSZmpYoZ+kqqNW/O2WbTxtp9rT9DbevH0taI+h9xkhGCgS50K
+         vNAL9sklTZSPKf9UzfIdLyM1mbtDv4jqe+0AdWTE6SAd0UkjKMzSMSxqfWn5/Ro2xkWw
+         /UCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Py/vysFzJts4D379yYBV14GJq8PM0BBmsGxpLWSgnm4=;
+        b=G50w0klsvpjLwXSFjuZmExppptfCyFGKn8jeSihOWHZWsOftqf8qS0ezgdx7K4UP0g
+         N7AcF1mach9RMYCGGlTKBgZ7bS08jiJuESAy/logPuWJF1Aoc7mwxch7OZwe69OrAlig
+         4tMYgURxJszYCRdvXFOXVYS/3xCklSp9QhE5IbSnw6q9Sz/TiR4UopBFx6s2M0ClnjdT
+         Mcm4wLgaFxsuqHS6zv+s5ecSc2r6WvyHcYCvywPjxfZ0DKDqtZwsLyMs+V177KNdFD7T
+         ffBkON3g7QKJQETuYTjJhAFTodwNWV59WdssG/TpOya9OMy2dL3Zo9AiAfpBbZL52mjd
+         mLNQ==
+X-Gm-Message-State: ANoB5pm9A4a7j1XXoAavNwtlY62lucPh+ZCykp7ZhFYdV8xVC1ZP9TP+
+        Uk5gA83hlCxyJc1XS5XfSZY=
+X-Google-Smtp-Source: AA0mqf6FL2R1zzO7z+hBp3JngNFWlBB+FWzKinQVAYElo/QWwnvNovxJX5oHoFZFExl5VtI8B3qRgQ==
+X-Received: by 2002:a05:6402:4491:b0:46f:777f:f9ad with SMTP id er17-20020a056402449100b0046f777ff9admr21141828edb.19.1671121506284;
+        Thu, 15 Dec 2022 08:25:06 -0800 (PST)
+Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id b20-20020aa7df94000000b0044dbecdcd29sm7612037edy.12.2022.12.15.08.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Dec 2022 08:25:05 -0800 (PST)
+Message-ID: <a279467764c063fccf28c7d8fdfac2ab57570fee.camel@gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ep93xx: Add
+ cirrus,ep9301-adc description
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
         Jonathan Cameron <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v4 0/4] IIO: More HID custom sensors
-Message-ID: <20221215162152.0000693f@Huawei.com>
-In-Reply-To: <nycvar.YFH.7.76.2212141819340.9000@cbobk.fhfr.pm>
-References: <20221124233841.3103-1-p.jungkamp@gmx.net>
-        <623f2206647e69199c64064c48eb8bf03afb99da.camel@linux.intel.com>
-        <cc35bdc25daedb32dbb5949f99559485a7f83080.camel@gmx.net>
-        <nycvar.YFH.7.76.2212141819340.9000@cbobk.fhfr.pm>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Date:   Thu, 15 Dec 2022 17:25:04 +0100
+In-Reply-To: <20221215161835.GA138650-robh@kernel.org>
+References: <20221214222024.951984-1-alexander.sverdlin@gmail.com>
+         <20221215161835.GA138650-robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,29 +79,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 14 Dec 2022 18:20:10 +0100 (CET)
-Jiri Kosina <jikos@kernel.org> wrote:
+Thanks Krzysztof, Rob,
 
-> On Tue, 13 Dec 2022, Philipp Jungkamp wrote:
-> 
-> > Is there something I still need to do for this to be merged in the next
-> > merge window?
-> > 
-> > I don't quite understand what would happen next. I'm curious and hope I
-> > don't bother in the busy times when approaching a merge window.  
-> 
-> Unless Jonathan prefers to take this through iio.git for some reason, I'll 
-> pick it up into hid.git for 6.3 once 6.2 merge window is over.
+I'll incorporate your comments into the next version, but...
 
-Probably more sensible if you pick it up through hid.git given the balance of changes.
+On Thu, 2022-12-15 at 10:18 -0600, Rob Herring wrote:
+> > +=C2=A0 clock-names:
+> > +=C2=A0=C2=A0=C2=A0 const: ep93xx-adc
+>=20
+> Weird name for a clock. Generally is signal name or what it=20
+> controls (e.g. bus, core, etc.). Perhaps just drop it.
+>=20
+> > +
+> > +=C2=A0 interrupts:
+> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > +
+> > +required:
+> > +=C2=A0 - compatible
+> > +=C2=A0 - reg
+> > +=C2=A0 - clocks
+> > +=C2=A0 - clock-names
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +=C2=A0 - |
+> > +=C2=A0=C2=A0=C2=A0 #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
 
-If you can make an immutable branch even better on the off chance anything else
-comes up that hits few lines changed in the IIO drivers.  I'd only pull that
-into IIO if we needed to though (and I would be surprised if we do!)
+your robot was right, this dependency is missing, I thought I can prepare
+the ADC driver in advance, but seems it has to go together with the whole
+DT conversion of the EP93xx series.
 
-Jonathan
-
-> 
-> Thanks,
-> 
+--=20
+Alexander Sverdlin.
 

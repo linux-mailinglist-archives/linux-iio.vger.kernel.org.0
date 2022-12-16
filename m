@@ -2,69 +2,77 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFE9C64EA74
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Dec 2022 12:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C463364EABD
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Dec 2022 12:40:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbiLPLbH (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Dec 2022 06:31:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38662 "EHLO
+        id S230406AbiLPLkK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Dec 2022 06:40:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbiLPLau (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Dec 2022 06:30:50 -0500
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19F01C12F
-        for <linux-iio@vger.kernel.org>; Fri, 16 Dec 2022 03:30:45 -0800 (PST)
-Received: by mail-lj1-x22e.google.com with SMTP id v11so1800452ljk.12
-        for <linux-iio@vger.kernel.org>; Fri, 16 Dec 2022 03:30:45 -0800 (PST)
+        with ESMTP id S229726AbiLPLkG (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Dec 2022 06:40:06 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92A424955
+        for <linux-iio@vger.kernel.org>; Fri, 16 Dec 2022 03:40:04 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id bf43so3071046lfb.6
+        for <linux-iio@vger.kernel.org>; Fri, 16 Dec 2022 03:40:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=05rB3U3b128McDFXG+s8KkNAz+6RDwWkT+PP9f8F8g0=;
-        b=CYF7wwDduN06j7EB8tWkH8cas//i9408CEC94xDtMIUSVVjWMvzOR625N8hH0EGvqG
-         Ep0ZAb6GP0omDHpJPWGfLOyHjvw/ZFf0xPwMuRrNlCuXFkNFfAdTaI2BqtRWMfQLJbpP
-         oKscIgxdH33uKinTOOv/C5yLi8JY83w4zgFZwTHAIGJeEM69GiI4dcTIsy4lo5rYB6iR
-         8f4CuG3INKmY800QFaUh9ri4EUXVc2L3EmxivEffUe2ZQW+k9O+zIAptAVV+RbfzAV1U
-         J5kwkazGf6Dac46EAR4BqE1ynBWAAGcAzwrAAwD6YG9H4ErYZ4YwMVPKcm5DvHYUh0DD
-         6k0g==
+        bh=wgeKrmXSmoymqmhHI2YxMBA2Z5Er7kXuJpmNUKdUO0s=;
+        b=pH6psooufM1EOIZ1dTWqVkEr69xvgIPx4ZEimTv6mC4eINse5qEa4NrGDSOBBwj762
+         /bgd34koXFHQAyv2NArrX1sUBOYds7odGlIKUmbgzLfSbmCf7PFb/L0qsJuvwYm0bgtY
+         c+ezpSSgWG3DLKcPusnb/n8iC0TPfTCO6u51t93e8QEWDdggW/RdOqSRj5yqPYRUNR0d
+         ozeZIxkcHjYfS8INT1pQmdsT2Lw7Fdax5Fdmp0iBQs83RPjwS9sIg88sVySVVFzPq02n
+         0UgYJhV7vQdHp3pqY2VRYGeLM9OKplVLkJ68QRO4edAki3NdrPofkrmkzReyPK0ZDLFq
+         IB4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=05rB3U3b128McDFXG+s8KkNAz+6RDwWkT+PP9f8F8g0=;
-        b=KfHVJoqSqqHLFdInzMFjRVuAjuQBwCtVf9ZkpMI5RxFmdHnoU7uP1+37JNkHe6LWYK
-         5gIez9VdKDRlhR2ihtplE/iXhLmh1+SClieI17/QIsGBtOs5KRFjIVMKGP14ITIZienP
-         tDU4o+IVcs6LGiK+HGitN9Q6TfCYqGuOTXShD68wOtdpunAx5/8/HuUhA6AfZC+kCmuP
-         ts5UjuJ6eaMqJMntinlTPcZilpcnFJx7savZ8SQ1jo54dBc0UpE/0Tjxt0KH+O+awED2
-         ceI3TlNMdnfJHqY2JeiFfo5bEsIPGtoRnQrpAvO1lItEgtwP87CbjU9b7E3cSPB5+1fC
-         +V9A==
-X-Gm-Message-State: ANoB5pnHoPrZQuC/hdY9clutysMV6VtjpR80fLkP/N1lw7XJdmbxCgXc
-        EDSTEbKe5lfs/oD8q1GBGqOJLGlY9L0YGupK
-X-Google-Smtp-Source: AA0mqf5pFuvT/S4FjixUoT6vGlM3G/op9kapqcPJ8/DLnGwyFrfT5P+FnPPT4w1U+a9+HK4JUtFF2Q==
-X-Received: by 2002:a2e:b544:0:b0:276:b5ec:d4db with SMTP id a4-20020a2eb544000000b00276b5ecd4dbmr7170297ljn.23.1671190243715;
-        Fri, 16 Dec 2022 03:30:43 -0800 (PST)
+        bh=wgeKrmXSmoymqmhHI2YxMBA2Z5Er7kXuJpmNUKdUO0s=;
+        b=7WJkwqkxNDcctPflXE/sOmyUay9Chb4JHlIpdNquND0nz9Zt3vw9Tsp2YpuDItyYCx
+         1WtBLPnyykovuuNEIJYzUhwmT7B8+1wSMUOu8dXxP0Jp21ugumiMP87iWMHPu88ggFJo
+         HWpZOBLDwknWfAHUw63flTj69O3Qgap4KlXOttQ5ebURSmD9FaAjZnOt5Nv3eOETvX23
+         u1fy3ofOE2v+CFsLjkPZknXadgFT+PQEVAZ56kFcJ/TsRKumcFi8WEwECL5xUrErBU0U
+         TarPd+jRZhXgKXWhSacjeMKLIYcVheA5+bzyLk95lcqkyhaoklYobsHmH1BY1QzSf0n4
+         rSaQ==
+X-Gm-Message-State: AFqh2krCHRXuFcXXDrm7MR5jbbgI5GYWNATGwttgs4OaCY3l5Bqm0gJB
+        I07bwl4ufkYD08FLZkxifW0/+ANx8HJboa+C
+X-Google-Smtp-Source: AMrXdXuV817UvVBPH9lI2IUvXbV1k38ISLjRMejglKcsP6HyI0s7d/1c8hLJRQG8SH+qs+RHZf7btw==
+X-Received: by 2002:a05:6512:282a:b0:4b9:a91c:b0cb with SMTP id cf42-20020a056512282a00b004b9a91cb0cbmr3681915lfb.57.1671190803152;
+        Fri, 16 Dec 2022 03:40:03 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id q9-20020a2eb4a9000000b00279f3c58278sm130903ljm.51.2022.12.16.03.30.42
+        by smtp.gmail.com with ESMTPSA id m8-20020a056512358800b004b5284a92f9sm195222lfr.208.2022.12.16.03.40.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Dec 2022 03:30:43 -0800 (PST)
-Message-ID: <e7b95521-9a2d-7c0f-a379-b32d4aaf1031@linaro.org>
-Date:   Fri, 16 Dec 2022 12:30:42 +0100
+        Fri, 16 Dec 2022 03:40:02 -0800 (PST)
+Message-ID: <c9dd9e3f-67f5-d2b3-79f9-f18fa07e4e89@linaro.org>
+Date:   Fri, 16 Dec 2022 12:40:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH] dt-bindings: iio: adc: max1238: Fix a typo in the
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: ep93xx: Add cirrus,ep9301-adc
  description
 Content-Language: en-US
-To:     Fabio Estevam <festevam@denx.de>, jic23@kernel.org
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20221216004015.2902966-1-festevam@denx.de>
+To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Rob Herring <robh@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221214222024.951984-1-alexander.sverdlin@gmail.com>
+ <20221215161835.GA138650-robh@kernel.org>
+ <a279467764c063fccf28c7d8fdfac2ab57570fee.camel@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221216004015.2902966-1-festevam@denx.de>
+In-Reply-To: <a279467764c063fccf28c7d8fdfac2ab57570fee.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -74,21 +82,18 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 16/12/2022 01:40, Fabio Estevam wrote:
-> Fix a typo in the description, where "interface" is spelled incorrectly.
+On 15/12/2022 17:25, Alexander Sverdlin wrote:
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    #include <dt-bindings/clock/cirrus,ep93xx-clock.h>
 > 
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> ---
->  Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml
-> index 50bcd72ac9d6..60d7b34e3286 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml
+> your robot was right, this dependency is missing, I thought I can prepare
+> the ADC driver in advance, but seems it has to go together with the whole
+> DT conversion of the EP93xx series.
 
-While fixing such, fix also max1363 in the same patch. Or maybe even
-more files (but then usually split per maintainer).
+You can hard-code a number in the binding example, to drop dependency on
+the header.
 
 Best regards,
 Krzysztof

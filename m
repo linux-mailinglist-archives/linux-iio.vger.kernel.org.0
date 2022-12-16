@@ -2,90 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0272F64F16F
-	for <lists+linux-iio@lfdr.de>; Fri, 16 Dec 2022 20:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E968164F297
+	for <lists+linux-iio@lfdr.de>; Fri, 16 Dec 2022 21:50:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231469AbiLPTKJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 16 Dec 2022 14:10:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56632 "EHLO
+        id S231961AbiLPUuu (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 16 Dec 2022 15:50:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231422AbiLPTKH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Dec 2022 14:10:07 -0500
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [5.144.164.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF7A25C56
-        for <linux-iio@vger.kernel.org>; Fri, 16 Dec 2022 11:10:05 -0800 (PST)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2750D3F618;
-        Fri, 16 Dec 2022 20:10:00 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Robert Marko <robimarko@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] thermal: qcom-spmi-adc5: Suppress probe-deferral error message
-Date:   Fri, 16 Dec 2022 20:09:45 +0100
-Message-Id: <20221216190945.902754-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.0
+        with ESMTP id S231959AbiLPUus (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 16 Dec 2022 15:50:48 -0500
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2F5619FEA;
+        Fri, 16 Dec 2022 12:50:44 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.96,251,1665414000"; 
+   d="scan'208";a="146465852"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 17 Dec 2022 05:50:44 +0900
+Received: from localhost.localdomain (unknown [10.226.92.240])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 90BFF40DAAD0;
+        Sat, 17 Dec 2022 05:50:42 +0900 (JST)
+From:   Biju Das <biju.das.jz@bp.renesas.com>
+To:     William Breathitt Gray <william.gray@linaro.org>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>, linux-iio@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v10 3/5] Documentation: ABI: sysfs-bus-counter: add cascade_counts_enable and external_input_phase_clock_select
+Date:   Fri, 16 Dec 2022 20:50:26 +0000
+Message-Id: <20221216205028.340795-4-biju.das.jz@bp.renesas.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20221216205028.340795-1-biju.das.jz@bp.renesas.com>
+References: <20221216205028.340795-1-biju.das.jz@bp.renesas.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Much like 807efb7102e8 ("thermal: qcom-spmi-adc-tm5: suppress
-probe-deferral error message") the ADC5 driver also spams a similar
-probe-deferral error on startup when a channel is not yet available:
+This commit adds cascade_counts_enable and external_input_phase_
+clock_select items to counter ABI file.
+(e.g. for Renesas MTU3 hardware used for phase counting).
 
-    [    0.343136] qcom-spmi-adc-tm5 1c40000.spmi:pmic@0:adc-tm@3500: get dt data failed: -517
-
-Suppress it by using dev_err_probe instead, which also takes care of
-storing the message as reason for deferring.
-
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: William Breathitt Gray <william.gray@linaro.org>
 ---
- drivers/iio/adc/qcom-spmi-adc5.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+v9->v10:
+ * Added Rb tag from William Breathitt Gray
+v8->v9:
+ * Added available blocks for external_input_phase_clock_select_available
+ * Removed the "This attribute" from the external_input_phase_clock_select
+   description, and capitalize the word "counter" from description.
+ * Removed the "This attribute" from the cascade_counts_enable description,
+   and capitalize "counts" and "counter"
+ * Moved these device-level configuration blocks to top of the file.
+v7->v8:
+ * Replaced cascade_enable->cascade_counts_enable
+ * Updated commit header and description
+ * Added external_input_phase_clock_select_available entry for driver-
+   specific enum attribute and created a new entry block for it.
+ * Add a line stating cascade_counts_enable is a boolean attribute.
+ * Added missing 'component_id' suffix.
+v6->v7:
+ * Replaced long_word_access_ctrl_mode->cascade_enable
+ * Updated Kernel version
+v5->v6:
+ * No change
+v5:
+ * New patch
+---
+ Documentation/ABI/testing/sysfs-bus-counter | 32 +++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index 821fee60a765..69cc36004b5a 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -894,10 +894,8 @@ static int adc5_probe(struct platform_device *pdev)
- 	mutex_init(&adc->lock);
+diff --git a/Documentation/ABI/testing/sysfs-bus-counter b/Documentation/ABI/testing/sysfs-bus-counter
+index ff83320b4255..97c1bd7a5df2 100644
+--- a/Documentation/ABI/testing/sysfs-bus-counter
++++ b/Documentation/ABI/testing/sysfs-bus-counter
+@@ -1,3 +1,33 @@
++What:		/sys/bus/counter/devices/counterX/cascade_counts_enable
++KernelVersion:	6.3
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Indicates the cascading of Counts on Counter X.
++
++		Valid attribute values are boolean.
++
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select
++KernelVersion:	6.3
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Selects the external clock pin for phase counting mode of
++		Counter X.
++
++		MTCLKA-MTCLKB:
++			MTCLKA and MTCLKB pins are selected for the external
++			phase clock.
++
++		MTCLKC-MTCLKD:
++			MTCLKC and MTCLKD pins are selected for the external
++			phase clock.
++
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select_available
++KernelVersion:  6.3
++Contact:        linux-iio@vger.kernel.org
++Description:
++                Discrete set of available values for the respective device
++                configuration are listed in this file.
++
+ What:		/sys/bus/counter/devices/counterX/countY/count
+ KernelVersion:	5.2
+ Contact:	linux-iio@vger.kernel.org
+@@ -215,6 +245,8 @@ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		This attribute indicates the number of overflows of count Y.
  
- 	ret = adc5_get_fw_data(adc);
--	if (ret) {
--		dev_err(dev, "adc get dt data failed\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "adc get dt data failed\n");
- 
- 	irq_eoc = platform_get_irq(pdev, 0);
- 	if (irq_eoc < 0) {
++What:		/sys/bus/counter/devices/counterX/cascade_counts_enable_component_id
++What:		/sys/bus/counter/devices/counterX/external_input_phase_clock_select_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/capture_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/ceiling_component_id
+ What:		/sys/bus/counter/devices/counterX/countY/floor_component_id
 -- 
-2.39.0
+2.25.1
 

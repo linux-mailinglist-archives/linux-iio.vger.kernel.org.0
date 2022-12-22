@@ -2,286 +2,320 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7846C6538B2
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Dec 2022 23:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE7D653D4C
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Dec 2022 10:09:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235062AbiLUWen (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 21 Dec 2022 17:34:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45606 "EHLO
+        id S230014AbiLVJJy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Thu, 22 Dec 2022 04:09:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235023AbiLUWei (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 21 Dec 2022 17:34:38 -0500
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC5262736
-        for <linux-iio@vger.kernel.org>; Wed, 21 Dec 2022 14:34:36 -0800 (PST)
-Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 06B1A2041E;
-        Wed, 21 Dec 2022 23:34:34 +0100 (CET)
-Date:   Wed, 21 Dec 2022 23:34:32 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S229608AbiLVJJw (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Thu, 22 Dec 2022 04:09:52 -0500
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A97B20372;
+        Thu, 22 Dec 2022 01:09:50 -0800 (PST)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BM7iAJw016862;
+        Thu, 22 Dec 2022 10:09:21 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=selector1;
+ bh=FkQMsBYNW3A96DWbowQRIJmP+O9EbhofFJvV/s01Lsc=;
+ b=iwtn7dvqeSKZuKOueM5iGc0B7gBqq1q69Zsz3Hyb3tOn6u6XnAsBf09AwvDwjETTu5yn
+ 4UeEUt2nhhZgJTPYq9HBoQs7hvJez1QSd3+qiI96WsZwB0blcUH+8r4OeC+WGZCZYtqt
+ TROHn2ebBHXwrZwGBf9JzduhxvzDSQkOw9ybfTsFYW7LXFjkkxAdJcXTx14Vg6TwvJVB
+ jP5k5msg2HsG3xRZ29Q4K0IA3LUVIOcUCf11RlRP5r90A6waeVxKw4eInHoyZs7nqdys
+ puW9q6z1pzWj3bGRtR8fHNVr1j6R5rWN/YdLlr9LlGr+I0VnN0cO1ZxDQGDffXaW2KHp rQ== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3mh605uqap-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 22 Dec 2022 10:09:21 +0100
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DC5C010002A;
+        Thu, 22 Dec 2022 10:09:20 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D54F1216828;
+        Thu, 22 Dec 2022 10:09:20 +0100 (CET)
+Received: from localhost (10.201.20.178) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.13; Thu, 22 Dec
+ 2022 10:09:20 +0100
+From:   Olivier Moysan <olivier.moysan@foss.st.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [RFC PATCH] iio: adc: qcom-spmi-vadc: Propagate fw node
- name/label to extend_name
-Message-ID: <20221221223432.si2aasbleiicayfl@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20221106193018.270106-1-marijn.suijten@somainline.org>
- <20221106202445.fkobsyc3mohmzqod@SoMainline.org>
- <20221112162719.0ac87998@jic23-huawei>
- <20221130205414.6m4rfufc25hfzxmf@SoMainline.org>
- <20221203170656.7b65142b@jic23-huawei>
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+CC:     Olivier Moysan <olivier.moysan@foss.st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] iio: adc: stm32-dfsdm: add id registers support
+Date:   Thu, 22 Dec 2022 10:08:06 +0100
+Message-ID: <20221222090806.934879-1-olivier.moysan@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221203170656.7b65142b@jic23-huawei>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.201.20.178]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-22_03,2022-12-21_01,2022-06-22_01
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-Hi Jonathan,
+Add support of identification registers to STM32 DFSDM
+to allow hardware capabilities discovery and configuration check.
+The number of filters and channels, are read from registers,
+when they are available.
 
-Apologies for another late reply; we really shouldn't make these
-messages this long and I'll try to only reply to the most relevant
-points and cull out the rest.
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+---
+ drivers/iio/adc/stm32-dfsdm-core.c | 93 +++++++++++++++++++++++++-----
+ drivers/iio/adc/stm32-dfsdm.h      | 69 ++++++++++++++++------
+ 2 files changed, 127 insertions(+), 35 deletions(-)
 
-On 2022-12-03 17:06:56, Jonathan Cameron wrote:
-> On Wed, 30 Nov 2022 21:54:14 +0100
-> Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> 
-> > On 2022-11-12 16:27:19, Jonathan Cameron wrote:
-> > > On Sun, 6 Nov 2022 21:24:45 +0100
-> > > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> > >   
-> > > > Adding Krzysztof to CC for the DT bindings discussion.
-> > > > 
-> > > > On 2022-11-06 20:30:18, Marijn Suijten wrote:  
-> > > > > Much like the ADC5 driver iio_chan_spec::extend_name has to be set for
-> > > > > friendly/useful names to show up in sysfs, allowing users to correlate
-> > > > > readout values with the corresponding probe. This name is read from
-> > > > > firmware, taking both the node name and - if set - node label into
-> > > > > account.  This is particularly useful for custom thermistors being
-> > > > > attached to otherwise-generically-named GPIOs.
-> > > > >   
-> > > 
-> > > If you are attaching thermistors to an ADC channel, then you should have
-> > > a driver for that thermistor.  It will be a consumer of the ADC channel
-> > > in question and any labels etc should apply there (along with scaling
-> > > / non linear transforms to get to a temperature), not at the ADC
-> > > level.  
-> > 
-> > This is what happens in the ADC5 driver, though.  In /sys/bus/iio names
-> > show up for ADC channels that aren't otherwise consumed by (thermistor)
-> > drivers.  There are also voltage readings.  The IIO driver seems to be
-> > aware of both the unit and (linear iirc) scaling.
-> 
-> There were cases where we did that but my understanding of what was going
-> on at the time may have been wrong. I was assuming there was specific
-> hardware on the SOC side of things that did 'special' stuff for the
-> thermistor rather than just being an ADC channel.
+diff --git a/drivers/iio/adc/stm32-dfsdm-core.c b/drivers/iio/adc/stm32-dfsdm-core.c
+index a3d4de6ba4c2..7f1e4767d4ff 100644
+--- a/drivers/iio/adc/stm32-dfsdm-core.c
++++ b/drivers/iio/adc/stm32-dfsdm-core.c
+@@ -6,6 +6,7 @@
+  * Author(s): Arnaud Pouliquen <arnaud.pouliquen@st.com> for STMicroelectronics.
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -20,6 +21,7 @@
+ #include "stm32-dfsdm.h"
+ 
+ struct stm32_dfsdm_dev_data {
++	u32 ipid;
+ 	unsigned int num_filters;
+ 	unsigned int num_channels;
+ 	const struct regmap_config *regmap_cfg;
+@@ -27,8 +29,6 @@ struct stm32_dfsdm_dev_data {
+ 
+ #define STM32H7_DFSDM_NUM_FILTERS	4
+ #define STM32H7_DFSDM_NUM_CHANNELS	8
+-#define STM32MP1_DFSDM_NUM_FILTERS	6
+-#define STM32MP1_DFSDM_NUM_CHANNELS	8
+ 
+ static bool stm32_dfsdm_volatile_reg(struct device *dev, unsigned int reg)
+ {
+@@ -75,8 +75,7 @@ static const struct regmap_config stm32mp1_dfsdm_regmap_cfg = {
+ };
+ 
+ static const struct stm32_dfsdm_dev_data stm32mp1_dfsdm_data = {
+-	.num_filters = STM32MP1_DFSDM_NUM_FILTERS,
+-	.num_channels = STM32MP1_DFSDM_NUM_CHANNELS,
++	.ipid = STM32MP15_IPIDR_NUMBER,
+ 	.regmap_cfg = &stm32mp1_dfsdm_regmap_cfg,
+ };
+ 
+@@ -295,6 +294,66 @@ static const struct of_device_id stm32_dfsdm_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, stm32_dfsdm_of_match);
+ 
++static int stm32_dfsdm_probe_identification(struct platform_device *pdev,
++					    struct dfsdm_priv *priv,
++					    const struct stm32_dfsdm_dev_data *dev_data)
++{
++	struct device_node *np = pdev->dev.of_node;
++	struct device_node *child;
++	struct stm32_dfsdm *dfsdm = &priv->dfsdm;
++	const char *compat;
++	int ret, count = 0;
++	u32 id, val;
++
++	if (!dev_data->ipid) {
++		dfsdm->num_fls = dev_data->num_filters;
++		dfsdm->num_chs = dev_data->num_channels;
++		return 0;
++	}
++
++	ret = regmap_read(dfsdm->regmap, DFSDM_IPIDR, &val);
++	if (ret)
++		return ret;
++
++	id = FIELD_GET(DFSDM_IPIDR_MASK, val);
++	if (id != dev_data->ipid) {
++		dev_err(&pdev->dev, "Unexpected IP version: 0x%x", id);
++		return -EINVAL;
++	}
++
++	for_each_child_of_node(np, child) {
++		ret = of_property_read_string(child, "compatible", &compat);
++		if (ret)
++			continue;
++		/* Count only child nodes with dfsdm compatible */
++		if (strstr(compat, "dfsdm"))
++			count++;
++	}
++
++	ret = regmap_read(dfsdm->regmap, DFSDM_HWCFGR, &val);
++	if (ret)
++		return ret;
++
++	dfsdm->num_fls = FIELD_GET(DFSDM_HWCFGR_NBF_MASK, val);
++	dfsdm->num_chs = FIELD_GET(DFSDM_HWCFGR_NBT_MASK, val);
++
++	if (count > dfsdm->num_fls) {
++		dev_err(&pdev->dev, "Unexpected child number: %d", count);
++		return -EINVAL;
++	}
++
++	ret = regmap_read(dfsdm->regmap, DFSDM_VERR, &val);
++	if (ret)
++		return ret;
++
++	dev_dbg(&pdev->dev, "DFSDM version: %lu.%lu. %d channels/%d filters\n",
++		FIELD_GET(DFSDM_VERR_MAJREV_MASK, val),
++		FIELD_GET(DFSDM_VERR_MINREV_MASK, val),
++		dfsdm->num_chs, dfsdm->num_fls);
++
++	return 0;
++}
++
+ static int stm32_dfsdm_probe(struct platform_device *pdev)
+ {
+ 	struct dfsdm_priv *priv;
+@@ -311,18 +370,6 @@ static int stm32_dfsdm_probe(struct platform_device *pdev)
+ 	dev_data = of_device_get_match_data(&pdev->dev);
+ 
+ 	dfsdm = &priv->dfsdm;
+-	dfsdm->fl_list = devm_kcalloc(&pdev->dev, dev_data->num_filters,
+-				      sizeof(*dfsdm->fl_list), GFP_KERNEL);
+-	if (!dfsdm->fl_list)
+-		return -ENOMEM;
+-
+-	dfsdm->num_fls = dev_data->num_filters;
+-	dfsdm->ch_list = devm_kcalloc(&pdev->dev, dev_data->num_channels,
+-				      sizeof(*dfsdm->ch_list),
+-				      GFP_KERNEL);
+-	if (!dfsdm->ch_list)
+-		return -ENOMEM;
+-	dfsdm->num_chs = dev_data->num_channels;
+ 
+ 	ret = stm32_dfsdm_parse_of(pdev, priv);
+ 	if (ret < 0)
+@@ -338,6 +385,20 @@ static int stm32_dfsdm_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	ret = stm32_dfsdm_probe_identification(pdev, priv, dev_data);
++	if (ret < 0)
++		return ret;
++
++	dfsdm->fl_list = devm_kcalloc(&pdev->dev, dfsdm->num_fls,
++				      sizeof(*dfsdm->fl_list), GFP_KERNEL);
++	if (!dfsdm->fl_list)
++		return -ENOMEM;
++
++	dfsdm->ch_list = devm_kcalloc(&pdev->dev, dfsdm->num_chs,
++				      sizeof(*dfsdm->ch_list), GFP_KERNEL);
++	if (!dfsdm->ch_list)
++		return -ENOMEM;
++
+ 	platform_set_drvdata(pdev, dfsdm);
+ 
+ 	ret = stm32_dfsdm_clk_prepare_enable(dfsdm);
+diff --git a/drivers/iio/adc/stm32-dfsdm.h b/drivers/iio/adc/stm32-dfsdm.h
+index 4afc1f528b78..4f230e2a7692 100644
+--- a/drivers/iio/adc/stm32-dfsdm.h
++++ b/drivers/iio/adc/stm32-dfsdm.h
+@@ -13,25 +13,28 @@
+ 
+ /*
+  * STM32 DFSDM - global register map
+- * ________________________________________________________
+- * | Offset |                 Registers block             |
+- * --------------------------------------------------------
+- * | 0x000  |      CHANNEL 0 + COMMON CHANNEL FIELDS      |
+- * --------------------------------------------------------
+- * | 0x020  |                CHANNEL 1                    |
+- * --------------------------------------------------------
+- * | ...    |                .....                        |
+- * --------------------------------------------------------
+- * | 0x0E0  |                CHANNEL 7                    |
+- * --------------------------------------------------------
+- * | 0x100  |      FILTER  0 + COMMON  FILTER FIELDs      |
+- * --------------------------------------------------------
+- * | 0x200  |                FILTER  1                    |
+- * --------------------------------------------------------
+- * | 0x300  |                FILTER  2                    |
+- * --------------------------------------------------------
+- * | 0x400  |                FILTER  3                    |
+- * --------------------------------------------------------
++ * __________________________________________________________
++ * | Offset   |                 Registers block             |
++ * ----------------------------------------------------------
++ * | 0x000    |      CHANNEL 0 + COMMON CHANNEL FIELDS      |
++ * ----------------------------------------------------------
++ * | 0x020    |                CHANNEL 1                    |
++ * ----------------------------------------------------------
++ * | ...      |                .....                        |
++ * ----------------------------------------------------------
++ * | 0x20 x n |                CHANNEL n                    |
++ * ----------------------------------------------------------
++ * | 0x100    |      FILTER  0 + COMMON FILTER FIELDs       |
++ * ----------------------------------------------------------
++ * | 0x200    |                FILTER  1                    |
++ * ----------------------------------------------------------
++ * |          |                .....                        |
++ * ----------------------------------------------------------
++ * | 0x100 x m|                FILTER  m                    |
++ * ----------------------------------------------------------
++ * ----------------------------------------------------------
++ * | 0x7F0-7FC|         Identification registers            |
++ * ----------------------------------------------------------
+  */
+ 
+ /*
+@@ -231,6 +234,34 @@
+ #define DFSDM_AWCFR_AWHTF_MASK	GENMASK(15, 8)
+ #define DFSDM_AWCFR_AWHTF(v)	FIELD_PREP(DFSDM_AWCFR_AWHTF_MASK, v)
+ 
++/*
++ * Identification register definitions
++ */
++#define DFSDM_HWCFGR		0x7F0
++#define DFSDM_VERR		0x7F4
++#define DFSDM_IPIDR		0x7F8
++#define DFSDM_SIDR		0x7FC
++
++/* HWCFGR: Hardware configuration register */
++#define DFSDM_HWCFGR_NBT_SHIFT	0
++#define DFSDM_HWCFGR_NBT_MASK	GENMASK(7, 0)
++#define DFSDM_HWCFGR_NBF_SHIFT	8
++#define DFSDM_HWCFGR_NBF_MASK	GENMASK(15, 8)
++
++/* VERR: Version register */
++#define DFSDM_VERR_MINREV_SHIFT	0
++#define DFSDM_VERR_MINREV_MASK	GENMASK(3, 0)
++#define DFSDM_VERR_MAJREV_SHIFT	4
++#define DFSDM_VERR_MAJREV_MASK	GENMASK(7, 4)
++
++/* IPDR: Identification register */
++#define DFSDM_IPIDR_MASK	GENMASK(31, 0)
++
++/* SIDR: Size identification register */
++#define DFSDM_SIDR_MASK		GENMASK(31, 0)
++
++#define STM32MP15_IPIDR_NUMBER	0x00110031
++
+ /* DFSDM filter order  */
+ enum stm32_dfsdm_sinc_order {
+ 	DFSDM_FASTSINC_ORDER, /* FastSinc filter type */
+-- 
+2.25.1
 
-There is, it's the thermal monitor driver but I don't think it binds to
-every ADC channel, and the ADC channels provided by VADC/ADC5 provide
-useful information on their own in sysfs.
-
-<snip>
-
-> > This is how these drivers are describing their channels though, except
-> > for a few freely assignable GPIO channels?
-> 
-> My assumption was that the inputs were not general purpose.  With the exception
-> of external temperature sensors, many SoC ADCs have some channels wired
-> to internal voltage lines and temperature sensors, so seemed reasonable
-> to label them as such.  If that's wrong then it was my misunderstanding when
-> reading the original code.
-
-These drivers seem to support both.  Internal PMIC channels, probably a
-couple that go off-chip but are for a "specific" usecase, and a few
-"GPIO" channels that appear to be multipurpose (per General Purpose...
-IO).
-
-> Lack of easy availability of suitable datasheets means we have to rely
-> on submitters distinguishing internally wired, from board wiring based
-> associations.
-
-And submitters typically rely on copy-pasting downstream - at least with
-the read_label callback contributors should have an easier way of
-correlating sysfs file readings back to the mapping they described in
-DTS, and ballpark-guesstimate that the reading is correct (e.g. on
-pm6125 I found that I was missing some pinctrl biases this way resulting
-in extraneous temperature readings).
-
-<snip>
-
-> > Ack, the node name is a mess nowadays.  That means ADC5 shouldn't use it
-> > as fallback either when a DT label is not set (and instead use the
-> > currently-unused adc5_channels::datasheet_name field).
-> > 
-> > Can I remove it (use of fwnode_get_name() as datasheet_name)?
-> 
-> Ah. That's indeed a mess. From an ABI point of view you can indeed break the
-> connection between datasheet_name and the "label", but you can't
-> change the use for extend_name (ABI breakage) unless you are very very sure
-> it won't break existing userspace code.
-
-As in, as long as we don't touch extend_name which would affect sysfs
-names, changing the label returned by read_label is fine?  And changing
-datasheet_name to only ever use the datasheet_name provided by the
-driver and never the name provided in DTS is also okay?
-
-> Now from a potential consumers point of view, it's possible someone is relying
-> on the datasheet name to get the right channel. Given those are only
-> used if a driver is directly registering an iio_map, should be easy enough
-> to fix..
-
-I am unfortunately completely unfamiliar with iio_map, and hope it
-doesn't distract too much from trying to add label files to QCom's SPMI
-VADC driver :)
-
-<snip>
-
-> In some drivers we have older code that squashes the thermistor handling
-> into the driver.  That can be necessary if there is handling to do on the
-> ADC side of things. From a quick glance, I'm not sure there is any to do
-> here (an example where this gets complex is the more sophisticated
-> touchscreen controllers, where there is a lot of sequencing involved
-> alongside reading particular ADC channels).
-
-Seems this works OOTB already (as in, when reading sysfs I see values
-that could be sensibly interpreted as "room temperature" in celsius).
-And not something I intend to look into, again, only labels.
-
-> > > > > 3. If only labels are going to be used in conjunction with generic node
-> > > > >    names, should ADC5 be changed to ignore the node name?  
-> > >
-> > > From a quick search, I'm only seeing the node name used in debug prints currently.
-> > > That feels fine to me as it's telling us where the binding parsing went wrong...
-> > > Am I missing some use outside of vadc_get_fw_channel_data()?  
-> > 
-> > That's the VADC driver.  Look at adc5_get_fw_channel_data, specifically
-> > where it calls fwnode_property_read_string() to overwrite
-> > prop->datasheet_name.
-> 
-> Ah. Thanks for the pointer, though I'm still confused.
-> 
-> 	ret = fwnode_property_read_string(fwnode, "label", &channel_name);
-> 	if (ret)
-> 		channel_name = name;
-  		             ^ here ^
-
-> 	prop->datasheet_name = channel_name;
-> 
-> That's reading the label property, not the node name.
-
-The node name sits in `name`, and that's used if there's no "label"
-property in wich case ret is non-zero and we end up in `if (ret)
-channel_name = name;`.
-
-> > > > > 4. If a label (or node name) is not set, do we fall back to
-> > > > >    datasheet_name hardcoded in the driver?  
-> > > 
-> > > Hmm. Probably not.  
-> > 
-> > Then we might as well remove this useless data from the kernel driver
-> > altogether...
-> 
-> Ok. May make sense to use the datasheet name if noting better provided
-> for the label.  Assuming the datasheet names are them selves somewhat
-> useful information for a user.
-
-They're generated from the macro (hence capitalized) in VADC, manually
-written in ADC5.  Would it make sense to add handwritten string
-literals for this?
-
-> > > > > 5. What do we use for datasheet_name vs extend_name?  
-> > > Expand that to include label.
-> > > datasheet_name : When you want to have human readable pin names from the ADC
-> > >   datasheet, used as part of provide services to consumer drivers. Doesn't
-> > >   work with DT though as it wasn't part of the binding for consumers.
-> > >   So largely irrelevant unless you have an MFD where the ADC consumers are
-> > >   also part of the MFD children and so the map is set up in the way we used
-> > >   to do it for board files.  
-> > 
-> > ... or this could remain to feed into datasheet_name?
-> Now I'm confused.  Feed into label perhaps?
-
-Feed into read_label when no label was otherwise provided in DTS, but
-always feed into iio_chan_spec::datasheet_name since we discussed that
-this should represent the name of the part (e.g. PMIC), not the board
-and way in which it consumes the channel.
-
-<snip>
-
-> > Do we then remove extend_name from qcom-spmi-adc5 and give it the same
-> > treatment, since it would now use DT node names as filenames unless a
-> > label is set?  I can only imagine it having been set because the ADC5
-> > author(s) didn't see a name nor label in sysfs either, without knowing
-> > about the existence of read_label.
-> 
-> Sadly we can't remove it because of the ABI change that would result and
-> potential userspace breakage.
-
-The change to fwnode_get_name is already breaking this sysfs ABI though,
-as discussed in a DTS series where I replaced all node names with labels
-to support (the followup of) this iio series.
-
-We could unbreak it by either stripping @xx off of it, or setting
-extend_name to a label (if it exists) instead, but the latter is
-breaking :(
-
-<snip>
-
-> > > Hope that helps.  
-> > 
-> > A lot, now knowing that read_label is the part of the puzzle I
-> > previously missed.  Thanks!
-> 
-> When I let the extend_name fallback in for the labels
-> it didn't occur to me that it would make it more confusing for
-> people looking at older code.  Long shot, but would a comment
-> in iio.h for extend_name to say something to this effect be likely
-> to have been something you'd have seen?  If it would, let's add
-> one to potentially make this less confusing for the next person!
-
-Yes, I think I visited the documentation/definition of extend_name at
-some point and would have been been helped if that pointed me right over
-to read_label.  Right in ADC5 (and other drivers) would be even better
-but may be overly verbose.
-
-Regardless of that VADC/ADC5 do some _really confusing_ things, passing
-strings around in various weird ways (or not), and it took some time to
-keep the various similar structs apart :)
-
-- Marijn

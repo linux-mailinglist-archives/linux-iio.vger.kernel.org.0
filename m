@@ -2,122 +2,96 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58558655288
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 17:07:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D0A96552BB
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 17:22:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbiLWQHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 11:07:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
+        id S231666AbiLWQWk (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 11:22:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbiLWQHT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 11:07:19 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3B3379E4;
-        Fri, 23 Dec 2022 08:07:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 43194B82045;
-        Fri, 23 Dec 2022 16:07:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37274C433D2;
-        Fri, 23 Dec 2022 16:07:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671811636;
-        bh=Q8ELXJCh1YDyuxTg7vg3kz6RhNqF1hvv6kbMTZMHhko=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=liwW+MtIuhO6vuS9IFRHsu6SCHHpRBU6ZMTew6hDmglCIgsL4WfJljVnmj4alS+43
-         qmhBnmKFtlYC59uJ8N+45PbZFFUTYhLzQCbQ5ec5eA7P9mNowddJEfPVxzHlEIplGI
-         dCv3j4m5TFlMEeg84aYLAJHyPdqwkqw49FHQ2TeGk4/MeyShsuBAANGwyumiSgnkex
-         aplAmI6Q0nwg6YiV3v1oVUxYTXoeXpkyELUz03ItfElOs+0lIUeVbFhuHdT1c5crOi
-         DODzc7+fHwyTcGEqnRQLWOcoXMZJhWifdsQSU5QjodFICOzXcyeh6k8ehwwsRABdnI
-         G14m/w/CgGMuQ==
-Date:   Fri, 23 Dec 2022 16:20:24 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
+        with ESMTP id S231392AbiLWQWh (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 11:22:37 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58DA11144E
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 08:22:36 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id f34so7621213lfv.10
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 08:22:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EMPz0MtuVMWlwIKG4Db0qbIbQdeIr2p2KQ20CqF4p88=;
+        b=wes4jimP9QZ7W14rfnCeo8l4yJ9ydId4GOHcDaUdSJV7vxbzYP85Wc+igPDGPwrboG
+         jxZIUHQoaa7Ehg4XGeMdQRsVWge91MG8XSGvV6iVFZpFkVvjXENpbw55HqdvMtpyhw0s
+         KJHazRSzjXY35ApKTYhqwGAU75rk0ALgaDWHuNLZrVjZKkfdC74v/uz8t1jucV34G9BV
+         CORYnLMrPQR+qVL4IFGQYa5HXPeUYhDjrUllhv6A8zxrASohbBwmkg0az4rZ94M759WY
+         LuJdqnHdQOlcs9xHcPXQibIZh/Cpxd8wEaztMVXAl6E9yFZ1ecdTJPuzXLjTR028BVgf
+         xvmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EMPz0MtuVMWlwIKG4Db0qbIbQdeIr2p2KQ20CqF4p88=;
+        b=5pGOk9ylhYHgvtgXYQ7uDeiinnR0NRBrhyDdWzvQBHSlN9iasyorNXCaQzbsNpYjnd
+         wAQBYuVQgbYLdj4owwTmLyW3M9cHw5BRsPqs4hFfnTMNG4SslLNnIW+oxRkdrI74+QaR
+         Zf4RAKhceSacchysbECffC+kcfqs/viNrlldhfDftrzhMhXPVf2A/XGs+lPAmmE5Rsav
+         aksdjGOJwnW/V+DbiTyQegg84GhPgHN/s3KXU02m5tdVDEgzDVFcC9yJssdR07Pe2xnJ
+         Saqm7whvXuJdYPWz8t3rGCI7H4d5mF0h0rwMSQAf6/NIoQ96rP4lTwV1kDvtqvoEk5ke
+         LAYg==
+X-Gm-Message-State: AFqh2kpnOAXczpJHt3+OdDYhu4rHIblTDE+0JyaajUQDPKe5wOQqn4cP
+        QObMtxhnvVd4GjqFYLyoqZ+aC5aJUQMl5iEp
+X-Google-Smtp-Source: AMrXdXsscBAwhaF92Zi0fKqEgTfluKLygxgolteoWlx2FymqcR2KSq5QVpVFyyeX0eMLzwmBRzKY/A==
+X-Received: by 2002:a05:6512:3a8f:b0:4c8:5f19:ccb8 with SMTP id q15-20020a0565123a8f00b004c85f19ccb8mr3391639lfu.48.1671812554766;
+        Fri, 23 Dec 2022 08:22:34 -0800 (PST)
+Received: from krzk-bin.NAT.warszawa.vectranet.pl (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id m7-20020a056512358700b004b55da14ba8sm569758lfr.291.2022.12.23.08.22.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Dec 2022 08:22:34 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: adc: ep93xx: Add OF support
-Message-ID: <20221223162024.46636cce@jic23-huawei>
-In-Reply-To: <20221219173618.1030415-2-alexander.sverdlin@gmail.com>
-References: <20221219173618.1030415-1-alexander.sverdlin@gmail.com>
-        <20221219173618.1030415-2-alexander.sverdlin@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH] dt-bindings: iio: adc: maxim,max1363: fix interface typo
+Date:   Fri, 23 Dec 2022 17:22:31 +0100
+Message-Id: <20221223162231.120216-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Dec 2022 18:36:18 +0100
-Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
+Correct inteface->interface in description.
 
-> Prepare for EP93xx conversion to DT.
-> 
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Hi Alexander,
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Comments inline,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/ep93xx_adc.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ep93xx_adc.c b/drivers/iio/adc/ep93xx_adc.c
-> index fd5a9404c8dc..e530a37180e1 100644
-> --- a/drivers/iio/adc/ep93xx_adc.c
-> +++ b/drivers/iio/adc/ep93xx_adc.c
-> @@ -21,6 +21,7 @@
->  #include <linux/module.h>
->  #include <linux/mutex.h>
->  #include <linux/platform_device.h>
-> +#include <linux/of.h>
->  
->  /*
->   * This code could benefit from real HR Timers, but jiffy granularity would
-> @@ -227,9 +228,18 @@ static int ep93xx_adc_remove(struct platform_device *pdev)
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_OF
-> +static const struct of_device_id ep93xx_adc_of_ids[] = {
-> +	{ .compatible = "cirrus,ep9301-adc" },
-> +	{},
-
-No comma needed for 'NULL' terminator of the array.
-
-> +};
-> +MODULE_DEVICE_TABLE(of, ep93xx_adc_of_ids);
-> +#endif
-> +
->  static struct platform_driver ep93xx_adc_driver = {
->  	.driver = {
->  		.name = "ep93xx-adc",
-> +		.of_match_table = of_match_ptr(ep93xx_adc_of_ids),
-drop the of_match_ptr() protection and the ifdefs.
-They only save a tiny amount of space, and add complexity that outweighs it.
-The other normal reason we don't like these is that there are ACPI paths
-that use of_match_table and this breaks them.  Not likely to be relevant
-here though I guess.
-
-Jonathan
-
-
-
-
->  	},
->  	.probe = ep93xx_adc_probe,
->  	.remove = ep93xx_adc_remove,
+diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml
+index e04f09f35601..96f3f535fe34 100644
+--- a/Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1363.yaml
+@@ -10,7 +10,7 @@ maintainers:
+   - Jonathan Cameron <jic23@kernel.org>
+ 
+ description: |
+-   Family of ADCs with i2c inteface, internal references and threshold
++   Family of ADCs with i2c interface, internal references and threshold
+    monitoring.
+ 
+ properties:
+-- 
+2.34.1
 

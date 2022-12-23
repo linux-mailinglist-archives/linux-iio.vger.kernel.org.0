@@ -2,45 +2,50 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1106655283
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 17:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58558655288
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 17:07:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236276AbiLWQDx (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 11:03:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35086 "EHLO
+        id S229937AbiLWQHU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 11:07:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230425AbiLWQDw (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 11:03:52 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A5D379E1;
-        Fri, 23 Dec 2022 08:03:51 -0800 (PST)
+        with ESMTP id S229625AbiLWQHT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 11:07:19 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F3B3379E4;
+        Fri, 23 Dec 2022 08:07:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C384B61506;
-        Fri, 23 Dec 2022 16:03:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE03C433D2;
-        Fri, 23 Dec 2022 16:03:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 43194B82045;
+        Fri, 23 Dec 2022 16:07:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37274C433D2;
+        Fri, 23 Dec 2022 16:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671811430;
-        bh=CmUH9OByAmfCEX6dhnmiGAFzKh+4JSJjcrx/3zhP8Wc=;
+        s=k20201202; t=1671811636;
+        bh=Q8ELXJCh1YDyuxTg7vg3kz6RhNqF1hvv6kbMTZMHhko=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=B4KHp3xlUExVt2qI5q/7TrchTsQ+aUOj5gkMOeXR+3Zt02q/le2/UVpY/Kt/jyzXe
-         NDbSaGI3hp8T9jIWCPgUFqqWFjM6KXAsg9PRfHn5vMDV44cLZdKAfwP9wUPX/O+t5E
-         3qHvDAKC40IHevgx8lkaou+nJCO/64XYcgBdujI05+cdDxF6Xy1Xiw9Kp1KcQ0UwcR
-         kmCySDCg4vpN20UFkkngQDB2uuvEX5V7R/n/HwV/uX+g54HPWlbpUXzh7i6XfKe5e0
-         m8S4Vs/Yp6rXDivqXMQTECkuUEMaaWVZWbvDcDe0xh6oWMGOab46MiupGT+hBfb38G
-         d6M9zj71C9cLQ==
-Date:   Fri, 23 Dec 2022 16:16:59 +0000
+        b=liwW+MtIuhO6vuS9IFRHsu6SCHHpRBU6ZMTew6hDmglCIgsL4WfJljVnmj4alS+43
+         qmhBnmKFtlYC59uJ8N+45PbZFFUTYhLzQCbQ5ec5eA7P9mNowddJEfPVxzHlEIplGI
+         dCv3j4m5TFlMEeg84aYLAJHyPdqwkqw49FHQ2TeGk4/MeyShsuBAANGwyumiSgnkex
+         aplAmI6Q0nwg6YiV3v1oVUxYTXoeXpkyELUz03ItfElOs+0lIUeVbFhuHdT1c5crOi
+         DODzc7+fHwyTcGEqnRQLWOcoXMZJhWifdsQSU5QjodFICOzXcyeh6k8ehwwsRABdnI
+         G14m/w/CgGMuQ==
+Date:   Fri, 23 Dec 2022 16:20:24 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Daniel Beer <dlbeer@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ad_sigma_delta: fix race between IRQ and completion
-Message-ID: <20221223161659.7652c95c@jic23-huawei>
-In-Reply-To: <63a01acb.a70a0220.9a08f.987d@mx.google.com>
-References: <63a01acb.a70a0220.9a08f.987d@mx.google.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ep93xx: Add OF support
+Message-ID: <20221223162024.46636cce@jic23-huawei>
+In-Reply-To: <20221219173618.1030415-2-alexander.sverdlin@gmail.com>
+References: <20221219173618.1030415-1-alexander.sverdlin@gmail.com>
+        <20221219173618.1030415-2-alexander.sverdlin@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -54,165 +59,65 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 19 Dec 2022 20:48:46 +1300
-Daniel Beer <dlbeer@gmail.com> wrote:
+On Mon, 19 Dec 2022 18:36:18 +0100
+Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
 
-> ad_sigma_delta waits for a conversion which terminates with the firing
-> of a one-shot IRQ handler. In this handler, the interrupt is disabled
-> and a completion is set.
+> Prepare for EP93xx conversion to DT.
 > 
-> Meanwhile, the thread that initiated the conversion is waiting on the
-> completion to know when the conversion happened. If this wait times out,
-> the conversion is aborted and IRQs are disabled. But the IRQ may fire
-> anyway between the time the completion wait times out and the disabling
-> of interrupts. If this occurs, we get a double-disabled interrupt.
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Hi Alexander,
 
-Ouch and good work tracking it down.  just to check, did you see this
-bug happen in the wild or spotted by code inspection?
-
-Given that timeout generally indicates hardware failure, I'm not sure
-how critical this is to fix.
-
-I don't think this fix fully closes the race - see inline.
+Comments inline,
 
 Jonathan
 
-> 
-> This patch fixes that by wrapping the completion wait in a function that
-> handles timeouts correctly by synchronously disabling the interrupt and
-> then undoing the damage if it got disabled twice.
-> 
-> Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Signed-off-by: Daniel Beer <dlbeer@gmail.com>
 > ---
->  drivers/iio/adc/ad_sigma_delta.c | 49 +++++++++++++++++++-------------
->  1 file changed, 30 insertions(+), 19 deletions(-)
+>  drivers/iio/adc/ep93xx_adc.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-> index d8570f620785..2f1702eeed56 100644
-> --- a/drivers/iio/adc/ad_sigma_delta.c
-> +++ b/drivers/iio/adc/ad_sigma_delta.c
-> @@ -202,6 +202,31 @@ int ad_sd_reset(struct ad_sigma_delta *sigma_delta,
+> diff --git a/drivers/iio/adc/ep93xx_adc.c b/drivers/iio/adc/ep93xx_adc.c
+> index fd5a9404c8dc..e530a37180e1 100644
+> --- a/drivers/iio/adc/ep93xx_adc.c
+> +++ b/drivers/iio/adc/ep93xx_adc.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/of.h>
+>  
+>  /*
+>   * This code could benefit from real HR Timers, but jiffy granularity would
+> @@ -227,9 +228,18 @@ static int ep93xx_adc_remove(struct platform_device *pdev)
+>  	return 0;
 >  }
->  EXPORT_SYMBOL_NS_GPL(ad_sd_reset, IIO_AD_SIGMA_DELTA);
 >  
-> +static int ad_sd_wait_and_disable(struct ad_sigma_delta *sigma_delta,
-> +				  unsigned long timeout)
-> +{
-> +	const int ret = wait_for_completion_interruptible_timeout(
-> +			&sigma_delta->completion, timeout);
+> +#ifdef CONFIG_OF
+> +static const struct of_device_id ep93xx_adc_of_ids[] = {
+> +	{ .compatible = "cirrus,ep9301-adc" },
+> +	{},
+
+No comma needed for 'NULL' terminator of the array.
+
+> +};
+> +MODULE_DEVICE_TABLE(of, ep93xx_adc_of_ids);
+> +#endif
 > +
-> +	if (!ret) {
-> +		/* Just because the completion timed out, doesn't mean that the
-Multiline comment syntax in IIO is the
-/*
- * Just...
+>  static struct platform_driver ep93xx_adc_driver = {
+>  	.driver = {
+>  		.name = "ep93xx-adc",
+> +		.of_match_table = of_match_ptr(ep93xx_adc_of_ids),
+drop the of_match_ptr() protection and the ifdefs.
+They only save a tiny amount of space, and add complexity that outweighs it.
+The other normal reason we don't like these is that there are ACPI paths
+that use of_match_table and this breaks them.  Not likely to be relevant
+here though I guess.
 
-form.
-
-> +		 * IRQ didn't fire. It might be in progress right now.
-> +		 */
-> +		disable_irq(sigma_delta->spi->irq);
-> +
-> +		/* The IRQ handler may have run after all. If that happened,
-
-Same for this comment.
-
-> +		 * then we will now have double-disabled the IRQ, and irq_dis
-> +		 * will be true (having been set in the handler).
-> +		 */
-> +		if (sigma_delta->irq_dis)
-> +			enable_irq(sigma_delta->spi->irq);
-> +		else
-> +			sigma_delta->irq_dis = true;
-
-I'd set this unconditionally.  It might already be set, but that shouldn't
-be a problem.
-
-Is this fix sufficient?  If the interrupt is being handled on a different
-CPU to the caller of this function, I think we can still race enough that
-this fails to fix it up.  Might need a spinlock to prevent that.
-
-  CPU 0                                        CPU 1
-ad_sd_data_rdy_trig_poll()               ad_sd_wait_and_disable()
-                                       
-                                         //wait_for_completion ends
-					
-Interrupt
-                                          disable_irq()
-					  if (sigma-delta->irq_dis) !true	
-					  else
-						sigma_delta->irq_dis = true
-
-disable_irq_nosync(irq)
-sigma_delta->irq_dis = true;
-
-So we still end up with a doubly disabled irq.  Add a spinlock to make the
-disable and the setting of sigma_delta->irq_dis atomic then it should all be fine.                
+Jonathan
 
 
 
-> +	}
-> +
-> +	return ret;
-> +}
-> +
->  int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
->  	unsigned int mode, unsigned int channel)
->  {
-> @@ -223,14 +248,11 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
->  
->  	sigma_delta->irq_dis = false;
->  	enable_irq(sigma_delta->spi->irq);
-> -	timeout = wait_for_completion_timeout(&sigma_delta->completion, 2 * HZ);
-> -	if (timeout == 0) {
-> -		sigma_delta->irq_dis = true;
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> +	timeout = ad_sd_wait_and_disable(sigma_delta, 2 * HZ);
-> +	if (timeout == 0)
->  		ret = -EIO;
-> -	} else {
-> +	else
->  		ret = 0;
-> -	}
->  out:
->  	sigma_delta->keep_cs_asserted = false;
->  	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
-> @@ -296,8 +318,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
->  
->  	sigma_delta->irq_dis = false;
->  	enable_irq(sigma_delta->spi->irq);
-> -	ret = wait_for_completion_interruptible_timeout(
-> -			&sigma_delta->completion, HZ);
-> +	ret = ad_sd_wait_and_disable(sigma_delta, HZ);
->  
->  	if (ret == 0)
->  		ret = -EIO;
-> @@ -314,11 +335,6 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
->  		&raw_sample);
->  
->  out:
-> -	if (!sigma_delta->irq_dis) {
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> -		sigma_delta->irq_dis = true;
-> -	}
-> -
->  	sigma_delta->keep_cs_asserted = false;
->  	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
->  	sigma_delta->bus_locked = false;
-> @@ -411,12 +427,7 @@ static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
->  	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
->  
->  	reinit_completion(&sigma_delta->completion);
-> -	wait_for_completion_timeout(&sigma_delta->completion, HZ);
-> -
-> -	if (!sigma_delta->irq_dis) {
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> -		sigma_delta->irq_dis = true;
-> -	}
-> +	ad_sd_wait_and_disable(sigma_delta, HZ);
->  
->  	sigma_delta->keep_cs_asserted = false;
->  	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
+
+>  	},
+>  	.probe = ep93xx_adc_probe,
+>  	.remove = ep93xx_adc_remove,
 

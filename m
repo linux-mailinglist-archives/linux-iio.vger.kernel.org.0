@@ -2,52 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE96565516F
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 15:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D94C6551DA
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:03:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230413AbiLWOhJ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 09:37:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60972 "EHLO
+        id S236472AbiLWPD6 (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 10:03:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbiLWOhI (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 09:37:08 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74BD0389D5;
-        Fri, 23 Dec 2022 06:37:07 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0EE0BB80315;
-        Fri, 23 Dec 2022 14:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EF8C433D2;
-        Fri, 23 Dec 2022 14:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671806224;
-        bh=18BHFIFkjjGnxunFDMVYe0OdKkXN4Kc7XdEmOv/CuOU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jt8VtmZCkhEPYXXo0C82YuAGPQD/vOFpOEklHi8MzQ0hfQUgmGCbkp24Y1JBZSJtS
-         4Rs+fbqFfrmCIEhzYGx4FcyXlg2nr74s4hvbGDM8G/II+S2MZp3FBLmah5pTlYC5Ak
-         +qU4zmXNbTR1sntrXeLMvQYj1LWf1EJvAQ5yB0KQ1YcJt/uiw6oWzXdNzmzyIhryaJ
-         zgTUE+AC+Um4TUOO7oR7RTSilckmk0RZXDCI1VhceOySW8SsqEhVkR4UymmZ1gvxHM
-         40V0Qiw99e9cNyDrAPVUdARLUnEOglwZfpG7blgTpVpEJxDMUE5uhSv5NXueTpM35E
-         NSLfGXnu6bgqg==
-Date:   Fri, 23 Dec 2022 14:50:13 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     hvilleneuve@dimonoff.com, lars@metafoo.de, robh+dt@kernel.org,
+        with ESMTP id S236241AbiLWPD4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:03:56 -0500
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC9E4494D
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 07:03:53 -0800 (PST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1p8jaF-0003OG-2Y; Fri, 23 Dec 2022 16:03:39 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+        (envelope-from <mfe@pengutronix.de>)
+        id 1p8jaE-0003rM-Ea; Fri, 23 Dec 2022 16:03:38 +0100
+Date:   Fri, 23 Dec 2022 16:03:38 +0100
+From:   Marco Felsch <m.felsch@pengutronix.de>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     puranjay12@gmail.com, lars@metafoo.de, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 3/3] dt-bindings: iio: adc: add ADS7924
-Message-ID: <20221223145013.68f7344a@jic23-huawei>
-In-Reply-To: <20221222203610.2571287-4-hugo@hugovil.com>
-References: <20221222203610.2571287-1-hugo@hugovil.com>
-        <20221222203610.2571287-4-hugo@hugovil.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
+        devicetree@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH v2 2/4] dt-bindings: iio: ti,tmp117: add binding for the
+ TMP116
+Message-ID: <20221223150338.iqpnp6z3m35eb5hz@pengutronix.de>
+References: <20221221092801.1977499-1-m.felsch@pengutronix.de>
+ <20221221092801.1977499-3-m.felsch@pengutronix.de>
+ <20221223150803.37e2939d@jic23-huawei>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221223150803.37e2939d@jic23-huawei>
+User-Agent: NeoMutt/20180716
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,139 +51,73 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Thu, 22 Dec 2022 15:36:10 -0500
-Hugo Villeneuve <hugo@hugovil.com> wrote:
-
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On 22-12-23, Jonathan Cameron wrote:
+> On Wed, 21 Dec 2022 10:27:59 +0100
+> Marco Felsch <m.felsch@pengutronix.de> wrote:
 > 
-> Add device tree bindings document for the Texas Instruments ADS7924
-> ADC.
+> > The TMP116 is the predecessor of the TMP117.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> I'm not sure this is introducing a valid fallback. The driver changes
+> imply some things the tmp117 driver supports, that this device
+> does not. A fallback compatible would mean that a new DT
+> with an old kernel would load the tmp117 against a tmp116 and
+> expect it to fully work.
+
+Since driver does all the detection an update of the bindings isn't
+really necessary. It is just to have a compatible already in place in
+case there a things we can't detected during runtime. This flow is
+common for a lot of SoC drivers. The fallback will be used as long as
+possible and once a specific feature can't be detected only via the
+binding, the driver adds the new binding to it of_compatible.
+
+Regards,
+  Marco
+
+> An example is calibbias which you've dropped from the channels
+> array entry.
 > 
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-
-Hi Hugo,
-
-Whilst you aren't using it yet, the binding should still attempt to be
-a full description of the hardware, so I'd expect the interrupt line to
-be part of it.
-
-Otherwise, Krzysztof already covered this in detail.
-
-Jonathan
-
-
-> ---
->  .../bindings/iio/adc/ti,ads7924.yaml          | 103 ++++++++++++++++++
->  1 file changed, 103 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
+> Jonathan
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> new file mode 100644
-> index 000000000000..5408ec95e417
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> @@ -0,0 +1,103 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads7924.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TI ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +maintainers:
-> +  - Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> +
-> +description: |
-> +  Texas Instruments ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +  Specifications:
-> +    https://www.ti.com/lit/gpn/ads7924
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,ads7924
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator supply for the ADC reference voltage (AVDD)
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      GPIO used for controlling the reset pin
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vref-supply
-> +  - "#address-cells"
-> +  - "#size-cells"
-> +
-> +additionalProperties: false
-> +
-> +patternProperties:
-> +  "^channel@[0-3]+$":
-> +    type: object
-> +    description:
-> +      Child nodes needed for each channel that the platform uses.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          0: Voltage over AIN0 and GND.
-> +          1: Voltage over AIN1 and GND.
-> +          2: Voltage over AIN2 and GND.
-> +          3: Voltage over AIN3 and GND.
-> +        items:
-> +          - minimum: 0
-> +            maximum: 3
-> +
-> +    required:
-> +      - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@48 {
-> +            compatible = "ti,ads7924";
-> +            reg = <0x48>;
-> +            vref-supply = <&ads7924_reg>;
-> +            reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            channel@0 {
-> +              reg = <0>;
-> +              label = "CH0";
-> +            };
-> +            channel@1 {
-> +              reg = <1>;
-> +              label = "CH1";
-> +            };
-> +            channel@2 {
-> +              reg = <2>;
-> +              label = "CH2";
-> +            };
-> +            channel@3 {
-> +              reg = <3>;
-> +              label = "CH3";
-> +            };
-> +        };
-> +    };
-> +...
-
+> 
+> > ---
+> > v2:
+> > - drop items from single enum
+> > 
+> >  .../bindings/iio/temperature/ti,tmp117.yaml        | 14 ++++++++++----
+> >  1 file changed, 10 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > index 8d1ec4d39b28..9b78357d6a79 100644
+> > --- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+> > @@ -7,8 +7,9 @@ $schema: "http://devicetree.org/meta-schemas/core.yaml#"
+> >  title: "TI TMP117 - Digital temperature sensor with integrated NV memory"
+> >  
+> >  description: |
+> > -    TI TMP117 - Digital temperature sensor with integrated NV memory that supports
+> > -    I2C interface.
+> > +    TI TMP116/117 - Digital temperature sensor with integrated NV memory that
+> > +    supports I2C interface.
+> > +      https://www.ti.com/lit/gpn/tmp116
+> >        https://www.ti.com/lit/gpn/tmp117
+> >  
+> >  maintainers:
+> > @@ -16,8 +17,13 @@ maintainers:
+> >  
+> >  properties:
+> >    compatible:
+> > -    enum:
+> > -      - ti,tmp117
+> > +    oneOf:
+> > +      - enum:
+> > +          - ti,tmp117
+> > +      - items:
+> > +          - enum:
+> > +              - ti,tmp116
+> > +          - const: ti,tmp117
+> >  
+> >    reg:
+> >      maxItems: 1
+> 
+> 

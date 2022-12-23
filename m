@@ -2,223 +2,168 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6A16654D57
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 09:19:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7FBB654D78
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 09:29:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235443AbiLWITK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 03:19:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53216 "EHLO
+        id S229603AbiLWI3P (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 03:29:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbiLWITJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 03:19:09 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3014D32BA9
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 00:19:07 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id p36so6147447lfa.12
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 00:19:07 -0800 (PST)
+        with ESMTP id S236097AbiLWI3J (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 03:29:09 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD02734D2E
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 00:29:08 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id bp15so6166378lfb.13
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 00:29:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NYP0kVcMdH1JUs4mFaaNK4geOaH1AZDQCGqMj2yIKIs=;
-        b=pdq34oqAbkBhwBwUFlF/oNI9TXjHWTAlercAm21EmG1yw57s8BN+3+PK9J1MTUm/aI
-         iPFPLKjO/z0O6oRoao7susVVkp89RygzTu6XcdErl7SXfRX4eP0xLowVRIDYe3pHDuFz
-         4LOHdyfle7hzOCbSuUdd8WEEHFV6dxC02pJWIvgp0p2s7XbjblQLtJsbRFHnzj0rYLfn
-         8GKaFUvyOkWGS2jTDr1hRs4MkkG2W852bwHaJYs9yMdpLmDzaJRXXUk6WZpCFr1Oh1VG
-         NNVbVfc/B0qHMuovFe6sXraotcyuKZXUcOX3C2yUPRpFhgUw3jWFX+j3u7iVKfwYRHNs
-         lgYA==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:cc:content-language
+         :references:to:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lAPnAFAPMmCL9GyOe3FaeDXi2cJ+AVPL4q0fGkCBYio=;
+        b=Kki7zRjMHrqzdQgVZyuM6yYpITKHCpIa5Z4fSQmGy7EvdH9pw2i97U4S4QfSq7JRcO
+         rR9l6j1ZpIDeSrEJ7i7BBRmfnBvHOyBXw5AF2YhXpU44dsAj5mLNcqdWJINitT23ZLXf
+         kk1aO3H0FLKsCJ0E9RxuU23vsiqj5trk8IcJnhzFU9t2dPCbfur0BO3teo4wjZ2nWKbk
+         /VD58f8LMbBAe6rUKCKi6a234JPibdwJc1hKU7c8UF+lYzNNFGilynt4sSrfHpLWWidc
+         m3WDuvHFwE2uR1qalkkFHSSsPVokUfhKAygqcbOt6ufHj1gyTk5/A45HJ0YHVbsjqTeI
+         9zPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:subject:cc:content-language
+         :references:to:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYP0kVcMdH1JUs4mFaaNK4geOaH1AZDQCGqMj2yIKIs=;
-        b=ottR9jqJXFK33m1Jj229JpQoml1vX5DIuqYEOpcFf5+c+6UkYl1PdLBoPwToBbQVtP
-         WaouUq/SPSq6eqBgWdJACCOvaCqTH/0gy2zA2lHLoe85feNr5tCNJBmJ36CIJKUP4wPk
-         uvfMTjTuhu/CH/SrEpiJ9vVCfudbZiMwKpCG+AGHuefntAyipuD3Fj6PIYw70/pdE7PL
-         pucQmlVrO+8C4KGQ/swR4OEDic3tBsa2i2+rQwHYlikCAP2oF/zfSn0vsmfuBwP8D09D
-         d0vYCBiKHqRBT1Nyv3WeMU99HLLfodre+PnBUXdA9pNbCrBRQ1tDWRF2kqahNgg0VRK3
-         QucA==
-X-Gm-Message-State: AFqh2kpyi5NR/vJnN25wjAGkJhkHvEKvpH0HPDTME3qx8CY4SAQJsb1u
-        QJjL8r9KlfT1e/FIelJiNkhHXQ==
-X-Google-Smtp-Source: AMrXdXv0EsqcoNgrB8S0klzfZzdakYkrtNwEy2lBcFG/Z1ptO4Z0atMnnFqWPhzHtMGuDvPfLx3Mew==
-X-Received: by 2002:a05:6512:1513:b0:4a4:a7d7:4769 with SMTP id bq19-20020a056512151300b004a4a7d74769mr2639547lfb.8.1671783545552;
-        Fri, 23 Dec 2022 00:19:05 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id q30-20020a19431e000000b004b373f61a60sm421582lfa.96.2022.12.23.00.19.04
+        bh=lAPnAFAPMmCL9GyOe3FaeDXi2cJ+AVPL4q0fGkCBYio=;
+        b=mAIPN65D/7U810rheX5IyeDmnhO2liftgwlf8Ur61zwijtEaHqneZCHTzAAC858C4i
+         2/v2+GiemT+GD6DiANtysf+03AB/V4xIiMjd0FGtTkaxlC/Z91iZ7SiCW9zRS1bEb4fi
+         4mMvQnRagpNzCh0gn/mg+ijrCZTsKK6LOdj1M7p2h641KIDPlvlhTFp2lBcl+Z0Sf4Cy
+         46gjSXBTkIDVSzYo3g0aa3fZGo4wNOYHs5eW5w1T5JKsuRKXNXBBCAI5hMJGaBtnOwOf
+         +AfPDGjP/xmOAThRd0jZimFMFRjuqCaXFtCHTplJ6uzRsCqZPkfAVrdcQZ4vpQufzjZm
+         3L+g==
+X-Gm-Message-State: AFqh2kq59cL+K257fWmcexihs+ZSKRX/0eS8E6mBlxmAJf6nIpGyQM5p
+        yIX/WBEvHi4R7r2cX/PGLq1Yvaw0B3M=
+X-Google-Smtp-Source: AMrXdXun6Y5vF4KxP4C9u8XGTO1tNnSE44E9F1fmulaBGexJthEpeNUlDA0gqVrSJydhkgdISFAtvA==
+X-Received: by 2002:ac2:454b:0:b0:4b5:5fc1:9d1e with SMTP id j11-20020ac2454b000000b004b55fc19d1emr3149407lfm.44.1671784146930;
+        Fri, 23 Dec 2022 00:29:06 -0800 (PST)
+Received: from ?IPV6:2001:14ba:16f3:4a00::b? (dc75zzyyyyyyyyyyyyygt-3.rev.dnainternet.fi. [2001:14ba:16f3:4a00::b])
+        by smtp.gmail.com with ESMTPSA id q8-20020a2e8748000000b00279f213302bsm315163ljj.57.2022.12.23.00.29.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Dec 2022 00:19:04 -0800 (PST)
-Message-ID: <01a5f912-10d2-d5fe-023e-e2e6613ac03b@linaro.org>
-Date:   Fri, 23 Dec 2022 09:19:03 +0100
+        Fri, 23 Dec 2022 00:29:06 -0800 (PST)
+Message-ID: <0adad745-004d-8f70-510c-8af3c0935c2a@gmail.com>
+Date:   Fri, 23 Dec 2022 10:29:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v1 3/3] dt-bindings: iio: adc: add ADS7924
+ Thunderbird/102.5.1
+From:   Matti Vaittinen <mazziesaccount@gmail.com>
+To:     Mehdi Djait <mehdidjait@gmail.com>
+References: <CALpf1uAE+H+kMHmCoeACF65YDK0cNwie5MG3a11rkVKs59XLLg@mail.gmail.com>
 Content-Language: en-US
-To:     Hugo Villeneuve <hugo@hugovil.com>, hvilleneuve@dimonoff.com,
-        jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org
-Cc:     linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221222203610.2571287-1-hugo@hugovil.com>
- <20221222203610.2571287-4-hugo@hugovil.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221222203610.2571287-4-hugo@hugovil.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Cc:     "Haikola, Heikki" <Heikki.Haikola@fi.rohmeurope.com>,
+        "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>,
+        linux-iio <linux-iio@vger.kernel.org>
+Subject: Re: KX132/134-1211
+In-Reply-To: <CALpf1uAE+H+kMHmCoeACF65YDK0cNwie5MG3a11rkVKs59XLLg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On 22/12/2022 21:36, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Hi Mehdi,
+
+On 12/22/22 16:06, Mehdi Djait wrote:
+> Hello Matti,
 > 
-> Add device tree bindings document for the Texas Instruments ADS7924
-> ADC.
-> 
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> ---
->  .../bindings/iio/adc/ti,ads7924.yaml          | 103 ++++++++++++++++++
->  1 file changed, 103 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> new file mode 100644
-> index 000000000000..5408ec95e417
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> @@ -0,0 +1,103 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/ti,ads7924.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TI ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +maintainers:
-> +  - Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> +
-> +description: |
-> +  Texas Instruments ADS7924 4 channels 12 bits I2C analog to digital converter
-> +
-> +  Specifications:
-> +    https://www.ti.com/lit/gpn/ads7924
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,ads7924
-> +
-> +  vref-supply:
-> +    description:
-> +      The regulator supply for the ADC reference voltage (AVDD)
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      GPIO used for controlling the reset pin
+> First of all I apologize for bothering you out of the blue and I hope it 
+> is not a bad time to send you an email with a couple of questions.
 
-Drop description, it's obvious (unless you want to actually describe
-some pieces of the hardware).
+No problem. But I suggest you CC the IIO mail list when sending this 
+kind of questions. It may be the messages where the list is not in CC 
+are regarded as spam by my mail filters... Besides, others with more 
+insight to IIO may be able to further help you when the list is CC'd ;)
 
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  "#io-channel-cells":
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vref-supply
-> +  - "#address-cells"
-> +  - "#size-cells"
+> My name is Mehdi Djait, I am a student living in Germany currently, 
+> REALLY interested in linux kernel development and still trying to find 
+> something to contribute to the kernel. The IIO subsystem seems like a 
+> good place to start for a kernel Newbie and am currently investing my 
+> time in learning the subsystem (reading driver implementations, the 
+> IIO-core, lurking in the mailing list ...) I have been looking lately 
+> everywhere for sensors without a kernel driver and I stumbled upon the 
+> KX132/134-1211 accelerometers and that's why I decided to send you an 
+> email with these questions:
 
-Keep the same order as in properties. This one is more common (reg after
-compatible).
+Oh, thanks for contacting me :) So, you have the sensor hardware at your 
+hands? I think this is mandatory when writing a driver.
 
-> +
-> +additionalProperties: false
-> +
-> +patternProperties:
+> - Am I correct in assuming that the accelerometer does not have a kernel 
+> driver ? I looked in the RohmSemiconductor Linux-Kernel-Input-Drivers 
+> and Linux-Kernel-Sensor-Drivers GitHub repos and grepped inside the iio, 
+> staging and linux-next trees
 
-patternProperties go immediately after properties.
+Yes and no :) There is a kernel driver which supports many of the kx* 
+accelerometers in the ROHM downstream Linux-Kernel-Input-Drivers, and I 
+believe it also supports the KX132/KX134. Yet, as the name suggests - 
+these drivers are not exposing the accelerometer using IIO but the INPUT 
+subsystem. Reason is that quite a few device manufacturers still use the 
+accelerometers via HAL written on top of the INPUT. Heikki Haikola (in 
+CC) has authored many of these drivers. The INPUT is not the preferred 
+subsystem for acceleromerers though - so you're correct when planning to 
+write an IIO driver for upstream.
 
-> +  "^channel@[0-3]+$":
-> +    type: object
+> - Is anyone working on a driver now ? If not, I am really interested in 
+> trying to write one for some basic functionality. I am fully __AWARE__ 
+> how difficult the task is (I did read your LinkedIn posts) but I am 
+> truly motivated and I will use every example I can find as reference: 
+> the drivers under iio/accel, the GitHub repos from RohmSemiconductor and 
+> your KX02AA driver that recently landed in linux-next (Congrats :) )
 
-additionalProperties: false on this level
+Upstream support for (ROHM or any other) ICs is very welcome. It enables 
+more and more people to benefit from the ICs. Companies can rarely 
+support small customers and open source drivers make it possible for the 
+people to work without this support :) This work has been on my TODO 
+list since I added KX022A driver - but it has had low priority and I 
+seem to always have some other tasks. So, Your work on these ICs is more 
+than welcome!
 
-> +    description:
-> +      Child nodes needed for each channel that the platform uses.
+> I’m eager to receive your feedback! (and sorry for the long text)
 
-I cannot understand this sentence at all. Instead describe the hardware
-you are here representing. What's this?
+It was not too long :)
 
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          0: Voltage over AIN0 and GND.
-> +          1: Voltage over AIN1 and GND.
-> +          2: Voltage over AIN2 and GND.
-> +          3: Voltage over AIN3 and GND.
-> +        items:
-> +          - minimum: 0
-> +            maximum: 3
-> +
-> +    required:
-> +      - reg
-> +
-> +examples:
-> +  - |
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@48 {
-> +            compatible = "ti,ads7924";
-> +            reg = <0x48>;
-> +            vref-supply = <&ads7924_reg>;
-> +            reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            channel@0 {
-> +              reg = <0>;
+If you wish to proceed with the driver, then I would have couple of 
+suggestions to you. As far as I remember the KX132 is not really _that_ 
+different from the KX022A. Sure the resolution is different as may be 
+the G-ranges. But the logic of the register interface is largely same. I 
+suggest you to study the possibility of extending the KX022A driver to 
+support the other variants. I would differentiate the IC types based on 
+device-tree and fill in the register offsets/required quirks in the 
+driver private data.
 
-Messed indentation. Keep 4 spaces.
+The other suggestion from me is that you could check the IC's logic from 
+the Linux-Kernel-Input-Drivers. I think there were some minor 
+differencies in the behaviour for example when the BUFE or PC1 bits are 
+toggled.
 
-> +              label = "CH0";
-> +            };
-> +            channel@1 {
-> +              reg = <1>;
-> +              label = "CH1";
-> +            };
-> +            channel@2 {
-> +              reg = <2>;
-> +              label = "CH2";
-> +            };
-> +            channel@3 {
-> +              reg = <3>;
-> +              label = "CH3";
-> +            };
-> +        };
-> +    };
-> +...
+Feel free to ask us if you hit to problems with the work, but please 
+note that most of us in Finland are having a holiday season right now - 
+so many of us will be offline until January.
 
-Best regards,
-Krzysztof
+Yours,
+	-- Matti
+
+> Kind regards
+> Mehdi Djait
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
 

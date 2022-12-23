@@ -2,47 +2,47 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0B665526A
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C508D65526E
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:51:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236236AbiLWPsy (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 10:48:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59234 "EHLO
+        id S236205AbiLWPvA (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 10:51:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236205AbiLWPsx (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:48:53 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E490930F40;
-        Fri, 23 Dec 2022 07:48:52 -0800 (PST)
+        with ESMTP id S231345AbiLWPu7 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:50:59 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A6263C5;
+        Fri, 23 Dec 2022 07:50:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8228461221;
-        Fri, 23 Dec 2022 15:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985FC433F0;
-        Fri, 23 Dec 2022 15:48:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C977AB820EA;
+        Fri, 23 Dec 2022 15:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EACC433D2;
+        Fri, 23 Dec 2022 15:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671810531;
-        bh=uDdlMtPBoNlyiwxUajCYBTLiiIYPz+lZctiEtYYrPqo=;
+        s=k20201202; t=1671810656;
+        bh=kBnt6c+xPK/PYr9W28KzLKm+YufOtx3oqN0N6kNlx4k=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=l1XRUTa2A3U3SY1HMy/7J7VzlLcJ7qr+pUjt4egi3potOh/1ksa65BknI7s+ISdSY
-         KR3BvHDwUR+yEz8ow3a6MoW2a+RfIb5SimtDkjo8qZWD9WVvmmHW+5/JC3+1dkjbFK
-         IIVCQn0mjoT9UY5UnkXHYV0677RYED/X13PXeZtM4V+J5jUd2yjFQAeHpcvuBdWHJc
-         FXjuEg5N83GDQOXiWtipkt8fqpNLYsd1M8Lgsbn/IvBEXGQuO3AdZVsoujQ3tAyy9j
-         OIHoixikAx7Dawbiq7r7p6V99D+JXV3Obo4e4w04hGOdKv4cH2xRbhvG82EltGBdCz
-         VMuGxxiL6fkEA==
-Date:   Fri, 23 Dec 2022 16:02:00 +0000
+        b=EQS6n0V6KZcY2WfsniCNI7qQ7yCasrtl0A6ex1YLUusNaefMHIzmtCSDX8B5ts7sY
+         +9WSQFE1G08UfUqkoordnxhihHvuZo7RIsBBZaETujHjK2rT9zh0Km5MZbbv5HwDHd
+         X9NCdT51bm6CRDPQxgMHGDautzRLAO7561rdez5L8R4YJ3nzdbW3K+vTbBB8GdXlLb
+         M7PnKWXZ9kDc7jQHoC6yHJYT3IuEKHWJ5wG4ND7101wARBSzdmNK0o95a468Q2Ej5X
+         HN6Ct4Rx1ng1sEokraYzQOrXmeRpaTSAEOkZPHSR359QGhW0Ut5qxS8HWLdxyVU2Ct
+         puNzoPhejT8cg==
+Date:   Fri, 23 Dec 2022 16:04:05 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andreas Kemnade <andreas@kemnade.info>
-Cc:     lars@metafoo.de, paul@crapouillou.net, jiasheng@iscas.ac.cn,
-        oleksandr.kozaruk@ti.com, gg@slimlogic.co.uk, balajitk@ti.com,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Julia Lawall <julia.lawall@lip6.fr>
-Subject: Re: [PATCH] iio:adc:twl6030: Enable measurement of VAC
-Message-ID: <20221223160200.1ae6df91@jic23-huawei>
-In-Reply-To: <20221217221305.671117-1-andreas@kemnade.info>
-References: <20221217221305.671117-1-andreas@kemnade.info>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Fabio Estevam <festevam@denx.de>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: max1238: Fix a typo in the
+ description
+Message-ID: <20221223160405.32ba9716@jic23-huawei>
+In-Reply-To: <e7b95521-9a2d-7c0f-a379-b32d4aaf1031@linaro.org>
+References: <20221216004015.2902966-1-festevam@denx.de>
+        <e7b95521-9a2d-7c0f-a379-b32d4aaf1031@linaro.org>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,37 +56,37 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Sat, 17 Dec 2022 23:13:05 +0100
-Andreas Kemnade <andreas@kemnade.info> wrote:
+On Fri, 16 Dec 2022 12:30:42 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> VAC needs to be wired up to produce proper measurements,
-> without this change only near zero values are reported.
+> On 16/12/2022 01:40, Fabio Estevam wrote:
+> > Fix a typo in the description, where "interface" is spelled incorrectly.
+> > 
+> > Signed-off-by: Fabio Estevam <festevam@denx.de>
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml b/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml
+> > index 50bcd72ac9d6..60d7b34e3286 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/maxim,max1238.yaml  
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Julia Lawall <julia.lawall@lip6.fr>
-> Fixes: 1696f36482e7 ("iio: twl6030-gpadc: TWL6030, TWL6032 GPADC driver")
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Applied to the fixes-togreg branch of iio.git.
+> While fixing such, fix also max1363 in the same patch. Or maybe even
+> more files (but then usually split per maintainer).
+
+Absolutely agree that it would be good to fix the other instances.
+Still, I'm not going to not take the one fix in front of me today
+whilst waiting on that ;)
+
+Applied to the togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/adc/twl6030-gpadc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/adc/twl6030-gpadc.c b/drivers/iio/adc/twl6030-gpadc.c
-> index 40438e5b4970..32873fb5f367 100644
-> --- a/drivers/iio/adc/twl6030-gpadc.c
-> +++ b/drivers/iio/adc/twl6030-gpadc.c
-> @@ -952,7 +952,7 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
->  	}
->  
->  	ret = twl_i2c_write_u8(TWL6030_MODULE_ID0,
-> -				VBAT_MEAS | BB_MEAS | BB_MEAS,
-> +				VBAT_MEAS | BB_MEAS | VAC_MEAS,
->  				TWL6030_MISC1);
->  	if (ret < 0) {
->  		dev_err(dev, "failed to wire up inputs\n");
+> Best regards,
+> Krzysztof
+> 
 

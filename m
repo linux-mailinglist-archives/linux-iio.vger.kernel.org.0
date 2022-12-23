@@ -2,43 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7053655205
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:27:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7561C655212
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:31:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230249AbiLWP1M (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 10:27:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49448 "EHLO
+        id S236390AbiLWPbo (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 10:31:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230390AbiLWP1M (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:27:12 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2119F28E3A
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 07:27:11 -0800 (PST)
+        with ESMTP id S231423AbiLWPbn (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:31:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C2D63FD;
+        Fri, 23 Dec 2022 07:31:41 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 7BCEECE1C02
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 15:27:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12CDC433EF;
-        Fri, 23 Dec 2022 15:27:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 313F16150C;
+        Fri, 23 Dec 2022 15:31:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14B1C433D2;
+        Fri, 23 Dec 2022 15:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671809227;
-        bh=ykJgLOsyg+jfR1orxeL+IB6BRdbchGsLUkuA2VXe2VY=;
+        s=k20201202; t=1671809500;
+        bh=Yv990aidhbKkTEJvdoOyJvp9FxAYjDIxP+cgiiuIyv8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rJKm5MF5D/RvkEx9OtMQNPTznbGK62DRaqPSSo5LXwqowxTLTjqzw1AbNPQuTCZNL
-         8+J2KVlEIvomRIHHhdh0Z9tlLs6+m9+PvupC4vs3wbovzJFcH7QZ+q+RnNyNkk8X5M
-         4yfkOpjoFKNoi426Vyw1EXnxOzHvRgpWlatv7zQp96beYjCPsZTNZAsEGx1Lu/qSHQ
-         q4mq8KqdY/hDpVs0L7d0W/xM2CJ6qc0ve4zAP2knDYac3Zkav4mkUBMAcluK3OQbrb
-         E+cs8WbVwRJ6vQSxAmnXnah+knhO37qCriJpDDBvlejD39IPXLkHssKrxj4LSxZ5gJ
-         dxWGuyEqQGC5w==
-Date:   Fri, 23 Dec 2022 15:40:17 +0000
+        b=XJzBsc1QdbvzKgxYeXFnYdycVxsbK/dRc1bsNlglPTTPcjnbJP8qm8FYKqsOkicXH
+         g/9WQhIGbb3B5nXIv32QFQBi8vFpmvYBzZGqxFVNMVnMIdav4Dm2ff3l3Gk0IFpyYW
+         3aNhs6sOBGBbKSOuMXgYci0zn2r+hq9DAHnp7UzeRWPG37wPuNSMI2Pw6Chu+6pvY1
+         Kfd1Z84qlnVT8oi3jANw+UzuCa0YX6iEEPsVYEqb2rfram5zThKf/IuGK1zwZVyR1J
+         ijqpoxQa6Sc2JBTX2o6Ubou6YSF0zv7F76Q5AyqvIWG3gyGsUm16M3Red/aJ8DflPP
+         P6CxxBg8WenSA==
+Date:   Fri, 23 Dec 2022 15:44:50 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Gwendal Grignou <gwendal@chromium.org>
-Cc:     swboyd@chromium.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2] iio: proximity: sx_common: Add old register mapping
-Message-ID: <20221223154017.20f25396@jic23-huawei>
-In-Reply-To: <20221220193926.126366-1-gwendal@chromium.org>
-References: <20221220193926.126366-1-gwendal@chromium.org>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/2] iio: adc: ti-adc128s052: Switch to use
+ spi_get_device_match_data()
+Message-ID: <20221223154450.458771b8@jic23-huawei>
+In-Reply-To: <20221223152242.2ee926eb@jic23-huawei>
+References: <20221214114944.83790-1-andriy.shevchenko@linux.intel.com>
+        <20221223152242.2ee926eb@jic23-huawei>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -52,73 +55,129 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 20 Dec 2022 11:39:26 -0800
-Gwendal Grignou <gwendal@chromium.org> wrote:
+On Fri, 23 Dec 2022 15:22:42 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Older firmwares still send sensor configuration using a list of
-> registers with opaque values defined during sensor tuning.
-> sx9234 and sx9360 sensor on ACPI based devices are concerned.
-> More schema to configure the sensors will be needed to support devices
-> designed for windows, like Samsung Galaxy Book2.
+> On Wed, 14 Dec 2022 13:49:43 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> Support schema is: "<_HID>.<register_name>". For instance
-> "STH9324,reg_adv_ctrl2" in:
+> > The spi_get_device_match_data() helps to get driver data from the
+> > firmware node or SPI ID table. Use it instead of open coding.
+> > 
+> > While at it, switch ID tables to provide an acrual pointers to
+> > the configuration data.
+> > 
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> > 
+> > Requires aea672d054a2 ("spi: Introduce spi_get_device_match_data()
+> > helper") which is part of upstream as of today.  
 > 
->     Scope (\_SB.PCI0.I2C2)
->     {
->         Device (SX28)
->         {
->             Name (_HID, "STH9324")  // _HID: Hardware ID
-> ...
->             Name (_DSD, Package (0x02)  // _DSD: Device-Specific Data
->             {
->                 ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301") /*
-> Device Properties for _DSD */,
->                 Package (0x3F)
->                 {
-> ...
->                     Package (0x02)
->                     {
->                         "STH9324,reg_adv_ctrl2",
->                         Zero
->                     },`
+> I rebased to get that (will rebase again on rc1).
 > 
-> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
-LGTM with one exception. See below.  I can fix that whilst applying, but
-would like to leave time for Stephen to take a look anyway.
+> Applied to the togreg branch of iio.git and pushed out as testing
+> to keep 0-day busy over my holidays.
 
-...
+I take it back...  Build test failed...
 
->  
-> @@ -101,6 +105,7 @@ struct sx_common_chip_info {
->   * @client:		I2C client structure.
->   * @trig:		IIO trigger object.
->   * @regmap:		Register map.
-> + * @acpi_id: ACPI device entry when the device is using APCI, NULL otherwise.
+> 
+> Jonathan
+> 
+> > 
+> >  drivers/iio/adc/ti-adc128s052.c | 39 +++++++++++++++------------------
+> >  1 file changed, 18 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ti-adc128s052.c b/drivers/iio/adc/ti-adc128s052.c
+> > index b3d5b9b7255b..9dfc625100b6 100644
+> > --- a/drivers/iio/adc/ti-adc128s052.c
+> > +++ b/drivers/iio/adc/ti-adc128s052.c
+> > @@ -139,16 +139,11 @@ static void adc128_disable_regulator(void *reg)
+> >  
+> >  static int adc128_probe(struct spi_device *spi)
+> >  {
+> > +	const struct adc128_configuration *config;
+> >  	struct iio_dev *indio_dev;
+> > -	unsigned int config;
+> >  	struct adc128 *adc;
+> >  	int ret;
+> >  
+> > -	if (dev_fwnode(&spi->dev))
+> > -		config = (unsigned long) device_get_match_data(&spi->dev);
+> > -	else
+> > -		config = spi_get_device_id(spi)->driver_data;
+> > -
+> >  	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+> >  	if (!indio_dev)
+> >  		return -ENOMEM;
+> > @@ -160,6 +155,8 @@ static int adc128_probe(struct spi_device *spi)
+> >  	indio_dev->modes = INDIO_DIRECT_MODE;
+> >  	indio_dev->info = &adc128_info;
+> >  
+> > +	config = spi_get_device_match_data(&spi->dev);
+Takes a struct spi_device*
 
-The lack of num_default_regs below made me suspicious enough to open the code.
-This is the wrong documentation block.
+Also, having opened code up to fix this, we have a spi_get_device_id() left
+just above that needs dealing with.
 
->   * @num_default_regs:	Number of default registers to set at init.
->   * @supplies:		Power supplies object.
->   * @chan_prox_stat:	Last reading of the proximity status for each channel.
-> @@ -119,6 +124,7 @@ struct sx_common_data {
->  	struct i2c_client *client;
->  	struct iio_trigger *trig;
->  	struct regmap *regmap;
-> +	const struct acpi_device_id *acpi_id;
->  
->  	struct regulator_bulk_data supplies[2];
->  	unsigned long chan_prox_stat;
-> @@ -151,6 +157,10 @@ int sx_common_probe(struct i2c_client *client,
->  		    const struct sx_common_chip_info *chip_info,
->  		    const struct regmap_config *regmap_config);
->  
-> +void sx_common_get_raw_register_config(struct device *dev,
-> +				       const struct acpi_device_id *id,
-> +				       struct sx_common_reg_default *reg_def);
-> +
->  /* 3 is the number of events defined by a single phase. */
->  extern const struct iio_event_spec sx_common_events[3];
->  
+And a lot of uses of config below that need fixing.
+
+I'm dropping this series until that's all fixed up.
+
+Jonathan
+
+
+
+> > +
+> >  	indio_dev->channels = adc128_config[config].channels;
+> >  	indio_dev->num_channels = adc128_config[config].num_channels;
+> >  
+> > @@ -181,32 +178,32 @@ static int adc128_probe(struct spi_device *spi)
+> >  }
+> >  
+> >  static const struct of_device_id adc128_of_match[] = {
+> > -	{ .compatible = "ti,adc128s052", .data = (void*)0L, },
+> > -	{ .compatible = "ti,adc122s021", .data = (void*)1L, },
+> > -	{ .compatible = "ti,adc122s051", .data = (void*)1L, },
+> > -	{ .compatible = "ti,adc122s101", .data = (void*)1L, },
+> > -	{ .compatible = "ti,adc124s021", .data = (void*)2L, },
+> > -	{ .compatible = "ti,adc124s051", .data = (void*)2L, },
+> > -	{ .compatible = "ti,adc124s101", .data = (void*)2L, },
+> > +	{ .compatible = "ti,adc128s052", .data = &adc128_config[0] },
+> > +	{ .compatible = "ti,adc122s021", .data = &adc128_config[1] },
+> > +	{ .compatible = "ti,adc122s051", .data = &adc128_config[1] },
+> > +	{ .compatible = "ti,adc122s101", .data = &adc128_config[1] },
+> > +	{ .compatible = "ti,adc124s021", .data = &adc128_config[2] },
+> > +	{ .compatible = "ti,adc124s051", .data = &adc128_config[2] },
+> > +	{ .compatible = "ti,adc124s101", .data = &adc128_config[2] },
+> >  	{ /* sentinel */ },
+> >  };
+> >  MODULE_DEVICE_TABLE(of, adc128_of_match);
+> >  
+> >  static const struct spi_device_id adc128_id[] = {
+> > -	{ "adc128s052", 0 },	/* index into adc128_config */
+> > -	{ "adc122s021",	1 },
+> > -	{ "adc122s051",	1 },
+> > -	{ "adc122s101",	1 },
+> > -	{ "adc124s021", 2 },
+> > -	{ "adc124s051", 2 },
+> > -	{ "adc124s101", 2 },
+> > +	{ "adc128s052", (kernel_ulong_t)&adc128_config[0] },
+> > +	{ "adc122s021",	(kernel_ulong_t)&adc128_config[1] },
+> > +	{ "adc122s051",	(kernel_ulong_t)&adc128_config[1] },
+> > +	{ "adc122s101",	(kernel_ulong_t)&adc128_config[1] },
+> > +	{ "adc124s021", (kernel_ulong_t)&adc128_config[2] },
+> > +	{ "adc124s051", (kernel_ulong_t)&adc128_config[2] },
+> > +	{ "adc124s101", (kernel_ulong_t)&adc128_config[2] },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(spi, adc128_id);
+> >  
+> >  #ifdef CONFIG_ACPI
+> >  static const struct acpi_device_id adc128_acpi_match[] = {
+> > -	{ "AANT1280", 2 }, /* ADC124S021 compatible ACPI ID */
+> > +	{ "AANT1280", (kernel_ulong_t)&adc128_config[2] },
+> >  	{ }
+> >  };
+> >  MODULE_DEVICE_TABLE(acpi, adc128_acpi_match);  
+> 
 

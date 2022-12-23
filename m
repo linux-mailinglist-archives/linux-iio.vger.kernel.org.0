@@ -2,46 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6CC265524C
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A340A655268
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 16:47:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236362AbiLWPlI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 10:41:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
+        id S230387AbiLWPrt (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 10:47:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236622AbiLWPkv (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:40:51 -0500
+        with ESMTP id S230251AbiLWPrs (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 10:47:48 -0500
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56FF4DE47
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 07:40:06 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E9AD28E14
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 07:47:47 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 3D2FEB820E5
-        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 15:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C3EC433EF;
-        Fri, 23 Dec 2022 15:40:02 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 34DB9B81FEF
+        for <linux-iio@vger.kernel.org>; Fri, 23 Dec 2022 15:47:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C3C433EF;
+        Fri, 23 Dec 2022 15:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671810003;
-        bh=U718eykJ43OjSiecxgzEEd2QIvz80VNFU4/iN2fKRYw=;
+        s=k20201202; t=1671810464;
+        bh=p1NhYbmIRnsdPGHapDpLQNESVQbHt9ZkLEhRtqOOoZE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=rTLQKvbU3yD/7h0qZXTixn75QGRdtHJ1slq1+9eBDtvzRlgTvdNawl5HLBV+AWVG0
-         tVFRn/GVEeTR9irUJSu36IX0WqiHvGSo0gGWeufCEzAgbby/M2727j1P19fkO0nr0N
-         S++XEnXZz4S19UgG1TwWlUnoip3dGsgARM67zL7gYS2qzMmBUeH9HrmegfbXqlORaH
-         io6adI4siZwc1QfuiqKIe7RSTY7oqCFQG00cHixMkCuiPAME41xaSTYo5e+S5Lc2tL
-         mqQcKCh40ZQFIPwH55UZUKxZbAkwEZuLCwGq3lePHy2I823qgzyuzlqV0wDfhw/Qfi
-         i6Rpu4TgoeakQ==
-Date:   Fri, 23 Dec 2022 15:53:13 +0000
+        b=cKdOD52H/y2UNt9b38Ow/7+IOUBS71gxySYtpAIK+WJtSFyHqzrBqHplH9kOtcPjq
+         RXi1oH4P6ltqtRvW9G2dPRJfAW/dKDG0Yvh8xrYyU3AGI+NfeQ5L0CJSJrQArAHNtk
+         CBFGoTWtCtk3cfbC9oTnyifGsoT9GMhhkNunF9c1hZpiHEiOJISY6qT5ZUtCbJlpDq
+         3WlkiUGxBzXRUdRdPPQIOqwHqJ06lRLgwpe3GqLtJA8o+O867lfLlcizA3FkgUE4Jy
+         +KRGRuFHOnIx0nCiX+ZeKKxpMNcxaB42mcW6rPtk2dVz9hTsX18PRa9jA44PCkXf1B
+         6zLIOlmQtm9CA==
+Date:   Fri, 23 Dec 2022 16:00:54 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     =?UTF-8?B?TcOlcnRlbg==?= Lindahl <marten.lindahl@axis.com>
 Cc:     Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
         <kernel@axis.com>
-Subject: Re: [PATCH 1/2] iio: light: vcnl4000: Make irq handling more
- generic
-Message-ID: <20221223155313.00a89322@jic23-huawei>
-In-Reply-To: <20221220214959.2289330-2-marten.lindahl@axis.com>
+Subject: Re: [PATCH 2/2] iio: light: vcnl4000: Add interrupt support for
+ vcnl4040
+Message-ID: <20221223160054.316c473f@jic23-huawei>
+In-Reply-To: <20221220214959.2289330-3-marten.lindahl@axis.com>
 References: <20221220214959.2289330-1-marten.lindahl@axis.com>
-        <20221220214959.2289330-2-marten.lindahl@axis.com>
+        <20221220214959.2289330-3-marten.lindahl@axis.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,201 +55,116 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, 20 Dec 2022 22:49:58 +0100
+On Tue, 20 Dec 2022 22:49:59 +0100
 M=C3=A5rten Lindahl <marten.lindahl@axis.com> wrote:
 
-> This driver supports 4 chips, by which only one (vcnl4010) handles
-> interrupts and has support for triggered buffer. The setup of these
-> functions is hardcoded for vcnl4010 inside the generic vcnl4000_probe,
-> and thus ignores the chip specific configuration structure where all
-> other chip specific functions are specified.
->=20
-> This complicates adding interrupt handler and triggered buffer support
-> to chips which may have support for it.
->=20
-> Add members for irq threads and iio_buffer_setup_ops to the generic
-> vcnl4000_chip_spec struct, so that instead of checking a chip specific
-> boolean irq support, we check for a chip specific triggered buffer
-> handler, and/or a chip specific irq thread handler.
+> Add support to configure proximity sensor interrupts and threshold
+> limits for vcnl4040. If an interrupt is detected an event will be
+> pushed to the event interface.
 >=20
 > Signed-off-by: M=C3=A5rten Lindahl <marten.lindahl@axis.com>
-Hi M=C3=A5rten,
+Hi,
 
-A few comments inline.
+Code looks good in general. A few readability related suggestions inline.
+
+Thanks,
 
 Jonathan
 
-
 > ---
->  drivers/iio/light/vcnl4000.c | 66 +++++++++++++++++++++---------------
->  1 file changed, 38 insertions(+), 28 deletions(-)
+>  drivers/iio/light/vcnl4000.c | 163 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 163 insertions(+)
 >=20
 > diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
-> index cc1a2062e76d..142d1760f65d 100644
+> index 142d1760f65d..61d18c404ea6 100644
 > --- a/drivers/iio/light/vcnl4000.c
 > +++ b/drivers/iio/light/vcnl4000.c
-> @@ -150,11 +150,13 @@ struct vcnl4000_chip_spec {
->  	struct iio_chan_spec const *channels;
->  	const int num_channels;
->  	const struct iio_info *info;
-> -	bool irq_support;
-> +	const struct iio_buffer_setup_ops *buffer_setup_ops;
->  	int (*init)(struct vcnl4000_data *data);
->  	int (*measure_light)(struct vcnl4000_data *data, int *val);
->  	int (*measure_proximity)(struct vcnl4000_data *data, int *val);
->  	int (*set_power_state)(struct vcnl4000_data *data, bool on);
-> +	irqreturn_t (*irq_thread)(int irq, void *priv);
-> +	irqreturn_t (*trig_buffer_func)(int irq, void *priv);
->  };
-> =20
->  static const struct i2c_device_id vcnl4000_id[] =3D {
-> @@ -167,6 +169,11 @@ static const struct i2c_device_id vcnl4000_id[] =3D {
->  };
->  MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
-> =20
-> +static irqreturn_t vcnl4010_irq_thread(int irq, void *p);
-> +static irqreturn_t vcnl4010_trigger_handler(int irq, void *p);
-> +static int vcnl4010_buffer_postenable(struct iio_dev *indio_dev);
-> +static int vcnl4010_buffer_predisable(struct iio_dev *indio_dev);
+> @@ -60,8 +60,11 @@
 
-Does it makes sense to just move the chip_spec array later in the driver
-to avoid this set of forwards definitions?  If you do, make that move
-a precursor to this patch as otherwise things are going to get very
-hard to read!
+...
+
+>  /* Bit masks for interrupt registers. */
+>  #define VCNL4010_INT_THR_SEL	BIT(0) /* Select threshold interrupt source=
+ */
+> @@ -138,6 +144,7 @@ struct vcnl4000_data {
+>  	enum vcnl4000_device_ids id;
+>  	int rev;
+>  	int al_scale;
+> +	int ps_int;
+
+Bit big for 2 bits ;)  Maybe size it same as register size.
+
+Also, probably benefit from a comment as ps_int isn't a particularly obviou=
+sly name.
+
+>  	const struct vcnl4000_chip_spec *chip_spec;
+>  	struct mutex vcnl4000_lock;
+>  	struct vcnl4200_channel vcnl4200_al;
+
+
+...
+
+> =20
+> +static int vcnl4040_read_event_config(struct iio_dev *indio_dev,
+> +				      const struct iio_chan_spec *chan,
+> +				      enum iio_event_type type,
+> +				      enum iio_event_direction dir)
+> +{
+> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
+> +
+> +	return (dir =3D=3D IIO_EV_DIR_RISING) ?
+> +	    (data->ps_int & 0x01) : (data->ps_int & 0x02) >> 1;
+
+Add some field definitions and FIELD_GET() to extract them.
+
+> +}
+> +
+> +static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
+> +				       const struct iio_chan_spec *chan,
+> +				       enum iio_event_type type,
+> +				       enum iio_event_direction dir, int state)
+> +{
+> +	int ret;
+> +	u16 val;
+> +	struct vcnl4000_data *data =3D iio_priv(indio_dev);
+> +
+> +	mutex_lock(&data->vcnl4000_lock);
+> +
+> +	ret =3D i2c_smbus_read_word_data(data->client, VCNL4200_PS_CONF1);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	val =3D FIELD_GET(VCNL4040_PS_CONF2_PS_INT, ret);
+> +
+> +	if (dir =3D=3D IIO_EV_DIR_RISING)
+> +		val =3D state ? (val | 0x1) : (val & 0x2);
+
+Whilst I'm sure this is correct, it's not easy to follow. Perhaps
+		val =3D state ? (val | 0x1) : (val & ~0x1);
+to make it clear you are turning on an off one bit?
+Also as above, some field definitions may make this easier to follow.
+
+> +	else
+> +		val =3D state ? (val | 0x2) : (val & 0x1);
+> +
+> +	data->ps_int =3D val;
+> +	val =3D (ret & ~VCNL4040_PS_CONF2_PS_INT) |
+
+It's been quite a few lines. Probably better to put that ret into
+a reg_val or similarly named field to make it slightly easier to see it
+is retained from above.
+
+> +	    FIELD_PREP(VCNL4040_PS_CONF2_PS_INT, val);
+> +	ret =3D i2c_smbus_write_word_data(data->client, VCNL4200_PS_CONF1, val);
+> +
+> +out:
+> +	mutex_unlock(&data->vcnl4000_lock);
+> +	data->chip_spec->set_power_state(data, (bool)data->ps_int);
+the bool cast is a little nasty.  Perhaps !=3D 0 is clearer?
 
 > +
->  static int vcnl4000_set_power_state(struct vcnl4000_data *data, bool on)
->  {
->  	/* no suspend op */
-> @@ -983,6 +990,11 @@ static const struct iio_info vcnl4040_info =3D {
->  	.read_avail =3D vcnl4040_read_avail,
->  };
-> =20
-> +static const struct iio_buffer_setup_ops vcnl4010_buffer_ops =3D {
-> +	.postenable =3D &vcnl4010_buffer_postenable,
-> +	.predisable =3D &vcnl4010_buffer_predisable,
-> +};
+> +	return ret;
+> +}
 > +
->  static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] =3D {
->  	[VCNL4000] =3D {
->  		.prod =3D "VCNL4000",
-> @@ -993,7 +1005,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chip=
-_spec_cfg[] =3D {
->  		.channels =3D vcnl4000_channels,
->  		.num_channels =3D ARRAY_SIZE(vcnl4000_channels),
->  		.info =3D &vcnl4000_info,
-> -		.irq_support =3D false,
->  	},
->  	[VCNL4010] =3D {
->  		.prod =3D "VCNL4010/4020",
-> @@ -1004,7 +1015,9 @@ static const struct vcnl4000_chip_spec vcnl4000_chi=
-p_spec_cfg[] =3D {
->  		.channels =3D vcnl4010_channels,
->  		.num_channels =3D ARRAY_SIZE(vcnl4010_channels),
->  		.info =3D &vcnl4010_info,
-> -		.irq_support =3D true,
-> +		.irq_thread =3D vcnl4010_irq_thread,
-> +		.trig_buffer_func =3D vcnl4010_trigger_handler,
-> +		.buffer_setup_ops =3D &vcnl4010_buffer_ops,
->  	},
->  	[VCNL4040] =3D {
->  		.prod =3D "VCNL4040",
-> @@ -1015,7 +1028,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chi=
-p_spec_cfg[] =3D {
->  		.channels =3D vcnl4040_channels,
->  		.num_channels =3D ARRAY_SIZE(vcnl4040_channels),
->  		.info =3D &vcnl4040_info,
-> -		.irq_support =3D false,
->  	},
->  	[VCNL4200] =3D {
->  		.prod =3D "VCNL4200",
-> @@ -1026,7 +1038,6 @@ static const struct vcnl4000_chip_spec vcnl4000_chi=
-p_spec_cfg[] =3D {
->  		.channels =3D vcnl4000_channels,
->  		.num_channels =3D ARRAY_SIZE(vcnl4000_channels),
->  		.info =3D &vcnl4000_info,
-> -		.irq_support =3D false,
->  	},
->  };
-> =20
-> @@ -1153,11 +1164,6 @@ static int vcnl4010_buffer_predisable(struct iio_d=
-ev *indio_dev)
->  	return i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND, 0);
->  }
-> =20
-> -static const struct iio_buffer_setup_ops vcnl4010_buffer_ops =3D {
-> -	.postenable =3D &vcnl4010_buffer_postenable,
-> -	.predisable =3D &vcnl4010_buffer_predisable,
-> -};
-> -
->  static const struct iio_trigger_ops vcnl4010_trigger_ops =3D {
->  	.validate_device =3D iio_trigger_validate_own_device,
->  };
-> @@ -1214,26 +1220,30 @@ static int vcnl4000_probe(struct i2c_client *clie=
-nt)
->  	indio_dev->name =3D VCNL4000_DRV_NAME;
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> =20
-> -	if (client->irq && data->chip_spec->irq_support) {
-> -		ret =3D devm_iio_triggered_buffer_setup(&client->dev, indio_dev,
-> -						      NULL,
-> -						      vcnl4010_trigger_handler,
-> -						      &vcnl4010_buffer_ops);
-> -		if (ret < 0) {
-> -			dev_err(&client->dev,
-> -				"unable to setup iio triggered buffer\n");
-> -			return ret;
-> +	if (client->irq) {
-> +		if (data->chip_spec->trig_buffer_func) {
-
-Whilst they may always go together, perhaps also check the buffer_setup_ops=
- is
-present.
-
-> +			ret =3D devm_iio_triggered_buffer_setup(&client->dev,
-> +							      indio_dev, NULL,
-> +							      data->chip_spec->trig_buffer_func,
-> +							      data->chip_spec->buffer_setup_ops);
-
-As a general rule, the buffer ideally wouldn't be directly coupled to their=
- being an
-irq available. The driver only allows the trigger to be used with this devi=
-ce, but doesn't
-prevent another trigger being used with the device (only one of the two val=
-idate functions
-is there).  So I'd kind of expect this block outside of the if (client->irq)
-
-
-> +			if (ret < 0) {
-> +				dev_err(&client->dev,
-> +					"unable to setup iio triggered buffer\n");
-> +				return ret;
-> +			}
->  		}
-> =20
-> -		ret =3D devm_request_threaded_irq(&client->dev, client->irq,
-> -						NULL, vcnl4010_irq_thread,
-> -						IRQF_TRIGGER_FALLING |
-> -						IRQF_ONESHOT,
-> -						"vcnl4010_irq",
-> -						indio_dev);
-> -		if (ret < 0) {
-> -			dev_err(&client->dev, "irq request failed\n");
-> -			return ret;
-> +		if (data->chip_spec->irq_thread) {
-> +			ret =3D devm_request_threaded_irq(&client->dev,
-> +							client->irq, NULL,
-> +							data->chip_spec->irq_thread,
-> +							IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-> +							"vcnl4000_irq",
-> +							indio_dev);
-> +			if (ret < 0) {
-> +				dev_err(&client->dev, "irq request failed\n");
-> +				return ret;
-> +			}
->  		}
-> =20
->  		ret =3D vcnl4010_probe_trigger(indio_dev);
-Does it make sense to add the trigger even if we have no irq_thread?
 
 

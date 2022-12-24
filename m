@@ -2,206 +2,105 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ECDE6553D6
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Dec 2022 20:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57292655714
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Dec 2022 02:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232592AbiLWTYg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 14:24:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37500 "EHLO
+        id S236456AbiLXBbp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 20:31:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232463AbiLWTYf (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 14:24:35 -0500
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CBCB1FF9D;
-        Fri, 23 Dec 2022 11:24:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=GpiRGOqycih7gHtk9sdXXKqEWZsp6P4vk6+7hqHyIGk=; b=nWYwtKMEonf0UMyQeaA604HFz8
-        NXSb8jrbmEOZ5VBiidmNKOJ9/Let48SezDUcRaPvIRn1T9/ZeJd8uaFEuK2uxIpbL3S58wmpdUvGQ
-        lMgRExNgXpIEl/T0Xs3cMW1q3EnPzuud1Aug6ArOc/a1pHyog2kYfkRB09Gnbln5ViwE=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:49008 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1p8nec-0004IE-L2; Fri, 23 Dec 2022 14:24:27 -0500
-Date:   Fri, 23 Dec 2022 14:24:26 -0500
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     hvilleneuve@dimonoff.com, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-Id: <20221223142426.fc43c5fe36d946e47c7bcfae@hugovil.com>
-In-Reply-To: <20221223145013.68f7344a@jic23-huawei>
-References: <20221222203610.2571287-1-hugo@hugovil.com>
-        <20221222203610.2571287-4-hugo@hugovil.com>
-        <20221223145013.68f7344a@jic23-huawei>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        with ESMTP id S236451AbiLXBbT (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 20:31:19 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F913055B;
+        Fri, 23 Dec 2022 17:30:26 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B41861BFB;
+        Sat, 24 Dec 2022 01:30:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67CDC433EF;
+        Sat, 24 Dec 2022 01:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671845423;
+        bh=lQ5K7ti7ooaQbz7h7OzPaF6tCLSFNqN5Idal7gXxsko=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=d73isXt/iWdpK4/g1qQbwgvgmV/X8UlOe/pxzB6fZvCrI4vwZLb4B0qTLIS4CHUZH
+         w1ru7JQen4J2vSGrqdV93U1alsTEKWGOmimbVKV2VICnubsLkT+4gcLQuPfUOsLc4z
+         MhKy0Bn8KiqGhXhUlVEWyWdygE3PufBPaia4FnRrZ/ZvvRAhXwC/Ppvxb3gDkjOSxC
+         jqXVc6J9KU6AcgUtLIbbx7sAu/501/cOHdSlFrGwrN2JAajXMrOogNSNkbE55dcGRs
+         d3fWRTsvU44dJWJ5ssYqRXT6/YDADc9Mzx5be5L3Ohh53NreimeIv3/mQtnSrCBIdu
+         sVJik0+sqTNmQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, lars@metafoo.de,
+        Michael.Hennerich@analog.com, jic23@kernel.org,
+        linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 20/26] iio: filter: admv8818: close potential out-of-bounds read in __admv8818_read_[h|l]pf_freq()
+Date:   Fri, 23 Dec 2022 20:29:24 -0500
+Message-Id: <20221224012930.392358-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221224012930.392358-1-sashal@kernel.org>
+References: <20221224012930.392358-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v1 3/3] dt-bindings: iio: adc: add ADS7924
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Dec 2022 14:50:13 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-> On Thu, 22 Dec 2022 15:36:10 -0500
-> Hugo Villeneuve <hugo@hugovil.com> wrote:
-> 
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > 
-> > Add device tree bindings document for the Texas Instruments ADS7924
-> > ADC.
-> > 
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> Hi Hugo,
-> 
-> Whilst you aren't using it yet, the binding should still attempt to be
-> a full description of the hardware, so I'd expect the interrupt line to
-> be part of it.
-> 
-> Otherwise, Krzysztof already covered this in detail.
+[ Upstream commit 3f4033a811bcd1a1f077ce5297488a5c4dd30eb1 ]
 
-Ok, makes sense. Added.
+ADMV8818_SW_IN_WR0_MSK and ADMV8818_SW_OUT_WR0_MSK have 3 bits,
+which means a length of 8, but freq_range_hpf and freq_range_lpf
+array size is 4, may end up reading 4 elements beyond the end of
+those arrays.
 
-Hugo.
+Check value first before access freq_range_hpf and freq_range_lpf
+to harden against the hardware allowing out of range values.
 
- > Jonathan
-> 
-> 
-> > ---
-> >  .../bindings/iio/adc/ti,ads7924.yaml          | 103 ++++++++++++++++++
-> >  1 file changed, 103 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> > new file mode 100644
-> > index 000000000000..5408ec95e417
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7924.yaml
-> > @@ -0,0 +1,103 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/ti,ads7924.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: TI ADS7924 4 channels 12 bits I2C analog to digital converter
-> > +
-> > +maintainers:
-> > +  - Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > +
-> > +description: |
-> > +  Texas Instruments ADS7924 4 channels 12 bits I2C analog to digital converter
-> > +
-> > +  Specifications:
-> > +    https://www.ti.com/lit/gpn/ads7924
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: ti,ads7924
-> > +
-> > +  vref-supply:
-> > +    description:
-> > +      The regulator supply for the ADC reference voltage (AVDD)
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  reset-gpios:
-> > +    description:
-> > +      GPIO used for controlling the reset pin
-> > +    maxItems: 1
-> > +
-> > +  "#address-cells":
-> > +    const: 1
-> > +
-> > +  "#size-cells":
-> > +    const: 0
-> > +
-> > +  "#io-channel-cells":
-> > +    const: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - vref-supply
-> > +  - "#address-cells"
-> > +  - "#size-cells"
-> > +
-> > +additionalProperties: false
-> > +
-> > +patternProperties:
-> > +  "^channel@[0-3]+$":
-> > +    type: object
-> > +    description:
-> > +      Child nodes needed for each channel that the platform uses.
-> > +
-> > +    properties:
-> > +      reg:
-> > +        description: |
-> > +          0: Voltage over AIN0 and GND.
-> > +          1: Voltage over AIN1 and GND.
-> > +          2: Voltage over AIN2 and GND.
-> > +          3: Voltage over AIN3 and GND.
-> > +        items:
-> > +          - minimum: 0
-> > +            maximum: 3
-> > +
-> > +    required:
-> > +      - reg
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        adc@48 {
-> > +            compatible = "ti,ads7924";
-> > +            reg = <0x48>;
-> > +            vref-supply = <&ads7924_reg>;
-> > +            reset-gpios = <&gpio 5 GPIO_ACTIVE_LOW>;
-> > +            #address-cells = <1>;
-> > +            #size-cells = <0>;
-> > +            channel@0 {
-> > +              reg = <0>;
-> > +              label = "CH0";
-> > +            };
-> > +            channel@1 {
-> > +              reg = <1>;
-> > +              label = "CH1";
-> > +            };
-> > +            channel@2 {
-> > +              reg = <2>;
-> > +              label = "CH2";
-> > +            };
-> > +            channel@3 {
-> > +              reg = <3>;
-> > +              label = "CH3";
-> > +            };
-> > +        };
-> > +    };
-> > +...
-> 
-> 
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Link: https://lore.kernel.org/r/20220922115848.1800021-1-weiyongjun@huaweicloud.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/filter/admv8818.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index 68de45fe21b4..fe8d46cb7f1d 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -265,7 +265,7 @@ static int __admv8818_read_hpf_freq(struct admv8818_state *st, u64 *hpf_freq)
+ 		return ret;
+ 
+ 	hpf_band = FIELD_GET(ADMV8818_SW_IN_WR0_MSK, data);
+-	if (!hpf_band) {
++	if (!hpf_band || hpf_band > 4) {
+ 		*hpf_freq = 0;
+ 		return ret;
+ 	}
+@@ -303,7 +303,7 @@ static int __admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
+ 		return ret;
+ 
+ 	lpf_band = FIELD_GET(ADMV8818_SW_OUT_WR0_MSK, data);
+-	if (!lpf_band) {
++	if (!lpf_band || lpf_band > 4) {
+ 		*lpf_freq = 0;
+ 		return ret;
+ 	}
 -- 
-Hugo Villeneuve <hugo@hugovil.com>
+2.35.1
+

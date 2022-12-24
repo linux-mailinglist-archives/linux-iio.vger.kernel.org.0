@@ -2,35 +2,35 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57292655714
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Dec 2022 02:31:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC32765575A
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Dec 2022 02:34:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236456AbiLXBbp (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 20:31:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59060 "EHLO
+        id S236758AbiLXBeX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 23 Dec 2022 20:34:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236451AbiLXBbT (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 20:31:19 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F913055B;
-        Fri, 23 Dec 2022 17:30:26 -0800 (PST)
+        with ESMTP id S236534AbiLXBdY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 20:33:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1925940829;
+        Fri, 23 Dec 2022 17:31:18 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B41861BFB;
-        Sat, 24 Dec 2022 01:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67CDC433EF;
-        Sat, 24 Dec 2022 01:30:22 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6DAC4B8219D;
+        Sat, 24 Dec 2022 01:31:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEE1C433D2;
+        Sat, 24 Dec 2022 01:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1671845423;
+        s=k20201202; t=1671845476;
         bh=lQ5K7ti7ooaQbz7h7OzPaF6tCLSFNqN5Idal7gXxsko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d73isXt/iWdpK4/g1qQbwgvgmV/X8UlOe/pxzB6fZvCrI4vwZLb4B0qTLIS4CHUZH
-         w1ru7JQen4J2vSGrqdV93U1alsTEKWGOmimbVKV2VICnubsLkT+4gcLQuPfUOsLc4z
-         MhKy0Bn8KiqGhXhUlVEWyWdygE3PufBPaia4FnRrZ/ZvvRAhXwC/Ppvxb3gDkjOSxC
-         jqXVc6J9KU6AcgUtLIbbx7sAu/501/cOHdSlFrGwrN2JAajXMrOogNSNkbE55dcGRs
-         d3fWRTsvU44dJWJ5ssYqRXT6/YDADc9Mzx5be5L3Ohh53NreimeIv3/mQtnSrCBIdu
-         sVJik0+sqTNmQ==
+        b=Dab2y1jhlmJsYcEdYCNXGOhE5ysHtaGVAdQKM5eIgQxq3pENJSaoi5kvqk1jjTMm/
+         6ZyV6l9nyccxQactqRv85dbAOYZKaQad1hbHYx3Dl5Z5BWXx05+lIdgJEeccQ1a3pq
+         XqNoD7+9ZLgaueGQ4UulAWbyA83v9y3IiB/O3+lN4sccT8TAE8dK8v3mingv/nCvLb
+         36xtLkbG4O1zyNbrrIvPSpa2np29n+XlbfZWNPe9MoaZNxkcD5Tv7QIEOUfW9MDV6t
+         95egpGZn++mFBfqYUSzyAkoNz2ZYGdSzZy2A8Tu0ZFeRMtcyGTCjVd+AW7EGaQeCCl
+         wWkQGOggtMJMQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
@@ -39,12 +39,12 @@ Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
         Sasha Levin <sashal@kernel.org>, lars@metafoo.de,
         Michael.Hennerich@analog.com, jic23@kernel.org,
         linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 20/26] iio: filter: admv8818: close potential out-of-bounds read in __admv8818_read_[h|l]pf_freq()
-Date:   Fri, 23 Dec 2022 20:29:24 -0500
-Message-Id: <20221224012930.392358-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.0 12/18] iio: filter: admv8818: close potential out-of-bounds read in __admv8818_read_[h|l]pf_freq()
+Date:   Fri, 23 Dec 2022 20:30:28 -0500
+Message-Id: <20221224013034.392810-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221224012930.392358-1-sashal@kernel.org>
-References: <20221224012930.392358-1-sashal@kernel.org>
+In-Reply-To: <20221224013034.392810-1-sashal@kernel.org>
+References: <20221224013034.392810-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

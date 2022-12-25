@@ -2,66 +2,67 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB39655814
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Dec 2022 03:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77073655DE1
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Dec 2022 17:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230160AbiLXCcF (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 23 Dec 2022 21:32:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38498 "EHLO
+        id S230054AbiLYQ4J (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 25 Dec 2022 11:56:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230505AbiLXCcE (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 23 Dec 2022 21:32:04 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF1195A7;
-        Fri, 23 Dec 2022 18:32:01 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id k88-20020a17090a4ce100b00219d0b857bcso6425818pjh.1;
-        Fri, 23 Dec 2022 18:32:01 -0800 (PST)
+        with ESMTP id S229960AbiLYQ4H (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 25 Dec 2022 11:56:07 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11BF7219F;
+        Sun, 25 Dec 2022 08:56:03 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id i7so8552922wrv.8;
+        Sun, 25 Dec 2022 08:56:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GX+qyGsc0p9ERUYOo7nTONHwRSdpCqjvBlXCvvUgAiY=;
-        b=Ni0nL8trQ/GcyMmugbzLyScoRy8/LWxdgSIxeFWu3XczTjfkr4o4IFUo+12B8PtfI5
-         sfwC7FxVPJ2tTBBrdIh69JvgJzZ4iIqbpCX60E1AhA7/Q6z5+YNc0Oet0JKiViGAE5Pc
-         o1SlgkNtFe1Uhq9iKQ7mUW1NJyiKqKInyNACdgmvQZMvoOkfIg9JFCkW4+HKYBDdE9dy
-         nx3+oaOcSkzwDqvIzyzYKAAZ1pf2Z2+wPCt8C6dZSGi9d3gGdR2yahl9jGPxIqK6JB8O
-         sqPXH1UKqQAs1CIN6ojlMOjKqq9i/g3bnKnuLZAiMosbQ9LzZfibwBo0FI7XY9bVJWB1
-         9gRw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UKSqG/HJfk7EMkIlt3NPe0GCcNup8Td9YliDtZjfqvw=;
+        b=enBJu3HxPffXruE6QnuHjd5KGX9mEafWooZkX3mBnWmB8mWcpbMVzT3nhYlbmfDTZo
+         6pUKg6rHm8/L9rjntWZIWNL+4cc8bC/PH2gsXhBNcOMZRSFCsiTU5PGh3zre5/znpH2w
+         cTOVPtb3ul5vNrI6IwaUc0bk1zvu6hRFmIFdLbrbCi9410J9LaYpDI8E+jaYnyTp2ScR
+         +YCCqKDZ74buxOepr/0mXn4srReKyJDLiswgm7Nw+vP07sG13oqZnbXtf2ERoJ3WFp6D
+         wchsyWduh6En8zxT7Bj+puDeriuSQl7i4dyUrceX8uwRgoCmYhX2B2xWK6mS5FUm21xn
+         KeRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GX+qyGsc0p9ERUYOo7nTONHwRSdpCqjvBlXCvvUgAiY=;
-        b=lspy/oI2a20JQ1oe9CTp/uEwm2rpX5Z5r8eJ1fJR0i2VJ5bS0W7Q0xXbbV6yJFB9im
-         i+kH0ka4KAgFbi+JKzPQTIpdBPIZB7qhpLrnmLwG8azkf8j4WsgGPWQbPP60bCdGehix
-         xPAD7o76y4yaQYv0CpmLz8SX3pMwPfSvTsRd1jXZzijDWkDlvwOl9xQ+yhKMWdiAEnNB
-         Demo512ppKpaioxfJ49YGNihdnu7gu7w0pnge9+j3MlBQhBQA4hjh7zX/WGRIb8E26XI
-         4k1d77oGEHtvIFs0zvISPJTkeL9nuVsVUkTrSR8/uODvbn4jfTpuu3BlS40UYLMlgUKm
-         98lQ==
-X-Gm-Message-State: AFqh2kqwfOtuyUyKyZl5eJapf7fYX9J5cfhGcVPUbLh0TK9411dUNJus
-        us6LiJ7cxM9Aj8rWfffkKSTPD0SUr1Y=
-X-Google-Smtp-Source: AMrXdXsRW+k6i7keBCvLhs7V77NwMATR/Sab+rClNQuMsRvzfyoRwxtMxUCqt2GADHBNJOyNW/8ogQ==
-X-Received: by 2002:a17:902:a708:b0:187:467f:c76c with SMTP id w8-20020a170902a70800b00187467fc76cmr11682112plq.51.1671849121449;
-        Fri, 23 Dec 2022 18:32:01 -0800 (PST)
-Received: from localhost ([121.99.145.49])
-        by smtp.gmail.com with ESMTPSA id q18-20020a170902c9d200b0018930dbc560sm3008598pld.96.2022.12.23.18.32.00
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UKSqG/HJfk7EMkIlt3NPe0GCcNup8Td9YliDtZjfqvw=;
+        b=1S6ciONcnTs+oqNnTwj5BA+6pv1phBb0Nrto1gUIYXokvhFC8tjizfJlZ/z/KKcHXQ
+         aqlYVFJzgxN1C9OR2x0MGZUrfhajN+O9RRzmEkyG/8ETRZE8klz2E1lF+pBWjiyqFMlG
+         sW34ZtTk0oxzLwlmUSp1P4ovJo6BLvNPtajcGai4PvIt34xbCHCBuM8G/7KTkcJUlLtF
+         ZVXLf/WsHeTX5ITx4CMJDhXpPa8zcQcD6dtl52Qs4+Gvq77wdnmWtpRRYGtnQpvSmOgo
+         TItGBrHoHQJRFHWkEiSeM0pbIw7RBnmM+NBeoS2XRcPQmtFeLDxTKf2dDconZt2D16Km
+         8bag==
+X-Gm-Message-State: AFqh2kpQH2lXsZJr38iU0Ens1oqfUPcmx4iDlWhZufq1u5+gYu/oI3G7
+        9m5NjmBZ6RV5wQbY16thzVBlutNHk2Q=
+X-Google-Smtp-Source: AMrXdXsyk2aWDLifDWvGx4eNtVdvR0lk0UuGc41MMF+rraQGcCpiv31pKMzdVtAa7YmV9wo8uuvfgA==
+X-Received: by 2002:a5d:5642:0:b0:242:5728:8f2b with SMTP id j2-20020a5d5642000000b0024257288f2bmr10651634wrw.44.1671987361362;
+        Sun, 25 Dec 2022 08:56:01 -0800 (PST)
+Received: from localhost.localdomain (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
+        by smtp.gmail.com with ESMTPSA id w14-20020adfee4e000000b002422bc69111sm9875243wro.9.2022.12.25.08.56.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Dec 2022 18:32:01 -0800 (PST)
-Date:   Sat, 24 Dec 2022 15:31:58 +1300
-From:   Daniel Beer <dlbeer@gmail.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Sun, 25 Dec 2022 08:56:01 -0800 (PST)
+From:   Angel Iglesias <ang.iglesiasg@gmail.com>
+To:     linux-iio@vger.kernel.org
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Paul Cercueil <paul@crapouillou.net>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ad_sigma_delta: fix race between IRQ and completion
-Message-ID: <20221224023158.GA254443@nyquist.nev>
-References: <63a01acb.a70a0220.9a08f.987d@mx.google.com>
- <20221223161659.7652c95c@jic23-huawei>
+Subject: [PATCH 0/5] Add support for pressure sensor Bosch BMP580
+Date:   Sun, 25 Dec 2022 17:55:28 +0100
+Message-Id: <cover.1671986815.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221223161659.7652c95c@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -72,80 +73,39 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, Dec 23, 2022 at 04:16:59PM +0000, Jonathan Cameron wrote:
-> > ad_sigma_delta waits for a conversion which terminates with the firing
-> > of a one-shot IRQ handler. In this handler, the interrupt is disabled
-> > and a completion is set.
-> > 
-> > Meanwhile, the thread that initiated the conversion is waiting on the
-> > completion to know when the conversion happened. If this wait times out,
-> > the conversion is aborted and IRQs are disabled. But the IRQ may fire
-> > anyway between the time the completion wait times out and the disabling
-> > of interrupts. If this occurs, we get a double-disabled interrupt.
-> 
-> Ouch and good work tracking it down.  just to check, did you see this
-> bug happen in the wild or spotted by code inspection?
+This patchset adds support for the new pressure sensors BMP580 extending
+the bmp280 driver.
 
-Hi Jonathan,
+Patch 1 introduces a variant enumeration and refactors sensor verification
+logic adding a chip_id field to the chip_info struct. This change is
+required because BMP380 and BMP580 have the same chip_id and values would
+collide using the chip_id as the driver_data value.
+Patch 2 introduces new preinit callback and unifies init logic across all
+supported variants.
+Patch 3 adds the logic to read measurements and configure operations params
+of the BMP580 pressure sensor.
+Patch 4 updates the devicetree binding docs with the new sensor id
+Patch 5 adds the NVMEM operations to read and program the NVM user range
+contained in the non-volatile memory of the BMP580 sensors.
 
-Thanks for reviewing. It was by inspection -- I'd originally thought
-about it and fixed in in a similar way in this patch:
+Angel Iglesias (5):
+  iio: pressure: bmp280: Add enumeration to handle chip variants
+  iio: pressure: bmp280: Add preinit callback
+  iio: pressure: bmp280: Add support for new sensor BMP580
+  dt-bindings: iio: pressure: bmp085: Add BMP580 compatible string
+  iio: pressure: bmp280: Add nvmem operations for BMP580
 
-    https://lore.kernel.org/all/61dd3e0c.1c69fb81.cea15.8d98@mx.google.com/
+ .../bindings/iio/pressure/bmp085.yaml         |   2 +
+ drivers/iio/pressure/Kconfig                  |   6 +-
+ drivers/iio/pressure/bmp280-core.c            | 617 +++++++++++++++++-
+ drivers/iio/pressure/bmp280-i2c.c             |  33 +-
+ drivers/iio/pressure/bmp280-regmap.c          |  60 ++
+ drivers/iio/pressure/bmp280-spi.c             |  23 +-
+ drivers/iio/pressure/bmp280.h                 | 115 ++++
+ 7 files changed, 815 insertions(+), 41 deletions(-)
 
-But since that's not applied, I thought I'd better put together a
-separate fix for the time being.
 
-> Given that timeout generally indicates hardware failure, I'm not sure
-> how critical this is to fix.
-
-Probably not very critical. I think you'd have to be pretty unlucky to
-encounter it.
-
-> Is this fix sufficient?  If the interrupt is being handled on a different
-> CPU to the caller of this function, I think we can still race enough that
-> this fails to fix it up.  Might need a spinlock to prevent that.
-> 
->   CPU 0                                        CPU 1
-> ad_sd_data_rdy_trig_poll()               ad_sd_wait_and_disable()
->                                        
->                                          //wait_for_completion ends
-> 					
-> Interrupt
->                                           disable_irq()
-> 					  if (sigma-delta->irq_dis) !true	
-> 					  else
-> 						sigma_delta->irq_dis = true
-> 
-> disable_irq_nosync(irq)
-> sigma_delta->irq_dis = true;
-> 
-> So we still end up with a doubly disabled irq.  Add a spinlock to make the
-> disable and the setting of sigma_delta->irq_dis atomic then it should all be fine.                
-
-My understanding is that the suffix-less version of disable_irq would
-wait for all running handlers on other CPUs (i.e.
-ad_sd_data_rdy_trig_poll) to finish before proceeding, which would
-prevent this from happening. Is that not the case?
-
-But now that you mention it, there is another small problem: in the case
-where the conversion doesn't time out, the interrupt handler will call
-complete() and then perform some operations on the struct
-ad_sigma_delta.
-
-This is always ok on a single processor, but if there are multiple CPUs
-there is possibly a brief period where both the interrupt handler and
-the waiting thread are accessing the ad_sigma_delta struct without
-synchronization between them.
-
-Not sure if that's really a problem in practice, but I think an easy way
-to rule it out would just be to move the complete() call to the bottom
-of the handler and make sure it doesn't touch the structure again after
-that.
-
-Cheers,
-Daniel
-
+base-commit: e807541c2b273677e82ef50b5747ec7ae7d652b9
 -- 
-Daniel Beer <dlbeer@gmail.com> http://dlbeer.co.nz/
-PGP: BA6E 0B26 1F89 246C E3F3  C910 1E58 C43A 160A 553B
+2.39.0
+

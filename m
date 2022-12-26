@@ -2,269 +2,296 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2967D65636D
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Dec 2022 15:33:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F5FB65643D
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Dec 2022 17:56:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232114AbiLZOdO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Dec 2022 09:33:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48312 "EHLO
+        id S232196AbiLZQ4C (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Dec 2022 11:56:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232151AbiLZOdG (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Dec 2022 09:33:06 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AE4663A1;
-        Mon, 26 Dec 2022 06:33:00 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id fm16-20020a05600c0c1000b003d96fb976efso5213624wmb.3;
-        Mon, 26 Dec 2022 06:33:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YYNAweZ1AcDlKrjIzBiejJuOGZWpzppFV/wft0OI8ho=;
-        b=o3J958Lu6aSZsc+6r3mYM2RsgrS5K+m/YBbCcmTXGvMTF/pzPcd4uznaW0qdQlAMiZ
-         HWKF9GGUd9QZ/Xy5iK/tIMhNJw5tejeR+ID6qqKY0+dtS+K4qAmPctCQC8j/HCtXo0Tn
-         fH2HTo7/orf8l6D1t7Rm28t+fnLyXelPrw9bsIVs1V5c77bhkkjGNNZQgDO7NGvUUnQ9
-         laKOTiFFS7BKoOrUVyH2iRe4sTy4MYSdJaxv1R+WBum3xqS5Fjm1PM1+YXcB6/rPTih4
-         sAL/HsymxTSeDw3b4aKCnhs9r9YLr21YJOb/nEf/PRi7JLrjUzjS19JdQXIKMBzI/AQi
-         A2YQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YYNAweZ1AcDlKrjIzBiejJuOGZWpzppFV/wft0OI8ho=;
-        b=L3JyaXJ18TuRvFUmp6U0rfDlEiSgLfHnAT+kHN1FNUmJNtPXtAbqspS0uH+fq15azH
-         or3BJhik5TGC9rc/gn4I0hb6IJwPCwREa3Sn0LB44zfBzzsSUR8EetqgCuDJ1OzPib1z
-         UglxRUUyo3ySgzdHmUR8PmdgKL7oqbU3c6stELDh9jSYR9QpPAJnjLVsU+xc56FgYicm
-         aVf/ixH+Lz7xgXXz2Rwf/spvOwNHudwDKteZbTutn/kgU6BExgNP2SLLSuDIcFQEkcc4
-         6uKsrpMw4P1HTg81FU4LqcY6sGfIIs3SStJuXGtbpGOnsedWYrnw7qDN8j1Uv1uqE7Km
-         11SQ==
-X-Gm-Message-State: AFqh2krOzIGAqqeOOEl3uqGq7bzc1nLWlPxLDVRkXsXretDbCFaY9E21
-        0axi54rHdkVRiaf5qE1Y5g7yvlW9578=
-X-Google-Smtp-Source: AMrXdXtsCMXh/CoWQCfZ6EuQvD71zX0Zljc1n+nF7nCN0pMw4i/kJmqDLisL9Ihd1Y14tFPAEwA51w==
-X-Received: by 2002:a05:600c:17c6:b0:3d2:20ec:24be with SMTP id y6-20020a05600c17c600b003d220ec24bemr13482551wmo.38.1672065178495;
-        Mon, 26 Dec 2022 06:32:58 -0800 (PST)
-Received: from localhost.localdomain (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id c4-20020a05600c0a4400b003cf75213bb9sm21511754wmq.8.2022.12.26.06.32.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Dec 2022 06:32:58 -0800 (PST)
-From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     linux-iio@vger.kernel.org
-Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2 5/5] iio: pressure: bmp280: Add nvmem operations for BMP580
-Date:   Mon, 26 Dec 2022 15:29:24 +0100
-Message-Id: <92664164d24cbd9c6541cdbd73b163dbf964ab68.1672062380.git.ang.iglesiasg@gmail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <cover.1672062380.git.ang.iglesiasg@gmail.com>
-References: <cover.1672062380.git.ang.iglesiasg@gmail.com>
+        with ESMTP id S232165AbiLZQzb (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Dec 2022 11:55:31 -0500
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A609F6413;
+        Mon, 26 Dec 2022 08:55:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1672073701; x=1703609701;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=SfZzdNV19bg9UmQpe6KYIZYymHxtUypJH/O7nO8s6g4=;
+  b=h31mID8Nj5IvQhElF9vkmX2MwemEqgYnIN6yGlU2CZyWEac6EvWXINt7
+   l5mr/uWh8P0XXMqpyY+DImnkCpzuQoiOLMHQNkjnGqMbt6mMQVAkvWg4z
+   hj+qhEZ5WAY5AFarg1LsBGlqdJ9qL67uPj6rUFbhHN0Y70lSuVLXgTXW8
+   rqQTxFviXwYYhJIIuAHkrPJNJDSzNLB+ShXcNPWJYa9GYJ/s3OqPVu6yD
+   idmnf7K4mV/AcO6GoTntodEJf3aM2/aWvOftu6AcpJLXRQRv1nfRoEGvR
+   9MlniTegoPbXWLjkxruZ33hcPBnYfy+hr1LAdqJpFRbQ79mQ4RMo4rCfc
+   w==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="308338533"
+X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
+   d="scan'208";a="308338533"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2022 08:55:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10572"; a="646205184"
+X-IronPort-AV: E=Sophos;i="5.96,276,1665471600"; 
+   d="scan'208";a="646205184"
+Received: from lkp-server01.sh.intel.com (HELO b5d47979f3ad) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 26 Dec 2022 08:54:55 -0800
+Received: from kbuild by b5d47979f3ad with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1p9qkZ-000EZN-0D;
+        Mon, 26 Dec 2022 16:54:55 +0000
+Date:   Tue, 27 Dec 2022 00:54:10 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     virtualization@lists.linux-foundation.org,
+        speakup@linux-speakup.org, netdev@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-xfs@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-media@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ c76083fac3bae1a87ae3d005b5cb1cbc761e31d5
+Message-ID: <63a9d1b2.869GAwHafmAB6R7M%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-The pressure sensor BMP580 contains a non-volatile memory that stores
-trimming and configuration params. That memory provides an programmable
-user range of three 2-byte words.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: c76083fac3bae1a87ae3d005b5cb1cbc761e31d5  Add linux-next specific files for 20221226
 
-Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+Error/Warning reports:
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 44901c6eb2f9..578d145be55d 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -28,6 +28,7 @@
- #include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/module.h>
-+#include <linux/nvmem-provider.h>
- #include <linux/regmap.h>
- #include <linux/delay.h>
- #include <linux/iio/iio.h>
-@@ -1628,8 +1629,140 @@ static const int bmp580_odr_table[][2] = {
- 	[BMP580_ODR_0_125HZ] =	{0, 125000},
- };
- 
-+const int bmp580_nvmem_addrs[] = { 0x20, 0x21, 0x22 };
-+
-+static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
-+			     size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *dst = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(u16)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_cmd(data, BMP580_NVM_READ_CMD);
-+		if (ret)
-+			goto exit;
-+
-+		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+				       sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error reading nvm data regs\n");
-+			goto exit;
-+		}
-+
-+		*dst++ = le16_to_cpu(data->le16);
-+		bytes -= sizeof(u16);
-+		offset += sizeof(u16);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
-+static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
-+			      size_t bytes)
-+{
-+	struct bmp280_data *data = priv;
-+	u16 *buf = val;
-+	int ret, addr;
-+
-+	pm_runtime_get_sync(data->dev);
-+	mutex_lock(&data->lock);
-+
-+	/* Set sensor in standby mode */
-+	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-+				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-+				 BMP580_ODR_DEEPSLEEP_DIS |
-+				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-+	if (ret) {
-+		dev_err(data->dev, "failed to change sensor to standby mode\n");
-+		goto exit;
-+	}
-+	/* Wait standby transition time */
-+	usleep_range(2500, 3000);
-+
-+	while (bytes >= sizeof(u16)) {
-+		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
-+
-+		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
-+				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-+		if (ret) {
-+			dev_err(data->dev, "error writing nvm address\n");
-+			goto exit;
-+		}
-+		data->le16 = cpu_to_le16(*buf++);
-+
-+		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-+					sizeof(data->le16));
-+		if (ret) {
-+			dev_err(data->dev, "error writing LSB NVM data regs\n");
-+			goto exit;
-+		}
-+
-+		ret = bmp580_cmd(data, BMP580_NVM_WRITE_CMD);
-+		if (ret)
-+			goto exit;
-+
-+		/* Disable programming mode bit */
-+		ret = regmap_update_bits(data->regmap, BMP580_REG_NVM_ADDR,
-+					 BMP580_NVM_PROG_EN, 0);
-+		if (ret) {
-+			dev_err(data->dev, "error resetting nvm write\n");
-+			goto exit;
-+		}
-+
-+		bytes -= sizeof(u16);
-+		offset += sizeof(u16);
-+	}
-+exit:
-+	/* Restore chip config */
-+	data->chip_info->chip_config(data);
-+	mutex_unlock(&data->lock);
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+	return ret;
-+}
-+
- static int bmp580_preinit(struct bmp280_data *data)
- {
-+	struct nvmem_config config = {
-+		.dev = data->dev,
-+		.priv = data,
-+		.name = "bmp580_nvmem",
-+		.word_size = sizeof(u16),
-+		.stride = sizeof(u16),
-+		.size = 3 * sizeof(u16),
-+		.reg_read = bmp580_nvmem_read,
-+		.reg_write = bmp580_nvmem_write,
-+	};
- 	unsigned int reg;
- 	int ret;
- 
-@@ -1653,8 +1786,8 @@ static int bmp580_preinit(struct bmp280_data *data)
- 		dev_err(data->dev, "preinit: nvm error on powerup sequence\n");
- 		return -EIO;
- 	}
--
--	return 0;
-+	/* Register nvmem device */
-+	return PTR_ERR_OR_ZERO(devm_nvmem_register(config.dev, &config));
- }
- 
- static int bmp580_chip_config(struct bmp280_data *data)
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 27d2abc17d01..e2a093a4f767 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -101,6 +101,9 @@
- #define BMP580_FILTER_63X		6
- #define BMP580_FILTER_127X		7
- 
-+#define BMP580_NVM_ROW_ADDR_MASK	GENMASK(5, 0)
-+#define BMP580_NVM_PROG_EN		BIT(6)
-+
- #define BMP580_TEMP_SKIPPED		0x7f7f7f
- #define BMP580_PRESS_SKIPPED		0x7f7f7f
- 
+https://lore.kernel.org/oe-kbuild-all/202212020520.0OkMIno3-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212041528.4TbQL9ys-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212051759.cEv6fyHy-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212061455.6GE7y0jg-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212080938.RHVtvwt0-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212090509.NjAl9tbo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212242239.hWUlGmm0-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202212250859.uLjFpJy3-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+ERROR: modpost: "input_ff_create_memless" [drivers/hid/hid-betopff.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/hid/hid-logitech.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/hid/hid-megaworld.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/hid/hid-mf.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/input/misc/drv260x.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/input/misc/drv2665.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/input/misc/gpio-vibra.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/input/misc/regulator-haptic.ko] undefined!
+ERROR: modpost: "input_ff_create_memless" [drivers/input/misc/sc27xx-vibra.ko] undefined!
+aarch64-linux-ld: ID map text too big or misaligned
+arch/arm/kernel/entry-armv.S:485:5: warning: "CONFIG_ARM_THUMB" is not defined, evaluates to 0 [-Wundef]
+arch/arm64/include/asm/pgtable-hwdef.h:82:64: warning: "PMD_SHIFT" is not defined, evaluates to 0 [-Wundef]
+arch/loongarch/kernel/asm-offsets.c:265:6: warning: no previous prototype for 'output_pbe_defines' [-Wmissing-prototypes]
+drivers/regulator/tps65219-regulator.c:310:32: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:310:60: warning: parameter 'dev' set but not used [-Wunused-but-set-parameter]
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    int
+drivers/regulator/tps65219-regulator.c:370:26: sparse:    struct regulator_dev *[assigned] rdev
+drivers/regulator/tps65219-regulator.c:370:26: warning: ordered comparison of pointer with integer zero [-Wextra]
+loongarch64-linux-ld: sleep.c:(.text+0x22c): undefined reference to `loongarch_wakeup_start'
+sleep.c:(.text+0x228): undefined reference to `loongarch_wakeup_start'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/accessibility/speakup/main.c:1290:26: sparse: sparse: obsolete array initializer, use C99 syntax
+drivers/block/null_blk/zoned.c:769 zone_cond_store() warn: potential spectre issue 'dev->zones' [w] (local cap)
+drivers/block/virtio_blk.c:721:9: sparse:    bad type *
+drivers/block/virtio_blk.c:721:9: sparse:    unsigned int *
+drivers/block/virtio_blk.c:721:9: sparse: sparse: incompatible types in comparison expression (different base types):
+drivers/block/virtio_blk.c:721:9: sparse: sparse: no generic selection for 'restricted __le32 [addressable] virtio_cread_v'
+drivers/block/virtio_blk.c:721:9: sparse: sparse: no generic selection for 'restricted __le32 virtio_cread_v'
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast from non-scalar
+drivers/cxl/core/mbox.c:832:18: sparse: sparse: cast to non-scalar
+drivers/i2c/busses/i2c-qcom-geni.c:1028:28: sparse: sparse: symbol 'i2c_master_hub' was not declared. Should it be static?
+drivers/iio/adc/twl6030-gpadc.c:955:16-23: duplicated argument to & or |
+drivers/iio/light/tsl2563.c:751:8-33: WARNING: Threaded IRQ with no primary handler requested without IRQF_ONESHOT (unless it is nested IRQ)
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast from non-scalar
+drivers/media/platform/ti/davinci/vpif.c:483:20: sparse: sparse: cast to non-scalar
+drivers/media/test-drivers/visl/visl-video.c:690:22: sparse: sparse: symbol 'visl_qops' was not declared. Should it be static?
+fs/exfat/dir.c:862 exfat_get_dentry_set() warn: missing unwind goto?
+fs/xfs/xfs_iomap.c:86:29: sparse: sparse: symbol 'xfs_iomap_page_ops' was not declared. Should it be static?
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-randconfig-r024-20221225
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arc-randconfig-s041-20221225
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- arm-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm-badge4_defconfig
+|   `-- arch-arm-kernel-entry-armv.S:warning:CONFIG_ARM_THUMB-is-not-defined-evaluates-to
+|-- arm64-allyesconfig
+|   |-- aarch64-linux-ld:ID-map-text-too-big-or-misaligned
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- arm64-randconfig-c034-20221225
+|   `-- arch-arm64-include-asm-pgtable-hwdef.h:warning:PMD_SHIFT-is-not-defined-evaluates-to
+|-- csky-randconfig-c033-20221225
+|   |-- drivers-iio-light-tsl2563.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
+|   `-- drivers-mtd-ubi-build.c:WARNING:conversion-to-bool-not-needed-here
+|-- i386-allyesconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- i386-randconfig-c021-20221226
+|   `-- drivers-iio-light-tsl2563.c:WARNING:Threaded-IRQ-with-no-primary-handler-requested-without-IRQF_ONESHOT-(unless-it-is-nested-IRQ)
+|-- i386-randconfig-m021-20221226
+|   `-- fs-exfat-dir.c-exfat_get_dentry_set()-warn:missing-unwind-goto
+|-- i386-randconfig-s002
+|   `-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|-- ia64-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- loongarch-allyesconfig
+|   `-- arch-loongarch-kernel-asm-offsets.c:warning:no-previous-prototype-for-output_pbe_defines
+|-- loongarch-randconfig-s043-20221225
+|   |-- arch-loongarch-kernel-asm-offsets.c:warning:no-previous-prototype-for-output_pbe_defines
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-from-non-scalar
+|   |-- drivers-cxl-core-mbox.c:sparse:sparse:cast-to-non-scalar
+|   |-- drivers-i2c-busses-i2c-qcom-geni.c:sparse:sparse:symbol-i2c_master_hub-was-not-declared.-Should-it-be-static
+|   |-- fs-xfs-xfs_iomap.c:sparse:sparse:symbol-xfs_iomap_page_ops-was-not-declared.-Should-it-be-static
+|   |-- loongarch64-linux-ld:sleep.c:(.text):undefined-reference-to-loongarch_wakeup_start
+|   `-- sleep.c:(.text):undefined-reference-to-loongarch_wakeup_start
+|-- m68k-allmodconfig
+|   |-- drivers-regulator-tps65219-regulator.c:warning:ordered-comparison-of-pointer-with-integer-zero
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+clang_recent_errors
+|-- hexagon-buildonly-randconfig-r003-20221225
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- hexagon-randconfig-r002-20221225
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- riscv-randconfig-r021-20221225
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+|-- x86_64-allyesconfig
+|   `-- drivers-regulator-tps65219-regulator.c:warning:parameter-dev-set-but-not-used
+`-- x86_64-randconfig-a003-20221226
+    `-- vmlinux.o:warning:objtool:___ksymtab_gpl-_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont:data-relocation-to-ENDBR:_RNvNtCsfATHBUcknU9_6kernel5print16call_printk_cont
+
+elapsed time: 720m
+
+configs tested: 89
+configs skipped: 2
+
+gcc tested configs:
+um                             i386_defconfig
+um                           x86_64_defconfig
+arc                                 defconfig
+alpha                               defconfig
+i386                 randconfig-a012-20221226
+x86_64                    rhel-8.3-kselftests
+arm                                 defconfig
+i386                 randconfig-a011-20221226
+x86_64                          rhel-8.3-func
+i386                                defconfig
+i386                 randconfig-a013-20221226
+x86_64                           rhel-8.3-bpf
+s390                             allmodconfig
+s390                                defconfig
+ia64                             allmodconfig
+i386                 randconfig-a014-20221226
+x86_64                           rhel-8.3-syz
+x86_64                              defconfig
+i386                 randconfig-a016-20221226
+s390                             allyesconfig
+i386                 randconfig-a015-20221226
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-kvm
+x86_64                            allnoconfig
+x86_64               randconfig-a014-20221226
+powerpc                           allnoconfig
+x86_64               randconfig-a013-20221226
+x86_64                               rhel-8.3
+arm64                            allyesconfig
+x86_64               randconfig-a011-20221226
+arm                              allyesconfig
+x86_64               randconfig-a012-20221226
+i386                             allyesconfig
+x86_64               randconfig-a015-20221226
+x86_64               randconfig-a016-20221226
+sh                               allmodconfig
+m68k                             allyesconfig
+mips                             allyesconfig
+powerpc                          allmodconfig
+x86_64                           allyesconfig
+m68k                             allmodconfig
+arc                              allyesconfig
+alpha                            allyesconfig
+arm                  randconfig-r046-20221225
+arc                  randconfig-r043-20221225
+arc                  randconfig-r043-20221226
+riscv                randconfig-r042-20221226
+s390                 randconfig-r044-20221226
+x86_64                           alldefconfig
+sh                          lboxre2_defconfig
+arc                               allnoconfig
+sh                             shx3_defconfig
+arm                           tegra_defconfig
+microblaze                          defconfig
+m68k                       m5475evb_defconfig
+m68k                        m5407c3_defconfig
+xtensa                              defconfig
+mips                      maltasmvp_defconfig
+parisc                           alldefconfig
+arm                          badge4_defconfig
+powerpc                     mpc83xx_defconfig
+sh                          rsk7201_defconfig
+sh                 kfr2r09-romimage_defconfig
+powerpc                    klondike_defconfig
+sh                  sh7785lcr_32bit_defconfig
+
+clang tested configs:
+x86_64                          rhel-8.3-rust
+i386                 randconfig-a004-20221226
+i386                 randconfig-a001-20221226
+x86_64               randconfig-a002-20221226
+i386                 randconfig-a003-20221226
+i386                 randconfig-a002-20221226
+x86_64               randconfig-a003-20221226
+x86_64               randconfig-a006-20221226
+i386                 randconfig-a005-20221226
+i386                 randconfig-a006-20221226
+x86_64               randconfig-a001-20221226
+x86_64               randconfig-a004-20221226
+x86_64               randconfig-a005-20221226
+hexagon              randconfig-r045-20221225
+hexagon              randconfig-r041-20221225
+hexagon              randconfig-r041-20221226
+arm                  randconfig-r046-20221226
+s390                 randconfig-r044-20221225
+hexagon              randconfig-r045-20221226
+riscv                randconfig-r042-20221225
+powerpc                     tqm5200_defconfig
+arm                         shannon_defconfig
+arm                         orion5x_defconfig
+arm                           sama7_defconfig
+x86_64                           allyesconfig
+
 -- 
-2.39.0
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp

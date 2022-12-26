@@ -2,74 +2,72 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CB0B6562A2
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Dec 2022 13:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F5465635D
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Dec 2022 15:30:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230365AbiLZMnN (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Mon, 26 Dec 2022 07:43:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48764 "EHLO
+        id S229580AbiLZOaK (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Mon, 26 Dec 2022 09:30:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiLZMnM (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Dec 2022 07:43:12 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0372DDB;
-        Mon, 26 Dec 2022 04:43:11 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id t15so1110182wro.9;
-        Mon, 26 Dec 2022 04:43:11 -0800 (PST)
+        with ESMTP id S229532AbiLZOaJ (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Mon, 26 Dec 2022 09:30:09 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D81F5;
+        Mon, 26 Dec 2022 06:30:02 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id o15so7615526wmr.4;
+        Mon, 26 Dec 2022 06:30:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Tnj5SsI95MjQUidBq1LKnLQZ8dpy3MP0SAOacrmbBMQ=;
-        b=ZIiZhQvBsrWvx1hdEGZfT2ocMYyjKCS3B6cIfPET0W5rHEDKO9EANz5Bnj8UocwGxs
-         Lm83C3blpWPXOTChmLAY6/xg2iovpq6FD/XD9ewtyx/LJTGUtyvwXqLbl4QHijWodKBs
-         pWv57H6uMcf3XfJtnEPytEnxMP1QJ+bgrQNon9n1qcUep0Q4deDbp1TbfkAc9RhPBqt3
-         bBWnEi7gmegKtzHc2d6BznXGD+XApXm9pbZFhkV1oyeU5y7vqT/y84XqLJOvA9Bpecqk
-         e1HFJDTW5yrjB54ajZbsywHOwLtFC+ExvG6FGpYgvP7PASbr6JqzNsjo8jXIoWQv1ziI
-         uEpQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VFIJomb/mQCAttQ+nb+AVnywnrRMyslLFJlDXuhv2cg=;
+        b=fGaA4uzxMk4aEwNMfCKwOq0qn3mEmABOnHLQSR2DVjHBqdH8/7aGzDyOxkI5D9o5lN
+         EWMtezM66uEgh5gCIQMZE6MsZrhukgUaM84SAY9efB1nLFFcwpTKMYytRQJOSlv2U5/n
+         Vt939tP2UG8qHhefdHWjPfY2+KNHYSK4KQZ4pPezoBLW/A33rwNTXiLm8PL7hr2IWX8x
+         gJ6Rmys6QcDv4EELHXrwKX8MW0WzGs6kV3ofCMyVs+HC3MX9ZZi3S0Dn/T8Me3j9l3AQ
+         WpnwndwuPViq2l4Z4LZ94Ph/s2Q2ZD+/PSZRfzFtfU/W5pI8UNhOPtuY7bjOd/wFiTmr
+         fF5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tnj5SsI95MjQUidBq1LKnLQZ8dpy3MP0SAOacrmbBMQ=;
-        b=0fciS/g4tA0kXZOF2954sHCkQ6478h3CNGijobgifR/jAjBcsiiynzxpY1+ofr5TAD
-         Lf12iZywIbgHLPrIqxzTMATlTYd6XTVp011OJdDnjTJKRniYX7BCmkKSnGKIufy37eIB
-         yO2uIdR4MP2+UG82Qybi1X64cyzawfCOM0MifSm34fnbuKoRDC1lMCuQdei8eABP1YHt
-         YKHME4xslswMP9rY+KmBeevdEE9eAaSevlMOEdMaI06M4sstcBC1IvbYVNPoZ2NzmRDO
-         AK+2+BA5cTibNN9Wr87Zu5BOryuP1zBqAsgfCWpuNxPvvrUsmyoFKdqCT1BUuaGs114U
-         O/Xw==
-X-Gm-Message-State: AFqh2koOPTHmB/GTSePztEOJFZFzxgzIJSwKeZNL+mNUL2CUf9eLy0qB
-        HngWSVUrLNcCpbeMbQoZkIQ=
-X-Google-Smtp-Source: AMrXdXshV3v94R0ghdyyjA99tfZWYTzC+OpiVzewoJXQGBsxADeNHflnwPuBtJt4JZmVvlyMUIS0kQ==
-X-Received: by 2002:a05:6000:80b:b0:274:c846:4211 with SMTP id bt11-20020a056000080b00b00274c8464211mr8564616wrb.54.1672058589986;
-        Mon, 26 Dec 2022 04:43:09 -0800 (PST)
-Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id f14-20020adfe90e000000b002365730eae8sm10273895wrm.55.2022.12.26.04.43.09
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VFIJomb/mQCAttQ+nb+AVnywnrRMyslLFJlDXuhv2cg=;
+        b=HOWYkCuaKYCF5XW4uxDg1oezNJl7GY2Twk1Fw86Vg5h9izEMH8IDyMd3AP/A6j8wzE
+         jaBcNhJyFW7Ad3qH4+qXHxa6TYuCQbrxvaNob7wK9I02IdwNUSyb3QoVs0naXR8ViyQI
+         J6Xnr6zMVNsNh4ENDST1pX9tEHjWJMLgx0KOdfQ59TpMEbifMVnEwr16n4lZmgj3/AmR
+         V5v+UYHevzSgOithQ6OB4MHi/GjkqB3cMXf5QzRnkPlX/ViRrA3IzdQ4+PIsZLGkSvVn
+         JOMuF9vYStEFkZDOILIJ+joaVWTb9V4ztDDhYHjhwzNBFsJO1o3gqfIVPY2bXuAPyYAK
+         x8TA==
+X-Gm-Message-State: AFqh2koGdzpf1ISwDa5SoeFGvnckwbI21AY/YURyjj76zyq07uoa8Xkd
+        N68H7quGlWR2uIt1UEXQsO5OdNXQmG8=
+X-Google-Smtp-Source: AMrXdXvK9iky3bReAaSSKV7dGYZpClFij6a/zVWGHSqaR5BZbrKVO0blUb/6gMSUUW8H2MjBsZzcNA==
+X-Received: by 2002:a05:600c:4e09:b0:3d4:5741:af9b with SMTP id b9-20020a05600c4e0900b003d45741af9bmr15961265wmq.0.1672065001066;
+        Mon, 26 Dec 2022 06:30:01 -0800 (PST)
+Received: from localhost.localdomain (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
+        by smtp.gmail.com with ESMTPSA id c4-20020a05600c0a4400b003cf75213bb9sm21511754wmq.8.2022.12.26.06.29.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Dec 2022 04:43:09 -0800 (PST)
-Message-ID: <9ba1d5781ee43096c2660799321b43184e9a0c76.camel@gmail.com>
-Subject: Re: [PATCH 4/5] dt-bindings: iio: pressure: bmp085: Add BMP580
- compatible string
+        Mon, 26 Dec 2022 06:30:00 -0800 (PST)
 From:   Angel Iglesias <ang.iglesiasg@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-iio@vger.kernel.org
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+To:     linux-iio@vger.kernel.org
+Cc:     Angel Iglesias <ang.iglesiasg@gmail.com>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Date:   Mon, 26 Dec 2022 13:43:08 +0100
-In-Reply-To: <6b533031-e46c-3c7a-9d7b-3118c5ab7219@linaro.org>
-References: <cover.1671986815.git.ang.iglesiasg@gmail.com>
-         <778a9d07ad1d88e036cc1ddd9c3fa53390b906a3.1671986815.git.ang.iglesiasg@gmail.com>
-         <6b533031-e46c-3c7a-9d7b-3118c5ab7219@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.2 (by Flathub.org) 
+Subject: [PATCH v2 0/5] Add support for pressure sensor Bosch BMP580
+Date:   Mon, 26 Dec 2022 15:29:19 +0100
+Message-Id: <cover.1672062380.git.ang.iglesiasg@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -80,29 +78,44 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 2022-12-26 at 13:05 +0100, Krzysztof Kozlowski wrote:
-> On 25/12/2022 17:59, Angel Iglesias wrote:
-> > Add bosch,bmp580 to compatible string for the new family of sensors.
-> > This family includes the BMP580 and BMP581 sensors. The register map
-> > in this family presents significant departures from previous generation=
-s.
-> >=20
-> > Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
->=20
-> I did not receive anything else - no cover letter, no rest of patches -
-> so difficult to judge whether driver is implemented the same way.
+This patchset adds support for the new pressure sensors BMP580 extending
+the bmp280 driver.
 
-Sorry about that. I'll need to send an updated version with a few correctio=
-ns.
-I'll be sure next time to send the complete patchset your way.
+Patch 1 introduces a variant enumeration and refactors sensor verification
+logic adding a chip_id field to the chip_info struct. This change is
+required because BMP380 and BMP580 have the same chip_id and values would
+collide using the chip_id as the driver_data value.
+Patch 2 introduces new preinit callback and unifies init logic across all
+supported variants.
+Patch 3 extends the bmp280 driver with the new logic to read measurements
+and configure the operation parameters for the BMP580 sensors.
+Patch 4 updates the devicetree binding docs with the new sensor id.
+Patch 5 adds the NVMEM operations to read and program the NVM user range
+contained in the non-volatile memory of the BMP580 sensors.
 
-Thanks for your time!
+Changes in V2:
+* For patch 3, fixed missing retcodes reported by the kernel test robot.
+* For patch 5, fixed logic paths that left the sensor mutex locked
+  reported by the kernel test robot.
 
-> For this patch only, assuming it matches the driver:
->=20
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-> Best regards,
-> Krzysztof
->=20
+Angel Iglesias (5):
+  iio: pressure: bmp280: Add enumeration to handle chip variants
+  iio: pressure: bmp280: Add preinit callback
+  iio: pressure: bmp280: Add support for new sensor BMP580
+  dt-bindings: iio: pressure: bmp085: Add BMP580 compatible string
+  iio: pressure: bmp280: Add nvmem operations for BMP580
+
+ .../bindings/iio/pressure/bmp085.yaml         |   2 +
+ drivers/iio/pressure/Kconfig                  |   6 +-
+ drivers/iio/pressure/bmp280-core.c            | 617 +++++++++++++++++-
+ drivers/iio/pressure/bmp280-i2c.c             |  33 +-
+ drivers/iio/pressure/bmp280-regmap.c          |  60 ++
+ drivers/iio/pressure/bmp280-spi.c             |  23 +-
+ drivers/iio/pressure/bmp280.h                 | 115 ++++
+ 7 files changed, 815 insertions(+), 41 deletions(-)
+
+
+base-commit: e807541c2b273677e82ef50b5747ec7ae7d652b9
+-- 
+2.39.0
 

@@ -2,65 +2,64 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 741E4656E8A
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Dec 2022 21:11:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 651C2657002
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Dec 2022 22:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230118AbiL0ULI (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Tue, 27 Dec 2022 15:11:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60196 "EHLO
+        id S231835AbiL0VgU (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Tue, 27 Dec 2022 16:36:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229488AbiL0ULH (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Dec 2022 15:11:07 -0500
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39F6EE67;
-        Tue, 27 Dec 2022 12:11:02 -0800 (PST)
+        with ESMTP id S230037AbiL0VgS (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Tue, 27 Dec 2022 16:36:18 -0500
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDDEE02;
+        Tue, 27 Dec 2022 13:36:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672171863; x=1703707863;
+  t=1672176977; x=1703712977;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=JZe9g/BRs1pwpm2oRodWlUNpn0uToVJhlchWGIMzD3g=;
-  b=EwC9wwpDavylPyP5o0Ldlob39zjFrwrG5bmg5Ez3lLwDClO1YHamq4eZ
-   XCnpkNqRW204vR/YCrBqlmY8HzbxHJrK/DD4bx4w0HqkPo5YyuKTZ9HqW
-   N3lJgkZQxMYjd2nph72A/NFNaf8fRQC7t8/an2qtPaggvqNZp5kDa+4it
-   y4qY7L5YtAHbXmsaH0re1FFbCKvChKtfHPGktQEv6LXo2MfVPfciU/xr6
-   t2lEV5+AJcs1K0L1LXciNbhBc+XutjjubtNa5lPB/v9GP6n1SZ8Z14Frc
-   Rpgn1rTa++MBhxC3yOVZ7MyRUl83XCRO/gSDkZNOhElfhCpOAUaI6/mGB
+  bh=imOmzEkUNHKYrCfC/7lqeotv82pgHCjFJwRPkSJr+0I=;
+  b=Bb6g0Lx6RVN6t+sWwFI15Hiy1cFsdoVS8BZa0xCjmpZdK2Kk4Ttp0FsE
+   mEgEvHxePeNO4J17j0v48WRYN4aWFm1zygmOj3mlkTrOM8Rfing749MV2
+   wVcd5XqaVs+eC+BaYdgJWWpAeB3z1c8xIugmmbhlKr521o1h34/pjFlmz
+   tFMIE9y7AMggYjA3jyF5Q/JH9oFIKr5lCekd/6zkvHxxHsu+NNWWvM8wL
+   Yx1dPSQ/Dmhh4c+AYj/b6GeHcZoDZ0XQsFsUMbilKFOfNMcSxHUEeWozx
+   KkfNWNaDWmvhAxY2KfLEHKbKTdZhw9SGtaCULOWpiAGqFFDBx0T6p0C38
    g==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="407017066"
+X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="383063081"
 X-IronPort-AV: E=Sophos;i="5.96,279,1665471600"; 
-   d="scan'208";a="407017066"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2022 12:11:01 -0800
+   d="scan'208";a="383063081"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2022 13:36:15 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="630774323"
+X-IronPort-AV: E=McAfee;i="6500,9779,10573"; a="716441008"
 X-IronPort-AV: E=Sophos;i="5.96,279,1665471600"; 
-   d="scan'208";a="630774323"
+   d="scan'208";a="716441008"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 27 Dec 2022 12:10:58 -0800
+  by fmsmga008.fm.intel.com with ESMTP; 27 Dec 2022 13:36:13 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
         (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pAGHo-000Djo-1C;
-        Tue, 27 Dec 2022 22:10:56 +0200
-Date:   Tue, 27 Dec 2022 22:10:56 +0200
+        id 1pAHcJ-000Gcx-2h;
+        Tue, 27 Dec 2022 23:36:11 +0200
+Date:   Tue, 27 Dec 2022 23:36:11 +0200
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Okan Sahin <okan.sahin@analog.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Ramona Bolboaca <ramona.bolboaca@analog.com>,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] Add MAX77541/MAX77540 PMIC Support
-Message-ID: <Y6tRUOwwrk5ZlD84@smile.fi.intel.com>
-References: <20221226225158.106055-1-okan.sahin@analog.com>
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: pressure: bmp280: Add enumeration to handle
+ chip variants
+Message-ID: <Y6tlS5lLkNO5PxhH@smile.fi.intel.com>
+References: <cover.1671986815.git.ang.iglesiasg@gmail.com>
+ <f0368a3f460707417110dffdb0166824da20af15.1671986815.git.ang.iglesiasg@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221226225158.106055-1-okan.sahin@analog.com>
+In-Reply-To: <f0368a3f460707417110dffdb0166824da20af15.1671986815.git.ang.iglesiasg@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
@@ -71,12 +70,27 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Tue, Dec 27, 2022 at 01:51:50AM +0300, Okan Sahin wrote:
-> MFD, regulator and ADC driver and related bindings for MAX77540/MAX77541.
-> The patches are requeired to be applied in sequence.
+On Sun, Dec 25, 2022 at 05:56:07PM +0100, Angel Iglesias wrote:
+> Adds enumeration to improve handling the different supported sensors
+> on driver initialization. This avoid collisions if different variants
+> share the same device idetifier on ID register.
 
-I have got only a single message, i.e. cover letter. What am I supposed
-to do here?
+...
+
+>  static const struct of_device_id bmp280_of_i2c_match[] = {
+> -	{ .compatible = "bosch,bmp085", .data = (void *)BMP180_CHIP_ID },
+> -	{ .compatible = "bosch,bmp180", .data = (void *)BMP180_CHIP_ID },
+> -	{ .compatible = "bosch,bmp280", .data = (void *)BMP280_CHIP_ID },
+> -	{ .compatible = "bosch,bme280", .data = (void *)BME280_CHIP_ID },
+> -	{ .compatible = "bosch,bmp380", .data = (void *)BMP380_CHIP_ID },
+> +	{ .compatible = "bosch,bmp085", .data = (void *)BMP180 },
+> +	{ .compatible = "bosch,bmp180", .data = (void *)BMP180 },
+> +	{ .compatible = "bosch,bmp280", .data = (void *)BMP280 },
+> +	{ .compatible = "bosch,bme280", .data = (void *)BME280 },
+> +	{ .compatible = "bosch,bmp380", .data = (void *)BMP380 },
+
+Seems an unneeded churn. If we want to have chip info, then provide a pointer
+here. And in case it's done later, squash into this patch.
 
 -- 
 With Best Regards,

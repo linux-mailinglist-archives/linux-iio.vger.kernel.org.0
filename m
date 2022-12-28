@@ -2,51 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D456574C3
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Dec 2022 10:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F10586574C2
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Dec 2022 10:39:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232554AbiL1JjP (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Wed, 28 Dec 2022 04:39:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
+        id S232562AbiL1JjQ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Wed, 28 Dec 2022 04:39:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232813AbiL1JjJ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Dec 2022 04:39:09 -0500
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2074.outbound.protection.outlook.com [40.107.22.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA53DDF11
-        for <linux-iio@vger.kernel.org>; Wed, 28 Dec 2022 01:39:08 -0800 (PST)
+        with ESMTP id S232819AbiL1JjO (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Wed, 28 Dec 2022 04:39:14 -0500
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2070.outbound.protection.outlook.com [40.107.103.70])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762C5F015
+        for <linux-iio@vger.kernel.org>; Wed, 28 Dec 2022 01:39:13 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R52f+FaA0QcrE5PgsZ/vCzQKJh4o9qku37vCsDAY1O7p1kGUBjcDXJ521INJ1C78bx70W+zGmQtgfioSrgeEThIEwycHJW5iubZic/fYQZpA6xCH0OZ9TQF0s9gH0YYVzEt/A9wvPeRC8clRyG5iCvcic3lv8ZZaG4TrmtyimHk+n5k50rPQ5t0vMGlrF8PI6MzIUQHojwyIHEl3N+B64cZ/yfIx4nCGeZPlvxodgBmp6rUrxMMHCoUMFeTrbnOHQNaqXckQUKZr46WunU0gBFxcWCuLzPx7D+i89G+K0z1joGiX9LsLJjebqpoOT0HfmgVAjz87R0nFmKpkLLLG3Q==
+ b=UxgZR2Q/5qEasjWQgkOUvVQImmwwl7TOpX8R99MyhLzxCb8/7QOKQYTcYsuHctthUxdWd2eTp8alMcTWBA+w1QVhG8rNSkijwu/VuEwSj1NaF2QfdH4GcJv8kgqbKk2nUMm6sXCUTlyhChUC2X2Xsys1HGJiOCka0MQxaokJGUIuQXS+xwvdbux7p5WCtCJ/Bt6xK4+i6hfqmCjLSVnqjes5aJueDTWnpIi0EIw9IcyM47qSGhoE6fN7yCCoosTtJy/vg/2RIZ5+RGOnjxUsCH5514oGs5wRfNIZ5mTuz8JNu38uQd8nqpWlPADH9LWgdiIJ9Rz5mA59gQgb3S04Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WIhyZryQxFaQMbqpvTPAfPJDo2jCPPhJp5rmu/3JlhI=;
- b=kkEUr+vDZJNHtrcjzywhcWtDs1uNWlKmFShNL+1ytKVzo0DqCGumAaGi8IX/I7rWI7dIZYcuGvrTIqiLfjYYbBrjt0wC2uysFWIuajSQpKYjNl4psHRpt0OBHOOa+wkWtiq2aVCNUEz4KIKtnJ5I4h5SDJsKx17QYyKZOIbHa+RG0+cJMHTKHZ/mi+aqOy7CYgSTbTQ0t2PnN/Qt1uky8gkeMaqQCcxV1qR6IAunoLt2zD6WiOAtjbvdQjZk2sKxk4t21mQc4xz12QSJJ18AKytsLSqPx6LFccZSLsn0drtZbymoaFypzo2Htmxguq7gpHDDGZ4hmVtHO+hLBuN+kw==
+ bh=TgXC0Z3/M2gPBYpPr4l3jOhdS4KGeH6Tl2udpBH5iwQ=;
+ b=DNDs4j8aijnGNmhvM7p4sz+SZgFrke89IXiq0XSApKdVH6/XwtBGKYL3CUzNUyTpXvIsP4dI4SKStqresrQxTyzbzV8wRLF3SwH0Gi+UGz5NDDdJjbB0B92md9JPI8NHiUDelQ3XAWRcAbT8DBRDRWXIbw/J7jtKg83+EsagnIx7XHm3HZ7JvxBCSd510Q1xMfFMRSBsZEfhozJpmdMNm0gSrX6Xh7j0Hwaiz6+wFmo1heYv5sjpvXY+L6zc0oaNtuWOok5+c0uVM58W1qrkRufJ1WXoEfafgbtO469WdE0PsbrsJdOVuJEbJak7aNI+AVwUWGxsfFHkQZBnZAn+yQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WIhyZryQxFaQMbqpvTPAfPJDo2jCPPhJp5rmu/3JlhI=;
- b=knQbm4M6KbXJ4/YxgaOCBYT3XspIuQn3Pu8Jlx2VWCnGHACztWE9a2Elr28NfbOhjWCReV7X4+1fXW270jVk/YRhE5O1hSxxlBCgtwjit5eiJKE4c639o0yoZ+ahrQdTuTyDzyp3dEK+5HdsrXEQQzngIbs811tzEcsKV8EiAoo=
+ bh=TgXC0Z3/M2gPBYpPr4l3jOhdS4KGeH6Tl2udpBH5iwQ=;
+ b=Qm+nsHG2yP+E8LoCvP5Ntdwm0fJ/HTq781xZI6OfUQBSM7olOeW7mK5MXdrhq85IPyZDHbenV8Jd7Q1yNzj8f57NLEONaJPA4yYxG7bkBCJlQzqKO1HfWnD61CcMEvqpy3eUF6jMqAJBK+OZzdV6SuSJAjEE5oDI2C3E+DtOPbU=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from VI1PR04MB5005.eurprd04.prod.outlook.com (2603:10a6:803:57::30)
  by AM9PR04MB8177.eurprd04.prod.outlook.com (2603:10a6:20b:3b7::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.16; Wed, 28 Dec
- 2022 09:39:07 +0000
+ 2022 09:39:10 +0000
 Received: from VI1PR04MB5005.eurprd04.prod.outlook.com
  ([fe80::e2d1:cb8b:dc57:8749]) by VI1PR04MB5005.eurprd04.prod.outlook.com
  ([fe80::e2d1:cb8b:dc57:8749%3]) with mapi id 15.20.5944.014; Wed, 28 Dec 2022
- 09:39:07 +0000
+ 09:39:10 +0000
 From:   carlos.song@nxp.com
 To:     jic23@kernel.org, lars@metafoo.de
 Cc:     rjones@gateworks.com, Jonathan.Cameron@huawei.com,
         haibo.chen@nxp.com, carlos.song@nxp.com, linux-imx@nxp.com,
         linux-iio@vger.kernel.org
-Subject: [PATCH v4 1/4] iio: imu: fxos8700: fix incorrect ODR mode readback
-Date:   Wed, 28 Dec 2022 17:39:38 +0800
-Message-Id: <20221228093941.270046-2-carlos.song@nxp.com>
+Subject: [PATCH v4 2/4] iio: imu: fxos8700: fix failed initialization ODR mode assignment
+Date:   Wed, 28 Dec 2022 17:39:39 +0800
+Message-Id: <20221228093941.270046-3-carlos.song@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221228093941.270046-1-carlos.song@nxp.com>
 References: <20221228093941.270046-1-carlos.song@nxp.com>
@@ -58,50 +58,50 @@ X-ClientProxiedBy: SI2PR01CA0030.apcprd01.prod.exchangelabs.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: VI1PR04MB5005:EE_|AM9PR04MB8177:EE_
-X-MS-Office365-Filtering-Correlation-Id: d086c384-fc3c-48e0-c37a-08dae8b75dad
+X-MS-Office365-Filtering-Correlation-Id: 7d7c9863-623e-47f7-451e-08dae8b75f5d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uQlOSp7MAvbM9jqvVyxbxJO7t9GlfpZgw1BHBbdd7zFPDtIeni6Cxzna23DX0vYUuEzt/oaq92vCz86IunRIIZDJ7hLkocjW1ikmCjOn58SuIMtLBPYoc6mlRrJ0TehldQI6UEwsFZz8A/HDl3MqOFYaP5F9/VoORqOMkczaN7icPOaM+aomsmw6EkdQDHtV0pnhsIE7JWbG20Pfh1cZyx5Gace9K7h1IDxkwfQixaq0fw0NDFwXwHiL9H8fx5oj/9DCiILbvNydTQGruF031hzJyUhGX6mk6XemSBoFbEUDp2Flxe9uvE8AmR+ca56XNvD5ulfeObNm3KopEhhyIeWvhRu4IdvQudCSfp5utreGJG71lDw9D98qPuK2WRzwnCJiJzWOW+DEyIvVnd41QiQU4pUHS+MC7cfX/5OEh7Y8A13uTuXIYeAY5p126ygzRD+1HK9cARBd9DK3+KANj4VdpXOicJLfh26riTuq2okIRtI5+1ZvQfuGnlUONhYFMIo4aV/lVCWVUYuORaRWvJI7VtXJAD84SSdOQ+KvvZrD8ypaMve2Kzmvp7GyVpmO4nxWuGbSHytqjDNm8Hz7rIGoTyvmRmdfp3fDffUcvAFtaPYCIF75SkGL5GD7EZwfRE92/iW6kY7OahSGHxFKM0V9uSTOiriFOsGnxzb7U5oT/nZcx77SB6ZaJLFM38dg2FvR0eUvJXVRRY7+Hdas5A==
+X-Microsoft-Antispam-Message-Info: GRa2ncO/69cnGIruqQ4WEADhpF+69xnj2RDLIUByRqLZKrQQlweP0jGR7Wn4dE1WWolV7cCqR55Hw3lanQ+omcs5Dl87NTYGnQwr5cYbUydMKTG2UAdLJG4W9JALNcgO4M66d/oiRJfDMML2Ip4QMRIzoa8JAFzrXjd95YuzS08Jlb9u07CdiGNTJHHdSMdRdn+yrtcGA8nId7RQ79xoecMSj6ajqD6duuUY2/1DWtiS0p4p/UVPb3uCAE80C+dC/qbJHUKA1PVzLPNQKktGzJq/kmSkURhQvAsM4QbcgXu3vvi/7K4sNZ+ZVLybDvQSQP2hzUw/KmvcZhfayiYWJYrWAEN80OCFyVRHGOGhNk9V7N4TM3Aok6lpM3GcJ4FJtcfWFgCS5fPZzVtmPatmQZhmuT5nx3N4y9s6XJVvnWeeYHNomOrggymyTuW8xj25Egv1VdXkv1w0hgAGanyaH8ClGwVA2l+CPhV4AZDGv5qoDSsReb8HYDPvxZUfFL/blu8luCHaTtiuhYeDPjgdz01A0ZI4msTSGzgQrN9VSaPi/z993gCaILFn6hob5iRKzcGdXjHywKBTrOsrvFhZP2L+f3xymPV2kWg8dt6IINBzlg6GHxriWLLM0dMXc1814yIVS4Im6qvkFcd+B4M9Qj+Y1tsfqncJv99KB2r853UtUtm79w2WnNTcdREowURA53UBlrdKdySGJQ9BD3J5Gw==
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5005.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(39860400002)(366004)(346002)(136003)(376002)(396003)(451199015)(66476007)(66556008)(4326008)(8676002)(8936002)(86362001)(5660300002)(66946007)(41300700001)(36756003)(316002)(2906002)(83380400001)(52116002)(6486002)(478600001)(1076003)(6666004)(2616005)(6506007)(186003)(26005)(6512007)(9686003)(38100700002)(38350700002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?fvfRCVm0KLk1KGqt4j/3KaM1xsdzqlVlkpGG4B5uPzkkrUZi/H36WN5IGsQ+?=
- =?us-ascii?Q?Kb+NPRAz0971e/D/znwknvhtLDgsB7VNXFtS17xXSxgBH2SzZT5auzsRaCJB?=
- =?us-ascii?Q?FQcs5cetCRkdrEP+Fxb/ZEeoBSz8g91nVk07KA4DqShW8DhqcY7XyB+lCo5y?=
- =?us-ascii?Q?vtl/erKIVDFQeeNBIqwv0BRJryzlXGLQyBwDUTIzx+qgEXMSCXStG4ufZZWf?=
- =?us-ascii?Q?4d2RPXnHJMPXNcwpa6brxWXRHS/+vZxWDhYE7LbIOOazQc8z4lTTnMh0Fca+?=
- =?us-ascii?Q?4RZK3tpZHGKuwjI7DG8u5OQ0993wjnUpmkrHwkL2GB9xLwtlyHXf9p0ptpPN?=
- =?us-ascii?Q?cwfZap+Ukc9a12qeF9l6miZx5i6E+GDP7Ml//0P1IsCC/w2++w7Z1p5wrv8F?=
- =?us-ascii?Q?y6QyhyRXOSjFViuK0GrkdIwDh9aFRIrVq+P/JO1s2UHkCN/kVY7fSq3MYmjv?=
- =?us-ascii?Q?cIYXo860HL1vUMJ7rhzlzdgEuKs+wzgJ0DqjOo/MtkpjbQ8eZy/+MTbjJET/?=
- =?us-ascii?Q?7lVB1c37GQ9r4dUiqTg6kVVcsheRgpOM0tk4xeGGg2CkMbCjjht8MLHTwBD6?=
- =?us-ascii?Q?shWqp+yTWS2Jx4hdJsN+bscl2ZdHjaAHtFgSYU3MIsWWgMEDodBkPhXSx+mp?=
- =?us-ascii?Q?NgZB+CdkTi7K9yGe5uNHiQaCU+wNsIU0c93PD6/jHFlhsmGWWVf9As84pKEW?=
- =?us-ascii?Q?8ydJRzBmYwg2iX2mSBIytNmh85cVvDiEoe0rudnOjCRjrzGvUl0qmMKA/n9l?=
- =?us-ascii?Q?eIeWbyais3s/FIjS1mJBrOUmfUNcxxRRrSMzpKbFVSRg6ZSR76E/15+xzj5f?=
- =?us-ascii?Q?T4GPsILKoA2HWi12TYpowc4Nh0WZzQh+s+LiMDPeky+mDqlcV+5QozdONpJT?=
- =?us-ascii?Q?j7zbI8pWAbV/sS7OvDffwtWUYdm6agg2gv9wJVW9uplLVescEDhV39kEX0Qv?=
- =?us-ascii?Q?FhGbQJ1JoY6Pdczf86DFp19efs/KiF+NLaA0XQSMeu7gky/vhaZEYgTWxrfw?=
- =?us-ascii?Q?htSo37z+h6rWEIsPD7SGValjgvKKqrdjkGBhvj93Vy2dNYIEKfP8moLQeMRm?=
- =?us-ascii?Q?udSitEW7lbduY6SkN+kYF8fCTqEHUqb6dx8+7MR3XKwAQj3WFn/P6Xkw8iKO?=
- =?us-ascii?Q?Ob1DdkaSmZ3aj+ahicZN2hRsSjeG6VJoXXkeTS5yanE11HdG//Qmo7wMNLOf?=
- =?us-ascii?Q?e0MQ5beicA7QHhsaEryU702yI86T33x7S7PSIEzn52drTkU87whFinWZqqRo?=
- =?us-ascii?Q?UmmXnhW382Fvt+AfShKYT9TQgV3lNoLTJnYJkYNW5ZhOwHjs4yHA96VtjA+i?=
- =?us-ascii?Q?0L885pwtVio4mD9hE0qP2fzCfTwIh6h1kBlOPqLBgBhgcOC2+Pe6V2TeTXUh?=
- =?us-ascii?Q?gp6kUnvPPQ5o1F4TAnm/TW4AAtqHbdK+HGtKb7lzc75srzXPmTC3701QVIgr?=
- =?us-ascii?Q?Asjoq4goxfHq2U7QOMj7YRAlEFGYeANiCYJLDUP+i7VfEd4p/neQ0CDz/ykC?=
- =?us-ascii?Q?wNjJM9tQMsTzMDvKhV5+z1OjzxLarJJgSeq63n01hyVR8og10YTUcF7OcW4U?=
- =?us-ascii?Q?TdxfNnwXhr7Sc+cIUUyFnY1wuD9AxwY3Tp6PYz0w?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B+0bxaVZ9ZDqUy2NcrJiHW5MMG+2jeW5cy5zotvXeyzP3g8Rzu2JGqZEExPS?=
+ =?us-ascii?Q?9NdtjxWvOYYH1dnxPlsrse3WCHpesoI8BSebKUCCDzCP6T35VZJYjtSftpZn?=
+ =?us-ascii?Q?zj6CKwUFFBoMaGywy1o/z7abUNpksiYc8GL9rDCgA3WEr8R9Wr+lYdimYKK8?=
+ =?us-ascii?Q?DrW4GQVr88jFfmivYrTGi7hy4sQeMlMXrETy4waiFM70PulqL8I8gsIVBwCj?=
+ =?us-ascii?Q?6HWgUD+NmVwNRcsb+PiZzOgGdbv0k/PkahIAZaRJ6tzNvAQmT4JghCk6bmRg?=
+ =?us-ascii?Q?95Nuw5XvqbA8Muhbj54pLy4pZDryh+T28e3OnkRbgdfQ/p7umb62bTCA0BzP?=
+ =?us-ascii?Q?N2rXrbt/78EqhC5mniAmMX1weqLhkafPCHWWehx3NlMAloon+eIyT4vQTE3f?=
+ =?us-ascii?Q?UnuHVukuRN8FAup/1dq3W/FSTGvPTGc+zfl5lLSqMyvSgvGxu/fGhCPPxwhm?=
+ =?us-ascii?Q?7Ta/e+8RG4/DrCNa8Stbb4fYbEdR5RCHChGTrZBX5A7cSaRFEbCvgIlTgYs+?=
+ =?us-ascii?Q?qLudGcmPKCbsO6nmlsfaNvLJ344Q+7HUJ1Jw5kaccYoqr9J5BIMOeQXSXrBX?=
+ =?us-ascii?Q?u6f89pujVH7H5kW34Ek9F5BtC/pWdIk+Vnd8rK1C+fDF4yo+JmbWmmrlt+1D?=
+ =?us-ascii?Q?rVC0HFrEzzZYDLIPev4sFHj/dUX9Yulye3VoUTy0SmWwP2sP9Z/EGWG+XneT?=
+ =?us-ascii?Q?WWgfuMo5IyYKxvpqKqNexbtKQGzzbnT30CAg+9sRJloWNtmYxBskZpaKI/p/?=
+ =?us-ascii?Q?/caSLCua5vKuUeODMac87dU4D/EIrf4WsoBqkKXf2AUiwy/uOJM5Pqm6+RZx?=
+ =?us-ascii?Q?J46M5YXfu/VFwEXBO1t5hsw7lbKfQZ1MfM2pm7OZTKlZhhZSHuhjjgbV+iqt?=
+ =?us-ascii?Q?ThQWOCRpU1qyrapfgHyHmlNcjk5dI/ucJpn9DsfJU/x66SQPaROSK9APu5fL?=
+ =?us-ascii?Q?QzLKFLmmmF7QH1LPykD7hwYqt/ZO3EwJCgdHLz+4YkJEDHZR8XaqWkzAsUPP?=
+ =?us-ascii?Q?JimDRkHOTR58KXRPr3+tEdfTwr42chFQexHtt0/TrRuVi1e6DH7msaXxrkT7?=
+ =?us-ascii?Q?MwvBWVwGL1aVJXld4y6DxVRsS3VD5KE+o8/vOg+OzkpzMQNaDb7erb10H4l3?=
+ =?us-ascii?Q?tHqIXhXK7rQrmodQCvRABmy5SjezwubkJEhaBqL4qS4xjNehcQYyMT2AXBYV?=
+ =?us-ascii?Q?CywWkBVwZsaRgq2KNyew8RmJ5/BDnwse2enL4K3zOw5Rju3k7IxHtiangxVw?=
+ =?us-ascii?Q?Mx3aHRz8rcQyn1ZUnClhIivPiWGXy0vL03PSChiiMpJTBzJyLKAo2JI84FPw?=
+ =?us-ascii?Q?gNwTnlpdkrKLTLWc/FES6awsDx/g3Mv7CqOS9gQmi4o9Lbo4nF9ow7TB8jLK?=
+ =?us-ascii?Q?JQxwMoYhxk6c5PznhPztyH4bOqG49Qzqz19KDXN6Z44LPEMlTatMLJiDR5pz?=
+ =?us-ascii?Q?icKEjmLJV4eRBDuoaU/Xjcz8g1qMf1DHH85E6lA2AExTHfGHQKuaYCxSwC9W?=
+ =?us-ascii?Q?2IYRPOQVtBp5mF4TCKl1wSA5cxng7EMhS4CZMe4VKEylncRKbR1gDz1PcXuM?=
+ =?us-ascii?Q?gT2RvjDqvHMYlJkZoJtLeHCmrl4Pi2e1fzMZ505n?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d086c384-fc3c-48e0-c37a-08dae8b75dad
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d7c9863-623e-47f7-451e-08dae8b75f5d
 X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5005.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2022 09:39:07.7174
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Dec 2022 09:39:10.5453
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5BGSs4IFYqSdnPQyLJECnhNaxO10+2pIGmLhdENSGDRCyz8NS2Vw/olHBWTh6cqvcCf3s7cMADb1zWYW9zVNyA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: bSDAHqAwLLICPIW07YTA+e93zm4DbTMa3E2TXtE6jhmEX2vYYQjEWCRqRDC6VjgV3yfwfLNYA94Xs8qCLrR5JA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8177
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
@@ -115,75 +115,51 @@ X-Mailing-List: linux-iio@vger.kernel.org
 
 From: Carlos Song <carlos.song@nxp.com>
 
-The absence of a correct offset leads an incorrect ODR mode
-readback after use a hexadecimal number to mark the value from
-FXOS8700_CTRL_REG1.
+The absence of correct offset leads a failed initialization ODR mode
+assignment.
 
-Get ODR mode by field mask and FIELD_GET clearly and conveniently.
-And attach other additional fix for keeping the original code logic
-and a good readability.
+Select MAX ODR mode as the initialization ODR mode by field mask and
+FIELD_PREP.
 
 Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
 Signed-off-by: Carlos Song <carlos.song@nxp.com>
 ---
 Changes for V4:
-- Use ODR_MSK in the first place that merged the first two patches
-  in V3 into this patch.
-- Rework commit log
+- None
 Changes for V3:
-- Remove FXOS8700_CTRL_ODR_GENMSK and set FXOS8700_CTRL_ODR_MSK a
-  field mask
-- Legal use of filed mask and FIELD_PREP() to select ODR mode
+- Legal use of FIELD_PREP() and field mask to select initialization
+  ODR mode
 - Rework commit log
 ---
- drivers/iio/imu/fxos8700_core.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/iio/imu/fxos8700_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
-index 773f62203bf0..a1af5d0fde5d 100644
+index a1af5d0fde5d..de4ced979226 100644
 --- a/drivers/iio/imu/fxos8700_core.c
 +++ b/drivers/iio/imu/fxos8700_core.c
-@@ -10,6 +10,7 @@
- #include <linux/regmap.h>
- #include <linux/acpi.h>
- #include <linux/bitops.h>
-+#include <linux/bitfield.h>
+@@ -611,6 +611,7 @@ static const struct iio_info fxos8700_info = {
+ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
+ {
+ 	int ret;
++	int reg;
+ 	unsigned int val;
+ 	struct device *dev = regmap_get_device(data->regmap);
  
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -144,9 +145,9 @@
- #define FXOS8700_NVM_DATA_BNK0      0xa7
- 
- /* Bit definitions for FXOS8700_CTRL_REG1 */
--#define FXOS8700_CTRL_ODR_MSK       0x38
- #define FXOS8700_CTRL_ODR_MAX       0x00
- #define FXOS8700_CTRL_ODR_MIN       GENMASK(4, 3)
-+#define FXOS8700_CTRL_ODR_MSK       GENMASK(5, 3)
- 
- /* Bit definitions for FXOS8700_M_CTRL_REG1 */
- #define FXOS8700_HMS_MASK           GENMASK(1, 0)
-@@ -508,10 +509,8 @@ static int fxos8700_set_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
- 	if (i >= odr_num)
- 		return -EINVAL;
- 
--	return regmap_update_bits(data->regmap,
--				  FXOS8700_CTRL_REG1,
--				  FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
--				  fxos8700_odr[i].bits << 3 | active_mode);
-+	val = val | FIELD_PREP(FXOS8700_CTRL_ODR_MSK, fxos8700_odr[i].bits) | active_mode;
-+	return regmap_write(data->regmap, FXOS8700_CTRL_REG1, val);
- }
- 
- static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
-@@ -524,7 +523,7 @@ static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
- 	if (ret)
+@@ -663,8 +664,11 @@ static int fxos8700_chip_init(struct fxos8700_data *data, bool use_spi)
  		return ret;
  
--	val &= FXOS8700_CTRL_ODR_MSK;
-+	val = FIELD_GET(FXOS8700_CTRL_ODR_MSK, val);
+ 	/* Max ODR (800Hz individual or 400Hz hybrid), active mode */
+-	return regmap_write(data->regmap, FXOS8700_CTRL_REG1,
+-			   FXOS8700_CTRL_ODR_MAX | FXOS8700_ACTIVE);
++	ret = regmap_read(data->regmap, FXOS8700_CTRL_REG1, &reg);
++	if (ret)
++		return ret;
++	reg = reg | FIELD_PREP(FXOS8700_CTRL_ODR_MSK, FXOS8700_CTRL_ODR_MAX) | FXOS8700_ACTIVE;
++	return regmap_write(data->regmap, FXOS8700_CTRL_REG1, reg);
+ }
  
- 	for (i = 0; i < odr_num; i++)
- 		if (val == fxos8700_odr[i].bits)
+ static void fxos8700_chip_uninit(void *data)
 -- 
 2.34.1
 

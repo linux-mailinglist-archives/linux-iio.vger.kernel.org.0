@@ -2,224 +2,129 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 106AC659B8E
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 20:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE5F659C45
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 21:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiL3TDO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Dec 2022 14:03:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
+        id S235536AbiL3UmC (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Dec 2022 15:42:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiL3TDN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 14:03:13 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFAB1B9E3;
-        Fri, 30 Dec 2022 11:03:12 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3694361B76;
-        Fri, 30 Dec 2022 19:03:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46F8C433D2;
-        Fri, 30 Dec 2022 19:03:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672426991;
-        bh=CoyJlW49fOqwJ+4r20pKWD1OZFtwRKrkSTZjaCFJLq8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bq+J983/JdlT5ZqidG79JKn5LV8hl1VMzzLihJXwmKaMUH7FD3dVEQqf70/ItOwGK
-         xoWydqHW5I+ILgkFGBL4b58aACdBnW7XjCmujNJ3pd9t3VqfGzyx78xglkLMrdxJs9
-         getOCAc/zXCzDYe6SmebGy5qacoRiw+XvbNHFrlAF0Dr7WNxlYPGC0IKbxx2QOLz2n
-         5DI+ZBWE/zYGzW6OMUrzZSbDptSsdS3sSIdkTWgsC/K68vL/QyxHANoy/MzSccCzAf
-         EqUKL+NQDFAOdrCKo444wZUCq8B89+qKkLCF+AqIjjpBV+gfuQNCJbmxx2mCJvHED3
-         9q9sfWv77wMUA==
-Date:   Fri, 30 Dec 2022 19:16:29 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     haibo.chen@nxp.com
-Cc:     lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] iio: adc: add imx93 adc support
-Message-ID: <20221230191629.01205144@jic23-huawei>
-In-Reply-To: <20221226042719.694659-2-haibo.chen@nxp.com>
-References: <20221226042719.694659-1-haibo.chen@nxp.com>
-        <20221226042719.694659-2-haibo.chen@nxp.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        with ESMTP id S235571AbiL3Ul4 (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 15:41:56 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B316DF6B;
+        Fri, 30 Dec 2022 12:41:52 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id u9so53507357ejo.0;
+        Fri, 30 Dec 2022 12:41:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=86PyXlSx5WkytdDAlxZ5GSQ+l6oxs1MnuvKlsCrh+9M=;
+        b=h87Rvb404enElgERXfZMPxMoZrB5KqD1u02z4/gTM4413rL9TrmWIj4f7mEkk8MLtR
+         l1fwSSXAkcXl0d6Zugv9vLO+sw9cfmkW8Pf5a+rr1ezn2Ah4i7MckbGejqsB8XOWiysd
+         RaZsGcKoCKqiBmoIe0HboQKI7fDHdedUpbfojxYPqaG8xI15LCsT0/lrPkP6bZQSk6Lu
+         3hhlj9TSgj7S16DvRTRv5JqrHQKofwhh5jqXyVv+QonYZ7usF014u15QcxfM+3xcT8nM
+         H1q4PH4sZa8Dw4cDsUvM36tmzjyBSFoLhJmGC8XHwRHUMomswJweMe2MKTGaCQZQHVM6
+         HDEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=86PyXlSx5WkytdDAlxZ5GSQ+l6oxs1MnuvKlsCrh+9M=;
+        b=1848ZchN9ZshDGYV2hC24WRcD2EZb7x424ElvoTQLP3gtvbzNV2mk28siOX7Hj5rE6
+         /MjcG8VXpSueVcXHUjYykR2nyRQbGKygE2R7wQHIqP4XXn+vLOgMxPnloGd3tKXo+D9f
+         SvCJJ47L1ZQZno1EjlmsKohG6qJRr+yw6oIslIevvy91kqUpFsz1J6GtCTnj+45OpXoR
+         ME0Xxyr/NgXwATbsngT0IHs6yO5MON2xr0+n+nUhHUpBaW9TCnAClLuT9Srzn/mRlCKc
+         jtFQ8bAColxYlMUfP5eqHqkLWWT+hlY0QFEzkMGau7IABM+ZNgGFeBE731h1vb1wu8dl
+         8wAg==
+X-Gm-Message-State: AFqh2kpFc4qmbvT+sr6MspVXbCtfSfUF/YQPxwthBYS5DvmkK1+ArjND
+        GORahRgW67R09YfXFavODzPA3AP7LLLtGg==
+X-Google-Smtp-Source: AMrXdXtNMroc0OK8FqmhkdN4N1DU1jgDPDEaOAr48xUA8CZ2ByhHMnBwnMSidMv1W2zQo0nZTbNebg==
+X-Received: by 2002:a17:906:2349:b0:7c1:65f7:18d8 with SMTP id m9-20020a170906234900b007c165f718d8mr26755992eja.60.1672432910345;
+        Fri, 30 Dec 2022 12:41:50 -0800 (PST)
+Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id a15-20020a170906368f00b007a9c3831409sm9996070ejc.137.2022.12.30.12.41.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Dec 2022 12:41:49 -0800 (PST)
+Message-ID: <2c25f7d8882da98f2acaa1cc26f4f2de84eef1cd.camel@gmail.com>
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: ep93xx: Add
+ cirrus,ep9301-adc description
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-iio@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date:   Fri, 30 Dec 2022 21:41:48 +0100
+In-Reply-To: <20221230180809.051fc6bd@jic23-huawei>
+References: <20221223162636.6488-1-alexander.sverdlin@gmail.com>
+         <20221230180809.051fc6bd@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Dec 2022 12:27:17 +0800
-haibo.chen@nxp.com wrote:
+Hi Jonathan,
 
-> From: Haibo Chen <haibo.chen@nxp.com>
-> 
-> The ADC in i.mx93 is a total new ADC IP, add a driver to support
-> this ADC.
-> 
-> Currently, only support one shot normal conversion triggered by
-> software. For other mode, will add in future.
-> 
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+On Fri, 2022-12-30 at 18:08 +0000, Jonathan Cameron wrote:
+> On Fri, 23 Dec 2022 17:26:35 +0100
+> Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
+>=20
+> > Add device tree bindings for Cirrus Logic EP9301/EP9302 internal SoCs' =
+ADC
+> > block.
+> >=20
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+>=20
+> Applied to the togreg branch of iio.git and pushed out as testing.
 
-Hi Haibo,
+Thanks!
 
-I think there are still improvements to be made in ordering in probe()/remove()
-and also you aren't calling pm_runtime_dont_use_autosuspend()
-which is a requirement if manually handling runtime pm disabling on remove()
+> Whilst we are looking at this driver, Alexander, would you mind if we rel=
+axed
+> the Kconfig dependencies to:
+>=20
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 46c4fc2fc534..fd1d68dce507 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -441,7 +441,7 @@ config ENVELOPE_DETECTOR
+> =C2=A0
+> =C2=A0config EP93XX_ADC
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Cirrus Logic EP93XX =
+ADC driver"
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ARCH_EP93XX
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ARCH_EP93XX || COMPILE_T=
+EST
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Driver for the ADC=
+ module on the EP93XX series of SoC from Cirrus Logic.
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 It's recommended t=
+o switch on CONFIG_HIGH_RES_TIMERS option, in this
+>=20
+> I end up doing that locally to build test patches like this one and it do=
+esn't
+> seem to cause any problems.
 
-Jonathan
+Sure, it's fine with me!
 
-> ---
->
-> diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-> new file mode 100644
-> index 000000000000..677f13a040f8
-> --- /dev/null
-> +++ b/drivers/iio/adc/imx93_adc.c
-> @@ -0,0 +1,477 @@
-
-
-
-> +static int imx93_adc_probe(struct platform_device *pdev)
-> +{
-> +	struct imx93_adc *adc;
-> +	struct iio_dev *indio_dev;
-> +	struct device *dev = &pdev->dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-> +	if (!indio_dev) {
-> +		dev_err(dev, "Failed allocating iio device\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	adc = iio_priv(indio_dev);
-> +	adc->dev = dev;
-> +
-> +	mutex_init(&adc->lock);
-> +	adc->regs = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(adc->regs))
-> +		return PTR_ERR(adc->regs);
-> +
-> +	/* The third irq is for ADC conversion usage */
-> +	adc->irq = platform_get_irq(pdev, 2);
-> +	if (adc->irq < 0)
-> +		return adc->irq;
-> +
-> +	adc->ipg_clk = devm_clk_get(dev, "ipg");
-> +	if (IS_ERR(adc->ipg_clk))
-> +		return dev_err_probe(dev, PTR_ERR(adc->ipg_clk),
-> +				     "Failed getting clock.\n");
-> +
-> +	adc->vref = devm_regulator_get(dev, "vref");
-> +	if (IS_ERR(adc->vref))
-> +		return dev_err_probe(dev, PTR_ERR(adc->vref),
-> +				     "Failed getting reference voltage.\n");
-> +
-> +	ret = regulator_enable(adc->vref);
-> +	if (ret) {
-> +		dev_err(dev, "Can't enable adc reference top voltage.\n");
-
-You can use dev_err_probe() for all such handling in probe() whether or not
-it can defer.  That tends to simplify things and avoids the need for reviewers
-to consider if a function can defer of not.
-
-> +		return ret;
-> +	}
-> +
-> +	platform_set_drvdata(pdev, indio_dev);
-> +
-> +	init_completion(&adc->completion);
-> +
-> +	indio_dev->name = "imx93-adc";
-> +	indio_dev->info = &imx93_adc_iio_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = imx93_adc_iio_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(imx93_adc_iio_channels);
-> +
-> +	ret = clk_prepare_enable(adc->ipg_clk);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "Could not prepare or enable the clock.\n");
-> +		goto error_regulator_disable;
-> +	}
-> +
-> +	ret = request_irq(adc->irq, imx93_adc_isr, 0, IMX93_ADC_DRIVER_NAME, adc);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed requesting irq, irq = %d\n", adc->irq);
-> +		goto error_ipg_clk_disable;
-> +	}
-> +
-> +	ret = imx93_adc_calibration(adc);
-> +	if (ret < 0)
-> +		goto error_free_adc_irq;
-> +
-> +	imx93_adc_config_ad_clk(adc);
-> +
-> +	ret = iio_device_register(indio_dev);
-> +	if (ret) {
-> +		dev_err(dev, "Couldn't register the device.\n");
-> +		goto error_free_adc_irq;
-> +	}
-> +
-> +	pm_runtime_set_active(dev);
-> +	pm_runtime_set_autosuspend_delay(dev, 50);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_enable(dev);
-> +
-> +	return 0;
-> +
-> +error_free_adc_irq:
-> +	free_irq(adc->irq, adc);
-> +error_ipg_clk_disable:
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +error_regulator_disable:
-> +	regulator_disable(adc->vref);
-> +
-> +	return ret;
-> +}
-> +
-> +static int imx93_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-> +	struct imx93_adc *adc = iio_priv(indio_dev);
-> +	struct device *dev = adc->dev;
-> +
-> +	/* adc power down need clock on */
-> +	pm_runtime_get_sync(dev);
-> +
-> +	iio_device_unregister(indio_dev);
-> +	imx93_adc_power_down(adc);
-
-Why is there no similar power down in the error path in probe for
-iio_device_register() returning an error?
-
-> +	free_irq(adc->irq, adc);
-> +	clk_disable_unprepare(adc->ipg_clk);
-> +	regulator_disable(adc->vref);
-> +
-> +	pm_runtime_disable(dev);
-> +	pm_runtime_put_noidle(dev);
-
-I think I caused confusion a bit here by pointing out the device unregister
-needed to be first. That's now fine, but the rest would benefit from a rethink.
-To my mind, the ideal situation is that the remove() is a reverse of the probe()
-function, so I'd expect to see these pm_runtime_disable(), pm_runtime_put_noidle()
-at the start of this
-function.  Note that you also need to call pm_runtime_dont_use_autosuspend() somewhere
-in here - or take all the probe/remove devm_ managed and use
-devm_pm_runtime_enable() which tidies that up for you as needed.
-(see docs in pm_runtime.h)
-
-> +
-> +	return 0;
-> +}
+--=20
+Alexander Sverdlin.
 

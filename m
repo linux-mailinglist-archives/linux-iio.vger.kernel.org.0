@@ -2,54 +2,48 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A892D659B6D
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 19:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 106AC659B8E
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 20:03:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229967AbiL3SgR (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Dec 2022 13:36:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
+        id S229527AbiL3TDO (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Dec 2022 14:03:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230434AbiL3SgQ (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 13:36:16 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C6E4193D7;
-        Fri, 30 Dec 2022 10:36:15 -0800 (PST)
+        with ESMTP id S229519AbiL3TDN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 14:03:13 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFAB1B9E3;
+        Fri, 30 Dec 2022 11:03:12 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id A01BCCE175F;
-        Fri, 30 Dec 2022 18:36:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E79C433D2;
-        Fri, 30 Dec 2022 18:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3694361B76;
+        Fri, 30 Dec 2022 19:03:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46F8C433D2;
+        Fri, 30 Dec 2022 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672425371;
-        bh=t1Ep3yE+UPYrmEucrzGo/7bQGiZxo5BU23bcF+bvORk=;
+        s=k20201202; t=1672426991;
+        bh=CoyJlW49fOqwJ+4r20pKWD1OZFtwRKrkSTZjaCFJLq8=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=kmYRJKzn3xxwMicF8I1GP7IgQHU9NSLi6GTw1btUsR5O3yLIxsI9FoJHp1Y8aAVGu
-         CwsEdEMhHJJs4sSymYQj2qfq180Rt2TKtHSzha25NzRaflX0z50aMLT7asfRMbH3Dp
-         h43CKLzS2adP5YLpKtnAiaAzJxx8rL5mMPQrKpxBTcB2P3uGN+o6jERyUF/PepY5Uw
-         ++sh75Yse3UtuzPhkZgRH2I2cLp/cbm6dBWP/w6On3hZOo3iHBd/QCYs0YNyL4U+kn
-         bWXP4HiMKxOYcnA+4brrpfD7hAYha+tf2S7GEBKUxAenipSDQEa29uCiQPKX+YUyYS
-         miVUdTeRcITFw==
-Date:   Fri, 30 Dec 2022 18:49:28 +0000
+        b=bq+J983/JdlT5ZqidG79JKn5LV8hl1VMzzLihJXwmKaMUH7FD3dVEQqf70/ItOwGK
+         xoWydqHW5I+ILgkFGBL4b58aACdBnW7XjCmujNJ3pd9t3VqfGzyx78xglkLMrdxJs9
+         getOCAc/zXCzDYe6SmebGy5qacoRiw+XvbNHFrlAF0Dr7WNxlYPGC0IKbxx2QOLz2n
+         5DI+ZBWE/zYGzW6OMUrzZSbDptSsdS3sSIdkTWgsC/K68vL/QyxHANoy/MzSccCzAf
+         EqUKL+NQDFAOdrCKo444wZUCq8B89+qKkLCF+AqIjjpBV+gfuQNCJbmxx2mCJvHED3
+         9q9sfWv77wMUA==
+Date:   Fri, 30 Dec 2022 19:16:29 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] iio: pressure: bmp280: Add nvmem operations for
- BMP580
-Message-ID: <20221230184928.011a7851@jic23-huawei>
-In-Reply-To: <92664164d24cbd9c6541cdbd73b163dbf964ab68.1672062380.git.ang.iglesiasg@gmail.com>
-References: <cover.1672062380.git.ang.iglesiasg@gmail.com>
-        <92664164d24cbd9c6541cdbd73b163dbf964ab68.1672062380.git.ang.iglesiasg@gmail.com>
+To:     haibo.chen@nxp.com
+Cc:     lars@metafoo.de, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+        linux-imx@nxp.com, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 1/3] iio: adc: add imx93 adc support
+Message-ID: <20221230191629.01205144@jic23-huawei>
+In-Reply-To: <20221226042719.694659-2-haibo.chen@nxp.com>
+References: <20221226042719.694659-1-haibo.chen@nxp.com>
+        <20221226042719.694659-2-haibo.chen@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,166 +57,169 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Dec 2022 15:29:24 +0100
-Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+On Mon, 26 Dec 2022 12:27:17 +0800
+haibo.chen@nxp.com wrote:
 
-> The pressure sensor BMP580 contains a non-volatile memory that stores
-> trimming and configuration params. That memory provides an programmable
-> user range of three 2-byte words.
+> From: Haibo Chen <haibo.chen@nxp.com>
 > 
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+> The ADC in i.mx93 is a total new ADC IP, add a driver to support
+> this ADC.
+> 
+> Currently, only support one shot normal conversion triggered by
+> software. For other mode, will add in future.
+> 
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-Not much in this one from me other than follow on from earlier patch.
-Thanks,
+Hi Haibo,
+
+I think there are still improvements to be made in ordering in probe()/remove()
+and also you aren't calling pm_runtime_dont_use_autosuspend()
+which is a requirement if manually handling runtime pm disabling on remove()
 
 Jonathan
 
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 44901c6eb2f9..578d145be55d 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -28,6 +28,7 @@
->  #include <linux/bitfield.h>
->  #include <linux/device.h>
->  #include <linux/module.h>
-> +#include <linux/nvmem-provider.h>
->  #include <linux/regmap.h>
->  #include <linux/delay.h>
->  #include <linux/iio/iio.h>
-> @@ -1628,8 +1629,140 @@ static const int bmp580_odr_table[][2] = {
->  	[BMP580_ODR_0_125HZ] =	{0, 125000},
->  };
->  
-> +const int bmp580_nvmem_addrs[] = { 0x20, 0x21, 0x22 };
-> +
-> +static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
-> +			     size_t bytes)
+> ---
+>
+> diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
+> new file mode 100644
+> index 000000000000..677f13a040f8
+> --- /dev/null
+> +++ b/drivers/iio/adc/imx93_adc.c
+> @@ -0,0 +1,477 @@
+
+
+
+> +static int imx93_adc_probe(struct platform_device *pdev)
 > +{
-> +	struct bmp280_data *data = priv;
-> +	u16 *dst = val;
-> +	int ret, addr;
+> +	struct imx93_adc *adc;
+> +	struct iio_dev *indio_dev;
+> +	struct device *dev = &pdev->dev;
+> +	int ret;
 > +
-> +	pm_runtime_get_sync(data->dev);
-> +	mutex_lock(&data->lock);
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+> +	if (!indio_dev) {
+> +		dev_err(dev, "Failed allocating iio device\n");
+> +		return -ENOMEM;
+> +	}
 > +
-> +	/* Set sensor in standby mode */
-> +	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-> +				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-> +				 BMP580_ODR_DEEPSLEEP_DIS |
-> +				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
+> +	adc = iio_priv(indio_dev);
+> +	adc->dev = dev;
+> +
+> +	mutex_init(&adc->lock);
+> +	adc->regs = devm_platform_ioremap_resource(pdev, 0);
+> +	if (IS_ERR(adc->regs))
+> +		return PTR_ERR(adc->regs);
+> +
+> +	/* The third irq is for ADC conversion usage */
+> +	adc->irq = platform_get_irq(pdev, 2);
+> +	if (adc->irq < 0)
+> +		return adc->irq;
+> +
+> +	adc->ipg_clk = devm_clk_get(dev, "ipg");
+> +	if (IS_ERR(adc->ipg_clk))
+> +		return dev_err_probe(dev, PTR_ERR(adc->ipg_clk),
+> +				     "Failed getting clock.\n");
+> +
+> +	adc->vref = devm_regulator_get(dev, "vref");
+> +	if (IS_ERR(adc->vref))
+> +		return dev_err_probe(dev, PTR_ERR(adc->vref),
+> +				     "Failed getting reference voltage.\n");
+> +
+> +	ret = regulator_enable(adc->vref);
 > +	if (ret) {
-> +		dev_err(data->dev, "failed to change sensor to standby mode\n");
-> +		goto exit;
+> +		dev_err(dev, "Can't enable adc reference top voltage.\n");
+
+You can use dev_err_probe() for all such handling in probe() whether or not
+it can defer.  That tends to simplify things and avoids the need for reviewers
+to consider if a function can defer of not.
+
+> +		return ret;
 > +	}
-> +	/* Wait standby transition time */
-> +	usleep_range(2500, 3000);
 > +
-> +	while (bytes >= sizeof(u16)) {
-> +		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
+> +	platform_set_drvdata(pdev, indio_dev);
 > +
-> +		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR,
-> +				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-> +		if (ret) {
-> +			dev_err(data->dev, "error writing nvm address\n");
-> +			goto exit;
-> +		}
+> +	init_completion(&adc->completion);
 > +
-> +		ret = bmp580_cmd(data, BMP580_NVM_READ_CMD);
-Ah. Here is the command being used.  Good to pull that code forwards to this patch.
-
-> +		if (ret)
-> +			goto exit;
+> +	indio_dev->name = "imx93-adc";
+> +	indio_dev->info = &imx93_adc_iio_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = imx93_adc_iio_channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(imx93_adc_iio_channels);
 > +
-> +		ret = regmap_bulk_read(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-> +				       sizeof(data->le16));
-> +		if (ret) {
-> +			dev_err(data->dev, "error reading nvm data regs\n");
-> +			goto exit;
-> +		}
-> +
-> +		*dst++ = le16_to_cpu(data->le16);
-> +		bytes -= sizeof(u16);
-
-sizeof(le16) seems more appropriate (obviously it's the same value).
-
-> +		offset += sizeof(u16);
+> +	ret = clk_prepare_enable(adc->ipg_clk);
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Could not prepare or enable the clock.\n");
+> +		goto error_regulator_disable;
 > +	}
-> +exit:
-> +	/* Restore chip config */
-> +	data->chip_info->chip_config(data);
-> +	mutex_unlock(&data->lock);
-> +	pm_runtime_mark_last_busy(data->dev);
-> +	pm_runtime_put_autosuspend(data->dev);
+> +
+> +	ret = request_irq(adc->irq, imx93_adc_isr, 0, IMX93_ADC_DRIVER_NAME, adc);
+> +	if (ret < 0) {
+> +		dev_err(dev, "Failed requesting irq, irq = %d\n", adc->irq);
+> +		goto error_ipg_clk_disable;
+> +	}
+> +
+> +	ret = imx93_adc_calibration(adc);
+> +	if (ret < 0)
+> +		goto error_free_adc_irq;
+> +
+> +	imx93_adc_config_ad_clk(adc);
+> +
+> +	ret = iio_device_register(indio_dev);
+> +	if (ret) {
+> +		dev_err(dev, "Couldn't register the device.\n");
+> +		goto error_free_adc_irq;
+> +	}
+> +
+> +	pm_runtime_set_active(dev);
+> +	pm_runtime_set_autosuspend_delay(dev, 50);
+> +	pm_runtime_use_autosuspend(dev);
+> +	pm_runtime_enable(dev);
+> +
+> +	return 0;
+> +
+> +error_free_adc_irq:
+> +	free_irq(adc->irq, adc);
+> +error_ipg_clk_disable:
+> +	clk_disable_unprepare(adc->ipg_clk);
+> +error_regulator_disable:
+> +	regulator_disable(adc->vref);
+> +
 > +	return ret;
 > +}
 > +
-> +static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
-> +			      size_t bytes)
+> +static int imx93_adc_remove(struct platform_device *pdev)
 > +{
-> +	struct bmp280_data *data = priv;
-> +	u16 *buf = val;
-> +	int ret, addr;
+> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> +	struct imx93_adc *adc = iio_priv(indio_dev);
+> +	struct device *dev = adc->dev;
 > +
-> +	pm_runtime_get_sync(data->dev);
-> +	mutex_lock(&data->lock);
+> +	/* adc power down need clock on */
+> +	pm_runtime_get_sync(dev);
 > +
-> +	/* Set sensor in standby mode */
-> +	ret = regmap_update_bits(data->regmap, BMP580_REG_ODR_CONFIG,
-> +				 BMP580_MODE_MASK | BMP580_ODR_DEEPSLEEP_DIS,
-> +				 BMP580_ODR_DEEPSLEEP_DIS |
-> +				 FIELD_PREP(BMP580_MODE_MASK, BMP580_MODE_SLEEP));
-> +	if (ret) {
-> +		dev_err(data->dev, "failed to change sensor to standby mode\n");
-> +		goto exit;
-> +	}
-> +	/* Wait standby transition time */
-> +	usleep_range(2500, 3000);
-> +
-> +	while (bytes >= sizeof(u16)) {
-> +		addr = bmp580_nvmem_addrs[offset / sizeof(u16)];
-> +
-> +		ret = regmap_write(data->regmap, BMP580_REG_NVM_ADDR, BMP580_NVM_PROG_EN |
-> +				   FIELD_PREP(BMP580_NVM_ROW_ADDR_MASK, addr));
-> +		if (ret) {
-> +			dev_err(data->dev, "error writing nvm address\n");
-> +			goto exit;
-> +		}
-> +		data->le16 = cpu_to_le16(*buf++);
-> +
-> +		ret = regmap_bulk_write(data->regmap, BMP580_REG_NVM_DATA_LSB, &data->le16,
-> +					sizeof(data->le16));
-> +		if (ret) {
-> +			dev_err(data->dev, "error writing LSB NVM data regs\n");
-> +			goto exit;
-> +		}
-> +
-> +		ret = bmp580_cmd(data, BMP580_NVM_WRITE_CMD);
-> +		if (ret)
-> +			goto exit;
-> +
-> +		/* Disable programming mode bit */
-> +		ret = regmap_update_bits(data->regmap, BMP580_REG_NVM_ADDR,
-> +					 BMP580_NVM_PROG_EN, 0);
-> +		if (ret) {
-> +			dev_err(data->dev, "error resetting nvm write\n");
-> +			goto exit;
-> +		}
-> +
-> +		bytes -= sizeof(u16);
+> +	iio_device_unregister(indio_dev);
+> +	imx93_adc_power_down(adc);
 
-As above, maybe sizeof(le16)
+Why is there no similar power down in the error path in probe for
+iio_device_register() returning an error?
 
-> +		offset += sizeof(u16);
-> +	}
-> +exit:
-> +	/* Restore chip config */
-> +	data->chip_info->chip_config(data);
-> +	mutex_unlock(&data->lock);
-> +	pm_runtime_mark_last_busy(data->dev);
-> +	pm_runtime_put_autosuspend(data->dev);
-> +	return ret;
+> +	free_irq(adc->irq, adc);
+> +	clk_disable_unprepare(adc->ipg_clk);
+> +	regulator_disable(adc->vref);
+> +
+> +	pm_runtime_disable(dev);
+> +	pm_runtime_put_noidle(dev);
+
+I think I caused confusion a bit here by pointing out the device unregister
+needed to be first. That's now fine, but the rest would benefit from a rethink.
+To my mind, the ideal situation is that the remove() is a reverse of the probe()
+function, so I'd expect to see these pm_runtime_disable(), pm_runtime_put_noidle()
+at the start of this
+function.  Note that you also need to call pm_runtime_dont_use_autosuspend() somewhere
+in here - or take all the probe/remove devm_ managed and use
+devm_pm_runtime_enable() which tidies that up for you as needed.
+(see docs in pm_runtime.h)
+
+> +
+> +	return 0;
 > +}
-> +
-
 

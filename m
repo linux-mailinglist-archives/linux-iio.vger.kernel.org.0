@@ -2,51 +2,54 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4B39659B24
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 18:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32C53659B2D
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 19:01:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235478AbiL3RzX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Dec 2022 12:55:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42226 "EHLO
+        id S235287AbiL3SBZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Dec 2022 13:01:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235424AbiL3RzN (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 12:55:13 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2020B1C90C;
-        Fri, 30 Dec 2022 09:54:54 -0800 (PST)
+        with ESMTP id S229456AbiL3SBY (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 13:01:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDAB360E7;
+        Fri, 30 Dec 2022 10:01:21 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BBC25B81CE7;
-        Fri, 30 Dec 2022 17:54:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16E6C433EF;
-        Fri, 30 Dec 2022 17:54:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7987C61B2D;
+        Fri, 30 Dec 2022 18:01:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D4AC433EF;
+        Fri, 30 Dec 2022 18:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672422891;
-        bh=n26j3UNEBWhnst1Oo9v8s52C4KD49fhyEge2J4vzAmc=;
+        s=k20201202; t=1672423280;
+        bh=ILEVj0T2gK+HIo88lJKu2qs6fZn70l7XILyjzXsrudU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mzqd2UgN5mNYi2ZRQozGDhqjfBuD6TjIX+dV/JNT/N+/DTkzRqDdGSw9BiUyKGAYM
-         KsZYneFe0OmEFn5LhB8boWiTMgaKAnOdXJeMKW/NlvhbJnLMmDcOt7QCTRLoNtx5Sz
-         BohFSRe++CrN0yTtaklYUKypwsd9zqxHBxnER+am3OymXkeK447j3e3DGOy6/kcXz2
-         hBxBqYb1Gu0buKUl0s6bjN7G2sTlWIihvYOWgzEV+isQiI/HM544kYR7kRLujrYUEf
-         b4b9sjOQMAwdrAnqbpuKeHTxbuYRpCfx+Vmq7HTGh5PUELXbU8pxyxMcpqfnSwu16K
-         eqvl7Jf2gtBEQ==
-Date:   Fri, 30 Dec 2022 18:08:09 +0000
+        b=gtDtgEiI90dCLi2nOW/PyYIOYWY+IKcO1mP58lS/WW6NyJI3sJMh0PnOGvaMD01nt
+         YC0fC0gyqZohmlMuSj1K7cqnYH4/rzPDjno8Q/VS15/bK9IH5xCvdXwFeQbsPwISSm
+         6iEVxFAXonHvUoA8/yiFSvY03XZZhVi35FSYMmKYeF4mLfe9GFiBoFtLg9I18Tzup2
+         oiXWh7Le4av7rAKg79N1RUdlRZ+1TKphfe8/+CccasF4u19+qFFGK44gV5IPxP4r/O
+         gtzHSqcq5ZnD1IJEoBP4LuNBp5VIXKP3Y9cp/VW4J1zJWEbdgYahMmvpxF6/uv2Rg/
+         SSaBvmfo5t3tw==
+Date:   Fri, 30 Dec 2022 18:14:38 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Cc:     linux-iio@vger.kernel.org,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+To:     Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: ep93xx: Add
- cirrus,ep9301-adc description
-Message-ID: <20221230180809.051fc6bd@jic23-huawei>
-In-Reply-To: <20221223162636.6488-1-alexander.sverdlin@gmail.com>
-References: <20221223162636.6488-1-alexander.sverdlin@gmail.com>
+        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] iio: pressure: bmp280: Add enumeration to handle
+ chip variants
+Message-ID: <20221230181438.42e25cb9@jic23-huawei>
+In-Reply-To: <f0368a3f460707417110dffdb0166824da20af15.1672062380.git.ang.iglesiasg@gmail.com>
+References: <cover.1672062380.git.ang.iglesiasg@gmail.com>
+        <f0368a3f460707417110dffdb0166824da20af15.1672062380.git.ang.iglesiasg@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -60,114 +63,221 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Dec 2022 17:26:35 +0100
-Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
+On Mon, 26 Dec 2022 15:29:20 +0100
+Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> Add device tree bindings for Cirrus Logic EP9301/EP9302 internal SoCs' ADC
-> block.
+> Adds enumeration to improve handling the different supported sensors
+> on driver initialization. This avoid collisions if different variants
+> share the same device idetifier on ID register.
+
+If we get two parts with the same ID that need different handling
+then we should probably be shouting at Bosch.  Still I don't mind
+tidying this up anyway as using the CHIP_IDs is messy - however...
+
+Please be careful to make sure you have responded (either by changes, or by
+replying to review to say why you aren't making changes).  If you are not receiving
+all emails, then you can always check lore.kernel.org to make sure you didn't miss
+any reviews.
+
+As Andy suggested, switch over to using pointers to the chip_info structure as the
+data element in *_device_id tables.  It usually ends up neater in the end than
+messing around with an indirection via an enum value.
+
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-
-Applied to the togreg branch of iio.git and pushed out as testing.
-
-Whilst we are looking at this driver, Alexander, would you mind if we relaxed
-the Kconfig dependencies to:
-
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 46c4fc2fc534..fd1d68dce507 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -441,7 +441,7 @@ config ENVELOPE_DETECTOR
- 
- config EP93XX_ADC
-        tristate "Cirrus Logic EP93XX ADC driver"
--       depends on ARCH_EP93XX
-+       depends on ARCH_EP93XX || COMPILE_TEST
-        help
-          Driver for the ADC module on the EP93XX series of SoC from Cirrus Logic.
-          It's recommended to switch on CONFIG_HIGH_RES_TIMERS option, in this
-
-I end up doing that locally to build test patches like this one and it doesn't
-seem to cause any problems.
-
-Jonathan
-
-> ---
-> Changelog:
-> v2: removed clock-names property, soc node and include as Krzysztof suggested
+> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 > 
->  .../bindings/iio/adc/cirrus,ep9301-adc.yaml   | 47 +++++++++++++++++++
->  MAINTAINERS                                   |  2 +
->  2 files changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
-> new file mode 100644
-> index 000000000000..6d4fb3e1d2a2
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
-> @@ -0,0 +1,47 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/cirrus,ep9301-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Cirrus Logic EP930x internal ADC
-> +
-> +description: |
-> +  Cirrus Logic EP9301/EP9302 SoCs' internal ADC block.
-> +
-> +  User's manual:
-> +  https://cdn.embeddedts.com/resource-attachments/ts-7000_ep9301-ug.pdf
-> +
-> +maintainers:
-> +  - Alexander Sverdlin <alexander.sverdlin@gmail.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: cirrus,ep9301-adc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    adc: adc@80900000 {
-> +        compatible = "cirrus,ep9301-adc";
-> +        reg = <0x80900000 0x28>;
-> +        clocks = <&syscon 24>;
-> +        interrupt-parent = <&vic1>;
-> +        interrupts = <30>;
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 69565ac0c224..4a914d5bc2e6 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2027,8 +2027,10 @@ M:	Hartley Sweeten <hsweeten@visionengravers.com>
->  M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
->  S:	Maintained
-> +F:	Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
->  F:	arch/arm/mach-ep93xx/
->  F:	arch/arm/mach-ep93xx/include/mach/
-> +F:	drivers/iio/adc/ep93xx_adc.c
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index c0aff78489b4..46959a91408f 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -186,6 +186,7 @@ struct bmp280_data {
 >  
->  ARM/CLKDEV SUPPORT
->  M:	Russell King <linux@armlinux.org.uk>
+>  struct bmp280_chip_info {
+>  	unsigned int id_reg;
+> +	const unsigned int chip_id;
+>  
+>  	const struct iio_chan_spec *channels;
+>  	int num_channels;
+> @@ -907,6 +908,7 @@ static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
+>  
+>  static const struct bmp280_chip_info bmp280_chip_info = {
+>  	.id_reg = BMP280_REG_ID,
+> +	.chip_id = BMP280_CHIP_ID,
+>  	.start_up_time = 2000,
+>  	.channels = bmp280_channels,
+>  	.num_channels = 2,
+> @@ -955,6 +957,7 @@ static int bme280_chip_config(struct bmp280_data *data)
+>  
+>  static const struct bmp280_chip_info bme280_chip_info = {
+>  	.id_reg = BMP280_REG_ID,
+> +	.chip_id = BME280_CHIP_ID,
+>  	.start_up_time = 2000,
+>  	.channels = bmp280_channels,
+>  	.num_channels = 3,
+> @@ -1321,6 +1324,7 @@ static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 12
+>  
+>  static const struct bmp280_chip_info bmp380_chip_info = {
+>  	.id_reg = BMP380_REG_ID,
+> +	.chip_id = BMP380_CHIP_ID,
+>  	.start_up_time = 2000,
+>  	.channels = bmp380_channels,
+>  	.num_channels = 2,
+> @@ -1581,6 +1585,7 @@ static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
+>  
+>  static const struct bmp280_chip_info bmp180_chip_info = {
+>  	.id_reg = BMP280_REG_ID,
+> +	.chip_id = BMP180_CHIP_ID,
+>  	.start_up_time = 2000,
+>  	.channels = bmp280_channels,
+>  	.num_channels = 2,
+> @@ -1685,16 +1690,16 @@ int bmp280_common_probe(struct device *dev,
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  
+>  	switch (chip) {
+> -	case BMP180_CHIP_ID:
+> +	case BMP180:
+>  		chip_info = &bmp180_chip_info;
+>  		break;
+> -	case BMP280_CHIP_ID:
+> +	case BMP280:
+>  		chip_info = &bmp280_chip_info;
+>  		break;
+> -	case BME280_CHIP_ID:
+> +	case BME280:
+>  		chip_info = &bme280_chip_info;
+>  		break;
+> -	case BMP380_CHIP_ID:
+> +	case BMP380:
+>  		chip_info = &bmp380_chip_info;
+
+If you use a pointer directly then no need for this switch statement at all.
+
+>  		break;
+>  	default:
+> @@ -1751,9 +1756,9 @@ int bmp280_common_probe(struct device *dev,
+>  	ret = regmap_read(regmap, data->chip_info->id_reg, &chip_id);
+>  	if (ret < 0)
+>  		return ret;
+> -	if (chip_id != chip) {
+> +	if (chip_id != data->chip_info->chip_id) {
+>  		dev_err(dev, "bad chip id: expected %x got %x\n",
+> -			chip, chip_id);
+> +			data->chip_info->chip_id, chip_id);
+>  		return -EINVAL;
+>  	}
+>  
+> diff --git a/drivers/iio/pressure/bmp280-i2c.c b/drivers/iio/pressure/bmp280-i2c.c
+> index 14eab086d24a..59921e8cd592 100644
+> --- a/drivers/iio/pressure/bmp280-i2c.c
+> +++ b/drivers/iio/pressure/bmp280-i2c.c
+> @@ -12,14 +12,14 @@ static int bmp280_i2c_probe(struct i2c_client *client)
+>  	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+>  
+>  	switch (id->driver_data) {
+> -	case BMP180_CHIP_ID:
+> +	case BMP180:
+>  		regmap_config = &bmp180_regmap_config;
+>  		break;
+> -	case BMP280_CHIP_ID:
+> -	case BME280_CHIP_ID:
+> +	case BMP280:
+> +	case BME280:
+>  		regmap_config = &bmp280_regmap_config;
+>  		break;
+> -	case BMP380_CHIP_ID:
+> +	case BMP380:
+>  		regmap_config = &bmp380_regmap_config;
+>  		break;
+>  	default:
+> @@ -40,21 +40,21 @@ static int bmp280_i2c_probe(struct i2c_client *client)
+>  }
+>  
+>  static const struct of_device_id bmp280_of_i2c_match[] = {
+> -	{ .compatible = "bosch,bmp085", .data = (void *)BMP180_CHIP_ID },
+> -	{ .compatible = "bosch,bmp180", .data = (void *)BMP180_CHIP_ID },
+> -	{ .compatible = "bosch,bmp280", .data = (void *)BMP280_CHIP_ID },
+> -	{ .compatible = "bosch,bme280", .data = (void *)BME280_CHIP_ID },
+> -	{ .compatible = "bosch,bmp380", .data = (void *)BMP380_CHIP_ID },
+> +	{ .compatible = "bosch,bmp085", .data = (void *)BMP180 },
+> +	{ .compatible = "bosch,bmp180", .data = (void *)BMP180 },
+> +	{ .compatible = "bosch,bmp280", .data = (void *)BMP280 },
+> +	{ .compatible = "bosch,bme280", .data = (void *)BME280 },
+> +	{ .compatible = "bosch,bmp380", .data = (void *)BMP380 },
+>  	{ },
+>  };
+>  MODULE_DEVICE_TABLE(of, bmp280_of_i2c_match);
+>  
+>  static const struct i2c_device_id bmp280_i2c_id[] = {
+> -	{"bmp085", BMP180_CHIP_ID },
+> -	{"bmp180", BMP180_CHIP_ID },
+> -	{"bmp280", BMP280_CHIP_ID },
+> -	{"bme280", BME280_CHIP_ID },
+> -	{"bmp380", BMP380_CHIP_ID },
+> +	{"bmp085", BMP180 },
+> +	{"bmp180", BMP180 },
+> +	{"bmp280", BMP280 },
+> +	{"bme280", BME280 },
+> +	{"bmp380", BMP380 },
+>  	{ },
+>  };
+>  MODULE_DEVICE_TABLE(i2c, bmp280_i2c_id);
+> diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> index 011c68e07ebf..4a2df5b5d838 100644
+> --- a/drivers/iio/pressure/bmp280-spi.c
+> +++ b/drivers/iio/pressure/bmp280-spi.c
+> @@ -59,14 +59,14 @@ static int bmp280_spi_probe(struct spi_device *spi)
+>  	}
+>  
+>  	switch (id->driver_data) {
+> -	case BMP180_CHIP_ID:
+> +	case BMP180:
+>  		regmap_config = &bmp180_regmap_config;
+>  		break;
+> -	case BMP280_CHIP_ID:
+> -	case BME280_CHIP_ID:
+> +	case BMP280:
+> +	case BME280:
+>  		regmap_config = &bmp280_regmap_config;
+>  		break;
+> -	case BMP380_CHIP_ID:
+> +	case BMP380:
+>  		regmap_config = &bmp380_regmap_config;
+>  		break;
+>  	default:
+> @@ -101,11 +101,11 @@ static const struct of_device_id bmp280_of_spi_match[] = {
+>  MODULE_DEVICE_TABLE(of, bmp280_of_spi_match);
+>  
+>  static const struct spi_device_id bmp280_spi_id[] = {
+> -	{ "bmp180", BMP180_CHIP_ID },
+> -	{ "bmp181", BMP180_CHIP_ID },
+> -	{ "bmp280", BMP280_CHIP_ID },
+> -	{ "bme280", BME280_CHIP_ID },
+> -	{ "bmp380", BMP380_CHIP_ID },
+> +	{ "bmp180", BMP180 },
+> +	{ "bmp181", BMP180 },
+> +	{ "bmp280", BMP280 },
+> +	{ "bme280", BME280 },
+> +	{ "bmp380", BMP380 },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(spi, bmp280_spi_id);
+> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> index c791325c7416..efc31bc84708 100644
+> --- a/drivers/iio/pressure/bmp280.h
+> +++ b/drivers/iio/pressure/bmp280.h
+> @@ -191,6 +191,14 @@
+>  #define BMP280_PRESS_SKIPPED		0x80000
+>  #define BMP280_HUMIDITY_SKIPPED		0x8000
+>  
+> +/* Enum with supported pressure sensor models */
+> +enum bmp280_variant {
+> +	BMP180,
+> +	BMP280,
+> +	BME280,
+> +	BMP380,
+> +};
+> +
+>  /* Regmap configurations */
+>  extern const struct regmap_config bmp180_regmap_config;
+>  extern const struct regmap_config bmp280_regmap_config;
 

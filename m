@@ -2,57 +2,57 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9B15659B34
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 19:05:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56791659B4E
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 19:11:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbiL3SFZ (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Dec 2022 13:05:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46436 "EHLO
+        id S235495AbiL3SLm (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Dec 2022 13:11:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbiL3SFY (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 13:05:24 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A41178B5;
-        Fri, 30 Dec 2022 10:05:23 -0800 (PST)
+        with ESMTP id S235597AbiL3SLH (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 13:11:07 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE841DF38;
+        Fri, 30 Dec 2022 10:09:39 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE90261B32;
-        Fri, 30 Dec 2022 18:05:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F615C433D2;
-        Fri, 30 Dec 2022 18:05:19 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 13EB8B81BFF;
+        Fri, 30 Dec 2022 18:09:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8DEC433D2;
+        Fri, 30 Dec 2022 18:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672423522;
-        bh=vaaGlDn5lukU30p0UlEvyAPikiJjlJp1zDhTh2mWxt0=;
+        s=k20201202; t=1672423775;
+        bh=CoZ8Y9DkgEsHZLc653nnSDUcpjzD/J2+Dg3WhtxF4bE=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=Afq9jhn9Prt460DcO60BOhAV+uPWjtgG1eBHLGYEoPpTSXmpPVfvJm9zmQb7sAOs4
-         P58zACGP8ffd9K9eabbg4JIMsI1cGqPv0085/iL6f7lEKtqb0yTutVjmaiCxbaW8gC
-         MeCkIxA9HkEbxcr1ep4IBngCza0I2SkBHfKI4tn/VZbJo4vVyz+JCCQsuaSx806rp/
-         o5EagFMcirteHqIFJRro8XdSVD6deX4dkjFEFKZbY16iPFqNdFxzw6DdqNJEG5HOkb
-         iCOC8TOuwVHgVAnLIOIDkzqm2fvop7Y0ivjVX1K8jbGn5NLQ6z1QK8l6BeqF/NRFwQ
-         z6YMdDIthOXPw==
-Date:   Fri, 30 Dec 2022 18:18:39 +0000
+        b=hyt50MJf5YtZUNif3+pr1LX5qM7MB7dJxn8gfQAG6XSmuhF6WuxRYybNmHGwzQOu1
+         R8ZRikS7J2okRgSc2M1G5Ai1pcEAgkLhtRUVPjlUEx+ZrIlrNGbH90YTjpyUxrThr7
+         glmCx0bDUkbaKam7W4FyLgoEomrR4T4FtI78MuWezurZa0Lw+iG9RqdOMjB63dC9QL
+         ZLC+Nf4uWsD3nftzcFXn7JNrEMoO+mNyWR4RRQo/MghL0yImPqDOSR+tiKHbIQKxH4
+         HdEEnD5b52+OECbSSrByPUHjtDN/EdEvEWkRh4FuAStm6nOXSyg/WN+oK6aQfMsYDc
+         cA/fyrTrz5/cQ==
+Date:   Fri, 30 Dec 2022 18:22:53 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
 To:     Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] iio: pressure: bmp280: Add preinit callback
-Message-ID: <20221230181839.43191be2@jic23-huawei>
-In-Reply-To: <724e92e64e6d91d48d762e804b430c716679bccb.1672062380.git.ang.iglesiasg@gmail.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        ak@it-klinger.de, andriy.shevchenko@linux.intel.com,
+        devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nikita.yoush@cogentembedded.com,
+        paul@crapouillou.net, rafael.j.wysocki@intel.com,
+        robh+dt@kernel.org, ulf.hansson@linaro.org
+Subject: Re: [PATCH v2 3/5] iio: pressure: bmp280: Add support for new
+ sensor BMP580
+Message-ID: <20221230182253.45fcfdf4@jic23-huawei>
+In-Reply-To: <8c4826ea5698e4e1b2910f5b01e66a41970a8053.camel@gmail.com>
 References: <cover.1672062380.git.ang.iglesiasg@gmail.com>
-        <724e92e64e6d91d48d762e804b430c716679bccb.1672062380.git.ang.iglesiasg@gmail.com>
+        <c053976f56c3810915ca2ead6c358b5997b782e5.1672062380.git.ang.iglesiasg@gmail.com>
+        <d0e98b2d-1c00-b7cc-d0b3-4477e27cf822@wanadoo.fr>
+        <8c4826ea5698e4e1b2910f5b01e66a41970a8053.camel@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,101 +62,88 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Mon, 26 Dec 2022 15:29:21 +0100
+On Thu, 29 Dec 2022 19:23:16 +0100
 Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> Adds preinit callback to execute operations on probe before applying
-> initial configuration.
-> 
-> Signed-off-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 46959a91408f..c37cf2caec68 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -217,6 +217,7 @@ struct bmp280_chip_info {
->  	int (*read_press)(struct bmp280_data *, int *, int *);
->  	int (*read_humid)(struct bmp280_data *, int *, int *);
->  	int (*read_calib)(struct bmp280_data *);
-> +	int (*preinit)(struct bmp280_data *);
->  };
->  
->  /*
-> @@ -935,6 +936,7 @@ static const struct bmp280_chip_info bmp280_chip_info = {
->  	.read_temp = bmp280_read_temp,
->  	.read_press = bmp280_read_press,
->  	.read_calib = bmp280_read_calib,
-> +	.preinit = NULL,
-C standard guarantees those are set to NULL anyway + the default is obvious.
-Hence don't set them to NULL, just leave the automatic initialization of
-unspecified structure elements to handle it for you.
+> On Thu, 2022-12-29 at 18:35 +0100, Christophe JAILLET wrote:
+> > Le 26/12/2022 =C3=A0 15:29, Angel Iglesias a =C3=A9crit=C2=A0: =20
+> > > Adds compatibility with the new sensor generation, the BMP580.
+> > >=20
+> > > The measurement and initialization codepaths are adapted from
+> > > the device datasheet and the repository from manufacturer at
+> > > https://github.com/boschsensortec/BMP5-Sensor-API.
+> > >=20
+> > > Signed-off-by: Angel Iglesias
+> > > <ang.iglesiasg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > >  =20
+> >=20
+> > [...]
+> >  =20
+> > > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp=
+280.h
+> > > index efc31bc84708..27d2abc17d01 100644
+> > > --- a/drivers/iio/pressure/bmp280.h
+> > > +++ b/drivers/iio/pressure/bmp280.h =20
+> >=20
+> > [...]
+> >  =20
+> > > +#define BMP580_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x50
+> > > =C2=A0 #define BMP380_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x50 =20
+> >=20
+> > Hi,
+> >=20
+> > this is maybe correct (I've not been able to find the datasheet to chec=
+k=20
+> > myself), but it looks odd to have the same ID for 2 different chips. =20
+>=20
+> Yes, I also couldn't find a datasheet for the BMP580 or a devkit anywhere=
+. I'm
+> developing this using the BMP581, which seems to be a variant almost iden=
+tical.
+> Something similar happened with the BMP38x; you could find the BMP384 and=
+ the
+> BMP388, but the BMP380 was unavailable everywhere, datasheet included. My=
+ guess
+> is this is a similar situation. In any case, the datasheet of the BMP581 =
+is
+> available here:
+> https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets=
+/bst-bmp581-ds004.pdf
+>=20
+> Regarding the chip id being the same between generations is weird, but at=
+ least
+> the datasheet and the sensor I have uses 0x50 as the chip id. After you
+> mentioned this, I checked back on the reference API repository from Bosch=
+ and it
+> has both 0x50 and 0x51 as valid IDs:
+> * https://github.com/boschsensortec/BMP5-Sensor-API/blob/master/bmp5_defs=
+.h#L198
+> * https://github.com/boschsensortec/BMP5-Sensor-API/blob/master/bmp5.c#L1=
+444
+https://github.com/boschsensortec/BMP3-Sensor-API/blob/master/bmp3_defs.h
+I was curious on whether we had a wrong value for bmp380, but nope... Same =
+ID.
 
->  };
->  
->  static int bme280_chip_config(struct bmp280_data *data)
-> @@ -979,6 +981,7 @@ static const struct bmp280_chip_info bme280_chip_info = {
->  	.read_press = bmp280_read_press,
->  	.read_humid = bmp280_read_humid,
->  	.read_calib = bme280_read_calib,
-> +	.preinit = NULL,
->  };
->  
->  /*
-> @@ -1220,6 +1223,12 @@ static const int bmp380_odr_table[][2] = {
->  	[BMP380_ODR_0_0015HZ]	= {0, 1526},
->  };
->  
-> +static int bmp380_preinit(struct bmp280_data *data)
-> +{
-> +	/* BMP3xx requires soft-reset as part of initialization */
-> +	return bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
-> +}
-> +
->  static int bmp380_chip_config(struct bmp280_data *data)
->  {
->  	bool change = false, aux;
-> @@ -1349,6 +1358,7 @@ static const struct bmp280_chip_info bmp380_chip_info = {
->  	.read_temp = bmp380_read_temp,
->  	.read_press = bmp380_read_press,
->  	.read_calib = bmp380_read_calib,
-> +	.preinit = bmp380_preinit,
->  };
->  
->  static int bmp180_measure(struct bmp280_data *data, u8 ctrl_meas)
-> @@ -1604,6 +1614,7 @@ static const struct bmp280_chip_info bmp180_chip_info = {
->  	.read_temp = bmp180_read_temp,
->  	.read_press = bmp180_read_press,
->  	.read_calib = bmp180_read_calib,
-> +	.preinit = NULL,
->  };
->  
->  static irqreturn_t bmp085_eoc_irq(int irq, void *d)
-> @@ -1762,9 +1773,13 @@ int bmp280_common_probe(struct device *dev,
->  		return -EINVAL;
->  	}
->  
-> -	/* BMP3xx requires soft-reset as part of initialization */
-> -	if (chip_id == BMP380_CHIP_ID) {
-> -		ret = bmp380_cmd(data, BMP380_CMD_SOFT_RESET);
-> +	/*
-> +	 * Some chips like the BMP3xx have preinit tasks to run
-> +	 * before applying the initial configuration.
-> +	 */
-I would drop this comment. It's kind of obvious that some devices need you
-to call something here - otherwise why have the clearly optional callback?
-The specific BMP3xx requirements are well commented in your new callback above
-so don't want to be here as well.
+Huh. As per earlier comment - who wants to moan at Bosch as this is crazy s=
+ituation?
 
-> +	if (data->chip_info->preinit) {
-> +		ret = data->chip_info->preinit(data);
-> +		dev_err(dev, "error running preinit tasks");
+Jonathan
 
-Error message printed on success...
 
->  		if (ret < 0)
->  			return ret;
-
-			return dev_err_probe(dev, ret, "error running preinit tasks");
-
->  	}
+>=20
+> Angel
+>=20
+> > CJ
+> >  =20
+> > > =C2=A0 #define BMP180_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x55
+> > > =C2=A0 #define BMP280_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x58 =20
+> >  =20
+>=20
 

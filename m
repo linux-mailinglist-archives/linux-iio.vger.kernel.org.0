@@ -2,49 +2,51 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CA2659B14
-	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 18:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4B39659B24
+	for <lists+linux-iio@lfdr.de>; Fri, 30 Dec 2022 18:55:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231174AbiL3Rtz (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Fri, 30 Dec 2022 12:49:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39558 "EHLO
+        id S235478AbiL3RzX (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Fri, 30 Dec 2022 12:55:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbiL3Rty (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 12:49:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC0121A380;
-        Fri, 30 Dec 2022 09:49:53 -0800 (PST)
+        with ESMTP id S235424AbiL3RzN (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Fri, 30 Dec 2022 12:55:13 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2020B1C90C;
+        Fri, 30 Dec 2022 09:54:54 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45DF361B00;
-        Fri, 30 Dec 2022 17:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F995C433D2;
-        Fri, 30 Dec 2022 17:49:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BBC25B81CE7;
+        Fri, 30 Dec 2022 17:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16E6C433EF;
+        Fri, 30 Dec 2022 17:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672422592;
-        bh=mCQwh+M4v4BqKHGPRo63aRCGwtmNGYo5iHzaQi1VwBY=;
+        s=k20201202; t=1672422891;
+        bh=n26j3UNEBWhnst1Oo9v8s52C4KD49fhyEge2J4vzAmc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=cyG9qoJRrp0kZa+RNIanWDpaFXXsqnQ3E3AXCJEOvWuYofdX/HcutnreO0RPxqxIm
-         ama/vpsFeQ4LvdXHGXY2tlpgX7qNIUwDWP3jPiP7XmXo8ayS65m3uojr5Zd9aq+SKB
-         Kohl7sp0YXqyasGKIMCY9iYTB8f81kVz0vwg7eIeeUFy4BUnLeX98KLwKv2CAXcT4n
-         ytCGkgVCj4MAZrZR9lu4aXKrT8ORMMWF3CM5dloGiR/oE96P3wzY9wXbZm5l2/6YSY
-         H/5wclT2taOM4R1qKW8/NqJ0YJGMbbx7/TvUO9UuPkkuWMkRkXcBW/dFNuokX7vJqV
-         3GmM1AfkvUEMQ==
-Date:   Fri, 30 Dec 2022 18:03:10 +0000
+        b=mzqd2UgN5mNYi2ZRQozGDhqjfBuD6TjIX+dV/JNT/N+/DTkzRqDdGSw9BiUyKGAYM
+         KsZYneFe0OmEFn5LhB8boWiTMgaKAnOdXJeMKW/NlvhbJnLMmDcOt7QCTRLoNtx5Sz
+         BohFSRe++CrN0yTtaklYUKypwsd9zqxHBxnER+am3OymXkeK447j3e3DGOy6/kcXz2
+         hBxBqYb1Gu0buKUl0s6bjN7G2sTlWIihvYOWgzEV+isQiI/HM544kYR7kRLujrYUEf
+         b4b9sjOQMAwdrAnqbpuKeHTxbuYRpCfx+Vmq7HTGh5PUELXbU8pxyxMcpqfnSwu16K
+         eqvl7Jf2gtBEQ==
+Date:   Fri, 30 Dec 2022 18:08:09 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     hvilleneuve@dimonoff.com, lars@metafoo.de, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] iio: adc: Kconfig: add SPI interface mention to
- AD7924 description
-Message-ID: <20221230180310.5978f5b6@jic23-huawei>
-In-Reply-To: <20221223135209.f46617b6f23ff9b60a85ebe7@hugovil.com>
-References: <20221222203610.2571287-1-hugo@hugovil.com>
-        <20221222203610.2571287-2-hugo@hugovil.com>
-        <20221223141232.0f570f33@jic23-huawei>
-        <20221223135209.f46617b6f23ff9b60a85ebe7@hugovil.com>
+To:     Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc:     linux-iio@vger.kernel.org,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: ep93xx: Add
+ cirrus,ep9301-adc description
+Message-ID: <20221230180809.051fc6bd@jic23-huawei>
+In-Reply-To: <20221223162636.6488-1-alexander.sverdlin@gmail.com>
+References: <20221223162636.6488-1-alexander.sverdlin@gmail.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -58,85 +60,114 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Fri, 23 Dec 2022 13:52:09 -0500
-Hugo Villeneuve <hugo@hugovil.com> wrote:
+On Fri, 23 Dec 2022 17:26:35 +0100
+Alexander Sverdlin <alexander.sverdlin@gmail.com> wrote:
 
-> On Fri, 23 Dec 2022 14:12:32 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
+> Add device tree bindings for Cirrus Logic EP9301/EP9302 internal SoCs' ADC
+> block.
 > 
-> > On Thu, 22 Dec 2022 15:36:08 -0500
-> > Hugo Villeneuve <hugo@hugovil.com> wrote:
-> >   
-> > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > 
-> > > The Analog Devices AD7924 uses an SPI interface. There is also a Texas
-> > > Instruments ADS7924 which uses an I2C interface.
-> > > 
-> > > Adding the SPI mention to the AD7924 will help to avoid confusion
-> > > between the two chips.  
-> > Hi Hugo,
-> > 
-> > Welcome to IIO.
-> > 
-> > I don't really mind this, but given they have different part numbers
-> > and the similarly named TI part could just have easily been SPI
-> > I'm not sure the clarification is really useful.
-> > 
-> > Also, under all the circumstances I can think of, if you can see the
-> > help text you can also see the SPI dependence clearly listed.
-> > 
-> > Hence I think is just noise, though I'm guessing it reflects a
-> > confusion you ran into!
-> > 
-> > Jonathan  
-> 
-> Hi Jonathan,
-> yes, I initially tought that the TI ADS7924 was already supported because of the AD7924 entry. I wrongly assumed that the parts were similar and TI just renamed it because they bought Analog Devices. I am pretty sure that I am not the only one having made a similar error :)
-> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
 
-Yikes.  If TI bought ADI that would definitely be big news (my uninformed
-guess it it would never get past competition authorities :)
+Applied to the togreg branch of iio.git and pushed out as testing.
 
-I do vaguely wonder if long term we'll have to start naming drivers
-with vendor prefixes as we will eventually get significant naming clashes.
-Still I'm not keen to do it until we have a real problem.
+Whilst we are looking at this driver, Alexander, would you mind if we relaxed
+the Kconfig dependencies to:
 
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 46c4fc2fc534..fd1d68dce507 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -441,7 +441,7 @@ config ENVELOPE_DETECTOR
+ 
+ config EP93XX_ADC
+        tristate "Cirrus Logic EP93XX ADC driver"
+-       depends on ARCH_EP93XX
++       depends on ARCH_EP93XX || COMPILE_TEST
+        help
+          Driver for the ADC module on the EP93XX series of SoC from Cirrus Logic.
+          It's recommended to switch on CONFIG_HIGH_RES_TIMERS option, in this
 
-> Of course, both chips differ not only because of their interface (SPI vs I2C), but also in their modes of operation and registers, interrupt pin presence (ADS7924), etc.
-> 
-> But I can drop this patch if you want.
-
-Will do,
-
-Thanks,
+I end up doing that locally to build test patches like this one and it doesn't
+seem to cause any problems.
 
 Jonathan
 
+> ---
+> Changelog:
+> v2: removed clock-names property, soc node and include as Krzysztof suggested
 > 
-> Hugo V.
+>  .../bindings/iio/adc/cirrus,ep9301-adc.yaml   | 47 +++++++++++++++++++
+>  MAINTAINERS                                   |  2 +
+>  2 files changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
 > 
-> 
-> 
-> > > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > ---
-> > >  drivers/iio/adc/Kconfig | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > > index 46c4fc2fc534..235319546974 100644
-> > > --- a/drivers/iio/adc/Kconfig
-> > > +++ b/drivers/iio/adc/Kconfig
-> > > @@ -243,7 +243,7 @@ config AD7923
-> > >  	select IIO_TRIGGERED_BUFFER
-> > >  	help
-> > >  	  Say yes here to build support for Analog Devices
-> > > -	  AD7904, AD7914, AD7923, AD7924 4 Channel ADCs.
-> > > +	  AD7904, AD7914, AD7923, AD7924 4 Channel SPI ADCs.
-> > >  
-> > >  	  To compile this driver as a module, choose M here: the
-> > >  	  module will be called ad7923.  
-> > 
-> >   
-> 
-> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
+> new file mode 100644
+> index 000000000000..6d4fb3e1d2a2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
+> @@ -0,0 +1,47 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/cirrus,ep9301-adc.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Cirrus Logic EP930x internal ADC
+> +
+> +description: |
+> +  Cirrus Logic EP9301/EP9302 SoCs' internal ADC block.
+> +
+> +  User's manual:
+> +  https://cdn.embeddedts.com/resource-attachments/ts-7000_ep9301-ug.pdf
+> +
+> +maintainers:
+> +  - Alexander Sverdlin <alexander.sverdlin@gmail.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: cirrus,ep9301-adc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    adc: adc@80900000 {
+> +        compatible = "cirrus,ep9301-adc";
+> +        reg = <0x80900000 0x28>;
+> +        clocks = <&syscon 24>;
+> +        interrupt-parent = <&vic1>;
+> +        interrupts = <30>;
+> +    };
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 69565ac0c224..4a914d5bc2e6 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2027,8 +2027,10 @@ M:	Hartley Sweeten <hsweeten@visionengravers.com>
+>  M:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+>  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+>  S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/adc/cirrus,ep9301-adc.yaml
+>  F:	arch/arm/mach-ep93xx/
+>  F:	arch/arm/mach-ep93xx/include/mach/
+> +F:	drivers/iio/adc/ep93xx_adc.c
+>  
+>  ARM/CLKDEV SUPPORT
+>  M:	Russell King <linux@armlinux.org.uk>
 

@@ -2,48 +2,46 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5609D65A506
-	for <lists+linux-iio@lfdr.de>; Sat, 31 Dec 2022 15:32:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF62B65A512
+	for <lists+linux-iio@lfdr.de>; Sat, 31 Dec 2022 15:38:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbiLaOcn (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sat, 31 Dec 2022 09:32:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35384 "EHLO
+        id S231165AbiLaOiB (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sat, 31 Dec 2022 09:38:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229523AbiLaOcm (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sat, 31 Dec 2022 09:32:42 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E01095F4D;
-        Sat, 31 Dec 2022 06:32:41 -0800 (PST)
+        with ESMTP id S229523AbiLaOiA (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sat, 31 Dec 2022 09:38:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95530CE06
+        for <linux-iio@vger.kernel.org>; Sat, 31 Dec 2022 06:37:59 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 90BB4B8074C;
-        Sat, 31 Dec 2022 14:32:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4931DC433D2;
-        Sat, 31 Dec 2022 14:32:38 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 56B67B8074C
+        for <linux-iio@vger.kernel.org>; Sat, 31 Dec 2022 14:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1131C433EF;
+        Sat, 31 Dec 2022 14:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672497159;
-        bh=MP5Y9V4XRfuEEV4O27iMkporMWBEUSDCBHNGenZ/zFo=;
+        s=k20201202; t=1672497476;
+        bh=Puqr3BotDbDyGcuTI2we8Xoso7YG9+IoMs9z14jc3Jc=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=X+8LVvji7s2e/Ba+WgxQm0PpYCDZQuqBLSaTED7r7ArgiZOMmex1gotxZBi4WOKa7
-         y6IrQnF55BqOYnIjjzRD+Kq48ji1qLa1wIKqCH6ogDoT18NxkdJlKybWqZmSM4Vxn5
-         HNvpQk5hJYt38ijy0z8D+vFgvjTMRZzEdYFT8i4bhz/Kb39dhKQjjmBp7IznD9kdj1
-         VptgUrSeOOLfmWrjtru0RnPf3r0FBbTGqAT4eBegpTtpAygWSG6OlOLQXN/AQnctj4
-         JXwEz0BqfclfSUAnyd6f4IbJt/SOkcQe2HD+yC97g0XyUi81crpqMUZdjj6/TpWaC1
-         TBZQjS5M2O2VQ==
-Date:   Sat, 31 Dec 2022 14:45:58 +0000
+        b=KzJaNvr2v0AxmC0K3Wt0V08WbFArcrRn4rO0G9HNgzeIuxukHD7h0iVJVxWg6uW8I
+         9Ydv8dU9VhJdDc6dKcs2T8nIhrtHb34DCQKIk4PXPquT24AQkq3VHXs6jbb8lvQCGK
+         r4VWrxTedL9LfSE4swtg7VdH0iIeoQz83eRotDGpnN22tO8QhMkJGGGBfGdEFq08t5
+         OuE5kycRPhacM7PJVP9cLN3Xi1I5R08dM6QmGc4wZnuH2wD4tzKX3GwOElk1LHOUHu
+         61uvmXp8J6p1WZHYlOFo6LVGomg2sJwRuY49q5GItBsuFKClcjdu3Y6MGt0f7dPeIP
+         DTU6+REVIvVjQ==
+Date:   Sat, 31 Dec 2022 14:51:15 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/2] iio: adc: ti-adc128s052: Switch to use
- spi_get_device_match_data()
-Message-ID: <20221231144558.44720f4d@jic23-huawei>
-In-Reply-To: <Y6wTmapfACknDKO8@smile.fi.intel.com>
-References: <20221214114944.83790-1-andriy.shevchenko@linux.intel.com>
-        <20221223152242.2ee926eb@jic23-huawei>
-        <20221223154450.458771b8@jic23-huawei>
-        <Y6wTmapfACknDKO8@smile.fi.intel.com>
+To:     carlos.song@nxp.com
+Cc:     lars@metafoo.de, rjones@gateworks.com, Jonathan.Cameron@huawei.com,
+        haibo.chen@nxp.com, linux-imx@nxp.com, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 1/4] iio: imu: fxos8700: fix incorrect ODR mode
+ readback
+Message-ID: <20221231145115.7d9414e5@jic23-huawei>
+In-Reply-To: <20221228093941.270046-2-carlos.song@nxp.com>
+References: <20221228093941.270046-1-carlos.song@nxp.com>
+        <20221228093941.270046-2-carlos.song@nxp.com>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -57,49 +55,93 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-On Wed, 28 Dec 2022 11:59:53 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed, 28 Dec 2022 17:39:38 +0800
+carlos.song@nxp.com wrote:
 
-> On Fri, Dec 23, 2022 at 03:44:50PM +0000, Jonathan Cameron wrote:
-> > On Fri, 23 Dec 2022 15:22:42 +0000
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >   
-> > > On Wed, 14 Dec 2022 13:49:43 +0200
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > >   
-> > > > The spi_get_device_match_data() helps to get driver data from the
-> > > > firmware node or SPI ID table. Use it instead of open coding.
-> > > > 
-> > > > While at it, switch ID tables to provide an acrual pointers to
-> > > > the configuration data.
-> > > > 
-> > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > > ---
-> > > > 
-> > > > Requires aea672d054a2 ("spi: Introduce spi_get_device_match_data()
-> > > > helper") which is part of upstream as of today.    
-> > > 
-> > > I rebased to get that (will rebase again on rc1).
-> > > 
-> > > Applied to the togreg branch of iio.git and pushed out as testing
-> > > to keep 0-day busy over my holidays.  
-> > 
-> > I take it back...  Build test failed...  
+> From: Carlos Song <carlos.song@nxp.com>
 > 
-> As comment on the first patch stays this requires an SPI core patch, which is
-> now the part of the v6.2-rc1.
+> The absence of a correct offset leads an incorrect ODR mode
+> readback after use a hexadecimal number to mark the value from
+> FXOS8700_CTRL_REG1.
 > 
-> Can you reapply it taking the above into consideration?
->
+> Get ODR mode by field mask and FIELD_GET clearly and conveniently.
+> And attach other additional fix for keeping the original code logic
+> and a good readability.
+> 
+> Fixes: 84e5ddd5c46e ("iio: imu: Add support for the FXOS8700 IMU")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Hi Carlos,
 
-I should have been more specific though I do mention rebasing to get the
-patch above.. Doesn't build with it.
-
-Signature of spi_get_device_match_data is:
-extern const void *
-spi_get_device_match_data(const struct spi_device *sdev);
-
-and you are passing it a struct device * which rather implies you didn't
-successfully build test this.
+I'm fairly sure the new code doesn't quite work correctly. See inline.
 
 Jonathan
+
+> ---
+> Changes for V4:
+> - Use ODR_MSK in the first place that merged the first two patches
+>   in V3 into this patch.
+> - Rework commit log
+> Changes for V3:
+> - Remove FXOS8700_CTRL_ODR_GENMSK and set FXOS8700_CTRL_ODR_MSK a
+>   field mask
+> - Legal use of filed mask and FIELD_PREP() to select ODR mode
+> - Rework commit log
+> ---
+>  drivers/iio/imu/fxos8700_core.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/fxos8700_core.c b/drivers/iio/imu/fxos8700_core.c
+> index 773f62203bf0..a1af5d0fde5d 100644
+> --- a/drivers/iio/imu/fxos8700_core.c
+> +++ b/drivers/iio/imu/fxos8700_core.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/regmap.h>
+>  #include <linux/acpi.h>
+>  #include <linux/bitops.h>
+> +#include <linux/bitfield.h>
+>  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -144,9 +145,9 @@
+>  #define FXOS8700_NVM_DATA_BNK0      0xa7
+>  
+>  /* Bit definitions for FXOS8700_CTRL_REG1 */
+> -#define FXOS8700_CTRL_ODR_MSK       0x38
+>  #define FXOS8700_CTRL_ODR_MAX       0x00
+>  #define FXOS8700_CTRL_ODR_MIN       GENMASK(4, 3)
+> +#define FXOS8700_CTRL_ODR_MSK       GENMASK(5, 3)
+>  
+>  /* Bit definitions for FXOS8700_M_CTRL_REG1 */
+>  #define FXOS8700_HMS_MASK           GENMASK(1, 0)
+> @@ -508,10 +509,8 @@ static int fxos8700_set_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
+>  	if (i >= odr_num)
+>  		return -EINVAL;
+>  
+> -	return regmap_update_bits(data->regmap,
+> -				  FXOS8700_CTRL_REG1,
+> -				  FXOS8700_CTRL_ODR_MSK + FXOS8700_ACTIVE,
+> -				  fxos8700_odr[i].bits << 3 | active_mode);
+> +	val = val | FIELD_PREP(FXOS8700_CTRL_ODR_MSK, fxos8700_odr[i].bits) | active_mode;
+
+val |= would be neater.
+
+Also, if I read the existing code correctly, val hasn't been masked, so if active_mode was
+set in val, it still will be, hence no need to or it in again.
+You also haven't masked out _CTRL_ODR_MSK so as a result of this call you will get the
+bitwise or of whatever ODR value you are trying to set and whatever it was set to before.
+
+
+> +	return regmap_write(data->regmap, FXOS8700_CTRL_REG1, val);
+>  }
+>  
+>  static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
+> @@ -524,7 +523,7 @@ static int fxos8700_get_odr(struct fxos8700_data *data, enum fxos8700_sensor t,
+>  	if (ret)
+>  		return ret;
+>  
+> -	val &= FXOS8700_CTRL_ODR_MSK;
+> +	val = FIELD_GET(FXOS8700_CTRL_ODR_MSK, val);
+>  
+>  	for (i = 0; i < odr_num; i++)
+>  		if (val == fxos8700_odr[i].bits)
+

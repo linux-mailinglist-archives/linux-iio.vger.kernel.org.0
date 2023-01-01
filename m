@@ -2,74 +2,74 @@ Return-Path: <linux-iio-owner@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 957A365A9B0
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Jan 2023 12:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB9B65A9BA
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Jan 2023 12:16:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229631AbjAALJc (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
-        Sun, 1 Jan 2023 06:09:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
+        id S229575AbjAALQg (ORCPT <rfc822;lists+linux-iio@lfdr.de>);
+        Sun, 1 Jan 2023 06:16:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbjAALJa (ORCPT
-        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Jan 2023 06:09:30 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050E56177;
-        Sun,  1 Jan 2023 03:09:25 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id l26so16792435wme.5;
-        Sun, 01 Jan 2023 03:09:25 -0800 (PST)
+        with ESMTP id S229476AbjAALQd (ORCPT
+        <rfc822;linux-iio@vger.kernel.org>); Sun, 1 Jan 2023 06:16:33 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEDA626ED;
+        Sun,  1 Jan 2023 03:16:31 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id bs20so21773642wrb.3;
+        Sun, 01 Jan 2023 03:16:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=j5PT8q9BxmBpzjhbUsqPnpb+0zMREfMJNYd0Y1lM8e8=;
-        b=fIj7I5D4IRn7p+KGxQY9FI6KOOZaTS+kio1/Q5hNgKVzNgKQs7S+s0c8AS/XWoX6Y0
-         yYfQC46/mvfC9XZFFkjVHcyDyA8iKuaPeS+aGRksLaPDnYwg99Jy+RHh6cJ+r90M9AZ2
-         ak8TEVYm7beWCuJhkcSjYX9LQNOWuw716ih7/1LTkGL/qXjwQKwn8CQJ0GUDEsRWBRZP
-         Redp6ovsDSd5rbozT6NDz2lTac6c1jiFchtgSq/mY71hxRSriEccqkLB3taXRsnL2RRu
-         VK1djaIXyCnVJG28NcrjbKBG1wA+ltUgppwdXXrZH9g0EtItZngPBeo76cvtMHZIqHVw
-         5w8A==
+        bh=DohetCaml00wlk7F6nBCpFTgHCeu68qAGTRRsdfvvGw=;
+        b=N2FoHfpC/gYxAhABdvGWZlJw1fzzJLSnVqwQ8pWPZYeUh2WKuKccdODIg3PlAOTpj1
+         5z+VAEwa98XZwO9c0keyw8+dfxxr/QHSjoT6knOpjZMO5JUxMSjqdW/QuKLk+fDP0yG7
+         l/M5rfXYQWGoLOL4F/q0PRMMm2GnOHYfmUV4WdTMhfFacKgQbGs7lrgR6ENFh3oEdLn+
+         ZU1ILrqsSDTodTKl3LPTuxE94EMJ5BCTH4hUa3GVBG4BmumF4XgkkL8s15lyf7wKwWff
+         1WV2VubYjPasY3DPNW2L/ZA7Iy36Mph/jaHyRl1/HuRy3e6L6xaz8dqQMNX4MohuDaY4
+         Fpig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=j5PT8q9BxmBpzjhbUsqPnpb+0zMREfMJNYd0Y1lM8e8=;
-        b=e0P35g7arFSCYKVfSuZPTSusov+P5fnSHhfH+X+v0hybSBEcd1JjdDOcaXVBHCh6HP
-         sPk+b0jIPcYET1GcuJ8kts+jkrPrdhlyG9FtJSr8LP+foJKcDxrBqoMusk54HwWWN8Pm
-         BbLHMnEwjC4ST+r2OZqs1LX9J0hEC3uNbh3DIJGY5erQy67a562NbmJKkfjmCJNFXQjY
-         1QXcWkPNIa+d5l4zoZL8xHWHGeUZq5C/xugldsr6JJpMrQFZgPHa5iNGDqf8wQwV80Vn
-         ESaENut8lr2Fl+5eMC/HjDbQnT7ysyhzaXixiWGTe+rr1IHRochunYN3A+JstC0i5rsF
-         nx8w==
-X-Gm-Message-State: AFqh2krCSiY4OldliUAJ/VHrfS/E5DwwlM0DvqbRXEdNbqN1bOESa6+G
-        guL5kteJUoAncuWnidvnIUgXozY0fM8=
-X-Google-Smtp-Source: AMrXdXvhUTRGyN7tu1CC8JDlHkNZNkArT47HdE2XJJk6hcK5yi6Wf+ZWV/0OVa6mMVQ90kjiXMgucg==
-X-Received: by 2002:a05:600c:ace:b0:3d1:fe0a:f134 with SMTP id c14-20020a05600c0ace00b003d1fe0af134mr26566718wmr.19.1672571364600;
-        Sun, 01 Jan 2023 03:09:24 -0800 (PST)
+        bh=DohetCaml00wlk7F6nBCpFTgHCeu68qAGTRRsdfvvGw=;
+        b=fS7ToD28VJBUEzVFCyWGLFq9eMlvo/7c9Ood7IRnze4ekhflh1/gwgYD79AEoYB9Ap
+         czHQNXMmLZKnwHY/cl2CBvzOmvqm4t01k5NG7IUsGLjjpaHKK6DS5lEix1K+qZGn5S22
+         kCKzt/M4JuFHO3UE2hOkClZ/wa8zOuWPbTClaoJEf4ff4N2mfvPzRFwKMgk+soMlpzPZ
+         VWfWCQTXRu0RcEC7YjaW8B+2ARdgqJkQjJXNWzAhaGW76sWYBARLcpXLbRAOlCm/i5jO
+         YPCUFW75VwjdAYqw5CoJM4H1WBT7QYlV/76CU+sraAjyZo9MKhrUqAmrLYnQRXzbhwQw
+         P93Q==
+X-Gm-Message-State: AFqh2kpGe1bdNFHqKnAKxU7sQhsWX+jHkEW/FZQClEu3Gxg66lW7JgO8
+        qBD8GVJgP5D2eXud/IE6NcQ=
+X-Google-Smtp-Source: AMrXdXvOph/bVkqhHqIsKEGjNzeEWVEJlHkVJc7nl60IGr844j8ILYHbEQdwM183l+rrx99X9HX06g==
+X-Received: by 2002:a5d:6d0f:0:b0:28b:456c:1b6d with SMTP id e15-20020a5d6d0f000000b0028b456c1b6dmr12197004wrq.55.1672571790148;
+        Sun, 01 Jan 2023 03:16:30 -0800 (PST)
 Received: from DreamMachine2.lan (188.red-83-35-57.dynamicip.rima-tde.net. [83.35.57.188])
-        by smtp.gmail.com with ESMTPSA id l27-20020a05600c1d1b00b003cfd4e6400csm37758452wms.19.2023.01.01.03.09.23
+        by smtp.gmail.com with ESMTPSA id r13-20020adfa14d000000b002779dab8d85sm22119553wrr.8.2023.01.01.03.16.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Jan 2023 03:09:24 -0800 (PST)
-Message-ID: <c8e312d7584a0c4d42264a2dbeeccb9adb676dd6.camel@gmail.com>
-Subject: Re: [PATCH v2 2/5] iio: pressure: bmp280: Add preinit callback
+        Sun, 01 Jan 2023 03:16:29 -0800 (PST)
+Message-ID: <0f86cf66a14b4d5900ddee68cd7b49807128b7e9.camel@gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: pressure: bmp280: Add support for new
+ sensor BMP580
 From:   Angel Iglesias <ang.iglesiasg@gmail.com>
 To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Andreas Klinger <ak@it-klinger.de>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 01 Jan 2023 12:09:23 +0100
-In-Reply-To: <20221230181839.43191be2@jic23-huawei>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        ak@it-klinger.de, andriy.shevchenko@linux.intel.com,
+        devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        lars@metafoo.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, nikita.yoush@cogentembedded.com,
+        paul@crapouillou.net, rafael.j.wysocki@intel.com,
+        robh+dt@kernel.org, ulf.hansson@linaro.org
+Date:   Sun, 01 Jan 2023 12:16:28 +0100
+In-Reply-To: <20221230182253.45fcfdf4@jic23-huawei>
 References: <cover.1672062380.git.ang.iglesiasg@gmail.com>
-         <724e92e64e6d91d48d762e804b430c716679bccb.1672062380.git.ang.iglesiasg@gmail.com>
-         <20221230181839.43191be2@jic23-huawei>
+         <c053976f56c3810915ca2ead6c358b5997b782e5.1672062380.git.ang.iglesiasg@gmail.com>
+         <d0e98b2d-1c00-b7cc-d0b3-4477e27cf822@wanadoo.fr>
+         <8c4826ea5698e4e1b2910f5b01e66a41970a8053.camel@gmail.com>
+         <20221230182253.45fcfdf4@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.2 (by Flathub.org) 
 MIME-Version: 1.0
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -82,82 +82,108 @@ Precedence: bulk
 List-ID: <linux-iio.vger.kernel.org>
 X-Mailing-List: linux-iio@vger.kernel.org
 
-T24gRnJpLCAyMDIyLTEyLTMwIGF0IDE4OjE4ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
-Ogo+IE9uIE1vbiwgMjYgRGVjIDIwMjIgMTU6Mjk6MjEgKzAxMDAKPiBBbmdlbCBJZ2xlc2lhcyA8
-YW5nLmlnbGVzaWFzZ0BnbWFpbC5jb20+IHdyb3RlOgo+IAo+ID4gQWRkcyBwcmVpbml0IGNhbGxi
-YWNrIHRvIGV4ZWN1dGUgb3BlcmF0aW9ucyBvbiBwcm9iZSBiZWZvcmUgYXBwbHlpbmcKPiA+IGlu
-aXRpYWwgY29uZmlndXJhdGlvbi4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogQW5nZWwgSWdsZXNp
-YXMgPGFuZy5pZ2xlc2lhc2dAZ21haWwuY29tPgo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9paW8vcHJlc3N1cmUvYm1wMjgwLWNvcmUuYwo+ID4gYi9kcml2ZXJzL2lpby9wcmVzc3VyZS9i
-bXAyODAtY29yZS5jCj4gPiBpbmRleCA0Njk1OWE5MTQwOGYuLmMzN2NmMmNhZWM2OCAxMDA2NDQK
-PiA+IC0tLSBhL2RyaXZlcnMvaWlvL3ByZXNzdXJlL2JtcDI4MC1jb3JlLmMKPiA+ICsrKyBiL2Ry
-aXZlcnMvaWlvL3ByZXNzdXJlL2JtcDI4MC1jb3JlLmMKPiA+IEBAIC0yMTcsNiArMjE3LDcgQEAg
-c3RydWN0IGJtcDI4MF9jaGlwX2luZm8gewo+ID4gwqDCoMKgwqDCoMKgwqDCoGludCAoKnJlYWRf
-cHJlc3MpKHN0cnVjdCBibXAyODBfZGF0YSAqLCBpbnQgKiwgaW50ICopOwo+ID4gwqDCoMKgwqDC
-oMKgwqDCoGludCAoKnJlYWRfaHVtaWQpKHN0cnVjdCBibXAyODBfZGF0YSAqLCBpbnQgKiwgaW50
-ICopOwo+ID4gwqDCoMKgwqDCoMKgwqDCoGludCAoKnJlYWRfY2FsaWIpKHN0cnVjdCBibXAyODBf
-ZGF0YSAqKTsKPiA+ICvCoMKgwqDCoMKgwqDCoGludCAoKnByZWluaXQpKHN0cnVjdCBibXAyODBf
-ZGF0YSAqKTsKPiA+IMKgfTsKPiA+IMKgCj4gPiDCoC8qCj4gPiBAQCAtOTM1LDYgKzkzNiw3IEBA
-IHN0YXRpYyBjb25zdCBzdHJ1Y3QgYm1wMjgwX2NoaXBfaW5mbyBibXAyODBfY2hpcF9pbmZvID0K
-PiA+IHsKPiA+IMKgwqDCoMKgwqDCoMKgwqAucmVhZF90ZW1wID0gYm1wMjgwX3JlYWRfdGVtcCwK
-PiA+IMKgwqDCoMKgwqDCoMKgwqAucmVhZF9wcmVzcyA9IGJtcDI4MF9yZWFkX3ByZXNzLAo+ID4g
-wqDCoMKgwqDCoMKgwqDCoC5yZWFkX2NhbGliID0gYm1wMjgwX3JlYWRfY2FsaWIsCj4gPiArwqDC
-oMKgwqDCoMKgwqAucHJlaW5pdCA9IE5VTEwsCj4gQyBzdGFuZGFyZCBndWFyYW50ZWVzIHRob3Nl
-IGFyZSBzZXQgdG8gTlVMTCBhbnl3YXkgKyB0aGUgZGVmYXVsdCBpcyBvYnZpb3VzLgo+IEhlbmNl
-IGRvbid0IHNldCB0aGVtIHRvIE5VTEwsIGp1c3QgbGVhdmUgdGhlIGF1dG9tYXRpYyBpbml0aWFs
-aXphdGlvbiBvZgo+IHVuc3BlY2lmaWVkIHN0cnVjdHVyZSBlbGVtZW50cyB0byBoYW5kbGUgaXQg
-Zm9yIHlvdS4KCk9LISBOb3RlIHRvIHNlbGY6IGNvbXBpbGVyIGtub3dzIGJlc3QhCgo+ID4gwqB9
-Owo+ID4gwqAKPiA+IMKgc3RhdGljIGludCBibWUyODBfY2hpcF9jb25maWcoc3RydWN0IGJtcDI4
-MF9kYXRhICpkYXRhKQo+ID4gQEAgLTk3OSw2ICs5ODEsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0
-IGJtcDI4MF9jaGlwX2luZm8gYm1lMjgwX2NoaXBfaW5mbyA9Cj4gPiB7Cj4gPiDCoMKgwqDCoMKg
-wqDCoMKgLnJlYWRfcHJlc3MgPSBibXAyODBfcmVhZF9wcmVzcywKPiA+IMKgwqDCoMKgwqDCoMKg
-wqAucmVhZF9odW1pZCA9IGJtcDI4MF9yZWFkX2h1bWlkLAo+ID4gwqDCoMKgwqDCoMKgwqDCoC5y
-ZWFkX2NhbGliID0gYm1lMjgwX3JlYWRfY2FsaWIsCj4gPiArwqDCoMKgwqDCoMKgwqAucHJlaW5p
-dCA9IE5VTEwsCj4gPiDCoH07Cj4gPiDCoAo+ID4gwqAvKgo+ID4gQEAgLTEyMjAsNiArMTIyMywx
-MiBAQCBzdGF0aWMgY29uc3QgaW50IGJtcDM4MF9vZHJfdGFibGVbXVsyXSA9IHsKPiA+IMKgwqDC
-oMKgwqDCoMKgwqBbQk1QMzgwX09EUl8wXzAwMTVIWl3CoMKgwqA9IHswLCAxNTI2fSwKPiA+IMKg
-fTsKPiA+IMKgCj4gPiArc3RhdGljIGludCBibXAzODBfcHJlaW5pdChzdHJ1Y3QgYm1wMjgwX2Rh
-dGEgKmRhdGEpCj4gPiArewo+ID4gK8KgwqDCoMKgwqDCoMKgLyogQk1QM3h4IHJlcXVpcmVzIHNv
-ZnQtcmVzZXQgYXMgcGFydCBvZiBpbml0aWFsaXphdGlvbiAqLwo+ID4gK8KgwqDCoMKgwqDCoMKg
-cmV0dXJuIGJtcDM4MF9jbWQoZGF0YSwgQk1QMzgwX0NNRF9TT0ZUX1JFU0VUKTsKPiA+ICt9Cj4g
-PiArCj4gPiDCoHN0YXRpYyBpbnQgYm1wMzgwX2NoaXBfY29uZmlnKHN0cnVjdCBibXAyODBfZGF0
-YSAqZGF0YSkKPiA+IMKgewo+ID4gwqDCoMKgwqDCoMKgwqDCoGJvb2wgY2hhbmdlID0gZmFsc2Us
-IGF1eDsKPiA+IEBAIC0xMzQ5LDYgKzEzNTgsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGJtcDI4
-MF9jaGlwX2luZm8gYm1wMzgwX2NoaXBfaW5mbwo+ID4gPSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKg
-LnJlYWRfdGVtcCA9IGJtcDM4MF9yZWFkX3RlbXAsCj4gPiDCoMKgwqDCoMKgwqDCoMKgLnJlYWRf
-cHJlc3MgPSBibXAzODBfcmVhZF9wcmVzcywKPiA+IMKgwqDCoMKgwqDCoMKgwqAucmVhZF9jYWxp
-YiA9IGJtcDM4MF9yZWFkX2NhbGliLAo+ID4gK8KgwqDCoMKgwqDCoMKgLnByZWluaXQgPSBibXAz
-ODBfcHJlaW5pdCwKPiA+IMKgfTsKPiA+IMKgCj4gPiDCoHN0YXRpYyBpbnQgYm1wMTgwX21lYXN1
-cmUoc3RydWN0IGJtcDI4MF9kYXRhICpkYXRhLCB1OCBjdHJsX21lYXMpCj4gPiBAQCAtMTYwNCw2
-ICsxNjE0LDcgQEAgc3RhdGljIGNvbnN0IHN0cnVjdCBibXAyODBfY2hpcF9pbmZvIGJtcDE4MF9j
-aGlwX2luZm8KPiA+ID0gewo+ID4gwqDCoMKgwqDCoMKgwqDCoC5yZWFkX3RlbXAgPSBibXAxODBf
-cmVhZF90ZW1wLAo+ID4gwqDCoMKgwqDCoMKgwqDCoC5yZWFkX3ByZXNzID0gYm1wMTgwX3JlYWRf
-cHJlc3MsCj4gPiDCoMKgwqDCoMKgwqDCoMKgLnJlYWRfY2FsaWIgPSBibXAxODBfcmVhZF9jYWxp
-YiwKPiA+ICvCoMKgwqDCoMKgwqDCoC5wcmVpbml0ID0gTlVMTCwKPiA+IMKgfTsKPiA+IMKgCj4g
-PiDCoHN0YXRpYyBpcnFyZXR1cm5fdCBibXAwODVfZW9jX2lycShpbnQgaXJxLCB2b2lkICpkKQo+
-ID4gQEAgLTE3NjIsOSArMTc3MywxMyBAQCBpbnQgYm1wMjgwX2NvbW1vbl9wcm9iZShzdHJ1Y3Qg
-ZGV2aWNlICpkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiAt
-RUlOVkFMOwo+ID4gwqDCoMKgwqDCoMKgwqDCoH0KPiA+IMKgCj4gPiAtwqDCoMKgwqDCoMKgwqAv
-KiBCTVAzeHggcmVxdWlyZXMgc29mdC1yZXNldCBhcyBwYXJ0IG9mIGluaXRpYWxpemF0aW9uICov
-Cj4gPiAtwqDCoMKgwqDCoMKgwqBpZiAoY2hpcF9pZCA9PSBCTVAzODBfQ0hJUF9JRCkgewo+ID4g
-LcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldCA9IGJtcDM4MF9jbWQoZGF0YSwgQk1Q
-MzgwX0NNRF9TT0ZUX1JFU0VUKTsKPiA+ICvCoMKgwqDCoMKgwqDCoC8qCj4gPiArwqDCoMKgwqDC
-oMKgwqAgKiBTb21lIGNoaXBzIGxpa2UgdGhlIEJNUDN4eCBoYXZlIHByZWluaXQgdGFza3MgdG8g
-cnVuCj4gPiArwqDCoMKgwqDCoMKgwqAgKiBiZWZvcmUgYXBwbHlpbmcgdGhlIGluaXRpYWwgY29u
-ZmlndXJhdGlvbi4KPiA+ICvCoMKgwqDCoMKgwqDCoCAqLwo+IEkgd291bGQgZHJvcCB0aGlzIGNv
-bW1lbnQuIEl0J3Mga2luZCBvZiBvYnZpb3VzIHRoYXQgc29tZSBkZXZpY2VzIG5lZWQgeW91Cj4g
-dG8gY2FsbCBzb21ldGhpbmcgaGVyZSAtIG90aGVyd2lzZSB3aHkgaGF2ZSB0aGUgY2xlYXJseSBv
-cHRpb25hbCBjYWxsYmFjaz8KPiBUaGUgc3BlY2lmaWMgQk1QM3h4IHJlcXVpcmVtZW50cyBhcmUg
-d2VsbCBjb21tZW50ZWQgaW4geW91ciBuZXcgY2FsbGJhY2sgYWJvdmUKPiBzbyBkb24ndCB3YW50
-IHRvIGJlIGhlcmUgYXMgd2VsbC4KPiAKPiA+ICvCoMKgwqDCoMKgwqDCoGlmIChkYXRhLT5jaGlw
-X2luZm8tPnByZWluaXQpIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQg
-PSBkYXRhLT5jaGlwX2luZm8tPnByZWluaXQoZGF0YSk7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgZGV2X2VycihkZXYsICJlcnJvciBydW5uaW5nIHByZWluaXQgdGFza3MiKTsK
-PiAKPiBFcnJvciBtZXNzYWdlIHByaW50ZWQgb24gc3VjY2Vzcy4uLgoKWXVwLCBzb3JyeSBhYm91
-dCB0aGF0Li4uCgo+IAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAocmV0
-IDwgMCkKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHJldHVybiByZXQ7Cj4gCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgcmV0dXJuIGRldl9lcnJfcHJvYmUoZGV2LCByZXQsICJlcnJvciBydW5uaW5nIHBy
-ZWluaXQKPiB0YXNrcyIpOwo+IAo+ID4gwqDCoMKgwqDCoMKgwqDCoH0KPiAKVGhhbmtzIGZvciB5
-b3VyIHRpbWUhCkFuZ2VsCg==
+On Fri, 2022-12-30 at 18:22 +0000, Jonathan Cameron wrote:
+> On Thu, 29 Dec 2022 19:23:16 +0100
+> Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
+>=20
+> > On Thu, 2022-12-29 at 18:35 +0100, Christophe JAILLET wrote:
+> > > Le 26/12/2022 =C3=A0 15:29, Angel Iglesias a =C3=A9crit=C2=A0:=C2=A0=
+=20
+> > > > Adds compatibility with the new sensor generation, the BMP580.
+> > > >=20
+> > > > The measurement and initialization codepaths are adapted from
+> > > > the device datasheet and the repository from manufacturer at
+> > > > https://github.com/boschsensortec/BMP5-Sensor-API.
+> > > >=20
+> > > > Signed-off-by: Angel Iglesias
+> > > > <ang.iglesiasg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > > > =C2=A0=20
+> > >=20
+> > > [...]
+> > > =C2=A0=20
+> > > > diff --git a/drivers/iio/pressure/bmp280.h
+> > > > b/drivers/iio/pressure/bmp280.h
+> > > > index efc31bc84708..27d2abc17d01 100644
+> > > > --- a/drivers/iio/pressure/bmp280.h
+> > > > +++ b/drivers/iio/pressure/bmp280.h=C2=A0=20
+> > >=20
+> > > [...]
+> > > =C2=A0=20
+> > > > +#define BMP580_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x50
+> > > > =C2=A0 #define BMP380_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x50=C2=A0=20
+> > >=20
+> > > Hi,
+> > >=20
+> > > this is maybe correct (I've not been able to find the datasheet to ch=
+eck=20
+> > > myself), but it looks odd to have the same ID for 2 different chips.=
+=C2=A0=20
+> >=20
+> > Yes, I also couldn't find a datasheet for the BMP580 or a devkit anywhe=
+re.
+> > I'm
+> > developing this using the BMP581, which seems to be a variant almost
+> > identical.
+> > Something similar happened with the BMP38x; you could find the BMP384 a=
+nd
+> > the
+> > BMP388, but the BMP380 was unavailable everywhere, datasheet included. =
+My
+> > guess
+> > is this is a similar situation. In any case, the datasheet of the BMP58=
+1 is
+> > available here:
+> > https://www.bosch-sensortec.com/media/boschsensortec/downloads/datashee=
+ts/bst-bmp581-ds004.pdf
+> >=20
+> > Regarding the chip id being the same between generations is weird, but =
+at
+> > least
+> > the datasheet and the sensor I have uses 0x50 as the chip id. After you
+> > mentioned this, I checked back on the reference API repository from Bos=
+ch
+> > and it
+> > has both 0x50 and 0x51 as valid IDs:
+> > *
+> > https://github.com/boschsensortec/BMP5-Sensor-API/blob/master/bmp5_defs=
+.h#L198
+> > * https://github.com/boschsensortec/BMP5-Sensor-API/blob/master/bmp5.c#=
+L1444
+> https://github.com/boschsensortec/BMP3-Sensor-API/blob/master/bmp3_defs.h
+> I was curious on whether we had a wrong value for bmp380, but nope... Sam=
+e ID.
+>=20
+> Huh. As per earlier comment - who wants to moan at Bosch as this is crazy
+> situation?
+>=20
+> Jonathan
+
+Well I'm doing this in my free time beacuse I wanted to setup a meteo stati=
+on
+and got annoyed needing to patch-up userspace code for reading pressure and
+temperature sensors on a very underpowered ARM device when there is a kerne=
+l
+subsystem for this kind of things. The rest is history on the mailing list.
+I don't think I have any leverage to have Bosch listening to my complaints
+
+Angel
+
+>=20
+> >=20
+> > Angel
+> >=20
+> > > CJ
+> > > =C2=A0=20
+> > > > =C2=A0 #define BMP180_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x55
+> > > > =C2=A0 #define BMP280_CHIP_ID=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A00x58=C2=A0=20
+> > > =C2=A0=20
+> >=20
+>=20
 
